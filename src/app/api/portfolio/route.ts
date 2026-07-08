@@ -1,14 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getUserId } from "@/lib/auth";
-import { getOutcomeMidPrices } from "@/lib/orderbookPricing";
+import { requireCanonicalActor } from "@/lib/canonicalAuth";
+import { getOutcomeQuotes } from "@/lib/orderbookPricing";
+import { buildPortfolioSelectionSourceSummary } from "@/server/services/portfolioSelectionSourceSummary";
+import { buildTicketSelectionMetadata } from "@/server/services/ticketSelectionMetadata";
 
 export const dynamic = "force-dynamic";
 
 // LEGACY: retained for current UI compatibility. External agents should use GET /api/account/positions
 // and GET /api/account/balance for canonical machine-facing account data.
-export async function GET(_request: NextRequest) {
-  const userId = await getUserId();
+async function getPortfolioUserId(request: NextRequest) {
+  if (request.headers.get("Authorization")) {
+    const actor = await requireCanonicalActor(request, ["account:read"]);
+    return actor.userId;
+  }
+  return getUserId();
+}
+
+export async function GET(request: NextRequest) {
+  const userId = await getPortfolioUserId(request);
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -20,6 +31,34 @@ export async function GET(_request: NextRequest) {
       market: true,
     },
   });
+  const positionSelectionOrders = positions.length
+    ? await prisma.order.findMany({
+        where: {
+          userId,
+          marketId: {
+            in: Array.from(new Set(positions.map((position: { marketId: string }) => position.marketId))),
+          },
+          outcomeId: {
+            in: Array.from(new Set(positions.map((position: { outcomeId: string }) => position.outcomeId))),
+          },
+          status: { in: ["FILLED", "PARTIAL", "OPEN"] },
+          apiOrderRequest: { isNot: null },
+        },
+        orderBy: [{ updatedAt: "desc" }, { id: "desc" }],
+        select: {
+          marketId: true,
+          outcomeId: true,
+          apiOrderRequest: { select: { requestBody: true } },
+        },
+      })
+    : [];
+  const positionSelectionByMarketOutcome = new Map<string, unknown>();
+  for (const order of positionSelectionOrders) {
+    const key = `${order.marketId}:${order.outcomeId}`;
+    if (!positionSelectionByMarketOutcome.has(key)) {
+      positionSelectionByMarketOutcome.set(key, order.apiOrderRequest?.requestBody);
+    }
+  }
 
   const realizedAgg = await prisma.position.aggregate({
     where: { userId },
@@ -35,10 +74,34 @@ export async function GET(_request: NextRequest) {
     take: 25,
     include: {
       outcome: {
-        select: { id: true, name: true },
+        select: {
+          id: true,
+          name: true,
+          label: true,
+          side: true,
+          referenceTokenId: true,
+          referenceOutcomeLabel: true,
+        },
       },
       market: {
-        select: { id: true, title: true, status: true },
+        select: {
+          id: true,
+          title: true,
+          status: true,
+          marketGroupKey: true,
+          marketType: true,
+          line: true,
+          period: true,
+          referenceSource: true,
+          externalSlug: true,
+          externalMarketId: true,
+          conditionId: true,
+        },
+      },
+      apiOrderRequest: {
+        select: {
+          requestBody: true,
+        },
       },
     },
   });
@@ -67,18 +130,19 @@ export async function GET(_request: NextRequest) {
     marketOutcomeMap.set(p.marketId, existing);
   }
 
-  const marketOutcomeMids = new Map<string, Map<string, number>>();
+  const marketOutcomeQuotes = new Map<string, Awaited<ReturnType<typeof getOutcomeQuotes>>>();
   for (const [marketId, outcomeIds] of marketOutcomeMap.entries()) {
-    const mids = await getOutcomeMidPrices(marketId, outcomeIds);
-    marketOutcomeMids.set(marketId, mids);
+    const quotes = await getOutcomeQuotes(marketId, outcomeIds);
+    marketOutcomeQuotes.set(marketId, quotes);
   }
 
   const items = positions.map((position) => {
     const shares = Number(position.shares);
     const avgCost = Number(position.avgCost);
-    const mids = marketOutcomeMids.get(position.marketId);
+    const quotes = marketOutcomeQuotes.get(position.marketId);
+    const quote = quotes?.get(position.outcomeId) ?? null;
     const currentPrice =
-      position.market.mechanism === "POOL" ? 0.5 : mids?.get(position.outcomeId) ?? 0.5;
+      position.market.mechanism === "POOL" ? 0.5 : quote?.mid ?? 0.5;
 
     const valueTokens = shares * currentPrice;
     const costBasisTokens = shares * avgCost;
@@ -92,10 +156,20 @@ export async function GET(_request: NextRequest) {
         resolveTime: position.market.resolveTime,
         createdAt: position.market.createdAt,
       },
+      outcomeId: position.outcomeId,
       outcome: position.outcome.name,
+      selection: buildTicketSelectionMetadata({
+        requestBody: positionSelectionByMarketOutcome.get(`${position.marketId}:${position.outcomeId}`),
+        market: position.market,
+        outcome: position.outcome,
+      }),
       shares,
       avgCost,
       currentPrice,
+      bestBid: quote?.bestBid ?? null,
+      bestAsk: quote?.bestAsk ?? null,
+      bestBidSize: quote?.bestBidSize ?? null,
+      bestAskSize: quote?.bestAskSize ?? null,
       valueTokens,
       costBasisTokens,
       totalCostBasisTokens: costBasisTokens,
@@ -112,6 +186,31 @@ export async function GET(_request: NextRequest) {
   const walletLockedUSDC = Number(custody?.lockedUSDC ?? 0);
   const walletTotalUSDC = walletAvailableUSDC + walletLockedUSDC;
   const totalRealizedPnl = Number(realizedAgg._sum.realizedPnl ?? 0);
+  const openOrderItems = openOrders.map((order) => ({
+    id: order.id,
+    market: {
+      id: order.market.id,
+      title: order.market.title,
+      status: order.market.status,
+    },
+    outcome: {
+      id: order.outcome.id,
+      name: order.outcome.name,
+    },
+    selection: buildTicketSelectionMetadata({
+      requestBody: order.apiOrderRequest?.requestBody,
+      market: order.market,
+      outcome: order.outcome,
+    }),
+    side: order.side,
+    status: order.status,
+    price: Number(order.price),
+    size: Number(order.amount),
+    remaining: Number(order.remaining),
+    reservedNotional: Number(order.reservedNotional),
+    createdAt: order.createdAt,
+    updatedAt: order.updatedAt,
+  }));
 
   return NextResponse.json({
     walletAvailableUSDC,
@@ -123,26 +222,12 @@ export async function GET(_request: NextRequest) {
     totalRealizedPnl,
     totalPnl,
     positions: items,
-    openOrders: openOrders.map((order) => ({
-      id: order.id,
-      market: {
-        id: order.market.id,
-        title: order.market.title,
-        status: order.market.status,
-      },
-      outcome: {
-        id: order.outcome.id,
-        name: order.outcome.name,
-      },
-      side: order.side,
-      status: order.status,
-      price: Number(order.price),
-      size: Number(order.amount),
-      remaining: Number(order.remaining),
-      reservedNotional: Number(order.reservedNotional),
-      createdAt: order.createdAt,
-      updatedAt: order.updatedAt,
-    })),
+    openOrders: openOrderItems,
+    selectionSourceSummary: {
+      positions: buildPortfolioSelectionSourceSummary(items),
+      openOrders: buildPortfolioSelectionSourceSummary(openOrderItems),
+      combined: buildPortfolioSelectionSourceSummary([...items, ...openOrderItems]),
+    },
     comboOrders: comboOrders.map((combo) => ({
       id: combo.id,
       status: combo.status,

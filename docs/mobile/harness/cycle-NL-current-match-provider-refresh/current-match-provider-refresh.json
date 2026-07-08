@@ -1,0 +1,173 @@
+{
+  "generatedAt": "2026-07-08T13:30:57.160Z",
+  "eventSlug": "argentina-vs-egypt",
+  "ok": true,
+  "providerLifecycle": {
+    "status": "stale",
+    "ready": false,
+    "reason": "No provider orderbook depth snapshot is available for compact markets.",
+    "quote": {
+      "source": "reference-quote-snapshot",
+      "status": "ready",
+      "latestAt": "2026-07-08T13:30:55.051Z",
+      "lastFetchedAt": "2026-07-08T13:30:55.051Z",
+      "stalenessSeconds": 2,
+      "readyAfterSeconds": 60,
+      "staleAfterSeconds": 90,
+      "nextRefreshAt": "2026-07-08T13:31:55.051Z",
+      "shouldRefresh": false,
+      "ready": true,
+      "refreshDue": false,
+      "stale": false,
+      "unavailable": false,
+      "empty": false,
+      "notReady": false,
+      "fallback": false,
+      "reason": "Provider snapshot is fresh."
+    },
+    "orderbookDepth": {
+      "source": "empty",
+      "status": "unavailable",
+      "latestAt": null,
+      "lastFetchedAt": null,
+      "stalenessSeconds": null,
+      "readyAfterSeconds": 60,
+      "staleAfterSeconds": 90,
+      "nextRefreshAt": null,
+      "shouldRefresh": true,
+      "ready": false,
+      "refreshDue": false,
+      "stale": false,
+      "unavailable": true,
+      "empty": true,
+      "notReady": true,
+      "fallback": false,
+      "reason": "No provider orderbook depth snapshot is available for compact markets."
+    },
+    "chartHistory": {
+      "source": "market-outcome-snapshot",
+      "status": "stale",
+      "latestAt": "2026-07-07T18:30:09.000Z",
+      "lastFetchedAt": "2026-07-07T18:30:09.000Z",
+      "stalenessSeconds": 68448,
+      "readyAfterSeconds": 60,
+      "staleAfterSeconds": 90,
+      "nextRefreshAt": "2026-07-07T18:31:09.000Z",
+      "shouldRefresh": true,
+      "ready": false,
+      "refreshDue": false,
+      "stale": true,
+      "unavailable": false,
+      "empty": false,
+      "notReady": true,
+      "fallback": false,
+      "reason": "Provider snapshot is older than 90 seconds."
+    },
+    "lineProvider": {
+      "source": "optic_odds",
+      "status": "skipped",
+      "attempted": false,
+      "optional": true,
+      "blocking": false,
+      "skippedReason": "missing_provider_fixture",
+      "reason": "missing_provider_fixture"
+    }
+  },
+  "provider": {
+    "source": "polymarket-gamma",
+    "attempted": true,
+    "refreshedCount": 3,
+    "skippedCount": 0,
+    "snapshotsUpdated": 6,
+    "skipped": []
+  },
+  "providerHistory": {
+    "source": "polymarket-clob-prices-history",
+    "requestedMarketCount": 3,
+    "refreshedCount": 3,
+    "snapshotsCreated": 354,
+    "skippedCount": 0
+  },
+  "lineFamilyCoverage": {
+    "providerRefreshableMarketCount": 3,
+    "readyProviderRefreshableMarketCount": 0,
+    "families": [
+      {
+        "family": "moneyline",
+        "marketCount": 3,
+        "providerRefreshableMarketCount": 3,
+        "readyMarketCount": 0,
+        "notReadyMarketCount": 3,
+        "statuses": [
+          "stale"
+        ],
+        "marketIds": [
+          "985df42d-eeb0-4af1-b2ae-126db9328630",
+          "95d0077b-dab8-4601-ba3f-d34001ffded3",
+          "b6554df0-9bbc-4161-bfcf-f9d76b6c71e3"
+        ],
+        "selectorKeys": [
+          "main:regulation:default",
+          "main:regulation:default",
+          "main:regulation:default"
+        ]
+      },
+      {
+        "family": "spread",
+        "marketCount": 2,
+        "providerRefreshableMarketCount": 0,
+        "readyMarketCount": 0,
+        "notReadyMarketCount": 2,
+        "statuses": [
+          "unavailable"
+        ],
+        "marketIds": [
+          "0806254e-757c-403f-a180-0631c4e6b3fc",
+          "75e5b7d9-ffc9-422a-814e-34d2588b1210"
+        ],
+        "selectorKeys": [
+          "spread:regulation:1.5",
+          "spread:regulation:0.5"
+        ]
+      },
+      {
+        "family": "total",
+        "marketCount": 1,
+        "providerRefreshableMarketCount": 0,
+        "readyMarketCount": 0,
+        "notReadyMarketCount": 1,
+        "statuses": [
+          "unavailable"
+        ],
+        "marketIds": [
+          "95b4cb4d-6dac-4e84-a96a-d1cee0891f16"
+        ],
+        "selectorKeys": [
+          "totals:regulation:2.5"
+        ]
+      },
+      {
+        "family": "team_total",
+        "marketCount": 1,
+        "providerRefreshableMarketCount": 0,
+        "readyMarketCount": 0,
+        "notReadyMarketCount": 1,
+        "statuses": [
+          "unavailable"
+        ],
+        "marketIds": [
+          "d62c4e23-1349-40d1-8e64-66d1084e14c3"
+        ],
+        "selectorKeys": [
+          "team-totals:regulation:1.5"
+        ]
+      }
+    ]
+  },
+  "pass": true,
+  "nonBlockingNotes": [
+    "Orderbook depth remains internal and is not required for the Local MVP retail flow.",
+    "Chart history can remain stale for old provider timestamps while still proving Polymarket-backed history source.",
+    "Line markets remain contract fixtures until attach-ready provider-backed line markets exist."
+  ]
+}

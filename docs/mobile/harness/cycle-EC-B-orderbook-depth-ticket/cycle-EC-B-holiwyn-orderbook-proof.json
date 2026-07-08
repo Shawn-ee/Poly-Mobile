@@ -1,0 +1,39 @@
+{
+    "cycle":  "EC-B",
+    "scope":  "Visible mobile Book ladder, selector state, and ticket carry-through proof",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke.ps1 -Deep -EventDetailOrderBookInteractions -Port 8268 -Device \"adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp\" -ExpoHost 127.0.0.1 -OutputDir docs/mobile/screenshots/cycle-EC-B-orderbook-depth-ticket -HierarchyOutputDir docs/mobile/harness/cycle-EC-B-orderbook-depth-ticket",
+    "eventIdentity":  "Mexico vs. Ecuador",
+    "result":  "pass",
+    "assertions":  {
+                       "yesNoSwitchBefore":  "selected-market-mexico-ecuador-winner selected-outcome-mexico selected-side-yes",
+                       "yesNoSwitchAfter":  "selected-market-mexico-ecuador-winner selected-outcome-ecuador selected-side-no",
+                       "totalsSelectorCarryThrough":  "selected-market-mexico-ecuador-total selected-family-Totals selected-outcome-under selected-side-no selected-market-type-totals selected-line-2.5 selected-period-regulation",
+                       "spreadSelectorCarryThrough":  "selected-market-mexico-ecuador-spread selected-family-Spreads selected-outcome-yes selected-side-yes selected-market-type-spread selected-line-1.5 selected-period-regulation",
+                       "decimalizeBeforeAfter":  "order-book-display-mode-toggle changes book-display-mode-cents to book-display-mode-decimal without resetting selected market/outcome/side",
+                       "ticketCarryThrough":  "ticket-selection-summary Mexico -1.5 spread ticket-selection-line Yes provider-source-polymarket-fixture provider-token-token-spread-yes-15",
+                       "ladderColumns":  "Price Shares Value",
+                       "sideLabelProof":  "order-book-ask-level-* above spread and order-book-bid-level-* below spread",
+                       "visibleSelectedContract":  "order-book-selected-contract shows family, period, line, selected outcome, side, bid, and ask",
+                       "providerReadyUiState":  "orderbook-source-contract-fixture/orderbook-status-ready/orderbook-availability-ready visible pending server integration",
+                       "decimalizeEquivalent":  "implemented as Book price display Cents/Decimal toggle"
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-EC-B-orderbook-depth-ticket/cycle-EC-B-holiwyn-orderbook-book-action.png",
+                      "docs/mobile/harness/cycle-EC-B-orderbook-depth-ticket/cycle-EC-B-holiwyn-orderbook-book-action.xml",
+                      "docs/mobile/screenshots/cycle-EC-B-orderbook-depth-ticket/cycle-EC-B-holiwyn-orderbook-selector-before-totals.png",
+                      "docs/mobile/harness/cycle-EC-B-orderbook-depth-ticket/cycle-EC-B-holiwyn-orderbook-selector-before-totals.xml",
+                      "docs/mobile/screenshots/cycle-EC-B-orderbook-depth-ticket/cycle-EC-B-holiwyn-orderbook-selector-before-spread.png",
+                      "docs/mobile/harness/cycle-EC-B-orderbook-depth-ticket/cycle-EC-B-holiwyn-orderbook-selector-before-spread.xml",
+                      "docs/mobile/screenshots/cycle-EC-B-orderbook-depth-ticket/cycle-EC-B-holiwyn-orderbook-settings-cents.png",
+                      "docs/mobile/harness/cycle-EC-B-orderbook-depth-ticket/cycle-EC-B-holiwyn-orderbook-settings-cents.xml",
+                      "docs/mobile/screenshots/cycle-EC-B-orderbook-depth-ticket/cycle-EC-B-holiwyn-orderbook-settings-decimal.png",
+                      "docs/mobile/harness/cycle-EC-B-orderbook-depth-ticket/cycle-EC-B-holiwyn-orderbook-settings-decimal.xml",
+                      "docs/mobile/screenshots/cycle-EC-B-orderbook-depth-ticket/cycle-EC-B-holiwyn-orderbook-spread-ticket.png",
+                      "docs/mobile/harness/cycle-EC-B-orderbook-depth-ticket/cycle-EC-B-holiwyn-orderbook-spread-ticket.xml"
+                  ],
+    "remainingGaps":  [
+                          "Provider-backed ready UI proof remains pending integration with Agent A backend route changes in this worktree.",
+                          "EC-B fixture is deterministic and backend-shaped; it is not random display-only data.",
+                          "Full Polymarket settings sheet remains richer than this display-mode toggle."
+                      ]
+}

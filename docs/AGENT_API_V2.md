@@ -72,6 +72,7 @@ Supported scopes:
 - `orders:write`
 - `fills:read`
 - `account:read`
+- `account:write`
 - `markets:read`
 
 ### Scope Semantics
@@ -97,6 +98,8 @@ It is not enough to have only one of those scopes.
 - `GET /api/account/balance` -> `account:read`
 - `GET /api/account/positions` -> `account:read`
 - `GET /api/account/ledger` -> `account:read`
+- `GET /api/profile/preferences` -> `account:read`
+- `PUT /api/profile/preferences` -> `account:write`
 - `GET /api/stream/me/orders` -> `orders:read` and `fills:read`
 
 ## Canonical Data Encoding

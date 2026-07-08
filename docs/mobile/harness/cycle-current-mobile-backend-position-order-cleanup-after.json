@@ -1,0 +1,125 @@
+{
+  "ready": true,
+  "applied": false,
+  "cutoff": null,
+  "selectors": {
+    "marketSlugPrefix": "mobile-backend-position-order-",
+    "userPrefixes": [
+      "holiwyn_mobile_backend_position_order_user_",
+      "holiwyn_mobile_backend_position_order_bid_",
+      "holiwyn_mobile_backend_position_order_ask_"
+    ]
+  },
+  "counts": {
+    "markets": 4,
+    "users": 12,
+    "credentials": 4
+  },
+  "deleted": {},
+  "markets": [
+    {
+      "id": "541a594e-2b87-4d52-b15f-1d0c26f0af40",
+      "slug": "mobile-backend-position-order-5772496c",
+      "title": "World Cup Backend Position Order Proof",
+      "createdAt": "2026-07-02T13:36:13.374Z"
+    },
+    {
+      "id": "35cdcfa5-df98-4fb2-afa8-c6c54d3b5220",
+      "slug": "mobile-backend-position-order-13fbca55",
+      "title": "World Cup Backend Position Order Proof",
+      "createdAt": "2026-07-02T13:41:15.054Z"
+    },
+    {
+      "id": "46a17a6d-91b4-4baf-b1d5-3ae4e4f9141d",
+      "slug": "mobile-backend-position-order-96fca357",
+      "title": "World Cup Backend Position Order Proof",
+      "createdAt": "2026-07-02T13:43:34.719Z"
+    },
+    {
+      "id": "5f82f81a-a97a-40a5-a820-1f9f9dd326eb",
+      "slug": "mobile-backend-position-order-7910877d",
+      "title": "World Cup Backend Position Order Proof",
+      "createdAt": "2026-07-02T13:45:59.783Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "b4057443-63b3-4863-8384-d7ba334aa86d",
+      "username": "holiwyn_mobile_backend_position_order_user_99f3bedf",
+      "createdAt": "2026-07-02T13:36:13.385Z"
+    },
+    {
+      "id": "7653a5bc-9e20-4cde-adfe-648083866765",
+      "username": "holiwyn_mobile_backend_position_order_bid_48f07bb4",
+      "createdAt": "2026-07-02T13:36:13.395Z"
+    },
+    {
+      "id": "641f69a6-9cf5-492c-bf41-4814d6f2e814",
+      "username": "holiwyn_mobile_backend_position_order_ask_91adc1eb",
+      "createdAt": "2026-07-02T13:36:13.405Z"
+    },
+    {
+      "id": "521ff79a-14ee-48ab-a8ca-8368f2b6772d",
+      "username": "holiwyn_mobile_backend_position_order_user_23be1e62",
+      "createdAt": "2026-07-02T13:41:15.066Z"
+    },
+    {
+      "id": "88a04365-8cb9-4467-8479-60aa2537c9eb",
+      "username": "holiwyn_mobile_backend_position_order_bid_340f6e0f",
+      "createdAt": "2026-07-02T13:41:15.075Z"
+    },
+    {
+      "id": "e0973c37-9647-4672-b44f-9ad1eae42d58",
+      "username": "holiwyn_mobile_backend_position_order_ask_607fb9a0",
+      "createdAt": "2026-07-02T13:41:15.082Z"
+    },
+    {
+      "id": "ae9148f1-acde-49c0-887e-26f92dc14b63",
+      "username": "holiwyn_mobile_backend_position_order_user_8e751929",
+      "createdAt": "2026-07-02T13:43:34.729Z"
+    },
+    {
+      "id": "93fa6499-3f6d-481b-9dbd-b1fb5c9333ff",
+      "username": "holiwyn_mobile_backend_position_order_bid_5d854d47",
+      "createdAt": "2026-07-02T13:43:34.740Z"
+    },
+    {
+      "id": "579c31f3-fdee-41ed-a80b-f463c33e8782",
+      "username": "holiwyn_mobile_backend_position_order_ask_90c49d62",
+      "createdAt": "2026-07-02T13:43:34.749Z"
+    },
+    {
+      "id": "951d6167-aab3-4c52-9271-caf52ec7bff5",
+      "username": "holiwyn_mobile_backend_position_order_user_5a4e7ab9",
+      "createdAt": "2026-07-02T13:45:59.793Z"
+    },
+    {
+      "id": "ae606a1c-f97a-4b7f-8ac7-f53ea354a3e5",
+      "username": "holiwyn_mobile_backend_position_order_bid_58f33315",
+      "createdAt": "2026-07-02T13:45:59.803Z"
+    },
+    {
+      "id": "0fbaf722-6f4c-4eab-b573-f4433317869d",
+      "username": "holiwyn_mobile_backend_position_order_ask_fda13019",
+      "createdAt": "2026-07-02T13:45:59.811Z"
+    }
+  ],
+  "credentials": [
+    {
+      "id": "9cdee2e9-c8fc-4236-a52e-02d2e1ecf68e",
+      "keyId": "pk_live_6dcea0a830f0f76b"
+    },
+    {
+      "id": "bd4f6b7d-7631-4172-a747-d90c80fb15b8",
+      "keyId": "pk_live_f9b8c4ae85b3663f"
+    },
+    {
+      "id": "ffab78dd-418e-4e9b-83bf-f131d8544a8a",
+      "keyId": "pk_live_314c15c91facff5d"
+    },
+    {
+      "id": "1f87db3e-fe47-40a7-9dc2-bec7dde0ba2a",
+      "keyId": "pk_live_3db6d45ca08a1558"
+    }
+  ]
+}

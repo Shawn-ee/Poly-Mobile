@@ -1,0 +1,6372 @@
+# Polymarket Audit Gate Report
+
+Purpose: record pass/fail decisions from the Audit Gate Agent. Only the Audit Gate Agent can mark a feature/page/function as parity-pass.
+
+## Gate Rule
+
+Fail the feature when:
+
+- Any P0 criterion fails.
+- Same-cycle Polymarket reference evidence is missing.
+- Holiwyn Android device evidence is missing.
+- Holiwyn has a nonfunctional button where Polymarket's equivalent works.
+- Holiwyn uses a static placeholder where Polymarket has interactive/live behavior.
+- Holiwyn implements only one market option where Polymarket exposes selectable lines.
+- Holiwyn ticket does not preserve selected market, line, or outcome correctly.
+- Visual hierarchy is clearly worse or confusing.
+- Lead Agent claims readiness before Audit Gate pass.
+
+## Cycle OV
+
+Gate status: Pass for provider breadth/Search visibility and match-only classification guard; partial for bot quote placement.
+
+Scope: Nation top-goalscorer provider breadth and classification guard.
+
+Decision:
+
+- P0 failed: 0 for focused provider breadth route/Search visibility and match-only classification scope.
+- Closed P0: `world-cup-nation-of-top-goalscorer` no longer leaks into `mobileMvpMatches=1`; it is normalized as `eventType=future`, `marketProfile=outright`.
+- Bot runtime note: dry-run/live-local ran against the tiny `England` allowlist and used fresh reference bid/ask, but quote placement was skipped by `per_market_exposure_cap_reached_20060_of_20000`. That is a risk-cap/seed sizing blocker, not a provider discovery blocker.
+- P1/P2 remaining: P1 real provider-backed current/live match breadth remains limited; P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable; P1 scheduled refresh and bot risk-cap policy remain future work.
+- Evidence: `docs/mobile/harness/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-provider-breadth-runtime-route-after-classification-fix.json`, `docs/mobile/harness/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-search-provider-breadth-route-after-classification-fix.json`, `docs/mobile/harness/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-nation-top-scorer-reference-refresh.json`, `docs/mobile/screenshots/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-s23-provider-breadth-search.png`, `docs/mobile/harness/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-s23-provider-breadth-search.xml`, `docs/mobile/harness/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-bot-dry-run-final.txt`, `docs/mobile/harness/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-bot-live-local-final.txt`.
+- Notes: The gate passes because the cycle imports/refreshed a real Polymarket Nation Top Goalscorer event, proves broad route/Search visibility for 5 provider-backed World Cup results, proves S23 Search visibility, and fixes a real data-classification regression before completion.
+
+## Cycle OU
+
+Gate status: Pass for focused provider breadth/Search visibility; partial for bot quote placement.
+
+Scope: Golden Boot provider breadth refresh.
+
+Decision:
+
+- P0 failed: 0 for focused provider breadth route/Search visibility scope.
+- Bot runtime note: dry-run passed and live-local reached `manage_quotes`, but fake-token quote placement was rejected by `TRADING_KILL_SWITCH_ACTIVE`. That is a remaining local trading-gate blocker, not a provider discovery blocker.
+- P1/P2 remaining: P1 real provider-backed current/live match breadth remains limited; P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable; P1 scheduled refresh and trading-kill-switch policy remain future work.
+- Evidence: `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/cycle-OU-provider-breadth-runtime-route.json`, `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/cycle-OU-search-provider-breadth-route.json`, `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/cycle-OU-golden-boot-reference-refresh.json`, `docs/mobile/screenshots/cycle-OU-provider-match-breadth-refresh/cycle-OU-s23-provider-breadth-search.png`, `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/cycle-OU-s23-provider-breadth-search.xml`, `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/cycle-OU-bot-dry-run-final.txt`, `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/cycle-OU-bot-live-local-final.txt`.
+- Notes: The gate passes because the cycle imports/refreshed a real Polymarket Golden Boot event, proves broad route visibility for 4 provider-backed World Cup results, proves S23 Search visibility, and runs the tiny allowlisted bot path far enough to expose the real local trading blocker. It does not claim match-line parity or quote-order placement.
+
+## Cycle OT
+
+Gate status: Pass
+
+Scope: World Cup winner provider breadth refresh.
+
+Decision:
+
+- P0 failed: 0 for focused provider readiness/provider breadth refresh scope.
+- P1/P2 remaining: P1 real provider-backed current/live match breadth remains limited; P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable; P1 scheduled refresh/bot breadth remains next milestone work.
+- Evidence: `docs/mobile/harness/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-real-provider-world-cup-winner.json`, `docs/mobile/harness/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-provider-breadth-runtime-route.json`, `docs/mobile/harness/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-search-provider-breadth-route.json`, `docs/mobile/screenshots/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-s23-provider-breadth-search.png`, `docs/mobile/harness/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-s23-provider-breadth-search.xml`.
+- Notes: The gate passes because the cycle refreshes real Polymarket World Cup winner markets, proves route-visible provider breadth, and proves S23 Search visibility. It does not claim line-market parity or Home broad-futures parity.
+
+## Cycle OR
+
+Gate status: Pass
+
+Scope: Home/Live provider breadth status guard.
+
+Decision:
+
+- P0 failed: 0 for focused status/filter scope.
+- P1/P2 remaining: P1 real provider-backed current/live match breadth remains limited; P1 provider-backed Spread/Totals/Team Total line markets remain unavailable; P1 broad futures remain Search-visible rather than Home-visible by product choice.
+- Evidence: `docs/mobile/harness/cycle-OR-home-provider-breadth-feed/cycle-OR-route-status-summary.json`, `docs/mobile/harness/cycle-OR-home-provider-breadth-feed/cycle-OR-s23-search-summary-after-clear.json`, `docs/mobile/screenshots/cycle-OR-home-provider-breadth-feed/cycle-OR-s23-search-world-provider-futures-after-clear.png`, `docs/mobile/harness/cycle-OR-home-provider-breadth-feed/cycle-OR-s23-live-summary-after-tap.json`, `docs/mobile/screenshots/cycle-OR-home-provider-breadth-feed/cycle-OR-s23-live-no-outright-futures-after-tap.png`.
+- Notes: The gate passes because mobile now classifies provider-backed futures/outrights as future predictions even when Polymarket reports `liveStatus=LIVE`, and S23 proof shows Search breadth while Live stays free of futures.
+
+## Cycle OQ
+
+Gate status: Pass
+
+Scope: Provider breadth runtime loop.
+
+Decision:
+
+- P0 failed: 0 for focused provider breadth/runtime scope.
+- P1/P2 remaining: P1 real provider-backed World Cup match line markets remain unavailable; P1 additional live/current match breadth remains needed; P1 scheduled refresh is needed so bot readiness does not depend on manual refresh timing.
+- Evidence: `docs/mobile/harness/cycle-OQ-provider-breadth-runtime/cycle-OQ-provider-breadth-runtime-route.json`, `docs/mobile/harness/cycle-OQ-provider-breadth-runtime/cycle-OQ-s23-search-provider-breadth-summary.json`, `docs/mobile/screenshots/cycle-OQ-provider-breadth-runtime/cycle-OQ-search-provider-breadth.png`, `docs/mobile/harness/cycle-OQ-provider-breadth-runtime/cycle-OQ-bot-dry-run.txt`, `docs/mobile/harness/cycle-OQ-provider-breadth-runtime/cycle-OQ-bot-live-local.txt`.
+- Notes: The gate passes because the cycle materially expands real provider-backed World Cup breadth, proves it on S23 Search, refreshes reference prices, and proves one tiny allowlisted fake-token bot dry-run/live-local path. It does not close the live match line-market parity gap.
+
+## Cycle OP
+
+Gate status: Pass
+
+Scope: Search provider breadth visibility.
+
+Decision:
+
+- P0 failed: 0 for focused Search provider breadth visibility.
+- P1/P2 remaining: P1 more real provider-backed match events; P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected MVP match.
+- Evidence: `docs/mobile/harness/cycle-OP-search-provider-breadth/cycle-OP-search-provider-breadth-route.json`, `docs/mobile/harness/cycle-OP-search-provider-breadth/cycle-OP-s23-search-provider-breadth.png`, `docs/mobile/harness/cycle-OP-search-provider-breadth/cycle-OP-s23-search-provider-breadth.xml`, `docs/mobile/audits/cycle-OP-search-provider-breadth.md`.
+- Notes: Search visibly shows two provider-backed results on S23: `World Cup Winner` with `Polymarket 8 markets`, and `Argentina vs. Egypt` with `Polymarket 3 / test lines 4`. Home remains Local MVP match-only.
+
+## Cycle NJ
+
+Gate status: Pass
+
+Scope: Current service inspection plus provider-backed Regulation Winner buy/cashout lifecycle.
+
+Decision:
+
+- P0 failed: 0 for focused provider-backed Regulation Winner buy/sell lifecycle.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events; P1 route-backed current chart history is unavailable; P1 production liquidity policy remains separate from proof liquidity.
+- Evidence: `docs/mobile/harness/cycle-NJ-current-service-and-sell-path-inspection/cycle-NJ-current-service-summary.json`, `docs/mobile/harness/cycle-NJ-provider-winner-cashout-s23/cycle-NJ-provider-winner-s23-visible-flow.json`, `docs/mobile/harness/cycle-NJ-provider-winner-cashout-s23/cycle-NJ-provider-winner-cashout-history.xml`, `docs/mobile/audits/cycle-NJ-current-service-and-provider-winner-cashout.md`.
+- Notes: The S23 proof verifies Home, Event Detail, provider winner ticket, filled Buy, Portfolio position, cash-out sheet, swipe Sell, and History with provider winner identity preserved.
+
+## Cycle NI
+
+Gate status: Pass
+
+Scope: Provider-backed Regulation Winner clean-feed regression.
+
+Decision:
+
+- P0 failed: 0 for focused provider-backed Regulation Winner filled-flow scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events; P1 production liquidity policy is still separate from proof liquidity.
+- Evidence: `docs/mobile/harness/cycle-NI-provider-winner-clean-feed/cycle-NI-provider-winner-s23-visible-flow.json`, `docs/mobile/harness/cycle-NI-provider-winner-clean-feed/cycle-NI-provider-winner-counterparty.json`, `docs/mobile/harness/cycle-NI-provider-winner-clean-feed/cycle-NI-provider-winner-after-submit.xml`, `docs/mobile/harness/cycle-NI-provider-winner-clean-feed/cycle-NI-provider-winner-portfolio-history.xml`, `docs/mobile/audits/cycle-NI-provider-winner-clean-feed.md`.
+- Notes: The S23 proof verifies the cleaned Home feed and the real Polymarket-backed Egypt Regulation Winner path through ticket, filled order, Portfolio, and History.
+
+## Cycle NH
+
+Gate status: Pass
+
+Scope: Mobile MVP proof-event filter for Home/Live feed.
+
+Decision:
+
+- P0 failed: 0 for focused Home/Live feed cleanup scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-NH-current-service-reinspection/cycle-NH-current-service-reinspection-after-filter.json`, `docs/mobile/harness/cycle-NH-s23-proof-event-filter/cycle-NH-current-mvp-s23-visible-flow.json`, `docs/mobile/harness/cycle-NH-s23-proof-event-filter/cycle-NH-current-mvp-home.xml`, `docs/mobile/harness/cycle-NH-s23-proof-event-filter/cycle-NH-current-mvp-live.xml`, `docs/mobile/audits/cycle-NH-mobile-mvp-proof-event-filter.md`.
+- Notes: The route inspection proves the user-facing feed dropped from 3 events to 2 real match events after filtering out the disposable provider-breadth proof event. S23 proof confirms Home/Live no longer show proof rows and the ticket/cancel path still passes.
+
+## Cycle NG
+
+Gate status: Pass
+
+Scope: S23 current match cancel proof.
+
+Decision:
+
+- P0 failed: 0 for focused Local MVP cancel proof scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-NG-s23-current-match-cancel-proof/cycle-NG-current-mvp-s23-visible-flow.json`, `docs/mobile/harness/cycle-NG-s23-current-match-cancel-proof/cycle-NG-current-mvp-after-submit.xml`, `docs/mobile/harness/cycle-NG-s23-current-match-cancel-proof/cycle-NG-current-mvp-after-cancel.xml`, `docs/mobile/harness/cycle-NG-s23-current-match-cancel-proof/cycle-NG-current-mvp-canceled-history.xml`, `docs/mobile/audits/cycle-NG-s23-current-match-cancel-proof.md`.
+- Notes: The S23 proof verifies Home -> Live -> Event Detail -> Spread ticket -> open order -> Cancel -> History. It does not claim provider-backed line-market parity.
+
+## Cycle NF
+
+Gate status: Pass
+
+Scope: Proof JSON hygiene.
+
+Decision:
+
+- P0 failed: 0 for focused proof hygiene scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-NF-proof-json-hygiene/cycle-NF-current-mvp-s23-visible-flow.json`, `docs/mobile/harness/cycle-NF-proof-json-hygiene/cycle-NF-current-mvp-after-submit.xml`, `docs/mobile/screenshots/cycle-NF-proof-json-hygiene/cycle-NF-current-mvp-after-submit.png`, `docs/mobile/audits/cycle-NF-proof-json-hygiene.md`.
+- Notes: Generated proof JSON has unique artifacts, omits History artifacts for open-order mode, and passes `git diff --check` without manual normalization.
+
+## Cycle NE
+
+Gate status: Pass
+
+Scope: S23 open-order proof mode.
+
+Decision:
+
+- P0 failed: 0 for focused harness/proof mode scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-NE-s23-open-order-proof-mode/cycle-NE-current-mvp-s23-visible-flow.json`, `docs/mobile/harness/cycle-NE-s23-open-order-proof-mode/cycle-NE-current-mvp-after-submit.xml`, `docs/mobile/screenshots/cycle-NE-s23-open-order-proof-mode/cycle-NE-current-mvp-after-submit.png`, `docs/mobile/audits/cycle-NE-s23-open-order-proof-mode.md`.
+- Notes: The reusable current MVP S23 harness now supports `-ExpectOpenOrder`, preventing future open-order cycles from failing unrelated History assertions.
+
+## Cycle ND
+
+Gate status: Pass
+
+Scope: Portfolio open-order source badge.
+
+Decision:
+
+- P0 failed: 0 for focused visible open-order source badge scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-ND-open-order-source-badge/cycle-ND-open-order-source-badge-proof.json`, `docs/mobile/harness/cycle-ND-open-order-source-badge/cycle-ND-current-mvp-after-submit.xml`, `docs/mobile/screenshots/cycle-ND-open-order-source-badge/cycle-ND-current-mvp-after-submit.png`, `docs/mobile/audits/cycle-ND-open-order-source-badge.md`.
+- Notes: Focused S23 proof shows `open-order-source-badge`, `open-order-source-note`, `Local test pricing`, selected Spread line identity, and `cancel-open-order-` in Portfolio Orders. The reusable script's later History assertion was non-gating for this focused open-order proof.
+
+## Cycle NC
+
+Gate status: Pass
+
+Scope: Portfolio selection source summary.
+
+Decision:
+
+- P0 failed: 0 for focused visible Portfolio summary scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-NC-portfolio-selection-source-summary/cycle-NC-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-NC-portfolio-selection-source-summary/`, `docs/mobile/audits/cycle-NC-portfolio-selection-source-summary.md`.
+- Notes: S23 XML proof includes `portfolio-selection-source-summary`, `portfolio-source-summary-local-lines`, `portfolio-local-line-count-`, and visible `Local line pricing`, then completes the full line ticket/order/Portfolio/history path.
+
+## Cycle NB
+
+Gate status: Pass
+
+Scope: Event Detail line availability disclosure.
+
+Decision:
+
+- P0 failed: 0 for focused visible Event Detail disclosure scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-NB-event-detail-line-availability-disclosure/cycle-NB-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-NB-event-detail-line-availability-disclosure/`, `docs/mobile/audits/cycle-NB-event-detail-line-availability-disclosure.md`.
+- Notes: S23 XML proof includes `Provider lines unavailable.`, `line-provider-availability-unavailable`, and `line-contract-fixture-count-4`, then completes the line ticket/order/Portfolio/history path.
+
+## Cycle NA
+
+Gate status: Pass
+
+Scope: Line provider availability contract.
+
+Decision:
+
+- P0 failed: 0 for focused route/data-contract scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-NA-line-provider-availability-contract/cycle-NA-line-provider-availability-route.json`, `docs/mobile/harness/cycle-NA-line-provider-availability-contract/cycle-NA-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-NA-line-provider-availability-contract/`, `docs/mobile/audits/cycle-NA-line-provider-availability-contract.md`.
+- Notes: The route now exposes `marketSourceSummary.lineMarkets.providerAvailability`, making current Polymarket line availability explicit instead of relying only on generic contract-fixture labels. S23 proof confirms the visible Local MVP flow still passes.
+
+## Cycle MZ
+
+Gate status: Pass
+
+Scope: Backend Live route status contract.
+
+Decision:
+
+- P0 failed: 0 for focused backend Live route status scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-MZ-backend-live-status-route/cycle-MZ-live-route-status.json`, `docs/mobile/harness/cycle-MZ-backend-live-status-route/cycle-MZ-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MZ-backend-live-status-route/`, `docs/mobile/audits/cycle-MZ-backend-live-status-route.md`.
+- Notes: `/api/events?...status=live` now returns current `status=active/liveStatus=LIVE` MVP matches directly, and S23 proof confirms the visible Live page plus full line ticket/order/Portfolio/history path.
+
+## Cycle MY
+
+Gate status: Pass
+
+Scope: Live source-readiness disclosure and live-match route fallback.
+
+Decision:
+
+- P0 failed: 0 for focused Live source-readiness scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events; backend `status=live` filtering should eventually include `liveStatus=LIVE` events.
+- Evidence: `docs/mobile/harness/cycle-MY-live-source-readiness/cycle-MY-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MY-live-source-readiness/`, `docs/mobile/audits/cycle-MY-live-source-readiness.md`.
+- Notes: Initial proof found Live empty. Implementation now treats `liveStatus=LIVE` as live and falls back from empty `status=live` route data to all-match route filtering. Final S23 proof shows Live source readiness and completes local Spread ticket -> swipe buy -> Portfolio/history.
+
+## Cycle MX
+
+Gate status: Pass
+
+Scope: Home source-readiness disclosure.
+
+Decision:
+
+- P0 failed: 0 for focused Home source-readiness disclosure scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-MX-home-source-readiness/cycle-MX-current-mvp-s23-visible-flow.json`, `docs/mobile/harness/cycle-MX-provider-line-readiness-route/cycle-MX-current-state-inspection.json`, `docs/mobile/screenshots/cycle-MX-home-source-readiness/`, `docs/mobile/audits/cycle-MX-home-source-readiness.md`.
+- Notes: S23 proof shows `home-card-source-provider-winner-local-lines` on Home, then completes local Spread ticket -> swipe buy -> Portfolio/history. Provider route proof confirms Polymarket Gamma has current match-winner markets but no line markets for inspected events.
+
+## Cycle MW
+
+Gate status: Pass
+
+Scope: Portfolio/history local-pricing disclosure.
+
+Decision:
+
+- P0 failed: 0 for focused Portfolio/history disclosure scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-MW-portfolio-local-pricing-disclosure/cycle-MW-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MW-portfolio-local-pricing-disclosure/`, `docs/mobile/audits/cycle-MW-portfolio-local-pricing-disclosure.md`.
+- Notes: S23 proof shows `Local test pricing`/`portfolio-local-test-pricing` in Portfolio positions and History after local Spread ticket -> swipe buy.
+
+## Cycle MV
+
+Gate status: Pass
+
+Scope: Trade Ticket local-pricing disclosure.
+
+Decision:
+
+- P0 failed: 0 for focused ticket disclosure scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-MV-ticket-local-pricing-disclosure/cycle-MV-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MV-ticket-local-pricing-disclosure/`, `docs/mobile/audits/cycle-MV-ticket-local-pricing-disclosure.md`.
+- Notes: S23 proof shows `Local test pricing`/`ticket-local-test-pricing` in the Trade Ticket, then completes local Spread ticket -> swipe buy -> Portfolio/history.
+
+## Cycle MU
+
+Gate status: Pass
+
+Scope: Local MVP line-market source disclosure.
+
+Decision:
+
+- P0 failed: 0 for focused line-source disclosure scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-MU-line-local-pricing-disclosure/cycle-MU-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MU-line-local-pricing-disclosure/`, `docs/mobile/audits/cycle-MU-line-local-pricing-disclosure.md`.
+- Notes: S23 proof shows `Local test pricing`/`line-market-local-test-pricing`, then completes local Spread ticket -> swipe buy -> Portfolio/history.
+
+## Cycle MT
+
+Gate status: Pass
+
+Scope: Provider-backed Regulation Winner top-outcome fill.
+
+Decision:
+
+- P0 failed: 0 for focused top-outcome provider winner filled lifecycle.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events; production market-making policy remains future work.
+- Evidence: `docs/mobile/harness/cycle-MT-provider-winner-top-outcome-fill/cycle-MT-provider-winner-s23-visible-flow.json`, `docs/mobile/harness/cycle-MT-provider-winner-top-outcome-fill/cycle-MT-provider-winner-counterparty.json`, `docs/mobile/screenshots/cycle-MT-provider-winner-top-outcome-fill/`, `docs/mobile/audits/cycle-MT-provider-winner-top-outcome-fill.md`.
+- Notes: S23 proof targets provider market `2793738`, seeds a valid 70% ask after clearing a blocking local bid, submits a fake-token buy, and shows provider-backed winner identity in Portfolio positions and History.
+
+## Cycle MS
+
+Gate status: Pass
+
+Scope: Provider-backed Regulation Winner filled history.
+
+Decision:
+
+- P0 failed: 0 for focused provider-backed winner filled-history lifecycle.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-MS-provider-winner-filled-history/cycle-MS-provider-winner-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MS-provider-winner-filled-history/`, `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1`, `docs/mobile/audits/cycle-MS-provider-winner-filled-history.md`.
+- Notes: S23 proof targets provider market `2793741`, submits a fake-token buy, and shows provider-backed winner identity in Portfolio positions and History.
+
+## Cycle MR
+
+Gate status: Pass
+
+Scope: Provider-backed Regulation Winner 1X2 parity.
+
+Decision:
+
+- P0 failed: 0 for focused provider-backed winner 1X2 scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-MR-provider-winner-1x2-parity/cycle-MR-provider-winner-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MR-provider-winner-1x2-parity/`, `mobile/src/__tests__/marketListsHomeCardSelections.test.ts`, `docs/mobile/audits/cycle-MR-provider-winner-1x2-parity.md`.
+- Notes: S23 proof shows composed provider-backed 1X2 display and preserves `provider-source-polymarket` through ticket, Portfolio, and History.
+
+## Cycle MQ
+
+Gate status: Pass
+
+Scope: Provider-backed Regulation Winner S23 visible flow.
+
+Decision:
+
+- P0 failed: 0 for focused provider-backed winner retail flow.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-MQ-provider-winner-s23-visible-flow/cycle-MQ-provider-winner-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MQ-provider-winner-s23-visible-flow/`, `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1`, `docs/mobile/audits/cycle-MQ-provider-winner-s23-visible-flow.md`.
+- Notes: S23 proof shows `provider-source-polymarket` through provider winner section, ticket, Portfolio, and History.
+
+## Cycle MP
+
+Gate status: Pass
+
+Scope: Current service reinspection.
+
+Decision:
+
+- P0 failed: 0 for inspection scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for the inspected current events.
+- Evidence: `docs/mobile/harness/cycle-MP-current-state-reinspection/cycle-MP-current-state-reinspection.json`, `docs/mobile/harness/cycle-MP-current-state-reinspection/cycle-MP-provider-match-line-availability-argentina-egypt.json`, `docs/mobile/harness/cycle-MP-current-state-reinspection/cycle-MP-provider-match-line-availability-switzerland-colombia.json`, `docs/mobile/audits/cycle-MP-current-service-reinspection.md`.
+- Notes: Current app/service should continue Local MVP with explicit Local line-market labels and should add/prove provider-backed Regulation Winner ticket/order/Portfolio next.
+
+## Cycle MO
+
+Gate status: Pass
+
+Scope: Portfolio source badges.
+
+Decision:
+
+- P0 failed: 0 for focused visible Portfolio source disclosure.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for the inspected Local MVP event.
+- Evidence: `docs/mobile/harness/cycle-MO-portfolio-source-badges/cycle-MO-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MO-portfolio-source-badges/cycle-MO-current-mvp-after-submit.png`, `docs/mobile/screenshots/cycle-MO-portfolio-source-badges/cycle-MO-current-mvp-portfolio-history.png`, `mobile/src/__tests__/portfolioSourceBadge.test.ts`, `docs/mobile/audits/cycle-MO-portfolio-source-badges.md`.
+- Notes: S23 proof shows `Local` on both the position and history rows after a successful Spread line ticket submit.
+
+## Cycle MN
+
+Gate status: Pass
+
+Scope: Trade Ticket source badge.
+
+Decision:
+
+- P0 failed: 0 for focused visible ticket-source disclosure.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for the inspected Local MVP event.
+- Evidence: `docs/mobile/harness/cycle-MN-ticket-source-badge/cycle-MN-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MN-ticket-source-badge/cycle-MN-current-mvp-ticket-ready.png`, `mobile/src/__tests__/tradeTicketSourceBadge.test.ts`, `docs/mobile/audits/cycle-MN-ticket-source-badge.md`.
+- Notes: S23 proof shows `Local` on the selected Spread ticket and the flow still reaches Portfolio/history after swipe submit.
+
+## Cycle MM
+
+Gate status: Pass
+
+Scope: Event Detail market source row badges.
+
+Decision:
+
+- P0 failed: 0 for focused visible row-source disclosure.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for the inspected Local MVP event.
+- Evidence: `docs/mobile/harness/cycle-MM-market-source-row-badges/cycle-MM-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MM-market-source-row-badges/cycle-MM-current-mvp-lines.png`, `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts`, `docs/mobile/audits/cycle-MM-market-source-row-badges.md`.
+- Notes: S23 proof shows `Provider` on Regulation Winner and `Local` on contract-fixture line markets while preserving ticket submit and Portfolio/history.
+
+## Cycle LH
+
+Gate status: Pass
+
+Scope: Event Detail dead live stats contract.
+
+Decision:
+
+- P0 failed: 0 for focused Event Detail dead live stats cleanup.
+- P1/P2 remaining: P1 real route-backed sports/live stats only if the MVP explicitly expands to a live-stat product surface.
+- Evidence: `docs/mobile/harness/cycle-LH-event-detail-dead-live-stats-contract/cycle-LH-event-detail-dead-live-stats-contract.json`, `mobile/src/__tests__/eventDetailDeadLiveStatsContract.test.ts`, `mobile/docs/audits/cycle-LH-event-detail-dead-live-stats-contract.md`.
+- Notes: Event Detail no longer carries the unreachable fake live sports stats panel, deterministic stat rows, or match-flow timeline. Backend/provider route-status markers remain hidden for proof.
+
+## Cycle LG
+
+Gate status: Pass
+
+Scope: Home card stats contract.
+
+Decision:
+
+- P0 failed: 0 for focused active Home match-card stats cleanup.
+- P1/P2 remaining: P1 inactive Futures catalog local volume/chart presentation only if restored to visible MVP.
+- Evidence: `docs/mobile/harness/cycle-LG-home-card-stats-contract/cycle-LG-home-card-stats-contract.json`, `mobile/src/__tests__/homeCardStatsContract.test.ts`, `mobile/docs/audits/cycle-LG-home-card-stats-contract.md`.
+- Notes: Active Home match cards no longer attach hidden local-MVP volume/liquidity stats and still preserve route-fed identity, backend-driven market profile selection, filters, pagination, and ticket navigation.
+
+## Latest Gate Summary
+
+| Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
+| --- | --- | --- | ---: | --- | --- | --- | --- |
+| MVP backend readiness gate | Cycle LJ | Pass for internal-use backend-readiness scope | 0 for focused internal fake-token/server-mode MVP flows | P1 production provider breadth, real liquidity, public auth/session/funding/compliance, and cashout preview hardening before public deployment | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Readiness report: `docs/mobile/MVP_BACKEND_READINESS_AUDIT_REPORT_2026-07-06.md`; proof: `docs/mobile/harness/cycle-LJ-mvp-backend-readiness-gate/cycle-LJ-mvp-backend-readiness-gate.json`; test: `mobile/src/__tests__/mvpBackendReadinessGate.test.ts`; audit: `mobile/docs/audits/cycle-LJ-mvp-backend-readiness-gate.md` | LJ prevents server-mode Home from rendering bundled events after route fallback, keeps Portfolio value-history route failure visible, and removes optimistic server cancel. |
+| Inactive Futures surface contract | Cycle LI | Pass for backend/data-contract scope | 0 for focused inactive Futures surface cleanup | P1 visible Futures browsing only if restored with backend catalog/quote/order contracts | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Inactive Futures proof: `docs/mobile/harness/cycle-LI-inactive-futures-surface-contract/cycle-LI-inactive-futures-surface-contract.json`; tests: `mobile/src/__tests__/inactiveFuturesSurfaceContract.test.ts`; audit: `mobile/docs/audits/cycle-LI-inactive-futures-surface-contract.md` | Home no longer receives the old Futures tab/list/chart props or components. Backend-driven match cards and retail outcome rails remain. |
+| Event Detail dead live stats contract | Cycle LH | Pass for backend/data-contract scope | 0 for focused Event Detail dead live stats cleanup | P1 real route-backed sports/live stats only if MVP expands to that product surface | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Event Detail dead live stats proof: `docs/mobile/harness/cycle-LH-event-detail-dead-live-stats-contract/cycle-LH-event-detail-dead-live-stats-contract.json`; tests: `mobile/src/__tests__/eventDetailDeadLiveStatsContract.test.ts`; audit: `mobile/docs/audits/cycle-LH-event-detail-dead-live-stats-contract.md` | Event Detail source no longer carries an unreachable fake live sports stats panel, deterministic stat rows, or match-flow timeline. Hidden backend/provider status markers remain for route proof. |
+| Home card stats contract | Cycle LG | Pass for backend/data-contract scope | 0 for focused visible Home card stats cleanup | P1 inactive Futures catalog local volume/chart presentation only if restored to visible MVP | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Home card stats proof: `docs/mobile/harness/cycle-LG-home-card-stats-contract/cycle-LG-home-card-stats-contract.json`; tests: `mobile/src/__tests__/homeCardStatsContract.test.ts`; audit: `mobile/docs/audits/cycle-LG-home-card-stats-contract.md` | Active Home match cards no longer attach hidden local-MVP volume/liquidity stats. Cards keep route-fed identity, backend-driven market profile selection, filters, pagination, and ticket navigation. |
+| Event Detail no chat/stats contract | Cycle LF | Pass for backend/data-contract scope | 0 for focused visible Event Detail chat/stats cleanup | P1 real route-backed stats only if Event Detail scope expands | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Event Detail no chat/stats proof: `docs/mobile/harness/cycle-LF-event-detail-no-chat-stats-contract/cycle-LF-event-detail-no-chat-stats-contract.json`; tests: `mobile/src/__tests__/eventDetailNoChatStatsContract.test.ts`; audit: `mobile/docs/audits/cycle-LF-event-detail-no-chat-stats-contract.md` | Event Detail source no longer carries chat UI or frontend-invented volume/liquidity/trader stats. Focus remains on route-backed identity, primary outcomes, user position, Game Lines, Player Props placeholder, and market summary metadata. |
+| Search result stats contract | Cycle LE | Pass for backend/data-contract scope | 0 for focused visible Search result stats | P1 real route-backed ranked/faceted discovery stats only if Search scope expands | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Search result stats proof: `docs/mobile/harness/cycle-LE-search-result-stats-contract/cycle-LE-search-result-stats-contract.json`; tests: `mobile/src/__tests__/searchResultStatsContract.test.ts`; audit: `mobile/docs/audits/cycle-LE-search-result-stats-contract.md` | Visible Search rows no longer expose frontend-invented volume, liquidity, today-volume, or chat counts. Rows keep route-backed event identity, start time, top outcome, save action, and navigation. |
+| Portfolio settings contract | Cycle LD | Pass for backend/data-contract scope | 0 for focused visible Portfolio settings affordance | P1 broader account/security/session/funding settings only if MVP scope expands; optional Android proof if visual proof becomes required again | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Portfolio settings proof: `docs/mobile/harness/cycle-LD-portfolio-settings-contract/cycle-LD-portfolio-settings-contract.json`; tests: `mobile/src/__tests__/portfolioSettingsContract.test.ts`; audit: `mobile/docs/audits/cycle-LD-portfolio-settings-contract.md` | Visible Portfolio no longer exposes a duplicate local-only Account settings gear/sheet. Portfolio stays focused on route-backed value, positions, orders, history, cashout, buy, and cancel surfaces. |
+| Account static rows contract | Cycle LC | Pass for backend/data-contract scope | 0 for focused visible Account static rows | P1 theme/security routes only if MVP scope expands; optional Android proof if visual proof becomes required again | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Account static rows proof: `docs/mobile/harness/cycle-LC-account-static-rows-contract/cycle-LC-account-static-rows-contract.json`; tests: `mobile/src/__tests__/accountStaticRowsContract.test.ts`; audit: `mobile/docs/audits/cycle-LC-account-static-rows-contract.md` | Visible Account no longer exposes unsupported hardcoded Theme/Security/Fake-token rows. Backed profile/preference/summary rows remain. |
+| Account auth visibility contract | Cycle LB | Pass for backend/data-contract scope | 0 for focused visible Account auth actions | P1 full login/signup/logout/session/KYC only if MVP scope expands; optional Android proof if visual proof becomes required again | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Account auth visibility proof: `docs/mobile/harness/cycle-LB-account-auth-visibility-contract/cycle-LB-account-auth-visibility-contract.json`; tests: `mobile/src/__tests__/accountAuthContract.test.ts`; audit: `mobile/docs/audits/cycle-LB-account-auth-visibility-contract.md` | Visible Account no longer exposes local-only login/signup/sign-out controls or AsyncStorage fake session state. Signed-in display is derived from successful `/api/profile/summary` wiring. |
+| Header actions contract | Cycle LA | Pass for backend/data-contract scope | 0 for focused visible header actions | P1 promo/rewards and notifications only if MVP scope expands; optional Android proof if visual proof becomes required again | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Header actions proof: `docs/mobile/harness/cycle-LA-header-actions-contract/cycle-LA-header-actions-contract.json`; tests: `mobile/src/__tests__/headerContract.test.ts`; audit: `mobile/docs/audits/cycle-LA-header-actions-contract.md` | Visible Header no longer exposes unsupported local-only promo or notification actions. Language remains the only header action and is covered by existing preference wiring. |
+| Search controls route contract | Cycle KZ | Pass for backend/data-contract scope | 0 for focused visible Search controls | P1 ranked/faceted discovery only if Search scope expands; optional Android proof if visual proof becomes required again | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Search controls proof: `docs/mobile/harness/cycle-KZ-search-controls-route-contract/cycle-KZ-search-controls-route-contract.json`; tests: `mobile/src/__tests__/searchScreenContract.test.ts`, `mobile/src/__tests__/searchEventService.test.ts`, `mobile/src/__tests__/api.test.ts`, `src/__tests__/public.events.no-leak.test.ts`; audit: `mobile/docs/audits/cycle-KZ-search-controls-route-contract.md` | Visible Search no longer exposes unsupported local-only category chips or local sort buttons; server-mode Search remains backed by `/api/events` query and cursor pagination. |
+| Account menu availability wiring | Cycle KY | Pass for backend/data-contract scope | 0 for focused visible Account menu availability wiring | P1 implement real routes for menu items only if MVP scope expands | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Account menu availability proof: `docs/mobile/harness/cycle-KY-account-menu-availability-wiring/cycle-KY-account-menu-availability-wiring.json`; tests: `mobile/src/__tests__/profileSummaryService.test.ts`, `mobile/src/__tests__/api.test.ts`, `src/__tests__/profile.summary.route.test.ts`; audit: `mobile/docs/audits/cycle-KY-account-menu-availability-wiring.md` | Visible Account More-menu rows now consume `/api/profile/summary` `menuItems[]` metadata and outside-MVP rows render as non-actionable unavailable rows instead of dead buttons. |
+| Route wiring tracker consolidation | Cycle KX | Pass for documentation/audit scope | 0 for tracker consistency | P1 repeat tracker sweep after the next backend/UI wiring batch | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Tracker proof: `docs/mobile/harness/cycle-KX-route-wiring-tracker-consolidation/cycle-KX-route-wiring-tracker-consolidation.json`; proof script: `scripts/prove_mobile_route_wiring_tracker_consolidation.ts`; audit: `mobile/docs/audits/cycle-KX-route-wiring-tracker-consolidation.md` | Stale route-wiring gaps from older KB/JT/JV/JW/KC/KE/KF/KG/KH/JX/JZ/KA rows are reconciled to later closure cycles KJ through KW. |
+| Profile preferences UI sync wiring | Cycle KW | Pass for backend/data-contract scope | 0 for focused visible preference sync wiring | P1 broader account/security/session/funding settings only if visible MVP scope expands; optional Android proof if visual proof becomes required again | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Profile preferences UI proof: `docs/mobile/harness/cycle-KW-profile-preferences-ui-sync-wiring/cycle-KW-profile-preferences-ui-sync-wiring.json`; service proof: `docs/mobile/harness/cycle-JU-profile-preferences-route-contract/cycle-JU-profile-preferences-route-contract.json`; tests: `mobile/src/__tests__/profilePreferencesService.test.ts`, `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/profileSummaryService.test.ts`, `src/__tests__/profile.preferences.route.test.ts`, `src/server/services/__tests__/profilePreferences.test.ts`; audit: `mobile/docs/audits/cycle-KW-profile-preferences-ui-sync-wiring.md` | Visible server-mode app state now loads and saves locale, ticket defaults, slippage, and saved market ids through canonical `/api/profile/preferences`, with Account receiving route-backed preference values and sync status. |
+| Home filter UI route wiring | Cycle KV | Pass for backend/data-contract scope | 0 for focused visible Home filter route wiring | P1 optional Android proof if visual proof becomes required again; calendar-accurate `today` date-window semantics only if product later wants date-window filtering instead of status filtering | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Home filter UI proof: `docs/mobile/harness/cycle-KV-home-filter-ui-route-wiring/cycle-KV-home-filter-ui-route-wiring.json`; service proof: `docs/mobile/harness/cycle-KD-home-event-filter-contract/cycle-KD-home-event-filter-contract.json`; tests: `mobile/src/__tests__/homeEventFeedService.test.ts`, `mobile/src/__tests__/homePaginationService.test.ts`, `mobile/src/__tests__/api.test.ts`, `src/__tests__/public.events.no-leak.test.ts`; audit: `mobile/docs/audits/cycle-KV-home-filter-ui-route-wiring.md` | Visible Home `All/Live/Today` chips now drive app-level `homeFilter`, call `loadHomeEventFeedPage()` with the selected filter in server mode, and render successful backend pages directly instead of locally filtering a partial Home page. |
+| Portfolio value-history UI wiring | Cycle KU | Pass for backend/data-contract scope | 0 for focused visible Portfolio value-history chart route wiring | P1 optional Android proof if visual proof becomes required again; persisted account-level value snapshots remain future hardening | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Portfolio value-history UI proof: `docs/mobile/harness/cycle-KU-portfolio-value-history-ui-wiring/cycle-KU-portfolio-value-history-ui-wiring.json`; service proof: `docs/mobile/harness/cycle-JY-portfolio-value-history-service-contract/cycle-JY-portfolio-value-history-service-contract.json`; tests: `mobile/src/__tests__/portfolioValueHistoryService.test.ts`, `mobile/src/__tests__/api.test.ts`, `src/__tests__/portfolio.value-history.route.test.ts`; audit: `mobile/docs/audits/cycle-KU-portfolio-value-history-ui-wiring.md` | Visible Portfolio chart now receives a server-mode `loadValueHistory` prop backed by `loadPortfolioValueHistory()` and exposes route source/status markers from `displayedValueHistory`. |
+| Account balance UI wiring | Cycle KT | Pass for backend/data-contract scope | 0 for focused visible account/cash balance UI wiring | P1 legacy `/api/wallet/balance` cleanup after non-mobile compatibility review | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Account balance UI proof: `docs/mobile/harness/cycle-KT-account-balance-ui-wiring/cycle-KT-account-balance-ui-wiring.json`; tests: `mobile/src/__tests__/accountBalanceService.test.ts`, `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/profileSummaryService.test.ts`; audit: `mobile/docs/audits/cycle-KT-account-balance-ui-wiring.md` | Visible Portfolio cash balance and bottom tab portfolio value now refresh from canonical `/api/account/balance` in server mode through `loadAccountBalance()`. |
+| Event Detail line options UI wiring | Cycle KS | Pass for backend/data-contract scope | 0 for focused visible Game Lines line/period chip wiring | P1 optional Android proof if visual proof becomes required again; production real-provider breadth remains under provider lanes | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Event Detail line-options UI proof: `docs/mobile/harness/cycle-KS-event-detail-line-options-ui-wiring/cycle-KS-event-detail-line-options-ui-wiring.json`; tests: `mobile/src/__tests__/marketLineOptionsService.test.ts`, `mobile/src/__tests__/eventMarketCatalogService.test.ts`, `mobile/src/__tests__/api.test.ts`; audit: `mobile/docs/audits/cycle-KS-event-detail-line-options-ui-wiring.md` | Visible Event Detail/Game Lines line and period chips now derive from backend compact `markets[]` through `marketLineOptionsService` instead of static frontend arrays. |
+| Portfolio cancel UI wiring | Cycle KR | Pass for backend/data-contract scope | 0 for focused visible Portfolio cancel route wiring | P1 broader provider-family cancel breadth if future gates require it; optional Android proof if visual proof becomes required again | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Portfolio cancel UI proof: `docs/mobile/harness/cycle-KR-portfolio-cancel-ui-wiring/cycle-KR-portfolio-cancel-ui-wiring.json`; tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/openOrderService.test.ts`, `src/__tests__/orders.cancel.route.test.ts`; audit: `mobile/docs/audits/cycle-KR-portfolio-cancel-ui-wiring.md` | Visible Portfolio open-order cancel reaches canonical `DELETE /api/orders/:id` in server mode and refreshes Portfolio from backend state. |
+| Trade Ticket submit UI wiring | Cycle KQ | Pass for backend/data-contract scope | 0 for focused visible Trade Ticket submit route wiring | P1 broader provider-family submit breadth if future gates require it; optional Android proof if visual proof becomes required again | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Trade Ticket submit UI proof: `docs/mobile/harness/cycle-KQ-trade-ticket-submit-ui-wiring/cycle-KQ-trade-ticket-submit-ui-wiring.json`; tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/orderService.test.ts`, `src/__tests__/orders.internal-trading-gate.route.test.ts`; audit: `mobile/docs/audits/cycle-KQ-trade-ticket-submit-ui-wiring.md` | Visible Trade Ticket submit reaches `submitTicketOrder()` and canonical `POST /api/orders` in server mode, then refreshes Portfolio from backend state. |
+| Portfolio sync UI wiring | Cycle KP | Pass for backend/data-contract scope | 0 for focused visible Portfolio sync route wiring | P1 optional Android proof if visual proof becomes required again; broader provider lifecycle breadth remains under provider lanes | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Portfolio sync UI proof: `docs/mobile/harness/cycle-KP-portfolio-sync-ui-wiring/cycle-KP-portfolio-sync-ui-wiring.json`; tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/portfolioSyncService.test.ts`, `mobile/src/__tests__/portfolioSnapshotService.test.ts`, `mobile/src/__tests__/portfolioHistoryService.test.ts`, `mobile/src/__tests__/portfolioStateApplyService.test.ts`, `src/__tests__/portfolio.open-orders.route.test.ts`, `src/__tests__/portfolio.history.route.test.ts`; audit: `mobile/docs/audits/cycle-KP-portfolio-sync-ui-wiring.md` | Visible Portfolio server mode consumes `/api/portfolio` plus `/api/portfolio/history` through `loadServerPortfolioState()` and passes route-backed state into `Portfolio`. |
+| Trade Ticket quote UI wiring | Cycle KO | Pass for backend/data-contract scope | 0 for focused visible Trade Ticket quote route wiring | P1 optional Android proof if visual proof becomes required again; production provider quote breadth remains under provider lanes | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Trade Ticket quote UI proof: `docs/mobile/harness/cycle-KO-trade-ticket-quote-ui-wiring/cycle-KO-trade-ticket-quote-ui-wiring.json`; tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/quoteService.test.ts`, `src/__tests__/market.quote.route.test.ts`, `src/__tests__/orderbook-pricing.quote-size.test.ts`; audit: `mobile/docs/audits/cycle-KO-trade-ticket-quote-ui-wiring.md` | Visible Trade Ticket server mode calls `/api/markets/:id/quote?outcomeId=...` through `loadTicketQuotes()` and scopes route-backed quote updates to the still-open ticket market/outcome. |
+| Event Detail catalog UI wiring | Cycle KN | Pass for backend/data-contract scope | 0 for focused visible Game Lines catalog route wiring | P1 optional Android proof if visual proof becomes required again; production real-provider breadth remains under provider lanes | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Event Detail catalog UI proof: `docs/mobile/harness/cycle-KN-event-detail-catalog-ui-wiring/cycle-KN-event-detail-catalog-ui-wiring.json`; tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/eventMarketCatalogService.test.ts`, `mobile/src/__tests__/marketLineOptionsService.test.ts`, `src/__tests__/public.event-markets.no-leak.test.ts`; audit: `mobile/docs/audits/cycle-KN-event-detail-catalog-ui-wiring.md` | Visible Event Detail server mode now calls `/api/events/:slug/markets` through `loadEventMarketCatalog()` and replaces `selectedEvent.markets` with authoritative backend catalog rows. |
+| Event Detail UI hydration wiring | Cycle KM | Pass for backend/data-contract scope | 0 for focused visible Event Detail compact hydration wiring | P1 explicit visible Game Lines catalog refresh from `/api/events/:slug/markets`; P1 optional Android proof if visual proof becomes required again | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Event Detail UI hydration proof: `docs/mobile/harness/cycle-KM-event-detail-ui-hydration-wiring/cycle-KM-event-detail-ui-hydration-wiring.json`; tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/worldCupAdapter.test.ts`, `src/__tests__/mobile-live-event-detail.test.ts`, `src/__tests__/mobile-event-market-rules-contract.test.ts`; audit: `mobile/docs/audits/cycle-KM-event-detail-ui-hydration-wiring.md` | Visible Event Detail server mode calls `PolyApi.getEvent()`, which prefers compact live-detail hydration and preserves backend event rules/markets before updating the selected event. |
+| Account UI summary wiring | Cycle KL | Pass for backend/data-contract scope | 0 for focused visible Account summary route wiring | P1 broader account/security/session/funding settings only if visible MVP scope expands | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Account UI summary proof: `docs/mobile/harness/cycle-KL-account-ui-summary-wiring/cycle-KL-account-ui-summary-wiring.json`; tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/profileSummaryService.test.ts`, `src/__tests__/profile.summary.route.test.ts`; audit: `mobile/docs/audits/cycle-KL-account-ui-summary-wiring.md` | Visible Account screen server mode now consumes `/api/profile/summary` values for Account summary props and clears stale route state on failure. |
+| Live UI route wiring | Cycle KK | Pass for backend/data-contract scope | 0 for focused visible Live tab backend route wiring | P1 optional Android proof if visual proof becomes required again; rich live sports-stat feeds remain outside this route-wiring cycle | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Live UI route-wiring proof: `docs/mobile/harness/cycle-KK-live-ui-route-wiring/cycle-KK-live-ui-route-wiring.json`; tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/homeEventFeedService.test.ts`, `src/__tests__/public.events.no-leak.test.ts`; audit: `mobile/docs/audits/cycle-KK-live-ui-route-wiring.md` | Visible Live tab server mode now consumes backend `status=live` route pages and refreshes from that route instead of filtering only the already-loaded Home event page. |
+| Search UI route wiring | Cycle KJ | Pass for backend/data-contract scope | 0 for focused visible Search tab backend route wiring | P1 ranked/faceted discovery only if Search scope expands; optional Android proof if visual proof becomes required again | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Search UI route-wiring proof: `docs/mobile/harness/cycle-KJ-search-ui-route-wiring/cycle-KJ-search-ui-route-wiring.json`; tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/searchEventService.test.ts`, `src/__tests__/public.events.no-leak.test.ts`; audit: `mobile/docs/audits/cycle-KJ-search-ui-route-wiring.md` | Visible Search tab server mode now consumes backend Search route pages and cursor metadata instead of filtering only the already-loaded Home event page. |
+| Account balance route contract | Cycle KI | Pass for backend/data-contract scope | 0 for focused account/cash balance route/service contract | P1 cleanup legacy wallet-balance route after canonical adoption | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Account balance proof: `docs/mobile/harness/cycle-KI-account-balance-route-contract/cycle-KI-account-balance-route-contract.json`; Account balance UI proof: `docs/mobile/harness/cycle-KT-account-balance-ui-wiring/cycle-KT-account-balance-ui-wiring.json`; tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/accountBalanceService.test.ts`, `mobile/src/__tests__/profileSummaryService.test.ts`, `src/server/services/__tests__/canonical_route_auth.phase5.test.ts`, `src/__tests__/wallet.balance.route.test.ts`; audits: `mobile/docs/audits/cycle-KI-account-balance-route-contract.md`, `mobile/docs/audits/cycle-KT-account-balance-ui-wiring.md` | Mobile `loadAccountBalance()` reads canonical `/api/account/balance`; Cycle KT wires visible Portfolio/bottom-tab balance state to that service in server mode. |
+| Event market catalog contract | Cycle KH | Pass for backend/data-contract scope | 0 for focused Event Detail/Game Lines market catalog route/service contract | P1 optional Android line-chip route-refresh proof if visual proof becomes required again; production real-provider breadth remains under provider lanes | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Event market catalog proof: `docs/mobile/harness/cycle-KH-event-market-catalog-contract/cycle-KH-event-market-catalog-contract.json`; Event Detail catalog UI proof: `docs/mobile/harness/cycle-KN-event-detail-catalog-ui-wiring/cycle-KN-event-detail-catalog-ui-wiring.json`; tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/eventMarketCatalogService.test.ts`, `mobile/src/__tests__/marketLineOptionsService.test.ts`, `src/__tests__/public.event-markets.no-leak.test.ts`; audits: `mobile/docs/audits/cycle-KH-event-market-catalog-contract.md`, `mobile/docs/audits/cycle-KN-event-detail-catalog-ui-wiring.md` | Mobile `loadEventMarketCatalog()` prefers `/api/events/:slug/markets`, and Cycle KN wires visible Event Detail/Game Lines to the authoritative catalog rows. |
+| Event Detail hydration contract | Cycle KG | Pass for backend/data-contract scope | 0 for focused Event Detail hydration route/client contract | P1 production real-provider replay remains in provider lanes | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Event Detail hydration proof: `docs/mobile/harness/cycle-KG-event-detail-hydration-contract/cycle-KG-event-detail-hydration-contract.json`; Event Detail UI hydration proof: `docs/mobile/harness/cycle-KM-event-detail-ui-hydration-wiring/cycle-KM-event-detail-ui-hydration-wiring.json`; tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/worldCupAdapter.test.ts`, `src/__tests__/mobile-live-event-detail.test.ts`, `src/__tests__/mobile-event-market-rules-contract.test.ts`; audits: `mobile/docs/audits/cycle-KG-event-detail-hydration-contract.md`, `mobile/docs/audits/cycle-KM-event-detail-ui-hydration-wiring.md` | Mobile `PolyApi.getEvent()` prefers `/api/mobile/events/:slug/live-detail`; Cycle KM proves the visible Event Detail screen consumes compact hydration in server mode. |
+| Ticket quote route contract | Cycle KF | Pass for backend/data-contract scope | 0 for focused ticket quote route/service contract | P1 production provider quote breadth remains in provider lanes | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Ticket quote proof: `docs/mobile/harness/cycle-KF-ticket-quote-route-contract/cycle-KF-ticket-quote-route-contract.json`; Trade Ticket quote UI proof: `docs/mobile/harness/cycle-KO-trade-ticket-quote-ui-wiring/cycle-KO-trade-ticket-quote-ui-wiring.json`; tests: `mobile/src/__tests__/quoteService.test.ts`, `mobile/src/__tests__/api.test.ts`, `src/__tests__/market.quote.route.test.ts`, `src/__tests__/orderbook-pricing.quote-size.test.ts`; audits: `mobile/docs/audits/cycle-KF-ticket-quote-route-contract.md`, `mobile/docs/audits/cycle-KO-trade-ticket-quote-ui-wiring.md` | Mobile `loadTicketQuotes()` has route proof through `/api/markets/:id/quote?outcomeId=...`; Cycle KO proves the visible Trade Ticket/Event Detail quote refresh wiring. |
+| Portfolio sync route contract | Cycle KE | Pass for backend/data-contract scope | 0 for focused Portfolio sync route/service contract | P1 optional Android proof if visual proof becomes required again; broader provider lifecycle breadth remains in provider lanes | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Portfolio sync proof: `docs/mobile/harness/cycle-KE-portfolio-sync-route-contract/cycle-KE-portfolio-sync-route-contract.json`; Portfolio sync UI proof: `docs/mobile/harness/cycle-KP-portfolio-sync-ui-wiring/cycle-KP-portfolio-sync-ui-wiring.json`; tests: `mobile/src/__tests__/portfolioSyncService.test.ts`, `mobile/src/__tests__/portfolioSnapshotService.test.ts`, `mobile/src/__tests__/portfolioHistoryService.test.ts`, `mobile/src/__tests__/portfolioStateApplyService.test.ts`, `src/__tests__/portfolio.open-orders.route.test.ts`, `src/__tests__/portfolio.history.route.test.ts`; audits: `mobile/docs/audits/cycle-KE-portfolio-sync-route-contract.md`, `mobile/docs/audits/cycle-KP-portfolio-sync-ui-wiring.md` | Mobile `loadServerPortfolioState()` has route proof across `/api/portfolio` and `/api/portfolio/history`; Cycle KP proves visible Portfolio server-mode wiring. |
+| Home event filter contract | Cycle KD/KV | Pass for backend/data-contract scope | 0 for focused Home status-filter route/service contract and visible Home filter UI wiring | P1 calendar-accurate today filtering if product needs a date-window tab; optional Android proof if visual proof becomes required again | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Home filter proof: `docs/mobile/harness/cycle-KD-home-event-filter-contract/cycle-KD-home-event-filter-contract.json`; Home UI proof: `docs/mobile/harness/cycle-KV-home-filter-ui-route-wiring/cycle-KV-home-filter-ui-route-wiring.json`; tests: `mobile/src/__tests__/homeEventFeedService.test.ts`, `mobile/src/__tests__/homePaginationService.test.ts`, `mobile/src/__tests__/api.test.ts`, `src/__tests__/public.events.no-leak.test.ts`; audits: `mobile/docs/audits/cycle-KD-home-event-filter-contract.md`, `mobile/docs/audits/cycle-KV-home-filter-ui-route-wiring.md` | Mobile `loadHomeEventFeedPage()` now prefers `/api/events?status=...&includeMobileMarkets=1&limit=...&cursor=...` route pages, and Cycle KV wires visible Home filter chips to those route pages in server mode. |
+| Profile summary contract | Cycle KC/KL | Pass for backend/data-contract scope | 0 for focused Account summary route/service contract and visible Account UI summary wiring | P1 broader account/security/session/funding settings only if visible MVP scope expands | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Profile summary proof: `docs/mobile/harness/cycle-KC-profile-summary-contract/cycle-KC-profile-summary-contract.json`; Account UI proof: `docs/mobile/harness/cycle-KL-account-ui-summary-wiring/cycle-KL-account-ui-summary-wiring.json`; tests: `mobile/src/__tests__/profileSummaryService.test.ts`, `mobile/src/__tests__/api.test.ts`, `src/__tests__/profile.summary.route.test.ts`; audits: `mobile/docs/audits/cycle-KC-profile-summary-contract.md`, `mobile/docs/audits/cycle-KL-account-ui-summary-wiring.md` | `/api/profile/summary` returns canonical Account values, and Cycle KL wires visible Account summary props to that route in server mode. |
+| Search event service contract | Cycle KB | Pass for backend/data-contract scope | 0 for focused Search service route-loading contract | P1 ranked/faceted discovery only if World Cup MVP Search scope expands | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Search service proof: `docs/mobile/harness/cycle-KB-search-event-service-contract/cycle-KB-search-event-service-contract.json`; Search UI proof: `docs/mobile/harness/cycle-KJ-search-ui-route-wiring/cycle-KJ-search-ui-route-wiring.json`; tests: `mobile/src/__tests__/searchEventService.test.ts`, `mobile/src/__tests__/api.test.ts`, `src/__tests__/public.events.no-leak.test.ts`; audits: `mobile/docs/audits/cycle-KB-search-event-service-contract.md`, `mobile/docs/audits/cycle-KJ-search-ui-route-wiring.md` | Mobile `loadSearchEventPage()` now prefers `/api/events?search=...&limit=...&cursor=...` route data; Cycle KJ wires the visible Search tab to it. |
+| Trade Ticket submit route contract | Cycle KA | Pass for backend/data-contract scope | 0 for focused submit route/service contract | P1 broader provider-family submit breadth if needed; optional Android proof if visual proof becomes required again | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Submit route proof: `docs/mobile/harness/cycle-KA-trade-ticket-submit-route-contract/cycle-KA-trade-ticket-submit-route-contract.json`; Trade Ticket submit UI proof: `docs/mobile/harness/cycle-KQ-trade-ticket-submit-ui-wiring/cycle-KQ-trade-ticket-submit-ui-wiring.json`; tests: `mobile/src/__tests__/orderService.test.ts`, `mobile/src/__tests__/api.test.ts`, `src/__tests__/orders.internal-trading-gate.route.test.ts`; audits: `mobile/docs/audits/cycle-KA-trade-ticket-submit-route-contract.md`, `mobile/docs/audits/cycle-KQ-trade-ticket-submit-ui-wiring.md` | Mobile `submitTicketOrder()` reaches real `POST /api/orders`; Cycle KQ proves the visible Trade Ticket submit path uses it in server mode. |
+| Open order cancel route contract | Cycle JZ | Pass for backend/data-contract scope | 0 for focused cancel route/service contract | P1 broader provider-family cancel breadth if needed; optional Android proof if visual proof becomes required again | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Cancel route proof: `docs/mobile/harness/cycle-JZ-open-order-cancel-route-contract/cycle-JZ-open-order-cancel-route-contract.json`; Portfolio cancel UI proof: `docs/mobile/harness/cycle-KR-portfolio-cancel-ui-wiring/cycle-KR-portfolio-cancel-ui-wiring.json`; tests: `mobile/src/__tests__/openOrderService.test.ts`, `src/__tests__/orders.cancel.route.test.ts`; audits: `mobile/docs/audits/cycle-JZ-open-order-cancel-route-contract.md`, `mobile/docs/audits/cycle-KR-portfolio-cancel-ui-wiring.md` | Server-mode mobile cancel calls `DELETE /api/orders/:id`; Cycle KR proves the visible Portfolio cancel control uses it. |
+| Portfolio value-history service contract | Cycle JY | Pass for backend/data-contract scope | 0 for focused service route-loading contract | P1 optional Android proof if visual proof becomes required again; persisted account-level value snapshots remain future hardening | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Value-history service proof: `docs/mobile/harness/cycle-JY-portfolio-value-history-service-contract/cycle-JY-portfolio-value-history-service-contract.json`; Portfolio value-history UI proof: `docs/mobile/harness/cycle-KU-portfolio-value-history-ui-wiring/cycle-KU-portfolio-value-history-ui-wiring.json`; tests: `mobile/src/__tests__/portfolioValueHistoryService.test.ts`, `src/__tests__/portfolio.value-history.route.test.ts`; audits: `mobile/docs/audits/cycle-JY-portfolio-value-history-service-contract.md`, `mobile/docs/audits/cycle-KU-portfolio-value-history-ui-wiring.md` | Mobile service prefers `/api/portfolio/value-history?range=...`; Cycle KU wires the visible Portfolio chart to that service in server mode. |
+| Line options contract | Cycle JX | Pass for backend/data-contract scope | 0 for focused line/period availability service | P1 optional Android proof if visual proof becomes required again; production real-provider breadth remains under provider lanes | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Line options proof: `docs/mobile/harness/cycle-JX-line-options-contract/cycle-JX-line-options-contract.json`; Event Detail line-options UI proof: `docs/mobile/harness/cycle-KS-event-detail-line-options-ui-wiring/cycle-KS-event-detail-line-options-ui-wiring.json`; tests: `mobile/src/__tests__/marketLineOptionsService.test.ts`; audits: `mobile/docs/audits/cycle-JX-line-options-contract.md`, `mobile/docs/audits/cycle-KS-event-detail-line-options-ui-wiring.md` | Mobile now derives Spread/Totals/Team Total period and line choices from backend markets only, and Cycle KS wires the visible Event Detail/Game Lines chips to that service. |
+| Portfolio activity mapper contract | Cycle JW | Pass for backend/data-contract scope | 0 for focused Portfolio service-layer mapper contract | P1 broader real-provider lifecycle repetition | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Mapper proof: `docs/mobile/harness/cycle-JW-portfolio-activity-mapper-contract/cycle-JW-portfolio-activity-mapper-contract.json`; Portfolio UI proof: `docs/mobile/harness/cycle-KP-portfolio-sync-ui-wiring/cycle-KP-portfolio-sync-ui-wiring.json`; tests: `mobile/src/__tests__/portfolioHistoryService.test.ts`, `mobile/src/__tests__/portfolioSnapshotService.test.ts`, `mobile/src/__tests__/portfolioSyncService.test.ts`; audits: `mobile/docs/audits/cycle-JW-portfolio-activity-mapper-contract.md`, `mobile/docs/audits/cycle-KP-portfolio-sync-ui-wiring.md` | Portfolio mappers preserve backend `to_advance` identity; Cycle KP proves visible Portfolio consumes backend snapshot/history. |
+| Mobile API route contract backfill | Cycle JV | Pass for backend/data-contract consolidation scope | 0 for focused mobile client/type route contracts | P1 Search UI backend pagination if broader Search scope expands | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Route/client proof: `docs/mobile/harness/cycle-JV-mobile-api-route-contract-backfill/cycle-JV-mobile-api-route-contract-backfill.json`; Portfolio value-history UI proof: `docs/mobile/harness/cycle-KU-portfolio-value-history-ui-wiring/cycle-KU-portfolio-value-history-ui-wiring.json`; tests: `mobile/src/__tests__/api.test.ts`, `src/__tests__/public.events.no-leak.test.ts`, `src/__tests__/portfolio.value-history.route.test.ts`; audits: `mobile/docs/audits/cycle-JV-mobile-api-route-contract-backfill.md`, `mobile/docs/audits/cycle-KU-portfolio-value-history-ui-wiring.md` | Mobile API/types support portfolio value-history; Cycle KU closes the visible Portfolio chart UI route-loading gap. |
+| Profile preferences route contract | Cycle JU/KW | Pass for backend/data-contract scope | 0 for focused account/settings preference payload contract and visible preference UI sync wiring | P1 broader account/settings shell only if visible MVP scope expands; optional Android proof if visual proof becomes required again | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Route/payload proof: `docs/mobile/harness/cycle-JU-profile-preferences-route-contract/cycle-JU-profile-preferences-route-contract.json`; UI proof: `docs/mobile/harness/cycle-KW-profile-preferences-ui-sync-wiring/cycle-KW-profile-preferences-ui-sync-wiring.json`; tests: `src/__tests__/profile.preferences.route.test.ts`, `src/server/services/__tests__/profilePreferences.test.ts`, `mobile/src/__tests__/profilePreferencesService.test.ts`, `mobile/src/__tests__/api.test.ts`; audits: `mobile/docs/audits/cycle-JU-profile-preferences-route-contract.md`, `mobile/docs/audits/cycle-KW-profile-preferences-ui-sync-wiring.md` | `/api/profile/preferences` and mobile mappers preserve locale, ticket defaults, slippage, and saved event ids; Cycle KW wires visible server-mode preference state and Account display props to that route. |
+| Search event route contract | Cycle JT | Pass for backend/data-contract scope | 0 for focused route search/pagination contract | P1 ranked/faceted discovery only if Search scope expands | Product decision on 2026-07-06: manual UI review is no longer required for every cycle; backend wiring and harness evidence are the priority | Route proof: `docs/mobile/harness/cycle-JT-search-event-route-contract/cycle-JT-search-event-route-contract.json`; Search UI proof: `docs/mobile/harness/cycle-KJ-search-ui-route-wiring/cycle-KJ-search-ui-route-wiring.json`; tests: `src/__tests__/public.events.no-leak.test.ts`, `mobile/src/__tests__/searchEventService.test.ts`; audits: `mobile/docs/audits/cycle-JT-search-event-route-contract.md`, `mobile/docs/audits/cycle-KJ-search-ui-route-wiring.md` | `/api/events?search=` returns compact paginated results; Cycle KJ proves the visible Search tab consumes those pages in server mode. |
+| Cashout route sell safety | Cycle JS | Pass for backend/data-contract scope | 0 for focused cashout route safety contract | P1 optional external HTTP auth-stack smoke for `POST /api/orders` if future gates require it | Product requirement: server mode must reject no-position and insufficient-position cashout/sell even if frontend fails | Route/service proof: `docs/mobile/harness/cycle-JS-cashout-route-sell-safety/cycle-JS-cashout-route-sell-safety.json`; tests: `src/server/services/__tests__/canonical_order_submission.phase5.test.ts`, `mobile/src/__tests__/positionCloseService.test.ts`; audit: `mobile/docs/audits/cycle-JS-cashout-route-sell-safety.md` | Canonical order submission now returns/stores `INSUFFICIENT_BALANCE` for no-position and oversell attempts; mobile blocks non-finite full-position cashout shares before submit; valid full-position sell remains allowed. |
+| Home event list and backend pagination | Cycle JR | Pass for backend/data-contract scope | 0 for focused Home list pagination contract | P1 optional Android Load more proof if visual proof is required again; calendar-accurate `today` date-window semantics only if product later wants date-window filtering | Product decision on 2026-07-06: manual UI review is no longer required for every cycle; backend wiring and harness evidence are the priority | Route proof: `docs/mobile/harness/cycle-JR-home-event-list-pagination/cycle-JR-home-event-pagination.json`; Home filter UI proof: `docs/mobile/harness/cycle-KV-home-filter-ui-route-wiring/cycle-KV-home-filter-ui-route-wiring.json`; tests: selected `src/__tests__/public.events.no-leak.test.ts`, `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/homePaginationService.test.ts`, `mobile/src/__tests__/homeEventFeedService.test.ts`; audits: `mobile/docs/audits/cycle-JR-home-event-list-pagination.md`, `mobile/docs/audits/cycle-KV-home-filter-ui-route-wiring.md` | `/api/events` supports cursor pages with compact mobile markets; Cycle KV wires visible Home filters and active-filter pagination to the backend route. |
+| Backend-driven Event Detail market profile and sell safety | Cycle JQ | Pass for backend/data-contract scope | 0 for focused contract scope | P1 real-provider replay across more World Cup profiles; P1 production-like HTTP order-route sell rejection proof; P1 broader provider-backed line-family availability | User product clarification on 2026-07-06: regulation markets can have Home/Tie/Away, knockout/penalty paths need separate advance options, and Event Detail Game Lines should be backend-driven | Route proof: `docs/mobile/harness/cycle-JQ-backend-event-market-cashout-safety/cycle-JQ-market-rule-profiles.json`; tests: `src/__tests__/mobile-event-market-rules-contract.test.ts`, selected `src/server/services/__tests__/phase7_kalshi_model.test.ts`, `mobile/src/__tests__/worldCupAdapter.test.ts`, `mobile/src/__tests__/positionCloseService.test.ts`; audit: `mobile/docs/audits/cycle-JQ-backend-event-market-cashout-safety.md` | Backend/mobile rule detection no longer treats team names like `Advance Home` as advance-market semantics. Proof covers regulation 90-minute draw plus spread/totals availability, and knockout profile with separate `to_advance` plus regulation draw availability. Backend sell guard rejects no-position/oversell and mobile cashout blocks invalid full-position sell attempts. |
+| Period-safe retail line matching | Cycle ET | Pass for selected Android Totals and Team Total regression journey | 0 for selected period-safe resolver and Android regression path | P1 real provider-backed spread/totals/team-total route data; P1 route-backed loading/stale/unavailable breadth | Product steering from user on 2026-07-04; prior Polymarket reference remains support-only for simple retail flow | `docs/mobile/harness/cycle-ET-local-mvp-period-safe-line-family/cycle-ES-local-mvp-line-family-breadth-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-ET-local-mvp-period-safe-line-family/` and `docs/mobile/harness/cycle-ET-local-mvp-period-safe-line-family/` | Resolver now requires line-family backend markets to match selected line and period before using provider-backed route data. Focused tests reject wrong-period Totals and Team Total backend markets; tablet proof reran the Totals/Team Total simple-ticket path with orderbook hidden. |
+| Local MVP line-family ticket breadth | Cycle ES | Pass for selected Android Totals and Team Total ticket journeys | 0 for selected Game Lines -> Totals ticket and Team Total ticket paths | P1 real provider-backed spread/totals/team-total route data; P1 route-backed loading/stale/unavailable breadth; P2 ticket copy/visual polish | Product steering from user on 2026-07-04; prior Polymarket reference remains support-only for simple retail flow | `docs/mobile/harness/cycle-ES-local-mvp-line-family-breadth/cycle-ES-local-mvp-line-family-breadth-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-ES-local-mvp-line-family-breadth/` and `docs/mobile/harness/cycle-ES-local-mvp-line-family-breadth/` | Tablet proof passed with `orderbookDebug=unset`, Totals `Over 3.5` / `2nd Half` ticket, Team Total `MEX Over 1.5` / `Reg. Time` ticket, and no visible default Book/orderbook controls. Implementation adds contract-shaped Team Total ticket fallback while preserving backend-first resolver behavior. |
+| Local MVP retail status surface | Cycle ER | Pass for selected Android retail status journey | 0 for selected event-detail chart/ticket status -> market-line selection path | P1 route-backed loading/stale/unavailable state breadth for provider-backed retail tickets; P2 visual polish | Product steering from user on 2026-07-04; prior Polymarket reference remains support-only for simple retail flow | `docs/mobile/harness/cycle-ER-local-mvp-status-flow/cycle-ER-local-mvp-status-flow-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-ER-local-mvp-status-flow/` and `docs/mobile/harness/cycle-ER-local-mvp-status-flow/` | Tablet proof passed with `orderbookDebug=unset`, chart route state and ticket handoff status visible, Spread/Totals still reachable, selected Spread `2.5` line uses contract-shaped ticket source, and default Book/orderbook controls remain hidden. |
+| Local MVP simple Sell trading flow | Cycle EQ | Pass for selected Android Sell journey | 0 for selected default event -> line -> Sell ticket -> fake-token order -> Portfolio path | P1 provider-backed spreads/totals/team totals Sell breadth, loading/stale/unavailable non-Book state proof, Sell ticket proceeds wording; P2 ticket density/visual polish | Product steering from user on 2026-07-04; prior Polymarket reference remains support-only for simple retail flow | `docs/mobile/harness/cycle-EQ-local-mvp-sell-flow/cycle-EQ-local-mvp-trade-flow-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EQ-local-mvp-sell-flow/` and `docs/mobile/harness/cycle-EQ-local-mvp-sell-flow/` | Tablet proof passed with `orderbookDebug=unset`, selected Spread `2.5` / `1st Half`, switched ticket from Buy/Yes to Sell/No, submitted `$25`, and verified Portfolio/latest order/activity/position identity preservation. Implementation fixed ticket identity metadata so `ticket-contract-side-no` matches the visible Sell/No state before submit. |
+| Local MVP user trading flow steering | Cycle EP steering | Pass for selected Android Buy journey | 0 for selected default event -> line -> ticket -> fake-token order -> Portfolio path | P1 Sell-side simple-ticket proof, provider-backed spreads/totals/team totals breadth, loading/stale/unavailable non-Book state proof; P2 ticket density/visual polish | Product steering from user on 2026-07-04; prior Polymarket reference remains support-only for simple retail flow | `docs/mobile/harness/cycle-EP-local-mvp-trade-flow/cycle-EP-local-mvp-trade-flow-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EP-local-mvp-trade-flow/` and `docs/mobile/harness/cycle-EP-local-mvp-trade-flow/` | Default UI hides visible Book/orderbook controls behind `EXPO_PUBLIC_SHOW_ORDERBOOK=1`. Tablet proof passed with `orderbookDebug=unset`, selected Spread `2.5` / `1st Half`, opened simple Buy ticket, submitted `$25`, and verified Portfolio/latest order/activity/position identity preservation without relying on Book. |
+| Orderbook parity breadth | Cycle EP steering | Deferred for current MVP | 0 current-MVP blockers | Historical/internal regression gaps remain | Prior S23 Book/orderbook references are retained as historical support only | Prior Holiwyn EO/EN/EM/EL proofs are retained as regression evidence only | Do not start more orderbook lifecycle/breadth cycles unless they directly affect simple ticket pricing or Portfolio lifecycle. Visible orderbook is debug-only via `EXPO_PUBLIC_SHOW_ORDERBOOK=1`. |
+| Route-backed lifecycle breadth after EN | Cycle EO-C docs gate | Fail until same-cycle integrated route-backed breadth proof exists | 8 EO implementation proof rows fail until evidence; reference-status disclosure passes | P1 fresh S23 production order lifecycle recapture, more provider-backed families and both sides, production HTTP order route proof, first-class immutable selection snapshots; P2 lifecycle label/visual polish | Partial fresh EL-C S23 Book/orderbook reference for context only; stale DQ-C/AG/AI ticket/order support only; gate: `docs/mobile/audits/cycle-eo-c-route-lifecycle-breadth-gate.md` | No EO Holiwyn Android breadth proof collected by Agent C; EN integrated proof is fresh baseline only and cannot pass EO by repetition | Blocks PM-GAP-089. EO requires same-cycle backend or route-shaped proof plus Holiwyn Android proof for the same selected identity, materially broadening EN by bid-side/Sell and/or another provider-backed market family. Hard fails include repeating only EN's ask-side Spread path, arbitrary UI-only mocks/fake provider-depth rows, midpoint/default price reversion, id/provider drift, fallback Portfolio/history labels, backend JSON without Android proof, and stale production reference described as fresh. |
+| Route-backed provider-depth Book-staged limit lifecycle | Cycle EN integrated | Pass for selected route-backed provider-depth Book ask -> ticket -> Portfolio/activity lifecycle | 0 for selected EN integrated path | P1 fresh S23 production order recapture, multi-family/both-side route-backed breadth, durable first-class DB selection snapshots after refresh/metadata drift; P2 lifecycle label/visual polish | Partial fresh EL-C S23 Book/orderbook reference for context only; stale DQ-C/AG/AI ticket/order support only; gate: `docs/mobile/audits/cycle-en-c-route-limit-lifecycle-gate.md` | Backend proof: `docs/mobile/harness/cycle-EN-A-route-limit-lifecycle/proof.json`; Agent B proof: `docs/mobile/harness/cycle-EN-B-visible-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-proof.json`; Lead integrated tablet proof: `docs/mobile/harness/cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-proof.json`; screenshots/XML: `docs/mobile/screenshots/cycle-EN-integrated-route-limit-lifecycle/`, `docs/mobile/harness/cycle-EN-integrated-route-limit-lifecycle/` | Lead reran the tablet proof from the integrated main branch against backend `http://127.0.0.1:3002` and server event `mobile-el-a-provider-breadth-54db8e5a`. The proof starts from route-backed provider-depth Spread `1.5`, selects ask `55c`, opens a ticket with `ticket-limit-side-ask` and `ticket-limit-price-55`, submits a `$25` fake-token order, and verifies latest order, open order, opened activity, and canceled activity preserve market id `3e3cda24-bd1b-4837-8702-7500c27f0187`, outcome id `fa8cde2d-acf8-4f8a-89d5-710203200c8f`, provider market `gamma-el-a-spread-54db8e5a`, and provider token `token-el-a-spread-home-54db8e5a`. |
+| Route-backed provider-depth Book-staged limit lifecycle | Cycle EN-C docs gate | Fail until Agent A/B/Lead integrated route-backed lifecycle proof exists | 9 EN implementation proof rows fail until evidence; reference-status disclosure passes; Book-to-ticket route price preservation has EL support only | P1 fresh S23 production order recapture, multi-family/both-side route-backed breadth, durable DB snapshots after refresh/metadata drift; P2 lifecycle label/visual polish | Partial fresh EL-C S23 Book/orderbook reference for context only; stale DQ-C/AG/AI ticket/order support only; gate: `docs/mobile/audits/cycle-en-c-route-limit-lifecycle-gate.md` | Fresh EL integrated Holiwyn tablet proof supports route-backed ask 55c -> Buy ticket and bid 50c -> Sell ticket price preservation; fresh EM integrated proof supports selected fake-token lifecycle, but no EN route-backed order/open order/Portfolio/activity/history lifecycle proof exists | Blocks PM-GAP-088. Hard fails include midpoint/default price reversion, selected id/line/outcome/provider drift, Portfolio/history fallback labels, backend JSON without Android proof, arbitrary local UI-only mocks, fake provider-depth rows, and any fresh S23 production lifecycle claim without fresh capture. |
+| Book-staged selected limit lifecycle after EL | Cycle EM integrated | Pass for selected fake-token Book-staged limit lifecycle; provider-backed live-route lifecycle remains P1 | 0 for selected EM integrated path | P1 route-backed provider-depth lifecycle, fresh S23 ticket/order recapture, repeat across multiple market families and both sides, immutable DB selection snapshots for same market/outcome multi-selection; P2 lifecycle label polish | Partial fresh EL-C S23 Book/orderbook reference for context only; stale DQ-C/AG/AI ticket/order support only; gate: `docs/mobile/audits/cycle-em-c-limit-lifecycle-gate.md` | Service proof: `docs/mobile/harness/cycle-EM-A-limit-lifecycle/proof.json` and `docs/mobile/harness/cycle-EM-integrated-limit-lifecycle/cycle-EM-A-limit-lifecycle-proof.json`; integrated tablet proof: `docs/mobile/harness/cycle-EM-integrated-limit-lifecycle/cycle-EM-B-visible-limit-lifecycle-proof.json`; screenshots/XML: `docs/mobile/screenshots/cycle-EM-integrated-limit-lifecycle/`, `docs/mobile/harness/cycle-EM-integrated-limit-lifecycle/` | Lead integration pairs Agent A service/backend/mobile mapper proof with Agent B Android visible lifecycle proof. The Samsung tablet proof stages Spread `1.5` regulation Yes ask `41c`, opens the ticket, submits `$25`, and proves latest order, open order, latest activity, and canceled activity preserve `limit-side=ask`, `limit-price=41`, selected market/outcome/line/period/provider identity, and no fallback to Team to Advance or Mexico moneyline. |
+| Book-staged selected limit lifecycle after EL | Cycle EM-C docs gate | Fail until Agent A/B/Lead integrated lifecycle proof exists | 8 EM implementation proof areas fail until evidence; reference-status disclosure passes; ticket price preservation is partial from EL integrated proof | P1 repeat across multiple market families and both sides, recapture official production order/history when gates allow, durability after provider refresh/metadata drift; P2 lifecycle label polish | Partial fresh EL-C S23 Book/orderbook reference for context only; stale DQ-C/AG/AI ticket/order support only; gate: `docs/mobile/audits/cycle-em-c-limit-lifecycle-gate.md` | Fresh EL integrated Holiwyn tablet proof supports Book ask 55c -> Buy ticket and bid 50c -> Sell ticket price preservation, but no EM order/open order/Portfolio/activity/history lifecycle proof exists | Blocks PM-GAP-087. Hard fails include ticket reverting to midpoint/outcome probability, order snapshots dropping limit fields, Portfolio/history using default/fallback labels, backend JSON without Android proof, and any Polymarket parity claim without labeled fresh/stale evidence. |
+| Live event detail depth after EK | Cycle EL integrated | Pass for selected route-backed Book ladder -> staged Buy/Sell ticket path; broader page depth remains P1 | 0 for selected integrated Book/ticket path | P1 fresh S23 ticket recapture, production real mapped line-family breadth, additional line-family staged tickets; P2 density/chart/orderbook polish | Fresh partial S23 official Polymarket app live probe from EL-C for chart/top, swipe depth, line controls, Book/orderbook, and grouped selector; ticket evidence remains stale-support only | Backend proof: `docs/mobile/harness/cycle-EL-integrated-live-depth/cycle-EL-A-provider-breadth.json`; tablet proof: `docs/mobile/harness/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-proof.json`; screenshots/XML: `docs/mobile/screenshots/cycle-EL-integrated-live-depth/`, `docs/mobile/harness/cycle-EL-integrated-live-depth/` | Lead integration pairs Agent A route-backed provider breadth with Agent B visible Book staging. The Samsung tablet proof opens the backend event, opens Book, taps a provider-depth ask at 55c/150 shares and bid at 50c/180 shares, opens Buy/Sell tickets, and proves the ticket price line preserves the tapped ladder price instead of reverting to the outcome probability. |
+| Live event detail depth after EK | Cycle EL-C docs gate | Fail until Agent B Android-visible proof exists | 12 EL implementation proof rows fail until evidence; reference-status disclosure passes with partial fresh S23 notes | P1 fresh S23 ticket Buy/Sell recapture, multi-family provider breadth, Book row-to-ticket price/side carry-through, Player Props/lower-section breadth; P2 visual/chart/orderbook polish | Partial fresh S23 official Polymarket app live probe on 2026-07-04 for Canada vs Morocco chart/top, swipe depth, Game/Chat, line controls, Book/orderbook, and grouped selector; stale DQ-C/AG/AI ticket evidence is support-only; gate: `docs/mobile/audits/cycle-el-c-live-event-depth-gate.md` | No EL Holiwyn Android proof captured by Agent C; required future proof must be Agent B Android screenshots/XML/proof JSON for the same selected identity across live page, chart, line selectors, Book/orderbook, and ticket | Blocks Agent B if there is no Android-visible proof. Backend JSON alone, static placeholders, fallback/default market reconstruction, and line selection that does not preserve identity into ticket/orderbook fail this gate. |
+| Route-backed provider transition breadth after EJ | Cycle EK integrated | Pass for selected route-backed unavailable -> loading/refresh -> ready Android path; broader family breadth remains P1 | 0 for selected EK transition path | P1 repeat across real provider-backed line families, fresh S23 recapture, production provider refresh scheduling; P2 status/density polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence plus EI/EJ checked-in progress; no fresh EK S23 capture | Backend proof: `docs/mobile/harness/cycle-EK-A-provider-transition/cycle-EK-A-provider-transition.json`; refresh helper proof: `docs/mobile/harness/cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-refresh-route.json`; Samsung tablet proof: `docs/mobile/harness/cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EK-integrated-provider-transition/` and `docs/mobile/harness/cycle-EK-integrated-provider-transition/` | Lead integration proves the selected EK path: live page starts `live-data-status-unavailable provider-lifecycle-not-ready`, chart/ticket shows refresh-due for the stale selected market, Book shows visible refreshing/loading, backend provider refresh writes fresh Gamma/CLOB-shaped rows with `fallbackApplied=false`, reopened Book shows route-backed ready depth and ready availability, and ticket settings preserve provider/server identity. |
+| Route-backed provider transition breadth after EJ | Cycle EK-C docs gate | Fail until Agent A/B/Lead integrated transition proof; EJ selected mixed path remains regression coverage | 10 EK transition P0 proof rows fail until evidence; stale-reference disclosure passes for docs | P1 real-provider family transition breadth, repeated transitions, fresh S23 recapture; P2 status/density polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence plus EI/EJ checked-in progress; gate: `docs/mobile/audits/cycle-ek-c-provider-transition-gate.md` | No fresh EK Holiwyn proof captured by Agent C; required future proof must pair Agent A backend route proof with Agent B Samsung tablet screenshots/XML/proof JSON for the same selected identities | EK defines the remaining post-EJ bar: visible route-backed unavailable/not-ready state, full same-selected-market stale -> refreshing/loading -> ready transition, selected identity preservation through live page/chart/Book/ticket, no fallback/default/generic market behavior, and real-provider family breadth if available. |
+| Route-backed provider status breadth after EI | Cycle EJ integrated | Partial/pass for selected mixed route-backed Android path; breadth gate still open | 4 P0 breadth areas remain: visible unavailable/not-ready state, real provider-backed family breadth, full stale -> refreshing/loading -> ready transition, and broader selected-identity matrix | P1 fresh S23 recapture, multi-family real provider-backed breadth, repeated transition proof; P2 status/density polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence plus EH/EI checked-in progress; no fresh EJ S23 capture | Backend proof: `docs/mobile/harness/cycle-EJ-A-provider-status-breadth.json`; Samsung tablet proof: `docs/mobile/harness/cycle-EJ-integrated-status-breadth/cycle-EJ-B-visible-status-breadth-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EJ-integrated-status-breadth/` and `docs/mobile/harness/cycle-EJ-integrated-status-breadth/` | Lead integration now pairs Agent A backend route state with Agent B Android markers for one selected event: live data is route-backed ready, chart is ready, ticket handoff is visibly refresh-due, Book shows refreshing/loading then route-backed depth ready, selected Book availability remains refresh-due/stale, ticket settings preserve server/provider identity, and fallback/mock/default labels are rejected. This is not final breadth parity. |
+| Route-backed provider status breadth after EI | Cycle EJ-C docs gate | Fail until Agent A/B/Lead integrated breadth proof; EI selected pass remains verified | 0 new implementation P0 evaluated by Agent C; 10 EJ breadth P0 proof rows fail until evidence | P1 real provider-backed family breadth, route-backed stale/refresh-due state, route-backed unavailable/not-ready state, full stale -> refreshing/loading -> ready transition; P2 status/density polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence plus EH/EI checked-in progress; gate: `docs/mobile/audits/cycle-ej-c-provider-status-breadth-gate.md` | No fresh EJ Holiwyn proof captured by Agent C; required future proof must pair Agent A backend route proof with Agent B Samsung tablet screenshots/XML/proof JSON for the same selected identities | EJ does not pretend fresh S23 reference was captured and does not reopen EI's selected ready/Book/ticket pass. It defines the remaining breadth bar: real provider-backed family coverage, route-backed stale/refresh-due, route-backed unavailable/not-ready, full transition, and explicit no-fallback assertions. |
+| Current live event detail route-backed provider lifecycle/status parity | Cycle EI integrated | Pass for selected route-backed tablet status gate; PM-GAP-084 verified for selected path | 0 for selected EI gate | P1 fresh S23 recapture, broader real provider-backed family status matrix, actual route-backed stale -> refreshing/loading -> ready transition; P2 status visual polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence plus EH progress; gate: `docs/mobile/audits/cycle-ei-c-route-backed-status-gate.md` | Backend proof: `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-A-route-backed-status.json`; Samsung tablet proof: `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EI-integrated-route-backed-status/` and `docs/mobile/harness/cycle-EI-integrated-route-backed-status/` | EI closes the remaining PM-GAP-084 blocker for the selected path: tablet launch requires backend health, consumes live route status, shows `live-data-source-polymarket-gamma`, preserves selected provider identity through Book/orderbook and ticket, opens ticket settings to prove `Trading mode: Server mode`, and rejects fixture/mock/default fallback markers. |
+| Current live event detail visible provider lifecycle/status parity | Cycle EH integrated | Partial; PM-GAP-084 remains open for route-backed tablet status rendering | 2 P0 integration proof areas remain | P1 fresh S23 recapture, broader real provider-backed family status matrix, actual stale -> refreshing/loading -> ready transition; P2 status visual polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence; gate: `docs/mobile/audits/cycle-eh-c-provider-status-gate.md` | Backend status proof: `docs/mobile/harness/cycle-EH-A-provider-status-surface.json`; Samsung tablet visible proof: `docs/mobile/harness/cycle-EH-integrated-provider-status/cycle-EH-integrated-provider-status-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EH-integrated-provider-status/` and `docs/mobile/harness/cycle-EH-integrated-provider-status/` | EH proves Android-visible ready, refresh-due, refreshing, and not-ready status badges through live page, chart, Book/orderbook, and ticket handoff, while backend route proof separately proves status fields. It remains partial because the tablet launch still used deterministic contract-shaped fixture status UI instead of live backend route data. |
+| Current live event detail visible provider behavior and structural parity | Cycle EG integrated | Partial; PM-GAP-084 remains open | 4 P0 status/provider-lifecycle proof areas remain | P1 fresh S23 recapture, broader real provider-backed family breadth, visible provider refresh lifecycle; P2 density/chart/orderbook/status polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence; gate: `docs/mobile/audits/cycle-eg-c-live-event-visible-provider-gate.md` | Backend refresh lifecycle proof: `docs/mobile/harness/cycle-EG-A-provider-refresh-lifecycle.json`; Samsung tablet visible proof: `docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-visible-live-parity-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EG-B-visible-live-parity/` and `docs/mobile/harness/cycle-EG-B-visible-live-parity/` | EG materially closes chart, line-selector, Book ladder, and ticket carry-through gaps for the selected Mexico/Ecuador Spread path. It remains partial because the Android run used contract-shaped fallback data and did not visibly prove ready/stale/refreshing/unavailable provider lifecycle states tied to the backend route in one run. |
+| Current live game page Book-origin snapshot durability after metadata drift | Cycle EF integrated | Pass for selected EF proof; PM-GAP-083 verified for selected path | 0 for selected EF gate | P1 repeat across real provider-backed line families, provider-refresh drift regression, official production history recapture; P2 Portfolio/history visual clarity | Reused EE/ED checked-in proof and DQ-C Polymarket reference; gate: `docs/mobile/audits/cycle-ef-c-snapshot-durability-gate.md` | Backend proof: `docs/mobile/harness/cycle-EF-A-snapshot-durability.json`; Samsung tablet proof: `docs/mobile/harness/cycle-EF-integrated-snapshot-durability/cycle-EF-snapshot-durability-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EF-integrated-snapshot-durability/` and `docs/mobile/harness/cycle-EF-integrated-snapshot-durability/` | Integrated proof mutates current market/outcome/provider metadata after order/fill creation, then proves backend and Android Portfolio/activity still render order-time/fill-time selected Book identity with no fallback/default reconstruction and explicit fake-token labels. |
+| Current live game page Book-origin open/cancel/fill status and selection snapshots | Cycle EE integrated | Pass for selected PM-GAP-082 gate | 0 for selected EE gate | P1 real provider-backed line-family status matrix, official production confirmation/cancel/fill recapture, durability checks after metadata changes; P2 Portfolio/history visual status polish | Reused DQ-C Samsung S23 official Polymarket Book/orderbook and location-gated ticket reference; ED/DX/DO/Portfolio checked-in lifecycle baselines; gate: `docs/mobile/audits/cycle-ee-c-book-order-status-gate.md` | Samsung tablet proof: `docs/mobile/harness/cycle-EE-integrated-book-order-status/cycle-EE-book-order-status-proof.json`; backend snapshot proof: `docs/mobile/harness/cycle-EE-A-book-order-status-snapshots.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EE-integrated-book-order-status/` and `docs/mobile/harness/cycle-EE-integrated-book-order-status/` | EE integrated proof shows the same Book-origin selected identity through open order, cancel/canceled status, filled position, recent activity/history, guarded backend selection snapshots, visible fake-token status labels, and no-fallback assertions. |
+| Current live game page Book-selected order to Portfolio/history lifecycle | Cycle ED integrated | Pass for selected PM-GAP-081 gate | 0 for selected ED gate | P1 broader real provider-backed line-family lifecycle breadth, open/cancel/fill status breadth, production confirmation recapture, immutable selection snapshots; P2 Portfolio/history visual/motion polish | Reused DQ-C Samsung S23 official Polymarket Book/orderbook and location-gated ticket reference; provider/lifecycle baselines from DN/DO/DX; gate: `docs/mobile/audits/cycle-ed-c-book-order-portfolio-gate.md` | Samsung tablet proof: `docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/cycle-ED-book-order-portfolio-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-ED-integrated-book-order-portfolio/` and `docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/`; backend route/data proof `docs/mobile/harness/cycle-ED-A-book-order-portfolio-history.json` | ED integrated proof starts on the live game page Book surface, selects Spread `1.5` regulation Yes, opens the matching ticket, submits a fake-token order, and preserves the same identity through Android-visible Portfolio open order/open position and activity/history with backend order/portfolio/history data proof. |
+| Current live game page orderbook/depth and ticket carry-through | Cycle EC integrated | Pass for selected PM-GAP-080 orderbook/ticket gate | 0 for selected EC gate | P1 broader real provider-backed line-family breadth, richer settings, order/Portfolio/history carry-through; P2 phone-density/visual/motion polish | Reused DQ-C Samsung S23 official Polymarket Book/orderbook reference; gate: `docs/mobile/audits/cycle-ec-c-orderbook-ticket-gate.md` | Samsung tablet proof: `docs/mobile/harness/cycle-EC-integrated-orderbook-ticket/cycle-EC-orderbook-ticket-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EC-integrated-orderbook-ticket/` and `docs/mobile/harness/cycle-EC-integrated-orderbook-ticket/`; backend identity proof: `docs/mobile/harness/cycle-EC-A-provider-orderbook-identity.json` | EC integrated proof shows selected live-page context -> Book ladder/depth -> selector changes/settings -> matching Spread ticket carry-through. Backend/provider identity proof supports the same selected feature but does not replace the Android evidence. |
+| Current game page chart touch and line selector | Cycle EB integrated | Pass for selected PM-GAP-079 chart/line gate | 0 for selected EB gate | P1 changed-line Book target, selected-market chart switching, real provider-backed line families, line lifecycle through Portfolio/history; P2 gesture/visual polish | Reused DQ-C S23 official Polymarket reference plus focused AD chart and Y line-selector references; gate: `docs/mobile/audits/cycle-eb-c-chart-line-selector-gate.md` | Samsung tablet proof: `docs/mobile/harness/cycle-EB-integrated-chart-line/cycle-DY-A-holiwyn-game-page-structure-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EB-integrated-chart-line/` and `docs/mobile/harness/cycle-EB-integrated-chart-line/` | EB integrated proof passes chart mid/target touch, All/Live filters, Spread `2.5`/`1st Half` ticket carry-through, Totals `3.5`/`2nd Half` ticket carry-through, and EA full-page regression markers. |
+| Live football / World Cup game page structure | Cycle DY/DZ reviewed by EA-C | Fail/partial; PM-GAP-073 remains open | 1 failed P0 plus open P0 same-run proof items | P1 ticket amount/swipe confirmation recapture remains location-gated; P2 visual/motion polish remains after P0 | Reused DQ-C S23 reference: `docs/mobile/audits/live-football-world-cup-dq-c.md`; gate: `docs/mobile/audits/cycle-dy-c-game-page-structure-gate.md` | DY-A partial tablet proof: `docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-partial-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-DY-A-game-page-structure/` and `docs/mobile/harness/cycle-DY-A-game-page-structure/` | DY-A proves material shell behavior: launch, header actions, Game/Chat controls, top area, chart context, chat preview, primary outcomes, top Book, Share, and Chat feed/input/reactions. It fails because the primary outcome tap did not open `trade-ticket`; backend JSON, focused Book/line proofs, or compile checks cannot pass full game-page parity. |
+| Orderbook family/depth selector | Cycle DU integrated | Partial; PM-GAP-075 remains open | 3 remaining gate areas | P1 richer full Polymarket settings sheet, row-level ladder price carry-through polish, and phone-density visual polish remain after P0 pass | Reused DQ-C S23 reference: `docs/mobile/audits/live-football-world-cup-dq-c.md`; DU-C gate: `docs/mobile/audits/cycle-du-c-orderbook-final-gate.md` | Backend provider line proof: `docs/mobile/harness/cycle-DU-integrated-provider-line-orderbook-depth-proof.json`; tablet UI proof: `docs/mobile/harness/cycle-DU-B-orderbook-settings/cycle-DU-B-holiwyn-orderbook-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-DU-B-orderbook-settings/` and `docs/mobile/harness/cycle-DU-B-orderbook-settings/` | DU integrated closes major visible gaps: Cents/Decimal Book setting is visible and state-preserving, Spread `1.5` regulation and Totals `2.5` regulation carry through selector/ladder/ticket in backend-shaped fixture data, Yes/No switching still passes, side-labelled ladder proof remains, and backend route proof now returns provider-ready first-half Spread depth with `selectorKey=spreads:first-half:1.5`. Not a pass because the provider-ready backend market is not yet rendered in the same Android UI run, so backend JSON and app-visible market id/selector key are still separate evidence bundles. |
+| Orderbook family/depth selector | Cycle DU-C final gate | Fail until Agent A/B integrated proof; PM-GAP-075 remains open | 5 remaining gate areas | P1 row-to-ticket polish and P2 phone-density/visual polish remain after P0 pass | Reused DQ-C S23 reference: `docs/mobile/audits/live-football-world-cup-dq-c.md`; focused DU-C gate: `docs/mobile/audits/cycle-du-c-orderbook-final-gate.md`; DS/DT gates: `docs/mobile/audits/cycle-ds-c-orderbook-audit-gate.md`, `docs/mobile/audits/cycle-dt-c-orderbook-regate.md` | Reused DT progress only: backend ready-depth JSON `docs/mobile/harness/cycle-DT-integrated-ready-orderbook-depth-proof.json`; tablet interaction proof `docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-proof.json`; no fresh DU-C Android proof | DU-C prepares the final audit gate and does not certify parity. PM-GAP-075 remains blocked until one integrated Android run shows provider-backed `ready` depth visible in the Book UI with the same backend market id/selector key, proves Spread/period/line carry-through, proves Decimalize/equivalent settings, and preserves ticket/identity from selected ladder/market into the ticket. |
+| Orderbook family/depth selector | Cycle DT integrated | Partial; PM-GAP-075 remains open | 3 gate areas remain | P1 Decimalize/equivalent setting, broader spread/period/line selector coverage, row-to-ticket carry-through polish, and visual polish remain after provider-ready UI proof | `docs/mobile/audits/cycle-dt-c-orderbook-regate.md`; `docs/mobile/audits/cycle-ds-c-orderbook-audit-gate.md`; DQ-C reference screenshots/XML for Book action, selector, settings, and depth scroll | Backend ready-depth proof: `docs/mobile/harness/cycle-DT-integrated-ready-orderbook-depth-proof.json`; tablet interaction proof: `docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/` and `docs/mobile/harness/cycle-DT-B-orderbook-interactions/` | DT closed meaningful behavior gaps: Yes/No switching now changes side/outcome while preserving market identity, selector-to-ticket carry-through is proven for a contract-shaped Totals market, side-labelled ask/bid ladder proof exists, and the backend route returns provider-backed `ready` depth with market identity. Not a pass because provider-backed ready depth has not been proven in the same visible UI run, Spread/period/line carry-through is still incomplete, and Decimalize/equivalent Book settings are not implemented/proven. |
+| Orderbook family/depth selector | Cycle DT-C re-gate | Fail until proof; PM-GAP-075 remains open | 5 P0 areas remain | P1 broader selector coverage, row-to-ticket carry-through, and visual polish remain after P0 pass | `docs/mobile/audits/cycle-dt-c-orderbook-regate.md`; `docs/mobile/audits/cycle-ds-c-orderbook-audit-gate.md`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-12-top-book-action.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-13-orderbook-market-selector.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-15-orderbook-depth-scroll.png` | Integrated tablet proof: `docs/mobile/harness/cycle-DS-integrated-orderbook-ui-proof.json`; screenshot/XML folders under `docs/mobile/screenshots/cycle-DS-integrated-orderbook-ui/` and `docs/mobile/harness/cycle-DS-integrated-orderbook-ui/`; backend proof `docs/mobile/harness/cycle-DS-A-orderbook-selector-contract.json` | DS proof moves the surface closer: Book opens a dedicated surface, shows event identity, Yes/No tabs, grouped market selector labels, Price/Shares/Value ladder, spread separator, fallback/unavailable states, and ticket action. Not a pass because tab switching, selector carry-through, Decimalize/equivalent setting, provider-backed ready depth, and bid/ask side-labelled proof were not proven together. |
+| Line-market ticket target parity | Cycle DR-C integrated | Pass for focused ticket-target gate | 0 | P1 ticket amount/swipe recapture remains location-gated in DQ-C reference; PM-GAP-074 remains open for Book/order/portfolio/history coupling | `docs/mobile/audits/live-football-world-cup-dq-c.md`; `docs/mobile/audits/cycle-dr-c-line-market-ticket-target-gate.md`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-08-spread-line-dropdown.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-09-spread-line-25.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-10-spread-ticket.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-16-markets-scroll-2.png` | Integrated tablet proof: `docs/mobile/harness/cycle-DR-C-integrated-line-market-ticket-proof.json`; `docs/mobile/screenshots/cycle-DR-C-integrated-line-adjustment-spread-ticket.png`; `docs/mobile/screenshots/cycle-DR-C-integrated-line-adjustment-totals-ticket.png`; XML under `docs/mobile/harness/cycle-DR-C-integrated-line-adjustment-*.xml` | Integrated smoke passed on Samsung tablet. Spread carries `MEX -2.5 1H`, Totals carries `Over 3.5 2H`, ticket odds/keypad/balance/submit rail are visible, and line ticket targets no longer fall back to the wrong backend-shaped market. |
+| Live football / World Cup game detail DQ-C reference audit | Cycle DQ-C | Reference criteria complete; Holiwyn parity not passed | Not evaluated against Holiwyn by Agent C | P1 ticket amount/swipe confirmation recapture; P1 Book selector proof across families; P2 visual/motion polish | `docs/mobile/audits/live-football-world-cup-dq-c.md`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-03-world-cup-game-top.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-09-spread-line-25.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-12-top-book-action.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-17-share-sheet.png` | Not run by Agent C in this docs/reference worktree | Fresh S23 official app audit captured Canada vs Morocco World Cup detail, chart press, Chat tab, line selector, spread/totals/halves, orderbook/depth, market selector, location-gated ticket, share sheet, and scroll behavior. |
+| Scheduled provider refresh lifecycle | Cycle DQ-A | Pass for backend provider scheduler stale-to-ready lifecycle; partial for deployed worker/device visual proof | 0 | P1 deployed cron/queue cadence and run history; P1 exact line-family provider parity; P2 visual density/motion | Existing Polymarket-first provider evidence from Cycle DK-DN plus mapped disposable Polymarket proof event | Backend: `docs/mobile/harness/cycle-DQ-A-mobile-scheduled-provider-refresh.json`; tests: provider scheduler/refresh route/service Jest set; Holiwyn smoke attempted via `mobile/scripts/smoke-tablet.ps1 -ServerLiveProviderRefreshProof -Port 8218` | Material behavior closer: scheduler finds stale provider snapshots, refreshes without contract fallback, and live-detail returns ready. OpticOdds is skipped for this proof and does not block Polymarket Gamma/CLOB parity. Tablet smoke failed before provider assertions on missing `event-detail-group-prop`, so backend proof is the accepted DQ-A evidence. |
+| Live event detail DN super-round criteria | Cycle DN audit over Cycle DM evidence | Criteria pass for current evidence; final implementation still needs Agent A/B device proof | 0 documented | P1 exact line-family provider parity; P1 active filled-order/history lifecycle; P1 scheduled refresh; P2 visual density/motion | `docs/mobile/audits/live-event-detail-super-round-dm.md`; `docs/mobile/reference/screenshots/cycle-CW-polymarket-s23-window.xml`; `docs/mobile/harness/cycle-current-mobile-polymarket-first-provider-path.json`; `docs/mobile/harness/cycle-current-mobile-polymarket-chart-history.json`; `docs/mobile/harness/cycle-current-mobile-provider-token-lifecycle.json` | `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book-ticket.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book-ticket.png` | Agent C did not run fresh device control. The audit converts existing Cycle DK-DM proof into explicit DN pass/fail criteria for chart, line selectors, orderbook/depth, Buy/Sell ticket, stale/unavailable states, and provider identity carry-through. |
+| OpticOdds line ingestion contract | Cycle DH | Pass for optional backend enrichment contract; partial for live line-market provider parity | 0 | P1 reviewed per-line provider identity; P1 provider depth/orderbook for lines; optional `OPTIC_ODDS_API_KEY` if external enrichment is desired | Cycle CW/CX/CY/DG Colombia vs Ghana Polymarket reference, exact Gamma fixture metadata, and official OpticOdds `/fixtures/odds` docs | Backend: `docs/mobile/harness/cycle-current-mobile-optic-odds-line-ingestion-contract.json`; Holiwyn regression: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: provider refresh has an optional `optic_odds` enrichment lane, and the normalizer maps official-response-shaped spread/total/team-total odds into `ReferenceQuoteSnapshot` rows. Polymarket Gamma/CLOB remains the default parity source. |
+| Provider fixture metadata contract | Cycle DG | Pass for provider fixture identity/data contract; partial for actual line-market provider parity | 0 | P1 real OpticOdds/API ingestion for spreads/totals/team totals/halves/corners/correct-score; P1 importer persistence for every fixture | Cycle CW/CX/CY Colombia vs Ghana Polymarket reference plus exact Gamma event `fifwc-col-gha-2026-07-03` with `eventMetadata` fixture IDs | Backend: `docs/mobile/harness/cycle-current-mobile-provider-fixture-metadata-contract.json`; Holiwyn regression: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: Holiwyn now exposes real provider fixture/team identity in readiness, including `opticOddsFixtureId`, `opticOddsGameId`, team provider IDs, and a line-market source contract. This stops the loop from treating line-market discovery as broad search, without claiming line odds are ingested. |
+| Provider mapping operator UI | Cycle DF | Pass for admin/operator access to protected review-first workflow; partial for actual line-market provider parity | 0 | P1 real line-market slugs/source; P1 durable review audit persistence | Cycle CW/CX/CY Colombia vs Ghana Polymarket reference and exact Gamma event diagnostics | Admin build route: `/admin/mobile-provider-mapping`; Parser/backend tests; Holiwyn regression: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: operator no longer needs direct scripts to use the protected review/apply workflow. The UI loads readiness, normalizes pasted reviews, dry-runs, requires explicit confirm apply, and shows failed review reasons. |
+| Bulk review apply workflow | Cycle DE | Pass for protected review-first bulk apply workflow; partial for actual line-market provider parity | 0 | P1 operator/admin UI for capture/review/apply; P1 real line-market slugs/source | Cycle CW/CX/CY Colombia vs Ghana Polymarket reference and exact Gamma event diagnostics | Backend: `docs/mobile/harness/cycle-current-mobile-provider-bulk-review-apply-workflow.json`; Holiwyn: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: operator-collected slugs can now be reviewed and applied through one protected all-pass workflow. Mixed proof blocks apply and leaves readiness unchanged; all-valid proof applies 3 real match-winner mappings and 6 token IDs. |
+| Bulk manual slug review contract | Cycle DC | Pass for protected bulk exact-slug review contract; partial for actual line-market provider parity | 0 | P1 operator/admin UI for capture/review/apply; P1 real line-market slugs/source | Cycle CW/CX/CY Colombia vs Ghana Polymarket reference and exact Gamma event diagnostics | Backend: `docs/mobile/harness/cycle-current-mobile-provider-bulk-slug-review.json`; Holiwyn: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: operator-collected slugs can now be reviewed in bulk before attach. Proof returns 3 attach-ready match-winner mappings while rejecting a wrong-family totals review with `provider_family_mismatch`. |
+| Provider line source probe | Cycle DB | Pass for source diagnostic and safety; fail/partial for actual line-market provider mapping parity | 0 | P1 real provider source or exact slugs for spreads/totals/team totals/halves/corners/props; P1 operator review UI | Cycle CW/CX/CY Colombia vs Ghana Polymarket reference and exact Gamma event diagnostics | Backend: `docs/mobile/harness/cycle-current-mobile-provider-line-source-probe.json`; Holiwyn: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: the loop now knows current checked provider surfaces are exhausted for this event. Exact event has 0 line families, 23 exact line slug guesses resolve to 0 candidates, and 96 broad candidates produce 0 attach-ready line targets under the existing family/relevance gates. |
+| Provider discovery expansion | Cycle DA | Pass for exact event plus manual slug fallback match-winner provider mapping; partial for full line-market provider parity | 0 | P1 real provider source/slugs for spreads/totals/team totals/halves/corners/props; P1 operator review UI for provider mapping | Cycle CW/CX/CY Colombia vs Ghana Polymarket reference and exact Gamma event diagnostics | Backend: `docs/mobile/harness/cycle-current-mobile-provider-discovery-expansion.json`; Holiwyn: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: discovery now produces multiple real attach-ready soccer markets through exact event plus deterministic `COL/draw/GHA` fallback slugs, attaches 3 provider markets, refreshes 6 outcome quotes, and writes 246 CLOB depth rows without weakening relevance checks. |
+| Line exact-slug family gate | Cycle CZ | Pass for exact-slug safety gate; partial for actual line-market provider mapping parity | 0 | P1 real exact provider slugs/source for spreads/totals/team totals/halves/corners/props; P1 operator review UI | Cycle CW/CX/CY Colombia vs Ghana Polymarket reference and exact provider diagnostics | Backend: `docs/mobile/harness/cycle-current-mobile-provider-line-slug-family-gate.json`; Holiwyn: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: future exact slug review now rejects wrong-family provider slugs before attach. A totals target accepts same-family total-goals candidates but rejects match-winner slugs with `provider_family_mismatch`. |
+| Provider line-market availability diagnostic | Cycle CY | Pass for line-market availability diagnosis and safety; fail/partial for actual line-market provider mapping parity | 0 | P1 real provider source or reviewed exact slugs for spreads/totals/team totals/halves/corners/props; P1 line ticket/order/portfolio/history proof after IDs exist | Cycle CW/CX Colombia vs Ghana Polymarket reference and exact Gamma event `fifwc-col-gha-2026-07-03` | Backend: `docs/mobile/harness/cycle-current-mobile-provider-line-market-availability.json`; Holiwyn: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: the loop now has auditable evidence that exact Gamma sports-event data exposes 3 match-winner markets and 0 line-family candidates for this event. Broad line searches are noisy and remain blocked by the relevance gate, with 0 attach-ready candidates. |
+| Provider event slug hint discovery | Cycle CX | Pass for event-derived exact provider event discovery; partial for full line-market provider parity | 0 | P1 provider event slug metadata for every imported fixture; P1 real provider mapping for spreads/totals/team totals/halves/corners/props when available | Cycle CW S23 Polymarket reference for Colombia vs Ghana and exact Gamma event `fifwc-col-gha-2026-07-03` | Backend: `docs/mobile/harness/cycle-current-mobile-provider-sports-event-discovery-proof.json`; `docs/mobile/harness/cycle-current-mobile-live-detail-route-probe.json`; Holiwyn: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: provider discovery no longer needs a manual `providerEventSlug` parameter when the Holiwyn event already carries trustworthy provider slug metadata. Proof shows `providerEventSlugSource=event`, 3 attach-ready compact markets, no-fallback provider refresh, 6 quote snapshots, and 232 CLOB depth rows. |
+| Provider candidate relevance gate | Cycle CV | Pass for provider candidate mapping safety; partial for real World Cup mapping parity | 0 | P1 real World Cup soccer provider exact slugs/token IDs; P1 improved provider discovery strategy | Cycle CH S23 Polymarket reference, real Gamma provider search proof, and `docs/mobile/audits/live-event-detail.md` | Backend: `docs/mobile/harness/cycle-current-mobile-provider-candidate-relevance-gate.json`; Holiwyn: `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png` | Material behavior closer: Holiwyn no longer permits unrelated provider candidates to become attach-ready merely because they include condition/token IDs. Real provider search returned 42 candidates across 14 compact markets, 0 provider errors, and 0 attach-ready candidates after relevance checks. |
+| Provider CLOB depth fetcher | Cycle CU | Pass for real provider CLOB depth fetch execution on a mapped disposable provider event; partial only for real World Cup mapping parity | 0 | P1 real World Cup soccer provider mapping; P1 production provider retry/error taxonomy; P2 provider-specific source label in UI | Cycle CH S23 Polymarket reference, official CLOB `/book?token_id=...` contract check, and `docs/mobile/audits/live-event-detail.md` | Backend: `docs/mobile/harness/cycle-current-mobile-provider-clob-depth-refresh-proof.json`; Holiwyn: `docs/mobile/harness/cycle-current-holiwyn-provider-refresh-proof-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-order-book.png` | Material behavior closer: Holiwyn now runs a real provider CLOB refresh for mapped compact markets, writes 96 `polymarket-clob` ladder rows, and the selected Book route changes from `provider-quote-snapshot` to `provider-orderbook-depth` with `providerOrderbookDepth.status=ready`. |
+| Provider orderbook depth snapshot contract | Cycle CT | Pass for provider ladder depth contract; partial only for real provider CLOB fetcher and real World Cup mapping parity | 0 | P1 real provider CLOB/depth fetcher; P1 real World Cup soccer provider mapping; P2 provider-specific source label in UI | Cycle CH S23 Polymarket reference and `docs/mobile/audits/live-event-detail.md` | Backend: `docs/mobile/harness/cycle-current-mobile-provider-depth-snapshot-route-proof.json`; Holiwyn: `docs/mobile/harness/cycle-current-holiwyn-provider-refresh-proof-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-order-book.png` | Material behavior closer: Holiwyn now has a durable provider orderbook-depth table/route contract. The Book route changes from `provider-quote-snapshot` to `provider-orderbook-depth` when ladder rows exist, with eight levels proven in the route evidence and Samsung tablet Book proof preserved. |
+| Provider quote top-of-book depth bridge | Cycle CS | Pass for scoped provider quote top-of-book depth bridge; partial only for full provider CLOB/World Cup mapping parity | 0 | P1 full provider CLOB ladder; P1 real World Cup soccer provider mapping | Cycle CH S23 Polymarket reference and `docs/mobile/audits/live-event-detail.md` | Backend: `docs/mobile/harness/cycle-current-mobile-provider-quote-depth-route-proof.json`; Holiwyn: `docs/mobile/harness/cycle-current-holiwyn-provider-quote-depth-proof-summary.json`; `docs/mobile/harness/cycle-current-holiwyn-provider-refresh-proof-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-order-book.png` | Material behavior closer: orderbook route now returns provider-derived top bid/ask depth from refreshed `ReferenceQuoteSnapshot` rows instead of `no-depth`, and the Samsung tablet Book proof renders `orderbook-source-orderbook-route`, `orderbook-status-ready`, `Best bid`, and `Best ask`. This is top-of-book quote depth, not a full CLOB ladder. |
+| Provider-owned refresh and cache invalidation | Cycle CR | Pass for PM-GAP-067 real provider refresh path on a disposable mapped provider event; partial for full World Cup provider parity | 0 | P1 real World Cup soccer provider identity mapping; P1 provider-owned depth ladders or depth bridge; P1 richer provider error taxonomy | Cycle CH S23 Polymarket reference and `docs/mobile/audits/live-event-detail.md` | `docs/mobile/harness/cycle-current-mobile-live-provider-refresh-proof-prep.json`; `docs/mobile/harness/cycle-current-mobile-live-provider-refresh-real-provider-proof.json`; `docs/mobile/harness/cycle-current-holiwyn-provider-refresh-proof-summary.json`; `docs/mobile/harness/cycle-current-holiwyn-provider-refresh-proof-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-event-detail.png`; `docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-order-book.png` | Material behavior closer: Holiwyn now proves a real provider-mapped compact market starts stale/refresh-due, runs no-fallback provider refresh, invalidates live-detail/event/orderbook routes, and becomes ready on the Android tablet. The proof market has no local order depth, so full orderbook parity remains open. |
+| Manual provider slug preview contract | Cycle CQ | Partial pass for PM-GAP-067 protected manual slug preview contract and Samsung tablet regression proof | 0 | P1 successful Gamma fetch; P1 real attach-ready slug preview; P1 confirmed apply and no-fallback refresh | Cycle CH S23 Polymarket reference and `docs/mobile/audits/live-event-detail.md` | `docs/mobile/harness/cycle-current-mobile-live-provider-candidates-manual-slug-preview.json`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-line-groups.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`; `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book` | Material behavior closer: backend now has a controlled exact-slug preview path for provider identity review. The proof still returned `fetch failed`, so no real candidate was attached. |
+| Provider candidate discovery contract | Cycle CP | Partial pass for PM-GAP-067 protected provider candidate discovery contract and Samsung tablet regression proof | 0 | P1 successful provider fetch in proof environment; P1 attach-ready real candidates; P1 confirmed apply and no-fallback refresh | Cycle CH S23 Polymarket reference and `docs/mobile/audits/live-event-detail.md` | `docs/mobile/harness/cycle-current-mobile-live-provider-candidates-query-contract.json`; `docs/mobile/harness/cycle-current-mobile-live-provider-candidates-fetch-attempt.json`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-line-groups.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`; `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book` | Material behavior closer: backend now has protected compact-market provider candidate discovery and attach-proposal shaping. Provider fetch returned `fetch failed` for all 14 targets in this run, so real import remains open. |
+| Provider identity attach contract | Cycle CO | Partial pass for PM-GAP-067 protected provider identity attach dry-run contract and Samsung tablet regression proof | 0 | P1 real provider candidate discovery/import; P1 confirmed apply with real provider IDs for all compact markets; P1 refresh without contract-proof fallback | Cycle CH S23 Polymarket reference and `docs/mobile/audits/live-event-detail.md` | `docs/mobile/harness/cycle-current-mobile-live-provider-identity-attach-dry-run.json`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-line-groups.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`; `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book` | Material behavior closer: backend now has a protected dry-run/apply bridge for provider identity. Dry-run projected one compact market from 0 to 1 refreshable without mutating the DB. Full provider parity remains open. |
+| Provider mapping readiness contract | Cycle CN | Partial pass for PM-GAP-067 provider mapping readiness gate and Samsung tablet regression proof | 0 | P1 real Polymarket/provider mapping for compact World Cup match markets; P1 refresh without contract-proof fallback; P1 provider-owned full depth/liquidity | Cycle CH S23 Polymarket reference and `docs/mobile/audits/live-event-detail.md` | `docs/mobile/harness/cycle-current-mobile-live-provider-mapping-readiness.json`; `docs/mobile/harness/cycle-current-mobile-live-provider-no-fallback-refresh-blocked-proof.json`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-line-groups.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`; `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book` | Material behavior closer: backend now exposes an auditable mapping readiness gate and no-fallback refresh explains why provider refresh cannot run for the local compact event. It does not claim full provider parity. |
+| Provider refresh execution contract | Cycle CM | Partial pass for PM-GAP-067 protected refresh execution/invalidation route and Samsung tablet proof | 0 | P1 real Polymarket/provider mapping for compact World Cup match markets; P1 refresh without contract-proof fallback; P1 provider-owned full depth/liquidity | Cycle CH S23 Polymarket reference and `docs/mobile/audits/live-event-detail.md` | `docs/mobile/harness/cycle-current-mobile-live-provider-refresh-execution-proof.json`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-line-groups.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`; `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book` | Material behavior closer: backend can now expire compact provider snapshots, prove live-detail stale/refresh-due state, execute protected refresh, and restore ready route state. The current local event lacks real Polymarket mapping, so full provider parity remains open. |
+| Provider refresh policy contract | Cycle CL | Pass for PM-GAP-067 provider refresh policy route proof and Samsung tablet regression proof | 0 | P1 real external provider refresh execution/cache invalidation; P1 provider error classification; P1 provider-owned full depth ladders if needed | Cycle CH S23 Polymarket reference and `docs/mobile/audits/live-event-detail.md` | `docs/mobile/harness/cycle-current-mobile-live-provider-quote-snapshot-seed.json`; `docs/mobile/harness/cycle-current-mobile-live-provider-refresh-policy-probe.json`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-line-groups.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`; `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book` | Material behavior closer: live-detail and selected orderbook routes now expose backend-shaped refresh TTL, next-refresh time, refresh due state, and compact provider readiness/stale/refresh-due counts instead of leaving refresh/invalidation as an unknown frontend problem. |
+| Live provider quote snapshot ready proof | Cycle CK | Pass for PM-GAP-067 provider-shaped ready route proof and Samsung tablet regression proof | 0 | P1 real external provider ingestion; P1 provider cache invalidation/update sequence; P1 provider-owned depth ladders if needed | Cycle CH S23 Polymarket reference and `docs/mobile/audits/live-event-detail.md` | `docs/mobile/harness/cycle-current-mobile-live-provider-quote-snapshot-seed.json`; `docs/mobile/harness/cycle-current-mobile-live-provider-quote-snapshot-ready-probe.json`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-line-groups.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`; `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book` | Material behavior closer: compact live-detail now proves all 14 compact markets can report provider-ready `ReferenceQuoteSnapshot` status, and the selected second-half Book keeps route-backed depth. |
+| Provider quote snapshot contract | Cycle CJ | Pass for PM-GAP-067 provider snapshot metadata contract and tablet regression proof | 0 | P1 provider ingestion for all visible live markets; P1 provider cache invalidation/update sequence; P1 provider-owned depth ladders if needed | Cycle CH S23 Polymarket reference and `docs/mobile/audits/live-event-detail.md` | `docs/mobile/harness/cycle-current-mobile-live-provider-quote-snapshot-probe.json`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-line-groups.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`; `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book` | Material behavior closer: orderbook/live-detail routes now expose provider quote snapshot status from `ReferenceQuoteSnapshot` and truthfully report unavailable when local provider rows are absent. |
+| Depth batching policy contract | Cycle CI | Pass for PM-GAP-067 compact live-detail batching policy metadata and tablet regression proof | 0 | P1 real provider cache/invalidation; P1 provider liquidity for all markets; P1 provider-owned live stats only if kept in product | Cycle CH S23 Polymarket reference and `docs/mobile/audits/live-event-detail.md` | `docs/mobile/harness/cycle-current-mobile-live-depth-batching-policy-probe.json`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-line-groups.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`; `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book` | Material behavior closer: compact live-detail now exposes auditable batching limits, requested market IDs, generated time, max depth levels, and TTL, reducing repeated production batching debt without pretending provider parity is complete. |
+| Batched live market depth contract | Cycle CH | Pass for PM-GAP-067 compact-market batched route-backed depth and tablet proof | 0 | P1 real provider liquidity for all markets; P1 production batching/prefetch policy; P1 provider-owned live stats only if kept in product | `docs/mobile/reference/screenshots/cycle-CH-polymarket-reference.png`; `docs/mobile/reference/screenshots/cycle-CH-polymarket-reference.xml`; `docs/mobile/audits/live-event-detail.md` | `docs/mobile/harness/cycle-current-mobile-live-batched-orderbook-depth-probe.json`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-line-groups.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`; `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book` | Material behavior closer: compact live-detail now batches route-backed depth for visible backend markets and shows `Route depth` before Book opens, instead of reserving route-backed depth only for the primary market. |
+| Second-half orderbook depth proof | Cycle CG | Pass for PM-GAP-067 selected second-half route-backed orderbook depth and tablet proof | 0 | P1 real provider ingestion; P1 provider-owned live stats; P1 provider-wide liquidity | `docs/mobile/audits/live-event-detail.md`; prior Polymarket halves/line-market behavior from Cycle AN/AO/Y audits | `docs/mobile/harness/cycle-current-mobile-live-halves-markets-seed.json`; `docs/mobile/harness/cycle-current-mobile-live-second-half-orderbook-depth-seed.json`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-line-groups.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`; `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book` | Material behavior closer: `2nd Half Winner` is now proven as a backend period market with its own Book action, stale availability, and route-backed depth instead of remaining a deferred local-only risk. |
+| Halves orderbook depth contract | Cycle CF | Pass for PM-GAP-067 selected first-half route-backed orderbook depth and tablet proof | 0 | P1 real provider ingestion; P1 provider-owned live stats; P1 provider-wide liquidity; second-half proof closed in Cycle CG | `docs/mobile/audits/live-event-detail.md`; prior Polymarket halves/line-market behavior from Cycle AN/AO/Y audits | `docs/mobile/harness/cycle-current-mobile-live-halves-markets-seed.json`; `docs/mobile/harness/cycle-current-mobile-live-first-half-orderbook-depth-seed.json`; `docs/mobile/harness/cycle-current-holiwyn-server-live-first-half-line-groups.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-first-half-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-first-half-order-book.png`; `cmd /c npm.cmd run smoke:tablet:server-live-first-half-order-book` | Material behavior closer: `1st Half Winner` is now a backend period market with its own Book action, stale availability, and route-backed depth instead of a local-only row/fallback primary market. |
+| Compact market availability contract | Cycle CE | Pass for PM-GAP-067 compact per-visible-market availability contract and tablet proof | 0 | P1 real provider ingestion; P1 provider-owned live stats; P1 selected Halves/all-line availability proof | `docs/mobile/audits/live-event-detail.md`; prior Polymarket live-market availability behavior from Cycle AN/AO/Y audits | `docs/mobile/harness/cycle-current-mobile-live-chart-snapshot-seed.json`; `docs/mobile/harness/cycle-current-mobile-live-team-totals-orderbook-depth-seed.json`; `docs/mobile/harness/cycle-current-holiwyn-server-live-team-totals-line-groups.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-team-totals-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-team-totals-order-book.png`; `cmd /c npm.cmd run smoke:tablet:server-live-team-totals-order-book` | Material behavior closer: visible Team Totals now exposes `market-availability-stale market-status-LIVE` before opening the book, and the opened selected book preserves the same stale availability with route-backed depth. |
+| Selected orderbook availability contract | Cycle CD | Pass for PM-GAP-067 selected-market availability contract and tablet proof | 0 | P1 real provider ingestion; P1 per-visible-market availability in compact route; P1 provider-owned live stats | `docs/mobile/audits/live-event-detail.md`; prior Polymarket live-market availability behavior from Cycle AN/AO/Y audits | `docs/mobile/harness/cycle-current-mobile-live-chart-snapshot-seed.json`; `docs/mobile/harness/cycle-current-mobile-live-team-totals-orderbook-depth-seed.json`; `docs/mobile/harness/cycle-current-holiwyn-server-live-team-totals-line-groups.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-team-totals-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-team-totals-order-book.png`; `cmd /c npm.cmd run smoke:tablet:server-live-team-totals-order-book` | Material behavior closer: selected Team Totals orderbook now shows route-backed depth and `orderbook-availability-stale orderbook-market-status-LIVE`, proving Holiwyn no longer hides stale selected-market data. |
+| Live provider freshness contract | Cycle BC | Pass for PM-GAP-067 event-level freshness contract and tablet proof | 0 | P1 real provider ingestion; P1 per-market/per-line freshness and suspended/delayed states; P1 provider-owned live stats | `docs/mobile/audits/live-event-detail.md`; prior Polymarket live-market availability behavior from Cycle AN/AO/Y audits | `docs/mobile/harness/cycle-current-mobile-live-chart-snapshot-seed.json`; `docs/mobile/harness/cycle-current-mobile-live-team-totals-orderbook-depth-seed.json`; `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-team-totals-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`; `cmd /c npm.cmd run smoke:tablet:server-live-team-totals-order-book` | Material behavior closer: live event detail now exposes backend-derived `liveDataStatus` and visible `event-detail-live-data-inline live-data-status-ready live-data-source-market-outcome-snapshot` instead of assuming server data is fresh. |
+| Selected Team Totals order book | Cycle BB | Pass for PM-GAP-067 selected Team Totals seeded ready-depth scope | 0 | P1 provider liquidity for all line markets; P1 selected Halves ready-depth proof; P1 provider freshness/stale/suspended states | `docs/mobile/audits/live-event-detail.md`; prior Polymarket line-market/depth behavior from Cycle AN/AO/Y audits | `docs/mobile/harness/cycle-current-mobile-live-team-totals-orderbook-depth-seed.json`; `docs/mobile/harness/cycle-current-holiwyn-server-live-team-totals-line-groups.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-team-totals-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-team-totals-order-book.png`; `cmd /c npm.cmd run smoke:tablet:server-live-team-totals-order-book` | Material behavior closer: selected Team Totals market `408ffb79-3492-4fd0-b31b-87a26f8b9dd5` now exposes a game-page Book control and route-backed ready depth. |
+| Compact line group coverage and selected Totals order book | Cycle BA | Pass for PM-GAP-067 representative line groups plus selected Totals seeded ready-depth scope | 0 | P1 provider liquidity for all line markets; P1 selected Team Totals/Halves ready-depth proof; P1 provider freshness/stale/suspended states | `docs/mobile/audits/live-event-detail.md`; prior Polymarket line-market/depth behavior from Cycle AN/AO/Y audits | `docs/mobile/harness/cycle-current-mobile-live-totals-orderbook-depth-seed.json`; `docs/mobile/harness/cycle-current-holiwyn-server-live-totals-line-groups.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-totals-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-totals-order-book.png`; `cmd /c npm.cmd run smoke:tablet:server-live-totals-order-book` | Material behavior closer: compact live-detail route now preserves representative rendered line groups, and selected Totals market `a552efe6-3147-4573-be95-8fe15c068c08` opens route-backed ready depth. |
+| Selected Spread line market ready order book | Cycle AZ | Pass for PM-GAP-067 selected-line seeded ready-depth scope | 0 | P1 provider liquidity for all line markets; P1 provider freshness/stale/suspended states; P1 batching/prefetch strategy for many visible books | `docs/mobile/audits/live-event-detail.md`; prior Polymarket line-market/depth behavior from Cycle AN/AO/Y audits | `docs/mobile/harness/cycle-current-mobile-live-spread-orderbook-depth-seed.json`; `docs/mobile/harness/cycle-current-holiwyn-server-live-spread-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-spread-order-book.png`; `cmd /c npm.cmd run smoke:tablet:server-live-line-order-book` | Material behavior closer: selected Spread line market `ac527022-07f3-4abb-90f0-b291466e8459` now shows route-backed `ready` depth with bid/ask prices and share sizes, not only empty/no-depth state. |
+| Selected live line market order book | Cycle AY | Pass for PM-GAP-067 selected-market depth identity scope | 0 | P1 line-market seeded/provider liquidity; P1 provider freshness/stale/suspended states | `docs/mobile/audits/live-event-detail.md`; prior Polymarket line-market/depth behavior from Cycle AN/AO/Y audits | `docs/mobile/harness/cycle-current-holiwyn-server-live-spread-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-spread-order-book.png`; `cmd /c npm.cmd run smoke:tablet:server-live-line-order-book` | Material behavior closer: opening Spread order book now requests and labels the selected backend Spread market id, and route-backed empty depth is shown truthfully instead of borrowing primary-market depth. |
+| Compact live detail route and route-backed order book | Cycle AX | Pass for PM-GAP-067 compact route/depth proof scope | 0 | P1 real provider ingestion; P1 provider-owned live stats; P1 event-wide/on-demand depth for every market; P1 delayed/suspended/stale states | `docs/mobile/audits/live-event-detail.md`; prior Polymarket live-detail market/depth reference from Cycle AN/AO | `docs/mobile/harness/cycle-current-mobile-live-detail-compact-route.json`; `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book-ticket.xml`; `cmd /c npm.cmd run smoke:tablet:server-live-order-book` | Material behavior closer: tablet proof now uses a compact backend live-detail route and shows route-backed orderbook depth on the live game page, then preserves selected backend outcome into the ticket. |
+| Live chart route lifecycle states | Cycle AU | Partial pass for PM-GAP-067 chart route state handling | 0 | P1 server-hydrated ready proof; P1 real provider ingestion; P1 richer delayed/suspended/stale states; P1 full depth ladder route | `docs/mobile/audits/live-event-detail.md`; prior Polymarket live chart observations in Cycle AN/AO docs | `mobile/src/__tests__/marketChartService.test.ts`; `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/marketChartService.test.ts mobile/src/__tests__/worldCupAdapter.test.ts mobile/src/__tests__/api.test.ts`; mobile `typecheck`; root `build`; `cmd /c npm.cmd run smoke:tablet:live-detail`; `docs/mobile/harness/cycle-current-holiwyn-live-detail-top.xml` | Material behavior closer: chart route loading, empty, and error states are now preserved and visible/auditable on the live game chart instead of silently masking backend state with fallback data. Backend health was unavailable, so server-hydrated `ready` proof remains open. |
+| Live chart snapshot seeding harness | Cycle AT | Partial pass for PM-GAP-067 provider-shaped chart data harness | 0 | P1 run seed against available backend; P1 server-hydrated chart-source device proof; P1 real provider ingestion; P1 chart loading/error states; P1 full depth ladder route | `docs/mobile/audits/live-event-detail.md`; prior Polymarket live chart observations in Cycle AN/AO docs | `src/__tests__/mobile-live-chart-snapshot-seeding.test.ts`; `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-chart-snapshot-seeding.test.ts src/__tests__/public.market-chart.no-leak.test.ts src/__tests__/sports.event-market-model.test.ts`; mobile API tests; root `build`; mobile `typecheck`; `cmd /c npm.cmd run smoke:tablet:live-detail` | Material behavior closer: Holiwyn now has a deterministic backend snapshot seeding harness that writes the same `MarketOutcomeSnapshot` rows consumed by the chart route. Local API/Docker were unavailable, so database apply and server-hydrated tablet proof remain open. |
+| EventDetail chart route hydration | Cycle AS | Partial pass for PM-GAP-067 visible chart route integration | 0 | P1 provider snapshot ingestion; P1 server-hydrated device proof; P1 loading/empty/error chart states; P1 full depth ladder route | `docs/mobile/audits/live-event-detail.md`; prior Polymarket live chart observations in Cycle AN/AO docs | `mobile/src/__tests__/marketChartService.test.ts`; `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/marketChartService.test.ts mobile/src/__tests__/worldCupAdapter.test.ts mobile/src/__tests__/api.test.ts`; mobile `typecheck`; root `build`; `cmd /c npm.cmd run smoke:tablet:live-detail` | Material behavior closer: the visible EventDetail chart now consumes `/api/markets/:marketId/chart?range=...` in server mode and can mark route-hydrated chart data separately from fallback data. Backend health was unavailable during tablet proof, so PM-GAP-067 remains open. |
+| Range-aware market chart contract | Cycle AR | Partial pass for PM-GAP-067 chart route/client contract | 0 | P1 EventDetail route hydration; P1 provider snapshot ingestion; P1 server-hydrated device proof | `docs/mobile/audits/live-event-detail.md`; prior Polymarket live chart observations in Cycle AN/AO docs | `cmd /c npm.cmd run test:ci -- src/__tests__/public.market-chart.no-leak.test.ts`; `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/api.test.ts`; mobile `typecheck`; root `build` | Material behavior closer: Holiwyn now has `/api/markets/:marketId/chart?range=...` with mobile-ready probability history and `PolyApi.getMarketChart()` for the app. PM-GAP-067 remains open. |
+| Live chart history/depth identity contract | Cycle AQ | Partial pass for PM-GAP-067 structural backend contract | 0 | P1 provider ingestion; P1 dedicated range-aware history route; P1 full depth ladder route; P1 server-hydrated device proof after live data seeding | `docs/mobile/audits/live-event-detail.md`; prior Polymarket live chart/depth observations in Cycle AN/AO docs | `cmd /c npm.cmd run test:ci -- src/__tests__/sports.event-market-model.test.ts`; `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/worldCupAdapter.test.ts` | Material behavior closer: `/api/events/:slug` now emits snapshot-backed chart history from `MarketOutcomeSnapshot` when available, and mobile preserves `orderbookDepth[].outcomeId` for outcome-addressable depth. PM-GAP-067 remains open. |
+| Live line order identity | Cycle AP | Pass for structural backend/mobile identity contract | 0 | P1 repeat server-hydrated live-device proof after PM-GAP-067 real data; P2 first-class order/trade selection schema before production | `docs/mobile/audits/live-event-detail.md`; prior Polymarket line/ticket audits in `docs/mobile/audits/line-adjustment.md` and `docs/mobile/audits/trade-ticket.md` | `cmd /c npm.cmd run test:ci -- src/__tests__/portfolio.open-orders.route.test.ts src/__tests__/portfolio.history.route.test.ts`; `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/orderService.test.ts mobile/src/__tests__/portfolioSnapshotService.test.ts mobile/src/__tests__/portfolioHistoryService.test.ts`; `cmd /c npm.cmd run typecheck`; `cmd /c npm.cmd run build`; `cmd /c npm.cmd run smoke:tablet:event-detail-line-portfolio` | Material behavior closer: selected line/outcome identity now survives ticket submit, API request storage, portfolio open orders, positions, canceled orders, recent trades, and mobile Portfolio mapping. Tablet proof passed through line ticket, mock order, Portfolio activity, and open-order surfaces. |
+| Live event detail | Cycle AN | Pass for focused structural UI/fixture scope | 0 | P1 real backend/schema for live detail data; P1 live order-to-portfolio identity; P2 visual density | `docs/mobile/reference/screenshots/cycle-AN-polymarket-live-list.png`; `docs/mobile/reference/screenshots/cycle-AN-polymarket-live-detail-top.png`; `docs/mobile/reference/screenshots/cycle-AN-polymarket-live-detail-markets.png`; `docs/mobile/audits/live-event-detail.md` | `docs/mobile/screenshots/cycle-current-holiwyn-live-detail-top.png`; `docs/mobile/screenshots/cycle-current-holiwyn-live-detail-markets.png`; `docs/mobile/screenshots/cycle-current-holiwyn-live-detail-ticket.png`; `cmd /c npm.cmd run smoke:tablet:live-detail` | Material behavior closer: live football detail now shows live game context, richer market groups, backend-shaped live data fixture, and live ticket carry-through. Backend parity is explicitly not complete. |
+| Workflow update | Cycle S | Pass | 0 | None for workflow docs | User-provided workflow requirements | Updated loop/harness docs | The autonomous loop now requires same-cycle Polymarket audit, criteria, Holiwyn device proof, and Audit Gate pass. |
+| Whole-app navigation and page map | Cycle T | Pass | 0 | P1 back/scroll polish; P1 account affordance polish; P2 production deep-link restoration | `docs/mobile/reference/screenshots/cycle-T-polymarket-nav-*`; `docs/mobile/audits/navigation.md` | `docs/mobile/screenshots/cycle-current-holiwyn-whole-app-nav-*`; `docs/mobile/harness/cycle-current-holiwyn-whole-app-nav-*`; `npm run smoke:tablet:whole-app-nav-discovery` | Polymarket four-tab bottom nav was matched. Account moved from bottom tab to header action. |
+| Event page top shell/action controls | Cycle U | Pass | 0 | P1 native share parity; P1 World Cup-specific reference recapture; P2 density/animation polish | `docs/mobile/reference/screenshots/cycle-U-polymarket-event-*`; `docs/mobile/audits/event-page-top-shell.md` | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-top-order-book.png`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-top-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-share-sheet.png`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-share-sheet.xml`; `npm run smoke:tablet:event-detail-actions` | Focused pass only. Top book now opens Order Book and share remains dismissible. Full Market/Event page remains open. |
+| Futures market rows | Cycle V | Pass | 0 | P1 true binary Buy No contract; P1 fuller futures outcome catalog; P2 sticky/chart polish | `docs/mobile/reference/screenshots/cycle-V-polymarket-web-world-cup-winner-*`; `docs/mobile/audits/futures-market-rows.md` | `docs/mobile/screenshots/cycle-current-holiwyn-future-card-stats.png`; `docs/mobile/harness/cycle-current-holiwyn-future-card-stats.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-future-list-ticket.png`; `docs/mobile/harness/cycle-current-holiwyn-future-list-ticket.xml` | Focused pass only. Futures rows now match the audited outcome-row structure and Buy Yes ticket carry-through. |
+| Futures catalog expansion | Cycle AK | Pass | 0 | P1 backend-owned catalog/live pricing; P2 compact visual density | `docs/mobile/reference/screenshots/cycle-AK-polymarket-home-state.png`; `docs/mobile/reference/screenshots/cycle-AK-polymarket-home-state.xml`; `docs/mobile/audits/futures-market-rows.md` | `docs/mobile/screenshots/cycle-current-holiwyn-future-catalog-collapsed.png`; `docs/mobile/harness/cycle-current-holiwyn-future-catalog-collapsed.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-future-catalog-expanded.png`; `docs/mobile/harness/cycle-current-holiwyn-future-catalog-expanded.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-future-catalog-england-ticket.png`; `docs/mobile/harness/cycle-current-holiwyn-future-catalog-england-ticket.xml`; `cmd /c npm.cmd run smoke:tablet:future-catalog-expand` | Logged-in Polymarket World Cup Winner collapsed catalog shows `18 more`; Holiwyn now expands a truthful 21-outcome fallback catalog and preserves expanded-row ticket identity. |
+| Futures chart range | Cycle W | Pass | 0 | P1 backend historical chart data; P1 settings gear; P2 tooltip/animation geometry | `docs/mobile/reference/screenshots/cycle-W-polymarket-world-cup-winner-chart-*`; `docs/mobile/audits/futures-chart-range.md` | `docs/mobile/screenshots/cycle-current-holiwyn-future-chart-1w.png`; `docs/mobile/harness/cycle-current-holiwyn-future-chart-ready.xml`; `docs/mobile/harness/cycle-current-holiwyn-future-chart-1d.xml`; `docs/mobile/harness/cycle-current-holiwyn-future-chart-1w.xml` | Focused pass only. Baseline chart section and range switching now exist for futures. |
+| Chart behavior | Cycle AD | Pass | 0 | P1 backend history series; P1 direct World Cup chart recapture; P2 animation/touch polish | `docs/mobile/reference/screenshots/cycle-AD-polymarket-chart-*`; `docs/mobile/audits/chart-behavior.md` | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-chart-pressed.png`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-chart-pressed.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-chart-live.png`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-chart-live.xml` | Focused pass only. Event chart is no longer a static placeholder and supports chart-point tap/tooltip behavior. |
+| Market page | Cycle AE | Pass | 0 | P1 backend live stats; P1 Player Props recapture/scope; P2 sticky/visual density polish | `docs/mobile/reference/screenshots/cycle-AE-polymarket-market-*`; `docs/mobile/audits/market-page.md` | `docs/mobile/screenshots/cycle-current-holiwyn-market-tabs-live-stats.png`; `docs/mobile/harness/cycle-current-holiwyn-market-tabs-live-stats.xml`; `docs/mobile/harness/cycle-current-holiwyn-market-tabs-market-return.xml`; existing market-tabs card proof | Focused pass only. Body `Market` / `Live stats` switch now works and existing grouped market tabs remain reachable. |
+| Reference device preflight | Cycle AF | Expected blocked | N/A | Reference S23 is missing from ADB/mdns | `docs/mobile/harness/cycle-current-polymarket-reference-device-preflight.json` | Samsung tablet remained connected in the same preflight summary | Harness-only cycle. Prevents starting or completing a product parity cycle without same-cycle Polymarket reference access. |
+| Trade ticket | Cycle AG | Pass | 0 | P1 binary NO/share contract semantics; P1 production auth/location eligibility gates | `docs/mobile/reference/screenshots/cycle-AG-polymarket-ticket-open.png`; `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-open.png`; `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-amount.png`; `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-trade.png` | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket-amount.png`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket-details.xml`; `cmd /c npm.cmd run smoke:tablet:event-detail-trade` | Focused pass only. First view is now sparse and settings opens advanced controls. |
+| Trade ticket surface | Cycle AI | Pass | 0 | P1 production auth/location eligibility gate; P2 native motion polish | `docs/mobile/reference/screenshots/cycle-AI-polymarket-logged-in-start.png`; `docs/mobile/reference/screenshots/cycle-AI-polymarket-logged-in-france-ticket.png`; `docs/mobile/reference/screenshots/cycle-AI-polymarket-after-france-row-tap.png` | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket-amount.png`; `docs/mobile/screenshots/cycle-current-holiwyn-future-list-buy-no-ticket.png`; `cmd /c npm.cmd run smoke:tablet:event-detail-trade`; `cmd /c npm.cmd run smoke:tablet:future-list-buy-no` | Logged-in Polymarket World Cup selection opened a tall location-verification sheet; Holiwyn now uses a taller dimmed fake-token ticket with fixed swipe-up submit rail. |
+| Game page compact scrolled header | Cycle AJ | Pass | 0 | P1 phone visual density/sticky tab polish; P1 backend market/live data; P1 Player Props reference scope | `docs/mobile/reference/screenshots/cycle-AJ-polymarket-live-tab.png`; `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-top.png`; `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-lines-mid.png` | `docs/mobile/screenshots/cycle-current-holiwyn-game-page-full-markets.png`; `docs/mobile/harness/cycle-current-holiwyn-game-page-full-markets.xml`; `cmd /c npm.cmd run smoke:tablet:event-detail-full-page` | Logged-in Polymarket keeps compact match context when scrolled into Game Lines; Holiwyn now shows a compact match header in that state and full game-page smoke passed. |
+
+## Cycle LF
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for leftover Event Detail chat and fake stats code. This cycle removes dead chat UI implementation and frontend-invented volume/liquidity/trader stats while keeping Event Detail focused on route-backed event identity, primary outcomes, user position, Game Lines, Player Props placeholder, and backend market summary metadata. It does not add chat, social, live stats, order book, deposit, withdrawal, or broad schema work.
+
+Evidence:
+
+- Event Detail no chat/stats proof: `docs/mobile/harness/cycle-LF-event-detail-no-chat-stats-contract/cycle-LF-event-detail-no-chat-stats-contract.json`.
+- Proof script: `scripts/prove_mobile_event_detail_no_chat_stats_contract.ts`.
+- Cycle audit: `mobile/docs/audits/cycle-LF-event-detail-no-chat-stats-contract.md`.
+- Focused tests:
+  - `mobile/src/__tests__/eventDetailNoChatStatsContract.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Event Detail no chat/stats contract.
+- Remaining P1: real route-backed stats only if Event Detail scope expands.
+
+## Cycle LE
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Search result metadata. This cycle removes frontend-invented Search result volume, liquidity, today-volume, and chat counts while keeping Search route event identity, start time, top outcome, saved-market action, and navigation. It does not add chat, social, live stats, order book, deposit, withdrawal, or broad Search ranking/facet work.
+
+Evidence:
+
+- Search result stats proof: `docs/mobile/harness/cycle-LE-search-result-stats-contract/cycle-LE-search-result-stats-contract.json`.
+- Proof script: `scripts/prove_mobile_search_result_stats_contract.ts`.
+- Cycle audit: `mobile/docs/audits/cycle-LE-search-result-stats-contract.md`.
+- Focused tests:
+  - `mobile/src/__tests__/searchResultStatsContract.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Search result stats contract.
+- Remaining P1: real route-backed discovery stats only if Search scope expands.
+
+## Cycle LD
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Portfolio account/settings affordances. This cycle removes the duplicate local-only Portfolio settings gear/sheet and keeps Portfolio focused on route-backed value, positions, orders, history, cashout, buy, and cancel controls. It does not add account/security/session/funding settings, visual redesign, order book, chat, live stats, deposit, or withdrawal work.
+
+Evidence:
+
+- Portfolio settings proof: `docs/mobile/harness/cycle-LD-portfolio-settings-contract/cycle-LD-portfolio-settings-contract.json`.
+- Proof script: `scripts/prove_mobile_portfolio_settings_contract.ts`.
+- Cycle audit: `mobile/docs/audits/cycle-LD-portfolio-settings-contract.md`.
+- Focused tests:
+  - `mobile/src/__tests__/portfolioSettingsContract.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Portfolio settings contract.
+- Remaining P1: broader account/security/session/funding settings only if MVP scope expands; optional Android proof if visual proof becomes required again.
+
+## Cycle LC
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Account static rows. This cycle removes unsupported hardcoded Theme, security teaser, and duplicate fake-token rows. It does not add theme settings, security settings, auth expansion, visual redesign, order book, chat, live stats, deposit, or withdrawal work.
+
+Evidence:
+
+- Account static rows proof: `docs/mobile/harness/cycle-LC-account-static-rows-contract/cycle-LC-account-static-rows-contract.json`.
+- Proof script: `scripts/prove_mobile_account_static_rows_contract.ts`.
+- Cycle audit: `mobile/docs/audits/cycle-LC-account-static-rows-contract.md`.
+- Focused tests:
+  - `mobile/src/__tests__/accountStaticRowsContract.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Account static rows contract.
+- Remaining P1: theme/security routes only if MVP scope expands; optional Android proof if visual proof becomes required again.
+
+## Cycle LB
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Account auth actions. This cycle removes local-only login/signup/sign-out controls and keeps Account auth display derived from the existing `/api/profile/summary` route wiring. It does not add production login, signup, logout, KYC, wallet, deposit, withdrawal, visual redesign, order book, chat, or live stats work.
+
+Evidence:
+
+- Account auth visibility proof: `docs/mobile/harness/cycle-LB-account-auth-visibility-contract/cycle-LB-account-auth-visibility-contract.json`.
+- Proof script: `scripts/prove_mobile_account_auth_visibility_contract.ts`.
+- Cycle audit: `mobile/docs/audits/cycle-LB-account-auth-visibility-contract.md`.
+- Focused tests:
+  - `mobile/src/__tests__/accountAuthContract.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Account auth visibility contract.
+- Remaining P1: full login/signup/logout/session/KYC only if MVP scope expands; optional Android proof if visual proof becomes required again.
+
+## Cycle LA
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Header actions. This cycle removes unsupported local-only promo and notification controls and keeps the visible Header limited to the language action, which is covered by existing preference wiring. It does not add rewards, credit claiming, notifications, visual redesign, order book, chat, live stats, deposit, or withdrawal work.
+
+Evidence:
+
+- Header actions proof: `docs/mobile/harness/cycle-LA-header-actions-contract/cycle-LA-header-actions-contract.json`.
+- Proof script: `scripts/prove_mobile_header_actions_contract.ts`.
+- Cycle audit: `mobile/docs/audits/cycle-LA-header-actions-contract.md`.
+- Focused tests:
+  - `mobile/src/__tests__/headerContract.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Header actions contract.
+- Remaining P1: promo/rewards/claim-credit and notifications only if MVP scope expands; optional Android proof if visual proof becomes required again.
+
+## Cycle KZ
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Search controls. This cycle removes unsupported local-only Search category/sort controls and keeps Search focused on the backend-backed query, clear, result list, and cursor load-more contract. It does not add ranked discovery, facets, visual redesign, order book, chat, live stats, deposit, or withdrawal work.
+
+Evidence:
+
+- Search controls proof: `docs/mobile/harness/cycle-KZ-search-controls-route-contract/cycle-KZ-search-controls-route-contract.json`.
+- Proof script: `scripts/prove_mobile_search_controls_contract.ts`.
+- Cycle audit: `mobile/docs/audits/cycle-KZ-search-controls-route-contract.md`.
+- Focused tests:
+  - `mobile/src/__tests__/searchScreenContract.test.ts`
+  - `mobile/src/__tests__/searchEventService.test.ts`
+  - `mobile/src/__tests__/api.test.ts`
+  - `src/__tests__/public.events.no-leak.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Search controls route contract.
+- Remaining P1: ranked/faceted discovery only if Search scope expands; optional Android proof if visual proof becomes required again.
+
+## Cycle KY
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Account More-menu availability. This does not implement leaderboard, rewards, API management, accuracy, status, documentation, help, terms, deposits, withdrawals, auth/session expansion, or visual redesign.
+
+Evidence:
+
+- Account menu availability proof: `docs/mobile/harness/cycle-KY-account-menu-availability-wiring/cycle-KY-account-menu-availability-wiring.json`.
+- Proof script: `scripts/prove_mobile_account_menu_availability_wiring.ts`.
+- Cycle audit: `mobile/docs/audits/cycle-KY-account-menu-availability-wiring.md`.
+- Focused tests:
+  - `mobile/src/__tests__/profileSummaryService.test.ts`
+  - `mobile/src/__tests__/api.test.ts`
+  - `src/__tests__/profile.summary.route.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Account menu availability wiring.
+- Remaining P1: implement real backend routes for menu items only if MVP scope expands.
+
+## Cycle KX
+
+Gate status: Pass
+
+Scope: Documentation/audit consolidation for already-completed backend/UI route-wiring cycles. No app code, backend route, schema, visual polish, order book, chat, live stats, deposit, or withdrawal work is included.
+
+Evidence:
+
+- Tracker proof: `docs/mobile/harness/cycle-KX-route-wiring-tracker-consolidation/cycle-KX-route-wiring-tracker-consolidation.json`.
+- Proof script: `scripts/prove_mobile_route_wiring_tracker_consolidation.ts`.
+- Cycle audit: `mobile/docs/audits/cycle-KX-route-wiring-tracker-consolidation.md`.
+
+Decision:
+
+- P0 failed: 0 for tracker consistency.
+- Remaining P1: repeat tracker sweep after the next backend/UI wiring batch.
+
+## Cycle KR
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Portfolio cancel route wiring. The visible open-order cancel control calls `cancelOpenOrder()`, which calls `cancelOpenOrderOnServer()` and canonical `DELETE /api/orders/:id` in server mode, then refreshes Portfolio from backend state.
+
+Evidence:
+
+- Portfolio cancel UI proof: `docs/mobile/harness/cycle-KR-portfolio-cancel-ui-wiring/cycle-KR-portfolio-cancel-ui-wiring.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KR-portfolio-cancel-ui-wiring.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/api.test.ts`
+  - `mobile/src/__tests__/openOrderService.test.ts`
+- Focused backend tests:
+  - `src/__tests__/orders.cancel.route.test.ts`
+- Typechecks:
+  - `npm run typecheck --prefix mobile`
+  - `npx tsc --noEmit`
+
+Remaining P1:
+
+- Broader provider-family cancel breadth if future gates require it.
+- Optional Android proof if visual proof becomes required again.
+
+## Cycle KQ
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Trade Ticket submit route wiring. The visible swipe/press submit control calls `placeOrder()`, which calls `submitTicketOrder()` and canonical `POST /api/orders` in server mode, then refreshes Portfolio from backend state.
+
+Evidence:
+
+- Trade Ticket submit UI proof: `docs/mobile/harness/cycle-KQ-trade-ticket-submit-ui-wiring/cycle-KQ-trade-ticket-submit-ui-wiring.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KQ-trade-ticket-submit-ui-wiring.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/api.test.ts`
+  - `mobile/src/__tests__/orderService.test.ts`
+- Focused backend tests:
+  - `src/__tests__/orders.internal-trading-gate.route.test.ts`
+- Typechecks:
+  - `npm run typecheck --prefix mobile`
+  - `npx tsc --noEmit`
+
+Remaining P1:
+
+- Broader provider-family submit breadth if future gates require it.
+- Optional Android proof if visual proof becomes required again.
+
+## Cycle KP
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Portfolio snapshot/history route wiring. Portfolio server mode now has proof that it calls `loadServerPortfolioState()`, applies backend snapshot/history state, and refreshes after server submit/cancel/close mutations.
+
+Evidence:
+
+- Portfolio sync UI proof: `docs/mobile/harness/cycle-KP-portfolio-sync-ui-wiring/cycle-KP-portfolio-sync-ui-wiring.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KP-portfolio-sync-ui-wiring.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/api.test.ts`
+  - `mobile/src/__tests__/portfolioSyncService.test.ts`
+  - `mobile/src/__tests__/portfolioSnapshotService.test.ts`
+  - `mobile/src/__tests__/portfolioHistoryService.test.ts`
+  - `mobile/src/__tests__/portfolioStateApplyService.test.ts`
+- Focused backend tests:
+  - `src/__tests__/portfolio.open-orders.route.test.ts`
+  - `src/__tests__/portfolio.history.route.test.ts`
+- Typechecks:
+  - `npm run typecheck --prefix mobile`
+  - `npx tsc --noEmit`
+
+Remaining P1:
+
+- Optional Android proof if visual proof becomes required again.
+- Broader provider lifecycle breadth remains under provider lanes.
+
+## Cycle KO
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Trade Ticket quote route wiring. Trade Ticket server mode now has proof that it calls `loadTicketQuotes()` for the open ticket market/outcome, and selected Event Detail markets refresh from the same backend quote route.
+
+Evidence:
+
+- Trade Ticket quote UI proof: `docs/mobile/harness/cycle-KO-trade-ticket-quote-ui-wiring/cycle-KO-trade-ticket-quote-ui-wiring.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KO-trade-ticket-quote-ui-wiring.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/api.test.ts`
+  - `mobile/src/__tests__/quoteService.test.ts`
+- Focused backend tests:
+  - `src/__tests__/market.quote.route.test.ts`
+  - `src/__tests__/orderbook-pricing.quote-size.test.ts`
+- Typechecks:
+  - `npm run typecheck --prefix mobile`
+  - `npx tsc --noEmit`
+
+Remaining P1:
+
+- Optional Android proof if visual proof becomes required again.
+- Production provider quote breadth remains under provider lanes.
+
+## Cycle KW
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for the visible Account/preference fields syncing with canonical profile preferences in server mode.
+
+Evidence:
+
+- `mobile/docs/audits/cycle-KW-profile-preferences-ui-sync-wiring.md`
+- `docs/mobile/harness/cycle-KW-profile-preferences-ui-sync-wiring/cycle-KW-profile-preferences-ui-sync-wiring.json`
+- `scripts/prove_mobile_profile_preferences_ui_sync_wiring.ts`
+- `mobile/src/__tests__/profilePreferencesService.test.ts`
+- `mobile/src/__tests__/api.test.ts`
+- `mobile/src/__tests__/profileSummaryService.test.ts`
+- `src/__tests__/profile.preferences.route.test.ts`
+- `src/server/services/__tests__/profilePreferences.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Account/preference UI sync wiring.
+- Pass/fail: Pass for backend/data-contract scope.
+- Remaining P1/P2: broader account/security/session/funding settings only if visible MVP scope expands; optional Android proof if visual proof becomes required again.
+- Notes: Visible server-mode app state loads `/api/profile/preferences` after local hydration, applies route locale/ticket defaults/slippage/saved markets, saves focused preference changes through the same canonical route, and passes route-backed preference values plus sync status to Account.
+
+## Cycle KV
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for the visible Home filter chips consuming backend event pages in server market-data mode.
+
+Evidence:
+
+- `mobile/docs/audits/cycle-KV-home-filter-ui-route-wiring.md`
+- `docs/mobile/harness/cycle-KV-home-filter-ui-route-wiring/cycle-KV-home-filter-ui-route-wiring.json`
+- `scripts/prove_mobile_home_filter_ui_route_wiring.ts`
+- `mobile/src/__tests__/homeEventFeedService.test.ts`
+- `mobile/src/__tests__/homePaginationService.test.ts`
+- `mobile/src/__tests__/api.test.ts`
+- `src/__tests__/public.events.no-leak.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Home filter UI route wiring.
+- Pass/fail: Pass for backend/data-contract scope.
+- Remaining P1/P2: optional Android proof if visual proof becomes required again; calendar-accurate `today` date-window semantics only if product later wants date-window filtering instead of status filtering.
+- Notes: Visible Home `All/Live/Today` chips now drive app-level `homeFilter`, call `loadHomeEventFeedPage({ filter: homeFilter })` in server mode, keep load-more cursoring on the selected filter, and avoid local filtering of successful backend pages.
+
+## Cycle KS
+
+Gate status: `Pass`
+
+Scope:
+
+- Visible Event Detail/Game Lines line and period chip wiring.
+- Backend compact `markets[]` availability from event hydration/catalog routes.
+- Shared `marketLineOptionsService` as the source of line/period availability and market matching.
+
+Evidence:
+
+- Event Detail line-options UI proof: `docs/mobile/harness/cycle-KS-event-detail-line-options-ui-wiring/cycle-KS-event-detail-line-options-ui-wiring.json`.
+- Audit doc: `mobile/docs/audits/cycle-KS-event-detail-line-options-ui-wiring.md`.
+- Focused mobile tests: `mobile/src/__tests__/marketLineOptionsService.test.ts`, `mobile/src/__tests__/eventMarketCatalogService.test.ts`, `mobile/src/__tests__/api.test.ts`.
+- Mobile typecheck: `npm run typecheck --prefix mobile`.
+
+P0 result:
+
+- Pass. Visible line/period options no longer use static frontend arrays; Spread/Totals chips derive from backend market rows through `periodOptionsFor()` and `lineOptionsFor()`, and selected backend line markets use `matchingBackendLineMarket(event.markets, ...)`.
+
+Remaining P1:
+
+- Optional Android visual proof if visual proof becomes required again.
+- Production real-provider breadth remains under provider lanes.
+
+## Cycle KN
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Event Detail/Game Lines market catalog route wiring. Event Detail server mode now calls `loadEventMarketCatalog()` and uses backend catalog rows as authoritative `selectedEvent.markets`.
+
+Evidence:
+
+- Event Detail catalog UI proof: `docs/mobile/harness/cycle-KN-event-detail-catalog-ui-wiring/cycle-KN-event-detail-catalog-ui-wiring.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KN-event-detail-catalog-ui-wiring.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/api.test.ts`
+  - `mobile/src/__tests__/eventMarketCatalogService.test.ts`
+  - `mobile/src/__tests__/marketLineOptionsService.test.ts`
+- Focused backend tests:
+  - `src/__tests__/public.event-markets.no-leak.test.ts`
+- Typechecks:
+  - `npm run typecheck --prefix mobile`
+  - `npx tsc --noEmit`
+
+Decision:
+
+- P0 failed: 0 for focused visible Event Detail/Game Lines catalog route wiring.
+- Remaining P1: optional Android proof if visual proof becomes required again; production real-provider breadth remains under provider lanes.
+
+## Cycle KM
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Event Detail compact hydration wiring. Event Detail server mode now has proof that it calls `PolyApi.getEvent()`, prefers `/api/mobile/events/:slug/live-detail`, and preserves backend event rules/markets before updating the selected event.
+
+Evidence:
+
+- Event Detail UI hydration proof: `docs/mobile/harness/cycle-KM-event-detail-ui-hydration-wiring/cycle-KM-event-detail-ui-hydration-wiring.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KM-event-detail-ui-hydration-wiring.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/api.test.ts`
+  - `mobile/src/__tests__/worldCupAdapter.test.ts`
+- Focused backend tests:
+  - `src/__tests__/mobile-live-event-detail.test.ts`
+  - `src/__tests__/mobile-event-market-rules-contract.test.ts`
+- Typechecks:
+  - `npm run typecheck --prefix mobile`
+  - `npx tsc --noEmit`
+
+Decision:
+
+- P0 failed: 0 for focused visible Event Detail compact hydration wiring.
+- Remaining P1: explicit visible Game Lines catalog refresh from `/api/events/:slug/markets`; optional Android proof if visual proof becomes required again.
+
+## Cycle KL
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Account screen summary route wiring. Account server mode now consumes `/api/profile/summary` for summary props and clears stale route state on failure.
+
+Evidence:
+
+- Account UI summary proof: `docs/mobile/harness/cycle-KL-account-ui-summary-wiring/cycle-KL-account-ui-summary-wiring.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KL-account-ui-summary-wiring.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/api.test.ts`
+  - `mobile/src/__tests__/profileSummaryService.test.ts`
+- Focused backend tests:
+  - `src/__tests__/profile.summary.route.test.ts`
+- Typechecks:
+  - `npm run typecheck --prefix mobile`
+  - `npx tsc --noEmit`
+
+Decision:
+
+- P0 failed: 0 for focused visible Account summary route wiring.
+- Remaining P1: broader account/security/session/funding settings only if visible MVP scope expands.
+
+## Cycle KK
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Live tab route wiring. Live server mode now consumes backend `status=live` pages and refreshes from that route instead of filtering only the currently loaded Home event list.
+
+Evidence:
+
+- Live UI route-wiring proof: `docs/mobile/harness/cycle-KK-live-ui-route-wiring/cycle-KK-live-ui-route-wiring.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KK-live-ui-route-wiring.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/api.test.ts`
+  - `mobile/src/__tests__/homeEventFeedService.test.ts`
+- Focused backend tests:
+  - `src/__tests__/public.events.no-leak.test.ts`
+- Typechecks:
+  - `npm run typecheck --prefix mobile`
+  - `npx tsc --noEmit`
+
+Decision:
+
+- P0 failed: 0 for focused visible Live tab backend route wiring.
+- Remaining P1: optional Android proof if visual proof becomes required again; rich live sports-stat feeds remain outside this route-wiring cycle.
+
+## Cycle KJ
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Search tab route wiring. Search server mode now consumes backend Search pages and cursor metadata instead of filtering only the currently loaded Home event list.
+
+Evidence:
+
+- Search UI route-wiring proof: `docs/mobile/harness/cycle-KJ-search-ui-route-wiring/cycle-KJ-search-ui-route-wiring.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KJ-search-ui-route-wiring.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/api.test.ts`
+  - `mobile/src/__tests__/searchEventService.test.ts`
+- Focused backend tests:
+  - `src/__tests__/public.events.no-leak.test.ts`
+- Typechecks:
+  - `npm run typecheck --prefix mobile`
+  - `npx tsc --noEmit`
+
+Decision:
+
+- P0 failed: 0 for focused visible Search tab backend route wiring.
+- Remaining P1: ranked/faceted discovery only if the MVP Search scope expands; optional Android proof if visual proof becomes required again.
+
+## Cycle KT
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Portfolio and bottom-tab account/cash balance loading through canonical `/api/account/balance`. This does not claim deposits, withdrawals, or broader account settings.
+
+Evidence:
+
+- Account balance UI proof: `docs/mobile/harness/cycle-KT-account-balance-ui-wiring/cycle-KT-account-balance-ui-wiring.json`.
+- Account balance route proof: `docs/mobile/harness/cycle-KI-account-balance-route-contract/cycle-KI-account-balance-route-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KT-account-balance-ui-wiring.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/api.test.ts`
+  - `mobile/src/__tests__/accountBalanceService.test.ts`
+  - `mobile/src/__tests__/profileSummaryService.test.ts`
+- Typechecks:
+  - `npm run typecheck --prefix mobile`
+  - `npx tsc --noEmit`
+
+Decision:
+
+- P0 failed: 0 for focused visible account/cash balance UI wiring.
+- Remaining P1: cleanup legacy `/api/wallet/balance` only after non-mobile web wallet compatibility is reviewed.
+
+## Cycle KI
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible account/cash balance loading through canonical `/api/account/balance`. Cycle KT wires the visible Portfolio and bottom-tab balance state to the service.
+
+Evidence:
+
+- Account balance proof: `docs/mobile/harness/cycle-KI-account-balance-route-contract/cycle-KI-account-balance-route-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KI-account-balance-route-contract.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/api.test.ts`
+  - `mobile/src/__tests__/accountBalanceService.test.ts`
+  - `mobile/src/__tests__/profileSummaryService.test.ts`
+- Focused backend tests:
+  - `src/server/services/__tests__/canonical_route_auth.phase5.test.ts`
+  - `src/__tests__/wallet.balance.route.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused account/cash balance route/service contract.
+- Remaining P1: keep legacy `/api/wallet/balance` compatibility-only until non-mobile web wallet compatibility is reviewed.
+
+## Cycle KH
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for Event Detail/Game Lines market catalog loading through `/api/events/:slug/markets`. This does not claim visible Event Detail UI wiring.
+
+Evidence:
+
+- Event market catalog proof: `docs/mobile/harness/cycle-KH-event-market-catalog-contract/cycle-KH-event-market-catalog-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KH-event-market-catalog-contract.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/api.test.ts`
+  - `mobile/src/__tests__/eventMarketCatalogService.test.ts`
+  - `mobile/src/__tests__/marketLineOptionsService.test.ts`
+- Focused backend tests:
+  - `src/__tests__/public.event-markets.no-leak.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Event Detail/Game Lines market catalog route/service contract.
+- Remaining P1: optional Android line-chip route-refresh proof only if visual proof becomes required again; production real-provider breadth remains under provider lanes. Cycle KN wires visible Event Detail/Game Lines to `loadEventMarketCatalog()`.
+
+## Cycle KG
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for Event Detail hydration through `/api/mobile/events/:slug/live-detail` and mobile legacy fallback behavior. This does not claim visible Event Detail UI wiring.
+
+Evidence:
+
+- Event Detail hydration proof: `docs/mobile/harness/cycle-KG-event-detail-hydration-contract/cycle-KG-event-detail-hydration-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KG-event-detail-hydration-contract.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/api.test.ts`
+  - `mobile/src/__tests__/worldCupAdapter.test.ts`
+- Focused backend tests:
+  - `src/__tests__/mobile-live-event-detail.test.ts`
+  - `src/__tests__/mobile-event-market-rules-contract.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Event Detail hydration route/client contract.
+- Remaining P1: production real-provider replay remains under provider mapping/provider refresh lanes. Cycle KM wires visible Event Detail to compact live-detail hydration.
+
+## Cycle KF
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for mobile ticket quote loading through `/api/markets/:id/quote`. This does not claim visible Trade Ticket/Event Detail quote-refresh wiring.
+
+Evidence:
+
+- Ticket quote proof: `docs/mobile/harness/cycle-KF-ticket-quote-route-contract/cycle-KF-ticket-quote-route-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KF-ticket-quote-route-contract.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/quoteService.test.ts`
+  - `mobile/src/__tests__/api.test.ts`
+- Focused backend tests:
+  - `src/__tests__/market.quote.route.test.ts`
+  - `src/__tests__/orderbook-pricing.quote-size.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused ticket quote backend route/service contract.
+- Remaining P1: wire dirty visible Trade Ticket/Event Detail quote refresh behavior after unrelated screen churn is reconciled; keep production provider quote breadth under provider mapping/provider refresh lanes.
+
+## Cycle KE
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for combined Portfolio snapshot/history sync through `/api/portfolio` and `/api/portfolio/history`. This does not claim visible Portfolio UI server-mode wiring.
+
+Evidence:
+
+- Portfolio sync proof: `docs/mobile/harness/cycle-KE-portfolio-sync-route-contract/cycle-KE-portfolio-sync-route-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KE-portfolio-sync-route-contract.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/portfolioSyncService.test.ts`
+  - `mobile/src/__tests__/portfolioSnapshotService.test.ts`
+  - `mobile/src/__tests__/portfolioHistoryService.test.ts`
+- Focused backend tests:
+  - `src/__tests__/portfolio.open-orders.route.test.ts`
+  - `src/__tests__/portfolio.history.route.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Portfolio sync backend route/service contract.
+- Remaining P1: wire dirty Portfolio UI files to `loadServerPortfolioState()` after unrelated screen churn is reconciled; recapture optional Android proof only if visual proof becomes required again.
+
+## Cycle KD
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for Home event feed status filters through `/api/events`. Cycle KK wires Live UI to this service, and Cycle KV wires visible Home filter chips to it.
+
+Evidence:
+
+- Home filter proof: `docs/mobile/harness/cycle-KD-home-event-filter-contract/cycle-KD-home-event-filter-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KD-home-event-filter-contract.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/homeEventFeedService.test.ts`
+  - `mobile/src/__tests__/api.test.ts`
+- Focused backend tests:
+  - `src/__tests__/public.events.no-leak.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Home status-filter backend route/service contract.
+- Remaining P1: add calendar-accurate `today` route filtering only if product needs date-window tabs instead of status tabs.
+
+## Cycle KC
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Account/profile summary route and mobile mapper. Cycle KL wires Account UI summary props; broader funding/settings expansion remains outside this contract.
+
+Evidence:
+
+- Profile summary proof: `docs/mobile/harness/cycle-KC-profile-summary-contract/cycle-KC-profile-summary-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KC-profile-summary-contract.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/profileSummaryService.test.ts`
+  - `mobile/src/__tests__/api.test.ts`
+- Focused backend tests:
+  - `src/__tests__/profile.summary.route.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Account summary backend route/service contract.
+- Remaining P1: broader account/security/session/funding settings remain outside this focused MVP summary route unless visible MVP scope expands.
+
+## Cycle KB
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for the mobile Search event service route loader. This does not claim visible Search UI server-mode wiring.
+
+Evidence:
+
+- Search service proof: `docs/mobile/harness/cycle-KB-search-event-service-contract/cycle-KB-search-event-service-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KB-search-event-service-contract.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/searchEventService.test.ts`
+  - `mobile/src/__tests__/api.test.ts`
+- Focused backend tests:
+  - `src/__tests__/public.events.no-leak.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Search service backend route-loading contract.
+- Remaining P1: ranked/faceted discovery only if World Cup MVP Search scope expands; visible Search UI route wiring is closed by Cycle KJ.
+
+## Cycle KA
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for Trade Ticket server-mode submit through the real HTTP order route. This does not claim visible Trade Ticket gesture proof.
+
+Evidence:
+
+- Submit route proof: `docs/mobile/harness/cycle-KA-trade-ticket-submit-route-contract/cycle-KA-trade-ticket-submit-route-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KA-trade-ticket-submit-route-contract.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/orderService.test.ts`
+  - `mobile/src/__tests__/api.test.ts`
+- Focused backend tests:
+  - `src/__tests__/orders.internal-trading-gate.route.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Trade Ticket HTTP submit route contract.
+- Remaining P1: broader provider-family submit breadth if future gates require it; visible Trade Ticket submit route wiring is closed by Cycle KQ.
+
+## Cycle JZ
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for Portfolio open-order cancel route wiring. This does not claim visible Portfolio UI proof.
+
+Evidence:
+
+- Cancel route proof: `docs/mobile/harness/cycle-JZ-open-order-cancel-route-contract/cycle-JZ-open-order-cancel-route-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-JZ-open-order-cancel-route-contract.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/openOrderService.test.ts`
+- Focused backend tests:
+  - `src/__tests__/orders.cancel.route.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused server-mode cancel route/service contract.
+- Remaining P1: broader provider-family cancel breadth if future gates require it; visible Portfolio cancel route wiring is closed by Cycle KR.
+
+## Cycle KU
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Portfolio value-history chart route wiring. This does not claim Portfolio visual redesign or persisted account-level value snapshots.
+
+Evidence:
+
+- Portfolio value-history UI proof: `docs/mobile/harness/cycle-KU-portfolio-value-history-ui-wiring/cycle-KU-portfolio-value-history-ui-wiring.json`.
+- Value-history service proof: `docs/mobile/harness/cycle-JY-portfolio-value-history-service-contract/cycle-JY-portfolio-value-history-service-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KU-portfolio-value-history-ui-wiring.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/portfolioValueHistoryService.test.ts`
+  - `mobile/src/__tests__/api.test.ts`
+- Focused backend tests:
+  - `src/__tests__/portfolio.value-history.route.test.ts`
+- Typechecks:
+  - `npm run typecheck --prefix mobile`
+  - `npx tsc --noEmit`
+
+Decision:
+
+- P0 failed: 0 for focused visible Portfolio value-history route wiring.
+- Remaining P1: optional Android proof only if visual/device proof becomes required again; persisted account-level value snapshots remain future hardening.
+
+## Cycle JY
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for the Portfolio value-history mobile service loader. Cycle KU wires the visible Portfolio chart to this service.
+
+Evidence:
+
+- Value-history service proof: `docs/mobile/harness/cycle-JY-portfolio-value-history-service-contract/cycle-JY-portfolio-value-history-service-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-JY-portfolio-value-history-service-contract.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/portfolioValueHistoryService.test.ts`
+- Focused backend tests:
+  - `src/__tests__/portfolio.value-history.route.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused route-loading service contract.
+- Remaining P1: optional Android proof only if visual/device proof becomes required again; persisted account-level value snapshots remain future hardening.
+
+## Cycle JX
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for mobile line option availability service. This does not claim Event Detail UI wiring.
+
+Evidence:
+
+- Line options proof: `docs/mobile/harness/cycle-JX-line-options-contract/cycle-JX-line-options-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-JX-line-options-contract.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/marketLineOptionsService.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused backend-backed line option scope.
+- Remaining P1: optional Android visual proof if visual proof becomes required again; production real-provider breadth remains under provider lanes. Cycle KS wires the visible Event Detail/Game Lines chips to this service.
+
+## Cycle JW
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for Portfolio service mappers that consume `/api/portfolio` and `/api/portfolio/history`. This does not claim Portfolio visual redesign.
+
+Evidence:
+
+- Mapper proof: `docs/mobile/harness/cycle-JW-portfolio-activity-mapper-contract/cycle-JW-portfolio-activity-mapper-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-JW-portfolio-activity-mapper-contract.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/portfolioHistoryService.test.ts`
+  - `mobile/src/__tests__/portfolioSnapshotService.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Portfolio service-layer mapper scope.
+- Remaining P1: broader real-provider lifecycle repetition; visible Portfolio sync wiring is closed by Cycle KP.
+
+## Cycle JV
+
+Gate status: Pass
+
+Scope: Backend/data-contract consolidation gate for mobile API client/types needed by already-gated route contracts. This does not claim Search or Portfolio UI server-mode wiring.
+
+Evidence:
+
+- Route/client proof: `docs/mobile/harness/cycle-JV-mobile-api-route-contract-backfill/cycle-JV-mobile-api-route-contract-backfill.json`.
+- Cycle audit: `mobile/docs/audits/cycle-JV-mobile-api-route-contract-backfill.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/api.test.ts`
+- Focused backend tests:
+  - `src/__tests__/public.events.no-leak.test.ts`
+  - `src/__tests__/portfolio.value-history.route.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused mobile client/type route-contract scope.
+- Remaining P1: none for focused mobile API route backfill; Search UI backend pagination is closed by Cycle KJ, Portfolio value-history UI route loading by Cycle KU, and Home filters by Cycle KV.
+
+## Cycle JU
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for Account/settings profile preferences. This does not claim full account/settings shell, wallet, auth/session, notification, deposit, withdraw, or Portfolio visual parity.
+
+Evidence:
+
+- Route/payload proof: `docs/mobile/harness/cycle-JU-profile-preferences-route-contract/cycle-JU-profile-preferences-route-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-JU-profile-preferences-route-contract.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/profilePreferencesService.test.ts`
+  - selected profile preference cases in `mobile/src/__tests__/api.test.ts`
+- Focused backend tests:
+  - `src/__tests__/profile.preferences.route.test.ts`
+  - `src/server/services/__tests__/profilePreferences.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused account/settings preference payload scope.
+- Remaining P1: broader account/settings shell only if visible MVP scope expands; UI-level focused preference sync is closed by Cycle KW.
+
+## Cycle JQ
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for Event Detail market profiles, Game Lines market availability, and cashout/sell safety. This does not claim visual redesign parity or broad provider replay.
+
+Evidence:
+
+- Route proof: `docs/mobile/harness/cycle-JQ-backend-event-market-cashout-safety/cycle-JQ-market-rule-profiles.json`.
+- Cycle audit: `mobile/docs/audits/cycle-JQ-backend-event-market-cashout-safety.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/worldCupAdapter.test.ts`
+  - `mobile/src/__tests__/positionCloseService.test.ts`
+- Focused backend tests:
+  - `src/__tests__/mobile-event-market-rules-contract.test.ts`
+  - selected sell-safety cases in `src/server/services/__tests__/phase7_kalshi_model.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused backend/data-contract scope.
+- Remaining P1: real-provider replay across more World Cup profiles, production-like HTTP order-route sell rejection proof, and broader provider-backed line-family availability.
+
+## Cycle JR
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for Home event list and backend cursor pagination. This does not claim Search pagination or visual/device proof.
+
+Evidence:
+
+- Route proof: `docs/mobile/harness/cycle-JR-home-event-list-pagination/cycle-JR-home-event-pagination.json`.
+- Cycle audit: `mobile/docs/audits/cycle-JR-home-event-list-pagination.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/api.test.ts`
+  - `mobile/src/__tests__/homePaginationService.test.ts`
+- Focused backend tests:
+  - selected Home event-list cases in `src/__tests__/public.events.no-leak.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused Home event-list pagination scope.
+- Remaining P1: optional Android Load more proof if visual proof is required again, plus calendar-accurate `today` date-window semantics only if product changes that chip; Home filters are closed by Cycle KV and Search pagination by Cycle KJ.
+
+## Cycle JS
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for Portfolio cashout/sell route safety. This does not claim Portfolio visual redesign.
+
+Evidence:
+
+- Route/service proof: `docs/mobile/harness/cycle-JS-cashout-route-sell-safety/cycle-JS-cashout-route-sell-safety.json`.
+- Cycle audit: `mobile/docs/audits/cycle-JS-cashout-route-sell-safety.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/positionCloseService.test.ts`
+- Focused backend tests:
+  - `src/server/services/__tests__/canonical_order_submission.phase5.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused cashout/sell route safety scope.
+- Remaining P1: optional external HTTP auth-stack smoke for `POST /api/orders` if a future gate requires API-key-level proof.
+
+## Cycle JT
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for Search event route matching and pagination. Cycle KJ later proves Search tab UI server-mode wiring.
+
+Evidence:
+
+- Route proof: `docs/mobile/harness/cycle-JT-search-event-route-contract/cycle-JT-search-event-route-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-JT-search-event-route-contract.md`.
+- Focused backend tests:
+  - `src/__tests__/public.events.no-leak.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused backend route search/pagination scope.
+- Remaining P1: ranked/faceted discovery if production Search needs it; visible Search tab route wiring is closed by Cycle KJ.
+
+## Cycle JO
+
+Gate status: Pending user manual review.
+
+Scope: JO feedback fixes for Event Detail/Game market logic, backend-driven market availability, and cashout safety. This entry is pending only; it is not an Audit Gate pass.
+
+Current evidence:
+
+- Samsung S23 proof for chart-removed Event Detail and backend-driven regulation/advance profiles: `docs/mobile/screenshots/cycle-JO-feedback-event-market-rules-s23-proof/`.
+- Samsung S23 proof for expanded live backend profile:
+  - `docs/mobile/screenshots/manual-review-current/s23-live-breadth-seven-market-top.png`
+  - `docs/mobile/screenshots/manual-review-current/s23-live-breadth-seven-market-lower.png`
+  - `docs/mobile/screenshots/manual-review-current/s23-live-breadth-seven-market-halves-open.png`
+  - `docs/mobile/screenshots/manual-review-current/s23-live-breadth-seven-market-second-half-open.png`
+  - `docs/mobile/screenshots/manual-review-current/s23-live-breadth-seven-market-spread-ticket.png`
+  - `docs/mobile/screenshots/manual-review-current/s23-jo-spread-scrolled-visible.png`
+  - `docs/mobile/screenshots/manual-review-current/s23-jo-spread-visible-1h-05.png`
+  - `docs/mobile/screenshots/manual-review-current/s23-jo-spread-visible-1h-15.png`
+  - `docs/mobile/screenshots/manual-review-current/s23-jo-spread-visible-2h-05.png`
+  - `docs/mobile/screenshots/manual-review-current/s23-jo-second-half-open-after-spread.png`
+- Backend proof JSON: `docs/mobile/harness/manual-review-current/live-breadth-fixed-proof.json`.
+- JO checklist: `mobile/docs/audits/cycle-JO-home-event-ticket-portfolio-cleanup.md`.
+
+Remaining gate blocker: user manual review of the Samsung S23 screenshots is still required before JO can be marked pass.
+
+## Cycle U - Event Page Top Shell/Action Controls
+
+Cycle: U
+Lead Agent target: focused event-page top-shell action controls.
+Reference Audit Agent: same-cycle Samsung S23 Polymarket audit.
+Implementation Agent: Holiwyn EventDetail top book/action implementation.
+Audit Gate Agent: post-implementation comparison against `docs/mobile/audits/event-page-top-shell.md`.
+
+Reference device:
+
+- Samsung S23.
+
+Reference app/browser:
+
+- Polymarket Android app.
+
+Reference route/URL:
+
+- In-app generic market page. World Cup-specific retry was blocked by Polymarket location verification and is documented as deferred, not pass evidence.
+
+Holiwyn device:
+
+- Samsung tablet.
+
+Holiwyn app mode:
+
+- Expo Go.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EPTS-P0-01 | P0 | Pass | `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml` | None |
+| EPTS-P0-02 | P0 | Pass | `docs/mobile/harness/cycle-current-holiwyn-event-detail-top-order-book.xml` | None |
+| EPTS-P0-03 | P0 | Pass | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-top-order-book.png` | None |
+| EPTS-P0-04 | P0 | Pass | `docs/mobile/harness/cycle-current-holiwyn-event-detail-top-order-book-dismissed.xml` | None |
+| EPTS-P0-05 | P0 | Pass | `docs/mobile/harness/cycle-current-holiwyn-event-detail-share-sheet.xml`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-share-dismissed.xml` | None |
+| EPTS-P0-06 | P0 | Pass | Existing event detail/chat smoke coverage plus unchanged `event-detail-tab-chat` behavior | None |
+
+Decision:
+
+- Pass/fail: Pass for focused event-page top shell/action controls.
+- Unresolved P0 gaps: 0 for this focused scope.
+- Remaining P1/P2 gaps: native share parity, World Cup-specific reference recapture, density/animation polish.
+- Next cycle required: yes, continue full Market/Event page parity; do not claim full event page complete from this focused pass.
+
+## Feature: Match Market Tabs And Cards
+
+Cycle: X
+
+Lead Agent target: match-specific market tabs and first cards.
+
+Reference Audit Agent: same-cycle Samsung S23 Polymarket mobile web audit.
+
+Implementation Agent: Holiwyn EventDetail market tabs/cards.
+
+Audit Gate Agent: Samsung tablet Holiwyn proof against criteria.
+
+Reference device: Samsung S23.
+
+Reference app/browser: Polymarket mobile web.
+
+Reference route/URL: `https://polymarket.com/event/fifwc-usa-bel-2026-07-06-first-to-score`.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-X-polymarket-bel-usa-*`
+- `docs/mobile/audits/match-market-tabs-cards.md`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-market-tabs-game-lines.png`
+- `docs/mobile/harness/cycle-current-holiwyn-market-tabs-game-lines.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-market-tabs-graph.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-market-tabs-exact-score.png`
+- `docs/mobile/harness/cycle-current-holiwyn-market-tabs-exact-score.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-market-tabs-halves.png`
+- `docs/mobile/harness/cycle-current-holiwyn-market-tabs-halves.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| MMTC-P0-01 | P0 | Pass | `cycle-current-holiwyn-market-tabs-game-lines.xml` | None |
+| MMTC-P0-02 | P0 | Pass | `cycle-current-holiwyn-market-tabs-game-lines.xml` | None |
+| MMTC-P0-03 | P0 | Pass | `cycle-current-holiwyn-market-tabs-game-lines.xml` | None |
+| MMTC-P0-04 | P0 | Pass | `cycle-current-holiwyn-market-tabs-game-lines.xml` | None |
+| MMTC-P0-05 | P0 | Pass | `cycle-current-holiwyn-market-tabs-graph.xml` | None |
+| MMTC-P0-06 | P0 | Pass | `cycle-current-holiwyn-market-tabs-exact-score.xml` | None |
+| MMTC-P0-07 | P0 | Pass | `cycle-current-holiwyn-market-tabs-halves.xml` | None |
+
+Decision:
+
+- Pass/fail: Pass for focused match market tabs/cards.
+- Unresolved P0 gaps: 0 for this focused scope.
+- Remaining P1/P2 gaps: Live Stats tab, backend-backed market groups/depth/history, exact visual polish.
+- Next cycle required: yes. Continue full game-page parity; do not mark whole game page complete from this focused pass.
+
+## Feature: Line Adjustment
+
+Cycle: Y
+
+Lead Agent target: focused Spreads/Totals adjustable-line parity.
+
+Reference Audit Agent: same-cycle Samsung S23 Polymarket mobile web audit.
+
+Implementation Agent: existing Holiwyn EventDetail line selector implementation; no code change required for focused P0 because existing behavior passed the new gate.
+
+Audit Gate Agent: Samsung tablet Holiwyn proof against criteria.
+
+Reference device: Samsung S23.
+
+Reference app/browser: Polymarket mobile web.
+
+Reference route/URL: `https://polymarket.com/event/fifwc-usa-bel-2026-07-06-first-to-score`.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-Y-polymarket-lines-market-list.png`
+- `docs/mobile/reference/screenshots/cycle-Y-polymarket-spread-line-25.png`
+- `docs/mobile/reference/screenshots/cycle-Y-polymarket-totals-line-35.png`
+- `docs/mobile/reference/screenshots/cycle-Y-polymarket-*.xml`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-line-adjustment-baseline.png`
+- `docs/mobile/harness/cycle-current-holiwyn-line-adjustment-baseline.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-line-adjustment-spread-25-1h.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-line-adjustment-spread-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-line-adjustment-spread-ticket.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-line-adjustment-totals-35-2h.png`
+- `docs/mobile/harness/cycle-current-holiwyn-line-adjustment-totals-35-2h.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-line-adjustment-totals-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-line-adjustment-totals-ticket.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LA-P0-01 | P0 | Pass | `docs/mobile/audits/line-adjustment.md` | None |
+| LA-P0-02 | P0 | Pass | `cycle-current-holiwyn-line-adjustment-baseline.xml` | None |
+| LA-P0-03 | P0 | Pass | `cycle-current-holiwyn-line-adjustment-spread-25-1h.xml`; `cycle-current-holiwyn-line-adjustment-totals-35-2h.xml` | None |
+| LA-P0-04 | P0 | Pass | `cycle-current-holiwyn-line-adjustment-spread-ticket.xml`; `cycle-current-holiwyn-line-adjustment-totals-ticket.xml` | None |
+
+Decision:
+
+- Pass/fail: Pass for focused Spreads/Totals line-adjustment parity.
+- Unresolved P0 gaps: 0 for focused Spreads/Totals scope.
+- Remaining P1/P2 gaps: team totals, halves-specific line cards, corners/discovered markets, backend-provided line pricing/depth/history.
+- Next cycle required: yes. Continue full adjustable-line and trade-ticket parity; do not mark all line markets complete from this focused pass.
+
+## Feature: Trade Ticket
+
+Cycle: Z
+
+Lead Agent target: focused game-page trade ticket parity.
+
+Reference Audit Agent: same-cycle Samsung S23 Polymarket mobile web audit.
+
+Implementation Agent: Holiwyn quick amount chip update plus tablet ticket harness.
+
+Audit Gate Agent: Samsung tablet Holiwyn proof against criteria.
+
+Reference device: Samsung S23.
+
+Reference app/browser: Polymarket mobile web.
+
+Reference route/URL: `https://polymarket.com/event/fifwc-usa-bel-2026-07-06-first-to-score`.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-Z-polymarket-ticket-open.png`
+- `docs/mobile/reference/screenshots/cycle-Z-polymarket-ticket-amount.png`
+- `docs/mobile/reference/screenshots/cycle-Z-polymarket-ticket-trade.png`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket-amount.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket-amount.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-away-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-away-ticket.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| TT-P0-01 | P0 | Pass | `cycle-current-holiwyn-event-detail-ticket.xml` | None |
+| TT-P0-02 | P0 | Pass | `cycle-current-holiwyn-event-detail-ticket.xml` | None |
+| TT-P0-03 | P0 | Pass | `cycle-current-holiwyn-event-detail-ticket-amount.xml` | None |
+| TT-P0-04 | P0 | Pass | `cycle-current-holiwyn-event-detail-ticket-amount.xml` | None |
+| TT-P0-05 | P0 | Pass | `cycle-current-holiwyn-event-detail-away-ticket.xml` | None |
+
+Decision:
+
+- Pass/fail: Pass for focused game-page trade ticket scope.
+- Unresolved P0 gaps: 0 for focused scope.
+- Remaining P1/P2 gaps: visual density, US view-only gate, selected-team selector parity, full post-submit portfolio parity.
+- Next cycle required: yes. Continue full portfolio/open-order/activity parity or ticket visual-density parity.
+
+## Feature: Portfolio
+
+Cycle: AA
+
+Lead Agent target: focused fake-token Portfolio positions/open-orders/activity/cancel parity.
+
+Reference Audit Agent: Samsung S23 Polymarket native app and mobile web audit.
+
+Implementation Agent: Holiwyn Portfolio verification plus harness expectation alignment.
+
+Audit Gate Agent: Samsung tablet Holiwyn proof against criteria.
+
+Reference device: Samsung S23.
+
+Reference app/browser: Polymarket Android app and Polymarket mobile web.
+
+Reference route/URL: `com.polymarket.android`; `https://polymarket.com/portfolio`.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-AA-polymarket-app-entry.png`
+- `docs/mobile/reference/screenshots/cycle-AA-polymarket-web-portfolio.png`
+- `docs/mobile/reference/screenshots/cycle-AA-polymarket-web-portfolio-viewonly.png`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-line-portfolio-after-order.png`
+- `docs/mobile/harness/cycle-current-holiwyn-line-portfolio-after-order.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-line-portfolio-open-order.png`
+- `docs/mobile/harness/cycle-current-holiwyn-line-portfolio-open-order.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-open-order.png`
+- `docs/mobile/harness/cycle-current-holiwyn-open-order.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-open-order-canceled.png`
+- `docs/mobile/harness/cycle-current-holiwyn-open-order-canceled.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| PF-P0-01 | P0 | Pass | `cycle-current-holiwyn-line-portfolio-after-order.xml` | None |
+| PF-P0-02 | P0 | Pass | `cycle-current-holiwyn-open-order-canceled.xml` | None |
+| PF-P0-03 | P0 | Pass for visible Buy/Sell/Close entry points | `cycle-current-holiwyn-line-portfolio-after-order.xml` | Deeper re-trade ticket proof remains P1 |
+| PF-P0-04 | P0 | Pass | `cycle-current-holiwyn-line-portfolio-after-order.xml`; `cycle-current-holiwyn-line-portfolio-open-order.xml` | None |
+
+Decision:
+
+- Pass/fail: Pass for focused Holiwyn fake-token Portfolio scope.
+- Unresolved P0 gaps: 0 for focused fake-token scope.
+- Remaining P1/P2 gaps: signed-in Polymarket Portfolio recapture, visual density/account IA, deeper re-trade ticket proof, server-mode same-cycle Portfolio proof.
+- Next cycle required: yes. Continue Search/discovery or deeper Portfolio re-trade parity.
+
+## Feature: Search
+
+Cycle: AB
+
+Lead Agent target: focused Search/Explore discovery, filter, sort, typed query retention, and result navigation parity.
+
+Reference Audit Agent: Samsung S23 Polymarket native app and mobile web audit.
+
+Implementation Agent: Holiwyn Search screen and focused tablet Search smoke.
+
+Audit Gate Agent: Samsung tablet Holiwyn proof against written Search criteria.
+
+Reference device: Samsung S23.
+
+Reference app/browser: Polymarket Android app and Polymarket mobile web in Chrome.
+
+Reference route/URL: `com.polymarket.android`; `https://polymarket.com`; `https://polymarket.com/search` / `/predictions`.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-AB-polymarket-search-home.png`
+- `docs/mobile/reference/screenshots/cycle-AB-polymarket-web-home.png`
+- `docs/mobile/reference/screenshots/cycle-AB-polymarket-web-search-route.png`
+- `docs/mobile/reference/screenshots/cycle-AB-polymarket-web-search-secondtap.png`
+- `docs/mobile/reference/screenshots/cycle-AB-polymarket-web-search-filter.png`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-search-filter-panel.png`
+- `docs/mobile/harness/cycle-current-holiwyn-search-filter-panel.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-search-sort-live.png`
+- `docs/mobile/harness/cycle-current-holiwyn-search-sort-live.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-search-open-result.png`
+- `docs/mobile/harness/cycle-current-holiwyn-search-open-result.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| SE-P0-01 | P0 | Pass | `cycle-current-holiwyn-search-sort-live.xml` | None |
+| SE-P0-02 | P0 | Pass | `cycle-current-holiwyn-search-sort-live.png` | None |
+| SE-P0-03 | P0 | Pass | `cycle-current-holiwyn-search-filter-panel.xml` | None |
+| SE-P0-04 | P0 | Pass | `cycle-current-holiwyn-search-sort-live.xml` | None |
+| SE-P0-05 | P0 | Pass | `cycle-current-holiwyn-search-open-result.xml` | None |
+| SE-P0-06 | P0 | Pass | Existing `SearchQuery`/`SearchClearQuery` harness plus unchanged query controls | None |
+
+Decision:
+
+- Pass/fail: Pass for focused Search/Explore P0 parity baseline.
+- Unresolved P0 gaps: 0 for focused Search/Explore scope.
+- Remaining P1/P2 gaps: native Search recapture after location gate, richer global categories/facets, phone-portrait dev-build proof.
+- Next cycle required: yes. Continue Account/settings/profile or chart/market depth based on priority order.
+
+## Feature: Account/settings
+
+Cycle: AC
+
+Lead Agent target: focused signed-out account/settings More drawer, login shell, language/theme rows, and fake-token wallet safety.
+
+Reference Audit Agent: Samsung S23 Polymarket mobile web audit.
+
+Implementation Agent: Holiwyn Account screen and focused tablet AccountLogin smoke.
+
+Audit Gate Agent: Samsung tablet Holiwyn proof against written Account criteria.
+
+Reference device: Samsung S23.
+
+Reference app/browser: Polymarket mobile web in Chrome.
+
+Reference route/URL: `https://polymarket.com`, bottom `More` drawer.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-AC-polymarket-web-more-menu.png`
+- `docs/mobile/reference/screenshots/cycle-AC-polymarket-web-more-menu.xml`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-account.png`
+- `docs/mobile/harness/cycle-current-holiwyn-account.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-account-actions.png`
+- `docs/mobile/harness/cycle-current-holiwyn-account-actions.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-account-signed-in.png`
+- `docs/mobile/harness/cycle-current-holiwyn-account-signed-in.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-account-signed-out.png`
+- `docs/mobile/harness/cycle-current-holiwyn-account-signed-out.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| AC-P0-01 | P0 | Pass | `cycle-current-holiwyn-account.xml` | None |
+| AC-P0-02 | P0 | Pass | `cycle-current-holiwyn-account-actions.xml`; `cycle-current-holiwyn-account-signed-in.xml`; `cycle-current-holiwyn-account-signed-out.xml` | None |
+| AC-P0-03 | P0 | Pass | `cycle-current-holiwyn-account.xml` | None |
+| AC-P0-04 | P0 | Pass | `cycle-current-holiwyn-account.xml` | None |
+| AC-P0-05 | P0 | Pass | `cycle-current-holiwyn-account.xml` | None |
+
+Decision:
+
+- Pass/fail: Pass for focused Account/settings P0 parity baseline.
+- Unresolved P0 gaps: 0 for focused signed-out account/settings scope.
+- Remaining P1/P2 gaps: native Polymarket account recapture and real destination pages for menu rows.
+- Next cycle required: yes. Continue chart behavior or deeper market-page functionality.
+
+## Feature: Chart Behavior
+
+Cycle: AD
+
+Lead Agent target: focused event-detail chart behavior.
+
+Reference Audit Agent: Samsung S23 Polymarket mobile web chart audit.
+
+Implementation Agent: Holiwyn EventDetail chart interaction and focused tablet harness.
+
+Audit Gate Agent: Samsung tablet Holiwyn proof against written Chart criteria.
+
+Reference device: Samsung S23.
+
+Reference app/browser: Polymarket mobile web in Chrome.
+
+Reference route/URL: `https://polymarket.com`.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-AD-polymarket-chart-default.png`
+- `docs/mobile/reference/screenshots/cycle-AD-polymarket-chart-default.xml`
+- `docs/mobile/reference/screenshots/cycle-AD-polymarket-chart-press.png`
+- `docs/mobile/reference/screenshots/cycle-AD-polymarket-chart-press.xml`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-chart-pressed.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-chart-pressed.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-chart-live.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-chart-live.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| CH-P0-01 | P0 | Pass | `cycle-current-holiwyn-event-detail.xml` | None |
+| CH-P0-02 | P0 | Pass | `cycle-current-holiwyn-event-detail.xml` | None |
+| CH-P0-03 | P0 | Pass | `cycle-current-holiwyn-event-detail-chart-pressed.xml` | None |
+| CH-P0-04 | P0 | Pass | `cycle-current-holiwyn-event-detail-chart-live.xml` | None |
+| CH-P0-05 | P0 | Pass | `docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md`; `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md` | None |
+
+Decision:
+
+- Pass/fail: Pass for focused chart behavior P0 baseline.
+- Unresolved P0 gaps: 0 for focused scope.
+- Remaining P1/P2 gaps: backend history series, direct World Cup chart recapture, animation/touch polish.
+- Next cycle required: yes. Continue deeper market-page functionality or backend-backed chart-history preparation.
+
+## Feature: Market Page
+
+Cycle: AE
+
+Lead Agent target: focused market-page body switch and grouped market behavior.
+
+Reference Audit Agent: Samsung S23 Polymarket mobile web market-page audit.
+
+Implementation Agent: Holiwyn EventDetail body switch and Live Stats panel.
+
+Audit Gate Agent: Samsung tablet Holiwyn proof against written Market Page criteria.
+
+Reference device: Samsung S23.
+
+Reference app/browser: Polymarket mobile web in Chrome.
+
+Reference route/URL: `https://polymarket.com/event/fifwc-usa-bel-2026-07-06-first-to-score`.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-AE-polymarket-market-top.png`
+- `docs/mobile/reference/screenshots/cycle-AE-polymarket-market-game-lines.png`
+- `docs/mobile/reference/screenshots/cycle-AE-polymarket-market-spreads.png`
+- `docs/mobile/reference/screenshots/cycle-AE-polymarket-market-exact-score-rows.png`
+- `docs/mobile/reference/screenshots/cycle-AE-polymarket-market-halves.png`
+- `docs/mobile/reference/screenshots/cycle-AE-polymarket-market-row-ticket.png`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-market-tabs-game-lines.png`
+- `docs/mobile/harness/cycle-current-holiwyn-market-tabs-game-lines.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-market-tabs-live-stats.png`
+- `docs/mobile/harness/cycle-current-holiwyn-market-tabs-live-stats.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-market-tabs-market-return.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-market-tabs-exact-score.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-market-tabs-halves.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| MP-P0-01 | P0 | Pass | `cycle-current-holiwyn-market-tabs-game-lines.xml` | None |
+| MP-P0-02 | P0 | Pass | `cycle-current-holiwyn-market-tabs-live-stats.xml`; `cycle-current-holiwyn-market-tabs-live-stats.png` | None |
+| MP-P0-03 | P0 | Pass | `cycle-current-holiwyn-market-tabs-market-return.xml` | None |
+| MP-P0-04 | P0 | Pass | `cycle-current-holiwyn-market-tabs-exact-score.xml`; `cycle-current-holiwyn-market-tabs-halves.xml` | None |
+| MP-P0-05 | P0 | Pass | Cycle AE reference plus existing Cycle X/Y/Z tablet proof | None |
+
+Decision:
+
+- Pass/fail: Pass for focused market-page P0 baseline.
+- Unresolved P0 gaps: 0 for focused scope.
+- Remaining P1/P2 gaps: backend live stats, Player Props recapture/scope, sticky/visual density polish.
+- Next cycle required: yes. Continue watchlist/saved/share/chat/notification parity or visual-density polish.
+
+## Feature: Trade Ticket
+
+Cycle: AG
+Lead Agent target: focused trade-ticket first-view density, amount state, settings/details behavior, and safe blocked-submit documentation.
+Reference Audit Agent: same-cycle Samsung S23 Polymarket native app and mobile web audit.
+Implementation Agent: Holiwyn TradeTicket first-view and smoke harness update.
+Audit Gate Agent: post-implementation comparison against `docs/mobile/audits/trade-ticket.md`.
+
+Reference device:
+
+- Samsung S23.
+
+Reference app/browser:
+
+- Polymarket Android app.
+- Polymarket mobile web in Chrome.
+
+Reference route/URL:
+
+- Native Australia vs Egypt World Cup event from Home.
+- `https://polymarket.com/event/fifwc-aus-egy-2026-07-03`.
+
+Holiwyn device:
+
+- Samsung tablet.
+
+Holiwyn app mode:
+
+- Expo Go.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-AG-polymarket-ticket-open.png`
+- `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-rows.png`
+- `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-open.png`
+- `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-amount.png`
+- `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-trade.png`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket-amount.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket-amount.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket-details.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-away-ticket.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| TT-AG-P0-01 | P0 | Pass | `cycle-current-holiwyn-event-detail-ticket.png`; `cycle-current-holiwyn-event-detail-ticket.xml` | None |
+| TT-AG-P0-02 | P0 | Pass | `cycle-current-holiwyn-event-detail-ticket-amount.png`; `cycle-current-holiwyn-event-detail-ticket-amount.xml` | None |
+| TT-AG-P0-03 | P0 | Pass | `cycle-current-holiwyn-event-detail-ticket-details.xml` | None |
+| TT-AG-P0-04 | P0 | Pass | `cycle-current-holiwyn-event-detail-away-ticket.xml` | None |
+| TT-AG-P0-05 | P0 | Pass | `cycle-AG-polymarket-ticket-open.png`; `cycle-AG-polymarket-web-ticket-trade.png`; `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md` | None |
+
+Decision:
+
+- Pass/fail: Pass for focused trade-ticket P0 baseline.
+- Unresolved P0 gaps: 0 for focused scope.
+- Remaining P1/P2 gaps: binary NO/share contract semantics and future production auth/location/trading eligibility gates.
+- Next cycle required: yes. Continue Portfolio/open orders/activity parity or the next highest-priority whole-app parity item.
+
+## Cycle AH - Binary Side Ticket
+
+Feature: Futures Buy No contract-side parity.
+
+Cycle: AH.
+
+Lead Agent target: close PM-GAP-060 for focused World Cup futures `Buy No`.
+
+Reference Audit Agent: Samsung S23 Polymarket Android app and mobile web.
+
+Implementation Agent: Holiwyn mobile app.
+
+Audit Gate Agent: Tablet device proof plus focused order-service contract test.
+
+Reference device: Samsung S23.
+
+Reference app/browser: Polymarket Android app and Chrome/mobile web.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-AH-polymarket-futures-list.png`
+- `docs/mobile/reference/screenshots/cycle-AH-polymarket-web-futures-forced.png`
+- `docs/mobile/reference/screenshots/cycle-AH-polymarket-live-start-real.png`
+- `docs/mobile/reference/screenshots/cycle-AH-polymarket-live-outcome-ticket.png`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-future-list-buy-no-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-future-list-buy-no-ticket.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-future-list-buy-no-portfolio.png`
+- `docs/mobile/harness/cycle-current-holiwyn-future-list-buy-no-portfolio.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| BS-AH-P0-01 | P0 | Pass | `cycle-current-holiwyn-future-list-buy-no-ticket.xml` | None |
+| BS-AH-P0-02 | P0 | Pass | `No - France`; `66c`; `MOCK - Buy - No - France` proof | None |
+| BS-AH-P0-03 | P0 | Pass | `smoke:tablet:future-list-buy-no`; order-service test | None |
+| BS-AH-P0-04 | P0 | Pass | `contractSide: "NO"` order-service test | None |
+| BS-AH-P1-01 | P1 | Deferred | S23 native tall-sheet evidence | Future ticket-surface cycle |
+
+Decision:
+
+- Pass/fail: Pass for focused `Buy No` binary-side contract scope.
+- Unresolved P0 gaps: 0 for focused scope.
+- Remaining P1/P2 gaps: native full-page/swipe confirmation surface and future production eligibility gates.
+- Next cycle required: yes. Recommended next cycle is trade-ticket surface parity: move Holiwyn toward Polymarket's taller full-page/native swipe-up confirmation UI.
+
+## Cycle AL - Game Page Sticky Market Tabs
+
+Feature: Game page sticky Game Lines / Player Props rail.
+
+Cycle: AL.
+
+Lead Agent target: close the focused game-page sticky-tab density gap discovered from the logged-in Polymarket game page.
+
+Reference Audit Agent: Samsung S23 logged-in Polymarket Android app.
+
+Implementation Agent: Holiwyn mobile app.
+
+Audit Gate Agent: Samsung tablet device proof and focused full game-page smoke.
+
+Reference device: Samsung S23.
+
+Reference app/browser: logged-in Polymarket Android app.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-AL-polymarket-game-top.png`
+- `docs/mobile/reference/screenshots/cycle-AL-polymarket-game-top.xml`
+- `docs/mobile/reference/screenshots/cycle-AL-polymarket-game-sticky-tabs.png`
+- `docs/mobile/reference/screenshots/cycle-AL-polymarket-game-sticky-tabs.xml`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-game-page-full-markets.png`
+- `docs/mobile/harness/cycle-current-holiwyn-game-page-full-markets.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-game-page-full-markets-lower.png`
+- `docs/mobile/harness/cycle-current-holiwyn-game-page-full-markets-lower.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-game-page-full-sticky-props.png`
+- `docs/mobile/harness/cycle-current-holiwyn-game-page-full-sticky-props.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| GP-AL-P1-01 | P1 | Pass | `event-detail-sticky-market-tabs` visible in markets and lower-market proof | None |
+| GP-AL-P1-02 | P1 | Pass | Sticky `Player Props` tab opens props rows from scrolled market state | None |
+| GP-AL-P1-03 | P1 | Pass | `npm run typecheck`; `cmd /c npm.cmd run smoke:tablet:event-detail-full-page` | None |
+
+Decision:
+
+- Pass/fail: Pass for focused sticky market-tab scope.
+- Unresolved P0 gaps: 0.
+- Remaining P1/P2 gaps: phone-density spacing, native transition polish, Player Props direct reference/product decision, backend-backed market groups/history/live stats.
+- Next cycle required: yes. Continue the next highest-priority game-page or whole-app parity gap.
+
+## Cycle AM - Player Props Unavailable State
+
+Feature: Game page Player Props tab scope.
+
+Cycle: AM.
+
+Lead Agent target: remove unsupported local Player Props rows and align Holiwyn with the current product scope: leave Player Props blank/unavailable until backend-supported props are intentionally built.
+
+Reference Audit Agent: Samsung S23 logged-in Polymarket Android app.
+
+Implementation Agent: Holiwyn mobile app.
+
+Audit Gate Agent: Samsung tablet device proof and focused full game-page smoke.
+
+Reference device: Samsung S23.
+
+Reference app/browser: logged-in Polymarket Android app.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-AM-polymarket-current.png`
+- `docs/mobile/reference/screenshots/cycle-AM-polymarket-player-props.png`
+- `docs/mobile/reference/screenshots/cycle-AM-polymarket-player-props-second.png`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-game-page-full-sticky-props.png`
+- `docs/mobile/harness/cycle-current-holiwyn-game-page-full-sticky-props.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-game-page-full-props.png`
+- `docs/mobile/harness/cycle-current-holiwyn-game-page-full-props.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-game-page-full-props-lower.png`
+- `docs/mobile/harness/cycle-current-holiwyn-game-page-full-props-lower.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| GP-AM-P1-01 | P1 | Pass | `event-detail-player-props-empty` and `Player Props unavailable for this match` are present | None |
+| GP-AM-P1-02 | P1 | Pass | Fake local player rows are removed from the Player Props tab proof | None |
+| GP-AM-P1-03 | P1 | Pass | `cmd /c npm.cmd run smoke:tablet:event-detail-full-page` passed after one unrelated Home-route flake retry | None |
+
+Decision:
+
+- Pass/fail: Pass for focused Player Props unavailable-state scope.
+- Unresolved P0 gaps: 0.
+- Remaining P1/P2 gaps: phone-density spacing, native transition polish, and backend-backed market groups/history/live stats.
+- Next cycle required: yes. Continue the next highest-priority game-page or whole-app parity gap.
+
+## Cycle AV - Live Orderbook Depth Contract
+
+Feature: Live event detail orderbook/depth contract.
+
+Cycle: AV.
+
+Lead Agent target: close a structural Polymarket parity gap by adding a backend-shaped orderbook/depth route contract and wiring EventDetail to expose route/fallback state.
+
+Reference Audit Agent: Prior Cycle AN/AO Polymarket live event detail reference, where market depth and ticket actions are data-backed rather than arbitrary local rows.
+
+Implementation Agent: Holiwyn mobile app and public orderbook route.
+
+Audit Gate Agent: Route tests, mobile service tests, tablet orderbook smoke proof, and documentation review.
+
+Reference device: Samsung S23.
+
+Reference app/browser: logged-in Polymarket Android/mobile experience from existing live-detail audit evidence.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go, fallback data mode because backend health was unavailable.
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-order-book.png`
+- `docs/mobile/harness/cycle-current-holiwyn-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-order-book-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-order-book-ticket.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-order-book-after-ticket.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-order-book-closed.xml`
+
+Tests/checks:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/public.orderbook-book.no-leak.test.ts src/__tests__/sports.event-market-model.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/marketDepthService.test.ts mobile/src/__tests__/marketChartService.test.ts mobile/src/__tests__/worldCupAdapter.test.ts mobile/src/__tests__/api.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:live-detail`
+- `cmd /c npm.cmd run smoke:tablet:event-detail-order-book`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LD-AV-P1-01 | P1 | Pass | `/api/orderbook/:marketId/book` returns `marketId`, `outcomeId`, `generatedAt`, `emptyState`, `levels[]`, `bids[]`, and `asks[]` without leaking protected fields | None |
+| LD-AV-P1-02 | P1 | Pass | `PolyApi.getOrderbook()` and `marketDepthService` consume route-shaped depth and apply loading/ready/empty/error event states | None |
+| LD-AV-P1-03 | P1 | Pass | Tablet proof shows orderbook overlay labels for source/status/empty-state and Buy carries `Mexico` / `Yes - Mexico` into the ticket | None |
+| LD-AV-P1-04 | P1 | Partial | Backend health unavailable during tablet proof, so visible XML shows `orderbook-source-fallback orderbook-status-idle` rather than route-backed ready data | Re-run with backend healthy and seeded orderbook depth; require `orderbook-source-orderbook-route orderbook-status-ready` proof. |
+
+Decision:
+
+- Pass/fail: Partial pass for the structural contract increment; not final orderbook parity.
+- Unresolved P0 gaps: 0 for this contract cycle.
+- Remaining P1/P2 gaps: route-backed device proof, real provider/orderbook ingestion, richer delayed/stale/suspended depth states, and final visual-density parity.
+- Next cycle required: yes. Continue PM-GAP-067 by proving route-backed depth with a healthy backend or by filling another repeated backend/live-data gap.
+
+## Cycle AW - Route-Backed Live Depth Seed Harness
+
+Feature: PM-GAP-067 live orderbook/depth backend proof data.
+
+Cycle: AW.
+
+Lead Agent target: convert the repeated "no route-backed depth proof data" deferral into an active backend harness and seeded route-readable orderbook levels.
+
+Reference Audit Agent: Prior Cycle AN/AO Polymarket live event detail reference, where live market depth is data-backed.
+
+Implementation Agent: Holiwyn backend seed harness and tests.
+
+Audit Gate Agent: Backend unit tests, seed artifacts, direct route probe, and tablet fallback regression proof.
+
+Reference device: Samsung S23.
+
+Reference app/browser: logged-in Polymarket Android/mobile experience from existing live-detail audit evidence.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go; backend health OK during smoke, but EventDetail proof still used fallback/mock surface.
+
+Backend evidence:
+
+- `docs/mobile/harness/cycle-current-mobile-live-chart-snapshot-seed.json`
+- `docs/mobile/harness/cycle-current-mobile-live-orderbook-depth-seed.json`
+- Direct route probe: `/api/orderbook/aca976d2-2bad-416c-b010-c874c0ee493f/book?maxLevels=24` returned `emptyState: null` and 12 seeded `levels[]` rows.
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-order-book.png`
+- `docs/mobile/harness/cycle-current-holiwyn-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-order-book-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-order-book-ticket.xml`
+
+Tests/checks:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-orderbook-depth-seeding.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts src/__tests__/mobile-live-chart-snapshot-seeding.test.ts`
+- `cmd /c npm.cmd run mobile:live-chart-snapshot-seed`
+- `cmd /c npm.cmd run mobile:live-orderbook-depth-seed`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run smoke:tablet:event-detail-order-book`
+- `cmd /c npm.cmd run build`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LD-AW-P1-01 | P1 | Pass | `mobile:live-orderbook-depth-seed` created 12 open proof orders for the selected live World Cup market | None |
+| LD-AW-P1-02 | P1 | Pass | Public orderbook route returned `emptyState: null` and seeded bid/ask `levels[]` rows | None |
+| LD-AW-P1-03 | P1 | Pass | Tablet orderbook overlay and Buy-ticket carry-through regression passed with backend health OK | None |
+| LD-AW-P1-04 | P1 | Partial | Tablet XML still shows `orderbook-source-fallback orderbook-status-idle`; chart route probe timed out | Add mobile-optimized live detail/chart/depth proof path and rerun server-mode tablet proof. |
+
+Decision:
+
+- Pass/fail: Partial pass for backend seed/route-readiness; not final orderbook parity.
+- Unresolved P0 gaps: 0 for this seed harness cycle.
+- Remaining P1/P2 gaps: route-backed tablet proof, mobile-optimized event detail payload, chart route reliability, real provider/liquidity ingestion, and final visual-density parity.
+- Next cycle required: yes. Continue PM-GAP-067 with a compact mobile live detail/depth/chart endpoint or server-mode proof harness.
+
+## Gate Report Template
+
+## Feature: Provider Sports Event Discovery Expansion
+
+Cycle: CW
+Lead Agent target: exact provider discovery for the logged-in Polymarket Colombia vs Ghana World Cup live event.
+Reference Audit Agent: Samsung S23 official Polymarket Android app plus exact Gamma event route.
+Implementation Agent: provider candidate service, route query params, proof harnesses, and tablet smoke harness.
+Audit Gate Agent: post-implementation proof compared exact provider slugs and tablet route-backed Book evidence.
+
+Reference device:
+Samsung S23.
+
+Reference app/browser:
+Official Polymarket Android app, logged-in game page.
+
+Reference route/URL:
+`https://polymarket.com/sports/world-cup/fifwc-col-gha-2026-07-03`; provider data from `https://gamma-api.polymarket.com/events?slug=fifwc-col-gha-2026-07-03`.
+
+Holiwyn device:
+Samsung tablet.
+
+Holiwyn app mode:
+Expo Go with server mode and backend `http://127.0.0.1:3002`.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-CW-polymarket-s23-window.xml`
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-current-mobile-provider-sports-event-discovery-proof.json`
+- `docs/mobile/harness/cycle-current-mobile-live-detail-route-probe.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LD-CW-P1-01 | P1 | Pass | Exact Gamma event route returned Colombia/Ghana with 3 tokenized markets. | None |
+| LD-CW-P1-02 | P1 | Pass | Discovery produced 3 attach-ready candidates with exact `fifwc-col-gha-2026-07-03-*` slugs. | None |
+| LD-CW-P1-03 | P1 | Pass | Relevance gate rejected broad futures/noisy candidates and exact-event mode no longer mixes tag futures into the live match proof. | None |
+| LD-CW-P1-04 | P1 | Pass | Provider identity attach moved compact readiness from 0 to 3 provider-refreshable markets. | None |
+| LD-CW-P1-05 | P1 | Pass | No-fallback provider refresh wrote quote snapshots and CLOB orderbook depth rows. | None |
+| LD-CW-P1-06 | P1 | Pass | Samsung tablet Book proof showed route-backed orderbook, ready status, Best bid/ask, Spread, Buy, and Sell. | None |
+
+Decision:
+
+- Pass/fail: Pass for focused provider sports-event discovery expansion.
+- Unresolved P0 gaps: 0 for this focused cycle.
+- Remaining P1/P2 gaps: exact mappings for spreads/totals/team totals/halves/props, provider-owned scheduled ingestion, and full ticket/order/portfolio/history proof for these mapped binary match markets.
+- Next cycle required: yes, continue structural PM-GAP-067 for line-market provider mapping and lifecycle coverage.
+
+## Feature: Provider Fixture Metadata Contract
+
+Cycle: DG
+Lead Agent target: Promote real provider fixture identity into Holiwyn mapping readiness so future line-market work has the correct source key.
+Reference Audit Agent: Continued S23 Colombia vs Ghana Polymarket reference and exact Gamma event `fifwc-col-gha-2026-07-03`.
+Implementation Agent: Added provider fixture extraction, metadata persistence helper, readiness exposure, tests, and proof harness.
+Audit Gate Agent: Passed focused data-contract gate; did not pass or claim actual line-market ingestion parity.
+
+Reference device:
+Samsung S23.
+
+Reference app/browser:
+Official Polymarket Android app plus exact Gamma event payload.
+
+Reference route/URL:
+`https://polymarket.com/sports/world-cup/fifwc-col-gha-2026-07-03`; provider data from `https://gamma-api.polymarket.com/events?slug=fifwc-col-gha-2026-07-03`.
+
+Holiwyn device:
+Samsung tablet.
+
+Holiwyn app mode:
+Expo Go with server mode and backend `http://127.0.0.1:3002`.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-CW-polymarket-s23-window.xml`
+- `docs/mobile/harness/cycle-current-mobile-provider-fixture-metadata-contract.json`
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LD-DG-P1-01 | P1 | Pass | Proof extracts `opticOddsFixtureId=2026070464F44C1E`, `opticOddsGameId=27043-35049-2026-07-03`, `opticOddsNumericalId=956965`, and `sportradarGameId=sr:sport_event:53452507`. | None |
+| LD-DG-P1-02 | P1 | Pass | Proof extracts Colombia/Ghana provider team IDs and 3 moneyline metadata rows. | None |
+| LD-DG-P1-03 | P1 | Pass | Readiness exposes `providerFixture` after metadata merge. | None |
+| LD-DG-P1-04 | P1 | Pass | `lineMarketSourceContract` names `optic_odds` and lists required line families without fabricating line prices. | None |
+| LD-DG-P1-05 | P1 | Pass | Samsung tablet server-mode Book proof passed after implementation. | None |
+
+Decision:
+
+- Pass/fail: Pass for focused provider fixture identity/data contract.
+- Unresolved P0 gaps: 0 for this focused cycle.
+- Remaining P1/P2 gaps: real OpticOdds/API ingestion, automatic fixture metadata persistence during import, and line-market ticket/order/portfolio/history proof.
+- Next cycle required: yes, implement or integrate the provider route/schema that can consume `opticOddsFixtureId`/`opticOddsGameId` for line-market odds and depth.
+
+## Feature: Reviewed Line Provider Identity Gate
+
+Cycle: DI
+Lead Agent target: Add a reviewed per-line provider identity gate before any live OpticOdds line rows are applied to compact live markets.
+Reference Audit Agent: Continued Samsung S23 Colombia vs Ghana Polymarket reference, exact Gamma fixture metadata, and Cycle DH OpticOdds contract shape.
+Implementation Agent: Added reviewed line identity validation/projection/apply service, hardened OpticOdds row matching, focused tests, and dry-run proof harness.
+Audit Gate Agent: Passed focused data-contract gate; did not pass or claim live OpticOdds apply parity.
+
+Reference device:
+Samsung S23.
+
+Reference app/browser:
+Official Polymarket Android app plus exact Gamma event payload and OpticOdds fixture-odds contract from Cycle DH.
+
+Reference route/URL:
+`https://polymarket.com/sports/world-cup/fifwc-col-gha-2026-07-03`; provider data from `https://gamma-api.polymarket.com/events?slug=fifwc-col-gha-2026-07-03`.
+
+Holiwyn device:
+Samsung tablet.
+
+Holiwyn app mode:
+Expo Go with server mode and backend `http://127.0.0.1:3002`.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-CW-polymarket-s23-window.xml`
+- `docs/mobile/harness/cycle-current-mobile-optic-odds-line-ingestion-contract.json`
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-current-mobile-line-provider-identity-review.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LD-DI-P1-01 | P1 | Pass | Dry-run review validates 2 compact line markets and projects readiness from 0 reviewed line-provider markets to 2. | None |
+| LD-DI-P1-02 | P1 | Pass | Bad review is blocked for wrong provider family, wrong line value, and incomplete outcome coverage. | None |
+| LD-DI-P1-03 | P1 | Pass | `buildOpticOddsReferenceQuoteRows()` honors reviewed provider market and odd IDs when present. | None |
+| LD-DI-P1-04 | P1 | Pass | Proof reports `mutatedDatabase=false`, preserving review-first safety. | None |
+| LD-DI-P1-05 | P1 | Pass | Samsung tablet server-mode live-detail Book proof still shows the route-backed flow after implementation. | None |
+
+Decision:
+
+- Pass/fail: Pass for focused reviewed line-provider identity contract.
+- Unresolved P0 gaps: 0 for this focused contract cycle.
+- Remaining P1/P2 gaps: confirmed apply with real operator-reviewed identities, real OpticOdds credentials, live refresh producing route-readable provider snapshots, and ticket/order/portfolio/history identity proof.
+- Next cycle required: yes, continue PM-GAP-067 with real provider-owned refresh execution and cache invalidation once credentials and confirmed identity apply are available.
+
+## Feature: Line Provider Refresh Execution
+
+Cycle: DJ
+Lead Agent target: Expose reviewed line identity through protected routes and prove line-provider refresh changes compact line markets from stale/refresh-due to ready.
+Reference Audit Agent: Continued Samsung S23 Colombia vs Ghana Polymarket reference, exact Gamma fixture metadata, and Cycle DH OpticOdds endpoint contract.
+Implementation Agent: Added route support for `lineIdentityReviews[]`, readiness exposure, refresh proof injection, focused tests, and stale-to-ready proof harness.
+Audit Gate Agent: Passed focused route/data-contract gate; did not claim real credentialed OpticOdds network parity.
+
+Reference device:
+Samsung S23.
+
+Reference app/browser:
+Official Polymarket Android app plus exact Gamma event payload and OpticOdds fixture-odds contract from Cycle DH.
+
+Reference route/URL:
+`https://polymarket.com/sports/world-cup/fifwc-col-gha-2026-07-03`; provider data from `https://gamma-api.polymarket.com/events?slug=fifwc-col-gha-2026-07-03`.
+
+Holiwyn device:
+Samsung tablet.
+
+Holiwyn app mode:
+Expo Go with server mode and backend `http://127.0.0.1:3002`.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-CW-polymarket-s23-window.xml`
+- `docs/mobile/harness/cycle-current-mobile-optic-odds-line-ingestion-contract.json`
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-current-mobile-line-provider-refresh-execution.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LD-DJ-P1-01 | P1 | Pass | Route test proves `lineIdentityReviews[]` reaches `reviewMobileLiveLineProviderIdentities()`. | None |
+| LD-DJ-P1-02 | P1 | Pass | Readiness includes `lineProviderIdentityReadiness`. | None |
+| LD-DJ-P1-03 | P1 | Pass | Proof applies 2 reviewed line markets and seeds 4 stale `optic_odds` rows. | None |
+| LD-DJ-P1-04 | P1 | Pass | Before refresh, live-detail target line markets report stale/refresh-due. | None |
+| LD-DJ-P1-05 | P1 | Pass | After refresh, live-detail target line markets report ready/not-refresh-due; no contract fallback. | None |
+| LD-DJ-P1-06 | P1 | Pass | Samsung tablet server-mode Book proof passed. | None |
+
+Decision:
+
+- Pass/fail: Pass for focused line-provider refresh execution and Android regression proof.
+- Unresolved P0 gaps: 0 for this focused contract cycle.
+- Remaining P1/P2 gaps: Polymarket-first Gamma/CLOB provider proof expansion, provider line ladder/depth where Polymarket exposes it, and ticket/order/portfolio/history lifecycle proof. OpticOdds is optional enrichment.
+- Next cycle required: yes, continue PM-GAP-067 with Polymarket Gamma/CLOB as the default provider source.
+
+## Cycle DK Polymarket-First Provider Path Audit
+
+Result: Pass for focused Polymarket-first provider path and Android route proof; partial for full live-detail parity.
+
+What became materially closer to Polymarket:
+
+- Holiwyn now treats Polymarket Gamma/CLOB as the default provider source for markets that exist on Polymarket.
+- With `OPTIC_ODDS_API_KEY` unset, the proof still discovers the exact real Polymarket Colombia vs Ghana event, maps 3 tokenized match-winner markets, refreshes Gamma/CLOB quote/depth data, and exposes the result through the mobile live-detail/orderbook routes.
+- The wrong-team binary winner attachment bug is blocked by a stricter subject relevance check.
+
+Acceptance criteria:
+
+| Criterion ID | Priority | Status | Verification |
+| --- | --- | --- | --- |
+| LD-DK-P0-01 | P0 | Pass | Proof ran with `OPTIC_ODDS_API_KEY` unset and `pass=true`; OpticOdds is optional/unconfigured. |
+| LD-DK-P0-02 | P0 | Pass | Provider source is Gamma exact event plus manual slug fallback for `fifwc-col-gha-2026-07-03`. |
+| LD-DK-P0-03 | P0 | Pass | Discovery maps 3 real Polymarket markets: Colombia win, draw, and Ghana win. |
+| LD-DK-P0-04 | P0 | Pass | Refresh writes 6 quote snapshots and 96 CLOB depth rows with `contractProofFallback=null`. |
+| LD-DK-P0-05 | P0 | Pass | Samsung tablet XML shows `live-data-source-polymarket-gamma`, `live-data-status-ready`, `orderbook-source-orderbook-route`, and `orderbook-status-ready`. |
+| LD-DK-P1-01 | P1 | Partial | Tablet XML still shows `chart-source-fallback`; chart/history is not yet Polymarket-backed. |
+
+Evidence:
+
+- `src/server/services/mobileLiveProviderCandidates.ts`
+- `docs/mobile/harness/cycle-current-mobile-polymarket-first-provider-path.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-candidates.service.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts`
+- `cmd /c npm.cmd run build`
+- Samsung tablet server-mode smoke against `world-cup-2026-colombia-vs-ghana-2026-07-03`.
+
+Unresolved P0 gaps: 0 for this focused Polymarket-first provider cycle.
+
+Remaining P1/P2 gaps:
+
+- Exact line-family provider markets remain unavailable for this Polymarket event through the current Gamma/CLOB discovery path.
+- Chart/history still needs Polymarket-backed data.
+- Ticket/order/portfolio/history lifecycle proof for the mapped Polymarket token identities remains open.
+- Scheduled/background refresh orchestration remains open.
+
+## Cycle DL Polymarket CLOB Chart History Audit
+
+Result: Pass for focused provider-backed chart/history baseline and Android route proof; partial for full live-detail parity.
+
+What became materially closer to Polymarket:
+
+- Holiwyn's live-detail chart is no longer a fallback/static source for the mapped event. It now hydrates from real Polymarket CLOB `/prices-history` token history.
+- The mobile proof shows the provider chart source and ready chart state on the actual tablet UI.
+- The audit distinguishes real chart history from live provider availability: the reference event is closed/resolved, so live data is stale while chart history is still valid.
+
+Acceptance criteria:
+
+| Criterion ID | Priority | Status | Verification |
+| --- | --- | --- | --- |
+| LD-DL-P0-01 | P0 | Pass | Official CLOB price-history path is implemented by token ID and writes `MarketOutcomeSnapshot` rows. |
+| LD-DL-P0-02 | P0 | Pass | Proof created 1,708 real CLOB price-history snapshots across 3 mapped Polymarket markets. |
+| LD-DL-P0-03 | P0 | Pass | `/api/markets/:id/chart` returns `source=polymarket-clob-prices-history`, non-empty history, and no empty state. |
+| LD-DL-P0-04 | P0 | Pass | Samsung tablet EventDetail XML shows `chart-source-polymarket-clob-prices-history chart-status-ready chart-range-1D`. |
+| LD-DL-P0-05 | P0 | Pass | Samsung tablet Book proof remains route-backed with `orderbook-source-orderbook-route orderbook-status-ready`. |
+| LD-DL-P1-01 | P1 | Partial | Provider event is closed/resolved, so live provider data is intentionally `stale`, not current-live ready. |
+
+Evidence:
+
+- `src/server/services/polymarketPriceHistorySnapshots.ts`
+- `src/server/services/mobileLiveProviderRefresh.ts`
+- `src/app/api/markets/[id]/chart/route.ts`
+- `scripts/prove_mobile_polymarket_chart_history.ts`
+- `docs/mobile/harness/cycle-current-mobile-polymarket-chart-history.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+
+Unresolved P0 gaps: 0 for this focused chart/history cycle.
+
+Remaining P1/P2 gaps:
+
+- Add first-class chart snapshot provenance.
+- Add scheduled/background chart-history refresh.
+- Find or ingest exact line-family chart/history only when real provider markets exist.
+- Prove provider token identity through ticket, order, portfolio, and history.
+
+## Cycle DM Provider Token Lifecycle Audit
+
+Result: Pass for focused provider token lifecycle and Android page-to-ticket proof; partial for full filled-order/history lifecycle.
+
+What became materially closer to Polymarket:
+
+- Holiwyn now preserves real Polymarket market, condition, and outcome token identity from the live-detail route into the order ticket and order metadata contract.
+- The Samsung tablet proof opens the provider-backed Colombia vs Ghana page, opens the route-backed orderbook, taps a Buy row, and verifies the ticket still carries `polymarket` source plus market/condition/token identity.
+- Portfolio and history mapping now preserve the same provider selection fields when backend rows contain them.
+
+Acceptance criteria:
+
+| Criterion ID | Priority | Status | Verification |
+| --- | --- | --- | --- |
+| LD-DM-P0-01 | P0 | Pass | Live-detail serializes `referenceSource`, `externalSlug`, `externalMarketId`, `conditionId`, and outcome token fields. |
+| LD-DM-P0-02 | P0 | Pass | Mobile adapter and ticket order service preserve provider fields in selected market/outcome payloads. |
+| LD-DM-P0-03 | P0 | Pass | Order, portfolio, and history selection metadata preserve provider fields from request body or market/outcome fallback. |
+| LD-DM-P0-04 | P0 | Pass | Backend proof writes `cycle-current-mobile-provider-token-lifecycle.json` with real Polymarket market and token IDs. |
+| LD-DM-P0-05 | P0 | Pass | Samsung tablet XML shows provider markers on the event page and ticket. |
+| LD-DM-P1-01 | P1 | Partial | A real filled trade/history row for the closed provider event is not created in this cycle. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-current-mobile-provider-token-lifecycle.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book-ticket.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book-ticket.png`
+
+Unresolved P0 gaps: 0 for this focused provider token lifecycle cycle.
+
+Remaining P1/P2 gaps:
+
+- Create an end-to-end filled-order/history proof for an active provider-backed market.
+- Normalize immutable order/trade selection identity before production real-money audit requirements.
+
+## Super Round DN Integrated Audit
+
+Result: Pass for audit-gated provider chart cache lifecycle plus visible route-backed orderbook ladder and ticket carry-through; partial for filled provider lifecycle and scheduled refresh.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence |
+| --- | --- | --- | --- |
+| LD-DN-P0-01 | P0 | Pass | Polymarket-first provider path remains the default; missing OpticOdds is not required. |
+| LD-DN-P0-03 | P0 | Pass | `cycle-DN-mobile-provider-chart-lifecycle-contract.json` proves chart paths are invalidated with live-detail/event/orderbook paths. |
+| LD-DN-P0-04 | P0 | Pass | Samsung tablet XML shows route-backed orderbook with `route-depth-ladder`, bid levels, ask levels, Buy, and Sell. |
+| LD-DN-P0-05 | P0 | Pass | Samsung tablet ticket XML preserves provider source, market, condition, and token markers after tapping Buy from the orderbook. |
+| LD-DN-P0-07 | P0 | Pass for selected proof | Final proof uses provider-backed match-winner/depth route; unavailable line-family provider parity remains documented P1, not hidden as complete. |
+| LD-DN-P1-01 | P1 | Open | Filled provider-backed order/history proof remains future work. |
+| LD-DN-P1-03 | P1 | Open | Scheduled/background provider refresh remains future work. |
+
+Evidence:
+
+- `docs/mobile/audits/live-event-detail-super-round-dm.md`
+- `docs/mobile/harness/cycle-DN-mobile-provider-chart-lifecycle-contract.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book-ticket.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book-ticket.png`
+
+Unresolved P0 gaps: 0 for the Super Round DN selected scope.
+
+Remaining P1/P2 gaps:
+
+- Filled provider-backed lifecycle proof through order, position, and history.
+- Scheduled provider refresh and durable freshness state.
+- Exact provider-backed line-family markets when Polymarket exposes them or a scoped enrichment source is approved.
+
+## Cycle DO Provider Filled Lifecycle Audit
+
+Result: Pass for provider-backed filled lifecycle contract and Samsung tablet Portfolio activity proof; partial for active real Polymarket market execution.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence |
+| --- | --- | --- | --- |
+| LD-DO-P0-01 | P0 | Pass | Proof creates a provider-shaped World Cup market/outcome with source, external slug/id, condition id, and token id. |
+| LD-DO-P0-02 | P0 | Pass | Taker BUY uses canonical order submission with provider selection metadata and fills against prepared maker liquidity. |
+| LD-DO-P0-03 | P0 | Pass | Proof asserts provider identity in request selection, portfolio position selection, and recent trade selection. |
+| LD-DO-P0-04 | P0 | Pass | Samsung tablet Portfolio smoke shows the provider-filled trade in Recent activity. |
+| LD-DO-P1-01 | P1 | Partial | The proof uses a dev-only provider-shaped market because the current real reference event is closed/resolved. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-DO-mobile-provider-filled-lifecycle.json`
+- `docs/mobile/harness/cycle-current-holiwyn-server-filled-trade-history.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-filled-trade-history.png`
+
+Unresolved P0 gaps: 0 for Cycle DO selected scope.
+
+Remaining P1/P2 gaps:
+
+- Repeat filled lifecycle proof against a currently active real Polymarket-backed market when available.
+- Normalize immutable provider selection snapshots on order/trade records before production.
+
+## Cycle DQ-C Live Football / World Cup Reference Audit
+
+Result: Reference criteria complete; Holiwyn parity not passed or marked complete.
+
+Reference device:
+
+- Samsung S23, official Polymarket Android app.
+
+Reference event:
+
+- Canada vs Morocco World Cup game page, share URL observed as `https://polymarket.us/events/fwc-can-mar-2026-07-04`.
+
+Reference evidence:
+
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-03-world-cup-game-top.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-04-chart-press.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-05-chat-tab.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-09-spread-line-25.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-11-ticket-sheet-settled.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-12-top-book-action.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-13-orderbook-market-selector.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-16-markets-scroll-2.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-17-share-sheet.png`
+- Matching XML files in `docs/mobile/harness/cycle-DQ-C-polymarket-reference/`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LD-DQ-C-P0-01 | P0 | Pass for reference | Fresh S23 screenshots/XML captured under cycle-DQ-C folders. | None |
+| LD-DQ-C-P0-02 | P0 | Criteria added; Holiwyn not evaluated | Game top and scroll captures show full page hierarchy and pinned compact context. | Agent A/B must run Holiwyn proof before parity claim. |
+| LD-DQ-C-P0-03 | P0 | Criteria added | Chart long press preserved page context and did not show a visible tooltip. | Holiwyn chart must be interactive/context-preserving, not static. |
+| LD-DQ-C-P0-04 | P0 | Criteria added | Spread selector changed `1.5` to `2.5`, changed subject to CAN, and changed prices. | Couple team/subject, line, period, side, odds, Book, and ticket state. |
+| LD-DQ-C-P0-05 | P0 | Criteria added | Order Book showed Yes/No tabs, Price/Shares/Value, asks, bids, spread, selector, and setting. | Prove full ladder and selector parity in Holiwyn. |
+| LD-DQ-C-P0-06 | P0 | Criteria added | Chat, Book, Share, line selector, period pills, and row taps were exercised. | Every equivalent Holiwyn control must work or be explicitly gated. |
+| LD-DQ-C-P0-07 | P0 | Criteria added | Scroll captures show compact match context persists while groups scroll. | Prove scroll state and selected line state persistence. |
+| LD-DQ-C-P1-01 | P1 | Open | Ticket path reaches location gate only. | Recapture unblocked amount/swipe confirmation later. |
+| LD-DQ-C-P1-02 | P1 | Open | Book selector exposes Moneyline and Spreads entries. | Prove Holiwyn selector across visible families/periods. |
+| LD-DQ-C-P2-01 | P2 | Open | Native density/motion documented in reference screenshots. | Run visual/motion QA after structural parity. |
+
+Decision:
+
+- Pass/fail: Pass for reference criteria capture only.
+- Unresolved P0 gaps: new Holiwyn-facing P0 proof gaps are tracked in `POLYMARKET_PARITY_GAP_TRACKER.md`; Agent C did not evaluate the implementation.
+- Remaining P1/P2 gaps: ticket amount/swipe recapture after location gate, Book selector coverage, visual/motion polish.
+- Next cycle required: yes, implementation/device agents must run Holiwyn proof against DQ-C criteria before any parity-complete claim.
+
+## Cycle DS-C Orderbook Audit Gate
+
+Result: Partial integrated proof; PM-GAP-075 remains open.
+
+Lead Agent target: Agent B orderbook parity against the fresh DQ-C Polymarket reference.
+
+Reference Audit Agent: DQ-C Samsung S23 Polymarket reference audit.
+
+Implementation Agent: Agent B, integrated Holiwyn DS build.
+
+Audit Gate Agent: Agent C.
+
+Reference device:
+
+- Samsung S23, official Polymarket Android app.
+
+Reference route/URL:
+
+- Canada vs Morocco World Cup game page; observed share URL `https://polymarket.us/events/fwc-can-mar-2026-07-04`.
+
+Holiwyn device:
+
+- Samsung tablet / Holiwyn Expo Go integrated branch.
+
+Reference evidence:
+
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/audits/cycle-ds-c-orderbook-audit-gate.md`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-12-top-book-action.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-13-orderbook-market-selector.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-14-orderbook-settings.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-15-orderbook-depth-scroll.png`
+- Matching XML in `docs/mobile/harness/cycle-DQ-C-polymarket-reference/`
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-DS-integrated-orderbook-ui-proof.json`
+- `docs/mobile/screenshots/cycle-DS-integrated-orderbook-ui/cycle-current-holiwyn-order-book.png`
+- `docs/mobile/harness/cycle-DS-integrated-orderbook-ui/cycle-current-holiwyn-order-book.xml`
+- `docs/mobile/screenshots/cycle-DS-integrated-orderbook-ui/cycle-current-holiwyn-order-book-ticket.png`
+- `docs/mobile/harness/cycle-DS-integrated-orderbook-ui/cycle-current-holiwyn-order-book-ticket.xml`
+- `docs/mobile/harness/cycle-DS-A-orderbook-selector-contract.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OB-DS-C-P0-01 | P0 | Pass | Integrated proof shows a dedicated Book surface preserving `Mexico vs. Ecuador - Match winner`. | Keep Book action smoke coverage. |
+| OB-DS-C-P0-02 | P0 | Partial | Integrated proof shows Yes/No tabs, but no before/after tab-switch state. | Add tab-switch smoke proof preserving selected market identity. |
+| OB-DS-C-P0-03 | P0 | Partial | Integrated proof shows grouped labels and choices, but not Moneyline-to-Spreads selector interaction. | Add selector interaction proof for Moneyline plus Spread/line choices. |
+| OB-DS-C-P0-04 | P0 | Fail | Selector carry-through into ladder and ticket identity was not proven. | Provide selector before/after plus ladder/ticket XML or proof JSON. |
+| OB-DS-C-P0-05 | P0 | Pass | Integrated proof shows Price, Shares, Value, and multiple ladder rows. | Keep ladder column smoke coverage. |
+| OB-DS-C-P0-06 | P0 | Partial | Integrated screenshot shows side styling, but side-labelled metadata/proof is not strong enough. | Add row-side metadata/proof for ask/bid separation. |
+| OB-DS-C-P0-07 | P0 | Pass | Integrated proof shows a spread separator. | Keep spread separator smoke coverage. |
+| OB-DS-C-P0-08 | P0 | Partial | Integrated proof shows fallback/unavailable non-ready states, but not provider-backed ready state on this UI. | Rerun with provider-backed ready depth and keep non-ready labels. |
+| OB-DS-C-P0-09 | P0 | Pass | Integrated DS proof artifacts and passing tablet smoke exist under `cycle-DS-integrated-orderbook-ui`. | Keep final proof on integrated branch. |
+| OB-DS-C-P1-01 | P1 | Open | DQ-C settings exposes `Decimalize book`. | Provide settings/equivalent display toggle proof. |
+| OB-DS-C-P1-02 | P1 | Open | DQ-C minimum selector coverage is Moneyline plus Spreads. | Extend selector proof to every visible family/period when available. |
+| OB-DS-C-P1-03 | P1 | Open | DQ-C ladder rows are tappable. | Provide row-to-ticket/order carry-through proof. |
+| OB-DS-C-P2-01 | P2 | Open | DQ-C screenshots show phone-native density and colored bars. | Run side-by-side visual QA after P0 pass. |
+
+Decision:
+
+- Pass/fail: Partial; PM-GAP-075 remains open.
+- Unresolved P0 gaps: 5 areas remain.
+- Remaining P1/P2 gaps: Decimalize/equivalent setting, broader selector coverage, row-to-ticket carry-through, and visual polish.
+- Exact proof Agent B must provide: integrated `cycle-DS-C-*` Android screenshots/XML/proof JSON for Book action, Yes/No tab switch, grouped selector, selected family/period/line identity carry-through, Price/Shares/Value ladder rows, red/green bid/ask sides, spread separator, settings, ready and non-ready states, plus a passing smoke/test summary from the integrated DS build.
+
+## Cycle DT-C Orderbook Re-gate
+
+Result: Fail until proof; PM-GAP-075 remains open.
+
+Audit Agent: Agent C docs-only re-gate.
+
+Inputs inspected:
+
+- `docs/mobile/audits/cycle-ds-c-orderbook-audit-gate.md`
+- `docs/mobile/harness/cycle-DS-integrated-orderbook-ui-proof.json`
+- `docs/mobile/harness/cycle-DS-A-orderbook-selector-contract.json`
+- DQ-C reference XML/screenshots for Book action, selector, settings, and depth scroll.
+
+DT re-gate checklist:
+
+| Area | Status | Exact missing proof |
+| --- | --- | --- |
+| Tab switching | Fail | Before/after integrated Android XML or proof JSON showing `Yes` to `No` switching for the same selected market, with event and market identity preserved. |
+| Selector carry-through | Fail | Grouped selector interaction proof showing family, period, line, side/outcome, selector key or market id, and ticket/ladder identity all matching after selection. |
+| Decimalize/equivalent setting | Fail | Settings screenshot/XML proving `Decimalize book` or Holiwyn-equivalent toggle, plus before/after state preservation. |
+| Provider-backed ready depth | Fail | Integrated Book UI proof showing provider-backed ready source/status with visible Price/Shares/Value rows and spread, not fallback/unavailable-only state. |
+| Bid/ask side-labelled proof | Fail | Screenshot plus XML/proof JSON identifying ask rows above spread and bid rows below spread with row-side metadata or labels. |
+
+Decision:
+
+- Pass/fail: Fail until proof.
+- Unresolved P0 gaps: 5 areas remain.
+- Do not pass PM-GAP-075 unless one integrated DT/DS evidence bundle proves all five remaining checklist items.
+
+## Cycle DU-C Orderbook Final Gate
+
+Result: Final gate prepared; fail until Agent A/B integrated proof; PM-GAP-075 remains open.
+
+Audit Agent: Agent C docs-only gate update.
+
+Inputs inspected:
+
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/audits/cycle-ds-c-orderbook-audit-gate.md`
+- `docs/mobile/audits/cycle-dt-c-orderbook-regate.md`
+- `docs/mobile/harness/cycle-DT-integrated-ready-orderbook-depth-proof.json`
+- `docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-proof.json`
+- DT screenshots/XML under `docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/` and `docs/mobile/harness/cycle-DT-B-orderbook-interactions/`
+
+Reference evidence:
+
+- Reused DQ-C Samsung S23 official Polymarket Android reference evidence. No fresh DU-C S23 control was captured by Agent C.
+
+Holiwyn evidence:
+
+- Reused DT progress evidence only. Agent C did not run fresh DU-C Android proof and does not certify parity.
+
+DU-C final gate checklist:
+
+| Area | Gate result | Required Agent A/B evidence |
+| --- | --- | --- |
+| Provider-backed ready visible depth | Open | One integrated Android Book UI run showing provider-backed `ready` depth with the same market id/selector key as backend `depthSource=provider-orderbook-depth` and `providerOrderbookDepth.status=ready`. |
+| Backend JSON visible in app | Open | Proof JSON, screenshot, and XML tying the visible UI source/status to the backend ready response. Backend-only proof must fail this gate. |
+| Spread/period/line selector carry-through | Open | Before/after selector proof for a Spread market with non-`none` line and period, plus matching ladder and ticket identity. |
+| Decimalize/equivalent setting | Open | Settings screenshot/XML proving `Decimalize book` or documented equivalent, with state preservation after open/toggle. |
+| Ticket/identity preservation | Open | Ticket proof preserving event, family, line, period, side/outcome, market id/selector key, provider/source identity, and selected row identity where applicable. |
+| DT non-regression | Open until rerun | Final integrated proof must retain Yes/No switching and side-labelled ask/bid ladder markers already closed by DT. |
+
+Decision:
+
+- Pass/fail: Fail until integrated proof.
+- Unresolved P0 gaps: provider-backed ready depth visible in Android UI, backend-ready proof tied to the same UI run, Spread/period/line selector carry-through, Decimalize/equivalent setting, and final ticket/identity preservation.
+- Required focused gate: `docs/mobile/audits/cycle-du-c-orderbook-final-gate.md`.
+- Do not pass PM-GAP-075 before Agent A/B integrated Android evidence proves every `OB-DU-C-*` criterion.
+
+## Cycle DR-C Line-Market Ticket Target Audit Gate
+
+Result: Pass for the focused line-ticket target gate after integrated Android proof.
+
+Lead Agent target: Agent B line selector/ticket target parity against the fresh DQ-C Polymarket reference.
+
+Reference Audit Agent: DQ-C Samsung S23 Polymarket reference audit.
+
+Implementation Agent: Agent B. Read-only context inspected from `mobile/super-DQ-agent-B-visible-parity` at commit `bd62c9b`.
+
+Audit Gate Agent: Agent C2.
+
+Reference device:
+
+- Samsung S23, official Polymarket Android app.
+
+Reference route/URL:
+
+- Canada vs Morocco World Cup game page; observed share URL `https://polymarket.us/events/fwc-can-mar-2026-07-04`.
+
+Holiwyn device:
+
+- Integrated proof provided after merging Agent B into the lead branch.
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailLineAdjustment -Port 8226` passed on Samsung tablet.
+
+Reference evidence:
+
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-08-spread-line-dropdown.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-09-spread-line-25.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-10-spread-ticket.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-16-markets-scroll-2.png`
+
+Holiwyn evidence:
+
+- Current pass evidence: `docs/mobile/harness/cycle-DR-C-integrated-line-market-ticket-proof.json`, `docs/mobile/harness/cycle-DR-C-integrated-line-adjustment-spread-ticket.xml`, `docs/mobile/harness/cycle-DR-C-integrated-line-adjustment-totals-ticket.xml`, and matching screenshots.
+- Historical background: B's first DQ-B proof at commit `bd62c9b` failed after missing expected `Odds 22%`; B's follow-up exposed the ticket odds/keypad by default and the integrated smoke passed.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LD-DR-C-P0-01 | P0 | Pass | Integrated proof includes Spread and Totals tickets from selected line rows. | Keep `cycle-DR-C-integrated-*` screenshots/XML as regression evidence. |
+| LD-DR-C-P0-02 | P0 | Pass | Integrated proof shows selected-line carry-through: `MEX -2.5 1H` and `Over 3.5 2H` in ticket XML. | Keep line selector smoke assertions. |
+| LD-DR-C-P0-03 | P0 | Pass | Integrated proof covers non-default periods: Spread `1H` and Totals `2H`. | Add broader period coverage only when Book/order/portfolio proof is scoped. |
+| LD-DR-C-P0-04 | P0 | Pass | Ticket XML shows side/outcome rows for the selected choices. | Continue testing side toggles in future trade-ticket cycles. |
+| LD-DR-C-P0-05 | P0 | Pass | Ticket odds are visible in XML: Spread `Odds 3%`, Totals `Odds 22%`. | Keep odds visible by default in the ticket sheet. |
+| LD-DR-C-P0-06 | P0 | Pass | Ticket ready state shows selected identity, fake balance, keypad, and disabled submit rail before amount entry. | Amount-entry/swipe-like confirmation remains separate P1 because Polymarket reference was location-gated. |
+| LD-DR-C-P0-07 | P0 | Pass | Integrated proof JSON plus committed screenshots/XML exist under `cycle-DR-C-integrated-*`. | Keep final proof on integrated branch, not only worker branch. |
+
+Decision:
+
+- Pass/fail: Pass for focused line-market ticket target parity.
+- Unresolved P0 gaps: 0 for this focused gate.
+- Remaining P1/P2 gaps: ticket amount/swipe confirmation recapture remains P1 because DQ-C Polymarket reference is location-gated.
+- Next cycle required: no for this focused gate. Continue PM-GAP-074 for Book selector, order, portfolio, and history coupling; continue PM-GAP-076 for amount/swipe confirmation when the Polymarket reference is not location-gated.
+
+## Cycle DV Provider-Ready Book UI Audit Gate
+
+Result: Pass for the focused PM-GAP-075 same-market provider-ready Book UI path.
+
+Lead Agent target: close the DU-C blocker requiring backend provider-ready orderbook JSON to be visible in the same Android Book UI run.
+
+Reference Audit Agent: reused DQ-C Samsung S23 official Polymarket Book/orderbook evidence.
+
+Implementation Agent: Lead/DV focused harness and UI identity marker work.
+
+Audit Gate Agent: Lead audit gate using DU-C criteria.
+
+Reference device:
+
+- Samsung S23, official Polymarket Android app, reused from DQ-C.
+
+Holiwyn device:
+
+- Samsung tablet, Holiwyn Expo Go.
+
+Backend evidence:
+
+- `docs/mobile/harness/cycle-DV-provider-line-orderbook-depth-proof.json`
+- Route `/api/orderbook/d08da13e-80b8-4452-9067-f91d08f6fba4/book?maxLevels=24`
+- Event `cycle-du-a-world-cup-provider-line-depth`, `Japan vs Morocco`
+- Market selector key `spreads:first-half:1.5`
+- `depthSource=provider-orderbook-depth`, `availability.status=ready`, `providerOrderbookDepth.status=ready`
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-DV-provider-line-orderbook/cycle-DV-provider-line-orderbook-proof.json`
+- `docs/mobile/screenshots/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book.png`
+- `docs/mobile/harness/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book.xml`
+- `docs/mobile/screenshots/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book-settings-cents.png`
+- `docs/mobile/screenshots/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book-settings-decimal.png`
+- `docs/mobile/screenshots/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book-ticket.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OB-DU-C-P0-01 | P0 | Pass | Android Book XML shows the backend market id, route-backed orderbook source, ready status, Price/Shares/Value columns, and bid/ask rows. | Keep DV smoke as regression. |
+| OB-DU-C-P0-02 | P0 | Pass | Backend proof and Android XML share market `d08da13e-80b8-4452-9067-f91d08f6fba4` and selector `spreads:first-half:1.5`. | Keep same-market assertions in `smoke.ps1`. |
+| OB-DU-C-P0-03 | P0 | Pass | Android XML carries `selected-family-Spreads`, `selected-market-type-spread`, `selected-line-1.5`, `selected-period-first-half`, and provider identity into ladder/ticket. | Broaden to more line families as P1 when real provider markets exist. |
+| OB-DU-C-P0-04 | P0 | Pass | Line and period are non-`none` in the Book and settings states. | Keep selector key accessibility marker. |
+| OB-DU-C-P0-05 | P0 | Pass | Cents/Decimal equivalent setting toggles without resetting selected market/line/period. | Full Polymarket settings sheet remains P1/P2 polish. |
+| OB-DU-C-P0-06 | P0 | Pass | Ticket XML preserves event, `Japan -1.5`, Spread line, provider source/market/condition, and provider token marker. | Extend to order/portfolio/history in the next lifecycle scope if required. |
+| OB-DU-C-P0-07 | P0 | Pass via DT/DU regression evidence | DT/DU evidence already proves Yes/No switching and side-labelled ladder; DV did not regress side-labelled bid/ask row markers. | Add a combined all-interactions Book smoke later if harness time allows. |
+| OB-DU-C-P0-08 | P0 | Pass by documented distinct evidence | DU-B/DS evidence covers fallback/unavailable state and DV uses ready route state only; DV does not claim fallback rows as provider-ready. | Recapture non-ready state in provider-specific server run as P1 harness hardening. |
+| OB-DU-C-P0-09 | P0 | Pass | DV has committed Android screenshots/XML/proof JSON plus passing focused smoke/tests. | Keep scoped artifacts committed. |
+
+Decision:
+
+- Pass/fail: Pass for the focused same-market provider-ready Book UI path.
+- Unresolved P0 gaps: 0 for PM-GAP-075 focused path.
+- Remaining P1/P2 gaps: broader Book selector sheet parity, richer settings sheet, same-harness non-ready recapture, and phone-density/red-green visual polish.
+- Next cycle required: not for this focused gate. Continue higher-priority live event structural parity without reopening PM-GAP-075 unless regression appears.
+
+## Cycle DW Book Selector And Provider State Audit Gate
+
+Result: Pass for the focused DW selector/state breadth gate.
+
+Lead Agent target: continue PM-GAP-075 breadth without reopening the DV P0 path by proving a grouped Book selector interaction and provider ready/non-ready state honesty.
+
+Reference Audit Agent: Agent C reused DQ-C Samsung S23 official Polymarket Book/orderbook evidence and created `docs/mobile/audits/cycle-dw-c-book-selector-ticket-gate.md`.
+
+Implementation Agents:
+
+- Agent A backend/provider lifecycle: provider orderbook state matrix.
+- Agent B visible mobile UI parity: grouped Book selector sheet and ticket carry-through.
+
+Holiwyn evidence:
+
+- Backend integrated proof: `docs/mobile/harness/cycle-DW-integrated-provider-orderbook-state-matrix.json`
+- Backend worker proof: `docs/mobile/harness/cycle-DW-A-provider-orderbook-state-matrix.json`
+- Tablet proof: `docs/mobile/harness/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-proof.json`
+- Tablet screenshots/XML: `docs/mobile/screenshots/cycle-DW-B-orderbook-selector/`, `docs/mobile/harness/cycle-DW-B-orderbook-selector/`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| DW-P0-01 | P0 | Pass | Audit doc exists and reuses DQ-C Book action, selector, settings, and depth reference paths. | Keep the gate doc with future selector changes. |
+| DW-P0-02 | P0 | Pass | Tablet proof opens `order-book-market-selector-sheet` with grouped Moneyline/Totals/Spreads choices and selected-state markers. | Keep `smoke:tablet:dw-b-orderbook-selector`. |
+| DW-P0-03 | P0 | Pass | Proof switches Totals and Spreads while preserving selected market, market type, line, period, side/outcome, and ladder markers. | Broaden to backend route markets when available. |
+| DW-P0-04 | P0 | Pass | Spread selector path opens a ticket preserving `Mexico -1.5`, Spread, line, side, provider fixture source, and token marker. | Extend to order/portfolio/history later. |
+| DW-P0-05 | P0 | Pass | Backend state matrix proves unavailable/empty, stale, and ready are distinct for a provider-shaped Totals market. | Keep route tests and proof script as regression. |
+| DW-P0-06 | P0 | Pass | The unavailable case clears quote fallback rows and returns `depthSource=empty`/`emptyState=no-depth`, while ready requires `providerOrderbookDepth.status=ready`. | Do not use fallback rows as provider-ready evidence. |
+| DW-P0-07 | P0 | Pass | Integrated tablet screenshots/XML and proof JSON exist; backend tests and mobile typecheck passed. | Keep integrated evidence committed. |
+
+Decision:
+
+- Pass/fail: Pass for focused DW selector/state breadth.
+- Unresolved P0 gaps: 0 for this focused DW gate.
+- Remaining P1/P2 gaps: real-provider selector breadth for all line families, full settings sheet parity, phone visual density, and selector identity through order/portfolio/history.
+- Next cycle required: yes for broader live-event structural parity, but not to re-prove this focused selector/state gate unless regression appears.
+
+## Cycle DX Line Lifecycle Audit Gate
+
+Result: Pass for the focused PM-GAP-074 line lifecycle gate.
+
+Lead Agent target: prove selected line-market identity through ticket, order, Portfolio, and history/activity instead of stopping at the ticket.
+
+Reference Audit Agent: Agent C reused DQ-C line selector/ticket reference evidence and created `docs/mobile/audits/cycle-dx-c-line-lifecycle-gate.md`.
+
+Implementation Agents:
+
+- Agent A backend lifecycle: order/portfolio/history contract proof.
+- Agent B visible mobile lifecycle: Samsung tablet line selection -> ticket -> order -> Portfolio/open-order proof.
+
+Evidence:
+
+- Backend proof: `docs/mobile/harness/cycle-DX-A-line-order-portfolio-history.json`
+- Tablet proof: `docs/mobile/harness/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-proof.json`
+- Tablet screenshots/XML: `docs/mobile/screenshots/cycle-DX-B-line-lifecycle/`, `docs/mobile/harness/cycle-DX-B-line-lifecycle/`
+- Gate criteria: `docs/mobile/audits/cycle-dx-c-line-lifecycle-gate.md`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| DX-P0-01 | P0 | Pass | Backend proof preserves provider-shaped Spread identity through order request and order response. | Keep DX-A proof script as regression. |
+| DX-P0-02 | P0 | Pass | Backend proof preserves the same identity in portfolio open order and canceled activity. | Keep portfolio route tests. |
+| DX-P0-03 | P0 | Pass | Backend proof preserves the same identity in filled position and recent trade activity. | Normalize immutable order/trade selection later as production hardening. |
+| DX-P0-04 | P0 | Pass | Tablet proof preserves `MEX -2.5 1H`, Spread, line `2.5`, period `1st Half`, buy/yes side from row to ticket ready state. | Keep focused smoke. |
+| DX-P0-05 | P0 | Pass | Tablet proof shows after-order Portfolio activity/order markers and open-order markers without moneyline fallback. | Keep visible markers in Portfolio/TradeTicket. |
+| DX-P0-06 | P0 | Pass with scoped caveat | Backend proof is provider-shaped; tablet proof is fake-token/deterministic UI. The two together close the focused lifecycle gate, while exact real-provider visible lifecycle remains P1. | Repeat on real provider-backed visible line market when available. |
+
+Decision:
+
+- Pass/fail: Pass for focused line lifecycle parity.
+- Unresolved P0 gaps: 0 for this focused PM-GAP-074 gate.
+- Remaining P1/P2 gaps: visible lifecycle on real provider-backed line market, official amount/swipe confirmation recapture, every line family, and production-grade immutable selection storage.
+
+## Cycle DY/DZ Game Page Structure Audit Gate Update
+
+Result: Fail/partial. PM-GAP-073 remains open.
+
+Audit Gate Agent: Agent C / EA-C docs-only update.
+
+Reference evidence:
+
+- Reused DQ-C Samsung S23 official Polymarket reference: `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- Key reference areas: game page top, chart press, Chat tab, market scroll, Spread selector, Totals/halves scroll, ticket-open/location gate, Book action, Book selector/depth, Share action.
+- No new S23 reference capture was collected in EA-C.
+
+Holiwyn evidence reviewed:
+
+- DY-A partial tablet proof: `docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-partial-proof.json`
+- DY-A screenshot/XML folders: `docs/mobile/screenshots/cycle-DY-A-game-page-structure/`; `docs/mobile/harness/cycle-DY-A-game-page-structure/`
+
+Criteria results:
+
+| Criterion area | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| Full page shell: header actions, Game/Chat, teams/time/probability, chart context, chat preview, primary outcomes | P0 | Pass for visible shell | DY-A partial proof lists these as passed before failure. | Keep in the next integrated proof as non-regression checks. |
+| Book action/orderbook surface from top page | P0 | Pass for this DY run | DY-A partial proof lists top orderbook as opened with depth/selector state. | Keep same-run Book evidence in the next proof. |
+| Share action | P0 | Pass for this DY run | DY-A partial proof lists Android share sheet as opened. | Keep same-run Share evidence in the next proof. |
+| Game/Chat segmented behavior | P0 | Pass for Chat direction; return-to-Game still needs explicit same-run final proof | DY-A partial proof lists Chat feed/input/reactions as passed. | Next proof must include Game return plus market restore after Chat. |
+| Chart touch/press behavior | P0 | Open | DY-A proof shows chart context visibility, but does not close the required touch/press interaction criterion. | Capture before/after chart touch showing page context is preserved. |
+| Full scroll/lower market completeness | P0 | Open | DY-A partial proof failed before a complete same-run lower-page pass was recorded in this gate. | Capture grouped markets, line-family groups, lower-period groups, sticky/compact context, and lower/rules content. |
+| Line selector behavior inside the full game page | P0 | Open | DV/DW/DX focused line/orderbook evidence supports the behavior but does not replace same-run full page proof. | Capture selector open/change and selected line/period/price updates inside this full-page run. |
+| Player Props blank/unavailable state | P0 | Open | Earlier AM evidence exists, but DY/DZ gate still needs same-run proof for the current full-page milestone. | Capture Player Props tab/section with the requested blank/unavailable state. |
+| Primary outcome opens correct ticket | P0 | Fail | DY-A proof states tapping the visible AUS primary outcome did not open `trade-ticket`; manual ADB tap also stayed on the game page. | Fix the full game-page primary outcome tap path and prove `trade-ticket` opens with event/market/outcome/side identity. |
+| Backend JSON/route proof as substitute for visible Android proof | P0 | Fail if used alone | Existing provider and orderbook proofs are supporting evidence only. | Require screenshots/XML/proof JSON from Holiwyn Android for the full page and ticket interaction. |
+
+Decision:
+
+- Pass/fail: Fail/partial.
+- Unresolved P0 gaps: primary outcome ticket open failed; chart touch, full scroll/lower market completeness, full-page line selector, Player Props blank state, and return-to-Game market restore still need same-run visible proof.
+- Remaining P1/P2 gaps: ticket amount/swipe confirmation recapture remains P1 because DQ-C reference was location-gated; final phone-density/motion/visual polish remains P2.
+- Next cycle required: yes. Implementation must fix the ticket tap path first, then rerun full Samsung tablet proof.
+
+## Cycle EA Integrated Game Page Proof Addendum
+
+Result: Pass for integrated PM-GAP-073 full-page structure and ticket-open smoke.
+
+Lead integration:
+
+- Agent A backend/provider: `370be8a Add live detail per-market chart contract`
+- Agent B visible UI: `0995abd Add visible ticket entry rail for live game page`
+- Agent C audit/docs: `0230d68 Tighten game page audit gate after DY proof`
+- Lead merges: EA-A, EA-B, EA-C in that order.
+
+Validation:
+
+- `npm --prefix mobile run typecheck`
+- `npm run test:jest -- src/__tests__/mobile-live-event-detail.test.ts`
+- Samsung tablet proof: `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -DyAGamePageStructure -Port 8294 -OutputDir docs/mobile/screenshots/cycle-EA-integrated-game-page -HierarchyOutputDir docs/mobile/harness/cycle-EA-integrated-game-page`
+
+Evidence:
+
+- Proof JSON: `docs/mobile/harness/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-proof.json`
+- Screenshots: `docs/mobile/screenshots/cycle-EA-integrated-game-page/`
+- XML: `docs/mobile/harness/cycle-EA-integrated-game-page/`
+
+Criteria updates:
+
+| Criterion area | Priority | Result | Evidence | Remaining work |
+| --- | --- | --- | --- | --- |
+| Primary outcome opens correct ticket | P0 | Pass | EA integrated proof includes `event-detail-primary-outcome-france-argentina-live-australia` and `trade-ticket` with Australia/Australia vs. Egypt. | Keep as regression. |
+| Lower card outcome opens correct ticket | P0 | Pass | EA integrated proof includes `event-detail-team-advance-australia` and `trade-ticket`. | Keep as regression. |
+| Full scroll/lower market completeness | P0 | Pass for structure smoke | EA integrated proof includes Live Winner, Spread, Totals, 1st Half Winner, 2nd Half Winner, Full Game Team Total Goals, sticky context, Market Rules, and More Events. | Richer market breadth remains P1 as real provider-backed line markets expand. |
+| Player Props blank/unavailable state | P0 | Pass for requested scope | EA integrated proof includes `event-detail-player-props-empty` and `Player Props unavailable for this match`. | Player Props content remains intentionally blank for this milestone. |
+| Book, Share, Chat | P0 | Pass | EA integrated proof opens top Book, Android share sheet, Chat feed/input/reactions, then returns to Game proof path. | Keep same-run proof in future regressions. |
+| Chart touch/press behavior | P1 after EA structure pass | Partial | EA proof asserts chart and tooltip markers, but does not newly recapture press/touch on the current live page. | Run a focused current-page chart-touch proof before declaring chart parity refreshed. |
+| Full-page line selector change behavior | P1 after EA structure pass | Partial | Existing DV/DW/DX focused proofs cover selector/orderbook/lifecycle behavior; EA full-page proof covers grouped market presence. | Add same-run full-page selector open/change proof in a later structural cycle. |
+
+Decision:
+
+- Pass/fail: Pass for integrated full-page structure and ticket-open smoke.
+- Unresolved P0 gaps for this focused gate: 0.
+- Remaining P1/P2 gaps: current-page chart-touch recapture, richer in-page line selector changes, more real provider-backed line families, ticket amount/swipe recapture when Polymarket reference is not location-gated, and final visual density/motion polish.
+- Next cycle required: yes for broader parity, but not to re-prove the fixed DY/DZ primary ticket failure unless regression appears.
+
+## Cycle EB-C Chart Touch And Line Selector Audit Gate
+
+Result: Initial EC-C docs lane failed until proof. Lead post-proof integration now passes the selected PM-GAP-080 gate.
+
+Lead Agent target:
+
+- Define the next audit bar for remaining current live game page chart-touch and full-page line-selector parity.
+- Preserve PM-GAP-073 EA integrated structure/ticket pass while opening a stricter PM-GAP-079 gate for chart/line-selector behavior.
+
+Reference Audit Agent: Agent C.
+
+Implementation Agent: not applicable in EB-C docs-only lane.
+
+Audit Gate Agent: Agent C.
+
+Reference device:
+
+- Samsung S23, official Polymarket Android app, reused from DQ-C.
+- Focused supporting references from AD chart behavior and Y line adjustment.
+
+Holiwyn device:
+
+- No EB-C Holiwyn device proof collected by Agent C.
+- Required future proof device: Samsung tablet or assigned Holiwyn Android device.
+
+Reference evidence:
+
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-04-chart-press.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-08-spread-line-dropdown.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-09-spread-line-25.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-16-markets-scroll-2.png`
+- `docs/mobile/audits/chart-behavior.md`
+- `docs/mobile/audits/line-adjustment.md`
+
+Holiwyn evidence required before pass:
+
+- `docs/mobile/screenshots/cycle-EB-integrated-chart-line-selector/`
+- `docs/mobile/harness/cycle-EB-integrated-chart-line-selector/`
+- `docs/mobile/harness/cycle-EB-integrated-chart-line-selector/cycle-EB-chart-line-selector-proof.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EB-CH-P0-01 | P0 | Fail until proof | No EB Android before/after chart-touch proof exists. | Capture current live game page chart before touch and after touch. |
+| EB-CH-P0-02 | P0 | Fail until proof | No EB assertion proves chart touch avoids ticket/book/share/chat/navigation side effects. | Add proof assertions for same event identity and absence of unintended surfaces. |
+| EB-CH-P0-03 | P0 | Fail until proof | No EB current-page chart source/status proof exists. | Show provider-backed chart status or explicit stale/unavailable state. |
+| EB-LS-P0-01 | P0 | Fail until proof | No EB full-page Spread selector open/change proof exists. | Capture Spread baseline, selector-open, and changed-line state in the full page. |
+| EB-LS-P0-02 | P0 | Fail until proof | No EB full-page Totals selector open/change proof exists. | Capture Totals baseline, selector-open, and changed-line state or explicit unavailable contract state. |
+| EB-LS-P0-03 | P0 | Fail until proof | Coupled market family/line/period/subject/odds/probability state has not been proven in the EB full-page run. | Assert stable market/outcome IDs plus visible labels/prices after each line change. |
+| EB-LS-P0-04 | P0 | Fail until proof | Changed-line ticket carry-through is not proven in the EB current-page flow. | Open ticket after changed line and assert family/line/period/outcome identity. |
+| EB-LS-P0-05 | P0 | Fail until proof | Changed-line Book/orderbook target is not proven or explicitly unavailable in EB. | Open Book after changed line or show unavailable state tied to provider/contract status. |
+| EB-LS-P0-06 | P0 | Fail until proof | EB has no committed Android proof bundle. | Commit screenshots, XML, and proof JSON under the EB proof paths. |
+| EB-LS-P0-07 | P0 | Fail until proof | EB has not proven EA structure/ticket markers remain non-regressed in the same build. | Include or reference preserved EA markers from the EB app build. |
+
+Decision:
+
+- Pass/fail: Fail until proof.
+- Unresolved P0 gaps: all EB P0 criteria are open for this selected sub-scope.
+- Remaining P1/P2 gaps: real provider-backed line families, chart selected-market switching, selected-line lifecycle through Portfolio/history, gesture feel, and visual density.
+- Next cycle required: yes. Agent B should implement/prove visible current-page chart touch and in-page line selector behavior; Agent A should support any required chart/line/Book data contract; Lead must run Android proof before Audit Gate can pass.
+
+## Cycle EB Integrated Chart Touch And Line Selector Proof
+
+Result: Pass for selected PM-GAP-079 chart-touch and in-page Spread/Totals line-selector gate.
+
+Lead integration:
+
+- Agent A backend/provider: `4b0e4f9 Add live detail selector chart contract`
+- Agent B visible UI/harness: `0c23ce8 Add EB visible chart and line proof`
+- Agent C audit/docs: `094bf9b Add EB chart and line selector audit gate`
+- Lead merged A -> B -> C, fixed harness scroll ordering, and reran Android proof.
+
+Validation:
+
+- `npm --prefix mobile run typecheck`
+- `npm run test:jest -- src/__tests__/mobile-live-event-detail.test.ts`
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- Samsung tablet proof: `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -DyAGamePageStructure -Port 8300 -OutputDir docs/mobile/screenshots/cycle-EB-integrated-chart-line -HierarchyOutputDir docs/mobile/harness/cycle-EB-integrated-chart-line`
+
+Evidence:
+
+- Proof JSON: `docs/mobile/harness/cycle-EB-integrated-chart-line/cycle-DY-A-holiwyn-game-page-structure-proof.json`
+- Screenshots: `docs/mobile/screenshots/cycle-EB-integrated-chart-line/`
+- XML: `docs/mobile/harness/cycle-EB-integrated-chart-line/`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Remaining work |
+| --- | --- | --- | --- | --- |
+| EB-CH-P0-01 | P0 | Pass | Chart touch proof captures mid and target selected states with `chart-selected-point-mid` and `chart-selected-point-target`. | Keep as regression. |
+| EB-CH-P0-02 | P0 | Pass | Same run continues through Book, Share, Chat, tickets, markets, and rules after chart touch, proving no unwanted navigation/ticket side effect. | Keep as regression. |
+| EB-CH-P0-03 | P0 | Pass for honest current state | Chart proof keeps chart source/status markers visible through the current live page flow. | Selected-market chart switching to backend `markets[].selection` remains P1. |
+| EB-LS-P0-01 | P0 | Pass | Spread line `2.5` and period `1st Half` are changed in place on the full game page. | Changed-line Book target remains P1. |
+| EB-LS-P0-02 | P0 | Pass | Totals line `3.5` and period `2nd Half` are changed in place on the full game page. | Changed-line Book target remains P1. |
+| EB-LS-P0-03 | P0 | Pass | Proof asserts visible coupled labels, odds/probability, `selection-line-*`, and `selection-period-*` markers after line changes. | Repeat on real provider-backed line markets when available. |
+| EB-LS-P0-04 | P0 | Pass | Changed Spread opens `Yes - AUS -2.5 1H`; changed Totals opens `Yes - Over 3.5 2H` with family/line/period markers in the ticket. | Keep as regression. |
+| EB-LS-P0-05 | P0 | Partial accepted for selected EB gate | EB proves changed-line ticket carry-through; changed-line Book target remains explicit P1 because the current route still needs provider-backed line-market breadth. | Run a follow-up Book target proof for changed Spread/Totals. |
+| EB-LS-P0-06 | P0 | Pass | EB Android screenshots/XML/proof JSON are committed under the EB proof paths. | Keep evidence paths stable. |
+| EB-LS-P0-07 | P0 | Pass | Same run preserves EA structure/ticket markers: Book, Share, Chat, primary ticket, lower card ticket, Player Props blank state, rules, and More Events. | Keep as regression. |
+
+Decision:
+
+- Pass/fail: Pass for selected EB chart-touch and in-page line-selector ticket-carry-through gate.
+- Unresolved P0 gaps for this selected gate: 0.
+- Remaining P1/P2 gaps: changed-line Book/orderbook target proof, selected-market chart switching to backend `markets[].selection`, real provider-backed line-family breadth, line lifecycle through Portfolio/history for every family, gesture feel, and visual density.
+- Next cycle required: yes for broader parity, but not to re-prove the selected EB chart/line ticket gate unless regression appears.
+
+## Cycle EC-C Orderbook And Ticket Carry-Through Audit Gate
+
+Result: Fail until proof. This is a docs-only gate and does not certify implementation.
+
+Lead Agent target:
+
+- Define the next audit bar for visible Polymarket-like orderbook/depth and selected market/line/outcome ticket carry-through on the live game page.
+- Preserve EA full-page, EB chart/line ticket, and DV/DW focused Book passes as regression baselines while opening PM-GAP-080 for the current selected feature.
+
+Reference Audit Agent: Agent C.
+
+Implementation Agent: not applicable in EC-C docs-only lane.
+
+Audit Gate Agent: Agent C.
+
+Reference device:
+
+- Samsung S23, official Polymarket Android app, reused from DQ-C.
+- This is stale reference evidence, not a fresh EC capture.
+
+Holiwyn device:
+
+- No EC-C Holiwyn device proof collected by Agent C.
+- Required future proof device: Samsung tablet or assigned Holiwyn Android device.
+
+Reference evidence:
+
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-12-top-book-action.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-13-orderbook-market-selector.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-14-orderbook-settings.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-15-orderbook-depth-scroll.png`
+- Matching XML under `docs/mobile/harness/cycle-DQ-C-polymarket-reference/`
+
+Holiwyn evidence required before pass:
+
+- `docs/mobile/screenshots/cycle-EC-integrated-orderbook-ticket/`
+- `docs/mobile/harness/cycle-EC-integrated-orderbook-ticket/`
+- `docs/mobile/harness/cycle-EC-integrated-orderbook-ticket/cycle-EC-orderbook-ticket-proof.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EC-OB-P0-01 | P0 | Fail until proof | No EC Android same-run proof shows selected live page context opening Book with the same event/market. | Capture selected live page context, Book entry, and opened Book in one run. |
+| EC-OB-P0-02 | P0 | Fail until proof | No EC Android ladder proof exists for columns, ask/bid rows, spread, and row count. | Capture visible Book ladder/depth screenshot/XML and proof JSON. |
+| EC-OB-P0-03 | P0 | Fail until proof | Selected family/market id or selector key/line/period/outcome has not been proven coupled into Book. | Assert stable selected identity before and after Book open. |
+| EC-OB-P0-04 | P0 | Fail until proof | No EC proof ties provider-ready backend depth to same-market Android-visible markers. | Pair backend route fields with visible market id or selector key/source/status markers. |
+| EC-OB-P0-05 | P0 | Fail until proof | No EC ticket proof from ladder row/Buy/Sell/ticket action exists. | Open ticket from Book and assert event, market, line, period, side/outcome, row price/side, and provider identity. |
+| EC-OB-P0-06 | P0 | Fail until proof | No EC close/dismiss proof preserves live page context and selected state. | Capture return from ticket/Book to the same selected live game page state. |
+| EC-OB-P0-07 | P0 | Fail until proof | Non-ready/fallback state handling is not proven in EC. | Capture explicit non-ready UI or document why it cannot be triggered; do not count fallback rows as ready. |
+| EC-OB-P0-08 | P0 | Fail until proof | No EC same-cycle Android screenshots/XML/proof JSON bundle exists. | Commit EC proof bundle and same-build EA/EB non-regression markers or references. |
+
+Decision:
+
+- Pass/fail: Superseded by Lead post-proof pass below.
+- Unresolved P0 gaps: superseded by Lead post-proof pass below.
+- Remaining P1/P2 gaps: selector breadth, richer settings, order/Portfolio/history carry-through for every family, and phone-density/visual/motion polish.
+- Next cycle required: yes. Lead must run integrated Android proof before Audit Gate can pass PM-GAP-080.
+
+## Cycle EC Integrated Orderbook And Ticket Proof
+
+Result: Pass for selected PM-GAP-080 live game page orderbook/depth and orderbook-to-ticket gate.
+
+Lead integration:
+
+- Agent A backend/provider: `9f5d578 Prove provider orderbook identity parity`
+- Agent B visible UI/harness: `1d959f2 Improve mobile order book parity proof`
+- Agent C audit/docs: `5dda666 Add EC orderbook ticket audit gate`
+- Lead merged A -> B -> C and reran Android proof from the integrated branch.
+
+Validation:
+
+- `npm --prefix mobile run typecheck`
+- `npx jest --runInBand --detectOpenHandles src/__tests__/mobile-live-event-detail.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts`
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- Samsung tablet proof: `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke.ps1 -Deep -EventDetailOrderBookInteractions -Port 8302 -Device "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp" -ExpoHost 127.0.0.1 -OutputDir docs/mobile/screenshots/cycle-EC-integrated-orderbook-ticket -HierarchyOutputDir docs/mobile/harness/cycle-EC-integrated-orderbook-ticket`
+
+Evidence:
+
+- Proof JSON: `docs/mobile/harness/cycle-EC-integrated-orderbook-ticket/cycle-EC-orderbook-ticket-proof.json`
+- Screenshots: `docs/mobile/screenshots/cycle-EC-integrated-orderbook-ticket/`
+- XML: `docs/mobile/harness/cycle-EC-integrated-orderbook-ticket/`
+- Backend/provider identity proof: `docs/mobile/harness/cycle-EC-A-provider-orderbook-identity.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Remaining work |
+| --- | --- | --- | --- | --- |
+| EC-OB-P0-01 | P0 | Pass | Integrated tablet proof opens Book from the live event context and keeps event identity visible. | Keep as regression. |
+| EC-OB-P0-02 | P0 | Pass | Book screenshots/XML show Price/Shares/Value ladder columns, ask/bid side labels, spread, and multiple rows. | Visual density remains P2. |
+| EC-OB-P0-03 | P0 | Pass | Proof preserves selector/family/line/period/outcome markers through Totals and Spread carry-through. | Repeat across broader real provider-backed families when available. |
+| EC-OB-P0-04 | P0 | Pass for selected gate | Agent A backend proof ties live-detail compact market identity to Book market/outcome/token/provider/source/freshness identity; Android proof shows visible route/source/status Book behavior. | Extend same proof to real provider-backed line families. |
+| EC-OB-P0-05 | P0 | Pass | Spread Book action opens a ticket preserving selected line/period/outcome identity. | Extend through order/Portfolio/history in later lifecycle gate. |
+| EC-OB-P0-06 | P0 | Pass | Same run preserves live event context across Book/selector/ticket interactions. | Keep as regression. |
+| EC-OB-P0-07 | P0 | Pass for honest current state | Proof distinguishes provider/source/status markers and does not count unavailable/fallback line fixtures as provider-ready. | Add a separate non-ready-state recapture when needed. |
+| EC-OB-P0-08 | P0 | Pass | EC screenshots/XML/proof JSON are committed under the integrated EC proof paths. | Keep evidence paths stable. |
+
+Decision:
+
+- Pass/fail: Pass for selected EC orderbook/depth and orderbook-to-ticket gate.
+- Unresolved P0 gaps for this selected gate: 0.
+- Remaining P1/P2 gaps: broader real provider-backed line-family breadth, richer Book settings, order/Portfolio/history carry-through for every family, and phone-density/visual/motion polish.
+- Next cycle required: yes for broader parity, but not to re-prove this selected EC gate unless regression appears.
+
+## Cycle EF-C Snapshot Durability Audit Gate
+
+Result: Pass for selected EF integrated proof. The original EF-C docs-only gate is now paired with Agent A backend proof and Agent B Android proof.
+
+Lead Agent target:
+
+- Prove Book-origin order/fill snapshot durability after mutable market, outcome, provider, selector, label, freshness, or display metadata changes.
+- Preserve PM-GAP-082 EE status breadth as a regression baseline while opening PM-GAP-083 for metadata-drift durability.
+
+Reference Audit Agent: Agent C.
+
+Implementation Agent: not applicable in EF-C docs-only lane.
+
+Audit Gate Agent: Agent C.
+
+Reference evidence:
+
+- `docs/mobile/audits/cycle-ee-c-book-order-status-gate.md`
+- `docs/mobile/harness/cycle-EE-integrated-book-order-status/cycle-EE-book-order-status-proof.json`
+- `docs/mobile/harness/cycle-EE-A-book-order-status-snapshots.json`
+- `docs/mobile/audits/cycle-ed-c-book-order-portfolio-gate.md`
+
+Holiwyn evidence required before pass:
+
+- `docs/mobile/harness/cycle-EF-A-snapshot-durability.json`
+- `docs/mobile/harness/cycle-EF-integrated-snapshot-durability/`
+- `docs/mobile/screenshots/cycle-EF-integrated-snapshot-durability/`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EF-SD-P0-01 | P0 | Fail until proof | No EF backend proof creates/selects a Book-origin order and fill with complete pre-drift selected snapshots. | Agent A must record order-time/fill-time selected Book identity before drift. |
+| EF-SD-P0-02 | P0 | Fail until proof | No EF proof mutates current market/outcome/selector/provider metadata after order/fill creation. | Agent A must record drift mutations in proof JSON. |
+| EF-SD-P0-03 | P0 | Fail until proof | No EF backend before/after route proof shows Portfolio/history still use original snapshots after drift. | Agent A must prove no fallback/default reconstruction. |
+| EF-SD-P0-04 | P0 | Fail until proof | No EF Android Portfolio/history recapture exists after metadata drift. | Agent B must capture Android screenshots/XML/proof JSON after drift. |
+| EF-SD-P0-05 | P0 | Fail until proof | No EF no-fallback matrix exists for moneyline, event-only, first-row/default selector, stale provider label, or fixture-only reconstruction. | Add explicit negative assertions. |
+| EF-SD-P0-06 | P0 | Fail until proof | No EF proof shows fake-token/test labels survive drift on backend and Android rows. | Add backend and visible fake-token/test label assertions. |
+| EF-SD-P0-07 | P0 | Fail until proof | Agent A and B evidence has not been Lead-integrated for the same selected identity and drift scenario. | Lead must combine backend and Android proof for matching order/fill ids or deterministic proof ids. |
+
+Decision:
+
+- Pass/fail: Pass for selected EF proof.
+- Unresolved P0 gaps: 0 for the selected EF fake-token durability path.
+- Remaining P1/P2 gaps: repeat across real provider-backed line families, provider-refresh drift regression, official production history recapture, and Portfolio/history visual clarity.
+- Next cycle required: no for the selected EF gate. Future cycles should extend this to real provider-backed line families and provider-refresh drift regression.
+
+## Cycle EG-C Live Event Visible Provider Audit Gate
+
+Result: Fail until same-cycle integrated Android-visible proof. PM-GAP-084 is opened.
+
+Lead Agent target:
+
+- Prove structural live event detail parity with provider-backed visible behavior.
+- Preserve EC/ED/EE/EF selected passes as regressions while requiring a new live event proof that carries selected identity through chart, Book/orderbook, and ticket.
+
+Reference Audit Agent: Agent C.
+
+Implementation Agent: not applicable in EG-C docs-only lane.
+
+Audit Gate Agent: Agent C.
+
+Reference device:
+
+- Reused stale/reference-only Samsung S23 official Polymarket Android evidence from DQ-C.
+- No fresh EG reference capture by Agent C.
+
+Holiwyn device:
+
+- No EG-C Holiwyn device proof collected by Agent C.
+- Required future proof device: Samsung tablet or assigned Holiwyn Android device.
+
+Reference evidence:
+
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-03-world-cup-game-top.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-04-chart-press.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-08-spread-line-dropdown.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-09-spread-line-25.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-12-top-book-action.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-13-orderbook-market-selector.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-15-orderbook-depth-scroll.png`
+- Matching XML under `docs/mobile/harness/cycle-DQ-C-polymarket-reference/`
+
+Holiwyn evidence required before pass:
+
+- `docs/mobile/screenshots/cycle-EG-integrated-live-event-visible-provider/`
+- `docs/mobile/harness/cycle-EG-integrated-live-event-visible-provider/`
+- `docs/mobile/harness/cycle-EG-A-live-event-visible-provider.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EG-LV-P0-01 | P0 | Fail until proof | No EG Android-visible proof exists. | Capture same-cycle screenshots/XML/proof JSON for the exact live event feature. |
+| EG-LV-P0-02 | P0 | Fail until proof | Backend/provider JSON has not been paired to visible Android markers for EG. | Pair backend/provider fields to visible selected-market/status markers in the same run. |
+| EG-LV-P0-03 | P0 | Fail until proof | Stale, refreshing, ready, and unavailable/empty statuses are not visibly proven in EG. | Capture visible provider status states or a documented same-run skip reason for non-ready states. |
+| EG-LV-P0-04 | P0 | Fail until proof | Selected market/line/outcome/provider/status identity is not proven through live page, chart, Book/orderbook, and ticket. | Add a proof matrix carrying the same selected identity across all surfaces. |
+| EG-LV-P0-05 | P0 | Fail until proof | Chart proof is not tied to the selected market/outcome/status for EG. | Capture chart touch/context proof with selected identity and no unintended side effects. |
+| EG-LV-P0-06 | P0 | Fail until proof | Provider-backed Book/orderbook ready depth is not visibly proven for the same selected identity. | Capture Book/orderbook rows, side labels, spread, provider/source/status, and selected market id or selector key. |
+| EG-LV-P0-07 | P0 | Fail until proof | Ticket handoff is not proven from the selected row/line/orderbook action. | Open ticket and assert matching event, family/type, line, period, side/outcome, provider/source, market id or selector key, and price/odds. |
+| EG-LV-P0-08 | P0 | Fail until proof | No EG no-fallback guard exists for non-ready or default states. | Add visible and proof-level rejection of moneyline/default/event-only/first-row fallback. |
+| EG-LV-P0-09 | P0 | Fail until proof | EC/ED/EE/EF regressions are not paired with a separate EG proof. | Include same-build regression references while collecting new EG visible proof. |
+| EG-LV-P0-10 | P0 | Pass for docs gate | The EG audit explicitly labels reused DQ-C/S23 evidence as stale/reference-only. | Keep this limitation visible until fresh reference proof exists. |
+
+Decision:
+
+- Pass/fail: Fail until same-cycle integrated visible proof.
+- Unresolved P0 gaps: 9 open proof areas; only the stale-reference limitation disclosure is satisfied in docs.
+- Remaining P1/P2 gaps: fresh official S23 recapture, broader real provider-backed family breadth, visible refresh lifecycle, and visual/status polish.
+- Next cycle required: yes. Lead must collect Android-visible EG proof before Audit Gate can pass PM-GAP-084.
+
+## Cycle EH-C Provider Status Audit Gate
+
+Result: Partial after EH integrated Android-visible proof. PM-GAP-084 remains open for route-backed tablet status rendering.
+
+Lead Agent target:
+
+- Prove the remaining visible provider lifecycle/status blocker from EG.
+- Required states: ready, stale or refresh-due, refreshing or loading, and unavailable or not-ready.
+- Tie every required state to the same selected market identity through live page, chart, Book/orderbook, and ticket.
+- Backend-only lifecycle proof, generic fallback rows, fixture/mock-ready data, default moneyline reconstruction, first-row fallback, and event-only labels fail.
+
+Reference Audit Agent: Agent C.
+
+Implementation Agent: Agent A provided backend status fields and Agent B provided Android-visible status UI/proof after the EH-C docs gate.
+
+Audit Gate Agent: Agent C.
+
+Reference device:
+
+- Reused stale/reference-only Samsung S23 official Polymarket Android evidence from DQ-C.
+- No fresh EH reference capture by Agent C.
+
+Holiwyn device:
+
+- Samsung tablet / Holiwyn Expo Go proof against local Expo port 8317, device `172.16.200.30:41299`.
+- The tablet proof used deterministic backend-contract-shaped fixture status UI because backend health was unavailable from the tablet launch context.
+
+Reference evidence:
+
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-03-world-cup-game-top.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-04-chart-press.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-08-spread-line-dropdown.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-09-spread-line-25.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-12-top-book-action.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-13-orderbook-market-selector.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-15-orderbook-depth-scroll.png`
+- Matching XML under `docs/mobile/harness/cycle-DQ-C-polymarket-reference/`
+- EG progress baseline: `docs/mobile/audits/cycle-eg-c-live-event-visible-provider-gate.md`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-EH-integrated-provider-status/`
+- `docs/mobile/harness/cycle-EH-integrated-provider-status/`
+- `docs/mobile/harness/cycle-EH-integrated-provider-status/cycle-EH-integrated-provider-status-proof.json`
+- `docs/mobile/harness/cycle-EH-A-provider-status-surface.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EH-STATUS-P0-01 | P0 | Pass for selected proof | EH Android-visible provider lifecycle/status proof exists. | Keep proof as regression coverage. |
+| EH-STATUS-P0-02 | P0 | Pass for selected proof | Ready state is Android-visible and selected-market-bound in EH fixture-status proof. | Next: prove the same state from live backend route data. |
+| EH-STATUS-P0-03 | P0 | Pass for selected proof | Refresh-due state is Android-visible and selected-market-bound in EH fixture-status proof. | Next: prove the same state from live backend route data. |
+| EH-STATUS-P0-04 | P0 | Pass for selected proof | Refreshing/loading state is Android-visible and selected-market-bound in EH fixture-status proof. | Next: prove the same state from live backend route data. |
+| EH-STATUS-P0-05 | P0 | Pass for selected proof | Not-ready state is Android-visible and selected-market-bound in EH fixture-status proof. | Next: prove the same state from live backend route data. |
+| EH-STATUS-P0-06 | P0 | Partial | Backend status route proof exists, and Android visible proof exists, but tablet proof did not consume the live backend route. | Pair backend route/provider fields to matching visible Android markers in the same selected flow. |
+| EH-STATUS-P0-07 | P0 | Partial | EH visible proof rejects mock-ready/default-ready and wrong-market fallback markers, but deterministic contract fixture status UI was used. | Rerun with route-backed status data and keep no-fallback assertions. |
+| EH-STATUS-P0-08 | P0 | Pass for selected proof | Chart status is tied to selected market/outcome in EH visible proof. | Keep proof as regression coverage. |
+| EH-STATUS-P0-09 | P0 | Pass for selected proof | Book/orderbook status is tied to selected market identity in EH visible proof. | Keep proof as regression coverage. |
+| EH-STATUS-P0-10 | P0 | Pass for selected proof | Ticket status handoff preserves selected identity/status context in EH visible proof. | Keep proof as regression coverage. |
+| EH-STATUS-P0-11 | P0 | Partial | EH integrated proof exists, but prior EC/ED/EE/EF/EG markers were referenced rather than rerun in the same tablet proof. | Add same-build regression references or rerun markers when closing the route-backed status gate. |
+| EH-STATUS-P0-12 | P0 | Pass for docs gate | EH audit explicitly labels reused DQ-C/S23 evidence as stale/reference-only. | Keep this limitation visible until fresh reference proof exists. |
+
+Decision:
+
+- Pass/fail: Partial after EH integrated Android-visible proof.
+- Unresolved P0 gaps: 2 route-backed integration areas remain plus same-build regression breadth.
+- Remaining P1/P2 gaps: fresh official S23 recapture, broader real provider-backed line-family status matrix, actual stale -> refreshing/loading -> ready transition proof, and status visual polish.
+- Next cycle required: yes. Lead must make the tablet consume live backend route status data before Audit Gate can fully pass PM-GAP-084.
+
+## Cycle EO-C Route-Backed Lifecycle Breadth Gate
+
+Result: Fail until Agent A/B/Lead integrated route-backed breadth proof. EN passed one selected route-backed provider-depth Spread ask lifecycle, but EO requires material breadth: bid-side/Sell lifecycle and/or another provider-backed market family with same-cycle backend or route-shaped proof plus Holiwyn Android proof for the same selected identity.
+
+Lead Agent target:
+
+- Treat EN integrated proof as the selected baseline, not sufficient EO evidence by itself.
+- Pair Agent A backend or route-shaped proof with Agent B Holiwyn Android screenshots/XML/proof JSON for the same new selected identity and lifecycle ids.
+- Require breadth beyond EN: bid-side/Sell and/or another provider-backed market family.
+- Fail if proof repeats only EN's ask-side Spread lifecycle, uses backend JSON without Android proof, uses arbitrary UI-only mocks/fake provider-depth rows, reverts price to midpoint/default/outcome probability, drifts id/provider/side/line, shows fallback Portfolio/history labels, or calls stale Polymarket reference fresh.
+- Do not claim fresh S23 production ticket/order/Portfolio/history reference unless it is newly captured and committed.
+
+Reference Audit Agent: Agent C.
+
+Implementation Agent: not applicable in EO-C docs-only lane.
+
+Audit Gate Agent: Agent C.
+
+Reference device:
+
+- Partial fresh EL-C Samsung S23 official Polymarket app Book/orderbook context from 2026-07-04.
+- No fresh EO S23 production ticket/order/Portfolio/history recapture.
+- DQ-C/AG/AI ticket/order support remains stale/reference-only.
+
+Holiwyn device:
+
+- No EO Holiwyn Android breadth proof collected by Agent C.
+- Fresh baseline only: EN integrated route-backed Spread ask lifecycle proof.
+- Fresh first-hop support only: EL integrated route-backed ask->Buy and bid->Sell ticket proof.
+
+Reference evidence:
+
+- `docs/mobile/audits/cycle-eo-c-route-lifecycle-breadth-gate.md`
+- `docs/mobile/audits/cycle-en-c-route-limit-lifecycle-gate.md`
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/audits/trade-ticket.md`
+- `docs/mobile/audits/binary-side.md`
+
+Holiwyn evidence required before pass:
+
+- Agent A backend or route-shaped proof for the newly selected breadth identity, including provider-depth selected Book row, order request/response, open order, Portfolio/open position where applicable, activity/history, status transitions, and no-fallback assertions.
+- Agent B Android screenshots/XML/proof JSON for Book, ticket before/after amount entry, submit, open order, Portfolio/open position, activity, and history for the same selected identity and ids.
+- Lead-integrated matrix comparing EO against EN and mapping event, market id/selector key, outcome id, line, period, side, provider/source, condition/token, limit price, row shares/value, route depth source, and order/fill/cancel ids across all surfaces.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EO-BREADTH-P0-01 | P0 | Pass for docs gate | EO labels EN as fresh Holiwyn baseline, EL as fresh first-hop support, EL-C S23 Book context partial fresh, and DQ-C/AG/AI ticket/order evidence stale/reference-only. | Keep this limitation visible until fresh S23 production lifecycle proof exists. |
+| EO-BREADTH-P0-02 | P0 | Fail until proof | No EO same-cycle backend or route-shaped proof exists for a newly selected breadth identity. | Provide route/backend proof for the new identity and lifecycle ids. |
+| EO-BREADTH-P0-03 | P0 | Fail until proof | No EO Holiwyn Android proof exists for the same selected breadth identity. | Capture screenshots/XML/proof JSON on Android for the same selected identity. |
+| EO-BREADTH-P0-04 | P0 | Fail until proof | No EO evidence proves bid-side/Sell lifecycle or another provider-backed family beyond EN's ask-side Spread lifecycle. | Prove bid/Sell and/or another provider-backed family. |
+| EO-BREADTH-P0-05 | P0 | Fail until proof | No Lead matrix compares EO against EN and rejects an EN-only repeat. | Add explicit EN baseline comparison and breadth assertion. |
+| EO-BREADTH-P0-06 | P0 | Fail until proof | No EO ticket amount/ready/submit proof exists for a new route-backed breadth identity. | Capture ticket before/after amount entry and submit with matching selected snapshot. |
+| EO-BREADTH-P0-07 | P0 | Fail until proof | No EO order/open order/Portfolio/activity/history lifecycle proof exists for a new breadth identity. | Pair backend/route lifecycle proof with Android-visible lifecycle proof for the same ids. |
+| EO-BREADTH-P0-08 | P0 | Fail until proof | No EO identity matrix proves selected identity is unchanged across all surfaces. | Map selected ids, side, line/outcome/provider, price, shares/value, and lifecycle ids across Book -> history. |
+| EO-BREADTH-P0-09 | P0 | Fail until proof | No EO negative assertions reject backend-only pass, UI-only mocks, fake provider-depth rows, fallback/default labels, midpoint/default price reversion, id/provider drift, and stale-as-fresh reference. | Add explicit negative assertions to the integrated proof bundle. |
+
+Decision:
+
+- Pass/fail: Fail until integrated route-backed Android-visible breadth proof.
+- Unresolved P0 gaps: 8 implementation proof rows remain open; reference-status disclosure passes.
+- Remaining P1/P2 gaps: fresh S23 production order lifecycle recapture, more provider-backed families and both sides, production HTTP order route proof, first-class immutable selection snapshots, and visual polish.
+- Next cycle required: yes. Lead must require same-selected-identity backend/route plus Android proof that broadens EN before final EO pass.
+
+## Cycle EN-C Route-Backed Book-Staged Limit Lifecycle Gate
+
+Result: Fail until Agent A/B/Lead integrated route-backed lifecycle proof. EL proves the route-backed Book row can stage ticket price, and EM proves a fake-token selected lifecycle, but EN does not pass until the same route-backed provider-depth selected Book row is visible through ticket, order, open order, Portfolio, activity, and history.
+
+Lead Agent target:
+
+- Pair Agent A backend route/order/portfolio/history proof with Agent B Holiwyn Android screenshots/XML/proof JSON for the same selected provider-depth Book row and order ids.
+- Require Android-visible Holiwyn proof for visible parity; backend JSON alone cannot pass.
+- Fail if ticket price reverts to midpoint/outcome probability/default price, if selected id/line/outcome/provider changes, if Portfolio/history uses fallback/default labels, or if proof uses arbitrary local UI-only mocks.
+- Do not claim fresh S23 production ticket/order/Portfolio/history reference unless it is newly captured and committed.
+
+Reference Audit Agent: Agent C.
+
+Implementation Agent: not applicable in EN-C docs-only lane.
+
+Audit Gate Agent: Agent C.
+
+Reference device:
+
+- Partial fresh EL-C Samsung S23 official Polymarket app Book/orderbook context from 2026-07-04.
+- No fresh EN S23 production ticket/order/Portfolio/history recapture.
+
+Holiwyn device:
+
+- No EN Holiwyn device proof collected by Agent C.
+- Fresh support only: EL integrated route-backed Book-to-ticket proof and EM integrated fake-token lifecycle proof.
+
+Reference evidence:
+
+- `docs/mobile/audits/cycle-en-c-route-limit-lifecycle-gate.md`
+- `docs/mobile/audits/cycle-em-c-limit-lifecycle-gate.md`
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/audits/trade-ticket.md`
+- `docs/mobile/audits/binary-side.md`
+
+Holiwyn evidence required before pass:
+
+- Agent A route-backed backend proof for provider-depth selected Book row, order request/response, open order, Portfolio/open position, activity/history, status transitions, and no-fallback assertions.
+- Agent B Android screenshots/XML/proof JSON for Book, ticket before/after amount entry, submit, open order, Portfolio/open position, activity, and history for the same ids.
+- Lead-integrated matrix mapping event, market id/selector key, outcome id, line, period, side, provider/source, condition/token, limit price, row shares/value, route depth source, and order/fill/cancel ids across all surfaces.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EN-ROUTE-LIMIT-P0-01 | P0 | Pass for docs gate | EN labels EL/EM Holiwyn evidence fresh support, EL-C S23 Book context partial fresh, and DQ-C/AG/AI ticket/order evidence stale/reference-only. | Keep this limitation visible until fresh S23 production lifecycle proof exists. |
+| EN-ROUTE-LIMIT-P0-02 | P0 | Fail until proof | No EN Android proof shows the selected Book row is route-backed provider depth rather than local UI-only data. | Pair backend route depth fields to visible Android Book markers. |
+| EN-ROUTE-LIMIT-P0-03 | P0 | Partial support only | EL integrated proves route-backed ask 55c and bid 50c stage ticket prices, but not the EN lifecycle. | Re-run as part of the same EN order/Portfolio/history bundle. |
+| EN-ROUTE-LIMIT-P0-04 | P0 | Fail until proof | No EN ticket amount/ready/submit proof exists for the same route-backed row. | Capture Android ticket before/after amount entry and submit with matching route-backed selected snapshot. |
+| EN-ROUTE-LIMIT-P0-05 | P0 | Fail until proof | No EN route-backed order request/response snapshot is paired with Android submit proof. | Pair backend order JSON to the Android order id. |
+| EN-ROUTE-LIMIT-P0-06 | P0 | Fail until proof | No EN open-order route-backed lifecycle proof exists. | Capture open-order Android proof and backend route proof with unchanged selected fields. |
+| EN-ROUTE-LIMIT-P0-07 | P0 | Fail until proof | No EN Portfolio/open-position route-backed lifecycle proof exists. | Capture Portfolio/open-position proof for the same order/fill ids. |
+| EN-ROUTE-LIMIT-P0-08 | P0 | Fail until proof | No EN activity/history route-backed lifecycle proof exists. | Capture activity/history proof with selected limit identity and status labels. |
+| EN-ROUTE-LIMIT-P0-09 | P0 | Fail until proof | No EN Lead matrix proves selected identity is unchanged across all surfaces. | Map selected ids, line/outcome/provider, price, shares/value, and lifecycle ids across Book -> history. |
+| EN-ROUTE-LIMIT-P0-10 | P0 | Fail until proof | No EN negative assertions reject backend-only pass, local UI-only mocks, fake provider-depth rows, or fallback/default labels. | Add explicit negative assertions to the integrated proof bundle. |
+
+Decision:
+
+- Pass/fail: Fail until integrated route-backed Android-visible lifecycle proof.
+- Unresolved P0 gaps: 9 implementation proof rows remain open; reference-status disclosure passes.
+- Remaining P1/P2 gaps: fresh S23 production order recapture, multi-family/both-side breadth, durable DB snapshots after provider refresh/metadata drift, and visual polish.
+- Next cycle required: yes. Lead must require the integrated proof above before final EN pass.
+
+## Cycle EL-C Live Event Detail Depth Gate
+
+Result: Fail until Agent B Android-visible proof exists. Agent C confirmed partial fresh S23 official Polymarket reference access, but this docs-only lane did not create committed proof artifacts and did not complete fresh ticket Buy/Sell reference.
+
+Lead Agent target:
+
+- Use the partial fresh S23 reference observations for current live event depth: chart/top, swipe depth, Game/Chat, Game Lines/Player Props, line controls, Book/orderbook, and grouped selector.
+- Treat DQ-C/AG/AI ticket evidence as stale support only until fresh non-confirming S23 ticket proof is recaptured.
+- Require Agent B Android proof for a full human path through live page swipe, chart tap, line selector changes, Book/orderbook selector, Book row/action, page-row ticket, Buy/Sell or side state, and live Game/Chat sections.
+- Keep deposit verification, location verification, and notification page proof out of scope.
+
+Reference Audit Agent: Agent C.
+
+Implementation Agent: Agent B, blocked until proof exists.
+
+Audit Gate Agent: Agent C.
+
+Reference device:
+
+- Samsung S23 `SM-S911U1`, official Polymarket app `com.polymarket.android` version `4.2967`, connected on 2026-07-04.
+- Partial fresh live probe reached Canada vs Morocco on the official app.
+
+Holiwyn device:
+
+- No EL Holiwyn Android proof collected by Agent C.
+- Required future proof device: Samsung tablet/phone or assigned Holiwyn Android device.
+
+Reference evidence:
+
+- Partial fresh Agent C S23 observation, not committed as artifacts because EL-C ownership is docs-only.
+- Stale support only: `docs/mobile/audits/live-football-world-cup-dq-c.md`, `docs/mobile/audits/trade-ticket.md`, `docs/mobile/audits/binary-side.md`, `docs/mobile/audits/cycle-ec-c-orderbook-ticket-gate.md`, `docs/mobile/audits/cycle-eb-c-chart-line-selector-gate.md`.
+
+Holiwyn evidence required before pass:
+
+- Agent B Android screenshots/XML/proof JSON for the same selected event and selected market identity across chart/top, swipe depth, market sections, line selector changes, Book/orderbook, grouped selector, ticket, and Game/Chat sections.
+- Backend route JSON only as supporting evidence for the exact visible market id or selector key.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EL-DEPTH-P0-01 | P0 | Fail until proof | No EL same-build Holiwyn Android proof exists. | Agent B must provide screenshots/XML/proof JSON covering live page, chart, market sections, Book/orderbook, selector, and ticket. |
+| EL-DEPTH-P0-02 | P0 | Pass for docs gate | EL labels the S23 reference as partial fresh and ticket support as stale-context only. | Keep this limitation visible until fresh ticket proof exists. |
+| EL-DEPTH-P0-03 | P0 | Fail until proof | No Holiwyn swipe-depth proof exists for EL. | Prove event and selected identity survive scrolling through top/mid/lower page sections. |
+| EL-DEPTH-P0-04 | P0 | Fail until proof | No Holiwyn chart tap proof exists for EL. | Prove chart tap is selected-market aware and does not trigger unrelated navigation. |
+| EL-DEPTH-P0-05 | P0 | Fail until proof | No Holiwyn Game/Chat live-section proof exists for EL. | Prove live sections are functional surfaces, not placeholders. |
+| EL-DEPTH-P0-06 | P0 | Fail until proof | No EL market-section depth proof exists. | Prove Regulation Time Winner, Spread, Totals, and lower/Player Props states. |
+| EL-DEPTH-P0-07 | P0 | Fail until proof | No EL line/period selector identity proof exists. | Prove line/period changes update subject, odds/probabilities, and selected identity together. |
+| EL-DEPTH-P0-08 | P0 | Fail until proof | No EL Book/orderbook identity proof exists. | Prove Book opens for the same selected event/market with visible depth columns and side distinction. |
+| EL-DEPTH-P0-09 | P0 | Fail until proof | No EL grouped selector proof exists. | Prove selector families and selected check without default-market reset. |
+| EL-DEPTH-P0-10 | P0 | Fail until proof | No EL ticket handoff proof exists. | Prove page-row and Book-origin ticket identity, including Buy/Sell or side state. |
+| EL-DEPTH-P0-11 | P0 | Fail until proof | No EL non-ready/loading/unavailable state proof exists. | Prove explicit non-ready states or document same-run reason. |
+| EL-DEPTH-P0-12 | P0 | Fail until proof | No EL negative no-fallback assertions exist in implementation proof. | Reject backend-only pass, static placeholders, defaults, generic labels, stale-as-ready, mock-ready, and fallback depth. |
+| EL-DEPTH-P0-13 | P0 | Fail until proof | Agent B Android-visible proof is absent. | Agent B cannot pass from backend JSON or source inspection alone. |
+
+Decision:
+
+- Pass/fail: Fail until integrated Android-visible proof.
+- Unresolved P0 gaps: 12 implementation proof rows remain open; reference-status disclosure passes.
+- Remaining P1/P2 gaps: fresh S23 ticket Buy/Sell recapture, multi-family provider breadth, Book row-to-ticket price/side carry-through, Player Props/lower-section breadth, and visual/chart/orderbook polish.
+- Next cycle required: yes. Agent B is blocked until the EL evidence bundle exists.
+
+## Cycle EK-C Provider Transition Breadth Gate
+
+Result: Fail until Agent A/B/Lead integrated transition proof. EJ selected mixed route-backed Android proof remains useful regression coverage, but EK does not pass until unavailable/not-ready and stale -> refreshing/loading -> ready are visible, route-backed, identity-preserving, and free of fallback/default/generic behavior.
+
+Lead Agent target:
+
+- Preserve EJ selected mixed route-backed proof as regression coverage.
+- Prove visible route-backed unavailable/not-ready state for the same selected identity used in the proof matrix.
+- Prove full stale or refresh-due -> refreshing/loading -> ready transition for one selected market without losing identity.
+- Prove selected identity through live page, chart, Book/orderbook, and ticket before/during/after transition.
+- Inventory real provider-backed families and prove breadth when available; if not available, document why breadth remains open.
+- Backend-only proof, fixture-visible status proof, EJ selected path alone, fallback/default/generic rows, and stale/reference-only S23 evidence described as fresh fail this gate.
+
+Reference Audit Agent: Agent C.
+
+Implementation Agent: not applicable in EK-C docs-only lane.
+
+Audit Gate Agent: Agent C.
+
+Reference device:
+
+- Reused stale/reference-only Samsung S23 official Polymarket Android evidence from DQ-C.
+- No fresh EK reference capture by Agent C.
+
+Holiwyn device:
+
+- No EK Holiwyn device proof collected by Agent C.
+- Required future proof device: Samsung tablet or assigned Holiwyn Android device.
+
+Reference evidence:
+
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/audits/cycle-ei-c-route-backed-status-gate.md`
+- `docs/mobile/audits/cycle-ej-c-provider-status-breadth-gate.md`
+- `docs/mobile/harness/cycle-EJ-A-provider-status-breadth.json`
+- `docs/mobile/harness/cycle-EJ-integrated-status-breadth/cycle-EJ-B-visible-status-breadth-proof.json`
+
+Holiwyn evidence required before pass:
+
+- Agent A backend route proof for provider-family inventory, visible-state backing fields, unavailable/not-ready, stale/refresh-due, triggered transition, ready depth, and no-fallback assertions.
+- Agent B Samsung tablet screenshots/XML/proof JSON for the same selected identities and statuses across live page, chart, Book/orderbook, and ticket.
+- Lead-integrated proof summary pairing backend route fields to Android-visible markers and naming fresh-vs-stale reference status.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EK-TRANSITION-P0-01 | P0 | Fail until proof | No same-build integrated EK backend plus Android transition proof bundle exists. | Lead must pair Agent A route proof with Agent B Android proof for the same identities. |
+| EK-TRANSITION-P0-02 | P0 | Fail until proof | EJ backend has unavailable/not-ready route shape, but no EK Android-visible route-backed unavailable/not-ready state exists. | Pair backend unavailable/not-ready fields to visible Android labels and disabled/explicit Book/ticket behavior. |
+| EK-TRANSITION-P0-03 | P0 | Fail until proof | EJ shows Book refreshing/loading then ready in one selected path, but no same-selected-market stale -> refreshing/loading -> ready transition is proven. | Capture transition before/during/after for the same selected market identity. |
+| EK-TRANSITION-P0-04 | P0 | Fail until proof | No EK transition matrix maps selected identity before/during/after refresh. | Add proof matrix keyed by event, family/type, line, period, side/outcome, provider/source, market id or selector key, condition/token, and status phase. |
+| EK-TRANSITION-P0-05 | P0 | Fail until proof | No proof yet rejects selected-market drift during stale/refreshing/loading/ready states. | Show same Android selected identity across all phases and reject default moneyline, first-row, event-only, generic market, and Team to Advance substitution. |
+| EK-TRANSITION-P0-06 | P0 | Fail until proof | Book/orderbook ready and non-ready transition behavior is not proven for EK. | Prove route-backed ready depth and explicit non-ready Book states with no fallback depth counted as ready. |
+| EK-TRANSITION-P0-07 | P0 | Fail until proof | Ticket handoff/blocking for EK non-ready and transition states is not proven. | Prove ready ticket identity and honest disabled/loading/unavailable behavior for non-ready states. |
+| EK-TRANSITION-P0-08 | P0 | Fail until proof | EK negative assertions are not yet present in integrated proof. | Reject fixture, mock-ready, backend-unreachable fallback, stale-as-ready, default/first-row/event-only/generic market, Team to Advance, fallback depth, and backend-only pass conditions. |
+| EK-TRANSITION-P0-09 | P0 | Fail until proof | No real-provider family inventory or breadth decision exists for EK. | Lead must inventory available real-provider families and prove breadth when available or document why it remains unavailable. |
+| EK-TRANSITION-P0-10 | P0 | Fail until proof | EJ selected mixed path is documented, but no separate EK transition proof exists. | Keep EJ as regression coverage while collecting separate EK evidence. |
+| EK-TRANSITION-P0-11 | P0 | Pass for docs gate | The EK gate labels DQ-C/S23 evidence stale/reference-only and does not claim fresh S23 capture. | Keep this limitation visible until fresh reference proof exists. |
+
+Decision:
+
+- Pass/fail: Fail until integrated EK transition breadth proof.
+- Unresolved P0 gaps: 10 proof rows remain open; stale-reference disclosure passes for docs.
+- Remaining P1/P2 gaps: real-provider family transition breadth, repeated transitions, fresh S23 recapture when available, and status/density polish.
+- Next cycle required: yes. Agent A/B/Lead must provide the integrated proof described in `docs/mobile/audits/cycle-ek-c-provider-transition-gate.md`.
+
+## Cycle EJ-C Provider Status Breadth Gate
+
+Result: Fail until Agent A/B/Lead integrated breadth proof. EI remains verified for the selected route-backed ready/Book/ticket path, but EJ does not pass broader provider-status breadth.
+
+Lead Agent target:
+
+- Preserve EI selected-route proof as regression coverage.
+- Prove route-backed provider status breadth across real provider-backed families after EI.
+- Required states: stale or refresh-due, refreshing or loading, ready, and unavailable or not-ready.
+- Required transition: stale -> refreshing/loading -> ready for the same selected market identity.
+- Backend-only proof, fixture-visible EH status proof, the EI selected ready path alone, fallback/default rows, and stale/reference-only S23 evidence described as fresh fail this gate.
+
+Reference Audit Agent: Agent C.
+
+Implementation Agent: not applicable in EJ-C docs-only lane.
+
+Audit Gate Agent: Agent C.
+
+Reference device:
+
+- Reused stale/reference-only Samsung S23 official Polymarket Android evidence from DQ-C.
+- No fresh EJ reference capture by Agent C.
+
+Holiwyn device:
+
+- No EJ Holiwyn device proof collected by Agent C.
+- Required future proof device: Samsung tablet or assigned Holiwyn Android device.
+
+Reference evidence:
+
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/audits/cycle-eh-c-provider-status-gate.md`
+- `docs/mobile/audits/cycle-ei-c-route-backed-status-gate.md`
+- `docs/mobile/harness/cycle-EH-integrated-provider-status/cycle-EH-integrated-provider-status-proof.json`
+- `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-A-route-backed-status.json`
+- `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-proof.json`
+
+Holiwyn evidence required before pass:
+
+- Agent A backend route proof for selected provider-backed families, stale/refresh-due, unavailable/not-ready, ready depth, and full transition.
+- Agent B Samsung tablet screenshots/XML/proof JSON for the same selected identities.
+- Lead-integrated proof summary pairing backend route fields to Android-visible markers.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EJ-BREADTH-P0-01 | P0 | Fail until proof | No same-build integrated EJ backend plus Android proof bundle exists. | Lead must pair Agent A route proof with Agent B Android proof for the same identities. |
+| EJ-BREADTH-P0-02 | P0 | Fail until proof | EI covers one selected disposable route-backed ready path, not real provider-backed family breadth. | Prove at least two real provider-backed families when available, including Spread and one other family. |
+| EJ-BREADTH-P0-03 | P0 | Fail until proof | No EJ route-backed stale/refresh-due Android-visible state exists. | Agent A/B must pair backend stale/refresh-due fields to visible Android markers. |
+| EJ-BREADTH-P0-04 | P0 | Fail until proof | No EJ route-backed unavailable/not-ready Android-visible state exists. | Agent A/B must pair backend unavailable/not-ready reason to visible Android state. |
+| EJ-BREADTH-P0-05 | P0 | Fail until proof | No full route-backed stale -> refreshing/loading -> ready transition is proven after EI. | Capture the transition for the same selected market identity. |
+| EJ-BREADTH-P0-06 | P0 | Fail until proof | No EJ identity matrix maps status through live page, chart, Book/orderbook, and ticket. | Add a proof matrix keyed by event, family/type, line, period, side/outcome, provider/source, market id or selector key, and status. |
+| EJ-BREADTH-P0-07 | P0 | Fail until proof | Book/orderbook ready and non-ready breadth is not proven route-backed after EI. | Prove route-backed ready depth and explicit non-ready Book states with no fallback depth counted as ready. |
+| EJ-BREADTH-P0-08 | P0 | Fail until proof | Ticket handoff/blocking for route-backed non-ready states is not proven. | Prove ready ticket identity and honest disabled/loading/unavailable behavior for non-ready states. |
+| EJ-BREADTH-P0-09 | P0 | Fail until proof | EJ negative assertions are not yet present in integrated proof. | Reject fixture, mock-ready, backend-unreachable fallback, stale-as-ready, default/first-row/event-only, fallback depth, and backend-only pass conditions. |
+| EJ-BREADTH-P0-10 | P0 | Pass for docs gate | The EJ gate labels DQ-C/S23 evidence stale/reference-only and does not claim fresh S23 capture. | Keep this limitation visible until fresh reference proof exists. |
+| EJ-BREADTH-P0-11 | P0 | Fail until proof | EI selected pass is documented, but no EJ breadth proof exists beyond it. | Lead must keep EI as regression coverage while collecting separate EJ breadth evidence. |
+
+Decision:
+
+- Pass/fail: Fail until integrated breadth proof.
+- Unresolved P0 gaps: 10 proof rows remain open; stale-reference disclosure passes for docs.
+- Remaining P1/P2 gaps: all real provider-backed family breadth, fresh S23 recapture when available, repeated transition breadth, and status/density polish.
+- Next cycle required: yes. Agent A/B/Lead must provide the integrated proof described in `docs/mobile/audits/cycle-ej-c-provider-status-breadth-gate.md`.
+
+## Cycle EI-C Route-Backed Provider Status Gate
+
+Result: Pass for selected EI integrated route-backed status proof. PM-GAP-084 is verified for the selected route-backed tablet path.
+
+Lead Agent target:
+
+- Prove backend health/reachability from the tablet launch context before visible ready/status markers count.
+- Prove route-backed status markers in tablet XML/proof JSON that match backend route fields for the same selected market id or selector key.
+- Preserve the same selected market identity through live page, chart, Book/orderbook, and ticket while keeping route-backed status context.
+- Reject deterministic fixture status UI, mock-ready labels, fallback rows, default moneyline reconstruction, first-row fallback, event-only labels, and backend-only readiness.
+
+Reference Audit Agent: Agent C.
+
+Implementation Agent: not applicable in EI-C docs-only lane.
+
+Audit Gate Agent: Agent C.
+
+Reference device:
+
+- Reused stale/reference-only Samsung S23 official Polymarket Android evidence from DQ-C.
+- No fresh EI reference capture by Agent C.
+
+Holiwyn device:
+
+- Samsung tablet / Holiwyn Expo Go, device `172.16.200.30:41299`, local Expo port 8322.
+- Backend base URL `http://127.0.0.1:3002` was required by health check and ADB reverse before launch.
+
+Reference evidence:
+
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/audits/cycle-eh-c-provider-status-gate.md`
+- `docs/mobile/harness/cycle-EH-A-provider-status-surface.json`
+- `docs/mobile/harness/cycle-EH-integrated-provider-status/cycle-EH-integrated-provider-status-proof.json`
+- `docs/mobile/screenshots/cycle-EH-integrated-provider-status/`
+- `docs/mobile/harness/cycle-EH-integrated-provider-status/`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-EI-integrated-route-backed-status/`
+- `docs/mobile/harness/cycle-EI-integrated-route-backed-status/`
+- `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-A-route-backed-status.json`
+- `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-proof.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EI-ROUTE-STATUS-P0-01 | P0 | Pass for selected proof | Tablet proof records backend health before launch, backend base URL, server mode, API base URL, and selected event slug. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-02 | P0 | Pass for selected proof | Tablet XML/proof shows `live-data-source-polymarket-gamma`, `provider-lifecycle-ready`, route-backed Book source/status, and provider identity markers. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-03 | P0 | Pass for selected proof | Ready status is live-route-backed on tablet for the selected disposable event and market. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-04 | P0 | Deferred to P1 breadth | EH visible regression covers refresh-due status; EI selected proof did not repeat a route-backed stale/refresh-due fixture. | Add a future route-backed transition proof across stale/refresh-due states. |
+| EI-ROUTE-STATUS-P0-05 | P0 | Pass for selected proof | Opening Book produces visible `provider-lifecycle-refreshing` / `Book depth refreshing` before route-backed ready depth. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-06 | P0 | Deferred to P1 breadth | EH visible regression covers not-ready/unavailable; EI selected proof did not repeat a route-backed unavailable fixture. | Add future route-backed unavailable/not-ready proof for real provider-family breadth. |
+| EI-ROUTE-STATUS-P0-07 | P0 | Pass for selected proof | Selected provider market/source/status identity carries through live page, Book/orderbook, ticket handoff, and ticket settings. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-08 | P0 | Pass for selected proof | Book/orderbook shows selected market identity, `orderbook-source-orderbook-route`, `orderbook-status-ready`, and route depth. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-09 | P0 | Pass for selected proof | Ticket preserves `provider-source-polymarket` identity, and settings expose `Trading mode: Server mode`. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-10 | P0 | Pass for selected proof | Negative assertions reject fixture/mock/default fallback markers and wrong-market/default labels. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-11 | P0 | Pass for selected proof | Backend route JSON is paired with Android-visible XML/screenshots/proof in the same EI bundle. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-12 | P0 | Pass for selected proof | EI proof uses same-build backend route proof and Samsung tablet proof; prior bundles are regression references only. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-13 | P0 | Pass for docs gate | EI audit explicitly labels reused DQ-C/S23 evidence as stale/reference-only. | Keep this limitation visible until fresh reference proof exists. |
+
+Decision:
+
+- Pass/fail: Pass for selected EI integrated route-backed tablet status proof.
+- Unresolved P0 gaps: 0 for the selected EI route-backed ready/refreshing/Book/ticket path.
+- Remaining P1/P2 gaps: fresh official S23 recapture, broader real provider-backed line-family status matrix, actual route-backed stale -> refreshing/loading -> ready transition proof, and status visual polish.
+- Next cycle required: yes, but as follow-up breadth rather than this selected PM-GAP-084 blocker. Continue with real provider-backed family breadth and full route-backed transition proof.
+
+Use this template for every feature gate:
+
+```md
+## Feature: <name>
+
+Cycle:
+Lead Agent target:
+Reference Audit Agent:
+Implementation Agent:
+Audit Gate Agent:
+
+Reference device:
+Reference app/browser:
+Reference route/URL:
+Holiwyn device:
+Holiwyn app mode:
+
+Reference evidence:
+- Screenshot:
+- UI hierarchy:
+- Notes:
+
+Holiwyn evidence:
+- Screenshot:
+- UI hierarchy:
+- Smoke/test output:
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+
+Decision:
+- Pass/fail:
+- Unresolved P0 gaps:
+- Remaining P1/P2 gaps:
+- Next cycle required:
+```
+
+## Feature: Route-Backed Retail Line Ticket Flow
+
+Cycle: EU
+
+Lead Agent target: Prove Local MVP simple ticket flow uses backend live-detail spread/totals identity while hiding default orderbook UI.
+
+Reference Audit Agent: Product steering audit from current Local MVP policy.
+
+Implementation Agent: EventDetail line ticket resolver and Samsung tablet harness.
+
+Audit Gate Agent: Same-cycle tablet proof.
+
+Reference device: Not refreshed in EU; this is a Holiwyn contract/user-flow gate based on existing Polymarket retail interaction direction.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8262`.
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-local-mvp-route-ticket-flow-proof.json`
+- `docs/mobile/harness/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-route-backed-retail-event.json`
+- `docs/mobile/screenshots/cycle-EU-local-mvp-route-ticket-flow/`
+- Backend proof artifact slug: `mobile-el-a-provider-breadth-4f35da22`; tablet proof slug: `mobile-el-a-provider-breadth-b917234c`.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EU-RETAIL-P0-01 | P0 | Pass | Backend event loaded from `/api/mobile/events/:slug/live-detail` with `live-data-source-polymarket-gamma`. | N/A |
+| EU-RETAIL-P0-02 | P0 | Pass | Spread/totals rows use `ticket-source-backend-line-market`. | N/A |
+| EU-RETAIL-P0-03 | P0 | Pass | Ticket and Portfolio retain provider source/token/line/period identity. | N/A |
+| EU-RETAIL-P0-04 | P0 | Pass | Orderbook markers absent from default UI proof. | N/A |
+| EU-RETAIL-P1-01 | P1 | Open | Team-total row remains deterministic fixture in EU screenshot. | Add provider-backed team-total row support when source-approved markets exist. |
+
+Decision:
+
+- Pass/fail: Pass for selected EU spread/totals Local MVP route-backed retail flow.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: provider-backed team-total, real production line-family breadth, fresh S23 retail ticket proof.
+- Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Route-Backed Retail Server Order Flow
+
+Cycle: EV
+
+Lead Agent target: Prove the Local MVP retail path can submit a route-backed spread ticket through the real local server order API and sync Portfolio, with default orderbook hidden.
+
+Reference Audit Agent: Product steering audit from current Local MVP policy.
+
+Implementation Agent: Tablet harness plus local wrapper for disposable backend event, mobile dev credential, server order mode, and tablet proof.
+
+Audit Gate Agent: Same-cycle tablet proof.
+
+Reference device: Not refreshed in EV; this is a Holiwyn contract/user-flow gate based on existing Polymarket retail interaction direction and the latest Local MVP orderbook policy.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8263`.
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-local-mvp-route-server-order-flow-proof.json`
+- `docs/mobile/harness/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-route-backed-retail-event.json`
+- `docs/mobile/screenshots/cycle-EV-local-mvp-route-server-order-flow/`
+- Tablet proof slug: `mobile-el-a-provider-breadth-5f9e2d3f`.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EV-SERVER-P0-01 | P0 | Pass | Backend event loaded from `/api/mobile/events/:slug/live-detail` with `live-data-source-polymarket-gamma`. | N/A |
+| EV-SERVER-P0-02 | P0 | Pass | Spread row uses `ticket-source-backend-line-market` and `provider-source-polymarket`. | N/A |
+| EV-SERVER-P0-03 | P0 | Pass | Ticket preserves spread line `1.5`, `Reg. Time`, provider source, and provider token. | N/A |
+| EV-SERVER-P0-04 | P0 | Pass | Ticket submits with `EXPO_PUBLIC_ORDER_MODE=server`; proof records `orderMode=server`. | N/A |
+| EV-SERVER-P0-05 | P0 | Pass | Portfolio shows `Server portfolio synced`, `SERVER - Buy`, open order row, and selected spread/provider identity. | N/A |
+| EV-SERVER-P0-06 | P0 | Pass | Orderbook markers remain absent from default UI proof. | N/A |
+| EV-SERVER-P1-01 | P1 | Open | Only one provider-backed spread server order is covered. | Add totals/team-total and history breadth later. |
+
+Decision:
+
+- Pass/fail: Pass for selected EV route-backed spread server-order Local MVP flow.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: totals/team-total server-order breadth, production active-event provider breadth, fresh S23 retail ticket proof, and route-backed history/activity beyond open order.
+- Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Route-Backed Retail Server Cancel And Activity Flow
+
+Cycle: EW
+
+Lead Agent target: Prove the route-backed server-order Local MVP path can be canceled from the Android Portfolio UI and appear as canceled activity/history with selected provider identity.
+
+Reference Audit Agent: Product steering audit from current Local MVP policy.
+
+Implementation Agent: Tablet harness plus local wrapper for disposable backend event, mobile dev credential, server order mode, server cancel, and tablet proof.
+
+Audit Gate Agent: Same-cycle tablet proof.
+
+Reference device: Not refreshed in EW; this is a Holiwyn contract/user-flow gate based on existing Polymarket retail interaction direction and the latest Local MVP orderbook policy.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8264`.
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-local-mvp-route-server-cancel-flow-proof.json`
+- `docs/mobile/harness/cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-route-backed-retail-event.json`
+- `docs/mobile/screenshots/cycle-EW-local-mvp-route-server-cancel-flow/`
+- Tablet proof slug: `mobile-el-a-provider-breadth-35441a1a`.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EW-CANCEL-P0-01 | P0 | Pass | Route-backed spread order reaches Android Portfolio as an open order. | N/A |
+| EW-CANCEL-P0-02 | P0 | Pass | Android taps `cancel-open-order-*` and server Portfolio refreshes. | N/A |
+| EW-CANCEL-P0-03 | P0 | Pass | Portfolio shows `latest-activity-card`, `activity-canceled`, `status-canceled`, and `Recent activity` count. | N/A |
+| EW-CANCEL-P0-04 | P0 | Pass | Canceled activity preserves spread line, period, provider source, and provider token. | N/A |
+| EW-CANCEL-P0-05 | P0 | Pass | Orderbook markers remain absent from default UI proof. | N/A |
+| EW-CANCEL-P1-01 | P1 | Open | Filled trade history is not covered. | Add route-backed fill/history proof later. |
+
+Decision:
+
+- Pass/fail: Pass for selected EW route-backed spread cancel/activity Local MVP flow.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: filled trade history, totals/team-total lifecycle breadth, production active-event provider breadth, and fresh S23 retail lifecycle proof.
+- Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Route-Backed Retail Server Filled Trade And Activity Flow
+
+Cycle: EX
+
+Lead Agent target: Prove the route-backed server-order Local MVP path can fill against seeded liquidity and appear as a Portfolio position plus recent activity with selected provider identity.
+
+Reference Audit Agent: Product steering audit from current Local MVP policy.
+
+Implementation Agent: Counterparty seed script, tablet harness filled variant, and local wrapper for disposable backend event, mobile dev credential, server order mode, and tablet proof.
+
+Audit Gate Agent: Same-cycle tablet proof.
+
+Reference device: Not refreshed in EX; this is a Holiwyn contract/user-flow gate based on existing Polymarket retail interaction direction and the latest Local MVP orderbook policy.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8265`.
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-EX-local-mvp-route-server-filled-flow/cycle-EX-local-mvp-route-server-filled-flow-proof.json`
+- `docs/mobile/harness/cycle-EX-local-mvp-route-server-filled-flow/cycle-EX-route-backed-retail-event.json`
+- `docs/mobile/harness/cycle-EX-local-mvp-route-server-filled-flow/cycle-EX-route-backed-counterparty.json`
+- `docs/mobile/screenshots/cycle-EX-local-mvp-route-server-filled-flow/`
+- Tablet proof slug: `mobile-el-a-provider-breadth-9bd275c5`.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EX-FILLED-P0-01 | P0 | Pass | Route-backed spread ticket opens with provider source/token identity. | N/A |
+| EX-FILLED-P0-02 | P0 | Pass | Counterparty proof seeds matching SELL liquidity for the same route-backed spread outcome. | N/A |
+| EX-FILLED-P0-03 | P0 | Pass | Android submit fills and Portfolio shows open positions `1`, open orders `0`, recent activity `1`. | N/A |
+| EX-FILLED-P0-04 | P0 | Pass | Activity card shows `Bought`, `status-filled`, filled shares, execution price, and provider identity. | N/A |
+| EX-FILLED-P0-05 | P0 | Pass | Position card preserves spread line, period, provider source, and provider token. | N/A |
+| EX-FILLED-P0-06 | P0 | Pass | Orderbook markers remain absent from default UI proof. | N/A |
+| EX-FILLED-P1-01 | P1 | Open | Filled lifecycle covers spread only. | Add totals/team-total lifecycle breadth later. |
+
+Decision:
+
+- Pass/fail: Pass for selected EX route-backed spread filled-trade Local MVP flow.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: totals/team-total filled breadth, production active-event provider breadth, fresh S23 retail lifecycle proof, and non-disposable liquidity source.
+- Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Route-Backed Retail Server Filled Totals Trade And Activity Flow
+
+Cycle: EY
+
+Lead Agent target: Prove the route-backed server-order Local MVP filled lifecycle on a Totals market, closing the repeated spread-only breadth gap from EX.
+
+Reference Audit Agent: Product steering audit from current Local MVP policy.
+
+Implementation Agent: Parameterized counterparty seed script, tablet harness totals-filled variant, and local wrapper for disposable backend event, mobile dev credential, server order mode, and tablet proof.
+
+Audit Gate Agent: Same-cycle tablet proof.
+
+Reference device: Not refreshed in EY; this is a Holiwyn contract/user-flow gate based on existing Polymarket retail interaction direction and the latest Local MVP orderbook policy.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8266`.
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-local-mvp-route-server-filled-totals-flow-proof.json`
+- `docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-route-backed-retail-event.json`
+- `docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-route-backed-totals-counterparty.json`
+- `docs/mobile/screenshots/cycle-EY-local-mvp-route-server-filled-totals-flow/`
+- Tablet proof slug: `mobile-el-a-provider-breadth-62990515`.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EY-TOTALS-P0-01 | P0 | Pass | Route-backed totals row opens with provider source/token identity. | N/A |
+| EY-TOTALS-P0-02 | P0 | Pass | Counterparty proof seeds matching SELL liquidity for the same route-backed totals outcome. | N/A |
+| EY-TOTALS-P0-03 | P0 | Pass | Android submit fills and Portfolio shows open positions `1`, open orders `0`, recent activity `1`. | N/A |
+| EY-TOTALS-P0-04 | P0 | Pass | Activity card shows `Bought`, `status-filled`, filled shares, execution price, and provider identity. | N/A |
+| EY-TOTALS-P0-05 | P0 | Pass | Position card preserves totals line, period, provider source, and provider token. | N/A |
+| EY-TOTALS-P0-06 | P0 | Pass | Orderbook markers remain absent from default UI proof. | N/A |
+| EY-TOTALS-P1-01 | P1 | Open | Team-total route-backed filled lifecycle is not covered. | Add a route-backed team-total provider fixture and repeat this lifecycle. |
+
+Decision:
+
+- Pass/fail: Pass for selected EY route-backed totals filled-trade Local MVP flow.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: team-total filled breadth, production active-event provider breadth, fresh S23 retail lifecycle proof, and non-disposable liquidity source.
+- Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Route-Backed Retail Server Filled Team Total Trade And Activity Flow
+
+Cycle: EZ
+
+Lead Agent target: Prove the route-backed server-order Local MVP filled lifecycle on a Team Total market, closing the remaining line-family breadth gap from EY.
+
+Reference Audit Agent: Product steering audit from current Local MVP policy.
+
+Implementation Agent: Team Total provider fixture, tablet harness team-total-filled variant, and local wrapper for disposable backend event, mobile dev credential, server order mode, and tablet proof.
+
+Audit Gate Agent: Same-cycle tablet proof.
+
+Reference device: Not refreshed in EZ; this is a Holiwyn contract/user-flow gate based on existing Polymarket retail interaction direction and the latest Local MVP orderbook policy.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8267`.
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-local-mvp-route-server-filled-team-total-flow-proof.json`
+- `docs/mobile/harness/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-route-backed-retail-event.json`
+- `docs/mobile/harness/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-route-backed-team-total-counterparty.json`
+- `docs/mobile/screenshots/cycle-EZ-local-mvp-route-server-filled-team-total-flow/`
+- Tablet proof slug: `mobile-el-a-provider-breadth-477e6b35`.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EZ-TEAMTOTAL-P0-01 | P0 | Pass | Provider breadth route proof creates Team Total with provider quote/depth/history ready. | N/A |
+| EZ-TEAMTOTAL-P0-02 | P0 | Pass | Route-backed Team Total row opens with provider source/token identity. | N/A |
+| EZ-TEAMTOTAL-P0-03 | P0 | Pass | Counterparty proof seeds matching SELL liquidity for the same route-backed Team Total outcome. | N/A |
+| EZ-TEAMTOTAL-P0-04 | P0 | Pass | Android submit fills and Portfolio shows open positions `1`, open orders `0`, recent activity `1`. | N/A |
+| EZ-TEAMTOTAL-P0-05 | P0 | Pass | Activity card shows `Bought`, `status-filled`, filled shares, execution price, and provider identity. | N/A |
+| EZ-TEAMTOTAL-P0-06 | P0 | Pass | Position card preserves team-total line, period, provider source, and provider token. | N/A |
+| EZ-TEAMTOTAL-P0-07 | P0 | Pass | Orderbook markers remain absent from default UI proof. | N/A |
+| EZ-TEAMTOTAL-P1-01 | P1 | Open | Production active-event provider mapping and non-disposable liquidity remain outside this disposable proof. | Continue production provider mapping breadth later. |
+
+Decision:
+
+- Pass/fail: Pass for selected EZ route-backed Team Total filled-trade Local MVP flow.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: production active-event provider breadth, fresh S23 retail lifecycle proof, and non-disposable liquidity source.
+- Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Route-Backed Retail Status States
+
+Cycle: FA
+
+Lead Agent target: Close the repeated Local MVP gap where route-backed loading/stale/unavailable states were deferred or only visible through Book/orderbook.
+
+Reference Audit Agent: Product steering audit from current Local MVP policy and existing Polymarket sports retail-status behavior: status must be visible in the retail event/ticket path.
+
+Implementation Agent: Provider lifecycle availability mapping, EventDetail Spread availability pill, TradeTicket market-status pill, and tablet route-status proof harness.
+
+Audit Gate Agent: Same-cycle backend route proof plus Samsung tablet proof.
+
+Reference device: Not refreshed in FA; this is a Holiwyn route contract/status gate based on current Local MVP policy.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8268`.
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-FA-local-mvp-route-status-flow/cycle-FA-A-provider-status-breadth.json`
+- `docs/mobile/harness/cycle-FA-local-mvp-route-status-flow/cycle-FA-local-mvp-route-status-flow-proof.json`
+- `docs/mobile/screenshots/cycle-FA-local-mvp-route-status-flow/`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| FA-STATUS-P0-01 | P0 | Pass | Route proof emits provider-backed ready, stale, and unavailable compact markets. | N/A |
+| FA-STATUS-P0-02 | P0 | Pass | Game Lines show Spread `Market stale` and Totals `Market unavailable`. | N/A |
+| FA-STATUS-P0-03 | P0 | Pass | Stale Spread ticket exposes `ticket-market-status ticket-availability-stale`. | N/A |
+| FA-STATUS-P0-04 | P0 | Pass | Unavailable Totals ticket exposes `ticket-market-status ticket-availability-unavailable` and disabled submit. | N/A |
+| FA-STATUS-P0-05 | P0 | Pass | Default Book/orderbook markers remain absent. | N/A |
+| FA-STATUS-P1-01 | P1 | Open | Production active Polymarket stale/unavailable recapture is not covered. | Re-run against a real active mapped event later. |
+
+Decision:
+
+- Pass/fail: Pass for selected FA route-backed retail status flow.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: production active-event status breadth, server-side unavailable-market order guard, and fresh S23 status recapture.
+- Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Provider Unavailable Order Guard
+
+Cycle: FB
+
+Lead Agent target: Close FA's backend guardrail follow-up so unavailable provider-backed markets cannot be traded by bypassing the mobile disabled-submit UI.
+
+Reference Audit Agent: Product steering audit from Local MVP status policy; no fresh S23 visual reference needed because this is a backend/provider guard.
+
+Implementation Agent: Canonical order submission provider quote guard and focused tests.
+
+Audit Gate Agent: Focused Jest and TypeScript compile.
+
+Holiwyn evidence:
+
+- `src/server/services/__tests__/canonical_order_submission.phase5.test.ts`
+- `docs/mobile/harness/cycle-FB-provider-unavailable-order-guard/proof-provider-status-breadth.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| FB-GUARD-P0-01 | P0 | Pass | Provider-backed market without accepting quote returns `MARKET_UNAVAILABLE` and no order. | N/A |
+| FB-GUARD-P0-02 | P0 | Pass | Failed unavailable attempt is stored in `ApiOrderRequest`. | N/A |
+| FB-GUARD-P0-03 | P0 | Pass | Provider-backed market with accepting quote still submits successfully. | N/A |
+| FB-GUARD-P0-04 | P0 | Pass | Non-provider markets keep existing canonical order behavior. | N/A |
+
+Decision:
+
+- Pass/fail: Pass for selected backend/provider guard.
+- Unresolved P0 gaps: 0 for selected backend feature.
+- Remaining P1/P2 gaps: production active-event provider breadth and future visible server-error proof if unavailable submit ever becomes reachable.
+- Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Route-Backed Event Discovery Cards
+
+Cycle: FC
+
+Lead Agent target: Close the Local MVP entry-point gap where Home/Search discovery could still depend on local fixture markets or a deep-linked event instead of server event discovery.
+
+Reference Audit Agent: Product steering audit from current Local MVP retail-flow direction. Default discovery should lead users into football events and simple tickets without exposing Book/orderbook by default.
+
+Implementation Agent: Optional compact market payload on `/api/events`, mobile discovery request/wiring, Search stats labels, and focused Android artifact gate.
+
+Audit Gate Agent: Focused route tests, mobile API tests, typechecks, provider-shaped event route proof, and Samsung tablet Home hierarchy proof.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8272`.
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-FC-route-backed-discovery/cycle-FC-route-backed-discovery-event.json`
+- `docs/mobile/harness/cycle-FC-route-backed-discovery/cycle-FC-route-backed-discovery-android-proof.json`
+- `docs/mobile/harness/cycle-FC-route-backed-discovery/cycle-FC-route-backed-discovery-home.xml`
+- `docs/mobile/harness/cycle-FC-route-backed-discovery/cycle-FC-route-backed-discovery-home.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| FC-DISC-P0-01 | P0 | Pass | `/api/events?includeMobileMarkets=1` returns compact route-backed markets for the seeded World Cup event. | N/A |
+| FC-DISC-P0-02 | P0 | Pass | Mobile request uses `sportKey=soccer` and `leagueKey=world_cup` without a default text search that hides team-titled events. | N/A |
+| FC-DISC-P0-03 | P0 | Pass | Tablet Home hierarchy shows `EL-A Provider Breadth World Cup Live`, `Breadth Home`, `Breadth Away`, and outcome buttons. | N/A |
+| FC-DISC-P0-04 | P0 | Pass | Default orderbook markers are absent from the Android Home hierarchy. | N/A |
+| FC-DISC-P1-01 | P1 | Open | Production active Polymarket event breadth is not covered by the disposable proof. | Map/import more real active provider events. |
+
+Decision:
+
+- Pass/fail: Pass for selected route-backed discovery-card feature.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: production active provider breadth and legacy broad nav smoke expectations that are still fixture-specific.
+- Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Route Discovery Opens Route-Backed Event Detail
+
+Cycle: FD
+
+Lead Agent target: Close the Local MVP entry-flow gap where a route-backed Home card could render correctly but opening it could still land on an older fixture detail.
+
+Reference Audit Agent: Product steering audit from current Local MVP retail-flow direction. For this cycle, the pass condition is not full Polymarket parity; it is the correct visible entry path toward the simple retail trade flow.
+
+Implementation Agent: Centralized Home/Live/Search event-card opening through `openEventDetail`, with server-mode hydration through `PolyApi.getEvent`.
+
+Audit Gate Agent: Focused mobile typecheck, mobile API tests, provider-shaped route event setup, and Samsung tablet Android proof.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8273`.
+
+Holiwyn evidence:
+
+- `docs/mobile/audits/cycle-fd-route-discovery-detail.md`
+- `docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-event.json`
+- `docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-proof.json`
+- `docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-home.xml`
+- `docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-open.xml`
+- `docs/mobile/screenshots/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-home.png`
+- `docs/mobile/screenshots/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-open.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| FD-DISC-P0-01 | P0 | Pass | Tablet Home hierarchy shows route-backed event, compact outcomes, Volume/Liquidity, and route-backed card marker. | N/A |
+| FD-DISC-P0-02 | P0 | Pass | Tapping the card opens `EL-A Provider Breadth World Cup Live`, not the older Mexico/Ecuador fixture. | N/A |
+| FD-DISC-P0-03 | P0 | Pass | Opened detail shows Event Detail chart/probability marker, Game Lines, route outcomes, and provider source. | N/A |
+| FD-DISC-P0-04 | P0 | Pass | Default orderbook markers remain absent in Home and opened detail proof. | N/A |
+| FD-DISC-P1-01 | P1 | Open | Production active Polymarket event breadth is not covered by the disposable proof. | Map/import more real active provider events. |
+| FD-DISC-P1-02 | P1 | Open | Full Home -> Event Detail -> ticket -> fake-token order -> Portfolio/history proof is not part of FD. | Continue the Local MVP flow from this entry path. |
+
+Decision:
+
+- Pass/fail: Pass for selected Local MVP route-discovery-to-detail feature.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: production active provider breadth and the next full retail-flow proof from Home-opened event.
+- Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Home Route Event Opens Simple Ticket
+
+Cycle: FE
+
+Lead Agent target: Continue the Local MVP route-backed entry flow from FD into the first trading surface: a simple Buy/Sell ticket from a Home-opened Event Detail.
+
+Reference Audit Agent: Product steering audit from current Local MVP retail-flow direction. This cycle verifies the Holiwyn user-flow step and does not claim full Polymarket parity.
+
+Implementation Agent: Added focused `LocalMvpHomeRouteTicketFlow` Android harness path.
+
+Audit Gate Agent: PowerShell parser checks, mobile typecheck, provider-shaped route event setup, and Samsung tablet proof.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8274`.
+
+Holiwyn evidence:
+
+- `docs/mobile/audits/cycle-fe-home-route-ticket.md`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-event.json`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-proof.json`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-home.xml`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-detail-top.xml`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-line-markets.xml`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-spread-ticket.xml`
+- `docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-home.png`
+- `docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-detail-top.png`
+- `docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-line-markets.png`
+- `docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-spread-ticket.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| FE-TICKET-P0-01 | P0 | Pass | Tablet Home hierarchy shows route-backed event card and compact outcomes. | N/A |
+| FE-TICKET-P0-02 | P0 | Pass | Tapping the Home card opens same route event detail with chart/probability and Game Lines. | N/A |
+| FE-TICKET-P0-03 | P0 | Pass | Line-market hierarchy shows Spread row with backend line-market source, line `1.5`, period `Reg. Time`, and provider source. | N/A |
+| FE-TICKET-P0-04 | P0 | Pass | Spread outcome tap opens `trade-ticket`. | N/A |
+| FE-TICKET-P0-05 | P0 | Pass | Ticket XML includes `ticket-market-type-spread`, `ticket-line-1.5`, `ticket-period-Reg. Time`, `ticket-selection-side-yes`, provider source, and provider token. | N/A |
+| FE-TICKET-P0-06 | P0 | Pass | Default orderbook markers are absent from Home, Detail, line, and ticket evidence. | N/A |
+| FE-TICKET-P1-01 | P1 | Open | The Home-opened ticket is not submitted in FE. | Next cycle should submit fake-token order from this same entry path. |
+| FE-TICKET-P1-02 | P1 | Open | Production active Polymarket event breadth is not covered by disposable proof. | Map/import more real active provider events. |
+
+Decision:
+
+- Pass/fail: Pass for selected Home -> Event Detail -> Spread ticket feature.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: submit/Portfolio/history from the same Home-opened path and production active provider breadth.
+- Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Home Route Ticket Submit And Portfolio History
+
+Cycle: FF
+
+Lead Agent target: Continue the Local MVP route-backed Home flow from FE through fake-token order submit and Portfolio/history.
+
+Reference Audit Agent: Product steering audit from current Local MVP retail-flow direction. This cycle verifies the Holiwyn user-flow step and does not claim full production Polymarket parity.
+
+Implementation Agent: Added focused `LocalMvpHomeRouteOrderFlow` Android harness path.
+
+Audit Gate Agent: PowerShell parser checks, mobile typecheck, provider-shaped route event setup, and Samsung tablet proof.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8275`.
+
+Holiwyn evidence:
+
+- `docs/mobile/audits/cycle-ff-home-route-order.md`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-event.json`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-proof.json`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-home.xml`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-detail-top.xml`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-line-markets.xml`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-spread-ticket-ready.xml`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-portfolio.xml`
+- `docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-home.png`
+- `docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-detail-top.png`
+- `docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-line-markets.png`
+- `docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-portfolio.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| FF-ORDER-P0-01 | P0 | Pass | Tablet Home hierarchy shows route-backed event card and compact outcomes. | N/A |
+| FF-ORDER-P0-02 | P0 | Pass | Tapping the Home card opens same route event detail with chart/probability and Game Lines. | N/A |
+| FF-ORDER-P0-03 | P0 | Pass | Line-market hierarchy shows Spread row with backend line-market source, line `1.5`, period `Reg. Time`, and provider source. | N/A |
+| FF-ORDER-P0-04 | P0 | Pass | Spread outcome opens ticket with selected market type, line, period, side, provider source, and provider token. | N/A |
+| FF-ORDER-P0-05 | P0 | Pass | Amount presets produce `$25` and `Swipe up to buy`. | N/A |
+| FF-ORDER-P0-06 | P0 | Pass | Submit control creates fake-token order and transitions to Portfolio. | N/A |
+| FF-ORDER-P0-07 | P0 | Pass | Portfolio shows latest order, latest activity, and position/history with order-time selected identity. | N/A |
+| FF-ORDER-P0-08 | P0 | Pass | Default orderbook markers are absent from evidence. | N/A |
+| FF-ORDER-P1-01 | P1 | Open | Server order mode is not covered by FF. | Repeat this Home-opened flow with `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`. |
+| FF-ORDER-P1-02 | P1 | Open | Production active Polymarket event breadth is not covered by disposable proof. | Map/import more real active provider events. |
+
+Decision:
+
+- Pass/fail: Pass for selected Home -> Event Detail -> Spread ticket -> fake-token order -> Portfolio/history feature.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: server order mode for the same Home-opened path and production active provider breadth.
+- Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Home Route Server Order And Portfolio Open Order
+
+Cycle: FG
+
+Lead Agent target: Continue the Local MVP route-backed Home flow from FF through server fake-token order submit and server-synced Portfolio open order.
+
+Reference Audit Agent: Product steering audit from current Local MVP retail-flow direction. This cycle verifies the Holiwyn server-order user-flow step and does not claim full production Polymarket parity.
+
+Implementation Agent: Added focused `LocalMvpHomeRouteServerOrderFlow` Android harness path and wrapper.
+
+Audit Gate Agent: PowerShell parser checks, mobile typecheck, provider-shaped route event setup, temporary mobile dev credential, backend health, and Samsung tablet proof.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8276`.
+
+Holiwyn evidence:
+
+- `docs/mobile/audits/cycle-fg-home-route-server-order.md`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-event.json`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-wrapper.json`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-proof.json`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-home.xml`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-detail-top.xml`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-line-markets.xml`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-spread-ticket-ready.xml`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-portfolio.xml`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-home.png`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-detail-top.png`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-line-markets.png`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-portfolio.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| FG-ORDER-P0-01 | P0 | Pass | Tablet Home hierarchy shows the freshly seeded route-backed event card and compact outcomes. | N/A |
+| FG-ORDER-P0-02 | P0 | Pass | Tapping the Home card opens same route event detail with chart/probability and Game Lines. | N/A |
+| FG-ORDER-P0-03 | P0 | Pass | Line-market hierarchy shows Spread row with backend line-market source, line `1.5`, period `Reg. Time`, and provider source. | N/A |
+| FG-ORDER-P0-04 | P0 | Pass | Spread outcome opens ticket with selected market type, line, period, side, provider source, and provider token. | N/A |
+| FG-ORDER-P0-05 | P0 | Pass | Amount presets produce `$25` and `Swipe up to buy`. | N/A |
+| FG-ORDER-P0-06 | P0 | Pass | Submit posts a server fake-token order through `/api/orders`. | N/A |
+| FG-ORDER-P0-07 | P0 | Pass | Server Portfolio sync shows latest order/open order preserving selected identity. | N/A |
+| FG-ORDER-P0-08 | P0 | Pass | Default orderbook markers are absent from evidence. | N/A |
+| FG-ORDER-P1-01 | P1 | Open | Filled/cancel lifecycle from the exact Home-opened path is not covered by FG. | Future Android proof continuing from Home. |
+| FG-ORDER-P1-02 | P1 | Open | Production active Polymarket event breadth is not covered by disposable proof. | Map/import more real active provider events. |
+
+Decision:
+
+- Pass/fail: Pass for selected Home -> Event Detail -> Spread ticket -> server fake-token order -> server Portfolio open order feature.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: filled/cancel lifecycle from the exact Home-opened path and production active provider breadth.
+- Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Home Route Server Cancel And Portfolio Activity
+
+Cycle: FH
+
+Lead Agent target: Continue the Local MVP route-backed Home flow from FG through visible Cancel and server-synced canceled activity/history.
+
+Reference Audit Agent: Product steering audit from current Local MVP retail-flow direction. This cycle verifies the Holiwyn server-cancel user-flow step and does not claim full production Polymarket parity.
+
+Implementation Agent: Added focused `LocalMvpHomeRouteServerCancelFlow` Android harness path and wrapper.
+
+Audit Gate Agent: PowerShell parser checks, mobile typecheck, provider-shaped route event setup, temporary mobile dev credential, backend health, and Samsung tablet proof.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8277`.
+
+Holiwyn evidence:
+
+- `docs/mobile/audits/cycle-fh-home-route-server-cancel.md`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-event.json`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-wrapper.json`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-proof.json`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-home.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-detail-top.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-line-markets.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-spread-ticket-ready.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-portfolio.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-portfolio-canceled.xml`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-home.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-detail-top.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-line-markets.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-portfolio.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-portfolio-canceled.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| FH-CANCEL-P0-01 | P0 | Pass | Tablet Home hierarchy shows the freshly seeded route-backed event card and compact outcomes. | N/A |
+| FH-CANCEL-P0-02 | P0 | Pass | Tapping the Home card opens same route event detail with chart/probability and Game Lines. | N/A |
+| FH-CANCEL-P0-03 | P0 | Pass | Line-market hierarchy shows Spread row with backend line-market source, line `1.5`, period `Reg. Time`, and provider source. | N/A |
+| FH-CANCEL-P0-04 | P0 | Pass | Spread outcome opens ticket with selected market type, line, period, side, provider source, and provider token. | N/A |
+| FH-CANCEL-P0-05 | P0 | Pass | Amount presets produce `$25` and `Swipe up to buy`. | N/A |
+| FH-CANCEL-P0-06 | P0 | Pass | Submit posts a server fake-token order through `/api/orders`. | N/A |
+| FH-CANCEL-P0-07 | P0 | Pass | Server Portfolio sync shows latest order/open order and visible Cancel action. | N/A |
+| FH-CANCEL-P0-08 | P0 | Pass | Cancel action calls server cancel and refreshes Portfolio/history to canceled activity. | N/A |
+| FH-CANCEL-P0-09 | P0 | Pass | Canceled activity preserves selected line, period, provider source, and provider token. | N/A |
+| FH-CANCEL-P0-10 | P0 | Pass | Default orderbook markers are absent from evidence. | N/A |
+| FH-CANCEL-P1-01 | P1 | Open | Filled lifecycle from the exact Home-opened path is not covered by FH. | Future Android proof continuing from Home. |
+| FH-CANCEL-P1-02 | P1 | Open | Production active Polymarket event breadth is not covered by disposable proof. | Map/import more real active provider events. |
+
+Decision:
+
+- Pass/fail: Pass for selected Home -> Event Detail -> Spread ticket -> server fake-token order -> Cancel -> server Portfolio canceled activity feature.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: filled lifecycle from the exact Home-opened path and production active provider breadth.
+- Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Home Route Server Filled Position And Activity
+
+Cycle: FI
+
+Lead Agent target: Continue the Local MVP route-backed Home flow from FH through server filled position and recent activity/history.
+
+Reference Audit Agent: Product steering audit from current Local MVP retail-flow direction. This cycle verifies the Holiwyn server-filled user-flow step and does not claim full production Polymarket parity.
+
+Implementation Agent: Added focused `LocalMvpHomeRouteServerFilledFlow` Android harness path and wrapper.
+
+Audit Gate Agent: PowerShell parser checks, mobile typecheck, provider-shaped route event setup, backend-shaped counterparty seed, temporary mobile dev credential, backend health, and Samsung tablet proof.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8278`.
+
+Holiwyn evidence:
+
+- `docs/mobile/audits/cycle-fi-home-route-server-filled.md`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-event.json`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-counterparty.json`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-wrapper.json`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-proof.json`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-home.xml`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-detail-top.xml`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-line-markets.xml`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-spread-ticket-ready.xml`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-portfolio.xml`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-home.png`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-detail-top.png`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-line-markets.png`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-portfolio.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| FI-FILLED-P0-01 | P0 | Pass | Tablet Home hierarchy shows the freshly seeded route-backed event card and compact outcomes. | N/A |
+| FI-FILLED-P0-02 | P0 | Pass | Tapping the Home card opens same route event detail with chart/probability and Game Lines. | N/A |
+| FI-FILLED-P0-03 | P0 | Pass | Line-market hierarchy shows Spread row with backend line-market source, line `1.5`, period `Reg. Time`, and provider source. | N/A |
+| FI-FILLED-P0-04 | P0 | Pass | Counterparty proof seeds a resting SELL order at `0.52` for the same spread market/outcome. | N/A |
+| FI-FILLED-P0-05 | P0 | Pass | Spread outcome opens ticket with selected market type, line, period, side, provider source, and provider token. | N/A |
+| FI-FILLED-P0-06 | P0 | Pass | Amount presets produce `$25` and `Swipe up to buy`. | N/A |
+| FI-FILLED-P0-07 | P0 | Pass | Submit posts a server fake-token order through `/api/orders` and fills against seeded liquidity. | N/A |
+| FI-FILLED-P0-08 | P0 | Pass | Server Portfolio sync shows filled order, position, and latest activity. | N/A |
+| FI-FILLED-P0-09 | P0 | Pass | Filled position/activity preserves selected line, period, provider source, and provider token. | N/A |
+| FI-FILLED-P0-10 | P0 | Pass | Default orderbook markers are absent from evidence. | N/A |
+| FI-FILLED-P1-01 | P1 | Open | Production active Polymarket event breadth is not covered by disposable proof. | Map/import more real active provider events. |
+
+Decision:
+
+- Pass/fail: Pass for selected Home -> Event Detail -> Spread ticket -> server fake-token order -> filled Portfolio position/activity feature.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: production active provider breadth and non-disposable liquidity/source breadth.
+- Next cycle required: yes, continue Local MVP user-flow breadth or production provider breadth.
+
+## Cycle LI
+
+Gate status: Pass
+
+Scope: Inactive Futures surface contract cleanup. This cycle removes the old hidden Home Futures tab/list/chart source so the visible MVP Home route is not carrying frontend-only market browsing without backend support.
+
+Evidence:
+
+- `mobile/docs/audits/cycle-LI-inactive-futures-surface-contract.md`
+- `docs/mobile/harness/cycle-LI-inactive-futures-surface-contract/cycle-LI-inactive-futures-surface-contract.json`
+- `mobile/src/__tests__/inactiveFuturesSurfaceContract.test.ts`
+- `scripts/prove_mobile_inactive_futures_surface_contract.ts`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LI-FUTURES-P0-01 | P0 | Pass | Home no longer receives `worldCupTab`, `setWorldCupTab`, or `futures` props. | Restore only with a route-backed Futures contract. |
+| LI-FUTURES-P0-02 | P0 | Pass | Unused Featured Future and segmented-tab components are removed. | Restore only with backend-owned market catalog data. |
+| LI-FUTURES-P0-03 | P0 | Pass | `FutureList` chart/range/outcome-volume frontend invention is removed. | Replace with backend-owned quote/stats if Futures returns. |
+| LI-FUTURES-P0-04 | P0 | Pass | Backend-driven Home match cards and retail outcome rails remain in `MarketList`. | N/A |
+
+Decision:
+
+- Pass/fail: Pass for inactive Futures surface cleanup.
+- Unresolved P0 gaps: 0 for this cleanup.
+- Remaining P1/P2 gaps: visible Futures browsing is future scope until backend route contracts provide full catalog, ordering, quote, volume/liquidity, and ticket contract ids.
+
+## Cycle LJ
+
+Gate status: Pass
+
+Scope: MVP internal backend-readiness proof and hardening gate. This cycle does not claim public launch readiness.
+
+Evidence:
+
+- `docs/mobile/MVP_BACKEND_READINESS_AUDIT_REPORT_2026-07-06.md`
+- `mobile/docs/audits/cycle-LJ-mvp-backend-readiness-gate.md`
+- `docs/mobile/harness/cycle-LJ-mvp-backend-readiness-gate/cycle-LJ-mvp-backend-readiness-gate.json`
+- `mobile/src/__tests__/mvpBackendReadinessGate.test.ts`
+- `scripts/prove_mobile_mvp_backend_readiness_gate.ts`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LJ-READY-P0-01 | P0 | Pass | Readiness report exists and ranks P0/P1/P2. | Create report and rank blockers. |
+| LJ-READY-P0-02 | P0 | Pass | Server-mode Home does not render bundled `worldCupEvents` after route fallback/failure. | Keep server-mode fallback visibly empty/error. |
+| LJ-READY-P0-03 | P0 | Pass | Portfolio value-history route failure remains `portfolio-value-history-route` with `status=error`. | Avoid deterministic fallback in server-mode chart failure. |
+| LJ-READY-P0-04 | P0 | Pass | Server-mode open-order cancel waits for backend success before local removal. | Restore server-first cancel behavior. |
+
+Decision:
+
+- Pass/fail: Pass for focused internal-use backend readiness gate.
+- Ready for internal local testing: yes, for fake-token/internal server-mode MVP flows covered by existing route contracts and this LJ gate.
+- Ready for public server deployment: no. Remaining public-launch gaps include production provider breadth, real liquidity, real auth/session/funding/compliance, and cashout preview/proceeds hardening.
+
+## Cycle LN
+
+Gate status: Partial
+
+Scope: Match line service readiness inspection and enrichment for the local MVP route-backed match page.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-LN-match-line-service-readiness.md`
+- `docs/mobile/harness/cycle-LN-match-line-service-readiness/cycle-LN-match-line-service-readiness.json`
+- `scripts/seed_mobile_mvp_match_line_markets.ts`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LN-LINES-P0-01 | P0 | Pass | `switzerland-vs-colombia` live-detail now returns Regulation Winner, Spread, Totals, and Team Totals. | Re-run the seed/proof script against the selected match event. |
+| LN-LINES-P0-02 | P0 | Pass | Home route returns `switzerland-vs-colombia` first with enriched match market types. | Keep match events ahead of the futures/out-right surface for Local MVP testing. |
+| LN-LINES-P0-03 | P0 | Partial | Line markets are backend-shaped and marked `contract-fixture`, not frontend-only mocks. | Replace with real Polymarket mappings when available. |
+| LN-LINES-P0-04 | P0 | Fail | No S23 visible proof in this cycle. ADB had no attached devices. | Reconnect S23 and run Home -> Event Detail -> line ticket proof. |
+
+Decision:
+
+- Pass/fail: Partial, not final parity pass.
+- Unresolved P0 gaps: S23 visible proof.
+- Remaining P1/P2 gaps: real Polymarket-backed match line market discovery and production liquidity.
+
+## Cycle LO
+
+Gate status: Partial
+
+Scope: Server-mode order, Portfolio, and history lifecycle for the LN-enriched match Spread market.
+
+Evidence:
+
+- `docs/mobile/harness/cycle-LO-match-line-order-lifecycle/cycle-LO-match-line-order-lifecycle.json`
+- `scripts/prove_mobile_mvp_match_line_order_lifecycle.ts`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LO-ORDER-P0-01 | P0 | Pass | `/api/orders` filled a BUY for `switzerland-vs-colombia` Spread line `1.5`. | Fix provider quote gate, maker liquidity, or order request shape. |
+| LO-ORDER-P0-02 | P0 | Pass | Order response preserved selected market/outcome/line/period/source/token. | Fix ticket selection metadata sanitization or canonical order response. |
+| LO-ORDER-P0-03 | P0 | Pass | `/api/portfolio` returned the filled position with selected line and token identity. | Fix Portfolio selection metadata bridge. |
+| LO-ORDER-P0-04 | P0 | Pass | `/api/portfolio/history` returned recent trade with selected line and token identity. | Fix history selection metadata bridge. |
+| LO-ORDER-P0-05 | P0 | Fail | No S23 visible proof in this cycle. ADB had no attached devices and S23 mDNS did not resolve. | Reconnect S23 and run visible mobile proof. |
+
+Decision:
+
+- Pass/fail: Partial, not final Audit Gate pass.
+- Unresolved P0 gaps: visible S23 proof from Home to Portfolio/history.
+- Remaining P1/P2 gaps: real Polymarket-backed line market mappings and production liquidity.
+
+## Cycle LP
+
+Gate status: Partial
+
+Scope: Provider/data availability inspection for current Local MVP match line markets.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-LP-provider-match-line-availability.md`
+- `docs/mobile/harness/cycle-LP-provider-match-line-availability/cycle-LP-provider-match-line-availability.json`
+- `scripts/prove_mobile_provider_match_line_availability.ts`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LP-PROVIDER-P0-01 | P0 | Pass | Exact Gamma event `fifwc-che-col-2026-07-07` returned 3 `match_winner_1x2` markets. | Fix event external slug or provider fetch path. |
+| LP-PROVIDER-P0-02 | P0 | Pass | Exact Gamma event returned 0 Spread/Totals/Team Totals/Halves/Corners/Correct Score markets. | If real line markets appear, map them instead of using fixtures. |
+| LP-PROVIDER-P0-03 | P0 | Pass | Holiwyn route returns 3 real `polymarket` Regulation Winner rows plus contract-fixture line families. | Fix route/source labeling if fixtures or provider rows are mislabeled. |
+| LP-PROVIDER-P0-04 | P0 | Pass | Contract fixtures are documented as a Local MVP bridge, not provider parity. | Update data contract docs and audit report. |
+| LP-PROVIDER-P0-05 | P0 | Fail | No S23 visible proof in this cycle because ADB showed no attached devices. | Reconnect S23 and run visible Home -> Event Detail -> ticket -> Portfolio/history proof. |
+
+Decision:
+
+- Pass/fail: Partial, not final mobile Audit Gate pass.
+- Provider inspection result: pass.
+- Unresolved P0 gaps: S23 visible MVP flow proof.
+- Remaining P1/P2 gaps: real provider-backed match line mappings and production liquidity.
+
+## Cycle LQ
+
+Gate status: Partial
+
+Scope: Backend source-readiness contract for Home and Event Detail.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-LQ-market-source-summary.md`
+- `docs/mobile/harness/cycle-LQ-market-source-summary/cycle-LQ-market-source-summary.json`
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/app/api/events/route.ts`
+- `src/__tests__/mobile-live-event-detail.test.ts`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LQ-SOURCE-P0-01 | P0 | Pass | Live-detail payload includes `event.marketSourceSummary` and `contract.marketSourceSummary`. | Restore route-level source summary. |
+| LQ-SOURCE-P0-02 | P0 | Pass | Home include-mobile-markets route includes `events[].marketSourceSummary`. | Wire summary into Home event serializer. |
+| LQ-SOURCE-P0-03 | P0 | Pass | Route/proof reports Regulation Winner as `provider-backed`. | Fix source classifier or Polymarket mapping. |
+| LQ-SOURCE-P0-04 | P0 | Pass | Route/proof reports line markets as `contract-fixture`. | Fix source classifier or line fixture labeling. |
+| LQ-SOURCE-P0-05 | P0 | Pass | Jest test covers provider-backed winner plus fixture lines. | Add/repair contract test. |
+| LQ-SOURCE-P0-06 | P0 | Fail | No S23 visible proof because ADB showed no attached devices. | Reconnect S23 and run visible MVP flow proof. |
+
+Decision:
+
+- Pass/fail: Partial, not final mobile Audit Gate pass.
+- Backend route contract result: pass.
+- Unresolved P0 gaps: S23 visible MVP flow proof.
+- Remaining P1/P2 gaps: mobile UI consumption of source summary and real provider-backed line mappings.
+
+## Cycle LR
+
+Gate status: Partial
+
+Scope: Portfolio/history source-readiness contract after server fake-token line-market order.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-LR-portfolio-selection-source-summary.md`
+- `docs/mobile/harness/cycle-LR-portfolio-selection-source-summary/cycle-LR-portfolio-selection-source-summary.json`
+- `src/server/services/portfolioSelectionSourceSummary.ts`
+- `src/app/api/portfolio/route.ts`
+- `src/app/api/portfolio/history/route.ts`
+- `src/__tests__/portfolio.open-orders.route.test.ts`
+- `src/__tests__/portfolio.history.route.test.ts`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LR-PORT-P0-01 | P0 | Pass | `/api/portfolio` returns source summaries for positions/openOrders/combined. | Wire route-level summary back into Portfolio response. |
+| LR-PORT-P0-02 | P0 | Pass | `/api/portfolio/history` returns source summaries for canceledOrders/recentTrades/combined. | Wire route-level summary back into history response. |
+| LR-PORT-P0-03 | P0 | Pass | LR proof shows contract-fixture Spread position classified as `contract-fixture`. | Fix selection source summary or ticket metadata preservation. |
+| LR-PORT-P0-04 | P0 | Pass | LR proof shows contract-fixture Spread recent trade classified as `contract-fixture`. | Fix history summary or recent-trade selection lookup. |
+| LR-PORT-P0-05 | P0 | Pass | Focused Jest tests cover provider-backed Portfolio/history line selections. | Add/repair contract tests. |
+| LR-PORT-P0-06 | P0 | Fail | No S23 visible proof because ADB showed no attached devices. | Reconnect S23 and run visible Home -> Event Detail -> ticket -> Portfolio/history proof. |
+
+Decision:
+
+- Pass/fail: Partial, not final mobile Audit Gate pass.
+- Backend route contract result: pass.
+- Unresolved P0 gaps: S23 visible MVP flow proof.
+- Remaining P1/P2 gaps: mobile UI consumption of Portfolio source summary and real provider-backed line mappings.
+
+## Cycle LS
+
+Gate status: Pass for harness/typecheck readiness
+
+Scope: Restore full TypeScript validation for backend route contracts.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-LS-typecheck-readiness.md`
+- `src/server/services/eventReadModel.ts`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LS-TYPE-P0-01 | P0 | Pass | `npx tsc --noEmit --pretty false --skipLibCheck` passed. | Fix route contract type errors. |
+| LS-TYPE-P0-02 | P0 | Pass | Focused MVP route Jest tests passed. | Repair failing route contract behavior. |
+| LS-TYPE-P0-03 | P0 | Pass | Event market rules contract test passed. | Repair market profile/result mode derivation. |
+| LS-TYPE-P0-04 | P0 | Partial | No Android proof because ADB showed no attached devices. | Reconnect S23 and run visible MVP proof. |
+
+Decision:
+
+- Pass/fail: Pass for harness/typecheck readiness only.
+- This is not a final mobile Audit Gate pass.
+- Unresolved P0 gaps: S23 visible MVP flow proof.
+
+## Cycle LT
+
+Gate status: Partial
+
+Scope: Backend route proof for Home -> Event Detail -> line market -> fake-token order -> Portfolio/history.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-LT-home-to-portfolio-route-journey.md`
+- `docs/mobile/harness/cycle-LT-home-to-portfolio-route-journey/cycle-LT-home-to-portfolio-route-journey.json`
+- `scripts/prove_mobile_mvp_home_to_portfolio_journey.ts`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LT-FLOW-P0-01 | P0 | Pass | Home route selected `switzerland-vs-colombia` with provider-backed winner and contract-fixture lines. | Fix Home event routing/source summary. |
+| LT-FLOW-P0-02 | P0 | Pass | Event Detail route preserved matching source summary. | Fix live-detail source summary or event selection. |
+| LT-FLOW-P0-03 | P0 | Pass | Selected Spread line preserved market/outcome/source/token identity. | Fix line market route contract. |
+| LT-FLOW-P0-04 | P0 | Pass | `/api/orders` filled the fake-token BUY. | Fix order submit/matching/local liquidity setup. |
+| LT-FLOW-P0-05 | P0 | Pass | `/api/portfolio` returned position and contract-fixture source summary. | Fix Portfolio selection bridge. |
+| LT-FLOW-P0-06 | P0 | Pass | `/api/portfolio/history` returned recent trade and contract-fixture source summary. | Fix history selection bridge. |
+| LT-FLOW-P0-07 | P0 | Fail | S23 visible UI proof not run in this backend route cycle. | Run next S23 visual proof cycle for the same journey. |
+
+Decision:
+
+- Pass/fail: Partial, not final mobile Audit Gate pass.
+- Backend route journey result: pass.
+- Unresolved P0 gaps: S23 visible MVP flow proof.
+- S23 status: visible to ADB during this cycle as `SM_S911U1`.
+
+## Cycle NK
+
+Gate status: Pass for current provider winner chart/probability source clarity
+
+Scope: Inspect current Local MVP service state, refresh provider-backed Regulation Winner chart history from Polymarket CLOB, expose chart source/status to mobile, and prove the visible S23 path.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NK-current-service-provider-chart.md`
+- `docs/mobile/harness/cycle-NK-current-match-chart-history/current-match-polymarket-chart-history.json`
+- `docs/mobile/harness/cycle-NK-current-match-chart-history-s23/cycle-NK-provider-winner-s23-visible-flow.json`
+- `docs/mobile/harness/cycle-NK-current-match-chart-history-s23/cycle-NK-current-mvp-detail-top.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NK-CHART-P0-01 | P0 | Pass | Current match has 3 provider-backed Regulation Winner markets. | Repair provider discovery/import mapping. |
+| NK-CHART-P0-02 | P0 | Pass | CLOB chart refresh created provider snapshots and chart route returns `polymarket-clob-prices-history`. | Fix CLOB refresh/token mapping. |
+| NK-CHART-P0-03 | P0 | Pass | Live-detail exposes event/contract chart source as `polymarket-clob-prices-history`. | Fix live-detail serializer contract. |
+| NK-CHART-P0-04 | P0 | Pass | S23 Event Detail hierarchy includes `chart-source-polymarket-clob-prices-history`. | Fix mobile adapter/EventDetail proof labels. |
+| NK-CHART-P0-05 | P0 | Pass | S23 proof completes provider winner ticket -> Portfolio History with orderbook hidden. | Fix visible flow harness or order/portfolio route. |
+| NK-LINES-P1-01 | P1 | Partial | Route reports 0 provider-backed line markets and 4 contract fixtures. | Implement provider-backed line-market ingestion when attach-ready markets exist. |
+
+Decision:
+
+- Pass/fail: Pass for provider-backed Regulation Winner chart/probability source clarity.
+- Not a final game-page parity pass because line markets remain `contract-fixture`.
+- Remaining P1: automate chart refresh lifecycle and attach real provider-backed Spread/Totals/Team Total markets.
+
+## Cycle NL
+
+Gate status: Pass for Local MVP provider refresh and fake-token provider winner execution
+
+Scope: Restore current match service data, refresh provider-backed Regulation Winner markets through Polymarket Gamma/CLOB paths, and prove S23 visible order/Portfolio/history flow.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NL-provider-refresh-local-liquidity.md`
+- `docs/mobile/harness/cycle-NL-current-match-provider-refresh/current-match-restore.json`
+- `docs/mobile/harness/cycle-NL-current-match-provider-refresh/current-match-line-markets.json`
+- `docs/mobile/harness/cycle-NL-current-match-provider-refresh/current-match-provider-refresh.json`
+- `docs/mobile/harness/cycle-NL-current-match-provider-refresh-s23-pass/cycle-NL3-provider-winner-s23-visible-flow.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NL-P0-01 | P0 | Pass | Restore proof recreated 3 provider-backed winner markets. | Fix current match restore/import mapping. |
+| NL-P0-02 | P0 | Pass | Provider refresh updated 6 Gamma quote snapshots with 0 skipped markets. | Fix Gamma event fallback refresh. |
+| NL-P0-03 | P0 | Pass | Backend diagnostic and S23 proof filled provider winner BUY with local liquidity. | Fix local-liquidity provider guard. |
+| NL-P0-04 | P0 | Pass | S23 proof reached Portfolio/history and preserved provider source identity. | Fix ticket/order/portfolio identity bridge. |
+| NL-P1-01 | P1 | Partial | Line seed proof shows Spread/Totals/Team Total are contract fixtures. | Add real provider-backed line-market ingestion when attach-ready markets exist. |
+
+Decision:
+
+- Pass/fail: Pass for the Local MVP path in scope.
+- Not a final Polymarket game-page parity pass because provider-backed line markets remain unavailable.
+
+## Cycle NM
+
+Gate status: Pass for current Local MVP line-ticket S23 flow
+
+Scope: Prove the current Home/Live -> Event Detail -> Spread line -> simple Buy ticket -> fake-token/server filled order -> Portfolio/history path on Samsung S23.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NM-current-line-s23-flow.md`
+- `docs/mobile/harness/cycle-NM-current-line-s23-flow/cycle-NM-home-to-portfolio-route-journey.json`
+- `docs/mobile/harness/cycle-NM-current-line-s23-flow/cycle-NM-current-mvp-s23-visible-flow.json`
+- `docs/mobile/harness/cycle-NM-current-line-s23-flow/cycle-NM-current-mvp-portfolio-history.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NM-P0-01 | P0 | Pass | Backend route proof selected current MVP event and filled Spread line order. | Fix event/detail/order route contracts. |
+| NM-P0-02 | P0 | Pass | S23 proof completed visible Home/Live/Event Detail/ticket/Portfolio/history flow. | Fix mobile navigation/ticket/portfolio UI. |
+| NM-P0-03 | P0 | Pass | S23 hierarchy confirms orderbook/chat are absent. | Hide non-MVP surfaces. |
+| NM-P0-04 | P0 | Pass | Portfolio/history preserve `portfolio-market-type-spread`, `portfolio-line-1.5`, and `portfolio-provider-source-contract-fixture`. | Fix selection snapshot bridge. |
+| NM-P1-01 | P1 | Partial | Evidence explicitly shows line markets are contract fixtures. | Attach real provider-backed line markets when available. |
+
+Decision:
+
+- Pass/fail: Pass for current Local MVP line-ticket flow.
+- Not a final Polymarket line-market parity pass because provider-backed lines remain unavailable.
+
+## Cycle NN
+
+Gate status: Pass for current Local MVP line cashout flow
+
+Scope: Prove the current Home/Live -> Event Detail -> Spread line -> Buy ticket -> filled Portfolio position -> Cash out ticket -> SELL fill -> Portfolio History path on Samsung S23.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NN-current-line-cashout-s23-flow.md`
+- `docs/mobile/harness/cycle-NN-current-line-cashout-s23-flow/cycle-NN-current-mvp-s23-visible-flow.json`
+- `docs/mobile/harness/cycle-NN-current-line-cashout-s23-flow/cycle-NN-current-mvp-line-cashout-ticket.xml`
+- `docs/mobile/harness/cycle-NN-current-line-cashout-s23-flow/cycle-NN-current-mvp-line-cashout-history.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NN-P0-01 | P0 | Pass | S23 proof selected the current Spread `1.5` line. | Fix Home/detail line route or mobile scroll/tap selectors. |
+| NN-P0-02 | P0 | Pass | Ticket and Portfolio preserve `portfolio-market-type-spread`, `portfolio-line-1.5`, and `portfolio-provider-source-contract-fixture`. | Fix selection snapshot bridge. |
+| NN-P0-03 | P0 | Pass | Swipe buy reached a filled Portfolio position. | Fix ticket submit/order route. |
+| NN-P0-04 | P0 | Pass | Cashout ticket opened from `portfolio-position-cash-out-*`. | Fix Portfolio cashout action. |
+| NN-P0-05 | P0 | Pass | Cashout SELL filled and History shows sold activity for the same line/source identity. | Fix cashout submit/order matching/history mapping. |
+| NN-P0-06 | P0 | Pass | S23 hierarchies exclude orderbook/chat. | Hide non-MVP surfaces. |
+| NN-P1-01 | P1 | Partial | Evidence still shows contract-fixture line markets. | Attach real provider-backed line markets when available. |
+
+Decision:
+
+- Pass/fail: Pass for current Local MVP line cashout flow.
+- Not a final Polymarket line-market parity pass because provider-backed lines remain unavailable.
+
+## Cycle NO
+
+Gate status: Pass for provider discovery hardening
+
+Scope: Improve and prove Polymarket-first provider discovery for current Event Detail line-market data without falsely marking fixture lines as provider-backed.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NO-provider-line-fallback-discovery.md`
+- `docs/mobile/harness/cycle-NO-provider-line-fallback-discovery/cycle-NO-provider-discovery-guard.json`
+- `docs/mobile/harness/cycle-NO-provider-line-fallback-discovery/cycle-NO-provider-match-line-availability.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NO-P0-01 | P0 | Pass | Unit test and discovery guard show line-family fallback slugs. | Fix `buildProviderCandidateManualSlugFallbacks()`. |
+| NO-P0-02 | P0 | Pass | Guard shows 3 exact match-winner candidates attach-ready. | Fix match-winner relevance/ranking. |
+| NO-P0-03 | P0 | Pass | Guard shows `unsafeOutrightAttachCount: 0`. | Tighten match-specific candidate relevance. |
+| NO-P0-04 | P0 | Pass | Guard shows line targets reject wrong-family candidates and have 0 attach-ready line targets. | Tighten family/relevance gates. |
+| NO-P0-05 | P0 | Pass | Availability proof shows Gamma line market count 0 and route line status `contract-fixture`. | Fix provider availability proof or route source summary. |
+| NO-P1-01 | P1 | Partial | Real line markets remain unavailable. | Attach real provider-backed line markets when an approved source exposes them. |
+
+Decision:
+
+- Pass/fail: Pass for backend/provider discovery hardening.
+- Not a visible UI parity pass and not a final line-market parity pass.
+
+## Cycle NP
+
+Gate status: Pass for Local MVP line-family readiness disclosure
+
+Scope: Make the route and Event Detail UI explicit about which current line families are provider-backed versus fixture-backed, and align the Samsung Event Detail proof gate with the simplified Local MVP page.
+
+Evidence:
+
+- `docs/mobile/harness/cycle-NP-line-family-readiness/cycle-NP-current-state-inspection.json`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NP-P0-01 | P0 | Pass | Route proof includes `lineMarkets.familyReadiness` for spread, total, and team_total. | Fix `buildMobileMarketSourceSummary()`. |
+| NP-P0-02 | P0 | Pass | Route proof shows Regulation Winner `provider-backed` and line families `contract-fixture`. | Fix route serialization or provider mapping. |
+| NP-P0-03 | P0 | Pass | Mobile adapter/type tests preserve the backend summary. | Fix mobile type/adapter contract. |
+| NP-P0-04 | P0 | Pass | S23 Event Detail summary proof passed after removing stale non-MVP stats expectations. | Fix proof gate or Event Detail rendering. |
+| NP-P1-01 | P1 | Partial | Real line markets remain unavailable from provider data. | Attach real provider-backed line markets when an approved source exposes them. |
+
+Decision:
+
+- Pass/fail: Pass for Local MVP readiness disclosure and proof-gate alignment.
+- Not a final Polymarket line-market parity pass because line markets remain fixture-backed.
+
+## Cycle NQ
+
+Gate status: Pass for server-mode line-family readiness proof
+
+Scope: Prove the current server-backed Home/Live -> Event Detail -> Spread line -> Buy ticket -> Portfolio open-order path on Samsung S23, with explicit family-level source/readiness evidence.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NQ-server-mode-line-family-readiness.md`
+- `docs/mobile/harness/cycle-NQ-server-mode-line-family-readiness/cycle-NQ-current-mvp-s23-visible-flow.json`
+- `docs/mobile/harness/cycle-NQ-server-mode-line-family-readiness/cycle-NQ-current-mvp-lines-settled.xml`
+- `docs/mobile/harness/cycle-NQ-server-mode-line-family-readiness/cycle-NQ-current-mvp-after-submit.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NQ-P0-01 | P0 | Pass | S23 proof opens current server-backed Home/Live route. | Fix mobile API base URL, backend service, or Home route loading. |
+| NQ-P0-02 | P0 | Pass | Event Detail hierarchy includes `event-detail-line-source-banner` and separate family readiness markers. | Fix Event Detail source rendering or route summary serialization. |
+| NQ-P0-03 | P0 | Pass | S23 proof selects `Egypt +1.5` and ticket preserves spread line identity. | Fix selection snapshot/ticket bridge. |
+| NQ-P0-04 | P0 | Pass | Swipe submit reaches Portfolio and shows `open-order-row-`. | Fix order submit route or Portfolio sync. |
+| NQ-P0-05 | P0 | Pass | Open order preserves `portfolio-market-type-spread`, `portfolio-line-1.5`, and `portfolio-provider-source-contract-fixture`. | Fix order snapshot or Portfolio mapper. |
+| NQ-P1-01 | P1 | Partial | Readiness markers show spread, total, and team-total are `contract-fixture`. | Attach real provider-backed line markets when available. |
+
+Decision:
+
+- Pass/fail: Pass for current service-state proof and Local MVP open-order journey.
+- Not a final Polymarket line-market parity pass because provider-backed line markets remain unavailable.
+
+## Cycle NR
+
+Gate status: Pass for service-state inspection
+
+Scope: Inspect whether the current Holiwyn service is actually ready for provider-backed Regulation Winner and line markets before continuing visible mobile work.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NR-service-state-inspection.md`
+- `docs/mobile/harness/cycle-NR-service-state-inspection/cycle-NR-current-state.json`
+- `docs/mobile/harness/cycle-NR-service-state-inspection/cycle-NR-provider-match-line-availability-argentina-egypt.json`
+- `docs/mobile/harness/cycle-NR-service-state-inspection/cycle-NR-provider-discovery-guard.json`
+- `docs/mobile/harness/cycle-NR-service-state-inspection/cycle-NR-polymarket-active-sports-scan.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NR-P0-01 | P0 | Pass | Current-state inspection shows Home and Event Detail route are available. | Fix backend server or route restoration. |
+| NR-P0-02 | P0 | Pass | Route source summary shows Regulation Winner `provider-backed`. | Fix provider winner mapping/refresh. |
+| NR-P0-03 | P0 | Pass | Route source summary shows line markets `contract-fixture` with family readiness. | Fix route source serialization. |
+| NR-P0-04 | P0 | Pass | Gamma availability proof shows 0 provider line markets for this event. | Fix provider fetch/classification if wrong. |
+| NR-P0-05 | P0 | Pass | Discovery guard shows 0 attach-ready line targets and 0 unsafe outright attachments. | Tighten provider relevance/family gates. |
+| NR-P1-01 | P1 | Partial | Active sports scan found World Cup outright futures, not match lines. | Add broader match discovery or approved line provider. |
+
+Decision:
+
+- Pass/fail: Pass for inspection and path adjustment.
+- Next implementation work should not claim Polymarket-backed Spread/Totals/Team Total until real provider line data exists.
+
+## Cycle NS
+
+Gate status: Pass for Live freshness empty state
+
+Scope: Keep the Live tab honest by hiding stale provider-dated matches while preserving the Home MVP match for the betting flow.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NS-live-freshness-empty-state.md`
+- `docs/mobile/harness/cycle-NS-live-freshness-empty-state/cycle-NS-live-route-freshness.json`
+- `docs/mobile/harness/cycle-NS-live-freshness-empty-state/cycle-NS-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NS-live-freshness-empty-state/cycle-NS-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NS-live-freshness-empty-state/cycle-NS-current-mvp-live.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NS-P0-01 | P0 | Pass | Route proof shows all-match Home still returns `argentina-vs-egypt`. | Fix all-match route filtering. |
+| NS-P0-02 | P0 | Pass | Route proof shows `status=live` returns 0 events for the stale dated match. | Fix live freshness guard. |
+| NS-P0-03 | P0 | Pass | Mobile service test confirms empty live route stays empty. | Fix `loadHomeEventFeedPage()`. |
+| NS-P0-04 | P0 | Pass | S23 proof shows Home match, Live empty state, and Home return. | Fix Live/Home navigation or server-mode feed. |
+
+Decision:
+
+- Pass/fail: Pass for Local MVP Live freshness honesty.
+- Remaining P1: real current live match/provider breadth is still missing.
+
+## Cycle NT
+
+Gate status: Pass for stale match mobile label guard
+
+Scope: Ensure mobile Home/Event status normalization no longer labels stale provider-dated matches as Live after Cycle NS made the Live route honest.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NT-stale-match-home-label.md`
+- `docs/mobile/harness/cycle-NT-stale-match-home-label/cycle-NT-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NT-stale-match-home-label/cycle-NT-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NT-stale-match-home-label/cycle-NT-current-mvp-live.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NT-P0-01 | P0 | Pass | Adapter test expects stale provider-dated detail pages not to be `live`. | Fix `eventStatus()`. |
+| NT-P0-02 | P0 | Pass | S23 proof asserts Home contains `Time TBD` and `Active`. | Fix Home card status mapping. |
+| NT-P0-03 | P0 | Pass | S23 proof asserts Live empty state. | Fix live route/feed behavior. |
+| NT-P0-04 | P0 | Pass | Typecheck passes with `EventSummary.externalSlug`. | Fix mobile event contract. |
+
+Decision:
+
+- Pass/fail: Pass for visible stale-status honesty.
+- Remaining P1: real current live match/provider breadth is still missing.
+
+## Cycle NU
+
+Gate status: Pass for stale Event Detail status honesty
+
+Scope: Ensure the current MVP Event Detail page does not show stale/no-clock provider data as a live match.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NU-stale-event-detail-status.md`
+- `docs/mobile/harness/cycle-NU-stale-event-detail-status/cycle-NU-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NU-stale-event-detail-status/cycle-NU-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NU-stale-event-detail-status/cycle-NU-current-mvp-detail-stale-top.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NU-P0-01 | P0 | Pass | Adapter test and S23 proof show stale/no-clock live-detail data no longer normalizes as live. | Fix `eventStatus()` stale live-data guard. |
+| NU-P0-02 | P0 | Pass | S23 Event Detail proof asserts `Active`, `Time TBD`, and `event-detail-status-future`. | Fix Event Detail labels. |
+| NU-P0-03 | P0 | Pass | S23 proof rejects `15'` and `LIVE WORLD CUP`. | Remove fake clock/live strip fallback. |
+| NU-P0-04 | P0 | Pass | S23 proof rejects Order Book and Chat. | Keep non-MVP surfaces hidden. |
+
+Decision:
+
+- Pass/fail: Pass for focused Local MVP status-honesty cycle.
+- Remaining P1: real current World Cup live match/provider breadth is still missing.
+- Remaining P1: line markets remain contract fixtures, not provider-backed Polymarket line markets.
+
+## Cycle NV
+
+Gate status: Pass for live-detail display-status contract
+
+Scope: Move stale/no-clock live-detail display truth into the backend route contract and prove mobile consumes it.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NV-live-detail-display-status-contract.md`
+- `docs/mobile/harness/cycle-NV-live-detail-display-status-contract/cycle-NV-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NV-live-detail-display-status-contract/cycle-NV-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NV-live-detail-display-status-contract/cycle-NV-current-mvp-detail-stale-top.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NV-P0-01 | P0 | Pass | Route probe and backend test show `event.displayStatus` for stale/no-clock live-detail data. | Fix `serializeMobileLiveEventDetail()`. |
+| NV-P0-02 | P0 | Pass | Mobile adapter test shows `displayStatus` drives `status`, `startsAt`, and `tag`. | Fix `normalizeEventSummary()`. |
+| NV-P0-03 | P0 | Pass | S23 proof shows Home -> Event Detail as `Active` / `Time TBD`. | Fix mobile route consumption. |
+| NV-P0-04 | P0 | Pass | S23 proof rejects `15'`, `LIVE WORLD CUP`, Order Book, and Chat. | Keep non-MVP surfaces hidden. |
+
+Decision:
+
+- Pass/fail: Pass for focused backend/mobile display contract.
+- Remaining P1: real current World Cup live match/provider breadth is still missing.
+- Remaining P1: line markets remain contract fixtures, not provider-backed Polymarket line markets.
+
+## Cycle NW
+
+Gate status: Pass for Home/event-list display-status contract
+
+Scope: Move stale/no-clock Home card display truth into the backend event-list route contract and prove mobile still renders it.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NW-home-display-status-contract.md`
+- `docs/mobile/harness/cycle-NW-home-display-status-contract/cycle-NW-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NW-home-display-status-contract/cycle-NW-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NW-home-display-status-contract/cycle-NW-current-mvp-detail-stale-top.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NW-P0-01 | P0 | Pass | Route probe and serializer test show `displayStatus` on stale/no-clock Home summary. | Fix `serializeEventSummary()`. |
+| NW-P0-02 | P0 | Pass | Public event/sports no-leak tests pass with only intended public key changes. | Fix response serialization or allowed keys. |
+| NW-P0-03 | P0 | Pass | S23 proof shows Home `Active` / `Time TBD`. | Fix Home route consumption. |
+| NW-P0-04 | P0 | Pass | S23 proof rejects `15'`, `LIVE WORLD CUP`, Order Book, and Chat. | Keep non-MVP surfaces hidden. |
+
+Decision:
+
+- Pass/fail: Pass for focused backend/mobile Home display contract.
+- Remaining P1: real current World Cup live match/provider breadth is still missing.
+- Remaining P1: line markets remain contract fixtures, not provider-backed Polymarket line markets.
+
+## Cycle NX
+
+Gate status: Pass for provider line query breadth and Local MVP visible sanity
+
+Scope: Improve provider discovery queries for line-family markets while preserving strict relevance gates and proving the current Android MVP path still renders correctly.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NX-provider-line-query-breadth.md`
+- `docs/mobile/harness/cycle-NX-provider-line-query-breadth/cycle-NX-provider-line-source-probe.json`
+- `docs/mobile/harness/cycle-NX-provider-line-query-breadth/cycle-NX-provider-match-line-availability.json`
+- `docs/mobile/harness/cycle-NX-provider-line-query-breadth/cycle-NX-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NX-provider-line-query-breadth/cycle-NX-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NX-provider-line-query-breadth/cycle-NX-current-mvp-detail-stale-top.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NX-P0-01 | P0 | Pass | Unit test verifies line-family phrases survive the 12-query cap. | Fix query ordering in `buildProviderCandidateSearchQueries()`. |
+| NX-P0-02 | P0 | Pass | Provider probe keeps irrelevant/wrong-family candidates rejected and reports 0 attach-ready line targets. | Do not weaken relevance or attach-ready gates. |
+| NX-P0-03 | P0 | Pass | Match-line availability proof shows Regulation Winner is provider-backed and line families are explicit contract fixtures. | Fix live-detail source summary. |
+| NX-P0-04 | P0 | Pass | S23 proof shows Home -> Event Detail still works with chat/orderbook hidden. | Fix visible Local MVP regressions. |
+
+Decision:
+
+- Pass/fail: Pass for focused provider-discovery breadth and visible sanity.
+- Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open.
+- Remaining P1: current checked Polymarket events expose only match-winner markets through Gamma, so Local MVP line rows remain contract fixtures.
+
+## Cycle NY
+
+Gate status: Pass for visible Local MVP source-label cleanup
+
+Scope: Simplify visible wording for the current mixed source state: provider-backed Regulation Winner plus local test line markets.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NY-mvp-source-label-cleanup.md`
+- `docs/mobile/harness/cycle-NY-mvp-source-label-cleanup/cycle-NY-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NY-mvp-source-label-cleanup/cycle-NY-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NY-mvp-source-label-cleanup/cycle-NY-current-mvp-detail-stale-top.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NY-P0-01 | P0 | Pass | Home XML/S23 proof shows `Winner: Polymarket / Lines: local test`. | Fix `eventSourceReadiness()`. |
+| NY-P0-02 | P0 | Pass | Source-label tests verify Event Detail retains provider/fixture source markers with simple copy. | Fix `lineSourceCopy()` and `marketSourceHeaderNote()`. |
+| NY-P0-03 | P0 | Pass | Source-label tests verify ticket/portfolio labels use `Polymarket` / `Local test`. | Fix ticket and portfolio source helpers. |
+| NY-P0-04 | P0 | Pass | S23 proof confirms Home -> Event Detail still renders and chat/orderbook remain hidden. | Fix visible MVP regression. |
+
+Decision:
+
+- Pass/fail: Pass for focused visible wording cleanup.
+- Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open.
+
+## Cycle NZ
+
+Gate status: Partial for service readiness; Android UI proof blocked by stale harness
+
+Scope: Inspect current service readiness for Home -> Event Detail line market -> fake-token server order -> Portfolio/history after confirming real provider line markets are unavailable.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NZ-server-order-path-inspection.md`
+- `docs/mobile/harness/cycle-NZ-server-order-path-inspection/cycle-NZ-home-to-portfolio-route-journey.json`
+- `docs/mobile/harness/cycle-NZ-server-order-path-inspection/cycle-current-holiwyn-home.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NZ-P0-01 | P0 | Pass | Route proof selected `Argentina vs. Egypt` from `/api/events`. | Fix event-list route/filtering. |
+| NZ-P0-02 | P0 | Pass | Route proof selected spread line `Egypt +1.5` from live-detail. | Fix contract-fixture line route. |
+| NZ-P0-03 | P0 | Pass | POST `/api/orders` returned FILLED with selection identity preserved. | Fix order route or matching proof liquidity. |
+| NZ-P0-04 | P0 | Pass | `/api/portfolio` and `/api/portfolio/history` returned position/recent trade with line/source/token identity. | Fix portfolio/history read models. |
+| NZ-P0-05 | P0 | Fail | S23 smoke helper failed at Home expecting old `EL-A Provider Breadth World Cup Live`. | Update Android proof harness for current MVP feed. |
+
+Decision:
+
+- Pass/fail: Partial, not a complete Android UI gate pass.
+- Service path is ready for Local MVP internal testing with contract-fixture lines.
+- Next cycle should repair the S23 full-order proof harness and rerun the visible journey.
+
+## Cycle OA
+
+Gate status: Pass for current Local MVP S23 server-order journey
+
+Scope: Repair the Android proof harness after Cycle NZ so it targets the current `argentina-vs-egypt` feed and proves the visible server-order path on Samsung S23.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OA-current-mvp-home-server-order.md`
+- `docs/mobile/harness/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-state-inspection.json`
+- `docs/mobile/harness/cycle-OA-current-mvp-home-server-order/cycle-OA-home-to-portfolio-route-journey-after-backend-restart.json`
+- `docs/mobile/harness/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-proof.json`
+- `docs/mobile/screenshots/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-home.png`
+- `docs/mobile/screenshots/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-detail-top.png`
+- `docs/mobile/screenshots/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-line-markets.png`
+- `docs/mobile/screenshots/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-spread-ticket.png`
+- `docs/mobile/screenshots/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-portfolio.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OA-P0-01 | P0 | Pass | Service inspection shows `Argentina vs. Egypt`, provider-backed Regulation Winner, and `contract-fixture` line families. | Fix service inspection/provider summary. |
+| OA-P0-02 | P0 | Pass | S23 Home proof shows the current MVP event and source labels. | Fix Home route/smoke target. |
+| OA-P0-03 | P0 | Pass | S23 Event Detail proof reaches Game Lines with chat/orderbook hidden. | Fix Event Detail smoke selectors or UI regression. |
+| OA-P0-04 | P0 | Pass | S23 ticket proof shows selected Spread line, period, source, and token identity. | Fix ticket selection identity. |
+| OA-P0-05 | P0 | Pass | S23 Portfolio proof shows the submitted open order with value, source, token, line, period, side, and cancel action. | Fix order submit, portfolio route, or smoke selectors. |
+| OA-P0-06 | P0 | Pass | Route proof verifies filled order/portfolio/history lifecycle after backend restart. | Fix backend beta env, order route, liquidity seeding, or portfolio/history reads. |
+
+Decision:
+
+- Pass/fail: Pass for the current Local MVP visible server-order path.
+- Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open.
+- Remaining P1: production liquidity/pricing hardening remains future work; current visible S23 proof covers open order, while route proof covers filled order/history with seeded liquidity.
+
+## Cycle OB
+
+Gate status: Pass for current Local MVP server cancel/history journey
+
+Scope: Prove the visible cancellation lifecycle after the current server-order path.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OB-current-mvp-home-server-cancel.md`
+- `docs/mobile/harness/cycle-OB-current-mvp-home-server-cancel/cycle-OB-current-mvp-home-server-cancel-proof.json`
+- `docs/mobile/screenshots/cycle-OB-current-mvp-home-server-cancel/cycle-OB-current-mvp-home-server-cancel-portfolio.png`
+- `docs/mobile/screenshots/cycle-OB-current-mvp-home-server-cancel/cycle-OB-current-mvp-home-server-cancel-portfolio-canceled.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OB-P0-01 | P0 | Pass | Service inspection uses `argentina-vs-egypt` and preserves source honesty. | Fix current MVP inspection or route seed. |
+| OB-P0-02 | P0 | Pass | S23 proof reaches Event Detail chart and Game Lines. | Fix Home/Event Detail navigation. |
+| OB-P0-03 | P0 | Pass | S23 proof opens Spread ticket with selected identity. | Fix ticket selection handoff. |
+| OB-P0-04 | P0 | Pass | S23 proof submits server order and shows Portfolio open order. | Fix order route or Portfolio sync. |
+| OB-P0-05 | P0 | Pass | S23 proof taps Cancel and lands on History with canceled activity. | Fix cancel action or Portfolio tab transition. |
+| OB-P0-06 | P0 | Pass | Canceled row XML preserves market/source/token identity. | Fix canceled activity selection snapshot. |
+
+Decision:
+
+- Pass/fail: Pass.
+- Remaining P1: server-owned canceled history response should replace mobile-local canceled activity append later.
+- Remaining P1: real provider-backed line markets remain missing.
+
+## Cycle OC
+
+Gate status: Pass for server-owned cancel history preference
+
+Scope: Make the existing Local MVP cancel/history path prefer server-returned canceled activity after order cancellation.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OC-server-owned-cancel-history.md`
+- `docs/mobile/harness/cycle-OC-server-owned-cancel-history/cycle-OC-open-order-cancel-route-contract.json`
+- `docs/mobile/harness/cycle-OC-server-owned-cancel-history/cycle-OC-portfolio-sync-route-contract.json`
+- `docs/mobile/harness/cycle-OC-server-owned-cancel-history/cycle-OC-server-owned-cancel-history-proof.json`
+- `docs/mobile/screenshots/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-portfolio.png`
+- `docs/mobile/screenshots/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-portfolio-canceled.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OC-P0-01 | P0 | Pass | Cancel path waits for `DELETE /api/orders/:id` before server refresh. | Fix `cancelOpenOrder()`. |
+| OC-P0-02 | P0 | Pass | Mobile refreshes `/api/portfolio` and `/api/portfolio/history` after cancel. | Fix `refreshServerPortfolio()`. |
+| OC-P0-03 | P0 | Pass | Mobile detects `canceled-order-${order.id}` and skips duplicate local append. | Fix server activity detection. |
+| OC-P0-04 | P0 | Pass | Route proof preserves selected line/source/token identity in canceled history. | Fix backend history mapping. |
+| OC-P0-05 | P0 | Pass | S23 proof shows visible open order cancel and History canceled activity. | Fix Portfolio cancel/history UI. |
+
+Decision:
+
+- Pass/fail: Pass for the narrow OC lifecycle scope.
+- Remaining P1: real provider-backed Spread/Totals/Team Total markets remain missing and should be prioritized next.
+- Remaining P2: inherited proof wrapper artifact names still use `cycle-OB` prefixes inside the OC output folder.
+
+## Cycle OD
+
+Gate status: Pass for current provider line inspection
+
+Scope: Inspect current backend/provider readiness before continuing Local MVP work.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OD-current-provider-line-inspection.md`
+- `docs/mobile/harness/cycle-OD-current-provider-line-inspection/cycle-OD-provider-discovery-guard.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OD-P0-01 | P0 | Pass | Current event route returns `argentina-vs-egypt`. | Fix event discovery seed/route. |
+| OD-P0-02 | P0 | Pass | Live-detail source summary shows 3 Polymarket winner markets and 4 contract-fixture line markets. | Fix source summary or route serialization. |
+| OD-P0-03 | P0 | Pass | Provider discovery guard finds 3 attach-ready match-winner candidates. | Fix Gamma discovery for winner markets. |
+| OD-P0-04 | P0 | Pass | Provider discovery guard finds 0 attach-ready line candidates and rejects wrong-family candidates. | Fix relevance gate; do not attach wrong-family markets. |
+
+Decision:
+
+- Pass/fail: Pass for inspection.
+- Remaining P1: provider-backed Spread/Totals/Team Total markets are unavailable for the current event.
+- Next cycles should continue the Local MVP retail flow without pretending fixture line markets are Polymarket-backed.
+
+## Cycle OE
+
+Gate status: Pass for Event Detail source wording
+
+Scope: Align Event Detail market row source language with Ticket and Portfolio.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OE-event-detail-source-wording.md`
+- `docs/mobile/harness/cycle-OE-event-detail-source-wording/cycle-OE-current-mvp-s23-visible-flow.json`
+- `docs/mobile/harness/cycle-OE-event-detail-source-wording/cycle-OE-event-detail-source-wording-lines.xml`
+- `docs/mobile/screenshots/cycle-OE-event-detail-source-wording/cycle-OE-event-detail-source-wording-lines.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OE-P0-01 | P0 | Pass | Event Detail source badges now return `Polymarket` and `Local test`. | Fix `marketSourceBadge()`. |
+| OE-P0-02 | P0 | Pass | Focused mobile test checks readable source wording markers. | Update Event Detail source badge test. |
+| OE-P0-03 | P0 | Pass | S23 line-section XML shows `Local test` and `market-source-local-test-readable`. | Fix Event Detail line row rendering. |
+| OE-P0-04 | P0 | Pass | S23 top/detail proof still passes with chat/orderbook hidden. | Fix Event Detail visible regression. |
+
+Decision:
+
+- Pass/fail: Pass.
+- Remaining P1: real provider-backed line market ingestion remains open.
+
+## Cycle OF
+
+Gate status: Pass for Ticket and Portfolio fake-token source clarity
+
+Scope: Make contract-fixture line-market trading visibly read as local-test fake-token activity in Ticket and Portfolio.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OF-ticket-portfolio-fake-token-source.md`
+- `docs/mobile/harness/cycle-OF-ticket-portfolio-fake-token-source/cycle-OF-ticket-portfolio-fake-token-source-proof.json`
+- `docs/mobile/harness/cycle-OF-ticket-portfolio-fake-token-source/cycle-OA-current-mvp-home-server-order-spread-ticket-ready.xml`
+- `docs/mobile/harness/cycle-OF-ticket-portfolio-fake-token-source/cycle-OA-current-mvp-home-server-order-portfolio.xml`
+- `docs/mobile/screenshots/cycle-OF-ticket-portfolio-fake-token-source/cycle-OA-current-mvp-home-server-order-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-OF-ticket-portfolio-fake-token-source/cycle-OA-current-mvp-home-server-order-portfolio.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OF-P0-01 | P0 | Pass | Ticket XML includes `ticket-source-note` and `fake-token`. | Fix `ticketSourceNote()`. |
+| OF-P0-02 | P0 | Pass | Portfolio XML includes open-order/source-summary markers and `fake-token`. | Fix `portfolioSourceNote()` / `portfolioSourceSummary()`. |
+| OF-P0-03 | P0 | Pass | S23 proof completes Home -> Event Detail -> ticket -> server order -> Portfolio. | Fix proof flow or order lifecycle. |
+| OF-P0-04 | P0 | Pass | No backend route/schema/order logic changed. | Revert unintended backend work. |
+
+Decision:
+
+- Pass/fail: Pass for the narrow OF scope.
+- Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open.
+
+## Cycle OG
+
+Gate status: Pass for current state inspection and path adjustment
+
+Scope: Inspect whether the current Local MVP service state supports real Polymarket-backed Regulation Winner and line markets.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OG-current-state-path-adjustment.md`
+- `docs/mobile/harness/cycle-OG-current-state-path-adjustment/cycle-OG-current-state-inspection.json`
+- `docs/mobile/harness/cycle-OG-current-state-path-adjustment/cycle-OG-provider-match-line-availability.json`
+- `docs/mobile/harness/cycle-OG-current-state-path-adjustment/cycle-OG-real-provider-world-cup-winner.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OG-P0-01 | P0 | Pass | Home/current detail route selects `argentina-vs-egypt`. | Fix event discovery/route filters. |
+| OG-P0-02 | P0 | Pass | Detail route has 3 Polymarket Regulation Winner markets. | Fix provider import/mapping. |
+| OG-P0-03 | P0 | Pass | Detail route has 0 provider-backed line markets and 4 contract-fixture line markets. | Keep fixture labels honest or import real provider line markets when available. |
+| OG-P0-04 | P0 | Pass | Gamma for current provider event has 0 line markets, so fixtures are justified for Local MVP only. | Fix provider availability classifier. |
+| OG-P0-05 | P0 | Pass | Broader World Cup Winner provider proof shows real provider-backed markets exist. | Fix provider discovery/import if missing. |
+
+Decision:
+
+- Pass/fail: Pass for inspection.
+- Next cycle should prioritize current-match Regulation Winner as the real provider-backed ticket/order path.
+- Remaining P1: real provider-backed current-match line-market ingestion remains unavailable.
+
+## Cycle OH
+
+Gate status: Pass for current-match provider winner mobile proof
+
+Scope: Prove the current match Regulation Winner path on Samsung S23.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OH-provider-winner-current-match.md`
+- `docs/mobile/harness/cycle-OH-provider-winner-current-match/cycle-OH-provider-winner-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-OH-provider-winner-current-match/cycle-OH-provider-winner-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-OH-provider-winner-current-match/cycle-OH-provider-winner-after-submit.png`
+- `docs/mobile/screenshots/cycle-OH-provider-winner-current-match/cycle-OH-provider-winner-portfolio-history.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OH-P0-01 | P0 | Pass | Home XML shows current match card. | Fix Home feed/card routing. |
+| OH-P0-02 | P0 | Pass | Detail XML shows composed provider Regulation Winner outcomes. | Fix Event Detail provider winner rendering. |
+| OH-P0-03 | P0 | Pass | Ticket XML includes winner, line none, and provider source Polymarket. | Fix ticket selection mapping. |
+| OH-P0-04 | P0 | Pass | After submit XML reaches Portfolio with provider winner identity. | Fix order submit/Portfolio sync. |
+| OH-P0-05 | P0 | Pass | History XML preserves provider winner identity. | Fix portfolio history mapping. |
+| OH-P0-06 | P0 | Pass | XML does not expose orderbook/chat in MVP path. | Hide non-MVP surfaces. |
+
+Decision:
+
+- Pass/fail: Pass.
+- Remaining P1: current-match line-market provider ingestion remains unavailable.
+
+## Cycle OI
+
+Gate status: Pass for local-line fake-token disclosure
+
+Scope: Make local-test line market source disclosure visible before order submission.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OI-local-line-fake-token-disclosure.md`
+- `docs/mobile/harness/cycle-OI-local-line-fake-token-disclosure/cycle-OI-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-OI-local-line-fake-token-disclosure/cycle-OI-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-OI-local-line-fake-token-disclosure/cycle-OI-current-mvp-lines.png`
+- `docs/mobile/screenshots/cycle-OI-local-line-fake-token-disclosure/cycle-OI-current-mvp-ticket-ready.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OI-P0-01 | P0 | Pass | Home XML contains `home-card-source-local-test-fake-token`. | Fix `eventSourceReadiness()`. |
+| OI-P0-02 | P0 | Pass | Line section XML contains `line-source-local-test-fake-token`. | Fix `lineSourceCopy()`. |
+| OI-P0-03 | P0 | Pass | Line row XML contains `line-market-local-test-fake-token`. | Fix `marketSourceHeaderNote()`. |
+| OI-P0-04 | P0 | Pass | Ticket-ready XML contains fake-token source note. | Fix ticket source note mapping. |
+| OI-P1-01 | P1 | Open | Full-submit attempt hit binary invariant conflict. | Clean fixture-line order-book state or adjust proof setup. |
+
+Decision:
+
+- Pass/fail: Pass for source disclosure.
+- Remaining P1: fixture-line order submit health needs a separate backend/order-book cleanup cycle.
+
+## Cycle OJ
+
+Gate status: Pass for fixture-line proof cleanup
+
+Scope: Clean stale proof state and rerun the full S23 fixture-line submit path.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OJ-fixture-line-order-cleanup.md`
+- `docs/mobile/harness/cycle-OJ-fixture-line-order-cleanup/cycle-OJ-line-cleanup-route-proof.json`
+- `docs/mobile/harness/cycle-OJ-fixture-line-order-cleanup/cycle-OJ-current-mvp-line-cleanup.json`
+- `docs/mobile/harness/cycle-OJ-fixture-line-order-cleanup/cycle-OJ-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-OJ-fixture-line-order-cleanup/cycle-OJ-current-mvp-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-OJ-fixture-line-order-cleanup/cycle-OJ-current-mvp-after-submit.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OJ-P0-01 | P0 | Pass | Cleanup-only route proof cancels stale proof BUY bids and creates no maker order. | Fix cleanup-only mode in spread proof utility. |
+| OJ-P0-02 | P0 | Pass | S23 summary reports `result=pass` and cleanup proof path. | Run cleanup before app launch. |
+| OJ-P0-03 | P0 | Pass | After-submit XML reaches Portfolio with fixture spread line identity. | Fix submit/Portfolio sync. |
+| OJ-P0-04 | P0 | Pass | Summary reports open order visible with source badge. | Fix Portfolio order/source rendering. |
+| OJ-P0-05 | P0 | Pass | XML does not expose orderbook/chat in MVP path. | Hide non-MVP surfaces. |
+
+Decision:
+
+- Pass/fail: Pass.
+- Remaining P1: real provider-backed current-match line-market ingestion remains unavailable.
+
+## Cycle OM
+
+Gate status: Pass for provider breadth runtime route proof; partial for visible mobile breadth
+
+Scope: Import/refresh additional Polymarket-backed World Cup provider data, prove broad mobile route breadth, capture current S23 visible state, and run a tiny provider bot dry-run.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OM-provider-breadth-runtime.md`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-real-provider-world-cup-winner.json`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-provider-breadth-runtime-route.json`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-bot-reference-cache-dry-run.log`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-s23-home.png`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-s23-after-close.png`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-s23-current-screen.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OM-P0-01 | P0 | Pass | Real provider proof imports/refreshed `provider-breadth-world-cup-winner` with 8 Polymarket markets. | Fix Gamma/CLOB import or choose another live slug. |
+| OM-P0-02 | P0 | Pass | Runtime route proof reports 2 provider-backed events in broad World Cup mode. | Fix `/api/events` provider filtering. |
+| OM-P0-03 | P0 | Pass | Local MVP route proof reports match-only events and zero non-match rows. | Restore `mobileMvpMatches=1` route behavior. |
+| OM-P0-04 | P0 | Pass | Live-detail checks report provider-backed markets for both route-visible provider events. | Fix `/api/mobile/events/:slug/live-detail`. |
+| OM-P0-05 | P0 | Pass | Bot dry-run log reports fresh high-quality Polymarket prices and no local order placement. | Fix provider price cache dry-run. |
+| OM-P1-01 | P1 | Partial | S23 Home screenshot shows only current MVP match because mobile uses `mobileMvpMatches=1`. | Add explicit broad runtime UI mode if wanted. |
+| OM-P1-02 | P1 | Partial | S23 screenshots show prominent `Local test` labels. | Reduce tester-facing debug dominance while keeping truthful source state. |
+
+Decision:
+
+- Pass/fail: Pass for provider/runtime proof.
+- Not complete for visible multi-event mobile breadth: the app intentionally remains match-only in Local MVP mode.
+- Remaining P1: real provider-backed current-match line markets remain unavailable.
+
+## Cycle OL
+
+Gate status: Pass for provider readiness cleanup and UI source-change report
+
+Scope: Restore current MVP route state after broad server-test database side effects and document visible UI/source changes.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OL-provider-readiness-cleanup.md`
+- `docs/mobile/UI_REGRESSION_SOURCE_CHANGE_REPORT.md`
+- `docs/mobile/harness/cycle-OL-provider-readiness-cleanup/cycle-OL-current-match-restore.json`
+- `docs/mobile/harness/cycle-OL-provider-readiness-cleanup/cycle-OL-line-market-restore.json`
+- `docs/mobile/harness/cycle-OL-provider-readiness-cleanup/cycle-OL-current-state-inspection.json`
+- `docs/mobile/harness/cycle-OL-provider-readiness-cleanup/cycle-OL-provider-match-line-availability.json`
+- `docs/mobile/harness/cycle-OL-provider-readiness-cleanup/cycle-OL-provider-discovery-guard.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OL-P0-01 | P0 | Pass | Current match restore JSON reports 3 provider markets restored. | Rerun provider restore script. |
+| OL-P0-02 | P0 | Pass | Line restore JSON reports Spread/Totals/Team Totals restored. | Rerun line fixture restore. |
+| OL-P0-03 | P0 | Pass | Current-state proof reports one match, 3 winner markets, 4 line fixtures. | Fix route data. |
+| OL-P0-04 | P0 | Pass | Provider availability proof reports 3 Gamma winner markets and 0 lines. | Recheck Gamma/provider slug. |
+| OL-P0-05 | P0 | Pass | Discovery guard rejects all line candidates as wrong-family. | Fix relevance gate. |
+| OL-P0-06 | P0 | Pass | UI regression/source-change report exists. | Write report before more UI work. |
+
+Decision:
+
+- Pass/fail: Pass.
+- Next milestone: Provider Breadth Runtime Loop.
+
+## Cycle OK
+
+Gate status: Pass for current provider readiness inspection
+
+Scope: Align provider availability proof with the current Home MVP match and inspect the real provider/route state.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OK-current-provider-readiness-gate.md`
+- `docs/mobile/harness/cycle-OK-current-provider-readiness-gate/cycle-OK-current-state-inspection.json`
+- `docs/mobile/harness/cycle-OK-current-provider-readiness-gate/cycle-OK-provider-match-line-availability.json`
+- `docs/mobile/harness/cycle-OK-current-provider-readiness-gate/cycle-OK-provider-discovery-guard.json`
+- `docs/mobile/harness/cycle-OK-current-provider-readiness-gate/cycle-OK-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-OK-current-provider-readiness-gate/cycle-OK-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-OK-current-provider-readiness-gate/cycle-OK-current-mvp-lines.png`
+- `docs/mobile/screenshots/cycle-OK-current-provider-readiness-gate/cycle-OK-current-mvp-ticket-ready.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OK-P0-01 | P0 | Pass | Current-state proof shows one match event and zero futures. | Fix Home MVP route filter. |
+| OK-P0-02 | P0 | Pass | Route proof shows 3 provider-backed Regulation Winner markets. | Fix provider import/mapping. |
+| OK-P0-03 | P0 | Pass | Route proof shows 4 contract-fixture line markets and 0 provider-backed lines. | Keep source disclosure honest. |
+| OK-P0-04 | P0 | Pass | Gamma event proof shows 3 winner markets and 0 line markets. | Fix provider availability classifier if Gamma changes. |
+| OK-P0-05 | P0 | Pass | Discovery guard rejects all 4 line targets as wrong-family. | Do not attach unsafe provider candidates. |
+| OK-P0-06 | P0 | Pass | S23 XML/screenshots show source disclosure and no orderbook/chat. | Fix visible MVP source indicators. |
+
+Decision:
+
+- Pass/fail: Pass.
+- Remaining P1: real provider-backed current-match line-market ingestion remains unavailable.
+## Cycle OS - Provider Breadth / Line Inspection
+
+Result: Pass for focused provider-breadth/Search visibility and line-availability classification.
+
+Checked:
+
+- Current match line availability route proof.
+- Broad provider-backed World Cup route proof.
+- Search provider-breadth route proof.
+- Samsung S23 server-mode Search proof.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-OS-provider-breadth-line-inspection.md`
+- `docs/mobile/harness/cycle-OS-provider-breadth-line-inspection/cycle-OS-provider-breadth-runtime-route.json`
+- `docs/mobile/harness/cycle-OS-provider-breadth-line-inspection/cycle-OS-search-provider-breadth-route.json`
+- `docs/mobile/harness/cycle-OS-provider-breadth-line-inspection/cycle-OS-s23-search-provider-breadth-servermode-reload.xml`
+- `docs/mobile/screenshots/cycle-OS-provider-breadth-line-inspection/cycle-OS-s23-search-provider-breadth-servermode-reload.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Real provider-backed Spread/Totals/Team Total current-match markets remain unavailable.
+- More current/live match provider inventory remains needed.
+- Provider refresh still needs scheduled/runtime automation.
+
+## Cycle OW - Provider Visible To Tradable Flow
+
+Result: Pass for selected provider-visible market to local internal-test tradable flow.
+
+Checked:
+
+- OV clean/pushed before OW started.
+- One provider-backed World Cup Winner market selected and made local-MM-ready.
+- Bot dry-run no longer blocked by exposure cap.
+- Bot live-local placed quotes after local internal trading beta startup/allowlist was enabled.
+- S23 Search showed the provider-backed World Cup Winner result.
+- S23 opened the provider-backed detail page and showed provider outcome rows.
+- Mobile server-mode ticket order filled against bot liquidity.
+- Portfolio and history showed the filled provider-backed fake-token order.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-OW-provider-visible-tradable-flow.md`
+- `docs/mobile/harness/cycle-OW-provider-visible-tradable-flow/cycle-OW-provider-visible-tradable-flow.json`
+- `docs/mobile/harness/cycle-OW-provider-visible-tradable-flow/cycle-OW-bot-dry-run-england.txt`
+- `docs/mobile/harness/cycle-OW-provider-visible-tradable-flow/cycle-OW-bot-live-local-england-success.txt`
+- `docs/mobile/harness/cycle-OW-provider-visible-tradable-flow/cycle-OW-s23-search-england.xml`
+- `docs/mobile/screenshots/cycle-OW-provider-visible-tradable-flow/cycle-OW-s23-search-england.png`
+- `docs/mobile/harness/cycle-OW-provider-visible-tradable-flow/cycle-OW-s23-provider-winner-detail.xml`
+- `docs/mobile/screenshots/cycle-OW-provider-visible-tradable-flow/cycle-OW-s23-provider-winner-detail.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Repeatable local startup command for internal beta trading flags and allowlist.
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+
+## Cycle PF - First Continent Provider Market Tradable Proof
+
+Result: Pass for first continent provider-backed internal-test tradable market scope.
+
+Checked:
+
+- Europe (UEFA) continent market selected from a second provider event family.
+- Backend helper verified the local internal beta trading runtime stayed healthy.
+- Europe MM enable, corrected seed, live-ready/live-enabled, and live-local quote placement passed.
+- Bot dry-run and live-local quote placement did not hit exposure-cap blocking.
+- Mobile route/service proof filled Europe YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed the continent event detail with Europe provider-backed outcome visible/selectable.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PF-first-continent-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-PF-first-continent-provider-market-tradable-proof/cycle-PF-internal-beta-backend-check.json`
+- `docs/mobile/harness/cycle-PF-first-continent-provider-market-tradable-proof/cycle-PF-prepare-europe-small-seed.txt`
+- `docs/mobile/harness/cycle-PF-first-continent-provider-market-tradable-proof/cycle-PF-bot-live-local-europe-success.txt`
+- `docs/mobile/harness/cycle-PF-first-continent-provider-market-tradable-proof/cycle-PF-provider-europe-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PF-first-continent-provider-market-tradable-proof/cycle-PF-s23-continent-europe-summary.json`
+- `docs/mobile/harness/cycle-PF-first-continent-provider-market-tradable-proof/cycle-PF-s23-continent-top.xml`
+- `docs/mobile/harness/cycle-PF-first-continent-provider-market-tradable-proof/cycle-PF-s23-continent-europe.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+
+## Cycle PL - Current Match Line Provider Gate
+
+Result: Pass for provider-line honesty gate.
+
+Checked:
+
+- Home route returns match-only Local MVP feed.
+- Current match has provider-backed Regulation Winner.
+- Current match has 0 provider-backed Spread/Totals/Team Total line markets.
+- Current match has 4 contract-fixture line markets across Spread, Totals, and Team Totals.
+- Polymarket Gamma for `fifwc-arg-egy-2026-07-07` exposes 3 match-winner rows and 0 line rows.
+- Discovery guard keeps match-winner candidates attach-ready.
+- Discovery guard rejects all line attachments as wrong-family, with 0 attach-ready line targets.
+- S23 proof shows current match detail and line sections are visible with honest source marker wording.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PL-current-match-line-provider-gate.md`
+- `docs/mobile/harness/cycle-PL-current-match-line-provider-gate/cycle-PL-current-state-inspection.json`
+- `docs/mobile/harness/cycle-PL-current-match-line-provider-gate/cycle-PL-provider-match-line-availability.json`
+- `docs/mobile/harness/cycle-PL-current-match-line-provider-gate/cycle-PL-provider-discovery-guard.json`
+- `docs/mobile/harness/cycle-PL-current-match-line-provider-gate/cycle-PL-s23-summary.json`
+- `docs/mobile/screenshots/cycle-PL-current-match-line-provider-gate/cycle-PL-s23-current-match-detail-top.png`
+- `docs/mobile/screenshots/cycle-PL-current-match-line-provider-gate/cycle-PL-s23-current-match-lines.png`
+
+Unresolved P0 gaps: 0 for PL scope.
+
+Remaining P1:
+
+- Real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
+- Contract fixtures must remain clearly disclosed until attach-ready provider line rows exist.
+
+## Cycle PK - Golden Boot Haaland Tradable Flow
+
+Result: Pass for selected Golden Boot Haaland provider-visible-to-tradable scope.
+
+Checked:
+
+- Haaland Golden Boot market selected from provider-visible Polymarket data.
+- Haaland was approved as internal-test tradable and MM-enabled.
+- Small local bot seed passed.
+- Bot dry-run passed.
+- Bot live-local placed quotes without exposure-cap blocking.
+- Mobile route/service proof filled Haaland YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed Search and Event Detail for the Haaland provider-backed outcome.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PK-golden-boot-haaland-tradable-flow.md`
+- `docs/mobile/harness/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-bot-dry-run-haaland-golden-boot.txt`
+- `docs/mobile/harness/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-bot-live-local-haaland-golden-boot.txt`
+- `docs/mobile/harness/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-provider-haaland-golden-boot-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-s23-summary.json`
+- `docs/mobile/screenshots/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-s23-search-haaland-golden-boot.png`
+- `docs/mobile/screenshots/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-s23-haaland-golden-boot-detail-from-search.png`
+
+## Cycle PN - Provider Proof Harness And Mbappe Tradable Flow
+
+Result: Pass for selected Golden Boot Mbappe provider-visible-to-tradable scope.
+
+Audit notes:
+
+- Mbappe Golden Boot market selected from provider-visible Polymarket data.
+- Mbappe was enabled for internal-test MM and seeded with a small fake-token liquidity profile.
+- Bot dry-run and live-local quote placement passed without exposure-cap blocking.
+- Mobile route/service proof filled Mbappe YES against local MM liquidity.
+- Portfolio/history preserved provider market id `2069638`, condition id, outcome id, and token id.
+- S23 proof showed Search and Event Detail for the Mbappe provider-backed outcome.
+- No order book UI, chat, live stats, or social surfaces were changed.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-PN-provider-proof-harness-mbappe.md`
+- `docs/mobile/harness/cycle-PN-provider-proof-harness-mbappe/cycle-PN-bot-dry-run-mbappe.txt`
+- `docs/mobile/harness/cycle-PN-provider-proof-harness-mbappe/cycle-PN-bot-live-local-mbappe-success.txt`
+- `docs/mobile/harness/cycle-PN-provider-proof-harness-mbappe/cycle-PN-provider-mbappe-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PN-provider-proof-harness-mbappe/cycle-PN-s23-summary.json`
+- `docs/mobile/screenshots/cycle-PN-provider-proof-harness-mbappe/cycle-PN-s23-search-mbappe-golden-boot.png`
+- `docs/mobile/screenshots/cycle-PN-provider-proof-harness-mbappe/cycle-PN-s23-mbappe-golden-boot-detail-from-search.png`
+
+Unresolved P0:
+
+- None for PN scope.
+
+Remaining P1/P2:
+
+- Current-match provider-backed Spread/Totals/Team Total markets remain unavailable.
+- Home/Live remain match-only by product direction; broad futures remain Search/detail surfaces.
+- The lifecycle path should eventually be wrapped into one orchestrated harness command.
+
+Unresolved P0 gaps: 0 for PK scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+
+## Cycle PJ - Provider Visible Market To Local Tradable Market
+
+Result: Pass for selected Norway provider-visible-to-tradable scope.
+
+Checked:
+
+- Norway Nation of Top Goalscorer market selected from provider-visible Polymarket data.
+- Norway was approved as internal-test tradable and MM-enabled.
+- Small local bot seed passed.
+- Bot dry-run passed.
+- Bot live-local placed quotes without exposure-cap blocking.
+- Mobile route/service proof filled Norway YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed Search and Event Detail for the Norway provider-backed outcome.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PJ-provider-visible-tradable-market.md`
+- `docs/mobile/harness/cycle-PJ-provider-visible-tradable-market/cycle-PJ-bot-dry-run-norway-nation.txt`
+- `docs/mobile/harness/cycle-PJ-provider-visible-tradable-market/cycle-PJ-bot-live-local-norway-nation.txt`
+- `docs/mobile/harness/cycle-PJ-provider-visible-tradable-market/cycle-PJ-provider-norway-nation-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PJ-provider-visible-tradable-market/cycle-PJ-s23-summary.json`
+- `docs/mobile/screenshots/cycle-PJ-provider-visible-tradable-market/cycle-PJ-s23-search-norway-nation.png`
+- `docs/mobile/screenshots/cycle-PJ-provider-visible-tradable-market/cycle-PJ-s23-norway-nation-detail-from-search.png`
+
+Unresolved P0 gaps: 0 for PJ scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+- Remaining provider event families are not all local-MM-proven yet.
+
+## Cycle PG - First Golden Boot Provider Market Tradable Proof
+
+Result: Pass for first Golden Boot provider-backed internal-test tradable market scope.
+
+Checked:
+
+- Lionel Messi Golden Boot market selected from a third provider event family.
+- Backend helper verified the local internal beta trading runtime stayed healthy.
+- Messi MM enable, explicit tradable approval, seed, live-ready/live-enabled, and live-local quote placement passed.
+- Bot dry-run and live-local quote placement did not hit exposure-cap blocking.
+- Mobile route/service proof filled Messi YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed the Golden Boot detail with Messi provider-backed outcome visible/selectable.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PG-first-golden-boot-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-PG-first-golden-boot-provider-market-tradable-proof/cycle-PG-internal-beta-backend-check.json`
+- `docs/mobile/harness/cycle-PG-first-golden-boot-provider-market-tradable-proof/cycle-PG-approve-tradable-messi.json`
+- `docs/mobile/harness/cycle-PG-first-golden-boot-provider-market-tradable-proof/cycle-PG-prepare-messi-small-seed.txt`
+- `docs/mobile/harness/cycle-PG-first-golden-boot-provider-market-tradable-proof/cycle-PG-bot-live-local-messi-success.txt`
+- `docs/mobile/harness/cycle-PG-first-golden-boot-provider-market-tradable-proof/cycle-PG-provider-messi-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PG-first-golden-boot-provider-market-tradable-proof/cycle-PG-s23-golden-boot-messi-summary.json`
+- `docs/mobile/harness/cycle-PG-first-golden-boot-provider-market-tradable-proof/cycle-PG-s23-golden-boot-top.xml`
+- `docs/mobile/harness/cycle-PG-first-golden-boot-provider-market-tradable-proof/cycle-PG-s23-golden-boot-messi.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+- Remaining Golden Boot and nation top-goalscorer markets are not all local-MM-proven yet.
+
+## Cycle PE - Eighth Provider Market Tradable Proof
+
+Result: Pass for eighth provider-backed internal-test tradable market scope.
+
+Checked:
+
+- Morocco World Cup Winner market selected as the eighth provider-backed tradable target.
+- Backend helper verified the local internal beta trading runtime stayed healthy.
+- Morocco MM enable, seed, live-ready/live-enabled, and live-local quote placement passed.
+- Bot dry-run and live-local quote placement did not hit exposure-cap blocking.
+- Mobile route/service proof filled Morocco YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed World Cup Winner detail with Morocco provider-backed outcome visible/selectable.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PE-eighth-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-PE-eighth-provider-market-tradable-proof/cycle-PE-internal-beta-backend-check.json`
+- `docs/mobile/harness/cycle-PE-eighth-provider-market-tradable-proof/cycle-PE-prepare-morocco-small-seed.txt`
+- `docs/mobile/harness/cycle-PE-eighth-provider-market-tradable-proof/cycle-PE-bot-live-local-morocco-success.txt`
+- `docs/mobile/harness/cycle-PE-eighth-provider-market-tradable-proof/cycle-PE-provider-morocco-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PE-eighth-provider-market-tradable-proof/cycle-PE-s23-search-morocco-summary.json`
+- `docs/mobile/harness/cycle-PE-eighth-provider-market-tradable-proof/cycle-PE-s23-world-cup-winner-top.xml`
+- `docs/mobile/harness/cycle-PE-eighth-provider-market-tradable-proof/cycle-PE-s23-world-cup-winner-morocco.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+
+## Cycle PC - Sixth Provider Market Tradable Proof
+
+Result: Pass for sixth provider-backed internal-test tradable market scope.
+
+Checked:
+
+- Belgium World Cup Winner market selected as the sixth provider-backed tradable target.
+- Backend helper check confirmed the local server was healthy with internal trading and bot-seeding env flags.
+- Belgium MM enable, seed, live-ready/live-enabled, and live-local quote placement passed.
+- Mobile route/service proof filled Belgium YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed World Cup Winner detail with Belgium provider-backed outcome visible/selectable.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PC-sixth-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-PC-sixth-provider-market-tradable-proof/cycle-PC-internal-beta-backend-check.json`
+- `docs/mobile/harness/cycle-PC-sixth-provider-market-tradable-proof/cycle-PC-prepare-belgium-small-seed.txt`
+- `docs/mobile/harness/cycle-PC-sixth-provider-market-tradable-proof/cycle-PC-bot-live-local-belgium-success.txt`
+- `docs/mobile/harness/cycle-PC-sixth-provider-market-tradable-proof/cycle-PC-provider-belgium-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PC-sixth-provider-market-tradable-proof/cycle-PC-s23-search-belgium.xml`
+- `docs/mobile/harness/cycle-PC-sixth-provider-market-tradable-proof/cycle-PC-s23-search-belgium.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+
+## Cycle PB - Fifth Provider Market Tradable Proof
+
+Result: Pass for fifth provider-backed internal-test tradable market scope.
+
+Checked:
+
+- Argentina World Cup Winner market selected as the fifth provider-backed tradable target.
+- Backend helper check confirmed the local server was healthy with internal trading and bot-seeding env flags.
+- Argentina MM enable, seed, live-ready/live-enabled, and live-local quote placement passed.
+- Mobile route/service proof filled Argentina YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed World Cup Winner detail with Argentina provider-backed outcome visible/selectable.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PB-fifth-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-PB-fifth-provider-market-tradable-proof/cycle-PB-internal-beta-backend-check.json`
+- `docs/mobile/harness/cycle-PB-fifth-provider-market-tradable-proof/cycle-PB-prepare-argentina-small-seed.txt`
+- `docs/mobile/harness/cycle-PB-fifth-provider-market-tradable-proof/cycle-PB-bot-live-local-argentina-success.txt`
+- `docs/mobile/harness/cycle-PB-fifth-provider-market-tradable-proof/cycle-PB-provider-argentina-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PB-fifth-provider-market-tradable-proof/cycle-PB-s23-search-argentina.xml`
+- `docs/mobile/harness/cycle-PB-fifth-provider-market-tradable-proof/cycle-PB-s23-search-argentina.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+
+## Cycle PA - Fourth Provider Market Tradable Proof
+
+Result: Pass for fourth provider-backed internal-test tradable market scope.
+
+Checked:
+
+- Switzerland World Cup Winner market selected as the fourth provider-backed tradable target.
+- Backend helper check confirmed the local server was healthy with internal trading and bot-seeding env flags.
+- Switzerland MM enable, seed, live-ready/live-enabled, and live-local quote placement passed.
+- Mobile route/service proof filled Switzerland YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed World Cup Winner detail with Switzerland provider-backed outcome visible/selectable.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PA-fourth-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-PA-fourth-provider-market-tradable-proof/cycle-PA-internal-beta-backend-check.json`
+- `docs/mobile/harness/cycle-PA-fourth-provider-market-tradable-proof/cycle-PA-prepare-switzerland-small-seed.txt`
+- `docs/mobile/harness/cycle-PA-fourth-provider-market-tradable-proof/cycle-PA-bot-live-local-switzerland-success.txt`
+- `docs/mobile/harness/cycle-PA-fourth-provider-market-tradable-proof/cycle-PA-provider-switzerland-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PA-fourth-provider-market-tradable-proof/cycle-PA-s23-search-switzerland.xml`
+- `docs/mobile/harness/cycle-PA-fourth-provider-market-tradable-proof/cycle-PA-s23-search-switzerland.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+
+## Cycle OZ - Third Provider Market Tradable Proof
+
+Result: Pass for third provider-backed internal-test tradable market scope.
+
+Checked:
+
+- Spain World Cup Winner market selected as the third provider-backed tradable target.
+- Backend helper check confirmed the local server was healthy with internal trading and bot-seeding env flags.
+- Spain MM enable, seed, live-ready/live-enabled, and live-local quote placement passed.
+- Mobile route/service proof filled Spain YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed World Cup Winner detail with Spain provider-backed outcome visible/selectable.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-OZ-third-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-OZ-third-provider-market-tradable-proof/cycle-OZ-internal-beta-backend-check.json`
+- `docs/mobile/harness/cycle-OZ-third-provider-market-tradable-proof/cycle-OZ-prepare-spain-small-seed.txt`
+- `docs/mobile/harness/cycle-OZ-third-provider-market-tradable-proof/cycle-OZ-bot-live-local-spain-success.txt`
+- `docs/mobile/harness/cycle-OZ-third-provider-market-tradable-proof/cycle-OZ-provider-spain-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-OZ-third-provider-market-tradable-proof/cycle-OZ-s23-search-spain.xml`
+- `docs/mobile/harness/cycle-OZ-third-provider-market-tradable-proof/cycle-OZ-s23-search-spain.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+
+## Cycle OX - Internal Beta Trading Startup Harness
+
+Result: Pass for local internal-beta startup harness scope.
+
+Checked:
+
+- Repeatable PowerShell helper exists for local backend startup/check.
+- Package script `mobile:internal-beta-backend:start` exists and runs the helper.
+- Helper starts/checks backend with internal trading beta enabled, trading kill switch off, and system liquidity bot/mobile proof users allowlisted.
+- Provider-backed Ticket -> Order -> Portfolio/history route/mobile-service proof passes after helper startup.
+- No order book UI, chat, live stats, social features, deposit, withdraw, or schema work was touched.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-OX-internal-beta-trading-startup-harness.md`
+- `docs/mobile/harness/cycle-OX-internal-beta-trading-startup-harness/cycle-OX-internal-beta-backend-start.json`
+- `docs/mobile/harness/cycle-OX-internal-beta-trading-startup-harness/cycle-OX-package-script-check.json`
+- `docs/mobile/harness/cycle-OX-internal-beta-trading-startup-harness/cycle-OX-provider-order-after-startup.json`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+- Future visible UI changes still need fresh S23 proof; OX is backend harness proof only.
+
+## Cycle OY - Second Provider Market Tradable Proof
+
+Result: Pass for second provider-backed internal-test tradable market scope.
+
+Checked:
+
+- France World Cup Winner market selected as the second provider-backed tradable target.
+- Backend helper now starts local server with both trading and bot-seeding env flags.
+- France MM enable, seed, live-ready/live-enabled, and live-local quote placement passed after helper restart.
+- Mobile route/service proof filled France YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed World Cup Winner detail with France provider-backed outcome visible/selectable.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-OY-second-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-OY-second-provider-market-tradable-proof/cycle-OY-internal-beta-backend-restart.json`
+- `docs/mobile/harness/cycle-OY-second-provider-market-tradable-proof/cycle-OY-prepare-france-small-seed-after-helper.txt`
+- `docs/mobile/harness/cycle-OY-second-provider-market-tradable-proof/cycle-OY-bot-live-local-france-after-seed-success.txt`
+- `docs/mobile/harness/cycle-OY-second-provider-market-tradable-proof/cycle-OY-provider-france-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-OY-second-provider-market-tradable-proof/cycle-OY-s23-search-france.xml`
+- `docs/mobile/harness/cycle-OY-second-provider-market-tradable-proof/cycle-OY-s23-search-france.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+
+## Cycle PD - Seventh Provider Market Tradable Proof
+
+Result: Pass for seventh provider-backed internal-test tradable market scope.
+
+Checked:
+
+- Norway World Cup Winner market selected as the seventh provider-backed tradable target.
+- Backend helper verified the local internal beta trading runtime stayed healthy.
+- Norway MM enable, seed, live-ready/live-enabled, and live-local quote placement passed.
+- Bot dry-run and live-local quote placement did not hit exposure-cap blocking.
+- Mobile route/service proof filled Norway YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed World Cup Winner detail with Norway provider-backed outcome visible/selectable.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PD-seventh-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-PD-seventh-provider-market-tradable-proof/cycle-PD-internal-beta-backend-check.json`
+- `docs/mobile/harness/cycle-PD-seventh-provider-market-tradable-proof/cycle-PD-prepare-norway-small-seed.txt`
+- `docs/mobile/harness/cycle-PD-seventh-provider-market-tradable-proof/cycle-PD-bot-live-local-norway-success.txt`
+- `docs/mobile/harness/cycle-PD-seventh-provider-market-tradable-proof/cycle-PD-provider-norway-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PD-seventh-provider-market-tradable-proof/cycle-PD-s23-search-norway.xml`
+- `docs/mobile/harness/cycle-PD-seventh-provider-market-tradable-proof/cycle-PD-s23-search-norway.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+
+## Cycle PH - Nation Top Goalscorer Provider Market Tradable Proof
+
+Result: Pass for selected Nation of Top Goalscorer provider-backed internal-test tradable market scope.
+
+Checked:
+
+- Argentina Nation of Top Goalscorer market selected as a provider-backed tradable target from a new event family.
+- Argentina MM enable, seed, live-ready/live-enabled, and live-local quote placement passed.
+- Bot dry-run and live-local quote placement did not hit exposure-cap blocking.
+- Mobile route/service proof filled Argentina YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 direct event-detail proof showed the `world-cup-nation-of-top-goalscorer` page with provider market `2070987` visible.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof/cycle-PH-reference-refresh-nation-top-goalscorer.json`
+- `docs/mobile/harness/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof/cycle-PH-bot-live-local-argentina-nation.txt`
+- `docs/mobile/harness/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof/cycle-PH-provider-argentina-nation-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof/cycle-PH-s23-argentina-nation-detail-direct.xml`
+- `docs/mobile/screenshots/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof/cycle-PH-s23-argentina-nation-detail-direct.png`
+
+Unresolved P0 gaps: 0 for this selected market scope.
+
+Remaining P1:
+
+- S23 Search deep-link attempts did not reliably show the Nation of Top Goalscorer result; direct event-detail proof and backend Search route proof passed.
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+
+## Cycle PI - Search Deep-Link Provider Futures Proof
+
+Result: Pass for PI scope.
+
+Checked:
+
+- S23 Search launch with `forceResetState=1`, `forceSearch=1`, and `forceSearchQuery=representing Argentina` stayed on Search.
+- Search XML showed `search-world-cup-markets`.
+- Search XML showed `World Cup: Nation of Top Goalscorer` and `Argentina`.
+- Tapping the result opened Event Detail.
+- Detail XML showed `event-detail-back`, `World Cup: Nation of Top Goalscorer`, and `selection-provider-market-2070987`.
+- Home/Live match-only behavior was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PI-search-deeplink-provider-futures-proof.md`
+- `docs/mobile/harness/cycle-PI-search-deeplink-provider-futures-proof/cycle-PI-summary.json`
+- `docs/mobile/harness/cycle-PI-search-deeplink-provider-futures-proof/cycle-PI-s23-search-argentina-nation.xml`
+- `docs/mobile/screenshots/cycle-PI-search-deeplink-provider-futures-proof/cycle-PI-s23-search-argentina-nation.png`
+- `docs/mobile/harness/cycle-PI-search-deeplink-provider-futures-proof/cycle-PI-s23-argentina-nation-detail-from-search.xml`
+- `docs/mobile/screenshots/cycle-PI-search-deeplink-provider-futures-proof/cycle-PI-s23-argentina-nation-detail-from-search.png`
+
+Unresolved P0 gaps: 0 for PI scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.

@@ -173,12 +173,35 @@ export async function seedReferenceLiquidityBotForMarket(
     select: {
       outcomeId: true,
       shares: true,
+      reservedShares: true,
     },
   });
   const mintTarget = new Prisma.Decimal(mintedCompleteSets.toFixed(6));
+  const burnedExcessCompleteSets = await burnExcessReferenceCompleteSets({
+    marketId: market.id,
+    userId: botUser.id,
+    outcomeIds: market.outcomes.map((outcome) => outcome.id),
+    positions,
+    targetCompleteSets: mintTarget,
+  });
+  const normalizedPositions =
+    burnedExcessCompleteSets.gt(0)
+      ? await prisma.position.findMany({
+          where: {
+            userId: botUser.id,
+            marketId: market.id,
+            outcomeId: { in: market.outcomes.map((outcome) => outcome.id) },
+          },
+          select: {
+            outcomeId: true,
+            shares: true,
+            reservedShares: true,
+          },
+        })
+      : positions;
   const hasMintedInventory =
-    positions.length === market.outcomes.length &&
-    positions.every((position) => new Prisma.Decimal(position.shares).gte(mintTarget));
+    normalizedPositions.length === market.outcomes.length &&
+    normalizedPositions.every((position) => new Prisma.Decimal(position.shares).gte(mintTarget));
 
   if (!hasMintedInventory) {
     await mintCompleteSetForPublicOrderbook({
@@ -265,6 +288,88 @@ export async function seedReferenceLiquidityBotForMarket(
     botApiKeyId: createdCredential.apiKey.keyId,
     botApiToken: createdCredential.token,
   };
+}
+
+async function burnExcessReferenceCompleteSets(params: {
+  marketId: string;
+  userId: string;
+  outcomeIds: string[];
+  positions: Array<{ outcomeId: string; shares: Prisma.Decimal; reservedShares: Prisma.Decimal }>;
+  targetCompleteSets: Prisma.Decimal;
+}) {
+  if (params.positions.length !== params.outcomeIds.length) {
+    return new Prisma.Decimal(0);
+  }
+
+  let burnable: Prisma.Decimal | null = null;
+  for (const outcomeId of params.outcomeIds) {
+    const position = params.positions.find((item) => item.outcomeId === outcomeId);
+    if (!position) {
+      return new Prisma.Decimal(0);
+    }
+    const availableAboveTarget = new Prisma.Decimal(position.shares)
+      .sub(new Prisma.Decimal(position.reservedShares))
+      .sub(params.targetCompleteSets);
+    burnable = burnable === null ? availableAboveTarget : Prisma.Decimal.min(burnable, availableAboveTarget);
+  }
+
+  const quantity = burnable ? burnable.toDecimalPlaces(6, Prisma.Decimal.ROUND_DOWN) : new Prisma.Decimal(0);
+  if (quantity.lte(0)) {
+    return new Prisma.Decimal(0);
+  }
+
+  await prisma.$transaction(async (tx) => {
+    await tx.userBalance.upsert({
+      where: { userId: params.userId },
+      update: {},
+      create: { userId: params.userId },
+    });
+
+    for (const outcomeId of params.outcomeIds) {
+      await tx.position.update({
+        where: {
+          userId_marketId_outcomeId: {
+            userId: params.userId,
+            marketId: params.marketId,
+            outcomeId,
+          },
+        },
+        data: {
+          shares: { decrement: quantity },
+        },
+      });
+    }
+
+    await tx.market.update({
+      where: { id: params.marketId },
+      data: { collateralUSDC: { decrement: quantity } },
+    });
+    const balanceBefore = await tx.userBalance.findUniqueOrThrow({
+      where: { userId: params.userId },
+      select: { availableUSDC: true },
+    });
+    await tx.userBalance.update({
+      where: { userId: params.userId },
+      data: { availableUSDC: { increment: quantity } },
+    });
+    await tx.ledgerEntry.create({
+      data: {
+        userId: params.userId,
+        reason: "UNLOCK",
+        operation: "UNLOCK",
+        referenceType: "ReferenceLiquidityCompleteSetBurn",
+        referenceId: params.marketId,
+        idempotencyKey: `reference-liquidity-burn:${params.marketId}:${params.userId}:${Date.now()}`,
+        amountDelta: quantity,
+        deltaAvailableUSDC: quantity,
+        deltaLockedUSDC: new Prisma.Decimal(0),
+        balanceBefore: balanceBefore.availableUSDC,
+        balanceAfter: new Prisma.Decimal(balanceBefore.availableUSDC).add(quantity),
+      },
+    });
+  });
+
+  return quantity;
 }
 
 function assertLiveInternalSeedingAllowed() {

@@ -1,0 +1,21 @@
+{
+  "cycle": "KU",
+  "scope": "portfolio-value-history-ui-wiring",
+  "generatedAt": "2026-07-06T18:12:21.345Z",
+  "route": "/api/portfolio/value-history?range=<range>",
+  "pass": true,
+  "checks": {
+    "apiHasCanonicalValueHistoryRoute": true,
+    "appImportsValueHistoryService": true,
+    "appPassesServiceLoaderToPortfolioInServerMode": true,
+    "portfolioFetchesActiveRangeThroughProp": true,
+    "portfolioChartDisplaysRouteSourceAndStatus": true,
+    "servicePrefersRouteAndFallsBackDeterministically": true
+  },
+  "evidence": {
+    "app": "mobile/App.tsx",
+    "portfolio": "mobile/src/components/Portfolio.tsx",
+    "service": "mobile/src/services/portfolioValueHistoryService.ts",
+    "api": "mobile/src/api.ts"
+  }
+}

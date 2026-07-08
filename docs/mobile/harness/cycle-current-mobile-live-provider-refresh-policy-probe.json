@@ -1,0 +1,37 @@
+{
+  "cycle": "CL",
+  "feature": "provider refresh policy contract",
+  "capturedAt": "2026-07-04T03:25:21.3684016Z",
+  "server": "http://127.0.0.1:3002",
+  "routes": {
+    "liveDetail": "/api/mobile/events/world-cup-2026-curacao-vs-cote-divoire-2026-06-25/live-detail",
+    "orderbook": "/api/orderbook/ed121b08-88bd-4735-9793-64a0022e9696/book?maxLevels=2"
+  },
+  "seedArtifact": "docs/mobile/harness/cycle-current-mobile-live-provider-quote-snapshot-seed.json",
+  "result": {
+    "providerSource": "reference-quote-snapshot",
+    "providerMarketCount": 14,
+    "providerReadyCount": 14,
+    "providerStaleCount": 0,
+    "providerRefreshDueCount": 0,
+    "providerNextRefreshAt": "2026-07-04T03:26:08.265Z",
+    "secondHalfMarketId": "ed121b08-88bd-4735-9793-64a0022e9696",
+    "secondHalfStatus": "ready",
+    "secondHalfRefreshTtlSeconds": 60,
+    "secondHalfNextRefreshAt": "2026-07-04T03:26:08.265Z",
+    "secondHalfShouldRefresh": false,
+    "secondHalfRefreshKey": "polymarket:2026-07-04T03:25:08.265Z",
+    "bookStatus": "ready",
+    "bookRefreshTtlSeconds": 60,
+    "bookNextRefreshAt": "2026-07-04T03:26:08.265Z",
+    "bookShouldRefresh": false,
+    "bookRefreshKey": "polymarket:2026-07-04T03:25:08.265Z",
+    "bookLevels": 4
+  },
+  "audit": {
+    "p0RouteContract": "pass",
+    "p0SelectedMarketContract": "pass",
+    "p0OrderbookContract": "pass",
+    "remainingGap": "Real provider-owned refresh execution and invalidation are still pending; this cycle only exposes policy and due-state fields through the backend contract."
+  }
+}

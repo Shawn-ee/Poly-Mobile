@@ -1,0 +1,46 @@
+{
+    "cycle":  "CR",
+    "feature":  "real provider-owned refresh and cache invalidation",
+    "eventSlug":  "mobile-provider-refresh-proof-live",
+    "server":  "http://127.0.0.1:3002",
+    "capturedAt":  "2026-07-04T04:36:03.0543316Z",
+    "before":  {
+                   "readyCount":  0,
+                   "staleCount":  1,
+                   "refreshDueCount":  1,
+                   "primaryStatus":  "stale",
+                   "primaryShouldRefresh":  true,
+                   "primaryRefreshKey":  "polymarket:2026-07-04T04:21:35.855Z"
+               },
+    "refresh":  {
+                    "ok":  true,
+                    "providerAttempted":  true,
+                    "providerMappedMarketCount":  1,
+                    "providerSnapshotsUpdated":  2,
+                    "providerRefreshedCount":  1,
+                    "providerSkippedCount":  0,
+                    "fallbackApplied":  false,
+                    "cacheInvalidatedCount":  3,
+                    "cacheInvalidationErrors":  0,
+                    "cacheInvalidated":  [
+                                             "/api/mobile/events/mobile-provider-refresh-proof-live/live-detail",
+                                             "/api/events/mobile-provider-refresh-proof-live",
+                                             "/api/orderbook/40f86f7b-1c5f-4853-abd4-379f08ce9bf0/book"
+                                         ]
+                },
+    "after":  {
+                  "readyCount":  1,
+                  "staleCount":  0,
+                  "refreshDueCount":  0,
+                  "primaryStatus":  "ready",
+                  "primaryShouldRefresh":  false,
+                  "primaryRefreshKey":  "polymarket:2026-07-04T04:36:03.007Z",
+                  "primaryLatestFetchedAt":  "2026-07-04T04:36:03.007Z"
+              },
+    "book":  {
+                 "status":  "ready",
+                 "shouldRefresh":  false,
+                 "refreshKey":  "polymarket:2026-07-04T04:36:03.007Z",
+                 "snapshotCount":  2
+             }
+}

@@ -1,0 +1,115 @@
+
+> poly-bot@0.1.0 bot:polymarket:mm:dry-run
+> tsx scripts/liquidityRuntime.ts --dryRun true --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug provider-breadth-world-cup-winner --allowlist Spain --maxMarkets 1 --durationSeconds 5 --pollMs 1000
+
+{
+  "dryRun": true,
+  "liveOrdersEnabled": false,
+  "confirmLive": false,
+  "cycleReports": [
+    {
+      "marketId": "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+      "slug": "will-spain-win-the-2026-fifa-world-cup-963",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": true,
+      "referenceBid": 0.187,
+      "referenceAsk": 0.188,
+      "plannedBotBid": 0.17,
+      "plannedBotAsk": 0.21,
+      "reasons": [
+        "confirm_live_required",
+        "live_orders_disabled",
+        "dry_run_enabled"
+      ],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 3283,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 3283,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+      "slug": "will-spain-win-the-2026-fifa-world-cup-963",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": true,
+      "referenceBid": 0.187,
+      "referenceAsk": 0.188,
+      "plannedBotBid": 0.17,
+      "plannedBotAsk": 0.21,
+      "reasons": [
+        "confirm_live_required",
+        "live_orders_disabled",
+        "dry_run_enabled"
+      ],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 3283,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 3283,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+      "slug": "will-spain-win-the-2026-fifa-world-cup-963",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": true,
+      "referenceBid": 0.187,
+      "referenceAsk": 0.188,
+      "plannedBotBid": 0.17,
+      "plannedBotAsk": 0.21,
+      "reasons": [
+        "confirm_live_required",
+        "live_orders_disabled",
+        "dry_run_enabled"
+      ],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 3283,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 3283,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+      "slug": "will-spain-win-the-2026-fifa-world-cup-963",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": true,
+      "referenceBid": 0.187,
+      "referenceAsk": 0.188,
+      "plannedBotBid": 0.17,
+      "plannedBotAsk": 0.21,
+      "reasons": [
+        "confirm_live_required",
+        "live_orders_disabled",
+        "dry_run_enabled"
+      ],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 3283,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 3283,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    }
+  ]
+}

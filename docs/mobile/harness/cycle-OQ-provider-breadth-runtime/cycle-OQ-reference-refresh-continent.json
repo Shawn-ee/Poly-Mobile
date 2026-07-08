@@ -1,0 +1,123 @@
+{
+  "summary": {
+    "cycle": 1,
+    "generatedAt": "2026-07-08T18:40:16.758Z",
+    "marketsRefreshed": 3,
+    "marketsSkipped": 0,
+    "snapshotsUpdated": 6,
+    "staleCount": 0,
+    "wideCount": 0,
+    "missingCount": 0,
+    "errorCount": 0
+  },
+  "report": {
+    "generatedAt": "2026-07-08T18:40:16.758Z",
+    "dryRun": true,
+    "snapshotWritesApplied": true,
+    "liveOrdersEnabled": false,
+    "pollMs": 5000,
+    "refreshedCount": 3,
+    "snapshotsUpdated": 6,
+    "skippedCount": 0,
+    "refreshed": [
+      {
+        "marketId": "fd7d40f6-898d-402b-b4b1-5d1d0380e38c",
+        "title": "Will Africa (CAF) win the 2026 FIFA World Cup?",
+        "slug": "will-africa-win-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "305c0eca-795b-40e0-b53a-355a194c6ed6",
+            "tokenId": "1592099975156656573745061572642427093819000123828108257356891175030364428770",
+            "bestBid": 0.028,
+            "bestAsk": 0.029,
+            "spread": 0.001,
+            "lastTradePrice": 0.028,
+            "outcomePrice": 0.0285,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "2a3a4942-63ce-4542-bf20-d915485364f0",
+            "tokenId": "105933029641124149476040127626722302831560342486456292015033100559176356663875",
+            "bestBid": 0.028,
+            "bestAsk": 0.029,
+            "spread": 0.001,
+            "lastTradePrice": 0.028,
+            "outcomePrice": 0.9715,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      },
+      {
+        "marketId": "44dfd0c8-a46b-4ec0-aa2a-a5904088bbf8",
+        "title": "Will Europe (UEFA) win the 2026 FIFA World Cup?",
+        "slug": "will-europe-win-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "598a7b64-39e3-4c47-92ad-e520e4c2a07e",
+            "tokenId": "76641034721053425080952855862174690067662519247667787282293691334146019135577",
+            "bestBid": 0.78,
+            "bestAsk": 0.79,
+            "spread": 0.01,
+            "lastTradePrice": 0.79,
+            "outcomePrice": 0.785,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "a19721db-286a-4f9e-bbfb-4b62cb7c8067",
+            "tokenId": "75526855999106765508404306526411633961177918645365850944802093381755001229796",
+            "bestBid": 0.78,
+            "bestAsk": 0.79,
+            "spread": 0.01,
+            "lastTradePrice": 0.79,
+            "outcomePrice": 0.215,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      },
+      {
+        "marketId": "d7fa3c01-2b02-4ee4-84ce-aadd7f507f3f",
+        "title": "Will South America (CONMEBOL) win the 2026 FIFA World Cup?",
+        "slug": "will-south-america-win-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "ca483419-35e9-4ad4-abfd-301b95d4924d",
+            "tokenId": "114036690755635530230019486612558387907241351352528636183974658009961263219918",
+            "bestBid": 0.18,
+            "bestAsk": 0.19,
+            "spread": 0.01,
+            "lastTradePrice": 0.19,
+            "outcomePrice": 0.185,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "68af4cb7-e2b4-4485-913a-6b49dba34571",
+            "tokenId": "91406376166685457249969745291260796817402882835969733443451859926168141525875",
+            "bestBid": 0.18,
+            "bestAsk": 0.19,
+            "spread": 0.01,
+            "lastTradePrice": 0.19,
+            "outcomePrice": 0.815,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      }
+    ],
+    "skipped": []
+  },
+  "error": null
+}

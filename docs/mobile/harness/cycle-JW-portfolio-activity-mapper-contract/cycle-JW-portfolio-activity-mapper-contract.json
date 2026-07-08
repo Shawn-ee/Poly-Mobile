@@ -1,0 +1,23 @@
+{
+  "pass": true,
+  "createdAt": "2026-07-06T15:12:17.938Z",
+  "scope": "portfolio route mapper contract",
+  "groupedActivity": {
+    "id": "trade-order-order-123",
+    "amount": 47.400000000000006,
+    "shares": 103.043478,
+    "fillCount": 2,
+    "marketType": "totals",
+    "orderBacked": true
+  },
+  "advanceActivity": {
+    "marketType": "to_advance",
+    "displayLabel": "Who Advances",
+    "providerToken": "token-mexico-advance"
+  },
+  "advancePosition": {
+    "marketType": "to_advance",
+    "displayLabel": "Who Advances",
+    "providerToken": "token-mexico-advance"
+  }
+}

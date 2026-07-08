@@ -1,0 +1,74 @@
+{
+  "ready": true,
+  "event": {
+    "id": "9f662a7d-5700-43e4-b4f1-50e99cef6ec9",
+    "slug": "world-cup-2026-paraguay-vs-australia-2026-06-25",
+    "title": "Paraguay vs Australia"
+  },
+  "market": {
+    "id": "49a21c1b-893e-4139-ac54-6ad79d2ee204",
+    "title": "Paraguay vs Australia: Both teams to score"
+  },
+  "outcome": {
+    "id": "67d221dd-6139-4643-82ee-2470944b692a",
+    "name": "Yes"
+  },
+  "mobileUser": {
+    "id": "0d92719c-8e4b-483f-b21a-525f78419af2",
+    "username": "holiwyn-mobile-proof-sell-20260702070658",
+    "shares": "300",
+    "reservedShares": "0"
+  },
+  "makerOrder": {
+    "id": "d01472b2-2a7d-4fd2-a0ac-5151bd433309",
+    "status": "OPEN",
+    "price": "0.50",
+    "size": "500",
+    "requiredRemaining": "250",
+    "remaining": "500"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "makerOrderId": "ce67f388-fdf6-4314-923c-4176f1d5ae11",
+      "status": "FILLED",
+      "remaining": "0",
+      "fillCount": 2
+    },
+    {
+      "attempt": 2,
+      "makerOrderId": "b15a99d1-2a9d-4b36-8fc9-19dc4dae2b32",
+      "status": "FILLED",
+      "remaining": "0",
+      "fillCount": 2
+    },
+    {
+      "attempt": 3,
+      "makerOrderId": "1b11ffb5-9358-40b6-bf92-6c6dbcf2cf22",
+      "status": "FILLED",
+      "remaining": "0",
+      "fillCount": 2
+    },
+    {
+      "attempt": 4,
+      "makerOrderId": "8dc18ee4-e2b2-4e2c-b890-1cc0e64acc37",
+      "status": "FILLED",
+      "remaining": "0",
+      "fillCount": 2
+    },
+    {
+      "attempt": 5,
+      "makerOrderId": "cef0b4a3-29ac-4dd7-957f-3e14fc98510b",
+      "status": "PARTIAL",
+      "remaining": "200",
+      "fillCount": 1
+    },
+    {
+      "attempt": 6,
+      "makerOrderId": "d01472b2-2a7d-4fd2-a0ac-5151bd433309",
+      "status": "OPEN",
+      "remaining": "500",
+      "fillCount": 0
+    }
+  ]
+}

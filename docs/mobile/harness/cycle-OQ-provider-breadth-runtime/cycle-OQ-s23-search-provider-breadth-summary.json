@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-07-08T18:41:58.1986190Z",
+  "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+  "model": "SM_S911U1",
+  "expoUrl": "exp://172.16.200.14:8081/--/?forceSearchQuery=world",
+  "screenshot": "docs\\mobile\\screenshots\\cycle-OQ-provider-breadth-runtime\\cycle-OQ-search-provider-breadth.png",
+  "xml": "docs\\mobile\\harness\\cycle-OQ-provider-breadth-runtime\\cycle-OQ-search-provider-breadth.xml",
+  "containsWhichContinent": true,
+  "containsWorldCupWinner": true,
+  "containsArgentinaEgypt": true,
+  "containsPolymarketSource": true,
+  "pass": true
+}

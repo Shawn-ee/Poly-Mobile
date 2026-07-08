@@ -1,0 +1,47 @@
+
+> poly-bot@0.1.0 liquidity:prepare-event
+> tsx scripts/prepareReferenceLiquidityEvent.ts --baseUrl http://127.0.0.1:3002 --eventSlug world-cup-golden-boot-winner --allowlist Erling Haaland --maxMarkets 1 --capitalDollars 500 --mintDollars 25 --dryRun false --confirmSeed true
+
+{
+  "ok": true,
+  "dryRun": false,
+  "eventSlug": "world-cup-golden-boot-winner",
+  "marketCount": 1,
+  "seededOrChecked": 1,
+  "blocked": 0,
+  "results": [
+    {
+      "marketId": "70612733-f5d4-4fcb-8561-c1e7f93be924",
+      "slug": "will-erling-haaland-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "title": "Will Erling Haaland be the top goalscorer at the 2026 FIFA World Cup?",
+      "importStatus": "approved",
+      "mmEnabled": true,
+      "tradable": true,
+      "ok": true,
+      "runtimePath": "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\poly-bot\\.runtime\\reference-liquidity-70612733-f5d4-4fcb-8561-c1e7f93be924.json",
+      "result": {
+        "ok": true,
+        "dryRun": false,
+        "marketId": "70612733-f5d4-4fcb-8561-c1e7f93be924",
+        "title": "Will Erling Haaland be the top goalscorer at the 2026 FIFA World Cup?",
+        "referenceSource": "polymarket",
+        "importStatus": "approved",
+        "isListed": true,
+        "binary": true,
+        "seeded": true,
+        "alreadySeeded": false,
+        "noMutation": false,
+        "capitalCents": 50000,
+        "mintBudgetCents": 2500,
+        "cashReserveCents": 47500,
+        "mintedCompleteSets": 25,
+        "autoReplenish": false,
+        "botUserId": "[redacted-bot-user]",
+        "botUsername": "system-liquidity-bot",
+        "botApiCredentialId": "[redacted-bot-credential]",
+        "botApiKeyId": "[redacted-api-key]",
+        "botApiToken": "[redacted]"
+      }
+    }
+  ]
+}

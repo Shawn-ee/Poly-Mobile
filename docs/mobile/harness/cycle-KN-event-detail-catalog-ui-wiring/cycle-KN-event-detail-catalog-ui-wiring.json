@@ -1,0 +1,20 @@
+{
+  "cycle": "KN",
+  "scope": "event-detail-catalog-ui-wiring",
+  "generatedAt": "2026-07-06T17:17:06.207Z",
+  "route": "/api/events/:slug/markets",
+  "pass": true,
+  "checks": {
+    "appImportsCatalogService": true,
+    "appRefreshesSelectedEventMarkets": true,
+    "appScopesCatalogToSelectedEvent": true,
+    "serviceUsesBackendCatalogRoute": true,
+    "serviceKeepsEmptyRouteAuthoritative": true,
+    "eventDetailRendersCatalogMarkets": true
+  },
+  "evidence": {
+    "app": "mobile/App.tsx",
+    "service": "mobile/src/services/eventMarketCatalogService.ts",
+    "eventDetail": "mobile/src/components/EventDetail.tsx"
+  }
+}

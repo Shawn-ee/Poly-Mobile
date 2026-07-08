@@ -1,0 +1,15 @@
+﻿{
+    "cycle":  "FI",
+    "result":  "pass",
+    "username":  "holiwyn-mobile-fi-20260704152405",
+    "userId":  "efa05a47-53af-4dc5-aba6-d3efa28b69b4",
+    "keyId":  "pk_live_6ded616594968eee",
+    "token":  "redacted",
+    "eventSlug":  "mobile-el-a-provider-breadth-0ca8dfb3",
+    "eventProofPath":  "docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-event.json",
+    "counterpartyProofPath":  "docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-counterparty.json",
+    "tabletProofPath":  "docs\\mobile\\harness\\cycle-FI-home-route-server-filled\\cycle-FI-home-route-server-filled-proof.json",
+    "orderMode":  "server",
+    "marketDataMode":  "server",
+    "backendBaseUrl":  "http://172.16.200.14:3002"
+}

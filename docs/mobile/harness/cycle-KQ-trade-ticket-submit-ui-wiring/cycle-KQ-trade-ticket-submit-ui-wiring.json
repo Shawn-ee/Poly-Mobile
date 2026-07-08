@@ -1,0 +1,23 @@
+{
+  "cycle": "KQ",
+  "scope": "trade-ticket-submit-ui-wiring",
+  "generatedAt": "2026-07-06T17:33:37.964Z",
+  "route": "POST /api/orders",
+  "pass": true,
+  "checks": {
+    "ticketSubmitControlRequiresPositiveTradableAmount": true,
+    "ticketSubmitControlSupportsSwipeAndPress": true,
+    "visibleTicketCallsPlaceOrder": true,
+    "appPassesPlaceOrderToVisibleTicket": true,
+    "appPlaceOrderUsesSubmitTicketOrder": true,
+    "appRefreshesPortfolioAfterServerSubmit": true,
+    "orderServiceCallsCanonicalOrderRoute": true,
+    "apiClientSubmitsLimitOrder": true
+  },
+  "evidence": {
+    "app": "git show HEAD:mobile/App.tsx",
+    "ticket": "git show HEAD:mobile/src/components/TradeTicket.tsx",
+    "orderService": "mobile/src/services/orderService.ts",
+    "api": "mobile/src/api.ts"
+  }
+}

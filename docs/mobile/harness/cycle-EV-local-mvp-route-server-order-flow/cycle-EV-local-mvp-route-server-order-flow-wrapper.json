@@ -1,0 +1,14 @@
+{
+    "cycle":  "EV",
+    "result":  "pass",
+    "username":  "holiwyn-mobile-ev-20260704131104",
+    "userId":  "7e39c9be-115e-436b-81c3-353b04bd8445",
+    "keyId":  "pk_live_3c6452dc73cd61a5",
+    "token":  "redacted",
+    "eventSlug":  "mobile-el-a-provider-breadth-5f9e2d3f",
+    "eventProofPath":  "docs/mobile/harness/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-route-backed-retail-event.json",
+    "tabletProofPath":  "docs\\mobile\\harness\\cycle-EV-local-mvp-route-server-order-flow\\cycle-EV-local-mvp-route-server-order-flow-proof.json",
+    "orderMode":  "server",
+    "marketDataMode":  "server",
+    "backendBaseUrl":  "http://172.16.200.14:3002"
+}

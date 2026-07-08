@@ -1,0 +1,30 @@
+{
+  "generatedAt": "2026-07-04T09:52:59.787Z",
+  "eventSlug": "world-cup-live",
+  "marketIds": [
+    "market-world-cup-live",
+    "market-total-goals"
+  ],
+  "cacheInvalidationContract": {
+    "source": "next-revalidate-path",
+    "liveDetailPath": "/api/mobile/events/world-cup-live/live-detail",
+    "eventPath": "/api/events/world-cup-live",
+    "chartPaths": [
+      "/api/markets/market-world-cup-live/chart",
+      "/api/markets/market-total-goals/chart"
+    ],
+    "orderbookPaths": [
+      "/api/orderbook/market-world-cup-live/book",
+      "/api/orderbook/market-total-goals/book"
+    ],
+    "chartMarketCount": 2,
+    "orderbookMarketCount": 2
+  },
+  "lifecycleAssertions": {
+    "liveDetailInvalidated": true,
+    "eventInvalidated": true,
+    "chartInvalidatedForEveryMarket": true,
+    "orderbookInvalidatedForEveryMarket": true,
+    "chartAndOrderbookUseSameMarketSet": true
+  }
+}

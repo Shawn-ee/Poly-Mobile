@@ -1,0 +1,24 @@
+{
+    "pass":  true,
+    "cycle":  "PE",
+    "generatedAt":  "2026-07-08T21:55:28.7265182Z",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "expoPort":  8298,
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "mobileApiBaseUrl":  "http://172.16.200.14:3002",
+    "search":  "Morocco",
+    "detailXml":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\docs\\mobile\\harness\\cycle-PE-eighth-provider-market-tradable-proof\\cycle-PE-s23-world-cup-winner-top.xml",
+    "expectedMarkers":  [
+                            "Morocco",
+                            "provider-market-558963",
+                            "5796a9be-8359-48f4-bf45-268dc662f2c0",
+                            "provider-source-polymarket",
+                            "World Cup Winner"
+                        ],
+    "artifacts":  [
+                      "docs/mobile/harness/cycle-PE-eighth-provider-market-tradable-proof/cycle-PE-s23-search-morocco.png",
+                      "docs/mobile/harness/cycle-PE-eighth-provider-market-tradable-proof/cycle-PE-s23-world-cup-winner-morocco.png",
+                      "docs\\mobile\\harness\\cycle-PE-eighth-provider-market-tradable-proof\\cycle-PE-s23-world-cup-winner-top.xml"
+                  ]
+}

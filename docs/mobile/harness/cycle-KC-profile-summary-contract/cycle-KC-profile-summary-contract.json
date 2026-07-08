@@ -1,0 +1,24 @@
+{
+  "pass": true,
+  "createdAt": "2026-07-06T15:51:30.500Z",
+  "route": "/api/profile/summary",
+  "auth": "canonical account:read API key",
+  "profileId": "95507fda-175b-4ed1-8078-7aea034b03f0",
+  "username": "mobile_kc_f5ccb0a4",
+  "account": {
+    "balance": 40.8,
+    "portfolioValue": 1,
+    "openPositionCount": 1,
+    "openOrderCount": 1,
+    "openOrderValue": 20.5,
+    "totalExposure": 21.5,
+    "tradingMode": "server"
+  },
+  "preferences": {
+    "locale": "zh",
+    "savedMarketCount": 1,
+    "ticketDefaultAmount": "250",
+    "ticketDefaultSide": "sell",
+    "ticketDefaultSlippage": "2%"
+  }
+}

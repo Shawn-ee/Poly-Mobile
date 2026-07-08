@@ -1,0 +1,136 @@
+﻿{
+    "ready":  true,
+    "username":  "holiwyn-mobile-open-cancel-20260702071931",
+    "userId":  "950d1805-2edc-406a-bfe7-3db69abeaf9b",
+    "keyId":  "pk_live_ce4c0cc2c9292268",
+    "port":  8156,
+    "summaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json",
+    "orderSummary":  {
+                         "username":  "holiwyn-mobile-open-cancel-20260702071931",
+                         "userId":  "950d1805-2edc-406a-bfe7-3db69abeaf9b",
+                         "orderCount":  1,
+                         "statusCounts":  {
+                                              "CANCELED":  1
+                                          },
+                         "latestOrder":  {
+                                             "id":  "fac0bdf2-bd69-4a21-8d8d-5e04ec5615e4",
+                                             "status":  "CANCELED",
+                                             "side":  "BUY",
+                                             "market":  {
+                                                            "id":  "49a21c1b-893e-4139-ac54-6ad79d2ee204",
+                                                            "title":  "Paraguay vs Australia: Both teams to score"
+                                                        },
+                                             "outcome":  {
+                                                             "id":  "67d221dd-6139-4643-82ee-2470944b692a",
+                                                             "name":  "Yes"
+                                                         },
+                                             "price":  "0.01",
+                                             "size":  "100",
+                                             "remaining":  "100",
+                                             "reservedNotional":  "0",
+                                             "notional":  "1",
+                                             "remainingNotional":  "1",
+                                             "apiKeyId":  "pk_live_ce4c0cc2c9292268",
+                                             "canceledByApiKeyId":  "pk_live_ce4c0cc2c9292268",
+                                             "createdAt":  "2026-07-02T12:20:25.084Z",
+                                             "updatedAt":  "2026-07-02T12:20:28.125Z"
+                                         },
+                         "latestCanceledOrder":  {
+                                                     "id":  "fac0bdf2-bd69-4a21-8d8d-5e04ec5615e4",
+                                                     "status":  "CANCELED",
+                                                     "side":  "BUY",
+                                                     "market":  {
+                                                                    "id":  "49a21c1b-893e-4139-ac54-6ad79d2ee204",
+                                                                    "title":  "Paraguay vs Australia: Both teams to score"
+                                                                },
+                                                     "outcome":  {
+                                                                     "id":  "67d221dd-6139-4643-82ee-2470944b692a",
+                                                                     "name":  "Yes"
+                                                                 },
+                                                     "price":  "0.01",
+                                                     "size":  "100",
+                                                     "remaining":  "100",
+                                                     "reservedNotional":  "0",
+                                                     "notional":  "1",
+                                                     "remainingNotional":  "1",
+                                                     "apiKeyId":  "pk_live_ce4c0cc2c9292268",
+                                                     "canceledByApiKeyId":  "pk_live_ce4c0cc2c9292268",
+                                                     "createdAt":  "2026-07-02T12:20:25.084Z",
+                                                     "updatedAt":  "2026-07-02T12:20:28.125Z"
+                                                 },
+                         "recentOrders":  [
+                                              {
+                                                  "id":  "fac0bdf2-bd69-4a21-8d8d-5e04ec5615e4",
+                                                  "status":  "CANCELED",
+                                                  "side":  "BUY",
+                                                  "market":  {
+                                                                 "id":  "49a21c1b-893e-4139-ac54-6ad79d2ee204",
+                                                                 "title":  "Paraguay vs Australia: Both teams to score"
+                                                             },
+                                                  "outcome":  {
+                                                                  "id":  "67d221dd-6139-4643-82ee-2470944b692a",
+                                                                  "name":  "Yes"
+                                                              },
+                                                  "price":  "0.01",
+                                                  "size":  "100",
+                                                  "remaining":  "100",
+                                                  "reservedNotional":  "0",
+                                                  "notional":  "1",
+                                                  "remainingNotional":  "1",
+                                                  "apiKeyId":  "pk_live_ce4c0cc2c9292268",
+                                                  "canceledByApiKeyId":  "pk_live_ce4c0cc2c9292268",
+                                                  "createdAt":  "2026-07-02T12:20:25.084Z",
+                                                  "updatedAt":  "2026-07-02T12:20:28.125Z"
+                                              }
+                                          ]
+                     },
+    "proofNoiseGate":  {
+                           "pre":  {
+                                       "enabled":  true,
+                                       "passed":  true,
+                                       "checks":  {
+                                                      "openOrders":  {
+                                                                         "enabled":  true,
+                                                                         "passed":  true,
+                                                                         "affectedUsers":  0
+                                                                     },
+                                                      "lockedBalance":  {
+                                                                            "enabled":  true,
+                                                                            "passed":  true,
+                                                                            "affectedUsers":  0,
+                                                                            "users":  [
+
+                                                                                      ]
+                                                                        }
+                                                  }
+                                   },
+                           "post":  {
+                                        "enabled":  true,
+                                        "passed":  true,
+                                        "checks":  {
+                                                       "openOrders":  {
+                                                                          "enabled":  true,
+                                                                          "passed":  true,
+                                                                          "affectedUsers":  0
+                                                                      },
+                                                       "lockedBalance":  {
+                                                                             "enabled":  true,
+                                                                             "passed":  true,
+                                                                             "affectedUsers":  0,
+                                                                             "users":  [
+
+                                                                                       ]
+                                                                         }
+                                                   }
+                                    },
+                           "preSummaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof-noise-gate-pre.json",
+                           "postSummaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof-noise-gate.json"
+                       },
+    "liquiditySummaryPath":  "docs/mobile/harness/cycle-current-mobile-server-open-order-quote-liquidity.json",
+    "evidence":  {
+                     "portfolioXml":  "docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml",
+                     "canceledXml":  "docs/mobile/harness/cycle-current-holiwyn-server-open-order-canceled.xml",
+                     "portfolioScreenshot":  "docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png",
+                     "canceledScreenshot":  "docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png"
+                 }
+}

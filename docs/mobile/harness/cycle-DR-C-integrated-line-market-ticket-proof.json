@@ -1,0 +1,46 @@
+{
+  "cycle": "DR-C integrated",
+  "scope": "line-market ticket target audit gate",
+  "generatedAt": "2026-07-04T10:43:00.000Z",
+  "referenceEvidence": [
+    "docs/mobile/audits/live-football-world-cup-dq-c.md",
+    "docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-08-spread-line-dropdown.png",
+    "docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-09-spread-line-25.png",
+    "docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-10-spread-ticket.png",
+    "docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-16-markets-scroll-2.png"
+  ],
+  "holiwynProof": {
+    "command": "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailLineAdjustment -Port 8226",
+    "device": "adb-R5GYA13X7NJ-4O0ADU._adb-tls-connect._tcp",
+    "result": "pass",
+    "artifacts": [
+      "docs/mobile/screenshots/cycle-DR-C-integrated-line-adjustment-spread-25-1h.png",
+      "docs/mobile/screenshots/cycle-DR-C-integrated-line-adjustment-spread-ticket.png",
+      "docs/mobile/screenshots/cycle-DR-C-integrated-line-adjustment-totals-35-2h.png",
+      "docs/mobile/screenshots/cycle-DR-C-integrated-line-adjustment-totals-ticket.png",
+      "docs/mobile/harness/cycle-DR-C-integrated-line-adjustment-spread-25-1h.xml",
+      "docs/mobile/harness/cycle-DR-C-integrated-line-adjustment-spread-ticket.xml",
+      "docs/mobile/harness/cycle-DR-C-integrated-line-adjustment-totals-35-2h.xml",
+      "docs/mobile/harness/cycle-DR-C-integrated-line-adjustment-totals-ticket.xml"
+    ]
+  },
+  "assertions": {
+    "spreadFamilyTicket": true,
+    "spreadSelectedLine": "MEX -2.5 1H",
+    "spreadNonDefaultPeriod": "1H",
+    "spreadTicketOddsVisible": "Odds 3%",
+    "totalsFamilyTicket": true,
+    "totalsSelectedLine": "Over 3.5 2H",
+    "totalsNonDefaultPeriod": "2H",
+    "totalsTicketOddsVisible": "Odds 22%",
+    "ticketChoiceVisible": true,
+    "fakeBalanceVisible": true,
+    "amountKeypadVisible": true,
+    "submitRailVisible": true
+  },
+  "pass": true,
+  "remainingGaps": [
+    "PM-GAP-074 remains open for Book selector, order, portfolio, and history coupling beyond this ticket-target gate.",
+    "PM-GAP-076 remains P1 because the Polymarket reference ticket was location-gated before real amount/swipe confirmation."
+  ]
+}

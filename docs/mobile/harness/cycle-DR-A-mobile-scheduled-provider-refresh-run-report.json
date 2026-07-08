@@ -1,0 +1,324 @@
+{
+  "generatedAt": "2026-07-04T10:36:57.742Z",
+  "mode": "scheduled-provider-refresh",
+  "eventSlug": "mobile-provider-refresh-proof-live",
+  "expired": {
+    "eventSlug": "mobile-provider-refresh-proof-live",
+    "compactMarketCount": 1,
+    "expiredSnapshotCount": 2,
+    "staleFetchedAt": "2026-07-04T10:33:56.554Z"
+  },
+  "before": {
+    "eventTitle": "Mobile Provider Refresh Proof",
+    "compactMarketCount": 1,
+    "batchedProviderQuoteSnapshotMarketCount": 1,
+    "batchedProviderQuoteSnapshotReadyCount": 0,
+    "batchedProviderQuoteSnapshotStaleCount": 1,
+    "batchedProviderQuoteSnapshotRefreshDueCount": 1,
+    "batchedProviderQuoteSnapshotNextRefreshAt": "2026-07-04T10:34:56.554Z",
+    "batchedProviderOrderbookDepthReadyCount": 0,
+    "chartHistorySource": "market-outcome-snapshot"
+  },
+  "scheduler": {
+    "runId": "mobile-live-provider-scheduler:2026-07-04T10:36:56.611Z",
+    "generatedAt": "2026-07-04T10:36:56.611Z",
+    "startedAt": "2026-07-04T10:36:56.611Z",
+    "completedAt": "2026-07-04T10:36:57.723Z",
+    "durationMs": 1112,
+    "source": "mobile-live-provider-scheduler",
+    "status": "completed",
+    "refreshTtlSeconds": 60,
+    "dryRun": false,
+    "candidateCount": 1,
+    "dueEventCount": 1,
+    "attemptedEventCount": 1,
+    "refreshedEventCount": 1,
+    "successfulEventCount": 1,
+    "failedEventCount": 0,
+    "dryRunEventCount": 0,
+    "candidates": [
+      {
+        "eventSlug": "mobile-provider-refresh-proof-live",
+        "title": "Mobile Provider Refresh Proof",
+        "providerMarketCount": 1,
+        "providerOutcomeCount": 2,
+        "snapshotCount": 2,
+        "dueMarketIds": [
+          "40f86f7b-1c5f-4853-abd4-379f08ce9bf0"
+        ],
+        "dueMarketCount": 1,
+        "missingOutcomeCount": 0,
+        "staleOutcomeCount": 2,
+        "shouldRefresh": true,
+        "nextAction": "refresh_provider_event"
+      }
+    ],
+    "refreshed": [
+      {
+        "eventSlug": "mobile-provider-refresh-proof-live",
+        "status": "completed",
+        "dryRun": false,
+        "dueMarketCount": 1,
+        "refresh": {
+          "eventSlug": "mobile-provider-refresh-proof-live",
+          "generatedAt": "2026-07-04T10:36:57.722Z",
+          "compactMarketCount": 1,
+          "providerMappedMarketCount": 1,
+          "unsupportedMarketCount": 0,
+          "unsupportedMarkets": [],
+          "mappingReadiness": {
+            "eventSlug": "mobile-provider-refresh-proof-live",
+            "generatedAt": "2026-07-04T10:36:56.630Z",
+            "providerFixture": null,
+            "lineProviderIdentityReadiness": {
+              "compactMarketCount": 1,
+              "lineMarketCount": 0,
+              "lineProviderReadyMarketCount": 0,
+              "lineProviderMissingMarketCount": 0,
+              "readyMarketIds": [],
+              "nextRequiredAction": "review_and_apply_line_provider_identity"
+            },
+            "compactMarketCount": 1,
+            "providerRefreshableMarketCount": 1,
+            "providerRefreshableOutcomeCount": 2,
+            "totalOutcomeCount": 2,
+            "unsupportedSourceMarketCount": 0,
+            "missingExternalSlugMarketCount": 0,
+            "missingExternalMarketIdMarketCount": 0,
+            "missingConditionIdMarketCount": 0,
+            "missingOutcomeTokenMarketCount": 0,
+            "isProviderRefreshReady": true,
+            "nextRequiredAction": "run_provider_refresh_without_contract_fallback",
+            "markets": [
+              {
+                "marketId": "40f86f7b-1c5f-4853-abd4-379f08ce9bf0",
+                "title": "New Rihanna Album before GTA VI?",
+                "status": "LIVE",
+                "marketGroupKey": "main",
+                "marketGroupTitle": "Main",
+                "marketType": "moneyline",
+                "period": null,
+                "line": null,
+                "unit": null,
+                "propCategory": null,
+                "referenceSource": "polymarket",
+                "externalSlug": "new-rhianna-album-before-gta-vi-926",
+                "externalMarketId": "540817",
+                "conditionId": "0x1fad72fae204143ff1c3035e99e7c0f65ea8d5cd9bd1070987bd1a3316f772be",
+                "providerRefreshable": true,
+                "missingFields": [],
+                "recommendedAction": "ready_for_provider_refresh",
+                "outcomes": [
+                  {
+                    "outcomeId": "fde6baad-7291-4709-ab2b-424d8ad0c84f",
+                    "name": "Yes",
+                    "side": "yes",
+                    "displayOrder": 0,
+                    "isTradable": true,
+                    "referenceTokenId": "98022490269692409998126496127597032490334070080325855126491859374983463996227",
+                    "referenceOutcomeLabel": "Yes",
+                    "providerRefreshable": true,
+                    "missingFields": [],
+                    "recommendedAction": "ready_for_provider_refresh"
+                  },
+                  {
+                    "outcomeId": "8e3ee80e-2c6c-4df9-811f-2cf8b048e84f",
+                    "name": "No",
+                    "side": "no",
+                    "displayOrder": 1,
+                    "isTradable": true,
+                    "referenceTokenId": "53831553061883006530739877284105938919721408776239639687877978808906551086026",
+                    "referenceOutcomeLabel": "No",
+                    "providerRefreshable": true,
+                    "missingFields": [],
+                    "recommendedAction": "ready_for_provider_refresh"
+                  }
+                ]
+              }
+            ]
+          },
+          "provider": {
+            "source": "polymarket-gamma",
+            "attempted": true,
+            "refreshedCount": 1,
+            "skippedCount": 0,
+            "snapshotsUpdated": 2,
+            "refreshed": [
+              {
+                "marketId": "40f86f7b-1c5f-4853-abd4-379f08ce9bf0",
+                "title": "New Rihanna Album before GTA VI?",
+                "slug": "new-rhianna-album-before-gta-vi-926",
+                "snapshotsUpdated": 2,
+                "outcomes": [
+                  {
+                    "outcomeId": "fde6baad-7291-4709-ab2b-424d8ad0c84f",
+                    "tokenId": "98022490269692409998126496127597032490334070080325855126491859374983463996227",
+                    "bestBid": 0.51,
+                    "bestAsk": 0.53,
+                    "spread": 0.02,
+                    "lastTradePrice": 0.52,
+                    "outcomePrice": 0.52,
+                    "qualityStatus": "high_quality",
+                    "mmEligible": true,
+                    "reason": null
+                  },
+                  {
+                    "outcomeId": "8e3ee80e-2c6c-4df9-811f-2cf8b048e84f",
+                    "tokenId": "53831553061883006530739877284105938919721408776239639687877978808906551086026",
+                    "bestBid": 0.51,
+                    "bestAsk": 0.53,
+                    "spread": 0.02,
+                    "lastTradePrice": 0.52,
+                    "outcomePrice": 0.48,
+                    "qualityStatus": "high_quality",
+                    "mmEligible": true,
+                    "reason": null
+                  }
+                ]
+              }
+            ],
+            "skipped": []
+          },
+          "providerDepth": {
+            "generatedAt": "2026-07-04T10:36:57.136Z",
+            "source": "polymarket-clob",
+            "maxLevels": 24,
+            "requestedMarketCount": 1,
+            "refreshedCount": 1,
+            "depthRowsUpdated": 96,
+            "skippedCount": 0,
+            "refreshed": [
+              {
+                "marketId": "40f86f7b-1c5f-4853-abd4-379f08ce9bf0",
+                "title": "New Rihanna Album before GTA VI?",
+                "slug": "new-rhianna-album-before-gta-vi-926",
+                "outcomeCount": 2,
+                "depthRowsUpdated": 96,
+                "outcomes": [
+                  {
+                    "outcomeId": "fde6baad-7291-4709-ab2b-424d8ad0c84f",
+                    "tokenId": "98022490269692409998126496127597032490334070080325855126491859374983463996227",
+                    "bidCount": 24,
+                    "askCount": 24,
+                    "fetchedAt": "2026-07-04T10:36:56.913Z",
+                    "providerTimestamp": "2026-07-04T05:36:56.561Z"
+                  },
+                  {
+                    "outcomeId": "8e3ee80e-2c6c-4df9-811f-2cf8b048e84f",
+                    "tokenId": "53831553061883006530739877284105938919721408776239639687877978808906551086026",
+                    "bidCount": 24,
+                    "askCount": 24,
+                    "fetchedAt": "2026-07-04T10:36:57.059Z",
+                    "providerTimestamp": "2026-07-04T05:36:56.561Z"
+                  }
+                ]
+              }
+            ],
+            "skipped": []
+          },
+          "providerHistory": {
+            "generatedAt": "2026-07-04T10:36:57.716Z",
+            "source": "polymarket-clob-prices-history",
+            "interval": "1d",
+            "fidelityMinutes": 5,
+            "requestedMarketCount": 1,
+            "refreshedCount": 1,
+            "snapshotsCreated": 578,
+            "skippedCount": 0,
+            "refreshed": [
+              {
+                "marketId": "40f86f7b-1c5f-4853-abd4-379f08ce9bf0",
+                "title": "New Rihanna Album before GTA VI?",
+                "slug": "new-rhianna-album-before-gta-vi-926",
+                "outcomeCount": 2,
+                "snapshotsCreated": 578,
+                "outcomes": [
+                  {
+                    "outcomeId": "fde6baad-7291-4709-ab2b-424d8ad0c84f",
+                    "tokenId": "98022490269692409998126496127597032490334070080325855126491859374983463996227",
+                    "historyPointCount": 289,
+                    "createdSnapshots": 289,
+                    "firstTimestamp": "2026-07-03T05:40:05.000Z",
+                    "lastTimestamp": "2026-07-04T05:36:03.000Z"
+                  },
+                  {
+                    "outcomeId": "8e3ee80e-2c6c-4df9-811f-2cf8b048e84f",
+                    "tokenId": "53831553061883006530739877284105938919721408776239639687877978808906551086026",
+                    "historyPointCount": 289,
+                    "createdSnapshots": 289,
+                    "firstTimestamp": "2026-07-03T05:40:06.000Z",
+                    "lastTimestamp": "2026-07-04T05:36:04.000Z"
+                  }
+                ]
+              }
+            ],
+            "skipped": []
+          },
+          "lineProvider": {
+            "eventSlug": "mobile-provider-refresh-proof-live",
+            "generatedAt": "2026-07-04T10:36:57.716Z",
+            "source": "optic_odds",
+            "attempted": false,
+            "status": "skipped",
+            "compactMarketCount": 1,
+            "matchedMarketCount": 0,
+            "snapshotRowsBuilt": 0,
+            "snapshotsUpdated": 0,
+            "skippedReason": "missing_provider_fixture"
+          },
+          "contractProofFallback": null,
+          "postRefresh": {
+            "marketCount": 1,
+            "snapshotCount": 2,
+            "latestFetchedAt": "2026-07-04T10:36:56.749Z",
+            "oldestFetchedAt": "2026-07-04T10:36:56.749Z",
+            "sourceCount": 1
+          },
+          "postRefreshHistory": {
+            "marketCount": 1,
+            "snapshotCount": 588,
+            "latestSnapshotAt": "2026-07-04T05:36:04.000Z",
+            "oldestSnapshotAt": "2026-07-03T05:15:04.000Z",
+            "outcomeCount": 2,
+            "source": "market-outcome-snapshot"
+          }
+        },
+        "cacheInvalidationContract": {
+          "liveDetailPath": "/api/mobile/events/mobile-provider-refresh-proof-live/live-detail",
+          "eventPath": "/api/events/mobile-provider-refresh-proof-live",
+          "chartPaths": [
+            "/api/markets/40f86f7b-1c5f-4853-abd4-379f08ce9bf0/chart"
+          ],
+          "orderbookPaths": [
+            "/api/orderbook/40f86f7b-1c5f-4853-abd4-379f08ce9bf0/book"
+          ]
+        }
+      }
+    ]
+  },
+  "after": {
+    "eventTitle": "Mobile Provider Refresh Proof",
+    "compactMarketCount": 1,
+    "batchedProviderQuoteSnapshotMarketCount": 1,
+    "batchedProviderQuoteSnapshotReadyCount": 1,
+    "batchedProviderQuoteSnapshotStaleCount": 0,
+    "batchedProviderQuoteSnapshotRefreshDueCount": 0,
+    "batchedProviderQuoteSnapshotNextRefreshAt": "2026-07-04T10:37:56.749Z",
+    "batchedProviderOrderbookDepthReadyCount": 1,
+    "chartHistorySource": "market-outcome-snapshot"
+  },
+  "assertions": {
+    "expiredSnapshots": true,
+    "beforeRefreshDue": true,
+    "schedulerRunCompleted": true,
+    "schedulerAttemptedOneEvent": true,
+    "schedulerFoundDueEvent": true,
+    "schedulerRefreshedEvent": true,
+    "schedulerSuccessfulEventCount": true,
+    "schedulerFailedEventCount": true,
+    "schedulerRefreshItemCompleted": true,
+    "afterReady": true,
+    "afterNotRefreshDue": true
+  },
+  "pass": true
+}

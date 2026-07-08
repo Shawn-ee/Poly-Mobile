@@ -1,0 +1,32 @@
+{
+  "cycle": "NS",
+  "generatedAt": "2026-07-08T14:42:22.254Z",
+  "result": "pass",
+  "allMatchRoute": {
+    "url": "http://127.0.0.1:3002/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&mobileMvpMatches=1&limit=10",
+    "status": 200,
+    "eventCount": 1,
+    "events": [
+      {
+        "slug": "argentina-vs-egypt",
+        "title": "Argentina vs. Egypt",
+        "status": "active",
+        "liveStatus": "LIVE",
+        "startTime": null,
+        "externalSlug": "fifwc-arg-egy-2026-07-07",
+        "winnerStatus": "provider-backed",
+        "lineStatus": "contract-fixture"
+      }
+    ]
+  },
+  "liveRoute": {
+    "url": "http://127.0.0.1:3002/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&mobileMvpMatches=1&limit=10&status=live",
+    "status": 200,
+    "eventCount": 0,
+    "events": []
+  },
+  "assertions": {
+    "homeAllRouteStillShowsMvpMatch": true,
+    "liveRouteHidesStaleMatch": true
+  }
+}

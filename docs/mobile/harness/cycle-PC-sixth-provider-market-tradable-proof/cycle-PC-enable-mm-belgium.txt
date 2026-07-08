@@ -1,0 +1,31 @@
+
+> poly-bot@0.1.0 liquidity:enable-event-mm
+> tsx scripts/enableReferenceEventMm.ts --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug provider-breadth-world-cup-winner --allowlist Belgium --maxMarkets 1 --dryRun false --confirmEnable true
+
+{
+  "ok": true,
+  "dryRun": false,
+  "eventSlug": "provider-breadth-world-cup-winner",
+  "results": [
+    {
+      "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+      "slug": "will-belgium-win-the-2026-fifa-world-cup-358",
+      "title": "Will Belgium win the 2026 FIFA World Cup?",
+      "safe": true,
+      "reason": null,
+      "updated": {
+        "ok": true,
+        "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+        "importStatus": "approved",
+        "referenceOnly": false,
+        "tradable": true,
+        "mmEnabled": true,
+        "isListed": true,
+        "reviewedAt": "2026-07-08T21:32:02.292Z",
+        "reviewedBy": "[redacted-dev-admin]",
+        "reviewNotes": null,
+        "botInitialization": null
+      }
+    }
+  ]
+}

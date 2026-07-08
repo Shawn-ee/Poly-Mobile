@@ -1,0 +1,90 @@
+
+> poly-bot@0.1.0 bot:polymarket:mm:live-local
+> tsx scripts/liquidityRuntime.ts --dryRun false --confirmLive true --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug provider-breadth-world-cup-winner --allowlist France --maxMarkets 1 --durationSeconds 6 --pollMs 1000 --confirmLive true
+
+{
+  "dryRun": false,
+  "liveOrdersEnabled": true,
+  "confirmLive": true,
+  "cycleReports": [
+    {
+      "marketId": "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+      "slug": "will-france-win-the-2026-fifa-world-cup-924",
+      "status": "manage_quotes",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.325,
+      "referenceAsk": 0.326,
+      "plannedBotBid": 0.3,
+      "plannedBotAsk": 0.35,
+      "reasons": [],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 2938,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 2938,
+      "globalExposureCents": 2938,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [
+        "new quote 6c96ee3d-290a-4c10-8fa9-f1debc4591d4:BUY @ 0.31",
+        "new quote 6c96ee3d-290a-4c10-8fa9-f1debc4591d4:SELL @ 0.35",
+        "new quote f62a736c-b9bd-4c38-9266-401005697dd4:BUY @ 0.65",
+        "new quote f62a736c-b9bd-4c38-9266-401005697dd4:SELL @ 0.70",
+        "placed 6c96ee3d-290a-4c10-8fa9-f1debc4591d4:BUY @ 0.31",
+        "placed 6c96ee3d-290a-4c10-8fa9-f1debc4591d4:SELL @ 0.35",
+        "placed f62a736c-b9bd-4c38-9266-401005697dd4:BUY @ 0.65",
+        "placed f62a736c-b9bd-4c38-9266-401005697dd4:SELL @ 0.70"
+      ],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+      "slug": "will-france-win-the-2026-fifa-world-cup-924",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.325,
+      "referenceAsk": 0.326,
+      "plannedBotBid": 0.3,
+      "plannedBotAsk": 0.35,
+      "reasons": [
+        "max_open_orders_per_market_4_of_4"
+      ],
+      "openOrderCount": 4,
+      "perMarketExposureCents": 3898,
+      "openOrderNotionalCents": 960,
+      "inventoryExposureCents": 2938,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+      "slug": "will-france-win-the-2026-fifa-world-cup-924",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.325,
+      "referenceAsk": 0.326,
+      "plannedBotBid": 0.3,
+      "plannedBotAsk": 0.35,
+      "reasons": [
+        "max_open_orders_per_market_4_of_4"
+      ],
+      "openOrderCount": 4,
+      "perMarketExposureCents": 3898,
+      "openOrderNotionalCents": 960,
+      "inventoryExposureCents": 2938,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    }
+  ]
+}

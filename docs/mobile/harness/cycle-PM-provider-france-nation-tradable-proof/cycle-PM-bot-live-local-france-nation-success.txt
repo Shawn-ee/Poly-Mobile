@@ -1,0 +1,42 @@
+
+> poly-bot@0.1.0 bot:polymarket:mm:live-local
+> tsx scripts/liquidityRuntime.ts --dryRun false --confirmLive true --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug world-cup-nation-of-top-goalscorer --allowlist France --maxMarkets 1 --durationSeconds 2 --pollMs 1000
+
+{
+  "dryRun": false,
+  "liveOrdersEnabled": true,
+  "confirmLive": true,
+  "cycleReports": [
+    {
+      "marketId": "42203d58-497f-49e6-a660-87eca202bd59",
+      "slug": "will-a-player-representing-france-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "status": "manage_quotes",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.41,
+      "referenceAsk": 0.42,
+      "plannedBotBid": 0.39,
+      "plannedBotAsk": 0.44,
+      "reasons": [],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 2525,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 2525,
+      "globalExposureCents": 2525,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [
+        "new quote e5beef8e-00fc-4dfe-bafe-775deec419e9:BUY @ 0.39",
+        "new quote e5beef8e-00fc-4dfe-bafe-775deec419e9:SELL @ 0.44",
+        "new quote 2c1a3aaf-e5b0-496e-8fd7-3a142cca8d57:BUY @ 0.41",
+        "new quote 2c1a3aaf-e5b0-496e-8fd7-3a142cca8d57:SELL @ 0.61",
+        "placed e5beef8e-00fc-4dfe-bafe-775deec419e9:BUY @ 0.39",
+        "placed e5beef8e-00fc-4dfe-bafe-775deec419e9:SELL @ 0.44",
+        "placed 2c1a3aaf-e5b0-496e-8fd7-3a142cca8d57:BUY @ 0.41",
+        "placed 2c1a3aaf-e5b0-496e-8fd7-3a142cca8d57:SELL @ 0.61"
+      ],
+      "perMarketExposureCapCents": 20000
+    }
+  ]
+}

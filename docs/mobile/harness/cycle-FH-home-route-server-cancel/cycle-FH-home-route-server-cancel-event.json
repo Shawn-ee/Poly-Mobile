@@ -1,0 +1,2170 @@
+{
+  "pass": true,
+  "generatedAt": "2026-07-04T20:14:43.176Z",
+  "proof": "EL-A proves provider-backed compact market breadth across moneyline, spread, totals, and team totals using Polymarket Gamma/CLOB-shaped route refresh.",
+  "opticOddsCredential": "missing_non_blocking",
+  "eventSlug": "mobile-el-a-provider-breadth-4f7f2397",
+  "routes": {
+    "liveDetail": "/api/mobile/events/:slug/live-detail",
+    "providerRefresh": "/api/mobile/events/:slug/provider-refresh"
+  },
+  "marketIds": {
+    "main": "325f9cec-621c-40e6-b694-9d907918fd75",
+    "spread": "8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558",
+    "totals": "1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb",
+    "team-totals": "9dd13944-55d8-4fa6-af16-e838e0e075f8"
+  },
+  "before": {
+    "contract": {
+      "route": "mobile-live-detail",
+      "generatedAt": "2026-07-04T20:14:42.963Z",
+      "marketCount": 4,
+      "maxMarkets": 14,
+      "primaryMarketId": "325f9cec-621c-40e6-b694-9d907918fd75",
+      "orderbookDepthSource": "empty",
+      "batchedOrderbookDepthSource": "empty",
+      "batchedOrderbookDepthMarketCount": 0,
+      "batchedOrderbookDepthRequestedMarketCount": 4,
+      "batchedOrderbookDepthRequestedMarketIds": [
+        "325f9cec-621c-40e6-b694-9d907918fd75",
+        "8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558",
+        "1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb",
+        "9dd13944-55d8-4fa6-af16-e838e0e075f8"
+      ],
+      "batchedOrderbookDepthMaxLevels": 24,
+      "batchedOrderbookDepthCacheTtlSeconds": 3,
+      "batchedProviderOrderbookDepthSource": "empty",
+      "batchedProviderOrderbookDepthMarketCount": 0,
+      "batchedProviderOrderbookDepthReadyCount": 0,
+      "batchedProviderOrderbookDepthStaleCount": 0,
+      "batchedProviderOrderbookDepthRefreshDueCount": 4,
+      "batchedProviderQuoteSnapshotSource": "empty",
+      "batchedProviderQuoteSnapshotMarketCount": 0,
+      "batchedProviderQuoteSnapshotReadyCount": 0,
+      "batchedProviderQuoteSnapshotStaleCount": 0,
+      "batchedProviderQuoteSnapshotRefreshDueCount": 4,
+      "batchedProviderQuoteSnapshotNextRefreshAt": null,
+      "chartHistorySource": "empty",
+      "batchedChartHistorySource": "empty",
+      "batchedChartHistoryMarketCount": 0,
+      "batchedChartHistoryPointCount": 0,
+      "batchedChartHistoryReadyCount": 0,
+      "batchedChartHistoryStaleCount": 0,
+      "batchedChartHistoryRefreshDueCount": 4,
+      "batchedChartHistoryNextRefreshAt": null,
+      "batchedChartHistoryRequestedMarketCount": 4,
+      "batchedChartHistoryRequestedMarketIds": [
+        "325f9cec-621c-40e6-b694-9d907918fd75",
+        "8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558",
+        "1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb",
+        "9dd13944-55d8-4fa6-af16-e838e0e075f8"
+      ],
+      "liveDataStatus": "ready",
+      "providerLifecycle": {
+        "source": "mobile-live-detail",
+        "status": "unavailable",
+        "ready": false,
+        "stale": false,
+        "refreshDue": false,
+        "refreshing": false,
+        "refreshStarted": false,
+        "unavailable": true,
+        "empty": true,
+        "notReady": true,
+        "fallback": false,
+        "fallbackApplied": false,
+        "fallbackReason": null,
+        "reason": "No provider quote snapshot is available for this market.",
+        "nextRefreshAt": null,
+        "lastFetchedAt": null,
+        "quote": {
+          "source": "reference-quote-snapshot",
+          "status": "unavailable",
+          "reason": "No provider quote snapshot is available for this market.",
+          "nextRefreshAt": null,
+          "lastFetchedAt": null,
+          "stalenessSeconds": null,
+          "shouldRefresh": true,
+          "ready": false,
+          "stale": false,
+          "refreshDue": false,
+          "unavailable": true,
+          "empty": true,
+          "notReady": true
+        },
+        "orderbookDepth": {
+          "source": "reference-orderbook-depth-snapshot",
+          "status": "unavailable",
+          "reason": "No provider orderbook depth snapshot is available.",
+          "nextRefreshAt": null,
+          "lastFetchedAt": null,
+          "stalenessSeconds": null,
+          "shouldRefresh": true,
+          "ready": false,
+          "stale": false,
+          "refreshDue": false,
+          "unavailable": true,
+          "empty": true,
+          "notReady": true
+        },
+        "chartHistory": {
+          "source": "empty",
+          "status": "unavailable",
+          "reason": "No provider chart history snapshot is available for this market.",
+          "nextRefreshAt": null,
+          "lastFetchedAt": null,
+          "stalenessSeconds": null,
+          "shouldRefresh": true,
+          "ready": false,
+          "stale": false,
+          "refreshDue": false,
+          "unavailable": true,
+          "empty": true,
+          "notReady": true
+        }
+      }
+    },
+    "eventProviderLifecycle": {
+      "source": "mobile-live-detail",
+      "status": "unavailable",
+      "ready": false,
+      "stale": false,
+      "refreshDue": false,
+      "refreshing": false,
+      "refreshStarted": false,
+      "unavailable": true,
+      "empty": true,
+      "notReady": true,
+      "fallback": false,
+      "fallbackApplied": false,
+      "fallbackReason": null,
+      "reason": "No provider quote snapshot is available for this market.",
+      "nextRefreshAt": null,
+      "lastFetchedAt": null,
+      "quote": {
+        "source": "reference-quote-snapshot",
+        "status": "unavailable",
+        "reason": "No provider quote snapshot is available for this market.",
+        "nextRefreshAt": null,
+        "lastFetchedAt": null,
+        "stalenessSeconds": null,
+        "shouldRefresh": true,
+        "ready": false,
+        "stale": false,
+        "refreshDue": false,
+        "unavailable": true,
+        "empty": true,
+        "notReady": true
+      },
+      "orderbookDepth": {
+        "source": "reference-orderbook-depth-snapshot",
+        "status": "unavailable",
+        "reason": "No provider orderbook depth snapshot is available.",
+        "nextRefreshAt": null,
+        "lastFetchedAt": null,
+        "stalenessSeconds": null,
+        "shouldRefresh": true,
+        "ready": false,
+        "stale": false,
+        "refreshDue": false,
+        "unavailable": true,
+        "empty": true,
+        "notReady": true
+      },
+      "chartHistory": {
+        "source": "empty",
+        "status": "unavailable",
+        "reason": "No provider chart history snapshot is available for this market.",
+        "nextRefreshAt": null,
+        "lastFetchedAt": null,
+        "stalenessSeconds": null,
+        "shouldRefresh": true,
+        "ready": false,
+        "stale": false,
+        "refreshDue": false,
+        "unavailable": true,
+        "empty": true,
+        "notReady": true
+      }
+    }
+  },
+  "refresh": {
+    "providerLifecycle": {
+      "source": "mobile-live-provider-refresh",
+      "status": "ready",
+      "generatedAt": "2026-07-04T20:14:43.161Z",
+      "refreshStartedAt": "2026-07-04T20:14:42.987Z",
+      "refreshCompletedAt": "2026-07-04T20:14:43.161Z",
+      "refreshStarted": true,
+      "refreshing": false,
+      "refreshStatus": "completed",
+      "quote": {
+        "source": "reference-quote-snapshot",
+        "status": "ready",
+        "latestAt": "2026-07-04T20:14:43.029Z",
+        "lastFetchedAt": "2026-07-04T20:14:43.029Z",
+        "stalenessSeconds": 0,
+        "readyAfterSeconds": 60,
+        "staleAfterSeconds": 90,
+        "nextRefreshAt": "2026-07-04T20:15:43.029Z",
+        "shouldRefresh": false,
+        "ready": true,
+        "refreshDue": false,
+        "stale": false,
+        "unavailable": false,
+        "empty": false,
+        "notReady": false,
+        "fallback": false,
+        "reason": "Provider snapshot is fresh."
+      },
+      "orderbookDepth": {
+        "source": "reference-orderbook-depth-snapshot",
+        "status": "ready",
+        "latestAt": "2026-07-04T20:14:43.082Z",
+        "lastFetchedAt": "2026-07-04T20:14:43.082Z",
+        "stalenessSeconds": 0,
+        "readyAfterSeconds": 60,
+        "staleAfterSeconds": 90,
+        "nextRefreshAt": "2026-07-04T20:15:43.082Z",
+        "shouldRefresh": false,
+        "ready": true,
+        "refreshDue": false,
+        "stale": false,
+        "unavailable": false,
+        "empty": false,
+        "notReady": false,
+        "fallback": false,
+        "reason": "Provider snapshot is fresh."
+      },
+      "chartHistory": {
+        "source": "market-outcome-snapshot",
+        "status": "ready",
+        "latestAt": "2026-07-04T20:14:43.000Z",
+        "lastFetchedAt": "2026-07-04T20:14:43.000Z",
+        "stalenessSeconds": 0,
+        "readyAfterSeconds": 60,
+        "staleAfterSeconds": 90,
+        "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+        "shouldRefresh": false,
+        "ready": true,
+        "refreshDue": false,
+        "stale": false,
+        "unavailable": false,
+        "empty": false,
+        "notReady": false,
+        "fallback": false,
+        "reason": "Provider snapshot is fresh."
+      },
+      "ready": true,
+      "refreshDue": false,
+      "stale": false,
+      "unavailable": false,
+      "empty": false,
+      "notReady": false,
+      "fallback": false,
+      "fallbackApplied": false,
+      "fallbackReason": null,
+      "reason": "Provider lifecycle surfaces are ready after refresh.",
+      "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+      "lastFetchedAt": "2026-07-04T20:14:43.082Z",
+      "lineProvider": {
+        "source": "optic_odds",
+        "status": "unconfigured",
+        "attempted": false,
+        "optional": true,
+        "blocking": false,
+        "skippedReason": "missing_optic_odds_api_key",
+        "reason": "OPTIC_ODDS_API_KEY is optional enrichment and is not configured."
+      }
+    },
+    "provider": {
+      "source": "polymarket-gamma",
+      "attempted": true,
+      "refreshedCount": 4,
+      "skippedCount": 0,
+      "snapshotsUpdated": 8,
+      "refreshed": [
+        {
+          "marketId": "9dd13944-55d8-4fa6-af16-e838e0e075f8",
+          "title": "Breadth Home - Team Total Goals 1.5",
+          "slug": "el-a-team-total-4f7f2397",
+          "snapshotsUpdated": 2,
+          "outcomes": [
+            {
+              "outcomeId": "8fd51462-d20d-49c3-89b1-bfce9accfd13",
+              "tokenId": "token-el-a-team-total-over-4f7f2397",
+              "bestBid": 0.56,
+              "bestAsk": 0.6,
+              "spread": 0.04,
+              "lastTradePrice": 0.58,
+              "outcomePrice": 0.52,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            },
+            {
+              "outcomeId": "44235dbf-b03f-404a-ba20-3a0fbd1a2e32",
+              "tokenId": "token-el-a-team-total-under-4f7f2397",
+              "bestBid": 0.56,
+              "bestAsk": 0.6,
+              "spread": 0.04,
+              "lastTradePrice": 0.58,
+              "outcomePrice": 0.48,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            }
+          ]
+        },
+        {
+          "marketId": "325f9cec-621c-40e6-b694-9d907918fd75",
+          "title": "Breadth Home vs Breadth Away - Match Winner",
+          "slug": "el-a-moneyline-4f7f2397",
+          "snapshotsUpdated": 2,
+          "outcomes": [
+            {
+              "outcomeId": "4d72a826-9b4a-4fd8-94c2-e6e8beb91876",
+              "tokenId": "token-el-a-moneyline-home-4f7f2397",
+              "bestBid": 0.56,
+              "bestAsk": 0.6,
+              "spread": 0.04,
+              "lastTradePrice": 0.58,
+              "outcomePrice": 0.52,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            },
+            {
+              "outcomeId": "404be6eb-9659-46b9-b966-c0cf274c4a80",
+              "tokenId": "token-el-a-moneyline-away-4f7f2397",
+              "bestBid": 0.56,
+              "bestAsk": 0.6,
+              "spread": 0.04,
+              "lastTradePrice": 0.58,
+              "outcomePrice": 0.48,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            }
+          ]
+        },
+        {
+          "marketId": "8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558",
+          "title": "Breadth Home vs Breadth Away - Spread 1.5",
+          "slug": "el-a-spread-4f7f2397",
+          "snapshotsUpdated": 2,
+          "outcomes": [
+            {
+              "outcomeId": "9b49ab00-d67d-4e44-aa3d-b0df255d54dc",
+              "tokenId": "token-el-a-spread-home-4f7f2397",
+              "bestBid": 0.5,
+              "bestAsk": 0.54,
+              "spread": 0.04,
+              "lastTradePrice": 0.52,
+              "outcomePrice": 0.52,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            },
+            {
+              "outcomeId": "2d5cbcee-0a62-4d9c-adc6-1fe357fd1b4d",
+              "tokenId": "token-el-a-spread-away-4f7f2397",
+              "bestBid": 0.5,
+              "bestAsk": 0.54,
+              "spread": 0.04,
+              "lastTradePrice": 0.52,
+              "outcomePrice": 0.48,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            }
+          ]
+        },
+        {
+          "marketId": "1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb",
+          "title": "Breadth Home vs Breadth Away - Total Goals 2.5",
+          "slug": "el-a-totals-4f7f2397",
+          "snapshotsUpdated": 2,
+          "outcomes": [
+            {
+              "outcomeId": "5534c13b-fb78-4192-b8e5-e2d310080bab",
+              "tokenId": "token-el-a-totals-over-4f7f2397",
+              "bestBid": 0.44,
+              "bestAsk": 0.48,
+              "spread": 0.04,
+              "lastTradePrice": 0.46,
+              "outcomePrice": 0.52,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            },
+            {
+              "outcomeId": "a308b40d-019c-4e11-bd5a-1e372509dc92",
+              "tokenId": "token-el-a-totals-under-4f7f2397",
+              "bestBid": 0.44,
+              "bestAsk": 0.48,
+              "spread": 0.04,
+              "lastTradePrice": 0.46,
+              "outcomePrice": 0.48,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            }
+          ]
+        }
+      ],
+      "skipped": []
+    },
+    "providerDepth": {
+      "generatedAt": "2026-07-04T20:14:43.095Z",
+      "source": "polymarket-clob",
+      "maxLevels": 24,
+      "requestedMarketCount": 4,
+      "refreshedCount": 4,
+      "depthRowsUpdated": 32,
+      "skippedCount": 0,
+      "refreshed": [
+        {
+          "marketId": "9dd13944-55d8-4fa6-af16-e838e0e075f8",
+          "title": "Breadth Home - Team Total Goals 1.5",
+          "slug": "el-a-team-total-4f7f2397",
+          "outcomeCount": 2,
+          "depthRowsUpdated": 8,
+          "outcomes": [
+            {
+              "outcomeId": "8fd51462-d20d-49c3-89b1-bfce9accfd13",
+              "tokenId": "token-el-a-team-total-over-4f7f2397",
+              "bidCount": 2,
+              "askCount": 2,
+              "fetchedAt": "2026-07-04T20:14:43.041Z",
+              "providerTimestamp": "2026-07-04T20:14:43.000Z"
+            },
+            {
+              "outcomeId": "44235dbf-b03f-404a-ba20-3a0fbd1a2e32",
+              "tokenId": "token-el-a-team-total-under-4f7f2397",
+              "bidCount": 2,
+              "askCount": 2,
+              "fetchedAt": "2026-07-04T20:14:43.041Z",
+              "providerTimestamp": "2026-07-04T20:14:43.000Z"
+            }
+          ]
+        },
+        {
+          "marketId": "325f9cec-621c-40e6-b694-9d907918fd75",
+          "title": "Breadth Home vs Breadth Away - Match Winner",
+          "slug": "el-a-moneyline-4f7f2397",
+          "outcomeCount": 2,
+          "depthRowsUpdated": 8,
+          "outcomes": [
+            {
+              "outcomeId": "4d72a826-9b4a-4fd8-94c2-e6e8beb91876",
+              "tokenId": "token-el-a-moneyline-home-4f7f2397",
+              "bidCount": 2,
+              "askCount": 2,
+              "fetchedAt": "2026-07-04T20:14:43.056Z",
+              "providerTimestamp": "2026-07-04T20:14:43.000Z"
+            },
+            {
+              "outcomeId": "404be6eb-9659-46b9-b966-c0cf274c4a80",
+              "tokenId": "token-el-a-moneyline-away-4f7f2397",
+              "bidCount": 2,
+              "askCount": 2,
+              "fetchedAt": "2026-07-04T20:14:43.056Z",
+              "providerTimestamp": "2026-07-04T20:14:43.000Z"
+            }
+          ]
+        },
+        {
+          "marketId": "8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558",
+          "title": "Breadth Home vs Breadth Away - Spread 1.5",
+          "slug": "el-a-spread-4f7f2397",
+          "outcomeCount": 2,
+          "depthRowsUpdated": 8,
+          "outcomes": [
+            {
+              "outcomeId": "9b49ab00-d67d-4e44-aa3d-b0df255d54dc",
+              "tokenId": "token-el-a-spread-home-4f7f2397",
+              "bidCount": 2,
+              "askCount": 2,
+              "fetchedAt": "2026-07-04T20:14:43.070Z",
+              "providerTimestamp": "2026-07-04T20:14:43.000Z"
+            },
+            {
+              "outcomeId": "2d5cbcee-0a62-4d9c-adc6-1fe357fd1b4d",
+              "tokenId": "token-el-a-spread-away-4f7f2397",
+              "bidCount": 2,
+              "askCount": 2,
+              "fetchedAt": "2026-07-04T20:14:43.070Z",
+              "providerTimestamp": "2026-07-04T20:14:43.000Z"
+            }
+          ]
+        },
+        {
+          "marketId": "1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb",
+          "title": "Breadth Home vs Breadth Away - Total Goals 2.5",
+          "slug": "el-a-totals-4f7f2397",
+          "outcomeCount": 2,
+          "depthRowsUpdated": 8,
+          "outcomes": [
+            {
+              "outcomeId": "5534c13b-fb78-4192-b8e5-e2d310080bab",
+              "tokenId": "token-el-a-totals-over-4f7f2397",
+              "bidCount": 2,
+              "askCount": 2,
+              "fetchedAt": "2026-07-04T20:14:43.082Z",
+              "providerTimestamp": "2026-07-04T20:14:43.000Z"
+            },
+            {
+              "outcomeId": "a308b40d-019c-4e11-bd5a-1e372509dc92",
+              "tokenId": "token-el-a-totals-under-4f7f2397",
+              "bidCount": 2,
+              "askCount": 2,
+              "fetchedAt": "2026-07-04T20:14:43.082Z",
+              "providerTimestamp": "2026-07-04T20:14:43.000Z"
+            }
+          ]
+        }
+      ],
+      "skipped": []
+    },
+    "providerHistory": {
+      "generatedAt": "2026-07-04T20:14:43.154Z",
+      "source": "polymarket-clob-prices-history",
+      "interval": "1d",
+      "fidelityMinutes": 5,
+      "requestedMarketCount": 4,
+      "refreshedCount": 4,
+      "snapshotsCreated": 24,
+      "skippedCount": 0,
+      "refreshed": [
+        {
+          "marketId": "9dd13944-55d8-4fa6-af16-e838e0e075f8",
+          "title": "Breadth Home - Team Total Goals 1.5",
+          "slug": "el-a-team-total-4f7f2397",
+          "outcomeCount": 2,
+          "snapshotsCreated": 6,
+          "outcomes": [
+            {
+              "outcomeId": "8fd51462-d20d-49c3-89b1-bfce9accfd13",
+              "tokenId": "token-el-a-team-total-over-4f7f2397",
+              "historyPointCount": 3,
+              "createdSnapshots": 3,
+              "firstTimestamp": "2026-07-04T20:12:43.000Z",
+              "lastTimestamp": "2026-07-04T20:14:43.000Z"
+            },
+            {
+              "outcomeId": "44235dbf-b03f-404a-ba20-3a0fbd1a2e32",
+              "tokenId": "token-el-a-team-total-under-4f7f2397",
+              "historyPointCount": 3,
+              "createdSnapshots": 3,
+              "firstTimestamp": "2026-07-04T20:12:43.000Z",
+              "lastTimestamp": "2026-07-04T20:14:43.000Z"
+            }
+          ]
+        },
+        {
+          "marketId": "325f9cec-621c-40e6-b694-9d907918fd75",
+          "title": "Breadth Home vs Breadth Away - Match Winner",
+          "slug": "el-a-moneyline-4f7f2397",
+          "outcomeCount": 2,
+          "snapshotsCreated": 6,
+          "outcomes": [
+            {
+              "outcomeId": "4d72a826-9b4a-4fd8-94c2-e6e8beb91876",
+              "tokenId": "token-el-a-moneyline-home-4f7f2397",
+              "historyPointCount": 3,
+              "createdSnapshots": 3,
+              "firstTimestamp": "2026-07-04T20:12:43.000Z",
+              "lastTimestamp": "2026-07-04T20:14:43.000Z"
+            },
+            {
+              "outcomeId": "404be6eb-9659-46b9-b966-c0cf274c4a80",
+              "tokenId": "token-el-a-moneyline-away-4f7f2397",
+              "historyPointCount": 3,
+              "createdSnapshots": 3,
+              "firstTimestamp": "2026-07-04T20:12:43.000Z",
+              "lastTimestamp": "2026-07-04T20:14:43.000Z"
+            }
+          ]
+        },
+        {
+          "marketId": "8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558",
+          "title": "Breadth Home vs Breadth Away - Spread 1.5",
+          "slug": "el-a-spread-4f7f2397",
+          "outcomeCount": 2,
+          "snapshotsCreated": 6,
+          "outcomes": [
+            {
+              "outcomeId": "9b49ab00-d67d-4e44-aa3d-b0df255d54dc",
+              "tokenId": "token-el-a-spread-home-4f7f2397",
+              "historyPointCount": 3,
+              "createdSnapshots": 3,
+              "firstTimestamp": "2026-07-04T20:12:43.000Z",
+              "lastTimestamp": "2026-07-04T20:14:43.000Z"
+            },
+            {
+              "outcomeId": "2d5cbcee-0a62-4d9c-adc6-1fe357fd1b4d",
+              "tokenId": "token-el-a-spread-away-4f7f2397",
+              "historyPointCount": 3,
+              "createdSnapshots": 3,
+              "firstTimestamp": "2026-07-04T20:12:43.000Z",
+              "lastTimestamp": "2026-07-04T20:14:43.000Z"
+            }
+          ]
+        },
+        {
+          "marketId": "1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb",
+          "title": "Breadth Home vs Breadth Away - Total Goals 2.5",
+          "slug": "el-a-totals-4f7f2397",
+          "outcomeCount": 2,
+          "snapshotsCreated": 6,
+          "outcomes": [
+            {
+              "outcomeId": "5534c13b-fb78-4192-b8e5-e2d310080bab",
+              "tokenId": "token-el-a-totals-over-4f7f2397",
+              "historyPointCount": 3,
+              "createdSnapshots": 3,
+              "firstTimestamp": "2026-07-04T20:12:43.000Z",
+              "lastTimestamp": "2026-07-04T20:14:43.000Z"
+            },
+            {
+              "outcomeId": "a308b40d-019c-4e11-bd5a-1e372509dc92",
+              "tokenId": "token-el-a-totals-under-4f7f2397",
+              "historyPointCount": 3,
+              "createdSnapshots": 3,
+              "firstTimestamp": "2026-07-04T20:12:43.000Z",
+              "lastTimestamp": "2026-07-04T20:14:43.000Z"
+            }
+          ]
+        }
+      ],
+      "skipped": []
+    },
+    "lineProvider": {
+      "eventSlug": "mobile-el-a-provider-breadth-4f7f2397",
+      "generatedAt": "2026-07-04T20:14:43.155Z",
+      "source": "optic_odds",
+      "attempted": false,
+      "status": "skipped",
+      "compactMarketCount": 4,
+      "matchedMarketCount": 0,
+      "snapshotRowsBuilt": 0,
+      "snapshotsUpdated": 0,
+      "skippedReason": "missing_optic_odds_api_key",
+      "fixtureId": "optic-fixture-el-a-4f7f2397",
+      "markets": [
+        "moneyline",
+        "point_spread",
+        "total_goals",
+        "team_total_goals",
+        "1st_half_moneyline",
+        "2nd_half_moneyline",
+        "correct_score"
+      ],
+      "sportsbooks": []
+    },
+    "lineFamilyCoverage": {
+      "source": "mobile-live-provider-refresh-line-family-coverage",
+      "generatedAt": "2026-07-04T20:14:43.161Z",
+      "compactMarketCount": 4,
+      "familyCount": 4,
+      "providerRefreshableFamilyCount": 4,
+      "providerRefreshableMarketCount": 4,
+      "readyProviderRefreshableMarketCount": 4,
+      "hasProviderMappedBreadth": true,
+      "hasReadyProviderMappedBreadth": true,
+      "optionalLineProviderBlocking": false,
+      "families": [
+        {
+          "family": "moneyline",
+          "marketCount": 1,
+          "providerRefreshableMarketCount": 1,
+          "readyMarketCount": 1,
+          "notReadyMarketCount": 0,
+          "statuses": [
+            "ready"
+          ],
+          "marketIds": [
+            "325f9cec-621c-40e6-b694-9d907918fd75"
+          ],
+          "selectorKeys": [
+            "main:full-game:default"
+          ]
+        },
+        {
+          "family": "spread",
+          "marketCount": 1,
+          "providerRefreshableMarketCount": 1,
+          "readyMarketCount": 1,
+          "notReadyMarketCount": 0,
+          "statuses": [
+            "ready"
+          ],
+          "marketIds": [
+            "8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558"
+          ],
+          "selectorKeys": [
+            "spread:full-game:1.5"
+          ]
+        },
+        {
+          "family": "total",
+          "marketCount": 1,
+          "providerRefreshableMarketCount": 1,
+          "readyMarketCount": 1,
+          "notReadyMarketCount": 0,
+          "statuses": [
+            "ready"
+          ],
+          "marketIds": [
+            "1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb"
+          ],
+          "selectorKeys": [
+            "totals:full-game:2.5"
+          ]
+        },
+        {
+          "family": "team_total",
+          "marketCount": 1,
+          "providerRefreshableMarketCount": 1,
+          "readyMarketCount": 1,
+          "notReadyMarketCount": 0,
+          "statuses": [
+            "ready"
+          ],
+          "marketIds": [
+            "9dd13944-55d8-4fa6-af16-e838e0e075f8"
+          ],
+          "selectorKeys": [
+            "team-totals:full-game:1.5"
+          ]
+        }
+      ],
+      "markets": [
+        {
+          "marketId": "325f9cec-621c-40e6-b694-9d907918fd75",
+          "title": "Breadth Home vs Breadth Away - Match Winner",
+          "selectorKey": "main:full-game:default",
+          "marketFamily": "moneyline",
+          "marketGroupKey": "main",
+          "marketType": "moneyline",
+          "period": "full-game",
+          "line": null,
+          "lineValue": null,
+          "referenceSource": "polymarket",
+          "externalSlug": "el-a-moneyline-4f7f2397",
+          "externalMarketId": "gamma-el-a-moneyline-4f7f2397",
+          "conditionId": "condition-el-a-moneyline-4f7f2397",
+          "providerRefreshable": true,
+          "missingFields": [],
+          "status": "ready",
+          "ready": true,
+          "notReady": false,
+          "quote": {
+            "source": "polymarket",
+            "status": "ready",
+            "latestAt": "2026-07-04T20:14:43.011Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.011Z",
+            "stalenessSeconds": 0,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-04T20:15:43.011Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "orderbookDepth": {
+            "source": "polymarket-clob",
+            "status": "ready",
+            "latestAt": "2026-07-04T20:14:43.056Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.056Z",
+            "stalenessSeconds": 0,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-04T20:15:43.056Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "chartHistory": {
+            "source": "polymarket-clob-prices-history",
+            "status": "ready",
+            "latestAt": "2026-07-04T20:14:43.000Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.000Z",
+            "stalenessSeconds": 0,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          }
+        },
+        {
+          "marketId": "8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558",
+          "title": "Breadth Home vs Breadth Away - Spread 1.5",
+          "selectorKey": "spread:full-game:1.5",
+          "marketFamily": "spread",
+          "marketGroupKey": "spread",
+          "marketType": "spread",
+          "period": "full-game",
+          "line": "1.5",
+          "lineValue": 1.5,
+          "referenceSource": "polymarket",
+          "externalSlug": "el-a-spread-4f7f2397",
+          "externalMarketId": "gamma-el-a-spread-4f7f2397",
+          "conditionId": "condition-el-a-spread-4f7f2397",
+          "providerRefreshable": true,
+          "missingFields": [],
+          "status": "ready",
+          "ready": true,
+          "notReady": false,
+          "quote": {
+            "source": "polymarket",
+            "status": "ready",
+            "latestAt": "2026-07-04T20:14:43.021Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.021Z",
+            "stalenessSeconds": 0,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-04T20:15:43.021Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "orderbookDepth": {
+            "source": "polymarket-clob",
+            "status": "ready",
+            "latestAt": "2026-07-04T20:14:43.070Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.070Z",
+            "stalenessSeconds": 0,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-04T20:15:43.070Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "chartHistory": {
+            "source": "polymarket-clob-prices-history",
+            "status": "ready",
+            "latestAt": "2026-07-04T20:14:43.000Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.000Z",
+            "stalenessSeconds": 0,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          }
+        },
+        {
+          "marketId": "1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb",
+          "title": "Breadth Home vs Breadth Away - Total Goals 2.5",
+          "selectorKey": "totals:full-game:2.5",
+          "marketFamily": "total",
+          "marketGroupKey": "totals",
+          "marketType": "total_goals",
+          "period": "full-game",
+          "line": "2.5",
+          "lineValue": 2.5,
+          "referenceSource": "polymarket",
+          "externalSlug": "el-a-totals-4f7f2397",
+          "externalMarketId": "gamma-el-a-totals-4f7f2397",
+          "conditionId": "condition-el-a-totals-4f7f2397",
+          "providerRefreshable": true,
+          "missingFields": [],
+          "status": "ready",
+          "ready": true,
+          "notReady": false,
+          "quote": {
+            "source": "polymarket",
+            "status": "ready",
+            "latestAt": "2026-07-04T20:14:43.029Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.029Z",
+            "stalenessSeconds": 0,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-04T20:15:43.029Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "orderbookDepth": {
+            "source": "polymarket-clob",
+            "status": "ready",
+            "latestAt": "2026-07-04T20:14:43.082Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.082Z",
+            "stalenessSeconds": 0,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-04T20:15:43.082Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "chartHistory": {
+            "source": "polymarket-clob-prices-history",
+            "status": "ready",
+            "latestAt": "2026-07-04T20:14:43.000Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.000Z",
+            "stalenessSeconds": 0,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          }
+        },
+        {
+          "marketId": "9dd13944-55d8-4fa6-af16-e838e0e075f8",
+          "title": "Breadth Home - Team Total Goals 1.5",
+          "selectorKey": "team-totals:full-game:1.5",
+          "marketFamily": "team_total",
+          "marketGroupKey": "team-totals",
+          "marketType": "team_total_goals",
+          "period": "full-game",
+          "line": "1.5",
+          "lineValue": 1.5,
+          "referenceSource": "polymarket",
+          "externalSlug": "el-a-team-total-4f7f2397",
+          "externalMarketId": "gamma-el-a-team-total-4f7f2397",
+          "conditionId": "condition-el-a-team-total-4f7f2397",
+          "providerRefreshable": true,
+          "missingFields": [],
+          "status": "ready",
+          "ready": true,
+          "notReady": false,
+          "quote": {
+            "source": "polymarket",
+            "status": "ready",
+            "latestAt": "2026-07-04T20:14:43.001Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.001Z",
+            "stalenessSeconds": 0,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-04T20:15:43.001Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "orderbookDepth": {
+            "source": "polymarket-clob",
+            "status": "ready",
+            "latestAt": "2026-07-04T20:14:43.041Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.041Z",
+            "stalenessSeconds": 0,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-04T20:15:43.041Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "chartHistory": {
+            "source": "polymarket-clob-prices-history",
+            "status": "ready",
+            "latestAt": "2026-07-04T20:14:43.000Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.000Z",
+            "stalenessSeconds": 0,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          }
+        }
+      ]
+    },
+    "contractProofFallback": null,
+    "cacheInvalidation": {
+      "source": "next-revalidate-path",
+      "generatedAt": "2026-07-04T20:14:43.161Z",
+      "eventSlug": "mobile-el-a-provider-breadth-4f7f2397",
+      "marketCount": 4,
+      "chartMarketCount": 4,
+      "orderbookMarketCount": 4,
+      "invalidated": [],
+      "errors": [
+        {
+          "path": "/api/mobile/events/mobile-el-a-provider-breadth-4f7f2397/live-detail",
+          "error": "Invariant: static generation store missing in revalidatePath /api/mobile/events/mobile-el-a-provider-breadth-4f7f2397/live-detail"
+        },
+        {
+          "path": "/api/events/mobile-el-a-provider-breadth-4f7f2397",
+          "error": "Invariant: static generation store missing in revalidatePath /api/events/mobile-el-a-provider-breadth-4f7f2397"
+        },
+        {
+          "path": "/api/markets/325f9cec-621c-40e6-b694-9d907918fd75/chart",
+          "error": "Invariant: static generation store missing in revalidatePath /api/markets/325f9cec-621c-40e6-b694-9d907918fd75/chart"
+        },
+        {
+          "path": "/api/markets/8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558/chart",
+          "error": "Invariant: static generation store missing in revalidatePath /api/markets/8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558/chart"
+        },
+        {
+          "path": "/api/markets/1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb/chart",
+          "error": "Invariant: static generation store missing in revalidatePath /api/markets/1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb/chart"
+        },
+        {
+          "path": "/api/markets/9dd13944-55d8-4fa6-af16-e838e0e075f8/chart",
+          "error": "Invariant: static generation store missing in revalidatePath /api/markets/9dd13944-55d8-4fa6-af16-e838e0e075f8/chart"
+        },
+        {
+          "path": "/api/orderbook/325f9cec-621c-40e6-b694-9d907918fd75/book",
+          "error": "Invariant: static generation store missing in revalidatePath /api/orderbook/325f9cec-621c-40e6-b694-9d907918fd75/book"
+        },
+        {
+          "path": "/api/orderbook/8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558/book",
+          "error": "Invariant: static generation store missing in revalidatePath /api/orderbook/8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558/book"
+        },
+        {
+          "path": "/api/orderbook/1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb/book",
+          "error": "Invariant: static generation store missing in revalidatePath /api/orderbook/1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb/book"
+        },
+        {
+          "path": "/api/orderbook/9dd13944-55d8-4fa6-af16-e838e0e075f8/book",
+          "error": "Invariant: static generation store missing in revalidatePath /api/orderbook/9dd13944-55d8-4fa6-af16-e838e0e075f8/book"
+        }
+      ]
+    }
+  },
+  "after": {
+    "contract": {
+      "route": "mobile-live-detail",
+      "generatedAt": "2026-07-04T20:14:43.168Z",
+      "marketCount": 4,
+      "maxMarkets": 14,
+      "primaryMarketId": "325f9cec-621c-40e6-b694-9d907918fd75",
+      "orderbookDepthSource": "orderbook-route",
+      "batchedOrderbookDepthSource": "orderbook-route",
+      "batchedOrderbookDepthMarketCount": 4,
+      "batchedOrderbookDepthRequestedMarketCount": 4,
+      "batchedOrderbookDepthRequestedMarketIds": [
+        "325f9cec-621c-40e6-b694-9d907918fd75",
+        "8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558",
+        "1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb",
+        "9dd13944-55d8-4fa6-af16-e838e0e075f8"
+      ],
+      "batchedOrderbookDepthMaxLevels": 24,
+      "batchedOrderbookDepthCacheTtlSeconds": 3,
+      "batchedProviderOrderbookDepthSource": "reference-orderbook-depth-snapshot",
+      "batchedProviderOrderbookDepthMarketCount": 4,
+      "batchedProviderOrderbookDepthReadyCount": 4,
+      "batchedProviderOrderbookDepthStaleCount": 0,
+      "batchedProviderOrderbookDepthRefreshDueCount": 0,
+      "batchedProviderQuoteSnapshotSource": "reference-quote-snapshot",
+      "batchedProviderQuoteSnapshotMarketCount": 4,
+      "batchedProviderQuoteSnapshotReadyCount": 4,
+      "batchedProviderQuoteSnapshotStaleCount": 0,
+      "batchedProviderQuoteSnapshotRefreshDueCount": 0,
+      "batchedProviderQuoteSnapshotNextRefreshAt": "2026-07-04T20:15:43.001Z",
+      "chartHistorySource": "market-outcome-snapshot",
+      "batchedChartHistorySource": "market-outcome-snapshot",
+      "batchedChartHistoryMarketCount": 4,
+      "batchedChartHistoryPointCount": 24,
+      "batchedChartHistoryReadyCount": 4,
+      "batchedChartHistoryStaleCount": 0,
+      "batchedChartHistoryRefreshDueCount": 0,
+      "batchedChartHistoryNextRefreshAt": "2026-07-04T20:15:43.000Z",
+      "batchedChartHistoryRequestedMarketCount": 4,
+      "batchedChartHistoryRequestedMarketIds": [
+        "325f9cec-621c-40e6-b694-9d907918fd75",
+        "8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558",
+        "1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb",
+        "9dd13944-55d8-4fa6-af16-e838e0e075f8"
+      ],
+      "liveDataStatus": "ready",
+      "providerLifecycle": {
+        "source": "mobile-live-detail",
+        "status": "ready",
+        "ready": true,
+        "stale": false,
+        "refreshDue": false,
+        "refreshing": false,
+        "refreshStarted": false,
+        "unavailable": false,
+        "empty": false,
+        "notReady": false,
+        "fallback": false,
+        "fallbackApplied": false,
+        "fallbackReason": null,
+        "reason": "Provider lifecycle surfaces are ready.",
+        "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+        "lastFetchedAt": "2026-07-04T20:14:43.082Z",
+        "quote": {
+          "source": "polymarket",
+          "status": "ready",
+          "reason": "Provider lifecycle segment is ready across compact markets.",
+          "nextRefreshAt": "2026-07-04T20:15:43.001Z",
+          "lastFetchedAt": "2026-07-04T20:14:43.029Z",
+          "stalenessSeconds": 0,
+          "shouldRefresh": false,
+          "ready": true,
+          "stale": false,
+          "refreshDue": false,
+          "unavailable": false,
+          "empty": false,
+          "notReady": false
+        },
+        "orderbookDepth": {
+          "source": "polymarket-clob",
+          "status": "ready",
+          "reason": "Provider lifecycle segment is ready across compact markets.",
+          "nextRefreshAt": "2026-07-04T20:15:43.041Z",
+          "lastFetchedAt": "2026-07-04T20:14:43.082Z",
+          "stalenessSeconds": 0,
+          "shouldRefresh": false,
+          "ready": true,
+          "stale": false,
+          "refreshDue": false,
+          "unavailable": false,
+          "empty": false,
+          "notReady": false
+        },
+        "chartHistory": {
+          "source": "polymarket-clob-prices-history",
+          "status": "ready",
+          "reason": "Provider lifecycle segment is ready across compact markets.",
+          "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+          "lastFetchedAt": "2026-07-04T20:14:43.000Z",
+          "stalenessSeconds": 0,
+          "shouldRefresh": false,
+          "ready": true,
+          "stale": false,
+          "refreshDue": false,
+          "unavailable": false,
+          "empty": false,
+          "notReady": false
+        }
+      }
+    },
+    "eventProviderLifecycle": {
+      "source": "mobile-live-detail",
+      "status": "ready",
+      "ready": true,
+      "stale": false,
+      "refreshDue": false,
+      "refreshing": false,
+      "refreshStarted": false,
+      "unavailable": false,
+      "empty": false,
+      "notReady": false,
+      "fallback": false,
+      "fallbackApplied": false,
+      "fallbackReason": null,
+      "reason": "Provider lifecycle surfaces are ready.",
+      "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+      "lastFetchedAt": "2026-07-04T20:14:43.082Z",
+      "quote": {
+        "source": "polymarket",
+        "status": "ready",
+        "reason": "Provider lifecycle segment is ready across compact markets.",
+        "nextRefreshAt": "2026-07-04T20:15:43.001Z",
+        "lastFetchedAt": "2026-07-04T20:14:43.029Z",
+        "stalenessSeconds": 0,
+        "shouldRefresh": false,
+        "ready": true,
+        "stale": false,
+        "refreshDue": false,
+        "unavailable": false,
+        "empty": false,
+        "notReady": false
+      },
+      "orderbookDepth": {
+        "source": "polymarket-clob",
+        "status": "ready",
+        "reason": "Provider lifecycle segment is ready across compact markets.",
+        "nextRefreshAt": "2026-07-04T20:15:43.041Z",
+        "lastFetchedAt": "2026-07-04T20:14:43.082Z",
+        "stalenessSeconds": 0,
+        "shouldRefresh": false,
+        "ready": true,
+        "stale": false,
+        "refreshDue": false,
+        "unavailable": false,
+        "empty": false,
+        "notReady": false
+      },
+      "chartHistory": {
+        "source": "polymarket-clob-prices-history",
+        "status": "ready",
+        "reason": "Provider lifecycle segment is ready across compact markets.",
+        "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+        "lastFetchedAt": "2026-07-04T20:14:43.000Z",
+        "stalenessSeconds": 0,
+        "shouldRefresh": false,
+        "ready": true,
+        "stale": false,
+        "refreshDue": false,
+        "unavailable": false,
+        "empty": false,
+        "notReady": false
+      }
+    },
+    "markets": {
+      "main": {
+        "id": "325f9cec-621c-40e6-b694-9d907918fd75",
+        "title": "Breadth Home vs Breadth Away - Match Winner",
+        "selection": {
+          "selectorKey": "main:full-game:default",
+          "marketId": "325f9cec-621c-40e6-b694-9d907918fd75",
+          "marketGroupKey": "main",
+          "marketGroupId": "main",
+          "marketGroupTitle": "Match Winner",
+          "marketType": "moneyline",
+          "marketFamily": "moneyline",
+          "displayLabel": "Match Winner",
+          "period": "full-game",
+          "line": null,
+          "lineValue": null,
+          "unit": null,
+          "chart": {
+            "targetMarketId": "325f9cec-621c-40e6-b694-9d907918fd75",
+            "status": "ready",
+            "source": "polymarket-clob-prices-history",
+            "pointCount": 6,
+            "outcomeCount": 2,
+            "range": "1D",
+            "ranges": [
+              "1D",
+              "1W",
+              "1M",
+              "MAX"
+            ],
+            "emptyState": null
+          },
+          "outcomes": [
+            {
+              "outcomeId": "4d72a826-9b4a-4fd8-94c2-e6e8beb91876",
+              "id": "4d72a826-9b4a-4fd8-94c2-e6e8beb91876",
+              "side": "home",
+              "label": "Breadth Home",
+              "tokenId": "token-el-a-moneyline-home-4f7f2397",
+              "referenceTokenId": "token-el-a-moneyline-home-4f7f2397",
+              "referenceOutcomeLabel": "Breadth Home",
+              "isTradable": true
+            },
+            {
+              "outcomeId": "404be6eb-9659-46b9-b966-c0cf274c4a80",
+              "id": "404be6eb-9659-46b9-b966-c0cf274c4a80",
+              "side": "away",
+              "label": "Breadth Away",
+              "tokenId": "token-el-a-moneyline-away-4f7f2397",
+              "referenceTokenId": "token-el-a-moneyline-away-4f7f2397",
+              "referenceOutcomeLabel": "Breadth Away",
+              "isTradable": true
+            }
+          ]
+        },
+        "orderbookIdentity": {
+          "route": "/api/orderbook/325f9cec-621c-40e6-b694-9d907918fd75/book",
+          "marketId": "325f9cec-621c-40e6-b694-9d907918fd75",
+          "marketGroupId": "main",
+          "marketGroupKey": "main",
+          "selectorKey": "main:full-game:default",
+          "marketFamily": "moneyline",
+          "period": "full-game",
+          "line": null,
+          "lineValue": null,
+          "outcomeIds": [
+            "4d72a826-9b4a-4fd8-94c2-e6e8beb91876",
+            "404be6eb-9659-46b9-b966-c0cf274c4a80"
+          ],
+          "tokenIds": [
+            "token-el-a-moneyline-home-4f7f2397",
+            "token-el-a-moneyline-away-4f7f2397"
+          ],
+          "providerSource": "polymarket",
+          "providerStatus": "ready",
+          "depthSource": "provider-orderbook-depth",
+          "depthStatus": "ready",
+          "depthProviderSource": "reference-orderbook-depth-snapshot",
+          "depthProviderStatus": "ready",
+          "depthProviderSources": [
+            "polymarket-clob"
+          ],
+          "refreshedAt": "2026-07-04T20:14:43.056Z",
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T20:15:43.056Z",
+          "shouldRefresh": false,
+          "isStale": false,
+          "ready": true,
+          "reason": "Depth comes from provider orderbook ladder snapshots."
+        },
+        "chartHistoryStatus": {
+          "source": "polymarket-clob-prices-history",
+          "status": "ready",
+          "pointCount": 6,
+          "outcomeCount": 2,
+          "lastUpdated": "2026-07-04T20:14:43.000Z",
+          "stalenessSeconds": 0,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+          "shouldRefresh": false,
+          "isStale": false,
+          "emptyState": null,
+          "range": "1D",
+          "ranges": [
+            "1D",
+            "1W",
+            "1M",
+            "MAX"
+          ]
+        },
+        "orderbookDepthSource": "provider-orderbook-depth",
+        "orderbookDepthStatus": "ready",
+        "providerLifecycle": {
+          "source": "mobile-live-detail-market",
+          "status": "ready",
+          "ready": true,
+          "stale": false,
+          "refreshDue": false,
+          "refreshing": false,
+          "refreshStarted": false,
+          "unavailable": false,
+          "empty": false,
+          "notReady": false,
+          "fallback": false,
+          "fallbackApplied": false,
+          "fallbackReason": null,
+          "reason": "Provider lifecycle surfaces are ready.",
+          "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+          "lastFetchedAt": "2026-07-04T20:14:43.056Z",
+          "quote": {
+            "source": "polymarket",
+            "status": "ready",
+            "reason": "Provider quote snapshot is fresh.",
+            "nextRefreshAt": "2026-07-04T20:15:43.011Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.011Z",
+            "stalenessSeconds": 0,
+            "shouldRefresh": false,
+            "ready": true,
+            "stale": false,
+            "refreshDue": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false
+          },
+          "orderbookDepth": {
+            "source": "polymarket-clob",
+            "status": "ready",
+            "reason": "Provider orderbook depth snapshot is fresh.",
+            "nextRefreshAt": "2026-07-04T20:15:43.056Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.056Z",
+            "stalenessSeconds": 0,
+            "shouldRefresh": false,
+            "ready": true,
+            "stale": false,
+            "refreshDue": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false
+          },
+          "chartHistory": {
+            "source": "polymarket-clob-prices-history",
+            "status": "ready",
+            "reason": "Provider chart history is fresh.",
+            "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.000Z",
+            "stalenessSeconds": 0,
+            "shouldRefresh": false,
+            "ready": true,
+            "stale": false,
+            "refreshDue": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false
+          }
+        },
+        "providerOrderbookDepth": {
+          "source": "reference-orderbook-depth-snapshot",
+          "status": "ready",
+          "levelCount": 8,
+          "snapshotCount": 8,
+          "latestFetchedAt": "2026-07-04T20:14:43.056Z",
+          "latestUpdatedAt": "2026-07-04T20:14:43.059Z",
+          "stalenessSeconds": 0,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T20:15:43.056Z",
+          "shouldRefresh": false,
+          "isStale": false,
+          "sources": [
+            "polymarket-clob"
+          ],
+          "reason": "Provider orderbook depth snapshot is fresh."
+        },
+        "providerQuoteSnapshot": {
+          "source": "reference-quote-snapshot",
+          "status": "ready",
+          "snapshotCount": 2,
+          "latestFetchedAt": "2026-07-04T20:14:43.011Z",
+          "latestUpdatedAt": "2026-07-04T20:14:43.013Z",
+          "stalenessSeconds": 0,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T20:15:43.011Z",
+          "shouldRefresh": false,
+          "refreshKey": "polymarket:2026-07-04T20:14:43.011Z",
+          "isStale": false,
+          "acceptingOrders": true,
+          "outcomeIds": [
+            "404be6eb-9659-46b9-b966-c0cf274c4a80",
+            "4d72a826-9b4a-4fd8-94c2-e6e8beb91876"
+          ],
+          "sources": [
+            "polymarket"
+          ],
+          "reason": "Provider quote snapshot is fresh."
+        }
+      },
+      "spread": {
+        "id": "8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558",
+        "title": "Breadth Home vs Breadth Away - Spread 1.5",
+        "selection": {
+          "selectorKey": "spread:full-game:1.5",
+          "marketId": "8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558",
+          "marketGroupKey": "spread",
+          "marketGroupId": "spread",
+          "marketGroupTitle": "Spread",
+          "marketType": "spread",
+          "marketFamily": "spread",
+          "displayLabel": "Spread 1.5",
+          "period": "full-game",
+          "line": "1.5",
+          "lineValue": 1.5,
+          "unit": "goals",
+          "chart": {
+            "targetMarketId": "8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558",
+            "status": "ready",
+            "source": "polymarket-clob-prices-history",
+            "pointCount": 6,
+            "outcomeCount": 2,
+            "range": "1D",
+            "ranges": [
+              "1D",
+              "1W",
+              "1M",
+              "MAX"
+            ],
+            "emptyState": null
+          },
+          "outcomes": [
+            {
+              "outcomeId": "9b49ab00-d67d-4e44-aa3d-b0df255d54dc",
+              "id": "9b49ab00-d67d-4e44-aa3d-b0df255d54dc",
+              "side": "home",
+              "label": "Breadth Home +1.5",
+              "tokenId": "token-el-a-spread-home-4f7f2397",
+              "referenceTokenId": "token-el-a-spread-home-4f7f2397",
+              "referenceOutcomeLabel": "Breadth Home +1.5",
+              "isTradable": true
+            },
+            {
+              "outcomeId": "2d5cbcee-0a62-4d9c-adc6-1fe357fd1b4d",
+              "id": "2d5cbcee-0a62-4d9c-adc6-1fe357fd1b4d",
+              "side": "away",
+              "label": "Breadth Away -1.5",
+              "tokenId": "token-el-a-spread-away-4f7f2397",
+              "referenceTokenId": "token-el-a-spread-away-4f7f2397",
+              "referenceOutcomeLabel": "Breadth Away -1.5",
+              "isTradable": true
+            }
+          ]
+        },
+        "orderbookIdentity": {
+          "route": "/api/orderbook/8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558/book",
+          "marketId": "8e2dc5da-4b72-4c5a-b3f6-b091c8ba3558",
+          "marketGroupId": "spread",
+          "marketGroupKey": "spread",
+          "selectorKey": "spread:full-game:1.5",
+          "marketFamily": "spread",
+          "period": "full-game",
+          "line": "1.5",
+          "lineValue": 1.5,
+          "outcomeIds": [
+            "9b49ab00-d67d-4e44-aa3d-b0df255d54dc",
+            "2d5cbcee-0a62-4d9c-adc6-1fe357fd1b4d"
+          ],
+          "tokenIds": [
+            "token-el-a-spread-home-4f7f2397",
+            "token-el-a-spread-away-4f7f2397"
+          ],
+          "providerSource": "polymarket",
+          "providerStatus": "ready",
+          "depthSource": "provider-orderbook-depth",
+          "depthStatus": "ready",
+          "depthProviderSource": "reference-orderbook-depth-snapshot",
+          "depthProviderStatus": "ready",
+          "depthProviderSources": [
+            "polymarket-clob"
+          ],
+          "refreshedAt": "2026-07-04T20:14:43.070Z",
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T20:15:43.070Z",
+          "shouldRefresh": false,
+          "isStale": false,
+          "ready": true,
+          "reason": "Depth comes from provider orderbook ladder snapshots."
+        },
+        "chartHistoryStatus": {
+          "source": "polymarket-clob-prices-history",
+          "status": "ready",
+          "pointCount": 6,
+          "outcomeCount": 2,
+          "lastUpdated": "2026-07-04T20:14:43.000Z",
+          "stalenessSeconds": 0,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+          "shouldRefresh": false,
+          "isStale": false,
+          "emptyState": null,
+          "range": "1D",
+          "ranges": [
+            "1D",
+            "1W",
+            "1M",
+            "MAX"
+          ]
+        },
+        "orderbookDepthSource": "provider-orderbook-depth",
+        "orderbookDepthStatus": "ready",
+        "providerLifecycle": {
+          "source": "mobile-live-detail-market",
+          "status": "ready",
+          "ready": true,
+          "stale": false,
+          "refreshDue": false,
+          "refreshing": false,
+          "refreshStarted": false,
+          "unavailable": false,
+          "empty": false,
+          "notReady": false,
+          "fallback": false,
+          "fallbackApplied": false,
+          "fallbackReason": null,
+          "reason": "Provider lifecycle surfaces are ready.",
+          "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+          "lastFetchedAt": "2026-07-04T20:14:43.070Z",
+          "quote": {
+            "source": "polymarket",
+            "status": "ready",
+            "reason": "Provider quote snapshot is fresh.",
+            "nextRefreshAt": "2026-07-04T20:15:43.021Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.021Z",
+            "stalenessSeconds": 0,
+            "shouldRefresh": false,
+            "ready": true,
+            "stale": false,
+            "refreshDue": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false
+          },
+          "orderbookDepth": {
+            "source": "polymarket-clob",
+            "status": "ready",
+            "reason": "Provider orderbook depth snapshot is fresh.",
+            "nextRefreshAt": "2026-07-04T20:15:43.070Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.070Z",
+            "stalenessSeconds": 0,
+            "shouldRefresh": false,
+            "ready": true,
+            "stale": false,
+            "refreshDue": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false
+          },
+          "chartHistory": {
+            "source": "polymarket-clob-prices-history",
+            "status": "ready",
+            "reason": "Provider chart history is fresh.",
+            "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.000Z",
+            "stalenessSeconds": 0,
+            "shouldRefresh": false,
+            "ready": true,
+            "stale": false,
+            "refreshDue": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false
+          }
+        },
+        "providerOrderbookDepth": {
+          "source": "reference-orderbook-depth-snapshot",
+          "status": "ready",
+          "levelCount": 8,
+          "snapshotCount": 8,
+          "latestFetchedAt": "2026-07-04T20:14:43.070Z",
+          "latestUpdatedAt": "2026-07-04T20:14:43.072Z",
+          "stalenessSeconds": 0,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T20:15:43.070Z",
+          "shouldRefresh": false,
+          "isStale": false,
+          "sources": [
+            "polymarket-clob"
+          ],
+          "reason": "Provider orderbook depth snapshot is fresh."
+        },
+        "providerQuoteSnapshot": {
+          "source": "reference-quote-snapshot",
+          "status": "ready",
+          "snapshotCount": 2,
+          "latestFetchedAt": "2026-07-04T20:14:43.021Z",
+          "latestUpdatedAt": "2026-07-04T20:14:43.023Z",
+          "stalenessSeconds": 0,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T20:15:43.021Z",
+          "shouldRefresh": false,
+          "refreshKey": "polymarket:2026-07-04T20:14:43.021Z",
+          "isStale": false,
+          "acceptingOrders": true,
+          "outcomeIds": [
+            "2d5cbcee-0a62-4d9c-adc6-1fe357fd1b4d",
+            "9b49ab00-d67d-4e44-aa3d-b0df255d54dc"
+          ],
+          "sources": [
+            "polymarket"
+          ],
+          "reason": "Provider quote snapshot is fresh."
+        }
+      },
+      "totals": {
+        "id": "1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb",
+        "title": "Breadth Home vs Breadth Away - Total Goals 2.5",
+        "selection": {
+          "selectorKey": "totals:full-game:2.5",
+          "marketId": "1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb",
+          "marketGroupKey": "totals",
+          "marketGroupId": "totals",
+          "marketGroupTitle": "Totals",
+          "marketType": "total_goals",
+          "marketFamily": "total",
+          "displayLabel": "Totals 2.5",
+          "period": "full-game",
+          "line": "2.5",
+          "lineValue": 2.5,
+          "unit": "goals",
+          "chart": {
+            "targetMarketId": "1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb",
+            "status": "ready",
+            "source": "polymarket-clob-prices-history",
+            "pointCount": 6,
+            "outcomeCount": 2,
+            "range": "1D",
+            "ranges": [
+              "1D",
+              "1W",
+              "1M",
+              "MAX"
+            ],
+            "emptyState": null
+          },
+          "outcomes": [
+            {
+              "outcomeId": "5534c13b-fb78-4192-b8e5-e2d310080bab",
+              "id": "5534c13b-fb78-4192-b8e5-e2d310080bab",
+              "side": "over",
+              "label": "Over 2.5",
+              "tokenId": "token-el-a-totals-over-4f7f2397",
+              "referenceTokenId": "token-el-a-totals-over-4f7f2397",
+              "referenceOutcomeLabel": "Over 2.5",
+              "isTradable": true
+            },
+            {
+              "outcomeId": "a308b40d-019c-4e11-bd5a-1e372509dc92",
+              "id": "a308b40d-019c-4e11-bd5a-1e372509dc92",
+              "side": "under",
+              "label": "Under 2.5",
+              "tokenId": "token-el-a-totals-under-4f7f2397",
+              "referenceTokenId": "token-el-a-totals-under-4f7f2397",
+              "referenceOutcomeLabel": "Under 2.5",
+              "isTradable": true
+            }
+          ]
+        },
+        "orderbookIdentity": {
+          "route": "/api/orderbook/1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb/book",
+          "marketId": "1e5c60ab-0fe2-4f8d-a8c3-d20e6826b3fb",
+          "marketGroupId": "totals",
+          "marketGroupKey": "totals",
+          "selectorKey": "totals:full-game:2.5",
+          "marketFamily": "total",
+          "period": "full-game",
+          "line": "2.5",
+          "lineValue": 2.5,
+          "outcomeIds": [
+            "5534c13b-fb78-4192-b8e5-e2d310080bab",
+            "a308b40d-019c-4e11-bd5a-1e372509dc92"
+          ],
+          "tokenIds": [
+            "token-el-a-totals-over-4f7f2397",
+            "token-el-a-totals-under-4f7f2397"
+          ],
+          "providerSource": "polymarket",
+          "providerStatus": "ready",
+          "depthSource": "provider-orderbook-depth",
+          "depthStatus": "ready",
+          "depthProviderSource": "reference-orderbook-depth-snapshot",
+          "depthProviderStatus": "ready",
+          "depthProviderSources": [
+            "polymarket-clob"
+          ],
+          "refreshedAt": "2026-07-04T20:14:43.082Z",
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T20:15:43.082Z",
+          "shouldRefresh": false,
+          "isStale": false,
+          "ready": true,
+          "reason": "Depth comes from provider orderbook ladder snapshots."
+        },
+        "chartHistoryStatus": {
+          "source": "polymarket-clob-prices-history",
+          "status": "ready",
+          "pointCount": 6,
+          "outcomeCount": 2,
+          "lastUpdated": "2026-07-04T20:14:43.000Z",
+          "stalenessSeconds": 0,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+          "shouldRefresh": false,
+          "isStale": false,
+          "emptyState": null,
+          "range": "1D",
+          "ranges": [
+            "1D",
+            "1W",
+            "1M",
+            "MAX"
+          ]
+        },
+        "orderbookDepthSource": "provider-orderbook-depth",
+        "orderbookDepthStatus": "ready",
+        "providerLifecycle": {
+          "source": "mobile-live-detail-market",
+          "status": "ready",
+          "ready": true,
+          "stale": false,
+          "refreshDue": false,
+          "refreshing": false,
+          "refreshStarted": false,
+          "unavailable": false,
+          "empty": false,
+          "notReady": false,
+          "fallback": false,
+          "fallbackApplied": false,
+          "fallbackReason": null,
+          "reason": "Provider lifecycle surfaces are ready.",
+          "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+          "lastFetchedAt": "2026-07-04T20:14:43.082Z",
+          "quote": {
+            "source": "polymarket",
+            "status": "ready",
+            "reason": "Provider quote snapshot is fresh.",
+            "nextRefreshAt": "2026-07-04T20:15:43.029Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.029Z",
+            "stalenessSeconds": 0,
+            "shouldRefresh": false,
+            "ready": true,
+            "stale": false,
+            "refreshDue": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false
+          },
+          "orderbookDepth": {
+            "source": "polymarket-clob",
+            "status": "ready",
+            "reason": "Provider orderbook depth snapshot is fresh.",
+            "nextRefreshAt": "2026-07-04T20:15:43.082Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.082Z",
+            "stalenessSeconds": 0,
+            "shouldRefresh": false,
+            "ready": true,
+            "stale": false,
+            "refreshDue": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false
+          },
+          "chartHistory": {
+            "source": "polymarket-clob-prices-history",
+            "status": "ready",
+            "reason": "Provider chart history is fresh.",
+            "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.000Z",
+            "stalenessSeconds": 0,
+            "shouldRefresh": false,
+            "ready": true,
+            "stale": false,
+            "refreshDue": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false
+          }
+        },
+        "providerOrderbookDepth": {
+          "source": "reference-orderbook-depth-snapshot",
+          "status": "ready",
+          "levelCount": 8,
+          "snapshotCount": 8,
+          "latestFetchedAt": "2026-07-04T20:14:43.082Z",
+          "latestUpdatedAt": "2026-07-04T20:14:43.084Z",
+          "stalenessSeconds": 0,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T20:15:43.082Z",
+          "shouldRefresh": false,
+          "isStale": false,
+          "sources": [
+            "polymarket-clob"
+          ],
+          "reason": "Provider orderbook depth snapshot is fresh."
+        },
+        "providerQuoteSnapshot": {
+          "source": "reference-quote-snapshot",
+          "status": "ready",
+          "snapshotCount": 2,
+          "latestFetchedAt": "2026-07-04T20:14:43.029Z",
+          "latestUpdatedAt": "2026-07-04T20:14:43.031Z",
+          "stalenessSeconds": 0,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T20:15:43.029Z",
+          "shouldRefresh": false,
+          "refreshKey": "polymarket:2026-07-04T20:14:43.029Z",
+          "isStale": false,
+          "acceptingOrders": true,
+          "outcomeIds": [
+            "5534c13b-fb78-4192-b8e5-e2d310080bab",
+            "a308b40d-019c-4e11-bd5a-1e372509dc92"
+          ],
+          "sources": [
+            "polymarket"
+          ],
+          "reason": "Provider quote snapshot is fresh."
+        }
+      },
+      "team-totals": {
+        "id": "9dd13944-55d8-4fa6-af16-e838e0e075f8",
+        "title": "Breadth Home - Team Total Goals 1.5",
+        "selection": {
+          "selectorKey": "team-totals:full-game:1.5",
+          "marketId": "9dd13944-55d8-4fa6-af16-e838e0e075f8",
+          "marketGroupKey": "team-totals",
+          "marketGroupId": "team-totals",
+          "marketGroupTitle": "Team Total Goals",
+          "marketType": "team_total_goals",
+          "marketFamily": "team_total",
+          "displayLabel": "Team Total Goals 1.5",
+          "period": "full-game",
+          "line": "1.5",
+          "lineValue": 1.5,
+          "unit": "goals",
+          "chart": {
+            "targetMarketId": "9dd13944-55d8-4fa6-af16-e838e0e075f8",
+            "status": "ready",
+            "source": "polymarket-clob-prices-history",
+            "pointCount": 6,
+            "outcomeCount": 2,
+            "range": "1D",
+            "ranges": [
+              "1D",
+              "1W",
+              "1M",
+              "MAX"
+            ],
+            "emptyState": null
+          },
+          "outcomes": [
+            {
+              "outcomeId": "8fd51462-d20d-49c3-89b1-bfce9accfd13",
+              "id": "8fd51462-d20d-49c3-89b1-bfce9accfd13",
+              "side": "over",
+              "label": "Breadth Home Over 1.5",
+              "tokenId": "token-el-a-team-total-over-4f7f2397",
+              "referenceTokenId": "token-el-a-team-total-over-4f7f2397",
+              "referenceOutcomeLabel": "Breadth Home Over 1.5",
+              "isTradable": true
+            },
+            {
+              "outcomeId": "44235dbf-b03f-404a-ba20-3a0fbd1a2e32",
+              "id": "44235dbf-b03f-404a-ba20-3a0fbd1a2e32",
+              "side": "under",
+              "label": "Breadth Home Under 1.5",
+              "tokenId": "token-el-a-team-total-under-4f7f2397",
+              "referenceTokenId": "token-el-a-team-total-under-4f7f2397",
+              "referenceOutcomeLabel": "Breadth Home Under 1.5",
+              "isTradable": true
+            }
+          ]
+        },
+        "orderbookIdentity": {
+          "route": "/api/orderbook/9dd13944-55d8-4fa6-af16-e838e0e075f8/book",
+          "marketId": "9dd13944-55d8-4fa6-af16-e838e0e075f8",
+          "marketGroupId": "team-totals",
+          "marketGroupKey": "team-totals",
+          "selectorKey": "team-totals:full-game:1.5",
+          "marketFamily": "team_total",
+          "period": "full-game",
+          "line": "1.5",
+          "lineValue": 1.5,
+          "outcomeIds": [
+            "8fd51462-d20d-49c3-89b1-bfce9accfd13",
+            "44235dbf-b03f-404a-ba20-3a0fbd1a2e32"
+          ],
+          "tokenIds": [
+            "token-el-a-team-total-over-4f7f2397",
+            "token-el-a-team-total-under-4f7f2397"
+          ],
+          "providerSource": "polymarket",
+          "providerStatus": "ready",
+          "depthSource": "provider-orderbook-depth",
+          "depthStatus": "ready",
+          "depthProviderSource": "reference-orderbook-depth-snapshot",
+          "depthProviderStatus": "ready",
+          "depthProviderSources": [
+            "polymarket-clob"
+          ],
+          "refreshedAt": "2026-07-04T20:14:43.041Z",
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T20:15:43.041Z",
+          "shouldRefresh": false,
+          "isStale": false,
+          "ready": true,
+          "reason": "Depth comes from provider orderbook ladder snapshots."
+        },
+        "chartHistoryStatus": {
+          "source": "polymarket-clob-prices-history",
+          "status": "ready",
+          "pointCount": 6,
+          "outcomeCount": 2,
+          "lastUpdated": "2026-07-04T20:14:43.000Z",
+          "stalenessSeconds": 0,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+          "shouldRefresh": false,
+          "isStale": false,
+          "emptyState": null,
+          "range": "1D",
+          "ranges": [
+            "1D",
+            "1W",
+            "1M",
+            "MAX"
+          ]
+        },
+        "orderbookDepthSource": "provider-orderbook-depth",
+        "orderbookDepthStatus": "ready",
+        "providerLifecycle": {
+          "source": "mobile-live-detail-market",
+          "status": "ready",
+          "ready": true,
+          "stale": false,
+          "refreshDue": false,
+          "refreshing": false,
+          "refreshStarted": false,
+          "unavailable": false,
+          "empty": false,
+          "notReady": false,
+          "fallback": false,
+          "fallbackApplied": false,
+          "fallbackReason": null,
+          "reason": "Provider lifecycle surfaces are ready.",
+          "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+          "lastFetchedAt": "2026-07-04T20:14:43.041Z",
+          "quote": {
+            "source": "polymarket",
+            "status": "ready",
+            "reason": "Provider quote snapshot is fresh.",
+            "nextRefreshAt": "2026-07-04T20:15:43.001Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.001Z",
+            "stalenessSeconds": 0,
+            "shouldRefresh": false,
+            "ready": true,
+            "stale": false,
+            "refreshDue": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false
+          },
+          "orderbookDepth": {
+            "source": "polymarket-clob",
+            "status": "ready",
+            "reason": "Provider orderbook depth snapshot is fresh.",
+            "nextRefreshAt": "2026-07-04T20:15:43.041Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.041Z",
+            "stalenessSeconds": 0,
+            "shouldRefresh": false,
+            "ready": true,
+            "stale": false,
+            "refreshDue": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false
+          },
+          "chartHistory": {
+            "source": "polymarket-clob-prices-history",
+            "status": "ready",
+            "reason": "Provider chart history is fresh.",
+            "nextRefreshAt": "2026-07-04T20:15:43.000Z",
+            "lastFetchedAt": "2026-07-04T20:14:43.000Z",
+            "stalenessSeconds": 0,
+            "shouldRefresh": false,
+            "ready": true,
+            "stale": false,
+            "refreshDue": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false
+          }
+        },
+        "providerOrderbookDepth": {
+          "source": "reference-orderbook-depth-snapshot",
+          "status": "ready",
+          "levelCount": 8,
+          "snapshotCount": 8,
+          "latestFetchedAt": "2026-07-04T20:14:43.041Z",
+          "latestUpdatedAt": "2026-07-04T20:14:43.044Z",
+          "stalenessSeconds": 0,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T20:15:43.041Z",
+          "shouldRefresh": false,
+          "isStale": false,
+          "sources": [
+            "polymarket-clob"
+          ],
+          "reason": "Provider orderbook depth snapshot is fresh."
+        },
+        "providerQuoteSnapshot": {
+          "source": "reference-quote-snapshot",
+          "status": "ready",
+          "snapshotCount": 2,
+          "latestFetchedAt": "2026-07-04T20:14:43.001Z",
+          "latestUpdatedAt": "2026-07-04T20:14:43.003Z",
+          "stalenessSeconds": 0,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T20:15:43.001Z",
+          "shouldRefresh": false,
+          "refreshKey": "polymarket:2026-07-04T20:14:43.001Z",
+          "isStale": false,
+          "acceptingOrders": true,
+          "outcomeIds": [
+            "44235dbf-b03f-404a-ba20-3a0fbd1a2e32",
+            "8fd51462-d20d-49c3-89b1-bfce9accfd13"
+          ],
+          "sources": [
+            "polymarket"
+          ],
+          "reason": "Provider quote snapshot is fresh."
+        }
+      }
+    }
+  },
+  "assertions": {
+    "routeBackedContract": true,
+    "noContractProofFallback": true,
+    "gammaAndClobAttemptedAllMappedCompactMarkets": true,
+    "lineFamilyCoverageProvesBreadth": true,
+    "moneylineSpreadTotalsTeamTotalReady": true,
+    "liveDetailPreservesProviderStatuses": true,
+    "cacheInvalidatesAllFamilyRoutes": true,
+    "opticOddsMissingIsNonBlocking": true
+  },
+  "remainingGaps": [
+    "This proof uses disposable Polymarket-shaped provider responses; production breadth still depends on live Gamma event mappings.",
+    "Visible Android parity and screenshots are outside Agent A ownership for this cycle.",
+    "OPTIC_ODDS_API_KEY remains optional enrichment and is not required for this Polymarket Gamma/CLOB route proof."
+  ]
+}

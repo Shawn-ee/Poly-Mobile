@@ -1,0 +1,35 @@
+{
+  "cycle": "CJ",
+  "feature": "Live event detail provider quote snapshot contract",
+  "capturedAt": "2026-07-04T03:16:00.000Z",
+  "routes": [
+    "GET /api/mobile/events/world-cup-2026-curacao-vs-cote-divoire-2026-06-25/live-detail",
+    "GET /api/orderbook/aca976d2-2bad-416c-b010-c874c0ee493f/book?maxLevels=2"
+  ],
+  "liveDetailContract": {
+    "batchedProviderQuoteSnapshotSource": "empty",
+    "batchedProviderQuoteSnapshotMarketCount": 0,
+    "note": "The contract field is present and truthful. Local proof data has no ReferenceQuoteSnapshot rows for this match, so the route reports empty rather than inventing provider readiness."
+  },
+  "sampleMarket": {
+    "marketId": "aca976d2-2bad-416c-b010-c874c0ee493f",
+    "providerQuoteSnapshot": {
+      "source": "reference-quote-snapshot",
+      "status": "unavailable",
+      "snapshotCount": 0,
+      "latestFetchedAt": null,
+      "acceptingOrders": false
+    }
+  },
+  "selectedOrderbook": {
+    "providerQuoteSnapshot": {
+      "source": "reference-quote-snapshot",
+      "status": "unavailable",
+      "snapshotCount": 0,
+      "latestFetchedAt": null,
+      "acceptingOrders": false
+    },
+    "levelCount": 4
+  },
+  "result": "pass for provider snapshot metadata shape; provider ingestion remains open"
+}

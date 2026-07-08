@@ -1,0 +1,57 @@
+{
+    "cycle":  "EN-B",
+    "scope":  "Visible Android route-backed Book-staged limit lifecycle",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleLimitLifecycle -Port 8358 -BackendBaseUrl http://127.0.0.1:3002 -ServerEventSlug mobile-el-a-provider-breadth-54db8e5a -OutputDir docs\\mobile\\screenshots\\cycle-EN-integrated-route-limit-lifecycle -HierarchyOutputDir docs\\mobile\\harness\\cycle-EN-integrated-route-limit-lifecycle",
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "orderMode":  "mock",
+    "marketDataMode":  "server",
+    "apiBaseUrl":  "http://127.0.0.1:3002",
+    "adbReverse":  "tcp:3002 tcp:3002",
+    "eventIdentity":  "EL-A Provider Breadth World Cup Live",
+    "serverEventSlug":  "mobile-el-a-provider-breadth-54db8e5a",
+    "selectedMarketId":  "3e3cda24-bd1b-4837-8702-7500c27f0187",
+    "selectedOutcomeId":  "fa8cde2d-acf8-4f8a-89d5-710203200c8f",
+    "selectedProviderMarket":  "gamma-el-a-spread-54db8e5a",
+    "selectedProviderToken":  "token-el-a-spread-home-54db8e5a",
+    "routeBackedProviderDepth":  true,
+    "result":  "pass",
+    "selectedLimit":  {
+                          "side":  "ask",
+                          "cents":  55,
+                          "decimal":  "0.55",
+                          "shares":  "150"
+                      },
+    "assertions":  {
+                       "backendHealth":  "Backend /api/health was required before launch; the proof aborts instead of falling back when unavailable.",
+                       "bookSelection":  "Live event Book opens from route-backed live detail with mock trading plus server market-data mode, switches to provider-backed Spread 1.5, and exposes orderbook-source-orderbook-route/orderbook-status-ready.",
+                       "stagedAsk":  "Tapping order-book-ask-level-fa8cde2d-acf8-4f8a-89d5-710203200c8f-1 stages Buy ask at 0.55 USDT / 55c.",
+                       "ticketLimit":  "Trade ticket exposes ticket-limit-side-ask ticket-limit-price-55 ticket-limit-decimal-0.55 and submits at ticket-price-line 55c.",
+                       "latestOrder":  "Latest order card exposes order-status-open and the same portfolio limit/source/market/outcome/line/period/provider tokens.",
+                       "openOrder":  "Open order row shows Limit 55% and the same order-time snapshot identity.",
+                       "activityHistory":  "Opened and canceled activity cards retain portfolio-limit-side-ask portfolio-limit-price-55 and the same selected route-backed Book identity.",
+                       "fallbackGuard":  "Portfolio and activity reject Mexico fixture labels, Team to Advance, and generic Match Winner fallback labels for the selected spread lifecycle."
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\screenshots\\cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-book-baseline.png",
+                      "docs\\mobile\\harness\\cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-book-baseline.xml",
+                      "docs\\mobile\\harness\\cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-selector.xml",
+                      "docs\\mobile\\screenshots\\cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-spread-book.png",
+                      "docs\\mobile\\harness\\cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-spread-book.xml",
+                      "docs\\mobile\\screenshots\\cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-ask-staged.png",
+                      "docs\\mobile\\harness\\cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-ask-staged.xml",
+                      "docs\\mobile\\screenshots\\cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-ticket-empty.png",
+                      "docs\\mobile\\harness\\cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-ticket-empty.xml",
+                      "docs\\mobile\\harness\\cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-ticket-amount-10.xml",
+                      "docs\\mobile\\harness\\cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-ticket-amount-20.xml",
+                      "docs\\mobile\\screenshots\\cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-ticket-ready.png",
+                      "docs\\mobile\\harness\\cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-ticket-ready.xml",
+                      "docs\\mobile\\screenshots\\cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-portfolio-open.png",
+                      "docs\\mobile\\harness\\cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-portfolio-open.xml",
+                      "docs\\mobile\\screenshots\\cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-portfolio-canceled.png",
+                      "docs\\mobile\\harness\\cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-portfolio-canceled.xml"
+                  ],
+    "remainingGaps":  [
+                          "This visible proof uses the selected disposable EL-A provider-backed route event supplied by the backend route proof lineage.",
+                          "Broader future hardening remains for multiple market families, bid-side order lifecycle, and immutable first-class backend selection snapshots."
+                      ]
+}

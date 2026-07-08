@@ -1,0 +1,46 @@
+{
+    "cycle":  "EZ",
+    "scenario":  "Local MVP Android route-backed server fake-token team-total filled trade/history flow with orderbook hidden by default",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/local-mvp-route-server-filled-team-total-proof.ps1 -Port 8267 -BackendBaseUrl http://172.16.200.14:3002 -OutputDir docs\\mobile\\screenshots\\cycle-EZ-local-mvp-route-server-filled-team-total-flow -HierarchyOutputDir docs\\mobile\\harness\\cycle-EZ-local-mvp-route-server-filled-team-total-flow",
+    "backendBaseUrl":  "http://172.16.200.14:3002",
+    "serverEventSlug":  "mobile-el-a-provider-breadth-477e6b35",
+    "orderbookDebug":  "unset",
+    "marketDataMode":  "server",
+    "orderMode":  "server",
+    "apiKey":  "in-process-mobile-dev-credential-redacted",
+    "result":  "pass",
+    "assertions":  {
+                       "routeBackedEvent":  [
+                                                "live-detail loaded through forceBackendEventSlug",
+                                                "live-data-source-polymarket-gamma"
+                                            ],
+                       "retailRows":  [
+                                          "team-total row uses ticket-source-backend-line-market",
+                                          "provider-source-polymarket visible",
+                                          "no default Book/orderbook entry points"
+                                      ],
+                       "ticket":  [
+                                      "simple ticket opens from route-backed team-total",
+                                      "provider token/source visible",
+                                      "server fake-token buy uses swipe-style submit"
+                                  ],
+                       "serverPortfolio":  [
+                                               "POST /api/orders succeeds through mobile",
+                                               "Portfolio sync returns server filled position and recent activity",
+                                               "selected line/provider identity preserved"
+                                           ],
+                       "serverHistory":  [
+                                             "seeded counterparty fills the mobile order",
+                                             "Portfolio sync returns position and recent trade activity",
+                                             "filled activity/history preserves selected line/provider identity"
+                                         ]
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\screenshots\\cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-holiwyn-route-server-mvp-line-markets.png",
+                      "docs\\mobile\\harness\\cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-holiwyn-route-server-mvp-line-markets.xml",
+                      "docs\\mobile\\screenshots\\cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-holiwyn-route-server-mvp-team-total-ticket-ready.png",
+                      "docs\\mobile\\harness\\cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-holiwyn-route-server-mvp-team-total-ticket-ready.xml",
+                      "docs\\mobile\\screenshots\\cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-holiwyn-route-server-mvp-portfolio.png",
+                      "docs\\mobile\\harness\\cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-holiwyn-route-server-mvp-portfolio.xml"
+                  ]
+}

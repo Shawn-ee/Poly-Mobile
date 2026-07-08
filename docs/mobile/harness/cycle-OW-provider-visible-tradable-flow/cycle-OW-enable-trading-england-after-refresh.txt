@@ -1,0 +1,120 @@
+
+> poly-bot@0.1.0 markets:enable-event-trading
+> tsx scripts/enableReferenceEventTrading.ts --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug provider-breadth-world-cup-winner --allowlist England --maxMarkets 1 --confirmLive true --dryRun false --confirmEnable true
+
+{
+  "ok": true,
+  "dryRun": false,
+  "eventSlug": "provider-breadth-world-cup-winner",
+  "results": [
+    {
+      "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+      "slug": "will-england-win-the-2026-fifa-world-cup-937",
+      "title": "Will England win the 2026 FIFA World Cup?",
+      "safe": true,
+      "seeded": true,
+      "updated": {
+        "ok": true,
+        "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+        "importStatus": "approved",
+        "referenceOnly": false,
+        "tradable": true,
+        "mmEnabled": true,
+        "isListed": true,
+        "reviewedAt": "2026-07-08T20:28:18.221Z",
+        "reviewedBy": "[redacted]",
+        "reviewNotes": null,
+        "botInitialization": {
+          "reason": null,
+          "status": "dry_run_ready",
+          "capital": {
+            "botUserId": "[redacted]",
+            "botApiKeyId": "[redacted-api-key-id]",
+            "botUsername": "system-liquidity-bot",
+            "budgetCents": 50000,
+            "autoReplenish": false,
+            "initializedAt": "2026-07-08T20:27:53.571Z",
+            "initializedBy": "[redacted]",
+            "mintBudgetCents": 2500,
+            "cashReserveCents": 47500,
+            "maxDailyLossCents": 10000,
+            "botApiCredentialId": "[redacted]",
+            "mintedCompleteSets": 25,
+            "maxOpenOrderNotionalCents": 10000,
+            "maxSingleOrderNotionalCents": 1000
+          },
+          "runtime": {
+            "lastSeededAt": "2026-07-08T20:27:53.571Z",
+            "emergencyStop": false,
+            "lastLiveRunAt": null,
+            "cancelRequestedAt": null,
+            "lastRuntimeSyncAt": null,
+            "liveOrdersEnabled": false
+          },
+          "readiness": null,
+          "approvedAt": null,
+          "approvedBy": null,
+          "riskProfile": null,
+          "lastCheckedAt": null
+        }
+      },
+      "lifecycle": {
+        "ok": true,
+        "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+        "importStatus": "approved",
+        "referenceOnly": false,
+        "tradable": true,
+        "mmEnabled": true,
+        "isListed": true,
+        "reviewedAt": "2026-07-08T20:28:18.295Z",
+        "reviewedBy": "[redacted]",
+        "reviewNotes": null,
+        "botInitialization": {
+          "status": "live_ready",
+          "lastCheckedAt": "2026-07-08T20:28:18.292Z",
+          "reason": null,
+          "approvedBy": null,
+          "approvedAt": null,
+          "riskProfile": null,
+          "capital": {
+            "budgetCents": 50000,
+            "mintBudgetCents": 2500,
+            "mintedCompleteSets": 25,
+            "cashReserveCents": 47500,
+            "autoReplenish": false,
+            "initializedAt": "2026-07-08T20:27:53.571Z",
+            "initializedBy": "[redacted]",
+            "botUserId": "[redacted]",
+            "botUsername": "system-liquidity-bot",
+            "botApiCredentialId": "[redacted]",
+            "botApiKeyId": "[redacted-api-key-id]",
+            "maxSingleOrderNotionalCents": 1000,
+            "maxOpenOrderNotionalCents": 10000,
+            "maxDailyLossCents": 10000
+          },
+          "runtime": {
+            "liveOrdersEnabled": false,
+            "emergencyStop": false,
+            "cancelRequestedAt": null,
+            "lastSeededAt": "2026-07-08T20:27:53.571Z",
+            "lastLiveRunAt": null,
+            "lastRuntimeSyncAt": null
+          },
+          "readiness": {
+            "ready": true,
+            "dryRun": false,
+            "liveRequested": true,
+            "reasons": [],
+            "referenceBid": 0.158,
+            "referenceAsk": 0.159,
+            "plannedBotBid": 0.14,
+            "plannedBotAsk": 0.18,
+            "riskProfile": null,
+            "checkedAt": "2026-07-08T20:28:18.292Z"
+          }
+        }
+      },
+      "reason": null
+    }
+  ]
+}

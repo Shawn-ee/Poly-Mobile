@@ -1,0 +1,1609 @@
+{
+    "ok":  true,
+    "result":  {
+                   "eventSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25",
+                   "dryRun":  true,
+                   "applied":  false,
+                   "validation":  {
+                                      "valid":  true,
+                                      "compactMarketCount":  14,
+                                      "requestedMarketCount":  1,
+                                      "errors":  [
+
+                                                 ]
+                                  },
+                   "before":  {
+                                  "eventSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25",
+                                  "generatedAt":  "2026-07-04T03:56:14.488Z",
+                                  "compactMarketCount":  14,
+                                  "providerRefreshableMarketCount":  0,
+                                  "providerRefreshableOutcomeCount":  0,
+                                  "totalOutcomeCount":  31,
+                                  "unsupportedSourceMarketCount":  14,
+                                  "missingExternalSlugMarketCount":  2,
+                                  "missingExternalMarketIdMarketCount":  2,
+                                  "missingConditionIdMarketCount":  14,
+                                  "missingOutcomeTokenMarketCount":  14,
+                                  "isProviderRefreshReady":  false,
+                                  "nextRequiredAction":  "map_compact_markets_to_polymarket_provider_identity",
+                                  "markets":  [
+                                                  {
+                                                      "marketId":  "aca976d2-2bad-416c-b010-c874c0ee493f",
+                                                      "title":  "Curaçao vs Côte d\u0027Ivoire: Match Winner",
+                                                      "status":  "LIVE",
+                                                      "marketGroupKey":  "main",
+                                                      "marketGroupTitle":  "Main",
+                                                      "marketType":  "match_winner_1x2",
+                                                      "period":  null,
+                                                      "line":  null,
+                                                      "unit":  null,
+                                                      "propCategory":  null,
+                                                      "referenceSource":  "fifa_schedule",
+                                                      "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-match-winner",
+                                                      "externalMarketId":  "M55-match-winner",
+                                                      "conditionId":  null,
+                                                      "providerRefreshable":  false,
+                                                      "missingFields":  [
+                                                                            "referenceSource",
+                                                                            "conditionId"
+                                                                        ],
+                                                      "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                      "outcomes":  [
+                                                                       {
+                                                                           "outcomeId":  "0d480622-e2d5-4344-bb3f-748cb55ba257",
+                                                                           "name":  "Curaçao",
+                                                                           "side":  "home",
+                                                                           "displayOrder":  0,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "Curaçao",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       },
+                                                                       {
+                                                                           "outcomeId":  "8c8596bd-d65b-4368-a537-f3f01dbccb2c",
+                                                                           "name":  "Draw",
+                                                                           "side":  "draw",
+                                                                           "displayOrder":  1,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "Draw",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       },
+                                                                       {
+                                                                           "outcomeId":  "e96086f5-e9ce-45c1-a255-8a77425279e1",
+                                                                           "name":  "Côte d\u0027Ivoire",
+                                                                           "side":  "away",
+                                                                           "displayOrder":  2,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "Côte d\u0027Ivoire",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "marketId":  "ac527022-07f3-4abb-90f0-b291466e8459",
+                                                      "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao +1.5",
+                                                      "status":  "LIVE",
+                                                      "marketGroupKey":  "spreads",
+                                                      "marketGroupTitle":  "Spreads",
+                                                      "marketType":  "spread",
+                                                      "period":  null,
+                                                      "line":  "1.5",
+                                                      "unit":  "goals",
+                                                      "propCategory":  "handicap",
+                                                      "referenceSource":  "fifa_schedule",
+                                                      "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-spread-plus1_5",
+                                                      "externalMarketId":  "M55-home-spread-plus1_5",
+                                                      "conditionId":  null,
+                                                      "providerRefreshable":  false,
+                                                      "missingFields":  [
+                                                                            "referenceSource",
+                                                                            "conditionId"
+                                                                        ],
+                                                      "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                      "outcomes":  [
+                                                                       {
+                                                                           "outcomeId":  "5e1c4d3e-feae-43bc-9d09-da024b8ff18d",
+                                                                           "name":  "Yes",
+                                                                           "side":  "yes",
+                                                                           "displayOrder":  0,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "Yes",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       },
+                                                                       {
+                                                                           "outcomeId":  "362f65dc-7c69-47a2-b410-30c98f3b99ad",
+                                                                           "name":  "No",
+                                                                           "side":  "no",
+                                                                           "displayOrder":  1,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "No",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "marketId":  "a552efe6-3147-4573-be95-8fe15c068c08",
+                                                      "title":  "Curaçao vs Côte d\u0027Ivoire: Total goals 2.5",
+                                                      "status":  "LIVE",
+                                                      "marketGroupKey":  "totals",
+                                                      "marketGroupTitle":  "Totals",
+                                                      "marketType":  "total_goals",
+                                                      "period":  null,
+                                                      "line":  "2.5",
+                                                      "unit":  "goals",
+                                                      "propCategory":  "goals",
+                                                      "referenceSource":  "fifa_schedule",
+                                                      "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-total-goals-2.5",
+                                                      "externalMarketId":  "M55-total-goals-2.5",
+                                                      "conditionId":  null,
+                                                      "providerRefreshable":  false,
+                                                      "missingFields":  [
+                                                                            "referenceSource",
+                                                                            "conditionId"
+                                                                        ],
+                                                      "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                      "outcomes":  [
+                                                                       {
+                                                                           "outcomeId":  "68424d0f-6503-4695-b360-5cde95352faf",
+                                                                           "name":  "Over 2.5",
+                                                                           "side":  "over",
+                                                                           "displayOrder":  0,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "Over 2.5",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       },
+                                                                       {
+                                                                           "outcomeId":  "a8bc4725-e1fd-4d46-92ce-20c5b296d54f",
+                                                                           "name":  "Under 2.5",
+                                                                           "side":  "under",
+                                                                           "displayOrder":  1,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "Under 2.5",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "marketId":  "408ffb79-3492-4fd0-b31b-87a26f8b9dd5",
+                                                      "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao goals 1.5",
+                                                      "status":  "LIVE",
+                                                      "marketGroupKey":  "team-totals",
+                                                      "marketGroupTitle":  "Team Totals",
+                                                      "marketType":  "team_total_goals",
+                                                      "period":  null,
+                                                      "line":  "1.5",
+                                                      "unit":  "goals",
+                                                      "propCategory":  "goals",
+                                                      "referenceSource":  "fifa_schedule",
+                                                      "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-team-total-1.5",
+                                                      "externalMarketId":  "M55-home-team-total-1.5",
+                                                      "conditionId":  null,
+                                                      "providerRefreshable":  false,
+                                                      "missingFields":  [
+                                                                            "referenceSource",
+                                                                            "conditionId"
+                                                                        ],
+                                                      "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                      "outcomes":  [
+                                                                       {
+                                                                           "outcomeId":  "1af16c8a-f667-4245-acce-72ff11cf7099",
+                                                                           "name":  "Over 1.5",
+                                                                           "side":  "over",
+                                                                           "displayOrder":  0,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "Over 1.5",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       },
+                                                                       {
+                                                                           "outcomeId":  "1927c0ea-2261-4638-be5a-5f102b1d74a3",
+                                                                           "name":  "Under 1.5",
+                                                                           "side":  "under",
+                                                                           "displayOrder":  1,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "Under 1.5",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "marketId":  "be4ab6f8-c054-4f6b-a6d9-7d857f7655ca",
+                                                      "title":  "1st Half Winner",
+                                                      "status":  "LIVE",
+                                                      "marketGroupKey":  "halves",
+                                                      "marketGroupTitle":  "Halves",
+                                                      "marketType":  "match_winner_1x2",
+                                                      "period":  "first-half",
+                                                      "line":  null,
+                                                      "unit":  null,
+                                                      "propCategory":  null,
+                                                      "referenceSource":  null,
+                                                      "externalSlug":  null,
+                                                      "externalMarketId":  null,
+                                                      "conditionId":  null,
+                                                      "providerRefreshable":  false,
+                                                      "missingFields":  [
+                                                                            "referenceSource",
+                                                                            "externalSlug",
+                                                                            "externalMarketId",
+                                                                            "conditionId"
+                                                                        ],
+                                                      "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                      "outcomes":  [
+                                                                       {
+                                                                           "outcomeId":  "2c051ece-4d2f-42cc-9d72-3c77e2ad5a51",
+                                                                           "name":  "Curaçao",
+                                                                           "side":  "home",
+                                                                           "displayOrder":  0,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  null,
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId",
+                                                                                                 "referenceOutcomeLabel"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       },
+                                                                       {
+                                                                           "outcomeId":  "3293b5a2-9eee-41dc-b19e-92f85aa79567",
+                                                                           "name":  "Draw",
+                                                                           "side":  "draw",
+                                                                           "displayOrder":  1,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  null,
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId",
+                                                                                                 "referenceOutcomeLabel"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       },
+                                                                       {
+                                                                           "outcomeId":  "399d8bff-8eb1-4c3a-a5dc-4002494af0e1",
+                                                                           "name":  "Côte d\u0027Ivoire",
+                                                                           "side":  "away",
+                                                                           "displayOrder":  2,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  null,
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId",
+                                                                                                 "referenceOutcomeLabel"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "marketId":  "ed121b08-88bd-4735-9793-64a0022e9696",
+                                                      "title":  "2nd Half Winner",
+                                                      "status":  "LIVE",
+                                                      "marketGroupKey":  "halves",
+                                                      "marketGroupTitle":  "Halves",
+                                                      "marketType":  "match_winner_1x2",
+                                                      "period":  "second-half",
+                                                      "line":  null,
+                                                      "unit":  null,
+                                                      "propCategory":  null,
+                                                      "referenceSource":  null,
+                                                      "externalSlug":  null,
+                                                      "externalMarketId":  null,
+                                                      "conditionId":  null,
+                                                      "providerRefreshable":  false,
+                                                      "missingFields":  [
+                                                                            "referenceSource",
+                                                                            "externalSlug",
+                                                                            "externalMarketId",
+                                                                            "conditionId"
+                                                                        ],
+                                                      "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                      "outcomes":  [
+                                                                       {
+                                                                           "outcomeId":  "22d284df-1ba5-45de-b6b9-506cc01040d6",
+                                                                           "name":  "Curaçao",
+                                                                           "side":  "home",
+                                                                           "displayOrder":  0,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  null,
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId",
+                                                                                                 "referenceOutcomeLabel"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       },
+                                                                       {
+                                                                           "outcomeId":  "b1ce873f-c80c-4018-a535-dbf0b5296d32",
+                                                                           "name":  "Draw",
+                                                                           "side":  "draw",
+                                                                           "displayOrder":  1,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  null,
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId",
+                                                                                                 "referenceOutcomeLabel"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       },
+                                                                       {
+                                                                           "outcomeId":  "331c2444-d27f-4982-95e9-c76d24e50988",
+                                                                           "name":  "Côte d\u0027Ivoire",
+                                                                           "side":  "away",
+                                                                           "displayOrder":  2,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  null,
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId",
+                                                                                                 "referenceOutcomeLabel"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "marketId":  "59931bba-fdce-4af7-a1f5-442d79f02a85",
+                                                      "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao draw no bet",
+                                                      "status":  "LIVE",
+                                                      "marketGroupKey":  "main",
+                                                      "marketGroupTitle":  "Main",
+                                                      "marketType":  "draw_no_bet",
+                                                      "period":  null,
+                                                      "line":  null,
+                                                      "unit":  null,
+                                                      "propCategory":  null,
+                                                      "referenceSource":  "fifa_schedule",
+                                                      "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-draw-no-bet",
+                                                      "externalMarketId":  "M55-home-draw-no-bet",
+                                                      "conditionId":  null,
+                                                      "providerRefreshable":  false,
+                                                      "missingFields":  [
+                                                                            "referenceSource",
+                                                                            "conditionId"
+                                                                        ],
+                                                      "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                      "outcomes":  [
+                                                                       {
+                                                                           "outcomeId":  "5eca8107-3fc4-4407-bccb-07e89123df9d",
+                                                                           "name":  "Yes",
+                                                                           "side":  "yes",
+                                                                           "displayOrder":  0,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "Yes",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       },
+                                                                       {
+                                                                           "outcomeId":  "be307a16-fc58-40d4-8798-4a72f7acab7b",
+                                                                           "name":  "No",
+                                                                           "side":  "no",
+                                                                           "displayOrder":  1,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "No",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "marketId":  "d6070c40-83b8-4f98-a9f5-eff829fb9348",
+                                                      "title":  "Curaçao vs Côte d\u0027Ivoire: Côte d\u0027Ivoire draw no bet",
+                                                      "status":  "LIVE",
+                                                      "marketGroupKey":  "main",
+                                                      "marketGroupTitle":  "Main",
+                                                      "marketType":  "draw_no_bet",
+                                                      "period":  null,
+                                                      "line":  null,
+                                                      "unit":  null,
+                                                      "propCategory":  null,
+                                                      "referenceSource":  "fifa_schedule",
+                                                      "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-away-draw-no-bet",
+                                                      "externalMarketId":  "M55-away-draw-no-bet",
+                                                      "conditionId":  null,
+                                                      "providerRefreshable":  false,
+                                                      "missingFields":  [
+                                                                            "referenceSource",
+                                                                            "conditionId"
+                                                                        ],
+                                                      "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                      "outcomes":  [
+                                                                       {
+                                                                           "outcomeId":  "527cfb2b-5110-4eab-8f4b-05cb04104511",
+                                                                           "name":  "Yes",
+                                                                           "side":  "yes",
+                                                                           "displayOrder":  0,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "Yes",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       },
+                                                                       {
+                                                                           "outcomeId":  "dce0a5f9-f9e0-4ce9-bcd3-af555c3d7398",
+                                                                           "name":  "No",
+                                                                           "side":  "no",
+                                                                           "displayOrder":  1,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "No",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "marketId":  "693f0b80-f2d2-4b24-8c48-42026f6f1354",
+                                                      "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao +0.5",
+                                                      "status":  "LIVE",
+                                                      "marketGroupKey":  "spreads",
+                                                      "marketGroupTitle":  "Spreads",
+                                                      "marketType":  "spread",
+                                                      "period":  null,
+                                                      "line":  "0.5",
+                                                      "unit":  "goals",
+                                                      "propCategory":  "handicap",
+                                                      "referenceSource":  "fifa_schedule",
+                                                      "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-spread-plus0_5",
+                                                      "externalMarketId":  "M55-home-spread-plus0_5",
+                                                      "conditionId":  null,
+                                                      "providerRefreshable":  false,
+                                                      "missingFields":  [
+                                                                            "referenceSource",
+                                                                            "conditionId"
+                                                                        ],
+                                                      "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                      "outcomes":  [
+                                                                       {
+                                                                           "outcomeId":  "99faaf1c-d3c4-4d07-aa10-8890f070bb85",
+                                                                           "name":  "Yes",
+                                                                           "side":  "yes",
+                                                                           "displayOrder":  0,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "Yes",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       },
+                                                                       {
+                                                                           "outcomeId":  "97c8a5b9-0416-40e0-b729-5b5450226605",
+                                                                           "name":  "No",
+                                                                           "side":  "no",
+                                                                           "displayOrder":  1,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "No",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "marketId":  "35479f11-092f-4929-a6a5-3c524a3dbcb0",
+                                                      "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao +2.5",
+                                                      "status":  "LIVE",
+                                                      "marketGroupKey":  "spreads",
+                                                      "marketGroupTitle":  "Spreads",
+                                                      "marketType":  "spread",
+                                                      "period":  null,
+                                                      "line":  "2.5",
+                                                      "unit":  "goals",
+                                                      "propCategory":  "handicap",
+                                                      "referenceSource":  "fifa_schedule",
+                                                      "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-spread-plus2_5",
+                                                      "externalMarketId":  "M55-home-spread-plus2_5",
+                                                      "conditionId":  null,
+                                                      "providerRefreshable":  false,
+                                                      "missingFields":  [
+                                                                            "referenceSource",
+                                                                            "conditionId"
+                                                                        ],
+                                                      "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                      "outcomes":  [
+                                                                       {
+                                                                           "outcomeId":  "dce5ae64-03c1-4e5d-bf37-fc407487a356",
+                                                                           "name":  "Yes",
+                                                                           "side":  "yes",
+                                                                           "displayOrder":  0,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "Yes",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       },
+                                                                       {
+                                                                           "outcomeId":  "af1c3533-9cce-4595-a55e-d5d9c5835b23",
+                                                                           "name":  "No",
+                                                                           "side":  "no",
+                                                                           "displayOrder":  1,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "No",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "marketId":  "4d2d05d6-c43f-4c55-80bd-3d81e5b2b64d",
+                                                      "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao +3.5",
+                                                      "status":  "LIVE",
+                                                      "marketGroupKey":  "spreads",
+                                                      "marketGroupTitle":  "Spreads",
+                                                      "marketType":  "spread",
+                                                      "period":  null,
+                                                      "line":  "3.5",
+                                                      "unit":  "goals",
+                                                      "propCategory":  "handicap",
+                                                      "referenceSource":  "fifa_schedule",
+                                                      "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-spread-plus3_5",
+                                                      "externalMarketId":  "M55-home-spread-plus3_5",
+                                                      "conditionId":  null,
+                                                      "providerRefreshable":  false,
+                                                      "missingFields":  [
+                                                                            "referenceSource",
+                                                                            "conditionId"
+                                                                        ],
+                                                      "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                      "outcomes":  [
+                                                                       {
+                                                                           "outcomeId":  "f33674ef-9fac-43b0-ab09-fc02f7e39f78",
+                                                                           "name":  "Yes",
+                                                                           "side":  "yes",
+                                                                           "displayOrder":  0,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "Yes",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       },
+                                                                       {
+                                                                           "outcomeId":  "3f860b20-d0b7-4c21-b2c4-fde374bb0837",
+                                                                           "name":  "No",
+                                                                           "side":  "no",
+                                                                           "displayOrder":  1,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "No",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "marketId":  "1e47f339-ab54-48a9-8fe2-fa6f93e711b3",
+                                                      "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao +4.5",
+                                                      "status":  "LIVE",
+                                                      "marketGroupKey":  "spreads",
+                                                      "marketGroupTitle":  "Spreads",
+                                                      "marketType":  "spread",
+                                                      "period":  null,
+                                                      "line":  "4.5",
+                                                      "unit":  "goals",
+                                                      "propCategory":  "handicap",
+                                                      "referenceSource":  "fifa_schedule",
+                                                      "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-spread-plus4_5",
+                                                      "externalMarketId":  "M55-home-spread-plus4_5",
+                                                      "conditionId":  null,
+                                                      "providerRefreshable":  false,
+                                                      "missingFields":  [
+                                                                            "referenceSource",
+                                                                            "conditionId"
+                                                                        ],
+                                                      "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                      "outcomes":  [
+                                                                       {
+                                                                           "outcomeId":  "d4834259-c29d-4942-ae6d-bd65c4c0627e",
+                                                                           "name":  "Yes",
+                                                                           "side":  "yes",
+                                                                           "displayOrder":  0,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "Yes",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       },
+                                                                       {
+                                                                           "outcomeId":  "72f18e8d-1951-44a0-923a-17701eb44d7e",
+                                                                           "name":  "No",
+                                                                           "side":  "no",
+                                                                           "displayOrder":  1,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "No",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "marketId":  "f828ed4d-232e-4184-8fc6-f610f3bbd1bc",
+                                                      "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao +5.5",
+                                                      "status":  "LIVE",
+                                                      "marketGroupKey":  "spreads",
+                                                      "marketGroupTitle":  "Spreads",
+                                                      "marketType":  "spread",
+                                                      "period":  null,
+                                                      "line":  "5.5",
+                                                      "unit":  "goals",
+                                                      "propCategory":  "handicap",
+                                                      "referenceSource":  "fifa_schedule",
+                                                      "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-spread-plus5_5",
+                                                      "externalMarketId":  "M55-home-spread-plus5_5",
+                                                      "conditionId":  null,
+                                                      "providerRefreshable":  false,
+                                                      "missingFields":  [
+                                                                            "referenceSource",
+                                                                            "conditionId"
+                                                                        ],
+                                                      "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                      "outcomes":  [
+                                                                       {
+                                                                           "outcomeId":  "b0b2e22b-24eb-4dd4-9a02-fd0d67502e7a",
+                                                                           "name":  "Yes",
+                                                                           "side":  "yes",
+                                                                           "displayOrder":  0,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "Yes",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       },
+                                                                       {
+                                                                           "outcomeId":  "61938c9a-6958-4456-8194-443563258a6f",
+                                                                           "name":  "No",
+                                                                           "side":  "no",
+                                                                           "displayOrder":  1,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "No",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "marketId":  "dd56e07d-90de-4d22-828b-dcff5b524ac1",
+                                                      "title":  "Curaçao vs Côte d\u0027Ivoire: Côte d\u0027Ivoire -0.5",
+                                                      "status":  "LIVE",
+                                                      "marketGroupKey":  "spreads",
+                                                      "marketGroupTitle":  "Spreads",
+                                                      "marketType":  "spread",
+                                                      "period":  null,
+                                                      "line":  "-0.5",
+                                                      "unit":  "goals",
+                                                      "propCategory":  "handicap",
+                                                      "referenceSource":  "fifa_schedule",
+                                                      "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-away-spread-minus0_5",
+                                                      "externalMarketId":  "M55-away-spread-minus0_5",
+                                                      "conditionId":  null,
+                                                      "providerRefreshable":  false,
+                                                      "missingFields":  [
+                                                                            "referenceSource",
+                                                                            "conditionId"
+                                                                        ],
+                                                      "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                      "outcomes":  [
+                                                                       {
+                                                                           "outcomeId":  "e6310ec9-bcc1-4fed-b209-c89cb02b0aff",
+                                                                           "name":  "Yes",
+                                                                           "side":  "yes",
+                                                                           "displayOrder":  0,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "Yes",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       },
+                                                                       {
+                                                                           "outcomeId":  "4c2ac4e8-caa7-40e7-a664-c595835e8edd",
+                                                                           "name":  "No",
+                                                                           "side":  "no",
+                                                                           "displayOrder":  1,
+                                                                           "isTradable":  true,
+                                                                           "referenceTokenId":  null,
+                                                                           "referenceOutcomeLabel":  "No",
+                                                                           "providerRefreshable":  false,
+                                                                           "missingFields":  [
+                                                                                                 "referenceTokenId"
+                                                                                             ],
+                                                                           "recommendedAction":  "map_outcome_to_provider_token"
+                                                                       }
+                                                                   ]
+                                                  }
+                                              ]
+                              },
+                   "after":  {
+                                 "eventSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25",
+                                 "generatedAt":  "2026-07-04T03:56:14.488Z",
+                                 "compactMarketCount":  14,
+                                 "providerRefreshableMarketCount":  1,
+                                 "providerRefreshableOutcomeCount":  3,
+                                 "totalOutcomeCount":  31,
+                                 "unsupportedSourceMarketCount":  13,
+                                 "missingExternalSlugMarketCount":  2,
+                                 "missingExternalMarketIdMarketCount":  2,
+                                 "missingConditionIdMarketCount":  13,
+                                 "missingOutcomeTokenMarketCount":  13,
+                                 "isProviderRefreshReady":  false,
+                                 "nextRequiredAction":  "map_compact_markets_to_polymarket_provider_identity",
+                                 "markets":  [
+                                                 {
+                                                     "marketId":  "aca976d2-2bad-416c-b010-c874c0ee493f",
+                                                     "title":  "Curaçao vs Côte d\u0027Ivoire: Match Winner",
+                                                     "status":  "LIVE",
+                                                     "marketGroupKey":  "main",
+                                                     "marketGroupTitle":  "Main",
+                                                     "marketType":  "match_winner_1x2",
+                                                     "period":  null,
+                                                     "line":  null,
+                                                     "unit":  null,
+                                                     "propCategory":  null,
+                                                     "referenceSource":  "polymarket",
+                                                     "externalSlug":  "dry-run-polymarket-aca976d2-2bad-416c-b010-c874c0ee493f",
+                                                     "externalMarketId":  "dry-run-market-aca976d2-2bad-416c-b010-c874c0ee493f",
+                                                     "conditionId":  "dry-run-condition-aca976d2-2bad-416c-b010-c874c0ee493f",
+                                                     "providerRefreshable":  true,
+                                                     "missingFields":  [
+
+                                                                       ],
+                                                     "recommendedAction":  "ready_for_provider_refresh",
+                                                     "outcomes":  [
+                                                                      {
+                                                                          "outcomeId":  "0d480622-e2d5-4344-bb3f-748cb55ba257",
+                                                                          "name":  "Curaçao",
+                                                                          "side":  "home",
+                                                                          "displayOrder":  0,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  "dry-run-token-0d480622-e2d5-4344-bb3f-748cb55ba257",
+                                                                          "referenceOutcomeLabel":  "Curaçao",
+                                                                          "providerRefreshable":  true,
+                                                                          "missingFields":  [
+
+                                                                                            ],
+                                                                          "recommendedAction":  "ready_for_provider_refresh"
+                                                                      },
+                                                                      {
+                                                                          "outcomeId":  "8c8596bd-d65b-4368-a537-f3f01dbccb2c",
+                                                                          "name":  "Draw",
+                                                                          "side":  "draw",
+                                                                          "displayOrder":  1,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  "dry-run-token-8c8596bd-d65b-4368-a537-f3f01dbccb2c",
+                                                                          "referenceOutcomeLabel":  "Draw",
+                                                                          "providerRefreshable":  true,
+                                                                          "missingFields":  [
+
+                                                                                            ],
+                                                                          "recommendedAction":  "ready_for_provider_refresh"
+                                                                      },
+                                                                      {
+                                                                          "outcomeId":  "e96086f5-e9ce-45c1-a255-8a77425279e1",
+                                                                          "name":  "Côte d\u0027Ivoire",
+                                                                          "side":  "away",
+                                                                          "displayOrder":  2,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  "dry-run-token-e96086f5-e9ce-45c1-a255-8a77425279e1",
+                                                                          "referenceOutcomeLabel":  "Côte d\u0027Ivoire",
+                                                                          "providerRefreshable":  true,
+                                                                          "missingFields":  [
+
+                                                                                            ],
+                                                                          "recommendedAction":  "ready_for_provider_refresh"
+                                                                      }
+                                                                  ]
+                                                 },
+                                                 {
+                                                     "marketId":  "ac527022-07f3-4abb-90f0-b291466e8459",
+                                                     "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao +1.5",
+                                                     "status":  "LIVE",
+                                                     "marketGroupKey":  "spreads",
+                                                     "marketGroupTitle":  "Spreads",
+                                                     "marketType":  "spread",
+                                                     "period":  null,
+                                                     "line":  "1.5",
+                                                     "unit":  "goals",
+                                                     "propCategory":  "handicap",
+                                                     "referenceSource":  "fifa_schedule",
+                                                     "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-spread-plus1_5",
+                                                     "externalMarketId":  "M55-home-spread-plus1_5",
+                                                     "conditionId":  null,
+                                                     "providerRefreshable":  false,
+                                                     "missingFields":  [
+                                                                           "referenceSource",
+                                                                           "conditionId"
+                                                                       ],
+                                                     "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                     "outcomes":  [
+                                                                      {
+                                                                          "outcomeId":  "5e1c4d3e-feae-43bc-9d09-da024b8ff18d",
+                                                                          "name":  "Yes",
+                                                                          "side":  "yes",
+                                                                          "displayOrder":  0,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "Yes",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      },
+                                                                      {
+                                                                          "outcomeId":  "362f65dc-7c69-47a2-b410-30c98f3b99ad",
+                                                                          "name":  "No",
+                                                                          "side":  "no",
+                                                                          "displayOrder":  1,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "No",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      }
+                                                                  ]
+                                                 },
+                                                 {
+                                                     "marketId":  "a552efe6-3147-4573-be95-8fe15c068c08",
+                                                     "title":  "Curaçao vs Côte d\u0027Ivoire: Total goals 2.5",
+                                                     "status":  "LIVE",
+                                                     "marketGroupKey":  "totals",
+                                                     "marketGroupTitle":  "Totals",
+                                                     "marketType":  "total_goals",
+                                                     "period":  null,
+                                                     "line":  "2.5",
+                                                     "unit":  "goals",
+                                                     "propCategory":  "goals",
+                                                     "referenceSource":  "fifa_schedule",
+                                                     "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-total-goals-2.5",
+                                                     "externalMarketId":  "M55-total-goals-2.5",
+                                                     "conditionId":  null,
+                                                     "providerRefreshable":  false,
+                                                     "missingFields":  [
+                                                                           "referenceSource",
+                                                                           "conditionId"
+                                                                       ],
+                                                     "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                     "outcomes":  [
+                                                                      {
+                                                                          "outcomeId":  "68424d0f-6503-4695-b360-5cde95352faf",
+                                                                          "name":  "Over 2.5",
+                                                                          "side":  "over",
+                                                                          "displayOrder":  0,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "Over 2.5",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      },
+                                                                      {
+                                                                          "outcomeId":  "a8bc4725-e1fd-4d46-92ce-20c5b296d54f",
+                                                                          "name":  "Under 2.5",
+                                                                          "side":  "under",
+                                                                          "displayOrder":  1,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "Under 2.5",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      }
+                                                                  ]
+                                                 },
+                                                 {
+                                                     "marketId":  "408ffb79-3492-4fd0-b31b-87a26f8b9dd5",
+                                                     "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao goals 1.5",
+                                                     "status":  "LIVE",
+                                                     "marketGroupKey":  "team-totals",
+                                                     "marketGroupTitle":  "Team Totals",
+                                                     "marketType":  "team_total_goals",
+                                                     "period":  null,
+                                                     "line":  "1.5",
+                                                     "unit":  "goals",
+                                                     "propCategory":  "goals",
+                                                     "referenceSource":  "fifa_schedule",
+                                                     "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-team-total-1.5",
+                                                     "externalMarketId":  "M55-home-team-total-1.5",
+                                                     "conditionId":  null,
+                                                     "providerRefreshable":  false,
+                                                     "missingFields":  [
+                                                                           "referenceSource",
+                                                                           "conditionId"
+                                                                       ],
+                                                     "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                     "outcomes":  [
+                                                                      {
+                                                                          "outcomeId":  "1af16c8a-f667-4245-acce-72ff11cf7099",
+                                                                          "name":  "Over 1.5",
+                                                                          "side":  "over",
+                                                                          "displayOrder":  0,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "Over 1.5",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      },
+                                                                      {
+                                                                          "outcomeId":  "1927c0ea-2261-4638-be5a-5f102b1d74a3",
+                                                                          "name":  "Under 1.5",
+                                                                          "side":  "under",
+                                                                          "displayOrder":  1,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "Under 1.5",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      }
+                                                                  ]
+                                                 },
+                                                 {
+                                                     "marketId":  "be4ab6f8-c054-4f6b-a6d9-7d857f7655ca",
+                                                     "title":  "1st Half Winner",
+                                                     "status":  "LIVE",
+                                                     "marketGroupKey":  "halves",
+                                                     "marketGroupTitle":  "Halves",
+                                                     "marketType":  "match_winner_1x2",
+                                                     "period":  "first-half",
+                                                     "line":  null,
+                                                     "unit":  null,
+                                                     "propCategory":  null,
+                                                     "referenceSource":  null,
+                                                     "externalSlug":  null,
+                                                     "externalMarketId":  null,
+                                                     "conditionId":  null,
+                                                     "providerRefreshable":  false,
+                                                     "missingFields":  [
+                                                                           "referenceSource",
+                                                                           "externalSlug",
+                                                                           "externalMarketId",
+                                                                           "conditionId"
+                                                                       ],
+                                                     "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                     "outcomes":  [
+                                                                      {
+                                                                          "outcomeId":  "2c051ece-4d2f-42cc-9d72-3c77e2ad5a51",
+                                                                          "name":  "Curaçao",
+                                                                          "side":  "home",
+                                                                          "displayOrder":  0,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  null,
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId",
+                                                                                                "referenceOutcomeLabel"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      },
+                                                                      {
+                                                                          "outcomeId":  "3293b5a2-9eee-41dc-b19e-92f85aa79567",
+                                                                          "name":  "Draw",
+                                                                          "side":  "draw",
+                                                                          "displayOrder":  1,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  null,
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId",
+                                                                                                "referenceOutcomeLabel"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      },
+                                                                      {
+                                                                          "outcomeId":  "399d8bff-8eb1-4c3a-a5dc-4002494af0e1",
+                                                                          "name":  "Côte d\u0027Ivoire",
+                                                                          "side":  "away",
+                                                                          "displayOrder":  2,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  null,
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId",
+                                                                                                "referenceOutcomeLabel"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      }
+                                                                  ]
+                                                 },
+                                                 {
+                                                     "marketId":  "ed121b08-88bd-4735-9793-64a0022e9696",
+                                                     "title":  "2nd Half Winner",
+                                                     "status":  "LIVE",
+                                                     "marketGroupKey":  "halves",
+                                                     "marketGroupTitle":  "Halves",
+                                                     "marketType":  "match_winner_1x2",
+                                                     "period":  "second-half",
+                                                     "line":  null,
+                                                     "unit":  null,
+                                                     "propCategory":  null,
+                                                     "referenceSource":  null,
+                                                     "externalSlug":  null,
+                                                     "externalMarketId":  null,
+                                                     "conditionId":  null,
+                                                     "providerRefreshable":  false,
+                                                     "missingFields":  [
+                                                                           "referenceSource",
+                                                                           "externalSlug",
+                                                                           "externalMarketId",
+                                                                           "conditionId"
+                                                                       ],
+                                                     "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                     "outcomes":  [
+                                                                      {
+                                                                          "outcomeId":  "22d284df-1ba5-45de-b6b9-506cc01040d6",
+                                                                          "name":  "Curaçao",
+                                                                          "side":  "home",
+                                                                          "displayOrder":  0,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  null,
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId",
+                                                                                                "referenceOutcomeLabel"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      },
+                                                                      {
+                                                                          "outcomeId":  "b1ce873f-c80c-4018-a535-dbf0b5296d32",
+                                                                          "name":  "Draw",
+                                                                          "side":  "draw",
+                                                                          "displayOrder":  1,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  null,
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId",
+                                                                                                "referenceOutcomeLabel"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      },
+                                                                      {
+                                                                          "outcomeId":  "331c2444-d27f-4982-95e9-c76d24e50988",
+                                                                          "name":  "Côte d\u0027Ivoire",
+                                                                          "side":  "away",
+                                                                          "displayOrder":  2,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  null,
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId",
+                                                                                                "referenceOutcomeLabel"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      }
+                                                                  ]
+                                                 },
+                                                 {
+                                                     "marketId":  "59931bba-fdce-4af7-a1f5-442d79f02a85",
+                                                     "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao draw no bet",
+                                                     "status":  "LIVE",
+                                                     "marketGroupKey":  "main",
+                                                     "marketGroupTitle":  "Main",
+                                                     "marketType":  "draw_no_bet",
+                                                     "period":  null,
+                                                     "line":  null,
+                                                     "unit":  null,
+                                                     "propCategory":  null,
+                                                     "referenceSource":  "fifa_schedule",
+                                                     "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-draw-no-bet",
+                                                     "externalMarketId":  "M55-home-draw-no-bet",
+                                                     "conditionId":  null,
+                                                     "providerRefreshable":  false,
+                                                     "missingFields":  [
+                                                                           "referenceSource",
+                                                                           "conditionId"
+                                                                       ],
+                                                     "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                     "outcomes":  [
+                                                                      {
+                                                                          "outcomeId":  "5eca8107-3fc4-4407-bccb-07e89123df9d",
+                                                                          "name":  "Yes",
+                                                                          "side":  "yes",
+                                                                          "displayOrder":  0,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "Yes",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      },
+                                                                      {
+                                                                          "outcomeId":  "be307a16-fc58-40d4-8798-4a72f7acab7b",
+                                                                          "name":  "No",
+                                                                          "side":  "no",
+                                                                          "displayOrder":  1,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "No",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      }
+                                                                  ]
+                                                 },
+                                                 {
+                                                     "marketId":  "d6070c40-83b8-4f98-a9f5-eff829fb9348",
+                                                     "title":  "Curaçao vs Côte d\u0027Ivoire: Côte d\u0027Ivoire draw no bet",
+                                                     "status":  "LIVE",
+                                                     "marketGroupKey":  "main",
+                                                     "marketGroupTitle":  "Main",
+                                                     "marketType":  "draw_no_bet",
+                                                     "period":  null,
+                                                     "line":  null,
+                                                     "unit":  null,
+                                                     "propCategory":  null,
+                                                     "referenceSource":  "fifa_schedule",
+                                                     "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-away-draw-no-bet",
+                                                     "externalMarketId":  "M55-away-draw-no-bet",
+                                                     "conditionId":  null,
+                                                     "providerRefreshable":  false,
+                                                     "missingFields":  [
+                                                                           "referenceSource",
+                                                                           "conditionId"
+                                                                       ],
+                                                     "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                     "outcomes":  [
+                                                                      {
+                                                                          "outcomeId":  "527cfb2b-5110-4eab-8f4b-05cb04104511",
+                                                                          "name":  "Yes",
+                                                                          "side":  "yes",
+                                                                          "displayOrder":  0,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "Yes",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      },
+                                                                      {
+                                                                          "outcomeId":  "dce0a5f9-f9e0-4ce9-bcd3-af555c3d7398",
+                                                                          "name":  "No",
+                                                                          "side":  "no",
+                                                                          "displayOrder":  1,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "No",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      }
+                                                                  ]
+                                                 },
+                                                 {
+                                                     "marketId":  "693f0b80-f2d2-4b24-8c48-42026f6f1354",
+                                                     "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao +0.5",
+                                                     "status":  "LIVE",
+                                                     "marketGroupKey":  "spreads",
+                                                     "marketGroupTitle":  "Spreads",
+                                                     "marketType":  "spread",
+                                                     "period":  null,
+                                                     "line":  "0.5",
+                                                     "unit":  "goals",
+                                                     "propCategory":  "handicap",
+                                                     "referenceSource":  "fifa_schedule",
+                                                     "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-spread-plus0_5",
+                                                     "externalMarketId":  "M55-home-spread-plus0_5",
+                                                     "conditionId":  null,
+                                                     "providerRefreshable":  false,
+                                                     "missingFields":  [
+                                                                           "referenceSource",
+                                                                           "conditionId"
+                                                                       ],
+                                                     "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                     "outcomes":  [
+                                                                      {
+                                                                          "outcomeId":  "99faaf1c-d3c4-4d07-aa10-8890f070bb85",
+                                                                          "name":  "Yes",
+                                                                          "side":  "yes",
+                                                                          "displayOrder":  0,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "Yes",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      },
+                                                                      {
+                                                                          "outcomeId":  "97c8a5b9-0416-40e0-b729-5b5450226605",
+                                                                          "name":  "No",
+                                                                          "side":  "no",
+                                                                          "displayOrder":  1,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "No",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      }
+                                                                  ]
+                                                 },
+                                                 {
+                                                     "marketId":  "35479f11-092f-4929-a6a5-3c524a3dbcb0",
+                                                     "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao +2.5",
+                                                     "status":  "LIVE",
+                                                     "marketGroupKey":  "spreads",
+                                                     "marketGroupTitle":  "Spreads",
+                                                     "marketType":  "spread",
+                                                     "period":  null,
+                                                     "line":  "2.5",
+                                                     "unit":  "goals",
+                                                     "propCategory":  "handicap",
+                                                     "referenceSource":  "fifa_schedule",
+                                                     "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-spread-plus2_5",
+                                                     "externalMarketId":  "M55-home-spread-plus2_5",
+                                                     "conditionId":  null,
+                                                     "providerRefreshable":  false,
+                                                     "missingFields":  [
+                                                                           "referenceSource",
+                                                                           "conditionId"
+                                                                       ],
+                                                     "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                     "outcomes":  [
+                                                                      {
+                                                                          "outcomeId":  "dce5ae64-03c1-4e5d-bf37-fc407487a356",
+                                                                          "name":  "Yes",
+                                                                          "side":  "yes",
+                                                                          "displayOrder":  0,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "Yes",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      },
+                                                                      {
+                                                                          "outcomeId":  "af1c3533-9cce-4595-a55e-d5d9c5835b23",
+                                                                          "name":  "No",
+                                                                          "side":  "no",
+                                                                          "displayOrder":  1,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "No",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      }
+                                                                  ]
+                                                 },
+                                                 {
+                                                     "marketId":  "4d2d05d6-c43f-4c55-80bd-3d81e5b2b64d",
+                                                     "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao +3.5",
+                                                     "status":  "LIVE",
+                                                     "marketGroupKey":  "spreads",
+                                                     "marketGroupTitle":  "Spreads",
+                                                     "marketType":  "spread",
+                                                     "period":  null,
+                                                     "line":  "3.5",
+                                                     "unit":  "goals",
+                                                     "propCategory":  "handicap",
+                                                     "referenceSource":  "fifa_schedule",
+                                                     "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-spread-plus3_5",
+                                                     "externalMarketId":  "M55-home-spread-plus3_5",
+                                                     "conditionId":  null,
+                                                     "providerRefreshable":  false,
+                                                     "missingFields":  [
+                                                                           "referenceSource",
+                                                                           "conditionId"
+                                                                       ],
+                                                     "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                     "outcomes":  [
+                                                                      {
+                                                                          "outcomeId":  "f33674ef-9fac-43b0-ab09-fc02f7e39f78",
+                                                                          "name":  "Yes",
+                                                                          "side":  "yes",
+                                                                          "displayOrder":  0,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "Yes",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      },
+                                                                      {
+                                                                          "outcomeId":  "3f860b20-d0b7-4c21-b2c4-fde374bb0837",
+                                                                          "name":  "No",
+                                                                          "side":  "no",
+                                                                          "displayOrder":  1,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "No",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      }
+                                                                  ]
+                                                 },
+                                                 {
+                                                     "marketId":  "1e47f339-ab54-48a9-8fe2-fa6f93e711b3",
+                                                     "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao +4.5",
+                                                     "status":  "LIVE",
+                                                     "marketGroupKey":  "spreads",
+                                                     "marketGroupTitle":  "Spreads",
+                                                     "marketType":  "spread",
+                                                     "period":  null,
+                                                     "line":  "4.5",
+                                                     "unit":  "goals",
+                                                     "propCategory":  "handicap",
+                                                     "referenceSource":  "fifa_schedule",
+                                                     "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-spread-plus4_5",
+                                                     "externalMarketId":  "M55-home-spread-plus4_5",
+                                                     "conditionId":  null,
+                                                     "providerRefreshable":  false,
+                                                     "missingFields":  [
+                                                                           "referenceSource",
+                                                                           "conditionId"
+                                                                       ],
+                                                     "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                     "outcomes":  [
+                                                                      {
+                                                                          "outcomeId":  "d4834259-c29d-4942-ae6d-bd65c4c0627e",
+                                                                          "name":  "Yes",
+                                                                          "side":  "yes",
+                                                                          "displayOrder":  0,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "Yes",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      },
+                                                                      {
+                                                                          "outcomeId":  "72f18e8d-1951-44a0-923a-17701eb44d7e",
+                                                                          "name":  "No",
+                                                                          "side":  "no",
+                                                                          "displayOrder":  1,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "No",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      }
+                                                                  ]
+                                                 },
+                                                 {
+                                                     "marketId":  "f828ed4d-232e-4184-8fc6-f610f3bbd1bc",
+                                                     "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao +5.5",
+                                                     "status":  "LIVE",
+                                                     "marketGroupKey":  "spreads",
+                                                     "marketGroupTitle":  "Spreads",
+                                                     "marketType":  "spread",
+                                                     "period":  null,
+                                                     "line":  "5.5",
+                                                     "unit":  "goals",
+                                                     "propCategory":  "handicap",
+                                                     "referenceSource":  "fifa_schedule",
+                                                     "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-spread-plus5_5",
+                                                     "externalMarketId":  "M55-home-spread-plus5_5",
+                                                     "conditionId":  null,
+                                                     "providerRefreshable":  false,
+                                                     "missingFields":  [
+                                                                           "referenceSource",
+                                                                           "conditionId"
+                                                                       ],
+                                                     "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                     "outcomes":  [
+                                                                      {
+                                                                          "outcomeId":  "b0b2e22b-24eb-4dd4-9a02-fd0d67502e7a",
+                                                                          "name":  "Yes",
+                                                                          "side":  "yes",
+                                                                          "displayOrder":  0,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "Yes",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      },
+                                                                      {
+                                                                          "outcomeId":  "61938c9a-6958-4456-8194-443563258a6f",
+                                                                          "name":  "No",
+                                                                          "side":  "no",
+                                                                          "displayOrder":  1,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "No",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      }
+                                                                  ]
+                                                 },
+                                                 {
+                                                     "marketId":  "dd56e07d-90de-4d22-828b-dcff5b524ac1",
+                                                     "title":  "Curaçao vs Côte d\u0027Ivoire: Côte d\u0027Ivoire -0.5",
+                                                     "status":  "LIVE",
+                                                     "marketGroupKey":  "spreads",
+                                                     "marketGroupTitle":  "Spreads",
+                                                     "marketType":  "spread",
+                                                     "period":  null,
+                                                     "line":  "-0.5",
+                                                     "unit":  "goals",
+                                                     "propCategory":  "handicap",
+                                                     "referenceSource":  "fifa_schedule",
+                                                     "externalSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-away-spread-minus0_5",
+                                                     "externalMarketId":  "M55-away-spread-minus0_5",
+                                                     "conditionId":  null,
+                                                     "providerRefreshable":  false,
+                                                     "missingFields":  [
+                                                                           "referenceSource",
+                                                                           "conditionId"
+                                                                       ],
+                                                     "recommendedAction":  "map_market_to_polymarket_provider_source",
+                                                     "outcomes":  [
+                                                                      {
+                                                                          "outcomeId":  "e6310ec9-bcc1-4fed-b209-c89cb02b0aff",
+                                                                          "name":  "Yes",
+                                                                          "side":  "yes",
+                                                                          "displayOrder":  0,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "Yes",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      },
+                                                                      {
+                                                                          "outcomeId":  "4c2ac4e8-caa7-40e7-a664-c595835e8edd",
+                                                                          "name":  "No",
+                                                                          "side":  "no",
+                                                                          "displayOrder":  1,
+                                                                          "isTradable":  true,
+                                                                          "referenceTokenId":  null,
+                                                                          "referenceOutcomeLabel":  "No",
+                                                                          "providerRefreshable":  false,
+                                                                          "missingFields":  [
+                                                                                                "referenceTokenId"
+                                                                                            ],
+                                                                          "recommendedAction":  "map_outcome_to_provider_token"
+                                                                      }
+                                                                  ]
+                                                 }
+                                             ]
+                             }
+               }
+}

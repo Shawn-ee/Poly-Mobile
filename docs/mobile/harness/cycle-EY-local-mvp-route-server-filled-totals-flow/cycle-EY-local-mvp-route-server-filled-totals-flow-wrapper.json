@@ -1,0 +1,15 @@
+{
+    "cycle":  "EY",
+    "result":  "pass",
+    "username":  "holiwyn-mobile-ey-20260704133951",
+    "userId":  "ab2d4bc2-727e-4282-9403-e2bdd601c77f",
+    "keyId":  "pk_live_f20e017d7b005dbf",
+    "token":  "redacted",
+    "eventSlug":  "mobile-el-a-provider-breadth-62990515",
+    "eventProofPath":  "docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-route-backed-retail-event.json",
+    "counterpartyProofPath":  "docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-route-backed-totals-counterparty.json",
+    "tabletProofPath":  "docs\\mobile\\harness\\cycle-EY-local-mvp-route-server-filled-totals-flow\\cycle-EY-local-mvp-route-server-filled-totals-flow-proof.json",
+    "orderMode":  "server",
+    "marketDataMode":  "server",
+    "backendBaseUrl":  "http://172.16.200.14:3002"
+}

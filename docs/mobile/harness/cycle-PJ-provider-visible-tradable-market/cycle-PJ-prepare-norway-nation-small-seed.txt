@@ -1,0 +1,47 @@
+
+> poly-bot@0.1.0 liquidity:prepare-event
+> tsx scripts/prepareReferenceLiquidityEvent.ts --baseUrl http://127.0.0.1:3002 --eventSlug world-cup-nation-of-top-goalscorer --allowlist Norway --maxMarkets 1 --capitalDollars 500 --mintDollars 25 --dryRun false --confirmSeed true
+
+{
+  "ok": true,
+  "dryRun": false,
+  "eventSlug": "world-cup-nation-of-top-goalscorer",
+  "marketCount": 1,
+  "seededOrChecked": 1,
+  "blocked": 0,
+  "results": [
+    {
+      "marketId": "3c089b24-8a2e-42f4-97fb-3e7422bdfa65",
+      "slug": "will-a-player-representing-norway-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "title": "Will a player representing Norway be the top goalscorer at the 2026 FIFA World Cup?",
+      "importStatus": "approved",
+      "mmEnabled": true,
+      "tradable": true,
+      "ok": true,
+      "runtimePath": "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\poly-bot\\.runtime\\reference-liquidity-3c089b24-8a2e-42f4-97fb-3e7422bdfa65.json",
+      "result": {
+        "ok": true,
+        "dryRun": false,
+        "marketId": "3c089b24-8a2e-42f4-97fb-3e7422bdfa65",
+        "title": "Will a player representing Norway be the top goalscorer at the 2026 FIFA World Cup?",
+        "referenceSource": "polymarket",
+        "importStatus": "approved",
+        "isListed": true,
+        "binary": true,
+        "seeded": true,
+        "alreadySeeded": false,
+        "noMutation": false,
+        "capitalCents": 50000,
+        "mintBudgetCents": 2500,
+        "cashReserveCents": 47500,
+        "mintedCompleteSets": 25,
+        "autoReplenish": false,
+        "botUserId": "[redacted-bot-user]",
+        "botUsername": "system-liquidity-bot",
+        "botApiCredentialId": "[redacted-bot-credential]",
+        "botApiKeyId": "[redacted-api-key]",
+        "botApiToken": "[redacted]"
+      }
+    }
+  ]
+}

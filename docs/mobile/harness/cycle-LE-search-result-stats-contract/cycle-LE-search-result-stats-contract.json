@@ -1,0 +1,16 @@
+{
+  "cycle": "LE",
+  "scope": "search-result-stats-contract",
+  "generatedAt": "2026-07-06T19:04:22.437Z",
+  "pass": true,
+  "decision": "Search results no longer display frontend-invented volume, liquidity, today-volume, or chat counts. Rows keep backend/search-route event identity, start time, top outcome, save action, and navigation.",
+  "checks": {
+    "removesFrontendInventedVolumeLiquidity": true,
+    "removesVisibleChatCount": true,
+    "keepsRouteBackedSearchRowActions": true
+  },
+  "evidence": {
+    "searchScreen": "mobile/src/components/SearchScreen.tsx",
+    "test": "mobile/src/__tests__/searchResultStatsContract.test.ts"
+  }
+}

@@ -1,0 +1,39 @@
+
+> poly-bot@0.1.0 liquidity:check-event-readiness
+> tsx scripts/checkReferenceLiquidityEventReadiness.ts --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug provider-breadth-world-cup-winner --allowlist France --maxMarkets 1
+
+{
+  "ok": true,
+  "eventSlug": "provider-breadth-world-cup-winner",
+  "confirmLive": false,
+  "liveOrdersEnabled": false,
+  "systemLiquidityDryRun": true,
+  "readyMarkets": 0,
+  "blockedMarkets": 1,
+  "results": [
+    {
+      "marketId": "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+      "slug": "will-france-win-the-2026-fifa-world-cup-924",
+      "title": "Will France win the 2026 FIFA World Cup?",
+      "status": "not_started",
+      "ready": false,
+      "reasons": [
+        "confirm_live_required",
+        "live_orders_disabled",
+        "dry_run_enabled",
+        "bot_not_seeded",
+        "missing_system_bot_account",
+        "missing_live_bot_credentials",
+        "missing_risk_caps",
+        "lifecycle_not_live_ready",
+        "reference_stale"
+      ],
+      "referenceBid": 0.325,
+      "referenceAsk": 0.326,
+      "plannedBotBid": 0.3,
+      "plannedBotAsk": 0.35,
+      "openOrderNotionalCents": 0,
+      "dailyLossCents": 0
+    }
+  ]
+}

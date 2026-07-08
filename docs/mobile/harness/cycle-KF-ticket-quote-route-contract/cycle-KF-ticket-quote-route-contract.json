@@ -1,0 +1,19 @@
+{
+  "pass": true,
+  "createdAt": "2026-07-06T16:10:37.263Z",
+  "route": "/api/markets/:id/quote?outcomeId=<outcome-id>",
+  "service": "loadTicketQuotes",
+  "marketId": "409f8dc0-8343-4ee8-81dd-0c0e82192b91",
+  "filteredQuote": {
+    "outcomeId": "b82073c0-4209-4370-9501-b147eb7e2533",
+    "outcomeName": "Home -1.5",
+    "probability": 43,
+    "bestBid": 41,
+    "bestAsk": 45,
+    "bestBidSize": 120,
+    "bestAskSize": 80,
+    "midPrice": 43,
+    "lastPrice": 42
+  },
+  "allOutcomeQuoteCount": 2
+}

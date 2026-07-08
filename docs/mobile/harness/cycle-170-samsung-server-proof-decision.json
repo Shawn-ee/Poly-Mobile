@@ -1,0 +1,61 @@
+﻿{
+    "ready":  false,
+    "expectedBlocked":  true,
+    "decision":  "do-not-run-server-backed-samsung-proof",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "backendBaseUrl":  "http://127.0.0.1:3000",
+    "evidence":  {
+                     "backendReadinessPath":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\docs\\mobile\\harness\\cycle-current-mobile-backend-readiness.json",
+                     "credentialReadinessPath":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\docs\\mobile\\harness\\cycle-current-mobile-credential-readiness.json",
+                     "serverSuccessGatePath":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\docs\\mobile\\harness\\cycle-current-server-success-gate.json",
+                     "quoteProofPath":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\docs\\mobile\\harness\\cycle-current-samsung-quote-proof.json"
+                 },
+    "readiness":  {
+                      "dockerCliAvailable":  true,
+                      "dockerDaemonReachable":  false,
+                      "composeFileFound":  true,
+                      "databaseTcpReachable":  false,
+                      "apiKeyPresent":  false,
+                      "readyForServerBackedSamsungProof":  false,
+                      "serverSuccessGateReady":  false,
+                      "quoteProofReady":  false,
+                      "quoteProofAttempted":  false,
+                      "samsungDeviceReachable":  true,
+                      "marketQuoteReachable":  false
+                  },
+    "blockerCategories":  [
+                              "docker-daemon",
+                              "database-tcp",
+                              "api-key",
+                              "backend-health",
+                              "quote-readiness"
+                          ],
+    "blockers":  [
+                     {
+                         "category":  "docker-daemon",
+                         "message":  "Docker daemon is not reachable."
+                     },
+                     {
+                         "category":  "database-tcp",
+                         "message":  "Database TCP is not reachable at localhost:5432."
+                     },
+                     {
+                         "category":  "api-key",
+                         "message":  "EXPO_PUBLIC_API_KEY is missing for server-backed Samsung proof."
+                     },
+                     {
+                         "category":  "backend-health",
+                         "message":  "Backend health unavailable at http://127.0.0.1:3000: The operation has timed out."
+                     },
+                     {
+                         "category":  "quote-readiness",
+                         "message":  "Server quote readiness is blocked."
+                     }
+                 ],
+    "nextActions":  [
+                        "Do not run the successful server-backed Samsung proof until ready is true.",
+                        "If Docker daemon or DB TCP are blockers, start Docker Desktop and local Postgres, then rerun this decision harness.",
+                        "If API key is a blocker, create/export a mobile dev credential after backend readiness passes.",
+                        "If quote readiness is a blocker, restore backend health and World Cup market quote availability before Samsung quote proof."
+                    ]
+}

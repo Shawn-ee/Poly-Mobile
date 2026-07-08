@@ -1,0 +1,26 @@
+{
+  "pass": true,
+  "createdAt": "2026-07-06T05:55:17.673Z",
+  "regulation90Draw": {
+    "eventSlug": "mobile-jq-regulation-90-draw-0e4531fe",
+    "title": "JQ Regulation 90 Draw Proof",
+    "marketProfile": "regulation_90",
+    "resultMode": "can_draw",
+    "supportedMarketTypes": [
+      "regulation_90",
+      "spread",
+      "totals"
+    ]
+  },
+  "toAdvanceNoDraw": {
+    "eventSlug": "mobile-jq-to-advance-no-draw-0e4531fe",
+    "title": "JQ Knockout Advance Proof",
+    "marketProfile": "full_match_with_overtime",
+    "resultMode": "can_draw",
+    "supportedMarketTypes": [
+      "full_match_with_overtime",
+      "to_advance",
+      "regulation_90"
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "cycle": "KV",
+  "scope": "home-filter-ui-route-wiring",
+  "generatedAt": "2026-07-06T18:20:08.448Z",
+  "route": "/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&status=<home-filter>&limit=10&cursor=<event-id>",
+  "pass": true,
+  "checks": {
+    "appOwnsVisibleHomeFilter": true,
+    "appUsesHomeFeedService": true,
+    "appPassesFilterControlsToHome": true,
+    "homeScreenDoesNotLocallyRefilterServerPages": true,
+    "serviceMapsVisibleFiltersToRouteStatus": true
+  },
+  "evidence": {
+    "app": "mobile/App.tsx",
+    "homeScreen": "mobile/src/components/HomeScreen.tsx",
+    "service": "mobile/src/services/homeEventFeedService.ts"
+  }
+}

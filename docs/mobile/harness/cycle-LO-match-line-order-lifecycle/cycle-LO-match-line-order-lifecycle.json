@@ -1,0 +1,133 @@
+{
+  "pass": true,
+  "generatedAt": "2026-07-08T06:27:39.491Z",
+  "cycle": "LO",
+  "scope": "match-line-order-lifecycle",
+  "event": {
+    "slug": "switzerland-vs-colombia",
+    "title": "Switzerland vs. Colombia",
+    "eventType": "match",
+    "liveStatus": "LIVE"
+  },
+  "market": {
+    "id": "3418dcb6-35ff-4cbe-a4b1-5258a21b5870",
+    "title": "Switzerland vs. Colombia: Colombia +1.5",
+    "marketType": "spread",
+    "marketGroupKey": "spread",
+    "line": "1.5",
+    "period": "regulation",
+    "referenceSource": "contract-fixture",
+    "externalMarketId": "contract-switzerland-vs-colombia-spread-away-1-5",
+    "conditionId": "condition-switzerland-vs-colombia-spread-away-1-5"
+  },
+  "outcome": {
+    "id": "487e58d6-aa10-4745-8932-fa16ff7f5d0b",
+    "label": "Colombia +1.5",
+    "side": "away",
+    "referenceTokenId": "contract-switzerland-vs-colombia-spread-away-1-5-away"
+  },
+  "maker": {
+    "userId": "7c203b2f-545b-40fa-baca-722a59b57d73",
+    "orderId": "3d8ad75a-9137-4dd5-bb7c-96fbb4248662",
+    "status": "OPEN"
+  },
+  "order": {
+    "id": "af77f5aa-6f47-495d-a4e1-0c21f53b22f1",
+    "status": "FILLED",
+    "side": "BUY",
+    "price": "0.52",
+    "size": "10",
+    "remaining": "0",
+    "selection": {
+      "marketId": "3418dcb6-35ff-4cbe-a4b1-5258a21b5870",
+      "outcomeId": "487e58d6-aa10-4745-8932-fa16ff7f5d0b",
+      "marketGroupId": "spread",
+      "marketType": "spread",
+      "line": "1.5",
+      "period": "regulation",
+      "side": "away",
+      "displayLabel": "Colombia +1.5",
+      "contractSide": "yes",
+      "referenceSource": "contract-fixture",
+      "providerSource": "contract-fixture",
+      "externalSlug": "switzerland-vs-colombia-spread-away-1-5",
+      "externalMarketId": "contract-switzerland-vs-colombia-spread-away-1-5",
+      "conditionId": "condition-switzerland-vs-colombia-spread-away-1-5",
+      "referenceTokenId": "contract-switzerland-vs-colombia-spread-away-1-5-away",
+      "tokenId": "contract-switzerland-vs-colombia-spread-away-1-5-away",
+      "referenceOutcomeLabel": "Colombia +1.5",
+      "limitPrice": 0.52,
+      "limitSide": "ask",
+      "limitShares": 10
+    }
+  },
+  "portfolio": {
+    "position": {
+      "marketId": "3418dcb6-35ff-4cbe-a4b1-5258a21b5870",
+      "outcomeId": "487e58d6-aa10-4745-8932-fa16ff7f5d0b",
+      "shares": 10,
+      "avgCost": 0.52,
+      "selection": {
+        "marketId": "3418dcb6-35ff-4cbe-a4b1-5258a21b5870",
+        "outcomeId": "487e58d6-aa10-4745-8932-fa16ff7f5d0b",
+        "marketGroupId": "spread",
+        "marketType": "spread",
+        "line": "1.5",
+        "period": "regulation",
+        "side": "away",
+        "displayLabel": "Colombia +1.5",
+        "contractSide": "yes",
+        "referenceSource": "contract-fixture",
+        "providerSource": "contract-fixture",
+        "externalSlug": "switzerland-vs-colombia-spread-away-1-5",
+        "externalMarketId": "contract-switzerland-vs-colombia-spread-away-1-5",
+        "conditionId": "condition-switzerland-vs-colombia-spread-away-1-5",
+        "referenceTokenId": "contract-switzerland-vs-colombia-spread-away-1-5-away",
+        "tokenId": "contract-switzerland-vs-colombia-spread-away-1-5-away",
+        "referenceOutcomeLabel": "Colombia +1.5",
+        "limitPrice": 0.52,
+        "limitSide": "ask",
+        "limitShares": 10
+      }
+    },
+    "openOrders": 0
+  },
+  "history": {
+    "recentTrade": {
+      "id": "d007e286-b13e-479c-b151-20a653e52724",
+      "side": "BUY",
+      "selection": {
+        "marketId": "3418dcb6-35ff-4cbe-a4b1-5258a21b5870",
+        "outcomeId": "487e58d6-aa10-4745-8932-fa16ff7f5d0b",
+        "marketGroupId": "spread",
+        "marketType": "spread",
+        "line": "1.5",
+        "period": "regulation",
+        "side": "away",
+        "displayLabel": "Colombia +1.5",
+        "contractSide": "yes",
+        "referenceSource": "contract-fixture",
+        "providerSource": "contract-fixture",
+        "externalSlug": "switzerland-vs-colombia-spread-away-1-5",
+        "externalMarketId": "contract-switzerland-vs-colombia-spread-away-1-5",
+        "conditionId": "condition-switzerland-vs-colombia-spread-away-1-5",
+        "referenceTokenId": "contract-switzerland-vs-colombia-spread-away-1-5-away",
+        "tokenId": "contract-switzerland-vs-colombia-spread-away-1-5-away",
+        "referenceOutcomeLabel": "Colombia +1.5",
+        "limitPrice": 0.52,
+        "limitSide": "ask",
+        "limitShares": 10
+      }
+    },
+    "recentTradeCount": 1,
+    "canceledOrderCount": 0
+  },
+  "assertions": {
+    "routeOrderFilled": true,
+    "portfolioPositionPresent": true,
+    "historyRecentTradePresent": true,
+    "selectedLinePreserved": true,
+    "selectedTokenPreserved": true,
+    "androidProof": "not-run-s23-not-visible-to-adb"
+  }
+}

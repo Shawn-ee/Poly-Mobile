@@ -1,0 +1,44 @@
+{
+    "cycle":  "EP",
+    "scenario":  "Local MVP Android trade flow with orderbook hidden by default",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpTradeFlow -Port 8365 -OutputDir docs\\mobile\\screenshots\\cycle-EP-local-mvp-trade-flow -HierarchyOutputDir docs\\mobile\\harness\\cycle-EP-local-mvp-trade-flow",
+    "orderbookDebug":  "unset",
+    "result":  "pass",
+    "assertions":  {
+                       "defaultEventDetail":  [
+                                                  "chart",
+                                                  "contract rail",
+                                                  "game lines",
+                                                  "spread/totals selectors",
+                                                  "no visible Book/orderbook entry points"
+                                              ],
+                       "selectedLine":  [
+                                            "spread 2.5",
+                                            "1st Half",
+                                            "market/outcome identity preserved"
+                                        ],
+                       "simpleTicket":  [
+                                            "fake-token buy",
+                                            "current probability price",
+                                            "swipe up to buy",
+                                            "no visible Book/orderbook entry points"
+                                        ],
+                       "portfolio":  [
+                                         "Order placed",
+                                         "latest order",
+                                         "latest activity",
+                                         "position card",
+                                         "line identity preserved"
+                                     ]
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-EP-local-mvp-trade-flow/cycle-EP-holiwyn-local-mvp-market-lines.png",
+                      "docs/mobile/harness/cycle-EP-local-mvp-trade-flow/cycle-EP-holiwyn-local-mvp-market-lines.xml",
+                      "docs/mobile/screenshots/cycle-EP-local-mvp-trade-flow/cycle-EP-holiwyn-local-mvp-selected-line.png",
+                      "docs/mobile/harness/cycle-EP-local-mvp-trade-flow/cycle-EP-holiwyn-local-mvp-selected-line.xml",
+                      "docs/mobile/screenshots/cycle-EP-local-mvp-trade-flow/cycle-EP-holiwyn-local-mvp-ticket-ready.png",
+                      "docs/mobile/harness/cycle-EP-local-mvp-trade-flow/cycle-EP-holiwyn-local-mvp-ticket-ready.xml",
+                      "docs/mobile/screenshots/cycle-EP-local-mvp-trade-flow/cycle-EP-holiwyn-local-mvp-portfolio.png",
+                      "docs/mobile/harness/cycle-EP-local-mvp-trade-flow/cycle-EP-holiwyn-local-mvp-portfolio.xml"
+                  ]
+}

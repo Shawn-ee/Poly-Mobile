@@ -1,0 +1,37 @@
+
+> poly-bot@0.1.0 bot:polymarket:mm:dry-run
+> tsx scripts/liquidityRuntime.ts --dryRun true --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug which-continent-will-win-the-world-cup --allowlist Europe (UEFA) --maxMarkets 1 --durationSeconds 1
+
+{
+  "dryRun": true,
+  "liveOrdersEnabled": false,
+  "confirmLive": false,
+  "cycleReports": [
+    {
+      "marketId": "44dfd0c8-a46b-4ec0-aa2a-a5904088bbf8",
+      "slug": "will-europe-win-the-2026-fifa-world-cup",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": true,
+      "referenceBid": 0.77,
+      "referenceAsk": 0.78,
+      "plannedBotBid": 0.75,
+      "plannedBotAsk": 0.8,
+      "reasons": [
+        "confirm_live_required",
+        "live_orders_disabled",
+        "dry_run_enabled"
+      ],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 2525,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 2525,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    }
+  ]
+}

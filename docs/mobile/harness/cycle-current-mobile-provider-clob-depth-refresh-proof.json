@@ -1,0 +1,161 @@
+{
+  "generatedAt": "2026-07-04T05:50:15.416Z",
+  "eventSlug": "mobile-provider-refresh-proof-live",
+  "marketId": "40f86f7b-1c5f-4853-abd4-379f08ce9bf0",
+  "marketSlug": "mobile-provider-refresh-proof-live-new-rhianna-album-before-gta-vi-926",
+  "outcomeCount": 2,
+  "before": {
+    "depthSource": "provider-quote-snapshot",
+    "depthReason": "Depth comes from provider quote snapshot top-of-book prices and estimated size.",
+    "bidCount": 2,
+    "askCount": 2,
+    "firstBids": [
+      {
+        "outcomeId": "fde6baad-7291-4709-ab2b-424d8ad0c84f",
+        "price": 0.51,
+        "size": 7668.053186
+      },
+      {
+        "outcomeId": "8e3ee80e-2c6c-4df9-811f-2cf8b048e84f",
+        "price": 0.51,
+        "size": 7668.053186
+      }
+    ],
+    "firstAsks": [
+      {
+        "outcomeId": "fde6baad-7291-4709-ab2b-424d8ad0c84f",
+        "price": 0.52,
+        "size": 7520.590625
+      },
+      {
+        "outcomeId": "8e3ee80e-2c6c-4df9-811f-2cf8b048e84f",
+        "price": 0.52,
+        "size": 7520.590625
+      }
+    ],
+    "providerOrderbookDepth": {
+      "source": "reference-orderbook-depth-snapshot",
+      "status": "unavailable",
+      "levelCount": 0,
+      "snapshotCount": 0,
+      "latestFetchedAt": null,
+      "latestUpdatedAt": null,
+      "stalenessSeconds": null,
+      "staleAfterSeconds": 90,
+      "refreshTtlSeconds": 60,
+      "nextRefreshAt": null,
+      "shouldRefresh": true,
+      "isStale": false,
+      "sources": [],
+      "reason": "No provider orderbook depth snapshot is available."
+    },
+    "providerQuoteDepth": {
+      "source": "reference-quote-snapshot",
+      "levelCount": 4,
+      "sizeSource": "liquidityClob",
+      "isEstimatedSize": true,
+      "reason": "Provider quote snapshots expose top-of-book prices; sizes are estimated from provider liquidity fields."
+    },
+    "providerQuoteSnapshot": {
+      "status": "ready",
+      "snapshotCount": 2,
+      "shouldRefresh": false,
+      "sources": [
+        "polymarket"
+      ]
+    }
+  },
+  "refresh": {
+    "providerMappedMarketCount": 1,
+    "quoteSnapshotsUpdated": 2,
+    "clobDepthRowsUpdated": 96,
+    "clobRefreshedCount": 1,
+    "clobSkippedCount": 0,
+    "clobSkipped": []
+  },
+  "after": {
+    "depthSource": "provider-orderbook-depth",
+    "depthReason": "Depth comes from provider orderbook ladder snapshots.",
+    "bidCount": 24,
+    "askCount": 24,
+    "firstBids": [
+      {
+        "outcomeId": "8e3ee80e-2c6c-4df9-811f-2cf8b048e84f",
+        "price": 0.44,
+        "size": 310.98
+      },
+      {
+        "outcomeId": "8e3ee80e-2c6c-4df9-811f-2cf8b048e84f",
+        "price": 0.43,
+        "size": 416.84
+      },
+      {
+        "outcomeId": "8e3ee80e-2c6c-4df9-811f-2cf8b048e84f",
+        "price": 0.41,
+        "size": 474.29
+      },
+      {
+        "outcomeId": "8e3ee80e-2c6c-4df9-811f-2cf8b048e84f",
+        "price": 0.4,
+        "size": 5
+      }
+    ],
+    "firstAsks": [
+      {
+        "outcomeId": "8e3ee80e-2c6c-4df9-811f-2cf8b048e84f",
+        "price": 0.65,
+        "size": 2000
+      },
+      {
+        "outcomeId": "8e3ee80e-2c6c-4df9-811f-2cf8b048e84f",
+        "price": 0.68,
+        "size": 168.97
+      },
+      {
+        "outcomeId": "8e3ee80e-2c6c-4df9-811f-2cf8b048e84f",
+        "price": 0.69,
+        "size": 150.57
+      },
+      {
+        "outcomeId": "8e3ee80e-2c6c-4df9-811f-2cf8b048e84f",
+        "price": 0.7,
+        "size": 388.91
+      }
+    ],
+    "providerOrderbookDepth": {
+      "source": "reference-orderbook-depth-snapshot",
+      "status": "ready",
+      "levelCount": 48,
+      "snapshotCount": 48,
+      "latestFetchedAt": "2026-07-04T05:50:15.290Z",
+      "latestUpdatedAt": "2026-07-04T05:50:15.300Z",
+      "stalenessSeconds": 0,
+      "staleAfterSeconds": 90,
+      "refreshTtlSeconds": 60,
+      "nextRefreshAt": "2026-07-04T05:51:15.290Z",
+      "shouldRefresh": false,
+      "isStale": false,
+      "sources": [
+        "polymarket-clob"
+      ],
+      "reason": "Provider orderbook depth snapshot is fresh."
+    },
+    "providerQuoteDepth": {
+      "source": "reference-quote-snapshot",
+      "levelCount": 4,
+      "sizeSource": "liquidityClob",
+      "isEstimatedSize": true,
+      "reason": "Provider quote snapshots expose top-of-book prices; sizes are estimated from provider liquidity fields."
+    },
+    "providerQuoteSnapshot": {
+      "status": "ready",
+      "snapshotCount": 2,
+      "shouldRefresh": false,
+      "sources": [
+        "polymarket"
+      ]
+    }
+  },
+  "rowCount": 96,
+  "pass": true
+}

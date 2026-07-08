@@ -1,0 +1,21 @@
+{
+  "cycle": "MJ",
+  "result": "pass",
+  "generatedAt": "2026-07-08T09:39:36.155Z",
+  "feature": "Portfolio position sell/retrade ticket contract identity",
+  "assertions": {
+    "ownedYesTicketContractSide": "yes",
+    "ownedYesSelectionSide": "yes",
+    "ownedYesSelectionContractSide": "yes",
+    "ownedNoTicketContractSide": "no",
+    "ownedNoSelectionSide": "no",
+    "ownedNoSelectionContractSide": "no",
+    "appUsesSharedIdentityResolver": true,
+    "legacySellFlipRemoved": true
+  },
+  "routeContract": {
+    "orderRoute": "POST /api/orders",
+    "expectedPositionSellPayloadIdentity": "side=SELL with the owned marketId/outcomeId/line/period and owned contractSide, not an automatic No-side flip.",
+    "backendChanged": false
+  }
+}

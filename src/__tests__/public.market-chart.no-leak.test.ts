@@ -129,12 +129,22 @@ describe("public market chart API no-leak checks", () => {
     );
 
     const body = await response.json();
-    expectOnlyKeys(body, ["marketId", "outcomes", "series"]);
+    expectOnlyKeys(body, ["emptyState", "generatedAt", "history", "lastUpdated", "marketId", "outcomes", "range", "ranges", "series", "source"]);
     expect(body).toMatchObject({
       marketId: "market-1",
+      source: "market-outcome-snapshot",
+      range: "1W",
+      ranges: ["1D", "1W", "1M", "MAX"],
+      generatedAt: expect.any(String),
+      lastUpdated: now.toISOString(),
+      emptyState: null,
       outcomes: [
         { id: "yes", name: "Yes" },
         { id: "no", name: "No" },
+      ],
+      history: [
+        { outcomeId: "yes", timestamp: now.toISOString(), price: 0.57, probability: 57 },
+        { outcomeId: "no", timestamp: now.toISOString(), price: 0.43, probability: 43 },
       ],
       series: {
         yes: [{ ts: now.toISOString(), price: 0.57 }],
@@ -162,14 +172,48 @@ describe("public market chart API no-leak checks", () => {
     );
 
     const body = await response.json();
-    expectOnlyKeys(body, ["marketId", "outcomes", "series"]);
+    expectOnlyKeys(body, ["emptyState", "generatedAt", "history", "lastUpdated", "marketId", "outcomes", "range", "ranges", "series", "source"]);
     expect(body).toEqual({
       marketId: "market-1",
+      source: "empty",
+      range: "1M",
+      ranges: ["1D", "1W", "1M", "MAX"],
+      generatedAt: expect.any(String),
+      lastUpdated: null,
+      emptyState: "no-history",
       outcomes: [
         { id: "yes", name: "Yes" },
         { id: "no", name: "No" },
       ],
+      history: [],
       series: {},
+    });
+    expectNoForbiddenKeys(body);
+  });
+
+  test("GET /api/markets/[id]/chart marks Polymarket-backed history source", async () => {
+    mockPrisma.market.findUnique.mockResolvedValue({
+      id: "market-1",
+      visibility: "PUBLIC",
+      mechanism: "ORDERBOOK",
+      ownerId: null,
+      referenceSource: "polymarket",
+      outcomes: [
+        { id: "yes", name: "Yes" },
+        { id: "no", name: "No" },
+      ],
+    });
+
+    const response = await getMarketChart(new NextRequest("http://localhost/api/markets/market-1/chart?range=1D"), {
+      params: Promise.resolve({ id: "market-1" }),
+    });
+
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body).toMatchObject({
+      marketId: "market-1",
+      source: "polymarket-clob-prices-history",
+      emptyState: null,
     });
     expectNoForbiddenKeys(body);
   });

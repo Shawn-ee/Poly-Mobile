@@ -1,0 +1,75 @@
+{
+  "cycle": "CS",
+  "feature": "provider quote top-of-book depth bridge",
+  "eventSlug": "mobile-provider-refresh-proof-live",
+  "marketId": "40f86f7b-1c5f-4853-abd4-379f08ce9bf0",
+  "capturedAt": "2026-07-04T05:25:08.2790228Z",
+  "before": {
+    "readyCount": 0,
+    "staleCount": 1,
+    "refreshDueCount": 1,
+    "depthSource": "orderbook-route",
+    "depthMarketCount": 1
+  },
+  "refresh": {
+    "ok": true,
+    "providerAttempted": true,
+    "providerSnapshotsUpdated": 2,
+    "fallbackApplied": null,
+    "cacheInvalidatedCount": 3,
+    "cacheInvalidationErrors": 0
+  },
+  "after": {
+    "readyCount": 1,
+    "staleCount": 0,
+    "refreshDueCount": 0,
+    "depthSource": "orderbook-route",
+    "depthMarketCount": 1,
+    "firstMarketDepthCount": 4,
+    "firstMarketProviderStatus": "ready"
+  },
+  "book": {
+    "depthSource": "provider-quote-snapshot",
+    "depthReason": "Depth comes from provider quote snapshot top-of-book prices and estimated size.",
+    "emptyState": null,
+    "levelCount": 4,
+    "providerQuoteDepth": {
+      "source": "reference-quote-snapshot",
+      "levelCount": 4,
+      "sizeSource": "liquidityClob",
+      "isEstimatedSize": true,
+      "reason": "Provider quote snapshots expose top-of-book prices; sizes are estimated from provider liquidity fields."
+    },
+    "providerQuoteSnapshotStatus": "ready",
+    "levels": [
+      {
+        "outcomeId": "fde6baad-7291-4709-ab2b-424d8ad0c84f",
+        "side": "bid",
+        "price": 0.51,
+        "shares": 7875.796471,
+        "total": 4016.6562
+      },
+      {
+        "outcomeId": "8e3ee80e-2c6c-4df9-811f-2cf8b048e84f",
+        "side": "bid",
+        "price": 0.51,
+        "shares": 7875.796471,
+        "total": 4016.6562
+      },
+      {
+        "outcomeId": "fde6baad-7291-4709-ab2b-424d8ad0c84f",
+        "side": "ask",
+        "price": 0.52,
+        "shares": 7724.338846,
+        "total": 4016.6562
+      },
+      {
+        "outcomeId": "8e3ee80e-2c6c-4df9-811f-2cf8b048e84f",
+        "side": "ask",
+        "price": 0.52,
+        "shares": 7724.338846,
+        "total": 4016.6562
+      }
+    ]
+  }
+}

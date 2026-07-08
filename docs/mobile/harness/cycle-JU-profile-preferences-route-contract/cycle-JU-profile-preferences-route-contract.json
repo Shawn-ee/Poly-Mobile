@@ -1,0 +1,40 @@
+{
+  "pass": true,
+  "createdAt": "2026-07-06T15:03:31.943Z",
+  "route": "/api/profile/preferences",
+  "scope": "mobile account/settings preference payload contract",
+  "canonicalPayload": {
+    "locale": "zh",
+    "ticketDefaultAmount": "250",
+    "ticketDefaultSide": "SELL",
+    "ticketDefaultSlippage": "2%",
+    "savedEventIds": [
+      "world-cup-winner",
+      "mexico-ecuador"
+    ]
+  },
+  "savedLocalPreferences": {
+    "locale": "zh",
+    "ticketDefaultAmount": "250",
+    "ticketDefaultSide": "sell",
+    "ticketDefaultSlippage": "2%",
+    "savedEventIds": [
+      "world-cup-winner",
+      "mexico-ecuador"
+    ]
+  },
+  "legacyDefaults": {
+    "locale": "en",
+    "ticketDefaultAmount": "100",
+    "ticketDefaultSide": "buy",
+    "ticketDefaultSlippage": "1%",
+    "savedEventIds": []
+  },
+  "assertions": [
+    "local buy/sell side maps to canonical BUY/SELL",
+    "ticket default amount and slippage survive mobile -> backend -> mobile round trip",
+    "saved event ids are preserved as string arrays",
+    "legacy backend payloads default missing slippage to 1%",
+    "backend parser rejects incomplete payloads before storage"
+  ]
+}

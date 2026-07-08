@@ -1,0 +1,47 @@
+
+> poly-bot@0.1.0 liquidity:prepare-event
+> tsx scripts/prepareReferenceLiquidityEvent.ts --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug provider-breadth-world-cup-winner --allowlist Morocco --maxMarkets 1 --capitalDollars 500 --mintDollars 25 --dryRun false --confirmSeed true
+
+{
+  "ok": true,
+  "dryRun": false,
+  "eventSlug": "provider-breadth-world-cup-winner",
+  "marketCount": 1,
+  "seededOrChecked": 1,
+  "blocked": 0,
+  "results": [
+    {
+      "marketId": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+      "slug": "will-morocco-win-the-2026-fifa-world-cup-464",
+      "title": "Will Morocco win the 2026 FIFA World Cup?",
+      "importStatus": "approved",
+      "mmEnabled": true,
+      "tradable": true,
+      "ok": true,
+      "runtimePath": "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\poly-bot\\.runtime\\reference-liquidity-5796a9be-8359-48f4-bf45-268dc662f2c0.json",
+      "result": {
+        "ok": true,
+        "dryRun": false,
+        "marketId": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+        "title": "Will Morocco win the 2026 FIFA World Cup?",
+        "referenceSource": "polymarket",
+        "importStatus": "approved",
+        "isListed": true,
+        "binary": true,
+        "seeded": true,
+        "alreadySeeded": false,
+        "noMutation": false,
+        "capitalCents": 50000,
+        "mintBudgetCents": 2500,
+        "cashReserveCents": 47500,
+        "mintedCompleteSets": 25,
+        "autoReplenish": false,
+        "botUserId": "[redacted-bot-user]",
+        "botUsername": "system-liquidity-bot",
+        "botApiCredentialId": "a034caa7-84bc-4f7a-bc4a-a2fee28adb2b",
+        "botApiKeyId": "[redacted-api-key]",
+        "botApiToken": "[redacted]"
+      }
+    }
+  ]
+}

@@ -1,0 +1,2537 @@
+{
+    "event":  {
+                  "id":  "c7ff470c-d144-4729-b622-122c87f85f25",
+                  "slug":  "argentina-vs-egypt",
+                  "title":  "Argentina vs. Egypt",
+                  "description":  "This event is for the upcoming FIFA World Cup game, scheduled for Tuesday, July 7, 2026 between Argentina and Egypt.",
+                  "category":  "Sports / Soccer",
+                  "sportKey":  "soccer",
+                  "leagueKey":  "world_cup",
+                  "eventType":  "match",
+                  "homeTeamName":  "Argentina",
+                  "awayTeamName":  "Egypt",
+                  "startTime":  null,
+                  "status":  "active",
+                  "liveStatus":  "LIVE",
+                  "period":  "Regulation",
+                  "clock":  null,
+                  "homeScore":  null,
+                  "awayScore":  null,
+                  "imageUrl":  null,
+                  "marketCount":  7,
+                  "activeMarketCount":  7,
+                  "liveStats":  [
+
+                                ],
+                  "liveDataStatus":  {
+                                         "source":  "unknown",
+                                         "status":  "unavailable",
+                                         "lastUpdated":  null,
+                                         "stalenessSeconds":  null,
+                                         "staleAfterSeconds":  90,
+                                         "isStale":  false,
+                                         "isSuspended":  false,
+                                         "isDelayed":  false,
+                                         "reason":  "No provider timestamp available."
+                                     },
+                  "providerLifecycle":  {
+                                            "source":  "mobile-live-detail",
+                                            "status":  "stale",
+                                            "ready":  false,
+                                            "stale":  true,
+                                            "refreshDue":  false,
+                                            "refreshing":  false,
+                                            "refreshStarted":  false,
+                                            "unavailable":  true,
+                                            "empty":  false,
+                                            "notReady":  true,
+                                            "fallback":  false,
+                                            "fallbackApplied":  false,
+                                            "fallbackReason":  null,
+                                            "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                            "nextRefreshAt":  "2026-07-07T15:46:15.762Z",
+                                            "lastFetchedAt":  "2026-07-08T07:46:37.742Z",
+                                            "quote":  {
+                                                          "source":  "polymarket",
+                                                          "status":  "stale",
+                                                          "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                                          "nextRefreshAt":  "2026-07-07T15:46:15.762Z",
+                                                          "lastFetchedAt":  "2026-07-08T07:46:37.742Z",
+                                                          "stalenessSeconds":  75551,
+                                                          "shouldRefresh":  true,
+                                                          "ready":  false,
+                                                          "stale":  true,
+                                                          "refreshDue":  false,
+                                                          "unavailable":  false,
+                                                          "empty":  false,
+                                                          "notReady":  true
+                                                      },
+                                            "orderbookDepth":  {
+                                                                   "source":  "reference-orderbook-depth-snapshot",
+                                                                   "status":  "unavailable",
+                                                                   "reason":  "No provider orderbook depth snapshot is available.",
+                                                                   "nextRefreshAt":  null,
+                                                                   "lastFetchedAt":  null,
+                                                                   "stalenessSeconds":  null,
+                                                                   "shouldRefresh":  true,
+                                                                   "ready":  false,
+                                                                   "stale":  false,
+                                                                   "refreshDue":  false,
+                                                                   "unavailable":  true,
+                                                                   "empty":  true,
+                                                                   "notReady":  true
+                                                               },
+                                            "chartHistory":  {
+                                                                 "source":  "empty",
+                                                                 "status":  "unavailable",
+                                                                 "reason":  "No provider chart history snapshot is available for this market.",
+                                                                 "nextRefreshAt":  null,
+                                                                 "lastFetchedAt":  null,
+                                                                 "stalenessSeconds":  null,
+                                                                 "shouldRefresh":  true,
+                                                                 "ready":  false,
+                                                                 "stale":  false,
+                                                                 "refreshDue":  false,
+                                                                 "unavailable":  true,
+                                                                 "empty":  true,
+                                                                 "notReady":  true
+                                                             }
+                                        },
+                  "marketSourceSummary":  {
+                                              "totalMarketCount":  7,
+                                              "sourceBreakdown":  {
+                                                                      "polymarket":  3,
+                                                                      "contract-fixture":  4
+                                                                  },
+                                              "polymarketMarketCount":  3,
+                                              "contractFixtureMarketCount":  4,
+                                              "unknownSourceMarketCount":  0,
+                                              "regulationWinner":  {
+                                                                       "totalCount":  3,
+                                                                       "polymarketCount":  3,
+                                                                       "contractFixtureCount":  0,
+                                                                       "status":  "provider-backed"
+                                                                   },
+                                              "lineMarkets":  {
+                                                                  "totalCount":  4,
+                                                                  "polymarketCount":  0,
+                                                                  "contractFixtureCount":  4,
+                                                                  "status":  "contract-fixture",
+                                                                  "families":  [
+                                                                                   "spread",
+                                                                                   "total_goals",
+                                                                                   "team_total_goals"
+                                                                               ],
+                                                                  "providerAvailability":  {
+                                                                                               "source":  "polymarket-gamma",
+                                                                                               "status":  "unavailable",
+                                                                                               "providerBackedLineMarketCount":  0,
+                                                                                               "contractFixtureLineMarketCount":  4,
+                                                                                               "reason":  "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures."
+                                                                                           },
+                                                                  "reason":  "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured."
+                                                              }
+                                          },
+                  "chartHistory":  [
+
+                                   ],
+                  "marketProfile":  "regulation_90",
+                  "resultMode":  "can_draw",
+                  "gameRules":  {
+                                    "allowDraw":  true,
+                                    "includesOvertime":  false,
+                                    "description":  "This event is for the upcoming FIFA World Cup game, scheduled for Tuesday, July 7, 2026 between Argentina and Egypt."
+                                },
+                  "supportedMarketTypes":  [
+                                               "regulation_90",
+                                               "spread",
+                                               "totals",
+                                               "team-total"
+                                           ]
+              },
+    "markets":  [
+                    {
+                        "id":  "57079b71-6c20-4bda-8538-9274fcdd426d",
+                        "title":  "Will Argentina win on 2026-07-07?",
+                        "description":  "This event is for the upcoming FIFA World Cup game, scheduled for Tuesday, July 7, 2026 between Argentina and Egypt.",
+                        "status":  "LIVE",
+                        "marketGroupKey":  "main",
+                        "marketGroupId":  "main",
+                        "marketGroupTitle":  "Regulation Winner",
+                        "displayOrder":  0,
+                        "marketType":  "match_winner_1x2",
+                        "period":  "regulation",
+                        "line":  null,
+                        "unit":  null,
+                        "referenceSource":  "polymarket",
+                        "externalSlug":  "fifwc-arg-egy-2026-07-07-arg",
+                        "externalMarketId":  "2793738",
+                        "conditionId":  "0xa7b5b123f9fd38f83fbe19773a5d04e38208b370ca66be27b9688155e7b5c60a",
+                        "propCategory":  null,
+                        "availability":  {
+                                             "source":  "local-orderbook",
+                                             "status":  "ready",
+                                             "marketStatus":  "LIVE",
+                                             "lastUpdated":  "2026-07-07T15:45:15.785Z",
+                                             "stalenessSeconds":  75551,
+                                             "staleAfterSeconds":  90,
+                                             "isStale":  false,
+                                             "isSuspended":  false,
+                                             "isDelayed":  false,
+                                             "reason":  "Local orderbook has executable depth."
+                                         },
+                        "liquidity":  33.753,
+                        "chartHistory":  [
+
+                                         ],
+                        "chartHistoryStatus":  {
+                                                   "source":  "empty",
+                                                   "status":  "unavailable",
+                                                   "pointCount":  0,
+                                                   "outcomeCount":  0,
+                                                   "lastUpdated":  null,
+                                                   "stalenessSeconds":  null,
+                                                   "staleAfterSeconds":  90,
+                                                   "refreshTtlSeconds":  60,
+                                                   "nextRefreshAt":  null,
+                                                   "shouldRefresh":  true,
+                                                   "isStale":  false,
+                                                   "emptyState":  "no-history",
+                                                   "range":  "1D",
+                                                   "ranges":  [
+                                                                  "1D",
+                                                                  "1W",
+                                                                  "1M",
+                                                                  "MAX"
+                                                              ]
+                                               },
+                        "providerLifecycle":  {
+                                                  "source":  "mobile-live-detail-market",
+                                                  "status":  "stale",
+                                                  "ready":  false,
+                                                  "stale":  true,
+                                                  "refreshDue":  false,
+                                                  "refreshing":  false,
+                                                  "refreshStarted":  false,
+                                                  "unavailable":  true,
+                                                  "empty":  false,
+                                                  "notReady":  true,
+                                                  "fallback":  false,
+                                                  "fallbackApplied":  false,
+                                                  "fallbackReason":  null,
+                                                  "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                                  "nextRefreshAt":  "2026-07-07T15:46:15.785Z",
+                                                  "lastFetchedAt":  "2026-07-07T15:45:15.785Z",
+                                                  "quote":  {
+                                                                "source":  "polymarket",
+                                                                "status":  "stale",
+                                                                "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                                                "nextRefreshAt":  "2026-07-07T15:46:15.785Z",
+                                                                "lastFetchedAt":  "2026-07-07T15:45:15.785Z",
+                                                                "stalenessSeconds":  75551,
+                                                                "shouldRefresh":  true,
+                                                                "ready":  false,
+                                                                "stale":  true,
+                                                                "refreshDue":  false,
+                                                                "unavailable":  false,
+                                                                "empty":  false,
+                                                                "notReady":  true
+                                                            },
+                                                  "orderbookDepth":  {
+                                                                         "source":  "reference-orderbook-depth-snapshot",
+                                                                         "status":  "unavailable",
+                                                                         "reason":  "No provider orderbook depth snapshot is available.",
+                                                                         "nextRefreshAt":  null,
+                                                                         "lastFetchedAt":  null,
+                                                                         "stalenessSeconds":  null,
+                                                                         "shouldRefresh":  true,
+                                                                         "ready":  false,
+                                                                         "stale":  false,
+                                                                         "refreshDue":  true,
+                                                                         "unavailable":  true,
+                                                                         "empty":  true,
+                                                                         "notReady":  true
+                                                                     },
+                                                  "chartHistory":  {
+                                                                       "source":  "empty",
+                                                                       "status":  "unavailable",
+                                                                       "reason":  "No provider chart history snapshot is available for this market.",
+                                                                       "nextRefreshAt":  null,
+                                                                       "lastFetchedAt":  null,
+                                                                       "stalenessSeconds":  null,
+                                                                       "shouldRefresh":  true,
+                                                                       "ready":  false,
+                                                                       "stale":  false,
+                                                                       "refreshDue":  true,
+                                                                       "unavailable":  true,
+                                                                       "empty":  true,
+                                                                       "notReady":  true
+                                                                   }
+                                              },
+                        "selection":  {
+                                          "selectorKey":  "main:regulation:default",
+                                          "marketId":  "57079b71-6c20-4bda-8538-9274fcdd426d",
+                                          "marketGroupKey":  "main",
+                                          "marketGroupId":  "main",
+                                          "marketGroupTitle":  "Regulation Winner",
+                                          "marketType":  "match_winner_1x2",
+                                          "marketFamily":  "moneyline",
+                                          "displayLabel":  "Regulation Winner regulation",
+                                          "period":  "regulation",
+                                          "line":  null,
+                                          "lineValue":  null,
+                                          "unit":  null,
+                                          "chart":  {
+                                                        "targetMarketId":  "57079b71-6c20-4bda-8538-9274fcdd426d",
+                                                        "status":  "unavailable",
+                                                        "source":  "empty",
+                                                        "pointCount":  0,
+                                                        "outcomeCount":  0,
+                                                        "range":  "1D",
+                                                        "ranges":  [
+                                                                       "1D",
+                                                                       "1W",
+                                                                       "1M",
+                                                                       "MAX"
+                                                                   ],
+                                                        "emptyState":  "no-history"
+                                                    },
+                                          "outcomes":  [
+                                                           {
+                                                               "outcomeId":  "94bf4e3c-dd73-4030-8652-13321bd4ac20",
+                                                               "id":  "94bf4e3c-dd73-4030-8652-13321bd4ac20",
+                                                               "side":  "yes",
+                                                               "label":  "Argentina",
+                                                               "tokenId":  "87390712702935875353084647255226721799646621048501318482801979643152933271064",
+                                                               "referenceTokenId":  "87390712702935875353084647255226721799646621048501318482801979643152933271064",
+                                                               "referenceOutcomeLabel":  "Yes",
+                                                               "isTradable":  true
+                                                           },
+                                                           {
+                                                               "outcomeId":  "3bd9455a-9728-44e7-a792-384e7b9001d8",
+                                                               "id":  "3bd9455a-9728-44e7-a792-384e7b9001d8",
+                                                               "side":  "no",
+                                                               "label":  "No",
+                                                               "tokenId":  "108484238848648074372041518363480249254156420448181302544958828959135013838825",
+                                                               "referenceTokenId":  "108484238848648074372041518363480249254156420448181302544958828959135013838825",
+                                                               "referenceOutcomeLabel":  "No",
+                                                               "isTradable":  true
+                                                           }
+                                                       ]
+                                      },
+                        "orderbookIdentity":  {
+                                                  "route":  "/api/orderbook/57079b71-6c20-4bda-8538-9274fcdd426d/book",
+                                                  "marketId":  "57079b71-6c20-4bda-8538-9274fcdd426d",
+                                                  "marketGroupId":  "main",
+                                                  "marketGroupKey":  "main",
+                                                  "selectorKey":  "main:regulation:default",
+                                                  "marketFamily":  "moneyline",
+                                                  "period":  "regulation",
+                                                  "line":  null,
+                                                  "lineValue":  null,
+                                                  "outcomeIds":  [
+                                                                     "94bf4e3c-dd73-4030-8652-13321bd4ac20",
+                                                                     "3bd9455a-9728-44e7-a792-384e7b9001d8"
+                                                                 ],
+                                                  "tokenIds":  [
+                                                                   "87390712702935875353084647255226721799646621048501318482801979643152933271064",
+                                                                   "108484238848648074372041518363480249254156420448181302544958828959135013838825"
+                                                               ],
+                                                  "providerSource":  "polymarket",
+                                                  "providerStatus":  "stale",
+                                                  "depthSource":  "local-orderbook",
+                                                  "depthStatus":  "ready",
+                                                  "depthProviderSource":  "reference-orderbook-depth-snapshot",
+                                                  "depthProviderStatus":  "unavailable",
+                                                  "depthProviderSources":  [
+
+                                                                           ],
+                                                  "refreshedAt":  "2026-07-07T15:45:15.785Z",
+                                                  "staleAfterSeconds":  90,
+                                                  "refreshTtlSeconds":  60,
+                                                  "nextRefreshAt":  "2026-07-07T15:46:15.785Z",
+                                                  "shouldRefresh":  true,
+                                                  "isStale":  true,
+                                                  "ready":  true,
+                                                  "reason":  "Depth comes from local open orderbook orders."
+                                              },
+                        "orderbookDepth":  [
+                                               {
+                                                   "outcomeId":  "3bd9455a-9728-44e7-a792-384e7b9001d8",
+                                                   "side":  "bid",
+                                                   "price":  0.25,
+                                                   "shares":  5,
+                                                   "total":  1.25
+                                               },
+                                               {
+                                                   "outcomeId":  "3bd9455a-9728-44e7-a792-384e7b9001d8",
+                                                   "side":  "ask",
+                                                   "price":  0.3,
+                                                   "shares":  5,
+                                                   "total":  1.5
+                                               },
+                                               {
+                                                   "outcomeId":  "94bf4e3c-dd73-4030-8652-13321bd4ac20",
+                                                   "side":  "ask",
+                                                   "price":  0.7,
+                                                   "shares":  44.29,
+                                                   "total":  31.003
+                                               }
+                                           ],
+                        "orderbookDepthSource":  "local-orderbook",
+                        "orderbookDepthStatus":  "ready",
+                        "providerOrderbookDepth":  {
+                                                       "source":  "reference-orderbook-depth-snapshot",
+                                                       "status":  "unavailable",
+                                                       "levelCount":  0,
+                                                       "snapshotCount":  0,
+                                                       "latestFetchedAt":  null,
+                                                       "latestUpdatedAt":  null,
+                                                       "stalenessSeconds":  null,
+                                                       "staleAfterSeconds":  90,
+                                                       "refreshTtlSeconds":  60,
+                                                       "nextRefreshAt":  null,
+                                                       "shouldRefresh":  true,
+                                                       "isStale":  false,
+                                                       "sources":  [
+
+                                                                   ],
+                                                       "reason":  "No provider orderbook depth snapshot is available."
+                                                   },
+                        "providerQuoteSnapshot":  {
+                                                      "source":  "reference-quote-snapshot",
+                                                      "status":  "stale",
+                                                      "snapshotCount":  2,
+                                                      "latestFetchedAt":  "2026-07-07T15:45:15.785Z",
+                                                      "latestUpdatedAt":  "2026-07-07T15:45:15.786Z",
+                                                      "stalenessSeconds":  75551,
+                                                      "staleAfterSeconds":  90,
+                                                      "refreshTtlSeconds":  60,
+                                                      "nextRefreshAt":  "2026-07-07T15:46:15.785Z",
+                                                      "shouldRefresh":  true,
+                                                      "refreshKey":  "polymarket:2026-07-07T15:45:15.785Z",
+                                                      "isStale":  true,
+                                                      "acceptingOrders":  true,
+                                                      "outcomeIds":  [
+                                                                         "3bd9455a-9728-44e7-a792-384e7b9001d8",
+                                                                         "94bf4e3c-dd73-4030-8652-13321bd4ac20"
+                                                                     ],
+                                                      "sources":  [
+                                                                      "polymarket"
+                                                                  ],
+                                                      "reason":  "Provider quote snapshot is older than 90 seconds."
+                                                  },
+                        "rulesText":  "Soccer market normalized from Polymarket provider data.",
+                        "event":  null,
+                        "outcomes":  [
+                                         {
+                                             "id":  "94bf4e3c-dd73-4030-8652-13321bd4ac20",
+                                             "name":  "YES",
+                                             "label":  "Argentina",
+                                             "side":  "yes",
+                                             "tokenId":  "87390712702935875353084647255226721799646621048501318482801979643152933271064",
+                                             "referenceTokenId":  "87390712702935875353084647255226721799646621048501318482801979643152933271064",
+                                             "referenceOutcomeLabel":  "Yes",
+                                             "price":  0.735,
+                                             "bestBid":  0.73,
+                                             "bestAsk":  0.74,
+                                             "bestBidSize":  null,
+                                             "bestAskSize":  44.29,
+                                             "isTradable":  true
+                                         },
+                                         {
+                                             "id":  "3bd9455a-9728-44e7-a792-384e7b9001d8",
+                                             "name":  "NO",
+                                             "label":  "No",
+                                             "side":  "no",
+                                             "tokenId":  "108484238848648074372041518363480249254156420448181302544958828959135013838825",
+                                             "referenceTokenId":  "108484238848648074372041518363480249254156420448181302544958828959135013838825",
+                                             "referenceOutcomeLabel":  "No",
+                                             "price":  0.265,
+                                             "bestBid":  0.26,
+                                             "bestAsk":  0.27,
+                                             "bestBidSize":  5,
+                                             "bestAskSize":  5,
+                                             "isTradable":  true
+                                         }
+                                     ]
+                    },
+                    {
+                        "id":  "02bc8228-01c9-4fa5-a229-642c429a75dc",
+                        "title":  "Argentina vs. Egypt: Egypt +1.5",
+                        "description":  "Local MVP contract-shaped Spread market for Argentina vs. Egypt.",
+                        "status":  "LIVE",
+                        "marketGroupKey":  "spread",
+                        "marketGroupId":  "spread",
+                        "marketGroupTitle":  "Spread",
+                        "displayOrder":  41,
+                        "marketType":  "spread",
+                        "period":  "regulation",
+                        "line":  "1.5",
+                        "unit":  "goals",
+                        "referenceSource":  "contract-fixture",
+                        "externalSlug":  "argentina-vs-egypt-spread-away-1-5",
+                        "externalMarketId":  "contract-argentina-vs-egypt-spread-away-1-5",
+                        "conditionId":  "condition-argentina-vs-egypt-spread-away-1-5",
+                        "propCategory":  "handicap",
+                        "availability":  {
+                                             "source":  "local-orderbook",
+                                             "status":  "ready",
+                                             "marketStatus":  "LIVE",
+                                             "lastUpdated":  "2026-07-08T07:46:37.697Z",
+                                             "stalenessSeconds":  17869,
+                                             "staleAfterSeconds":  90,
+                                             "isStale":  false,
+                                             "isSuspended":  false,
+                                             "isDelayed":  false,
+                                             "reason":  "Local orderbook has executable depth."
+                                         },
+                        "liquidity":  75.0024,
+                        "chartHistory":  [
+
+                                         ],
+                        "chartHistoryStatus":  {
+                                                   "source":  "empty",
+                                                   "status":  "unavailable",
+                                                   "pointCount":  0,
+                                                   "outcomeCount":  0,
+                                                   "lastUpdated":  null,
+                                                   "stalenessSeconds":  null,
+                                                   "staleAfterSeconds":  90,
+                                                   "refreshTtlSeconds":  60,
+                                                   "nextRefreshAt":  null,
+                                                   "shouldRefresh":  true,
+                                                   "isStale":  false,
+                                                   "emptyState":  "no-history",
+                                                   "range":  "1D",
+                                                   "ranges":  [
+                                                                  "1D",
+                                                                  "1W",
+                                                                  "1M",
+                                                                  "MAX"
+                                                              ]
+                                               },
+                        "providerLifecycle":  {
+                                                  "source":  "mobile-live-detail-market",
+                                                  "status":  "stale",
+                                                  "ready":  false,
+                                                  "stale":  true,
+                                                  "refreshDue":  false,
+                                                  "refreshing":  false,
+                                                  "refreshStarted":  false,
+                                                  "unavailable":  true,
+                                                  "empty":  false,
+                                                  "notReady":  true,
+                                                  "fallback":  false,
+                                                  "fallbackApplied":  false,
+                                                  "fallbackReason":  null,
+                                                  "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                                  "nextRefreshAt":  "2026-07-08T07:47:37.697Z",
+                                                  "lastFetchedAt":  "2026-07-08T07:46:37.697Z",
+                                                  "quote":  {
+                                                                "source":  "contract-fixture",
+                                                                "status":  "stale",
+                                                                "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                                                "nextRefreshAt":  "2026-07-08T07:47:37.697Z",
+                                                                "lastFetchedAt":  "2026-07-08T07:46:37.697Z",
+                                                                "stalenessSeconds":  17869,
+                                                                "shouldRefresh":  true,
+                                                                "ready":  false,
+                                                                "stale":  true,
+                                                                "refreshDue":  false,
+                                                                "unavailable":  false,
+                                                                "empty":  false,
+                                                                "notReady":  true
+                                                            },
+                                                  "orderbookDepth":  {
+                                                                         "source":  "reference-orderbook-depth-snapshot",
+                                                                         "status":  "unavailable",
+                                                                         "reason":  "No provider orderbook depth snapshot is available.",
+                                                                         "nextRefreshAt":  null,
+                                                                         "lastFetchedAt":  null,
+                                                                         "stalenessSeconds":  null,
+                                                                         "shouldRefresh":  true,
+                                                                         "ready":  false,
+                                                                         "stale":  false,
+                                                                         "refreshDue":  true,
+                                                                         "unavailable":  true,
+                                                                         "empty":  true,
+                                                                         "notReady":  true
+                                                                     },
+                                                  "chartHistory":  {
+                                                                       "source":  "empty",
+                                                                       "status":  "unavailable",
+                                                                       "reason":  "No provider chart history snapshot is available for this market.",
+                                                                       "nextRefreshAt":  null,
+                                                                       "lastFetchedAt":  null,
+                                                                       "stalenessSeconds":  null,
+                                                                       "shouldRefresh":  true,
+                                                                       "ready":  false,
+                                                                       "stale":  false,
+                                                                       "refreshDue":  true,
+                                                                       "unavailable":  true,
+                                                                       "empty":  true,
+                                                                       "notReady":  true
+                                                                   }
+                                              },
+                        "selection":  {
+                                          "selectorKey":  "spread:regulation:1.5",
+                                          "marketId":  "02bc8228-01c9-4fa5-a229-642c429a75dc",
+                                          "marketGroupKey":  "spread",
+                                          "marketGroupId":  "spread",
+                                          "marketGroupTitle":  "Spread",
+                                          "marketType":  "spread",
+                                          "marketFamily":  "spread",
+                                          "displayLabel":  "Spread regulation 1.5",
+                                          "period":  "regulation",
+                                          "line":  "1.5",
+                                          "lineValue":  1.5,
+                                          "unit":  "goals",
+                                          "chart":  {
+                                                        "targetMarketId":  "02bc8228-01c9-4fa5-a229-642c429a75dc",
+                                                        "status":  "unavailable",
+                                                        "source":  "empty",
+                                                        "pointCount":  0,
+                                                        "outcomeCount":  0,
+                                                        "range":  "1D",
+                                                        "ranges":  [
+                                                                       "1D",
+                                                                       "1W",
+                                                                       "1M",
+                                                                       "MAX"
+                                                                   ],
+                                                        "emptyState":  "no-history"
+                                                    },
+                                          "outcomes":  [
+                                                           {
+                                                               "outcomeId":  "2d636231-c32f-44f9-8235-065fcf041049",
+                                                               "id":  "2d636231-c32f-44f9-8235-065fcf041049",
+                                                               "side":  "away",
+                                                               "label":  "Egypt +1.5",
+                                                               "tokenId":  "contract-argentina-vs-egypt-spread-away-1-5-away",
+                                                               "referenceTokenId":  "contract-argentina-vs-egypt-spread-away-1-5-away",
+                                                               "referenceOutcomeLabel":  "Egypt +1.5",
+                                                               "isTradable":  true
+                                                           },
+                                                           {
+                                                               "outcomeId":  "697fccf1-c047-4185-a1fc-4afebe1579fe",
+                                                               "id":  "697fccf1-c047-4185-a1fc-4afebe1579fe",
+                                                               "side":  "home",
+                                                               "label":  "Argentina -1.5",
+                                                               "tokenId":  "contract-argentina-vs-egypt-spread-away-1-5-home",
+                                                               "referenceTokenId":  "contract-argentina-vs-egypt-spread-away-1-5-home",
+                                                               "referenceOutcomeLabel":  "Argentina -1.5",
+                                                               "isTradable":  true
+                                                           }
+                                                       ]
+                                      },
+                        "orderbookIdentity":  {
+                                                  "route":  "/api/orderbook/02bc8228-01c9-4fa5-a229-642c429a75dc/book",
+                                                  "marketId":  "02bc8228-01c9-4fa5-a229-642c429a75dc",
+                                                  "marketGroupId":  "spread",
+                                                  "marketGroupKey":  "spread",
+                                                  "selectorKey":  "spread:regulation:1.5",
+                                                  "marketFamily":  "spread",
+                                                  "period":  "regulation",
+                                                  "line":  "1.5",
+                                                  "lineValue":  1.5,
+                                                  "outcomeIds":  [
+                                                                     "2d636231-c32f-44f9-8235-065fcf041049",
+                                                                     "697fccf1-c047-4185-a1fc-4afebe1579fe"
+                                                                 ],
+                                                  "tokenIds":  [
+                                                                   "contract-argentina-vs-egypt-spread-away-1-5-away",
+                                                                   "contract-argentina-vs-egypt-spread-away-1-5-home"
+                                                               ],
+                                                  "providerSource":  "contract-fixture",
+                                                  "providerStatus":  "stale",
+                                                  "depthSource":  "local-orderbook",
+                                                  "depthStatus":  "ready",
+                                                  "depthProviderSource":  "reference-orderbook-depth-snapshot",
+                                                  "depthProviderStatus":  "unavailable",
+                                                  "depthProviderSources":  [
+
+                                                                           ],
+                                                  "refreshedAt":  "2026-07-08T07:46:37.697Z",
+                                                  "staleAfterSeconds":  90,
+                                                  "refreshTtlSeconds":  60,
+                                                  "nextRefreshAt":  "2026-07-08T07:47:37.697Z",
+                                                  "shouldRefresh":  true,
+                                                  "isStale":  true,
+                                                  "ready":  true,
+                                                  "reason":  "Depth comes from local open orderbook orders."
+                                              },
+                        "orderbookDepth":  [
+                                               {
+                                                   "outcomeId":  "2d636231-c32f-44f9-8235-065fcf041049",
+                                                   "side":  "bid",
+                                                   "price":  0.66,
+                                                   "shares":  113.64,
+                                                   "total":  75.0024
+                                               }
+                                           ],
+                        "orderbookDepthSource":  "local-orderbook",
+                        "orderbookDepthStatus":  "ready",
+                        "providerOrderbookDepth":  {
+                                                       "source":  "reference-orderbook-depth-snapshot",
+                                                       "status":  "unavailable",
+                                                       "levelCount":  0,
+                                                       "snapshotCount":  0,
+                                                       "latestFetchedAt":  null,
+                                                       "latestUpdatedAt":  null,
+                                                       "stalenessSeconds":  null,
+                                                       "staleAfterSeconds":  90,
+                                                       "refreshTtlSeconds":  60,
+                                                       "nextRefreshAt":  null,
+                                                       "shouldRefresh":  true,
+                                                       "isStale":  false,
+                                                       "sources":  [
+
+                                                                   ],
+                                                       "reason":  "No provider orderbook depth snapshot is available."
+                                                   },
+                        "providerQuoteSnapshot":  {
+                                                      "source":  "reference-quote-snapshot",
+                                                      "status":  "stale",
+                                                      "snapshotCount":  2,
+                                                      "latestFetchedAt":  "2026-07-08T07:46:37.697Z",
+                                                      "latestUpdatedAt":  "2026-07-08T07:46:37.714Z",
+                                                      "stalenessSeconds":  17869,
+                                                      "staleAfterSeconds":  90,
+                                                      "refreshTtlSeconds":  60,
+                                                      "nextRefreshAt":  "2026-07-08T07:47:37.697Z",
+                                                      "shouldRefresh":  true,
+                                                      "refreshKey":  "contract-fixture:2026-07-08T07:46:37.697Z",
+                                                      "isStale":  true,
+                                                      "acceptingOrders":  true,
+                                                      "outcomeIds":  [
+                                                                         "2d636231-c32f-44f9-8235-065fcf041049",
+                                                                         "697fccf1-c047-4185-a1fc-4afebe1579fe"
+                                                                     ],
+                                                      "sources":  [
+                                                                      "contract-fixture"
+                                                                  ],
+                                                      "reason":  "Provider quote snapshot is older than 90 seconds."
+                                                  },
+                        "rulesText":  "Local MVP fake-token market. Replace with Polymarket-backed provider mapping when this market family is available.",
+                        "event":  null,
+                        "outcomes":  [
+                                         {
+                                             "id":  "2d636231-c32f-44f9-8235-065fcf041049",
+                                             "name":  "Egypt +1.5",
+                                             "label":  "Egypt +1.5",
+                                             "side":  "away",
+                                             "tokenId":  "contract-argentina-vs-egypt-spread-away-1-5-away",
+                                             "referenceTokenId":  "contract-argentina-vs-egypt-spread-away-1-5-away",
+                                             "referenceOutcomeLabel":  "Egypt +1.5",
+                                             "price":  0.64,
+                                             "bestBid":  0.62,
+                                             "bestAsk":  0.66,
+                                             "bestBidSize":  113.64,
+                                             "bestAskSize":  null,
+                                             "isTradable":  true
+                                         },
+                                         {
+                                             "id":  "697fccf1-c047-4185-a1fc-4afebe1579fe",
+                                             "name":  "Argentina -1.5",
+                                             "label":  "Argentina -1.5",
+                                             "side":  "home",
+                                             "tokenId":  "contract-argentina-vs-egypt-spread-away-1-5-home",
+                                             "referenceTokenId":  "contract-argentina-vs-egypt-spread-away-1-5-home",
+                                             "referenceOutcomeLabel":  "Argentina -1.5",
+                                             "price":  0.36,
+                                             "bestBid":  0.34,
+                                             "bestAsk":  0.38,
+                                             "bestBidSize":  null,
+                                             "bestAskSize":  null,
+                                             "isTradable":  true
+                                         }
+                                     ]
+                    },
+                    {
+                        "id":  "80dc4fb7-dbb1-4da8-be1c-76dabc5f9549",
+                        "title":  "Argentina vs. Egypt: Total goals 2.5",
+                        "description":  "Local MVP contract-shaped Totals market for Argentina vs. Egypt.",
+                        "status":  "LIVE",
+                        "marketGroupKey":  "totals",
+                        "marketGroupId":  "totals",
+                        "marketGroupTitle":  "Totals",
+                        "displayOrder":  50,
+                        "marketType":  "total_goals",
+                        "period":  "regulation",
+                        "line":  "2.5",
+                        "unit":  "goals",
+                        "referenceSource":  "contract-fixture",
+                        "externalSlug":  "argentina-vs-egypt-total-goals-2-5",
+                        "externalMarketId":  "contract-argentina-vs-egypt-total-goals-2-5",
+                        "conditionId":  "condition-argentina-vs-egypt-total-goals-2-5",
+                        "propCategory":  "goals",
+                        "availability":  {
+                                             "source":  "provider-lifecycle",
+                                             "status":  "unavailable",
+                                             "marketStatus":  "LIVE",
+                                             "lastUpdated":  "2026-07-08T07:46:37.719Z",
+                                             "stalenessSeconds":  17869,
+                                             "staleAfterSeconds":  90,
+                                             "isStale":  true,
+                                             "isSuspended":  false,
+                                             "isDelayed":  false,
+                                             "reason":  "Provider quote snapshot is older than 90 seconds."
+                                         },
+                        "liquidity":  1500,
+                        "chartHistory":  [
+
+                                         ],
+                        "chartHistoryStatus":  {
+                                                   "source":  "empty",
+                                                   "status":  "unavailable",
+                                                   "pointCount":  0,
+                                                   "outcomeCount":  0,
+                                                   "lastUpdated":  null,
+                                                   "stalenessSeconds":  null,
+                                                   "staleAfterSeconds":  90,
+                                                   "refreshTtlSeconds":  60,
+                                                   "nextRefreshAt":  null,
+                                                   "shouldRefresh":  true,
+                                                   "isStale":  false,
+                                                   "emptyState":  "no-history",
+                                                   "range":  "1D",
+                                                   "ranges":  [
+                                                                  "1D",
+                                                                  "1W",
+                                                                  "1M",
+                                                                  "MAX"
+                                                              ]
+                                               },
+                        "providerLifecycle":  {
+                                                  "source":  "mobile-live-detail-market",
+                                                  "status":  "stale",
+                                                  "ready":  false,
+                                                  "stale":  true,
+                                                  "refreshDue":  false,
+                                                  "refreshing":  false,
+                                                  "refreshStarted":  false,
+                                                  "unavailable":  true,
+                                                  "empty":  false,
+                                                  "notReady":  true,
+                                                  "fallback":  false,
+                                                  "fallbackApplied":  false,
+                                                  "fallbackReason":  null,
+                                                  "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                                  "nextRefreshAt":  "2026-07-08T07:47:37.719Z",
+                                                  "lastFetchedAt":  "2026-07-08T07:46:37.719Z",
+                                                  "quote":  {
+                                                                "source":  "contract-fixture",
+                                                                "status":  "stale",
+                                                                "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                                                "nextRefreshAt":  "2026-07-08T07:47:37.719Z",
+                                                                "lastFetchedAt":  "2026-07-08T07:46:37.719Z",
+                                                                "stalenessSeconds":  17869,
+                                                                "shouldRefresh":  true,
+                                                                "ready":  false,
+                                                                "stale":  true,
+                                                                "refreshDue":  false,
+                                                                "unavailable":  false,
+                                                                "empty":  false,
+                                                                "notReady":  true
+                                                            },
+                                                  "orderbookDepth":  {
+                                                                         "source":  "reference-orderbook-depth-snapshot",
+                                                                         "status":  "unavailable",
+                                                                         "reason":  "No provider orderbook depth snapshot is available.",
+                                                                         "nextRefreshAt":  null,
+                                                                         "lastFetchedAt":  null,
+                                                                         "stalenessSeconds":  null,
+                                                                         "shouldRefresh":  true,
+                                                                         "ready":  false,
+                                                                         "stale":  false,
+                                                                         "refreshDue":  true,
+                                                                         "unavailable":  true,
+                                                                         "empty":  true,
+                                                                         "notReady":  true
+                                                                     },
+                                                  "chartHistory":  {
+                                                                       "source":  "empty",
+                                                                       "status":  "unavailable",
+                                                                       "reason":  "No provider chart history snapshot is available for this market.",
+                                                                       "nextRefreshAt":  null,
+                                                                       "lastFetchedAt":  null,
+                                                                       "stalenessSeconds":  null,
+                                                                       "shouldRefresh":  true,
+                                                                       "ready":  false,
+                                                                       "stale":  false,
+                                                                       "refreshDue":  true,
+                                                                       "unavailable":  true,
+                                                                       "empty":  true,
+                                                                       "notReady":  true
+                                                                   }
+                                              },
+                        "selection":  {
+                                          "selectorKey":  "totals:regulation:2.5",
+                                          "marketId":  "80dc4fb7-dbb1-4da8-be1c-76dabc5f9549",
+                                          "marketGroupKey":  "totals",
+                                          "marketGroupId":  "totals",
+                                          "marketGroupTitle":  "Totals",
+                                          "marketType":  "total_goals",
+                                          "marketFamily":  "total",
+                                          "displayLabel":  "Totals regulation 2.5",
+                                          "period":  "regulation",
+                                          "line":  "2.5",
+                                          "lineValue":  2.5,
+                                          "unit":  "goals",
+                                          "chart":  {
+                                                        "targetMarketId":  "80dc4fb7-dbb1-4da8-be1c-76dabc5f9549",
+                                                        "status":  "unavailable",
+                                                        "source":  "empty",
+                                                        "pointCount":  0,
+                                                        "outcomeCount":  0,
+                                                        "range":  "1D",
+                                                        "ranges":  [
+                                                                       "1D",
+                                                                       "1W",
+                                                                       "1M",
+                                                                       "MAX"
+                                                                   ],
+                                                        "emptyState":  "no-history"
+                                                    },
+                                          "outcomes":  [
+                                                           {
+                                                               "outcomeId":  "fdffa1ba-8884-4044-b68b-7ef474decbd8",
+                                                               "id":  "fdffa1ba-8884-4044-b68b-7ef474decbd8",
+                                                               "side":  "over",
+                                                               "label":  "Over 2.5",
+                                                               "tokenId":  "contract-argentina-vs-egypt-total-goals-2-5-over",
+                                                               "referenceTokenId":  "contract-argentina-vs-egypt-total-goals-2-5-over",
+                                                               "referenceOutcomeLabel":  "Over 2.5",
+                                                               "isTradable":  true
+                                                           },
+                                                           {
+                                                               "outcomeId":  "2e5c416c-7c1c-45a6-ab80-31319ecc5e2e",
+                                                               "id":  "2e5c416c-7c1c-45a6-ab80-31319ecc5e2e",
+                                                               "side":  "under",
+                                                               "label":  "Under 2.5",
+                                                               "tokenId":  "contract-argentina-vs-egypt-total-goals-2-5-under",
+                                                               "referenceTokenId":  "contract-argentina-vs-egypt-total-goals-2-5-under",
+                                                               "referenceOutcomeLabel":  "Under 2.5",
+                                                               "isTradable":  true
+                                                           }
+                                                       ]
+                                      },
+                        "orderbookIdentity":  {
+                                                  "route":  "/api/orderbook/80dc4fb7-dbb1-4da8-be1c-76dabc5f9549/book",
+                                                  "marketId":  "80dc4fb7-dbb1-4da8-be1c-76dabc5f9549",
+                                                  "marketGroupId":  "totals",
+                                                  "marketGroupKey":  "totals",
+                                                  "selectorKey":  "totals:regulation:2.5",
+                                                  "marketFamily":  "total",
+                                                  "period":  "regulation",
+                                                  "line":  "2.5",
+                                                  "lineValue":  2.5,
+                                                  "outcomeIds":  [
+                                                                     "fdffa1ba-8884-4044-b68b-7ef474decbd8",
+                                                                     "2e5c416c-7c1c-45a6-ab80-31319ecc5e2e"
+                                                                 ],
+                                                  "tokenIds":  [
+                                                                   "contract-argentina-vs-egypt-total-goals-2-5-over",
+                                                                   "contract-argentina-vs-egypt-total-goals-2-5-under"
+                                                               ],
+                                                  "providerSource":  "contract-fixture",
+                                                  "providerStatus":  "stale",
+                                                  "depthSource":  "provider-quote-snapshot",
+                                                  "depthStatus":  "stale",
+                                                  "depthProviderSource":  "reference-orderbook-depth-snapshot",
+                                                  "depthProviderStatus":  "unavailable",
+                                                  "depthProviderSources":  [
+
+                                                                           ],
+                                                  "refreshedAt":  "2026-07-08T07:46:37.719Z",
+                                                  "staleAfterSeconds":  90,
+                                                  "refreshTtlSeconds":  60,
+                                                  "nextRefreshAt":  "2026-07-08T07:47:37.719Z",
+                                                  "shouldRefresh":  true,
+                                                  "isStale":  true,
+                                                  "ready":  false,
+                                                  "reason":  "Depth comes from provider quote snapshot top-of-book prices and estimated size."
+                                              },
+                        "orderbookDepth":  [
+                                               {
+                                                   "outcomeId":  "fdffa1ba-8884-4044-b68b-7ef474decbd8",
+                                                   "side":  "bid",
+                                                   "price":  0.51,
+                                                   "shares":  735.294118,
+                                                   "total":  375
+                                               },
+                                               {
+                                                   "outcomeId":  "2e5c416c-7c1c-45a6-ab80-31319ecc5e2e",
+                                                   "side":  "bid",
+                                                   "price":  0.45,
+                                                   "shares":  833.333333,
+                                                   "total":  375
+                                               },
+                                               {
+                                                   "outcomeId":  "fdffa1ba-8884-4044-b68b-7ef474decbd8",
+                                                   "side":  "ask",
+                                                   "price":  0.55,
+                                                   "shares":  681.818182,
+                                                   "total":  375
+                                               },
+                                               {
+                                                   "outcomeId":  "2e5c416c-7c1c-45a6-ab80-31319ecc5e2e",
+                                                   "side":  "ask",
+                                                   "price":  0.49,
+                                                   "shares":  765.306122,
+                                                   "total":  375
+                                               }
+                                           ],
+                        "orderbookDepthSource":  "provider-quote-snapshot",
+                        "orderbookDepthStatus":  "stale",
+                        "providerOrderbookDepth":  {
+                                                       "source":  "reference-orderbook-depth-snapshot",
+                                                       "status":  "unavailable",
+                                                       "levelCount":  0,
+                                                       "snapshotCount":  0,
+                                                       "latestFetchedAt":  null,
+                                                       "latestUpdatedAt":  null,
+                                                       "stalenessSeconds":  null,
+                                                       "staleAfterSeconds":  90,
+                                                       "refreshTtlSeconds":  60,
+                                                       "nextRefreshAt":  null,
+                                                       "shouldRefresh":  true,
+                                                       "isStale":  false,
+                                                       "sources":  [
+
+                                                                   ],
+                                                       "reason":  "No provider orderbook depth snapshot is available."
+                                                   },
+                        "providerQuoteSnapshot":  {
+                                                      "source":  "reference-quote-snapshot",
+                                                      "status":  "stale",
+                                                      "snapshotCount":  2,
+                                                      "latestFetchedAt":  "2026-07-08T07:46:37.719Z",
+                                                      "latestUpdatedAt":  "2026-07-08T07:46:37.736Z",
+                                                      "stalenessSeconds":  17869,
+                                                      "staleAfterSeconds":  90,
+                                                      "refreshTtlSeconds":  60,
+                                                      "nextRefreshAt":  "2026-07-08T07:47:37.719Z",
+                                                      "shouldRefresh":  true,
+                                                      "refreshKey":  "contract-fixture:2026-07-08T07:46:37.719Z",
+                                                      "isStale":  true,
+                                                      "acceptingOrders":  true,
+                                                      "outcomeIds":  [
+                                                                         "2e5c416c-7c1c-45a6-ab80-31319ecc5e2e",
+                                                                         "fdffa1ba-8884-4044-b68b-7ef474decbd8"
+                                                                     ],
+                                                      "sources":  [
+                                                                      "contract-fixture"
+                                                                  ],
+                                                      "reason":  "Provider quote snapshot is older than 90 seconds."
+                                                  },
+                        "rulesText":  "Local MVP fake-token market. Replace with Polymarket-backed provider mapping when this market family is available.",
+                        "event":  null,
+                        "outcomes":  [
+                                         {
+                                             "id":  "fdffa1ba-8884-4044-b68b-7ef474decbd8",
+                                             "name":  "Over 2.5",
+                                             "label":  "Over 2.5",
+                                             "side":  "over",
+                                             "tokenId":  "contract-argentina-vs-egypt-total-goals-2-5-over",
+                                             "referenceTokenId":  "contract-argentina-vs-egypt-total-goals-2-5-over",
+                                             "referenceOutcomeLabel":  "Over 2.5",
+                                             "price":  0.53,
+                                             "bestBid":  0.51,
+                                             "bestAsk":  0.55,
+                                             "bestBidSize":  735.294118,
+                                             "bestAskSize":  681.818182,
+                                             "isTradable":  true
+                                         },
+                                         {
+                                             "id":  "2e5c416c-7c1c-45a6-ab80-31319ecc5e2e",
+                                             "name":  "Under 2.5",
+                                             "label":  "Under 2.5",
+                                             "side":  "under",
+                                             "tokenId":  "contract-argentina-vs-egypt-total-goals-2-5-under",
+                                             "referenceTokenId":  "contract-argentina-vs-egypt-total-goals-2-5-under",
+                                             "referenceOutcomeLabel":  "Under 2.5",
+                                             "price":  0.47,
+                                             "bestBid":  0.45,
+                                             "bestAsk":  0.49,
+                                             "bestBidSize":  833.333333,
+                                             "bestAskSize":  765.306122,
+                                             "isTradable":  true
+                                         }
+                                     ]
+                    },
+                    {
+                        "id":  "05a4ed86-79a1-4758-a239-3dbcd611459b",
+                        "title":  "Argentina vs. Egypt: Argentina total goals 1.5",
+                        "description":  "Local MVP contract-shaped Team Totals market for Argentina vs. Egypt.",
+                        "status":  "LIVE",
+                        "marketGroupKey":  "team-totals",
+                        "marketGroupId":  "team-totals",
+                        "marketGroupTitle":  "Team Totals",
+                        "displayOrder":  60,
+                        "marketType":  "team_total_goals",
+                        "period":  "regulation",
+                        "line":  "1.5",
+                        "unit":  "goals",
+                        "referenceSource":  "contract-fixture",
+                        "externalSlug":  "argentina-vs-egypt-team-total-home-1-5",
+                        "externalMarketId":  "contract-argentina-vs-egypt-team-total-home-1-5",
+                        "conditionId":  "condition-argentina-vs-egypt-team-total-home-1-5",
+                        "propCategory":  "goals",
+                        "availability":  {
+                                             "source":  "provider-lifecycle",
+                                             "status":  "unavailable",
+                                             "marketStatus":  "LIVE",
+                                             "lastUpdated":  "2026-07-08T07:46:37.742Z",
+                                             "stalenessSeconds":  17869,
+                                             "staleAfterSeconds":  90,
+                                             "isStale":  true,
+                                             "isSuspended":  false,
+                                             "isDelayed":  false,
+                                             "reason":  "Provider quote snapshot is older than 90 seconds."
+                                         },
+                        "liquidity":  1500,
+                        "chartHistory":  [
+
+                                         ],
+                        "chartHistoryStatus":  {
+                                                   "source":  "empty",
+                                                   "status":  "unavailable",
+                                                   "pointCount":  0,
+                                                   "outcomeCount":  0,
+                                                   "lastUpdated":  null,
+                                                   "stalenessSeconds":  null,
+                                                   "staleAfterSeconds":  90,
+                                                   "refreshTtlSeconds":  60,
+                                                   "nextRefreshAt":  null,
+                                                   "shouldRefresh":  true,
+                                                   "isStale":  false,
+                                                   "emptyState":  "no-history",
+                                                   "range":  "1D",
+                                                   "ranges":  [
+                                                                  "1D",
+                                                                  "1W",
+                                                                  "1M",
+                                                                  "MAX"
+                                                              ]
+                                               },
+                        "providerLifecycle":  {
+                                                  "source":  "mobile-live-detail-market",
+                                                  "status":  "stale",
+                                                  "ready":  false,
+                                                  "stale":  true,
+                                                  "refreshDue":  false,
+                                                  "refreshing":  false,
+                                                  "refreshStarted":  false,
+                                                  "unavailable":  true,
+                                                  "empty":  false,
+                                                  "notReady":  true,
+                                                  "fallback":  false,
+                                                  "fallbackApplied":  false,
+                                                  "fallbackReason":  null,
+                                                  "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                                  "nextRefreshAt":  "2026-07-08T07:47:37.742Z",
+                                                  "lastFetchedAt":  "2026-07-08T07:46:37.742Z",
+                                                  "quote":  {
+                                                                "source":  "contract-fixture",
+                                                                "status":  "stale",
+                                                                "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                                                "nextRefreshAt":  "2026-07-08T07:47:37.742Z",
+                                                                "lastFetchedAt":  "2026-07-08T07:46:37.742Z",
+                                                                "stalenessSeconds":  17869,
+                                                                "shouldRefresh":  true,
+                                                                "ready":  false,
+                                                                "stale":  true,
+                                                                "refreshDue":  false,
+                                                                "unavailable":  false,
+                                                                "empty":  false,
+                                                                "notReady":  true
+                                                            },
+                                                  "orderbookDepth":  {
+                                                                         "source":  "reference-orderbook-depth-snapshot",
+                                                                         "status":  "unavailable",
+                                                                         "reason":  "No provider orderbook depth snapshot is available.",
+                                                                         "nextRefreshAt":  null,
+                                                                         "lastFetchedAt":  null,
+                                                                         "stalenessSeconds":  null,
+                                                                         "shouldRefresh":  true,
+                                                                         "ready":  false,
+                                                                         "stale":  false,
+                                                                         "refreshDue":  true,
+                                                                         "unavailable":  true,
+                                                                         "empty":  true,
+                                                                         "notReady":  true
+                                                                     },
+                                                  "chartHistory":  {
+                                                                       "source":  "empty",
+                                                                       "status":  "unavailable",
+                                                                       "reason":  "No provider chart history snapshot is available for this market.",
+                                                                       "nextRefreshAt":  null,
+                                                                       "lastFetchedAt":  null,
+                                                                       "stalenessSeconds":  null,
+                                                                       "shouldRefresh":  true,
+                                                                       "ready":  false,
+                                                                       "stale":  false,
+                                                                       "refreshDue":  true,
+                                                                       "unavailable":  true,
+                                                                       "empty":  true,
+                                                                       "notReady":  true
+                                                                   }
+                                              },
+                        "selection":  {
+                                          "selectorKey":  "team-totals:regulation:1.5",
+                                          "marketId":  "05a4ed86-79a1-4758-a239-3dbcd611459b",
+                                          "marketGroupKey":  "team-totals",
+                                          "marketGroupId":  "team-totals",
+                                          "marketGroupTitle":  "Team Totals",
+                                          "marketType":  "team_total_goals",
+                                          "marketFamily":  "team_total",
+                                          "displayLabel":  "Team Totals regulation 1.5",
+                                          "period":  "regulation",
+                                          "line":  "1.5",
+                                          "lineValue":  1.5,
+                                          "unit":  "goals",
+                                          "chart":  {
+                                                        "targetMarketId":  "05a4ed86-79a1-4758-a239-3dbcd611459b",
+                                                        "status":  "unavailable",
+                                                        "source":  "empty",
+                                                        "pointCount":  0,
+                                                        "outcomeCount":  0,
+                                                        "range":  "1D",
+                                                        "ranges":  [
+                                                                       "1D",
+                                                                       "1W",
+                                                                       "1M",
+                                                                       "MAX"
+                                                                   ],
+                                                        "emptyState":  "no-history"
+                                                    },
+                                          "outcomes":  [
+                                                           {
+                                                               "outcomeId":  "3f95e0d9-e56a-4385-b1b7-7252de5287c0",
+                                                               "id":  "3f95e0d9-e56a-4385-b1b7-7252de5287c0",
+                                                               "side":  "over",
+                                                               "label":  "Argentina Over 1.5",
+                                                               "tokenId":  "contract-argentina-vs-egypt-team-total-home-1-5-over",
+                                                               "referenceTokenId":  "contract-argentina-vs-egypt-team-total-home-1-5-over",
+                                                               "referenceOutcomeLabel":  "Argentina Over 1.5",
+                                                               "isTradable":  true
+                                                           },
+                                                           {
+                                                               "outcomeId":  "c59e3138-63be-439d-b292-a374c0e046ff",
+                                                               "id":  "c59e3138-63be-439d-b292-a374c0e046ff",
+                                                               "side":  "under",
+                                                               "label":  "Argentina Under 1.5",
+                                                               "tokenId":  "contract-argentina-vs-egypt-team-total-home-1-5-under",
+                                                               "referenceTokenId":  "contract-argentina-vs-egypt-team-total-home-1-5-under",
+                                                               "referenceOutcomeLabel":  "Argentina Under 1.5",
+                                                               "isTradable":  true
+                                                           }
+                                                       ]
+                                      },
+                        "orderbookIdentity":  {
+                                                  "route":  "/api/orderbook/05a4ed86-79a1-4758-a239-3dbcd611459b/book",
+                                                  "marketId":  "05a4ed86-79a1-4758-a239-3dbcd611459b",
+                                                  "marketGroupId":  "team-totals",
+                                                  "marketGroupKey":  "team-totals",
+                                                  "selectorKey":  "team-totals:regulation:1.5",
+                                                  "marketFamily":  "team_total",
+                                                  "period":  "regulation",
+                                                  "line":  "1.5",
+                                                  "lineValue":  1.5,
+                                                  "outcomeIds":  [
+                                                                     "3f95e0d9-e56a-4385-b1b7-7252de5287c0",
+                                                                     "c59e3138-63be-439d-b292-a374c0e046ff"
+                                                                 ],
+                                                  "tokenIds":  [
+                                                                   "contract-argentina-vs-egypt-team-total-home-1-5-over",
+                                                                   "contract-argentina-vs-egypt-team-total-home-1-5-under"
+                                                               ],
+                                                  "providerSource":  "contract-fixture",
+                                                  "providerStatus":  "stale",
+                                                  "depthSource":  "provider-quote-snapshot",
+                                                  "depthStatus":  "stale",
+                                                  "depthProviderSource":  "reference-orderbook-depth-snapshot",
+                                                  "depthProviderStatus":  "unavailable",
+                                                  "depthProviderSources":  [
+
+                                                                           ],
+                                                  "refreshedAt":  "2026-07-08T07:46:37.742Z",
+                                                  "staleAfterSeconds":  90,
+                                                  "refreshTtlSeconds":  60,
+                                                  "nextRefreshAt":  "2026-07-08T07:47:37.742Z",
+                                                  "shouldRefresh":  true,
+                                                  "isStale":  true,
+                                                  "ready":  false,
+                                                  "reason":  "Depth comes from provider quote snapshot top-of-book prices and estimated size."
+                                              },
+                        "orderbookDepth":  [
+                                               {
+                                                   "outcomeId":  "3f95e0d9-e56a-4385-b1b7-7252de5287c0",
+                                                   "side":  "bid",
+                                                   "price":  0.44,
+                                                   "shares":  852.272727,
+                                                   "total":  375
+                                               },
+                                               {
+                                                   "outcomeId":  "c59e3138-63be-439d-b292-a374c0e046ff",
+                                                   "side":  "bid",
+                                                   "price":  0.52,
+                                                   "shares":  721.153846,
+                                                   "total":  375
+                                               },
+                                               {
+                                                   "outcomeId":  "3f95e0d9-e56a-4385-b1b7-7252de5287c0",
+                                                   "side":  "ask",
+                                                   "price":  0.48,
+                                                   "shares":  781.25,
+                                                   "total":  375
+                                               },
+                                               {
+                                                   "outcomeId":  "c59e3138-63be-439d-b292-a374c0e046ff",
+                                                   "side":  "ask",
+                                                   "price":  0.56,
+                                                   "shares":  669.642857,
+                                                   "total":  375
+                                               }
+                                           ],
+                        "orderbookDepthSource":  "provider-quote-snapshot",
+                        "orderbookDepthStatus":  "stale",
+                        "providerOrderbookDepth":  {
+                                                       "source":  "reference-orderbook-depth-snapshot",
+                                                       "status":  "unavailable",
+                                                       "levelCount":  0,
+                                                       "snapshotCount":  0,
+                                                       "latestFetchedAt":  null,
+                                                       "latestUpdatedAt":  null,
+                                                       "stalenessSeconds":  null,
+                                                       "staleAfterSeconds":  90,
+                                                       "refreshTtlSeconds":  60,
+                                                       "nextRefreshAt":  null,
+                                                       "shouldRefresh":  true,
+                                                       "isStale":  false,
+                                                       "sources":  [
+
+                                                                   ],
+                                                       "reason":  "No provider orderbook depth snapshot is available."
+                                                   },
+                        "providerQuoteSnapshot":  {
+                                                      "source":  "reference-quote-snapshot",
+                                                      "status":  "stale",
+                                                      "snapshotCount":  2,
+                                                      "latestFetchedAt":  "2026-07-08T07:46:37.742Z",
+                                                      "latestUpdatedAt":  "2026-07-08T07:46:37.761Z",
+                                                      "stalenessSeconds":  17869,
+                                                      "staleAfterSeconds":  90,
+                                                      "refreshTtlSeconds":  60,
+                                                      "nextRefreshAt":  "2026-07-08T07:47:37.742Z",
+                                                      "shouldRefresh":  true,
+                                                      "refreshKey":  "contract-fixture:2026-07-08T07:46:37.742Z",
+                                                      "isStale":  true,
+                                                      "acceptingOrders":  true,
+                                                      "outcomeIds":  [
+                                                                         "3f95e0d9-e56a-4385-b1b7-7252de5287c0",
+                                                                         "c59e3138-63be-439d-b292-a374c0e046ff"
+                                                                     ],
+                                                      "sources":  [
+                                                                      "contract-fixture"
+                                                                  ],
+                                                      "reason":  "Provider quote snapshot is older than 90 seconds."
+                                                  },
+                        "rulesText":  "Local MVP fake-token market. Replace with Polymarket-backed provider mapping when this market family is available.",
+                        "event":  null,
+                        "outcomes":  [
+                                         {
+                                             "id":  "3f95e0d9-e56a-4385-b1b7-7252de5287c0",
+                                             "name":  "Argentina Over 1.5",
+                                             "label":  "Argentina Over 1.5",
+                                             "side":  "over",
+                                             "tokenId":  "contract-argentina-vs-egypt-team-total-home-1-5-over",
+                                             "referenceTokenId":  "contract-argentina-vs-egypt-team-total-home-1-5-over",
+                                             "referenceOutcomeLabel":  "Argentina Over 1.5",
+                                             "price":  0.46,
+                                             "bestBid":  0.44,
+                                             "bestAsk":  0.48,
+                                             "bestBidSize":  852.272727,
+                                             "bestAskSize":  781.25,
+                                             "isTradable":  true
+                                         },
+                                         {
+                                             "id":  "c59e3138-63be-439d-b292-a374c0e046ff",
+                                             "name":  "Argentina Under 1.5",
+                                             "label":  "Argentina Under 1.5",
+                                             "side":  "under",
+                                             "tokenId":  "contract-argentina-vs-egypt-team-total-home-1-5-under",
+                                             "referenceTokenId":  "contract-argentina-vs-egypt-team-total-home-1-5-under",
+                                             "referenceOutcomeLabel":  "Argentina Under 1.5",
+                                             "price":  0.54,
+                                             "bestBid":  0.52,
+                                             "bestAsk":  0.56,
+                                             "bestBidSize":  721.153846,
+                                             "bestAskSize":  669.642857,
+                                             "isTradable":  true
+                                         }
+                                     ]
+                    },
+                    {
+                        "id":  "83016fc9-d6a7-48a4-a652-0755c75b2a0a",
+                        "title":  "Will Argentina vs. Egypt end in a draw?",
+                        "description":  "This event is for the upcoming FIFA World Cup game, scheduled for Tuesday, July 7, 2026 between Argentina and Egypt.",
+                        "status":  "LIVE",
+                        "marketGroupKey":  "main",
+                        "marketGroupId":  "main",
+                        "marketGroupTitle":  "Regulation Winner",
+                        "displayOrder":  1,
+                        "marketType":  "match_winner_1x2",
+                        "period":  "regulation",
+                        "line":  null,
+                        "unit":  null,
+                        "referenceSource":  "polymarket",
+                        "externalSlug":  "fifwc-arg-egy-2026-07-07-draw",
+                        "externalMarketId":  "2793739",
+                        "conditionId":  "0x4d39d238893ea8f7e0f4d53822a594129b9a98a1fc18744dab57351742e6a702",
+                        "propCategory":  null,
+                        "availability":  {
+                                             "source":  "local-orderbook",
+                                             "status":  "ready",
+                                             "marketStatus":  "LIVE",
+                                             "lastUpdated":  "2026-07-07T15:45:15.762Z",
+                                             "stalenessSeconds":  75551,
+                                             "staleAfterSeconds":  90,
+                                             "isStale":  false,
+                                             "isSuspended":  false,
+                                             "isDelayed":  false,
+                                             "reason":  "Local orderbook has executable depth."
+                                         },
+                        "liquidity":  10,
+                        "chartHistory":  [
+
+                                         ],
+                        "chartHistoryStatus":  {
+                                                   "source":  "empty",
+                                                   "status":  "unavailable",
+                                                   "pointCount":  0,
+                                                   "outcomeCount":  0,
+                                                   "lastUpdated":  null,
+                                                   "stalenessSeconds":  null,
+                                                   "staleAfterSeconds":  90,
+                                                   "refreshTtlSeconds":  60,
+                                                   "nextRefreshAt":  null,
+                                                   "shouldRefresh":  true,
+                                                   "isStale":  false,
+                                                   "emptyState":  "no-history",
+                                                   "range":  "1D",
+                                                   "ranges":  [
+                                                                  "1D",
+                                                                  "1W",
+                                                                  "1M",
+                                                                  "MAX"
+                                                              ]
+                                               },
+                        "providerLifecycle":  {
+                                                  "source":  "mobile-live-detail-market",
+                                                  "status":  "stale",
+                                                  "ready":  false,
+                                                  "stale":  true,
+                                                  "refreshDue":  false,
+                                                  "refreshing":  false,
+                                                  "refreshStarted":  false,
+                                                  "unavailable":  true,
+                                                  "empty":  false,
+                                                  "notReady":  true,
+                                                  "fallback":  false,
+                                                  "fallbackApplied":  false,
+                                                  "fallbackReason":  null,
+                                                  "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                                  "nextRefreshAt":  "2026-07-07T15:46:15.762Z",
+                                                  "lastFetchedAt":  "2026-07-07T15:45:15.762Z",
+                                                  "quote":  {
+                                                                "source":  "polymarket",
+                                                                "status":  "stale",
+                                                                "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                                                "nextRefreshAt":  "2026-07-07T15:46:15.762Z",
+                                                                "lastFetchedAt":  "2026-07-07T15:45:15.762Z",
+                                                                "stalenessSeconds":  75551,
+                                                                "shouldRefresh":  true,
+                                                                "ready":  false,
+                                                                "stale":  true,
+                                                                "refreshDue":  false,
+                                                                "unavailable":  false,
+                                                                "empty":  false,
+                                                                "notReady":  true
+                                                            },
+                                                  "orderbookDepth":  {
+                                                                         "source":  "reference-orderbook-depth-snapshot",
+                                                                         "status":  "unavailable",
+                                                                         "reason":  "No provider orderbook depth snapshot is available.",
+                                                                         "nextRefreshAt":  null,
+                                                                         "lastFetchedAt":  null,
+                                                                         "stalenessSeconds":  null,
+                                                                         "shouldRefresh":  true,
+                                                                         "ready":  false,
+                                                                         "stale":  false,
+                                                                         "refreshDue":  true,
+                                                                         "unavailable":  true,
+                                                                         "empty":  true,
+                                                                         "notReady":  true
+                                                                     },
+                                                  "chartHistory":  {
+                                                                       "source":  "empty",
+                                                                       "status":  "unavailable",
+                                                                       "reason":  "No provider chart history snapshot is available for this market.",
+                                                                       "nextRefreshAt":  null,
+                                                                       "lastFetchedAt":  null,
+                                                                       "stalenessSeconds":  null,
+                                                                       "shouldRefresh":  true,
+                                                                       "ready":  false,
+                                                                       "stale":  false,
+                                                                       "refreshDue":  true,
+                                                                       "unavailable":  true,
+                                                                       "empty":  true,
+                                                                       "notReady":  true
+                                                                   }
+                                              },
+                        "selection":  {
+                                          "selectorKey":  "main:regulation:default",
+                                          "marketId":  "83016fc9-d6a7-48a4-a652-0755c75b2a0a",
+                                          "marketGroupKey":  "main",
+                                          "marketGroupId":  "main",
+                                          "marketGroupTitle":  "Regulation Winner",
+                                          "marketType":  "match_winner_1x2",
+                                          "marketFamily":  "moneyline",
+                                          "displayLabel":  "Regulation Winner regulation",
+                                          "period":  "regulation",
+                                          "line":  null,
+                                          "lineValue":  null,
+                                          "unit":  null,
+                                          "chart":  {
+                                                        "targetMarketId":  "83016fc9-d6a7-48a4-a652-0755c75b2a0a",
+                                                        "status":  "unavailable",
+                                                        "source":  "empty",
+                                                        "pointCount":  0,
+                                                        "outcomeCount":  0,
+                                                        "range":  "1D",
+                                                        "ranges":  [
+                                                                       "1D",
+                                                                       "1W",
+                                                                       "1M",
+                                                                       "MAX"
+                                                                   ],
+                                                        "emptyState":  "no-history"
+                                                    },
+                                          "outcomes":  [
+                                                           {
+                                                               "outcomeId":  "6a1d415c-a18b-4efe-8648-e226c1bca7f6",
+                                                               "id":  "6a1d415c-a18b-4efe-8648-e226c1bca7f6",
+                                                               "side":  "yes",
+                                                               "label":  "Draw (Argentina vs. Egypt)",
+                                                               "tokenId":  "29252823886591163818892631827503025749306440692725158708119244431095401849247",
+                                                               "referenceTokenId":  "29252823886591163818892631827503025749306440692725158708119244431095401849247",
+                                                               "referenceOutcomeLabel":  "Yes",
+                                                               "isTradable":  true
+                                                           },
+                                                           {
+                                                               "outcomeId":  "ee425cd5-5343-42d6-a0be-f2b2675cd34b",
+                                                               "id":  "ee425cd5-5343-42d6-a0be-f2b2675cd34b",
+                                                               "side":  "no",
+                                                               "label":  "No",
+                                                               "tokenId":  "34157451043698668319114893878288785488552974792331044909448715557755021200679",
+                                                               "referenceTokenId":  "34157451043698668319114893878288785488552974792331044909448715557755021200679",
+                                                               "referenceOutcomeLabel":  "No",
+                                                               "isTradable":  true
+                                                           }
+                                                       ]
+                                      },
+                        "orderbookIdentity":  {
+                                                  "route":  "/api/orderbook/83016fc9-d6a7-48a4-a652-0755c75b2a0a/book",
+                                                  "marketId":  "83016fc9-d6a7-48a4-a652-0755c75b2a0a",
+                                                  "marketGroupId":  "main",
+                                                  "marketGroupKey":  "main",
+                                                  "selectorKey":  "main:regulation:default",
+                                                  "marketFamily":  "moneyline",
+                                                  "period":  "regulation",
+                                                  "line":  null,
+                                                  "lineValue":  null,
+                                                  "outcomeIds":  [
+                                                                     "6a1d415c-a18b-4efe-8648-e226c1bca7f6",
+                                                                     "ee425cd5-5343-42d6-a0be-f2b2675cd34b"
+                                                                 ],
+                                                  "tokenIds":  [
+                                                                   "29252823886591163818892631827503025749306440692725158708119244431095401849247",
+                                                                   "34157451043698668319114893878288785488552974792331044909448715557755021200679"
+                                                               ],
+                                                  "providerSource":  "polymarket",
+                                                  "providerStatus":  "stale",
+                                                  "depthSource":  "local-orderbook",
+                                                  "depthStatus":  "ready",
+                                                  "depthProviderSource":  "reference-orderbook-depth-snapshot",
+                                                  "depthProviderStatus":  "unavailable",
+                                                  "depthProviderSources":  [
+
+                                                                           ],
+                                                  "refreshedAt":  "2026-07-07T15:45:15.762Z",
+                                                  "staleAfterSeconds":  90,
+                                                  "refreshTtlSeconds":  60,
+                                                  "nextRefreshAt":  "2026-07-07T15:46:15.762Z",
+                                                  "shouldRefresh":  true,
+                                                  "isStale":  true,
+                                                  "ready":  true,
+                                                  "reason":  "Depth comes from local open orderbook orders."
+                                              },
+                        "orderbookDepth":  [
+                                               {
+                                                   "outcomeId":  "ee425cd5-5343-42d6-a0be-f2b2675cd34b",
+                                                   "side":  "bid",
+                                                   "price":  0.78,
+                                                   "shares":  5,
+                                                   "total":  3.9
+                                               },
+                                               {
+                                                   "outcomeId":  "6a1d415c-a18b-4efe-8648-e226c1bca7f6",
+                                                   "side":  "bid",
+                                                   "price":  0.17,
+                                                   "shares":  5,
+                                                   "total":  0.85
+                                               },
+                                               {
+                                                   "outcomeId":  "6a1d415c-a18b-4efe-8648-e226c1bca7f6",
+                                                   "side":  "ask",
+                                                   "price":  0.22,
+                                                   "shares":  5,
+                                                   "total":  1.1
+                                               },
+                                               {
+                                                   "outcomeId":  "ee425cd5-5343-42d6-a0be-f2b2675cd34b",
+                                                   "side":  "ask",
+                                                   "price":  0.83,
+                                                   "shares":  5,
+                                                   "total":  4.15
+                                               }
+                                           ],
+                        "orderbookDepthSource":  "local-orderbook",
+                        "orderbookDepthStatus":  "ready",
+                        "providerOrderbookDepth":  {
+                                                       "source":  "reference-orderbook-depth-snapshot",
+                                                       "status":  "unavailable",
+                                                       "levelCount":  0,
+                                                       "snapshotCount":  0,
+                                                       "latestFetchedAt":  null,
+                                                       "latestUpdatedAt":  null,
+                                                       "stalenessSeconds":  null,
+                                                       "staleAfterSeconds":  90,
+                                                       "refreshTtlSeconds":  60,
+                                                       "nextRefreshAt":  null,
+                                                       "shouldRefresh":  true,
+                                                       "isStale":  false,
+                                                       "sources":  [
+
+                                                                   ],
+                                                       "reason":  "No provider orderbook depth snapshot is available."
+                                                   },
+                        "providerQuoteSnapshot":  {
+                                                      "source":  "reference-quote-snapshot",
+                                                      "status":  "stale",
+                                                      "snapshotCount":  2,
+                                                      "latestFetchedAt":  "2026-07-07T15:45:15.762Z",
+                                                      "latestUpdatedAt":  "2026-07-07T15:45:15.763Z",
+                                                      "stalenessSeconds":  75551,
+                                                      "staleAfterSeconds":  90,
+                                                      "refreshTtlSeconds":  60,
+                                                      "nextRefreshAt":  "2026-07-07T15:46:15.762Z",
+                                                      "shouldRefresh":  true,
+                                                      "refreshKey":  "polymarket:2026-07-07T15:45:15.762Z",
+                                                      "isStale":  true,
+                                                      "acceptingOrders":  true,
+                                                      "outcomeIds":  [
+                                                                         "6a1d415c-a18b-4efe-8648-e226c1bca7f6",
+                                                                         "ee425cd5-5343-42d6-a0be-f2b2675cd34b"
+                                                                     ],
+                                                      "sources":  [
+                                                                      "polymarket"
+                                                                  ],
+                                                      "reason":  "Provider quote snapshot is older than 90 seconds."
+                                                  },
+                        "rulesText":  "Soccer market normalized from Polymarket provider data.",
+                        "event":  null,
+                        "outcomes":  [
+                                         {
+                                             "id":  "6a1d415c-a18b-4efe-8648-e226c1bca7f6",
+                                             "name":  "YES",
+                                             "label":  "Draw (Argentina vs. Egypt)",
+                                             "side":  "yes",
+                                             "tokenId":  "29252823886591163818892631827503025749306440692725158708119244431095401849247",
+                                             "referenceTokenId":  "29252823886591163818892631827503025749306440692725158708119244431095401849247",
+                                             "referenceOutcomeLabel":  "Yes",
+                                             "price":  0.195,
+                                             "bestBid":  0.19,
+                                             "bestAsk":  0.2,
+                                             "bestBidSize":  5,
+                                             "bestAskSize":  5,
+                                             "isTradable":  true
+                                         },
+                                         {
+                                             "id":  "ee425cd5-5343-42d6-a0be-f2b2675cd34b",
+                                             "name":  "NO",
+                                             "label":  "No",
+                                             "side":  "no",
+                                             "tokenId":  "34157451043698668319114893878288785488552974792331044909448715557755021200679",
+                                             "referenceTokenId":  "34157451043698668319114893878288785488552974792331044909448715557755021200679",
+                                             "referenceOutcomeLabel":  "No",
+                                             "price":  0.805,
+                                             "bestBid":  0.8,
+                                             "bestAsk":  0.81,
+                                             "bestBidSize":  5,
+                                             "bestAskSize":  5,
+                                             "isTradable":  true
+                                         }
+                                     ]
+                    },
+                    {
+                        "id":  "1edaddba-52b8-4333-8941-4c6ca1ac29ff",
+                        "title":  "Will Egypt win on 2026-07-07?",
+                        "description":  "This event is for the upcoming FIFA World Cup game, scheduled for Tuesday, July 7, 2026 between Argentina and Egypt.",
+                        "status":  "LIVE",
+                        "marketGroupKey":  "main",
+                        "marketGroupId":  "main",
+                        "marketGroupTitle":  "Regulation Winner",
+                        "displayOrder":  2,
+                        "marketType":  "match_winner_1x2",
+                        "period":  "regulation",
+                        "line":  null,
+                        "unit":  null,
+                        "referenceSource":  "polymarket",
+                        "externalSlug":  "fifwc-arg-egy-2026-07-07-egy",
+                        "externalMarketId":  "2793741",
+                        "conditionId":  "0x971eb98daab3a11a1dd3b76e14ae962f8e5980ec6a3d499529b5f19b75108d4a",
+                        "propCategory":  null,
+                        "availability":  {
+                                             "source":  "local-orderbook",
+                                             "status":  "ready",
+                                             "marketStatus":  "LIVE",
+                                             "lastUpdated":  "2026-07-07T15:45:15.893Z",
+                                             "stalenessSeconds":  75551,
+                                             "staleAfterSeconds":  90,
+                                             "isStale":  false,
+                                             "isSuspended":  false,
+                                             "isDelayed":  false,
+                                             "reason":  "Local orderbook has executable depth."
+                                         },
+                        "liquidity":  64.9027,
+                        "chartHistory":  [
+
+                                         ],
+                        "chartHistoryStatus":  {
+                                                   "source":  "empty",
+                                                   "status":  "unavailable",
+                                                   "pointCount":  0,
+                                                   "outcomeCount":  0,
+                                                   "lastUpdated":  null,
+                                                   "stalenessSeconds":  null,
+                                                   "staleAfterSeconds":  90,
+                                                   "refreshTtlSeconds":  60,
+                                                   "nextRefreshAt":  null,
+                                                   "shouldRefresh":  true,
+                                                   "isStale":  false,
+                                                   "emptyState":  "no-history",
+                                                   "range":  "1D",
+                                                   "ranges":  [
+                                                                  "1D",
+                                                                  "1W",
+                                                                  "1M",
+                                                                  "MAX"
+                                                              ]
+                                               },
+                        "providerLifecycle":  {
+                                                  "source":  "mobile-live-detail-market",
+                                                  "status":  "stale",
+                                                  "ready":  false,
+                                                  "stale":  true,
+                                                  "refreshDue":  false,
+                                                  "refreshing":  false,
+                                                  "refreshStarted":  false,
+                                                  "unavailable":  true,
+                                                  "empty":  false,
+                                                  "notReady":  true,
+                                                  "fallback":  false,
+                                                  "fallbackApplied":  false,
+                                                  "fallbackReason":  null,
+                                                  "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                                  "nextRefreshAt":  "2026-07-07T15:46:15.893Z",
+                                                  "lastFetchedAt":  "2026-07-07T15:45:15.893Z",
+                                                  "quote":  {
+                                                                "source":  "polymarket",
+                                                                "status":  "stale",
+                                                                "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                                                "nextRefreshAt":  "2026-07-07T15:46:15.893Z",
+                                                                "lastFetchedAt":  "2026-07-07T15:45:15.893Z",
+                                                                "stalenessSeconds":  75551,
+                                                                "shouldRefresh":  true,
+                                                                "ready":  false,
+                                                                "stale":  true,
+                                                                "refreshDue":  false,
+                                                                "unavailable":  false,
+                                                                "empty":  false,
+                                                                "notReady":  true
+                                                            },
+                                                  "orderbookDepth":  {
+                                                                         "source":  "reference-orderbook-depth-snapshot",
+                                                                         "status":  "unavailable",
+                                                                         "reason":  "No provider orderbook depth snapshot is available.",
+                                                                         "nextRefreshAt":  null,
+                                                                         "lastFetchedAt":  null,
+                                                                         "stalenessSeconds":  null,
+                                                                         "shouldRefresh":  true,
+                                                                         "ready":  false,
+                                                                         "stale":  false,
+                                                                         "refreshDue":  true,
+                                                                         "unavailable":  true,
+                                                                         "empty":  true,
+                                                                         "notReady":  true
+                                                                     },
+                                                  "chartHistory":  {
+                                                                       "source":  "empty",
+                                                                       "status":  "unavailable",
+                                                                       "reason":  "No provider chart history snapshot is available for this market.",
+                                                                       "nextRefreshAt":  null,
+                                                                       "lastFetchedAt":  null,
+                                                                       "stalenessSeconds":  null,
+                                                                       "shouldRefresh":  true,
+                                                                       "ready":  false,
+                                                                       "stale":  false,
+                                                                       "refreshDue":  true,
+                                                                       "unavailable":  true,
+                                                                       "empty":  true,
+                                                                       "notReady":  true
+                                                                   }
+                                              },
+                        "selection":  {
+                                          "selectorKey":  "main:regulation:default",
+                                          "marketId":  "1edaddba-52b8-4333-8941-4c6ca1ac29ff",
+                                          "marketGroupKey":  "main",
+                                          "marketGroupId":  "main",
+                                          "marketGroupTitle":  "Regulation Winner",
+                                          "marketType":  "match_winner_1x2",
+                                          "marketFamily":  "moneyline",
+                                          "displayLabel":  "Regulation Winner regulation",
+                                          "period":  "regulation",
+                                          "line":  null,
+                                          "lineValue":  null,
+                                          "unit":  null,
+                                          "chart":  {
+                                                        "targetMarketId":  "1edaddba-52b8-4333-8941-4c6ca1ac29ff",
+                                                        "status":  "unavailable",
+                                                        "source":  "empty",
+                                                        "pointCount":  0,
+                                                        "outcomeCount":  0,
+                                                        "range":  "1D",
+                                                        "ranges":  [
+                                                                       "1D",
+                                                                       "1W",
+                                                                       "1M",
+                                                                       "MAX"
+                                                                   ],
+                                                        "emptyState":  "no-history"
+                                                    },
+                                          "outcomes":  [
+                                                           {
+                                                               "outcomeId":  "6e7d3f14-371b-4906-9ee7-a89337c11005",
+                                                               "id":  "6e7d3f14-371b-4906-9ee7-a89337c11005",
+                                                               "side":  "yes",
+                                                               "label":  "Egypt",
+                                                               "tokenId":  "115321303982678629228305623888886288749804075736763407098365012911341798952806",
+                                                               "referenceTokenId":  "115321303982678629228305623888886288749804075736763407098365012911341798952806",
+                                                               "referenceOutcomeLabel":  "Yes",
+                                                               "isTradable":  true
+                                                           },
+                                                           {
+                                                               "outcomeId":  "013a59e7-5ea5-4bb0-b34d-11f80834bf68",
+                                                               "id":  "013a59e7-5ea5-4bb0-b34d-11f80834bf68",
+                                                               "side":  "no",
+                                                               "label":  "No",
+                                                               "tokenId":  "34540998510618112670520542034558139652694657466670033556242205558762918802135",
+                                                               "referenceTokenId":  "34540998510618112670520542034558139652694657466670033556242205558762918802135",
+                                                               "referenceOutcomeLabel":  "No",
+                                                               "isTradable":  true
+                                                           }
+                                                       ]
+                                      },
+                        "orderbookIdentity":  {
+                                                  "route":  "/api/orderbook/1edaddba-52b8-4333-8941-4c6ca1ac29ff/book",
+                                                  "marketId":  "1edaddba-52b8-4333-8941-4c6ca1ac29ff",
+                                                  "marketGroupId":  "main",
+                                                  "marketGroupKey":  "main",
+                                                  "selectorKey":  "main:regulation:default",
+                                                  "marketFamily":  "moneyline",
+                                                  "period":  "regulation",
+                                                  "line":  null,
+                                                  "lineValue":  null,
+                                                  "outcomeIds":  [
+                                                                     "6e7d3f14-371b-4906-9ee7-a89337c11005",
+                                                                     "013a59e7-5ea5-4bb0-b34d-11f80834bf68"
+                                                                 ],
+                                                  "tokenIds":  [
+                                                                   "115321303982678629228305623888886288749804075736763407098365012911341798952806",
+                                                                   "34540998510618112670520542034558139652694657466670033556242205558762918802135"
+                                                               ],
+                                                  "providerSource":  "polymarket",
+                                                  "providerStatus":  "stale",
+                                                  "depthSource":  "local-orderbook",
+                                                  "depthStatus":  "ready",
+                                                  "depthProviderSource":  "reference-orderbook-depth-snapshot",
+                                                  "depthProviderStatus":  "unavailable",
+                                                  "depthProviderSources":  [
+
+                                                                           ],
+                                                  "refreshedAt":  "2026-07-07T15:45:15.893Z",
+                                                  "staleAfterSeconds":  90,
+                                                  "refreshTtlSeconds":  60,
+                                                  "nextRefreshAt":  "2026-07-07T15:46:15.893Z",
+                                                  "shouldRefresh":  true,
+                                                  "isStale":  true,
+                                                  "ready":  true,
+                                                  "reason":  "Depth comes from local open orderbook orders."
+                                              },
+                        "orderbookDepth":  [
+                                               {
+                                                   "outcomeId":  "013a59e7-5ea5-4bb0-b34d-11f80834bf68",
+                                                   "side":  "bid",
+                                                   "price":  0.89,
+                                                   "shares":  5,
+                                                   "total":  4.45
+                                               },
+                                               {
+                                                   "outcomeId":  "6e7d3f14-371b-4906-9ee7-a89337c11005",
+                                                   "side":  "bid",
+                                                   "price":  0.11,
+                                                   "shares":  222.27,
+                                                   "total":  24.4497
+                                               },
+                                               {
+                                                   "outcomeId":  "6e7d3f14-371b-4906-9ee7-a89337c11005",
+                                                   "side":  "bid",
+                                                   "price":  0.06,
+                                                   "shares":  5,
+                                                   "total":  0.3
+                                               },
+                                               {
+                                                   "outcomeId":  "6e7d3f14-371b-4906-9ee7-a89337c11005",
+                                                   "side":  "ask",
+                                                   "price":  0.7,
+                                                   "shares":  44.29,
+                                                   "total":  31.003
+                                               },
+                                               {
+                                                   "outcomeId":  "013a59e7-5ea5-4bb0-b34d-11f80834bf68",
+                                                   "side":  "ask",
+                                                   "price":  0.94,
+                                                   "shares":  5,
+                                                   "total":  4.7
+                                               }
+                                           ],
+                        "orderbookDepthSource":  "local-orderbook",
+                        "orderbookDepthStatus":  "ready",
+                        "providerOrderbookDepth":  {
+                                                       "source":  "reference-orderbook-depth-snapshot",
+                                                       "status":  "unavailable",
+                                                       "levelCount":  0,
+                                                       "snapshotCount":  0,
+                                                       "latestFetchedAt":  null,
+                                                       "latestUpdatedAt":  null,
+                                                       "stalenessSeconds":  null,
+                                                       "staleAfterSeconds":  90,
+                                                       "refreshTtlSeconds":  60,
+                                                       "nextRefreshAt":  null,
+                                                       "shouldRefresh":  true,
+                                                       "isStale":  false,
+                                                       "sources":  [
+
+                                                                   ],
+                                                       "reason":  "No provider orderbook depth snapshot is available."
+                                                   },
+                        "providerQuoteSnapshot":  {
+                                                      "source":  "reference-quote-snapshot",
+                                                      "status":  "stale",
+                                                      "snapshotCount":  2,
+                                                      "latestFetchedAt":  "2026-07-07T15:45:15.893Z",
+                                                      "latestUpdatedAt":  "2026-07-07T15:45:15.894Z",
+                                                      "stalenessSeconds":  75551,
+                                                      "staleAfterSeconds":  90,
+                                                      "refreshTtlSeconds":  60,
+                                                      "nextRefreshAt":  "2026-07-07T15:46:15.893Z",
+                                                      "shouldRefresh":  true,
+                                                      "refreshKey":  "polymarket:2026-07-07T15:45:15.893Z",
+                                                      "isStale":  true,
+                                                      "acceptingOrders":  true,
+                                                      "outcomeIds":  [
+                                                                         "013a59e7-5ea5-4bb0-b34d-11f80834bf68",
+                                                                         "6e7d3f14-371b-4906-9ee7-a89337c11005"
+                                                                     ],
+                                                      "sources":  [
+                                                                      "polymarket"
+                                                                  ],
+                                                      "reason":  "Provider quote snapshot is older than 90 seconds."
+                                                  },
+                        "rulesText":  "Soccer market normalized from Polymarket provider data.",
+                        "event":  null,
+                        "outcomes":  [
+                                         {
+                                             "id":  "6e7d3f14-371b-4906-9ee7-a89337c11005",
+                                             "name":  "YES",
+                                             "label":  "Egypt",
+                                             "side":  "yes",
+                                             "tokenId":  "115321303982678629228305623888886288749804075736763407098365012911341798952806",
+                                             "referenceTokenId":  "115321303982678629228305623888886288749804075736763407098365012911341798952806",
+                                             "referenceOutcomeLabel":  "Yes",
+                                             "price":  0.075,
+                                             "bestBid":  0.07,
+                                             "bestAsk":  0.08,
+                                             "bestBidSize":  5,
+                                             "bestAskSize":  44.29,
+                                             "isTradable":  true
+                                         },
+                                         {
+                                             "id":  "013a59e7-5ea5-4bb0-b34d-11f80834bf68",
+                                             "name":  "NO",
+                                             "label":  "No",
+                                             "side":  "no",
+                                             "tokenId":  "34540998510618112670520542034558139652694657466670033556242205558762918802135",
+                                             "referenceTokenId":  "34540998510618112670520542034558139652694657466670033556242205558762918802135",
+                                             "referenceOutcomeLabel":  "No",
+                                             "price":  0.925,
+                                             "bestBid":  0.92,
+                                             "bestAsk":  0.93,
+                                             "bestBidSize":  5,
+                                             "bestAskSize":  5,
+                                             "isTradable":  true
+                                         }
+                                     ]
+                    },
+                    {
+                        "id":  "12d96f2c-cec2-48d7-9e2d-a7a09b770c2a",
+                        "title":  "Argentina vs. Egypt: Argentina +0.5",
+                        "description":  "Local MVP contract-shaped Spread market for Argentina vs. Egypt.",
+                        "status":  "LIVE",
+                        "marketGroupKey":  "spread",
+                        "marketGroupId":  "spread",
+                        "marketGroupTitle":  "Spread",
+                        "displayOrder":  40,
+                        "marketType":  "spread",
+                        "period":  "regulation",
+                        "line":  "0.5",
+                        "unit":  "goals",
+                        "referenceSource":  "contract-fixture",
+                        "externalSlug":  "argentina-vs-egypt-spread-home-0-5",
+                        "externalMarketId":  "contract-argentina-vs-egypt-spread-home-0-5",
+                        "conditionId":  "condition-argentina-vs-egypt-spread-home-0-5",
+                        "propCategory":  "handicap",
+                        "availability":  {
+                                             "source":  "provider-lifecycle",
+                                             "status":  "unavailable",
+                                             "marketStatus":  "LIVE",
+                                             "lastUpdated":  "2026-07-08T07:46:37.670Z",
+                                             "stalenessSeconds":  17869,
+                                             "staleAfterSeconds":  90,
+                                             "isStale":  true,
+                                             "isSuspended":  false,
+                                             "isDelayed":  false,
+                                             "reason":  "Provider quote snapshot is older than 90 seconds."
+                                         },
+                        "liquidity":  1500,
+                        "chartHistory":  [
+
+                                         ],
+                        "chartHistoryStatus":  {
+                                                   "source":  "empty",
+                                                   "status":  "unavailable",
+                                                   "pointCount":  0,
+                                                   "outcomeCount":  0,
+                                                   "lastUpdated":  null,
+                                                   "stalenessSeconds":  null,
+                                                   "staleAfterSeconds":  90,
+                                                   "refreshTtlSeconds":  60,
+                                                   "nextRefreshAt":  null,
+                                                   "shouldRefresh":  true,
+                                                   "isStale":  false,
+                                                   "emptyState":  "no-history",
+                                                   "range":  "1D",
+                                                   "ranges":  [
+                                                                  "1D",
+                                                                  "1W",
+                                                                  "1M",
+                                                                  "MAX"
+                                                              ]
+                                               },
+                        "providerLifecycle":  {
+                                                  "source":  "mobile-live-detail-market",
+                                                  "status":  "stale",
+                                                  "ready":  false,
+                                                  "stale":  true,
+                                                  "refreshDue":  false,
+                                                  "refreshing":  false,
+                                                  "refreshStarted":  false,
+                                                  "unavailable":  true,
+                                                  "empty":  false,
+                                                  "notReady":  true,
+                                                  "fallback":  false,
+                                                  "fallbackApplied":  false,
+                                                  "fallbackReason":  null,
+                                                  "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                                  "nextRefreshAt":  "2026-07-08T07:47:37.670Z",
+                                                  "lastFetchedAt":  "2026-07-08T07:46:37.670Z",
+                                                  "quote":  {
+                                                                "source":  "contract-fixture",
+                                                                "status":  "stale",
+                                                                "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                                                "nextRefreshAt":  "2026-07-08T07:47:37.670Z",
+                                                                "lastFetchedAt":  "2026-07-08T07:46:37.670Z",
+                                                                "stalenessSeconds":  17869,
+                                                                "shouldRefresh":  true,
+                                                                "ready":  false,
+                                                                "stale":  true,
+                                                                "refreshDue":  false,
+                                                                "unavailable":  false,
+                                                                "empty":  false,
+                                                                "notReady":  true
+                                                            },
+                                                  "orderbookDepth":  {
+                                                                         "source":  "reference-orderbook-depth-snapshot",
+                                                                         "status":  "unavailable",
+                                                                         "reason":  "No provider orderbook depth snapshot is available.",
+                                                                         "nextRefreshAt":  null,
+                                                                         "lastFetchedAt":  null,
+                                                                         "stalenessSeconds":  null,
+                                                                         "shouldRefresh":  true,
+                                                                         "ready":  false,
+                                                                         "stale":  false,
+                                                                         "refreshDue":  true,
+                                                                         "unavailable":  true,
+                                                                         "empty":  true,
+                                                                         "notReady":  true
+                                                                     },
+                                                  "chartHistory":  {
+                                                                       "source":  "empty",
+                                                                       "status":  "unavailable",
+                                                                       "reason":  "No provider chart history snapshot is available for this market.",
+                                                                       "nextRefreshAt":  null,
+                                                                       "lastFetchedAt":  null,
+                                                                       "stalenessSeconds":  null,
+                                                                       "shouldRefresh":  true,
+                                                                       "ready":  false,
+                                                                       "stale":  false,
+                                                                       "refreshDue":  true,
+                                                                       "unavailable":  true,
+                                                                       "empty":  true,
+                                                                       "notReady":  true
+                                                                   }
+                                              },
+                        "selection":  {
+                                          "selectorKey":  "spread:regulation:0.5",
+                                          "marketId":  "12d96f2c-cec2-48d7-9e2d-a7a09b770c2a",
+                                          "marketGroupKey":  "spread",
+                                          "marketGroupId":  "spread",
+                                          "marketGroupTitle":  "Spread",
+                                          "marketType":  "spread",
+                                          "marketFamily":  "spread",
+                                          "displayLabel":  "Spread regulation 0.5",
+                                          "period":  "regulation",
+                                          "line":  "0.5",
+                                          "lineValue":  0.5,
+                                          "unit":  "goals",
+                                          "chart":  {
+                                                        "targetMarketId":  "12d96f2c-cec2-48d7-9e2d-a7a09b770c2a",
+                                                        "status":  "unavailable",
+                                                        "source":  "empty",
+                                                        "pointCount":  0,
+                                                        "outcomeCount":  0,
+                                                        "range":  "1D",
+                                                        "ranges":  [
+                                                                       "1D",
+                                                                       "1W",
+                                                                       "1M",
+                                                                       "MAX"
+                                                                   ],
+                                                        "emptyState":  "no-history"
+                                                    },
+                                          "outcomes":  [
+                                                           {
+                                                               "outcomeId":  "32a200f4-d6d6-4d52-b0ab-113ab551ae5e",
+                                                               "id":  "32a200f4-d6d6-4d52-b0ab-113ab551ae5e",
+                                                               "side":  "home",
+                                                               "label":  "Argentina +0.5",
+                                                               "tokenId":  "contract-argentina-vs-egypt-spread-home-0-5-home",
+                                                               "referenceTokenId":  "contract-argentina-vs-egypt-spread-home-0-5-home",
+                                                               "referenceOutcomeLabel":  "Argentina +0.5",
+                                                               "isTradable":  true
+                                                           },
+                                                           {
+                                                               "outcomeId":  "72bb0160-52bd-4fe5-8643-283eaebc304a",
+                                                               "id":  "72bb0160-52bd-4fe5-8643-283eaebc304a",
+                                                               "side":  "away",
+                                                               "label":  "Egypt -0.5",
+                                                               "tokenId":  "contract-argentina-vs-egypt-spread-home-0-5-away",
+                                                               "referenceTokenId":  "contract-argentina-vs-egypt-spread-home-0-5-away",
+                                                               "referenceOutcomeLabel":  "Egypt -0.5",
+                                                               "isTradable":  true
+                                                           }
+                                                       ]
+                                      },
+                        "orderbookIdentity":  {
+                                                  "route":  "/api/orderbook/12d96f2c-cec2-48d7-9e2d-a7a09b770c2a/book",
+                                                  "marketId":  "12d96f2c-cec2-48d7-9e2d-a7a09b770c2a",
+                                                  "marketGroupId":  "spread",
+                                                  "marketGroupKey":  "spread",
+                                                  "selectorKey":  "spread:regulation:0.5",
+                                                  "marketFamily":  "spread",
+                                                  "period":  "regulation",
+                                                  "line":  "0.5",
+                                                  "lineValue":  0.5,
+                                                  "outcomeIds":  [
+                                                                     "32a200f4-d6d6-4d52-b0ab-113ab551ae5e",
+                                                                     "72bb0160-52bd-4fe5-8643-283eaebc304a"
+                                                                 ],
+                                                  "tokenIds":  [
+                                                                   "contract-argentina-vs-egypt-spread-home-0-5-home",
+                                                                   "contract-argentina-vs-egypt-spread-home-0-5-away"
+                                                               ],
+                                                  "providerSource":  "contract-fixture",
+                                                  "providerStatus":  "stale",
+                                                  "depthSource":  "provider-quote-snapshot",
+                                                  "depthStatus":  "stale",
+                                                  "depthProviderSource":  "reference-orderbook-depth-snapshot",
+                                                  "depthProviderStatus":  "unavailable",
+                                                  "depthProviderSources":  [
+
+                                                                           ],
+                                                  "refreshedAt":  "2026-07-08T07:46:37.670Z",
+                                                  "staleAfterSeconds":  90,
+                                                  "refreshTtlSeconds":  60,
+                                                  "nextRefreshAt":  "2026-07-08T07:47:37.670Z",
+                                                  "shouldRefresh":  true,
+                                                  "isStale":  true,
+                                                  "ready":  false,
+                                                  "reason":  "Depth comes from provider quote snapshot top-of-book prices and estimated size."
+                                              },
+                        "orderbookDepth":  [
+                                               {
+                                                   "outcomeId":  "32a200f4-d6d6-4d52-b0ab-113ab551ae5e",
+                                                   "side":  "bid",
+                                                   "price":  0.56,
+                                                   "shares":  669.642857,
+                                                   "total":  375
+                                               },
+                                               {
+                                                   "outcomeId":  "72bb0160-52bd-4fe5-8643-283eaebc304a",
+                                                   "side":  "bid",
+                                                   "price":  0.4,
+                                                   "shares":  937.5,
+                                                   "total":  375
+                                               },
+                                               {
+                                                   "outcomeId":  "32a200f4-d6d6-4d52-b0ab-113ab551ae5e",
+                                                   "side":  "ask",
+                                                   "price":  0.6,
+                                                   "shares":  625,
+                                                   "total":  375
+                                               },
+                                               {
+                                                   "outcomeId":  "72bb0160-52bd-4fe5-8643-283eaebc304a",
+                                                   "side":  "ask",
+                                                   "price":  0.44,
+                                                   "shares":  852.272727,
+                                                   "total":  375
+                                               }
+                                           ],
+                        "orderbookDepthSource":  "provider-quote-snapshot",
+                        "orderbookDepthStatus":  "stale",
+                        "providerOrderbookDepth":  {
+                                                       "source":  "reference-orderbook-depth-snapshot",
+                                                       "status":  "unavailable",
+                                                       "levelCount":  0,
+                                                       "snapshotCount":  0,
+                                                       "latestFetchedAt":  null,
+                                                       "latestUpdatedAt":  null,
+                                                       "stalenessSeconds":  null,
+                                                       "staleAfterSeconds":  90,
+                                                       "refreshTtlSeconds":  60,
+                                                       "nextRefreshAt":  null,
+                                                       "shouldRefresh":  true,
+                                                       "isStale":  false,
+                                                       "sources":  [
+
+                                                                   ],
+                                                       "reason":  "No provider orderbook depth snapshot is available."
+                                                   },
+                        "providerQuoteSnapshot":  {
+                                                      "source":  "reference-quote-snapshot",
+                                                      "status":  "stale",
+                                                      "snapshotCount":  2,
+                                                      "latestFetchedAt":  "2026-07-08T07:46:37.670Z",
+                                                      "latestUpdatedAt":  "2026-07-08T07:46:37.691Z",
+                                                      "stalenessSeconds":  17869,
+                                                      "staleAfterSeconds":  90,
+                                                      "refreshTtlSeconds":  60,
+                                                      "nextRefreshAt":  "2026-07-08T07:47:37.670Z",
+                                                      "shouldRefresh":  true,
+                                                      "refreshKey":  "contract-fixture:2026-07-08T07:46:37.670Z",
+                                                      "isStale":  true,
+                                                      "acceptingOrders":  true,
+                                                      "outcomeIds":  [
+                                                                         "32a200f4-d6d6-4d52-b0ab-113ab551ae5e",
+                                                                         "72bb0160-52bd-4fe5-8643-283eaebc304a"
+                                                                     ],
+                                                      "sources":  [
+                                                                      "contract-fixture"
+                                                                  ],
+                                                      "reason":  "Provider quote snapshot is older than 90 seconds."
+                                                  },
+                        "rulesText":  "Local MVP fake-token market. Replace with Polymarket-backed provider mapping when this market family is available.",
+                        "event":  null,
+                        "outcomes":  [
+                                         {
+                                             "id":  "32a200f4-d6d6-4d52-b0ab-113ab551ae5e",
+                                             "name":  "Argentina +0.5",
+                                             "label":  "Argentina +0.5",
+                                             "side":  "home",
+                                             "tokenId":  "contract-argentina-vs-egypt-spread-home-0-5-home",
+                                             "referenceTokenId":  "contract-argentina-vs-egypt-spread-home-0-5-home",
+                                             "referenceOutcomeLabel":  "Argentina +0.5",
+                                             "price":  0.58,
+                                             "bestBid":  0.56,
+                                             "bestAsk":  0.6,
+                                             "bestBidSize":  669.642857,
+                                             "bestAskSize":  625,
+                                             "isTradable":  true
+                                         },
+                                         {
+                                             "id":  "72bb0160-52bd-4fe5-8643-283eaebc304a",
+                                             "name":  "Egypt -0.5",
+                                             "label":  "Egypt -0.5",
+                                             "side":  "away",
+                                             "tokenId":  "contract-argentina-vs-egypt-spread-home-0-5-away",
+                                             "referenceTokenId":  "contract-argentina-vs-egypt-spread-home-0-5-away",
+                                             "referenceOutcomeLabel":  "Egypt -0.5",
+                                             "price":  0.42,
+                                             "bestBid":  0.4,
+                                             "bestAsk":  0.44,
+                                             "bestBidSize":  937.5,
+                                             "bestAskSize":  852.272727,
+                                             "isTradable":  true
+                                         }
+                                     ]
+                    }
+                ],
+    "providerLifecycle":  {
+                              "source":  "mobile-live-detail",
+                              "status":  "stale",
+                              "ready":  false,
+                              "stale":  true,
+                              "refreshDue":  false,
+                              "refreshing":  false,
+                              "refreshStarted":  false,
+                              "unavailable":  true,
+                              "empty":  false,
+                              "notReady":  true,
+                              "fallback":  false,
+                              "fallbackApplied":  false,
+                              "fallbackReason":  null,
+                              "reason":  "Provider quote snapshot is older than 90 seconds.",
+                              "nextRefreshAt":  "2026-07-07T15:46:15.762Z",
+                              "lastFetchedAt":  "2026-07-08T07:46:37.742Z",
+                              "quote":  {
+                                            "source":  "polymarket",
+                                            "status":  "stale",
+                                            "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                            "nextRefreshAt":  "2026-07-07T15:46:15.762Z",
+                                            "lastFetchedAt":  "2026-07-08T07:46:37.742Z",
+                                            "stalenessSeconds":  75551,
+                                            "shouldRefresh":  true,
+                                            "ready":  false,
+                                            "stale":  true,
+                                            "refreshDue":  false,
+                                            "unavailable":  false,
+                                            "empty":  false,
+                                            "notReady":  true
+                                        },
+                              "orderbookDepth":  {
+                                                     "source":  "reference-orderbook-depth-snapshot",
+                                                     "status":  "unavailable",
+                                                     "reason":  "No provider orderbook depth snapshot is available.",
+                                                     "nextRefreshAt":  null,
+                                                     "lastFetchedAt":  null,
+                                                     "stalenessSeconds":  null,
+                                                     "shouldRefresh":  true,
+                                                     "ready":  false,
+                                                     "stale":  false,
+                                                     "refreshDue":  false,
+                                                     "unavailable":  true,
+                                                     "empty":  true,
+                                                     "notReady":  true
+                                                 },
+                              "chartHistory":  {
+                                                   "source":  "empty",
+                                                   "status":  "unavailable",
+                                                   "reason":  "No provider chart history snapshot is available for this market.",
+                                                   "nextRefreshAt":  null,
+                                                   "lastFetchedAt":  null,
+                                                   "stalenessSeconds":  null,
+                                                   "shouldRefresh":  true,
+                                                   "ready":  false,
+                                                   "stale":  false,
+                                                   "refreshDue":  false,
+                                                   "unavailable":  true,
+                                                   "empty":  true,
+                                                   "notReady":  true
+                                               }
+                          },
+    "contract":  {
+                     "route":  "mobile-live-detail",
+                     "generatedAt":  "2026-07-08T12:44:26.909Z",
+                     "marketCount":  7,
+                     "maxMarkets":  14,
+                     "primaryMarketId":  "57079b71-6c20-4bda-8538-9274fcdd426d",
+                     "orderbookDepthSource":  "orderbook-route",
+                     "batchedOrderbookDepthSource":  "orderbook-route",
+                     "batchedOrderbookDepthMarketCount":  7,
+                     "batchedOrderbookDepthRequestedMarketCount":  7,
+                     "batchedOrderbookDepthRequestedMarketIds":  [
+                                                                     "57079b71-6c20-4bda-8538-9274fcdd426d",
+                                                                     "02bc8228-01c9-4fa5-a229-642c429a75dc",
+                                                                     "80dc4fb7-dbb1-4da8-be1c-76dabc5f9549",
+                                                                     "05a4ed86-79a1-4758-a239-3dbcd611459b",
+                                                                     "83016fc9-d6a7-48a4-a652-0755c75b2a0a",
+                                                                     "1edaddba-52b8-4333-8941-4c6ca1ac29ff",
+                                                                     "12d96f2c-cec2-48d7-9e2d-a7a09b770c2a"
+                                                                 ],
+                     "batchedOrderbookDepthMaxLevels":  24,
+                     "batchedOrderbookDepthCacheTtlSeconds":  3,
+                     "batchedProviderOrderbookDepthSource":  "empty",
+                     "batchedProviderOrderbookDepthMarketCount":  0,
+                     "batchedProviderOrderbookDepthReadyCount":  0,
+                     "batchedProviderOrderbookDepthStaleCount":  0,
+                     "batchedProviderOrderbookDepthRefreshDueCount":  7,
+                     "batchedProviderQuoteSnapshotSource":  "reference-quote-snapshot",
+                     "batchedProviderQuoteSnapshotMarketCount":  7,
+                     "batchedProviderQuoteSnapshotReadyCount":  0,
+                     "batchedProviderQuoteSnapshotStaleCount":  7,
+                     "batchedProviderQuoteSnapshotRefreshDueCount":  7,
+                     "batchedProviderQuoteSnapshotNextRefreshAt":  "2026-07-07T15:46:15.762Z",
+                     "chartHistorySource":  "empty",
+                     "batchedChartHistorySource":  "empty",
+                     "batchedChartHistoryMarketCount":  0,
+                     "batchedChartHistoryPointCount":  0,
+                     "batchedChartHistoryReadyCount":  0,
+                     "batchedChartHistoryStaleCount":  0,
+                     "batchedChartHistoryRefreshDueCount":  7,
+                     "batchedChartHistoryNextRefreshAt":  null,
+                     "batchedChartHistoryRequestedMarketCount":  7,
+                     "batchedChartHistoryRequestedMarketIds":  [
+                                                                   "57079b71-6c20-4bda-8538-9274fcdd426d",
+                                                                   "02bc8228-01c9-4fa5-a229-642c429a75dc",
+                                                                   "80dc4fb7-dbb1-4da8-be1c-76dabc5f9549",
+                                                                   "05a4ed86-79a1-4758-a239-3dbcd611459b",
+                                                                   "83016fc9-d6a7-48a4-a652-0755c75b2a0a",
+                                                                   "1edaddba-52b8-4333-8941-4c6ca1ac29ff",
+                                                                   "12d96f2c-cec2-48d7-9e2d-a7a09b770c2a"
+                                                               ],
+                     "liveDataStatus":  "unavailable",
+                     "providerLifecycle":  {
+                                               "source":  "mobile-live-detail",
+                                               "status":  "stale",
+                                               "ready":  false,
+                                               "stale":  true,
+                                               "refreshDue":  false,
+                                               "refreshing":  false,
+                                               "refreshStarted":  false,
+                                               "unavailable":  true,
+                                               "empty":  false,
+                                               "notReady":  true,
+                                               "fallback":  false,
+                                               "fallbackApplied":  false,
+                                               "fallbackReason":  null,
+                                               "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                               "nextRefreshAt":  "2026-07-07T15:46:15.762Z",
+                                               "lastFetchedAt":  "2026-07-08T07:46:37.742Z",
+                                               "quote":  {
+                                                             "source":  "polymarket",
+                                                             "status":  "stale",
+                                                             "reason":  "Provider quote snapshot is older than 90 seconds.",
+                                                             "nextRefreshAt":  "2026-07-07T15:46:15.762Z",
+                                                             "lastFetchedAt":  "2026-07-08T07:46:37.742Z",
+                                                             "stalenessSeconds":  75551,
+                                                             "shouldRefresh":  true,
+                                                             "ready":  false,
+                                                             "stale":  true,
+                                                             "refreshDue":  false,
+                                                             "unavailable":  false,
+                                                             "empty":  false,
+                                                             "notReady":  true
+                                                         },
+                                               "orderbookDepth":  {
+                                                                      "source":  "reference-orderbook-depth-snapshot",
+                                                                      "status":  "unavailable",
+                                                                      "reason":  "No provider orderbook depth snapshot is available.",
+                                                                      "nextRefreshAt":  null,
+                                                                      "lastFetchedAt":  null,
+                                                                      "stalenessSeconds":  null,
+                                                                      "shouldRefresh":  true,
+                                                                      "ready":  false,
+                                                                      "stale":  false,
+                                                                      "refreshDue":  false,
+                                                                      "unavailable":  true,
+                                                                      "empty":  true,
+                                                                      "notReady":  true
+                                                                  },
+                                               "chartHistory":  {
+                                                                    "source":  "empty",
+                                                                    "status":  "unavailable",
+                                                                    "reason":  "No provider chart history snapshot is available for this market.",
+                                                                    "nextRefreshAt":  null,
+                                                                    "lastFetchedAt":  null,
+                                                                    "stalenessSeconds":  null,
+                                                                    "shouldRefresh":  true,
+                                                                    "ready":  false,
+                                                                    "stale":  false,
+                                                                    "refreshDue":  false,
+                                                                    "unavailable":  true,
+                                                                    "empty":  true,
+                                                                    "notReady":  true
+                                                                }
+                                           },
+                     "marketSourceSummary":  {
+                                                 "totalMarketCount":  7,
+                                                 "sourceBreakdown":  {
+                                                                         "polymarket":  3,
+                                                                         "contract-fixture":  4
+                                                                     },
+                                                 "polymarketMarketCount":  3,
+                                                 "contractFixtureMarketCount":  4,
+                                                 "unknownSourceMarketCount":  0,
+                                                 "regulationWinner":  {
+                                                                          "totalCount":  3,
+                                                                          "polymarketCount":  3,
+                                                                          "contractFixtureCount":  0,
+                                                                          "status":  "provider-backed"
+                                                                      },
+                                                 "lineMarkets":  {
+                                                                     "totalCount":  4,
+                                                                     "polymarketCount":  0,
+                                                                     "contractFixtureCount":  4,
+                                                                     "status":  "contract-fixture",
+                                                                     "families":  [
+                                                                                      "spread",
+                                                                                      "total_goals",
+                                                                                      "team_total_goals"
+                                                                                  ],
+                                                                     "providerAvailability":  {
+                                                                                                  "source":  "polymarket-gamma",
+                                                                                                  "status":  "unavailable",
+                                                                                                  "providerBackedLineMarketCount":  0,
+                                                                                                  "contractFixtureLineMarketCount":  4,
+                                                                                                  "reason":  "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures."
+                                                                                              },
+                                                                     "reason":  "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured."
+                                                                 }
+                                             }
+                 }
+}

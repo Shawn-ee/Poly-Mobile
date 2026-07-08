@@ -1,0 +1,22 @@
+{
+  "cycle": "KM",
+  "scope": "event-detail-ui-hydration-wiring",
+  "generatedAt": "2026-07-06T17:12:08.584Z",
+  "preferredRoute": "/api/mobile/events/:slug/live-detail",
+  "fallbackRoute": "/api/events/:slug",
+  "pass": true,
+  "checks": {
+    "appImportsDetailNormalizer": true,
+    "appOpensVisibleDetailWithServerHydration": true,
+    "appPassesHydratedEventToVisibleScreen": true,
+    "apiPrefersCompactLiveDetail": true,
+    "adapterPreservesBackendRules": true,
+    "eventDetailRendersBackendMarkets": true
+  },
+  "evidence": {
+    "app": "mobile/App.tsx",
+    "api": "mobile/src/api.ts",
+    "adapter": "mobile/src/adapters/worldCupAdapter.ts",
+    "eventDetail": "mobile/src/components/EventDetail.tsx"
+  }
+}

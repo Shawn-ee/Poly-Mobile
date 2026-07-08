@@ -1,0 +1,24 @@
+{
+    "cycle":  "ND",
+    "scope":  "open-order-source-badge-visible-proof",
+    "result":  "pass",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "focusedEvidence":  "docs\\mobile\\harness\\cycle-ND-open-order-source-badge\\cycle-ND-current-mvp-after-submit.xml",
+    "screenshot":  "docs\\mobile\\screenshots\\cycle-ND-open-order-source-badge\\cycle-ND-current-mvp-after-submit.png",
+    "assertions":  {
+                       "openOrderVisible":  true,
+                       "openOrderSourceBadgeVisible":  true,
+                       "openOrderSourceNoteVisible":  true,
+                       "localSourceBadgeVisible":  true,
+                       "localTestPricingVisible":  true,
+                       "selectedLinePreserved":  true,
+                       "selectedSourcePreserved":  true,
+                       "cancelButtonVisible":  true
+                   },
+    "notes":  [
+                  "Focused S23 proof uses the current Local MVP Argentina vs Egypt path without seeded counterparty liquidity after clearing stale open SELL liquidity for the selected spread outcome.",
+                  "The broader reusable proof script continued into History and failed a non-gating empty-history assertion; the focused open-order source badge gate is proven by the after-submit XML/screenshot."
+              ],
+    "pass":  true
+}

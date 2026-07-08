@@ -79,11 +79,14 @@ const expectedEventSummaryKeys = [
   "activeMarketCount",
   "awayTeamName",
   "category",
+  "chartHistory",
   "createdAt",
   "description",
+  "displayStatus",
   "eventType",
   "externalEventId",
   "externalSlug",
+  "gameRules",
   "hasGroupedMarkets",
   "homeTeamName",
   "icon",
@@ -91,13 +94,17 @@ const expectedEventSummaryKeys = [
   "image",
   "imageUrl",
   "leagueKey",
+  "liveStats",
   "marketCount",
+  "marketProfile",
   "metadata",
+  "resultMode",
   "slug",
   "source",
   "sportKey",
   "startTime",
   "status",
+  "supportedMarketTypes",
   "title",
   "updatedAt",
 ];
@@ -174,6 +181,32 @@ const market = {
   mechanism: "ORDERBOOK",
 };
 
+const mobileListMarket = {
+  ...market,
+  event: baseEvent,
+  category: null,
+  tags: [],
+  outcomeSnapshots: [],
+  marketGroupKey: "main",
+  marketGroupTitle: "Match Winner",
+  displayOrder: 0,
+  line: null,
+  unit: null,
+  period: "full-game",
+  participantType: null,
+  participantName: null,
+  participantId: null,
+  propCategory: null,
+  sourceUpdatedAt: now,
+  updatedAt: now,
+  rulesText: null,
+  outcomes: market.outcomes.map((outcome) => ({
+    ...outcome,
+    side: outcome.id === "home" ? "home" : "away",
+    resolvedResult: null,
+  })),
+};
+
 describe("public event API no-leak checks", () => {
   beforeEach(() => {
     mockPrisma.event.findMany.mockReset();
@@ -199,15 +232,23 @@ describe("public event API no-leak checks", () => {
     expect(mockPrisma.event.findMany).toHaveBeenCalledWith(
       expect.objectContaining({
         where: expect.objectContaining({
-          category: "sports",
-          sportKey: "soccer",
-          leagueKey: "world_cup",
+          AND: expect.arrayContaining([
+            expect.objectContaining({
+              category: "sports",
+              sportKey: "soccer",
+              leagueKey: "world_cup",
+            }),
+          ]),
         }),
+        take: 51,
+        orderBy: [{ updatedAt: "desc" }, { createdAt: "desc" }, { id: "desc" }],
       }),
     );
 
     const body = await response.json();
-    expectOnlyKeys(body, ["events"]);
+    expectOnlyKeys(body, ["events", "nextCursor", "page"]);
+    expect(body.nextCursor).toBeNull();
+    expect(body.page).toEqual({ limit: 50, nextCursor: null, hasMore: false });
     expect(body.events).toHaveLength(1);
     expectOnlyKeys(body.events[0], [
       ...expectedEventSummaryKeys,
@@ -220,6 +261,277 @@ describe("public event API no-leak checks", () => {
       sportKey: "soccer",
       marketCount: 1,
       activeMarketCount: 1,
+    });
+    expectNoForbiddenKeys(body);
+  });
+
+  test("GET /api/events can include mobile compact markets when explicitly requested", async () => {
+    mockPrisma.event.findMany.mockResolvedValue([
+      {
+        ...baseEvent,
+        markets: [mobileListMarket],
+      },
+    ]);
+
+    const response = await listEvents(
+      new NextRequest("http://localhost/api/events?category=sports&sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1"),
+    );
+
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expectOnlyKeys(body, ["events", "nextCursor", "page"]);
+    expect(body.events).toHaveLength(1);
+    expectOnlyKeys(body.events[0], [
+      ...expectedEventSummaryKeys,
+      "groupedSummary",
+      "marketSourceSummary",
+      "markets",
+      "topOutcomes",
+    ]);
+    expect(body.events[0]).toMatchObject({
+      slug: "france-vs-argentina",
+      marketCount: 1,
+      activeMarketCount: 1,
+      markets: [
+        {
+          id: "market-1",
+          marketGroupTitle: "Match Winner",
+          marketType: "match_winner",
+          period: "full-game",
+          outcomes: [
+            { id: "home", label: "France", side: "home", isTradable: true },
+            { id: "away", label: "Argentina", side: "away", isTradable: true },
+          ],
+        },
+      ],
+    });
+    expectNoForbiddenKeys(body);
+  });
+
+  test("GET /api/events filters mobile compact markets by backend event status", async () => {
+    mockPrisma.event.findMany.mockResolvedValue([
+      {
+        ...baseEvent,
+        startTime: new Date("2026-07-08T16:00:00.000Z"),
+        status: "active",
+        liveStatus: "LIVE",
+        markets: [mobileListMarket],
+      },
+    ]);
+
+    const response = await listEvents(
+      new NextRequest("http://localhost/api/events?sportKey=soccer&leagueKey=world_cup&status=live&includeMobileMarkets=1&limit=10"),
+    );
+
+    expect(response.status).toBe(200);
+    expect(mockPrisma.event.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          AND: expect.arrayContaining([
+            expect.objectContaining({
+              sportKey: "soccer",
+              leagueKey: "world_cup",
+              OR: [
+                { status: "live" },
+                { liveStatus: "LIVE" },
+              ],
+            }),
+          ]),
+        }),
+        take: 11,
+      }),
+    );
+
+    const body = await response.json();
+    expect(body.events).toHaveLength(1);
+    expect(body.events[0]).toMatchObject({
+      slug: "france-vs-argentina",
+      status: "active",
+      liveStatus: "LIVE",
+      markets: [{ id: "market-1" }],
+    });
+    expectNoForbiddenKeys(body);
+  });
+
+  test("GET /api/events supports Local MVP match-only mobile feed filtering", async () => {
+    mockPrisma.event.findMany.mockResolvedValue([
+      {
+        ...baseEvent,
+        markets: [mobileListMarket],
+      },
+    ]);
+
+    const response = await listEvents(
+      new NextRequest("http://localhost/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10"),
+    );
+
+    expect(response.status).toBe(200);
+    expect(mockPrisma.event.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          AND: expect.arrayContaining([
+            expect.objectContaining({
+              AND: [
+                {
+                  OR: [
+                    { eventType: null },
+                    { eventType: { notIn: ["future", "futures", "outright", "outrights"] } },
+                  ],
+                },
+                {
+                  OR: [
+                    { eventType: "match" },
+                    { status: "live" },
+                    { liveStatus: { not: null } },
+                    { clock: { not: null } },
+                    { period: { not: null } },
+                    {
+                      AND: [
+                        { homeTeamName: { not: null } },
+                        { awayTeamName: { not: null } },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  NOT: [
+                    { slug: { startsWith: "mobile-", mode: "insensitive" } },
+                    { source: { contains: "proof", mode: "insensitive" } },
+                    { eventType: { contains: "proof", mode: "insensitive" } },
+                    { title: { contains: "proof", mode: "insensitive" } },
+                    { title: { contains: "provider breadth", mode: "insensitive" } },
+                  ],
+                },
+              ],
+            }),
+            expect.objectContaining({
+              sportKey: "soccer",
+              leagueKey: "world_cup",
+            }),
+          ]),
+        }),
+        take: 11,
+      }),
+    );
+
+    const body = await response.json();
+    expect(body.events).toHaveLength(1);
+    expect(body.events[0]).toMatchObject({
+      slug: "france-vs-argentina",
+      eventType: "match",
+      markets: [{ id: "market-1" }],
+    });
+    expectNoForbiddenKeys(body);
+  });
+
+  test("GET /api/events supports cursor pagination for mobile Home", async () => {
+    const cursorEvent = { ...baseEvent, id: "cursor-event", updatedAt: now, createdAt: now };
+    mockPrisma.event.findUnique.mockResolvedValue(cursorEvent);
+    mockPrisma.event.findMany.mockResolvedValue([
+      {
+        ...baseEvent,
+        id: "page-event-1",
+        slug: "page-event-1",
+        markets: [{ status: "LIVE", title: "Match Winner", referenceMetadata: null }],
+      },
+      {
+        ...baseEvent,
+        id: "page-event-2",
+        slug: "page-event-2",
+        markets: [{ status: "LIVE", title: "Match Winner", referenceMetadata: null }],
+      },
+    ]);
+
+    const response = await listEvents(
+      new NextRequest("http://localhost/api/events?sportKey=soccer&leagueKey=world_cup&limit=1&cursor=cursor-event"),
+    );
+
+    expect(response.status).toBe(200);
+    expect(mockPrisma.event.findUnique).toHaveBeenCalledWith({
+      where: { id: "cursor-event" },
+      select: { id: true, updatedAt: true, createdAt: true },
+    });
+    expect(mockPrisma.event.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        take: 2,
+        orderBy: [{ updatedAt: "desc" }, { createdAt: "desc" }, { id: "desc" }],
+      }),
+    );
+
+    const body = await response.json();
+    expect(body.events).toHaveLength(1);
+    expect(body.events[0].slug).toBe("page-event-1");
+    expect(body.nextCursor).toBe("page-event-1");
+    expect(body.page).toEqual({ limit: 1, nextCursor: "page-event-1", hasMore: true });
+    expectNoForbiddenKeys(body);
+  });
+
+  test("GET /api/events search matches public team, market, and outcome text for mobile Search", async () => {
+    mockPrisma.event.findMany.mockResolvedValue([
+      {
+        ...baseEvent,
+        markets: [mobileListMarket],
+      },
+    ]);
+
+    const response = await listEvents(
+      new NextRequest("http://localhost/api/events?sportKey=soccer&leagueKey=world_cup&search=Argentina&includeMobileMarkets=1&limit=10"),
+    );
+
+    expect(response.status).toBe(200);
+    expect(mockPrisma.event.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          AND: expect.arrayContaining([
+            expect.objectContaining({
+              sportKey: "soccer",
+              leagueKey: "world_cup",
+              OR: expect.arrayContaining([
+                { title: { contains: "Argentina", mode: "insensitive" } },
+                { description: { contains: "Argentina", mode: "insensitive" } },
+                { homeTeamName: { contains: "Argentina", mode: "insensitive" } },
+                { awayTeamName: { contains: "Argentina", mode: "insensitive" } },
+                {
+                  markets: {
+                    some: {
+                      visibility: "PUBLIC",
+                      isListed: true,
+                      OR: [
+                        { title: { contains: "Argentina", mode: "insensitive" } },
+                        { description: { contains: "Argentina", mode: "insensitive" } },
+                        {
+                          outcomes: {
+                            some: {
+                              OR: [
+                                { name: { contains: "Argentina", mode: "insensitive" } },
+                                { label: { contains: "Argentina", mode: "insensitive" } },
+                              ],
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              ]),
+            }),
+          ]),
+        }),
+        take: 11,
+      }),
+    );
+
+    const body = await response.json();
+    expect(body.events).toHaveLength(1);
+    expect(body.events[0]).toMatchObject({
+      slug: "france-vs-argentina",
+      markets: [
+        {
+          outcomes: expect.arrayContaining([
+            expect.objectContaining({ label: "Argentina" }),
+          ]),
+        },
+      ],
     });
     expectNoForbiddenKeys(body);
   });

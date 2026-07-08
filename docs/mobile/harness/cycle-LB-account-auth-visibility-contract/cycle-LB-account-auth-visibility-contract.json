@@ -1,0 +1,19 @@
+{
+  "cycle": "LB",
+  "scope": "account-auth-visibility-contract",
+  "generatedAt": "2026-07-06T18:53:54.577Z",
+  "pass": true,
+  "decision": "Visible Account auth state is route-derived from /api/profile/summary; local mock login, signup, sign-out, and AsyncStorage session toggles are not exposed.",
+  "checks": {
+    "accountSignedInIsRouteDerived": true,
+    "accountRemovesLocalSessionStorage": true,
+    "accountRemovesAuthActionButtons": true,
+    "accountShowsUnavailableNotice": true
+  },
+  "evidence": {
+    "app": "mobile/App.tsx",
+    "accountScreen": "mobile/src/components/AccountScreen.tsx",
+    "profileSummaryService": "mobile/src/services/profileSummaryService.ts",
+    "test": "mobile/src/__tests__/accountAuthContract.test.ts"
+  }
+}

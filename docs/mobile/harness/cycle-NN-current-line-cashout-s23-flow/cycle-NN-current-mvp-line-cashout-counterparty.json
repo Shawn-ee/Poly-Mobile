@@ -1,0 +1,92 @@
+{
+  "pass": true,
+  "eventSlug": "argentina-vs-egypt",
+  "market": {
+    "id": "0806254e-757c-403f-a180-0631c4e6b3fc",
+    "title": "Argentina vs. Egypt: Egypt +1.5",
+    "marketType": "spread",
+    "marketGroupKey": "spread",
+    "period": "regulation",
+    "line": "1.5",
+    "referenceSource": "contract-fixture",
+    "externalMarketId": "contract-argentina-vs-egypt-spread-away-1-5",
+    "conditionId": "condition-argentina-vs-egypt-spread-away-1-5"
+  },
+  "outcome": {
+    "id": "3e6c4f20-556f-4877-822b-1459cd5647ae",
+    "name": "Egypt +1.5",
+    "side": "away",
+    "referenceTokenId": "contract-argentina-vs-egypt-spread-away-1-5-away",
+    "referenceOutcomeLabel": "Egypt +1.5"
+  },
+  "maker": {
+    "id": "109dc524-3668-4a9f-84c6-9e84e11f9685",
+    "username": "mobile_route_fill_maker_989b248c"
+  },
+  "cleanup": {
+    "enabled": false,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": [],
+    "cleanupBlockingBids": false,
+    "canceledBlockingBids": [],
+    "cleanupBlockingMarketBids": true,
+    "canceledBlockingMarketBids": [
+      {
+        "id": "19a5081e-b740-4407-b4f3-0564a5efed5a",
+        "outcomeId": "3e6c4f20-556f-4877-822b-1459cd5647ae",
+        "username": "mobile_route_fill_maker_a67a9527",
+        "previousStatus": "OPEN",
+        "price": "0.5",
+        "remaining": "80",
+        "canceledStatus": "CANCELED"
+      }
+    ],
+    "cleanupProofAsks": true,
+    "canceledProofAsks": [
+      {
+        "id": "d44bbfbe-c7f0-41c1-b5f3-b00ede7c5d7b",
+        "username": "holiwyn-mobile-nn-s23-20260708084425",
+        "previousStatus": "OPEN",
+        "price": "0.52",
+        "remaining": "48.08",
+        "canceledStatus": "CANCELED"
+      }
+    ],
+    "cleanupBlockingAsks": true,
+    "canceledBlockingAsks": [
+      {
+        "id": "210ec35e-56e9-4df7-b696-77d62fe128f5",
+        "username": "mobile_route_fill_maker_2264874b",
+        "previousStatus": "PARTIAL",
+        "price": "0.52",
+        "remaining": "30.76",
+        "canceledStatus": "CANCELED"
+      },
+      {
+        "id": "84d3b213-e218-4d01-9cf3-1020012bf432",
+        "username": "mobile_route_fill_maker_e8db7acb",
+        "previousStatus": "OPEN",
+        "price": "0.52",
+        "remaining": "80",
+        "canceledStatus": "CANCELED"
+      }
+    ]
+  },
+  "makerOrder": {
+    "id": "8779b6a2-bdbc-44d9-8bb5-6d8cc8491300",
+    "marketId": "0806254e-757c-403f-a180-0631c4e6b3fc",
+    "outcomeId": "3e6c4f20-556f-4877-822b-1459cd5647ae",
+    "side": "BUY",
+    "price": "0.6",
+    "size": "80",
+    "remaining": "80",
+    "reservedNotional": "48",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "BUY",
+    "price": "0.60",
+    "size": "80",
+    "intendedMobileTaker": "SELL/cashout route-backed spread position"
+  }
+}

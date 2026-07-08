@@ -1,0 +1,201 @@
+{
+  "pass": true,
+  "cycle": "PB",
+  "generatedAt": "2026-07-08T21:27:22.913Z",
+  "scope": "provider-visible-market-to-internal-test-tradable-mobile-flow",
+  "routes": {
+    "search": "/api/events?source=polymarket&search=Argentina",
+    "detail": "/api/mobile/events/:slug/live-detail",
+    "quote": "/api/markets/:marketId/quote",
+    "order": "POST /api/orders",
+    "portfolio": "/api/portfolio",
+    "history": "/api/portfolio/history"
+  },
+  "event": {
+    "id": "16dba6f4-c5ec-4d0c-9d69-6b8c06fd6bc5",
+    "slug": "provider-breadth-world-cup-winner",
+    "title": "World Cup Winner",
+    "eventType": "future"
+  },
+  "market": {
+    "id": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+    "slug": "provider-breadth-world-cup-winner-will-argentina-win-the-2026-fifa-world-cup-245",
+    "title": "Will Argentina win the 2026 FIFA World Cup?",
+    "referenceSource": "polymarket",
+    "externalSlug": "will-argentina-win-the-2026-fifa-world-cup-245",
+    "externalMarketId": "558938",
+    "conditionId": "0x0c4cd2055d6ea89354ffddc55d6dbcef9355748112ea952fc925f3db6a5c457f"
+  },
+  "outcome": {
+    "id": "fa181546-35ad-47d4-8874-f5b73cd9f571",
+    "name": "Argentina",
+    "referenceTokenId": "18812649149814341758733697580460697418474693998558159483117100240528657629879",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "botQuote": {
+    "orderId": "19a0d56d-c98a-4fc4-8950-e636a15bc034",
+    "side": "SELL",
+    "price": 0.22,
+    "remaining": 5
+  },
+  "mobileProofUser": {
+    "id": "00199b0a-a78f-4a08-aeb2-3a5b92e8e8ab",
+    "email": "cycle_pb_provider_user_e398fc74@local.test"
+  },
+  "checks": {
+    "searchVisible": true,
+    "detailVisible": true,
+    "quoteVisible": true,
+    "serverModeTicketSubmitted": true,
+    "filledAgainstBotLiquidity": true,
+    "portfolioPositionVisible": true,
+    "historyTradeVisible": true,
+    "homeLiveMatchOnlyUnchanged": true
+  },
+  "orderResult": {
+    "id": "a00b6631-25c9-42a4-b1b5-4cf6880f17a8",
+    "mode": "server",
+    "title": "Will Argentina win the 2026 FIFA World Cup?",
+    "outcome": "Argentina",
+    "selection": {
+      "marketType": "future",
+      "marketId": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+      "outcomeId": "fa181546-35ad-47d4-8874-f5b73cd9f571",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Argentina",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-argentina-win-the-2026-fifa-world-cup-245",
+      "externalMarketId": "558938",
+      "conditionId": "0x0c4cd2055d6ea89354ffddc55d6dbcef9355748112ea952fc925f3db6a5c457f",
+      "referenceTokenId": "18812649149814341758733697580460697418474693998558159483117100240528657629879",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.22,
+      "limitSide": "ask"
+    },
+    "contractSide": "yes",
+    "side": "buy",
+    "amount": 0.66,
+    "probability": 22,
+    "status": "FILLED",
+    "size": 3,
+    "filledSize": 3,
+    "remainingSize": 0
+  },
+  "portfolioPosition": {
+    "marketId": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+    "outcomeId": "fa181546-35ad-47d4-8874-f5b73cd9f571",
+    "shares": 3,
+    "selection": {
+      "marketType": "future",
+      "marketId": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+      "outcomeId": "fa181546-35ad-47d4-8874-f5b73cd9f571",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Argentina",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-argentina-win-the-2026-fifa-world-cup-245",
+      "externalMarketId": "558938",
+      "conditionId": "0x0c4cd2055d6ea89354ffddc55d6dbcef9355748112ea952fc925f3db6a5c457f",
+      "referenceTokenId": "18812649149814341758733697580460697418474693998558159483117100240528657629879",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.22,
+      "limitSide": "ask"
+    }
+  },
+  "historyTrade": {
+    "id": "f2515f52-2e71-49d4-aa09-d835aa662150",
+    "market": {
+      "id": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+      "title": "Will Argentina win the 2026 FIFA World Cup?",
+      "status": "LIVE",
+      "marketGroupKey": "outrights",
+      "marketType": "outright",
+      "line": null,
+      "period": "futures",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-argentina-win-the-2026-fifa-world-cup-245",
+      "externalMarketId": "558938",
+      "conditionId": "0x0c4cd2055d6ea89354ffddc55d6dbcef9355748112ea952fc925f3db6a5c457f"
+    },
+    "outcome": {
+      "id": "fa181546-35ad-47d4-8874-f5b73cd9f571",
+      "name": "Argentina",
+      "label": "Argentina",
+      "side": "yes",
+      "referenceTokenId": "18812649149814341758733697580460697418474693998558159483117100240528657629879",
+      "referenceOutcomeLabel": "Yes"
+    },
+    "selection": {
+      "marketId": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+      "outcomeId": "fa181546-35ad-47d4-8874-f5b73cd9f571",
+      "marketGroupId": "outrights",
+      "marketType": "future",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Argentina",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "providerSource": "polymarket",
+      "externalSlug": "will-argentina-win-the-2026-fifa-world-cup-245",
+      "externalMarketId": "558938",
+      "conditionId": "0x0c4cd2055d6ea89354ffddc55d6dbcef9355748112ea952fc925f3db6a5c457f",
+      "referenceTokenId": "18812649149814341758733697580460697418474693998558159483117100240528657629879",
+      "tokenId": "18812649149814341758733697580460697418474693998558159483117100240528657629879",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.22,
+      "limitSide": "ask"
+    },
+    "side": "BUY",
+    "shares": 3,
+    "cost": 0.66,
+    "fee": 0,
+    "createdAt": "2026-07-08T21:27:22.783Z"
+  },
+  "remainingOpenOrders": [
+    {
+      "id": "904198d3-860c-435c-a699-c817a0b10640",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "fa181546-35ad-47d4-8874-f5b73cd9f571",
+      "side": "BUY",
+      "price": "0.18",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "19a0d56d-c98a-4fc4-8950-e636a15bc034",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "fa181546-35ad-47d4-8874-f5b73cd9f571",
+      "side": "SELL",
+      "price": "0.22",
+      "amount": "5",
+      "remaining": "2",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "62e7bfb0-f180-4c85-9e4a-519de2d88b68",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "0301d826-33a5-41d9-bab5-8fcbe291831a",
+      "side": "BUY",
+      "price": "0.78",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "ed1e6cfa-7178-43fd-81eb-6bdbba60ff51",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "0301d826-33a5-41d9-bab5-8fcbe291831a",
+      "side": "SELL",
+      "price": "0.82",
+      "amount": "5",
+      "remaining": "5",
+      "status": "OPEN"
+    }
+  ]
+}

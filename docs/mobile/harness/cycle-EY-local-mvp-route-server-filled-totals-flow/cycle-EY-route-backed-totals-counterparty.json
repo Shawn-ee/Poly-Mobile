@@ -1,0 +1,43 @@
+{
+    "pass":  true,
+    "eventSlug":  "mobile-el-a-provider-breadth-62990515",
+    "market":  {
+                   "id":  "e31bb258-70c1-4676-9326-39add8feb9b0",
+                   "title":  "Breadth Home vs Breadth Away - Total Goals 2.5",
+                   "marketType":  "total_goals",
+                   "marketGroupKey":  "totals",
+                   "period":  "full-game",
+                   "line":  "2.5",
+                   "referenceSource":  "polymarket",
+                   "externalMarketId":  "gamma-el-a-totals-62990515",
+                   "conditionId":  "condition-el-a-totals-62990515"
+               },
+    "outcome":  {
+                    "id":  "e0af05b7-dacd-4b50-b9e7-bf9701499826",
+                    "name":  "Over",
+                    "side":  "over",
+                    "referenceTokenId":  "token-el-a-totals-over-62990515",
+                    "referenceOutcomeLabel":  "Over 2.5"
+                },
+    "maker":  {
+                  "id":  "328c3b50-f438-467e-97da-87a2a1901035",
+                  "username":  "mobile_route_fill_maker_9021991f"
+              },
+    "makerOrder":  {
+                       "id":  "68502cdf-5297-42ac-9efa-899869ca90a2",
+                       "marketId":  "e31bb258-70c1-4676-9326-39add8feb9b0",
+                       "outcomeId":  "e0af05b7-dacd-4b50-b9e7-bf9701499826",
+                       "side":  "SELL",
+                       "price":  "0.46",
+                       "size":  "60",
+                       "remaining":  "60",
+                       "reservedNotional":  "0",
+                       "status":  "OPEN"
+                   },
+    "seededAsk":  {
+                      "side":  "SELL",
+                      "price":  "0.46",
+                      "size":  "60",
+                      "intendedMobileTaker":  "BUY $25 route-backed totals ticket"
+                  }
+}

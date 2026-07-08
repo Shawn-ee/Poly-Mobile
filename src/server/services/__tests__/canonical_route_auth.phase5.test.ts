@@ -119,4 +119,65 @@ describe("Phase 5 canonical route auth and scope enforcement", () => {
     });
     expect(getCanonicalAccountBalance).not.toHaveBeenCalled();
   });
+
+  test("account balance route returns canonical balance for account:read API keys", async () => {
+    const credential = makeCredential(["account:read"]);
+    prismaMock.apiCredential.findUnique.mockResolvedValue(credential.row);
+    prismaMock.apiCredential.update.mockResolvedValue(undefined);
+    getExistingUserId.mockResolvedValue(null);
+    getCanonicalAccountBalance.mockResolvedValue({
+      availableUSDC: "40.800000",
+      lockedUSDC: "2.500000",
+      totalUSDC: "43.300000",
+      updatedAt: new Date("2026-07-06T12:00:00.000Z"),
+    });
+
+    const { GET } = await import("@/app/api/account/balance/route");
+    const request = new NextRequest("http://localhost/api/account/balance", {
+      headers: {
+        Authorization: `Bearer ${credential.token}`,
+      },
+    });
+
+    const response = await GET(request);
+    expect(response.status).toBe(200);
+    expect(getCanonicalAccountBalance).toHaveBeenCalledWith("user_1");
+    expect(await response.json()).toEqual({
+      availableUSDC: "40.800000",
+      lockedUSDC: "2.500000",
+      totalUSDC: "43.300000",
+      updatedAt: "2026-07-06T12:00:00.000Z",
+    });
+  });
+
+  test("profile preference save rejects API keys without account:write scope", async () => {
+    const credential = makeCredential(["account:read"]);
+    prismaMock.apiCredential.findUnique.mockResolvedValue(credential.row);
+    prismaMock.apiCredential.update.mockResolvedValue(undefined);
+    getExistingUserId.mockResolvedValue(null);
+
+    const { PUT } = await import("@/app/api/profile/preferences/route");
+    const request = new NextRequest("http://localhost/api/profile/preferences", {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${credential.token}`,
+      },
+      body: JSON.stringify({
+        locale: "en",
+        ticketDefaultAmount: "100",
+        ticketDefaultSide: "BUY",
+        ticketDefaultSlippage: "1%",
+        savedEventIds: [],
+      }),
+    });
+
+    const response = await PUT(request);
+    expect(response.status).toBe(403);
+    expect(await response.json()).toEqual({
+      error: {
+        code: "INSUFFICIENT_SCOPE",
+        message: "API key does not include required scope: account:write.",
+      },
+    });
+  });
 });

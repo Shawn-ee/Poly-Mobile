@@ -1,0 +1,24 @@
+{
+  "pass": true,
+  "createdAt": "2026-07-06T15:07:10.048Z",
+  "scope": "mobile API route contract backfill",
+  "routes": {
+    "events": "https://api.example.test/api/events?sportKey=soccer&leagueKey=world_cup&search=Home&limit=5&cursor=cursor-jv-1&includeMobileMarkets=1",
+    "portfolioValueHistory": "https://api.example.test/api/portfolio/value-history?range=1W"
+  },
+  "eventPage": {
+    "count": 1,
+    "nextCursor": "cursor-jv-2",
+    "hasMore": true,
+    "marketProfile": "regulation_90",
+    "supportedMarketTypes": [
+      "regulation_90",
+      "spread"
+    ]
+  },
+  "portfolioValueHistory": {
+    "source": "portfolio-value-history-route",
+    "range": "1W",
+    "pointCount": 1
+  }
+}

@@ -1,0 +1,44 @@
+{
+    "cycle":  "EQ",
+    "scenario":  "Local MVP Android Sell trade flow with orderbook hidden by default",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpSellFlow -Port 8373 -OutputDir docs\\mobile\\screenshots\\cycle-EQ-local-mvp-sell-flow -HierarchyOutputDir docs\\mobile\\harness\\cycle-EQ-local-mvp-sell-flow",
+    "orderbookDebug":  "unset",
+    "result":  "pass",
+    "assertions":  {
+                       "defaultEventDetail":  [
+                                                  "chart",
+                                                  "contract rail",
+                                                  "game lines",
+                                                  "spread/totals selectors",
+                                                  "no visible Book/orderbook entry points"
+                                              ],
+                       "selectedLine":  [
+                                            "spread 2.5",
+                                            "1st Half",
+                                            "market/outcome identity preserved"
+                                        ],
+                       "simpleTicket":  [
+                                            "fake-token sell",
+                                            "current probability price",
+                                            "Swipe up to sell",
+                                            "no visible Book/orderbook entry points"
+                                        ],
+                       "portfolio":  [
+                                         "Order placed",
+                                         "latest order",
+                                         "latest activity",
+                                         "position card",
+                                         "line identity preserved"
+                                     ]
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-EQ-local-mvp-sell-flow/cycle-EQ-holiwyn-local-mvp-market-lines.png",
+                      "docs/mobile/harness/cycle-EQ-local-mvp-sell-flow/cycle-EQ-holiwyn-local-mvp-market-lines.xml",
+                      "docs/mobile/screenshots/cycle-EQ-local-mvp-sell-flow/cycle-EQ-holiwyn-local-mvp-selected-line.png",
+                      "docs/mobile/harness/cycle-EQ-local-mvp-sell-flow/cycle-EQ-holiwyn-local-mvp-selected-line.xml",
+                      "docs/mobile/screenshots/cycle-EQ-local-mvp-sell-flow/cycle-EQ-holiwyn-local-mvp-ticket-ready.png",
+                      "docs/mobile/harness/cycle-EQ-local-mvp-sell-flow/cycle-EQ-holiwyn-local-mvp-ticket-ready.xml",
+                      "docs/mobile/screenshots/cycle-EQ-local-mvp-sell-flow/cycle-EQ-holiwyn-local-mvp-portfolio.png",
+                      "docs/mobile/harness/cycle-EQ-local-mvp-sell-flow/cycle-EQ-holiwyn-local-mvp-portfolio.xml"
+                  ]
+}

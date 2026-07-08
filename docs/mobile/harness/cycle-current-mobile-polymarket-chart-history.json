@@ -1,0 +1,176 @@
+{
+  "generatedAt": "2026-07-04T09:05:49.321Z",
+  "eventSlug": "world-cup-2026-colombia-vs-ghana-2026-07-03",
+  "providerEventSlug": "fifwc-col-gha-2026-07-03",
+  "providerEventTitle": "Colombia vs. Ghana",
+  "providerEventClosed": true,
+  "providerEventEnded": true,
+  "providerSource": "gamma-api.polymarket.com/events?slug plus clob.polymarket.com/prices-history",
+  "prepared": {
+    "eventId": "8485921d-d6fe-4578-ba82-21f63ecca536",
+    "eventSlug": "world-cup-2026-colombia-vs-ghana-2026-07-03",
+    "providerClosed": true,
+    "marketCount": 3,
+    "markets": [
+      {
+        "id": "d89acdee-41f6-4766-87e3-53928e1901b4",
+        "slug": "world-cup-2026-colombia-vs-ghana-2026-07-03-fifwc-col-gha-2026-07-03-col",
+        "title": "Will Colombia win on 2026-07-03?",
+        "providerSlug": "fifwc-col-gha-2026-07-03-col",
+        "closed": true,
+        "outcomes": [
+          {
+            "id": "63466ea1-d6dd-49ef-a4c6-8ff846c727db",
+            "name": "Yes",
+            "tokenId": "76150025241705071715660741383746313361341926806422361774139695469030476859782"
+          },
+          {
+            "id": "4febf731-7175-4cad-a0cb-2ae4926119d3",
+            "name": "No",
+            "tokenId": "6965085377369893154950113188092980062181789590218347314196090952178756077518"
+          }
+        ]
+      },
+      {
+        "id": "03e4dd0f-796c-4630-b40d-555e5760a33c",
+        "slug": "world-cup-2026-colombia-vs-ghana-2026-07-03-fifwc-col-gha-2026-07-03-draw",
+        "title": "Will Colombia vs. Ghana end in a draw?",
+        "providerSlug": "fifwc-col-gha-2026-07-03-draw",
+        "closed": true,
+        "outcomes": [
+          {
+            "id": "405b5edb-82db-4039-8df0-c2d3bc873311",
+            "name": "Yes",
+            "tokenId": "74465184772301188489011024618947583704857068259629739095253675726347456742213"
+          },
+          {
+            "id": "06470cc4-7d2b-4d22-9430-482c9961ac47",
+            "name": "No",
+            "tokenId": "102212517740669548454196908225149183081553291532233839080313430138503529986387"
+          }
+        ]
+      },
+      {
+        "id": "30c78d5d-7a4a-4ad5-b1d8-ff75999e5453",
+        "slug": "world-cup-2026-colombia-vs-ghana-2026-07-03-fifwc-col-gha-2026-07-03-gha",
+        "title": "Will Ghana win on 2026-07-03?",
+        "providerSlug": "fifwc-col-gha-2026-07-03-gha",
+        "closed": true,
+        "outcomes": [
+          {
+            "id": "865a0188-5a50-4253-9b87-2fb7e9a9e688",
+            "name": "Yes",
+            "tokenId": "105539798766547200092323662417726863479637721229836283901511466011186180591923"
+          },
+          {
+            "id": "9f79965b-a9e3-4ead-97ee-94607518d20a",
+            "name": "No",
+            "tokenId": "103342324942471319985602539818363146547812329708347340456245582195138932754822"
+          }
+        ]
+      }
+    ]
+  },
+  "history": {
+    "source": "polymarket-clob-prices-history",
+    "interval": "1d",
+    "fidelityMinutes": 5,
+    "requestedMarketCount": 3,
+    "refreshedCount": 3,
+    "snapshotsCreated": 1708,
+    "skippedCount": 0,
+    "skipped": [],
+    "refreshed": [
+      {
+        "marketId": "03e4dd0f-796c-4630-b40d-555e5760a33c",
+        "title": "Will Colombia vs. Ghana end in a draw?",
+        "slug": "fifwc-col-gha-2026-07-03-draw",
+        "outcomeCount": 2,
+        "snapshotsCreated": 569,
+        "outcomes": [
+          {
+            "outcomeId": "405b5edb-82db-4039-8df0-c2d3bc873311",
+            "tokenId": "74465184772301188489011024618947583704857068259629739095253675726347456742213",
+            "historyPointCount": 285,
+            "createdSnapshots": 285,
+            "firstTimestamp": "2026-07-03T04:05:04.000Z",
+            "lastTimestamp": "2026-07-04T03:45:03.000Z"
+          },
+          {
+            "outcomeId": "06470cc4-7d2b-4d22-9430-482c9961ac47",
+            "tokenId": "102212517740669548454196908225149183081553291532233839080313430138503529986387",
+            "historyPointCount": 284,
+            "createdSnapshots": 284,
+            "firstTimestamp": "2026-07-03T04:10:04.000Z",
+            "lastTimestamp": "2026-07-04T03:45:03.000Z"
+          }
+        ]
+      },
+      {
+        "marketId": "d89acdee-41f6-4766-87e3-53928e1901b4",
+        "title": "Will Colombia win on 2026-07-03?",
+        "slug": "fifwc-col-gha-2026-07-03-col",
+        "outcomeCount": 2,
+        "snapshotsCreated": 571,
+        "outcomes": [
+          {
+            "outcomeId": "63466ea1-d6dd-49ef-a4c6-8ff846c727db",
+            "tokenId": "76150025241705071715660741383746313361341926806422361774139695469030476859782",
+            "historyPointCount": 286,
+            "createdSnapshots": 286,
+            "firstTimestamp": "2026-07-03T04:05:04.000Z",
+            "lastTimestamp": "2026-07-04T03:50:04.000Z"
+          },
+          {
+            "outcomeId": "4febf731-7175-4cad-a0cb-2ae4926119d3",
+            "tokenId": "6965085377369893154950113188092980062181789590218347314196090952178756077518",
+            "historyPointCount": 285,
+            "createdSnapshots": 285,
+            "firstTimestamp": "2026-07-03T04:10:04.000Z",
+            "lastTimestamp": "2026-07-04T03:50:04.000Z"
+          }
+        ]
+      },
+      {
+        "marketId": "30c78d5d-7a4a-4ad5-b1d8-ff75999e5453",
+        "title": "Will Ghana win on 2026-07-03?",
+        "slug": "fifwc-col-gha-2026-07-03-gha",
+        "outcomeCount": 2,
+        "snapshotsCreated": 568,
+        "outcomes": [
+          {
+            "outcomeId": "865a0188-5a50-4253-9b87-2fb7e9a9e688",
+            "tokenId": "105539798766547200092323662417726863479637721229836283901511466011186180591923",
+            "historyPointCount": 284,
+            "createdSnapshots": 284,
+            "firstTimestamp": "2026-07-03T04:10:04.000Z",
+            "lastTimestamp": "2026-07-04T03:45:03.000Z"
+          },
+          {
+            "outcomeId": "9f79965b-a9e3-4ead-97ee-94607518d20a",
+            "tokenId": "103342324942471319985602539818363146547812329708347340456245582195138932754822",
+            "historyPointCount": 284,
+            "createdSnapshots": 284,
+            "firstTimestamp": "2026-07-03T04:10:05.000Z",
+            "lastTimestamp": "2026-07-04T03:45:04.000Z"
+          }
+        ]
+      }
+    ]
+  },
+  "chartRoute": {
+    "marketId": "d89acdee-41f6-4766-87e3-53928e1901b4",
+    "source": "polymarket-clob-prices-history",
+    "range": "1D",
+    "emptyState": null,
+    "historyPointCount": 240,
+    "lastUpdated": "2026-07-03T14:05:04.000Z"
+  },
+  "liveDetail": {
+    "chartHistoryPointCount": 240,
+    "chartHistorySource": "market-outcome-snapshot",
+    "liveDataSource": "polymarket-gamma",
+    "liveDataStatus": "stale"
+  },
+  "pass": true
+}

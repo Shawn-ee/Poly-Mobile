@@ -1,0 +1,135 @@
+﻿{
+    "ready":  true,
+    "side":  "sell",
+    "username":  "holiwyn-mobile-proof-sell-20260702070658",
+    "userId":  "0d92719c-8e4b-483f-b21a-525f78419af2",
+    "keyId":  "pk_live_ce8753e5a41048ac",
+    "port":  8159,
+    "event":  {
+                  "id":  "9f662a7d-5700-43e4-b4f1-50e99cef6ec9",
+                  "slug":  "world-cup-2026-paraguay-vs-australia-2026-06-25",
+                  "title":  "Paraguay vs Australia"
+              },
+    "market":  {
+                   "id":  "49a21c1b-893e-4139-ac54-6ad79d2ee204",
+                   "title":  "Paraguay vs Australia: Both teams to score"
+               },
+    "outcome":  {
+                    "id":  "67d221dd-6139-4643-82ee-2470944b692a",
+                    "name":  "Yes"
+                },
+    "makerOrder":  {
+                       "id":  "d01472b2-2a7d-4fd2-a0ac-5151bd433309",
+                       "status":  "OPEN",
+                       "price":  "0.50",
+                       "size":  "500",
+                       "requiredRemaining":  "250",
+                       "remaining":  "500"
+                   },
+    "mobileUser":  {
+                       "id":  "0d92719c-8e4b-483f-b21a-525f78419af2",
+                       "username":  "holiwyn-mobile-proof-sell-20260702070658",
+                       "shares":  "300",
+                       "reservedShares":  "0"
+                   },
+    "orderSummary":  {
+                         "username":  "holiwyn-mobile-proof-sell-20260702070658",
+                         "userId":  "0d92719c-8e4b-483f-b21a-525f78419af2",
+                         "orderCount":  1,
+                         "statusCounts":  {
+                                              "FILLED":  1
+                                          },
+                         "latestOrder":  {
+                                             "id":  "b81534f8-1197-4c85-bdf8-da41e8f6761b",
+                                             "status":  "FILLED",
+                                             "side":  "SELL",
+                                             "market":  {
+                                                            "id":  "49a21c1b-893e-4139-ac54-6ad79d2ee204",
+                                                            "title":  "Paraguay vs Australia: Both teams to score"
+                                                        },
+                                             "outcome":  {
+                                                             "id":  "67d221dd-6139-4643-82ee-2470944b692a",
+                                                             "name":  "Yes"
+                                                         },
+                                             "price":  "0.5",
+                                             "size":  "200",
+                                             "remaining":  "0",
+                                             "reservedNotional":  "0",
+                                             "notional":  "100",
+                                             "remainingNotional":  "0",
+                                             "apiKeyId":  "pk_live_ce8753e5a41048ac",
+                                             "canceledByApiKeyId":  null,
+                                             "createdAt":  "2026-07-02T12:07:51.355Z",
+                                             "updatedAt":  "2026-07-02T12:07:51.377Z"
+                                         },
+                         "latestCanceledOrder":  null,
+                         "recentOrders":  [
+                                              {
+                                                  "id":  "b81534f8-1197-4c85-bdf8-da41e8f6761b",
+                                                  "status":  "FILLED",
+                                                  "side":  "SELL",
+                                                  "market":  {
+                                                                 "id":  "49a21c1b-893e-4139-ac54-6ad79d2ee204",
+                                                                 "title":  "Paraguay vs Australia: Both teams to score"
+                                                             },
+                                                  "outcome":  {
+                                                                  "id":  "67d221dd-6139-4643-82ee-2470944b692a",
+                                                                  "name":  "Yes"
+                                                              },
+                                                  "price":  "0.5",
+                                                  "size":  "200",
+                                                  "remaining":  "0",
+                                                  "reservedNotional":  "0",
+                                                  "notional":  "100",
+                                                  "remainingNotional":  "0",
+                                                  "apiKeyId":  "pk_live_ce8753e5a41048ac",
+                                                  "canceledByApiKeyId":  null,
+                                                  "createdAt":  "2026-07-02T12:07:51.355Z",
+                                                  "updatedAt":  "2026-07-02T12:07:51.377Z"
+                                              }
+                                          ]
+                     },
+    "proofNoiseGate":  {
+                           "pre":  {
+                                       "enabled":  true,
+                                       "passed":  true,
+                                       "checks":  {
+                                                      "openOrders":  {
+                                                                         "enabled":  true,
+                                                                         "passed":  true,
+                                                                         "affectedUsers":  0
+                                                                     },
+                                                      "lockedBalance":  {
+                                                                            "enabled":  true,
+                                                                            "passed":  true,
+                                                                            "affectedUsers":  0,
+                                                                            "users":  [
+
+                                                                                      ]
+                                                                        }
+                                                  }
+                                   },
+                           "post":  {
+                                        "enabled":  true,
+                                        "passed":  true,
+                                        "checks":  {
+                                                       "openOrders":  {
+                                                                          "enabled":  true,
+                                                                          "passed":  true,
+                                                                          "affectedUsers":  0
+                                                                      },
+                                                       "lockedBalance":  {
+                                                                             "enabled":  true,
+                                                                             "passed":  true,
+                                                                             "affectedUsers":  0,
+                                                                             "users":  [
+
+                                                                                       ]
+                                                                         }
+                                                   }
+                                    },
+                           "preSummaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof-noise-gate-pre.json",
+                           "postSummaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof-noise-gate.json"
+                       },
+    "summaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof.json"
+}

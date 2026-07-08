@@ -1,0 +1,54 @@
+{
+  "pass": true,
+  "cycle": "DM",
+  "proof": "provider-token-lifecycle",
+  "generatedAt": "2026-07-04T09:27:45.134Z",
+  "event": {
+    "id": "8485921d-d6fe-4578-ba82-21f63ecca536",
+    "slug": "world-cup-2026-colombia-vs-ghana-2026-07-03",
+    "title": "Colombia vs. Ghana"
+  },
+  "market": {
+    "id": "d89acdee-41f6-4766-87e3-53928e1901b4",
+    "title": "Will Colombia win on 2026-07-03?",
+    "referenceSource": "polymarket",
+    "externalSlug": "fifwc-col-gha-2026-07-03-col",
+    "externalMarketId": "2718931",
+    "conditionId": "0xc4a26ee77fc5777d5036854f3835bf7ce44b42a61e3c6325c22b444627757eca",
+    "marketType": "moneyline",
+    "marketGroupId": "main",
+    "line": null,
+    "period": null
+  },
+  "outcome": {
+    "id": "63466ea1-d6dd-49ef-a4c6-8ff846c727db",
+    "name": "Yes",
+    "label": "Yes",
+    "side": "yes",
+    "referenceTokenId": "76150025241705071715660741383746313361341926806422361774139695469030476859782",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "selection": {
+    "marketId": "d89acdee-41f6-4766-87e3-53928e1901b4",
+    "outcomeId": "63466ea1-d6dd-49ef-a4c6-8ff846c727db",
+    "marketGroupId": "main",
+    "marketType": "moneyline",
+    "side": "yes",
+    "displayLabel": "Yes",
+    "contractSide": "yes",
+    "referenceSource": "polymarket",
+    "externalSlug": "fifwc-col-gha-2026-07-03-col",
+    "externalMarketId": "2718931",
+    "conditionId": "0xc4a26ee77fc5777d5036854f3835bf7ce44b42a61e3c6325c22b444627757eca",
+    "referenceTokenId": "76150025241705071715660741383746313361341926806422361774139695469030476859782",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "checks": {
+    "missingOpticOddsDoesNotBlock": true,
+    "hasPolymarketMarket": true,
+    "hasProviderOutcomeToken": true,
+    "selectionPreservesProviderMarket": true,
+    "selectionPreservesCondition": true,
+    "selectionPreservesProviderToken": true
+  }
+}

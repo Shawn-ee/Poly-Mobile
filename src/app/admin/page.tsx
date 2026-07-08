@@ -414,6 +414,12 @@ function AdminPageInner() {
         description="Internal market operations console. High-impact actions stay visibly separated from public user flows."
         actions={<>
           <Link
+          href="/admin/mobile-provider-mapping"
+          className="rounded-lg border border-[var(--poly-border)] bg-white px-3 py-2 text-sm font-semibold text-[var(--poly-text)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
+        >
+          Mobile Provider Mapping
+        </Link>
+          <Link
           href="/admin/reference-markets"
           className="rounded-lg border border-[var(--poly-border)] bg-white px-3 py-2 text-sm font-semibold text-[var(--poly-text)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
         >

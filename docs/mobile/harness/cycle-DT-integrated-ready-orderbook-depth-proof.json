@@ -1,0 +1,196 @@
+{
+  "cycle": "DT-A",
+  "agent": "Agent A - Ready Depth Proof",
+  "gap": "PM-GAP-075",
+  "generatedAt": "2026-07-04T11:23:59.611Z",
+  "route": "/api/orderbook/7b1b05ef-ce2e-4c7d-88ee-76e068d326fc/book?maxLevels=24",
+  "baseUrl": "http://127.0.0.1:3002",
+  "event": {
+    "slug": "cycle-dt-a-world-cup-ready-depth",
+    "title": "World Cup 2026: Brazil vs Germany",
+    "compactStyle": "World Cup moneyline"
+  },
+  "market": {
+    "id": "7b1b05ef-ce2e-4c7d-88ee-76e068d326fc",
+    "slug": "cycle-dt-a-world-cup-ready-depth-match-winner",
+    "title": "Brazil vs Germany: Match Winner",
+    "marketType": "match_winner_1x2",
+    "marketGroupKey": "main",
+    "period": null,
+    "outcomeCount": 3
+  },
+  "seededProviderDepth": {
+    "source": "polymarket-clob-dt-proof",
+    "rowsRequested": 12,
+    "rowsUpserted": 12,
+    "fetchedAt": "2026-07-04T11:23:59.111Z"
+  },
+  "response": {
+    "marketId": "7b1b05ef-ce2e-4c7d-88ee-76e068d326fc",
+    "outcomeId": null,
+    "depthSource": "provider-orderbook-depth",
+    "depthReason": "Depth comes from provider orderbook ladder snapshots.",
+    "emptyState": null,
+    "availability": {
+      "status": "ready",
+      "marketStatus": "LIVE",
+      "isStale": false,
+      "isSuspended": false,
+      "isDelayed": false
+    },
+    "marketIdentity": {
+      "source": "market-route-contract",
+      "marketId": "7b1b05ef-ce2e-4c7d-88ee-76e068d326fc",
+      "title": "Brazil vs Germany: Match Winner",
+      "selectorKey": "main:full-game:default",
+      "marketFamily": "moneyline",
+      "marketType": "match_winner_1x2",
+      "marketGroupKey": "main",
+      "period": null,
+      "line": null,
+      "unit": null,
+      "outcomeCount": 3,
+      "tradableOutcomeCount": 3,
+      "outcomes": [
+        {
+          "id": "baee8d27-2d30-46c2-9434-ed38fe5d44d4",
+          "name": "Brazil",
+          "side": "home",
+          "isTradable": true
+        },
+        {
+          "id": "11ae542f-5041-40ad-be3d-fac3f80e610d",
+          "name": "Draw",
+          "side": "draw",
+          "isTradable": true
+        },
+        {
+          "id": "83c3391b-7397-468d-99c8-71aa53f4c01e",
+          "name": "Germany",
+          "side": "away",
+          "isTradable": true
+        }
+      ]
+    },
+    "levelCount": 12,
+    "priceShareValueRows": [
+      {
+        "outcomeId": "baee8d27-2d30-46c2-9434-ed38fe5d44d4",
+        "side": "bid",
+        "price": 0.57,
+        "shares": 12400,
+        "value": 7068
+      },
+      {
+        "outcomeId": "baee8d27-2d30-46c2-9434-ed38fe5d44d4",
+        "side": "bid",
+        "price": 0.56,
+        "shares": 13100,
+        "value": 7336
+      },
+      {
+        "outcomeId": "11ae542f-5041-40ad-be3d-fac3f80e610d",
+        "side": "bid",
+        "price": 0.31,
+        "shares": 8600,
+        "value": 2666
+      },
+      {
+        "outcomeId": "11ae542f-5041-40ad-be3d-fac3f80e610d",
+        "side": "bid",
+        "price": 0.3,
+        "shares": 9300,
+        "value": 2790
+      },
+      {
+        "outcomeId": "83c3391b-7397-468d-99c8-71aa53f4c01e",
+        "side": "bid",
+        "price": 0.18,
+        "shares": 5300,
+        "value": 954
+      },
+      {
+        "outcomeId": "83c3391b-7397-468d-99c8-71aa53f4c01e",
+        "side": "bid",
+        "price": 0.17,
+        "shares": 6000,
+        "value": 1020
+      },
+      {
+        "outcomeId": "83c3391b-7397-468d-99c8-71aa53f4c01e",
+        "side": "ask",
+        "price": 0.21,
+        "shares": 4800,
+        "value": 1008
+      },
+      {
+        "outcomeId": "83c3391b-7397-468d-99c8-71aa53f4c01e",
+        "side": "ask",
+        "price": 0.22,
+        "shares": 5600,
+        "value": 1232
+      },
+      {
+        "outcomeId": "11ae542f-5041-40ad-be3d-fac3f80e610d",
+        "side": "ask",
+        "price": 0.34,
+        "shares": 8100,
+        "value": 2754
+      },
+      {
+        "outcomeId": "11ae542f-5041-40ad-be3d-fac3f80e610d",
+        "side": "ask",
+        "price": 0.35,
+        "shares": 8900,
+        "value": 3115
+      },
+      {
+        "outcomeId": "baee8d27-2d30-46c2-9434-ed38fe5d44d4",
+        "side": "ask",
+        "price": 0.6,
+        "shares": 11900,
+        "value": 7140
+      },
+      {
+        "outcomeId": "baee8d27-2d30-46c2-9434-ed38fe5d44d4",
+        "side": "ask",
+        "price": 0.61,
+        "shares": 12700,
+        "value": 7747
+      }
+    ],
+    "providerOrderbookDepth": {
+      "source": "reference-orderbook-depth-snapshot",
+      "status": "ready",
+      "levelCount": 12,
+      "snapshotCount": 12,
+      "latestFetchedAt": "2026-07-04T11:23:59.111Z",
+      "latestUpdatedAt": "2026-07-04T11:23:59.114Z",
+      "stalenessSeconds": 0,
+      "staleAfterSeconds": 90,
+      "refreshTtlSeconds": 60,
+      "nextRefreshAt": "2026-07-04T11:24:59.111Z",
+      "shouldRefresh": false,
+      "isStale": false,
+      "sources": [
+        "polymarket-clob-dt-proof"
+      ],
+      "reason": "Provider orderbook depth snapshot is fresh."
+    },
+    "providerQuoteDepth": {
+      "source": "reference-quote-snapshot",
+      "levelCount": 0,
+      "sizeSource": null,
+      "isEstimatedSize": false,
+      "reason": "No provider quote snapshot is available."
+    }
+  },
+  "assertions": {
+    "routeReturnedProviderBackedReadyDepth": true,
+    "marketIdentityPresent": true,
+    "selectorKeyPresent": true,
+    "multiplePriceSharesValueRows": true,
+    "noEmptyState": true
+  },
+  "pass": true
+}

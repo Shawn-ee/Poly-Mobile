@@ -8,8 +8,10 @@ type GammaWire = Record<string, unknown>;
 export type RefreshReferenceSnapshotsOptions = {
   slug?: string | null;
   marketId?: string | null;
+  marketIds?: string[] | null;
   eventSlug?: string | null;
   onlyMmEnabled?: boolean;
+  fetchImpl?: typeof fetch;
 };
 
 export async function refreshPolymarketReferenceSnapshots(options: RefreshReferenceSnapshotsOptions = {}) {
@@ -17,6 +19,7 @@ export async function refreshPolymarketReferenceSnapshots(options: RefreshRefere
     where: {
       referenceSource: "polymarket",
       ...(options.marketId ? { id: options.marketId } : {}),
+      ...(options.marketIds?.length ? { id: { in: options.marketIds } } : {}),
       externalSlug: options.slug ?? { not: null },
       ...(options.slug ? { externalSlug: options.slug } : {}),
       ...(options.eventSlug ? { event: { slug: options.eventSlug } } : {}),
@@ -27,6 +30,12 @@ export async function refreshPolymarketReferenceSnapshots(options: RefreshRefere
       ],
     },
     include: {
+      event: {
+        select: {
+          slug: true,
+          externalSlug: true,
+        },
+      },
       outcomes: {
         where: { isActive: true },
         orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }],
@@ -44,7 +53,12 @@ export async function refreshPolymarketReferenceSnapshots(options: RefreshRefere
       continue;
     }
 
-    const gamma = await fetchGammaMarketBySlug(market.externalSlug).catch((error) => ({
+    const gamma = await fetchGammaMarketBySlug({
+      slug: market.externalSlug,
+      eventSlug: market.event?.externalSlug ?? market.event?.slug ?? null,
+      externalMarketId: market.externalMarketId,
+      fetchImpl: options.fetchImpl ?? fetch,
+    }).catch((error) => ({
       error: error instanceof Error ? error.message : String(error),
     }));
     if ("error" in gamma) {
@@ -97,11 +111,12 @@ export async function refreshPolymarketReferenceSnapshots(options: RefreshRefere
       };
     });
 
-    await upsertReferenceQuoteSnapshots(inputs);
+    const results = await upsertReferenceQuoteSnapshots(inputs);
     refreshed.push({
       marketId: market.id,
       title: market.title,
       slug: market.externalSlug,
+      snapshotsUpdated: results.length,
       outcomes: inputs.map((input) => ({
         outcomeId: input.outcomeId,
         tokenId: input.tokenId,
@@ -120,9 +135,11 @@ export async function refreshPolymarketReferenceSnapshots(options: RefreshRefere
   return {
     generatedAt: new Date().toISOString(),
     dryRun: true,
+    snapshotWritesApplied: true,
     liveOrdersEnabled: false,
     pollMs: referenceSnapshotConfig.pollMs,
     refreshedCount: refreshed.length,
+    snapshotsUpdated: refreshed.reduce((sum, market) => sum + (typeof market.snapshotsUpdated === "number" ? market.snapshotsUpdated : 0), 0),
     skippedCount: skipped.length,
     refreshed,
     skipped,
@@ -170,18 +187,60 @@ function evaluateSnapshotQuality(input: {
   };
 }
 
-async function fetchGammaMarketBySlug(slug: string) {
+async function fetchGammaMarketBySlug(params: {
+  slug: string;
+  eventSlug?: string | null;
+  externalMarketId?: string | null;
+  fetchImpl: typeof fetch;
+}) {
   const url = new URL("/markets", GAMMA_BASE_URL);
-  url.searchParams.set("slug", slug);
-  const response = await fetch(url, { headers: { Accept: "application/json" } });
+  url.searchParams.set("slug", params.slug);
+  const response = await params.fetchImpl(url.toString(), { headers: { Accept: "application/json" } });
   if (!response.ok) {
     throw new Error(`Gamma API request failed: ${response.status} ${response.statusText}`);
   }
   const payload = (await response.json()) as unknown;
-  if (!Array.isArray(payload) || payload.length === 0 || !payload[0] || typeof payload[0] !== "object") {
+  if (Array.isArray(payload)) {
+    const direct = payload.find((item) => item && typeof item === "object" && asString((item as GammaWire).slug) === params.slug)
+      ?? payload.find((item) => item && typeof item === "object");
+    if (direct && typeof direct === "object") {
+      return normalizeGammaMarket(direct as GammaWire);
+    }
+  } else {
     throw new Error("Gamma API returned unexpected payload.");
   }
-  return normalizeGammaMarket(payload[0] as GammaWire);
+
+  if (params.eventSlug) {
+    const eventMarket = await fetchGammaMarketFromEvent(params);
+    if (eventMarket) return normalizeGammaMarket(eventMarket);
+  }
+
+  throw new Error("Gamma API returned no market for slug.");
+}
+
+async function fetchGammaMarketFromEvent(params: {
+  slug: string;
+  eventSlug?: string | null;
+  externalMarketId?: string | null;
+  fetchImpl: typeof fetch;
+}) {
+  if (!params.eventSlug) return null;
+  const url = new URL("/events", GAMMA_BASE_URL);
+  url.searchParams.set("slug", params.eventSlug);
+  const response = await params.fetchImpl(url.toString(), { headers: { Accept: "application/json" } });
+  if (!response.ok) {
+    throw new Error(`Gamma event request failed: ${response.status} ${response.statusText}`);
+  }
+  const payload = (await response.json()) as unknown;
+  if (!Array.isArray(payload) || !payload[0] || typeof payload[0] !== "object") {
+    throw new Error("Gamma event payload was empty or malformed.");
+  }
+  const markets = (payload[0] as GammaWire).markets;
+  if (!Array.isArray(markets)) return null;
+  const bySlug = markets.find((item) => item && typeof item === "object" && asString((item as GammaWire).slug) === params.slug);
+  if (bySlug && typeof bySlug === "object") return bySlug as GammaWire;
+  const byId = markets.find((item) => item && typeof item === "object" && params.externalMarketId && asString((item as GammaWire).id) === params.externalMarketId);
+  return byId && typeof byId === "object" ? byId as GammaWire : null;
 }
 
 function normalizeGammaMarket(input: GammaWire) {
@@ -238,6 +297,10 @@ function parseNumberArray(value: unknown): number[] {
     }
   }
   return [];
+}
+
+function asString(value: unknown) {
+  return typeof value === "string" && value.trim() ? value.trim() : null;
 }
 
 function asNumber(value: unknown): number | null {

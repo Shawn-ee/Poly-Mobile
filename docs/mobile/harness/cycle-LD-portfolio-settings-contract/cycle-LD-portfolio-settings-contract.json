@@ -1,0 +1,16 @@
+{
+  "cycle": "LD",
+  "scope": "portfolio-settings-contract",
+  "generatedAt": "2026-07-06T19:01:13.035Z",
+  "pass": true,
+  "decision": "Portfolio no longer exposes a duplicate local-only account settings gear/sheet. Account/preferences remain on the Account surface, while Portfolio keeps route-backed value, positions, orders, history, cashout, and cancel controls.",
+  "checks": {
+    "removesDuplicateSettingsAction": true,
+    "removesLocalOnlySettingsRows": true,
+    "keepsPortfolioDataSurface": true
+  },
+  "evidence": {
+    "portfolio": "mobile/src/components/Portfolio.tsx",
+    "test": "mobile/src/__tests__/portfolioSettingsContract.test.ts"
+  }
+}

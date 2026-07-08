@@ -1,0 +1,43 @@
+{
+    "cycle":  "MT",
+    "result":  "pass",
+    "generatedAt":  "2026-07-08T10:51:02.0885742Z",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "mobileApiBaseUrl":  "http://172.16.200.14:3002",
+    "expoPort":  8289,
+    "keyId":  "redacted",
+    "apiKey":  "redacted",
+    "eventSlug":  "argentina-vs-egypt",
+    "targetProviderMarketId":  "2793738",
+    "counterpartyAskPrice":  "0.70",
+    "seededCounterparty":  true,
+    "counterpartyProof":  "docs\\mobile\\harness\\cycle-MT-provider-winner-top-outcome-fill\\cycle-MT-provider-winner-counterparty.json",
+    "assertions":  {
+                       "homeShowsCurrentMatch":  true,
+                       "detailShowsProviderWinner":  true,
+                       "detailShowsComposedRegulationWinner1x2":  true,
+                       "regulationWinnerIsPolymarketBacked":  true,
+                       "orderbookHidden":  true,
+                       "ticketPreservesProviderWinner":  true,
+                       "swipeSubmitReachedPortfolio":  true,
+                       "portfolioPreservesProviderWinnerSource":  true,
+                       "historyPreservesProviderWinnerSource":  true,
+                       "filledHistoryVisible":  true
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\screenshots\\cycle-MT-provider-winner-top-outcome-fill\\cycle-MT-current-mvp-home.png",
+                      "docs\\mobile\\harness\\cycle-MT-provider-winner-top-outcome-fill\\cycle-MT-current-mvp-home.xml",
+                      "docs\\mobile\\screenshots\\cycle-MT-provider-winner-top-outcome-fill\\cycle-MT-current-mvp-detail-top.png",
+                      "docs\\mobile\\harness\\cycle-MT-provider-winner-top-outcome-fill\\cycle-MT-current-mvp-detail-top.xml",
+                      "docs\\mobile\\screenshots\\cycle-MT-provider-winner-top-outcome-fill\\cycle-MT-provider-winner.png",
+                      "docs\\mobile\\harness\\cycle-MT-provider-winner-top-outcome-fill\\cycle-MT-provider-winner-attempt-*.xml",
+                      "docs\\mobile\\screenshots\\cycle-MT-provider-winner-top-outcome-fill\\cycle-MT-provider-winner-ticket-ready.png",
+                      "docs\\mobile\\harness\\cycle-MT-provider-winner-top-outcome-fill\\cycle-MT-provider-winner-ticket-ready.xml",
+                      "docs\\mobile\\screenshots\\cycle-MT-provider-winner-top-outcome-fill\\cycle-MT-provider-winner-after-submit.png",
+                      "docs\\mobile\\harness\\cycle-MT-provider-winner-top-outcome-fill\\cycle-MT-provider-winner-after-submit.xml",
+                      "docs\\mobile\\screenshots\\cycle-MT-provider-winner-top-outcome-fill\\cycle-MT-provider-winner-portfolio-history.png",
+                      "docs\\mobile\\harness\\cycle-MT-provider-winner-top-outcome-fill\\cycle-MT-provider-winner-portfolio-history.xml"
+                  ]
+}

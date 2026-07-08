@@ -1,0 +1,21 @@
+{
+  "cycle": "KR",
+  "scope": "portfolio-cancel-ui-wiring",
+  "generatedAt": "2026-07-06T17:36:50.249Z",
+  "route": "DELETE /api/orders/:id",
+  "pass": true,
+  "checks": {
+    "portfolioRendersVisibleCancelButton": true,
+    "appPassesCancelHandlerToPortfolio": true,
+    "appCancelHandlerCallsServerService": true,
+    "appRefreshesBackendPortfolioAfterServerCancel": true,
+    "cancelServiceUsesApiCancelRouteInServerMode": true,
+    "apiClientDeletesCanonicalOrderRoute": true
+  },
+  "evidence": {
+    "app": "git show HEAD:mobile/App.tsx",
+    "portfolio": "git show HEAD:mobile/src/components/Portfolio.tsx",
+    "cancelService": "mobile/src/services/openOrderService.ts",
+    "api": "mobile/src/api.ts"
+  }
+}

@@ -9,6 +9,7 @@ import {
 } from "@/lib/canonicalApi";
 import { createApiOrderRequestWithPolicyCheck } from "@/server/services/canonicalGovernance";
 import { placeOrderAndMatch } from "@/server/services/matching";
+import { sanitizeTicketSelectionSnapshot } from "@/server/services/ticketSelectionMetadata";
 
 const PROCESSING_WAIT_MS = 100;
 const PROCESSING_MAX_ATTEMPTS = 30;
@@ -40,6 +41,8 @@ type StoredOrderResponse = {
     type: CanonicalOrderType;
     clientOrderId: string | null;
     apiKeyId: string | null;
+    contractSide: "YES" | "NO" | null;
+    selection: Record<string, unknown> | null;
     price: string;
     size: string;
     remaining: string;
@@ -138,6 +141,9 @@ const parsePriceString = (value: unknown) => {
 const buildFingerprint = (body: Record<string, unknown>) =>
   createHash("sha256").update(JSON.stringify(body)).digest("hex");
 
+const sanitizeOptionalStringField = (value: unknown) =>
+  typeof value === "string" && value.trim().length > 0 ? value.trim() : null;
+
 const parseOptionalPositiveDecimalString = (
   value: unknown,
   fieldName: string,
@@ -175,6 +181,75 @@ const getMatchingPrice = (order: Pick<NormalizedOrderRequest, "type" | "side" | 
   return order.side === "BUY" ? "1" : "0";
 };
 
+const hasMatchingLocalLiquidity = async (
+  order: Pick<NormalizedOrderRequest, "marketId" | "outcomeId" | "side" | "type" | "price">,
+) => {
+  const oppositeSide = order.side === "BUY" ? "SELL" : "BUY";
+  const price =
+    order.type === "LIMIT" && order.price
+      ? new Prisma.Decimal(order.price)
+      : new Prisma.Decimal(order.side === "BUY" ? "1" : "0");
+  const priceFilter = order.side === "BUY" ? { lte: price } : { gte: price };
+  const resting = await prisma.order.findFirst({
+    where: {
+      marketId: order.marketId,
+      outcomeId: order.outcomeId,
+      side: oppositeSide,
+      status: { in: ["OPEN", "PARTIAL"] },
+      remaining: { gt: new Prisma.Decimal(0) },
+      price: priceFilter,
+    },
+    select: { id: true },
+  });
+  return Boolean(resting);
+};
+
+const assertProviderMarketAcceptsOrders = async (
+  order: Pick<NormalizedOrderRequest, "marketId" | "outcomeId" | "side" | "type" | "price">,
+) => {
+  const market = await prisma.market.findUnique({
+    where: { id: order.marketId },
+    select: {
+      id: true,
+      referenceSource: true,
+      externalMarketId: true,
+      conditionId: true,
+      referenceQuoteSnapshots: {
+        where: { outcomeId: order.outcomeId },
+        orderBy: [{ fetchedAt: "desc" }, { updatedAt: "desc" }],
+        take: 1,
+        select: {
+          acceptingOrders: true,
+          outcomePrice: true,
+          source: true,
+          fetchedAt: true,
+          reason: true,
+        },
+      },
+    },
+  });
+
+  if (!market) {
+    return;
+  }
+
+  const providerBackedMarket = Boolean(market.referenceSource || market.externalMarketId || market.conditionId);
+  if (!providerBackedMarket) {
+    return;
+  }
+
+  const latestQuote = market.referenceQuoteSnapshots[0] ?? null;
+  const outcomePrice = latestQuote?.outcomePrice == null ? null : Number(latestQuote.outcomePrice);
+  const hasValidProviderPrice = outcomePrice != null && Number.isFinite(outcomePrice) && outcomePrice > 0 && outcomePrice < 1;
+  if (!latestQuote?.acceptingOrders && !hasValidProviderPrice && !(await hasMatchingLocalLiquidity(order))) {
+    throw new CanonicalApiError(
+      "MARKET_UNAVAILABLE",
+      latestQuote?.reason || "Market is unavailable for provider-backed trading.",
+      409,
+    );
+  }
+};
+
 const normalizeOrderRequest = (params: {
   userId: string;
   body: unknown;
@@ -196,6 +271,11 @@ const normalizeOrderRequest = (params: {
     typeof body.clientOrderId === "string" && body.clientOrderId.trim().length > 0
       ? body.clientOrderId.trim()
       : null;
+  const contractSide =
+    body.contractSide === "YES" || body.contractSide === "NO"
+      ? body.contractSide
+      : null;
+  const selection = sanitizeTicketSelectionSnapshot(body.selection);
   const headerKey = params.idempotencyKeyHeader?.trim() || null;
   const idempotencyKey = headerKey ?? clientOrderId;
 
@@ -242,6 +322,8 @@ const normalizeOrderRequest = (params: {
       size,
       maxSpend,
       clientOrderId,
+      contractSide,
+      selection,
     },
     fingerprint: buildFingerprint({
       marketId,
@@ -252,6 +334,8 @@ const normalizeOrderRequest = (params: {
       size,
       maxSpend,
       clientOrderId,
+      contractSide,
+      selection,
     }),
     maxSpend,
   };
@@ -440,6 +524,7 @@ export const submitCanonicalOrder = async (params: {
   });
 
   try {
+    await assertProviderMarketAcceptsOrders(normalized);
     const matchingPrice = getMatchingPrice(normalized);
     const result = await placeOrderAndMatch({
       marketId: normalized.marketId,
@@ -459,6 +544,8 @@ export const submitCanonicalOrder = async (params: {
         type: normalized.type,
         clientOrderId: normalized.clientOrderId,
         apiKeyId: params.apiKeyId,
+        contractSide: normalized.requestBody.contractSide as "YES" | "NO" | null,
+        selection: normalized.requestBody.selection as Record<string, unknown> | null,
       },
       fills: result.fills,
       balance: result.balance,

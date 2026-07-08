@@ -1,0 +1,56 @@
+{
+  "pass": true,
+  "eventSlug": "argentina-vs-egypt",
+  "market": {
+    "id": "b6554df0-9bbc-4161-bfcf-f9d76b6c71e3",
+    "title": "Will Egypt win on 2026-07-07?",
+    "marketType": "match_winner_1x2",
+    "marketGroupKey": "main",
+    "period": "regulation",
+    "line": null,
+    "referenceSource": "polymarket",
+    "externalMarketId": "2793741",
+    "conditionId": "0x971eb98daab3a11a1dd3b76e14ae962f8e5980ec6a3d499529b5f19b75108d4a"
+  },
+  "outcome": {
+    "id": "4b69a72a-8636-4a92-b484-8f2508ce522c",
+    "name": "Egypt",
+    "side": "yes",
+    "referenceTokenId": "115321303982678629228305623888886288749804075736763407098365012911341798952806",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "maker": {
+    "id": "e9b0571f-0e7b-4346-b085-cbecf6aad123",
+    "username": "mobile_route_fill_maker_f1589e6b"
+  },
+  "cleanup": {
+    "enabled": true,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": [],
+    "cleanupBlockingBids": true,
+    "canceledBlockingBids": [],
+    "cleanupBlockingMarketBids": false,
+    "canceledBlockingMarketBids": [],
+    "cleanupProofAsks": false,
+    "canceledProofAsks": [],
+    "cleanupBlockingAsks": false,
+    "canceledBlockingAsks": []
+  },
+  "makerOrder": {
+    "id": "9f98c574-9447-4134-a83b-cf7532cba73c",
+    "marketId": "b6554df0-9bbc-4161-bfcf-f9d76b6c71e3",
+    "outcomeId": "4b69a72a-8636-4a92-b484-8f2508ce522c",
+    "side": "SELL",
+    "price": "0.7",
+    "size": "80",
+    "remaining": "80",
+    "reservedNotional": "0",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "SELL",
+    "price": "0.70",
+    "size": "80",
+    "intendedMobileTaker": "BUY $25 route-backed main ticket"
+  }
+}

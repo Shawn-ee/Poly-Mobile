@@ -1,0 +1,41 @@
+{
+    "cycle":  "EJ-B",
+    "scope":  "Route-backed visible Android status breadth across live detail, chart, Book/orderbook settings, and ticket settings",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleStatusBreadth -Port 8325 -BackendBaseUrl http://127.0.0.1:3002 -ServerEventSlug mobile-ej-a-provider-status-breadth-757c94ec -OutputDir docs\\mobile\\screenshots\\cycle-EJ-integrated-status-breadth -HierarchyOutputDir docs\\mobile\\harness\\cycle-EJ-integrated-status-breadth",
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "serverMode":  "server",
+    "apiBaseUrl":  "http://127.0.0.1:3002",
+    "adbReverse":  "tcp:3002 tcp:3002",
+    "serverEventSlug":  "mobile-ej-a-provider-status-breadth-757c94ec",
+    "eventIdentity":  "backend live detail route",
+    "routeBackedStatusConsumed":  true,
+    "routeBackedStatusSource":  "polymarket-gamma",
+    "result":  "pass",
+    "assertions":  {
+                       "backendHealth":  "Backend /api/health was required before launch; the proof aborts instead of falling back when unavailable.",
+                       "liveRouteStatusReady":  "Live detail consumed route-backed liveDataStatus with live-data-status-ready and live-data-source-polymarket-gamma.",
+                       "chartRouteStatusReady":  "Chart route state exposes chart-status-ready plus a visible Ticket refresh due handoff for the mixed provider lifecycle event.",
+                       "serverRuntime":  "Expo launched with EXPO_PUBLIC_ORDER_MODE=server and EXPO_PUBLIC_API_BASE_URL set to the supplied BackendBaseUrl.",
+                       "bookRefreshing":  "Opening Book produces a visible provider-lifecycle-refreshing Book depth refreshing state before the resolved depth state.",
+                       "bookRouteDepthReady":  "Resolved Book depth uses orderbook-source-orderbook-route and orderbook-status-ready while the selected market availability remains visibly refresh-due/stale rather than fixture/default ready.",
+                       "bookSettings":  "Book settings toggles book-display-mode-cents to book-display-mode-decimal while preserving selected-provider-source-polymarket.",
+                       "ticketServerMode":  "Ticket settings exposes Trading mode: Server mode while preserving provider-source-polymarket and ticket-provider-source-polymarket selection identity.",
+                       "fallbackGuard":  "The top, Book, and ticket hierarchies reject deterministic-status-fixture, fixture-ready, mock-ready, and default-ready markers."
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\screenshots\\cycle-EJ-integrated-status-breadth/cycle-EJ-B-visible-status-breadth-live-top.png",
+                      "docs\\mobile\\harness\\cycle-EJ-integrated-status-breadth/cycle-EJ-B-visible-status-breadth-live-top.xml",
+                      "docs\\mobile\\screenshots\\cycle-EJ-integrated-status-breadth/cycle-EJ-B-visible-status-breadth-book-refreshing.png",
+                      "docs\\mobile\\harness\\cycle-EJ-integrated-status-breadth/cycle-EJ-B-visible-status-breadth-book-refreshing.xml",
+                      "docs\\mobile\\screenshots\\cycle-EJ-integrated-status-breadth/cycle-EJ-B-visible-status-breadth-book-resolved.png",
+                      "docs\\mobile\\harness\\cycle-EJ-integrated-status-breadth/cycle-EJ-B-visible-status-breadth-book-resolved.xml",
+                      "docs\\mobile\\screenshots\\cycle-EJ-integrated-status-breadth/cycle-EJ-B-visible-status-breadth-book-settings-cents.png",
+                      "docs\\mobile\\harness\\cycle-EJ-integrated-status-breadth/cycle-EJ-B-visible-status-breadth-book-settings-cents.xml",
+                      "docs\\mobile\\screenshots\\cycle-EJ-integrated-status-breadth/cycle-EJ-B-visible-status-breadth-book-settings-decimal.png",
+                      "docs\\mobile\\harness\\cycle-EJ-integrated-status-breadth/cycle-EJ-B-visible-status-breadth-book-settings-decimal.xml",
+                      "docs\\mobile\\screenshots\\cycle-EJ-integrated-status-breadth/cycle-EJ-B-visible-status-breadth-ticket-handoff.png",
+                      "docs\\mobile\\harness\\cycle-EJ-integrated-status-breadth/cycle-EJ-B-visible-status-breadth-ticket-handoff.xml",
+                      "docs\\mobile\\screenshots\\cycle-EJ-integrated-status-breadth/cycle-EJ-B-visible-status-breadth-ticket-settings.png",
+                      "docs\\mobile\\harness\\cycle-EJ-integrated-status-breadth/cycle-EJ-B-visible-status-breadth-ticket-settings.xml"
+                  ]
+}

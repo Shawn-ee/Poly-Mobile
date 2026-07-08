@@ -1,0 +1,2338 @@
+{
+  "generatedAt": "2026-07-04T07:27:06.435Z",
+  "provider": "polymarket-gamma",
+  "providerEventSlug": "fifwc-col-gha-2026-07-03",
+  "surfaces": {
+    "exactEvent": {
+      "source": "gamma-api.polymarket.com/events?slug",
+      "candidateCount": 3,
+      "familySummary": {
+        "match_winner": 3,
+        "spread": 0,
+        "total_goals": 0,
+        "team_total_goals": 0,
+        "corners": 0,
+        "first_half": 0,
+        "second_half": 0,
+        "correct_score": 0,
+        "other": 0
+      },
+      "lineCandidateCount": 0,
+      "samples": [
+        {
+          "slug": "fifwc-col-gha-2026-07-03-col",
+          "question": "Will Colombia win on 2026-07-03?",
+          "family": "match_winner",
+          "tokenComplete": true
+        },
+        {
+          "slug": "fifwc-col-gha-2026-07-03-draw",
+          "question": "Will Colombia vs. Ghana end in a draw?",
+          "family": "match_winner",
+          "tokenComplete": true
+        },
+        {
+          "slug": "fifwc-col-gha-2026-07-03-gha",
+          "question": "Will Ghana win on 2026-07-03?",
+          "family": "match_winner",
+          "tokenComplete": true
+        }
+      ]
+    },
+    "exactSlugGuesses": {
+      "source": "gamma-api.polymarket.com/markets?slug",
+      "guessedSlugCount": 23,
+      "candidateCount": 0,
+      "familySummary": {
+        "match_winner": 0,
+        "spread": 0,
+        "total_goals": 0,
+        "team_total_goals": 0,
+        "corners": 0,
+        "first_half": 0,
+        "second_half": 0,
+        "correct_score": 0,
+        "other": 0
+      },
+      "lineCandidateCount": 0,
+      "candidates": []
+    },
+    "broadLineQueries": {
+      "source": "gamma-api.polymarket.com/markets?search",
+      "targetCount": 8,
+      "totalBroadCandidateCount": 96,
+      "attachReadyLineTargetCount": 0,
+      "targets": [
+        {
+          "key": "spread-colombia-plus-1-5",
+          "marketType": "spread",
+          "title": "Colombia +1.5",
+          "period": null,
+          "line": "1.5",
+          "exactSlugGuesses": [
+            "fifwc-col-gha-2026-07-03-spread",
+            "fifwc-col-gha-2026-07-03-handicap",
+            "fifwc-col-gha-2026-07-03-col-spread",
+            "fifwc-col-gha-2026-07-03-gha-spread",
+            "fifwc-col-gha-2026-07-03-colombia-spread",
+            "fifwc-col-gha-2026-07-03-ghana-spread"
+          ],
+          "queries": [
+            "Colombia +1.5",
+            "Colombia",
+            "Colombia spread",
+            "Colombia Game Lines",
+            "Colombia Ghana spread",
+            "Colombia Ghana handicap",
+            "Colombia +1.5 Ghana",
+            "Colombia cover 1.5 Ghana"
+          ],
+          "broadCandidateCount": 12,
+          "mergedCandidateCount": 15,
+          "attachReadyCandidateCount": 0,
+          "familyMismatchCount": 10,
+          "insufficientRelevanceCount": 7,
+          "ranked": [
+            {
+              "slug": "fifwc-col-gha-2026-07-03-col",
+              "question": "Will Colombia win on 2026-07-03?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 92,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch"
+              ],
+              "relevance": {
+                "relevant": true,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": true,
+                "expectedFamily": "spread",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "colombia"
+                ],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 92
+              }
+            },
+            {
+              "slug": "fifwc-col-gha-2026-07-03-draw",
+              "question": "Will Colombia vs. Ghana end in a draw?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 92,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch"
+              ],
+              "relevance": {
+                "relevant": true,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": true,
+                "expectedFamily": "spread",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "colombia"
+                ],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 92
+              }
+            },
+            {
+              "slug": "fifwc-col-gha-2026-07-03-gha",
+              "question": "Will Ghana win on 2026-07-03?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 84.8,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch"
+              ],
+              "relevance": {
+                "relevant": true,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": true,
+                "expectedFamily": "spread",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "colombia"
+                ],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 84.8
+              }
+            },
+            {
+              "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+              "question": "Will bitcoin hit $1m before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.9
+              }
+            },
+            {
+              "slug": "will-jesus-christ-return-before-gta-vi-665",
+              "question": "Will Jesus Christ return before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+              "question": "Will China invades Taiwan before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "new-rhianna-album-before-gta-vi-926",
+              "question": "New Rihanna Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 71.42475684,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 71.42
+              }
+            },
+            {
+              "slug": "trump-out-as-president-before-gta-vi-846",
+              "question": "Trump out as President before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 67.51799008,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 67.52
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-between-5-and-10-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to between 5 and 10 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 66.7397,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 66.74
+              }
+            },
+            {
+              "slug": "new-playboi-carti-album-before-gta-vi-421",
+              "question": "New Playboi Carti Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 66.37971102,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 66.38
+              }
+            }
+          ]
+        },
+        {
+          "key": "spread-ghana-minus-1-5",
+          "marketType": "spread",
+          "title": "Ghana -1.5",
+          "period": null,
+          "line": "-1.5",
+          "exactSlugGuesses": [
+            "fifwc-col-gha-2026-07-03-spread",
+            "fifwc-col-gha-2026-07-03-handicap",
+            "fifwc-col-gha-2026-07-03-col-spread",
+            "fifwc-col-gha-2026-07-03-gha-spread",
+            "fifwc-col-gha-2026-07-03-colombia-spread",
+            "fifwc-col-gha-2026-07-03-ghana-spread"
+          ],
+          "queries": [
+            "Ghana -1.5",
+            "Ghana",
+            "Ghana spread",
+            "Ghana Game Lines",
+            "Ghana Colombia spread",
+            "Ghana Colombia handicap",
+            "Ghana -1.5 Colombia",
+            "Ghana cover 1.5 Colombia"
+          ],
+          "broadCandidateCount": 12,
+          "mergedCandidateCount": 15,
+          "attachReadyCandidateCount": 0,
+          "familyMismatchCount": 10,
+          "insufficientRelevanceCount": 7,
+          "ranked": [
+            {
+              "slug": "fifwc-col-gha-2026-07-03-gha",
+              "question": "Will Ghana win on 2026-07-03?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 92.8,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch"
+              ],
+              "relevance": {
+                "relevant": true,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": true,
+                "expectedFamily": "spread",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "ghana"
+                ],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 92.8
+              }
+            },
+            {
+              "slug": "fifwc-col-gha-2026-07-03-draw",
+              "question": "Will Colombia vs. Ghana end in a draw?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 92,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch"
+              ],
+              "relevance": {
+                "relevant": true,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": true,
+                "expectedFamily": "spread",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "ghana"
+                ],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 92
+              }
+            },
+            {
+              "slug": "fifwc-col-gha-2026-07-03-col",
+              "question": "Will Colombia win on 2026-07-03?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 84,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch"
+              ],
+              "relevance": {
+                "relevant": true,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": true,
+                "expectedFamily": "spread",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "ghana"
+                ],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 84
+              }
+            },
+            {
+              "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+              "question": "Will bitcoin hit $1m before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.9
+              }
+            },
+            {
+              "slug": "will-jesus-christ-return-before-gta-vi-665",
+              "question": "Will Jesus Christ return before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+              "question": "Will China invades Taiwan before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "new-rhianna-album-before-gta-vi-926",
+              "question": "New Rihanna Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 71.42475684,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 71.42
+              }
+            },
+            {
+              "slug": "trump-out-as-president-before-gta-vi-846",
+              "question": "Trump out as President before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 67.51799008,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 67.52
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-between-5-and-10-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to between 5 and 10 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 66.7397,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 66.74
+              }
+            },
+            {
+              "slug": "new-playboi-carti-album-before-gta-vi-421",
+              "question": "New Playboi Carti Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 66.37971102,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 66.38
+              }
+            }
+          ]
+        },
+        {
+          "key": "total-goals-2-5",
+          "marketType": "total_goals",
+          "title": "Colombia vs Ghana total goals 2.5",
+          "period": null,
+          "line": "2.5",
+          "exactSlugGuesses": [
+            "fifwc-col-gha-2026-07-03-total-goals",
+            "fifwc-col-gha-2026-07-03-total-goals-25",
+            "fifwc-col-gha-2026-07-03-over-under",
+            "fifwc-col-gha-2026-07-03-over-25",
+            "fifwc-col-gha-2026-07-03-under-25",
+            "fifwc-col-gha-2026-07-03-team-total-col",
+            "fifwc-col-gha-2026-07-03-team-total-gha",
+            "fifwc-col-gha-2026-07-03-col-team-total",
+            "fifwc-col-gha-2026-07-03-gha-team-total",
+            "fifwc-col-gha-2026-07-03-first-half-total-goals",
+            "fifwc-col-gha-2026-07-03-total-corners"
+          ],
+          "queries": [
+            "Colombia vs Ghana total goals 2.5",
+            "Colombia vs Ghana total goals",
+            "Over 2.5 Under 2.5",
+            "Over 2.5 Under 2.5 over under",
+            "Colombia vs Ghana total goals total goals",
+            "Colombia vs Ghana total goals over under",
+            "Colombia vs Ghana total goals Game Lines",
+            "Over 2.5 ghana",
+            "Over 2.5 ghana soccer",
+            "Over 2.5 ghana world cup",
+            "Over 2.5 ghana over under",
+            "Colombia Ghana total goals"
+          ],
+          "broadCandidateCount": 12,
+          "mergedCandidateCount": 15,
+          "attachReadyCandidateCount": 0,
+          "familyMismatchCount": 10,
+          "insufficientRelevanceCount": 10,
+          "ranked": [
+            {
+              "slug": "fifwc-col-gha-2026-07-03-draw",
+              "question": "Will Colombia vs. Ghana end in a draw?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 108,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "colombia",
+                  "ghana"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 108
+              }
+            },
+            {
+              "slug": "fifwc-col-gha-2026-07-03-gha",
+              "question": "Will Ghana win on 2026-07-03?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 100.8,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "colombia",
+                  "ghana"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 100.8
+              }
+            },
+            {
+              "slug": "fifwc-col-gha-2026-07-03-col",
+              "question": "Will Colombia win on 2026-07-03?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 100,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "colombia",
+                  "ghana"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 100
+              }
+            },
+            {
+              "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+              "question": "Will bitcoin hit $1m before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.9
+              }
+            },
+            {
+              "slug": "will-jesus-christ-return-before-gta-vi-665",
+              "question": "Will Jesus Christ return before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+              "question": "Will China invades Taiwan before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "new-rhianna-album-before-gta-vi-926",
+              "question": "New Rihanna Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 71.42475684,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 71.42
+              }
+            },
+            {
+              "slug": "trump-out-as-president-before-gta-vi-846",
+              "question": "Trump out as President before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 67.51799008,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 67.52
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-between-5-and-10-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to between 5 and 10 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 66.7397,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 66.74
+              }
+            },
+            {
+              "slug": "new-playboi-carti-album-before-gta-vi-421",
+              "question": "New Playboi Carti Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 66.37971102,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 66.38
+              }
+            }
+          ]
+        },
+        {
+          "key": "team-total-colombia-1-5",
+          "marketType": "team_total_goals",
+          "title": "Colombia team total goals 1.5",
+          "period": null,
+          "line": "1.5",
+          "exactSlugGuesses": [
+            "fifwc-col-gha-2026-07-03-spread",
+            "fifwc-col-gha-2026-07-03-handicap",
+            "fifwc-col-gha-2026-07-03-col-spread",
+            "fifwc-col-gha-2026-07-03-gha-spread",
+            "fifwc-col-gha-2026-07-03-colombia-spread",
+            "fifwc-col-gha-2026-07-03-ghana-spread",
+            "fifwc-col-gha-2026-07-03-total-goals",
+            "fifwc-col-gha-2026-07-03-total-goals-25",
+            "fifwc-col-gha-2026-07-03-over-under",
+            "fifwc-col-gha-2026-07-03-over-25",
+            "fifwc-col-gha-2026-07-03-under-25",
+            "fifwc-col-gha-2026-07-03-team-total-col",
+            "fifwc-col-gha-2026-07-03-team-total-gha",
+            "fifwc-col-gha-2026-07-03-col-team-total",
+            "fifwc-col-gha-2026-07-03-gha-team-total",
+            "fifwc-col-gha-2026-07-03-first-half",
+            "fifwc-col-gha-2026-07-03-first-half-winner",
+            "fifwc-col-gha-2026-07-03-1h",
+            "fifwc-col-gha-2026-07-03-1h-winner",
+            "fifwc-col-gha-2026-07-03-first-half-total-goals",
+            "fifwc-col-gha-2026-07-03-corners",
+            "fifwc-col-gha-2026-07-03-total-corners",
+            "fifwc-col-gha-2026-07-03-correct-score"
+          ],
+          "queries": [
+            "Colombia team total goals 1.5",
+            "Colombia team total goals",
+            "Over 1.5 Under 1.5",
+            "Over 1.5 Under 1.5 team total",
+            "Colombia team total goals team total goals",
+            "Colombia team total goals team total",
+            "Colombia team total goals Game Lines",
+            "Over 1.5 colombia",
+            "Over 1.5 colombia soccer",
+            "Over 1.5 colombia world cup",
+            "Over 1.5 colombia team total",
+            "Colombia Ghana team total"
+          ],
+          "broadCandidateCount": 12,
+          "mergedCandidateCount": 15,
+          "attachReadyCandidateCount": 0,
+          "familyMismatchCount": 10,
+          "insufficientRelevanceCount": 10,
+          "ranked": [
+            {
+              "slug": "fifwc-col-gha-2026-07-03-col",
+              "question": "Will Colombia win on 2026-07-03?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 92,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "colombia"
+                ],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 92
+              }
+            },
+            {
+              "slug": "fifwc-col-gha-2026-07-03-draw",
+              "question": "Will Colombia vs. Ghana end in a draw?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 92,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "colombia"
+                ],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 92
+              }
+            },
+            {
+              "slug": "fifwc-col-gha-2026-07-03-gha",
+              "question": "Will Ghana win on 2026-07-03?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 84.8,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "colombia"
+                ],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 84.8
+              }
+            },
+            {
+              "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+              "question": "Will bitcoin hit $1m before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.9
+              }
+            },
+            {
+              "slug": "will-jesus-christ-return-before-gta-vi-665",
+              "question": "Will Jesus Christ return before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+              "question": "Will China invades Taiwan before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "new-rhianna-album-before-gta-vi-926",
+              "question": "New Rihanna Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 71.42475684,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 71.42
+              }
+            },
+            {
+              "slug": "trump-out-as-president-before-gta-vi-846",
+              "question": "Trump out as President before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 67.51799008,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 67.52
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-between-5-and-10-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to between 5 and 10 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 66.7397,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 66.74
+              }
+            },
+            {
+              "slug": "new-playboi-carti-album-before-gta-vi-421",
+              "question": "New Playboi Carti Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 66.37971102,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 66.38
+              }
+            }
+          ]
+        },
+        {
+          "key": "team-total-ghana-1-5",
+          "marketType": "team_total_goals",
+          "title": "Ghana team total goals 1.5",
+          "period": null,
+          "line": "1.5",
+          "exactSlugGuesses": [
+            "fifwc-col-gha-2026-07-03-spread",
+            "fifwc-col-gha-2026-07-03-handicap",
+            "fifwc-col-gha-2026-07-03-col-spread",
+            "fifwc-col-gha-2026-07-03-gha-spread",
+            "fifwc-col-gha-2026-07-03-colombia-spread",
+            "fifwc-col-gha-2026-07-03-ghana-spread",
+            "fifwc-col-gha-2026-07-03-total-goals",
+            "fifwc-col-gha-2026-07-03-total-goals-25",
+            "fifwc-col-gha-2026-07-03-over-under",
+            "fifwc-col-gha-2026-07-03-over-25",
+            "fifwc-col-gha-2026-07-03-under-25",
+            "fifwc-col-gha-2026-07-03-team-total-col",
+            "fifwc-col-gha-2026-07-03-team-total-gha",
+            "fifwc-col-gha-2026-07-03-col-team-total",
+            "fifwc-col-gha-2026-07-03-gha-team-total",
+            "fifwc-col-gha-2026-07-03-first-half",
+            "fifwc-col-gha-2026-07-03-first-half-winner",
+            "fifwc-col-gha-2026-07-03-1h",
+            "fifwc-col-gha-2026-07-03-1h-winner",
+            "fifwc-col-gha-2026-07-03-first-half-total-goals",
+            "fifwc-col-gha-2026-07-03-corners",
+            "fifwc-col-gha-2026-07-03-total-corners",
+            "fifwc-col-gha-2026-07-03-correct-score"
+          ],
+          "queries": [
+            "Ghana team total goals 1.5",
+            "Ghana team total goals",
+            "Over 1.5 Under 1.5",
+            "Over 1.5 Under 1.5 team total",
+            "Ghana team total goals team total goals",
+            "Ghana team total goals team total",
+            "Ghana team total goals Game Lines",
+            "Over 1.5 ghana",
+            "Over 1.5 ghana soccer",
+            "Over 1.5 ghana world cup",
+            "Over 1.5 ghana team total",
+            "Ghana Colombia team total"
+          ],
+          "broadCandidateCount": 12,
+          "mergedCandidateCount": 15,
+          "attachReadyCandidateCount": 0,
+          "familyMismatchCount": 10,
+          "insufficientRelevanceCount": 10,
+          "ranked": [
+            {
+              "slug": "fifwc-col-gha-2026-07-03-gha",
+              "question": "Will Ghana win on 2026-07-03?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 92.8,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "ghana"
+                ],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 92.8
+              }
+            },
+            {
+              "slug": "fifwc-col-gha-2026-07-03-draw",
+              "question": "Will Colombia vs. Ghana end in a draw?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 92,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "ghana"
+                ],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 92
+              }
+            },
+            {
+              "slug": "fifwc-col-gha-2026-07-03-col",
+              "question": "Will Colombia win on 2026-07-03?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 84,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "ghana"
+                ],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 84
+              }
+            },
+            {
+              "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+              "question": "Will bitcoin hit $1m before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.9
+              }
+            },
+            {
+              "slug": "will-jesus-christ-return-before-gta-vi-665",
+              "question": "Will Jesus Christ return before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+              "question": "Will China invades Taiwan before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "new-rhianna-album-before-gta-vi-926",
+              "question": "New Rihanna Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 71.42475684,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 71.42
+              }
+            },
+            {
+              "slug": "trump-out-as-president-before-gta-vi-846",
+              "question": "Trump out as President before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 67.51799008,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 67.52
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-between-5-and-10-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to between 5 and 10 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 66.7397,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 66.74
+              }
+            },
+            {
+              "slug": "new-playboi-carti-album-before-gta-vi-421",
+              "question": "New Playboi Carti Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 66.37971102,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 66.38
+              }
+            }
+          ]
+        },
+        {
+          "key": "first-half-total-goals-1-5",
+          "marketType": "total_goals",
+          "title": "First half total goals 1.5",
+          "period": "first-half",
+          "line": "1.5",
+          "exactSlugGuesses": [
+            "fifwc-col-gha-2026-07-03-first-half",
+            "fifwc-col-gha-2026-07-03-first-half-winner",
+            "fifwc-col-gha-2026-07-03-1h",
+            "fifwc-col-gha-2026-07-03-1h-winner",
+            "fifwc-col-gha-2026-07-03-first-half-total-goals"
+          ],
+          "queries": [
+            "First half total goals 1.5",
+            "First half total goals",
+            "Over 1.5 Under 1.5",
+            "Over 1.5 Under 1.5 over under",
+            "First half total goals total goals",
+            "First half total goals over under",
+            "First half total goals Game Lines",
+            "First half total goals first half",
+            "Over 1.5 Under 1.5 soccer",
+            "Over 1.5 Under 1.5 world cup",
+            "Colombia Ghana first half total goals",
+            "Colombia Ghana first half over under"
+          ],
+          "broadCandidateCount": 12,
+          "mergedCandidateCount": 15,
+          "attachReadyCandidateCount": 0,
+          "familyMismatchCount": 10,
+          "insufficientRelevanceCount": 10,
+          "ranked": [
+            {
+              "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+              "question": "Will bitcoin hit $1m before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 0,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.9
+              }
+            },
+            {
+              "slug": "fifwc-col-gha-2026-07-03-gha",
+              "question": "Will Ghana win on 2026-07-03?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 76.8,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 0,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.8
+              }
+            },
+            {
+              "slug": "fifwc-col-gha-2026-07-03-col",
+              "question": "Will Colombia win on 2026-07-03?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 0,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "fifwc-col-gha-2026-07-03-draw",
+              "question": "Will Colombia vs. Ghana end in a draw?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 0,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "will-jesus-christ-return-before-gta-vi-665",
+              "question": "Will Jesus Christ return before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 0,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+              "question": "Will China invades Taiwan before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 0,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "new-rhianna-album-before-gta-vi-926",
+              "question": "New Rihanna Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 71.42475684,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 0,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 71.42
+              }
+            },
+            {
+              "slug": "trump-out-as-president-before-gta-vi-846",
+              "question": "Trump out as President before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 67.51799008,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 0,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 67.52
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-between-5-and-10-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to between 5 and 10 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 66.7397,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 0,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 66.74
+              }
+            },
+            {
+              "slug": "new-playboi-carti-album-before-gta-vi-421",
+              "question": "New Playboi Carti Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 66.37971102,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 0,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 66.38
+              }
+            }
+          ]
+        },
+        {
+          "key": "first-half-winner-colombia",
+          "marketType": "first_half_winner",
+          "title": "First half Colombia winner",
+          "period": "first-half",
+          "line": null,
+          "exactSlugGuesses": [
+            "fifwc-col-gha-2026-07-03-first-half",
+            "fifwc-col-gha-2026-07-03-first-half-winner",
+            "fifwc-col-gha-2026-07-03-1h",
+            "fifwc-col-gha-2026-07-03-1h-winner",
+            "fifwc-col-gha-2026-07-03-first-half-total-goals"
+          ],
+          "queries": [
+            "First half Colombia winner",
+            "First half Colombia winner first half winner",
+            "First half Colombia winner Game Lines",
+            "First half Colombia winner first half",
+            "Colombia Ghana first half winner",
+            "Colombia first half Ghana",
+            "Colombia Ghana 1h winner"
+          ],
+          "broadCandidateCount": 12,
+          "mergedCandidateCount": 15,
+          "attachReadyCandidateCount": 0,
+          "familyMismatchCount": 10,
+          "insufficientRelevanceCount": 7,
+          "ranked": [
+            {
+              "slug": "fifwc-col-gha-2026-07-03-col",
+              "question": "Will Colombia win on 2026-07-03?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 92,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch"
+              ],
+              "relevance": {
+                "relevant": true,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": true,
+                "expectedFamily": "first_half",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "colombia"
+                ],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 92
+              }
+            },
+            {
+              "slug": "fifwc-col-gha-2026-07-03-draw",
+              "question": "Will Colombia vs. Ghana end in a draw?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 92,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch"
+              ],
+              "relevance": {
+                "relevant": true,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": true,
+                "expectedFamily": "first_half",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "colombia"
+                ],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 92
+              }
+            },
+            {
+              "slug": "fifwc-col-gha-2026-07-03-gha",
+              "question": "Will Ghana win on 2026-07-03?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 84.8,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch"
+              ],
+              "relevance": {
+                "relevant": true,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": true,
+                "expectedFamily": "first_half",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "colombia"
+                ],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 84.8
+              }
+            },
+            {
+              "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+              "question": "Will bitcoin hit $1m before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "first_half",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.9
+              }
+            },
+            {
+              "slug": "will-jesus-christ-return-before-gta-vi-665",
+              "question": "Will Jesus Christ return before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "first_half",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+              "question": "Will China invades Taiwan before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "first_half",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "new-rhianna-album-before-gta-vi-926",
+              "question": "New Rihanna Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 71.42475684,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "first_half",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 71.42
+              }
+            },
+            {
+              "slug": "trump-out-as-president-before-gta-vi-846",
+              "question": "Trump out as President before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 67.51799008,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "first_half",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 67.52
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-between-5-and-10-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to between 5 and 10 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 66.7397,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "first_half",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 66.74
+              }
+            },
+            {
+              "slug": "new-playboi-carti-album-before-gta-vi-421",
+              "question": "New Playboi Carti Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 66.37971102,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "first_half",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 1,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 66.38
+              }
+            }
+          ]
+        },
+        {
+          "key": "corners-8-5",
+          "marketType": "corners",
+          "title": "Colombia vs Ghana corners 8.5",
+          "period": null,
+          "line": "8.5",
+          "exactSlugGuesses": [
+            "fifwc-col-gha-2026-07-03-corners",
+            "fifwc-col-gha-2026-07-03-total-corners"
+          ],
+          "queries": [
+            "Colombia vs Ghana corners 8.5",
+            "Colombia vs Ghana corners",
+            "Over 8.5 Under 8.5",
+            "Over 8.5 Under 8.5 corners",
+            "Colombia vs Ghana corners corners",
+            "Colombia vs Ghana corners Game Lines",
+            "Over 8.5 ghana",
+            "Over 8.5 ghana soccer",
+            "Over 8.5 ghana world cup",
+            "Over 8.5 ghana corners",
+            "Colombia Ghana corners",
+            "Colombia Ghana corner kicks over 8.5"
+          ],
+          "broadCandidateCount": 12,
+          "mergedCandidateCount": 15,
+          "attachReadyCandidateCount": 0,
+          "familyMismatchCount": 10,
+          "insufficientRelevanceCount": 10,
+          "ranked": [
+            {
+              "slug": "fifwc-col-gha-2026-07-03-draw",
+              "question": "Will Colombia vs. Ghana end in a draw?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 108,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "colombia",
+                  "ghana"
+                ],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 108
+              }
+            },
+            {
+              "slug": "fifwc-col-gha-2026-07-03-gha",
+              "question": "Will Ghana win on 2026-07-03?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 100.8,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "colombia",
+                  "ghana"
+                ],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 100.8
+              }
+            },
+            {
+              "slug": "fifwc-col-gha-2026-07-03-col",
+              "question": "Will Colombia win on 2026-07-03?",
+              "eventTitle": "Colombia vs. Ghana",
+              "family": "match_winner",
+              "score": 100,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "colombia",
+                  "ghana"
+                ],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 100
+              }
+            },
+            {
+              "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+              "question": "Will bitcoin hit $1m before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.9
+              }
+            },
+            {
+              "slug": "will-jesus-christ-return-before-gta-vi-665",
+              "question": "Will Jesus Christ return before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+              "question": "Will China invades Taiwan before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "new-rhianna-album-before-gta-vi-926",
+              "question": "New Rihanna Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 71.42475684,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 71.42
+              }
+            },
+            {
+              "slug": "trump-out-as-president-before-gta-vi-846",
+              "question": "Trump out as President before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 67.51799008,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 67.52
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-between-5-and-10-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to between 5 and 10 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 66.7397,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 66.74
+              }
+            },
+            {
+              "slug": "new-playboi-carti-album-before-gta-vi-421",
+              "question": "New Playboi Carti Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 66.37971102,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 66.38
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "nextRequiredAction": "line_provider_source_still_missing_use_operator_review_or_alternate_provider_source",
+  "pass": true
+}

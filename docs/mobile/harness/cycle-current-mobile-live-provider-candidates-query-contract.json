@@ -1,0 +1,336 @@
+{
+    "ok":  true,
+    "result":  {
+                   "eventSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25",
+                   "generatedAt":  "2026-07-04T04:06:37.439Z",
+                   "provider":  "polymarket-gamma",
+                   "fetchProvider":  false,
+                   "targetMarketCount":  14,
+                   "attachReadyCandidateCount":  0,
+                   "providerErrorCount":  0,
+                   "nextRequiredAction":  "run_provider_candidate_discovery_with_fetch_enabled",
+                   "targets":  [
+                                   {
+                                       "marketId":  "aca976d2-2bad-416c-b010-c874c0ee493f",
+                                       "title":  "Curaçao vs Côte d\u0027Ivoire: Match Winner",
+                                       "marketType":  "match_winner_1x2",
+                                       "period":  null,
+                                       "line":  null,
+                                       "unit":  null,
+                                       "outcomeCount":  3,
+                                       "queries":  [
+                                                       "Curaçao vs Côte d\u0027Ivoire Match Winner",
+                                                       "Curaçao vs Côte d\u0027Ivoire Match Winner match winner 1x2",
+                                                       "Curaçao vs Côte d\u0027Ivoire Match Winner Main"
+                                                   ],
+                                       "providerFetchAttempted":  false,
+                                       "providerError":  null,
+                                       "candidateCount":  0,
+                                       "bestCandidate":  null,
+                                       "attachProposal":  null,
+                                       "candidates":  [
+
+                                                      ]
+                                   },
+                                   {
+                                       "marketId":  "ac527022-07f3-4abb-90f0-b291466e8459",
+                                       "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao +1.5",
+                                       "marketType":  "spread",
+                                       "period":  null,
+                                       "line":  "1.5",
+                                       "unit":  "goals",
+                                       "outcomeCount":  2,
+                                       "queries":  [
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao +1.5",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao spread",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao Spreads"
+                                                   ],
+                                       "providerFetchAttempted":  false,
+                                       "providerError":  null,
+                                       "candidateCount":  0,
+                                       "bestCandidate":  null,
+                                       "attachProposal":  null,
+                                       "candidates":  [
+
+                                                      ]
+                                   },
+                                   {
+                                       "marketId":  "a552efe6-3147-4573-be95-8fe15c068c08",
+                                       "title":  "Curaçao vs Côte d\u0027Ivoire: Total goals 2.5",
+                                       "marketType":  "total_goals",
+                                       "period":  null,
+                                       "line":  "2.5",
+                                       "unit":  "goals",
+                                       "outcomeCount":  2,
+                                       "queries":  [
+                                                       "Curaçao vs Côte d\u0027Ivoire Total goals 2.5",
+                                                       "Curaçao vs Côte d\u0027Ivoire Total goals",
+                                                       "Curaçao vs Côte d\u0027Ivoire Total goals total goals",
+                                                       "Curaçao vs Côte d\u0027Ivoire Total goals Totals"
+                                                   ],
+                                       "providerFetchAttempted":  false,
+                                       "providerError":  null,
+                                       "candidateCount":  0,
+                                       "bestCandidate":  null,
+                                       "attachProposal":  null,
+                                       "candidates":  [
+
+                                                      ]
+                                   },
+                                   {
+                                       "marketId":  "408ffb79-3492-4fd0-b31b-87a26f8b9dd5",
+                                       "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao goals 1.5",
+                                       "marketType":  "team_total_goals",
+                                       "period":  null,
+                                       "line":  "1.5",
+                                       "unit":  "goals",
+                                       "outcomeCount":  2,
+                                       "queries":  [
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao goals 1.5",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao goals",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao goals team total goals",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao goals Team Totals"
+                                                   ],
+                                       "providerFetchAttempted":  false,
+                                       "providerError":  null,
+                                       "candidateCount":  0,
+                                       "bestCandidate":  null,
+                                       "attachProposal":  null,
+                                       "candidates":  [
+
+                                                      ]
+                                   },
+                                   {
+                                       "marketId":  "be4ab6f8-c054-4f6b-a6d9-7d857f7655ca",
+                                       "title":  "1st Half Winner",
+                                       "marketType":  "match_winner_1x2",
+                                       "period":  "first-half",
+                                       "line":  null,
+                                       "unit":  null,
+                                       "outcomeCount":  3,
+                                       "queries":  [
+                                                       "1st Half Winner",
+                                                       "st Half Winner",
+                                                       "st Half Winner match winner 1x2",
+                                                       "st Half Winner Halves",
+                                                       "st Half Winner first half"
+                                                   ],
+                                       "providerFetchAttempted":  false,
+                                       "providerError":  null,
+                                       "candidateCount":  0,
+                                       "bestCandidate":  null,
+                                       "attachProposal":  null,
+                                       "candidates":  [
+
+                                                      ]
+                                   },
+                                   {
+                                       "marketId":  "ed121b08-88bd-4735-9793-64a0022e9696",
+                                       "title":  "2nd Half Winner",
+                                       "marketType":  "match_winner_1x2",
+                                       "period":  "second-half",
+                                       "line":  null,
+                                       "unit":  null,
+                                       "outcomeCount":  3,
+                                       "queries":  [
+                                                       "2nd Half Winner",
+                                                       "nd Half Winner",
+                                                       "nd Half Winner match winner 1x2",
+                                                       "nd Half Winner Halves",
+                                                       "nd Half Winner second half"
+                                                   ],
+                                       "providerFetchAttempted":  false,
+                                       "providerError":  null,
+                                       "candidateCount":  0,
+                                       "bestCandidate":  null,
+                                       "attachProposal":  null,
+                                       "candidates":  [
+
+                                                      ]
+                                   },
+                                   {
+                                       "marketId":  "59931bba-fdce-4af7-a1f5-442d79f02a85",
+                                       "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao draw no bet",
+                                       "marketType":  "draw_no_bet",
+                                       "period":  null,
+                                       "line":  null,
+                                       "unit":  null,
+                                       "outcomeCount":  2,
+                                       "queries":  [
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao draw no bet",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao draw no bet draw no bet",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao draw no bet Main"
+                                                   ],
+                                       "providerFetchAttempted":  false,
+                                       "providerError":  null,
+                                       "candidateCount":  0,
+                                       "bestCandidate":  null,
+                                       "attachProposal":  null,
+                                       "candidates":  [
+
+                                                      ]
+                                   },
+                                   {
+                                       "marketId":  "d6070c40-83b8-4f98-a9f5-eff829fb9348",
+                                       "title":  "Curaçao vs Côte d\u0027Ivoire: Côte d\u0027Ivoire draw no bet",
+                                       "marketType":  "draw_no_bet",
+                                       "period":  null,
+                                       "line":  null,
+                                       "unit":  null,
+                                       "outcomeCount":  2,
+                                       "queries":  [
+                                                       "Curaçao vs Côte d\u0027Ivoire Côte d\u0027Ivoire draw no bet",
+                                                       "Curaçao vs Côte d\u0027Ivoire Côte d\u0027Ivoire draw no bet draw no bet",
+                                                       "Curaçao vs Côte d\u0027Ivoire Côte d\u0027Ivoire draw no bet Main"
+                                                   ],
+                                       "providerFetchAttempted":  false,
+                                       "providerError":  null,
+                                       "candidateCount":  0,
+                                       "bestCandidate":  null,
+                                       "attachProposal":  null,
+                                       "candidates":  [
+
+                                                      ]
+                                   },
+                                   {
+                                       "marketId":  "693f0b80-f2d2-4b24-8c48-42026f6f1354",
+                                       "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao +0.5",
+                                       "marketType":  "spread",
+                                       "period":  null,
+                                       "line":  "0.5",
+                                       "unit":  "goals",
+                                       "outcomeCount":  2,
+                                       "queries":  [
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao +0.5",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao spread",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao Spreads"
+                                                   ],
+                                       "providerFetchAttempted":  false,
+                                       "providerError":  null,
+                                       "candidateCount":  0,
+                                       "bestCandidate":  null,
+                                       "attachProposal":  null,
+                                       "candidates":  [
+
+                                                      ]
+                                   },
+                                   {
+                                       "marketId":  "35479f11-092f-4929-a6a5-3c524a3dbcb0",
+                                       "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao +2.5",
+                                       "marketType":  "spread",
+                                       "period":  null,
+                                       "line":  "2.5",
+                                       "unit":  "goals",
+                                       "outcomeCount":  2,
+                                       "queries":  [
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao +2.5",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao spread",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao Spreads"
+                                                   ],
+                                       "providerFetchAttempted":  false,
+                                       "providerError":  null,
+                                       "candidateCount":  0,
+                                       "bestCandidate":  null,
+                                       "attachProposal":  null,
+                                       "candidates":  [
+
+                                                      ]
+                                   },
+                                   {
+                                       "marketId":  "4d2d05d6-c43f-4c55-80bd-3d81e5b2b64d",
+                                       "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao +3.5",
+                                       "marketType":  "spread",
+                                       "period":  null,
+                                       "line":  "3.5",
+                                       "unit":  "goals",
+                                       "outcomeCount":  2,
+                                       "queries":  [
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao +3.5",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao spread",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao Spreads"
+                                                   ],
+                                       "providerFetchAttempted":  false,
+                                       "providerError":  null,
+                                       "candidateCount":  0,
+                                       "bestCandidate":  null,
+                                       "attachProposal":  null,
+                                       "candidates":  [
+
+                                                      ]
+                                   },
+                                   {
+                                       "marketId":  "1e47f339-ab54-48a9-8fe2-fa6f93e711b3",
+                                       "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao +4.5",
+                                       "marketType":  "spread",
+                                       "period":  null,
+                                       "line":  "4.5",
+                                       "unit":  "goals",
+                                       "outcomeCount":  2,
+                                       "queries":  [
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao +4.5",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao spread",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao Spreads"
+                                                   ],
+                                       "providerFetchAttempted":  false,
+                                       "providerError":  null,
+                                       "candidateCount":  0,
+                                       "bestCandidate":  null,
+                                       "attachProposal":  null,
+                                       "candidates":  [
+
+                                                      ]
+                                   },
+                                   {
+                                       "marketId":  "f828ed4d-232e-4184-8fc6-f610f3bbd1bc",
+                                       "title":  "Curaçao vs Côte d\u0027Ivoire: Curaçao +5.5",
+                                       "marketType":  "spread",
+                                       "period":  null,
+                                       "line":  "5.5",
+                                       "unit":  "goals",
+                                       "outcomeCount":  2,
+                                       "queries":  [
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao +5.5",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao spread",
+                                                       "Curaçao vs Côte d\u0027Ivoire Curaçao Spreads"
+                                                   ],
+                                       "providerFetchAttempted":  false,
+                                       "providerError":  null,
+                                       "candidateCount":  0,
+                                       "bestCandidate":  null,
+                                       "attachProposal":  null,
+                                       "candidates":  [
+
+                                                      ]
+                                   },
+                                   {
+                                       "marketId":  "dd56e07d-90de-4d22-828b-dcff5b524ac1",
+                                       "title":  "Curaçao vs Côte d\u0027Ivoire: Côte d\u0027Ivoire -0.5",
+                                       "marketType":  "spread",
+                                       "period":  null,
+                                       "line":  "-0.5",
+                                       "unit":  "goals",
+                                       "outcomeCount":  2,
+                                       "queries":  [
+                                                       "Curaçao vs Côte d\u0027Ivoire Côte d\u0027Ivoire -0.5",
+                                                       "Curaçao vs Côte d\u0027Ivoire Côte d\u0027Ivoire",
+                                                       "Curaçao vs Côte d\u0027Ivoire Côte d\u0027Ivoire spread",
+                                                       "Curaçao vs Côte d\u0027Ivoire Côte d\u0027Ivoire Spreads"
+                                                   ],
+                                       "providerFetchAttempted":  false,
+                                       "providerError":  null,
+                                       "candidateCount":  0,
+                                       "bestCandidate":  null,
+                                       "attachProposal":  null,
+                                       "candidates":  [
+
+                                                      ]
+                                   }
+                               ]
+               }
+}

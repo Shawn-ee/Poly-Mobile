@@ -1,0 +1,206 @@
+{
+  "generatedAt": "2026-07-04T07:35:18.866Z",
+  "eventSlug": "world-cup-2026-colombia-vs-ghana-2026-07-03",
+  "providerEventSlug": "fifwc-col-gha-2026-07-03",
+  "providerEventTitle": "Colombia vs. Ghana",
+  "prepared": {
+    "eventId": "8485921d-d6fe-4578-ba82-21f63ecca536",
+    "eventSlug": "world-cup-2026-colombia-vs-ghana-2026-07-03",
+    "matchWinnerMarkets": {
+      "colombia": {
+        "id": "d89acdee-41f6-4766-87e3-53928e1901b4",
+        "slug": "world-cup-2026-colombia-vs-ghana-2026-07-03-fifwc-col-gha-2026-07-03-col",
+        "title": "Will Colombia win on 2026-07-03?"
+      },
+      "draw": {
+        "id": "03e4dd0f-796c-4630-b40d-555e5760a33c",
+        "slug": "world-cup-2026-colombia-vs-ghana-2026-07-03-fifwc-col-gha-2026-07-03-draw",
+        "title": "Will Colombia vs. Ghana end in a draw?"
+      },
+      "ghana": {
+        "id": "30c78d5d-7a4a-4ad5-b1d8-ff75999e5453",
+        "slug": "world-cup-2026-colombia-vs-ghana-2026-07-03-fifwc-col-gha-2026-07-03-gha",
+        "title": "Will Ghana win on 2026-07-03?"
+      }
+    },
+    "lineMarket": {
+      "id": "2dfbdb0f-a21e-42da-adce-055e9528638e",
+      "slug": "world-cup-2026-colombia-vs-ghana-2026-07-03-bulk-preview-total-goals-25",
+      "title": "Colombia vs Ghana total goals 2.5"
+    }
+  },
+  "reviews": [
+    {
+      "marketId": "d89acdee-41f6-4766-87e3-53928e1901b4",
+      "slugs": [
+        "fifwc-col-gha-2026-07-03-col"
+      ]
+    },
+    {
+      "marketId": "03e4dd0f-796c-4630-b40d-555e5760a33c",
+      "slugs": [
+        "fifwc-col-gha-2026-07-03-draw"
+      ]
+    },
+    {
+      "marketId": "30c78d5d-7a4a-4ad5-b1d8-ff75999e5453",
+      "slugs": [
+        "fifwc-col-gha-2026-07-03-gha"
+      ]
+    },
+    {
+      "marketId": "2dfbdb0f-a21e-42da-adce-055e9528638e",
+      "slugs": [
+        "fifwc-col-gha-2026-07-03-col"
+      ]
+    }
+  ],
+  "preview": {
+    "mode": "bulk-manual-slug-preview",
+    "reviewCount": 4,
+    "attachReadyReviewCount": 3,
+    "candidateCount": 4,
+    "attachReadyCandidateCount": 3,
+    "mappingCount": 3,
+    "nextRequiredAction": "fix_failed_slug_reviews_before_bulk_apply",
+    "results": [
+      {
+        "marketId": "d89acdee-41f6-4766-87e3-53928e1901b4",
+        "title": "Will Colombia win on 2026-07-03?",
+        "expectedProviderFamily": "match_winner",
+        "requestedSlugs": [
+          "fifwc-col-gha-2026-07-03-col"
+        ],
+        "candidateCount": 1,
+        "attachReadyCandidateCount": 1,
+        "attachReady": true,
+        "bestCandidate": {
+          "slug": "fifwc-col-gha-2026-07-03-col",
+          "question": "Will Colombia win on 2026-07-03?",
+          "expectedFamily": "match_winner",
+          "candidateFamily": "match_winner",
+          "reasons": [],
+          "relevance": {
+            "relevant": true,
+            "lineFamilyRelevant": false,
+            "binaryQuestionRelevant": true,
+            "expectedFamily": "match_winner",
+            "candidateFamily": "match_winner",
+            "matchedImportantTokens": [
+              "colombia",
+              "win"
+            ],
+            "importantTokenCount": 2,
+            "outcomeNameMatches": 0,
+            "requiredOutcomeMatches": 1,
+            "score": 116
+          }
+        }
+      },
+      {
+        "marketId": "03e4dd0f-796c-4630-b40d-555e5760a33c",
+        "title": "Will Colombia vs. Ghana end in a draw?",
+        "expectedProviderFamily": "match_winner",
+        "requestedSlugs": [
+          "fifwc-col-gha-2026-07-03-draw"
+        ],
+        "candidateCount": 1,
+        "attachReadyCandidateCount": 1,
+        "attachReady": true,
+        "bestCandidate": {
+          "slug": "fifwc-col-gha-2026-07-03-draw",
+          "question": "Will Colombia vs. Ghana end in a draw?",
+          "expectedFamily": "match_winner",
+          "candidateFamily": "match_winner",
+          "reasons": [],
+          "relevance": {
+            "relevant": true,
+            "lineFamilyRelevant": false,
+            "binaryQuestionRelevant": true,
+            "expectedFamily": "match_winner",
+            "candidateFamily": "match_winner",
+            "matchedImportantTokens": [
+              "colombia",
+              "ghana",
+              "end"
+            ],
+            "importantTokenCount": 3,
+            "outcomeNameMatches": 0,
+            "requiredOutcomeMatches": 1,
+            "score": 132
+          }
+        }
+      },
+      {
+        "marketId": "30c78d5d-7a4a-4ad5-b1d8-ff75999e5453",
+        "title": "Will Ghana win on 2026-07-03?",
+        "expectedProviderFamily": "match_winner",
+        "requestedSlugs": [
+          "fifwc-col-gha-2026-07-03-gha"
+        ],
+        "candidateCount": 1,
+        "attachReadyCandidateCount": 1,
+        "attachReady": true,
+        "bestCandidate": {
+          "slug": "fifwc-col-gha-2026-07-03-gha",
+          "question": "Will Ghana win on 2026-07-03?",
+          "expectedFamily": "match_winner",
+          "candidateFamily": "match_winner",
+          "reasons": [],
+          "relevance": {
+            "relevant": true,
+            "lineFamilyRelevant": false,
+            "binaryQuestionRelevant": true,
+            "expectedFamily": "match_winner",
+            "candidateFamily": "match_winner",
+            "matchedImportantTokens": [
+              "ghana",
+              "win"
+            ],
+            "importantTokenCount": 2,
+            "outcomeNameMatches": 0,
+            "requiredOutcomeMatches": 1,
+            "score": 116.9
+          }
+        }
+      },
+      {
+        "marketId": "2dfbdb0f-a21e-42da-adce-055e9528638e",
+        "title": "Colombia vs Ghana total goals 2.5",
+        "expectedProviderFamily": "total_goals",
+        "requestedSlugs": [
+          "fifwc-col-gha-2026-07-03-col"
+        ],
+        "candidateCount": 1,
+        "attachReadyCandidateCount": 0,
+        "attachReady": false,
+        "bestCandidate": {
+          "slug": "fifwc-col-gha-2026-07-03-col",
+          "question": "Will Colombia win on 2026-07-03?",
+          "expectedFamily": "total_goals",
+          "candidateFamily": "match_winner",
+          "reasons": [
+            "provider_family_mismatch",
+            "insufficient_market_relevance"
+          ],
+          "relevance": {
+            "relevant": false,
+            "lineFamilyRelevant": false,
+            "binaryQuestionRelevant": false,
+            "expectedFamily": "total_goals",
+            "candidateFamily": "match_winner",
+            "matchedImportantTokens": [
+              "colombia",
+              "ghana"
+            ],
+            "importantTokenCount": 2,
+            "outcomeNameMatches": 0,
+            "requiredOutcomeMatches": 1,
+            "score": 100
+          }
+        }
+      }
+    ]
+  },
+  "pass": true
+}

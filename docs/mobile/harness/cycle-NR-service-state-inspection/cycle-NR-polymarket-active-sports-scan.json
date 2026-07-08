@@ -1,0 +1,191 @@
+{
+  "generatedAt": "2026-07-08T14:33:09.868Z",
+  "source": "gamma-api.polymarket.com",
+  "dryRun": true,
+  "createLocalMarkets": false,
+  "targetCount": 20,
+  "selectedCount": 8,
+  "notes": [
+    "Read-only scanner. No local markets were created.",
+    "Scanner does not make markets tradable, enable MM, or place orders.",
+    "Local market creation remains disabled by default."
+  ],
+  "candidates": [
+    {
+      "question": "Will Switzerland win the 2026 FIFA World Cup?",
+      "slug": "will-switzerland-win-the-2026-fifa-world-cup",
+      "eventTitle": "World Cup Winner",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.0215,
+        0.9785
+      ],
+      "bestBid": 0.021,
+      "bestAsk": 0.022,
+      "spread": 0.001,
+      "lastTradePrice": 0.021,
+      "volume24hr": 15173348.543739052,
+      "liquidity": 11678327.0092,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Argentina win the 2026 FIFA World Cup?",
+      "slug": "will-argentina-win-the-2026-fifa-world-cup-245",
+      "eventTitle": "World Cup Winner",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.1875,
+        0.8125
+      ],
+      "bestBid": 0.187,
+      "bestAsk": 0.188,
+      "spread": 0.001,
+      "lastTradePrice": 0.187,
+      "volume24hr": 12377303.24572908,
+      "liquidity": 11411991.84711,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Norway win the 2026 FIFA World Cup?",
+      "slug": "will-norway-win-the-2026-fifa-world-cup-893",
+      "eventTitle": "World Cup Winner",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.0595,
+        0.9405
+      ],
+      "bestBid": 0.059,
+      "bestAsk": 0.06,
+      "spread": 0.001,
+      "lastTradePrice": 0.06,
+      "volume24hr": 4736369.705737892,
+      "liquidity": 5366933.33849,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Morocco win the 2026 FIFA World Cup?",
+      "slug": "will-morocco-win-the-2026-fifa-world-cup-464",
+      "eventTitle": "World Cup Winner",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.0315,
+        0.9685
+      ],
+      "bestBid": 0.031,
+      "bestAsk": 0.032,
+      "spread": 0.001,
+      "lastTradePrice": 0.032,
+      "volume24hr": 4393745.737260961,
+      "liquidity": 2029861.01029,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will England win the 2026 FIFA World Cup?",
+      "slug": "will-england-win-the-2026-fifa-world-cup-937",
+      "eventTitle": "World Cup Winner",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.1575,
+        0.8425
+      ],
+      "bestBid": 0.157,
+      "bestAsk": 0.158,
+      "spread": 0.001,
+      "lastTradePrice": 0.157,
+      "volume24hr": 2971338.5830499977,
+      "liquidity": 10518302.07634,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Belgium win the 2026 FIFA World Cup?",
+      "slug": "will-belgium-win-the-2026-fifa-world-cup-358",
+      "eventTitle": "World Cup Winner",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.0245,
+        0.9755
+      ],
+      "bestBid": 0.024,
+      "bestAsk": 0.025,
+      "spread": 0.001,
+      "lastTradePrice": 0.025,
+      "volume24hr": 2990133.108888992,
+      "liquidity": 4343910.90308,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will France win the 2026 FIFA World Cup?",
+      "slug": "will-france-win-the-2026-fifa-world-cup-924",
+      "eventTitle": "World Cup Winner",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.3265,
+        0.6735
+      ],
+      "bestBid": 0.326,
+      "bestAsk": 0.327,
+      "spread": 0.001,
+      "lastTradePrice": 0.327,
+      "volume24hr": 2784157.608393949,
+      "liquidity": 11052672.1176,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Spain win the 2026 FIFA World Cup?",
+      "slug": "will-spain-win-the-2026-fifa-world-cup-963",
+      "eventTitle": "World Cup Winner",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.1875,
+        0.8125
+      ],
+      "bestBid": 0.187,
+      "bestAsk": 0.188,
+      "spread": 0.001,
+      "lastTradePrice": 0.188,
+      "volume24hr": 1867405.9721659904,
+      "liquidity": 11898356.40722,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    }
+  ]
+}

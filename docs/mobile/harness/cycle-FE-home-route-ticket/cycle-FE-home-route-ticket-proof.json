@@ -1,0 +1,40 @@
+﻿{
+    "cycle":  "FE",
+    "scenario":  "Home route-backed event opens Event Detail and simple spread Buy/Sell ticket",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpHomeRouteTicketFlow -Port 8274 -BackendBaseUrl http://172.16.200.14:3002 -OutputDir docs/mobile/screenshots/cycle-FE-home-route-ticket -HierarchyOutputDir docs/mobile/harness/cycle-FE-home-route-ticket",
+    "backendBaseUrl":  "http://172.16.200.14:3002",
+    "orderbookDebug":  "unset",
+    "marketDataMode":  "server",
+    "orderMode":  "mock",
+    "result":  "pass",
+    "assertions":  {
+                       "homeDiscovery":  [
+                                             "route-backed event card",
+                                             "compact outcomes"
+                                         ],
+                       "detailHydration":  [
+                                               "same route-backed event",
+                                               "price chart",
+                                               "Game Lines"
+                                           ],
+                       "ticket":  [
+                                      "spread ticket opens from Home-opened detail",
+                                      "line/period/side/provider token identity preserved",
+                                      "Buy/Sell controls visible"
+                                  ],
+                       "noFallback":  [
+                                          "no Mexico/Ecuador fallback",
+                                          "no default orderbook UI"
+                                      ]
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-home.png",
+                      "docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-home.xml",
+                      "docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-detail-top.png",
+                      "docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-detail-top.xml",
+                      "docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-line-markets.png",
+                      "docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-line-markets.xml",
+                      "docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-spread-ticket.png",
+                      "docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-spread-ticket.xml"
+                  ]
+}

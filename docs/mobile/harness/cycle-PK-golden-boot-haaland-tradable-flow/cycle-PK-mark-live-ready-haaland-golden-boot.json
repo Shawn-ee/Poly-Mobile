@@ -1,0 +1,58 @@
+{
+    "ok":  true,
+    "marketId":  "70612733-f5d4-4fcb-8561-c1e7f93be924",
+    "importStatus":  "approved",
+    "referenceOnly":  false,
+    "tradable":  true,
+    "mmEnabled":  true,
+    "isListed":  true,
+    "reviewedAt":  "2026-07-08T23:04:56.485Z",
+    "reviewedBy":  "[redacted-dev-admin]",
+    "reviewNotes":  "Cycle PK internal local MVP tradable proof for Golden Boot Erling Haaland.",
+    "botInitialization":  {
+                              "status":  "live_ready",
+                              "lastCheckedAt":  "2026-07-08T23:04:56.482Z",
+                              "reason":  null,
+                              "approvedBy":  null,
+                              "approvedAt":  null,
+                              "riskProfile":  null,
+                              "capital":  {
+                                              "budgetCents":  50000,
+                                              "mintBudgetCents":  2500,
+                                              "mintedCompleteSets":  25,
+                                              "cashReserveCents":  47500,
+                                              "autoReplenish":  false,
+                                              "initializedAt":  "2026-07-08T23:04:44.668Z",
+                                              "initializedBy":  "[redacted-dev-admin]",
+                                              "botUserId":  "[redacted-bot-user]",
+                                              "botUsername":  "system-liquidity-bot",
+                                              "botApiCredentialId":  "[redacted-bot-credential]",
+                                              "botApiKeyId":  "[redacted-api-key]",
+                                              "maxSingleOrderNotionalCents":  1000,
+                                              "maxOpenOrderNotionalCents":  10000,
+                                              "maxDailyLossCents":  10000
+                                          },
+                              "runtime":  {
+                                              "liveOrdersEnabled":  false,
+                                              "emergencyStop":  false,
+                                              "cancelRequestedAt":  null,
+                                              "lastSeededAt":  "2026-07-08T23:04:44.668Z",
+                                              "lastLiveRunAt":  null,
+                                              "lastRuntimeSyncAt":  null
+                                          },
+                              "readiness":  {
+                                                "ready":  true,
+                                                "dryRun":  false,
+                                                "liveRequested":  true,
+                                                "reasons":  [
+
+                                                            ],
+                                                "referenceBid":  0.111,
+                                                "referenceAsk":  0.114,
+                                                "plannedBotBid":  0.09,
+                                                "plannedBotAsk":  0.13,
+                                                "riskProfile":  null,
+                                                "checkedAt":  "2026-07-08T23:04:56.482Z"
+                                            }
+                          }
+}

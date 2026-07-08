@@ -1,0 +1,51 @@
+﻿{
+    "cycle":  "FI",
+    "scenario":  "Home route-backed event opens spread ticket, submits server fake-token order, fills it, and shows server Portfolio filled activity",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/local-mvp-home-route-server-filled-proof.ps1 -Port 8278 -BackendBaseUrl http://172.16.200.14:3002 -OutputDir docs\\mobile\\screenshots\\cycle-FI-home-route-server-filled -HierarchyOutputDir docs\\mobile\\harness\\cycle-FI-home-route-server-filled",
+    "backendBaseUrl":  "http://172.16.200.14:3002",
+    "serverEventSlug":  "mobile-el-a-provider-breadth-0ca8dfb3",
+    "orderbookDebug":  "unset",
+    "marketDataMode":  "server",
+    "orderMode":  "server",
+    "apiKey":  "in-process-mobile-dev-credential-redacted",
+    "result":  "pass",
+    "assertions":  {
+                       "homeDiscovery":  [
+                                             "route-backed event card",
+                                             "fresh seeded event card tapped from Home"
+                                         ],
+                       "detailHydration":  [
+                                               "same route-backed event",
+                                               "price chart",
+                                               "Game Lines"
+                                           ],
+                       "ticket":  [
+                                      "spread ticket opens from Home-opened detail",
+                                      "amount set to 25",
+                                      "provider token/source visible",
+                                      "server order mode active"
+                                  ],
+                       "serverPortfolio":  [
+                                               "seeded counterparty fills the mobile order",
+                                               "POST /api/orders succeeds through mobile",
+                                               "Portfolio sync returns server filled position and recent activity",
+                                               "selected line/provider identity preserved"
+                                           ],
+                       "noFallback":  [
+                                          "no Mexico/Ecuador fallback",
+                                          "no default orderbook UI"
+                                      ]
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-home.png",
+                      "docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-home.xml",
+                      "docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-detail-top.png",
+                      "docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-detail-top.xml",
+                      "docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-line-markets.png",
+                      "docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-line-markets.xml",
+                      "docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-spread-ticket-ready.png",
+                      "docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-spread-ticket-ready.xml",
+                      "docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-portfolio.png",
+                      "docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-portfolio.xml"
+                  ]
+}

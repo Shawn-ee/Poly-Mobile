@@ -1,0 +1,9 @@
+{
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "port":  8304,
+    "searchPass":  true,
+    "detailPass":  true,
+    "searchScreenshot":  "docs/mobile/screenshots/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-s23-search-haaland-golden-boot.png",
+    "detailScreenshot":  "docs/mobile/screenshots/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-s23-haaland-golden-boot-detail-from-search.png"
+}

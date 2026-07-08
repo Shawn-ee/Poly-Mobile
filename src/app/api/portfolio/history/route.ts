@@ -1,11 +1,22 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getUserId } from "@/lib/auth";
+import { requireCanonicalActor } from "@/lib/canonicalAuth";
+import { buildPortfolioSelectionSourceSummary } from "@/server/services/portfolioSelectionSourceSummary";
+import { buildTicketSelectionMetadata } from "@/server/services/ticketSelectionMetadata";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
-  const userId = await getUserId();
+async function getPortfolioHistoryUserId(request: NextRequest) {
+  if (request.headers.get("Authorization")) {
+    const actor = await requireCanonicalActor(request, ["account:read"]);
+    return actor.userId;
+  }
+  return getUserId();
+}
+
+export async function GET(request: NextRequest) {
+  const userId = await getPortfolioHistoryUserId(request);
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -20,6 +31,110 @@ export async function GET() {
     },
     orderBy: { createdAt: "desc" },
   });
+
+  const canceledOrders = await prisma.order.findMany({
+    where: {
+      userId,
+      status: "CANCELED",
+    },
+    include: {
+      market: {
+        select: {
+          id: true,
+          title: true,
+          status: true,
+          marketGroupKey: true,
+          marketType: true,
+          line: true,
+          period: true,
+          referenceSource: true,
+          externalSlug: true,
+          externalMarketId: true,
+          conditionId: true,
+        },
+      },
+      outcome: {
+        select: {
+          id: true,
+          name: true,
+          label: true,
+          side: true,
+          referenceTokenId: true,
+          referenceOutcomeLabel: true,
+        },
+      },
+      apiOrderRequest: {
+        select: {
+          requestBody: true,
+        },
+      },
+    },
+    orderBy: { updatedAt: "desc" },
+    take: 50,
+  });
+
+  const recentTrades = await prisma.trade.findMany({
+    where: {
+      userId,
+    },
+    include: {
+      market: {
+        select: {
+          id: true,
+          title: true,
+          status: true,
+          marketGroupKey: true,
+          marketType: true,
+          line: true,
+          period: true,
+          referenceSource: true,
+          externalSlug: true,
+          externalMarketId: true,
+          conditionId: true,
+        },
+      },
+      outcome: {
+        select: {
+          id: true,
+          name: true,
+          label: true,
+          side: true,
+          referenceTokenId: true,
+          referenceOutcomeLabel: true,
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+    take: 50,
+  });
+  const recentTradeSelectionOrders = recentTrades.length
+    ? await prisma.order.findMany({
+        where: {
+          userId,
+          marketId: {
+            in: Array.from(new Set(recentTrades.map((trade: { marketId: string }) => trade.marketId))),
+          },
+          outcomeId: {
+            in: Array.from(new Set(recentTrades.map((trade: { outcomeId: string }) => trade.outcomeId))),
+          },
+          status: { in: ["FILLED", "PARTIAL", "OPEN"] },
+          apiOrderRequest: { isNot: null },
+        },
+        orderBy: [{ updatedAt: "desc" }, { id: "desc" }],
+        select: {
+          marketId: true,
+          outcomeId: true,
+          apiOrderRequest: { select: { requestBody: true } },
+        },
+      })
+    : [];
+  const recentTradeSelectionByMarketOutcome = new Map<string, unknown>();
+  for (const order of recentTradeSelectionOrders) {
+    const key = `${order.marketId}:${order.outcomeId}`;
+    if (!recentTradeSelectionByMarketOutcome.has(key)) {
+      recentTradeSelectionByMarketOutcome.set(key, order.apiOrderRequest?.requestBody);
+    }
+  }
 
   const marketMap = new Map<
     string,
@@ -122,5 +237,46 @@ export async function GET() {
     return bTime - aTime;
   });
 
-  return NextResponse.json({ history: items.slice(0, 50) });
+  const canceledOrderItems = canceledOrders.map((order) => ({
+    id: order.id,
+    market: order.market,
+    outcome: order.outcome,
+    selection: buildTicketSelectionMetadata({
+      requestBody: order.apiOrderRequest?.requestBody,
+      market: order.market,
+      outcome: order.outcome,
+    }),
+    side: order.side,
+    status: order.status,
+    price: Number(order.price),
+    size: Number(order.amount),
+    remaining: Number(order.remaining),
+    canceledAt: order.updatedAt,
+  }));
+  const recentTradeItems = recentTrades.map((trade) => ({
+    id: trade.id,
+    market: trade.market,
+    outcome: trade.outcome,
+    selection: buildTicketSelectionMetadata({
+      requestBody: recentTradeSelectionByMarketOutcome.get(`${trade.marketId}:${trade.outcomeId}`),
+      market: trade.market,
+      outcome: trade.outcome,
+    }),
+    side: trade.side,
+    shares: Number(trade.shares),
+    cost: Number(trade.cost),
+    fee: Number(trade.fee),
+    createdAt: trade.createdAt,
+  }));
+
+  return NextResponse.json({
+    history: items.slice(0, 50),
+    canceledOrders: canceledOrderItems,
+    recentTrades: recentTradeItems,
+    selectionSourceSummary: {
+      canceledOrders: buildPortfolioSelectionSourceSummary(canceledOrderItems),
+      recentTrades: buildPortfolioSelectionSourceSummary(recentTradeItems),
+      combined: buildPortfolioSelectionSourceSummary([...canceledOrderItems, ...recentTradeItems]),
+    },
+  });
 }

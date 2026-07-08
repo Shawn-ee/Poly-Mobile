@@ -1,0 +1,90 @@
+
+> poly-bot@0.1.0 bot:polymarket:mm:live-local
+> tsx scripts/liquidityRuntime.ts --dryRun false --confirmLive true --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug world-cup-golden-boot-winner --allowlist Kylian Mbappe --maxMarkets 1 --durationSeconds 3 --pollMs 1000
+
+{
+  "dryRun": false,
+  "liveOrdersEnabled": true,
+  "confirmLive": true,
+  "cycleReports": [
+    {
+      "marketId": "99caf629-cb24-4fda-ae7f-3249e98778d6",
+      "slug": "will-kylian-mbappe-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "status": "manage_quotes",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.41,
+      "referenceAsk": 0.42,
+      "plannedBotBid": 0.39,
+      "plannedBotAsk": 0.44,
+      "reasons": [],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 4545,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 4545,
+      "globalExposureCents": 4545,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [
+        "new quote 3885f64d-0308-43ae-b922-79e7f391f11e:BUY @ 0.39",
+        "new quote 3885f64d-0308-43ae-b922-79e7f391f11e:SELL @ 0.44",
+        "new quote 370e03d4-5e18-4318-b7a9-ebc541b6b774:BUY @ 0.41",
+        "new quote 370e03d4-5e18-4318-b7a9-ebc541b6b774:SELL @ 0.61",
+        "placed 3885f64d-0308-43ae-b922-79e7f391f11e:BUY @ 0.39",
+        "placed 3885f64d-0308-43ae-b922-79e7f391f11e:SELL @ 0.44",
+        "placed 370e03d4-5e18-4318-b7a9-ebc541b6b774:BUY @ 0.41",
+        "placed 370e03d4-5e18-4318-b7a9-ebc541b6b774:SELL @ 0.61"
+      ],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "99caf629-cb24-4fda-ae7f-3249e98778d6",
+      "slug": "will-kylian-mbappe-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.41,
+      "referenceAsk": 0.42,
+      "plannedBotBid": 0.39,
+      "plannedBotAsk": 0.44,
+      "reasons": [
+        "max_open_orders_per_market_4_of_4"
+      ],
+      "openOrderCount": 4,
+      "perMarketExposureCents": 5345,
+      "openOrderNotionalCents": 800,
+      "inventoryExposureCents": 4545,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "99caf629-cb24-4fda-ae7f-3249e98778d6",
+      "slug": "will-kylian-mbappe-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.41,
+      "referenceAsk": 0.42,
+      "plannedBotBid": 0.39,
+      "plannedBotAsk": 0.44,
+      "reasons": [
+        "max_open_orders_per_market_4_of_4"
+      ],
+      "openOrderCount": 4,
+      "perMarketExposureCents": 5345,
+      "openOrderNotionalCents": 800,
+      "inventoryExposureCents": 4545,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+    "cycle":  "NX",
+    "result":  "pass",
+    "generatedAt":  "2026-07-08T15:20:56.9084660Z",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "mobileApiBaseUrl":  "http://172.16.200.14:3002",
+    "expoPort":  8304,
+    "keyId":  "redacted",
+    "apiKey":  "redacted",
+    "eventSlug":  "argentina-vs-egypt",
+    "assertions":  {
+                       "homeLabelsStaleMatchAsActive":  true,
+                       "detailLabelsStaleMatchAsActive":  true,
+                       "detailShowsTimeTbd":  true,
+                       "detailDoesNotShowFakeLiveMinute":  true,
+                       "orderbookHidden":  true,
+                       "chatHidden":  true
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\screenshots\\cycle-NX-provider-line-query-breadth\\cycle-NX-current-mvp-home.png",
+                      "docs\\mobile\\harness\\cycle-NX-provider-line-query-breadth\\cycle-NX-current-mvp-home.xml",
+                      "docs\\mobile\\screenshots\\cycle-NX-provider-line-query-breadth\\cycle-NX-current-mvp-detail-stale-top.png",
+                      "docs\\mobile\\harness\\cycle-NX-provider-line-query-breadth\\cycle-NX-current-mvp-detail-stale-top.xml"
+                  ]
+}

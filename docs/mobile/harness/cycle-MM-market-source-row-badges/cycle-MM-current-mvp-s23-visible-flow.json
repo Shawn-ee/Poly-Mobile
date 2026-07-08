@@ -1,0 +1,40 @@
+{
+    "cycle":  "MM",
+    "result":  "pass",
+    "generatedAt":  "2026-07-08T10:03:23.6286252Z",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "mobileApiBaseUrl":  "http://172.16.200.14:3002",
+    "expoPort":  8289,
+    "keyId":  "redacted",
+    "apiKey":  "redacted",
+    "eventSlug":  "argentina-vs-egypt",
+    "seededCounterparty":  true,
+    "counterpartyProof":  "docs\\mobile\\harness\\cycle-MM-market-source-row-badges\\cycle-MM-current-mvp-counterparty.json",
+    "assertions":  {
+                       "homeShowsCurrentMatch":  true,
+                       "detailShowsGameLines":  true,
+                       "lineMarketsAreContractFixture":  true,
+                       "orderbookHidden":  true,
+                       "ticketPreservesLine":  true,
+                       "swipeSubmitReachedPortfolio":  true,
+                       "portfolioOpenOrderPreservesLineSource":  true,
+                       "historyShowsEmptyStateUntilFill":  false,
+                       "filledHistoryVisible":  true
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\screenshots\\cycle-MM-market-source-row-badges\\cycle-MM-current-mvp-home.png",
+                      "docs\\mobile\\harness\\cycle-MM-market-source-row-badges\\cycle-MM-current-mvp-home.xml",
+                      "docs\\mobile\\screenshots\\cycle-MM-market-source-row-badges\\cycle-MM-current-mvp-detail-top.png",
+                      "docs\\mobile\\harness\\cycle-MM-market-source-row-badges\\cycle-MM-current-mvp-detail-top.xml",
+                      "docs\\mobile\\screenshots\\cycle-MM-market-source-row-badges\\cycle-MM-current-mvp-lines.png",
+                      "docs\\mobile\\harness\\cycle-MM-market-source-row-badges\\cycle-MM-current-mvp-lines-attempt-*.xml",
+                      "docs\\mobile\\screenshots\\cycle-MM-market-source-row-badges\\cycle-MM-current-mvp-ticket-ready.png",
+                      "docs\\mobile\\harness\\cycle-MM-market-source-row-badges\\cycle-MM-current-mvp-ticket-ready.xml",
+                      "docs\\mobile\\screenshots\\cycle-MM-market-source-row-badges\\cycle-MM-current-mvp-after-submit.png",
+                      "docs\\mobile\\harness\\cycle-MM-market-source-row-badges\\cycle-MM-current-mvp-after-submit.xml",
+                      "docs\\mobile\\screenshots\\cycle-MM-market-source-row-badges\\cycle-MM-current-mvp-portfolio-history.png",
+                      "docs\\mobile\\harness\\cycle-MM-market-source-row-badges\\cycle-MM-current-mvp-portfolio-history.xml"
+                  ]
+}

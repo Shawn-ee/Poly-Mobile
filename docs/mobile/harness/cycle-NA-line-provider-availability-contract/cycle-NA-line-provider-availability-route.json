@@ -1,0 +1,27 @@
+﻿{
+    "cycle":  "NA",
+    "route":  "http://127.0.0.1:3002/api/events?sportKey=soccer\u0026leagueKey=world_cup\u0026includeMobileMarkets=1\u0026mobileMvpMatches=1\u0026limit=10\u0026status=live",
+    "checkedAt":  "2026-07-08T06:39:11.8403341-05:00",
+    "pass":  true,
+    "eventCount":  2,
+    "lineProviderAvailability":  [
+                                     {
+                                         "slug":  "argentina-vs-egypt",
+                                         "status":  "active",
+                                         "liveStatus":  "LIVE",
+                                         "providerStatus":  "unavailable",
+                                         "providerBackedLineMarketCount":  0,
+                                         "contractFixtureLineMarketCount":  4,
+                                         "reason":  "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures."
+                                     },
+                                     {
+                                         "slug":  "switzerland-vs-colombia",
+                                         "status":  "active",
+                                         "liveStatus":  "LIVE",
+                                         "providerStatus":  "unavailable",
+                                         "providerBackedLineMarketCount":  0,
+                                         "contractFixtureLineMarketCount":  4,
+                                         "reason":  "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures."
+                                     }
+                                 ]
+}

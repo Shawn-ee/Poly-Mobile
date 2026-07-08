@@ -1,0 +1,25 @@
+﻿{
+    "ready":  false,
+    "expectedBlocked":  true,
+    "readinessPath":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\docs\\mobile\\harness\\cycle-current-mobile-backend-readiness.json",
+    "dockerCliAvailable":  true,
+    "dockerDaemonReachable":  false,
+    "composeFileFound":  true,
+    "databaseTcpReachable":  false,
+    "usesDefaultLocalComposePort":  true,
+    "databaseHost":  "localhost",
+    "databasePort":  5432,
+    "apiKeyPresent":  false,
+    "apiKeyLooksValid":  false,
+    "failures":  [
+                     "Docker daemon is not reachable.",
+                     "Database TCP is not reachable at localhost:5432.",
+                     "EXPO_PUBLIC_API_KEY is missing."
+                 ],
+    "nextActions":  [
+                        "Run npm run mobile:backend-readiness:summary from the repo root.",
+                        "Start Docker Desktop and local Postgres if Docker daemon or DB TCP are unavailable.",
+                        "Run npm run mobile:dev-credential after database readiness passes.",
+                        "Export EXPO_PUBLIC_API_KEY before attempting successful server-backed Samsung proof."
+                    ]
+}

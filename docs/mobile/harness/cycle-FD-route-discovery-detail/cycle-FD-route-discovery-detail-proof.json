@@ -1,0 +1,30 @@
+﻿{
+    "cycle":  "FD",
+    "scenario":  "Route-backed discovery card opens route-backed event detail",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpRouteDiscoveryDetail -Port 8273 -BackendBaseUrl http://172.16.200.14:3002 -OutputDir docs/mobile/screenshots/cycle-FD-route-discovery-detail -HierarchyOutputDir docs/mobile/harness/cycle-FD-route-discovery-detail",
+    "orderbookDebug":  "unset",
+    "result":  "pass",
+    "assertions":  {
+                       "homeDiscovery":  [
+                                             "route-backed event card",
+                                             "compact outcomes",
+                                             "Volume/Liquidity"
+                                         ],
+                       "detailHydration":  [
+                                               "same route-backed event",
+                                               "price chart",
+                                               "game lines",
+                                               "tradeable outcomes"
+                                           ],
+                       "noFallback":  [
+                                          "no Mexico/Ecuador fallback",
+                                          "no default orderbook UI"
+                                      ]
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-home.png",
+                      "docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-home.xml",
+                      "docs/mobile/screenshots/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-open.png",
+                      "docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-open.xml"
+                  ]
+}

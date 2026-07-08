@@ -1,0 +1,42 @@
+
+> poly-bot@0.1.0 bot:polymarket:mm:live-local
+> tsx scripts/liquidityRuntime.ts --dryRun false --confirmLive true --baseUrl http://127.0.0.1:3002 --eventSlug world-cup-golden-boot-winner --allowlist Erling Haaland --maxMarkets 1 --durationSeconds 1
+
+{
+  "dryRun": false,
+  "liveOrdersEnabled": true,
+  "confirmLive": true,
+  "cycleReports": [
+    {
+      "marketId": "70612733-f5d4-4fcb-8561-c1e7f93be924",
+      "slug": "will-erling-haaland-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "status": "manage_quotes",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.111,
+      "referenceAsk": 0.114,
+      "plannedBotBid": 0.09,
+      "plannedBotAsk": 0.13,
+      "reasons": [],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 2508,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 2508,
+      "globalExposureCents": 2508,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [
+        "new quote ec49ce29-343f-422f-bc29-fb2c479e62e4:BUY @ 0.09",
+        "new quote ec49ce29-343f-422f-bc29-fb2c479e62e4:SELL @ 0.13",
+        "new quote 60f08752-e4c1-4628-8318-253be05fff61:BUY @ 0.10",
+        "new quote 60f08752-e4c1-4628-8318-253be05fff61:SELL @ 0.91",
+        "placed ec49ce29-343f-422f-bc29-fb2c479e62e4:BUY @ 0.09",
+        "placed ec49ce29-343f-422f-bc29-fb2c479e62e4:SELL @ 0.13",
+        "placed 60f08752-e4c1-4628-8318-253be05fff61:BUY @ 0.10",
+        "placed 60f08752-e4c1-4628-8318-253be05fff61:SELL @ 0.91"
+      ],
+      "perMarketExposureCapCents": 20000
+    }
+  ]
+}

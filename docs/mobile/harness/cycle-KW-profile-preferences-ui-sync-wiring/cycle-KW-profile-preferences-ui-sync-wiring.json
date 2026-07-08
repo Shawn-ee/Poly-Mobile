@@ -1,0 +1,25 @@
+{
+  "cycle": "KW",
+  "scope": "profile-preferences-ui-sync-wiring",
+  "generatedAt": "2026-07-06T18:24:37.742Z",
+  "routes": {
+    "load": "/api/profile/preferences",
+    "save": "/api/profile/preferences"
+  },
+  "pass": true,
+  "checks": {
+    "appImportsPreferencesService": true,
+    "appEnablesServerPreferenceSync": true,
+    "appWaitsForLocalHydrationBeforeRouteLoad": true,
+    "appAppliesRoutePreferencesToVisibleState": true,
+    "appSavesVisiblePreferenceChanges": true,
+    "appPassesPreferenceStatusAndValuesToAccount": true,
+    "accountShowsRouteBackedPreferenceFields": true,
+    "serviceUsesCanonicalProfilePreferenceRoute": true
+  },
+  "evidence": {
+    "app": "mobile/App.tsx",
+    "accountScreen": "mobile/src/components/AccountScreen.tsx",
+    "service": "mobile/src/services/profilePreferencesService.ts"
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "cycle": "EC-A",
+  "agent": "Agent A - Backend/provider lifecycle",
+  "gap": "provider-backed orderbook identity parity",
+  "generatedAt": "2026-07-04T09:02:05.213Z",
+  "baseUrl": "http://127.0.0.1:3012",
+  "routes": {
+    "liveDetail": "/api/mobile/events/cycle-ec-a-world-cup-provider-orderbook-identity/live-detail",
+    "orderbook": "/api/orderbook/edad75e1-a7b9-42b5-9243-e7fd544e4d9f/book?maxLevels=24"
+  },
+  "event": {
+    "id": "13fdccb2-71ee-4ace-a8de-9d7d0248da91",
+    "slug": "cycle-ec-a-world-cup-provider-orderbook-identity",
+    "title": "World Cup 2026: Spain vs Japan"
+  },
+  "setup": {
+    "proofDepthSource": "polymarket-clob-ec-identity-proof",
+    "providerQuoteRowsUpserted": 3,
+    "providerOrderbookDepthRowsUpserted": 12,
+    "matchWinnerMarketId": "edad75e1-a7b9-42b5-9243-e7fd544e4d9f",
+    "totalsLineMarketId": "e120aa52-6a94-462a-8c54-0f53bfb45fe8"
+  },
+  "liveDetailSelection": {
+    "marketId": "edad75e1-a7b9-42b5-9243-e7fd544e4d9f",
+    "marketGroupId": "main",
+    "selectorKey": "main:full-game:default",
+    "marketFamily": "moneyline",
+    "period": "full-game",
+    "line": null,
+    "outcomeIds": [
+      "6b385ea6-84d3-42c9-84f3-f8b2de93b675",
+      "79d4a60c-b9dc-43a3-aeea-49ca7af52d30",
+      "9ec31098-2105-48f8-b371-2343e1630d10"
+    ],
+    "tokenIds": [
+      "ec-a-token-spain",
+      "ec-a-token-draw",
+      "ec-a-token-japan"
+    ],
+    "providerSource": "polymarket",
+    "providerStatus": "ready",
+    "depthSource": "provider-orderbook-depth",
+    "depthStatus": "ready",
+    "depthProviderStatus": "ready",
+    "depthProviderSources": [
+      "polymarket-clob-ec-identity-proof"
+    ],
+    "refreshedAt": "2026-07-04T09:02:02.942Z",
+    "nextRefreshAt": "2026-07-04T09:03:02.942Z",
+    "shouldRefresh": false,
+    "isStale": false,
+    "ready": true,
+    "reason": "Depth comes from provider orderbook ladder snapshots."
+  },
+  "orderbookResponse": {
+    "marketId": "edad75e1-a7b9-42b5-9243-e7fd544e4d9f",
+    "depthSource": "provider-orderbook-depth",
+    "depthReason": "Depth comes from provider orderbook ladder snapshots.",
+    "emptyState": null,
+    "marketIdentity": {
+      "marketId": "edad75e1-a7b9-42b5-9243-e7fd544e4d9f",
+      "marketGroupId": "main",
+      "selectorKey": "main:full-game:default",
+      "marketFamily": "moneyline",
+      "period": "full-game",
+      "line": null,
+      "outcomes": [
+        {
+          "id": "6b385ea6-84d3-42c9-84f3-f8b2de93b675",
+          "outcomeId": "6b385ea6-84d3-42c9-84f3-f8b2de93b675",
+          "tokenId": "ec-a-token-spain",
+          "label": "Spain",
+          "side": "home"
+        },
+        {
+          "id": "79d4a60c-b9dc-43a3-aeea-49ca7af52d30",
+          "outcomeId": "79d4a60c-b9dc-43a3-aeea-49ca7af52d30",
+          "tokenId": "ec-a-token-draw",
+          "label": "Draw",
+          "side": "draw"
+        },
+        {
+          "id": "9ec31098-2105-48f8-b371-2343e1630d10",
+          "outcomeId": "9ec31098-2105-48f8-b371-2343e1630d10",
+          "tokenId": "ec-a-token-japan",
+          "label": "Japan",
+          "side": "away"
+        }
+      ]
+    },
+    "providerOrderbookDepth": {
+      "source": "reference-orderbook-depth-snapshot",
+      "status": "ready",
+      "levelCount": 12,
+      "snapshotCount": 12,
+      "latestFetchedAt": "2026-07-04T09:02:02.942Z",
+      "latestUpdatedAt": "2026-07-04T09:02:02.956Z",
+      "stalenessSeconds": 2,
+      "staleAfterSeconds": 90,
+      "refreshTtlSeconds": 60,
+      "nextRefreshAt": "2026-07-04T09:03:02.942Z",
+      "shouldRefresh": false,
+      "isStale": false,
+      "sources": [
+        "polymarket-clob-ec-identity-proof"
+      ],
+      "reason": "Provider orderbook depth snapshot is fresh."
+    },
+    "levelCount": 12,
+    "firstLevels": [
+      {
+        "outcomeId": "6b385ea6-84d3-42c9-84f3-f8b2de93b675",
+        "side": "bid",
+        "price": 0.62,
+        "shares": 18400,
+        "value": 11408
+      },
+      {
+        "outcomeId": "6b385ea6-84d3-42c9-84f3-f8b2de93b675",
+        "side": "bid",
+        "price": 0.61,
+        "shares": 19200,
+        "value": 11712
+      },
+      {
+        "outcomeId": "79d4a60c-b9dc-43a3-aeea-49ca7af52d30",
+        "side": "bid",
+        "price": 0.23,
+        "shares": 11200,
+        "value": 2576
+      },
+      {
+        "outcomeId": "79d4a60c-b9dc-43a3-aeea-49ca7af52d30",
+        "side": "bid",
+        "price": 0.22,
+        "shares": 12000,
+        "value": 2640
+      },
+      {
+        "outcomeId": "9ec31098-2105-48f8-b371-2343e1630d10",
+        "side": "bid",
+        "price": 0.17,
+        "shares": 9600,
+        "value": 1632
+      },
+      {
+        "outcomeId": "9ec31098-2105-48f8-b371-2343e1630d10",
+        "side": "bid",
+        "price": 0.16,
+        "shares": 10400,
+        "value": 1664
+      },
+      {
+        "outcomeId": "9ec31098-2105-48f8-b371-2343e1630d10",
+        "side": "ask",
+        "price": 0.2,
+        "shares": 9000,
+        "value": 1800
+      },
+      {
+        "outcomeId": "9ec31098-2105-48f8-b371-2343e1630d10",
+        "side": "ask",
+        "price": 0.21,
+        "shares": 10100,
+        "value": 2121
+      }
+    ]
+  },
+  "lineMarketProviderGap": {
+    "documented": true,
+    "compactLineMarketCount": 1,
+    "providerBackedLineMarketCount": 0,
+    "note": "This EC proof intentionally proves match-winner provider-backed identity; compact line markets are present but not seeded as provider-backed in this disposable event.",
+    "lineMarkets": [
+      {
+        "marketId": "e120aa52-6a94-462a-8c54-0f53bfb45fe8",
+        "selectorKey": "totals:regulation:2.5",
+        "marketFamily": "total",
+        "period": "regulation",
+        "line": "2.5",
+        "depthSource": "empty",
+        "depthProviderStatus": "unavailable"
+      }
+    ]
+  },
+  "assertions": {
+    "liveDetailStartedProof": true,
+    "selectedProviderBackedCompactMarket": true,
+    "sameMarketId": true,
+    "sameSelectorKey": true,
+    "sameMarketGroupId": true,
+    "sameFamilyPeriodLine": true,
+    "sameOutcomeIds": true,
+    "sameTokenIds": true,
+    "bookReturnedProviderReadyDepth": true,
+    "providerSourceMatches": true,
+    "freshnessFieldsPresent": true
+  },
+  "pass": true
+}

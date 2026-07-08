@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-07-04T06:48:11.245Z",
+  "eventSlug": "world-cup-2026-colombia-vs-ghana-2026-07-03",
+  "elapsedMs": 18,
+  "eventTitle": "Colombia vs. Ghana",
+  "compactMarketCount": 3,
+  "batchedProviderQuoteSnapshotReadyCount": 3,
+  "batchedProviderOrderbookDepthReadyCount": 3,
+  "batchedProviderOrderbookDepthMarketCount": 3,
+  "orderbookDepthSource": "orderbook-route",
+  "providerOrderbookDepthSource": "reference-orderbook-depth-snapshot",
+  "pass": true
+}

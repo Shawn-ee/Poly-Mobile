@@ -1,0 +1,16 @@
+{
+  "pass": true,
+  "createdAt": "2026-07-06T15:25:19.510Z",
+  "scope": "portfolio value-history service route loading",
+  "serverRoute": {
+    "source": "portfolio-value-history-route",
+    "range": "1W",
+    "pointCount": 1,
+    "lastValue": 140.86
+  },
+  "fallback": {
+    "source": "deterministic-mobile-fallback",
+    "range": "1D",
+    "pointCount": 6
+  }
+}

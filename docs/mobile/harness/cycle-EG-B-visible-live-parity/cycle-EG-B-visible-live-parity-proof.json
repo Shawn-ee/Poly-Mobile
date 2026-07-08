@@ -1,0 +1,33 @@
+{
+    "cycle":  "EG-B",
+    "scope":  "Visible chart, line selector, orderbook ladder, and ticket carry-through parity",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleLiveParity -Port 8316 -OutputDir docs/mobile/screenshots/cycle-EG-B-visible-live-parity -HierarchyOutputDir docs/mobile/harness/cycle-EG-B-visible-live-parity",
+    "eventIdentity":  "Mexico vs. Ecuador",
+    "result":  "pass",
+    "assertions":  {
+                       "chartOutcomeTouch":  "Chart Live filter changes the selected chart outcome to Ecuador and keeps target tooltip visible.",
+                       "chartPointTouch":  "Point selector changes chart-selected-point-target with Target line tooltip.",
+                       "lineSelector":  "Spread line rail visibly changes 2.5 then returns to backend-shaped 1.5.",
+                       "chartContractRail":  "Chart rail carries chart-selected-contract-spread chart-selected-market-mexico-ecuador-spread chart-selected-line-1.5 chart-selected-period-regulation.",
+                       "bookCarryThrough":  "Chart Book opens Spreads order book with selected line/period and ladder columns.",
+                       "ticketCarryThrough":  "Chart Trade opens ticket with provider fixture market/condition/token for Mexico -1.5 spread."
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-chart-outcome-target.png",
+                      "docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-chart-outcome-target.xml",
+                      "docs/mobile/screenshots/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-line-selector-25.png",
+                      "docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-line-selector-25.xml",
+                      "docs/mobile/screenshots/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-line-selector-15.png",
+                      "docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-line-selector-15.xml",
+                      "docs/mobile/screenshots/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-chart-spread-linked.png",
+                      "docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-chart-spread-linked.xml",
+                      "docs/mobile/screenshots/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-chart-book-spread.png",
+                      "docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-chart-book-spread.xml",
+                      "docs/mobile/screenshots/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-chart-spread-ticket.png",
+                      "docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-chart-spread-ticket.xml"
+                  ],
+    "remainingGaps":  [
+                          "Chart geometry is still rendered with React Native layout primitives rather than a true pan/zoom chart engine.",
+                          "Real provider-backed line-family chart history remains dependent on backend/provider market history coverage."
+                      ]
+}

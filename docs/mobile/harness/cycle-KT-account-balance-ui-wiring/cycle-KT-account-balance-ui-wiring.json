@@ -1,0 +1,21 @@
+{
+  "cycle": "KT",
+  "scope": "account-balance-ui-wiring",
+  "generatedAt": "2026-07-06T18:05:49.502Z",
+  "route": "/api/account/balance",
+  "pass": true,
+  "checks": {
+    "appImportsAccountBalanceService": true,
+    "appLoadsCanonicalBalanceInServerMode": true,
+    "appDoesNotUseLegacyWalletBalance": true,
+    "visiblePortfolioUsesCanonicalBalanceState": true,
+    "visibleBottomTabUsesBalanceBackedPortfolioValue": true,
+    "serviceUsesCanonicalAccountRouteOnly": true
+  },
+  "evidence": {
+    "app": "mobile/App.tsx",
+    "service": "mobile/src/services/accountBalanceService.ts",
+    "portfolio": "mobile/src/components/Portfolio.tsx",
+    "bottomTabs": "mobile/src/components/BottomTabs.tsx"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "pass": true,
+  "generatedAt": "2026-07-04T19:24:55.001Z",
+  "cycle": "FC",
+  "proof": "Android Home hierarchy shows route-backed World Cup discovery event and compact markets without default orderbook UI.",
+  "xmlPath": "docs/mobile/harness/cycle-FC-route-backed-discovery/cycle-FC-route-backed-discovery-home.xml",
+  "eventProofPath": "docs/mobile/harness/cycle-FC-route-backed-discovery/cycle-FC-route-backed-discovery-event.json",
+  "eventSlug": "mobile-el-a-provider-breadth-e0acffe0",
+  "marketIds": {
+    "main": "ab28e1fa-8ab6-494e-ab19-7f2e93a9eba0",
+    "spread": "147d90fd-efb3-4ea9-af86-1a4bb1a51aba",
+    "totals": "107074e7-190e-4867-945f-1597e3bb082c",
+    "team-totals": "0e372676-6882-4ff9-8d0a-2a64b8872f39"
+  },
+  "required": [
+    "event-card-mobile-el-a-provider-breadth",
+    "EL-A Provider Breadth World Cup Live",
+    "Volume:",
+    "Liquidity:",
+    "Breadth Home",
+    "Breadth Away",
+    "event-outcome-mobile-el-a-provider-breadth",
+    "holiwyn-home-tab",
+    "holiwyn-live-tab",
+    "holiwyn-search-tab"
+  ],
+  "missing": [],
+  "forbidden": [
+    "event-detail-top-order-book",
+    "event-detail-chart-open-book",
+    "event-detail-inline-order-book",
+    "orderbook-source-",
+    "Route depth"
+  ],
+  "unexpected": [],
+  "assertions": {
+    "providerRouteProofPassed": true,
+    "providerAssertionsPassed": true,
+    "androidHierarchyShowsRouteEvent": true,
+    "defaultOrderbookHidden": true
+  },
+  "note": "The broad WholeAppNavDiscovery script is fixture-specific and still expects Mexico vs. Ecuador; this focused gate validates the new Local MVP route-backed discovery surface from the saved tablet hierarchy."
+}

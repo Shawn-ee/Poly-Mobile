@@ -1,0 +1,43 @@
+{
+  "cycle": "DY-A",
+  "issue": "PM-GAP-073",
+  "scope": "Samsung tablet full live football World Cup game page structure",
+  "result": "partial-fail",
+  "device": "adb-R5GYA13X7NJ-4O0ADU._adb-tls-connect._tcp",
+  "command": "npm --prefix mobile run smoke:tablet:dy-a-game-page-structure",
+  "passedBeforeFailure": [
+    "live game detail launched on Samsung tablet",
+    "header actions were visible",
+    "Game and Chat segmented controls were visible",
+    "team/time/probability top area was visible",
+    "chart and chart context were visible",
+    "chat preview was visible",
+    "primary outcomes were visible",
+    "top order book opened and exposed depth/selector state",
+    "share sheet opened",
+    "chat tab opened and showed feed/input/reactions"
+  ],
+  "failingAssertion": {
+    "step": "primary outcome ticket open",
+    "expected": "tapping the visible AUS primary outcome opens trade-ticket",
+    "actual": "the screen remained on the game page; the UI hierarchy still contained event-detail-primary-outcome markers and did not contain trade-ticket",
+    "failedMarker": "trade-ticket",
+    "manualCheck": "ADB tap at primary AUS button center also did not open trade-ticket"
+  },
+  "artifacts": [
+    "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-top.png",
+    "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-top.xml",
+    "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-top-book.png",
+    "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-top-book.xml",
+    "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-share-sheet.png",
+    "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-share-sheet.xml",
+    "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-chat.png",
+    "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-chat.xml",
+    "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-chat-lower.png",
+    "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-chat-lower.xml",
+    "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-ticket.png",
+    "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-ticket.xml",
+    "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-manual-primary-tap.xml"
+  ],
+  "recommendedNextStep": "Implementation owner should fix live primary outcome tap behavior so selected market/outcome opens the trade ticket, then rerun this DY-A smoke."
+}

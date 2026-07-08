@@ -1,0 +1,28 @@
+{
+  "pass": true,
+  "createdAt": "2026-07-06T15:59:49.361Z",
+  "route": "/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&status=<home-filter>&limit=10",
+  "service": "loadHomeEventFeedPage",
+  "filters": {
+    "live": {
+      "source": "server-route",
+      "status": "live",
+      "proofCount": 2,
+      "compactMarkets": true,
+      "slugs": [
+        "mobile-kd-home-filter-live-1-59d7b7fc",
+        "mobile-kd-home-filter-live-0-59d7b7fc"
+      ]
+    },
+    "upcoming": {
+      "source": "server-route",
+      "status": "upcoming",
+      "proofCount": 2,
+      "compactMarkets": true,
+      "slugs": [
+        "mobile-kd-home-filter-upcoming-0-59d7b7fc",
+        "mobile-kd-home-filter-upcoming-1-59d7b7fc"
+      ]
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+    "cycle":  "MS",
+    "result":  "pass",
+    "generatedAt":  "2026-07-08T10:45:44.5216268Z",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "mobileApiBaseUrl":  "http://172.16.200.14:3002",
+    "expoPort":  8289,
+    "keyId":  "redacted",
+    "apiKey":  "redacted",
+    "eventSlug":  "argentina-vs-egypt",
+    "targetProviderMarketId":  "2793741",
+    "seededCounterparty":  false,
+    "counterpartyProof":  null,
+    "assertions":  {
+                       "homeShowsCurrentMatch":  true,
+                       "detailShowsProviderWinner":  true,
+                       "detailShowsComposedRegulationWinner1x2":  true,
+                       "regulationWinnerIsPolymarketBacked":  true,
+                       "orderbookHidden":  true,
+                       "ticketPreservesProviderWinner":  true,
+                       "swipeSubmitReachedPortfolio":  true,
+                       "portfolioPreservesProviderWinnerSource":  true,
+                       "historyPreservesProviderWinnerSource":  true,
+                       "filledHistoryVisible":  true
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\screenshots\\cycle-MS-provider-winner-filled-history\\cycle-MS-current-mvp-home.png",
+                      "docs\\mobile\\harness\\cycle-MS-provider-winner-filled-history\\cycle-MS-current-mvp-home.xml",
+                      "docs\\mobile\\screenshots\\cycle-MS-provider-winner-filled-history\\cycle-MS-current-mvp-detail-top.png",
+                      "docs\\mobile\\harness\\cycle-MS-provider-winner-filled-history\\cycle-MS-current-mvp-detail-top.xml",
+                      "docs\\mobile\\screenshots\\cycle-MS-provider-winner-filled-history\\cycle-MS-provider-winner.png",
+                      "docs\\mobile\\harness\\cycle-MS-provider-winner-filled-history\\cycle-MS-provider-winner-attempt-*.xml",
+                      "docs\\mobile\\screenshots\\cycle-MS-provider-winner-filled-history\\cycle-MS-provider-winner-ticket-ready.png",
+                      "docs\\mobile\\harness\\cycle-MS-provider-winner-filled-history\\cycle-MS-provider-winner-ticket-ready.xml",
+                      "docs\\mobile\\screenshots\\cycle-MS-provider-winner-filled-history\\cycle-MS-provider-winner-after-submit.png",
+                      "docs\\mobile\\harness\\cycle-MS-provider-winner-filled-history\\cycle-MS-provider-winner-after-submit.xml",
+                      "docs\\mobile\\screenshots\\cycle-MS-provider-winner-filled-history\\cycle-MS-provider-winner-portfolio-history.png",
+                      "docs\\mobile\\harness\\cycle-MS-provider-winner-filled-history\\cycle-MS-provider-winner-portfolio-history.xml"
+                  ]
+}

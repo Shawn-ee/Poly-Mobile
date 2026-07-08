@@ -1,0 +1,10 @@
+{
+  "eventSlug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25",
+  "route": "/api/mobile/events/:slug/live-detail",
+  "marketCount": 14,
+  "batchedOrderbookDepthSource": "orderbook-route",
+  "batchedOrderbookDepthMarketCount": 6,
+  "secondHalfMarketId": "ed121b08-88bd-4735-9793-64a0022e9696",
+  "secondHalfDepthLevels": 12,
+  "proofCommand": "Invoke-RestMethod http://127.0.0.1:3002/api/mobile/events/world-cup-2026-curacao-vs-cote-divoire-2026-06-25/live-detail"
+}

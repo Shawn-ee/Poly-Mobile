@@ -1,0 +1,45 @@
+{
+    "ok":  true,
+    "marketId":  "6e0eac54-df5e-4cb0-bab8-cb575ea5b4f0",
+    "importStatus":  "approved",
+    "referenceOnly":  false,
+    "tradable":  true,
+    "mmEnabled":  true,
+    "isListed":  true,
+    "reviewedAt":  "2026-07-08T22:10:34.128Z",
+    "reviewedBy":  "[redacted-dev-admin]",
+    "reviewNotes":  "Imported from grouped World Cup event.",
+    "botInitialization":  {
+                              "reason":  null,
+                              "status":  "dry_run_ready",
+                              "capital":  {
+                                              "botUserId":  "[redacted-bot-user]",
+                                              "botApiKeyId":  "[redacted-api-key]",
+                                              "botUsername":  "system-liquidity-bot",
+                                              "budgetCents":  50000,
+                                              "autoReplenish":  false,
+                                              "initializedAt":  "2026-07-08T22:10:03.212Z",
+                                              "initializedBy":  "[redacted-dev-admin]",
+                                              "mintBudgetCents":  2500,
+                                              "cashReserveCents":  47500,
+                                              "maxDailyLossCents":  10000,
+                                              "botApiCredentialId":  "d57b4e0f-3a08-4ca5-9114-09b18c4fa44e",
+                                              "mintedCompleteSets":  25,
+                                              "maxOpenOrderNotionalCents":  10000,
+                                              "maxSingleOrderNotionalCents":  1000
+                                          },
+                              "runtime":  {
+                                              "lastSeededAt":  "2026-07-08T22:10:03.212Z",
+                                              "emergencyStop":  false,
+                                              "lastLiveRunAt":  null,
+                                              "cancelRequestedAt":  null,
+                                              "lastRuntimeSyncAt":  null,
+                                              "liveOrdersEnabled":  false
+                                          },
+                              "readiness":  null,
+                              "approvedAt":  null,
+                              "approvedBy":  null,
+                              "riskProfile":  null,
+                              "lastCheckedAt":  null
+                          }
+}

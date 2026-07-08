@@ -1,0 +1,201 @@
+{
+  "pass": true,
+  "cycle": "OZ",
+  "generatedAt": "2026-07-08T21:07:44.852Z",
+  "scope": "provider-visible-market-to-internal-test-tradable-mobile-flow",
+  "routes": {
+    "search": "/api/events?source=polymarket&search=Spain",
+    "detail": "/api/mobile/events/:slug/live-detail",
+    "quote": "/api/markets/:marketId/quote",
+    "order": "POST /api/orders",
+    "portfolio": "/api/portfolio",
+    "history": "/api/portfolio/history"
+  },
+  "event": {
+    "id": "16dba6f4-c5ec-4d0c-9d69-6b8c06fd6bc5",
+    "slug": "provider-breadth-world-cup-winner",
+    "title": "World Cup Winner",
+    "eventType": "future"
+  },
+  "market": {
+    "id": "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+    "slug": "provider-breadth-world-cup-winner-will-spain-win-the-2026-fifa-world-cup-963",
+    "title": "Will Spain win the 2026 FIFA World Cup?",
+    "referenceSource": "polymarket",
+    "externalSlug": "will-spain-win-the-2026-fifa-world-cup-963",
+    "externalMarketId": "558934",
+    "conditionId": "0x7976b8dbacf9077eb1453a62bcefd6ab2df199acd28aad276ff0d920d6992892"
+  },
+  "outcome": {
+    "id": "5726cf62-ff54-47ff-8554-a8a563df94e4",
+    "name": "Spain",
+    "referenceTokenId": "4394372887385518214471608448209527405727552777602031099972143344338178308080",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "botQuote": {
+    "orderId": "df81f4d7-ee51-4364-94e8-ed04f53a1091",
+    "side": "SELL",
+    "price": 0.21,
+    "remaining": 5
+  },
+  "mobileProofUser": {
+    "id": "534771b4-83f2-466f-9aee-9c8a9f9b6384",
+    "email": "cycle_oz_provider_user_5e9e7809@local.test"
+  },
+  "checks": {
+    "searchVisible": true,
+    "detailVisible": true,
+    "quoteVisible": true,
+    "serverModeTicketSubmitted": true,
+    "filledAgainstBotLiquidity": true,
+    "portfolioPositionVisible": true,
+    "historyTradeVisible": true,
+    "homeLiveMatchOnlyUnchanged": true
+  },
+  "orderResult": {
+    "id": "1f1c208a-67d1-43bb-a52d-e321922641d8",
+    "mode": "server",
+    "title": "Will Spain win the 2026 FIFA World Cup?",
+    "outcome": "Spain",
+    "selection": {
+      "marketType": "future",
+      "marketId": "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+      "outcomeId": "5726cf62-ff54-47ff-8554-a8a563df94e4",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Spain",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-spain-win-the-2026-fifa-world-cup-963",
+      "externalMarketId": "558934",
+      "conditionId": "0x7976b8dbacf9077eb1453a62bcefd6ab2df199acd28aad276ff0d920d6992892",
+      "referenceTokenId": "4394372887385518214471608448209527405727552777602031099972143344338178308080",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.21,
+      "limitSide": "ask"
+    },
+    "contractSide": "yes",
+    "side": "buy",
+    "amount": 0.63,
+    "probability": 21,
+    "status": "FILLED",
+    "size": 3,
+    "filledSize": 3,
+    "remainingSize": 0
+  },
+  "portfolioPosition": {
+    "marketId": "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+    "outcomeId": "5726cf62-ff54-47ff-8554-a8a563df94e4",
+    "shares": 3,
+    "selection": {
+      "marketType": "future",
+      "marketId": "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+      "outcomeId": "5726cf62-ff54-47ff-8554-a8a563df94e4",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Spain",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-spain-win-the-2026-fifa-world-cup-963",
+      "externalMarketId": "558934",
+      "conditionId": "0x7976b8dbacf9077eb1453a62bcefd6ab2df199acd28aad276ff0d920d6992892",
+      "referenceTokenId": "4394372887385518214471608448209527405727552777602031099972143344338178308080",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.21,
+      "limitSide": "ask"
+    }
+  },
+  "historyTrade": {
+    "id": "77d955da-7b01-4996-a5a4-cbdc32ec697b",
+    "market": {
+      "id": "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+      "title": "Will Spain win the 2026 FIFA World Cup?",
+      "status": "LIVE",
+      "marketGroupKey": "outrights",
+      "marketType": "outright",
+      "line": null,
+      "period": "futures",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-spain-win-the-2026-fifa-world-cup-963",
+      "externalMarketId": "558934",
+      "conditionId": "0x7976b8dbacf9077eb1453a62bcefd6ab2df199acd28aad276ff0d920d6992892"
+    },
+    "outcome": {
+      "id": "5726cf62-ff54-47ff-8554-a8a563df94e4",
+      "name": "Spain",
+      "label": "Spain",
+      "side": "yes",
+      "referenceTokenId": "4394372887385518214471608448209527405727552777602031099972143344338178308080",
+      "referenceOutcomeLabel": "Yes"
+    },
+    "selection": {
+      "marketId": "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+      "outcomeId": "5726cf62-ff54-47ff-8554-a8a563df94e4",
+      "marketGroupId": "outrights",
+      "marketType": "future",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Spain",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "providerSource": "polymarket",
+      "externalSlug": "will-spain-win-the-2026-fifa-world-cup-963",
+      "externalMarketId": "558934",
+      "conditionId": "0x7976b8dbacf9077eb1453a62bcefd6ab2df199acd28aad276ff0d920d6992892",
+      "referenceTokenId": "4394372887385518214471608448209527405727552777602031099972143344338178308080",
+      "tokenId": "4394372887385518214471608448209527405727552777602031099972143344338178308080",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.21,
+      "limitSide": "ask"
+    },
+    "side": "BUY",
+    "shares": 3,
+    "cost": 0.63,
+    "fee": 0,
+    "createdAt": "2026-07-08T21:07:44.728Z"
+  },
+  "remainingOpenOrders": [
+    {
+      "id": "c4cf3628-3707-4899-a80f-629e471ab9b4",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "5726cf62-ff54-47ff-8554-a8a563df94e4",
+      "side": "BUY",
+      "price": "0.17",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "df81f4d7-ee51-4364-94e8-ed04f53a1091",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "5726cf62-ff54-47ff-8554-a8a563df94e4",
+      "side": "SELL",
+      "price": "0.21",
+      "amount": "5",
+      "remaining": "2",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "752db90a-8d2b-4e85-b317-8e5c0ab681ac",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "3227cee1-d2d1-4180-a18e-3b1e728f9820",
+      "side": "BUY",
+      "price": "0.79",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "3d81ab6b-eafe-498e-9e68-5a57ab6c9ba6",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "3227cee1-d2d1-4180-a18e-3b1e728f9820",
+      "side": "SELL",
+      "price": "0.83",
+      "amount": "5",
+      "remaining": "5",
+      "status": "OPEN"
+    }
+  ]
+}

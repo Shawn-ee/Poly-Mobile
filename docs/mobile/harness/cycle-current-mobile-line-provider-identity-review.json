@@ -1,0 +1,86 @@
+{
+  "generatedAt": "2026-07-04T08:27:15.494Z",
+  "eventSlug": "world-cup-2026-colombia-vs-ghana-2026-07-03",
+  "providerEventSlug": "fifwc-col-gha-2026-07-03",
+  "opticOddsFixtureId": "2026070464F44C1E",
+  "mode": "line-provider-identity-review-dry-run",
+  "lineMarketCount": 2,
+  "reviewedMarketCount": 2,
+  "initialReadiness": {
+    "compactMarketCount": 5,
+    "lineMarketCount": 2,
+    "lineProviderReadyMarketCount": 0,
+    "lineProviderMissingMarketCount": 2,
+    "readyMarketIds": [],
+    "nextRequiredAction": "review_and_apply_line_provider_identity"
+  },
+  "goodDryRun": {
+    "applied": false,
+    "blocked": false,
+    "validation": {
+      "valid": true,
+      "compactMarketCount": 5,
+      "reviewedMarketCount": 2,
+      "reviewedOutcomeCount": 4,
+      "errors": []
+    },
+    "before": {
+      "compactMarketCount": 5,
+      "lineMarketCount": 2,
+      "lineProviderReadyMarketCount": 0,
+      "lineProviderMissingMarketCount": 2,
+      "readyMarketIds": [],
+      "nextRequiredAction": "review_and_apply_line_provider_identity"
+    },
+    "after": {
+      "compactMarketCount": 5,
+      "lineMarketCount": 2,
+      "lineProviderReadyMarketCount": 2,
+      "lineProviderMissingMarketCount": 0,
+      "readyMarketIds": [
+        "2dfbdb0f-a21e-42da-adce-055e9528638e",
+        "24c0f0fe-073b-4661-8fa3-6e90bf6f23a5"
+      ],
+      "nextRequiredAction": "run_optic_odds_refresh_after_credentials_are_available"
+    },
+    "nextRequiredAction": "confirm_apply_line_provider_identity_reviews"
+  },
+  "badDryRun": {
+    "applied": false,
+    "blocked": true,
+    "validation": {
+      "valid": false,
+      "compactMarketCount": 5,
+      "reviewedMarketCount": 1,
+      "reviewedOutcomeCount": 1,
+      "errors": [
+        {
+          "marketId": "2dfbdb0f-a21e-42da-adce-055e9528638e",
+          "field": "providerMarketId",
+          "reason": "provider_market_type_mismatch"
+        },
+        {
+          "marketId": "2dfbdb0f-a21e-42da-adce-055e9528638e",
+          "field": "points",
+          "reason": "provider_line_value_mismatch"
+        },
+        {
+          "marketId": "2dfbdb0f-a21e-42da-adce-055e9528638e",
+          "reason": "review_must_include_every_compact_market_outcome"
+        }
+      ]
+    },
+    "blockReason": "line_provider_review_has_failed_items",
+    "nextRequiredAction": "fix_failed_line_provider_identity_reviews"
+  },
+  "finalReadiness": {
+    "compactMarketCount": 5,
+    "lineMarketCount": 2,
+    "lineProviderReadyMarketCount": 0,
+    "lineProviderMissingMarketCount": 2,
+    "readyMarketIds": [],
+    "nextRequiredAction": "review_and_apply_line_provider_identity"
+  },
+  "mutatedDatabase": false,
+  "pass": true
+}

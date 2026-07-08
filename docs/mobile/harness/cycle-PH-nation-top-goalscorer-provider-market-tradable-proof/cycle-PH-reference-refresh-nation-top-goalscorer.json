@@ -1,0 +1,283 @@
+﻿{
+  "summary": {
+    "cycle": 1,
+    "generatedAt": "2026-07-08T22:20:08.688Z",
+    "marketsRefreshed": 8,
+    "marketsSkipped": 0,
+    "snapshotsUpdated": 16,
+    "staleCount": 0,
+    "wideCount": 0,
+    "missingCount": 2,
+    "errorCount": 0
+  },
+  "report": {
+    "generatedAt": "2026-07-08T22:20:08.688Z",
+    "dryRun": true,
+    "snapshotWritesApplied": true,
+    "liveOrdersEnabled": false,
+    "pollMs": 5000,
+    "refreshedCount": 8,
+    "snapshotsUpdated": 16,
+    "skippedCount": 0,
+    "refreshed": [
+      {
+        "marketId": "94644351-61b3-474d-9f08-7f9b9ab169d3",
+        "title": "Will a player representing Argentina be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-a-player-representing-argentina-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "bddcf2cd-e78e-4aae-b0c5-f5c2291814c5",
+            "tokenId": "69978386029605462586055266334854311610656271346989780229379039945466258702636",
+            "bestBid": 0.374,
+            "bestAsk": 0.379,
+            "spread": 0.005,
+            "lastTradePrice": 0.379,
+            "outcomePrice": 0.3765,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "4f27f48a-34d0-43bc-b69b-1f7ea94cc553",
+            "tokenId": "106088470766491512143556787718415610623466753524491382287339767248708612652744",
+            "bestBid": 0.374,
+            "bestAsk": 0.379,
+            "spread": 0.005,
+            "lastTradePrice": 0.379,
+            "outcomePrice": 0.6235,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      },
+      {
+        "marketId": "84ac4db8-436b-4076-b1e1-cfc6f05c0639",
+        "title": "Will a player representing Belgium be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-a-player-representing-belgium-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "b55b689f-34e6-41d4-b7a6-e409ed894205",
+            "tokenId": "102543883479322406514766353660718453917498243323000578848756758924879966498911",
+            "bestBid": 0.002,
+            "bestAsk": 0.005,
+            "spread": 0.003,
+            "lastTradePrice": 0.002,
+            "outcomePrice": 0.0035,
+            "qualityStatus": "invalid_price",
+            "mmEligible": false,
+            "reason": "reference_invalid_price"
+          },
+          {
+            "outcomeId": "54c18eed-d85f-4795-b476-e9f0900f6741",
+            "tokenId": "85095553958529500501495648230797157476661725130762790939084194273145316944461",
+            "bestBid": 0.002,
+            "bestAsk": 0.005,
+            "spread": 0.003,
+            "lastTradePrice": 0.002,
+            "outcomePrice": 0.9965,
+            "qualityStatus": "invalid_price",
+            "mmEligible": false,
+            "reason": "reference_invalid_price"
+          }
+        ]
+      },
+      {
+        "marketId": "1ed8362b-4f0e-4c23-9f04-2f3720e4a4e2",
+        "title": "Will a player representing England be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-a-player-representing-england-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "64c1af01-52ff-40bf-acd3-ca289095f710",
+            "tokenId": "64629622135231584511867352637155783428688818837404742975812255586947706448094",
+            "bestBid": 0.076,
+            "bestAsk": 0.079,
+            "spread": 0.003,
+            "lastTradePrice": 0.076,
+            "outcomePrice": 0.0775,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "9295eb79-6ec1-439a-a8c0-9a54c64b0cbe",
+            "tokenId": "8558252781089041766444738882154618257124716666260573642517741003358526878833",
+            "bestBid": 0.076,
+            "bestAsk": 0.079,
+            "spread": 0.003,
+            "lastTradePrice": 0.076,
+            "outcomePrice": 0.9225,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      },
+      {
+        "marketId": "42203d58-497f-49e6-a660-87eca202bd59",
+        "title": "Will a player representing France be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-a-player-representing-france-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "e5beef8e-00fc-4dfe-bafe-775deec419e9",
+            "tokenId": "69445358764332911577161945635356930153907413229133084312248583098790657994408",
+            "bestBid": 0.41,
+            "bestAsk": 0.42,
+            "spread": 0.01,
+            "lastTradePrice": 0.42,
+            "outcomePrice": 0.415,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "2c1a3aaf-e5b0-496e-8fd7-3a142cca8d57",
+            "tokenId": "43959882530278723809934264473162260439768644742244015679810067992421994535884",
+            "bestBid": 0.41,
+            "bestAsk": 0.42,
+            "spread": 0.01,
+            "lastTradePrice": 0.42,
+            "outcomePrice": 0.585,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      },
+      {
+        "marketId": "b5466ed5-31ba-4ed2-9c4c-d786244bb69d",
+        "title": "Will a player representing Morocco be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-a-player-representing-morocco-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "32a36fc4-9cc8-4016-aa4e-b480b028ef68",
+            "tokenId": "78874179525187591571031826037653177391113500266155063869341080298051648048485",
+            "bestBid": null,
+            "bestAsk": 0.001,
+            "spread": 0.001,
+            "lastTradePrice": 0.001,
+            "outcomePrice": 0.0005,
+            "qualityStatus": "missing_book",
+            "mmEligible": false,
+            "reason": "reference_missing_book"
+          },
+          {
+            "outcomeId": "62782a36-56e6-4ee4-b3ca-f97a025a9420",
+            "tokenId": "67099095679298551159338565731112513079047484897635301826905545078972464186295",
+            "bestBid": null,
+            "bestAsk": 0.001,
+            "spread": 0.001,
+            "lastTradePrice": 0.001,
+            "outcomePrice": 0.9995,
+            "qualityStatus": "missing_book",
+            "mmEligible": false,
+            "reason": "reference_missing_book"
+          }
+        ]
+      },
+      {
+        "marketId": "3c089b24-8a2e-42f4-97fb-3e7422bdfa65",
+        "title": "Will a player representing Norway be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-a-player-representing-norway-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "194f5143-2648-4338-9524-ff4f17c3a987",
+            "tokenId": "31960290572206355599715903681672400762275615114199539541850805144627068381070",
+            "bestBid": 0.097,
+            "bestAsk": 0.101,
+            "spread": 0.004,
+            "lastTradePrice": 0.101,
+            "outcomePrice": 0.099,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "3d314ac4-7437-420b-b8b2-38a9cf5b6d3d",
+            "tokenId": "86510287033654336554509456736395970825103117658346023996432379296842151531131",
+            "bestBid": 0.097,
+            "bestAsk": 0.101,
+            "spread": 0.004,
+            "lastTradePrice": 0.101,
+            "outcomePrice": 0.901,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      },
+      {
+        "marketId": "019e01c4-fa4a-4be3-bd35-1cf132c7cf83",
+        "title": "Will a player representing Spain be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-a-player-representing-spain-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "bae1e271-752b-49a5-9065-0ba8e2cffd4b",
+            "tokenId": "76771721436511321972897094612139799308589108105580725427627118366082799261958",
+            "bestBid": 0.008,
+            "bestAsk": 0.009,
+            "spread": 0.001,
+            "lastTradePrice": 0.008,
+            "outcomePrice": 0.0085,
+            "qualityStatus": "invalid_price",
+            "mmEligible": false,
+            "reason": "reference_invalid_price"
+          },
+          {
+            "outcomeId": "51647824-94b3-4a3c-b906-49a83a4d5e1a",
+            "tokenId": "33200852491883726876534758203062630585645144374759425714217544535967249715003",
+            "bestBid": 0.008,
+            "bestAsk": 0.009,
+            "spread": 0.001,
+            "lastTradePrice": 0.008,
+            "outcomePrice": 0.9915,
+            "qualityStatus": "invalid_price",
+            "mmEligible": false,
+            "reason": "reference_invalid_price"
+          }
+        ]
+      },
+      {
+        "marketId": "0630a89a-e281-412d-8121-c8ad032037ba",
+        "title": "Will a player representing Switzerland be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-a-player-representing-switzerland-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "04c8bd1f-c9d0-4120-8723-68abd69c45fb",
+            "tokenId": "85539071098117750466865598123644317976254996215732922094998965762689299964059",
+            "bestBid": 0.001,
+            "bestAsk": 0.002,
+            "spread": 0.001,
+            "lastTradePrice": 0.001,
+            "outcomePrice": 0.0015,
+            "qualityStatus": "invalid_price",
+            "mmEligible": false,
+            "reason": "reference_invalid_price"
+          },
+          {
+            "outcomeId": "c0b3cd2f-2ba2-4979-868d-586d66df4d24",
+            "tokenId": "104289195996970372188445347257134356417525108847435741502159453127386453711737",
+            "bestBid": 0.001,
+            "bestAsk": 0.002,
+            "spread": 0.001,
+            "lastTradePrice": 0.001,
+            "outcomePrice": 0.9985,
+            "qualityStatus": "invalid_price",
+            "mmEligible": false,
+            "reason": "reference_invalid_price"
+          }
+        ]
+      }
+    ],
+    "skipped": []
+  }
+}
+

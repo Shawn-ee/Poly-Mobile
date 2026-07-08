@@ -3,6 +3,8 @@ import { prisma } from "@/lib/db";
 
 export type PolymarketImportOutcomeInput = {
   name: string;
+  label?: string | null;
+  side?: string | null;
   displayOrder?: number | null;
   isTradable?: boolean | null;
   referenceTokenId?: string | null;
@@ -30,6 +32,19 @@ export type PolymarketImportMarketInput = {
   category?: string | null;
   resolveTime?: string | null;
   type?: "BINARY" | "MULTI_WINNER";
+  marketType?: string | null;
+  marketGroupKey?: string | null;
+  marketGroupTitle?: string | null;
+  displayOrder?: number | null;
+  line?: Prisma.Decimal | null;
+  unit?: string | null;
+  period?: string | null;
+  participantType?: string | null;
+  participantName?: string | null;
+  participantId?: string | null;
+  propCategory?: string | null;
+  rules?: Prisma.InputJsonValue | null;
+  rulesText?: string | null;
   desiredStatus?: "draft" | "paused" | "live";
   externalMarketId?: string | null;
   conditionId?: string | null;
@@ -66,7 +81,7 @@ type ReferenceReviewMetadata = {
 
 export async function upsertPolymarketReferenceMarket(
   input: PolymarketImportRequest,
-  actorUserId: string,
+  actorUserId: string | null,
 ): Promise<PolymarketImportResult> {
   const createEvents = input.createEvents !== false;
   const marketType = normalizeMarketType(input.market.type, input.market.outcomes.length);
@@ -134,6 +149,17 @@ export async function upsertPolymarketReferenceMarket(
               description: input.market.description ?? existingMarket.description,
               categoryLegacy: input.market.category ?? existingMarket.categoryLegacy,
               type: marketType,
+              marketType: input.market.marketType ?? existingMarket.marketType,
+              marketGroupKey: input.market.marketGroupKey ?? existingMarket.marketGroupKey,
+              marketGroupTitle: input.market.marketGroupTitle ?? existingMarket.marketGroupTitle,
+              displayOrder: input.market.displayOrder ?? existingMarket.displayOrder,
+              line: input.market.line === undefined ? existingMarket.line : input.market.line,
+              unit: input.market.unit ?? existingMarket.unit,
+              period: input.market.period ?? existingMarket.period,
+              participantType: input.market.participantType ?? existingMarket.participantType,
+              participantName: input.market.participantName ?? existingMarket.participantName,
+              participantId: input.market.participantId ?? existingMarket.participantId,
+              propCategory: input.market.propCategory ?? existingMarket.propCategory,
               status: desiredStatus,
               resolveTime,
               eventId,
@@ -142,6 +168,10 @@ export async function upsertPolymarketReferenceMarket(
               referenceSource: input.market.referenceSource ?? "polymarket",
               externalSlug: input.market.externalSlug ?? null,
               referenceMetadata: mergedReferenceMetadata,
+              rules: input.market.rules === undefined
+                ? existingMarket.rules ?? Prisma.JsonNull
+                : input.market.rules ?? Prisma.JsonNull,
+              rulesText: input.market.rulesText ?? existingMarket.rulesText,
             },
           })
         : await tx.market.create({
@@ -151,6 +181,17 @@ export async function upsertPolymarketReferenceMarket(
               description: input.market.description ?? input.market.title,
               categoryLegacy: input.market.category ?? null,
               type: marketType,
+              marketType: input.market.marketType ?? "generic",
+              marketGroupKey: input.market.marketGroupKey ?? null,
+              marketGroupTitle: input.market.marketGroupTitle ?? null,
+              displayOrder: input.market.displayOrder ?? 0,
+              line: input.market.line ?? null,
+              unit: input.market.unit ?? null,
+              period: input.market.period ?? null,
+              participantType: input.market.participantType ?? null,
+              participantName: input.market.participantName ?? null,
+              participantId: input.market.participantId ?? null,
+              propCategory: input.market.propCategory ?? null,
               visibility: "PUBLIC",
               mechanism: "ORDERBOOK",
               status: desiredStatus,
@@ -163,6 +204,8 @@ export async function upsertPolymarketReferenceMarket(
               referenceSource: input.market.referenceSource ?? "polymarket",
               externalSlug: input.market.externalSlug ?? null,
               referenceMetadata: mergedReferenceMetadata,
+              rules: input.market.rules ?? Prisma.JsonNull,
+              rulesText: input.market.rulesText ?? null,
             },
           });
 
@@ -173,6 +216,8 @@ export async function upsertPolymarketReferenceMarket(
       select: {
         id: true,
         name: true,
+        label: true,
+        side: true,
         slug: true,
         referenceTokenId: true,
         referenceOutcomeLabel: true,
@@ -189,7 +234,9 @@ export async function upsertPolymarketReferenceMarket(
         const updated = await tx.outcome.update({
           where: { id: existingOutcome.id },
           data: {
-            name: existingOutcome.name,
+            name: localName,
+            label: outcomeInput.label ?? existingOutcome.label ?? localName,
+            side: outcomeInput.side ?? existingOutcome.side,
             displayOrder: outcomeInput.displayOrder ?? index,
             isTradable: outcomeInput.isTradable ?? false,
             referenceTokenId: outcomeInput.referenceTokenId ?? null,
@@ -205,6 +252,8 @@ export async function upsertPolymarketReferenceMarket(
           data: {
             marketId: market.id,
             name: localName,
+            label: outcomeInput.label ?? localName,
+            side: outcomeInput.side ?? null,
             slug: outcomeSlug,
             displayOrder: outcomeInput.displayOrder ?? index,
             isTradable: outcomeInput.isTradable ?? false,
@@ -360,6 +409,8 @@ function findExistingOutcome(
   outcomes: Array<{
     id: string;
     name: string;
+    label: string | null;
+    side: string | null;
     slug: string | null;
     referenceTokenId: string | null;
     referenceOutcomeLabel: string | null;

@@ -2,6 +2,126 @@ import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { serializeEventSummary } from "@/server/services/eventReadModel";
+import { marketReadInclude, serializeMarketReadModel } from "@/server/services/marketReadModel";
+import { buildMobileMarketSourceSummary, selectCompactLiveMarkets } from "@/server/services/mobileLiveEventDetail";
+
+const DEFAULT_LIMIT = 50;
+const MAX_LIMIT = 100;
+
+const paginationLimit = (value: string | null) => {
+  const parsed = Number(value ?? DEFAULT_LIMIT);
+  if (!Number.isFinite(parsed)) return DEFAULT_LIMIT;
+  return Math.min(Math.max(Math.trunc(parsed), 1), MAX_LIMIT);
+};
+
+const eventCursorFilter = (cursor: { updatedAt: Date; createdAt: Date; id: string } | null): Prisma.EventWhereInput =>
+  cursor
+    ? {
+        OR: [
+          { updatedAt: { lt: cursor.updatedAt } },
+          {
+            updatedAt: cursor.updatedAt,
+            createdAt: { lt: cursor.createdAt },
+          },
+          {
+            updatedAt: cursor.updatedAt,
+            createdAt: cursor.createdAt,
+            id: { lt: cursor.id },
+          },
+        ],
+      }
+    : {};
+
+const mobileMvpMatchFilter = (enabled: boolean): Prisma.EventWhereInput =>
+  enabled
+    ? {
+        AND: [
+          {
+            OR: [
+              { eventType: null },
+              { eventType: { notIn: ["future", "futures", "outright", "outrights"] } },
+            ],
+          },
+          {
+            OR: [
+              { eventType: "match" },
+              { status: "live" },
+              { liveStatus: { not: null } },
+              { clock: { not: null } },
+              { period: { not: null } },
+              {
+                AND: [
+                  { homeTeamName: { not: null } },
+                  { awayTeamName: { not: null } },
+                ],
+              },
+            ],
+          },
+          {
+            NOT: [
+              { slug: { startsWith: "mobile-", mode: Prisma.QueryMode.insensitive } },
+              { source: { contains: "proof", mode: Prisma.QueryMode.insensitive } },
+              { eventType: { contains: "proof", mode: Prisma.QueryMode.insensitive } },
+              { title: { contains: "proof", mode: Prisma.QueryMode.insensitive } },
+              { title: { contains: "provider breadth", mode: Prisma.QueryMode.insensitive } },
+            ],
+          },
+        ],
+      }
+    : {};
+
+const eventStatusFilter = (status: string): Prisma.EventWhereInput => {
+  if (!status) return {};
+  if (status.toLowerCase() === "live") {
+    return {
+      OR: [
+        { status: "live" },
+        { liveStatus: "LIVE" },
+      ],
+    };
+  }
+  return { status };
+};
+
+const liveDatePattern = /\b(20\d{2})-(\d{2})-(\d{2})\b/;
+
+const dateOnlyUtc = (date: Date) => Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+
+const liveDateFromText = (value: unknown) => {
+  if (typeof value !== "string") return null;
+  const match = value.match(liveDatePattern);
+  if (!match) return null;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const timestamp = Date.UTC(year, month - 1, day);
+  return Number.isFinite(timestamp) ? timestamp : null;
+};
+
+const liveDateFromStartTime = (value: unknown) => {
+  if (!value) return null;
+  const date = value instanceof Date ? value : new Date(String(value));
+  if (Number.isNaN(date.getTime())) return null;
+  return dateOnlyUtc(date);
+};
+
+const isFreshLiveEvent = (event: {
+  title?: string | null;
+  externalSlug?: string | null;
+  startTime?: Date | string | null;
+}) => {
+  const today = dateOnlyUtc(new Date());
+  const eventDay =
+    liveDateFromStartTime(event.startTime) ??
+    liveDateFromText(event.externalSlug) ??
+    liveDateFromText(event.title);
+  return eventDay == null || eventDay >= today;
+};
+
+const filterFreshLiveEvents = <T extends { title?: string | null; externalSlug?: string | null; startTime?: Date | string | null }>(
+  events: T[],
+  status: string,
+) => status.toLowerCase() === "live" ? events.filter(isFreshLiveEvent) : events;
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
@@ -11,13 +131,51 @@ export async function GET(request: NextRequest) {
   const leagueKey = url.searchParams.get("leagueKey")?.trim() ?? "";
   const source = url.searchParams.get("source")?.trim() ?? "";
   const status = url.searchParams.get("status")?.trim() ?? "";
+  const includeMobileMarkets = url.searchParams.get("includeMobileMarkets") === "1";
+  const mobileMvpMatches = url.searchParams.get("mobileMvpMatches") === "1";
+  const limit = paginationLimit(url.searchParams.get("limit"));
+  const cursorId = url.searchParams.get("cursor")?.trim() ?? "";
+  const cursor = cursorId
+    ? await prisma.event.findUnique({ where: { id: cursorId }, select: { id: true, updatedAt: true, createdAt: true } })
+    : null;
 
-  const where: Prisma.EventWhereInput = {
+  if (cursorId && !cursor) {
+    return NextResponse.json({ error: "Invalid event cursor." }, { status: 400 });
+  }
+
+  const eventFilters: Prisma.EventWhereInput[] = [
+    eventCursorFilter(cursor),
+    mobileMvpMatchFilter(mobileMvpMatches),
+    {
     ...(search
       ? {
           OR: [
             { title: { contains: search, mode: Prisma.QueryMode.insensitive } },
             { description: { contains: search, mode: Prisma.QueryMode.insensitive } },
+            { homeTeamName: { contains: search, mode: Prisma.QueryMode.insensitive } },
+            { awayTeamName: { contains: search, mode: Prisma.QueryMode.insensitive } },
+            {
+              markets: {
+                some: {
+                  visibility: "PUBLIC",
+                  isListed: true,
+                  OR: [
+                    { title: { contains: search, mode: Prisma.QueryMode.insensitive } },
+                    { description: { contains: search, mode: Prisma.QueryMode.insensitive } },
+                    {
+                      outcomes: {
+                        some: {
+                          OR: [
+                            { name: { contains: search, mode: Prisma.QueryMode.insensitive } },
+                            { label: { contains: search, mode: Prisma.QueryMode.insensitive } },
+                          ],
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
           ],
         }
         : {}),
@@ -25,12 +183,94 @@ export async function GET(request: NextRequest) {
     ...(sportKey ? { sportKey } : {}),
     ...(leagueKey ? { leagueKey } : {}),
     ...(source ? { source } : {}),
-    ...(status ? { status } : {}),
-  };
+    ...eventStatusFilter(status),
+    },
+  ];
+  const where: Prisma.EventWhereInput = { AND: eventFilters };
 
-  const events = await prisma.event.findMany({
+  if (includeMobileMarkets) {
+    const rows = await prisma.event.findMany({
+      where,
+      orderBy: [{ updatedAt: "desc" }, { createdAt: "desc" }, { id: "desc" }],
+      take: limit + 1,
+      include: {
+        markets: {
+          where: { visibility: "PUBLIC", isListed: true },
+          orderBy: [{ marketGroupKey: "asc" }, { displayOrder: "asc" }, { createdAt: "asc" }],
+          include: marketReadInclude,
+        },
+      },
+    });
+    const events = rows.slice(0, limit);
+    const nextCursor = rows.length > limit ? events[events.length - 1]?.id ?? null : null;
+
+    const serializedEvents = (await Promise.all(
+        events.map(async (event) => {
+          const base = serializeEventSummary(event);
+          const metadata =
+            event.metadata && typeof event.metadata === "object" && !Array.isArray(event.metadata)
+              ? (event.metadata as Record<string, unknown>)
+              : {};
+          const referenceGroup =
+            metadata.referenceGroup && typeof metadata.referenceGroup === "object" && !Array.isArray(metadata.referenceGroup)
+              ? (metadata.referenceGroup as Record<string, unknown>)
+              : null;
+          const activeMarketCount = event.markets.filter((market) => market.status === "LIVE").length;
+          const topOutcomes = event.markets
+            .map((market) => {
+              const marketMetadata =
+                market.referenceMetadata && typeof market.referenceMetadata === "object" && !Array.isArray(market.referenceMetadata)
+                  ? (market.referenceMetadata as Record<string, unknown>)
+                  : {};
+              const group =
+                marketMetadata.group && typeof marketMetadata.group === "object" && !Array.isArray(marketMetadata.group)
+                  ? (marketMetadata.group as Record<string, unknown>)
+                  : null;
+              return typeof group?.outcomeLabel === "string" ? group.outcomeLabel : null;
+            })
+            .filter((value): value is string => Boolean(value))
+            .slice(0, 4);
+          const compactMarketIds = new Set(selectCompactLiveMarkets(event.markets).map((market) => market.id));
+          const mobileMarkets = await Promise.all(
+            event.markets
+              .filter((market) => compactMarketIds.has(market.id))
+              .map((market) => serializeMarketReadModel(market)),
+          );
+          const marketSourceSummary = buildMobileMarketSourceSummary(mobileMarkets);
+          return {
+            ...base,
+            marketCount: event.markets.length,
+            activeMarketCount,
+            marketSourceSummary,
+            hasGroupedMarkets: Boolean(referenceGroup) || base.hasGroupedMarkets,
+            groupedSummary:
+              referenceGroup && typeof referenceGroup.slug === "string"
+                ? {
+                    title: typeof referenceGroup.title === "string" ? referenceGroup.title : "Group",
+                    slug: referenceGroup.slug,
+                  }
+                : null,
+            topOutcomes,
+            markets: mobileMarkets,
+          };
+        }),
+      )).filter((event) => event.marketCount > 0);
+
+    return NextResponse.json({
+      events: filterFreshLiveEvents(serializedEvents, status),
+      nextCursor,
+      page: {
+        limit,
+        nextCursor,
+        hasMore: Boolean(nextCursor),
+      },
+    });
+  }
+
+  const rows = await prisma.event.findMany({
     where,
-    orderBy: [{ updatedAt: "desc" }, { createdAt: "desc" }],
+    orderBy: [{ updatedAt: "desc" }, { createdAt: "desc" }, { id: "desc" }],
+    take: limit + 1,
     include: {
       markets: {
         where: { visibility: "PUBLIC", isListed: true },
@@ -38,9 +278,10 @@ export async function GET(request: NextRequest) {
       },
     },
   });
+  const events = rows.slice(0, limit);
+  const nextCursor = rows.length > limit ? events[events.length - 1]?.id ?? null : null;
 
-  return NextResponse.json({
-    events: events
+  const serializedEvents = events
       .map((event) => {
         const base = serializeEventSummary(event);
         const metadata =
@@ -81,6 +322,15 @@ export async function GET(request: NextRequest) {
           topOutcomes,
         };
       })
-      .filter((event) => event.marketCount > 0),
+      .filter((event) => event.marketCount > 0);
+
+  return NextResponse.json({
+    events: filterFreshLiveEvents(serializedEvents, status),
+    nextCursor,
+    page: {
+      limit,
+      nextCursor,
+      hasMore: Boolean(nextCursor),
+    },
   });
 }

@@ -1,0 +1,202 @@
+﻿{
+  "pass": true,
+  "cycle": "PH",
+  "generatedAt": "2026-07-08T22:21:56.668Z",
+  "scope": "provider-visible-market-to-internal-test-tradable-mobile-flow",
+  "routes": {
+    "search": "/api/events?source=polymarket&search=Argentina",
+    "detail": "/api/mobile/events/:slug/live-detail",
+    "quote": "/api/markets/:marketId/quote",
+    "order": "POST /api/orders",
+    "portfolio": "/api/portfolio",
+    "history": "/api/portfolio/history"
+  },
+  "event": {
+    "id": "0e9870f0-f8d0-49c5-a5c0-012359dacfb6",
+    "slug": "world-cup-nation-of-top-goalscorer",
+    "title": "World Cup: Nation of Top Goalscorer",
+    "eventType": "future"
+  },
+  "market": {
+    "id": "94644351-61b3-474d-9f08-7f9b9ab169d3",
+    "slug": "will-a-player-representing-argentina-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+    "title": "Will a player representing Argentina be the top goalscorer at the 2026 FIFA World Cup?",
+    "referenceSource": "polymarket",
+    "externalSlug": "will-a-player-representing-argentina-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+    "externalMarketId": "2070987",
+    "conditionId": "0xb258d0370d1d409b3fe03ba0d6e0ae88a55b0a179edf8b4a6b0e386542ca0b9c"
+  },
+  "outcome": {
+    "id": "bddcf2cd-e78e-4aae-b0c5-f5c2291814c5",
+    "name": "YES",
+    "referenceTokenId": "69978386029605462586055266334854311610656271346989780229379039945466258702636",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "botQuote": {
+    "orderId": "fb56f9dc-ba11-4a39-b3bf-b5e5e41beacb",
+    "side": "SELL",
+    "price": 0.4,
+    "remaining": 5
+  },
+  "mobileProofUser": {
+    "id": "[redacted-mobile-proof-user]",
+    "email": "cycle_ph_provider_user_908f7ad3@local.test"
+  },
+  "checks": {
+    "searchVisible": true,
+    "detailVisible": true,
+    "quoteVisible": true,
+    "serverModeTicketSubmitted": true,
+    "filledAgainstBotLiquidity": true,
+    "portfolioPositionVisible": true,
+    "historyTradeVisible": true,
+    "homeLiveMatchOnlyUnchanged": true
+  },
+  "orderResult": {
+    "id": "35797bae-7637-41f9-bbd2-95bddf432d94",
+    "mode": "server",
+    "title": "Will a player representing Argentina be the top goalscorer at the 2026 FIFA World Cup?",
+    "outcome": "Argentina",
+    "selection": {
+      "marketType": "future",
+      "marketId": "94644351-61b3-474d-9f08-7f9b9ab169d3",
+      "outcomeId": "bddcf2cd-e78e-4aae-b0c5-f5c2291814c5",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Argentina",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-a-player-representing-argentina-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2070987",
+      "conditionId": "0xb258d0370d1d409b3fe03ba0d6e0ae88a55b0a179edf8b4a6b0e386542ca0b9c",
+      "referenceTokenId": "69978386029605462586055266334854311610656271346989780229379039945466258702636",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.4,
+      "limitSide": "ask"
+    },
+    "contractSide": "yes",
+    "side": "buy",
+    "amount": 1.2,
+    "probability": 40,
+    "status": "FILLED",
+    "size": 3,
+    "filledSize": 3,
+    "remainingSize": 0
+  },
+  "portfolioPosition": {
+    "marketId": "94644351-61b3-474d-9f08-7f9b9ab169d3",
+    "outcomeId": "bddcf2cd-e78e-4aae-b0c5-f5c2291814c5",
+    "shares": 3,
+    "selection": {
+      "marketType": "future",
+      "marketId": "94644351-61b3-474d-9f08-7f9b9ab169d3",
+      "outcomeId": "bddcf2cd-e78e-4aae-b0c5-f5c2291814c5",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Argentina",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-a-player-representing-argentina-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2070987",
+      "conditionId": "0xb258d0370d1d409b3fe03ba0d6e0ae88a55b0a179edf8b4a6b0e386542ca0b9c",
+      "referenceTokenId": "69978386029605462586055266334854311610656271346989780229379039945466258702636",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.4,
+      "limitSide": "ask"
+    }
+  },
+  "historyTrade": {
+    "id": "07285ea8-fb4b-4c63-8749-919b55cfb357",
+    "market": {
+      "id": "94644351-61b3-474d-9f08-7f9b9ab169d3",
+      "title": "Will a player representing Argentina be the top goalscorer at the 2026 FIFA World Cup?",
+      "status": "LIVE",
+      "marketGroupKey": "outrights",
+      "marketType": "outright",
+      "line": null,
+      "period": "futures",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-a-player-representing-argentina-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2070987",
+      "conditionId": "0xb258d0370d1d409b3fe03ba0d6e0ae88a55b0a179edf8b4a6b0e386542ca0b9c"
+    },
+    "outcome": {
+      "id": "bddcf2cd-e78e-4aae-b0c5-f5c2291814c5",
+      "name": "YES",
+      "label": "Argentina",
+      "side": "yes",
+      "referenceTokenId": "69978386029605462586055266334854311610656271346989780229379039945466258702636",
+      "referenceOutcomeLabel": "Yes"
+    },
+    "selection": {
+      "marketId": "94644351-61b3-474d-9f08-7f9b9ab169d3",
+      "outcomeId": "bddcf2cd-e78e-4aae-b0c5-f5c2291814c5",
+      "marketGroupId": "outrights",
+      "marketType": "future",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Argentina",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "providerSource": "polymarket",
+      "externalSlug": "will-a-player-representing-argentina-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2070987",
+      "conditionId": "0xb258d0370d1d409b3fe03ba0d6e0ae88a55b0a179edf8b4a6b0e386542ca0b9c",
+      "referenceTokenId": "69978386029605462586055266334854311610656271346989780229379039945466258702636",
+      "tokenId": "69978386029605462586055266334854311610656271346989780229379039945466258702636",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.4,
+      "limitSide": "ask"
+    },
+    "side": "BUY",
+    "shares": 3,
+    "cost": 1.2,
+    "fee": 0,
+    "createdAt": "2026-07-08T22:21:56.548Z"
+  },
+  "remainingOpenOrders": [
+    {
+      "id": "416d1571-0f04-404b-ad88-4644e0f34a11",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "bddcf2cd-e78e-4aae-b0c5-f5c2291814c5",
+      "side": "BUY",
+      "price": "0.35",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "fb56f9dc-ba11-4a39-b3bf-b5e5e41beacb",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "bddcf2cd-e78e-4aae-b0c5-f5c2291814c5",
+      "side": "SELL",
+      "price": "0.4",
+      "amount": "5",
+      "remaining": "2",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "61f1d964-6017-4601-86a2-9721cc228998",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "4f27f48a-34d0-43bc-b69b-1f7ea94cc553",
+      "side": "BUY",
+      "price": "0.37",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "aa039af3-3bec-430d-9bd1-49f85dd0046e",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "4f27f48a-34d0-43bc-b69b-1f7ea94cc553",
+      "side": "SELL",
+      "price": "0.65",
+      "amount": "5",
+      "remaining": "5",
+      "status": "OPEN"
+    }
+  ]
+}
+

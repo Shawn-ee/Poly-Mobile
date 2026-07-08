@@ -1,0 +1,138 @@
+
+> poly-bot@0.1.0 bot:polymarket:mm:live-local
+> tsx scripts/liquidityRuntime.ts --dryRun false --confirmLive true --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug provider-breadth-world-cup-winner --allowlist Argentina --maxMarkets 1 --durationSeconds 6 --pollMs 1000 --confirmLive true
+
+{
+  "dryRun": false,
+  "liveOrdersEnabled": true,
+  "confirmLive": true,
+  "cycleReports": [
+    {
+      "marketId": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+      "slug": "will-argentina-win-the-2026-fifa-world-cup-245",
+      "status": "manage_quotes",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.2,
+      "referenceAsk": 0.201,
+      "plannedBotBid": 0.18,
+      "plannedBotAsk": 0.22,
+      "reasons": [],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 3250,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 3250,
+      "globalExposureCents": 3250,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [
+        "new quote fa181546-35ad-47d4-8874-f5b73cd9f571:BUY @ 0.18",
+        "new quote fa181546-35ad-47d4-8874-f5b73cd9f571:SELL @ 0.22",
+        "new quote 0301d826-33a5-41d9-bab5-8fcbe291831a:BUY @ 0.78",
+        "new quote 0301d826-33a5-41d9-bab5-8fcbe291831a:SELL @ 0.82",
+        "placed fa181546-35ad-47d4-8874-f5b73cd9f571:BUY @ 0.18",
+        "placed fa181546-35ad-47d4-8874-f5b73cd9f571:SELL @ 0.22",
+        "placed 0301d826-33a5-41d9-bab5-8fcbe291831a:BUY @ 0.78",
+        "placed 0301d826-33a5-41d9-bab5-8fcbe291831a:SELL @ 0.82"
+      ],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+      "slug": "will-argentina-win-the-2026-fifa-world-cup-245",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.2,
+      "referenceAsk": 0.201,
+      "plannedBotBid": 0.18,
+      "plannedBotAsk": 0.22,
+      "reasons": [
+        "max_open_orders_per_market_4_of_4"
+      ],
+      "openOrderCount": 4,
+      "perMarketExposureCents": 4210,
+      "openOrderNotionalCents": 960,
+      "inventoryExposureCents": 3250,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+      "slug": "will-argentina-win-the-2026-fifa-world-cup-245",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.2,
+      "referenceAsk": 0.201,
+      "plannedBotBid": 0.18,
+      "plannedBotAsk": 0.22,
+      "reasons": [
+        "max_open_orders_per_market_4_of_4"
+      ],
+      "openOrderCount": 4,
+      "perMarketExposureCents": 4210,
+      "openOrderNotionalCents": 960,
+      "inventoryExposureCents": 3250,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+      "slug": "will-argentina-win-the-2026-fifa-world-cup-245",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.2,
+      "referenceAsk": 0.201,
+      "plannedBotBid": 0.18,
+      "plannedBotAsk": 0.22,
+      "reasons": [
+        "max_open_orders_per_market_4_of_4"
+      ],
+      "openOrderCount": 4,
+      "perMarketExposureCents": 4210,
+      "openOrderNotionalCents": 960,
+      "inventoryExposureCents": 3250,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+      "slug": "will-argentina-win-the-2026-fifa-world-cup-245",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.2,
+      "referenceAsk": 0.201,
+      "plannedBotBid": 0.18,
+      "plannedBotAsk": 0.22,
+      "reasons": [
+        "max_open_orders_per_market_4_of_4"
+      ],
+      "openOrderCount": 4,
+      "perMarketExposureCents": 4210,
+      "openOrderNotionalCents": 960,
+      "inventoryExposureCents": 3250,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    }
+  ]
+}

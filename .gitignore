@@ -49,6 +49,10 @@ yarn-error.log*
 test-logs/
 .runtime/
 
+# local mobile cleanup artifacts
+mobile/vitest.config.ts
+mobile/docs/mobile/
+
 # env files
 .env
 .env.local

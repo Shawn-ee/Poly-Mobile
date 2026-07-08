@@ -1,0 +1,59 @@
+{
+  "cycle": "KX",
+  "scope": "route-wiring-tracker-consolidation",
+  "generatedAt": "2026-07-06T18:33:53.727Z",
+  "pass": true,
+  "checks": {
+    "featureCriteriaHasKxRow": true,
+    "parityTrackerHasKxRow": true,
+    "auditGateHasKxSummary": true,
+    "routeMapHasKxSection": true,
+    "dataGapsHasKxSection": true,
+    "allStalePhrasesRemoved": true,
+    "closureReferencesPresent": true
+  },
+  "stalePhrasesRemoved": [
+    "wire dirty Search UI files to this service in server mode",
+    "wire dirty Search UI files to `loadSearchEventPage()` in server mode",
+    "Search tab UI still needs to request backend search pages in server mode",
+    "wire Search tab UI to backend pages in server mode after unrelated mobile UI churn is reconciled",
+    "Search UI backend pagination and Portfolio value-history UI route loading after unrelated UI churn is reconciled",
+    "UI files can still use local filtering/fallback until those dirty screens are reconciled",
+    "wire Search UI server pagination and Home live/today server-side filter pagination",
+    "server-side pagination for Home live/today filters, Search tab backend pagination",
+    "Portfolio value-history UI route loading after unrelated UI churn is reconciled",
+    "Event Detail/Game Lines UI still needs clean wiring to this service once dirty screen churn is reconciled",
+    "Event Detail UI server-mode wiring after dirty screen churn is reconciled",
+    "Dirty visible Trade Ticket/Event Detail quote refresh behavior still needs clean server-mode wiring after unrelated UI churn is reconciled",
+    "Dirty Portfolio UI files still need clean server-mode wiring to `loadServerPortfolioState()` after unrelated UI churn is reconciled",
+    "Dirty Account UI files still need clean server-mode wiring to `loadProfileSummary()` after unrelated UI churn is reconciled",
+    "UI-level Portfolio proof after dirty screen churn is reconciled",
+    "Full UI-level proof for Portfolio history/positions remains P1 because the Portfolio screen file is dirty from older unrelated work",
+    "Android proof that the visible dirty Trade Ticket submit gesture uses this HTTP route in server mode remains P1",
+    "Android proof that the visible dirty Portfolio Orders tab cancel button uses this route remains P1",
+    "Android proof that the dirty Portfolio Orders tab button uses this route once UI churn is reconciled",
+    "Android proof that the visible Portfolio Orders tab cancel button after dirty UI churn is reconciled",
+    "Android proof of the visible Portfolio Orders tab cancel button after dirty UI churn is reconciled"
+  ],
+  "closureReferences": [
+    "Cycle KJ wires the visible Search tab",
+    "Cycle KV wires visible Home",
+    "Cycle KU wires the visible Portfolio chart",
+    "Cycle KM proves the visible Event Detail",
+    "Cycle KN wires visible Event Detail/Game Lines",
+    "Cycle KO proves the visible Trade Ticket/Event Detail quote refresh wiring",
+    "Cycle KP proves visible Portfolio UI wiring",
+    "Cycle KQ proves visible Trade Ticket submit",
+    "Cycle KR proves the visible Portfolio",
+    "Cycle KS wires the visible Event Detail/Game Lines line",
+    "Cycle KL wires the visible Account screen",
+    "Cycle KW wires visible server-mode preference state"
+  ],
+  "evidence": {
+    "featureCriteria": "docs/mobile/POLYMARKET_FEATURE_CRITERIA.md",
+    "parityTracker": "docs/mobile/POLYMARKET_PARITY_GAP_TRACKER.md",
+    "auditGate": "docs/mobile/POLYMARKET_AUDIT_GATE_REPORT.md",
+    "routeMap": "docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md",
+    "dataGaps": "docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md"
+  }
+}

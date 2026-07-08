@@ -8,6 +8,13 @@ export const marketReadInclude = Prisma.validator<Prisma.MarketInclude>()({
     where: { isActive: true },
     orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }],
   },
+  outcomeSnapshots: {
+    orderBy: { ts: "desc" },
+    take: 240,
+  },
+  referenceQuoteSnapshots: {
+    orderBy: [{ fetchedAt: "desc" }, { updatedAt: "desc" }],
+  },
   event: true,
   category: true,
   tags: { include: { tag: true } },
@@ -37,8 +44,92 @@ const buildLegacyBinaryPrices = (
   };
 };
 
+const decimalToNumber = (value: Prisma.Decimal | null | undefined) => {
+  if (value == null) return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
+};
+
+const isOutrightEventType = (value: string | null | undefined) => {
+  const normalized = `${value ?? ""}`.trim().toLowerCase();
+  return ["future", "futures", "outright", "outrights"].includes(normalized);
+};
+
+const mobileMarketContractForMarket = (market: MarketWithRelations) => {
+  const isOutright = isOutrightEventType(market.event?.eventType);
+  return {
+    marketGroupKey: isOutright ? "outrights" : market.marketGroupKey,
+    marketGroupTitle: isOutright ? "Outrights" : market.marketGroupTitle,
+    marketType: isOutright ? "outright" : market.marketType,
+  };
+};
+
+const latestReferenceQuoteByOutcome = (
+  snapshots: MarketWithRelations["referenceQuoteSnapshots"] | undefined,
+) => {
+  const latestByOutcome = new Map<string, MarketWithRelations["referenceQuoteSnapshots"][number]>();
+  for (const snapshot of snapshots ?? []) {
+    const existing = latestByOutcome.get(snapshot.outcomeId);
+    if (
+      !existing ||
+      snapshot.fetchedAt > existing.fetchedAt ||
+      (snapshot.fetchedAt.getTime() === existing.fetchedAt.getTime() && snapshot.updatedAt > existing.updatedAt)
+    ) {
+      latestByOutcome.set(snapshot.outcomeId, snapshot);
+    }
+  }
+  return latestByOutcome;
+};
+
+const displayQuoteFromReferenceSnapshot = (
+  snapshot: MarketWithRelations["referenceQuoteSnapshots"][number] | null,
+) => {
+  if (!snapshot) return null;
+  const outcomePrice = decimalToNumber(snapshot.outcomePrice);
+  const { bestBid, bestAsk } = normalizeReferenceBidAsk({
+    outcomePrice,
+    bestBid: decimalToNumber(snapshot.bestBid),
+    bestAsk: decimalToNumber(snapshot.bestAsk),
+  });
+  const price = outcomePrice ?? (bestBid != null && bestAsk != null ? (bestBid + bestAsk) / 2 : bestAsk ?? bestBid);
+  if (price == null) return null;
+  return {
+    bestBid,
+    bestAsk,
+    bestBidSize: null,
+    bestAskSize: null,
+    mid: price,
+    spread: decimalToNumber(snapshot.spread) ?? (bestBid != null && bestAsk != null ? bestAsk - bestBid : null),
+  };
+};
+
+const normalizeReferenceBidAsk = (quote: {
+  outcomePrice: number | null;
+  bestBid: number | null;
+  bestAsk: number | null;
+}) => {
+  const { outcomePrice, bestBid, bestAsk } = quote;
+  if (outcomePrice == null || bestBid == null || bestAsk == null) {
+    return { bestBid, bestAsk };
+  }
+  const midpoint = (bestBid + bestAsk) / 2;
+  const complementBid = 1 - bestAsk;
+  const complementAsk = 1 - bestBid;
+  const complementMidpoint = (complementBid + complementAsk) / 2;
+  const midpointDistance = Math.abs(outcomePrice - midpoint);
+  const complementDistance = Math.abs(outcomePrice - complementMidpoint);
+  if (complementDistance + 0.000001 < midpointDistance && midpointDistance > 0.1) {
+    return {
+      bestBid: Number(complementBid.toFixed(8)),
+      bestAsk: Number(complementAsk.toFixed(8)),
+    };
+  }
+  return { bestBid, bestAsk };
+};
+
 export const serializeMarketReadModel = async (market: MarketWithRelations) => {
   const referenceReview = parseReferenceReview(market.referenceMetadata);
+  const mobileContract = mobileMarketContractForMarket(market);
   const outcomeQuotes =
     market.mechanism === "ORDERBOOK"
       ? await getOutcomeQuotes(
@@ -48,23 +139,73 @@ export const serializeMarketReadModel = async (market: MarketWithRelations) => {
       : new Map(
           market.outcomes.map((outcome) => [
             outcome.id,
-            { bestBid: null, bestAsk: null, mid: 0.5, spread: null },
+            { bestBid: null, bestAsk: null, bestBidSize: null, bestAskSize: null, mid: 0.5, spread: null },
           ]),
         );
 
+  const referenceQuoteByOutcome = latestReferenceQuoteByOutcome(market.referenceQuoteSnapshots);
+  const displayQuoteByOutcome = new Map(
+    market.outcomes.map((outcome) => [
+      outcome.id,
+      displayQuoteFromReferenceSnapshot(referenceQuoteByOutcome.get(outcome.id) ?? null) ??
+        outcomeQuotes.get(outcome.id) ?? {
+          bestBid: null,
+          bestAsk: null,
+          bestBidSize: null,
+          bestAskSize: null,
+          mid: 0.5,
+          spread: null,
+        },
+    ]),
+  );
+
   const pricesByOutcome = Object.fromEntries(
-    market.outcomes.map((outcome) => [outcome.id, outcomeQuotes.get(outcome.id)?.mid ?? 0.5]),
+    market.outcomes.map((outcome) => [outcome.id, displayQuoteByOutcome.get(outcome.id)?.mid ?? 0.5]),
   );
   const legacyPrices = buildLegacyBinaryPrices(market.outcomes, pricesByOutcome);
   const referenceSummary = await getReferenceSummaryForMarket(market.id);
+  const orderbookDepth = market.outcomes.flatMap((outcome) => {
+    const quote = outcomeQuotes.get(outcome.id);
+    const levels: Array<{
+      outcomeId: string;
+      side: "bid" | "ask";
+      price: number;
+      shares: number;
+      total: number;
+    }> = [];
+    if (quote?.bestBid != null && quote.bestBidSize != null && quote.bestBidSize > 0) {
+      levels.push({
+        outcomeId: outcome.id,
+        side: "bid",
+        price: quote.bestBid,
+        shares: quote.bestBidSize,
+        total: quote.bestBid * quote.bestBidSize,
+      });
+    }
+    if (quote?.bestAsk != null && quote.bestAskSize != null && quote.bestAskSize > 0) {
+      levels.push({
+        outcomeId: outcome.id,
+        side: "ask",
+        price: quote.bestAsk,
+        shares: quote.bestAskSize,
+        total: quote.bestAsk * quote.bestAskSize,
+      });
+    }
+    return levels;
+  });
+  const liquidity =
+    orderbookDepth.length > 0
+      ? orderbookDepth.reduce((sum, level) => sum + level.total, 0)
+      : null;
 
   return {
     id: market.id,
     title: market.title,
     description: market.description,
     status: market.status,
-    marketGroupKey: market.marketGroupKey,
-    marketGroupTitle: market.marketGroupTitle,
+    marketGroupKey: mobileContract.marketGroupKey,
+    marketGroupId: mobileContract.marketGroupKey,
+    marketGroupTitle: mobileContract.marketGroupTitle,
     displayOrder: market.displayOrder,
     line: market.line?.toString() ?? null,
     unit: market.unit,
@@ -73,14 +214,18 @@ export const serializeMarketReadModel = async (market: MarketWithRelations) => {
     participantName: market.participantName,
     participantId: market.participantId,
     propCategory: market.propCategory,
+    liquidity,
+    orderbookDepth,
     rulesText: market.rulesText,
     sourceUpdatedAt: market.sourceUpdatedAt,
     resolveTime: market.resolveTime,
     createdAt: market.createdAt,
     outcomes: market.outcomes.map((outcome) => {
-      const quote = outcomeQuotes.get(outcome.id) ?? {
+      const quote = displayQuoteByOutcome.get(outcome.id) ?? {
         bestBid: null,
         bestAsk: null,
+        bestBidSize: null,
+        bestAskSize: null,
         mid: 0.5,
         spread: null,
       };
@@ -100,6 +245,8 @@ export const serializeMarketReadModel = async (market: MarketWithRelations) => {
         price: quote.mid,
         bestBid: quote.bestBid,
         bestAsk: quote.bestAsk,
+        bestBidSize: quote.bestBidSize,
+        bestAskSize: quote.bestAskSize,
         spread: quote.spread,
       };
     }),
@@ -139,7 +286,7 @@ export const serializeMarketReadModel = async (market: MarketWithRelations) => {
     mmEnabled: referenceReview.mmEnabled ?? null,
     referenceSummary,
     type: market.type,
-    marketType: market.marketType,
+    marketType: mobileContract.marketType,
     kind: market.kind,
     visibility: market.visibility,
     mechanism: market.mechanism,

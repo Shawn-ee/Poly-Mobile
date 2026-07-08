@@ -1,0 +1,76 @@
+{
+    "cycle":  "MZ",
+    "result":  "pass",
+    "generatedAt":  "2026-07-08T11:33:24.0779030Z",
+    "route":  "/api/events?sportKey=soccer\u0026leagueKey=world_cup\u0026includeMobileMarkets=1\u0026mobileMvpMatches=1\u0026limit=10\u0026status=live",
+    "eventCount":  2,
+    "events":  [
+                   {
+                       "slug":  "argentina-vs-egypt",
+                       "status":  "active",
+                       "liveStatus":  "LIVE",
+                       "marketSourceSummary":  {
+                                                   "totalMarketCount":  7,
+                                                   "sourceBreakdown":  {
+                                                                           "polymarket":  3,
+                                                                           "contract-fixture":  4
+                                                                       },
+                                                   "polymarketMarketCount":  3,
+                                                   "contractFixtureMarketCount":  4,
+                                                   "unknownSourceMarketCount":  0,
+                                                   "regulationWinner":  {
+                                                                            "totalCount":  3,
+                                                                            "polymarketCount":  3,
+                                                                            "contractFixtureCount":  0,
+                                                                            "status":  "provider-backed"
+                                                                        },
+                                                   "lineMarkets":  {
+                                                                       "totalCount":  4,
+                                                                       "polymarketCount":  0,
+                                                                       "contractFixtureCount":  4,
+                                                                       "status":  "contract-fixture",
+                                                                       "families":  [
+                                                                                        "spread",
+                                                                                        "team_total_goals",
+                                                                                        "total_goals"
+                                                                                    ],
+                                                                       "reason":  "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured."
+                                                                   }
+                                               }
+                   },
+                   {
+                       "slug":  "switzerland-vs-colombia",
+                       "status":  "active",
+                       "liveStatus":  "LIVE",
+                       "marketSourceSummary":  {
+                                                   "totalMarketCount":  7,
+                                                   "sourceBreakdown":  {
+                                                                           "polymarket":  3,
+                                                                           "contract-fixture":  4
+                                                                       },
+                                                   "polymarketMarketCount":  3,
+                                                   "contractFixtureMarketCount":  4,
+                                                   "unknownSourceMarketCount":  0,
+                                                   "regulationWinner":  {
+                                                                            "totalCount":  3,
+                                                                            "polymarketCount":  3,
+                                                                            "contractFixtureCount":  0,
+                                                                            "status":  "provider-backed"
+                                                                        },
+                                                   "lineMarkets":  {
+                                                                       "totalCount":  4,
+                                                                       "polymarketCount":  0,
+                                                                       "contractFixtureCount":  4,
+                                                                       "status":  "contract-fixture",
+                                                                       "families":  [
+                                                                                        "spread",
+                                                                                        "team_total_goals",
+                                                                                        "total_goals"
+                                                                                    ],
+                                                                       "reason":  "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured."
+                                                                   }
+                                               }
+                   }
+               ],
+    "pass":  true
+}

@@ -1,0 +1,20 @@
+{
+  "cycle": "KZ",
+  "scope": "search-controls-route-contract",
+  "generatedAt": "2026-07-06T18:46:44.619Z",
+  "pass": true,
+  "route": "/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&search=<query>&limit=10&cursor=<event-id>",
+  "checks": {
+    "appUsesBackendSearchService": true,
+    "appPassesServerSearchResults": true,
+    "serviceCallsEventsRouteWithQueryPagination": true,
+    "searchKeepsQueryAndLoadMoreControls": true,
+    "searchDoesNotExposeUnsupportedLocalControls": true
+  },
+  "evidence": {
+    "app": "mobile/App.tsx",
+    "screen": "mobile/src/components/SearchScreen.tsx",
+    "service": "mobile/src/services/searchEventService.ts",
+    "test": "mobile/src/__tests__/searchScreenContract.test.ts"
+  }
+}

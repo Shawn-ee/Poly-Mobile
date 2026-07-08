@@ -1,0 +1,21 @@
+{
+  "cycle": "KL",
+  "scope": "account-ui-summary-wiring",
+  "generatedAt": "2026-07-06T17:07:42.213Z",
+  "route": "/api/profile/summary",
+  "pass": true,
+  "checks": {
+    "appImportsProfileSummaryService": true,
+    "appKeepsAccountSummaryState": true,
+    "appLoadsSummaryForVisibleAccount": true,
+    "appClearsStaleSummaryOnFailure": true,
+    "appPassesRouteValuesToAccountScreen": true,
+    "serviceUsesProfileSummaryRoute": true,
+    "accountScreenDisplaysExistingProps": true
+  },
+  "evidence": {
+    "app": "mobile/App.tsx",
+    "service": "mobile/src/services/profileSummaryService.ts",
+    "accountScreen": "mobile/src/components/AccountScreen.tsx"
+  }
+}

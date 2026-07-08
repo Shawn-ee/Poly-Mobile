@@ -1,0 +1,73 @@
+{
+  "applied": true,
+  "event": {
+    "id": "4a9eb675-cfa6-4873-93f9-1a4ffb8e45eb",
+    "slug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25",
+    "title": "Curaçao vs Côte d'Ivoire",
+    "liveStatus": "pre_match"
+  },
+  "market": {
+    "id": "a552efe6-3147-4573-be95-8fe15c068c08",
+    "title": "Curaçao vs Côte d'Ivoire: Total goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "line": "2.5",
+    "outcomeCount": 2
+  },
+  "users": {
+    "bidderId": "5877f9e3-7dae-49a9-86d9-50362d26271b",
+    "askerId": "a6a8f696-6b4d-4d67-b241-fd129e92eef3"
+  },
+  "deletedOrders": 0,
+  "createdOrders": 8,
+  "preview": [
+    {
+      "outcomeId": "68424d0f-6503-4695-b360-5cde95352faf",
+      "side": "BUY",
+      "price": "0.59",
+      "amount": "1060"
+    },
+    {
+      "outcomeId": "68424d0f-6503-4695-b360-5cde95352faf",
+      "side": "BUY",
+      "price": "0.57",
+      "amount": "820"
+    },
+    {
+      "outcomeId": "68424d0f-6503-4695-b360-5cde95352faf",
+      "side": "SELL",
+      "price": "0.65",
+      "amount": "940"
+    },
+    {
+      "outcomeId": "68424d0f-6503-4695-b360-5cde95352faf",
+      "side": "SELL",
+      "price": "0.67",
+      "amount": "740"
+    },
+    {
+      "outcomeId": "a8bc4725-e1fd-4d46-92ce-20c5b296d54f",
+      "side": "BUY",
+      "price": "0.15",
+      "amount": "1220"
+    },
+    {
+      "outcomeId": "a8bc4725-e1fd-4d46-92ce-20c5b296d54f",
+      "side": "BUY",
+      "price": "0.13",
+      "amount": "980"
+    },
+    {
+      "outcomeId": "a8bc4725-e1fd-4d46-92ce-20c5b296d54f",
+      "side": "SELL",
+      "price": "0.21",
+      "amount": "1100"
+    },
+    {
+      "outcomeId": "a8bc4725-e1fd-4d46-92ce-20c5b296d54f",
+      "side": "SELL",
+      "price": "0.23",
+      "amount": "900"
+    }
+  ]
+}

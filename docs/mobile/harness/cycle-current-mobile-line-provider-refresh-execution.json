@@ -1,0 +1,278 @@
+{
+  "generatedAt": "2026-07-04T08:42:47.991Z",
+  "eventSlug": "world-cup-2026-colombia-vs-ghana-2026-07-03",
+  "providerEventSlug": "fifwc-col-gha-2026-07-03",
+  "opticOddsFixtureId": "2026070464F44C1E",
+  "mode": "line-provider-refresh-execution",
+  "lineMarketCount": 2,
+  "reviewedMarketCount": 2,
+  "apply": {
+    "applied": true,
+    "blocked": false,
+    "before": {
+      "compactMarketCount": 5,
+      "lineMarketCount": 2,
+      "lineProviderReadyMarketCount": 2,
+      "lineProviderMissingMarketCount": 0,
+      "readyMarketIds": [
+        "2dfbdb0f-a21e-42da-adce-055e9528638e",
+        "24c0f0fe-073b-4661-8fa3-6e90bf6f23a5"
+      ],
+      "nextRequiredAction": "optional_optic_odds_enrichment_ready"
+    },
+    "after": {
+      "compactMarketCount": 5,
+      "lineMarketCount": 2,
+      "lineProviderReadyMarketCount": 2,
+      "lineProviderMissingMarketCount": 0,
+      "readyMarketIds": [
+        "2dfbdb0f-a21e-42da-adce-055e9528638e",
+        "24c0f0fe-073b-4661-8fa3-6e90bf6f23a5"
+      ],
+      "nextRequiredAction": "optional_optic_odds_enrichment_ready"
+    },
+    "nextRequiredAction": "optional_optic_odds_enrichment_ready"
+  },
+  "staleSeed": {
+    "fetchedAt": "2026-07-04T08:37:46.887Z",
+    "rowCount": 4,
+    "marketCount": 2
+  },
+  "before": {
+    "contract": {
+      "route": "mobile-live-detail",
+      "generatedAt": "2026-07-04T08:42:46.903Z",
+      "marketCount": 5,
+      "maxMarkets": 14,
+      "primaryMarketId": "d89acdee-41f6-4766-87e3-53928e1901b4",
+      "orderbookDepthSource": "orderbook-route",
+      "batchedOrderbookDepthSource": "orderbook-route",
+      "batchedOrderbookDepthMarketCount": 3,
+      "batchedOrderbookDepthRequestedMarketCount": 5,
+      "batchedOrderbookDepthRequestedMarketIds": [
+        "d89acdee-41f6-4766-87e3-53928e1901b4",
+        "2dfbdb0f-a21e-42da-adce-055e9528638e",
+        "03e4dd0f-796c-4630-b40d-555e5760a33c",
+        "30c78d5d-7a4a-4ad5-b1d8-ff75999e5453",
+        "24c0f0fe-073b-4661-8fa3-6e90bf6f23a5"
+      ],
+      "batchedOrderbookDepthMaxLevels": 24,
+      "batchedOrderbookDepthCacheTtlSeconds": 3,
+      "batchedProviderOrderbookDepthSource": "reference-orderbook-depth-snapshot",
+      "batchedProviderOrderbookDepthMarketCount": 3,
+      "batchedProviderOrderbookDepthReadyCount": 0,
+      "batchedProviderOrderbookDepthStaleCount": 3,
+      "batchedProviderOrderbookDepthRefreshDueCount": 5,
+      "batchedProviderQuoteSnapshotSource": "reference-quote-snapshot",
+      "batchedProviderQuoteSnapshotMarketCount": 5,
+      "batchedProviderQuoteSnapshotReadyCount": 0,
+      "batchedProviderQuoteSnapshotStaleCount": 5,
+      "batchedProviderQuoteSnapshotRefreshDueCount": 5,
+      "batchedProviderQuoteSnapshotNextRefreshAt": "2026-07-04T08:37:54.637Z",
+      "chartHistorySource": "empty",
+      "liveDataStatus": "ready"
+    },
+    "targetLineMarkets": [
+      {
+        "marketId": "2dfbdb0f-a21e-42da-adce-055e9528638e",
+        "title": "Colombia vs Ghana total goals 2.5",
+        "marketType": "total_goals",
+        "line": "2.5",
+        "providerQuoteSnapshot": {
+          "source": "reference-quote-snapshot",
+          "status": "stale",
+          "snapshotCount": 2,
+          "latestFetchedAt": "2026-07-04T08:37:46.887Z",
+          "latestUpdatedAt": "2026-07-04T08:42:46.889Z",
+          "stalenessSeconds": 300,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T08:38:46.887Z",
+          "shouldRefresh": true,
+          "refreshKey": "optic_odds:2026-07-04T08:37:46.887Z",
+          "isStale": true,
+          "acceptingOrders": true,
+          "outcomeIds": [
+            "21a4c1dd-6913-4502-ade1-0bbd96cd4f16",
+            "4d189be8-83cd-42aa-8593-14c7df1e5e2e"
+          ],
+          "sources": [
+            "optic_odds"
+          ],
+          "reason": "Provider quote snapshot is older than 90 seconds."
+        }
+      },
+      {
+        "marketId": "24c0f0fe-073b-4661-8fa3-6e90bf6f23a5",
+        "title": "Colombia vs Ghana total goals 2.5",
+        "marketType": "total_goals",
+        "line": "2.5",
+        "providerQuoteSnapshot": {
+          "source": "reference-quote-snapshot",
+          "status": "stale",
+          "snapshotCount": 2,
+          "latestFetchedAt": "2026-07-04T08:37:46.887Z",
+          "latestUpdatedAt": "2026-07-04T08:42:46.889Z",
+          "stalenessSeconds": 300,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T08:38:46.887Z",
+          "shouldRefresh": true,
+          "refreshKey": "optic_odds:2026-07-04T08:37:46.887Z",
+          "isStale": true,
+          "acceptingOrders": true,
+          "outcomeIds": [
+            "2c43a64a-83ca-4ee5-99ab-1a1adfc4e1ce",
+            "617c6198-09d2-4e78-afb7-c974b0b452d6"
+          ],
+          "sources": [
+            "optic_odds"
+          ],
+          "reason": "Provider quote snapshot is older than 90 seconds."
+        }
+      }
+    ]
+  },
+  "expired": {
+    "eventSlug": "world-cup-2026-colombia-vs-ghana-2026-07-03",
+    "compactMarketCount": 5,
+    "expiredSnapshotCount": 10,
+    "staleFetchedAt": "2026-07-04T08:37:46.926Z"
+  },
+  "refresh": {
+    "providerSnapshotsUpdated": 6,
+    "lineProvider": {
+      "eventSlug": "world-cup-2026-colombia-vs-ghana-2026-07-03",
+      "generatedAt": "2026-07-04T08:42:47.979Z",
+      "source": "optic_odds",
+      "attempted": true,
+      "status": "ready",
+      "fixtureId": "2026070464F44C1E",
+      "sportsbookCount": 1,
+      "requestedMarkets": [
+        "moneyline",
+        "point_spread",
+        "total_goals",
+        "team_total_goals",
+        "1st_half_moneyline",
+        "2nd_half_moneyline",
+        "correct_score"
+      ],
+      "compactMarketCount": 5,
+      "matchedMarketCount": 2,
+      "snapshotRowsBuilt": 4,
+      "snapshotsUpdated": 4,
+      "skippedReason": null
+    },
+    "contractProofFallback": null,
+    "postRefresh": {
+      "marketCount": 5,
+      "snapshotCount": 10,
+      "latestFetchedAt": "2026-07-04T08:42:47.970Z",
+      "oldestFetchedAt": "2026-07-04T08:42:46.997Z",
+      "sourceCount": 2
+    }
+  },
+  "after": {
+    "contract": {
+      "route": "mobile-live-detail",
+      "generatedAt": "2026-07-04T08:42:47.985Z",
+      "marketCount": 5,
+      "maxMarkets": 14,
+      "primaryMarketId": "d89acdee-41f6-4766-87e3-53928e1901b4",
+      "orderbookDepthSource": "orderbook-route",
+      "batchedOrderbookDepthSource": "orderbook-route",
+      "batchedOrderbookDepthMarketCount": 3,
+      "batchedOrderbookDepthRequestedMarketCount": 5,
+      "batchedOrderbookDepthRequestedMarketIds": [
+        "d89acdee-41f6-4766-87e3-53928e1901b4",
+        "2dfbdb0f-a21e-42da-adce-055e9528638e",
+        "03e4dd0f-796c-4630-b40d-555e5760a33c",
+        "30c78d5d-7a4a-4ad5-b1d8-ff75999e5453",
+        "24c0f0fe-073b-4661-8fa3-6e90bf6f23a5"
+      ],
+      "batchedOrderbookDepthMaxLevels": 24,
+      "batchedOrderbookDepthCacheTtlSeconds": 3,
+      "batchedProviderOrderbookDepthSource": "reference-orderbook-depth-snapshot",
+      "batchedProviderOrderbookDepthMarketCount": 3,
+      "batchedProviderOrderbookDepthReadyCount": 3,
+      "batchedProviderOrderbookDepthStaleCount": 0,
+      "batchedProviderOrderbookDepthRefreshDueCount": 2,
+      "batchedProviderQuoteSnapshotSource": "reference-quote-snapshot",
+      "batchedProviderQuoteSnapshotMarketCount": 5,
+      "batchedProviderQuoteSnapshotReadyCount": 5,
+      "batchedProviderQuoteSnapshotStaleCount": 0,
+      "batchedProviderQuoteSnapshotRefreshDueCount": 0,
+      "batchedProviderQuoteSnapshotNextRefreshAt": "2026-07-04T08:43:46.997Z",
+      "chartHistorySource": "empty",
+      "liveDataStatus": "ready"
+    },
+    "targetLineMarkets": [
+      {
+        "marketId": "2dfbdb0f-a21e-42da-adce-055e9528638e",
+        "title": "Colombia vs Ghana total goals 2.5",
+        "marketType": "total_goals",
+        "line": "2.5",
+        "providerQuoteSnapshot": {
+          "source": "reference-quote-snapshot",
+          "status": "ready",
+          "snapshotCount": 2,
+          "latestFetchedAt": "2026-07-04T08:42:47.970Z",
+          "latestUpdatedAt": "2026-07-04T08:42:47.972Z",
+          "stalenessSeconds": 0,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T08:43:47.970Z",
+          "shouldRefresh": false,
+          "refreshKey": "optic_odds:2026-07-04T08:42:47.970Z",
+          "isStale": false,
+          "acceptingOrders": true,
+          "outcomeIds": [
+            "21a4c1dd-6913-4502-ade1-0bbd96cd4f16",
+            "4d189be8-83cd-42aa-8593-14c7df1e5e2e"
+          ],
+          "sources": [
+            "optic_odds"
+          ],
+          "reason": "Provider quote snapshot is fresh."
+        }
+      },
+      {
+        "marketId": "24c0f0fe-073b-4661-8fa3-6e90bf6f23a5",
+        "title": "Colombia vs Ghana total goals 2.5",
+        "marketType": "total_goals",
+        "line": "2.5",
+        "providerQuoteSnapshot": {
+          "source": "reference-quote-snapshot",
+          "status": "ready",
+          "snapshotCount": 2,
+          "latestFetchedAt": "2026-07-04T08:42:47.970Z",
+          "latestUpdatedAt": "2026-07-04T08:42:47.972Z",
+          "stalenessSeconds": 0,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T08:43:47.970Z",
+          "shouldRefresh": false,
+          "refreshKey": "optic_odds:2026-07-04T08:42:47.970Z",
+          "isStale": false,
+          "acceptingOrders": true,
+          "outcomeIds": [
+            "2c43a64a-83ca-4ee5-99ab-1a1adfc4e1ce",
+            "617c6198-09d2-4e78-afb7-c974b0b452d6"
+          ],
+          "sources": [
+            "optic_odds"
+          ],
+          "reason": "Provider quote snapshot is fresh."
+        }
+      }
+    ]
+  },
+  "fetchCalls": [
+    {
+      "url": "https://api.opticodds.com/api/v3/fixtures/odds?fixture_id=2026070464F44C1E&odds_format=PROBABILITY&sportsbook=BetMGM&market=moneyline&market=point_spread&market=total_goals&market=team_total_goals&market=1st_half_moneyline&market=2nd_half_moneyline&market=correct_score",
+      "apiKey": "cycle-dj-proof-key"
+    }
+  ],
+  "pass": true
+}

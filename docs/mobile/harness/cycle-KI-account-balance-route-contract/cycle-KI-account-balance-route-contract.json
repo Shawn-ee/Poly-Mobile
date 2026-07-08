@@ -1,0 +1,21 @@
+{
+  "pass": true,
+  "createdAt": "2026-07-06T16:31:23.052Z",
+  "route": "/api/account/balance",
+  "auth": "canonical account:read API key",
+  "userId": "6218161e-32e5-494d-b988-4e81df451a4e",
+  "routeBody": {
+    "availableUSDC": "40.800000",
+    "lockedUSDC": "2.500000",
+    "totalUSDC": "43.300000",
+    "updatedAt": "2026-07-06T16:31:22.965Z"
+  },
+  "mobileViewModel": {
+    "source": "server-route",
+    "availableUSDC": 40.8,
+    "lockedUSDC": 2.5,
+    "totalUSDC": 43.3,
+    "updatedAt": "2026-07-06T16:31:22.965Z"
+  },
+  "fallbackSuppressedBySuccessfulRoute": true
+}

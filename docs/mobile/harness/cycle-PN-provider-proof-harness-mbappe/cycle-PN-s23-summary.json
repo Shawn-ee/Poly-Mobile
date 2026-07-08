@@ -1,0 +1,9 @@
+{
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "port":  8305,
+    "searchPass":  true,
+    "detailPass":  true,
+    "searchScreenshot":  "docs/mobile/screenshots/cycle-PN-provider-proof-harness-mbappe/cycle-PN-s23-search-mbappe-golden-boot.png",
+    "detailScreenshot":  "docs/mobile/screenshots/cycle-PN-provider-proof-harness-mbappe/cycle-PN-s23-mbappe-golden-boot-detail-from-search.png"
+}

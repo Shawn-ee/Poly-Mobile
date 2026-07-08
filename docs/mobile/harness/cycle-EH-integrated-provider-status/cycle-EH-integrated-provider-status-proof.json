@@ -1,0 +1,28 @@
+{
+    "cycle":  "EH-integrated",
+    "scope":  "Visible provider lifecycle/status badges on live detail, chart, Book/orderbook, and ticket handoff",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailProviderStatus -Port 8317 -Device 172.16.200.30:41299 -OutputDir docs/mobile/screenshots/cycle-EH-integrated-provider-status -HierarchyOutputDir docs/mobile/harness/cycle-EH-integrated-provider-status",
+    "eventIdentity":  "Australia vs. Egypt",
+    "result":  "pass",
+    "assertions":  {
+                       "liveRefreshDue":  "Live detail exposes provider-lifecycle-refresh-due with visible Live refresh due text when backend liveDataStatus is absent.",
+                       "chartReady":  "Chart context exposes provider-lifecycle-ready with visible Chart provider ready text from deterministic embedded history.",
+                       "bookRefreshing":  "Opening Book produces a visible provider-lifecycle-refreshing Book depth refreshing state before the resolved depth state.",
+                       "bookNotReady":  "Book availability and Book ticket handoff expose provider-lifecycle-not-ready rather than silently becoming provider-ready.",
+                       "fallbackGuard":  "Ticket handoff avoids mock-ready/default-ready and Mexico moneyline fallback markers."
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-EH-integrated-provider-status/cycle-EH-B-provider-status-live-top.png",
+                      "docs/mobile/harness/cycle-EH-integrated-provider-status/cycle-EH-B-provider-status-live-top.xml",
+                      "docs/mobile/screenshots/cycle-EH-integrated-provider-status/cycle-EH-B-provider-status-book-refreshing.png",
+                      "docs/mobile/harness/cycle-EH-integrated-provider-status/cycle-EH-B-provider-status-book-refreshing.xml",
+                      "docs/mobile/screenshots/cycle-EH-integrated-provider-status/cycle-EH-B-provider-status-book-resolved.png",
+                      "docs/mobile/harness/cycle-EH-integrated-provider-status/cycle-EH-B-provider-status-book-resolved.xml",
+                      "docs/mobile/screenshots/cycle-EH-integrated-provider-status/cycle-EH-B-provider-status-ticket-handoff.png",
+                      "docs/mobile/harness/cycle-EH-integrated-provider-status/cycle-EH-B-provider-status-ticket-handoff.xml"
+                  ],
+    "remainingGaps":  [
+                          "Live mock status is deterministic backend-contract-shaped fixture UI because the tablet launch used deterministic backend-contract-shaped fixture status UI despite local backend route proof passing separately.",
+                          "Tablet-to-backend route-backed status rendering remains a follow-up integration proof; backend route status fields are proven separately in docs/mobile/harness/cycle-EH-A-provider-status-surface.json."
+                      ]
+}

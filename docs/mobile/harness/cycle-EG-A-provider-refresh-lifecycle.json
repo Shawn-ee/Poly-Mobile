@@ -1,0 +1,388 @@
+{
+  "pass": true,
+  "generatedAt": "2026-07-04T10:52:20.215Z",
+  "proof": "EG-A provider refresh lifecycle distinguishes stale, refresh-due, and ready state for live-detail depth/chart data; deterministic CLOB-shaped fixture responses refresh provider depth and chart history without an Optic Odds key.",
+  "eventSlug": "mobile-eg-a-provider-refresh-9a35c370",
+  "marketId": "c5cc1b0f-e5ef-4d1e-bc1e-ba04b524a447",
+  "providerSource": "polymarket-first-with-deterministic-clob-fixture",
+  "fixtureStatus": "explicit_contract_proof_fallback_for_gamma_quote_only",
+  "before": {
+    "contract": {
+      "route": "mobile-live-detail",
+      "generatedAt": "2026-07-04T10:52:19.895Z",
+      "marketCount": 1,
+      "maxMarkets": 14,
+      "primaryMarketId": "c5cc1b0f-e5ef-4d1e-bc1e-ba04b524a447",
+      "orderbookDepthSource": "orderbook-route",
+      "batchedOrderbookDepthSource": "orderbook-route",
+      "batchedOrderbookDepthMarketCount": 1,
+      "batchedOrderbookDepthRequestedMarketCount": 1,
+      "batchedOrderbookDepthRequestedMarketIds": [
+        "c5cc1b0f-e5ef-4d1e-bc1e-ba04b524a447"
+      ],
+      "batchedOrderbookDepthMaxLevels": 24,
+      "batchedOrderbookDepthCacheTtlSeconds": 3,
+      "batchedProviderOrderbookDepthSource": "reference-orderbook-depth-snapshot",
+      "batchedProviderOrderbookDepthMarketCount": 1,
+      "batchedProviderOrderbookDepthReadyCount": 0,
+      "batchedProviderOrderbookDepthStaleCount": 1,
+      "batchedProviderOrderbookDepthRefreshDueCount": 1,
+      "batchedProviderQuoteSnapshotSource": "reference-quote-snapshot",
+      "batchedProviderQuoteSnapshotMarketCount": 1,
+      "batchedProviderQuoteSnapshotReadyCount": 0,
+      "batchedProviderQuoteSnapshotStaleCount": 1,
+      "batchedProviderQuoteSnapshotRefreshDueCount": 1,
+      "batchedProviderQuoteSnapshotNextRefreshAt": "2026-07-04T10:48:19.864Z",
+      "chartHistorySource": "market-outcome-snapshot",
+      "batchedChartHistorySource": "market-outcome-snapshot",
+      "batchedChartHistoryMarketCount": 1,
+      "batchedChartHistoryPointCount": 2,
+      "batchedChartHistoryReadyCount": 0,
+      "batchedChartHistoryStaleCount": 1,
+      "batchedChartHistoryRefreshDueCount": 1,
+      "batchedChartHistoryNextRefreshAt": "2026-07-04T10:48:19.864Z",
+      "batchedChartHistoryRequestedMarketCount": 1,
+      "batchedChartHistoryRequestedMarketIds": [
+        "c5cc1b0f-e5ef-4d1e-bc1e-ba04b524a447"
+      ],
+      "liveDataStatus": "ready"
+    },
+    "orderbookDepthStatus": "stale",
+    "orderbookDepthNextRefreshAt": "2026-07-04T10:48:19.864Z",
+    "chartHistoryStatus": {
+      "source": "polymarket-clob-prices-history",
+      "status": "stale",
+      "pointCount": 2,
+      "outcomeCount": 2,
+      "lastUpdated": "2026-07-04T10:47:19.864Z",
+      "stalenessSeconds": 300,
+      "staleAfterSeconds": 90,
+      "refreshTtlSeconds": 60,
+      "nextRefreshAt": "2026-07-04T10:48:19.864Z",
+      "shouldRefresh": true,
+      "isStale": true,
+      "emptyState": null,
+      "range": "1D",
+      "ranges": [
+        "1D",
+        "1W",
+        "1M",
+        "MAX"
+      ]
+    }
+  },
+  "refresh": {
+    "providerLifecycle": {
+      "source": "mobile-live-provider-refresh",
+      "generatedAt": "2026-07-04T10:52:20.206Z",
+      "quote": {
+        "source": "reference-quote-snapshot",
+        "status": "ready",
+        "latestAt": "2026-07-04T10:52:20.195Z",
+        "stalenessSeconds": 0,
+        "readyAfterSeconds": 60,
+        "staleAfterSeconds": 90,
+        "nextRefreshAt": "2026-07-04T10:53:20.195Z",
+        "shouldRefresh": false,
+        "reason": "Provider snapshot is fresh."
+      },
+      "orderbookDepth": {
+        "source": "reference-orderbook-depth-snapshot",
+        "status": "ready",
+        "latestAt": "2026-07-04T10:52:20.166Z",
+        "stalenessSeconds": 0,
+        "readyAfterSeconds": 60,
+        "staleAfterSeconds": 90,
+        "nextRefreshAt": "2026-07-04T10:53:20.166Z",
+        "shouldRefresh": false,
+        "reason": "Provider snapshot is fresh."
+      },
+      "chartHistory": {
+        "source": "market-outcome-snapshot",
+        "status": "ready",
+        "latestAt": "2026-07-04T10:52:20.000Z",
+        "stalenessSeconds": 0,
+        "readyAfterSeconds": 60,
+        "staleAfterSeconds": 90,
+        "nextRefreshAt": "2026-07-04T10:53:20.000Z",
+        "shouldRefresh": false,
+        "reason": "Provider snapshot is fresh."
+      },
+      "ready": true,
+      "refreshDue": false,
+      "stale": false,
+      "nextRefreshAt": "2026-07-04T10:53:20.000Z"
+    },
+    "provider": {
+      "source": "polymarket-gamma",
+      "attempted": true,
+      "refreshedCount": 0,
+      "skippedCount": 1,
+      "snapshotsUpdated": 0,
+      "refreshed": [],
+      "skipped": [
+        {
+          "marketId": "c5cc1b0f-e5ef-4d1e-bc1e-ba04b524a447",
+          "title": "Provider Home vs Provider Away - Match Winner",
+          "slug": "eg-a-provider-refresh-9a35c370",
+          "reason": "Gamma API returned unexpected payload."
+        }
+      ]
+    },
+    "providerDepth": {
+      "generatedAt": "2026-07-04T10:52:20.178Z",
+      "source": "polymarket-clob",
+      "maxLevels": 24,
+      "requestedMarketCount": 1,
+      "refreshedCount": 1,
+      "depthRowsUpdated": 8,
+      "skippedCount": 0,
+      "refreshed": [
+        {
+          "marketId": "c5cc1b0f-e5ef-4d1e-bc1e-ba04b524a447",
+          "title": "Provider Home vs Provider Away - Match Winner",
+          "slug": "eg-a-provider-refresh-9a35c370",
+          "outcomeCount": 2,
+          "depthRowsUpdated": 8,
+          "outcomes": [
+            {
+              "outcomeId": "8ea5adbc-5de2-4b1d-97f0-bde7368dd476",
+              "tokenId": "token-eg-a-home-9a35c370",
+              "bidCount": 2,
+              "askCount": 2,
+              "fetchedAt": "2026-07-04T10:52:20.165Z",
+              "providerTimestamp": "2026-07-04T10:52:20.000Z"
+            },
+            {
+              "outcomeId": "b91b726f-872f-4ea3-9127-057aeff72e65",
+              "tokenId": "token-eg-a-away-9a35c370",
+              "bidCount": 2,
+              "askCount": 2,
+              "fetchedAt": "2026-07-04T10:52:20.166Z",
+              "providerTimestamp": "2026-07-04T10:52:20.000Z"
+            }
+          ]
+        }
+      ],
+      "skipped": []
+    },
+    "providerHistory": {
+      "generatedAt": "2026-07-04T10:52:20.194Z",
+      "source": "polymarket-clob-prices-history",
+      "interval": "1d",
+      "fidelityMinutes": 5,
+      "requestedMarketCount": 1,
+      "refreshedCount": 1,
+      "snapshotsCreated": 6,
+      "skippedCount": 0,
+      "refreshed": [
+        {
+          "marketId": "c5cc1b0f-e5ef-4d1e-bc1e-ba04b524a447",
+          "title": "Provider Home vs Provider Away - Match Winner",
+          "slug": "eg-a-provider-refresh-9a35c370",
+          "outcomeCount": 2,
+          "snapshotsCreated": 6,
+          "outcomes": [
+            {
+              "outcomeId": "8ea5adbc-5de2-4b1d-97f0-bde7368dd476",
+              "tokenId": "token-eg-a-home-9a35c370",
+              "historyPointCount": 3,
+              "createdSnapshots": 3,
+              "firstTimestamp": "2026-07-04T10:50:20.000Z",
+              "lastTimestamp": "2026-07-04T10:52:20.000Z"
+            },
+            {
+              "outcomeId": "b91b726f-872f-4ea3-9127-057aeff72e65",
+              "tokenId": "token-eg-a-away-9a35c370",
+              "historyPointCount": 3,
+              "createdSnapshots": 3,
+              "firstTimestamp": "2026-07-04T10:50:20.000Z",
+              "lastTimestamp": "2026-07-04T10:52:20.000Z"
+            }
+          ]
+        }
+      ],
+      "skipped": []
+    },
+    "lineProvider": {
+      "eventSlug": "mobile-eg-a-provider-refresh-9a35c370",
+      "generatedAt": "2026-07-04T10:52:20.195Z",
+      "source": "optic_odds",
+      "attempted": false,
+      "status": "skipped",
+      "compactMarketCount": 1,
+      "matchedMarketCount": 0,
+      "snapshotRowsBuilt": 0,
+      "snapshotsUpdated": 0,
+      "skippedReason": "missing_provider_fixture"
+    },
+    "contractProofFallback": {
+      "applied": true,
+      "reason": "local_event_has_no_real_polymarket_market_mapping",
+      "snapshotsUpdated": 2
+    },
+    "postRefreshDepth": {
+      "marketCount": 1,
+      "snapshotCount": 12,
+      "latestFetchedAt": "2026-07-04T10:52:20.166Z",
+      "oldestFetchedAt": "2026-07-04T10:47:19.864Z",
+      "sourceCount": 2,
+      "lifecycle": {
+        "source": "reference-orderbook-depth-snapshot",
+        "status": "ready",
+        "latestAt": "2026-07-04T10:52:20.166Z",
+        "stalenessSeconds": 0,
+        "readyAfterSeconds": 60,
+        "staleAfterSeconds": 90,
+        "nextRefreshAt": "2026-07-04T10:53:20.166Z",
+        "shouldRefresh": false,
+        "reason": "Provider snapshot is fresh."
+      }
+    },
+    "postRefreshHistory": {
+      "marketCount": 1,
+      "snapshotCount": 8,
+      "latestSnapshotAt": "2026-07-04T10:52:20.000Z",
+      "oldestSnapshotAt": "2026-07-04T10:47:19.864Z",
+      "outcomeCount": 2,
+      "source": "market-outcome-snapshot",
+      "lifecycle": {
+        "source": "market-outcome-snapshot",
+        "status": "ready",
+        "latestAt": "2026-07-04T10:52:20.000Z",
+        "stalenessSeconds": 0,
+        "readyAfterSeconds": 60,
+        "staleAfterSeconds": 90,
+        "nextRefreshAt": "2026-07-04T10:53:20.000Z",
+        "shouldRefresh": false,
+        "reason": "Provider snapshot is fresh."
+      }
+    }
+  },
+  "after": {
+    "contract": {
+      "route": "mobile-live-detail",
+      "generatedAt": "2026-07-04T10:52:20.210Z",
+      "marketCount": 1,
+      "maxMarkets": 14,
+      "primaryMarketId": "c5cc1b0f-e5ef-4d1e-bc1e-ba04b524a447",
+      "orderbookDepthSource": "orderbook-route",
+      "batchedOrderbookDepthSource": "orderbook-route",
+      "batchedOrderbookDepthMarketCount": 1,
+      "batchedOrderbookDepthRequestedMarketCount": 1,
+      "batchedOrderbookDepthRequestedMarketIds": [
+        "c5cc1b0f-e5ef-4d1e-bc1e-ba04b524a447"
+      ],
+      "batchedOrderbookDepthMaxLevels": 24,
+      "batchedOrderbookDepthCacheTtlSeconds": 3,
+      "batchedProviderOrderbookDepthSource": "reference-orderbook-depth-snapshot",
+      "batchedProviderOrderbookDepthMarketCount": 1,
+      "batchedProviderOrderbookDepthReadyCount": 1,
+      "batchedProviderOrderbookDepthStaleCount": 0,
+      "batchedProviderOrderbookDepthRefreshDueCount": 0,
+      "batchedProviderQuoteSnapshotSource": "reference-quote-snapshot",
+      "batchedProviderQuoteSnapshotMarketCount": 1,
+      "batchedProviderQuoteSnapshotReadyCount": 1,
+      "batchedProviderQuoteSnapshotStaleCount": 0,
+      "batchedProviderQuoteSnapshotRefreshDueCount": 0,
+      "batchedProviderQuoteSnapshotNextRefreshAt": "2026-07-04T10:53:20.195Z",
+      "chartHistorySource": "market-outcome-snapshot",
+      "batchedChartHistorySource": "market-outcome-snapshot",
+      "batchedChartHistoryMarketCount": 1,
+      "batchedChartHistoryPointCount": 8,
+      "batchedChartHistoryReadyCount": 1,
+      "batchedChartHistoryStaleCount": 0,
+      "batchedChartHistoryRefreshDueCount": 0,
+      "batchedChartHistoryNextRefreshAt": "2026-07-04T10:53:20.000Z",
+      "batchedChartHistoryRequestedMarketCount": 1,
+      "batchedChartHistoryRequestedMarketIds": [
+        "c5cc1b0f-e5ef-4d1e-bc1e-ba04b524a447"
+      ],
+      "liveDataStatus": "ready"
+    },
+    "orderbookIdentity": {
+      "route": "/api/orderbook/c5cc1b0f-e5ef-4d1e-bc1e-ba04b524a447/book",
+      "marketId": "c5cc1b0f-e5ef-4d1e-bc1e-ba04b524a447",
+      "marketGroupId": "main",
+      "marketGroupKey": "main",
+      "selectorKey": "main:full-game:default",
+      "marketFamily": "moneyline",
+      "period": "full-game",
+      "line": null,
+      "lineValue": null,
+      "outcomeIds": [
+        "8ea5adbc-5de2-4b1d-97f0-bde7368dd476",
+        "b91b726f-872f-4ea3-9127-057aeff72e65"
+      ],
+      "tokenIds": [
+        "token-eg-a-home-9a35c370",
+        "token-eg-a-away-9a35c370"
+      ],
+      "providerSource": "polymarket",
+      "providerStatus": "ready",
+      "depthSource": "provider-orderbook-depth",
+      "depthStatus": "ready",
+      "depthProviderSource": "reference-orderbook-depth-snapshot",
+      "depthProviderStatus": "ready",
+      "depthProviderSources": [
+        "polymarket-clob"
+      ],
+      "refreshedAt": "2026-07-04T10:52:20.166Z",
+      "staleAfterSeconds": 90,
+      "refreshTtlSeconds": 60,
+      "nextRefreshAt": "2026-07-04T10:53:20.166Z",
+      "shouldRefresh": false,
+      "isStale": false,
+      "ready": true,
+      "reason": "Depth comes from provider orderbook ladder snapshots."
+    },
+    "providerOrderbookDepth": {
+      "source": "reference-orderbook-depth-snapshot",
+      "status": "ready",
+      "levelCount": 4,
+      "snapshotCount": 4,
+      "latestFetchedAt": "2026-07-04T10:52:20.166Z",
+      "latestUpdatedAt": "2026-07-04T10:52:20.167Z",
+      "stalenessSeconds": 0,
+      "staleAfterSeconds": 90,
+      "refreshTtlSeconds": 60,
+      "nextRefreshAt": "2026-07-04T10:53:20.166Z",
+      "shouldRefresh": false,
+      "isStale": false,
+      "sources": [
+        "polymarket-clob"
+      ],
+      "reason": "Provider orderbook depth snapshot is fresh."
+    },
+    "chartHistoryStatus": {
+      "source": "polymarket-clob-prices-history",
+      "status": "ready",
+      "pointCount": 8,
+      "outcomeCount": 2,
+      "lastUpdated": "2026-07-04T10:52:20.000Z",
+      "stalenessSeconds": 0,
+      "staleAfterSeconds": 90,
+      "refreshTtlSeconds": 60,
+      "nextRefreshAt": "2026-07-04T10:53:20.000Z",
+      "shouldRefresh": false,
+      "isStale": false,
+      "emptyState": null,
+      "range": "1D",
+      "ranges": [
+        "1D",
+        "1W",
+        "1M",
+        "MAX"
+      ]
+    }
+  },
+  "assertions": {
+    "missingOpticKeyDidNotBlock": true,
+    "staleBeforeRefresh": true,
+    "refreshReportsLifecycleReady": true,
+    "depthRefreshedFromPolymarketClob": true,
+    "chartRefreshedFromPolymarketClob": true,
+    "liveDetailReadyAfterRefresh": true,
+    "deterministicFallbackExplicit": true
+  }
+}

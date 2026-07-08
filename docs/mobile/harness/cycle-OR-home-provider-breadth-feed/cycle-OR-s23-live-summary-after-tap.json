@@ -1,0 +1,29 @@
+{
+  "containsContinent": false,
+  "containsWorldCupWinner": false,
+  "containsArgentinaEgypt": false,
+  "visibleTexts": [
+    "H",
+    "Holiwyn",
+    "WORLD CUP MARKETS",
+    "ïŽª",
+    "ä¸­æ–‡",
+    "WORLD CUP",
+    "Live World Cup",
+    "0",
+    "ïŽ°",
+    "ïŒ»",
+    "No live markets right now.",
+    "ïŠƒ",
+    "Home",
+    "ï“¿",
+    "Live",
+    "ï’ª",
+    "Portfolio",
+    "$10K",
+    "ï•Ÿ",
+    "Search"
+  ],
+  "screenshot": "docs/mobile/screenshots/cycle-OR-home-provider-breadth-feed/cycle-OR-s23-live-no-outright-futures-after-tap.png",
+  "xml": "docs/mobile/harness/cycle-OR-home-provider-breadth-feed/cycle-OR-s23-live-no-outright-futures-after-tap.xml"
+}

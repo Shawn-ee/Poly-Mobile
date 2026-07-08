@@ -1,0 +1,13 @@
+{
+    "ok":  true,
+    "marketId":  "70612733-f5d4-4fcb-8561-c1e7f93be924",
+    "importStatus":  "approved",
+    "referenceOnly":  false,
+    "tradable":  true,
+    "mmEnabled":  true,
+    "isListed":  true,
+    "reviewedAt":  "2026-07-08T23:04:33.993Z",
+    "reviewedBy":  "[redacted-dev-admin]",
+    "reviewNotes":  "Cycle PK internal local MVP tradable proof for Golden Boot Erling Haaland.",
+    "botInitialization":  null
+}

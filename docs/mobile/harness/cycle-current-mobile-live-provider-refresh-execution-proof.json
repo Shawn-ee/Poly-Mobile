@@ -1,0 +1,48 @@
+{
+  "cycle": "CM",
+  "feature": "provider refresh execution contract",
+  "eventSlug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25",
+  "server": "http://127.0.0.1:3002",
+  "route": "/api/mobile/events/:slug/provider-refresh",
+  "auth": "x-internal-admin-key",
+  "seedArtifact": "docs/mobile/harness/cycle-current-mobile-live-provider-quote-snapshot-seed.json",
+  "staleProof": {
+    "capturedAt": "2026-07-04T03:36:16.5873421Z",
+    "expiredSnapshotCount": 31,
+    "refreshProviderAttempted": false,
+    "refreshProviderSnapshotsUpdated": 0,
+    "unsupportedMarketCount": 14,
+    "fallbackApplied": false,
+    "routeReadyCount": 0,
+    "routeStaleCount": 14,
+    "routeRefreshDueCount": 14,
+    "secondHalfStatus": "stale",
+    "secondHalfShouldRefresh": true,
+    "secondHalfRefreshKey": "polymarket:2026-07-04T03:33:16.472Z"
+  },
+  "readyProof": {
+    "capturedAt": "2026-07-04T03:36:29.6074547Z",
+    "refreshProviderAttempted": false,
+    "refreshProviderSnapshotsUpdated": 0,
+    "unsupportedMarketCount": 14,
+    "fallbackApplied": true,
+    "fallbackSnapshotsUpdated": 31,
+    "routeReadyCount": 14,
+    "routeStaleCount": 0,
+    "routeRefreshDueCount": 0,
+    "routeNextRefreshAt": "2026-07-04T03:37:29.494Z",
+    "secondHalfStatus": "ready",
+    "secondHalfShouldRefresh": false,
+    "secondHalfRefreshKey": "polymarket:2026-07-04T03:36:29.494Z",
+    "bookStatus": "ready",
+    "bookShouldRefresh": false,
+    "bookRefreshKey": "polymarket:2026-07-04T03:36:29.494Z"
+  },
+  "audit": {
+    "p0RefreshRouteExists": "pass",
+    "p0StaleToRefreshDueProof": "pass",
+    "p0ReadyAfterRefreshProof": "pass-with-local-contract-proof-fallback",
+    "realProviderMapping": "blocked-for-this-local-event",
+    "remainingGap": "The local World Cup compact event is sourced from fifa_schedule and has no real Polymarket market mapping, so real Gamma refresh is not attempted for these compact markets. The route now reports that truthfully and exposes the missing mapping as active PM-GAP-067 debt."
+  }
+}

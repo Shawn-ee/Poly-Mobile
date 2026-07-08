@@ -1,0 +1,17 @@
+{
+  "cycle": "LG",
+  "scope": "home-card-stats-contract",
+  "generatedAt": "2026-07-06T21:33:56.116Z",
+  "pass": true,
+  "decision": "Home match cards no longer attach frontend-invented volume/liquidity stats. The active Home flow keeps event-feed identity, backend-driven market profile selection, filters, pagination, and ticket navigation.",
+  "checks": {
+    "removesHomeCardLocalStats": true,
+    "removesHomeStatsCopyContract": true,
+    "keepsBackendDrivenMatchCardOutcomes": true
+  },
+  "evidence": {
+    "homeScreen": "mobile/src/components/HomeScreen.tsx",
+    "marketLists": "mobile/src/components/MarketLists.tsx",
+    "test": "mobile/src/__tests__/homeCardStatsContract.test.ts"
+  }
+}

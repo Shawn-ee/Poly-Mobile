@@ -1,0 +1,410 @@
+{
+  "summary": {
+    "cycle": 1,
+    "generatedAt": "2026-07-08T22:09:32.043Z",
+    "marketsRefreshed": 12,
+    "marketsSkipped": 0,
+    "snapshotsUpdated": 24,
+    "staleCount": 0,
+    "wideCount": 0,
+    "missingCount": 12,
+    "errorCount": 0
+  },
+  "report": {
+    "generatedAt": "2026-07-08T22:09:32.043Z",
+    "dryRun": true,
+    "snapshotWritesApplied": true,
+    "liveOrdersEnabled": false,
+    "pollMs": 5000,
+    "refreshedCount": 12,
+    "snapshotsUpdated": 24,
+    "skippedCount": 0,
+    "refreshed": [
+      {
+        "marketId": "247f7021-f204-489c-99d2-336d9e6613b4",
+        "title": "Will Bradley Barcola be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-bradley-barcola-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "4ee2d7c8-0fee-4ee7-a5b2-6c427b8710c1",
+            "tokenId": "9841751774105817390657694451225729034043375045563393996113250597897372845783",
+            "bestBid": null,
+            "bestAsk": 0.001,
+            "spread": 0.001,
+            "lastTradePrice": 0.001,
+            "outcomePrice": 0.0005,
+            "qualityStatus": "missing_book",
+            "mmEligible": false,
+            "reason": "reference_missing_book"
+          },
+          {
+            "outcomeId": "23c19bae-8cb8-4198-89a5-c87dae567126",
+            "tokenId": "16970119773460003949123304564551790823979319791216363902272534776465644061935",
+            "bestBid": null,
+            "bestAsk": 0.001,
+            "spread": 0.001,
+            "lastTradePrice": 0.001,
+            "outcomePrice": 0.9995,
+            "qualityStatus": "missing_book",
+            "mmEligible": false,
+            "reason": "reference_missing_book"
+          }
+        ]
+      },
+      {
+        "marketId": "31065c58-a8ce-493f-a75a-9b581770604a",
+        "title": "Will Dani Olmo be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-dani-olmo-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "1d7eca6e-3f27-4fd8-8188-ad7c3c1fe240",
+            "tokenId": "64313440370755447989065691789842678797381598108790424101248303536951806456879",
+            "bestBid": null,
+            "bestAsk": 0.001,
+            "spread": 0.001,
+            "lastTradePrice": 0.001,
+            "outcomePrice": 0.0005,
+            "qualityStatus": "missing_book",
+            "mmEligible": false,
+            "reason": "reference_missing_book"
+          },
+          {
+            "outcomeId": "ec515a7f-ad4c-4a84-875a-15c9bfe9d200",
+            "tokenId": "74846791301994649985645261113686740183020959772749795504629525332893899838745",
+            "bestBid": null,
+            "bestAsk": 0.001,
+            "spread": 0.001,
+            "lastTradePrice": 0.001,
+            "outcomePrice": 0.9995,
+            "qualityStatus": "missing_book",
+            "mmEligible": false,
+            "reason": "reference_missing_book"
+          }
+        ]
+      },
+      {
+        "marketId": "0c055207-00f4-4e83-bcb5-6f7676ca56e2",
+        "title": "Will Desire Doue be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-desire-doue-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "95b7a2d8-03d7-4890-bb51-3a95deb0e769",
+            "tokenId": "88914339078207384188247520566428537902646291340851312396061187317957764028944",
+            "bestBid": null,
+            "bestAsk": 0.001,
+            "spread": 0.001,
+            "lastTradePrice": 0.001,
+            "outcomePrice": 0.0005,
+            "qualityStatus": "missing_book",
+            "mmEligible": false,
+            "reason": "reference_missing_book"
+          },
+          {
+            "outcomeId": "9700074d-a61f-41fc-847c-6887473977ad",
+            "tokenId": "34978626781824602325075572863488085933926920092134844475029015564436283039071",
+            "bestBid": null,
+            "bestAsk": 0.001,
+            "spread": 0.001,
+            "lastTradePrice": 0.001,
+            "outcomePrice": 0.9995,
+            "qualityStatus": "missing_book",
+            "mmEligible": false,
+            "reason": "reference_missing_book"
+          }
+        ]
+      },
+      {
+        "marketId": "70612733-f5d4-4fcb-8561-c1e7f93be924",
+        "title": "Will Erling Haaland be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-erling-haaland-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "ec49ce29-343f-422f-bc29-fb2c479e62e4",
+            "tokenId": "31406625278784876442535138605689400126810670910748624621168689552518588989487",
+            "bestBid": 0.111,
+            "bestAsk": 0.112,
+            "spread": 0.001,
+            "lastTradePrice": 0.111,
+            "outcomePrice": 0.1115,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "60f08752-e4c1-4628-8318-253be05fff61",
+            "tokenId": "37459691885280571389083350894291361093570876624819527228743420655749611231692",
+            "bestBid": 0.111,
+            "bestAsk": 0.112,
+            "spread": 0.001,
+            "lastTradePrice": 0.111,
+            "outcomePrice": 0.8885,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      },
+      {
+        "marketId": "81957c43-f808-4d4d-a277-7220331ad952",
+        "title": "Will Ferran Torres be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-ferran-torres-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "f909e61d-70bd-4331-a3f8-11507456b5e9",
+            "tokenId": "103268771314208411708601873073144783742489571526954554639230247435300003474289",
+            "bestBid": null,
+            "bestAsk": 0.001,
+            "spread": 0.001,
+            "lastTradePrice": 0.001,
+            "outcomePrice": 0.0005,
+            "qualityStatus": "missing_book",
+            "mmEligible": false,
+            "reason": "reference_missing_book"
+          },
+          {
+            "outcomeId": "404f120e-ca9c-4378-907e-198d4ce0a11b",
+            "tokenId": "4367815842045146807091041348078792177886393505009471345986207787127779724346",
+            "bestBid": null,
+            "bestAsk": 0.001,
+            "spread": 0.001,
+            "lastTradePrice": 0.001,
+            "outcomePrice": 0.9995,
+            "qualityStatus": "missing_book",
+            "mmEligible": false,
+            "reason": "reference_missing_book"
+          }
+        ]
+      },
+      {
+        "marketId": "07cda5aa-9ff4-4549-afa8-f2cdeb3f0f99",
+        "title": "Will Jude Bellingham be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-jude-bellingham-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "4a5bf2ac-d904-4684-9f08-dbd4f77451bb",
+            "tokenId": "21681578411954970343236802028806118171644822229289954494018054365027453603503",
+            "bestBid": 0.002,
+            "bestAsk": 0.003,
+            "spread": 0.001,
+            "lastTradePrice": 0.002,
+            "outcomePrice": 0.0025,
+            "qualityStatus": "invalid_price",
+            "mmEligible": false,
+            "reason": "reference_invalid_price"
+          },
+          {
+            "outcomeId": "e8aece9f-d219-4ad9-b3d4-0a98406a975b",
+            "tokenId": "3133218930138833652074929460361825158657768376381171777896493255035034123450",
+            "bestBid": 0.002,
+            "bestAsk": 0.003,
+            "spread": 0.001,
+            "lastTradePrice": 0.002,
+            "outcomePrice": 0.9975,
+            "qualityStatus": "invalid_price",
+            "mmEligible": false,
+            "reason": "reference_invalid_price"
+          }
+        ]
+      },
+      {
+        "marketId": "99caf629-cb24-4fda-ae7f-3249e98778d6",
+        "title": "Will Kylian Mbappe be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-kylian-mbappe-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "3885f64d-0308-43ae-b922-79e7f391f11e",
+            "tokenId": "109346928118758112535699085058290058645349086894874742550948182824395861480007",
+            "bestBid": 0.41,
+            "bestAsk": 0.42,
+            "spread": 0.01,
+            "lastTradePrice": 0.42,
+            "outcomePrice": 0.415,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "370e03d4-5e18-4318-b7a9-ebc541b6b774",
+            "tokenId": "49886028487112281574279422474095181525913123582177075375309734310587117931078",
+            "bestBid": 0.41,
+            "bestAsk": 0.42,
+            "spread": 0.01,
+            "lastTradePrice": 0.42,
+            "outcomePrice": 0.585,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      },
+      {
+        "marketId": "11f71904-2042-4a10-ae8a-ba76d12e3916",
+        "title": "Will Lamine Yamal be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-lamine-yamal-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "3af8739c-fcdd-4ba6-8d7d-c5cdc77f9283",
+            "tokenId": "12443507708490579267303275816299242973522539389954129092471837019475810226676",
+            "bestBid": 0.001,
+            "bestAsk": 0.002,
+            "spread": 0.001,
+            "lastTradePrice": 0.001,
+            "outcomePrice": 0.0015,
+            "qualityStatus": "invalid_price",
+            "mmEligible": false,
+            "reason": "reference_invalid_price"
+          },
+          {
+            "outcomeId": "4de86164-1473-49f7-8fff-1587a0d15359",
+            "tokenId": "10760815429699691381695504816880542259042826089637710920079824881593757928179",
+            "bestBid": 0.001,
+            "bestAsk": 0.002,
+            "spread": 0.001,
+            "lastTradePrice": 0.001,
+            "outcomePrice": 0.9985,
+            "qualityStatus": "invalid_price",
+            "mmEligible": false,
+            "reason": "reference_invalid_price"
+          }
+        ]
+      },
+      {
+        "marketId": "6e0eac54-df5e-4cb0-bab8-cb575ea5b4f0",
+        "title": "Will Lionel Messi be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-lionel-messi-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "bbd30c9c-3f22-46a5-ada8-7ac94763ab6d",
+            "tokenId": "19214394437683566921750936876376421489271269944393354497977881791256347396217",
+            "bestBid": 0.382,
+            "bestAsk": 0.383,
+            "spread": 0.001,
+            "lastTradePrice": 0.382,
+            "outcomePrice": 0.3825,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "02e672e1-fdab-4cd0-bbad-0837c28cddd0",
+            "tokenId": "36586667785814641857008731622413716797407337292495614620493145114086484487337",
+            "bestBid": 0.382,
+            "bestAsk": 0.383,
+            "spread": 0.001,
+            "lastTradePrice": 0.382,
+            "outcomePrice": 0.6175,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      },
+      {
+        "marketId": "59366f69-e7e8-4652-a1c5-c1be9b8e29de",
+        "title": "Will Marcus Thuram be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-marcus-thuram-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "b3c834b1-29d2-459f-8eb6-2d9e83ba6a20",
+            "tokenId": "8642962174482833931497662661316554692597558058842448478217249634138314521360",
+            "bestBid": null,
+            "bestAsk": 0.001,
+            "spread": 0.001,
+            "lastTradePrice": 0.001,
+            "outcomePrice": 0.0005,
+            "qualityStatus": "missing_book",
+            "mmEligible": false,
+            "reason": "reference_missing_book"
+          },
+          {
+            "outcomeId": "1264adfd-17bb-4a53-8969-e63dc6ded595",
+            "tokenId": "97461152733366473876088746836354231619787401140884390420188432980998064847143",
+            "bestBid": null,
+            "bestAsk": 0.001,
+            "spread": 0.001,
+            "lastTradePrice": 0.001,
+            "outcomePrice": 0.9995,
+            "qualityStatus": "missing_book",
+            "mmEligible": false,
+            "reason": "reference_missing_book"
+          }
+        ]
+      },
+      {
+        "marketId": "f1cbb00d-93ad-4746-a385-2f56ff6e6321",
+        "title": "Will Noah Okafor be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-noah-okafor-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "49257d6c-3a7b-4acb-bdf3-2d8ed728d003",
+            "tokenId": "69572138699380443950163663291451987915827534991818531919696394986588308535675",
+            "bestBid": null,
+            "bestAsk": 0.001,
+            "spread": 0.001,
+            "lastTradePrice": 0.001,
+            "outcomePrice": 0.0005,
+            "qualityStatus": "missing_book",
+            "mmEligible": false,
+            "reason": "reference_missing_book"
+          },
+          {
+            "outcomeId": "49b3d657-ef02-484d-ab54-7b9ce97f3d70",
+            "tokenId": "96831116210320290727983192458899236666236166835820233582512460603117322715849",
+            "bestBid": null,
+            "bestAsk": 0.001,
+            "spread": 0.001,
+            "lastTradePrice": 0.001,
+            "outcomePrice": 0.9995,
+            "qualityStatus": "missing_book",
+            "mmEligible": false,
+            "reason": "reference_missing_book"
+          }
+        ]
+      },
+      {
+        "marketId": "115ee4f1-81f3-4e2c-9c63-c9bac343e1c0",
+        "title": "Will Ousmane Dembele be the top goalscorer at the 2026 FIFA World Cup?",
+        "slug": "will-ousmane-dembele-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "dcd74546-d907-422f-bdc5-32fe5a991f7b",
+            "tokenId": "27269186948049749581184760460000364446817878078791417927906189617801131722751",
+            "bestBid": 0.018,
+            "bestAsk": 0.019,
+            "spread": 0.001,
+            "lastTradePrice": 0.013,
+            "outcomePrice": 0.0185,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "e9668bd3-8ae7-40b0-8f80-31cbac67cedb",
+            "tokenId": "65802371316426511416270075072865872041106457144339735447316002021541813241147",
+            "bestBid": 0.018,
+            "bestAsk": 0.019,
+            "spread": 0.001,
+            "lastTradePrice": 0.013,
+            "outcomePrice": 0.9815,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      }
+    ],
+    "skipped": []
+  }
+}

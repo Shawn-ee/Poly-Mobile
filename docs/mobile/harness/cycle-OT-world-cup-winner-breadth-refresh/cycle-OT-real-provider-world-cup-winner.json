@@ -1,0 +1,1595 @@
+{
+  "generatedAt": "2026-07-08T19:36:56.797Z",
+  "cycle": "OT",
+  "eventSlug": "provider-breadth-world-cup-winner",
+  "providerEventSlug": "world-cup-winner",
+  "providerEventTitle": "World Cup Winner",
+  "source": {
+    "discovery": "Polymarket Gamma /events?slug",
+    "refresh": "Polymarket Gamma market slugs plus CLOB public market data",
+    "opticOdds": "unconfigured_optional_non_blocking"
+  },
+  "prepared": {
+    "eventId": "16dba6f4-c5ec-4d0c-9d69-6b8c06fd6bc5",
+    "eventSlug": "provider-breadth-world-cup-winner",
+    "marketCount": 8,
+    "markets": [
+      {
+        "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+        "slug": "provider-breadth-world-cup-winner-will-switzerland-win-the-2026-fifa-world-cup",
+        "title": "Will Switzerland win the 2026 FIFA World Cup?",
+        "externalSlug": "will-switzerland-win-the-2026-fifa-world-cup",
+        "externalMarketId": "558974",
+        "conditionId": "0x3a26ca6425e2d98f14935670bc22cdb0744defc6f6d83c65f8c413a921c5c70c",
+        "yesOutcomeId": "d16de1fc-1318-4f3b-ab07-22d597caf8ed",
+        "noOutcomeId": "eb1f5ca0-8c01-407f-be22-5c00e6b98b99",
+        "yesTokenId": "62131913648515148266463816694306031394539656598501514114816028349608560215534",
+        "noTokenId": "45315272750116791836504013666029583517532908319286234834610455739871173419179",
+        "bestBid": 0.021,
+        "bestAsk": 0.022,
+        "liquidity": 12330095.10353
+      },
+      {
+        "marketId": "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+        "slug": "provider-breadth-world-cup-winner-will-spain-win-the-2026-fifa-world-cup-963",
+        "title": "Will Spain win the 2026 FIFA World Cup?",
+        "externalSlug": "will-spain-win-the-2026-fifa-world-cup-963",
+        "externalMarketId": "558934",
+        "conditionId": "0x7976b8dbacf9077eb1453a62bcefd6ab2df199acd28aad276ff0d920d6992892",
+        "yesOutcomeId": "5726cf62-ff54-47ff-8554-a8a563df94e4",
+        "noOutcomeId": "3227cee1-d2d1-4180-a18e-3b1e728f9820",
+        "yesTokenId": "4394372887385518214471608448209527405727552777602031099972143344338178308080",
+        "noTokenId": "112680630004798425069810935278212000865453267506345451433803052322987302357330",
+        "bestBid": 0.187,
+        "bestAsk": 0.188,
+        "liquidity": 7956232.66193
+      },
+      {
+        "marketId": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+        "slug": "provider-breadth-world-cup-winner-will-argentina-win-the-2026-fifa-world-cup-245",
+        "title": "Will Argentina win the 2026 FIFA World Cup?",
+        "externalSlug": "will-argentina-win-the-2026-fifa-world-cup-245",
+        "externalMarketId": "558938",
+        "conditionId": "0x0c4cd2055d6ea89354ffddc55d6dbcef9355748112ea952fc925f3db6a5c457f",
+        "yesOutcomeId": "fa181546-35ad-47d4-8874-f5b73cd9f571",
+        "noOutcomeId": "0301d826-33a5-41d9-bab5-8fcbe291831a",
+        "yesTokenId": "18812649149814341758733697580460697418474693998558159483117100240528657629879",
+        "noTokenId": "115428153746996892211798999366308897078723117634059783423375188043903703749062",
+        "bestBid": 0.194,
+        "bestAsk": 0.195,
+        "liquidity": 7321967.48458
+      },
+      {
+        "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+        "slug": "provider-breadth-world-cup-winner-will-england-win-the-2026-fifa-world-cup-937",
+        "title": "Will England win the 2026 FIFA World Cup?",
+        "externalSlug": "will-england-win-the-2026-fifa-world-cup-937",
+        "externalMarketId": "558935",
+        "conditionId": "0x375409bc5eeeff961e82b479caeccc20f33d15738e5bce1186d628aa3d9dfb1f",
+        "yesOutcomeId": "cdcc34fa-73a4-4fb7-bf71-cf6df5f19374",
+        "noOutcomeId": "1b5a9a21-06db-4574-8adb-261da5d4df12",
+        "yesTokenId": "115556263888245616435851357148058235707004733438163639091106356867234218207169",
+        "noTokenId": "77121637225348873006259930776623502125079210522997384841464684944292365296940",
+        "bestBid": 0.158,
+        "bestAsk": 0.159,
+        "liquidity": 7108355.84097
+      },
+      {
+        "marketId": "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+        "slug": "provider-breadth-world-cup-winner-will-france-win-the-2026-fifa-world-cup-924",
+        "title": "Will France win the 2026 FIFA World Cup?",
+        "externalSlug": "will-france-win-the-2026-fifa-world-cup-924",
+        "externalMarketId": "558936",
+        "conditionId": "0x9b6fef249040fd17e9c107955b37ac2c3e923509b6b0ff01cc463a331ddeb894",
+        "yesOutcomeId": "6c96ee3d-290a-4c10-8fa9-f1debc4591d4",
+        "noOutcomeId": "f62a736c-b9bd-4c38-9266-401005697dd4",
+        "yesTokenId": "108233603819467706476318984012158651931658302669301887462181073562758483842092",
+        "noTokenId": "32270411694523539495262303868629477861017829722282576458031815333486368239544",
+        "bestBid": 0.325,
+        "bestAsk": 0.326,
+        "liquidity": 6887166.69151
+      },
+      {
+        "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+        "slug": "provider-breadth-world-cup-winner-will-belgium-win-the-2026-fifa-world-cup-358",
+        "title": "Will Belgium win the 2026 FIFA World Cup?",
+        "externalSlug": "will-belgium-win-the-2026-fifa-world-cup-358",
+        "externalMarketId": "558946",
+        "conditionId": "0x32cfa52198e85e070d1b17d1b53c5c3a6aaae7736cdc33fa6aa04d353f0c2811",
+        "yesOutcomeId": "5e90f5bc-f8f6-4dfe-9a50-35c95e687387",
+        "noOutcomeId": "90725b3c-a504-47f0-891d-cfa7c0757cc0",
+        "yesTokenId": "30815807067456631524510535002617106205417832891402132396713720656146245200000",
+        "noTokenId": "71145888994888153292442623019750517622535407476309461406574461229898137896934",
+        "bestBid": 0.024,
+        "bestAsk": 0.025,
+        "liquidity": 6565860.23744
+      },
+      {
+        "marketId": "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+        "slug": "provider-breadth-world-cup-winner-will-norway-win-the-2026-fifa-world-cup-893",
+        "title": "Will Norway win the 2026 FIFA World Cup?",
+        "externalSlug": "will-norway-win-the-2026-fifa-world-cup-893",
+        "externalMarketId": "558951",
+        "conditionId": "0x7b52405ad0e0d31bfe970940b67d77f24ecedeab8a2361c11148c02a006e325c",
+        "yesOutcomeId": "b266d59f-e9a3-493d-ad88-0ee47cd85f00",
+        "noOutcomeId": "99c07c37-123e-47d4-87a3-1dd92152a19f",
+        "yesTokenId": "60447443643099453130956385288904175887233107411078568881602330835010340506057",
+        "noTokenId": "111538579557239934343870815626480092245052857494675784434731223739153238373070",
+        "bestBid": 0.059,
+        "bestAsk": 0.06,
+        "liquidity": 5667822.48364
+      },
+      {
+        "marketId": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+        "slug": "provider-breadth-world-cup-winner-will-morocco-win-the-2026-fifa-world-cup-464",
+        "title": "Will Morocco win the 2026 FIFA World Cup?",
+        "externalSlug": "will-morocco-win-the-2026-fifa-world-cup-464",
+        "externalMarketId": "558963",
+        "conditionId": "0x37a6de1b21803e5f3fb1965116218215d79963af4f7e51659696366267a63a03",
+        "yesOutcomeId": "beb850a6-01f9-4ec0-a0df-da003a310838",
+        "noOutcomeId": "b64ef40b-846b-4cb5-b048-1febcd318c7e",
+        "yesTokenId": "69910730841487615802736046038473620030754616421912831175284551372639933569112",
+        "noTokenId": "64291832879722161879651094688874074984529456778901604558632306686248535158725",
+        "bestBid": 0.029,
+        "bestAsk": 0.03,
+        "liquidity": 2313981.31706
+      }
+    ]
+  },
+  "marketLimit": 12,
+  "refresh": {
+    "ok": true,
+    "providerLifecycle": {
+      "source": "mobile-live-provider-refresh",
+      "status": "ready",
+      "generatedAt": "2026-07-08T19:36:56.797Z",
+      "refreshStartedAt": "2026-07-08T19:36:49.037Z",
+      "refreshCompletedAt": "2026-07-08T19:36:56.797Z",
+      "refreshStarted": true,
+      "refreshing": false,
+      "refreshStatus": "completed",
+      "quote": {
+        "source": "reference-quote-snapshot",
+        "status": "ready",
+        "latestAt": "2026-07-08T19:36:49.318Z",
+        "lastFetchedAt": "2026-07-08T19:36:49.318Z",
+        "stalenessSeconds": 7,
+        "readyAfterSeconds": 60,
+        "staleAfterSeconds": 90,
+        "nextRefreshAt": "2026-07-08T19:37:49.318Z",
+        "shouldRefresh": false,
+        "ready": true,
+        "refreshDue": false,
+        "stale": false,
+        "unavailable": false,
+        "empty": false,
+        "notReady": false,
+        "fallback": false,
+        "reason": "Provider snapshot is fresh."
+      },
+      "orderbookDepth": {
+        "source": "reference-orderbook-depth-snapshot",
+        "status": "ready",
+        "latestAt": "2026-07-08T19:36:52.316Z",
+        "lastFetchedAt": "2026-07-08T19:36:52.316Z",
+        "stalenessSeconds": 4,
+        "readyAfterSeconds": 60,
+        "staleAfterSeconds": 90,
+        "nextRefreshAt": "2026-07-08T19:37:52.316Z",
+        "shouldRefresh": false,
+        "ready": true,
+        "refreshDue": false,
+        "stale": false,
+        "unavailable": false,
+        "empty": false,
+        "notReady": false,
+        "fallback": false,
+        "reason": "Provider snapshot is fresh."
+      },
+      "chartHistory": {
+        "source": "market-outcome-snapshot",
+        "status": "ready",
+        "latestAt": "2026-07-08T19:36:07.000Z",
+        "lastFetchedAt": "2026-07-08T19:36:07.000Z",
+        "stalenessSeconds": 50,
+        "readyAfterSeconds": 60,
+        "staleAfterSeconds": 90,
+        "nextRefreshAt": "2026-07-08T19:37:07.000Z",
+        "shouldRefresh": false,
+        "ready": true,
+        "refreshDue": false,
+        "stale": false,
+        "unavailable": false,
+        "empty": false,
+        "notReady": false,
+        "fallback": false,
+        "reason": "Provider snapshot is fresh."
+      },
+      "ready": true,
+      "refreshDue": false,
+      "stale": false,
+      "unavailable": false,
+      "empty": false,
+      "notReady": false,
+      "fallback": false,
+      "fallbackApplied": false,
+      "fallbackReason": null,
+      "reason": "Provider lifecycle surfaces are ready after refresh.",
+      "nextRefreshAt": "2026-07-08T19:37:07.000Z",
+      "lastFetchedAt": "2026-07-08T19:36:52.316Z",
+      "lineProvider": {
+        "source": "optic_odds",
+        "status": "skipped",
+        "attempted": false,
+        "optional": true,
+        "blocking": false,
+        "skippedReason": "missing_provider_fixture",
+        "reason": "missing_provider_fixture"
+      }
+    },
+    "provider": {
+      "source": "polymarket-gamma",
+      "attempted": true,
+      "refreshedCount": 8,
+      "skippedCount": 0,
+      "snapshotsUpdated": 16,
+      "refreshed": [
+        {
+          "marketId": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+          "title": "Will Argentina win the 2026 FIFA World Cup?",
+          "slug": "will-argentina-win-the-2026-fifa-world-cup-245",
+          "snapshotsUpdated": 2,
+          "outcomes": [
+            {
+              "outcomeId": "fa181546-35ad-47d4-8874-f5b73cd9f571",
+              "tokenId": "18812649149814341758733697580460697418474693998558159483117100240528657629879",
+              "bestBid": 0.194,
+              "bestAsk": 0.195,
+              "spread": 0.001,
+              "lastTradePrice": 0.195,
+              "outcomePrice": 0.1945,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            },
+            {
+              "outcomeId": "0301d826-33a5-41d9-bab5-8fcbe291831a",
+              "tokenId": "115428153746996892211798999366308897078723117634059783423375188043903703749062",
+              "bestBid": 0.194,
+              "bestAsk": 0.195,
+              "spread": 0.001,
+              "lastTradePrice": 0.195,
+              "outcomePrice": 0.8055,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            }
+          ]
+        },
+        {
+          "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+          "title": "Will Belgium win the 2026 FIFA World Cup?",
+          "slug": "will-belgium-win-the-2026-fifa-world-cup-358",
+          "snapshotsUpdated": 2,
+          "outcomes": [
+            {
+              "outcomeId": "5e90f5bc-f8f6-4dfe-9a50-35c95e687387",
+              "tokenId": "30815807067456631524510535002617106205417832891402132396713720656146245200000",
+              "bestBid": 0.024,
+              "bestAsk": 0.025,
+              "spread": 0.001,
+              "lastTradePrice": 0.024,
+              "outcomePrice": 0.0245,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            },
+            {
+              "outcomeId": "90725b3c-a504-47f0-891d-cfa7c0757cc0",
+              "tokenId": "71145888994888153292442623019750517622535407476309461406574461229898137896934",
+              "bestBid": 0.024,
+              "bestAsk": 0.025,
+              "spread": 0.001,
+              "lastTradePrice": 0.024,
+              "outcomePrice": 0.9755,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            }
+          ]
+        },
+        {
+          "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+          "title": "Will England win the 2026 FIFA World Cup?",
+          "slug": "will-england-win-the-2026-fifa-world-cup-937",
+          "snapshotsUpdated": 2,
+          "outcomes": [
+            {
+              "outcomeId": "cdcc34fa-73a4-4fb7-bf71-cf6df5f19374",
+              "tokenId": "115556263888245616435851357148058235707004733438163639091106356867234218207169",
+              "bestBid": 0.158,
+              "bestAsk": 0.159,
+              "spread": 0.001,
+              "lastTradePrice": 0.159,
+              "outcomePrice": 0.1585,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            },
+            {
+              "outcomeId": "1b5a9a21-06db-4574-8adb-261da5d4df12",
+              "tokenId": "77121637225348873006259930776623502125079210522997384841464684944292365296940",
+              "bestBid": 0.158,
+              "bestAsk": 0.159,
+              "spread": 0.001,
+              "lastTradePrice": 0.159,
+              "outcomePrice": 0.8415,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            }
+          ]
+        },
+        {
+          "marketId": "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+          "title": "Will France win the 2026 FIFA World Cup?",
+          "slug": "will-france-win-the-2026-fifa-world-cup-924",
+          "snapshotsUpdated": 2,
+          "outcomes": [
+            {
+              "outcomeId": "6c96ee3d-290a-4c10-8fa9-f1debc4591d4",
+              "tokenId": "108233603819467706476318984012158651931658302669301887462181073562758483842092",
+              "bestBid": 0.325,
+              "bestAsk": 0.326,
+              "spread": 0.001,
+              "lastTradePrice": 0.326,
+              "outcomePrice": 0.3255,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            },
+            {
+              "outcomeId": "f62a736c-b9bd-4c38-9266-401005697dd4",
+              "tokenId": "32270411694523539495262303868629477861017829722282576458031815333486368239544",
+              "bestBid": 0.325,
+              "bestAsk": 0.326,
+              "spread": 0.001,
+              "lastTradePrice": 0.326,
+              "outcomePrice": 0.6745,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            }
+          ]
+        },
+        {
+          "marketId": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+          "title": "Will Morocco win the 2026 FIFA World Cup?",
+          "slug": "will-morocco-win-the-2026-fifa-world-cup-464",
+          "snapshotsUpdated": 2,
+          "outcomes": [
+            {
+              "outcomeId": "beb850a6-01f9-4ec0-a0df-da003a310838",
+              "tokenId": "69910730841487615802736046038473620030754616421912831175284551372639933569112",
+              "bestBid": 0.029,
+              "bestAsk": 0.03,
+              "spread": 0.001,
+              "lastTradePrice": 0.03,
+              "outcomePrice": 0.0295,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            },
+            {
+              "outcomeId": "b64ef40b-846b-4cb5-b048-1febcd318c7e",
+              "tokenId": "64291832879722161879651094688874074984529456778901604558632306686248535158725",
+              "bestBid": 0.029,
+              "bestAsk": 0.03,
+              "spread": 0.001,
+              "lastTradePrice": 0.03,
+              "outcomePrice": 0.9705,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            }
+          ]
+        },
+        {
+          "marketId": "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+          "title": "Will Norway win the 2026 FIFA World Cup?",
+          "slug": "will-norway-win-the-2026-fifa-world-cup-893",
+          "snapshotsUpdated": 2,
+          "outcomes": [
+            {
+              "outcomeId": "b266d59f-e9a3-493d-ad88-0ee47cd85f00",
+              "tokenId": "60447443643099453130956385288904175887233107411078568881602330835010340506057",
+              "bestBid": 0.059,
+              "bestAsk": 0.06,
+              "spread": 0.001,
+              "lastTradePrice": 0.059,
+              "outcomePrice": 0.0595,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            },
+            {
+              "outcomeId": "99c07c37-123e-47d4-87a3-1dd92152a19f",
+              "tokenId": "111538579557239934343870815626480092245052857494675784434731223739153238373070",
+              "bestBid": 0.059,
+              "bestAsk": 0.06,
+              "spread": 0.001,
+              "lastTradePrice": 0.059,
+              "outcomePrice": 0.9405,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            }
+          ]
+        },
+        {
+          "marketId": "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+          "title": "Will Spain win the 2026 FIFA World Cup?",
+          "slug": "will-spain-win-the-2026-fifa-world-cup-963",
+          "snapshotsUpdated": 2,
+          "outcomes": [
+            {
+              "outcomeId": "5726cf62-ff54-47ff-8554-a8a563df94e4",
+              "tokenId": "4394372887385518214471608448209527405727552777602031099972143344338178308080",
+              "bestBid": 0.187,
+              "bestAsk": 0.188,
+              "spread": 0.001,
+              "lastTradePrice": 0.187,
+              "outcomePrice": 0.1875,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            },
+            {
+              "outcomeId": "3227cee1-d2d1-4180-a18e-3b1e728f9820",
+              "tokenId": "112680630004798425069810935278212000865453267506345451433803052322987302357330",
+              "bestBid": 0.187,
+              "bestAsk": 0.188,
+              "spread": 0.001,
+              "lastTradePrice": 0.187,
+              "outcomePrice": 0.8125,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            }
+          ]
+        },
+        {
+          "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+          "title": "Will Switzerland win the 2026 FIFA World Cup?",
+          "slug": "will-switzerland-win-the-2026-fifa-world-cup",
+          "snapshotsUpdated": 2,
+          "outcomes": [
+            {
+              "outcomeId": "d16de1fc-1318-4f3b-ab07-22d597caf8ed",
+              "tokenId": "62131913648515148266463816694306031394539656598501514114816028349608560215534",
+              "bestBid": 0.021,
+              "bestAsk": 0.022,
+              "spread": 0.001,
+              "lastTradePrice": 0.022,
+              "outcomePrice": 0.0215,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            },
+            {
+              "outcomeId": "eb1f5ca0-8c01-407f-be22-5c00e6b98b99",
+              "tokenId": "45315272750116791836504013666029583517532908319286234834610455739871173419179",
+              "bestBid": 0.021,
+              "bestAsk": 0.022,
+              "spread": 0.001,
+              "lastTradePrice": 0.022,
+              "outcomePrice": 0.9785,
+              "qualityStatus": "high_quality",
+              "mmEligible": true,
+              "reason": null
+            }
+          ]
+        }
+      ],
+      "skipped": []
+    },
+    "providerDepth": {
+      "generatedAt": "2026-07-08T19:36:52.374Z",
+      "source": "polymarket-clob",
+      "maxLevels": 24,
+      "requestedMarketCount": 8,
+      "refreshedCount": 8,
+      "depthRowsUpdated": 762,
+      "skippedCount": 0,
+      "refreshed": [
+        {
+          "marketId": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+          "title": "Will Argentina win the 2026 FIFA World Cup?",
+          "slug": "will-argentina-win-the-2026-fifa-world-cup-245",
+          "outcomeCount": 2,
+          "depthRowsUpdated": 96,
+          "outcomes": [
+            {
+              "outcomeId": "fa181546-35ad-47d4-8874-f5b73cd9f571",
+              "tokenId": "18812649149814341758733697580460697418474693998558159483117100240528657629879",
+              "bidCount": 24,
+              "askCount": 24,
+              "fetchedAt": "2026-07-08T19:36:49.479Z",
+              "providerTimestamp": "2026-07-08T19:36:48.113Z"
+            },
+            {
+              "outcomeId": "0301d826-33a5-41d9-bab5-8fcbe291831a",
+              "tokenId": "115428153746996892211798999366308897078723117634059783423375188043903703749062",
+              "bidCount": 24,
+              "askCount": 24,
+              "fetchedAt": "2026-07-08T19:36:49.607Z",
+              "providerTimestamp": "2026-07-08T19:36:48.113Z"
+            }
+          ]
+        },
+        {
+          "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+          "title": "Will Belgium win the 2026 FIFA World Cup?",
+          "slug": "will-belgium-win-the-2026-fifa-world-cup-358",
+          "outcomeCount": 2,
+          "depthRowsUpdated": 96,
+          "outcomes": [
+            {
+              "outcomeId": "5e90f5bc-f8f6-4dfe-9a50-35c95e687387",
+              "tokenId": "30815807067456631524510535002617106205417832891402132396713720656146245200000",
+              "bidCount": 24,
+              "askCount": 24,
+              "fetchedAt": "2026-07-08T19:36:49.807Z",
+              "providerTimestamp": "2026-07-08T19:36:32.477Z"
+            },
+            {
+              "outcomeId": "90725b3c-a504-47f0-891d-cfa7c0757cc0",
+              "tokenId": "71145888994888153292442623019750517622535407476309461406574461229898137896934",
+              "bidCount": 24,
+              "askCount": 24,
+              "fetchedAt": "2026-07-08T19:36:49.941Z",
+              "providerTimestamp": "2026-07-08T19:36:32.477Z"
+            }
+          ]
+        },
+        {
+          "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+          "title": "Will England win the 2026 FIFA World Cup?",
+          "slug": "will-england-win-the-2026-fifa-world-cup-937",
+          "outcomeCount": 2,
+          "depthRowsUpdated": 96,
+          "outcomes": [
+            {
+              "outcomeId": "cdcc34fa-73a4-4fb7-bf71-cf6df5f19374",
+              "tokenId": "115556263888245616435851357148058235707004733438163639091106356867234218207169",
+              "bidCount": 24,
+              "askCount": 24,
+              "fetchedAt": "2026-07-08T19:36:50.145Z",
+              "providerTimestamp": "2026-07-08T19:36:36.114Z"
+            },
+            {
+              "outcomeId": "1b5a9a21-06db-4574-8adb-261da5d4df12",
+              "tokenId": "77121637225348873006259930776623502125079210522997384841464684944292365296940",
+              "bidCount": 24,
+              "askCount": 24,
+              "fetchedAt": "2026-07-08T19:36:50.281Z",
+              "providerTimestamp": "2026-07-08T19:36:36.114Z"
+            }
+          ]
+        },
+        {
+          "marketId": "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+          "title": "Will France win the 2026 FIFA World Cup?",
+          "slug": "will-france-win-the-2026-fifa-world-cup-924",
+          "outcomeCount": 2,
+          "depthRowsUpdated": 96,
+          "outcomes": [
+            {
+              "outcomeId": "6c96ee3d-290a-4c10-8fa9-f1debc4591d4",
+              "tokenId": "108233603819467706476318984012158651931658302669301887462181073562758483842092",
+              "bidCount": 24,
+              "askCount": 24,
+              "fetchedAt": "2026-07-08T19:36:50.506Z",
+              "providerTimestamp": "2026-07-08T19:36:49.795Z"
+            },
+            {
+              "outcomeId": "f62a736c-b9bd-4c38-9266-401005697dd4",
+              "tokenId": "32270411694523539495262303868629477861017829722282576458031815333486368239544",
+              "bidCount": 24,
+              "askCount": 24,
+              "fetchedAt": "2026-07-08T19:36:50.634Z",
+              "providerTimestamp": "2026-07-08T19:36:49.795Z"
+            }
+          ]
+        },
+        {
+          "marketId": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+          "title": "Will Morocco win the 2026 FIFA World Cup?",
+          "slug": "will-morocco-win-the-2026-fifa-world-cup-464",
+          "outcomeCount": 2,
+          "depthRowsUpdated": 96,
+          "outcomes": [
+            {
+              "outcomeId": "beb850a6-01f9-4ec0-a0df-da003a310838",
+              "tokenId": "69910730841487615802736046038473620030754616421912831175284551372639933569112",
+              "bidCount": 24,
+              "askCount": 24,
+              "fetchedAt": "2026-07-08T19:36:50.828Z",
+              "providerTimestamp": "2026-07-08T19:36:42.650Z"
+            },
+            {
+              "outcomeId": "b64ef40b-846b-4cb5-b048-1febcd318c7e",
+              "tokenId": "64291832879722161879651094688874074984529456778901604558632306686248535158725",
+              "bidCount": 24,
+              "askCount": 24,
+              "fetchedAt": "2026-07-08T19:36:50.979Z",
+              "providerTimestamp": "2026-07-08T19:36:42.650Z"
+            }
+          ]
+        },
+        {
+          "marketId": "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+          "title": "Will Norway win the 2026 FIFA World Cup?",
+          "slug": "will-norway-win-the-2026-fifa-world-cup-893",
+          "outcomeCount": 2,
+          "depthRowsUpdated": 96,
+          "outcomes": [
+            {
+              "outcomeId": "b266d59f-e9a3-493d-ad88-0ee47cd85f00",
+              "tokenId": "60447443643099453130956385288904175887233107411078568881602330835010340506057",
+              "bidCount": 24,
+              "askCount": 24,
+              "fetchedAt": "2026-07-08T19:36:51.169Z",
+              "providerTimestamp": "2026-07-08T19:36:47.100Z"
+            },
+            {
+              "outcomeId": "99c07c37-123e-47d4-87a3-1dd92152a19f",
+              "tokenId": "111538579557239934343870815626480092245052857494675784434731223739153238373070",
+              "bidCount": 24,
+              "askCount": 24,
+              "fetchedAt": "2026-07-08T19:36:51.657Z",
+              "providerTimestamp": "2026-07-08T19:36:47.100Z"
+            }
+          ]
+        },
+        {
+          "marketId": "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+          "title": "Will Spain win the 2026 FIFA World Cup?",
+          "slug": "will-spain-win-the-2026-fifa-world-cup-963",
+          "outcomeCount": 2,
+          "depthRowsUpdated": 96,
+          "outcomes": [
+            {
+              "outcomeId": "5726cf62-ff54-47ff-8554-a8a563df94e4",
+              "tokenId": "4394372887385518214471608448209527405727552777602031099972143344338178308080",
+              "bidCount": 24,
+              "askCount": 24,
+              "fetchedAt": "2026-07-08T19:36:51.845Z",
+              "providerTimestamp": "2026-07-08T19:36:50.153Z"
+            },
+            {
+              "outcomeId": "3227cee1-d2d1-4180-a18e-3b1e728f9820",
+              "tokenId": "112680630004798425069810935278212000865453267506345451433803052322987302357330",
+              "bidCount": 24,
+              "askCount": 24,
+              "fetchedAt": "2026-07-08T19:36:51.986Z",
+              "providerTimestamp": "2026-07-08T19:36:50.153Z"
+            }
+          ]
+        },
+        {
+          "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+          "title": "Will Switzerland win the 2026 FIFA World Cup?",
+          "slug": "will-switzerland-win-the-2026-fifa-world-cup",
+          "outcomeCount": 2,
+          "depthRowsUpdated": 90,
+          "outcomes": [
+            {
+              "outcomeId": "d16de1fc-1318-4f3b-ab07-22d597caf8ed",
+              "tokenId": "62131913648515148266463816694306031394539656598501514114816028349608560215534",
+              "bidCount": 21,
+              "askCount": 24,
+              "fetchedAt": "2026-07-08T19:36:52.189Z",
+              "providerTimestamp": "2026-07-08T19:36:47.099Z"
+            },
+            {
+              "outcomeId": "eb1f5ca0-8c01-407f-be22-5c00e6b98b99",
+              "tokenId": "45315272750116791836504013666029583517532908319286234834610455739871173419179",
+              "bidCount": 24,
+              "askCount": 21,
+              "fetchedAt": "2026-07-08T19:36:52.316Z",
+              "providerTimestamp": "2026-07-08T19:36:47.099Z"
+            }
+          ]
+        }
+      ],
+      "skipped": []
+    },
+    "providerHistory": {
+      "generatedAt": "2026-07-08T19:36:56.747Z",
+      "source": "polymarket-clob-prices-history",
+      "interval": "1d",
+      "fidelityMinutes": 5,
+      "requestedMarketCount": 8,
+      "refreshedCount": 8,
+      "snapshotsCreated": 4624,
+      "skippedCount": 0,
+      "refreshed": [
+        {
+          "marketId": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+          "title": "Will Argentina win the 2026 FIFA World Cup?",
+          "slug": "will-argentina-win-the-2026-fifa-world-cup-245",
+          "outcomeCount": 2,
+          "snapshotsCreated": 578,
+          "outcomes": [
+            {
+              "outcomeId": "fa181546-35ad-47d4-8874-f5b73cd9f571",
+              "tokenId": "18812649149814341758733697580460697418474693998558159483117100240528657629879",
+              "historyPointCount": 289,
+              "createdSnapshots": 289,
+              "firstTimestamp": "2026-07-07T19:40:05.000Z",
+              "lastTimestamp": "2026-07-08T19:35:04.000Z"
+            },
+            {
+              "outcomeId": "0301d826-33a5-41d9-bab5-8fcbe291831a",
+              "tokenId": "115428153746996892211798999366308897078723117634059783423375188043903703749062",
+              "historyPointCount": 289,
+              "createdSnapshots": 289,
+              "firstTimestamp": "2026-07-07T19:40:06.000Z",
+              "lastTimestamp": "2026-07-08T19:35:05.000Z"
+            }
+          ]
+        },
+        {
+          "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+          "title": "Will Belgium win the 2026 FIFA World Cup?",
+          "slug": "will-belgium-win-the-2026-fifa-world-cup-358",
+          "outcomeCount": 2,
+          "snapshotsCreated": 578,
+          "outcomes": [
+            {
+              "outcomeId": "5e90f5bc-f8f6-4dfe-9a50-35c95e687387",
+              "tokenId": "30815807067456631524510535002617106205417832891402132396713720656146245200000",
+              "historyPointCount": 289,
+              "createdSnapshots": 289,
+              "firstTimestamp": "2026-07-07T19:40:06.000Z",
+              "lastTimestamp": "2026-07-08T19:36:07.000Z"
+            },
+            {
+              "outcomeId": "90725b3c-a504-47f0-891d-cfa7c0757cc0",
+              "tokenId": "71145888994888153292442623019750517622535407476309461406574461229898137896934",
+              "historyPointCount": 289,
+              "createdSnapshots": 289,
+              "firstTimestamp": "2026-07-07T19:40:05.000Z",
+              "lastTimestamp": "2026-07-08T19:36:06.000Z"
+            }
+          ]
+        },
+        {
+          "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+          "title": "Will England win the 2026 FIFA World Cup?",
+          "slug": "will-england-win-the-2026-fifa-world-cup-937",
+          "outcomeCount": 2,
+          "snapshotsCreated": 578,
+          "outcomes": [
+            {
+              "outcomeId": "cdcc34fa-73a4-4fb7-bf71-cf6df5f19374",
+              "tokenId": "115556263888245616435851357148058235707004733438163639091106356867234218207169",
+              "historyPointCount": 289,
+              "createdSnapshots": 289,
+              "firstTimestamp": "2026-07-07T19:40:06.000Z",
+              "lastTimestamp": "2026-07-08T19:36:07.000Z"
+            },
+            {
+              "outcomeId": "1b5a9a21-06db-4574-8adb-261da5d4df12",
+              "tokenId": "77121637225348873006259930776623502125079210522997384841464684944292365296940",
+              "historyPointCount": 289,
+              "createdSnapshots": 289,
+              "firstTimestamp": "2026-07-07T19:40:06.000Z",
+              "lastTimestamp": "2026-07-08T19:36:07.000Z"
+            }
+          ]
+        },
+        {
+          "marketId": "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+          "title": "Will France win the 2026 FIFA World Cup?",
+          "slug": "will-france-win-the-2026-fifa-world-cup-924",
+          "outcomeCount": 2,
+          "snapshotsCreated": 578,
+          "outcomes": [
+            {
+              "outcomeId": "6c96ee3d-290a-4c10-8fa9-f1debc4591d4",
+              "tokenId": "108233603819467706476318984012158651931658302669301887462181073562758483842092",
+              "historyPointCount": 289,
+              "createdSnapshots": 289,
+              "firstTimestamp": "2026-07-07T19:40:06.000Z",
+              "lastTimestamp": "2026-07-08T19:35:05.000Z"
+            },
+            {
+              "outcomeId": "f62a736c-b9bd-4c38-9266-401005697dd4",
+              "tokenId": "32270411694523539495262303868629477861017829722282576458031815333486368239544",
+              "historyPointCount": 289,
+              "createdSnapshots": 289,
+              "firstTimestamp": "2026-07-07T19:40:06.000Z",
+              "lastTimestamp": "2026-07-08T19:36:07.000Z"
+            }
+          ]
+        },
+        {
+          "marketId": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+          "title": "Will Morocco win the 2026 FIFA World Cup?",
+          "slug": "will-morocco-win-the-2026-fifa-world-cup-464",
+          "outcomeCount": 2,
+          "snapshotsCreated": 578,
+          "outcomes": [
+            {
+              "outcomeId": "beb850a6-01f9-4ec0-a0df-da003a310838",
+              "tokenId": "69910730841487615802736046038473620030754616421912831175284551372639933569112",
+              "historyPointCount": 289,
+              "createdSnapshots": 289,
+              "firstTimestamp": "2026-07-07T19:40:05.000Z",
+              "lastTimestamp": "2026-07-08T19:36:06.000Z"
+            },
+            {
+              "outcomeId": "b64ef40b-846b-4cb5-b048-1febcd318c7e",
+              "tokenId": "64291832879722161879651094688874074984529456778901604558632306686248535158725",
+              "historyPointCount": 289,
+              "createdSnapshots": 289,
+              "firstTimestamp": "2026-07-07T19:40:06.000Z",
+              "lastTimestamp": "2026-07-08T19:35:05.000Z"
+            }
+          ]
+        },
+        {
+          "marketId": "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+          "title": "Will Norway win the 2026 FIFA World Cup?",
+          "slug": "will-norway-win-the-2026-fifa-world-cup-893",
+          "outcomeCount": 2,
+          "snapshotsCreated": 578,
+          "outcomes": [
+            {
+              "outcomeId": "b266d59f-e9a3-493d-ad88-0ee47cd85f00",
+              "tokenId": "60447443643099453130956385288904175887233107411078568881602330835010340506057",
+              "historyPointCount": 289,
+              "createdSnapshots": 289,
+              "firstTimestamp": "2026-07-07T19:40:06.000Z",
+              "lastTimestamp": "2026-07-08T19:35:05.000Z"
+            },
+            {
+              "outcomeId": "99c07c37-123e-47d4-87a3-1dd92152a19f",
+              "tokenId": "111538579557239934343870815626480092245052857494675784434731223739153238373070",
+              "historyPointCount": 289,
+              "createdSnapshots": 289,
+              "firstTimestamp": "2026-07-07T19:40:06.000Z",
+              "lastTimestamp": "2026-07-08T19:35:05.000Z"
+            }
+          ]
+        },
+        {
+          "marketId": "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+          "title": "Will Spain win the 2026 FIFA World Cup?",
+          "slug": "will-spain-win-the-2026-fifa-world-cup-963",
+          "outcomeCount": 2,
+          "snapshotsCreated": 578,
+          "outcomes": [
+            {
+              "outcomeId": "5726cf62-ff54-47ff-8554-a8a563df94e4",
+              "tokenId": "4394372887385518214471608448209527405727552777602031099972143344338178308080",
+              "historyPointCount": 289,
+              "createdSnapshots": 289,
+              "firstTimestamp": "2026-07-07T19:40:06.000Z",
+              "lastTimestamp": "2026-07-08T19:36:07.000Z"
+            },
+            {
+              "outcomeId": "3227cee1-d2d1-4180-a18e-3b1e728f9820",
+              "tokenId": "112680630004798425069810935278212000865453267506345451433803052322987302357330",
+              "historyPointCount": 289,
+              "createdSnapshots": 289,
+              "firstTimestamp": "2026-07-07T19:40:06.000Z",
+              "lastTimestamp": "2026-07-08T19:36:07.000Z"
+            }
+          ]
+        },
+        {
+          "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+          "title": "Will Switzerland win the 2026 FIFA World Cup?",
+          "slug": "will-switzerland-win-the-2026-fifa-world-cup",
+          "outcomeCount": 2,
+          "snapshotsCreated": 578,
+          "outcomes": [
+            {
+              "outcomeId": "d16de1fc-1318-4f3b-ab07-22d597caf8ed",
+              "tokenId": "62131913648515148266463816694306031394539656598501514114816028349608560215534",
+              "historyPointCount": 289,
+              "createdSnapshots": 289,
+              "firstTimestamp": "2026-07-07T19:40:05.000Z",
+              "lastTimestamp": "2026-07-08T19:36:06.000Z"
+            },
+            {
+              "outcomeId": "eb1f5ca0-8c01-407f-be22-5c00e6b98b99",
+              "tokenId": "45315272750116791836504013666029583517532908319286234834610455739871173419179",
+              "historyPointCount": 289,
+              "createdSnapshots": 289,
+              "firstTimestamp": "2026-07-07T19:40:06.000Z",
+              "lastTimestamp": "2026-07-08T19:36:07.000Z"
+            }
+          ]
+        }
+      ],
+      "skipped": []
+    },
+    "lineFamilyCoverage": {
+      "source": "mobile-live-provider-refresh-line-family-coverage",
+      "generatedAt": "2026-07-08T19:36:56.797Z",
+      "compactMarketCount": 8,
+      "familyCount": 1,
+      "providerRefreshableFamilyCount": 1,
+      "providerRefreshableMarketCount": 8,
+      "readyProviderRefreshableMarketCount": 6,
+      "hasProviderMappedBreadth": false,
+      "hasReadyProviderMappedBreadth": false,
+      "optionalLineProviderBlocking": false,
+      "families": [
+        {
+          "family": "outright",
+          "marketCount": 8,
+          "providerRefreshableMarketCount": 8,
+          "readyMarketCount": 6,
+          "notReadyMarketCount": 2,
+          "statuses": [
+            "ready",
+            "stale"
+          ],
+          "marketIds": [
+            "bd114913-161d-43c0-9770-58e90846f172",
+            "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+            "8210401b-3b19-49fa-bf50-ba985a8843e2",
+            "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+            "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+            "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+            "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+            "5796a9be-8359-48f4-bf45-268dc662f2c0"
+          ],
+          "selectorKeys": [
+            "outrights:futures:default",
+            "outrights:futures:default",
+            "outrights:futures:default",
+            "outrights:futures:default",
+            "outrights:futures:default",
+            "outrights:futures:default",
+            "outrights:futures:default",
+            "outrights:futures:default"
+          ]
+        }
+      ],
+      "markets": [
+        {
+          "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+          "title": "Will Switzerland win the 2026 FIFA World Cup?",
+          "selectorKey": "outrights:futures:default",
+          "marketFamily": "outright",
+          "marketGroupKey": "outrights",
+          "marketType": "outright",
+          "period": "futures",
+          "line": null,
+          "lineValue": null,
+          "referenceSource": "polymarket",
+          "externalSlug": "will-switzerland-win-the-2026-fifa-world-cup",
+          "externalMarketId": "558974",
+          "conditionId": "0x3a26ca6425e2d98f14935670bc22cdb0744defc6f6d83c65f8c413a921c5c70c",
+          "providerRefreshable": true,
+          "missingFields": [],
+          "status": "ready",
+          "ready": true,
+          "notReady": false,
+          "quote": {
+            "source": "polymarket",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:49.318Z",
+            "lastFetchedAt": "2026-07-08T19:36:49.318Z",
+            "stalenessSeconds": 7,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:49.318Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "orderbookDepth": {
+            "source": "polymarket-clob",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:52.316Z",
+            "lastFetchedAt": "2026-07-08T19:36:52.316Z",
+            "stalenessSeconds": 4,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:52.316Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "chartHistory": {
+            "source": "polymarket-clob-prices-history",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:07.000Z",
+            "lastFetchedAt": "2026-07-08T19:36:07.000Z",
+            "stalenessSeconds": 50,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:07.000Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          }
+        },
+        {
+          "marketId": "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+          "title": "Will Spain win the 2026 FIFA World Cup?",
+          "selectorKey": "outrights:futures:default",
+          "marketFamily": "outright",
+          "marketGroupKey": "outrights",
+          "marketType": "outright",
+          "period": "futures",
+          "line": null,
+          "lineValue": null,
+          "referenceSource": "polymarket",
+          "externalSlug": "will-spain-win-the-2026-fifa-world-cup-963",
+          "externalMarketId": "558934",
+          "conditionId": "0x7976b8dbacf9077eb1453a62bcefd6ab2df199acd28aad276ff0d920d6992892",
+          "providerRefreshable": true,
+          "missingFields": [],
+          "status": "ready",
+          "ready": true,
+          "notReady": false,
+          "quote": {
+            "source": "polymarket",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:49.241Z",
+            "lastFetchedAt": "2026-07-08T19:36:49.241Z",
+            "stalenessSeconds": 8,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:49.241Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "orderbookDepth": {
+            "source": "polymarket-clob",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:51.986Z",
+            "lastFetchedAt": "2026-07-08T19:36:51.986Z",
+            "stalenessSeconds": 5,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:51.986Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "chartHistory": {
+            "source": "polymarket-clob-prices-history",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:07.000Z",
+            "lastFetchedAt": "2026-07-08T19:36:07.000Z",
+            "stalenessSeconds": 50,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:07.000Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          }
+        },
+        {
+          "marketId": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+          "title": "Will Argentina win the 2026 FIFA World Cup?",
+          "selectorKey": "outrights:futures:default",
+          "marketFamily": "outright",
+          "marketGroupKey": "outrights",
+          "marketType": "outright",
+          "period": "futures",
+          "line": null,
+          "lineValue": null,
+          "referenceSource": "polymarket",
+          "externalSlug": "will-argentina-win-the-2026-fifa-world-cup-245",
+          "externalMarketId": "558938",
+          "conditionId": "0x0c4cd2055d6ea89354ffddc55d6dbcef9355748112ea952fc925f3db6a5c457f",
+          "providerRefreshable": true,
+          "missingFields": [],
+          "status": "stale",
+          "ready": false,
+          "notReady": true,
+          "quote": {
+            "source": "polymarket",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:49.067Z",
+            "lastFetchedAt": "2026-07-08T19:36:49.067Z",
+            "stalenessSeconds": 8,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:49.067Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "orderbookDepth": {
+            "source": "polymarket-clob",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:49.607Z",
+            "lastFetchedAt": "2026-07-08T19:36:49.607Z",
+            "stalenessSeconds": 7,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:49.607Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "chartHistory": {
+            "source": "polymarket-clob-prices-history",
+            "status": "stale",
+            "latestAt": "2026-07-08T19:35:05.000Z",
+            "lastFetchedAt": "2026-07-08T19:35:05.000Z",
+            "stalenessSeconds": 112,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:36:05.000Z",
+            "shouldRefresh": true,
+            "ready": false,
+            "refreshDue": false,
+            "stale": true,
+            "unavailable": false,
+            "empty": false,
+            "notReady": true,
+            "fallback": false,
+            "reason": "Provider snapshot is older than 90 seconds."
+          }
+        },
+        {
+          "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+          "title": "Will England win the 2026 FIFA World Cup?",
+          "selectorKey": "outrights:futures:default",
+          "marketFamily": "outright",
+          "marketGroupKey": "outrights",
+          "marketType": "outright",
+          "period": "futures",
+          "line": null,
+          "lineValue": null,
+          "referenceSource": "polymarket",
+          "externalSlug": "will-england-win-the-2026-fifa-world-cup-937",
+          "externalMarketId": "558935",
+          "conditionId": "0x375409bc5eeeff961e82b479caeccc20f33d15738e5bce1186d628aa3d9dfb1f",
+          "providerRefreshable": true,
+          "missingFields": [],
+          "status": "ready",
+          "ready": true,
+          "notReady": false,
+          "quote": {
+            "source": "polymarket",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:49.160Z",
+            "lastFetchedAt": "2026-07-08T19:36:49.160Z",
+            "stalenessSeconds": 8,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:49.160Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "orderbookDepth": {
+            "source": "polymarket-clob",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:50.281Z",
+            "lastFetchedAt": "2026-07-08T19:36:50.281Z",
+            "stalenessSeconds": 7,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:50.281Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "chartHistory": {
+            "source": "polymarket-clob-prices-history",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:07.000Z",
+            "lastFetchedAt": "2026-07-08T19:36:07.000Z",
+            "stalenessSeconds": 50,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:07.000Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          }
+        },
+        {
+          "marketId": "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+          "title": "Will France win the 2026 FIFA World Cup?",
+          "selectorKey": "outrights:futures:default",
+          "marketFamily": "outright",
+          "marketGroupKey": "outrights",
+          "marketType": "outright",
+          "period": "futures",
+          "line": null,
+          "lineValue": null,
+          "referenceSource": "polymarket",
+          "externalSlug": "will-france-win-the-2026-fifa-world-cup-924",
+          "externalMarketId": "558936",
+          "conditionId": "0x9b6fef249040fd17e9c107955b37ac2c3e923509b6b0ff01cc463a331ddeb894",
+          "providerRefreshable": true,
+          "missingFields": [],
+          "status": "ready",
+          "ready": true,
+          "notReady": false,
+          "quote": {
+            "source": "polymarket",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:49.180Z",
+            "lastFetchedAt": "2026-07-08T19:36:49.180Z",
+            "stalenessSeconds": 8,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:49.180Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "orderbookDepth": {
+            "source": "polymarket-clob",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:50.634Z",
+            "lastFetchedAt": "2026-07-08T19:36:50.634Z",
+            "stalenessSeconds": 6,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:50.634Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "chartHistory": {
+            "source": "polymarket-clob-prices-history",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:07.000Z",
+            "lastFetchedAt": "2026-07-08T19:36:07.000Z",
+            "stalenessSeconds": 50,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:07.000Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          }
+        },
+        {
+          "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+          "title": "Will Belgium win the 2026 FIFA World Cup?",
+          "selectorKey": "outrights:futures:default",
+          "marketFamily": "outright",
+          "marketGroupKey": "outrights",
+          "marketType": "outright",
+          "period": "futures",
+          "line": null,
+          "lineValue": null,
+          "referenceSource": "polymarket",
+          "externalSlug": "will-belgium-win-the-2026-fifa-world-cup-358",
+          "externalMarketId": "558946",
+          "conditionId": "0x32cfa52198e85e070d1b17d1b53c5c3a6aaae7736cdc33fa6aa04d353f0c2811",
+          "providerRefreshable": true,
+          "missingFields": [],
+          "status": "ready",
+          "ready": true,
+          "notReady": false,
+          "quote": {
+            "source": "polymarket",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:49.136Z",
+            "lastFetchedAt": "2026-07-08T19:36:49.136Z",
+            "stalenessSeconds": 8,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:49.136Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "orderbookDepth": {
+            "source": "polymarket-clob",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:49.941Z",
+            "lastFetchedAt": "2026-07-08T19:36:49.941Z",
+            "stalenessSeconds": 7,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:49.941Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "chartHistory": {
+            "source": "polymarket-clob-prices-history",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:07.000Z",
+            "lastFetchedAt": "2026-07-08T19:36:07.000Z",
+            "stalenessSeconds": 50,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:07.000Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          }
+        },
+        {
+          "marketId": "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+          "title": "Will Norway win the 2026 FIFA World Cup?",
+          "selectorKey": "outrights:futures:default",
+          "marketFamily": "outright",
+          "marketGroupKey": "outrights",
+          "marketType": "outright",
+          "period": "futures",
+          "line": null,
+          "lineValue": null,
+          "referenceSource": "polymarket",
+          "externalSlug": "will-norway-win-the-2026-fifa-world-cup-893",
+          "externalMarketId": "558951",
+          "conditionId": "0x7b52405ad0e0d31bfe970940b67d77f24ecedeab8a2361c11148c02a006e325c",
+          "providerRefreshable": true,
+          "missingFields": [],
+          "status": "stale",
+          "ready": false,
+          "notReady": true,
+          "quote": {
+            "source": "polymarket",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:49.222Z",
+            "lastFetchedAt": "2026-07-08T19:36:49.222Z",
+            "stalenessSeconds": 8,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:49.222Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "orderbookDepth": {
+            "source": "polymarket-clob",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:51.657Z",
+            "lastFetchedAt": "2026-07-08T19:36:51.657Z",
+            "stalenessSeconds": 5,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:51.657Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "chartHistory": {
+            "source": "polymarket-clob-prices-history",
+            "status": "stale",
+            "latestAt": "2026-07-08T19:35:05.000Z",
+            "lastFetchedAt": "2026-07-08T19:35:05.000Z",
+            "stalenessSeconds": 112,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:36:05.000Z",
+            "shouldRefresh": true,
+            "ready": false,
+            "refreshDue": false,
+            "stale": true,
+            "unavailable": false,
+            "empty": false,
+            "notReady": true,
+            "fallback": false,
+            "reason": "Provider snapshot is older than 90 seconds."
+          }
+        },
+        {
+          "marketId": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+          "title": "Will Morocco win the 2026 FIFA World Cup?",
+          "selectorKey": "outrights:futures:default",
+          "marketFamily": "outright",
+          "marketGroupKey": "outrights",
+          "marketType": "outright",
+          "period": "futures",
+          "line": null,
+          "lineValue": null,
+          "referenceSource": "polymarket",
+          "externalSlug": "will-morocco-win-the-2026-fifa-world-cup-464",
+          "externalMarketId": "558963",
+          "conditionId": "0x37a6de1b21803e5f3fb1965116218215d79963af4f7e51659696366267a63a03",
+          "providerRefreshable": true,
+          "missingFields": [],
+          "status": "ready",
+          "ready": true,
+          "notReady": false,
+          "quote": {
+            "source": "polymarket",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:49.201Z",
+            "lastFetchedAt": "2026-07-08T19:36:49.201Z",
+            "stalenessSeconds": 8,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:49.201Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "orderbookDepth": {
+            "source": "polymarket-clob",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:50.979Z",
+            "lastFetchedAt": "2026-07-08T19:36:50.979Z",
+            "stalenessSeconds": 6,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:50.979Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          },
+          "chartHistory": {
+            "source": "polymarket-clob-prices-history",
+            "status": "ready",
+            "latestAt": "2026-07-08T19:36:06.000Z",
+            "lastFetchedAt": "2026-07-08T19:36:06.000Z",
+            "stalenessSeconds": 51,
+            "readyAfterSeconds": 60,
+            "staleAfterSeconds": 90,
+            "nextRefreshAt": "2026-07-08T19:37:06.000Z",
+            "shouldRefresh": false,
+            "ready": true,
+            "refreshDue": false,
+            "stale": false,
+            "unavailable": false,
+            "empty": false,
+            "notReady": false,
+            "fallback": false,
+            "reason": "Provider snapshot is fresh."
+          }
+        }
+      ]
+    },
+    "contractProofFallback": null,
+    "note": "Cycle OT treats CLOB chart history refresh_due as non-blocking when Gamma quotes are fresh, because public prices-history timestamps can lag the proof run by more than the route freshness window."
+  },
+  "androidTarget": {
+    "cardId": "event-card-provider-breadth-world-cup-winner",
+    "primaryOutcomeId": "d16de1fc-1318-4f3b-ab07-22d597caf8ed",
+    "primaryMarketId": "bd114913-161d-43c0-9770-58e90846f172",
+    "primaryMarketType": "winner",
+    "primaryTokenId": "62131913648515148266463816694306031394539656598501514114816028349608560215534"
+  },
+  "pass": true
+}

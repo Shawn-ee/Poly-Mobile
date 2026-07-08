@@ -1,0 +1,48 @@
+{
+    "cycle":  "EW",
+    "scenario":  "Local MVP Android route-backed server fake-token order cancel/history flow with orderbook hidden by default",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/local-mvp-route-server-cancel-proof.ps1 -Port 8264 -BackendBaseUrl http://172.16.200.14:3002 -OutputDir docs\\mobile\\screenshots\\cycle-EW-local-mvp-route-server-cancel-flow -HierarchyOutputDir docs\\mobile\\harness\\cycle-EW-local-mvp-route-server-cancel-flow",
+    "backendBaseUrl":  "http://172.16.200.14:3002",
+    "serverEventSlug":  "mobile-el-a-provider-breadth-35441a1a",
+    "orderbookDebug":  "unset",
+    "marketDataMode":  "server",
+    "orderMode":  "server",
+    "apiKey":  "in-process-mobile-dev-credential-redacted",
+    "result":  "pass",
+    "assertions":  {
+                       "routeBackedEvent":  [
+                                                "live-detail loaded through forceBackendEventSlug",
+                                                "live-data-source-polymarket-gamma"
+                                            ],
+                       "retailRows":  [
+                                          "spread row uses ticket-source-backend-line-market",
+                                          "provider-source-polymarket visible",
+                                          "no default Book/orderbook entry points"
+                                      ],
+                       "ticket":  [
+                                      "simple ticket opens from route-backed spread",
+                                      "provider token/source visible",
+                                      "server fake-token buy uses swipe-style submit"
+                                  ],
+                       "serverPortfolio":  [
+                                               "POST /api/orders succeeds through mobile",
+                                               "Portfolio sync returns server open order",
+                                               "selected line/provider identity preserved"
+                                           ],
+                       "serverHistory":  [
+                                             "DELETE /api/orders/:id succeeds through mobile",
+                                             "Portfolio sync returns canceled activity",
+                                             "activity/history preserves selected line/provider identity"
+                                         ]
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\screenshots\\cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-holiwyn-route-server-mvp-line-markets.png",
+                      "docs\\mobile\\harness\\cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-holiwyn-route-server-mvp-line-markets.xml",
+                      "docs\\mobile\\screenshots\\cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-holiwyn-route-server-mvp-spread-ticket-ready.png",
+                      "docs\\mobile\\harness\\cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-holiwyn-route-server-mvp-spread-ticket-ready.xml",
+                      "docs\\mobile\\screenshots\\cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-holiwyn-route-server-mvp-portfolio.png",
+                      "docs\\mobile\\harness\\cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-holiwyn-route-server-mvp-portfolio.xml",
+                      "docs\\mobile\\screenshots\\cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-holiwyn-route-server-mvp-portfolio-canceled.png",
+                      "docs\\mobile\\harness\\cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-holiwyn-route-server-mvp-portfolio-canceled.xml"
+                  ]
+}

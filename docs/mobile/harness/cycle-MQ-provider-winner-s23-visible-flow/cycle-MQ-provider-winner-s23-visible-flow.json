@@ -1,0 +1,37 @@
+{
+    "cycle":  "MQ",
+    "result":  "pass",
+    "generatedAt":  "2026-07-08T10:29:08.0881888Z",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "mobileApiBaseUrl":  "http://172.16.200.14:3002",
+    "expoPort":  8289,
+    "keyId":  "redacted",
+    "apiKey":  "redacted",
+    "eventSlug":  "argentina-vs-egypt",
+    "assertions":  {
+                       "homeShowsCurrentMatch":  true,
+                       "detailShowsProviderWinner":  true,
+                       "regulationWinnerIsPolymarketBacked":  true,
+                       "orderbookHidden":  true,
+                       "ticketPreservesProviderWinner":  true,
+                       "swipeSubmitReachedPortfolio":  true,
+                       "portfolioPreservesProviderWinnerSource":  true,
+                       "historyPreservesProviderWinnerSource":  true
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\screenshots\\cycle-MQ-provider-winner-s23-visible-flow\\cycle-MQ-current-mvp-home.png",
+                      "docs\\mobile\\harness\\cycle-MQ-provider-winner-s23-visible-flow\\cycle-MQ-current-mvp-home.xml",
+                      "docs\\mobile\\screenshots\\cycle-MQ-provider-winner-s23-visible-flow\\cycle-MQ-current-mvp-detail-top.png",
+                      "docs\\mobile\\harness\\cycle-MQ-provider-winner-s23-visible-flow\\cycle-MQ-current-mvp-detail-top.xml",
+                      "docs\\mobile\\screenshots\\cycle-MQ-provider-winner-s23-visible-flow\\cycle-MQ-provider-winner.png",
+                      "docs\\mobile\\harness\\cycle-MQ-provider-winner-s23-visible-flow\\cycle-MQ-provider-winner-attempt-*.xml",
+                      "docs\\mobile\\screenshots\\cycle-MQ-provider-winner-s23-visible-flow\\cycle-MQ-provider-winner-ticket-ready.png",
+                      "docs\\mobile\\harness\\cycle-MQ-provider-winner-s23-visible-flow\\cycle-MQ-provider-winner-ticket-ready.xml",
+                      "docs\\mobile\\screenshots\\cycle-MQ-provider-winner-s23-visible-flow\\cycle-MQ-provider-winner-after-submit.png",
+                      "docs\\mobile\\harness\\cycle-MQ-provider-winner-s23-visible-flow\\cycle-MQ-provider-winner-after-submit.xml",
+                      "docs\\mobile\\screenshots\\cycle-MQ-provider-winner-s23-visible-flow\\cycle-MQ-provider-winner-portfolio-history.png",
+                      "docs\\mobile\\harness\\cycle-MQ-provider-winner-s23-visible-flow\\cycle-MQ-provider-winner-portfolio-history.xml"
+                  ]
+}
