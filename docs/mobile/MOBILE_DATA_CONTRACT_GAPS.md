@@ -4746,6 +4746,41 @@ Future migration concern:
 - Repeat LO against real Polymarket-backed match line markets when provider discovery/attachment can prove them.
 - Run S23 proof from Home -> Event Detail -> Spread line -> Buy ticket -> filled Portfolio/history as the next P0.
 
+## Cycle LP - Provider Match Line Availability
+
+Closed or narrowed:
+
+- Confirmed the current Polymarket Gamma event for `switzerland-vs-colombia` exposes 3 Regulation Winner markets.
+- Confirmed the same Gamma event exposes 0 Spread, Totals, Team Totals, Halves, Corners, or Correct Score markets.
+- Confirmed Holiwyn route data is truthful about sources:
+  - 3 `polymarket` Regulation Winner markets
+  - 4 `contract-fixture` line markets
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider ids/tokens/quotes for match Spread, Totals, and Team Totals when those markets exist.
+- A provider source or manual attach workflow for non-Gamma soccer line markets if they are required before Polymarket exposes them.
+- Fresh S23-visible proof that the UI uses the route-backed line contract correctly.
+
+Schema mismatch:
+
+- No schema mismatch was found. Existing `Market.referenceSource`, `Market.externalSlug`, `Market.externalMarketId`, `Market.conditionId`, `Outcome.referenceTokenId`, line, period, participant, and group fields can carry both provider-backed and contract-fixture data.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/live-detail` correctly exposes both real provider rows and clearly marked contract fixture rows.
+- The missing piece is not this route shape; it is real provider line-market availability.
+
+Temporary mock/static data:
+
+- The line markets remain backend-written contract fixtures, not frontend-only local strings.
+- They are acceptable for Local MVP UI/order proof only because the selected exact Polymarket event has no line markets in Gamma.
+
+Future migration concern:
+
+- When a future Polymarket event exposes attach-ready line markets, replace the contract fixture rows with real provider mappings before claiming provider parity for line markets.
+- Do not promote real provider-backed line parity from P1 to complete without proof of provider market ids, condition ids, token ids, route visibility, ticket selection preservation, order lifecycle, and Android UI proof.
+
 ## Cycle FH - Home Route Server Cancel And Portfolio Activity
 
 Closed or narrowed:

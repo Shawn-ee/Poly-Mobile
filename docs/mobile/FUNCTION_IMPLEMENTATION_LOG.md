@@ -5537,3 +5537,44 @@ Known limitations:
 - S23 Android proof was not run because no ADB devices were visible and the S23 wireless debug hostname did not resolve.
 - The selected line market is still `contract-fixture`, not real Polymarket-backed line liquidity.
 - This is a backend/server-mode proof only; the next P0 remains visible S23 proof from Home into ticket and Portfolio.
+
+## Cycle LP - Provider Match Line Availability Inspection
+
+Feature/page worked on:
+
+- Provider/data inspection for the Local MVP match page before continuing visible mobile work.
+
+Frontend/harness/backend files touched:
+
+- `scripts/prove_mobile_provider_match_line_availability.ts`
+- `docs/mobile/audits/cycle-LP-provider-match-line-availability.md`
+- `docs/mobile/harness/cycle-LP-provider-match-line-availability/cycle-LP-provider-match-line-availability.json`
+
+Important functions/services touched:
+
+- Added a proof script that compares the selected local match event against its exact Polymarket Gamma event slug.
+- Reused `GET /api/mobile/events/:slug/live-detail` as the Holiwyn route proof surface.
+- No backend schema, order route, mobile UI, orderbook UI, chat, live stats, or social feature code was changed.
+
+User interactions supported/proven:
+
+- The data contract behind Event Detail is now explicitly classified:
+  - Regulation Winner rows are real Polymarket-backed rows for `switzerland-vs-colombia`.
+  - Spread, Totals, and Team Totals rows are backend-shaped `contract-fixture` rows.
+- This supports the next visible MVP proof without pretending fixture line markets are provider-backed parity.
+
+State transitions:
+
+- No user/order state transition was added in LP.
+- The cycle updates the loop decision: continue Local MVP with contract fixture line markets until real provider line markets exist.
+
+Validation:
+
+- `npx tsx scripts/prove_mobile_provider_match_line_availability.ts --eventSlug=switzerland-vs-colombia --summaryPath=docs/mobile/harness/cycle-LP-provider-match-line-availability/cycle-LP-provider-match-line-availability.json`
+- `npm run test:jest -- src/__tests__/mobile-live-event-detail.test.ts`
+
+Known limitations:
+
+- No Android proof was run because ADB showed no visible devices.
+- Gamma exposes no Spread, Totals, Team Totals, Halves, Corners, or Correct Score markets for the selected match event.
+- Real provider-backed line-market replacement remains P1 until Polymarket exposes attach-ready line markets or another approved provider is in scope.

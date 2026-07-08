@@ -2281,3 +2281,17 @@ Cycle LO implementation notes:
 
 - LO is a server-mode lifecycle pass, not a device Audit Gate pass.
 - ADB showed no attached devices, and the S23 wireless debug hostname did not resolve, so Android proof remains the next P0.
+
+## Cycle LP - Provider Match Line Availability
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail provider availability audit | Polymarket Gamma `https://gamma-api.polymarket.com/events?slug=fifwc-che-col-2026-07-07` | GET | Public provider API | Exact provider event slug | Provider event title, market ids, market slugs, questions, condition ids | None directly; compared against local `Event.externalSlug` and market mapping fields | None. This is a provider inspection. | Gamma exposes only Regulation Winner markets for the selected event; no provider-backed Spread/Totals/Team Totals are available through this surface. |
+| Holiwyn Event Detail route comparison | `/api/mobile/events/switzerland-vs-colombia/live-detail` | GET | Public viewing | Event slug | `markets[]` with `marketType`, `marketGroupTitle`, `line`, `period`, `referenceSource`, `externalMarketId` | `Event`, `Market`, `Outcome`, provider/read-model quote fields | Contract-fixture line markets are allowed for Local MVP UI/order proof when the exact Polymarket event has no real line markets. | Replace fixture line rows with real provider mappings when available. |
+
+Cycle LP implementation notes:
+
+- No schema or order-route change was required.
+- `Regulation Winner` is real Polymarket-backed data for the selected match.
+- `Spread`, `Totals`, and `Team Totals` are route-visible only through backend-shaped `contract-fixture` rows.
+- `OPTIC_ODDS_API_KEY` remains optional and is not a blocker for this Polymarket-first MVP path.

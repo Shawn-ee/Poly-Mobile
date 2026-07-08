@@ -4405,3 +4405,32 @@ Decision:
 - Pass/fail: Partial, not final Audit Gate pass.
 - Unresolved P0 gaps: visible S23 proof from Home to Portfolio/history.
 - Remaining P1/P2 gaps: real Polymarket-backed line market mappings and production liquidity.
+
+## Cycle LP
+
+Gate status: Partial
+
+Scope: Provider/data availability inspection for current Local MVP match line markets.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-LP-provider-match-line-availability.md`
+- `docs/mobile/harness/cycle-LP-provider-match-line-availability/cycle-LP-provider-match-line-availability.json`
+- `scripts/prove_mobile_provider_match_line_availability.ts`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LP-PROVIDER-P0-01 | P0 | Pass | Exact Gamma event `fifwc-che-col-2026-07-07` returned 3 `match_winner_1x2` markets. | Fix event external slug or provider fetch path. |
+| LP-PROVIDER-P0-02 | P0 | Pass | Exact Gamma event returned 0 Spread/Totals/Team Totals/Halves/Corners/Correct Score markets. | If real line markets appear, map them instead of using fixtures. |
+| LP-PROVIDER-P0-03 | P0 | Pass | Holiwyn route returns 3 real `polymarket` Regulation Winner rows plus contract-fixture line families. | Fix route/source labeling if fixtures or provider rows are mislabeled. |
+| LP-PROVIDER-P0-04 | P0 | Pass | Contract fixtures are documented as a Local MVP bridge, not provider parity. | Update data contract docs and audit report. |
+| LP-PROVIDER-P0-05 | P0 | Fail | No S23 visible proof in this cycle because ADB showed no attached devices. | Reconnect S23 and run visible Home -> Event Detail -> ticket -> Portfolio/history proof. |
+
+Decision:
+
+- Pass/fail: Partial, not final mobile Audit Gate pass.
+- Provider inspection result: pass.
+- Unresolved P0 gaps: S23 visible MVP flow proof.
+- Remaining P1/P2 gaps: real provider-backed match line mappings and production liquidity.
