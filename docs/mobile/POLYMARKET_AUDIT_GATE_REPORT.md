@@ -5591,3 +5591,33 @@ Decision:
 
 - Pass/fail: Pass for source disclosure.
 - Remaining P1: fixture-line order submit health needs a separate backend/order-book cleanup cycle.
+
+## Cycle OJ
+
+Gate status: Pass for fixture-line proof cleanup
+
+Scope: Clean stale proof state and rerun the full S23 fixture-line submit path.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OJ-fixture-line-order-cleanup.md`
+- `docs/mobile/harness/cycle-OJ-fixture-line-order-cleanup/cycle-OJ-line-cleanup-route-proof.json`
+- `docs/mobile/harness/cycle-OJ-fixture-line-order-cleanup/cycle-OJ-current-mvp-line-cleanup.json`
+- `docs/mobile/harness/cycle-OJ-fixture-line-order-cleanup/cycle-OJ-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-OJ-fixture-line-order-cleanup/cycle-OJ-current-mvp-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-OJ-fixture-line-order-cleanup/cycle-OJ-current-mvp-after-submit.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OJ-P0-01 | P0 | Pass | Cleanup-only route proof cancels stale proof BUY bids and creates no maker order. | Fix cleanup-only mode in spread proof utility. |
+| OJ-P0-02 | P0 | Pass | S23 summary reports `result=pass` and cleanup proof path. | Run cleanup before app launch. |
+| OJ-P0-03 | P0 | Pass | After-submit XML reaches Portfolio with fixture spread line identity. | Fix submit/Portfolio sync. |
+| OJ-P0-04 | P0 | Pass | Summary reports open order visible with source badge. | Fix Portfolio order/source rendering. |
+| OJ-P0-05 | P0 | Pass | XML does not expose orderbook/chat in MVP path. | Hide non-MVP surfaces. |
+
+Decision:
+
+- Pass/fail: Pass.
+- Remaining P1: real provider-backed current-match line-market ingestion remains unavailable.

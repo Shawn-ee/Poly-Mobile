@@ -29,6 +29,7 @@ const cleanupBlockingBids = process.argv.includes("--cleanupBlockingBids");
 const cleanupBlockingMarketBids = process.argv.includes("--cleanupBlockingMarketBids");
 const cleanupProofAsks = process.argv.includes("--cleanupProofAsks");
 const cleanupBlockingAsks = process.argv.includes("--cleanupBlockingAsks");
+const cleanupOnly = process.argv.includes("--cleanupOnly");
 const proofUserPrefix = argValue("proofUserPrefix") ?? "holiwyn-mobile-";
 
 const assert: (condition: unknown, message: string) => asserts condition = (condition, message) => {
@@ -208,23 +209,27 @@ async function main() {
     }
   }
 
-  const maker = await createMaker();
-  if (makerSide === "SELL") {
+  const maker = cleanupOnly ? null : await createMaker();
+  if (maker && makerSide === "SELL") {
     await mintCompleteSetForPublicOrderbook({ marketId: market.id, userId: maker.id, quantity: "80" });
   }
   const makerPrice = makerSide === "BUY" ? bidPrice : askPrice;
   const makerSize = makerSide === "BUY" ? bidSize : askSize;
-  const makerOrder = await placeOrderAndMatch({
-    marketId: market.id,
-    outcomeId: outcome.id,
-    userId: maker.id,
-    side: makerSide,
-    type: "LIMIT",
-    price: makerPrice,
-    size: makerSize,
-  });
+  const makerOrder = maker
+    ? await placeOrderAndMatch({
+        marketId: market.id,
+        outcomeId: outcome.id,
+        userId: maker.id,
+        side: makerSide,
+        type: "LIMIT",
+        price: makerPrice,
+        size: makerSize,
+      })
+    : null;
 
-  assert(makerOrder.order.status === "OPEN", `Expected maker order to rest open, got ${makerOrder.order.status}.`);
+  if (makerOrder) {
+    assert(makerOrder.order.status === "OPEN", `Expected maker order to rest open, got ${makerOrder.order.status}.`);
+  }
 
   const summary = {
     pass: true,
@@ -247,10 +252,13 @@ async function main() {
       referenceTokenId: outcome.referenceTokenId,
       referenceOutcomeLabel: outcome.referenceOutcomeLabel,
     },
-    maker: {
-      id: maker.id,
-      username: maker.username,
-    },
+    cleanupOnly,
+    maker: maker
+      ? {
+          id: maker.id,
+          username: maker.username,
+        }
+      : null,
     cleanup: {
       enabled: cleanupProofBids,
       proofUserPrefix,
@@ -264,7 +272,7 @@ async function main() {
       cleanupBlockingAsks,
       canceledBlockingAsks,
     },
-    makerOrder: makerOrder.order,
+    makerOrder: makerOrder?.order ?? null,
     seededAsk: {
       side: makerSide,
       price: makerPrice,

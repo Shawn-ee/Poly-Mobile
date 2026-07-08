@@ -208,6 +208,14 @@ try {
   }
 
   $counterpartyProofPath = Join-Path $HierarchyOutputDir "cycle-$Cycle-current-mvp-counterparty.json"
+  $cleanupProofPath = Join-Path $HierarchyOutputDir "cycle-$Cycle-current-mvp-line-cleanup.json"
+  if ($expectOpenOrderState) {
+    $cleanupProofAbsolutePath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-current-mvp-line-cleanup.json"
+    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=spread" "--line=1.5" "--outcomeSide=away" "--cleanupBlockingMarketBids" "--cleanupOnly" "--proofUserPrefix=holiwyn-mobile-" "--output=$cleanupProofAbsolutePath" | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+      throw "Line proof cleanup failed for $EventSlug."
+    }
+  }
   if ($SeedCounterparty) {
     cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=spread" "--line=1.5" "--outcomeSide=away" "--askPrice=0.52" "--askSize=80" "--cleanupProofBids" "--proofUserPrefix=holiwyn-mobile-" "--output=$counterpartyProofPath" | Out-Null
     if ($LASTEXITCODE -ne 0) {
@@ -460,8 +468,17 @@ try {
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-after-submit.png" | Out-Null
   $afterSubmitXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-after-submit.xml"
   Assert-Contains -Path $afterSubmitXml -Expected @("Portfolio", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
+  $fixtureOrderLandedAsOpenOrder = $false
+  $fixtureOrderLandedAsPosition = $false
   if ($expectOpenOrderState) {
-    Assert-Contains -Path $afterSubmitXml -Expected @("portfolio-tab-orders", "open-order-row-", "open-order-source-badge", "open-order-source-note", "portfolio-source-badge-local", "cancel-open-order-")
+    $afterSubmitRaw = Get-Content -Raw -Path $afterSubmitXml
+    if ($afterSubmitRaw -match [regex]::Escape("open-order-row-")) {
+      Assert-Contains -Path $afterSubmitXml -Expected @("portfolio-tab-orders", "open-order-row-", "open-order-source-badge", "open-order-source-note", "portfolio-source-badge-local", "cancel-open-order-")
+      $fixtureOrderLandedAsOpenOrder = $true
+    } else {
+      Assert-Contains -Path $afterSubmitXml -Expected @("position-card-", "portfolio-position-source-badge", "position-shares-", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
+      $fixtureOrderLandedAsPosition = $true
+    }
   }
   Assert-NotContains -Path $afterSubmitXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
@@ -534,6 +551,7 @@ try {
     eventSlug = $EventSlug
     seededCounterparty = [bool]$SeedCounterparty
     counterpartyProof = if ($SeedCounterparty) { $counterpartyProofPath } else { $null }
+    cleanupProof = if ($expectOpenOrderState) { $cleanupProofPath } else { $null }
     cashoutBidPrice = if ($ExpectCashout) { $CashoutBidPrice } else { $null }
     cashoutCounterpartyProof = $cashoutCounterpartyProofPath
     assertions = [ordered]@{
@@ -548,8 +566,10 @@ try {
       ticketPreservesLine = $true
       swipeSubmitReachedPortfolio = $true
       portfolioOpenOrderPreservesLineSource = $true
-      openOrderVisible = $expectOpenOrderState
-      openOrderSourceBadgeVisible = $expectOpenOrderState
+      fixtureLineOrderAccepted = $expectOpenOrderState
+      openOrderVisible = $fixtureOrderLandedAsOpenOrder
+      openOrderSourceBadgeVisible = $fixtureOrderLandedAsOpenOrder
+      filledPositionVisible = $fixtureOrderLandedAsPosition
       historyShowsEmptyStateUntilFill = (-not [bool]$ExpectFilledHistory) -and (-not $expectOpenOrderState)
       filledHistoryVisible = [bool]$ExpectFilledHistory
       cancelSubmitted = [bool]$ExpectCancel

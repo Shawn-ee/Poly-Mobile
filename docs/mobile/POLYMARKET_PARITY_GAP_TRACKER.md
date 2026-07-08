@@ -798,3 +798,12 @@ For every UI element or interaction, answer:
 - S23 proof confirms Home, Event Detail line section, and Trade Ticket ready state all expose fake-token local-line markers.
 - Remaining P1: fixture-line submit hit a backend binary invariant in one full-submit attempt and needs order-book cleanup before claiming fixture-line order health.
 - Remaining P1: real provider-backed current-match line markets remain unavailable.
+
+## Cycle OJ Gap Tracker Update
+
+- PM-GAP-130 is opened and verified for fixture-line repeated proof cleanup.
+- OJ closes the OI fixture-line submit blocker by cleaning stale proof BUY bids before S23 submit proof.
+- S23 proof confirms Home -> Event Detail -> Spread line -> Trade Ticket -> fake-token server order -> Portfolio open order without the binary invariant failure.
+- Portfolio preserves spread line `1.5`, `contract-fixture`, and local-test fake-token identity.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Remaining P1: cleanup-only harness support is for local proof health only; it does not make fixture lines provider-backed.

@@ -8244,3 +8244,48 @@ Known limitations:
 
 - Fixture-line order submit hit a backend binary invariant during an earlier full proof attempt and is tracked separately.
 - Current-match Regulation Winner remains the proven real provider-backed order path.
+
+## Cycle OJ - Fixture Line Order Cleanup
+
+Feature/page worked on:
+
+- Current Local MVP fixture-line submit proof: Event Detail Spread line -> Trade Ticket -> Portfolio.
+
+Frontend/proof files touched:
+
+- `scripts/seed_mobile_route_spread_counterparty.ts`
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+- `docs/mobile/audits/cycle-OJ-fixture-line-order-cleanup.md`
+- `docs/mobile/harness/cycle-OJ-fixture-line-order-cleanup/`
+- `docs/mobile/screenshots/cycle-OJ-fixture-line-order-cleanup/`
+
+Important functions/services touched:
+
+- Spread counterparty proof utility now supports cleanup-only execution.
+- Current MVP S23 proof harness cleans stale fixture-line bids before full submit proof.
+
+User interactions supported/proven:
+
+- User opens Home.
+- User opens `Argentina vs. Egypt`.
+- User selects a local-test fake-token Spread line.
+- User opens a Trade Ticket preserving line/source identity.
+- User swipes to submit a fake-token server order.
+- User reaches Portfolio with the fixture-line order visible.
+
+State transitions:
+
+- Cleanup-only proof cancels stale proof BUY bids before launch.
+- Trade Ticket submit no longer fails due to the stale binary invariant conflict.
+- Portfolio receives either an open order or a filled position; the final S23 proof landed as an open order.
+
+Validation:
+
+- Mobile TypeScript passed.
+- Focused mobile Vitest source/selection tests passed.
+- Samsung S23 full visible proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- Spread/Totals/Team Total remain local-test fake-token fixtures.
+- Current-match Regulation Winner remains the real Polymarket-backed market path.

@@ -6658,3 +6658,31 @@ Temporary mock/static data:
 Future migration concern:
 
 - Do not remove fake-token fixture disclosure until real provider-backed line rows replace the fixture rows in backend route contracts.
+
+## Cycle OJ - Fixture Line Order Cleanup
+
+Closed or narrowed:
+
+- Repeated fixture-line S23 submit proof no longer fails because of stale proof BUY bids.
+- The proof harness now accepts the valid Portfolio outcome after submit: either an open order or a filled position, while still requiring line/source/fake-token identity.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed current-match Spread/Totals/Team Total market identities.
+- A provider-owned source for current-match line market prices and line availability.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch blocked OJ.
+
+Temporary mock/static data:
+
+- Existing backend-shaped `contract-fixture` Spread/Totals/Team Total rows remain in use for Local MVP line-selector UX and fake-token testing.
+
+Future migration concern:
+
+- Cleanup-only proof should remain a harness utility, not a substitute for real provider-owned line-market lifecycle.

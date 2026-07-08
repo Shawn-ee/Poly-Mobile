@@ -930,6 +930,37 @@ Pass for stale Event Detail status honesty.
 Remaining gaps:
 Real current live match discovery/breadth is still missing, and line families remain contract fixtures.
 
+### 2026-07-08 - Cycle OJ - Fixture-line proof cleanup
+
+Reference device:
+Not used. This was a Holiwyn Local MVP proof-health cycle after current provider/source inspection.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://172.16.200.14:3002`, temporary Expo port `8316`, temporary mobile dev API key.
+
+Holiwyn actions:
+Opened Home, opened `Argentina vs. Egypt`, selected the Spread `Egypt +1.5` fixture line, opened Trade Ticket, swiped to submit a fake-token order, and verified Portfolio shows the resulting open order with line/source/fake-token identity.
+
+Evidence:
+- `docs/mobile/harness/cycle-OJ-fixture-line-order-cleanup/cycle-OJ-current-mvp-s23-visible-flow.json`
+- `docs/mobile/harness/cycle-OJ-fixture-line-order-cleanup/cycle-OJ-current-mvp-line-cleanup.json`
+- `docs/mobile/screenshots/cycle-OJ-fixture-line-order-cleanup/cycle-OJ-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-OJ-fixture-line-order-cleanup/cycle-OJ-current-mvp-lines.png`
+- `docs/mobile/screenshots/cycle-OJ-fixture-line-order-cleanup/cycle-OJ-current-mvp-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-OJ-fixture-line-order-cleanup/cycle-OJ-current-mvp-after-submit.png`
+
+Smoke/tests:
+Mobile TypeScript, focused mobile Vitest source/selection tests, cleanup route proof, and S23 full visible proof passed.
+
+Result:
+Pass for fixture-line proof cleanup and fake-token line submit health.
+
+Remaining gaps:
+Real current-match Spread/Totals/Team Total provider-backed line markets remain unavailable. Regulation Winner remains the current real Polymarket-backed MVP order path.
+
 ### 2026-07-08 - Cycle OF - Ticket and Portfolio fake-token source clarity
 
 Reference device:

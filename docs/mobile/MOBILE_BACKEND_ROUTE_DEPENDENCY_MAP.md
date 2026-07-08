@@ -3176,3 +3176,16 @@ Cycle OI implementation notes:
 
 - No backend route or schema changed.
 - Backend order matching was not changed in this source-disclosure cycle.
+
+## Cycle OJ - Fixture Line Order Cleanup
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Fixture-line cleanup proof | `scripts/seed_mobile_route_spread_counterparty.ts --cleanupOnly --cleanupBlockingMarketBids` | Local proof/service | Local service context | Event slug, spread group, line `1.5`, outcome side `away`, proof user prefix | Canceled stale proof order ids and target market/outcome identity | `Event`, `Market`, `Outcome`, `Order` | Existing contract-fixture spread line remains the Local MVP line source. | Real provider-backed Spread/Totals/Team Total rows remain unavailable. |
+| Fixture-line fake-token submit | `/api/orders` | POST | Mobile API key with order scope | Spread `marketId`, `outcomeId`, side, price, size, line/source identity | Order id/status and selected fixture-line identity | `User`, `ApiCredential`, `Order`, accounting models | Existing `contract-fixture` line rows render as local-test fake-token lines. | None for Local MVP fake-token submit after stale proof cleanup. |
+| Portfolio fixture-line result | `/api/portfolio` | GET | Mobile API key with portfolio scope | None | Open orders or positions with `marketType=spread`, `line=1.5`, `provider-source=contract-fixture` | `Order`, portfolio read model | Existing fixture-line source labels remain visible. | Real provider-backed line-market replacement remains future work. |
+
+Cycle OJ implementation notes:
+
+- No backend route or schema changed.
+- The proof harness now removes stale proof bids before S23 submit proof so repeated local fake-token line tests do not trip binary market invariants.
