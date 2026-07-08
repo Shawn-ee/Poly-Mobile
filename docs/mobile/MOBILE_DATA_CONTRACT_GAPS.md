@@ -7082,3 +7082,33 @@ Future migration concern:
 
 - Local bot runtime files live outside the mobile repo and must not be committed.
 - Production/staging bot enablement must not reuse local fake-token proof flags without separate review.
+
+## Cycle OZ - Third Provider Market Tradable Proof
+
+Closed or narrowed:
+
+- Provider-visible-to-tradable proof now covers three provider-backed World Cup Winner markets: England, France, and Spain.
+- Spain has provider identity preserved through quote, order, Portfolio, and History.
+- Exposure-cap blocking did not recur with the selected small seed/live-local quote configuration.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Current-match provider-backed Spread/Totals/Team Total market ids, token ids, chart history, and prices.
+- A product-approved way to expose broad futures outside Search/detail if desired; Home/Live remain match-only by design.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch for the selected provider-backed Spain future flow.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- Local bot runtime identifiers were redacted from committed evidence.
+- Production/staging bot enablement must not reuse local fake-token proof flags without separate review.
