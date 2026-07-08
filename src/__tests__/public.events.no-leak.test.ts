@@ -311,7 +311,8 @@ describe("public event API no-leak checks", () => {
     mockPrisma.event.findMany.mockResolvedValue([
       {
         ...baseEvent,
-        status: "live",
+        status: "active",
+        liveStatus: "LIVE",
         markets: [mobileListMarket],
       },
     ]);
@@ -328,7 +329,10 @@ describe("public event API no-leak checks", () => {
             expect.objectContaining({
               sportKey: "soccer",
               leagueKey: "world_cup",
-              status: "live",
+              OR: [
+                { status: "live" },
+                { liveStatus: "LIVE" },
+              ],
             }),
           ]),
         }),
@@ -340,7 +344,8 @@ describe("public event API no-leak checks", () => {
     expect(body.events).toHaveLength(1);
     expect(body.events[0]).toMatchObject({
       slug: "france-vs-argentina",
-      status: "live",
+      status: "active",
+      liveStatus: "LIVE",
       markets: [{ id: "market-1" }],
     });
     expectNoForbiddenKeys(body);

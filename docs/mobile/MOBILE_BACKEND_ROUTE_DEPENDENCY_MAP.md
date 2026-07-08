@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle MZ - Backend Live Status Route
+
+Cycle MZ closes the backend `status=live` route gap discovered by the Live page.
+
+- Route proof: `docs/mobile/harness/cycle-MZ-backend-live-status-route/cycle-MZ-live-route-status.json`.
+- S23 proof: `docs/mobile/harness/cycle-MZ-backend-live-status-route/cycle-MZ-current-mvp-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-MZ-backend-live-status-route.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Live page event feed | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10&status=live` | GET | Public event viewing | None | `status`, `liveStatus`, compact `markets`, `marketSourceSummary`, event slug/team/title fields | Existing `Event`, `Market`, `Outcome`; no schema change | Mobile still has defensive all-match fallback from Cycle MY, but the backend live route now returns current `liveStatus=LIVE` events directly | Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected Polymarket events. |
+
 ## Cycle MY - Live Source Readiness
 
 Cycle MY makes the Live page robust against the current backend status contract where live matches may have `status=active` and `liveStatus=LIVE`.

@@ -2,6 +2,26 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle MZ - Backend Live Status Route
+
+Closed or narrowed:
+
+- Backend `/api/events?status=live` now includes current events where `liveStatus=LIVE`, even if canonical event `status` is `active`.
+- Route proof shows the current live endpoint returns Argentina/Egypt and Switzerland/Colombia.
+- S23 proof verifies the visible Live page and full MVP ticket/order/Portfolio flow still pass.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected events.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Existing `contract-fixture` line markets remain backend-shaped Local MVP fallback rows.
+
 ## Cycle MY - Live Source Readiness
 
 Closed or narrowed:

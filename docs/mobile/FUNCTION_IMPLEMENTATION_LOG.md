@@ -2,6 +2,37 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle MZ - Backend Live Status Route
+
+Feature/page worked on:
+
+- Backend `/api/events` live status filtering used by the mobile Live page.
+
+Frontend/services touched:
+
+- `src/app/api/events/route.ts`
+- `src/__tests__/public.events.no-leak.test.ts`
+
+User interactions supported/proven:
+
+- On S23, opened Home, switched to Live, returned Home, then completed Event Detail -> local Spread ticket -> swipe buy -> Portfolio/history.
+
+Backend/API route changed:
+
+- `/api/events?status=live` now includes events where `status=live` or `liveStatus=LIVE`.
+
+Verified:
+
+- Public events route Jest test passed.
+- Focused mobile Vitest tests passed.
+- Mobile typecheck passed.
+- Route proof passed: `docs/mobile/harness/cycle-MZ-backend-live-status-route/cycle-MZ-live-route-status.json`.
+- S23 proof passed: `docs/mobile/harness/cycle-MZ-backend-live-status-route/cycle-MZ-current-mvp-s23-visible-flow.json`.
+
+Known limitations:
+
+- Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected events.
+
 ## Cycle MY - Live Source Readiness
 
 Feature/page worked on:

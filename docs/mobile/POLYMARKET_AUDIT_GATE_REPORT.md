@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle MZ
+
+Gate status: Pass
+
+Scope: Backend Live route status contract.
+
+Decision:
+
+- P0 failed: 0 for focused backend Live route status scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-MZ-backend-live-status-route/cycle-MZ-live-route-status.json`, `docs/mobile/harness/cycle-MZ-backend-live-status-route/cycle-MZ-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MZ-backend-live-status-route/`, `docs/mobile/audits/cycle-MZ-backend-live-status-route.md`.
+- Notes: `/api/events?...status=live` now returns current `status=active/liveStatus=LIVE` MVP matches directly, and S23 proof confirms the visible Live page plus full line ticket/order/Portfolio/history path.
+
 ## Cycle MY
 
 Gate status: Pass

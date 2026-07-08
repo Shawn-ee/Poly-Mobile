@@ -61,6 +61,19 @@ const mobileMvpMatchFilter = (enabled: boolean): Prisma.EventWhereInput =>
       }
     : {};
 
+const eventStatusFilter = (status: string): Prisma.EventWhereInput => {
+  if (!status) return {};
+  if (status.toLowerCase() === "live") {
+    return {
+      OR: [
+        { status: "live" },
+        { liveStatus: "LIVE" },
+      ],
+    };
+  }
+  return { status };
+};
+
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const search = url.searchParams.get("search")?.trim() ?? "";
@@ -121,7 +134,7 @@ export async function GET(request: NextRequest) {
     ...(sportKey ? { sportKey } : {}),
     ...(leagueKey ? { leagueKey } : {}),
     ...(source ? { source } : {}),
-    ...(status ? { status } : {}),
+    ...eventStatusFilter(status),
     },
   ];
   const where: Prisma.EventWhereInput = { AND: eventFilters };
