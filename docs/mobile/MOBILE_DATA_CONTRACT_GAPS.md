@@ -2,6 +2,32 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle OR - Home/Live Provider Breadth Status Guard
+
+Closed or narrowed:
+
+- Mobile no longer treats provider-backed World Cup futures/outrights as live football games just because Polymarket provider data carries `liveStatus=LIVE`.
+- The Home/Live service now rejects `future`, `futures`, `outright`, and `outrights` before applying team-name match heuristics.
+- S23 Search still proves multiple provider-backed World Cup predictions, and S23 Live proves futures are not shown as live matches.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- A clearer backend `displayStatus.mobileStatus` for provider-backed futures would reduce the need for mobile-side protection.
+- More current provider-backed match events and real provider-backed line markets remain unavailable.
+
+Route mismatch:
+
+- Raw provider route `/api/events?...status=live...` can include futures because provider status is live/open. Mobile now intentionally protects the MVP Live surface from that mismatch.
+
+Temporary mock/static data:
+
+- No new mock data added.
+- Current MVP Spread/Totals/Team Total markets remain contract fixtures.
+
+Future migration concern:
+
+- If Home later exposes broad World Cup futures, keep that as an explicit prediction/futures surface and do not mix it into the Live football tab.
+
 ## Cycle OQ - Provider Breadth Runtime Loop
 
 Closed or narrowed:

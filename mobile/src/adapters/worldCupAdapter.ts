@@ -105,7 +105,19 @@ const hasStaleLiveDataWithoutClock = (event: BackendEventSummary) => {
   return !event.clock && ["stale", "unavailable", "empty"].includes(liveDataStatus);
 };
 
+const isOutrightProviderEvent = (event: BackendEventSummary) => {
+  const eventType = `${event.eventType ?? ""}`.trim().toLowerCase();
+  const marketProfile = `${event.marketProfile ?? ""}`.trim().toLowerCase();
+  const supportedMarketTypes = event.supportedMarketTypes ?? [];
+  return (
+    ["future", "futures", "outright", "outrights"].includes(eventType) ||
+    marketProfile === "outright" ||
+    supportedMarketTypes.includes("outright")
+  );
+};
+
 const eventStatus = (event: BackendEventSummary): Event["status"] => {
+  if (isOutrightProviderEvent(event)) return "future";
   const displayStatus = `${event.displayStatus?.mobileStatus ?? ""}`.trim().toLowerCase();
   if (["live", "today", "tomorrow", "future"].includes(displayStatus)) return displayStatus as Event["status"];
   const liveStatus = `${event.liveStatus ?? ""}`.toLowerCase();

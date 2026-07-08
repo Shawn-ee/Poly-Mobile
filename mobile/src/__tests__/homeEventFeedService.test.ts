@@ -10,6 +10,7 @@ const event = (input: Partial<EventSummary> & Pick<EventSummary, "id" | "slug" |
   category: input.category ?? "Sports / Soccer",
   sportKey: input.sportKey ?? "soccer",
   leagueKey: input.leagueKey ?? "world_cup",
+  eventType: input.eventType ?? null,
   homeTeamName: input.homeTeamName ?? null,
   awayTeamName: input.awayTeamName ?? null,
   startTime: input.startTime ?? "2026-07-04T12:00:00.000Z",
@@ -104,6 +105,45 @@ describe("homeEventFeedService", () => {
       source: "polymarket",
       leagueKey: "world_cup",
       mobileMvpMatches: true,
+    });
+  });
+
+  test("keeps provider-backed World Cup futures out of the Home Live match feed", async () => {
+    const listWorldCupEvents = vi.fn(async () => ({
+      events: [
+        event({
+          id: "future-1",
+          slug: "which-continent-will-win-the-world-cup",
+          title: "Which continent will win the World Cup?",
+          eventType: "future",
+          status: "active",
+          liveStatus: "LIVE",
+          homeTeamName: "World Cup",
+          awayTeamName: "Winner",
+        }),
+        event({
+          id: "match-1",
+          slug: "argentina-vs-egypt",
+          title: "Argentina vs. Egypt",
+          eventType: "match",
+          status: "active",
+          liveStatus: "LIVE",
+          homeTeamName: "Argentina",
+          awayTeamName: "Egypt",
+        }),
+      ],
+      page: { limit: 10, nextCursor: null, hasMore: false },
+    }));
+
+    await expect(
+      loadHomeEventFeedPage({
+        api: { listWorldCupEvents },
+        filter: "live",
+        limit: 10,
+      }),
+    ).resolves.toMatchObject({
+      source: "server-route",
+      events: [{ slug: "argentina-vs-egypt" }],
     });
   });
 

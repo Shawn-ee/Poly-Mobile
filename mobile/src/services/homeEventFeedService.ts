@@ -38,7 +38,7 @@ const matchesFilter = (event: EventSummary, filter: HomeEventFeedFilter) => {
 const isWorldCupMatchEvent = (event: EventSummary) =>
   event.sportKey === "soccer" &&
   event.leagueKey === "world_cup" &&
-  event.eventType !== "future" &&
+  !["future", "futures", "outright", "outrights"].includes(`${event.eventType ?? ""}`.trim().toLowerCase()) &&
   (
     event.eventType === "match" ||
     event.status === "live" ||

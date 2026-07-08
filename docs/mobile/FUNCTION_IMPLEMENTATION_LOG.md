@@ -2,6 +2,43 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle OR - Home/Live Provider Breadth Status Guard
+
+Feature/page worked on:
+
+- Mobile Search provider-breadth status display.
+- Mobile Home/Live match-only filtering for the Local MVP retail path.
+
+Frontend/services touched:
+
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/services/homeEventFeedService.ts`
+- `mobile/src/__tests__/worldCupAdapter.test.ts`
+- `mobile/src/__tests__/homeEventFeedService.test.ts`
+
+User interactions supported:
+
+- Users can search for World Cup provider-backed predictions and see multiple real provider-backed events without futures being mislabeled as live football.
+- Users can open the Live tab without World Cup outright/future markets polluting the live-match feed.
+
+State transitions:
+
+- Provider `eventType=future` / `marketProfile=outright` now maps to mobile `future` state even when provider `liveStatus=LIVE`.
+- Home/Live service rejects future/outright event types before using team-name fields as match heuristics.
+
+Known limitations:
+
+- No backend schema or order route changed.
+- Broad provider futures remain visible through Search, while Home remains the match-only MVP path.
+- Real provider-backed current match breadth and line-market breadth remain P1.
+
+Validation:
+
+- Focused mobile Vitest passed.
+- Mobile typecheck passed.
+- Public event route no-leak Jest test passed.
+- S23 Search/Live proof passed.
+
 ## Cycle OQ - Provider Breadth Runtime Loop
 
 Feature/page worked on:

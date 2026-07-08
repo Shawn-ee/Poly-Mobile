@@ -1,0 +1,68 @@
+{
+  "generatedAt": "2026-07-08T19:05:46.3746194Z",
+  "broadProviderEvents": [
+    {
+      "slug": "which-continent-will-win-the-world-cup",
+      "title": "Which continent will win the World Cup?",
+      "eventType": "future",
+      "status": "active",
+      "liveStatus": "LIVE",
+      "marketProfile": "outright",
+      "marketCount": 3,
+      "polymarketMarketCount": 3,
+      "contractFixtureMarketCount": 0
+    },
+    {
+      "slug": "provider-breadth-world-cup-winner",
+      "title": "World Cup Winner",
+      "eventType": "future",
+      "status": "live",
+      "liveStatus": "LIVE",
+      "marketProfile": "outright",
+      "marketCount": 8,
+      "polymarketMarketCount": 8,
+      "contractFixtureMarketCount": 0
+    },
+    {
+      "slug": "argentina-vs-egypt",
+      "title": "Argentina vs. Egypt",
+      "eventType": "match",
+      "status": "active",
+      "liveStatus": "LIVE",
+      "marketProfile": "regulation_90",
+      "marketCount": 7,
+      "polymarketMarketCount": 3,
+      "contractFixtureMarketCount": 4
+    }
+  ],
+  "mobileMvpMatchEvents": {
+    "slug": "argentina-vs-egypt",
+    "title": "Argentina vs. Egypt",
+    "eventType": "match",
+    "status": "active",
+    "liveStatus": "LIVE",
+    "marketProfile": "regulation_90",
+    "marketCount": 7,
+    "polymarketMarketCount": 3,
+    "contractFixtureMarketCount": 4
+  },
+  "rawLiveProviderEvents": [
+    {
+      "slug": "which-continent-will-win-the-world-cup",
+      "title": "Which continent will win the World Cup?",
+      "eventType": "future",
+      "status": "active",
+      "liveStatus": "LIVE",
+      "marketProfile": "outright"
+    },
+    {
+      "slug": "provider-breadth-world-cup-winner",
+      "title": "World Cup Winner",
+      "eventType": "future",
+      "status": "live",
+      "liveStatus": "LIVE",
+      "marketProfile": "outright"
+    }
+  ],
+  "finding": "Polymarket-backed World Cup futures can carry liveStatus=LIVE; mobile must classify outright/future events as future predictions and keep Home/Live match feeds match-only."
+}

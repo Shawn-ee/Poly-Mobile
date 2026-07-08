@@ -527,4 +527,64 @@ describe("world cup adapter", () => {
     expect(normalized?.markets.map((market) => market.outcomes[0].label)).toEqual(["Argentina", "France"]);
     expect(normalized?.markets.map((market) => market.outcomes[1].label)).toEqual(["No", "No"]);
   });
+
+  test("keeps Polymarket outright futures out of the mobile live-match status", () => {
+    const detail: EventDetail = {
+      event: {
+        id: "continent-winner",
+        slug: "which-continent-will-win-the-world-cup",
+        title: "Which continent will win the World Cup?",
+        description: "Tournament outright.",
+        category: "Sports / Soccer",
+        sportKey: "soccer",
+        leagueKey: "world_cup",
+        eventType: "future",
+        homeTeamName: "World Cup",
+        awayTeamName: "Winner",
+        startTime: null,
+        status: "active",
+        liveStatus: "LIVE",
+        period: "Futures",
+        clock: "Live",
+        homeScore: null,
+        awayScore: null,
+        imageUrl: null,
+        marketCount: 1,
+        activeMarketCount: 1,
+        marketProfile: "outright",
+        resultMode: "one_winner",
+        gameRules: {
+          allowDraw: false,
+          includesOvertime: false,
+          description: "Tournament outright winner market.",
+        },
+        supportedMarketTypes: ["outright"],
+      },
+      markets: [
+        {
+          ...baseMarket,
+          id: "africa-market",
+          title: "Africa (CAF)",
+          marketGroupTitle: "Outrights",
+          marketGroupKey: "outrights",
+          marketGroupId: "outrights",
+          marketType: "outright",
+          period: "futures",
+          propCategory: null,
+          referenceSource: "polymarket",
+          outcomes: [
+            { id: "africa-yes", name: "YES", label: "Africa (CAF)", side: "yes", price: 0.03, bestBid: 0.028, bestAsk: 0.029, isTradable: true },
+            { id: "africa-no", name: "NO", label: "No", side: "no", price: 0.97, bestBid: 0.971, bestAsk: 0.972, isTradable: true },
+          ],
+        },
+      ],
+    };
+
+    const normalized = normalizeEventDetail(detail);
+
+    expect(normalized?.marketProfile).toBe("outright");
+    expect(normalized?.status).toBe("future");
+    expect(normalized?.tag).toBe("Active");
+    expect(normalized?.startsAt).toBe("Time TBD");
+  });
 });

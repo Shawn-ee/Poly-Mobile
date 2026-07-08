@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle OR
+
+Gate status: Pass
+
+Scope: Home/Live provider breadth status guard.
+
+Decision:
+
+- P0 failed: 0 for focused status/filter scope.
+- P1/P2 remaining: P1 real provider-backed current/live match breadth remains limited; P1 provider-backed Spread/Totals/Team Total line markets remain unavailable; P1 broad futures remain Search-visible rather than Home-visible by product choice.
+- Evidence: `docs/mobile/harness/cycle-OR-home-provider-breadth-feed/cycle-OR-route-status-summary.json`, `docs/mobile/harness/cycle-OR-home-provider-breadth-feed/cycle-OR-s23-search-summary-after-clear.json`, `docs/mobile/screenshots/cycle-OR-home-provider-breadth-feed/cycle-OR-s23-search-world-provider-futures-after-clear.png`, `docs/mobile/harness/cycle-OR-home-provider-breadth-feed/cycle-OR-s23-live-summary-after-tap.json`, `docs/mobile/screenshots/cycle-OR-home-provider-breadth-feed/cycle-OR-s23-live-no-outright-futures-after-tap.png`.
+- Notes: The gate passes because mobile now classifies provider-backed futures/outrights as future predictions even when Polymarket reports `liveStatus=LIVE`, and S23 proof shows Search breadth while Live stays free of futures.
+
 ## Cycle OQ
 
 Gate status: Pass

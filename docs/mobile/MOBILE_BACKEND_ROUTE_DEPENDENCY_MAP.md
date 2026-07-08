@@ -2,6 +2,21 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle OR - Home/Live Provider Breadth Status Guard
+
+Cycle OR does not change backend routes or schemas. It documents and guards the existing route behavior where Polymarket World Cup futures can carry `liveStatus=LIVE`.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Search provider breadth display | `/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&limit=20` | GET | None for browsing | None | `eventType`, `liveStatus`, `marketProfile`, `supportedMarketTypes`, compact `markets[]`, `marketSourceSummary` | `Event`, `Market`, `Outcome`, reference snapshot tables | None added | More current provider-backed match events remain needed. |
+| Home/Live match-only guard | `/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&mobileMvpMatches=1&limit=10`; `/api/events?...status=live...` | GET | None for browsing | None | `eventType`, `homeTeamName`, `awayTeamName`, `liveStatus`, `status` | `Event`, `Market`, `Outcome` | Existing local fallback only when backend is unreachable | Backend raw live status can include futures; mobile now guards future/outright types explicitly. |
+
+Evidence:
+
+- Route summary: `docs/mobile/harness/cycle-OR-home-provider-breadth-feed/cycle-OR-route-status-summary.json`
+- S23 Search proof: `docs/mobile/harness/cycle-OR-home-provider-breadth-feed/cycle-OR-s23-search-summary-after-clear.json`
+- S23 Live proof: `docs/mobile/harness/cycle-OR-home-provider-breadth-feed/cycle-OR-s23-live-summary-after-tap.json`
+
 ## Cycle OQ - Provider Breadth Runtime Loop
 
 Cycle OQ imports one additional real Polymarket-backed World Cup event, refreshes reference prices, proves it in mobile Search on S23, and proves one tiny allowlisted fake-token bot dry-run/live-local path.
