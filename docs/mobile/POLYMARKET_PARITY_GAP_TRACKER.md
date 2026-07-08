@@ -660,3 +660,11 @@ For every UI element or interaction, answer:
 - `/api/events?status=live` now hides stale provider-dated matches, and mobile no longer falls back to all-match results for Live.
 - S23 proof passes for Home showing the MVP match, Live showing no live markets, and Home return preserving the MVP match.
 - Remaining P1: real current live World Cup match/provider breadth remains missing.
+
+## Cycle NT Gap Tracker Update
+
+- PM-GAP-116 is opened and verified for stale provider-date mobile status labeling.
+- NT closes the follow-on issue where Home could still visually tag a stale provider-dated match as Live because the mobile adapter trusted `liveStatus=LIVE`.
+- Mobile now uses the same freshness idea as the backend route and shows the MVP match as `Active` / `Time TBD`.
+- S23 proof passes for Home stale-label honesty and Live empty state.
+- Remaining P1: real current live World Cup match/provider breadth remains missing.

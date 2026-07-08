@@ -76,10 +76,34 @@ const asPeriod = (value: string | null | undefined): Market["period"] | undefine
   return undefined;
 };
 
+const datePattern = /\b(20\d{2})-(\d{2})-(\d{2})\b/;
+
+const dateOnly = (date: Date) => Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+
+const dateFromText = (value: string | null | undefined) => {
+  const match = `${value ?? ""}`.match(datePattern);
+  if (!match) return null;
+  const timestamp = Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+  return Number.isFinite(timestamp) ? timestamp : null;
+};
+
+const eventDate = (event: BackendEventSummary) => {
+  if (event.startTime) {
+    const start = new Date(event.startTime);
+    if (!Number.isNaN(start.getTime())) return dateOnly(start);
+  }
+  return dateFromText(event.externalSlug) ?? dateFromText(event.title);
+};
+
+const isFreshLiveEvent = (event: BackendEventSummary) => {
+  const day = eventDate(event);
+  return day == null || day >= dateOnly(new Date());
+};
+
 const eventStatus = (event: BackendEventSummary): Event["status"] => {
   const liveStatus = `${event.liveStatus ?? ""}`.toLowerCase();
   const status = `${event.status ?? ""}`.toLowerCase();
-  if (liveStatus.includes("live") || liveStatus === "in_progress" || status === "live") return "live";
+  if ((liveStatus.includes("live") || liveStatus === "in_progress" || status === "live") && isFreshLiveEvent(event)) return "live";
   if (!event.startTime) return "future";
   const start = new Date(event.startTime);
   if (Number.isNaN(start.getTime())) return "future";
@@ -93,7 +117,7 @@ const eventStatus = (event: BackendEventSummary): Event["status"] => {
 };
 
 const startsAt = (event: BackendEventSummary) => {
-  if (event.liveStatus || event.clock) {
+  if ((event.liveStatus || event.clock) && eventStatus(event) === "live") {
     return ["Live", event.period, event.clock].filter(Boolean).join(" · ");
   }
   if (!event.startTime) return "Time TBD";

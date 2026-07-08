@@ -7562,3 +7562,47 @@ Known limitations:
 
 - Home still contains the current MVP match for betting-flow testing even though it is no longer treated as live.
 - A broader provider match feed is still needed for real current World Cup live-game breadth.
+
+## Cycle NT - Stale Match Mobile Label Guard
+
+Feature/page worked on:
+
+- Local MVP Home/Event status normalization.
+
+Frontend/harness/backend files touched:
+
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/types.ts`
+- `mobile/src/__tests__/worldCupAdapter.test.ts`
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+- Evidence/docs:
+  - `docs/mobile/harness/cycle-NT-stale-match-home-label/cycle-NT-current-mvp-s23-visible-flow.json`
+  - `docs/mobile/screenshots/cycle-NT-stale-match-home-label/`
+  - `docs/mobile/audits/cycle-NT-stale-match-home-label.md`
+
+Important functions/services touched:
+
+- `eventStatus()` now mirrors backend live freshness behavior using `startTime`, `externalSlug`, or title dates.
+- `startsAt()` no longer displays Live context when the event is stale.
+- `EventSummary` now declares optional `externalSlug` so mobile can consume the backend provider-date contract.
+
+User interactions supported/proven:
+
+- User opens Home and sees the current MVP match labeled as `Active` / `Time TBD`, not Live.
+- User taps Live and sees the no-live empty state.
+- User returns Home and the MVP match remains available for the betting-flow test path.
+
+State transitions:
+
+- No backend schema, order route, provider mapping, or portfolio logic changed.
+
+Validation:
+
+- Mobile adapter/feed/API tests passed.
+- Mobile TypeScript passed.
+- Root TypeScript passed.
+- S23 focused proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- This fixes stale live labeling. It does not add real current live match/provider breadth.

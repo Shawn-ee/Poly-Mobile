@@ -873,3 +873,31 @@ Pass for Live freshness empty state.
 
 Remaining gaps:
 Holiwyn still needs real current live match discovery/breadth. Home keeps the MVP match for ticket-flow testing.
+
+### 2026-07-08 - Cycle NT - Stale match Home label
+
+Reference device:
+Not used. This was a Holiwyn route/UI honesty cycle.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://172.16.200.14:3002`, temporary Expo port `8300`, temporary mobile dev API key.
+
+Holiwyn actions:
+Opened Home, verified the MVP match is shown as `Active` / `Time TBD` with provider-winner/local-lines disclosure, tapped Live, verified the no-live empty state, then returned Home.
+
+Evidence:
+- `docs/mobile/harness/cycle-NT-stale-match-home-label/cycle-NT-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NT-stale-match-home-label/cycle-NT-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NT-stale-match-home-label/cycle-NT-current-mvp-live.png`
+
+Smoke/tests:
+Mobile adapter/feed/API tests, mobile TypeScript, root TypeScript, and S23 focused proof passed.
+
+Result:
+Pass for stale match Home label honesty.
+
+Remaining gaps:
+Holiwyn still needs real current live match discovery/breadth. This cycle only fixes visible stale-state labeling.

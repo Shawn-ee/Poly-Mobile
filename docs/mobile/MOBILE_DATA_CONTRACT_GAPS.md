@@ -6174,3 +6174,32 @@ Temporary mock/static data:
 Future migration concern:
 
 - Provider import should populate `startTime` and/or a first-class event end time instead of relying on date extraction from provider slugs.
+
+## Cycle NT - Stale Match Mobile Label Guard
+
+Closed or narrowed:
+
+- Mobile Event adapter no longer labels stale provider-dated matches as live.
+- `EventSummary.externalSlug` is now explicit in the mobile type contract.
+- S23 proof verifies Home shows `Active` / `Time TBD` while Live remains empty.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- First-class provider event freshness/end state instead of deriving freshness from provider slug dates.
+- Real current live match/provider breadth.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- No new mock data was added.
+
+Future migration concern:
+
+- Once provider import supplies reliable match start/end/freshness fields, mobile should prefer those fields over slug-date inference.

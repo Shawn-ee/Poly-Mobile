@@ -242,6 +242,9 @@ try {
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-home.png" | Out-Null
   $homeXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-home.xml"
   Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Argentina vs. Egypt", "event-card-$EventSlug", "home-compact-retail-feed", "home-card-source-provider-winner-local-lines")
+  if ($ExpectLiveEmptyOnly) {
+    Assert-Contains -Path $homeXml -Expected @("Time TBD", "Active")
+  }
   Assert-NotContains -Path $homeXml -Unexpected @("This is the developer menu", "SDK version")
   Assert-NotContains -Path $homeXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "Provider Breadth", "EL-A Provider Breadth", "mobile-el-a-provider-breadth")
 
@@ -272,6 +275,7 @@ try {
       eventSlug = $EventSlug
       assertions = [ordered]@{
         homeShowsCurrentMatch = $true
+        homeLabelsStaleMatchAsActive = $true
         liveRouteHidesStaleMatch = $true
         liveShowsEmptyState = $true
         homeStillShowsProviderWinnerLocalLinesDisclosure = $true

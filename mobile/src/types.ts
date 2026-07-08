@@ -140,6 +140,7 @@ export type OrderbookBook = {
 export type EventSummary = {
   id: string;
   slug: string;
+  externalSlug?: string | null;
   title: string;
   description: string | null;
   category: string | null;

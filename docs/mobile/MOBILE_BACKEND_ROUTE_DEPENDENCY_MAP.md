@@ -2955,3 +2955,15 @@ Cycle NS implementation notes:
 - No schema migration was added.
 - No order or portfolio route changed.
 - The route freshness guard uses event `startTime` first, then provider/date text from `externalSlug` or title when `startTime` is absent.
+
+## Cycle NT - Stale Match Mobile Label Guard
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home card status label | `/api/events?...includeMobileMarkets=1&mobileMvpMatches=1` | GET | Public viewing | Query filters/page size | `status`, `liveStatus`, `startTime`, `externalSlug`, title | `Event` | None added. | First-class provider event end/freshness field remains missing. |
+| Live empty-state proof | `/api/events?...&status=live` plus S23 UI | GET/device proof | Public viewing plus temporary mobile dev API key for app launch | Live status filter and Expo deep link | Home `Active` / `Time TBD`, Live empty state | `Event`, `ApiCredential` for proof launch | None added. | Real current live match/provider feed remains missing. |
+
+Cycle NT implementation notes:
+
+- No backend route changed.
+- Mobile now consumes `externalSlug` as part of the event summary contract.

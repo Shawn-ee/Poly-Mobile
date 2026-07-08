@@ -5128,3 +5128,30 @@ Decision:
 
 - Pass/fail: Pass for Local MVP Live freshness honesty.
 - Remaining P1: real current live match/provider breadth is still missing.
+
+## Cycle NT
+
+Gate status: Pass for stale match mobile label guard
+
+Scope: Ensure mobile Home/Event status normalization no longer labels stale provider-dated matches as Live after Cycle NS made the Live route honest.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NT-stale-match-home-label.md`
+- `docs/mobile/harness/cycle-NT-stale-match-home-label/cycle-NT-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NT-stale-match-home-label/cycle-NT-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NT-stale-match-home-label/cycle-NT-current-mvp-live.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NT-P0-01 | P0 | Pass | Adapter test expects stale provider-dated detail pages not to be `live`. | Fix `eventStatus()`. |
+| NT-P0-02 | P0 | Pass | S23 proof asserts Home contains `Time TBD` and `Active`. | Fix Home card status mapping. |
+| NT-P0-03 | P0 | Pass | S23 proof asserts Live empty state. | Fix live route/feed behavior. |
+| NT-P0-04 | P0 | Pass | Typecheck passes with `EventSummary.externalSlug`. | Fix mobile event contract. |
+
+Decision:
+
+- Pass/fail: Pass for visible stale-status honesty.
+- Remaining P1: real current live match/provider breadth is still missing.

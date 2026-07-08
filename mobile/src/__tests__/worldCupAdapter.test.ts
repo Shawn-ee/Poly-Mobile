@@ -328,7 +328,7 @@ describe("world cup adapter", () => {
     });
   });
 
-  test("keeps backend live-detail page live when provider status is ended or stale", () => {
+  test("does not label stale provider-dated detail pages as live", () => {
     const detail: EventDetail = {
       event: {
         id: "event-1",
@@ -341,6 +341,7 @@ describe("world cup adapter", () => {
         homeTeamName: "Colombia",
         awayTeamName: "Ghana",
         startTime: null,
+        externalSlug: "fifwc-col-gha-2026-07-03",
         status: "live",
         liveStatus: "ENDED",
         period: "Final",
@@ -381,7 +382,8 @@ describe("world cup adapter", () => {
 
     const normalized = normalizeEventDetail(detail);
 
-    expect(normalized?.status).toBe("live");
+    expect(normalized?.status).toBe("future");
+    expect(normalized?.startsAt).toBe("Time TBD");
     expect(normalized?.liveDataStatus?.status).toBe("stale");
   });
 
