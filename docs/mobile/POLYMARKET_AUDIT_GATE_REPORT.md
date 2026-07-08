@@ -5862,3 +5862,30 @@ Remaining P1:
 - Repeatable local startup command for internal beta trading flags and allowlist.
 - Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Broad futures remain Search/detail-only while Home/Live stay match-only.
+
+## Cycle OX - Internal Beta Trading Startup Harness
+
+Result: Pass for local internal-beta startup harness scope.
+
+Checked:
+
+- Repeatable PowerShell helper exists for local backend startup/check.
+- Package script `mobile:internal-beta-backend:start` exists and runs the helper.
+- Helper starts/checks backend with internal trading beta enabled, trading kill switch off, and system liquidity bot/mobile proof users allowlisted.
+- Provider-backed Ticket -> Order -> Portfolio/history route/mobile-service proof passes after helper startup.
+- No order book UI, chat, live stats, social features, deposit, withdraw, or schema work was touched.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-OX-internal-beta-trading-startup-harness.md`
+- `docs/mobile/harness/cycle-OX-internal-beta-trading-startup-harness/cycle-OX-internal-beta-backend-start.json`
+- `docs/mobile/harness/cycle-OX-internal-beta-trading-startup-harness/cycle-OX-package-script-check.json`
+- `docs/mobile/harness/cycle-OX-internal-beta-trading-startup-harness/cycle-OX-provider-order-after-startup.json`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+- Future visible UI changes still need fresh S23 proof; OX is backend harness proof only.

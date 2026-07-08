@@ -8812,3 +8812,44 @@ Known limitations:
 - Live-local quote placement currently requires local server startup flags for internal trading beta and allowlist.
 - Home/Live remain match-only by design; this provider future is visible through Search/detail.
 - Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
+
+## Cycle OX - Internal Beta Trading Startup Harness
+
+Feature/page worked on:
+
+- Local MVP fake-token trading backend startup harness.
+- Provider-backed server-mode ticket/order/Portfolio route proof after harness startup.
+
+Frontend/proof files touched:
+
+- `scripts/start_holiwyn_internal_beta_backend.ps1`
+- `scripts/prove_mobile_provider_visible_tradable_flow.ts`
+- `docs/mobile/audits/cycle-OX-internal-beta-trading-startup-harness.md`
+- `docs/mobile/harness/cycle-OX-internal-beta-trading-startup-harness/`
+
+Important functions/services touched:
+
+- No visible mobile UI source changed.
+- Added a repeatable package command, `mobile:internal-beta-backend:start`, for local fake-token server-mode proof.
+- Reused the mobile order and portfolio service harness against `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+
+User interactions supported/proven:
+
+- No new app screen interaction was added.
+- The backend setup required for the existing provider-backed Ticket -> Order -> Portfolio flow is now repeatable.
+
+State transitions:
+
+- Local backend process was restarted through the helper with internal trading beta enabled, kill switch off, and test/bot emails allowlisted.
+- A provider-backed fake-token order filled against local MM liquidity and then appeared in Portfolio/history.
+
+Validation:
+
+- Backend startup helper passed and wrote `cycle-OX-internal-beta-backend-start.json`.
+- Package script check passed and wrote `cycle-OX-package-script-check.json`.
+- Provider-visible tradable route/mobile-service proof passed and wrote `cycle-OX-provider-order-after-startup.json`.
+
+Known limitations:
+
+- No new S23 visual proof was run because this cycle changed backend harness/runtime setup only.
+- The helper is local internal MVP infrastructure, not production trading readiness.

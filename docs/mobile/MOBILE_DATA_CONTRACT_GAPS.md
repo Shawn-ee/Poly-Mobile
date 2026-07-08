@@ -7024,3 +7024,31 @@ Future migration concern:
 
 - Do not treat local internal-beta flags as production readiness.
 - Keep order book UI hidden; bot quote infrastructure supports pricing/fills without becoming default user-facing UI.
+
+## Cycle OX - Internal Beta Trading Startup Harness
+
+Closed or narrowed:
+
+- Repeatable local startup/harness command now exists for internal beta trading flags and test allowlist.
+- The package command path can verify a healthy backend.
+- Provider-backed mobile order/Portfolio proof passed after backend startup through the helper.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Current-match provider-backed Spread/Totals/Team Total market ids, token ids, chart history, and prices.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch for the selected provider-backed fake-token ticket/order/Portfolio flow.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- The helper is local internal MVP infrastructure. Production/staging trading must use separate deployment configuration and review.

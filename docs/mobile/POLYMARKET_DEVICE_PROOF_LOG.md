@@ -1484,3 +1484,35 @@ Pass for selected provider-visible market to local internal-test tradable mobile
 
 Remaining gaps:
 Home/Live remain match-only. Current-match line markets remain contract fixtures.
+
+## Cycle OX - Internal Beta Trading Startup Harness
+
+Date:
+2026-07-08
+
+Reference device:
+No new Polymarket reference-device action. This cycle closes local Holiwyn backend harness setup for the already audited simple retail trading flow.
+
+Holiwyn device:
+No new S23 visual proof because no visible mobile UI code changed.
+
+Holiwyn app/backend mode:
+Backend `http://127.0.0.1:3002` was restarted through `scripts/start_holiwyn_internal_beta_backend.ps1` with local internal trading beta enabled, trading kill switch off, and the system liquidity bot/mobile proof users allowlisted.
+
+Holiwyn actions:
+Backend/mobile-service proof selected the provider-backed World Cup Winner / England market, submitted a fake-token server-mode order against local MM liquidity, and confirmed Portfolio/history identity preservation.
+
+Evidence:
+- `docs/mobile/harness/cycle-OX-internal-beta-trading-startup-harness/cycle-OX-internal-beta-backend-start.json`
+- `docs/mobile/harness/cycle-OX-internal-beta-trading-startup-harness/cycle-OX-package-script-check.json`
+- `docs/mobile/harness/cycle-OX-internal-beta-trading-startup-harness/cycle-OX-provider-order-after-startup.json`
+- `docs/mobile/audits/cycle-OX-internal-beta-trading-startup-harness.md`
+
+Smoke/tests:
+Startup helper passed, package script check passed, and provider-backed order/Portfolio route proof passed.
+
+Result:
+Pass for backend harness scope. This does not replace S23 visual proof for future UI work.
+
+Remaining gaps:
+Home/Live remain match-only. Current-match line markets remain contract fixtures.

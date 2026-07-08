@@ -3373,3 +3373,10 @@ Cycle OW implementation notes:
 - No schema migration was added.
 - No default order book UI was exposed.
 - Backend route behavior required local internal-trading beta flags: `INTERNAL_TRADING_BETA_ENABLED=true`, `TRADING_KILL_SWITCH=false`, and `INTERNAL_TRADING_ALLOWLIST_EMAILS` containing the system liquidity bot and proof users/admins.
+
+## Cycle OX - Internal Beta Trading Startup Harness
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Internal beta backend startup harness | `scripts/start_holiwyn_internal_beta_backend.ps1` plus `npm run mobile:internal-beta-backend:start` | Local script | Local developer machine only | Optional `-Port`, `-AllowlistEmails`, `-Restart`, `-CheckOnly`, `-SummaryPath` | JSON startup/check summary: backend health URL, LAN base URL, internal beta flag, kill switch flag, allowlist emails, stopped listeners, started process, and whether backend is intentionally left running | No database tables directly; it controls runtime env for routes that use `config.internalTradingBetaEnabled`, `config.tradingKillSwitch`, and `config.internalTradingAllowlistEmails` | None. | This is local fake-token MVP infrastructure only. It must not be treated as production trading or funding readiness. |
+| Post-startup provider-backed order proof | `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | GET/POST | Public viewing plus mobile API key for order/portfolio/history | Provider-backed future selection with market/outcome/provider token identity, price, and size | Filled order, position, and history trade preserving provider source/market/condition/token identity | `Event`, `Market`, `Outcome`, `Order`, `Trade`, `Position`, `ApiCredential`, `UserBalance` | None for the selected provider future. | Current-match Spread/Totals/Team Total provider-backed lines remain unavailable. |

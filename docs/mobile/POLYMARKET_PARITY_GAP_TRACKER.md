@@ -865,3 +865,11 @@ For every UI element or interaction, answer:
 - Remaining P1: make local internal-beta startup/allowlist a repeatable harness command.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
 - Remaining P1: broad futures remain visible in Search/detail only; Home/Live remain match-only by design.
+
+## Cycle OX Gap Tracker Update
+
+- PM-GAP-136 is opened and closed for repeatable local internal-beta backend startup.
+- OX adds `mobile:internal-beta-backend:start`, which starts/checks the backend with internal trading beta enabled, trading kill switch off, and the system liquidity bot/mobile proof users allowlisted.
+- OX proves the package script path and then proves a provider-backed fake-token mobile order still fills and appears in Portfolio/history after backend startup through the helper.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
+- Remaining P1: broad futures remain visible in Search/detail only; Home/Live remain match-only by design.
