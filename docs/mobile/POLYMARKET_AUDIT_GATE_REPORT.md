@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle NE
+
+Gate status: Pass
+
+Scope: S23 open-order proof mode.
+
+Decision:
+
+- P0 failed: 0 for focused harness/proof mode scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-NE-s23-open-order-proof-mode/cycle-NE-current-mvp-s23-visible-flow.json`, `docs/mobile/harness/cycle-NE-s23-open-order-proof-mode/cycle-NE-current-mvp-after-submit.xml`, `docs/mobile/screenshots/cycle-NE-s23-open-order-proof-mode/cycle-NE-current-mvp-after-submit.png`, `docs/mobile/audits/cycle-NE-s23-open-order-proof-mode.md`.
+- Notes: The reusable current MVP S23 harness now supports `-ExpectOpenOrder`, preventing future open-order cycles from failing unrelated History assertions.
+
 ## Cycle ND
 
 Gate status: Pass

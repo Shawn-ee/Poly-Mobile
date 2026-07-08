@@ -9,7 +9,8 @@ param(
   [string]$OutputDir = "docs\mobile\screenshots\cycle-MB-current-mvp-s23-visible-flow",
   [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-MB-current-mvp-s23-visible-flow",
   [switch]$SeedCounterparty,
-  [switch]$ExpectFilledHistory
+  [switch]$ExpectFilledHistory,
+  [switch]$ExpectOpenOrder
 )
 
 $ErrorActionPreference = "Stop"
@@ -21,6 +22,10 @@ $resolvedHierarchyOutputDir = Join-Path $repoRoot $HierarchyOutputDir
 $expoOut = Join-Path $repoRoot ".runtime\mobile-current-mvp-s23-expo.out.log"
 $expoErr = Join-Path $repoRoot ".runtime\mobile-current-mvp-s23-expo.err.log"
 $adb = "adb"
+
+if ($ExpectOpenOrder -and $ExpectFilledHistory) {
+  throw "Choose either -ExpectOpenOrder or -ExpectFilledHistory, not both."
+}
 
 New-Item -ItemType Directory -Force -Path $resolvedOutputDir | Out-Null
 New-Item -ItemType Directory -Force -Path $resolvedHierarchyOutputDir | Out-Null
@@ -289,15 +294,21 @@ try {
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-after-submit.png" | Out-Null
   $afterSubmitXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-after-submit.xml"
   Assert-Contains -Path $afterSubmitXml -Expected @("Portfolio", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
+  if ($ExpectOpenOrder) {
+    Assert-Contains -Path $afterSubmitXml -Expected @("portfolio-tab-orders", "open-order-row-", "open-order-source-badge", "open-order-source-note", "portfolio-source-badge-local", "cancel-open-order-")
+  }
   Assert-NotContains -Path $afterSubmitXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
-  Invoke-TapNode -Path $afterSubmitXml -Identifier "portfolio-tab-history"
-  Start-Sleep -Seconds 1
-  Save-Screenshot -Name "cycle-$Cycle-current-mvp-portfolio-history.png" | Out-Null
-  $historyXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-portfolio-history.xml"
+  $historyXml = $null
+  if (-not $ExpectOpenOrder) {
+    Invoke-TapNode -Path $afterSubmitXml -Identifier "portfolio-tab-history"
+    Start-Sleep -Seconds 1
+    Save-Screenshot -Name "cycle-$Cycle-current-mvp-portfolio-history.png" | Out-Null
+    $historyXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-portfolio-history.xml"
+  }
   if ($ExpectFilledHistory) {
     Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "portfolio-history-market-context-readable", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
-  } else {
+  } elseif (-not $ExpectOpenOrder) {
     Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "No history", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture")
   }
 
@@ -325,7 +336,9 @@ try {
       ticketPreservesLine = $true
       swipeSubmitReachedPortfolio = $true
       portfolioOpenOrderPreservesLineSource = $true
-      historyShowsEmptyStateUntilFill = -not [bool]$ExpectFilledHistory
+      openOrderVisible = [bool]$ExpectOpenOrder
+      openOrderSourceBadgeVisible = [bool]$ExpectOpenOrder
+      historyShowsEmptyStateUntilFill = (-not [bool]$ExpectFilledHistory) -and (-not [bool]$ExpectOpenOrder)
       filledHistoryVisible = [bool]$ExpectFilledHistory
     }
     artifacts = @(
@@ -341,8 +354,8 @@ try {
       "$HierarchyOutputDir\cycle-$Cycle-current-mvp-ticket-ready.xml",
       "$OutputDir\cycle-$Cycle-current-mvp-after-submit.png",
       "$HierarchyOutputDir\cycle-$Cycle-current-mvp-after-submit.xml",
-      "$OutputDir\cycle-$Cycle-current-mvp-portfolio-history.png",
-      "$HierarchyOutputDir\cycle-$Cycle-current-mvp-portfolio-history.xml"
+      $(if ($ExpectOpenOrder) { "$HierarchyOutputDir\cycle-$Cycle-current-mvp-after-submit.xml" } else { "$OutputDir\cycle-$Cycle-current-mvp-portfolio-history.png" }),
+      $(if ($ExpectOpenOrder) { "$OutputDir\cycle-$Cycle-current-mvp-after-submit.png" } else { "$HierarchyOutputDir\cycle-$Cycle-current-mvp-portfolio-history.xml" })
     )
   }
   $summaryPath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-current-mvp-s23-visible-flow.json"

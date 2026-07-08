@@ -2,6 +2,34 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle NE - S23 Open Order Proof Mode
+
+Feature/page worked on:
+
+- S23 Local MVP proof harness for Portfolio open-order state.
+
+Frontend/services touched:
+
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+
+User interactions supported/proven:
+
+- On S23, completed Home -> Live -> Event Detail -> local Spread ticket -> swipe buy -> Portfolio Orders/open order with source badge and Cancel visible.
+
+Backend/API route changed:
+
+- None.
+
+Verified:
+
+- PowerShell parser check passed.
+- S23 proof passed: `docs/mobile/harness/cycle-NE-s23-open-order-proof-mode/cycle-NE-current-mvp-s23-visible-flow.json`.
+- Proof JSON reports `openOrderVisible=true` and `openOrderSourceBadgeVisible=true`.
+
+Known limitations:
+
+- Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected events.
+
 ## Cycle ND - Open Order Source Badge
 
 Feature/page worked on:

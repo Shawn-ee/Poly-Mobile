@@ -2,6 +2,25 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle NE - S23 Open Order Proof Mode
+
+Closed or narrowed:
+
+- The S23 harness can now intentionally verify open-order state without relying on empty History.
+- Proof JSON separates `openOrderVisible` and `openOrderSourceBadgeVisible` from filled History assertions.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected events.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Existing `contract-fixture` line markets remain backend-shaped Local MVP fallback rows.
+
 ## Cycle ND - Open Order Source Badge
 
 Closed or narrowed:
