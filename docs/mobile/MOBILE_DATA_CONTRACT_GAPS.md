@@ -5123,3 +5123,36 @@ Future migration concern:
 
 - Promote provider-backed line-market ingestion when Polymarket Gamma/CLOB or another approved source exposes attach-ready soccer line markets.
 - The next full-path cycle should prove line ticket submit and Portfolio/history using the visible Argentina vs Egypt line market.
+
+## Cycle MB - Current MVP Inspection, Swipe Submit, And S23 Flow
+
+Closed or narrowed:
+
+- Confirmed current service state: Regulation Winner is provider-backed for live matches, while Spread/Totals/Team Total are explicitly backend-shaped `contract-fixture` rows.
+- Added S23 proof for current Home -> Event Detail -> line ticket -> swipe submit -> Portfolio open order.
+- Added backend route proof for Home-selected line order fill and Portfolio/history preservation.
+- Tightened Trade Ticket interaction so simple tap no longer submits the swipe control.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total rows for inspected Polymarket matches.
+- A visible UI fill path that reliably crosses seeded liquidity and appears in History without a separate backend-only proof.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+- Visible S23 order proof uses `/api/orders` and returns an open order; backend route proof uses seeded maker liquidity to prove filled history.
+
+Temporary mock/static data:
+
+- No frontend-only random mock data was added.
+- Existing line markets remain backend records with `referenceSource=contract-fixture`.
+
+Future migration concern:
+
+- Add provider-backed line ingestion when attach-ready provider line rows exist.
+- Add a visible seeded/crossing fill proof or market-order fill mode so S23 UI order can populate History in the same visible run.

@@ -1,0 +1,37 @@
+{
+  "cycle": "MB",
+  "result": "pass",
+  "generatedAt": "2026-07-08T08:24:17.4153513Z",
+  "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+  "model": "SM-S911U1",
+  "backendBaseUrl": "http://127.0.0.1:3002",
+  "mobileApiBaseUrl": "http://172.16.200.14:3002",
+  "expoPort": 8289,
+  "keyId": "redacted",
+  "apiKey": "redacted",
+  "eventSlug": "argentina-vs-egypt",
+  "assertions": {
+    "homeShowsCurrentMatch": true,
+    "detailShowsGameLines": true,
+    "lineMarketsAreContractFixture": true,
+    "orderbookHidden": true,
+    "ticketPreservesLine": true,
+    "swipeSubmitReachedPortfolio": true,
+    "portfolioOpenOrderPreservesLineSource": true,
+    "historyShowsEmptyStateUntilFill": true
+  },
+  "artifacts": [
+    "docs\\mobile\\screenshots\\cycle-MB-current-mvp-s23-visible-flow\\cycle-MB-current-mvp-home.png",
+    "docs\\mobile\\harness\\cycle-MB-current-mvp-s23-visible-flow\\cycle-MB-current-mvp-home.xml",
+    "docs\\mobile\\screenshots\\cycle-MB-current-mvp-s23-visible-flow\\cycle-MB-current-mvp-detail-top.png",
+    "docs\\mobile\\harness\\cycle-MB-current-mvp-s23-visible-flow\\cycle-MB-current-mvp-detail-top.xml",
+    "docs\\mobile\\screenshots\\cycle-MB-current-mvp-s23-visible-flow\\cycle-MB-current-mvp-lines.png",
+    "docs\\mobile\\harness\\cycle-MB-current-mvp-s23-visible-flow\\cycle-MB-current-mvp-lines-attempt-*.xml",
+    "docs\\mobile\\screenshots\\cycle-MB-current-mvp-s23-visible-flow\\cycle-MB-current-mvp-ticket-ready.png",
+    "docs\\mobile\\harness\\cycle-MB-current-mvp-s23-visible-flow\\cycle-MB-current-mvp-ticket-ready.xml",
+    "docs\\mobile\\screenshots\\cycle-MB-current-mvp-s23-visible-flow\\cycle-MB-current-mvp-after-submit.png",
+    "docs\\mobile\\harness\\cycle-MB-current-mvp-s23-visible-flow\\cycle-MB-current-mvp-after-submit.xml",
+    "docs\\mobile\\screenshots\\cycle-MB-current-mvp-s23-visible-flow\\cycle-MB-current-mvp-portfolio-history.png",
+    "docs\\mobile\\harness\\cycle-MB-current-mvp-s23-visible-flow\\cycle-MB-current-mvp-portfolio-history.xml"
+  ]
+}

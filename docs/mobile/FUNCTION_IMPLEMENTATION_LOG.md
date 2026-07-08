@@ -6001,3 +6001,47 @@ Known limitations:
 
 - Regulation Winner is provider-backed, but Spread/Totals/Team Total remain `contract-fixture` for Local MVP because attach-ready Polymarket line markets are not present for the inspected match.
 - The next useful cycle should prove the full line ticket/order/Portfolio path using this now-visible event.
+
+## Cycle MB - Current MVP Inspection, Swipe Submit, And S23 Flow
+
+Feature/page worked on:
+
+- Current Local MVP service readiness.
+- Home -> Event Detail -> Spread line ticket -> swipe-to-buy -> Portfolio open order -> History empty-state path.
+
+Frontend/harness/backend files touched:
+
+- `mobile/src/components/TradeTicket.tsx`
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+- `docs/mobile/audits/cycle-MB-current-mvp-inspection-and-s23-flow.md`
+
+Important functions/services touched:
+
+- `SwipeSubmitControl` now uses drag responder handling and no longer submits from a simple tap.
+- `prove_mobile_current_mvp_s23_visible_flow.ps1` starts a temporary Expo server with a generated mobile dev API key, drives the S23, captures screenshots/XML, and cleans up the temporary Metro process.
+
+User interactions supported/proven:
+
+- Home shows the current `argentina-vs-egypt` match.
+- Event Detail displays current Game Lines with Spread/Totals/Team Total line markets.
+- Trade Ticket preserves selected Spread line `1.5` and `contract-fixture` source.
+- A deliberate upward swipe submits the order and lands on Portfolio.
+- Portfolio preserves selected line/source identity for the open order; History shows the correct empty state until a fill exists.
+
+State transitions:
+
+- Ticket amount changes from `$0` to `$25`.
+- Swipe crosses the submit threshold and calls the existing `placeOrder` path.
+- Server-mode mobile Portfolio sync shows cash reduced by the open order value.
+
+Validation:
+
+- `npx tsx scripts/inspect_mobile_mvp_current_state.ts --cycle=MB --summaryPath=docs/mobile/harness/cycle-MB-current-state-inspection/cycle-MB-current-state-inspection.json`
+- `npx tsx scripts/prove_mobile_mvp_home_to_portfolio_journey.ts --cycle=MB --summaryPath=docs/mobile/harness/cycle-MB-home-to-portfolio-route-journey/cycle-MB-home-to-portfolio-route-journey.json`
+- `npm run -s typecheck` from `mobile/`
+- S23 proof: `docs/mobile/harness/cycle-MB-current-mvp-s23-visible-flow/cycle-MB-current-mvp-s23-visible-flow.json`
+
+Known limitations:
+
+- Visible S23 order currently lands as an open order; backend route proof separately verifies filled position/history for a seeded counterparty.
+- Spread/Totals/Team Total remain backend-shaped `contract-fixture` markets because real provider-backed line rows are not available for the inspected Polymarket match.

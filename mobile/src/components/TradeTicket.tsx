@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { BackHandler, Modal, Pressable, StyleSheet, Text, View, Vibration, useWindowDimensions } from "react-native";
+import { BackHandler, Modal, PanResponder, Pressable, StyleSheet, Text, View, Vibration, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { Locale, Event, Market, Outcome } from "../mocks/worldCup";
 import { label, money } from "../presentation/formatters";
@@ -175,11 +175,27 @@ function SwipeSubmitControl({
     setIsArmed(false);
     updateProgress(0);
   }, [triggerSubmit, updateProgress]);
+  const panResponder = useMemo(
+    () =>
+      PanResponder.create({
+        onStartShouldSetPanResponder: () => !disabledRef.current && !submittingRef.current,
+        onMoveShouldSetPanResponder: (_, gestureState) =>
+          !disabledRef.current && !submittingRef.current && Math.abs(gestureState.dy) > 2,
+        onPanResponderGrant: (event) => handleTouchStart(event),
+        onPanResponderMove: (_, gestureState) => {
+          if (disabledRef.current || submittingRef.current) return;
+          updateDragDistance(Math.max(0, -gestureState.dy));
+        },
+        onPanResponderRelease: handleTouchEnd,
+        onPanResponderTerminate: handleTouchEnd,
+      }),
+    [handleTouchEnd, handleTouchStart, updateDragDistance],
+  );
   const progressBucket = disabled ? "disabled" : isSubmitting ? "submitting" : isArmed ? "armed" : swipeProgress > 0 ? "dragging" : "idle";
   const handleLift = -28 * swipeProgress;
 
   return (
-      <Pressable
+      <View
         accessible
         accessibilityRole="button"
         accessibilityState={{ disabled: disabled || isSubmitting }}
@@ -194,13 +210,7 @@ function SwipeSubmitControl({
         disabled && !unavailable && styles.swipeSubmitDisabled,
       ]}
       testID="place-mock-order"
-      onPress={() => {
-        void triggerSubmit();
-      }}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-      onTouchCancel={handleTouchEnd}
+      {...panResponder.panHandlers}
       onStartShouldSetResponder={() => !disabledRef.current && !submittingRef.current}
       onMoveShouldSetResponder={() => !disabledRef.current && !submittingRef.current}
       onResponderGrant={handleTouchStart}
@@ -226,7 +236,7 @@ function SwipeSubmitControl({
         <Text style={[styles.swipeLabel, unavailable && styles.swipeLabelUnavailable]}>{isSubmitting ? label : label}</Text>
         <Text style={[styles.swipeHelper, unavailable && styles.swipeHelperUnavailable]}>{helper}</Text>
       </View>
-    </Pressable>
+    </View>
   );
 }
 

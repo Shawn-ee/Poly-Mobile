@@ -2425,3 +2425,18 @@ Cycle MA implementation notes:
 - No schema migration was added.
 - No order route behavior changed.
 - Event Detail now uses `event.slug ?? event.id` for hydration, matching the mobile live-detail route contract.
+
+## Cycle MB - Current MVP Inspection, Swipe Submit, And S23 Flow
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Current Home route inspection | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10` | GET | Public viewing | Query filters/page size | Event slug/title/type/status, compact markets, `marketSourceSummary` | `Event`, `Market`, `Outcome`, provider/read-model fields | None added. Existing contract-fixture rows are returned from backend. | Route still includes one future; mobile filters it for Local MVP match flow. |
+| Event Detail line market proof | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | 7 markets, provider-backed Regulation Winner, contract-fixture line markets, selected `marketId`, `outcomeId`, `line`, `period`, source/token/condition identity | `Event`, `Market`, `Outcome`, provider quote/read-model fields | Contract-shaped line rows are backend records, not frontend-only random mock data. | Real provider-backed Spread/Totals/Team Total rows are not available for the inspected Polymarket match. |
+| Visible S23 swipe order | `/api/orders` | POST | Mobile dev API key with order scope | Selected line market/outcome, side, price/size, selection snapshot | Open order/Portfolio refresh; selected line/source identity | `ApiCredential`, `Order`, `ApiOrderRequest`, `UserBalance`, `Market`, `Outcome` | None added. | UI proof lands as open order unless crossing liquidity is available. |
+| Portfolio open order and history empty state | `/api/portfolio`, `/api/portfolio/history` | GET | Mobile dev API key with account scope | None | Portfolio cash/open order plus History empty state; selection identity remains present in labels/state | `UserBalance`, `Order`, `Trade`, `Market`, `Outcome` | None added. | Filled History from visible UI requires seeded/crossing liquidity or a fill path. |
+
+Cycle MB implementation notes:
+
+- No schema migration was added.
+- Backend route proof verified a filled order/history using seeded counterparty liquidity.
+- S23 visible proof verified the retail open-order path and History empty state after an unfilled order.

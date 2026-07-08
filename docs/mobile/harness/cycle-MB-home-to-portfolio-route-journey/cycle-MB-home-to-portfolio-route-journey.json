@@ -1,0 +1,347 @@
+{
+  "pass": true,
+  "generatedAt": "2026-07-08T08:03:50.568Z",
+  "cycle": "MB",
+  "scope": "home-to-portfolio-route-journey",
+  "routes": {
+    "home": "http://127.0.0.1:3002/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10",
+    "detail": "http://127.0.0.1:3002/api/mobile/events/argentina-vs-egypt/live-detail",
+    "order": "/api/orders",
+    "portfolio": "/api/portfolio",
+    "history": "/api/portfolio/history"
+  },
+  "home": {
+    "selectedSlug": "argentina-vs-egypt",
+    "selectedTitle": "Argentina vs. Egypt",
+    "marketSourceSummary": {
+      "totalMarketCount": 7,
+      "sourceBreakdown": {
+        "polymarket": 3,
+        "contract-fixture": 4
+      },
+      "polymarketMarketCount": 3,
+      "contractFixtureMarketCount": 4,
+      "unknownSourceMarketCount": 0,
+      "regulationWinner": {
+        "totalCount": 3,
+        "polymarketCount": 3,
+        "contractFixtureCount": 0,
+        "status": "provider-backed"
+      },
+      "lineMarkets": {
+        "totalCount": 4,
+        "polymarketCount": 0,
+        "contractFixtureCount": 4,
+        "status": "contract-fixture",
+        "families": [
+          "spread",
+          "team_total_goals",
+          "total_goals"
+        ],
+        "reason": "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured."
+      }
+    }
+  },
+  "detail": {
+    "eventSlug": "argentina-vs-egypt",
+    "eventTitle": "Argentina vs. Egypt",
+    "marketSourceSummary": {
+      "totalMarketCount": 7,
+      "sourceBreakdown": {
+        "polymarket": 3,
+        "contract-fixture": 4
+      },
+      "polymarketMarketCount": 3,
+      "contractFixtureMarketCount": 4,
+      "unknownSourceMarketCount": 0,
+      "regulationWinner": {
+        "totalCount": 3,
+        "polymarketCount": 3,
+        "contractFixtureCount": 0,
+        "status": "provider-backed"
+      },
+      "lineMarkets": {
+        "totalCount": 4,
+        "polymarketCount": 0,
+        "contractFixtureCount": 4,
+        "status": "contract-fixture",
+        "families": [
+          "spread",
+          "total_goals",
+          "team_total_goals"
+        ],
+        "reason": "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured."
+      }
+    },
+    "marketCount": 7
+  },
+  "selection": {
+    "marketId": "02bc8228-01c9-4fa5-a229-642c429a75dc",
+    "outcomeId": "2d636231-c32f-44f9-8235-065fcf041049",
+    "marketGroupId": "spread",
+    "marketType": "spread",
+    "line": "1.5",
+    "period": "regulation",
+    "side": "away",
+    "displayLabel": "Egypt +1.5",
+    "contractSide": "yes",
+    "referenceSource": "contract-fixture",
+    "providerSource": "contract-fixture",
+    "externalSlug": "argentina-vs-egypt-spread-away-1-5",
+    "externalMarketId": "contract-argentina-vs-egypt-spread-away-1-5",
+    "conditionId": "condition-argentina-vs-egypt-spread-away-1-5",
+    "referenceTokenId": "contract-argentina-vs-egypt-spread-away-1-5-away",
+    "tokenId": "contract-argentina-vs-egypt-spread-away-1-5-away",
+    "referenceOutcomeLabel": "Egypt +1.5",
+    "limitPrice": 0.52,
+    "limitSide": "ask",
+    "limitShares": 10
+  },
+  "maker": {
+    "userId": "634f3138-0131-4d2b-96ea-cc1eef4ca28b",
+    "orderId": "6f45bb9e-3bbd-4012-9da9-cbb014ec723b",
+    "status": "OPEN"
+  },
+  "order": {
+    "id": "4443b156-1cfd-4a33-b358-b025049f5e64",
+    "status": "FILLED",
+    "side": "BUY",
+    "selection": {
+      "marketId": "02bc8228-01c9-4fa5-a229-642c429a75dc",
+      "outcomeId": "2d636231-c32f-44f9-8235-065fcf041049",
+      "marketGroupId": "spread",
+      "marketType": "spread",
+      "line": "1.5",
+      "period": "regulation",
+      "side": "away",
+      "displayLabel": "Egypt +1.5",
+      "contractSide": "yes",
+      "referenceSource": "contract-fixture",
+      "providerSource": "contract-fixture",
+      "externalSlug": "argentina-vs-egypt-spread-away-1-5",
+      "externalMarketId": "contract-argentina-vs-egypt-spread-away-1-5",
+      "conditionId": "condition-argentina-vs-egypt-spread-away-1-5",
+      "referenceTokenId": "contract-argentina-vs-egypt-spread-away-1-5-away",
+      "tokenId": "contract-argentina-vs-egypt-spread-away-1-5-away",
+      "referenceOutcomeLabel": "Egypt +1.5",
+      "limitPrice": 0.52,
+      "limitSide": "ask",
+      "limitShares": 10
+    }
+  },
+  "portfolio": {
+    "position": {
+      "marketId": "02bc8228-01c9-4fa5-a229-642c429a75dc",
+      "outcomeId": "2d636231-c32f-44f9-8235-065fcf041049",
+      "shares": 10,
+      "selection": {
+        "marketId": "02bc8228-01c9-4fa5-a229-642c429a75dc",
+        "outcomeId": "2d636231-c32f-44f9-8235-065fcf041049",
+        "marketGroupId": "spread",
+        "marketType": "spread",
+        "line": "1.5",
+        "period": "regulation",
+        "side": "away",
+        "displayLabel": "Egypt +1.5",
+        "contractSide": "yes",
+        "referenceSource": "contract-fixture",
+        "providerSource": "contract-fixture",
+        "externalSlug": "argentina-vs-egypt-spread-away-1-5",
+        "externalMarketId": "contract-argentina-vs-egypt-spread-away-1-5",
+        "conditionId": "condition-argentina-vs-egypt-spread-away-1-5",
+        "referenceTokenId": "contract-argentina-vs-egypt-spread-away-1-5-away",
+        "tokenId": "contract-argentina-vs-egypt-spread-away-1-5-away",
+        "referenceOutcomeLabel": "Egypt +1.5",
+        "limitPrice": 0.52,
+        "limitSide": "ask",
+        "limitShares": 10
+      }
+    },
+    "selectionSourceSummary": {
+      "positions": {
+        "totalSelectionCount": 1,
+        "sourceBreakdown": {
+          "contract-fixture": 1
+        },
+        "polymarketSelectionCount": 0,
+        "contractFixtureSelectionCount": 1,
+        "unknownSourceSelectionCount": 0,
+        "regulationWinner": {
+          "totalCount": 0,
+          "polymarketCount": 0,
+          "contractFixtureCount": 0,
+          "status": "missing"
+        },
+        "lineMarkets": {
+          "totalCount": 1,
+          "polymarketCount": 0,
+          "contractFixtureCount": 1,
+          "status": "contract-fixture",
+          "families": [
+            "spread"
+          ],
+          "reason": "Portfolio line selections are Local MVP contract fixtures until provider-backed line markets are available."
+        }
+      },
+      "openOrders": {
+        "totalSelectionCount": 0,
+        "sourceBreakdown": {},
+        "polymarketSelectionCount": 0,
+        "contractFixtureSelectionCount": 0,
+        "unknownSourceSelectionCount": 0,
+        "regulationWinner": {
+          "totalCount": 0,
+          "polymarketCount": 0,
+          "contractFixtureCount": 0,
+          "status": "missing"
+        },
+        "lineMarkets": {
+          "totalCount": 0,
+          "polymarketCount": 0,
+          "contractFixtureCount": 0,
+          "status": "missing",
+          "families": [],
+          "reason": "No portfolio line selections are present."
+        }
+      },
+      "combined": {
+        "totalSelectionCount": 1,
+        "sourceBreakdown": {
+          "contract-fixture": 1
+        },
+        "polymarketSelectionCount": 0,
+        "contractFixtureSelectionCount": 1,
+        "unknownSourceSelectionCount": 0,
+        "regulationWinner": {
+          "totalCount": 0,
+          "polymarketCount": 0,
+          "contractFixtureCount": 0,
+          "status": "missing"
+        },
+        "lineMarkets": {
+          "totalCount": 1,
+          "polymarketCount": 0,
+          "contractFixtureCount": 1,
+          "status": "contract-fixture",
+          "families": [
+            "spread"
+          ],
+          "reason": "Portfolio line selections are Local MVP contract fixtures until provider-backed line markets are available."
+        }
+      }
+    }
+  },
+  "history": {
+    "recentTrade": {
+      "id": "062594e2-622a-4d0d-aada-296c7d7f4662",
+      "side": "BUY",
+      "selection": {
+        "marketId": "02bc8228-01c9-4fa5-a229-642c429a75dc",
+        "outcomeId": "2d636231-c32f-44f9-8235-065fcf041049",
+        "marketGroupId": "spread",
+        "marketType": "spread",
+        "line": "1.5",
+        "period": "regulation",
+        "side": "away",
+        "displayLabel": "Egypt +1.5",
+        "contractSide": "yes",
+        "referenceSource": "contract-fixture",
+        "providerSource": "contract-fixture",
+        "externalSlug": "argentina-vs-egypt-spread-away-1-5",
+        "externalMarketId": "contract-argentina-vs-egypt-spread-away-1-5",
+        "conditionId": "condition-argentina-vs-egypt-spread-away-1-5",
+        "referenceTokenId": "contract-argentina-vs-egypt-spread-away-1-5-away",
+        "tokenId": "contract-argentina-vs-egypt-spread-away-1-5-away",
+        "referenceOutcomeLabel": "Egypt +1.5",
+        "limitPrice": 0.52,
+        "limitSide": "ask",
+        "limitShares": 10
+      }
+    },
+    "selectionSourceSummary": {
+      "canceledOrders": {
+        "totalSelectionCount": 0,
+        "sourceBreakdown": {},
+        "polymarketSelectionCount": 0,
+        "contractFixtureSelectionCount": 0,
+        "unknownSourceSelectionCount": 0,
+        "regulationWinner": {
+          "totalCount": 0,
+          "polymarketCount": 0,
+          "contractFixtureCount": 0,
+          "status": "missing"
+        },
+        "lineMarkets": {
+          "totalCount": 0,
+          "polymarketCount": 0,
+          "contractFixtureCount": 0,
+          "status": "missing",
+          "families": [],
+          "reason": "No portfolio line selections are present."
+        }
+      },
+      "recentTrades": {
+        "totalSelectionCount": 1,
+        "sourceBreakdown": {
+          "contract-fixture": 1
+        },
+        "polymarketSelectionCount": 0,
+        "contractFixtureSelectionCount": 1,
+        "unknownSourceSelectionCount": 0,
+        "regulationWinner": {
+          "totalCount": 0,
+          "polymarketCount": 0,
+          "contractFixtureCount": 0,
+          "status": "missing"
+        },
+        "lineMarkets": {
+          "totalCount": 1,
+          "polymarketCount": 0,
+          "contractFixtureCount": 1,
+          "status": "contract-fixture",
+          "families": [
+            "spread"
+          ],
+          "reason": "Portfolio line selections are Local MVP contract fixtures until provider-backed line markets are available."
+        }
+      },
+      "combined": {
+        "totalSelectionCount": 1,
+        "sourceBreakdown": {
+          "contract-fixture": 1
+        },
+        "polymarketSelectionCount": 0,
+        "contractFixtureSelectionCount": 1,
+        "unknownSourceSelectionCount": 0,
+        "regulationWinner": {
+          "totalCount": 0,
+          "polymarketCount": 0,
+          "contractFixtureCount": 0,
+          "status": "missing"
+        },
+        "lineMarkets": {
+          "totalCount": 1,
+          "polymarketCount": 0,
+          "contractFixtureCount": 1,
+          "status": "contract-fixture",
+          "families": [
+            "spread"
+          ],
+          "reason": "Portfolio line selections are Local MVP contract fixtures until provider-backed line markets are available."
+        }
+      }
+    }
+  },
+  "assertions": {
+    "homeSelectedMvpReadyEvent": true,
+    "detailSourceSummaryMatchesHome": true,
+    "routeOrderFilled": true,
+    "portfolioPositionPresent": true,
+    "historyRecentTradePresent": true,
+    "selectedLinePreserved": true,
+    "selectedTokenPreserved": true,
+    "portfolioLineSourceSummary": "contract-fixture",
+    "historyLineSourceSummary": "contract-fixture",
+    "androidProof": "not-run-in-this-backend-route-cycle"
+  }
+}
