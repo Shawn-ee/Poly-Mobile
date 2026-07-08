@@ -1,0 +1,31 @@
+
+> poly-bot@0.1.0 liquidity:enable-event-mm
+> tsx scripts/enableReferenceEventMm.ts --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug world-cup-golden-boot-winner --allowlist Lionel Messi --maxMarkets 1 --dryRun false --confirmEnable true
+
+{
+  "ok": true,
+  "dryRun": false,
+  "eventSlug": "world-cup-golden-boot-winner",
+  "results": [
+    {
+      "marketId": "6e0eac54-df5e-4cb0-bab8-cb575ea5b4f0",
+      "slug": "will-lionel-messi-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "title": "Will Lionel Messi be the top goalscorer at the 2026 FIFA World Cup?",
+      "safe": true,
+      "reason": null,
+      "updated": {
+        "ok": true,
+        "marketId": "6e0eac54-df5e-4cb0-bab8-cb575ea5b4f0",
+        "importStatus": "approved",
+        "referenceOnly": true,
+        "tradable": false,
+        "mmEnabled": true,
+        "isListed": true,
+        "reviewedAt": "2026-07-08T22:09:54.264Z",
+        "reviewedBy": "[redacted-dev-admin]",
+        "reviewNotes": "Imported from grouped World Cup event.",
+        "botInitialization": null
+      }
+    }
+  ]
+}

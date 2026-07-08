@@ -1,0 +1,201 @@
+{
+  "pass": true,
+  "cycle": "PG",
+  "generatedAt": "2026-07-08T22:11:34.795Z",
+  "scope": "provider-visible-market-to-internal-test-tradable-mobile-flow",
+  "routes": {
+    "search": "/api/events?source=polymarket&search=Messi",
+    "detail": "/api/mobile/events/:slug/live-detail",
+    "quote": "/api/markets/:marketId/quote",
+    "order": "POST /api/orders",
+    "portfolio": "/api/portfolio",
+    "history": "/api/portfolio/history"
+  },
+  "event": {
+    "id": "52373944-bf97-4814-a780-c00ae7eb2c62",
+    "slug": "world-cup-golden-boot-winner",
+    "title": "World Cup: Golden Boot Winner",
+    "eventType": "future"
+  },
+  "market": {
+    "id": "6e0eac54-df5e-4cb0-bab8-cb575ea5b4f0",
+    "slug": "will-lionel-messi-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+    "title": "Will Lionel Messi be the top goalscorer at the 2026 FIFA World Cup?",
+    "referenceSource": "polymarket",
+    "externalSlug": "will-lionel-messi-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+    "externalMarketId": "2069635",
+    "conditionId": "0xd2a8caba5559bc21e14f6b2aa504cb14a1782751658b71409e25b82e432c0a97"
+  },
+  "outcome": {
+    "id": "bbd30c9c-3f22-46a5-ada8-7ac94763ab6d",
+    "name": "YES",
+    "referenceTokenId": "19214394437683566921750936876376421489271269944393354497977881791256347396217",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "botQuote": {
+    "orderId": "eb478a1d-b431-48ac-a831-212740bd090d",
+    "side": "SELL",
+    "price": 0.4,
+    "remaining": 5
+  },
+  "mobileProofUser": {
+    "id": "7706010d-cbbc-4f2d-bf00-8cc3b1fb43c8",
+    "email": "cycle_pg_provider_user_c166f1db@local.test"
+  },
+  "checks": {
+    "searchVisible": true,
+    "detailVisible": true,
+    "quoteVisible": true,
+    "serverModeTicketSubmitted": true,
+    "filledAgainstBotLiquidity": true,
+    "portfolioPositionVisible": true,
+    "historyTradeVisible": true,
+    "homeLiveMatchOnlyUnchanged": true
+  },
+  "orderResult": {
+    "id": "ebaf855c-8535-4b82-8b00-068c7caabe42",
+    "mode": "server",
+    "title": "Will Lionel Messi be the top goalscorer at the 2026 FIFA World Cup?",
+    "outcome": "Lionel Messi",
+    "selection": {
+      "marketType": "future",
+      "marketId": "6e0eac54-df5e-4cb0-bab8-cb575ea5b4f0",
+      "outcomeId": "bbd30c9c-3f22-46a5-ada8-7ac94763ab6d",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Lionel Messi",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-lionel-messi-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2069635",
+      "conditionId": "0xd2a8caba5559bc21e14f6b2aa504cb14a1782751658b71409e25b82e432c0a97",
+      "referenceTokenId": "19214394437683566921750936876376421489271269944393354497977881791256347396217",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.4,
+      "limitSide": "ask"
+    },
+    "contractSide": "yes",
+    "side": "buy",
+    "amount": 1.2,
+    "probability": 40,
+    "status": "FILLED",
+    "size": 3,
+    "filledSize": 3,
+    "remainingSize": 0
+  },
+  "portfolioPosition": {
+    "marketId": "6e0eac54-df5e-4cb0-bab8-cb575ea5b4f0",
+    "outcomeId": "bbd30c9c-3f22-46a5-ada8-7ac94763ab6d",
+    "shares": 3,
+    "selection": {
+      "marketType": "future",
+      "marketId": "6e0eac54-df5e-4cb0-bab8-cb575ea5b4f0",
+      "outcomeId": "bbd30c9c-3f22-46a5-ada8-7ac94763ab6d",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Lionel Messi",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-lionel-messi-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2069635",
+      "conditionId": "0xd2a8caba5559bc21e14f6b2aa504cb14a1782751658b71409e25b82e432c0a97",
+      "referenceTokenId": "19214394437683566921750936876376421489271269944393354497977881791256347396217",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.4,
+      "limitSide": "ask"
+    }
+  },
+  "historyTrade": {
+    "id": "d50246ac-5be7-41b7-a2b2-d584b684f0b2",
+    "market": {
+      "id": "6e0eac54-df5e-4cb0-bab8-cb575ea5b4f0",
+      "title": "Will Lionel Messi be the top goalscorer at the 2026 FIFA World Cup?",
+      "status": "LIVE",
+      "marketGroupKey": "outrights",
+      "marketType": "outright",
+      "line": null,
+      "period": "futures",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-lionel-messi-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2069635",
+      "conditionId": "0xd2a8caba5559bc21e14f6b2aa504cb14a1782751658b71409e25b82e432c0a97"
+    },
+    "outcome": {
+      "id": "bbd30c9c-3f22-46a5-ada8-7ac94763ab6d",
+      "name": "YES",
+      "label": "Lionel Messi",
+      "side": "yes",
+      "referenceTokenId": "19214394437683566921750936876376421489271269944393354497977881791256347396217",
+      "referenceOutcomeLabel": "Yes"
+    },
+    "selection": {
+      "marketId": "6e0eac54-df5e-4cb0-bab8-cb575ea5b4f0",
+      "outcomeId": "bbd30c9c-3f22-46a5-ada8-7ac94763ab6d",
+      "marketGroupId": "outrights",
+      "marketType": "future",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Lionel Messi",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "providerSource": "polymarket",
+      "externalSlug": "will-lionel-messi-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2069635",
+      "conditionId": "0xd2a8caba5559bc21e14f6b2aa504cb14a1782751658b71409e25b82e432c0a97",
+      "referenceTokenId": "19214394437683566921750936876376421489271269944393354497977881791256347396217",
+      "tokenId": "19214394437683566921750936876376421489271269944393354497977881791256347396217",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.4,
+      "limitSide": "ask"
+    },
+    "side": "BUY",
+    "shares": 3,
+    "cost": 1.2,
+    "fee": 0,
+    "createdAt": "2026-07-08T22:11:34.670Z"
+  },
+  "remainingOpenOrders": [
+    {
+      "id": "5f4ec9b0-6812-43ee-a496-1184509e058e",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "bbd30c9c-3f22-46a5-ada8-7ac94763ab6d",
+      "side": "BUY",
+      "price": "0.36",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "eb478a1d-b431-48ac-a831-212740bd090d",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "bbd30c9c-3f22-46a5-ada8-7ac94763ab6d",
+      "side": "SELL",
+      "price": "0.4",
+      "amount": "5",
+      "remaining": "2",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "4ed4a9bd-1e61-4999-8671-b773a2249889",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "02e672e1-fdab-4cd0-bbad-0837c28cddd0",
+      "side": "BUY",
+      "price": "0.37",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "01fdbd56-c378-452e-9c66-8e6fa5835faa",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "02e672e1-fdab-4cd0-bbad-0837c28cddd0",
+      "side": "SELL",
+      "price": "0.64",
+      "amount": "5",
+      "remaining": "5",
+      "status": "OPEN"
+    }
+  ]
+}

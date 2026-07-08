@@ -1,0 +1,42 @@
+
+> poly-bot@0.1.0 bot:polymarket:mm:live-local
+> tsx scripts/liquidityRuntime.ts --dryRun false --confirmLive true --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug world-cup-golden-boot-winner --allowlist Lionel Messi --maxMarkets 1 --durationSeconds 1
+
+{
+  "dryRun": false,
+  "liveOrdersEnabled": true,
+  "confirmLive": true,
+  "cycleReports": [
+    {
+      "marketId": "6e0eac54-df5e-4cb0-bab8-cb575ea5b4f0",
+      "slug": "will-lionel-messi-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "status": "manage_quotes",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.382,
+      "referenceAsk": 0.383,
+      "plannedBotBid": 0.36,
+      "plannedBotAsk": 0.4,
+      "reasons": [],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 2502,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 2502,
+      "globalExposureCents": 2502,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [
+        "new quote bbd30c9c-3f22-46a5-ada8-7ac94763ab6d:BUY @ 0.36",
+        "new quote bbd30c9c-3f22-46a5-ada8-7ac94763ab6d:SELL @ 0.40",
+        "new quote 02e672e1-fdab-4cd0-bbad-0837c28cddd0:BUY @ 0.37",
+        "new quote 02e672e1-fdab-4cd0-bbad-0837c28cddd0:SELL @ 0.64",
+        "placed bbd30c9c-3f22-46a5-ada8-7ac94763ab6d:BUY @ 0.36",
+        "placed bbd30c9c-3f22-46a5-ada8-7ac94763ab6d:SELL @ 0.40",
+        "placed 02e672e1-fdab-4cd0-bbad-0837c28cddd0:BUY @ 0.37",
+        "placed 02e672e1-fdab-4cd0-bbad-0837c28cddd0:SELL @ 0.64"
+      ],
+      "perMarketExposureCapCents": 20000
+    }
+  ]
+}
