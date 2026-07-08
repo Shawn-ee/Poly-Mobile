@@ -1,0 +1,282 @@
+{
+  "summary": {
+    "cycle": 1,
+    "generatedAt": "2026-07-08T21:26:11.617Z",
+    "marketsRefreshed": 8,
+    "marketsSkipped": 0,
+    "snapshotsUpdated": 16,
+    "staleCount": 0,
+    "wideCount": 0,
+    "missingCount": 0,
+    "errorCount": 0
+  },
+  "report": {
+    "generatedAt": "2026-07-08T21:26:11.617Z",
+    "dryRun": true,
+    "snapshotWritesApplied": true,
+    "liveOrdersEnabled": false,
+    "pollMs": 5000,
+    "refreshedCount": 8,
+    "snapshotsUpdated": 16,
+    "skippedCount": 0,
+    "refreshed": [
+      {
+        "marketId": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+        "title": "Will Argentina win the 2026 FIFA World Cup?",
+        "slug": "will-argentina-win-the-2026-fifa-world-cup-245",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "fa181546-35ad-47d4-8874-f5b73cd9f571",
+            "tokenId": "18812649149814341758733697580460697418474693998558159483117100240528657629879",
+            "bestBid": 0.2,
+            "bestAsk": 0.201,
+            "spread": 0.001,
+            "lastTradePrice": 0.201,
+            "outcomePrice": 0.2005,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "0301d826-33a5-41d9-bab5-8fcbe291831a",
+            "tokenId": "115428153746996892211798999366308897078723117634059783423375188043903703749062",
+            "bestBid": 0.2,
+            "bestAsk": 0.201,
+            "spread": 0.001,
+            "lastTradePrice": 0.201,
+            "outcomePrice": 0.7995,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      },
+      {
+        "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+        "title": "Will Belgium win the 2026 FIFA World Cup?",
+        "slug": "will-belgium-win-the-2026-fifa-world-cup-358",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "5e90f5bc-f8f6-4dfe-9a50-35c95e687387",
+            "tokenId": "30815807067456631524510535002617106205417832891402132396713720656146245200000",
+            "bestBid": 0.024,
+            "bestAsk": 0.025,
+            "spread": 0.001,
+            "lastTradePrice": 0.024,
+            "outcomePrice": 0.0245,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "90725b3c-a504-47f0-891d-cfa7c0757cc0",
+            "tokenId": "71145888994888153292442623019750517622535407476309461406574461229898137896934",
+            "bestBid": 0.024,
+            "bestAsk": 0.025,
+            "spread": 0.001,
+            "lastTradePrice": 0.024,
+            "outcomePrice": 0.9755,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      },
+      {
+        "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+        "title": "Will England win the 2026 FIFA World Cup?",
+        "slug": "will-england-win-the-2026-fifa-world-cup-937",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "cdcc34fa-73a4-4fb7-bf71-cf6df5f19374",
+            "tokenId": "115556263888245616435851357148058235707004733438163639091106356867234218207169",
+            "bestBid": 0.158,
+            "bestAsk": 0.159,
+            "spread": 0.001,
+            "lastTradePrice": 0.159,
+            "outcomePrice": 0.1585,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "1b5a9a21-06db-4574-8adb-261da5d4df12",
+            "tokenId": "77121637225348873006259930776623502125079210522997384841464684944292365296940",
+            "bestBid": 0.158,
+            "bestAsk": 0.159,
+            "spread": 0.001,
+            "lastTradePrice": 0.159,
+            "outcomePrice": 0.8415,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      },
+      {
+        "marketId": "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+        "title": "Will France win the 2026 FIFA World Cup?",
+        "slug": "will-france-win-the-2026-fifa-world-cup-924",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "6c96ee3d-290a-4c10-8fa9-f1debc4591d4",
+            "tokenId": "108233603819467706476318984012158651931658302669301887462181073562758483842092",
+            "bestBid": 0.325,
+            "bestAsk": 0.326,
+            "spread": 0.001,
+            "lastTradePrice": 0.326,
+            "outcomePrice": 0.3255,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "f62a736c-b9bd-4c38-9266-401005697dd4",
+            "tokenId": "32270411694523539495262303868629477861017829722282576458031815333486368239544",
+            "bestBid": 0.325,
+            "bestAsk": 0.326,
+            "spread": 0.001,
+            "lastTradePrice": 0.326,
+            "outcomePrice": 0.6745,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      },
+      {
+        "marketId": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+        "title": "Will Morocco win the 2026 FIFA World Cup?",
+        "slug": "will-morocco-win-the-2026-fifa-world-cup-464",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "beb850a6-01f9-4ec0-a0df-da003a310838",
+            "tokenId": "69910730841487615802736046038473620030754616421912831175284551372639933569112",
+            "bestBid": 0.029,
+            "bestAsk": 0.03,
+            "spread": 0.001,
+            "lastTradePrice": 0.03,
+            "outcomePrice": 0.0295,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "b64ef40b-846b-4cb5-b048-1febcd318c7e",
+            "tokenId": "64291832879722161879651094688874074984529456778901604558632306686248535158725",
+            "bestBid": 0.029,
+            "bestAsk": 0.03,
+            "spread": 0.001,
+            "lastTradePrice": 0.03,
+            "outcomePrice": 0.9705,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      },
+      {
+        "marketId": "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+        "title": "Will Norway win the 2026 FIFA World Cup?",
+        "slug": "will-norway-win-the-2026-fifa-world-cup-893",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "b266d59f-e9a3-493d-ad88-0ee47cd85f00",
+            "tokenId": "60447443643099453130956385288904175887233107411078568881602330835010340506057",
+            "bestBid": 0.059,
+            "bestAsk": 0.06,
+            "spread": 0.001,
+            "lastTradePrice": 0.06,
+            "outcomePrice": 0.0595,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "99c07c37-123e-47d4-87a3-1dd92152a19f",
+            "tokenId": "111538579557239934343870815626480092245052857494675784434731223739153238373070",
+            "bestBid": 0.059,
+            "bestAsk": 0.06,
+            "spread": 0.001,
+            "lastTradePrice": 0.06,
+            "outcomePrice": 0.9405,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      },
+      {
+        "marketId": "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+        "title": "Will Spain win the 2026 FIFA World Cup?",
+        "slug": "will-spain-win-the-2026-fifa-world-cup-963",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "5726cf62-ff54-47ff-8554-a8a563df94e4",
+            "tokenId": "4394372887385518214471608448209527405727552777602031099972143344338178308080",
+            "bestBid": 0.187,
+            "bestAsk": 0.188,
+            "spread": 0.001,
+            "lastTradePrice": 0.188,
+            "outcomePrice": 0.1875,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "3227cee1-d2d1-4180-a18e-3b1e728f9820",
+            "tokenId": "112680630004798425069810935278212000865453267506345451433803052322987302357330",
+            "bestBid": 0.187,
+            "bestAsk": 0.188,
+            "spread": 0.001,
+            "lastTradePrice": 0.188,
+            "outcomePrice": 0.8125,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      },
+      {
+        "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+        "title": "Will Switzerland win the 2026 FIFA World Cup?",
+        "slug": "will-switzerland-win-the-2026-fifa-world-cup",
+        "snapshotsUpdated": 2,
+        "outcomes": [
+          {
+            "outcomeId": "d16de1fc-1318-4f3b-ab07-22d597caf8ed",
+            "tokenId": "62131913648515148266463816694306031394539656598501514114816028349608560215534",
+            "bestBid": 0.021,
+            "bestAsk": 0.022,
+            "spread": 0.001,
+            "lastTradePrice": 0.022,
+            "outcomePrice": 0.0215,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          },
+          {
+            "outcomeId": "eb1f5ca0-8c01-407f-be22-5c00e6b98b99",
+            "tokenId": "45315272750116791836504013666029583517532908319286234834610455739871173419179",
+            "bestBid": 0.021,
+            "bestAsk": 0.022,
+            "spread": 0.001,
+            "lastTradePrice": 0.022,
+            "outcomePrice": 0.9785,
+            "qualityStatus": "high_quality",
+            "mmEligible": true,
+            "reason": null
+          }
+        ]
+      }
+    ],
+    "skipped": []
+  }
+}
