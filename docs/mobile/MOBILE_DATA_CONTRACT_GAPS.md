@@ -6571,3 +6571,34 @@ Temporary mock/static data:
 Future migration concern:
 
 - When line markets become provider-backed, Ticket and Portfolio source notes should switch naturally from local-test fake-token wording to Polymarket-backed wording based on the route contract.
+
+## Cycle OG - Current State Inspection And Path Adjustment
+
+Closed or narrowed:
+
+- Confirmed the current match route has provider-backed Regulation Winner rows.
+- Confirmed the current match route does not have provider-backed Spread/Totals/Team Total rows.
+- Confirmed Polymarket Gamma for `fifwc-arg-egy-2026-07-07` exposes 3 match-winner markets and 0 line markets.
+- Confirmed broader real provider-backed World Cup Winner markets exist with fresh quote/depth data.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed current-match Spread/Totals/Team Total ids, condition ids, token ids, prices, and chart data.
+- More current match inventory beyond the single selected MVP match.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch blocked inspection.
+- One proof script still has an outdated default event slug and must be passed the selected event explicitly.
+
+Temporary mock/static data:
+
+- Existing backend-shaped contract fixtures remain the current-match line market source.
+
+Future migration concern:
+
+- Once Polymarket or another approved provider exposes attach-ready current-match line markets, replace the fixture line rows at the backend contract level instead of adding mobile-only structures.

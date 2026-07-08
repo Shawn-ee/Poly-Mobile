@@ -775,3 +775,11 @@ For every UI element or interaction, answer:
 - S23 proof confirms Ticket and Portfolio XML include `fake-token` source wording while the full Home -> Event Detail -> Spread ticket -> fake-token server order -> Portfolio path still passes.
 - Remaining P1: real provider-backed Spread/Totals/Team Total line markets remain unavailable for the current event.
 - Adjusted path remains: continue Local MVP retail flow, do not block on unavailable provider line markets, and keep source wording honest until backend/provider line ingestion exists.
+
+## Cycle OG Gap Tracker Update
+
+- PM-GAP-127 is opened and verified for current service readiness/path adjustment.
+- OG confirms the current match is not fully provider-backed: Regulation Winner is Polymarket-backed, while Spread/Totals/Team Total are local-test contract fixtures.
+- OG confirms Polymarket Gamma exposes 0 line markets for the selected current event, so the app should not attach fake provider identity to fixture lines.
+- OG confirms broader World Cup Winner provider data exists and is healthier than the current match line-market path.
+- Next visible milestone: current-match Regulation Winner ticket/order/Portfolio proof, so the main MVP journey exercises real Polymarket-backed market identity where available.

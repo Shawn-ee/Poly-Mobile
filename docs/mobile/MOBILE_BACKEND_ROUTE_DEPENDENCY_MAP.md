@@ -3135,3 +3135,17 @@ Cycle OF implementation notes:
 
 - No backend route or schema changed.
 - Mobile now renders the existing route/order/portfolio contract with clearer wording: `Local test line · fake-token` and `Local test lines · fake-token`.
+
+## Cycle OG - Current State Inspection And Path Adjustment
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home current MVP event discovery | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` | GET | Public viewing | Query filters | One current match, event slug/title, market source summary | `Event`, `Market`, `Outcome` | None added. | More current match inventory remains future work. |
+| Current match live detail | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | Regulation Winner provider-backed rows, local fixture line rows, source summary | `Event`, `Market`, `Outcome`, reference metadata | Existing `contract-fixture` Spread/Totals/Team Total rows. | Real Polymarket-backed line market rows are unavailable for this event. |
+| Provider availability check | Polymarket Gamma `/events?slug=fifwc-arg-egy-2026-07-07` plus local live-detail route | GET/local proof | Public provider data/local route | Provider event slug and local event slug | 3 Gamma match-winner markets, 0 Gamma line markets, 4 local fixture line rows | Local event and market rows with provider identity | Existing fixtures justified for Local MVP only. | No current provider-backed line markets to attach. |
+| Broader provider readiness | Polymarket Gamma/CLOB through existing real provider proof | GET/local proof | Public provider data/local route | `world-cup-winner` provider event | Multiple real provider-backed outright markets with quotes/depth | Imported provider-backed outright event/markets/outcomes | None added. | Chart history can be refresh-due while quotes/depth are fresh. |
+
+Cycle OG implementation notes:
+
+- No backend route or schema changed.
+- The next visible MVP cycle should use current-match Regulation Winner as the real provider-backed path.

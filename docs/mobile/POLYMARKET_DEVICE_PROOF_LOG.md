@@ -960,6 +960,34 @@ Pass for the narrow Ticket/Portfolio fake-token source clarity scope.
 Remaining gaps:
 Real provider-backed Spread/Totals/Team Total market ingestion remains missing for the current event.
 
+### 2026-07-08 - Cycle OG - Current state inspection and path adjustment
+
+Reference device:
+Not used. This was a backend/provider/mobile-route inspection cycle requested before continuing app work.
+
+Holiwyn device:
+Not used for this inspection cycle. Last verified S23 target remains `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / `SM_S911U1`.
+
+Holiwyn app mode:
+Backend route inspection against `http://127.0.0.1:3002`.
+
+Holiwyn actions:
+Inspected current Home and Event Detail route state, checked Polymarket Gamma availability for the selected current match, and verified broader World Cup Winner provider readiness.
+
+Evidence:
+- `docs/mobile/harness/cycle-OG-current-state-path-adjustment/cycle-OG-current-state-inspection.json`
+- `docs/mobile/harness/cycle-OG-current-state-path-adjustment/cycle-OG-provider-match-line-availability.json`
+- `docs/mobile/harness/cycle-OG-current-state-path-adjustment/cycle-OG-real-provider-world-cup-winner.json`
+
+Smoke/tests:
+Route/provider inspection proofs passed.
+
+Result:
+Pass for inspection. Current match Regulation Winner is Polymarket-backed; current match Spread/Totals/Team Total are local-test contract fixtures.
+
+Remaining gaps:
+Next visible S23 proof should target the current-match Regulation Winner ticket/order/Portfolio path.
+
 ### 2026-07-08 - Cycle OC - Server-owned cancel history
 
 Reference device:

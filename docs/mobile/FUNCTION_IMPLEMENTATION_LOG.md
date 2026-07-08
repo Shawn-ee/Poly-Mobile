@@ -8121,3 +8121,40 @@ Known limitations:
 
 - This cycle clarifies mixed-source/fake-token wording only.
 - Spread/Totals/Team Total remain `contract-fixture` line markets until real attach-ready Polymarket line markets exist.
+
+## Cycle OG - Current State Inspection And Path Adjustment
+
+Feature/page worked on:
+
+- Current Local MVP backend/mobile readiness inspection.
+
+Frontend/backend files touched:
+
+- No app runtime files changed.
+- `docs/mobile/audits/cycle-OG-current-state-path-adjustment.md`
+- `docs/mobile/harness/cycle-OG-current-state-path-adjustment/`
+
+Important functions/services touched:
+
+- No runtime functions changed.
+- Inspection exercised `/api/events`, `/api/mobile/events/:slug/live-detail`, current provider match availability proof, and real provider World Cup Winner proof.
+
+User interactions supported/proven:
+
+- No new visible interaction was implemented in this inspection-only cycle.
+- The next visible path is adjusted to prioritize current-match Regulation Winner because it is real Polymarket-backed.
+
+State transitions:
+
+- None.
+
+Validation:
+
+- Current MVP state inspection passed.
+- Current match provider/line availability proof passed for `argentina-vs-egypt`.
+- Real provider World Cup Winner proof passed.
+
+Known limitations:
+
+- Current match Spread/Totals/Team Total are still local-test fake-token fixtures.
+- The provider line availability script has an old default slug and should be called with the selected current event slug until updated.

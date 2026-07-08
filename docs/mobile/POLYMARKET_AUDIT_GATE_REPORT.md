@@ -5503,3 +5503,32 @@ Decision:
 
 - Pass/fail: Pass for the narrow OF scope.
 - Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open.
+
+## Cycle OG
+
+Gate status: Pass for current state inspection and path adjustment
+
+Scope: Inspect whether the current Local MVP service state supports real Polymarket-backed Regulation Winner and line markets.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OG-current-state-path-adjustment.md`
+- `docs/mobile/harness/cycle-OG-current-state-path-adjustment/cycle-OG-current-state-inspection.json`
+- `docs/mobile/harness/cycle-OG-current-state-path-adjustment/cycle-OG-provider-match-line-availability.json`
+- `docs/mobile/harness/cycle-OG-current-state-path-adjustment/cycle-OG-real-provider-world-cup-winner.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OG-P0-01 | P0 | Pass | Home/current detail route selects `argentina-vs-egypt`. | Fix event discovery/route filters. |
+| OG-P0-02 | P0 | Pass | Detail route has 3 Polymarket Regulation Winner markets. | Fix provider import/mapping. |
+| OG-P0-03 | P0 | Pass | Detail route has 0 provider-backed line markets and 4 contract-fixture line markets. | Keep fixture labels honest or import real provider line markets when available. |
+| OG-P0-04 | P0 | Pass | Gamma for current provider event has 0 line markets, so fixtures are justified for Local MVP only. | Fix provider availability classifier. |
+| OG-P0-05 | P0 | Pass | Broader World Cup Winner provider proof shows real provider-backed markets exist. | Fix provider discovery/import if missing. |
+
+Decision:
+
+- Pass/fail: Pass for inspection.
+- Next cycle should prioritize current-match Regulation Winner as the real provider-backed ticket/order path.
+- Remaining P1: real provider-backed current-match line-market ingestion remains unavailable.
