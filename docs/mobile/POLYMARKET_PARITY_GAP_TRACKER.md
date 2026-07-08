@@ -686,3 +686,12 @@ For every UI element or interaction, answer:
 - Mobile consumes that display contract and S23 proof passes for Home -> Event Detail stale-status rendering.
 - Remaining P1: real current live World Cup match/provider breadth remains missing.
 - Remaining P1: Spread/Totals/Team Total remain contract fixtures until attach-ready provider line markets exist.
+
+## Cycle NW Gap Tracker Update
+
+- PM-GAP-119 is opened and verified for backend-owned Home/event-list display status.
+- NW closes the data-contract gap left after NV: Home summaries now receive `displayStatus` from `/api/events`, not only from mobile inference.
+- `/api/events` now emits `event.displayStatus` with `mobileStatus=future`, `label=Active`, and `startsAt=Time TBD` for stale/no-clock raw live or active summaries.
+- S23 proof passes for Home -> Event Detail stale-status rendering.
+- Remaining P1: real current live World Cup match/provider breadth remains missing.
+- Remaining P1: Spread/Totals/Team Total remain contract fixtures until attach-ready provider line markets exist.

@@ -79,6 +79,63 @@ const arrayFromMetadata = (metadata: Record<string, unknown>, key: string) => {
   return Array.isArray(value) ? value : [];
 };
 
+const datePattern = /(20\d{2})[-_/](\d{1,2})[-_/](\d{1,2})/;
+
+const dateOnlyUtc = (date: Date) => Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+
+const dateFromText = (value: string | null | undefined) => {
+  const match = `${value ?? ""}`.match(datePattern);
+  if (!match) return null;
+  const timestamp = Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+  return Number.isFinite(timestamp) ? timestamp : null;
+};
+
+const eventDate = (event: { startTime?: Date | string | null; externalSlug?: string | null; title?: string | null }) => {
+  if (event.startTime) {
+    const start = new Date(event.startTime);
+    if (!Number.isNaN(start.getTime())) return dateOnlyUtc(start);
+  }
+  return dateFromText(event.externalSlug) ?? dateFromText(event.title);
+};
+
+const isFreshEventDate = (event: { startTime?: Date | string | null; externalSlug?: string | null; title?: string | null }) => {
+  const day = eventDate(event);
+  return day == null || day >= dateOnlyUtc(new Date());
+};
+
+const stringFromMetadata = (metadata: Record<string, unknown>, key: string) => {
+  const value = metadata[key];
+  return typeof value === "string" && value.trim().length > 0 ? value.trim() : null;
+};
+
+const booleanFromMetadata = (metadata: Record<string, unknown>, key: string) =>
+  typeof metadata[key] === "boolean" ? metadata[key] : null;
+
+const displayStatusForSummary = (event: {
+  status?: string | null;
+  liveStatus?: string | null;
+  clock?: string | null;
+  startTime?: Date | string | null;
+  externalSlug?: string | null;
+  title?: string | null;
+}, mobileLiveDetail: Record<string, unknown>) => {
+  const rawLooksLive = ["live", "active"].includes(`${event.status ?? ""}`.toLowerCase())
+    || `${event.liveStatus ?? ""}`.toLowerCase().includes("live")
+    || `${event.liveStatus ?? ""}`.toLowerCase() === "in_progress";
+  if (!rawLooksLive || `${event.clock ?? ""}`.trim()) return null;
+
+  const liveDataStatus = `${stringFromMetadata(mobileLiveDetail, "status") ?? ""}`.toLowerCase();
+  const staleProvider = ["stale", "unavailable", "empty"].includes(liveDataStatus) || booleanFromMetadata(mobileLiveDetail, "isStale") === true;
+  if (isFreshEventDate(event) && !staleProvider) return null;
+
+  return {
+    mobileStatus: "future" as const,
+    label: "Active",
+    startsAt: "Time TBD",
+    reason: stringFromMetadata(mobileLiveDetail, "reason") ?? "Event has no current live clock or fresh provider status.",
+  };
+};
+
 const probabilityFromPrice = (value: { toString(): string } | string | number) => {
   const parsed = typeof value === "number" ? value : Number(value.toString());
   if (!Number.isFinite(parsed)) return null;
@@ -318,6 +375,7 @@ export const serializeEventSummary = (
     normalizedSoccerRulesFromMetadata(metadata) ?? deriveEventMarketRules(event, markets),
     markets,
   );
+  const displayStatus = displayStatusForSummary(event, mobileLiveDetail);
 
   return {
     id: event.id,
@@ -333,6 +391,7 @@ export const serializeEventSummary = (
     startTime: event.startTime,
     status: event.status,
     liveStatus: event.liveStatus,
+    displayStatus,
     period: event.period,
     clock: event.clock,
     homeScore: event.homeScore,

@@ -5211,3 +5211,31 @@ Decision:
 - Pass/fail: Pass for focused backend/mobile display contract.
 - Remaining P1: real current World Cup live match/provider breadth is still missing.
 - Remaining P1: line markets remain contract fixtures, not provider-backed Polymarket line markets.
+
+## Cycle NW
+
+Gate status: Pass for Home/event-list display-status contract
+
+Scope: Move stale/no-clock Home card display truth into the backend event-list route contract and prove mobile still renders it.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NW-home-display-status-contract.md`
+- `docs/mobile/harness/cycle-NW-home-display-status-contract/cycle-NW-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NW-home-display-status-contract/cycle-NW-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NW-home-display-status-contract/cycle-NW-current-mvp-detail-stale-top.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NW-P0-01 | P0 | Pass | Route probe and serializer test show `displayStatus` on stale/no-clock Home summary. | Fix `serializeEventSummary()`. |
+| NW-P0-02 | P0 | Pass | Public event/sports no-leak tests pass with only intended public key changes. | Fix response serialization or allowed keys. |
+| NW-P0-03 | P0 | Pass | S23 proof shows Home `Active` / `Time TBD`. | Fix Home route consumption. |
+| NW-P0-04 | P0 | Pass | S23 proof rejects `15'`, `LIVE WORLD CUP`, Order Book, and Chat. | Keep non-MVP surfaces hidden. |
+
+Decision:
+
+- Pass/fail: Pass for focused backend/mobile Home display contract.
+- Remaining P1: real current World Cup live match/provider breadth is still missing.
+- Remaining P1: line markets remain contract fixtures, not provider-backed Polymarket line markets.

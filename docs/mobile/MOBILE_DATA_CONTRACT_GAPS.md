@@ -6264,3 +6264,33 @@ Temporary mock/static data:
 Future migration concern:
 
 - When provider import supplies reliable event end/freshness fields, `displayStatus` should use those fields directly rather than stale lifecycle inference.
+
+## Cycle NW - Home Display Status Contract
+
+Closed or narrowed:
+
+- `/api/events` summaries now emit `event.displayStatus` for stale/no-clock raw live or active events.
+- Home and Event Detail now share a backend-owned display-status contract instead of relying on different mobile inference paths.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real current live World Cup match discovery and provider breadth.
+- Provider-backed Spread/Totals/Team Total line markets.
+- First-class provider event end/freshness fields, so `displayStatus` can stop deriving from dates and stale provider status.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- Narrowed: `/api/events` and `/api/mobile/events/:slug/live-detail` both expose `displayStatus` for the stale/no-clock MVP case.
+
+Temporary mock/static data:
+
+- No new mock data was added.
+- Existing backend `contract-fixture` line rows remain.
+
+Future migration concern:
+
+- Once provider import stores reliable match state, event-list `displayStatus` should prefer those fields over slug-date inference.

@@ -82,6 +82,7 @@ const expectedEventSummaryKeys = [
   "chartHistory",
   "createdAt",
   "description",
+  "displayStatus",
   "eventType",
   "externalEventId",
   "externalSlug",
@@ -311,6 +312,7 @@ describe("public event API no-leak checks", () => {
     mockPrisma.event.findMany.mockResolvedValue([
       {
         ...baseEvent,
+        startTime: new Date("2026-07-08T16:00:00.000Z"),
         status: "active",
         liveStatus: "LIVE",
         markets: [mobileListMarket],

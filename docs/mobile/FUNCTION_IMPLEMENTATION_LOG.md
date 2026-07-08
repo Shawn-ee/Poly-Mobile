@@ -7696,3 +7696,48 @@ Known limitations:
 
 - `displayStatus` is a display contract only; it does not create real live provider breadth.
 - Line families remain `contract-fixture` until provider-backed Spread/Totals/Team Total markets exist.
+
+## Cycle NW - Home Display Status Contract
+
+Feature/page worked on:
+
+- Local MVP Home/event-list status contract between backend and mobile.
+
+Backend/harness files touched:
+
+- `src/server/services/eventReadModel.ts`
+- `src/__tests__/mobile-event-market-rules-contract.test.ts`
+- `src/__tests__/public.events.no-leak.test.ts`
+- `src/__tests__/public.sports.no-leak.test.ts`
+- Evidence/docs:
+  - `docs/mobile/harness/cycle-NW-home-display-status-contract/cycle-NW-current-mvp-s23-visible-flow.json`
+  - `docs/mobile/screenshots/cycle-NW-home-display-status-contract/`
+  - `docs/mobile/audits/cycle-NW-home-display-status-contract.md`
+
+Important functions/services touched:
+
+- `serializeEventSummary()` now emits `displayStatus` for stale/no-clock raw live/active event summaries.
+- Public event and sports exact-key tests were updated to include the intended `displayStatus` public field.
+
+User interactions supported/proven:
+
+- User opens Home and receives backend-owned `Active` / `Time TBD` display state.
+- User taps the match and Event Detail continues to show the same display state.
+- Chat/orderbook remain hidden.
+
+State transitions:
+
+- No database schema, order lifecycle, provider ingestion, or portfolio route changed.
+
+Validation:
+
+- Backend event summary contract/no-leak tests passed.
+- Mobile adapter/feed tests passed.
+- Mobile TypeScript passed.
+- Root TypeScript passed.
+- S23 focused proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- `displayStatus` does not create real live provider breadth.
+- Spread/Totals/Team Total remain `contract-fixture` line markets.

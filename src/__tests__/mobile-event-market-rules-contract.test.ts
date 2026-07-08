@@ -46,6 +46,33 @@ const market = (overrides: Record<string, unknown>) => ({
 });
 
 describe("mobile event market rules contract", () => {
+  test("emits display status for stale provider-dated live summaries", () => {
+    const event = serializeEventSummary({
+      ...baseEvent,
+      startTime: null,
+      status: "active",
+      liveStatus: "LIVE",
+      period: "Regulation",
+      clock: null,
+      externalSlug: "fifwc-arg-egy-2026-07-07",
+      metadata: {
+        mobileLiveDetail: {
+          status: "stale",
+          isStale: true,
+          reason: "Latest provider update is older than 90 seconds.",
+        },
+      },
+      markets: [market({})],
+    });
+
+    expect(event.displayStatus).toEqual({
+      mobileStatus: "future",
+      label: "Active",
+      startsAt: "Time TBD",
+      reason: "Latest provider update is older than 90 seconds.",
+    });
+  });
+
   test("emits regulation 90 profile with draw and line-market availability", () => {
     const event = serializeEventSummary({
       ...baseEvent,

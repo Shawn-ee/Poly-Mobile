@@ -957,3 +957,31 @@ Pass for live-detail display-status contract.
 
 Remaining gaps:
 Real current live match discovery/breadth is still missing, and line families remain contract fixtures.
+
+### 2026-07-08 - Cycle NW - Home display status contract
+
+Reference device:
+Not used. This was a Holiwyn backend/mobile contract cycle based on current service inspection.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://172.16.200.14:3002`, temporary Expo port `8303`, temporary mobile dev API key.
+
+Holiwyn actions:
+Opened Home, verified backend-owned `Active` / `Time TBD` display state, tapped into Event Detail, and verified consistent `Active` / `Time TBD` state with no fake live minute, orderbook, or chat.
+
+Evidence:
+- `docs/mobile/harness/cycle-NW-home-display-status-contract/cycle-NW-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NW-home-display-status-contract/cycle-NW-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NW-home-display-status-contract/cycle-NW-current-mvp-detail-stale-top.png`
+
+Smoke/tests:
+Backend event summary/no-leak tests, mobile adapter/feed tests, mobile TypeScript, root TypeScript, and S23 focused proof passed.
+
+Result:
+Pass for Home display-status contract.
+
+Remaining gaps:
+Real current live match discovery/breadth is still missing, and line families remain contract fixtures.

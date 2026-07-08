@@ -2994,3 +2994,16 @@ Cycle NV implementation notes:
 
 - No schema migration was added.
 - The route now exposes a first-class display-status field for stale/unavailable no-clock live-detail data instead of forcing mobile to infer it.
+
+## Cycle NW - Home Display Status Contract
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home event card display status | `/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` | GET | Public viewing | Query filters/page size | `event.displayStatus.mobileStatus`, `event.displayStatus.label`, `event.displayStatus.startsAt`, `event.displayStatus.reason`, raw `status`, `liveStatus`, `clock`, `externalSlug` | `Event`, `Market`, `Outcome` | None added. | Real current live World Cup feed remains missing. |
+| Public event summary serialization | `serializeEventSummary()` | Service serializer | N/A | Event row and optional markets | `displayStatus` for stale/no-clock raw live/active summaries | `Event`, `Market` | None added. | Provider import should eventually write reliable event freshness/end fields. |
+| Android proof | `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1 -ExpectDetailStaleOnly` | Device proof | Temporary mobile dev API key | Expo deep link with API key | Home and Event Detail hierarchy/screenshot proof | `ApiCredential` for app launch only | None added. | None for focused display-status proof. |
+
+Cycle NW implementation notes:
+
+- No schema migration was added.
+- Home/event-list route now emits the same display-status contract style as live-detail.
