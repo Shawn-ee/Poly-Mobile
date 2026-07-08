@@ -107,8 +107,8 @@ export type Event = {
   liveDataStatus?: AvailabilityState;
   chartHistory?: Array<{ outcomeId: string; timestamp: string; probability: number }>;
   marketSourceSummary?: MarketSourceSummary;
-  chartHistorySource?: "embedded" | "market-chart-route" | "polymarket-clob-prices-history";
-  chartHistoryStatus?: "idle" | "loading" | "ready" | "empty" | "error";
+  chartHistorySource?: "embedded" | "market-chart-route" | "polymarket-clob-prices-history" | "market-outcome-snapshot" | "empty" | string;
+  chartHistoryStatus?: "idle" | "loading" | "ready" | "refresh_due" | "stale" | "unavailable" | "empty" | "error" | string;
   chartHistoryRange?: "1D" | "1W" | "1M" | "MAX";
   chartHistoryLastUpdated?: string | null;
   chartHistoryEmptyState?: "no-history" | null;

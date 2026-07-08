@@ -583,3 +583,12 @@ For every UI element or interaction, answer:
 - LJ hardens the main internal-readiness risks: server-mode Home no longer renders bundled fallback events, Portfolio value-history route failure remains visible, and server cancel waits for backend success before local removal.
 - Ready for internal local fake-token/server-mode MVP testing: yes.
 - Ready for public server deployment: no. Remaining P1 items are production provider breadth, real liquidity, public auth/session/funding/compliance, and cashout preview/proceeds hardening.
+
+## Cycle NK Gap Tracker Update
+
+- PM-GAP-107 is opened and verified for current-match provider chart source clarity.
+- NK closes the inspection gap where Event Detail could draw a chart-like surface while the route did not clearly prove whether chart history came from Polymarket CLOB or fallback data.
+- Backend proof refreshes three provider-backed Regulation Winner markets for `argentina-vs-egypt`, creates CLOB-backed `MarketOutcomeSnapshot` rows, and verifies `/api/mobile/events/:slug/live-detail` plus `/api/markets/:id/chart`.
+- S23 proof passes for Home -> Event Detail -> provider-backed Regulation Winner ticket -> fake-token/server order -> Portfolio History, with Event Detail hierarchy showing `chart-source-polymarket-clob-prices-history`.
+- Remaining P0/P1: real provider-backed Spread/Totals/Team Total rows are still missing for current matches; current route-visible line markets are `contract-fixture` and must not be claimed as Polymarket parity.
+- Remaining P1: chart history is real but stale for this inspected match; provider lifecycle should refresh automatically for current matches instead of relying on a proof script.

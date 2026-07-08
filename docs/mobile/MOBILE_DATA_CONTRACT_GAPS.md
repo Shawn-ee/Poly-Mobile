@@ -5901,3 +5901,36 @@ Future migration concern:
 
 - Replace line fixtures with provider-backed line markets only when Gamma/CLOB or another approved provider exposes attach-ready rows.
 - If Home grows beyond the Local MVP scope, graduate the flag into a dedicated mobile Home feed route with an explicit response contract.
+
+## Cycle NK - Current Service Inspection And Provider Chart Contract
+
+Closed or narrowed:
+
+- Provider-backed Regulation Winner markets are present for `argentina-vs-egypt`.
+- Polymarket CLOB `/prices-history` can populate `MarketOutcomeSnapshot` for those winner markets.
+- `/api/mobile/events/:slug/live-detail` now exposes chart source/status/range/last-updated fields, allowing the mobile app and S23 proof to distinguish real provider history from visual fallback.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for the inspected current matches.
+- Automated refresh scheduling/invalidation for current event chart history outside the proof script.
+- Fresh live chart timestamps for matches whose provider history is older than the current freshness threshold.
+
+Schema mismatch:
+
+- No schema mismatch was found or introduced.
+
+Route mismatch:
+
+- Before Cycle NK, populated event chart history could be surfaced without preserving provider source/status on the mobile event contract.
+- After Cycle NK, the route exposes source/status fields, and S23 proof verifies `chart-source-polymarket-clob-prices-history`.
+
+Temporary mock/static data:
+
+- No frontend-only random mock data was added.
+- Existing line markets remain backend `contract-fixture` rows and are explicitly reported as such.
+
+Future migration concern:
+
+- Promote chart refresh from proof script/manual execution into the provider lifecycle refresh path for current matches.
+- Do not claim Polymarket line-market parity until attached provider-backed line markets exist or a new approved provider contract is implemented.

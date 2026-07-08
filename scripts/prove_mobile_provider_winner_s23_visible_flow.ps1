@@ -274,7 +274,7 @@ try {
     Save-Screenshot -Name "cycle-$Cycle-current-mvp-detail-top-retry.png" | Out-Null
     $detailTopXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-detail-top-retry.xml"
   }
-  Assert-Contains -Path $detailTopXml -Expected @("event-detail-back", "Game", "ARG", "EGY", "Argentina", "Egypt", "provider-regulation-1x2-composed", "provider-regulation-1x2-outcome-ARG", "provider-regulation-1x2-outcome-DRA", "provider-regulation-1x2-outcome-EGY")
+  Assert-Contains -Path $detailTopXml -Expected @("event-detail-back", "Game", "ARG", "EGY", "Argentina", "Egypt", "provider-regulation-1x2-composed", "provider-regulation-1x2-outcome-ARG", "provider-regulation-1x2-outcome-DRA", "provider-regulation-1x2-outcome-EGY", "event-detail-price-chart", "chart-source-polymarket-clob-prices-history")
   Assert-NotContains -Path $detailTopXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "event-detail-chat")
 
   $winnerXml = $null

@@ -4869,3 +4869,33 @@ Decision:
 - Backend route journey result: pass.
 - Unresolved P0 gaps: S23 visible MVP flow proof.
 - S23 status: visible to ADB during this cycle as `SM_S911U1`.
+
+## Cycle NK
+
+Gate status: Pass for current provider winner chart/probability source clarity
+
+Scope: Inspect current Local MVP service state, refresh provider-backed Regulation Winner chart history from Polymarket CLOB, expose chart source/status to mobile, and prove the visible S23 path.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NK-current-service-provider-chart.md`
+- `docs/mobile/harness/cycle-NK-current-match-chart-history/current-match-polymarket-chart-history.json`
+- `docs/mobile/harness/cycle-NK-current-match-chart-history-s23/cycle-NK-provider-winner-s23-visible-flow.json`
+- `docs/mobile/harness/cycle-NK-current-match-chart-history-s23/cycle-NK-current-mvp-detail-top.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NK-CHART-P0-01 | P0 | Pass | Current match has 3 provider-backed Regulation Winner markets. | Repair provider discovery/import mapping. |
+| NK-CHART-P0-02 | P0 | Pass | CLOB chart refresh created provider snapshots and chart route returns `polymarket-clob-prices-history`. | Fix CLOB refresh/token mapping. |
+| NK-CHART-P0-03 | P0 | Pass | Live-detail exposes event/contract chart source as `polymarket-clob-prices-history`. | Fix live-detail serializer contract. |
+| NK-CHART-P0-04 | P0 | Pass | S23 Event Detail hierarchy includes `chart-source-polymarket-clob-prices-history`. | Fix mobile adapter/EventDetail proof labels. |
+| NK-CHART-P0-05 | P0 | Pass | S23 proof completes provider winner ticket -> Portfolio History with orderbook hidden. | Fix visible flow harness or order/portfolio route. |
+| NK-LINES-P1-01 | P1 | Partial | Route reports 0 provider-backed line markets and 4 contract fixtures. | Implement provider-backed line-market ingestion when attach-ready markets exist. |
+
+Decision:
+
+- Pass/fail: Pass for provider-backed Regulation Winner chart/probability source clarity.
+- Not a final game-page parity pass because line markets remain `contract-fixture`.
+- Remaining P1: automate chart refresh lifecycle and attach real provider-backed Spread/Totals/Team Total markets.

@@ -7163,3 +7163,51 @@ Known limitations:
 - Regulation Winner is provider-backed for the inspected events.
 - Spread/Totals/Team Total remain backend-shaped `contract-fixture` rows until attach-ready provider line markets exist.
 - Local proof still uses deterministic seeded counterparty liquidity for a guaranteed filled History row.
+
+## Cycle NK - Current Service Inspection And Provider Winner Chart Proof
+
+Feature/page worked on:
+
+- Event Detail chart/probability contract for the current Local MVP match.
+- Home -> Event Detail -> provider-backed Regulation Winner ticket -> Portfolio History proof on Samsung S23.
+
+Frontend/harness/backend files touched:
+
+- `src/server/services/mobileLiveEventDetail.ts`
+- `mobile/src/types.ts`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/components/EventDetail.tsx`
+- `scripts/prove_current_match_polymarket_chart_history.ts`
+- `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1`
+- `docs/mobile/audits/cycle-NK-current-service-provider-chart.md`
+
+Important functions/services touched:
+
+- `serializeMobileLiveEventDetail` now exposes primary chart source/status/range/last-updated fields from compact market snapshots.
+- `normalizeEventSummary` preserves backend chart contract fields instead of relabeling populated route history as generic embedded data.
+- `EventDetail` exposes chart source/status/range in the S23 hierarchy so visible proof can verify real provider-backed chart data.
+- `prove_current_match_polymarket_chart_history.ts` refreshes current provider-backed Regulation Winner chart history from Polymarket CLOB prices-history and records route proof.
+
+User interactions supported/proven:
+
+- User opens Home on S23, taps Argentina vs Egypt, sees Event Detail with `chart-source-polymarket-clob-prices-history`, selects the provider-backed Egypt Regulation Winner, swipes to buy, and sees provider source preserved in Portfolio History.
+
+State transitions:
+
+- No schema migration was added.
+- The inspection refreshes `MarketOutcomeSnapshot` rows for current Polymarket Regulation Winner markets.
+- The visible fake-token order path still creates a mobile dev credential, seeds deterministic counterparty liquidity, submits `/api/orders`, fills, then reads `/api/portfolio` and `/api/portfolio/history`.
+
+Validation:
+
+- `npx tsx scripts/prove_current_match_polymarket_chart_history.ts --eventSlug=argentina-vs-egypt`
+- `npm run test:jest -- src/__tests__/mobile-live-event-detail.test.ts src/__tests__/polymarket-price-history-snapshots.test.ts`
+- `npm --prefix mobile run typecheck`
+- S23 proof: `docs/mobile/harness/cycle-NK-current-match-chart-history-s23/cycle-NK-provider-winner-s23-visible-flow.json`
+
+Known limitations:
+
+- Provider-backed Regulation Winner and CLOB chart history are proven for the inspected current match.
+- Chart status is `stale` because the provider history timestamps are from July 7, 2026; the source is real, but not fresh live data.
+- Spread/Totals/Team Total remain backend-shaped `contract-fixture` rows with 0 provider-backed line markets for this event.

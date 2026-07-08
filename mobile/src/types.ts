@@ -153,6 +153,11 @@ export type EventSummary = {
   liveStats?: EventLiveStat[];
   liveDataStatus?: EventLiveDataStatus;
   chartHistory?: EventChartPoint[];
+  chartHistorySource?: "polymarket-clob-prices-history" | "market-outcome-snapshot" | "empty" | string;
+  chartHistoryStatus?: "ready" | "refresh_due" | "stale" | "unavailable" | "empty" | string;
+  chartHistoryRange?: MarketChartRange;
+  chartHistoryLastUpdated?: string | null;
+  chartHistoryEmptyState?: "no-history" | null;
   marketSourceSummary?: MarketSourceSummary;
   marketProfile?: "outright" | "to_advance" | "regulation_90" | "full_match_with_overtime";
   resultMode?: "one_winner" | "can_draw" | "no_draw";

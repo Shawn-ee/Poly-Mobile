@@ -599,3 +599,34 @@ Partial. Server lifecycle passed; visible Android proof did not run.
 
 Remaining gaps:
 Reconnect S23 and run visible Home -> Event Detail -> Spread line -> ticket -> filled Portfolio/history proof. Real Polymarket-backed match line markets remain P1.
+
+### 2026-07-08 - Cycle NK - Current provider winner chart proof
+
+Reference device:
+Not used for a fresh Polymarket app comparison in this inspection cycle. The Polymarket provider source was verified through Gamma-local mapped markets and public CLOB `prices-history`.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://172.16.200.14:3002`, temporary Expo port `8290`, temporary mobile dev API key, orderbook hidden.
+
+Holiwyn actions:
+Opened Home, tapped `argentina-vs-egypt`, verified Event Detail chart source label, selected the provider-backed Egypt Regulation Winner, entered `$25`, swiped to buy, and verified Portfolio History preserved provider winner identity.
+
+Holiwyn evidence:
+- `docs/mobile/harness/cycle-NK-current-match-chart-history/current-match-polymarket-chart-history.json`
+- `docs/mobile/harness/cycle-NK-current-match-chart-history-s23/cycle-NK-provider-winner-s23-visible-flow.json`
+- `docs/mobile/harness/cycle-NK-current-match-chart-history-s23/cycle-NK-current-mvp-detail-top.xml`
+- `docs/mobile/screenshots/cycle-NK-current-match-chart-history-s23/cycle-NK-current-mvp-detail-top.png`
+- `docs/mobile/screenshots/cycle-NK-current-match-chart-history-s23/cycle-NK-provider-winner-after-submit.png`
+- `docs/mobile/screenshots/cycle-NK-current-match-chart-history-s23/cycle-NK-provider-winner-portfolio-history.png`
+
+Smoke/tests:
+Backend chart proof script, focused Jest tests, mobile typecheck, and S23 visible-flow proof passed.
+
+Result:
+Pass for provider-backed Regulation Winner chart/probability source clarity and visible server-mode provider winner order/history flow.
+
+Remaining gaps:
+Spread/Totals/Team Total remain contract fixtures for the inspected current matches. Chart data is real Polymarket CLOB history but stale for this old match timestamp; automatic freshness refresh remains P1.

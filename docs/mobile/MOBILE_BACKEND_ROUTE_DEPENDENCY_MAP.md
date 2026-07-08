@@ -2824,3 +2824,19 @@ Cycle MG implementation notes:
 - `/api/events` now supports `mobileMvpMatches=1` as an explicit Local MVP Home feed contract.
 - Route proof returned 2 active match events and 0 futures.
 - No schema migration was added.
+
+## Cycle NK - Current Provider Winner Chart Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Current Home match feed | `/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` | GET | Public viewing | Query filters/page size | Current match slug/title plus compact markets and `marketSourceSummary` | `Event`, `Market`, `Outcome` | None added. | None for current match discovery. |
+| Event Detail provider chart | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | `event.chartHistory`, `event.chartHistorySource`, `event.chartHistoryStatus`, `event.chartHistoryRange`, `event.chartHistoryLastUpdated`, `contract.batchedChartHistorySource`, market-level `chartHistoryStatus` | `Event`, `Market`, `Outcome`, `MarketOutcomeSnapshot` | Existing synthetic chart drawing remains only a visual fallback when history is empty. | Automated provider refresh scheduling is still separate; this cycle proves the refresh path and route contract. |
+| Primary market chart route | `/api/markets/:id/chart?range=1D` | GET | Public viewing plus market visibility guard | Market id/range | `source`, `history`, `lastUpdated`, `emptyState`, `series` | `Market`, `Outcome`, `MarketOutcomeSnapshot` | Empty route returns `emptyState: no-history`. | None for provider-backed Regulation Winner history after refresh. |
+| Provider CLOB history refresh | `scripts/prove_current_match_polymarket_chart_history.ts` -> `refreshPolymarketPriceHistorySnapshots` | Local script/provider fetch | Local development database and public Polymarket CLOB | Event slug, provider-backed market ids | Refresh report, snapshot counts, skipped reasons | `Market`, `Outcome`, `MarketOutcomeSnapshot` | None added. | Freshness depends on provider availability and current market token ids. |
+| Visible S23 provider winner order | `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | POST/GET | Mobile dev API key for order/account routes | Provider-backed Regulation Winner selection snapshot | Filled order, Portfolio position/activity/history with provider source and no line | `ApiCredential`, `Order`, `ApiOrderRequest`, `Trade`, `Position`, `UserBalance`, `Market`, `Outcome` | Proof seeds deterministic counterparty liquidity. | Production liquidity remains future work. |
+
+Cycle NK implementation notes:
+
+- No schema migration was added.
+- `/api/mobile/events/:slug/live-detail` now surfaces route-visible chart source/status fields for mobile proof.
+- Current line-market route rows remain `contract-fixture`; this is documented and not claimed as Polymarket-backed parity.

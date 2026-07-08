@@ -881,6 +881,10 @@ export async function serializeMobileLiveEventDetail(input: {
 
   const primaryChartSnapshots = primaryMarketId ? chartSnapshotsByMarketId.get(primaryMarketId) ?? [] : [];
   const chartHistory = chartHistoryFromSnapshots(primaryChartSnapshots);
+  const primaryChartHistoryStatus = primaryMarket
+    ? chartHistoryStatusForMarket({ market: primaryMarket, snapshots: primaryChartSnapshots })
+    : null;
+  const chartHistorySource = primaryChartHistoryStatus?.source ?? (chartHistory.length ? "market-outcome-snapshot" : "empty");
   const latestSnapshotTs = primaryChartSnapshots.reduce<Date | null>(
     (latest, snapshot) => !latest || snapshot.ts > latest ? snapshot.ts : latest,
     null,
@@ -1004,6 +1008,11 @@ export async function serializeMobileLiveEventDetail(input: {
       providerLifecycle,
       marketSourceSummary,
       chartHistory,
+      chartHistorySource,
+      chartHistoryStatus: primaryChartHistoryStatus?.status ?? (chartHistory.length ? "ready" : "empty"),
+      chartHistoryRange: primaryChartHistoryStatus?.range ?? "1D",
+      chartHistoryLastUpdated: primaryChartHistoryStatus?.lastUpdated ?? null,
+      chartHistoryEmptyState: primaryChartHistoryStatus?.emptyState ?? (chartHistory.length ? null : "no-history"),
       marketProfile,
       resultMode: isOutrightEvent ? "one_winner" : ruleAllowDraw ? "can_draw" : "no_draw",
       gameRules: {
@@ -1039,8 +1048,12 @@ export async function serializeMobileLiveEventDetail(input: {
       batchedProviderQuoteSnapshotStaleCount,
       batchedProviderQuoteSnapshotRefreshDueCount,
       batchedProviderQuoteSnapshotNextRefreshAt,
-      chartHistorySource: chartHistory.length ? "market-outcome-snapshot" : "empty",
-      batchedChartHistorySource: input.chartSnapshots.length ? "market-outcome-snapshot" : "empty",
+      chartHistorySource,
+      batchedChartHistorySource: input.chartSnapshots.length
+        ? serializedMarkets.some((market) => market.chartHistoryStatus.source === "polymarket-clob-prices-history")
+          ? "polymarket-clob-prices-history"
+          : "market-outcome-snapshot"
+        : "empty",
       batchedChartHistoryMarketCount: Array.from(chartSnapshotsByMarketId.values()).filter((snapshots) => snapshots.length > 0).length,
       batchedChartHistoryPointCount: input.chartSnapshots.length,
       batchedChartHistoryReadyCount: serializedMarkets.filter((market) => market.chartHistoryStatus.status === "ready").length,

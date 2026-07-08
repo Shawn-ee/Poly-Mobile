@@ -308,7 +308,7 @@ const providerLifecycleIcon: Record<ProviderLifecycle, keyof typeof Ionicons.gly
 const providerLifecycleFromRoute = (status: RouteStatus): ProviderLifecycle => {
   if (status === "ready") return "ready";
   if (status === "loading") return "refreshing";
-  if (status === "idle") return "refresh-due";
+  if (status === "idle" || status === "refresh_due" || status === "stale") return "refresh-due";
   return "not-ready";
 };
 
@@ -1559,7 +1559,7 @@ export function EventDetail({
 
     return (
       <Pressable
-        accessibilityLabel={`event-detail-price-chart event-detail-probability-chart ${teamCode(homeOutcome.label)} ${homeOutcome.probability}% ${teamCode(awayOutcome.label)} ${awayOutcome.probability}% chart-history-points-${history.length}`}
+        accessibilityLabel={`event-detail-price-chart event-detail-probability-chart ${teamCode(homeOutcome.label)} ${homeOutcome.probability}% ${teamCode(awayOutcome.label)} ${awayOutcome.probability}% chart-history-points-${history.length} chart-source-${event.chartHistorySource ?? "fallback"} chart-status-${event.chartHistoryStatus ?? "fallback"} chart-range-${event.chartHistoryRange ?? "none"}`}
         onPress={() => setSelectedPrimaryOutcomeId(selectedPrimaryOutcome?.id === awayOutcome.id ? homeOutcome.id : awayOutcome.id)}
         style={styles.chartBlock}
         testID="event-detail-price-chart"
