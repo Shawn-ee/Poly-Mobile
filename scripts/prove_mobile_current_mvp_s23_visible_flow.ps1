@@ -218,6 +218,18 @@ try {
   Assert-NotContains -Path $homeXml -Unexpected @("This is the developer menu", "SDK version")
   Assert-NotContains -Path $homeXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
+  Invoke-TapNode -Path $homeXml -Identifier "holiwyn-live-tab"
+  Start-Sleep -Seconds 2
+  Save-Screenshot -Name "cycle-$Cycle-current-mvp-live.png" | Out-Null
+  $liveXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-live.xml"
+  Assert-Contains -Path $liveXml -Expected @("live-world-cup-games-focus", "live-source-readiness", "home-card-source-provider-winner-local-lines", "event-card-$EventSlug")
+  Assert-NotContains -Path $liveXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
+
+  Invoke-TapNode -Path $liveXml -Identifier "holiwyn-home-tab"
+  Start-Sleep -Seconds 1
+  $homeXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-home-return.xml"
+  Assert-Contains -Path $homeXml -Expected @("event-card-$EventSlug", "home-card-source-provider-winner-local-lines")
+
   Invoke-TapNode -Path $homeXml -Identifier "event-card-$EventSlug" -StartsWith -YRatio 0.28
   Start-Sleep -Seconds 5
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-detail-top.png" | Out-Null
@@ -306,6 +318,7 @@ try {
     assertions = [ordered]@{
       homeShowsCurrentMatch = $true
       homeShowsProviderWinnerLocalLinesDisclosure = $true
+      liveShowsProviderWinnerLocalLinesDisclosure = $true
       detailShowsGameLines = $true
       lineMarketsAreContractFixture = $true
       orderbookHidden = $true
@@ -318,6 +331,8 @@ try {
     artifacts = @(
       "$OutputDir\cycle-$Cycle-current-mvp-home.png",
       "$HierarchyOutputDir\cycle-$Cycle-current-mvp-home.xml",
+      "$OutputDir\cycle-$Cycle-current-mvp-live.png",
+      "$HierarchyOutputDir\cycle-$Cycle-current-mvp-live.xml",
       "$OutputDir\cycle-$Cycle-current-mvp-detail-top.png",
       "$HierarchyOutputDir\cycle-$Cycle-current-mvp-detail-top.xml",
       "$OutputDir\cycle-$Cycle-current-mvp-lines.png",

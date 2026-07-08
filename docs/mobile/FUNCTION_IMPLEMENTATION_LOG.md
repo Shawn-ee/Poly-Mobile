@@ -2,6 +2,47 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle MY - Live Source Readiness
+
+Feature/page worked on:
+
+- Live page for Local MVP World Cup live matches.
+- Added a visible source readiness strip and fixed live event filtering when backend events use `liveStatus=LIVE`.
+
+Frontend/services touched:
+
+- `mobile/src/components/LiveScreen.tsx`
+- `mobile/src/components/MarketLists.tsx`
+- `mobile/src/services/homeEventFeedService.ts`
+- `mobile/src/__tests__/homeEventFeedService.test.ts`
+- `mobile/src/__tests__/homeCardStatsContract.test.ts`
+- `mobile/src/__tests__/liveSourceReadinessContract.test.ts`
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+
+User interactions supported/proven:
+
+- On S23, opened Home, switched to Live, confirmed `live-source-readiness` and `home-card-source-provider-winner-local-lines`, returned Home, then completed Event Detail -> local Spread ticket -> swipe buy -> Portfolio/history.
+
+Backend/API route changed:
+
+- None.
+
+Backend/API route dependency clarified:
+
+- Live still calls `/api/events` with `status=live` first.
+- If that returns no events, mobile retries `/api/events` without `status`, then filters events where `status=live` or `liveStatus=LIVE`.
+
+Verified:
+
+- Mobile typecheck passed.
+- Focused mobile tests passed.
+- S23 proof passed: `docs/mobile/harness/cycle-MY-live-source-readiness/cycle-MY-current-mvp-s23-visible-flow.json`.
+
+Known limitations:
+
+- Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected events.
+- Live sports stats remain out of Local MVP scope.
+
 ## Cycle MX - Home Source Readiness
 
 Feature/page worked on:

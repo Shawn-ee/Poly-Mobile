@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
-import { MarketList } from "./MarketLists";
+import { eventSourceReadiness, MarketList } from "./MarketLists";
 
 type LiveScreenCopy = {
   liveNow: string;
@@ -36,6 +36,9 @@ export function LiveScreen({
     (total, event) => total + event.markets.reduce((marketTotal, market) => marketTotal + market.outcomes.length, 0),
     0,
   );
+  const readiness = events
+    .map((event) => eventSourceReadiness(event, locale))
+    .find((item) => item?.accessibility.includes("home-card-source-provider-winner-local-lines")) ?? null;
 
   return (
     <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
@@ -50,6 +53,15 @@ export function LiveScreen({
         </View>
         <Text style={styles.liveCount}>{events.length}</Text>
       </View>
+      {readiness && (
+        <View
+          accessibilityLabel={`live-source-readiness ${readiness.accessibility}`}
+          style={styles.sourceReadiness}
+          testID="live-source-readiness"
+        >
+          <Text numberOfLines={1} style={styles.sourceReadinessText}>{readiness.text}</Text>
+        </View>
+      )}
       <View
         accessibilityLabel={`live-operational-controls-hidden-local-mvp live-refresh-hidden refresh-tick-${refreshTick} is-refreshing-${isRefreshing ? "yes" : "no"} refresh-action-available market-count-${liveMarketCount} outcome-count-${liveOutcomeCount}`}
         style={styles.a11yOnly}
@@ -75,6 +87,8 @@ const styles = StyleSheet.create({
   liveHeaderText: { flex: 1, minWidth: 0 },
   liveEyebrow: { color: "#60a5fa", fontSize: 12, fontWeight: "900", textTransform: "uppercase" },
   liveCount: { minWidth: 34, textAlign: "center", color: "#ffffff", fontWeight: "900", backgroundColor: "#ef4444", borderRadius: 999, paddingHorizontal: 10, paddingVertical: 6 },
+  sourceReadiness: { minHeight: 32, justifyContent: "center", marginTop: -4, marginBottom: 10, paddingHorizontal: 10, borderRadius: 9, backgroundColor: "#1b2638", borderWidth: 1, borderColor: "#334155" },
+  sourceReadinessText: { color: "#fde68a", fontSize: 12, fontWeight: "900" },
   a11yOnly: { height: 1, opacity: 0.01, overflow: "hidden" },
   summaryRow: { flexDirection: "row", gap: 8, marginBottom: 14 },
   summaryPill: { flex: 1, minHeight: 42, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, borderRadius: 10, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },

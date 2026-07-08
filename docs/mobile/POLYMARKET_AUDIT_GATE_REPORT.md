@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle MY
+
+Gate status: Pass
+
+Scope: Live source-readiness disclosure and live-match route fallback.
+
+Decision:
+
+- P0 failed: 0 for focused Live source-readiness scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events; backend `status=live` filtering should eventually include `liveStatus=LIVE` events.
+- Evidence: `docs/mobile/harness/cycle-MY-live-source-readiness/cycle-MY-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MY-live-source-readiness/`, `docs/mobile/audits/cycle-MY-live-source-readiness.md`.
+- Notes: Initial proof found Live empty. Implementation now treats `liveStatus=LIVE` as live and falls back from empty `status=live` route data to all-match route filtering. Final S23 proof shows Live source readiness and completes local Spread ticket -> swipe buy -> Portfolio/history.
+
 ## Cycle MX
 
 Gate status: Pass

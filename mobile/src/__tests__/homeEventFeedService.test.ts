@@ -76,6 +76,50 @@ describe("homeEventFeedService", () => {
     });
   });
 
+  test("falls back to the all-match route when the live status route returns no events", async () => {
+    const listWorldCupEvents = vi
+      .fn()
+      .mockResolvedValueOnce({
+        events: [],
+        page: { limit: 10, nextCursor: null, hasMore: false },
+      })
+      .mockResolvedValueOnce({
+        events: [
+          event({ id: "match-1", slug: "argentina-vs-egypt", title: "Argentina vs. Egypt", status: "active", liveStatus: "LIVE", eventType: "match" }),
+          event({ id: "match-2", slug: "upcoming-match", title: "Upcoming Match", status: "upcoming", eventType: "match" }),
+        ],
+        page: { limit: 10, nextCursor: null, hasMore: false },
+      });
+
+    await expect(
+      loadHomeEventFeedPage({
+        api: { listWorldCupEvents },
+        filter: "live",
+        limit: 10,
+      }),
+    ).resolves.toMatchObject({
+      source: "server-route",
+      events: [{ slug: "argentina-vs-egypt" }],
+    });
+
+    expect(listWorldCupEvents).toHaveBeenNthCalledWith(1, {
+      limit: 10,
+      cursor: null,
+      status: "live",
+      source: "polymarket",
+      leagueKey: "world_cup",
+      mobileMvpMatches: true,
+    });
+    expect(listWorldCupEvents).toHaveBeenNthCalledWith(2, {
+      limit: 10,
+      cursor: null,
+      status: null,
+      source: "polymarket",
+      leagueKey: "world_cup",
+      mobileMvpMatches: true,
+    });
+  });
+
   test("keeps server-mode Home focused on World Cup soccer matches only", async () => {
     const listWorldCupEvents = vi.fn(async () => ({
       events: [

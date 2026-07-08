@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle MY - Live Source Readiness
+
+Cycle MY makes the Live page robust against the current backend status contract where live matches may have `status=active` and `liveStatus=LIVE`.
+
+- S23 proof: `docs/mobile/harness/cycle-MY-live-source-readiness/cycle-MY-current-mvp-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-MY-live-source-readiness.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Live source-readiness feed | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&status=live`, fallback `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1` | GET | Public event viewing | None | `status`, `liveStatus`, `marketSourceSummary.regulationWinner.status`, `marketSourceSummary.lineMarkets.status`, `marketSourceSummary.lineMarkets.families`, event/market `referenceSource` | Existing `Event`, `Market`, `Outcome`; no schema change | If the live-status route returns empty, mobile uses the all-match route and client-filters `status=live` or `liveStatus=LIVE` | Backend status filter does not currently return `status=active/liveStatus=LIVE` matches for `status=live`; real provider-backed Spread/Totals/Team Total markets remain unavailable. |
+
 ## Cycle MX - Home Source Readiness
 
 Cycle MX uses existing backend source summary fields to make current provider readiness visible on Home cards.

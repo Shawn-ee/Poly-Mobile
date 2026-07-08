@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle MY - Live Source Readiness
+
+Closed or narrowed:
+
+- Live now treats `liveStatus=LIVE` as live, matching the current backend event contract.
+- If `/api/events?...status=live` returns no events, mobile falls back to the all-match route and client-filters live events.
+- S23 proof verifies Live source readiness before the ticket/order/Portfolio flow.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected events.
+- A backend `status=live` route behavior that includes `status=active/liveStatus=LIVE` matches would remove the mobile fallback.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Existing `contract-fixture` line markets remain backend-shaped Local MVP fallback rows.
+
 ## Cycle MX - Home Source Readiness
 
 Closed or narrowed:

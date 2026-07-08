@@ -49,7 +49,7 @@ const isOutrightEvent = (event: Event) =>
 const tradableOutrightOutcome = (market: Market) =>
   market.outcomes.find((outcome) => outcome.side !== "no" && !/^no$/i.test(outcome.label)) ?? market.outcomes[0];
 
-const homeSourceReadiness = (event: Event, locale: Locale) => {
+export const eventSourceReadiness = (event: Event, locale: Locale) => {
   const summary = event.marketSourceSummary;
   if (!summary) return null;
   const winnerStatus = summary.regulationWinner?.status;
@@ -104,7 +104,7 @@ export function MarketList({
     <View style={styles.eventList}>
       {events.map((event) => {
         const winner = homeCardMarket(event);
-        const sourceReadiness = homeSourceReadiness(event, locale);
+        const sourceReadiness = eventSourceReadiness(event, locale);
         const regulationSelections = homeCardSelectionsForEvent(event);
         const outrightSelections = isOutrightEvent(event)
           ? event.markets

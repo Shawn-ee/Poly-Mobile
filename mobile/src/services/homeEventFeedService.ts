@@ -29,6 +29,9 @@ const statusForFilter = (filter: HomeEventFeedFilter) => filter === "all" ? null
 
 const matchesFilter = (event: EventSummary, filter: HomeEventFeedFilter) => {
   if (filter === "all") return true;
+  if (filter === "live") {
+    return String(event.status ?? "").toLowerCase() === "live" || String(event.liveStatus ?? "").toLowerCase() === "live";
+  }
   return String(event.status ?? "").toLowerCase() === filter;
 };
 
@@ -67,6 +70,32 @@ export const loadHomeEventFeedPage = async ({
       });
       const nextCursor = payload.nextCursor ?? payload.page?.nextCursor ?? null;
       const events = payload.events.filter(isWorldCupMatchEvent);
+      if (filter === "live" && events.length === 0 && !cursor) {
+        const unfilteredPayload = await api.listWorldCupEvents({
+          limit: safeLimit,
+          cursor: null,
+          status: null,
+          source,
+          leagueKey: "world_cup",
+          mobileMvpMatches: true,
+        });
+        const unfilteredNextCursor = unfilteredPayload.nextCursor ?? unfilteredPayload.page?.nextCursor ?? null;
+        const liveEvents = unfilteredPayload.events.filter(isWorldCupMatchEvent).filter((event) => matchesFilter(event, "live"));
+        if (liveEvents.length > 0) {
+          return {
+            source: "server-route",
+            filter,
+            status,
+            events: liveEvents,
+            nextCursor: unfilteredNextCursor,
+            page: {
+              limit: unfilteredPayload.page?.limit ?? safeLimit,
+              nextCursor: unfilteredNextCursor,
+              hasMore: unfilteredPayload.page?.hasMore ?? Boolean(unfilteredNextCursor),
+            },
+          };
+        }
+      }
       return {
         source: "server-route",
         filter,
