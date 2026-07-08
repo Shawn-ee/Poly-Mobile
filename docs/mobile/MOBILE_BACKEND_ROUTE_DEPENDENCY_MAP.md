@@ -2,6 +2,22 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle OS - Provider Breadth / Line Inspection
+
+Cycle OS does not change backend routes or schema. It refreshes provider-breadth route proof, current-match line availability proof, and S23 Search visibility proof.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider-backed Search results | `/api/events?sportKey=soccer&source=polymarket&includeMobileMarkets=1&limit=10&search=world` | GET | None for browsing | None | `events[]`, `eventType`, `source`, `marketCount`, `marketSourceSummary`, compact `markets[]`, `referenceSource` | `Event`, `Market`, `Outcome`, reference quote/depth snapshot tables | Local fallback only when backend is unreachable | More current match events and true line-market provider data remain missing. |
+| Broad World Cup provider runtime | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10` | GET | None for browsing | None | Provider-backed event list, `marketSourceSummary`, `markets[].externalSlug`, `markets[].externalMarketId` | `Event`, `Market`, `Outcome` | None added | Scheduled provider refresh is still future work. |
+| Current match live detail | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | None for browsing | None | `event.marketSourceSummary.regulationWinner.status`, `event.marketSourceSummary.lineMarkets.status`, `markets[].referenceSource`, `markets[].marketType`, `markets[].line` | `Event`, `Market`, `Outcome` | Existing contract-fixture line markets remain active for Local MVP | Polymarket-backed Spread/Totals/Team Total markets are not available from Gamma for this event. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-OS-provider-breadth-line-inspection/cycle-OS-provider-breadth-runtime-route.json`
+- `docs/mobile/harness/cycle-OS-provider-breadth-line-inspection/cycle-OS-search-provider-breadth-route.json`
+- `docs/mobile/harness/cycle-OS-provider-breadth-line-inspection/cycle-OS-current-match-line-availability.json`
+
 ## Cycle OR - Home/Live Provider Breadth Status Guard
 
 Cycle OR does not change backend routes or schemas. It documents and guards the existing route behavior where Polymarket World Cup futures can carry `liveStatus=LIVE`.

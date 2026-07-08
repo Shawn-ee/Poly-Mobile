@@ -46,6 +46,7 @@ const summarizeEvent = (event: any) => ({
 async function main() {
   const baseUrl = argValue("baseUrl") ?? DEFAULT_BASE_URL;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
+  const cycle = argValue("cycle") ?? "OP";
   const searchUrl = `${baseUrl}/api/events?sportKey=soccer&source=polymarket&includeMobileMarkets=1&limit=10`;
   const worldCupUrl = `${baseUrl}/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&limit=10`;
 
@@ -63,7 +64,7 @@ async function main() {
 
   const result = {
     generatedAt: new Date().toISOString(),
-    cycle: "OP",
+    cycle,
     scope: "search-provider-breadth-visible-contract",
     routes: {
       searchProviderBreadth: searchUrl,
