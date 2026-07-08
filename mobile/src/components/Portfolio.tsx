@@ -531,6 +531,9 @@ const portfolioPageCopy = {
   },
 };
 
+const PORTFOLIO_CHART_TOP = 14;
+const PORTFOLIO_CHART_HEIGHT = 92;
+
 function PortfolioSparkline({
   range,
   source,
@@ -551,7 +554,7 @@ function PortfolioSparkline({
   const plotted = points.map((point, index) => ({
     key: `${point.timestamp}-${index}`,
     left: points.length <= 1 ? 0 : (index / (points.length - 1)) * 100,
-    top: 34 + (1 - (point.value - min) / spread) * 122,
+    top: PORTFOLIO_CHART_TOP + (1 - (point.value - min) / spread) * PORTFOLIO_CHART_HEIGHT,
     value: point.value,
   }));
   const trend = points.length >= 2 && points[points.length - 1].value >= points[0].value ? "up" : "down";
@@ -566,7 +569,7 @@ function PortfolioSparkline({
 
   return (
     <Pressable
-      accessibilityLabel={`portfolio-performance-chart portfolio-chart-data-driven portfolio-chart-scaled-account-range portfolio-chart-touchable portfolio-performance-chart-range-${range} portfolio-chart-source-${source} portfolio-chart-status-${status} portfolio-chart-point-count-${pointCount} portfolio-chart-trend-${trend} portfolio-chart-value-spread-${rangeSpread} portfolio-chart-selected-index-${selectedIndex} portfolio-chart-selected-value-${Math.round(selectedValue)}`}
+      accessibilityLabel={`portfolio-performance-chart portfolio-chart-contained-above-range portfolio-chart-data-driven portfolio-chart-scaled-account-range portfolio-chart-touchable portfolio-performance-chart-range-${range} portfolio-chart-source-${source} portfolio-chart-status-${status} portfolio-chart-point-count-${pointCount} portfolio-chart-trend-${trend} portfolio-chart-value-spread-${rangeSpread} portfolio-chart-selected-index-${selectedIndex} portfolio-chart-selected-value-${Math.round(selectedValue)}`}
       onPress={() => setSelectedIndexOverride(pointCount > 2 ? Math.floor(pointCount / 2) : Math.max(pointCount - 1, 0))}
       testID="portfolio-performance-chart"
       style={styles.chartArea}
@@ -1282,7 +1285,7 @@ const styles = StyleSheet.create({
   portfolioValue: { color: "#f8fafc", fontSize: 50, fontWeight: "300" },
   portfolioPnlLine: { fontSize: 17, fontWeight: "500", marginTop: 0 },
   cashText: { color: "#a8b0bf" },
-  chartArea: { height: 142, marginTop: 8, marginHorizontal: 22, position: "relative" },
+  chartArea: { height: 118, marginTop: 6, marginHorizontal: 22, marginBottom: 6, position: "relative", overflow: "hidden" },
   chartSegment: { position: "absolute", height: 6, borderRadius: 999, backgroundColor: "#22c55e" },
   chartSegmentOne: { left: "0%", top: 68, width: "17%" },
   chartSegmentTwo: { left: "16%", top: 72, width: "15%", transform: [{ rotate: "7deg" }] },
@@ -1299,7 +1302,7 @@ const styles = StyleSheet.create({
   chartReadout: { position: "absolute", top: 0, left: 0, minWidth: 124, minHeight: 58, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937", zIndex: 2 },
   chartReadoutValue: { color: "#f8fafc", fontSize: 17, fontWeight: "700" },
   chartReadoutLabel: { color: "#22c55e", fontSize: 12, fontWeight: "700", marginTop: 2 },
-  rangeBrandRow: { minHeight: 46, marginTop: 0, paddingHorizontal: 16, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8 },
+  rangeBrandRow: { minHeight: 48, marginTop: 2, paddingHorizontal: 16, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8 },
   rangeRow: { flexDirection: "row", padding: 4, borderRadius: 999, backgroundColor: "#202633" },
   rangePill: { minWidth: 45, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 999 },
   rangePillActive: { backgroundColor: "#0c111d" },

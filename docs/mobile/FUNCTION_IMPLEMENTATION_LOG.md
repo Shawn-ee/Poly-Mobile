@@ -5699,6 +5699,44 @@ Known limitations:
 
 - This cycle did not run a new S23 trade proof; Cycle LW remains the visible S23 flow proof.
 - A future harness polish pass can add an optional post-start S23 deep-link reload step.
+
+## Cycle LY - Portfolio Chart Containment
+
+Feature/page worked on:
+
+- Portfolio account header/chart/range section on Samsung S23.
+
+Frontend/harness/backend files touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `docs/mobile/audits/cycle-LY-portfolio-chart-containment.md`
+- `docs/mobile/screenshots/cycle-LY-portfolio-chart-containment/portfolio-chart-contained.png`
+- `docs/mobile/harness/cycle-LY-portfolio-chart-containment/portfolio-chart-contained.xml`
+
+Important functions/services touched:
+
+- `PortfolioSparkline()` now uses explicit plot bounds so points stay inside the chart area.
+- No backend service or API route was changed.
+
+User interactions supported/proven:
+
+- Portfolio tab opens on S23.
+- Chart, range selector, and section tabs remain visible as separate bands.
+- No chat or orderbook UI appears in Portfolio.
+
+State transitions:
+
+- No order or portfolio state transition was changed.
+
+Validation:
+
+- `npm run typecheck -- --pretty false`
+- S23 screenshot/XML proof.
+
+Known limitations:
+
+- This cycle used a clean server-mode account state to prove the Portfolio header layout.
+- Cycle LW remains the proof for post-order position/history behavior.
 - Gamma exposes no Spread, Totals, Team Totals, Halves, Corners, or Correct Score markets for the selected match event.
 - Real provider-backed line-market replacement remains P1 until Polymarket exposes attach-ready line markets or another approved provider is in scope.
 

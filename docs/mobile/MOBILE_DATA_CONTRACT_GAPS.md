@@ -5032,3 +5032,30 @@ Temporary mock/static data:
 Future migration concern:
 
 - For production/mobile release, replace local generated API key startup with the real login/session model.
+
+## Cycle LY - Portfolio Chart Containment
+
+Closed or narrowed:
+
+- Portfolio chart no longer overflows into the range selector/watermark row on S23.
+- Added an auditable XML marker for chart containment.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Richer production-grade value history data can improve visual parity, but no new field is required for this containment fix.
+
+Schema mismatch:
+
+- No schema mismatch was found or introduced.
+
+Route mismatch:
+
+- No route mismatch was found or introduced.
+
+Temporary mock/static data:
+
+- Deterministic value history fallback remains available when the route is empty or unavailable.
+
+Future migration concern:
+
+- Revisit Portfolio chart shape and range behavior when production account-value history is richer.

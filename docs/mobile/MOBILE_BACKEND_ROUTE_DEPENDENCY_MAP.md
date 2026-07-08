@@ -2386,3 +2386,14 @@ Cycle LX implementation notes:
 
 - No API route or schema changed.
 - Startup now makes the server-mode mobile proof dependency explicit instead of relying on fragile runtime deep-link API-key injection.
+
+## Cycle LY - Portfolio Chart Containment
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio header chart/range display | `/api/portfolio` and `/api/portfolio/value-history?range=1D` | GET | Mobile dev API key with `account:read` when server mode is active | None | Portfolio balance/positions plus value-history `points`, `range`, `source`, and `status` | `UserBalance`, `Position`, portfolio value history read model | Deterministic value history remains the fallback if route history is unavailable. | None for chart containment; broader production value-history richness remains P1. |
+
+Cycle LY implementation notes:
+
+- No backend route or schema changed.
+- The UI now constrains route/fallback value-history points to the visual chart band before the range selector.
