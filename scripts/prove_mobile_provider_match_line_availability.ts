@@ -173,7 +173,7 @@ async function main() {
       liveDetail.payload.event?.marketSourceSummary?.regulationWinner?.status === "provider-backed" &&
       liveDetail.payload.event?.marketSourceSummary?.lineMarkets?.status === "contract-fixture",
     limitations: [
-      "This is a backend/provider availability proof only; no Android device was visible to ADB for S23 proof.",
+      "This is a backend/provider availability proof only; Android proof is handled by the visible Local MVP journey harness.",
       "Contract-fixture line markets are acceptable for local MVP UI/order proof but are not Polymarket-backed parity.",
       "If a future Polymarket event exposes line markets through Gamma/CLOB, those real mappings should replace the fixture rows.",
     ],

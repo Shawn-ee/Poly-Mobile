@@ -5189,3 +5189,30 @@ Future migration concern:
 
 - Replace `contract-fixture` line rows with provider-backed line-market ingestion when attach-ready provider rows exist.
 - Replace proof-only liquidity seeding with production liquidity/market-making or approved retail execution behavior.
+
+## Cycle MD - Provider Line Availability Inspection
+
+Closed or narrowed:
+
+- Confirmed Polymarket Gamma for `fifwc-arg-egy-2026-07-07` exposes only the three Regulation Winner markets and no Spread/Totals/Team Total line markets.
+- Confirmed Holiwyn route state is internally consistent: provider-backed Regulation Winner plus backend-shaped `contract-fixture` line markets.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed line-market ids, condition ids, token ids, quote snapshots, and chart history for Spread/Totals/Team Total.
+
+Schema mismatch:
+
+- No schema mismatch was found or introduced.
+
+Route mismatch:
+
+- No route mismatch was found. `/api/mobile/events/argentina-vs-egypt/live-detail` correctly reports `lineMarkets.status=contract-fixture`.
+
+Temporary mock/static data:
+
+- Existing line markets are backend contract fixtures, not frontend-only display strings.
+
+Future migration concern:
+
+- Replace fixture lines with provider-backed rows only when Gamma/CLOB or another approved provider exposes attach-ready line markets for the match.
