@@ -767,3 +767,11 @@ For every UI element or interaction, answer:
 - OE closes the visible wording mismatch where Event Detail source pills said generic `Provider`/`Local` while Ticket and Portfolio used `Polymarket`/`Local test`.
 - S23 line-section proof confirms Game Lines now show `Local test` row source pills with `market-source-local-test-readable`.
 - Remaining P1: real provider-backed Spread/Totals/Team Total line markets remain unavailable for the current event.
+
+## Cycle OF Gap Tracker Update
+
+- PM-GAP-126 is opened and verified for Ticket/Portfolio fake-token source clarity.
+- OF closes the visible wording gap where contract-fixture line tickets and Portfolio entries did not clearly say they are local-test fake-token line activity.
+- S23 proof confirms Ticket and Portfolio XML include `fake-token` source wording while the full Home -> Event Detail -> Spread ticket -> fake-token server order -> Portfolio path still passes.
+- Remaining P1: real provider-backed Spread/Totals/Team Total line markets remain unavailable for the current event.
+- Adjusted path remains: continue Local MVP retail flow, do not block on unavailable provider line markets, and keep source wording honest until backend/provider line ingestion exists.

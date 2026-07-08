@@ -320,7 +320,7 @@ function ticketSourceNote(ticket: Ticket) {
   const source = ticket.selection?.referenceSource ?? ticket.market.referenceSource ?? "";
   if (source.includes("contract-fixture")) {
     return {
-      text: "Local test line",
+      text: "Local test line · fake-token",
       accessibility: "ticket-local-test-pricing",
       tone: "fixture" as const,
     };

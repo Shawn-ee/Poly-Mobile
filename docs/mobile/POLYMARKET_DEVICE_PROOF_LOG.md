@@ -930,6 +930,36 @@ Pass for stale Event Detail status honesty.
 Remaining gaps:
 Real current live match discovery/breadth is still missing, and line families remain contract fixtures.
 
+### 2026-07-08 - Cycle OF - Ticket and Portfolio fake-token source clarity
+
+Reference device:
+Not used. This was a Holiwyn visible clarity cycle based on the current inspected service state.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM_S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://127.0.0.1:3002`, temporary Expo port `8313`, temporary mobile dev API key.
+
+Holiwyn actions:
+Opened Home, entered `Argentina vs. Egypt`, selected a Spread line, opened the Trade Ticket, entered an amount, submitted a fake-token server order, and opened Portfolio. Ticket and Portfolio XML show local-test fake-token source wording for contract-fixture line markets.
+
+Evidence:
+- `docs/mobile/harness/cycle-OF-ticket-portfolio-fake-token-source/cycle-OF-ticket-portfolio-fake-token-source-proof.json`
+- `docs/mobile/harness/cycle-OF-ticket-portfolio-fake-token-source/cycle-OA-current-mvp-home-server-order-spread-ticket-ready.xml`
+- `docs/mobile/harness/cycle-OF-ticket-portfolio-fake-token-source/cycle-OA-current-mvp-home-server-order-portfolio.xml`
+- `docs/mobile/screenshots/cycle-OF-ticket-portfolio-fake-token-source/cycle-OA-current-mvp-home-server-order-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-OF-ticket-portfolio-fake-token-source/cycle-OA-current-mvp-home-server-order-portfolio.png`
+
+Smoke/tests:
+Mobile TypeScript, focused source-badge Vitest tests, and S23 visible order proof passed.
+
+Result:
+Pass for the narrow Ticket/Portfolio fake-token source clarity scope.
+
+Remaining gaps:
+Real provider-backed Spread/Totals/Team Total market ingestion remains missing for the current event.
+
 ### 2026-07-08 - Cycle OC - Server-owned cancel history
 
 Reference device:

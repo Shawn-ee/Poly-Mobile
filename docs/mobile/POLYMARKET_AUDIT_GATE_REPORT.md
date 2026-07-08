@@ -5474,3 +5474,32 @@ Decision:
 
 - Pass/fail: Pass.
 - Remaining P1: real provider-backed line market ingestion remains open.
+
+## Cycle OF
+
+Gate status: Pass for Ticket and Portfolio fake-token source clarity
+
+Scope: Make contract-fixture line-market trading visibly read as local-test fake-token activity in Ticket and Portfolio.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OF-ticket-portfolio-fake-token-source.md`
+- `docs/mobile/harness/cycle-OF-ticket-portfolio-fake-token-source/cycle-OF-ticket-portfolio-fake-token-source-proof.json`
+- `docs/mobile/harness/cycle-OF-ticket-portfolio-fake-token-source/cycle-OA-current-mvp-home-server-order-spread-ticket-ready.xml`
+- `docs/mobile/harness/cycle-OF-ticket-portfolio-fake-token-source/cycle-OA-current-mvp-home-server-order-portfolio.xml`
+- `docs/mobile/screenshots/cycle-OF-ticket-portfolio-fake-token-source/cycle-OA-current-mvp-home-server-order-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-OF-ticket-portfolio-fake-token-source/cycle-OA-current-mvp-home-server-order-portfolio.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OF-P0-01 | P0 | Pass | Ticket XML includes `ticket-source-note` and `fake-token`. | Fix `ticketSourceNote()`. |
+| OF-P0-02 | P0 | Pass | Portfolio XML includes open-order/source-summary markers and `fake-token`. | Fix `portfolioSourceNote()` / `portfolioSourceSummary()`. |
+| OF-P0-03 | P0 | Pass | S23 proof completes Home -> Event Detail -> ticket -> server order -> Portfolio. | Fix proof flow or order lifecycle. |
+| OF-P0-04 | P0 | Pass | No backend route/schema/order logic changed. | Revert unintended backend work. |
+
+Decision:
+
+- Pass/fail: Pass for the narrow OF scope.
+- Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open.

@@ -8080,3 +8080,44 @@ Validation:
 Known limitations:
 
 - This cycle clarifies the visible source wording only; it does not make Spread/Totals/Team Total provider-backed.
+
+## Cycle OF - Ticket and Portfolio Fake-Token Source Clarity
+
+Feature/page worked on:
+
+- Trade Ticket and Portfolio source wording for Local MVP line markets.
+
+Frontend files touched:
+
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/src/__tests__/tradeTicketSourceBadge.test.ts`
+- `mobile/src/__tests__/portfolioSourceBadge.test.ts`
+- `docs/mobile/audits/cycle-OF-ticket-portfolio-fake-token-source.md`
+
+Important functions/services touched:
+
+- `ticketSourceNote()`
+- `portfolioSourceNote()`
+- `portfolioSourceSummary()`
+
+User interactions supported/proven:
+
+- User opens Home, enters the current MVP event, selects a Spread line, opens the Trade Ticket, submits a fake-token server order, and sees the order in Portfolio.
+- Ticket and Portfolio now make contract-fixture line markets visibly read as local-test fake-token activity instead of generic local data.
+
+State transitions:
+
+- No state transition changed.
+- Existing fake-token order placement and Portfolio refresh behavior were preserved.
+
+Validation:
+
+- Mobile TypeScript passed.
+- Focused mobile Vitest source-badge tests passed.
+- Samsung S23 proof passed on `SM_S911U1`.
+
+Known limitations:
+
+- This cycle clarifies mixed-source/fake-token wording only.
+- Spread/Totals/Team Total remain `contract-fixture` line markets until real attach-ready Polymarket line markets exist.

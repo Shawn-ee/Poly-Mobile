@@ -369,7 +369,7 @@ const portfolioSourceNote = (selection?: TicketSelection) => {
   const source = selection?.referenceSource ?? "";
   if (source.includes("contract-fixture")) {
     return {
-      text: "Local test line",
+      text: "Local test line · fake-token",
       accessibility: "portfolio-local-test-pricing",
       tone: "fixture" as const,
     };
@@ -423,7 +423,7 @@ const portfolioSourceSummary = ({
   if (localLineCount > 0) {
     return {
       label: "Source",
-      text: "Local test lines",
+      text: "Local test lines · fake-token",
       tone: "fixture" as const,
       accessibility:
         `portfolio-selection-source-summary portfolio-source-summary-local-lines portfolio-provider-count-${providerCount} portfolio-local-line-count-${localLineCount} portfolio-line-families-${lineFamilies.join("-") || "none"}`,

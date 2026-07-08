@@ -1,0 +1,46 @@
+{
+  "cycle": "OF",
+  "result": "pass",
+  "scope": "Ticket and Portfolio source wording for local-test line markets",
+  "device": {
+    "adbId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model": "SM_S911U1"
+  },
+  "backendBaseUrl": "http://127.0.0.1:3002",
+  "eventSlug": "argentina-vs-egypt",
+  "eventTitle": "Argentina vs. Egypt",
+  "marketDataMode": "server",
+  "orderMode": "server",
+  "assertions": [
+    {
+      "id": "OF-P0-01",
+      "result": "pass",
+      "summary": "Contract-fixture Trade Ticket source note includes fake-token wording."
+    },
+    {
+      "id": "OF-P0-02",
+      "result": "pass",
+      "summary": "Portfolio open order and source summary XML include fake-token wording."
+    },
+    {
+      "id": "OF-P0-03",
+      "result": "pass",
+      "summary": "S23 proof still completes Home -> Event Detail -> Spread ticket -> fake-token server order -> Portfolio."
+    },
+    {
+      "id": "OF-P0-04",
+      "result": "pass",
+      "summary": "No orderbook, chat, live stats, backend route, or schema work was touched."
+    }
+  ],
+  "evidence": {
+    "harnessDir": "docs/mobile/harness/cycle-OF-ticket-portfolio-fake-token-source",
+    "screenshotDir": "docs/mobile/screenshots/cycle-OF-ticket-portfolio-fake-token-source",
+    "ticketXml": "docs/mobile/harness/cycle-OF-ticket-portfolio-fake-token-source/cycle-OA-current-mvp-home-server-order-spread-ticket-ready.xml",
+    "portfolioXml": "docs/mobile/harness/cycle-OF-ticket-portfolio-fake-token-source/cycle-OA-current-mvp-home-server-order-portfolio.xml"
+  },
+  "remainingGaps": [
+    "Real Polymarket-backed Spread/Totals/Team Total line markets remain unavailable for the current event.",
+    "The inherited proof script still emits OA-prefixed artifact filenames inside the OF output folder."
+  ]
+}

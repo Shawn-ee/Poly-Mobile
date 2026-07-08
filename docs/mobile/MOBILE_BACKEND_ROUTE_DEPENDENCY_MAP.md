@@ -3122,3 +3122,16 @@ Cycle OE implementation notes:
 
 - No backend route or schema changed.
 - Mobile now renders the existing route contract with clearer user-facing wording: `Polymarket` and `Local test`.
+
+## Cycle OF - Ticket and Portfolio Fake-Token Source Clarity
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Trade Ticket source note | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | `market.referenceSource`, `selection.referenceSource`, line/period/outcome identity | `Event`, `Market`, `Outcome` | Existing `contract-fixture` line rows render as local-test fake-token lines. | Real Polymarket-backed Spread/Totals/Team Total rows remain unavailable. |
+| Fake-token order placement | `/api/orders` | POST | Mobile API key with order scope | Selected line market/outcome, side, price, size, selection identity | Order id/status and selection echo | `User`, `ApiCredential`, `Order`, accounting models | None added. | None for current fake-token order path. |
+| Portfolio source note/summary | `/api/portfolio` | GET | Mobile API key with portfolio scope | None | Open orders, selection source, line/source/token identity | `Order`, portfolio read model | Existing `contract-fixture` line rows render as local-test fake-token lines. | Real provider-backed line-market replacement remains future work. |
+
+Cycle OF implementation notes:
+
+- No backend route or schema changed.
+- Mobile now renders the existing route/order/portfolio contract with clearer wording: `Local test line · fake-token` and `Local test lines · fake-token`.

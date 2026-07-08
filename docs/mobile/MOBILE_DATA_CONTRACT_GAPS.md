@@ -6543,3 +6543,31 @@ Temporary mock/static data:
 Future migration concern:
 
 - When line markets become provider-backed, the same source-pill component should naturally switch those rows from `Local test` to `Polymarket`.
+
+## Cycle OF - Ticket and Portfolio Fake-Token Source Clarity
+
+Closed or narrowed:
+
+- Trade Ticket and Portfolio now explicitly label contract-fixture line trading as local-test fake-token activity.
+- S23 XML proof confirms `fake-token` appears in ticket and Portfolio surfaces for the current local line order flow.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real Polymarket-backed Spread/Totals/Team Total market ids, condition ids, token ids, and prices for the current World Cup event.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch blocked this cycle.
+- `/api/mobile/events/argentina-vs-egypt/live-detail`, `/api/orders`, and `/api/portfolio` remain sufficient for the current fake-token Local MVP flow.
+
+Temporary mock/static data:
+
+- Existing backend-shaped `contract-fixture` line markets remain the Local MVP source for non-winner line markets.
+
+Future migration concern:
+
+- When line markets become provider-backed, Ticket and Portfolio source notes should switch naturally from local-test fake-token wording to Polymarket-backed wording based on the route contract.
