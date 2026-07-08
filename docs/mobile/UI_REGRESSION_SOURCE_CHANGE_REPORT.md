@@ -8,6 +8,7 @@ This report covers the visible mobile UI state after the provider readiness and 
 
 Latest cleanup status:
 
+- Cycle OU imported/refreshed `World Cup: Golden Boot Winner` with 12 real Polymarket markets and proved S23 Search visibility with 4 provider-backed World Cup results.
 - Cycle OT refreshed/imported `World Cup Winner` with 8 real Polymarket markets, proved the broad provider route, and proved S23 Search visibility with 3 provider-backed World Cup results.
 - Cycle OQ imported/refreshed broader Polymarket-backed World Cup provider data and proved multiple provider-backed events through the mobile Search surface.
 - Cycle OR guarded the mobile Live match feed so provider `future` / `outright` events do not appear as live football matches even when upstream provider metadata reports `LIVE`.
@@ -31,6 +32,7 @@ Latest cleanup status:
   - `World Cup Winner`
   - `Argentina vs. Egypt`
 - Latest S23 Search proof shows `World Cup Winner` as `Polymarket 8 markets`, `Which continent...` as `Polymarket 3 markets`, and `Argentina vs. Egypt` as `Polymarket 3 / test lines 4`.
+- Newer S23 Search proof shows 4 results, led by `World Cup: Golden Boot Winner` with `Polymarket 12 markets`, plus `World Cup Winner`, `Which continent will win the World Cup?`, and `Argentina vs. Egypt`.
 - Provider-backed futures/outrights in Search now display as future predictions with `Starts Time TBD` instead of looking like active live matches.
 - Live now intentionally shows the empty live-football state when only provider futures/outrights are available.
 
@@ -61,6 +63,7 @@ Latest cleanup status:
 - Broader Polymarket provider breadth is available through backend routes and Search/provider runtime proof, but Home intentionally remains MVP-focused on the single match route.
 - Order book routes/tests remain as internal infrastructure, but order book is hidden from default mobile MVP UI.
 - Provider breadth proof imported/refreshed the World Cup winner event and confirmed multiple provider-backed backend surfaces; Home still filters to match events for the current retail MVP path.
+- Golden Boot provider breadth is available through Search and backend routes; Home still does not show it because Home is scoped to the Local MVP match journey.
 - The backend/API route can still return broad provider-backed World Cup surfaces when called without the Home `mobileMvpMatches=1` filter.
 - Internal source/status proof markers remain available in XML/accessibility labels for harness checks, but they should not dominate final tester-facing copy.
 
@@ -70,6 +73,7 @@ Latest cleanup status:
 - Workflow regression: the completed mobile branch was pushed to `poly-mobile`, but a normal local merge into the standalone `mobile-development` branch failed because that branch has an unrelated history and root-level mobile layout while this repo keeps the app under `mobile/`. Do not force-merge that branch without first deciding the canonical mobile repo layout.
 - Existing product gap remains: spread/total/team-total line markets are contract-shaped test fixtures, not real Polymarket-backed line markets for the selected MVP match.
 - Existing provider breadth gap remains: multiple real provider-backed events are proven in backend/search surfaces, but not yet visible as multiple Home match cards because Home deliberately uses the local MVP match filter.
+- Existing bot runtime gap remains: the tiny allowlisted live-local bot reached quote management, but fake-token quote placement was rejected by the internal trading kill switch.
 - Existing tester-flow gap remains: full end-to-end fake-token order proof was not rerun in this source-label cleanup cycle because backend/order behavior was intentionally untouched.
 - Current cycle result: no new visual regression found; the only failed proof attempt was environmental, because the S23 was sitting on a Samsung system update screen before Expo was relaunched.
 
@@ -85,6 +89,8 @@ Latest cleanup status:
 - Trade Ticket fixture-backed line:
   - `docs/mobile/harness/cycle-ON-source-label-tester-cleanup/cycle-ON-s23-line-ticket.png`
 - Provider breadth Search proof:
+  - `docs/mobile/screenshots/cycle-OU-provider-match-breadth-refresh/cycle-OU-s23-provider-breadth-search.png`
+  - `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/cycle-OU-s23-provider-breadth-search.xml`
   - `docs/mobile/screenshots/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-s23-provider-breadth-search.png`
   - `docs/mobile/harness/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-s23-provider-breadth-search.xml`
   - `docs/mobile/screenshots/cycle-OQ-provider-breadth-runtime/cycle-OQ-search-provider-breadth.png`

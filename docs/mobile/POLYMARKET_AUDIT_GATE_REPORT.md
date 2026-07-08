@@ -16,6 +16,20 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle OU
+
+Gate status: Pass for focused provider breadth/Search visibility; partial for bot quote placement.
+
+Scope: Golden Boot provider breadth refresh.
+
+Decision:
+
+- P0 failed: 0 for focused provider breadth route/Search visibility scope.
+- Bot runtime note: dry-run passed and live-local reached `manage_quotes`, but fake-token quote placement was rejected by `TRADING_KILL_SWITCH_ACTIVE`. That is a remaining local trading-gate blocker, not a provider discovery blocker.
+- P1/P2 remaining: P1 real provider-backed current/live match breadth remains limited; P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable; P1 scheduled refresh and trading-kill-switch policy remain future work.
+- Evidence: `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/cycle-OU-provider-breadth-runtime-route.json`, `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/cycle-OU-search-provider-breadth-route.json`, `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/cycle-OU-golden-boot-reference-refresh.json`, `docs/mobile/screenshots/cycle-OU-provider-match-breadth-refresh/cycle-OU-s23-provider-breadth-search.png`, `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/cycle-OU-s23-provider-breadth-search.xml`, `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/cycle-OU-bot-dry-run-final.txt`, `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/cycle-OU-bot-live-local-final.txt`.
+- Notes: The gate passes because the cycle imports/refreshed a real Polymarket Golden Boot event, proves broad route visibility for 4 provider-backed World Cup results, proves S23 Search visibility, and runs the tiny allowlisted bot path far enough to expose the real local trading blocker. It does not claim match-line parity or quote-order placement.
+
 ## Cycle OT
 
 Gate status: Pass

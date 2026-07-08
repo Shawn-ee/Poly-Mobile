@@ -1,0 +1,608 @@
+{
+  "generatedAt": "2026-07-08T19:47:23.855Z",
+  "cycle": "OU",
+  "scope": "provider-breadth-runtime-loop",
+  "routes": {
+    "broadMobileWorldCup": "http://127.0.0.1:3002/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10",
+    "localMvpMatchOnly": "http://127.0.0.1:3002/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10",
+    "liveDetail": "/api/mobile/events/:slug/live-detail"
+  },
+  "broadMobileWorldCup": {
+    "eventCount": 4,
+    "providerBackedEventCount": 4,
+    "providerBackedMatchEventCount": 1,
+    "providerBackedOutrightEventCount": 3,
+    "events": [
+      {
+        "slug": "world-cup-golden-boot-winner",
+        "title": "World Cup: Golden Boot Winner",
+        "eventType": "future",
+        "source": "polymarket",
+        "marketCount": 12,
+        "polymarketMarketCount": 12,
+        "contractFixtureMarketCount": 0,
+        "regulationWinnerStatus": "missing",
+        "lineMarketStatus": "missing",
+        "lineFamilies": [],
+        "markets": [
+          {
+            "marketId": "6e0eac54-df5e-4cb0-bab8-cb575ea5b4f0",
+            "title": "Will Lionel Messi be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-lionel-messi-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069635",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "70612733-f5d4-4fcb-8561-c1e7f93be924",
+            "title": "Will Erling Haaland be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-erling-haaland-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069636",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "99caf629-cb24-4fda-ae7f-3249e98778d6",
+            "title": "Will Kylian Mbappe be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-kylian-mbappe-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069638",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "07cda5aa-9ff4-4549-afa8-f2cdeb3f0f99",
+            "title": "Will Jude Bellingham be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-jude-bellingham-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069639",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "11f71904-2042-4a10-ae8a-ba76d12e3916",
+            "title": "Will Lamine Yamal be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-lamine-yamal-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069640",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "f1cbb00d-93ad-4746-a385-2f56ff6e6321",
+            "title": "Will Noah Okafor be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-noah-okafor-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069643",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "81957c43-f808-4d4d-a277-7220331ad952",
+            "title": "Will Ferran Torres be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-ferran-torres-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069656",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "31065c58-a8ce-493f-a75a-9b581770604a",
+            "title": "Will Dani Olmo be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-dani-olmo-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069657",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "59366f69-e7e8-4652-a1c5-c1be9b8e29de",
+            "title": "Will Marcus Thuram be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-marcus-thuram-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069658",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "0c055207-00f4-4e83-bcb5-6f7676ca56e2",
+            "title": "Will Desire Doue be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-desire-doue-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069659",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "115ee4f1-81f3-4e2c-9c63-c9bac343e1c0",
+            "title": "Will Ousmane Dembele be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-ousmane-dembele-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069660",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "247f7021-f204-489c-99d2-336d9e6613b4",
+            "title": "Will Bradley Barcola be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-bradley-barcola-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069661",
+            "outcomeCount": 2
+          }
+        ]
+      },
+      {
+        "slug": "provider-breadth-world-cup-winner",
+        "title": "World Cup Winner",
+        "eventType": "future",
+        "source": "polymarket",
+        "marketCount": 8,
+        "polymarketMarketCount": 8,
+        "contractFixtureMarketCount": 0,
+        "regulationWinnerStatus": "missing",
+        "lineMarketStatus": "missing",
+        "lineFamilies": [],
+        "markets": [
+          {
+            "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+            "title": "Will Switzerland win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-switzerland-win-the-2026-fifa-world-cup",
+            "externalMarketId": "558974",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+            "title": "Will Spain win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-spain-win-the-2026-fifa-world-cup-963",
+            "externalMarketId": "558934",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+            "title": "Will Argentina win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-argentina-win-the-2026-fifa-world-cup-245",
+            "externalMarketId": "558938",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+            "title": "Will England win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-england-win-the-2026-fifa-world-cup-937",
+            "externalMarketId": "558935",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+            "title": "Will France win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-france-win-the-2026-fifa-world-cup-924",
+            "externalMarketId": "558936",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+            "title": "Will Belgium win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-belgium-win-the-2026-fifa-world-cup-358",
+            "externalMarketId": "558946",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+            "title": "Will Norway win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-norway-win-the-2026-fifa-world-cup-893",
+            "externalMarketId": "558951",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+            "title": "Will Morocco win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-morocco-win-the-2026-fifa-world-cup-464",
+            "externalMarketId": "558963",
+            "outcomeCount": 2
+          }
+        ]
+      },
+      {
+        "slug": "which-continent-will-win-the-world-cup",
+        "title": "Which continent will win the World Cup?",
+        "eventType": "future",
+        "source": "polymarket",
+        "marketCount": 3,
+        "polymarketMarketCount": 3,
+        "contractFixtureMarketCount": 0,
+        "regulationWinnerStatus": "missing",
+        "lineMarketStatus": "missing",
+        "lineFamilies": [],
+        "markets": [
+          {
+            "marketId": "fd7d40f6-898d-402b-b4b1-5d1d0380e38c",
+            "title": "Will Africa (CAF) win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-africa-win-the-2026-fifa-world-cup",
+            "externalMarketId": "840927",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "44dfd0c8-a46b-4ec0-aa2a-a5904088bbf8",
+            "title": "Will Europe (UEFA) win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-europe-win-the-2026-fifa-world-cup",
+            "externalMarketId": "840929",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "d7fa3c01-2b02-4ee4-84ce-aadd7f507f3f",
+            "title": "Will South America (CONMEBOL) win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-south-america-win-the-2026-fifa-world-cup",
+            "externalMarketId": "840931",
+            "outcomeCount": 2
+          }
+        ]
+      },
+      {
+        "slug": "argentina-vs-egypt",
+        "title": "Argentina vs. Egypt",
+        "eventType": "match",
+        "source": "polymarket",
+        "marketCount": 7,
+        "polymarketMarketCount": 3,
+        "contractFixtureMarketCount": 4,
+        "regulationWinnerStatus": "provider-backed",
+        "lineMarketStatus": "contract-fixture",
+        "lineFamilies": [
+          "spread",
+          "team_total_goals",
+          "total_goals"
+        ],
+        "markets": [
+          {
+            "marketId": "2b3c820f-19f5-476a-9f91-0e43eb26c6d7",
+            "title": "Will Argentina win on 2026-07-07?",
+            "marketType": "match_winner_1x2",
+            "marketGroupKey": "main",
+            "referenceSource": "polymarket",
+            "externalSlug": "fifwc-arg-egy-2026-07-07-arg",
+            "externalMarketId": "2793738",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "0a725cc6-ec1d-4d33-92aa-584aa3ff23e5",
+            "title": "Will Argentina vs. Egypt end in a draw?",
+            "marketType": "match_winner_1x2",
+            "marketGroupKey": "main",
+            "referenceSource": "polymarket",
+            "externalSlug": "fifwc-arg-egy-2026-07-07-draw",
+            "externalMarketId": "2793739",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "35a8e3d4-a699-4000-920a-bfa5eb6d1eb8",
+            "title": "Will Egypt win on 2026-07-07?",
+            "marketType": "match_winner_1x2",
+            "marketGroupKey": "main",
+            "referenceSource": "polymarket",
+            "externalSlug": "fifwc-arg-egy-2026-07-07-egy",
+            "externalMarketId": "2793741",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "23eaa980-3ccb-40ba-847f-b617c650f4e7",
+            "title": "Argentina vs. Egypt: Argentina +0.5",
+            "marketType": "spread",
+            "marketGroupKey": "spread",
+            "referenceSource": "contract-fixture",
+            "externalSlug": "argentina-vs-egypt-spread-home-0-5",
+            "externalMarketId": "contract-argentina-vs-egypt-spread-home-0-5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "b658ace7-eed8-4e16-9633-4f100c7d995f",
+            "title": "Argentina vs. Egypt: Egypt +1.5",
+            "marketType": "spread",
+            "marketGroupKey": "spread",
+            "referenceSource": "contract-fixture",
+            "externalSlug": "argentina-vs-egypt-spread-away-1-5",
+            "externalMarketId": "contract-argentina-vs-egypt-spread-away-1-5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "f605df0d-087c-473b-9838-2b52ea0444f1",
+            "title": "Argentina vs. Egypt: Argentina total goals 1.5",
+            "marketType": "team_total_goals",
+            "marketGroupKey": "team-totals",
+            "referenceSource": "contract-fixture",
+            "externalSlug": "argentina-vs-egypt-team-total-home-1-5",
+            "externalMarketId": "contract-argentina-vs-egypt-team-total-home-1-5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "871ecb31-02ac-44bf-b187-8936d4651938",
+            "title": "Argentina vs. Egypt: Total goals 2.5",
+            "marketType": "total_goals",
+            "marketGroupKey": "totals",
+            "referenceSource": "contract-fixture",
+            "externalSlug": "argentina-vs-egypt-total-goals-2-5",
+            "externalMarketId": "contract-argentina-vs-egypt-total-goals-2-5",
+            "outcomeCount": 2
+          }
+        ]
+      }
+    ]
+  },
+  "localMvpMatchOnly": {
+    "eventCount": 1,
+    "nonMatchCount": 0,
+    "providerBackedMatchEventCount": 1,
+    "events": [
+      {
+        "slug": "argentina-vs-egypt",
+        "title": "Argentina vs. Egypt",
+        "eventType": "match",
+        "source": "polymarket",
+        "marketCount": 7,
+        "polymarketMarketCount": 3,
+        "contractFixtureMarketCount": 4,
+        "regulationWinnerStatus": "provider-backed",
+        "lineMarketStatus": "contract-fixture",
+        "lineFamilies": [
+          "spread",
+          "team_total_goals",
+          "total_goals"
+        ],
+        "markets": [
+          {
+            "marketId": "2b3c820f-19f5-476a-9f91-0e43eb26c6d7",
+            "title": "Will Argentina win on 2026-07-07?",
+            "marketType": "match_winner_1x2",
+            "marketGroupKey": "main",
+            "referenceSource": "polymarket",
+            "externalSlug": "fifwc-arg-egy-2026-07-07-arg",
+            "externalMarketId": "2793738",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "0a725cc6-ec1d-4d33-92aa-584aa3ff23e5",
+            "title": "Will Argentina vs. Egypt end in a draw?",
+            "marketType": "match_winner_1x2",
+            "marketGroupKey": "main",
+            "referenceSource": "polymarket",
+            "externalSlug": "fifwc-arg-egy-2026-07-07-draw",
+            "externalMarketId": "2793739",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "35a8e3d4-a699-4000-920a-bfa5eb6d1eb8",
+            "title": "Will Egypt win on 2026-07-07?",
+            "marketType": "match_winner_1x2",
+            "marketGroupKey": "main",
+            "referenceSource": "polymarket",
+            "externalSlug": "fifwc-arg-egy-2026-07-07-egy",
+            "externalMarketId": "2793741",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "23eaa980-3ccb-40ba-847f-b617c650f4e7",
+            "title": "Argentina vs. Egypt: Argentina +0.5",
+            "marketType": "spread",
+            "marketGroupKey": "spread",
+            "referenceSource": "contract-fixture",
+            "externalSlug": "argentina-vs-egypt-spread-home-0-5",
+            "externalMarketId": "contract-argentina-vs-egypt-spread-home-0-5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "b658ace7-eed8-4e16-9633-4f100c7d995f",
+            "title": "Argentina vs. Egypt: Egypt +1.5",
+            "marketType": "spread",
+            "marketGroupKey": "spread",
+            "referenceSource": "contract-fixture",
+            "externalSlug": "argentina-vs-egypt-spread-away-1-5",
+            "externalMarketId": "contract-argentina-vs-egypt-spread-away-1-5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "f605df0d-087c-473b-9838-2b52ea0444f1",
+            "title": "Argentina vs. Egypt: Argentina total goals 1.5",
+            "marketType": "team_total_goals",
+            "marketGroupKey": "team-totals",
+            "referenceSource": "contract-fixture",
+            "externalSlug": "argentina-vs-egypt-team-total-home-1-5",
+            "externalMarketId": "contract-argentina-vs-egypt-team-total-home-1-5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "871ecb31-02ac-44bf-b187-8936d4651938",
+            "title": "Argentina vs. Egypt: Total goals 2.5",
+            "marketType": "total_goals",
+            "marketGroupKey": "totals",
+            "referenceSource": "contract-fixture",
+            "externalSlug": "argentina-vs-egypt-total-goals-2-5",
+            "externalMarketId": "contract-argentina-vs-egypt-total-goals-2-5",
+            "outcomeCount": 2
+          }
+        ]
+      }
+    ]
+  },
+  "liveDetailChecks": [
+    {
+      "slug": "world-cup-golden-boot-winner",
+      "url": "http://127.0.0.1:3002/api/mobile/events/world-cup-golden-boot-winner/live-detail",
+      "status": "ok",
+      "marketCount": 12,
+      "polymarketMarketCount": 12,
+      "contractFixtureMarketCount": 0,
+      "providerLifecycleSources": [
+        "mobile-live-detail-market"
+      ],
+      "marketSourceSummary": {
+        "totalMarketCount": 12,
+        "sourceBreakdown": {
+          "polymarket": 12
+        },
+        "polymarketMarketCount": 12,
+        "contractFixtureMarketCount": 0,
+        "unknownSourceMarketCount": 0,
+        "regulationWinner": {
+          "totalCount": 0,
+          "polymarketCount": 0,
+          "contractFixtureCount": 0,
+          "status": "missing"
+        },
+        "lineMarkets": {
+          "totalCount": 0,
+          "polymarketCount": 0,
+          "contractFixtureCount": 0,
+          "status": "missing",
+          "families": [],
+          "familyReadiness": [],
+          "providerAvailability": {
+            "source": "polymarket-gamma",
+            "status": "unknown",
+            "providerBackedLineMarketCount": 0,
+            "contractFixtureLineMarketCount": 0,
+            "reason": "Line-market provider availability is unknown because no route-visible line markets are present."
+          },
+          "reason": "No route-visible line markets are available."
+        }
+      }
+    },
+    {
+      "slug": "provider-breadth-world-cup-winner",
+      "url": "http://127.0.0.1:3002/api/mobile/events/provider-breadth-world-cup-winner/live-detail",
+      "status": "ok",
+      "marketCount": 8,
+      "polymarketMarketCount": 8,
+      "contractFixtureMarketCount": 0,
+      "providerLifecycleSources": [
+        "mobile-live-detail-market"
+      ],
+      "marketSourceSummary": {
+        "totalMarketCount": 8,
+        "sourceBreakdown": {
+          "polymarket": 8
+        },
+        "polymarketMarketCount": 8,
+        "contractFixtureMarketCount": 0,
+        "unknownSourceMarketCount": 0,
+        "regulationWinner": {
+          "totalCount": 0,
+          "polymarketCount": 0,
+          "contractFixtureCount": 0,
+          "status": "missing"
+        },
+        "lineMarkets": {
+          "totalCount": 0,
+          "polymarketCount": 0,
+          "contractFixtureCount": 0,
+          "status": "missing",
+          "families": [],
+          "familyReadiness": [],
+          "providerAvailability": {
+            "source": "polymarket-gamma",
+            "status": "unknown",
+            "providerBackedLineMarketCount": 0,
+            "contractFixtureLineMarketCount": 0,
+            "reason": "Line-market provider availability is unknown because no route-visible line markets are present."
+          },
+          "reason": "No route-visible line markets are available."
+        }
+      }
+    },
+    {
+      "slug": "which-continent-will-win-the-world-cup",
+      "url": "http://127.0.0.1:3002/api/mobile/events/which-continent-will-win-the-world-cup/live-detail",
+      "status": "ok",
+      "marketCount": 3,
+      "polymarketMarketCount": 3,
+      "contractFixtureMarketCount": 0,
+      "providerLifecycleSources": [
+        "mobile-live-detail-market"
+      ],
+      "marketSourceSummary": {
+        "totalMarketCount": 3,
+        "sourceBreakdown": {
+          "polymarket": 3
+        },
+        "polymarketMarketCount": 3,
+        "contractFixtureMarketCount": 0,
+        "unknownSourceMarketCount": 0,
+        "regulationWinner": {
+          "totalCount": 0,
+          "polymarketCount": 0,
+          "contractFixtureCount": 0,
+          "status": "missing"
+        },
+        "lineMarkets": {
+          "totalCount": 0,
+          "polymarketCount": 0,
+          "contractFixtureCount": 0,
+          "status": "missing",
+          "families": [],
+          "familyReadiness": [],
+          "providerAvailability": {
+            "source": "polymarket-gamma",
+            "status": "unknown",
+            "providerBackedLineMarketCount": 0,
+            "contractFixtureLineMarketCount": 0,
+            "reason": "Line-market provider availability is unknown because no route-visible line markets are present."
+          },
+          "reason": "No route-visible line markets are available."
+        }
+      }
+    }
+  ],
+  "decisions": {
+    "providerBreadthReadyInBroadRuntime": true,
+    "localMvpStillMatchOnly": true,
+    "providerLineMarketsRemainGap": true,
+    "noOpticOddsBlocker": "unconfigured_optional_non_blocking"
+  },
+  "pass": true
+}

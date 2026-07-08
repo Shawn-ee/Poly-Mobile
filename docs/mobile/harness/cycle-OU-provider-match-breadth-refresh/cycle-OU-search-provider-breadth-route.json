@@ -1,0 +1,337 @@
+{
+  "generatedAt": "2026-07-08T19:47:23.765Z",
+  "cycle": "OU",
+  "scope": "search-provider-breadth-visible-contract",
+  "routes": {
+    "searchProviderBreadth": "http://127.0.0.1:3002/api/events?sportKey=soccer&source=polymarket&includeMobileMarkets=1&limit=10",
+    "worldCupProviderBreadth": "http://127.0.0.1:3002/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&limit=10"
+  },
+  "searchProviderBreadth": {
+    "eventCount": 4,
+    "providerBackedEventCount": 4,
+    "providerBackedMatchEventCount": 1,
+    "providerBackedNonMatchEventCount": 3,
+    "events": [
+      {
+        "slug": "world-cup-golden-boot-winner",
+        "title": "World Cup: Golden Boot Winner",
+        "eventType": "future",
+        "status": "active",
+        "source": "polymarket",
+        "marketCount": 12,
+        "polymarketMarketCount": 12,
+        "contractFixtureMarketCount": 0,
+        "regulationWinnerStatus": "missing",
+        "lineMarketStatus": "missing",
+        "lineFamilies": [],
+        "topMarketTitles": [
+          {
+            "title": "Will Lionel Messi be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will Erling Haaland be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will Kylian Mbappe be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will Jude Bellingham be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          }
+        ]
+      },
+      {
+        "slug": "provider-breadth-world-cup-winner",
+        "title": "World Cup Winner",
+        "eventType": "future",
+        "status": "live",
+        "source": "polymarket",
+        "marketCount": 8,
+        "polymarketMarketCount": 8,
+        "contractFixtureMarketCount": 0,
+        "regulationWinnerStatus": "missing",
+        "lineMarketStatus": "missing",
+        "lineFamilies": [],
+        "topMarketTitles": [
+          {
+            "title": "Will Switzerland win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will Spain win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will Argentina win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will England win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          }
+        ]
+      },
+      {
+        "slug": "which-continent-will-win-the-world-cup",
+        "title": "Which continent will win the World Cup?",
+        "eventType": "future",
+        "status": "active",
+        "source": "polymarket",
+        "marketCount": 3,
+        "polymarketMarketCount": 3,
+        "contractFixtureMarketCount": 0,
+        "regulationWinnerStatus": "missing",
+        "lineMarketStatus": "missing",
+        "lineFamilies": [],
+        "topMarketTitles": [
+          {
+            "title": "Will Africa (CAF) win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will Europe (UEFA) win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will South America (CONMEBOL) win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          }
+        ]
+      },
+      {
+        "slug": "argentina-vs-egypt",
+        "title": "Argentina vs. Egypt",
+        "eventType": "match",
+        "status": "active",
+        "source": "polymarket",
+        "marketCount": 7,
+        "polymarketMarketCount": 3,
+        "contractFixtureMarketCount": 4,
+        "regulationWinnerStatus": "provider-backed",
+        "lineMarketStatus": "contract-fixture",
+        "lineFamilies": [
+          "spread",
+          "team_total_goals",
+          "total_goals"
+        ],
+        "topMarketTitles": [
+          {
+            "title": "Will Argentina win on 2026-07-07?",
+            "marketType": "match_winner_1x2",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will Argentina vs. Egypt end in a draw?",
+            "marketType": "match_winner_1x2",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will Egypt win on 2026-07-07?",
+            "marketType": "match_winner_1x2",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Argentina vs. Egypt: Argentina +0.5",
+            "marketType": "spread",
+            "referenceSource": "contract-fixture",
+            "outcomeCount": 2
+          }
+        ]
+      }
+    ]
+  },
+  "worldCupProviderBreadth": {
+    "eventCount": 4,
+    "providerBackedEventCount": 4,
+    "events": [
+      {
+        "slug": "world-cup-golden-boot-winner",
+        "title": "World Cup: Golden Boot Winner",
+        "eventType": "future",
+        "status": "active",
+        "source": "polymarket",
+        "marketCount": 12,
+        "polymarketMarketCount": 12,
+        "contractFixtureMarketCount": 0,
+        "regulationWinnerStatus": "missing",
+        "lineMarketStatus": "missing",
+        "lineFamilies": [],
+        "topMarketTitles": [
+          {
+            "title": "Will Lionel Messi be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will Erling Haaland be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will Kylian Mbappe be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will Jude Bellingham be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          }
+        ]
+      },
+      {
+        "slug": "provider-breadth-world-cup-winner",
+        "title": "World Cup Winner",
+        "eventType": "future",
+        "status": "live",
+        "source": "polymarket",
+        "marketCount": 8,
+        "polymarketMarketCount": 8,
+        "contractFixtureMarketCount": 0,
+        "regulationWinnerStatus": "missing",
+        "lineMarketStatus": "missing",
+        "lineFamilies": [],
+        "topMarketTitles": [
+          {
+            "title": "Will Switzerland win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will Spain win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will Argentina win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will England win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          }
+        ]
+      },
+      {
+        "slug": "which-continent-will-win-the-world-cup",
+        "title": "Which continent will win the World Cup?",
+        "eventType": "future",
+        "status": "active",
+        "source": "polymarket",
+        "marketCount": 3,
+        "polymarketMarketCount": 3,
+        "contractFixtureMarketCount": 0,
+        "regulationWinnerStatus": "missing",
+        "lineMarketStatus": "missing",
+        "lineFamilies": [],
+        "topMarketTitles": [
+          {
+            "title": "Will Africa (CAF) win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will Europe (UEFA) win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will South America (CONMEBOL) win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          }
+        ]
+      },
+      {
+        "slug": "argentina-vs-egypt",
+        "title": "Argentina vs. Egypt",
+        "eventType": "match",
+        "status": "active",
+        "source": "polymarket",
+        "marketCount": 7,
+        "polymarketMarketCount": 3,
+        "contractFixtureMarketCount": 4,
+        "regulationWinnerStatus": "provider-backed",
+        "lineMarketStatus": "contract-fixture",
+        "lineFamilies": [
+          "spread",
+          "team_total_goals",
+          "total_goals"
+        ],
+        "topMarketTitles": [
+          {
+            "title": "Will Argentina win on 2026-07-07?",
+            "marketType": "match_winner_1x2",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will Argentina vs. Egypt end in a draw?",
+            "marketType": "match_winner_1x2",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Will Egypt win on 2026-07-07?",
+            "marketType": "match_winner_1x2",
+            "referenceSource": "polymarket",
+            "outcomeCount": 2
+          },
+          {
+            "title": "Argentina vs. Egypt: Argentina +0.5",
+            "marketType": "spread",
+            "referenceSource": "contract-fixture",
+            "outcomeCount": 2
+          }
+        ]
+      }
+    ]
+  },
+  "mobileVisibilityContract": {
+    "searchRowsCanShowMultipleProviderBackedEvents": true,
+    "sourceSummaryFieldsPresent": true,
+    "includesMatchAndOutrightWhenAvailable": true
+  },
+  "pass": true
+}
