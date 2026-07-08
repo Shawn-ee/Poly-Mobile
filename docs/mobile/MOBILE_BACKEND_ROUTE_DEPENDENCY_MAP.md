@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle NF - Proof JSON Hygiene
+
+Cycle NF changes proof harness output only; it consumes the same mobile routes as Cycle NE.
+
+- S23 proof: `docs/mobile/harness/cycle-NF-proof-json-hygiene/cycle-NF-current-mvp-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-NF-proof-json-hygiene.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Current MVP proof artifact generation | `/api/events`; `/api/mobile/events/:slug/live-detail`; `/api/orders`; `/api/portfolio` | GET and POST | Existing mobile API auth for order/portfolio | Existing ticket order body | Event compact markets, ticket selection snapshot, open order selection/source identity | Existing `Event`, `Market`, `Outcome`, `Order`; no schema change | Existing Local MVP `contract-fixture` line selections remain proof data | Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected Polymarket events. |
+
 ## Cycle NE - S23 Open Order Proof Mode
 
 Cycle NE changes proof harness behavior only; it consumes the same mobile routes as Cycle ND.

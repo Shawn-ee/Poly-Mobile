@@ -2,6 +2,35 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle NF - Proof JSON Hygiene
+
+Feature/page worked on:
+
+- S23 Local MVP proof harness output hygiene.
+
+Frontend/services touched:
+
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+
+User interactions supported/proven:
+
+- On S23, completed Home -> Live -> Event Detail -> local Spread ticket -> swipe buy -> Portfolio Orders/open order using `-ExpectOpenOrder`.
+
+Backend/API route changed:
+
+- None.
+
+Verified:
+
+- PowerShell parser check passed.
+- S23 proof passed: `docs/mobile/harness/cycle-NF-proof-json-hygiene/cycle-NF-current-mvp-s23-visible-flow.json`.
+- `git diff --check` passed with the generated proof JSON staged in the worktree.
+- Proof summary contains 12 unique artifacts and no History artifact in open-order mode.
+
+Known limitations:
+
+- Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected events.
+
 ## Cycle NE - S23 Open Order Proof Mode
 
 Feature/page worked on:

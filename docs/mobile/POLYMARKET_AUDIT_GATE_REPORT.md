@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle NF
+
+Gate status: Pass
+
+Scope: Proof JSON hygiene.
+
+Decision:
+
+- P0 failed: 0 for focused proof hygiene scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-NF-proof-json-hygiene/cycle-NF-current-mvp-s23-visible-flow.json`, `docs/mobile/harness/cycle-NF-proof-json-hygiene/cycle-NF-current-mvp-after-submit.xml`, `docs/mobile/screenshots/cycle-NF-proof-json-hygiene/cycle-NF-current-mvp-after-submit.png`, `docs/mobile/audits/cycle-NF-proof-json-hygiene.md`.
+- Notes: Generated proof JSON has unique artifacts, omits History artifacts for open-order mode, and passes `git diff --check` without manual normalization.
+
 ## Cycle NE
 
 Gate status: Pass

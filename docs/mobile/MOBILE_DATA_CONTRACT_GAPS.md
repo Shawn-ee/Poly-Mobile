@@ -2,6 +2,25 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle NF - Proof JSON Hygiene
+
+Closed or narrowed:
+
+- Generated S23 proof JSON no longer needs manual BOM/trailing-whitespace normalization.
+- Open-order proof summaries now list only unique artifacts captured in that mode.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected events.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Existing `contract-fixture` line markets remain backend-shaped Local MVP fallback rows.
+
 ## Cycle NE - S23 Open Order Proof Mode
 
 Closed or narrowed:

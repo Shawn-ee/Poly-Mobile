@@ -161,6 +161,19 @@ function Start-Link {
   & $adb -s $Device shell am start -a android.intent.action.VIEW -d "'$Url'" | Out-Null
 }
 
+function Write-JsonNoBom {
+  param(
+    [Parameter(Mandatory = $true)]
+    [object]$Value,
+    [Parameter(Mandatory = $true)]
+    [string]$Path,
+    [int]$Depth = 6
+  )
+  $json = $Value | ConvertTo-Json -Depth $Depth
+  $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+  [System.IO.File]::WriteAllText((Resolve-Path -LiteralPath (Split-Path -Parent $Path)).Path + "\" + (Split-Path -Leaf $Path), ($json -replace "`r`n", "`n") + "`n", $utf8NoBom)
+}
+
 Push-Location $repoRoot
 $previousEnv = @{
   MOBILE_DEV_USERNAME = $env:MOBILE_DEV_USERNAME
@@ -341,7 +354,7 @@ try {
       historyShowsEmptyStateUntilFill = (-not [bool]$ExpectFilledHistory) -and (-not [bool]$ExpectOpenOrder)
       filledHistoryVisible = [bool]$ExpectFilledHistory
     }
-    artifacts = @(
+    artifacts = [System.Collections.Generic.List[string]]@(
       "$OutputDir\cycle-$Cycle-current-mvp-home.png",
       "$HierarchyOutputDir\cycle-$Cycle-current-mvp-home.xml",
       "$OutputDir\cycle-$Cycle-current-mvp-live.png",
@@ -353,13 +366,15 @@ try {
       "$OutputDir\cycle-$Cycle-current-mvp-ticket-ready.png",
       "$HierarchyOutputDir\cycle-$Cycle-current-mvp-ticket-ready.xml",
       "$OutputDir\cycle-$Cycle-current-mvp-after-submit.png",
-      "$HierarchyOutputDir\cycle-$Cycle-current-mvp-after-submit.xml",
-      $(if ($ExpectOpenOrder) { "$HierarchyOutputDir\cycle-$Cycle-current-mvp-after-submit.xml" } else { "$OutputDir\cycle-$Cycle-current-mvp-portfolio-history.png" }),
-      $(if ($ExpectOpenOrder) { "$OutputDir\cycle-$Cycle-current-mvp-after-submit.png" } else { "$HierarchyOutputDir\cycle-$Cycle-current-mvp-portfolio-history.xml" })
+      "$HierarchyOutputDir\cycle-$Cycle-current-mvp-after-submit.xml"
     )
   }
+  if (-not $ExpectOpenOrder) {
+    $summary.artifacts.Add("$OutputDir\cycle-$Cycle-current-mvp-portfolio-history.png")
+    $summary.artifacts.Add("$HierarchyOutputDir\cycle-$Cycle-current-mvp-portfolio-history.xml")
+  }
   $summaryPath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-current-mvp-s23-visible-flow.json"
-  $summary | ConvertTo-Json -Depth 6 | Set-Content -Path $summaryPath -Encoding utf8
+  Write-JsonNoBom -Value $summary -Path $summaryPath -Depth 6
   Write-Host "Proof summary: $summaryPath"
 } finally {
   if ($expo -and -not $expo.HasExited) {
