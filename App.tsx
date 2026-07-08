@@ -2,14 +2,15 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BackHandler, Linking, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { PolyApi } from "./src/api";
 import { normalizeEventDetail, normalizeEventSummary } from "./src/adapters/worldCupAdapter";
 import { AccountScreen } from "./src/components/AccountScreen";
 import { BottomTabs } from "./src/components/BottomTabs";
+import { CashoutTicket } from "./src/components/CashoutTicket";
 import { EventDetail } from "./src/components/EventDetail";
 import { Header } from "./src/components/Header";
-import { HomeScreen } from "./src/components/HomeScreen";
+import { HomeScreen, type HomeFilter } from "./src/components/HomeScreen";
 import { LiveScreen } from "./src/components/LiveScreen";
 import {
   OpenOrder,
@@ -22,7 +23,6 @@ import {
 } from "./src/components/Portfolio";
 import { SearchScreen } from "./src/components/SearchScreen";
 import { Ticket, TicketSelection, TradeTicket } from "./src/components/TradeTicket";
-import { WorldCupTab } from "./src/components/WorldCupSegmented";
 import { appCopy } from "./src/localization/appCopy";
 import {
   Event,
@@ -35,13 +35,18 @@ import {
 import type { PortfolioValueHistoryRange } from "./src/types";
 import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 import { appendUniqueActivity, cancelOpenOrderOnServer, openOrderCanceledActivity } from "./src/services/openOrderService";
-import { closePositionOnServer } from "./src/services/positionCloseService";
+import { assertCanSellPositionShares, availablePositionShares, canCashOutPosition, closePositionOnServer } from "./src/services/positionCloseService";
 import { serverBackendOnlyPortfolioFixture, serverClosedPortfolioFixture, serverHydratedPortfolioFixture } from "./src/services/portfolioFixtureService";
 import { applyServerPortfolioState } from "./src/services/portfolioStateApplyService";
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
+import { loadPortfolioValueHistory as loadPortfolioValueHistoryRoute } from "./src/services/portfolioValueHistoryService";
 import { resolvePositionTradeTarget } from "./src/services/positionTradeTargetService";
+import { loadAccountBalance } from "./src/services/accountBalanceService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
-import { applyChartErrorToEvent, applyChartLoadingToEvent, applyChartStateToEvent, loadMarketChartState } from "./src/services/marketChartService";
+import { loadProfileSummary, type AccountSummaryViewModel } from "./src/services/profileSummaryService";
+import { loadEventMarketCatalog } from "./src/services/eventMarketCatalogService";
+import { loadHomeEventFeedPage } from "./src/services/homeEventFeedService";
+import { loadSearchEventPage } from "./src/services/searchEventService";
 import { applyMarketDepthErrorToEvent, applyMarketDepthLoadingToEvent, applyDepthStateToEvent, loadMarketDepthState } from "./src/services/marketDepthService";
 import {
   applyTicketQuoteToOutcome,
@@ -59,10 +64,19 @@ const MARKET_DATA_MODE: "mock" | "server" =
   ORDER_MODE === "server" || process.env.EXPO_PUBLIC_MARKET_DATA_MODE === "server" ? "server" : "mock";
 const SMOKE_OPEN_SERVER_ORDER_PRICE = 1;
 const SMOKE_OPEN_SERVER_ORDER_AMOUNT = "1";
+const HOME_EVENT_PAGE_SIZE = 10;
+const LIVE_EVENT_PAGE_SIZE = 10;
+const SEARCH_EVENT_PAGE_SIZE = 10;
 const SAVED_EVENTS_STORAGE_KEY = "holiwyn.savedEventIds.v1";
 const LANGUAGE_STORAGE_KEY = "holiwyn.language.v1";
 const PORTFOLIO_STORAGE_KEY = "holiwyn.portfolio.v1";
 const TICKET_DEFAULTS_STORAGE_KEY = "holiwyn.ticketDefaults.v1";
+
+const matchesHomeFilter = (event: Event, filter: HomeFilter) => {
+  if (filter === "all") return true;
+  return event.status === filter;
+};
+
 const SMOKE_OPEN_ORDER: OpenOrder = {
   id: "smoke-open-order",
   title: "Mexico vs. Ecuador winner",
@@ -246,6 +260,17 @@ const isBookSpreadLifecycleSelection = (selection?: TicketSelection) =>
   typeof selection.limitPrice === "number" &&
   selection.limitPrice > 0;
 
+const appendUniqueEvents = (current: Event[], next: Event[]) => {
+  const seen = new Set(current.map((event) => event.id));
+  const merged = [...current];
+  for (const event of next) {
+    if (seen.has(event.id)) continue;
+    seen.add(event.id);
+    merged.push(event);
+  }
+  return merged;
+};
+
 const mexicoEcuadorGamePositionFixture = (): Position | undefined => {
   const event = worldCupEvents.find((item) => item.id === "mexico-ecuador");
   const market = event?.markets.find((item) => item.id === "mexico-ecuador-winner");
@@ -275,6 +300,7 @@ const mexicoEcuadorGamePositionFixture = (): Position | undefined => {
 
 const openOrderRemainingShares = (order: OpenOrder) => order.remainingShares ?? order.remaining;
 const openOrderValue = (order: OpenOrder) => order.orderValue ?? openOrderRemainingShares(order) * order.price;
+const sharesForTicketAmount = (amount: number, probability: number) => amount / Math.max(probability / 100, 0.01);
 
 type MainTab = "home" | "live" | "portfolio" | "search" | "account";
 type StoredPortfolio = {
@@ -295,14 +321,16 @@ export default function App() {
   const [locale, setLocale] = useState<Locale>("en");
   const [localeHydrated, setLocaleHydrated] = useState(false);
   const [mainTab, setMainTab] = useState<MainTab>("home");
-  const [worldCupTab, setWorldCupTab] = useState<WorldCupTab>("games");
+  const [homeFilter, setHomeFilter] = useState<HomeFilter>("all");
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [selectedDepthMarketId, setSelectedDepthMarketId] = useState<string | null>(null);
   const [eventDetailForcedSide, setEventDetailForcedSide] = useState<"buy" | "sell" | null>(null);
   const [query, setQuery] = useState("");
   const [ticket, setTicket] = useState<Ticket | null>(null);
+  const [cashoutPosition, setCashoutPosition] = useState<Position | null>(null);
   const [ticketOrderError, setTicketOrderError] = useState<string | null>(null);
   const [ticketOrderErrorDetail, setTicketOrderErrorDetail] = useState<string | null>(null);
+  const [cashoutError, setCashoutError] = useState<string | null>(null);
   const [forceOrderFailure, setForceOrderFailure] = useState(false);
   const [balance, setBalance] = useState(10000);
   const [positions, setPositions] = useState<Position[]>([]);
@@ -316,14 +344,21 @@ export default function App() {
   const [profilePreferencesSyncStatus, setProfilePreferencesSyncStatus] = useState<ProfilePreferencesSyncStatus>(
     ORDER_MODE === "server" && DEFAULT_API_KEY.length > 0 ? "syncing" : "hidden"
   );
-  const [events, setEvents] = useState<Event[]>(worldCupEvents);
+  const [accountSummary, setAccountSummary] = useState<AccountSummaryViewModel | null>(null);
+  const [events, setEvents] = useState<Event[]>(() => MARKET_DATA_MODE === "server" ? [] : worldCupEvents);
+  const [eventNextCursor, setEventNextCursor] = useState<string | null>(null);
+  const [isLoadingMoreEvents, setIsLoadingMoreEvents] = useState(false);
+  const [searchEvents, setSearchEvents] = useState<Event[]>([]);
+  const [searchNextCursor, setSearchNextCursor] = useState<string | null>(null);
+  const [isLoadingSearchEvents, setIsLoadingSearchEvents] = useState(false);
+  const [liveEvents, setLiveEvents] = useState<Event[]>([]);
   const [savedEventIds, setSavedEventIds] = useState<Set<string>>(() => new Set());
   const [savedEventIdsHydrated, setSavedEventIdsHydrated] = useState(false);
   const [forceAccountSignedIn, setForceAccountSignedIn] = useState(false);
   const [isRefreshingLive, setIsRefreshingLive] = useState(false);
   const [liveRefreshTick, setLiveRefreshTick] = useState(0);
   const [launchUrlVersion, setLaunchUrlVersion] = useState(0);
-  const [futures, setFutures] = useState<Market[]>(worldCupFutures);
+  const [futures, setFutures] = useState<Market[]>(() => MARKET_DATA_MODE === "server" ? [] : worldCupFutures);
   const [runtimeApiKey, setRuntimeApiKey] = useState(DEFAULT_API_KEY);
   const [apiKeyDiagnosticEnabled, setApiKeyDiagnosticEnabled] = useState(false);
   const [apiKeyDiagnostic, setApiKeyDiagnostic] = useState<string | null>(null);
@@ -332,6 +367,8 @@ export default function App() {
   const api = useMemo(() => new PolyApi(DEFAULT_API_BASE, runtimeApiKey), [runtimeApiKey]);
   const mounted = useRef(true);
   const profilePreferencesReady = useRef(false);
+  const searchRequestSeq = useRef(0);
+  const liveRequestSeq = useRef(0);
   const skipPortfolioHydration = useRef(false);
   const forceServerCloseFixture = useRef(false);
   const forceServerOrderProof = useRef(false);
@@ -346,6 +383,18 @@ export default function App() {
     () => openOrders.reduce((total, order) => total + openOrderValue(order), 0),
     [openOrders],
   );
+  const accountDisplayLocale = accountSummary?.locale ?? locale;
+  const accountDisplayBalance = accountSummary?.balance ?? balance;
+  const accountDisplayPortfolioValue = accountSummary?.portfolioValue ?? accountPortfolioValue;
+  const accountDisplayOpenOrderValue = accountSummary?.openOrderValue ?? accountOpenOrderValue;
+  const accountDisplayOpenPositionCount = accountSummary?.openPositionCount ?? positions.length;
+  const accountDisplayOpenOrderCount = accountSummary?.openOrderCount ?? openOrders.length;
+  const accountDisplayTotalExposure = accountSummary?.totalExposure ?? accountPortfolioValue + accountOpenOrderValue;
+  const accountDisplaySavedMarketCount = accountSummary?.savedMarketCount ?? savedEventIds.size;
+  const accountDisplayTicketDefaultAmount = accountSummary?.ticketDefaultAmount ?? ticketDefaults.amount;
+  const accountDisplayTicketDefaultSide = accountSummary?.ticketDefaultSide ?? ticketDefaults.side;
+  const accountDisplayTicketDefaultSlippage = accountSummary?.ticketDefaultSlippage ?? ticketDefaults.slippage;
+  const accountDisplayTradingMode = accountSummary?.tradingMode ?? ORDER_MODE;
 
   useEffect(() => {
     return () => {
@@ -494,11 +543,50 @@ export default function App() {
       });
   }, [api, locale, localeHydrated, savedEventIds, savedEventIdsHydrated, shouldSyncProfilePreferences, ticketDefaults, ticketDefaultsHydrated]);
 
+  useEffect(() => {
+    if (ORDER_MODE !== "server" || runtimeApiKey.length === 0 || mainTab !== "account") return undefined;
+    let cancelled = false;
+    setAccountSummary(null);
+    setProfilePreferencesSyncStatus("syncing");
+    loadProfileSummary(api)
+      .then((summary) => {
+        if (cancelled || !mounted.current) return;
+        setAccountSummary(summary);
+        setForceAccountSignedIn(true);
+        setProfilePreferencesSyncStatus("synced");
+      })
+      .catch(() => {
+        if (!cancelled && mounted.current) {
+          setAccountSummary(null);
+          setProfilePreferencesSyncStatus("error");
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [api, mainTab, runtimeApiKey]);
+
+  useEffect(() => {
+    if (ORDER_MODE !== "server" || runtimeApiKey.length === 0) return undefined;
+    let cancelled = false;
+    loadAccountBalance({ api, fallbackBalance: 0 })
+      .then((accountBalance) => {
+        if (cancelled || !mounted.current || accountBalance.source !== "server-route") return;
+        setBalance(accountBalance.availableUSDC);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [api, runtimeApiKey]);
+
   const handleLaunchUrl = useCallback((url: string | null) => {
     if (!mounted.current || !url) return;
     const shouldForceWorldCupWinnerFranceTicket = url.includes("forceWorldCupWinnerFranceTicket=1");
     const shouldForceClosedWorldCupWinnerFrance = url.includes("forceClosedWorldCupWinnerFrance=1");
     const shouldForceServerPortfolioFixture = url.includes("forceServerPortfolioFixture=1");
+    const shouldForceZeroSharePosition = url.includes("forceZeroSharePosition=1");
+    const shouldForceTinySharePosition = url.includes("forceTinySharePosition=1");
     const shouldForceServerPortfolioFallbackFixture = url.includes("forceServerPortfolioFallbackFixture=1");
     const shouldForceMexicoEcuadorGamePosition = url.includes("forceMexicoEcuadorGamePosition=1");
     const shouldForcePortfolio = url.includes("forcePortfolio=1");
@@ -549,7 +637,6 @@ export default function App() {
         setSelectedDepthMarketId(null);
         setQuery("");
         setMainTab("home");
-        setWorldCupTab("games");
         setTicketDefaults({ amount: "100", side: "buy", slippage: "1%" });
         setSavedEventIds(new Set());
         setForceAccountSignedIn(false);
@@ -561,6 +648,8 @@ export default function App() {
         !shouldForceWorldCupWinnerFranceTicket &&
         !shouldForceClosedWorldCupWinnerFrance &&
         !shouldForceServerPortfolioFixture &&
+        !shouldForceZeroSharePosition &&
+        !shouldForceTinySharePosition &&
         !shouldForceServerPortfolioFallbackFixture &&
         !shouldForcePortfolio &&
         !shouldForceOpenOrder &&
@@ -713,8 +802,28 @@ export default function App() {
       setMainTab("portfolio");
       AsyncStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(snapshot)).catch(() => undefined);
     }
-    if (shouldForceServerPortfolioFixture) {
+    if (shouldForceServerPortfolioFixture || shouldForceZeroSharePosition || shouldForceTinySharePosition) {
       const fixture = serverHydratedPortfolioFixture();
+      if (shouldForceZeroSharePosition) {
+        fixture.positions = fixture.positions.map((position) => ({
+          ...position,
+          id: `${position.id}-zero-shares`,
+          shares: 0,
+          amount: 0,
+          currentValue: 0,
+          pnl: 0,
+        }));
+      }
+      if (shouldForceTinySharePosition) {
+        fixture.positions = fixture.positions.map((position) => ({
+          ...position,
+          id: `${position.id}-tiny-shares`,
+          shares: 1,
+          amount: position.probability / 100,
+          currentValue: position.currentPrice ?? position.probability / 100,
+          pnl: 0,
+        }));
+      }
       setBalance(fixture.balance);
       setPositions(fixture.positions);
       setLatestOrder(fixture.latestOrder);
@@ -911,14 +1020,26 @@ export default function App() {
     };
   }, [apiKeyDiagnosticEnabled, runtimeApiKey]);
 
-  const loadBackendWorldCup = useCallback(async () => {
+  const loadBackendWorldCup = useCallback(async (cursor: string | null = null, append = false) => {
     try {
-      const payload = await api.listWorldCupEvents();
-      const summaryEvents = payload.events
+      const page = await loadHomeEventFeedPage({
+        api,
+        filter: homeFilter,
+        limit: HOME_EVENT_PAGE_SIZE,
+        cursor,
+      });
+      if (page.source === "local-fallback") {
+        if (mounted.current) {
+          if (!append) setEvents([]);
+          setEventNextCursor(null);
+        }
+        return;
+      }
+      const summaryEvents = page.events
         .map((event) => normalizeEventSummary(event, event.markets ?? []))
         .filter((event) => event.markets.length > 0);
       const details = await Promise.all(
-        payload.events
+        page.events
           .filter((event) => !event.markets?.length)
           .slice(0, Math.max(0, 8 - summaryEvents.length))
           .map(async (event) => {
@@ -935,7 +1056,8 @@ export default function App() {
       ];
       if (mounted.current && normalized.length > 0) {
         if (ORDER_MODE !== "server") {
-          setEvents(normalized);
+          setEvents((current) => append ? appendUniqueEvents(current, normalized) : normalized);
+          setEventNextCursor(page.nextCursor);
           return;
         }
         const quotedEvents = await Promise.all(
@@ -944,12 +1066,122 @@ export default function App() {
             return applyTicketQuotesToEvent(event, quotesByMarketId);
           }),
         );
-        if (mounted.current) setEvents(quotedEvents);
+        if (mounted.current) {
+          setEvents((current) => append ? appendUniqueEvents(current, quotedEvents) : quotedEvents);
+          setEventNextCursor(page.nextCursor);
+        }
       }
     } catch {
-      if (mounted.current) setEvents(worldCupEvents);
+      if (mounted.current && !append) {
+        setEvents([]);
+        setEventNextCursor(null);
+      }
     }
+  }, [api, homeFilter]);
+
+  const loadMoreBackendEvents = useCallback(() => {
+    if (MARKET_DATA_MODE !== "server" || !eventNextCursor || isLoadingMoreEvents) return;
+    setIsLoadingMoreEvents(true);
+    loadBackendWorldCup(eventNextCursor, true)
+      .finally(() => {
+        if (mounted.current) setIsLoadingMoreEvents(false);
+      });
+  }, [eventNextCursor, isLoadingMoreEvents, loadBackendWorldCup]);
+
+  const hydrateSearchEventSummaries = useCallback(async (pageEvents: Awaited<ReturnType<typeof loadSearchEventPage>>["events"]) => {
+    const summaryEvents = pageEvents
+      .map((event) => normalizeEventSummary(event, event.markets ?? []))
+      .filter((event) => event.markets.length > 0);
+    const details = await Promise.all(
+      pageEvents
+        .filter((event) => !event.markets?.length)
+        .slice(0, Math.max(0, 8 - summaryEvents.length))
+        .map(async (event) => {
+          try {
+            return normalizeEventDetail(await api.getEvent(event.slug));
+          } catch {
+            return null;
+          }
+        }),
+    );
+    const normalized = [
+      ...summaryEvents,
+      ...details.filter((event): event is Event => Boolean(event)),
+    ];
+    if (ORDER_MODE !== "server") return normalized;
+    return Promise.all(
+      normalized.map(async (event) => {
+        const quotesByMarketId = await loadMarketQuotesById(api, event.markets.map((market) => market.id));
+        return applyTicketQuotesToEvent(event, quotesByMarketId);
+      }),
+    );
   }, [api]);
+
+  const loadBackendSearchEvents = useCallback(async (cursor: string | null = null, append = false) => {
+    if (MARKET_DATA_MODE !== "server") return;
+    const requestSeq = append ? searchRequestSeq.current : searchRequestSeq.current + 1;
+    if (!append) searchRequestSeq.current = requestSeq;
+    setIsLoadingSearchEvents(true);
+    try {
+      const page = await loadSearchEventPage({
+        api,
+        query,
+        limit: SEARCH_EVENT_PAGE_SIZE,
+        cursor,
+      });
+      const normalized = await hydrateSearchEventSummaries(page.events);
+      if (!mounted.current || requestSeq !== searchRequestSeq.current) return;
+      setSearchEvents((current) => append ? appendUniqueEvents(current, normalized) : normalized);
+      setSearchNextCursor(page.nextCursor);
+    } catch {
+      if (mounted.current && !append) {
+        setSearchEvents([]);
+        setSearchNextCursor(null);
+      }
+    } finally {
+      if (mounted.current && requestSeq === searchRequestSeq.current) {
+        setIsLoadingSearchEvents(false);
+      }
+    }
+  }, [api, hydrateSearchEventSummaries, query]);
+
+  const loadMoreSearchEvents = useCallback(() => {
+    if (MARKET_DATA_MODE !== "server" || !searchNextCursor || isLoadingSearchEvents) return;
+    loadBackendSearchEvents(searchNextCursor, true);
+  }, [isLoadingSearchEvents, loadBackendSearchEvents, searchNextCursor]);
+
+  useEffect(() => {
+    if (MARKET_DATA_MODE !== "server" || mainTab !== "search") return;
+    loadBackendSearchEvents();
+  }, [loadBackendSearchEvents, mainTab]);
+
+  const loadBackendLiveEvents = useCallback(async () => {
+    if (MARKET_DATA_MODE !== "server") return;
+    const requestSeq = liveRequestSeq.current + 1;
+    liveRequestSeq.current = requestSeq;
+    setIsRefreshingLive(true);
+    try {
+      const page = await loadHomeEventFeedPage({
+        api,
+        filter: "live",
+        limit: LIVE_EVENT_PAGE_SIZE,
+        fallbackEvents: [],
+      });
+      const normalized = await hydrateSearchEventSummaries(page.events);
+      if (!mounted.current || requestSeq !== liveRequestSeq.current) return;
+      setLiveEvents(normalized);
+      setLiveRefreshTick((tick) => tick + 1);
+    } catch {
+      if (mounted.current && requestSeq === liveRequestSeq.current) setLiveEvents([]);
+    } finally {
+      if (mounted.current && requestSeq === liveRequestSeq.current) setIsRefreshingLive(false);
+    }
+  }, [api, hydrateSearchEventSummaries]);
+
+  useEffect(() => {
+    if (MARKET_DATA_MODE !== "server" || mainTab !== "live") return;
+    loadBackendLiveEvents();
+  }, [loadBackendLiveEvents, mainTab]);
 
   useEffect(() => {
     loadBackendWorldCup();
@@ -997,9 +1229,15 @@ export default function App() {
       if (ORDER_MODE !== "server" || runtimeApiKey.length === 0) {
         return Promise.reject(new Error("Portfolio value history route is unavailable outside server mode."));
       }
-      return api.getPortfolioValueHistory(range);
+      return loadPortfolioValueHistoryRoute({
+        api,
+        range,
+        cash: balance,
+        positionsValue: positions.reduce((total, position) => total + portfolioPositionValue(position), 0),
+        pnl: positions.reduce((total, position) => total + portfolioPositionValue(position) - position.amount, 0),
+      });
     },
-    [api, runtimeApiKey],
+    [api, balance, positions, runtimeApiKey],
   );
 
   useEffect(() => {
@@ -1045,7 +1283,32 @@ export default function App() {
     setSelectedDepthMarketId(null);
   }, [selectedEvent?.id]);
 
+  const selectedEventMarketKey = selectedEvent?.markets.map((market) => market.id).join("|") ?? "";
+
+  useEffect(() => {
+    if (MARKET_DATA_MODE !== "server" || !selectedEvent) return undefined;
+    let cancelled = false;
+    const eventId = selectedEvent.id;
+    const fallbackMarkets = selectedEvent.markets;
+    loadEventMarketCatalog({ api, slug: eventId, fallbackMarkets })
+      .then((catalog) => {
+        if (cancelled || !mounted.current) return;
+        setSelectedEvent((current) => {
+          if (!current || current.id !== eventId) return current;
+          return { ...current, markets: catalog.markets };
+        });
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [api, selectedEvent?.id, selectedEventMarketKey]);
+
   const refreshLiveMarkets = useCallback(async () => {
+    if (MARKET_DATA_MODE === "server") {
+      await loadBackendLiveEvents();
+      return;
+    }
     setIsRefreshingLive(true);
     try {
       await loadBackendWorldCup();
@@ -1053,7 +1316,7 @@ export default function App() {
     } finally {
       if (mounted.current) setIsRefreshingLive(false);
     }
-  }, [loadBackendWorldCup]);
+  }, [loadBackendLiveEvents, loadBackendWorldCup]);
 
   const filteredEvents = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -1182,34 +1445,6 @@ export default function App() {
     };
   }, [api, selectedEvent?.id, selectedDepthMarketId]);
 
-  useEffect(() => {
-    if (MARKET_DATA_MODE !== "server" || !selectedEvent) return undefined;
-    let cancelled = false;
-    const eventId = selectedEvent.id;
-    setSelectedEvent((current) => {
-      if (!current || current.id !== eventId) return current;
-      return applyChartLoadingToEvent(current);
-    });
-    loadMarketChartState(api, selectedEvent)
-      .then((chartState) => {
-        if (cancelled || !mounted.current) return;
-        setSelectedEvent((current) => {
-          if (!current || current.id !== eventId) return current;
-          return applyChartStateToEvent(current, chartState);
-        });
-      })
-      .catch(() => {
-        if (cancelled || !mounted.current) return;
-        setSelectedEvent((current) => {
-          if (!current || current.id !== eventId) return current;
-          return applyChartErrorToEvent(current);
-        });
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [api, selectedEvent?.id]);
-
   const toggleSavedEvent = (event: Event) => {
     setSavedEventIds((current) => {
       const next = new Set(current);
@@ -1227,6 +1462,23 @@ export default function App() {
     const cost = Math.min(amount, balance);
     setTicketOrderError(null);
     setTicketOrderErrorDetail(null);
+    const sourcePosition = ticket.sourcePositionId
+      ? positions.find((position) => position.id === ticket.sourcePositionId)
+      : undefined;
+    if (side === "sell" && ticket.sourcePositionId) {
+      if (!sourcePosition) {
+        setTicketOrderError(t.orderFailed);
+        setTicketOrderErrorDetail("No position is available to cash out.");
+        return;
+      }
+      try {
+        assertCanSellPositionShares(sourcePosition, sharesForTicketAmount(cost, ticket.outcome.probability));
+      } catch (error) {
+        setTicketOrderError(t.orderFailed);
+        setTicketOrderErrorDetail(error instanceof Error ? error.message : "Sell amount exceeds available shares.");
+        return;
+      }
+    }
     let result;
     try {
       if (forceOrderFailure) {
@@ -1273,9 +1525,21 @@ export default function App() {
         }
       : null;
     if (ORDER_MODE !== "server") {
-      if (result.side === "sell" && ticket.sourcePositionId) {
+      if (result.side === "sell" && ticket.sourcePositionId && sourcePosition) {
+        const soldShares = sharesForTicketAmount(result.amount, result.probability);
         setBalance((current) => current + result.amount);
-        setPositions((current) => current.filter((position) => position.id !== ticket.sourcePositionId));
+        setPositions((current) => current.flatMap((position) => {
+          if (position.id !== ticket.sourcePositionId) return [position];
+          const remainingShares = availablePositionShares(position) - soldShares;
+          if (remainingShares <= 0.000001) return [];
+          const remainingRatio = remainingShares / availablePositionShares(position);
+          return [{
+            ...position,
+            shares: remainingShares,
+            amount: position.amount * remainingRatio,
+            currentValue: position.currentValue === undefined ? undefined : position.currentValue * remainingRatio,
+          }];
+        }));
       } else {
         setBalance((current) => current - cost);
         setPositions((current) => [
@@ -1366,19 +1630,20 @@ export default function App() {
         activities: fixture.activities,
       };
       AsyncStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(snapshot)).catch(() => undefined);
-      return;
+      return true;
     }
     try {
       await closePositionOnServer({ mode: ORDER_MODE, api, position });
-    } catch {
+    } catch (error) {
       if (mounted.current) setPortfolioSyncStatus("error");
-      return;
+      setCashoutError(error instanceof Error ? error.message : "Cash out failed. Try again.");
+      return false;
     }
     if (ORDER_MODE === "server") {
       await refreshServerPortfolio().catch(() => {
         if (mounted.current) setPortfolioSyncStatus("error");
       });
-      return;
+      return true;
     }
     const value = portfolioPositionValue(position);
     setBalance((current) => current + value);
@@ -1399,9 +1664,41 @@ export default function App() {
       },
       ...current,
     ]);
+    return true;
+  };
+
+  const openCashoutPosition = (position: Position) => {
+    setTicket(null);
+    setTicketOrderError(null);
+    setTicketOrderErrorDetail(null);
+    setCashoutError(null);
+    if (!canCashOutPosition(position)) {
+      setCashoutError("No position is available to cash out.");
+      setCashoutPosition(position);
+      return;
+    }
+    setCashoutPosition(position);
+  };
+
+  const cashOutFullPosition = async (position: Position) => {
+    setCashoutError(null);
+    if (!canCashOutPosition(position)) {
+      setCashoutError("No position is available to cash out.");
+      return;
+    }
+    const closed = await closePosition(position);
+    if (!closed) return;
+    setCashoutPosition(null);
+    setSelectedEvent(null);
+    setMainTab("portfolio");
   };
 
   const openPositionTrade = (position: Position, side: "buy" | "sell") => {
+    if (side === "sell" && availablePositionShares(position) <= 0) {
+      setTicketOrderError(t.orderFailed);
+      setTicketOrderErrorDetail("No shares are available to cash out.");
+      return;
+    }
     const target = resolvePositionTradeTarget({ position, futures, events });
     if (!target) {
       setPortfolioSyncStatus("error");
@@ -1444,9 +1741,11 @@ export default function App() {
   }, [api]);
 
   const cancelOpenOrder = (order: OpenOrder) => {
-    setOpenOrders((current) => current.filter((item) => item.id !== order.id));
     const canceledActivity = openOrderCanceledActivity(order, t.justNow);
-    setActivities((current) => appendUniqueActivity(current, canceledActivity));
+    if (ORDER_MODE !== "server") {
+      setOpenOrders((current) => current.filter((item) => item.id !== order.id));
+      setActivities((current) => appendUniqueActivity(current, canceledActivity));
+    }
     cancelOpenOrderOnServer({ mode: ORDER_MODE, api, order })
       .then(() => {
         if (ORDER_MODE === "server") {
@@ -1456,6 +1755,8 @@ export default function App() {
             }
           });
         }
+        setOpenOrders((current) => current.filter((item) => item.id !== order.id));
+        setActivities((current) => appendUniqueActivity(current, canceledActivity));
         return undefined;
       })
       .catch(() => {
@@ -1464,16 +1765,15 @@ export default function App() {
   };
 
   return (
+    <SafeAreaProvider>
     <SafeAreaView style={styles.safe}>
       <StatusBar style="light" />
       <View style={styles.shell}>
         {!selectedEvent && mainTab !== "portfolio" && (
           <Header
             locale={locale}
-            promo={t.promo}
             language={t.language}
             toggleLanguage={() => setLocale((current) => (current === "en" ? "zh" : "en"))}
-            openAccount={() => setMainTab("account")}
           />
         )}
         {selectedEvent ? (
@@ -1491,7 +1791,7 @@ export default function App() {
             toggleSavedEvent={toggleSavedEvent}
             requestMarketDepth={setSelectedDepthMarketId}
             positions={positions}
-            closePosition={closePosition}
+            openCashoutPosition={openCashoutPosition}
             openPositionTrade={openPositionTrade}
           />
         ) : (
@@ -1500,14 +1800,14 @@ export default function App() {
               <HomeScreen
                 locale={locale}
                 t={t}
-                worldCupTab={worldCupTab}
-                setWorldCupTab={setWorldCupTab}
-                events={filteredEvents}
-                query={query}
-                setQuery={setQuery}
+                events={events}
                 openEvent={openEventDetail}
                 openTicket={openTicket}
-                futures={futures}
+                homeFilter={homeFilter}
+                setHomeFilter={setHomeFilter}
+                canLoadMoreEvents={MARKET_DATA_MODE === "server" ? Boolean(eventNextCursor) : undefined}
+                isLoadingMoreEvents={isLoadingMoreEvents}
+                loadMoreEvents={MARKET_DATA_MODE === "server" ? loadMoreBackendEvents : undefined}
                 savedEventIds={savedEventIds}
                 toggleSavedEvent={toggleSavedEvent}
               />
@@ -1516,7 +1816,7 @@ export default function App() {
               <LiveScreen
                 locale={locale}
                 t={t}
-                events={events.filter((event) => event.status === "live")}
+                events={MARKET_DATA_MODE === "server" ? liveEvents : events.filter((event) => event.status === "live")}
                 isRefreshing={isRefreshingLive}
                 refreshTick={liveRefreshTick}
                 onRefresh={refreshLiveMarkets}
@@ -1540,10 +1840,11 @@ export default function App() {
                   openOrders={openOrders}
                   activities={activities}
                   syncStatus={portfolioSyncStatus}
-                  closePosition={closePosition}
+                  openCashoutPosition={openCashoutPosition}
                   openPositionTrade={openPositionTrade}
                   cancelOpenOrder={cancelOpenOrder}
                   loadValueHistory={ORDER_MODE === "server" && runtimeApiKey.length > 0 ? loadPortfolioValueHistory : undefined}
+                  openAccount={() => setMainTab("account")}
                 />
               </>
             )}
@@ -1553,30 +1854,34 @@ export default function App() {
                 t={t}
                 query={query}
                 setQuery={setQuery}
-                events={filteredEvents}
+                events={MARKET_DATA_MODE === "server" ? searchEvents : filteredEvents}
                 openEvent={openEventDetail}
                 openTicket={openTicket}
                 savedEventIds={savedEventIds}
                 toggleSavedEvent={toggleSavedEvent}
+                canLoadMoreEvents={MARKET_DATA_MODE === "server" ? Boolean(searchNextCursor) : undefined}
+                isLoadingMoreEvents={isLoadingSearchEvents}
+                loadMoreEvents={MARKET_DATA_MODE === "server" ? loadMoreSearchEvents : undefined}
               />
             )}
             {mainTab === "account" && (
               <AccountScreen
                 t={t}
-                balance={balance}
+                balance={accountDisplayBalance}
                 forceSignedIn={forceAccountSignedIn}
-                languagePreferenceValue={locale === "en" ? "English" : "\u4e2d\u6587"}
-                ticketDefaultAmount={ticketDefaults.amount}
-                ticketDefaultSide={ticketDefaults.side}
-                ticketDefaultSlippage={ticketDefaults.slippage}
+                languagePreferenceValue={accountDisplayLocale === "en" ? "English" : "\u4e2d\u6587"}
+                ticketDefaultAmount={accountDisplayTicketDefaultAmount}
+                ticketDefaultSide={accountDisplayTicketDefaultSide}
+                ticketDefaultSlippage={accountDisplayTicketDefaultSlippage}
                 profileSyncStatus={profilePreferencesSyncStatus}
-                savedMarketCount={savedEventIds.size}
-                openPositionCount={positions.length}
-                openOrderCount={openOrders.length}
-                openOrderValue={accountOpenOrderValue}
-                totalExposure={accountPortfolioValue + accountOpenOrderValue}
-                portfolioValue={accountPortfolioValue}
-                tradingMode={ORDER_MODE}
+                savedMarketCount={accountDisplaySavedMarketCount}
+                openPositionCount={accountDisplayOpenPositionCount}
+                openOrderCount={accountDisplayOpenOrderCount}
+                openOrderValue={accountDisplayOpenOrderValue}
+                totalExposure={accountDisplayTotalExposure}
+                portfolioValue={accountDisplayPortfolioValue}
+                tradingMode={accountDisplayTradingMode}
+                accountMenuItems={accountSummary?.menuItems ?? []}
               />
             )}
           </>
@@ -1602,7 +1907,17 @@ export default function App() {
         }}
         placeOrder={placeOrder}
       />
+      <CashoutTicket
+        position={cashoutPosition}
+        error={cashoutError}
+        close={() => {
+          setCashoutError(null);
+          setCashoutPosition(null);
+        }}
+        cashOut={cashOutFullPosition}
+      />
     </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 

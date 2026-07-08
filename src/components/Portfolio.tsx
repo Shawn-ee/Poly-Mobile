@@ -632,6 +632,7 @@ export function Portfolio({
   openPositionTrade,
   cancelOpenOrder,
   loadValueHistory,
+  openAccount,
 }: {
   locale: Locale;
   t: PortfolioCopy;
@@ -645,6 +646,7 @@ export function Portfolio({
   openPositionTrade: (position: Position, side: "buy" | "sell") => void;
   cancelOpenOrder: (order: OpenOrder) => void;
   loadValueHistory?: (range: PortfolioValueHistoryRange) => Promise<PortfolioValueHistory>;
+  openAccount: () => void;
 }) {
   const scrollRef = useRef<ScrollView | null>(null);
   const [expandedPositionId, setExpandedPositionId] = useState<string | null>(null);
@@ -822,10 +824,16 @@ export function Portfolio({
   return (
     <ScrollView ref={scrollRef} accessibilityLabel={`portfolio-screen ${latestOrder ? "portfolio-result-content-landing portfolio-result-lands-at-account-header" : "portfolio-normal-browse"}`} testID="portfolio-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
       <View accessibilityLabel="portfolio-profile-header portfolio-header-retail-density" testID="portfolio-profile-header" style={styles.profileHeader}>
-        <View accessibilityLabel="portfolio-account-entry-top-left portfolio-account-entry-display-only" style={styles.profileLeft} testID="portfolio-account-entry-top-left">
+        <Pressable
+          accessibilityLabel="portfolio-account-entry-top-left portfolio-account-entry-opens-account"
+          accessibilityRole="button"
+          onPress={openAccount}
+          style={styles.profileLeft}
+          testID="portfolio-account-entry-top-left"
+        >
           <PortfolioAvatar />
           <Text style={styles.profileName}>{pageCopy.profile}</Text>
-        </View>
+        </Pressable>
       </View>
       <View accessibilityLabel="fake-balance-card portfolio-value-retail-density portfolio-header-dollar-value" testID="fake-balance-card" style={styles.valueBlock}>
         <Text style={styles.portfolioValue}>{portfolioHeaderMoney(portfolioValue)}</Text>
