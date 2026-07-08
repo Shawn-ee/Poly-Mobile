@@ -2455,3 +2455,15 @@ Cycle MC implementation notes:
 - No schema migration was added.
 - Proof cleanup cancels only stale automated proof BUY orders on the exact selected market/outcome before seeding maker liquidity.
 - S23 visible proof now verifies filled History, closing the prior MB gap where the visible UI landed only on an open order.
+
+## Cycle ME - Event Detail Line Section Clearance
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail Game Lines layout | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | Market group/title, `marketType`, `line`, `period`, outcome probability, source/token/condition identity | `Event`, `Market`, `Outcome` | Existing backend-shaped `contract-fixture` rows are rendered. | Real provider-backed line rows remain unavailable for the inspected match. |
+| Visible S23 regression path | `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | POST/GET | Mobile dev API key for order/account routes | Selected Spread `1.5` BUY selection snapshot | Filled order, refreshed Portfolio position, History trade row | `ApiCredential`, `Order`, `ApiOrderRequest`, `Trade`, `Position`, `UserBalance`, `Market`, `Outcome` | Local proof seeds deterministic counterparty liquidity before submit. | Production liquidity remains future work. |
+
+Cycle ME implementation notes:
+
+- No backend route or schema changed.
+- The API dependency remains the same as Cycle MC; this cycle only improved Event Detail layout/proof stability.

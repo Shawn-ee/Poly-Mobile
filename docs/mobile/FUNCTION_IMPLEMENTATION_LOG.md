@@ -6087,3 +6087,42 @@ Known limitations:
 
 - Spread/Totals/Team Total remain backend-shaped `contract-fixture` markets because real provider-backed line rows are not available for the inspected Polymarket match.
 - Visible fill proof depends on local seeded liquidity; production liquidity remains future work.
+
+## Cycle ME - Event Detail Line Section Clearance
+
+Feature/page worked on:
+
+- Event Detail Game Lines layout on Samsung S23.
+- Local MVP visible path continuity through ticket/order/Portfolio History.
+
+Frontend/harness/backend files touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+- `docs/mobile/audits/cycle-ME-event-detail-line-clearance.md`
+
+Important functions/services touched:
+
+- `handleScroll` now enables the compact sticky match header earlier, before the user reaches Game Lines.
+- Game Lines now exposes `event-detail-line-section-clearance-24` on the visible container/spacer.
+- The S23 proof settles the Game Lines scroll position before capturing the official line screenshot.
+
+User interactions supported/proven:
+
+- User opens Home, enters Event Detail, scrolls to Game Lines, and sees readable Regulation Winner, Spread, and Totals sections without landing on a clipped first market row.
+- User can still select Spread `Egypt +1.5`, open the ticket, swipe to buy, and see the filled trade in Portfolio History.
+
+State transitions:
+
+- No backend, balance, order, or schema state transition changed.
+- The proof still seeds local counterparty liquidity, submits a BUY, fills it, refreshes Portfolio, and shows History.
+
+Validation:
+
+- `npm run -s typecheck` from `mobile/`
+- S23 proof: `docs/mobile/harness/cycle-ME-event-detail-line-clearance/cycle-ME-current-mvp-s23-visible-flow.json`
+
+Known limitations:
+
+- This cycle fixes line-section readability and proof stability; it does not change provider availability.
+- Spread/Totals/Team Total remain `contract-fixture` until provider-backed line markets are available.

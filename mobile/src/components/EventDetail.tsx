@@ -582,7 +582,7 @@ export function EventDetail({
   const compactTimeLabel = event.status === "live" ? liveClock : event.startsAt.replace(/^Today\s*/, "");
   const scoreboard = event.status === "live" ? "0 - 1" : "0 - 0";
   const handleScroll = (eventScroll: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const shouldShow = eventScroll.nativeEvent.contentOffset.y > 620;
+    const shouldShow = eventScroll.nativeEvent.contentOffset.y > 360;
     setCompactHeaderVisible((visible) => visible === shouldShow ? visible : shouldShow);
   };
   const marketProfile = event.marketProfile ?? "regulation_90";
@@ -1718,10 +1718,10 @@ export function EventDetail({
         ) : activeTab === "halves" ? (
           renderHalves()
         ) : (
-          <View accessibilityLabel="event-detail-game-lines event-detail-core-full-game-lines-before-halves-local-mvp event-detail-line-section-clean-start event-detail-no-clipped-market-fragment" testID="event-detail-game-lines">
+          <View accessibilityLabel="event-detail-game-lines event-detail-core-full-game-lines-before-halves-local-mvp event-detail-line-section-clean-start event-detail-sticky-tab-content-clearance event-detail-line-section-clearance-24 event-detail-no-clipped-market-fragment" testID="event-detail-game-lines">
             <View
               accessible
-              accessibilityLabel="event-detail-line-section-clean-start event-detail-sticky-tab-content-clearance event-detail-no-clipped-market-fragment"
+              accessibilityLabel="event-detail-line-section-clean-start event-detail-sticky-tab-content-clearance event-detail-line-section-clearance-24 event-detail-no-clipped-market-fragment"
               style={styles.lineSectionCleanStart}
               testID="event-detail-line-section-clean-start"
             />
@@ -2001,7 +2001,7 @@ const styles = StyleSheet.create({
   marketTabActive: { borderBottomColor: "#f8fafc" },
   marketTabText: { color: "#6b7280", fontSize: 16, fontWeight: "800" },
   marketTabTextActive: { color: "#f8fafc" },
-  lineSectionCleanStart: { height: 4, backgroundColor: "#060b14", borderTopWidth: 1, borderTopColor: "#172033" },
+  lineSectionCleanStart: { height: 24, backgroundColor: "#060b14", borderTopWidth: 1, borderTopColor: "#172033" },
   emptyProps: { minHeight: 280, alignItems: "center", justifyContent: "center" },
   emptyPropsText: { color: "#6b7280", fontSize: 18, fontWeight: "800" },
   hiddenStats: { height: 1, overflow: "hidden", opacity: 0.01 },

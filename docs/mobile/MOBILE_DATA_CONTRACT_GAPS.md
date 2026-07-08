@@ -5216,3 +5216,32 @@ Temporary mock/static data:
 Future migration concern:
 
 - Replace fixture lines with provider-backed rows only when Gamma/CLOB or another approved provider exposes attach-ready line markets for the match.
+
+## Cycle ME - Event Detail Line Section Clearance
+
+Closed or narrowed:
+
+- Improved the visible Event Detail line-section proof so Game Lines, Regulation Winner, Spread, and Totals appear as readable sections on S23.
+- Confirmed the layout change does not regress ticket identity, server-backed order submit, Portfolio refresh, or History display.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- No new backend fields are required for this layout fix.
+- Real provider-backed line-market data remains missing as documented in Cycle MD.
+
+Schema mismatch:
+
+- No schema mismatch was found or introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- No new mock data was added.
+- Existing line markets remain backend `contract-fixture` rows.
+
+Future migration concern:
+
+- When provider-backed line markets exist, the same Game Lines layout should consume those rows without changing the visible proof contract.

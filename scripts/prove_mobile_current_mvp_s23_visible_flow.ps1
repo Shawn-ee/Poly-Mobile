@@ -213,8 +213,11 @@ try {
     Save-Screenshot -Name "cycle-$Cycle-current-mvp-lines-failed.png" | Out-Null
     throw "Could not find current MVP spread line market on S23."
   }
+  & $adb -s $Device shell input swipe 540 920 540 1450 320 | Out-Null
+  Start-Sleep -Seconds 1
+  $lineXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-lines-settled.xml"
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-lines.png" | Out-Null
-  Assert-Contains -Path $lineXml -Expected @("Spread", "Totals", "Team Total Goals", "selection-market-type-spread", "selection-line-1.5", "provider-source-contract-fixture")
+  Assert-Contains -Path $lineXml -Expected @("Spread", "Totals", "Team Total Goals", "event-detail-line-section-clearance-24", "selection-market-type-spread", "selection-line-1.5", "provider-source-contract-fixture")
   Assert-NotContains -Path $lineXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
   Invoke-TapNode -Path $lineXml -Identifier "event-detail-outcome-spread-" -StartsWith
