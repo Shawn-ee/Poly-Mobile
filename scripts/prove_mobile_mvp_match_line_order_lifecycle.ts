@@ -205,6 +205,7 @@ async function main() {
 
   const eventSlug = argValue("eventSlug") ?? DEFAULT_EVENT_SLUG;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
+  const cycle = argValue("cycle") ?? "LO";
   const suffix = randomUUID().slice(0, 8);
   const target = await loadTarget(eventSlug);
   const askPrice = argValue("price") ?? "0.52";
@@ -242,11 +243,19 @@ async function main() {
   assert(position.selection?.referenceTokenId === target.outcome.referenceTokenId, "Portfolio position lost selected token.");
   assert(recentTrade, "Expected filled spread trade in /api/portfolio/history recentTrades.");
   assert(recentTrade.selection?.marketType === "spread", "Recent trade lost spread market type.");
+  assert(
+    portfolio.selectionSourceSummary?.positions?.lineMarkets?.status === "contract-fixture",
+    "Portfolio position source summary did not classify the enriched line as contract-fixture.",
+  );
+  assert(
+    history.selectionSourceSummary?.recentTrades?.lineMarkets?.status === "contract-fixture",
+    "Portfolio history source summary did not classify the enriched line trade as contract-fixture.",
+  );
 
   const summary = {
     pass: true,
     generatedAt: new Date().toISOString(),
-    cycle: "LO",
+    cycle,
     scope: "match-line-order-lifecycle",
     event: {
       slug: target.event.slug,
@@ -296,6 +305,7 @@ async function main() {
           }
         : null,
       openOrders: portfolio.openOrders?.length ?? 0,
+      selectionSourceSummary: portfolio.selectionSourceSummary,
     },
     history: {
       recentTrade: recentTrade
@@ -309,6 +319,7 @@ async function main() {
         : null,
       recentTradeCount: history.recentTrades?.length ?? 0,
       canceledOrderCount: history.canceledOrders?.length ?? 0,
+      selectionSourceSummary: history.selectionSourceSummary,
     },
     assertions: {
       routeOrderFilled: order.status === "FILLED",
@@ -316,6 +327,8 @@ async function main() {
       historyRecentTradePresent: Boolean(recentTrade),
       selectedLinePreserved: position?.selection?.line === target.market.line?.toString(),
       selectedTokenPreserved: position?.selection?.referenceTokenId === target.outcome.referenceTokenId,
+      portfolioLineSourceSummary: portfolio.selectionSourceSummary?.positions?.lineMarkets?.status,
+      historyLineSourceSummary: history.selectionSourceSummary?.recentTrades?.lineMarkets?.status,
       androidProof: "not-run-s23-not-visible-to-adb",
     },
   };

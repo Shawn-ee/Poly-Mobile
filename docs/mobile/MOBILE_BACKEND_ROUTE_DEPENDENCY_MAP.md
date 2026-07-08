@@ -2308,3 +2308,16 @@ Cycle LQ implementation notes:
 - No schema migration was required.
 - The summary is derived from existing `referenceSource`, `marketType`, `marketGroupKey`, and `marketGroupTitle` fields.
 - Home and Event Detail now expose the same source-readiness classification for the selected MVP match.
+
+## Cycle LR - Portfolio Selection Source Summary
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio position/open-order source readiness | `/api/portfolio` | GET | Session user or mobile API key with `account:read` | None | `selectionSourceSummary.positions`, `selectionSourceSummary.openOrders`, `selectionSourceSummary.combined`; section source counts and line-market status/families | `Position`, `Order`, `ApiOrderRequest`, `Market`, `Outcome` | None added. Summary derives from stored order selection snapshots and market/outcome fallback fields. | Real provider-backed line markets remain absent for selected Gamma event. |
+| Portfolio recent-trade/cancel source readiness | `/api/portfolio/history` | GET | Session user or mobile API key with `account:read` | None | `selectionSourceSummary.recentTrades`, `selectionSourceSummary.canceledOrders`, `selectionSourceSummary.combined`; section source counts and line-market status/families | `Trade`, `Order`, `ApiOrderRequest`, `Market`, `Outcome` | None added. Summary derives from stored order selection snapshots and market/outcome fallback fields. | Real provider-backed line markets remain absent for selected Gamma event. |
+
+Cycle LR implementation notes:
+
+- No schema migration was required.
+- Portfolio/history selection summaries classify the same line-market source that was submitted through the ticket.
+- The LR proof shows a contract-fixture Spread order becomes a contract-fixture Portfolio position and contract-fixture recent trade.

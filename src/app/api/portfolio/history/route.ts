@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getUserId } from "@/lib/auth";
 import { requireCanonicalActor } from "@/lib/canonicalAuth";
+import { buildPortfolioSelectionSourceSummary } from "@/server/services/portfolioSelectionSourceSummary";
 import { buildTicketSelectionMetadata } from "@/server/services/ticketSelectionMetadata";
 
 export const dynamic = "force-dynamic";
@@ -236,38 +237,46 @@ export async function GET(request: NextRequest) {
     return bTime - aTime;
   });
 
-  return NextResponse.json({
-    history: items.slice(0, 50),
-    canceledOrders: canceledOrders.map((order) => ({
-      id: order.id,
+  const canceledOrderItems = canceledOrders.map((order) => ({
+    id: order.id,
+    market: order.market,
+    outcome: order.outcome,
+    selection: buildTicketSelectionMetadata({
+      requestBody: order.apiOrderRequest?.requestBody,
       market: order.market,
       outcome: order.outcome,
-      selection: buildTicketSelectionMetadata({
-        requestBody: order.apiOrderRequest?.requestBody,
-        market: order.market,
-        outcome: order.outcome,
-      }),
-      side: order.side,
-      status: order.status,
-      price: Number(order.price),
-      size: Number(order.amount),
-      remaining: Number(order.remaining),
-      canceledAt: order.updatedAt,
-    })),
-    recentTrades: recentTrades.map((trade) => ({
-      id: trade.id,
+    }),
+    side: order.side,
+    status: order.status,
+    price: Number(order.price),
+    size: Number(order.amount),
+    remaining: Number(order.remaining),
+    canceledAt: order.updatedAt,
+  }));
+  const recentTradeItems = recentTrades.map((trade) => ({
+    id: trade.id,
+    market: trade.market,
+    outcome: trade.outcome,
+    selection: buildTicketSelectionMetadata({
+      requestBody: recentTradeSelectionByMarketOutcome.get(`${trade.marketId}:${trade.outcomeId}`),
       market: trade.market,
       outcome: trade.outcome,
-      selection: buildTicketSelectionMetadata({
-        requestBody: recentTradeSelectionByMarketOutcome.get(`${trade.marketId}:${trade.outcomeId}`),
-        market: trade.market,
-        outcome: trade.outcome,
-      }),
-      side: trade.side,
-      shares: Number(trade.shares),
-      cost: Number(trade.cost),
-      fee: Number(trade.fee),
-      createdAt: trade.createdAt,
-    })),
+    }),
+    side: trade.side,
+    shares: Number(trade.shares),
+    cost: Number(trade.cost),
+    fee: Number(trade.fee),
+    createdAt: trade.createdAt,
+  }));
+
+  return NextResponse.json({
+    history: items.slice(0, 50),
+    canceledOrders: canceledOrderItems,
+    recentTrades: recentTradeItems,
+    selectionSourceSummary: {
+      canceledOrders: buildPortfolioSelectionSourceSummary(canceledOrderItems),
+      recentTrades: buildPortfolioSelectionSourceSummary(recentTradeItems),
+      combined: buildPortfolioSelectionSourceSummary([...canceledOrderItems, ...recentTradeItems]),
+    },
   });
 }

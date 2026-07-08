@@ -252,6 +252,38 @@ describe("GET /api/portfolio/history canceled orders", () => {
           createdAt: "2026-07-02T06:10:00.000Z",
         },
       ],
+      selectionSourceSummary: {
+        canceledOrders: expect.objectContaining({
+          totalSelectionCount: 1,
+          polymarketSelectionCount: 1,
+          lineMarkets: expect.objectContaining({
+            totalCount: 1,
+            polymarketCount: 1,
+            status: "provider-backed",
+            families: ["spread"],
+          }),
+        }),
+        recentTrades: expect.objectContaining({
+          totalSelectionCount: 1,
+          polymarketSelectionCount: 1,
+          lineMarkets: expect.objectContaining({
+            totalCount: 1,
+            polymarketCount: 1,
+            status: "provider-backed",
+            families: ["spread"],
+          }),
+        }),
+        combined: expect.objectContaining({
+          totalSelectionCount: 2,
+          polymarketSelectionCount: 2,
+          lineMarkets: expect.objectContaining({
+            totalCount: 2,
+            polymarketCount: 2,
+            status: "provider-backed",
+            families: ["spread"],
+          }),
+        }),
+      },
     });
   });
 
@@ -357,6 +389,16 @@ describe("GET /api/portfolio/history canceled orders", () => {
     expect(body.canceledOrders[0].selection.limitPrice).toBe(0.44);
     expect(body.recentTrades[0].selection.limitSide).toBe("ask");
     expect(body.recentTrades[0].selection.limitShares).toBe(125.5);
+    expect(body.selectionSourceSummary.combined).toMatchObject({
+      totalSelectionCount: 2,
+      polymarketSelectionCount: 2,
+      lineMarkets: {
+        totalCount: 2,
+        polymarketCount: 2,
+        status: "provider-backed",
+        families: ["spread"],
+      },
+    });
   });
 
   test("keeps bid-side Sell totals limit identity in canceled and recent trade history", async () => {

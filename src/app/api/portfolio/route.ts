@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { getUserId } from "@/lib/auth";
 import { requireCanonicalActor } from "@/lib/canonicalAuth";
 import { getOutcomeQuotes } from "@/lib/orderbookPricing";
+import { buildPortfolioSelectionSourceSummary } from "@/server/services/portfolioSelectionSourceSummary";
 import { buildTicketSelectionMetadata } from "@/server/services/ticketSelectionMetadata";
 
 export const dynamic = "force-dynamic";
@@ -185,6 +186,31 @@ export async function GET(request: NextRequest) {
   const walletLockedUSDC = Number(custody?.lockedUSDC ?? 0);
   const walletTotalUSDC = walletAvailableUSDC + walletLockedUSDC;
   const totalRealizedPnl = Number(realizedAgg._sum.realizedPnl ?? 0);
+  const openOrderItems = openOrders.map((order) => ({
+    id: order.id,
+    market: {
+      id: order.market.id,
+      title: order.market.title,
+      status: order.market.status,
+    },
+    outcome: {
+      id: order.outcome.id,
+      name: order.outcome.name,
+    },
+    selection: buildTicketSelectionMetadata({
+      requestBody: order.apiOrderRequest?.requestBody,
+      market: order.market,
+      outcome: order.outcome,
+    }),
+    side: order.side,
+    status: order.status,
+    price: Number(order.price),
+    size: Number(order.amount),
+    remaining: Number(order.remaining),
+    reservedNotional: Number(order.reservedNotional),
+    createdAt: order.createdAt,
+    updatedAt: order.updatedAt,
+  }));
 
   return NextResponse.json({
     walletAvailableUSDC,
@@ -196,31 +222,12 @@ export async function GET(request: NextRequest) {
     totalRealizedPnl,
     totalPnl,
     positions: items,
-    openOrders: openOrders.map((order) => ({
-      id: order.id,
-      market: {
-        id: order.market.id,
-        title: order.market.title,
-        status: order.market.status,
-      },
-      outcome: {
-        id: order.outcome.id,
-        name: order.outcome.name,
-      },
-      selection: buildTicketSelectionMetadata({
-        requestBody: order.apiOrderRequest?.requestBody,
-        market: order.market,
-        outcome: order.outcome,
-      }),
-      side: order.side,
-      status: order.status,
-      price: Number(order.price),
-      size: Number(order.amount),
-      remaining: Number(order.remaining),
-      reservedNotional: Number(order.reservedNotional),
-      createdAt: order.createdAt,
-      updatedAt: order.updatedAt,
-    })),
+    openOrders: openOrderItems,
+    selectionSourceSummary: {
+      positions: buildPortfolioSelectionSourceSummary(items),
+      openOrders: buildPortfolioSelectionSourceSummary(openOrderItems),
+      combined: buildPortfolioSelectionSourceSummary([...items, ...openOrderItems]),
+    },
     comboOrders: comboOrders.map((combo) => ({
       id: combo.id,
       status: combo.status,

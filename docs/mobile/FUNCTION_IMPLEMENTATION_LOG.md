@@ -5623,3 +5623,51 @@ Known limitations:
 - No Android proof was run because ADB showed no visible devices.
 - This does not create real provider-backed line markets; it makes their absence explicit.
 - Mobile UI can consume this summary in a later scoped cycle if needed.
+
+## Cycle LR - Portfolio Selection Source Summary
+
+Feature/page worked on:
+
+- Portfolio and Portfolio History backend contract for source identity after a fake-token line-market order.
+
+Frontend/harness/backend files touched:
+
+- `src/server/services/portfolioSelectionSourceSummary.ts`
+- `src/app/api/portfolio/route.ts`
+- `src/app/api/portfolio/history/route.ts`
+- `src/__tests__/portfolio.open-orders.route.test.ts`
+- `src/__tests__/portfolio.history.route.test.ts`
+- `scripts/prove_mobile_mvp_match_line_order_lifecycle.ts`
+- `docs/mobile/audits/cycle-LR-portfolio-selection-source-summary.md`
+- `docs/mobile/harness/cycle-LR-portfolio-selection-source-summary/cycle-LR-portfolio-selection-source-summary.json`
+
+Important functions/services touched:
+
+- Added `buildPortfolioSelectionSourceSummary()` for route-visible selection source classification.
+- `/api/portfolio` now returns `selectionSourceSummary` for positions, open orders, and combined account selections.
+- `/api/portfolio/history` now returns `selectionSourceSummary` for canceled orders, recent trades, and combined activity selections.
+
+User interactions supported/proven:
+
+- A server-mode BUY on `switzerland-vs-colombia` Spread `Colombia +1.5` still fills through `/api/orders`.
+- Portfolio position selection preserves the line/outcome/token/source and reports line source as `contract-fixture`.
+- Portfolio history recent trade selection preserves the line/outcome/token/source and reports line source as `contract-fixture`.
+
+State transitions:
+
+- Local proof user starts with fake-token balance.
+- Maker posts SELL liquidity.
+- Taker submits BUY.
+- Order transitions to `FILLED`.
+- Position and recent trade appear with section-level source summaries.
+
+Validation:
+
+- `npm run test:jest -- src/__tests__/portfolio.open-orders.route.test.ts src/__tests__/portfolio.history.route.test.ts src/__tests__/mobile-live-event-detail.test.ts`
+- `npx tsx scripts/prove_mobile_mvp_match_line_order_lifecycle.ts --cycle=LR --eventSlug=switzerland-vs-colombia --summaryPath=docs/mobile/harness/cycle-LR-portfolio-selection-source-summary/cycle-LR-portfolio-selection-source-summary.json`
+
+Known limitations:
+
+- No Android proof was run because ADB showed no visible devices.
+- Full typecheck remains blocked by an existing `src/server/services/eventReadModel.ts` string literal type issue.
+- This does not create real provider-backed line markets; it makes Portfolio/history source identity auditable.

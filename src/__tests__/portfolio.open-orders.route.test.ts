@@ -157,6 +157,16 @@ describe("GET /api/portfolio open order display data", () => {
         reservedNotional: 2.2,
       }),
     ]);
+    expect(body.selectionSourceSummary.openOrders).toMatchObject({
+      totalSelectionCount: 1,
+      polymarketSelectionCount: 1,
+      lineMarkets: {
+        totalCount: 1,
+        polymarketCount: 1,
+        status: "provider-backed",
+        families: ["spread"],
+      },
+    });
     expect(JSON.stringify(body.openOrders)).not.toContain("cred-private");
     expect(JSON.stringify(body.openOrders)).not.toContain("createdApiCredential");
   });
@@ -304,6 +314,16 @@ describe("GET /api/portfolio open order display data", () => {
     ]);
     expect(JSON.stringify(body.positions)).not.toContain("match_winner_1x2");
     expect(JSON.stringify(body.positions)).not.toContain("private-position-credential");
+    expect(body.selectionSourceSummary.positions).toMatchObject({
+      totalSelectionCount: 1,
+      polymarketSelectionCount: 1,
+      lineMarkets: {
+        totalCount: 1,
+        polymarketCount: 1,
+        status: "provider-backed",
+        families: ["spread"],
+      },
+    });
   });
 
   test("keeps selected position and open-order snapshots after current market metadata changes", async () => {
@@ -402,6 +422,16 @@ describe("GET /api/portfolio open order display data", () => {
     expect(body.positions[0].selection.limitPrice).toBe(0.44);
     expect(body.openOrders[0].selection.limitSide).toBe("ask");
     expect(body.openOrders[0].selection.limitShares).toBe(125.5);
+    expect(body.selectionSourceSummary.combined).toMatchObject({
+      totalSelectionCount: 2,
+      polymarketSelectionCount: 2,
+      lineMarkets: {
+        totalCount: 2,
+        polymarketCount: 2,
+        status: "provider-backed",
+        families: ["spread"],
+      },
+    });
   });
 
   test("keeps bid-side Sell totals limit identity in open orders", async () => {

@@ -4466,3 +4466,37 @@ Decision:
 - Backend route contract result: pass.
 - Unresolved P0 gaps: S23 visible MVP flow proof.
 - Remaining P1/P2 gaps: mobile UI consumption of source summary and real provider-backed line mappings.
+
+## Cycle LR
+
+Gate status: Partial
+
+Scope: Portfolio/history source-readiness contract after server fake-token line-market order.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-LR-portfolio-selection-source-summary.md`
+- `docs/mobile/harness/cycle-LR-portfolio-selection-source-summary/cycle-LR-portfolio-selection-source-summary.json`
+- `src/server/services/portfolioSelectionSourceSummary.ts`
+- `src/app/api/portfolio/route.ts`
+- `src/app/api/portfolio/history/route.ts`
+- `src/__tests__/portfolio.open-orders.route.test.ts`
+- `src/__tests__/portfolio.history.route.test.ts`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LR-PORT-P0-01 | P0 | Pass | `/api/portfolio` returns source summaries for positions/openOrders/combined. | Wire route-level summary back into Portfolio response. |
+| LR-PORT-P0-02 | P0 | Pass | `/api/portfolio/history` returns source summaries for canceledOrders/recentTrades/combined. | Wire route-level summary back into history response. |
+| LR-PORT-P0-03 | P0 | Pass | LR proof shows contract-fixture Spread position classified as `contract-fixture`. | Fix selection source summary or ticket metadata preservation. |
+| LR-PORT-P0-04 | P0 | Pass | LR proof shows contract-fixture Spread recent trade classified as `contract-fixture`. | Fix history summary or recent-trade selection lookup. |
+| LR-PORT-P0-05 | P0 | Pass | Focused Jest tests cover provider-backed Portfolio/history line selections. | Add/repair contract tests. |
+| LR-PORT-P0-06 | P0 | Fail | No S23 visible proof because ADB showed no attached devices. | Reconnect S23 and run visible Home -> Event Detail -> ticket -> Portfolio/history proof. |
+
+Decision:
+
+- Pass/fail: Partial, not final mobile Audit Gate pass.
+- Backend route contract result: pass.
+- Unresolved P0 gaps: S23 visible MVP flow proof.
+- Remaining P1/P2 gaps: mobile UI consumption of Portfolio source summary and real provider-backed line mappings.

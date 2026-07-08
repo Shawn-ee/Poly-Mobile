@@ -4813,6 +4813,40 @@ Future migration concern:
 
 - When real provider line markets exist, the same summary should flip line status to `provider-backed`; tests/proofs should catch any mismatch.
 
+## Cycle LR - Portfolio Selection Source Summary
+
+Closed or narrowed:
+
+- Portfolio and Portfolio History now expose section-level selection source summaries.
+- A contract-fixture Spread order can be audited through:
+  - ticket selection
+  - `/api/orders`
+  - `/api/portfolio`
+  - `/api/portfolio/history`
+- The LR lifecycle proof confirms Portfolio positions and recent trades report `lineMarkets.status=contract-fixture`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed line-market source for selected Spread/Totals/Team Totals remains unavailable for the checked Gamma event.
+- Android-visible proof that the mobile Portfolio UI consumes the new summary remains open.
+
+Schema mismatch:
+
+- No schema mismatch. The summary is derived from existing `ApiOrderRequest.requestBody.selection`, `Market`, and `Outcome` fields.
+
+Route mismatch:
+
+- `/api/portfolio` and `/api/portfolio/history` now expose the same source identity semantics as Home/Event Detail.
+
+Temporary mock/static data:
+
+- No new mock data was added.
+- The LR proof uses backend contract-fixture market rows and deterministic maker liquidity.
+
+Future migration concern:
+
+- When real provider line markets exist, Portfolio/history summaries must flip from `contract-fixture` to `provider-backed` without losing line/outcome/token identity.
+
 ## Cycle FH - Home Route Server Cancel And Portfolio Activity
 
 Closed or narrowed:
