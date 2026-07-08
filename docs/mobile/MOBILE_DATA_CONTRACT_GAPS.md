@@ -4944,3 +4944,33 @@ Future migration concern:
 
 - Rebuild/install a fresh Holiwyn development APK before using the installed package for manual acceptance.
 - Run the full S23 visible flow after this inspection: Home -> Event Detail -> line ticket -> fake-token/server-backed order -> Portfolio/history.
+
+## Cycle LV - Event Detail Layout Tightening
+
+Closed or narrowed:
+
+- Event Detail now visibly renders chart/probability plus Spread/Totals/Team Total groups on S23.
+- Duplicate fallback Regulation Winner groups are removed from the visible game-line list.
+- Chat and orderbook remain absent from the default Local MVP Event Detail path.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Provider-backed Spread/Totals/Team Total external market ids, condition ids, token ids, live prices, and chart history for the selected match.
+- A backend-side match-only and line-market readiness flag would make Home/Event Detail filtering less dependent on mobile-side cleanup.
+
+Schema mismatch:
+
+- No schema mismatch was found or introduced.
+
+Route mismatch:
+
+- No route mismatch was found for the visible Event Detail layout.
+
+Temporary mock/static data:
+
+- No frontend-only arbitrary market data was added.
+- The chart can display deterministic fallback points when `chartHistory` is empty; this is a visual fallback only and keeps market/outcome identity from the route.
+
+Future migration concern:
+
+- Replace contract-fixture line markets with real provider-backed line rows when Polymarket exposes attach-ready soccer lines for the selected World Cup event.

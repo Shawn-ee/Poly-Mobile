@@ -5576,6 +5576,46 @@ Validation:
 Known limitations:
 
 - No Android proof was run because ADB showed no visible devices.
+
+## Cycle LV - Event Detail Layout Tightening
+
+Feature/page worked on:
+
+- Local MVP Event Detail page on Samsung S23.
+
+Frontend/harness/backend files touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `docs/mobile/audits/cycle-LV-event-detail-layout-tightening.md`
+- `docs/mobile/screenshots/cycle-LV-event-detail-layout-tightening/*`
+- `docs/mobile/harness/cycle-LV-event-detail-layout-tightening/*`
+
+Important functions/services touched:
+
+- Event Detail rendering only.
+- No backend service or API route was changed.
+
+User interactions supported/proven:
+
+- Home match opens Event Detail in Expo Go on S23.
+- Event Detail now shows a compact probability chart in the first visible game-page view.
+- Game Lines, Spread, Totals, and Team Total Goals are visible without chat/orderbook UI.
+- Duplicate winner fallback groups are filtered out.
+
+State transitions:
+
+- No trading/order state changed in this cycle.
+- Chart tap toggles the selected primary outcome for visual focus only.
+
+Validation:
+
+- `npm run typecheck -- --pretty false`
+- S23 screenshot/XML proof for Home reload, Event Detail top, and Event Detail line-market scroll.
+
+Known limitations:
+
+- This cycle did not prove ticket submit or Portfolio/history.
+- Spread/Totals/Team Total rows remain backend-shaped `contract-fixture` data because the selected Polymarket Gamma event does not expose provider-backed line markets.
 - Gamma exposes no Spread, Totals, Team Totals, Halves, Corners, or Correct Score markets for the selected match event.
 - Real provider-backed line-market replacement remains P1 until Polymarket exposes attach-ready line markets or another approved provider is in scope.
 

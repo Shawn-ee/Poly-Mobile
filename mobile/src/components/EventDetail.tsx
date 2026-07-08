@@ -582,7 +582,7 @@ export function EventDetail({
   const compactTimeLabel = event.status === "live" ? liveClock : event.startsAt.replace(/^Today\s*/, "");
   const scoreboard = event.status === "live" ? "0 - 1" : "0 - 0";
   const handleScroll = (eventScroll: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const shouldShow = eventScroll.nativeEvent.contentOffset.y > 500;
+    const shouldShow = eventScroll.nativeEvent.contentOffset.y > 620;
     setCompactHeaderVisible((visible) => visible === shouldShow ? visible : shouldShow);
   };
   const marketProfile = event.marketProfile ?? "regulation_90";
@@ -730,7 +730,13 @@ export function EventDetail({
     ].filter((id): id is string => Boolean(id)),
   );
   const fallbackGameLineGroups: GameLineGroup[] = gameLineMarkets
-    .filter((market) => !renderedGameLineMarketIds.has(market.id) && !isAdvanceMarket(market))
+    .filter((market) =>
+      !renderedGameLineMarketIds.has(market.id) &&
+      !isAdvanceMarket(market) &&
+      !isWinnerMarket(market) &&
+      market.marketType !== "spread" &&
+      market.marketType !== "totals" &&
+      market.marketType !== "team-total")
     .map((market) => ({
       id: `backend-${market.id}`,
       title: label(locale, market),
@@ -1379,6 +1385,72 @@ export function EventDetail({
     </View>
     );
   };
+  const renderProbabilityChart = () => {
+    const homeOutcome = primaryOutcomes[0];
+    const awayOutcome = primaryOutcomes[1];
+    if (!homeOutcome || !awayOutcome) return null;
+
+    const history = event.chartHistory?.length
+      ? event.chartHistory.slice(-8).map((point) => ({ value: point.probability }))
+      : [
+          { value: Math.max(5, homeOutcome.probability - 4) },
+          { value: Math.max(5, homeOutcome.probability - 2) },
+          { value: homeOutcome.probability },
+          { value: Math.min(95, homeOutcome.probability + 3) },
+          { value: homeOutcome.probability },
+        ];
+
+    return (
+      <Pressable
+        accessibilityLabel={`event-detail-price-chart event-detail-probability-chart ${teamCode(homeOutcome.label)} ${homeOutcome.probability}% ${teamCode(awayOutcome.label)} ${awayOutcome.probability}% chart-history-points-${history.length}`}
+        onPress={() => setSelectedPrimaryOutcomeId(selectedPrimaryOutcome?.id === awayOutcome.id ? homeOutcome.id : awayOutcome.id)}
+        style={styles.chartBlock}
+        testID="event-detail-price-chart"
+      >
+        <View style={styles.dualChart}>
+          <View style={styles.chartReferenceLine} />
+          {history.map((point, index) => (
+            <View
+              key={`home-chart-${index}`}
+              style={[
+                styles.chartStep,
+                {
+                  backgroundColor: leftOutcomeColor,
+                  marginTop: Math.max(0, 34 - Math.round((point.value / 100) * 34)),
+                  opacity: 0.62 + index / Math.max(history.length * 2, 1),
+                },
+              ]}
+            />
+          ))}
+          <View style={[styles.chartDot, { backgroundColor: leftOutcomeColor }]} />
+          <View style={[styles.chartTrace, styles.chartTraceOverlay]}>
+            {history.map((point, index) => (
+              <View
+                key={`away-chart-${index}`}
+                style={[
+                  styles.chartStep,
+                  {
+                    backgroundColor: rightOutcomeColor,
+                    marginTop: Math.max(0, 34 - Math.round(((100 - point.value) / 100) * 34)),
+                    opacity: 0.54 + index / Math.max(history.length * 2, 1),
+                  },
+                ]}
+              />
+            ))}
+            <View style={[styles.chartDot, { backgroundColor: rightOutcomeColor }]} />
+          </View>
+        </View>
+        <View style={styles.chartLabel}>
+          <Text style={[styles.chartName, { color: primaryOutcomeDisplayColor(selectedPrimaryOutcome) }]}>
+            {teamCode(selectedPrimaryOutcome?.label ?? homeOutcome.label)}
+          </Text>
+          <Text style={[styles.chartPercent, { color: primaryOutcomeDisplayColor(selectedPrimaryOutcome) }]}>
+            {selectedPrimaryOutcome?.probability ?? homeOutcome.probability}%
+          </Text>
+        </View>
+      </Pressable>
+    );
+  };
   return (
     <View style={styles.screen}>
       <View style={styles.topBar}>
@@ -1504,6 +1576,8 @@ export function EventDetail({
             <Text style={styles.flag}>{teamB?.flag ?? ""}</Text>
           </View>
         </View>
+
+        {renderProbabilityChart()}
 
         <>
         <View accessible accessibilityLabel={`event-detail-market-switch-hidden-local-mvp event-detail-market-body-default ${isLiveEvent ? "live-world-cup-context-hidden" : "holiwyn-context-hidden"}`} style={styles.hiddenStats} testID="event-detail-market-switch-hidden-local-mvp">
@@ -1761,13 +1835,13 @@ export function EventDetail({
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: "#060b14" },
-  topBar: { minHeight: 58, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16 },
-  iconButton: { width: 42, height: 42, alignItems: "center", justifyContent: "center" },
+  topBar: { minHeight: 52, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16 },
+  iconButton: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
   topActions: { flexDirection: "row", alignItems: "center", gap: 4 },
   segmentedControl: { flexDirection: "row", alignItems: "center", padding: 4, borderRadius: 999, backgroundColor: "#171d2a" },
-  segment: { minHeight: 34, minWidth: 78, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, borderRadius: 999, paddingHorizontal: 12 },
+  segment: { minHeight: 32, minWidth: 76, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, borderRadius: 999, paddingHorizontal: 12 },
   segmentActive: { backgroundColor: "#0b1220" },
-  segmentText: { color: "#8d94a3", fontSize: 16, fontWeight: "800" },
+  segmentText: { color: "#8d94a3", fontSize: 15, fontWeight: "800" },
   segmentTextActive: { color: "#ffffff" },
   actionNotice: { minHeight: 48, flexDirection: "row", alignItems: "center", gap: 10, paddingHorizontal: 18, backgroundColor: "#0f1b2e", borderBottomWidth: 1, borderBottomColor: "#263247" },
   actionNoticeText: { flex: 1, color: "#f8fafc", fontSize: 14, fontWeight: "900" },
@@ -1780,25 +1854,25 @@ const styles = StyleSheet.create({
   shareActionsRow: { flexDirection: "row", gap: 8, marginTop: 12 },
   shareActionButton: { flex: 1, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#172033", borderWidth: 1, borderColor: "#293548" },
   shareActionText: { color: "#e5e7eb", fontSize: 12, fontWeight: "900" },
-  stickyMarketShell: { backgroundColor: "#060b14", borderBottomWidth: 1, borderBottomColor: "#1f2937", paddingBottom: 8 },
-  compactGameHeader: { minHeight: 78, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, backgroundColor: "#060b14", borderBottomWidth: 1, borderBottomColor: "#1f2937" },
-  compactTeamSide: { width: 132, flexDirection: "row", alignItems: "center", gap: 8 },
+  stickyMarketShell: { backgroundColor: "#060b14", borderBottomWidth: 1, borderBottomColor: "#1f2937", paddingBottom: 4 },
+  compactGameHeader: { minHeight: 58, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 18, backgroundColor: "#060b14", borderBottomWidth: 1, borderBottomColor: "#1f2937" },
+  compactTeamSide: { width: 112, flexDirection: "row", alignItems: "center", gap: 7 },
   compactTeamRight: { justifyContent: "flex-end" },
-  compactFlag: { fontSize: 31 },
-  compactTeamCode: { color: "#9ca3af", fontSize: 17, fontWeight: "900" },
-  compactProbability: { fontSize: 20, fontWeight: "900", marginTop: 2 },
+  compactFlag: { fontSize: 24 },
+  compactTeamCode: { color: "#9ca3af", fontSize: 14, fontWeight: "900" },
+  compactProbability: { fontSize: 16, fontWeight: "900", marginTop: 1 },
   compactMatchCenter: { flex: 1, alignItems: "center", justifyContent: "center" },
-  compactDate: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
-  compactTime: { color: "#cbd5e1", fontSize: 15, fontWeight: "800", marginTop: 3 },
+  compactDate: { color: "#f8fafc", fontSize: 14, fontWeight: "900" },
+  compactTime: { color: "#cbd5e1", fontSize: 12, fontWeight: "800", marginTop: 2 },
   compactRightText: { alignItems: "flex-end" },
   scroller: { flex: 1 },
   scrollPad: { width: "100%", maxWidth: 480, alignSelf: "center", paddingBottom: 110 },
   legacySummary: { height: 1, overflow: "hidden", opacity: 0 },
   legacySummaryText: { color: "#060b14", fontSize: 1 },
-  matchHeader: { minHeight: 86, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 22, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
+  matchHeader: { minHeight: 74, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 22, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   teamSide: { width: 96, flexDirection: "row", alignItems: "center", gap: 6 },
   teamSideRight: { justifyContent: "flex-end" },
-  flag: { fontSize: 32 },
+  flag: { fontSize: 28 },
   teamCode: { color: "#6b7280", fontSize: 15, fontWeight: "900" },
   teamProbability: { fontSize: 18, fontWeight: "900", marginLeft: -2 },
   matchTime: { flex: 1, alignItems: "center", justifyContent: "center" },
@@ -1823,7 +1897,7 @@ const styles = StyleSheet.create({
   liveDataText: { color: "#93c5fd", fontSize: 12, fontWeight: "900" },
   liveDataTextWarning: { color: "#fde68a" },
   liveDataMeta: { color: "#94a3b8", fontSize: 10, fontWeight: "800" },
-  chartBlock: { minHeight: 158, paddingHorizontal: 0, paddingTop: 18, paddingBottom: 8 },
+  chartBlock: { minHeight: 132, paddingHorizontal: 0, paddingTop: 14, paddingBottom: 8, borderBottomWidth: 1, borderBottomColor: "#101827" },
   liveChartBlock: { minHeight: 168, paddingTop: 20 },
   liveMatchStrip: { minHeight: 64, marginHorizontal: 24, marginTop: 10, padding: 12, borderRadius: 14, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   liveStripLabel: { color: "#ef4444", fontSize: 11, fontWeight: "900" },
@@ -1856,9 +1930,9 @@ const styles = StyleSheet.create({
   chartSelectedPoint: { position: "absolute", right: 20, top: 33, width: 20, height: 20, borderRadius: 999, borderWidth: 3, backgroundColor: "#0b1019" },
   chartSelectedPointMid: { right: "42%", top: 24 },
   chartSelectedPointTarget: { right: "18%", top: 10 },
-  chartLabel: { position: "absolute", right: 28, top: 44, alignItems: "flex-end", maxWidth: 150 },
-  chartName: { fontSize: 15, fontWeight: "800" },
-  chartPercent: { fontSize: 36, fontWeight: "500" },
+  chartLabel: { position: "absolute", right: 28, top: 38, alignItems: "flex-end", maxWidth: 150 },
+  chartName: { fontSize: 14, fontWeight: "800" },
+  chartPercent: { fontSize: 34, fontWeight: "500" },
   chartTooltip: { position: "absolute", left: "38%", top: 8, minWidth: 92, paddingHorizontal: 10, paddingVertical: 7, borderRadius: 10, backgroundColor: "#101827", borderWidth: 1, borderColor: "#334155" },
   chartTooltipHidden: { width: 1, height: 1, minWidth: 1, opacity: 0, overflow: "hidden", paddingHorizontal: 0, paddingVertical: 0 },
   chartTooltipLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "900" },
@@ -1888,7 +1962,7 @@ const styles = StyleSheet.create({
   chartTradeButton: { minHeight: 38, minWidth: 92, alignItems: "center", justifyContent: "center", borderRadius: 999, paddingHorizontal: 16 },
   chartTradeButtonText: { color: "#ffffff", fontSize: 15, fontWeight: "900" },
   userDot: { width: 26, height: 26, borderRadius: 999, backgroundColor: "#be18ff" },
-  positionSection: { marginTop: 8, paddingHorizontal: 20 },
+  positionSection: { marginTop: 6, paddingHorizontal: 18 },
   positionHeading: { color: "#f8fafc", fontSize: 17, fontWeight: "800", marginBottom: 10 },
   positionCard: { borderRadius: 18, borderWidth: 1, borderColor: "#263247", backgroundColor: "#080d16", overflow: "hidden" },
   positionTopRow: { minHeight: 56, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
@@ -1908,8 +1982,8 @@ const styles = StyleSheet.create({
   buyMoreText: { color: "#101827", fontSize: 16, fontWeight: "800" },
   cashOutButton: { flex: 1, minHeight: 50, alignItems: "center", justifyContent: "center", borderRadius: 13, borderWidth: 1, borderColor: "#293548", backgroundColor: "#070c14" },
   cashOutText: { color: "#f8fafc", fontSize: 16, fontWeight: "800" },
-  primaryOutcomeRow: { flexDirection: "row", gap: 8, paddingHorizontal: 16, marginTop: 14, paddingTop: 18, borderTopWidth: 1, borderTopColor: "#1f2937" },
-  primaryOutcomeButton: { flex: 1, minHeight: 64, alignItems: "center", justifyContent: "center", borderRadius: 12, paddingHorizontal: 4, shadowColor: "#000", shadowOpacity: 0.35, shadowRadius: 8, elevation: 3 },
+  primaryOutcomeRow: { flexDirection: "row", gap: 8, paddingHorizontal: 16, marginTop: 10, paddingTop: 12, borderTopWidth: 1, borderTopColor: "#1f2937" },
+  primaryOutcomeButton: { flex: 1, minHeight: 58, alignItems: "center", justifyContent: "center", borderRadius: 12, paddingHorizontal: 4, shadowColor: "#000", shadowOpacity: 0.35, shadowRadius: 8, elevation: 3 },
   primaryOutcomeButtonSelected: { borderWidth: 2, borderColor: "#f8fafc", transform: [{ translateY: -2 }] },
   primaryOutcomeText: { color: "rgba(255,255,255,0.72)", fontSize: 15, fontWeight: "900", textAlign: "center" },
   primaryOutcomePercent: { color: "#ffffff", fontSize: 20, fontWeight: "900" },
@@ -1921,23 +1995,23 @@ const styles = StyleSheet.create({
   selectedTradeMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "800", marginTop: 3 },
   selectedTradeButton: { minWidth: 116, minHeight: 50, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 4, borderRadius: 14, backgroundColor: "#d9f99d" },
   selectedTradeButtonText: { color: "#06110b", fontSize: 16, fontWeight: "900" },
-  marketTabs: { flexDirection: "row", gap: 24, paddingHorizontal: 20, marginTop: 16, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
+  marketTabs: { flexDirection: "row", gap: 24, paddingHorizontal: 20, marginTop: 12, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   stickyMarketTabs: { marginTop: 0, paddingHorizontal: 20, borderBottomWidth: 0, backgroundColor: "#060b14" },
-  marketTab: { minHeight: 46, justifyContent: "center", borderBottomWidth: 3, borderBottomColor: "transparent" },
+  marketTab: { minHeight: 40, justifyContent: "center", borderBottomWidth: 3, borderBottomColor: "transparent" },
   marketTabActive: { borderBottomColor: "#f8fafc" },
-  marketTabText: { color: "#6b7280", fontSize: 18, fontWeight: "800" },
+  marketTabText: { color: "#6b7280", fontSize: 16, fontWeight: "800" },
   marketTabTextActive: { color: "#f8fafc" },
-  lineSectionCleanStart: { height: 10, backgroundColor: "#060b14", borderTopWidth: 1, borderTopColor: "#172033" },
+  lineSectionCleanStart: { height: 4, backgroundColor: "#060b14", borderTopWidth: 1, borderTopColor: "#172033" },
   emptyProps: { minHeight: 280, alignItems: "center", justifyContent: "center" },
   emptyPropsText: { color: "#6b7280", fontSize: 18, fontWeight: "800" },
   hiddenStats: { height: 1, overflow: "hidden", opacity: 0.01 },
   hiddenStatsText: { color: "#060b14", fontSize: 1 },
-  marketBlock: { borderBottomWidth: 1, borderBottomColor: "#172033", paddingHorizontal: 20, paddingVertical: 14 },
-  marketHeaderRow: { minHeight: 58, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
+  marketBlock: { borderBottomWidth: 1, borderBottomColor: "#172033", paddingHorizontal: 18, paddingVertical: 10 },
+  marketHeaderRow: { minHeight: 48, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   marketTitleBlock: { flex: 1 },
-  marketTitle: { color: "#d1d5db", fontSize: 18, fontWeight: "800" },
+  marketTitle: { color: "#d1d5db", fontSize: 17, fontWeight: "800" },
   marketSubtitle: { color: "#8b93a3", fontSize: 15, fontWeight: "700", marginTop: 4 },
-  marketSubcopy: { color: "#6b7280", fontSize: 14, fontWeight: "700", marginTop: 2 },
+  marketSubcopy: { color: "#6b7280", fontSize: 13, fontWeight: "700", marginTop: 1 },
   polymarketLineCard: { marginHorizontal: 24, marginTop: 16, padding: 16, borderRadius: 18, backgroundColor: "#10171f", borderWidth: 1, borderColor: "#26313f" },
   lineCardTitleRow: { flexDirection: "row", alignItems: "center", gap: 6 },
   lineOutcomeButtonRow: { flexDirection: "row", gap: 12, marginTop: 16 },
@@ -1978,22 +2052,22 @@ const styles = StyleSheet.create({
   subSegmentActive: { backgroundColor: "#273244" },
   subSegmentText: { color: "#8b93a3", fontSize: 12, fontWeight: "900" },
   subSegmentTextActive: { color: "#f8fafc" },
-  lineRailRow: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 12, marginTop: 10, marginBottom: 6 },
-  lineRailOption: { minWidth: 62, minHeight: 42, alignItems: "center", justifyContent: "center", borderRadius: 12, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937" },
+  lineRailRow: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10, marginTop: 8, marginBottom: 4 },
+  lineRailOption: { minWidth: 58, minHeight: 36, alignItems: "center", justifyContent: "center", borderRadius: 11, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937" },
   lineRailOptionActive: { backgroundColor: "#052e1b", borderColor: "#0a8f61" },
   lineRailText: { color: "#8b93a3", fontSize: 16, fontWeight: "900" },
   lineRailTextActive: { color: "#86efac" },
   depthRow: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 10, marginBottom: 6 },
   depthText: { color: "#8b93a3", fontSize: 11, fontWeight: "800" },
-  parityOutcomeRow: { minHeight: 60, flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 9 },
-  parityOutcomeIcon: { width: 34, height: 34, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#111827" },
-  parityOutcomeIconText: { color: "#cbd5e1", fontSize: 18, fontWeight: "900" },
+  parityOutcomeRow: { minHeight: 52, flexDirection: "row", alignItems: "center", gap: 9, paddingVertical: 6 },
+  parityOutcomeIcon: { width: 30, height: 30, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#111827" },
+  parityOutcomeIconText: { color: "#cbd5e1", fontSize: 16, fontWeight: "900" },
   parityOutcomeTextBlock: { flex: 1, minWidth: 0 },
   miniLineTrack: { height: 4, borderRadius: 999, overflow: "hidden", backgroundColor: "#111827", marginTop: 8 },
   miniLineFill: { height: 4, borderRadius: 999 },
-  oddsMultiplier: { width: 54, color: "#cbd5e1", fontSize: 14, fontWeight: "900", textAlign: "right" },
-  parityProbButton: { width: 64, minHeight: 42, alignItems: "center", justifyContent: "center", borderRadius: 12 },
-  parityProbText: { color: "#ffffff", fontSize: 16, fontWeight: "900" },
+  oddsMultiplier: { width: 50, color: "#cbd5e1", fontSize: 13, fontWeight: "900", textAlign: "right" },
+  parityProbButton: { width: 62, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 11 },
+  parityProbText: { color: "#ffffff", fontSize: 15, fontWeight: "900" },
   propToolsRow: { minHeight: 42, flexDirection: "row", alignItems: "center", gap: 8, marginTop: 8, marginBottom: 6 },
   propFilterChip: { minHeight: 32, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#111827", paddingHorizontal: 14 },
   propFilterChipActive: { backgroundColor: "#273244" },
@@ -2009,7 +2083,7 @@ const styles = StyleSheet.create({
   showAllText: { color: "#cbd5e1", fontSize: 14, fontWeight: "900" },
   detailOutcome: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 12 },
   outcomeTextBlock: { flex: 1 },
-  teamName: { color: "#f8fafc", fontSize: 17, fontWeight: "800" },
+  teamName: { color: "#f8fafc", fontSize: 16, fontWeight: "800" },
   outcomeSizeText: { color: "#94a3b8", fontSize: 10, fontWeight: "800", marginTop: 4 },
   outcomeDepthText: { color: "#6b7280", fontSize: 11, fontWeight: "800", marginTop: 3 },
   depthBookButton: { minHeight: 30, flexDirection: "row", alignItems: "center", gap: 4, paddingHorizontal: 9, borderRadius: 8, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247" },

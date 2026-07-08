@@ -2349,3 +2349,15 @@ Cycle LU implementation notes:
 - No backend route or schema change was required.
 - Mobile Home feed now asks for `leagueKey=world_cup` and drops non-match/futures provider records.
 - S23 proof used Expo Go because the installed `com.holiwyn.mobile` package is stale and still shows older local Home UI.
+
+## Cycle LV - Event Detail Layout Tightening
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail visible chart and line-market layout | `/api/mobile/events/:slug/live-detail` | GET | Public viewing | Event slug selected from Home | Event title/teams/status, primary market outcomes, `chartHistory`, market `marketType`, `marketGroupTitle`, `line`, `period`, outcome probabilities, source identity fields | `Event`, `Market`, `Outcome`, provider/read-model quote fields | No new mock added. Existing backend-written `contract-fixture` line rows are rendered when provider line markets are absent. | Real provider-backed Spread/Totals/Team Total markets remain absent for `switzerland-vs-colombia`. |
+
+Cycle LV implementation notes:
+
+- No backend route or schema changed.
+- The mobile page now consumes the existing Event Detail route in a denser Polymarket-like layout.
+- The chart uses route `chartHistory` when present and falls back to deterministic display points from current probabilities.
