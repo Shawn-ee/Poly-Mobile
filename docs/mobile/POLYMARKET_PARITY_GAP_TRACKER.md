@@ -996,3 +996,13 @@ For every UI element or interaction, answer:
 - PK captures S23 Search/detail proof for the Haaland provider-backed outcome.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
 - Remaining P1: Home/Live remain match-only by product direction; broad futures remain Search/detail surfaces.
+
+## Cycle PL Gap Tracker Update
+
+- PM-GAP-150 is opened and passed as a provider-line honesty gate, not as provider-line parity completion.
+- PL re-proves `argentina-vs-egypt` has 3 Polymarket Regulation Winner markets and 0 provider-backed line markets.
+- PL re-proves Polymarket Gamma exposes 0 Spread/Totals/Team Total rows for `fifwc-arg-egy-2026-07-07`.
+- PL proves the provider discovery guard rejects wrong-family match-winner rows for line targets.
+- PL captures S23 visible proof for current match detail and line sections with honest source marker wording.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
+- Remaining P1: do not replace contract fixtures until attach-ready provider line rows exist.

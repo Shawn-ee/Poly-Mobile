@@ -8899,6 +8899,50 @@ Known limitations:
 - Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
 - Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
 
+## Cycle PL - Current Match Line Provider Gate
+
+Feature/page worked on:
+
+- Current-match line-market provider availability gate for the Local MVP event detail flow.
+- User-visible scope: Event Detail still shows Spread, Totals, and Team Totals while keeping source wording honest.
+
+Frontend/proof files touched:
+
+- No mobile source changed.
+- `docs/mobile/audits/cycle-PL-current-match-line-provider-gate.md`
+- `docs/mobile/harness/cycle-PL-current-match-line-provider-gate/`
+- `docs/mobile/screenshots/cycle-PL-current-match-line-provider-gate/`
+
+Important functions/services touched:
+
+- No backend source changed.
+- Reused `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1`.
+- Reused `/api/mobile/events/argentina-vs-egypt/live-detail`.
+- Reused Polymarket Gamma event lookup for `fifwc-arg-egy-2026-07-07`.
+- Reused provider discovery guard to verify line targets reject wrong-family match-winner candidates.
+
+User interactions supported/proven:
+
+- Samsung S23 opens the current match detail page.
+- Samsung S23 shows line-market sections for Spread, Totals, and Team Totals.
+- S23 XML confirms honest source marker wording is still present for local fixture/fake-token line flow.
+
+State transitions:
+
+- None. This was an audit-gate/contract proof cycle.
+
+Validation:
+
+- Current-state inspection passed.
+- Provider match line availability proof passed.
+- Provider discovery guard passed.
+- S23 visible current-match line proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- Real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
+- Local MVP line markets remain contract fixtures until attach-ready provider line rows exist.
+
 ## Cycle PK - Golden Boot Haaland Tradable Flow
 
 Feature/page worked on:

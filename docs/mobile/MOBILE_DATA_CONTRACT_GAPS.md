@@ -7202,6 +7202,40 @@ Future migration concern:
 - Bot preparation requires `POLY_DEV_ADMIN_USER_ID` or an equivalent local admin auth mechanism.
 - Standalone bot proof runs must carry `LIVE_SYSTEM_LIQUIDITY_ENABLED=true`.
 
+## Cycle PL - Current Match Line Provider Gate
+
+Closed or narrowed:
+
+- Re-proved the current backend/provider truth for the repeated current-match line-market gap.
+- Confirmed Regulation Winner is provider-backed while Spread/Totals/Team Totals are contract fixtures.
+- Confirmed the provider discovery guard rejects wrong-family match-winner rows for line targets.
+- Confirmed S23 visible line sections remain available with honest source wording.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed current-match Spread/Totals/Team Total market ids.
+- Provider token ids for those line outcomes.
+- Provider chart history and prices for those line outcomes.
+- Attach-ready provider rows from Polymarket Gamma/CLOB or another approved provider source.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch. The route accurately reports provider-backed Regulation Winner and contract-fixture line markets.
+
+Temporary mock/static data:
+
+- No new fixture data added.
+- Existing line markets remain contract-shaped Local MVP fixtures.
+
+Future migration concern:
+
+- Do not attach Polymarket match-winner rows to line markets.
+- Replace contract fixtures only when provider family, line, period, participant, outcome, condition id, and token ids are attach-ready.
+
 ## Cycle PK - Golden Boot Haaland Tradable Flow
 
 Closed or narrowed:
