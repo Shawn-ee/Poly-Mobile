@@ -5004,3 +5004,31 @@ Temporary mock/static data:
 Future migration concern:
 
 - Convert the dev-key Expo startup flow into the default local MVP proof harness before longer overnight runs.
+
+## Cycle LX - Local MVP S23 Startup Harness
+
+Closed or narrowed:
+
+- Added a repeatable Local MVP startup command that creates a mobile dev credential and restarts Expo with server-mode env.
+- Removed the need to rely on runtime `apiKey=` deep-link injection for authenticated S23 order proof.
+- Harness summary redacts generated credential tokens.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- No new app data field is needed for this harness cycle.
+
+Schema mismatch:
+
+- No schema mismatch was found or introduced.
+
+Route mismatch:
+
+- No route mismatch was found or introduced.
+
+Temporary mock/static data:
+
+- Local fake-token balance funding remains development-only proof infrastructure.
+
+Future migration concern:
+
+- For production/mobile release, replace local generated API key startup with the real login/session model.

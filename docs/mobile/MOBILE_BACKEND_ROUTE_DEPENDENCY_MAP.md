@@ -2374,3 +2374,15 @@ Cycle LW implementation notes:
 
 - `/api/orders` correctly rejected unauthenticated mobile submit with `Authentication required`.
 - With the dev API key loaded into the Expo process environment, the same S23 flow submitted and appeared in Portfolio/history.
+
+## Cycle LX - Local MVP S23 Startup Harness
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Local MVP S23 proof startup | `/api/health` and Expo `/status` | GET | Public | None | Backend health availability and Expo packager status | None | None | None for startup; proof still requires generated mobile dev API key for authenticated routes. |
+| Mobile dev credential generation | Local `scripts/create_mobile_dev_credential.ts` | Local script | Local development database access | Optional env overrides for username/balance/policy | Redacted credential metadata, configured API key status | `User`, `UserBalance`, `ApiCredential`, ledger deposit records | Fake-token local balance top-up to 10000 USDT equivalent | Production auth/session model remains outside local MVP proof scope. |
+
+Cycle LX implementation notes:
+
+- No API route or schema changed.
+- Startup now makes the server-mode mobile proof dependency explicit instead of relying on fragile runtime deep-link API-key injection.

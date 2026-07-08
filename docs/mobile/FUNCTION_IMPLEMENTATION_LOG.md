@@ -5659,6 +5659,46 @@ Known limitations:
 
 - This pass required restarting Expo with a local dev API key in process environment.
 - Runtime API-key deep link did not reliably inject the key in the current Expo Go session.
+
+## Cycle LX - Local MVP S23 Startup Harness
+
+Feature/page worked on:
+
+- Local MVP Android proof startup reliability.
+
+Frontend/harness/backend files touched:
+
+- `scripts/start_poly_mobile_rehearsal.ps1`
+- `package.json`
+- `docs/mobile/audits/cycle-LX-local-mvp-s23-startup-harness.md`
+
+Important functions/services touched:
+
+- Added `-RestartExpo` to the rehearsal harness so stale Expo listeners can be replaced with a server-mode bundle.
+- Added `npm run mobile:mvp-s23:start` for the current Local MVP S23 lane.
+
+User interactions supported/proven:
+
+- No new user interaction was added.
+- Future S23 proof runs can start from a fresh Expo bundle with a generated mobile dev API key.
+
+State transitions:
+
+- Existing Expo listener on port `8081` is stopped when `-RestartExpo` is set.
+- New Expo process starts with `EXPO_PUBLIC_ORDER_MODE=server`, `EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_API_BASE_URL`, and generated `EXPO_PUBLIC_API_KEY`.
+
+Validation:
+
+- Ran the rehearsal script with `-CreateMobileDevCredential -RestartExpo -SkipSnapshotWatch -SkipBots -SkipBackend -DurationSeconds 60`.
+- Expo status returned `packager-status:running`.
+- Rehearsal summary redacted the credential token.
+- `package.json` parsed successfully.
+- Secret scan found no committed `pk_live_...` token.
+
+Known limitations:
+
+- This cycle did not run a new S23 trade proof; Cycle LW remains the visible S23 flow proof.
+- A future harness polish pass can add an optional post-start S23 deep-link reload step.
 - Gamma exposes no Spread, Totals, Team Totals, Halves, Corners, or Correct Score markets for the selected match event.
 - Real provider-backed line-market replacement remains P1 until Polymarket exposes attach-ready line markets or another approved provider is in scope.
 

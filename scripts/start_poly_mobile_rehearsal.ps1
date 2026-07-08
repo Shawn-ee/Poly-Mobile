@@ -9,6 +9,7 @@ param(
   [string]$ApiBaseUrl = "",
   [string]$MobileApiKey = $env:EXPO_PUBLIC_API_KEY,
   [switch]$CreateMobileDevCredential,
+  [switch]$RestartExpo,
   [switch]$SkipBackend,
   [switch]$SkipSnapshotWatch,
   [switch]$SkipBots,
@@ -44,6 +45,24 @@ function Test-PortListening([int]$Port) {
   } catch {
     return $false
   }
+}
+
+function Stop-PortListeners([int]$Port) {
+  $connections = @(Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue)
+  $pids = @($connections | Select-Object -ExpandProperty OwningProcess -Unique | Where-Object { $_ })
+  $stopped = @()
+  foreach ($listenerPid in $pids) {
+    try {
+      Stop-Process -Id $listenerPid -Force -ErrorAction Stop
+      $stopped += [pscustomobject]@{ pid = $listenerPid; port = $Port }
+    } catch {
+      throw "Could not stop process $listenerPid listening on port $Port`: $($_.Exception.Message)"
+    }
+  }
+  if ($stopped.Count -gt 0) {
+    Start-Sleep -Seconds 2
+  }
+  return $stopped
 }
 
 function Get-LanIp {
@@ -231,9 +250,13 @@ npm run bot:polymarket:mm:live-local -- --baseUrl http://127.0.0.1:$BackendPort 
 
 if ($SkipExpo) {
   $skipped += [pscustomobject]@{ name = "expo"; reason = "skip flag" }
-} elseif (Test-PortListening $ExpoPort) {
+} elseif ((Test-PortListening $ExpoPort) -and -not $RestartExpo) {
   $skipped += [pscustomobject]@{ name = "expo"; reason = "port already listening"; port = $ExpoPort }
 } else {
+  $stoppedExpo = @()
+  if ((Test-PortListening $ExpoPort) -and $RestartExpo) {
+    $stoppedExpo = @(Stop-PortListeners $ExpoPort)
+  }
   $apiKeyLine = ""
   if ($MobileApiKey.Trim()) {
     $apiKeyLine = "`$env:EXPO_PUBLIC_API_KEY='$MobileApiKey'"
@@ -245,7 +268,11 @@ if ($SkipExpo) {
 $apiKeyLine
 npm run start -- --host lan --port $ExpoPort
 "@
-  $started += Start-RehearsalProcess -Name "mobile-expo-$ExpoPort" -WorkingDirectory (Join-Path $AppRoot "mobile") -Command $expoCommand
+  $startedExpo = Start-RehearsalProcess -Name "mobile-expo-$ExpoPort" -WorkingDirectory (Join-Path $AppRoot "mobile") -Command $expoCommand
+  if ($stoppedExpo.Count -gt 0) {
+    $startedExpo | Add-Member -NotePropertyName stoppedPriorListeners -NotePropertyValue $stoppedExpo
+  }
+  $started += $startedExpo
 }
 
 $summary = [pscustomobject]@{
@@ -267,6 +294,7 @@ $summary = [pscustomobject]@{
   eventSlugs = $EventSlugs
   durationSeconds = $DurationSeconds
   pollMs = $PollMs
+  restartExpo = [bool]$RestartExpo
   started = $started
   skipped = $skipped
   runtimeDir = $RuntimeDir
