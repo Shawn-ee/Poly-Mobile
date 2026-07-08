@@ -6515,3 +6515,31 @@ Temporary mock/static data:
 Future migration concern:
 
 - Do not attach unrelated Polymarket match-winner candidates to line markets. Wait for real line provider markets or add an approved provider/source with matching line contracts.
+
+## Cycle OE - Event Detail Source Wording
+
+Closed or narrowed:
+
+- Event Detail now presents the existing mixed-source route contract with clearer user-facing wording.
+- Generic `Provider`/`Local` source pills were replaced with `Polymarket`/`Local test`.
+- XML markers now expose `market-source-polymarket-readable` and `market-source-local-test-readable`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real Polymarket-backed Spread/Totals/Team Total market identities for current World Cup events.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch blocked this visible wording change.
+
+Temporary mock/static data:
+
+- Existing backend-shaped contract fixtures remain the line-market source.
+
+Future migration concern:
+
+- When line markets become provider-backed, the same source-pill component should naturally switch those rows from `Local test` to `Polymarket`.

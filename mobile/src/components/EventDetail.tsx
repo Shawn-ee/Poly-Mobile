@@ -440,16 +440,16 @@ const marketSourceBadge = (market?: Market) => {
   const source = market?.referenceSource ?? "";
   if (source.includes("polymarket")) {
     return {
-      label: "Provider",
+      label: "Polymarket",
       tone: "provider" as const,
-      accessibility: `market-source-badge-provider market-source-${source}`,
+      accessibility: `market-source-badge-provider market-source-polymarket-readable market-source-${source}`,
     };
   }
   if (source.includes("contract-fixture")) {
     return {
-      label: "Local",
+      label: "Local test",
       tone: "fixture" as const,
-      accessibility: `market-source-badge-local market-source-${source}`,
+      accessibility: `market-source-badge-local market-source-local-test-readable market-source-${source}`,
     };
   }
   if (!market) {

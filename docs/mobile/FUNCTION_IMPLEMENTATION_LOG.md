@@ -8042,3 +8042,41 @@ Known limitations:
 
 - No Android proof was required because no visible mobile behavior changed.
 - Real Polymarket-backed Spread/Totals/Team Total remain unavailable for the current event.
+
+## Cycle OE - Event Detail Source Wording
+
+Feature/page worked on:
+
+- Event Detail Game Lines source wording for the Local MVP mixed-source state.
+
+Frontend files touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts`
+- `docs/mobile/audits/cycle-OE-event-detail-source-wording.md`
+
+Important functions/services touched:
+
+- `marketSourceBadge()`
+
+User interactions supported/proven:
+
+- User opens Home and taps the current MVP event.
+- User lands on Event Detail with chat/orderbook hidden.
+- User scrolls to Game Lines and sees line market rows labeled `Local test`.
+- Provider-backed rows now use the same `Polymarket` wording as Ticket and Portfolio.
+
+State transitions:
+
+- None.
+
+Validation:
+
+- Mobile TypeScript passed.
+- Focused mobile Vitest passed.
+- Samsung S23 visible proof passed for Home -> Event Detail.
+- Samsung S23 line-section XML confirms `Local test` source pills on line markets.
+
+Known limitations:
+
+- This cycle clarifies the visible source wording only; it does not make Spread/Totals/Team Total provider-backed.

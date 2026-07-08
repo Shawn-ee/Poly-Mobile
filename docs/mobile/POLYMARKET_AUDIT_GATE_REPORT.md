@@ -5447,3 +5447,30 @@ Decision:
 - Pass/fail: Pass for inspection.
 - Remaining P1: provider-backed Spread/Totals/Team Total markets are unavailable for the current event.
 - Next cycles should continue the Local MVP retail flow without pretending fixture line markets are Polymarket-backed.
+
+## Cycle OE
+
+Gate status: Pass for Event Detail source wording
+
+Scope: Align Event Detail market row source language with Ticket and Portfolio.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OE-event-detail-source-wording.md`
+- `docs/mobile/harness/cycle-OE-event-detail-source-wording/cycle-OE-current-mvp-s23-visible-flow.json`
+- `docs/mobile/harness/cycle-OE-event-detail-source-wording/cycle-OE-event-detail-source-wording-lines.xml`
+- `docs/mobile/screenshots/cycle-OE-event-detail-source-wording/cycle-OE-event-detail-source-wording-lines.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OE-P0-01 | P0 | Pass | Event Detail source badges now return `Polymarket` and `Local test`. | Fix `marketSourceBadge()`. |
+| OE-P0-02 | P0 | Pass | Focused mobile test checks readable source wording markers. | Update Event Detail source badge test. |
+| OE-P0-03 | P0 | Pass | S23 line-section XML shows `Local test` and `market-source-local-test-readable`. | Fix Event Detail line row rendering. |
+| OE-P0-04 | P0 | Pass | S23 top/detail proof still passes with chat/orderbook hidden. | Fix Event Detail visible regression. |
+
+Decision:
+
+- Pass/fail: Pass.
+- Remaining P1: real provider-backed line market ingestion remains open.

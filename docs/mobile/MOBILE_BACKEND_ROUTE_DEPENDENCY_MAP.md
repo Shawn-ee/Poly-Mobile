@@ -3111,3 +3111,14 @@ Cycle OD implementation notes:
 
 - No route, schema, mobile UI, order, portfolio, orderbook, chat, or live-stat code changed.
 - This cycle adjusts the path: keep Local MVP line fixtures honest, and only replace them when real provider-backed line markets exist.
+
+## Cycle OE - Event Detail Source Wording
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail market source pills | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | `market.referenceSource`, `marketSourceSummary`, line family source state | `Event`, `Market`, `Outcome` | Existing contract-fixture line rows still render as `Local test`. | Real Polymarket-backed Spread/Totals/Team Total rows remain unavailable for current event. |
+
+Cycle OE implementation notes:
+
+- No backend route or schema changed.
+- Mobile now renders the existing route contract with clearer user-facing wording: `Polymarket` and `Local test`.

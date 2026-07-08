@@ -760,3 +760,10 @@ For every UI element or interaction, answer:
 - Line markets correctly reject wrong-family draw/match-winner candidates, preventing unsafe provider attachment.
 - Remaining P1: real provider-backed Spread/Totals/Team Total line markets remain missing until Polymarket Gamma/CLOB exposes attach-ready rows or another approved source is added.
 - Adjusted path: continue Local MVP retail flow with honest mixed-source labels and do not block fake-token order lifecycle on unavailable provider line markets.
+
+## Cycle OE Gap Tracker Update
+
+- PM-GAP-125 is opened and verified for Event Detail source wording clarity.
+- OE closes the visible wording mismatch where Event Detail source pills said generic `Provider`/`Local` while Ticket and Portfolio used `Polymarket`/`Local test`.
+- S23 line-section proof confirms Game Lines now show `Local test` row source pills with `market-source-local-test-readable`.
+- Remaining P1: real provider-backed Spread/Totals/Team Total line markets remain unavailable for the current event.

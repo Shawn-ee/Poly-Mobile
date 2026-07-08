@@ -964,6 +964,36 @@ Pass for server-owned cancel history preference in the Local MVP flow.
 Remaining gaps:
 Spread/Totals/Team Total are still `contract-fixture`; real provider-backed line market ingestion/mapping remains the next structural service gap.
 
+### 2026-07-08 - Cycle OE - Event Detail source wording
+
+Reference device:
+Not used. This was a Holiwyn Local MVP wording consistency cycle based on the current mixed-source service state from Cycle OD.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://172.16.200.14:3002`, temporary Expo port `8312`, temporary mobile dev API key.
+
+Holiwyn actions:
+Opened Home, tapped the current MVP event, verified Event Detail top state, then scrolled to Game Lines and captured line-market source pills.
+
+Evidence:
+- `docs/mobile/harness/cycle-OE-event-detail-source-wording/cycle-OE-current-mvp-s23-visible-flow.json`
+- `docs/mobile/harness/cycle-OE-event-detail-source-wording/cycle-OE-event-detail-source-wording-lines.xml`
+- `docs/mobile/screenshots/cycle-OE-event-detail-source-wording/cycle-OE-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-OE-event-detail-source-wording/cycle-OE-current-mvp-detail-stale-top.png`
+- `docs/mobile/screenshots/cycle-OE-event-detail-source-wording/cycle-OE-event-detail-source-wording-lines.png`
+
+Smoke/tests:
+Mobile TypeScript, focused mobile source wording test, and S23 visible proof passed.
+
+Result:
+Pass for Event Detail source wording clarity.
+
+Remaining gaps:
+Spread/Totals/Team Total remain `contract-fixture`; the wording is honest, not provider-backed parity.
+
 ### 2026-07-08 - Cycle OA - Current MVP S23 server order proof
 
 Reference device:
