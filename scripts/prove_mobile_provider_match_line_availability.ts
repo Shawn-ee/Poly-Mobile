@@ -3,9 +3,9 @@ import path from "node:path";
 import { GET as getMobileLiveDetail } from "@/app/api/mobile/events/[slug]/live-detail/route";
 import { prisma } from "@/lib/db";
 
-const DEFAULT_EVENT_SLUG = "switzerland-vs-colombia";
+const DEFAULT_EVENT_SLUG = "argentina-vs-egypt";
 const DEFAULT_OUTPUT_PATH =
-  "docs/mobile/harness/cycle-LP-provider-match-line-availability/cycle-LP-provider-match-line-availability.json";
+  "docs/mobile/harness/cycle-OK-current-provider-readiness-gate/cycle-OK-provider-match-line-availability.json";
 
 type GammaEvent = {
   title?: string;
@@ -72,7 +72,7 @@ async function main() {
 
   const eventSlug = argValue("eventSlug") ?? DEFAULT_EVENT_SLUG;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
-  const cycle = argValue("cycle") ?? "LP";
+  const cycle = argValue("cycle") ?? "OK";
   const event = await prisma.event.findUnique({
     where: { slug: eventSlug },
     select: { id: true, slug: true, title: true, externalSlug: true, source: true },
@@ -176,6 +176,7 @@ async function main() {
       "This is a backend/provider availability proof only; Android proof is handled by the visible Local MVP journey harness.",
       "Contract-fixture line markets are acceptable for local MVP UI/order proof but are not Polymarket-backed parity.",
       "If a future Polymarket event exposes line markets through Gamma/CLOB, those real mappings should replace the fixture rows.",
+      "The default event slug intentionally follows the current Home MVP match so stale disposable-event defaults do not hide real service readiness.",
     ],
   };
 

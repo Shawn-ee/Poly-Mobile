@@ -5621,3 +5621,36 @@ Decision:
 
 - Pass/fail: Pass.
 - Remaining P1: real provider-backed current-match line-market ingestion remains unavailable.
+
+## Cycle OK
+
+Gate status: Pass for current provider readiness inspection
+
+Scope: Align provider availability proof with the current Home MVP match and inspect the real provider/route state.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OK-current-provider-readiness-gate.md`
+- `docs/mobile/harness/cycle-OK-current-provider-readiness-gate/cycle-OK-current-state-inspection.json`
+- `docs/mobile/harness/cycle-OK-current-provider-readiness-gate/cycle-OK-provider-match-line-availability.json`
+- `docs/mobile/harness/cycle-OK-current-provider-readiness-gate/cycle-OK-provider-discovery-guard.json`
+- `docs/mobile/harness/cycle-OK-current-provider-readiness-gate/cycle-OK-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-OK-current-provider-readiness-gate/cycle-OK-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-OK-current-provider-readiness-gate/cycle-OK-current-mvp-lines.png`
+- `docs/mobile/screenshots/cycle-OK-current-provider-readiness-gate/cycle-OK-current-mvp-ticket-ready.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OK-P0-01 | P0 | Pass | Current-state proof shows one match event and zero futures. | Fix Home MVP route filter. |
+| OK-P0-02 | P0 | Pass | Route proof shows 3 provider-backed Regulation Winner markets. | Fix provider import/mapping. |
+| OK-P0-03 | P0 | Pass | Route proof shows 4 contract-fixture line markets and 0 provider-backed lines. | Keep source disclosure honest. |
+| OK-P0-04 | P0 | Pass | Gamma event proof shows 3 winner markets and 0 line markets. | Fix provider availability classifier if Gamma changes. |
+| OK-P0-05 | P0 | Pass | Discovery guard rejects all 4 line targets as wrong-family. | Do not attach unsafe provider candidates. |
+| OK-P0-06 | P0 | Pass | S23 XML/screenshots show source disclosure and no orderbook/chat. | Fix visible MVP source indicators. |
+
+Decision:
+
+- Pass/fail: Pass.
+- Remaining P1: real provider-backed current-match line-market ingestion remains unavailable.

@@ -3189,3 +3189,17 @@ Cycle OJ implementation notes:
 
 - No backend route or schema changed.
 - The proof harness now removes stale proof bids before S23 submit proof so repeated local fake-token line tests do not trip binary market invariants.
+
+## Cycle OK - Current Provider Readiness Gate
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home current MVP event discovery | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` | GET | Public viewing | Query filters | Event slug/title/type, `marketSourceSummary.regulationWinner`, `marketSourceSummary.lineMarkets` | `Event`, `Market`, `Outcome` | None added. | More current match inventory remains future work. |
+| Event Detail current MVP markets | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | Provider-backed Regulation Winner rows, contract-fixture Spread/Totals/Team Total rows, provider availability reason | `Event`, `Market`, `Outcome`, provider metadata | Existing contract-fixture line rows remain Local MVP fake-token line sources. | Real provider-backed Spread/Totals/Team Total rows remain unavailable. |
+| Polymarket provider event inspection | `https://gamma-api.polymarket.com/events?slug=fifwc-arg-egy-2026-07-07` | GET | Public provider data | Provider event slug | Market ids, slugs, questions, condition ids, inferred family | None directly | None added. | Gamma exposes zero line markets for this event. |
+| Provider candidate discovery guard | `discoverMobileLiveProviderCandidates({ eventSlug: "argentina-vs-egypt", providerSearchMode: "combined" })` | Local proof/service | Local service context | Current event slug | Attach-ready winner candidates, line wrong-family rejection reasons, manual slug fallback count | Local event and market rows | None added. | No attach-ready line candidates. |
+
+Cycle OK implementation notes:
+
+- No backend route or schema changed.
+- The provider availability proof default was aligned to the current Home MVP match to avoid stale event proof drift.

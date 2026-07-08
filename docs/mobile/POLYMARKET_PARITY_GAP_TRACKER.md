@@ -807,3 +807,13 @@ For every UI element or interaction, answer:
 - Portfolio preserves spread line `1.5`, `contract-fixture`, and local-test fake-token identity.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Remaining P1: cleanup-only harness support is for local proof health only; it does not make fixture lines provider-backed.
+
+## Cycle OK Gap Tracker Update
+
+- PM-GAP-131 is opened and verified for current provider readiness inspection.
+- OK closes the stale provider-line proof default: `prove_mobile_provider_match_line_availability.ts` now targets the current Home MVP match by default.
+- Current inspection proves the route/service state: one match event, 3 Polymarket Regulation Winner markets, 0 Polymarket line markets, and 4 contract-fixture line markets.
+- Provider discovery guard proves line markets reject wrong-family winner/draw candidates instead of attaching unsafe provider identity.
+- S23 proof confirms visible mixed-source/fake-token disclosure on Home, Event Detail, and Ticket while orderbook/chat remain hidden.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Remaining P1: broader current match inventory remains future work.

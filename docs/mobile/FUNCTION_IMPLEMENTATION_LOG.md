@@ -8289,3 +8289,46 @@ Known limitations:
 
 - Spread/Totals/Team Total remain local-test fake-token fixtures.
 - Current-match Regulation Winner remains the real Polymarket-backed market path.
+
+## Cycle OK - Current Provider Readiness Gate
+
+Feature/page worked on:
+
+- Current Local MVP provider readiness inspection for Home, Event Detail, line market disclosure, and ticket-ready visible proof.
+
+Frontend/proof files touched:
+
+- `scripts/prove_mobile_provider_match_line_availability.ts`
+- `docs/mobile/audits/cycle-OK-current-provider-readiness-gate.md`
+- `docs/mobile/harness/cycle-OK-current-provider-readiness-gate/`
+- `docs/mobile/screenshots/cycle-OK-current-provider-readiness-gate/`
+
+Important functions/services touched:
+
+- Provider match-line availability proof default now follows the current Home MVP match (`argentina-vs-egypt`) instead of an older disposable event.
+- Proof exercised `/api/events`, `/api/mobile/events/:slug/live-detail`, Polymarket Gamma event lookup, provider candidate discovery, and S23 visible source disclosure.
+
+User interactions supported/proven:
+
+- User opens Home and sees the current World Cup match.
+- User opens Event Detail and sees provider-backed winner plus fake-token local line disclosure.
+- User opens a line Trade Ticket and sees the fake-token local line source note.
+
+State transitions:
+
+- No app runtime state transition changed.
+- Inspection confirms the route state: Regulation Winner is provider-backed; lines are contract fixtures.
+
+Validation:
+
+- Root TypeScript passed.
+- Mobile TypeScript passed.
+- Current-state route proof passed.
+- Provider line availability proof passed.
+- Provider discovery guard passed.
+- Samsung S23 source/readiness proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- Broad configured server Vitest failed in the live local database because of parallel table-reset deadlocks and follow-on FK failures.
+- Real provider-backed Spread/Totals/Team Total line markets remain unavailable for the current Polymarket event.

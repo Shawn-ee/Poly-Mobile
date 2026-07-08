@@ -6686,3 +6686,32 @@ Temporary mock/static data:
 Future migration concern:
 
 - Cleanup-only proof should remain a harness utility, not a substitute for real provider-owned line-market lifecycle.
+
+## Cycle OK - Current Provider Readiness Gate
+
+Closed or narrowed:
+
+- The provider line availability proof now defaults to the current MVP Home match.
+- Current route/provider inspection confirms the service state instead of relying on earlier assumptions.
+- Discovery guard confirms line markets are not being mis-attached to winner/draw provider markets.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed current-match Spread/Totals/Team Total market ids, condition ids, token ids, prices, chart data, and line availability.
+- Broader current match inventory beyond the single selected MVP match.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- Closed: the provider line availability proof no longer defaults to an older match.
+
+Temporary mock/static data:
+
+- Existing backend-shaped `contract-fixture` Spread/Totals/Team Total rows remain in use for line-selector UX and fake-token testing.
+
+Future migration concern:
+
+- Do not weaken provider relevance checks just to make line markets appear provider-backed. Replace fixture lines only when provider rows are attach-ready.

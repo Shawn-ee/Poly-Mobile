@@ -961,6 +961,37 @@ Pass for fixture-line proof cleanup and fake-token line submit health.
 Remaining gaps:
 Real current-match Spread/Totals/Team Total provider-backed line markets remain unavailable. Regulation Winner remains the current real Polymarket-backed MVP order path.
 
+### 2026-07-08 - Cycle OK - Current provider readiness gate
+
+Reference device:
+Not used. This was a Holiwyn service/provider readiness inspection using Polymarket public Gamma and local route evidence.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://172.16.200.14:3002`, temporary Expo port `8317`, temporary mobile dev API key.
+
+Holiwyn actions:
+Opened Home, checked Live empty state handling, opened `Argentina vs. Egypt`, checked line source disclosure, opened a local-test line ticket, and verified ticket source disclosure. No order was submitted in this proof.
+
+Evidence:
+- `docs/mobile/harness/cycle-OK-current-provider-readiness-gate/cycle-OK-current-mvp-s23-visible-flow.json`
+- `docs/mobile/harness/cycle-OK-current-provider-readiness-gate/cycle-OK-provider-match-line-availability.json`
+- `docs/mobile/harness/cycle-OK-current-provider-readiness-gate/cycle-OK-provider-discovery-guard.json`
+- `docs/mobile/screenshots/cycle-OK-current-provider-readiness-gate/cycle-OK-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-OK-current-provider-readiness-gate/cycle-OK-current-mvp-lines.png`
+- `docs/mobile/screenshots/cycle-OK-current-provider-readiness-gate/cycle-OK-current-mvp-ticket-ready.png`
+
+Smoke/tests:
+Root TypeScript, mobile TypeScript, current-state route proof, provider line availability proof, provider discovery guard, and S23 source/readiness proof passed. Broad configured server Vitest failed in the live local database due parallel reset deadlocks and follow-on FK errors.
+
+Result:
+Pass for current provider readiness inspection.
+
+Remaining gaps:
+Real current-match Spread/Totals/Team Total provider-backed line markets remain unavailable. Keep local line fixtures disclosed as fake-token until a provider-backed contract exists.
+
 ### 2026-07-08 - Cycle OF - Ticket and Portfolio fake-token source clarity
 
 Reference device:
