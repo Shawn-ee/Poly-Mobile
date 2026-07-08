@@ -1,0 +1,24 @@
+{
+    "pass":  true,
+    "cycle":  "PF",
+    "generatedAt":  "2026-07-08T22:04:51.3775870Z",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "expoPort":  8299,
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "mobileApiBaseUrl":  "http://172.16.200.14:3002",
+    "search":  "Europe",
+    "detailXml":  "docs\\mobile\\harness\\cycle-PF-first-continent-provider-market-tradable-proof\\cycle-PF-s23-continent-top.xml",
+    "expectedMarkers":  [
+                            "Europe (UEFA)",
+                            "provider-market-840929",
+                            "44dfd0c8-a46b-4ec0-aa2a-a5904088bbf8",
+                            "provider-source-polymarket",
+                            "Which continent will win the World Cup?"
+                        ],
+    "artifacts":  [
+                      "docs/mobile/harness/cycle-PF-first-continent-provider-market-tradable-proof/cycle-PF-s23-search-europe.png",
+                      "docs/mobile/harness/cycle-PF-first-continent-provider-market-tradable-proof/cycle-PF-s23-continent-europe.png",
+                      "docs\\mobile\\harness\\cycle-PF-first-continent-provider-market-tradable-proof\\cycle-PF-s23-continent-top.xml"
+                  ]
+}

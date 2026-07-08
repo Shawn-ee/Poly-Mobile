@@ -1,0 +1,201 @@
+{
+  "pass": true,
+  "cycle": "PF",
+  "generatedAt": "2026-07-08T22:03:12.266Z",
+  "scope": "provider-visible-market-to-internal-test-tradable-mobile-flow",
+  "routes": {
+    "search": "/api/events?source=polymarket&search=Europe",
+    "detail": "/api/mobile/events/:slug/live-detail",
+    "quote": "/api/markets/:marketId/quote",
+    "order": "POST /api/orders",
+    "portfolio": "/api/portfolio",
+    "history": "/api/portfolio/history"
+  },
+  "event": {
+    "id": "2ef0f2e5-bed8-4c9d-9f16-0eca58a8bc63",
+    "slug": "which-continent-will-win-the-world-cup",
+    "title": "Which continent will win the World Cup?",
+    "eventType": "future"
+  },
+  "market": {
+    "id": "44dfd0c8-a46b-4ec0-aa2a-a5904088bbf8",
+    "slug": "will-europe-win-the-2026-fifa-world-cup",
+    "title": "Will Europe (UEFA) win the 2026 FIFA World Cup?",
+    "referenceSource": "polymarket",
+    "externalSlug": "will-europe-win-the-2026-fifa-world-cup",
+    "externalMarketId": "840929",
+    "conditionId": "0x3561a95d16ac2edfd3831aba4612c88c6f5b84a6f0924bdb6b07dc7cfe73e121"
+  },
+  "outcome": {
+    "id": "598a7b64-39e3-4c47-92ad-e520e4c2a07e",
+    "name": "YES",
+    "referenceTokenId": "76641034721053425080952855862174690067662519247667787282293691334146019135577",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "botQuote": {
+    "orderId": "7fba134a-8c3b-49f6-9d58-1c918100e3bd",
+    "side": "SELL",
+    "price": 0.8,
+    "remaining": 5
+  },
+  "mobileProofUser": {
+    "id": "4c98030c-41f9-4b7e-a251-e1d0a6bfd5c2",
+    "email": "cycle_pf_provider_user_dc527762@local.test"
+  },
+  "checks": {
+    "searchVisible": true,
+    "detailVisible": true,
+    "quoteVisible": true,
+    "serverModeTicketSubmitted": true,
+    "filledAgainstBotLiquidity": true,
+    "portfolioPositionVisible": true,
+    "historyTradeVisible": true,
+    "homeLiveMatchOnlyUnchanged": true
+  },
+  "orderResult": {
+    "id": "d2274b2a-5bb4-440b-8356-687c4686ae2a",
+    "mode": "server",
+    "title": "Will Europe (UEFA) win the 2026 FIFA World Cup?",
+    "outcome": "Europe (UEFA)",
+    "selection": {
+      "marketType": "future",
+      "marketId": "44dfd0c8-a46b-4ec0-aa2a-a5904088bbf8",
+      "outcomeId": "598a7b64-39e3-4c47-92ad-e520e4c2a07e",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Europe (UEFA)",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-europe-win-the-2026-fifa-world-cup",
+      "externalMarketId": "840929",
+      "conditionId": "0x3561a95d16ac2edfd3831aba4612c88c6f5b84a6f0924bdb6b07dc7cfe73e121",
+      "referenceTokenId": "76641034721053425080952855862174690067662519247667787282293691334146019135577",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.8,
+      "limitSide": "ask"
+    },
+    "contractSide": "yes",
+    "side": "buy",
+    "amount": 2.4,
+    "probability": 80,
+    "status": "FILLED",
+    "size": 3,
+    "filledSize": 3,
+    "remainingSize": 0
+  },
+  "portfolioPosition": {
+    "marketId": "44dfd0c8-a46b-4ec0-aa2a-a5904088bbf8",
+    "outcomeId": "598a7b64-39e3-4c47-92ad-e520e4c2a07e",
+    "shares": 3,
+    "selection": {
+      "marketType": "future",
+      "marketId": "44dfd0c8-a46b-4ec0-aa2a-a5904088bbf8",
+      "outcomeId": "598a7b64-39e3-4c47-92ad-e520e4c2a07e",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Europe (UEFA)",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-europe-win-the-2026-fifa-world-cup",
+      "externalMarketId": "840929",
+      "conditionId": "0x3561a95d16ac2edfd3831aba4612c88c6f5b84a6f0924bdb6b07dc7cfe73e121",
+      "referenceTokenId": "76641034721053425080952855862174690067662519247667787282293691334146019135577",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.8,
+      "limitSide": "ask"
+    }
+  },
+  "historyTrade": {
+    "id": "83e72dba-4e5f-443e-9620-b766362bdbcf",
+    "market": {
+      "id": "44dfd0c8-a46b-4ec0-aa2a-a5904088bbf8",
+      "title": "Will Europe (UEFA) win the 2026 FIFA World Cup?",
+      "status": "LIVE",
+      "marketGroupKey": "outrights",
+      "marketType": "outright",
+      "line": null,
+      "period": "futures",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-europe-win-the-2026-fifa-world-cup",
+      "externalMarketId": "840929",
+      "conditionId": "0x3561a95d16ac2edfd3831aba4612c88c6f5b84a6f0924bdb6b07dc7cfe73e121"
+    },
+    "outcome": {
+      "id": "598a7b64-39e3-4c47-92ad-e520e4c2a07e",
+      "name": "YES",
+      "label": "Europe (UEFA)",
+      "side": "yes",
+      "referenceTokenId": "76641034721053425080952855862174690067662519247667787282293691334146019135577",
+      "referenceOutcomeLabel": "Yes"
+    },
+    "selection": {
+      "marketId": "44dfd0c8-a46b-4ec0-aa2a-a5904088bbf8",
+      "outcomeId": "598a7b64-39e3-4c47-92ad-e520e4c2a07e",
+      "marketGroupId": "outrights",
+      "marketType": "future",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Europe (UEFA)",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "providerSource": "polymarket",
+      "externalSlug": "will-europe-win-the-2026-fifa-world-cup",
+      "externalMarketId": "840929",
+      "conditionId": "0x3561a95d16ac2edfd3831aba4612c88c6f5b84a6f0924bdb6b07dc7cfe73e121",
+      "referenceTokenId": "76641034721053425080952855862174690067662519247667787282293691334146019135577",
+      "tokenId": "76641034721053425080952855862174690067662519247667787282293691334146019135577",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.8,
+      "limitSide": "ask"
+    },
+    "side": "BUY",
+    "shares": 3,
+    "cost": 2.4,
+    "fee": 0,
+    "createdAt": "2026-07-08T22:03:12.139Z"
+  },
+  "remainingOpenOrders": [
+    {
+      "id": "530aa62c-8c8c-41c3-9879-586e72c778b4",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "598a7b64-39e3-4c47-92ad-e520e4c2a07e",
+      "side": "BUY",
+      "price": "0.75",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "7fba134a-8c3b-49f6-9d58-1c918100e3bd",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "598a7b64-39e3-4c47-92ad-e520e4c2a07e",
+      "side": "SELL",
+      "price": "0.8",
+      "amount": "5",
+      "remaining": "2",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "36bb8621-edf4-4274-a379-5b24214b26f3",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "a19721db-286a-4f9e-bbfb-4b62cb7c8067",
+      "side": "BUY",
+      "price": "0.2",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "c11b7c8b-9f80-408a-a6d8-015f63cb158d",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "a19721db-286a-4f9e-bbfb-4b62cb7c8067",
+      "side": "SELL",
+      "price": "0.78",
+      "amount": "5",
+      "remaining": "5",
+      "status": "OPEN"
+    }
+  ]
+}

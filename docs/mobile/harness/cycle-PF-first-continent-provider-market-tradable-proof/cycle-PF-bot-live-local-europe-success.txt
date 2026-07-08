@@ -1,0 +1,42 @@
+
+> poly-bot@0.1.0 bot:polymarket:mm:live-local
+> tsx scripts/liquidityRuntime.ts --dryRun false --confirmLive true --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug which-continent-will-win-the-world-cup --allowlist Europe (UEFA) --maxMarkets 1 --durationSeconds 1
+
+{
+  "dryRun": false,
+  "liveOrdersEnabled": true,
+  "confirmLive": true,
+  "cycleReports": [
+    {
+      "marketId": "44dfd0c8-a46b-4ec0-aa2a-a5904088bbf8",
+      "slug": "will-europe-win-the-2026-fifa-world-cup",
+      "status": "manage_quotes",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.77,
+      "referenceAsk": 0.78,
+      "plannedBotBid": 0.75,
+      "plannedBotAsk": 0.8,
+      "reasons": [],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 2525,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 2525,
+      "globalExposureCents": 2525,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [
+        "new quote 598a7b64-39e3-4c47-92ad-e520e4c2a07e:BUY @ 0.75",
+        "new quote 598a7b64-39e3-4c47-92ad-e520e4c2a07e:SELL @ 0.80",
+        "new quote a19721db-286a-4f9e-bbfb-4b62cb7c8067:BUY @ 0.20",
+        "new quote a19721db-286a-4f9e-bbfb-4b62cb7c8067:SELL @ 0.78",
+        "placed 598a7b64-39e3-4c47-92ad-e520e4c2a07e:BUY @ 0.75",
+        "placed 598a7b64-39e3-4c47-92ad-e520e4c2a07e:SELL @ 0.80",
+        "placed a19721db-286a-4f9e-bbfb-4b62cb7c8067:BUY @ 0.20",
+        "placed a19721db-286a-4f9e-bbfb-4b62cb7c8067:SELL @ 0.78"
+      ],
+      "perMarketExposureCapCents": 20000
+    }
+  ]
+}

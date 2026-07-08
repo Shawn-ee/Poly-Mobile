@@ -1,0 +1,10 @@
+
+> poly-bot@0.1.0 liquidity:enable-event-mm
+> tsx scripts/enableReferenceEventMm.ts --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug which-continent-will-win-the-world-cup --allowlist Europe --maxMarkets 1 --dryRun false --confirmEnable true
+
+{
+  "ok": true,
+  "dryRun": false,
+  "eventSlug": "which-continent-will-win-the-world-cup",
+  "results": []
+}

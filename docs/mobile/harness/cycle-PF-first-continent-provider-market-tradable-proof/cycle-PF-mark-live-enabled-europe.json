@@ -1,0 +1,58 @@
+{
+    "ok":  true,
+    "marketId":  "44dfd0c8-a46b-4ec0-aa2a-a5904088bbf8",
+    "importStatus":  "approved",
+    "referenceOnly":  false,
+    "tradable":  true,
+    "mmEnabled":  true,
+    "isListed":  true,
+    "reviewedAt":  "2026-07-08T22:02:31.793Z",
+    "reviewedBy":  "[redacted-dev-admin]",
+    "reviewNotes":  "Imported from grouped World Cup event.",
+    "botInitialization":  {
+                              "status":  "live_enabled",
+                              "lastCheckedAt":  "2026-07-08T22:02:31.791Z",
+                              "reason":  "explicit_live_confirmed",
+                              "approvedBy":  null,
+                              "approvedAt":  null,
+                              "riskProfile":  null,
+                              "capital":  {
+                                              "budgetCents":  50000,
+                                              "mintBudgetCents":  2500,
+                                              "mintedCompleteSets":  25,
+                                              "cashReserveCents":  47500,
+                                              "autoReplenish":  false,
+                                              "initializedAt":  "2026-07-08T22:02:09.690Z",
+                                              "initializedBy":  "[redacted-dev-admin]",
+                                              "botUserId":  "[redacted-bot-user]",
+                                              "botUsername":  "system-liquidity-bot",
+                                              "botApiCredentialId":  "10cdcbef-2b84-4b29-817f-21d73a628b9d",
+                                              "botApiKeyId":  "[redacted-api-key]",
+                                              "maxSingleOrderNotionalCents":  1000,
+                                              "maxOpenOrderNotionalCents":  10000,
+                                              "maxDailyLossCents":  10000
+                                          },
+                              "runtime":  {
+                                              "liveOrdersEnabled":  true,
+                                              "emergencyStop":  false,
+                                              "cancelRequestedAt":  null,
+                                              "lastSeededAt":  "2026-07-08T22:02:09.690Z",
+                                              "lastLiveRunAt":  "2026-07-08T22:02:31.793Z",
+                                              "lastRuntimeSyncAt":  "2026-07-08T22:02:31.791Z"
+                                          },
+                              "readiness":  {
+                                                "ready":  true,
+                                                "dryRun":  false,
+                                                "liveRequested":  true,
+                                                "reasons":  [
+
+                                                            ],
+                                                "referenceBid":  0.77,
+                                                "referenceAsk":  0.78,
+                                                "plannedBotBid":  0.75,
+                                                "plannedBotAsk":  0.8,
+                                                "riskProfile":  null,
+                                                "checkedAt":  "2026-07-08T22:02:31.791Z"
+                                            }
+                          }
+}

@@ -1,0 +1,36 @@
+{
+    "ok":  true,
+    "marketId":  "44dfd0c8-a46b-4ec0-aa2a-a5904088bbf8",
+    "importStatus":  "approved",
+    "referenceOnly":  false,
+    "tradable":  true,
+    "mmEnabled":  true,
+    "isListed":  true,
+    "reviewedAt":  "2026-07-08T22:01:16.269Z",
+    "reviewedBy":  "[redacted-dev-admin]",
+    "reviewNotes":  "Imported from grouped World Cup event.",
+    "botInitialization":  {
+                              "status":  "dry_run_ready",
+                              "lastCheckedAt":  "2026-07-08T22:01:16.267Z",
+                              "reason":  null,
+                              "approvedBy":  null,
+                              "approvedAt":  null,
+                              "riskProfile":  null,
+                              "capital":  null,
+                              "runtime":  null,
+                              "readiness":  {
+                                                "ready":  true,
+                                                "dryRun":  true,
+                                                "liveRequested":  false,
+                                                "reasons":  [
+
+                                                            ],
+                                                "referenceBid":  0.77,
+                                                "referenceAsk":  0.78,
+                                                "plannedBotBid":  0.75,
+                                                "plannedBotAsk":  0.8,
+                                                "riskProfile":  null,
+                                                "checkedAt":  "2026-07-08T22:01:16.267Z"
+                                            }
+                          }
+}

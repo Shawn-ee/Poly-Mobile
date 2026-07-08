@@ -8899,6 +8899,49 @@ Known limitations:
 - Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
 - Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
 
+## Cycle PF - First Continent Provider Market Tradable Proof
+
+Feature/page worked on:
+
+- Provider-backed World Cup continent winner market breadth for the Local MVP retail betting flow.
+- Europe (UEFA) market local-MM readiness, fake-token order fill, and Portfolio/history proof.
+
+Frontend/proof files touched:
+
+- `docs/mobile/audits/cycle-PF-first-continent-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-PF-first-continent-provider-market-tradable-proof/`
+
+Important functions/services touched:
+
+- No visible mobile UI source changed.
+- Reused the internal beta backend helper, reference refresh path, bot MM enable/seed path, local bot live-local quoting, and mobile order/Portfolio proof harness.
+
+User interactions supported/proven:
+
+- Samsung S23 proof shows the `Which continent will win the World Cup?` detail page with the Europe provider-backed outcome visible/selectable.
+- Mobile service proof submits a server-mode fake-token buy against Europe local MM liquidity.
+- Portfolio/history proof shows the filled Europe provider-backed position/trade.
+
+State transitions:
+
+- Europe continent market was MM-enabled, seeded, marked live-ready/live-enabled, and locally quoted.
+- Mobile proof user bought Europe YES at `0.80`, producing a filled order and Portfolio/history state.
+
+Validation:
+
+- Backend helper check passed.
+- Reference refresh passed.
+- Initial seed with `Europe` matched zero markets; corrected seed with `Europe (UEFA)` passed.
+- Bot live-local placed four Europe quotes without exposure-cap blocking after the standalone bot process was run with `LIVE_SYSTEM_LIQUIDITY_ENABLED=true`.
+- Mobile provider-visible tradable route/service proof passed.
+- S23 visibility proof captured XML/screenshot on `SM-S911U1`.
+
+Known limitations:
+
+- Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
+- Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
+- Other provider event families remain visible but not fully local-MM-proven.
+
 ## Cycle PE - Eighth Provider Market Tradable Proof
 
 Feature/page worked on:
