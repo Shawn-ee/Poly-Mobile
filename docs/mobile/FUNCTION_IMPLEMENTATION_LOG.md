@@ -8765,3 +8765,50 @@ Known limitations:
 - Visible mobile Home intentionally still uses `mobileMvpMatches=1`, so it shows one match, not the broader provider-backed World Cup Winner event.
 - `Local test` labels remain too prominent in tester UI for contract-fixture line markets.
 - Live-local bot order placement was not started; only dry-run provider price readiness was proven.
+
+## Cycle OW - Provider Visible To Tradable Flow
+
+Feature/page worked on:
+
+- Provider-visible World Cup Winner market converted into local internal-test tradable proof flow.
+- Mobile Search/Event Detail visibility for a provider-backed future.
+- Server-mode Trade Ticket order and Portfolio/history proof against live-local bot liquidity.
+
+Frontend/proof files touched:
+
+- `scripts/prove_mobile_provider_visible_tradable_flow.ts`
+- `docs/mobile/audits/cycle-OW-provider-visible-tradable-flow.md`
+- `docs/mobile/harness/cycle-OW-provider-visible-tradable-flow/`
+- `docs/mobile/screenshots/cycle-OW-provider-visible-tradable-flow/`
+
+Important functions/services touched:
+
+- No visible mobile UI source changed.
+- New harness exercises mobile `submitTicketOrder`, `loadPortfolioSnapshot`, `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+- `poly-bot` reference liquidity setup/runtime was used with one allowlisted market; no bot source changed.
+
+User interactions supported/proven:
+
+- S23 Search can see `World Cup Winner` as a provider-backed result.
+- S23 can open the provider-backed World Cup Winner detail page and see outcome rows including England.
+- Mobile server-mode ticket order can fill against bot local liquidity.
+- Portfolio and history show the filled provider-backed fake-token order.
+
+State transitions:
+
+- `provider-breadth-world-cup-winner` / England was seeded with a small local bot inventory.
+- Local backend was restarted for proof with internal trading beta enabled, kill switch off, and the system liquidity bot allowlisted.
+- Bot live-local placed four open quotes; the mobile proof filled one NO-side ask.
+
+Validation:
+
+- Bot dry-run passed without exposure-cap blocking.
+- Bot live-local quote placement passed.
+- Provider visible/tradable route harness passed.
+- S23 Search and Event Detail XML/screenshots captured on `SM-S911U1`.
+
+Known limitations:
+
+- Live-local quote placement currently requires local server startup flags for internal trading beta and allowlist.
+- Home/Live remain match-only by design; this provider future is visible through Search/detail.
+- Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.

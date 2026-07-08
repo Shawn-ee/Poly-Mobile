@@ -1,0 +1,114 @@
+
+> poly-bot@0.1.0 bot:polymarket:mm:live-local
+> tsx scripts/liquidityRuntime.ts --dryRun false --confirmLive true --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug provider-breadth-world-cup-winner --allowlist England --maxMarkets 1 --durationSeconds 6 --pollMs 1000 --confirmLive true
+
+{
+  "dryRun": false,
+  "liveOrdersEnabled": true,
+  "confirmLive": true,
+  "cycleReports": [
+    {
+      "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+      "slug": "will-england-win-the-2026-fifa-world-cup-937",
+      "status": "manage_quotes",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.158,
+      "referenceAsk": 0.159,
+      "plannedBotBid": 0.14,
+      "plannedBotAsk": 0.18,
+      "reasons": [],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 3355,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 3355,
+      "globalExposureCents": 3355,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [
+        "new quote cdcc34fa-73a4-4fb7-bf71-cf6df5f19374:BUY @ 0.14",
+        "new quote cdcc34fa-73a4-4fb7-bf71-cf6df5f19374:SELL @ 0.18",
+        "new quote 1b5a9a21-06db-4574-8adb-261da5d4df12:BUY @ 0.82",
+        "new quote 1b5a9a21-06db-4574-8adb-261da5d4df12:SELL @ 0.86",
+        "placed cdcc34fa-73a4-4fb7-bf71-cf6df5f19374:BUY @ 0.14",
+        "placed cdcc34fa-73a4-4fb7-bf71-cf6df5f19374:SELL @ 0.18",
+        "placed 1b5a9a21-06db-4574-8adb-261da5d4df12:BUY @ 0.82",
+        "placed 1b5a9a21-06db-4574-8adb-261da5d4df12:SELL @ 0.86"
+      ],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+      "slug": "will-england-win-the-2026-fifa-world-cup-937",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.158,
+      "referenceAsk": 0.159,
+      "plannedBotBid": 0.14,
+      "plannedBotAsk": 0.18,
+      "reasons": [
+        "max_open_orders_per_market_4_of_4"
+      ],
+      "openOrderCount": 4,
+      "perMarketExposureCents": 4315,
+      "openOrderNotionalCents": 960,
+      "inventoryExposureCents": 3355,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+      "slug": "will-england-win-the-2026-fifa-world-cup-937",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.158,
+      "referenceAsk": 0.159,
+      "plannedBotBid": 0.14,
+      "plannedBotAsk": 0.18,
+      "reasons": [
+        "max_open_orders_per_market_4_of_4"
+      ],
+      "openOrderCount": 4,
+      "perMarketExposureCents": 4315,
+      "openOrderNotionalCents": 960,
+      "inventoryExposureCents": 3355,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+      "slug": "will-england-win-the-2026-fifa-world-cup-937",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.158,
+      "referenceAsk": 0.159,
+      "plannedBotBid": 0.14,
+      "plannedBotAsk": 0.18,
+      "reasons": [
+        "max_open_orders_per_market_4_of_4"
+      ],
+      "openOrderCount": 4,
+      "perMarketExposureCents": 4315,
+      "openOrderNotionalCents": 960,
+      "inventoryExposureCents": 3355,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    }
+  ]
+}

@@ -854,3 +854,14 @@ For every UI element or interaction, answer:
 - Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open until Polymarket Gamma/CLOB or another approved provider exposes attach-ready line markets.
 - Remaining P1: scheduled provider refresh/runtime automation remains future work.
 - Remaining P1: broader current/live match provider inventory remains limited.
+
+## Cycle OW Gap Tracker Update
+
+- PM-GAP-135 is opened and closed for one provider-visible market becoming internal-test tradable.
+- OW proves `provider-breadth-world-cup-winner` / England can move from provider-visible Search/detail to local bot-quoted fake-token trading.
+- Exposure-cap blocking is closed for this selected market by small seed/mint sizing: exposure stayed below the `20000` cent cap.
+- Bot live-local placed four quotes after the local proof server was started with internal trading beta enabled, kill switch off, and the system liquidity bot allowlisted.
+- Mobile server-mode ticket order filled against bot liquidity and appeared in Portfolio/history with Polymarket provider identity preserved.
+- Remaining P1: make local internal-beta startup/allowlist a repeatable harness command.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
+- Remaining P1: broad futures remain visible in Search/detail only; Home/Live remain match-only by design.

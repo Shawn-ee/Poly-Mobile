@@ -3357,3 +3357,19 @@ Cycle OM implementation notes:
 - No backend schema changed.
 - No visible mobile UI code changed.
 - Broad provider route now proves multiple provider-backed World Cup surfaces, while Local MVP remains match-only by design.
+
+## Cycle OW - Provider Visible To Tradable Flow
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider-backed event discovery | `/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&search=England&limit=10` | GET | Public viewing | Search/provider filters | Event slug/title/type, `marketSourceSummary`, provider-backed market count | `Event`, `Market`, `Outcome` | None. | Home/Live intentionally do not expose broad futures. |
+| Provider-backed event detail | `/api/mobile/events/provider-breadth-world-cup-winner/live-detail` | GET | Public viewing | Event slug | Outright markets, outcome ids, provider market id, condition id, token id, probabilities | `Event`, `Market`, `Outcome`, reference metadata/snapshots | None. | Chart history remains sparse for some futures. |
+| Provider quote | `/api/markets/49ca30ca-afa9-45ee-8962-1941ad7524fe/quote` | GET | Public quote route | Market id | Local bot bid/ask quotes plus provider-derived prices consumed by ticket harness | `Order`, `ReferenceQuoteSnapshot`, `Market`, `Outcome` | None. | None for selected England market. |
+| Fake-token server order | `/api/orders` | POST | Mobile API key; internal trading beta must be enabled/allowlisted in local proof runtime | `marketId`, `outcomeId`, side, contract side, price, size, provider selection identity | Order id/status/fill state and selection identity | `User`, `UserBalance`, `ApiCredential`, `Order`, `Trade`, `Position` | None. | Startup flags/allowlist need a repeatable local harness command. |
+| Portfolio/history result | `/api/portfolio`, `/api/portfolio/history` | GET | Mobile API key | None | Filled position and recent trade with provider token/condition/source identity | `Position`, `Trade`, portfolio/history read models | None. | None for selected provider-backed future order. |
+
+Cycle OW implementation notes:
+
+- No schema migration was added.
+- No default order book UI was exposed.
+- Backend route behavior required local internal-trading beta flags: `INTERNAL_TRADING_BETA_ENABLED=true`, `TRADING_KILL_SWITCH=false`, and `INTERNAL_TRADING_ALLOWLIST_EMAILS` containing the system liquidity bot and proof users/admins.

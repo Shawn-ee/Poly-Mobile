@@ -5827,3 +5827,38 @@ Remaining P1:
 - Real provider-backed Spread/Totals/Team Total current-match markets remain unavailable.
 - More current/live match provider inventory remains needed.
 - Provider refresh still needs scheduled/runtime automation.
+
+## Cycle OW - Provider Visible To Tradable Flow
+
+Result: Pass for selected provider-visible market to local internal-test tradable flow.
+
+Checked:
+
+- OV clean/pushed before OW started.
+- One provider-backed World Cup Winner market selected and made local-MM-ready.
+- Bot dry-run no longer blocked by exposure cap.
+- Bot live-local placed quotes after local internal trading beta startup/allowlist was enabled.
+- S23 Search showed the provider-backed World Cup Winner result.
+- S23 opened the provider-backed detail page and showed provider outcome rows.
+- Mobile server-mode ticket order filled against bot liquidity.
+- Portfolio and history showed the filled provider-backed fake-token order.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-OW-provider-visible-tradable-flow.md`
+- `docs/mobile/harness/cycle-OW-provider-visible-tradable-flow/cycle-OW-provider-visible-tradable-flow.json`
+- `docs/mobile/harness/cycle-OW-provider-visible-tradable-flow/cycle-OW-bot-dry-run-england.txt`
+- `docs/mobile/harness/cycle-OW-provider-visible-tradable-flow/cycle-OW-bot-live-local-england-success.txt`
+- `docs/mobile/harness/cycle-OW-provider-visible-tradable-flow/cycle-OW-s23-search-england.xml`
+- `docs/mobile/screenshots/cycle-OW-provider-visible-tradable-flow/cycle-OW-s23-search-england.png`
+- `docs/mobile/harness/cycle-OW-provider-visible-tradable-flow/cycle-OW-s23-provider-winner-detail.xml`
+- `docs/mobile/screenshots/cycle-OW-provider-visible-tradable-flow/cycle-OW-s23-provider-winner-detail.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Repeatable local startup command for internal beta trading flags and allowlist.
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
