@@ -3036,3 +3036,20 @@ Cycle NY implementation notes:
 
 - No backend route or schema changed.
 - This is a visible wording cleanup over the existing provider/source contract.
+
+## Cycle NZ - Server Order Path Inspection
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home MVP event discovery | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10` | GET | Public viewing | Query filters/page size | `events[]`, `slug`, `title`, `marketSourceSummary` | `Event`, `Market`, `Outcome` | None added. | Broader real current match inventory remains missing. |
+| Event Detail line market | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | Market rows, source summary, spread line `1.5`, outcome ids, token/source identity | `Event`, `Market`, `Outcome` | Existing contract-fixture line market. | Provider-backed line market source remains missing. |
+| Fake-token order placement | `/api/orders` | POST | Mobile API key with order scopes | `marketId`, `outcomeId`, `side=BUY`, `contractSide=YES`, `price`, `size`, `selection` identity | Order id/status, selection echo, fill state | `User`, `ApiCredential`, `UserBalance`, `Order`, `Trade`, collateral/accounting tables | None added. | None for local MVP order path. |
+| Portfolio position | `/api/portfolio` | GET | Mobile API key | None | Positions, selection source summary, line/source/token identity | `Order`, `Trade`, `Position`/derived portfolio read model, `UserBalance` | None added. | None for verified filled line position. |
+| Portfolio history | `/api/portfolio/history` | GET | Mobile API key | None | `recentTrades`, selection source summary, line/source/token identity | `Trade`, `Market`, `Outcome` | None added. | None for verified recent trade history. |
+| S23 UI server-order proof | `mobile/scripts/local-mvp-home-route-server-order-proof.ps1` | Device proof | Temporary mobile API key | Deep link plus generated credential | Intended to drive visible Home -> ticket -> Portfolio | Same as above | None added. | Harness still expects retired EL-A seed text and must be updated for current MVP feed. |
+
+Cycle NZ implementation notes:
+
+- No schema migration was added.
+- Backend/service route readiness passed for the current MVP order lifecycle.
+- Android proof must be repaired to target `argentina-vs-egypt` instead of the old EL-A proof event.

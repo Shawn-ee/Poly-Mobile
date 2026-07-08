@@ -6356,3 +6356,34 @@ Temporary mock/static data:
 Future migration concern:
 
 - Once line markets become provider-backed, the same UI labels should automatically show `Polymarket` instead of `Local test` through `referenceSource`.
+
+## Cycle NZ - Server Order Path Inspection
+
+Closed or narrowed:
+
+- Current backend routes can support the Local MVP order lifecycle for the selected Home event.
+- `/api/orders` preserves selected line/outcome/source identity.
+- `/api/portfolio` and `/api/portfolio/history` preserve the filled spread line identity after matching.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total market identity.
+- Current broad World Cup live/current event inventory beyond the single MVP-ready event.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch blocked the backend proof.
+- Android proof route/harness mismatch remains: the current S23 smoke helper targets old EL-A proof copy while the live app route serves `Argentina vs. Egypt`.
+
+Temporary mock/static data:
+
+- No new mock data was added.
+- The order proof used existing backend-shaped contract-fixture spread line data and temporary proof liquidity.
+
+Future migration concern:
+
+- Replace contract-fixture line rows with provider-backed rows when an approved provider exposes attach-ready line markets; the same order/portfolio identity path should remain valid.

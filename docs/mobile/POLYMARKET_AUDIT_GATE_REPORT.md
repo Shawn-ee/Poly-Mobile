@@ -5296,3 +5296,31 @@ Decision:
 
 - Pass/fail: Pass for focused visible wording cleanup.
 - Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open.
+
+## Cycle NZ
+
+Gate status: Partial for service readiness; Android UI proof blocked by stale harness
+
+Scope: Inspect current service readiness for Home -> Event Detail line market -> fake-token server order -> Portfolio/history after confirming real provider line markets are unavailable.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NZ-server-order-path-inspection.md`
+- `docs/mobile/harness/cycle-NZ-server-order-path-inspection/cycle-NZ-home-to-portfolio-route-journey.json`
+- `docs/mobile/harness/cycle-NZ-server-order-path-inspection/cycle-current-holiwyn-home.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NZ-P0-01 | P0 | Pass | Route proof selected `Argentina vs. Egypt` from `/api/events`. | Fix event-list route/filtering. |
+| NZ-P0-02 | P0 | Pass | Route proof selected spread line `Egypt +1.5` from live-detail. | Fix contract-fixture line route. |
+| NZ-P0-03 | P0 | Pass | POST `/api/orders` returned FILLED with selection identity preserved. | Fix order route or matching proof liquidity. |
+| NZ-P0-04 | P0 | Pass | `/api/portfolio` and `/api/portfolio/history` returned position/recent trade with line/source/token identity. | Fix portfolio/history read models. |
+| NZ-P0-05 | P0 | Fail | S23 smoke helper failed at Home expecting old `EL-A Provider Breadth World Cup Live`. | Update Android proof harness for current MVP feed. |
+
+Decision:
+
+- Pass/fail: Partial, not a complete Android UI gate pass.
+- Service path is ready for Local MVP internal testing with contract-fixture lines.
+- Next cycle should repair the S23 full-order proof harness and rerun the visible journey.

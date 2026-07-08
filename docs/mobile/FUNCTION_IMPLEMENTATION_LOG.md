@@ -7830,3 +7830,43 @@ Known limitations:
 
 - This does not create real provider-backed line markets.
 - S23 proof covers Home and Event Detail visible sanity; ticket/portfolio wording is covered by focused source-label tests.
+
+## Cycle NZ - Server Order Path Inspection
+
+Feature/page worked on:
+
+- Local MVP service readiness for Home -> Event Detail line market -> server fake-token order -> Portfolio/history.
+
+Backend/harness files touched:
+
+- Evidence only:
+  - `docs/mobile/harness/cycle-NZ-server-order-path-inspection/cycle-NZ-home-to-portfolio-route-journey.json`
+  - `docs/mobile/harness/cycle-NZ-server-order-path-inspection/cycle-current-holiwyn-home.xml`
+  - `docs/mobile/harness/cycle-NZ-server-order-path-inspection/cycle-current-holiwyn-expo-menu.xml`
+  - `docs/mobile/audits/cycle-NZ-server-order-path-inspection.md`
+
+Important functions/services touched:
+
+- No app/backend source files changed.
+- The proof exercised `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+
+User interactions supported/proven:
+
+- Backend route proof selected the current Home MVP event `Argentina vs. Egypt`.
+- Backend route proof selected the contract-fixture spread line `Egypt +1.5`.
+- Server fake-token order filled and Portfolio/history preserved line, outcome, source, token, and selection identity.
+
+State transitions:
+
+- Created a temporary proof user and seeded maker liquidity.
+- Created a BUY order, matched it to FILLED, then verified resulting Portfolio position and recent trade history.
+
+Validation:
+
+- Backend route journey proof passed.
+- Attempted S23 UI proof failed before order placement because the Android smoke harness still expects the retired `EL-A Provider Breadth World Cup Live` seed instead of the current `Argentina vs. Egypt` feed.
+
+Known limitations:
+
+- Android UI order proof remains blocked by stale proof harness expectations, not by the service route.
+- Real provider-backed Spread/Totals/Team Total lines remain unavailable; the passing order path uses backend-shaped contract fixtures.

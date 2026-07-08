@@ -990,6 +990,34 @@ Pass for visible source-label cleanup and current MVP sanity.
 Remaining gaps:
 Real provider-backed Spread/Totals/Team Total lines remain missing; UI now labels those as local test lines.
 
+### 2026-07-08 - Cycle NZ - Server order path inspection
+
+Reference device:
+Not used. This was a Holiwyn service-readiness inspection following the current provider/source audit.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Backend route proof used `http://127.0.0.1:3002`. S23 proof attempt used Expo Go with temporary port `8307`.
+
+Holiwyn actions:
+Backend route proof exercised Home discovery, Event Detail line selection, fake-token order placement, Portfolio, and history. S23 UI proof attempted the same path but stopped at Home because the smoke harness expected the old `EL-A Provider Breadth World Cup Live` seed.
+
+Evidence:
+- `docs/mobile/harness/cycle-NZ-server-order-path-inspection/cycle-NZ-home-to-portfolio-route-journey.json`
+- `docs/mobile/harness/cycle-NZ-server-order-path-inspection/cycle-current-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-NZ-server-order-path-inspection/cycle-current-holiwyn-expo-menu.xml`
+
+Smoke/tests:
+Backend route journey proof passed. Android UI proof failed due stale harness expectation before order placement.
+
+Result:
+Partial: service route/order/portfolio/history path passes; Android UI proof harness needs repair.
+
+Remaining gaps:
+Fix S23 UI proof to target current `argentina-vs-egypt` Local MVP feed and then rerun the full visible order journey.
+
 ### 2026-07-08 - Cycle NV - Live Detail display status contract
 
 Reference device:

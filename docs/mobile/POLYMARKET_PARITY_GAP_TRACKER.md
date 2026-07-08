@@ -714,3 +714,12 @@ For every UI element or interaction, answer:
 - Event Detail, Trade Ticket, and Portfolio source helpers now use `Polymarket` and `Local test` consistently.
 - S23 proof passes for Home -> Event Detail visible sanity with chat/orderbook hidden.
 - Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open.
+
+## Cycle NZ Gap Tracker Update
+
+- PM-GAP-122 is opened for stale Android server-order proof targeting.
+- NZ verifies the backend/service path: Home event -> contract-fixture spread line -> POST `/api/orders` -> Portfolio position -> recent trade history.
+- NZ confirms service readiness is better than suspected: Regulation Winner is provider-backed and line-market trading works through contract fixtures.
+- NZ exposes the real blocker for full Android proof: `local-mvp-home-route-server-order-proof.ps1` / smoke expectations still target the retired EL-A seed.
+- Remaining P0 for visible proof: update S23 order harness to target current `argentina-vs-egypt` feed, then rerun full visible order journey.
+- Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open.
