@@ -5889,3 +5889,34 @@ Remaining P1:
 - Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Broad futures remain Search/detail-only while Home/Live stay match-only.
 - Future visible UI changes still need fresh S23 proof; OX is backend harness proof only.
+
+## Cycle OY - Second Provider Market Tradable Proof
+
+Result: Pass for second provider-backed internal-test tradable market scope.
+
+Checked:
+
+- France World Cup Winner market selected as the second provider-backed tradable target.
+- Backend helper now starts local server with both trading and bot-seeding env flags.
+- France MM enable, seed, live-ready/live-enabled, and live-local quote placement passed after helper restart.
+- Mobile route/service proof filled France YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed World Cup Winner detail with France provider-backed outcome visible/selectable.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-OY-second-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-OY-second-provider-market-tradable-proof/cycle-OY-internal-beta-backend-restart.json`
+- `docs/mobile/harness/cycle-OY-second-provider-market-tradable-proof/cycle-OY-prepare-france-small-seed-after-helper.txt`
+- `docs/mobile/harness/cycle-OY-second-provider-market-tradable-proof/cycle-OY-bot-live-local-france-after-seed-success.txt`
+- `docs/mobile/harness/cycle-OY-second-provider-market-tradable-proof/cycle-OY-provider-france-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-OY-second-provider-market-tradable-proof/cycle-OY-s23-search-france.xml`
+- `docs/mobile/harness/cycle-OY-second-provider-market-tradable-proof/cycle-OY-s23-search-france.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.

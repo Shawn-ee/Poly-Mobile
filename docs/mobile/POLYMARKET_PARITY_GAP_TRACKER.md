@@ -873,3 +873,12 @@ For every UI element or interaction, answer:
 - OX proves the package script path and then proves a provider-backed fake-token mobile order still fills and appears in Portfolio/history after backend startup through the helper.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
 - Remaining P1: broad futures remain visible in Search/detail only; Home/Live remain match-only by design.
+
+## Cycle OY Gap Tracker Update
+
+- PM-GAP-137 is opened and closed for a second provider-backed market becoming internal-test tradable.
+- OY makes France in `provider-breadth-world-cup-winner` local-MM-ready, live-enabled, and quoted.
+- OY extends the backend startup helper with required local bot-seeding env flags, closing the seed-route 400 blocker discovered during France setup.
+- OY proves mobile route/service order fill and Portfolio/history identity for France YES, and captures S23 visibility proof for the France provider-backed outcome.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
+- Remaining P1: broad futures remain visible in Search/detail only; Home/Live remain match-only by design.

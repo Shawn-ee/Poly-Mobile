@@ -56,6 +56,7 @@ async function main() {
   const baseUrl = argValue("baseUrl") ?? DEFAULT_BASE_URL;
   const eventSlug = argValue("eventSlug") ?? DEFAULT_EVENT_SLUG;
   const marketId = argValue("marketId") ?? DEFAULT_MARKET_ID;
+  const searchQuery = argValue("search") ?? "England";
   const outputPath =
     argValue("output") ??
     argValue("summaryPath") ??
@@ -97,7 +98,7 @@ async function main() {
 
   const [searchPayload, detailPayload, quotePayload] = await Promise.all([
     fetchJson(
-      `${baseUrl}/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&search=England&limit=10`,
+      `${baseUrl}/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&search=${encodeURIComponent(searchQuery)}&limit=10`,
     ),
     fetchJson(`${baseUrl}/api/mobile/events/${encodeURIComponent(eventSlug)}/live-detail`),
     fetchJson(`${baseUrl}/api/markets/${encodeURIComponent(marketId)}/quote`),
@@ -243,7 +244,7 @@ async function main() {
     generatedAt: new Date().toISOString(),
     scope: "provider-visible-market-to-internal-test-tradable-mobile-flow",
     routes: {
-      search: "/api/events?source=polymarket&search=England",
+      search: `/api/events?source=polymarket&search=${searchQuery}`,
       detail: "/api/mobile/events/:slug/live-detail",
       quote: "/api/markets/:marketId/quote",
       order: "POST /api/orders",
