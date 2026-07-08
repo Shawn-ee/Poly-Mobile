@@ -2,6 +2,25 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle NB - Event Detail Line Availability Disclosure
+
+Closed or narrowed:
+
+- Event Detail now consumes `marketSourceSummary.lineMarkets.providerAvailability` instead of showing only a generic local-pricing sentence.
+- S23 XML proof verifies `line-provider-availability-unavailable` and `line-contract-fixture-count-4`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected events.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Existing `contract-fixture` line markets remain backend-shaped Local MVP fallback rows.
+
 ## Cycle NA - Line Provider Availability Contract
 
 Closed or narrowed:

@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle NB
+
+Gate status: Pass
+
+Scope: Event Detail line availability disclosure.
+
+Decision:
+
+- P0 failed: 0 for focused visible Event Detail disclosure scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-NB-event-detail-line-availability-disclosure/cycle-NB-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-NB-event-detail-line-availability-disclosure/`, `docs/mobile/audits/cycle-NB-event-detail-line-availability-disclosure.md`.
+- Notes: S23 XML proof includes `Provider lines unavailable.`, `line-provider-availability-unavailable`, and `line-contract-fixture-count-4`, then completes the line ticket/order/Portfolio/history path.
+
 ## Cycle NA
 
 Gate status: Pass

@@ -2,6 +2,35 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle NB - Event Detail Line Availability Disclosure
+
+Feature/page worked on:
+
+- Event Detail source disclosure for Local MVP line markets.
+
+Frontend/services touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts`
+
+User interactions supported/proven:
+
+- On S23, opened Home, switched to Live, opened Event Detail, confirmed provider-unavailable line marker, then completed local Spread ticket -> swipe buy -> Portfolio/history.
+
+Backend/API route changed:
+
+- None. This cycle consumes `marketSourceSummary.lineMarkets.providerAvailability` added in Cycle NA.
+
+Verified:
+
+- Focused mobile Vitest and mobile typecheck passed.
+- S23 proof passed: `docs/mobile/harness/cycle-NB-event-detail-line-availability-disclosure/cycle-NB-current-mvp-s23-visible-flow.json`.
+- XML proof includes `Provider lines unavailable.`, `line-provider-availability-unavailable`, and `line-contract-fixture-count-4`.
+
+Known limitations:
+
+- Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected events.
+
 ## Cycle NA - Line Provider Availability Contract
 
 Feature/page worked on:

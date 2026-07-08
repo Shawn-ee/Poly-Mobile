@@ -234,22 +234,32 @@ const lineSourceCopy = (event: Event) => {
   const winnerReady = summary.regulationWinner.status === "provider-backed";
   const lineStatus = summary.lineMarkets.status;
   const lineCount = summary.lineMarkets.totalCount;
+  const lineAvailability = summary.lineMarkets.providerAvailability;
+  const lineAvailabilityMarker = lineAvailability
+    ? ` line-provider-availability-${lineAvailability.status} line-provider-backed-count-${lineAvailability.providerBackedLineMarketCount} line-contract-fixture-count-${lineAvailability.contractFixtureLineMarketCount}`
+    : "";
   if (lineStatus === "provider-backed") {
     return {
       label: "Market source",
       text: winnerReady ? "Winner and lines are live from provider data." : "Line markets are live from provider data.",
       tone: "ready" as const,
       accessibility:
-        `event-detail-line-source-banner line-source-provider-backed regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}`,
+        `event-detail-line-source-banner line-source-provider-backed regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}`,
     };
   }
   if (lineStatus === "contract-fixture") {
+    const availabilityCopy =
+      lineAvailability?.status === "unavailable"
+        ? " Provider lines unavailable."
+        : "";
     return {
       label: "Market source",
-      text: winnerReady ? "Winner is provider-backed. Lines use local server pricing." : "Lines use local server pricing.",
+      text: winnerReady
+        ? `Winner is provider-backed. Lines use local server pricing.${availabilityCopy}`
+        : `Lines use local server pricing.${availabilityCopy}`,
       tone: "fixture" as const,
       accessibility:
-        `event-detail-line-source-banner line-source-contract-fixture regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}`,
+        `event-detail-line-source-banner line-source-contract-fixture regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}`,
     };
   }
   if (lineStatus === "missing") {
@@ -258,7 +268,7 @@ const lineSourceCopy = (event: Event) => {
       text: "Line markets are unavailable for this match.",
       tone: "missing" as const,
       accessibility:
-        `event-detail-line-source-banner line-source-missing regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}`,
+        `event-detail-line-source-banner line-source-missing regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}`,
     };
   }
   return {
@@ -266,7 +276,7 @@ const lineSourceCopy = (event: Event) => {
     text: "Line market source is being checked.",
     tone: "missing" as const,
     accessibility:
-      `event-detail-line-source-banner line-source-unknown regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}`,
+      `event-detail-line-source-banner line-source-unknown regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}`,
   };
 };
 

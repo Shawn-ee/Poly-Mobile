@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle NB - Event Detail Line Availability Disclosure
+
+Cycle NB consumes the Cycle NA backend contract in visible Event Detail UI.
+
+- S23 proof: `docs/mobile/harness/cycle-NB-event-detail-line-availability-disclosure/cycle-NB-current-mvp-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-NB-event-detail-line-availability-disclosure.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail line availability disclosure | `/api/events?...includeMobileMarkets=1...`; `/api/mobile/events/:slug/live-detail` | GET | Public event viewing | None | `marketSourceSummary.lineMarkets.providerAvailability.status`, `providerBackedLineMarketCount`, `contractFixtureLineMarketCount` | Existing `Event`, `Market`, `Outcome`; no schema change | Existing `contract-fixture` line markets remain Local MVP fallback rows and are visibly explained in Event Detail | Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected Polymarket events. |
+
 ## Cycle NA - Line Provider Availability Contract
 
 Cycle NA adds a structured line-market provider availability contract to the mobile event payload.
