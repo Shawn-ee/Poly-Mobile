@@ -976,3 +976,13 @@ For every UI element or interaction, answer:
 - PI proves tapping the Search result opens the provider-backed detail page with provider market `2070987`.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
 - Remaining P1: Home/Live remain match-only by product direction; broad futures remain Search/detail surfaces.
+
+## Cycle PJ Gap Tracker Update
+
+- PM-GAP-148 is opened and closed for converting a provider-visible market into an internal-test tradable market.
+- PJ makes Norway in `world-cup-nation-of-top-goalscorer` local-MM-ready, live-enabled, and quoted.
+- PJ proves bot dry-run and live-local quote placement without exposure-cap blocking.
+- PJ proves mobile route/service order fill and Portfolio/history identity for Norway YES.
+- PJ captures S23 Search/detail proof for the Norway provider-backed outcome.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
+- Remaining P1: Home/Live remain match-only by product direction; broad futures remain Search/detail surfaces.

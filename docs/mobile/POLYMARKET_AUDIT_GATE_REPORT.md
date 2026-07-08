@@ -5895,6 +5895,39 @@ Remaining P1:
 
 - Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Broad futures remain Search/detail-only while Home/Live stay match-only.
+
+## Cycle PJ - Provider Visible Market To Local Tradable Market
+
+Result: Pass for selected Norway provider-visible-to-tradable scope.
+
+Checked:
+
+- Norway Nation of Top Goalscorer market selected from provider-visible Polymarket data.
+- Norway was approved as internal-test tradable and MM-enabled.
+- Small local bot seed passed.
+- Bot dry-run passed.
+- Bot live-local placed quotes without exposure-cap blocking.
+- Mobile route/service proof filled Norway YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed Search and Event Detail for the Norway provider-backed outcome.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PJ-provider-visible-tradable-market.md`
+- `docs/mobile/harness/cycle-PJ-provider-visible-tradable-market/cycle-PJ-bot-dry-run-norway-nation.txt`
+- `docs/mobile/harness/cycle-PJ-provider-visible-tradable-market/cycle-PJ-bot-live-local-norway-nation.txt`
+- `docs/mobile/harness/cycle-PJ-provider-visible-tradable-market/cycle-PJ-provider-norway-nation-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PJ-provider-visible-tradable-market/cycle-PJ-s23-summary.json`
+- `docs/mobile/screenshots/cycle-PJ-provider-visible-tradable-market/cycle-PJ-s23-search-norway-nation.png`
+- `docs/mobile/screenshots/cycle-PJ-provider-visible-tradable-market/cycle-PJ-s23-norway-nation-detail-from-search.png`
+
+Unresolved P0 gaps: 0 for PJ scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
 - Remaining provider event families are not all local-MM-proven yet.
 
 ## Cycle PG - First Golden Boot Provider Market Tradable Proof

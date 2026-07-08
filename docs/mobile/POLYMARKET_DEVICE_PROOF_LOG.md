@@ -1877,3 +1877,38 @@ Pass for Search deep-link provider futures proof.
 
 Remaining gaps:
 Home/Live remain match-only. Current-match line markets remain contract fixtures.
+
+## Cycle PJ - Provider Visible Market To Local Tradable Market
+
+Date:
+2026-07-08
+
+Reference device:
+No new Polymarket reference-device action. The provider source is the existing Polymarket Gamma/CLOB-backed Nation of Top Goalscorer event.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go server mode. Backend `http://127.0.0.1:3002` stayed healthy; mobile API used LAN backend `http://172.16.200.14:3002`.
+
+Holiwyn actions:
+Opened Holiwyn with a Norway Search deep link, confirmed `World Cup: Nation of Top Goalscorer` was visible, tapped the result, and confirmed Event Detail showed provider market `2070985`. Backend/mobile-service proof submitted a fake-token Norway YES order and confirmed Portfolio/history state.
+
+Evidence:
+- `docs/mobile/audits/cycle-PJ-provider-visible-tradable-market.md`
+- `docs/mobile/harness/cycle-PJ-provider-visible-tradable-market/cycle-PJ-provider-norway-nation-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PJ-provider-visible-tradable-market/cycle-PJ-s23-summary.json`
+- `docs/mobile/screenshots/cycle-PJ-provider-visible-tradable-market/cycle-PJ-s23-search-norway-nation.png`
+- `docs/mobile/harness/cycle-PJ-provider-visible-tradable-market/cycle-PJ-s23-search-norway-nation.xml`
+- `docs/mobile/screenshots/cycle-PJ-provider-visible-tradable-market/cycle-PJ-s23-norway-nation-detail-from-search.png`
+- `docs/mobile/harness/cycle-PJ-provider-visible-tradable-market/cycle-PJ-s23-norway-nation-detail-from-search.xml`
+
+Smoke/tests:
+Bot dry-run passed, bot live-local quote placement passed, mobile order/Portfolio proof passed, and S23 visible Search/detail proof passed.
+
+Result:
+Pass for selected provider-visible-to-tradable Norway market scope.
+
+Remaining gaps:
+Home/Live remain match-only. Current-match line markets remain contract fixtures.

@@ -1,0 +1,201 @@
+{
+  "pass": true,
+  "cycle": "PJ",
+  "generatedAt": "2026-07-08T22:55:08.592Z",
+  "scope": "provider-visible-market-to-internal-test-tradable-mobile-flow",
+  "routes": {
+    "search": "/api/events?source=polymarket&search=Norway",
+    "detail": "/api/mobile/events/:slug/live-detail",
+    "quote": "/api/markets/:marketId/quote",
+    "order": "POST /api/orders",
+    "portfolio": "/api/portfolio",
+    "history": "/api/portfolio/history"
+  },
+  "event": {
+    "id": "0e9870f0-f8d0-49c5-a5c0-012359dacfb6",
+    "slug": "world-cup-nation-of-top-goalscorer",
+    "title": "World Cup: Nation of Top Goalscorer",
+    "eventType": "future"
+  },
+  "market": {
+    "id": "3c089b24-8a2e-42f4-97fb-3e7422bdfa65",
+    "slug": "will-a-player-representing-norway-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+    "title": "Will a player representing Norway be the top goalscorer at the 2026 FIFA World Cup?",
+    "referenceSource": "polymarket",
+    "externalSlug": "will-a-player-representing-norway-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+    "externalMarketId": "2070985",
+    "conditionId": "0x13769b3c9e8daf0052d90385dcebb80bf28a570a8193bd5576ac73aa82909111"
+  },
+  "outcome": {
+    "id": "194f5143-2648-4338-9524-ff4f17c3a987",
+    "name": "YES",
+    "referenceTokenId": "31960290572206355599715903681672400762275615114199539541850805144627068381070",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "botQuote": {
+    "orderId": "92f783a7-cd3b-44ae-b641-def833ecc4c4",
+    "side": "SELL",
+    "price": 0.12,
+    "remaining": 5
+  },
+  "mobileProofUser": {
+    "id": "[redacted-mobile-proof-user]",
+    "email": "cycle_pj_provider_user_d9f9e9de@local.test"
+  },
+  "checks": {
+    "searchVisible": true,
+    "detailVisible": true,
+    "quoteVisible": true,
+    "serverModeTicketSubmitted": true,
+    "filledAgainstBotLiquidity": true,
+    "portfolioPositionVisible": true,
+    "historyTradeVisible": true,
+    "homeLiveMatchOnlyUnchanged": true
+  },
+  "orderResult": {
+    "id": "96db8450-859e-4add-aad2-910e204146da",
+    "mode": "server",
+    "title": "Will a player representing Norway be the top goalscorer at the 2026 FIFA World Cup?",
+    "outcome": "Norway",
+    "selection": {
+      "marketType": "future",
+      "marketId": "3c089b24-8a2e-42f4-97fb-3e7422bdfa65",
+      "outcomeId": "194f5143-2648-4338-9524-ff4f17c3a987",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Norway",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-a-player-representing-norway-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2070985",
+      "conditionId": "0x13769b3c9e8daf0052d90385dcebb80bf28a570a8193bd5576ac73aa82909111",
+      "referenceTokenId": "31960290572206355599715903681672400762275615114199539541850805144627068381070",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.12,
+      "limitSide": "ask"
+    },
+    "contractSide": "yes",
+    "side": "buy",
+    "amount": 0.36,
+    "probability": 12,
+    "status": "FILLED",
+    "size": 3,
+    "filledSize": 3,
+    "remainingSize": 0
+  },
+  "portfolioPosition": {
+    "marketId": "3c089b24-8a2e-42f4-97fb-3e7422bdfa65",
+    "outcomeId": "194f5143-2648-4338-9524-ff4f17c3a987",
+    "shares": 3,
+    "selection": {
+      "marketType": "future",
+      "marketId": "3c089b24-8a2e-42f4-97fb-3e7422bdfa65",
+      "outcomeId": "194f5143-2648-4338-9524-ff4f17c3a987",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Norway",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-a-player-representing-norway-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2070985",
+      "conditionId": "0x13769b3c9e8daf0052d90385dcebb80bf28a570a8193bd5576ac73aa82909111",
+      "referenceTokenId": "31960290572206355599715903681672400762275615114199539541850805144627068381070",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.12,
+      "limitSide": "ask"
+    }
+  },
+  "historyTrade": {
+    "id": "a23ff8f6-b442-4042-b307-a5cc3e5c463e",
+    "market": {
+      "id": "3c089b24-8a2e-42f4-97fb-3e7422bdfa65",
+      "title": "Will a player representing Norway be the top goalscorer at the 2026 FIFA World Cup?",
+      "status": "LIVE",
+      "marketGroupKey": "outrights",
+      "marketType": "outright",
+      "line": null,
+      "period": "futures",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-a-player-representing-norway-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2070985",
+      "conditionId": "0x13769b3c9e8daf0052d90385dcebb80bf28a570a8193bd5576ac73aa82909111"
+    },
+    "outcome": {
+      "id": "194f5143-2648-4338-9524-ff4f17c3a987",
+      "name": "YES",
+      "label": "Norway",
+      "side": "yes",
+      "referenceTokenId": "31960290572206355599715903681672400762275615114199539541850805144627068381070",
+      "referenceOutcomeLabel": "Yes"
+    },
+    "selection": {
+      "marketId": "3c089b24-8a2e-42f4-97fb-3e7422bdfa65",
+      "outcomeId": "194f5143-2648-4338-9524-ff4f17c3a987",
+      "marketGroupId": "outrights",
+      "marketType": "future",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Norway",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "providerSource": "polymarket",
+      "externalSlug": "will-a-player-representing-norway-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2070985",
+      "conditionId": "0x13769b3c9e8daf0052d90385dcebb80bf28a570a8193bd5576ac73aa82909111",
+      "referenceTokenId": "31960290572206355599715903681672400762275615114199539541850805144627068381070",
+      "tokenId": "31960290572206355599715903681672400762275615114199539541850805144627068381070",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.12,
+      "limitSide": "ask"
+    },
+    "side": "BUY",
+    "shares": 3,
+    "cost": 0.36,
+    "fee": 0,
+    "createdAt": "2026-07-08T22:55:08.459Z"
+  },
+  "remainingOpenOrders": [
+    {
+      "id": "df1ae42c-d981-4160-96b6-721dca468488",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "194f5143-2648-4338-9524-ff4f17c3a987",
+      "side": "BUY",
+      "price": "0.08",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "92f783a7-cd3b-44ae-b641-def833ecc4c4",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "194f5143-2648-4338-9524-ff4f17c3a987",
+      "side": "SELL",
+      "price": "0.12",
+      "amount": "5",
+      "remaining": "2",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "7f35dade-f931-46e2-a2de-92a297e46f96",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "3d314ac4-7437-420b-b8b2-38a9cf5b6d3d",
+      "side": "BUY",
+      "price": "0.09",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "69dd0afd-7d52-4336-bb96-85a68726d28f",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "3d314ac4-7437-420b-b8b2-38a9cf5b6d3d",
+      "side": "SELL",
+      "price": "0.92",
+      "amount": "5",
+      "remaining": "5",
+      "status": "OPEN"
+    }
+  ]
+}

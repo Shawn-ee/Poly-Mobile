@@ -1,0 +1,13 @@
+{
+    "ok":  true,
+    "marketId":  "3c089b24-8a2e-42f4-97fb-3e7422bdfa65",
+    "importStatus":  "approved",
+    "referenceOnly":  false,
+    "tradable":  true,
+    "mmEnabled":  true,
+    "isListed":  true,
+    "reviewedAt":  "2026-07-08T22:53:32.102Z",
+    "reviewedBy":  "[redacted-dev-admin]",
+    "reviewNotes":  "Cycle PJ internal local MVP tradable proof for nation top goalscorer Norway.",
+    "botInitialization":  null
+}
