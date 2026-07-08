@@ -966,3 +966,13 @@ For every UI element or interaction, answer:
 - Remaining P1: S23 Search deep-link attempts did not reliably show the Nation of Top Goalscorer result, although the backend Search route returned it and direct detail proof passed.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
 - Remaining P1: Home/Live remain match-only by product direction; broad futures remain Search/detail surfaces.
+
+## Cycle PI Gap Tracker Update
+
+- PM-GAP-147 is opened and closed for S23 Search deep-link provider futures visibility.
+- PI fixes mobile launch parsing so `forceSearchQuery` and `forceHomeQuery` support the comma-separated proof-link convention.
+- PI prevents forced Search/Home query state from being wiped by the delayed reset path.
+- PI proves on Samsung S23 that Search shows `World Cup: Nation of Top Goalscorer` for `representing Argentina`.
+- PI proves tapping the Search result opens the provider-backed detail page with provider market `2070987`.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
+- Remaining P1: Home/Live remain match-only by product direction; broad futures remain Search/detail surfaces.

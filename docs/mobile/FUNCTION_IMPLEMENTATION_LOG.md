@@ -9279,3 +9279,46 @@ Known limitations:
 - S23 Search deep-link attempts did not reliably land on the Nation of Top Goalscorer Search result surface; direct detail proof passed.
 - Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
 - Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
+
+## Cycle PI - Search Deep-Link Provider Futures Proof
+
+Feature/page worked on:
+
+- Search launch/deep-link behavior for provider-backed broad futures.
+- Closed the Cycle PH P1 gap where `forceSearchQuery=representing Argentina` was wiped back to Home during reset.
+
+Frontend/proof files touched:
+
+- `mobile/App.tsx`
+- `mobile/src/__tests__/deepLinkResetContract.test.ts`
+- `docs/mobile/audits/cycle-PI-search-deeplink-provider-futures-proof.md`
+- `docs/mobile/harness/cycle-PI-search-deeplink-provider-futures-proof/`
+- `docs/mobile/screenshots/cycle-PI-search-deeplink-provider-futures-proof/`
+
+Important functions/services touched:
+
+- `handleLaunchUrl` in `mobile/App.tsx`.
+- No backend provider, schema, order, or portfolio route source changed.
+
+User interactions supported/proven:
+
+- Samsung S23 launch into Search with a provider-future query.
+- Search displays the `World Cup: Nation of Top Goalscorer` provider-backed event for `representing Argentina`.
+- Tapping the Search result opens Event Detail and preserves provider market `2070987`.
+
+State transitions:
+
+- `forceResetState=1` still clears local runtime state.
+- Forced Search/Home query launch flags now survive the delayed reset path.
+- Search query state is restored before the selected tab is held on Search.
+
+Validation:
+
+- Mobile typecheck passed.
+- S23 Search proof passed on `SM-S911U1`.
+- S23 detail-from-Search proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
+- Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
