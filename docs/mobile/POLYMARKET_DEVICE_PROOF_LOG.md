@@ -1945,6 +1945,33 @@ Bot dry-run passed, bot live-local quote placement passed, mobile order/Portfoli
 Result:
 Pass for selected Golden Boot Haaland provider-visible-to-tradable scope.
 
+## Cycle PN - Provider Proof Harness And Mbappe Tradable Flow
+
+Date: 2026-07-08
+
+Device:
+
+- Samsung S23 `SM-S911U1`
+- ADB id: `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`
+
+Proof summary:
+
+Opened Holiwyn with a Mbappe Search deep link, confirmed `World Cup: Golden Boot Winner` was visible, tapped the result, and confirmed Event Detail showed provider market `2069638`. Backend/mobile-service proof submitted a fake-token Mbappe YES order and confirmed Portfolio/history state.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-PN-provider-proof-harness-mbappe.md`
+- `docs/mobile/harness/cycle-PN-provider-proof-harness-mbappe/cycle-PN-provider-mbappe-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PN-provider-proof-harness-mbappe/cycle-PN-s23-summary.json`
+- `docs/mobile/screenshots/cycle-PN-provider-proof-harness-mbappe/cycle-PN-s23-search-mbappe-golden-boot.png`
+- `docs/mobile/harness/cycle-PN-provider-proof-harness-mbappe/cycle-PN-s23-search-mbappe-golden-boot.xml`
+- `docs/mobile/screenshots/cycle-PN-provider-proof-harness-mbappe/cycle-PN-s23-mbappe-golden-boot-detail-from-search.png`
+- `docs/mobile/harness/cycle-PN-provider-proof-harness-mbappe/cycle-PN-s23-mbappe-golden-boot-detail-from-search.xml`
+
+Result:
+
+Pass for selected Golden Boot Mbappe provider-visible-to-tradable scope.
+
 Remaining gaps:
 Home/Live remain match-only. Current-match line markets remain contract fixtures.
 

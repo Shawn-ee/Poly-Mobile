@@ -5954,6 +5954,40 @@ Pass evidence:
 - `docs/mobile/screenshots/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-s23-search-haaland-golden-boot.png`
 - `docs/mobile/screenshots/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-s23-haaland-golden-boot-detail-from-search.png`
 
+## Cycle PN - Provider Proof Harness And Mbappe Tradable Flow
+
+Result: Pass for selected Golden Boot Mbappe provider-visible-to-tradable scope.
+
+Audit notes:
+
+- Mbappe Golden Boot market selected from provider-visible Polymarket data.
+- Mbappe was enabled for internal-test MM and seeded with a small fake-token liquidity profile.
+- Bot dry-run and live-local quote placement passed without exposure-cap blocking.
+- Mobile route/service proof filled Mbappe YES against local MM liquidity.
+- Portfolio/history preserved provider market id `2069638`, condition id, outcome id, and token id.
+- S23 proof showed Search and Event Detail for the Mbappe provider-backed outcome.
+- No order book UI, chat, live stats, or social surfaces were changed.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-PN-provider-proof-harness-mbappe.md`
+- `docs/mobile/harness/cycle-PN-provider-proof-harness-mbappe/cycle-PN-bot-dry-run-mbappe.txt`
+- `docs/mobile/harness/cycle-PN-provider-proof-harness-mbappe/cycle-PN-bot-live-local-mbappe-success.txt`
+- `docs/mobile/harness/cycle-PN-provider-proof-harness-mbappe/cycle-PN-provider-mbappe-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PN-provider-proof-harness-mbappe/cycle-PN-s23-summary.json`
+- `docs/mobile/screenshots/cycle-PN-provider-proof-harness-mbappe/cycle-PN-s23-search-mbappe-golden-boot.png`
+- `docs/mobile/screenshots/cycle-PN-provider-proof-harness-mbappe/cycle-PN-s23-mbappe-golden-boot-detail-from-search.png`
+
+Unresolved P0:
+
+- None for PN scope.
+
+Remaining P1/P2:
+
+- Current-match provider-backed Spread/Totals/Team Total markets remain unavailable.
+- Home/Live remain match-only by product direction; broad futures remain Search/detail surfaces.
+- The lifecycle path should eventually be wrapped into one orchestrated harness command.
+
 Unresolved P0 gaps: 0 for PK scope.
 
 Remaining P1:

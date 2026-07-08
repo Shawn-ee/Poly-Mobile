@@ -7144,6 +7144,36 @@ Future migration concern:
 - Standalone bot proof runs must carry `LIVE_SYSTEM_LIQUIDITY_ENABLED=true`; backend helper env alone does not arm a separate bot process.
 - Production/staging bot enablement must not reuse local fake-token proof flags without separate review.
 
+## Cycle PN - Provider Proof Harness And Mbappe Tradable Flow
+
+Closed or narrowed:
+
+- Mbappe Golden Boot moved from provider-visible to internal-test tradable.
+- Mbappe now preserves provider identity through quote, order, Portfolio, and History.
+- The provider-visible-to-tradable proof harness no longer hardcodes `cycle-ow-provider` order ids; it uses the active cycle label.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Current-match provider-backed Spread/Totals/Team Total market ids, token ids, chart history, and prices.
+- One orchestrated backend/bot harness command for enable, seed, dry-run, live-local quote placement, mobile order, and Portfolio proof.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch for the selected provider-backed Mbappe future flow.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- Home/Live remain match-only; broad futures stay Search/detail surfaces by product direction.
+- Production/staging bot enablement must not reuse local fake-token proof flags without separate review.
+
 ## Cycle PM - France Nation Top Goalscorer Tradable Proof
 
 Closed or narrowed:
