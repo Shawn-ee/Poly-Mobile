@@ -1,0 +1,59 @@
+﻿{
+    "ok":  true,
+    "marketId":  "94644351-61b3-474d-9f08-7f9b9ab169d3",
+    "importStatus":  "approved",
+    "referenceOnly":  false,
+    "tradable":  true,
+    "mmEnabled":  true,
+    "isListed":  true,
+    "reviewedAt":  "2026-07-08T22:21:01.050Z",
+    "reviewedBy":  "[redacted-dev-admin]",
+    "reviewNotes":  "Cycle PH internal local MVP tradable proof for nation top goalscorer Argentina.",
+    "botInitialization":  {
+                              "status":  "live_enabled",
+                              "lastCheckedAt":  "2026-07-08T22:21:01.047Z",
+                              "reason":  "explicit_live_confirmed",
+                              "approvedBy":  null,
+                              "approvedAt":  null,
+                              "riskProfile":  null,
+                              "capital":  {
+                                              "budgetCents":  50000,
+                                              "mintBudgetCents":  2500,
+                                              "mintedCompleteSets":  25,
+                                              "cashReserveCents":  47500,
+                                              "autoReplenish":  false,
+                                              "initializedAt":  "2026-07-08T22:20:41.651Z",
+                                              "initializedBy":  "[redacted-dev-admin]",
+                                              "botUserId":  "[redacted-bot-user]",
+                                              "botUsername":  "system-liquidity-bot",
+                                              "botApiCredentialId":  "9b138283-b62d-47db-acc2-ffea3091f37a",
+                                              "botApiKeyId":  "[redacted-api-key]",
+                                              "maxSingleOrderNotionalCents":  1000,
+                                              "maxOpenOrderNotionalCents":  10000,
+                                              "maxDailyLossCents":  10000
+                                          },
+                              "runtime":  {
+                                              "liveOrdersEnabled":  true,
+                                              "emergencyStop":  false,
+                                              "cancelRequestedAt":  null,
+                                              "lastSeededAt":  "2026-07-08T22:20:41.651Z",
+                                              "lastLiveRunAt":  "2026-07-08T22:21:01.050Z",
+                                              "lastRuntimeSyncAt":  "2026-07-08T22:21:01.047Z"
+                                          },
+                              "readiness":  {
+                                                "ready":  true,
+                                                "dryRun":  false,
+                                                "liveRequested":  true,
+                                                "reasons":  [
+
+                                                            ],
+                                                "referenceBid":  0.374,
+                                                "referenceAsk":  0.379,
+                                                "plannedBotBid":  0.35,
+                                                "plannedBotAsk":  0.4,
+                                                "riskProfile":  null,
+                                                "checkedAt":  "2026-07-08T22:21:01.047Z"
+                                            }
+                          }
+}
+

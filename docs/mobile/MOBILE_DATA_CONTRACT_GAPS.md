@@ -2762,7 +2762,7 @@ Schema mismatch:
 
 Route mismatch:
 
-- `/provider-candidates` can now prove “provider reachable but no safe attach candidate” instead of conflating provider fetch failure with no mapping.
+- `/provider-candidates` can now prove â€œprovider reachable but no safe attach candidateâ€ instead of conflating provider fetch failure with no mapping.
 
 Temporary mock/static data:
 
@@ -4081,7 +4081,7 @@ Future migration concern:
 Fields Holiwyn needs but backend does not provide consistently yet:
 
 - Search/Explore row rank and category/facet metadata.
-- Canonical sport/category labels such as `Sports · Soccer`.
+- Canonical sport/category labels such as `Sports Â· Soccer`.
 - Row-level volume, today volume, liquidity, comment/chat count, and end-time display strings.
 - Result probability/outcome summary chosen by backend rank.
 - Facet counts for status, category, saved, live, and other discovered Polymarket-style filters.
@@ -7133,6 +7133,37 @@ Schema mismatch:
 Route mismatch:
 
 - No route mismatch for the selected provider-backed Switzerland future flow.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- Local bot runtime identifiers were redacted from committed evidence.
+- Standalone bot proof runs must carry `LIVE_SYSTEM_LIQUIDITY_ENABLED=true`; backend helper env alone does not arm a separate bot process.
+- Production/staging bot enablement must not reuse local fake-token proof flags without separate review.
+
+## Cycle PH - Nation Top Goalscorer Provider Market Tradable Proof
+
+Closed or narrowed:
+
+- Provider-visible-to-tradable proof now covers the Nation of Top Goalscorer event family with Argentina.
+- Argentina nation has provider identity preserved through quote, order, Portfolio, and History.
+- Exposure-cap blocking did not recur with the selected small seed/live-local quote configuration.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Current-match provider-backed Spread/Totals/Team Total market ids, token ids, chart history, and prices.
+- A more reliable mobile Search/deep-link path for broad futures on S23; direct detail route proof works, but forced Search navigation did not reliably show the target event.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch for the selected provider-backed Argentina nation future flow.
 
 Temporary mock/static data:
 

@@ -6178,3 +6178,34 @@ Remaining P1:
 
 - Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Broad futures remain Search/detail-only while Home/Live stay match-only.
+
+## Cycle PH - Nation Top Goalscorer Provider Market Tradable Proof
+
+Result: Pass for selected Nation of Top Goalscorer provider-backed internal-test tradable market scope.
+
+Checked:
+
+- Argentina Nation of Top Goalscorer market selected as a provider-backed tradable target from a new event family.
+- Argentina MM enable, seed, live-ready/live-enabled, and live-local quote placement passed.
+- Bot dry-run and live-local quote placement did not hit exposure-cap blocking.
+- Mobile route/service proof filled Argentina YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 direct event-detail proof showed the `world-cup-nation-of-top-goalscorer` page with provider market `2070987` visible.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof/cycle-PH-reference-refresh-nation-top-goalscorer.json`
+- `docs/mobile/harness/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof/cycle-PH-bot-live-local-argentina-nation.txt`
+- `docs/mobile/harness/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof/cycle-PH-provider-argentina-nation-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof/cycle-PH-s23-argentina-nation-detail-direct.xml`
+- `docs/mobile/screenshots/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof/cycle-PH-s23-argentina-nation-detail-direct.png`
+
+Unresolved P0 gaps: 0 for this selected market scope.
+
+Remaining P1:
+
+- S23 Search deep-link attempts did not reliably show the Nation of Top Goalscorer result; direct event-detail proof and backend Search route proof passed.
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.

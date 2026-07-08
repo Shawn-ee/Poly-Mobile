@@ -3259,7 +3259,7 @@ Cycle OE implementation notes:
 Cycle OF implementation notes:
 
 - No backend route or schema changed.
-- Mobile now renders the existing route/order/portfolio contract with clearer wording: `Local test line · fake-token` and `Local test lines · fake-token`.
+- Mobile now renders the existing route/order/portfolio contract with clearer wording: `Local test line Â· fake-token` and `Local test lines Â· fake-token`.
 
 ## Cycle OG - Current State Inspection And Path Adjustment
 
@@ -3452,3 +3452,11 @@ Cycle OW implementation notes:
 | Golden Boot provider-backed future visibility | `/api/events?source=polymarket&search=Messi`, `/api/mobile/events/world-cup-golden-boot-winner/live-detail` | GET | Public viewing | Search/detail params only | Golden Boot event, Messi market/outcome id, probability, provider source, provider market id, condition id, token id | `Event`, `Market`, `Outcome`, provider quote snapshots | None for selected provider future. | Home/Live intentionally exclude broad futures. |
 | Messi local-MM preparation | `/api/admin/reference-markets/:id`, `/api/admin/reference-markets/:id/seed-bot` through bot admin scripts | PATCH/POST | Dev admin header and local internal bot env flags | Approve tradable, enable MM, seed capital/mint budget, mark live-ready/live-enabled | Runtime credential state, local bot inventory/capital, live-enabled lifecycle | `Market.referenceMetadata`, `User`, `ApiCredential`, `UserBalance`, `Position` | None. | Newly imported player markets may start `referenceOnly=true` and need explicit internal-test tradable approval before live-ready. |
 | Messi fake-token retail order | `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | GET/POST | Mobile proof API key with order/account scopes | Messi YES selection, price `0.40`, amount `1.20`, provider market/condition/token identity | Filled order, Portfolio position, History trade | `Order`, `Trade`, `Position`, `ApiCredential`, `UserBalance` | None. | No missing support for selected provider-backed future order. |
+
+## Cycle PH - Nation Top Goalscorer Provider Market Tradable Proof
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Nation top-goalscorer provider-backed future visibility | `/api/events?source=polymarket&search=representing%20Argentina`, `/api/mobile/events/world-cup-nation-of-top-goalscorer/live-detail` | GET | Public viewing | Search/detail params only | Nation event, Argentina market/outcome id, probability, provider source, provider market id, condition id, token id | `Event`, `Market`, `Outcome`, provider quote snapshots | None for selected provider future. | S23 Search deep-link did not reliably land on this Search result; direct detail route proof passed. |
+| Argentina nation local-MM preparation | `/api/admin/reference-markets/:id`, `/api/admin/reference-markets/:id/seed-bot` through bot admin scripts | PATCH/POST | Dev admin header and local internal bot env flags | Approve tradable, enable MM, seed capital/mint budget, mark live-ready/live-enabled | Runtime credential state, local bot inventory/capital, live-enabled lifecycle | `Market.referenceMetadata`, `User`, `ApiCredential`, `UserBalance`, `Position` | None. | Newly imported nation markets may start `referenceOnly=true` and need explicit internal-test tradable approval before live-ready. |
+| Argentina nation fake-token retail order | `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | GET/POST | Mobile proof API key with order/account scopes | Argentina YES selection, price `0.40`, amount `1.20`, provider market/condition/token identity | Filled order, Portfolio position, History trade | `Order`, `Trade`, `Position`, `ApiCredential`, `UserBalance` | None. | No missing support for selected provider-backed future order. |

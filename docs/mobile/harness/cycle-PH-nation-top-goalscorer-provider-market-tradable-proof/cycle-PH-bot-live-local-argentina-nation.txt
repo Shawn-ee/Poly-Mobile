@@ -1,0 +1,43 @@
+﻿
+> poly-bot@0.1.0 bot:polymarket:mm:live-local
+> tsx scripts/liquidityRuntime.ts --dryRun false --confirmLive true --baseUrl http://127.0.0.1:3002 --eventSlug world-cup-nation-of-top-goalscorer --allowlist Argentina --maxMarkets 1 --durationSeconds 1
+
+{
+  "dryRun": false,
+  "liveOrdersEnabled": true,
+  "confirmLive": true,
+  "cycleReports": [
+    {
+      "marketId": "94644351-61b3-474d-9f08-7f9b9ab169d3",
+      "slug": "will-a-player-representing-argentina-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "status": "manage_quotes",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.374,
+      "referenceAsk": 0.379,
+      "plannedBotBid": 0.35,
+      "plannedBotAsk": 0.4,
+      "reasons": [],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 2513,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 2513,
+      "globalExposureCents": 2513,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [
+        "new quote bddcf2cd-e78e-4aae-b0c5-f5c2291814c5:BUY @ 0.35",
+        "new quote bddcf2cd-e78e-4aae-b0c5-f5c2291814c5:SELL @ 0.40",
+        "new quote 4f27f48a-34d0-43bc-b69b-1f7ea94cc553:BUY @ 0.37",
+        "new quote 4f27f48a-34d0-43bc-b69b-1f7ea94cc553:SELL @ 0.65",
+        "placed bddcf2cd-e78e-4aae-b0c5-f5c2291814c5:BUY @ 0.35",
+        "placed bddcf2cd-e78e-4aae-b0c5-f5c2291814c5:SELL @ 0.40",
+        "placed 4f27f48a-34d0-43bc-b69b-1f7ea94cc553:BUY @ 0.37",
+        "placed 4f27f48a-34d0-43bc-b69b-1f7ea94cc553:SELL @ 0.65"
+      ],
+      "perMarketExposureCapCents": 20000
+    }
+  ]
+}
+
