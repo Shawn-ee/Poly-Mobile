@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle MI - Provider Discovery Guard
+
+Closed or narrowed:
+
+- Provider relevance now includes the local event title, so event-specific match markets require matchup context.
+- Broad team outright markets are rejected for event-specific match-winner mappings.
+- Current `argentina-vs-egypt` discovery now returns exact match-winner candidates for Argentina/draw/Egypt and no unsafe outright attach.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Attach-ready Polymarket Spread line markets for the inspected event.
+- Attach-ready Polymarket Totals line markets for the inspected event.
+- Attach-ready Polymarket Team Total line markets for the inspected event.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Backend-shaped `contract-fixture` line markets remain the Local MVP fallback for line-ticket UI and server-order proof.
+
 ## Cycle MH - MVP Service Readiness Inspection
 
 Closed or narrowed:

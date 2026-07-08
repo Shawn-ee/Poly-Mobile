@@ -2,6 +2,38 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle MI - Provider Discovery Guard
+
+Feature/page worked on:
+
+- Tightened Polymarket provider candidate relevance for event-specific match markets.
+- Prevented broad team outright markets, such as a World Cup winner market, from satisfying a match-specific provider mapping.
+- Added repeatable proof for the current `argentina-vs-egypt` provider discovery state.
+
+Frontend/services touched:
+
+- `src/server/services/mobileLiveProviderCandidates.ts`
+- `src/__tests__/mobile-live-provider-candidates.service.test.ts`
+- `scripts/prove_mobile_mvp_provider_discovery_guard.ts`
+
+User interactions supported/proven:
+
+- No visible UI was redesigned.
+- S23 regression proof confirms the current MVP phone flow still works after the backend provider guard: Home -> Event Detail -> line ticket -> swipe submit -> Portfolio/history.
+
+Verified:
+
+- Provider discovery guard proof passed: `docs/mobile/harness/cycle-MI-provider-discovery-guard/cycle-MI-provider-discovery-guard.json`.
+- S23 proof passed: `docs/mobile/harness/cycle-MI-provider-discovery-guard/cycle-MI-current-mvp-s23-visible-flow.json`.
+- Focused provider-candidate Jest test passed.
+- Backend TypeScript check passed.
+- Mobile typecheck passed.
+
+Known limitations:
+
+- Spread/Totals/Team Total still have no attach-ready Polymarket provider candidates for the inspected event.
+- Local MVP should continue using explicit contract-shaped line markets without claiming provider-backed line parity.
+
 ## Cycle MH - MVP Service Readiness Inspection
 
 Feature/page worked on:

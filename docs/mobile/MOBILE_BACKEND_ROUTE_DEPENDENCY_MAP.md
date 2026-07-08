@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle MI - Provider Discovery Guard
+
+Cycle MI tightens provider candidate ranking and attach readiness for current Local MVP event mappings.
+
+- Provider guard proof: `docs/mobile/harness/cycle-MI-provider-discovery-guard/cycle-MI-provider-discovery-guard.json`.
+- S23 proof: `docs/mobile/harness/cycle-MI-provider-discovery-guard/cycle-MI-current-mvp-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-MI-provider-discovery-guard.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Polymarket provider candidate discovery | Internal service used by protected `/api/mobile/events/:slug/provider-candidates`; Gamma `/events` and `/markets` public provider fetches | GET through protected route or internal proof | Protected route requires internal admin key/session; proof uses local service directly | Query params/body vary by provider-candidate route; proof uses `eventSlug=argentina-vs-egypt` | `providerEventSlugs`, target markets, candidate slug/question/event title, family, relevance tokens, attach readiness, provider condition/token identity | Existing `Event`, `Market`, `Outcome`; no schema change | Existing contract-shaped line markets remain available for Local MVP UI. They do not become provider-backed. | Real provider-backed Spread/Totals/Team Total slugs/tokens remain unavailable for the inspected event. |
+
 ## Cycle MH - MVP Service Readiness Inspection
 
 Cycle MH inspects the current server-mode Local MVP routes and fixes the inspection harness to use the same match-only feed contract as Home.

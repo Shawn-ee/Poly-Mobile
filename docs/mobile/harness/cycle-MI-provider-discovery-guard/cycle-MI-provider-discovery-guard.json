@@ -1,0 +1,201 @@
+{
+  "cycle": "MI",
+  "result": "pass",
+  "generatedAt": "2026-07-08T09:27:00.719Z",
+  "provider": "polymarket-gamma",
+  "eventSlug": "argentina-vs-egypt",
+  "providerSearchMode": "combined",
+  "providerEventSlugs": [
+    "fifwc-arg-egy-2026-07-07",
+    "665652"
+  ],
+  "providerCandidateFamilySummary": {
+    "match_winner": 3,
+    "spread": 0,
+    "total_goals": 0,
+    "team_total_goals": 0,
+    "corners": 0,
+    "first_half": 0,
+    "second_half": 0,
+    "correct_score": 0,
+    "other": 0
+  },
+  "targetMarketCount": 7,
+  "attachReadyCandidateCount": 3,
+  "nextRequiredAction": "review_and_attach_provider_identity_candidates",
+  "assertions": {
+    "matchWinnerAttachReadyCount": 3,
+    "unsafeOutrightAttachCount": 0,
+    "lineTargetCount": 4,
+    "attachReadyLineTargetCount": 0,
+    "lineWrongFamilyRejectionCount": 4
+  },
+  "targets": [
+    {
+      "marketId": "57079b71-6c20-4bda-8538-9274fcdd426d",
+      "title": "Will Argentina win on 2026-07-07?",
+      "marketType": "match_winner_1x2",
+      "line": null,
+      "expectedProviderFamily": "match_winner",
+      "candidateCount": 3,
+      "attachReady": true,
+      "bestCandidate": {
+        "slug": "fifwc-arg-egy-2026-07-07-arg",
+        "question": "Will Argentina win on 2026-07-07?",
+        "eventTitle": "Argentina vs. Egypt",
+        "expectedFamily": "match_winner",
+        "candidateFamily": "match_winner",
+        "reasons": [],
+        "matchedImportantTokens": [
+          "argentina",
+          "egypt",
+          "win"
+        ],
+        "relevant": true
+      }
+    },
+    {
+      "marketId": "02bc8228-01c9-4fa5-a229-642c429a75dc",
+      "title": "Argentina vs. Egypt: Egypt +1.5",
+      "marketType": "spread",
+      "line": "1.5",
+      "expectedProviderFamily": "spread",
+      "candidateCount": 3,
+      "attachReady": false,
+      "bestCandidate": {
+        "slug": "fifwc-arg-egy-2026-07-07-draw",
+        "question": "Will Argentina vs. Egypt end in a draw?",
+        "eventTitle": "Argentina vs. Egypt",
+        "expectedFamily": "spread",
+        "candidateFamily": "match_winner",
+        "reasons": [
+          "provider_family_mismatch"
+        ],
+        "matchedImportantTokens": [
+          "argentina",
+          "egypt"
+        ],
+        "relevant": true
+      }
+    },
+    {
+      "marketId": "80dc4fb7-dbb1-4da8-be1c-76dabc5f9549",
+      "title": "Argentina vs. Egypt: Total goals 2.5",
+      "marketType": "total_goals",
+      "line": "2.5",
+      "expectedProviderFamily": "total_goals",
+      "candidateCount": 3,
+      "attachReady": false,
+      "bestCandidate": {
+        "slug": "fifwc-arg-egy-2026-07-07-draw",
+        "question": "Will Argentina vs. Egypt end in a draw?",
+        "eventTitle": "Argentina vs. Egypt",
+        "expectedFamily": "total_goals",
+        "candidateFamily": "match_winner",
+        "reasons": [
+          "provider_family_mismatch",
+          "insufficient_market_relevance"
+        ],
+        "matchedImportantTokens": [
+          "argentina",
+          "egypt"
+        ],
+        "relevant": false
+      }
+    },
+    {
+      "marketId": "05a4ed86-79a1-4758-a239-3dbcd611459b",
+      "title": "Argentina vs. Egypt: Argentina total goals 1.5",
+      "marketType": "team_total_goals",
+      "line": "1.5",
+      "expectedProviderFamily": "team_total_goals",
+      "candidateCount": 3,
+      "attachReady": false,
+      "bestCandidate": {
+        "slug": "fifwc-arg-egy-2026-07-07-draw",
+        "question": "Will Argentina vs. Egypt end in a draw?",
+        "eventTitle": "Argentina vs. Egypt",
+        "expectedFamily": "team_total_goals",
+        "candidateFamily": "match_winner",
+        "reasons": [
+          "provider_family_mismatch"
+        ],
+        "matchedImportantTokens": [
+          "argentina",
+          "egypt"
+        ],
+        "relevant": true
+      }
+    },
+    {
+      "marketId": "83016fc9-d6a7-48a4-a652-0755c75b2a0a",
+      "title": "Will Argentina vs. Egypt end in a draw?",
+      "marketType": "match_winner_1x2",
+      "line": null,
+      "expectedProviderFamily": "match_winner",
+      "candidateCount": 3,
+      "attachReady": true,
+      "bestCandidate": {
+        "slug": "fifwc-arg-egy-2026-07-07-draw",
+        "question": "Will Argentina vs. Egypt end in a draw?",
+        "eventTitle": "Argentina vs. Egypt",
+        "expectedFamily": "match_winner",
+        "candidateFamily": "match_winner",
+        "reasons": [],
+        "matchedImportantTokens": [
+          "argentina",
+          "egypt",
+          "end"
+        ],
+        "relevant": true
+      }
+    },
+    {
+      "marketId": "1edaddba-52b8-4333-8941-4c6ca1ac29ff",
+      "title": "Will Egypt win on 2026-07-07?",
+      "marketType": "match_winner_1x2",
+      "line": null,
+      "expectedProviderFamily": "match_winner",
+      "candidateCount": 3,
+      "attachReady": true,
+      "bestCandidate": {
+        "slug": "fifwc-arg-egy-2026-07-07-egy",
+        "question": "Will Egypt win on 2026-07-07?",
+        "eventTitle": "Argentina vs. Egypt",
+        "expectedFamily": "match_winner",
+        "candidateFamily": "match_winner",
+        "reasons": [],
+        "matchedImportantTokens": [
+          "argentina",
+          "egypt",
+          "win"
+        ],
+        "relevant": true
+      }
+    },
+    {
+      "marketId": "12d96f2c-cec2-48d7-9e2d-a7a09b770c2a",
+      "title": "Argentina vs. Egypt: Argentina +0.5",
+      "marketType": "spread",
+      "line": "0.5",
+      "expectedProviderFamily": "spread",
+      "candidateCount": 3,
+      "attachReady": false,
+      "bestCandidate": {
+        "slug": "fifwc-arg-egy-2026-07-07-draw",
+        "question": "Will Argentina vs. Egypt end in a draw?",
+        "eventTitle": "Argentina vs. Egypt",
+        "expectedFamily": "spread",
+        "candidateFamily": "match_winner",
+        "reasons": [
+          "provider_family_mismatch"
+        ],
+        "matchedImportantTokens": [
+          "argentina",
+          "egypt"
+        ],
+        "relevant": true
+      }
+    }
+  ]
+}

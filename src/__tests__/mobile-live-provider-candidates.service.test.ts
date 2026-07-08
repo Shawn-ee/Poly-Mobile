@@ -202,6 +202,63 @@ describe("mobile live provider candidates", () => {
     }));
   });
 
+  test("rejects team outright winner candidates for event-specific match winner markets", () => {
+    const argEgyptMarket = {
+      id: "argentina-win",
+      title: "Will Argentina win on 2026-07-07?",
+      eventTitle: "Argentina vs. Egypt",
+      marketType: "match_winner_1x2",
+      period: "regulation",
+      line: null,
+      unit: null,
+      marketGroupKey: "regulation-winner",
+      marketGroupTitle: "Regulation Winner",
+      outcomes: [
+        { id: "yes", name: "Yes", side: "yes", displayOrder: 0, referenceOutcomeLabel: "Yes" },
+        { id: "no", name: "No", side: "no", displayOrder: 1, referenceOutcomeLabel: "No" },
+      ],
+    };
+
+    const ranked = rankProviderCandidates(argEgyptMarket, [
+      {
+        slug: "will-argentina-win-the-2026-fifa-world-cup-245",
+        question: "Will Argentina win the 2026 FIFA World Cup?",
+        externalMarketId: "gamma-arg-outright",
+        conditionId: "condition-arg-outright",
+        eventTitle: "2026 FIFA World Cup Winner",
+        active: true,
+        closed: false,
+        archived: false,
+        acceptingOrders: true,
+        bestBid: 0.08,
+        bestAsk: 0.09,
+        spread: 0.01,
+        lastTradePrice: null,
+        volume: null,
+        volume24hr: null,
+        liquidity: null,
+        outcomes: [
+          { name: "Yes", tokenId: "token-yes", outcomePrice: 0.08, displayOrder: 0 },
+          { name: "No", tokenId: "token-no", outcomePrice: 0.92, displayOrder: 1 },
+        ],
+        tags: ["soccer", "fifa-world-cup"],
+        category: "Sports / Soccer",
+        score: 0,
+        attachReadiness: { attachReady: false, reasons: ["not_ranked"] },
+      },
+    ]);
+
+    expect(ranked[0].attachReadiness).toEqual(expect.objectContaining({
+      attachReady: false,
+      expectedFamily: "match_winner",
+      candidateFamily: "match_winner",
+      reasons: expect.arrayContaining(["insufficient_market_relevance"]),
+      relevance: expect.objectContaining({
+        matchedImportantTokens: expect.not.arrayContaining(["egypt"]),
+      }),
+    }));
+  });
+
   test("summarizes exact event provider families with explicit zero line buckets", () => {
     const summary = summarizeProviderCandidateFamilies([
       {

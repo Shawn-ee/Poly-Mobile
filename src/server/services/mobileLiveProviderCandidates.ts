@@ -67,6 +67,7 @@ export type ProviderSearchMode = "market-search" | "sports-events" | "combined";
 type CompactMarketForCandidates = {
   id: string;
   title: string;
+  eventTitle?: string | null;
   marketType: string;
   period: string | null;
   line: Prisma.Decimal | null;
@@ -443,8 +444,10 @@ export function deriveProviderEventSlugHints(
 
 export function buildProviderCandidateSearchQueries(market: CompactMarketForCandidates) {
   const title = market.title.replace(/[:]/g, " ").replace(/\s+/g, " ").trim();
+  const eventTitle = market.eventTitle?.replace(/[:]/g, " ").replace(/\s+/g, " ").trim();
   const withoutLine = title.replace(/[+-]?\d+(\.\d+)?/g, " ").replace(/\s+/g, " ").trim();
   const normalizedTitle = normalizeProviderSearchPhrase(title);
+  const normalizedEventTitle = eventTitle ? normalizeProviderSearchPhrase(eventTitle) : null;
   const normalizedWithoutLine = normalizeProviderSearchPhrase(withoutLine);
   const outcomeTeams = market.outcomes
     .map((outcome) => normalizeProviderSearchPhrase(outcome.name))
@@ -455,6 +458,10 @@ export function buildProviderCandidateSearchQueries(market: CompactMarketForCand
     normalizedTitle,
     withoutLine,
     normalizedWithoutLine,
+    eventTitle,
+    normalizedEventTitle,
+    eventTitle ? `${eventTitle} ${marketTypeSearchAlias(market.marketType)}` : null,
+    normalizedEventTitle ? `${normalizedEventTitle} ${marketTypeSearchAlias(market.marketType)}` : null,
     teamPair,
     teamPair ? `${teamPair} ${marketTypeSearchAlias(market.marketType)}` : null,
     `${withoutLine} ${market.marketType.replace(/_/g, " ")}`,
@@ -697,7 +704,7 @@ function mergeProviderCandidates(candidates: ProviderMarketCandidate[]) {
 
 
 function scoreProviderCandidate(market: CompactMarketForCandidates, candidate: NonNullable<ProviderMarketCandidate>) {
-  const marketText = normalizeText(`${market.title} ${market.marketType} ${market.period ?? ""} ${market.line?.toString() ?? ""}`);
+  const marketText = normalizeText(`${market.eventTitle ?? ""} ${market.title} ${market.marketType} ${market.period ?? ""} ${market.line?.toString() ?? ""}`);
   const candidateText = normalizeText(`${candidate.question} ${candidate.eventTitle ?? ""} ${candidate.category ?? ""} ${candidate.tags.join(" ")}`);
   const marketTokens = new Set(marketText.split(" ").filter((token) => token.length > 2));
   const overlap = candidateText.split(" ").filter((token) => marketTokens.has(token)).length;
@@ -847,7 +854,7 @@ function isGenericBinaryCandidate(candidate: NonNullable<ProviderMarketCandidate
 }
 
 function relevantMarketTokens(market: CompactMarketForCandidates) {
-  const text = normalizeText(`${market.title} ${market.outcomes.map((outcome) => outcome.name).join(" ")}`);
+  const text = normalizeText(`${market.eventTitle ?? ""} ${market.title} ${market.outcomes.map((outcome) => outcome.name).join(" ")}`);
   return Array.from(new Set(text.split(" ").filter((token) =>
     token.length > 2 && !GENERIC_RELEVANCE_TOKENS.has(token) && !/^\d+$/.test(token)
   )));
@@ -892,12 +899,16 @@ async function loadCompactLiveEvent(eventSlug: string) {
 
   return {
     event: {
+      title: event.title,
       externalSlug: event.externalSlug,
       externalEventId: event.externalEventId,
       source: event.source,
       metadata: event.metadata,
     },
-    markets: selectCompactLiveMarkets(event.markets),
+    markets: selectCompactLiveMarkets(event.markets).map((market) => ({
+      ...market,
+      eventTitle: event.title,
+    })),
   };
 }
 

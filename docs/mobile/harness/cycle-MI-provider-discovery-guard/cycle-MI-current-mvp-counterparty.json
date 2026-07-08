@@ -1,0 +1,48 @@
+{
+  "pass": true,
+  "eventSlug": "argentina-vs-egypt",
+  "market": {
+    "id": "02bc8228-01c9-4fa5-a229-642c429a75dc",
+    "title": "Argentina vs. Egypt: Egypt +1.5",
+    "marketType": "spread",
+    "marketGroupKey": "spread",
+    "period": "regulation",
+    "line": "1.5",
+    "referenceSource": "contract-fixture",
+    "externalMarketId": "contract-argentina-vs-egypt-spread-away-1-5",
+    "conditionId": "condition-argentina-vs-egypt-spread-away-1-5"
+  },
+  "outcome": {
+    "id": "2d636231-c32f-44f9-8235-065fcf041049",
+    "name": "Egypt +1.5",
+    "side": "away",
+    "referenceTokenId": "contract-argentina-vs-egypt-spread-away-1-5-away",
+    "referenceOutcomeLabel": "Egypt +1.5"
+  },
+  "maker": {
+    "id": "459f2002-291d-45fc-82ac-c02edbea7d9d",
+    "username": "mobile_route_fill_maker_d23e0dac"
+  },
+  "cleanup": {
+    "enabled": true,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": []
+  },
+  "makerOrder": {
+    "id": "1982899f-adb9-441e-9b30-afc8f6b7131a",
+    "marketId": "02bc8228-01c9-4fa5-a229-642c429a75dc",
+    "outcomeId": "2d636231-c32f-44f9-8235-065fcf041049",
+    "side": "SELL",
+    "price": "0.52",
+    "size": "80",
+    "remaining": "80",
+    "reservedNotional": "0",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "SELL",
+    "price": "0.52",
+    "size": "80",
+    "intendedMobileTaker": "BUY $25 route-backed spread ticket"
+  }
+}
