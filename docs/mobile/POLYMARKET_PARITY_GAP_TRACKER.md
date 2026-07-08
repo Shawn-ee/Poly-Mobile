@@ -616,3 +616,12 @@ For every UI element or interaction, answer:
 - S23 proof passes on `SM-S911U1`, and orderbook/chat remain hidden.
 - Remaining P1: line markets are still `contract-fixture`, not real provider-backed Polymarket line markets.
 - Remaining P1: cashout price/proceeds are backed by deterministic local liquidity for MVP proof; production liquidity/provider price preview is future work.
+
+## Cycle NO Gap Tracker Update
+
+- PM-GAP-111 is opened and verified for provider line fallback discovery hardening.
+- NO closes the discovery-path gap where exact manual slug fallback covered match-winner markets only.
+- NO adds line-family fallback slug generation while preserving strict attach-readiness gates.
+- NO closes a provider safety gap where broad World Cup outright winners could be ranked above exact match-winner slugs for match-specific markets.
+- Current Polymarket Gamma evidence still shows 0 attach-ready line markets for `argentina-vs-egypt`; Spread/Totals/Team Total remain `contract-fixture`.
+- Remaining P1: real provider-backed line market ingestion remains open until attach-ready Polymarket line markets or another approved provider source exists.

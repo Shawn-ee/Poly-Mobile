@@ -330,6 +330,51 @@ describe("mobile live provider candidates", () => {
     ]);
   });
 
+  test("builds exact Polymarket line-market slug fallbacks from event, family, teams, and line", () => {
+    expect(buildProviderCandidateManualSlugFallbacks({
+      title: "Colombia +1.5",
+      marketType: "spread",
+      outcomes: [
+        { id: "yes", name: "Yes", side: "yes", displayOrder: 0 },
+        { id: "no", name: "No", side: "no", displayOrder: 1 },
+      ],
+    }, ["fifwc-col-gha-2026-07-03"])).toEqual(expect.arrayContaining([
+      "fifwc-col-gha-2026-07-03-spread",
+      "fifwc-col-gha-2026-07-03-handicap",
+      "fifwc-col-gha-2026-07-03-col-spread",
+      "fifwc-col-gha-2026-07-03-spread-1-5",
+      "fifwc-col-gha-2026-07-03-col-handicap-15",
+    ]));
+
+    expect(buildProviderCandidateManualSlugFallbacks({
+      title: "Total goals 2.5",
+      marketType: "total_goals",
+      outcomes: [
+        { id: "over", name: "Over 2.5", side: "over", displayOrder: 0 },
+        { id: "under", name: "Under 2.5", side: "under", displayOrder: 1 },
+      ],
+    }, ["fifwc-col-gha-2026-07-03"])).toEqual(expect.arrayContaining([
+      "fifwc-col-gha-2026-07-03-total-goals",
+      "fifwc-col-gha-2026-07-03-over-under",
+      "fifwc-col-gha-2026-07-03-total-goals-2-5",
+      "fifwc-col-gha-2026-07-03-over-25",
+    ]));
+
+    expect(buildProviderCandidateManualSlugFallbacks({
+      title: "Ghana team total goals 1.5",
+      marketType: "team_total_goals",
+      outcomes: [
+        { id: "over", name: "Over 1.5", side: "over", displayOrder: 0 },
+        { id: "under", name: "Under 1.5", side: "under", displayOrder: 1 },
+      ],
+    }, ["fifwc-col-gha-2026-07-03"])).toEqual(expect.arrayContaining([
+      "fifwc-col-gha-2026-07-03-team-total",
+      "fifwc-col-gha-2026-07-03-gha-team-total",
+      "fifwc-col-gha-2026-07-03-team-total-gha",
+      "fifwc-col-gha-2026-07-03-gha-team-goals-1-5",
+    ]));
+  });
+
   test("adds normalized soccer event phrases to provider search queries", () => {
     expect(buildProviderCandidateSearchQueries({
       id: "market-col",

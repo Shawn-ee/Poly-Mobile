@@ -7341,3 +7341,47 @@ Known limitations:
 
 - Line markets remain backend `contract-fixture` rows, not provider-backed Polymarket line markets.
 - No backend route/schema changed in this cycle.
+
+## Cycle NO - Provider Line Fallback Discovery
+
+Feature/page worked on:
+
+- Backend/provider discovery for the current Event Detail line-market gap.
+
+Frontend/harness/backend files touched:
+
+- `src/server/services/mobileLiveProviderCandidates.ts`
+- `src/__tests__/mobile-live-provider-candidates.service.test.ts`
+- `scripts/prove_mobile_mvp_provider_discovery_guard.ts`
+- Evidence/docs:
+  - `docs/mobile/audits/cycle-NO-provider-line-fallback-discovery.md`
+  - `docs/mobile/harness/cycle-NO-provider-line-fallback-discovery/`
+
+Important functions/services touched:
+
+- `buildProviderCandidateManualSlugFallbacks()` now generates exact fallback slug guesses for line families instead of only match-winner markets.
+- `assessCandidateRelevance()` now keeps match-specific two-outcome winner markets on the strict subject/event-context path so broad World Cup outright markets cannot attach.
+- `scripts/prove_mobile_mvp_provider_discovery_guard.ts` now records manual slug fallback evidence.
+
+User interactions supported/proven:
+
+- No new visible mobile interaction changed in this backend/provider cycle.
+- Cycle NO protects the existing Event Detail line flow from being upgraded to provider-backed status with wrong-family or broad-outcome candidates.
+
+State transitions:
+
+- No schema migration was added.
+- No production data was mutated.
+- Current route state remains provider-backed Regulation Winner plus contract-fixture Spread/Totals/Team Total rows.
+
+Validation:
+
+- Provider candidate Jest test passed.
+- Full TypeScript check passed.
+- Provider discovery guard passed.
+- Current provider line availability proof passed.
+
+Known limitations:
+
+- Polymarket Gamma still exposes no attach-ready line markets for the current `argentina-vs-egypt` event.
+- Android proof was not rerun because no mobile UI changed; latest S23 visible proof remains Cycle NN.

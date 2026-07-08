@@ -2884,3 +2884,16 @@ Cycle NN implementation notes:
 
 - No backend route/schema changed.
 - The proof confirms the existing backend order route can support the Local MVP sell/cashout path when crossing liquidity exists.
+
+## Cycle NO - Provider Line Fallback Discovery
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail provider discovery | `discoverMobileLiveProviderCandidates()` via provider-candidate scripts/routes | Service / proof script | Local backend context | Event slug, provider search mode, optional provider event slugs | `manualSlugFallbacks`, `providerCandidateFamilySummary`, `targets[].attachProposal`, `targets[].bestCandidate.attachReadiness` | `Event`, `Market`, `Outcome` | None added. Existing line fixtures remain explicit route data. | Real provider-backed Spread/Totals/Team Total markets remain unavailable for current event. |
+| Current provider line availability | Polymarket Gamma `/events?slug=fifwc-arg-egy-2026-07-07` | GET | Public provider API | Event slug | Provider event markets, family counts, line market count | None directly; compared to local `Event`/`Market`/`Outcome` route data | None added. | Gamma exposes only match-winner markets for this inspected event. |
+| Current Event Detail route | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | `marketSourceSummary.regulationWinner.status`, `marketSourceSummary.lineMarkets.status`, market source fields | `Event`, `Market`, `Outcome` | Backend `contract-fixture` line rows remain. | Provider line ingestion can only attach real lines once attach-ready provider candidates exist. |
+
+Cycle NO implementation notes:
+
+- No backend route/schema changed.
+- Discovery now searches line-family exact slug fallbacks and keeps strict attach-readiness gates.

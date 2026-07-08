@@ -75,6 +75,8 @@ async function main() {
     eventSlug: discovery.eventSlug,
     providerSearchMode: discovery.providerSearchMode,
     providerEventSlugs: discovery.providerEventSlugs,
+    manualSlugFallbacks: discovery.manualSlugFallbacks,
+    manualSlugFallbackCandidateCount: discovery.manualSlugFallbackCandidateCount,
     providerCandidateFamilySummary: discovery.providerCandidateFamilySummary,
     targetMarketCount: discovery.targetMarketCount,
     attachReadyCandidateCount: discovery.attachReadyCandidateCount,

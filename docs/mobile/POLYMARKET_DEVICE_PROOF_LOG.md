@@ -727,3 +727,30 @@ Pass for current Local MVP line cashout flow.
 
 Remaining gaps:
 Line markets are contract fixtures, not provider-backed Polymarket lines. Cashout uses deterministic backend liquidity for MVP proof, not production liquidity.
+
+### 2026-07-08 - Cycle NO - Provider line fallback discovery
+
+Reference device:
+Not used. This cycle was a backend/provider discovery hardening cycle using Polymarket Gamma public API evidence.
+
+Holiwyn device:
+No new Android UI proof. The mobile UI did not change. Latest S23 visible proof remains Cycle NN.
+
+Holiwyn app mode:
+Backend/provider proof against local backend state and public Polymarket Gamma.
+
+Holiwyn actions:
+No manual mobile interaction changed. Provider discovery was expanded and hardened before future mobile line data can be marked provider-backed.
+
+Evidence:
+- `docs/mobile/harness/cycle-NO-provider-line-fallback-discovery/cycle-NO-provider-discovery-guard.json`
+- `docs/mobile/harness/cycle-NO-provider-line-fallback-discovery/cycle-NO-provider-match-line-availability.json`
+
+Smoke/tests:
+Provider candidate Jest test, full TypeScript check, provider discovery guard, and current provider line availability proof passed.
+
+Result:
+Pass for provider discovery hardening.
+
+Remaining gaps:
+Spread/Totals/Team Total remain backend contract fixtures for `argentina-vs-egypt`; no attach-ready Polymarket line markets are exposed by the inspected Gamma event.

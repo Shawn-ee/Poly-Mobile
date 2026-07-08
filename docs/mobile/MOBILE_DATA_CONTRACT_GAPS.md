@@ -6026,3 +6026,33 @@ Future migration concern:
 
 - Replace fixture line markets with provider-backed line markets when available.
 - Keep cashout route proof tied to owned `marketId`/`outcomeId`/line identity so provider-backed lines can replace fixtures without changing the mobile interaction model.
+
+## Cycle NO - Provider Line Fallback Discovery
+
+Closed or narrowed:
+
+- Added exact Polymarket fallback slug generation for line-family discovery, covering spread/handicap, total goals, over-under, team-total/team-goal, halves, corners, and correct-score style suffixes.
+- Hardened provider candidate relevance so broad tournament outrights cannot attach to match-specific winner markets.
+- Proved current line targets still reject wrong-family match-winner candidates.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total rows for the inspected match.
+- Provider line candidates with matching family, condition id, external market id, and complete token ids.
+
+Schema mismatch:
+
+- No schema mismatch was found or introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- Existing backend `contract-fixture` lines remain in place.
+- No frontend-only mock data was added.
+
+Future migration concern:
+
+- Once Gamma/CLOB or another approved provider exposes attach-ready line markets, the existing selection snapshot and cashout/order proof paths should support replacing fixture line ids with provider-backed ids.

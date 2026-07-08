@@ -243,19 +243,104 @@ export function buildProviderCandidateManualSlugFallbacks(
 ) {
   const exactEventSlugs = Array.from(new Set(providerEventSlugs.map(sanitizeSlug).filter(Boolean)));
   if (exactEventSlugs.length === 0) return [];
-  if (expectedProviderMarketFamily({
+  const family = expectedProviderMarketFamily({
     title: market.title,
     marketType: market.marketType,
     period: null,
     marketGroupKey: null,
     marketGroupTitle: null,
-  }) !== "match_winner") {
-    return [];
+  });
+  if (family !== "match_winner") {
+    return exactEventSlugs.flatMap((eventSlug) => buildLineMarketSlugFallbacks(eventSlug, market, family));
   }
 
   const suffix = inferMatchWinnerSlugSuffix(market);
   if (!suffix) return [];
   return exactEventSlugs.map((eventSlug) => `${eventSlug}-${suffix}`);
+}
+
+function buildLineMarketSlugFallbacks(
+  eventSlug: string,
+  market: Pick<CompactMarketForCandidates, "title" | "marketType" | "outcomes">,
+  family: ProviderMarketFamily,
+) {
+  const suffixes = new Set<string>();
+  const line = inferLineSlugFragments(market.title);
+  const teamCodes = inferTeamCodes(market);
+
+  if (family === "spread") {
+    suffixes.add("spread");
+    suffixes.add("handicap");
+    for (const code of teamCodes) {
+      suffixes.add(`${code}-spread`);
+      suffixes.add(`${code}-handicap`);
+    }
+    for (const fragment of line) {
+      suffixes.add(`spread-${fragment}`);
+      suffixes.add(`handicap-${fragment}`);
+      for (const code of teamCodes) {
+        suffixes.add(`${code}-spread-${fragment}`);
+        suffixes.add(`${code}-handicap-${fragment}`);
+      }
+    }
+  } else if (family === "total_goals") {
+    suffixes.add("total-goals");
+    suffixes.add("over-under");
+    suffixes.add("goals");
+    for (const fragment of line) {
+      suffixes.add(`total-goals-${fragment}`);
+      suffixes.add(`over-${fragment}`);
+      suffixes.add(`under-${fragment}`);
+    }
+  } else if (family === "team_total_goals") {
+    suffixes.add("team-total");
+    suffixes.add("team-goals");
+    for (const code of teamCodes) {
+      suffixes.add(`${code}-team-total`);
+      suffixes.add(`team-total-${code}`);
+      suffixes.add(`${code}-team-goals`);
+      suffixes.add(`${code}-total-goals`);
+    }
+    for (const fragment of line) {
+      suffixes.add(`team-total-${fragment}`);
+      for (const code of teamCodes) {
+        suffixes.add(`${code}-team-total-${fragment}`);
+        suffixes.add(`${code}-team-goals-${fragment}`);
+      }
+    }
+  } else if (family === "first_half") {
+    suffixes.add("first-half");
+    suffixes.add("1h");
+    suffixes.add("first-half-winner");
+    suffixes.add("1h-winner");
+    for (const fragment of line) {
+      suffixes.add(`first-half-total-goals-${fragment}`);
+      suffixes.add(`1h-total-goals-${fragment}`);
+    }
+  } else if (family === "second_half") {
+    suffixes.add("second-half");
+    suffixes.add("2h");
+    suffixes.add("second-half-winner");
+    suffixes.add("2h-winner");
+    for (const fragment of line) {
+      suffixes.add(`second-half-total-goals-${fragment}`);
+      suffixes.add(`2h-total-goals-${fragment}`);
+    }
+  } else if (family === "corners") {
+    suffixes.add("corners");
+    suffixes.add("total-corners");
+    for (const fragment of line) {
+      suffixes.add(`corners-${fragment}`);
+      suffixes.add(`total-corners-${fragment}`);
+    }
+  } else if (family === "correct_score") {
+    suffixes.add("correct-score");
+    suffixes.add("final-score");
+  } else {
+    return [];
+  }
+
+  return Array.from(suffixes).map((suffix) => `${eventSlug}-${suffix}`);
 }
 
 export function summarizeProviderCandidateFamilies(candidates: ProviderMarketCandidate[]) {
@@ -791,6 +876,11 @@ function assessCandidateRelevance(
   const requiredOutcomeMatches = market.outcomes.length >= 3 ? 2 : 1;
   const expectedFamily = expectedProviderMarketFamily(market);
   const candidateFamily = classifyProviderMarketFamily(candidate);
+  const strictBinaryMatchWinner =
+    expectedFamily === "match_winner" &&
+    candidateFamily === "match_winner" &&
+    market.outcomes.length === 2 &&
+    candidate.outcomes.length === 2;
   const lineFamilyRelevant =
     expectedFamily !== "other" &&
     expectedFamily !== "match_winner" &&
@@ -799,15 +889,14 @@ function assessCandidateRelevance(
     candidateScore >= 30;
   const binaryQuestionSubjectRelevant = isBinaryQuestionSubjectRelevant(market, candidate);
   const binaryQuestionRelevant =
-    isGenericBinaryMarket(market) &&
-    isGenericBinaryCandidate(candidate) &&
+    (strictBinaryMatchWinner || (isGenericBinaryMarket(market) && isGenericBinaryCandidate(candidate))) &&
     binaryQuestionSubjectRelevant &&
     matchedImportantTokens.length >= Math.min(3, marketTokens.length) &&
     candidateScore >= 30;
   const relevant =
     lineFamilyRelevant ||
     binaryQuestionRelevant ||
-    (
+    (!strictBinaryMatchWinner &&
       matchedImportantTokens.length >= MIN_RELEVANT_TOKEN_MATCHES &&
       outcomeNameMatches >= requiredOutcomeMatches &&
       candidateScore >= 30
@@ -838,7 +927,18 @@ function isBinaryQuestionSubjectRelevant(
   const candidateQuestionTokens = new Set(normalizeText(candidate.question).split(" ").filter(Boolean));
   if (marketQuestionTokens.length === 0) return false;
   const required = marketQuestionTokens.filter((token) => token !== "end");
-  return required.length > 0 && required.every((token) => candidateQuestionTokens.has(token));
+  if (required.length === 0 || !required.every((token) => candidateQuestionTokens.has(token))) {
+    return false;
+  }
+
+  const eventContextTokens = matchEventContextTokens(market);
+  if (eventContextTokens.length === 0) {
+    return true;
+  }
+  const candidateContextTokens = new Set(
+    normalizeText(`${candidate.question} ${candidate.eventTitle ?? ""} ${candidate.slug}`).split(" ").filter(Boolean),
+  );
+  return eventContextTokens.every((token) => candidateContextTokens.has(token));
 }
 
 function isGenericBinaryMarket(market: CompactMarketForCandidates) {
@@ -858,6 +958,14 @@ function relevantMarketTokens(market: CompactMarketForCandidates) {
   return Array.from(new Set(text.split(" ").filter((token) =>
     token.length > 2 && !GENERIC_RELEVANCE_TOKENS.has(token) && !/^\d+$/.test(token)
   )));
+}
+
+function matchEventContextTokens(market: CompactMarketForCandidates) {
+  const text = normalizeText(market.eventTitle ?? "");
+  if (!/\bvs\b/.test(text)) return [];
+  return text
+    .split(" ")
+    .filter((token) => token.length > 2 && !GENERIC_RELEVANCE_TOKENS.has(token) && !/^\d+$/.test(token) && token !== "vs");
 }
 
 function countOutcomeNameMatches(
@@ -1004,6 +1112,29 @@ function inferMatchWinnerSlugSuffix(market: Pick<CompactMarketForCandidates, "ti
     }
   }
   return null;
+}
+
+function inferTeamCodes(market: Pick<CompactMarketForCandidates, "title" | "outcomes">) {
+  const text = normalizeText(`${market.title} ${market.outcomes.map((outcome) => outcome.name).join(" ")}`);
+  const codes = new Set<string>();
+  for (const [name, code] of Object.entries(PROVIDER_MARKET_SLUG_CODE_BY_NAME)) {
+    if (new RegExp(`\\b${escapeRegExp(name)}\\b`).test(text)) {
+      codes.add(code);
+    }
+  }
+  return Array.from(codes);
+}
+
+function inferLineSlugFragments(title: string) {
+  const fragments = new Set<string>();
+  const matches = title.match(/[+-]?\d+(?:\.\d+)?/g) ?? [];
+  for (const match of matches) {
+    const unsigned = match.replace(/^[+-]/, "");
+    if (!unsigned) continue;
+    fragments.add(unsigned.replace(".", "-"));
+    fragments.add(unsigned.replace(".", ""));
+  }
+  return Array.from(fragments);
 }
 
 function escapeRegExp(value: string) {

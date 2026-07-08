@@ -4986,3 +4986,31 @@ Decision:
 
 - Pass/fail: Pass for current Local MVP line cashout flow.
 - Not a final Polymarket line-market parity pass because provider-backed lines remain unavailable.
+
+## Cycle NO
+
+Gate status: Pass for provider discovery hardening
+
+Scope: Improve and prove Polymarket-first provider discovery for current Event Detail line-market data without falsely marking fixture lines as provider-backed.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NO-provider-line-fallback-discovery.md`
+- `docs/mobile/harness/cycle-NO-provider-line-fallback-discovery/cycle-NO-provider-discovery-guard.json`
+- `docs/mobile/harness/cycle-NO-provider-line-fallback-discovery/cycle-NO-provider-match-line-availability.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NO-P0-01 | P0 | Pass | Unit test and discovery guard show line-family fallback slugs. | Fix `buildProviderCandidateManualSlugFallbacks()`. |
+| NO-P0-02 | P0 | Pass | Guard shows 3 exact match-winner candidates attach-ready. | Fix match-winner relevance/ranking. |
+| NO-P0-03 | P0 | Pass | Guard shows `unsafeOutrightAttachCount: 0`. | Tighten match-specific candidate relevance. |
+| NO-P0-04 | P0 | Pass | Guard shows line targets reject wrong-family candidates and have 0 attach-ready line targets. | Tighten family/relevance gates. |
+| NO-P0-05 | P0 | Pass | Availability proof shows Gamma line market count 0 and route line status `contract-fixture`. | Fix provider availability proof or route source summary. |
+| NO-P1-01 | P1 | Partial | Real line markets remain unavailable. | Attach real provider-backed line markets when an approved source exposes them. |
+
+Decision:
+
+- Pass/fail: Pass for backend/provider discovery hardening.
+- Not a visible UI parity pass and not a final line-market parity pass.
