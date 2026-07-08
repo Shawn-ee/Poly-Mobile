@@ -466,6 +466,18 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
       contractFixtureCount: contractFixtureLineMarkets.length,
       status: lineMarketStatus,
       families: Array.from(new Set(lineMarkets.map((market) => market.marketType).filter((value): value is string => Boolean(value)))),
+      providerAvailability: {
+        source: "polymarket-gamma",
+        status: realLineMarkets.length > 0 ? "available" : contractFixtureLineMarkets.length > 0 ? "unavailable" : "unknown",
+        providerBackedLineMarketCount: realLineMarkets.length,
+        contractFixtureLineMarketCount: contractFixtureLineMarkets.length,
+        reason:
+          realLineMarkets.length > 0
+            ? "Route includes provider-backed Polymarket line markets."
+            : contractFixtureLineMarkets.length > 0
+              ? "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures."
+              : "Line-market provider availability is unknown because no route-visible line markets are present.",
+      },
       reason:
         lineMarketStatus === "provider-backed"
           ? "At least one line market is provider-backed."

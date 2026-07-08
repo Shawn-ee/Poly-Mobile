@@ -2,6 +2,38 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle NA - Line Provider Availability Contract
+
+Feature/page worked on:
+
+- Backend/mobile market source summary contract for Local MVP line markets.
+
+Frontend/services touched:
+
+- `src/server/services/mobileLiveEventDetail.ts`
+- `mobile/src/types.ts`
+- `mobile/src/mocks/worldCup.ts`
+- `src/__tests__/mobile-live-event-detail.test.ts`
+- `mobile/src/__tests__/worldCupAdapter.test.ts`
+
+User interactions supported/proven:
+
+- On S23, opened Home, switched to Live, returned Home, then completed Event Detail -> local Spread ticket -> swipe buy -> Portfolio/history.
+
+Backend/API route changed:
+
+- `/api/events?...includeMobileMarkets=1...` and `/api/mobile/events/:slug/live-detail` now include `marketSourceSummary.lineMarkets.providerAvailability`.
+
+Verified:
+
+- Backend route proof passed: `docs/mobile/harness/cycle-NA-line-provider-availability-contract/cycle-NA-line-provider-availability-route.json`.
+- S23 proof passed: `docs/mobile/harness/cycle-NA-line-provider-availability-contract/cycle-NA-current-mvp-s23-visible-flow.json`.
+- Backend Jest, focused mobile Vitest, mobile typecheck, and `git diff --check` passed.
+
+Known limitations:
+
+- Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected events.
+
 ## Cycle MZ - Backend Live Status Route
 
 Feature/page worked on:

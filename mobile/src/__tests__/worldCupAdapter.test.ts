@@ -258,6 +258,13 @@ describe("world cup adapter", () => {
             contractFixtureCount: 4,
             status: "contract-fixture",
             families: ["spread", "total_goals", "team_total_goals"],
+            providerAvailability: {
+              source: "polymarket-gamma",
+              status: "unavailable",
+              providerBackedLineMarketCount: 0,
+              contractFixtureLineMarketCount: 4,
+              reason: "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures.",
+            },
             reason: "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets.",
           },
         },
@@ -285,7 +292,17 @@ describe("world cup adapter", () => {
 
     expect(normalizeEventDetail(detail)?.marketSourceSummary).toMatchObject({
       regulationWinner: { status: "provider-backed", polymarketCount: 3 },
-      lineMarkets: { status: "contract-fixture", polymarketCount: 0, contractFixtureCount: 4 },
+      lineMarkets: {
+        status: "contract-fixture",
+        polymarketCount: 0,
+        contractFixtureCount: 4,
+        providerAvailability: {
+          source: "polymarket-gamma",
+          status: "unavailable",
+          providerBackedLineMarketCount: 0,
+          contractFixtureLineMarketCount: 4,
+        },
+      },
     });
   });
 

@@ -472,6 +472,13 @@ describe("mobile live event detail contract", () => {
         contractFixtureCount: 3,
         status: "contract-fixture",
         families: ["spread", "total_goals", "team_total_goals"],
+        providerAvailability: {
+          source: "polymarket-gamma",
+          status: "unavailable",
+          providerBackedLineMarketCount: 0,
+          contractFixtureLineMarketCount: 3,
+          reason: "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures.",
+        },
       },
     });
   });

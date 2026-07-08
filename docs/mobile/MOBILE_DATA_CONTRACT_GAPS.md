@@ -2,6 +2,26 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle NA - Line Provider Availability Contract
+
+Closed or narrowed:
+
+- Backend/mobile payloads now include `marketSourceSummary.lineMarkets.providerAvailability`.
+- Route proof shows current live events report line provider status `unavailable`, provider-backed line count `0`, and contract fixture line count greater than `0`.
+- S23 proof verifies the visible Local MVP ticket/order/Portfolio path still passes after the contract change.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected events.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Existing `contract-fixture` line markets remain backend-shaped Local MVP fallback rows and are now counted explicitly in route data.
+
 ## Cycle MZ - Backend Live Status Route
 
 Closed or narrowed:

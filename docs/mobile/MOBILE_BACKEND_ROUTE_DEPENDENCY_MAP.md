@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle NA - Line Provider Availability Contract
+
+Cycle NA adds a structured line-market provider availability contract to the mobile event payload.
+
+- Route proof: `docs/mobile/harness/cycle-NA-line-provider-availability-contract/cycle-NA-line-provider-availability-route.json`.
+- S23 proof: `docs/mobile/harness/cycle-NA-line-provider-availability-contract/cycle-NA-current-mvp-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-NA-line-provider-availability-contract.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Line-market provider availability disclosure | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10&status=live`; `/api/mobile/events/:slug/live-detail` | GET | Public event viewing | None | `marketSourceSummary.lineMarkets.providerAvailability.source`, `status`, `providerBackedLineMarketCount`, `contractFixtureLineMarketCount`, `reason` | Existing `Event`, `Market`, `Outcome`; no schema change | Existing backend-shaped `contract-fixture` line markets remain Local MVP fallback rows and are counted in the new availability field | Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected Polymarket events. |
+
 ## Cycle MZ - Backend Live Status Route
 
 Cycle MZ closes the backend `status=live` route gap discovered by the Live page.

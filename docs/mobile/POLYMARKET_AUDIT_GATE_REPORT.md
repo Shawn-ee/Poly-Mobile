@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle NA
+
+Gate status: Pass
+
+Scope: Line provider availability contract.
+
+Decision:
+
+- P0 failed: 0 for focused route/data-contract scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-NA-line-provider-availability-contract/cycle-NA-line-provider-availability-route.json`, `docs/mobile/harness/cycle-NA-line-provider-availability-contract/cycle-NA-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-NA-line-provider-availability-contract/`, `docs/mobile/audits/cycle-NA-line-provider-availability-contract.md`.
+- Notes: The route now exposes `marketSourceSummary.lineMarkets.providerAvailability`, making current Polymarket line availability explicit instead of relying only on generic contract-fixture labels. S23 proof confirms the visible Local MVP flow still passes.
+
 ## Cycle MZ
 
 Gate status: Pass
