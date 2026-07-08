@@ -16,6 +16,7 @@ import {
   openOrderValue,
 } from "../services/openOrderEconomicsService";
 import type { OrderMode } from "../services/orderService";
+import { canCashOutPosition } from "../services/positionCloseService";
 import type { PortfolioValueHistory, PortfolioValueHistoryPoint, PortfolioValueHistoryRange } from "../types";
 import type { BinaryContractSide, TicketSelection } from "./TradeTicket";
 
@@ -530,6 +531,9 @@ const portfolioPageCopy = {
   },
 };
 
+const PORTFOLIO_CHART_TOP = 14;
+const PORTFOLIO_CHART_HEIGHT = 92;
+
 function PortfolioSparkline({
   range,
   source,
@@ -550,7 +554,7 @@ function PortfolioSparkline({
   const plotted = points.map((point, index) => ({
     key: `${point.timestamp}-${index}`,
     left: points.length <= 1 ? 0 : (index / (points.length - 1)) * 100,
-    top: 34 + (1 - (point.value - min) / spread) * 122,
+    top: PORTFOLIO_CHART_TOP + (1 - (point.value - min) / spread) * PORTFOLIO_CHART_HEIGHT,
     value: point.value,
   }));
   const trend = points.length >= 2 && points[points.length - 1].value >= points[0].value ? "up" : "down";
@@ -565,7 +569,7 @@ function PortfolioSparkline({
 
   return (
     <Pressable
-      accessibilityLabel={`portfolio-performance-chart portfolio-chart-data-driven portfolio-chart-scaled-account-range portfolio-chart-touchable portfolio-performance-chart-range-${range} portfolio-chart-source-${source} portfolio-chart-status-${status} portfolio-chart-point-count-${pointCount} portfolio-chart-trend-${trend} portfolio-chart-value-spread-${rangeSpread} portfolio-chart-selected-index-${selectedIndex} portfolio-chart-selected-value-${Math.round(selectedValue)}`}
+      accessibilityLabel={`portfolio-performance-chart portfolio-chart-contained-above-range portfolio-chart-data-driven portfolio-chart-scaled-account-range portfolio-chart-touchable portfolio-performance-chart-range-${range} portfolio-chart-source-${source} portfolio-chart-status-${status} portfolio-chart-point-count-${pointCount} portfolio-chart-trend-${trend} portfolio-chart-value-spread-${rangeSpread} portfolio-chart-selected-index-${selectedIndex} portfolio-chart-selected-value-${Math.round(selectedValue)}`}
       onPress={() => setSelectedIndexOverride(pointCount > 2 ? Math.floor(pointCount / 2) : Math.max(pointCount - 1, 0))}
       testID="portfolio-performance-chart"
       style={styles.chartArea}
@@ -624,7 +628,7 @@ export function Portfolio({
   openOrders,
   activities,
   syncStatus,
-  closePosition,
+  openCashoutPosition,
   openPositionTrade,
   cancelOpenOrder,
   loadValueHistory,
@@ -637,7 +641,7 @@ export function Portfolio({
   openOrders: OpenOrder[];
   activities: PortfolioActivity[];
   syncStatus: PortfolioSyncStatus;
-  closePosition: (position: Position) => void;
+  openCashoutPosition: (position: Position) => void;
   openPositionTrade: (position: Position, side: "buy" | "sell") => void;
   cancelOpenOrder: (order: OpenOrder) => void;
   loadValueHistory?: (range: PortfolioValueHistoryRange) => Promise<PortfolioValueHistory>;
@@ -649,7 +653,6 @@ export function Portfolio({
   const [activeTab, setActiveTab] = useState<PortfolioTab>("positions");
   const [activeRange, setActiveRange] = useState<PortfolioValueHistoryRange>("1D");
   const [serverValueHistory, setServerValueHistory] = useState<PortfolioValueHistory | null>(null);
-  const [settingsOpen, setSettingsOpen] = useState(false);
   const closedActivityCount = activities.filter((activity) => activity.action === "closed").length;
   const latestActivity = activities[0];
   const detailCopy = portfolioDetailCopy[locale];
@@ -663,9 +666,21 @@ export function Portfolio({
     positionsValue: currentValueTotal(positions),
     pnl: portfolioPnl,
   });
+  const routeErrorValueHistory: PortfolioValueHistory = {
+    range: activeRange,
+    ranges: valueHistory.ranges,
+    source: "portfolio-value-history-route",
+    status: "error",
+    generatedAt: new Date(0).toISOString(),
+    lastUpdated: null,
+    emptyState: "no-history",
+    points: [],
+  };
   const displayedValueHistory =
-    serverValueHistory?.range === activeRange && serverValueHistory.status !== "error"
+    serverValueHistory?.range === activeRange
       ? serverValueHistory
+      : loadValueHistory
+        ? routeErrorValueHistory
       : valueHistory;
 
   useEffect(() => {
@@ -679,7 +694,16 @@ export function Portfolio({
         if (!cancelled) setServerValueHistory(history);
       })
       .catch(() => {
-        if (!cancelled) setServerValueHistory(null);
+        if (!cancelled) setServerValueHistory({
+          range: activeRange,
+          ranges: valueHistory.ranges,
+          source: "portfolio-value-history-route",
+          status: "error",
+          generatedAt: new Date().toISOString(),
+          lastUpdated: null,
+          emptyState: "no-history",
+          points: [],
+        });
       });
     return () => {
       cancelled = true;
@@ -798,46 +822,11 @@ export function Portfolio({
   return (
     <ScrollView ref={scrollRef} accessibilityLabel={`portfolio-screen ${latestOrder ? "portfolio-result-content-landing portfolio-result-lands-at-account-header" : "portfolio-normal-browse"}`} testID="portfolio-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
       <View accessibilityLabel="portfolio-profile-header portfolio-header-retail-density" testID="portfolio-profile-header" style={styles.profileHeader}>
-        <View style={styles.profileLeft}>
+        <View accessibilityLabel="portfolio-account-entry-top-left portfolio-account-entry-display-only" style={styles.profileLeft} testID="portfolio-account-entry-top-left">
           <PortfolioAvatar />
           <Text style={styles.profileName}>{pageCopy.profile}</Text>
         </View>
-        <Pressable
-          accessibilityLabel={`portfolio-settings portfolio-settings-state-${settingsOpen ? "open" : "closed"}`}
-          onPress={() => setSettingsOpen((open) => !open)}
-          testID="portfolio-settings"
-          style={styles.settingsIconButton}
-        >
-          <Ionicons name="settings-outline" color="#f8fafc" size={25} />
-        </Pressable>
       </View>
-      {settingsOpen && (
-        <View accessibilityLabel="portfolio-settings-sheet portfolio-settings-state-open local-mvp-account-sheet" testID="portfolio-settings-sheet" style={styles.settingsSheet}>
-          <View style={styles.settingsSheetHeader}>
-            <View>
-              <Text style={styles.settingsSheetTitle}>Account settings</Text>
-              <Text style={styles.settingsSheetSub}>{pageCopy.profile}</Text>
-            </View>
-            <Pressable accessibilityLabel="portfolio-settings-close" onPress={() => setSettingsOpen(false)} testID="portfolio-settings-close" style={styles.settingsCloseButton}>
-              <Ionicons name="close" color="#f8fafc" size={20} />
-            </Pressable>
-          </View>
-          <View style={styles.settingsRows}>
-            <View accessibilityLabel={`portfolio-settings-language-${locale}`} style={styles.settingsRow} testID="portfolio-settings-language">
-              <Text style={styles.settingsRowLabel}>Language</Text>
-              <Text style={styles.settingsRowValue}>{locale === "zh" ? "Chinese" : "English"}</Text>
-            </View>
-            <View accessibilityLabel="portfolio-settings-fake-token-mode" style={styles.settingsRow} testID="portfolio-settings-fake-token-mode">
-              <Text style={styles.settingsRowLabel}>Trading mode</Text>
-              <Text style={styles.settingsRowValue}>Fake-token MVP</Text>
-            </View>
-            <View accessibilityLabel="portfolio-settings-funding-disabled-local-mvp" style={styles.settingsRow} testID="portfolio-settings-funding-disabled-local-mvp">
-              <Text style={styles.settingsRowLabel}>Funding</Text>
-              <Text style={styles.settingsRowValue}>Disabled</Text>
-            </View>
-          </View>
-        </View>
-      )}
       <View accessibilityLabel="fake-balance-card portfolio-value-retail-density portfolio-header-dollar-value" testID="fake-balance-card" style={styles.valueBlock}>
         <Text style={styles.portfolioValue}>{portfolioHeaderMoney(portfolioValue)}</Text>
         <Text style={[styles.portfolioPnlLine, portfolioPnl >= 0 ? styles.pnlPositive : styles.pnlNegative]}>
@@ -996,14 +985,16 @@ export function Portfolio({
                   <Text style={styles.positionChance}>{Math.round(position.currentPrice ? position.currentPrice * 100 : position.probability)}% {pageCopy.chance}</Text>
                 </View>
                 <View style={styles.positionQuickActions}>
-                  <Pressable
-                    accessibilityLabel={`portfolio-position-cash-out-${position.id}`}
-                    onPress={() => openPositionTrade(position, "sell")}
-                    style={styles.cashOutButton}
-                    testID={`portfolio-position-cash-out-${position.id}`}
-                  >
-                    <Text style={styles.cashOutText}>{pageCopy.cashOut}</Text>
-                  </Pressable>
+                  {canCashOutPosition(position) && (
+                    <Pressable
+                      accessibilityLabel={`portfolio-position-cash-out-${position.id}`}
+                      onPress={() => openCashoutPosition(position)}
+                      style={styles.cashOutButton}
+                      testID={`portfolio-position-cash-out-${position.id}`}
+                    >
+                      <Text style={styles.cashOutText}>{pageCopy.cashOut}</Text>
+                    </Pressable>
+                  )}
                   <Pressable
                     accessibilityLabel={`position-trade-buy-${position.id}`}
                     onPress={() => openPositionTrade(position, "buy")}
@@ -1078,22 +1069,26 @@ export function Portfolio({
                 >
                   <Text style={styles.positionTradeButtonText}>{t.buy}</Text>
                 </Pressable>
-                <Pressable
-                  accessibilityLabel={`position-trade-sell-${position.id}`}
-                  onPress={() => openPositionTrade(position, "sell")}
-                  style={styles.positionTradeButton}
-                  testID={`position-trade-sell-${position.id}`}
-                >
-                  <Text style={styles.positionTradeButtonText}>{t.sell}</Text>
-                </Pressable>
-                <Pressable
-                  accessibilityLabel={`close-position-${position.id}`}
-                  onPress={() => closePosition(position)}
-                  style={styles.closeButton}
-                  testID={`close-position-${position.id}`}
-                >
-                  <Text style={styles.closeButtonText}>{t.closePosition}</Text>
-                </Pressable>
+                {canCashOutPosition(position) && (
+                  <Pressable
+                    accessibilityLabel={`position-trade-sell-${position.id}`}
+                    onPress={() => openCashoutPosition(position)}
+                    style={styles.positionTradeButton}
+                    testID={`position-trade-sell-${position.id}`}
+                  >
+                    <Text style={styles.positionTradeButtonText}>{t.sell}</Text>
+                  </Pressable>
+                )}
+                {canCashOutPosition(position) && (
+                  <Pressable
+                    accessibilityLabel={`close-position-${position.id}`}
+                    onPress={() => openCashoutPosition(position)}
+                    style={styles.closeButton}
+                    testID={`close-position-${position.id}`}
+                  >
+                    <Text style={styles.closeButtonText}>{t.closePosition}</Text>
+                  </Pressable>
+                )}
               </View>
             </View>
           ))}
@@ -1286,21 +1281,11 @@ const styles = StyleSheet.create({
   avatarColorStopYellow: { right: -4, top: 2, width: 44, height: 44, backgroundColor: "#facc15" },
   avatarColorStopBlue: { left: 4, bottom: -12, width: 42, height: 42, backgroundColor: "#7c3aed" },
   profileName: { color: "#e5e7eb", fontSize: 20, fontWeight: "500", flexShrink: 1 },
-  settingsIconButton: { width: 42, height: 42, alignItems: "center", justifyContent: "center" },
-  settingsSheet: { marginHorizontal: 24, marginTop: 4, marginBottom: 8, padding: 14, borderRadius: 16, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
-  settingsSheetHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
-  settingsSheetTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "700" },
-  settingsSheetSub: { color: "#8b94a5", fontSize: 13, fontWeight: "500", marginTop: 3 },
-  settingsCloseButton: { width: 34, height: 34, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
-  settingsRows: { gap: 8, marginTop: 14 },
-  settingsRow: { minHeight: 42, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 14, paddingHorizontal: 12, borderRadius: 12, backgroundColor: "#0b1220" },
-  settingsRowLabel: { color: "#a8b0bf", fontSize: 14, fontWeight: "500" },
-  settingsRowValue: { color: "#f8fafc", fontSize: 14, fontWeight: "600", textAlign: "right" },
   valueBlock: { paddingHorizontal: 24, paddingTop: 4 },
   portfolioValue: { color: "#f8fafc", fontSize: 50, fontWeight: "300" },
   portfolioPnlLine: { fontSize: 17, fontWeight: "500", marginTop: 0 },
   cashText: { color: "#a8b0bf" },
-  chartArea: { height: 142, marginTop: 8, marginHorizontal: 22, position: "relative" },
+  chartArea: { height: 118, marginTop: 6, marginHorizontal: 22, marginBottom: 6, position: "relative", overflow: "hidden" },
   chartSegment: { position: "absolute", height: 6, borderRadius: 999, backgroundColor: "#22c55e" },
   chartSegmentOne: { left: "0%", top: 68, width: "17%" },
   chartSegmentTwo: { left: "16%", top: 72, width: "15%", transform: [{ rotate: "7deg" }] },
@@ -1317,7 +1302,7 @@ const styles = StyleSheet.create({
   chartReadout: { position: "absolute", top: 0, left: 0, minWidth: 124, minHeight: 58, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937", zIndex: 2 },
   chartReadoutValue: { color: "#f8fafc", fontSize: 17, fontWeight: "700" },
   chartReadoutLabel: { color: "#22c55e", fontSize: 12, fontWeight: "700", marginTop: 2 },
-  rangeBrandRow: { minHeight: 46, marginTop: 0, paddingHorizontal: 16, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8 },
+  rangeBrandRow: { minHeight: 48, marginTop: 2, paddingHorizontal: 16, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8 },
   rangeRow: { flexDirection: "row", padding: 4, borderRadius: 999, backgroundColor: "#202633" },
   rangePill: { minWidth: 45, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 999 },
   rangePillActive: { backgroundColor: "#0c111d" },
