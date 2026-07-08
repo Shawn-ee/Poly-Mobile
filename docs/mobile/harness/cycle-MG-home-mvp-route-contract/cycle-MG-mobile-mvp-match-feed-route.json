@@ -1,0 +1,46 @@
+﻿{
+    "cycle":  "MG",
+    "route":  "/api/events?sportKey=soccer\u0026leagueKey=world_cup\u0026source=polymarket\u0026includeMobileMarkets=1\u0026mobileMvpMatches=1\u0026limit=10",
+    "generatedAt":  "2026-07-08T09:09:50.3818120Z",
+    "eventCount":  2,
+    "futureCount":  0,
+    "events":  [
+                   {
+                       "slug":  "argentina-vs-egypt",
+                       "title":  "Argentina vs. Egypt",
+                       "eventType":  "match",
+                       "status":  "active",
+                       "liveStatus":  "LIVE",
+                       "marketCount":  7,
+                       "activeMarketCount":  7,
+                       "regulationWinnerStatus":  "provider-backed",
+                       "lineMarketsStatus":  "contract-fixture",
+                       "lineFamilies":  [
+                                            "spread",
+                                            "team_total_goals",
+                                            "total_goals"
+                                        ]
+                   },
+                   {
+                       "slug":  "switzerland-vs-colombia",
+                       "title":  "Switzerland vs. Colombia",
+                       "eventType":  "match",
+                       "status":  "active",
+                       "liveStatus":  "LIVE",
+                       "marketCount":  7,
+                       "activeMarketCount":  7,
+                       "regulationWinnerStatus":  "provider-backed",
+                       "lineMarketsStatus":  "contract-fixture",
+                       "lineFamilies":  [
+                                            "spread",
+                                            "team_total_goals",
+                                            "total_goals"
+                                        ]
+                   }
+               ],
+    "page":  {
+                 "limit":  10,
+                 "nextCursor":  null,
+                 "hasMore":  false
+             }
+}

@@ -63,6 +63,7 @@ export const loadHomeEventFeedPage = async ({
         status,
         source,
         leagueKey: "world_cup",
+        mobileMvpMatches: true,
       });
       const nextCursor = payload.nextCursor ?? payload.page?.nextCursor ?? null;
       const events = payload.events.filter(isWorldCupMatchEvent);

@@ -54,6 +54,7 @@ describe("homeEventFeedService", () => {
       status: "live",
       source: "polymarket",
       leagueKey: "world_cup",
+      mobileMvpMatches: true,
     });
   });
 
@@ -71,6 +72,7 @@ describe("homeEventFeedService", () => {
       status: null,
       source: "polymarket",
       leagueKey: "world_cup",
+      mobileMvpMatches: true,
     });
   });
 

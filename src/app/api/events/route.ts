@@ -32,6 +32,35 @@ const eventCursorFilter = (cursor: { updatedAt: Date; createdAt: Date; id: strin
       }
     : {};
 
+const mobileMvpMatchFilter = (enabled: boolean): Prisma.EventWhereInput =>
+  enabled
+    ? {
+        AND: [
+          {
+            OR: [
+              { eventType: null },
+              { eventType: { notIn: ["future", "futures", "outright", "outrights"] } },
+            ],
+          },
+          {
+            OR: [
+              { eventType: "match" },
+              { status: "live" },
+              { liveStatus: { not: null } },
+              { clock: { not: null } },
+              { period: { not: null } },
+              {
+                AND: [
+                  { homeTeamName: { not: null } },
+                  { awayTeamName: { not: null } },
+                ],
+              },
+            ],
+          },
+        ],
+      }
+    : {};
+
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const search = url.searchParams.get("search")?.trim() ?? "";
@@ -41,6 +70,7 @@ export async function GET(request: NextRequest) {
   const source = url.searchParams.get("source")?.trim() ?? "";
   const status = url.searchParams.get("status")?.trim() ?? "";
   const includeMobileMarkets = url.searchParams.get("includeMobileMarkets") === "1";
+  const mobileMvpMatches = url.searchParams.get("mobileMvpMatches") === "1";
   const limit = paginationLimit(url.searchParams.get("limit"));
   const cursorId = url.searchParams.get("cursor")?.trim() ?? "";
   const cursor = cursorId
@@ -53,6 +83,7 @@ export async function GET(request: NextRequest) {
 
   const eventFilters: Prisma.EventWhereInput[] = [
     eventCursorFilter(cursor),
+    mobileMvpMatchFilter(mobileMvpMatches),
     {
     ...(search
       ? {

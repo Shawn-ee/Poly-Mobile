@@ -5277,3 +5277,35 @@ Future migration concern:
 
 - Promote Home match filtering into the backend route once the Local MVP feed contract is finalized.
 - Replace line fixtures with provider-backed line markets only when Gamma/CLOB or an approved provider exposes attach-ready rows.
+
+## Cycle MG - Home MVP Match Route Contract
+
+Closed or narrowed:
+
+- Added `mobileMvpMatches=1` to `/api/events` so Home can request a server-filtered Local MVP match feed.
+- Route proof shows 2 active World Cup match rows and 0 futures/outrights.
+- Mobile Home now sends the explicit match-only flag.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total rows for the inspected Polymarket events.
+- Production liquidity/execution behavior that does not depend on proof-only counterparty seeding.
+
+Schema mismatch:
+
+- No schema mismatch was found or introduced.
+
+Route mismatch:
+
+- The repeated Home route mismatch is narrowed: `/api/events` now has an explicit match-only mode.
+- A dedicated `/api/mobile/home/matches` endpoint may be cleaner later, but is not required for the current Local MVP.
+
+Temporary mock/static data:
+
+- No frontend-only random mock data was added.
+- Existing line markets remain backend `contract-fixture` rows.
+
+Future migration concern:
+
+- Replace line fixtures with provider-backed line markets only when Gamma/CLOB or another approved provider exposes attach-ready rows.
+- If Home grows beyond the Local MVP scope, graduate the flag into a dedicated mobile Home feed route with an explicit response contract.

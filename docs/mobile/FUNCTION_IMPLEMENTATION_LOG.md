@@ -6169,3 +6169,51 @@ Known limitations:
 - Regulation Winner remains the real Polymarket-backed market for the inspected event.
 - Spread/Totals/Team Total remain backend-shaped `contract-fixture` rows until provider-backed line markets are available.
 - Home load-more pagination still needs proof when the backend route contains more than 10 active match rows.
+
+## Cycle MG - Home MVP Match Route Contract
+
+Feature/page worked on:
+
+- Home backend route contract for the Local MVP match feed.
+- Home -> Event Detail -> Spread line ticket -> Portfolio History visible proof on Samsung S23.
+
+Frontend/harness/backend files touched:
+
+- `src/app/api/events/route.ts`
+- `src/__tests__/public.events.no-leak.test.ts`
+- `mobile/src/api.ts`
+- `mobile/src/services/homeEventFeedService.ts`
+- `mobile/src/__tests__/api.test.ts`
+- `mobile/src/__tests__/homeEventFeedService.test.ts`
+- `docs/mobile/audits/cycle-MG-home-mvp-route-contract.md`
+
+Important functions/services touched:
+
+- `/api/events` now accepts `mobileMvpMatches=1` and applies a server-side Local MVP match-only filter.
+- `PolyApi.listWorldCupEvents` supports `mobileMvpMatches`, while still allowing Search to opt out of the World Cup league filter with `leagueKey: null`.
+- `loadHomeEventFeedPage` now requests `mobileMvpMatches: true`.
+
+User interactions supported/proven:
+
+- User opens Home on S23 and sees only the two active Local MVP World Cup match rows.
+- User taps Argentina vs Egypt, selects Spread `Egypt +1.5`, enters `$25`, swipes up to buy, and sees the filled trade in Portfolio History.
+
+State transitions:
+
+- No schema migration was added.
+- Home discovery now depends on an explicit backend filter instead of relying only on mobile-side future filtering.
+- Order/Portfolio state transitions remain unchanged: proof seeds deterministic counterparty liquidity, submits a BUY, fills it, and displays History.
+
+Validation:
+
+- `npm run -s typecheck` from `mobile/`
+- `npx jest --runInBand src/__tests__/public.events.no-leak.test.ts -t "Local MVP match-only|mobile compact markets|backend event status"`
+- `npx vitest run --config vitest.mobile.config.mts mobile/src/__tests__/api.test.ts mobile/src/__tests__/homeEventFeedService.test.ts`
+- Route proof: `docs/mobile/harness/cycle-MG-home-mvp-route-contract/cycle-MG-mobile-mvp-match-feed-route.json`
+- S23 proof: `docs/mobile/harness/cycle-MG-home-mvp-route-contract/cycle-MG-current-mvp-s23-visible-flow.json`
+
+Known limitations:
+
+- Regulation Winner is provider-backed for the inspected events.
+- Spread/Totals/Team Total remain backend-shaped `contract-fixture` rows until attach-ready provider line markets exist.
+- Local proof still uses deterministic seeded counterparty liquidity for a guaranteed filled History row.

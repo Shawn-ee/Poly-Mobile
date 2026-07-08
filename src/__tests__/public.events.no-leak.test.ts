@@ -283,6 +283,7 @@ describe("public event API no-leak checks", () => {
     expectOnlyKeys(body.events[0], [
       ...expectedEventSummaryKeys,
       "groupedSummary",
+      "marketSourceSummary",
       "markets",
       "topOutcomes",
     ]);
@@ -340,6 +341,68 @@ describe("public event API no-leak checks", () => {
     expect(body.events[0]).toMatchObject({
       slug: "france-vs-argentina",
       status: "live",
+      markets: [{ id: "market-1" }],
+    });
+    expectNoForbiddenKeys(body);
+  });
+
+  test("GET /api/events supports Local MVP match-only mobile feed filtering", async () => {
+    mockPrisma.event.findMany.mockResolvedValue([
+      {
+        ...baseEvent,
+        markets: [mobileListMarket],
+      },
+    ]);
+
+    const response = await listEvents(
+      new NextRequest("http://localhost/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10"),
+    );
+
+    expect(response.status).toBe(200);
+    expect(mockPrisma.event.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          AND: expect.arrayContaining([
+            expect.objectContaining({
+              AND: [
+                {
+                  OR: [
+                    { eventType: null },
+                    { eventType: { notIn: ["future", "futures", "outright", "outrights"] } },
+                  ],
+                },
+                {
+                  OR: [
+                    { eventType: "match" },
+                    { status: "live" },
+                    { liveStatus: { not: null } },
+                    { clock: { not: null } },
+                    { period: { not: null } },
+                    {
+                      AND: [
+                        { homeTeamName: { not: null } },
+                        { awayTeamName: { not: null } },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            }),
+            expect.objectContaining({
+              sportKey: "soccer",
+              leagueKey: "world_cup",
+            }),
+          ]),
+        }),
+        take: 11,
+      }),
+    );
+
+    const body = await response.json();
+    expect(body.events).toHaveLength(1);
+    expect(body.events[0]).toMatchObject({
+      slug: "france-vs-argentina",
+      eventType: "match",
       markets: [{ id: "market-1" }],
     });
     expectNoForbiddenKeys(body);

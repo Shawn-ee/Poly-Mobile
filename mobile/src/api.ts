@@ -42,12 +42,12 @@ export class PolyApi {
     }
   }
 
-  listWorldCupEvents(input: string | { search?: string; limit?: number; cursor?: string | null; status?: string | null; source?: string | null; leagueKey?: string | null } = "") {
+  listWorldCupEvents(input: string | { search?: string; limit?: number; cursor?: string | null; status?: string | null; source?: string | null; leagueKey?: string | null; mobileMvpMatches?: boolean } = "") {
     const search = typeof input === "string" ? input : input.search ?? "";
     const params = new URLSearchParams({
       sportKey: "soccer",
     });
-    const leagueKey = typeof input === "object" ? input.leagueKey ?? null : "world_cup";
+    const leagueKey = typeof input === "object" ? ("leagueKey" in input ? input.leagueKey ?? null : "world_cup") : "world_cup";
     if (leagueKey) params.set("leagueKey", leagueKey);
     if (search.trim()) {
       params.set("search", search.trim());
@@ -57,6 +57,7 @@ export class PolyApi {
       if (input.cursor) params.set("cursor", input.cursor);
       if (input.status?.trim()) params.set("status", input.status.trim());
       if (input.source?.trim()) params.set("source", input.source.trim());
+      if (input.mobileMvpMatches) params.set("mobileMvpMatches", "1");
     }
     params.set("includeMobileMarkets", "1");
     return this.request<{ events: EventSummary[]; nextCursor?: string | null; page?: { limit: number; nextCursor: string | null; hasMore: boolean } }>(`/api/events?${params.toString()}`);

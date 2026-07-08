@@ -222,8 +222,26 @@ describe("Holiwyn mobile API client", () => {
     expect(parsedUrl.searchParams.get("sportKey")).toBe("soccer");
     expect(parsedUrl.searchParams.get("leagueKey")).toBe("world_cup");
     expect(parsedUrl.searchParams.get("includeMobileMarkets")).toBe("1");
+    expect(parsedUrl.searchParams.has("mobileMvpMatches")).toBe(false);
     expect(parsedUrl.searchParams.has("search")).toBe(false);
     expect((init.headers as Headers).get("Authorization")).toBe("Bearer test-api-key");
+  });
+
+  test("can request the Local MVP match-only Home feed contract", async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse({ events: [] }));
+    vi.stubGlobal("fetch", fetchImpl);
+
+    await new PolyApi("https://api.example.test", "test-api-key").listWorldCupEvents({
+      limit: 10,
+      mobileMvpMatches: true,
+    });
+
+    const [url] = fetchImpl.mock.calls[0] as unknown as [string, RequestInit];
+    const parsedUrl = new URL(url);
+    expect(parsedUrl.searchParams.get("sportKey")).toBe("soccer");
+    expect(parsedUrl.searchParams.get("leagueKey")).toBe("world_cup");
+    expect(parsedUrl.searchParams.get("includeMobileMarkets")).toBe("1");
+    expect(parsedUrl.searchParams.get("mobileMvpMatches")).toBe("1");
   });
 
   test("lists World Cup events with backend pagination parameters", async () => {
