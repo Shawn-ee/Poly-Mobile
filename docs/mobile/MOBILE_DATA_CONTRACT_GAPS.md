@@ -4974,3 +4974,33 @@ Temporary mock/static data:
 Future migration concern:
 
 - Replace contract-fixture line markets with real provider-backed line rows when Polymarket exposes attach-ready soccer lines for the selected World Cup event.
+
+## Cycle LW - S23 Line Ticket To Portfolio History Flow
+
+Closed or narrowed:
+
+- Proved the Local MVP user path on Samsung S23 from Home -> Event Detail -> Spread line ticket -> swipe buy -> Portfolio -> History.
+- Confirmed the visible authentication failure is not a Spread market data failure; it is caused by missing mobile API key in the running Expo bundle.
+- Confirmed server-backed Portfolio/history can display the submitted line-market trade when Expo is started with a valid dev API key.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed line-market identifiers remain absent for the selected match.
+- A first-class local Android startup harness should generate a dev key, start Expo with the key, and avoid runtime deep-link key injection.
+
+Schema mismatch:
+
+- No schema mismatch was found or introduced.
+
+Route mismatch:
+
+- No route mismatch was found after authenticated server-mode startup.
+
+Temporary mock/static data:
+
+- No frontend-only mock data was added.
+- The selected Spread row remains a backend-shaped `contract-fixture` line market.
+
+Future migration concern:
+
+- Convert the dev-key Expo startup flow into the default local MVP proof harness before longer overnight runs.

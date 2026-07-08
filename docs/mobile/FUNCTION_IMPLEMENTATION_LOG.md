@@ -5616,6 +5616,49 @@ Known limitations:
 
 - This cycle did not prove ticket submit or Portfolio/history.
 - Spread/Totals/Team Total rows remain backend-shaped `contract-fixture` data because the selected Polymarket Gamma event does not expose provider-backed line markets.
+
+## Cycle LW - S23 Line Ticket To Portfolio History Flow
+
+Feature/page worked on:
+
+- Local MVP visible user flow from Home to Portfolio/history.
+
+Frontend/harness/backend files touched:
+
+- `docs/mobile/audits/cycle-LW-s23-line-ticket-flow.md`
+- `docs/mobile/screenshots/cycle-LW-s23-line-ticket-flow/*`
+- `docs/mobile/harness/cycle-LW-s23-line-ticket-flow/*`
+
+Important functions/services touched:
+
+- No code was changed.
+- Used existing mobile `PolyApi`, `submitTicketOrder()`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+
+User interactions supported/proven:
+
+- Open first Home match.
+- Open Spread line ticket from Event Detail.
+- Select `+$25`.
+- Swipe to buy.
+- Land in Portfolio with the new position.
+- Switch to History and see the new trade activity.
+
+State transitions:
+
+- Ticket amount changed from `$0` to `$25`.
+- Server order moved from ticket submit to Portfolio state.
+- Portfolio cash/value changed after the fake-token order.
+- History received the newly bought Spread line activity.
+
+Validation:
+
+- S23 screenshot/XML proof.
+- Secret scan found no committed API key strings in proof artifacts.
+
+Known limitations:
+
+- This pass required restarting Expo with a local dev API key in process environment.
+- Runtime API-key deep link did not reliably inject the key in the current Expo Go session.
 - Gamma exposes no Spread, Totals, Team Totals, Halves, Corners, or Correct Score markets for the selected match event.
 - Real provider-backed line-market replacement remains P1 until Polymarket exposes attach-ready line markets or another approved provider is in scope.
 

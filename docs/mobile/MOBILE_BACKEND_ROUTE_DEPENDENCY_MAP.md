@@ -2361,3 +2361,16 @@ Cycle LV implementation notes:
 - No backend route or schema changed.
 - The mobile page now consumes the existing Event Detail route in a denser Polymarket-like layout.
 - The chart uses route `chartHistory` when present and falls back to deterministic display points from current probabilities.
+
+## Cycle LW - S23 Line Ticket To Portfolio History Flow
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Spread line Buy submit | `/api/orders` | POST | Mobile dev API key with `orders:write`; internal trading beta enabled | `marketId`, `outcomeId`, `side=BUY`, `type=LIMIT`, price/size derived from `$25` at `52%`, line-market `selection` snapshot | Order response status, filled/open order fields, resulting Portfolio refresh | `ApiCredential`, `ApiOrderRequest`, `Order`, `Trade`, `Position`, `Market`, `Outcome`, `UserBalance` | None added. Existing backend-shaped `contract-fixture` line row selected from Event Detail. | Runtime deep-link API-key injection is unreliable in current Expo Go session; Expo env startup path is required for proof. |
+| Portfolio after line Buy | `/api/portfolio` | GET | Mobile dev API key with `account:read` | None | Position title/outcome, cost, to-win, entry probability, cash/value totals | `Position`, `Order`, `Trade`, `UserBalance`, `Market`, `Outcome` | None. Route-backed Portfolio state shown on S23. | None for local fake-token MVP proof. |
+| History after line Buy | `/api/portfolio/history` | GET | Mobile dev API key with `account:read` | None | Recent trade/activity row with event, line, side, amount, timestamp | `Trade`, `Order`, `ApiOrderRequest`, `Market`, `Outcome` | None. Route-backed History state shown on S23. | None for local fake-token MVP proof. |
+
+Cycle LW implementation notes:
+
+- `/api/orders` correctly rejected unauthenticated mobile submit with `Authentication required`.
+- With the dev API key loaded into the Expo process environment, the same S23 flow submitted and appeared in Portfolio/history.
