@@ -1,0 +1,47 @@
+
+> poly-bot@0.1.0 liquidity:prepare-event
+> tsx scripts/prepareReferenceLiquidityEvent.ts --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug which-continent-will-win-the-world-cup --allowlist Europe (UEFA) --maxMarkets 1 --capitalDollars 500 --mintDollars 25 --dryRun false --confirmSeed true
+
+{
+  "ok": true,
+  "dryRun": false,
+  "eventSlug": "which-continent-will-win-the-world-cup",
+  "marketCount": 1,
+  "seededOrChecked": 1,
+  "blocked": 0,
+  "results": [
+    {
+      "marketId": "44dfd0c8-a46b-4ec0-aa2a-a5904088bbf8",
+      "slug": "will-europe-win-the-2026-fifa-world-cup",
+      "title": "Will Europe (UEFA) win the 2026 FIFA World Cup?",
+      "importStatus": "approved",
+      "mmEnabled": true,
+      "tradable": true,
+      "ok": true,
+      "runtimePath": "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\poly-bot\\.runtime\\reference-liquidity-44dfd0c8-a46b-4ec0-aa2a-a5904088bbf8.json",
+      "result": {
+        "ok": true,
+        "dryRun": false,
+        "marketId": "44dfd0c8-a46b-4ec0-aa2a-a5904088bbf8",
+        "title": "Will Europe (UEFA) win the 2026 FIFA World Cup?",
+        "referenceSource": "polymarket",
+        "importStatus": "approved",
+        "isListed": true,
+        "binary": true,
+        "seeded": true,
+        "alreadySeeded": false,
+        "noMutation": false,
+        "capitalCents": 50000,
+        "mintBudgetCents": 2500,
+        "cashReserveCents": 47500,
+        "mintedCompleteSets": 25,
+        "autoReplenish": false,
+        "botUserId": "[redacted-bot-user]",
+        "botUsername": "system-liquidity-bot",
+        "botApiCredentialId": "10cdcbef-2b84-4b29-817f-21d73a628b9d",
+        "botApiKeyId": "[redacted-api-key]",
+        "botApiToken": "[redacted]"
+      }
+    }
+  ]
+}

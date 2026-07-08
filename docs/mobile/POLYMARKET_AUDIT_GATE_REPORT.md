@@ -5863,6 +5863,40 @@ Remaining P1:
 - Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Broad futures remain Search/detail-only while Home/Live stay match-only.
 
+## Cycle PF - First Continent Provider Market Tradable Proof
+
+Result: Pass for first continent provider-backed internal-test tradable market scope.
+
+Checked:
+
+- Europe (UEFA) continent market selected from a second provider event family.
+- Backend helper verified the local internal beta trading runtime stayed healthy.
+- Europe MM enable, corrected seed, live-ready/live-enabled, and live-local quote placement passed.
+- Bot dry-run and live-local quote placement did not hit exposure-cap blocking.
+- Mobile route/service proof filled Europe YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed the continent event detail with Europe provider-backed outcome visible/selectable.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PF-first-continent-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-PF-first-continent-provider-market-tradable-proof/cycle-PF-internal-beta-backend-check.json`
+- `docs/mobile/harness/cycle-PF-first-continent-provider-market-tradable-proof/cycle-PF-prepare-europe-small-seed.txt`
+- `docs/mobile/harness/cycle-PF-first-continent-provider-market-tradable-proof/cycle-PF-bot-live-local-europe-success.txt`
+- `docs/mobile/harness/cycle-PF-first-continent-provider-market-tradable-proof/cycle-PF-provider-europe-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PF-first-continent-provider-market-tradable-proof/cycle-PF-s23-continent-europe-summary.json`
+- `docs/mobile/harness/cycle-PF-first-continent-provider-market-tradable-proof/cycle-PF-s23-continent-top.xml`
+- `docs/mobile/harness/cycle-PF-first-continent-provider-market-tradable-proof/cycle-PF-s23-continent-europe.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+- Remaining provider event families are not all local-MM-proven yet.
+
 ## Cycle PE - Eighth Provider Market Tradable Proof
 
 Result: Pass for eighth provider-backed internal-test tradable market scope.
