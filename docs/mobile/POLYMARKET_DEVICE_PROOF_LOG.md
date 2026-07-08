@@ -754,3 +754,32 @@ Pass for provider discovery hardening.
 
 Remaining gaps:
 Spread/Totals/Team Total remain backend contract fixtures for `argentina-vs-egypt`; no attach-ready Polymarket line markets are exposed by the inspected Gamma event.
+
+### 2026-07-08 - Cycle NP - Line family readiness contract
+
+Reference device:
+Not used for fresh Polymarket app comparison. This cycle was a Local MVP route/readiness disclosure and proof-gate alignment cycle.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go smoke proof on temporary port `8168`. Backend route inspection used local backend `http://127.0.0.1:3002`.
+
+Holiwyn actions:
+Opened Event Detail through the Samsung smoke proof and verified the compact game page summary, Game Lines, Player Props, and simplified Local MVP page expectations.
+
+Evidence:
+- `docs/mobile/harness/cycle-NP-line-family-readiness/cycle-NP-current-state-inspection.json`
+- `docs/mobile/screenshots/cycle-current-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+
+Smoke/tests:
+Backend contract test, mobile adapter/source tests, root TypeScript, mobile TypeScript, and S23 Event Detail summary proof passed.
+
+Result:
+Pass for route-level line-family readiness disclosure and S23 Event Detail proof-gate alignment.
+
+Remaining gaps:
+Spread/Totals/Team Total remain backend contract fixtures for `argentina-vs-egypt`; no attach-ready Polymarket line markets are exposed by the inspected Gamma event.

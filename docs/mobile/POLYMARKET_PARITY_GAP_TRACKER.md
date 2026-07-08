@@ -625,3 +625,12 @@ For every UI element or interaction, answer:
 - NO closes a provider safety gap where broad World Cup outright winners could be ranked above exact match-winner slugs for match-specific markets.
 - Current Polymarket Gamma evidence still shows 0 attach-ready line markets for `argentina-vs-egypt`; Spread/Totals/Team Total remain `contract-fixture`.
 - Remaining P1: real provider-backed line market ingestion remains open until attach-ready Polymarket line markets or another approved provider source exists.
+
+## Cycle NP Gap Tracker Update
+
+- PM-GAP-112 is opened and verified for route-level line-family readiness disclosure.
+- NP closes the ambiguity where the route only said line markets were contract fixtures without showing family-by-family readiness.
+- `/api/events` and `/api/mobile/events/:slug/live-detail` now expose `lineMarkets.familyReadiness` showing spread, total, and team_total status/counts.
+- Event Detail copy now names the local line families instead of using only generic local-pricing language.
+- S23 Event Detail summary proof passes after aligning the smoke gate with the simplified Local MVP page and removing stale Volume/Liquidity/Traders expectations.
+- Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open until attach-ready provider markets exist.

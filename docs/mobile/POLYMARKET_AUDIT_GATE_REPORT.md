@@ -5014,3 +5014,30 @@ Decision:
 
 - Pass/fail: Pass for backend/provider discovery hardening.
 - Not a visible UI parity pass and not a final line-market parity pass.
+
+## Cycle NP
+
+Gate status: Pass for Local MVP line-family readiness disclosure
+
+Scope: Make the route and Event Detail UI explicit about which current line families are provider-backed versus fixture-backed, and align the Samsung Event Detail proof gate with the simplified Local MVP page.
+
+Evidence:
+
+- `docs/mobile/harness/cycle-NP-line-family-readiness/cycle-NP-current-state-inspection.json`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NP-P0-01 | P0 | Pass | Route proof includes `lineMarkets.familyReadiness` for spread, total, and team_total. | Fix `buildMobileMarketSourceSummary()`. |
+| NP-P0-02 | P0 | Pass | Route proof shows Regulation Winner `provider-backed` and line families `contract-fixture`. | Fix route serialization or provider mapping. |
+| NP-P0-03 | P0 | Pass | Mobile adapter/type tests preserve the backend summary. | Fix mobile type/adapter contract. |
+| NP-P0-04 | P0 | Pass | S23 Event Detail summary proof passed after removing stale non-MVP stats expectations. | Fix proof gate or Event Detail rendering. |
+| NP-P1-01 | P1 | Partial | Real line markets remain unavailable from provider data. | Attach real provider-backed line markets when an approved source exposes them. |
+
+Decision:
+
+- Pass/fail: Pass for Local MVP readiness disclosure and proof-gate alignment.
+- Not a final Polymarket line-market parity pass because line markets remain fixture-backed.

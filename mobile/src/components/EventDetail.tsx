@@ -235,8 +235,16 @@ const lineSourceCopy = (event: Event) => {
   const lineStatus = summary.lineMarkets.status;
   const lineCount = summary.lineMarkets.totalCount;
   const lineAvailability = summary.lineMarkets.providerAvailability;
+  const localFamilies = summary.lineMarkets.familyReadiness
+    ?.filter((family) => family.status === "contract-fixture")
+    .map((family) => family.family.replace(/_/g, " "))
+    .slice(0, 3)
+    .join(", ");
   const lineAvailabilityMarker = lineAvailability
     ? ` line-provider-availability-${lineAvailability.status} line-provider-backed-count-${lineAvailability.providerBackedLineMarketCount} line-contract-fixture-count-${lineAvailability.contractFixtureLineMarketCount}`
+    : "";
+  const familyMarker = summary.lineMarkets.familyReadiness
+    ? ` line-family-readiness-${summary.lineMarkets.familyReadiness.map((family) => `${family.family}-${family.status}`).join("-")}`
     : "";
   if (lineStatus === "provider-backed") {
     return {
@@ -244,7 +252,7 @@ const lineSourceCopy = (event: Event) => {
       text: winnerReady ? "Winner and lines are live from provider data." : "Line markets are live from provider data.",
       tone: "ready" as const,
       accessibility:
-        `event-detail-line-source-banner line-source-provider-backed regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}`,
+        `event-detail-line-source-banner line-source-provider-backed regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}${familyMarker}`,
     };
   }
   if (lineStatus === "contract-fixture") {
@@ -252,14 +260,15 @@ const lineSourceCopy = (event: Event) => {
       lineAvailability?.status === "unavailable"
         ? " Provider lines unavailable."
         : "";
+    const familyCopy = localFamilies ? ` Local lines: ${localFamilies}.` : "";
     return {
       label: "Market source",
       text: winnerReady
-        ? `Winner is provider-backed. Lines use local server pricing.${availabilityCopy}`
-        : `Lines use local server pricing.${availabilityCopy}`,
+        ? `Winner is provider-backed.${familyCopy}${availabilityCopy}`
+        : `Lines use local server pricing.${familyCopy}${availabilityCopy}`,
       tone: "fixture" as const,
       accessibility:
-        `event-detail-line-source-banner line-source-contract-fixture regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}`,
+        `event-detail-line-source-banner line-source-contract-fixture regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}${familyMarker}`,
     };
   }
   if (lineStatus === "missing") {

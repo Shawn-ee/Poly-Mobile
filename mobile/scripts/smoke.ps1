@@ -706,7 +706,7 @@ try {
   } elseif ($EventDetailVisibleLiveDepth -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25") {
     @("EL-A Provider Breadth World Cup Live", "Game Lines", "Best bid", "Best ask")
   } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $LocalMvpSimpleTradeFlow) {
-    @("Mexico vs. Ecuador", "5 markets", "10 outcomes")
+    @("Mexico vs. Ecuador", "5 markets", "11 outcomes")
   } elseif ($DyAGamePageStructure -or $LiveDetail -or $EventDetailProviderRouteStatusProof) {
     @("Australia vs. Egypt", "Live Winner", "LIVE WORLD CUP", "Game Lines", "Player Props")
   } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
@@ -3166,7 +3166,7 @@ try {
     } elseif ($EventDetailPosition) {
       @("Mexico vs. Ecuador", "Volume", "Liquidity", "Traders", "Best bid", "Best ask", "Spread", "Markets", "Your position")
     } else {
-      @("Mexico vs. Ecuador", "Volume", "Liquidity", "Traders", "Best bid", "Best ask", "Spread", "Markets", "Game Lines", "Player Props")
+      @("Mexico vs. Ecuador", "Best bid", "Best ask", "Spread", "Markets", "Game Lines", "Player Props")
     }
     Assert-HierarchyContains -Path $eventDetailHierarchy -Expected $eventDetailBaseExpected
     if ($JoMarketRulesProof) {
@@ -4352,7 +4352,7 @@ try {
     }
 
     if ($EventDetailSummary) {
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-market-summary", "5 markets", "10 outcomes", "Game lines", "3 markets", "Props", "2 markets", "Match winner")
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-market-summary", "5 markets", "11 outcomes", "Game lines", "3 markets", "Props", "2 markets", "Match winner")
       return
     }
 

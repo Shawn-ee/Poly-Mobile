@@ -472,6 +472,29 @@ describe("mobile live event detail contract", () => {
         contractFixtureCount: 3,
         status: "contract-fixture",
         families: ["spread", "total_goals", "team_total_goals"],
+        familyReadiness: [
+          expect.objectContaining({
+            family: "spread",
+            totalCount: 1,
+            polymarketCount: 0,
+            contractFixtureCount: 1,
+            status: "contract-fixture",
+          }),
+          expect.objectContaining({
+            family: "total",
+            totalCount: 1,
+            polymarketCount: 0,
+            contractFixtureCount: 1,
+            status: "contract-fixture",
+          }),
+          expect.objectContaining({
+            family: "team_total",
+            totalCount: 1,
+            polymarketCount: 0,
+            contractFixtureCount: 1,
+            status: "contract-fixture",
+          }),
+        ],
         providerAvailability: {
           source: "polymarket-gamma",
           status: "unavailable",

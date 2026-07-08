@@ -2897,3 +2897,17 @@ Cycle NO implementation notes:
 
 - No backend route/schema changed.
 - Discovery now searches line-family exact slug fallbacks and keeps strict attach-readiness gates.
+
+## Cycle NP - Line Family Readiness Contract
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home current match source disclosure | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` | GET | Public viewing | Query filters/page size | `marketSourceSummary.regulationWinner.status`, `marketSourceSummary.lineMarkets.status`, `lineMarkets.familyReadiness` | `Event`, `Market`, `Outcome` | None added. | Real provider-backed line markets remain unavailable for this event. |
+| Event Detail source disclosure | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | `event.marketSourceSummary.lineMarkets.familyReadiness[]`, family counts/status/reasons, provider availability reason | `Event`, `Market`, `Outcome` | Existing backend `contract-fixture` line rows remain explicit route data. | Provider-backed Spread/Totals/Team Total rows are missing until a provider exposes attach-ready markets. |
+| Samsung Event Detail proof | `mobile/scripts/smoke.ps1 -EventDetailSummary` through `mobile/scripts/smoke-samsung.ps1` | Device smoke | Expo Go/device reachability | Deep-link startup | Event Detail summary labels, game lines, player props, no old stats requirement | None | Uses existing mock Event Detail proof path when backend health check is unavailable. | Server-mode visible proof should be rerun for the next full MVP journey cycle. |
+
+Cycle NP implementation notes:
+
+- No schema migration was added.
+- The route now answers which line families are provider-backed vs fixture-backed.
+- The proof gate no longer requires old Volume/Liquidity/Traders copy that conflicts with the Local MVP simple event-info direction.

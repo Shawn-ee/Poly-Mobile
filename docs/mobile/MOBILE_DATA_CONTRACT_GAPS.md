@@ -6056,3 +6056,32 @@ Temporary mock/static data:
 Future migration concern:
 
 - Once Gamma/CLOB or another approved provider exposes attach-ready line markets, the existing selection snapshot and cashout/order proof paths should support replacing fixture line ids with provider-backed ids.
+
+## Cycle NP - Line Family Readiness Contract
+
+Closed or narrowed:
+
+- Added family-level route readiness for line markets through `lineMarkets.familyReadiness`.
+- The current route proof now states spread, total, and team-total line families are `contract-fixture` with provider-backed counts of `0`.
+- Event Detail copy now reflects the exact local line families instead of only saying lines are local.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total market ids, condition ids, token ids, and CLOB price/history data for the inspected match.
+
+Schema mismatch:
+
+- No schema mismatch was found or introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- No frontend-only random mock data was added.
+- Existing backend `contract-fixture` rows remain the explicit Local MVP line-market source.
+
+Future migration concern:
+
+- When real line markets are available, `familyReadiness` should flip family-by-family instead of requiring mobile UI changes.

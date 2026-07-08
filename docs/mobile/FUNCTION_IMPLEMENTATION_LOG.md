@@ -7385,3 +7385,50 @@ Known limitations:
 
 - Polymarket Gamma still exposes no attach-ready line markets for the current `argentina-vs-egypt` event.
 - Android proof was not rerun because no mobile UI changed; latest S23 visible proof remains Cycle NN.
+
+## Cycle NP - Line Family Readiness Contract
+
+Feature/page worked on:
+
+- Local MVP Event Detail source/readiness disclosure for the current provider-backed winner plus fixture-only line-market route.
+
+Frontend/harness/backend files touched:
+
+- `src/server/services/mobileLiveEventDetail.ts`
+- `mobile/src/types.ts`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+- Evidence/docs:
+  - `docs/mobile/harness/cycle-NP-line-family-readiness/cycle-NP-current-state-inspection.json`
+  - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+  - `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+
+Important functions/services touched:
+
+- `buildMobileMarketSourceSummary()` now includes `lineMarkets.familyReadiness`, with per-family counts and status for spread, total, and team-total line markets.
+- `lineSourceCopy()` now displays the local line families when lines are fixture-backed.
+- The Samsung Event Detail smoke gate was aligned with the current Local MVP page: `11 outcomes` and no required Volume/Liquidity/Traders copy.
+
+User interactions supported/proven:
+
+- User can open Event Detail on Samsung S23 and see the compact game page without old non-MVP stats requirements.
+- Route proof shows Regulation Winner is provider-backed while spread/total/team-total lines are explicitly contract fixtures.
+
+State transitions:
+
+- No database schema or production data changed.
+- No order, portfolio, or cashout behavior changed.
+
+Validation:
+
+- Backend Jest contract passed.
+- Mobile route/adapter tests passed.
+- Root TypeScript passed.
+- Mobile TypeScript passed.
+- S23 Event Detail summary proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- Real provider-backed Spread/Totals/Team Total markets are still unavailable for the inspected event.
+- The S23 visible proof used the generic mock Event Detail proof path; route readiness is proven separately by the backend route inspection JSON.

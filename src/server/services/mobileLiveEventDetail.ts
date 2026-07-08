@@ -399,7 +399,11 @@ const combineProviderLifecycleSegments = (params: {
   };
 };
 
-const marketFamilyForMarket = (market: MarketInput) => {
+const marketFamilyForMarket = (market: {
+  marketType?: string | null;
+  marketGroupKey?: string | null;
+  marketGroupTitle?: string | null;
+}) => {
   const key = `${market.marketGroupKey ?? ""} ${market.marketType ?? ""} ${market.marketGroupTitle ?? ""}`.toLowerCase();
   if (key.includes("outright") || key.includes("future")) return "outright";
   if (key.includes("spread") || key.includes("handicap")) return "spread";
@@ -435,6 +439,30 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
   });
   const realLineMarkets = lineMarkets.filter((market) => market.referenceSource === "polymarket");
   const contractFixtureLineMarkets = lineMarkets.filter((market) => market.referenceSource === "contract-fixture");
+  const familyReadiness = Array.from(new Set(lineMarkets.map(marketFamilyForMarket).filter(Boolean))).map((family) => {
+    const familyMarkets = lineMarkets.filter((market) => marketFamilyForMarket(market) === family);
+    const polymarketCount = familyMarkets.filter((market) => market.referenceSource === "polymarket").length;
+    const contractFixtureCount = familyMarkets.filter((market) => market.referenceSource === "contract-fixture").length;
+    const status =
+      polymarketCount > 0
+        ? "provider-backed"
+        : contractFixtureCount > 0
+          ? "contract-fixture"
+          : "unknown";
+    return {
+      family,
+      totalCount: familyMarkets.length,
+      polymarketCount,
+      contractFixtureCount,
+      status,
+      reason:
+        status === "provider-backed"
+          ? `${family} has route-visible provider-backed Polymarket markets.`
+          : status === "contract-fixture"
+            ? `${family} is served by Local MVP contract fixtures for this event.`
+            : `${family} source is not classified for this event.`,
+    };
+  });
   const lineMarketStatus =
     lineMarkets.length === 0
       ? "missing"
@@ -466,6 +494,7 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
       contractFixtureCount: contractFixtureLineMarkets.length,
       status: lineMarketStatus,
       families: Array.from(new Set(lineMarkets.map((market) => market.marketType).filter((value): value is string => Boolean(value)))),
+      familyReadiness,
       providerAvailability: {
         source: "polymarket-gamma",
         status: realLineMarkets.length > 0 ? "available" : contractFixtureLineMarkets.length > 0 ? "unavailable" : "unknown",

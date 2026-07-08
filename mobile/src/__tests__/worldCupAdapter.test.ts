@@ -258,6 +258,24 @@ describe("world cup adapter", () => {
             contractFixtureCount: 4,
             status: "contract-fixture",
             families: ["spread", "total_goals", "team_total_goals"],
+            familyReadiness: [
+              {
+                family: "spread",
+                totalCount: 1,
+                polymarketCount: 0,
+                contractFixtureCount: 1,
+                status: "contract-fixture",
+                reason: "spread is served by Local MVP contract fixtures for this event.",
+              },
+              {
+                family: "total",
+                totalCount: 1,
+                polymarketCount: 0,
+                contractFixtureCount: 1,
+                status: "contract-fixture",
+                reason: "total is served by Local MVP contract fixtures for this event.",
+              },
+            ],
             providerAvailability: {
               source: "polymarket-gamma",
               status: "unavailable",
@@ -296,6 +314,10 @@ describe("world cup adapter", () => {
         status: "contract-fixture",
         polymarketCount: 0,
         contractFixtureCount: 4,
+        familyReadiness: [
+          expect.objectContaining({ family: "spread", status: "contract-fixture" }),
+          expect.objectContaining({ family: "total", status: "contract-fixture" }),
+        ],
         providerAvailability: {
           source: "polymarket-gamma",
           status: "unavailable",

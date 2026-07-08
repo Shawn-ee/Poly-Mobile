@@ -69,6 +69,14 @@ export type MarketSourceSummary = {
     contractFixtureCount: number;
     status: "provider-backed" | "contract-fixture" | "missing" | "unknown" | string;
     families: string[];
+    familyReadiness?: Array<{
+      family: string;
+      totalCount: number;
+      polymarketCount: number;
+      contractFixtureCount: number;
+      status: "provider-backed" | "contract-fixture" | "unknown" | string;
+      reason: string;
+    }>;
     providerAvailability?: {
       source: "polymarket-gamma" | string;
       status: "available" | "unavailable" | "unknown" | string;
