@@ -986,3 +986,13 @@ For every UI element or interaction, answer:
 - PJ captures S23 Search/detail proof for the Norway provider-backed outcome.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
 - Remaining P1: Home/Live remain match-only by product direction; broad futures remain Search/detail surfaces.
+
+## Cycle PK Gap Tracker Update
+
+- PM-GAP-149 is opened and closed for converting the Golden Boot Haaland provider-visible market into an internal-test tradable market.
+- PK makes Haaland in `world-cup-golden-boot-winner` local-MM-ready, live-enabled, and quoted.
+- PK proves bot dry-run and live-local quote placement without exposure-cap blocking.
+- PK proves mobile route/service order fill and Portfolio/history identity for Haaland YES.
+- PK captures S23 Search/detail proof for the Haaland provider-backed outcome.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
+- Remaining P1: Home/Live remain match-only by product direction; broad futures remain Search/detail surfaces.

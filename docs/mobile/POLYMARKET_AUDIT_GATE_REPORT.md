@@ -5896,6 +5896,39 @@ Remaining P1:
 - Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Broad futures remain Search/detail-only while Home/Live stay match-only.
 
+## Cycle PK - Golden Boot Haaland Tradable Flow
+
+Result: Pass for selected Golden Boot Haaland provider-visible-to-tradable scope.
+
+Checked:
+
+- Haaland Golden Boot market selected from provider-visible Polymarket data.
+- Haaland was approved as internal-test tradable and MM-enabled.
+- Small local bot seed passed.
+- Bot dry-run passed.
+- Bot live-local placed quotes without exposure-cap blocking.
+- Mobile route/service proof filled Haaland YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed Search and Event Detail for the Haaland provider-backed outcome.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PK-golden-boot-haaland-tradable-flow.md`
+- `docs/mobile/harness/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-bot-dry-run-haaland-golden-boot.txt`
+- `docs/mobile/harness/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-bot-live-local-haaland-golden-boot.txt`
+- `docs/mobile/harness/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-provider-haaland-golden-boot-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-s23-summary.json`
+- `docs/mobile/screenshots/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-s23-search-haaland-golden-boot.png`
+- `docs/mobile/screenshots/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-s23-haaland-golden-boot-detail-from-search.png`
+
+Unresolved P0 gaps: 0 for PK scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+
 ## Cycle PJ - Provider Visible Market To Local Tradable Market
 
 Result: Pass for selected Norway provider-visible-to-tradable scope.

@@ -1912,3 +1912,38 @@ Pass for selected provider-visible-to-tradable Norway market scope.
 
 Remaining gaps:
 Home/Live remain match-only. Current-match line markets remain contract fixtures.
+
+## Cycle PK - Golden Boot Haaland Tradable Flow
+
+Date:
+2026-07-08
+
+Reference device:
+No new Polymarket reference-device action. The provider source is the existing Polymarket Gamma/CLOB-backed Golden Boot event.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go server mode. Backend `http://127.0.0.1:3002` stayed healthy; mobile API used LAN backend `http://172.16.200.14:3002`.
+
+Holiwyn actions:
+Opened Holiwyn with a Haaland Search deep link, confirmed `World Cup: Golden Boot Winner` was visible, tapped the result, and confirmed Event Detail showed provider market `2069636`. Backend/mobile-service proof submitted a fake-token Haaland YES order and confirmed Portfolio/history state.
+
+Evidence:
+- `docs/mobile/audits/cycle-PK-golden-boot-haaland-tradable-flow.md`
+- `docs/mobile/harness/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-provider-haaland-golden-boot-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-s23-summary.json`
+- `docs/mobile/screenshots/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-s23-search-haaland-golden-boot.png`
+- `docs/mobile/harness/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-s23-search-haaland-golden-boot.xml`
+- `docs/mobile/screenshots/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-s23-haaland-golden-boot-detail-from-search.png`
+- `docs/mobile/harness/cycle-PK-golden-boot-haaland-tradable-flow/cycle-PK-s23-haaland-golden-boot-detail-from-search.xml`
+
+Smoke/tests:
+Bot dry-run passed, bot live-local quote placement passed, mobile order/Portfolio proof passed, and S23 visible Search/detail proof passed.
+
+Result:
+Pass for selected Golden Boot Haaland provider-visible-to-tradable scope.
+
+Remaining gaps:
+Home/Live remain match-only. Current-match line markets remain contract fixtures.
