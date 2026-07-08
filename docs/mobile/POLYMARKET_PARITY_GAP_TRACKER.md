@@ -695,3 +695,13 @@ For every UI element or interaction, answer:
 - S23 proof passes for Home -> Event Detail stale-status rendering.
 - Remaining P1: real current live World Cup match/provider breadth remains missing.
 - Remaining P1: Spread/Totals/Team Total remain contract fixtures until attach-ready provider line markets exist.
+
+## Cycle NX Gap Tracker Update
+
+- PM-GAP-120 is opened and verified for provider line query breadth.
+- NX closes the query-breadth gap where event/team/family line-market phrases could be pushed beyond the 12-query cap.
+- NX closes the query-normalization gap where Over/Under outcome labels could displace the actual event team pair for total-goals discovery.
+- The relevance gate remains strict: wrong-family match-winner markets and irrelevant search results are still rejected instead of attached as line markets.
+- Route proof confirms the current honest service state: Regulation Winner is `polymarket`, while Spread/Totals/Team Total are `contract-fixture`.
+- S23 proof passes for the current Local MVP Home -> Event Detail visible path with orderbook/chat hidden.
+- Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open until Polymarket Gamma/CLOB or another approved provider exposes attach-ready line markets.

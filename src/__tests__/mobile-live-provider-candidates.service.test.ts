@@ -391,8 +391,33 @@ describe("mobile live provider candidates", () => {
         { id: "away", name: "Ghana", side: "away", displayOrder: 2, referenceOutcomeLabel: "Ghana" },
       ],
     })).toEqual(expect.arrayContaining([
-      "Colombia ghana soccer",
-      "Colombia ghana world cup",
+      "colombia ghana soccer",
+      "colombia ghana world cup",
+    ]));
+  });
+
+  test("prioritizes World Cup line-family search phrases before query cap", () => {
+    const queries = buildProviderCandidateSearchQueries({
+      id: "market-total",
+      title: "Colombia vs Ghana total goals 2.5",
+      eventTitle: "Colombia vs. Ghana",
+      marketType: "total_goals",
+      period: null,
+      line: { toString: () => "2.5" },
+      unit: "goals",
+      marketGroupKey: "totals",
+      marketGroupTitle: "Totals",
+      outcomes: [
+        { id: "over", name: "Over 2.5", side: "over", displayOrder: 0, referenceOutcomeLabel: "Over 2.5" },
+        { id: "under", name: "Under 2.5", side: "under", displayOrder: 1, referenceOutcomeLabel: "Under 2.5" },
+      ],
+    });
+
+    expect(queries.length).toBeLessThanOrEqual(12);
+    expect(queries).toEqual(expect.arrayContaining([
+      "colombia ghana total goals",
+      "colombia ghana over under",
+      "colombia ghana total goals 2-5",
     ]));
   });
 

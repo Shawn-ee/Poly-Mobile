@@ -6294,3 +6294,35 @@ Temporary mock/static data:
 Future migration concern:
 
 - Once provider import stores reliable match state, event-list `displayStatus` should prefer those fields over slug-date inference.
+
+## Cycle NX - Provider Line Query Breadth Inspection
+
+Closed or narrowed:
+
+- Provider candidate search now prioritizes event/team/family line queries before the query cap.
+- Total-goals discovery no longer lets Over/Under outcome labels replace the actual event team pair in line-family search phrases.
+- The proof path now clearly separates real Polymarket Regulation Winner rows from Local MVP contract-fixture line rows.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Provider-backed Spread/Totals/Team Total market ids for current World Cup events.
+- Provider-backed outcome token ids and condition ids for line markets.
+- Provider-owned line-market chart/price history tied to line/outcome identity.
+- A provider event source that exposes attach-ready line-market families for the selected match.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/live-detail` correctly discloses `referenceSource=contract-fixture` for line markets, but the route cannot yet serve real provider-backed line families for the checked event.
+
+Temporary mock/static data:
+
+- No new mock data was added.
+- Existing contract fixtures remain backend-shaped and are still required for Local MVP Spread/Totals/Team Total trade-ticket proof.
+
+Future migration concern:
+
+- When Polymarket or another approved source exposes attach-ready line markets, the fixture rows should be replaced by provider rows with stable `marketId`, `outcomeId`, `externalMarketId`, `conditionId`, token ids, `line`, `period`, and `referenceSource=polymarket`.

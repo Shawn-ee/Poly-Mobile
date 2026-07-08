@@ -930,6 +930,36 @@ Pass for stale Event Detail status honesty.
 Remaining gaps:
 Real current live match discovery/breadth is still missing, and line families remain contract fixtures.
 
+### 2026-07-08 - Cycle NX - Provider line query breadth inspection
+
+Reference device:
+Not used. This was a Holiwyn provider/data inspection cycle using public Polymarket Gamma API proof.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://172.16.200.14:3002`, temporary Expo port `8304`, temporary mobile dev API key.
+
+Holiwyn actions:
+Opened Home, verified the MVP match, tapped into Event Detail, and verified the current MVP display path remains clean with chat/orderbook hidden while provider query breadth changed under the hood.
+
+Evidence:
+- `docs/mobile/harness/cycle-NX-provider-line-query-breadth/cycle-NX-provider-line-source-probe.json`
+- `docs/mobile/harness/cycle-NX-provider-line-query-breadth/cycle-NX-provider-match-line-availability.json`
+- `docs/mobile/harness/cycle-NX-provider-line-query-breadth/cycle-NX-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NX-provider-line-query-breadth/cycle-NX-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NX-provider-line-query-breadth/cycle-NX-current-mvp-detail-stale-top.png`
+
+Smoke/tests:
+Provider candidate unit tests, root TypeScript, provider source probe, provider match-line availability proof, and S23 focused visible proof passed.
+
+Result:
+Pass for provider line query breadth and current Local MVP visible sanity.
+
+Remaining gaps:
+Real provider-backed Spread/Totals/Team Total lines are still missing for the checked Polymarket events; those rows remain explicit contract fixtures.
+
 ### 2026-07-08 - Cycle NV - Live Detail display status contract
 
 Reference device:

@@ -3007,3 +3007,19 @@ Cycle NW implementation notes:
 
 - No schema migration was added.
 - Home/event-list route now emits the same display-status contract style as live-detail.
+
+## Cycle NX - Provider Line Query Breadth Inspection
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail Regulation Winner | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | Provider-backed match-winner rows, `referenceSource=polymarket`, `externalMarketId`, market source summary | `Event`, `Market`, `Outcome` | None for Regulation Winner. | None for current winner rows. |
+| Event Detail line markets | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | Spread/Totals/Team Total rows, line, period, market/outcome identity, `referenceSource=contract-fixture`, family readiness summary | `Event`, `Market`, `Outcome` | Existing backend-shaped `contract-fixture` lines are still used for Local MVP. | Real provider-backed Spread/Totals/Team Total rows. |
+| Polymarket provider event availability | Gamma `/events?slug=fifwc-arg-egy-2026-07-07` and `/events?slug=fifwc-col-gha-2026-07-03` | GET | Public provider API | Provider event slug | Market count, questions, condition ids, token completeness, family classification | None directly; used by provider mapping/proof | None added. | Gamma returned 0 attach-ready line markets for checked events. |
+| Provider candidate discovery | `buildProviderCandidateSearchQueries()` and `discoverMobileLiveProviderCandidates()` | Local service/proof using public Gamma search | Local backend context | Compact market title/event/outcomes/line/family | Candidate query list, family relevance, attach-ready decision reasons | `Event`, `Market`, `Outcome` | None added. | Need a real source exposing line-market condition/token data. |
+| Android visible sanity | `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1 -ExpectDetailStaleOnly` | Device proof | Temporary mobile dev API key | Expo deep link with API key | Home and Event Detail rendered route state | `ApiCredential` for proof launch only | None added. | None for sanity proof. |
+
+Cycle NX implementation notes:
+
+- No schema migration was added.
+- No order, portfolio, or ticket backend route changed.
+- Query breadth improved, but provider-backed line parity remains open until real attach-ready line markets exist.

@@ -5239,3 +5239,33 @@ Decision:
 - Pass/fail: Pass for focused backend/mobile Home display contract.
 - Remaining P1: real current World Cup live match/provider breadth is still missing.
 - Remaining P1: line markets remain contract fixtures, not provider-backed Polymarket line markets.
+
+## Cycle NX
+
+Gate status: Pass for provider line query breadth and Local MVP visible sanity
+
+Scope: Improve provider discovery queries for line-family markets while preserving strict relevance gates and proving the current Android MVP path still renders correctly.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NX-provider-line-query-breadth.md`
+- `docs/mobile/harness/cycle-NX-provider-line-query-breadth/cycle-NX-provider-line-source-probe.json`
+- `docs/mobile/harness/cycle-NX-provider-line-query-breadth/cycle-NX-provider-match-line-availability.json`
+- `docs/mobile/harness/cycle-NX-provider-line-query-breadth/cycle-NX-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NX-provider-line-query-breadth/cycle-NX-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NX-provider-line-query-breadth/cycle-NX-current-mvp-detail-stale-top.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NX-P0-01 | P0 | Pass | Unit test verifies line-family phrases survive the 12-query cap. | Fix query ordering in `buildProviderCandidateSearchQueries()`. |
+| NX-P0-02 | P0 | Pass | Provider probe keeps irrelevant/wrong-family candidates rejected and reports 0 attach-ready line targets. | Do not weaken relevance or attach-ready gates. |
+| NX-P0-03 | P0 | Pass | Match-line availability proof shows Regulation Winner is provider-backed and line families are explicit contract fixtures. | Fix live-detail source summary. |
+| NX-P0-04 | P0 | Pass | S23 proof shows Home -> Event Detail still works with chat/orderbook hidden. | Fix visible Local MVP regressions. |
+
+Decision:
+
+- Pass/fail: Pass for focused provider-discovery breadth and visible sanity.
+- Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open.
+- Remaining P1: current checked Polymarket events expose only match-winner markets through Gamma, so Local MVP line rows remain contract fixtures.

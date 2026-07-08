@@ -538,6 +538,7 @@ export function buildProviderCandidateSearchQueries(market: CompactMarketForCand
     .map((outcome) => normalizeProviderSearchPhrase(outcome.name))
     .filter((name) => name.length > 2 && !GENERIC_RELEVANCE_TOKENS.has(name));
   const teamPair = outcomeTeams.length >= 2 ? `${outcomeTeams[0]} ${outcomeTeams[outcomeTeams.length - 1]}` : null;
+  const eventSearchPhrases = buildProviderEventSearchPhrases(market);
   const terms = [
     title,
     normalizedTitle,
@@ -549,13 +550,13 @@ export function buildProviderCandidateSearchQueries(market: CompactMarketForCand
     normalizedEventTitle ? `${normalizedEventTitle} ${marketTypeSearchAlias(market.marketType)}` : null,
     teamPair,
     teamPair ? `${teamPair} ${marketTypeSearchAlias(market.marketType)}` : null,
+    ...eventSearchPhrases,
     `${withoutLine} ${market.marketType.replace(/_/g, " ")}`,
     `${normalizedWithoutLine} ${marketTypeSearchAlias(market.marketType)}`,
     market.marketGroupTitle ? `${withoutLine} ${market.marketGroupTitle}` : null,
     market.marketGroupTitle ? `${normalizedWithoutLine} ${normalizeProviderSearchPhrase(market.marketGroupTitle)}` : null,
     market.period ? `${withoutLine} ${market.period.replace(/-/g, " ")}` : null,
     market.period ? `${normalizedWithoutLine} ${market.period.replace(/-/g, " ")}` : null,
-    ...buildProviderEventSearchPhrases(market),
   ].filter((query): query is string => Boolean(query && query.length > 2));
   return Array.from(new Set(terms)).slice(0, 12);
 }
@@ -1086,20 +1087,61 @@ function marketTypeSearchAlias(marketType: string) {
 }
 
 function buildProviderEventSearchPhrases(market: CompactMarketForCandidates) {
-  const normalizedTitle = normalizeText(market.title);
-  const teams = Array.from(new Set([
-    ...market.outcomes.map((outcome) => outcome.name),
-    ...Object.keys(PROVIDER_MARKET_SLUG_CODE_BY_NAME).filter((name) => normalizedTitle.includes(name)),
-  ]
+  const normalizedTitle = normalizeText(`${market.eventTitle ?? ""} ${market.title}`);
+  const family = expectedProviderMarketFamily(market);
+  const lineFragments = inferLineSlugFragments(market.title);
+  const providerTeams = Object.keys(PROVIDER_MARKET_SLUG_CODE_BY_NAME).filter((name) => normalizedTitle.includes(name));
+  const outcomeTeams = market.outcomes.map((outcome) => outcome.name);
+  const teams = Array.from(new Set((providerTeams.length >= 2 ? providerTeams : [...providerTeams, ...outcomeTeams])
     .map((name) => normalizeProviderSearchPhrase(name))
     .filter((name) => name.length > 2 && !GENERIC_RELEVANCE_TOKENS.has(normalizeText(name)))));
   if (teams.length < 2) return [];
   const pair = `${teams[0]} ${teams[teams.length - 1]}`;
+  const familyPhrases = [
+    ...(family === "spread" ? [
+      `${pair} spread`,
+      `${pair} handicap`,
+      `${pair} asian handicap`,
+      `world cup ${pair} spread`,
+      `world cup ${pair} handicap`,
+      ...lineFragments.flatMap((fragment) => [
+        `${pair} spread ${fragment}`,
+        `${pair} handicap ${fragment}`,
+      ]),
+    ] : []),
+    ...(family === "total_goals" ? [
+      `${pair} total goals`,
+      `${pair} over under`,
+      ...lineFragments.flatMap((fragment) => [
+        `${pair} total goals ${fragment}`,
+      ]),
+      `world cup ${pair} total goals`,
+      `world cup ${pair} over under`,
+      `${pair} goals over under`,
+      ...lineFragments.flatMap((fragment) => [
+        `${pair} over ${fragment}`,
+        `${pair} under ${fragment}`,
+      ]),
+    ] : []),
+    ...(family === "team_total_goals" ? [
+      `${pair} team total`,
+      `${pair} team goals`,
+      `world cup ${pair} team total`,
+      `world cup ${pair} team goals`,
+      ...lineFragments.flatMap((fragment) => [
+        `${pair} team total ${fragment}`,
+        `${pair} team goals ${fragment}`,
+      ]),
+    ] : []),
+  ];
   return [
     pair,
+    ...familyPhrases,
     `${pair} soccer`,
     `${pair} world cup`,
     `${pair} ${marketTypeSearchAlias(market.marketType)}`,
+    `world cup ${pair} ${marketTypeSearchAlias(market.marketType)}`,
+    `fifa world cup ${pair} ${marketTypeSearchAlias(market.marketType)}`,
   ];
 }
 

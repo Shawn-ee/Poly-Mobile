@@ -7741,3 +7741,49 @@ Known limitations:
 
 - `displayStatus` does not create real live provider breadth.
 - Spread/Totals/Team Total remain `contract-fixture` line markets.
+
+## Cycle NX - Provider Line Query Breadth Inspection
+
+Feature/page worked on:
+
+- Local MVP provider discovery path for World Cup line markets used by Event Detail and the simple trade ticket.
+
+Backend/harness files touched:
+
+- `src/server/services/mobileLiveProviderCandidates.ts`
+- `src/__tests__/mobile-live-provider-candidates.service.test.ts`
+- Evidence/docs:
+  - `docs/mobile/harness/cycle-NX-provider-line-query-breadth/cycle-NX-provider-line-source-probe.json`
+  - `docs/mobile/harness/cycle-NX-provider-line-query-breadth/cycle-NX-provider-match-line-availability.json`
+  - `docs/mobile/harness/cycle-NX-provider-line-query-breadth/cycle-NX-current-mvp-s23-visible-flow.json`
+  - `docs/mobile/screenshots/cycle-NX-provider-line-query-breadth/`
+  - `docs/mobile/audits/cycle-NX-provider-line-query-breadth.md`
+
+Important functions/services touched:
+
+- `buildProviderCandidateSearchQueries()` now keeps event/team/family line phrases inside the 12-query cap.
+- `buildProviderEventSearchPhrases()` now infers the event team pair from event/title provider team names before outcome labels, so Over/Under outcomes do not displace the actual teams.
+- Line-family phrases now include total goals, over/under, spread, handicap, and team-total variants shaped for Polymarket Gamma search.
+
+User interactions supported/proven:
+
+- No new UI surface was added.
+- S23 proof verified the current Local MVP Home -> Event Detail path still renders with chat/orderbook hidden while provider discovery work changed under the hood.
+
+State transitions:
+
+- No database schema, order lifecycle, portfolio route, or order submission logic changed.
+
+Validation:
+
+- Provider candidate unit tests passed.
+- Root TypeScript passed.
+- Provider line source probe passed.
+- Provider match line availability proof passed.
+- S23 focused visible proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- Polymarket Gamma still exposes only match-winner markets for `argentina-vs-egypt` and `fifwc-col-gha-2026-07-03` in the checked paths.
+- Spread/Totals/Team Total remain `contract-fixture` line markets for Local MVP order proof.
+- The relevance gate was not weakened; irrelevant candidates remain rejected instead of being attached as fake provider lines.
