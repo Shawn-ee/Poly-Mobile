@@ -16,6 +16,11 @@ describe("Search result stats contract", () => {
     expect(search).not.toContain("t.liquidity");
     expect(search).toContain("Starts");
     expect(search).toContain("event.startsAt");
+    expect(search).toContain("marketSourceSummary");
+    expect(search).toContain("polymarketMarketCount");
+    expect(search).toContain("contractFixtureMarketCount");
+    expect(search).toContain("search-result-source-");
+    expect(search).toContain("Polymarket ${providerCount} markets");
     expect(search).toContain("save-event-");
     expect(search).toContain("search-result-");
   });

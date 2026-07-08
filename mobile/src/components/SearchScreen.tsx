@@ -60,6 +60,41 @@ export function SearchScreen({
     if (distanceFromBottom < 160) loadMoreResults();
   };
 
+  const sourceLabel = (event: Event) => {
+    const summary = event.marketSourceSummary;
+    if (!summary) return locale === "zh" ? "\u6765\u6e90\u68c0\u67e5\u4e2d" : "Checking source";
+    const providerCount = summary.polymarketMarketCount ?? 0;
+    const fixtureCount = summary.contractFixtureMarketCount ?? 0;
+    const lineStatus = summary.lineMarkets?.status;
+    if (providerCount > 0 && fixtureCount > 0) {
+      return locale === "zh"
+        ? `Polymarket ${providerCount} / \u6d4b\u8bd5\u76d8\u53e3 ${fixtureCount}`
+        : `Polymarket ${providerCount} / test lines ${fixtureCount}`;
+    }
+    if (providerCount > 0) {
+      return locale === "zh" ? `Polymarket ${providerCount} \u4e2a\u5e02\u573a` : `Polymarket ${providerCount} markets`;
+    }
+    if (lineStatus === "contract-fixture" || fixtureCount > 0) {
+      return locale === "zh" ? "\u6d4b\u8bd5\u76d8\u53e3" : "Test lines";
+    }
+    return locale === "zh" ? "\u5e02\u573a\u6765\u6e90\u672a\u5c31\u7eea" : "Source unavailable";
+  };
+
+  const sourceAccessibility = (event: Event) => {
+    const summary = event.marketSourceSummary;
+    const providerCount = summary?.polymarketMarketCount ?? 0;
+    const fixtureCount = summary?.contractFixtureMarketCount ?? 0;
+    const status =
+      providerCount > 0 && fixtureCount > 0
+        ? "mixed-provider-test-lines"
+        : providerCount > 0
+          ? "provider-backed"
+          : fixtureCount > 0
+            ? "test-lines"
+            : "unknown";
+    return `search-result-source-${event.id} source-${status} polymarket-count-${providerCount} contract-fixture-count-${fixtureCount}`;
+  };
+
   return (
     <View style={styles.screen}>
       <ScrollView
@@ -128,6 +163,16 @@ export function SearchScreen({
                   <View style={styles.resultBody}>
                     <Text style={styles.resultKicker}>{label(locale, { label: "Sports - Soccer", zhLabel: "\u4f53\u80b2 - \u8db3\u7403" })}</Text>
                     <Text style={styles.resultTitle}>{label(locale, event)}</Text>
+                    <Text
+                      accessibilityLabel={sourceAccessibility(event)}
+                      style={[
+                        styles.resultSource,
+                        (event.marketSourceSummary?.polymarketMarketCount ?? 0) > 0 && styles.resultSourceProvider,
+                        (event.marketSourceSummary?.contractFixtureMarketCount ?? 0) > 0 && styles.resultSourceMixed,
+                      ]}
+                    >
+                      {sourceLabel(event)}
+                    </Text>
                     <Text style={styles.resultTime}>{locale === "zh" ? "\u5f00\u59cb" : "Starts"} {event.startsAt}</Text>
                   </View>
                   <View style={styles.resultRight}>
@@ -191,6 +236,9 @@ const styles = StyleSheet.create({
   resultBody: { flex: 1, minWidth: 0 },
   resultKicker: { color: "#8ea0b8", fontSize: 13, fontWeight: "900", marginBottom: 5 },
   resultTitle: { color: "#f8fafc", fontSize: 21, lineHeight: 26, fontWeight: "900", marginBottom: 8 },
+  resultSource: { color: "#94a3b8", fontSize: 12, fontWeight: "900", marginBottom: 5 },
+  resultSourceProvider: { color: "#86efac" },
+  resultSourceMixed: { color: "#fde68a" },
   resultTime: { color: "#8ea0b8", fontSize: 12, fontWeight: "800", marginTop: 2 },
   resultRight: { width: 88, alignItems: "flex-end", paddingTop: 4 },
   resultProbability: { color: "#f8fafc", fontSize: 31, lineHeight: 36, fontWeight: "900" },

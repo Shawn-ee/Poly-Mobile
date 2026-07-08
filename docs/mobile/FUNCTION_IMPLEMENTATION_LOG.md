@@ -2,6 +2,45 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle OP - Search Provider Breadth Visibility
+
+Feature/page worked on:
+
+- Search Top Results provider breadth visibility.
+
+Frontend/services touched:
+
+- `mobile/src/components/SearchScreen.tsx`
+- `scripts/prove_mobile_search_provider_breadth.ts`
+
+User interactions supported/proven:
+
+- On Samsung S23, Search shows two provider-backed results from the broad provider route.
+- Search rows disclose `World Cup Winner` as `Polymarket 8 markets`.
+- Search rows disclose `Argentina vs. Egypt` as `Polymarket 3 / test lines 4`.
+
+Backend/API route changed:
+
+- None.
+
+Backend/API routes exercised:
+
+- `/api/events?sportKey=soccer&source=polymarket&includeMobileMarkets=1&limit=10`
+- `/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&limit=10`
+
+Verified:
+
+- Mobile typecheck passed.
+- Focused mobile API/source tests passed.
+- Provider breadth route proof passed.
+- S23 Search screenshot/XML proof saved under `docs/mobile/harness/cycle-OP-search-provider-breadth/`.
+
+Known limitations:
+
+- Home remains intentionally Local MVP match-only.
+- Current broader provider-backed breadth is one match plus one outright; next provider work should add more real attach-ready match events.
+- MVP line markets remain contract-shaped fixtures.
+
 ## Cycle ON - Source Label Tester Cleanup
 
 Feature/page worked on:

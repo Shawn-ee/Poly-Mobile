@@ -2,6 +2,26 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle OP - Search Provider Breadth Visibility
+
+Closed or narrowed:
+
+- Mobile Search now visibly consumes `marketSourceSummary` fields from the provider route, making provider-backed breadth auditable on S23.
+- The route proof confirms broad Search currently has two provider-backed World Cup surfaces: one outright and one match.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- More real attach-ready provider-backed match events, not only the current MVP match plus an outright.
+- Real provider-backed Spread/Totals/Team Total markets for the current MVP match.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Existing `contract-fixture` line markets remain visible in Search as `test lines` counts when mixed with provider-backed winner markets.
+
 ## Cycle ON - Source Label Tester Cleanup
 
 Closed or narrowed:

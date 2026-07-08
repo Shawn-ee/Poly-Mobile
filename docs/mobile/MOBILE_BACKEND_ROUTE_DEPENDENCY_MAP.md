@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle OP - Search Provider Breadth Visibility
+
+Cycle OP renders existing provider/source contract fields in mobile Search rows and proves the broad provider route contains multiple provider-backed events.
+
+- Route proof: `docs/mobile/harness/cycle-OP-search-provider-breadth/cycle-OP-search-provider-breadth-route.json`.
+- S23 proof: `docs/mobile/harness/cycle-OP-search-provider-breadth/`.
+- Audit: `docs/mobile/audits/cycle-OP-search-provider-breadth.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Search provider breadth source labels | `/api/events?sportKey=soccer&source=polymarket&includeMobileMarkets=1&limit=10`; `/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&limit=10` | GET | None for Search browsing | None | `events[]`, `title`, `eventType`, compact `markets[]`, `marketSourceSummary.polymarketMarketCount`, `marketSourceSummary.contractFixtureMarketCount`, `marketSourceSummary.regulationWinner.status`, `marketSourceSummary.lineMarkets.status` | Existing `Event`, `Market`, `Outcome`; no schema change | Search row labels use existing route-provided contract summary; no frontend-invented volume/liquidity | More real provider-backed match events and real provider-backed line markets remain needed. |
+
 ## Cycle ON - Source Label Tester Cleanup
 
 Cycle ON changes tester-facing mobile copy only; no backend route, schema, or request/response contract changed.

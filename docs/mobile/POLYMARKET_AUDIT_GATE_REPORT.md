@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle OP
+
+Gate status: Pass
+
+Scope: Search provider breadth visibility.
+
+Decision:
+
+- P0 failed: 0 for focused Search provider breadth visibility.
+- P1/P2 remaining: P1 more real provider-backed match events; P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected MVP match.
+- Evidence: `docs/mobile/harness/cycle-OP-search-provider-breadth/cycle-OP-search-provider-breadth-route.json`, `docs/mobile/harness/cycle-OP-search-provider-breadth/cycle-OP-s23-search-provider-breadth.png`, `docs/mobile/harness/cycle-OP-search-provider-breadth/cycle-OP-s23-search-provider-breadth.xml`, `docs/mobile/audits/cycle-OP-search-provider-breadth.md`.
+- Notes: Search visibly shows two provider-backed results on S23: `World Cup Winner` with `Polymarket 8 markets`, and `Argentina vs. Egypt` with `Polymarket 3 / test lines 4`. Home remains Local MVP match-only.
+
 ## Cycle NJ
 
 Gate status: Pass
