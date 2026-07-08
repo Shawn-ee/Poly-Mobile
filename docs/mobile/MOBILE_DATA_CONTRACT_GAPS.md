@@ -5156,3 +5156,36 @@ Future migration concern:
 
 - Add provider-backed line ingestion when attach-ready provider line rows exist.
 - Add a visible seeded/crossing fill proof or market-order fill mode so S23 UI order can populate History in the same visible run.
+
+## Cycle MC - Visible Filled History For Local MVP Line Ticket
+
+Closed or narrowed:
+
+- Closed the MB visible-proof gap: S23 now proves Home -> Event Detail -> Spread line ticket -> swipe submit -> Portfolio History with a filled server-backed fake-token trade.
+- Confirmed Regulation Winner remains provider-backed while Spread/Totals/Team Total remain explicitly classified as `contract-fixture`.
+- Added scoped proof liquidity cleanup so stale automated proof orders do not make the local S23 fill proof flaky.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total rows for inspected Polymarket matches.
+- Production-grade user/liquidity model for guaranteed retail fills without local proof seeding.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+- `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` preserve the selected line/source/token identity after the visible S23 submit.
+
+Temporary mock/static data:
+
+- No frontend-only random mock data was added.
+- Existing line markets remain backend records with `referenceSource=contract-fixture`.
+- Local proof uses deterministic seeded counterparty liquidity to make the visible S23 order fill.
+
+Future migration concern:
+
+- Replace `contract-fixture` line rows with provider-backed line-market ingestion when attach-ready provider rows exist.
+- Replace proof-only liquidity seeding with production liquidity/market-making or approved retail execution behavior.

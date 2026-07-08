@@ -6045,3 +6045,45 @@ Known limitations:
 
 - Visible S23 order currently lands as an open order; backend route proof separately verifies filled position/history for a seeded counterparty.
 - Spread/Totals/Team Total remain backend-shaped `contract-fixture` markets because real provider-backed line rows are not available for the inspected Polymarket match.
+
+## Cycle MC - Visible Filled History For Local MVP Line Ticket
+
+Feature/page worked on:
+
+- Home -> Event Detail -> Spread line ticket -> swipe-to-buy -> Portfolio History.
+- Local MVP visible order fill proof on Samsung S23.
+
+Frontend/harness/backend files touched:
+
+- `scripts/seed_mobile_route_spread_counterparty.ts`
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+- `scripts/prove_mobile_mvp_home_to_portfolio_journey.ts`
+- `docs/mobile/audits/cycle-MC-visible-filled-history.md`
+
+Important functions/services touched:
+
+- `seed_mobile_route_spread_counterparty.ts` can now target a specific line and clean only stale automated proof BUY orders on the selected market/outcome before seeding a maker ask.
+- `prove_mobile_current_mvp_s23_visible_flow.ps1` now requires filled History when `-ExpectFilledHistory` is set.
+- `prove_mobile_mvp_home_to_portfolio_journey.ts` uses the same scoped proof cleanup before route-level maker seeding.
+
+User interactions supported/proven:
+
+- User opens Home on S23, enters `argentina-vs-egypt`, selects Spread `Egypt +1.5`, enters `$25`, swipes up to buy, and reaches Portfolio.
+- Portfolio History shows the filled Spread line trade with selected line/source identity.
+
+State transitions:
+
+- Stale automated proof BUY orders on the exact selected outcome are canceled before proof liquidity is seeded.
+- A fresh maker SELL at `0.52` is seeded for the selected Spread `1.5` away outcome.
+- The S23 BUY crosses the seeded maker liquidity, creates a filled order, creates a position, and creates a recent trade shown in History.
+
+Validation:
+
+- `npm run -s typecheck` from `mobile/`
+- `npx tsx scripts/prove_mobile_mvp_home_to_portfolio_journey.ts --cycle=MC --summaryPath=docs/mobile/harness/cycle-MC-visible-filled-history/cycle-MC-home-to-portfolio-route-journey.json`
+- S23 proof: `docs/mobile/harness/cycle-MC-visible-filled-history/cycle-MC-current-mvp-s23-visible-flow.json`
+
+Known limitations:
+
+- Spread/Totals/Team Total remain backend-shaped `contract-fixture` markets because real provider-backed line rows are not available for the inspected Polymarket match.
+- Visible fill proof depends on local seeded liquidity; production liquidity remains future work.

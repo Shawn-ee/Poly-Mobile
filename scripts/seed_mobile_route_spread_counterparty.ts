@@ -3,7 +3,7 @@ import * as path from "node:path";
 import { randomUUID } from "node:crypto";
 import { Prisma, PrismaClient } from "@prisma/client";
 import { mintCompleteSetForPublicOrderbook } from "../src/server/services/orderbookCollateral";
-import { placeOrderAndMatch } from "../src/server/services/matching";
+import { cancelOrderAndUnlock, placeOrderAndMatch } from "../src/server/services/matching";
 
 const prisma = new PrismaClient();
 const dec = (value: Prisma.Decimal.Value) => new Prisma.Decimal(value);
@@ -19,6 +19,9 @@ const marketGroupKey = argValue("marketGroupKey") ?? "spread";
 const outcomeSide = argValue("outcomeSide") ?? "home";
 const askPrice = argValue("askPrice") ?? "0.52";
 const askSize = argValue("askSize") ?? "60";
+const line = argValue("line");
+const cleanupProofBids = process.argv.includes("--cleanupProofBids");
+const proofUserPrefix = argValue("proofUserPrefix") ?? "holiwyn-mobile-";
 
 const assert: (condition: unknown, message: string) => asserts condition = (condition, message) => {
   if (!condition) throw new Error(message);
@@ -55,10 +58,39 @@ async function main() {
     },
   });
   assert(event, `Event ${eventSlug} was not found.`);
-  const market = event.markets[0];
+  const market = line
+    ? event.markets.find((item) => item.line?.equals(dec(line)))
+    : event.markets[0];
   assert(market, `Event ${eventSlug} has no ${marketGroupKey} market.`);
   const outcome = market.outcomes.find((item) => item.side === outcomeSide) ?? market.outcomes[0];
   assert(outcome, `${marketGroupKey} market ${market.id} has no outcome.`);
+
+  const canceledProofBids = [];
+  if (cleanupProofBids) {
+    const staleProofBids = await prisma.order.findMany({
+      where: {
+        marketId: market.id,
+        outcomeId: outcome.id,
+        side: "BUY",
+        status: { in: ["OPEN", "PARTIAL"] },
+        price: { gte: dec(askPrice) },
+        user: { username: { startsWith: proofUserPrefix } },
+      },
+      include: { user: { select: { id: true, username: true } } },
+      orderBy: { createdAt: "asc" },
+    });
+    for (const order of staleProofBids) {
+      const canceled = await cancelOrderAndUnlock({ orderId: order.id, userId: order.userId });
+      canceledProofBids.push({
+        id: order.id,
+        username: order.user.username,
+        previousStatus: order.status,
+        price: order.price.toString(),
+        remaining: order.remaining.toString(),
+        canceledStatus: canceled.order.status,
+      });
+    }
+  }
 
   const maker = await createMaker();
   await mintCompleteSetForPublicOrderbook({ marketId: market.id, userId: maker.id, quantity: "80" });
@@ -98,6 +130,11 @@ async function main() {
     maker: {
       id: maker.id,
       username: maker.username,
+    },
+    cleanup: {
+      enabled: cleanupProofBids,
+      proofUserPrefix,
+      canceledProofBids,
     },
     makerOrder: makerOrder.order,
     seededAsk: {

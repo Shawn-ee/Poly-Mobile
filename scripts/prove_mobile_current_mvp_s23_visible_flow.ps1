@@ -7,7 +7,9 @@ param(
   [string]$EventSlug = "argentina-vs-egypt",
   [string]$Cycle = "MB",
   [string]$OutputDir = "docs\mobile\screenshots\cycle-MB-current-mvp-s23-visible-flow",
-  [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-MB-current-mvp-s23-visible-flow"
+  [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-MB-current-mvp-s23-visible-flow",
+  [switch]$SeedCounterparty,
+  [switch]$ExpectFilledHistory
 )
 
 $ErrorActionPreference = "Stop"
@@ -140,6 +142,14 @@ try {
     throw "Backend health is not ok."
   }
 
+  $counterpartyProofPath = Join-Path $HierarchyOutputDir "cycle-$Cycle-current-mvp-counterparty.json"
+  if ($SeedCounterparty) {
+    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=spread" "--line=1.5" "--outcomeSide=away" "--askPrice=0.52" "--askSize=80" "--cleanupProofBids" "--proofUserPrefix=holiwyn-mobile-" "--output=$counterpartyProofPath" | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+      throw "Counterparty seed failed for $EventSlug."
+    }
+  }
+
   $env:MOBILE_DEV_USERNAME = "holiwyn-mobile-$($Cycle.ToLower())-s23-$(Get-Date -Format yyyyMMddHHmmss)"
   $credentialRaw = cmd /c npm.cmd run mobile:dev-credential 2>&1 | Out-String
   if ($LASTEXITCODE -ne 0) {
@@ -231,7 +241,11 @@ try {
   Start-Sleep -Seconds 1
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-portfolio-history.png" | Out-Null
   $historyXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-portfolio-history.xml"
-  Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "No history", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture")
+  if ($ExpectFilledHistory) {
+    Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "portfolio-history-market-context-readable", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture")
+  } else {
+    Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "No history", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture")
+  }
 
   $summary = [ordered]@{
     cycle = $Cycle
@@ -245,6 +259,8 @@ try {
     keyId = "redacted"
     apiKey = "redacted"
     eventSlug = $EventSlug
+    seededCounterparty = [bool]$SeedCounterparty
+    counterpartyProof = if ($SeedCounterparty) { $counterpartyProofPath } else { $null }
     assertions = [ordered]@{
       homeShowsCurrentMatch = $true
       detailShowsGameLines = $true
@@ -253,7 +269,8 @@ try {
       ticketPreservesLine = $true
       swipeSubmitReachedPortfolio = $true
       portfolioOpenOrderPreservesLineSource = $true
-      historyShowsEmptyStateUntilFill = $true
+      historyShowsEmptyStateUntilFill = -not [bool]$ExpectFilledHistory
+      filledHistoryVisible = [bool]$ExpectFilledHistory
     }
     artifacts = @(
       "$OutputDir\cycle-$Cycle-current-mvp-home.png",

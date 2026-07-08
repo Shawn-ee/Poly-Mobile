@@ -63,11 +63,30 @@ async function createMakerForMarket(params: {
   askPrice: string;
   askSize: string;
 }) {
-  const [{ mintCompleteSetForPublicOrderbook }, { placeOrderAndMatch }] = await Promise.all([
+  const [{ mintCompleteSetForPublicOrderbook }, { cancelOrderAndUnlock, placeOrderAndMatch }] = await Promise.all([
     import("@/server/services/orderbookCollateral"),
     import("@/server/services/matching"),
   ]);
   const { prisma } = await import("@/lib/db");
+  const staleProofBids = await prisma.order.findMany({
+    where: {
+      marketId: params.marketId,
+      outcomeId: params.outcomeId,
+      side: "BUY",
+      status: { in: ["OPEN", "PARTIAL"] },
+      price: { gte: dec(params.askPrice) },
+      user: {
+        OR: [
+          { username: { startsWith: "cycle_lt_home_journey_" } },
+          { username: { startsWith: "holiwyn-mobile-" } },
+        ],
+      },
+    },
+    select: { id: true, userId: true },
+  });
+  for (const order of staleProofBids) {
+    await cancelOrderAndUnlock({ orderId: order.id, userId: order.userId });
+  }
   const suffix = randomUUID().slice(0, 8);
   const user = await prisma.user.create({
     data: {

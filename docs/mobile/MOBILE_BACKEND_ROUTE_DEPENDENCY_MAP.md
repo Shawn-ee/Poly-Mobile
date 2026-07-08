@@ -2440,3 +2440,18 @@ Cycle MB implementation notes:
 - No schema migration was added.
 - Backend route proof verified a filled order/history using seeded counterparty liquidity.
 - S23 visible proof verified the retail open-order path and History empty state after an unfilled order.
+
+## Cycle MC - Visible Filled History For Local MVP Line Ticket
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home MVP match selection | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10` | GET | Public viewing | Query filters/page size | Event slug/title/type/status, compact markets, `marketSourceSummary` | `Event`, `Market`, `Outcome`, provider/read-model fields | None added. Existing contract-fixture rows are returned from backend. | Route still includes one future; mobile filters it for Local MVP match flow. |
+| Event Detail line market selection | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | 7 markets, provider-backed Regulation Winner, selected Spread `1.5` line, source/token/condition identity | `Event`, `Market`, `Outcome`, provider quote/read-model fields | Contract-shaped line rows are backend records, not frontend-only random mock data. | Real provider-backed Spread/Totals/Team Total rows are not available for the inspected Polymarket match. |
+| Visible S23 filled swipe order | `/api/orders` | POST | Mobile dev API key with order scope | Selected line market/outcome, BUY side, price/size, selection snapshot | Filled order/Portfolio refresh; selected line/source identity | `ApiCredential`, `Order`, `ApiOrderRequest`, `Trade`, `Position`, `UserBalance`, `Market`, `Outcome` | Local proof seeds deterministic counterparty liquidity before the S23 submit. | Production liquidity remains future work. |
+| Portfolio filled position and history | `/api/portfolio`, `/api/portfolio/history` | GET | Mobile dev API key with account scope | None | Filled position and recent trade row with selected Spread line/source/token identity | `UserBalance`, `Position`, `Trade`, `Order`, `Market`, `Outcome` | None added. Routes read real server state after the visible S23 submit. | None for local fake-token MVP proof. |
+
+Cycle MC implementation notes:
+
+- No schema migration was added.
+- Proof cleanup cancels only stale automated proof BUY orders on the exact selected market/outcome before seeding maker liquidity.
+- S23 visible proof now verifies filled History, closing the prior MB gap where the visible UI landed only on an open order.
