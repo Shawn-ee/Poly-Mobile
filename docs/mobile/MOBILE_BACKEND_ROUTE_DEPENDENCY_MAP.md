@@ -3098,3 +3098,16 @@ Cycle OC implementation notes:
 - No backend route or schema changed; this cycle consumes the existing server history contract more correctly.
 - No orderbook, chat, live stats, or social features were touched.
 - Inspection confirms the remaining product-service gap is real provider-backed line market breadth: Regulation Winner is Polymarket-backed, while Spread/Totals/Team Total remain backend-shaped contract fixtures.
+
+## Cycle OD - Current Provider Line Inspection
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home current MVP event | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` | GET | Public viewing | Event-list query filters | Event slug/title, `marketSourceSummary`, display status | `Event`, `Market`, `Outcome` | Existing contract-fixture line markets. | Broader current match inventory and real line families. |
+| Event Detail current MVP markets | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | 3 Polymarket winner markets, 4 contract-fixture line markets, `marketSourceSummary.lineMarkets.status` | `Event`, `Market`, `Outcome`, provider snapshot tables | Existing contract-fixture Spread/Totals/Team Total rows. | Real Polymarket-backed Spread/Totals/Team Total route-visible markets. |
+| Provider discovery guard | `discoverMobileLiveProviderCandidates({ eventSlug: "argentina-vs-egypt", providerSearchMode: "combined" })` | Local proof/service | Local service context | Current event slug | Attach-ready match-winner candidates, line rejection reasons, manual slug fallback count | None directly; reads local compact event and public Gamma | None added. | Gamma exposes no attach-ready line markets for current event. |
+
+Cycle OD implementation notes:
+
+- No route, schema, mobile UI, order, portfolio, orderbook, chat, or live-stat code changed.
+- This cycle adjusts the path: keep Local MVP line fixtures honest, and only replace them when real provider-backed line markets exist.

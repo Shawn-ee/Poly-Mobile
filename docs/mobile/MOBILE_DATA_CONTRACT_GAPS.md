@@ -6484,3 +6484,34 @@ Temporary mock/static data:
 Future migration concern:
 
 - Replace contract-fixture line rows with real provider rows where Polymarket Gamma/CLOB exposes attach-ready markets, while preserving the selected market/line/outcome identity now proven through ticket, order, portfolio, and history.
+
+## Cycle OD - Current Provider Line Inspection
+
+Closed or narrowed:
+
+- The current service state is now explicitly inspected for `argentina-vs-egypt`.
+- Polymarket Gamma discovery confirms 3 attach-ready match-winner markets.
+- Provider discovery confirms 0 attach-ready spread/totals/team-total markets for the current event.
+- The relevance gate safely rejects wrong-family match-winner/draw candidates for line markets.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real Polymarket-backed line market ids, condition ids, token ids, and prices for Spread/Totals/Team Total.
+- Fresh provider quote/chart snapshots for the current local event.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch blocked the inspection.
+- `/api/mobile/events/argentina-vs-egypt/live-detail` is honest: `marketSourceSummary.lineMarkets.status=contract-fixture`.
+
+Temporary mock/static data:
+
+- Existing backend-shaped contract fixtures remain the line market source for the Local MVP.
+
+Future migration concern:
+
+- Do not attach unrelated Polymarket match-winner candidates to line markets. Wait for real line provider markets or add an approved provider/source with matching line contracts.

@@ -5421,3 +5421,29 @@ Decision:
 - Pass/fail: Pass for the narrow OC lifecycle scope.
 - Remaining P1: real provider-backed Spread/Totals/Team Total markets remain missing and should be prioritized next.
 - Remaining P2: inherited proof wrapper artifact names still use `cycle-OB` prefixes inside the OC output folder.
+
+## Cycle OD
+
+Gate status: Pass for current provider line inspection
+
+Scope: Inspect current backend/provider readiness before continuing Local MVP work.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OD-current-provider-line-inspection.md`
+- `docs/mobile/harness/cycle-OD-current-provider-line-inspection/cycle-OD-provider-discovery-guard.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OD-P0-01 | P0 | Pass | Current event route returns `argentina-vs-egypt`. | Fix event discovery seed/route. |
+| OD-P0-02 | P0 | Pass | Live-detail source summary shows 3 Polymarket winner markets and 4 contract-fixture line markets. | Fix source summary or route serialization. |
+| OD-P0-03 | P0 | Pass | Provider discovery guard finds 3 attach-ready match-winner candidates. | Fix Gamma discovery for winner markets. |
+| OD-P0-04 | P0 | Pass | Provider discovery guard finds 0 attach-ready line candidates and rejects wrong-family candidates. | Fix relevance gate; do not attach wrong-family markets. |
+
+Decision:
+
+- Pass/fail: Pass for inspection.
+- Remaining P1: provider-backed Spread/Totals/Team Total markets are unavailable for the current event.
+- Next cycles should continue the Local MVP retail flow without pretending fixture line markets are Polymarket-backed.

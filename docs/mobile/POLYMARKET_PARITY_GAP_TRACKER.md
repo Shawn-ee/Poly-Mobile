@@ -751,3 +751,12 @@ For every UI element or interaction, answer:
 - Current inspection confirms the service is not yet full Polymarket line parity: Regulation Winner is Polymarket-backed, while Spread/Totals/Team Total remain `contract-fixture`.
 - Remaining P1: real provider-backed Spread/Totals/Team Total ingestion/mapping remains the next structural milestone.
 - Remaining P2: proof wrapper artifact filenames should be renamed from inherited `cycle-OB` prefixes.
+
+## Cycle OD Gap Tracker Update
+
+- PM-GAP-124 is opened for current Polymarket-backed line-market availability.
+- OD confirms the current service state for `argentina-vs-egypt`: 3 Polymarket match-winner markets and 4 contract-fixture line markets.
+- Provider discovery guard passes with 3 attach-ready match-winner candidates and 0 attach-ready line candidates.
+- Line markets correctly reject wrong-family draw/match-winner candidates, preventing unsafe provider attachment.
+- Remaining P1: real provider-backed Spread/Totals/Team Total line markets remain missing until Polymarket Gamma/CLOB exposes attach-ready rows or another approved source is added.
+- Adjusted path: continue Local MVP retail flow with honest mixed-source labels and do not block fake-token order lifecycle on unavailable provider line markets.

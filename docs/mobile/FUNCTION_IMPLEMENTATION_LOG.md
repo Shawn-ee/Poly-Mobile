@@ -8006,3 +8006,39 @@ Known limitations:
 
 - The inherited proof wrapper still writes some screenshot/XML filenames with a `cycle-OB` prefix even when using the OC output folders.
 - Spread/Totals/Team Total remain `contract-fixture` line markets. The next structural milestone should focus on real Polymarket-backed line market availability/mapping instead of more lifecycle UI polish.
+
+## Cycle OD - Current Provider Line Inspection
+
+Feature/page worked on:
+
+- Current backend/provider readiness inspection for the Local MVP event detail markets.
+
+Frontend/backend files touched:
+
+- No app runtime files changed.
+- `docs/mobile/audits/cycle-OD-current-provider-line-inspection.md`
+- `docs/mobile/harness/cycle-OD-current-provider-line-inspection/cycle-OD-provider-discovery-guard.json`
+
+Important functions/services touched:
+
+- `discoverMobileLiveProviderCandidates()`
+- Current event routes were inspected but not changed.
+
+User interactions supported/proven:
+
+- No new visible interaction was implemented in this inspection-only cycle.
+- The inspection supports the next visible MVP cycles by confirming which market data is real provider-backed versus fixture-backed.
+
+State transitions:
+
+- None.
+
+Validation:
+
+- Provider discovery guard passed.
+- The guard confirms 3 match-winner candidates are attach-ready and 0 line-market candidates are attach-ready.
+
+Known limitations:
+
+- No Android proof was required because no visible mobile behavior changed.
+- Real Polymarket-backed Spread/Totals/Team Total remain unavailable for the current event.
