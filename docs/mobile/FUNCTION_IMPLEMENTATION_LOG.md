@@ -2,6 +2,33 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle MK - Provider Line Readiness Inspection
+
+Feature/page worked on:
+
+- Re-inspected Polymarket Gamma provider discovery for the current Local MVP event after the service-readiness concern.
+- Confirmed Regulation Winner / match-winner markets have real attach-ready Polymarket candidates.
+- Confirmed Spread/Totals/Team Total line markets do not currently have attach-ready Polymarket candidates for `argentina-vs-egypt`.
+
+Frontend/services touched:
+
+- `scripts/prove_mobile_mvp_provider_discovery_guard.ts`
+
+User interactions supported/proven:
+
+- No visible UI changed in this inspection cycle.
+- The adjusted path is to keep the MVP user flow working with explicit backend-shaped line fixtures while not claiming provider-backed line parity.
+
+Verified:
+
+- Provider readiness proof passed: `docs/mobile/harness/cycle-MK-provider-line-readiness-inspection/cycle-MK-provider-line-readiness-inspection.json`.
+- The proof reports 3 attach-ready match-winner candidates and 0 attach-ready line-market candidates.
+
+Known limitations:
+
+- Spread/Totals/Team Total are still Local MVP contract fixtures for this event.
+- The next visible implementation cycle should improve the user journey around the existing route contract rather than chasing unavailable Polymarket line data for this match.
+
 ## Cycle MJ - Position Sell Contract Identity
 
 Feature/page worked on:

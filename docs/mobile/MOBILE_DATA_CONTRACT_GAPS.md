@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle MK - Provider Line Readiness Inspection
+
+Closed or narrowed:
+
+- Confirmed the current provider path is not blocked globally: Polymarket Gamma returns three attach-ready match-winner candidates for `argentina-vs-egypt`.
+- Confirmed the line-market gap is specific and real for the inspected event: provider family summary has 0 `spread`, 0 `total_goals`, and 0 `team_total_goals` candidates.
+- The loop path is adjusted: do not keep spending cycles trying to mark contract-fixture line markets as provider-backed.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real Polymarket-backed Spread line markets for the current MVP event.
+- Real Polymarket-backed Totals line markets for the current MVP event.
+- Real Polymarket-backed Team Total line markets for the current MVP event.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Backend-shaped `contract-fixture` line markets remain the accepted Local MVP fallback for the fake-token user journey.
+
 ## Cycle MJ - Position Sell Contract Identity
 
 Closed or narrowed:

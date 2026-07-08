@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle MK - Provider Line Readiness Inspection
+
+Cycle MK re-checks Polymarket Gamma candidate availability for the current Local MVP event.
+
+- Provider readiness proof: `docs/mobile/harness/cycle-MK-provider-line-readiness-inspection/cycle-MK-provider-line-readiness-inspection.json`.
+- Audit: `docs/mobile/audits/cycle-MK-provider-line-readiness-inspection.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider-backed market discovery for current MVP event | Internal service behind `/api/mobile/events/:slug/provider-candidates`; Polymarket Gamma `/events` and `/markets` public fetches | GET through route or proof service | Protected route requires admin/internal access; proof uses local service directly | `eventSlug=argentina-vs-egypt`, provider search mode `combined` | Provider candidate family, slug, question, event title, attach readiness, mismatch reasons | Existing `Event`, `Market`, `Outcome`; no schema change | Current Spread/Totals/Team Total rows remain backend-shaped `contract-fixture` markets. They are allowed for Local MVP fake-token flow but not provider parity. | Real provider-backed Spread/Totals/Team Total candidates are not available for this inspected event. |
+
 ## Cycle MJ - Position Sell Contract Identity
 
 Cycle MJ preserves owned contract identity when reopening a Portfolio position for sell/retrade ticket behavior.

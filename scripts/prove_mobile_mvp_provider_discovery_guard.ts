@@ -22,6 +22,7 @@ const assert = (condition: unknown, message: string): asserts condition => {
 async function main() {
   const eventSlug = argValue("eventSlug") ?? DEFAULT_EVENT_SLUG;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
+  const cycle = argValue("cycle") ?? "MI";
   const discovery = await discoverMobileLiveProviderCandidates({
     eventSlug,
     maxCandidatesPerMarket: 3,
@@ -67,7 +68,7 @@ async function main() {
   assert(lineWrongFamilyRejections.length >= 3, "Expected line targets to reject wrong-family match-winner candidates.");
 
   const summary = {
-    cycle: "MI",
+    cycle,
     result: "pass",
     generatedAt: new Date().toISOString(),
     provider: discovery.provider,
