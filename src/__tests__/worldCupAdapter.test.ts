@@ -98,6 +98,7 @@ describe("world cup adapter", () => {
     });
 
     expect(normalized).toMatchObject({
+      type: "game-line",
       marketGroupId: "aus-egy-live-game-lines",
       marketType: "spread",
       period: "regulation",
@@ -150,6 +151,7 @@ describe("world cup adapter", () => {
     });
 
     expect(normalized).toMatchObject({
+      type: "game-line",
       marketType: "team-total",
       line: "1.5",
       outcomes: [{ id: "over", side: "over", bestBid: 0.57, bestAsk: 0.65 }],
@@ -271,5 +273,139 @@ describe("world cup adapter", () => {
 
     expect(normalized?.status).toBe("live");
     expect(normalized?.liveDataStatus?.status).toBe("stale");
+  });
+
+  test("preserves backend event market rules instead of deriving from local market heuristics", () => {
+    const detail: EventDetail = {
+      event: {
+        id: "event-rules-1",
+        slug: "backend-rule-owned",
+        title: "Backend Rules Home vs Backend Rules Away",
+        description: "Backend-provided market rules should win.",
+        category: "sports",
+        sportKey: "soccer",
+        leagueKey: "world_cup",
+        homeTeamName: "Backend Rules Home",
+        awayTeamName: "Backend Rules Away",
+        startTime: "2026-07-10T20:00:00.000Z",
+        status: "upcoming",
+        liveStatus: null,
+        period: null,
+        clock: null,
+        homeScore: null,
+        awayScore: null,
+        imageUrl: null,
+        marketCount: 1,
+        activeMarketCount: 1,
+        marketProfile: "full_match_with_overtime",
+        resultMode: "no_draw",
+        gameRules: {
+          allowDraw: false,
+          includesOvertime: true,
+          description: "Full match including overtime has no draw outcome.",
+        },
+        supportedMarketTypes: ["full_match_with_overtime", "to_advance"],
+      },
+      markets: [{
+        ...baseMarket,
+        id: "misleading-regulation-market",
+        title: "Misleading 90 Minute Winner",
+        marketGroupTitle: "Regulation Time Winner",
+        marketType: "moneyline",
+        period: "regulation",
+        outcomes: [
+          { id: "home", name: "Home", label: "Home", side: "home", price: 0.4, bestBid: 0.39, bestAsk: 0.41, isTradable: true },
+          { id: "tie", name: "Tie", label: "Tie", side: "draw", price: 0.3, bestBid: 0.29, bestAsk: 0.31, isTradable: true },
+          { id: "away", name: "Away", label: "Away", side: "away", price: 0.3, bestBid: 0.29, bestAsk: 0.31, isTradable: true },
+        ],
+      }],
+    };
+
+    const normalized = normalizeEventDetail(detail);
+
+    expect(normalized?.marketProfile).toBe("full_match_with_overtime");
+    expect(normalized?.resultMode).toBe("no_draw");
+    expect(normalized?.gameRules).toMatchObject({
+      allowDraw: false,
+      includesOvertime: true,
+      description: "Full match including overtime has no draw outcome.",
+    });
+    expect(normalized?.supportedMarketTypes).toEqual(["full_match_with_overtime", "to_advance"]);
+  });
+
+  test("normalizes backend outright events without exposing the binary No leg as a game line", () => {
+    const detail: EventDetail = {
+      event: {
+        id: "world-cup-winner",
+        slug: "world-cup-winner",
+        title: "World Cup Winner",
+        description: "Tournament outright winner.",
+        category: "sports",
+        sportKey: "soccer",
+        leagueKey: "world_cup",
+        eventType: "future",
+        homeTeamName: null,
+        awayTeamName: null,
+        startTime: null,
+        status: "OPEN",
+        liveStatus: null,
+        period: null,
+        clock: null,
+        homeScore: null,
+        awayScore: null,
+        imageUrl: null,
+        marketCount: 2,
+        activeMarketCount: 2,
+        marketProfile: "outright",
+        resultMode: "one_winner",
+        gameRules: {
+          allowDraw: false,
+          includesOvertime: false,
+          description: "Tournament outright winner market.",
+        },
+        supportedMarketTypes: ["outright"],
+      },
+      markets: [
+        {
+          ...baseMarket,
+          id: "argentina-market",
+          title: "Argentina",
+          marketGroupTitle: "Outrights",
+          marketGroupKey: "outrights",
+          marketGroupId: "outrights",
+          marketType: "outright",
+          propCategory: null,
+          outcomes: [
+            { id: "argentina-yes", name: "YES", label: "Argentina", side: "yes", price: 0.17, bestBid: 0.16, bestAsk: 0.18, isTradable: true },
+            { id: "argentina-no", name: "NO", label: "No", side: "no", price: 0.83, bestBid: 0.82, bestAsk: 0.84, isTradable: true },
+          ],
+        },
+        {
+          ...baseMarket,
+          id: "france-market",
+          title: "France",
+          marketGroupTitle: "Outrights",
+          marketGroupKey: "outrights",
+          marketGroupId: "outrights",
+          marketType: "outright",
+          propCategory: null,
+          outcomes: [
+            { id: "france-yes", name: "YES", label: "France", side: "yes", price: 0.15, bestBid: 0.14, bestAsk: 0.16, isTradable: true },
+            { id: "france-no", name: "NO", label: "No", side: "no", price: 0.85, bestBid: 0.84, bestAsk: 0.86, isTradable: true },
+          ],
+        },
+      ],
+    };
+
+    const normalized = normalizeEventDetail(detail);
+
+    expect(normalized?.marketProfile).toBe("outright");
+    expect(normalized?.resultMode).toBe("one_winner");
+    expect(normalized?.supportedMarketTypes).toEqual(["outright"]);
+    expect(normalized?.markets).toHaveLength(2);
+    expect(normalized?.markets.every((market) => market.type === "future")).toBe(true);
+    expect(normalized?.markets.map((market) => market.marketType)).toEqual(["future", "future"]);
+    expect(normalized?.markets.map((market) => market.outcomes[0].label)).toEqual(["Argentina", "France"]);
+    expect(normalized?.markets.map((market) => market.outcomes[1].label)).toEqual(["No", "No"]);
   });
 });
