@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle NC - Portfolio Selection Source Summary
+
+Cycle NC consumes existing server Portfolio/history selection snapshots in visible Portfolio UI.
+
+- S23 proof: `docs/mobile/harness/cycle-NC-portfolio-selection-source-summary/cycle-NC-current-mvp-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-NC-portfolio-selection-source-summary.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio selection source summary | `/api/portfolio`; `/api/portfolio/history` | GET | Existing mobile API auth | None | Position/open-order/history `selection.referenceSource`, `selection.marketType`, `selection.line`, `selection.period`, `selection.marketId`, `selection.outcomeId` | Existing `Order`, `Trade`, `Position`, `Market`, `Outcome`; no schema change | Existing Local MVP `contract-fixture` line selections are summarized as `Local line pricing` | Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected Polymarket events. |
+
 ## Cycle NB - Event Detail Line Availability Disclosure
 
 Cycle NB consumes the Cycle NA backend contract in visible Event Detail UI.

@@ -15,5 +15,9 @@ describe("Portfolio source badges", () => {
     expect(source).toContain("portfolio-source-badge-local");
     expect(source).toContain("Provider");
     expect(source).toContain("Local");
+    expect(source).toContain("portfolioSourceSummary");
+    expect(source).toContain("portfolio-selection-source-summary");
+    expect(source).toContain("portfolio-source-summary-local-lines");
+    expect(source).toContain("portfolio-local-line-count-");
   });
 });

@@ -2,6 +2,25 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle NC - Portfolio Selection Source Summary
+
+Closed or narrowed:
+
+- Portfolio now summarizes selection source state above the tabs using actual position, open-order, and activity selection snapshots.
+- S23 XML proof verifies `portfolio-source-summary-local-lines` and visible `Local line pricing`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected events.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Existing `contract-fixture` line markets remain backend-shaped Local MVP fallback rows.
+
 ## Cycle NB - Event Detail Line Availability Disclosure
 
 Closed or narrowed:

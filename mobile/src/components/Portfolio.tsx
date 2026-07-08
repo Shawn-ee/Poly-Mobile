@@ -384,6 +384,60 @@ const portfolioSourceNote = (selection?: TicketSelection) => {
   return null;
 };
 
+const portfolioSourceSummary = ({
+  positions,
+  openOrders,
+  activities,
+}: {
+  positions: Position[];
+  openOrders: OpenOrder[];
+  activities: PortfolioActivity[];
+}) => {
+  const selections = [
+    ...positions.map((item) => item.selection),
+    ...openOrders.map((item) => item.selection),
+    ...activities.map((item) => item.selection),
+  ].filter((selection): selection is TicketSelection => Boolean(selection));
+  if (selections.length === 0) return null;
+
+  const providerCount = selections.filter((selection) => selection.referenceSource?.includes("polymarket")).length;
+  const localLineCount = selections.filter((selection) => selection.referenceSource?.includes("contract-fixture")).length;
+  const lineFamilies = Array.from(
+    new Set(
+      selections
+        .filter((selection) => selection.referenceSource?.includes("contract-fixture"))
+        .map((selection) => selection.marketType)
+        .filter(Boolean),
+    ),
+  );
+
+  if (providerCount > 0 && localLineCount > 0) {
+    return {
+      label: "Source",
+      text: "Provider winner / local line pricing",
+      tone: "mixed" as const,
+      accessibility:
+        `portfolio-selection-source-summary portfolio-source-summary-mixed portfolio-provider-count-${providerCount} portfolio-local-line-count-${localLineCount} portfolio-line-families-${lineFamilies.join("-") || "none"}`,
+    };
+  }
+  if (localLineCount > 0) {
+    return {
+      label: "Source",
+      text: "Local line pricing",
+      tone: "fixture" as const,
+      accessibility:
+        `portfolio-selection-source-summary portfolio-source-summary-local-lines portfolio-provider-count-${providerCount} portfolio-local-line-count-${localLineCount} portfolio-line-families-${lineFamilies.join("-") || "none"}`,
+    };
+  }
+  return {
+    label: "Source",
+    text: "Provider market pricing",
+    tone: "provider" as const,
+    accessibility:
+      `portfolio-selection-source-summary portfolio-source-summary-provider portfolio-provider-count-${providerCount} portfolio-local-line-count-${localLineCount}`,
+  };
+};
+
 const portfolioDetailCopy = {
   en: {
     details: "Details",
@@ -704,6 +758,7 @@ export function Portfolio({
   const portfolioValue = balance + currentValueTotal(positions);
   const portfolioPnl = pnlTotal(positions);
   const portfolioPnlPercent = investedTotal(positions) > 0 ? (portfolioPnl / investedTotal(positions)) * 100 : 0;
+  const sourceSummary = portfolioSourceSummary({ positions, openOrders, activities });
   const valueHistory = deterministicPortfolioValueHistory({
     range: activeRange,
     cash: balance,
@@ -913,6 +968,30 @@ export function Portfolio({
       <View accessibilityLabel="portfolio-funding-hidden-local-mvp" testID="portfolio-funding-hidden-local-mvp" style={styles.a11yOnly}>
         <Text>funding-hidden-local-mvp</Text>
       </View>
+      {sourceSummary && (
+        <View
+          accessibilityLabel={sourceSummary.accessibility}
+          style={[
+            styles.portfolioSourceSummary,
+            sourceSummary.tone === "provider" && styles.portfolioSourceSummaryProvider,
+            sourceSummary.tone === "fixture" && styles.portfolioSourceSummaryFixture,
+            sourceSummary.tone === "mixed" && styles.portfolioSourceSummaryMixed,
+          ]}
+          testID="portfolio-selection-source-summary"
+        >
+          <Text style={styles.portfolioSourceSummaryLabel}>{sourceSummary.label}</Text>
+          <Text
+            numberOfLines={1}
+            style={[
+              styles.portfolioSourceSummaryText,
+              sourceSummary.tone === "provider" && styles.portfolioSourceSummaryTextProvider,
+              sourceSummary.tone === "fixture" && styles.portfolioSourceSummaryTextFixture,
+            ]}
+          >
+            {sourceSummary.text}
+          </Text>
+        </View>
+      )}
       <View accessibilityLabel="portfolio-section-tabs" testID="portfolio-section-tabs" style={styles.portfolioTabs}>
         {tabs.map((item) => (
           <Pressable
@@ -1505,6 +1584,14 @@ const styles = StyleSheet.create({
   portfolioSourceNote: { color: "#94a3b8", fontSize: 11, fontWeight: "900", marginTop: 4 },
   portfolioSourceNoteProvider: { color: "#86efac" },
   portfolioSourceNoteFixture: { color: "#fde68a" },
+  portfolioSourceSummary: { marginHorizontal: 24, marginTop: 14, marginBottom: 4, minHeight: 38, flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 12, borderRadius: 10, borderWidth: 1, borderColor: "#334155", backgroundColor: "#101827" },
+  portfolioSourceSummaryProvider: { borderColor: "#166534", backgroundColor: "#052e16" },
+  portfolioSourceSummaryFixture: { borderColor: "#854d0e", backgroundColor: "#33280f" },
+  portfolioSourceSummaryMixed: { borderColor: "#374151", backgroundColor: "#111827" },
+  portfolioSourceSummaryLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "900", textTransform: "uppercase" },
+  portfolioSourceSummaryText: { flex: 1, minWidth: 0, color: "#dbeafe", fontSize: 13, fontWeight: "800" },
+  portfolioSourceSummaryTextProvider: { color: "#86efac" },
+  portfolioSourceSummaryTextFixture: { color: "#fde68a" },
   positionValueRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8, marginTop: 14 },
   positionValueBlock: { flex: 1, minWidth: 0 },
   positionValue: { color: "#f8fafc", fontSize: 18, fontWeight: "500" },

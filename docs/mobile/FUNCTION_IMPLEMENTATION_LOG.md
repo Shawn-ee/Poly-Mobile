@@ -2,6 +2,35 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle NC - Portfolio Selection Source Summary
+
+Feature/page worked on:
+
+- Portfolio source summary for Local MVP selection snapshots.
+
+Frontend/services touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/src/__tests__/portfolioSourceBadge.test.ts`
+
+User interactions supported/proven:
+
+- On S23, completed Home -> Live -> Event Detail -> local Spread ticket -> swipe buy -> Portfolio/history, then verified the Portfolio source summary above the tabs.
+
+Backend/API route changed:
+
+- None. The summary uses existing position, open-order, and history selection snapshots.
+
+Verified:
+
+- Focused mobile Vitest and mobile typecheck passed.
+- S23 proof passed: `docs/mobile/harness/cycle-NC-portfolio-selection-source-summary/cycle-NC-current-mvp-s23-visible-flow.json`.
+- XML proof includes `portfolio-selection-source-summary`, `portfolio-source-summary-local-lines`, `portfolio-local-line-count-`, and visible `Local line pricing`.
+
+Known limitations:
+
+- Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected events.
+
 ## Cycle NB - Event Detail Line Availability Disclosure
 
 Feature/page worked on:

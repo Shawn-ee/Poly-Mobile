@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle NC
+
+Gate status: Pass
+
+Scope: Portfolio selection source summary.
+
+Decision:
+
+- P0 failed: 0 for focused visible Portfolio summary scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-NC-portfolio-selection-source-summary/cycle-NC-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-NC-portfolio-selection-source-summary/`, `docs/mobile/audits/cycle-NC-portfolio-selection-source-summary.md`.
+- Notes: S23 XML proof includes `portfolio-selection-source-summary`, `portfolio-source-summary-local-lines`, `portfolio-local-line-count-`, and visible `Local line pricing`, then completes the full line ticket/order/Portfolio/history path.
+
 ## Cycle NB
 
 Gate status: Pass
