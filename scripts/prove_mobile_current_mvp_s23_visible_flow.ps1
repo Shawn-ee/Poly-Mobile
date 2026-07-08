@@ -13,7 +13,8 @@ param(
   [switch]$ExpectFilledHistory,
   [switch]$ExpectOpenOrder,
   [switch]$ExpectCancel,
-  [switch]$ExpectCashout
+  [switch]$ExpectCashout,
+  [switch]$ExpectLiveEmptyOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -248,6 +249,47 @@ try {
   Start-Sleep -Seconds 2
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-live.png" | Out-Null
   $liveXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-live.xml"
+  if ($ExpectLiveEmptyOnly) {
+    Assert-Contains -Path $liveXml -Expected @("live-world-cup-games-focus", "No live markets right now.")
+    Assert-NotContains -Path $liveXml -Unexpected @("event-card-$EventSlug", "Order Book", "event-detail-open-order-book", "Chat", "Provider Breadth", "EL-A Provider Breadth", "mobile-el-a-provider-breadth")
+
+    Invoke-TapNode -Path $liveXml -Identifier "holiwyn-home-tab"
+    Start-Sleep -Seconds 1
+    $homeReturnXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-home-return.xml"
+    Assert-Contains -Path $homeReturnXml -Expected @("event-card-$EventSlug", "home-card-source-provider-winner-local-lines")
+
+    $summary = [ordered]@{
+      cycle = $Cycle
+      result = "pass"
+      generatedAt = (Get-Date).ToUniversalTime().ToString("o")
+      device = $Device
+      model = $deviceInfo
+      backendBaseUrl = $BackendBaseUrl
+      mobileApiBaseUrl = $MobileApiBaseUrl
+      expoPort = $Port
+      keyId = "redacted"
+      apiKey = "redacted"
+      eventSlug = $EventSlug
+      assertions = [ordered]@{
+        homeShowsCurrentMatch = $true
+        liveRouteHidesStaleMatch = $true
+        liveShowsEmptyState = $true
+        homeStillShowsProviderWinnerLocalLinesDisclosure = $true
+        orderbookHidden = $true
+      }
+      artifacts = [System.Collections.Generic.List[string]]@(
+        "$OutputDir\cycle-$Cycle-current-mvp-home.png",
+        "$HierarchyOutputDir\cycle-$Cycle-current-mvp-home.xml",
+        "$OutputDir\cycle-$Cycle-current-mvp-live.png",
+        "$HierarchyOutputDir\cycle-$Cycle-current-mvp-live.xml",
+        "$HierarchyOutputDir\cycle-$Cycle-current-mvp-home-return.xml"
+      )
+    }
+    $summaryPath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-current-mvp-s23-visible-flow.json"
+    Write-JsonNoBom -Value $summary -Path $summaryPath -Depth 6
+    Write-Host "Proof summary: $summaryPath"
+    return
+  }
   Assert-Contains -Path $liveXml -Expected @("live-world-cup-games-focus", "live-source-readiness", "home-card-source-provider-winner-local-lines", "event-card-$EventSlug")
   Assert-NotContains -Path $liveXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "Provider Breadth", "EL-A Provider Breadth", "mobile-el-a-provider-breadth")
 

@@ -652,3 +652,11 @@ For every UI element or interaction, answer:
 - Provider discovery guard confirms 0 attach-ready line targets and rejects wrong-family winner candidates for line markets.
 - Active sports scan returned World Cup outright winner futures, not match-level spread/total/team-total lines.
 - Path adjustment: continue Local MVP line-ticket flow with explicit contract-fixture disclosure; do not mark provider-backed line parity complete until a real provider line source exists.
+
+## Cycle NS Gap Tracker Update
+
+- PM-GAP-115 is opened and verified for Live-tab stale match honesty.
+- NS closes the visible problem where a provider-dated stale match could still appear under Live because `liveStatus=LIVE` remained on the local row.
+- `/api/events?status=live` now hides stale provider-dated matches, and mobile no longer falls back to all-match results for Live.
+- S23 proof passes for Home showing the MVP match, Live showing no live markets, and Home return preserving the MVP match.
+- Remaining P1: real current live World Cup match/provider breadth remains missing.

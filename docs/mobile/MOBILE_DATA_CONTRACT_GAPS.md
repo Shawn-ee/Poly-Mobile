@@ -6145,3 +6145,32 @@ Temporary mock/static data:
 Future migration concern:
 
 - If Polymarket does not expose match line markets through Gamma/CLOB for current World Cup games, Holiwyn needs another approved provider contract for line pricing before provider-backed line parity can be claimed.
+
+## Cycle NS - Live Freshness Empty State
+
+Closed or narrowed:
+
+- Live route no longer exposes a provider-dated stale match as live.
+- Mobile Live page no longer falls back to all-match data when the server live route is empty.
+- S23 proof confirms Home still has the MVP match while Live shows the empty state.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- A first-class provider event status/end-time contract for match freshness.
+- A broader current live World Cup match feed with real provider-backed markets.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- No new mock data was added.
+
+Future migration concern:
+
+- Provider import should populate `startTime` and/or a first-class event end time instead of relying on date extraction from provider slugs.

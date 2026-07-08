@@ -5100,3 +5100,31 @@ Decision:
 
 - Pass/fail: Pass for inspection and path adjustment.
 - Next implementation work should not claim Polymarket-backed Spread/Totals/Team Total until real provider line data exists.
+
+## Cycle NS
+
+Gate status: Pass for Live freshness empty state
+
+Scope: Keep the Live tab honest by hiding stale provider-dated matches while preserving the Home MVP match for the betting flow.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NS-live-freshness-empty-state.md`
+- `docs/mobile/harness/cycle-NS-live-freshness-empty-state/cycle-NS-live-route-freshness.json`
+- `docs/mobile/harness/cycle-NS-live-freshness-empty-state/cycle-NS-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NS-live-freshness-empty-state/cycle-NS-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NS-live-freshness-empty-state/cycle-NS-current-mvp-live.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NS-P0-01 | P0 | Pass | Route proof shows all-match Home still returns `argentina-vs-egypt`. | Fix all-match route filtering. |
+| NS-P0-02 | P0 | Pass | Route proof shows `status=live` returns 0 events for the stale dated match. | Fix live freshness guard. |
+| NS-P0-03 | P0 | Pass | Mobile service test confirms empty live route stays empty. | Fix `loadHomeEventFeedPage()`. |
+| NS-P0-04 | P0 | Pass | S23 proof shows Home match, Live empty state, and Home return. | Fix Live/Home navigation or server-mode feed. |
+
+Decision:
+
+- Pass/fail: Pass for Local MVP Live freshness honesty.
+- Remaining P1: real current live match/provider breadth is still missing.

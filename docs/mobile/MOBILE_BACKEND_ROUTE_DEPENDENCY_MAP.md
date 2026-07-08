@@ -2941,3 +2941,17 @@ Cycle NR implementation notes:
 
 - No route/schema/code changed.
 - The inspection confirms current service readiness: provider-backed Regulation Winner plus explicit backend-shaped line fixtures.
+
+## Cycle NS - Live Freshness Empty State
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home all-match feed | `/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` | GET | Public viewing | Query filters/page size | Current MVP match, source summary, compact markets | `Event`, `Market`, `Outcome` | None added. | Broader current match inventory remains missing. |
+| Live feed | `/api/events?...&status=live` | GET | Public viewing | Live status filter | Empty event list when provider-dated match is stale | `Event`, `Market`, `Outcome` | Mobile no longer falls back to all-match route for Live. | Real current live game discovery remains missing. |
+| Android proof | `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1 -ExpectLiveEmptyOnly` | Device proof | Temporary mobile dev API key | Expo deep link with API key | Home and Live UI hierarchy/screenshot proof | `ApiCredential` for app launch only | None added. | None for the empty-state proof. |
+
+Cycle NS implementation notes:
+
+- No schema migration was added.
+- No order or portfolio route changed.
+- The route freshness guard uses event `startTime` first, then provider/date text from `externalSlug` or title when `startTime` is absent.

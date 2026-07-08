@@ -844,3 +844,32 @@ Pass for service-state inspection.
 
 Remaining gaps:
 Current route line markets remain contract fixtures. Active sports scan did not find match-level line markets; it found World Cup outright futures.
+
+### 2026-07-08 - Cycle NS - Live freshness empty state
+
+Reference device:
+Not used. This was a Holiwyn route/UI honesty cycle.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://172.16.200.14:3002`, temporary Expo port `8299`, temporary mobile dev API key.
+
+Holiwyn actions:
+Opened Home, verified the MVP match and provider-winner/local-lines disclosure, tapped Live, verified the no-live empty state, then returned Home and verified the MVP match remained available.
+
+Evidence:
+- `docs/mobile/harness/cycle-NS-live-freshness-empty-state/cycle-NS-live-route-freshness.json`
+- `docs/mobile/harness/cycle-NS-live-freshness-empty-state/cycle-NS-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NS-live-freshness-empty-state/cycle-NS-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NS-live-freshness-empty-state/cycle-NS-current-mvp-live.png`
+
+Smoke/tests:
+Mobile Home feed tests, mobile TypeScript, root TypeScript, and S23 focused proof passed.
+
+Result:
+Pass for Live freshness empty state.
+
+Remaining gaps:
+Holiwyn still needs real current live match discovery/breadth. Home keeps the MVP match for ticket-flow testing.

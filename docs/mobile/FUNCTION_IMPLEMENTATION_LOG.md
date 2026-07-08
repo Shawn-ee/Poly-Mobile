@@ -7516,3 +7516,49 @@ Known limitations/path adjustment:
 - Regulation Winner is provider-backed.
 - Spread/Totals/Team Total are not provider-backed; Polymarket Gamma exposes 0 line markets for this event and the active sports scan returned only World Cup outright winner futures in the first active sports candidates.
 - Next useful work should not chase visual parity around nonexistent provider lines. Continue Local MVP visible flow with explicit `contract-fixture` line disclosure, or add a real approved line provider before claiming provider-backed line parity.
+
+## Cycle NS - Live Freshness Empty State
+
+Feature/page worked on:
+
+- Local MVP Home/Live route honesty.
+
+Frontend/harness/backend files touched:
+
+- `src/app/api/events/route.ts`
+- `mobile/src/services/homeEventFeedService.ts`
+- `mobile/src/__tests__/homeEventFeedService.test.ts`
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+- Evidence/docs:
+  - `docs/mobile/harness/cycle-NS-live-freshness-empty-state/cycle-NS-current-mvp-s23-visible-flow.json`
+  - `docs/mobile/screenshots/cycle-NS-live-freshness-empty-state/`
+  - `docs/mobile/audits/cycle-NS-live-freshness-empty-state.md`
+
+Important functions/services touched:
+
+- `/api/events?status=live` now hides stale provider-dated matches using `startTime`, `externalSlug`, or title date.
+- `loadHomeEventFeedPage()` no longer falls back from an empty live route to the all-match route, so stale matches do not silently reappear in Live.
+- The S23 proof harness now supports `-ExpectLiveEmptyOnly` for focused Live empty-state proof.
+
+User interactions supported/proven:
+
+- User opens Home and still sees the MVP match.
+- User taps Live and sees the no-live empty state instead of yesterday's provider-dated match.
+- User can return Home and the match remains available for the Local MVP ticket flow.
+
+State transitions:
+
+- No schema, order, portfolio, or provider mapping logic changed.
+- No database data was mutated.
+
+Validation:
+
+- Mobile Home feed tests passed.
+- Mobile TypeScript passed.
+- Root TypeScript passed.
+- S23 focused Live freshness proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- Home still contains the current MVP match for betting-flow testing even though it is no longer treated as live.
+- A broader provider match feed is still needed for real current World Cup live-game breadth.

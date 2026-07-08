@@ -83,6 +83,46 @@ const eventStatusFilter = (status: string): Prisma.EventWhereInput => {
   return { status };
 };
 
+const liveDatePattern = /\b(20\d{2})-(\d{2})-(\d{2})\b/;
+
+const dateOnlyUtc = (date: Date) => Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+
+const liveDateFromText = (value: unknown) => {
+  if (typeof value !== "string") return null;
+  const match = value.match(liveDatePattern);
+  if (!match) return null;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const timestamp = Date.UTC(year, month - 1, day);
+  return Number.isFinite(timestamp) ? timestamp : null;
+};
+
+const liveDateFromStartTime = (value: unknown) => {
+  if (!value) return null;
+  const date = value instanceof Date ? value : new Date(String(value));
+  if (Number.isNaN(date.getTime())) return null;
+  return dateOnlyUtc(date);
+};
+
+const isFreshLiveEvent = (event: {
+  title?: string | null;
+  externalSlug?: string | null;
+  startTime?: Date | string | null;
+}) => {
+  const today = dateOnlyUtc(new Date());
+  const eventDay =
+    liveDateFromStartTime(event.startTime) ??
+    liveDateFromText(event.externalSlug) ??
+    liveDateFromText(event.title);
+  return eventDay == null || eventDay >= today;
+};
+
+const filterFreshLiveEvents = <T extends { title?: string | null; externalSlug?: string | null; startTime?: Date | string | null }>(
+  events: T[],
+  status: string,
+) => status.toLowerCase() === "live" ? events.filter(isFreshLiveEvent) : events;
+
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const search = url.searchParams.get("search")?.trim() ?? "";
@@ -164,8 +204,7 @@ export async function GET(request: NextRequest) {
     const events = rows.slice(0, limit);
     const nextCursor = rows.length > limit ? events[events.length - 1]?.id ?? null : null;
 
-    return NextResponse.json({
-      events: (await Promise.all(
+    const serializedEvents = (await Promise.all(
         events.map(async (event) => {
           const base = serializeEventSummary(event);
           const metadata =
@@ -215,7 +254,10 @@ export async function GET(request: NextRequest) {
             markets: mobileMarkets,
           };
         }),
-      )).filter((event) => event.marketCount > 0),
+      )).filter((event) => event.marketCount > 0);
+
+    return NextResponse.json({
+      events: filterFreshLiveEvents(serializedEvents, status),
       nextCursor,
       page: {
         limit,
@@ -239,8 +281,7 @@ export async function GET(request: NextRequest) {
   const events = rows.slice(0, limit);
   const nextCursor = rows.length > limit ? events[events.length - 1]?.id ?? null : null;
 
-  return NextResponse.json({
-    events: events
+  const serializedEvents = events
       .map((event) => {
         const base = serializeEventSummary(event);
         const metadata =
@@ -281,7 +322,10 @@ export async function GET(request: NextRequest) {
           topOutcomes,
         };
       })
-      .filter((event) => event.marketCount > 0),
+      .filter((event) => event.marketCount > 0);
+
+  return NextResponse.json({
+    events: filterFreshLiveEvents(serializedEvents, status),
     nextCursor,
     page: {
       limit,
