@@ -1,0 +1,14 @@
+﻿{
+    "ok":  true,
+    "marketId":  "94644351-61b3-474d-9f08-7f9b9ab169d3",
+    "importStatus":  "approved",
+    "referenceOnly":  false,
+    "tradable":  true,
+    "mmEnabled":  true,
+    "isListed":  true,
+    "reviewedAt":  "2026-07-08T22:20:21.229Z",
+    "reviewedBy":  "[redacted-dev-admin]",
+    "reviewNotes":  "Cycle PH internal local MVP tradable proof for nation top goalscorer Argentina.",
+    "botInitialization":  null
+}
+

@@ -1810,3 +1810,36 @@ Pass for selected first Golden Boot provider-backed internal-test tradable marke
 
 Remaining gaps:
 Home/Live remain match-only. Current-match line markets remain contract fixtures.
+
+## Cycle PH - Nation Top Goalscorer Provider Market Tradable Proof
+
+Date:
+2026-07-08
+
+Reference device:
+No new Polymarket reference-device action. The provider source is the existing Polymarket Gamma/CLOB-backed Nation of Top Goalscorer event.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go server mode. Backend `http://127.0.0.1:3002` stayed running; mobile API used LAN backend `http://172.16.200.14:3002`.
+
+Holiwyn actions:
+Opened Holiwyn with a direct backend event detail deep link for `world-cup-nation-of-top-goalscorer` and captured provider markers showing the Argentina provider-backed outcome row. Backend/mobile-service proof then submitted a fake-token Argentina YES order and confirmed Portfolio/history state.
+
+Evidence:
+- `docs/mobile/harness/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof/cycle-PH-s23-argentina-nation-summary.json`
+- `docs/mobile/screenshots/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof/cycle-PH-s23-argentina-nation-detail-direct.png`
+- `docs/mobile/harness/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof/cycle-PH-s23-argentina-nation-detail-direct.xml`
+- `docs/mobile/harness/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof/cycle-PH-provider-argentina-nation-order-portfolio-proof.json`
+- `docs/mobile/audits/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof.md`
+
+Smoke/tests:
+Reference refresh passed, Argentina seed/live-local quote placement passed, mobile route/service order proof passed, and S23 direct detail proof was captured.
+
+Result:
+Pass for selected first Nation of Top Goalscorer provider-backed internal-test tradable market.
+
+Remaining gaps:
+Search deep-link attempts did not reliably show the Nation of Top Goalscorer result. Home/Live remain match-only. Current-match line markets remain contract fixtures.

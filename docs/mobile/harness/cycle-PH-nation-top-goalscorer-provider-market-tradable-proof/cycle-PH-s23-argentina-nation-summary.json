@@ -1,0 +1,23 @@
+﻿{
+    "cycle":  "PH",
+    "result":  "pass",
+    "generatedAt":  "2026-07-08T22:29:35.0606730Z",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "backendBaseUrl":  "http://172.16.200.14:3002",
+    "expoPort":  8301,
+    "eventSlug":  "world-cup-nation-of-top-goalscorer",
+    "marketId":  "94644351-61b3-474d-9f08-7f9b9ab169d3",
+    "providerMarketId":  "2070987",
+    "assertions":  {
+                       "directDetailShowsTargetEvent":  true,
+                       "directDetailShowsProviderMarket":  true,
+                       "orderbookHidden":  true,
+                       "chatHidden":  true
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\screenshots\\cycle-PH-nation-top-goalscorer-provider-market-tradable-proof\\cycle-PH-s23-argentina-nation-detail-direct.png",
+                      "docs\\mobile\\harness\\cycle-PH-nation-top-goalscorer-provider-market-tradable-proof\\cycle-PH-s23-argentina-nation-detail-direct.xml"
+                  ]
+}
+

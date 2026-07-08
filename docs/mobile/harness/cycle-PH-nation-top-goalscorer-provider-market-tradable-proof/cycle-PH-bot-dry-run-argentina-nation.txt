@@ -1,0 +1,37 @@
+﻿
+> poly-bot@0.1.0 bot:polymarket:mm:dry-run
+> tsx scripts/liquidityRuntime.ts --dryRun true --baseUrl http://127.0.0.1:3002 --eventSlug world-cup-nation-of-top-goalscorer --allowlist Argentina --maxMarkets 1 --durationSeconds 1
+
+{
+  "dryRun": true,
+  "liveOrdersEnabled": true,
+  "confirmLive": false,
+  "cycleReports": [
+    {
+      "marketId": "94644351-61b3-474d-9f08-7f9b9ab169d3",
+      "slug": "will-a-player-representing-argentina-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": true,
+      "referenceBid": 0.374,
+      "referenceAsk": 0.379,
+      "plannedBotBid": 0.35,
+      "plannedBotAsk": 0.4,
+      "reasons": [
+        "confirm_live_required",
+        "dry_run_enabled"
+      ],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 2513,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 2513,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    }
+  ]
+}
+

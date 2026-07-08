@@ -6988,7 +6988,7 @@ Validation:
 - Expo status returned `packager-status:running`.
 - Rehearsal summary redacted the credential token.
 - `package.json` parsed successfully.
-- Secret scan found no committed `pk_live_...` token.
+- Secret scan found no committed `[redacted-api-key]` token.
 
 Known limitations:
 
@@ -9234,5 +9234,48 @@ Validation:
 
 Known limitations:
 
+- Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
+- Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
+
+## Cycle PH - Nation Top Goalscorer Provider Market Tradable Proof
+
+Feature/page worked on:
+
+- Provider-backed Nation of Top Goalscorer market breadth for the Local MVP retail betting flow.
+- Argentina nation market local-MM readiness, fake-token order fill, and Portfolio/history proof.
+
+Frontend/proof files touched:
+
+- `docs/mobile/audits/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof/`
+- `docs/mobile/screenshots/cycle-PH-nation-top-goalscorer-provider-market-tradable-proof/`
+
+Important functions/services touched:
+
+- No visible mobile UI source changed.
+- Reused the internal beta backend helper, reference refresh path, bot MM enable/seed path, local bot live-local quoting, mobile order/Portfolio proof harness, and S23 direct backend event detail launch path.
+
+User interactions supported/proven:
+
+- Samsung S23 direct detail proof shows the Nation of Top Goalscorer page with the Argentina provider-backed outcome visible.
+- Mobile service proof submits a server-mode fake-token buy against Argentina local MM liquidity.
+- Portfolio/history proof shows the filled Argentina provider-backed position/trade.
+
+State transitions:
+
+- Argentina Nation of Top Goalscorer market was approved tradable, MM-enabled, seeded, marked live-ready/live-enabled, and locally quoted.
+- Mobile proof user bought Argentina YES at `0.40`, producing a filled order and Portfolio/history state.
+
+Validation:
+
+- Target reference refresh passed with high-quality provider data.
+- Argentina seed passed.
+- Bot live-local placed four Argentina nation quotes without exposure-cap blocking.
+- Mobile provider-visible tradable route/service proof passed.
+- S23 direct detail proof captured XML/screenshot on `SM-S911U1`.
+
+Known limitations:
+
+- S23 Search deep-link attempts did not reliably land on the Nation of Top Goalscorer Search result surface; direct detail proof passed.
 - Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
 - Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.

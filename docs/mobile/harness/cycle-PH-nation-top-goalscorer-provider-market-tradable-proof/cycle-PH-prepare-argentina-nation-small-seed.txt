@@ -1,0 +1,48 @@
+﻿
+> poly-bot@0.1.0 liquidity:prepare-event
+> tsx scripts/prepareReferenceLiquidityEvent.ts --baseUrl http://127.0.0.1:3002 --eventSlug world-cup-nation-of-top-goalscorer --allowlist Argentina --maxMarkets 1 --capitalDollars 500 --mintDollars 25 --dryRun false --confirmSeed true
+
+{
+  "ok": true,
+  "dryRun": false,
+  "eventSlug": "world-cup-nation-of-top-goalscorer",
+  "marketCount": 1,
+  "seededOrChecked": 1,
+  "blocked": 0,
+  "results": [
+    {
+      "marketId": "94644351-61b3-474d-9f08-7f9b9ab169d3",
+      "slug": "will-a-player-representing-argentina-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "title": "Will a player representing Argentina be the top goalscorer at the 2026 FIFA World Cup?",
+      "importStatus": "approved",
+      "mmEnabled": true,
+      "tradable": true,
+      "ok": true,
+      "runtimePath": "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\poly-bot\\.runtime\\reference-liquidity-94644351-61b3-474d-9f08-7f9b9ab169d3.json",
+      "result": {
+        "ok": true,
+        "dryRun": false,
+        "marketId": "94644351-61b3-474d-9f08-7f9b9ab169d3",
+        "title": "Will a player representing Argentina be the top goalscorer at the 2026 FIFA World Cup?",
+        "referenceSource": "polymarket",
+        "importStatus": "approved",
+        "isListed": true,
+        "binary": true,
+        "seeded": true,
+        "alreadySeeded": false,
+        "noMutation": false,
+        "capitalCents": 50000,
+        "mintBudgetCents": 2500,
+        "cashReserveCents": 47500,
+        "mintedCompleteSets": 25,
+        "autoReplenish": false,
+        "botUserId": "[redacted-bot-user]",
+        "botUsername": "system-liquidity-bot",
+        "botApiCredentialId": "9b138283-b62d-47db-acc2-ffea3091f37a",
+        "botApiKeyId": "[redacted-api-key]",
+        "botApiToken": "[redacted]"
+      }
+    }
+  ]
+}
+
