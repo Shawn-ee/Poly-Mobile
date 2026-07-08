@@ -342,6 +342,29 @@ const snapshotSourceLabel = (id: string, selection?: TicketSelection) =>
     ? `snapshot-source-order-time snapshot-display-label-${selection.displayLabel} snapshot-provider-market-${selection.externalMarketId ?? "none"} snapshot-provider-token-${selection.referenceTokenId ?? "none"} snapshot-market-id-${selection.marketId ?? "none"} snapshot-outcome-id-${selection.outcomeId ?? "none"} ${limitIdentityLabel(selection)}`
     : `snapshot-source-current-state snapshot-row-${id} portfolio-limit-side-none portfolio-limit-price-none portfolio-limit-shares-none`;
 
+const portfolioSourceBadge = (selection?: TicketSelection) => {
+  const source = selection?.referenceSource ?? "";
+  if (source.includes("polymarket")) {
+    return {
+      label: "Provider",
+      tone: "provider" as const,
+      accessibility: `portfolio-source-badge-provider portfolio-source-${source}`,
+    };
+  }
+  if (source.includes("contract-fixture")) {
+    return {
+      label: "Local",
+      tone: "fixture" as const,
+      accessibility: `portfolio-source-badge-local portfolio-source-${source}`,
+    };
+  }
+  return {
+    label: "Checking",
+    tone: "unknown" as const,
+    accessibility: `portfolio-source-badge-unknown portfolio-source-${source || "unknown"}`,
+  };
+};
+
 const portfolioDetailCopy = {
   en: {
     details: "Details",
@@ -960,7 +983,30 @@ export function Portfolio({
               <View style={styles.positionRowTop}>
                 <PositionFlag item={position} />
                 <View style={styles.positionTextColumn}>
-                  <Text style={styles.positionTitle}><Text style={styles.yesBadge}>{position.contractSide === "no" ? "No" : "Yes"}</Text> {displayPositionChoice(position)}</Text>
+                  <View style={styles.positionTitleRow}>
+                    <Text numberOfLines={1} style={styles.positionTitle}><Text style={styles.yesBadge}>{position.contractSide === "no" ? "No" : "Yes"}</Text> {displayPositionChoice(position)}</Text>
+                    {position.selection && (
+                      <View
+                        accessibilityLabel={`portfolio-position-source-badge-${position.id} ${portfolioSourceBadge(position.selection).accessibility}`}
+                        style={[
+                          styles.portfolioSourcePill,
+                          portfolioSourceBadge(position.selection).tone === "provider" && styles.portfolioSourcePillProvider,
+                          portfolioSourceBadge(position.selection).tone === "fixture" && styles.portfolioSourcePillFixture,
+                        ]}
+                        testID={`portfolio-position-source-badge-${position.id}`}
+                      >
+                        <Text
+                          style={[
+                            styles.portfolioSourcePillText,
+                            portfolioSourceBadge(position.selection).tone === "provider" && styles.portfolioSourcePillTextProvider,
+                            portfolioSourceBadge(position.selection).tone === "fixture" && styles.portfolioSourcePillTextFixture,
+                          ]}
+                        >
+                          {portfolioSourceBadge(position.selection).label}
+                        </Text>
+                      </View>
+                    )}
+                  </View>
                   <Text style={styles.positionMeta}>
                     Cost {portfolioRowMoney(position.amount)} | To win {portfolioRowMoney(positionPotentialPayout(position))} | Entry {position.probability}%
                   </Text>
@@ -1127,6 +1173,27 @@ export function Portfolio({
                   <Text style={styles.activityActionVerb}>{activityActionLabel(activity, t)}</Text>
                   <Text style={[styles.activitySidePill, activitySideLabel(activity) === "No" && styles.activitySidePillNo]}>{activitySideLabel(activity)}</Text>
                   <Text numberOfLines={1} style={styles.activityAction}>{activityDisplayTitle(activity)}</Text>
+                  {activity.selection && (
+                    <View
+                      accessibilityLabel={`portfolio-history-source-badge-${activity.id} ${portfolioSourceBadge(activity.selection).accessibility}`}
+                      style={[
+                        styles.portfolioSourcePill,
+                        portfolioSourceBadge(activity.selection).tone === "provider" && styles.portfolioSourcePillProvider,
+                        portfolioSourceBadge(activity.selection).tone === "fixture" && styles.portfolioSourcePillFixture,
+                      ]}
+                      testID={`portfolio-history-source-badge-${activity.id}`}
+                    >
+                      <Text
+                        style={[
+                          styles.portfolioSourcePillText,
+                          portfolioSourceBadge(activity.selection).tone === "provider" && styles.portfolioSourcePillTextProvider,
+                          portfolioSourceBadge(activity.selection).tone === "fixture" && styles.portfolioSourcePillTextFixture,
+                        ]}
+                      >
+                        {portfolioSourceBadge(activity.selection).label}
+                      </Text>
+                    </View>
+                  )}
                 </View>
                 <View
                   accessibilityLabel={`activity-status-${activity.id} fake-token-test activity-${activity.action} status-${activityStatusLabel(activity).toLowerCase()}`}
@@ -1381,8 +1448,15 @@ const styles = StyleSheet.create({
   positionTextColumn: { flex: 1 },
   positionScoreLine: { color: "#a8b0bf", fontSize: 14, fontWeight: "500" },
   yesBadge: { color: "#22c55e", backgroundColor: "#052e16" },
-  positionTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "500" },
+  positionTitleRow: { flexDirection: "row", alignItems: "center", gap: 7 },
+  positionTitle: { flex: 1, minWidth: 0, color: "#f8fafc", fontSize: 18, fontWeight: "500" },
   positionMeta: { color: "#a8b0bf", marginTop: 4, fontSize: 14, fontWeight: "500" },
+  portfolioSourcePill: { minHeight: 22, justifyContent: "center", borderRadius: 999, paddingHorizontal: 8, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155", flexShrink: 0 },
+  portfolioSourcePillProvider: { backgroundColor: "#052e16", borderColor: "#166534" },
+  portfolioSourcePillFixture: { backgroundColor: "#33280f", borderColor: "#854d0e" },
+  portfolioSourcePillText: { color: "#cbd5e1", fontSize: 9, fontWeight: "900" },
+  portfolioSourcePillTextProvider: { color: "#86efac" },
+  portfolioSourcePillTextFixture: { color: "#fde68a" },
   positionValueRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8, marginTop: 14 },
   positionValueBlock: { flex: 1, minWidth: 0 },
   positionValue: { color: "#f8fafc", fontSize: 18, fontWeight: "500" },
@@ -1445,7 +1519,7 @@ const styles = StyleSheet.create({
   activityActionVerb: { color: "#f8fafc", fontSize: 16, fontWeight: "500" },
   activitySidePill: { overflow: "hidden", borderRadius: 6, paddingHorizontal: 6, paddingVertical: 2, color: "#22c55e", backgroundColor: "#052e16", fontSize: 13, fontWeight: "700" },
   activitySidePillNo: { color: "#ef4444", backgroundColor: "#3a0f15" },
-  activityAction: { color: "#f8fafc", fontSize: 17, fontWeight: "500" },
+  activityAction: { flex: 1, minWidth: 0, color: "#f8fafc", fontSize: 17, fontWeight: "500" },
   activitySideMeta: { minWidth: 82, alignItems: "flex-end", gap: 6 },
   activityTime: { color: "#8b94a5", fontSize: 14, fontWeight: "500", textAlign: "right" },
   activityLiveText: { alignSelf: "flex-start", color: "#fecaca", fontSize: 11, fontWeight: "900", marginTop: 3, textTransform: "uppercase" },

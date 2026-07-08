@@ -2,6 +2,26 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle MO - Portfolio Source Badges
+
+Closed or narrowed:
+
+- Portfolio now surfaces source state from order-time selection snapshots in positions/history.
+- S23 proof confirms Local badge appears in both Positions and History for the current Spread line order.
+- The badge uses `selection.referenceSource`, matching existing portfolio identity fields.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real Polymarket-backed Spread/Totals/Team Total markets for the inspected event.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- `contract-fixture` line positions/history remain Local MVP fallback rows and now render with visible `Local` badges.
+
 ## Cycle MN - Trade Ticket Source Badge
 
 Closed or narrowed:

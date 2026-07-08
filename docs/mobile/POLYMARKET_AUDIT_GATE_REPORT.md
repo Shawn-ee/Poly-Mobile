@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle MO
+
+Gate status: Pass
+
+Scope: Portfolio source badges.
+
+Decision:
+
+- P0 failed: 0 for focused visible Portfolio source disclosure.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for the inspected Local MVP event.
+- Evidence: `docs/mobile/harness/cycle-MO-portfolio-source-badges/cycle-MO-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MO-portfolio-source-badges/cycle-MO-current-mvp-after-submit.png`, `docs/mobile/screenshots/cycle-MO-portfolio-source-badges/cycle-MO-current-mvp-portfolio-history.png`, `mobile/src/__tests__/portfolioSourceBadge.test.ts`, `docs/mobile/audits/cycle-MO-portfolio-source-badges.md`.
+- Notes: S23 proof shows `Local` on both the position and history rows after a successful Spread line ticket submit.
+
 ## Cycle MN
 
 Gate status: Pass

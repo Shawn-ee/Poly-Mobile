@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle MO - Portfolio Source Badges
+
+Cycle MO renders Portfolio source state from existing order-time selection snapshots.
+
+- S23 proof: `docs/mobile/harness/cycle-MO-portfolio-source-badges/cycle-MO-current-mvp-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-MO-portfolio-source-badges.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio position/history source badges | Existing `/api/portfolio` and `/api/portfolio/history`; upstream ticket submit still uses `/api/orders` | GET for portfolio/history refresh; POST for order submit | Existing mobile API auth | No new request body fields | Position/activity `selection.referenceSource`, existing market/outcome/line/source identity fields | Existing `Order`, `Trade`, `Position`/portfolio read models; no schema change | `referenceSource=contract-fixture` renders `Local`; Polymarket source renders `Provider`; unknown source renders checking state | Real provider-backed Spread/Totals/Team Total markets remain missing for the inspected event. |
+
 ## Cycle MN - Trade Ticket Source Badge
 
 Cycle MN renders Trade Ticket source state from existing ticket/market reference fields.

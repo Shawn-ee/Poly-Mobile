@@ -2,6 +2,40 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle MO - Portfolio Source Badges
+
+Feature/page worked on:
+
+- Added visible source disclosure to Portfolio position and history rows.
+- Post-submit Local MVP positions now visibly show `Local`.
+- Post-submit history activity rows now visibly show `Local`.
+- Preserved the Local MVP path: Home -> Event Detail -> line ticket -> fake-token order -> Portfolio/history.
+
+Frontend/services touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/src/__tests__/portfolioSourceBadge.test.ts`
+
+User interactions supported/proven:
+
+- On S23, after a successful Spread line order, the Positions tab shows a visible `Local` badge.
+- On S23, the History tab shows a visible `Local` badge for the filled order activity.
+- The badge is derived from the order-time selection snapshot `referenceSource`.
+
+Verified:
+
+- Focused Portfolio source badge test passed.
+- Portfolio history/snapshot/sync regression tests passed.
+- Mobile typecheck passed.
+- S23 proof passed: `docs/mobile/harness/cycle-MO-portfolio-source-badges/cycle-MO-current-mvp-s23-visible-flow.json`.
+- Position screenshot: `docs/mobile/screenshots/cycle-MO-portfolio-source-badges/cycle-MO-current-mvp-after-submit.png`.
+- History screenshot: `docs/mobile/screenshots/cycle-MO-portfolio-source-badges/cycle-MO-current-mvp-portfolio-history.png`.
+
+Known limitations:
+
+- This cycle does not make line markets real Polymarket-backed markets.
+- The `Local` badge is intentionally a current-state disclosure until provider-backed line candidates exist.
+
 ## Cycle MN - Trade Ticket Source Badge
 
 Feature/page worked on:
