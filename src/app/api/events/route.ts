@@ -3,7 +3,7 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { serializeEventSummary } from "@/server/services/eventReadModel";
 import { marketReadInclude, serializeMarketReadModel } from "@/server/services/marketReadModel";
-import { selectCompactLiveMarkets } from "@/server/services/mobileLiveEventDetail";
+import { buildMobileMarketSourceSummary, selectCompactLiveMarkets } from "@/server/services/mobileLiveEventDetail";
 
 const DEFAULT_LIMIT = 50;
 const MAX_LIMIT = 100;
@@ -144,10 +144,12 @@ export async function GET(request: NextRequest) {
               .filter((market) => compactMarketIds.has(market.id))
               .map((market) => serializeMarketReadModel(market)),
           );
+          const marketSourceSummary = buildMobileMarketSourceSummary(mobileMarkets);
           return {
             ...base,
             marketCount: event.markets.length,
             activeMarketCount,
+            marketSourceSummary,
             hasGroupedMarkets: Boolean(referenceGroup) || base.hasGroupedMarkets,
             groupedSummary:
               referenceGroup && typeof referenceGroup.slug === "string"

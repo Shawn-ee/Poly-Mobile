@@ -4781,6 +4781,38 @@ Future migration concern:
 - When a future Polymarket event exposes attach-ready line markets, replace the contract fixture rows with real provider mappings before claiming provider parity for line markets.
 - Do not promote real provider-backed line parity from P1 to complete without proof of provider market ids, condition ids, token ids, route visibility, ticket selection preservation, order lifecycle, and Android UI proof.
 
+## Cycle LQ - Market Source Summary Contract
+
+Closed or narrowed:
+
+- Home and Event Detail no longer require clients/audits to infer provider readiness by scanning every market row.
+- The backend now states whether Regulation Winner and line markets are provider-backed, contract fixtures, missing, or unknown.
+- The current selected match reports:
+  - `regulationWinner.status=provider-backed`
+  - `lineMarkets.status=contract-fixture`
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed line-market ids/tokens/quotes remain missing because the selected Gamma event has no line markets.
+- Mobile UI has not yet consumed `marketSourceSummary` visibly.
+
+Schema mismatch:
+
+- No schema mismatch. The summary is derived from existing persisted fields.
+
+Route mismatch:
+
+- The Home and Event Detail routes now agree on source readiness for the selected MVP event.
+
+Temporary mock/static data:
+
+- No new mock data was added.
+- Existing contract-fixture line rows are still backend-written Local MVP fixtures.
+
+Future migration concern:
+
+- When real provider line markets exist, the same summary should flip line status to `provider-backed`; tests/proofs should catch any mismatch.
+
 ## Cycle FH - Home Route Server Cancel And Portfolio Activity
 
 Closed or narrowed:

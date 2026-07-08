@@ -11,7 +11,11 @@ jest.mock("@/server/services/orderbookSnapshot", () => ({
   buildPublicOrderbookSnapshot: (...args: unknown[]) => buildPublicOrderbookSnapshot(...args),
 }));
 
-import { selectCompactLiveMarkets, serializeMobileLiveEventDetail } from "@/server/services/mobileLiveEventDetail";
+import {
+  buildMobileMarketSourceSummary,
+  selectCompactLiveMarkets,
+  serializeMobileLiveEventDetail,
+} from "@/server/services/mobileLiveEventDetail";
 
 const market = (overrides: Partial<Parameters<typeof serializeMobileLiveEventDetail>[0]["event"]["markets"][number]> = {}) => ({
   id: "market-main",
@@ -224,6 +228,19 @@ describe("mobile live event detail contract", () => {
       isDelayed: false,
       reason: "Provider heartbeat accepted.",
     });
+    expect(payload.event.marketSourceSummary).toMatchObject({
+      totalMarketCount: 14,
+      unknownSourceMarketCount: 14,
+      regulationWinner: {
+        totalCount: 1,
+        status: "non-provider",
+      },
+      lineMarkets: {
+        totalCount: 13,
+        status: "unknown",
+      },
+    });
+    expect(payload.contract.marketSourceSummary).toEqual(payload.event.marketSourceSummary);
     expect(payload.event.chartHistory).toEqual([
       { outcomeId: "home", timestamp: "2026-07-03T22:00:00.000Z", probability: 59 },
     ]);
@@ -396,6 +413,67 @@ describe("mobile live event detail contract", () => {
     expect(buildPublicOrderbookSnapshot).toHaveBeenCalledWith({ marketId: "market-main", maxLevels: 24 });
     expect(buildPublicOrderbookSnapshot).toHaveBeenCalledWith({ marketId: "market-0", maxLevels: 24 });
     expect(buildPublicOrderbookSnapshot).toHaveBeenCalledTimes(14);
+  });
+
+  test("classifies provider-backed regulation winner and fixture line market sources", () => {
+    expect(buildMobileMarketSourceSummary([
+      {
+        marketType: "match_winner_1x2",
+        marketGroupKey: "main",
+        marketGroupTitle: "Regulation Winner",
+        referenceSource: "polymarket",
+      },
+      {
+        marketType: "match_winner_1x2",
+        marketGroupKey: "main",
+        marketGroupTitle: "Regulation Winner",
+        referenceSource: "polymarket",
+      },
+      {
+        marketType: "match_winner_1x2",
+        marketGroupKey: "main",
+        marketGroupTitle: "Regulation Winner",
+        referenceSource: "polymarket",
+      },
+      {
+        marketType: "spread",
+        marketGroupKey: "spread",
+        marketGroupTitle: "Spread",
+        referenceSource: "contract-fixture",
+      },
+      {
+        marketType: "total_goals",
+        marketGroupKey: "totals",
+        marketGroupTitle: "Totals",
+        referenceSource: "contract-fixture",
+      },
+      {
+        marketType: "team_total_goals",
+        marketGroupKey: "team-totals",
+        marketGroupTitle: "Team Totals",
+        referenceSource: "contract-fixture",
+      },
+    ])).toMatchObject({
+      totalMarketCount: 6,
+      sourceBreakdown: {
+        polymarket: 3,
+        "contract-fixture": 3,
+      },
+      polymarketMarketCount: 3,
+      contractFixtureMarketCount: 3,
+      regulationWinner: {
+        totalCount: 3,
+        polymarketCount: 3,
+        status: "provider-backed",
+      },
+      lineMarkets: {
+        totalCount: 3,
+        polymarketCount: 0,
+        contractFixtureCount: 3,
+        status: "contract-fixture",
+        families: ["spread", "total_goals", "team_total_goals"],
+      },
+    });
   });
 
   test("marks live detail unavailable when no provider timestamp is available", async () => {

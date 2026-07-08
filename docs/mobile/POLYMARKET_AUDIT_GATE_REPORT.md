@@ -4434,3 +4434,35 @@ Decision:
 - Provider inspection result: pass.
 - Unresolved P0 gaps: S23 visible MVP flow proof.
 - Remaining P1/P2 gaps: real provider-backed match line mappings and production liquidity.
+
+## Cycle LQ
+
+Gate status: Partial
+
+Scope: Backend source-readiness contract for Home and Event Detail.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-LQ-market-source-summary.md`
+- `docs/mobile/harness/cycle-LQ-market-source-summary/cycle-LQ-market-source-summary.json`
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/app/api/events/route.ts`
+- `src/__tests__/mobile-live-event-detail.test.ts`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LQ-SOURCE-P0-01 | P0 | Pass | Live-detail payload includes `event.marketSourceSummary` and `contract.marketSourceSummary`. | Restore route-level source summary. |
+| LQ-SOURCE-P0-02 | P0 | Pass | Home include-mobile-markets route includes `events[].marketSourceSummary`. | Wire summary into Home event serializer. |
+| LQ-SOURCE-P0-03 | P0 | Pass | Route/proof reports Regulation Winner as `provider-backed`. | Fix source classifier or Polymarket mapping. |
+| LQ-SOURCE-P0-04 | P0 | Pass | Route/proof reports line markets as `contract-fixture`. | Fix source classifier or line fixture labeling. |
+| LQ-SOURCE-P0-05 | P0 | Pass | Jest test covers provider-backed winner plus fixture lines. | Add/repair contract test. |
+| LQ-SOURCE-P0-06 | P0 | Fail | No S23 visible proof because ADB showed no attached devices. | Reconnect S23 and run visible MVP flow proof. |
+
+Decision:
+
+- Pass/fail: Partial, not final mobile Audit Gate pass.
+- Backend route contract result: pass.
+- Unresolved P0 gaps: S23 visible MVP flow proof.
+- Remaining P1/P2 gaps: mobile UI consumption of source summary and real provider-backed line mappings.

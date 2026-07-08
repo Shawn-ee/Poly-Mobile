@@ -75,6 +75,7 @@ const MAX_DEPTH_LEVELS = 24;
 const STALE_AFTER_SECONDS = 90;
 const CHART_REFRESH_TTL_SECONDS = 60;
 const DEPTH_BATCH_CACHE_TTL_SECONDS = 3;
+const LINE_MARKET_TYPES = new Set(["spread", "total_goals", "totals", "team_total_goals", "team-total", "team_total"]);
 
 type LiveAvailabilityStatus = "ready" | "stale" | "suspended" | "delayed" | "unavailable";
 type ProviderLifecycleStatus = "ready" | "refresh_due" | "stale" | "unavailable";
@@ -409,6 +410,72 @@ const marketFamilyForMarket = (market: MarketInput) => {
   if (key.includes("prop")) return "prop";
   if (key.includes("winner") || key.includes("moneyline") || key.includes("main")) return "moneyline";
   return market.marketType;
+};
+
+type SourceSummaryMarket = {
+  marketType?: string | null;
+  marketGroupKey?: string | null;
+  marketGroupTitle?: string | null;
+  referenceSource?: string | null;
+};
+
+export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) => {
+  const sourceBreakdown = markets.reduce<Record<string, number>>((result, market) => {
+    const source = market.referenceSource?.trim() || "unknown";
+    result[source] = (result[source] ?? 0) + 1;
+    return result;
+  }, {});
+  const lineMarkets = markets.filter((market) => {
+    const key = `${market.marketType ?? ""} ${market.marketGroupKey ?? ""} ${market.marketGroupTitle ?? ""}`.toLowerCase();
+    return LINE_MARKET_TYPES.has(`${market.marketType ?? ""}`) || key.includes("spread") || key.includes("total");
+  });
+  const regulationWinnerMarkets = markets.filter((market) => {
+    const key = `${market.marketType ?? ""} ${market.marketGroupKey ?? ""} ${market.marketGroupTitle ?? ""}`.toLowerCase();
+    return market.marketType === "match_winner_1x2" || key.includes("regulation") || key.includes("winner") || key.includes("moneyline");
+  });
+  const realLineMarkets = lineMarkets.filter((market) => market.referenceSource === "polymarket");
+  const contractFixtureLineMarkets = lineMarkets.filter((market) => market.referenceSource === "contract-fixture");
+  const lineMarketStatus =
+    lineMarkets.length === 0
+      ? "missing"
+      : realLineMarkets.length > 0
+        ? "provider-backed"
+        : contractFixtureLineMarkets.length > 0
+          ? "contract-fixture"
+          : "unknown";
+
+  return {
+    totalMarketCount: markets.length,
+    sourceBreakdown,
+    polymarketMarketCount: sourceBreakdown.polymarket ?? 0,
+    contractFixtureMarketCount: sourceBreakdown["contract-fixture"] ?? 0,
+    unknownSourceMarketCount: sourceBreakdown.unknown ?? 0,
+    regulationWinner: {
+      totalCount: regulationWinnerMarkets.length,
+      polymarketCount: regulationWinnerMarkets.filter((market) => market.referenceSource === "polymarket").length,
+      contractFixtureCount: regulationWinnerMarkets.filter((market) => market.referenceSource === "contract-fixture").length,
+      status: regulationWinnerMarkets.some((market) => market.referenceSource === "polymarket")
+        ? "provider-backed"
+        : regulationWinnerMarkets.length > 0
+          ? "non-provider"
+          : "missing",
+    },
+    lineMarkets: {
+      totalCount: lineMarkets.length,
+      polymarketCount: realLineMarkets.length,
+      contractFixtureCount: contractFixtureLineMarkets.length,
+      status: lineMarketStatus,
+      families: Array.from(new Set(lineMarkets.map((market) => market.marketType).filter((value): value is string => Boolean(value)))),
+      reason:
+        lineMarketStatus === "provider-backed"
+          ? "At least one line market is provider-backed."
+          : lineMarketStatus === "contract-fixture"
+            ? "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured."
+            : lineMarketStatus === "missing"
+              ? "No route-visible line markets are available."
+              : "Line market source is not classified.",
+    },
+  };
 };
 
 const isOutrightEventType = (value: string | null | undefined) => {
@@ -798,6 +865,7 @@ export async function serializeMobileLiveEventDetail(input: {
       };
     }),
   );
+  const marketSourceSummary = buildMobileMarketSourceSummary(serializedMarkets);
 
   const primaryChartSnapshots = primaryMarketId ? chartSnapshotsByMarketId.get(primaryMarketId) ?? [] : [];
   const chartHistory = chartHistoryFromSnapshots(primaryChartSnapshots);
@@ -922,6 +990,7 @@ export async function serializeMobileLiveEventDetail(input: {
         reason: effectiveLiveDataReason,
       },
       providerLifecycle,
+      marketSourceSummary,
       chartHistory,
       marketProfile,
       resultMode: isOutrightEvent ? "one_winner" : ruleAllowDraw ? "can_draw" : "no_draw",
@@ -973,6 +1042,7 @@ export async function serializeMobileLiveEventDetail(input: {
       batchedChartHistoryRequestedMarketIds: markets.map((market) => market.id),
       liveDataStatus,
       providerLifecycle,
+      marketSourceSummary,
     },
   };
 }

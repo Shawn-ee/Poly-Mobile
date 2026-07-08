@@ -5578,3 +5578,48 @@ Known limitations:
 - No Android proof was run because ADB showed no visible devices.
 - Gamma exposes no Spread, Totals, Team Totals, Halves, Corners, or Correct Score markets for the selected match event.
 - Real provider-backed line-market replacement remains P1 until Polymarket exposes attach-ready line markets or another approved provider is in scope.
+
+## Cycle LQ - Market Source Summary Contract
+
+Feature/page worked on:
+
+- Backend route contract for Home and Event Detail market source readiness.
+
+Frontend/harness/backend files touched:
+
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/app/api/events/route.ts`
+- `src/__tests__/mobile-live-event-detail.test.ts`
+- `scripts/prove_mobile_provider_match_line_availability.ts`
+- `docs/mobile/audits/cycle-LQ-market-source-summary.md`
+- `docs/mobile/harness/cycle-LQ-market-source-summary/cycle-LQ-market-source-summary.json`
+
+Important functions/services touched:
+
+- Added `buildMobileMarketSourceSummary()` to classify route-visible markets by source and family.
+- `serializeMobileLiveEventDetail()` now returns `event.marketSourceSummary` and `contract.marketSourceSummary`.
+- `GET /api/events?includeMobileMarkets=1` now includes `marketSourceSummary` for each mobile event.
+
+User interactions supported/proven:
+
+- Home and Event Detail can now tell the mobile app that Regulation Winner is provider-backed while Spread/Totals/Team Totals are Local MVP contract fixtures.
+- This removes guesswork before the visible ticket/order proof and keeps the service honest about Polymarket-backed data.
+
+State transitions:
+
+- No user/order state transition was added.
+- Route contract state is now explicit:
+  - `regulationWinner.status=provider-backed`
+  - `lineMarkets.status=contract-fixture`
+
+Validation:
+
+- `npm run test:jest -- src/__tests__/mobile-live-event-detail.test.ts`
+- `npx tsx scripts/prove_mobile_provider_match_line_availability.ts --cycle=LQ --eventSlug=switzerland-vs-colombia --summaryPath=docs/mobile/harness/cycle-LQ-market-source-summary/cycle-LQ-market-source-summary.json`
+- HTTP check confirmed both Home and Event Detail summaries for `switzerland-vs-colombia`.
+
+Known limitations:
+
+- No Android proof was run because ADB showed no visible devices.
+- This does not create real provider-backed line markets; it makes their absence explicit.
+- Mobile UI can consume this summary in a later scoped cycle if needed.

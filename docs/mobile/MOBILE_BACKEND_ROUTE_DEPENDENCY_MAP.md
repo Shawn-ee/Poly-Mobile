@@ -2295,3 +2295,16 @@ Cycle LP implementation notes:
 - `Regulation Winner` is real Polymarket-backed data for the selected match.
 - `Spread`, `Totals`, and `Team Totals` are route-visible only through backend-shaped `contract-fixture` rows.
 - `OPTIC_ODDS_API_KEY` remains optional and is not a blocker for this Polymarket-first MVP path.
+
+## Cycle LQ - Market Source Summary Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home event source readiness | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1` | GET | Public viewing | Query filters and page size | `events[].marketSourceSummary.totalMarketCount`, `sourceBreakdown`, `regulationWinner.status`, `lineMarkets.status`, `lineMarkets.families`, `lineMarkets.reason` | `Event`, `Market`, `Outcome` source/mapping fields | None added. Existing contract fixtures remain backend rows. | Real provider-backed line markets remain absent for selected Gamma event. |
+| Event Detail source readiness | `/api/mobile/events/:slug/live-detail` | GET | Public viewing | Event slug | `event.marketSourceSummary`, `contract.marketSourceSummary`; same source/family/status fields as Home | `Event`, `Market`, `Outcome` source/mapping fields | None added. Existing contract fixtures remain backend rows. | Real provider-backed line markets remain absent for selected Gamma event. |
+
+Cycle LQ implementation notes:
+
+- No schema migration was required.
+- The summary is derived from existing `referenceSource`, `marketType`, `marketGroupKey`, and `marketGroupTitle` fields.
+- Home and Event Detail now expose the same source-readiness classification for the selected MVP match.

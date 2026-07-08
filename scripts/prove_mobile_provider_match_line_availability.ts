@@ -72,6 +72,7 @@ async function main() {
 
   const eventSlug = argValue("eventSlug") ?? DEFAULT_EVENT_SLUG;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
+  const cycle = argValue("cycle") ?? "LP";
   const event = await prisma.event.findUnique({
     where: { slug: eventSlug },
     select: { id: true, slug: true, title: true, externalSlug: true, source: true },
@@ -111,7 +112,7 @@ async function main() {
 
   const summary = {
     generatedAt: new Date().toISOString(),
-    cycle: "LP",
+    cycle,
     scope: "provider-match-line-availability",
     event: {
       slug: event.slug,
@@ -141,6 +142,7 @@ async function main() {
       realPolymarketMarketCount: localRealPolymarketMarkets.length,
       contractFixtureMarketCount: localContractFixtureMarkets.length,
       contractLineFamilies: localContractLineFamilies,
+      marketSourceSummary: liveDetail.payload.event?.marketSourceSummary ?? liveDetail.payload.contract?.marketSourceSummary ?? null,
       markets: localSummary,
     },
     decision: {
@@ -152,6 +154,9 @@ async function main() {
         localContractLineFamilies.includes("spread") &&
         localContractLineFamilies.includes("total_goals") &&
         localContractLineFamilies.includes("team_total_goals"),
+      routeSourceSummaryMatches:
+        liveDetail.payload.event?.marketSourceSummary?.regulationWinner?.status === "provider-backed" &&
+        liveDetail.payload.event?.marketSourceSummary?.lineMarkets?.status === "contract-fixture",
       nextPath:
         gammaLineMarketCount > 0
           ? "map_real_gamma_line_markets_before_using_fixtures"
@@ -164,7 +169,9 @@ async function main() {
       localRealPolymarketMarkets.length >= 3 &&
       localContractLineFamilies.includes("spread") &&
       localContractLineFamilies.includes("total_goals") &&
-      localContractLineFamilies.includes("team_total_goals"),
+      localContractLineFamilies.includes("team_total_goals") &&
+      liveDetail.payload.event?.marketSourceSummary?.regulationWinner?.status === "provider-backed" &&
+      liveDetail.payload.event?.marketSourceSummary?.lineMarkets?.status === "contract-fixture",
     limitations: [
       "This is a backend/provider availability proof only; no Android device was visible to ADB for S23 proof.",
       "Contract-fixture line markets are acceptable for local MVP UI/order proof but are not Polymarket-backed parity.",
