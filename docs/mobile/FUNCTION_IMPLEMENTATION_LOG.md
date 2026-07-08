@@ -5671,3 +5671,33 @@ Known limitations:
 - No Android proof was run because ADB showed no visible devices.
 - Full typecheck remains blocked by an existing `src/server/services/eventReadModel.ts` string literal type issue.
 - This does not create real provider-backed line markets; it makes Portfolio/history source identity auditable.
+
+## Cycle LS - Typecheck Readiness
+
+Feature/page worked on:
+
+- Harness validation health for backend route contracts used by the mobile MVP.
+
+Frontend/harness/backend files touched:
+
+- `src/server/services/eventReadModel.ts`
+- `docs/mobile/audits/cycle-LS-typecheck-readiness.md`
+
+Important functions/services touched:
+
+- Tightened event market rules typing with literal type guards.
+- `deriveEventMarketRules()` now returns the explicit `EventMarketRules` contract.
+
+User interactions supported/proven:
+
+- No new user-facing interaction was added.
+- Future Home/Event Detail/Portfolio route cycles can again use full TypeScript validation as part of the Audit Gate.
+
+Validation:
+
+- `npx tsc --noEmit --pretty false --skipLibCheck`
+- `npm run test:jest -- src/__tests__/mobile-live-event-detail.test.ts src/__tests__/portfolio.open-orders.route.test.ts src/__tests__/portfolio.history.route.test.ts src/__tests__/mobile-event-market-rules-contract.test.ts`
+
+Known limitations:
+
+- No Android proof was run because ADB showed no visible devices.

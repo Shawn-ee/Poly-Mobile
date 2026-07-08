@@ -44,6 +44,33 @@ type EventMarketRules = {
   supportedMarketTypes: SupportedMarketType[];
 };
 
+type MarketProfile = EventMarketRules["marketProfile"];
+type ResultMode = EventMarketRules["resultMode"];
+
+const MARKET_PROFILES = ["outright", "to_advance", "regulation_90", "full_match_with_overtime"] as const;
+const RESULT_MODES = ["one_winner", "can_draw", "no_draw"] as const;
+const SUPPORTED_MARKET_TYPES = [
+  "outright",
+  "to_advance",
+  "regulation_90",
+  "full_match_with_overtime",
+  "spread",
+  "totals",
+  "team-total",
+  "first-half",
+  "second-half",
+  "player-props",
+] as const;
+
+const isMarketProfile = (value: unknown): value is MarketProfile =>
+  typeof value === "string" && MARKET_PROFILES.includes(value as MarketProfile);
+
+const isResultMode = (value: unknown): value is ResultMode =>
+  typeof value === "string" && RESULT_MODES.includes(value as ResultMode);
+
+const isSupportedMarketType = (value: unknown): value is SupportedMarketType =>
+  typeof value === "string" && SUPPORTED_MARKET_TYPES.includes(value as SupportedMarketType);
+
 const metadataObject = (value: unknown): Record<string, unknown> =>
   value && typeof value === "object" && !Array.isArray(value) ? (value as Record<string, unknown>) : {};
 
@@ -99,10 +126,8 @@ const normalizedSoccerRulesFromMetadata = (metadata: Record<string, unknown>): E
   const gameRules = metadataObject(normalizedSoccer.gameRules);
   const supportedMarketTypes = normalizedSoccer.supportedMarketTypes;
   if (
-    typeof marketProfile !== "string" ||
-    typeof resultMode !== "string" ||
-    !["outright", "to_advance", "regulation_90", "full_match_with_overtime"].includes(marketProfile) ||
-    !["one_winner", "can_draw", "no_draw"].includes(resultMode)
+    !isMarketProfile(marketProfile) ||
+    !isResultMode(resultMode)
   ) {
     return null;
   }
@@ -121,26 +146,15 @@ const normalizedSoccerRulesFromMetadata = (metadata: Record<string, unknown>): E
             : "Winner market has no draw outcome.",
     },
     supportedMarketTypes: Array.isArray(supportedMarketTypes)
-      ? supportedMarketTypes.filter((value): value is SupportedMarketType =>
-          typeof value === "string" &&
-          [
-            "outright",
-            "to_advance",
-            "regulation_90",
-            "full_match_with_overtime",
-            "spread",
-            "totals",
-            "team-total",
-            "first-half",
-            "second-half",
-            "player-props",
-          ].includes(value),
-        )
+      ? supportedMarketTypes.filter(isSupportedMarketType)
       : [marketProfile as SupportedMarketType],
   };
 };
 
-const deriveEventMarketRules = (event: { description?: string | null; sportKey?: string | null; leagueKey?: string | null; eventType?: string | null }, markets: EventMarket[]) => {
+const deriveEventMarketRules = (
+  event: { description?: string | null; sportKey?: string | null; leagueKey?: string | null; eventType?: string | null },
+  markets: EventMarket[],
+): EventMarketRules => {
   const supported = new Set<SupportedMarketType>();
   if (isOutrightEventType(event.eventType)) {
     supported.add("outright");
@@ -190,12 +204,13 @@ const deriveEventMarketRules = (event: { description?: string | null; sportKey?:
       (mainKey.includes("winner") || mainKey.includes("moneyline") || mainKey.includes("main") || mainKey.includes("match")),
   );
   const includesOvertime = hasAdvanceMarket || isAdvance || isTwoWaySoccerWinner || mainKey.includes("overtime") || mainKey.includes("full match");
-  const marketProfile = isAdvance ? "to_advance" : includesOvertime ? "full_match_with_overtime" : "regulation_90";
+  const marketProfile: MarketProfile = isAdvance ? "to_advance" : includesOvertime ? "full_match_with_overtime" : "regulation_90";
+  const resultMode: ResultMode = allowDraw ? "can_draw" : "no_draw";
   supported.add(marketProfile);
 
   return {
     marketProfile,
-    resultMode: allowDraw ? "can_draw" : "no_draw",
+    resultMode,
     gameRules: {
       allowDraw,
       includesOvertime,

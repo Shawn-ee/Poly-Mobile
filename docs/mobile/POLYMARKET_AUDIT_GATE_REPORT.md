@@ -4500,3 +4500,29 @@ Decision:
 - Backend route contract result: pass.
 - Unresolved P0 gaps: S23 visible MVP flow proof.
 - Remaining P1/P2 gaps: mobile UI consumption of Portfolio source summary and real provider-backed line mappings.
+
+## Cycle LS
+
+Gate status: Pass for harness/typecheck readiness
+
+Scope: Restore full TypeScript validation for backend route contracts.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-LS-typecheck-readiness.md`
+- `src/server/services/eventReadModel.ts`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LS-TYPE-P0-01 | P0 | Pass | `npx tsc --noEmit --pretty false --skipLibCheck` passed. | Fix route contract type errors. |
+| LS-TYPE-P0-02 | P0 | Pass | Focused MVP route Jest tests passed. | Repair failing route contract behavior. |
+| LS-TYPE-P0-03 | P0 | Pass | Event market rules contract test passed. | Repair market profile/result mode derivation. |
+| LS-TYPE-P0-04 | P0 | Partial | No Android proof because ADB showed no attached devices. | Reconnect S23 and run visible MVP proof. |
+
+Decision:
+
+- Pass/fail: Pass for harness/typecheck readiness only.
+- This is not a final mobile Audit Gate pass.
+- Unresolved P0 gaps: S23 visible MVP flow proof.
