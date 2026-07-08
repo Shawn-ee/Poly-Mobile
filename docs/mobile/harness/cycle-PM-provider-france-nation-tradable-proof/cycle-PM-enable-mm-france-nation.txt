@@ -1,0 +1,74 @@
+
+> poly-bot@0.1.0 liquidity:enable-event-mm
+> tsx scripts/enableReferenceEventMm.ts --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug world-cup-nation-of-top-goalscorer --allowlist France --maxMarkets 1 --dryRun false --confirmEnable true
+
+{
+  "ok": true,
+  "dryRun": false,
+  "eventSlug": "world-cup-nation-of-top-goalscorer",
+  "results": [
+    {
+      "marketId": "42203d58-497f-49e6-a660-87eca202bd59",
+      "slug": "will-a-player-representing-france-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "title": "Will a player representing France be the top goalscorer at the 2026 FIFA World Cup?",
+      "safe": true,
+      "reason": null,
+      "updated": {
+        "ok": true,
+        "marketId": "42203d58-497f-49e6-a660-87eca202bd59",
+        "importStatus": "approved",
+        "referenceOnly": false,
+        "tradable": true,
+        "mmEnabled": true,
+        "isListed": true,
+        "reviewedAt": "2026-07-08T23:21:05.527Z",
+        "reviewedBy": "[redacted-dev-admin]",
+        "reviewNotes": "Imported from grouped World Cup event.",
+        "botInitialization": {
+          "reason": null,
+          "status": "live_ready",
+          "capital": {
+            "botUserId": "[redacted-bot-user]",
+            "botApiKeyId": "[redacted-api-key]",
+            "botUsername": "system-liquidity-bot",
+            "budgetCents": 100000,
+            "autoReplenish": false,
+            "initializedAt": "2026-07-08T20:15:30.529Z",
+            "initializedBy": "[redacted-dev-admin]",
+            "mintBudgetCents": 20000,
+            "cashReserveCents": 80000,
+            "maxDailyLossCents": 10000,
+            "botApiCredentialId": "[redacted]",
+            "mintedCompleteSets": 200,
+            "maxOpenOrderNotionalCents": 10000,
+            "maxSingleOrderNotionalCents": 1000
+          },
+          "runtime": {
+            "lastSeededAt": "2026-07-08T20:15:30.529Z",
+            "emergencyStop": false,
+            "lastLiveRunAt": null,
+            "cancelRequestedAt": null,
+            "lastRuntimeSyncAt": null,
+            "liveOrdersEnabled": false
+          },
+          "readiness": {
+            "ready": true,
+            "dryRun": false,
+            "reasons": [],
+            "checkedAt": "2026-07-08T20:15:32.264Z",
+            "riskProfile": null,
+            "referenceAsk": 0.42,
+            "referenceBid": 0.41,
+            "liveRequested": true,
+            "plannedBotAsk": 0.44,
+            "plannedBotBid": 0.39
+          },
+          "approvedAt": null,
+          "approvedBy": null,
+          "riskProfile": null,
+          "lastCheckedAt": "2026-07-08T20:15:32.264Z"
+        }
+      }
+    }
+  ]
+}

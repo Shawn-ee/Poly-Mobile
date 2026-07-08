@@ -8899,6 +8899,54 @@ Known limitations:
 - Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
 - Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
 
+## Cycle PM - France Nation Top Goalscorer Tradable Proof
+
+Feature/page worked on:
+
+- Provider-visible-to-internal-test-tradable path for a France Nation Top Goalscorer Polymarket market.
+- Bot seed/risk-cap behavior that previously blocked live-local quote placement after oversized local inventory.
+
+Frontend/proof files touched:
+
+- `docs/mobile/audits/cycle-PM-provider-france-nation-tradable-proof.md`
+- `docs/mobile/harness/cycle-PM-provider-france-nation-tradable-proof/`
+- `docs/mobile/screenshots/cycle-PM-provider-france-nation-tradable-proof/`
+
+Important functions/services touched:
+
+- `seedReferenceLiquidityBotForMarket` in `src/server/services/referenceLiquiditySeeding.ts`.
+- No visible mobile UI source changed.
+- Reused bot MM enable/seed/live-local scripts, mobile order/Portfolio proof harness, and S23 Search/detail proof.
+
+User interactions supported/proven:
+
+- Samsung S23 Search shows `World Cup: Nation of Top Goalscorer` as a Polymarket-backed event.
+- Samsung S23 Event Detail shows the France outcome carrying provider market `2070983`.
+- Mobile service proof submits a server-mode fake-token buy against France local MM liquidity.
+- Portfolio/history proof shows the filled France provider-backed position/trade.
+
+State transitions:
+
+- France Nation Top Goalscorer market stayed approved/listed/tradable/MM-enabled.
+- Reseed downsized stale local complete-set inventory from the older oversized proof profile to the small `500/25` local profile.
+- Bot dry-run moved from exposure-cap blocked to below-cap readiness.
+- Bot live-local placed quotes, and the mobile proof filled a France YES order.
+
+Validation:
+
+- `npm run test:reference-bot-initialization` passed.
+- `npx tsc --noEmit --pretty false --allowJs false` passed.
+- Bot dry-run passed after reseed.
+- Bot live-local quote placement passed.
+- Mobile provider-visible tradable route/service proof passed.
+- S23 Search/detail proof captured XML/screenshot on `SM-S911U1`.
+
+Known limitations:
+
+- Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
+- Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
+- Broad futures chart history may remain unavailable even when quote/order/Portfolio flow is tradable.
+
 ## Cycle PL - Current Match Line Provider Gate
 
 Feature/page worked on:

@@ -3259,7 +3259,7 @@ Cycle OE implementation notes:
 Cycle OF implementation notes:
 
 - No backend route or schema changed.
-- Mobile now renders the existing route/order/portfolio contract with clearer wording: `Local test line Â· fake-token` and `Local test lines Â· fake-token`.
+- Mobile now renders the existing route/order/portfolio contract with clearer wording: `Local test line Ã‚Â· fake-token` and `Local test lines Ã‚Â· fake-token`.
 
 ## Cycle OG - Current State Inspection And Path Adjustment
 
@@ -3490,3 +3490,11 @@ Cycle OW implementation notes:
 | Home current match source map | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` | GET | Public viewing | Query params only | Match-only event list, market source summary, regulation winner status, line market status, line families | `Event`, `Market`, `Outcome`, provider quote snapshots, contract fixture line markets | Contract-fixture line markets remain present for Local MVP. | Provider-backed current-match line markets missing. |
 | Current match detail source map | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug only | 3 Polymarket regulation-winner markets, 4 contract-fixture line markets, line family readiness, provider availability reason | `Event`, `Market`, `Outcome`, provider quote snapshots, contract fixture line markets | Contract-fixture Spread/Totals/Team Totals used for Local MVP until attach-ready provider rows exist. | Polymarket Gamma currently exposes 0 attach-ready line markets for this event. |
 | Provider line availability | Polymarket Gamma `https://gamma-api.polymarket.com/events?slug=fifwc-arg-egy-2026-07-07` plus provider discovery guard | GET/service | Public provider data | Event slug | Provider market families, candidate attach readiness, family mismatch reasons | Provider candidate mapping only; no DB mutation | None added. | No real provider line rows found; wrong-family rows must remain rejected. |
+
+## Cycle PM - France Nation Top Goalscorer Tradable Proof
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| France Nation Top Goalscorer visibility | `/api/events?source=polymarket&search=France`, `/api/mobile/events/world-cup-nation-of-top-goalscorer/live-detail` | GET | Public viewing | Search query and detail slug only | Event slug/title, France market id, provider market id `2070983`, condition id, token id, probability, provider source | `Event`, `Market`, `Outcome`, provider quote snapshots | None for selected provider future. | No missing support for selected provider-backed visibility. |
+| France internal-test MM setup | `/api/admin/reference-markets/42203d58-497f-49e6-a660-87eca202bd59`, `/api/admin/reference-markets/:id/seed-bot`, bot live-local scripts | PATCH/POST/script | Dev admin header / local bot env | Enable MM, seed capital/mint budget, mark live-enabled | Runtime credential state, downsized local bot inventory/capital, bot readiness, quote placement result | `Market.referenceMetadata`, `User`, `ApiCredential`, `UserBalance`, `Position`, `Order`, `LedgerEntry` | None. | No missing support after seed downsizing fix. |
+| France fake-token retail order | `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | GET/POST | Mobile proof API key with order/account scopes | France YES selection, price `0.44`, amount `1`, provider market/condition/token identity | Filled order, Portfolio position, History trade | `Order`, `Trade`, `Position`, `ApiCredential`, `UserBalance` | None. | No missing support for selected provider-backed future order. |

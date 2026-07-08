@@ -1,0 +1,92 @@
+
+> poly-bot@0.1.0 bot:polymarket:mm:dry-run
+> tsx scripts/liquidityRuntime.ts --dryRun true --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug world-cup-nation-of-top-goalscorer --allowlist France --maxMarkets 1 --durationSeconds 3 --pollMs 1000
+
+{
+  "dryRun": true,
+  "liveOrdersEnabled": false,
+  "confirmLive": false,
+  "cycleReports": [
+    {
+      "marketId": "42203d58-497f-49e6-a660-87eca202bd59",
+      "slug": "will-a-player-representing-france-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "status": "skip",
+      "previousLifecycleStatus": "live_ready",
+      "currentLifecycleStatus": "live_ready",
+      "lifecycleTransition": null,
+      "dryRun": true,
+      "referenceBid": 0.41,
+      "referenceAsk": 0.42,
+      "plannedBotBid": 0.39,
+      "plannedBotAsk": 0.44,
+      "reasons": [
+        "confirm_live_required",
+        "live_orders_disabled",
+        "dry_run_enabled",
+        "per_market_exposure_cap_reached_20200_of_20000"
+      ],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 20200,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 20200,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "42203d58-497f-49e6-a660-87eca202bd59",
+      "slug": "will-a-player-representing-france-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "status": "skip",
+      "previousLifecycleStatus": "live_ready",
+      "currentLifecycleStatus": "live_ready",
+      "lifecycleTransition": null,
+      "dryRun": true,
+      "referenceBid": 0.41,
+      "referenceAsk": 0.42,
+      "plannedBotBid": 0.39,
+      "plannedBotAsk": 0.44,
+      "reasons": [
+        "confirm_live_required",
+        "live_orders_disabled",
+        "dry_run_enabled",
+        "per_market_exposure_cap_reached_20200_of_20000"
+      ],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 20200,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 20200,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "42203d58-497f-49e6-a660-87eca202bd59",
+      "slug": "will-a-player-representing-france-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "status": "skip",
+      "previousLifecycleStatus": "live_ready",
+      "currentLifecycleStatus": "live_ready",
+      "lifecycleTransition": null,
+      "dryRun": true,
+      "referenceBid": 0.41,
+      "referenceAsk": 0.42,
+      "plannedBotBid": 0.39,
+      "plannedBotAsk": 0.44,
+      "reasons": [
+        "confirm_live_required",
+        "live_orders_disabled",
+        "dry_run_enabled",
+        "per_market_exposure_cap_reached_20200_of_20000"
+      ],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 20200,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 20200,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    }
+  ]
+}

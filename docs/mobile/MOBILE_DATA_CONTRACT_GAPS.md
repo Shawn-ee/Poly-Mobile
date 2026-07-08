@@ -2762,7 +2762,7 @@ Schema mismatch:
 
 Route mismatch:
 
-- `/provider-candidates` can now prove â€œprovider reachable but no safe attach candidateâ€ instead of conflating provider fetch failure with no mapping.
+- `/provider-candidates` can now prove Ã¢â‚¬Å“provider reachable but no safe attach candidateÃ¢â‚¬Â instead of conflating provider fetch failure with no mapping.
 
 Temporary mock/static data:
 
@@ -4081,7 +4081,7 @@ Future migration concern:
 Fields Holiwyn needs but backend does not provide consistently yet:
 
 - Search/Explore row rank and category/facet metadata.
-- Canonical sport/category labels such as `Sports Â· Soccer`.
+- Canonical sport/category labels such as `Sports Ã‚Â· Soccer`.
 - Row-level volume, today volume, liquidity, comment/chat count, and end-time display strings.
 - Result probability/outcome summary chosen by backend rank.
 - Facet counts for status, category, saved, live, and other discovered Polymarket-style filters.
@@ -7142,6 +7142,38 @@ Future migration concern:
 
 - Local bot runtime identifiers were redacted from committed evidence.
 - Standalone bot proof runs must carry `LIVE_SYSTEM_LIQUIDITY_ENABLED=true`; backend helper env alone does not arm a separate bot process.
+- Production/staging bot enablement must not reuse local fake-token proof flags without separate review.
+
+## Cycle PM - France Nation Top Goalscorer Tradable Proof
+
+Closed or narrowed:
+
+- France Nation Top Goalscorer provider market `2070983` is now proven internally tradable through quote, fake-token order, Portfolio, and History.
+- The repeated local bot exposure-cap blocker is closed for markets previously seeded too large: reseeding now downsizes unreserved complete-set inventory to match the smaller local proof profile.
+- S23 proof shows the event in Search and the target France provider market on Event Detail.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Current-match provider-backed Spread/Totals/Team Total market ids, token ids, chart history, and prices.
+- Provider chart history for broad future event-detail pages.
+- A product-approved way to expose broad futures outside Search/detail if desired; Home/Live remain match-only by design.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch for the selected provider-backed France Nation Top Goalscorer flow.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- Complete-set downsizing is for local fake-token proof seeding and should stay guarded by local internal bot flags.
+- Local bot runtime identifiers were redacted from committed evidence.
 - Production/staging bot enablement must not reuse local fake-token proof flags without separate review.
 
 ## Cycle PI - Search Deep-Link Provider Futures Proof
