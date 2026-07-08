@@ -1,0 +1,61 @@
+{
+    "pass":  true,
+    "eventSlug":  "argentina-vs-egypt",
+    "market":  {
+                   "id":  "57079b71-6c20-4bda-8538-9274fcdd426d",
+                   "title":  "Will Argentina win on 2026-07-07?",
+                   "marketType":  "match_winner_1x2",
+                   "marketGroupKey":  "main",
+                   "period":  "regulation",
+                   "line":  null,
+                   "referenceSource":  "polymarket",
+                   "externalMarketId":  "2793738",
+                   "conditionId":  "0xa7b5b123f9fd38f83fbe19773a5d04e38208b370ca66be27b9688155e7b5c60a"
+               },
+    "outcome":  {
+                    "id":  "94bf4e3c-dd73-4030-8652-13321bd4ac20",
+                    "name":  "YES",
+                    "side":  "yes",
+                    "referenceTokenId":  "87390712702935875353084647255226721799646621048501318482801979643152933271064",
+                    "referenceOutcomeLabel":  "Yes"
+                },
+    "maker":  {
+                  "id":  "51ebf940-124e-423b-a248-0ad7cf2f9b70",
+                  "username":  "mobile_route_fill_maker_aeb51930"
+              },
+    "cleanup":  {
+                    "enabled":  true,
+                    "proofUserPrefix":  "holiwyn-mobile-",
+                    "canceledProofBids":  [
+
+                                          ],
+                    "cleanupBlockingBids":  true,
+                    "canceledBlockingBids":  [
+                                                 {
+                                                     "id":  "aac4a82c-3741-4286-b495-759859c821fd",
+                                                     "username":  "system-liquidity-bot",
+                                                     "previousStatus":  "OPEN",
+                                                     "price":  "0.7",
+                                                     "remaining":  "5",
+                                                     "canceledStatus":  "CANCELED"
+                                                 }
+                                             ]
+                },
+    "makerOrder":  {
+                       "id":  "23e26a12-794a-4fab-ba8e-d3e0d33de17a",
+                       "marketId":  "57079b71-6c20-4bda-8538-9274fcdd426d",
+                       "outcomeId":  "94bf4e3c-dd73-4030-8652-13321bd4ac20",
+                       "side":  "SELL",
+                       "price":  "0.7",
+                       "size":  "80",
+                       "remaining":  "80",
+                       "reservedNotional":  "0",
+                       "status":  "OPEN"
+                   },
+    "seededAsk":  {
+                      "side":  "SELL",
+                      "price":  "0.70",
+                      "size":  "80",
+                      "intendedMobileTaker":  "BUY $25 route-backed main ticket"
+                  }
+}

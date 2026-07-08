@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle MT - Provider Winner Top Outcome Fill
+
+Closed or narrowed:
+
+- The top visible provider-backed Regulation Winner outcome is now proven through a filled S23 Portfolio/history path.
+- Local proof setup can target provider markets by `externalMarketId`, which avoids accidentally filling a different winner binary.
+- Blocking local bids can be canceled before ask seeding so the maker ask rests and remains available for the mobile buyer.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected events.
+- A production market-making policy for provider-backed current match outcomes is still future work.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- No UI mock data was added.
+- Proof-local maker liquidity was created in the local database for provider market `2793738`.
+
 ## Cycle MS - Provider Winner Filled History
 
 Closed or narrowed:

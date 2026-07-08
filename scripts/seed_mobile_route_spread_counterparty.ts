@@ -16,11 +16,13 @@ const argValue = (name: string) => {
 const eventSlug = argValue("eventSlug");
 const outputPath = argValue("output") ?? "docs/mobile/harness/cycle-EX-local-mvp-route-server-filled-flow/cycle-EX-route-backed-counterparty.json";
 const marketGroupKey = argValue("marketGroupKey") ?? "spread";
+const externalMarketId = argValue("externalMarketId");
 const outcomeSide = argValue("outcomeSide") ?? "home";
 const askPrice = argValue("askPrice") ?? "0.52";
 const askSize = argValue("askSize") ?? "60";
 const line = argValue("line");
 const cleanupProofBids = process.argv.includes("--cleanupProofBids");
+const cleanupBlockingBids = process.argv.includes("--cleanupBlockingBids");
 const proofUserPrefix = argValue("proofUserPrefix") ?? "holiwyn-mobile-";
 
 const assert: (condition: unknown, message: string) => asserts condition = (condition, message) => {
@@ -58,7 +60,9 @@ async function main() {
     },
   });
   assert(event, `Event ${eventSlug} was not found.`);
-  const market = line
+  const market = externalMarketId
+    ? event.markets.find((item) => item.externalMarketId === externalMarketId)
+    : line
     ? event.markets.find((item) => item.line?.equals(dec(line)))
     : event.markets[0];
   assert(market, `Event ${eventSlug} has no ${marketGroupKey} market.`);
@@ -82,6 +86,32 @@ async function main() {
     for (const order of staleProofBids) {
       const canceled = await cancelOrderAndUnlock({ orderId: order.id, userId: order.userId });
       canceledProofBids.push({
+        id: order.id,
+        username: order.user.username,
+        previousStatus: order.status,
+        price: order.price.toString(),
+        remaining: order.remaining.toString(),
+        canceledStatus: canceled.order.status,
+      });
+    }
+  }
+
+  const canceledBlockingBids = [];
+  if (cleanupBlockingBids) {
+    const blockingBids = await prisma.order.findMany({
+      where: {
+        marketId: market.id,
+        outcomeId: outcome.id,
+        side: "BUY",
+        status: { in: ["OPEN", "PARTIAL"] },
+        price: { gte: dec(askPrice) },
+      },
+      include: { user: { select: { id: true, username: true } } },
+      orderBy: { createdAt: "asc" },
+    });
+    for (const order of blockingBids) {
+      const canceled = await cancelOrderAndUnlock({ orderId: order.id, userId: order.userId });
+      canceledBlockingBids.push({
         id: order.id,
         username: order.user.username,
         previousStatus: order.status,
@@ -135,6 +165,8 @@ async function main() {
       enabled: cleanupProofBids,
       proofUserPrefix,
       canceledProofBids,
+      cleanupBlockingBids,
+      canceledBlockingBids,
     },
     makerOrder: makerOrder.order,
     seededAsk: {

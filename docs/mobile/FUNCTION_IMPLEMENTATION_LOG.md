@@ -2,6 +2,41 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle MT - Provider Winner Top Outcome Fill
+
+Feature/page worked on:
+
+- Proved the visible top provider-backed Regulation Winner outcome can fill through the Local MVP retail path.
+- Added proof-local liquidity setup controls for provider market id and blocking-bid cleanup.
+
+Frontend/services touched:
+
+- `scripts/seed_mobile_route_spread_counterparty.ts`
+- `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1`
+
+User interactions supported/proven:
+
+- On S23, opened Home -> Event Detail -> Argentina provider winner ticket.
+- Selected `$25`, swiped to buy, and reached Portfolio/history.
+- Portfolio positions and History showed provider-backed winner source identity for provider market `2793738`.
+
+Backend/API route changed:
+
+- No backend route or schema changed.
+- Proof-local service setup now supports `--externalMarketId` and `--cleanupBlockingBids` for safe local liquidity preparation.
+
+Verified:
+
+- Script parse check passed.
+- Mobile typecheck passed.
+- Root TypeScript check passed.
+- S23 proof passed: `docs/mobile/harness/cycle-MT-provider-winner-top-outcome-fill/cycle-MT-provider-winner-s23-visible-flow.json`.
+
+Known limitations:
+
+- This prepares local proof liquidity; it is not a production market-making policy.
+- Spread/Totals/Team Total remain explicit Local `contract-fixture` rows until real attach-ready Polymarket line markets exist.
+
 ## Cycle MS - Provider Winner Filled History
 
 Feature/page worked on:

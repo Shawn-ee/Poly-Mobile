@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle MT - Provider Winner Top Outcome Fill
+
+Cycle MT proves the top provider-backed Regulation Winner outcome can fill after local proof liquidity is prepared for the selected provider market.
+
+- S23 proof: `docs/mobile/harness/cycle-MT-provider-winner-top-outcome-fill/cycle-MT-provider-winner-s23-visible-flow.json`.
+- Counterparty proof: `docs/mobile/harness/cycle-MT-provider-winner-top-outcome-fill/cycle-MT-provider-winner-counterparty.json`.
+- Audit: `docs/mobile/audits/cycle-MT-provider-winner-top-outcome-fill.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider-backed Regulation Winner top-outcome filled lifecycle | `/api/events?...includeMobileMarkets=1&mobileMvpMatches=1`, `/api/mobile/events/:slug/live-detail`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history`; proof setup uses local Prisma + `placeOrderAndMatch()` | GET for Home/detail/Portfolio/history; POST for order submit; local proof setup before S23 run | Public event viewing; existing mobile API auth for order/portfolio; proof setup refuses production | Existing ticket order body with selected `marketId`, `outcomeId`, `marketType=winner`, `line=null`, `period=regulation`, provider IDs/tokens | `referenceSource=polymarket`, provider market `2793738`, provider token, filled trade/position/history selection snapshots | Existing `Event`, `Market`, `Outcome`, `Order`, `Trade`, `Position`; no schema change | No UI mock fallback. Proof setup creates valid local ask liquidity and cancels blocking local bids for the target provider market. | Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected events. |
+
 ## Cycle MS - Provider Winner Filled History
 
 Cycle MS proves the provider-backed Regulation Winner route data through a filled S23 ticket/order/Portfolio/history lifecycle.

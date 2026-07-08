@@ -6,6 +6,7 @@ param(
   [string]$BackendBaseUrl = "http://127.0.0.1:3002",
   [string]$EventSlug = "argentina-vs-egypt",
   [string]$TargetProviderMarketId = "2793741",
+  [string]$CounterpartyAskPrice = "0.70",
   [string]$Cycle = "MQ",
   [string]$OutputDir = "docs\mobile\screenshots\cycle-MQ-provider-winner-s23-visible-flow",
   [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-MQ-provider-winner-s23-visible-flow",
@@ -209,7 +210,7 @@ try {
 
   $counterpartyProofPath = Join-Path $HierarchyOutputDir "cycle-$Cycle-provider-winner-counterparty.json"
   if ($SeedCounterparty) {
-    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=main" "--outcomeSide=yes" "--askPrice=0.52" "--askSize=80" "--cleanupProofBids" "--proofUserPrefix=holiwyn-mobile-" "--output=$counterpartyProofPath" | Out-Null
+    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=main" "--externalMarketId=$TargetProviderMarketId" "--outcomeSide=yes" "--askPrice=$CounterpartyAskPrice" "--askSize=80" "--cleanupProofBids" "--cleanupBlockingBids" "--proofUserPrefix=holiwyn-mobile-" "--output=$counterpartyProofPath" | Out-Null
     if ($LASTEXITCODE -ne 0) {
       throw "Provider winner counterparty seed failed for $EventSlug."
     }
@@ -333,6 +334,7 @@ try {
     apiKey = "redacted"
     eventSlug = $EventSlug
     targetProviderMarketId = $TargetProviderMarketId
+    counterpartyAskPrice = if ($SeedCounterparty) { $CounterpartyAskPrice } else { $null }
     seededCounterparty = [bool]$SeedCounterparty
     counterpartyProof = if ($SeedCounterparty) { $counterpartyProofPath } else { $null }
     assertions = [ordered]@{
