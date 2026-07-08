@@ -2,6 +2,57 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle OQ - Provider Breadth Runtime Loop
+
+Feature/page worked on:
+
+- Provider-backed World Cup breadth for mobile Search/provider runtime.
+- Local bot dry-run/live-local readiness for one tiny allowlisted provider-backed market.
+
+Frontend/services touched:
+
+- None. This cycle intentionally avoided visual micro-polish and source-label changes.
+
+Backend/provider/runtime touched:
+
+- Imported Polymarket Gamma event `which-continent-will-win-the-world-cup`.
+- Refreshed Polymarket reference snapshots for the imported event through CLOB-backed reference snapshot refresh.
+- Enabled MM/trading only for `Will Africa (CAF) win the 2026 FIFA World Cup?`.
+- Seeded one tiny local fake-token system-liquidity bot runtime for market `fd7d40f6-898d-402b-b4b1-5d1d0380e38c`.
+- Ran poly-bot dry-run and live-local with allowlist `Africa (CAF)`.
+
+User interactions supported/proven:
+
+- On Samsung S23, Search shows three provider-backed World Cup results: `Which continent will win the World Cup`, `World Cup Winner`, and `Argentina vs. Egypt`.
+- Home remains intentionally Local MVP match-only and still shows the current match path.
+
+Backend/API routes exercised:
+
+- `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10`
+- `/api/events?sportKey=soccer&source=polymarket&includeMobileMarkets=1&limit=10`
+- `/api/mobile/events/:slug/live-detail`
+- Admin reference-market routes used by poly-bot for reference refresh, MM enablement, bot seed, and lifecycle updates.
+
+State transitions:
+
+- `Which continent will win the World Cup?` imported as a provider-backed World Cup future with 3 Polymarket markets.
+- Africa market moved from reference-only provider-visible to `tradable=true`, `mmEnabled=true`, `botInitialization.status=live_enabled`.
+- Readiness moved from blocked (`no_ready_provider_snapshots`, `local_mm_ready_market_count_below_1`) to pass with one local-MM-ready market.
+
+Verified:
+
+- Provider readiness route proof passed.
+- Provider breadth route proof passed with 3 provider-backed mobile-visible events.
+- S23 Search screenshot/XML proof passed.
+- Bot dry-run produced cycle reports and correctly skipped placement.
+- Bot live-local produced `manage_quotes` cycles for the one allowlisted market.
+
+Known limitations:
+
+- The newly imported continent event is a World Cup futures/outright surface, not a live match.
+- Argentina/Egypt provider winner markets are now one-sided/stale for MM purposes even though they remain useful mobile provider identity proof.
+- Real provider-backed Spread/Totals/Team Total line markets for World Cup match pages remain open.
+
 ## Cycle OP - Search Provider Breadth Visibility
 
 Feature/page worked on:

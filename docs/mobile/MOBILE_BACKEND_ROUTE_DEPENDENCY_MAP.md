@@ -2,6 +2,21 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle OQ - Provider Breadth Runtime Loop
+
+Cycle OQ imports one additional real Polymarket-backed World Cup event, refreshes reference prices, proves it in mobile Search on S23, and proves one tiny allowlisted fake-token bot dry-run/live-local path.
+
+- S23 proof: `docs/mobile/harness/cycle-OQ-provider-breadth-runtime/cycle-OQ-s23-search-provider-breadth-summary.json`; screenshot: `docs/mobile/screenshots/cycle-OQ-provider-breadth-runtime/cycle-OQ-search-provider-breadth.png`.
+- Route proof: `docs/mobile/harness/cycle-OQ-provider-breadth-runtime/cycle-OQ-provider-breadth-runtime-route.json`.
+- Bot proof: `docs/mobile/harness/cycle-OQ-provider-breadth-runtime/cycle-OQ-bot-dry-run.txt`; `docs/mobile/harness/cycle-OQ-provider-breadth-runtime/cycle-OQ-bot-live-local.txt`.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider-backed World Cup breadth in Search | `/api/events?sportKey=soccer&source=polymarket&includeMobileMarkets=1&limit=10`; `/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&limit=10` | GET | None for mobile browsing | None | `events[]`, `eventType`, compact `markets[]`, `marketSourceSummary.polymarketMarketCount`, `referenceSource`, source labels | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot` | None added; imported provider data is persisted from Polymarket Gamma/CLOB | Real provider-backed World Cup match line markets remain unavailable. |
+| Provider-backed event detail hydration | `/api/mobile/events/which-continent-will-win-the-world-cup/live-detail` | GET | None for mobile browsing | None | `event`, compact `markets[]`, `marketSourceSummary`, provider lifecycle source fields | `Event`, `Market`, `Outcome`, reference metadata | None | This event is futures/outright, not a live match detail replacement. |
+| Reference snapshot refresh | Admin/provider refresh through `reference:snapshot-refresh` and admin reference-market routes | GET/POST internal runtime | Dev admin or internal admin key | Event slug/market id through script/API params | CLOB token ids, best bid/ask, spread, last trade price, quality status, `mmEligible` | `ReferenceQuoteSnapshot`, provider metadata on `Market`/`Outcome` | None | Snapshots remain freshness-window dependent and need scheduled refresh for stable bot readiness. |
+| Tiny bot dry-run/live-local | poly-bot admin reference routes and canonical bot order/quote routes | GET/POST internal runtime | Dev admin plus bot API credential generated during seeding | One-market allowlist `Africa (CAF)`, tiny local capital/mint budget | bot lifecycle status, reference bid/ask, planned bot bid/ask, per-market exposure, quote actions | `User`, `ApiCredential`, `Market`, `Outcome`, orders/positions for local bot account | Fake-token local bot only; no external Polymarket orders | Wider bot breadth still requires explicit allowlist, seed, live-ready lifecycle, and fresh snapshots per market. |
+
 ## Cycle OP - Search Provider Breadth Visibility
 
 Cycle OP renders existing provider/source contract fields in mobile Search rows and proves the broad provider route contains multiple provider-backed events.

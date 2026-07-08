@@ -2,6 +2,35 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle OQ - Provider Breadth Runtime Loop
+
+Closed or narrowed:
+
+- Broad World Cup provider route now exposes three provider-backed mobile-visible events: `Which continent will win the World Cup`, `World Cup Winner`, and `Argentina vs. Egypt`.
+- `Which continent will win the World Cup` is imported from Polymarket Gamma with 3 real markets and refreshed CLOB-backed reference snapshots.
+- One provider-backed Africa market is local-MM-ready and live-enabled for fake-token internal runtime proof.
+- S23 Search proof confirms the broader provider surface is visible in mobile.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- More real provider-backed World Cup match events, not only one current/settled-looking match plus futures/outrights.
+- Real provider-backed Spread/Totals/Team Total line markets for World Cup match pages.
+- Scheduled refresh coverage so provider snapshots do not fall out of the 90-second bot readiness window.
+- Bot runtime seeding/readiness for additional approved markets if the product needs broader local liquidity.
+
+Schema mismatch:
+
+- No Prisma/schema migration was made.
+
+Temporary mock/static data:
+
+- Existing Local MVP match line markets remain `contract-fixture` rows.
+- Bot live-local uses fake-token local liquidity only; it does not place orders on Polymarket.
+
+Future migration concern:
+
+- Provider-backed futures/outrights are useful for breadth and bot readiness, but the core MVP still needs live match-detail parity and line-market data for the soccer game page.
+
 ## Cycle OP - Search Provider Breadth Visibility
 
 Closed or narrowed:

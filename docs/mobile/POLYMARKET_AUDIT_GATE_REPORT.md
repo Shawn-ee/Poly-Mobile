@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle OQ
+
+Gate status: Pass
+
+Scope: Provider breadth runtime loop.
+
+Decision:
+
+- P0 failed: 0 for focused provider breadth/runtime scope.
+- P1/P2 remaining: P1 real provider-backed World Cup match line markets remain unavailable; P1 additional live/current match breadth remains needed; P1 scheduled refresh is needed so bot readiness does not depend on manual refresh timing.
+- Evidence: `docs/mobile/harness/cycle-OQ-provider-breadth-runtime/cycle-OQ-provider-breadth-runtime-route.json`, `docs/mobile/harness/cycle-OQ-provider-breadth-runtime/cycle-OQ-s23-search-provider-breadth-summary.json`, `docs/mobile/screenshots/cycle-OQ-provider-breadth-runtime/cycle-OQ-search-provider-breadth.png`, `docs/mobile/harness/cycle-OQ-provider-breadth-runtime/cycle-OQ-bot-dry-run.txt`, `docs/mobile/harness/cycle-OQ-provider-breadth-runtime/cycle-OQ-bot-live-local.txt`.
+- Notes: The gate passes because the cycle materially expands real provider-backed World Cup breadth, proves it on S23 Search, refreshes reference prices, and proves one tiny allowlisted fake-token bot dry-run/live-local path. It does not close the live match line-market parity gap.
+
 ## Cycle OP
 
 Gate status: Pass
