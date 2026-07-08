@@ -1,0 +1,201 @@
+{
+  "pass": true,
+  "cycle": "OY",
+  "generatedAt": "2026-07-08T21:00:41.259Z",
+  "scope": "provider-visible-market-to-internal-test-tradable-mobile-flow",
+  "routes": {
+    "search": "/api/events?source=polymarket&search=France",
+    "detail": "/api/mobile/events/:slug/live-detail",
+    "quote": "/api/markets/:marketId/quote",
+    "order": "POST /api/orders",
+    "portfolio": "/api/portfolio",
+    "history": "/api/portfolio/history"
+  },
+  "event": {
+    "id": "16dba6f4-c5ec-4d0c-9d69-6b8c06fd6bc5",
+    "slug": "provider-breadth-world-cup-winner",
+    "title": "World Cup Winner",
+    "eventType": "future"
+  },
+  "market": {
+    "id": "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+    "slug": "provider-breadth-world-cup-winner-will-france-win-the-2026-fifa-world-cup-924",
+    "title": "Will France win the 2026 FIFA World Cup?",
+    "referenceSource": "polymarket",
+    "externalSlug": "will-france-win-the-2026-fifa-world-cup-924",
+    "externalMarketId": "558936",
+    "conditionId": "0x9b6fef249040fd17e9c107955b37ac2c3e923509b6b0ff01cc463a331ddeb894"
+  },
+  "outcome": {
+    "id": "6c96ee3d-290a-4c10-8fa9-f1debc4591d4",
+    "name": "France",
+    "referenceTokenId": "108233603819467706476318984012158651931658302669301887462181073562758483842092",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "botQuote": {
+    "orderId": "b706a2a0-5c4b-464a-aa27-9f1f66199c48",
+    "side": "SELL",
+    "price": 0.35,
+    "remaining": 5
+  },
+  "mobileProofUser": {
+    "id": "56603627-a6f5-44a9-9f26-abbdafd29cce",
+    "email": "cycle_oy_provider_user_0f28c735@local.test"
+  },
+  "checks": {
+    "searchVisible": true,
+    "detailVisible": true,
+    "quoteVisible": true,
+    "serverModeTicketSubmitted": true,
+    "filledAgainstBotLiquidity": true,
+    "portfolioPositionVisible": true,
+    "historyTradeVisible": true,
+    "homeLiveMatchOnlyUnchanged": true
+  },
+  "orderResult": {
+    "id": "aade8f76-74e3-4f30-913f-5a6caa80ee87",
+    "mode": "server",
+    "title": "Will France win the 2026 FIFA World Cup?",
+    "outcome": "France",
+    "selection": {
+      "marketType": "future",
+      "marketId": "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+      "outcomeId": "6c96ee3d-290a-4c10-8fa9-f1debc4591d4",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "France",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-france-win-the-2026-fifa-world-cup-924",
+      "externalMarketId": "558936",
+      "conditionId": "0x9b6fef249040fd17e9c107955b37ac2c3e923509b6b0ff01cc463a331ddeb894",
+      "referenceTokenId": "108233603819467706476318984012158651931658302669301887462181073562758483842092",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.35,
+      "limitSide": "ask"
+    },
+    "contractSide": "yes",
+    "side": "buy",
+    "amount": 0.7,
+    "probability": 35,
+    "status": "FILLED",
+    "size": 2,
+    "filledSize": 2,
+    "remainingSize": 0
+  },
+  "portfolioPosition": {
+    "marketId": "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+    "outcomeId": "6c96ee3d-290a-4c10-8fa9-f1debc4591d4",
+    "shares": 2,
+    "selection": {
+      "marketType": "future",
+      "marketId": "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+      "outcomeId": "6c96ee3d-290a-4c10-8fa9-f1debc4591d4",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "France",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-france-win-the-2026-fifa-world-cup-924",
+      "externalMarketId": "558936",
+      "conditionId": "0x9b6fef249040fd17e9c107955b37ac2c3e923509b6b0ff01cc463a331ddeb894",
+      "referenceTokenId": "108233603819467706476318984012158651931658302669301887462181073562758483842092",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.35,
+      "limitSide": "ask"
+    }
+  },
+  "historyTrade": {
+    "id": "0c425f21-6e59-4fad-bef9-b54b23648bc2",
+    "market": {
+      "id": "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+      "title": "Will France win the 2026 FIFA World Cup?",
+      "status": "LIVE",
+      "marketGroupKey": "outrights",
+      "marketType": "outright",
+      "line": null,
+      "period": "futures",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-france-win-the-2026-fifa-world-cup-924",
+      "externalMarketId": "558936",
+      "conditionId": "0x9b6fef249040fd17e9c107955b37ac2c3e923509b6b0ff01cc463a331ddeb894"
+    },
+    "outcome": {
+      "id": "6c96ee3d-290a-4c10-8fa9-f1debc4591d4",
+      "name": "France",
+      "label": "France",
+      "side": "yes",
+      "referenceTokenId": "108233603819467706476318984012158651931658302669301887462181073562758483842092",
+      "referenceOutcomeLabel": "Yes"
+    },
+    "selection": {
+      "marketId": "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+      "outcomeId": "6c96ee3d-290a-4c10-8fa9-f1debc4591d4",
+      "marketGroupId": "outrights",
+      "marketType": "future",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "France",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "providerSource": "polymarket",
+      "externalSlug": "will-france-win-the-2026-fifa-world-cup-924",
+      "externalMarketId": "558936",
+      "conditionId": "0x9b6fef249040fd17e9c107955b37ac2c3e923509b6b0ff01cc463a331ddeb894",
+      "referenceTokenId": "108233603819467706476318984012158651931658302669301887462181073562758483842092",
+      "tokenId": "108233603819467706476318984012158651931658302669301887462181073562758483842092",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.35,
+      "limitSide": "ask"
+    },
+    "side": "BUY",
+    "shares": 2,
+    "cost": 0.7,
+    "fee": 0,
+    "createdAt": "2026-07-08T21:00:41.062Z"
+  },
+  "remainingOpenOrders": [
+    {
+      "id": "ca0d7a5b-b815-4bba-9da2-1dd81a137516",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "6c96ee3d-290a-4c10-8fa9-f1debc4591d4",
+      "side": "BUY",
+      "price": "0.31",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "b706a2a0-5c4b-464a-aa27-9f1f66199c48",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "6c96ee3d-290a-4c10-8fa9-f1debc4591d4",
+      "side": "SELL",
+      "price": "0.35",
+      "amount": "5",
+      "remaining": "3",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "74f4f4f0-30a4-4a1c-bc48-5377f635ed83",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "f62a736c-b9bd-4c38-9266-401005697dd4",
+      "side": "BUY",
+      "price": "0.65",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "e50169ed-a2e0-463e-90ce-9abba9e838b7",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "f62a736c-b9bd-4c38-9266-401005697dd4",
+      "side": "SELL",
+      "price": "0.7",
+      "amount": "5",
+      "remaining": "5",
+      "status": "OPEN"
+    }
+  ]
+}

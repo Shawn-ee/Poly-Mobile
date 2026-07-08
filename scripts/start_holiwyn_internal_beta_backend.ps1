@@ -91,6 +91,11 @@ if ($CheckOnly) {
 `$env:TRADING_KILL_SWITCH='false'
 `$env:NEXT_PUBLIC_INTERNAL_TRADING_BETA_ENABLED='true'
 `$env:INTERNAL_TRADING_ALLOWLIST_EMAILS='$AllowlistEmails'
+`$env:POLY_BOTS_ENABLED='true'
+`$env:POLY_BOTS_LIVE_TRADING='true'
+`$env:POLY_BOTS_GLOBAL_KILL_SWITCH='false'
+`$env:LIVE_SYSTEM_LIQUIDITY_ENABLED='true'
+`$env:SYSTEM_LIQUIDITY_DRY_RUN='false'
 npm run dev -- -p $Port
 "@
 
@@ -133,6 +138,11 @@ $summary = [ordered]@{
   internalTradingBetaEnabled = $true
   tradingKillSwitch = $false
   nextPublicInternalTradingBetaEnabled = $true
+  polyBotsEnabled = $true
+  polyBotsLiveTrading = $true
+  polyBotsGlobalKillSwitch = $false
+  liveSystemLiquidityEnabled = $true
+  systemLiquidityDryRun = $false
   allowlistEmails = @($AllowlistEmails.Split(",") | ForEach-Object { $_.Trim().ToLowerInvariant() } | Where-Object { $_ })
   stoppedListeners = $stopped
   startedProcess = $started

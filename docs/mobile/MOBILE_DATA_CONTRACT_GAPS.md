@@ -7052,3 +7052,33 @@ Temporary mock/static data:
 Future migration concern:
 
 - The helper is local internal MVP infrastructure. Production/staging trading must use separate deployment configuration and review.
+
+## Cycle OY - Second Provider Market Tradable Proof
+
+Closed or narrowed:
+
+- Provider-visible-to-tradable proof now covers two provider-backed World Cup Winner markets: England and France.
+- Local backend helper now includes bot-seeding env flags required by reference liquidity seed routes.
+- France has provider identity preserved through quote, order, Portfolio, and History.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Current-match provider-backed Spread/Totals/Team Total market ids, token ids, chart history, and prices.
+- A product-approved way to expose broad futures outside Search/detail if desired; Home/Live remain match-only by design.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch for the selected provider-backed France future flow.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- Local bot runtime files live outside the mobile repo and must not be committed.
+- Production/staging bot enablement must not reuse local fake-token proof flags without separate review.

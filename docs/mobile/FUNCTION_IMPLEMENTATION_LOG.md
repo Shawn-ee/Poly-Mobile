@@ -8853,3 +8853,48 @@ Known limitations:
 
 - No new S23 visual proof was run because this cycle changed backend harness/runtime setup only.
 - The helper is local internal MVP infrastructure, not production trading readiness.
+
+## Cycle OY - Second Provider Market Tradable Proof
+
+Feature/page worked on:
+
+- Provider-backed World Cup Winner market breadth for the Local MVP retail betting flow.
+- France market local-MM readiness, fake-token order fill, and Portfolio/history proof.
+
+Frontend/proof files touched:
+
+- `scripts/start_holiwyn_internal_beta_backend.ps1`
+- `scripts/prove_mobile_provider_visible_tradable_flow.ts`
+- `docs/mobile/audits/cycle-OY-second-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-OY-second-provider-market-tradable-proof/`
+
+Important functions/services touched:
+
+- No visible mobile UI source changed.
+- Backend helper now starts the local backend with internal trading flags and local bot-seeding flags.
+- Provider proof script now accepts a search query for provider-visible mobile Search proof.
+
+User interactions supported/proven:
+
+- Samsung S23 proof shows the World Cup Winner detail page with the France provider-backed outcome visible/selectable.
+- Mobile service proof submits a server-mode fake-token buy against France local MM liquidity.
+- Portfolio/history proof shows the filled France provider-backed position/trade.
+
+State transitions:
+
+- France World Cup Winner market was MM-enabled, seeded, marked live-ready/live-enabled, and locally quoted.
+- Mobile proof user bought France YES at `0.35`, producing a filled order and Portfolio/history state.
+
+Validation:
+
+- Backend helper restart passed.
+- Reference refresh passed.
+- France seed passed after helper carried bot-seeding env.
+- Bot live-local placed four France quotes.
+- Mobile provider-visible tradable route/service proof passed.
+- S23 visibility proof captured XML/screenshot on `SM-S911U1`.
+
+Known limitations:
+
+- Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
+- Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
