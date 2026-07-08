@@ -8899,6 +8899,48 @@ Known limitations:
 - Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
 - Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
 
+## Cycle PB - Fifth Provider Market Tradable Proof
+
+Feature/page worked on:
+
+- Provider-backed World Cup Winner market breadth for the Local MVP retail betting flow.
+- Argentina market local-MM readiness, fake-token order fill, and Portfolio/history proof.
+
+Frontend/proof files touched:
+
+- `docs/mobile/audits/cycle-PB-fifth-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-PB-fifth-provider-market-tradable-proof/`
+
+Important functions/services touched:
+
+- No visible mobile UI source changed.
+- Reused the internal beta backend helper, reference refresh path, bot MM enable/seed path, local bot live-local quoting, and mobile order/Portfolio proof harness.
+
+User interactions supported/proven:
+
+- Samsung S23 proof shows the World Cup Winner detail page with the Argentina provider-backed outcome visible/selectable.
+- Mobile service proof submits a server-mode fake-token buy against Argentina local MM liquidity.
+- Portfolio/history proof shows the filled Argentina provider-backed position/trade.
+
+State transitions:
+
+- Argentina World Cup Winner market was MM-enabled, seeded, marked live-ready/live-enabled, and locally quoted.
+- Mobile proof user bought Argentina YES at `0.22`, producing a filled order and Portfolio/history state.
+
+Validation:
+
+- Backend helper check passed.
+- Reference refresh passed.
+- Argentina seed passed.
+- Bot live-local placed four Argentina quotes without exposure-cap blocking after the standalone bot process was run with `LIVE_SYSTEM_LIQUIDITY_ENABLED=true`.
+- Mobile provider-visible tradable route/service proof passed.
+- S23 visibility proof captured XML/screenshot on `SM-S911U1`.
+
+Known limitations:
+
+- Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
+- Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
+
 ## Cycle PA - Fourth Provider Market Tradable Proof
 
 Feature/page worked on:

@@ -5863,6 +5863,37 @@ Remaining P1:
 - Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Broad futures remain Search/detail-only while Home/Live stay match-only.
 
+## Cycle PB - Fifth Provider Market Tradable Proof
+
+Result: Pass for fifth provider-backed internal-test tradable market scope.
+
+Checked:
+
+- Argentina World Cup Winner market selected as the fifth provider-backed tradable target.
+- Backend helper check confirmed the local server was healthy with internal trading and bot-seeding env flags.
+- Argentina MM enable, seed, live-ready/live-enabled, and live-local quote placement passed.
+- Mobile route/service proof filled Argentina YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed World Cup Winner detail with Argentina provider-backed outcome visible/selectable.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PB-fifth-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-PB-fifth-provider-market-tradable-proof/cycle-PB-internal-beta-backend-check.json`
+- `docs/mobile/harness/cycle-PB-fifth-provider-market-tradable-proof/cycle-PB-prepare-argentina-small-seed.txt`
+- `docs/mobile/harness/cycle-PB-fifth-provider-market-tradable-proof/cycle-PB-bot-live-local-argentina-success.txt`
+- `docs/mobile/harness/cycle-PB-fifth-provider-market-tradable-proof/cycle-PB-provider-argentina-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PB-fifth-provider-market-tradable-proof/cycle-PB-s23-search-argentina.xml`
+- `docs/mobile/harness/cycle-PB-fifth-provider-market-tradable-proof/cycle-PB-s23-search-argentina.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+
 ## Cycle PA - Fourth Provider Market Tradable Proof
 
 Result: Pass for fourth provider-backed internal-test tradable market scope.
