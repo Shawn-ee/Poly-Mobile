@@ -2253,3 +2253,17 @@ Cycle LJ implementation notes:
 - No backend route or schema change was required.
 - LJ turns the full MVP readiness audit into a proof gate and hardens the main server-mode masking risks discovered by the audit.
 - Internal local readiness is limited to fake-token/internal server-mode MVP flows.
+
+## Cycle LN - Match Line Service Readiness
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home match event with line markets | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1` | GET | Public viewing | Query filters/page size | Event slug/title/status, `marketProfile=regulation_90`, compact `markets[]` with `marketType`, `marketGroupTitle`, `line`, `period`, outcomes, prices | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot` | No frontend-only fallback added. Local seed writes backend-shaped contract rows. | Real Polymarket match line-market discovery/attachment remains P1. |
+| Event Detail line market route | `/api/mobile/events/switzerland-vs-colombia/live-detail` | GET | Public viewing | Event slug | 7 route markets after LN: Regulation Winner, Spread, Totals, Team Totals; outcome ids/token ids/prices; chart/provider lifecycle metadata where available | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `MarketOutcomeSnapshot` | Contract-fixture line markets are marked `referenceSource=contract-fixture`. | Replace contract-fixture line rows with Polymarket-backed rows when available. |
+| Local MVP line-market readiness seed | `scripts/seed_mobile_mvp_match_line_markets.ts` | Local script/Prisma write | Local development only | `--eventSlug`, optional `--summaryPath` | Proof JSON with before/after route market types and groups | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot` | Intended temporary bridge for local MVP UI proof. | Production provider breadth and real liquidity remain outside this cycle. |
+
+Cycle LN implementation notes:
+
+- Before LN, `switzerland-vs-colombia` and `argentina-vs-egypt` only served `match_winner_1x2`.
+- `mobile-fj-real-world-cup-winner` is provider-backed but is a futures/outright surface, not a match-betting line surface.
+- LN enriches the live match path only and keeps futures as a separate surface.

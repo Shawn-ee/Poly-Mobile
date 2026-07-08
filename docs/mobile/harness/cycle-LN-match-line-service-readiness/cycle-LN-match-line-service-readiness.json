@@ -1,0 +1,130 @@
+{
+  "pass": true,
+  "generatedAt": "2026-07-08T06:20:09.074Z",
+  "cycle": "LN",
+  "eventSlug": "switzerland-vs-colombia",
+  "eventTitle": "Switzerland vs. Colombia",
+  "inspection": {
+    "beforeStatus": 200,
+    "beforeMarketCount": 3,
+    "beforeMarketTypes": [
+      "match_winner_1x2"
+    ],
+    "conclusion": "Current live match routes had Regulation Winner only; spreads/totals were absent from the served mobile data."
+  },
+  "seededMarkets": [
+    {
+      "id": "8e24ba85-8353-406b-b102-d9bc4a66c70a",
+      "slug": "switzerland-vs-colombia-spread-home-0-5",
+      "title": "Switzerland vs. Colombia: Switzerland +0.5",
+      "outcomeCount": 2
+    },
+    {
+      "id": "3418dcb6-35ff-4cbe-a4b1-5258a21b5870",
+      "slug": "switzerland-vs-colombia-spread-away-1-5",
+      "title": "Switzerland vs. Colombia: Colombia +1.5",
+      "outcomeCount": 2
+    },
+    {
+      "id": "389f8b0f-0127-4fa0-88b9-a6d4873714f3",
+      "slug": "switzerland-vs-colombia-total-goals-2-5",
+      "title": "Switzerland vs. Colombia: Total goals 2.5",
+      "outcomeCount": 2
+    },
+    {
+      "id": "315b9a40-c5c3-486b-9ce7-31ca932d35d4",
+      "slug": "switzerland-vs-colombia-team-total-home-1-5",
+      "title": "Switzerland vs. Colombia: Switzerland total goals 1.5",
+      "outcomeCount": 2
+    }
+  ],
+  "after": {
+    "status": 200,
+    "marketCount": 7,
+    "marketTypes": [
+      "match_winner_1x2",
+      "spread",
+      "total_goals",
+      "team_total_goals"
+    ],
+    "marketGroups": [
+      "Regulation Winner",
+      "Spread",
+      "Totals",
+      "Team Totals"
+    ],
+    "sample": [
+      {
+        "id": "a427174d-a07d-439f-afdd-5636653eedf7",
+        "title": "Will Switzerland win on 2026-07-07?",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Winner",
+        "line": null,
+        "period": "regulation",
+        "outcomeCount": 2
+      },
+      {
+        "id": "3418dcb6-35ff-4cbe-a4b1-5258a21b5870",
+        "title": "Switzerland vs. Colombia: Colombia +1.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "1.5",
+        "period": "regulation",
+        "outcomeCount": 2
+      },
+      {
+        "id": "389f8b0f-0127-4fa0-88b9-a6d4873714f3",
+        "title": "Switzerland vs. Colombia: Total goals 2.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Totals",
+        "line": "2.5",
+        "period": "regulation",
+        "outcomeCount": 2
+      },
+      {
+        "id": "315b9a40-c5c3-486b-9ce7-31ca932d35d4",
+        "title": "Switzerland vs. Colombia: Switzerland total goals 1.5",
+        "marketType": "team_total_goals",
+        "marketGroupTitle": "Team Totals",
+        "line": "1.5",
+        "period": "regulation",
+        "outcomeCount": 2
+      },
+      {
+        "id": "c345a304-4658-42a8-862e-b368406230f0",
+        "title": "Will Switzerland vs. Colombia end in a draw?",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Winner",
+        "line": null,
+        "period": "regulation",
+        "outcomeCount": 2
+      },
+      {
+        "id": "b204379a-9ca9-429d-a420-8902dea25982",
+        "title": "Will Colombia win on 2026-07-07?",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Winner",
+        "line": null,
+        "period": "regulation",
+        "outcomeCount": 2
+      },
+      {
+        "id": "8e24ba85-8353-406b-b102-d9bc4a66c70a",
+        "title": "Switzerland vs. Colombia: Switzerland +0.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "0.5",
+        "period": "regulation",
+        "outcomeCount": 2
+      }
+    ]
+  },
+  "assertions": {
+    "routeOk": true,
+    "regulationWinnerPresent": true,
+    "spreadPresent": true,
+    "totalsPresent": true,
+    "teamTotalsPresent": true,
+    "noOrderbookUiWork": true
+  }
+}

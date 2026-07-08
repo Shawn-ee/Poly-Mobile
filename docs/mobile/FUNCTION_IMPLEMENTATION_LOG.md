@@ -5452,3 +5452,45 @@ Known limitations:
 - The route derives historical position value from existing market outcome snapshots and falls back to position average cost when older point-in-time prices are missing.
 - No new persisted account-value snapshot table was added.
 - Standalone mobile still uses the deterministic fallback chart until the next mobile wiring/proof cycle consumes this route on Android.
+
+## Cycle LN - Match Line Service Readiness Inspection And Seed
+
+Feature/page worked on:
+
+- Local MVP match betting service readiness for Home -> Event Detail -> line market.
+
+Frontend/harness/backend files touched:
+
+- `scripts/seed_mobile_mvp_match_line_markets.ts`
+- `docs/mobile/audits/cycle-LN-match-line-service-readiness.md`
+- `docs/mobile/harness/cycle-LN-match-line-service-readiness/cycle-LN-match-line-service-readiness.json`
+
+Important functions/services touched:
+
+- Added a local-only seed/proof script that enriches an existing match event with backend-shaped Spread, Totals, and Team Totals markets.
+- Reused `GET /api/mobile/events/:slug/live-detail` as the route proof surface.
+- Reused `ReferenceQuoteSnapshot` rows so the mobile app receives current probability/price data from the normal read model.
+
+User interactions supported/proven:
+
+- Home can now receive `switzerland-vs-colombia` as a match event with Regulation Winner plus line markets from the running server.
+- Event Detail can receive market rows for `match_winner_1x2`, `spread`, `total_goals`, and `team_total_goals`.
+- No orderbook UI, chat, live stats, or social feature work was touched.
+
+State transitions:
+
+- `switzerland-vs-colombia` remains a match event and was marked active/live for local MVP testing.
+- Existing Regulation Winner markets were preserved.
+- Added contract-fixture line markets are clearly marked as `referenceSource=contract-fixture`.
+
+Validation:
+
+- `npx tsx scripts/seed_mobile_mvp_match_line_markets.ts --eventSlug=switzerland-vs-colombia --summaryPath=docs/mobile/harness/cycle-LN-match-line-service-readiness/cycle-LN-match-line-service-readiness.json`
+- HTTP route check: `GET /api/mobile/events/switzerland-vs-colombia/live-detail` returned 7 markets with Regulation Winner, Spread, Totals, and Team Totals.
+- HTTP Home check: `GET /api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=5` returned `switzerland-vs-colombia` first with the enriched market types.
+
+Known limitations:
+
+- The new line markets are deterministic backend-shaped contract fixtures, not real Polymarket-mapped line markets.
+- Real Polymarket Gamma/CLOB line-market discovery for match events remains open.
+- Android proof of line selection -> ticket -> order -> Portfolio/history is the next P0 cycle.

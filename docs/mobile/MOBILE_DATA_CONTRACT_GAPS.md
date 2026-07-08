@@ -4676,6 +4676,42 @@ Future migration concern:
 
 - Replace disposable provider-shaped proof events and seeded counterparty liquidity with production active Polymarket-backed World Cup events/liquidity before treating provider breadth as complete.
 
+## Cycle LN - Match Line Service Readiness
+
+Closed or narrowed:
+
+- The current running match route for `switzerland-vs-colombia` now contains backend-shaped line markets:
+  - `spread`
+  - `total_goals`
+  - `team_total_goals`
+- The Home route now returns the enriched match first for local MVP server-mode testing.
+- The route proof distinguishes the existing real provider-backed futures event from match-betting line markets.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real Polymarket Gamma/CLOB market ids, condition ids, and token ids for match Spread/Totals/Team Totals when those markets exist.
+- Provider-owned refresh and chart history for the new contract-fixture line markets.
+- Real liquidity/fill support for production line markets.
+
+Schema mismatch:
+
+- No schema migration was required. Existing `Market`, `Outcome`, and `ReferenceQuoteSnapshot` fields can carry the MVP line-market contract.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/live-detail` can now carry line markets for `switzerland-vs-colombia`.
+- Provider discovery/attachment for real Polymarket match lines remains incomplete.
+
+Temporary mock/static data:
+
+- LN line markets are backend-written contract fixtures, not frontend-only mock data.
+- They are marked `referenceSource=contract-fixture` and should not be treated as Polymarket-backed.
+
+Future migration concern:
+
+- Replace `contract-fixture` line markets with real Polymarket provider mappings when Gamma/CLOB exposes attach-ready soccer match lines.
+- Next P0 should prove Android flow from enriched match line selection through fake-token order and Portfolio/history.
+
 ## Cycle FH - Home Route Server Cancel And Portfolio Activity
 
 Closed or narrowed:
