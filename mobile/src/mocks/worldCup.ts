@@ -55,7 +55,7 @@ export type Outcome = {
 export type Market = {
   id: string;
   marketGroupId?: string;
-  marketType?: "moneyline" | "to_advance" | "spread" | "totals" | "team-total" | "next-goal" | "prop" | "future";
+  marketType?: "moneyline" | "match_winner_1x2" | "winner" | "to_advance" | "spread" | "totals" | "team-total" | "next-goal" | "prop" | "future";
   period?: "full-game" | "regulation" | "first-half" | "second-half";
   line?: string | null;
   referenceSource?: string | null;

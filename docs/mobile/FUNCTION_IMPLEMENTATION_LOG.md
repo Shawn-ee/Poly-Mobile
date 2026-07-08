@@ -2,6 +2,37 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle MR - Provider Winner 1X2 Parity
+
+Feature/page worked on:
+
+- Fixed Event Detail provider-backed Regulation Winner display.
+- Real Polymarket soccer winner markets now compose as home/draw/away instead of one binary market's `Yes/No`.
+
+Frontend/services touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/services/homeCardSelectionService.ts`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/src/__tests__/marketListsHomeCardSelections.test.ts`
+- `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1`
+
+User interactions supported/proven:
+
+- On S23, Event Detail shows composed provider-backed 1X2 outcome markers.
+- On S23, Regulation Winner includes Argentina, Draw, and Egypt from separate provider market ids.
+- On S23, ticket submit still reaches Portfolio/history with `provider-source-polymarket`.
+
+Verified:
+
+- Focused home/provider selection test passed.
+- Mobile typecheck passed.
+- S23 proof passed: `docs/mobile/harness/cycle-MR-provider-winner-1x2-parity/cycle-MR-provider-winner-s23-visible-flow.json`.
+
+Known limitations:
+
+- Spread/Totals/Team Total remain explicit Local `contract-fixture` rows because Polymarket Gamma returned no line markets for inspected events.
+
 ## Cycle MQ - Provider Winner S23 Visible Flow
 
 Feature/page worked on:

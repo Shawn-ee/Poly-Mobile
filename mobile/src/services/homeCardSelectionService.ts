@@ -17,7 +17,7 @@ const yesOutcome = (market: Market) =>
 
 const isProviderBinaryRegulationMarket = (market: Market) =>
   market.type === "game-line" &&
-  market.marketType === "moneyline" &&
+  ["moneyline", "match_winner_1x2", "winner"].includes(market.marketType ?? "") &&
   market.outcomes.length === 2 &&
   Boolean(yesOutcome(market));
 

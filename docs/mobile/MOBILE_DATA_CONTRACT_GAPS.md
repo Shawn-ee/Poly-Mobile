@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle MR - Provider Winner 1X2 Parity
+
+Closed or narrowed:
+
+- Event Detail now understands the backend/provider contract where soccer Regulation Winner arrives as three binary Polymarket markets.
+- Visible rows compose into home/draw/away while preserving each underlying provider market/outcome/token.
+- The mobile `Market` type now includes `winner` and `match_winner_1x2`, matching route data observed in S23 proof.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected events.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- None for provider-backed Regulation Winner 1X2 display.
+- Local `contract-fixture` line markets remain separate MVP fallback rows.
+
 ## Cycle MQ - Provider Winner S23 Visible Flow
 
 Closed or narrowed:

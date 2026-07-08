@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle MR
+
+Gate status: Pass
+
+Scope: Provider-backed Regulation Winner 1X2 parity.
+
+Decision:
+
+- P0 failed: 0 for focused provider-backed winner 1X2 scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-MR-provider-winner-1x2-parity/cycle-MR-provider-winner-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MR-provider-winner-1x2-parity/`, `mobile/src/__tests__/marketListsHomeCardSelections.test.ts`, `docs/mobile/audits/cycle-MR-provider-winner-1x2-parity.md`.
+- Notes: S23 proof shows composed provider-backed 1X2 display and preserves `provider-source-polymarket` through ticket, Portfolio, and History.
+
 ## Cycle MQ
 
 Gate status: Pass

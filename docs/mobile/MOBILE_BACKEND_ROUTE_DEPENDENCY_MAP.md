@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle MR - Provider Winner 1X2 Parity
+
+Cycle MR fixes Event Detail rendering for provider-backed soccer Regulation Winner markets.
+
+- S23 proof: `docs/mobile/harness/cycle-MR-provider-winner-1x2-parity/cycle-MR-provider-winner-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-MR-provider-winner-1x2-parity.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider-backed Regulation Winner 1X2 display/ticket | `/api/events?...includeMobileMarkets=1&mobileMvpMatches=1`, `/api/mobile/events/:slug/live-detail`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | GET for Home/detail/Portfolio/history; POST for order submit | Public event viewing; existing mobile API auth for order/portfolio | Existing ticket order body; each composed visible row maps to its own provider `marketId`, `outcomeId`, `externalMarketId`, `conditionId`, and `referenceTokenId` | Three provider binary winner markets, `referenceSource=polymarket`, market title/slug for home/draw/away classification, `selection.referenceSource` snapshots | Existing `Event`, `Market`, `Outcome`, `Order`, `Trade`, `Position`/portfolio read models; no schema change | No local fallback for provider winner 1X2 when all three provider markets exist. If the three-market set is incomplete, Event Detail falls back to existing market rows. | Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected events. |
+
 ## Cycle MQ - Provider Winner S23 Visible Flow
 
 Cycle MQ proves the provider-backed Regulation Winner route data through visible S23 ticket/order/Portfolio/history.

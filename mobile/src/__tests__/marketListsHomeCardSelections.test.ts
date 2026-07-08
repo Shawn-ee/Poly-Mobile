@@ -2,10 +2,10 @@ import { describe, expect, test } from "vitest";
 import { homeCardSelectionsForEvent } from "../services/homeCardSelectionService";
 import type { Event, Market } from "../mocks/worldCup";
 
-const binaryMarket = (id: string, title: string, yesProbability: number): Market => ({
+const binaryMarket = (id: string, title: string, yesProbability: number, marketType: Market["marketType"] = "moneyline"): Market => ({
   id,
   marketGroupId: "provider-regulation",
-  marketType: "moneyline",
+  marketType,
   period: "regulation",
   line: null,
   referenceSource: "polymarket",
@@ -78,5 +78,27 @@ describe("homeCardSelectionsForEvent", () => {
       "fifwc-che-col-2026-07-07-col",
     ]);
     expect(selections.every((selection) => selection.outcome.id.endsWith("-yes"))).toBe(true);
+  });
+
+  test("accepts provider winner market types used by Event Detail route data", () => {
+    const selections = homeCardSelectionsForEvent({
+      ...event,
+      markets: [
+        binaryMarket("fifwc-che-col-2026-07-07-draw", "Will Switzerland vs. Colombia end in a draw?", 32, "match_winner_1x2"),
+        binaryMarket("fifwc-che-col-2026-07-07-che", "Will Switzerland win on 2026-07-07?", 27, "winner"),
+        binaryMarket("fifwc-che-col-2026-07-07-col", "Will Colombia win on 2026-07-07?", 43, "winner"),
+      ],
+    });
+
+    expect(selections.map((selection) => selection.outcome.label)).toEqual([
+      "Switzerland",
+      "Draw",
+      "Colombia",
+    ]);
+    expect(selections.map((selection) => selection.market.marketType)).toEqual([
+      "winner",
+      "match_winner_1x2",
+      "winner",
+    ]);
   });
 });

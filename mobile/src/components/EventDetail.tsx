@@ -8,6 +8,7 @@ import {
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { label, money } from "../presentation/formatters";
 import { resolveLineTicketTarget } from "../services/eventDetailLineTicketService";
+import { homeCardSelectionsForEvent } from "../services/homeCardSelectionService";
 import {
   equivalentMarketPeriod,
   lineOptionsFor,
@@ -511,18 +512,24 @@ export function EventDetail({
   const primaryMarket = shouldUseAdvancePrimary ? advanceMarket : regulationMarket ?? advanceMarket ?? gameLineMarkets[0] ?? event.markets[0];
   const orderBookMarket = event.markets.find((market) => market.id === orderBookMarketId) ?? primaryMarket;
   const orderBookSelectedOutcome = orderBookMarket?.outcomes.find((outcome) => outcome.id === orderBookOutcomeId) ?? orderBookMarket?.outcomes[0];
+  const providerRegulationSelections = useMemo(() => homeCardSelectionsForEvent(event), [event]);
   const primaryOutcomes = primaryMarket?.outcomes.slice(0, 3) ?? [];
+  const primaryDisplayOutcomes = providerRegulationSelections.length === 3
+    ? providerRegulationSelections.map((selection) => selection.outcome)
+    : primaryOutcomes;
   const outrightSelections = outrightMarkets.flatMap((market) => {
     const outcome = market.outcomes.find((item) => item.side !== "no" && !/^no$/i.test(item.label)) ?? market.outcomes[0];
     return outcome ? [{ market, outcome }] : [];
   });
   const primaryOutcomeDisplayColor = (outcome?: Outcome) => {
-    const index = outcome ? primaryOutcomes.findIndex((item) => item.id === outcome.id) : -1;
+    const index = outcome ? primaryDisplayOutcomes.findIndex((item) => item.id === outcome.id) : -1;
     if (index === 0) return "#008b10";
+    if (index === 1 && primaryDisplayOutcomes.length === 3) return "#64748b";
     if (index === 1) return "#ff1f1f";
+    if (index === 2) return "#ff1f1f";
     return outcome?.color ?? "#22c55e";
   };
-  const selectedPrimaryOutcome = primaryOutcomes.find((outcome) => outcome.id === selectedPrimaryOutcomeId) ?? primaryOutcomes[0];
+  const selectedPrimaryOutcome = primaryDisplayOutcomes.find((outcome) => outcome.id === selectedPrimaryOutcomeId) ?? primaryDisplayOutcomes[0];
   const [expandedMarketIds, setExpandedMarketIds] = useState<Record<string, boolean>>({
     "regulation-time-winner": true,
     "match-winner": true,
@@ -545,8 +552,8 @@ export function EventDetail({
   );
   const teamA = event.teams[0];
   const teamB = event.teams[1];
-  const leftOutcome = primaryOutcomes[0];
-  const rightOutcome = primaryOutcomes[1];
+  const leftOutcome = primaryDisplayOutcomes[0];
+  const rightOutcome = primaryDisplayOutcomes[primaryDisplayOutcomes.length === 3 ? 2 : 1];
   const leftOutcomeColor = primaryOutcomeDisplayColor(leftOutcome);
   const rightOutcomeColor = primaryOutcomeDisplayColor(rightOutcome);
   const liveDataStatus = event.liveDataStatus;
@@ -615,27 +622,30 @@ export function EventDetail({
     setOrderBookVisible(true);
   };
   const openPrimaryOutcomeTicket = (outcome: Outcome) => {
-    if (!primaryMarket) return;
+    const providerSelection = providerRegulationSelections.find((selection) => selection.outcome.id === outcome.id);
+    const ticketMarket = providerSelection?.market ?? primaryMarket;
+    const ticketOutcome = providerSelection?.outcome ?? outcome;
+    if (!ticketMarket) return;
     setSelectedPrimaryOutcomeId(outcome.id);
     setShareSheetVisible(false);
     setOrderBookVisible(false);
-    const outcomeIndex = primaryMarket.outcomes.findIndex((item) => item.id === outcome.id);
-    const contractSide = orderBookOutcomeSide(primaryMarket, outcome, outcomeIndex);
-    openTicket(primaryMarket, outcome, event, defaultSide, {
-      marketType: orderBookMarketType(primaryMarket),
-      marketId: primaryMarket.id,
-      outcomeId: outcome.id,
-      marketGroupId: primaryMarket.marketGroupId,
-      period: primaryMarket.period,
-      side: outcome.side,
+    const outcomeIndex = ticketMarket.outcomes.findIndex((item) => item.id === ticketOutcome.id);
+    const contractSide = orderBookOutcomeSide(ticketMarket, ticketOutcome, outcomeIndex);
+    openTicket(ticketMarket, ticketOutcome, event, defaultSide, {
+      marketType: orderBookMarketType(ticketMarket),
+      marketId: ticketMarket.id,
+      outcomeId: ticketOutcome.id,
+      marketGroupId: ticketMarket.marketGroupId,
+      period: ticketMarket.period,
+      side: ticketOutcome.side,
       displayLabel: primaryMarketTitle,
       contractSide,
-      referenceSource: primaryMarket.referenceSource ?? undefined,
-      externalSlug: primaryMarket.externalSlug ?? undefined,
-      externalMarketId: primaryMarket.externalMarketId ?? undefined,
-      conditionId: primaryMarket.conditionId ?? undefined,
-      referenceTokenId: outcome.referenceTokenId ?? undefined,
-      referenceOutcomeLabel: outcome.referenceOutcomeLabel ?? undefined,
+      referenceSource: ticketMarket.referenceSource ?? undefined,
+      externalSlug: ticketMarket.externalSlug ?? undefined,
+      externalMarketId: ticketMarket.externalMarketId ?? undefined,
+      conditionId: ticketMarket.conditionId ?? undefined,
+      referenceTokenId: ticketOutcome.referenceTokenId ?? undefined,
+      referenceOutcomeLabel: ticketOutcome.referenceOutcomeLabel ?? undefined,
     });
   };
   const selectOrderBookMarket = (market: Market) => {
@@ -692,7 +702,19 @@ export function EventDetail({
   const winnerMarketSubcopy = selectedWinnerPeriod === "Reg. Time"
     ? primaryMarketSubcopy
     : `Includes tie for ${selectedWinnerPeriod.toLowerCase()}`;
-  const regulationWinnerRows: DisplayOutcome[] = selectedWinnerMarket?.outcomes.map((outcome, index) => ({
+  const regulationWinnerRows: DisplayOutcome[] = providerRegulationSelections.length === 3 && selectedWinnerPeriod === "Reg. Time"
+    ? providerRegulationSelections.map((selection, index) => ({
+        id: selection.outcome.id,
+        label: label(locale, selection.outcome),
+        color: primaryOutcomeDisplayColor(selection.outcome),
+        probability: selection.outcome.probability,
+        odds: `${outcomeOdds(selection.outcome)}x`,
+        icon: selection.role === "draw" ? "%" : selection.role === "home" ? teamA?.flag ?? "" : teamB?.flag ?? "",
+        miniLine: selection.outcome.probability,
+        ticketOutcome: selection.outcome,
+        ticketSelection: orderBookTicketSelection(selection.market, selection.outcome, 0, winnerMarketTitle),
+      }))
+    : selectedWinnerMarket?.outcomes.map((outcome, index) => ({
     id: outcome.id,
     label: label(locale, outcome),
     color: outcome.color,
@@ -1776,12 +1798,12 @@ export function EventDetail({
 
         {!isOutrightEvent && (
         <View accessibilityLabel="event-detail-primary-outcomes" style={styles.primaryOutcomeRow} testID="event-detail-primary-outcomes">
-          {primaryMarket ? primaryOutcomes.map((outcome) => {
+          {primaryMarket ? primaryDisplayOutcomes.map((outcome) => {
             const market = primaryMarket;
             if (!market) return null;
             return (
               <Pressable
-                accessibilityLabel={`event-detail-outcome-${market.id}-${outcome.id}`}
+                accessibilityLabel={`event-detail-outcome-${market.id}-${outcome.id} provider-regulation-1x2-outcome-${teamCode(outcome.label)} ${providerRegulationSelections.length === 3 ? "provider-regulation-1x2-composed" : ""}`}
                 key={outcome.id}
                 onPress={() => openPrimaryOutcomeTicket(outcome)}
                 style={[styles.primaryOutcomeButton, { backgroundColor: primaryOutcomeDisplayColor(outcome) }, selectedPrimaryOutcome?.id === outcome.id && styles.primaryOutcomeButtonSelected]}
@@ -1904,8 +1926,10 @@ export function EventDetail({
                       </View>
                     )}
                     {regulationWinnerRows.map((outcome) => {
-                      const matchingOutcome = selectedWinnerMarket.outcomes.find((item) => item.id === outcome.id);
-                      return renderParityOutcomeRow(outcome, selectedWinnerMarket.id, matchingOutcome, selectedWinnerMarket);
+                      const composedSelection = providerRegulationSelections.find((selection) => selection.outcome.id === outcome.id);
+                      const rowMarket = composedSelection?.market ?? selectedWinnerMarket;
+                      const matchingOutcome = rowMarket.outcomes.find((item) => item.id === outcome.id);
+                      return renderParityOutcomeRow(outcome, rowMarket.id, matchingOutcome, rowMarket);
                     })}
                   </>
                 )}

@@ -240,7 +240,7 @@ try {
     Save-Screenshot -Name "cycle-$Cycle-current-mvp-detail-top-retry.png" | Out-Null
     $detailTopXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-detail-top-retry.xml"
   }
-  Assert-Contains -Path $detailTopXml -Expected @("event-detail-back", "Game", "ARG", "EGY", "Argentina", "Egypt")
+  Assert-Contains -Path $detailTopXml -Expected @("event-detail-back", "Game", "ARG", "EGY", "Argentina", "Egypt", "provider-regulation-1x2-composed", "provider-regulation-1x2-outcome-ARG", "provider-regulation-1x2-outcome-DRA", "provider-regulation-1x2-outcome-EGY")
   Assert-NotContains -Path $detailTopXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "event-detail-chat")
 
   $winnerXml = $null
@@ -266,7 +266,7 @@ try {
   Start-Sleep -Seconds 1
   $winnerXml = Save-Hierarchy -Name "cycle-$Cycle-provider-winner-settled.xml"
   Save-Screenshot -Name "cycle-$Cycle-provider-winner.png" | Out-Null
-  Assert-Contains -Path $winnerXml -Expected @("Regulation Time Winner", "Provider", "selection-market-type-winner", "selection-line-none", "provider-source-polymarket")
+  Assert-Contains -Path $winnerXml -Expected @("Regulation Time Winner", "Provider", "Argentina", "Draw", "Egypt", "selection-market-type-winner", "selection-line-none", "provider-source-polymarket", "selection-provider-market-2793738", "selection-provider-market-2793739", "selection-provider-market-2793741")
   Assert-NotContains -Path $winnerXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
   Invoke-TapProviderWinnerOutcome -Path $winnerXml
@@ -310,6 +310,7 @@ try {
     assertions = [ordered]@{
       homeShowsCurrentMatch = $true
       detailShowsProviderWinner = $true
+      detailShowsComposedRegulationWinner1x2 = $true
       regulationWinnerIsPolymarketBacked = $true
       orderbookHidden = $true
       ticketPreservesProviderWinner = $true
