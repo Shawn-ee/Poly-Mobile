@@ -8899,6 +8899,52 @@ Known limitations:
 - Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
 - Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
 
+## Cycle PN - Provider Proof Harness And Mbappe Tradable Flow
+
+Feature/page worked on:
+
+- Provider-visible Golden Boot Mbappe market converted into an internal-test tradable Local MVP market.
+- Provider-visible-to-tradable proof harness cycle-label hygiene.
+- Search/detail visibility on Samsung S23.
+- Fake-token server-mode order and Portfolio/history proof.
+
+Frontend/proof files touched:
+
+- `scripts/prove_mobile_provider_visible_tradable_flow.ts`
+- `docs/mobile/audits/cycle-PN-provider-proof-harness-mbappe.md`
+- `docs/mobile/harness/cycle-PN-provider-proof-harness-mbappe/`
+- `docs/mobile/screenshots/cycle-PN-provider-proof-harness-mbappe/`
+
+Important functions/services touched:
+
+- `prove_mobile_provider_visible_tradable_flow.ts` now stamps idempotency keys and client order ids with the active cycle label instead of `cycle-ow-provider`.
+- Reused the internal beta backend helper, bot MM enable/seed path, local bot dry-run/live-local quoting, mobile order service, Portfolio snapshot service, and S23 Search/detail launch path.
+- No backend schema, visible mobile UI component, order book UI, chat, live stats, or social source files changed.
+
+User interactions supported/proven:
+
+- Samsung S23 Search shows `World Cup: Golden Boot Winner` for `Kylian Mbappe`.
+- Tapping the Search result opens Event Detail with provider market `2069638`.
+- Mobile service proof submits a fake-token Mbappe YES buy and sees the resulting Portfolio/history state.
+
+State transitions:
+
+- Mbappe Golden Boot market moved into internal-test tradable/MM-enabled state.
+- Mbappe market was seeded, quoted by the local bot, bought by the mobile proof user, and reflected in Portfolio/history.
+
+Validation:
+
+- Bot dry-run passed without exposure-cap blocking.
+- Bot live-local placed four Mbappe quotes.
+- Mobile provider-visible tradable route/service proof passed.
+- Samsung S23 Search/detail proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
+- Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
+- The provider-visible-to-tradable lifecycle still uses separate bot commands; a future harness can wrap enable/seed/dry-run/live-local/order proof into one orchestrated command.
+
 ## Cycle PM - France Nation Top Goalscorer Tradable Proof
 
 Feature/page worked on:

@@ -1,0 +1,19 @@
+
+> poly-bot@0.1.0 liquidity:enable-event-mm
+> tsx scripts/enableReferenceEventMm.ts --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug world-cup-golden-boot-winner --allowlist Kylian Mbappe --maxMarkets 1
+
+{
+  "ok": true,
+  "dryRun": true,
+  "eventSlug": "world-cup-golden-boot-winner",
+  "results": [
+    {
+      "marketId": "99caf629-cb24-4fda-ae7f-3249e98778d6",
+      "slug": "will-kylian-mbappe-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "title": "Will Kylian Mbappe be the top goalscorer at the 2026 FIFA World Cup?",
+      "safe": true,
+      "reason": null,
+      "updated": null
+    }
+  ]
+}

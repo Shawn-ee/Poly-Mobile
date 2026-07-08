@@ -1006,3 +1006,26 @@ For every UI element or interaction, answer:
 - PL captures S23 visible proof for current match detail and line sections with honest source marker wording.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
 - Remaining P1: do not replace contract fixtures until attach-ready provider line rows exist.
+
+## Cycle PM Gap Tracker Update
+
+- PM-GAP-151 is opened and closed for converting the France Nation of Top Goalscorer provider-visible market into an internal-test tradable market.
+- PM makes France in `world-cup-nation-of-top-goalscorer` local-MM-ready, live-enabled, and quoted.
+- PM fixes reference liquidity reseeding so old oversized complete-set inventory can be burned back down instead of causing exposure-cap blocking.
+- PM proves bot dry-run and live-local quote placement without exposure-cap blocking.
+- PM proves mobile route/service order fill and Portfolio/history identity for France YES.
+- PM captures S23 Search/detail proof for the France provider-backed outcome.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
+- Remaining P1: Home/Live remain match-only by product direction; broad futures remain Search/detail surfaces.
+
+## Cycle PN Gap Tracker Update
+
+- PM-GAP-152 is opened and closed for tightening the provider-visible tradable proof harness and converting the Golden Boot Mbappe provider-visible market into an internal-test tradable market.
+- PN makes Kylian Mbappe in `world-cup-golden-boot-winner` local-MM-ready and quoted.
+- PN fixes proof harness order idempotency/client ids so repeated cycles use the active cycle label instead of stale `cycle-ow-provider` ids.
+- PN proves bot dry-run and live-local quote placement without exposure-cap blocking.
+- PN proves mobile route/service order fill and Portfolio/history identity for Mbappe YES.
+- PN captures S23 Search/detail proof for the Mbappe provider-backed outcome.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
+- Remaining P1: Home/Live remain match-only by product direction; broad futures remain Search/detail surfaces.
+- Remaining P1: the enable/seed/dry-run/live-local/order path should eventually become one orchestrated harness command.

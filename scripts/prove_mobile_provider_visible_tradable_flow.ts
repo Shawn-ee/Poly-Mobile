@@ -53,6 +53,7 @@ async function createProofCredential(cycleLabel: string) {
 
 async function main() {
   const cycleLabel = argValue("cycle") ?? "OW";
+  const safeCycleLabel = cycleLabel.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "cycle";
   const baseUrl = argValue("baseUrl") ?? DEFAULT_BASE_URL;
   const eventSlug = argValue("eventSlug") ?? DEFAULT_EVENT_SLUG;
   const marketId = argValue("marketId") ?? DEFAULT_MARKET_ID;
@@ -123,12 +124,12 @@ async function main() {
         headers: {
           Authorization: `Bearer ${credential.token}`,
           "Content-Type": "application/json",
-          "Idempotency-Key": `cycle-ow-provider-${randomUUID()}`,
+          "Idempotency-Key": `cycle-${safeCycleLabel}-provider-${randomUUID()}`,
         },
         body: JSON.stringify({
           ...(input as Record<string, unknown>),
           type: "LIMIT",
-          clientOrderId: `cycle-ow-provider-${randomUUID()}`,
+          clientOrderId: `cycle-${safeCycleLabel}-provider-${randomUUID()}`,
         }),
       });
     },

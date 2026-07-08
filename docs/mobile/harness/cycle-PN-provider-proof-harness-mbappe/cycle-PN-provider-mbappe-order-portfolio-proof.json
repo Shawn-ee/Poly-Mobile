@@ -1,0 +1,201 @@
+{
+  "pass": true,
+  "cycle": "PN",
+  "generatedAt": "2026-07-08T23:40:41.430Z",
+  "scope": "provider-visible-market-to-internal-test-tradable-mobile-flow",
+  "routes": {
+    "search": "/api/events?source=polymarket&search=Kylian Mbappe",
+    "detail": "/api/mobile/events/:slug/live-detail",
+    "quote": "/api/markets/:marketId/quote",
+    "order": "POST /api/orders",
+    "portfolio": "/api/portfolio",
+    "history": "/api/portfolio/history"
+  },
+  "event": {
+    "id": "52373944-bf97-4814-a780-c00ae7eb2c62",
+    "slug": "world-cup-golden-boot-winner",
+    "title": "World Cup: Golden Boot Winner",
+    "eventType": "future"
+  },
+  "market": {
+    "id": "99caf629-cb24-4fda-ae7f-3249e98778d6",
+    "slug": "will-kylian-mbappe-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+    "title": "Will Kylian Mbappe be the top goalscorer at the 2026 FIFA World Cup?",
+    "referenceSource": "polymarket",
+    "externalSlug": "will-kylian-mbappe-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+    "externalMarketId": "2069638",
+    "conditionId": "0xfa021d817ad33e0fa28e04051b4fea25b0a090e94bb1b2a38b377bce9778eb8e"
+  },
+  "outcome": {
+    "id": "3885f64d-0308-43ae-b922-79e7f391f11e",
+    "name": "YES",
+    "referenceTokenId": "109346928118758112535699085058290058645349086894874742550948182824395861480007",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "botQuote": {
+    "orderId": "917cd4dc-faa8-48c0-a5e5-d1e02b5c1abe",
+    "side": "SELL",
+    "price": 0.44,
+    "remaining": 10
+  },
+  "mobileProofUser": {
+    "id": "c1763533-c840-4603-8c89-cebb47cc379b",
+    "email": "cycle_pn_provider_user_b41dda2c@local.test"
+  },
+  "checks": {
+    "searchVisible": true,
+    "detailVisible": true,
+    "quoteVisible": true,
+    "serverModeTicketSubmitted": true,
+    "filledAgainstBotLiquidity": true,
+    "portfolioPositionVisible": true,
+    "historyTradeVisible": true,
+    "homeLiveMatchOnlyUnchanged": true
+  },
+  "orderResult": {
+    "id": "0e2437ee-e48b-45ef-93b9-cb569c54a99d",
+    "mode": "server",
+    "title": "Will Kylian Mbappe be the top goalscorer at the 2026 FIFA World Cup?",
+    "outcome": "Kylian Mbappe",
+    "selection": {
+      "marketType": "future",
+      "marketId": "99caf629-cb24-4fda-ae7f-3249e98778d6",
+      "outcomeId": "3885f64d-0308-43ae-b922-79e7f391f11e",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Kylian Mbappe",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-kylian-mbappe-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2069638",
+      "conditionId": "0xfa021d817ad33e0fa28e04051b4fea25b0a090e94bb1b2a38b377bce9778eb8e",
+      "referenceTokenId": "109346928118758112535699085058290058645349086894874742550948182824395861480007",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.44,
+      "limitSide": "ask"
+    },
+    "contractSide": "yes",
+    "side": "buy",
+    "amount": 1,
+    "probability": 44,
+    "status": "FILLED",
+    "size": 2.27,
+    "filledSize": 2.27,
+    "remainingSize": 0
+  },
+  "portfolioPosition": {
+    "marketId": "99caf629-cb24-4fda-ae7f-3249e98778d6",
+    "outcomeId": "3885f64d-0308-43ae-b922-79e7f391f11e",
+    "shares": 2.27,
+    "selection": {
+      "marketType": "future",
+      "marketId": "99caf629-cb24-4fda-ae7f-3249e98778d6",
+      "outcomeId": "3885f64d-0308-43ae-b922-79e7f391f11e",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Kylian Mbappe",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-kylian-mbappe-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2069638",
+      "conditionId": "0xfa021d817ad33e0fa28e04051b4fea25b0a090e94bb1b2a38b377bce9778eb8e",
+      "referenceTokenId": "109346928118758112535699085058290058645349086894874742550948182824395861480007",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.44,
+      "limitSide": "ask"
+    }
+  },
+  "historyTrade": {
+    "id": "4c9001e8-eb48-4bc1-ab4a-3efda52ef005",
+    "market": {
+      "id": "99caf629-cb24-4fda-ae7f-3249e98778d6",
+      "title": "Will Kylian Mbappe be the top goalscorer at the 2026 FIFA World Cup?",
+      "status": "LIVE",
+      "marketGroupKey": "outrights",
+      "marketType": "outright",
+      "line": null,
+      "period": "futures",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-kylian-mbappe-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2069638",
+      "conditionId": "0xfa021d817ad33e0fa28e04051b4fea25b0a090e94bb1b2a38b377bce9778eb8e"
+    },
+    "outcome": {
+      "id": "3885f64d-0308-43ae-b922-79e7f391f11e",
+      "name": "YES",
+      "label": "Kylian Mbappe",
+      "side": "yes",
+      "referenceTokenId": "109346928118758112535699085058290058645349086894874742550948182824395861480007",
+      "referenceOutcomeLabel": "Yes"
+    },
+    "selection": {
+      "marketId": "99caf629-cb24-4fda-ae7f-3249e98778d6",
+      "outcomeId": "3885f64d-0308-43ae-b922-79e7f391f11e",
+      "marketGroupId": "outrights",
+      "marketType": "future",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Kylian Mbappe",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "providerSource": "polymarket",
+      "externalSlug": "will-kylian-mbappe-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2069638",
+      "conditionId": "0xfa021d817ad33e0fa28e04051b4fea25b0a090e94bb1b2a38b377bce9778eb8e",
+      "referenceTokenId": "109346928118758112535699085058290058645349086894874742550948182824395861480007",
+      "tokenId": "109346928118758112535699085058290058645349086894874742550948182824395861480007",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.44,
+      "limitSide": "ask"
+    },
+    "side": "BUY",
+    "shares": 2.27,
+    "cost": 0.9988,
+    "fee": 0,
+    "createdAt": "2026-07-08T23:40:41.311Z"
+  },
+  "remainingOpenOrders": [
+    {
+      "id": "ae2f4997-175a-40f2-9f37-6d8e32cd7f5a",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "3885f64d-0308-43ae-b922-79e7f391f11e",
+      "side": "BUY",
+      "price": "0.39",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "917cd4dc-faa8-48c0-a5e5-d1e02b5c1abe",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "3885f64d-0308-43ae-b922-79e7f391f11e",
+      "side": "SELL",
+      "price": "0.44",
+      "amount": "10",
+      "remaining": "7.73",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "a5e314cd-3c19-433d-beca-7a7ed4c0672d",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "370e03d4-5e18-4318-b7a9-ebc541b6b774",
+      "side": "BUY",
+      "price": "0.41",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "7296f506-04b3-42cc-a290-f5fc69a0212c",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "370e03d4-5e18-4318-b7a9-ebc541b6b774",
+      "side": "SELL",
+      "price": "0.61",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    }
+  ]
+}
