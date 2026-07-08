@@ -65,6 +65,7 @@ export type EventMarketType =
 
 export type Event = {
   id: string;
+  slug?: string;
   title: string;
   zhTitle: string;
   league: string;

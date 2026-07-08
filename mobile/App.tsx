@@ -1731,7 +1731,7 @@ export default function App() {
     setEventDetailForcedSide(null);
     setSelectedEvent(event);
     if (MARKET_DATA_MODE !== "server") return;
-    api.getEvent(event.id)
+    api.getEvent(event.slug ?? event.id)
       .then((detail) => normalizeEventDetail(detail))
       .then((hydrated) => {
         if (!hydrated || !mounted.current) return;

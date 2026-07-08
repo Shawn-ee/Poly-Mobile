@@ -2411,3 +2411,17 @@ Cycle LZ implementation notes:
 - No backend route or schema changed.
 - `mobile:mvp:inspect` now exists for repeatable Local MVP route inspection.
 - Portfolio account entry is frontend navigation only; account data dependencies remain the existing Account screen routes.
+
+## Cycle MA - Argentina vs Egypt Line Fixtures And Detail Hydration
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home match feed inspection | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10` | GET | Public viewing | Query filters/page size | Match `slug`, `title`, `eventType`, compact `markets`, `marketSourceSummary`, line families | `Event`, `Market`, `Outcome`, provider/read-model fields | Mobile filters out futures and does not invent Home matches in server mode. | Route still includes a future record; mobile filters it for Local MVP. |
+| Argentina vs Egypt detail hydration | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | 7 markets, `marketSourceSummary`, market `referenceSource`, `marketType`, `marketGroupTitle`, `line`, `period`, outcome prices, condition/token/source fields | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, local orderbook quote snapshots | Existing backend-written `contract-fixture` lines are consumed for Local MVP UI proof. | Real provider-backed Spread/Totals/Team Total markets are absent for the inspected Polymarket match. |
+| Local MVP line fixture seeding | `scripts/seed_mobile_mvp_match_line_markets.ts` | Local script | Local development database access | `--eventSlug`, `--cycle`, `--summaryPath` | Writes backend-shaped line markets and quote snapshots; proof reads route back | `Market`, `Outcome`, `ReferenceQuoteSnapshot` | This creates contract-shaped line rows only when provider-backed rows are unavailable. | Replace with provider-backed line ingestion when approved provider rows exist. |
+
+Cycle MA implementation notes:
+
+- No schema migration was added.
+- No order route behavior changed.
+- Event Detail now uses `event.slug ?? event.id` for hydration, matching the mobile live-detail route contract.

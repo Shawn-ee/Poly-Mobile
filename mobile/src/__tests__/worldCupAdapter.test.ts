@@ -98,6 +98,7 @@ describe("world cup adapter", () => {
     });
 
     expect(normalized).toMatchObject({
+      type: "game-line",
       marketGroupId: "aus-egy-live-game-lines",
       marketType: "spread",
       period: "regulation",
@@ -150,6 +151,7 @@ describe("world cup adapter", () => {
     });
 
     expect(normalized).toMatchObject({
+      type: "game-line",
       marketType: "team-total",
       line: "1.5",
       outcomes: [{ id: "over", side: "over", bestBid: 0.57, bestAsk: 0.65 }],

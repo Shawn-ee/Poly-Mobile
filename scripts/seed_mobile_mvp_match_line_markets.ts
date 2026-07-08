@@ -290,6 +290,7 @@ async function seedLineMarket(event: { id: string; slug: string | null; title: s
 async function main() {
   const eventSlug = argValue("eventSlug") ?? DEFAULT_EVENT_SLUG;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
+  const cycle = argValue("cycle") ?? "current";
   const before = await readLiveDetailRoute(eventSlug);
 
   const event = await prisma.event.findUnique({
@@ -339,7 +340,7 @@ async function main() {
   const summary = {
     pass,
     generatedAt: new Date().toISOString(),
-    cycle: "LN",
+    cycle,
     eventSlug,
     eventTitle: event.title,
     inspection: {

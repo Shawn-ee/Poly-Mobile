@@ -5952,3 +5952,52 @@ Known limitations:
 - Account/login remains disabled for the Local MVP.
 - Deposit/withdraw remains out of scope.
 - Reinspection confirmed real Polymarket-backed Regulation Winner is available, while Spread/Totals/Team Totals remain backend-shaped `contract-fixture` line rows until provider-backed line markets exist.
+
+## Cycle MA - Argentina vs Egypt Line Fixtures And Detail Hydration
+
+Feature/page worked on:
+
+- Local MVP Home -> Event Detail line-market readiness.
+- Argentina vs Egypt Event Detail visible line groups.
+
+Frontend/harness/backend files touched:
+
+- `mobile/App.tsx`
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/src/__tests__/worldCupAdapter.test.ts`
+- `mobile/src/__tests__/eventDetailHydrationContract.test.ts`
+- `scripts/seed_mobile_mvp_match_line_markets.ts`
+- `scripts/inspect_mobile_mvp_current_state.ts`
+- `docs/mobile/audits/cycle-MA-argentina-egypt-line-fixtures.md`
+
+Important functions/services touched:
+
+- `openEventDetail` now hydrates full detail using `event.slug ?? event.id`.
+- `normalizeEventSummary` now preserves backend slug in the mobile event contract.
+- `marketType` now treats structured line-market types as `game-line` before generic title heuristics.
+- `seed_mobile_mvp_match_line_markets.ts` can seed a named cycle/event and write a summary.
+- `inspect_mobile_mvp_current_state.ts` is reusable after adding the missing filesystem import.
+
+User interactions supported/proven:
+
+- S23 Home opens `argentina-vs-egypt`.
+- Event Detail shows 7 markets / 14 outcomes after full live-detail hydration.
+- Spread, Totals, and Team Total Goals are visible on S23.
+- Spread/Totals/Team Total rows preserve selected market, line, period, outcome, source, condition, token, and provider/fixture identity for ticket handoff.
+
+State transitions:
+
+- Home compact event is replaced by the full live-detail event after hydration.
+- No order, balance, Portfolio, or schema state changed in this cycle.
+
+Validation:
+
+- `npm run -s typecheck` from `mobile/`
+- `npx vitest run --config vitest.mobile.config.mts mobile/src/__tests__/worldCupAdapter.test.ts mobile/src/__tests__/eventDetailHydrationContract.test.ts`
+- `npm run -s mobile:mvp:inspect -- --cycle=MA --summaryPath=docs/mobile/harness/cycle-MA-argentina-egypt-line-fixtures/cycle-MA-current-state-after-second-match-lines.json`
+
+Known limitations:
+
+- Regulation Winner is provider-backed, but Spread/Totals/Team Total remain `contract-fixture` for Local MVP because attach-ready Polymarket line markets are not present for the inspected match.
+- The next useful cycle should prove the full line ticket/order/Portfolio path using this now-visible event.

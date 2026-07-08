@@ -5091,3 +5091,35 @@ Future migration concern:
 
 - Replace contract-fixture line rows with provider-backed rows when Polymarket or another approved provider exposes attach-ready line markets.
 - Build a real login/session model before making Account actions production-capable.
+
+## Cycle MA - Argentina vs Egypt Line Fixtures And Detail Hydration
+
+Closed or narrowed:
+
+- Both Local MVP live matches now expose provider-backed Regulation Winner plus backend-shaped Spread/Totals/Team Total line markets.
+- The mobile event contract now preserves `slug`, so detail hydration can explicitly request `/api/mobile/events/:slug/live-detail`.
+- Structured backend market types `spread`, `total_goals`, and `team_total_goals` are classified as visible game-line markets.
+- S23 proof confirms visible Spread, Totals, and Team Total line rows with line/outcome/source identity.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total ids, condition ids, token ids, quote snapshots, and chart history are still unavailable for the inspected Polymarket match.
+- Line-market chart history remains missing for these fixture rows.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- The mobile app now uses `event.slug ?? event.id` for Event Detail hydration.
+- Home route still returns a future/outright record, but the mobile app filters it out for the Local MVP match-only Home feed.
+
+Temporary mock/static data:
+
+- The line rows are backend-shaped `contract-fixture` records, not frontend-only random mock data.
+
+Future migration concern:
+
+- Promote provider-backed line-market ingestion when Polymarket Gamma/CLOB or another approved source exposes attach-ready soccer line markets.
+- The next full-path cycle should prove line ticket submit and Portfolio/history using the visible Argentina vs Egypt line market.

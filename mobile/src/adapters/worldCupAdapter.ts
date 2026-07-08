@@ -127,6 +127,7 @@ const marketType = (market: BackendMarket): Market["type"] => {
   const key = `${market.marketType ?? ""} ${market.marketGroupTitle ?? ""} ${market.propCategory ?? ""} ${market.title}`.toLowerCase();
   const structuredMarketType = `${market.marketType ?? ""}`.trim().toLowerCase();
   if (["future", "futures", "outright", "outrights"].includes(structuredMarketType)) return "future";
+  if (["spread", "handicap", "totals", "total", "total_goals", "team-total", "team_total", "team_totals", "team_total_goals"].includes(structuredMarketType)) return "game-line";
   if (key.includes("future") || key.includes("outright") || key.includes("cup")) return "future";
   if (key.includes("to_advance") || key.includes("to advance")) return "game-line";
   if (key.includes("winner") || key.includes("moneyline") || key.includes("match")) return "game-line";
@@ -245,6 +246,7 @@ export const normalizeEventSummary = (event: BackendEventSummary, markets: Backe
   const title = isGenericFixtureTitle(event.title) && isFuturesBundle ? "World Cup futures" : event.title;
   return {
     id: event.slug || event.id,
+    slug: event.slug || event.id,
     title,
     zhTitle: isGenericFixtureTitle(event.title) && isFuturesBundle ? "世界杯期货" : zhPassthrough(title),
     league: asTitleCase(event.leagueKey, "World Cup"),
