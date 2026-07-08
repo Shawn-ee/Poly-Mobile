@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useEffect, useMemo, useState } from "react";
-import { Modal, PanResponder, Pressable, StyleSheet, Text, View, useWindowDimensions } from "react-native";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { BackHandler, Modal, PanResponder, Pressable, StyleSheet, Text, View, Vibration, useWindowDimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { Locale, Event, Market, Outcome } from "../mocks/worldCup";
 import { label, money } from "../presentation/formatters";
 
@@ -17,7 +18,7 @@ export type Ticket = {
 export type BinaryContractSide = "yes" | "no";
 
 export type TicketSelection = {
-  marketType: "spread" | "totals" | "team-total" | "winner" | "prop" | "future" | "live";
+  marketType: "spread" | "totals" | "team-total" | "winner" | "to_advance" | "prop" | "future" | "live";
   marketId?: string;
   outcomeId?: string;
   marketGroupId?: string;
@@ -70,67 +71,128 @@ type TradeTicketCopy = {
   finalCostMayVary: string;
 };
 
-const SWIPE_SUBMIT_THRESHOLD = 124;
-const SWIPE_HANDLE_TRAVEL = 40;
+const SWIPE_SUBMIT_THRESHOLD = 150;
+const SWIPE_VISUAL_RANGE = 460;
 
 function SwipeSubmitControl({
   disabled,
+  unavailable,
+  tone,
   label,
   helper,
   onSubmit,
+  onProgressChange,
 }: {
   disabled: boolean;
+  unavailable?: boolean;
+  tone: "buy" | "sell";
   label: string;
   helper: string;
   onSubmit: () => void | Promise<void>;
+  onProgressChange?: (progress: number) => void;
 }) {
   const [isArmed, setIsArmed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [swipeProgress, setSwipeProgress] = useState(0);
-  const triggerSubmit = async () => {
-    if (disabled || isSubmitting) return;
+  const armedRef = useRef(false);
+  const progressRef = useRef(0);
+  const dragDistanceRef = useRef(0);
+  const touchStartYRef = useRef<number | null>(null);
+  const disabledRef = useRef(disabled);
+  const submittingRef = useRef(isSubmitting);
+  const onSubmitRef = useRef(onSubmit);
+  const onProgressChangeRef = useRef(onProgressChange);
+
+  useEffect(() => {
+    disabledRef.current = disabled;
+    submittingRef.current = isSubmitting;
+    onSubmitRef.current = onSubmit;
+    onProgressChangeRef.current = onProgressChange;
+  }, [disabled, isSubmitting, onProgressChange, onSubmit]);
+
+  const updateProgress = useCallback((nextProgress: number) => {
+    progressRef.current = nextProgress;
+    setSwipeProgress(nextProgress);
+    onProgressChangeRef.current?.(nextProgress);
+  }, []);
+  const updateDragDistance = useCallback(
+    (dragDistance: number) => {
+      const progress = Math.min(dragDistance / SWIPE_VISUAL_RANGE, 1);
+      const nextArmed = dragDistance >= SWIPE_SUBMIT_THRESHOLD;
+      dragDistanceRef.current = dragDistance;
+      updateProgress(progress);
+      setIsArmed(nextArmed);
+      if (nextArmed && !armedRef.current) {
+        Vibration.vibrate(18);
+      }
+      armedRef.current = nextArmed;
+    },
+    [updateProgress],
+  );
+  const triggerSubmit = useCallback(async () => {
+    if (disabledRef.current || submittingRef.current) return;
+    submittingRef.current = true;
     setIsSubmitting(true);
     try {
-      await onSubmit();
+      await onSubmitRef.current();
     } finally {
+      submittingRef.current = false;
       setIsSubmitting(false);
       setIsArmed(false);
-      setSwipeProgress(0);
+      armedRef.current = false;
+      dragDistanceRef.current = 0;
+      updateProgress(0);
     }
-  };
+  }, [updateProgress]);
+  const handleTouchStart = useCallback((event: { nativeEvent: { pageY: number } }) => {
+    if (disabledRef.current || submittingRef.current) return;
+    touchStartYRef.current = event.nativeEvent.pageY;
+    setIsArmed(false);
+    armedRef.current = false;
+    progressRef.current = 0;
+    dragDistanceRef.current = 0;
+    updateProgress(0);
+  }, [updateProgress]);
+  const handleTouchMove = useCallback((event: { nativeEvent: { pageY: number } }) => {
+    if (disabledRef.current || submittingRef.current || touchStartYRef.current === null) return;
+    const dragDistance = Math.max(0, touchStartYRef.current - event.nativeEvent.pageY);
+    updateDragDistance(dragDistance);
+  }, [updateDragDistance]);
+  const handleTouchEnd = useCallback(() => {
+    if (disabledRef.current || submittingRef.current) return;
+    const shouldSubmit =
+      dragDistanceRef.current >= SWIPE_SUBMIT_THRESHOLD ||
+      armedRef.current ||
+      progressRef.current >= SWIPE_SUBMIT_THRESHOLD / SWIPE_VISUAL_RANGE;
+    touchStartYRef.current = null;
+    if (shouldSubmit) {
+      void triggerSubmit();
+      return;
+    }
+    armedRef.current = false;
+    progressRef.current = 0;
+    dragDistanceRef.current = 0;
+    setIsArmed(false);
+    updateProgress(0);
+  }, [triggerSubmit, updateProgress]);
   const panResponder = useMemo(
     () =>
       PanResponder.create({
-        onStartShouldSetPanResponder: () => !disabled && !isSubmitting,
-        onStartShouldSetPanResponderCapture: () => !disabled && !isSubmitting,
-        onMoveShouldSetPanResponder: (_, gesture) => Math.abs(gesture.dy) > 8 && Math.abs(gesture.dy) > Math.abs(gesture.dx),
-        onMoveShouldSetPanResponderCapture: (_, gesture) => Math.abs(gesture.dy) > 8 && Math.abs(gesture.dy) > Math.abs(gesture.dx),
-        onPanResponderGrant: () => {
-          setIsArmed(false);
-          setSwipeProgress(0);
+        onStartShouldSetPanResponder: () => !disabledRef.current && !submittingRef.current,
+        onMoveShouldSetPanResponder: (_, gestureState) =>
+          !disabledRef.current && !submittingRef.current && Math.abs(gestureState.dy) > 2,
+        onPanResponderGrant: (event) => handleTouchStart(event),
+        onPanResponderMove: (_, gestureState) => {
+          if (disabledRef.current || submittingRef.current) return;
+          updateDragDistance(Math.max(0, -gestureState.dy));
         },
-        onPanResponderMove: (_, gesture) => {
-          const progress = gesture.dy < 0 ? Math.min(Math.abs(gesture.dy) / SWIPE_SUBMIT_THRESHOLD, 1) : 0;
-          setSwipeProgress(progress);
-          setIsArmed(progress >= 0.72);
-        },
-        onPanResponderRelease: (_, gesture) => {
-          if (gesture.dy < -SWIPE_SUBMIT_THRESHOLD) {
-            void triggerSubmit();
-            return;
-          }
-          setIsArmed(false);
-          setSwipeProgress(0);
-        },
-        onPanResponderTerminate: () => {
-          setIsArmed(false);
-          setSwipeProgress(0);
-        },
+        onPanResponderRelease: handleTouchEnd,
+        onPanResponderTerminate: handleTouchEnd,
       }),
-    [disabled, isSubmitting, onSubmit],
+    [handleTouchEnd, handleTouchStart, updateDragDistance],
   );
   const progressBucket = disabled ? "disabled" : isSubmitting ? "submitting" : isArmed ? "armed" : swipeProgress > 0 ? "dragging" : "idle";
-  const handleLift = -SWIPE_HANDLE_TRAVEL * swipeProgress;
+  const handleLift = -28 * swipeProgress;
 
   return (
       <View
@@ -139,20 +201,40 @@ function SwipeSubmitControl({
         accessibilityState={{ disabled: disabled || isSubmitting }}
         accessibilityHint={helper}
       accessibilityLabel={`swipe-to-submit-order swipe-submit-gesture-required swipe-submit-threshold-clear swipe-submit-tap-disabled swipe-submit-handle-progress-linked swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-handle-long-travel swipe-submit-state-${progressBucket} swipe-submit-progress-${Math.round(swipeProgress * 100)}`}
-      style={[styles.swipeSubmit, disabled && styles.swipeSubmitDisabled]}
+      style={[
+        styles.swipeSubmit,
+        !unavailable && tone === "buy" && styles.swipeSubmitBuy,
+        !unavailable && tone === "sell" && styles.swipeSubmitSell,
+        unavailable && styles.swipeSubmitUnavailable,
+        isArmed && !unavailable && styles.swipeSubmitArmed,
+        disabled && !unavailable && styles.swipeSubmitDisabled,
+      ]}
       testID="place-mock-order"
       {...panResponder.panHandlers}
+      onStartShouldSetResponder={() => !disabledRef.current && !submittingRef.current}
+      onMoveShouldSetResponder={() => !disabledRef.current && !submittingRef.current}
+      onResponderGrant={handleTouchStart}
+      onResponderMove={handleTouchMove}
+      onResponderRelease={handleTouchEnd}
+      onResponderTerminate={handleTouchEnd}
     >
+      {!unavailable && (
+        <View
+          accessibilityLabel={`swipe-submit-threshold-line swipe-submit-threshold-${isArmed ? "armed" : "waiting"}`}
+          style={[styles.swipeThresholdLine, isArmed && styles.swipeThresholdLineArmed]}
+          testID="swipe-submit-threshold-line"
+        />
+      )}
       <View
-        accessibilityLabel={`swipe-submit-handle swipe-submit-handle-progress-linked swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-handle-s23-visible-travel swipe-submit-handle-starts-near-footer-top swipe-submit-state-${progressBucket} swipe-submit-handle-translate-y-${Math.round(handleLift)}`}
-        style={[styles.swipeIcon, isArmed && styles.swipeIconArmed, { transform: [{ translateY: handleLift }] }]}
+        accessibilityLabel={`swipe-submit-handle swipe-submit-handle-progress-linked swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-handle-s23-visible-travel swipe-submit-handle-s23-large-travel swipe-submit-handle-starts-near-footer-top swipe-submit-state-${progressBucket} swipe-submit-handle-translate-y-${Math.round(handleLift)}`}
+        style={[styles.swipeIcon, unavailable && styles.swipeIconUnavailable, isArmed && styles.swipeIconArmed, { transform: [{ translateY: unavailable ? 0 : handleLift }] }]}
         testID="swipe-submit-handle"
       >
-        <Ionicons name={isSubmitting ? "hourglass-outline" : "chevron-up"} color="#ffffff" size={22} />
+        <Ionicons name={unavailable ? "alert-circle-outline" : isSubmitting ? "hourglass-outline" : "chevron-up"} color={unavailable ? "#fecaca" : "#ffffff"} size={22} />
       </View>
-      <View style={styles.swipeTextBlock}>
-        <Text style={styles.swipeLabel}>{isSubmitting ? label : label}</Text>
-        <Text style={styles.swipeHelper}>{helper}</Text>
+      <View style={[styles.swipeTextBlock, unavailable && styles.swipeTextBlockUnavailable, { transform: [{ translateY: unavailable ? 0 : Math.min(0, handleLift * 0.25) }] }]}>
+        <Text style={[styles.swipeLabel, unavailable && styles.swipeLabelUnavailable]}>{isSubmitting ? label : label}</Text>
+        <Text style={[styles.swipeHelper, unavailable && styles.swipeHelperUnavailable]}>{helper}</Text>
       </View>
     </View>
   );
@@ -345,8 +427,9 @@ export function TradeTicket({
   const [side, setSideState] = useState<"buy" | "sell">(defaultSide);
   const [activeContractSide, setActiveContractSide] = useState<BinaryContractSide>("yes");
   const [slippage, setSlippageState] = useState(defaultSlippage);
-  const [showOrderSettings, setShowOrderSettings] = useState(false);
+  const [swipeSubmitProgress, setSwipeSubmitProgress] = useState(0);
   const { height: viewportHeight } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
   const usePhoneTicketFit = viewportHeight <= 860;
 
   useEffect(() => {
@@ -356,7 +439,7 @@ export function TradeTicket({
     setSideState(ticket.side);
     setActiveContractSide(ticket.contractSide ?? ticket.selection?.contractSide ?? "yes");
     setSlippageState(defaultSlippage);
-    setShowOrderSettings(false);
+    setSwipeSubmitProgress(0);
   }, [
     ticket?.market.id,
     ticket?.outcome.id,
@@ -370,6 +453,15 @@ export function TradeTicket({
     ticket?.selection?.period,
     ticket?.selection?.displayLabel,
   ]);
+
+  useEffect(() => {
+    if (!ticket) return undefined;
+    const subscription = BackHandler.addEventListener("hardwareBackPress", () => {
+      close();
+      return true;
+    });
+    return () => subscription.remove();
+  }, [close, ticket]);
 
   if (!ticket) return null;
   const setAmount = (nextAmount: string) => {
@@ -422,6 +514,12 @@ export function TradeTicket({
   const availabilityStatus = ticket.market.availability?.status ?? "unknown";
   const marketTradable = availabilityTone !== "blocked";
   const submitLabel = !marketTradable ? availabilityLabel ?? "Market unavailable" : numericAmount <= 0 ? "Choose an amount" : swipeLabel;
+  const submitHelper = !marketTradable ? "Trading is disabled for this market." : t.finalCostMayVary;
+  const activeSubmitProgress = marketTradable ? swipeSubmitProgress : 0;
+  const footerBaseHeight = usePhoneTicketFit ? 172 : 184;
+  const submitSheetHeight = footerBaseHeight + activeSubmitProgress * Math.max(viewportHeight - footerBaseHeight, 0);
+  const ticketPanelMinHeight = Math.max(insets.top + 136, 180);
+  const ticketPanelHeight = Math.max(ticketPanelMinHeight, viewportHeight - submitSheetHeight + 28);
   const priceDisplay = `${contractProbability}c`;
   const providerIdentityLabel = [
     ticket.selection?.referenceSource ?? ticket.market.referenceSource
@@ -472,15 +570,29 @@ export function TradeTicket({
   const reviewPayout = compactCash(estimatedPayout);
 
   return (
-    <Modal visible transparent animationType="slide" statusBarTranslucent>
+    <Modal visible transparent animationType="slide" onRequestClose={close} statusBarTranslucent>
       <View style={styles.modalShade}>
         <View style={styles.ticket}>
           <View
             accessibilityLabel="trade-ticket ticket-retail-reference-layout ticket-body-rounded-above-swipe ticket-keypad-swipe-separated ticket-s23-keypad-clearance ticket-s23-safe-vertical-fit ticket-s23-reference-no-overlap ticket-dark-panel-above-red-swipe ticket-dark-keypad-panel-fixed-clearance"
-            style={[styles.ticketBodyPanel, usePhoneTicketFit && styles.ticketBodyPanelPhone]}
+            style={[
+              styles.ticketBodyPanel,
+              usePhoneTicketFit && styles.ticketBodyPanelPhone,
+              {
+                height: ticketPanelHeight,
+                borderBottomLeftRadius: activeSubmitProgress > 0 ? 30 : 0,
+                borderBottomRightRadius: activeSubmitProgress > 0 ? 30 : 0,
+              },
+            ]}
             testID="trade-ticket"
           >
-            <View style={[styles.ticketContent, usePhoneTicketFit && styles.ticketContentPhone]}>
+            <View
+              style={[
+                styles.ticketContent,
+                usePhoneTicketFit && styles.ticketContentPhone,
+                { paddingTop: Math.max(insets.top + 8, usePhoneTicketFit ? 32 : 26) },
+              ]}
+            >
             <View accessibilityLabel="ticket-drag-handle" testID="ticket-drag-handle" style={styles.dragHandle} />
             <View accessibilityLabel={`ticket-selection-summary ticket-retail-order-header ticket-header-retail-readable ${providerIdentityLabel}`} testID="ticket-selection-summary" style={styles.ticketHeader}>
               <Pressable accessibilityLabel="ticket-close" onPress={close} style={styles.closeButton} testID="ticket-close">
@@ -499,48 +611,17 @@ export function TradeTicket({
                   <Text style={styles.ticketOutcomeSide}>{sideLabel}</Text> <Text style={styles.ticketOutcomeDot}>-</Text> {selectionLabel}
                 </Text>
               </View>
-              <Pressable
-                accessibilityLabel={`ticket-settings ticket-order-filter-local-mvp ticket-settings-state-${showOrderSettings ? "open" : "closed"}`}
-                onPress={() => setShowOrderSettings((current) => !current)}
-                style={styles.ticketSettingsButton}
-                testID="ticket-settings"
-              >
-                <Ionicons name="options-outline" color="#dbe4f0" size={22} />
-              </Pressable>
             </View>
             <View accessibilityLabel="ticket-side-pill ticket-advanced-hidden-local-mvp" testID="ticket-side-pill" style={styles.orderReviewA11y}>
               <Text>ticket-advanced-hidden-local-mvp</Text>
             </View>
-            {showOrderSettings && (
-              <View accessibilityLabel={`ticket-settings-panel ticket-settings-state-open ${providerIdentityLabel}`} style={styles.settingsPanel} testID="ticket-settings-panel">
-                <View style={styles.settingsPanelRow}>
-                  <Text style={styles.settingsPanelLabel}>Order type</Text>
-                  <Text style={styles.settingsPanelValue}>Market</Text>
-                </View>
-                <View style={styles.settingsPanelRow}>
-                  <Text style={styles.settingsPanelLabel}>Odds</Text>
-                  <Text style={styles.settingsPanelValue}>{contractProbability}%</Text>
-                </View>
-                <View style={styles.settingsPanelRow}>
-                  <Text style={styles.settingsPanelLabel}>Available</Text>
-                  <Text style={styles.settingsPanelValue}>{money(balance)}</Text>
-                </View>
-              </View>
-            )}
             {availabilityLabel && availabilityTone === "blocked" && (
               <View
                 accessibilityLabel={`ticket-market-status ticket-availability-${availabilityStatus} ticket-market-status-${ticket.market.availability?.marketStatus ?? "unknown"} ${providerIdentityLabel} ${availabilityLabel}`}
-                style={[styles.marketStatusPill, styles.marketStatusPillBlocked]}
+                style={styles.orderReviewA11y}
                 testID="ticket-market-status"
               >
-                <Ionicons
-                  name={availabilityTone === "blocked" ? "alert-circle-outline" : availabilityTone === "warning" ? "time-outline" : "checkmark-circle-outline"}
-                  color={availabilityTone === "blocked" ? "#fecaca" : availabilityTone === "warning" ? "#fde68a" : "#bbf7d0"}
-                  size={15}
-                />
-                <Text style={[styles.marketStatusText, styles.marketStatusTextBlocked]}>
-                  {availabilityLabel}
-                </Text>
+                <Text>{availabilityLabel}</Text>
               </View>
             )}
             {availabilityLabel && availabilityTone === "warning" && (
@@ -559,8 +640,8 @@ export function TradeTicket({
             >
               <Text>ticket-advanced-hidden-local-mvp</Text>
             </View>
-            <View accessibilityLabel="ticket-amount-display" testID="ticket-amount-display" style={[styles.amountDisplayBlock, usePhoneTicketFit && styles.amountDisplayBlockPhone]}>
-              <Text style={[styles.amountDisplayText, usePhoneTicketFit && styles.amountDisplayTextPhone, numericAmount <= 0 && styles.amountDisplayTextEmpty]}>{amountDisplay}</Text>
+            <View accessibilityLabel="ticket-amount-display" testID="ticket-amount-display" style={[styles.amountDisplayBlock, usePhoneTicketFit && styles.amountDisplayBlockPhone, !marketTradable && styles.amountDisplayBlockUnavailable]}>
+              <Text style={[styles.amountDisplayText, usePhoneTicketFit && styles.amountDisplayTextPhone, numericAmount <= 0 && styles.amountDisplayTextEmpty, !marketTradable && styles.amountDisplayTextUnavailable]}>{amountDisplay}</Text>
             </View>
             <View accessibilityLabel={`${sideLabel} - ${outcomeLabel}`} testID="ticket-contract-outcome-row" style={styles.orderReviewA11y}>
               <Text accessibilityLabel="ticket-selected-outcome-choice" testID="ticket-selected-outcome-choice">
@@ -657,14 +738,35 @@ export function TradeTicket({
               </View>
             )}
             </View>
+            <View
+              pointerEvents="none"
+              style={[
+                styles.ticketMotionScrim,
+                { opacity: Math.min(activeSubmitProgress * 0.72, 0.72) },
+              ]}
+            />
           </View>
-          <View accessibilityLabel="ticket-swipe-area-fixed-bottom ticket-swipe-footer-fixed-separate ticket-keypad-swipe-separated ticket-s23-keypad-clearance ticket-s23-keypad-footer-gap ticket-red-swipe-area-fixed-bottom ticket-polymarket-style-swipe-zone ticket-red-footer-s23-reference-tightened ticket-red-footer-s23-reference-compact ticket-s23-reference-no-overlap" testID="ticket-swipe-area-fixed-bottom" style={[styles.ticketFooter, usePhoneTicketFit && styles.ticketFooterPhone]}>
-            <View style={styles.ticketFooterLightBand} />
-            <View style={styles.ticketFooterDarkBand} />
+          <View
+            accessibilityLabel={`ticket-swipe-area-fixed-bottom ticket-swipe-footer-fixed-separate ticket-keypad-swipe-separated ticket-s23-keypad-clearance ticket-s23-keypad-footer-gap ticket-red-swipe-area-fixed-bottom ticket-polymarket-style-swipe-zone ticket-red-footer-s23-reference-tightened ticket-red-footer-s23-reference-compact ticket-s23-reference-no-overlap ${!marketTradable ? "ticket-unavailable-footer-compact ticket-unavailable-single-visible-message" : ""}`}
+            testID="ticket-swipe-area-fixed-bottom"
+            style={[
+              styles.ticketFooter,
+              usePhoneTicketFit && styles.ticketFooterPhone,
+              marketTradable && styles.ticketFooterSubmitLive,
+              !marketTradable && styles.ticketFooterUnavailable,
+              {
+                height: marketTradable ? submitSheetHeight : footerBaseHeight,
+                paddingBottom: Math.max(insets.bottom + 14, usePhoneTicketFit ? 20 : 22),
+              },
+            ]}
+          >
             <SwipeSubmitControl
               disabled={numericAmount <= 0 || !marketTradable}
-              helper={t.finalCostMayVary}
+              unavailable={!marketTradable}
+              tone={side}
+              helper={submitHelper}
               label={submitLabel}
+              onProgressChange={setSwipeSubmitProgress}
               onSubmit={() => placeOrder(numericAmount, side, contractSide)}
             />
           </View>
@@ -676,33 +778,29 @@ export function TradeTicket({
 
 const styles = StyleSheet.create({
   modalShade: { flex: 1, justifyContent: "flex-end", backgroundColor: "#070b12" },
-  ticket: { flex: 1, height: "100%", backgroundColor: "#f72d72", overflow: "hidden" },
-  ticketBodyPanel: { flex: 1, backgroundColor: "#070b12", borderBottomLeftRadius: 42, borderBottomRightRadius: 42, overflow: "hidden", zIndex: 2 },
-  ticketBodyPanelPhone: { borderBottomLeftRadius: 38, borderBottomRightRadius: 38 },
+  ticket: { flex: 1, height: "100%", backgroundColor: "#070b12", overflow: "hidden" },
+  ticketBodyPanel: { backgroundColor: "#070b12", overflow: "hidden", zIndex: 8, elevation: 8 },
+  ticketBodyPanelPhone: {},
+  ticketMotionScrim: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(2,6,23,0.76)", zIndex: 6 },
   ticketContent: { flex: 1, width: "100%", maxWidth: 430, alignSelf: "center", paddingHorizontal: 24, paddingTop: 18, paddingBottom: 16 },
   ticketContentPhone: { paddingHorizontal: 22, paddingTop: 10, paddingBottom: 18 },
   dragHandle: { alignSelf: "center", width: 92, height: 1, borderRadius: 999, backgroundColor: "#293141", marginBottom: 2, opacity: 0.01 },
   ticketTop: { minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   ticketHeading: { flex: 1, alignItems: "center" },
-  ticketTitle: { color: "#cbd5e1", fontSize: 14, fontWeight: "700" },
-  ticketOutcome: { color: "#f8fafc", fontSize: 17, fontWeight: "800", marginTop: 2, lineHeight: 21 },
+  ticketTitle: { color: "#cbd5e1", fontSize: 13, fontWeight: "700" },
+  ticketOutcome: { color: "#f8fafc", fontSize: 16, fontWeight: "800", marginTop: 2, lineHeight: 20 },
   ticketOutcomeSide: { color: "#22c55e" },
   ticketOutcomeDot: { color: "#64748b" },
   ticketSub: { color: "#64748b", fontSize: 12, fontWeight: "900", marginTop: 4 },
   closeButton: { width: 40, height: 48, borderRadius: 999, alignItems: "center", justifyContent: "center" },
   tradeSidePill: { minWidth: 42, minHeight: 42 },
   tradeSideText: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
-  ticketHeader: { flexDirection: "row", alignItems: "center", gap: 12, minHeight: 56 },
-  outcomeFlag: { width: 50, height: 50, borderRadius: 13, alignItems: "center", justifyContent: "center", backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", overflow: "hidden" },
-  outcomeFlagEmoji: { fontSize: 30, lineHeight: 38 },
+  ticketHeader: { flexDirection: "row", alignItems: "center", gap: 10, minHeight: 52 },
+  outcomeFlag: { width: 44, height: 44, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", overflow: "hidden" },
+  outcomeFlagEmoji: { fontSize: 27, lineHeight: 34 },
   marketIconFlag: { backgroundColor: "#121a27", borderColor: "#334155" },
   marketIconText: { color: "#dbeafe", fontSize: 20, fontWeight: "900" },
   selectionTextBlock: { flex: 1, minWidth: 0 },
-  ticketSettingsButton: { width: 40, height: 48, borderRadius: 999, alignItems: "center", justifyContent: "center" },
-  settingsPanel: { marginTop: 8, paddingHorizontal: 14, paddingVertical: 10, borderRadius: 14, backgroundColor: "#0d1420", borderWidth: 1, borderColor: "#222d40", gap: 8 },
-  settingsPanelRow: { minHeight: 24, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
-  settingsPanelLabel: { color: "#8b94a5", fontSize: 13, fontWeight: "700" },
-  settingsPanelValue: { color: "#f8fafc", fontSize: 13, fontWeight: "900" },
   marketStatusPill: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 999, backgroundColor: "#052e1b", borderWidth: 1, borderColor: "#166534" },
   marketStatusPillWarning: { backgroundColor: "#2b2106", borderColor: "#854d0e" },
   marketStatusPillBlocked: { backgroundColor: "#2a0d0d", borderColor: "#7f1d1d" },
@@ -711,9 +809,11 @@ const styles = StyleSheet.create({
   marketStatusTextBlocked: { color: "#fecaca" },
   amountDisplayBlock: { minHeight: 82, alignItems: "center", justifyContent: "flex-end", marginTop: 6 },
   amountDisplayBlockPhone: { minHeight: 68, marginTop: 0 },
+  amountDisplayBlockUnavailable: { minHeight: 58, justifyContent: "center", marginTop: 2 },
   amountDisplayText: { color: "#f8fafc", fontSize: 68, fontWeight: "500", lineHeight: 76 },
   amountDisplayTextPhone: { fontSize: 60, lineHeight: 68 },
   amountDisplayTextEmpty: { color: "#1b2230" },
+  amountDisplayTextUnavailable: { color: "#151b27", fontSize: 54, lineHeight: 60 },
   ticketOutcomeRow: { alignSelf: "center", flexDirection: "row", alignItems: "center", gap: 4, minHeight: 56, padding: 5, borderRadius: 999, backgroundColor: "#1c2330" },
   outcomeChoiceMuted: { minWidth: 86, textAlign: "center", color: "#8b94a5", fontSize: 17, fontWeight: "700", paddingHorizontal: 14 },
   outcomeChoiceActive: { minWidth: 86, textAlign: "center", overflow: "hidden", color: "#f8fafc", fontSize: 17, fontWeight: "800", paddingHorizontal: 14, paddingVertical: 12, borderRadius: 999, backgroundColor: "#0d1422" },
@@ -762,16 +862,29 @@ const styles = StyleSheet.create({
   errorTextBlock: { flex: 1, gap: 3 },
   errorText: { color: "#fde68a", fontWeight: "800" },
   errorDetailText: { color: "#fcd34d", fontSize: 12, fontWeight: "700" },
-  ticketFooter: { minHeight: 214, paddingHorizontal: 18, paddingTop: 8, paddingBottom: 28, backgroundColor: "#f72d72", position: "relative", overflow: "hidden" },
-  ticketFooterPhone: { minHeight: 202, paddingTop: 6, paddingBottom: 24 },
-  ticketFooterLightBand: { position: "absolute", top: -22, left: -70, right: -20, height: 118, backgroundColor: "#ff9ac0", opacity: 0.56, transform: [{ rotate: "-8deg" }] },
-  ticketFooterDarkBand: { position: "absolute", left: -40, right: -40, bottom: -72, height: 132, backgroundColor: "#b80d52", opacity: 0.72, transform: [{ rotate: "7deg" }] },
-  swipeSubmit: { flex: 1, minHeight: 132, alignItems: "center", justifyContent: "center", paddingHorizontal: 14, borderRadius: 24, backgroundColor: "transparent", position: "relative" },
-  swipeSubmitArmed: { backgroundColor: "transparent" },
-  swipeSubmitDisabled: { opacity: 0.55 },
-  swipeIcon: { position: "absolute", top: 40, width: 56, height: 44, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "transparent", zIndex: 2 },
-  swipeIconArmed: { backgroundColor: "rgba(255,255,255,0.16)" },
-  swipeTextBlock: { alignItems: "center", transform: [{ translateY: 34 }], zIndex: 1 },
-  swipeLabel: { color: "#ffffff", fontSize: 24, fontWeight: "500" },
-  swipeHelper: { color: "rgba(255,255,255,0.42)", fontSize: 12, fontWeight: "700", marginTop: 8 },
+  ticketFooter: { position: "absolute", left: 0, right: 0, bottom: 0, minHeight: 118, paddingHorizontal: 18, paddingTop: 12, justifyContent: "flex-end", backgroundColor: "#070b12", borderTopWidth: 1, borderTopColor: "#151c28", overflow: "visible", zIndex: 4, elevation: 4 },
+  ticketFooterPhone: { minHeight: 112, paddingTop: 10 },
+  ticketFooterSubmitLive: { backgroundColor: "#ff2b72", borderTopColor: "#ff2b72" },
+  ticketFooterUnavailable: { minHeight: 112, backgroundColor: "#070b12", borderTopColor: "#201923" },
+  ticketFooterLightBand: { display: "none" },
+  ticketFooterDarkBand: { display: "none" },
+  swipeExpansionSheet: { display: "none" },
+  swipeExpansionSheetSell: { display: "none" },
+  swipeSubmit: { minHeight: 72, alignItems: "center", justifyContent: "center", paddingHorizontal: 18, borderRadius: 12, position: "relative", borderWidth: 1, shadowColor: "#000000", shadowOpacity: 0.18, shadowRadius: 14, shadowOffset: { width: 0, height: 8 }, elevation: 8, zIndex: 2 },
+  swipeSubmitBuy: { backgroundColor: "#ff2b72", borderColor: "#ff5a91" },
+  swipeSubmitSell: { backgroundColor: "#dc143f", borderColor: "#fb7185" },
+  swipeSubmitUnavailable: { minHeight: 72, flexDirection: "row", gap: 12, paddingHorizontal: 18, backgroundColor: "#111827", borderColor: "#2f1820" },
+  swipeSubmitArmed: { shadowOpacity: 0.32, elevation: 12 },
+  swipeSubmitDisabled: { opacity: 0.48 },
+  swipeIcon: { position: "absolute", right: 18, top: 17, width: 38, height: 38, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.13)", zIndex: 2 },
+  swipeIconUnavailable: { position: "relative", right: 0, top: 0, width: 38, height: 38, borderRadius: 19, backgroundColor: "#2a1117" },
+  swipeIconArmed: { backgroundColor: "rgba(255,255,255,0.22)" },
+  swipeThresholdLine: { position: "absolute", top: 8, width: 58, height: 2, borderRadius: 999, backgroundColor: "rgba(255,255,255,0.22)" },
+  swipeThresholdLineArmed: { backgroundColor: "rgba(255,255,255,0.86)" },
+  swipeTextBlock: { alignItems: "center", zIndex: 1 },
+  swipeTextBlockUnavailable: { flex: 1, alignItems: "flex-start" },
+  swipeLabel: { color: "#ffffff", fontSize: 18, fontWeight: "900" },
+  swipeLabelUnavailable: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
+  swipeHelper: { color: "rgba(255,255,255,0.72)", fontSize: 11, fontWeight: "800", marginTop: 4 },
+  swipeHelperUnavailable: { color: "#8b94a5", marginTop: 3 },
 });
