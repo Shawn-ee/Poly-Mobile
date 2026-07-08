@@ -1414,3 +1414,35 @@ Pass for Home display-status contract.
 
 Remaining gaps:
 Real current live match discovery/breadth is still missing, and line families remain contract fixtures.
+
+### 2026-07-08 - Cycle OM - Provider breadth runtime
+
+Reference device:
+Not used. This was a Holiwyn provider/runtime cycle using Polymarket Gamma/CLOB route data and current S23 Holiwyn state.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode. Backend route proof used `http://127.0.0.1:3002`; S23 app remained in current Local MVP match-only Home mode.
+
+Holiwyn actions:
+Captured current ticket, Event Detail, and Home screens after closing the ticket. Verified visible Home shows one current MVP match and does not yet expose broad provider runtime.
+
+Evidence:
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-s23-current-screen.png`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-s23-current-ui.xml`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-s23-after-close.png`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-s23-after-close-ui.xml`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-s23-home.png`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-s23-home-ui.xml`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-provider-breadth-runtime-route.json`
+
+Smoke/tests:
+Provider import/refresh proof, provider breadth route proof, and provider bot reference-cache dry-run passed.
+
+Result:
+Pass for provider route breadth and current S23 state capture. Partial for visible mobile breadth because Home intentionally uses `mobileMvpMatches=1`.
+
+Remaining gaps:
+Visible app does not yet expose broad World Cup Winner provider markets. Contract-fixture line labels remain too prominent for final tester UI.

@@ -6745,3 +6745,38 @@ Temporary mock/static data:
 Future migration concern:
 
 - Provider Breadth Runtime Loop should add real provider-backed events before more visible source-label polish.
+
+## Cycle OM - Provider Breadth Runtime Loop
+
+Closed or narrowed:
+
+- Broad mobile World Cup runtime now proves multiple provider-backed surfaces route-side:
+  - `provider-breadth-world-cup-winner` with 8 real Polymarket markets.
+  - `argentina-vs-egypt` with 3 real Polymarket winner markets.
+- Local MVP Home remains match-only and excludes futures/outrights through `mobileMvpMatches=1`.
+- Tiny bot provider-price dry-run confirmed fresh/high-quality provider quotes for one World Cup Winner market without placing orders.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- More current provider-backed match events for the visible Home MVP.
+- Real provider-backed current-match Spread/Totals/Team Total market ids, token ids, chart history, and prices.
+- A user-facing route/mode decision for whether broad World Cup Winner provider markets should appear in mobile outside the strict match-only MVP route.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- Broad route can return multiple provider-backed events.
+- Visible mobile Home currently uses `mobileMvpMatches=1`, so S23 proof shows only the match-only route. This is intentional product behavior, but it means route breadth is not visible in Home yet.
+
+Temporary mock/static data:
+
+- Contract-fixture line markets remain local-test fake-token fixtures for Spread/Totals/Team Total.
+
+Future migration concern:
+
+- Do not weaken provider relevance gates to force line breadth.
+- If broad provider runtime should become visible, add an explicit app tab/filter rather than silently removing the match-only Home guard.
+- Run a tiny allowlist bot runtime dry-run before any live-local order placement.

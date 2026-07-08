@@ -8371,3 +8371,48 @@ Known limitations:
 
 - No new S23 proof was run because no mobile UI code changed.
 - Next milestone should avoid broad DB-reset server Vitest on the live dev database.
+
+## Cycle OM - Provider Breadth Runtime Loop
+
+Feature/page worked on:
+
+- Provider breadth runtime for mobile World Cup routes.
+- S23 visible confirmation of current Local MVP match-only Home/Event Detail state.
+- Tiny bot provider-price dry-run.
+
+Frontend/proof files touched:
+
+- `scripts/prove_mobile_provider_breadth_runtime.ts`
+- `docs/mobile/audits/cycle-OM-provider-breadth-runtime.md`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/`
+
+Important functions/services touched:
+
+- No visible mobile UI code changed.
+- Existing real provider import/refresh path imported `provider-breadth-world-cup-winner` from Polymarket Gamma/CLOB.
+- New proof script exercised `/api/events` broad World Cup mobile runtime, Local MVP match-only runtime, and `/api/mobile/events/:slug/live-detail`.
+- Bot dry-run used `poly-bot` reference-cache dry-run against one Polymarket World Cup winner market.
+
+User interactions supported/proven:
+
+- S23 Home still shows the current Local MVP match-only route.
+- S23 Event Detail still renders current match lines and ticket entry.
+- Broad provider runtime is proven route-side, not yet exposed as a visible Home mode.
+
+State transitions:
+
+- Local database now has an additional provider-backed World Cup Winner event with 8 refreshed Polymarket markets.
+- No user order, portfolio, or visible navigation state changed.
+
+Validation:
+
+- Real provider import/refresh passed.
+- Provider breadth route proof passed.
+- S23 screenshots/XML captured on `SM-S911U1`.
+- Tiny provider bot reference-cache dry-run passed with no local orders placed.
+
+Known limitations:
+
+- Visible mobile Home intentionally still uses `mobileMvpMatches=1`, so it shows one match, not the broader provider-backed World Cup Winner event.
+- `Local test` labels remain too prominent in tester UI for contract-fixture line markets.
+- Live-local bot order placement was not started; only dry-run provider price readiness was proven.

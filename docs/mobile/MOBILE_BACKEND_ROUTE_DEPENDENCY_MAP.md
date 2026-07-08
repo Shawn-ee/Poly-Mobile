@@ -3216,3 +3216,19 @@ Cycle OL implementation notes:
 
 - No backend route or schema changed.
 - Cleanup restored local dev data after broad parallel DB tests created reset side effects.
+
+## Cycle OM - Provider Breadth Runtime Loop
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Broad World Cup provider runtime | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10` | GET | Public viewing | World Cup route filters without `mobileMvpMatches=1` | Multiple provider-backed events, compact markets, `marketSourceSummary`, source breakdown | `Event`, `Market`, `Outcome`, reference snapshot tables | None added. | Visible mobile Home does not yet expose this broad runtime mode. |
+| Local MVP match-only Home | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` | GET | Public viewing | World Cup match-only route filters | Current match-only event card and source summary | `Event`, `Market`, `Outcome` | Existing contract-fixture line rows. | More current provider-backed match events remain unavailable. |
+| Event Detail provider breadth check | `/api/mobile/events/:slug/live-detail` | GET | Public viewing | Provider-backed event slug | Route-visible market list, provider lifecycle/source summary | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, `MarketOutcomeSnapshot` | Contract-fixture lines only for current match. | Real line markets for match events. |
+| World Cup Winner import/refresh | `scripts/prove_mobile_real_provider_world_cup_winner.ts` and provider refresh services | Local proof/service | Public provider data/local DB | Provider event slug `world-cup-winner`, local slug `provider-breadth-world-cup-winner` | 8 market ids, condition ids, token ids, quote/depth/chart refresh status | `Event`, `Market`, `Outcome`, reference snapshot tables | None added. | Outrights are not part of current match-only MVP Home. |
+| Bot provider price dry-run | `poly-bot` `reference:cache-dry-run` | Local dry-run | Public Polymarket data | Slug `will-france-win-the-2026-fifa-world-cup-924` | Fresh bid/ask, spread, quality status, MM eligibility | No Poly DB mutation | None. | Local live quote runtime still needs a separate tiny allowlist gate. |
+
+Cycle OM implementation notes:
+
+- No backend schema changed.
+- No visible mobile UI code changed.
+- Broad provider route now proves multiple provider-backed World Cup surfaces, while Local MVP remains match-only by design.

@@ -5622,6 +5622,40 @@ Decision:
 - Pass/fail: Pass.
 - Remaining P1: real provider-backed current-match line-market ingestion remains unavailable.
 
+## Cycle OM
+
+Gate status: Pass for provider breadth runtime route proof; partial for visible mobile breadth
+
+Scope: Import/refresh additional Polymarket-backed World Cup provider data, prove broad mobile route breadth, capture current S23 visible state, and run a tiny provider bot dry-run.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OM-provider-breadth-runtime.md`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-real-provider-world-cup-winner.json`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-provider-breadth-runtime-route.json`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-bot-reference-cache-dry-run.log`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-s23-home.png`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-s23-after-close.png`
+- `docs/mobile/harness/cycle-OM-provider-breadth-runtime/cycle-OM-s23-current-screen.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OM-P0-01 | P0 | Pass | Real provider proof imports/refreshed `provider-breadth-world-cup-winner` with 8 Polymarket markets. | Fix Gamma/CLOB import or choose another live slug. |
+| OM-P0-02 | P0 | Pass | Runtime route proof reports 2 provider-backed events in broad World Cup mode. | Fix `/api/events` provider filtering. |
+| OM-P0-03 | P0 | Pass | Local MVP route proof reports match-only events and zero non-match rows. | Restore `mobileMvpMatches=1` route behavior. |
+| OM-P0-04 | P0 | Pass | Live-detail checks report provider-backed markets for both route-visible provider events. | Fix `/api/mobile/events/:slug/live-detail`. |
+| OM-P0-05 | P0 | Pass | Bot dry-run log reports fresh high-quality Polymarket prices and no local order placement. | Fix provider price cache dry-run. |
+| OM-P1-01 | P1 | Partial | S23 Home screenshot shows only current MVP match because mobile uses `mobileMvpMatches=1`. | Add explicit broad runtime UI mode if wanted. |
+| OM-P1-02 | P1 | Partial | S23 screenshots show prominent `Local test` labels. | Reduce tester-facing debug dominance while keeping truthful source state. |
+
+Decision:
+
+- Pass/fail: Pass for provider/runtime proof.
+- Not complete for visible multi-event mobile breadth: the app intentionally remains match-only in Local MVP mode.
+- Remaining P1: real provider-backed current-match line markets remain unavailable.
+
 ## Cycle OL
 
 Gate status: Pass for provider readiness cleanup and UI source-change report

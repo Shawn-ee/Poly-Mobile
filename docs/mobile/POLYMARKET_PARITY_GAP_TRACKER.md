@@ -826,3 +826,15 @@ For every UI element or interaction, answer:
 - OL adds `UI_REGRESSION_SOURCE_CHANGE_REPORT.md` and classifies intentional removals, hidden mock/proof/stale surfaces, alternate runtime surfaces, and real regressions.
 - Remaining P1: visible source labels should be reduced in final tester UI without removing internal accessibility/test markers.
 - Remaining P1: Provider Breadth Runtime Loop should import/normalize multiple provider-backed events before more source-label micro-proof.
+
+## Cycle OM Gap Tracker Update
+
+- PM-GAP-133 is opened and partially closed for Provider Breadth Runtime Loop.
+- OM imports/refreshed `provider-breadth-world-cup-winner` with 8 real Polymarket-backed markets.
+- OM route proof confirms broad World Cup mobile runtime can return two provider-backed surfaces: `provider-breadth-world-cup-winner` and `argentina-vs-egypt`.
+- OM confirms Local MVP Home remains match-only on S23 because mobile still requests `mobileMvpMatches=1`.
+- OM runs a tiny Polymarket provider price dry-run for `will-france-win-the-2026-fifa-world-cup-924`; no local orders were placed.
+- Remaining P1: decide whether broad provider runtime should become visible in mobile via an explicit tab/filter.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Remaining P1: reduce dominant tester-facing `Local test` labels while preserving internal source truth.
+- Remaining P1: run tiny allowlist bot runtime dry-run before any live-local quote placement.
