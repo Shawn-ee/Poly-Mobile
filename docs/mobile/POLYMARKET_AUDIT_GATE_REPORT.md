@@ -5070,3 +5070,33 @@ Decision:
 
 - Pass/fail: Pass for current service-state proof and Local MVP open-order journey.
 - Not a final Polymarket line-market parity pass because provider-backed line markets remain unavailable.
+
+## Cycle NR
+
+Gate status: Pass for service-state inspection
+
+Scope: Inspect whether the current Holiwyn service is actually ready for provider-backed Regulation Winner and line markets before continuing visible mobile work.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NR-service-state-inspection.md`
+- `docs/mobile/harness/cycle-NR-service-state-inspection/cycle-NR-current-state.json`
+- `docs/mobile/harness/cycle-NR-service-state-inspection/cycle-NR-provider-match-line-availability-argentina-egypt.json`
+- `docs/mobile/harness/cycle-NR-service-state-inspection/cycle-NR-provider-discovery-guard.json`
+- `docs/mobile/harness/cycle-NR-service-state-inspection/cycle-NR-polymarket-active-sports-scan.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NR-P0-01 | P0 | Pass | Current-state inspection shows Home and Event Detail route are available. | Fix backend server or route restoration. |
+| NR-P0-02 | P0 | Pass | Route source summary shows Regulation Winner `provider-backed`. | Fix provider winner mapping/refresh. |
+| NR-P0-03 | P0 | Pass | Route source summary shows line markets `contract-fixture` with family readiness. | Fix route source serialization. |
+| NR-P0-04 | P0 | Pass | Gamma availability proof shows 0 provider line markets for this event. | Fix provider fetch/classification if wrong. |
+| NR-P0-05 | P0 | Pass | Discovery guard shows 0 attach-ready line targets and 0 unsafe outright attachments. | Tighten provider relevance/family gates. |
+| NR-P1-01 | P1 | Partial | Active sports scan found World Cup outright futures, not match lines. | Add broader match discovery or approved line provider. |
+
+Decision:
+
+- Pass/fail: Pass for inspection and path adjustment.
+- Next implementation work should not claim Polymarket-backed Spread/Totals/Team Total until real provider line data exists.

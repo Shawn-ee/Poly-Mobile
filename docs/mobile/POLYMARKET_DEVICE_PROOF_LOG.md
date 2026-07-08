@@ -815,3 +815,32 @@ Pass for current server-mode line-family readiness and open-order proof.
 
 Remaining gaps:
 Real provider-backed Spread/Totals/Team Total lines are still missing. This proof confirms the app honestly exposes that state instead of marking fixture line markets as Polymarket parity.
+
+### 2026-07-08 - Cycle NR - Service state inspection
+
+Reference device:
+Not used. This cycle inspected backend/provider state and public Polymarket Gamma data.
+
+Holiwyn device:
+No new Android proof. Latest S23 proof remains Cycle NQ.
+
+Holiwyn app mode:
+Local backend route inspection and public Gamma read-only scan.
+
+Holiwyn actions:
+No new device interaction. Inspected Home route, Event Detail route, provider event market families, provider candidate discovery, and active sports candidate scan.
+
+Evidence:
+- `docs/mobile/harness/cycle-NR-service-state-inspection/cycle-NR-current-state.json`
+- `docs/mobile/harness/cycle-NR-service-state-inspection/cycle-NR-provider-match-line-availability-argentina-egypt.json`
+- `docs/mobile/harness/cycle-NR-service-state-inspection/cycle-NR-provider-discovery-guard.json`
+- `docs/mobile/harness/cycle-NR-service-state-inspection/cycle-NR-polymarket-active-sports-scan.json`
+
+Smoke/tests:
+All inspection scripts passed. No mobile typecheck was required because no app code changed.
+
+Result:
+Pass for service-state inspection.
+
+Remaining gaps:
+Current route line markets remain contract fixtures. Active sports scan did not find match-level line markets; it found World Cup outright futures.

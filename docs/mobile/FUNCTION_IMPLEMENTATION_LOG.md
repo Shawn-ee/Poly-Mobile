@@ -7472,3 +7472,47 @@ Known limitations:
 
 - Regulation Winner is provider-backed, but Spread/Totals/Team Total remain backend `contract-fixture` line families.
 - This cycle proves the current service state honestly on-device; it does not close real Polymarket line-market ingestion.
+
+## Cycle NR - Service State Inspection And Path Adjustment
+
+Feature/page worked on:
+
+- Local MVP service readiness inspection before continuing the next UI cycle.
+
+Frontend/harness/backend files touched:
+
+- Evidence/docs only:
+  - `docs/mobile/harness/cycle-NR-service-state-inspection/cycle-NR-current-state.json`
+  - `docs/mobile/harness/cycle-NR-service-state-inspection/cycle-NR-provider-match-line-availability-argentina-egypt.json`
+  - `docs/mobile/harness/cycle-NR-service-state-inspection/cycle-NR-provider-discovery-guard.json`
+  - `docs/mobile/harness/cycle-NR-service-state-inspection/cycle-NR-polymarket-active-sports-scan.json`
+  - `docs/mobile/audits/cycle-NR-service-state-inspection.md`
+
+Important functions/services touched:
+
+- No code changed.
+- Reused existing inspection/proof tools for `/api/events`, `/api/mobile/events/:slug/live-detail`, Polymarket Gamma event availability, provider candidate discovery, and active sports scan.
+
+User interactions supported/proven:
+
+- No new visible user interaction changed in this inspection cycle.
+- The prior S23 proof remains Cycle NQ for current Home -> Event Detail -> line ticket -> server open order.
+
+State transitions:
+
+- No database schema or production data changed by this inspection.
+- No order, portfolio, or provider mapping was applied.
+
+Validation:
+
+- Current state inspection passed.
+- Provider match line availability proof passed.
+- Provider discovery guard passed.
+- Active sports scan completed read-only.
+
+Known limitations/path adjustment:
+
+- Current Home has one match, `argentina-vs-egypt`.
+- Regulation Winner is provider-backed.
+- Spread/Totals/Team Total are not provider-backed; Polymarket Gamma exposes 0 line markets for this event and the active sports scan returned only World Cup outright winner futures in the first active sports candidates.
+- Next useful work should not chase visual parity around nonexistent provider lines. Continue Local MVP visible flow with explicit `contract-fixture` line disclosure, or add a real approved line provider before claiming provider-backed line parity.

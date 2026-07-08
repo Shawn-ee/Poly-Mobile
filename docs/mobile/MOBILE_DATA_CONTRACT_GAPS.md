@@ -6115,3 +6115,33 @@ Temporary mock/static data:
 Future migration concern:
 
 - The next service milestone should try to attach real Polymarket or approved provider line markets. If unavailable, the UI should keep the current clear local-line disclosure instead of presenting fixture lines as provider-backed.
+
+## Cycle NR - Service State Inspection And Path Adjustment
+
+Closed or narrowed:
+
+- Confirmed the current backend route is internally consistent: provider-backed Regulation Winner and contract-fixture line families.
+- Confirmed Polymarket Gamma exposes 3 match-winner markets and 0 spread/total/team-total markets for `fifwc-arg-egy-2026-07-07`.
+- Confirmed provider discovery rejects winner markets for line targets with family mismatch instead of unsafe attachment.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Attach-ready provider line markets for spread, total, and team-total families.
+- A broader current-match discovery source that returns real match-level markets beyond World Cup outright winner futures.
+
+Schema mismatch:
+
+- No schema mismatch was found or introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- Existing backend `contract-fixture` line rows remain necessary for Local MVP line-ticket UI.
+- No new frontend-only mock data was added.
+
+Future migration concern:
+
+- If Polymarket does not expose match line markets through Gamma/CLOB for current World Cup games, Holiwyn needs another approved provider contract for line pricing before provider-backed line parity can be claimed.

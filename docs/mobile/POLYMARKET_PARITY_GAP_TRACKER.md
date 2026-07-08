@@ -643,3 +643,12 @@ For every UI element or interaction, answer:
 - The proof verifies separate readiness markers for spread, total, and team-total, and verifies Portfolio preserves `spread`, `1.5`, and `contract-fixture` source identity.
 - Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open; current line families are explicitly `contract-fixture`.
 - Remaining P1: open-order behavior was proven without seeded counterparty liquidity; filled/cashout lifecycle is covered by earlier deterministic-liquidity proofs and still needs production liquidity hardening.
+
+## Cycle NR Gap Tracker Update
+
+- PM-GAP-114 is opened and verified for service-state inspection after repeated provider-line deferrals.
+- NR confirms the current service state instead of guessing: Home has `argentina-vs-egypt`, Regulation Winner is provider-backed, and line families are contract fixtures.
+- Polymarket Gamma for `fifwc-arg-egy-2026-07-07` exposes 3 match-winner markets and 0 line markets.
+- Provider discovery guard confirms 0 attach-ready line targets and rejects wrong-family winner candidates for line markets.
+- Active sports scan returned World Cup outright winner futures, not match-level spread/total/team-total lines.
+- Path adjustment: continue Local MVP line-ticket flow with explicit contract-fixture disclosure; do not mark provider-backed line parity complete until a real provider line source exists.

@@ -2926,3 +2926,18 @@ Cycle NQ implementation notes:
 - No schema migration was added.
 - No backend route changed.
 - This cycle promoted the S23 proof from generic Event Detail smoke to server-mode route proof for the current source/readiness state.
+
+## Cycle NR - Service State Inspection And Path Adjustment
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home current match inventory | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` | GET | Public viewing | Query filters/page size | Match count, event slug, source summary, line families | `Event`, `Market`, `Outcome` | None added. | More current provider-backed match inventory remains missing. |
+| Event Detail current market inventory | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | Market source summary, provider winner count, fixture line count/families, compact market rows | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot` | Existing backend `contract-fixture` line rows. | Real provider-backed Spread/Totals/Team Total rows for the selected match. |
+| Provider event availability | Polymarket Gamma `/events?slug=fifwc-arg-egy-2026-07-07` | GET | Public provider API | Provider event slug | Event market count, market questions, condition ids, classified family counts | None directly; compared to local route data | None added. | Gamma exposes only match-winner markets for this event. |
+| Provider candidate discovery | `discoverMobileLiveProviderCandidates()` | Local service/proof | Local backend context and public Gamma | Event slug, combined provider search mode | Attach-ready candidate count and family mismatch reasons | `Event`, `Market`, `Outcome` | None added. | 0 attach-ready line candidates. |
+| Active sports scan | Gamma `/markets?active=true&closed=false&archived=false&limit=200` | GET | Public provider API | Active market filters | Read-only sports candidates | None directly | None added. | First active sports scan returns World Cup outright futures, not match line markets. |
+
+Cycle NR implementation notes:
+
+- No route/schema/code changed.
+- The inspection confirms current service readiness: provider-backed Regulation Winner plus explicit backend-shaped line fixtures.

@@ -1,0 +1,290 @@
+{
+  "cycle": "NR",
+  "result": "pass",
+  "generatedAt": "2026-07-08T14:32:44.368Z",
+  "provider": "polymarket-gamma",
+  "eventSlug": "argentina-vs-egypt",
+  "providerSearchMode": "combined",
+  "providerEventSlugs": [
+    "fifwc-arg-egy-2026-07-07",
+    "665652"
+  ],
+  "manualSlugFallbacks": [
+    "fifwc-arg-egy-2026-07-07-arg",
+    "665652-arg",
+    "fifwc-arg-egy-2026-07-07-spread",
+    "fifwc-arg-egy-2026-07-07-handicap",
+    "fifwc-arg-egy-2026-07-07-arg-spread",
+    "fifwc-arg-egy-2026-07-07-arg-handicap",
+    "fifwc-arg-egy-2026-07-07-spread-1-5",
+    "fifwc-arg-egy-2026-07-07-handicap-1-5",
+    "fifwc-arg-egy-2026-07-07-arg-spread-1-5",
+    "fifwc-arg-egy-2026-07-07-arg-handicap-1-5",
+    "fifwc-arg-egy-2026-07-07-spread-15",
+    "fifwc-arg-egy-2026-07-07-handicap-15",
+    "fifwc-arg-egy-2026-07-07-arg-spread-15",
+    "fifwc-arg-egy-2026-07-07-arg-handicap-15",
+    "665652-spread",
+    "665652-handicap",
+    "665652-arg-spread",
+    "665652-arg-handicap",
+    "665652-spread-1-5",
+    "665652-handicap-1-5",
+    "665652-arg-spread-1-5",
+    "665652-arg-handicap-1-5",
+    "665652-spread-15",
+    "665652-handicap-15",
+    "665652-arg-spread-15",
+    "665652-arg-handicap-15",
+    "fifwc-arg-egy-2026-07-07-total-goals",
+    "fifwc-arg-egy-2026-07-07-over-under",
+    "fifwc-arg-egy-2026-07-07-goals",
+    "fifwc-arg-egy-2026-07-07-total-goals-2-5",
+    "fifwc-arg-egy-2026-07-07-over-2-5",
+    "fifwc-arg-egy-2026-07-07-under-2-5",
+    "fifwc-arg-egy-2026-07-07-total-goals-25",
+    "fifwc-arg-egy-2026-07-07-over-25",
+    "fifwc-arg-egy-2026-07-07-under-25",
+    "665652-total-goals",
+    "665652-over-under",
+    "665652-goals",
+    "665652-total-goals-2-5",
+    "665652-over-2-5",
+    "665652-under-2-5",
+    "665652-total-goals-25",
+    "665652-over-25",
+    "665652-under-25",
+    "fifwc-arg-egy-2026-07-07-team-total",
+    "fifwc-arg-egy-2026-07-07-team-goals",
+    "fifwc-arg-egy-2026-07-07-arg-team-total",
+    "fifwc-arg-egy-2026-07-07-team-total-arg",
+    "fifwc-arg-egy-2026-07-07-arg-team-goals",
+    "fifwc-arg-egy-2026-07-07-arg-total-goals",
+    "fifwc-arg-egy-2026-07-07-team-total-1-5",
+    "fifwc-arg-egy-2026-07-07-arg-team-total-1-5",
+    "fifwc-arg-egy-2026-07-07-arg-team-goals-1-5",
+    "fifwc-arg-egy-2026-07-07-team-total-15",
+    "fifwc-arg-egy-2026-07-07-arg-team-total-15",
+    "fifwc-arg-egy-2026-07-07-arg-team-goals-15",
+    "665652-team-total",
+    "665652-team-goals",
+    "665652-arg-team-total",
+    "665652-team-total-arg",
+    "665652-arg-team-goals",
+    "665652-arg-total-goals",
+    "665652-team-total-1-5",
+    "665652-arg-team-total-1-5",
+    "665652-arg-team-goals-1-5",
+    "665652-team-total-15",
+    "665652-arg-team-total-15",
+    "665652-arg-team-goals-15",
+    "fifwc-arg-egy-2026-07-07-draw",
+    "665652-draw",
+    "fifwc-arg-egy-2026-07-07-spread-0-5",
+    "fifwc-arg-egy-2026-07-07-handicap-0-5",
+    "fifwc-arg-egy-2026-07-07-arg-spread-0-5",
+    "fifwc-arg-egy-2026-07-07-arg-handicap-0-5",
+    "fifwc-arg-egy-2026-07-07-spread-05",
+    "fifwc-arg-egy-2026-07-07-handicap-05",
+    "fifwc-arg-egy-2026-07-07-arg-spread-05",
+    "fifwc-arg-egy-2026-07-07-arg-handicap-05",
+    "665652-spread-0-5",
+    "665652-handicap-0-5",
+    "665652-arg-spread-0-5",
+    "665652-arg-handicap-0-5",
+    "665652-spread-05",
+    "665652-handicap-05",
+    "665652-arg-spread-05",
+    "665652-arg-handicap-05"
+  ],
+  "manualSlugFallbackCandidateCount": 0,
+  "providerCandidateFamilySummary": {
+    "match_winner": 3,
+    "spread": 0,
+    "total_goals": 0,
+    "team_total_goals": 0,
+    "corners": 0,
+    "first_half": 0,
+    "second_half": 0,
+    "correct_score": 0,
+    "other": 0
+  },
+  "targetMarketCount": 7,
+  "attachReadyCandidateCount": 3,
+  "nextRequiredAction": "review_and_attach_provider_identity_candidates",
+  "assertions": {
+    "matchWinnerAttachReadyCount": 3,
+    "unsafeOutrightAttachCount": 0,
+    "lineTargetCount": 4,
+    "attachReadyLineTargetCount": 0,
+    "lineWrongFamilyRejectionCount": 4
+  },
+  "targets": [
+    {
+      "marketId": "985df42d-eeb0-4af1-b2ae-126db9328630",
+      "title": "Will Argentina win on 2026-07-07?",
+      "marketType": "match_winner_1x2",
+      "line": null,
+      "expectedProviderFamily": "match_winner",
+      "candidateCount": 3,
+      "attachReady": true,
+      "bestCandidate": {
+        "slug": "fifwc-arg-egy-2026-07-07-arg",
+        "question": "Will Argentina win on 2026-07-07?",
+        "eventTitle": "Argentina vs. Egypt",
+        "expectedFamily": "match_winner",
+        "candidateFamily": "match_winner",
+        "reasons": [],
+        "matchedImportantTokens": [
+          "argentina",
+          "egypt",
+          "win"
+        ],
+        "relevant": true
+      }
+    },
+    {
+      "marketId": "0806254e-757c-403f-a180-0631c4e6b3fc",
+      "title": "Argentina vs. Egypt: Egypt +1.5",
+      "marketType": "spread",
+      "line": "1.5",
+      "expectedProviderFamily": "spread",
+      "candidateCount": 3,
+      "attachReady": false,
+      "bestCandidate": {
+        "slug": "fifwc-arg-egy-2026-07-07-draw",
+        "question": "Will Argentina vs. Egypt end in a draw?",
+        "eventTitle": "Argentina vs. Egypt",
+        "expectedFamily": "spread",
+        "candidateFamily": "match_winner",
+        "reasons": [
+          "provider_family_mismatch"
+        ],
+        "matchedImportantTokens": [
+          "argentina",
+          "egypt"
+        ],
+        "relevant": true
+      }
+    },
+    {
+      "marketId": "95b4cb4d-6dac-4e84-a96a-d1cee0891f16",
+      "title": "Argentina vs. Egypt: Total goals 2.5",
+      "marketType": "total_goals",
+      "line": "2.5",
+      "expectedProviderFamily": "total_goals",
+      "candidateCount": 3,
+      "attachReady": false,
+      "bestCandidate": {
+        "slug": "fifwc-arg-egy-2026-07-07-draw",
+        "question": "Will Argentina vs. Egypt end in a draw?",
+        "eventTitle": "Argentina vs. Egypt",
+        "expectedFamily": "total_goals",
+        "candidateFamily": "match_winner",
+        "reasons": [
+          "provider_family_mismatch",
+          "insufficient_market_relevance"
+        ],
+        "matchedImportantTokens": [
+          "argentina",
+          "egypt"
+        ],
+        "relevant": false
+      }
+    },
+    {
+      "marketId": "d62c4e23-1349-40d1-8e64-66d1084e14c3",
+      "title": "Argentina vs. Egypt: Argentina total goals 1.5",
+      "marketType": "team_total_goals",
+      "line": "1.5",
+      "expectedProviderFamily": "team_total_goals",
+      "candidateCount": 3,
+      "attachReady": false,
+      "bestCandidate": {
+        "slug": "fifwc-arg-egy-2026-07-07-draw",
+        "question": "Will Argentina vs. Egypt end in a draw?",
+        "eventTitle": "Argentina vs. Egypt",
+        "expectedFamily": "team_total_goals",
+        "candidateFamily": "match_winner",
+        "reasons": [
+          "provider_family_mismatch"
+        ],
+        "matchedImportantTokens": [
+          "argentina",
+          "egypt"
+        ],
+        "relevant": true
+      }
+    },
+    {
+      "marketId": "95d0077b-dab8-4601-ba3f-d34001ffded3",
+      "title": "Will Argentina vs. Egypt end in a draw?",
+      "marketType": "match_winner_1x2",
+      "line": null,
+      "expectedProviderFamily": "match_winner",
+      "candidateCount": 3,
+      "attachReady": true,
+      "bestCandidate": {
+        "slug": "fifwc-arg-egy-2026-07-07-draw",
+        "question": "Will Argentina vs. Egypt end in a draw?",
+        "eventTitle": "Argentina vs. Egypt",
+        "expectedFamily": "match_winner",
+        "candidateFamily": "match_winner",
+        "reasons": [],
+        "matchedImportantTokens": [
+          "argentina",
+          "egypt",
+          "end"
+        ],
+        "relevant": true
+      }
+    },
+    {
+      "marketId": "b6554df0-9bbc-4161-bfcf-f9d76b6c71e3",
+      "title": "Will Egypt win on 2026-07-07?",
+      "marketType": "match_winner_1x2",
+      "line": null,
+      "expectedProviderFamily": "match_winner",
+      "candidateCount": 3,
+      "attachReady": true,
+      "bestCandidate": {
+        "slug": "fifwc-arg-egy-2026-07-07-egy",
+        "question": "Will Egypt win on 2026-07-07?",
+        "eventTitle": "Argentina vs. Egypt",
+        "expectedFamily": "match_winner",
+        "candidateFamily": "match_winner",
+        "reasons": [],
+        "matchedImportantTokens": [
+          "argentina",
+          "egypt",
+          "win"
+        ],
+        "relevant": true
+      }
+    },
+    {
+      "marketId": "75e5b7d9-ffc9-422a-814e-34d2588b1210",
+      "title": "Argentina vs. Egypt: Argentina +0.5",
+      "marketType": "spread",
+      "line": "0.5",
+      "expectedProviderFamily": "spread",
+      "candidateCount": 3,
+      "attachReady": false,
+      "bestCandidate": {
+        "slug": "fifwc-arg-egy-2026-07-07-draw",
+        "question": "Will Argentina vs. Egypt end in a draw?",
+        "eventTitle": "Argentina vs. Egypt",
+        "expectedFamily": "spread",
+        "candidateFamily": "match_winner",
+        "reasons": [
+          "provider_family_mismatch"
+        ],
+        "matchedImportantTokens": [
+          "argentina",
+          "egypt"
+        ],
+        "relevant": true
+      }
+    }
+  ]
+}
