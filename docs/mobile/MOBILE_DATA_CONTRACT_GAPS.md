@@ -4712,6 +4712,40 @@ Future migration concern:
 - Replace `contract-fixture` line markets with real Polymarket provider mappings when Gamma/CLOB exposes attach-ready soccer match lines.
 - Next P0 should prove Android flow from enriched match line selection through fake-token order and Portfolio/history.
 
+## Cycle LO - Enriched Match Line Order Lifecycle
+
+Closed or narrowed:
+
+- The LN-enriched `switzerland-vs-colombia` Spread market now has a server-mode filled lifecycle proof.
+- `/api/orders` accepts the selected Spread line ticket shape and fills against seeded backend liquidity.
+- `/api/portfolio` preserves the selected line market identity in the filled position.
+- `/api/portfolio/history` preserves the selected line market identity in recent trade activity.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real Polymarket-backed line-market ids/tokens for the selected match Spread market.
+- Visible Android proof that the mobile UI opens the same route-backed line ticket and submits the same server order.
+- Production liquidity/source breadth for the same line-market families.
+
+Schema mismatch:
+
+- No schema migration was required. Existing `ApiOrderRequest.requestBody.selection`, `Order`, `Trade`, `Position`, `Market`, and `Outcome` fields carried the identity.
+
+Route mismatch:
+
+- No route mismatch was found in server mode for the selected line order lifecycle.
+- The remaining gap is device/UI proof and replacement of `contract-fixture` source data with real provider mappings.
+
+Temporary mock/static data:
+
+- The proof uses deterministic backend maker liquidity, not frontend-only state.
+- The line market remains backend-written `contract-fixture` data.
+
+Future migration concern:
+
+- Repeat LO against real Polymarket-backed match line markets when provider discovery/attachment can prove them.
+- Run S23 proof from Home -> Event Detail -> Spread line -> Buy ticket -> filled Portfolio/history as the next P0.
+
 ## Cycle FH - Home Route Server Cancel And Portfolio Activity
 
 Closed or narrowed:

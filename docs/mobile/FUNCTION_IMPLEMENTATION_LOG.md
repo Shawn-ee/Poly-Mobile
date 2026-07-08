@@ -5494,3 +5494,46 @@ Known limitations:
 - The new line markets are deterministic backend-shaped contract fixtures, not real Polymarket-mapped line markets.
 - Real Polymarket Gamma/CLOB line-market discovery for match events remains open.
 - Android proof of line selection -> ticket -> order -> Portfolio/history is the next P0 cycle.
+
+## Cycle LO - Enriched Match Line Order Lifecycle
+
+Feature/page worked on:
+
+- Server-mode lifecycle behind the Local MVP visible path: Home -> Event Detail -> line market -> Buy ticket -> fake-token/server-backed order -> Portfolio/history.
+
+Frontend/harness/backend files touched:
+
+- `scripts/prove_mobile_mvp_match_line_order_lifecycle.ts`
+- `docs/mobile/harness/cycle-LO-match-line-order-lifecycle/cycle-LO-match-line-order-lifecycle.json`
+
+Important functions/services touched:
+
+- Added a proof script that targets the LN-enriched `switzerland-vs-colombia` match event.
+- Reused `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+- Reused matching/orderbook collateral services to seed a maker ask and fill the taker BUY order.
+
+User interactions supported/proven:
+
+- The selected enriched Spread market (`Colombia +1.5`) can be bought through the same server order route the mobile ticket uses.
+- The submitted order fills against seeded backend liquidity.
+- Portfolio shows the filled position.
+- Portfolio history shows the recent trade.
+- The selection snapshot preserves market type `spread`, line `1.5`, period `regulation`, outcome side, provider/source fields, and token identity.
+
+State transitions:
+
+- Local proof user starts with 10,000 fake-token USDC.
+- Maker receives complete-set collateral and posts a resting SELL ask.
+- Taker submits a BUY limit order through `/api/orders`.
+- Order transitions to `FILLED`.
+- Position and recent trade appear through server routes.
+
+Validation:
+
+- `npx tsx scripts/prove_mobile_mvp_match_line_order_lifecycle.ts --eventSlug=switzerland-vs-colombia --summaryPath=docs/mobile/harness/cycle-LO-match-line-order-lifecycle/cycle-LO-match-line-order-lifecycle.json`
+
+Known limitations:
+
+- S23 Android proof was not run because no ADB devices were visible and the S23 wireless debug hostname did not resolve.
+- The selected line market is still `contract-fixture`, not real Polymarket-backed line liquidity.
+- This is a backend/server-mode proof only; the next P0 remains visible S23 proof from Home into ticket and Portfolio.

@@ -549,3 +549,29 @@ Pass for selected Home -> Event Detail -> Spread ticket -> server fake-token ord
 
 Remaining gaps:
 Production active Polymarket World Cup provider breadth and non-disposable liquidity/source breadth.
+
+### 2026-07-08 - Cycle LO - Enriched match line order lifecycle
+
+Reference device:
+Not used in this backend/server-mode cycle. The Polymarket-reference expectation remains the Local MVP retail path: match event -> line market -> simple ticket -> Portfolio/history.
+
+Holiwyn device:
+Not run. `adb devices -l` returned no attached devices, and `adb connect adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` failed to resolve the S23 wireless debug hostname.
+
+Holiwyn app mode:
+Server-mode backend proof only against local backend route code.
+
+Holiwyn actions:
+Backend proof selected `switzerland-vs-colombia`, chose the enriched Spread line `Colombia +1.5`, seeded maker liquidity, submitted a BUY through `/api/orders`, then verified `/api/portfolio` and `/api/portfolio/history`.
+
+Holiwyn evidence:
+- `docs/mobile/harness/cycle-LO-match-line-order-lifecycle/cycle-LO-match-line-order-lifecycle.json`
+
+Smoke/tests:
+`npx tsx scripts/prove_mobile_mvp_match_line_order_lifecycle.ts --eventSlug=switzerland-vs-colombia --summaryPath=docs/mobile/harness/cycle-LO-match-line-order-lifecycle/cycle-LO-match-line-order-lifecycle.json`
+
+Result:
+Partial. Server lifecycle passed; visible Android proof did not run.
+
+Remaining gaps:
+Reconnect S23 and run visible Home -> Event Detail -> Spread line -> ticket -> filled Portfolio/history proof. Real Polymarket-backed match line markets remain P1.

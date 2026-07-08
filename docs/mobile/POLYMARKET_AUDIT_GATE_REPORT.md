@@ -4351,3 +4351,57 @@ Decision:
 - Pass/fail: Pass for focused internal-use backend readiness gate.
 - Ready for internal local testing: yes, for fake-token/internal server-mode MVP flows covered by existing route contracts and this LJ gate.
 - Ready for public server deployment: no. Remaining public-launch gaps include production provider breadth, real liquidity, real auth/session/funding/compliance, and cashout preview/proceeds hardening.
+
+## Cycle LN
+
+Gate status: Partial
+
+Scope: Match line service readiness inspection and enrichment for the local MVP route-backed match page.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-LN-match-line-service-readiness.md`
+- `docs/mobile/harness/cycle-LN-match-line-service-readiness/cycle-LN-match-line-service-readiness.json`
+- `scripts/seed_mobile_mvp_match_line_markets.ts`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LN-LINES-P0-01 | P0 | Pass | `switzerland-vs-colombia` live-detail now returns Regulation Winner, Spread, Totals, and Team Totals. | Re-run the seed/proof script against the selected match event. |
+| LN-LINES-P0-02 | P0 | Pass | Home route returns `switzerland-vs-colombia` first with enriched match market types. | Keep match events ahead of the futures/out-right surface for Local MVP testing. |
+| LN-LINES-P0-03 | P0 | Partial | Line markets are backend-shaped and marked `contract-fixture`, not frontend-only mocks. | Replace with real Polymarket mappings when available. |
+| LN-LINES-P0-04 | P0 | Fail | No S23 visible proof in this cycle. ADB had no attached devices. | Reconnect S23 and run Home -> Event Detail -> line ticket proof. |
+
+Decision:
+
+- Pass/fail: Partial, not final parity pass.
+- Unresolved P0 gaps: S23 visible proof.
+- Remaining P1/P2 gaps: real Polymarket-backed match line market discovery and production liquidity.
+
+## Cycle LO
+
+Gate status: Partial
+
+Scope: Server-mode order, Portfolio, and history lifecycle for the LN-enriched match Spread market.
+
+Evidence:
+
+- `docs/mobile/harness/cycle-LO-match-line-order-lifecycle/cycle-LO-match-line-order-lifecycle.json`
+- `scripts/prove_mobile_mvp_match_line_order_lifecycle.ts`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LO-ORDER-P0-01 | P0 | Pass | `/api/orders` filled a BUY for `switzerland-vs-colombia` Spread line `1.5`. | Fix provider quote gate, maker liquidity, or order request shape. |
+| LO-ORDER-P0-02 | P0 | Pass | Order response preserved selected market/outcome/line/period/source/token. | Fix ticket selection metadata sanitization or canonical order response. |
+| LO-ORDER-P0-03 | P0 | Pass | `/api/portfolio` returned the filled position with selected line and token identity. | Fix Portfolio selection metadata bridge. |
+| LO-ORDER-P0-04 | P0 | Pass | `/api/portfolio/history` returned recent trade with selected line and token identity. | Fix history selection metadata bridge. |
+| LO-ORDER-P0-05 | P0 | Fail | No S23 visible proof in this cycle. ADB had no attached devices and S23 mDNS did not resolve. | Reconnect S23 and run visible mobile proof. |
+
+Decision:
+
+- Pass/fail: Partial, not final Audit Gate pass.
+- Unresolved P0 gaps: visible S23 proof from Home to Portfolio/history.
+- Remaining P1/P2 gaps: real Polymarket-backed line market mappings and production liquidity.

@@ -2267,3 +2267,17 @@ Cycle LN implementation notes:
 - Before LN, `switzerland-vs-colombia` and `argentina-vs-egypt` only served `match_winner_1x2`.
 - `mobile-fj-real-world-cup-winner` is provider-backed but is a futures/outright surface, not a match-betting line surface.
 - LN enriches the live match path only and keeps futures as a separate surface.
+
+## Cycle LO - Enriched Match Line Order Lifecycle
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Simple Buy ticket for enriched match Spread | `/api/orders` | POST | Canonical mobile API key with `orders:write`; internal trading beta enabled for local proof user | `marketId`, `outcomeId`, `side=BUY`, `type=LIMIT`, `price=0.52`, `size=10`, `contractSide=YES`, and `selection` snapshot for Spread line `1.5` | Order id/status/fills, filled order selection, balance, position | `ApiCredential`, `ApiOrderRequest`, `Order`, `Trade`, `Position`, `Market`, `Outcome`, `UserBalance` | None in LO. The proof uses the real order route and matching service. | S23 visible ticket proof remains open. Production line liquidity remains open. |
+| Filled Portfolio position after enriched match line BUY | `/api/portfolio` | GET | Canonical mobile API key with `account:read` | None | Filled `positions[]` with selected market/outcome, line `1.5`, period `regulation`, provider/source fields, reference token id | `Position`, `Order`, `ApiOrderRequest`, `Market`, `Outcome` | None in LO. Server route is source of truth. | Public provider-backed line data remains P1. |
+| Recent trade activity after enriched match line BUY | `/api/portfolio/history` | GET | Canonical mobile API key with `account:read` | None | `recentTrades[]` selection preserving Spread identity, line, period, source, token | `Trade`, `Order`, `ApiOrderRequest`, `Market`, `Outcome` | None in LO. Server route is source of truth. | S23 Portfolio/history visible proof remains P0. |
+| Maker liquidity for local fill proof | Matching service via `scripts/prove_mobile_mvp_match_line_order_lifecycle.ts` | Local script/Prisma write | Local development only | Market/outcome, ask price `0.52`, ask size `25` | Creates a resting SELL order so the mobile-style BUY fills | `User`, `UserBalance`, collateral/position/order/trade tables | Deterministic backend liquidity only; not frontend mock state. | Replace with production liquidity/provider depth before public readiness. |
+
+Cycle LO implementation notes:
+
+- LO is a server-mode lifecycle pass, not a device Audit Gate pass.
+- ADB showed no attached devices, and the S23 wireless debug hostname did not resolve, so Android proof remains the next P0.
