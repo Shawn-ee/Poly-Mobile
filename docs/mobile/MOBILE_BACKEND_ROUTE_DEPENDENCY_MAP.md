@@ -2397,3 +2397,17 @@ Cycle LY implementation notes:
 
 - No backend route or schema changed.
 - The UI now constrains route/fallback value-history points to the visual chart band before the range selector.
+
+## Cycle LZ - Current State Reinspection And Portfolio Account Entry
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Current Local MVP route inspection | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10` and `/api/mobile/events/switzerland-vs-colombia/live-detail` | GET | Public viewing | Query filters and event slug | Event/match list, `eventType`, `marketSourceSummary`, `markets[].referenceSource`, `marketType`, `line`, `period` | `Event`, `Market`, `Outcome`, provider/read-model fields | Existing backend `contract-fixture` line rows remain visible when provider lines are absent. | Real provider-backed Spread/Totals/Team Totals are not attached for the selected Gamma event. |
+| Provider line availability confirmation | Polymarket Gamma `https://gamma-api.polymarket.com/events?slug=fifwc-che-col-2026-07-07` | GET | Public provider API | Exact provider event slug | Provider market ids, slugs, questions, condition ids, derived market-family count | Compared to local `Event.externalSlug`, `Market.externalMarketId`, `Market.referenceSource` | None; this is provider inspection only. | Gamma exposes 0 checked line-market families for this event. |
+| Portfolio account entry | Existing `AccountScreen` tab state | Local navigation | No new route | Tap Portfolio top-left profile/avatar | Existing Account screen props already loaded by App state and profile/account routes when available | No new database dependency | None | No backend route is required for the navigation change. |
+
+Cycle LZ implementation notes:
+
+- No backend route or schema changed.
+- `mobile:mvp:inspect` now exists for repeatable Local MVP route inspection.
+- Portfolio account entry is frontend navigation only; account data dependencies remain the existing Account screen routes.

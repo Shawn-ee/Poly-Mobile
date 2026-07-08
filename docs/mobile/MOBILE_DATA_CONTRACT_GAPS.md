@@ -5059,3 +5059,35 @@ Temporary mock/static data:
 Future migration concern:
 
 - Revisit Portfolio chart shape and range behavior when production account-value history is richer.
+
+## Cycle LZ - Current State Reinspection And Portfolio Account Entry
+
+Closed or narrowed:
+
+- Confirmed the service is running and mobile-facing routes return the current Local MVP event set.
+- Confirmed `switzerland-vs-colombia` has provider-backed Regulation Winner and contract-fixture line markets.
+- Confirmed Polymarket Gamma exposes 0 checked Spread/Totals/Team Total lines for the selected event, so the current fixture line rows are not hiding available provider line markets.
+- Portfolio top-left account/profile row now opens the existing Account screen.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Provider-backed Spread/Totals/Team Total external market ids, condition ids, token ids, quote snapshots, and chart history for the selected match remain unavailable because Gamma exposes no attach-ready line markets for the event.
+- Production login/session fields remain outside the Local MVP fake-token flow.
+
+Schema mismatch:
+
+- No schema mismatch was found or introduced.
+
+Route mismatch:
+
+- No route mismatch was found or introduced.
+
+Temporary mock/static data:
+
+- No new mock data was added.
+- Existing backend-shaped `contract-fixture` line rows remain the Local MVP bridge for line-ticket proof.
+
+Future migration concern:
+
+- Replace contract-fixture line rows with provider-backed rows when Polymarket or another approved provider exposes attach-ready line markets.
+- Build a real login/session model before making Account actions production-capable.

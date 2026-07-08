@@ -36,6 +36,7 @@ function marketSummary(markets: any[]) {
 async function main() {
   const baseUrl = argValue("baseUrl") ?? DEFAULT_BASE_URL;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
+  const cycle = argValue("cycle") ?? "current";
   const homeUrl = `${baseUrl}/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10`;
   const home = await fetchJson(homeUrl);
   const events = Array.isArray(home.events) ? home.events : [];
@@ -65,7 +66,7 @@ async function main() {
   );
 
   const result = {
-    cycle: "LU",
+    cycle,
     result: "inspection-pass",
     inspectedAt: new Date().toISOString(),
     baseUrl,

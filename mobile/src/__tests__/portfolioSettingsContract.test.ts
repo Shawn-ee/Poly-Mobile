@@ -13,7 +13,8 @@ describe("Portfolio settings contract", () => {
     expect(portfolio).not.toContain("portfolio-settings-fake-token-mode");
     expect(portfolio).not.toContain("portfolio-settings-funding-disabled-local-mvp");
     expect(portfolio).not.toContain("Account settings");
-    expect(portfolio).toContain("portfolio-account-entry-display-only");
+    expect(portfolio).toContain("portfolio-account-entry-opens-account");
+    expect(portfolio).toContain("openAccount: () => void");
     expect(portfolio).toContain("PortfolioSparkline");
     expect(portfolio).toContain("portfolio-section-tabs");
   });

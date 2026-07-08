@@ -1844,6 +1844,7 @@ export default function App() {
                   openPositionTrade={openPositionTrade}
                   cancelOpenOrder={cancelOpenOrder}
                   loadValueHistory={ORDER_MODE === "server" && runtimeApiKey.length > 0 ? loadPortfolioValueHistory : undefined}
+                  openAccount={() => setMainTab("account")}
                 />
               </>
             )}

@@ -5906,3 +5906,49 @@ Known limitations:
 
 - This is a backend route proof, not S23 visible UI proof.
 - S23 is now visible again and should be used for the next visible Audit Gate cycle.
+
+## Cycle LZ - Current State Reinspection And Portfolio Account Entry
+
+Feature/page worked on:
+
+- Local MVP service readiness inspection.
+- Portfolio top-left account/profile entry.
+
+Frontend/harness/backend files touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/App.tsx`
+- `mobile/src/__tests__/portfolioSettingsContract.test.ts`
+- `scripts/inspect_mobile_mvp_current_state.ts`
+- `package.json`
+- `docs/mobile/audits/cycle-LZ-current-state-reinspection.md`
+- `docs/mobile/audits/cycle-LZ-portfolio-account-entry.md`
+
+Important functions/services touched:
+
+- `Portfolio` now accepts an `openAccount` callback.
+- `App.tsx` wires Portfolio account entry to the existing `account` tab.
+- `scripts/inspect_mobile_mvp_current_state.ts` supports caller-provided cycle labels.
+
+User interactions supported/proven:
+
+- User can open Portfolio and tap the top-left profile/avatar row.
+- The tap opens the existing Account screen on Samsung S23.
+
+State transitions:
+
+- `mainTab` changes from `portfolio` to `account`.
+- No order, balance, Portfolio, or backend state changes.
+
+Validation:
+
+- `npm run -s mobile:mvp:inspect -- --cycle=LZ --summaryPath=docs/mobile/harness/cycle-LZ-current-state-reinspection/cycle-LZ-current-state-reinspection.json`
+- `npx tsx scripts/prove_mobile_provider_match_line_availability.ts --cycle=LZ --eventSlug=switzerland-vs-colombia --summaryPath=docs/mobile/harness/cycle-LZ-current-state-reinspection/cycle-LZ-provider-match-line-availability.json`
+- `npm run -s typecheck` from `mobile/`
+- `npx vitest run --config vitest.mobile.config.mts mobile/src/__tests__/portfolioSettingsContract.test.ts`
+
+Known limitations:
+
+- Account/login remains disabled for the Local MVP.
+- Deposit/withdraw remains out of scope.
+- Reinspection confirmed real Polymarket-backed Regulation Winner is available, while Spread/Totals/Team Totals remain backend-shaped `contract-fixture` line rows until provider-backed line markets exist.
