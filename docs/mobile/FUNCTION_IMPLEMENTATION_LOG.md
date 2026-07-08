@@ -2,6 +2,40 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle MJ - Position Sell Contract Identity
+
+Feature/page worked on:
+
+- Tightened the Portfolio position sell/retrade ticket identity path.
+- Selling or retrading an owned Yes position now preserves the owned Yes contract identity instead of automatically becoming a No-side ticket.
+- This keeps the Local MVP user path honest after Portfolio/history actions: Home -> Event Detail -> line ticket -> fake-token order -> Portfolio/history -> position action.
+
+Frontend/services touched:
+
+- `mobile/App.tsx`
+- `mobile/src/services/positionTradeTicketService.ts`
+- `mobile/src/__tests__/positionTradeTicketService.test.ts`
+- `scripts/prove_mobile_position_sell_contract_identity.ts`
+- `mobile/scripts/smoke.ps1`
+
+User interactions supported/proven:
+
+- Portfolio position ticket identity now preserves `marketId`, `outcomeId`, `line`, `period`, and owned `contractSide`.
+- Normal market-side Sell/No prediction flow is unchanged.
+- S23 integrated proof confirms the current MVP visible flow still works after the identity fix.
+
+Verified:
+
+- Focused identity proof passed: `docs/mobile/harness/cycle-MJ-position-sell-contract-identity/cycle-MJ-position-sell-contract-identity.json`.
+- S23 proof passed on `SM-S911U1`: `docs/mobile/harness/cycle-MJ-position-sell-contract-identity/cycle-MJ-current-mvp-s23-visible-flow.json`.
+- Focused mobile tests passed for position ticket identity, position trade target, and order service.
+- Mobile typecheck passed.
+
+Known limitations:
+
+- Visible Portfolio cashout still uses the dedicated cashout ticket surface.
+- Spread/Totals/Team Total remain backend-shaped `contract-fixture` line markets in the current MVP proof, not real provider-backed Polymarket line markets.
+
 ## Cycle MI - Provider Discovery Guard
 
 Feature/page worked on:

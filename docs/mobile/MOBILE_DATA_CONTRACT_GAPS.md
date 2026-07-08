@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle MJ - Position Sell Contract Identity
+
+Closed or narrowed:
+
+- Portfolio position sell/retrade ticket identity now preserves owned `contractSide` from the position or selection snapshot.
+- Owned Yes positions no longer become No tickets only because the user is performing a sell/retrade action.
+- The expected order contract is now explicit: `side=SELL` describes action direction, while `contractSide` describes the owned binary contract.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- No new field is required for this cycle. Existing position/selection snapshot fields are sufficient.
+- Real provider-backed Spread/Totals/Team Total markets remain unavailable for the inspected Local MVP event and stay tracked as a separate provider/data gap.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- S23 proof still uses backend-shaped Local MVP `contract-fixture` line markets for Spread/Totals/Team Total because real provider-backed line markets are not attached yet.
+
 ## Cycle MI - Provider Discovery Guard
 
 Closed or narrowed:

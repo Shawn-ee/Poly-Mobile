@@ -40,6 +40,7 @@ import { serverBackendOnlyPortfolioFixture, serverClosedPortfolioFixture, server
 import { applyServerPortfolioState } from "./src/services/portfolioStateApplyService";
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { loadPortfolioValueHistory as loadPortfolioValueHistoryRoute } from "./src/services/portfolioValueHistoryService";
+import { buildPositionTradeTicketIdentity } from "./src/services/positionTradeTicketService";
 import { resolvePositionTradeTarget } from "./src/services/positionTradeTargetService";
 import { loadAccountBalance } from "./src/services/accountBalanceService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
@@ -1704,14 +1705,7 @@ export default function App() {
       setPortfolioSyncStatus("error");
       return;
     }
-    const selection =
-      position.selection
-        ? {
-            ...position.selection,
-            side: side === "sell" ? "no" : position.selection.side,
-            contractSide: side === "sell" ? "no" : position.selection.contractSide,
-          }
-        : undefined;
+    const tradeIdentity = buildPositionTradeTicketIdentity(position);
     setSelectedEvent(target.event ?? null);
     setMainTab("portfolio");
     setTicketOrderError(null);
@@ -1721,8 +1715,8 @@ export default function App() {
       outcome: target.outcome,
       event: target.event,
       side,
-      contractSide: selection?.contractSide ?? (side === "sell" ? "no" : "yes"),
-      selection,
+      contractSide: tradeIdentity.contractSide,
+      selection: tradeIdentity.selection,
       sourcePositionId: position.id,
     });
   };

@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle MJ - Position Sell Contract Identity
+
+Cycle MJ preserves owned contract identity when reopening a Portfolio position for sell/retrade ticket behavior.
+
+- Identity proof: `docs/mobile/harness/cycle-MJ-position-sell-contract-identity/cycle-MJ-position-sell-contract-identity.json`.
+- S23 proof: `docs/mobile/harness/cycle-MJ-position-sell-contract-identity/cycle-MJ-current-mvp-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-MJ-position-sell-contract-identity.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio position sell/retrade ticket identity | Existing ticket and portfolio routes: `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | POST for order submit; GET for portfolio/history refresh | Existing mobile API key/session auth in server mode | Position action should submit `side=SELL` with the owned `marketId`, `outcomeId`, `line`, `period`, and owned `contractSide`; it must not auto-flip an owned Yes position into No | Order result, portfolio positions/open orders/activity/history, selected ticket identity fields | Existing `Order`, `Trade`, `Position`/portfolio read models and selection snapshot fields; no schema change | Offline/mock mode uses the same selected position identity resolver. S23 proof used the current server-mode Local MVP flow with seeded counterparty. | None for this identity fix. Real provider-backed Spread/Totals/Team Total remains tracked separately from this Portfolio identity contract. |
+
 ## Cycle MI - Provider Discovery Guard
 
 Cycle MI tightens provider candidate ranking and attach readiness for current Local MVP event mappings.

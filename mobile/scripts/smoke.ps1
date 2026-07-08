@@ -1856,7 +1856,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-server-position-trade-ticket.png"
       $serverPositionTradeTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-trade-ticket.xml"
-      Assert-HierarchyContains -Path $serverPositionTradeTicketHierarchy -Expected @("World Cup winner", "France", "Trading mode: Server mode", "Sell", "Estimated proceeds", "Est. shares", "Avg price")
+      Assert-HierarchyContains -Path $serverPositionTradeTicketHierarchy -Expected @("World Cup winner", "France", "Trading mode: Server mode", "Sell", "Estimated proceeds", "Est. shares", "Avg price", "ticket-contract-side-yes")
       Assert-ServerTicketUsesQuotedDepthSizes -Path $serverPositionTradeTicketHierarchy
       & $adb -s $Device shell input swipe 540 1850 540 950 450 | Out-Null
       Start-Sleep -Seconds 1
