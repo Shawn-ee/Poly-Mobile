@@ -5622,6 +5622,38 @@ Decision:
 - Pass/fail: Pass.
 - Remaining P1: real provider-backed current-match line-market ingestion remains unavailable.
 
+## Cycle OL
+
+Gate status: Pass for provider readiness cleanup and UI source-change report
+
+Scope: Restore current MVP route state after broad server-test database side effects and document visible UI/source changes.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OL-provider-readiness-cleanup.md`
+- `docs/mobile/UI_REGRESSION_SOURCE_CHANGE_REPORT.md`
+- `docs/mobile/harness/cycle-OL-provider-readiness-cleanup/cycle-OL-current-match-restore.json`
+- `docs/mobile/harness/cycle-OL-provider-readiness-cleanup/cycle-OL-line-market-restore.json`
+- `docs/mobile/harness/cycle-OL-provider-readiness-cleanup/cycle-OL-current-state-inspection.json`
+- `docs/mobile/harness/cycle-OL-provider-readiness-cleanup/cycle-OL-provider-match-line-availability.json`
+- `docs/mobile/harness/cycle-OL-provider-readiness-cleanup/cycle-OL-provider-discovery-guard.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OL-P0-01 | P0 | Pass | Current match restore JSON reports 3 provider markets restored. | Rerun provider restore script. |
+| OL-P0-02 | P0 | Pass | Line restore JSON reports Spread/Totals/Team Totals restored. | Rerun line fixture restore. |
+| OL-P0-03 | P0 | Pass | Current-state proof reports one match, 3 winner markets, 4 line fixtures. | Fix route data. |
+| OL-P0-04 | P0 | Pass | Provider availability proof reports 3 Gamma winner markets and 0 lines. | Recheck Gamma/provider slug. |
+| OL-P0-05 | P0 | Pass | Discovery guard rejects all line candidates as wrong-family. | Fix relevance gate. |
+| OL-P0-06 | P0 | Pass | UI regression/source-change report exists. | Write report before more UI work. |
+
+Decision:
+
+- Pass/fail: Pass.
+- Next milestone: Provider Breadth Runtime Loop.
+
 ## Cycle OK
 
 Gate status: Pass for current provider readiness inspection

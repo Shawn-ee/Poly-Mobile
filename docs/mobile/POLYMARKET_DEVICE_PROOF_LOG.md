@@ -992,6 +992,37 @@ Pass for current provider readiness inspection.
 Remaining gaps:
 Real current-match Spread/Totals/Team Total provider-backed line markets remain unavailable. Keep local line fixtures disclosed as fake-token until a provider-backed contract exists.
 
+### 2026-07-08 - Cycle OL - Provider readiness cleanup
+
+Reference device:
+Not used. This was a cleanup/reporting cycle using Polymarket public Gamma and local route evidence.
+
+Holiwyn device:
+Not used for new proof. Latest S23 visible readiness proof remains Cycle OK on Samsung S23 / `SM-S911U1`.
+
+Holiwyn app mode:
+Backend route proof used `http://127.0.0.1:3002`.
+
+Holiwyn actions:
+Restored the current MVP provider match, restored local line fixtures, rechecked current Home/Event Detail route state, rechecked Polymarket Gamma line availability, and rechecked provider discovery relevance gates.
+
+Evidence:
+- `docs/mobile/harness/cycle-OL-provider-readiness-cleanup/cycle-OL-current-match-restore.json`
+- `docs/mobile/harness/cycle-OL-provider-readiness-cleanup/cycle-OL-line-market-restore.json`
+- `docs/mobile/harness/cycle-OL-provider-readiness-cleanup/cycle-OL-current-state-inspection.json`
+- `docs/mobile/harness/cycle-OL-provider-readiness-cleanup/cycle-OL-provider-match-line-availability.json`
+- `docs/mobile/harness/cycle-OL-provider-readiness-cleanup/cycle-OL-provider-discovery-guard.json`
+- `docs/mobile/UI_REGRESSION_SOURCE_CHANGE_REPORT.md`
+
+Smoke/tests:
+Restore scripts and targeted provider-readiness proof scripts passed.
+
+Result:
+Pass for cleanup. No new S23 proof was needed because no mobile UI code changed.
+
+Remaining gaps:
+Provider Breadth Runtime Loop should import/normalize more provider-backed events and prove multiple events in mobile before more source-label polish.
+
 ### 2026-07-08 - Cycle OF - Ticket and Portfolio fake-token source clarity
 
 Reference device:

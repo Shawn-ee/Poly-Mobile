@@ -6715,3 +6715,33 @@ Temporary mock/static data:
 Future migration concern:
 
 - Do not weaken provider relevance checks just to make line markets appear provider-backed. Replace fixture lines only when provider rows are attach-ready.
+
+## Cycle OL - Provider Readiness Cleanup
+
+Closed or narrowed:
+
+- Current MVP event and line fixtures were restored after live database reset side effects.
+- Current provider readiness was re-proven after restore.
+- UI regression/source-change report was written to separate intentional MVP simplification from real regressions.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Multiple provider-backed World Cup events in the mobile Home feed.
+- Real provider-backed current-match Spread/Totals/Team Total lines.
+- An isolated test database path for broad reset-heavy server suites.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch remains for the current MVP event after restore.
+
+Temporary mock/static data:
+
+- Contract-fixture line markets remain local-test fake-token fixtures.
+
+Future migration concern:
+
+- Provider Breadth Runtime Loop should add real provider-backed events before more visible source-label polish.

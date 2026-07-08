@@ -817,3 +817,12 @@ For every UI element or interaction, answer:
 - S23 proof confirms visible mixed-source/fake-token disclosure on Home, Event Detail, and Ticket while orderbook/chat remain hidden.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Remaining P1: broader current match inventory remains future work.
+
+## Cycle OL Gap Tracker Update
+
+- PM-GAP-132 is opened and verified for provider readiness cleanup after live DB reset side effects.
+- OL restores the current MVP provider match and local line fixtures after broad server Vitest temporarily removed the Home event.
+- OL re-proves the current service state: one match event, 3 Polymarket Regulation Winner markets, 0 Polymarket line markets, and 4 contract-fixture line markets.
+- OL adds `UI_REGRESSION_SOURCE_CHANGE_REPORT.md` and classifies intentional removals, hidden mock/proof/stale surfaces, alternate runtime surfaces, and real regressions.
+- Remaining P1: visible source labels should be reduced in final tester UI without removing internal accessibility/test markers.
+- Remaining P1: Provider Breadth Runtime Loop should import/normalize multiple provider-backed events before more source-label micro-proof.

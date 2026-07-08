@@ -8332,3 +8332,42 @@ Known limitations:
 
 - Broad configured server Vitest failed in the live local database because of parallel table-reset deadlocks and follow-on FK failures.
 - Real provider-backed Spread/Totals/Team Total line markets remain unavailable for the current Polymarket event.
+
+## Cycle OL - Provider Readiness Cleanup
+
+Feature/page worked on:
+
+- Cleanup/reporting after provider readiness proof and live database reset side effects.
+
+Frontend/proof files touched:
+
+- `docs/mobile/UI_REGRESSION_SOURCE_CHANGE_REPORT.md`
+- `docs/mobile/audits/cycle-OL-provider-readiness-cleanup.md`
+- `docs/mobile/harness/cycle-OL-provider-readiness-cleanup/`
+
+Important functions/services touched:
+
+- No app runtime functions changed.
+- Restore/proof scripts exercised current match restore, line fixture restore, current-state route inspection, provider line availability proof, and provider discovery guard.
+
+User interactions supported/proven:
+
+- No new UI interaction was added in this cleanup cycle.
+- Current provider readiness is restored for Home/Event Detail testing.
+
+State transitions:
+
+- Local database state was restored after broad server tests temporarily removed the current MVP event.
+- Current match route state returned to one match, 3 Polymarket winner markets, and 4 contract-fixture line markets.
+
+Validation:
+
+- Restore scripts passed.
+- Current-state route proof passed.
+- Provider line availability proof passed.
+- Provider discovery guard passed.
+
+Known limitations:
+
+- No new S23 proof was run because no mobile UI code changed.
+- Next milestone should avoid broad DB-reset server Vitest on the live dev database.

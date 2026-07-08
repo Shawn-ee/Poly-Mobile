@@ -3203,3 +3203,16 @@ Cycle OK implementation notes:
 
 - No backend route or schema changed.
 - The provider availability proof default was aligned to the current Home MVP match to avoid stale event proof drift.
+
+## Cycle OL - Provider Readiness Cleanup
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Current match restore | `scripts/restore_current_mobile_mvp_match.ts` | Local restore/proof | Local service context | Provider event slug `fifwc-arg-egy-2026-07-07`, local slug `argentina-vs-egypt` | Restored event id, provider market ids, outcome ids | `Event`, `Market`, `Outcome`, quote snapshots | None added. | More provider-backed events remain future work. |
+| Local line fixture restore | `scripts/seed_mobile_mvp_match_line_markets.ts` | Local restore/proof | Local service context | Event slug `argentina-vs-egypt` | Restored Spread/Totals/Team Total market ids and route market count | `Market`, `Outcome`, quote snapshots | Contract-fixture line rows restored for Local MVP testing. | Real provider-backed line rows remain unavailable. |
+| Current-state route proof | `/api/events`, `/api/mobile/events/:slug/live-detail` | GET/local proof | Public viewing | World Cup match filters and event slug | Source summary, winner/line market counts | `Event`, `Market`, `Outcome` | Existing contract-fixture line rows. | Broader provider-backed event inventory. |
+
+Cycle OL implementation notes:
+
+- No backend route or schema changed.
+- Cleanup restored local dev data after broad parallel DB tests created reset side effects.
