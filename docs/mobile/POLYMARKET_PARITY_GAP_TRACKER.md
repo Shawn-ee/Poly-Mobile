@@ -733,3 +733,12 @@ For every UI element or interaction, answer:
 - Route proof after backend restart verifies filled order and Portfolio/history lifecycle with seeded liquidity.
 - Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open until Polymarket Gamma/CLOB or another approved source exposes attach-ready line markets.
 - Remaining P1: current visible S23 proof covers open order; production liquidity/fill/cashout hardening remains future work.
+
+## Cycle OB Gap Tracker Update
+
+- PM-GAP-123 is opened and verified for current server cancel/history visibility.
+- OB proves the current visible Local MVP cancel path on Samsung S23: Home -> `Argentina vs. Egypt` -> Event Detail -> Spread line -> Trade Ticket -> server fake-token order -> Portfolio open order -> Cancel -> Portfolio History canceled activity.
+- OB closes the UX gap where cancel could leave the user on an empty Orders tab instead of showing the cancellation result.
+- OB preserves selected market type, line, period, contract side, source, and provider token identity in the canceled History row.
+- Remaining P1: server-owned canceled history response should replace the mobile-local canceled activity append in a later backend hardening cycle.
+- Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open.

@@ -7917,3 +7917,47 @@ Known limitations:
 
 - Regulation Winner is Polymarket-backed, but Spread/Totals/Team Total remain `contract-fixture` line markets.
 - S23 visible proof creates an open order for the selected visible spread row; filled position/history behavior is covered by route proof with seeded liquidity.
+
+## Cycle OB - Current MVP Server Cancel History Proof
+
+Feature/page worked on:
+
+- Local MVP visible lifecycle after order placement: Portfolio open order -> Cancel -> Portfolio History canceled activity.
+
+Frontend/harness files touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/scripts/local-mvp-home-route-server-cancel-proof.ps1`
+- `mobile/scripts/smoke.ps1`
+- `docs/mobile/audits/cycle-OB-current-mvp-home-server-cancel.md`
+
+Important functions/services touched:
+
+- Portfolio tab selection after cancellation.
+- S23 current-MVP cancel proof wrapper.
+- Android smoke expectations for current History canceled row markers.
+
+User interactions supported/proven:
+
+- User opens Home and Event Detail for `Argentina vs. Egypt`.
+- User selects a Spread line and submits a server fake-token order.
+- User sees the server open order in Portfolio.
+- User taps Cancel.
+- Portfolio switches to History and shows a canceled activity row preserving selected line/source/token identity.
+
+State transitions:
+
+- `cancelOpenOrderOnServer()` calls the server cancel route.
+- The open order is removed from Portfolio.
+- A canceled activity is appended locally after server refresh.
+- Portfolio moves to the History tab when cancellation is the latest activity and no open orders remain.
+
+Validation:
+
+- Mobile TypeScript passed.
+- Samsung S23 proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- Current canceled activity is shown from the mobile-side canceled activity append after server cancel/refresh.
+- Line market source remains `contract-fixture`, not provider-backed Polymarket line data.

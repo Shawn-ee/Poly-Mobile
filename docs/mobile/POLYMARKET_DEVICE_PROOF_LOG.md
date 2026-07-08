@@ -964,6 +964,38 @@ Pass for current Local MVP visible Home -> Event Detail -> line ticket -> server
 Remaining gaps:
 Real provider-backed Spread/Totals/Team Total line markets remain missing; current line markets are honest `contract-fixture` rows.
 
+### 2026-07-08 - Cycle OB - Current MVP server cancel history proof
+
+Reference device:
+Not used. This was a Holiwyn Local MVP lifecycle proof continuing from Cycle OA.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://127.0.0.1:3002`, temporary Expo port `8309`, temporary mobile dev API key.
+
+Holiwyn actions:
+Opened Home, selected `Argentina vs. Egypt`, opened Event Detail, selected a Spread row, opened the ticket, entered amount, swiped to submit, verified Portfolio open order, tapped Cancel, and verified Portfolio History shows a canceled activity row with line/source/token identity.
+
+Evidence:
+- `docs/mobile/harness/cycle-OB-current-mvp-home-server-cancel/cycle-OB-current-mvp-home-server-cancel-proof.json`
+- `docs/mobile/screenshots/cycle-OB-current-mvp-home-server-cancel/cycle-OB-current-mvp-home-server-cancel-home.png`
+- `docs/mobile/screenshots/cycle-OB-current-mvp-home-server-cancel/cycle-OB-current-mvp-home-server-cancel-detail-top.png`
+- `docs/mobile/screenshots/cycle-OB-current-mvp-home-server-cancel/cycle-OB-current-mvp-home-server-cancel-line-markets.png`
+- `docs/mobile/screenshots/cycle-OB-current-mvp-home-server-cancel/cycle-OB-current-mvp-home-server-cancel-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-OB-current-mvp-home-server-cancel/cycle-OB-current-mvp-home-server-cancel-portfolio.png`
+- `docs/mobile/screenshots/cycle-OB-current-mvp-home-server-cancel/cycle-OB-current-mvp-home-server-cancel-portfolio-canceled.png`
+
+Smoke/tests:
+Mobile TypeScript passed. S23 visible proof passed.
+
+Result:
+Pass for current Local MVP server cancel/history visibility.
+
+Remaining gaps:
+Real provider-backed line markets remain missing; server-owned canceled history can be hardened later.
+
 ### 2026-07-08 - Cycle NX - Provider line query breadth inspection
 
 Reference device:

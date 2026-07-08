@@ -3069,3 +3069,17 @@ Cycle OA implementation notes:
 - No schema migration was added.
 - Mobile timeout was increased to 12 seconds to tolerate S23 local-network server-order latency.
 - The Android proof harness now targets the current `argentina-vs-egypt` feed instead of retired EL-A proof data.
+
+## Cycle OB - Current MVP Server Cancel History Proof
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Current MVP service inspection | Local proof script plus `/api/events` and `/api/mobile/events/:slug/live-detail` | GET/proof | Public viewing | Event-list filters and `argentina-vs-egypt` slug | Event title, market source summary, line family readiness, line/source/token identity | `Event`, `Market`, `Outcome` | Existing `contract-fixture` line markets. | Real provider-backed line families remain missing. |
+| Server fake-token order | `/api/orders` | POST | Mobile API key with order scopes | Selected spread market/outcome, BUY side, price, size, selection identity | Open order id/status and selected identity | `User`, `ApiCredential`, `UserBalance`, `Order` | None added. | None for open-order Local MVP proof. |
+| Cancel open order | `/api/orders/:id` through `api.cancelOrder(order.id)` | DELETE | Same mobile API key/order ownership | Order id in route | Server cancel success/failure; mobile removes open order and appends canceled activity | `Order`, order status/history/accounting tables | Mobile appends a canceled activity after server cancel/refresh so the user sees immediate History feedback. | Server-side canceled activity/history contract can be made more explicit later. |
+| Portfolio after cancel | `/api/portfolio` plus local canceled activity append | GET/local state | Mobile API key | None | Open orders after cancel, value history, selection source summary | `Order`, portfolio read model/accounting tables | Local canceled activity is used for immediate visible history. | First-class server canceled activity in `/api/portfolio/history` remains future hardening. |
+
+Cycle OB implementation notes:
+
+- No schema migration was added.
+- No orderbook, chat, live stats, or social features were touched.

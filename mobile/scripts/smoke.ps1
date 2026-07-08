@@ -1198,8 +1198,16 @@ try {
       $homeRouteServerArtifact = if ($LocalMvpHomeRealProviderServerOrderFlow) { "cycle-FJ-real-provider-home-ticket" } elseif ($LocalMvpHomeRouteServerFilledFlow) { "cycle-FI-home-route-server-filled" } elseif ($LocalMvpHomeRouteServerCancelFlow) { "cycle-FH-home-route-server-cancel" } else { "cycle-FG-home-route-server-order" }
       $homeRouteServerScript = if ($LocalMvpHomeRealProviderServerOrderFlow) { "local-mvp-real-provider-home-server-order-proof.ps1" } elseif ($LocalMvpHomeRouteServerFilledFlow) { "local-mvp-home-route-server-filled-proof.ps1" } elseif ($LocalMvpHomeRouteServerCancelFlow) { "local-mvp-home-route-server-cancel-proof.ps1" } else { "local-mvp-home-route-server-order-proof.ps1" }
       if ($isCurrentMvpHomeRoute) {
-        $homeRouteServerCycle = "OA"
-        $homeRouteServerArtifact = "cycle-OA-current-mvp-home-server-order"
+        if ($LocalMvpHomeRouteServerFilledFlow) {
+          $homeRouteServerCycle = "OC"
+          $homeRouteServerArtifact = "cycle-OC-current-mvp-home-server-filled"
+        } elseif ($LocalMvpHomeRouteServerCancelFlow) {
+          $homeRouteServerCycle = "OB"
+          $homeRouteServerArtifact = "cycle-OB-current-mvp-home-server-cancel"
+        } else {
+          $homeRouteServerCycle = "OA"
+          $homeRouteServerArtifact = "cycle-OA-current-mvp-home-server-order"
+        }
       }
       Write-Host "Home route server proof slug: $ServerEventSlug; current MVP route: $isCurrentMvpHomeRoute"
       $homeRouteServerScenario = if ($LocalMvpHomeRouteServerFilledFlow) {
@@ -1497,22 +1505,43 @@ try {
       if ($LocalMvpHomeRouteServerCancelFlow) {
         Assert-HierarchyContains -Path $homeRouteServerPortfolioHierarchy -Expected @("Cancel", "cancel-open-order-")
         Invoke-TapHierarchyNode -Path $homeRouteServerPortfolioHierarchy -Identifier "cancel-open-order-" -StartsWith
-        Wait-HierarchyContains -Name "$homeRouteServerArtifact-portfolio-canceled.xml" -Expected @(
-          "Portfolio",
-          "Server portfolio synced",
-          "Recent activity",
-          "Canceled",
-          "latest-activity-card",
-          "activity-canceled",
-          "status-canceled",
-          "portfolio-market-type-spread",
-          "portfolio-line-1.5",
-          "portfolio-period-Reg. Time",
-          "portfolio-provider-source-polymarket",
-          "portfolio-provider-token-token-el-a-spread-home"
-        ) -Attempts 14 -DelaySeconds 2 | Out-Null
+        $homeRouteServerCanceledExpected = if ($isCurrentMvpHomeRoute) {
+          @(
+            "Portfolio",
+            "portfolio-screen",
+            "portfolio-result-content-landing",
+            "portfolio-tab-history",
+            "History",
+            "Canceled",
+            "activity-row-canceled-order-",
+            "activity-canceled",
+            "status-canceled",
+            "portfolio-market-type-spread",
+            "portfolio-line-1.5",
+            "portfolio-period-regulation",
+            "portfolio-provider-source-contract-fixture",
+            "portfolio-provider-token-contract-argentina-vs-egypt-spread-away-1-5-home"
+          )
+        } else {
+          @(
+            "Portfolio",
+            "Server portfolio synced",
+            "Recent activity",
+            "Canceled",
+            "latest-activity-card",
+            "activity-canceled",
+            "status-canceled",
+            "portfolio-market-type-spread",
+            "portfolio-line-1.5",
+            "portfolio-period-Reg. Time",
+            "portfolio-provider-source-polymarket",
+            "portfolio-provider-token-token-el-a-spread-home"
+          )
+        }
+        Wait-HierarchyContains -Name "$homeRouteServerArtifact-portfolio-canceled.xml" -Expected $homeRouteServerCanceledExpected -Attempts 14 -DelaySeconds 2 | Out-Null
         Save-Screenshot -Name "$homeRouteServerArtifact-portfolio-canceled.png"
         $homeRouteServerCanceledHierarchy = Save-UiHierarchy -Name "$homeRouteServerArtifact-portfolio-canceled.xml"
+        Assert-HierarchyContains -Path $homeRouteServerCanceledHierarchy -Expected $homeRouteServerCanceledExpected
         Assert-HierarchyDoesNotContain -Path $homeRouteServerCanceledHierarchy -Unexpected @("event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth")
       }
 

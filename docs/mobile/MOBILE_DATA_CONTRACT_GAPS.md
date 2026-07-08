@@ -6421,3 +6421,34 @@ Temporary mock/static data:
 Future migration concern:
 
 - When real provider line markets are available, replace `contract-fixture` rows with provider rows while preserving the same selected market/line/outcome identity through ticket, order, portfolio, and history.
+
+## Cycle OB - Current MVP Server Cancel History Proof
+
+Closed or narrowed:
+
+- Visible cancel lifecycle is now proven on Samsung S23 for the current MVP event.
+- Portfolio no longer leaves the user on an empty Orders tab after cancel; it switches to History when the latest activity is canceled and no open orders remain.
+- The canceled activity row preserves market type, line, period, source, contract side, and provider token identity.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- First-class server-owned canceled activity/history response for `/api/portfolio/history` after cancel.
+- Real provider-backed Spread/Totals/Team Total market identities.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch blocked cancel proof.
+- Mobile still appends the canceled activity locally after server cancel/refresh for immediate UX.
+
+Temporary mock/static data:
+
+- No new arbitrary frontend mock data was added.
+- Existing backend-shaped `contract-fixture` line market rows remain the Local MVP path.
+
+Future migration concern:
+
+- Promote canceled activity into the server history contract so Portfolio History can be fully server-owned after cancellation.

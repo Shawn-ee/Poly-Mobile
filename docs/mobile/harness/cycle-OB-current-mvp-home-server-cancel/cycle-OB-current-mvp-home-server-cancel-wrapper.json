@@ -1,0 +1,15 @@
+{
+  "cycle": "OB",
+  "result": "pass",
+  "username": "holiwyn-mobile-ob-20260708114201",
+  "userId": "5d2497ca-ab49-463d-b91a-b5169d8e9951",
+  "keyId": "redacted",
+  "token": "redacted",
+  "eventSlug": "argentina-vs-egypt",
+  "eventTitle": "Argentina vs. Egypt",
+  "inspectionProofPath": "docs/mobile/harness/cycle-OB-current-mvp-home-server-cancel/cycle-OB-current-mvp-state-inspection.json",
+  "androidProofPath": "docs\\mobile\\harness\\cycle-OB-current-mvp-home-server-cancel\\cycle-OB-current-mvp-home-server-cancel-proof.json",
+  "orderMode": "server",
+  "marketDataMode": "server",
+  "backendBaseUrl": "http://127.0.0.1:3002"
+}

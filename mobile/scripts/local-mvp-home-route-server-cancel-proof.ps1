@@ -2,8 +2,8 @@ param(
   [string]$Device = "adb-R5GYA13X7NJ-4O0ADU._adb-tls-connect._tcp",
   [int]$Port = 8277,
   [string]$BackendBaseUrl = "http://127.0.0.1:3002",
-  [string]$OutputDir = "docs\mobile\screenshots\cycle-FH-home-route-server-cancel",
-  [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-FH-home-route-server-cancel"
+  [string]$OutputDir = "docs\mobile\screenshots\cycle-OB-current-mvp-home-server-cancel",
+  [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-OB-current-mvp-home-server-cancel"
 )
 
 $ErrorActionPreference = "Stop"
@@ -25,8 +25,8 @@ function Read-JsonStringField {
 
 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..")
 $stamp = Get-Date -Format "yyyyMMddHHmmss"
-$proofUsername = "holiwyn-mobile-fh-$stamp"
-$eventProofPath = "docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-event.json"
+$proofUsername = "holiwyn-mobile-ob-$stamp"
+$inspectionProofPath = "docs/mobile/harness/cycle-OB-current-mvp-home-server-cancel/cycle-OB-current-mvp-state-inspection.json"
 
 $previousProofUsername = $env:MOBILE_DEV_USERNAME
 $previousApiKey = $env:EXPO_PUBLIC_API_KEY
@@ -37,15 +37,21 @@ $previousApiBaseUrl = $env:EXPO_PUBLIC_API_BASE_URL
 try {
   Push-Location $repoRoot
   try {
-    cmd /c npx.cmd tsx scripts/prove_mobile_el_a_provider_breadth.ts --output=$eventProofPath | Out-Null
+    cmd /c npx.cmd tsx scripts/inspect_mobile_mvp_current_state.ts --cycle=OB --output=$inspectionProofPath | Out-Null
     if ($LASTEXITCODE -ne 0) {
-      throw "Route-backed provider event proof failed."
+      throw "Current MVP state inspection failed."
     }
-    $eventProofFullPath = Join-Path $repoRoot $eventProofPath
-    $eventProof = Get-Content -Raw -Path $eventProofFullPath | ConvertFrom-Json
-    if (-not $eventProof.pass) {
-      throw "Route-backed provider event proof did not pass."
+    $inspectionProofFullPath = Join-Path $repoRoot $inspectionProofPath
+    $inspectionProof = Get-Content -Raw -Path $inspectionProofFullPath | ConvertFrom-Json
+    if ($inspectionProof.result -ne "inspection-pass") {
+      throw "Current MVP state inspection did not pass."
     }
+    if (-not $inspectionProof.selectedMvpEvent.slug) {
+      throw "Current MVP state inspection did not select an event slug."
+    }
+    $selectedEventSlug = $inspectionProof.selectedMvpEvent.slug
+    $selectedEventTitle = $inspectionProof.selectedMvpEvent.title
+    Write-Host "Current MVP selected event: $selectedEventSlug ($selectedEventTitle)"
 
     $env:MOBILE_DEV_USERNAME = $proofUsername
     $credentialRaw = cmd /c npm.cmd run mobile:dev-credential 2>&1 | Out-String
@@ -67,26 +73,27 @@ try {
       -Device $Device `
       -Port $Port `
       -BackendBaseUrl $BackendBaseUrl `
-      -ServerEventSlug $eventProof.eventSlug `
+      -ServerEventSlug $selectedEventSlug `
       -OutputDir $OutputDir `
       -HierarchyOutputDir $HierarchyOutputDir
 
     if ($LASTEXITCODE -ne 0) {
-      throw "Tablet Home route-backed server cancel smoke failed."
+      throw "S23 Home route-backed server cancel smoke failed."
     }
 
-    $summaryPath = Join-Path $repoRoot (Join-Path $HierarchyOutputDir "cycle-FH-home-route-server-cancel-wrapper.json")
+    $summaryPath = Join-Path $repoRoot (Join-Path $HierarchyOutputDir "cycle-OB-current-mvp-home-server-cancel-wrapper.json")
     New-Item -ItemType Directory -Force -Path (Split-Path -Parent $summaryPath) | Out-Null
     [ordered]@{
-      cycle = "FH"
+      cycle = "OB"
       result = "pass"
       username = $proofUsername
       userId = $credential.userId
-      keyId = $credential.keyId
+      keyId = "redacted"
       token = "redacted"
-      eventSlug = $eventProof.eventSlug
-      eventProofPath = $eventProofPath
-      tabletProofPath = Join-Path $HierarchyOutputDir "cycle-FH-home-route-server-cancel-proof.json"
+      eventSlug = $selectedEventSlug
+      eventTitle = $selectedEventTitle
+      inspectionProofPath = $inspectionProofPath
+      androidProofPath = Join-Path $HierarchyOutputDir "cycle-OB-current-mvp-home-server-cancel-proof.json"
       orderMode = "server"
       marketDataMode = "server"
       backendBaseUrl = $BackendBaseUrl

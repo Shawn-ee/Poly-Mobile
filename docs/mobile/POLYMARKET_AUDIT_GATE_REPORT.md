@@ -5360,3 +5360,33 @@ Decision:
 - Pass/fail: Pass for the current Local MVP visible server-order path.
 - Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open.
 - Remaining P1: production liquidity/pricing hardening remains future work; current visible S23 proof covers open order, while route proof covers filled order/history with seeded liquidity.
+
+## Cycle OB
+
+Gate status: Pass for current Local MVP server cancel/history journey
+
+Scope: Prove the visible cancellation lifecycle after the current server-order path.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OB-current-mvp-home-server-cancel.md`
+- `docs/mobile/harness/cycle-OB-current-mvp-home-server-cancel/cycle-OB-current-mvp-home-server-cancel-proof.json`
+- `docs/mobile/screenshots/cycle-OB-current-mvp-home-server-cancel/cycle-OB-current-mvp-home-server-cancel-portfolio.png`
+- `docs/mobile/screenshots/cycle-OB-current-mvp-home-server-cancel/cycle-OB-current-mvp-home-server-cancel-portfolio-canceled.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OB-P0-01 | P0 | Pass | Service inspection uses `argentina-vs-egypt` and preserves source honesty. | Fix current MVP inspection or route seed. |
+| OB-P0-02 | P0 | Pass | S23 proof reaches Event Detail chart and Game Lines. | Fix Home/Event Detail navigation. |
+| OB-P0-03 | P0 | Pass | S23 proof opens Spread ticket with selected identity. | Fix ticket selection handoff. |
+| OB-P0-04 | P0 | Pass | S23 proof submits server order and shows Portfolio open order. | Fix order route or Portfolio sync. |
+| OB-P0-05 | P0 | Pass | S23 proof taps Cancel and lands on History with canceled activity. | Fix cancel action or Portfolio tab transition. |
+| OB-P0-06 | P0 | Pass | Canceled row XML preserves market/source/token identity. | Fix canceled activity selection snapshot. |
+
+Decision:
+
+- Pass/fail: Pass.
+- Remaining P1: server-owned canceled history response should replace mobile-local canceled activity append later.
+- Remaining P1: real provider-backed line markets remain missing.
