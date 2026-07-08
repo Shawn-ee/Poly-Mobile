@@ -882,3 +882,12 @@ For every UI element or interaction, answer:
 - OY proves mobile route/service order fill and Portfolio/history identity for France YES, and captures S23 visibility proof for the France provider-backed outcome.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
 - Remaining P1: broad futures remain visible in Search/detail only; Home/Live remain match-only by design.
+
+## Cycle OZ Gap Tracker Update
+
+- PM-GAP-138 is opened and closed for a third provider-backed market becoming internal-test tradable.
+- OZ makes Spain in `provider-breadth-world-cup-winner` local-MM-ready, live-enabled, and quoted.
+- OZ proves bot dry-run and live-local quote placement without exposure-cap blocking.
+- OZ proves mobile route/service order fill and Portfolio/history identity for Spain YES, and captures S23 visibility proof for the Spain provider-backed outcome.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
+- Remaining P1: broad futures remain visible in Search/detail only; Home/Live remain match-only by design.

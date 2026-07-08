@@ -8898,3 +8898,45 @@ Known limitations:
 
 - Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
 - Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
+
+## Cycle OZ - Third Provider Market Tradable Proof
+
+Feature/page worked on:
+
+- Provider-backed World Cup Winner market breadth for the Local MVP retail betting flow.
+- Spain market local-MM readiness, fake-token order fill, and Portfolio/history proof.
+
+Frontend/proof files touched:
+
+- `docs/mobile/audits/cycle-OZ-third-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-OZ-third-provider-market-tradable-proof/`
+
+Important functions/services touched:
+
+- No visible mobile UI source changed.
+- Reused the internal beta backend helper, reference refresh path, bot MM enable/seed path, local bot live-local quoting, and mobile order/Portfolio proof harness.
+
+User interactions supported/proven:
+
+- Samsung S23 proof shows the World Cup Winner detail page with the Spain provider-backed outcome visible/selectable.
+- Mobile service proof submits a server-mode fake-token buy against Spain local MM liquidity.
+- Portfolio/history proof shows the filled Spain provider-backed position/trade.
+
+State transitions:
+
+- Spain World Cup Winner market was MM-enabled, seeded, marked live-ready/live-enabled, and locally quoted.
+- Mobile proof user bought Spain YES at `0.21`, producing a filled order and Portfolio/history state.
+
+Validation:
+
+- Backend helper check passed.
+- Reference refresh passed.
+- Spain seed passed.
+- Bot live-local placed four Spain quotes without exposure-cap blocking.
+- Mobile provider-visible tradable route/service proof passed.
+- S23 visibility proof captured XML/screenshot on `SM-S911U1`.
+
+Known limitations:
+
+- Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
+- Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
