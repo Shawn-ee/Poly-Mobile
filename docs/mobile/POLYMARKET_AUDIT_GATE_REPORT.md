@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle MX
+
+Gate status: Pass
+
+Scope: Home source-readiness disclosure.
+
+Decision:
+
+- P0 failed: 0 for focused Home source-readiness disclosure scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-MX-home-source-readiness/cycle-MX-current-mvp-s23-visible-flow.json`, `docs/mobile/harness/cycle-MX-provider-line-readiness-route/cycle-MX-current-state-inspection.json`, `docs/mobile/screenshots/cycle-MX-home-source-readiness/`, `docs/mobile/audits/cycle-MX-home-source-readiness.md`.
+- Notes: S23 proof shows `home-card-source-provider-winner-local-lines` on Home, then completes local Spread ticket -> swipe buy -> Portfolio/history. Provider route proof confirms Polymarket Gamma has current match-winner markets but no line markets for inspected events.
+
 ## Cycle MW
 
 Gate status: Pass

@@ -2,6 +2,26 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle MX - Home Source Readiness
+
+Closed or narrowed:
+
+- Home cards now consume backend `marketSourceSummary` and visibly show when the winner is provider-backed while lines are local.
+- The S23 proof verifies `home-card-source-provider-winner-local-lines` before opening Event Detail.
+- Route/provider proof confirms current Polymarket Gamma events have Regulation Winner markets but zero line markets.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected events.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Existing `contract-fixture` line markets remain backend-shaped Local MVP fallback rows.
+
 ## Cycle MW - Portfolio Local Pricing Disclosure
 
 Closed or narrowed:

@@ -2,6 +2,46 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle MX - Home Source Readiness
+
+Feature/page worked on:
+
+- Home match cards in the Local MVP World Cup feed.
+- Added visible source readiness when Regulation Winner is provider-backed but line markets are local contract fixtures.
+
+Frontend/services touched:
+
+- `mobile/src/components/MarketLists.tsx`
+- `mobile/src/__tests__/homeCardStatsContract.test.ts`
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+
+User interactions supported/proven:
+
+- On S23, opened Home and confirmed the event card exposes `home-card-source-provider-winner-local-lines`.
+- Continued through Event Detail -> local Spread ticket -> swipe buy -> Portfolio/history.
+
+Backend/API route changed:
+
+- None.
+
+Backend/API route inspected:
+
+- `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10`
+- `/api/mobile/events/:slug/live-detail`
+- Polymarket Gamma event endpoints for the current Argentina/Egypt and Switzerland/Colombia provider events.
+
+Verified:
+
+- Mobile typecheck passed.
+- Focused mobile tests passed.
+- S23 proof passed: `docs/mobile/harness/cycle-MX-home-source-readiness/cycle-MX-current-mvp-s23-visible-flow.json`.
+- Provider route proof passed: `docs/mobile/harness/cycle-MX-provider-line-readiness-route/cycle-MX-current-state-inspection.json`.
+
+Known limitations:
+
+- Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected events.
+- Local MVP line markets remain backend-shaped `contract-fixture` rows and must stay visibly disclosed.
+
 ## Cycle MW - Portfolio Local Pricing Disclosure
 
 Feature/page worked on:

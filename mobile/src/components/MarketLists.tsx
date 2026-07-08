@@ -49,6 +49,39 @@ const isOutrightEvent = (event: Event) =>
 const tradableOutrightOutcome = (market: Market) =>
   market.outcomes.find((outcome) => outcome.side !== "no" && !/^no$/i.test(outcome.label)) ?? market.outcomes[0];
 
+const homeSourceReadiness = (event: Event, locale: Locale) => {
+  const summary = event.marketSourceSummary;
+  if (!summary) return null;
+  const winnerStatus = summary.regulationWinner?.status;
+  const lineStatus = summary.lineMarkets?.status;
+  const lineFamilies = summary.lineMarkets?.families ?? [];
+  if (winnerStatus === "provider-backed" && lineStatus === "contract-fixture") {
+    return {
+      text:
+        locale === "zh"
+          ? `胜负来自 Polymarket · 让球/大小球本地定价`
+          : `Winner from Polymarket · Lines local`,
+      accessibility: `home-card-source-provider-winner-local-lines line-families-${lineFamilies.join("-") || "none"}`,
+      tone: "mixed" as const,
+    };
+  }
+  if (winnerStatus === "provider-backed" && lineStatus === "provider-backed") {
+    return {
+      text: locale === "zh" ? "市场来自 Polymarket" : "Markets from Polymarket",
+      accessibility: "home-card-source-provider-backed",
+      tone: "provider" as const,
+    };
+  }
+  if (lineStatus === "contract-fixture") {
+    return {
+      text: locale === "zh" ? "本地测试定价" : "Local test pricing",
+      accessibility: `home-card-source-local-lines line-families-${lineFamilies.join("-") || "none"}`,
+      tone: "local" as const,
+    };
+  }
+  return null;
+};
+
 export function MarketList({
   locale,
   events,
@@ -71,6 +104,7 @@ export function MarketList({
     <View style={styles.eventList}>
       {events.map((event) => {
         const winner = homeCardMarket(event);
+        const sourceReadiness = homeSourceReadiness(event, locale);
         const regulationSelections = homeCardSelectionsForEvent(event);
         const outrightSelections = isOutrightEvent(event)
           ? event.markets
@@ -113,6 +147,21 @@ export function MarketList({
               </View>
             </View>
             <Text style={styles.eventTitle}>{label(locale, event)}</Text>
+            {sourceReadiness && (
+              <Text
+                accessibilityLabel={`event-card-source-readiness-${event.id} ${sourceReadiness.accessibility}`}
+                numberOfLines={1}
+                style={[
+                  styles.sourceReadiness,
+                  sourceReadiness.tone === "provider" && styles.sourceReadinessProvider,
+                  sourceReadiness.tone === "mixed" && styles.sourceReadinessMixed,
+                  sourceReadiness.tone === "local" && styles.sourceReadinessLocal,
+                ]}
+                testID={`event-card-source-readiness-${event.id}`}
+              >
+                {sourceReadiness.text}
+              </Text>
+            )}
             {outrightSelections.length > 0 ? (
               <View
                 accessibilityLabel={`event-card-retail-outcome-rail ${event.id} home-card-outright-market ${outrightSelections.map(({ outcome }) => label(locale, outcome)).join(" ")}`}
@@ -240,6 +289,10 @@ const styles = StyleSheet.create({
   saveText: { color: "#94a3b8", fontSize: 19, fontWeight: "900" },
   saveTextActive: { color: "#101827" },
   eventTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginBottom: 5 },
+  sourceReadiness: { color: "#94a3b8", fontSize: 11, fontWeight: "900", marginBottom: 3 },
+  sourceReadinessProvider: { color: "#86efac" },
+  sourceReadinessMixed: { color: "#fde68a" },
+  sourceReadinessLocal: { color: "#fca5a5" },
   teamRow: { display: "none", height: 0, opacity: 0, overflow: "hidden", flexDirection: "row", alignItems: "center", gap: 10, marginTop: 0 },
   teamName: { flex: 1, color: "#f8fafc", fontSize: 18, fontWeight: "800" },
   oddsText: { color: "#a7b1c2", width: 48, textAlign: "right", fontSize: 17, fontWeight: "800" },

@@ -214,7 +214,7 @@ try {
 
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-home.png" | Out-Null
   $homeXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-home.xml"
-  Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Argentina vs. Egypt", "event-card-$EventSlug", "home-compact-retail-feed")
+  Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Argentina vs. Egypt", "event-card-$EventSlug", "home-compact-retail-feed", "home-card-source-provider-winner-local-lines")
   Assert-NotContains -Path $homeXml -Unexpected @("This is the developer menu", "SDK version")
   Assert-NotContains -Path $homeXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
@@ -305,6 +305,7 @@ try {
     counterpartyProof = if ($SeedCounterparty) { $counterpartyProofPath } else { $null }
     assertions = [ordered]@{
       homeShowsCurrentMatch = $true
+      homeShowsProviderWinnerLocalLinesDisclosure = $true
       detailShowsGameLines = $true
       lineMarketsAreContractFixture = $true
       orderbookHidden = $true

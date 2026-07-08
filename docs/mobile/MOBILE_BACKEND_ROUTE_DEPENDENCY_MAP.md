@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle MX - Home Source Readiness
+
+Cycle MX uses existing backend source summary fields to make current provider readiness visible on Home cards.
+
+- S23 proof: `docs/mobile/harness/cycle-MX-home-source-readiness/cycle-MX-current-mvp-s23-visible-flow.json`.
+- Route/provider proof: `docs/mobile/harness/cycle-MX-provider-line-readiness-route/cycle-MX-current-state-inspection.json`.
+- Audit: `docs/mobile/audits/cycle-MX-home-source-readiness.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home source-readiness disclosure | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10`, `/api/mobile/events/:slug/live-detail`, Polymarket Gamma `events?slug=...` for provider inspection | GET | Public event viewing | None | `event.marketSourceSummary.regulationWinner.status`, `event.marketSourceSummary.lineMarkets.status`, `event.marketSourceSummary.lineMarkets.families`, event/market `referenceSource` | Existing `Event`, `Market`, `Outcome`; no schema change | Existing `contract-fixture` line markets remain backend-shaped Local MVP fallback rows and are now disclosed from Home | Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected Polymarket events. |
+
 ## Cycle MW - Portfolio Local Pricing Disclosure
 
 Cycle MW carries existing line-market source state into Portfolio positions and History.
