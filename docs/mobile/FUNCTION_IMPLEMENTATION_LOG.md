@@ -2,6 +2,39 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ML - Game Lines Source Banner
+
+Feature/page worked on:
+
+- Added visible source disclosure on Event Detail Game Lines.
+- The app now tells users when the winner market is provider-backed while line markets use local server pricing.
+- Preserved the existing Local MVP path: Home -> Event Detail -> line ticket -> fake-token order -> Portfolio/history.
+
+Frontend/services touched:
+
+- `mobile/src/types.ts`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/__tests__/worldCupAdapter.test.ts`
+
+User interactions supported/proven:
+
+- On S23, Event Detail Game Lines shows `Market source` and `Winner is provider-backed. Lines use local server pricing.`
+- The same S23 proof continues through line ticket, swipe submit, and Portfolio/history.
+
+Verified:
+
+- Focused adapter test passed.
+- Mobile typecheck passed.
+- S23 proof passed: `docs/mobile/harness/cycle-ML-line-source-banner/cycle-ML-current-mvp-s23-visible-flow.json`.
+- S23 Game Lines XML contains `event-detail-line-source-banner line-source-contract-fixture regulation-winner-provider-backed line-market-count-4`.
+
+Known limitations:
+
+- This cycle does not make line markets real Polymarket-backed markets.
+- The banner is intentionally a Local MVP honesty layer until provider-backed Spread/Totals/Team Total markets are available.
+
 ## Cycle MK - Provider Line Readiness Inspection
 
 Feature/page worked on:

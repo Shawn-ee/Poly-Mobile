@@ -51,6 +51,28 @@ export type OrderbookAvailability = {
   reason: string;
 };
 
+export type MarketSourceSummary = {
+  totalMarketCount: number;
+  sourceBreakdown: Record<string, number>;
+  polymarketMarketCount: number;
+  contractFixtureMarketCount: number;
+  unknownSourceMarketCount: number;
+  regulationWinner: {
+    totalCount: number;
+    polymarketCount: number;
+    contractFixtureCount: number;
+    status: "provider-backed" | "non-provider" | "missing" | string;
+  };
+  lineMarkets: {
+    totalCount: number;
+    polymarketCount: number;
+    contractFixtureCount: number;
+    status: "provider-backed" | "contract-fixture" | "missing" | "unknown" | string;
+    families: string[];
+    reason: string;
+  };
+};
+
 export type MarketChartRange = "1D" | "1W" | "1M" | "MAX";
 
 export type MarketChartHistoryPoint = {
@@ -124,6 +146,7 @@ export type EventSummary = {
   liveStats?: EventLiveStat[];
   liveDataStatus?: EventLiveDataStatus;
   chartHistory?: EventChartPoint[];
+  marketSourceSummary?: MarketSourceSummary;
   marketProfile?: "outright" | "to_advance" | "regulation_90" | "full_match_with_overtime";
   resultMode?: "one_winner" | "can_draw" | "no_draw";
   gameRules?: {

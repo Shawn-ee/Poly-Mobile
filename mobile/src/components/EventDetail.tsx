@@ -227,6 +227,48 @@ const marketStats = (event: Event) => {
   };
 };
 
+const lineSourceCopy = (event: Event) => {
+  const summary = event.marketSourceSummary;
+  if (!summary) return null;
+  const winnerReady = summary.regulationWinner.status === "provider-backed";
+  const lineStatus = summary.lineMarkets.status;
+  const lineCount = summary.lineMarkets.totalCount;
+  if (lineStatus === "provider-backed") {
+    return {
+      label: "Market source",
+      text: winnerReady ? "Winner and lines are live from provider data." : "Line markets are live from provider data.",
+      tone: "ready" as const,
+      accessibility:
+        `event-detail-line-source-banner line-source-provider-backed regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}`,
+    };
+  }
+  if (lineStatus === "contract-fixture") {
+    return {
+      label: "Market source",
+      text: winnerReady ? "Winner is provider-backed. Lines use local server pricing." : "Lines use local server pricing.",
+      tone: "fixture" as const,
+      accessibility:
+        `event-detail-line-source-banner line-source-contract-fixture regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}`,
+    };
+  }
+  if (lineStatus === "missing") {
+    return {
+      label: "Market source",
+      text: "Line markets are unavailable for this match.",
+      tone: "missing" as const,
+      accessibility:
+        `event-detail-line-source-banner line-source-missing regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}`,
+    };
+  }
+  return {
+    label: "Market source",
+    text: "Line market source is being checked.",
+    tone: "missing" as const,
+    accessibility:
+      `event-detail-line-source-banner line-source-unknown regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}`,
+  };
+};
+
 type RouteStatus = NonNullable<Event["chartHistoryStatus"]>;
 type AvailabilityStatus = NonNullable<NonNullable<Event["liveDataStatus"]>["status"]>;
 type ProviderLifecycle = "ready" | "refresh-due" | "refreshing" | "not-ready";
@@ -467,6 +509,7 @@ export function EventDetail({
     return () => clearTimeout(timer);
   }, [refreshingDepthMarketId]);
   const stats = marketStats(event);
+  const sourceCopy = lineSourceCopy(event);
   const position = positions.find((item) =>
     event.markets.some((market) => market.id === item.marketId || market.title === item.title),
   );
@@ -1725,6 +1768,22 @@ export function EventDetail({
               style={styles.lineSectionCleanStart}
               testID="event-detail-line-section-clean-start"
             />
+            {sourceCopy && (
+              <View
+                accessibilityLabel={sourceCopy.accessibility}
+                style={[
+                  styles.lineSourceBanner,
+                  sourceCopy.tone === "ready" && styles.lineSourceBannerReady,
+                  sourceCopy.tone === "missing" && styles.lineSourceBannerMissing,
+                ]}
+                testID="event-detail-line-source-banner"
+              >
+                <View>
+                  <Text style={styles.lineSourceLabel}>{sourceCopy.label}</Text>
+                  <Text style={styles.lineSourceText}>{sourceCopy.text}</Text>
+                </View>
+              </View>
+            )}
             <View accessibilityLabel="event-detail-market-summary" style={styles.hiddenStats} testID="event-detail-market-summary">
               <Text style={styles.hiddenStatsText}>{stats.marketCount} {t.marketCount}</Text>
               <Text style={styles.hiddenStatsText}>{stats.outcomeCount} {t.outcomeCount}</Text>
@@ -2002,6 +2061,11 @@ const styles = StyleSheet.create({
   marketTabText: { color: "#6b7280", fontSize: 16, fontWeight: "800" },
   marketTabTextActive: { color: "#f8fafc" },
   lineSectionCleanStart: { height: 24, backgroundColor: "#060b14", borderTopWidth: 1, borderTopColor: "#172033" },
+  lineSourceBanner: { marginHorizontal: 18, marginBottom: 10, paddingHorizontal: 14, paddingVertical: 11, borderRadius: 8, backgroundColor: "#101826", borderWidth: 1, borderColor: "#263244" },
+  lineSourceBannerReady: { borderColor: "rgba(34, 197, 94, 0.35)", backgroundColor: "rgba(10, 88, 48, 0.28)" },
+  lineSourceBannerMissing: { borderColor: "rgba(248, 113, 113, 0.34)", backgroundColor: "rgba(127, 29, 29, 0.24)" },
+  lineSourceLabel: { color: "#9ca3af", fontSize: 11, fontWeight: "800", textTransform: "uppercase" },
+  lineSourceText: { marginTop: 3, color: "#e5e7eb", fontSize: 13, lineHeight: 18, fontWeight: "700" },
   emptyProps: { minHeight: 280, alignItems: "center", justifyContent: "center" },
   emptyPropsText: { color: "#6b7280", fontSize: 18, fontWeight: "800" },
   hiddenStats: { height: 1, overflow: "hidden", opacity: 0.01 },

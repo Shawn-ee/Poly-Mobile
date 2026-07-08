@@ -218,6 +218,77 @@ describe("world cup adapter", () => {
     });
   });
 
+  test("preserves backend market source summary for honest line-market UI", () => {
+    const detail: EventDetail = {
+      event: {
+        id: "event-source-summary",
+        slug: "argentina-vs-egypt",
+        title: "Argentina vs. Egypt",
+        description: null,
+        category: "sports",
+        sportKey: "soccer",
+        leagueKey: "world_cup",
+        homeTeamName: "Argentina",
+        awayTeamName: "Egypt",
+        startTime: "2026-07-07T20:00:00.000Z",
+        status: "LIVE",
+        liveStatus: "in_progress",
+        period: "Regulation",
+        clock: "23'",
+        homeScore: 0,
+        awayScore: 0,
+        imageUrl: null,
+        marketCount: 7,
+        activeMarketCount: 7,
+        marketSourceSummary: {
+          totalMarketCount: 7,
+          sourceBreakdown: { polymarket: 3, "contract-fixture": 4 },
+          polymarketMarketCount: 3,
+          contractFixtureMarketCount: 4,
+          unknownSourceMarketCount: 0,
+          regulationWinner: {
+            totalCount: 3,
+            polymarketCount: 3,
+            contractFixtureCount: 0,
+            status: "provider-backed",
+          },
+          lineMarkets: {
+            totalCount: 4,
+            polymarketCount: 0,
+            contractFixtureCount: 4,
+            status: "contract-fixture",
+            families: ["spread", "total_goals", "team_total_goals"],
+            reason: "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets.",
+          },
+        },
+      },
+      markets: [{
+        ...baseMarket,
+        id: "arg-egy-spread",
+        title: "Argentina vs. Egypt: Egypt +1.5",
+        marketGroupTitle: "Game Lines",
+        marketType: "spread",
+        line: "1.5",
+        referenceSource: "contract-fixture",
+        outcomes: [{
+          id: "yes",
+          name: "Egypt +1.5",
+          label: "Egypt +1.5",
+          side: "yes",
+          price: 0.52,
+          bestBid: 0.5,
+          bestAsk: 0.54,
+          isTradable: true,
+        }],
+      }],
+    };
+
+    expect(normalizeEventDetail(detail)?.marketSourceSummary).toMatchObject({
+      regulationWinner: { status: "provider-backed", polymarketCount: 3 },
+      lineMarkets: { status: "contract-fixture", polymarketCount: 0, contractFixtureCount: 4 },
+    });
+  });
+
   test("keeps backend live-detail page live when provider status is ended or stale", () => {
     const detail: EventDetail = {
       event: {

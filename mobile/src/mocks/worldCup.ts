@@ -15,6 +15,28 @@ export type AvailabilityState = {
   reason: string;
 };
 
+export type MarketSourceSummary = {
+  totalMarketCount: number;
+  sourceBreakdown: Record<string, number>;
+  polymarketMarketCount: number;
+  contractFixtureMarketCount: number;
+  unknownSourceMarketCount: number;
+  regulationWinner: {
+    totalCount: number;
+    polymarketCount: number;
+    contractFixtureCount: number;
+    status: "provider-backed" | "non-provider" | "missing" | string;
+  };
+  lineMarkets: {
+    totalCount: number;
+    polymarketCount: number;
+    contractFixtureCount: number;
+    status: "provider-backed" | "contract-fixture" | "missing" | "unknown" | string;
+    families: string[];
+    reason: string;
+  };
+};
+
 export type Outcome = {
   id: string;
   label: string;
@@ -77,6 +99,7 @@ export type Event = {
   liveStats?: Array<{ statId: string; label: string; home: string; away: string }>;
   liveDataStatus?: AvailabilityState;
   chartHistory?: Array<{ outcomeId: string; timestamp: string; probability: number }>;
+  marketSourceSummary?: MarketSourceSummary;
   chartHistorySource?: "embedded" | "market-chart-route" | "polymarket-clob-prices-history";
   chartHistoryStatus?: "idle" | "loading" | "ready" | "empty" | "error";
   chartHistoryRange?: "1D" | "1W" | "1M" | "MAX";

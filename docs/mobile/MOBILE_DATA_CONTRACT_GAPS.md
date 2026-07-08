@@ -2,6 +2,26 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle ML - Game Lines Source Banner
+
+Closed or narrowed:
+
+- Mobile now preserves backend `marketSourceSummary` in the Event Detail adapter.
+- Event Detail renders a visible source banner when line markets are contract fixtures.
+- S23 proof confirms the banner appears with the current route state: provider-backed winner, local server-priced line markets.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real Polymarket-backed Spread/Totals/Team Total market mappings remain unavailable for the inspected event.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- `contract-fixture` line markets remain Local MVP fallback data, but the app now exposes that state to the user instead of hiding it only in XML/proof labels.
+
 ## Cycle MK - Provider Line Readiness Inspection
 
 Closed or narrowed:

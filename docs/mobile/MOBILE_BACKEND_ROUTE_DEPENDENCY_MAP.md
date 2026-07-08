@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ML - Game Lines Source Banner
+
+Cycle ML wires backend `marketSourceSummary` into the visible Event Detail Game Lines UI.
+
+- S23 proof: `docs/mobile/harness/cycle-ML-line-source-banner/cycle-ML-current-mvp-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-ML-line-source-banner.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail Game Lines source banner | `/api/mobile/events/:slug/live-detail`; Home can also receive the same summary through `/api/events?...includeMobileMarkets=1&mobileMvpMatches=1` | GET | Public event viewing; trading still uses existing account/order auth | Route params/query only | `event.marketSourceSummary.regulationWinner.status`, `event.marketSourceSummary.lineMarkets.status`, `lineMarkets.totalCount`, `lineMarkets.reason`, source counts | Existing `Event`, `Market`, `Outcome`; no schema change | Offline/mock event type can carry the same `marketSourceSummary` shape. If missing, the banner is omitted. | No new backend support is missing for the banner. Real provider-backed line markets remain missing for the current event and are tracked separately. |
+
 ## Cycle MK - Provider Line Readiness Inspection
 
 Cycle MK re-checks Polymarket Gamma candidate availability for the current Local MVP event.

@@ -261,6 +261,7 @@ export const normalizeEventSummary = (event: BackendEventSummary, markets: Backe
     liveStats: event.liveStats,
     liveDataStatus: event.liveDataStatus,
     chartHistory: event.chartHistory,
+    marketSourceSummary: event.marketSourceSummary,
     marketProfile: event.marketProfile ?? rules.marketProfile,
     resultMode: event.resultMode ?? rules.resultMode,
     gameRules: event.gameRules ?? rules.gameRules,
