@@ -2,6 +2,55 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle OU - Golden Boot Provider Breadth Refresh
+
+Feature/page worked on:
+
+- Provider Breadth Runtime Loop for Search-visible World Cup markets.
+- Mobile Search proof for multiple Polymarket-backed World Cup events on Samsung S23.
+- Tiny allowlisted bot dry-run/live-local readiness for one refreshed provider-backed market.
+
+Frontend/proof files touched:
+
+- `docs/mobile/audits/cycle-OU-provider-match-breadth-refresh.md`
+- `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/`
+- `docs/mobile/screenshots/cycle-OU-provider-match-breadth-refresh/`
+
+Important functions/services touched:
+
+- No mobile UI, backend route source, Prisma schema, order route, order book, chat, live stats, or social source files changed.
+- Existing Polymarket Gamma/CLOB import and refresh services imported `world-cup-golden-boot-winner` with 12 provider-backed markets.
+- Existing provider breadth route proofs exercised `/api/events` broad World Cup routes and Search routes.
+- Existing reference refresh path updated CLOB-backed quote snapshots for the Golden Boot event.
+- Existing `poly-bot` dry-run/live-local command path was exercised against the tiny `Kylian Mbappe` allowlist.
+
+User interactions supported/proven:
+
+- S23 Search in server mode shows 4 World Cup results, led by `World Cup: Golden Boot Winner` with `Polymarket 12 markets`.
+- Search still keeps broad provider futures out of Home/Live match-only surfaces by product direction.
+
+State transitions:
+
+- Local database now includes an additional Polymarket-backed Golden Boot futures event with 12 markets.
+- Reference snapshots refreshed for the 12 imported markets; high-quality CLOB prices were available for Messi/Haaland/Mbappe, while some long-tail markets remained missing-book.
+- The Kylian Mbappe market was enabled/prepared for local-MM runtime and reached live-local `manage_quotes`.
+
+Validation:
+
+- Provider breadth route proof passed.
+- Search provider breadth route proof passed.
+- Golden Boot reference refresh passed with 12 markets refreshed and 24 snapshots updated.
+- `mobile` typecheck passed.
+- Samsung S23 proof passed on `SM-S911U1`.
+- Bot dry-run passed as a planning proof; live-local reached quote management but order placement was rejected by the internal trading kill switch.
+
+Known limitations:
+
+- The first attempted match provider candidate did not expose enough attachable markets, so this cycle pivoted honestly to a provider-backed World Cup futures event instead of claiming match-line breadth.
+- Real provider-backed Spread/Totals/Team Total markets for match detail pages remain unavailable.
+- Internal source labels remain useful for proof, but final tester UI should not let them dominate screens.
+- Bot quote placement remains blocked while the internal trading kill switch is active.
+
 ## Cycle OT - World Cup Winner Provider Breadth Refresh
 
 Feature/page worked on:

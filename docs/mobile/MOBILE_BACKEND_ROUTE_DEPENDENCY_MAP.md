@@ -2,6 +2,26 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle OU - Golden Boot Provider Breadth Refresh
+
+Cycle OU does not change backend route or schema source. It imports/refreshed one additional real Polymarket-backed World Cup event, proves the existing mobile routes surface it, and proves the tiny bot runtime reaches quote management before the internal trading kill switch blocks placement.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Golden Boot provider import | Polymarket Gamma `/events?slug=world-cup-golden-boot-winner`; CLOB public market data through provider services | GET | None for public provider fetch | None | provider event title/slug, market slugs/ids, condition ids, outcome token ids, probabilities, best bid/ask, source/status fields | `Event`, `Market`, `Outcome`, reference quote/depth snapshot tables | None added | More provider-backed current match events remain needed. |
+| Broad World Cup provider runtime | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10` | GET | None for browsing | None | `events[]`, `eventType`, `source`, compact `markets[]`, `marketSourceSummary`, provider market counts | `Event`, `Market`, `Outcome` | No frontend-only data added | Real provider-backed line markets for match detail pages remain unavailable. |
+| Search provider breadth | `/api/events?sportKey=soccer&source=polymarket&includeMobileMarkets=1&limit=10&search=world` | GET | None for browsing | None | `title`, `eventType`, `marketCount`, `marketSourceSummary.polymarketMarketCount`, compact top market title/probability, source label fields | `Event`, `Market`, `Outcome`, reference snapshot tables | Existing local fallback only if server mode is not enabled | Home remains intentionally match-only; broad futures are Search-visible. |
+| Reference snapshot refresh | Internal reference refresh script/API path for `world-cup-golden-boot-winner` | GET/POST internal runtime | Dev/internal admin context | Event slug/market id through script params | token ids, best bid/ask, spread, quality status, `mmEligible`, missing-book status | `ReferenceQuoteSnapshot`, provider metadata on `Market`/`Outcome` | None | Scheduled refresh policy remains future work. |
+| Tiny bot dry-run/live-local | poly-bot admin/reference routes plus canonical fake-token order route | GET/POST internal runtime | Dev admin plus bot runtime credential | Event slug `world-cup-golden-boot-winner`, allowlist `Kylian Mbappe`, `maxMarkets=1` | reference bid/ask, planned bot bid/ask, lifecycle status, quote action attempts, trading gate error | `User`, `ApiCredential`, `Market`, `Outcome`, fake-token order tables | Fake-token local bot only; no external Polymarket orders | Internal trading kill switch blocks quote placement even after provider readiness passes. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/cycle-OU-provider-breadth-runtime-route.json`
+- `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/cycle-OU-search-provider-breadth-route.json`
+- `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/cycle-OU-golden-boot-reference-refresh.json`
+- `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/cycle-OU-bot-dry-run-final.txt`
+- `docs/mobile/harness/cycle-OU-provider-match-breadth-refresh/cycle-OU-bot-live-local-final.txt`
+
 ## Cycle OT - World Cup Winner Provider Breadth Refresh
 
 Cycle OT changes proof/import labeling only; no backend route or schema source changed. It refreshes local provider runtime data from Polymarket and proves the existing mobile routes surface it.

@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle OU - Golden Boot Provider Breadth Refresh
+
+Closed or narrowed:
+
+- Broad World Cup provider/Search routes now expose four provider-backed mobile-visible events.
+- `World Cup: Golden Boot Winner` is imported from Polymarket Gamma with 12 real markets and refreshed CLOB-backed reference snapshots.
+- S23 Search proof confirms the newly imported event is visible in mobile server mode with `Polymarket 12 markets`.
+- One refreshed provider market, `Kylian Mbappe`, was enabled/prepared for local bot runtime and reached live-local quote management.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed current World Cup match events with attach-ready markets.
+- Real provider-backed Spread/Totals/Team Total line markets for match detail pages.
+- Scheduled reference refresh coverage so quote freshness does not depend on manual proof refresh.
+- A product-safe trading flag path for local bot quote placement; current live-local order placement is blocked by the internal trading kill switch.
+
+Route mismatch:
+
+- Home remains intentionally match-only for the Local MVP retail path and does not show Golden Boot futures.
+- Live remains intentionally live-football-only and should not show provider futures/outrights.
+
+Temporary mock/static data:
+
+- Existing Local MVP match line markets remain `contract-fixture` rows.
+- No new frontend-only fixture or random mock data was added.
+
+Future migration concern:
+
+- Provider-backed futures/outrights are useful for breadth and Search discovery, but the Local MVP still needs provider-backed live/current match data before Home and Event Detail can look like a full Polymarket sports page.
+
 ## Cycle OT - World Cup Winner Provider Breadth Refresh
 
 Closed or narrowed:
