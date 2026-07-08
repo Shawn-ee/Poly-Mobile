@@ -5863,6 +5863,37 @@ Remaining P1:
 - Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Broad futures remain Search/detail-only while Home/Live stay match-only.
 
+## Cycle PA - Fourth Provider Market Tradable Proof
+
+Result: Pass for fourth provider-backed internal-test tradable market scope.
+
+Checked:
+
+- Switzerland World Cup Winner market selected as the fourth provider-backed tradable target.
+- Backend helper check confirmed the local server was healthy with internal trading and bot-seeding env flags.
+- Switzerland MM enable, seed, live-ready/live-enabled, and live-local quote placement passed.
+- Mobile route/service proof filled Switzerland YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed World Cup Winner detail with Switzerland provider-backed outcome visible/selectable.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PA-fourth-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-PA-fourth-provider-market-tradable-proof/cycle-PA-internal-beta-backend-check.json`
+- `docs/mobile/harness/cycle-PA-fourth-provider-market-tradable-proof/cycle-PA-prepare-switzerland-small-seed.txt`
+- `docs/mobile/harness/cycle-PA-fourth-provider-market-tradable-proof/cycle-PA-bot-live-local-switzerland-success.txt`
+- `docs/mobile/harness/cycle-PA-fourth-provider-market-tradable-proof/cycle-PA-provider-switzerland-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PA-fourth-provider-market-tradable-proof/cycle-PA-s23-search-switzerland.xml`
+- `docs/mobile/harness/cycle-PA-fourth-provider-market-tradable-proof/cycle-PA-s23-search-switzerland.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+
 ## Cycle OZ - Third Provider Market Tradable Proof
 
 Result: Pass for third provider-backed internal-test tradable market scope.

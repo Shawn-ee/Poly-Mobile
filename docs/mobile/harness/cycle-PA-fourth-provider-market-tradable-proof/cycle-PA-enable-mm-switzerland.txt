@@ -1,0 +1,31 @@
+
+> poly-bot@0.1.0 liquidity:enable-event-mm
+> tsx scripts/enableReferenceEventMm.ts --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug provider-breadth-world-cup-winner --allowlist Switzerland --maxMarkets 1 --dryRun false --confirmEnable true
+
+{
+  "ok": true,
+  "dryRun": false,
+  "eventSlug": "provider-breadth-world-cup-winner",
+  "results": [
+    {
+      "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+      "slug": "will-switzerland-win-the-2026-fifa-world-cup",
+      "title": "Will Switzerland win the 2026 FIFA World Cup?",
+      "safe": true,
+      "reason": null,
+      "updated": {
+        "ok": true,
+        "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+        "importStatus": "approved",
+        "referenceOnly": false,
+        "tradable": true,
+        "mmEnabled": true,
+        "isListed": true,
+        "reviewedAt": "2026-07-08T21:17:19.839Z",
+        "reviewedBy": "[redacted-dev-admin]",
+        "reviewNotes": null,
+        "botInitialization": null
+      }
+    }
+  ]
+}
