@@ -1019,6 +1019,35 @@ Pass. The current match now has a proven real Polymarket-backed mobile betting p
 Remaining gaps:
 Spread/Totals/Team Total current-match line markets remain local-test fixtures until real provider-backed line markets exist.
 
+### 2026-07-08 - Cycle OI - Local line fake-token disclosure
+
+Reference device:
+Not used. This is a Holiwyn source-disclosure proof based on already inspected provider/fixture state.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://127.0.0.1:3002`, mobile API base `http://172.16.200.14:3002`, temporary Expo port `8315`, temporary mobile dev API key.
+
+Holiwyn actions:
+Opened Home, checked mixed-source fake-token disclosure, visited Live empty state, returned Home, opened `Argentina vs. Egypt`, scrolled to Game Lines, verified fake-token line-source disclosure, opened a line Trade Ticket, and verified fake-token ticket-ready disclosure.
+
+Evidence:
+- `docs/mobile/harness/cycle-OI-local-line-fake-token-disclosure/cycle-OI-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-OI-local-line-fake-token-disclosure/cycle-OI-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-OI-local-line-fake-token-disclosure/cycle-OI-current-mvp-lines.png`
+- `docs/mobile/screenshots/cycle-OI-local-line-fake-token-disclosure/cycle-OI-current-mvp-ticket-ready.png`
+
+Smoke/tests:
+Mobile TypeScript, focused mobile Vitest tests, and S23 source-disclosure proof passed.
+
+Result:
+Pass for source disclosure.
+
+Remaining gaps:
+Fixture-line submit hit a backend binary invariant during a full-submit attempt. Current-match Regulation Winner remains the proven real provider-backed order path.
+
 ### 2026-07-08 - Cycle OC - Server-owned cancel history
 
 Reference device:

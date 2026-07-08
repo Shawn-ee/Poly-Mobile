@@ -790,3 +790,11 @@ For every UI element or interaction, answer:
 - OH closes the visible proof gap left by OG: S23 now proves Home -> Event Detail -> provider-backed Regulation Winner -> Ticket -> fake-token server order -> Portfolio/history.
 - Ticket and Portfolio preserve `marketType=winner`, `line=none`, and `provider-source-polymarket`.
 - Remaining P1: Spread/Totals/Team Total current-match line markets are still local-test fixtures, not real provider-backed Polymarket lines.
+
+## Cycle OI Gap Tracker Update
+
+- PM-GAP-129 is opened and verified for local-line fake-token disclosure.
+- OI closes the upstream wording gap where Home/Event Detail could show local line markets without clearly saying fake-token.
+- S23 proof confirms Home, Event Detail line section, and Trade Ticket ready state all expose fake-token local-line markers.
+- Remaining P1: fixture-line submit hit a backend binary invariant in one full-submit attempt and needs order-book cleanup before claiming fixture-line order health.
+- Remaining P1: real provider-backed current-match line markets remain unavailable.

@@ -15,7 +15,8 @@ param(
   [switch]$ExpectCancel,
   [switch]$ExpectCashout,
   [switch]$ExpectLiveEmptyOnly,
-  [switch]$ExpectDetailStaleOnly
+  [switch]$ExpectDetailStaleOnly,
+  [switch]$SourceDisclosureOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -242,7 +243,7 @@ try {
 
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-home.png" | Out-Null
   $homeXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-home.xml"
-  Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Argentina vs. Egypt", "event-card-$EventSlug", "home-compact-retail-feed", "home-card-source-provider-winner-local-lines")
+  Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Argentina vs. Egypt", "event-card-$EventSlug", "home-compact-retail-feed", "home-card-source-provider-winner-local-lines", "home-card-source-local-test-fake-token")
   if ($ExpectLiveEmptyOnly -or $ExpectDetailStaleOnly) {
     Assert-Contains -Path $homeXml -Expected @("Time TBD", "Active")
   }
@@ -308,7 +309,7 @@ try {
     Invoke-TapNode -Path $liveXml -Identifier "holiwyn-home-tab"
     Start-Sleep -Seconds 1
     $homeReturnXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-home-return.xml"
-    Assert-Contains -Path $homeReturnXml -Expected @("event-card-$EventSlug", "home-card-source-provider-winner-local-lines")
+    Assert-Contains -Path $homeReturnXml -Expected @("event-card-$EventSlug", "home-card-source-provider-winner-local-lines", "home-card-source-local-test-fake-token")
 
     $summary = [ordered]@{
       cycle = $Cycle
@@ -343,13 +344,19 @@ try {
     Write-Host "Proof summary: $summaryPath"
     return
   }
-  Assert-Contains -Path $liveXml -Expected @("live-world-cup-games-focus", "live-source-readiness", "home-card-source-provider-winner-local-lines", "event-card-$EventSlug")
-  Assert-NotContains -Path $liveXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "Provider Breadth", "EL-A Provider Breadth", "mobile-el-a-provider-breadth")
+  $liveRaw = Get-Content -Raw -Path $liveXml
+  if ($liveRaw -match [regex]::Escape("No live markets right now.")) {
+    Assert-Contains -Path $liveXml -Expected @("live-world-cup-games-focus", "No live markets right now.")
+    Assert-NotContains -Path $liveXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "Provider Breadth", "EL-A Provider Breadth", "mobile-el-a-provider-breadth")
+  } else {
+    Assert-Contains -Path $liveXml -Expected @("live-world-cup-games-focus", "live-source-readiness", "home-card-source-provider-winner-local-lines", "home-card-source-local-test-fake-token", "event-card-$EventSlug")
+    Assert-NotContains -Path $liveXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "Provider Breadth", "EL-A Provider Breadth", "mobile-el-a-provider-breadth")
+  }
 
   Invoke-TapNode -Path $liveXml -Identifier "holiwyn-home-tab"
   Start-Sleep -Seconds 1
   $homeXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-home-return.xml"
-  Assert-Contains -Path $homeXml -Expected @("event-card-$EventSlug", "home-card-source-provider-winner-local-lines")
+  Assert-Contains -Path $homeXml -Expected @("event-card-$EventSlug", "home-card-source-provider-winner-local-lines", "home-card-source-local-test-fake-token")
 
   Invoke-TapNode -Path $homeXml -Identifier "event-card-$EventSlug" -StartsWith -YRatio 0.28
   Start-Sleep -Seconds 5
@@ -375,7 +382,8 @@ try {
       $candidateRaw -match [regex]::Escape("selection-market-type-spread") -and
       $candidateRaw -match [regex]::Escape("selection-line-1.5") -and
       $candidateRaw -match [regex]::Escape("provider-source-contract-fixture") -and
-      $candidateRaw -match [regex]::Escape("line-market-local-test-pricing")
+      $candidateRaw -match [regex]::Escape("line-market-local-test-pricing") -and
+      $candidateRaw -match [regex]::Escape("line-market-local-test-fake-token")
     ) {
       $lineXml = $candidate
       break
@@ -389,7 +397,7 @@ try {
   Start-Sleep -Seconds 1
   $lineXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-lines-settled.xml"
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-lines.png" | Out-Null
-  Assert-Contains -Path $lineXml -Expected @("Spread", "Totals", "Local test pricing", "line-market-local-test-pricing", "event-detail-line-section-clearance-24", "event-detail-line-source-banner", "line-source-contract-fixture", "line-family-readiness-spread-contract-fixture", "line-family-readiness-total-contract-fixture", "line-family-readiness-team_total-contract-fixture", "selection-market-type-spread", "selection-line-1.5", "provider-source-contract-fixture")
+  Assert-Contains -Path $lineXml -Expected @("Spread", "Totals", "Local test line", "fake-token", "line-market-local-test-pricing", "line-market-local-test-fake-token", "event-detail-line-section-clearance-24", "event-detail-line-source-banner", "line-source-contract-fixture", "line-source-local-test-fake-token", "line-family-readiness-spread-contract-fixture", "line-family-readiness-total-contract-fixture", "line-family-readiness-team_total-contract-fixture", "selection-market-type-spread", "selection-line-1.5", "provider-source-contract-fixture")
   Assert-NotContains -Path $lineXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
   Invoke-TapNode -Path $lineXml -Identifier "event-detail-outcome-spread-" -StartsWith
@@ -404,6 +412,48 @@ try {
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-ticket-ready.png" | Out-Null
   $ticketReadyXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-ticket-ready.xml"
   Assert-Contains -Path $ticketReadyXml -Expected @('$25', "Swipe to buy", "place-mock-order", "ticket-line-1.5", "provider-source-contract-fixture", "ticket-local-test-pricing")
+
+  if ($SourceDisclosureOnly) {
+    $summary = [ordered]@{
+      cycle = $Cycle
+      result = "pass"
+      generatedAt = (Get-Date).ToUniversalTime().ToString("o")
+      device = $Device
+      model = $deviceInfo
+      backendBaseUrl = $BackendBaseUrl
+      mobileApiBaseUrl = $MobileApiBaseUrl
+      expoPort = $Port
+      keyId = "redacted"
+      apiKey = "redacted"
+      eventSlug = $EventSlug
+      proofMode = "source-disclosure-only"
+      assertions = [ordered]@{
+        homeShowsFakeTokenLineDisclosure = $true
+        liveEmptyStateDoesNotBlockProof = $true
+        detailShowsFakeTokenLineBanner = $true
+        lineRowsShowFakeTokenSourceNote = $true
+        ticketShowsFakeTokenSourceNote = $true
+        orderbookHidden = $true
+        chatHidden = $true
+      }
+      artifacts = [System.Collections.Generic.List[string]]@(
+        "$OutputDir\cycle-$Cycle-current-mvp-home.png",
+        "$HierarchyOutputDir\cycle-$Cycle-current-mvp-home.xml",
+        "$OutputDir\cycle-$Cycle-current-mvp-lines.png",
+        "$HierarchyOutputDir\cycle-$Cycle-current-mvp-lines-settled.xml",
+        "$OutputDir\cycle-$Cycle-current-mvp-ticket-ready.png",
+        "$HierarchyOutputDir\cycle-$Cycle-current-mvp-ticket-ready.xml"
+      )
+      limitations = [System.Collections.Generic.List[string]]@(
+        "Source disclosure proof stops before order submit.",
+        "Fixture-line order lifecycle remains covered by separate server-order/cancel proofs and should be rechecked after backend order-book cleanup."
+      )
+    }
+    $summaryPath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-current-mvp-s23-visible-flow.json"
+    Write-JsonNoBom -Value $summary -Path $summaryPath -Depth 6
+    Write-Host "Proof summary: $summaryPath"
+    return
+  }
 
   & $adb -s $Device shell input swipe 540 2070 540 1000 4000 | Out-Null
   Start-Sleep -Seconds 7

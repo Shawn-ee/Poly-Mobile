@@ -8199,3 +8199,48 @@ Known limitations:
 
 - This cycle proves the provider-backed Regulation Winner path only.
 - Spread/Totals/Team Total remain local-test fake-token fixtures.
+
+## Cycle OI - Local Line Fake-Token Disclosure
+
+Feature/page worked on:
+
+- Home source labels and Event Detail local line source disclosure.
+
+Frontend/proof files touched:
+
+- `mobile/src/components/MarketLists.tsx`
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts`
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+- `docs/mobile/audits/cycle-OI-local-line-fake-token-disclosure.md`
+- `docs/mobile/harness/cycle-OI-local-line-fake-token-disclosure/`
+- `docs/mobile/screenshots/cycle-OI-local-line-fake-token-disclosure/`
+
+Important functions/services touched:
+
+- `eventSourceReadiness()`
+- `lineSourceCopy()`
+- `marketSourceHeaderNote()`
+- Current MVP S23 proof harness source-disclosure mode.
+
+User interactions supported/proven:
+
+- User sees fake-token local-line disclosure on Home.
+- User opens Event Detail and sees fake-token local-line disclosure in the line section.
+- User opens a line Trade Ticket and sees the fake-token source note before submit.
+
+State transitions:
+
+- No app state transition changed.
+- Source-disclosure proof intentionally stops before order submit.
+
+Validation:
+
+- Mobile TypeScript passed.
+- Focused mobile Vitest source/selection tests passed.
+- Samsung S23 source-disclosure proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- Fixture-line order submit hit a backend binary invariant during an earlier full proof attempt and is tracked separately.
+- Current-match Regulation Winner remains the proven real provider-backed order path.

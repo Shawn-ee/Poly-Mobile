@@ -6630,3 +6630,31 @@ Temporary mock/static data:
 Future migration concern:
 
 - Prefer current-match provider winner for real Polymarket-backed MVP proof; use fixture lines only for line-selector UX until real provider line markets exist.
+
+## Cycle OI - Local Line Fake-Token Disclosure
+
+Closed or narrowed:
+
+- Home, Event Detail, and Ticket now disclose contract-fixture line markets as local-test fake-token lines.
+- S23 source-disclosure proof confirms the visible path through ticket-ready state.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed current-match Spread/Totals/Team Total market identities.
+- A clean fixture-line order-book state that avoids binary invariant conflicts during repeated proof runs.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch blocked source disclosure.
+
+Temporary mock/static data:
+
+- Existing backend-shaped line fixtures remain in use for line-selector UX and fake-token testing.
+
+Future migration concern:
+
+- Do not remove fake-token fixture disclosure until real provider-backed line rows replace the fixture rows in backend route contracts.

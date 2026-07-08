@@ -5562,3 +5562,32 @@ Decision:
 
 - Pass/fail: Pass.
 - Remaining P1: current-match line-market provider ingestion remains unavailable.
+
+## Cycle OI
+
+Gate status: Pass for local-line fake-token disclosure
+
+Scope: Make local-test line market source disclosure visible before order submission.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OI-local-line-fake-token-disclosure.md`
+- `docs/mobile/harness/cycle-OI-local-line-fake-token-disclosure/cycle-OI-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-OI-local-line-fake-token-disclosure/cycle-OI-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-OI-local-line-fake-token-disclosure/cycle-OI-current-mvp-lines.png`
+- `docs/mobile/screenshots/cycle-OI-local-line-fake-token-disclosure/cycle-OI-current-mvp-ticket-ready.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OI-P0-01 | P0 | Pass | Home XML contains `home-card-source-local-test-fake-token`. | Fix `eventSourceReadiness()`. |
+| OI-P0-02 | P0 | Pass | Line section XML contains `line-source-local-test-fake-token`. | Fix `lineSourceCopy()`. |
+| OI-P0-03 | P0 | Pass | Line row XML contains `line-market-local-test-fake-token`. | Fix `marketSourceHeaderNote()`. |
+| OI-P0-04 | P0 | Pass | Ticket-ready XML contains fake-token source note. | Fix ticket source note mapping. |
+| OI-P1-01 | P1 | Open | Full-submit attempt hit binary invariant conflict. | Clean fixture-line order-book state or adjust proof setup. |
+
+Decision:
+
+- Pass/fail: Pass for source disclosure.
+- Remaining P1: fixture-line order submit health needs a separate backend/order-book cleanup cycle.

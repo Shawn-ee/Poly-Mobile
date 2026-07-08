@@ -3163,3 +3163,16 @@ Cycle OH implementation notes:
 
 - No backend route or schema changed.
 - S23 proof confirms the current match has a full real provider-backed Regulation Winner mobile path.
+
+## Cycle OI - Local Line Fake-Token Disclosure
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home mixed-source label | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` | GET | Public viewing | Query filters | `marketSourceSummary.regulationWinner.status`, `marketSourceSummary.lineMarkets.status`, line families | `Event`, `Market`, `Outcome` | Existing `contract-fixture` line rows are disclosed as fake-token local test lines. | Real provider-backed line rows remain unavailable. |
+| Event Detail line-source banner | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | `marketSourceSummary.lineMarkets.familyReadiness`, `providerAvailability`, market `referenceSource` | `Event`, `Market`, `Outcome` | Existing fixture rows remain local-test fake-token lines. | Real provider-backed Spread/Totals/Team Total rows remain unavailable. |
+| Ticket source note | `/api/markets/:id/quote` plus existing ticket state | GET/local state | Public quote or server mode | Market/outcome id | Contract-fixture reference source and quote/probability | `Market`, `Outcome`, quote/read model | No new fallback added. | Fixture-line order submit needs cleanup after binary invariant conflict. |
+
+Cycle OI implementation notes:
+
+- No backend route or schema changed.
+- Backend order matching was not changed in this source-disclosure cycle.
