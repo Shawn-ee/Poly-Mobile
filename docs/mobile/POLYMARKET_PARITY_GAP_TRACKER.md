@@ -608,3 +608,11 @@ For every UI element or interaction, answer:
 - NM closes the gap called out by inspection: the current Home -> Event Detail -> line ticket -> server order -> Portfolio/history flow is proven against `argentina-vs-egypt`, not older disposable/tablet evidence.
 - Backend proof and S23 proof both pass for selecting `Egypt +1.5`, preserving line/source/token identity, filling a server order, and showing Portfolio/history.
 - Remaining P1: line markets are still `contract-fixture`, not real provider-backed Polymarket line markets.
+
+## Cycle NN Gap Tracker Update
+
+- PM-GAP-110 is opened and verified for the current route-backed line-position cashout lifecycle on Samsung S23.
+- NN closes the Local MVP sell/cashout proof gap by proving Home/Live -> Event Detail -> Spread line -> Buy ticket -> filled Portfolio position -> Cash out ticket -> SELL fill -> Portfolio History sold activity.
+- S23 proof passes on `SM-S911U1`, and orderbook/chat remain hidden.
+- Remaining P1: line markets are still `contract-fixture`, not real provider-backed Polymarket line markets.
+- Remaining P1: cashout price/proceeds are backed by deterministic local liquidity for MVP proof; production liquidity/provider price preview is future work.

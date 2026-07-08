@@ -2869,3 +2869,18 @@ Cycle NM implementation notes:
 
 - No backend route/schema changed.
 - The route and S23 proofs validate the current route-backed line-ticket flow after Cycle NL restored service readiness.
+
+## Cycle NN - Current Line Cashout S23 Flow
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Current Home/Live match entry | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10` | GET | Public viewing | Query filters/page size | Event slug/title, compact market source summary, provider winner/local line disclosure | `Event`, `Market`, `Outcome` | None added. | Dedicated active provider match feed remains future cleanup. |
+| Event Detail line selection | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | Spread line `1.5`, outcome ids, source, token, condition, line, period | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot` | Existing backend `contract-fixture` line rows. | Real provider-backed Spread/Totals/Team Total rows remain unavailable. |
+| Server buy ticket submit | `/api/orders` | POST | Mobile dev API key | BUY limit order with selection snapshot for `Egypt +1.5` | Filled order id/status and selection snapshot | `ApiCredential`, `ApiOrderRequest`, `Order`, `Trade`, `Position`, `UserBalance` | Proof seeds local SELL counterparty liquidity. | Production liquidity remains future work. |
+| Cashout sell submit | `/api/orders` | POST | Mobile dev API key | SELL order for the owned `marketId`/`outcomeId`/line with full position size | Filled SELL order/trade, updated position, sold activity | `ApiCredential`, `ApiOrderRequest`, `Order`, `Trade`, `Position`, `UserBalance` | Proof seeds local BUY counterparty liquidity at a crossing bid. | Production liquidity and price preview hardening remain future work. |
+| Portfolio/history confirmation | `/api/portfolio`, `/api/portfolio/history` | GET | Mobile dev API key | None | Position, sold activity, selected line/source identity | `Position`, `Trade`, `Order`, `Market`, `Outcome` | None added. | None for Local MVP fake-token cashout proof. |
+
+Cycle NN implementation notes:
+
+- No backend route/schema changed.
+- The proof confirms the existing backend order route can support the Local MVP sell/cashout path when crossing liquidity exists.

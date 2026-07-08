@@ -8,10 +8,12 @@ param(
   [string]$Cycle = "MB",
   [string]$OutputDir = "docs\mobile\screenshots\cycle-MB-current-mvp-s23-visible-flow",
   [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-MB-current-mvp-s23-visible-flow",
+  [string]$CashoutBidPrice = "0.60",
   [switch]$SeedCounterparty,
   [switch]$ExpectFilledHistory,
   [switch]$ExpectOpenOrder,
-  [switch]$ExpectCancel
+  [switch]$ExpectCancel,
+  [switch]$ExpectCashout
 )
 
 $ErrorActionPreference = "Stop"
@@ -25,7 +27,10 @@ $expoErr = Join-Path $repoRoot ".runtime\mobile-current-mvp-s23-expo.err.log"
 $adb = "adb"
 
 if (($ExpectOpenOrder -and $ExpectFilledHistory) -or ($ExpectCancel -and $ExpectFilledHistory)) {
-  throw "Choose open-order/cancel proof or filled-history proof, not both."
+  throw "Choose open-order/cancel proof or filled-history/cashout proof, not both."
+}
+if ($ExpectCashout -and (-not $ExpectFilledHistory)) {
+  throw "Cashout proof requires -ExpectFilledHistory so a filled position exists first."
 }
 
 $expectOpenOrderState = [bool]$ExpectOpenOrder -or [bool]$ExpectCancel
@@ -317,6 +322,9 @@ try {
 
   $historyXml = $null
   $cancelHistoryXml = $null
+  $cashoutCounterpartyProofPath = $null
+  $cashoutTicketXml = $null
+  $cashoutHistoryXml = $null
   if ($ExpectCancel) {
     Invoke-TapNode -Path $afterSubmitXml -Identifier "cancel-open-order-" -StartsWith
     Start-Sleep -Seconds 5
@@ -328,15 +336,42 @@ try {
     Save-Screenshot -Name "cycle-$Cycle-current-mvp-canceled-history.png" | Out-Null
     $cancelHistoryXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-canceled-history.xml"
     Assert-Contains -Path $cancelHistoryXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "Canceled", "portfolio-history-market-context-readable", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
+  } elseif ($ExpectCashout) {
+    Assert-Contains -Path $afterSubmitXml -Expected @("position-card-", "portfolio-position-cash-out-", "portfolio-position-source-badge")
+    $cashoutCounterpartyProofPath = Join-Path $HierarchyOutputDir "cycle-$Cycle-current-mvp-line-cashout-counterparty.json"
+    $cashoutCounterpartyProofAbsolutePath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-current-mvp-line-cashout-counterparty.json"
+    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=spread" "--line=1.5" "--outcomeSide=away" "--makerSide=BUY" "--bidPrice=$CashoutBidPrice" "--bidSize=80" "--cleanupBlockingMarketBids" "--cleanupProofAsks" "--cleanupBlockingAsks" "--proofUserPrefix=holiwyn-mobile-" "--output=$cashoutCounterpartyProofAbsolutePath" | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+      throw "Line cashout counterparty seed failed for $EventSlug."
+    }
+    Invoke-TapNode -Path $afterSubmitXml -Identifier "portfolio-position-cash-out-" -StartsWith
+    Start-Sleep -Seconds 2
+    Save-Screenshot -Name "cycle-$Cycle-current-mvp-line-cashout-ticket.png" | Out-Null
+    $cashoutTicketXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-line-cashout-ticket.xml"
+    Assert-Contains -Path $cashoutTicketXml -Expected @("cashout-ticket", "cashout-full-position", "cashout-current-price", "cashout-estimated-proceeds", "swipe-to-cashout")
+    Assert-NotContains -Path $cashoutTicketXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
+
+    & $adb -s $Device shell input swipe 540 2070 540 1450 2400 | Out-Null
+    Start-Sleep -Seconds 7
+    Save-Screenshot -Name "cycle-$Cycle-current-mvp-after-line-cashout.png" | Out-Null
+    $afterCashoutXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-after-line-cashout.xml"
+    Assert-Contains -Path $afterCashoutXml -Expected @("Portfolio")
+    Assert-NotContains -Path $afterCashoutXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
+    Invoke-TapNode -Path $afterCashoutXml -Identifier "portfolio-tab-history"
+    Start-Sleep -Seconds 2
+    Save-Screenshot -Name "cycle-$Cycle-current-mvp-line-cashout-history.png" | Out-Null
+    $cashoutHistoryXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-line-cashout-history.xml"
+    Assert-Contains -Path $cashoutHistoryXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "activity-sold", "portfolio-history-market-context-readable", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
+    Assert-NotContains -Path $cashoutHistoryXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
   } elseif (-not $expectOpenOrderState) {
     Invoke-TapNode -Path $afterSubmitXml -Identifier "portfolio-tab-history"
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-$Cycle-current-mvp-portfolio-history.png" | Out-Null
     $historyXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-portfolio-history.xml"
   }
-  if ($ExpectFilledHistory) {
+  if ($ExpectFilledHistory -and (-not $ExpectCashout)) {
     Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "portfolio-history-market-context-readable", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
-  } elseif ((-not $expectOpenOrderState) -and (-not $ExpectCancel)) {
+  } elseif ((-not $expectOpenOrderState) -and (-not $ExpectCancel) -and (-not $ExpectCashout)) {
     Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "No history", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture")
   }
 
@@ -354,6 +389,8 @@ try {
     eventSlug = $EventSlug
     seededCounterparty = [bool]$SeedCounterparty
     counterpartyProof = if ($SeedCounterparty) { $counterpartyProofPath } else { $null }
+    cashoutBidPrice = if ($ExpectCashout) { $CashoutBidPrice } else { $null }
+    cashoutCounterpartyProof = $cashoutCounterpartyProofPath
     assertions = [ordered]@{
       homeShowsCurrentMatch = $true
       homeShowsProviderWinnerLocalLinesDisclosure = $true
@@ -370,6 +407,9 @@ try {
       filledHistoryVisible = [bool]$ExpectFilledHistory
       cancelSubmitted = [bool]$ExpectCancel
       canceledHistoryVisible = [bool]$ExpectCancel
+      cashoutTicketOpened = [bool]$ExpectCashout
+      cashoutSellSubmitted = [bool]$ExpectCashout
+      cashoutHistoryVisible = [bool]$ExpectCashout
     }
     artifacts = [System.Collections.Generic.List[string]]@(
       "$OutputDir\cycle-$Cycle-current-mvp-home.png",
@@ -391,6 +431,13 @@ try {
     $summary.artifacts.Add("$HierarchyOutputDir\cycle-$Cycle-current-mvp-after-cancel.xml")
     $summary.artifacts.Add("$OutputDir\cycle-$Cycle-current-mvp-canceled-history.png")
     $summary.artifacts.Add("$HierarchyOutputDir\cycle-$Cycle-current-mvp-canceled-history.xml")
+  } elseif ($ExpectCashout) {
+    $summary.artifacts.Add("$OutputDir\cycle-$Cycle-current-mvp-line-cashout-ticket.png")
+    $summary.artifacts.Add("$HierarchyOutputDir\cycle-$Cycle-current-mvp-line-cashout-ticket.xml")
+    $summary.artifacts.Add("$OutputDir\cycle-$Cycle-current-mvp-after-line-cashout.png")
+    $summary.artifacts.Add("$HierarchyOutputDir\cycle-$Cycle-current-mvp-after-line-cashout.xml")
+    $summary.artifacts.Add("$OutputDir\cycle-$Cycle-current-mvp-line-cashout-history.png")
+    $summary.artifacts.Add("$HierarchyOutputDir\cycle-$Cycle-current-mvp-line-cashout-history.xml")
   } elseif (-not $expectOpenOrderState) {
     $summary.artifacts.Add("$OutputDir\cycle-$Cycle-current-mvp-portfolio-history.png")
     $summary.artifacts.Add("$HierarchyOutputDir\cycle-$Cycle-current-mvp-portfolio-history.xml")

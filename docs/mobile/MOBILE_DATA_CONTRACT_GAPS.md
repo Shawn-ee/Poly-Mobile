@@ -5995,3 +5995,34 @@ Temporary mock/static data:
 Future migration concern:
 
 - Keep the line fixture disclosure visible and documented until provider-backed line markets exist.
+
+## Cycle NN - Current Line Cashout S23 Flow
+
+Closed or narrowed:
+
+- Proved the current route-backed line-market lifecycle can complete both directions on Samsung S23: BUY/fill -> Portfolio position -> cashout SELL/fill -> History sold activity.
+- Confirmed cashout history preserves selected line, source, token, condition, market, and outcome identity for the backend contract-shaped Spread line.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total rows for the inspected match.
+- Production liquidity and provider-derived price preview for cashout.
+
+Schema mismatch:
+
+- No schema mismatch was found or introduced.
+
+Route mismatch:
+
+- No new route mismatch was introduced.
+
+Temporary mock/static data:
+
+- No frontend-only random mock data was added.
+- The line markets remain backend `contract-fixture` records.
+- The proof seeds deterministic backend liquidity shaped like real order data.
+
+Future migration concern:
+
+- Replace fixture line markets with provider-backed line markets when available.
+- Keep cashout route proof tied to owned `marketId`/`outcomeId`/line identity so provider-backed lines can replace fixtures without changing the mobile interaction model.

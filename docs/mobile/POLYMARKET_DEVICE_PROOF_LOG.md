@@ -694,3 +694,36 @@ Pass for current Local MVP line-ticket flow.
 
 Remaining gaps:
 Line markets are contract fixtures, not provider-backed Polymarket lines.
+
+### 2026-07-08 - Cycle NN - Current line cashout S23 flow
+
+Reference device:
+Not used for fresh Polymarket app comparison in this proof cycle. The cycle validates the current Holiwyn Local MVP cashout path against the already documented Polymarket retail flow expectations.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://172.16.200.14:3002`, temporary Expo port `8297`, temporary mobile dev API key, orderbook hidden.
+
+Holiwyn actions:
+Opened Home, checked Live, opened `argentina-vs-egypt`, scrolled to Game Lines, selected `Egypt +1.5`, entered `$25`, swiped to buy, verified Portfolio position, tapped Cash out, swiped to cash out, and verified History shows sold activity preserving line/source identity.
+
+Holiwyn evidence:
+- `docs/mobile/harness/cycle-NN-current-line-cashout-s23-flow/cycle-NN-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NN-current-line-cashout-s23-flow/cycle-NN-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NN-current-line-cashout-s23-flow/cycle-NN-current-mvp-lines.png`
+- `docs/mobile/screenshots/cycle-NN-current-line-cashout-s23-flow/cycle-NN-current-mvp-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-NN-current-line-cashout-s23-flow/cycle-NN-current-mvp-after-submit.png`
+- `docs/mobile/screenshots/cycle-NN-current-line-cashout-s23-flow/cycle-NN-current-mvp-line-cashout-ticket.png`
+- `docs/mobile/screenshots/cycle-NN-current-line-cashout-s23-flow/cycle-NN-current-mvp-after-line-cashout.png`
+- `docs/mobile/screenshots/cycle-NN-current-line-cashout-s23-flow/cycle-NN-current-mvp-line-cashout-history.png`
+
+Smoke/tests:
+Mobile typecheck and S23 visible-flow proof passed. A targeted backend script `tsc` check still hits existing repo-level path/target issues and was not used as a blocker.
+
+Result:
+Pass for current Local MVP line cashout flow.
+
+Remaining gaps:
+Line markets are contract fixtures, not provider-backed Polymarket lines. Cashout uses deterministic backend liquidity for MVP proof, not production liquidity.

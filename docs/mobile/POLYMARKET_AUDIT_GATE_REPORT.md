@@ -4956,3 +4956,33 @@ Decision:
 
 - Pass/fail: Pass for current Local MVP line-ticket flow.
 - Not a final Polymarket line-market parity pass because provider-backed lines remain unavailable.
+
+## Cycle NN
+
+Gate status: Pass for current Local MVP line cashout flow
+
+Scope: Prove the current Home/Live -> Event Detail -> Spread line -> Buy ticket -> filled Portfolio position -> Cash out ticket -> SELL fill -> Portfolio History path on Samsung S23.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NN-current-line-cashout-s23-flow.md`
+- `docs/mobile/harness/cycle-NN-current-line-cashout-s23-flow/cycle-NN-current-mvp-s23-visible-flow.json`
+- `docs/mobile/harness/cycle-NN-current-line-cashout-s23-flow/cycle-NN-current-mvp-line-cashout-ticket.xml`
+- `docs/mobile/harness/cycle-NN-current-line-cashout-s23-flow/cycle-NN-current-mvp-line-cashout-history.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NN-P0-01 | P0 | Pass | S23 proof selected the current Spread `1.5` line. | Fix Home/detail line route or mobile scroll/tap selectors. |
+| NN-P0-02 | P0 | Pass | Ticket and Portfolio preserve `portfolio-market-type-spread`, `portfolio-line-1.5`, and `portfolio-provider-source-contract-fixture`. | Fix selection snapshot bridge. |
+| NN-P0-03 | P0 | Pass | Swipe buy reached a filled Portfolio position. | Fix ticket submit/order route. |
+| NN-P0-04 | P0 | Pass | Cashout ticket opened from `portfolio-position-cash-out-*`. | Fix Portfolio cashout action. |
+| NN-P0-05 | P0 | Pass | Cashout SELL filled and History shows sold activity for the same line/source identity. | Fix cashout submit/order matching/history mapping. |
+| NN-P0-06 | P0 | Pass | S23 hierarchies exclude orderbook/chat. | Hide non-MVP surfaces. |
+| NN-P1-01 | P1 | Partial | Evidence still shows contract-fixture line markets. | Attach real provider-backed line markets when available. |
+
+Decision:
+
+- Pass/fail: Pass for current Local MVP line cashout flow.
+- Not a final Polymarket line-market parity pass because provider-backed lines remain unavailable.

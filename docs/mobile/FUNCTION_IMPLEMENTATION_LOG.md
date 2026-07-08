@@ -7299,3 +7299,45 @@ Known limitations:
 
 - Line markets remain contract fixtures, not Polymarket-backed line markets.
 - This cycle proves the current Local MVP user flow is working; it does not claim final Polymarket line-market parity.
+
+## Cycle NN - Current Line Cashout S23 Flow
+
+Feature/page worked on:
+
+- Current Home/Live -> Event Detail -> Spread line -> simple ticket -> fake-token/server filled order -> Portfolio position -> cashout ticket -> fake-token/server SELL -> Portfolio History proof.
+
+Frontend/harness/backend files touched:
+
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+- Evidence/docs:
+  - `docs/mobile/audits/cycle-NN-current-line-cashout-s23-flow.md`
+  - `docs/mobile/harness/cycle-NN-current-line-cashout-s23-flow/`
+  - `docs/mobile/screenshots/cycle-NN-current-line-cashout-s23-flow/`
+
+Important functions/services touched:
+
+- No production app or backend functions were changed.
+- The S23 harness now supports `-ExpectCashout`.
+- Route proof exercised `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+- Counterparty setup used `scripts/seed_mobile_route_spread_counterparty.ts` to create crossing backend BUY liquidity for the cashout SELL.
+
+User interactions supported/proven:
+
+- User opens Home, checks Live, opens Argentina vs Egypt, scrolls to Game Lines, selects `Egypt +1.5`, buys `$25`, sees the filled Portfolio position, taps Cash out, swipes to cash out, and sees sold activity in History.
+
+State transitions:
+
+- BUY order fills against deterministic local counterparty liquidity.
+- Position becomes visible in Portfolio.
+- Cashout SELL fills against deterministic local counterparty bid liquidity.
+- Portfolio History shows sold activity while preserving spread line/source identity.
+
+Validation:
+
+- Mobile typecheck passed.
+- S23 proof passed: `docs/mobile/harness/cycle-NN-current-line-cashout-s23-flow/cycle-NN-current-mvp-s23-visible-flow.json`
+
+Known limitations:
+
+- Line markets remain backend `contract-fixture` rows, not provider-backed Polymarket line markets.
+- No backend route/schema changed in this cycle.
