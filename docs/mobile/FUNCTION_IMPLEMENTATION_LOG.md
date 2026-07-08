@@ -2,6 +2,45 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ON - Source Label Tester Cleanup
+
+Feature/page worked on:
+
+- Home source readiness labels, Event Detail source disclosure, Trade Ticket source disclosure, and Portfolio source disclosure copy.
+
+Frontend/services touched:
+
+- `mobile/src/components/MarketLists.tsx`
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/src/components/Portfolio.tsx`
+
+User interactions supported/proven:
+
+- S23 Home shows the current MVP match with lighter `Winner: Polymarket / test lines` copy.
+- S23 Event Detail shows mixed provider/test-line disclosure without debug-heavy `local test fake-token` visible copy.
+- S23 line market rows and line ticket show `Test` / `Test line - fake USDT`.
+- Provider-backed winner ticket still shows `Polymarket market`.
+
+Backend/API route changed:
+
+- None.
+
+Backend/API routes exercised:
+
+- Existing Home/Event Detail routes through the running mobile app: `/api/events` and `/api/mobile/events/:slug/live-detail`.
+
+Verified:
+
+- Mobile typecheck passed.
+- Focused Vitest mobile API/source tests passed.
+- S23 proof saved under `docs/mobile/harness/cycle-ON-source-label-tester-cleanup/`.
+
+Known limitations:
+
+- Spread/Totals/Team Total rows remain contract-shaped test fixtures until real provider-backed line markets are available.
+- No order submission proof was rerun because backend/order logic was intentionally untouched.
+
 ## Cycle NJ - Current Service Inspection and Provider Winner Cashout
 
 Feature/page worked on:

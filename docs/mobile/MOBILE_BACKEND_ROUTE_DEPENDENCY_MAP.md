@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ON - Source Label Tester Cleanup
+
+Cycle ON changes tester-facing mobile copy only; no backend route, schema, or request/response contract changed.
+
+- UI report: `docs/mobile/UI_REGRESSION_SOURCE_CHANGE_REPORT.md`.
+- S23 proof: `docs/mobile/harness/cycle-ON-source-label-tester-cleanup/`.
+- Audit: `docs/mobile/audits/cycle-ON-source-label-tester-cleanup.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home/Event Detail/Ticket source disclosure cleanup | `/api/events`; `/api/mobile/events/:slug/live-detail` | GET | None for viewed feed/detail | None | Existing `marketSourceSummary`, `referenceSource`, market/outcome identity, source status, line family metadata | Existing `Event`, `Market`, `Outcome`; no schema change | Existing `contract-fixture` line markets remain visible as `Test` / `Test line - fake USDT` | Real provider-backed Spread/Totals/Team Total markets for inspected MVP match remain unavailable. |
+
 ## Cycle NJ - Current Service Inspection and Provider Winner Cashout
 
 Cycle NJ re-inspects current service readiness and proves the provider-backed Regulation Winner buy/sell lifecycle on S23.

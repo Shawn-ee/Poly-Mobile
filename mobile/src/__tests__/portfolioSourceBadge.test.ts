@@ -16,12 +16,12 @@ describe("Portfolio source badges", () => {
     expect(source).toContain("portfolio-source-badge-provider");
     expect(source).toContain("portfolio-source-badge-local");
     expect(source).toContain('label: "Polymarket"');
-    expect(source).toContain('label: "Local test"');
-    expect(source).toContain("Local test line · fake-token");
+    expect(source).toContain('label: "Test"');
+    expect(source).toContain("Test line - fake USDT");
     expect(source).toContain("portfolioSourceSummary");
     expect(source).toContain("portfolio-selection-source-summary");
     expect(source).toContain("portfolio-source-summary-local-lines");
-    expect(source).toContain("Local test lines · fake-token");
+    expect(source).toContain("Test lines - fake USDT");
     expect(source).toContain("portfolio-local-line-count-");
   });
 });

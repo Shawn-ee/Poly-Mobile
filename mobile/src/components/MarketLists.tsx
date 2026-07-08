@@ -60,7 +60,7 @@ export const eventSourceReadiness = (event: Event, locale: Locale) => {
       text:
         locale === "zh"
           ? "胜负: Polymarket / 盘口: 本地测试"
-          : "Winner: Polymarket / Lines: local test fake-token",
+          : "Winner: Polymarket / test lines",
       accessibility: `home-card-source-provider-winner-local-lines home-card-source-local-test-fake-token line-families-${lineFamilies.join("-") || "none"}`,
       tone: "mixed" as const,
     };
@@ -74,7 +74,7 @@ export const eventSourceReadiness = (event: Event, locale: Locale) => {
   }
   if (lineStatus === "contract-fixture") {
     return {
-      text: locale === "zh" ? "本地测试代币盘口" : "Local test fake-token lines",
+      text: locale === "zh" ? "本地测试代币盘口" : "Test lines",
       accessibility: `home-card-source-local-lines home-card-source-local-test-fake-token line-families-${lineFamilies.join("-") || "none"}`,
       tone: "local" as const,
     };
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
   saveText: { color: "#94a3b8", fontSize: 19, fontWeight: "900" },
   saveTextActive: { color: "#101827" },
   eventTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginBottom: 5 },
-  sourceReadiness: { color: "#94a3b8", fontSize: 11, fontWeight: "900", marginBottom: 3 },
+  sourceReadiness: { color: "#94a3b8", fontSize: 10, fontWeight: "800", marginBottom: 3 },
   sourceReadinessProvider: { color: "#86efac" },
   sourceReadinessMixed: { color: "#fde68a" },
   sourceReadinessLocal: { color: "#fca5a5" },

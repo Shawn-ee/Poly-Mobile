@@ -13,7 +13,7 @@ describe("Trade Ticket market source badge", () => {
     expect(source).toContain("ticket-source-badge-provider");
     expect(source).toContain("ticket-source-badge-local");
     expect(source).toContain('label: "Polymarket"');
-    expect(source).toContain('label: "Local test"');
-    expect(source).toContain("Local test line · fake-token");
+    expect(source).toContain('label: "Test"');
+    expect(source).toContain("Test line - fake USDT");
   });
 });

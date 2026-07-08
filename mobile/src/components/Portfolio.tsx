@@ -353,7 +353,7 @@ const portfolioSourceBadge = (selection?: TicketSelection) => {
   }
   if (source.includes("contract-fixture")) {
     return {
-      label: "Local test",
+      label: "Test",
       tone: "fixture" as const,
       accessibility: `portfolio-source-badge-local portfolio-source-${source}`,
     };
@@ -369,7 +369,7 @@ const portfolioSourceNote = (selection?: TicketSelection) => {
   const source = selection?.referenceSource ?? "";
   if (source.includes("contract-fixture")) {
     return {
-      text: "Local test line · fake-token",
+      text: "Test line - fake USDT",
       accessibility: "portfolio-local-test-pricing",
       tone: "fixture" as const,
     };
@@ -414,7 +414,7 @@ const portfolioSourceSummary = ({
   if (providerCount > 0 && localLineCount > 0) {
     return {
       label: "Source",
-      text: "Polymarket winner / local test lines",
+      text: "Polymarket winner / test lines",
       tone: "mixed" as const,
       accessibility:
         `portfolio-selection-source-summary portfolio-source-summary-mixed portfolio-provider-count-${providerCount} portfolio-local-line-count-${localLineCount} portfolio-line-families-${lineFamilies.join("-") || "none"}`,
@@ -423,7 +423,7 @@ const portfolioSourceSummary = ({
   if (localLineCount > 0) {
     return {
       label: "Source",
-      text: "Local test lines · fake-token",
+      text: "Test lines - fake USDT",
       tone: "fixture" as const,
       accessibility:
         `portfolio-selection-source-summary portfolio-source-summary-local-lines portfolio-provider-count-${providerCount} portfolio-local-line-count-${localLineCount} portfolio-line-families-${lineFamilies.join("-") || "none"}`,

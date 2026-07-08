@@ -2,6 +2,26 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle ON - Source Label Tester Cleanup
+
+Closed or narrowed:
+
+- Tester-facing copy no longer over-emphasizes debug wording such as `local test fake-token`.
+- Internal source/proof markers remain in accessibility labels and tests, so the app still distinguishes Polymarket-backed markets from contract-fixture lines.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected current MVP match.
+- Broader provider-backed event visibility in the default retail flow once provider breadth is ready for user-facing Home/Live.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Existing `contract-fixture` line markets remain backend-shaped Local MVP fallback rows and are visibly labeled `Test` / `Test line - fake USDT`.
+
 ## Cycle NJ - Current Service Inspection and Provider Winner Cashout
 
 Closed or narrowed:

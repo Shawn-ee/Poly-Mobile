@@ -260,8 +260,8 @@ const lineSourceCopy = (event: Event) => {
     return {
       label: "Market source",
       text: winnerReady
-        ? `Winner: Polymarket / Lines: local test fake-token.${familyCopy}`
-        : `Lines: local test fake-token.${familyCopy}`,
+        ? `Winner: Polymarket / test lines.${familyCopy}`
+        : `Test lines.${familyCopy}`,
       tone: "fixture" as const,
       accessibility:
         `event-detail-line-source-banner line-source-contract-fixture line-source-local-test-fake-token regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}${familyMarker}`,
@@ -423,7 +423,7 @@ const marketSourceHeaderNote = (market?: Market) => {
   const source = market?.referenceSource ?? "";
   if (source.includes("contract-fixture")) {
     return {
-      text: "Local test line · fake-token",
+      text: "Test line - fake USDT",
       accessibility: "line-market-local-test-pricing line-market-local-test-fake-token",
     };
   }
@@ -447,7 +447,7 @@ const marketSourceBadge = (market?: Market) => {
   }
   if (source.includes("contract-fixture")) {
     return {
-      label: "Local test",
+      label: "Test",
       tone: "fixture" as const,
       accessibility: `market-source-badge-local market-source-local-test-readable market-source-${source}`,
     };
