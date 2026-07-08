@@ -249,23 +249,19 @@ const lineSourceCopy = (event: Event) => {
   if (lineStatus === "provider-backed") {
     return {
       label: "Market source",
-      text: winnerReady ? "Winner and lines are live from provider data." : "Line markets are live from provider data.",
+      text: winnerReady ? "Winner + lines: Polymarket" : "Lines: Polymarket",
       tone: "ready" as const,
       accessibility:
         `event-detail-line-source-banner line-source-provider-backed regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}${familyMarker}`,
     };
   }
   if (lineStatus === "contract-fixture") {
-    const availabilityCopy =
-      lineAvailability?.status === "unavailable"
-        ? " Provider lines unavailable."
-        : "";
     const familyCopy = localFamilies ? ` Local lines: ${localFamilies}.` : "";
     return {
       label: "Market source",
       text: winnerReady
-        ? `Winner is provider-backed.${familyCopy}${availabilityCopy}`
-        : `Lines use local server pricing.${familyCopy}${availabilityCopy}`,
+        ? `Winner: Polymarket / Lines: local test.${familyCopy}`
+        : `Lines: local test.${familyCopy}`,
       tone: "fixture" as const,
       accessibility:
         `event-detail-line-source-banner line-source-contract-fixture regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}${familyMarker}`,
@@ -274,7 +270,7 @@ const lineSourceCopy = (event: Event) => {
   if (lineStatus === "missing") {
     return {
       label: "Market source",
-      text: "Line markets are unavailable for this match.",
+      text: "Lines unavailable",
       tone: "missing" as const,
       accessibility:
         `event-detail-line-source-banner line-source-missing regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}`,
@@ -282,7 +278,7 @@ const lineSourceCopy = (event: Event) => {
   }
   return {
     label: "Market source",
-    text: "Line market source is being checked.",
+    text: "Checking market source",
     tone: "missing" as const,
     accessibility:
       `event-detail-line-source-banner line-source-unknown regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}`,
@@ -427,13 +423,13 @@ const marketSourceHeaderNote = (market?: Market) => {
   const source = market?.referenceSource ?? "";
   if (source.includes("contract-fixture")) {
     return {
-      text: "Local test pricing",
+      text: "Local test line",
       accessibility: "line-market-local-test-pricing",
     };
   }
   if (source.includes("polymarket")) {
     return {
-      text: "Provider market",
+      text: "Polymarket market",
       accessibility: "line-market-provider-backed",
     };
   }

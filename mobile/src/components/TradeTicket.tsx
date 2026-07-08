@@ -297,14 +297,14 @@ function ticketSourceBadge(ticket: Ticket) {
   const source = ticket.selection?.referenceSource ?? ticket.market.referenceSource ?? "";
   if (source.includes("polymarket")) {
     return {
-      label: "Provider",
+      label: "Polymarket",
       tone: "provider" as const,
       accessibility: `ticket-source-badge-provider ticket-source-${source}`,
     };
   }
   if (source.includes("contract-fixture")) {
     return {
-      label: "Local",
+      label: "Local test",
       tone: "fixture" as const,
       accessibility: `ticket-source-badge-local ticket-source-${source}`,
     };
@@ -320,14 +320,14 @@ function ticketSourceNote(ticket: Ticket) {
   const source = ticket.selection?.referenceSource ?? ticket.market.referenceSource ?? "";
   if (source.includes("contract-fixture")) {
     return {
-      text: "Local test pricing",
+      text: "Local test line",
       accessibility: "ticket-local-test-pricing",
       tone: "fixture" as const,
     };
   }
   if (source.includes("polymarket")) {
     return {
-      text: "Provider market",
+      text: "Polymarket market",
       accessibility: "ticket-provider-backed-pricing",
       tone: "provider" as const,
     };

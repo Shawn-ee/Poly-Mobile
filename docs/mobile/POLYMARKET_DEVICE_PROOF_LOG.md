@@ -960,6 +960,36 @@ Pass for provider line query breadth and current Local MVP visible sanity.
 Remaining gaps:
 Real provider-backed Spread/Totals/Team Total lines are still missing for the checked Polymarket events; those rows remain explicit contract fixtures.
 
+### 2026-07-08 - Cycle NY - MVP source label cleanup
+
+Reference device:
+Not used. This was a Holiwyn Local MVP source-label cleanup based on the provider inspection results.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://172.16.200.14:3002`, temporary Expo port `8305`, temporary mobile dev API key.
+
+Holiwyn actions:
+Opened Home, verified the current MVP match and the simplified source label, tapped into Event Detail, and verified the current MVP detail display still renders with chat/orderbook hidden.
+
+Evidence:
+- `docs/mobile/harness/cycle-NY-mvp-source-label-cleanup/cycle-NY-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NY-mvp-source-label-cleanup/cycle-NY-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NY-mvp-source-label-cleanup/cycle-NY-current-mvp-detail-stale-top.png`
+- `docs/mobile/harness/cycle-NY-mvp-source-label-cleanup/cycle-NY-current-mvp-home.xml`
+- `docs/mobile/harness/cycle-NY-mvp-source-label-cleanup/cycle-NY-current-mvp-detail-stale-top.xml`
+
+Smoke/tests:
+Mobile source-label contract tests and mobile TypeScript passed.
+
+Result:
+Pass for visible source-label cleanup and current MVP sanity.
+
+Remaining gaps:
+Real provider-backed Spread/Totals/Team Total lines remain missing; UI now labels those as local test lines.
+
 ### 2026-07-08 - Cycle NV - Live Detail display status contract
 
 Reference device:

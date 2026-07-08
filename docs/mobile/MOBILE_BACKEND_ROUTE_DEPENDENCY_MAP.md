@@ -3023,3 +3023,16 @@ Cycle NX implementation notes:
 - No schema migration was added.
 - No order, portfolio, or ticket backend route changed.
 - Query breadth improved, but provider-backed line parity remains open until real attach-ready line markets exist.
+
+## Cycle NY - MVP Source Label Cleanup
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home source label | `/api/events?...includeMobileMarkets=1&mobileMvpMatches=1` | GET | Public viewing | Event-list query filters | `marketSourceSummary.regulationWinner.status`, `marketSourceSummary.lineMarkets.status`, line families | `Event`, `Market`, `Outcome` | Existing contract-fixture line disclosure. | Real provider-backed line market source remains missing. |
+| Event Detail source label | `/api/mobile/events/:slug/live-detail` | GET | Public viewing | Event slug | `marketSourceSummary`, market `referenceSource`, family readiness/provider availability markers | `Event`, `Market`, `Outcome` | Existing contract-fixture line disclosure. | Real provider-backed Spread/Totals/Team Total rows. |
+| Trade Ticket and Portfolio source chips | Existing ticket/order/portfolio payloads | Mixed | Existing server-mode auth when ordering | No request contract change | `selection.referenceSource` and market `referenceSource` | Existing order/portfolio identity fields | Existing contract-fixture selection identity remains supported. | None for wording; real line provider remains missing. |
+
+Cycle NY implementation notes:
+
+- No backend route or schema changed.
+- This is a visible wording cleanup over the existing provider/source contract.

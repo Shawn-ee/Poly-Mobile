@@ -6326,3 +6326,33 @@ Temporary mock/static data:
 Future migration concern:
 
 - When Polymarket or another approved source exposes attach-ready line markets, the fixture rows should be replaced by provider rows with stable `marketId`, `outcomeId`, `externalMarketId`, `conditionId`, token ids, `line`, `period`, and `referenceSource=polymarket`.
+
+## Cycle NY - MVP Source Label Cleanup
+
+Closed or narrowed:
+
+- Mobile wording now consistently maps `referenceSource=polymarket` to `Polymarket`.
+- Mobile wording now consistently maps `referenceSource=contract-fixture` to `Local test`.
+- Home no longer uses broken or overly generic provider/local wording for the mixed winner/line state.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- No new fields were requested in this cycle.
+- Real provider-backed Spread/Totals/Team Total identity remains missing.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- No new mock data was added.
+- Existing backend-shaped contract fixtures remain.
+
+Future migration concern:
+
+- Once line markets become provider-backed, the same UI labels should automatically show `Polymarket` instead of `Local test` through `referenceSource`.

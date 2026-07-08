@@ -705,3 +705,12 @@ For every UI element or interaction, answer:
 - Route proof confirms the current honest service state: Regulation Winner is `polymarket`, while Spread/Totals/Team Total are `contract-fixture`.
 - S23 proof passes for the current Local MVP Home -> Event Detail visible path with orderbook/chat hidden.
 - Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open until Polymarket Gamma/CLOB or another approved provider exposes attach-ready line markets.
+
+## Cycle NY Gap Tracker Update
+
+- PM-GAP-121 is opened and verified for visible source-label clarity.
+- NY closes the visible wording gap where the app used generic or noisy source copy while the service state is mixed.
+- Home now shows `Winner: Polymarket / Lines: local test` for the current MVP match.
+- Event Detail, Trade Ticket, and Portfolio source helpers now use `Polymarket` and `Local test` consistently.
+- S23 proof passes for Home -> Event Detail visible sanity with chat/orderbook hidden.
+- Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open.

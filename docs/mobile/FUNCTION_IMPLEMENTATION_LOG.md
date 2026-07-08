@@ -7787,3 +7787,46 @@ Known limitations:
 - Polymarket Gamma still exposes only match-winner markets for `argentina-vs-egypt` and `fifwc-col-gha-2026-07-03` in the checked paths.
 - Spread/Totals/Team Total remain `contract-fixture` line markets for Local MVP order proof.
 - The relevance gate was not weakened; irrelevant candidates remain rejected instead of being attached as fake provider lines.
+
+## Cycle NY - MVP Source Label Cleanup
+
+Feature/page worked on:
+
+- Visible source labels on Home, Event Detail, Trade Ticket, and Portfolio/history rows.
+
+Frontend files touched:
+
+- `mobile/src/components/MarketLists.tsx`
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts`
+
+Important functions/services touched:
+
+- `eventSourceReadiness()`
+- `lineSourceCopy()`
+- `marketSourceHeaderNote()`
+- `ticketSourceBadge()` / `ticketSourceNote()`
+- `portfolioSourceBadge()` / `portfolioSourceNote()` / `portfolioSourceSummary()`
+
+User interactions supported/proven:
+
+- User opens Home and sees concise provider truth: `Winner: Polymarket / Lines: local test`.
+- User opens Event Detail and the source wording remains concise while hidden accessibility markers still preserve provider/fixture status.
+- Ticket and Portfolio source chips now say `Polymarket` or `Local test` instead of generic `Provider` / `Local`.
+
+State transitions:
+
+- No database schema, API route, order lifecycle, or portfolio state logic changed.
+
+Validation:
+
+- Mobile source-label contract tests passed.
+- Mobile TypeScript passed.
+- S23 focused visible proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- This does not create real provider-backed line markets.
+- S23 proof covers Home and Event Detail visible sanity; ticket/portfolio wording is covered by focused source-label tests.

@@ -5269,3 +5269,30 @@ Decision:
 - Pass/fail: Pass for focused provider-discovery breadth and visible sanity.
 - Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open.
 - Remaining P1: current checked Polymarket events expose only match-winner markets through Gamma, so Local MVP line rows remain contract fixtures.
+
+## Cycle NY
+
+Gate status: Pass for visible Local MVP source-label cleanup
+
+Scope: Simplify visible wording for the current mixed source state: provider-backed Regulation Winner plus local test line markets.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NY-mvp-source-label-cleanup.md`
+- `docs/mobile/harness/cycle-NY-mvp-source-label-cleanup/cycle-NY-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NY-mvp-source-label-cleanup/cycle-NY-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NY-mvp-source-label-cleanup/cycle-NY-current-mvp-detail-stale-top.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NY-P0-01 | P0 | Pass | Home XML/S23 proof shows `Winner: Polymarket / Lines: local test`. | Fix `eventSourceReadiness()`. |
+| NY-P0-02 | P0 | Pass | Source-label tests verify Event Detail retains provider/fixture source markers with simple copy. | Fix `lineSourceCopy()` and `marketSourceHeaderNote()`. |
+| NY-P0-03 | P0 | Pass | Source-label tests verify ticket/portfolio labels use `Polymarket` / `Local test`. | Fix ticket and portfolio source helpers. |
+| NY-P0-04 | P0 | Pass | S23 proof confirms Home -> Event Detail still renders and chat/orderbook remain hidden. | Fix visible MVP regression. |
+
+Decision:
+
+- Pass/fail: Pass for focused visible wording cleanup.
+- Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open.

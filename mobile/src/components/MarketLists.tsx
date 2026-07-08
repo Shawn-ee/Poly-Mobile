@@ -59,22 +59,22 @@ export const eventSourceReadiness = (event: Event, locale: Locale) => {
     return {
       text:
         locale === "zh"
-          ? `胜负来自 Polymarket · 让球/大小球本地定价`
-          : `Winner from Polymarket · Lines local`,
+          ? "胜负: Polymarket / 盘口: 本地测试"
+          : "Winner: Polymarket / Lines: local test",
       accessibility: `home-card-source-provider-winner-local-lines line-families-${lineFamilies.join("-") || "none"}`,
       tone: "mixed" as const,
     };
   }
   if (winnerStatus === "provider-backed" && lineStatus === "provider-backed") {
     return {
-      text: locale === "zh" ? "市场来自 Polymarket" : "Markets from Polymarket",
+      text: locale === "zh" ? "市场: Polymarket" : "Markets: Polymarket",
       accessibility: "home-card-source-provider-backed",
       tone: "provider" as const,
     };
   }
   if (lineStatus === "contract-fixture") {
     return {
-      text: locale === "zh" ? "本地测试定价" : "Local test pricing",
+      text: locale === "zh" ? "本地测试盘口" : "Local test lines",
       accessibility: `home-card-source-local-lines line-families-${lineFamilies.join("-") || "none"}`,
       tone: "local" as const,
     };

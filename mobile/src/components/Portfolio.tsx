@@ -346,14 +346,14 @@ const portfolioSourceBadge = (selection?: TicketSelection) => {
   const source = selection?.referenceSource ?? "";
   if (source.includes("polymarket")) {
     return {
-      label: "Provider",
+      label: "Polymarket",
       tone: "provider" as const,
       accessibility: `portfolio-source-badge-provider portfolio-source-${source}`,
     };
   }
   if (source.includes("contract-fixture")) {
     return {
-      label: "Local",
+      label: "Local test",
       tone: "fixture" as const,
       accessibility: `portfolio-source-badge-local portfolio-source-${source}`,
     };
@@ -369,14 +369,14 @@ const portfolioSourceNote = (selection?: TicketSelection) => {
   const source = selection?.referenceSource ?? "";
   if (source.includes("contract-fixture")) {
     return {
-      text: "Local test pricing",
+      text: "Local test line",
       accessibility: "portfolio-local-test-pricing",
       tone: "fixture" as const,
     };
   }
   if (source.includes("polymarket")) {
     return {
-      text: "Provider market",
+      text: "Polymarket market",
       accessibility: "portfolio-provider-backed-pricing",
       tone: "provider" as const,
     };
@@ -414,7 +414,7 @@ const portfolioSourceSummary = ({
   if (providerCount > 0 && localLineCount > 0) {
     return {
       label: "Source",
-      text: "Provider winner / local line pricing",
+      text: "Polymarket winner / local test lines",
       tone: "mixed" as const,
       accessibility:
         `portfolio-selection-source-summary portfolio-source-summary-mixed portfolio-provider-count-${providerCount} portfolio-local-line-count-${localLineCount} portfolio-line-families-${lineFamilies.join("-") || "none"}`,
@@ -423,7 +423,7 @@ const portfolioSourceSummary = ({
   if (localLineCount > 0) {
     return {
       label: "Source",
-      text: "Local line pricing",
+      text: "Local test lines",
       tone: "fixture" as const,
       accessibility:
         `portfolio-selection-source-summary portfolio-source-summary-local-lines portfolio-provider-count-${providerCount} portfolio-local-line-count-${localLineCount} portfolio-line-families-${lineFamilies.join("-") || "none"}`,
@@ -431,7 +431,7 @@ const portfolioSourceSummary = ({
   }
   return {
     label: "Source",
-    text: "Provider market pricing",
+    text: "Polymarket pricing",
     tone: "provider" as const,
     accessibility:
       `portfolio-selection-source-summary portfolio-source-summary-provider portfolio-provider-count-${providerCount} portfolio-local-line-count-${localLineCount}`,
