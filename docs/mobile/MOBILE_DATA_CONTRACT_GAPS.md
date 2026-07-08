@@ -5966,3 +5966,32 @@ Future migration concern:
 
 - Replace contract-fixture line rows with provider-backed line markets only when attach-ready Polymarket or approved provider rows exist.
 - Prefer a fresher active provider event for future visible proofs so winner probabilities are not terminal 0/1 values.
+
+## Cycle NM - Current Line Ticket S23 Flow
+
+Closed or narrowed:
+
+- Proved the current route-backed line-market user journey on Samsung S23, not only backend JSON and not stale tablet/disposable proof.
+- Confirmed Portfolio/history preserve selected line, source, token, condition, and market identity after a filled server order.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total rows for the inspected match.
+- Production liquidity for line tickets.
+
+Schema mismatch:
+
+- No schema mismatch was found or introduced.
+
+Route mismatch:
+
+- No new route mismatch was introduced.
+
+Temporary mock/static data:
+
+- No frontend-only random mock data was added.
+- The line markets remain backend `contract-fixture` records.
+
+Future migration concern:
+
+- Keep the line fixture disclosure visible and documented until provider-backed line markets exist.

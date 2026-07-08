@@ -601,3 +601,10 @@ For every UI element or interaction, answer:
 - S23 proof passes for Home -> Event Detail -> provider-backed Regulation Winner -> simple ticket -> fake-token/server order -> Portfolio/history on `SM-S911U1`.
 - Remaining P1: Spread/Totals/Team Total are still contract fixtures, not provider-backed Polymarket lines.
 - Remaining P1: the inspected provider event is old and has terminal 0/1 prices; future proofs should prefer an active attach-ready soccer event when available.
+
+## Cycle NM Gap Tracker Update
+
+- PM-GAP-109 is opened and verified for the current route-backed line-ticket user journey on S23.
+- NM closes the gap called out by inspection: the current Home -> Event Detail -> line ticket -> server order -> Portfolio/history flow is proven against `argentina-vs-egypt`, not older disposable/tablet evidence.
+- Backend proof and S23 proof both pass for selecting `Egypt +1.5`, preserving line/source/token identity, filling a server order, and showing Portfolio/history.
+- Remaining P1: line markets are still `contract-fixture`, not real provider-backed Polymarket line markets.

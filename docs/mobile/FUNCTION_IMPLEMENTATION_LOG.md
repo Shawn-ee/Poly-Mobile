@@ -7259,3 +7259,43 @@ Known limitations:
 - Regulation Winner is provider-backed and route-refreshable.
 - Spread/Totals/Team Total remain backend-shaped `contract-fixture` rows until attach-ready provider-backed line markets exist.
 - The inspected Polymarket event is old, so provider prices can be 0/1 and chart history is stale; Local MVP proof uses Holiwyn local liquidity for fake-token execution.
+
+## Cycle NM - Current Line Ticket S23 Flow
+
+Feature/page worked on:
+
+- Current Home/Live -> Event Detail -> Spread line -> simple ticket -> fake-token/server order -> Portfolio/history proof.
+
+Frontend/harness/backend files touched:
+
+- No app source files changed.
+- Evidence/docs only:
+  - `docs/mobile/audits/cycle-NM-current-line-s23-flow.md`
+  - `docs/mobile/harness/cycle-NM-current-line-s23-flow/`
+  - `docs/mobile/screenshots/cycle-NM-current-line-s23-flow/`
+
+Important functions/services touched:
+
+- No production functions were changed.
+- Route proof exercised `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+- S23 harness exercised `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1` with seeded counterparty liquidity.
+
+User interactions supported/proven:
+
+- User opens Home, checks Live, returns Home, opens Argentina vs Egypt, scrolls to Game Lines, selects `Egypt +1.5`, opens the ticket, enters `$25`, swipes to buy, and sees the filled result in Portfolio History.
+
+State transitions:
+
+- No schema migration was added.
+- Proof seeds deterministic local counterparty liquidity for the selected contract-fixture Spread line.
+- `/api/orders` creates/fills the BUY order, then Portfolio/history read the resulting server state.
+
+Validation:
+
+- Backend route proof: `docs/mobile/harness/cycle-NM-current-line-s23-flow/cycle-NM-home-to-portfolio-route-journey.json`
+- S23 proof: `docs/mobile/harness/cycle-NM-current-line-s23-flow/cycle-NM-current-mvp-s23-visible-flow.json`
+
+Known limitations:
+
+- Line markets remain contract fixtures, not Polymarket-backed line markets.
+- This cycle proves the current Local MVP user flow is working; it does not claim final Polymarket line-market parity.

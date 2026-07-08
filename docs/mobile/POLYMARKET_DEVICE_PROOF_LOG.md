@@ -662,3 +662,35 @@ Pass for Local MVP provider refresh and provider-backed fake-token buy -> Portfo
 
 Remaining gaps:
 Spread/Totals/Team Total remain contract fixtures for this inspected match. The provider event is old and has terminal prices, so local liquidity is used for the fake-token proof path.
+
+### 2026-07-08 - Cycle NM - Current line ticket S23 flow
+
+Reference device:
+Not used for fresh Polymarket app comparison in this proof cycle. The cycle validates the current Holiwyn Local MVP line-ticket path against the already documented Polymarket retail flow expectations.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://172.16.200.14:3002`, temporary Expo port `8294`, temporary mobile dev API key, orderbook hidden.
+
+Holiwyn actions:
+Opened Home, checked Live, returned Home, opened `argentina-vs-egypt`, scrolled to Game Lines, selected `Egypt +1.5`, entered `$25`, swiped to buy, and verified Portfolio/history preserved the line-market source identity.
+
+Holiwyn evidence:
+- `docs/mobile/harness/cycle-NM-current-line-s23-flow/cycle-NM-home-to-portfolio-route-journey.json`
+- `docs/mobile/harness/cycle-NM-current-line-s23-flow/cycle-NM-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NM-current-line-s23-flow/cycle-NM-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NM-current-line-s23-flow/cycle-NM-current-mvp-lines.png`
+- `docs/mobile/screenshots/cycle-NM-current-line-s23-flow/cycle-NM-current-mvp-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-NM-current-line-s23-flow/cycle-NM-current-mvp-after-submit.png`
+- `docs/mobile/screenshots/cycle-NM-current-line-s23-flow/cycle-NM-current-mvp-portfolio-history.png`
+
+Smoke/tests:
+Backend route journey proof and S23 visible-flow proof passed.
+
+Result:
+Pass for current Local MVP line-ticket flow.
+
+Remaining gaps:
+Line markets are contract fixtures, not provider-backed Polymarket lines.

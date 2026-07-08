@@ -4928,3 +4928,31 @@ Decision:
 
 - Pass/fail: Pass for the Local MVP path in scope.
 - Not a final Polymarket game-page parity pass because provider-backed line markets remain unavailable.
+
+## Cycle NM
+
+Gate status: Pass for current Local MVP line-ticket S23 flow
+
+Scope: Prove the current Home/Live -> Event Detail -> Spread line -> simple Buy ticket -> fake-token/server filled order -> Portfolio/history path on Samsung S23.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NM-current-line-s23-flow.md`
+- `docs/mobile/harness/cycle-NM-current-line-s23-flow/cycle-NM-home-to-portfolio-route-journey.json`
+- `docs/mobile/harness/cycle-NM-current-line-s23-flow/cycle-NM-current-mvp-s23-visible-flow.json`
+- `docs/mobile/harness/cycle-NM-current-line-s23-flow/cycle-NM-current-mvp-portfolio-history.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NM-P0-01 | P0 | Pass | Backend route proof selected current MVP event and filled Spread line order. | Fix event/detail/order route contracts. |
+| NM-P0-02 | P0 | Pass | S23 proof completed visible Home/Live/Event Detail/ticket/Portfolio/history flow. | Fix mobile navigation/ticket/portfolio UI. |
+| NM-P0-03 | P0 | Pass | S23 hierarchy confirms orderbook/chat are absent. | Hide non-MVP surfaces. |
+| NM-P0-04 | P0 | Pass | Portfolio/history preserve `portfolio-market-type-spread`, `portfolio-line-1.5`, and `portfolio-provider-source-contract-fixture`. | Fix selection snapshot bridge. |
+| NM-P1-01 | P1 | Partial | Evidence explicitly shows line markets are contract fixtures. | Attach real provider-backed line markets when available. |
+
+Decision:
+
+- Pass/fail: Pass for current Local MVP line-ticket flow.
+- Not a final Polymarket line-market parity pass because provider-backed lines remain unavailable.
