@@ -7606,3 +7606,47 @@ Validation:
 Known limitations:
 
 - This fixes stale live labeling. It does not add real current live match/provider breadth.
+
+## Cycle NU - Stale Event Detail Status Honesty
+
+Feature/page worked on:
+
+- Local MVP Event Detail stale/live status presentation.
+
+Frontend/harness files touched:
+
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/components/EventDetail.tsx`
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+- Evidence/docs:
+  - `docs/mobile/harness/cycle-NU-stale-event-detail-status/cycle-NU-current-mvp-s23-visible-flow.json`
+  - `docs/mobile/screenshots/cycle-NU-stale-event-detail-status/`
+  - `docs/mobile/audits/cycle-NU-stale-event-detail-status.md`
+
+Important functions/services touched:
+
+- `eventStatus()` now treats `liveStatus=LIVE` plus stale/unavailable/empty `liveDataStatus` and no clock as non-live for the mobile MVP page.
+- `EventDetail` no longer uses a hardcoded `15'` fallback for non-live events.
+- The S23 proof harness now supports `-ExpectDetailStaleOnly` for focused Home -> Event Detail stale-status proof.
+
+User interactions supported/proven:
+
+- User opens Home and sees the MVP match as `Active` / `Time TBD`.
+- User taps the match and sees Event Detail as `Active` / `Time TBD`, not `Live` / fake clock.
+- User still sees Game Lines and Player Props; orderbook/chat remain hidden.
+
+State transitions:
+
+- No backend schema, provider ingestion, order route, portfolio route, or database state changed.
+
+Validation:
+
+- Mobile adapter/feed/Event Detail badge tests passed.
+- Mobile TypeScript passed.
+- Root TypeScript passed.
+- S23 focused Event Detail stale-status proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- Real current live match/provider breadth remains missing.
+- Spread/Totals/Team Total remain explicit backend `contract-fixture` line markets until a real provider exposes attach-ready line markets.

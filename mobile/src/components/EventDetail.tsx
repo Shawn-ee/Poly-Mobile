@@ -692,13 +692,17 @@ export function EventDetail({
     setRefreshingDepthMarketId(market.id);
     requestMarketDepth?.(market.id);
   };
-  const liveClock = event.status === "live" ? liveClockLabel(event.startsAt) : "15'";
+  const liveClock = event.status === "live" ? liveClockLabel(event.startsAt) : "";
+  const fallbackTimeLabel = event.startsAt && event.startsAt.trim().length > 0 ? event.startsAt : "Time TBD";
   const matchDateLabel = event.status === "live"
     ? "Live"
-    : event.startsAt.split(" ")[0] === "Today"
-      ? "Today"
-      : event.startsAt;
-  const compactTimeLabel = event.status === "live" ? liveClock : event.startsAt.replace(/^Today\s*/, "");
+    : fallbackTimeLabel === "Time TBD"
+      ? "Active"
+      : fallbackTimeLabel.split(" ")[0] === "Today"
+        ? "Today"
+        : fallbackTimeLabel;
+  const compactTimeLabel = event.status === "live" ? liveClock : fallbackTimeLabel.replace(/^Today\s*/, "");
+  const detailStatusToken = `event-detail-status-${event.status}`;
   const scoreboard = event.status === "live" ? "0 - 1" : "0 - 0";
   const handleScroll = (eventScroll: NativeSyntheticEvent<NativeScrollEvent>) => {
     const shouldShow = eventScroll.nativeEvent.contentOffset.y > 360;
@@ -1679,7 +1683,7 @@ export function EventDetail({
       {compactHeaderVisible && activeHeaderTab === "game" && (
         <View accessibilityLabel="event-detail-sticky-market-shell" style={styles.stickyMarketShell} testID="event-detail-sticky-market-shell">
           <View
-            accessibilityLabel={`event-detail-compact-game-header event-detail-header-team-identity-fit ${homeCode} ${leftOutcome?.probability ?? 0}% ${matchDateLabel} ${compactTimeLabel} ${awayCode} ${rightOutcome?.probability ?? 0}% Game Lines Player Props`}
+            accessibilityLabel={`event-detail-compact-game-header ${detailStatusToken} event-detail-header-team-identity-fit ${homeCode} ${leftOutcome?.probability ?? 0}% ${matchDateLabel} ${compactTimeLabel} ${awayCode} ${rightOutcome?.probability ?? 0}% Game Lines Player Props`}
             style={styles.compactGameHeader}
             testID="event-detail-compact-game-header"
           >
@@ -1719,7 +1723,7 @@ export function EventDetail({
           <Text style={styles.legacySummaryText}>{t.markets}</Text>
         </View>
         <View
-          accessibilityLabel={`event-detail-summary event-detail-header-team-identity-fit event-detail-non-prediction-lower-content-hidden-local-mvp market-rules-hidden-local-mvp more-events-hidden-local-mvp event-detail-market-summary ${homeCode} ${awayCode} ${matchDateLabel} ${compactTimeLabel} ${label(locale, event)} ${stats.marketCount} ${t.marketCount} ${stats.outcomeCount} ${t.outcomeCount} Game lines ${gameLineMarkets.length === 1 ? "1 market" : `${gameLineMarkets.length} ${t.marketCount}`} Props ${propMarkets.length} ${t.marketCount} ${primaryMarket ? label(locale, primaryMarket) : ""} ${t.markets} ${t.bestBid} ${t.bestAsk} ${t.spread}`}
+          accessibilityLabel={`event-detail-summary ${detailStatusToken} event-detail-header-team-identity-fit event-detail-non-prediction-lower-content-hidden-local-mvp market-rules-hidden-local-mvp more-events-hidden-local-mvp event-detail-market-summary ${homeCode} ${awayCode} ${matchDateLabel} ${compactTimeLabel} ${label(locale, event)} ${stats.marketCount} ${t.marketCount} ${stats.outcomeCount} ${t.outcomeCount} Game lines ${gameLineMarkets.length === 1 ? "1 market" : `${gameLineMarkets.length} ${t.marketCount}`} Props ${propMarkets.length} ${t.marketCount} ${primaryMarket ? label(locale, primaryMarket) : ""} ${t.markets} ${t.bestBid} ${t.bestAsk} ${t.spread}`}
           style={styles.matchHeader}
           testID="event-detail-summary"
         >

@@ -6203,3 +6203,34 @@ Temporary mock/static data:
 Future migration concern:
 
 - Once provider import supplies reliable match start/end/freshness fields, mobile should prefer those fields over slug-date inference.
+
+## Cycle NU - Stale Event Detail Status Honesty
+
+Closed or narrowed:
+
+- Event Detail no longer shows a stale/no-clock provider event as `Live`.
+- Event Detail no longer uses the old hardcoded fake `15'` fallback for non-live matches.
+- S23 proof verifies Home -> Event Detail stale-status honesty.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- First-class event freshness/end-state fields for `/api/mobile/events/:slug/live-detail`.
+- Reliable provider `startTime`/end-time or resolved/ended state for imported match events.
+- Real current live World Cup match/provider breadth.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/live-detail` can still return `liveStatus=LIVE` while provider lifecycle is stale and no clock exists. Mobile now guards this, but backend should eventually provide a clearer display status.
+
+Temporary mock/static data:
+
+- No new mock data was added.
+- Existing backend `contract-fixture` line rows remain necessary for Local MVP Spread/Totals/Team Total UI.
+
+Future migration concern:
+
+- Move stale/no-clock live downgrading into a backend-owned display-status contract so all clients behave consistently.

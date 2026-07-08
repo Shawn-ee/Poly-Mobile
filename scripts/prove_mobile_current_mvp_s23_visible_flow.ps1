@@ -14,7 +14,8 @@ param(
   [switch]$ExpectOpenOrder,
   [switch]$ExpectCancel,
   [switch]$ExpectCashout,
-  [switch]$ExpectLiveEmptyOnly
+  [switch]$ExpectLiveEmptyOnly,
+  [switch]$ExpectDetailStaleOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -242,11 +243,59 @@ try {
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-home.png" | Out-Null
   $homeXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-home.xml"
   Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Argentina vs. Egypt", "event-card-$EventSlug", "home-compact-retail-feed", "home-card-source-provider-winner-local-lines")
-  if ($ExpectLiveEmptyOnly) {
+  if ($ExpectLiveEmptyOnly -or $ExpectDetailStaleOnly) {
     Assert-Contains -Path $homeXml -Expected @("Time TBD", "Active")
   }
   Assert-NotContains -Path $homeXml -Unexpected @("This is the developer menu", "SDK version")
   Assert-NotContains -Path $homeXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "Provider Breadth", "EL-A Provider Breadth", "mobile-el-a-provider-breadth")
+
+  if ($ExpectDetailStaleOnly) {
+    Invoke-TapNode -Path $homeXml -Identifier "event-card-$EventSlug" -StartsWith -YRatio 0.28
+    Start-Sleep -Seconds 5
+    Save-Screenshot -Name "cycle-$Cycle-current-mvp-detail-stale-top.png" | Out-Null
+    $detailStaleXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-detail-stale-top.xml"
+    $detailStaleRaw = Get-Content -Raw -Path $detailStaleXml
+    if ($detailStaleRaw -notmatch [regex]::Escape("event-detail-back")) {
+      & $adb -s $Device shell input tap 540 900 | Out-Null
+      Start-Sleep -Seconds 4
+      Save-Screenshot -Name "cycle-$Cycle-current-mvp-detail-stale-top-retry.png" | Out-Null
+      $detailStaleXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-detail-stale-top-retry.xml"
+    }
+    Assert-Contains -Path $detailStaleXml -Expected @("event-detail-back", "event-detail-status-future", "Active", "Time TBD", "ARG", "EGY", "Argentina", "Egypt", "Game Lines", "Player Props")
+    Assert-NotContains -Path $detailStaleXml -Unexpected @("15'", "LIVE WORLD CUP", "Order Book", "event-detail-open-order-book", "Chat", "event-detail-chat")
+
+    $summary = [ordered]@{
+      cycle = $Cycle
+      result = "pass"
+      generatedAt = (Get-Date).ToUniversalTime().ToString("o")
+      device = $Device
+      model = $deviceInfo
+      backendBaseUrl = $BackendBaseUrl
+      mobileApiBaseUrl = $MobileApiBaseUrl
+      expoPort = $Port
+      keyId = "redacted"
+      apiKey = "redacted"
+      eventSlug = $EventSlug
+      assertions = [ordered]@{
+        homeLabelsStaleMatchAsActive = $true
+        detailLabelsStaleMatchAsActive = $true
+        detailShowsTimeTbd = $true
+        detailDoesNotShowFakeLiveMinute = $true
+        orderbookHidden = $true
+        chatHidden = $true
+      }
+      artifacts = [System.Collections.Generic.List[string]]@(
+        "$OutputDir\cycle-$Cycle-current-mvp-home.png",
+        "$HierarchyOutputDir\cycle-$Cycle-current-mvp-home.xml",
+        "$OutputDir\cycle-$Cycle-current-mvp-detail-stale-top.png",
+        "$HierarchyOutputDir\cycle-$Cycle-current-mvp-detail-stale-top.xml"
+      )
+    }
+    $summaryPath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-current-mvp-s23-visible-flow.json"
+    Write-JsonNoBom -Value $summary -Path $summaryPath -Depth 6
+    Write-Host "Proof summary: $summaryPath"
+    return
+  }
 
   Invoke-TapNode -Path $homeXml -Identifier "holiwyn-live-tab"
   Start-Sleep -Seconds 2

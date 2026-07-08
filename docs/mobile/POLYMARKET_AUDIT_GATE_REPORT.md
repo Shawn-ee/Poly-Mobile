@@ -5155,3 +5155,31 @@ Decision:
 
 - Pass/fail: Pass for visible stale-status honesty.
 - Remaining P1: real current live match/provider breadth is still missing.
+
+## Cycle NU
+
+Gate status: Pass for stale Event Detail status honesty
+
+Scope: Ensure the current MVP Event Detail page does not show stale/no-clock provider data as a live match.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NU-stale-event-detail-status.md`
+- `docs/mobile/harness/cycle-NU-stale-event-detail-status/cycle-NU-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NU-stale-event-detail-status/cycle-NU-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NU-stale-event-detail-status/cycle-NU-current-mvp-detail-stale-top.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NU-P0-01 | P0 | Pass | Adapter test and S23 proof show stale/no-clock live-detail data no longer normalizes as live. | Fix `eventStatus()` stale live-data guard. |
+| NU-P0-02 | P0 | Pass | S23 Event Detail proof asserts `Active`, `Time TBD`, and `event-detail-status-future`. | Fix Event Detail labels. |
+| NU-P0-03 | P0 | Pass | S23 proof rejects `15'` and `LIVE WORLD CUP`. | Remove fake clock/live strip fallback. |
+| NU-P0-04 | P0 | Pass | S23 proof rejects Order Book and Chat. | Keep non-MVP surfaces hidden. |
+
+Decision:
+
+- Pass/fail: Pass for focused Local MVP status-honesty cycle.
+- Remaining P1: real current World Cup live match/provider breadth is still missing.
+- Remaining P1: line markets remain contract fixtures, not provider-backed Polymarket line markets.

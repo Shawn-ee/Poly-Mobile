@@ -901,3 +901,31 @@ Pass for stale match Home label honesty.
 
 Remaining gaps:
 Holiwyn still needs real current live match discovery/breadth. This cycle only fixes visible stale-state labeling.
+
+### 2026-07-08 - Cycle NU - Stale Event Detail status
+
+Reference device:
+Not used. This was a Holiwyn service/UI honesty cycle following the current local service inspection.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://172.16.200.14:3002`, temporary Expo port `8301`, temporary mobile dev API key.
+
+Holiwyn actions:
+Opened Home, verified the MVP match is `Active` / `Time TBD`, tapped into Event Detail, and verified the detail header is also `Active` / `Time TBD` with no fake `15'`, hidden live strip, orderbook, or chat.
+
+Evidence:
+- `docs/mobile/harness/cycle-NU-stale-event-detail-status/cycle-NU-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NU-stale-event-detail-status/cycle-NU-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NU-stale-event-detail-status/cycle-NU-current-mvp-detail-stale-top.png`
+
+Smoke/tests:
+Mobile adapter/feed/Event Detail badge tests, mobile TypeScript, root TypeScript, and S23 focused proof passed.
+
+Result:
+Pass for stale Event Detail status honesty.
+
+Remaining gaps:
+Real current live match discovery/breadth is still missing, and line families remain contract fixtures.

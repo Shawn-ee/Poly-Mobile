@@ -100,10 +100,15 @@ const isFreshLiveEvent = (event: BackendEventSummary) => {
   return day == null || day >= dateOnly(new Date());
 };
 
+const hasStaleLiveDataWithoutClock = (event: BackendEventSummary) => {
+  const liveDataStatus = `${event.liveDataStatus?.status ?? ""}`.toLowerCase();
+  return !event.clock && ["stale", "unavailable", "empty"].includes(liveDataStatus);
+};
+
 const eventStatus = (event: BackendEventSummary): Event["status"] => {
   const liveStatus = `${event.liveStatus ?? ""}`.toLowerCase();
   const status = `${event.status ?? ""}`.toLowerCase();
-  if ((liveStatus.includes("live") || liveStatus === "in_progress" || status === "live") && isFreshLiveEvent(event)) return "live";
+  if ((liveStatus.includes("live") || liveStatus === "in_progress" || status === "live") && isFreshLiveEvent(event) && !hasStaleLiveDataWithoutClock(event)) return "live";
   if (!event.startTime) return "future";
   const start = new Date(event.startTime);
   if (Number.isNaN(start.getTime())) return "future";

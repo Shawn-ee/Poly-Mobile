@@ -2967,3 +2967,17 @@ Cycle NT implementation notes:
 
 - No backend route changed.
 - Mobile now consumes `externalSlug` as part of the event summary contract.
+
+## Cycle NU - Stale Event Detail Status Honesty
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home current match entry | `/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` | GET | Public viewing | Query filters/page size | `status`, `liveStatus`, `startTime`, `externalSlug`, `liveDataStatus`, market source summary | `Event`, `Market`, `Outcome` | None added. | Real current live World Cup feed remains missing. |
+| Event Detail stale status | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | `status=active`, `liveStatus=LIVE`, `startTime=null`, `liveDataStatus.status=stale`, `period`, market source summary | `Event`, `Market`, `Outcome`, `MarketOutcomeSnapshot`, `ReferenceQuoteSnapshot` | None added. Mobile downgrades stale/no-clock live-detail data for display only. | First-class provider event freshness/end state and reliable start/end time remain missing. |
+| Android proof | `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1 -ExpectDetailStaleOnly` | Device proof | Temporary mobile dev API key | Expo deep link with API key | Home and Event Detail hierarchy/screenshot proof | `ApiCredential` for app launch only | None added. | None for the focused status-honesty proof. |
+
+Cycle NU implementation notes:
+
+- No backend route/schema changed.
+- The mobile client now treats stale/no-clock live-detail responses as non-live for display.
+- The route still needs a better backend-owned freshness contract so mobile does not infer this from stale provider lifecycle fields.

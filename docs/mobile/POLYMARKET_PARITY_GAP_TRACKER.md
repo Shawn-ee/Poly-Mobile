@@ -668,3 +668,12 @@ For every UI element or interaction, answer:
 - Mobile now uses the same freshness idea as the backend route and shows the MVP match as `Active` / `Time TBD`.
 - S23 proof passes for Home stale-label honesty and Live empty state.
 - Remaining P1: real current live World Cup match/provider breadth remains missing.
+
+## Cycle NU Gap Tracker Update
+
+- PM-GAP-117 is opened and verified for stale Event Detail status honesty.
+- NU closes the issue where Event Detail still showed stale/no-clock provider data as `Live` and used the old fake `15'` fallback.
+- Mobile now downgrades `liveStatus=LIVE` when `liveDataStatus` is stale/unavailable/empty and there is no clock, then shows Event Detail as `Active` / `Time TBD`.
+- S23 proof passes for Home -> Event Detail stale-status honesty, with chat/orderbook hidden.
+- Remaining P1: real current live World Cup match/provider breadth remains missing.
+- Remaining P1: Spread/Totals/Team Total remain contract fixtures until attach-ready provider line markets exist.
