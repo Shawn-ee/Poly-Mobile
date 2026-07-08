@@ -1,0 +1,162 @@
+{
+  "generatedAt": "2026-07-08T10:18:50.897Z",
+  "cycle": "MP",
+  "scope": "provider-match-line-availability",
+  "event": {
+    "slug": "switzerland-vs-colombia",
+    "title": "Switzerland vs. Colombia",
+    "source": "polymarket",
+    "providerEventSlug": "fifwc-che-col-2026-07-07"
+  },
+  "provider": {
+    "source": "polymarket-gamma",
+    "url": "https://gamma-api.polymarket.com/events?slug=fifwc-che-col-2026-07-07",
+    "eventTitle": "Switzerland vs. Colombia",
+    "marketCount": 3,
+    "familyCounts": {
+      "match_winner_1x2": 3
+    },
+    "lineMarketCount": 0,
+    "markets": [
+      {
+        "id": "2793753",
+        "slug": "fifwc-che-col-2026-07-07-che",
+        "question": "Will Switzerland win on 2026-07-07?",
+        "conditionId": "0xc51a08334e7c0865181a72dd8c94662cacf7fd8129c3e24da5fd0ead4bc0ca43",
+        "family": "match_winner_1x2"
+      },
+      {
+        "id": "2793754",
+        "slug": "fifwc-che-col-2026-07-07-draw",
+        "question": "Will Switzerland vs. Colombia end in a draw?",
+        "conditionId": "0xe43caeeefb9438d44e3c73a10dddc88f3dd355daf89d0586f8e9c2369bbf762f",
+        "family": "match_winner_1x2"
+      },
+      {
+        "id": "2793757",
+        "slug": "fifwc-che-col-2026-07-07-col",
+        "question": "Will Colombia win on 2026-07-07?",
+        "conditionId": "0xeb348b65a59bb2752d3dd10636d17de501df76a424e978e136d22e76d07c84e9",
+        "family": "match_winner_1x2"
+      }
+    ]
+  },
+  "holiwynRoute": {
+    "route": "/api/mobile/events/switzerland-vs-colombia/live-detail",
+    "status": 200,
+    "marketCount": 7,
+    "realPolymarketMarketCount": 3,
+    "contractFixtureMarketCount": 4,
+    "contractLineFamilies": [
+      "spread",
+      "total_goals",
+      "team_total_goals"
+    ],
+    "marketSourceSummary": {
+      "totalMarketCount": 7,
+      "sourceBreakdown": {
+        "polymarket": 3,
+        "contract-fixture": 4
+      },
+      "polymarketMarketCount": 3,
+      "contractFixtureMarketCount": 4,
+      "unknownSourceMarketCount": 0,
+      "regulationWinner": {
+        "totalCount": 3,
+        "polymarketCount": 3,
+        "contractFixtureCount": 0,
+        "status": "provider-backed"
+      },
+      "lineMarkets": {
+        "totalCount": 4,
+        "polymarketCount": 0,
+        "contractFixtureCount": 4,
+        "status": "contract-fixture",
+        "families": [
+          "spread",
+          "total_goals",
+          "team_total_goals"
+        ],
+        "reason": "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured."
+      }
+    },
+    "markets": [
+      {
+        "title": "Will Switzerland win on 2026-07-07?",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Winner",
+        "line": null,
+        "period": "regulation",
+        "referenceSource": "polymarket",
+        "externalMarketId": "2793753"
+      },
+      {
+        "title": "Switzerland vs. Colombia: Colombia +1.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "1.5",
+        "period": "regulation",
+        "referenceSource": "contract-fixture",
+        "externalMarketId": "contract-switzerland-vs-colombia-spread-away-1-5"
+      },
+      {
+        "title": "Switzerland vs. Colombia: Total goals 2.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Totals",
+        "line": "2.5",
+        "period": "regulation",
+        "referenceSource": "contract-fixture",
+        "externalMarketId": "contract-switzerland-vs-colombia-total-goals-2-5"
+      },
+      {
+        "title": "Switzerland vs. Colombia: Switzerland total goals 1.5",
+        "marketType": "team_total_goals",
+        "marketGroupTitle": "Team Totals",
+        "line": "1.5",
+        "period": "regulation",
+        "referenceSource": "contract-fixture",
+        "externalMarketId": "contract-switzerland-vs-colombia-team-total-home-1-5"
+      },
+      {
+        "title": "Will Switzerland vs. Colombia end in a draw?",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Winner",
+        "line": null,
+        "period": "regulation",
+        "referenceSource": "polymarket",
+        "externalMarketId": "2793754"
+      },
+      {
+        "title": "Will Colombia win on 2026-07-07?",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Winner",
+        "line": null,
+        "period": "regulation",
+        "referenceSource": "polymarket",
+        "externalMarketId": "2793757"
+      },
+      {
+        "title": "Switzerland vs. Colombia: Switzerland +0.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "0.5",
+        "period": "regulation",
+        "referenceSource": "contract-fixture",
+        "externalMarketId": "contract-switzerland-vs-colombia-spread-home-0-5"
+      }
+    ]
+  },
+  "decision": {
+    "realRegulationWinnerAvailable": true,
+    "realLineMarketsAvailableFromGamma": false,
+    "contractFixturesJustifiedForLocalMvp": true,
+    "routeSourceSummaryMatches": true,
+    "nextPath": "continue_local_mvp_with_contract_fixture_lines_until_real_provider_line_markets_exist"
+  },
+  "pass": true,
+  "limitations": [
+    "This is a backend/provider availability proof only; Android proof is handled by the visible Local MVP journey harness.",
+    "Contract-fixture line markets are acceptable for local MVP UI/order proof but are not Polymarket-backed parity.",
+    "If a future Polymarket event exposes line markets through Gamma/CLOB, those real mappings should replace the fixture rows."
+  ]
+}

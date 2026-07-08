@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle MP - Current Service Reinspection
+
+Cycle MP inspected current Home/Event Detail route readiness and Polymarket Gamma availability before continuing the loop.
+
+- Route inspection: `docs/mobile/harness/cycle-MP-current-state-reinspection/cycle-MP-current-state-reinspection.json`.
+- Provider inspections: `docs/mobile/harness/cycle-MP-current-state-reinspection/cycle-MP-provider-match-line-availability-argentina-egypt.json`, `docs/mobile/harness/cycle-MP-current-state-reinspection/cycle-MP-provider-match-line-availability-switzerland-colombia.json`.
+- Audit: `docs/mobile/audits/cycle-MP-current-service-reinspection.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Local MVP service readiness inspection | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10`, `/api/mobile/events/:slug/live-detail`, Polymarket Gamma `/events?slug=:externalSlug` | GET | Public event viewing | Route params/query only | `eventType`, `marketCount`, `marketSourceSummary`, compact `markets[]`, `referenceSource`, `marketType`, `line`, `period`, `externalMarketId` | Existing `Event`, `Market`, `Outcome`; no schema change | Spread/Totals/Team Total remain `contract-fixture` Local MVP rows when Polymarket Gamma has no line markets | Real provider-backed Spread/Totals/Team Total markets are unavailable for inspected events; next route/user-flow work should prove provider-backed Regulation Winner end-to-end. |
+
 ## Cycle MO - Portfolio Source Badges
 
 Cycle MO renders Portfolio source state from existing order-time selection snapshots.

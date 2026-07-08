@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle MP - Current Service Reinspection
+
+Closed or narrowed:
+
+- Confirmed Regulation Winner is provider-backed for both inspected current World Cup events.
+- Confirmed current Home route is match-only for `mobileMvpMatches=1`.
+- Confirmed local line-market rows are intentionally marked `contract-fixture` and source summaries expose that state.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for the inspected events.
+- A dedicated S23 proof path for provider-backed Regulation Winner ticket/order/Portfolio is still needed because the current journey harness targets Local Spread.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- `contract-fixture` Spread/Totals/Team Total markets remain Local MVP fallback rows. They are backend-shaped, source-labeled, and tradable for fake-token MVP testing, but they are not Polymarket-backed parity.
+
 ## Cycle MO - Portfolio Source Badges
 
 Closed or narrowed:

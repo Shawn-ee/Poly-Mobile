@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle MP
+
+Gate status: Pass
+
+Scope: Current service reinspection.
+
+Decision:
+
+- P0 failed: 0 for inspection scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for the inspected current events.
+- Evidence: `docs/mobile/harness/cycle-MP-current-state-reinspection/cycle-MP-current-state-reinspection.json`, `docs/mobile/harness/cycle-MP-current-state-reinspection/cycle-MP-provider-match-line-availability-argentina-egypt.json`, `docs/mobile/harness/cycle-MP-current-state-reinspection/cycle-MP-provider-match-line-availability-switzerland-colombia.json`, `docs/mobile/audits/cycle-MP-current-service-reinspection.md`.
+- Notes: Current app/service should continue Local MVP with explicit Local line-market labels and should add/prove provider-backed Regulation Winner ticket/order/Portfolio next.
+
 ## Cycle MO
 
 Gate status: Pass

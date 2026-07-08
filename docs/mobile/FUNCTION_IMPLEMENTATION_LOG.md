@@ -2,6 +2,38 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle MP - Current Service Reinspection
+
+Feature/page worked on:
+
+- Inspected current Local MVP service readiness before opening new UI work.
+- Confirmed Home and Event Detail route state for current World Cup match events.
+- Confirmed Polymarket Gamma market availability for the two current provider events.
+
+Frontend/services touched:
+
+- No app code changed.
+- Proof scripts used:
+  - `scripts/inspect_mobile_mvp_current_state.ts`
+  - `scripts/prove_mobile_provider_match_line_availability.ts`
+
+User interactions supported/proven:
+
+- No new Android UI interaction was introduced in this inspection-only cycle.
+- S23 reachability was checked before inspection.
+
+Verified:
+
+- Route inspection passed: `docs/mobile/harness/cycle-MP-current-state-reinspection/cycle-MP-current-state-reinspection.json`.
+- Argentina vs Egypt provider line availability passed: `docs/mobile/harness/cycle-MP-current-state-reinspection/cycle-MP-provider-match-line-availability-argentina-egypt.json`.
+- Switzerland vs Colombia provider line availability passed: `docs/mobile/harness/cycle-MP-current-state-reinspection/cycle-MP-provider-match-line-availability-switzerland-colombia.json`.
+
+Known limitations:
+
+- Regulation Winner is provider-backed.
+- Spread/Totals/Team Total are not Polymarket-backed for the inspected events; they remain explicit `contract-fixture` Local MVP rows.
+- Next useful cycle should prove provider-backed Regulation Winner through ticket/order/Portfolio, because recent S23 journey proofs target the Local Spread line path.
+
 ## Cycle MO - Portfolio Source Badges
 
 Feature/page worked on:
