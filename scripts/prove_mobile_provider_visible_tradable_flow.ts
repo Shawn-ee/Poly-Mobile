@@ -11,8 +11,6 @@ import type { PolyApi } from "../mobile/src/api";
 const DEFAULT_BASE_URL = "http://127.0.0.1:3002";
 const DEFAULT_EVENT_SLUG = "provider-breadth-world-cup-winner";
 const DEFAULT_MARKET_ID = "49ca30ca-afa9-45ee-8962-1941ad7524fe";
-const DEFAULT_OUTPUT_PATH =
-  "docs/mobile/harness/cycle-OW-provider-visible-tradable-flow/cycle-OW-provider-visible-tradable-flow.json";
 
 const dec = (value: Prisma.Decimal.Value) => new Prisma.Decimal(value);
 
@@ -32,12 +30,13 @@ async function fetchJson(url: string, init?: RequestInit) {
   return body;
 }
 
-async function createProofCredential() {
+async function createProofCredential(cycleLabel: string) {
   const suffix = randomUUID().slice(0, 8);
+  const safeCycleLabel = cycleLabel.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "");
   const user = await prisma.user.create({
     data: {
-      username: `cycle_ow_provider_user_${suffix}`,
-      email: `cycle_ow_provider_user_${suffix}@local.test`,
+      username: `cycle_${safeCycleLabel}_provider_user_${suffix}`,
+      email: `cycle_${safeCycleLabel}_provider_user_${suffix}@local.test`,
       isAdmin: true,
     },
   });
@@ -46,17 +45,21 @@ async function createProofCredential() {
   });
   const credential = await createApiCredential({
     userId: user.id,
-    name: "Cycle OW provider-visible tradable mobile proof",
+    name: `Cycle ${cycleLabel} provider-visible tradable mobile proof`,
     scopes: API_KEY_SCOPES,
   });
   return { user, credential, suffix };
 }
 
 async function main() {
+  const cycleLabel = argValue("cycle") ?? "OW";
   const baseUrl = argValue("baseUrl") ?? DEFAULT_BASE_URL;
   const eventSlug = argValue("eventSlug") ?? DEFAULT_EVENT_SLUG;
   const marketId = argValue("marketId") ?? DEFAULT_MARKET_ID;
-  const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
+  const outputPath =
+    argValue("output") ??
+    argValue("summaryPath") ??
+    `docs/mobile/harness/cycle-${cycleLabel}-provider-visible-tradable-flow/cycle-${cycleLabel}-provider-visible-tradable-flow.json`;
   const amount = Number(argValue("amount") ?? "0.9");
 
   assert(Number.isFinite(amount) && amount > 0, "amount must be a positive number.");
@@ -109,7 +112,7 @@ async function main() {
   const detailMarket = detailMarkets.find((item: { id?: string }) => item.id === marketId);
   assert(detailMarket, "Mobile live-detail route did not expose the provider-backed market.");
 
-  const { credential, user } = await createProofCredential();
+  const { credential, user } = await createProofCredential(cycleLabel);
   const contractSide =
     yesOutcome.code?.toUpperCase() === "NO" || yesOutcome.side?.toLowerCase() === "no" ? "no" : "yes";
   const api = {
@@ -236,7 +239,7 @@ async function main() {
 
   const summary = {
     pass: true,
-    cycle: "OW",
+    cycle: cycleLabel,
     generatedAt: new Date().toISOString(),
     scope: "provider-visible-market-to-internal-test-tradable-mobile-flow",
     routes: {
