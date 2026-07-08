@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle ND
+
+Gate status: Pass
+
+Scope: Portfolio open-order source badge.
+
+Decision:
+
+- P0 failed: 0 for focused visible open-order source badge scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-ND-open-order-source-badge/cycle-ND-open-order-source-badge-proof.json`, `docs/mobile/harness/cycle-ND-open-order-source-badge/cycle-ND-current-mvp-after-submit.xml`, `docs/mobile/screenshots/cycle-ND-open-order-source-badge/cycle-ND-current-mvp-after-submit.png`, `docs/mobile/audits/cycle-ND-open-order-source-badge.md`.
+- Notes: Focused S23 proof shows `open-order-source-badge`, `open-order-source-note`, `Local test pricing`, selected Spread line identity, and `cancel-open-order-` in Portfolio Orders. The reusable script's later History assertion was non-gating for this focused open-order proof.
+
 ## Cycle NC
 
 Gate status: Pass

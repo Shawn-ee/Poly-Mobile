@@ -2,6 +2,36 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ND - Open Order Source Badge
+
+Feature/page worked on:
+
+- Portfolio Orders tab open-order rows.
+
+Frontend/services touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/src/__tests__/portfolioSourceBadge.test.ts`
+
+User interactions supported/proven:
+
+- On S23, completed Home -> Live -> Event Detail -> local Spread ticket -> swipe buy -> Portfolio Orders with an open order, then verified the open-order source badge, source note, selected line identity, and Cancel button.
+
+Backend/API route changed:
+
+- None. Open-order rows use existing `/api/portfolio` selection snapshots.
+
+Verified:
+
+- Focused mobile Vitest and mobile typecheck passed.
+- Focused S23 proof passed: `docs/mobile/harness/cycle-ND-open-order-source-badge/cycle-ND-open-order-source-badge-proof.json`.
+- XML proof includes `open-order-source-badge`, `open-order-source-note`, `portfolio-source-badge-local`, `Local test pricing`, `portfolio-line-1.5`, `portfolio-provider-source-contract-fixture`, and `cancel-open-order-`.
+
+Known limitations:
+
+- Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected events.
+- The broader reusable proof script's later History assertion is not a pass/fail gate for this focused open-order source badge cycle.
+
 ## Cycle NC - Portfolio Selection Source Summary
 
 Feature/page worked on:

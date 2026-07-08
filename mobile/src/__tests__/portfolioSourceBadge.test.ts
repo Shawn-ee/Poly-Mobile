@@ -10,6 +10,8 @@ describe("Portfolio source badges", () => {
     expect(source).toContain("portfolioSourceBadge");
     expect(source).toContain("selection?.referenceSource");
     expect(source).toContain("portfolio-position-source-badge");
+    expect(source).toContain("open-order-source-badge");
+    expect(source).toContain("open-order-source-note");
     expect(source).toContain("portfolio-history-source-badge");
     expect(source).toContain("portfolio-source-badge-provider");
     expect(source).toContain("portfolio-source-badge-local");

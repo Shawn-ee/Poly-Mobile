@@ -2,6 +2,25 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle ND - Open Order Source Badge
+
+Closed or narrowed:
+
+- Portfolio open-order rows now consume order-time source identity the same way positions and history rows do.
+- S23 XML proof verifies the source badge/note on an open order with selected Spread line identity and Cancel visible.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected events.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Existing `contract-fixture` line markets remain backend-shaped Local MVP fallback rows.
+
 ## Cycle NC - Portfolio Selection Source Summary
 
 Closed or narrowed:

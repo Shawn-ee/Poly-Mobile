@@ -850,10 +850,46 @@ export function Portfolio({
           >
             <View style={styles.openOrderHeader}>
               <View style={styles.openOrderMain}>
-                <Text style={styles.openOrderTitle}>{order.title}</Text>
+                <View style={styles.openOrderTitleRow}>
+                  <Text numberOfLines={1} style={styles.openOrderTitle}>{order.title}</Text>
+                  {order.selection && (
+                    <View
+                      accessibilityLabel={`open-order-source-badge-${order.id} ${portfolioSourceBadge(order.selection).accessibility}`}
+                      style={[
+                        styles.portfolioSourcePill,
+                        portfolioSourceBadge(order.selection).tone === "provider" && styles.portfolioSourcePillProvider,
+                        portfolioSourceBadge(order.selection).tone === "fixture" && styles.portfolioSourcePillFixture,
+                      ]}
+                      testID={`open-order-source-badge-${order.id}`}
+                    >
+                      <Text
+                        style={[
+                          styles.portfolioSourcePillText,
+                          portfolioSourceBadge(order.selection).tone === "provider" && styles.portfolioSourcePillTextProvider,
+                          portfolioSourceBadge(order.selection).tone === "fixture" && styles.portfolioSourcePillTextFixture,
+                        ]}
+                      >
+                        {portfolioSourceBadge(order.selection).label}
+                      </Text>
+                    </View>
+                  )}
+                </View>
                 <Text style={styles.openOrderMeta}>
                   {order.side === "buy" ? t.buy : t.sell} - {displayOutcome(order)} - {order.status}
                 </Text>
+                {portfolioSourceNote(order.selection) && (
+                  <Text
+                    accessibilityLabel={`open-order-source-note-${order.id} ${portfolioSourceNote(order.selection)?.accessibility}`}
+                    style={[
+                      styles.portfolioSourceNote,
+                      portfolioSourceNote(order.selection)?.tone === "provider" && styles.portfolioSourceNoteProvider,
+                      portfolioSourceNote(order.selection)?.tone === "fixture" && styles.portfolioSourceNoteFixture,
+                    ]}
+                    testID={`open-order-source-note-${order.id}`}
+                  >
+                    {portfolioSourceNote(order.selection)?.text}
+                  </Text>
+                )}
                 <View
                   accessibilityLabel={`open-order-status-${order.id} fake-token-test order-status-${order.status.toLowerCase()} ${order.selection ? snapshotSourceLabel(order.id, order.selection) : ""}`}
                   style={styles.a11yOnly}
@@ -1557,6 +1593,7 @@ const styles = StyleSheet.create({
   detailPanel: { gap: 4, marginTop: 10, padding: 10, borderRadius: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#29476d" },
   detailPanelTitle: { color: "#dbeafe", fontSize: 12, fontWeight: "900", textTransform: "uppercase" },
   detailPanelText: { color: "#94a3b8", fontSize: 12, fontWeight: "800" },
+  openOrderTitleRow: { flexDirection: "row", alignItems: "center", gap: 7 },
   liveBadge: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, marginBottom: 8, paddingHorizontal: 9, paddingVertical: 5, borderRadius: 999, backgroundColor: "#451a1a", borderWidth: 1, borderColor: "#7f1d1d" },
   liveBadgeText: { color: "#fecaca", fontSize: 11, fontWeight: "900", textTransform: "uppercase" },
   liveClock: { alignSelf: "flex-start", color: "#fca5a5", fontSize: 12, fontWeight: "900", marginBottom: 8 },
@@ -1631,7 +1668,7 @@ const styles = StyleSheet.create({
   openOrderItem: { gap: 8, paddingHorizontal: 24, paddingVertical: 18, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   openOrderHeader: { flexDirection: "row", alignItems: "flex-start", gap: 10 },
   openOrderMain: { flex: 1 },
-  openOrderTitle: { color: "#f8fafc", fontWeight: "900" },
+  openOrderTitle: { flex: 1, minWidth: 0, color: "#f8fafc", fontWeight: "900" },
   openOrderMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 3 },
   statusPillRow: { flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 6 },
   statusPill: { alignSelf: "flex-start", paddingHorizontal: 7, paddingVertical: 3, borderRadius: 999, overflow: "hidden", backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#29476d", color: "#bfdbfe", fontSize: 10, fontWeight: "900" },
