@@ -1580,3 +1580,35 @@ Pass for selected third provider-backed internal-test tradable market.
 
 Remaining gaps:
 Home/Live remain match-only. Current-match line markets remain contract fixtures.
+
+## Cycle PA - Fourth Provider Market Tradable Proof
+
+Date:
+2026-07-08
+
+Reference device:
+No new Polymarket reference-device action. The provider source is the existing Polymarket Gamma/CLOB-backed World Cup Winner event.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go server mode. Backend `http://127.0.0.1:3002` stayed healthy through the internal beta helper check; mobile API used LAN backend `http://172.16.200.14:3002`.
+
+Holiwyn actions:
+Opened Holiwyn with a Switzerland search deep link and captured World Cup Winner detail showing the Switzerland provider-backed outcome row. Backend/mobile-service proof then submitted a fake-token Switzerland YES order and confirmed Portfolio/history state.
+
+Evidence:
+- `docs/mobile/harness/cycle-PA-fourth-provider-market-tradable-proof/cycle-PA-s23-search-switzerland.xml`
+- `docs/mobile/harness/cycle-PA-fourth-provider-market-tradable-proof/cycle-PA-s23-search-switzerland.png`
+- `docs/mobile/harness/cycle-PA-fourth-provider-market-tradable-proof/cycle-PA-provider-switzerland-order-portfolio-proof.json`
+- `docs/mobile/audits/cycle-PA-fourth-provider-market-tradable-proof.md`
+
+Smoke/tests:
+Backend helper check passed, Switzerland seed/live-local quote placement passed, mobile route/service order proof passed, and S23 visibility proof was captured.
+
+Result:
+Pass for selected fourth provider-backed internal-test tradable market.
+
+Remaining gaps:
+Home/Live remain match-only. Current-match line markets remain contract fixtures.

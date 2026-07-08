@@ -1,0 +1,201 @@
+{
+  "pass": true,
+  "cycle": "PA",
+  "generatedAt": "2026-07-08T21:21:03.346Z",
+  "scope": "provider-visible-market-to-internal-test-tradable-mobile-flow",
+  "routes": {
+    "search": "/api/events?source=polymarket&search=Switzerland",
+    "detail": "/api/mobile/events/:slug/live-detail",
+    "quote": "/api/markets/:marketId/quote",
+    "order": "POST /api/orders",
+    "portfolio": "/api/portfolio",
+    "history": "/api/portfolio/history"
+  },
+  "event": {
+    "id": "16dba6f4-c5ec-4d0c-9d69-6b8c06fd6bc5",
+    "slug": "provider-breadth-world-cup-winner",
+    "title": "World Cup Winner",
+    "eventType": "future"
+  },
+  "market": {
+    "id": "bd114913-161d-43c0-9770-58e90846f172",
+    "slug": "provider-breadth-world-cup-winner-will-switzerland-win-the-2026-fifa-world-cup",
+    "title": "Will Switzerland win the 2026 FIFA World Cup?",
+    "referenceSource": "polymarket",
+    "externalSlug": "will-switzerland-win-the-2026-fifa-world-cup",
+    "externalMarketId": "558974",
+    "conditionId": "0x3a26ca6425e2d98f14935670bc22cdb0744defc6f6d83c65f8c413a921c5c70c"
+  },
+  "outcome": {
+    "id": "d16de1fc-1318-4f3b-ab07-22d597caf8ed",
+    "name": "Switzerland",
+    "referenceTokenId": "62131913648515148266463816694306031394539656598501514114816028349608560215534",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "botQuote": {
+    "orderId": "504633c9-5d25-4ecd-b5a7-aba0bc3ba889",
+    "side": "SELL",
+    "price": 0.04,
+    "remaining": 5
+  },
+  "mobileProofUser": {
+    "id": "b73f85aa-b465-42f3-a0eb-3a5f8557e208",
+    "email": "cycle_pa_provider_user_097016b9@local.test"
+  },
+  "checks": {
+    "searchVisible": true,
+    "detailVisible": true,
+    "quoteVisible": true,
+    "serverModeTicketSubmitted": true,
+    "filledAgainstBotLiquidity": true,
+    "portfolioPositionVisible": true,
+    "historyTradeVisible": true,
+    "homeLiveMatchOnlyUnchanged": true
+  },
+  "orderResult": {
+    "id": "b85bec00-576c-4d0a-9667-404bc8c5efa5",
+    "mode": "server",
+    "title": "Will Switzerland win the 2026 FIFA World Cup?",
+    "outcome": "Switzerland",
+    "selection": {
+      "marketType": "future",
+      "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+      "outcomeId": "d16de1fc-1318-4f3b-ab07-22d597caf8ed",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Switzerland",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-switzerland-win-the-2026-fifa-world-cup",
+      "externalMarketId": "558974",
+      "conditionId": "0x3a26ca6425e2d98f14935670bc22cdb0744defc6f6d83c65f8c413a921c5c70c",
+      "referenceTokenId": "62131913648515148266463816694306031394539656598501514114816028349608560215534",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.04,
+      "limitSide": "ask"
+    },
+    "contractSide": "yes",
+    "side": "buy",
+    "amount": 0.12,
+    "probability": 4,
+    "status": "FILLED",
+    "size": 3,
+    "filledSize": 3,
+    "remainingSize": 0
+  },
+  "portfolioPosition": {
+    "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+    "outcomeId": "d16de1fc-1318-4f3b-ab07-22d597caf8ed",
+    "shares": 3,
+    "selection": {
+      "marketType": "future",
+      "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+      "outcomeId": "d16de1fc-1318-4f3b-ab07-22d597caf8ed",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Switzerland",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-switzerland-win-the-2026-fifa-world-cup",
+      "externalMarketId": "558974",
+      "conditionId": "0x3a26ca6425e2d98f14935670bc22cdb0744defc6f6d83c65f8c413a921c5c70c",
+      "referenceTokenId": "62131913648515148266463816694306031394539656598501514114816028349608560215534",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.04,
+      "limitSide": "ask"
+    }
+  },
+  "historyTrade": {
+    "id": "1b60a60b-ea7a-4ebf-9ba9-a7efd8e4703d",
+    "market": {
+      "id": "bd114913-161d-43c0-9770-58e90846f172",
+      "title": "Will Switzerland win the 2026 FIFA World Cup?",
+      "status": "LIVE",
+      "marketGroupKey": "outrights",
+      "marketType": "outright",
+      "line": null,
+      "period": "futures",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-switzerland-win-the-2026-fifa-world-cup",
+      "externalMarketId": "558974",
+      "conditionId": "0x3a26ca6425e2d98f14935670bc22cdb0744defc6f6d83c65f8c413a921c5c70c"
+    },
+    "outcome": {
+      "id": "d16de1fc-1318-4f3b-ab07-22d597caf8ed",
+      "name": "Switzerland",
+      "label": "Switzerland",
+      "side": "yes",
+      "referenceTokenId": "62131913648515148266463816694306031394539656598501514114816028349608560215534",
+      "referenceOutcomeLabel": "Yes"
+    },
+    "selection": {
+      "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+      "outcomeId": "d16de1fc-1318-4f3b-ab07-22d597caf8ed",
+      "marketGroupId": "outrights",
+      "marketType": "future",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Switzerland",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "providerSource": "polymarket",
+      "externalSlug": "will-switzerland-win-the-2026-fifa-world-cup",
+      "externalMarketId": "558974",
+      "conditionId": "0x3a26ca6425e2d98f14935670bc22cdb0744defc6f6d83c65f8c413a921c5c70c",
+      "referenceTokenId": "62131913648515148266463816694306031394539656598501514114816028349608560215534",
+      "tokenId": "62131913648515148266463816694306031394539656598501514114816028349608560215534",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.04,
+      "limitSide": "ask"
+    },
+    "side": "BUY",
+    "shares": 3,
+    "cost": 0.12,
+    "fee": 0,
+    "createdAt": "2026-07-08T21:21:03.221Z"
+  },
+  "remainingOpenOrders": [
+    {
+      "id": "55ab1368-6cfe-4776-92cf-010efa3cb060",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "d16de1fc-1318-4f3b-ab07-22d597caf8ed",
+      "side": "BUY",
+      "price": "0.01",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "504633c9-5d25-4ecd-b5a7-aba0bc3ba889",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "d16de1fc-1318-4f3b-ab07-22d597caf8ed",
+      "side": "SELL",
+      "price": "0.04",
+      "amount": "5",
+      "remaining": "2",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "ca8eef6b-71e4-4e56-aa5c-f1ef1aafbede",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "eb1f5ca0-8c01-407f-be22-5c00e6b98b99",
+      "side": "BUY",
+      "price": "0.96",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "d512ec77-e3b2-4116-84c9-5aa796f6a729",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "eb1f5ca0-8c01-407f-be22-5c00e6b98b99",
+      "side": "SELL",
+      "price": "0.99",
+      "amount": "5",
+      "remaining": "5",
+      "status": "OPEN"
+    }
+  ]
+}

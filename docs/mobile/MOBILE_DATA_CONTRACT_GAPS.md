@@ -7112,3 +7112,34 @@ Future migration concern:
 
 - Local bot runtime identifiers were redacted from committed evidence.
 - Production/staging bot enablement must not reuse local fake-token proof flags without separate review.
+
+## Cycle PA - Fourth Provider Market Tradable Proof
+
+Closed or narrowed:
+
+- Provider-visible-to-tradable proof now covers four provider-backed World Cup Winner markets: England, France, Spain, and Switzerland.
+- Switzerland has provider identity preserved through quote, order, Portfolio, and History.
+- Exposure-cap blocking did not recur with the selected small seed/live-local quote configuration.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Current-match provider-backed Spread/Totals/Team Total market ids, token ids, chart history, and prices.
+- A product-approved way to expose broad futures outside Search/detail if desired; Home/Live remain match-only by design.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch for the selected provider-backed Switzerland future flow.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- Local bot runtime identifiers were redacted from committed evidence.
+- Standalone bot proof runs must carry `LIVE_SYSTEM_LIQUIDITY_ENABLED=true`; backend helper env alone does not arm a separate bot process.
+- Production/staging bot enablement must not reuse local fake-token proof flags without separate review.

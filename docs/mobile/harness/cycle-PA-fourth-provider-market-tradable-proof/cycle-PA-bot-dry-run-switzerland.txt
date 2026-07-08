@@ -1,0 +1,115 @@
+
+> poly-bot@0.1.0 bot:polymarket:mm:dry-run
+> tsx scripts/liquidityRuntime.ts --dryRun true --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug provider-breadth-world-cup-winner --allowlist Switzerland --maxMarkets 1 --durationSeconds 5 --pollMs 1000
+
+{
+  "dryRun": true,
+  "liveOrdersEnabled": false,
+  "confirmLive": false,
+  "cycleReports": [
+    {
+      "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+      "slug": "will-switzerland-win-the-2026-fifa-world-cup",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": true,
+      "referenceBid": 0.021,
+      "referenceAsk": 0.022,
+      "plannedBotBid": 0.01,
+      "plannedBotAsk": 0.04,
+      "reasons": [
+        "confirm_live_required",
+        "live_orders_disabled",
+        "dry_run_enabled"
+      ],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 3698,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 3698,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+      "slug": "will-switzerland-win-the-2026-fifa-world-cup",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": true,
+      "referenceBid": 0.021,
+      "referenceAsk": 0.022,
+      "plannedBotBid": 0.01,
+      "plannedBotAsk": 0.04,
+      "reasons": [
+        "confirm_live_required",
+        "live_orders_disabled",
+        "dry_run_enabled"
+      ],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 3698,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 3698,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+      "slug": "will-switzerland-win-the-2026-fifa-world-cup",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": true,
+      "referenceBid": 0.021,
+      "referenceAsk": 0.022,
+      "plannedBotBid": 0.01,
+      "plannedBotAsk": 0.04,
+      "reasons": [
+        "confirm_live_required",
+        "live_orders_disabled",
+        "dry_run_enabled"
+      ],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 3698,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 3698,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+      "slug": "will-switzerland-win-the-2026-fifa-world-cup",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": true,
+      "referenceBid": 0.021,
+      "referenceAsk": 0.022,
+      "plannedBotBid": 0.01,
+      "plannedBotAsk": 0.04,
+      "reasons": [
+        "confirm_live_required",
+        "live_orders_disabled",
+        "dry_run_enabled"
+      ],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 3698,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 3698,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    }
+  ]
+}

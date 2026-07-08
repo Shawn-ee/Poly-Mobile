@@ -1,0 +1,47 @@
+
+> poly-bot@0.1.0 liquidity:prepare-event
+> tsx scripts/prepareReferenceLiquidityEvent.ts --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug provider-breadth-world-cup-winner --allowlist Switzerland --maxMarkets 1 --capitalDollars 500 --mintDollars 25 --dryRun false --confirmSeed true
+
+{
+  "ok": true,
+  "dryRun": false,
+  "eventSlug": "provider-breadth-world-cup-winner",
+  "marketCount": 1,
+  "seededOrChecked": 1,
+  "blocked": 0,
+  "results": [
+    {
+      "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+      "slug": "will-switzerland-win-the-2026-fifa-world-cup",
+      "title": "Will Switzerland win the 2026 FIFA World Cup?",
+      "importStatus": "approved",
+      "mmEnabled": true,
+      "tradable": true,
+      "ok": true,
+      "runtimePath": "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\poly-bot\\.runtime\\reference-liquidity-bd114913-161d-43c0-9770-58e90846f172.json",
+      "result": {
+        "ok": true,
+        "dryRun": false,
+        "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+        "title": "Will Switzerland win the 2026 FIFA World Cup?",
+        "referenceSource": "polymarket",
+        "importStatus": "approved",
+        "isListed": true,
+        "binary": true,
+        "seeded": true,
+        "alreadySeeded": false,
+        "noMutation": false,
+        "capitalCents": 50000,
+        "mintBudgetCents": 2500,
+        "cashReserveCents": 47500,
+        "mintedCompleteSets": 25,
+        "autoReplenish": false,
+        "botUserId": "[redacted-bot-user]",
+        "botUsername": "system-liquidity-bot",
+        "botApiCredentialId": "[redacted-bot-credential]",
+        "botApiKeyId": "[redacted-api-key]",
+        "botApiToken": "[redacted]"
+      }
+    }
+  ]
+}
