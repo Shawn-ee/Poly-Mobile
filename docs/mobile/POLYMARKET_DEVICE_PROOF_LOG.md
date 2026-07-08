@@ -1982,3 +1982,37 @@ Pass for provider-line honesty gate.
 
 Remaining gaps:
 Current-match Spread/Totals/Team Totals remain contract fixtures until real attach-ready provider line rows exist.
+
+## Cycle PM - France Nation Top Goalscorer Tradable Proof
+
+Date:
+2026-07-08
+
+Reference device:
+No new Polymarket app reference-device action. Provider truth was the existing Polymarket Gamma/CLOB-backed Nation Top Goalscorer event.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go server mode. Backend `http://127.0.0.1:3002` was restarted with internal fake-token trading flags; mobile API used LAN backend `http://172.16.200.14:3002`.
+
+Holiwyn actions:
+Opened Holiwyn with a France Search deep link, confirmed `World Cup: Nation of Top Goalscorer` was visible as `Polymarket 8 markets`, tapped the result, and confirmed Event Detail showed France provider market `2070983`. Backend/mobile-service proof submitted a fake-token France YES order and confirmed Portfolio/history state.
+
+Evidence:
+- `docs/mobile/audits/cycle-PM-provider-france-nation-tradable-proof.md`
+- `docs/mobile/harness/cycle-PM-provider-france-nation-tradable-proof/cycle-PM-provider-france-nation-order-portfolio-proof.json`
+- `docs/mobile/screenshots/cycle-PM-provider-france-nation-tradable-proof/cycle-PM-s23-search-france-rerun.png`
+- `docs/mobile/harness/cycle-PM-provider-france-nation-tradable-proof/cycle-PM-s23-search-france-rerun.xml`
+- `docs/mobile/screenshots/cycle-PM-provider-france-nation-tradable-proof/cycle-PM-s23-france-nation-detail-from-search.png`
+- `docs/mobile/harness/cycle-PM-provider-france-nation-tradable-proof/cycle-PM-s23-france-nation-detail-from-search.xml`
+
+Smoke/tests:
+Reference bot initialization test passed, backend typecheck passed, bot dry-run passed after reseed, bot live-local quote placement passed, mobile order/Portfolio proof passed, and S23 visible Search/detail proof passed.
+
+Result:
+Pass for selected France Nation Top Goalscorer provider-visible-to-tradable scope.
+
+Remaining gaps:
+Home/Live remain match-only. Current-match line markets remain contract fixtures. Broad futures chart history remains P1.

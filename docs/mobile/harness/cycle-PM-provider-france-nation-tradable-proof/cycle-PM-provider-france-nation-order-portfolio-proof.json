@@ -1,0 +1,201 @@
+{
+  "pass": true,
+  "cycle": "PM",
+  "generatedAt": "2026-07-08T23:25:18.169Z",
+  "scope": "provider-visible-market-to-internal-test-tradable-mobile-flow",
+  "routes": {
+    "search": "/api/events?source=polymarket&search=France",
+    "detail": "/api/mobile/events/:slug/live-detail",
+    "quote": "/api/markets/:marketId/quote",
+    "order": "POST /api/orders",
+    "portfolio": "/api/portfolio",
+    "history": "/api/portfolio/history"
+  },
+  "event": {
+    "id": "0e9870f0-f8d0-49c5-a5c0-012359dacfb6",
+    "slug": "world-cup-nation-of-top-goalscorer",
+    "title": "World Cup: Nation of Top Goalscorer",
+    "eventType": "future"
+  },
+  "market": {
+    "id": "42203d58-497f-49e6-a660-87eca202bd59",
+    "slug": "will-a-player-representing-france-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+    "title": "Will a player representing France be the top goalscorer at the 2026 FIFA World Cup?",
+    "referenceSource": "polymarket",
+    "externalSlug": "will-a-player-representing-france-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+    "externalMarketId": "2070983",
+    "conditionId": "0x919c3aa6286d165c579ccaa3c17ffafd47d851d692f47d46192c3a71c85e22c3"
+  },
+  "outcome": {
+    "id": "e5beef8e-00fc-4dfe-bafe-775deec419e9",
+    "name": "YES",
+    "referenceTokenId": "69445358764332911577161945635356930153907413229133084312248583098790657994408",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "botQuote": {
+    "orderId": "83f224e1-40cb-4588-bdd8-a5654142225a",
+    "side": "SELL",
+    "price": 0.44,
+    "remaining": 5
+  },
+  "mobileProofUser": {
+    "id": "79794cf1-bc40-4508-a3c1-f24714b0c8a6",
+    "email": "cycle_pm_provider_user_e51ffb0e@local.test"
+  },
+  "checks": {
+    "searchVisible": true,
+    "detailVisible": true,
+    "quoteVisible": true,
+    "serverModeTicketSubmitted": true,
+    "filledAgainstBotLiquidity": true,
+    "portfolioPositionVisible": true,
+    "historyTradeVisible": true,
+    "homeLiveMatchOnlyUnchanged": true
+  },
+  "orderResult": {
+    "id": "ac79ef2e-6049-4cab-bd00-f294c4eac770",
+    "mode": "server",
+    "title": "Will a player representing France be the top goalscorer at the 2026 FIFA World Cup?",
+    "outcome": "France",
+    "selection": {
+      "marketType": "future",
+      "marketId": "42203d58-497f-49e6-a660-87eca202bd59",
+      "outcomeId": "e5beef8e-00fc-4dfe-bafe-775deec419e9",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "France",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-a-player-representing-france-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2070983",
+      "conditionId": "0x919c3aa6286d165c579ccaa3c17ffafd47d851d692f47d46192c3a71c85e22c3",
+      "referenceTokenId": "69445358764332911577161945635356930153907413229133084312248583098790657994408",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.44,
+      "limitSide": "ask"
+    },
+    "contractSide": "yes",
+    "side": "buy",
+    "amount": 1,
+    "probability": 44,
+    "status": "FILLED",
+    "size": 2.27,
+    "filledSize": 2.27,
+    "remainingSize": 0
+  },
+  "portfolioPosition": {
+    "marketId": "42203d58-497f-49e6-a660-87eca202bd59",
+    "outcomeId": "e5beef8e-00fc-4dfe-bafe-775deec419e9",
+    "shares": 2.27,
+    "selection": {
+      "marketType": "future",
+      "marketId": "42203d58-497f-49e6-a660-87eca202bd59",
+      "outcomeId": "e5beef8e-00fc-4dfe-bafe-775deec419e9",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "France",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-a-player-representing-france-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2070983",
+      "conditionId": "0x919c3aa6286d165c579ccaa3c17ffafd47d851d692f47d46192c3a71c85e22c3",
+      "referenceTokenId": "69445358764332911577161945635356930153907413229133084312248583098790657994408",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.44,
+      "limitSide": "ask"
+    }
+  },
+  "historyTrade": {
+    "id": "fc31d605-586d-4f4e-8390-428eb36f16ef",
+    "market": {
+      "id": "42203d58-497f-49e6-a660-87eca202bd59",
+      "title": "Will a player representing France be the top goalscorer at the 2026 FIFA World Cup?",
+      "status": "LIVE",
+      "marketGroupKey": "outrights",
+      "marketType": "outright",
+      "line": null,
+      "period": "futures",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-a-player-representing-france-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2070983",
+      "conditionId": "0x919c3aa6286d165c579ccaa3c17ffafd47d851d692f47d46192c3a71c85e22c3"
+    },
+    "outcome": {
+      "id": "e5beef8e-00fc-4dfe-bafe-775deec419e9",
+      "name": "YES",
+      "label": "France",
+      "side": "yes",
+      "referenceTokenId": "69445358764332911577161945635356930153907413229133084312248583098790657994408",
+      "referenceOutcomeLabel": "Yes"
+    },
+    "selection": {
+      "marketId": "42203d58-497f-49e6-a660-87eca202bd59",
+      "outcomeId": "e5beef8e-00fc-4dfe-bafe-775deec419e9",
+      "marketGroupId": "outrights",
+      "marketType": "future",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "France",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "providerSource": "polymarket",
+      "externalSlug": "will-a-player-representing-france-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2070983",
+      "conditionId": "0x919c3aa6286d165c579ccaa3c17ffafd47d851d692f47d46192c3a71c85e22c3",
+      "referenceTokenId": "69445358764332911577161945635356930153907413229133084312248583098790657994408",
+      "tokenId": "69445358764332911577161945635356930153907413229133084312248583098790657994408",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.44,
+      "limitSide": "ask"
+    },
+    "side": "BUY",
+    "shares": 2.27,
+    "cost": 0.9988,
+    "fee": 0,
+    "createdAt": "2026-07-08T23:25:17.886Z"
+  },
+  "remainingOpenOrders": [
+    {
+      "id": "0d5bd79f-e421-4651-a50c-e4d171ec98ea",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "e5beef8e-00fc-4dfe-bafe-775deec419e9",
+      "side": "BUY",
+      "price": "0.39",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "83f224e1-40cb-4588-bdd8-a5654142225a",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "e5beef8e-00fc-4dfe-bafe-775deec419e9",
+      "side": "SELL",
+      "price": "0.44",
+      "amount": "5",
+      "remaining": "2.73",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "fe4fbd3e-2b17-47c3-b73e-48f9a315131d",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "2c1a3aaf-e5b0-496e-8fd7-3a142cca8d57",
+      "side": "BUY",
+      "price": "0.41",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "4362c86f-4505-45f9-94ca-523e27f32eb9",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "2c1a3aaf-e5b0-496e-8fd7-3a142cca8d57",
+      "side": "SELL",
+      "price": "0.61",
+      "amount": "5",
+      "remaining": "5",
+      "status": "OPEN"
+    }
+  ]
+}
