@@ -2,6 +2,37 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle NH - Mobile MVP Proof Event Filter
+
+Feature/page worked on:
+
+- Home/Live Local MVP event feed.
+
+Frontend/services touched:
+
+- `src/app/api/events/route.ts`
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+
+User interactions supported/proven:
+
+- On Samsung S23, Home and Live show real current World Cup matches and no longer show the disposable `EL-A Provider Breadth` proof event.
+- The full Home -> Live -> Event Detail -> Spread ticket -> server-backed open order -> cancel -> History path still passes after the route filter.
+
+Backend/API route changed:
+
+- `/api/events` now excludes disposable proof events when `mobileMvpMatches=1`.
+
+Verified:
+
+- Focused Jest route test passed: `npm run test:jest -- src/__tests__/public.events.no-leak.test.ts`.
+- Route inspection before/after filter: `docs/mobile/harness/cycle-NH-current-service-reinspection/`.
+- S23 proof passed: `docs/mobile/harness/cycle-NH-s23-proof-event-filter/cycle-NH-current-mvp-s23-visible-flow.json`.
+
+Known limitations:
+
+- Regulation Winner is provider-backed for the inspected current match.
+- Spread/Totals/Team Total remain Local MVP `contract-fixture` line markets because the inspected Polymarket event has zero route-visible provider-backed line markets.
+
 ## Cycle NG - S23 Current Match Cancel Proof
 
 Feature/page worked on:

@@ -57,6 +57,15 @@ const mobileMvpMatchFilter = (enabled: boolean): Prisma.EventWhereInput =>
               },
             ],
           },
+          {
+            NOT: [
+              { slug: { startsWith: "mobile-", mode: Prisma.QueryMode.insensitive } },
+              { source: { contains: "proof", mode: Prisma.QueryMode.insensitive } },
+              { eventType: { contains: "proof", mode: Prisma.QueryMode.insensitive } },
+              { title: { contains: "proof", mode: Prisma.QueryMode.insensitive } },
+              { title: { contains: "provider breadth", mode: Prisma.QueryMode.insensitive } },
+            ],
+          },
         ],
       }
     : {};

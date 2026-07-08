@@ -237,14 +237,14 @@ try {
   $homeXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-home.xml"
   Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Argentina vs. Egypt", "event-card-$EventSlug", "home-compact-retail-feed", "home-card-source-provider-winner-local-lines")
   Assert-NotContains -Path $homeXml -Unexpected @("This is the developer menu", "SDK version")
-  Assert-NotContains -Path $homeXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
+  Assert-NotContains -Path $homeXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "Provider Breadth", "EL-A Provider Breadth", "mobile-el-a-provider-breadth")
 
   Invoke-TapNode -Path $homeXml -Identifier "holiwyn-live-tab"
   Start-Sleep -Seconds 2
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-live.png" | Out-Null
   $liveXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-live.xml"
   Assert-Contains -Path $liveXml -Expected @("live-world-cup-games-focus", "live-source-readiness", "home-card-source-provider-winner-local-lines", "event-card-$EventSlug")
-  Assert-NotContains -Path $liveXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
+  Assert-NotContains -Path $liveXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "Provider Breadth", "EL-A Provider Breadth", "mobile-el-a-provider-breadth")
 
   Invoke-TapNode -Path $liveXml -Identifier "holiwyn-home-tab"
   Start-Sleep -Seconds 1

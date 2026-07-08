@@ -391,6 +391,15 @@ describe("public event API no-leak checks", () => {
                     },
                   ],
                 },
+                {
+                  NOT: [
+                    { slug: { startsWith: "mobile-", mode: "insensitive" } },
+                    { source: { contains: "proof", mode: "insensitive" } },
+                    { eventType: { contains: "proof", mode: "insensitive" } },
+                    { title: { contains: "proof", mode: "insensitive" } },
+                    { title: { contains: "provider breadth", mode: "insensitive" } },
+                  ],
+                },
               ],
             }),
             expect.objectContaining({

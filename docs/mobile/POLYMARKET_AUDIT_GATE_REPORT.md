@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle NH
+
+Gate status: Pass
+
+Scope: Mobile MVP proof-event filter for Home/Live feed.
+
+Decision:
+
+- P0 failed: 0 for focused Home/Live feed cleanup scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-NH-current-service-reinspection/cycle-NH-current-service-reinspection-after-filter.json`, `docs/mobile/harness/cycle-NH-s23-proof-event-filter/cycle-NH-current-mvp-s23-visible-flow.json`, `docs/mobile/harness/cycle-NH-s23-proof-event-filter/cycle-NH-current-mvp-home.xml`, `docs/mobile/harness/cycle-NH-s23-proof-event-filter/cycle-NH-current-mvp-live.xml`, `docs/mobile/audits/cycle-NH-mobile-mvp-proof-event-filter.md`.
+- Notes: The route inspection proves the user-facing feed dropped from 3 events to 2 real match events after filtering out the disposable provider-breadth proof event. S23 proof confirms Home/Live no longer show proof rows and the ticket/cancel path still passes.
+
 ## Cycle NG
 
 Gate status: Pass

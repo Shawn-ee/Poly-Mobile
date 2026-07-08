@@ -2,6 +2,25 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle NH - Mobile MVP Proof Event Filter
+
+Closed or narrowed:
+
+- `mobileMvpMatches=1` no longer leaks disposable proof events such as `EL-A Provider Breadth` into the user-facing Home/Live feed.
+- Fresh inspection shows Home now returns two current match events and zero futures/proof rows.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected current events.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Existing `contract-fixture` line markets remain backend-shaped Local MVP fallback rows.
+
 ## Cycle NG - S23 Current Match Cancel Proof
 
 Closed or narrowed:

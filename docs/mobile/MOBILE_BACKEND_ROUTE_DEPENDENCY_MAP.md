@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle NH - Mobile MVP Proof Event Filter
+
+Cycle NH changes the public event list route used by Home, Live, and Search-style event discovery.
+
+- Route inspection: `docs/mobile/harness/cycle-NH-current-service-reinspection/`.
+- S23 proof: `docs/mobile/harness/cycle-NH-s23-proof-event-filter/cycle-NH-current-mvp-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-NH-mobile-mvp-proof-event-filter.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home/Live Local MVP match feed | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1` | GET | None | None | Event slug/title/type/status, compact markets, `marketSourceSummary.regulationWinner`, `marketSourceSummary.lineMarkets` | Existing `Event`, `Market`, `Outcome`; no schema change | None for event filtering; current line markets remain explicit `contract-fixture` data | Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected Polymarket events. |
+
 ## Cycle NG - S23 Current Match Cancel Proof
 
 Cycle NG changes the S23 proof harness only; it consumes the existing server order/cancel/portfolio routes.
