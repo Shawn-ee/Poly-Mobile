@@ -6209,3 +6209,32 @@ Remaining P1:
 - S23 Search deep-link attempts did not reliably show the Nation of Top Goalscorer result; direct event-detail proof and backend Search route proof passed.
 - Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Broad futures remain Search/detail-only while Home/Live stay match-only.
+
+## Cycle PI - Search Deep-Link Provider Futures Proof
+
+Result: Pass for PI scope.
+
+Checked:
+
+- S23 Search launch with `forceResetState=1`, `forceSearch=1`, and `forceSearchQuery=representing Argentina` stayed on Search.
+- Search XML showed `search-world-cup-markets`.
+- Search XML showed `World Cup: Nation of Top Goalscorer` and `Argentina`.
+- Tapping the result opened Event Detail.
+- Detail XML showed `event-detail-back`, `World Cup: Nation of Top Goalscorer`, and `selection-provider-market-2070987`.
+- Home/Live match-only behavior was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PI-search-deeplink-provider-futures-proof.md`
+- `docs/mobile/harness/cycle-PI-search-deeplink-provider-futures-proof/cycle-PI-summary.json`
+- `docs/mobile/harness/cycle-PI-search-deeplink-provider-futures-proof/cycle-PI-s23-search-argentina-nation.xml`
+- `docs/mobile/screenshots/cycle-PI-search-deeplink-provider-futures-proof/cycle-PI-s23-search-argentina-nation.png`
+- `docs/mobile/harness/cycle-PI-search-deeplink-provider-futures-proof/cycle-PI-s23-argentina-nation-detail-from-search.xml`
+- `docs/mobile/screenshots/cycle-PI-search-deeplink-provider-futures-proof/cycle-PI-s23-argentina-nation-detail-from-search.png`
+
+Unresolved P0 gaps: 0 for PI scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.

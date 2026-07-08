@@ -1,0 +1,9 @@
+{
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "port":  8302,
+    "searchPass":  true,
+    "detailPass":  true,
+    "searchScreenshot":  "docs/mobile/screenshots/cycle-PI-search-deeplink-provider-futures-proof/cycle-PI-s23-search-argentina-nation.png",
+    "detailScreenshot":  "docs/mobile/screenshots/cycle-PI-search-deeplink-provider-futures-proof/cycle-PI-s23-argentina-nation-detail-from-search.png"
+}

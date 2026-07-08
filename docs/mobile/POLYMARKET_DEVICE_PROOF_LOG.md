@@ -1843,3 +1843,37 @@ Pass for selected first Nation of Top Goalscorer provider-backed internal-test t
 
 Remaining gaps:
 Search deep-link attempts did not reliably show the Nation of Top Goalscorer result. Home/Live remain match-only. Current-match line markets remain contract fixtures.
+
+## Cycle PI - Search Deep-Link Provider Futures Proof
+
+Date:
+2026-07-08
+
+Reference device:
+No new Polymarket reference-device action. PI closes a Holiwyn mobile proof/navigation gap for already provider-backed Polymarket data.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go server mode. Backend `http://127.0.0.1:3002` stayed healthy; mobile API used LAN backend `http://172.16.200.14:3002`.
+
+Holiwyn actions:
+Opened Holiwyn with `forceResetState=1`, `forceSearch=1`, and `forceSearchQuery=representing%20Argentina`. Confirmed Search displayed `World Cup: Nation of Top Goalscorer`, then tapped the result and confirmed Event Detail showed provider market `2070987`.
+
+Evidence:
+- `docs/mobile/harness/cycle-PI-search-deeplink-provider-futures-proof/cycle-PI-summary.json`
+- `docs/mobile/screenshots/cycle-PI-search-deeplink-provider-futures-proof/cycle-PI-s23-search-argentina-nation.png`
+- `docs/mobile/harness/cycle-PI-search-deeplink-provider-futures-proof/cycle-PI-s23-search-argentina-nation.xml`
+- `docs/mobile/screenshots/cycle-PI-search-deeplink-provider-futures-proof/cycle-PI-s23-argentina-nation-detail-from-search.png`
+- `docs/mobile/harness/cycle-PI-search-deeplink-provider-futures-proof/cycle-PI-s23-argentina-nation-detail-from-search.xml`
+- `docs/mobile/audits/cycle-PI-search-deeplink-provider-futures-proof.md`
+
+Smoke/tests:
+Mobile typecheck passed and S23 Search/detail proof passed.
+
+Result:
+Pass for Search deep-link provider futures proof.
+
+Remaining gaps:
+Home/Live remain match-only. Current-match line markets remain contract fixtures.

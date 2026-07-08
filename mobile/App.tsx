@@ -600,6 +600,9 @@ export default function App() {
     const shouldForceAccountProfileSyncError = url.includes("forceAccountProfileSyncError=1");
     const shouldForceMexicoEcuadorDetail = url.includes("forceMexicoEcuadorDetail=1");
     const forceBackendEventSlugMatch = url.match(/[?&,]forceBackendEventSlug=([^&,]+)/);
+    const forcedSearchQuery = url.match(/[?&,]forceSearchQuery=([^&,]+)/)?.[1];
+    const forcedHomeQuery = url.match(/[?&,]forceHomeQuery=([^&,]+)/)?.[1];
+    const shouldForceSearch = url.includes("forceSearch=1");
     const forcedOpenOrder = url.includes("forceOpenOrderSide=sell") ? SMOKE_OPEN_SELL_ORDER : SMOKE_OPEN_ORDER;
     const apiKeyMatch = url.match(/[?&,]apiKey=([^&,]+)/);
     const shouldForceRuntimePortfolioSync =
@@ -665,7 +668,10 @@ export default function App() {
         !forceServerOrderProof.current &&
         !shouldForceLive &&
         !shouldForceLiveDetail &&
-        !shouldForceMexicoEcuadorGamePosition
+        !shouldForceMexicoEcuadorGamePosition &&
+        !forcedSearchQuery &&
+        !forcedHomeQuery &&
+        !shouldForceSearch
       ) {
         setTimeout(resetRuntimeState, 750);
       }
@@ -896,12 +902,10 @@ export default function App() {
       };
       AsyncStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(snapshot)).catch(() => undefined);
     }
-    const forcedSearchQuery = url.match(/[?&]forceSearchQuery=([^&]+)/)?.[1];
     if (forcedSearchQuery) {
       setQuery(decodeURIComponent(forcedSearchQuery));
       setMainTab("search");
     }
-    const forcedHomeQuery = url.match(/[?&]forceHomeQuery=([^&]+)/)?.[1];
     if (forcedHomeQuery) {
       setQuery(decodeURIComponent(forcedHomeQuery));
       setMainTab("home");
@@ -932,7 +936,7 @@ export default function App() {
       setLocale("en");
       AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, "en").catch(() => undefined);
     }
-    if (url.includes("forceSearch=1")) {
+    if (shouldForceSearch) {
       setMainTab("search");
     }
     const shouldForceSaveMexico = url.includes("forceSaveMexico=1");

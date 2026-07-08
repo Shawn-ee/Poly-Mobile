@@ -7144,6 +7144,34 @@ Future migration concern:
 - Standalone bot proof runs must carry `LIVE_SYSTEM_LIQUIDITY_ENABLED=true`; backend helper env alone does not arm a separate bot process.
 - Production/staging bot enablement must not reuse local fake-token proof flags without separate review.
 
+## Cycle PI - Search Deep-Link Provider Futures Proof
+
+Closed or narrowed:
+
+- The Cycle PH S23 Search deep-link visibility gap is closed for `representing Argentina`.
+- The mobile app can now launch into Search with a provider-future query after reset and then open the provider-backed detail page.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Current-match provider-backed Spread/Totals/Team Total market ids, token ids, chart history, and prices.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No backend route mismatch for PI. Existing `/api/events` and `/api/mobile/events/:slug/live-detail` data was sufficient.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- Launch proof links should keep using comma-separated flags or otherwise quote `&` query strings for Android shell safety.
+- Search/Home query launch parsing now supports comma-separated proof flags.
+
 ## Cycle PH - Nation Top Goalscorer Provider Market Tradable Proof
 
 Closed or narrowed:
