@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { CanonicalApiError } from "@/lib/canonicalApi";
 import { submitCanonicalOrder } from "@/server/services/canonicalOrderSubmission";
 import { mintCompleteSetForPublicOrderbook } from "@/server/services/orderbookCollateral";
+import { placeOrderAndMatch } from "@/server/services/matching";
 import {
   DatabaseCanonicalRateLimitProvider,
   MemoryCanonicalRateLimitProvider,
@@ -543,6 +544,134 @@ describe("Phase 5 canonical order submission", () => {
           marketId: market.id,
           outcomeId: market.outcomes[0].id,
         }),
+      }),
+    );
+  });
+
+  test("provider-backed fake-token orders can submit with provider outcome price even when provider book is unavailable", async () => {
+    const user = await createUser("provider_outcome_price_user");
+    const market = await createMarket({
+      referenceSource: "polymarket",
+      externalMarketId: "gamma-outcome-price-market",
+      conditionId: "condition-outcome-price-market",
+    });
+    const credential = await createApiCredential({ userId: user.id });
+    await fundUser(user.id, "100.000000");
+    await prisma.referenceQuoteSnapshot.create({
+      data: {
+        marketId: market.id,
+        outcomeId: market.outcomes[0].id,
+        source: "polymarket",
+        externalMarketId: "gamma-outcome-price-market",
+        conditionId: "condition-outcome-price-market",
+        tokenId: "token-outcome-price-yes",
+        outcomeLabel: "YES",
+        outcomePrice: "0.45",
+        bestBid: null,
+        bestAsk: null,
+        spread: null,
+        acceptingOrders: false,
+        qualityStatus: "available",
+        reason: "reference_missing_book",
+        fetchedAt: new Date(),
+      },
+    });
+
+    const result = await submitCanonicalOrder({
+      userId: user.id,
+      apiCredentialId: credential.id,
+      apiKeyId: credential.keyId,
+      body: {
+        marketId: market.id,
+        outcomeId: market.outcomes[0].id,
+        side: "BUY",
+        type: "LIMIT",
+        price: "0.45",
+        size: "10.000000",
+      },
+      idempotencyKeyHeader: "provider-outcome-price-key",
+    });
+
+    expect(result.status).toBe(200);
+    expect(result.body).toEqual(
+      expect.objectContaining({
+        order: expect.objectContaining({
+          marketId: market.id,
+          outcomeId: market.outcomes[0].id,
+        }),
+      }),
+    );
+  });
+
+  test("provider-backed fake-token orders can submit against local liquidity when provider book is unavailable", async () => {
+    const taker = await createUser("provider_local_liquidity_taker");
+    const maker = await createUser("provider_local_liquidity_maker");
+    const market = await createMarket({
+      referenceSource: "polymarket",
+      externalMarketId: "gamma-local-liquidity-market",
+      conditionId: "condition-local-liquidity-market",
+    });
+    const credential = await createApiCredential({ userId: taker.id });
+    await fundUser(taker.id, "100.000000");
+    await fundUser(maker.id, "100.000000");
+    await mintCompleteSetForPublicOrderbook({ marketId: market.id, userId: maker.id, quantity: "80.000000" });
+    await placeOrderAndMatch({
+      marketId: market.id,
+      outcomeId: market.outcomes[0].id,
+      userId: maker.id,
+      side: "SELL",
+      type: "LIMIT",
+      price: "0.70",
+      size: "80.000000",
+    });
+    await prisma.referenceQuoteSnapshot.create({
+      data: {
+        marketId: market.id,
+        outcomeId: market.outcomes[0].id,
+        source: "polymarket",
+        externalMarketId: "gamma-local-liquidity-market",
+        conditionId: "condition-local-liquidity-market",
+        tokenId: "token-local-liquidity-yes",
+        outcomeLabel: "YES",
+        outcomePrice: "0",
+        bestBid: null,
+        bestAsk: null,
+        spread: null,
+        acceptingOrders: false,
+        qualityStatus: "missing_book",
+        reason: "reference_missing_book",
+        fetchedAt: new Date(),
+      },
+    });
+
+    const result = await submitCanonicalOrder({
+      userId: taker.id,
+      apiCredentialId: credential.id,
+      apiKeyId: credential.keyId,
+      body: {
+        marketId: market.id,
+        outcomeId: market.outcomes[0].id,
+        side: "BUY",
+        type: "LIMIT",
+        price: "0.70",
+        size: "10.000000",
+      },
+      idempotencyKeyHeader: "provider-local-liquidity-key",
+    });
+
+    expect(result.status).toBe(200);
+    expect(result.body).toEqual(
+      expect.objectContaining({
+        order: expect.objectContaining({
+          status: "FILLED",
+          marketId: market.id,
+          outcomeId: market.outcomes[0].id,
+        }),
+        fills: expect.arrayContaining([
+          expect.objectContaining({
+            size: "10",
+          }),
+        ]),
       }),
     );
   });

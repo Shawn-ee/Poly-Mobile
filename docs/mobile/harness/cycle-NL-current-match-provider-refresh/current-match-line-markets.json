@@ -1,0 +1,130 @@
+{
+  "pass": true,
+  "generatedAt": "2026-07-08T13:30:46.661Z",
+  "cycle": "NL",
+  "eventSlug": "argentina-vs-egypt",
+  "eventTitle": "Argentina vs. Egypt",
+  "inspection": {
+    "beforeStatus": 200,
+    "beforeMarketCount": 3,
+    "beforeMarketTypes": [
+      "match_winner_1x2"
+    ],
+    "conclusion": "Current live match routes had Regulation Winner only; spreads/totals were absent from the served mobile data."
+  },
+  "seededMarkets": [
+    {
+      "id": "75e5b7d9-ffc9-422a-814e-34d2588b1210",
+      "slug": "argentina-vs-egypt-spread-home-0-5",
+      "title": "Argentina vs. Egypt: Argentina +0.5",
+      "outcomeCount": 2
+    },
+    {
+      "id": "0806254e-757c-403f-a180-0631c4e6b3fc",
+      "slug": "argentina-vs-egypt-spread-away-1-5",
+      "title": "Argentina vs. Egypt: Egypt +1.5",
+      "outcomeCount": 2
+    },
+    {
+      "id": "95b4cb4d-6dac-4e84-a96a-d1cee0891f16",
+      "slug": "argentina-vs-egypt-total-goals-2-5",
+      "title": "Argentina vs. Egypt: Total goals 2.5",
+      "outcomeCount": 2
+    },
+    {
+      "id": "d62c4e23-1349-40d1-8e64-66d1084e14c3",
+      "slug": "argentina-vs-egypt-team-total-home-1-5",
+      "title": "Argentina vs. Egypt: Argentina total goals 1.5",
+      "outcomeCount": 2
+    }
+  ],
+  "after": {
+    "status": 200,
+    "marketCount": 7,
+    "marketTypes": [
+      "match_winner_1x2",
+      "spread",
+      "total_goals",
+      "team_total_goals"
+    ],
+    "marketGroups": [
+      "Regulation Winner",
+      "Spread",
+      "Totals",
+      "Team Totals"
+    ],
+    "sample": [
+      {
+        "id": "985df42d-eeb0-4af1-b2ae-126db9328630",
+        "title": "Will Argentina win on 2026-07-07?",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Winner",
+        "line": null,
+        "period": "regulation",
+        "outcomeCount": 2
+      },
+      {
+        "id": "0806254e-757c-403f-a180-0631c4e6b3fc",
+        "title": "Argentina vs. Egypt: Egypt +1.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "1.5",
+        "period": "regulation",
+        "outcomeCount": 2
+      },
+      {
+        "id": "95b4cb4d-6dac-4e84-a96a-d1cee0891f16",
+        "title": "Argentina vs. Egypt: Total goals 2.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Totals",
+        "line": "2.5",
+        "period": "regulation",
+        "outcomeCount": 2
+      },
+      {
+        "id": "d62c4e23-1349-40d1-8e64-66d1084e14c3",
+        "title": "Argentina vs. Egypt: Argentina total goals 1.5",
+        "marketType": "team_total_goals",
+        "marketGroupTitle": "Team Totals",
+        "line": "1.5",
+        "period": "regulation",
+        "outcomeCount": 2
+      },
+      {
+        "id": "95d0077b-dab8-4601-ba3f-d34001ffded3",
+        "title": "Will Argentina vs. Egypt end in a draw?",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Winner",
+        "line": null,
+        "period": "regulation",
+        "outcomeCount": 2
+      },
+      {
+        "id": "b6554df0-9bbc-4161-bfcf-f9d76b6c71e3",
+        "title": "Will Egypt win on 2026-07-07?",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Winner",
+        "line": null,
+        "period": "regulation",
+        "outcomeCount": 2
+      },
+      {
+        "id": "75e5b7d9-ffc9-422a-814e-34d2588b1210",
+        "title": "Argentina vs. Egypt: Argentina +0.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "0.5",
+        "period": "regulation",
+        "outcomeCount": 2
+      }
+    ]
+  },
+  "assertions": {
+    "routeOk": true,
+    "regulationWinnerPresent": true,
+    "spreadPresent": true,
+    "totalsPresent": true,
+    "teamTotalsPresent": true,
+    "noOrderbookUiWork": true
+  }
+}

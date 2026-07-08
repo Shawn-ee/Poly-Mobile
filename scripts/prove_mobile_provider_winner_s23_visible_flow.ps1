@@ -210,6 +210,9 @@ $previousEnv = @{
   EXPO_PUBLIC_ORDER_MODE = $env:EXPO_PUBLIC_ORDER_MODE
   EXPO_PUBLIC_SHOW_ORDERBOOK = $env:EXPO_PUBLIC_SHOW_ORDERBOOK
   EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT = $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT
+  MOBILE_DEV_MAX_ORDER_SIZE = $env:MOBILE_DEV_MAX_ORDER_SIZE
+  MOBILE_DEV_MAX_ORDER_NOTIONAL = $env:MOBILE_DEV_MAX_ORDER_NOTIONAL
+  MOBILE_DEV_DAILY_NOTIONAL = $env:MOBILE_DEV_DAILY_NOTIONAL
 }
 $expo = $null
 try {
@@ -232,6 +235,9 @@ try {
   }
 
   $env:MOBILE_DEV_USERNAME = "holiwyn-mobile-$($Cycle.ToLower())-s23-$(Get-Date -Format yyyyMMddHHmmss)"
+  $env:MOBILE_DEV_MAX_ORDER_SIZE = "10000.000000"
+  $env:MOBILE_DEV_MAX_ORDER_NOTIONAL = "10000.000000"
+  $env:MOBILE_DEV_DAILY_NOTIONAL = "50000.000000"
   $credentialRaw = cmd /c npm.cmd run mobile:dev-credential 2>&1 | Out-String
   if ($LASTEXITCODE -ne 0) {
     throw "Mobile dev credential creation failed."

@@ -4899,3 +4899,32 @@ Decision:
 - Pass/fail: Pass for provider-backed Regulation Winner chart/probability source clarity.
 - Not a final game-page parity pass because line markets remain `contract-fixture`.
 - Remaining P1: automate chart refresh lifecycle and attach real provider-backed Spread/Totals/Team Total markets.
+
+## Cycle NL
+
+Gate status: Pass for Local MVP provider refresh and fake-token provider winner execution
+
+Scope: Restore current match service data, refresh provider-backed Regulation Winner markets through Polymarket Gamma/CLOB paths, and prove S23 visible order/Portfolio/history flow.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NL-provider-refresh-local-liquidity.md`
+- `docs/mobile/harness/cycle-NL-current-match-provider-refresh/current-match-restore.json`
+- `docs/mobile/harness/cycle-NL-current-match-provider-refresh/current-match-line-markets.json`
+- `docs/mobile/harness/cycle-NL-current-match-provider-refresh/current-match-provider-refresh.json`
+- `docs/mobile/harness/cycle-NL-current-match-provider-refresh-s23-pass/cycle-NL3-provider-winner-s23-visible-flow.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NL-P0-01 | P0 | Pass | Restore proof recreated 3 provider-backed winner markets. | Fix current match restore/import mapping. |
+| NL-P0-02 | P0 | Pass | Provider refresh updated 6 Gamma quote snapshots with 0 skipped markets. | Fix Gamma event fallback refresh. |
+| NL-P0-03 | P0 | Pass | Backend diagnostic and S23 proof filled provider winner BUY with local liquidity. | Fix local-liquidity provider guard. |
+| NL-P0-04 | P0 | Pass | S23 proof reached Portfolio/history and preserved provider source identity. | Fix ticket/order/portfolio identity bridge. |
+| NL-P1-01 | P1 | Partial | Line seed proof shows Spread/Totals/Team Total are contract fixtures. | Add real provider-backed line-market ingestion when attach-ready markets exist. |
+
+Decision:
+
+- Pass/fail: Pass for the Local MVP path in scope.
+- Not a final Polymarket game-page parity pass because provider-backed line markets remain unavailable.

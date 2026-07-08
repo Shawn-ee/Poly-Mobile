@@ -630,3 +630,35 @@ Pass for provider-backed Regulation Winner chart/probability source clarity and 
 
 Remaining gaps:
 Spread/Totals/Team Total remain contract fixtures for the inspected current matches. Chart data is real Polymarket CLOB history but stale for this old match timestamp; automatic freshness refresh remains P1.
+
+### 2026-07-08 - Cycle NL - Provider refresh and local liquidity proof
+
+Reference device:
+Not used for fresh Polymarket app comparison in this cycle. Provider behavior was verified through Polymarket Gamma grouped event data and CLOB history refresh.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://172.16.200.14:3002`, temporary Expo port `8293`, temporary mobile dev API key, orderbook hidden.
+
+Holiwyn actions:
+Opened Home, tapped `argentina-vs-egypt`, verified provider-backed Regulation Winner and chart source, selected the Egypt winner row, entered `$25`, swiped to buy, and verified Portfolio History preserved provider winner source/token/market identity.
+
+Holiwyn evidence:
+- `docs/mobile/harness/cycle-NL-current-match-provider-refresh/current-match-restore.json`
+- `docs/mobile/harness/cycle-NL-current-match-provider-refresh/current-match-line-markets.json`
+- `docs/mobile/harness/cycle-NL-current-match-provider-refresh/current-match-provider-refresh.json`
+- `docs/mobile/harness/cycle-NL-current-match-provider-refresh-s23-pass/cycle-NL3-provider-winner-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NL-current-match-provider-refresh-s23-pass/cycle-NL3-current-mvp-detail-top.png`
+- `docs/mobile/screenshots/cycle-NL-current-match-provider-refresh-s23-pass/cycle-NL3-provider-winner-after-submit.png`
+- `docs/mobile/screenshots/cycle-NL-current-match-provider-refresh-s23-pass/cycle-NL3-provider-winner-portfolio-history.png`
+
+Smoke/tests:
+Focused backend Jest tests, TypeScript typecheck, provider restore/refresh scripts, and S23 visible-flow proof passed.
+
+Result:
+Pass for Local MVP provider refresh and provider-backed fake-token buy -> Portfolio/history.
+
+Remaining gaps:
+Spread/Totals/Team Total remain contract fixtures for this inspected match. The provider event is old and has terminal prices, so local liquidity is used for the fake-token proof path.

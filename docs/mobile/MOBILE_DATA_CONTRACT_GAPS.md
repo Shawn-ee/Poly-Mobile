@@ -5934,3 +5934,35 @@ Future migration concern:
 
 - Promote chart refresh from proof script/manual execution into the provider lifecycle refresh path for current matches.
 - Do not claim Polymarket line-market parity until attached provider-backed line markets exist or a new approved provider contract is implemented.
+
+## Cycle NL - Provider Refresh And Local MVP Liquidity
+
+Closed or narrowed:
+
+- Current match restore is now repeatable after tests reset local DB state.
+- Gamma grouped soccer market refresh no longer depends only on direct `/markets?slug=<market>` responses.
+- Provider-backed winner tickets can fill through Holiwyn local liquidity in fake-token server mode.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total rows for the inspected Polymarket match.
+- Fresh active-match Polymarket soccer events with non-terminal 0/1 prices for realistic provider winner trading.
+- Production liquidity/execution that does not depend on proof-only maker seeding.
+
+Schema mismatch:
+
+- No schema mismatch was found or introduced.
+
+Route mismatch:
+
+- The provider quote route can refresh Gamma quote snapshots, but aggregate lifecycle still reports stale when internal orderbook depth is unavailable. This is acceptable for Local MVP because orderbook UI is hidden and ticket execution uses simple local liquidity.
+
+Temporary mock/static data:
+
+- No frontend-only random mock data was added.
+- Spread/Totals/Team Total remain backend `contract-fixture` rows.
+
+Future migration concern:
+
+- Replace contract-fixture line rows with provider-backed line markets only when attach-ready Polymarket or approved provider rows exist.
+- Prefer a fresher active provider event for future visible proofs so winner probabilities are not terminal 0/1 values.

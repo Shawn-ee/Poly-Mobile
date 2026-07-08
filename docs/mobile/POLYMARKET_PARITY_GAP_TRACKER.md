@@ -592,3 +592,12 @@ For every UI element or interaction, answer:
 - S23 proof passes for Home -> Event Detail -> provider-backed Regulation Winner ticket -> fake-token/server order -> Portfolio History, with Event Detail hierarchy showing `chart-source-polymarket-clob-prices-history`.
 - Remaining P0/P1: real provider-backed Spread/Totals/Team Total rows are still missing for current matches; current route-visible line markets are `contract-fixture` and must not be claimed as Polymarket parity.
 - Remaining P1: chart history is real but stale for this inspected match; provider lifecycle should refresh automatically for current matches instead of relying on a proof script.
+
+## Cycle NL Gap Tracker Update
+
+- PM-GAP-108 is opened and verified for current-match provider refresh and local server-backed provider winner execution.
+- NL closes the immediate service-readiness gap where test resets could leave `argentina-vs-egypt` with zero markets and make Regulation Winner disappear from mobile.
+- NL closes the provider refresh bug where Gamma direct market lookup returned empty for grouped soccer markets; refresh now falls back through the event payload and updates all 3 provider winner markets.
+- S23 proof passes for Home -> Event Detail -> provider-backed Regulation Winner -> simple ticket -> fake-token/server order -> Portfolio/history on `SM-S911U1`.
+- Remaining P1: Spread/Totals/Team Total are still contract fixtures, not provider-backed Polymarket lines.
+- Remaining P1: the inspected provider event is old and has terminal 0/1 prices; future proofs should prefer an active attach-ready soccer event when available.

@@ -181,7 +181,32 @@ const getMatchingPrice = (order: Pick<NormalizedOrderRequest, "type" | "side" | 
   return order.side === "BUY" ? "1" : "0";
 };
 
-const assertProviderMarketAcceptsOrders = async (order: Pick<NormalizedOrderRequest, "marketId" | "outcomeId">) => {
+const hasMatchingLocalLiquidity = async (
+  order: Pick<NormalizedOrderRequest, "marketId" | "outcomeId" | "side" | "type" | "price">,
+) => {
+  const oppositeSide = order.side === "BUY" ? "SELL" : "BUY";
+  const price =
+    order.type === "LIMIT" && order.price
+      ? new Prisma.Decimal(order.price)
+      : new Prisma.Decimal(order.side === "BUY" ? "1" : "0");
+  const priceFilter = order.side === "BUY" ? { lte: price } : { gte: price };
+  const resting = await prisma.order.findFirst({
+    where: {
+      marketId: order.marketId,
+      outcomeId: order.outcomeId,
+      side: oppositeSide,
+      status: { in: ["OPEN", "PARTIAL"] },
+      remaining: { gt: new Prisma.Decimal(0) },
+      price: priceFilter,
+    },
+    select: { id: true },
+  });
+  return Boolean(resting);
+};
+
+const assertProviderMarketAcceptsOrders = async (
+  order: Pick<NormalizedOrderRequest, "marketId" | "outcomeId" | "side" | "type" | "price">,
+) => {
   const market = await prisma.market.findUnique({
     where: { id: order.marketId },
     select: {
@@ -195,6 +220,7 @@ const assertProviderMarketAcceptsOrders = async (order: Pick<NormalizedOrderRequ
         take: 1,
         select: {
           acceptingOrders: true,
+          outcomePrice: true,
           source: true,
           fetchedAt: true,
           reason: true,
@@ -213,7 +239,9 @@ const assertProviderMarketAcceptsOrders = async (order: Pick<NormalizedOrderRequ
   }
 
   const latestQuote = market.referenceQuoteSnapshots[0] ?? null;
-  if (!latestQuote?.acceptingOrders) {
+  const outcomePrice = latestQuote?.outcomePrice == null ? null : Number(latestQuote.outcomePrice);
+  const hasValidProviderPrice = outcomePrice != null && Number.isFinite(outcomePrice) && outcomePrice > 0 && outcomePrice < 1;
+  if (!latestQuote?.acceptingOrders && !hasValidProviderPrice && !(await hasMatchingLocalLiquidity(order))) {
     throw new CanonicalApiError(
       "MARKET_UNAVAILABLE",
       latestQuote?.reason || "Market is unavailable for provider-backed trading.",

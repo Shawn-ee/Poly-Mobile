@@ -7211,3 +7211,51 @@ Known limitations:
 - Provider-backed Regulation Winner and CLOB chart history are proven for the inspected current match.
 - Chart status is `stale` because the provider history timestamps are from July 7, 2026; the source is real, but not fresh live data.
 - Spread/Totals/Team Total remain backend-shaped `contract-fixture` rows with 0 provider-backed line markets for this event.
+
+## Cycle NL - Provider Refresh And Local MVP Liquidity
+
+Feature/page worked on:
+
+- Current Local MVP service readiness for Home -> Event Detail -> provider-backed Regulation Winner ticket -> Portfolio/history.
+- Rebuildable current-match backend data after test resets.
+
+Frontend/harness/backend files touched:
+
+- `src/server/services/polymarketReferenceSnapshots.ts`
+- `src/server/services/canonicalOrderSubmission.ts`
+- `src/server/services/__tests__/canonical_order_submission.phase5.test.ts`
+- `src/__tests__/polymarket-reference-snapshots.test.ts`
+- `scripts/restore_current_mobile_mvp_match.ts`
+- `scripts/prove_current_match_provider_refresh.ts`
+- `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1`
+- `docs/mobile/audits/cycle-NL-provider-refresh-local-liquidity.md`
+
+Important functions/services touched:
+
+- `refreshPolymarketReferenceSnapshots` now falls back to Gamma `/events?slug=<event>` when direct `/markets?slug=<market>` returns an empty array for grouped soccer markets.
+- `assertProviderMarketAcceptsOrders` now allows provider-mapped fake-token orders when Holiwyn has matching local resting liquidity, even if the provider book is unavailable.
+- The S23 proof harness now creates proof-scoped mobile dev API keys with enough fake-token order allowance for visible swipe tests.
+
+User interactions supported/proven:
+
+- User opens Home on S23, taps Argentina vs Egypt, selects the provider-backed Egypt Regulation Winner, enters `$25`, swipes to buy, lands in Portfolio, and verifies History preserves provider winner identity.
+
+State transitions:
+
+- No schema migration was added.
+- Restore script recreates the current match provider markets after DB-resetting tests.
+- Provider refresh updates `ReferenceQuoteSnapshot` rows from Polymarket Gamma, while CLOB history refresh updates `MarketOutcomeSnapshot`.
+- The visible order path seeds deterministic local counterparty liquidity, submits `/api/orders`, fills, then reads `/api/portfolio` and `/api/portfolio/history`.
+
+Validation:
+
+- `npm run test:jest -- src/server/services/__tests__/canonical_order_submission.phase5.test.ts src/__tests__/polymarket-reference-snapshots.test.ts src/__tests__/mobile-live-provider-refresh.service.test.ts src/__tests__/mobile-live-provider-refresh.route.test.ts`
+- `npx tsc --noEmit --pretty false --skipLibCheck`
+- Backend restore/line/provider refresh proofs under `docs/mobile/harness/cycle-NL-current-match-provider-refresh/`
+- S23 proof: `docs/mobile/harness/cycle-NL-current-match-provider-refresh-s23-pass/cycle-NL3-provider-winner-s23-visible-flow.json`
+
+Known limitations:
+
+- Regulation Winner is provider-backed and route-refreshable.
+- Spread/Totals/Team Total remain backend-shaped `contract-fixture` rows until attach-ready provider-backed line markets exist.
+- The inspected Polymarket event is old, so provider prices can be 0/1 and chart history is stale; Local MVP proof uses Holiwyn local liquidity for fake-token execution.

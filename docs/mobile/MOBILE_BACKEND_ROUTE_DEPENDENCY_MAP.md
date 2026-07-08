@@ -2840,3 +2840,18 @@ Cycle NK implementation notes:
 - No schema migration was added.
 - `/api/mobile/events/:slug/live-detail` now surfaces route-visible chart source/status fields for mobile proof.
 - Current line-market route rows remain `contract-fixture`; this is documented and not claimed as Polymarket-backed parity.
+
+## Cycle NL - Provider Refresh And Local MVP Liquidity
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Current Home match feed | `/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` | GET | Public viewing | Query filters/page size | Current match slug/title plus compact markets and source summary | `Event`, `Market`, `Outcome` | None added. Restore script rebuilds backend records when tests reset DB. | Dedicated provider-owned active match discovery remains future work. |
+| Event Detail current match | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | 3 provider-backed Regulation Winner markets, 4 contract-fixture line markets, chart source/status, selection identity fields | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `MarketOutcomeSnapshot` | Backend-shaped line fixtures remain for MVP line UI. | Real provider-backed Spread/Totals/Team Total rows remain unavailable for this inspected event. |
+| Provider quote refresh | `/api/mobile/events/:slug/provider-refresh` via `executeMobileLiveProviderRefreshRoute` | Route/service proof | Local backend/proof context | Event slug, `allowContractProofFallback=false` | Provider refresh status, refreshed/skipped counts, quote lifecycle fields | `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `MarketOutcomeSnapshot` | Optic Odds is optional/unconfigured and non-blocking. | Orderbook depth remains internal and not required for Local MVP. |
+| Visible S23 provider winner order | `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | POST/GET | Mobile dev API key for order/account routes | Provider-backed Regulation Winner BUY selection snapshot | Filled order, Portfolio position, History activity with provider market/token/source identity | `ApiCredential`, `Order`, `ApiOrderRequest`, `Trade`, `Position`, `UserBalance`, `Market`, `Outcome` | Proof seeds deterministic local counterparty liquidity. | Production liquidity/execution behavior remains future work. |
+
+Cycle NL implementation notes:
+
+- No schema migration was added.
+- Gamma market refresh now supports grouped soccer event fallback.
+- Provider-mapped fake-token orders can execute when Holiwyn has local crossing liquidity even if the old provider book is unavailable.
