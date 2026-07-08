@@ -1,0 +1,201 @@
+{
+  "pass": true,
+  "cycle": "PD",
+  "generatedAt": "2026-07-08T21:39:08.962Z",
+  "scope": "provider-visible-market-to-internal-test-tradable-mobile-flow",
+  "routes": {
+    "search": "/api/events?source=polymarket&search=Norway",
+    "detail": "/api/mobile/events/:slug/live-detail",
+    "quote": "/api/markets/:marketId/quote",
+    "order": "POST /api/orders",
+    "portfolio": "/api/portfolio",
+    "history": "/api/portfolio/history"
+  },
+  "event": {
+    "id": "16dba6f4-c5ec-4d0c-9d69-6b8c06fd6bc5",
+    "slug": "provider-breadth-world-cup-winner",
+    "title": "World Cup Winner",
+    "eventType": "future"
+  },
+  "market": {
+    "id": "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+    "slug": "provider-breadth-world-cup-winner-will-norway-win-the-2026-fifa-world-cup-893",
+    "title": "Will Norway win the 2026 FIFA World Cup?",
+    "referenceSource": "polymarket",
+    "externalSlug": "will-norway-win-the-2026-fifa-world-cup-893",
+    "externalMarketId": "558951",
+    "conditionId": "0x7b52405ad0e0d31bfe970940b67d77f24ecedeab8a2361c11148c02a006e325c"
+  },
+  "outcome": {
+    "id": "b266d59f-e9a3-493d-ad88-0ee47cd85f00",
+    "name": "Norway",
+    "referenceTokenId": "60447443643099453130956385288904175887233107411078568881602330835010340506057",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "botQuote": {
+    "orderId": "6dc9450e-2e0b-48e6-87e3-7df2cec5a9a1",
+    "side": "SELL",
+    "price": 0.08,
+    "remaining": 5
+  },
+  "mobileProofUser": {
+    "id": "8089b212-fcd5-4859-a378-ff6856479b9b",
+    "email": "cycle_pd_provider_user_3c3924e6@local.test"
+  },
+  "checks": {
+    "searchVisible": true,
+    "detailVisible": true,
+    "quoteVisible": true,
+    "serverModeTicketSubmitted": true,
+    "filledAgainstBotLiquidity": true,
+    "portfolioPositionVisible": true,
+    "historyTradeVisible": true,
+    "homeLiveMatchOnlyUnchanged": true
+  },
+  "orderResult": {
+    "id": "78f0dbd3-b82a-4dc9-a4b9-d74b032ddad7",
+    "mode": "server",
+    "title": "Will Norway win the 2026 FIFA World Cup?",
+    "outcome": "Norway",
+    "selection": {
+      "marketType": "future",
+      "marketId": "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+      "outcomeId": "b266d59f-e9a3-493d-ad88-0ee47cd85f00",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Norway",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-norway-win-the-2026-fifa-world-cup-893",
+      "externalMarketId": "558951",
+      "conditionId": "0x7b52405ad0e0d31bfe970940b67d77f24ecedeab8a2361c11148c02a006e325c",
+      "referenceTokenId": "60447443643099453130956385288904175887233107411078568881602330835010340506057",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.08,
+      "limitSide": "ask"
+    },
+    "contractSide": "yes",
+    "side": "buy",
+    "amount": 0.24,
+    "probability": 8,
+    "status": "FILLED",
+    "size": 3,
+    "filledSize": 3,
+    "remainingSize": 0
+  },
+  "portfolioPosition": {
+    "marketId": "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+    "outcomeId": "b266d59f-e9a3-493d-ad88-0ee47cd85f00",
+    "shares": 3,
+    "selection": {
+      "marketType": "future",
+      "marketId": "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+      "outcomeId": "b266d59f-e9a3-493d-ad88-0ee47cd85f00",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Norway",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-norway-win-the-2026-fifa-world-cup-893",
+      "externalMarketId": "558951",
+      "conditionId": "0x7b52405ad0e0d31bfe970940b67d77f24ecedeab8a2361c11148c02a006e325c",
+      "referenceTokenId": "60447443643099453130956385288904175887233107411078568881602330835010340506057",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.08,
+      "limitSide": "ask"
+    }
+  },
+  "historyTrade": {
+    "id": "edafe8af-5ccd-49a7-856f-9164b44bdb33",
+    "market": {
+      "id": "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+      "title": "Will Norway win the 2026 FIFA World Cup?",
+      "status": "LIVE",
+      "marketGroupKey": "outrights",
+      "marketType": "outright",
+      "line": null,
+      "period": "futures",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-norway-win-the-2026-fifa-world-cup-893",
+      "externalMarketId": "558951",
+      "conditionId": "0x7b52405ad0e0d31bfe970940b67d77f24ecedeab8a2361c11148c02a006e325c"
+    },
+    "outcome": {
+      "id": "b266d59f-e9a3-493d-ad88-0ee47cd85f00",
+      "name": "Norway",
+      "label": "Norway",
+      "side": "yes",
+      "referenceTokenId": "60447443643099453130956385288904175887233107411078568881602330835010340506057",
+      "referenceOutcomeLabel": "Yes"
+    },
+    "selection": {
+      "marketId": "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+      "outcomeId": "b266d59f-e9a3-493d-ad88-0ee47cd85f00",
+      "marketGroupId": "outrights",
+      "marketType": "future",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Norway",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "providerSource": "polymarket",
+      "externalSlug": "will-norway-win-the-2026-fifa-world-cup-893",
+      "externalMarketId": "558951",
+      "conditionId": "0x7b52405ad0e0d31bfe970940b67d77f24ecedeab8a2361c11148c02a006e325c",
+      "referenceTokenId": "60447443643099453130956385288904175887233107411078568881602330835010340506057",
+      "tokenId": "60447443643099453130956385288904175887233107411078568881602330835010340506057",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.08,
+      "limitSide": "ask"
+    },
+    "side": "BUY",
+    "shares": 3,
+    "cost": 0.24,
+    "fee": 0,
+    "createdAt": "2026-07-08T21:39:08.833Z"
+  },
+  "remainingOpenOrders": [
+    {
+      "id": "17e7c35c-f2aa-400d-b8ce-1de798246213",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "b266d59f-e9a3-493d-ad88-0ee47cd85f00",
+      "side": "BUY",
+      "price": "0.04",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "6dc9450e-2e0b-48e6-87e3-7df2cec5a9a1",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "b266d59f-e9a3-493d-ad88-0ee47cd85f00",
+      "side": "SELL",
+      "price": "0.08",
+      "amount": "5",
+      "remaining": "2",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "6bc7c9ab-cbfb-4a1e-9ce4-0e948225d38c",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "99c07c37-123e-47d4-87a3-1dd92152a19f",
+      "side": "BUY",
+      "price": "0.92",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "a57e3b29-8373-416b-b10c-c1c036628032",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "99c07c37-123e-47d4-87a3-1dd92152a19f",
+      "side": "SELL",
+      "price": "0.96",
+      "amount": "5",
+      "remaining": "5",
+      "status": "OPEN"
+    }
+  ]
+}

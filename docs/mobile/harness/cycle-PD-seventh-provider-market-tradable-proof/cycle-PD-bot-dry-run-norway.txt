@@ -1,0 +1,118 @@
+
+> poly-bot@0.1.0 bot:polymarket:mm:dry-run
+> tsx scripts/liquidityRuntime.ts --dryRun true --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug provider-breadth-world-cup-winner --allowlist Norway --maxMarkets 1 --durationSeconds 5 --pollMs 1000
+
+{
+  "dryRun": true,
+  "liveOrdersEnabled": false,
+  "confirmLive": false,
+  "cycleReports": [
+    {
+      "marketId": "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+      "slug": "will-norway-win-the-2026-fifa-world-cup-893",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": true,
+      "referenceBid": 0.059,
+      "referenceAsk": 0.06,
+      "plannedBotBid": 0.04,
+      "plannedBotAsk": 0.08,
+      "reasons": [
+        "confirm_live_required",
+        "live_orders_disabled",
+        "dry_run_enabled"
+      ],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 3603,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 3603,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+      "slug": "will-norway-win-the-2026-fifa-world-cup-893",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": true,
+      "referenceBid": 0.059,
+      "referenceAsk": 0.06,
+      "plannedBotBid": 0.04,
+      "plannedBotAsk": 0.08,
+      "reasons": [
+        "confirm_live_required",
+        "live_orders_disabled",
+        "dry_run_enabled",
+        "max_open_orders_per_market_4_of_4"
+      ],
+      "openOrderCount": 4,
+      "perMarketExposureCents": 4563,
+      "openOrderNotionalCents": 960,
+      "inventoryExposureCents": 3603,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+      "slug": "will-norway-win-the-2026-fifa-world-cup-893",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": true,
+      "referenceBid": 0.059,
+      "referenceAsk": 0.06,
+      "plannedBotBid": 0.04,
+      "plannedBotAsk": 0.08,
+      "reasons": [
+        "confirm_live_required",
+        "live_orders_disabled",
+        "dry_run_enabled",
+        "max_open_orders_per_market_4_of_4"
+      ],
+      "openOrderCount": 4,
+      "perMarketExposureCents": 4563,
+      "openOrderNotionalCents": 960,
+      "inventoryExposureCents": 3603,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+      "slug": "will-norway-win-the-2026-fifa-world-cup-893",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": true,
+      "referenceBid": 0.059,
+      "referenceAsk": 0.06,
+      "plannedBotBid": 0.04,
+      "plannedBotAsk": 0.08,
+      "reasons": [
+        "confirm_live_required",
+        "live_orders_disabled",
+        "dry_run_enabled",
+        "max_open_orders_per_market_4_of_4"
+      ],
+      "openOrderCount": 4,
+      "perMarketExposureCents": 4563,
+      "openOrderNotionalCents": 960,
+      "inventoryExposureCents": 3603,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    }
+  ]
+}
