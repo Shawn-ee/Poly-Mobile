@@ -244,7 +244,7 @@ const lineSourceCopy = (event: Event) => {
     ? ` line-provider-availability-${lineAvailability.status} line-provider-backed-count-${lineAvailability.providerBackedLineMarketCount} line-contract-fixture-count-${lineAvailability.contractFixtureLineMarketCount}`
     : "";
   const familyMarker = summary.lineMarkets.familyReadiness
-    ? ` line-family-readiness-${summary.lineMarkets.familyReadiness.map((family) => `${family.family}-${family.status}`).join("-")}`
+    ? ` ${summary.lineMarkets.familyReadiness.map((family) => `line-family-readiness-${family.family}-${family.status}`).join(" ")}`
     : "";
   if (lineStatus === "provider-backed") {
     return {

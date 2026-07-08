@@ -6085,3 +6085,33 @@ Temporary mock/static data:
 Future migration concern:
 
 - When real line markets are available, `familyReadiness` should flip family-by-family instead of requiring mobile UI changes.
+
+## Cycle NQ - Server-Mode Line Family Readiness Proof
+
+Closed or narrowed:
+
+- Added S23 server-mode proof that the visible Event Detail line source banner matches the backend route contract.
+- The proof now verifies spread, total, and team-total family readiness markers independently on-device.
+- Portfolio open-order proof confirms selected line/source identity survives ticket submission into server-backed account state.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total market ids, outcome ids, provider condition ids, token ids, CLOB prices, and chart history for the inspected match.
+- Production liquidity or provider-derived executable quote support for line markets.
+
+Schema mismatch:
+
+- No schema mismatch was found or introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- No new frontend-only mock data was added.
+- Existing backend `contract-fixture` line rows remain the explicit Local MVP fallback.
+
+Future migration concern:
+
+- The next service milestone should try to attach real Polymarket or approved provider line markets. If unavailable, the UI should keep the current clear local-line disclosure instead of presenting fixture lines as provider-backed.

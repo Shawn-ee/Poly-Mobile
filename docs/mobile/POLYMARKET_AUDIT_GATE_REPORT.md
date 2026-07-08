@@ -5041,3 +5041,32 @@ Decision:
 
 - Pass/fail: Pass for Local MVP readiness disclosure and proof-gate alignment.
 - Not a final Polymarket line-market parity pass because line markets remain fixture-backed.
+
+## Cycle NQ
+
+Gate status: Pass for server-mode line-family readiness proof
+
+Scope: Prove the current server-backed Home/Live -> Event Detail -> Spread line -> Buy ticket -> Portfolio open-order path on Samsung S23, with explicit family-level source/readiness evidence.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NQ-server-mode-line-family-readiness.md`
+- `docs/mobile/harness/cycle-NQ-server-mode-line-family-readiness/cycle-NQ-current-mvp-s23-visible-flow.json`
+- `docs/mobile/harness/cycle-NQ-server-mode-line-family-readiness/cycle-NQ-current-mvp-lines-settled.xml`
+- `docs/mobile/harness/cycle-NQ-server-mode-line-family-readiness/cycle-NQ-current-mvp-after-submit.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NQ-P0-01 | P0 | Pass | S23 proof opens current server-backed Home/Live route. | Fix mobile API base URL, backend service, or Home route loading. |
+| NQ-P0-02 | P0 | Pass | Event Detail hierarchy includes `event-detail-line-source-banner` and separate family readiness markers. | Fix Event Detail source rendering or route summary serialization. |
+| NQ-P0-03 | P0 | Pass | S23 proof selects `Egypt +1.5` and ticket preserves spread line identity. | Fix selection snapshot/ticket bridge. |
+| NQ-P0-04 | P0 | Pass | Swipe submit reaches Portfolio and shows `open-order-row-`. | Fix order submit route or Portfolio sync. |
+| NQ-P0-05 | P0 | Pass | Open order preserves `portfolio-market-type-spread`, `portfolio-line-1.5`, and `portfolio-provider-source-contract-fixture`. | Fix order snapshot or Portfolio mapper. |
+| NQ-P1-01 | P1 | Partial | Readiness markers show spread, total, and team-total are `contract-fixture`. | Attach real provider-backed line markets when available. |
+
+Decision:
+
+- Pass/fail: Pass for current service-state proof and Local MVP open-order journey.
+- Not a final Polymarket line-market parity pass because provider-backed line markets remain unavailable.

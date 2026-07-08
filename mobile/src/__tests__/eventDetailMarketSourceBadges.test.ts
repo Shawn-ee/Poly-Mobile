@@ -17,5 +17,7 @@ describe("Event Detail market source badges", () => {
     expect(source).toContain("Provider lines unavailable.");
     expect(source).toContain("line-provider-availability-");
     expect(source).toContain("line-contract-fixture-count-");
+    expect(source).toContain("familyReadiness.map");
+    expect(source).toContain("line-family-readiness-${family.family}-${family.status}");
   });
 });

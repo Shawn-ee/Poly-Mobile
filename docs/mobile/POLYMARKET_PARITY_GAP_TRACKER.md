@@ -634,3 +634,12 @@ For every UI element or interaction, answer:
 - Event Detail copy now names the local line families instead of using only generic local-pricing language.
 - S23 Event Detail summary proof passes after aligning the smoke gate with the simplified Local MVP page and removing stale Volume/Liquidity/Traders expectations.
 - Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open until attach-ready provider markets exist.
+
+## Cycle NQ Gap Tracker Update
+
+- PM-GAP-113 is opened and verified for server-mode line-family readiness proof on Samsung S23.
+- NQ closes the inspection gap where Cycle NP had route readiness and generic Event Detail proof, but not one S23 server-mode journey proving the current route state through ticket submission.
+- S23 proof passes for Home/Live -> Event Detail -> Spread `1.5` -> Buy ticket -> `/api/orders` -> Portfolio open order.
+- The proof verifies separate readiness markers for spread, total, and team-total, and verifies Portfolio preserves `spread`, `1.5`, and `contract-fixture` source identity.
+- Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open; current line families are explicitly `contract-fixture`.
+- Remaining P1: open-order behavior was proven without seeded counterparty liquidity; filled/cashout lifecycle is covered by earlier deterministic-liquidity proofs and still needs production liquidity hardening.

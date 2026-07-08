@@ -783,3 +783,35 @@ Pass for route-level line-family readiness disclosure and S23 Event Detail proof
 
 Remaining gaps:
 Spread/Totals/Team Total remain backend contract fixtures for `argentina-vs-egypt`; no attach-ready Polymarket line markets are exposed by the inspected Gamma event.
+
+### 2026-07-08 - Cycle NQ - Server-mode line family readiness proof
+
+Reference device:
+Not used for fresh Polymarket app comparison. This cycle was a service-state inspection/proof cycle driven by the current Holiwyn backend route.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://172.16.200.14:3002`, temporary Expo port `8298`, temporary mobile dev API key, orderbook hidden.
+
+Holiwyn actions:
+Opened Home, checked Live, returned Home, opened `argentina-vs-egypt`, scrolled to Game Lines, verified family-level line readiness disclosure, selected `Egypt +1.5`, entered `$25`, swiped to buy, and verified Portfolio shows a server-backed open order preserving spread line/source identity.
+
+Evidence:
+- `docs/mobile/harness/cycle-NQ-server-mode-line-family-readiness/cycle-NQ-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NQ-server-mode-line-family-readiness/cycle-NQ-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NQ-server-mode-line-family-readiness/cycle-NQ-current-mvp-live.png`
+- `docs/mobile/screenshots/cycle-NQ-server-mode-line-family-readiness/cycle-NQ-current-mvp-detail-top.png`
+- `docs/mobile/screenshots/cycle-NQ-server-mode-line-family-readiness/cycle-NQ-current-mvp-lines.png`
+- `docs/mobile/screenshots/cycle-NQ-server-mode-line-family-readiness/cycle-NQ-current-mvp-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-NQ-server-mode-line-family-readiness/cycle-NQ-current-mvp-after-submit.png`
+
+Smoke/tests:
+Mobile adapter/source tests, mobile TypeScript, and S23 server-mode visible-flow proof passed.
+
+Result:
+Pass for current server-mode line-family readiness and open-order proof.
+
+Remaining gaps:
+Real provider-backed Spread/Totals/Team Total lines are still missing. This proof confirms the app honestly exposes that state instead of marking fixture line markets as Polymarket parity.

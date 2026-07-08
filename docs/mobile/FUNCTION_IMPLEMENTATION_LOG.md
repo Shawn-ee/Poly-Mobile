@@ -7432,3 +7432,43 @@ Known limitations:
 
 - Real provider-backed Spread/Totals/Team Total markets are still unavailable for the inspected event.
 - The S23 visible proof used the generic mock Event Detail proof path; route readiness is proven separately by the backend route inspection JSON.
+
+## Cycle NQ - Server-Mode Line Family Readiness Proof
+
+Feature/page worked on:
+
+- Local MVP server-mode journey: Home -> Live -> Event Detail -> Spread line -> Buy ticket -> Portfolio open order.
+
+Frontend/harness/backend files touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts`
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+- Evidence/docs:
+  - `docs/mobile/harness/cycle-NQ-server-mode-line-family-readiness/cycle-NQ-current-mvp-s23-visible-flow.json`
+  - `docs/mobile/screenshots/cycle-NQ-server-mode-line-family-readiness/`
+
+Important functions/services touched:
+
+- `lineSourceCopy()` now emits separate hidden audit markers for each line-family readiness item so S23 proof can verify spread, total, and team-total independently.
+- The S23 MVP proof now asserts the current Event Detail source banner and family-level line readiness markers before opening the ticket.
+
+User interactions supported/proven:
+
+- User can open the current server-backed Home/Live event, scroll to Game Lines, see the provider-winner/local-lines disclosure, select `Egypt +1.5`, open the ticket, submit a fake-token order, and see the server-backed open order preserve line/source identity in Portfolio.
+
+State transitions:
+
+- No schema or order-route logic changed.
+- The submitted line order remained open in this proof run because no crossing counterparty liquidity was seeded.
+
+Validation:
+
+- Mobile adapter/source tests passed.
+- Mobile TypeScript passed.
+- Samsung S23 server-mode visible proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- Regulation Winner is provider-backed, but Spread/Totals/Team Total remain backend `contract-fixture` line families.
+- This cycle proves the current service state honestly on-device; it does not close real Polymarket line-market ingestion.

@@ -2911,3 +2911,18 @@ Cycle NP implementation notes:
 - No schema migration was added.
 - The route now answers which line families are provider-backed vs fixture-backed.
 - The proof gate no longer requires old Volume/Liquidity/Traders copy that conflicts with the Local MVP simple event-info direction.
+
+## Cycle NQ - Server-Mode Line Family Readiness Proof
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Current Home/Live match entry | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10` | GET | Public viewing | Query filters/page size | Event slug/title, compact market source summary, provider winner/local line disclosure | `Event`, `Market`, `Outcome` | None added. | Active provider-backed soccer line breadth remains missing. |
+| Event Detail line readiness | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | `marketSourceSummary.regulationWinner.status`, `lineMarkets.status`, `lineMarkets.familyReadiness[]`, line market ids/outcome ids/source/line/period | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot` | Existing backend `contract-fixture` line rows for spread, total, and team-total. | Real provider-backed Spread/Totals/Team Total rows are not available for the inspected event. |
+| Server ticket submit | `/api/orders` | POST | Mobile dev API key | BUY limit order with `marketId`, `outcomeId`, `marketType=spread`, `line=1.5`, `providerSource=contract-fixture` | Open order id/status and selection snapshot | `ApiCredential`, `ApiOrderRequest`, `Order`, `Market`, `Outcome` | No counterparty liquidity was seeded in this proof; order rests open. | Production liquidity remains future work. |
+| Portfolio open-order confirmation | `/api/portfolio` | GET | Mobile dev API key | None | Open order row, market type, line, provider source badge | `Order`, `Market`, `Outcome`, `UserBalance` | None added. | None for current Local MVP open-order proof. |
+
+Cycle NQ implementation notes:
+
+- No schema migration was added.
+- No backend route changed.
+- This cycle promoted the S23 proof from generic Event Detail smoke to server-mode route proof for the current source/readiness state.
