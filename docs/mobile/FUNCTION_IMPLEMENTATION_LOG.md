@@ -8899,6 +8899,49 @@ Known limitations:
 - Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
 - Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
 
+## Cycle PK - Golden Boot Haaland Tradable Flow
+
+Feature/page worked on:
+
+- Provider-visible Golden Boot Haaland market converted into an internal-test tradable Local MVP market.
+- User path covered: Search/provider event visibility -> Event Detail -> quote -> fake-token order -> Portfolio/history.
+
+Frontend/proof files touched:
+
+- No visible mobile UI source changed.
+- `docs/mobile/audits/cycle-PK-golden-boot-haaland-tradable-flow.md`
+- `docs/mobile/harness/cycle-PK-golden-boot-haaland-tradable-flow/`
+- `docs/mobile/screenshots/cycle-PK-golden-boot-haaland-tradable-flow/`
+
+Important functions/services touched:
+
+- Backend/admin route state was used for `/api/admin/reference-markets/:id`.
+- Reused bot scripts for reference liquidity seed, dry-run, and live-local quote placement.
+- Reused mobile proof service for server-mode order and Portfolio/history checks.
+
+User interactions supported/proven:
+
+- Samsung S23 Search shows the Haaland provider-backed Golden Boot event.
+- Samsung S23 opens Event Detail from Search and preserves provider market `2069636`.
+- Mobile service proof submits a fake-token Haaland YES buy and sees the resulting Portfolio/history state.
+
+State transitions:
+
+- Haaland market moved from provider-visible/not-tradable into internal-test tradable state.
+- Haaland market was seeded, marked live-ready/live-enabled, quoted by the local bot, bought by the mobile proof user, and reflected in Portfolio/history.
+
+Validation:
+
+- Bot dry-run passed.
+- Bot live-local passed without exposure-cap blocking.
+- Mobile order/Portfolio proof passed.
+- S23 visible Search/detail proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
+- Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
+
 ## Cycle PJ - Provider Visible Market To Local Tradable Market
 
 Feature/page worked on:

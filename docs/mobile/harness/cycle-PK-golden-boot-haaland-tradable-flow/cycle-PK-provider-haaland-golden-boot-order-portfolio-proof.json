@@ -1,0 +1,201 @@
+{
+  "pass": true,
+  "cycle": "PK",
+  "generatedAt": "2026-07-08T23:05:26.336Z",
+  "scope": "provider-visible-market-to-internal-test-tradable-mobile-flow",
+  "routes": {
+    "search": "/api/events?source=polymarket&search=Haaland",
+    "detail": "/api/mobile/events/:slug/live-detail",
+    "quote": "/api/markets/:marketId/quote",
+    "order": "POST /api/orders",
+    "portfolio": "/api/portfolio",
+    "history": "/api/portfolio/history"
+  },
+  "event": {
+    "id": "52373944-bf97-4814-a780-c00ae7eb2c62",
+    "slug": "world-cup-golden-boot-winner",
+    "title": "World Cup: Golden Boot Winner",
+    "eventType": "future"
+  },
+  "market": {
+    "id": "70612733-f5d4-4fcb-8561-c1e7f93be924",
+    "slug": "will-erling-haaland-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+    "title": "Will Erling Haaland be the top goalscorer at the 2026 FIFA World Cup?",
+    "referenceSource": "polymarket",
+    "externalSlug": "will-erling-haaland-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+    "externalMarketId": "2069636",
+    "conditionId": "0xb4431b4a10c926381c72d581ba9bec629f430feea5e72fbaff3a9e2ac87a3001"
+  },
+  "outcome": {
+    "id": "ec49ce29-343f-422f-bc29-fb2c479e62e4",
+    "name": "YES",
+    "referenceTokenId": "31406625278784876442535138605689400126810670910748624621168689552518588989487",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "botQuote": {
+    "orderId": "607db813-b873-40c3-bffe-a36a23b6ddd9",
+    "side": "SELL",
+    "price": 0.13,
+    "remaining": 5
+  },
+  "mobileProofUser": {
+    "id": "[redacted-mobile-proof-user]",
+    "email": "cycle_pk_provider_user_da043368@local.test"
+  },
+  "checks": {
+    "searchVisible": true,
+    "detailVisible": true,
+    "quoteVisible": true,
+    "serverModeTicketSubmitted": true,
+    "filledAgainstBotLiquidity": true,
+    "portfolioPositionVisible": true,
+    "historyTradeVisible": true,
+    "homeLiveMatchOnlyUnchanged": true
+  },
+  "orderResult": {
+    "id": "9154baac-c4a5-45cf-8468-0b43f6ac8308",
+    "mode": "server",
+    "title": "Will Erling Haaland be the top goalscorer at the 2026 FIFA World Cup?",
+    "outcome": "Erling Haaland",
+    "selection": {
+      "marketType": "future",
+      "marketId": "70612733-f5d4-4fcb-8561-c1e7f93be924",
+      "outcomeId": "ec49ce29-343f-422f-bc29-fb2c479e62e4",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Erling Haaland",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-erling-haaland-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2069636",
+      "conditionId": "0xb4431b4a10c926381c72d581ba9bec629f430feea5e72fbaff3a9e2ac87a3001",
+      "referenceTokenId": "31406625278784876442535138605689400126810670910748624621168689552518588989487",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.13,
+      "limitSide": "ask"
+    },
+    "contractSide": "yes",
+    "side": "buy",
+    "amount": 0.39,
+    "probability": 13,
+    "status": "FILLED",
+    "size": 3,
+    "filledSize": 3,
+    "remainingSize": 0
+  },
+  "portfolioPosition": {
+    "marketId": "70612733-f5d4-4fcb-8561-c1e7f93be924",
+    "outcomeId": "ec49ce29-343f-422f-bc29-fb2c479e62e4",
+    "shares": 3,
+    "selection": {
+      "marketType": "future",
+      "marketId": "70612733-f5d4-4fcb-8561-c1e7f93be924",
+      "outcomeId": "ec49ce29-343f-422f-bc29-fb2c479e62e4",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Erling Haaland",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-erling-haaland-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2069636",
+      "conditionId": "0xb4431b4a10c926381c72d581ba9bec629f430feea5e72fbaff3a9e2ac87a3001",
+      "referenceTokenId": "31406625278784876442535138605689400126810670910748624621168689552518588989487",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.13,
+      "limitSide": "ask"
+    }
+  },
+  "historyTrade": {
+    "id": "9cc9cf38-72ec-481c-8a41-2089bed0f68a",
+    "market": {
+      "id": "70612733-f5d4-4fcb-8561-c1e7f93be924",
+      "title": "Will Erling Haaland be the top goalscorer at the 2026 FIFA World Cup?",
+      "status": "LIVE",
+      "marketGroupKey": "outrights",
+      "marketType": "outright",
+      "line": null,
+      "period": "futures",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-erling-haaland-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2069636",
+      "conditionId": "0xb4431b4a10c926381c72d581ba9bec629f430feea5e72fbaff3a9e2ac87a3001"
+    },
+    "outcome": {
+      "id": "ec49ce29-343f-422f-bc29-fb2c479e62e4",
+      "name": "YES",
+      "label": "Erling Haaland",
+      "side": "yes",
+      "referenceTokenId": "31406625278784876442535138605689400126810670910748624621168689552518588989487",
+      "referenceOutcomeLabel": "Yes"
+    },
+    "selection": {
+      "marketId": "70612733-f5d4-4fcb-8561-c1e7f93be924",
+      "outcomeId": "ec49ce29-343f-422f-bc29-fb2c479e62e4",
+      "marketGroupId": "outrights",
+      "marketType": "future",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Erling Haaland",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "providerSource": "polymarket",
+      "externalSlug": "will-erling-haaland-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      "externalMarketId": "2069636",
+      "conditionId": "0xb4431b4a10c926381c72d581ba9bec629f430feea5e72fbaff3a9e2ac87a3001",
+      "referenceTokenId": "31406625278784876442535138605689400126810670910748624621168689552518588989487",
+      "tokenId": "31406625278784876442535138605689400126810670910748624621168689552518588989487",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.13,
+      "limitSide": "ask"
+    },
+    "side": "BUY",
+    "shares": 3,
+    "cost": 0.39,
+    "fee": 0,
+    "createdAt": "2026-07-08T23:05:26.209Z"
+  },
+  "remainingOpenOrders": [
+    {
+      "id": "749c7ec2-7bb5-4271-8c79-1b2d513fa486",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "ec49ce29-343f-422f-bc29-fb2c479e62e4",
+      "side": "BUY",
+      "price": "0.09",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "607db813-b873-40c3-bffe-a36a23b6ddd9",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "ec49ce29-343f-422f-bc29-fb2c479e62e4",
+      "side": "SELL",
+      "price": "0.13",
+      "amount": "5",
+      "remaining": "2",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "75a351e2-4c22-4220-b3e4-0241fef76acb",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "60f08752-e4c1-4628-8318-253be05fff61",
+      "side": "BUY",
+      "price": "0.1",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "33bfd9ed-2db6-48bb-b98f-988ca908b1a5",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "60f08752-e4c1-4628-8318-253be05fff61",
+      "side": "SELL",
+      "price": "0.91",
+      "amount": "5",
+      "remaining": "5",
+      "status": "OPEN"
+    }
+  ]
+}
