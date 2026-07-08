@@ -5863,6 +5863,37 @@ Remaining P1:
 - Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Broad futures remain Search/detail-only while Home/Live stay match-only.
 
+## Cycle PC - Sixth Provider Market Tradable Proof
+
+Result: Pass for sixth provider-backed internal-test tradable market scope.
+
+Checked:
+
+- Belgium World Cup Winner market selected as the sixth provider-backed tradable target.
+- Backend helper check confirmed the local server was healthy with internal trading and bot-seeding env flags.
+- Belgium MM enable, seed, live-ready/live-enabled, and live-local quote placement passed.
+- Mobile route/service proof filled Belgium YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed World Cup Winner detail with Belgium provider-backed outcome visible/selectable.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PC-sixth-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-PC-sixth-provider-market-tradable-proof/cycle-PC-internal-beta-backend-check.json`
+- `docs/mobile/harness/cycle-PC-sixth-provider-market-tradable-proof/cycle-PC-prepare-belgium-small-seed.txt`
+- `docs/mobile/harness/cycle-PC-sixth-provider-market-tradable-proof/cycle-PC-bot-live-local-belgium-success.txt`
+- `docs/mobile/harness/cycle-PC-sixth-provider-market-tradable-proof/cycle-PC-provider-belgium-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PC-sixth-provider-market-tradable-proof/cycle-PC-s23-search-belgium.xml`
+- `docs/mobile/harness/cycle-PC-sixth-provider-market-tradable-proof/cycle-PC-s23-search-belgium.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+
 ## Cycle PB - Fifth Provider Market Tradable Proof
 
 Result: Pass for fifth provider-backed internal-test tradable market scope.
