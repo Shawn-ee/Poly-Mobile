@@ -71,7 +71,9 @@ function Invoke-TapNode {
   param(
     [string]$Path,
     [string]$Identifier,
-    [switch]$StartsWith
+    [switch]$StartsWith,
+    [double]$XRatio = 0.5,
+    [double]$YRatio = 0.5
   )
   [xml]$hierarchy = Get-Content -Raw -Path $Path
   $query = if ($StartsWith) {
@@ -86,9 +88,43 @@ function Invoke-TapNode {
   if ($node.bounds -notmatch "^\[(\d+),(\d+)\]\[(\d+),(\d+)\]$") {
     throw "Invalid bounds for '$Identifier': $($node.bounds)"
   }
-  $x = [math]::Floor(([int]$Matches[1] + [int]$Matches[3]) / 2)
-  $y = [math]::Floor(([int]$Matches[2] + [int]$Matches[4]) / 2)
+  $left = [int]$Matches[1]
+  $top = [int]$Matches[2]
+  $right = [int]$Matches[3]
+  $bottom = [int]$Matches[4]
+  $x = [math]::Floor($left + (($right - $left) * $XRatio))
+  $y = [math]::Floor($top + (($bottom - $top) * $YRatio))
   & $adb -s $Device shell input tap $x $y | Out-Null
+}
+
+function Dismiss-ExpoDeveloperMenu {
+  param([string]$NamePrefix)
+
+  $xmlPath = Save-Hierarchy -Name "$NamePrefix-preflight.xml"
+  $raw = Get-Content -Raw -Path $xmlPath
+  if ($raw -notmatch [regex]::Escape("This is the developer menu") -and $raw -notmatch [regex]::Escape("SDK version")) {
+    return $xmlPath
+  }
+
+  & $adb -s $Device shell input tap 1000 1300 | Out-Null
+  Start-Sleep -Seconds 2
+  $xmlPath = Save-Hierarchy -Name "$NamePrefix-preflight-after-close.xml"
+  $raw = Get-Content -Raw -Path $xmlPath
+  if ($raw -notmatch [regex]::Escape("This is the developer menu") -and $raw -notmatch [regex]::Escape("SDK version")) {
+    return $xmlPath
+  }
+
+  & $adb -s $Device shell input tap 540 2040 | Out-Null
+  Start-Sleep -Seconds 3
+  $xmlPath = Save-Hierarchy -Name "$NamePrefix-preflight-after-continue.xml"
+  $raw = Get-Content -Raw -Path $xmlPath
+  if ($raw -notmatch [regex]::Escape("This is the developer menu") -and $raw -notmatch [regex]::Escape("SDK version")) {
+    return $xmlPath
+  }
+
+  & $adb -s $Device shell input keyevent 4 | Out-Null
+  Start-Sleep -Seconds 2
+  return Save-Hierarchy -Name "$NamePrefix-preflight-after-back.xml"
 }
 
 function Wait-ExpoReady {
@@ -174,13 +210,15 @@ try {
   $encodedKey = [uri]::EscapeDataString($apiKey)
   Start-Link -Url "exp://${ExpoHost}:$Port/--/?forceResetState=1&apiKey=$encodedKey"
   Start-Sleep -Seconds 18
+  Dismiss-ExpoDeveloperMenu -NamePrefix "cycle-$Cycle-current-mvp-home" | Out-Null
 
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-home.png" | Out-Null
   $homeXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-home.xml"
-  Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Argentina vs. Egypt", "event-card-$EventSlug")
+  Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Argentina vs. Egypt", "event-card-$EventSlug", "home-compact-retail-feed")
+  Assert-NotContains -Path $homeXml -Unexpected @("This is the developer menu", "SDK version")
   Assert-NotContains -Path $homeXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
-  Invoke-TapNode -Path $homeXml -Identifier "event-card-$EventSlug" -StartsWith
+  Invoke-TapNode -Path $homeXml -Identifier "event-card-$EventSlug" -StartsWith -YRatio 0.28
   Start-Sleep -Seconds 5
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-detail-top.png" | Out-Null
   $detailTopXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-detail-top.xml"

@@ -5245,3 +5245,35 @@ Temporary mock/static data:
 Future migration concern:
 
 - When provider-backed line markets exist, the same Game Lines layout should consume those rows without changing the visible proof contract.
+
+## Cycle MF - Home Compact Feed And Proof Hygiene
+
+Closed or narrowed:
+
+- Home proof now requires a clean screen without the Expo developer-menu overlay.
+- Home match filtering no longer treats missing `eventType` as a match by default.
+- The visible S23 path again proves Home -> Event Detail -> Spread line ticket -> filled Portfolio History.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- A route-level Local MVP feed that returns only active World Cup match rows for Home, without mobile-side future filtering.
+- Real provider-backed Spread/Totals/Team Total rows for the inspected Polymarket event.
+
+Schema mismatch:
+
+- No schema mismatch was found or introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+- `/api/events` still returns enough fields for mobile to identify match-like rows, but the Home contract would be cleaner if the backend exposed a dedicated Local MVP matches route/filter.
+
+Temporary mock/static data:
+
+- No frontend-only random mock data was added.
+- Existing line markets remain backend `contract-fixture` rows.
+
+Future migration concern:
+
+- Promote Home match filtering into the backend route once the Local MVP feed contract is finalized.
+- Replace line fixtures with provider-backed line markets only when Gamma/CLOB or an approved provider exposes attach-ready rows.

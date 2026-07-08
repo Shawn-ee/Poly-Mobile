@@ -6126,3 +6126,46 @@ Known limitations:
 
 - This cycle fixes line-section readability and proof stability; it does not change provider availability.
 - Spread/Totals/Team Total remain `contract-fixture` until provider-backed line markets are available.
+
+## Cycle MF - Home Compact Feed And Proof Hygiene
+
+Feature/page worked on:
+
+- Home compact World Cup match feed.
+- Home -> Event Detail -> line market -> ticket -> Portfolio History visible proof.
+
+Frontend/harness/backend files touched:
+
+- `mobile/src/components/Header.tsx`
+- `mobile/src/components/HomeScreen.tsx`
+- `mobile/src/components/MarketLists.tsx`
+- `mobile/src/services/homeEventFeedService.ts`
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+- `docs/mobile/audits/cycle-MF-home-compact-feed.md`
+
+Important functions/services touched:
+
+- `homeEventFeedService.isWorldCupMatchEvent` now requires match-like evidence instead of treating missing `eventType` as a match.
+- `HomeScreen` exposes `home-compact-retail-feed` for the Local MVP proof gate.
+- `prove_mobile_current_mvp_s23_visible_flow.ps1` now dismisses Expo developer-menu overlays before official Home screenshots and taps the top/title area of the match card.
+
+User interactions supported/proven:
+
+- User opens a clean Home screen on S23, sees compact World Cup matches, taps the Argentina vs Egypt card, reaches Event Detail, selects Spread `Egypt +1.5`, enters `$25`, swipes up to buy, and sees the filled trade in Portfolio History.
+
+State transitions:
+
+- No backend schema or route transition changed.
+- Proof still creates a mobile dev credential, seeds deterministic counterparty liquidity, submits a server-backed fake-token BUY, fills it, refreshes Portfolio, and displays History.
+
+Validation:
+
+- `npm run -s typecheck` from `mobile/`
+- `npx vitest run --config vitest.mobile.config.mts mobile/src/__tests__/homeCardStatsContract.test.ts mobile/src/__tests__/inactiveFuturesSurfaceContract.test.ts mobile/src/__tests__/homeEventFeedService.test.ts`
+- S23 proof: `docs/mobile/harness/cycle-MF-home-compact-feed/cycle-MF-current-mvp-s23-visible-flow.json`
+
+Known limitations:
+
+- Regulation Winner remains the real Polymarket-backed market for the inspected event.
+- Spread/Totals/Team Total remain backend-shaped `contract-fixture` rows until provider-backed line markets are available.
+- Home load-more pagination still needs proof when the backend route contains more than 10 active match rows.

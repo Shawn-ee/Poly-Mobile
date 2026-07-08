@@ -2467,3 +2467,17 @@ Cycle ME implementation notes:
 
 - No backend route or schema changed.
 - The API dependency remains the same as Cycle MC; this cycle only improved Event Detail layout/proof stability.
+
+## Cycle MF - Home Compact Feed And Proof Hygiene
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home compact match feed | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10` | GET | Public viewing | Query filters/page size | Event `slug`, `title`, `eventType`, `status`, `sportKey`, `leagueKey`, `homeTeamName`, `awayTeamName`, `liveStatus`, `clock`, `period`, compact markets and outcomes | `Event`, `Market`, `Outcome`, provider/read-model fields | None added. Mobile filters the existing route to active match-like rows only. | Route should eventually return only Local MVP match rows for this view instead of requiring mobile-side future filtering. |
+| Event Detail line selection | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | Provider-backed Regulation Winner rows plus backend-shaped Spread/Totals line rows, `marketType`, `line`, `period`, outcome ids/source/price fields | `Event`, `Market`, `Outcome`, provider quote/read-model fields | Existing `contract-fixture` line rows remain the local MVP fallback. | Real provider-backed line rows remain unavailable for the inspected Polymarket event. |
+| Visible S23 filled swipe order | `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | POST/GET | Mobile dev API key for order/account routes | Selected Spread `1.5` BUY selection snapshot | Filled order, refreshed Portfolio position, History trade row | `ApiCredential`, `Order`, `ApiOrderRequest`, `Trade`, `Position`, `UserBalance`, `Market`, `Outcome` | Local proof seeds deterministic counterparty liquidity before submit. | Production liquidity/execution behavior remains future work. |
+
+Cycle MF implementation notes:
+
+- No backend route or schema changed.
+- The harness now proves Home is clean before route navigation by dismissing Expo developer-menu overlays.
+- Home filtering now avoids treating missing `eventType` as match evidence; match-like fields or live status must be present.

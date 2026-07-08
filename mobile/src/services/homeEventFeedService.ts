@@ -35,7 +35,14 @@ const matchesFilter = (event: EventSummary, filter: HomeEventFeedFilter) => {
 const isWorldCupMatchEvent = (event: EventSummary) =>
   event.sportKey === "soccer" &&
   event.leagueKey === "world_cup" &&
-  (event.eventType ?? "match") === "match";
+  event.eventType !== "future" &&
+  (
+    event.eventType === "match" ||
+    event.status === "live" ||
+    Boolean(event.homeTeamName && event.awayTeamName) ||
+    Boolean(event.liveStatus || event.clock || event.period) ||
+    /\bvs\.?\b|\bv\b/i.test(event.title)
+  );
 
 export const loadHomeEventFeedPage = async ({
   api,

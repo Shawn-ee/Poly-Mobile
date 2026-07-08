@@ -31,12 +31,12 @@ export function Header({
 }
 
 const styles = StyleSheet.create({
-  header: { flexDirection: "row", alignItems: "center", gap: 10, paddingHorizontal: 16, paddingTop: 12, paddingBottom: 14 },
-  logo: { width: 44, height: 44, borderRadius: 8, backgroundColor: "#101827", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "#263247" },
-  logoMark: { color: "#f8fafc", fontWeight: "900", fontSize: 24 },
+  header: { flexDirection: "row", alignItems: "center", gap: 9, paddingHorizontal: 16, paddingTop: 8, paddingBottom: 8 },
+  logo: { width: 36, height: 36, borderRadius: 7, backgroundColor: "#101827", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "#263247" },
+  logoMark: { color: "#f8fafc", fontWeight: "900", fontSize: 20 },
   headerMain: { flex: 1, minWidth: 0 },
-  brand: { color: "#f8fafc", fontSize: 26, fontWeight: "900" },
-  subBrand: { color: "#8ea0b8", fontSize: 12, fontWeight: "800", textTransform: "uppercase" },
-  langButton: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 10, paddingVertical: 9, borderRadius: 8, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
-  langText: { color: "#cbd5e1", fontWeight: "900" },
+  brand: { color: "#f8fafc", fontSize: 22, fontWeight: "900" },
+  subBrand: { color: "#8ea0b8", fontSize: 10, fontWeight: "800", textTransform: "uppercase" },
+  langButton: { minHeight: 36, flexDirection: "row", alignItems: "center", gap: 5, paddingHorizontal: 9, borderRadius: 8, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
+  langText: { color: "#cbd5e1", fontSize: 13, fontWeight: "900" },
 });
