@@ -403,6 +403,36 @@ type GameLineGroup = {
   onSelectLine?: (line: string) => void;
 };
 
+const marketSourceBadge = (market?: Market) => {
+  const source = market?.referenceSource ?? "";
+  if (source.includes("polymarket")) {
+    return {
+      label: "Provider",
+      tone: "provider" as const,
+      accessibility: `market-source-badge-provider market-source-${source}`,
+    };
+  }
+  if (source.includes("contract-fixture")) {
+    return {
+      label: "Local",
+      tone: "fixture" as const,
+      accessibility: `market-source-badge-local market-source-${source}`,
+    };
+  }
+  if (!market) {
+    return {
+      label: "Unavailable",
+      tone: "missing" as const,
+      accessibility: "market-source-badge-missing market-source-none",
+    };
+  }
+  return {
+    label: "Checking",
+    tone: "missing" as const,
+    accessibility: `market-source-badge-unknown market-source-${source || "unknown"}`,
+  };
+};
+
 const ticketSelectionIdentityLabel = (selection?: TicketSelection) =>
   selection
     ? `selection-market-family-${selection.marketType} selection-market-type-${selection.marketType} selection-market-id-${selection.marketId ?? "none"} selection-outcome-id-${selection.outcomeId ?? "none"} selection-market-group-${selection.marketGroupId ?? "none"} selection-line-${selection.line ?? "none"} selection-period-${selection.period ?? "none"} selection-side-${selection.side ?? "yes"} selection-display-label-${selection.displayLabel} selection-contract-side-${selection.contractSide ?? "yes"} selection-provider-source-${selection.referenceSource ?? "none"} selection-provider-market-${selection.externalMarketId ?? "none"} selection-provider-condition-${selection.conditionId ?? "none"} selection-provider-token-${selection.referenceTokenId ?? "none"} selection-provider-outcome-${selection.referenceOutcomeLabel ?? "none"}`
@@ -653,6 +683,7 @@ export function EventDetail({
     ? winnerPeriod
     : winnerPeriodOptions[0] ?? "Reg. Time";
   const selectedWinnerMarket = matchingBackendPeriodWinnerMarket(marketPeriodForLinePeriod(selectedWinnerPeriod)) ?? regulationMarket;
+  const selectedWinnerSourceBadge = marketSourceBadge(selectedWinnerMarket);
   const winnerMarketTitle = selectedWinnerPeriod === "1st Half"
     ? "1st Half Winner"
     : selectedWinnerPeriod === "2nd Half"
@@ -1340,11 +1371,12 @@ export function EventDetail({
   const renderGroup = (group: GameLineGroup) => {
     const visibleTitle = group.displayTitle ?? group.title;
     const compactHeaderLabel = group.displayTitle ? "event-detail-line-header-compact-retail" : "";
+    const sourceBadge = marketSourceBadge(group.backendMarket);
 
     return (
     <View key={group.id} style={styles.marketBlock}>
       <Pressable
-        accessibilityLabel={`event-detail-market-toggle-${group.id} ${compactHeaderLabel} ${group.title} visible-title-${visibleTitle} ${group.subtitle ?? ""} market-availability-${group.backendMarket?.availability?.status ?? "unknown"} market-depth-${marketDepthBatchLabel(group.backendMarket) ? "batched" : "empty"} ${providerIdentityLabel(group.backendMarket)}`}
+        accessibilityLabel={`event-detail-market-toggle-${group.id} ${compactHeaderLabel} ${group.title} visible-title-${visibleTitle} ${group.subtitle ?? ""} ${sourceBadge.accessibility} market-availability-${group.backendMarket?.availability?.status ?? "unknown"} market-depth-${marketDepthBatchLabel(group.backendMarket) ? "batched" : "empty"} ${providerIdentityLabel(group.backendMarket)}`}
         onPress={() => toggleGroup(group.id)}
         style={styles.marketHeaderRow}
         testID={`event-detail-market-toggle-${group.id}`}
@@ -1354,6 +1386,25 @@ export function EventDetail({
           {group.subtitle && <Text style={styles.marketSubcopy}>{group.subtitle}</Text>}
         </View>
         <View style={styles.headerRightCluster}>
+          <View
+            accessibilityLabel={`event-detail-market-source-${group.id} ${sourceBadge.accessibility}`}
+            style={[
+              styles.marketSourcePill,
+              sourceBadge.tone === "provider" && styles.marketSourcePillProvider,
+              sourceBadge.tone === "fixture" && styles.marketSourcePillFixture,
+            ]}
+            testID={`event-detail-market-source-${group.id}`}
+          >
+            <Text
+              style={[
+                styles.marketSourcePillText,
+                sourceBadge.tone === "provider" && styles.marketSourcePillTextProvider,
+                sourceBadge.tone === "fixture" && styles.marketSourcePillTextFixture,
+              ]}
+            >
+              {sourceBadge.label}
+            </Text>
+          </View>
           {group.backendMarket?.availability && (
             <View
               accessibilityLabel={`event-detail-market-availability-${group.id} market-availability-${group.backendMarket.availability.status} market-status-${group.backendMarket.availability.marketStatus ?? "unknown"} ${marketAvailabilityLabel(group.backendMarket) ?? ""}`}
@@ -1792,7 +1843,7 @@ export function EventDetail({
             {selectedWinnerMarket && (
               <View style={styles.marketBlock}>
                 <Pressable
-                  accessibilityLabel={`event-detail-market-toggle-${regulationMarketToggleKey} event-detail-market-toggle-${selectedWinnerMarket.id} ${providerIdentityLabel(selectedWinnerMarket)}`}
+                  accessibilityLabel={`event-detail-market-toggle-${regulationMarketToggleKey} event-detail-market-toggle-${selectedWinnerMarket.id} ${selectedWinnerSourceBadge.accessibility} ${providerIdentityLabel(selectedWinnerMarket)}`}
                   onPress={() => toggleGroup(regulationMarketToggleKey)}
                   style={styles.marketHeaderRow}
                   testID={`event-detail-market-toggle-${selectedWinnerMarket.id}`}
@@ -1801,7 +1852,28 @@ export function EventDetail({
                     <Text style={styles.marketTitle}>{winnerMarketTitle}</Text>
                     <Text style={styles.marketSubcopy}>{winnerMarketSubcopy}</Text>
                   </View>
-                  <Ionicons name={expandedMarketIds[regulationMarketToggleKey] ? "chevron-up" : "chevron-down"} color="#9ca3af" size={26} />
+                  <View style={styles.headerRightCluster}>
+                    <View
+                      accessibilityLabel={`event-detail-market-source-${regulationMarketToggleKey} ${selectedWinnerSourceBadge.accessibility}`}
+                      style={[
+                        styles.marketSourcePill,
+                        selectedWinnerSourceBadge.tone === "provider" && styles.marketSourcePillProvider,
+                        selectedWinnerSourceBadge.tone === "fixture" && styles.marketSourcePillFixture,
+                      ]}
+                      testID={`event-detail-market-source-${regulationMarketToggleKey}`}
+                    >
+                      <Text
+                        style={[
+                          styles.marketSourcePillText,
+                          selectedWinnerSourceBadge.tone === "provider" && styles.marketSourcePillTextProvider,
+                          selectedWinnerSourceBadge.tone === "fixture" && styles.marketSourcePillTextFixture,
+                        ]}
+                      >
+                        {selectedWinnerSourceBadge.label}
+                      </Text>
+                    </View>
+                    <Ionicons name={expandedMarketIds[regulationMarketToggleKey] ? "chevron-up" : "chevron-down"} color="#9ca3af" size={26} />
+                  </View>
                 </Pressable>
                 {expandedMarketIds[regulationMarketToggleKey] && (
                   <>
@@ -2109,6 +2181,12 @@ const styles = StyleSheet.create({
   marketAvailabilityTextWarning: { color: "#fde68a" },
   marketDepthPill: { minHeight: 28, justifyContent: "center", paddingHorizontal: 8, borderRadius: 999, backgroundColor: "rgba(14, 165, 233, 0.12)", borderWidth: 1, borderColor: "rgba(125, 211, 252, 0.28)" },
   marketDepthText: { color: "#bfdbfe", fontSize: 10, fontWeight: "900" },
+  marketSourcePill: { minHeight: 28, justifyContent: "center", borderRadius: 999, paddingHorizontal: 9, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
+  marketSourcePillProvider: { backgroundColor: "#052e16", borderColor: "#166534" },
+  marketSourcePillFixture: { backgroundColor: "#33280f", borderColor: "#854d0e" },
+  marketSourcePillText: { color: "#cbd5e1", fontSize: 10, fontWeight: "900" },
+  marketSourcePillTextProvider: { color: "#86efac" },
+  marketSourcePillTextFixture: { color: "#fde68a" },
   lineValuePill: { minWidth: 58, minHeight: 32, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 2, borderRadius: 999, backgroundColor: "#052e1b", paddingHorizontal: 10 },
   lineValueText: { color: "#86efac", fontSize: 14, fontWeight: "900" },
   subSegmentRow: { flexDirection: "row", alignItems: "center", gap: 8, marginTop: 12, marginBottom: 4 },

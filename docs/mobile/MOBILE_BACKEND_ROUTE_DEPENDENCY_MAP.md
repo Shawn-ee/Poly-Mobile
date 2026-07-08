@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle MM - Market Source Row Badges
+
+Cycle MM renders row-level source badges from existing market reference fields.
+
+- S23 proof: `docs/mobile/harness/cycle-MM-market-source-row-badges/cycle-MM-current-mvp-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-MM-market-source-row-badges.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail Game Lines row source badges | Existing `/api/mobile/events/:slug/live-detail` hydration and `/api/events?...includeMobileMarkets=1&mobileMvpMatches=1` feed/catalog fields | GET | Public event viewing; trading still uses existing account/order auth | Route params/query only | `market.referenceSource` on compact `markets[]`; existing `marketSourceSummary` remains used by the section banner | Existing `Event`, `Market`, `Outcome`; no schema change | `referenceSource=contract-fixture` renders `Local`; Polymarket source renders `Provider`; unknown/missing source renders checking/unavailable state | Real provider-backed Spread/Totals/Team Total markets remain missing for the inspected event. |
+
 ## Cycle ML - Game Lines Source Banner
 
 Cycle ML wires backend `marketSourceSummary` into the visible Event Detail Game Lines UI.

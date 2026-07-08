@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle MM
+
+Gate status: Pass
+
+Scope: Event Detail market source row badges.
+
+Decision:
+
+- P0 failed: 0 for focused visible row-source disclosure.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for the inspected Local MVP event.
+- Evidence: `docs/mobile/harness/cycle-MM-market-source-row-badges/cycle-MM-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MM-market-source-row-badges/cycle-MM-current-mvp-lines.png`, `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts`, `docs/mobile/audits/cycle-MM-market-source-row-badges.md`.
+- Notes: S23 proof shows `Provider` on Regulation Winner and `Local` on contract-fixture line markets while preserving ticket submit and Portfolio/history.
+
 ## Cycle LH
 
 Gate status: Pass

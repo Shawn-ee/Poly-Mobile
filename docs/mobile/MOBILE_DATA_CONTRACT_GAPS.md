@@ -2,6 +2,26 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle MM - Market Source Row Badges
+
+Closed or narrowed:
+
+- Event Detail now surfaces `market.referenceSource` at row level instead of only in hidden XML/provider labels or the section banner.
+- Provider-backed Regulation Winner and contract-fixture line rows are visually distinct on S23.
+- S23 proof confirms the full Local MVP ticket/order/Portfolio path still works.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real Polymarket-backed Spread/Totals/Team Total markets for the inspected event.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- `contract-fixture` line markets remain a Local MVP fallback and now render with a visible `Local` badge.
+
 ## Cycle ML - Game Lines Source Banner
 
 Closed or narrowed:

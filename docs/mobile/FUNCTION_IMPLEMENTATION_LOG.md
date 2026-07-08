@@ -2,6 +2,39 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle MM - Market Source Row Badges
+
+Feature/page worked on:
+
+- Added row-level source badges on Event Detail Game Lines.
+- Regulation Winner now visibly shows `Provider`.
+- Spread/Totals/Team Total contract-fixture rows now visibly show `Local`.
+- Preserved the Local MVP path: Home -> Event Detail -> line ticket -> fake-token order -> Portfolio/history.
+
+Frontend/services touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts`
+
+User interactions supported/proven:
+
+- On S23, Event Detail Game Lines shows Provider on the Polymarket-backed Regulation Winner row.
+- On S23, line rows show Local when they are backend-shaped contract fixtures.
+- The same S23 proof completes line ticket, swipe submit, and Portfolio/history.
+
+Verified:
+
+- Focused source badge test passed.
+- World Cup adapter source-summary regression test passed.
+- Mobile typecheck passed.
+- S23 proof passed: `docs/mobile/harness/cycle-MM-market-source-row-badges/cycle-MM-current-mvp-s23-visible-flow.json`.
+- S23 Game Lines screenshot: `docs/mobile/screenshots/cycle-MM-market-source-row-badges/cycle-MM-current-mvp-lines.png`.
+
+Known limitations:
+
+- This cycle does not create real Polymarket-backed Spread/Totals/Team Total markets.
+- Local badges intentionally disclose the current service state until provider-backed line candidates exist.
+
 ## Cycle ML - Game Lines Source Banner
 
 Feature/page worked on:
