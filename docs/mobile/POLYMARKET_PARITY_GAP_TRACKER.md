@@ -677,3 +677,12 @@ For every UI element or interaction, answer:
 - S23 proof passes for Home -> Event Detail stale-status honesty, with chat/orderbook hidden.
 - Remaining P1: real current live World Cup match/provider breadth remains missing.
 - Remaining P1: Spread/Totals/Team Total remain contract fixtures until attach-ready provider line markets exist.
+
+## Cycle NV Gap Tracker Update
+
+- PM-GAP-118 is opened and verified for backend-owned live-detail display status.
+- NV closes the data-contract gap left by NU: mobile no longer has to infer the stale/no-clock Event Detail display state on its own.
+- `/api/mobile/events/:slug/live-detail` now emits `event.displayStatus` with `mobileStatus=future`, `label=Active`, and `startsAt=Time TBD` for stale/unavailable no-clock raw live data.
+- Mobile consumes that display contract and S23 proof passes for Home -> Event Detail stale-status rendering.
+- Remaining P1: real current live World Cup match/provider breadth remains missing.
+- Remaining P1: Spread/Totals/Team Total remain contract fixtures until attach-ready provider line markets exist.

@@ -961,6 +961,19 @@ export async function serializeMobileLiveEventDetail(input: {
   const effectiveStalenessSeconds = effectiveLastUpdated
     ? Math.max(0, Math.round((Date.now() - new Date(effectiveLastUpdated).getTime()) / 1000))
     : stalenessSeconds;
+  const rawLooksLive = ["live", "active"].includes(`${input.event.status ?? ""}`.toLowerCase())
+    || `${input.event.liveStatus ?? ""}`.toLowerCase().includes("live")
+    || `${input.event.liveStatus ?? ""}`.toLowerCase() === "in_progress";
+  const hasLiveClock = Boolean(`${input.event.clock ?? ""}`.trim());
+  const shouldDowngradeDisplayLive = rawLooksLive && !hasLiveClock && ["stale", "unavailable"].includes(effectiveLiveDataStatus);
+  const displayStatus = shouldDowngradeDisplayLive
+    ? {
+        mobileStatus: "future" as const,
+        label: "Active",
+        startsAt: "Time TBD",
+        reason: effectiveLiveDataReason,
+      }
+    : null;
   const regulationMarket = serializedMarkets.find((market) => {
     const key = marketRuleKey(market);
     return !isAdvanceMarketKey(key) && (key.includes("winner") || key.includes("moneyline") || key.includes("regulation") || key.includes("90"));
@@ -1015,6 +1028,7 @@ export async function serializeMobileLiveEventDetail(input: {
       startTime: input.event.startTime?.toISOString() ?? null,
       status: input.event.status ?? "scheduled",
       liveStatus: input.event.liveStatus,
+      displayStatus,
       period: input.event.period,
       clock: input.event.clock,
       homeScore: input.event.homeScore,

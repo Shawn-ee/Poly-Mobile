@@ -106,6 +106,8 @@ const hasStaleLiveDataWithoutClock = (event: BackendEventSummary) => {
 };
 
 const eventStatus = (event: BackendEventSummary): Event["status"] => {
+  const displayStatus = `${event.displayStatus?.mobileStatus ?? ""}`.trim().toLowerCase();
+  if (["live", "today", "tomorrow", "future"].includes(displayStatus)) return displayStatus as Event["status"];
   const liveStatus = `${event.liveStatus ?? ""}`.toLowerCase();
   const status = `${event.status ?? ""}`.toLowerCase();
   if ((liveStatus.includes("live") || liveStatus === "in_progress" || status === "live") && isFreshLiveEvent(event) && !hasStaleLiveDataWithoutClock(event)) return "live";
@@ -122,6 +124,7 @@ const eventStatus = (event: BackendEventSummary): Event["status"] => {
 };
 
 const startsAt = (event: BackendEventSummary) => {
+  if (event.displayStatus?.startsAt) return event.displayStatus.startsAt;
   if ((event.liveStatus || event.clock) && eventStatus(event) === "live") {
     return ["Live", event.period, event.clock].filter(Boolean).join(" · ");
   }
@@ -281,7 +284,7 @@ export const normalizeEventSummary = (event: BackendEventSummary, markets: Backe
     league: asTitleCase(event.leagueKey, "World Cup"),
     startsAt: startsAt(event),
     status,
-    tag: status === "live" ? "Live" : asTitleCase(event.status, "World Cup"),
+    tag: event.displayStatus?.label ?? (status === "live" ? "Live" : asTitleCase(event.status, "World Cup")),
     zhTag: status === "live" ? "滚球" : asTitleCase(event.status, "世界杯"),
     teams: [
       { name: home, zhName: zhPassthrough(home), flag: "•" },

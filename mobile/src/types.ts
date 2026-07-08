@@ -152,6 +152,12 @@ export type EventSummary = {
   startTime: string | null;
   status: string;
   liveStatus: string | null;
+  displayStatus?: {
+    mobileStatus: "live" | "today" | "tomorrow" | "future" | string;
+    label: string;
+    startsAt: string;
+    reason?: string | null;
+  };
   period: string | null;
   clock: string | null;
   homeScore: number | null;

@@ -344,6 +344,12 @@ describe("world cup adapter", () => {
         externalSlug: "fifwc-col-gha-2026-07-03",
         status: "live",
         liveStatus: "ENDED",
+        displayStatus: {
+          mobileStatus: "future",
+          label: "Active",
+          startsAt: "Time TBD",
+          reason: "Provider event is closed/resolved.",
+        },
         period: "Final",
         clock: "FT",
         homeScore: 1,
@@ -384,6 +390,7 @@ describe("world cup adapter", () => {
 
     expect(normalized?.status).toBe("future");
     expect(normalized?.startsAt).toBe("Time TBD");
+    expect(normalized?.tag).toBe("Active");
     expect(normalized?.liveDataStatus?.status).toBe("stale");
   });
 

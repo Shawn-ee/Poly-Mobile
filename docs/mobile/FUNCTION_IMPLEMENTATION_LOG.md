@@ -7650,3 +7650,49 @@ Known limitations:
 
 - Real current live match/provider breadth remains missing.
 - Spread/Totals/Team Total remain explicit backend `contract-fixture` line markets until a real provider exposes attach-ready line markets.
+
+## Cycle NV - Live Detail Display Status Contract
+
+Feature/page worked on:
+
+- Local MVP Event Detail status contract between backend and mobile.
+
+Frontend/backend/harness files touched:
+
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/__tests__/mobile-live-event-detail.test.ts`
+- `mobile/src/types.ts`
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/__tests__/worldCupAdapter.test.ts`
+- Evidence/docs:
+  - `docs/mobile/harness/cycle-NV-live-detail-display-status-contract/cycle-NV-current-mvp-s23-visible-flow.json`
+  - `docs/mobile/screenshots/cycle-NV-live-detail-display-status-contract/`
+  - `docs/mobile/audits/cycle-NV-live-detail-display-status-contract.md`
+
+Important functions/services touched:
+
+- `serializeMobileLiveEventDetail()` now returns `event.displayStatus` when a raw live/active event has stale or unavailable provider data and no clock.
+- `normalizeEventSummary()` now prefers backend `displayStatus.mobileStatus`, `displayStatus.startsAt`, and `displayStatus.label` for mobile display.
+
+User interactions supported/proven:
+
+- User opens Home and sees the MVP match as `Active` / `Time TBD`.
+- User taps Event Detail and sees the same backend-owned display state.
+- Chat/orderbook remain hidden.
+
+State transitions:
+
+- No database schema, order lifecycle, provider ingestion, or portfolio route changed.
+
+Validation:
+
+- Backend live-detail contract test passed.
+- Mobile adapter/feed tests passed.
+- Mobile TypeScript passed.
+- Root TypeScript passed.
+- S23 focused proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- `displayStatus` is a display contract only; it does not create real live provider breadth.
+- Line families remain `contract-fixture` until provider-backed Spread/Totals/Team Total markets exist.

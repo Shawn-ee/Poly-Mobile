@@ -2981,3 +2981,16 @@ Cycle NU implementation notes:
 - No backend route/schema changed.
 - The mobile client now treats stale/no-clock live-detail responses as non-live for display.
 - The route still needs a better backend-owned freshness contract so mobile does not infer this from stale provider lifecycle fields.
+
+## Cycle NV - Live Detail Display Status Contract
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail display status | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | `event.displayStatus.mobileStatus`, `event.displayStatus.label`, `event.displayStatus.startsAt`, `event.displayStatus.reason`, plus raw `status`, `liveStatus`, `liveDataStatus` | `Event`, `Market`, `Outcome`, provider snapshot tables for lifecycle status | None added. | Real current live match/provider breadth remains missing. |
+| Mobile adapter display mapping | Backend event payload from live-detail and events routes | Client normalization | N/A | Route payload | `displayStatus` is preferred over local status/time inference when present | None | None added. | `/api/events` can later emit the same displayStatus contract for Home if needed. |
+| Android proof | `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1 -ExpectDetailStaleOnly` | Device proof | Temporary mobile dev API key | Expo deep link with API key | Home and Event Detail hierarchy/screenshot proof | `ApiCredential` for app launch only | None added. | None for the focused display-status proof. |
+
+Cycle NV implementation notes:
+
+- No schema migration was added.
+- The route now exposes a first-class display-status field for stale/unavailable no-clock live-detail data instead of forcing mobile to infer it.

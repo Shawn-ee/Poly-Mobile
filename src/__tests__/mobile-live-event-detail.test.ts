@@ -570,8 +570,8 @@ describe("mobile live event detail contract", () => {
         startTime: new Date("2026-06-25T20:00:00.000Z"),
         status: "LIVE",
         liveStatus: "in_progress",
-        period: "2H",
-        clock: "67'",
+        period: "Regulation",
+        clock: null,
         homeScore: 0,
         awayScore: 1,
         imageUrl: null,
@@ -591,6 +591,12 @@ describe("mobile live event detail contract", () => {
       isStale: false,
       isSuspended: false,
       isDelayed: false,
+      reason: "No provider timestamp available.",
+    });
+    expect(payload.event.displayStatus).toMatchObject({
+      mobileStatus: "future",
+      label: "Active",
+      startsAt: "Time TBD",
       reason: "No provider timestamp available.",
     });
     expect(payload.providerLifecycle).toMatchObject({

@@ -6234,3 +6234,33 @@ Temporary mock/static data:
 Future migration concern:
 
 - Move stale/no-clock live downgrading into a backend-owned display-status contract so all clients behave consistently.
+
+## Cycle NV - Live Detail Display Status Contract
+
+Closed or narrowed:
+
+- `/api/mobile/events/:slug/live-detail` now emits `event.displayStatus` for stale/unavailable no-clock live-detail responses.
+- Mobile consumes `displayStatus` directly instead of relying only on local inference from raw `status`, `liveStatus`, and provider lifecycle fields.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real current live World Cup match discovery and provider breadth.
+- Provider-backed Spread/Totals/Team Total line markets.
+- A matching `displayStatus` contract on every event-list route, if future Home variants need route-owned display status beyond the current adapter guard.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- Narrowed: live-detail now carries display status. Home all-match route still relies on existing event freshness normalization.
+
+Temporary mock/static data:
+
+- No new mock data was added.
+- Existing backend `contract-fixture` line rows remain.
+
+Future migration concern:
+
+- When provider import supplies reliable event end/freshness fields, `displayStatus` should use those fields directly rather than stale lifecycle inference.

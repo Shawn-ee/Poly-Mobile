@@ -5183,3 +5183,31 @@ Decision:
 - Pass/fail: Pass for focused Local MVP status-honesty cycle.
 - Remaining P1: real current World Cup live match/provider breadth is still missing.
 - Remaining P1: line markets remain contract fixtures, not provider-backed Polymarket line markets.
+
+## Cycle NV
+
+Gate status: Pass for live-detail display-status contract
+
+Scope: Move stale/no-clock live-detail display truth into the backend route contract and prove mobile consumes it.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-NV-live-detail-display-status-contract.md`
+- `docs/mobile/harness/cycle-NV-live-detail-display-status-contract/cycle-NV-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-NV-live-detail-display-status-contract/cycle-NV-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-NV-live-detail-display-status-contract/cycle-NV-current-mvp-detail-stale-top.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| NV-P0-01 | P0 | Pass | Route probe and backend test show `event.displayStatus` for stale/no-clock live-detail data. | Fix `serializeMobileLiveEventDetail()`. |
+| NV-P0-02 | P0 | Pass | Mobile adapter test shows `displayStatus` drives `status`, `startsAt`, and `tag`. | Fix `normalizeEventSummary()`. |
+| NV-P0-03 | P0 | Pass | S23 proof shows Home -> Event Detail as `Active` / `Time TBD`. | Fix mobile route consumption. |
+| NV-P0-04 | P0 | Pass | S23 proof rejects `15'`, `LIVE WORLD CUP`, Order Book, and Chat. | Keep non-MVP surfaces hidden. |
+
+Decision:
+
+- Pass/fail: Pass for focused backend/mobile display contract.
+- Remaining P1: real current World Cup live match/provider breadth is still missing.
+- Remaining P1: line markets remain contract fixtures, not provider-backed Polymarket line markets.
