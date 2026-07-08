@@ -7172,6 +7172,36 @@ Future migration concern:
 - Launch proof links should keep using comma-separated flags or otherwise quote `&` query strings for Android shell safety.
 - Search/Home query launch parsing now supports comma-separated proof flags.
 
+## Cycle PJ - Provider Visible Market To Local Tradable Market
+
+Closed or narrowed:
+
+- Norway Nation of Top Goalscorer moved from provider-visible/not-tradable to internal-test tradable.
+- Norway now preserves provider identity through quote, order, Portfolio, and History.
+- Bot risk-cap/seeding path succeeded with small local seed and did not block live-local quote placement.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Current-match provider-backed Spread/Totals/Team Total market ids, token ids, chart history, and prices.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch for the selected Norway provider future.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- Local bot runtime identifiers were redacted from committed evidence.
+- Bot preparation requires `POLY_DEV_ADMIN_USER_ID` or an equivalent local admin auth mechanism.
+- Standalone bot proof runs must carry `LIVE_SYSTEM_LIQUIDITY_ENABLED=true`.
+
 ## Cycle PH - Nation Top Goalscorer Provider Market Tradable Proof
 
 Closed or narrowed:

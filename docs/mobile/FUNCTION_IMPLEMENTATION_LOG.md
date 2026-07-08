@@ -8899,6 +8899,49 @@ Known limitations:
 - Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
 - Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
 
+## Cycle PJ - Provider Visible Market To Local Tradable Market
+
+Feature/page worked on:
+
+- Provider-visible Nation of Top Goalscorer Norway market converted into an internal-test tradable Local MVP market.
+- User path covered: Search/provider event visibility -> Event Detail -> quote -> fake-token order -> Portfolio/history.
+
+Frontend/proof files touched:
+
+- No visible mobile UI source changed.
+- `docs/mobile/audits/cycle-PJ-provider-visible-tradable-market.md`
+- `docs/mobile/harness/cycle-PJ-provider-visible-tradable-market/`
+- `docs/mobile/screenshots/cycle-PJ-provider-visible-tradable-market/`
+
+Important functions/services touched:
+
+- Backend/admin route state was used for `/api/admin/reference-markets/:id`.
+- Reused bot scripts for reference liquidity seed, dry-run, and live-local quote placement.
+- Reused mobile proof service for server-mode order and Portfolio/history checks.
+
+User interactions supported/proven:
+
+- Samsung S23 Search shows the Norway provider-backed Nation of Top Goalscorer event.
+- Samsung S23 opens Event Detail from Search and preserves provider market `2070985`.
+- Mobile service proof submits a fake-token Norway YES buy and sees the resulting Portfolio/history state.
+
+State transitions:
+
+- Norway market moved from provider-visible/reference-only style state into internal-test tradable state.
+- Norway market was seeded, marked live-ready/live-enabled, quoted by the local bot, bought by the mobile proof user, and reflected in Portfolio/history.
+
+Validation:
+
+- Bot dry-run passed.
+- Bot live-local passed without exposure-cap blocking.
+- Mobile order/Portfolio proof passed.
+- S23 visible Search/detail proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
+- Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
+
 ## Cycle PF - First Continent Provider Market Tradable Proof
 
 Feature/page worked on:

@@ -1,0 +1,58 @@
+{
+    "ok":  true,
+    "marketId":  "3c089b24-8a2e-42f4-97fb-3e7422bdfa65",
+    "importStatus":  "approved",
+    "referenceOnly":  false,
+    "tradable":  true,
+    "mmEnabled":  true,
+    "isListed":  true,
+    "reviewedAt":  "2026-07-08T22:54:38.476Z",
+    "reviewedBy":  "[redacted-dev-admin]",
+    "reviewNotes":  "Cycle PJ internal local MVP tradable proof for nation top goalscorer Norway.",
+    "botInitialization":  {
+                              "status":  "live_ready",
+                              "lastCheckedAt":  "2026-07-08T22:54:38.473Z",
+                              "reason":  null,
+                              "approvedBy":  null,
+                              "approvedAt":  null,
+                              "riskProfile":  null,
+                              "capital":  {
+                                              "budgetCents":  50000,
+                                              "mintBudgetCents":  2500,
+                                              "mintedCompleteSets":  25,
+                                              "cashReserveCents":  47500,
+                                              "autoReplenish":  false,
+                                              "initializedAt":  "2026-07-08T22:54:08.180Z",
+                                              "initializedBy":  "[redacted-dev-admin]",
+                                              "botUserId":  "[redacted-bot-user]",
+                                              "botUsername":  "system-liquidity-bot",
+                                              "botApiCredentialId":  "[redacted-bot-credential]",
+                                              "botApiKeyId":  "[redacted-api-key]",
+                                              "maxSingleOrderNotionalCents":  1000,
+                                              "maxOpenOrderNotionalCents":  10000,
+                                              "maxDailyLossCents":  10000
+                                          },
+                              "runtime":  {
+                                              "liveOrdersEnabled":  false,
+                                              "emergencyStop":  false,
+                                              "cancelRequestedAt":  null,
+                                              "lastSeededAt":  "2026-07-08T22:54:08.180Z",
+                                              "lastLiveRunAt":  null,
+                                              "lastRuntimeSyncAt":  null
+                                          },
+                              "readiness":  {
+                                                "ready":  true,
+                                                "dryRun":  false,
+                                                "liveRequested":  true,
+                                                "reasons":  [
+
+                                                            ],
+                                                "referenceBid":  0.097,
+                                                "referenceAsk":  0.101,
+                                                "plannedBotBid":  0.08,
+                                                "plannedBotAsk":  0.12,
+                                                "riskProfile":  null,
+                                                "checkedAt":  "2026-07-08T22:54:38.473Z"
+                                            }
+                          }
+}
