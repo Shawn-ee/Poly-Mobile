@@ -365,6 +365,25 @@ const portfolioSourceBadge = (selection?: TicketSelection) => {
   };
 };
 
+const portfolioSourceNote = (selection?: TicketSelection) => {
+  const source = selection?.referenceSource ?? "";
+  if (source.includes("contract-fixture")) {
+    return {
+      text: "Local test pricing",
+      accessibility: "portfolio-local-test-pricing",
+      tone: "fixture" as const,
+    };
+  }
+  if (source.includes("polymarket")) {
+    return {
+      text: "Provider market",
+      accessibility: "portfolio-provider-backed-pricing",
+      tone: "provider" as const,
+    };
+  }
+  return null;
+};
+
 const portfolioDetailCopy = {
   en: {
     details: "Details",
@@ -965,7 +984,7 @@ export function Portfolio({
             </View>
           </View>
           {positions.map((position) => (
-            <View accessibilityLabel={`position-card-${position.id} portfolio-position-retail-density-fit portfolio-position-tabs-gap-closed-s23 portfolio-first-position-first-screen-fit portfolio-row-dollar-amounts portfolio-position-to-win-payout portfolio-position-outcome-compact-label portfolio-position-market-context-readable portfolio-outcome-compact-${compactVisibleOutcomeLabel(position)} portfolio-position-visible-label-${displayPositionChoice(position)} ${providerBreadthCodes(position) ? "portfolio-event-title-compact-provider" : ""} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
+            <View accessibilityLabel={`position-card-${position.id} portfolio-position-retail-density-fit portfolio-position-tabs-gap-closed-s23 portfolio-first-position-first-screen-fit portfolio-row-dollar-amounts portfolio-position-to-win-payout portfolio-position-outcome-compact-label portfolio-position-market-context-readable portfolio-outcome-compact-${compactVisibleOutcomeLabel(position)} portfolio-position-visible-label-${displayPositionChoice(position)} ${portfolioSourceNote(position.selection)?.accessibility ?? ""} ${providerBreadthCodes(position) ? "portfolio-event-title-compact-provider" : ""} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
               <View style={styles.positionEventLine}>
                 <Text style={styles.positionScoreLine}>{compactPortfolioScoreLine(position)}</Text>
                 {(position.isLive || position.liveClock) && (
@@ -1010,6 +1029,19 @@ export function Portfolio({
                   <Text style={styles.positionMeta}>
                     Cost {portfolioRowMoney(position.amount)} | To win {portfolioRowMoney(positionPotentialPayout(position))} | Entry {position.probability}%
                   </Text>
+                  {portfolioSourceNote(position.selection) && (
+                    <Text
+                      accessibilityLabel={`portfolio-position-source-note-${position.id} ${portfolioSourceNote(position.selection)?.accessibility}`}
+                      style={[
+                        styles.portfolioSourceNote,
+                        portfolioSourceNote(position.selection)?.tone === "provider" && styles.portfolioSourceNoteProvider,
+                        portfolioSourceNote(position.selection)?.tone === "fixture" && styles.portfolioSourceNoteFixture,
+                      ]}
+                      testID={`portfolio-position-source-note-${position.id}`}
+                    >
+                      {portfolioSourceNote(position.selection)?.text}
+                    </Text>
+                  )}
                 </View>
               </View>
               {position.selection && (
@@ -1161,7 +1193,7 @@ export function Portfolio({
         <View style={styles.activityBlock}>
           {activities.slice(0, 5).map((activity) => (
             <Pressable
-              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity portfolio-history-dollar-amounts portfolio-history-outcome-compact-label portfolio-history-market-context-readable portfolio-history-outcome-compact-${compactVisibleOutcomeLabel(activity)} portfolio-history-visible-label-${activityDisplayTitle(activity)} portfolio-history-fill-count-${activity.fillCount ?? 1} ${providerBreadthCodes(activity) ? "portfolio-history-event-title-compact-provider" : ""} ${selectionIdentityLabel(activity)}`}
+              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity portfolio-history-dollar-amounts portfolio-history-outcome-compact-label portfolio-history-market-context-readable portfolio-history-outcome-compact-${compactVisibleOutcomeLabel(activity)} portfolio-history-visible-label-${activityDisplayTitle(activity)} portfolio-history-fill-count-${activity.fillCount ?? 1} ${portfolioSourceNote(activity.selection)?.accessibility ?? ""} ${providerBreadthCodes(activity) ? "portfolio-history-event-title-compact-provider" : ""} ${selectionIdentityLabel(activity)}`}
               key={activity.id}
               onPress={() => setExpandedActivityId((current) => (current === activity.id ? null : activity.id))}
               style={[styles.activityItem, expandedActivityId === activity.id && styles.rowExpanded]}
@@ -1207,6 +1239,19 @@ export function Portfolio({
                 {activity.isLive && (
                   <Text accessibilityLabel="portfolio-activity-live-badge" style={styles.activityLiveText}>
                     {t.liveNow}
+                  </Text>
+                )}
+                {portfolioSourceNote(activity.selection) && (
+                  <Text
+                    accessibilityLabel={`portfolio-history-source-note-${activity.id} ${portfolioSourceNote(activity.selection)?.accessibility}`}
+                    style={[
+                      styles.portfolioSourceNote,
+                      portfolioSourceNote(activity.selection)?.tone === "provider" && styles.portfolioSourceNoteProvider,
+                      portfolioSourceNote(activity.selection)?.tone === "fixture" && styles.portfolioSourceNoteFixture,
+                    ]}
+                    testID={`portfolio-history-source-note-${activity.id}`}
+                  >
+                    {portfolioSourceNote(activity.selection)?.text}
                   </Text>
                 )}
                 {activity.liveClock && (
@@ -1457,6 +1502,9 @@ const styles = StyleSheet.create({
   portfolioSourcePillText: { color: "#cbd5e1", fontSize: 9, fontWeight: "900" },
   portfolioSourcePillTextProvider: { color: "#86efac" },
   portfolioSourcePillTextFixture: { color: "#fde68a" },
+  portfolioSourceNote: { color: "#94a3b8", fontSize: 11, fontWeight: "900", marginTop: 4 },
+  portfolioSourceNoteProvider: { color: "#86efac" },
+  portfolioSourceNoteFixture: { color: "#fde68a" },
   positionValueRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8, marginTop: 14 },
   positionValueBlock: { flex: 1, minWidth: 0 },
   positionValue: { color: "#f8fafc", fontSize: 18, fontWeight: "500" },

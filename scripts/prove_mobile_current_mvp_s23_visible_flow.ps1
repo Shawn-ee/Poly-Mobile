@@ -276,7 +276,7 @@ try {
   Start-Sleep -Seconds 7
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-after-submit.png" | Out-Null
   $afterSubmitXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-after-submit.xml"
-  Assert-Contains -Path $afterSubmitXml -Expected @("Portfolio", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture")
+  Assert-Contains -Path $afterSubmitXml -Expected @("Portfolio", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
   Assert-NotContains -Path $afterSubmitXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
   Invoke-TapNode -Path $afterSubmitXml -Identifier "portfolio-tab-history"
@@ -284,7 +284,7 @@ try {
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-portfolio-history.png" | Out-Null
   $historyXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-portfolio-history.xml"
   if ($ExpectFilledHistory) {
-    Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "portfolio-history-market-context-readable", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture")
+    Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "portfolio-history-market-context-readable", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
   } else {
     Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "No history", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture")
   }

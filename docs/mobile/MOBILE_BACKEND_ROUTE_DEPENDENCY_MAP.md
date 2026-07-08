@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle MW - Portfolio Local Pricing Disclosure
+
+Cycle MW carries existing line-market source state into Portfolio positions and History.
+
+- S23 proof: `docs/mobile/harness/cycle-MW-portfolio-local-pricing-disclosure/cycle-MW-current-mvp-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-MW-portfolio-local-pricing-disclosure.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio/history local-pricing source disclosure | `/api/events?...includeMobileMarkets=1&mobileMvpMatches=1`, `/api/mobile/events/:slug/live-detail`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | GET for Home/detail/Portfolio/history; POST for order submit | Public event viewing; existing mobile API auth for order/portfolio | Existing ticket order body for selected Spread market/outcome/line | Portfolio/history `selection.referenceSource=contract-fixture`, selected `marketType=spread`, `line=1.5`, `period=regulation`, position/activity selection snapshots | Existing `Event`, `Market`, `Outcome`, `Order`, `Trade`, `Position`; no schema change | Existing backend-shaped `contract-fixture` line markets remain Local MVP fallback rows and are now visibly labeled in Portfolio/history | Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected events. |
+
 ## Cycle MV - Ticket Local Pricing Disclosure
 
 Cycle MV carries existing line-market source state into the Trade Ticket.

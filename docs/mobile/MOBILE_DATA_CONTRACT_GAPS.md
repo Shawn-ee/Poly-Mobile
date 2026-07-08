@@ -2,6 +2,26 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle MW - Portfolio Local Pricing Disclosure
+
+Closed or narrowed:
+
+- Contract-fixture line-market positions and history rows are now visibly disclosed as `Local test pricing`.
+- The S23 proof verifies this disclosure in Android hierarchy after ticket submit and in History.
+- Existing position/history source identity remains route-backed through selection snapshots.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected events.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Existing `contract-fixture` line markets remain backend-shaped Local MVP fallback rows.
+
 ## Cycle MV - Ticket Local Pricing Disclosure
 
 Closed or narrowed:

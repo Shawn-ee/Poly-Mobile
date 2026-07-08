@@ -2,6 +2,38 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle MW - Portfolio Local Pricing Disclosure
+
+Feature/page worked on:
+
+- Portfolio positions and History rows for Local MVP line markets.
+- Added a visible `Local test pricing` note for contract-fixture positions and filled activities.
+
+Frontend/services touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+
+User interactions supported/proven:
+
+- On S23, opened Home -> Event Detail -> Game Lines -> local Spread ticket.
+- Selected `$25`, swiped to buy, and reached Portfolio/history.
+- Confirmed Portfolio position and History rows expose `portfolio-local-test-pricing`.
+
+Backend/API route changed:
+
+- None.
+
+Verified:
+
+- Mobile typecheck passed.
+- Focused mobile tests passed.
+- S23 proof passed: `docs/mobile/harness/cycle-MW-portfolio-local-pricing-disclosure/cycle-MW-current-mvp-s23-visible-flow.json`.
+
+Known limitations:
+
+- This is Portfolio/history source disclosure for Local MVP line markets. It does not make Spread/Totals/Team Total provider-backed.
+
 ## Cycle MV - Ticket Local Pricing Disclosure
 
 Feature/page worked on:

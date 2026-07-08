@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle MW
+
+Gate status: Pass
+
+Scope: Portfolio/history local-pricing disclosure.
+
+Decision:
+
+- P0 failed: 0 for focused Portfolio/history disclosure scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-MW-portfolio-local-pricing-disclosure/cycle-MW-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MW-portfolio-local-pricing-disclosure/`, `docs/mobile/audits/cycle-MW-portfolio-local-pricing-disclosure.md`.
+- Notes: S23 proof shows `Local test pricing`/`portfolio-local-test-pricing` in Portfolio positions and History after local Spread ticket -> swipe buy.
+
 ## Cycle MV
 
 Gate status: Pass
