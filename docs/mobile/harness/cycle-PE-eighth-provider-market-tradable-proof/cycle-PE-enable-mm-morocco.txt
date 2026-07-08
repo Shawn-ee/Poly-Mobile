@@ -1,0 +1,31 @@
+
+> poly-bot@0.1.0 liquidity:enable-event-mm
+> tsx scripts/enableReferenceEventMm.ts --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug provider-breadth-world-cup-winner --allowlist Morocco --maxMarkets 1 --dryRun false --confirmEnable true
+
+{
+  "ok": true,
+  "dryRun": false,
+  "eventSlug": "provider-breadth-world-cup-winner",
+  "results": [
+    {
+      "marketId": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+      "slug": "will-morocco-win-the-2026-fifa-world-cup-464",
+      "title": "Will Morocco win the 2026 FIFA World Cup?",
+      "safe": true,
+      "reason": null,
+      "updated": {
+        "ok": true,
+        "marketId": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+        "importStatus": "approved",
+        "referenceOnly": false,
+        "tradable": true,
+        "mmEnabled": true,
+        "isListed": true,
+        "reviewedAt": "2026-07-08T21:46:38.505Z",
+        "reviewedBy": "[redacted-dev-admin]",
+        "reviewNotes": null,
+        "botInitialization": null
+      }
+    }
+  ]
+}

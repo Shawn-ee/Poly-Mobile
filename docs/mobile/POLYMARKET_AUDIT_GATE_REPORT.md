@@ -5863,6 +5863,39 @@ Remaining P1:
 - Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Broad futures remain Search/detail-only while Home/Live stay match-only.
 
+## Cycle PE - Eighth Provider Market Tradable Proof
+
+Result: Pass for eighth provider-backed internal-test tradable market scope.
+
+Checked:
+
+- Morocco World Cup Winner market selected as the eighth provider-backed tradable target.
+- Backend helper verified the local internal beta trading runtime stayed healthy.
+- Morocco MM enable, seed, live-ready/live-enabled, and live-local quote placement passed.
+- Bot dry-run and live-local quote placement did not hit exposure-cap blocking.
+- Mobile route/service proof filled Morocco YES against local MM liquidity.
+- Portfolio/history preserved provider source, market id, condition id, and token id.
+- S23 proof showed World Cup Winner detail with Morocco provider-backed outcome visible/selectable.
+- Home/Live match-only guard was not changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PE-eighth-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-PE-eighth-provider-market-tradable-proof/cycle-PE-internal-beta-backend-check.json`
+- `docs/mobile/harness/cycle-PE-eighth-provider-market-tradable-proof/cycle-PE-prepare-morocco-small-seed.txt`
+- `docs/mobile/harness/cycle-PE-eighth-provider-market-tradable-proof/cycle-PE-bot-live-local-morocco-success.txt`
+- `docs/mobile/harness/cycle-PE-eighth-provider-market-tradable-proof/cycle-PE-provider-morocco-order-portfolio-proof.json`
+- `docs/mobile/harness/cycle-PE-eighth-provider-market-tradable-proof/cycle-PE-s23-search-morocco-summary.json`
+- `docs/mobile/harness/cycle-PE-eighth-provider-market-tradable-proof/cycle-PE-s23-world-cup-winner-top.xml`
+- `docs/mobile/harness/cycle-PE-eighth-provider-market-tradable-proof/cycle-PE-s23-world-cup-winner-morocco.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad futures remain Search/detail-only while Home/Live stay match-only.
+
 ## Cycle PC - Sixth Provider Market Tradable Proof
 
 Result: Pass for sixth provider-backed internal-test tradable market scope.
