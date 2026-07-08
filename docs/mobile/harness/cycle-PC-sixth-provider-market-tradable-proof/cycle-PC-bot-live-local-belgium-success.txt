@@ -1,0 +1,138 @@
+
+> poly-bot@0.1.0 bot:polymarket:mm:live-local
+> tsx scripts/liquidityRuntime.ts --dryRun false --confirmLive true --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug provider-breadth-world-cup-winner --allowlist Belgium --maxMarkets 1 --durationSeconds 6 --pollMs 1000 --confirmLive true
+
+{
+  "dryRun": false,
+  "liveOrdersEnabled": true,
+  "confirmLive": true,
+  "cycleReports": [
+    {
+      "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+      "slug": "will-belgium-win-the-2026-fifa-world-cup-358",
+      "status": "manage_quotes",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.024,
+      "referenceAsk": 0.025,
+      "plannedBotBid": 0.01,
+      "plannedBotAsk": 0.04,
+      "reasons": [],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 3690,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 3690,
+      "globalExposureCents": 3690,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [
+        "new quote 5e90f5bc-f8f6-4dfe-9a50-35c95e687387:BUY @ 0.01",
+        "new quote 5e90f5bc-f8f6-4dfe-9a50-35c95e687387:SELL @ 0.05",
+        "new quote 90725b3c-a504-47f0-891d-cfa7c0757cc0:BUY @ 0.95",
+        "new quote 90725b3c-a504-47f0-891d-cfa7c0757cc0:SELL @ 0.99",
+        "placed 5e90f5bc-f8f6-4dfe-9a50-35c95e687387:BUY @ 0.01",
+        "placed 5e90f5bc-f8f6-4dfe-9a50-35c95e687387:SELL @ 0.05",
+        "placed 90725b3c-a504-47f0-891d-cfa7c0757cc0:BUY @ 0.95",
+        "placed 90725b3c-a504-47f0-891d-cfa7c0757cc0:SELL @ 0.99"
+      ],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+      "slug": "will-belgium-win-the-2026-fifa-world-cup-358",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.024,
+      "referenceAsk": 0.025,
+      "plannedBotBid": 0.01,
+      "plannedBotAsk": 0.04,
+      "reasons": [
+        "max_open_orders_per_market_4_of_4"
+      ],
+      "openOrderCount": 4,
+      "perMarketExposureCents": 4650,
+      "openOrderNotionalCents": 960,
+      "inventoryExposureCents": 3690,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+      "slug": "will-belgium-win-the-2026-fifa-world-cup-358",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.024,
+      "referenceAsk": 0.025,
+      "plannedBotBid": 0.01,
+      "plannedBotAsk": 0.04,
+      "reasons": [
+        "max_open_orders_per_market_4_of_4"
+      ],
+      "openOrderCount": 4,
+      "perMarketExposureCents": 4650,
+      "openOrderNotionalCents": 960,
+      "inventoryExposureCents": 3690,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+      "slug": "will-belgium-win-the-2026-fifa-world-cup-358",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.024,
+      "referenceAsk": 0.025,
+      "plannedBotBid": 0.01,
+      "plannedBotAsk": 0.04,
+      "reasons": [
+        "max_open_orders_per_market_4_of_4"
+      ],
+      "openOrderCount": 4,
+      "perMarketExposureCents": 4650,
+      "openOrderNotionalCents": 960,
+      "inventoryExposureCents": 3690,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    },
+    {
+      "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+      "slug": "will-belgium-win-the-2026-fifa-world-cup-358",
+      "status": "skip",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.024,
+      "referenceAsk": 0.025,
+      "plannedBotBid": 0.01,
+      "plannedBotAsk": 0.04,
+      "reasons": [
+        "max_open_orders_per_market_4_of_4"
+      ],
+      "openOrderCount": 4,
+      "perMarketExposureCents": 4650,
+      "openOrderNotionalCents": 960,
+      "inventoryExposureCents": 3690,
+      "globalExposureCents": 0,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [],
+      "perMarketExposureCapCents": 20000
+    }
+  ]
+}

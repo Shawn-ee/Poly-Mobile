@@ -909,3 +909,12 @@ For every UI element or interaction, answer:
 - PB proves mobile route/service order fill and Portfolio/history identity for Argentina YES, and captures S23 visibility proof for the Argentina provider-backed outcome.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
 - Remaining P1: broad futures remain visible in Search/detail only; Home/Live remain match-only by design.
+
+## Cycle PC Gap Tracker Update
+
+- PM-GAP-141 is opened and closed for a sixth provider-backed market becoming internal-test tradable.
+- PC makes Belgium in `provider-breadth-world-cup-winner` local-MM-ready, live-enabled, and quoted.
+- PC proves bot dry-run and live-local quote placement without exposure-cap blocking after the standalone bot process is run with local live liquidity env.
+- PC proves mobile route/service order fill and Portfolio/history identity for Belgium YES, and captures S23 visibility proof for the Belgium provider-backed outcome.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
+- Remaining P1: broad futures remain visible in Search/detail only; Home/Live remain match-only by design.

@@ -1,0 +1,201 @@
+{
+  "pass": true,
+  "cycle": "PC",
+  "generatedAt": "2026-07-08T21:33:00.624Z",
+  "scope": "provider-visible-market-to-internal-test-tradable-mobile-flow",
+  "routes": {
+    "search": "/api/events?source=polymarket&search=Belgium",
+    "detail": "/api/mobile/events/:slug/live-detail",
+    "quote": "/api/markets/:marketId/quote",
+    "order": "POST /api/orders",
+    "portfolio": "/api/portfolio",
+    "history": "/api/portfolio/history"
+  },
+  "event": {
+    "id": "16dba6f4-c5ec-4d0c-9d69-6b8c06fd6bc5",
+    "slug": "provider-breadth-world-cup-winner",
+    "title": "World Cup Winner",
+    "eventType": "future"
+  },
+  "market": {
+    "id": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+    "slug": "provider-breadth-world-cup-winner-will-belgium-win-the-2026-fifa-world-cup-358",
+    "title": "Will Belgium win the 2026 FIFA World Cup?",
+    "referenceSource": "polymarket",
+    "externalSlug": "will-belgium-win-the-2026-fifa-world-cup-358",
+    "externalMarketId": "558946",
+    "conditionId": "0x32cfa52198e85e070d1b17d1b53c5c3a6aaae7736cdc33fa6aa04d353f0c2811"
+  },
+  "outcome": {
+    "id": "5e90f5bc-f8f6-4dfe-9a50-35c95e687387",
+    "name": "Belgium",
+    "referenceTokenId": "30815807067456631524510535002617106205417832891402132396713720656146245200000",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "botQuote": {
+    "orderId": "6ff8d40b-2610-4c0e-a350-7d5c52aad60f",
+    "side": "SELL",
+    "price": 0.05,
+    "remaining": 5
+  },
+  "mobileProofUser": {
+    "id": "5428a8c9-6261-410c-956f-f2b9190304d3",
+    "email": "cycle_pc_provider_user_94b398e8@local.test"
+  },
+  "checks": {
+    "searchVisible": true,
+    "detailVisible": true,
+    "quoteVisible": true,
+    "serverModeTicketSubmitted": true,
+    "filledAgainstBotLiquidity": true,
+    "portfolioPositionVisible": true,
+    "historyTradeVisible": true,
+    "homeLiveMatchOnlyUnchanged": true
+  },
+  "orderResult": {
+    "id": "bdb92885-e8ad-48e4-9d98-10d53348031c",
+    "mode": "server",
+    "title": "Will Belgium win the 2026 FIFA World Cup?",
+    "outcome": "Belgium",
+    "selection": {
+      "marketType": "future",
+      "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+      "outcomeId": "5e90f5bc-f8f6-4dfe-9a50-35c95e687387",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Belgium",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-belgium-win-the-2026-fifa-world-cup-358",
+      "externalMarketId": "558946",
+      "conditionId": "0x32cfa52198e85e070d1b17d1b53c5c3a6aaae7736cdc33fa6aa04d353f0c2811",
+      "referenceTokenId": "30815807067456631524510535002617106205417832891402132396713720656146245200000",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.05,
+      "limitSide": "ask"
+    },
+    "contractSide": "yes",
+    "side": "buy",
+    "amount": 0.15,
+    "probability": 5,
+    "status": "FILLED",
+    "size": 3,
+    "filledSize": 3,
+    "remainingSize": 0
+  },
+  "portfolioPosition": {
+    "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+    "outcomeId": "5e90f5bc-f8f6-4dfe-9a50-35c95e687387",
+    "shares": 3,
+    "selection": {
+      "marketType": "future",
+      "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+      "outcomeId": "5e90f5bc-f8f6-4dfe-9a50-35c95e687387",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Belgium",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-belgium-win-the-2026-fifa-world-cup-358",
+      "externalMarketId": "558946",
+      "conditionId": "0x32cfa52198e85e070d1b17d1b53c5c3a6aaae7736cdc33fa6aa04d353f0c2811",
+      "referenceTokenId": "30815807067456631524510535002617106205417832891402132396713720656146245200000",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.05,
+      "limitSide": "ask"
+    }
+  },
+  "historyTrade": {
+    "id": "9df32b44-e309-4e76-a016-797dc401c73a",
+    "market": {
+      "id": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+      "title": "Will Belgium win the 2026 FIFA World Cup?",
+      "status": "LIVE",
+      "marketGroupKey": "outrights",
+      "marketType": "outright",
+      "line": null,
+      "period": "futures",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-belgium-win-the-2026-fifa-world-cup-358",
+      "externalMarketId": "558946",
+      "conditionId": "0x32cfa52198e85e070d1b17d1b53c5c3a6aaae7736cdc33fa6aa04d353f0c2811"
+    },
+    "outcome": {
+      "id": "5e90f5bc-f8f6-4dfe-9a50-35c95e687387",
+      "name": "Belgium",
+      "label": "Belgium",
+      "side": "yes",
+      "referenceTokenId": "30815807067456631524510535002617106205417832891402132396713720656146245200000",
+      "referenceOutcomeLabel": "Yes"
+    },
+    "selection": {
+      "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+      "outcomeId": "5e90f5bc-f8f6-4dfe-9a50-35c95e687387",
+      "marketGroupId": "outrights",
+      "marketType": "future",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Belgium",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "providerSource": "polymarket",
+      "externalSlug": "will-belgium-win-the-2026-fifa-world-cup-358",
+      "externalMarketId": "558946",
+      "conditionId": "0x32cfa52198e85e070d1b17d1b53c5c3a6aaae7736cdc33fa6aa04d353f0c2811",
+      "referenceTokenId": "30815807067456631524510535002617106205417832891402132396713720656146245200000",
+      "tokenId": "30815807067456631524510535002617106205417832891402132396713720656146245200000",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.05,
+      "limitSide": "ask"
+    },
+    "side": "BUY",
+    "shares": 3,
+    "cost": 0.15,
+    "fee": 0,
+    "createdAt": "2026-07-08T21:33:00.496Z"
+  },
+  "remainingOpenOrders": [
+    {
+      "id": "5d3fd029-d0e8-4f53-a538-6293e7a42384",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "5e90f5bc-f8f6-4dfe-9a50-35c95e687387",
+      "side": "BUY",
+      "price": "0.01",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "6ff8d40b-2610-4c0e-a350-7d5c52aad60f",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "5e90f5bc-f8f6-4dfe-9a50-35c95e687387",
+      "side": "SELL",
+      "price": "0.05",
+      "amount": "5",
+      "remaining": "2",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "b4582059-197e-4a91-acb9-fde4ea778481",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "90725b3c-a504-47f0-891d-cfa7c0757cc0",
+      "side": "BUY",
+      "price": "0.95",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "6c0f7bc5-c442-418c-8b74-f84523bf0ed2",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "90725b3c-a504-47f0-891d-cfa7c0757cc0",
+      "side": "SELL",
+      "price": "0.99",
+      "amount": "5",
+      "remaining": "5",
+      "status": "OPEN"
+    }
+  ]
+}
