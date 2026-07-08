@@ -1,0 +1,24 @@
+{
+    "pass":  true,
+    "cycle":  "PG",
+    "generatedAt":  "2026-07-08T22:13:11.0221556Z",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "expoPort":  8300,
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "mobileApiBaseUrl":  "http://172.16.200.14:3002",
+    "search":  "Messi",
+    "detailXml":  "docs\\mobile\\harness\\cycle-PG-first-golden-boot-provider-market-tradable-proof\\cycle-PG-s23-golden-boot-top.xml",
+    "expectedMarkers":  [
+                            "Lionel Messi",
+                            "provider-market-2069635",
+                            "6e0eac54-df5e-4cb0-bab8-cb575ea5b4f0",
+                            "provider-source-polymarket",
+                            "World Cup: Golden Boot Winner"
+                        ],
+    "artifacts":  [
+                      "docs/mobile/harness/cycle-PG-first-golden-boot-provider-market-tradable-proof/cycle-PG-s23-search-messi.png",
+                      "docs/mobile/harness/cycle-PG-first-golden-boot-provider-market-tradable-proof/cycle-PG-s23-golden-boot-messi.png",
+                      "docs\\mobile\\harness\\cycle-PG-first-golden-boot-provider-market-tradable-proof\\cycle-PG-s23-golden-boot-top.xml"
+                  ]
+}
