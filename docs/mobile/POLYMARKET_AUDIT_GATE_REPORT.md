@@ -5896,6 +5896,38 @@ Remaining P1:
 - Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Broad futures remain Search/detail-only while Home/Live stay match-only.
 
+## Cycle PL - Current Match Line Provider Gate
+
+Result: Pass for provider-line honesty gate.
+
+Checked:
+
+- Home route returns match-only Local MVP feed.
+- Current match has provider-backed Regulation Winner.
+- Current match has 0 provider-backed Spread/Totals/Team Total line markets.
+- Current match has 4 contract-fixture line markets across Spread, Totals, and Team Totals.
+- Polymarket Gamma for `fifwc-arg-egy-2026-07-07` exposes 3 match-winner rows and 0 line rows.
+- Discovery guard keeps match-winner candidates attach-ready.
+- Discovery guard rejects all line attachments as wrong-family, with 0 attach-ready line targets.
+- S23 proof shows current match detail and line sections are visible with honest source marker wording.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-PL-current-match-line-provider-gate.md`
+- `docs/mobile/harness/cycle-PL-current-match-line-provider-gate/cycle-PL-current-state-inspection.json`
+- `docs/mobile/harness/cycle-PL-current-match-line-provider-gate/cycle-PL-provider-match-line-availability.json`
+- `docs/mobile/harness/cycle-PL-current-match-line-provider-gate/cycle-PL-provider-discovery-guard.json`
+- `docs/mobile/harness/cycle-PL-current-match-line-provider-gate/cycle-PL-s23-summary.json`
+- `docs/mobile/screenshots/cycle-PL-current-match-line-provider-gate/cycle-PL-s23-current-match-detail-top.png`
+- `docs/mobile/screenshots/cycle-PL-current-match-line-provider-gate/cycle-PL-s23-current-match-lines.png`
+
+Unresolved P0 gaps: 0 for PL scope.
+
+Remaining P1:
+
+- Real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
+- Contract fixtures must remain clearly disclosed until attach-ready provider line rows exist.
+
 ## Cycle PK - Golden Boot Haaland Tradable Flow
 
 Result: Pass for selected Golden Boot Haaland provider-visible-to-tradable scope.

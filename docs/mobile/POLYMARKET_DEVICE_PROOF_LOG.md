@@ -1947,3 +1947,38 @@ Pass for selected Golden Boot Haaland provider-visible-to-tradable scope.
 
 Remaining gaps:
 Home/Live remain match-only. Current-match line markets remain contract fixtures.
+
+## Cycle PL - Current Match Line Provider Gate
+
+Date:
+2026-07-08
+
+Reference device:
+No new Polymarket app reference-device action. Provider truth was checked against Polymarket Gamma for `fifwc-arg-egy-2026-07-07`.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go server mode. Backend `http://127.0.0.1:3002` stayed healthy; mobile API used LAN backend `http://172.16.200.14:3002`.
+
+Holiwyn actions:
+Opened `Argentina vs. Egypt` detail, captured top detail proof, scrolled to line markets, and captured Spread/Totals/Team Totals visibility plus honest source wording.
+
+Evidence:
+- `docs/mobile/audits/cycle-PL-current-match-line-provider-gate.md`
+- `docs/mobile/harness/cycle-PL-current-match-line-provider-gate/cycle-PL-current-state-inspection.json`
+- `docs/mobile/harness/cycle-PL-current-match-line-provider-gate/cycle-PL-provider-match-line-availability.json`
+- `docs/mobile/harness/cycle-PL-current-match-line-provider-gate/cycle-PL-provider-discovery-guard.json`
+- `docs/mobile/harness/cycle-PL-current-match-line-provider-gate/cycle-PL-s23-summary.json`
+- `docs/mobile/screenshots/cycle-PL-current-match-line-provider-gate/cycle-PL-s23-current-match-detail-top.png`
+- `docs/mobile/screenshots/cycle-PL-current-match-line-provider-gate/cycle-PL-s23-current-match-lines.png`
+
+Smoke/tests:
+Current-state inspection passed, provider line availability proof passed, provider discovery guard passed, and S23 visible proof passed.
+
+Result:
+Pass for provider-line honesty gate.
+
+Remaining gaps:
+Current-match Spread/Totals/Team Totals remain contract fixtures until real attach-ready provider line rows exist.
