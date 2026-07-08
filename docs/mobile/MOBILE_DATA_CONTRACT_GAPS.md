@@ -2,6 +2,26 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle MU - Line Local Pricing Disclosure
+
+Closed or narrowed:
+
+- Contract-fixture line markets are now visibly disclosed in Event Detail as `Local test pricing`.
+- The S23 proof verifies this disclosure in the Android hierarchy before opening a line ticket.
+- The existing line ticket/order/Portfolio/history path remains functional after the UI disclosure change.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected events.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Existing `contract-fixture` line markets remain backend-shaped Local MVP fallback rows.
+
 ## Cycle MT - Provider Winner Top Outcome Fill
 
 Closed or narrowed:

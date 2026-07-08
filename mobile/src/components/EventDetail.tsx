@@ -404,6 +404,23 @@ type GameLineGroup = {
   onSelectLine?: (line: string) => void;
 };
 
+const marketSourceHeaderNote = (market?: Market) => {
+  const source = market?.referenceSource ?? "";
+  if (source.includes("contract-fixture")) {
+    return {
+      text: "Local test pricing",
+      accessibility: "line-market-local-test-pricing",
+    };
+  }
+  if (source.includes("polymarket")) {
+    return {
+      text: "Provider market",
+      accessibility: "line-market-provider-backed",
+    };
+  }
+  return null;
+};
+
 const marketSourceBadge = (market?: Market) => {
   const source = market?.referenceSource ?? "";
   if (source.includes("polymarket")) {
@@ -1394,11 +1411,12 @@ export function EventDetail({
     const visibleTitle = group.displayTitle ?? group.title;
     const compactHeaderLabel = group.displayTitle ? "event-detail-line-header-compact-retail" : "";
     const sourceBadge = marketSourceBadge(group.backendMarket);
+    const sourceHeaderNote = marketSourceHeaderNote(group.backendMarket);
 
     return (
     <View key={group.id} style={styles.marketBlock}>
       <Pressable
-        accessibilityLabel={`event-detail-market-toggle-${group.id} ${compactHeaderLabel} ${group.title} visible-title-${visibleTitle} ${group.subtitle ?? ""} ${sourceBadge.accessibility} market-availability-${group.backendMarket?.availability?.status ?? "unknown"} market-depth-${marketDepthBatchLabel(group.backendMarket) ? "batched" : "empty"} ${providerIdentityLabel(group.backendMarket)}`}
+        accessibilityLabel={`event-detail-market-toggle-${group.id} ${compactHeaderLabel} ${group.title} visible-title-${visibleTitle} ${group.subtitle ?? ""} ${sourceHeaderNote?.accessibility ?? ""} ${sourceBadge.accessibility} market-availability-${group.backendMarket?.availability?.status ?? "unknown"} market-depth-${marketDepthBatchLabel(group.backendMarket) ? "batched" : "empty"} ${providerIdentityLabel(group.backendMarket)}`}
         onPress={() => toggleGroup(group.id)}
         style={styles.marketHeaderRow}
         testID={`event-detail-market-toggle-${group.id}`}
@@ -1406,6 +1424,19 @@ export function EventDetail({
         <View style={styles.marketTitleBlock}>
           <Text numberOfLines={2} style={styles.marketTitle}>{visibleTitle}</Text>
           {group.subtitle && <Text style={styles.marketSubcopy}>{group.subtitle}</Text>}
+          {sourceHeaderNote && (
+            <Text
+              accessibilityLabel={`event-detail-market-source-note-${group.id} ${sourceHeaderNote.accessibility}`}
+              style={[
+                styles.marketSourceHeaderNote,
+                sourceBadge.tone === "provider" && styles.marketSourceHeaderNoteProvider,
+                sourceBadge.tone === "fixture" && styles.marketSourceHeaderNoteFixture,
+              ]}
+              testID={`event-detail-market-source-note-${group.id}`}
+            >
+              {sourceHeaderNote.text}
+            </Text>
+          )}
         </View>
         <View style={styles.headerRightCluster}>
           <View
@@ -2172,6 +2203,9 @@ const styles = StyleSheet.create({
   marketTitle: { color: "#d1d5db", fontSize: 17, fontWeight: "800" },
   marketSubtitle: { color: "#8b93a3", fontSize: 15, fontWeight: "700", marginTop: 4 },
   marketSubcopy: { color: "#6b7280", fontSize: 13, fontWeight: "700", marginTop: 1 },
+  marketSourceHeaderNote: { color: "#94a3b8", fontSize: 11, fontWeight: "900", marginTop: 4 },
+  marketSourceHeaderNoteProvider: { color: "#86efac" },
+  marketSourceHeaderNoteFixture: { color: "#fde68a" },
   polymarketLineCard: { marginHorizontal: 24, marginTop: 16, padding: 16, borderRadius: 18, backgroundColor: "#10171f", borderWidth: 1, borderColor: "#26313f" },
   lineCardTitleRow: { flexDirection: "row", alignItems: "center", gap: 6 },
   lineOutcomeButtonRow: { flexDirection: "row", gap: 12, marginTop: 16 },

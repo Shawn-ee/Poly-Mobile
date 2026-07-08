@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle MU - Line Local Pricing Disclosure
+
+Cycle MU adds visible disclosure for existing line-market source state.
+
+- S23 proof: `docs/mobile/harness/cycle-MU-line-local-pricing-disclosure/cycle-MU-current-mvp-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-MU-line-local-pricing-disclosure.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Local MVP line-market source disclosure | `/api/events?...includeMobileMarkets=1&mobileMvpMatches=1`, `/api/mobile/events/:slug/live-detail`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | GET for Home/detail/Portfolio/history; POST for order submit | Public event viewing; existing mobile API auth for order/portfolio | Existing ticket order body for selected Spread market/outcome/line | `market.referenceSource=contract-fixture`, selected `marketType=spread`, `line=1.5`, `period=regulation`, portfolio/history selection snapshots | Existing `Event`, `Market`, `Outcome`, `Order`, `Trade`, `Position`; no schema change | Existing backend-shaped `contract-fixture` line markets remain Local MVP fallback rows and are now visibly labeled `Local test pricing` | Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected events. |
+
 ## Cycle MT - Provider Winner Top Outcome Fill
 
 Cycle MT proves the top provider-backed Regulation Winner outcome can fill after local proof liquidity is prepared for the selected provider market.

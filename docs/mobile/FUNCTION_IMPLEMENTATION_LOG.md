@@ -2,6 +2,38 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle MU - Line Local Pricing Disclosure
+
+Feature/page worked on:
+
+- Event Detail Game Lines line-market headers.
+- Added a visible `Local test pricing` note for contract-fixture Spread/Totals/Team Total rows.
+
+Frontend/services touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+
+User interactions supported/proven:
+
+- On S23, opened Home -> Event Detail -> Game Lines.
+- Confirmed local line rows expose `line-market-local-test-pricing`.
+- Opened a local Spread ticket, selected `$25`, swiped to buy, and reached Portfolio/history with filled activity.
+
+Backend/API route changed:
+
+- None.
+
+Verified:
+
+- Mobile typecheck passed.
+- Focused mobile tests passed.
+- S23 proof passed: `docs/mobile/harness/cycle-MU-line-local-pricing-disclosure/cycle-MU-current-mvp-s23-visible-flow.json`.
+
+Known limitations:
+
+- This is source disclosure for Local MVP line markets. It does not make Spread/Totals/Team Total provider-backed.
+
 ## Cycle MT - Provider Winner Top Outcome Fill
 
 Feature/page worked on:

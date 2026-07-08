@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle MU
+
+Gate status: Pass
+
+Scope: Local MVP line-market source disclosure.
+
+Decision:
+
+- P0 failed: 0 for focused line-source disclosure scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-MU-line-local-pricing-disclosure/cycle-MU-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MU-line-local-pricing-disclosure/`, `docs/mobile/audits/cycle-MU-line-local-pricing-disclosure.md`.
+- Notes: S23 proof shows `Local test pricing`/`line-market-local-test-pricing`, then completes local Spread ticket -> swipe buy -> Portfolio/history.
+
 ## Cycle MT
 
 Gate status: Pass

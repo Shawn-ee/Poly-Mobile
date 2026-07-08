@@ -241,7 +241,8 @@ try {
     if (
       $candidateRaw -match [regex]::Escape("selection-market-type-spread") -and
       $candidateRaw -match [regex]::Escape("selection-line-1.5") -and
-      $candidateRaw -match [regex]::Escape("provider-source-contract-fixture")
+      $candidateRaw -match [regex]::Escape("provider-source-contract-fixture") -and
+      $candidateRaw -match [regex]::Escape("line-market-local-test-pricing")
     ) {
       $lineXml = $candidate
       break
@@ -255,7 +256,7 @@ try {
   Start-Sleep -Seconds 1
   $lineXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-lines-settled.xml"
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-lines.png" | Out-Null
-  Assert-Contains -Path $lineXml -Expected @("Spread", "Totals", "Team Total Goals", "event-detail-line-section-clearance-24", "selection-market-type-spread", "selection-line-1.5", "provider-source-contract-fixture")
+  Assert-Contains -Path $lineXml -Expected @("Spread", "Totals", "Local test pricing", "line-market-local-test-pricing", "event-detail-line-section-clearance-24", "selection-market-type-spread", "selection-line-1.5", "provider-source-contract-fixture")
   Assert-NotContains -Path $lineXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
   Invoke-TapNode -Path $lineXml -Identifier "event-detail-outcome-spread-" -StartsWith
