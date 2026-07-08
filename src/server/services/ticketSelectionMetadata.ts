@@ -44,6 +44,15 @@ const normalizedContractSide = (value: unknown) => {
   return raw === "yes" || raw === "no" ? raw : undefined;
 };
 
+const normalizedMarketType = (value: unknown) => {
+  const raw = stringValue(value)?.toLowerCase();
+  if (!raw) return undefined;
+  if (raw === "match_winner_1x2" || raw === "match_winner" || raw === "moneyline") return "winner";
+  if (raw === "total_goals") return "totals";
+  if (raw === "team_total_goals") return "team-total";
+  return raw;
+};
+
 const lineValue = (marketLine: SelectionMarket["line"]) => {
   if (marketLine === null || marketLine === undefined || marketLine === "") return undefined;
   return String(marketLine);
@@ -72,7 +81,7 @@ export const sanitizeTicketSelectionSnapshot = (value: unknown) => {
     marketId: stringValue(input.marketId),
     outcomeId: stringValue(input.outcomeId),
     marketGroupId: stringValue(input.marketGroupId),
-    marketType: stringValue(input.marketType),
+    marketType: normalizedMarketType(input.marketType),
     line: stringValue(input.line),
     period: stringValue(input.period),
     side: stringValue(input.side),
@@ -153,7 +162,7 @@ export function buildTicketSelectionMetadata(params: {
     marketId: params.market.id,
     outcomeId: params.outcome.id,
     marketGroupId: stringValue(selection?.marketGroupId) ?? params.market.marketGroupKey ?? undefined,
-    marketType: stringValue(selection?.marketType) ?? params.market.marketType ?? undefined,
+    marketType: normalizedMarketType(selection?.marketType) ?? normalizedMarketType(params.market.marketType),
     line: stringValue(selection?.line) ?? lineValue(params.market.line),
     period: stringValue(selection?.period) ?? params.market.period ?? undefined,
     side: stringValue(selection?.side) ?? params.outcome.side ?? undefined,

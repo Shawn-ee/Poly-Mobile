@@ -1,0 +1,92 @@
+{
+    "cycle":  "NJ",
+    "generatedAt":  "2026-07-08T12:44:26.9777129Z",
+    "homeEventCount":  2,
+    "homeSlugs":  [
+                      "argentina-vs-egypt",
+                      "switzerland-vs-colombia"
+                  ],
+    "inspected":  [
+                      "argentina-vs-egypt",
+                      "switzerland-vs-colombia"
+                  ],
+    "argentinaEgypt":  {
+                           "totalMarketCount":  7,
+                           "sourceBreakdown":  {
+                                                   "polymarket":  3,
+                                                   "contract-fixture":  4
+                                               },
+                           "polymarketMarketCount":  3,
+                           "contractFixtureMarketCount":  4,
+                           "unknownSourceMarketCount":  0,
+                           "regulationWinner":  {
+                                                    "totalCount":  3,
+                                                    "polymarketCount":  3,
+                                                    "contractFixtureCount":  0,
+                                                    "status":  "provider-backed"
+                                                },
+                           "lineMarkets":  {
+                                               "totalCount":  4,
+                                               "polymarketCount":  0,
+                                               "contractFixtureCount":  4,
+                                               "status":  "contract-fixture",
+                                               "families":  [
+                                                                "spread",
+                                                                "total_goals",
+                                                                "team_total_goals"
+                                                            ],
+                                               "providerAvailability":  {
+                                                                            "source":  "polymarket-gamma",
+                                                                            "status":  "unavailable",
+                                                                            "providerBackedLineMarketCount":  0,
+                                                                            "contractFixtureLineMarketCount":  4,
+                                                                            "reason":  "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures."
+                                                                        },
+                                               "reason":  "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured."
+                                           }
+                       },
+    "switzerlandColombia":  {
+                                "totalMarketCount":  7,
+                                "sourceBreakdown":  {
+                                                        "polymarket":  3,
+                                                        "contract-fixture":  4
+                                                    },
+                                "polymarketMarketCount":  3,
+                                "contractFixtureMarketCount":  4,
+                                "unknownSourceMarketCount":  0,
+                                "regulationWinner":  {
+                                                         "totalCount":  3,
+                                                         "polymarketCount":  3,
+                                                         "contractFixtureCount":  0,
+                                                         "status":  "provider-backed"
+                                                     },
+                                "lineMarkets":  {
+                                                    "totalCount":  4,
+                                                    "polymarketCount":  0,
+                                                    "contractFixtureCount":  4,
+                                                    "status":  "contract-fixture",
+                                                    "families":  [
+                                                                     "spread",
+                                                                     "total_goals",
+                                                                     "team_total_goals"
+                                                                 ],
+                                                    "providerAvailability":  {
+                                                                                 "source":  "polymarket-gamma",
+                                                                                 "status":  "unavailable",
+                                                                                 "providerBackedLineMarketCount":  0,
+                                                                                 "contractFixtureLineMarketCount":  4,
+                                                                                 "reason":  "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures."
+                                                                             },
+                                                    "reason":  "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured."
+                                                }
+                            },
+    "liveDetailProviderLifecycle":  {
+                                        "argentinaEgypt":  "stale",
+                                        "switzerlandColombia":  "stale"
+                                    },
+    "chartHistory":  {
+                         "argentinaEgypt":  "unavailable",
+                         "switzerlandColombia":  "unavailable"
+                     },
+    "routeTruth":  "Regulation Winner is provider-backed; spread/totals/team-total line markets are contract-fixture; chart history is empty/unavailable; provider quote snapshots are stale."
+}

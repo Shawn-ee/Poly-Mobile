@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle NJ - Current Service Inspection and Provider Winner Cashout
+
+Cycle NJ re-inspects current service readiness and proves the provider-backed Regulation Winner buy/sell lifecycle on S23.
+
+- Inspection: `docs/mobile/harness/cycle-NJ-current-service-and-sell-path-inspection/`.
+- S23 proof: `docs/mobile/harness/cycle-NJ-provider-winner-cashout-s23/cycle-NJ-provider-winner-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-NJ-current-service-and-provider-winner-cashout.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider-backed Regulation Winner buy/cashout lifecycle | `/api/events`; `/api/mobile/events/:slug/live-detail`; `/api/orders`; `/api/portfolio`; `/api/portfolio/history` | GET and POST | Existing mobile API auth for order/portfolio | Existing ticket order body for buy; cashout sell uses `marketId`, `outcomeId`, `side=SELL`, `price`, and `size` from the owned position | `marketSourceSummary`, provider-backed `match_winner_1x2` identity normalized to mobile `winner`, `externalMarketId=2793741`, condition id, token id, filled buy, filled sell, Portfolio position/history source identity | Existing `Event`, `Market`, `Outcome`, `Order`, trade/fill read models; no schema change | Proof seeds deterministic maker SELL liquidity for buy and maker BUY liquidity for cashout | Real provider-backed Spread/Totals/Team Total markets and route-backed current chart history remain unavailable for inspected events. |
+
 ## Cycle NI - Provider Winner Clean Feed Regression
 
 Cycle NI changes the provider-winner S23 proof harness only; it consumes existing provider-backed Regulation Winner, order, and Portfolio routes.

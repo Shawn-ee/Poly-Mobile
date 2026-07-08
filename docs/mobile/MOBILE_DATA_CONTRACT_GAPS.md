@@ -2,6 +2,29 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle NJ - Current Service Inspection and Provider Winner Cashout
+
+Closed or narrowed:
+
+- Current Home/service state is re-inspected and documented.
+- Provider-backed Regulation Winner is now proven through Buy, owned Portfolio position, cash-out swipe Sell, and Portfolio History on S23.
+- Server-created cash-out sell history now normalizes provider `match_winner_1x2` fallback metadata to mobile `winner`, preserving `portfolio-market-type-winner`, `portfolio-line-none`, and `portfolio-provider-source-polymarket`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected current events.
+- Route-backed current chart history for inspected current events.
+- Production liquidity policy for provider-backed match-winner buy/sell flows.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Deterministic proof maker liquidity is still seeded for filled buy and cash-out sell proof.
+- Existing `contract-fixture` line markets remain backend-shaped Local MVP fallback rows.
+
 ## Cycle NI - Provider Winner Clean Feed Regression
 
 Closed or narrowed:

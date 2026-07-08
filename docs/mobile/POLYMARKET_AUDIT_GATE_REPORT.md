@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle NJ
+
+Gate status: Pass
+
+Scope: Current service inspection plus provider-backed Regulation Winner buy/cashout lifecycle.
+
+Decision:
+
+- P0 failed: 0 for focused provider-backed Regulation Winner buy/sell lifecycle.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events; P1 route-backed current chart history is unavailable; P1 production liquidity policy remains separate from proof liquidity.
+- Evidence: `docs/mobile/harness/cycle-NJ-current-service-and-sell-path-inspection/cycle-NJ-current-service-summary.json`, `docs/mobile/harness/cycle-NJ-provider-winner-cashout-s23/cycle-NJ-provider-winner-s23-visible-flow.json`, `docs/mobile/harness/cycle-NJ-provider-winner-cashout-s23/cycle-NJ-provider-winner-cashout-history.xml`, `docs/mobile/audits/cycle-NJ-current-service-and-provider-winner-cashout.md`.
+- Notes: The S23 proof verifies Home, Event Detail, provider winner ticket, filled Buy, Portfolio position, cash-out sheet, swipe Sell, and History with provider winner identity preserved.
+
 ## Cycle NI
 
 Gate status: Pass

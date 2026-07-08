@@ -2,6 +2,52 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle NJ - Current Service Inspection and Provider Winner Cashout
+
+Feature/page worked on:
+
+- Local MVP provider-backed Regulation Winner buy/sell lifecycle.
+
+Frontend/services touched:
+
+- `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1`
+- `scripts/seed_mobile_route_spread_counterparty.ts`
+- `src/server/services/ticketSelectionMetadata.ts`
+- `src/__tests__/ticketSelectionMetadata.test.ts`
+
+User interactions supported/proven:
+
+- On Samsung S23, Home opens the current match feed.
+- Event Detail opens a provider-backed Egypt Regulation Winner ticket.
+- Swipe-to-buy creates a server-backed filled position.
+- Portfolio opens the cash-out sheet from the owned position.
+- Swipe-to-cashout submits a server-backed sell.
+- Portfolio History shows the sold activity with provider winner identity preserved.
+
+Backend/API route changed:
+
+- No schema or route shape change.
+- Selection metadata normalization now maps provider `match_winner_1x2`/`moneyline` fallback rows to mobile `winner`.
+
+Backend/API routes exercised:
+
+- `/api/health`
+- `/api/events`
+- `/api/mobile/events/:slug/live-detail`
+- `/api/orders`
+- `/api/portfolio`
+- `/api/portfolio/history`
+
+Verified:
+
+- Jest: `src/__tests__/ticketSelectionMetadata.test.ts`, `src/__tests__/public.events.no-leak.test.ts`.
+- S23 proof passed: `docs/mobile/harness/cycle-NJ-provider-winner-cashout-s23/cycle-NJ-provider-winner-s23-visible-flow.json`.
+
+Known limitations:
+
+- Current Spread/Totals/Team Total rows remain `contract-fixture`.
+- Current live-detail provider lifecycle is stale and chart history is unavailable.
+
 ## Cycle NI - Provider Winner Clean Feed Regression
 
 Feature/page worked on:

@@ -19,10 +19,16 @@ const marketGroupKey = argValue("marketGroupKey") ?? "spread";
 const externalMarketId = argValue("externalMarketId");
 const outcomeSide = argValue("outcomeSide") ?? "home";
 const askPrice = argValue("askPrice") ?? "0.52";
+const bidPrice = argValue("bidPrice") ?? askPrice;
 const askSize = argValue("askSize") ?? "60";
+const bidSize = argValue("bidSize") ?? askSize;
+const makerSideValue = (argValue("makerSide") ?? "SELL").toUpperCase();
 const line = argValue("line");
 const cleanupProofBids = process.argv.includes("--cleanupProofBids");
 const cleanupBlockingBids = process.argv.includes("--cleanupBlockingBids");
+const cleanupBlockingMarketBids = process.argv.includes("--cleanupBlockingMarketBids");
+const cleanupProofAsks = process.argv.includes("--cleanupProofAsks");
+const cleanupBlockingAsks = process.argv.includes("--cleanupBlockingAsks");
 const proofUserPrefix = argValue("proofUserPrefix") ?? "holiwyn-mobile-";
 
 const assert: (condition: unknown, message: string) => asserts condition = (condition, message) => {
@@ -48,6 +54,8 @@ async function main() {
     throw new Error("Refusing to seed mobile route counterparty in production.");
   }
   assert(eventSlug, "--eventSlug is required.");
+  assert(makerSideValue === "BUY" || makerSideValue === "SELL", "--makerSide must be BUY or SELL.");
+  const makerSide = makerSideValue;
 
   const event = await prisma.event.findUnique({
     where: { slug: eventSlug },
@@ -122,16 +130,98 @@ async function main() {
     }
   }
 
+  const canceledBlockingMarketBids = [];
+  if (cleanupBlockingMarketBids) {
+    const blockingMarketBids = await prisma.order.findMany({
+      where: {
+        marketId: market.id,
+        side: "BUY",
+        status: { in: ["OPEN", "PARTIAL"] },
+      },
+      include: { user: { select: { id: true, username: true } } },
+      orderBy: { createdAt: "asc" },
+    });
+    for (const order of blockingMarketBids) {
+      const canceled = await cancelOrderAndUnlock({ orderId: order.id, userId: order.userId });
+      canceledBlockingMarketBids.push({
+        id: order.id,
+        outcomeId: order.outcomeId,
+        username: order.user.username,
+        previousStatus: order.status,
+        price: order.price.toString(),
+        remaining: order.remaining.toString(),
+        canceledStatus: canceled.order.status,
+      });
+    }
+  }
+
+  const canceledProofAsks = [];
+  if (cleanupProofAsks) {
+    const staleProofAsks = await prisma.order.findMany({
+      where: {
+        marketId: market.id,
+        outcomeId: outcome.id,
+        side: "SELL",
+        status: { in: ["OPEN", "PARTIAL"] },
+        price: { lte: dec(bidPrice) },
+        user: { username: { startsWith: proofUserPrefix } },
+      },
+      include: { user: { select: { id: true, username: true } } },
+      orderBy: { createdAt: "asc" },
+    });
+    for (const order of staleProofAsks) {
+      const canceled = await cancelOrderAndUnlock({ orderId: order.id, userId: order.userId });
+      canceledProofAsks.push({
+        id: order.id,
+        username: order.user.username,
+        previousStatus: order.status,
+        price: order.price.toString(),
+        remaining: order.remaining.toString(),
+        canceledStatus: canceled.order.status,
+      });
+    }
+  }
+
+  const canceledBlockingAsks = [];
+  if (cleanupBlockingAsks) {
+    const blockingAsks = await prisma.order.findMany({
+      where: {
+        marketId: market.id,
+        outcomeId: outcome.id,
+        side: "SELL",
+        status: { in: ["OPEN", "PARTIAL"] },
+        price: { lte: dec(bidPrice) },
+      },
+      include: { user: { select: { id: true, username: true } } },
+      orderBy: { createdAt: "asc" },
+    });
+    for (const order of blockingAsks) {
+      const canceled = await cancelOrderAndUnlock({ orderId: order.id, userId: order.userId });
+      canceledBlockingAsks.push({
+        id: order.id,
+        username: order.user.username,
+        previousStatus: order.status,
+        price: order.price.toString(),
+        remaining: order.remaining.toString(),
+        canceledStatus: canceled.order.status,
+      });
+    }
+  }
+
   const maker = await createMaker();
-  await mintCompleteSetForPublicOrderbook({ marketId: market.id, userId: maker.id, quantity: "80" });
+  if (makerSide === "SELL") {
+    await mintCompleteSetForPublicOrderbook({ marketId: market.id, userId: maker.id, quantity: "80" });
+  }
+  const makerPrice = makerSide === "BUY" ? bidPrice : askPrice;
+  const makerSize = makerSide === "BUY" ? bidSize : askSize;
   const makerOrder = await placeOrderAndMatch({
     marketId: market.id,
     outcomeId: outcome.id,
     userId: maker.id,
-    side: "SELL",
+    side: makerSide,
     type: "LIMIT",
-    price: askPrice,
-    size: askSize,
+    price: makerPrice,
+    size: makerSize,
   });
 
   assert(makerOrder.order.status === "OPEN", `Expected maker order to rest open, got ${makerOrder.order.status}.`);
@@ -167,13 +257,21 @@ async function main() {
       canceledProofBids,
       cleanupBlockingBids,
       canceledBlockingBids,
+      cleanupBlockingMarketBids,
+      canceledBlockingMarketBids,
+      cleanupProofAsks,
+      canceledProofAsks,
+      cleanupBlockingAsks,
+      canceledBlockingAsks,
     },
     makerOrder: makerOrder.order,
     seededAsk: {
-      side: "SELL",
-      price: askPrice,
-      size: askSize,
-      intendedMobileTaker: `BUY $25 route-backed ${marketGroupKey} ticket`,
+      side: makerSide,
+      price: makerPrice,
+      size: makerSize,
+      intendedMobileTaker: makerSide === "SELL"
+        ? `BUY $25 route-backed ${marketGroupKey} ticket`
+        : `SELL/cashout route-backed ${marketGroupKey} position`,
     },
   };
 

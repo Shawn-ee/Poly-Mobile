@@ -222,4 +222,46 @@ describe("ticket selection metadata", () => {
     );
     expect(JSON.stringify(selection)).not.toContain("moneyline");
   });
+
+  test("normalizes provider match winner fallback metadata for portfolio history", () => {
+    const selection = buildTicketSelectionMetadata({
+      market: {
+        id: "egypt-winner-market",
+        title: "Will Egypt win on 2026-07-07?",
+        marketGroupKey: "main",
+        marketType: "match_winner_1x2",
+        line: null,
+        period: "regulation",
+        referenceSource: "polymarket",
+        externalMarketId: "2793741",
+        conditionId: "condition-egypt",
+      },
+      outcome: {
+        id: "egypt-yes",
+        name: "YES",
+        label: "Egypt",
+        side: "yes",
+        referenceTokenId: "token-egypt-yes",
+        referenceOutcomeLabel: "Yes",
+      },
+    });
+
+    expect(selection).toEqual(
+      expect.objectContaining({
+        marketGroupId: "main",
+        marketType: "winner",
+        line: undefined,
+        period: "regulation",
+        side: "yes",
+        displayLabel: "Egypt regulation",
+        contractSide: "yes",
+        referenceSource: "polymarket",
+        externalMarketId: "2793741",
+        conditionId: "condition-egypt",
+        referenceTokenId: "token-egypt-yes",
+      }),
+    );
+    expect(selection.marketType).not.toBe("prop");
+    expect(selection.marketType).not.toBe("match_winner_1x2");
+  });
 });

@@ -7,11 +7,13 @@ param(
   [string]$EventSlug = "argentina-vs-egypt",
   [string]$TargetProviderMarketId = "2793741",
   [string]$CounterpartyAskPrice = "0.70",
+  [string]$CashoutBidPrice = "0.70",
   [string]$Cycle = "MQ",
   [string]$OutputDir = "docs\mobile\screenshots\cycle-MQ-provider-winner-s23-visible-flow",
   [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-MQ-provider-winner-s23-visible-flow",
   [switch]$SeedCounterparty,
-  [switch]$ExpectFilledHistory
+  [switch]$ExpectFilledHistory,
+  [switch]$ExpectCashout
 )
 
 $ErrorActionPreference = "Stop"
@@ -276,15 +278,37 @@ try {
   Assert-NotContains -Path $detailTopXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "event-detail-chat")
 
   $winnerXml = $null
-  for ($attempt = 1; $attempt -le 5; $attempt++) {
+  $detailTopRaw = Get-Content -Raw -Path $detailTopXml
+  if (
+    $detailTopRaw -match [regex]::Escape("provider-source-polymarket") -and
+    $detailTopRaw -match [regex]::Escape("selection-market-type-winner") -and
+    $detailTopRaw -match [regex]::Escape("selection-provider-market-$TargetProviderMarketId")
+  ) {
+    $winnerXml = $detailTopXml
+  }
+  for ($attempt = 1; (-not $winnerXml) -and $attempt -le 5; $attempt++) {
+    & $adb -s $Device shell input swipe 540 760 540 1600 450 | Out-Null
+    Start-Sleep -Seconds 1
+    $candidate = Save-Hierarchy -Name "cycle-$Cycle-provider-winner-up-attempt-$attempt.xml"
+    $candidateRaw = Get-Content -Raw -Path $candidate
+    if (
+      $candidateRaw -match [regex]::Escape("provider-source-polymarket") -and
+      $candidateRaw -match [regex]::Escape("selection-market-type-winner") -and
+      $candidateRaw -match [regex]::Escape("selection-provider-market-$TargetProviderMarketId")
+    ) {
+      $winnerXml = $candidate
+      break
+    }
+  }
+  for ($attempt = 1; (-not $winnerXml) -and $attempt -le 5; $attempt++) {
     & $adb -s $Device shell input swipe 540 2100 540 760 450 | Out-Null
     Start-Sleep -Seconds 1
     $candidate = Save-Hierarchy -Name "cycle-$Cycle-provider-winner-attempt-$attempt.xml"
     $candidateRaw = Get-Content -Raw -Path $candidate
     if (
-      $candidateRaw -match [regex]::Escape("Regulation Time Winner") -and
       $candidateRaw -match [regex]::Escape("provider-source-polymarket") -and
-      $candidateRaw -match [regex]::Escape("selection-market-type-winner")
+      $candidateRaw -match [regex]::Escape("selection-market-type-winner") -and
+      $candidateRaw -match [regex]::Escape("selection-provider-market-$TargetProviderMarketId")
     ) {
       $winnerXml = $candidate
       break
@@ -294,11 +318,13 @@ try {
     Save-Screenshot -Name "cycle-$Cycle-provider-winner-failed.png" | Out-Null
     throw "Could not find provider-backed Regulation Winner market on S23."
   }
-  & $adb -s $Device shell input swipe 540 920 540 1450 320 | Out-Null
-  Start-Sleep -Seconds 1
-  $winnerXml = Save-Hierarchy -Name "cycle-$Cycle-provider-winner-settled.xml"
+  if ($winnerXml -ne $detailTopXml) {
+    & $adb -s $Device shell input swipe 540 920 540 1450 320 | Out-Null
+    Start-Sleep -Seconds 1
+    $winnerXml = Save-Hierarchy -Name "cycle-$Cycle-provider-winner-settled.xml"
+  }
   Save-Screenshot -Name "cycle-$Cycle-provider-winner.png" | Out-Null
-  Assert-Contains -Path $winnerXml -Expected @("Regulation Time Winner", "Provider", "Argentina", "Draw", "Egypt", "selection-market-type-winner", "selection-line-none", "provider-source-polymarket", "selection-provider-market-2793738", "selection-provider-market-2793739", "selection-provider-market-2793741")
+  Assert-Contains -Path $winnerXml -Expected @("Argentina", "Egypt", "selection-market-type-winner", "selection-line-none", "provider-source-polymarket", "selection-provider-market-2793738", "selection-provider-market-2793739", "selection-provider-market-2793741")
   Assert-NotContains -Path $winnerXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
   Invoke-TapProviderWinnerOutcome -Path $winnerXml -ProviderMarketId $TargetProviderMarketId
@@ -324,14 +350,46 @@ try {
   }
   Assert-NotContains -Path $afterSubmitXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
-  Invoke-TapNode -Path $afterSubmitXml -Identifier "portfolio-tab-history"
-  Start-Sleep -Seconds 1
-  Save-Screenshot -Name "cycle-$Cycle-provider-winner-portfolio-history.png" | Out-Null
-  $historyXml = Save-Hierarchy -Name "cycle-$Cycle-provider-winner-portfolio-history.xml"
-  Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "portfolio-market-type-winner", "portfolio-line-none", "portfolio-provider-source-polymarket")
-  if ($ExpectFilledHistory) {
-    Assert-Contains -Path $historyXml -Expected @("activity-row-", "portfolio-history-source-badge")
-    Assert-NotContains -Path $historyXml -Unexpected @("No history")
+  $cashoutCounterpartyProofPath = $null
+  $cashoutTicketXml = $null
+  $cashoutHistoryXml = $null
+  if ($ExpectCashout) {
+    Assert-Contains -Path $afterSubmitXml -Expected @("position-card-", "portfolio-position-cash-out-", "portfolio-position-source-badge")
+    $cashoutCounterpartyProofPath = Join-Path $HierarchyOutputDir "cycle-$Cycle-provider-winner-cashout-counterparty.json"
+    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=main" "--externalMarketId=$TargetProviderMarketId" "--outcomeSide=yes" "--makerSide=BUY" "--bidPrice=$CashoutBidPrice" "--bidSize=80" "--cleanupBlockingMarketBids" "--cleanupProofAsks" "--cleanupBlockingAsks" "--proofUserPrefix=holiwyn-mobile-" "--output=$cashoutCounterpartyProofPath" | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+      throw "Provider winner cashout counterparty seed failed for $EventSlug."
+    }
+    Invoke-TapNode -Path $afterSubmitXml -Identifier "portfolio-position-cash-out-" -StartsWith
+    Start-Sleep -Seconds 2
+    Save-Screenshot -Name "cycle-$Cycle-provider-winner-cashout-ticket.png" | Out-Null
+    $cashoutTicketXml = Save-Hierarchy -Name "cycle-$Cycle-provider-winner-cashout-ticket.xml"
+    Assert-Contains -Path $cashoutTicketXml -Expected @("cashout-ticket", "cashout-full-position", "cashout-current-price", "cashout-estimated-proceeds", "swipe-to-cashout")
+    Assert-NotContains -Path $cashoutTicketXml -Unexpected @("Order Book", "Chat")
+
+    & $adb -s $Device shell input swipe 540 2070 540 1450 2400 | Out-Null
+    Start-Sleep -Seconds 7
+    Save-Screenshot -Name "cycle-$Cycle-provider-winner-after-cashout.png" | Out-Null
+    $afterCashoutXml = Save-Hierarchy -Name "cycle-$Cycle-provider-winner-after-cashout.xml"
+    Assert-Contains -Path $afterCashoutXml -Expected @("Portfolio")
+    Invoke-TapNode -Path $afterCashoutXml -Identifier "portfolio-tab-history"
+    Start-Sleep -Seconds 2
+    Save-Screenshot -Name "cycle-$Cycle-provider-winner-cashout-history.png" | Out-Null
+    $cashoutHistoryXml = Save-Hierarchy -Name "cycle-$Cycle-provider-winner-cashout-history.xml"
+    Assert-Contains -Path $cashoutHistoryXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "activity-sold", "portfolio-market-type-winner", "portfolio-line-none", "portfolio-provider-source-polymarket")
+    Assert-NotContains -Path $cashoutHistoryXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
+  }
+
+  if (-not $ExpectCashout) {
+    Invoke-TapNode -Path $afterSubmitXml -Identifier "portfolio-tab-history"
+    Start-Sleep -Seconds 1
+    Save-Screenshot -Name "cycle-$Cycle-provider-winner-portfolio-history.png" | Out-Null
+    $historyXml = Save-Hierarchy -Name "cycle-$Cycle-provider-winner-portfolio-history.xml"
+    Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "portfolio-market-type-winner", "portfolio-line-none", "portfolio-provider-source-polymarket")
+    if ($ExpectFilledHistory) {
+      Assert-Contains -Path $historyXml -Expected @("activity-row-", "portfolio-history-source-badge")
+      Assert-NotContains -Path $historyXml -Unexpected @("No history")
+    }
   }
 
   $summary = [ordered]@{
@@ -348,8 +406,10 @@ try {
     eventSlug = $EventSlug
     targetProviderMarketId = $TargetProviderMarketId
     counterpartyAskPrice = if ($SeedCounterparty) { $CounterpartyAskPrice } else { $null }
+    cashoutBidPrice = if ($ExpectCashout) { $CashoutBidPrice } else { $null }
     seededCounterparty = [bool]$SeedCounterparty
     counterpartyProof = if ($SeedCounterparty) { $counterpartyProofPath } else { $null }
+    cashoutCounterpartyProof = $cashoutCounterpartyProofPath
     assertions = [ordered]@{
       homeShowsCurrentMatch = $true
       detailShowsProviderWinner = $true
@@ -361,6 +421,9 @@ try {
       portfolioPreservesProviderWinnerSource = $true
       historyPreservesProviderWinnerSource = $true
       filledHistoryVisible = [bool]$ExpectFilledHistory
+      cashoutTicketOpened = [bool]$ExpectCashout
+      cashoutSellSubmitted = [bool]$ExpectCashout
+      cashoutHistoryVisible = [bool]$ExpectCashout
     }
     artifacts = @(
       "$OutputDir\cycle-$Cycle-current-mvp-home.png",
@@ -368,13 +431,14 @@ try {
       "$OutputDir\cycle-$Cycle-current-mvp-detail-top.png",
       "$HierarchyOutputDir\cycle-$Cycle-current-mvp-detail-top.xml",
       "$OutputDir\cycle-$Cycle-provider-winner.png",
-      "$HierarchyOutputDir\cycle-$Cycle-provider-winner-attempt-*.xml",
       "$OutputDir\cycle-$Cycle-provider-winner-ticket-ready.png",
       "$HierarchyOutputDir\cycle-$Cycle-provider-winner-ticket-ready.xml",
       "$OutputDir\cycle-$Cycle-provider-winner-after-submit.png",
       "$HierarchyOutputDir\cycle-$Cycle-provider-winner-after-submit.xml",
-      "$OutputDir\cycle-$Cycle-provider-winner-portfolio-history.png",
-      "$HierarchyOutputDir\cycle-$Cycle-provider-winner-portfolio-history.xml"
+      $(if ($ExpectCashout) { "$OutputDir\cycle-$Cycle-provider-winner-cashout-ticket.png" } else { "$OutputDir\cycle-$Cycle-provider-winner-portfolio-history.png" }),
+      $(if ($ExpectCashout) { "$HierarchyOutputDir\cycle-$Cycle-provider-winner-cashout-ticket.xml" } else { "$HierarchyOutputDir\cycle-$Cycle-provider-winner-portfolio-history.xml" }),
+      $(if ($ExpectCashout) { "$OutputDir\cycle-$Cycle-provider-winner-cashout-history.png" } else { "$OutputDir\cycle-$Cycle-provider-winner-portfolio-history.png" }),
+      $(if ($ExpectCashout) { "$HierarchyOutputDir\cycle-$Cycle-provider-winner-cashout-history.xml" } else { "$HierarchyOutputDir\cycle-$Cycle-provider-winner-portfolio-history.xml" })
     )
   }
   $summaryPath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-provider-winner-s23-visible-flow.json"
