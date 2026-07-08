@@ -930,6 +930,40 @@ Pass for stale Event Detail status honesty.
 Remaining gaps:
 Real current live match discovery/breadth is still missing, and line families remain contract fixtures.
 
+### 2026-07-08 - Cycle OA - Current MVP S23 server order proof
+
+Reference device:
+Not used. This was a Holiwyn current-service inspection and Android proof repair cycle after confirming Polymarket-backed line markets are still unavailable for the selected event.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://127.0.0.1:3002`, temporary Expo port `8308`, temporary mobile dev API key.
+
+Holiwyn actions:
+Opened Home, selected `Argentina vs. Egypt`, opened Event Detail, scrolled to Game Lines, selected a visible Spread row, opened the ticket, entered amount, swiped to submit, and verified Portfolio Orders shows an open order with line/source/token identity.
+
+Evidence:
+- `docs/mobile/harness/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-state-inspection.json`
+- `docs/mobile/harness/cycle-OA-current-mvp-home-server-order/cycle-OA-home-to-portfolio-route-journey-after-backend-restart.json`
+- `docs/mobile/harness/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-proof.json`
+- `docs/mobile/screenshots/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-home.png`
+- `docs/mobile/screenshots/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-detail-top.png`
+- `docs/mobile/screenshots/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-line-markets.png`
+- `docs/mobile/screenshots/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-spread-ticket.png`
+- `docs/mobile/screenshots/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-portfolio.png`
+
+Smoke/tests:
+Current MVP service inspection passed. Backend route proof passed after restarting backend with internal trading beta enabled. Mobile TypeScript passed. S23 visible proof passed.
+
+Result:
+Pass for current Local MVP visible Home -> Event Detail -> line ticket -> server-backed fake-token order -> Portfolio open order.
+
+Remaining gaps:
+Real provider-backed Spread/Totals/Team Total line markets remain missing; current line markets are honest `contract-fixture` rows.
+
 ### 2026-07-08 - Cycle NX - Provider line query breadth inspection
 
 Reference device:

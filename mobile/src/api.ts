@@ -1,7 +1,7 @@
 import type { AccountBalance, EventDetail, EventSummary, Market, MarketChart, MarketChartRange, OrderbookBook, PortfolioCanceledOrderItem, PortfolioHistoryItem, PortfolioRecentTradeItem, PortfolioSnapshot, PortfolioValueHistory, PortfolioValueHistoryRange, ProfilePreferences, ProfileSummary, Quote } from "./types";
 
 const trimSlash = (value: string) => value.replace(/\/+$/, "");
-const REQUEST_TIMEOUT_MS = 3500;
+const REQUEST_TIMEOUT_MS = 12000;
 
 export class PolyApi {
   baseUrl: string;

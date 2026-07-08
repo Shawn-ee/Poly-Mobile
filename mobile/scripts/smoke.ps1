@@ -681,6 +681,8 @@ try {
     @("Holiwyn", "World Cup", "Games", "home-secondary-markets-hidden-local-mvp", "Mexico vs. Ecuador")
   } elseif ($LocalMvpRouteDiscoveryDetail) {
     @("Holiwyn", "World Cup", "Games", "Futures", "EL-A Provider Breadth World Cup Live", "Breadth Home")
+  } elseif (($LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $LocalMvpHomeRouteServerFilledFlow) -and $ServerEventSlug -eq "argentina-vs-egypt") {
+    @("Holiwyn", "Argentina vs. Egypt", "Winner: Polymarket / Lines: local test")
   } elseif ($LocalMvpHomeRouteTicketFlow -or $LocalMvpHomeRouteOrderFlow -or $LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $LocalMvpHomeRouteServerFilledFlow) {
     @("Holiwyn", "EL-A Provider Breadth World Cup Live", "Breadth Home")
   } elseif ($LocalMvpHomeRealProviderServerOrderFlow) {
@@ -1190,10 +1192,16 @@ try {
         "orderbook-source-",
         "Route depth"
       )
+      $isCurrentMvpHomeRoute = (-not $LocalMvpHomeRealProviderServerOrderFlow) -and ($ServerEventSlug -eq "argentina-vs-egypt")
       $homeRouteServerCardId = if ($ServerEventSlug -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25") { "event-card-$ServerEventSlug" } else { "event-card-mobile-el-a-provider-breadth" }
       $homeRouteServerCycle = if ($LocalMvpHomeRealProviderServerOrderFlow) { "FJ" } elseif ($LocalMvpHomeRouteServerFilledFlow) { "FI" } elseif ($LocalMvpHomeRouteServerCancelFlow) { "FH" } else { "FG" }
       $homeRouteServerArtifact = if ($LocalMvpHomeRealProviderServerOrderFlow) { "cycle-FJ-real-provider-home-ticket" } elseif ($LocalMvpHomeRouteServerFilledFlow) { "cycle-FI-home-route-server-filled" } elseif ($LocalMvpHomeRouteServerCancelFlow) { "cycle-FH-home-route-server-cancel" } else { "cycle-FG-home-route-server-order" }
       $homeRouteServerScript = if ($LocalMvpHomeRealProviderServerOrderFlow) { "local-mvp-real-provider-home-server-order-proof.ps1" } elseif ($LocalMvpHomeRouteServerFilledFlow) { "local-mvp-home-route-server-filled-proof.ps1" } elseif ($LocalMvpHomeRouteServerCancelFlow) { "local-mvp-home-route-server-cancel-proof.ps1" } else { "local-mvp-home-route-server-order-proof.ps1" }
+      if ($isCurrentMvpHomeRoute) {
+        $homeRouteServerCycle = "OA"
+        $homeRouteServerArtifact = "cycle-OA-current-mvp-home-server-order"
+      }
+      Write-Host "Home route server proof slug: $ServerEventSlug; current MVP route: $isCurrentMvpHomeRoute"
       $homeRouteServerScenario = if ($LocalMvpHomeRouteServerFilledFlow) {
         "Home route-backed event opens spread ticket, submits server fake-token order, fills it, and shows server Portfolio filled activity"
       } elseif ($LocalMvpHomeRouteServerCancelFlow) {
@@ -1208,6 +1216,8 @@ try {
       $homeRouteServerHomeHierarchy = Save-UiHierarchy -Name "$homeRouteServerArtifact-home.xml"
       $homeRouteServerHomeExpected = if ($LocalMvpHomeRealProviderServerOrderFlow) {
         @("World Cup Winner", $homeRouteServerCardId)
+      } elseif ($isCurrentMvpHomeRoute) {
+        @("Argentina vs. Egypt", "Winner: Polymarket / Lines: local test", $homeRouteServerCardId)
       } else {
         @("EL-A Provider Breadth World Cup Live", "Breadth Home", "Breadth Away", $homeRouteServerCardId)
       }
@@ -1220,6 +1230,8 @@ try {
       $homeRouteServerDetailTopHierarchy = Save-UiHierarchy -Name "$homeRouteServerArtifact-detail-top.xml"
       $homeRouteServerDetailTopExpected = if ($LocalMvpHomeRealProviderServerOrderFlow) {
         @("World Cup Winner", "event-detail-price-chart", "Game Lines", "live-data-source-polymarket-gamma")
+      } elseif ($isCurrentMvpHomeRoute) {
+        @("Argentina vs. Egypt", "event-detail-price-chart", "Game Lines")
       } else {
         @("EL-A Provider Breadth World Cup Live", "event-detail-price-chart", "Game Lines")
       }
@@ -1234,6 +1246,17 @@ try {
           "event-detail-primary-outcomes",
           "event-detail-outcome-",
           "provider-source-polymarket"
+        )
+      } elseif ($isCurrentMvpHomeRoute) {
+        @(
+        "Game Lines",
+        "Spread",
+        "event-detail-outcome-spread",
+        "ticket-source-backend-market",
+        "selection-market-family-spread",
+        "selection-line-1.5",
+        "selection-period-regulation",
+        "provider-source-contract-fixture"
         )
       } else {
         @(
@@ -1284,6 +1307,8 @@ try {
 
       if ($LocalMvpHomeRealProviderServerOrderFlow) {
         Invoke-TapHierarchyNode -Path $homeRouteServerLineHierarchy -Identifier "event-detail-outcome-" -StartsWith
+      } elseif ($isCurrentMvpHomeRoute) {
+        Invoke-TapHierarchyNode -Path $homeRouteServerLineHierarchy -Identifier "event-detail-outcome-spread-0806254e-757c-403f-a180-0631c4e6b3fc-896655aa" -StartsWith
       } else {
         Invoke-TapHierarchyNode -Path $homeRouteServerLineHierarchy -Identifier "event-detail-outcome-spread-spread-yes"
       }
@@ -1302,6 +1327,19 @@ try {
           "ticket-preset-10",
           "ticket-preset-5",
           "swipe-to-submit-order"
+        )
+      } elseif ($isCurrentMvpHomeRoute) {
+        @(
+        "trade-ticket",
+        "ticket-market-type-spread",
+        "ticket-line-1.5",
+        "ticket-period-regulation",
+        "provider-source-contract-fixture",
+        "Choose an amount",
+        "ticket-preset-25",
+        "ticket-preset-50",
+        "ticket-amount-keypad",
+        "swipe-to-submit-order"
         )
       } else {
         @(
@@ -1322,25 +1360,35 @@ try {
       Assert-HierarchyContains -Path $homeRouteServerSpreadTicketHierarchy -Expected $homeRouteServerTicketExpected
       Assert-HierarchyDoesNotContain -Path $homeRouteServerSpreadTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
-      Invoke-TapHierarchyNode -Path $homeRouteServerSpreadTicketHierarchy -Identifier "ticket-preset-10"
+      $homeRouteServerPrimaryPreset = if ($isCurrentMvpHomeRoute) { "ticket-preset-25" } else { "ticket-preset-10" }
+      $homeRouteServerSecondaryPreset = if ($isCurrentMvpHomeRoute) { "ticket-preset-50" } else { "ticket-preset-5" }
+      $homeRouteServerReadyAmount = if ($isCurrentMvpHomeRoute) { '$100' } else { '$25' }
+      Invoke-TapHierarchyNode -Path $homeRouteServerSpreadTicketHierarchy -Identifier $homeRouteServerPrimaryPreset
       Start-Sleep -Milliseconds 500
       $homeRouteServerAmount10Hierarchy = Save-UiHierarchy -Name "$homeRouteServerArtifact-$homeRouteServerTicketLabel-ticket-amount-10.xml"
-      Invoke-TapHierarchyNode -Path $homeRouteServerAmount10Hierarchy -Identifier "ticket-preset-10"
+      Invoke-TapHierarchyNode -Path $homeRouteServerAmount10Hierarchy -Identifier $homeRouteServerPrimaryPreset
       Start-Sleep -Milliseconds 500
       $homeRouteServerAmount20Hierarchy = Save-UiHierarchy -Name "$homeRouteServerArtifact-$homeRouteServerTicketLabel-ticket-amount-20.xml"
-      Invoke-TapHierarchyNode -Path $homeRouteServerAmount20Hierarchy -Identifier "ticket-preset-5"
+      Invoke-TapHierarchyNode -Path $homeRouteServerAmount20Hierarchy -Identifier $homeRouteServerSecondaryPreset
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "$homeRouteServerArtifact-$homeRouteServerTicketLabel-ticket-ready.png"
       $homeRouteServerReadyHierarchy = Save-UiHierarchy -Name "$homeRouteServerArtifact-$homeRouteServerTicketLabel-ticket-ready.xml"
       $homeRouteServerReadyExpected = if ($LocalMvpHomeRealProviderServerOrderFlow) {
         @('$25', "Swipe to buy", "place-mock-order", "ticket-market-type-live", "provider-source-polymarket", "ticket-provider-token-")
+      } elseif ($isCurrentMvpHomeRoute) {
+        @($homeRouteServerReadyAmount, "Swipe to buy", "place-mock-order", "ticket-market-type-spread", "ticket-line-1.5", "ticket-period-regulation", "provider-source-contract-fixture", "ticket-provider-token-contract-argentina-vs-egypt-spread-away-1-5-home")
       } else {
         @('$25', "Swipe to buy", "place-mock-order", "ticket-market-type-spread", "ticket-line-1.5", "ticket-period-Reg. Time", "provider-source-polymarket", "provider-token-token-el-a-spread-home")
       }
       Assert-HierarchyContains -Path $homeRouteServerReadyHierarchy -Expected $homeRouteServerReadyExpected
       Assert-HierarchyDoesNotContain -Path $homeRouteServerReadyHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
-      & $adb -s $Device shell input swipe 720 2190 720 1600 700 | Out-Null
+      $submitSwipe = if ($isCurrentMvpHomeRoute) {
+        @{ x1 = 540; y1 = 2070; x2 = 540; y2 = 1500; ms = 850 }
+      } else {
+        @{ x1 = 720; y1 = 2190; x2 = 720; y2 = 1600; ms = 700 }
+      }
+      & $adb -s $Device shell input swipe $submitSwipe.x1 $submitSwipe.y1 $submitSwipe.x2 $submitSwipe.y2 $submitSwipe.ms | Out-Null
       Start-Sleep -Seconds 5
       Save-Screenshot -Name "$homeRouteServerArtifact-portfolio.png"
       $homeRouteServerPortfolioHierarchy = Save-UiHierarchy -Name "$homeRouteServerArtifact-portfolio.xml"
@@ -1359,6 +1407,28 @@ try {
           "portfolio-period-Reg. Time",
           "portfolio-provider-source-polymarket",
           "portfolio-provider-token-token-el-a-spread-home"
+        )
+      } elseif ($isCurrentMvpHomeRoute) {
+        @(
+          "Portfolio",
+          "portfolio-screen",
+          "portfolio-result-content-landing",
+          "portfolio-tab-orders",
+          "latest-order-card",
+          "open-order-row-",
+          "portfolio-chart-data-driven",
+          "portfolio-chart-source-portfolio-value-history-route",
+          "portfolio-chart-status-ready",
+          "portfolio-market-type-spread",
+          "portfolio-line-1.5",
+          "portfolio-period-regulation",
+          "portfolio-side-buy",
+          "portfolio-contract-side-no",
+          "portfolio-provider-source-contract-fixture",
+          "portfolio-provider-token-contract-argentina-vs-egypt-spread-away-1-5-home",
+          "Cancel",
+          "Order value",
+          "100 USDT"
         )
       } elseif ($LocalMvpHomeRealProviderServerOrderFlow) {
         @(

@@ -6387,3 +6387,37 @@ Temporary mock/static data:
 Future migration concern:
 
 - Replace contract-fixture line rows with provider-backed rows when an approved provider exposes attach-ready line markets; the same order/portfolio identity path should remain valid.
+
+## Cycle OA - Current MVP S23 Server Order Proof
+
+Closed or narrowed:
+
+- The stale S23 proof-targeting gap is closed: the Android proof now targets `argentina-vs-egypt`, the current Home MVP event.
+- The current MVP path is proven visibly on Samsung S23 from Home through Portfolio open order.
+- Service inspection now clearly reports the mixed data state: Polymarket-backed Regulation Winner plus `contract-fixture` line families.
+- Mobile server-order timeout no longer aborts local S23 submissions too aggressively.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total market ids for the current event.
+- Provider token ids, condition ids, price history, and source-owned line identity for those line families.
+- Broader current World Cup live/current match inventory.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- The stale Android proof route mismatch from Cycle NZ was fixed.
+- The route still honestly returns `referenceSource=contract-fixture` for line markets because real provider-backed line families are not attached.
+
+Temporary mock/static data:
+
+- No new arbitrary frontend mock data was added.
+- Existing backend-shaped `contract-fixture` line markets remain the Local MVP path for Spread/Totals/Team Total.
+- Route proof uses deterministic seeded liquidity only to verify filled order/history behavior.
+
+Future migration concern:
+
+- When real provider line markets are available, replace `contract-fixture` rows with provider rows while preserving the same selected market/line/outcome identity through ticket, order, portfolio, and history.

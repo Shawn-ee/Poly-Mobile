@@ -723,3 +723,13 @@ For every UI element or interaction, answer:
 - NZ exposes the real blocker for full Android proof: `local-mvp-home-route-server-order-proof.ps1` / smoke expectations still target the retired EL-A seed.
 - Remaining P0 for visible proof: update S23 order harness to target current `argentina-vs-egypt` feed, then rerun full visible order journey.
 - Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open.
+
+## Cycle OA Gap Tracker Update
+
+- PM-GAP-122 is closed for stale Android server-order proof targeting.
+- OA proves the current visible Local MVP path on Samsung S23: Home -> `Argentina vs. Egypt` -> Event Detail -> Spread line -> Trade Ticket -> server fake-token order -> Portfolio open order.
+- OA confirms the current service state after inspection: Regulation Winner is Polymarket-backed; Spread/Totals/Team Total are `contract-fixture` line markets.
+- OA closes the local-network order timeout issue by increasing mobile API timeout to 12 seconds.
+- Route proof after backend restart verifies filled order and Portfolio/history lifecycle with seeded liquidity.
+- Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open until Polymarket Gamma/CLOB or another approved source exposes attach-ready line markets.
+- Remaining P1: current visible S23 proof covers open order; production liquidity/fill/cashout hardening remains future work.

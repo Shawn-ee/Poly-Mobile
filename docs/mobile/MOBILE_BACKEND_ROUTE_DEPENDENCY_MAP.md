@@ -3053,3 +3053,19 @@ Cycle NZ implementation notes:
 - No schema migration was added.
 - Backend/service route readiness passed for the current MVP order lifecycle.
 - Android proof must be repaired to target `argentina-vs-egypt` instead of the old EL-A proof event.
+
+## Cycle OA - Current MVP S23 Server Order Proof
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Current MVP service inspection | Local proof script plus `/api/events` and `/api/mobile/events/:slug/live-detail` | GET/proof | Public viewing | Event-list filters and `argentina-vs-egypt` slug | Event slug/title, market source summary, line family readiness, market/outcome/source/token identity | `Event`, `Market`, `Outcome` | Existing `contract-fixture` line markets for Spread/Totals/Team Total. | Real provider-backed line markets remain missing. |
+| S23 Home and Event Detail | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` and `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing plus temporary mobile API key for app launch | Route filters and event slug | Home card copy, detail markets, `referenceSource`, line, period, outcome ids, provider token ids | `Event`, `Market`, `Outcome` | Existing `contract-fixture` line rows. | Broader current live World Cup inventory and real provider-backed line families. |
+| Fake-token server order | `/api/orders` | POST | Mobile API key with order scopes; local backend requires internal trading beta enabled and kill switch disabled | `marketId`, `outcomeId`, `side=BUY`, selected contract side, price, size, selection identity | Order id/status, selection echo, open order state | `User`, `ApiCredential`, `UserBalance`, `Order`, related order accounting models | None added. S23 proof uses existing local line market route data. | None for open-order Local MVP proof. |
+| Portfolio open order | `/api/portfolio` | GET | Mobile API key | None | Open order, line, period, market family, contract side, provider source, provider token, order value | `Order`, `Market`, `Outcome`, portfolio read model/accounting tables | None added. | None for open-order Local MVP proof. |
+| Route-level filled order/history check | `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | POST/GET | Temporary proof API key | Seeded maker liquidity plus order payload | Filled order, position, recent trade/history identity | `Order`, `Trade`, portfolio/history read models | Deterministic proof liquidity only. | Production liquidity/pricing hardening remains future work. |
+
+Cycle OA implementation notes:
+
+- No schema migration was added.
+- Mobile timeout was increased to 12 seconds to tolerate S23 local-network server-order latency.
+- The Android proof harness now targets the current `argentina-vs-egypt` feed instead of retired EL-A proof data.

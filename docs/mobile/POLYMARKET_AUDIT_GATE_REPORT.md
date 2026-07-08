@@ -5324,3 +5324,39 @@ Decision:
 - Pass/fail: Partial, not a complete Android UI gate pass.
 - Service path is ready for Local MVP internal testing with contract-fixture lines.
 - Next cycle should repair the S23 full-order proof harness and rerun the visible journey.
+
+## Cycle OA
+
+Gate status: Pass for current Local MVP S23 server-order journey
+
+Scope: Repair the Android proof harness after Cycle NZ so it targets the current `argentina-vs-egypt` feed and proves the visible server-order path on Samsung S23.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OA-current-mvp-home-server-order.md`
+- `docs/mobile/harness/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-state-inspection.json`
+- `docs/mobile/harness/cycle-OA-current-mvp-home-server-order/cycle-OA-home-to-portfolio-route-journey-after-backend-restart.json`
+- `docs/mobile/harness/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-proof.json`
+- `docs/mobile/screenshots/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-home.png`
+- `docs/mobile/screenshots/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-detail-top.png`
+- `docs/mobile/screenshots/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-line-markets.png`
+- `docs/mobile/screenshots/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-spread-ticket.png`
+- `docs/mobile/screenshots/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-OA-current-mvp-home-server-order/cycle-OA-current-mvp-home-server-order-portfolio.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OA-P0-01 | P0 | Pass | Service inspection shows `Argentina vs. Egypt`, provider-backed Regulation Winner, and `contract-fixture` line families. | Fix service inspection/provider summary. |
+| OA-P0-02 | P0 | Pass | S23 Home proof shows the current MVP event and source labels. | Fix Home route/smoke target. |
+| OA-P0-03 | P0 | Pass | S23 Event Detail proof reaches Game Lines with chat/orderbook hidden. | Fix Event Detail smoke selectors or UI regression. |
+| OA-P0-04 | P0 | Pass | S23 ticket proof shows selected Spread line, period, source, and token identity. | Fix ticket selection identity. |
+| OA-P0-05 | P0 | Pass | S23 Portfolio proof shows the submitted open order with value, source, token, line, period, side, and cancel action. | Fix order submit, portfolio route, or smoke selectors. |
+| OA-P0-06 | P0 | Pass | Route proof verifies filled order/portfolio/history lifecycle after backend restart. | Fix backend beta env, order route, liquidity seeding, or portfolio/history reads. |
+
+Decision:
+
+- Pass/fail: Pass for the current Local MVP visible server-order path.
+- Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open.
+- Remaining P1: production liquidity/pricing hardening remains future work; current visible S23 proof covers open order, while route proof covers filled order/history with seeded liquidity.

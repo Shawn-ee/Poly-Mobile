@@ -7870,3 +7870,50 @@ Known limitations:
 
 - Android UI order proof remains blocked by stale proof harness expectations, not by the service route.
 - Real provider-backed Spread/Totals/Team Total lines remain unavailable; the passing order path uses backend-shaped contract fixtures.
+
+## Cycle OA - Current MVP S23 Server Order Proof
+
+Feature/page worked on:
+
+- Current Local MVP visible journey: Home -> Event Detail -> Spread line -> Trade Ticket -> fake-token server order -> Portfolio/open order.
+
+Frontend/harness files touched:
+
+- `mobile/src/api.ts`
+- `mobile/scripts/local-mvp-home-route-server-order-proof.ps1`
+- `mobile/scripts/smoke.ps1`
+- `docs/mobile/audits/cycle-OA-current-mvp-home-server-order.md`
+
+Important functions/services touched:
+
+- Mobile API timeout handling through `apiFetch()`.
+- S23 proof wrapper for the current MVP Home route.
+- Android smoke selectors for current Home, Event Detail, Trade Ticket, and Portfolio server-order proof.
+
+User interactions supported/proven:
+
+- User opens Home and sees `Argentina vs. Egypt`.
+- User opens Event Detail and scrolls to Game Lines.
+- User selects a visible Spread line.
+- User enters amount through the ticket presets/keypad.
+- User swipes to place a fake-token server-backed order.
+- User lands on Portfolio Orders and sees the open order with line, period, side, source, and token identity preserved.
+
+State transitions:
+
+- Temporary mobile API credential is created for S23 proof.
+- Ticket submit posts to `/api/orders`.
+- Portfolio reads back the resulting open order through `/api/portfolio`.
+- Separate route proof verifies a filled order and recent history path after backend restart.
+
+Validation:
+
+- Current MVP service inspection passed.
+- Backend route journey proof passed after running local backend with internal trading beta enabled and kill switch disabled.
+- Mobile TypeScript passed.
+- Samsung S23 visible proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- Regulation Winner is Polymarket-backed, but Spread/Totals/Team Total remain `contract-fixture` line markets.
+- S23 visible proof creates an open order for the selected visible spread row; filled position/history behavior is covered by route proof with seeded liquidity.
