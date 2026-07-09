@@ -8688,3 +8688,32 @@ Temporary mock/static data:
 Future migration concern:
 
 - When real Polymarket line markets are found/imported, the fixture-shaped line rows should be replaced by provider-backed markets without changing the mobile ticket/order/portfolio identity contract.
+
+## Cycle RJ - Portfolio Team Total Wording Cleanup
+
+Closed or narrowed:
+
+- Portfolio/history no longer derives the visible Team Total title from the generic market group display label.
+- The visible label now uses existing selection/outcome identity and renders `Argentina Over 1.5 goals` in the S23 History proof.
+- Cycle proof paths can now use a cycle label, avoiding stale RI artifact names for later current-route proof cycles.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed current-match Spread/Totals/Team Total markets.
+- Native app Google OAuth callback/session/logout state.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- No new mock data added.
+
+Future migration concern:
+
+- When real provider-backed Team Total rows arrive, they should continue populating `referenceOutcomeLabel`/outcome identity so Portfolio/history wording remains readable without another UI special case.

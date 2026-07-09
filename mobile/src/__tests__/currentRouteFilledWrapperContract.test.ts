@@ -26,7 +26,7 @@ describe("Current route server-filled wrapper contract", () => {
 
     expect(smoke).toContain("[switch]$LocalMvpCurrentRouteServerFilledFlow");
     expect(smoke).toContain('"local-mvp-current-route-server-filled-proof.ps1"');
-    expect(smoke).toContain('"cycle-RI-local-mvp-current-route-server-filled-flow-proof.json"');
+    expect(smoke).toContain('"cycle-$mvpRouteServerCycle-local-mvp-current-route-server-filled-flow-proof.json"');
     expect(block).toContain('"Argentina vs. Egypt"');
     expect(block).toContain('"ARG"');
     expect(block).toContain('"EGY"');
@@ -35,7 +35,7 @@ describe("Current route server-filled wrapper contract", () => {
     expect(smoke).toContain('"regulation-winner-provider-backed"');
     expect(smoke).toContain('"line-source-contract-fixture"');
     expect(smoke).toContain('"winner source is Polymarket-backed"');
-    expect(block).toContain('"Argentina Over 1.5"');
+    expect(block).toContain('"Argentina Over 1.5 goals"');
     expect(block).toContain("'To win $144.23'");
   });
 });

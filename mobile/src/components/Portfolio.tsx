@@ -168,7 +168,11 @@ const displayPositionChoice = (item: { outcome: string; selection?: TicketSelect
     return `${side} ${line} total goals`;
   }
   if (item.selection?.marketType === "team-total" && line) {
-    return `${compact} team goals`;
+    const outcomeLabel = (item.selection.referenceOutcomeLabel ?? item.outcome ?? compact).replace(/\s+(RT|1H|2H)$/i, "");
+    if (/\b(over|under)\b/i.test(outcomeLabel)) {
+      return /\bgoals?\b/i.test(outcomeLabel) ? outcomeLabel : `${outcomeLabel} goals`;
+    }
+    return `${outcomeLabel} ${line} goals`;
   }
   return compact;
 };

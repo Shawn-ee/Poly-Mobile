@@ -56,7 +56,8 @@ describe("Route server-filled wrapper env contract", () => {
     expect(routeBlock).toContain('"selection-period-regulation"');
     expect(routeBlock).toContain('"token-el-a-spread-reg-15-home"');
     expect(routeBlock).toContain('"token-el-a-team-total-over"');
-    expect(routeBlock).toContain('"Team Total Goals team goals"');
+    expect(routeBlock).toContain('"Breadth Home Over 1.5 goals"');
+    expect(routeBlock).toContain('"Argentina Over 1.5 goals"');
     expect(routeBlock).toContain("'Cost $75'");
     expect(routeBlock).toContain("'To win $144.23'");
     expect(smoke).toContain('"portfolio-history-fill-count-1"');

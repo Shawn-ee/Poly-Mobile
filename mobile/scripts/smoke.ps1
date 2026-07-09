@@ -6,6 +6,7 @@ param(
   [string]$BackendBaseUrl = "http://127.0.0.1:3002",
   [string]$ServerEventSlug = "world-cup-2026-curacao-vs-cote-divoire-2026-06-25",
   [string]$HierarchyOutputDir = "docs\mobile\harness",
+  [string]$CycleLabel = "",
   [switch]$SkipPackageClear,
   [switch]$Deep,
   [switch]$OrderFailure,
@@ -5418,7 +5419,7 @@ try {
 
       if ($LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpCurrentRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow) {
         $mvpRouteServerFilledFamily = if ($LocalMvpRouteServerFilledTeamTotalFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpCurrentRouteServerFilledFlow) { "team-total" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "totals" } else { "spread" }
-        $mvpRouteServerCycle = if ($LocalMvpCurrentRouteServerFilledFlow) { "RI" } elseif ($LocalMvpRouteServerFilledTeamTotalFlow) { "EZ" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "EY" } elseif ($LocalMvpRouteServerFilledFlow) { "EX" } elseif ($LocalMvpRouteServerCancelFlow) { "EW" } else { "EV" }
+        $mvpRouteServerCycle = if ($CycleLabel) { $CycleLabel.ToUpperInvariant() } elseif ($LocalMvpCurrentRouteServerFilledFlow) { "RI" } elseif ($LocalMvpRouteServerFilledTeamTotalFlow) { "EZ" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "EY" } elseif ($LocalMvpRouteServerFilledFlow) { "EX" } elseif ($LocalMvpRouteServerCancelFlow) { "EW" } else { "EV" }
         $mvpRouteServerScenario = if ($LocalMvpRouteServerFilledTeamTotalFlow) {
           "Local MVP Android route-backed server fake-token team-total filled trade/history flow with orderbook hidden by default"
         } elseif ($LocalMvpCurrentRouteServerFilledFlow) {
@@ -5436,7 +5437,7 @@ try {
         $mvpRouteServerProofName = if ($LocalMvpRouteServerFilledTeamTotalFlow) {
           "cycle-EZ-local-mvp-route-server-filled-team-total-flow-proof.json"
         } elseif ($LocalMvpCurrentRouteServerFilledFlow) {
-          "cycle-RI-local-mvp-current-route-server-filled-flow-proof.json"
+          "cycle-$mvpRouteServerCycle-local-mvp-current-route-server-filled-flow-proof.json"
         } elseif ($LocalMvpRouteServerFilledTotalsFlow) {
           "cycle-EY-local-mvp-route-server-filled-totals-flow-proof.json"
         } elseif ($LocalMvpRouteServerFilledFlow) {
@@ -5484,7 +5485,7 @@ try {
         $mvpRouteTicketEventTitle = if ($LocalMvpCurrentRouteServerFilledFlow) { "Argentina vs Egypt" } else { $mvpRouteEventTitle }
         $mvpRoutePortfolioScore = if ($LocalMvpCurrentRouteServerFilledFlow) { "ARG 0 - EGY 0" } else { "BHO 0 - BAW 0" }
         $mvpRoutePortfolioHistoryEvent = if ($LocalMvpCurrentRouteServerFilledFlow) { "ARG vs EGY" } else { "BHO vs BAW" }
-        $mvpRoutePortfolioContext = if ($LocalMvpCurrentRouteServerFilledFlow) { "Argentina Over 1.5" } elseif ($LocalMvpRouteServerFilledTeamTotalFlow -or $LocalMvpRouteServerFilledFlow) { "Team Total Goals team goals" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "Over 2.5 total goals" } else { "Spread" }
+        $mvpRoutePortfolioContext = if ($LocalMvpCurrentRouteServerFilledFlow) { "Argentina Over 1.5 goals" } elseif ($LocalMvpRouteServerFilledTeamTotalFlow -or $LocalMvpRouteServerFilledFlow) { "Breadth Home Over 1.5 goals" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "Over 2.5 total goals" } else { "Spread" }
         $mvpRoutePortfolioCost = if ($LocalMvpCurrentRouteServerFilledFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow) { 'Cost $75' } else { 'Cost $31.2' }
         $mvpRoutePortfolioToWin = if ($LocalMvpCurrentRouteServerFilledFlow) { 'To win $144.23' } elseif ($LocalMvpRouteServerFilledFlow) { 'To win $144.23' } elseif ($LocalMvpRouteServerFilledTotalsFlow) { 'To win $163.04' } else { 'To win $60' }
         $mvpRouteLineExpected = @(

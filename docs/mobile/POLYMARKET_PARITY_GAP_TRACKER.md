@@ -1166,3 +1166,13 @@ For every UI element or interaction, answer:
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable after provider breadth scan found zero attach-ready line markets.
 - Remaining P1: Portfolio/history Team Total wording should be cleaned without changing order/portfolio identity contracts.
 - Remaining P1: native Google OAuth callback/session/logout remains separate auth work.
+
+## Cycle RJ Gap Tracker Update
+
+- PM-GAP-164 is opened and closed for Portfolio/history Team Total wording after a current-route filled order.
+- RJ changes visible Team Total labels from generic market-group wording to selected outcome wording, proven as `Argentina Over 1.5 goals`.
+- RJ preserves the existing ticket/order/portfolio identity contract: market id, outcome id, line, period, source, and provider token remain in the S23 XML.
+- RJ adds cycle-labelled current-route proof output so later cycles do not reuse RI artifact names.
+- Unresolved P0 for RJ scope: 0.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Remaining P1: native Google OAuth callback/session/logout remains separate auth work.

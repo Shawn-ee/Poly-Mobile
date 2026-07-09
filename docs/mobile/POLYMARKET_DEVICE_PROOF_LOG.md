@@ -2557,3 +2557,34 @@ Pass for RI current route server-filled Local MVP proof.
 
 Remaining gaps:
 Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable; RI uses future-backend-shaped contract fixtures for line rows. Native Google OAuth callback/session/logout remains separate auth work.
+
+## Cycle RJ - Portfolio Team Total Wording Cleanup
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket reference-device action. This cycle cleaned a Holiwyn Local MVP Portfolio/history wording gap discovered during RI proof.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM_S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go proof on port `8336`. Backend health OK on `http://127.0.0.1:3002`; Samsung runtime API base `http://172.16.200.14:3002`. Order mode `server`; market data mode `server`.
+
+Holiwyn actions:
+Repeated the current-route Local MVP flow: Home, Argentina vs. Egypt Event Detail, Game Lines, blank Player Props, Argentina Over 1.5 Team Total ticket, `$75` swipe buy, Portfolio, Orders, and History.
+
+Evidence:
+- `docs/mobile/harness/cycle-RJ-portfolio-team-total-wording/cycle-RJ-local-mvp-current-route-server-filled-flow-proof.json`
+- `docs/mobile/screenshots/cycle-RJ-portfolio-team-total-wording/cycle-RJ-holiwyn-route-server-mvp-portfolio-history.png`
+- `docs/mobile/harness/cycle-RJ-portfolio-team-total-wording/cycle-RJ-holiwyn-route-server-mvp-portfolio-history.xml`
+
+Smoke/tests:
+Mobile typecheck passed. Focused mobile vitest suite passed. S23 current-route filled flow proof passed.
+
+Result:
+Pass for RJ Portfolio Team Total wording cleanup.
+
+Remaining gaps:
+Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable. Native Google OAuth callback/session/logout remains separate auth work.
