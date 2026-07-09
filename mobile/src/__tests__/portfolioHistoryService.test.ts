@@ -500,4 +500,55 @@ describe("portfolio history activity mapping", () => {
       }),
     ]);
   });
+
+  test("preserves parent event title for line-market recent trade activity", () => {
+    expect(
+      recentTradesToActivity([
+        {
+          id: "team-total-trade-1",
+          market: {
+            id: "argentina-egypt-team-total",
+            title: "Team Totals",
+            eventTitle: "Argentina vs. Egypt",
+            eventSlug: "argentina-vs-egypt",
+            status: "ACTIVE",
+          },
+          outcome: {
+            id: "argentina-over-15",
+            name: "Argentina Over 1.5",
+          },
+          selection: {
+            marketId: "argentina-egypt-team-total",
+            outcomeId: "argentina-over-15",
+            marketGroupId: "team-totals",
+            marketType: "team-total",
+            line: "1.5",
+            period: "regulation",
+            side: "yes",
+            displayLabel: "Team Totals",
+            referenceSource: "contract-fixture",
+            externalMarketId: "contract-argentina-vs-egypt-team-total-home-1-5",
+            referenceTokenId: "contract-argentina-vs-egypt-team-total-home-1-5-over",
+            referenceOutcomeLabel: "Argentina Over 1.5",
+          },
+          side: "BUY",
+          shares: 144.23,
+          cost: 75,
+          fee: 0,
+          createdAt: "2026-07-09T10:20:00.000Z",
+        },
+      ]),
+    ).toEqual([
+      expect.objectContaining({
+        title: "Team Totals",
+        eventTitle: "Argentina vs. Egypt",
+        outcome: "Argentina Over 1.5",
+        selection: expect.objectContaining({
+          marketType: "team-total",
+          line: "1.5",
+          referenceSource: "contract-fixture",
+        }),
+      }),
+    ]);
+  });
 });

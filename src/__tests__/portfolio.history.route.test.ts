@@ -428,6 +428,10 @@ describe("GET /api/portfolio/history canceled orders", () => {
       limitSide: "bid",
       limitShares: 480,
     };
+    const normalizedSellBidTotalsSelection = {
+      ...sellBidTotalsSelection,
+      marketType: "totals",
+    };
     const totalsMarket = {
       id: "market-eo-totals",
       title: "Route Home vs Route Away total goals",
@@ -497,12 +501,12 @@ describe("GET /api/portfolio/history canceled orders", () => {
     expect(body.canceledOrders[0]).toEqual(expect.objectContaining({
       id: "order-eo-canceled-sell",
       side: "SELL",
-      selection: sellBidTotalsSelection,
+      selection: normalizedSellBidTotalsSelection,
     }));
     expect(body.recentTrades[0]).toEqual(expect.objectContaining({
       id: "trade-eo-sell-filled",
       side: "SELL",
-      selection: sellBidTotalsSelection,
+      selection: normalizedSellBidTotalsSelection,
     }));
     expect(body.canceledOrders[0].selection.marketGroupId).toBe("totals");
     expect(body.recentTrades[0].selection.limitSide).toBe("bid");

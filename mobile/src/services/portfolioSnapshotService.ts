@@ -94,6 +94,7 @@ export const loadPortfolioSnapshot = async (api: PolyApi): Promise<PortfolioSnap
       marketId: position.market.id,
       outcomeId: position.outcomeId,
       title: position.market.title,
+      ...(position.market.eventTitle ? { eventTitle: position.market.eventTitle } : {}),
       outcome: position.outcome,
       selection: selectionFromBackend(position.selection),
       side: "buy",
@@ -111,6 +112,7 @@ export const loadPortfolioSnapshot = async (api: PolyApi): Promise<PortfolioSnap
     openOrders: snapshot.openOrders.map((order) => ({
       id: order.id,
       title: order.market.title,
+      ...(order.market.eventTitle ? { eventTitle: order.market.eventTitle } : {}),
       outcome: order.outcome.name,
       selection: selectionFromBackend(order.selection),
       side: order.side === "SELL" ? "sell" : "buy",

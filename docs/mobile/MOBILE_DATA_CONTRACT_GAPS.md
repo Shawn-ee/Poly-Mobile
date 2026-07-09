@@ -8657,3 +8657,34 @@ Temporary mock/static data:
 Future migration concern:
 
 - The current Portfolio team-total display text is compact but awkward (`Team Total Goals team goals`); a future visible UI cleanup should improve wording without changing the provider/order contract.
+
+## Cycle RI - Current Route Server-Filled MVP Proof
+
+Closed or narrowed:
+
+- The current `argentina-vs-egypt` Home/Event Detail route can be used for a server-mode S23 order proof.
+- `/api/portfolio` and `/api/portfolio/history` now return parent `eventTitle` / `eventSlug` for market objects consumed by mobile line-market rows.
+- Portfolio positions and history now preserve parent event context, so Team Total rows display the match context instead of deriving bad context from a line-market title.
+- Proof seeding now cleans stale fillable proof asks for the same current-route market/outcome before creating a fresh maker ask, preventing repeated stale fills from polluting History.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real Polymarket-backed current-match Spread/Totals/Team Total market ids, outcome ids, provider token ids, chart history, and prices.
+- Native app Google OAuth callback/session/logout state.
+
+Schema mismatch:
+
+- No schema mismatch was introduced. Parent event title/slug are response contract additions derived from existing `Market -> Event` relations.
+
+Route mismatch:
+
+- No route mismatch was introduced for current route order placement, Portfolio, or History.
+
+Temporary mock/static data:
+
+- Current route Regulation Winner is provider-backed.
+- Current route Spread/Totals/Team Total rows are contract fixtures matching the intended backend shape because the provider breadth scan found zero attach-ready Polymarket line markets.
+
+Future migration concern:
+
+- When real Polymarket line markets are found/imported, the fixture-shaped line rows should be replaced by provider-backed markets without changing the mobile ticket/order/portfolio identity contract.

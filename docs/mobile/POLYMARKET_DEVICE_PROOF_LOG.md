@@ -2517,3 +2517,43 @@ Pass for RH route-backed Team Total filled order proof.
 
 Remaining gaps:
 Production live World Cup provider mappings still need real Gamma/CLOB discovery beyond disposable proof markets. Portfolio team-total wording should be cleaned in a future visible UI cycle. Native Google OAuth callback/session/logout remains separate auth work.
+
+## Cycle RI - Current Route Server-Filled MVP Proof
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket reference-device action. This cycle validated the Holiwyn Local MVP retail flow on the current route after provider readiness inspection found provider-backed winner markets but no attach-ready provider line markets.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM_S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go proof on port `8335`. Backend health OK on `http://127.0.0.1:3002`; Samsung runtime API base `http://172.16.200.14:3002`. Order mode `server`; market data mode `server`.
+
+Holiwyn actions:
+Restored `argentina-vs-egypt`, seeded contract-shaped line markets for the current route, cleaned stale fillable proof asks, opened the current match on S23, verified provider-backed Regulation Winner and contract-fixture Game Lines, verified Player Props blank MVP state, opened Argentina Over 1.5 Team Total, entered `$75`, swiped to buy, landed in Portfolio, verified no open orders after full fill, and verified one `$75` filled History activity preserving line/source/token identity.
+
+Evidence:
+- `docs/mobile/harness/cycle-RI-current-mvp-inspection/cycle-RI-current-mvp-inspection.json`
+- `docs/mobile/harness/cycle-RI-provider-line-breadth-scan/cycle-RI-provider-line-breadth-scan.json`
+- `docs/mobile/harness/cycle-RI-current-route-server-filled/cycle-RI-current-match-restore.json`
+- `docs/mobile/harness/cycle-RI-current-route-server-filled/cycle-RI-current-match-line-markets.json`
+- `docs/mobile/harness/cycle-RI-current-route-server-filled/cycle-RI-current-route-counterparty.json`
+- `docs/mobile/harness/cycle-RI-current-route-server-filled/cycle-RI-local-mvp-current-route-server-filled-flow-proof.json`
+- `docs/mobile/screenshots/cycle-RI-current-route-server-filled/cycle-RI-holiwyn-route-server-mvp-line-markets.png`
+- `docs/mobile/screenshots/cycle-RI-current-route-server-filled/cycle-RI-holiwyn-route-server-mvp-team-total-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-RI-current-route-server-filled/cycle-RI-holiwyn-route-server-mvp-team-total-ticket-swipe-progress.png`
+- `docs/mobile/screenshots/cycle-RI-current-route-server-filled/cycle-RI-holiwyn-route-server-mvp-portfolio.png`
+- `docs/mobile/screenshots/cycle-RI-current-route-server-filled/cycle-RI-holiwyn-route-server-mvp-portfolio-orders.png`
+- `docs/mobile/screenshots/cycle-RI-current-route-server-filled/cycle-RI-holiwyn-route-server-mvp-portfolio-history.png`
+
+Smoke/tests:
+Mobile typecheck passed. Focused mobile vitest suite passed. Backend portfolio open-orders/history Jest tests passed. S23 current-route filled flow proof passed.
+
+Result:
+Pass for RI current route server-filled Local MVP proof.
+
+Remaining gaps:
+Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable; RI uses future-backend-shaped contract fixtures for line rows. Native Google OAuth callback/session/logout remains separate auth work.

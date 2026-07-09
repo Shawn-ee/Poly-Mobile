@@ -63,6 +63,7 @@ param(
   [switch]$LocalMvpRouteServerOrderFlow,
   [switch]$LocalMvpRouteServerCancelFlow,
   [switch]$LocalMvpRouteServerFilledFlow,
+  [switch]$LocalMvpCurrentRouteServerFilledFlow,
   [switch]$LocalMvpRouteServerFilledTotalsFlow,
   [switch]$LocalMvpRouteServerFilledTeamTotalFlow,
   [switch]$TradeTicketScreenProofOnly,
@@ -127,6 +128,8 @@ if ($LocalMvpRouteStatusFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteServerCancelFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpRouteServerFilledFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteServerFilledFlow -TradeTicketScreenProofOnly:$($TradeTicketScreenProofOnly.IsPresent) -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+} elseif ($LocalMvpCurrentRouteServerFilledFlow) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpCurrentRouteServerFilledFlow -TradeTicketScreenProofOnly:$($TradeTicketScreenProofOnly.IsPresent) -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpRouteServerFilledTotalsFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteServerFilledTotalsFlow -TradeTicketScreenProofOnly:$($TradeTicketScreenProofOnly.IsPresent) -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpRouteServerFilledTeamTotalFlow) {

@@ -244,6 +244,8 @@ export type PortfolioHistoryItem = {
   market: {
     id: string;
     title: string;
+    eventTitle?: string | null;
+    eventSlug?: string | null;
     status: string;
     resolveTime: string | null;
     resolvedOutcomeId: string | null;
@@ -263,6 +265,8 @@ export type PortfolioCanceledOrderItem = {
   market: {
     id: string;
     title: string;
+    eventTitle?: string | null;
+    eventSlug?: string | null;
     status: string;
   };
   outcome: {
@@ -303,6 +307,8 @@ export type PortfolioRecentTradeItem = {
   market: {
     id: string;
     title: string;
+    eventTitle?: string | null;
+    eventSlug?: string | null;
     status: string;
   };
   outcome: {
@@ -340,6 +346,8 @@ export type PortfolioPositionItem = {
   market: {
     id: string;
     title: string;
+    eventTitle?: string | null;
+    eventSlug?: string | null;
     status: string;
     resolveTime: string | null;
     createdAt: string;
@@ -383,6 +391,8 @@ export type PortfolioOpenOrderItem = {
   market: {
     id: string;
     title: string;
+    eventTitle?: string | null;
+    eventSlug?: string | null;
     status: string;
   };
   outcome: {

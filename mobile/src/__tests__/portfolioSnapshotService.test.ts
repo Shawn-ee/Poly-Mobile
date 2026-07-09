@@ -300,6 +300,66 @@ describe("portfolio snapshot service", () => {
     });
   });
 
+  test("preserves parent event titles for line-market portfolio rows", async () => {
+    const getPortfolio = vi.fn(async () =>
+      snapshot({
+        positions: [
+          {
+            market: {
+              id: "argentina-egypt-team-total",
+              title: "Team Totals",
+              eventTitle: "Argentina vs. Egypt",
+              eventSlug: "argentina-vs-egypt",
+              status: "ACTIVE",
+              resolveTime: null,
+              createdAt: "2026-07-07T18:30:00.000Z",
+            },
+            outcomeId: "argentina-over-15",
+            outcome: "Argentina Over 1.5",
+            selection: {
+              marketId: "argentina-egypt-team-total",
+              outcomeId: "argentina-over-15",
+              marketGroupId: "team-totals",
+              marketType: "team-total",
+              line: "1.5",
+              period: "regulation",
+              side: "yes",
+              displayLabel: "Team Totals",
+              referenceSource: "contract-fixture",
+              externalMarketId: "contract-argentina-vs-egypt-team-total-home-1-5",
+              referenceTokenId: "contract-argentina-vs-egypt-team-total-home-1-5-over",
+              referenceOutcomeLabel: "Argentina Over 1.5",
+            },
+            shares: 144.23,
+            avgCost: 0.52,
+            currentPrice: 0.52,
+            valueTokens: 75,
+            costBasisTokens: 75,
+            totalCostBasisTokens: 75,
+            pnlTokens: 0,
+          },
+        ],
+        openOrders: [],
+      }),
+    );
+    const api = { getPortfolio } as unknown as PolyApi;
+
+    await expect(loadPortfolioSnapshot(api)).resolves.toMatchObject({
+      positions: [
+        {
+          title: "Team Totals",
+          eventTitle: "Argentina vs. Egypt",
+          outcome: "Argentina Over 1.5",
+          selection: {
+            marketType: "team-total",
+            line: "1.5",
+            referenceSource: "contract-fixture",
+          },
+        },
+      ],
+    });
+  });
+
   test("preserves backend advance selection labels for positions", async () => {
     const getPortfolio = vi.fn(async () =>
       snapshot({

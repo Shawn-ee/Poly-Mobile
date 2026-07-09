@@ -28,7 +28,11 @@ export async function GET(request: NextRequest) {
     where: { userId, shares: { not: 0 } },
     include: {
       outcome: true,
-      market: true,
+      market: {
+        include: {
+          event: { select: { slug: true, title: true } },
+        },
+      },
     },
   });
   const positionSelectionOrders = positions.length
@@ -87,6 +91,7 @@ export async function GET(request: NextRequest) {
         select: {
           id: true,
           title: true,
+          event: { select: { slug: true, title: true } },
           status: true,
           marketGroupKey: true,
           marketType: true,
@@ -152,6 +157,8 @@ export async function GET(request: NextRequest) {
       market: {
         id: position.market.id,
         title: position.market.title,
+        eventTitle: position.market.event?.title ?? null,
+        eventSlug: position.market.event?.slug ?? null,
         status: position.market.status,
         resolveTime: position.market.resolveTime,
         createdAt: position.market.createdAt,
@@ -191,6 +198,8 @@ export async function GET(request: NextRequest) {
     market: {
       id: order.market.id,
       title: order.market.title,
+      eventTitle: order.market.event?.title ?? null,
+      eventSlug: order.market.event?.slug ?? null,
       status: order.market.status,
     },
     outcome: {
