@@ -23,6 +23,7 @@ type AccountCopy = {
   loginConnected: string;
   loginUnavailable: string;
   loginGoogleBody: string;
+  loginGoogleConnected: string;
   preferences: string;
   languagePreference: string;
   ticketDefaultPreference: string;
@@ -113,8 +114,22 @@ export function AccountScreen({
         </View>
       )}
 
-      {!signedIn && (
-        <View accessibilityLabel="account-login-card" testID="account-login-card" style={styles.loginCard}>
+      <View
+        accessibilityLabel={signedIn ? "account-login-card account-login-google-connected" : "account-login-card"}
+        testID="account-login-card"
+        style={styles.loginCard}
+      >
+        {signedIn ? (
+          <View
+            accessibilityLabel="account-login-google-connected"
+            testID="account-login-google-connected"
+            style={styles.connectedGoogleRow}
+          >
+            <Ionicons name="logo-google" size={20} color="#dbeafe" />
+            <Text style={styles.connectedGoogleText}>{t.loginGoogleConnected}</Text>
+            <Ionicons name="checkmark-circle" size={20} color="#22c55e" />
+          </View>
+        ) : (
           <Pressable
             accessibilityLabel="account-login-google"
             accessibilityRole="button"
@@ -125,9 +140,9 @@ export function AccountScreen({
             <Ionicons name="logo-google" size={20} color="#111827" />
             <Text style={styles.googleButtonText}>{t.loginMethodGoogle}</Text>
           </Pressable>
-          <Text style={styles.loginBody}>{t.loginGoogleBody}</Text>
-        </View>
-      )}
+        )}
+        <Text style={styles.loginBody}>{signedIn ? t.loginConnected : t.loginGoogleBody}</Text>
+      </View>
 
       <View style={styles.balanceCard}>
         <View>
@@ -225,6 +240,8 @@ const styles = StyleSheet.create({
   googleButton: { minHeight: 54, borderRadius: 13, backgroundColor: "#f8fafc", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10 },
   googleButtonPressed: { opacity: 0.82, transform: [{ scale: 0.99 }] },
   googleButtonText: { color: "#111827", fontSize: 17, fontWeight: "900" },
+  connectedGoogleRow: { minHeight: 54, borderRadius: 13, borderWidth: 1, borderColor: "#263247", backgroundColor: "#0f172a", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10 },
+  connectedGoogleText: { color: "#e5e7eb", fontSize: 17, fontWeight: "900" },
   loginBody: { color: "#94a3b8", fontSize: 13, fontWeight: "700", lineHeight: 19 },
   balanceCard: { marginTop: 14, padding: 16, borderRadius: 14, backgroundColor: "#0f1f35", borderWidth: 1, borderColor: "#28456b", flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   cardLabel: { color: "#93c5fd", fontWeight: "900" },

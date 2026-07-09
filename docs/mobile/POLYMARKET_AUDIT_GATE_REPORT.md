@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle QI
+
+Gate status: Pass for focused Account Google status visibility; not a pass for full Google OAuth/session parity.
+
+Scope: Portfolio -> Account auth entry/status visibility.
+
+Decision:
+
+- P0 failed: 0 for focused QI scope.
+- Implemented change: Account keeps a Google auth card visible in both states. Signed-out shows the existing `Continue with Google` button; signed-in/profile-loaded shows `Google connected`.
+- Runtime finding: S23 XML contains `account-login-google` for signed-out Account and `account-login-google-connected` for signed-in Account.
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, passed signed-out and signed-in Account proof.
+- P1 remaining: real mobile Google OAuth callback/session/logout proof once backend auth environment is configured.
+- Evidence: `docs/mobile/harness/cycle-QI-account-google-status/cycle-QI-account-google-status-proof.json`; screenshots/XML in `docs/mobile/screenshots/cycle-QI-account-google-status/` and `docs/mobile/harness/cycle-QI-account-google-status/`.
+
 ## Cycle QH
 
 Gate status: Pass for focused chart status UI clarity and provider-backed winner buy/cashout regression.

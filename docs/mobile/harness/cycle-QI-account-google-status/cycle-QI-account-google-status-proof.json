@@ -1,0 +1,12 @@
+{
+    "feature":  "Account Google status visibility",
+    "model":  "SM-S911U1",
+    "backendRoutesChanged":  false,
+    "androidProof":  "pass",
+    "signedInProof":  "docs/mobile/harness/cycle-QI-account-google-status/cycle-QI-account-google-connected.xml",
+    "restoredProof":  "docs/mobile/harness/cycle-QI-account-google-status/cycle-QI-account-restored-google.xml",
+    "signedOutProof":  "docs/mobile/harness/cycle-QI-account-google-status/cycle-QI-account-signed-out-google.xml",
+    "cycle":  "QI",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "result":  "pass"
+}
