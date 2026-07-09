@@ -661,8 +661,10 @@ export function TradeTicket({
                   <Text accessibilityLabel="ticket-selection-line" testID="ticket-selection-line" numberOfLines={2} style={styles.ticketOutcome}>
                     <Text style={styles.ticketOutcomeSide}>{sideLabel}</Text> <Text style={styles.ticketOutcomeDot}>-</Text> {selectionLabel}
                   </Text>
+                </View>
+                <View style={styles.ticketSourceRow}>
                   <View
-                    accessibilityLabel={`ticket-market-source-badge ${sourceBadge.accessibility}`}
+                    accessibilityLabel={`ticket-market-source-badge ticket-market-source-badge-inline-safe ticket-header-source-pill-no-clip ${sourceBadge.accessibility}`}
                     style={[
                       styles.ticketSourcePill,
                       sourceBadge.tone === "provider" && styles.ticketSourcePillProvider,
@@ -680,21 +682,21 @@ export function TradeTicket({
                       {sourceBadge.label}
                     </Text>
                   </View>
+                  {sourceNote && (
+                    <Text
+                      accessibilityLabel={`ticket-source-note ticket-source-note-inline ${sourceNote.accessibility}`}
+                      numberOfLines={1}
+                      style={[
+                        styles.ticketSourceNote,
+                        sourceNote.tone === "provider" && styles.ticketSourceNoteProvider,
+                        sourceNote.tone === "fixture" && styles.ticketSourceNoteFixture,
+                      ]}
+                      testID="ticket-source-note"
+                    >
+                      {sourceNote.text}
+                    </Text>
+                  )}
                 </View>
-                {sourceNote && (
-                  <Text
-                    accessibilityLabel={`ticket-source-note ${sourceNote.accessibility}`}
-                    numberOfLines={1}
-                    style={[
-                      styles.ticketSourceNote,
-                      sourceNote.tone === "provider" && styles.ticketSourceNoteProvider,
-                      sourceNote.tone === "fixture" && styles.ticketSourceNoteFixture,
-                    ]}
-                    testID="ticket-source-note"
-                  >
-                    {sourceNote.text}
-                  </Text>
-                )}
               </View>
             </View>
             <View accessibilityLabel="ticket-side-pill ticket-advanced-hidden-local-mvp" testID="ticket-side-pill" style={styles.orderReviewA11y}>
@@ -886,14 +888,15 @@ const styles = StyleSheet.create({
   marketIconFlag: { backgroundColor: "#121a27", borderColor: "#334155" },
   marketIconText: { color: "#dbeafe", fontSize: 20, fontWeight: "900" },
   selectionTextBlock: { flex: 1, minWidth: 0 },
-  ticketSelectionMetaRow: { minHeight: 23, flexDirection: "row", alignItems: "flex-start", gap: 8, marginTop: 2 },
-  ticketSourcePill: { minHeight: 22, justifyContent: "center", borderRadius: 999, paddingHorizontal: 8, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155", flexShrink: 0 },
+  ticketSelectionMetaRow: { minHeight: 23, flexDirection: "row", alignItems: "flex-start", marginTop: 2 },
+  ticketSourceRow: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4, maxWidth: "100%" },
+  ticketSourcePill: { minHeight: 22, justifyContent: "center", borderRadius: 999, paddingHorizontal: 8, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155", flexShrink: 0, maxWidth: 96 },
   ticketSourcePillProvider: { backgroundColor: "#052e16", borderColor: "#166534" },
   ticketSourcePillFixture: { backgroundColor: "#33280f", borderColor: "#854d0e" },
   ticketSourcePillText: { color: "#cbd5e1", fontSize: 9, fontWeight: "900" },
   ticketSourcePillTextProvider: { color: "#86efac" },
   ticketSourcePillTextFixture: { color: "#fde68a" },
-  ticketSourceNote: { color: "#94a3b8", fontSize: 10, fontWeight: "900", marginTop: 3 },
+  ticketSourceNote: { flex: 1, minWidth: 0, color: "#94a3b8", fontSize: 10, fontWeight: "900" },
   ticketSourceNoteProvider: { color: "#86efac" },
   ticketSourceNoteFixture: { color: "#fde68a" },
   marketStatusPill: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 999, backgroundColor: "#052e1b", borderWidth: 1, borderColor: "#166534" },
