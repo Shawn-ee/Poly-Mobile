@@ -16,6 +16,8 @@ describe("Portfolio settings contract", () => {
     expect(portfolio).toContain("portfolio-account-entry-opens-account");
     expect(portfolio).toContain("portfolio-account-entry-top-left");
     expect(portfolio).toContain("portfolio-account-entry-google");
+    expect(portfolio).toContain("portfolio-account-google-badge-visible");
+    expect(portfolio).toContain("portfolio-avatar-google-badge");
     expect(portfolio).toContain("portfolio-account-entry-label");
     expect(portfolio).toContain("portfolio-account-google-login-label-visible");
     expect(portfolio).toContain("portfolio-google-login-button-visible");

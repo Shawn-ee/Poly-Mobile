@@ -264,10 +264,15 @@ const teamCodeForPortfolioItem = (item: { title: string; outcome: string; select
 
 function PortfolioAvatar() {
   return (
-    <View accessibilityLabel="portfolio-gradient-avatar" style={styles.avatarGradient}>
+    <View accessibilityLabel="portfolio-gradient-avatar portfolio-account-google-badge-visible" style={styles.avatarWrap} testID="portfolio-account-avatar-entry">
+      <View style={styles.avatarGradient}>
       <View style={[styles.avatarColorStop, styles.avatarColorStopPink]} />
       <View style={[styles.avatarColorStop, styles.avatarColorStopYellow]} />
       <View style={[styles.avatarColorStop, styles.avatarColorStopBlue]} />
+      </View>
+      <View accessibilityLabel="portfolio-avatar-google-badge" style={styles.avatarGoogleBadge} testID="portfolio-avatar-google-badge">
+        <Ionicons name="logo-google" size={11} color="#111827" />
+      </View>
     </View>
   );
 }
@@ -970,7 +975,7 @@ export function Portfolio({
     <ScrollView ref={scrollRef} accessibilityLabel={`portfolio-screen ${latestOrder ? "portfolio-result-content-landing portfolio-result-lands-at-account-header" : "portfolio-normal-browse"}`} testID="portfolio-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
       <View accessibilityLabel="portfolio-profile-header portfolio-header-retail-density" testID="portfolio-profile-header" style={styles.profileHeader}>
         <Pressable
-          accessibilityLabel="portfolio-account-entry-top-left portfolio-account-entry-opens-account portfolio-account-google-login-label-visible"
+          accessibilityLabel="portfolio-account-entry-top-left portfolio-account-entry-opens-account portfolio-account-google-login-label-visible portfolio-account-google-badge-visible"
           accessibilityRole="button"
           onPress={openAccount}
           style={styles.profileLeft}
@@ -1544,11 +1549,13 @@ const styles = StyleSheet.create({
   accountGoogleButton: { minHeight: 44, maxWidth: 150, borderRadius: 999, paddingHorizontal: 14, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 7, backgroundColor: "#f8fafc" },
   accountGoogleButtonPressed: { opacity: 0.84, transform: [{ scale: 0.97 }] },
   accountGoogleButtonText: { color: "#111827", fontSize: 13, fontWeight: "900", flexShrink: 1 },
+  avatarWrap: { width: 50, height: 50, position: "relative", justifyContent: "center" },
   avatarGradient: { width: 46, height: 46, borderRadius: 999, overflow: "hidden", backgroundColor: "#f43f5e", position: "relative" },
   avatarColorStop: { position: "absolute", borderRadius: 999 },
   avatarColorStopPink: { left: -8, top: -5, width: 48, height: 48, backgroundColor: "#f43f5e" },
   avatarColorStopYellow: { right: -4, top: 2, width: 44, height: 44, backgroundColor: "#facc15" },
   avatarColorStopBlue: { left: 4, bottom: -12, width: 42, height: 42, backgroundColor: "#7c3aed" },
+  avatarGoogleBadge: { position: "absolute", right: 0, bottom: 0, width: 19, height: 19, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "#f8fafc", borderWidth: 2, borderColor: "#070b12" },
   profileName: { color: "#e5e7eb", fontSize: 20, fontWeight: "500", flexShrink: 1 },
   profileAccountLabel: { color: "#93c5fd", fontSize: 13, fontWeight: "900", marginTop: 3 },
   valueBlock: { paddingHorizontal: 24, paddingTop: 4 },

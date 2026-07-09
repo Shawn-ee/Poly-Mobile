@@ -8375,3 +8375,30 @@ Temporary mock/static data:
 Future migration concern:
 
 - Compact visible source copy should switch to provider-line wording once attach-ready provider lines exist.
+
+## Cycle QW - Portfolio Google Badge Visibility
+
+Closed or narrowed:
+
+- Portfolio account entry is visually clearer after Home account controls were intentionally removed.
+- Google login remains discoverable through Portfolio -> Account without changing the clean Home feed.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Native app Google OAuth callback/session/logout state.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- The Portfolio badge is only an entry cue. Real signed-in profile identity should replace demo profile text after native auth/session work is complete.

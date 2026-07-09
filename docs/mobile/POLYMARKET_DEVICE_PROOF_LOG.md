@@ -2275,3 +2275,36 @@ Pass for focused Event Detail source-disclosure compactness scope.
 
 Remaining gaps:
 Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle QW - Portfolio Google Badge Visibility
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket app reference-device action. This was a Holiwyn account-entry visibility cleanup after user feedback that Google login looked missing.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go server mode. Backend `http://127.0.0.1:3002` remained healthy; mobile API used LAN backend `http://172.16.200.14:3002`. Expo was stopped after proof.
+
+Holiwyn actions:
+Opened Holiwyn in Expo Go, tapped Portfolio, confirmed the top-left account entry has the Google badge marker, confirmed the visible Google login chip, opened Account, and confirmed `Continue with Google`.
+
+Evidence:
+- `docs/mobile/harness/cycle-QW-portfolio-google-badge-visibility/cycle-QW-portfolio-google-badge-visibility-proof.json`
+- `docs/mobile/screenshots/cycle-QW-portfolio-google-badge-visibility/cycle-QW-portfolio-google-badge.png`
+- `docs/mobile/harness/cycle-QW-portfolio-google-badge-visibility/cycle-QW-portfolio-google-badge.xml`
+- `docs/mobile/screenshots/cycle-QW-portfolio-google-badge-visibility/cycle-QW-account-google-login.png`
+- `docs/mobile/harness/cycle-QW-portfolio-google-badge-visibility/cycle-QW-account-google-login.xml`
+
+Smoke/tests:
+Mobile typecheck passed. Focused Portfolio settings and Account auth contract tests passed. S23 XML checks confirmed `host.exp.exponent`, `portfolio-screen`, `portfolio-account-google-badge-visible`, `portfolio-avatar-google-badge`, `portfolio-account-entry-google`, `account-screen`, and `account-login-google`.
+
+Result:
+Pass for focused Portfolio Google badge visibility scope.
+
+Remaining gaps:
+Native Google OAuth callback/session/logout remains separate auth work.
