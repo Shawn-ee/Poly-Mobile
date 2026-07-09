@@ -2,6 +2,22 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle QJ - Holiwyn Line Copy
+
+Cycle QJ changes no backend route or schema. It keeps existing Local MVP route contracts and improves visible source wording around current contract-fixture line markets.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home/Live source disclosure | `/api/events`, `/api/events?status=live` through existing mobile feed service | GET | Public/mobile event browse | Status/filter query when applicable | Event slug/title/status, provider/local market source counts, `marketSourceSummary`, provider winner count, contract-fixture line count | Existing `Event`, `Market`, `Outcome` | Contract-fixture lines display as Holiwyn lines/pricing | Real provider-backed Spread/Totals/Team Total lines remain unavailable for the current match. |
+| Event Detail line markets | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile event browse | Event slug `argentina-vs-egypt` | Market groups, `marketType`, `period`, `line`, `side`, `label`, `probability`, `bestBid`, `bestAsk`, `liquidity`, `referenceSource`, provider IDs, `marketSourceSummary`, `lineMarkets.providerAvailability` | Existing `Event`, `Market`, `Outcome`, provider snapshot models | Contract-fixture line rows are shaped like backend markets and now display as Holiwyn lines | Provider-backed line-market discovery/import remains P1. |
+| Simple ticket/order/Portfolio History proof | Existing mobile ticket/order/portfolio routes used by the mobile API client | GET/POST | Mobile API key/dev credential; local beta trading runtime | Ticket/order payload preserving event slug, market id, outcome id, market type `spread`, line `1.5`, period, side, amount, source, and fake-token mode | Portfolio position/activity/history rows with order-time snapshot fields and source identity | Existing `User`, `ApiCredential`, `Event`, `Market`, `Outcome`, order/position/history models | Fake-token order can fill locally and appears in History with contract-fixture identity | Production liquidity/wallet/auth policy remains future work. |
+| Google account entry visibility | `/api/auth/google/start?returnTo=/portfolio` through Account screen | Browser/deep-link open | Server auth route owns OAuth provider policy | None from mobile before browser open | None before callback/session completion | Existing backend auth/user/session models | Demo trading remains available without sign-in | End-to-end Google OAuth callback/session/logout proof remains P1. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-QJ-holiwyn-line-copy/cycle-QJ-current-mvp-s23-visible-flow.json`
+- `docs/mobile/harness/cycle-QJ-provider-line-reinspection/`
+
 ## Cycle QI - Account Google Status Visibility
 
 Cycle QI changes no backend route or schema. It clarifies the mobile Account UI state around the existing Google auth route.

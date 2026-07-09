@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle QJ
+
+Gate status: Pass for focused Holiwyn line-copy clarity and Local MVP full-flow regression; not a pass for real provider-backed line-market parity.
+
+Scope: visible source wording for contract-fixture line markets across Home/Live/Event Detail/Search/Trade Ticket/Portfolio, plus S23 proof of line ticket -> fake-token order -> Portfolio History.
+
+Decision:
+
+- P0 failed: 0 for focused QJ scope.
+- Implemented change: visible copy now says `Holiwyn line(s)` / `Holiwyn pricing` instead of raw `Local line(s)` copy, while internal contract-fixture markers remain for audit and backend replacement.
+- Runtime finding: current provider reinspection still finds provider-backed Regulation Winner markets and 0 attach-ready Polymarket line markets for the current event; broad provider-line scan still finds 0 attach-ready World Cup line candidates.
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, passed Home, Live, Event Detail lines, ticket, swipe buy, Portfolio, and History.
+- P1 remaining: real provider-backed Spread/Totals/Team Total lines; full Google OAuth callback/session/logout proof.
+- Evidence: `docs/mobile/audits/cycle-QJ-holiwyn-line-copy.md`; S23 proof `docs/mobile/harness/cycle-QJ-holiwyn-line-copy/cycle-QJ-current-mvp-s23-visible-flow.json`; provider reinspection `docs/mobile/harness/cycle-QJ-provider-line-reinspection/`.
+
 ## Cycle QI
 
 Gate status: Pass for focused Account Google status visibility; not a pass for full Google OAuth/session parity.

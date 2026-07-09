@@ -2,6 +2,35 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle QJ - Holiwyn Line Copy
+
+Closed or narrowed:
+
+- Visible tester copy no longer says `Local line(s)` where the backend state is an intentional Holiwyn Local MVP contract fixture.
+- Internal proof/data markers still preserve `contract-fixture` identity so the app does not pretend these lines are real Polymarket lines.
+- The default S23 fake-token order proof now accepts the real filled-history result when the local backend fills immediately.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total market ids, outcome ids, token ids, line values, probabilities, top prices, and liquidity.
+- Provider-backed history/portfolio snapshots for those line markets once they exist.
+- Mobile-authenticated Google account/session status beyond the visible Account entry/status.
+
+Route mismatch:
+
+- No route mismatch introduced.
+- Current `/api/mobile/events/:slug/live-detail` honestly reports provider winner markets and contract-fixture line markets.
+
+Temporary mock/static data:
+
+- Spread/Totals/Team Total line rows remain contract-shaped fixtures for Local MVP UI/order proof.
+- The fixture shape includes backend-replaceable identity fields such as `marketGroupId`, `marketId`, `outcomeId`, `marketType`, `period`, `line`, `side`, `probability`, `bestBid`, `bestAsk`, and provider/source markers.
+
+Future migration concern:
+
+- When Polymarket or another approved provider exposes attach-ready line markets, replace Holiwyn contract-fixture rows through the route contract without changing the ticket/order/Portfolio identity path.
+- Do not remove internal source markers until the backend can prove provider-backed line identity end to end.
+
 ## Cycle QI - Account Google Status Visibility
 
 Closed or narrowed:

@@ -8,6 +8,7 @@ param(
   [string]$Cycle = "MB",
   [string]$OutputDir = "docs\mobile\screenshots\cycle-MB-current-mvp-s23-visible-flow",
   [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-MB-current-mvp-s23-visible-flow",
+  [string]$DotenvPath = "",
   [string]$CashoutBidPrice = "0.60",
   [switch]$SeedCounterparty,
   [switch]$ExpectFilledHistory,
@@ -41,6 +42,25 @@ $expectOpenOrderState = [bool]$ExpectOpenOrder -or [bool]$ExpectCancel
 New-Item -ItemType Directory -Force -Path $resolvedOutputDir | Out-Null
 New-Item -ItemType Directory -Force -Path $resolvedHierarchyOutputDir | Out-Null
 New-Item -ItemType Directory -Force -Path (Split-Path -Parent $expoOut) | Out-Null
+
+function Set-ProofDotenvPath {
+  if ($DotenvPath -and (Test-Path -LiteralPath $DotenvPath)) {
+    $env:DOTENV_CONFIG_PATH = (Resolve-Path -LiteralPath $DotenvPath).Path
+    return
+  }
+  if ($env:DOTENV_CONFIG_PATH -and (Test-Path -LiteralPath $env:DOTENV_CONFIG_PATH)) {
+    return
+  }
+  $repoEnv = Join-Path $repoRoot ".env"
+  if (Test-Path -LiteralPath $repoEnv) {
+    $env:DOTENV_CONFIG_PATH = $repoEnv
+    return
+  }
+  $defaultProjectEnv = "C:\Users\hecto\Desktop\projects\PolyProj\Poly\.env"
+  if (Test-Path -LiteralPath $defaultProjectEnv) {
+    $env:DOTENV_CONFIG_PATH = $defaultProjectEnv
+  }
+}
 
 function Assert-Contains {
   param([string]$Path, [string[]]$Expected)
@@ -224,9 +244,10 @@ try {
   }
 
   $env:MOBILE_DEV_USERNAME = "holiwyn-mobile-$($Cycle.ToLower())-s23-$(Get-Date -Format yyyyMMddHHmmss)"
+  Set-ProofDotenvPath
   $credentialErrorAction = $ErrorActionPreference
   $ErrorActionPreference = "Continue"
-  $credentialRaw = cmd /c npm.cmd run mobile:dev-credential 2>&1 | Out-String
+  $credentialRaw = cmd /c npx.cmd tsx -r dotenv/config scripts/create_mobile_dev_credential.ts 2>&1 | Out-String
   $ErrorActionPreference = $credentialErrorAction
   if ($LASTEXITCODE -ne 0) {
     throw "Mobile dev credential creation failed."
@@ -408,7 +429,7 @@ try {
   Start-Sleep -Seconds 1
   $lineXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-lines-settled.xml"
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-lines.png" | Out-Null
-  Assert-Contains -Path $lineXml -Expected @("Spread", "Totals", "Local line", "line-market-local-test-pricing", "line-market-local-test-fake-token", "event-detail-line-section-clearance-24", "event-detail-line-source-banner", "line-source-contract-fixture", "line-source-local-test-fake-token", "line-family-readiness-spread-contract-fixture", "line-family-readiness-total-contract-fixture", "line-family-readiness-team_total-contract-fixture", "selection-market-type-spread", "selection-line-1.5", "provider-source-contract-fixture")
+  Assert-Contains -Path $lineXml -Expected @("Spread", "Totals", "Holiwyn line", "line-market-local-test-pricing", "line-market-local-test-fake-token", "event-detail-line-section-clearance-24", "event-detail-line-source-banner", "line-source-contract-fixture", "line-source-local-test-fake-token", "line-family-readiness-spread-contract-fixture", "line-family-readiness-total-contract-fixture", "line-family-readiness-team_total-contract-fixture", "selection-market-type-spread", "selection-line-1.5", "provider-source-contract-fixture")
   Assert-NotContains -Path $lineXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
   Invoke-TapNode -Path $lineXml -Identifier "event-detail-outcome-spread-" -StartsWith
@@ -534,10 +555,17 @@ try {
     Save-Screenshot -Name "cycle-$Cycle-current-mvp-portfolio-history.png" | Out-Null
     $historyXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-portfolio-history.xml"
   }
+  $defaultHistoryLandedAsFilled = $false
   if ($ExpectFilledHistory -and (-not $ExpectCashout)) {
     Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "portfolio-history-market-context-readable", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
   } elseif ((-not $expectOpenOrderState) -and (-not $ExpectCancel) -and (-not $ExpectCashout)) {
-    Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "No history", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture")
+    $historyRaw = Get-Content -Raw -Path $historyXml
+    if ($historyRaw -match [regex]::Escape("activity-row-")) {
+      Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "portfolio-history-market-context-readable", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
+      $defaultHistoryLandedAsFilled = $true
+    } else {
+      Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "No history", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture")
+    }
   }
 
   $summary = [ordered]@{
@@ -573,8 +601,8 @@ try {
       openOrderVisible = $fixtureOrderLandedAsOpenOrder
       openOrderSourceBadgeVisible = $fixtureOrderLandedAsOpenOrder
       filledPositionVisible = $fixtureOrderLandedAsPosition
-      historyShowsEmptyStateUntilFill = (-not [bool]$ExpectFilledHistory) -and (-not $expectOpenOrderState)
-      filledHistoryVisible = [bool]$ExpectFilledHistory
+      historyShowsEmptyStateUntilFill = (-not [bool]$ExpectFilledHistory) -and (-not $expectOpenOrderState) -and (-not $defaultHistoryLandedAsFilled)
+      filledHistoryVisible = [bool]$ExpectFilledHistory -or $defaultHistoryLandedAsFilled
       cancelSubmitted = [bool]$ExpectCancel
       canceledHistoryVisible = [bool]$ExpectCancel
       cashoutTicketOpened = [bool]$ExpectCashout
