@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle RD - Trade Ticket Swipe Motion
+
+Cycle RD changes no backend route or schema. It is a visible Trade Ticket gesture/UI change only.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Trade Ticket swipe-to-buy/sell handle motion | Existing ticket order path only after threshold release; no route called by this visual change | Existing `placeOrder()` path unchanged | Existing mode-dependent order auth unchanged | Existing order body unchanged | Existing ticket/order fields unchanged | Existing order/portfolio models unchanged | Fake-token/demo mode remains available | None for this visual motion cycle. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-RD-ticket-swipe-motion/cycle-RD-ticket-swipe-motion-proof.json`
+
 ## Cycle RC - Portfolio Account Login Clarity
 
 Cycle RC changes no backend route or schema. It makes the existing Portfolio auth entry visually clearer and preserves the current auth-start route.

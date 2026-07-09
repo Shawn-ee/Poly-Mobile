@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle RD
+
+Gate status: Pass for focused Trade Ticket swipe-motion parity; not a pass for full ticket-header visual parity.
+
+Scope: make the swipe-to-buy/sell handle centered and visibly progress-linked, closer to the Polymarket reference.
+
+Decision:
+
+- P0 failed: 0 for focused RD scope.
+- Implemented change: `SwipeSubmitControl` now centers the handle and increases handle travel from `-28 * swipeProgress` to `-118 * swipeProgress`.
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`; ticket XML confirmed `swipe-submit-handle-centered`, enabled `Swipe to buy`, and separated keypad/swipe sections.
+- Drag proof: S23 dragging screenshot captured the centered handle in the red/pink swipe area.
+- P1 remaining: ticket header source pill can still clip at the right edge; full continuous gesture video proof would be stronger than screenshot proof.
+- Evidence: `docs/mobile/audits/cycle-RD-ticket-swipe-motion.md`; S23 proof `docs/mobile/harness/cycle-RD-ticket-swipe-motion/cycle-RD-ticket-swipe-motion-proof.json`.
+
 ## Cycle RC
 
 Gate status: Pass for focused Portfolio account/login clarity; not a pass for full native OAuth/session parity.

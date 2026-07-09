@@ -1,5 +1,11 @@
 # Mobile Data Contract Gaps
 
+## Cycle RD - Trade Ticket Swipe Motion
+
+- No new mobile/backend data contract gap was introduced.
+- Existing ticket/order request and response contracts remain unchanged.
+- Remaining P1 UI gap: ticket header source pill can clip on the far right of S23 and should be handled separately from order data contracts.
+
 ## Cycle RC - Portfolio Account Login Clarity
 
 - No new mobile/backend data contract gap was introduced.

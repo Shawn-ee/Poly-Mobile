@@ -198,7 +198,7 @@ function SwipeSubmitControl({
     [handleTouchEnd, handleTouchStart, updateDragDistance],
   );
   const progressBucket = disabled ? "disabled" : isSubmitting ? "submitting" : isArmed ? "armed" : swipeProgress > 0 ? "dragging" : "idle";
-  const handleLift = -28 * swipeProgress;
+  const handleLift = -118 * swipeProgress;
 
   return (
       <View
@@ -232,7 +232,7 @@ function SwipeSubmitControl({
         />
       )}
       <View
-        accessibilityLabel={`swipe-submit-handle swipe-submit-handle-progress-linked swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-handle-s23-visible-travel swipe-submit-handle-s23-large-travel swipe-submit-handle-starts-near-footer-top swipe-submit-state-${progressBucket} swipe-submit-handle-translate-y-${Math.round(handleLift)}`}
+        accessibilityLabel={`swipe-submit-handle swipe-submit-handle-centered swipe-submit-handle-progress-linked swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-handle-s23-visible-travel swipe-submit-handle-s23-large-travel swipe-submit-handle-starts-near-footer-top swipe-submit-state-${progressBucket} swipe-submit-handle-translate-y-${Math.round(handleLift)}`}
         style={[styles.swipeIcon, unavailable && styles.swipeIconUnavailable, isArmed && styles.swipeIconArmed, { transform: [{ translateY: unavailable ? 0 : handleLift }] }]}
         testID="swipe-submit-handle"
       >
@@ -971,7 +971,7 @@ const styles = StyleSheet.create({
   swipeSubmitUnavailable: { minHeight: 72, flexDirection: "row", gap: 12, paddingHorizontal: 18, backgroundColor: "#111827", borderColor: "#2f1820" },
   swipeSubmitArmed: { shadowOpacity: 0.32, elevation: 12 },
   swipeSubmitDisabled: { opacity: 0.48 },
-  swipeIcon: { position: "absolute", right: 18, top: 17, width: 38, height: 38, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.13)", zIndex: 2 },
+  swipeIcon: { position: "absolute", left: "50%", marginLeft: -19, top: 17, width: 38, height: 38, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.13)", zIndex: 2 },
   swipeIconUnavailable: { position: "relative", right: 0, top: 0, width: 38, height: 38, borderRadius: 19, backgroundColor: "#2a1117" },
   swipeIconArmed: { backgroundColor: "rgba(255,255,255,0.22)" },
   swipeThresholdLine: { position: "absolute", top: 8, width: 58, height: 2, borderRadius: 999, backgroundColor: "rgba(255,255,255,0.22)" },
