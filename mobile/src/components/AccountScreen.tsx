@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { money } from "../presentation/formatters";
 import type { ProfileSummaryMenuItem } from "../types";
 
@@ -20,8 +20,10 @@ type AccountCopy = {
   sell: string;
   loginMethodPhone: string;
   loginMethodEmail: string;
+  loginMethodGoogle: string;
   loginConnected: string;
   loginUnavailable: string;
+  loginGoogleBody: string;
   preferences: string;
   languagePreference: string;
   ticketDefaultPreference: string;
@@ -62,6 +64,7 @@ export function AccountScreen({
   portfolioValue,
   tradingMode,
   accountMenuItems,
+  openGoogleSignIn,
 }: {
   t: AccountCopy;
   balance: number;
@@ -79,6 +82,7 @@ export function AccountScreen({
   portfolioValue: number;
   tradingMode: "mock" | "server";
   accountMenuItems: ProfileSummaryMenuItem[];
+  openGoogleSignIn?: () => void;
 }) {
   const signedIn = Boolean(forceSignedIn);
 
@@ -130,6 +134,22 @@ export function AccountScreen({
             <Text style={styles.profileName}>Holiwyn Demo</Text>
           </View>
           <Text style={styles.tier}>{t.accountTier}</Text>
+        </View>
+      )}
+
+      {!signedIn && (
+        <View accessibilityLabel="account-login-card" testID="account-login-card" style={styles.loginCard}>
+          <Pressable
+            accessibilityLabel="account-login-google"
+            accessibilityRole="button"
+            onPress={openGoogleSignIn}
+            style={({ pressed }) => [styles.googleButton, pressed && styles.googleButtonPressed]}
+            testID="account-login-google"
+          >
+            <Ionicons name="logo-google" size={20} color="#111827" />
+            <Text style={styles.googleButtonText}>{t.loginMethodGoogle}</Text>
+          </Pressable>
+          <Text style={styles.loginBody}>{t.loginGoogleBody}</Text>
         </View>
       )}
 
@@ -248,6 +268,11 @@ const styles = StyleSheet.create({
   profileCard: { marginTop: 14, padding: 16, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   profileName: { color: "#f8fafc", fontSize: 22, fontWeight: "900", marginTop: 5 },
   tier: { color: "#22c55e", fontWeight: "900" },
+  loginCard: { marginTop: 14, padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", gap: 10 },
+  googleButton: { minHeight: 54, borderRadius: 13, backgroundColor: "#f8fafc", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10 },
+  googleButtonPressed: { opacity: 0.82, transform: [{ scale: 0.99 }] },
+  googleButtonText: { color: "#111827", fontSize: 17, fontWeight: "900" },
+  loginBody: { color: "#94a3b8", fontSize: 13, fontWeight: "700", lineHeight: 19 },
   moreMenu: { marginTop: 14, paddingVertical: 6, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   menuRow: { minHeight: 54, paddingHorizontal: 14, flexDirection: "row", alignItems: "center", gap: 12 },
   menuRowUnavailable: { opacity: 0.76 },

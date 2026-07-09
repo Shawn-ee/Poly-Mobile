@@ -16,10 +16,13 @@ describe("Account auth visibility contract", () => {
     expect(account).not.toContain("account-sign-out");
     expect(account).not.toContain("updateSignedIn");
     expect(account).toContain("const signedIn = Boolean(forceSignedIn)");
+    expect(account).toContain("account-login-google");
+    expect(account).toContain("openGoogleSignIn");
     expect(account).toContain("account-login-unavailable");
     expect(copy).not.toContain("Mock login active");
     expect(copy).not.toContain("Mock login ready");
+    expect(copy).toContain("Continue with Google");
     expect(copy).toContain("Server profile loaded");
-    expect(copy).toContain("Login and signup are not available");
+    expect(copy).toContain("Deposits and withdrawals remain disabled");
   });
 });

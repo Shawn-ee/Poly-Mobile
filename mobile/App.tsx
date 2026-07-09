@@ -60,6 +60,7 @@ import {
 
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
 const DEFAULT_API_KEY = process.env.EXPO_PUBLIC_API_KEY || "";
+const GOOGLE_AUTH_URL = `${DEFAULT_API_BASE.replace(/\/+$/, "")}/api/auth/google/start?returnTo=${encodeURIComponent("/portfolio")}`;
 const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? "server" : "mock";
 const MARKET_DATA_MODE: "mock" | "server" =
   ORDER_MODE === "server" || process.env.EXPO_PUBLIC_MARKET_DATA_MODE === "server" ? "server" : "mock";
@@ -366,6 +367,9 @@ export default function App() {
   const [forcedRuntimePortfolioSyncNonce, setForcedRuntimePortfolioSyncNonce] = useState(0);
   const t = appCopy[locale];
   const api = useMemo(() => new PolyApi(DEFAULT_API_BASE, runtimeApiKey), [runtimeApiKey]);
+  const openGoogleSignIn = useCallback(() => {
+    Linking.openURL(GOOGLE_AUTH_URL).catch(() => undefined);
+  }, []);
   const mounted = useRef(true);
   const profilePreferencesReady = useRef(false);
   const searchRequestSeq = useRef(0);
@@ -1884,6 +1888,7 @@ export default function App() {
                 portfolioValue={accountDisplayPortfolioValue}
                 tradingMode={accountDisplayTradingMode}
                 accountMenuItems={accountSummary?.menuItems ?? []}
+                openGoogleSignIn={openGoogleSignIn}
               />
             )}
           </>

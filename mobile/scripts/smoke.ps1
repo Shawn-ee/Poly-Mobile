@@ -736,7 +736,7 @@ try {
   } elseif ($AccountPersistence) {
     @("Holiwyn", "Account", "Signed in", "Demo balance")
   } elseif ($AccountPreferences -or $AccountLanguageSummary) {
-    @("Holiwyn", "Account", "Preferences")
+    @("Holiwyn", "Account", "Signed out", "Continue with Google")
   } elseif ($AccountProfileSyncError) {
     @("Holiwyn", "Account", "Preferences", "Profile sync unavailable", "Using local preferences on this device.")
   } elseif ($AccountSavedSummary) {
@@ -2715,10 +2715,12 @@ try {
 
     if ($AccountPreferences) {
       & $adb -s $Device shell input swipe 540 1700 540 950 450 | Out-Null
+      Start-Sleep -Milliseconds 500
+      & $adb -s $Device shell input swipe 540 1700 540 950 450 | Out-Null
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-account-preferences.png"
       $accountPreferencesHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account-preferences.xml"
-      Assert-HierarchyContains -Path $accountPreferencesHierarchy -Expected @("Account", "Preferences", "Ticket default", "Sell 500 USDT", "Trading mode: Fake-token mock", "Fake-token mode only")
+      Assert-HierarchyContains -Path $accountPreferencesHierarchy -Expected @("Account", "Preferences", "Ticket default", "Sell 500 USDT", "Trading mode: Fake-token mock", "Deposits and withdrawals stay disabled")
       return
     }
 
