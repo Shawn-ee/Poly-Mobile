@@ -1108,3 +1108,13 @@ For every UI element or interaction, answer:
 - Unresolved P0 for QX scope: 0.
 - Remaining P1: native Google OAuth callback/session/logout remains separate auth work.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle QY Gap Tracker Update
+
+- PM-GAP-159 is opened and closed for Home/Live retail source cleanup.
+- QY removes visible provider/source debug wording from Home match cards and the Live source banner.
+- QY preserves hidden Home source-readiness markers for audit and backend migration.
+- QY proves on Samsung S23 that Home still shows match cards and outcome rails while visible source/debug copy is absent.
+- QY proves on Samsung S23 that Live visible source/debug copy is absent.
+- Unresolved P0 for QY scope: 0.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

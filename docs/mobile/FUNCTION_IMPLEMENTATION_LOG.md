@@ -10901,3 +10901,46 @@ Known limitations:
 - Native Google OAuth callback/session/logout remains separate auth work.
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Expo Go launch URL forwarding remains unreliable on this S23 session; stop stale `com.holiwyn.mobile` and use the proof initial-tab override when a deterministic proof starting screen is needed.
+
+## Cycle QY - Home/Live Retail Source Cleanup
+
+Feature/page worked on:
+
+- Home and Live visible match-card source/debug copy.
+- This keeps the Local MVP retail feed focused on matches and outcome probabilities instead of provider implementation labels.
+
+Frontend/proof files touched:
+
+- `mobile/src/components/MarketLists.tsx`
+- `mobile/src/components/LiveScreen.tsx`
+- `mobile/src/__tests__/liveSourceReadinessContract.test.ts`
+- `mobile/src/__tests__/marketListChineseSourceCopy.test.ts`
+- `docs/mobile/audits/cycle-QY-home-live-retail-source-cleanup.md`
+
+Important functions/services touched:
+
+- `eventSourceReadiness()` still derives hidden source readiness from `event.marketSourceSummary`.
+- `MarketList` now renders source readiness as a hidden audit marker instead of visible tester-facing text.
+- `LiveScreen` keeps `live-source-readiness` hidden when readiness is present.
+- No service, API client, order, provider, or backend function changed.
+
+User interactions supported/proven:
+
+- Home still opens with match cards and retail outcome buttons.
+- Visible source/debug labels such as `Winner: Polymarket / Holiwyn lines` are absent from Home and Live.
+- Hidden Home source readiness markers remain available for audit and backend migration.
+
+State transitions:
+
+- No navigation, ticket, order, Portfolio, account, backend, or provider state transition changed.
+
+Validation:
+
+- Mobile typecheck passed.
+- Focused source-readiness and Search contract tests passed.
+- Samsung S23 proof passed with `cycle-QY-home-live-retail-source-cleanup-proof.json`.
+
+Known limitations:
+
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Live proof had no live source-readiness marker because the current backend Live view did not expose a ready live marker in that capture.
