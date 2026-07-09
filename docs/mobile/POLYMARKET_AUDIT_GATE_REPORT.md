@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle RP
+
+Gate status: Pass for focused Trade Ticket source-label cleanup; not a pass for all backend source identity completeness.
+
+Scope: remove visible tester/debug `Checking` copy from the full-screen Sell ticket while keeping internal audit markers.
+
+Decision:
+
+- P0 failed: 0 for focused RP scope.
+- Implemented change: `ticketSourceBadge()` no longer returns visible `Checking`; provider source can be inferred from token/condition identity, and truly unknown source is hidden behind `ticket-market-source-badge-hidden`.
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`; proof confirmed visible `Checking` is absent, hidden source marker remains, and `Sell France` / `Swipe to sell` still pass.
+- Backend impact: none. Existing ticket/order routes remain unchanged.
+- P1 remaining: backend-derived portfolio/position selections should consistently preserve explicit `referenceSource`, provider market id, condition id, and token id.
+- Evidence: `docs/mobile/audits/cycle-RP-ticket-source-cleanup.md`; screenshots/XML in `docs/mobile/screenshots/cycle-RP-ticket-source-cleanup/` and `docs/mobile/harness/cycle-RP-ticket-source-cleanup/`.
+
 ## Cycle RO
 
 Gate status: Pass for focused Trade Ticket Sell-mode clarity; not a pass for full native auth/session parity.

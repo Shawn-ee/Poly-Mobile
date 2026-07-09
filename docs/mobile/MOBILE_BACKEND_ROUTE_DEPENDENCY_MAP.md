@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle RP - Trade Ticket Source Label Cleanup
+
+Cycle RP changes no backend route or schema. It improves how the mobile ticket consumes existing source identity fields.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Trade Ticket source label | Existing ticket/open-position selection data only; no route called by this visual cleanup | Existing routes unchanged | Existing auth unchanged | Existing request bodies unchanged | `selection.referenceSource`, `market.referenceSource`, `selection.referenceTokenId`, `selection.conditionId`, `outcome.referenceTokenId` | Existing market/outcome/provider identity fields | Unknown source is hidden from visible UI but retained as hidden audit marker | Ensure future backend/portfolio selection payloads keep source/token identity populated so tickets can show truthful provider/local source labels when useful. |
+
+Evidence:
+
+- Screenshots: `docs/mobile/screenshots/cycle-RP-ticket-source-cleanup/`
+- UI hierarchy: `docs/mobile/harness/cycle-RP-ticket-source-cleanup/`
+
 ## Cycle RO - Trade Ticket Sell Mode Clarity
 
 Cycle RO changes no backend route or schema. It is a visible Trade Ticket clarity change only.

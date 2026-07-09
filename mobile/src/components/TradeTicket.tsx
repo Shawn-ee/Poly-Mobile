@@ -299,12 +299,20 @@ function marketAvailabilityTone(market: Market) {
   return "ready";
 }
 
+function ticketReferenceSource(ticket: Ticket) {
+  const explicitSource = ticket.selection?.referenceSource ?? ticket.market.referenceSource ?? "";
+  if (explicitSource) return explicitSource;
+  if (ticket.selection?.referenceTokenId || ticket.selection?.conditionId || ticket.outcome.referenceTokenId) return "polymarket-token";
+  return "";
+}
+
 function ticketSourceBadge(ticket: Ticket) {
-  const source = ticket.selection?.referenceSource ?? ticket.market.referenceSource ?? "";
+  const source = ticketReferenceSource(ticket);
   if (source.includes("polymarket")) {
     return {
       label: "Polymarket",
       tone: "provider" as const,
+      visible: true,
       accessibility: `ticket-source-badge-provider ticket-source-${source}`,
     };
   }
@@ -312,18 +320,20 @@ function ticketSourceBadge(ticket: Ticket) {
     return {
       label: "Holiwyn",
       tone: "fixture" as const,
+      visible: true,
       accessibility: `ticket-source-badge-local ticket-source-${source}`,
     };
   }
   return {
-    label: "Checking",
+    label: "",
     tone: "unknown" as const,
+    visible: false,
     accessibility: `ticket-source-badge-unknown ticket-source-${source || "unknown"}`,
   };
 }
 
 function ticketSourceNote(ticket: Ticket, locale: Locale) {
-  const source = ticket.selection?.referenceSource ?? ticket.market.referenceSource ?? "";
+  const source = ticketReferenceSource(ticket);
   if (source.includes("contract-fixture")) {
     return {
       text: locale === "zh" ? "利云体育盘口" : "Holiwyn line",
@@ -665,25 +675,36 @@ export function TradeTicket({
                   </Text>
                 </View>
                 <View style={styles.ticketSourceRow}>
-                  <View
-                    accessibilityLabel={`ticket-market-source-badge ticket-market-source-badge-inline-safe ticket-header-source-pill-no-clip ${sourceBadge.accessibility}`}
-                    style={[
-                      styles.ticketSourcePill,
-                      sourceBadge.tone === "provider" && styles.ticketSourcePillProvider,
-                      sourceBadge.tone === "fixture" && styles.ticketSourcePillFixture,
-                    ]}
-                    testID="ticket-market-source-badge"
-                  >
-                    <Text
+                  {sourceBadge.visible && (
+                    <View
+                      accessibilityLabel={`ticket-market-source-badge ticket-market-source-badge-inline-safe ticket-header-source-pill-no-clip ${sourceBadge.accessibility}`}
                       style={[
-                        styles.ticketSourcePillText,
-                        sourceBadge.tone === "provider" && styles.ticketSourcePillTextProvider,
-                        sourceBadge.tone === "fixture" && styles.ticketSourcePillTextFixture,
+                        styles.ticketSourcePill,
+                        sourceBadge.tone === "provider" && styles.ticketSourcePillProvider,
+                        sourceBadge.tone === "fixture" && styles.ticketSourcePillFixture,
                       ]}
+                      testID="ticket-market-source-badge"
                     >
-                      {sourceBadge.label}
-                    </Text>
-                  </View>
+                      <Text
+                        style={[
+                          styles.ticketSourcePillText,
+                          sourceBadge.tone === "provider" && styles.ticketSourcePillTextProvider,
+                          sourceBadge.tone === "fixture" && styles.ticketSourcePillTextFixture,
+                        ]}
+                      >
+                        {sourceBadge.label}
+                      </Text>
+                    </View>
+                  )}
+                  {!sourceBadge.visible && (
+                    <View
+                      accessibilityLabel={`ticket-market-source-badge-hidden ticket-header-source-pill-hidden-local-mvp ${sourceBadge.accessibility}`}
+                      style={styles.orderReviewA11y}
+                      testID="ticket-market-source-badge-hidden"
+                    >
+                      <Text>ticket-source-hidden</Text>
+                    </View>
+                  )}
                   {sourceNote && (
                     <Text
                       accessibilityLabel={`ticket-source-note ticket-source-note-inline ${sourceNote.accessibility}`}

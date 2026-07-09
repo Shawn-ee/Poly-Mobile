@@ -1,5 +1,12 @@
 # Mobile Data Contract Gaps
 
+## Cycle RP - Trade Ticket Source Label Cleanup
+
+- No new mobile/backend data contract gap was introduced.
+- Mobile now infers provider-backed source from provider token/condition identity when explicit `referenceSource` is absent.
+- Mobile hides truly unknown source copy in the retail ticket while preserving a hidden `ticket-market-source-badge-hidden` audit marker.
+- Remaining backend-useful gap: portfolio/position-derived ticket payloads should consistently preserve `referenceSource`, provider market id, condition id, and token id so mobile can display truthful source labels without inference.
+
 ## Cycle RO - Trade Ticket Sell Mode Clarity
 
 - No new mobile/backend data contract gap was introduced.

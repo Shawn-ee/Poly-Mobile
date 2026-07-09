@@ -8,12 +8,16 @@ describe("Trade Ticket market source badge", () => {
     const source = tradeTicketSource();
 
     expect(source).toContain("ticketSourceBadge");
-    expect(source).toContain("ticket.selection?.referenceSource ?? ticket.market.referenceSource");
+    expect(source).toContain("ticketReferenceSource");
+    expect(source).toContain("ticket.selection?.referenceTokenId || ticket.selection?.conditionId || ticket.outcome.referenceTokenId");
     expect(source).toContain("ticket-market-source-badge");
+    expect(source).toContain("ticket-market-source-badge-hidden");
     expect(source).toContain("ticket-source-badge-provider");
     expect(source).toContain("ticket-source-badge-local");
+    expect(source).toContain("ticket-header-source-pill-hidden-local-mvp");
     expect(source).toContain('label: "Polymarket"');
     expect(source).toContain('label: "Holiwyn"');
+    expect(source).not.toContain('label: "Checking"');
     expect(source).toContain("Holiwyn line");
   });
 });

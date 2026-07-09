@@ -1960,6 +1960,7 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-server-position-trade-ticket.png"
       $serverPositionTradeTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-trade-ticket.xml"
       Assert-HierarchyContains -Path $serverPositionTradeTicketHierarchy -Expected @("trade-ticket", "World Cup winner", "France", "ticket-order-mode-visible", "ticket-order-mode-sell", "Sell France", "ticket-side-sell", "ticket-amount-keypad", "ticket-preset-25", "ticket-odds-available", "place-mock-order")
+      Assert-HierarchyDoesNotContain -Path $serverPositionTradeTicketHierarchy -Unexpected @("Checking")
       Invoke-TapHierarchyNode -Path $serverPositionTradeTicketHierarchy -Identifier "ticket-preset-25" -StartsWith
       Start-Sleep -Seconds 1
       & $adb -s $Device shell input swipe 540 1850 540 950 450 | Out-Null
