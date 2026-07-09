@@ -316,18 +316,18 @@ function ticketSourceBadge(ticket: Ticket) {
   };
 }
 
-function ticketSourceNote(ticket: Ticket) {
+function ticketSourceNote(ticket: Ticket, locale: Locale) {
   const source = ticket.selection?.referenceSource ?? ticket.market.referenceSource ?? "";
   if (source.includes("contract-fixture")) {
     return {
-      text: "Holiwyn line",
+      text: locale === "zh" ? "利云体育盘口" : "Holiwyn line",
       accessibility: "ticket-local-test-pricing",
       tone: "fixture" as const,
     };
   }
   if (source.includes("polymarket")) {
     return {
-      text: "Polymarket market",
+      text: locale === "zh" ? "Polymarket 市场" : "Polymarket market",
       accessibility: "ticket-provider-backed-pricing",
       tone: "provider" as const,
     };
@@ -550,7 +550,7 @@ export function TradeTicket({
   const fallbackMarketIcon = marketIconForTicket(ticket);
   const fallbackMarketType = ticket.selection?.marketType ?? ticket.market.marketType ?? ticket.market.type ?? "generic";
   const sourceBadge = ticketSourceBadge(ticket);
-  const sourceNote = ticketSourceNote(ticket);
+  const sourceNote = ticketSourceNote(ticket, locale);
   const amountDisplay = numericAmount > 0 ? compactCash(numericAmount) : "$0";
   const toWinDisplay = compactCash(estimatedPayout);
   const availabilityLabel = marketAvailabilityLabel(ticket.market);

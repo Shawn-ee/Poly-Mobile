@@ -228,7 +228,16 @@ const marketStats = (event: Event) => {
   };
 };
 
-const lineSourceCopy = (event: Event) => {
+const lineFamilyDisplay = (family: string, locale: Locale) => {
+  if (locale !== "zh") return family.replace(/_/g, " ");
+  if (family === "spread") return "让球";
+  if (family === "totals") return "大小球";
+  if (family === "team_total") return "球队大小球";
+  if (family === "team-total") return "球队大小球";
+  return family.replace(/_/g, " ");
+};
+
+const lineSourceCopy = (event: Event, locale: Locale) => {
   const summary = event.marketSourceSummary;
   if (!summary) return null;
   const winnerReady = summary.regulationWinner.status === "provider-backed";
@@ -237,7 +246,7 @@ const lineSourceCopy = (event: Event) => {
   const lineAvailability = summary.lineMarkets.providerAvailability;
   const localFamilies = summary.lineMarkets.familyReadiness
     ?.filter((family) => family.status === "contract-fixture")
-    .map((family) => family.family.replace(/_/g, " "))
+    .map((family) => lineFamilyDisplay(family.family, locale))
     .slice(0, 3)
     .join(", ");
   const lineAvailabilityMarker = lineAvailability
@@ -255,20 +264,28 @@ const lineSourceCopy = (event: Event) => {
     : "";
   if (lineStatus === "provider-backed") {
     return {
-      label: "Market source",
-      text: winnerReady ? "Winner + lines: Polymarket" : "Lines: Polymarket",
+      label: locale === "zh" ? "市场来源" : "Market source",
+      text: locale === "zh"
+        ? winnerReady ? "胜负和盘口: Polymarket" : "盘口: Polymarket"
+        : winnerReady ? "Winner + lines: Polymarket" : "Lines: Polymarket",
       tone: "ready" as const,
       accessibility:
         `event-detail-line-source-banner line-source-provider-backed regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount} ${lineAvailabilityMarker}${familyMarker}`,
     };
   }
   if (lineStatus === "contract-fixture") {
-    const familyCopy = localFamilies ? ` Holiwyn lines: ${localFamilies}.` : "";
+    const familyCopy = localFamilies
+      ? locale === "zh" ? ` 利云体育盘口: ${localFamilies}。` : ` Holiwyn lines: ${localFamilies}.`
+      : "";
     return {
-      label: "Market source",
-      text: winnerReady
-        ? `Winner: Polymarket. Lines: Holiwyn pricing.${familyCopy}`
-        : `Holiwyn lines.${familyCopy}`,
+      label: locale === "zh" ? "市场来源" : "Market source",
+      text: locale === "zh"
+        ? winnerReady
+          ? `胜负: Polymarket。盘口: 利云体育。${familyCopy}`
+          : `利云体育盘口。${familyCopy}`
+        : winnerReady
+          ? `Winner: Polymarket. Lines: Holiwyn pricing.${familyCopy}`
+          : `Holiwyn lines.${familyCopy}`,
       tone: "fixture" as const,
       accessibility:
         `event-detail-line-source-banner line-source-contract-fixture line-source-local-test-fake-token regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount} ${lineAvailabilityMarker}${familyMarker}`,
@@ -276,16 +293,16 @@ const lineSourceCopy = (event: Event) => {
   }
   if (lineStatus === "missing") {
     return {
-      label: "Market source",
-      text: "Lines unavailable",
+      label: locale === "zh" ? "市场来源" : "Market source",
+      text: locale === "zh" ? "盘口暂不可用" : "Lines unavailable",
       tone: "missing" as const,
       accessibility:
         `event-detail-line-source-banner line-source-missing regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}`,
     };
   }
   return {
-    label: "Market source",
-    text: "Checking market source",
+    label: locale === "zh" ? "市场来源" : "Market source",
+    text: locale === "zh" ? "正在检查市场来源" : "Checking market source",
     tone: "missing" as const,
     accessibility:
       `event-detail-line-source-banner line-source-unknown regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}`,
@@ -450,17 +467,17 @@ type GameLineGroup = {
   onSelectLine?: (line: string) => void;
 };
 
-const marketSourceHeaderNote = (market?: Market) => {
+const marketSourceHeaderNote = (market: Market | undefined, locale: Locale) => {
   const source = market?.referenceSource ?? "";
   if (source.includes("contract-fixture")) {
     return {
-      text: "Holiwyn line",
+      text: locale === "zh" ? "利云体育盘口" : "Holiwyn line",
       accessibility: "line-market-local-test-pricing line-market-local-test-fake-token",
     };
   }
   if (source.includes("polymarket")) {
     return {
-      text: "Polymarket market",
+      text: locale === "zh" ? "Polymarket 市场" : "Polymarket market",
       accessibility: "line-market-provider-backed",
     };
   }
@@ -610,7 +627,7 @@ export function EventDetail({
     return () => clearTimeout(timer);
   }, [refreshingDepthMarketId]);
   const stats = marketStats(event);
-  const sourceCopy = lineSourceCopy(event);
+  const sourceCopy = lineSourceCopy(event, locale);
   const position = positions.find((item) =>
     event.markets.some((market) => market.id === item.marketId || market.title === item.title),
   );
@@ -1462,7 +1479,7 @@ export function EventDetail({
     const visibleTitle = group.displayTitle ?? group.title;
     const compactHeaderLabel = group.displayTitle ? "event-detail-line-header-compact-retail" : "";
     const sourceBadge = marketSourceBadge(group.backendMarket);
-    const sourceHeaderNote = marketSourceHeaderNote(group.backendMarket);
+    const sourceHeaderNote = marketSourceHeaderNote(group.backendMarket, locale);
 
     return (
     <View key={group.id} style={styles.marketBlock}>
