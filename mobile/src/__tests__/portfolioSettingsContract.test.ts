@@ -24,10 +24,10 @@ describe("Portfolio settings contract", () => {
     expect(portfolio).toContain("portfolio-account-entry-label");
     expect(portfolio).toContain("portfolio-account-google-login-label-visible");
     expect(portfolio).toContain("portfolio-google-login-button-visible");
-    expect(portfolio).toContain("Account / Google login");
-    expect(portfolio).toContain("Google login");
-    expect(portfolio).toContain("\\u8d26\\u6237 / Google \\u767b\\u5f55");
-    expect(portfolio).toContain("Google \\u767b\\u5f55");
+    expect(portfolio).toContain("Continue with Google");
+    expect(portfolio).toContain("Load your server profile");
+    expect(portfolio).toContain("\\u4f7f\\u7528 Google \\u7ee7\\u7eed");
+    expect(portfolio).toContain("\\u52a0\\u8f7d\\u670d\\u52a1\\u5668\\u4e2a\\u4eba\\u8d44\\u6599");
     expect(portfolio).toContain("openAccount: () => void");
     expect(portfolio).toContain("openGoogleSignIn: () => void");
     expect(portfolio).toContain("onPress={openGoogleSignIn}");

@@ -5643,6 +5643,12 @@ try {
           )
         }
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
+        if ($mvpRouteTargetTicketMarketType -eq "team-total") {
+          & $adb -s $Device shell input swipe 540 2050 540 1620 260 | Out-Null
+          Start-Sleep -Milliseconds 500
+          $mvpRouteLineHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-line-markets-team-total-tap-ready.xml"
+          Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
+        }
 
         Invoke-TapHierarchyNode -Path $mvpRouteLineHierarchy -Identifier $mvpRouteTargetOutcomeId -StartsWith
         Start-Sleep -Seconds 1

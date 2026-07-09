@@ -11439,3 +11439,48 @@ Known limitations:
 
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Native Google OAuth callback/session/logout remains future auth work.
+
+## Cycle RL - Portfolio Google Entry and Source Summary Cleanup
+
+Feature/page worked on:
+
+- Local MVP Portfolio account/login entry after Home -> Event Detail -> Team Total line -> Trade Ticket -> server fake-token buy -> Portfolio/history.
+- This cycle fixes the tester-facing concern that Google login felt missing after Home account controls were intentionally removed.
+
+Frontend/proof files touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/src/__tests__/portfolioSettingsContract.test.ts`
+- `mobile/src/__tests__/portfolioSourceBadge.test.ts`
+- `mobile/scripts/smoke.ps1`
+
+Backend/proof files touched:
+
+- No backend route or schema changed.
+
+Important functions/services touched:
+
+- Portfolio header now shows a clear full-width `Continue with Google` action with helper copy under the profile header.
+- The top-left profile row remains the Account entry.
+- Portfolio source summary remains present for audit/XML metadata but is visually hidden so it no longer dominates the retail tester UI.
+- S23 route proof now nudges Team Total rows away from the bottom edge before tapping, avoiding clipped-node tap failures in automated proof.
+
+User interactions supported/proven:
+
+- S23 repeats the current-route Local MVP server-filled flow and verifies Portfolio shows the obvious Google entry, no visible source summary banner, readable position, Orders empty state, and History row.
+
+State transitions:
+
+- No auth, order, position, or history state changed.
+- The same server-mode fake-token buy fills against a seeded maker ask and lands in Portfolio/history.
+
+Validation:
+
+- Mobile typecheck passed.
+- Focused mobile vitest suite passed: portfolio settings contract, portfolio source badge, route server-filled wrapper contract.
+- Samsung S23 proof passed using device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM_S911U1` on Expo port `8340`.
+
+Known limitations:
+
+- Google auth still opens the backend browser redirect path; native app callback/session/logout remains future auth work.
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

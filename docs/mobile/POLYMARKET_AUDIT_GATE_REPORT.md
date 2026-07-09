@@ -7097,3 +7097,30 @@ Remaining P1:
 - Native Google OAuth callback/session/logout remains separate auth work.
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Event Detail Trade UI proof is not itself a server order-placement proof.
+
+## Cycle RL - Portfolio Google Entry and Source Summary Cleanup
+
+Result: Pass for RL scope.
+
+Checked:
+
+- Portfolio now exposes an obvious `Continue with Google` action under the profile header.
+- The top-left Portfolio profile row still opens Account.
+- The large Portfolio source summary banner no longer appears in the visible tester layout.
+- Source and selection identity markers remain present in XML/audit metadata.
+- S23 proof completes the current-route Local MVP server-filled flow through Portfolio, Orders, and History.
+- No backend route, schema, order logic, order book, chat, live stats, social, deposit, or withdraw work was touched.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-RL-portfolio-google-source-cleanup.md`
+- `docs/mobile/harness/cycle-RL-portfolio-google-source-cleanup/cycle-RL-local-mvp-current-route-server-filled-flow-proof.json`
+- `docs/mobile/screenshots/cycle-RL-portfolio-google-source-cleanup/cycle-RL-holiwyn-route-server-mvp-portfolio-top.png`
+- `docs/mobile/screenshots/cycle-RL-portfolio-google-source-cleanup/cycle-RL-holiwyn-route-server-mvp-portfolio-history.png`
+
+Unresolved P0 gaps: 0 for RL scope.
+
+Remaining P1:
+
+- Native Google OAuth callback/session/logout remains separate auth work.
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
