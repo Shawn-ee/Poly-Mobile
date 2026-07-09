@@ -8775,3 +8775,32 @@ Temporary mock/static data:
 Future migration concern:
 
 - When native Google auth is implemented, the visible Portfolio `Continue with Google` action should hand off to the native callback/session flow instead of browser-only redirect.
+
+## Cycle RM - Current MVP Cashout Ticket Retail Pass
+
+Closed or narrowed:
+
+- Current MVP now has S23 proof for buy -> position -> cashout/sell -> History, not only buy -> Portfolio/history.
+- Cashout ticket UI is closer to the Polymarket swipe-confirm model with a large amount, separated dark panel, and fixed red swipe zone.
+- Cashout preserves line-market source/identity through History after the sell.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed current-match Spread/Totals/Team Total markets.
+- Native app Google OAuth callback/session/logout state.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- S23 proof uses contract-fixture current-match spread line rows because real provider-backed current line markets remain unavailable.
+
+Future migration concern:
+
+- Cashout currently uses the dedicated `CashoutTicket`; future UI parity may consolidate cashout into the same generic Buy/Sell amount-entry ticket once sell sizing and full-position selection are unified.

@@ -1197,3 +1197,15 @@ For every UI element or interaction, answer:
 - Unresolved P0 for RL scope: 0.
 - Remaining P1: native Google OAuth callback/session/logout remains separate auth work.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle RM Gap Tracker Update
+
+- PM-GAP-167 is opened and closed for current MVP Portfolio cashout/sell proof and retail cashout ticket layout.
+- RM changes the cashout modal from a plain bottom sheet to a full-screen retail swipe-confirm ticket with a dark rounded panel, large estimated proceeds, and fixed red swipe zone.
+- RM proves on Samsung S23 that Home -> Event Detail -> line ticket -> buy -> Portfolio -> Cash out -> sell/cashout -> History completes in server mode.
+- RM preserves line-market identity/source markers through the sold History row.
+- RM fixes the current MVP S23 proof harness so local counterparty seeding works without requiring an externally pre-set `DATABASE_URL`.
+- Unresolved P0 for RM scope: 0.
+- Remaining P1: cashout still uses a dedicated cashout ticket rather than the generic Buy/Sell amount-entry ticket.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Remaining P1: native Google OAuth callback/session/logout remains separate auth work.

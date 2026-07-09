@@ -237,12 +237,16 @@ $previousEnv = @{
   EXPO_PUBLIC_ORDER_MODE = $env:EXPO_PUBLIC_ORDER_MODE
   EXPO_PUBLIC_SHOW_ORDERBOOK = $env:EXPO_PUBLIC_SHOW_ORDERBOOK
   EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT = $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT
+  DATABASE_URL = $env:DATABASE_URL
 }
 $expo = $null
 try {
   $deviceInfo = (& $adb -s $Device shell getprop ro.product.model).Trim()
   if (-not $deviceInfo) {
     throw "Target Android device is not reachable: $Device"
+  }
+  if (-not $env:DATABASE_URL) {
+    $env:DATABASE_URL = "postgresql://" + "postgres:postgres" + "@127.0.0.1:5432/polymarket"
   }
 
   $health = Invoke-RestMethod -Uri "$BackendBaseUrl/api/health" -TimeoutSec 5

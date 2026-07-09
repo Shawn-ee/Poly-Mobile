@@ -7124,3 +7124,30 @@ Remaining P1:
 
 - Native Google OAuth callback/session/logout remains separate auth work.
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle RM - Current MVP Cashout Ticket Retail Pass
+
+Result: Pass for RM scope.
+
+Checked:
+
+- Cashout opens from Portfolio after a filled current-match line-market buy.
+- Cashout ticket uses a full-screen retail layout with large proceeds, dark rounded panel, summary rows, and fixed red swipe-confirm area.
+- Swipe cashout submits the server-mode sell/close order and returns to Portfolio.
+- History shows the sold activity with line/source identity preserved.
+- Order book, chat, live stats, social, deposit, withdraw, and backend schema were not touched.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-RM-current-mvp-cashout-ticket.md`
+- `docs/mobile/harness/cycle-RM-current-mvp-cashout-ticket/cycle-RM-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-RM-current-mvp-cashout-ticket/cycle-RM-current-mvp-line-cashout-ticket.png`
+- `docs/mobile/screenshots/cycle-RM-current-mvp-cashout-ticket/cycle-RM-current-mvp-line-cashout-history.png`
+
+Unresolved P0 gaps: 0 for RM scope.
+
+Remaining P1:
+
+- Cashout still uses a dedicated cashout ticket instead of the generic Buy/Sell ticket.
+- Native Google OAuth callback/session/logout remains separate auth work.
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
