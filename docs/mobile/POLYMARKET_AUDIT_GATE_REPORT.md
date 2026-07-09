@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle QZ
+
+Gate status: Pass for focused Search retail source cleanup; not a pass for real provider-backed line-market parity.
+
+Scope: hide internal provider/source debug copy from Search result rows while preserving hidden audit markers.
+
+Decision:
+
+- P0 failed: 0 for focused QZ scope.
+- Implemented change: Search rows no longer visibly show `Polymarket X markets`, `Holiwyn lines`, `Source unavailable`, or `Checking source`.
+- Runtime finding: hidden `search-result-source-*` markers remain present for audit and backend migration.
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`; XML confirms Search input, result rows, probability, hidden source marker, and no unsupported filter controls.
+- P1 remaining: real provider-backed Spread/Totals/Team Total line markets.
+- Evidence: `docs/mobile/audits/cycle-QZ-search-retail-source-cleanup.md`; S23 XML `docs/mobile/harness/cycle-QZ-search-retail-source-cleanup/cycle-QZ-search.xml`; screenshot `docs/mobile/screenshots/cycle-QZ-search-retail-source-cleanup/cycle-QZ-search.png`.
+
 ## Cycle QO
 
 Gate status: Pass for focused Chinese Home/Live source-copy cleanup; not a pass for real provider-backed line-market parity.

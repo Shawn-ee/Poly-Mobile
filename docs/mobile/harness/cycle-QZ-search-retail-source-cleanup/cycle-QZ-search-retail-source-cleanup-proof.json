@@ -1,0 +1,40 @@
+{
+  "cycle": "QZ",
+  "feature": "Search retail source cleanup",
+  "device": {
+    "role": "Holiwyn Android proof",
+    "model": "SM-S911U1",
+    "adbDeviceId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp"
+  },
+  "runtime": {
+    "app": "Expo Go",
+    "backend": "http://127.0.0.1:3002",
+    "mobileApiBaseUrl": "http://172.16.200.14:3002",
+    "expoPort": 8309,
+    "marketDataMode": "server",
+    "orderMode": "server"
+  },
+  "evidence": {
+    "xml": "docs/mobile/harness/cycle-QZ-search-retail-source-cleanup/cycle-QZ-search.xml",
+    "screenshot": "docs/mobile/screenshots/cycle-QZ-search-retail-source-cleanup/cycle-QZ-search.png"
+  },
+  "checks": {
+    "packageExpo": true,
+    "searchInput": true,
+    "searchTab": true,
+    "searchResult": true,
+    "sourceMarker": true,
+    "probability": true,
+    "visiblePolymarketMarkets": false,
+    "visibleHoliwynLines": false,
+    "visibleSourceUnavailable": false,
+    "visibleCheckingSource": false,
+    "unsupportedFilter": false
+  },
+  "result": "pass",
+  "notes": [
+    "Visible Search source/debug labels were removed from the retail UI.",
+    "Hidden search-result-source-* markers remain available for audit and backend migration.",
+    "No backend, order, schema, orderbook, chat, live stats, social, deposit, or withdrawal code changed."
+  ]
+}

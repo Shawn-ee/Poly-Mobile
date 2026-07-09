@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle QZ - Search Retail Source Cleanup
+
+Cycle QZ changes no backend route or schema. It keeps the existing Search feed/source-summary contract and removes only visible retail source/debug copy.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Search result retail rows | Existing Search feed route through `loadSearchEventPage()` | Existing service contract | Existing API client config | Existing search query/page parameters | Event title, outcomes/probability, saved state, and `marketSourceSummary` for hidden audit markers only | Existing event/market/provider mapping models | Existing local Search fallback unchanged | Real provider-backed current-match Spread/Totals/Team Total markets remain unavailable. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-QZ-search-retail-source-cleanup/cycle-QZ-search.xml`
+
 ## Cycle QO - Chinese Source Copy Cleanup
 
 Cycle QO changes no backend route or schema. It keeps the existing Home/Live event-feed source contract and changes only Chinese visible copy.
