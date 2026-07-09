@@ -2651,3 +2651,35 @@ Pass for RL Portfolio Google entry/source summary cleanup.
 
 Remaining gaps:
 Native Google OAuth callback/session/logout remains separate auth work. Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle RM - Current MVP Cashout Ticket Retail Pass
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket reference-device action. This cycle applies the existing Polymarket retail trade direction: cashout/sell should be a simple swipe-confirm mobile flow.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM_S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go proof on port `8341`. Backend health OK on `http://127.0.0.1:3002`; Samsung runtime API base `http://172.16.200.14:3002`. Order mode `server`; market data mode `server`.
+
+Holiwyn actions:
+Ran the current MVP S23 visible flow: Home, Live, Argentina vs. Egypt Event Detail, spread line ticket, `$25` swipe buy, Portfolio, cashout ticket, swipe cashout/sell, and History.
+
+Evidence:
+- `docs/mobile/harness/cycle-RM-current-mvp-cashout-ticket/cycle-RM-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-RM-current-mvp-cashout-ticket/cycle-RM-current-mvp-line-cashout-ticket.png`
+- `docs/mobile/harness/cycle-RM-current-mvp-cashout-ticket/cycle-RM-current-mvp-line-cashout-ticket.xml`
+- `docs/mobile/screenshots/cycle-RM-current-mvp-cashout-ticket/cycle-RM-current-mvp-line-cashout-history.png`
+
+Smoke/tests:
+Mobile typecheck passed. Focused mobile vitest suite passed. S23 current MVP cashout lifecycle proof passed.
+
+Result:
+Pass for RM current MVP cashout ticket retail pass.
+
+Remaining gaps:
+Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket. Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable. Native Google OAuth callback/session/logout remains separate auth work.

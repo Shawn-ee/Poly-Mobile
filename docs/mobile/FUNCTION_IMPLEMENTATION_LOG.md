@@ -11484,3 +11484,49 @@ Known limitations:
 
 - Google auth still opens the backend browser redirect path; native app callback/session/logout remains future auth work.
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle RM - Current MVP Cashout Ticket Retail Pass
+
+Feature/page worked on:
+
+- Local MVP Portfolio cashout/sell flow after a filled line-market buy.
+- Required user path proven: Home -> Event Detail -> line market -> Buy ticket -> fake-token/server-backed order -> Portfolio -> Cash out -> sell/cashout order -> History.
+
+Frontend/proof files touched:
+
+- `mobile/src/components/CashoutTicket.tsx`
+- `mobile/src/__tests__/cashoutTicketContract.test.ts`
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+
+Backend/proof files touched:
+
+- No backend route or schema changed.
+
+Important functions/services touched:
+
+- `CashoutTicket` now uses a full-screen retail layout with a dark rounded ticket body, large estimated proceeds, clear position/price rows, and a fixed red swipe-to-cashout area.
+- Swipe handle still translates vertically with gesture progress and only submits after the threshold.
+- The current MVP S23 proof harness now sets and restores the local `DATABASE_URL` default before counterparty seeding.
+
+User interactions supported/proven:
+
+- S23 buys a current-match spread line from Event Detail.
+- Portfolio shows the filled position and cashout action.
+- Cashout opens the redesigned full-screen swipe ticket.
+- Swipe cashout submits the server-mode sell/close order and History shows the sold activity with line/source identity preserved.
+
+State transitions:
+
+- Buy order fills into a Portfolio position.
+- Cashout seeds a BUY counterparty, submits a SELL close order, returns to Portfolio, and records a sold History row.
+
+Validation:
+
+- Mobile typecheck passed.
+- Focused mobile vitest suite passed: cashout ticket contract, position close service, portfolio settings contract.
+- Samsung S23 cashout lifecycle proof passed using device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM_S911U1` on Expo port `8341`.
+
+Known limitations:
+
+- Cashout still uses the dedicated cashout ticket rather than the generic amount-entry Trade Ticket.
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
