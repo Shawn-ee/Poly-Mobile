@@ -78,6 +78,7 @@ async function main() {
     manualSlugFallbacks: discovery.manualSlugFallbacks,
     manualSlugFallbackCandidateCount: discovery.manualSlugFallbackCandidateCount,
     providerCandidateFamilySummary: discovery.providerCandidateFamilySummary,
+    lineDiscoverySummary: discovery.lineDiscoverySummary,
     targetMarketCount: discovery.targetMarketCount,
     attachReadyCandidateCount: discovery.attachReadyCandidateCount,
     nextRequiredAction: discovery.nextRequiredAction,
@@ -87,6 +88,9 @@ async function main() {
       lineTargetCount: lineTargets.length,
       attachReadyLineTargetCount: attachReadyLineTargets.length,
       lineWrongFamilyRejectionCount: lineWrongFamilyRejections.length,
+      lineSummaryTargetCount: discovery.lineDiscoverySummary.lineTargetCount,
+      lineSummaryAttachReadyCount: discovery.lineDiscoverySummary.attachReadyLineTargetCount,
+      lineSummaryNextRequiredAction: discovery.lineDiscoverySummary.nextRequiredAction,
     },
     targets,
   };

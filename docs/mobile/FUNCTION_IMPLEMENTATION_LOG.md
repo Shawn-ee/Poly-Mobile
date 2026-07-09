@@ -2,6 +2,45 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle QB - Provider Line Discovery Runtime Summary
+
+Feature/page worked on:
+
+- Local MVP Event Detail provider-line discovery runtime and proof.
+
+Frontend/backend touched:
+
+- `src/server/services/mobileLiveProviderCandidates.ts`
+- `scripts/prove_mobile_mvp_provider_discovery_guard.ts`
+- `src/__tests__/mobile-live-provider-candidates.service.test.ts`
+- Provider/audit docs and S23 proof evidence.
+
+Important functions/services touched:
+
+- `discoverMobileLiveProviderCandidates()` now includes `lineDiscoverySummary` in its route/service result.
+- `buildLineDiscoverySummary()` separates line-market discovery facts from generic provider candidate counts.
+- The provider discovery guard now records line target count, manual line slug fallback count, attach-ready line count, rejected reason summary, and next provider action.
+
+User interactions supported:
+
+- Users still see Event Detail Game Lines with the existing Local MVP flow.
+- The app/runtime can now prove why Spread/Totals/Team Total remain local fixtures: Polymarket exact event/manual slug/search discovery found no attach-ready provider line markets for the selected current match.
+
+State transitions:
+
+- No ticket, order, portfolio, wallet, auth, schema, chat, orderbook UI, live stats, deposit, or withdrawal state changed.
+
+Known limitations:
+
+- This cycle does not import real provider-backed line markets because no attach-ready Polymarket line candidates were found for the current match.
+- Android proof confirms the visible line-market/source state only; it does not prove a new order lifecycle.
+
+Evidence:
+
+- Runtime discovery proof: `docs/mobile/harness/cycle-QB-provider-line-discovery-runtime/cycle-QB-provider-discovery-guard.json`
+- S23 proof summary: `docs/mobile/harness/cycle-QB-provider-line-discovery-runtime/cycle-QB-s23-proof-summary.json`
+- S23 screenshots/XML: `docs/mobile/screenshots/cycle-QB-provider-line-discovery-runtime/cycle-QB-s23-event-detail-line-discovery.png`, `docs/mobile/screenshots/cycle-QB-provider-line-discovery-runtime/cycle-QB-s23-game-lines.png`, `docs/mobile/harness/cycle-QB-provider-line-discovery-runtime/cycle-QB-s23-event-detail-line-discovery.xml`, `docs/mobile/harness/cycle-QB-provider-line-discovery-runtime/cycle-QB-s23-game-lines.xml`
+
 ## Cycle QA - Provider Line Contract Action Fields
 
 Feature/page worked on:

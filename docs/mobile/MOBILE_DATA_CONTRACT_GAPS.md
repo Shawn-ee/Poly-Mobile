@@ -2,6 +2,30 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle QB - Provider Line Discovery Runtime Summary
+
+Closed or narrowed:
+
+- Provider discovery no longer reports only generic candidate counts. It now reports a line-specific summary that tells the loop whether line markets were checked, whether manual slug fallbacks found anything, whether candidates were rejected by family/relevance, and what action is next.
+- Runtime proof for `argentina-vs-egypt` checked 4 line targets, 82 manual line slug fallback guesses, and 12 ranked line candidates, with 0 attach-ready provider line targets.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Provider-backed Spread/Totals/Team Total markets with stable provider IDs, condition IDs, outcome token IDs, line values, periods, and usable prices.
+- A provider source that exposes those line markets for the current match. Current Polymarket Gamma surfaces only match-winner markets for this event.
+
+Route mismatch:
+
+- No route mismatch introduced. The `/provider-candidates` route will expose the new service field after the backend is restarted from this codebase.
+
+Temporary mock/static data:
+
+- Existing Local MVP line fixtures remain contract-shaped and are still used for UI/order proof.
+
+Future migration concern:
+
+- Do not convert line-market fixtures to provider-backed status unless `lineDiscoverySummary.attachReadyLineTargetCount` is greater than zero and the selected provider identities are attached/proven through ticket/order/portfolio/history.
+
 ## Cycle QA - Provider Line Contract Action Fields
 
 Closed or narrowed:

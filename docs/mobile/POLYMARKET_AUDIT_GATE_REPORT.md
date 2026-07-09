@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle QB
+
+Gate status: Pass for focused provider-line discovery runtime summary; not a pass for real provider-backed line-market parity.
+
+Scope: Provider-candidate discovery service/route contract and S23 Event Detail line-state proof.
+
+Decision:
+
+- P0 failed: 0 for the focused runtime discovery/actionability scope.
+- Implemented change: provider discovery now returns `lineDiscoverySummary`, separating line-market target counts, manual slug fallback attempts, attach-ready line counts, rejected reason summaries, and next provider action from generic provider-candidate totals.
+- Runtime finding: for `argentina-vs-egypt`, 4 line targets and 82 manual line slug fallbacks were checked, but 0 attach-ready Polymarket line targets were found. The 12 ranked line candidates were match-winner family candidates and were rejected for provider-family mismatch.
+- Android proof: Samsung S23 opens Event Detail and lower Game Lines view, showing the existing Market Source state: winner is Polymarket, lines are local.
+- P1/P2 remaining: real provider-backed Spread/Totals/Team Total markets remain unavailable for the selected current match.
+- Evidence: runtime proof `docs/mobile/harness/cycle-QB-provider-line-discovery-runtime/cycle-QB-provider-discovery-guard.json`; S23 summary `docs/mobile/harness/cycle-QB-provider-line-discovery-runtime/cycle-QB-s23-proof-summary.json`; screenshots `docs/mobile/screenshots/cycle-QB-provider-line-discovery-runtime/cycle-QB-s23-event-detail-line-discovery.png`, `docs/mobile/screenshots/cycle-QB-provider-line-discovery-runtime/cycle-QB-s23-game-lines.png`.
+
 ## Cycle QA
 
 Gate status: Pass for focused provider-line readiness contract; not a pass for real provider-backed line-market parity.

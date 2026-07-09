@@ -1,0 +1,14 @@
+{
+  "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+  "model": "SM-S911U1",
+  "hasEventDetail": true,
+  "hasLineSourceBanner": true,
+  "hasProviderUnavailable": true,
+  "hasNextProviderAction": true,
+  "hasContractFixtureFamilies": true,
+  "screenshot": "docs/mobile/screenshots/cycle-QB-provider-line-discovery-runtime/cycle-QB-s23-event-detail-line-discovery.png",
+  "xml": "docs/mobile/harness/cycle-QB-provider-line-discovery-runtime/cycle-QB-s23-event-detail-line-discovery.xml",
+  "hasGameLinesLowerView": true,
+  "lowerScreenshot": "docs/mobile/screenshots/cycle-QB-provider-line-discovery-runtime/cycle-QB-s23-game-lines.png",
+  "lowerXml": "docs/mobile/harness/cycle-QB-provider-line-discovery-runtime/cycle-QB-s23-game-lines.xml"
+}

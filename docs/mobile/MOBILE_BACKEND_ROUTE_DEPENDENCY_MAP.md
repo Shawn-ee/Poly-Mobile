@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle QB - Provider Line Discovery Runtime Summary
+
+Cycle QB extends the provider-candidates service/route contract with a line-specific discovery summary for the Local MVP Event Detail line-market gap.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider candidate discovery for current match lines | `/api/mobile/events/:slug/provider-candidates`; proof calls `discoverMobileLiveProviderCandidates()` directly and fetches Polymarket Gamma sports events, manual slug fallbacks, and market search candidates | GET/service call | Route requires internal/admin auth; local proof uses service directly with local DB | Query params: `providerSearchMode`, optional `providerEventSlug`, `marketId`, `maxCandidatesPerMarket` | New `lineDiscoverySummary`: `lineTargetCount`, `lineTargetFamilies`, `lineCandidateCount`, `attachReadyLineTargetCount`, `exactProviderLineCandidateCount`, `manualLineSlugFallbackCount`, `manualLineSlugFallbackCandidateCount`, `candidateFamilySummary`, `rejectedReasonSummary`, `nextRequiredAction` | Existing `Event`, `Market`, `Outcome`; no schema change | Existing Local MVP line markets remain `contract-fixture` until attach-ready provider line markets exist | Real provider-backed Spread/Totals/Team Total markets are still missing. The discovery route now proves that absence instead of leaving it as an implicit UI fixture. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-QB-provider-line-discovery-runtime/cycle-QB-provider-discovery-guard.json`
+- `docs/mobile/harness/cycle-QB-provider-line-discovery-runtime/cycle-QB-s23-proof-summary.json`
+
 ## Cycle QA - Provider Line Contract Action Fields
 
 Cycle QA extends the live Event Detail route contract so mobile and future provider work can distinguish real provider-backed line families from Local MVP contract-fixture lines.

@@ -1,5 +1,6 @@
 import {
   buildProviderCandidateSearchQueries,
+  buildLineDiscoverySummary,
   buildProviderCandidateManualSlugFallbacks,
   classifyProviderMarketFamily,
   deriveProviderEventSlugHints,
@@ -295,6 +296,78 @@ describe("mobile live provider candidates", () => {
       total_goals: 0,
       team_total_goals: 0,
       corners: 0,
+    }));
+  });
+
+  test("summarizes line discovery action separately from generic provider candidate counts", () => {
+    const winnerCandidate = {
+      slug: "fifwc-col-gha-2026-07-03-col",
+      question: "Will Colombia win on 2026-07-03?",
+      externalMarketId: "gamma-market-col",
+      conditionId: "condition-col",
+      eventTitle: "Colombia vs. Ghana",
+      active: true,
+      closed: false,
+      archived: false,
+      acceptingOrders: true,
+      bestBid: 0.8,
+      bestAsk: 0.82,
+      spread: 0.02,
+      lastTradePrice: null,
+      volume: null,
+      volume24hr: null,
+      liquidity: null,
+      outcomes: [
+        { name: "Yes", tokenId: "token-yes", outcomePrice: 0.8, displayOrder: 0 },
+        { name: "No", tokenId: "token-no", outcomePrice: 0.2, displayOrder: 1 },
+      ],
+      tags: ["soccer"],
+      category: "Sports / Soccer",
+      score: 0,
+      attachReadiness: {
+        attachReady: false,
+        reasons: ["provider_family_mismatch"],
+        expectedFamily: "total_goals",
+        candidateFamily: "match_winner",
+        relevance: { relevant: true },
+      },
+    };
+
+    const summary = buildLineDiscoverySummary({
+      targets: [
+        {
+          expectedProviderFamily: "match_winner",
+          attachProposal: { attachReady: true },
+          candidateCount: 3,
+          candidates: [],
+        },
+        {
+          expectedProviderFamily: "total_goals",
+          attachProposal: { attachReady: false },
+          candidateCount: 1,
+          candidates: [winnerCandidate as any],
+        },
+      ],
+      manualSlugFallbacks: [
+        "fifwc-col-gha-2026-07-03-col",
+        "fifwc-col-gha-2026-07-03-total-goals",
+      ],
+      manualSlugFallbackCandidates: [],
+      sportsEventCandidates: [winnerCandidate as any],
+    });
+
+    expect(summary).toEqual(expect.objectContaining({
+      lineTargetCount: 1,
+      lineTargetFamilies: ["total_goals"],
+      lineCandidateCount: 1,
+      attachReadyLineTargetCount: 0,
+      exactProviderLineCandidateCount: 0,
+      manualLineSlugFallbackCount: 1,
+      manualLineSlugFallbackCandidateCount: 0,
+      nextRequiredAction: "provider_line_markets_not_found_keep_contract_fixtures_for_local_mvp",
+    }));
+    expect(summary.rejectedReasonSummary).toEqual(expect.objectContaining({
+      provider_family_mismatch: 1,
     }));
   });
 

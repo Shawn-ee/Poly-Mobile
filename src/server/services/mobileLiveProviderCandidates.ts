@@ -226,6 +226,14 @@ export async function discoverMobileLiveProviderCandidates(options: ProviderCand
     providerCandidateFamilySummary: summarizeProviderCandidateFamilies(sportsEventCandidates),
     targetMarketCount: providerTargets.length,
     attachReadyCandidateCount: providerTargets.filter((target) => target.attachProposal?.attachReady).length,
+    lineDiscoverySummary: buildLineDiscoverySummary({
+      targets: providerTargets,
+      manualSlugFallbacks: providerEventSlugs.length > 0
+        ? Array.from(new Set(selectedMarkets.flatMap((market) => buildProviderCandidateManualSlugFallbacks(market, providerEventSlugs))))
+        : [],
+      manualSlugFallbackCandidates,
+      sportsEventCandidates,
+    }),
     providerErrorCount: providerTargets.filter((target) => target.providerError || target.providerSportsEventError).length,
     nextRequiredAction:
       providerTargets.some((target) => target.attachProposal?.attachReady)
@@ -235,6 +243,79 @@ export async function discoverMobileLiveProviderCandidates(options: ProviderCand
           : "run_provider_candidate_discovery_with_fetch_enabled",
     targets: providerTargets,
   };
+}
+
+export function buildLineDiscoverySummary(params: {
+  targets: Array<{
+    expectedProviderFamily: ProviderMarketFamily;
+    attachProposal: { attachReady: boolean } | null;
+    candidateCount: number;
+    candidates: ProviderMarketCandidate[];
+  }>;
+  manualSlugFallbacks: string[];
+  manualSlugFallbackCandidates: ProviderMarketCandidate[];
+  sportsEventCandidates: ProviderMarketCandidate[];
+}) {
+  const lineFamilies: ProviderMarketFamily[] = [
+    "spread",
+    "total_goals",
+    "team_total_goals",
+    "corners",
+    "first_half",
+    "second_half",
+    "correct_score",
+  ];
+  const lineFamilySet = new Set<ProviderMarketFamily>(lineFamilies);
+  const lineTargets = params.targets.filter((target) => lineFamilySet.has(target.expectedProviderFamily));
+  const attachReadyLineTargets = lineTargets.filter((target) => target.attachProposal?.attachReady);
+  const exactProviderFamilySummary = summarizeProviderCandidateFamilies(params.sportsEventCandidates);
+  const manualSlugFamilySummary = summarizeProviderCandidateFamilies(params.manualSlugFallbackCandidates);
+  const lineManualSlugFallbacks = params.manualSlugFallbacks.filter((slug) =>
+    /\b(spread|handicap|total|goals|over|under|team|1h|2h|half|corner|score)\b/.test(slug.replaceAll("-", " "))
+  );
+  const candidateFamilySummary = emptyProviderCandidateFamilySummary();
+  const rejectedReasonSummary: Record<string, number> = {};
+
+  for (const target of lineTargets) {
+    for (const candidate of target.candidates) {
+      candidateFamilySummary[classifyProviderMarketFamily(candidate)] += 1;
+      for (const reason of candidate.attachReadiness.reasons) {
+        rejectedReasonSummary[reason] = (rejectedReasonSummary[reason] ?? 0) + 1;
+      }
+    }
+  }
+
+  return {
+    lineTargetCount: lineTargets.length,
+    lineTargetFamilies: Array.from(new Set(lineTargets.map((target) => target.expectedProviderFamily))),
+    lineCandidateCount: lineTargets.reduce((total, target) => total + target.candidateCount, 0),
+    attachReadyLineTargetCount: attachReadyLineTargets.length,
+    exactProviderLineCandidateCount: countLineProviderFamilies(exactProviderFamilySummary),
+    manualLineSlugFallbackCount: lineManualSlugFallbacks.length,
+    manualLineSlugFallbackCandidateCount: countLineProviderFamilies(manualSlugFamilySummary),
+    candidateFamilySummary,
+    rejectedReasonSummary,
+    nextRequiredAction:
+      lineTargets.length === 0
+        ? "no_route_visible_line_markets_to_map"
+        : attachReadyLineTargets.length > 0
+          ? "review_and_attach_provider_line_identity_candidates"
+          : countLineProviderFamilies(exactProviderFamilySummary) > 0 || countLineProviderFamilies(manualSlugFamilySummary) > 0
+            ? "review_rejected_provider_line_candidates"
+            : "provider_line_markets_not_found_keep_contract_fixtures_for_local_mvp",
+  };
+}
+
+function countLineProviderFamilies(summary: Record<ProviderMarketFamily, number>) {
+  return (
+    summary.spread +
+    summary.total_goals +
+    summary.team_total_goals +
+    summary.corners +
+    summary.first_half +
+    summary.second_half +
+    summary.correct_score
+  );
 }
 
 export function buildProviderCandidateManualSlugFallbacks(
