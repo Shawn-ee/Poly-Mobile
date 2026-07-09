@@ -7042,3 +7042,30 @@ Remaining P1:
 - Native Google OAuth callback/session/logout remains separate auth work.
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Broad smoke should replace the older post-capture `ticket-settings` assertion with current ticket accessibility markers.
+
+## Cycle RF - Event Detail Trade Smoke Current Ticket Gate
+
+Result: Pass for RF scope.
+
+Checked:
+
+- Event Detail Trade smoke no longer expects removed `ticket-settings` or advanced details UI.
+- S23 proof opens the Mexico ticket and verifies current ticket markers, source badge no-clip markers, `$25/$50` presets, amount state, and gesture-only swipe marker.
+- S23 proof opens the Ecuador ticket and verifies the same current ticket layout markers.
+- Rolling `cycle-current-*` files were restored; scoped RF evidence is saved separately.
+- No app UI, backend route, schema, order logic, order book, chat, live stats, social, deposit, withdraw, or Google auth flow was changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-RF-event-detail-trade-smoke-current-ticket.md`
+- `docs/mobile/harness/cycle-RF-event-detail-trade-smoke-current-ticket/cycle-RF-event-detail-trade-smoke-current-ticket-proof.json`
+- `docs/mobile/screenshots/cycle-RF-event-detail-trade-smoke-current-ticket/cycle-RF-event-detail-ticket.png`
+- `docs/mobile/screenshots/cycle-RF-event-detail-trade-smoke-current-ticket/cycle-RF-event-detail-ticket-amount.png`
+- `docs/mobile/screenshots/cycle-RF-event-detail-trade-smoke-current-ticket/cycle-RF-event-detail-away-ticket.png`
+
+Unresolved P0 gaps: 0 for RF scope.
+
+Remaining P1:
+
+- Native Google OAuth callback/session/logout remains separate auth work.
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

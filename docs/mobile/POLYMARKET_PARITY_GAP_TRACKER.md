@@ -1135,3 +1135,12 @@ For every UI element or interaction, answer:
 - Remaining P1: broad smoke should update the old post-capture `ticket-settings` expectation.
 - Remaining P1: native Google OAuth callback/session/logout remains separate auth work.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle RF Gap Tracker Update
+
+- PM-GAP-161 is opened and closed for the Event Detail Trade smoke gate still expecting removed ticket settings UI.
+- RF updates the S23 proof path to validate the current Polymarket-style ticket, `$25/$50` presets, no-clip source badge, amount state, and gesture-only swipe marker.
+- RF proves on Samsung S23 that Event Detail can open both Mexico and Ecuador tickets through the current proof gate.
+- Unresolved P0 for RF scope: 0.
+- Remaining P1: native Google OAuth callback/session/logout remains separate auth work.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

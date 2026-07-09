@@ -8571,3 +8571,31 @@ Temporary mock/static data:
 Future migration concern:
 
 - Ticket source copy should eventually reflect real provider-backed line-market support once those routes/schemas exist.
+
+## Cycle RF - Event Detail Trade Smoke Current Ticket Gate
+
+Closed or narrowed:
+
+- Event Detail trade proof no longer blocks on removed `ticket-settings` UI.
+- Proof now checks the current Trade Ticket identity/source markers and `$25/$50` preset data.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Native app Google OAuth callback/session/logout state.
+- Real provider-backed current-match Spread/Totals/Team Total line market ids, outcome ids, provider token ids, chart history, and prices.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- None added. The proof used existing app mock fallback when the wrapper did not see backend health.
+
+Future migration concern:
+
+- UI proof should eventually run in server mode once the provider-backed current-match line data is reliably available.
