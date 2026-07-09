@@ -439,6 +439,8 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
   });
   const realLineMarkets = lineMarkets.filter((market) => market.referenceSource === "polymarket");
   const contractFixtureLineMarkets = lineMarkets.filter((market) => market.referenceSource === "contract-fixture");
+  const providerBackedLineFamilies = Array.from(new Set(realLineMarkets.map(marketFamilyForMarket).filter(Boolean)));
+  const contractFixtureLineFamilies = Array.from(new Set(contractFixtureLineMarkets.map(marketFamilyForMarket).filter(Boolean)));
   const familyReadiness = Array.from(new Set(lineMarkets.map(marketFamilyForMarket).filter(Boolean))).map((family) => {
     const familyMarkets = lineMarkets.filter((market) => marketFamilyForMarket(market) === family);
     const polymarketCount = familyMarkets.filter((market) => market.referenceSource === "polymarket").length;
@@ -471,6 +473,12 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
         : contractFixtureLineMarkets.length > 0
           ? "contract-fixture"
           : "unknown";
+  const nextProviderAction =
+    realLineMarkets.length > 0
+      ? "use_route_visible_provider_line_markets"
+      : contractFixtureLineMarkets.length > 0
+        ? "discover_attach_ready_polymarket_line_markets_or_configure_approved_line_provider"
+        : "discover_line_market_provider_contract";
 
   return {
     totalMarketCount: markets.length,
@@ -500,6 +508,9 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
         status: realLineMarkets.length > 0 ? "available" : contractFixtureLineMarkets.length > 0 ? "unavailable" : "unknown",
         providerBackedLineMarketCount: realLineMarkets.length,
         contractFixtureLineMarketCount: contractFixtureLineMarkets.length,
+        providerBackedFamilies: providerBackedLineFamilies,
+        contractFixtureFamilies: contractFixtureLineFamilies,
+        nextProviderAction,
         reason:
           realLineMarkets.length > 0
             ? "Route includes provider-backed Polymarket line markets."

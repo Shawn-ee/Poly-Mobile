@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle QA
+
+Gate status: Pass for focused provider-line readiness contract; not a pass for real provider-backed line-market parity.
+
+Scope: Event Detail line-market provider-readiness fields and Android proof markers.
+
+Decision:
+
+- P0 failed: 0 for the focused data-contract/actionability scope.
+- Implemented change: live Event Detail route summaries now expose `providerBackedFamilies`, `contractFixtureFamilies`, and `nextProviderAction` under `marketSourceSummary.lineMarkets.providerAvailability`.
+- Reference/provider finding: Polymarket Gamma for `fifwc-arg-egy-2026-07-07` returned 3 match-winner markets and 0 line markets, so Holiwyn is correct to treat current Spread/Totals/Team Total as Local MVP contract fixtures.
+- Android proof: Samsung S23 proof confirms the mobile Event Detail consumes the new provider-line fields through hidden audit markers while keeping the visible tester UI calm.
+- P1/P2 remaining: real provider-backed Spread/Totals/Team Total discovery/import remains open; the old backend HTTP process on port 3002 must be restarted from this codebase before HTTP route proof can expose the new fields.
+- Evidence: backend/provider proof `docs/mobile/harness/cycle-QA-provider-line-contract/cycle-QA-provider-match-line-availability.json`; S23 proof `docs/mobile/harness/cycle-QA-provider-line-contract/cycle-QA-s23-proof-summary.json`; screenshot `docs/mobile/screenshots/cycle-QA-provider-line-contract/cycle-QA-s23-event-detail-provider-line-contract.png`; XML `docs/mobile/harness/cycle-QA-provider-line-contract/cycle-QA-s23-event-detail-provider-line-contract.xml`.
+
 ## Cycle PZ
 
 Gate status: Pass

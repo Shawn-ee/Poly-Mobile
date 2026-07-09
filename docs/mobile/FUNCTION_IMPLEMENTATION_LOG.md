@@ -2,6 +2,45 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle QA - Provider Line Contract Action Fields
+
+Feature/page worked on:
+
+- Local MVP Event Detail provider-line readiness contract for Spread/Totals/Team Total markets.
+
+Frontend/backend touched:
+
+- `src/server/services/mobileLiveEventDetail.ts`
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/types.ts`
+- `mobile/src/mocks/worldCup.ts`
+- Contract tests under `src/__tests__/mobile-live-event-detail.test.ts` and `mobile/src/__tests__/`.
+
+Important functions/services touched:
+
+- `buildMobileMarketSourceSummary()` now adds route-shaped `providerBackedFamilies`, `contractFixtureFamilies`, and `nextProviderAction` under `marketSourceSummary.lineMarkets.providerAvailability`.
+- `EventDetail` keeps visible tester copy calm, but its accessibility proof marker now carries provider-backed family names, fixture family names, and the next provider action.
+
+User interactions supported:
+
+- Users still open Event Detail and trade the Local MVP line markets normally.
+- The app can now prove on Android that provider-backed line markets are unavailable for the selected current event and that Local MVP fixtures are intentionally used for Spread/Totals/Team Total until attach-ready provider markets exist.
+
+State transitions:
+
+- No order, portfolio, wallet, auth, schema, chat, orderbook UI, live stats, deposit, or withdrawal state changed.
+
+Known limitations:
+
+- This cycle does not create real provider-backed line markets. Polymarket Gamma for `fifwc-arg-egy-2026-07-07` still exposes only 3 match-winner markets and 0 line markets.
+- The running backend on port 3002 was not restarted from this worktree, so the HTTP process may not expose the new fields until restarted. The backend proof uses the branch route handler directly.
+
+Evidence:
+
+- Backend/provider proof: `docs/mobile/harness/cycle-QA-provider-line-contract/cycle-QA-provider-match-line-availability.json`
+- S23 proof summary: `docs/mobile/harness/cycle-QA-provider-line-contract/cycle-QA-s23-proof-summary.json`
+- S23 screenshot/XML: `docs/mobile/screenshots/cycle-QA-provider-line-contract/cycle-QA-s23-event-detail-provider-line-contract.png`, `docs/mobile/harness/cycle-QA-provider-line-contract/cycle-QA-s23-event-detail-provider-line-contract.xml`
+
 ## Cycle PZ - Portfolio Google Entry Clarity
 
 Feature/page worked on:

@@ -241,7 +241,14 @@ const lineSourceCopy = (event: Event) => {
     .slice(0, 3)
     .join(", ");
   const lineAvailabilityMarker = lineAvailability
-    ? ` line-provider-availability-${lineAvailability.status} line-provider-backed-count-${lineAvailability.providerBackedLineMarketCount} line-contract-fixture-count-${lineAvailability.contractFixtureLineMarketCount}`
+    ? [
+      `line-provider-availability-${lineAvailability.status}`,
+      `line-provider-backed-count-${lineAvailability.providerBackedLineMarketCount}`,
+      `line-contract-fixture-count-${lineAvailability.contractFixtureLineMarketCount}`,
+      `line-provider-families-${(lineAvailability.providerBackedFamilies ?? []).join("_") || "none"}`,
+      `line-contract-fixture-families-${(lineAvailability.contractFixtureFamilies ?? []).join("_") || "none"}`,
+      lineAvailability.nextProviderAction ? `line-next-provider-action-${lineAvailability.nextProviderAction}` : "",
+    ].filter(Boolean).join(" ")
     : "";
   const familyMarker = summary.lineMarkets.familyReadiness
     ? ` ${summary.lineMarkets.familyReadiness.map((family) => `line-family-readiness-${family.family}-${family.status}`).join(" ")}`
@@ -252,7 +259,7 @@ const lineSourceCopy = (event: Event) => {
       text: winnerReady ? "Winner + lines: Polymarket" : "Lines: Polymarket",
       tone: "ready" as const,
       accessibility:
-        `event-detail-line-source-banner line-source-provider-backed regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}${familyMarker}`,
+        `event-detail-line-source-banner line-source-provider-backed regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount} ${lineAvailabilityMarker}${familyMarker}`,
     };
   }
   if (lineStatus === "contract-fixture") {
@@ -264,7 +271,7 @@ const lineSourceCopy = (event: Event) => {
         : `Local lines.${familyCopy}`,
       tone: "fixture" as const,
       accessibility:
-        `event-detail-line-source-banner line-source-contract-fixture line-source-local-test-fake-token regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}${familyMarker}`,
+        `event-detail-line-source-banner line-source-contract-fixture line-source-local-test-fake-token regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount} ${lineAvailabilityMarker}${familyMarker}`,
     };
   }
   if (lineStatus === "missing") {

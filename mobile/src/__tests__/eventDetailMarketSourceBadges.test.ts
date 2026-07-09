@@ -23,6 +23,9 @@ describe("Event Detail market source badges", () => {
     expect(source).toContain("line-source-local-test-fake-token");
     expect(source).toContain("line-provider-availability-");
     expect(source).toContain("line-contract-fixture-count-");
+    expect(source).toContain("line-provider-families-");
+    expect(source).toContain("line-contract-fixture-families-");
+    expect(source).toContain("line-next-provider-action-");
     expect(source).toContain("familyReadiness.map");
     expect(source).toContain("line-family-readiness-${family.family}-${family.status}");
   });

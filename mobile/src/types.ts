@@ -82,6 +82,9 @@ export type MarketSourceSummary = {
       status: "available" | "unavailable" | "unknown" | string;
       providerBackedLineMarketCount: number;
       contractFixtureLineMarketCount: number;
+      providerBackedFamilies?: string[];
+      contractFixtureFamilies?: string[];
+      nextProviderAction?: string;
       reason: string;
     };
     reason: string;

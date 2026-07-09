@@ -2,6 +2,32 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle QA - Provider Line Contract Action Fields
+
+Closed or narrowed:
+
+- Repeated line-market provider ambiguity is narrowed into explicit route fields: `providerBackedFamilies`, `contractFixtureFamilies`, and `nextProviderAction`.
+- The current match now has machine-readable proof that Regulation Winner is provider-backed while Spread/Totals/Team Total are Local MVP contract fixtures.
+- Mobile can prove those fields on Samsung S23 without showing noisy debug labels to the tester UI.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total market rows with provider market IDs, outcome IDs, token IDs, line values, periods, probabilities, and refresh/source status.
+- A provider discovery path that finds attach-ready Polymarket line markets for current World Cup matches, or an approved external provider contract for line markets when Polymarket does not expose them.
+
+Route mismatch:
+
+- No intentional route mismatch. The branch route handler exposes the new fields, but the old backend process on port 3002 was not restarted from this worktree during proof, so that already-running HTTP process may not include the new response fields until restarted.
+
+Temporary mock/static data:
+
+- Existing Local MVP line markets remain backend-shaped `contract-fixture` rows.
+- The mobile deterministic fixture now mirrors the new backend route shape for UI proof only; it is not a new provider-backed line source.
+
+Future migration concern:
+
+- Do not mark line-market provider parity complete until `providerBackedFamilies` includes the relevant line families and ticket/order/portfolio/history preserve those provider identities through the full fake-token lifecycle.
+
 ## Cycle PZ - Portfolio Google Entry Clarity
 
 Closed or narrowed:

@@ -46,6 +46,9 @@ export type MarketSourceSummary = {
       status: "available" | "unavailable" | "unknown" | string;
       providerBackedLineMarketCount: number;
       contractFixtureLineMarketCount: number;
+      providerBackedFamilies?: string[];
+      contractFixtureFamilies?: string[];
+      nextProviderAction?: string;
       reason: string;
     };
     reason: string;
@@ -375,6 +378,63 @@ export const worldCupEvents: Event[] = [
       description: "Knockout match top market resolves to the team that advances; regulation and half winner markets can still settle as a draw.",
     },
     supportedMarketTypes: ["to_advance", "regulation_90", "first-half", "second-half", "spread", "totals", "team-total"],
+    marketSourceSummary: {
+      totalMarketCount: 12,
+      sourceBreakdown: { polymarket: 4, "contract-fixture": 8 },
+      polymarketMarketCount: 4,
+      contractFixtureMarketCount: 8,
+      unknownSourceMarketCount: 0,
+      regulationWinner: {
+        totalCount: 4,
+        polymarketCount: 4,
+        contractFixtureCount: 0,
+        status: "provider-backed",
+      },
+      lineMarkets: {
+        totalCount: 7,
+        polymarketCount: 0,
+        contractFixtureCount: 7,
+        status: "contract-fixture",
+        families: ["spread", "totals", "team-total"],
+        familyReadiness: [
+          {
+            family: "spread",
+            totalCount: 5,
+            polymarketCount: 0,
+            contractFixtureCount: 5,
+            status: "contract-fixture",
+            reason: "spread is served by Local MVP contract fixtures for this event.",
+          },
+          {
+            family: "total",
+            totalCount: 1,
+            polymarketCount: 0,
+            contractFixtureCount: 1,
+            status: "contract-fixture",
+            reason: "total is served by Local MVP contract fixtures for this event.",
+          },
+          {
+            family: "team_total",
+            totalCount: 1,
+            polymarketCount: 0,
+            contractFixtureCount: 1,
+            status: "contract-fixture",
+            reason: "team_total is served by Local MVP contract fixtures for this event.",
+          },
+        ],
+        providerAvailability: {
+          source: "polymarket-gamma",
+          status: "unavailable",
+          providerBackedLineMarketCount: 0,
+          contractFixtureLineMarketCount: 7,
+          providerBackedFamilies: [],
+          contractFixtureFamilies: ["spread", "total", "team_total"],
+          nextProviderAction: "discover_attach_ready_polymarket_line_markets_or_configure_approved_line_provider",
+          reason: "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures.",
+        },
+        reason: "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured.",
+      },
+    },
     tag: "Live",
     zhTag: "滚球",
     teams: [

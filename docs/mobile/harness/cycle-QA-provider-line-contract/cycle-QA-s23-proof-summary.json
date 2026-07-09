@@ -1,0 +1,10 @@
+{
+  "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+  "model": "SM-S911U1",
+  "hasLineSourceBanner": true,
+  "hasProviderUnavailable": true,
+  "hasNextProviderAction": true,
+  "hasFixtureFamilies": true,
+  "hasNoProviderFamilies": true,
+  "hasFixtureCount": true
+}

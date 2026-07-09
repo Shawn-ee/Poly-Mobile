@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle QA - Provider Line Contract Action Fields
+
+Cycle QA extends the live Event Detail route contract so mobile and future provider work can distinguish real provider-backed line families from Local MVP contract-fixture lines.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail line-market provider readiness | `/api/mobile/events/:slug/live-detail`; proof also reads Polymarket Gamma `/events?slug=fifwc-arg-egy-2026-07-07` | GET | None for public event browsing | None | `marketSourceSummary.lineMarkets.providerAvailability.status`, `providerBackedLineMarketCount`, `contractFixtureLineMarketCount`, `providerBackedFamilies`, `contractFixtureFamilies`, `nextProviderAction`, plus existing `markets[].referenceSource`, `marketType`, `line`, `period`, `outcomes[]` identity | Existing `Event`, `Market`, `Outcome`; no schema change in this cycle | Existing Local MVP Spread/Totals/Team Total rows remain backend-shaped `contract-fixture` lines; mobile consumes the same route-shaped contract fields in its deterministic proof fixture | Real provider-backed Spread/Totals/Team Total markets are still missing for the current match. The next provider milestone needs attach-ready Polymarket line markets or an approved line provider contract before backend parity can be marked complete. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-QA-provider-line-contract/cycle-QA-provider-match-line-availability.json`
+- `docs/mobile/harness/cycle-QA-provider-line-contract/cycle-QA-s23-proof-summary.json`
+- `docs/mobile/screenshots/cycle-QA-provider-line-contract/cycle-QA-s23-event-detail-provider-line-contract.png`
+
 ## Cycle PZ - Portfolio Google Entry Clarity
 
 Cycle PZ changes visible mobile navigation only. No backend route, auth route, Prisma schema, provider import, order matching, portfolio sync, or fake-token mechanics changed.
