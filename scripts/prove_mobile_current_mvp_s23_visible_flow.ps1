@@ -224,7 +224,10 @@ try {
   }
 
   $env:MOBILE_DEV_USERNAME = "holiwyn-mobile-$($Cycle.ToLower())-s23-$(Get-Date -Format yyyyMMddHHmmss)"
+  $credentialErrorAction = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
   $credentialRaw = cmd /c npm.cmd run mobile:dev-credential 2>&1 | Out-String
+  $ErrorActionPreference = $credentialErrorAction
   if ($LASTEXITCODE -ne 0) {
     throw "Mobile dev credential creation failed."
   }
@@ -405,7 +408,7 @@ try {
   Start-Sleep -Seconds 1
   $lineXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-lines-settled.xml"
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-lines.png" | Out-Null
-  Assert-Contains -Path $lineXml -Expected @("Spread", "Totals", "Local test line", "fake-token", "line-market-local-test-pricing", "line-market-local-test-fake-token", "event-detail-line-section-clearance-24", "event-detail-line-source-banner", "line-source-contract-fixture", "line-source-local-test-fake-token", "line-family-readiness-spread-contract-fixture", "line-family-readiness-total-contract-fixture", "line-family-readiness-team_total-contract-fixture", "selection-market-type-spread", "selection-line-1.5", "provider-source-contract-fixture")
+  Assert-Contains -Path $lineXml -Expected @("Spread", "Totals", "Test line - fake USDT", "line-market-local-test-pricing", "line-market-local-test-fake-token", "event-detail-line-section-clearance-24", "event-detail-line-source-banner", "line-source-contract-fixture", "line-source-local-test-fake-token", "line-family-readiness-spread-contract-fixture", "line-family-readiness-total-contract-fixture", "line-family-readiness-team_total-contract-fixture", "selection-market-type-spread", "selection-line-1.5", "provider-source-contract-fixture")
   Assert-NotContains -Path $lineXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
   Invoke-TapNode -Path $lineXml -Identifier "event-detail-outcome-spread-" -StartsWith
