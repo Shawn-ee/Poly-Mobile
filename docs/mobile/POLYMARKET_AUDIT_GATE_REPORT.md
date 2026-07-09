@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle PX
+
+Gate status: Pass
+
+Scope: Account login focus cleanup.
+
+Decision:
+
+- P0 failed: 0 for focused Account login cleanup scope.
+- Implemented change: Account no longer renders disabled non-MVP menu rows; Google login remains the primary signed-out action.
+- P1/P2 remaining: full Google OAuth callback/session proof remains future backend/auth work.
+- Evidence: typecheck passed; mobile API/contract tests passed; source guard confirmed disabled Account menu strings are absent from `AccountScreen`; S23 proof passed with `docs/mobile/harness/cycle-PX-account-login-focus-cleanup/cycle-PX-account-login-focus-s23-proof.json`, `docs/mobile/screenshots/cycle-PX-account-login-focus-cleanup/cycle-PX-account-initial.png`, and `docs/mobile/screenshots/cycle-PX-account-login-focus-cleanup/cycle-PX-account-lower.png`.
+
 ## Cycle PW
 
 Gate status: Pass

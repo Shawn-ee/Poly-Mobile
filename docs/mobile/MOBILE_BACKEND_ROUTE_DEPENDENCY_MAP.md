@@ -2,6 +2,15 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle PX - Account Login Focus Cleanup
+
+Cycle PX changes visible Account UI only. It does not change backend routes, auth routes, Prisma schema, provider import, order matching, portfolio sync, or fake-token mechanics.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Focused Account login screen | Existing `${EXPO_PUBLIC_API_BASE_URL}/api/auth/google/start?returnTo=/portfolio` through `openGoogleSignIn`; existing profile summary/balance routes in server mode | Browser/deep-link open plus existing GET routes | Existing server auth route decides Google auth requirements | None from this UI cleanup | No new response fields consumed | No schema change | Demo trading remains available without sign-in during MVP testing | End-to-end Google OAuth callback/session proof remains future backend/auth work. |
+| Removed disabled Account menu rows | Existing `/api/profile/summary` may still return `menuItems`, but mobile no longer renders disabled non-MVP rows in the Local MVP Account screen | Existing GET unchanged | Existing profile auth behavior unchanged | Existing payload unchanged | `menuItems` ignored by the focused Account UI | No schema change | None added | If future product restores these rows, each needs a real route and working action before visible exposure. |
+
 ## Cycle PW - Demo Trading Copy Cleanup
 
 Cycle PW changes visible mobile copy only. It does not change backend routes, auth routes, Prisma schema, provider import, order matching, portfolio sync, or fake-token mechanics.

@@ -1,7 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { money } from "../presentation/formatters";
-import type { ProfileSummaryMenuItem } from "../types";
 
 type AccountCopy = {
   account: string;
@@ -42,7 +41,6 @@ type AccountCopy = {
   profileSynced: string;
   profileSyncError: string;
   profileSyncFallback: string;
-  accountMenuUnavailable: string;
 };
 
 type ProfileSyncStatus = "hidden" | "syncing" | "synced" | "error";
@@ -63,7 +61,6 @@ export function AccountScreen({
   totalExposure,
   portfolioValue,
   tradingMode,
-  accountMenuItems,
   openGoogleSignIn,
 }: {
   t: AccountCopy;
@@ -81,7 +78,6 @@ export function AccountScreen({
   totalExposure: number;
   portfolioValue: number;
   tradingMode: "mock" | "server";
-  accountMenuItems: ProfileSummaryMenuItem[];
   openGoogleSignIn?: () => void;
 }) {
   const signedIn = Boolean(forceSignedIn);
@@ -94,26 +90,6 @@ export function AccountScreen({
         : profileSyncStatus === "error"
           ? t.profileSyncError
           : "";
-  const accountMenuMeta = {
-    leaderboard: ["trophy-outline", "Leaderboard", "#fbbf24"],
-    rewards: ["gift-outline", "Rewards", "#22c55e"],
-    apis: ["code-slash-outline", "APIs", "#ec4899"],
-    accuracy: ["analytics-outline", "Accuracy", "#93c5fd"],
-    status: ["pulse-outline", "Status", "#93c5fd"],
-    documentation: ["document-text-outline", "Documentation", "#93c5fd"],
-    help: ["help-circle-outline", "Help Center", "#93c5fd"],
-    terms: ["reader-outline", "Terms of Use", "#93c5fd"],
-  } as const;
-  const renderedAccountMenuItems =
-    accountMenuItems.length > 0
-      ? accountMenuItems
-      : (Object.keys(accountMenuMeta) as ProfileSummaryMenuItem["key"][]).map((key) => ({
-          key,
-          status: "unavailable",
-          reason: "outside-mvp-scope",
-          route: null,
-        }));
-
   return (
     <ScrollView accessibilityLabel="account-screen" testID="account-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
       <View style={styles.hero}>
@@ -153,29 +129,6 @@ export function AccountScreen({
         </View>
       )}
 
-      <View accessibilityLabel="account-more-menu" testID="account-more-menu" style={styles.moreMenu}>
-        {renderedAccountMenuItems.map((item) => {
-          const [icon, text, color] = accountMenuMeta[item.key];
-          return (
-          <View
-            accessibilityLabel={`account-menu-${item.key} account-menu-status-${item.status} account-menu-reason-${item.reason}`}
-            key={item.key}
-            style={[styles.menuRow, styles.menuRowUnavailable]}
-            testID={`account-menu-${item.key}`}
-          >
-            <Ionicons name={icon} size={23} color={color} />
-            <Text style={styles.menuText}>{text}</Text>
-            <Text style={styles.menuValue}>{t.accountMenuUnavailable}</Text>
-          </View>
-          );
-        })}
-        <View accessibilityLabel="account-language-row" testID="account-language-row" style={styles.menuRow}>
-          <Ionicons name="language-outline" size={23} color="#fbbf24" />
-          <Text style={styles.menuText}>{t.languagePreference}</Text>
-          <Text style={styles.menuValue}>{languagePreferenceValue}</Text>
-        </View>
-      </View>
-
       <View style={styles.balanceCard}>
         <View>
           <Text style={styles.cardLabel}>{t.demoBalance}</Text>
@@ -194,7 +147,7 @@ export function AccountScreen({
           </View>
         )}
         {profileSyncStatus === "error" && <Text style={styles.syncFallback}>{t.profileSyncFallback}</Text>}
-        <View style={styles.row}>
+        <View accessibilityLabel="account-language-row" testID="account-language-row" style={styles.row}>
           <Ionicons name="language-outline" size={20} color="#93c5fd" />
           <Text style={styles.rowText}>
             {t.languagePreference}: {languagePreferenceValue}
@@ -273,11 +226,6 @@ const styles = StyleSheet.create({
   googleButtonPressed: { opacity: 0.82, transform: [{ scale: 0.99 }] },
   googleButtonText: { color: "#111827", fontSize: 17, fontWeight: "900" },
   loginBody: { color: "#94a3b8", fontSize: 13, fontWeight: "700", lineHeight: 19 },
-  moreMenu: { marginTop: 14, paddingVertical: 6, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
-  menuRow: { minHeight: 54, paddingHorizontal: 14, flexDirection: "row", alignItems: "center", gap: 12 },
-  menuRowUnavailable: { opacity: 0.76 },
-  menuText: { flex: 1, color: "#e5e7eb", fontSize: 17, fontWeight: "900" },
-  menuValue: { color: "#94a3b8", fontSize: 15, fontWeight: "900" },
   balanceCard: { marginTop: 14, padding: 16, borderRadius: 14, backgroundColor: "#0f1f35", borderWidth: 1, borderColor: "#28456b", flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   cardLabel: { color: "#93c5fd", fontWeight: "900" },
   balanceValue: { color: "#f8fafc", fontSize: 30, fontWeight: "900", marginTop: 5 },

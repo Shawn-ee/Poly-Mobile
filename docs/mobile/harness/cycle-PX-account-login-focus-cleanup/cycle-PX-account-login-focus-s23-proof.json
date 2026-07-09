@@ -1,0 +1,24 @@
+﻿{
+    "cycle":  "PX",
+    "feature":  "Account login-focused cleanup",
+    "result":  "pass",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "proofMode":  "initial-account-plus-lower-preferences-scroll",
+    "assertions":  {
+                       "accountVisible":  true,
+                       "googleLoginVisible":  true,
+                       "languageVisible":  true,
+                       "demoBalanceVisible":  true,
+                       "tradingModeVisibleAfterScroll":  true,
+                       "disabledNonMvpMenuAbsent":  true
+                   },
+    "screenshots":  [
+                        "docs/mobile/screenshots/cycle-PX-account-login-focus-cleanup/cycle-PX-account-initial.png",
+                        "docs/mobile/screenshots/cycle-PX-account-login-focus-cleanup/cycle-PX-account-lower.png"
+                    ],
+    "xml":  [
+                "docs/mobile/harness/cycle-PX-account-login-focus-cleanup/cycle-PX-account-initial.xml",
+                "docs/mobile/harness/cycle-PX-account-login-focus-cleanup/cycle-PX-account-lower.xml"
+            ]
+}

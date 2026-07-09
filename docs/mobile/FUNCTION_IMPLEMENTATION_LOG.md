@@ -2,6 +2,44 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle PX - Account Login Focus Cleanup
+
+Feature/page worked on:
+
+- Account screen for the Local MVP Portfolio -> Account entry and Google login path.
+
+Frontend/services touched:
+
+- `mobile/src/components/AccountScreen.tsx`
+- `mobile/App.tsx`
+- `mobile/src/__tests__/accountStaticRowsContract.test.ts`
+
+Important functions/services touched:
+
+- Removed the visible disabled Account "More" menu block and fallback rows for Leaderboard, Rewards, APIs, Accuracy, Status, Documentation, Help Center, and Terms.
+- Moved the `account-language-row` proof marker to the Preferences language row so language remains visible without the extra disabled menu block.
+- Removed the now-unused `accountMenuItems` prop from `AccountScreen` wiring.
+
+User interactions supported:
+
+- Users enter Account from Portfolio and see the Google login button without non-MVP disabled rows competing for attention.
+- Users can still see demo balance, language, ticket defaults, portfolio summary, and trading mode.
+
+State transitions:
+
+- No auth, profile, order, portfolio, provider, schema, route, orderbook, chat, live stats, social, deposit, or withdrawal state changed.
+
+Known limitations:
+
+- This is visible Local MVP cleanup only. It does not prove Google OAuth callback/session completion.
+
+Evidence:
+
+- Audit doc: `docs/mobile/audits/cycle-PX-account-login-focus-cleanup.md`
+- Contract test: `mobile/src/__tests__/accountStaticRowsContract.test.ts`
+- S23 proof summary: `docs/mobile/harness/cycle-PX-account-login-focus-cleanup/cycle-PX-account-login-focus-s23-proof.json`
+- S23 proof screenshots/XML: `docs/mobile/screenshots/cycle-PX-account-login-focus-cleanup/cycle-PX-account-initial.png`, `docs/mobile/screenshots/cycle-PX-account-login-focus-cleanup/cycle-PX-account-lower.png`, `docs/mobile/harness/cycle-PX-account-login-focus-cleanup/cycle-PX-account-initial.xml`, `docs/mobile/harness/cycle-PX-account-login-focus-cleanup/cycle-PX-account-lower.xml`
+
 ## Cycle PW - Demo Trading Copy Cleanup
 
 Feature/page worked on:

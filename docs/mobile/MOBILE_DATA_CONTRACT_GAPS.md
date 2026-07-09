@@ -2,6 +2,30 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle PX - Account Login Focus Cleanup
+
+Closed or narrowed:
+
+- Account no longer renders disabled non-MVP menu rows that imply unavailable social/admin/help surfaces.
+- Google login remains the primary signed-out action and is easier to find.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- End-to-end Google OAuth callback/session profile hydration needs a configured auth environment and route proof.
+- Real production account/wallet state remains future work.
+
+Route mismatch:
+
+- None introduced. The mobile UI now ignores existing `profile.summary.menuItems` for the focused Local MVP Account screen.
+
+Temporary mock/static data:
+
+- Existing demo/local fake-token data remains unchanged.
+
+Future migration concern:
+
+- If Leaderboard, Rewards, APIs, Accuracy, Status, Documentation, Help Center, or Terms return to the visible app, each should be backed by a real route/action and not rendered as disabled placeholder rows.
+
 ## Cycle PW - Demo Trading Copy Cleanup
 
 Closed or narrowed:

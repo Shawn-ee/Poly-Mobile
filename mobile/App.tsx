@@ -1887,7 +1887,6 @@ export default function App() {
                 totalExposure={accountDisplayTotalExposure}
                 portfolioValue={accountDisplayPortfolioValue}
                 tradingMode={accountDisplayTradingMode}
-                accountMenuItems={accountSummary?.menuItems ?? []}
                 openGoogleSignIn={openGoogleSignIn}
               />
             )}
