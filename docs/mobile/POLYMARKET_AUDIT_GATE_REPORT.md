@@ -16,6 +16,22 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle QL
+
+Gate status: Pass for provider-line structural inspection and S23 proof-harness hardening; fail remains for real provider-backed line parity.
+
+Scope: verify current Polymarket/provider line availability for `argentina-vs-egypt`, prove the Local MVP visible line flow on S23, and harden startup proof timing.
+
+Decision:
+
+- P0 failed: 0 for focused QL inspection/harness scope.
+- Implemented change: S23 proof harness waits for Home content and dismisses Expo Go developer menu after bundle load before final Home assertions.
+- Runtime finding: Home returns one match event and zero futures; live-detail has 3 provider-backed Regulation Winner markets and 4 contract-fixture line markets.
+- Provider finding: current Gamma event has 3 match-winner markets and 0 line markets; broad World Cup scan found 0 provider line candidates.
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, passed Home -> Event Detail -> Spread line -> ticket -> swipe buy -> Portfolio History.
+- P1 remaining: real provider-backed Spread/Totals/Team Total line markets.
+- Evidence: `docs/mobile/audits/cycle-QL-provider-line-structural-inspection.md`; S23 proof `docs/mobile/harness/cycle-QL-provider-line-structural-inspection/cycle-QL-current-mvp-s23-visible-flow.json`.
+
 ## Cycle QK
 
 Gate status: Pass for focused Search source-copy cleanup; not a pass for broader provider-backed line-market parity.

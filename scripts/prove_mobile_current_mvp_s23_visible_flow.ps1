@@ -192,6 +192,29 @@ function Start-Link {
   & $adb -s $Device shell am start -a android.intent.action.VIEW -d "'$Url'" | Out-Null
 }
 
+function Wait-UiContains {
+  param(
+    [string]$NamePrefix,
+    [string[]]$Expected,
+    [int]$TimeoutSeconds = 75
+  )
+
+  $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+  $lastXml = $null
+  while ((Get-Date) -lt $deadline) {
+    $lastXml = Save-Hierarchy -Name "$NamePrefix-wait.xml"
+    $raw = Get-Content -Raw -Path $lastXml
+    $missing = @($Expected | Where-Object { $raw -notmatch [regex]::Escape($_) })
+    if ($missing.Count -eq 0) {
+      return $lastXml
+    }
+    Start-Sleep -Seconds 3
+  }
+
+  $expectedText = $Expected -join ", "
+  throw "Timed out waiting for UI text/labels: $expectedText. Last hierarchy: $lastXml"
+}
+
 function Write-JsonNoBom {
   param(
     [Parameter(Mandatory = $true)]
@@ -272,6 +295,9 @@ try {
   Start-Link -Url "exp://${ExpoHost}:$Port/--/?forceResetState=1&apiKey=$encodedKey"
   Start-Sleep -Seconds 18
   Dismiss-ExpoDeveloperMenu -NamePrefix "cycle-$Cycle-current-mvp-home" | Out-Null
+  Wait-UiContains -NamePrefix "cycle-$Cycle-current-mvp-home" -Expected @("Holiwyn", "World Cup", "event-card-$EventSlug") | Out-Null
+  Dismiss-ExpoDeveloperMenu -NamePrefix "cycle-$Cycle-current-mvp-home-post-load" | Out-Null
+  Wait-UiContains -NamePrefix "cycle-$Cycle-current-mvp-home-post-load" -Expected @("Holiwyn", "World Cup", "event-card-$EventSlug") | Out-Null
 
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-home.png" | Out-Null
   $homeXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-home.xml"

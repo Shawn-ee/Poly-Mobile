@@ -2,6 +2,46 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle QL - Provider Line Structural Inspection
+
+Feature/page worked on:
+
+- Current Local MVP provider-line readiness for Home -> Event Detail -> line ticket -> fake-token order -> Portfolio History.
+- S23 proof harness stability for the same journey.
+
+Frontend/backend touched:
+
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+- No mobile UI component, backend route, Prisma schema, provider import service, orderbook UI, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- Added `Wait-UiContains` to wait for real Home content on the S23 before assertions.
+- Added a post-load Expo developer-menu dismissal after Home is visible, so Expo Go overlays do not fail app proof.
+
+User interactions supported:
+
+- S23 proof opens Home, checks the current World Cup match, visits Event Detail, scrolls to Game Lines, opens the Spread line ticket, swipes to buy, and verifies Portfolio History.
+- The visible route still shows real Polymarket Regulation Winner plus Holiwyn contract-shaped line markets.
+
+State transitions:
+
+- No app state transition changed.
+- The proof confirms selected line/outcome identity still travels through ticket, server-backed fake-token order, and Portfolio History.
+
+Known limitations:
+
+- Fresh provider inspection found 0 Polymarket-backed line markets for the current match and 0 broad World Cup provider-line candidates.
+- Spread/Totals/Team Total stay contract-shaped Holiwyn fixtures until a provider exposes attach-ready line rows.
+
+Evidence:
+
+- Audit doc: `docs/mobile/audits/cycle-QL-provider-line-structural-inspection.md`
+- Current service inspection: `docs/mobile/harness/cycle-QL-provider-line-structural-inspection/cycle-QL-current-state.json`
+- Current match line availability: `docs/mobile/harness/cycle-QL-provider-line-structural-inspection/cycle-QL-provider-match-line-availability.json`
+- Broad provider line scan: `docs/mobile/harness/cycle-QL-provider-line-structural-inspection/cycle-QL-provider-line-breadth-scan.json`
+- S23 proof: `docs/mobile/harness/cycle-QL-provider-line-structural-inspection/cycle-QL-current-mvp-s23-visible-flow.json`
+
 ## Cycle QK - Search Source Copy
 
 Feature/page worked on:
