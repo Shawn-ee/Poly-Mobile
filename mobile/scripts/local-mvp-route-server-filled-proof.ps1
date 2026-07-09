@@ -35,11 +35,16 @@ $previousApiKey = $env:EXPO_PUBLIC_API_KEY
 $previousOrderMode = $env:EXPO_PUBLIC_ORDER_MODE
 $previousMarketDataMode = $env:EXPO_PUBLIC_MARKET_DATA_MODE
 $previousApiBaseUrl = $env:EXPO_PUBLIC_API_BASE_URL
+$previousDatabaseUrl = $env:DATABASE_URL
 
 try {
   Push-Location $repoRoot
   try {
-    cmd /c npx.cmd tsx scripts/prove_mobile_el_a_provider_breadth.ts --output=$eventProofPath | Out-Null
+    if (-not $env:DATABASE_URL) {
+      $env:DATABASE_URL = "postgresql://" + "postgres:postgres" + "@127.0.0.1:5432/polymarket"
+    }
+
+    cmd /c npx.cmd tsx -r dotenv/config scripts/prove_mobile_el_a_provider_breadth.ts --output=$eventProofPath | Out-Null
     if ($LASTEXITCODE -ne 0) {
       throw "Route-backed provider event proof failed."
     }
@@ -49,13 +54,13 @@ try {
       throw "Route-backed provider event proof did not pass."
     }
 
-    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts --eventSlug=$($eventProof.eventSlug) --output=$counterpartyProofPath | Out-Null
+    cmd /c npx.cmd tsx -r dotenv/config scripts/seed_mobile_route_spread_counterparty.ts --eventSlug=$($eventProof.eventSlug) --marketGroupKey=team-totals --outcomeSide=over --line=1.5 --askSize=200 --mintQuantity=240 --makerBalance=300 --output=$counterpartyProofPath | Out-Null
     if ($LASTEXITCODE -ne 0) {
       throw "Route-backed spread counterparty seed failed."
     }
 
     $env:MOBILE_DEV_USERNAME = $proofUsername
-    $credentialRaw = cmd /c npm.cmd run mobile:dev-credential 2>&1 | Out-String
+    $credentialRaw = cmd /c "npm.cmd run mobile:dev-credential 2>&1" | Out-String
     if ($LASTEXITCODE -ne 0) {
       throw "Mobile dev credential creation failed."
     }
@@ -134,5 +139,10 @@ try {
     Remove-Item Env:\EXPO_PUBLIC_API_BASE_URL -ErrorAction SilentlyContinue
   } else {
     $env:EXPO_PUBLIC_API_BASE_URL = $previousApiBaseUrl
+  }
+  if ($null -eq $previousDatabaseUrl) {
+    Remove-Item Env:\DATABASE_URL -ErrorAction SilentlyContinue
+  } else {
+    $env:DATABASE_URL = $previousDatabaseUrl
   }
 }

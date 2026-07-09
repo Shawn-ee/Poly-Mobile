@@ -8627,3 +8627,33 @@ Temporary mock/static data:
 Future migration concern:
 
 - UI smoke and server order-placement proof should be distinct but both must use the same active backend base.
+
+## Cycle RH - Route-Backed Team Total Filled Order Proof
+
+Closed or narrowed:
+
+- Missing `OPTIC_ODDS_API_KEY` is not a blocker for this proof.
+- A provider-backed Team Total 1.5 market can carry `marketId`, `outcomeId`, `marketGroupId`, `marketType`, `line`, `period`, provider source, provider market/condition/token ids through Event Detail, Trade Ticket, `/api/orders`, Portfolio, Orders, and History.
+- The local server-mode proof now fully fills a $75 fake-token buy rather than leaving a partial open order.
+- Portfolio verifies the current account/Google login entry instead of the removed local settings sheet.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Production live World Cup Gamma/CLOB mappings for the real target events.
+- Native app Google OAuth callback/session/logout state.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced for disposable provider-backed markets.
+
+Temporary mock/static data:
+
+- RH uses disposable Polymarket-shaped provider proof data, not arbitrary frontend-only mock data.
+
+Future migration concern:
+
+- The current Portfolio team-total display text is compact but awkward (`Team Total Goals team goals`); a future visible UI cleanup should improve wording without changing the provider/order contract.

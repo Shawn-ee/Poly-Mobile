@@ -1,43 +1,57 @@
 {
-    "pass":  true,
-    "eventSlug":  "mobile-el-a-provider-breadth-9bd275c5",
-    "market":  {
-                   "id":  "95b42b41-0f26-45d9-b7be-4be33920eb30",
-                   "title":  "Breadth Home vs Breadth Away - Spread 1.5",
-                   "marketType":  "spread",
-                   "marketGroupKey":  "spread",
-                   "period":  "full-game",
-                   "line":  "1.5",
-                   "referenceSource":  "polymarket",
-                   "externalMarketId":  "gamma-el-a-spread-9bd275c5",
-                   "conditionId":  "condition-el-a-spread-9bd275c5"
-               },
-    "outcome":  {
-                    "id":  "c1b67a4d-3a9a-46f6-bcf4-63979da7c0c4",
-                    "name":  "Home",
-                    "side":  "home",
-                    "referenceTokenId":  "token-el-a-spread-home-9bd275c5",
-                    "referenceOutcomeLabel":  "Breadth Home +1.5"
-                },
-    "maker":  {
-                  "id":  "998cf2bf-3a91-4f4e-9c26-1710a623c74c",
-                  "username":  "mobile_route_fill_maker_a8d74efd"
-              },
-    "makerOrder":  {
-                       "id":  "f295a601-3ce1-4122-9c60-2455b41925c2",
-                       "marketId":  "95b42b41-0f26-45d9-b7be-4be33920eb30",
-                       "outcomeId":  "c1b67a4d-3a9a-46f6-bcf4-63979da7c0c4",
-                       "side":  "SELL",
-                       "price":  "0.52",
-                       "size":  "60",
-                       "remaining":  "60",
-                       "reservedNotional":  "0",
-                       "status":  "OPEN"
-                   },
-    "seededAsk":  {
-                      "side":  "SELL",
-                      "price":  "0.52",
-                      "size":  "60",
-                      "intendedMobileTaker":  "BUY $25 route-backed spread ticket at 52%"
-                  }
+  "pass": true,
+  "eventSlug": "mobile-el-a-provider-breadth-fa30049a",
+  "market": {
+    "id": "d3a3960e-2524-47cf-8c9b-50f25804216c",
+    "title": "Breadth Home - Team Total Goals 1.5",
+    "marketType": "team_total_goals",
+    "marketGroupKey": "team-totals",
+    "period": "regulation",
+    "line": "1.5",
+    "referenceSource": "polymarket",
+    "externalMarketId": "gamma-el-a-team-total-fa30049a",
+    "conditionId": "condition-el-a-team-total-fa30049a"
+  },
+  "outcome": {
+    "id": "0f359d52-5028-40ee-a048-be7d97671c5f",
+    "name": "Over",
+    "side": "over",
+    "referenceTokenId": "token-el-a-team-total-over-fa30049a",
+    "referenceOutcomeLabel": "Breadth Home Over 1.5"
+  },
+  "cleanupOnly": false,
+  "maker": {
+    "id": "928ee713-abf4-4547-9bff-7de7742a67ae",
+    "username": "mobile_route_fill_maker_654c3005"
+  },
+  "cleanup": {
+    "enabled": false,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": [],
+    "cleanupBlockingBids": false,
+    "canceledBlockingBids": [],
+    "cleanupBlockingMarketBids": false,
+    "canceledBlockingMarketBids": [],
+    "cleanupProofAsks": false,
+    "canceledProofAsks": [],
+    "cleanupBlockingAsks": false,
+    "canceledBlockingAsks": []
+  },
+  "makerOrder": {
+    "id": "7f777f1a-194e-4ca0-9170-4b2abbae2cbb",
+    "marketId": "d3a3960e-2524-47cf-8c9b-50f25804216c",
+    "outcomeId": "0f359d52-5028-40ee-a048-be7d97671c5f",
+    "side": "SELL",
+    "price": "0.52",
+    "size": "200",
+    "remaining": "200",
+    "reservedNotional": "0",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "SELL",
+    "price": "0.52",
+    "size": "200",
+    "intendedMobileTaker": "BUY $25 route-backed team-totals ticket"
+  }
 }

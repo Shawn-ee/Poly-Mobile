@@ -1533,7 +1533,7 @@ try {
             "status-canceled",
             "portfolio-market-type-spread",
             "portfolio-line-1.5",
-            "portfolio-period-Reg. Time",
+            "portfolio-period-regulation",
             "portfolio-provider-source-polymarket",
             "portfolio-provider-token-token-el-a-spread-home"
           )
@@ -3248,6 +3248,8 @@ try {
     $eventDetailHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail.xml"
     $eventDetailBaseExpected = if ($JoMarketRulesProof) {
       @("Game Lines", "Player Props", "event-detail-live-data-inline")
+    } elseif ($LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow) {
+      @("Game Lines", "Player Props", "event-detail-live-data-inline", "live-data-source-polymarket-gamma", "event-detail-non-prediction-lower-content-hidden-local-mvp")
     } elseif ($ServerLiveDetailBackendProof) {
       @("Volume", "Liquidity", "Traders", "Best bid", "Best ask", "Spread", "Markets", "Game Lines", "event-detail-live-data-inline", "live-data-status-", "live-data-source-")
     } elseif ($EventDetailPosition) {
@@ -5408,7 +5410,7 @@ try {
       }
 
       if ($LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow) {
-        $mvpRouteServerFilledFamily = if ($LocalMvpRouteServerFilledTeamTotalFlow) { "team-total" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "totals" } else { "spread" }
+        $mvpRouteServerFilledFamily = if ($LocalMvpRouteServerFilledTeamTotalFlow -or $LocalMvpRouteServerFilledFlow) { "team-total" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "totals" } else { "spread" }
         $mvpRouteServerCycle = if ($LocalMvpRouteServerFilledTeamTotalFlow) { "EZ" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "EY" } elseif ($LocalMvpRouteServerFilledFlow) { "EX" } elseif ($LocalMvpRouteServerCancelFlow) { "EW" } else { "EV" }
         $mvpRouteServerScenario = if ($LocalMvpRouteServerFilledTeamTotalFlow) {
           "Local MVP Android route-backed server fake-token team-total filled trade/history flow with orderbook hidden by default"
@@ -5444,13 +5446,6 @@ try {
           "Route depth"
         )
         $mvpHiddenChartChatExpected = @(
-          "event-detail-price-chart",
-          "event-detail-chart-retail-surface-fit",
-          "event-detail-chart-contract-rail",
-          "event-detail-chart-point-selector",
-          "event-detail-chart-filter",
-          "chart-source-polymarket-clob-prices-history",
-          "chart-status-ready",
           "event-detail-chat-page",
           "event-detail-chat-preview",
           "event-detail-live-stats-panel",
@@ -5463,20 +5458,19 @@ try {
         Assert-HierarchyDoesNotContain -Path $mvpRouteTopHierarchy -Unexpected $mvpHiddenOrderBookExpected
         Assert-HierarchyDoesNotContain -Path $mvpRouteTopHierarchy -Unexpected $mvpHiddenChartChatExpected
 
-        $mvpRouteTargetOutcomeId = if ($LocalMvpRouteServerFilledTeamTotalFlow) { "event-detail-outcome-team-total-goals-team-total-over" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "event-detail-outcome-totals-totals-over" } else { "event-detail-outcome-spread-spread-yes" }
-        $mvpRouteTargetTicketMarketType = if ($LocalMvpRouteServerFilledTeamTotalFlow) { "team-total" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "totals" } else { "spread" }
+        $mvpRouteTargetOutcomeId = if ($LocalMvpRouteServerFilledTeamTotalFlow -or $LocalMvpRouteServerFilledFlow) { "event-detail-outcome-team-total-" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "event-detail-outcome-totals-" } else { "event-detail-outcome-spread-" }
+        $mvpRouteTargetTicketMarketType = if ($LocalMvpRouteServerFilledTeamTotalFlow -or $LocalMvpRouteServerFilledFlow) { "team-total" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "totals" } else { "spread" }
         $mvpRouteTargetLine = if ($LocalMvpRouteServerFilledTotalsFlow) { "2.5" } else { "1.5" }
-        $mvpRouteTargetToken = if ($LocalMvpRouteServerFilledTeamTotalFlow) { "token-el-a-team-total-over" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "token-el-a-totals-over" } else { "token-el-a-spread-home" }
-        $mvpRoutePortfolioContext = if ($LocalMvpRouteServerFilledTeamTotalFlow) { "BHO goals over 1.5" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "Over 2.5 total goals" } else { "BHO -1.5" }
-        $mvpRoutePortfolioCost = if ($LocalMvpRouteServerFilledTotalsFlow) { 'Cost $75' } else { 'Cost $31.2' }
-        $mvpRoutePortfolioToWin = if ($LocalMvpRouteServerFilledTotalsFlow) { 'To win $163.04' } else { 'To win $60' }
+        $mvpRouteTargetToken = if ($LocalMvpRouteServerFilledTeamTotalFlow -or $LocalMvpRouteServerFilledFlow) { "token-el-a-team-total-over" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "token-el-a-totals-over" } else { "token-el-a-spread-reg-15-home" }
+        $mvpRoutePortfolioContext = if ($LocalMvpRouteServerFilledTeamTotalFlow -or $LocalMvpRouteServerFilledFlow) { "Team Total Goals team goals" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "Over 2.5 total goals" } else { "Spread" }
+        $mvpRoutePortfolioCost = if ($LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow) { 'Cost $75' } else { 'Cost $31.2' }
+        $mvpRoutePortfolioToWin = if ($LocalMvpRouteServerFilledFlow) { 'To win $144.23' } elseif ($LocalMvpRouteServerFilledTotalsFlow) { 'To win $163.04' } else { 'To win $60' }
         $mvpRouteLineExpected = @(
           "Game Lines",
           $mvpRouteTargetOutcomeId,
-          "ticket-source-backend-line-market",
           "selection-market-family-$mvpRouteTargetTicketMarketType",
           "selection-line-$mvpRouteTargetLine",
-          "selection-period-Reg. Time",
+          "selection-period-regulation",
           "provider-source-polymarket"
         )
         $mvpRouteLineHierarchy = $null
@@ -5543,8 +5537,8 @@ try {
         }
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-market-tabs-local-mvp", "event-detail-core-full-game-lines-before-halves-local-mvp", "event-detail-sticky-tab-content-clearance", "event-detail-line-section-clean-start", "event-detail-no-clipped-market-fragment", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
-        if ($LocalMvpRouteServerFilledTeamTotalFlow) {
-          Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-line-header-compact-retail", "visible-title-Team Total Goals", "Team Total Goals", "BHO goals over 1.5 - Reg. Time")
+        if ($LocalMvpRouteServerFilledTeamTotalFlow -or $LocalMvpRouteServerFilledFlow) {
+          Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-line-header-compact-retail", "visible-title-Team Total Goals", "Team Total Goals", "Breadth Home Over", "1.5")
         }
         $mvpRouteLineOrderXml = Get-Content -Raw -Path $mvpRouteLineHierarchy
         $mvpTeamTotalIndex = $mvpRouteLineOrderXml.IndexOf("Full Game Team Total Goals")
@@ -5586,8 +5580,8 @@ try {
         }
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-market-tabs-local-mvp", "event-detail-core-full-game-lines-before-halves-local-mvp", "event-detail-sticky-tab-content-clearance", "event-detail-line-section-clean-start", "event-detail-no-clipped-market-fragment", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
-        if ($LocalMvpRouteServerFilledTeamTotalFlow) {
-          Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-line-header-compact-retail", "visible-title-Team Total Goals", "Team Total Goals", "BHO goals over 1.5 - Reg. Time")
+        if ($LocalMvpRouteServerFilledTeamTotalFlow -or $LocalMvpRouteServerFilledFlow) {
+          Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-line-header-compact-retail", "visible-title-Team Total Goals", "Team Total Goals", "Breadth Home Over", "1.5")
         }
         $mvpRouteReturnedOrderXml = Get-Content -Raw -Path $mvpRouteLineHierarchy
         $mvpReturnedTeamTotalIndex = $mvpRouteReturnedOrderXml.IndexOf("Full Game Team Total Goals")
@@ -5603,46 +5597,44 @@ try {
           & $adb -s $Device shell input swipe 540 2100 540 1700 300 | Out-Null
           Start-Sleep -Milliseconds 500
         }
+        if ($mvpRouteTargetTicketMarketType -eq "spread") {
+          & $adb -s $Device shell input swipe 540 760 540 1280 300 | Out-Null
+          Start-Sleep -Milliseconds 500
+        }
         $mvpRouteLineHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-line-markets-tap-ready.xml"
         $mvpRouteTapReadyXml = Get-Content -Raw -Path $mvpRouteLineHierarchy
-        if (($mvpRouteTapReadyXml -notmatch [regex]::Escape($mvpRouteTargetOutcomeId)) -and ($mvpRouteTapReadyXml -match [regex]::Escape("event-detail-outcome-team-total-goals-team-total-over"))) {
-          $mvpRouteTargetOutcomeId = "event-detail-outcome-team-total-goals-team-total-over"
+        if (($mvpRouteTapReadyXml -notmatch [regex]::Escape($mvpRouteTargetOutcomeId)) -and ($mvpRouteTapReadyXml -match [regex]::Escape("event-detail-outcome-team-total-"))) {
+          $mvpRouteTargetOutcomeId = "event-detail-outcome-team-total-"
           $mvpRouteTargetTicketMarketType = "team-total"
           $mvpRouteTargetLine = "1.5"
           $mvpRouteTargetToken = "token-el-a-team-total-over"
           $mvpRouteLineExpected = @(
             "Game Lines",
             $mvpRouteTargetOutcomeId,
-            "ticket-source-backend-line-market",
             "selection-market-family-$mvpRouteTargetTicketMarketType",
             "selection-line-$mvpRouteTargetLine",
-            "selection-period-Reg. Time",
+            "selection-period-regulation",
             "provider-source-polymarket"
           )
         }
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
 
-        Invoke-TapHierarchyNode -Path $mvpRouteLineHierarchy -Identifier $mvpRouteTargetOutcomeId
+        Invoke-TapHierarchyNode -Path $mvpRouteLineHierarchy -Identifier $mvpRouteTargetOutcomeId -StartsWith
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket.png"
         $mvpRouteSpreadTicketHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket.xml"
         $mvpRouteSpreadTicketXml = Get-Content -Raw -Path $mvpRouteSpreadTicketHierarchy
         if ($mvpRouteSpreadTicketXml -notmatch [regex]::Escape("trade-ticket")) {
-          Invoke-TapHierarchyNode -Path $mvpRouteLineHierarchy -Identifier $mvpRouteTargetOutcomeId
+          Invoke-TapHierarchyNode -Path $mvpRouteLineHierarchy -Identifier $mvpRouteTargetOutcomeId -StartsWith
           Start-Sleep -Seconds 2
           Save-Screenshot -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-retry.png"
           $mvpRouteSpreadTicketHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-retry.xml"
         }
-        Assert-HierarchyContains -Path $mvpRouteSpreadTicketHierarchy -Expected @("trade-ticket", "ticket-retail-order-header", "ticket-header-retail-readable", "ticket-settings-state-closed", "ticket-market-icon", "ticket-market-icon-$mvpRouteTargetTicketMarketType", "ticket-market-type-$mvpRouteTargetTicketMarketType", "ticket-line-$mvpRouteTargetLine", "ticket-period-Reg. Time", "provider-source-polymarket", "provider-token-$mvpRouteTargetToken", "Choose an amount")
+        Assert-HierarchyContains -Path $mvpRouteSpreadTicketHierarchy -Expected @("trade-ticket", "ticket-retail-order-header", "ticket-header-retail-readable", "ticket-advanced-hidden-local-mvp", "ticket-market-icon", "ticket-market-icon-$mvpRouteTargetTicketMarketType", "ticket-market-type-$mvpRouteTargetTicketMarketType", "ticket-line-$mvpRouteTargetLine", "ticket-period-regulation", "provider-source-polymarket", "provider-token-$mvpRouteTargetToken", "Choose an amount")
         Assert-HierarchyDoesNotContain -Path $mvpRouteSpreadTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
-        Invoke-TapHierarchyNode -Path $mvpRouteSpreadTicketHierarchy -Identifier "ticket-settings"
-        Start-Sleep -Milliseconds 500
-        $mvpRouteSettingsHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-settings.xml"
-        Assert-HierarchyContains -Path $mvpRouteSettingsHierarchy -Expected @("ticket-settings-panel", "ticket-settings-state-open", "Order type", "Market", "Odds", "Available")
-        Invoke-TapHierarchyNode -Path $mvpRouteSettingsHierarchy -Identifier "ticket-settings"
-        Start-Sleep -Milliseconds 500
-        $mvpRouteSpreadTicketClosedHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-settings-closed.xml"
-        Assert-HierarchyContains -Path $mvpRouteSpreadTicketClosedHierarchy -Expected @("trade-ticket", "ticket-settings-state-closed", "ticket-preset-25", "ticket-preset-50")
+        Assert-HierarchyDoesNotContain -Path $mvpRouteSpreadTicketHierarchy -Unexpected @("ticket-settings", "ticket-settings-panel", "ticket-settings-state-open")
+        $mvpRouteSpreadTicketClosedHierarchy = $mvpRouteSpreadTicketHierarchy
+        Assert-HierarchyContains -Path $mvpRouteSpreadTicketClosedHierarchy -Expected @("trade-ticket", "ticket-advanced-hidden-local-mvp", "ticket-preset-25", "ticket-preset-50")
         Invoke-TapHierarchyNode -Path $mvpRouteSpreadTicketClosedHierarchy -Identifier "ticket-preset-25"
         Start-Sleep -Milliseconds 500
         $mvpRouteSpreadAmount25Hierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-amount-25.xml"
@@ -5655,7 +5647,7 @@ try {
         $mvpRouteSpreadReadyHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-ready.xml"
         Assert-HierarchyContains -Path $mvpRouteSpreadReadyHierarchy -Expected @('$75', "Swipe to buy", "BHO vs BAW", "ticket-event-title-compact-matchup", "ticket-s23-keypad-clearance", "ticket-s23-safe-vertical-fit", "ticket-s23-keypad-footer-gap", "ticket-s23-reference-no-overlap", "ticket-red-footer-s23-reference-compact", "ticket-swipe-footer-fixed-separate", "swipe-submit-handle-progress-animated", "swipe-submit-handle-vertical-travel", "swipe-submit-handle-s23-large-travel", "swipe-submit-handle-starts-near-footer-top", "swipe-submit-handle-translate-y-0", "Final cost may vary.", "place-mock-order", "ticket-market-type-$mvpRouteTargetTicketMarketType", "ticket-line-$mvpRouteTargetLine", "provider-source-polymarket")
         Assert-HierarchyDoesNotContain -Path $mvpRouteSpreadReadyHierarchy -Unexpected $mvpHiddenOrderBookExpected
-        $mvpRouteSwipeProcess = Start-Process -FilePath $adb -ArgumentList @("-s", $Device, "shell", "input", "swipe", "720", "2190", "720", "1600", "1800") -PassThru -WindowStyle Hidden
+        $mvpRouteSwipeProcess = Start-Process -FilePath $adb -ArgumentList @("-s", $Device, "shell", "input", "swipe", "540", "1980", "540", "1370", "1800") -PassThru -WindowStyle Hidden
         Start-Sleep -Milliseconds 650
         Save-Screenshot -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-swipe-progress.png"
         Wait-Process -Id $mvpRouteSwipeProcess.Id
@@ -5717,7 +5709,7 @@ try {
             "portfolio-chart-status-ready",
             "portfolio-market-type-$mvpRouteTargetTicketMarketType",
             "portfolio-line-$mvpRouteTargetLine",
-            "portfolio-period-Reg. Time",
+            "portfolio-period-regulation",
             "portfolio-provider-source-polymarket",
             "portfolio-provider-token-$mvpRouteTargetToken",
             "portfolio-position-to-win-payout",
@@ -5736,7 +5728,7 @@ try {
             "portfolio-chart-status-ready",
             "portfolio-market-type-$mvpRouteTargetTicketMarketType",
             "portfolio-line-$mvpRouteTargetLine",
-            "portfolio-period-Reg. Time",
+            "portfolio-period-regulation",
             "portfolio-provider-source-polymarket",
             "portfolio-provider-token-$mvpRouteTargetToken",
             "Open orders",
@@ -5752,7 +5744,10 @@ try {
         Assert-HierarchyContains -Path $mvpRoutePortfolioTopHierarchy -Expected @(
           "Portfolio",
           "portfolio-header-retail-density",
-          "portfolio-settings portfolio-settings-state-closed",
+          "portfolio-account-entry-top-left",
+          "portfolio-account-settings-gear",
+          "portfolio-account-entry-google",
+          "portfolio-account-google-login-label-visible",
           "portfolio-value-retail-density",
           "portfolio-header-dollar-value",
           "portfolio-performance-chart",
@@ -5763,24 +5758,7 @@ try {
           "portfolio-funding-hidden-local-mvp"
         )
         Assert-HierarchyDoesNotContain -Path $mvpRoutePortfolioTopHierarchy -Unexpected @("Deposit", "Withdraw", "event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth")
-        Invoke-TapHierarchyNode -Path $mvpRoutePortfolioTopHierarchy -Identifier "portfolio-settings"
-        Start-Sleep -Seconds 1
-        Save-Screenshot -Name "$mvpRouteServerPrefix-portfolio-settings.png"
-        $mvpRoutePortfolioSettingsHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-portfolio-settings.xml"
-        Assert-HierarchyContains -Path $mvpRoutePortfolioSettingsHierarchy -Expected @(
-          "portfolio-settings-sheet",
-          "portfolio-settings-state-open",
-          "local-mvp-account-sheet",
-          "portfolio-settings-language",
-          "portfolio-settings-fake-token-mode",
-          "portfolio-settings-funding-disabled-local-mvp"
-        )
-        Assert-HierarchyDoesNotContain -Path $mvpRoutePortfolioSettingsHierarchy -Unexpected @("Deposit", "Withdraw", "event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth")
-        Invoke-TapHierarchyNode -Path $mvpRoutePortfolioSettingsHierarchy -Identifier "portfolio-settings-close"
-        Start-Sleep -Seconds 1
-        $mvpRoutePortfolioTopHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-portfolio-settings-closed.xml"
-        Assert-HierarchyContains -Path $mvpRoutePortfolioTopHierarchy -Expected @("portfolio-settings portfolio-settings-state-closed")
-        Assert-HierarchyDoesNotContain -Path $mvpRoutePortfolioTopHierarchy -Unexpected @("portfolio-settings-sheet")
+        Assert-HierarchyDoesNotContain -Path $mvpRoutePortfolioTopHierarchy -Unexpected @("portfolio-settings", "portfolio-settings-sheet", "local-mvp-account-sheet")
         $mvpRoutePortfolioHierarchy = $mvpRoutePortfolioTopHierarchy
 
         $mvpRouteFilledHistoryHierarchy = $null
@@ -5821,13 +5799,13 @@ try {
             $mvpRoutePortfolioContext,
             "portfolio-history-event-title-compact-provider",
             "BHO vs BAW",
-            "portfolio-history-fill-count-3",
+            "portfolio-history-fill-count-1",
             "portfolio-side-buy",
             "portfolio-history-market-icon",
             "portfolio-history-market-icon-$mvpRouteTargetTicketMarketType",
             "portfolio-market-type-$mvpRouteTargetTicketMarketType",
             "portfolio-line-$mvpRouteTargetLine",
-            "portfolio-period-Reg. Time",
+            "portfolio-period-regulation",
             "portfolio-provider-source-polymarket",
             "portfolio-provider-token-$mvpRouteTargetToken",
             '$75'
@@ -5839,7 +5817,7 @@ try {
         if ($LocalMvpRouteServerCancelFlow) {
           Assert-HierarchyContains -Path $mvpRoutePortfolioHierarchy -Expected @("Cancel", "cancel-open-order-")
           Invoke-TapHierarchyNode -Path $mvpRoutePortfolioHierarchy -Identifier "cancel-open-order-" -StartsWith
-          Wait-HierarchyContains -Name "$mvpRouteServerPrefix-portfolio-canceled.xml" -Expected @("Portfolio", "Server portfolio synced", "Recent activity", "1", "Canceled", "latest-activity-card", "activity-canceled", "status-canceled", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-period-Reg. Time", "portfolio-provider-source-polymarket", "portfolio-provider-token-token-el-a-spread-home") -Attempts 14 -DelaySeconds 2 | Out-Null
+          Wait-HierarchyContains -Name "$mvpRouteServerPrefix-portfolio-canceled.xml" -Expected @("Portfolio", "Server portfolio synced", "Recent activity", "1", "Canceled", "latest-activity-card", "activity-canceled", "status-canceled", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-period-regulation", "portfolio-provider-source-polymarket", "portfolio-provider-token-$mvpRouteTargetToken") -Attempts 14 -DelaySeconds 2 | Out-Null
           Save-Screenshot -Name "$mvpRouteServerPrefix-portfolio-canceled.png"
           $mvpRouteCanceledHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-portfolio-canceled.xml"
           Assert-HierarchyDoesNotContain -Path $mvpRouteCanceledHierarchy -Unexpected @("event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth")
