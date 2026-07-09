@@ -373,10 +373,10 @@ const chartSourceLabel = (source?: string | null) => {
   return "Chart";
 };
 
-const chartStatusLabel = (status?: string | null) => {
+const chartStatusLabel = (status?: string | null, source?: string | null) => {
   if (status === "ready") return "Live";
   if (status === "refresh_due") return "Refresh due";
-  if (status === "stale") return "Stale";
+  if (status === "stale") return source === "polymarket-clob-prices-history" ? "History" : "Stale";
   if (status === "loading") return "Loading";
   if (status === "error") return "Unavailable";
   if (status === "unavailable" || status === "empty") return "No history";
@@ -1605,7 +1605,7 @@ export function EventDetail({
       : selectedOutcome.probability;
     const selectedPointLabel = selectedChartPoint === "target" ? "Target line" : "Current";
     const chartSourceText = chartSourceLabel(event.chartHistorySource);
-    const chartStatusText = chartStatusLabel(event.chartHistoryStatus);
+    const chartStatusText = chartStatusLabel(event.chartHistoryStatus, event.chartHistorySource);
     const chartDateText = compactDateLabel(event.chartHistoryLastUpdated);
     const chartMetaText = [chartSourceText, chartStatusText, chartDateText].filter(Boolean).join(" - ");
 

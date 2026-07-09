@@ -2,6 +2,31 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle QM - Provider Chart Freshness Copy
+
+Closed or narrowed:
+
+- Event Detail no longer exposes stale-looking tester copy when the backend route has real Polymarket CLOB history but the event has no newer provider updates.
+- Internal proof markers still preserve route truth: `chart-status-stale`, `chart-source-polymarket-clob-prices-history`, and `chart-provider-status-visible`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Fresh/current provider chart status for an active live provider-backed event.
+- Real provider-backed Spread/Totals/Team Total market ids, outcome ids, token ids, line values, probabilities, and top prices.
+
+Route mismatch:
+
+- No route mismatch introduced.
+- The visible `History` copy is a UI interpretation of `status=stale` plus `source=polymarket-clob-prices-history`; the backend route still reports stale honestly.
+
+Temporary mock/static data:
+
+- None added by this cycle.
+
+Future migration concern:
+
+- Do not use `History` copy as proof that the route is live/fresh. Audit and backend diagnostics must continue reading the route status/source markers.
+
 ## Cycle QL - Provider Line Structural Inspection
 
 Closed or narrowed:

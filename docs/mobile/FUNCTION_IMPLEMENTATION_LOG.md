@@ -2,6 +2,48 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle QM - Provider Chart Freshness Copy
+
+Feature/page worked on:
+
+- Event Detail chart/probability display for the current provider-backed Local MVP match.
+- The cycle changes visible chart status copy only: real Polymarket CLOB history that is route-stale now displays as historical provider chart data instead of tester-facing `Stale`.
+
+Frontend/backend touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/__tests__/eventDetailChartStatusCopy.test.ts`
+- No backend route, Prisma schema, provider import service, order logic, orderbook UI, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- `chartStatusLabel(status, source)` now returns `History` when `status === "stale"` and `source === "polymarket-clob-prices-history"`.
+- Hidden/internal chart markers remain unchanged so proof can still inspect `chart-status-stale`, `chart-source-polymarket-clob-prices-history`, and `chart-provider-status-visible`.
+
+User interactions supported:
+
+- User opens Home, then Event Detail for `argentina-vs-egypt`, and sees the chart labeled as Polymarket historical chart context instead of visibly broken stale data.
+- No ticket/order/Portfolio behavior changed in this focused cycle.
+
+State transitions:
+
+- No runtime state transition changed.
+- Backend route status remains `stale`; only the user-facing copy for stale Polymarket CLOB history is softened to `History`.
+
+Known limitations:
+
+- The route is still stale because the provider event history ends on `2026-07-07`.
+- This is not a pass for real live/current chart freshness.
+- Real provider-backed Spread/Totals/Team Total line markets remain P1.
+
+Evidence:
+
+- Audit doc: `docs/mobile/audits/cycle-QM-provider-chart-freshness.md`
+- Provider chart proof before copy: `docs/mobile/harness/cycle-QM-provider-chart-freshness/cycle-QM-current-match-polymarket-chart-history.json`
+- Provider chart proof after copy: `docs/mobile/harness/cycle-QM-provider-chart-freshness/cycle-QM-current-match-polymarket-chart-history-after-copy.json`
+- S23 proof: `docs/mobile/harness/cycle-QM-provider-chart-freshness/cycle-QM-current-mvp-s23-visible-flow.json`
+- S23 screenshot/XML: `docs/mobile/screenshots/cycle-QM-provider-chart-freshness/cycle-QM-current-mvp-detail-stale-top.png`, `docs/mobile/harness/cycle-QM-provider-chart-freshness/cycle-QM-current-mvp-detail-stale-top.xml`
+
 ## Cycle QL - Provider Line Structural Inspection
 
 Feature/page worked on:
