@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle PS - Provider-Backed Line Market Gap
+
+Cycle PS does not change backend routes or schemas. It verifies the current match line-market provider gap against Polymarket Gamma and the Holiwyn live-detail route.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Current match provider line availability | Polymarket Gamma `/events?slug=fifwc-arg-egy-2026-07-07`; `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | None for public provider/event viewing | None | Provider market `question`, `slug`, `conditionId`; route `markets[].referenceSource`, `markets[].marketType`, `markets[].line`, `event.marketSourceSummary.lineMarkets.status`, `providerAvailability` | Existing `Event`, `Market`, `Outcome`; no schema change | Existing backend-shaped `contract-fixture` Spread/Totals/Team Total rows remain active for Local MVP UI/order proof | Real provider-backed Spread/Totals/Team Total markets are unavailable for the current MVP match; next provider milestone needs a richer current match source or approved line-market provider contract. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-PS-provider-backed-line-market-gap/cycle-PS-provider-match-line-availability.json`
+- `docs/mobile/audits/cycle-PS-provider-backed-line-market-gap.md`
+
 ## Cycle OV - Nation Top Goalscorer Provider Breadth And Classification Guard
 
 Cycle OV imports/refreshed another real Polymarket-backed World Cup event and fixes backend provider normalization so top-goalscorer nation futures do not leak into match-only Home/Live routes.

@@ -2,6 +2,33 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle PS - Provider-Backed Line Market Gap
+
+Closed or narrowed:
+
+- Current MVP match provider availability was re-proven against Polymarket Gamma and Holiwyn live-detail route.
+- `argentina-vs-egypt` has three real Polymarket-backed Regulation Winner markets.
+- Polymarket Gamma exposes zero Spread/Totals/Team Total markets for this provider event, so Holiwyn must not claim those line rows are provider-backed.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for current World Cup match detail pages.
+- A discovery/import path for current match events that have richer attach-ready Polymarket market groups, if Polymarket exposes them.
+- If Polymarket does not expose line markets for a match, an approved alternate provider contract for line markets before removing fixture status.
+
+Route mismatch:
+
+- `/api/mobile/events/argentina-vs-egypt/live-detail` correctly reports `lineMarkets.status=contract-fixture`; this is Local MVP behavior, not final Polymarket parity.
+
+Temporary mock/static data:
+
+- Existing Local MVP line markets remain backend-shaped `contract-fixture` rows.
+- No new frontend-only fixture or random mock data was added.
+
+Future migration concern:
+
+- Provider-backed Regulation Winner can flow through ticket/order/portfolio today, but line-market parity needs real provider market/outcome/token identity before it can be treated as complete.
+
 ## Cycle OV - Nation Top Goalscorer Provider Breadth And Classification Guard
 
 Closed or narrowed:
