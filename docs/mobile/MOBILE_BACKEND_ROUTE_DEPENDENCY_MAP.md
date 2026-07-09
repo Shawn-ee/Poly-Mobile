@@ -3841,3 +3841,9 @@ Cycle OW implementation notes:
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Event Detail Player Props empty tab | Existing `/api/mobile/events/:slug/live-detail` only to open the event page | GET | Public viewing | Event slug | Existing event identity and market groups; no player prop data consumed in this cycle | `Event`, `Market`, `Outcome`; no player-prop schema change | Local/static mode keeps the same blank Player Props tab. | Real provider-backed player prop groups/routes remain intentionally out of MVP scope. |
+
+## Cycle QU - Portfolio Google Login Visibility
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio account/login entry | `/api/auth/google/start?returnTo=%2Fportfolio` only after the user opens Account and taps Google sign-in | GET/browser redirect | Public auth-start route; Google provider credentials required on backend | `returnTo=/portfolio` query param; no JSON request body | Mobile consumes no JSON from the auth-start route; browser follows redirect/session flow | Existing backend auth/session/user tables implied | Fake-token trading remains available without Google login. | Native app deep-link callback/session/logout is still not implemented. |

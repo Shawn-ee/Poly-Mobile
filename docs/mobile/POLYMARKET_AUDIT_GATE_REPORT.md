@@ -6801,3 +6801,31 @@ Remaining P1:
 
 - Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Broad futures remain Search/detail-only while Home/Live stay match-only.
+
+## Cycle QU - Portfolio Google Login Visibility
+
+Result: Pass for QU scope.
+
+Checked:
+
+- Portfolio header visibly exposes account/login entry.
+- Portfolio header visibly says Google login.
+- Tapping the Portfolio Google login entry opens Account.
+- Account still exposes the Google login action.
+- Home account entry remains removed per Local MVP cleanup.
+- No backend route, schema, ticket, order, Portfolio data, order book, chat, live stats, social, deposit, or withdraw work was touched.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-QU-portfolio-google-login-visibility.md`
+- `docs/mobile/harness/cycle-QU-portfolio-google-login-visibility/cycle-QU-portfolio-google-login-visibility-proof.json`
+- `docs/mobile/harness/cycle-QU-portfolio-google-login-visibility/cycle-QU-portfolio-google-login-visible.xml`
+- `docs/mobile/harness/cycle-QU-portfolio-google-login-visibility/cycle-QU-account-google-login-screen.xml`
+- `docs/mobile/screenshots/cycle-QU-portfolio-google-login-visibility/cycle-QU-portfolio-google-login-visible.png`
+- `docs/mobile/screenshots/cycle-QU-portfolio-google-login-visibility/cycle-QU-account-google-login-screen.png`
+
+Unresolved P0 gaps: 0 for QU scope.
+
+Remaining P1:
+
+- Native Google OAuth callback/session/logout remains separate auth work.

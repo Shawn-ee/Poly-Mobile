@@ -1079,3 +1079,11 @@ For every UI element or interaction, answer:
 - Unresolved P0 for QT scope: 0.
 - Remaining P1: Player Props functionality remains intentionally blank until it becomes part of Local MVP.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle QU Gap Tracker Update
+
+- PM-GAP-156 is opened and closed for Portfolio Google login discoverability after Home account entry removal.
+- QU keeps Home focused on World Cup/Matches/Live while making Portfolio account/login wording explicit.
+- QU proves on Samsung S23 that Portfolio shows Google login, tapping it opens Account, and Account still shows the Google login action.
+- Unresolved P0 for QU scope: 0.
+- Remaining P1: native Google OAuth callback/session/logout remains separate auth work.

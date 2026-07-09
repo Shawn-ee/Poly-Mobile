@@ -8320,3 +8320,31 @@ Future migration concern:
 - Local bot runtime identifiers were redacted from committed evidence.
 - Standalone bot proof runs must carry `LIVE_SYSTEM_LIQUIDITY_ENABLED=true`; backend helper env alone does not arm a separate bot process.
 - Production/staging bot enablement must not reuse local fake-token proof flags without separate review.
+
+## Cycle QU - Portfolio Google Login Visibility
+
+Closed or narrowed:
+
+- Portfolio now makes the Google login entry explicit after Home account controls were intentionally removed.
+- S23 proof confirms Portfolio opens Account and Account still exposes the Google login action.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Native app auth callback/session/logout state for Google OAuth.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- Fake-token trading still works without Google login during Local MVP.
+- Native OAuth session handoff should be handled in a dedicated auth milestone.
