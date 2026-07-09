@@ -601,6 +601,8 @@ type PortfolioTab = "positions" | "orders" | "history";
 const portfolioPageCopy = {
   en: {
     profile: "holiwynplayer7067",
+    account: "Account",
+    googleSignIn: "Google sign-in",
     cash: "cash",
     deposit: "Deposit",
     withdraw: "Withdraw",
@@ -614,6 +616,8 @@ const portfolioPageCopy = {
   },
   zh: {
     profile: "liyunplayer7067",
+    account: "\u6211\u7684",
+    googleSignIn: "Google \u767b\u5f55",
     cash: "\u73b0\u91d1",
     deposit: "\u5145\u503c",
     withdraw: "\u63d0\u73b0",
@@ -971,17 +975,25 @@ export function Portfolio({
           testID="portfolio-account-entry-top-left"
         >
           <PortfolioAvatar />
-          <Text style={styles.profileName}>{pageCopy.profile}</Text>
+          <View style={styles.profileCopy}>
+            <Text adjustsFontSizeToFit minimumFontScale={0.72} numberOfLines={1} style={styles.profileName}>
+              {pageCopy.profile}
+            </Text>
+            <Text accessibilityLabel="portfolio-account-entry-label" testID="portfolio-account-entry-label" style={styles.profileAccountLabel}>
+              {pageCopy.account}
+            </Text>
+          </View>
         </Pressable>
         <Pressable
-          accessibilityLabel="portfolio-account-entry-gear portfolio-account-entry-opens-account"
+          accessibilityLabel="portfolio-account-entry-google portfolio-account-entry-opens-account"
           accessibilityRole="button"
           hitSlop={10}
           onPress={openAccount}
-          style={({ pressed }) => [styles.accountGearButton, pressed && styles.accountGearButtonPressed]}
-          testID="portfolio-account-entry-gear"
+          style={({ pressed }) => [styles.accountGoogleButton, pressed && styles.accountGoogleButtonPressed]}
+          testID="portfolio-account-entry-google"
         >
-          <Ionicons name="settings-outline" size={27} color="#f8fafc" />
+          <Ionicons name="logo-google" size={17} color="#111827" />
+          <Text style={styles.accountGoogleButtonText}>{pageCopy.googleSignIn}</Text>
         </Pressable>
       </View>
       <View accessibilityLabel="fake-balance-card portfolio-value-retail-density portfolio-header-dollar-value" testID="fake-balance-card" style={styles.valueBlock}>
@@ -1526,14 +1538,17 @@ const styles = StyleSheet.create({
   scrollPad: { width: "100%", maxWidth: 480, alignSelf: "center", paddingHorizontal: 0, paddingBottom: 110 },
   profileHeader: { minHeight: 58, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 24, paddingTop: 4 },
   profileLeft: { flexDirection: "row", alignItems: "center", gap: 12, flex: 1 },
-  accountGearButton: { width: 48, height: 48, borderRadius: 999, alignItems: "center", justifyContent: "center" },
-  accountGearButtonPressed: { backgroundColor: "#111827", transform: [{ scale: 0.97 }] },
+  profileCopy: { flex: 1, minWidth: 0 },
+  accountGoogleButton: { minHeight: 42, maxWidth: 150, borderRadius: 999, paddingHorizontal: 12, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 7, backgroundColor: "#f8fafc" },
+  accountGoogleButtonPressed: { opacity: 0.84, transform: [{ scale: 0.97 }] },
+  accountGoogleButtonText: { color: "#111827", fontSize: 13, fontWeight: "900", flexShrink: 1 },
   avatarGradient: { width: 46, height: 46, borderRadius: 999, overflow: "hidden", backgroundColor: "#f43f5e", position: "relative" },
   avatarColorStop: { position: "absolute", borderRadius: 999 },
   avatarColorStopPink: { left: -8, top: -5, width: 48, height: 48, backgroundColor: "#f43f5e" },
   avatarColorStopYellow: { right: -4, top: 2, width: 44, height: 44, backgroundColor: "#facc15" },
   avatarColorStopBlue: { left: 4, bottom: -12, width: 42, height: 42, backgroundColor: "#7c3aed" },
   profileName: { color: "#e5e7eb", fontSize: 20, fontWeight: "500", flexShrink: 1 },
+  profileAccountLabel: { color: "#60a5fa", fontSize: 12, fontWeight: "900", marginTop: 3 },
   valueBlock: { paddingHorizontal: 24, paddingTop: 4 },
   portfolioValue: { color: "#f8fafc", fontSize: 50, fontWeight: "300" },
   portfolioPnlLine: { fontSize: 17, fontWeight: "500", marginTop: 0 },

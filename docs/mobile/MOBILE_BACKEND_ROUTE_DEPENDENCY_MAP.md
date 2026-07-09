@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle PZ - Portfolio Google Entry Clarity
+
+Cycle PZ changes visible mobile navigation only. No backend route, auth route, Prisma schema, provider import, order matching, portfolio sync, or fake-token mechanics changed.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio Google sign-in entry | Existing Account screen can open `${EXPO_PUBLIC_API_BASE_URL}/api/auth/google/start?returnTo=/portfolio` through `openGoogleSignIn` | Browser/deep-link open after Portfolio -> Account navigation | Server auth route decides Google auth requirements | None from the Portfolio header | None until auth callback/profile sync is implemented | No schema change | Demo trading remains available without sign-in in Local MVP | End-to-end Google OAuth callback/session proof remains future backend/auth work. |
+
 ## Cycle PY - Current APK Lane Refresh
 
 Cycle PY changes no backend routes or mobile source. It refreshes the current-code installed Android APK proof lane.

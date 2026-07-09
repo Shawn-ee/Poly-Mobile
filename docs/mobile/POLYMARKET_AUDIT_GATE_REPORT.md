@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle PZ
+
+Gate status: Pass
+
+Scope: Portfolio Google login entry clarity.
+
+Decision:
+
+- P0 failed: 0 for focused Portfolio -> Account Google entry clarity scope.
+- Implemented change: Portfolio now shows an explicit `Account` label and `Google sign-in` chip that route to the existing Account screen instead of relying on a subtle avatar/gear entry.
+- P1/P2 remaining: full Google OAuth callback/session proof remains future backend/auth work.
+- Evidence: typecheck passed; mobile API/contract tests passed; Gradle release APK build passed; S23 proof passed with `docs/mobile/harness/cycle-PZ-portfolio-google-entry-clarity/cycle-PZ-s23-proof-summary.json`, `docs/mobile/screenshots/cycle-PZ-portfolio-google-entry-clarity/cycle-PZ-s23-portfolio-google-entry.png`, and `docs/mobile/screenshots/cycle-PZ-portfolio-google-entry-clarity/cycle-PZ-s23-account-google-login.png`.
+
 ## Cycle PY
 
 Gate status: Pass

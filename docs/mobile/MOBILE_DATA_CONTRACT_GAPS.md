@@ -2,6 +2,30 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle PZ - Portfolio Google Entry Clarity
+
+Closed or narrowed:
+
+- Google login discoverability is narrowed: Portfolio now exposes a visible Account label and Google sign-in chip that route to the existing Account screen.
+- The Home account shortcut remains removed, matching the Local MVP cleanup direction.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- End-to-end Google OAuth callback/session profile hydration still needs configured auth environment and route proof.
+- Production account/wallet state remains future work.
+
+Route mismatch:
+
+- None introduced. This cycle only improves the visible Portfolio entry point to existing Account/auth behavior.
+
+Temporary mock/static data:
+
+- Existing demo/local fake-token data remains unchanged.
+
+Future migration concern:
+
+- When native auth/session work begins, the Portfolio Google chip should either open the native sign-in flow directly or show signed-in profile state instead of routing to Account first.
+
 ## Cycle PY - Current APK Lane Refresh
 
 Closed or narrowed:

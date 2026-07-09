@@ -2,6 +2,43 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle PZ - Portfolio Google Entry Clarity
+
+Feature/page worked on:
+
+- Portfolio account entry and Google login discoverability for the Local MVP.
+
+Frontend/services touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/src/__tests__/portfolioSettingsContract.test.ts`
+
+Important functions/services touched:
+
+- Portfolio header now shows an explicit `Account` label under the profile name.
+- The former icon-only/gear account entry is replaced with a compact visible `Google sign-in` chip.
+- Both visible Portfolio account affordances still call the existing `openAccount` callback.
+
+User interactions supported:
+
+- Users can open Portfolio, see a visible Google sign-in entry, tap it, and land on the existing Account screen with the `Continue with Google` button.
+- The Home account shortcut remains intentionally removed.
+
+State transitions:
+
+- `mainTab` changes from `portfolio` to `account` through the existing `openAccount` callback.
+- No Google OAuth route, auth callback, profile, order, portfolio, provider, schema, orderbook, chat, live stats, social, deposit, or withdrawal state changed.
+
+Known limitations:
+
+- This cycle improves discoverability only. End-to-end native Google OAuth callback/session hydration remains future auth work.
+
+Evidence:
+
+- Audit doc: `docs/mobile/audits/cycle-PZ-portfolio-google-entry-clarity.md`
+- S23 proof summary: `docs/mobile/harness/cycle-PZ-portfolio-google-entry-clarity/cycle-PZ-s23-proof-summary.json`
+- S23 screenshots/XML: `docs/mobile/screenshots/cycle-PZ-portfolio-google-entry-clarity/cycle-PZ-s23-portfolio-google-entry.png`, `docs/mobile/screenshots/cycle-PZ-portfolio-google-entry-clarity/cycle-PZ-s23-account-google-login.png`, `docs/mobile/harness/cycle-PZ-portfolio-google-entry-clarity/cycle-PZ-s23-portfolio.xml`, `docs/mobile/harness/cycle-PZ-portfolio-google-entry-clarity/cycle-PZ-s23-account.xml`
+
 ## Cycle PY - Current APK Lane Refresh
 
 Feature/page worked on:
