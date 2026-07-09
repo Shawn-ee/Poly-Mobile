@@ -3,7 +3,8 @@ param(
   [string]$Side = "buy",
   [string]$Username = "",
   [string]$SummaryPath = "docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof.json",
-  [int]$Port = 0
+  [int]$Port = 0,
+  [string]$Device = "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp"
 )
 
 $ErrorActionPreference = "Stop"
@@ -37,6 +38,27 @@ function Invoke-CheckedNative {
   if ($LASTEXITCODE -ne 0) {
     throw "$Label failed with exit code $LASTEXITCODE."
   }
+}
+
+function Invoke-NativeOutput {
+  param(
+    [Parameter(Mandatory = $true)]
+    [scriptblock]$Command,
+    [Parameter(Mandatory = $true)]
+    [string]$Label
+  )
+
+  $previousErrorActionPreference = $ErrorActionPreference
+  try {
+    $ErrorActionPreference = "Continue"
+    $raw = & $Command 2>&1 | Out-String
+  } finally {
+    $ErrorActionPreference = $previousErrorActionPreference
+  }
+  if ($LASTEXITCODE -ne 0) {
+    throw "$Label failed with exit code $LASTEXITCODE. $raw"
+  }
+  return $raw
 }
 
 function Invoke-ProofNoiseGate {
@@ -92,6 +114,9 @@ $resolvedSummaryPath = Join-Path $repoRoot $SummaryPath
 
 $previousProofUsername = $env:MOBILE_DEV_USERNAME
 $previousApiKey = $env:EXPO_PUBLIC_API_KEY
+$previousProofEventId = $env:MOBILE_PROOF_EVENT_ID
+$previousProofMarketId = $env:MOBILE_PROOF_MARKET_ID
+$previousProofOutcomeId = $env:MOBILE_PROOF_OUTCOME_ID
 
 try {
   $env:MOBILE_DEV_USERNAME = $proofUsername
@@ -110,8 +135,11 @@ try {
       Invoke-CheckedNative -Label "Buy liquidity preparation" -Command { cmd /c npm.cmd run mobile:server-order-fill-liquidity }
     }
     $liquiditySummary = Read-LiquiditySummary -RepoRoot $repoRoot -Side $Side
+    $env:MOBILE_PROOF_EVENT_ID = $liquiditySummary.event.id
+    $env:MOBILE_PROOF_MARKET_ID = $liquiditySummary.market.id
+    $env:MOBILE_PROOF_OUTCOME_ID = $liquiditySummary.outcome.id
 
-    $credentialRaw = cmd /c npm.cmd run mobile:dev-credential 2>&1 | Out-String
+    $credentialRaw = Invoke-NativeOutput -Label "Mobile dev credential" -Command { cmd /c npm.cmd run mobile:dev-credential }
     $credential = ConvertFrom-FirstJsonObject -Raw $credentialRaw
     $env:EXPO_PUBLIC_API_KEY = $credential.token
 
@@ -120,12 +148,12 @@ try {
       if ($Side -eq "sell") {
         $resolvedPort = if ($Port -gt 0) { $Port } else { 8159 }
         Invoke-CheckedNative -Label "Samsung sell order smoke" -Command {
-          powershell -ExecutionPolicy Bypass -File .\scripts\smoke-samsung.ps1 -ServerSellOrderFilled -Port $resolvedPort
+          powershell -ExecutionPolicy Bypass -File .\scripts\smoke-samsung.ps1 -ServerSellOrderFilled -Port $resolvedPort -Device $Device
         }
       } else {
         $resolvedPort = if ($Port -gt 0) { $Port } else { 8158 }
         Invoke-CheckedNative -Label "Samsung buy order smoke" -Command {
-          powershell -ExecutionPolicy Bypass -File .\scripts\smoke-samsung.ps1 -ServerOrderFilled -Port $resolvedPort
+          powershell -ExecutionPolicy Bypass -File .\scripts\smoke-samsung.ps1 -ServerOrderFilled -Port $resolvedPort -Device $Device
         }
       }
     } finally {
@@ -137,7 +165,7 @@ try {
       -Label "Post-proof noise gate" `
       -SummaryPath "docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof-noise-gate.json"
 
-    $orderSummaryRaw = cmd /c npx.cmd tsx scripts/summarize_mobile_open_order_cancel_proof.ts --username=$proofUsername 2>&1 | Out-String
+    $orderSummaryRaw = Invoke-NativeOutput -Label "Order proof summary" -Command { cmd /c npx.cmd tsx scripts/summarize_mobile_open_order_cancel_proof.ts --username=$proofUsername }
     $orderSummary = ConvertFrom-FirstJsonObject -Raw $orderSummaryRaw
 
     $summary = [ordered]@{
@@ -177,5 +205,20 @@ try {
     Remove-Item Env:\EXPO_PUBLIC_API_KEY -ErrorAction SilentlyContinue
   } else {
     $env:EXPO_PUBLIC_API_KEY = $previousApiKey
+  }
+  if ($null -eq $previousProofEventId) {
+    Remove-Item Env:\MOBILE_PROOF_EVENT_ID -ErrorAction SilentlyContinue
+  } else {
+    $env:MOBILE_PROOF_EVENT_ID = $previousProofEventId
+  }
+  if ($null -eq $previousProofMarketId) {
+    Remove-Item Env:\MOBILE_PROOF_MARKET_ID -ErrorAction SilentlyContinue
+  } else {
+    $env:MOBILE_PROOF_MARKET_ID = $previousProofMarketId
+  }
+  if ($null -eq $previousProofOutcomeId) {
+    Remove-Item Env:\MOBILE_PROOF_OUTCOME_ID -ErrorAction SilentlyContinue
+  } else {
+    $env:MOBILE_PROOF_OUTCOME_ID = $previousProofOutcomeId
   }
 }

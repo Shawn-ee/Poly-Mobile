@@ -185,7 +185,10 @@ function SwipeSubmitControl({
     () =>
       PanResponder.create({
         onStartShouldSetPanResponder: () => !disabledRef.current && !submittingRef.current,
+        onStartShouldSetPanResponderCapture: () => !disabledRef.current && !submittingRef.current,
         onMoveShouldSetPanResponder: (_, gestureState) =>
+          !disabledRef.current && !submittingRef.current && Math.abs(gestureState.dy) > 2,
+        onMoveShouldSetPanResponderCapture: (_, gestureState) =>
           !disabledRef.current && !submittingRef.current && Math.abs(gestureState.dy) > 2,
         onPanResponderGrant: (event) => handleTouchStart(event),
         onPanResponderMove: (_, gestureState) => {
@@ -218,7 +221,9 @@ function SwipeSubmitControl({
       testID="place-mock-order"
       {...panResponder.panHandlers}
       onStartShouldSetResponder={() => !disabledRef.current && !submittingRef.current}
+      onStartShouldSetResponderCapture={() => !disabledRef.current && !submittingRef.current}
       onMoveShouldSetResponder={() => !disabledRef.current && !submittingRef.current}
+      onMoveShouldSetResponderCapture={() => !disabledRef.current && !submittingRef.current}
       onResponderGrant={handleTouchStart}
       onResponderMove={handleTouchMove}
       onResponderRelease={handleTouchEnd}

@@ -7196,3 +7196,11 @@ Remaining P1:
 - Cashout still uses a dedicated cashout ticket instead of the generic Buy/Sell ticket.
 - Native Google OAuth callback/session/logout remains separate auth work.
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+# Cycle RQ Audit Gate - Sell Fill Lands On History
+
+- Scope: Local MVP visible sell flow and Portfolio History landing.
+- P0 result: PASS.
+- Android proof: Samsung S23 `SM-S911U1`.
+- Backend proof: one FILLED SELL order for the proof user; pre/post noise gates passed.
+- Visible proof: Portfolio XML contains `portfolio-screen`, `portfolio-tab-history portfolio-tab-selected`, `activity-row-`, `Sold`, `portfolio-history-retail-row-parity`, `portfolio-history-dollar-amounts`, and `portfolio-history-relative-time`.
+- Remaining P1: production liquidity and public trading policy.

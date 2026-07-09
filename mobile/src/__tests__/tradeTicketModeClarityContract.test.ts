@@ -15,4 +15,14 @@ describe("Trade Ticket mode clarity", () => {
     expect(source).toContain('accessibilityLabel={`ticket-side-${option}`}');
     expect(source).toContain('{option === "buy" ? "Yes" : "No"}');
   });
+
+  test("captures Android swipe gestures on the submit control before children steal touch", () => {
+    const source = tradeTicketSource();
+
+    expect(source).toContain("onStartShouldSetPanResponderCapture");
+    expect(source).toContain("onMoveShouldSetPanResponderCapture");
+    expect(source).toContain("onStartShouldSetResponderCapture");
+    expect(source).toContain("onMoveShouldSetResponderCapture");
+    expect(source).toContain("swipe-submit-gesture-required");
+  });
 });

@@ -90,7 +90,14 @@ async function findMobileServerOrderTarget() {
       })
     ).find((item) => item.markets.length > 0);
   if (!event) throw new Error(`Missing event ${eventSlug} and no fallback World Cup event with live public orderbook markets was found.`);
-  const market = event.markets.find((item) => item.outcomes.length > 0);
+  const market =
+    event.markets.find(
+      (item) =>
+        item.outcomes.length > 0 &&
+        (item.marketType === "match_winner_1x2" ||
+          item.marketGroupKey === "main" ||
+          /match winner/i.test(item.title)),
+    ) ?? event.markets.find((item) => item.outcomes.length > 0);
   if (!market) throw new Error(`Event ${eventSlug} has no live public orderbook market with active outcomes.`);
   const outcome = market.outcomes[0];
   assert(Boolean(outcome), "Selected market has no active outcome.");
