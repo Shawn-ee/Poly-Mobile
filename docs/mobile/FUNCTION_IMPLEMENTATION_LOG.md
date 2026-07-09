@@ -2,6 +2,46 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle PV - Local Line Source Copy Cleanup
+
+Feature/page worked on:
+
+- Local MVP visible source labels across Home/Live, Event Detail Game Lines, Trade Ticket, Portfolio, and Search.
+
+Frontend/services touched:
+
+- `mobile/src/components/MarketLists.tsx`
+- `mobile/src/components/LiveScreen.tsx` indirectly through shared `eventSourceReadiness()`
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/src/components/SearchScreen.tsx`
+- Source-label contract tests under `mobile/src/__tests__/`
+
+Important functions/services touched:
+
+- `eventSourceReadiness()` now presents mixed provider/local line state as `Winner: Polymarket / local lines`.
+- `lineSourceCopy()`, `marketSourceHeaderNote()`, `marketSourceBadge()`, `ticketSourceBadge()`, `ticketSourceNote()`, `portfolioSourceBadge()`, `portfolioSourceNote()`, `portfolioSourceSummary()`, and `SearchScreen` source labels now use calmer `Local line(s)` tester-facing copy.
+
+User interactions supported:
+
+- Home/Live current-match cards, Event Detail line rows, Trade Ticket, Portfolio positions/orders/history, and Search results still disclose when line-market pricing is local.
+- Hidden accessibility/test markers still expose `contract-fixture` and local fake-token identity for harnesses and audits.
+
+State transitions:
+
+- No navigation, ticket, order, portfolio, backend, auth, schema, provider, orderbook, chat, live stats, or social state changed.
+
+Known limitations:
+
+- This is a visible-copy cleanup only. Spread/Totals/Team Total markets remain backend-shaped `contract-fixture` rows until real provider-backed line markets are available.
+
+Evidence:
+
+- Audit doc: `docs/mobile/audits/cycle-PV-local-line-source-copy-cleanup.md`
+- Contract tests: source badge and source-readiness tests in `mobile/src/__tests__/`
+- S23 proof summary: `docs/mobile/harness/cycle-PV-local-line-source-copy-cleanup/cycle-PV-current-mvp-s23-visible-flow.json`
+
 ## Cycle PT - Portfolio Google Entry Visibility
 
 Feature/page worked on:

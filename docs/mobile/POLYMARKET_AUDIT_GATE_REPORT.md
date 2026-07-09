@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle PV
+
+Gate status: Pass
+
+Scope: Local MVP source-label copy cleanup.
+
+Decision:
+
+- P0 failed: 0 for focused visible source-copy cleanup scope.
+- Implemented change: visible tester-facing labels now say `Local line(s)` instead of debug-heavy `Test line - fake USDT` / `test lines`, while hidden audit markers still preserve `contract-fixture` and local fake-token source identity.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total markets remain unavailable; this cycle does not claim provider line parity.
+- Evidence: typecheck passed; mobile API/contract tests passed; app-source search found no remaining loud debug labels; S23 source-disclosure proof passed with `docs/mobile/harness/cycle-PV-local-line-source-copy-cleanup/cycle-PV-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-PV-local-line-source-copy-cleanup/cycle-PV-current-mvp-lines.png`, and `docs/mobile/screenshots/cycle-PV-local-line-source-copy-cleanup/cycle-PV-current-mvp-ticket-ready.png`.
+
 ## Cycle OV
 
 Gate status: Pass for provider breadth/Search visibility and match-only classification guard; partial for bot quote placement.

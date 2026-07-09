@@ -12,14 +12,14 @@ describe("Event Detail market source badges", () => {
     expect(source).toContain("market-source-badge-local");
     expect(source).toContain("event-detail-market-source-");
     expect(source).toContain("Polymarket market");
-    expect(source).toContain("Test line - fake USDT");
+    expect(source).toContain("Local line");
     expect(source).toContain("line-market-local-test-fake-token");
     expect(source).toContain('label: "Polymarket"');
-    expect(source).toContain('label: "Test"');
+    expect(source).toContain('label: "Local"');
     expect(source).toContain("market-source-polymarket-readable");
     expect(source).toContain("market-source-local-test-readable");
     expect(source).toContain("event-detail-line-source-banner");
-    expect(source).toContain("Winner: Polymarket / test lines.");
+    expect(source).toContain("Winner: Polymarket / local lines.");
     expect(source).toContain("line-source-local-test-fake-token");
     expect(source).toContain("line-provider-availability-");
     expect(source).toContain("line-contract-fixture-count-");

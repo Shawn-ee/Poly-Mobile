@@ -304,7 +304,7 @@ function ticketSourceBadge(ticket: Ticket) {
   }
   if (source.includes("contract-fixture")) {
     return {
-      label: "Test",
+      label: "Local",
       tone: "fixture" as const,
       accessibility: `ticket-source-badge-local ticket-source-${source}`,
     };
@@ -320,7 +320,7 @@ function ticketSourceNote(ticket: Ticket) {
   const source = ticket.selection?.referenceSource ?? ticket.market.referenceSource ?? "";
   if (source.includes("contract-fixture")) {
     return {
-      text: "Test line - fake USDT",
+      text: "Local line",
       accessibility: "ticket-local-test-pricing",
       tone: "fixture" as const,
     };

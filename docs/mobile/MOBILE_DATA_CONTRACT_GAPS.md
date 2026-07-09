@@ -2,6 +2,30 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle PV - Local Line Source Copy Cleanup
+
+Closed or narrowed:
+
+- Tester-facing source labels no longer look like debug copy (`Test line - fake USDT` / `test lines`).
+- Home/Live, Event Detail, Search, Trade Ticket, and Portfolio now use `Local line(s)` copy while preserving machine-readable `contract-fixture` and local fake-token markers.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets with provider market IDs, outcome IDs, token IDs, prices, line values, periods, and source/status fields.
+
+Route mismatch:
+
+- No route mismatch was introduced. Current routes correctly represent line markets as `contract-fixture` for Local MVP.
+
+Temporary mock/static data:
+
+- Existing Local MVP line markets remain backend-shaped `contract-fixture` rows.
+- No new frontend-only fixture data was added.
+
+Future migration concern:
+
+- When real provider-backed line markets exist, the same visible copy should switch from `Local line(s)` to provider-backed source labels through `referenceSource`/`marketSourceSummary`, without changing ticket/order payload shape.
+
 ## Cycle PT - Portfolio Google Entry Visibility
 
 Closed or narrowed:

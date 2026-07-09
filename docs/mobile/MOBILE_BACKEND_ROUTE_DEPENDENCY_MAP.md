@@ -2,6 +2,15 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle PV - Local Line Source Copy Cleanup
+
+Cycle PV changes visible mobile copy only. No backend route, auth route, Prisma schema, provider import path, bot path, or order route changed.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home/Live/Event Detail/Search source labels | Existing event feed and live-detail routes, especially `/api/events?...includeMobileMarkets=1...` and `/api/mobile/events/:slug/live-detail` | GET | None for browsing | None | `marketSourceSummary.regulationWinner.status`, `marketSourceSummary.lineMarkets.status`, `familyReadiness`, `providerAvailability`, `markets[].referenceSource` | Existing `Event`, `Market`, `Outcome`; no schema change | Existing backend-shaped `contract-fixture` line markets remain active for Local MVP | Real provider-backed Spread/Totals/Team Total line markets remain missing. The UI now says `Local line(s)` while accessibility/test labels retain `contract-fixture` and fake-token markers. |
+| Trade Ticket and Portfolio source labels | Existing quote/order/portfolio routes | GET/POST depending on action | Existing Local MVP credential for server-backed fake-token orders | Existing ticket/order payloads unchanged | Existing `selection.referenceSource`, `selection.marketType`, `selection.line`, `selection.outcomeId`, `selection.referenceTokenId` | Existing order/portfolio selection snapshots; no schema change | Local line orders continue to use fake-token Local MVP pricing | Backend route/schema parity for real provider-backed line orders remains open until provider line market identity exists. |
+
 ## Cycle PT - Portfolio Google Entry Visibility
 
 Cycle PT changes visible mobile navigation only. No backend route, auth route, Prisma schema, or order route changed.
