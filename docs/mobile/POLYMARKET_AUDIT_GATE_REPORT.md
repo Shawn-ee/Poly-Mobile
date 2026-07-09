@@ -16,6 +16,20 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle RB
+
+Gate status: Pass for focused Event Detail chart-history readout; not a pass for full drag-nearest-point native chart parity.
+
+Scope: make Event Detail chart taps select actual chart-history points instead of synthetic `Target line` copy.
+
+Decision:
+
+- P0 failed: 0 for focused RB scope.
+- Implemented change: chart selection state now uses `early`/`mid`/`latest` and reads from `event.chartHistory` when available.
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`; Event Detail XML confirmed `chart-history-points-8`, `chart-selected-point-latest`, and after tap `chart-selected-point-mid`.
+- P1 remaining: continuous drag-nearest-point behavior and real provider-backed line-market chart switching.
+- Evidence: `docs/mobile/audits/cycle-RB-event-chart-history-readout.md`; S23 proof `docs/mobile/harness/cycle-RB-event-chart-history-readout/cycle-RB-event-chart-history-readout-proof.json`.
+
 ## Cycle RA
 
 Gate status: Pass for focused Portfolio Google direct-login entry; not a pass for full native OAuth/session parity.

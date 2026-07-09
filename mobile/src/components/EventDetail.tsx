@@ -393,6 +393,13 @@ const compactDateLabel = (value?: string | null) => {
   return parsed.toLocaleDateString(undefined, { month: "short", day: "numeric" });
 };
 
+const compactChartPointTimeLabel = (value?: string | null) => {
+  if (!value) return "Now";
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return parsed.toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+};
+
 const teamCode = (name: string) => {
   const words = name
     .replace(/[^A-Za-z\s]/g, " ")
@@ -554,7 +561,7 @@ export function EventDetail({
   const [refreshingDepthMarketId, setRefreshingDepthMarketId] = useState<string | null>(null);
   const [compactHeaderVisible, setCompactHeaderVisible] = useState(false);
   const [selectedPrimaryOutcomeId, setSelectedPrimaryOutcomeId] = useState<string | null>(null);
-  const [selectedChartPoint, setSelectedChartPoint] = useState<"current" | "target">("current");
+  const [selectedChartPoint, setSelectedChartPoint] = useState<"early" | "mid" | "latest">("latest");
   const isLiveEvent = event.status === "live";
   const gameLineMarkets = useMemo(() => event.markets.filter((market) => market.type !== "prop" && market.type !== "future"), [event.markets]);
   const propMarkets = useMemo(() => event.markets.filter((market) => market.type === "prop"), [event.markets]);
@@ -1591,22 +1598,28 @@ export function EventDetail({
     const awayOutcome = primaryOutcomes[1];
     if (!homeOutcome || !awayOutcome || !primaryMarket) return null;
 
-    const history = event.chartHistory?.length
-      ? event.chartHistory.slice(-8).map((point) => ({ value: point.probability }))
-      : [
-          { value: Math.max(5, homeOutcome.probability - 4) },
-          { value: Math.max(5, homeOutcome.probability - 2) },
-          { value: homeOutcome.probability },
-          { value: Math.min(95, homeOutcome.probability + 3) },
-          { value: homeOutcome.probability },
-        ];
     const selectedOutcome = selectedPrimaryOutcome ?? homeOutcome;
+    const selectedHistory = event.chartHistory?.filter((point) => !point.outcomeId || point.outcomeId === selectedOutcome.id) ?? [];
+    const chartPoints = selectedHistory.length
+      ? selectedHistory.slice(-8)
+      : [
+          { outcomeId: selectedOutcome.id, timestamp: "Earlier", probability: Math.max(5, selectedOutcome.probability - 4) },
+          { outcomeId: selectedOutcome.id, timestamp: "Mid", probability: Math.max(5, selectedOutcome.probability - 2) },
+          { outcomeId: selectedOutcome.id, timestamp: "Now", probability: selectedOutcome.probability },
+        ];
+    const history = chartPoints.map((point) => ({ value: point.probability }));
+    const selectedPointIndex =
+      selectedChartPoint === "latest"
+        ? chartPoints.length - 1
+        : selectedChartPoint === "mid"
+          ? Math.floor((chartPoints.length - 1) / 2)
+          : 0;
+    const selectedHistoryPoint = chartPoints[Math.max(0, selectedPointIndex)] ?? chartPoints.at(-1);
     const selectedOutcomeIndex = Math.max(0, primaryMarket.outcomes.findIndex((outcome) => outcome.id === selectedOutcome.id));
     const selectedSelection = orderBookTicketSelection(primaryMarket, selectedOutcome, selectedOutcomeIndex, label(locale, primaryMarket));
-    const selectedProbability = selectedChartPoint === "target"
-      ? Math.max(1, Math.min(99, selectedOutcome.probability + (selectedOutcome.id === homeOutcome.id ? 2 : -2)))
-      : selectedOutcome.probability;
-    const selectedPointLabel = selectedChartPoint === "target" ? "Target line" : "Current";
+    const selectedProbability = Math.round(selectedHistoryPoint?.probability ?? selectedOutcome.probability);
+    const selectedPointLabel = selectedChartPoint === "latest" ? "Latest" : selectedChartPoint === "mid" ? "Mid" : "Earlier";
+    const selectedPointTime = compactChartPointTimeLabel(selectedHistoryPoint?.timestamp);
     const chartSourceText = chartSourceLabel(event.chartHistorySource);
     const chartStatusText = chartStatusLabel(event.chartHistoryStatus, event.chartHistorySource);
     const chartDateText = compactDateLabel(event.chartHistoryLastUpdated);
@@ -1627,7 +1640,7 @@ export function EventDetail({
         </Text>
         <Pressable
           accessibilityLabel={`event-detail-chart-surface event-detail-chart-selected-point-${selectedChartPoint} chart-selected-point-${selectedChartPoint} ${selectedPointLabel} ${selectedProbability}%`}
-          onPress={() => setSelectedChartPoint((current) => current === "target" ? "current" : "target")}
+          onPress={() => setSelectedChartPoint((current) => current === "latest" ? "mid" : current === "mid" ? "early" : "latest")}
           style={styles.dualChart}
           testID="event-detail-chart-surface"
         >
@@ -1667,7 +1680,11 @@ export function EventDetail({
             style={[
               styles.chartSelectedPoint,
               { borderColor: primaryOutcomeDisplayColor(selectedOutcome) },
-              selectedChartPoint === "target" ? styles.chartSelectedPointTarget : styles.chartSelectedPointMid,
+              selectedChartPoint === "latest"
+                ? styles.chartSelectedPointLatest
+                : selectedChartPoint === "mid"
+                  ? styles.chartSelectedPointMid
+                  : styles.chartSelectedPointEarly,
             ]}
             testID={`event-detail-chart-selected-point-${selectedChartPoint}`}
           />
@@ -1678,11 +1695,11 @@ export function EventDetail({
           >
             <Text style={styles.chartTooltipLabel}>{selectedPointLabel}</Text>
             <Text style={[styles.chartTooltipValue, { color: primaryOutcomeDisplayColor(selectedOutcome) }]}>{selectedProbability}%</Text>
-            <Text style={styles.chartTooltipTime}>{selectedChartPoint === "target" ? "Target" : "Now"}</Text>
+            <Text style={styles.chartTooltipTime}>{selectedPointTime}</Text>
           </View>
         </Pressable>
         <View style={styles.chartPointSelector}>
-          {(["current", "target"] as const).map((point) => (
+          {(["early", "mid", "latest"] as const).map((point) => (
             <Pressable
               accessibilityLabel={`event-detail-chart-point-${point} ${selectedChartPoint === point ? `event-detail-chart-selected-point-${point} chart-selected-point-${point}` : "chart-point-inactive"}`}
               key={point}
@@ -1690,7 +1707,9 @@ export function EventDetail({
               style={[styles.chartPointChip, selectedChartPoint === point && styles.chartPointChipActive]}
               testID={`event-detail-chart-point-${point}`}
             >
-              <Text style={[styles.chartPointText, selectedChartPoint === point && styles.chartPointTextActive]}>{point === "target" ? "Target" : "Current"}</Text>
+              <Text style={[styles.chartPointText, selectedChartPoint === point && styles.chartPointTextActive]}>
+                {point === "latest" ? "Latest" : point === "mid" ? "Mid" : "Earlier"}
+              </Text>
             </Pressable>
           ))}
         </View>
@@ -2240,8 +2259,9 @@ const styles = StyleSheet.create({
   chartStep: { flex: 1, height: 5, borderRadius: 999, marginRight: -1 },
   chartDot: { position: "absolute", right: -8, top: 36, width: 15, height: 15, borderRadius: 999 },
   chartSelectedPoint: { position: "absolute", right: 20, top: 33, width: 20, height: 20, borderRadius: 999, borderWidth: 3, backgroundColor: "#0b1019" },
+  chartSelectedPointEarly: { right: "62%", top: 30 },
   chartSelectedPointMid: { right: "42%", top: 24 },
-  chartSelectedPointTarget: { right: "18%", top: 10 },
+  chartSelectedPointLatest: { right: "18%", top: 10 },
   chartLabel: { position: "absolute", right: 28, top: 38, alignItems: "flex-end", maxWidth: 150 },
   chartName: { fontSize: 14, fontWeight: "800" },
   chartPercent: { fontSize: 34, fontWeight: "500" },

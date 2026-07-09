@@ -1,0 +1,42 @@
+{
+  "cycle": "RB",
+  "feature": "Event Chart History Readout",
+  "device": {
+    "role": "Holiwyn Android proof",
+    "model": "SM-S911U1",
+    "adbDeviceId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp"
+  },
+  "runtime": {
+    "app": "Expo Go",
+    "backend": "http://127.0.0.1:3002",
+    "mobileApiBaseUrl": "http://172.16.200.14:3002",
+    "expoPort": 8311,
+    "marketDataMode": "server",
+    "orderMode": "server",
+    "proofInitialTab": "home"
+  },
+  "evidence": {
+    "homeXml": "docs/mobile/harness/cycle-RB-event-chart-history-readout/cycle-RB-home.xml",
+    "latestXml": "docs/mobile/harness/cycle-RB-event-chart-history-readout/cycle-RB-detail-latest.xml",
+    "latestScreenshot": "docs/mobile/screenshots/cycle-RB-event-chart-history-readout/cycle-RB-detail-latest.png",
+    "afterTapXml": "docs/mobile/harness/cycle-RB-event-chart-history-readout/cycle-RB-detail-mid.xml",
+    "afterTapScreenshot": "docs/mobile/screenshots/cycle-RB-event-chart-history-readout/cycle-RB-detail-mid.png"
+  },
+  "checks": {
+    "packageExpo": true,
+    "eventDetail": true,
+    "chartSurface": true,
+    "latestBefore": true,
+    "contractPointBefore": true,
+    "chartHistoryPoints": 8,
+    "midAfterTap": true,
+    "contractPointAfterTap": true,
+    "targetLineAbsentAfterTap": true
+  },
+  "result": "pass",
+  "notes": [
+    "Chart readout now selects real route-backed chart-history points when available.",
+    "Tap-to-cycle is still a simpler interaction than continuous drag-to-nearest-point.",
+    "No backend, order, ticket submit, order book, chat, live stats, social, deposit, or withdrawal code changed."
+  ]
+}

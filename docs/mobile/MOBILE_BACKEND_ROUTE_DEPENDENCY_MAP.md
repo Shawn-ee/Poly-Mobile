@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle RB - Event Chart History Readout
+
+Cycle RB changes no backend route or schema. It consumes the existing Event Detail chart-history contract more directly in the visible chart readout.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail chart readout | `/api/mobile/events/:slug/live-detail` through existing Event Detail hydration | GET | Public/mobile event browse | Event slug | `chartHistory[].outcomeId`, `chartHistory[].timestamp`, `chartHistory[].probability`, `chartHistorySource`, `chartHistoryStatus`, `chartHistoryRange`, `chartHistoryLastUpdated` | Existing event/market/outcome snapshot or provider chart-history tables behind the route | Deterministic fallback points only when `chartHistory` is absent | Continuous drag-to-nearest-point and richer per-line/per-outcome chart switching remain future UI work; real provider-backed line markets remain unavailable. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-RB-event-chart-history-readout/cycle-RB-event-chart-history-readout-proof.json`
+
 ## Cycle RA - Portfolio Google Direct Login
 
 Cycle RA changes no backend route or schema. It wires the Portfolio Google chip to the existing auth-start launcher.
