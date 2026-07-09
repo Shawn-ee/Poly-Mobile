@@ -6744,6 +6744,35 @@ Remaining P1:
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Native Google OAuth callback/session/logout remains separate auth work.
 
+## Cycle QT - Event Detail Player Props Chinese Empty State
+
+Result: Pass for QT scope.
+
+Checked:
+
+- Event Detail tabs use localized app copy.
+- Chinese mode renders `比赛盘口` and `球员特殊盘`.
+- Player Props remains intentionally blank for Local MVP.
+- Tapping Player Props shows `本场暂无球员特殊盘`.
+- Old English blank copy is absent from the Player Props state.
+- No order book, chat, live stats, social, deposit, withdraw, backend schema, ticket, order, or Portfolio work was touched.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-QT-event-detail-player-props-chinese-empty.md`
+- `docs/mobile/harness/cycle-QT-event-detail-player-props-chinese-empty/cycle-QT-event-detail-player-props-chinese-empty-proof.json`
+- `docs/mobile/harness/cycle-QT-event-detail-player-props-chinese-empty/cycle-QT-detail-game-lines.xml`
+- `docs/mobile/harness/cycle-QT-event-detail-player-props-chinese-empty/cycle-QT-player-props.xml`
+- `docs/mobile/screenshots/cycle-QT-event-detail-player-props-chinese-empty/cycle-QT-event-detail-game-lines-chinese.png`
+- `docs/mobile/screenshots/cycle-QT-event-detail-player-props-chinese-empty/cycle-QT-player-props-empty-chinese.png`
+
+Unresolved P0 gaps: 0 for QT scope.
+
+Remaining P1:
+
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Player Props functionality remains intentionally blank until it becomes part of the MVP.
+
 ## Cycle PI - Search Deep-Link Provider Futures Proof
 
 Result: Pass for PI scope.

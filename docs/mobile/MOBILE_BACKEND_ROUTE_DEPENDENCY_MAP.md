@@ -3835,3 +3835,9 @@ Cycle OW implementation notes:
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Chinese Home/Live/Search market-card source line | Existing `/api/events?...mobileMvpMatches=1`, `/api/events` Search route, and Live feed route data when server mode is active | GET | Public viewing | Existing event feed/search/live query params | `marketSourceSummary.regulationWinner.status`, `marketSourceSummary.lineMarkets.status`, `marketSourceSummary.lineMarkets.families` | `Event`, `Market`, `Outcome`; no new tables | Local/static mode keeps existing event fixtures. | No new backend support needed for copy fix; real provider-backed current-match line markets remain missing. |
+
+## Cycle QT - Event Detail Player Props Chinese Empty State
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail Player Props empty tab | Existing `/api/mobile/events/:slug/live-detail` only to open the event page | GET | Public viewing | Event slug | Existing event identity and market groups; no player prop data consumed in this cycle | `Event`, `Market`, `Outcome`; no player-prop schema change | Local/static mode keeps the same blank Player Props tab. | Real provider-backed player prop groups/routes remain intentionally out of MVP scope. |

@@ -1069,3 +1069,13 @@ For every UI element or interaction, answer:
 - Unresolved P0 for QS scope: 0.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Remaining P1: native Google OAuth callback/session/logout remains separate auth work.
+
+## Cycle QT Gap Tracker Update
+
+- PM-GAP-155 is opened and closed for Event Detail Player Props Chinese empty-state localization.
+- QT localizes Event Detail Game Lines and Player Props tab copy through `appCopy`.
+- QT localizes the intentionally blank Player Props MVP state in Chinese mode.
+- QT proves on Samsung S23 that `argentina-vs-egypt` Event Detail shows `比赛盘口`, `球员特殊盘`, and `本场暂无球员特殊盘`.
+- Unresolved P0 for QT scope: 0.
+- Remaining P1: Player Props functionality remains intentionally blank until it becomes part of Local MVP.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

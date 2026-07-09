@@ -1,0 +1,27 @@
+{
+  "cycle": "QT",
+  "result": "pass",
+  "generatedAt": "2026-07-09T06:02:49.2191593Z",
+  "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+  "model": "SM-S911U1",
+  "expoPort": 8306,
+  "apiBase": "http://172.16.200.14:3002",
+  "eventSlug": "argentina-vs-egypt",
+  "checks": {
+    "eventDetailLoaded": true,
+    "chineseGameLinesTab": true,
+    "chinesePlayerPropsTab": true,
+    "playerPropsBlankState": true,
+    "localMvpBlankMarker": true,
+    "chineseBlankCopy": true,
+    "oldEnglishBlankAbsent": true,
+    "noDevMenu": true
+  },
+  "failedChecks": [],
+  "artifacts": [
+    "docs/mobile/screenshots/cycle-QT-event-detail-player-props-chinese-empty/cycle-QT-event-detail-game-lines-chinese.png",
+    "docs/mobile/harness/cycle-QT-event-detail-player-props-chinese-empty/cycle-QT-detail-game-lines.xml",
+    "docs/mobile/screenshots/cycle-QT-event-detail-player-props-chinese-empty/cycle-QT-player-props-empty-chinese.png",
+    "docs/mobile/harness/cycle-QT-event-detail-player-props-chinese-empty/cycle-QT-player-props.xml"
+  ]
+}

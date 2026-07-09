@@ -34,6 +34,9 @@ type EventDetailCopy = {
   shares: string;
   buy: string;
   sell: string;
+  gameLines: string;
+  playerProps: string;
+  playerPropsUnavailable: string;
 };
 
 const marketDepth = (market: Market) => {
@@ -933,13 +936,13 @@ export function EventDetail({
 
   const renderMarketTabs = (mode: "inline" | "sticky" = "inline") => {
     const tabs = [
-      { id: "game-lines", label: "Game Lines" },
-      { id: "player-props", label: "Player Props" },
+      { id: "game-lines", label: t.gameLines },
+      { id: "player-props", label: t.playerProps },
     ];
 
     return (
       <View
-        accessibilityLabel={`${mode === "sticky" ? "event-detail-sticky-market-tabs event-detail-sticky-tab-content-clearance" : "event-detail-market-tabs"} event-detail-market-tabs-local-mvp Game Lines Player Props exact-score-hidden-local-mvp half-tabs-hidden-local-mvp`}
+        accessibilityLabel={`${mode === "sticky" ? "event-detail-sticky-market-tabs event-detail-sticky-tab-content-clearance" : "event-detail-market-tabs"} event-detail-market-tabs-local-mvp ${t.gameLines} ${t.playerProps} exact-score-hidden-local-mvp half-tabs-hidden-local-mvp`}
         style={[styles.marketTabs, mode === "sticky" && styles.stickyMarketTabs]}
         testID={mode === "sticky" ? "event-detail-sticky-market-tabs" : "event-detail-market-tabs"}
       >
@@ -1993,12 +1996,12 @@ export function EventDetail({
 
         {!isOutrightEvent && (activeTab === "player-props" ? (
           <View
-            accessibilityLabel="event-detail-player-props event-detail-player-props-empty event-detail-player-props-blank-local-mvp Player Props unavailable for this match"
+            accessibilityLabel={`event-detail-player-props event-detail-player-props-empty event-detail-player-props-blank-local-mvp ${t.playerPropsUnavailable}`}
             style={styles.emptyProps}
             testID="event-detail-player-props"
           >
             <Ionicons name="shirt-outline" color="#4b5563" size={34} />
-            <Text style={styles.emptyPropsText}>Player Props unavailable for this match</Text>
+            <Text style={styles.emptyPropsText}>{t.playerPropsUnavailable}</Text>
           </View>
         ) : activeTab === "exact-score" ? (
           renderExactScore()
