@@ -11206,3 +11206,44 @@ Known limitations:
 - Smoke wrapper reported backend health unavailable and used app mock fallback for this UI proof path.
 - Native Google OAuth callback/session/logout remains future auth work.
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle RG - Samsung Backend Port Health
+
+Feature/page worked on:
+
+- Samsung S23 proof startup for Event Detail -> Trade Ticket smoke.
+- This keeps the Local MVP proof loop connected to the active backend on port `3002`.
+
+Frontend/proof files touched:
+
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-samsung.ps1`
+- `mobile/src/__tests__/samsungSmokeBackendPortContract.test.ts`
+- `docs/mobile/audits/cycle-RG-samsung-backend-port-health.md`
+
+Important functions/services touched:
+
+- No app runtime component or backend service changed.
+- `smoke.ps1` now defaults backend health checks to `http://127.0.0.1:3002`.
+- `smoke-samsung.ps1` now computes `http://<ExpoHost>:3002`, prints it, and uses it for server-mode Samsung runtime API base.
+
+User interactions supported/proven:
+
+- S23 proof starts with `Backend health: ok`, opens Event Detail, opens the Mexico ticket, validates amount state, closes, and opens the Ecuador ticket.
+
+State transitions:
+
+- No app state transition changed.
+- Proof startup no longer reports false backend-unavailable fallback when the active backend is healthy.
+
+Validation:
+
+- Mobile typecheck passed.
+- Samsung backend port and Event Detail Trade smoke contract tests passed.
+- Samsung S23 Event Detail Trade proof passed on port `8333` with backend health OK.
+
+Known limitations:
+
+- This cycle fixes proof startup/backend reachability reporting. It does not convert the UI smoke into a server order-placement proof.
+- Native Google OAuth callback/session/logout remains future auth work.
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

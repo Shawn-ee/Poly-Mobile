@@ -8599,3 +8599,31 @@ Temporary mock/static data:
 Future migration concern:
 
 - UI proof should eventually run in server mode once the provider-backed current-match line data is reliably available.
+
+## Cycle RG - Samsung Backend Port Health
+
+Closed or narrowed:
+
+- Samsung smoke no longer uses stale port `3000` for backend health or server-mode runtime API base.
+- S23 proof now logs the active LAN backend base and confirms `Backend health: ok`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Native app Google OAuth callback/session/logout state.
+- Real provider-backed current-match Spread/Totals/Team Total line market ids, outcome ids, provider token ids, chart history, and prices.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- UI smoke and server order-placement proof should be distinct but both must use the same active backend base.

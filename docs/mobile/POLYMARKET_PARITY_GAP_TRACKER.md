@@ -1144,3 +1144,13 @@ For every UI element or interaction, answer:
 - Unresolved P0 for RF scope: 0.
 - Remaining P1: native Google OAuth callback/session/logout remains separate auth work.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle RG Gap Tracker Update
+
+- PM-GAP-162 is opened and closed for Samsung smoke using stale backend port `3000`.
+- RG updates smoke backend health default and Samsung server-mode runtime API base to port `3002`.
+- RG proves on Samsung S23 that Event Detail Trade smoke starts with `Backend health: ok`.
+- Unresolved P0 for RG scope: 0.
+- Remaining P1: native Google OAuth callback/session/logout remains separate auth work.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Remaining P1: Event Detail Trade UI proof is not itself a server order-placement proof.

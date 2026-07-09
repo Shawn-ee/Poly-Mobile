@@ -7069,3 +7069,31 @@ Remaining P1:
 
 - Native Google OAuth callback/session/logout remains separate auth work.
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle RG - Samsung Backend Port Health
+
+Result: Pass for RG scope.
+
+Checked:
+
+- `smoke.ps1` default backend health check now targets port `3002`.
+- `smoke-samsung.ps1` now prints and uses `Backend base: http://172.16.200.14:3002`.
+- S23 proof started with `Backend health: ok`.
+- Event Detail Trade smoke still passed after the backend-port fix.
+- No app UI, backend route, schema, order logic, order book, chat, live stats, social, deposit, withdraw, or Google auth flow was changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-RG-samsung-backend-port-health.md`
+- `docs/mobile/harness/cycle-RG-samsung-backend-port-health/cycle-RG-samsung-backend-port-health-proof.json`
+- `docs/mobile/screenshots/cycle-RG-samsung-backend-port-health/cycle-RG-event-detail-ticket.png`
+- `docs/mobile/screenshots/cycle-RG-samsung-backend-port-health/cycle-RG-event-detail-ticket-amount.png`
+- `docs/mobile/screenshots/cycle-RG-samsung-backend-port-health/cycle-RG-event-detail-away-ticket.png`
+
+Unresolved P0 gaps: 0 for RG scope.
+
+Remaining P1:
+
+- Native Google OAuth callback/session/logout remains separate auth work.
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Event Detail Trade UI proof is not itself a server order-placement proof.

@@ -2446,3 +2446,38 @@ Pass for RF Event Detail Trade smoke current-ticket gate.
 
 Remaining gaps:
 Native Google OAuth callback/session/logout remains separate auth work. Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle RG - Samsung Backend Port Health
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket reference-device action. This was a Holiwyn proof infrastructure cycle that supports reliable Android audit gates.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go. Backend `http://127.0.0.1:3002` remained intentionally running and was reachable from Samsung smoke as `http://172.16.200.14:3002`.
+
+Holiwyn actions:
+Ran `smoke-samsung.ps1 -EventDetailTrade` on port `8333`, confirmed startup printed `Backend health: ok`, opened Event Detail, opened Mexico ticket, tapped `$25`, closed, opened Ecuador ticket, and completed the current ticket proof.
+
+Evidence:
+- `docs/mobile/harness/cycle-RG-samsung-backend-port-health/cycle-RG-samsung-backend-port-health-proof.json`
+- `docs/mobile/screenshots/cycle-RG-samsung-backend-port-health/cycle-RG-event-detail-ticket.png`
+- `docs/mobile/harness/cycle-RG-samsung-backend-port-health/cycle-RG-event-detail-ticket.xml`
+- `docs/mobile/screenshots/cycle-RG-samsung-backend-port-health/cycle-RG-event-detail-ticket-amount.png`
+- `docs/mobile/harness/cycle-RG-samsung-backend-port-health/cycle-RG-event-detail-ticket-amount.xml`
+- `docs/mobile/screenshots/cycle-RG-samsung-backend-port-health/cycle-RG-event-detail-away-ticket.png`
+- `docs/mobile/harness/cycle-RG-samsung-backend-port-health/cycle-RG-event-detail-away-ticket.xml`
+
+Smoke/tests:
+Mobile typecheck passed. Samsung backend port contract and Event Detail Trade smoke current-ticket contract tests passed. S23 Event Detail Trade smoke passed with backend health OK.
+
+Result:
+Pass for RG Samsung backend port health scope.
+
+Remaining gaps:
+Native Google OAuth callback/session/logout remains separate auth work. Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable. Event Detail Trade UI proof is not itself a server order-placement proof.

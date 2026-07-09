@@ -3,7 +3,7 @@ param(
   [int]$Port = 8082,
   [string]$ExpoHost = "10.0.2.2",
   [string]$OutputDir = "docs\mobile\screenshots",
-  [string]$BackendBaseUrl = "http://127.0.0.1:3000",
+  [string]$BackendBaseUrl = "http://127.0.0.1:3002",
   [string]$ServerEventSlug = "world-cup-2026-curacao-vs-cote-divoire-2026-06-25",
   [string]$HierarchyOutputDir = "docs\mobile\harness",
   [switch]$SkipPackageClear,
