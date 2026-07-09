@@ -1069,7 +1069,7 @@ export function Portfolio({
             style={styles.statusPillRow}
             testID={`latest-activity-status-${latestActivity.id}`}
           >
-            <Text style={styles.statusPill}>Fake-token test</Text>
+            <Text style={styles.statusPill}>Demo trade</Text>
             <Text style={styles.statusPill}>{activityStatusLabel(latestActivity)}</Text>
             {latestActivity.selection && <Text accessibilityLabel={`latest-activity-snapshot-${latestActivity.id} ${snapshotSourceLabel(latestActivity.id, latestActivity.selection)}`} style={styles.statusPill}>Order-time snapshot</Text>}
           </View>
@@ -1363,7 +1363,7 @@ export function Portfolio({
                   style={[styles.statusPillRow, styles.a11yOnly]}
                   testID={`activity-status-${activity.id}`}
                 >
-                  <Text style={styles.statusPill}>Fake-token test</Text>
+                  <Text style={styles.statusPill}>Demo trade</Text>
                   <Text style={styles.statusPill}>{activityStatusLabel(activity)}</Text>
                   {activity.selection && <Text accessibilityLabel={`activity-snapshot-${activity.id} ${snapshotSourceLabel(activity.id, activity.selection)}`} style={styles.statusPill}>Order-time snapshot</Text>}
                 </View>
@@ -1486,7 +1486,7 @@ export function Portfolio({
             style={styles.statusPillRow}
             testID="latest-order-status"
           >
-            <Text style={styles.statusPill}>Fake-token test</Text>
+            <Text style={styles.statusPill}>Demo trade</Text>
             <Text style={styles.statusPill}>{lifecycleStatusLabel(latestOrder.status)}</Text>
             {latestOrder.selection && <Text accessibilityLabel={`latest-order-snapshot ${snapshotSourceLabel(latestOrder.id, latestOrder.selection)}`} style={styles.statusPill}>Order-time snapshot</Text>}
           </View>

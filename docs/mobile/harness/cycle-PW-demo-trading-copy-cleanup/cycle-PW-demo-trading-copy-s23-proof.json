@@ -1,0 +1,27 @@
+﻿{
+    "cycle":  "PW",
+    "feature":  "Account Google login visibility / demo trading copy cleanup",
+    "result":  "pass",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "expoPort":  8291,
+    "launchUrl":  "exp://172.16.200.14:8291/--/?forceAccount=1",
+    "assertions":  {
+                       "accountScreenVisible":  true,
+                       "googleLoginVisible":  true,
+                       "googleLoginTextVisible":  true,
+                       "demoCopySourceValidated":  true,
+                       "hiddenFakeTokenProofMarkerPreserved":  true
+                   },
+    "screenshots":  [
+                        "docs/mobile/screenshots/cycle-PW-demo-trading-copy-cleanup/cycle-PW-account-single-param.png"
+                    ],
+    "xml":  [
+                "docs/mobile/harness/cycle-PW-demo-trading-copy-cleanup/cycle-PW-account-single-param.xml"
+            ],
+    "notes":  [
+                  "Google login remains available on AccountScreen.",
+                  "Home account button was intentionally removed by prior MVP cleanup; normal entry is Portfolio top-left/gear -\u003e Account.",
+                  "Earlier direct proof attempts failed because Expo developer menu was open and multi-parameter Android shell deep links did not reach app handling reliably."
+              ]
+}

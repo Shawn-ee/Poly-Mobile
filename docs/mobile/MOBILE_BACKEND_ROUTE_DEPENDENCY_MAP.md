@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle PW - Demo Trading Copy Cleanup
+
+Cycle PW changes visible mobile copy only. It does not change backend routes, auth routes, Prisma schema, provider import, order matching, portfolio sync, or fake-token mechanics.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Demo trading copy in Account/Portfolio/Ticket labels | Existing account, portfolio, order, and profile routes when server mode is active | Existing GET/POST routes unchanged | Existing Local MVP credential/profile auth behavior unchanged | Existing payloads unchanged | No new response fields consumed | No schema change | Existing fake-token/local demo trading remains active; only visible labels now say demo/practice | Real production wallet/deposit/withdraw and real-money compliance flows are still intentionally not implemented. |
+
 ## Cycle PV - Local Line Source Copy Cleanup
 
 Cycle PV changes visible mobile copy only. No backend route, auth route, Prisma schema, provider import path, bot path, or order route changed.

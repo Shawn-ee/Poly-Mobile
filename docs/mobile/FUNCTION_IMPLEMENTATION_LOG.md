@@ -2,6 +2,44 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle PW - Demo Trading Copy Cleanup
+
+Feature/page worked on:
+
+- Visible Local MVP demo/practice trading copy in Account, Portfolio, empty portfolio state, and ticket mode labels.
+
+Frontend/services touched:
+
+- `mobile/src/localization/appCopy.ts`
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/src/__tests__/demoTradingCopyContract.test.ts`
+
+Important functions/services touched:
+
+- App copy keys: `balance`, `noPositionsBody`, `portfolioSyncFallback`, `placeMockOrder`, `loginGoogleBody`, and `tradingModeMock`.
+- Portfolio visible status pill copy now says `Demo trade` while accessibility labels keep `fake-token-test` for proof scripts.
+
+User interactions supported:
+
+- Users still trade with the same Local MVP fake-token/server-backed order flow, but tester-facing copy reads as a cleaner demo/practice experience.
+- Account Google entry still explains that server auth can load a profile while demo trading remains available.
+
+State transitions:
+
+- No order, portfolio, auth, provider, schema, route, orderbook, chat, live stats, or social state changed.
+
+Known limitations:
+
+- This is copy cleanup only. Real-money wallet/deposit/withdraw and provider-backed line-market parity remain out of scope for this cycle.
+
+Evidence:
+
+- Contract test: `mobile/src/__tests__/demoTradingCopyContract.test.ts`
+- Audit doc: `docs/mobile/audits/cycle-PW-demo-trading-copy-cleanup.md`
+- S23 proof summary: `docs/mobile/harness/cycle-PW-demo-trading-copy-cleanup/cycle-PW-demo-trading-copy-s23-proof.json`
+- S23 proof screenshot/XML: `docs/mobile/screenshots/cycle-PW-demo-trading-copy-cleanup/cycle-PW-account-single-param.png`, `docs/mobile/harness/cycle-PW-demo-trading-copy-cleanup/cycle-PW-account-single-param.xml`
+- Account entry note: Google login did not disappear; the Home account button was intentionally removed by the Local MVP Home cleanup, and the current entry is Portfolio top-left/gear -> Account.
+
 ## Cycle PV - Local Line Source Copy Cleanup
 
 Feature/page worked on:

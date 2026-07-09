@@ -16,6 +16,20 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle PW
+
+Gate status: Pass
+
+Scope: Demo/practice trading visible copy cleanup.
+
+Decision:
+
+- P0 failed: 0 for focused visible demo/practice copy cleanup scope.
+- Implemented change: Local MVP visible labels now use demo/practice wording while hidden fake-token proof markers remain for automation.
+- P1/P2 remaining: production real-money wallet/deposit/withdraw copy remains future work.
+- Evidence: typecheck passed; mobile API/contract tests passed; app-source search found no remaining removed visible fake/mock labels; S23 Account proof passed with `docs/mobile/harness/cycle-PW-demo-trading-copy-cleanup/cycle-PW-demo-trading-copy-s23-proof.json`, `docs/mobile/screenshots/cycle-PW-demo-trading-copy-cleanup/cycle-PW-account-single-param.png`, and `docs/mobile/harness/cycle-PW-demo-trading-copy-cleanup/cycle-PW-account-single-param.xml`.
+- Google login note: Google login remains available from Account; the prior Home account entry was intentionally removed, so Portfolio top-left/gear is the current account entry.
+
 ## Cycle PV
 
 Gate status: Pass

@@ -2,6 +2,30 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle PW - Demo Trading Copy Cleanup
+
+Closed or narrowed:
+
+- Visible app copy no longer presents Local MVP trading as `Fake balance`, `mock trade`, `mock order`, or `Fake-token test`.
+- Copy now presents the same behavior as demo/practice trading, which is closer to a retail MVP while still honest about the non-production state.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Production account/wallet state for real-money trading.
+- Deposit/withdraw flows remain intentionally out of scope.
+
+Route mismatch:
+
+- None introduced. Existing order and portfolio routes still back the Local MVP fake-token flow.
+
+Temporary mock/static data:
+
+- Existing demo/local fake-token data remains unchanged.
+
+Future migration concern:
+
+- When real-money wallet support is added, demo/practice copy should become environment-gated so production users see real balance/trading labels only.
+
 ## Cycle PV - Local Line Source Copy Cleanup
 
 Closed or narrowed:
