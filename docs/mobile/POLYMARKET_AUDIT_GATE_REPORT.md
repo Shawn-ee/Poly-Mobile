@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle QE
+
+Gate status: Pass for focused provider-line breadth evidence; not a pass for real provider-backed line-market parity.
+
+Scope: backend/data-contract provider scan for World Cup line-market availability.
+
+Decision:
+
+- P0 failed: 0 for the focused provider-line evidence scope.
+- Implemented change: added a read-only broad Gamma scanner for World Cup line-family candidates and a package script to run it.
+- Runtime finding: current match Gamma event has 3 match-winner markets and 0 line markets. Existing provider discovery also found 0 line candidates from 82 manual line fallback slugs. Broad Gamma scan found 0 line-family candidates across 2,339 World Cup-relevant candidates.
+- Android proof: Samsung S23 regression proof passed for Home -> Event Detail -> Local MVP line ticket -> Portfolio History, confirming the provider/local disclosure and contract-fixture line flow still work after the provider evidence change.
+- P1/P2 remaining: real provider-backed Spread/Totals/Team Total markets remain unavailable; Local MVP continues with contract-shaped line fixtures.
+- Evidence: `docs/mobile/harness/cycle-QE-provider-line-breadth-scan/cycle-QE-current-match-line-availability.json`, `docs/mobile/harness/cycle-QE-provider-line-breadth-scan/cycle-QE-provider-discovery-guard.json`, `docs/mobile/harness/cycle-QE-provider-line-breadth-scan/cycle-QE-provider-line-breadth-scan.json`, `docs/mobile/harness/cycle-QE-provider-line-breadth-scan/cycle-QE-provider-line-breadth-scan-npm-script.json`, `docs/mobile/harness/cycle-QE-provider-line-breadth-scan/cycle-QE-current-mvp-s23-visible-flow.json`.
+
 ## Cycle QD
 
 Gate status: Pass for focused Local MVP line history flow; not a pass for real provider-backed line-market parity.

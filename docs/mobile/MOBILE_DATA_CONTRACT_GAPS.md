@@ -2,6 +2,30 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle QE - Provider Line Breadth Scan
+
+Closed or narrowed:
+
+- Current-match proof confirms `argentina-vs-egypt` has 3 real Polymarket Regulation Winner markets and 0 real Polymarket line markets.
+- Provider discovery fallback proof checked exact event slugs plus 82 manual line slug guesses and found 0 manual line candidates.
+- A broader Gamma scan across World Cup line queries and sports tags checked 3,437 raw candidates, 2,339 World Cup-relevant candidates, and found 0 provider line-family candidates.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total market rows with stable provider IDs, condition IDs, token IDs, line values, periods, probabilities, and refresh status.
+
+Route mismatch:
+
+- No route mismatch introduced. Existing live-detail route truthfully reports winner as provider-backed and line markets as contract fixtures.
+
+Temporary mock/static data:
+
+- Local MVP line markets remain contract-shaped fixtures. Cycle QE strengthens the evidence that this is currently the honest provider-backed fallback.
+
+Future migration concern:
+
+- If a future Polymarket scan finds attach-ready line candidates, Holiwyn must run a review/attach cycle before replacing Local MVP fixtures. Do not auto-map broad search results into tradable line markets.
+
 ## Cycle QD - Local Line History Flow
 
 Closed or narrowed:

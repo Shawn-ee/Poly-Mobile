@@ -1,0 +1,65 @@
+{
+  "cycle": "QE",
+  "result": "pass",
+  "generatedAt": "2026-07-09T02:56:23.990Z",
+  "provider": "polymarket-gamma",
+  "scope": "world-cup-provider-line-breadth-scan",
+  "sources": {
+    "searchQueries": [
+      "world cup spread",
+      "world cup handicap",
+      "world cup total goals",
+      "world cup over under",
+      "world cup team total",
+      "world cup corners",
+      "world cup correct score",
+      "fifa world cup spread",
+      "fifa world cup total goals",
+      "fifwc spread",
+      "fifwc total goals"
+    ],
+    "eventTagSlugs": [
+      "fifa-world-cup",
+      "2026-fifa-world-cup",
+      "soccer"
+    ],
+    "limit": 100
+  },
+  "errors": [],
+  "totals": {
+    "rawCandidateCount": 3437,
+    "worldCupRelevantCandidateCount": 2339,
+    "providerLineCandidateCount": 0,
+    "attachReadyProviderLineCandidateCount": 0,
+    "providerLineCandidateFamilies": []
+  },
+  "familySummary": {
+    "match_winner": 481,
+    "spread": 0,
+    "total_goals": 0,
+    "team_total_goals": 0,
+    "corners": 0,
+    "first_half": 0,
+    "second_half": 0,
+    "correct_score": 0,
+    "other": 1858
+  },
+  "lineFamilySummary": {
+    "match_winner": 0,
+    "spread": 0,
+    "total_goals": 0,
+    "team_total_goals": 0,
+    "corners": 0,
+    "first_half": 0,
+    "second_half": 0,
+    "correct_score": 0,
+    "other": 0
+  },
+  "currentMvpInterpretation": "no_attach_ready_world_cup_line_markets_found_keep_local_contract_fixtures_for_mvp",
+  "topLineCandidates": [],
+  "limitations": [
+    "Read-only scan. No local events, markets, mappings, orders, or fixtures are created or modified.",
+    "A provider line candidate here is not enough for parity; it must still be reviewed against a specific Holiwyn event/market/outcome/line identity before attachment.",
+    "If attach-ready line candidates remain zero, Local MVP contract fixtures are still the honest path for spread/totals/team-total UI and fake-token order proof."
+  ]
+}

@@ -2,6 +2,24 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle QE - Provider Line Breadth Scan
+
+Cycle QE adds a read-only provider breadth proof script and records current-match plus broad Gamma evidence for World Cup line-market availability.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Current match line source proof | `/api/mobile/events/:slug/live-detail`; Gamma `/events?slug=fifwc-arg-egy-2026-07-07`; provider discovery service | GET/service call | Local DB env for route/service proof; public Gamma fetch | Event slug `argentina-vs-egypt` | `event.marketSourceSummary`, market `referenceSource`, `marketType`, `line`, `period`, provider market IDs, provider availability status | Existing `Event`, `Market`, `Outcome` | Contract-fixture line rows remain for Spread/Totals/Team Total | Real provider-backed line markets are unavailable for the current event. |
+| World Cup provider line breadth scan | Gamma `/markets?search=...` and `/events?tag_slug=...` | GET | None; public provider read | World Cup/soccer line-market query set and tag slugs | Provider candidate family counts, line candidate count, attach-ready line candidate count, next interpretation | No DB writes; no schema change | No fixture change. Scan only justifies keeping existing contract-shaped fixtures for MVP | If future scan finds attach-ready line candidates, a review/attach cycle is required before replacing fixtures. |
+| S23 Local MVP regression proof | Existing mobile routes for Home/Live/Event Detail/order/Portfolio History | GET/POST | Mobile API key/dev credential; internal beta runtime with kill switch off for fake-token order proof | Existing ticket/order payload preserving event slug, market id, outcome id, market type, line, period, side, reference source, and amount | Home/Live provider/local disclosure, ticket line identity, Portfolio History filled row | Existing `User`, `ApiCredential`, `Event`, `Market`, `Outcome`, order/position/portfolio/history models | Uses Local MVP contract-fixture lines | Real provider-backed line markets remain unavailable. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-QE-provider-line-breadth-scan/cycle-QE-current-match-line-availability.json`
+- `docs/mobile/harness/cycle-QE-provider-line-breadth-scan/cycle-QE-provider-discovery-guard.json`
+- `docs/mobile/harness/cycle-QE-provider-line-breadth-scan/cycle-QE-provider-line-breadth-scan.json`
+- `docs/mobile/harness/cycle-QE-provider-line-breadth-scan/cycle-QE-provider-line-breadth-scan-npm-script.json`
+- `docs/mobile/harness/cycle-QE-provider-line-breadth-scan/cycle-QE-current-mvp-s23-visible-flow.json`
+
 ## Cycle QD - Local Line History Flow
 
 Cycle QD changes no backend source. It proves the existing backend/mobile route contract can carry a Local MVP line order into Portfolio History after a filled fake-token/server-backed trade.

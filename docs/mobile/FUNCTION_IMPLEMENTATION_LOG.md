@@ -2,6 +2,49 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle QE - Provider Line Breadth Scan
+
+Feature/page worked on:
+
+- Provider/data readiness for Local MVP line markets.
+- No visible mobile UI changed in this cycle.
+
+Frontend/backend touched:
+
+- Added `scripts/prove_mobile_provider_line_breadth_scan.ts`.
+- Added package script `mobile:provider-line-breadth-scan`.
+- No mobile UI, order, portfolio, schema, orderbook, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- Reused `classifyProviderMarketFamily()` from `src/server/services/mobileLiveProviderCandidates.ts` so the scan uses the same provider family vocabulary as the existing attach-readiness path.
+- Current-match proofs exercised the existing live-detail route and provider discovery guard.
+
+User interactions supported:
+
+- No new user interaction was added, but the existing S23 Local MVP flow was regression-proven after the provider scan.
+- This cycle makes the backend/data-contract path clearer for the visible MVP flow: Spread/Totals/Team Total should remain Local MVP contract fixtures until a real Polymarket line provider candidate exists.
+
+State transitions:
+
+- No app state transition changed.
+- Provider-readiness evidence moved from current-match-only proof to a broader World Cup Gamma scan.
+
+Known limitations:
+
+- The breadth scan is read-only and does not attach provider identities.
+- Provider-line parity is still not complete because the scan found zero attach-ready World Cup line-family candidates.
+- Existing Local MVP fake-token line trading remains valid only as contract-fixture behavior.
+
+Evidence:
+
+- Current match line availability: `docs/mobile/harness/cycle-QE-provider-line-breadth-scan/cycle-QE-current-match-line-availability.json`
+- Current match discovery guard: `docs/mobile/harness/cycle-QE-provider-line-breadth-scan/cycle-QE-provider-discovery-guard.json`
+- Broad Gamma scan: `docs/mobile/harness/cycle-QE-provider-line-breadth-scan/cycle-QE-provider-line-breadth-scan.json`
+- Named script proof: `docs/mobile/harness/cycle-QE-provider-line-breadth-scan/cycle-QE-provider-line-breadth-scan-npm-script.json`
+- S23 regression proof: `docs/mobile/harness/cycle-QE-provider-line-breadth-scan/cycle-QE-current-mvp-s23-visible-flow.json`
+- S23 screenshots/XML: `docs/mobile/screenshots/cycle-QE-provider-line-breadth-scan/`, `docs/mobile/harness/cycle-QE-provider-line-breadth-scan/`
+
 ## Cycle QD - Local Line History Flow
 
 Feature/page worked on:

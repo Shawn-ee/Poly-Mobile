@@ -103,6 +103,7 @@
     "mobile:samsung-open-order-cancel-proof": "powershell -ExecutionPolicy Bypass -File scripts/mobile_samsung_open_order_cancel_proof.ps1",
     "mobile:proof-noise-report": "tsx scripts/mobile_proof_noise_report.ts --summaryPath=docs/mobile/harness/cycle-current-mobile-proof-noise-report.json",
     "mobile:proof-noise-gate": "tsx scripts/mobile_proof_noise_report.ts --failOnOpenOrders --failOnLockedBalance --summaryPath=docs/mobile/harness/cycle-current-mobile-proof-noise-gate.json",
+    "mobile:provider-line-breadth-scan": "tsx scripts/prove_mobile_provider_line_breadth_scan.ts --summaryPath=docs/mobile/harness/cycle-current-mobile-provider-line-breadth-scan.json",
     "bots:reset-state": "tsx scripts/reset_bot_state.ts",
     "bot:e2e:seed": "tsx tests/bot-e2e/seed.ts",
     "bot:e2e:run": "npm run bot:e2e:seed && node tests/bot-e2e/run.mjs",
