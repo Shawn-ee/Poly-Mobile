@@ -1051,3 +1051,12 @@ For every UI element or interaction, answer:
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets remain unavailable.
 - Remaining P1: Home/Live remain match-only by product direction; broad futures remain Search/detail surfaces.
 - Remaining P1: the enable/seed/dry-run/live-local/order path should eventually become one orchestrated harness command.
+
+## Cycle QR Gap Tracker Update
+
+- PM-GAP-153 is opened and closed for Portfolio login-entry clarity after Home account entry removal.
+- QR keeps the Home cleanup intact while making the Portfolio account/login path visible again.
+- QR changes the Portfolio Google entry to action-oriented copy in English and Chinese.
+- QR proves on Samsung S23 that Portfolio exposes account/profile and Google login entries and Account still exposes Google login/connect.
+- Unresolved P0 for QR scope: 0.
+- Remaining P1: native Google OAuth callback/session/logout remains separate auth work.

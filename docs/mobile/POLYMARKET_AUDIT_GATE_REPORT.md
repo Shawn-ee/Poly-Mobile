@@ -6692,6 +6692,33 @@ Remaining P1:
 - Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Broad futures remain Search/detail-only while Home/Live stay match-only.
 
+## Cycle QR - Portfolio Login Entry Clarity
+
+Result: Pass for QR scope.
+
+Checked:
+
+- Portfolio top-left profile/account area remains tappable and opens Account.
+- Portfolio Google entry is visible with action-oriented login copy.
+- Account screen still exposes the Google login/connect area.
+- Home account entry remains removed per Local MVP cleanup.
+- No order book, chat, live stats, social, deposit, withdraw, backend schema, or order route work was touched.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-QR-portfolio-login-entry-clarity.md`
+- `docs/mobile/harness/cycle-QR-portfolio-login-entry-clarity/cycle-QR-portfolio-login-entry-clarity-proof.json`
+- `docs/mobile/harness/cycle-QR-portfolio-login-entry-clarity/cycle-QR-portfolio.xml`
+- `docs/mobile/harness/cycle-QR-portfolio-login-entry-clarity/cycle-QR-account.xml`
+- `docs/mobile/screenshots/cycle-QR-portfolio-login-entry-clarity/cycle-QR-portfolio-login-entry.png`
+- `docs/mobile/screenshots/cycle-QR-portfolio-login-entry-clarity/cycle-QR-account-google-login.png`
+
+Unresolved P0 gaps: 0 for QR scope.
+
+Remaining P1:
+
+- Native Google OAuth callback/session/logout remains separate auth work.
+
 ## Cycle PI - Search Deep-Link Provider Futures Proof
 
 Result: Pass for PI scope.
