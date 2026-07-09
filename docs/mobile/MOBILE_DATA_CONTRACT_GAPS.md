@@ -8542,3 +8542,32 @@ Temporary mock/static data:
 Future migration concern:
 
 - When real provider-backed line markets exist, the hidden marker state can be used for audit without reintroducing visible debug copy on retail cards.
+
+## Cycle RE - Trade Ticket Header Density
+
+Closed or narrowed:
+
+- Trade Ticket header no longer places source metadata in the same row as the selected outcome, reducing S23 clipping risk.
+- Existing source identity remains visible/auditable without changing order payloads.
+- Google login remains intentionally outside Home and available through Portfolio/account; if it feels hidden, the issue is Portfolio visibility, not a removed auth route.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Native app Google OAuth callback/session/logout state.
+- Real provider-backed current-match Spread/Totals/Team Total line market ids, outcome ids, provider token ids, chart history, and prices.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- Ticket source copy should eventually reflect real provider-backed line-market support once those routes/schemas exist.

@@ -7014,3 +7014,31 @@ Unresolved P0 gaps: 0 for QU scope.
 Remaining P1:
 
 - Native Google OAuth callback/session/logout remains separate auth work.
+
+## Cycle RE - Trade Ticket Header Density
+
+Result: Pass for RE scope.
+
+Checked:
+
+- Trade Ticket header source badge is no longer placed on the same row as the selected outcome.
+- S23 ticket capture shows event title, selected outcome, source badge, source note, amount, odds/balance, keypad, and swipe area without the source badge clipping the header line.
+- Keypad and bottom swipe zone remain separated.
+- Existing swipe motion contract remains intact.
+- Google login was not removed; it remains under Portfolio/account by the Local MVP direction that removed account controls from Home.
+- No backend route, schema, order logic, order book, chat, live stats, social, deposit, or withdraw work was touched.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-RE-ticket-header-density.md`
+- `docs/mobile/harness/cycle-RE-ticket-header-density/cycle-RE-ticket-header-density-proof.json`
+- `docs/mobile/harness/cycle-RE-ticket-header-density/cycle-RE-ticket-header.xml`
+- `docs/mobile/screenshots/cycle-RE-ticket-header-density/cycle-RE-ticket-header.png`
+
+Unresolved P0 gaps: 0 for RE scope.
+
+Remaining P1:
+
+- Native Google OAuth callback/session/logout remains separate auth work.
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Broad smoke should replace the older post-capture `ticket-settings` assertion with current ticket accessibility markers.

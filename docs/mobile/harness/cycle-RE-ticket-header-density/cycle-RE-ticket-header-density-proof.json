@@ -1,0 +1,58 @@
+{
+  "cycle": "RE",
+  "feature": "trade-ticket-header-density",
+  "date": "2026-07-09",
+  "device": {
+    "role": "Holiwyn proof",
+    "adbId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model": "SM-S911U1"
+  },
+  "mode": {
+    "app": "Expo Go",
+    "marketData": "server smoke with fallback capture",
+    "backendPort": 3002,
+    "expoPort": 8328
+  },
+  "visibleUserFlowChanged": "Trade Ticket amount-entry header now keeps selected market text and source metadata on separate rows so the source badge does not clip on S23.",
+  "backendRouteChanged": false,
+  "apiDependencies": [
+    {
+      "route": "/api/mobile/events/:slug/live-detail",
+      "method": "GET",
+      "purpose": "Hydrates event and market selection before opening the ticket."
+    },
+    {
+      "route": "/api/orders",
+      "method": "POST",
+      "purpose": "Unchanged; used only when the user completes the swipe submit gesture."
+    }
+  ],
+  "proofArtifacts": [
+    "docs/mobile/screenshots/cycle-RE-ticket-header-density/cycle-RE-ticket-header.png",
+    "docs/mobile/harness/cycle-RE-ticket-header-density/cycle-RE-ticket-header.xml",
+    "docs/mobile/harness/cycle-RE-ticket-header-density/cycle-RE-home.xml"
+  ],
+  "markers": {
+    "ticket-market-source-badge-inline-safe": true,
+    "ticket-header-source-pill-no-clip": true,
+    "ticket-source-note-inline": true,
+    "ticket-selection-line": true
+  },
+  "validation": {
+    "mobileTypecheck": "passed",
+    "focusedTests": [
+      "tradeTicketHeaderDensityContract.test.ts",
+      "tradeTicketSwipeMotionContract.test.ts"
+    ],
+    "s23Proof": "passed for scoped ticket header capture",
+    "broadSmokeNote": "Legacy post-capture ticket-settings assertion failed after screenshot/XML capture; scoped RE evidence is still valid."
+  },
+  "unresolved": {
+    "p0": [],
+    "p1": [
+      "Native Google OAuth callback/session/logout remains future auth work.",
+      "Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable."
+    ],
+    "p2": []
+  }
+}

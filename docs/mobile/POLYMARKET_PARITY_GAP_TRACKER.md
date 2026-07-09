@@ -1123,3 +1123,15 @@ For every UI element or interaction, answer:
 - QY proves on Samsung S23 that Live visible source/debug copy is absent.
 - Unresolved P0 for QY scope: 0.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle RE Gap Tracker Update
+
+- PM-GAP-160 is opened and closed for Trade Ticket header source-badge clipping on S23.
+- RE moves ticket source metadata out of the selected outcome line and into an inline-safe compact source row.
+- RE keeps Cycle RD swipe motion behavior intact.
+- RE proves on Samsung S23 that the ticket header markers are present and the source badge no longer crowds the selected outcome line.
+- RE confirms Google login was not removed; it remains in Portfolio/account because Home account controls were intentionally removed.
+- Unresolved P0 for RE scope: 0.
+- Remaining P1: broad smoke should update the old post-capture `ticket-settings` expectation.
+- Remaining P1: native Google OAuth callback/session/logout remains separate auth work.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

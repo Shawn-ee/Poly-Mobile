@@ -2379,3 +2379,35 @@ Pass for QY Home/Live retail source cleanup scope.
 
 Remaining gaps:
 Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle RE - Trade Ticket Header Density
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket app reference-device action. This was a Holiwyn ticket cleanup based on the attached Polymarket ticket reference and the previous S23 ticket proof.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go. Backend `http://127.0.0.1:3002` remained intentionally running; mobile proof used S23 capture on Expo port `8328`.
+
+Holiwyn actions:
+Opened the current ticket proof path, captured the Trade Ticket amount-entry screen, and copied the screenshot/XML into the RE evidence folder. Restored rolling `cycle-current-*` smoke artifacts so only scoped RE evidence remains in the commit.
+
+Evidence:
+- `docs/mobile/harness/cycle-RE-ticket-header-density/cycle-RE-ticket-header-density-proof.json`
+- `docs/mobile/screenshots/cycle-RE-ticket-header-density/cycle-RE-ticket-header.png`
+- `docs/mobile/harness/cycle-RE-ticket-header-density/cycle-RE-ticket-header.xml`
+- `docs/mobile/harness/cycle-RE-ticket-header-density/cycle-RE-home.xml`
+
+Smoke/tests:
+Mobile typecheck passed. Focused header density and swipe motion contract tests passed. S23 XML checks confirmed `ticket-market-source-badge-inline-safe`, `ticket-header-source-pill-no-clip`, `ticket-source-note-inline`, and `ticket-selection-line`.
+
+Result:
+Pass for RE Trade Ticket header density scope.
+
+Remaining gaps:
+Native Google OAuth callback/session/logout remains separate auth work. Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

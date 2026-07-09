@@ -11124,3 +11124,44 @@ Known limitations:
 
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Live proof had no live source-readiness marker because the current backend Live view did not expose a ready live marker in that capture.
+
+## Cycle RE - Trade Ticket Header Density
+
+Feature/page worked on:
+
+- Trade Ticket amount-entry screen header on Samsung S23.
+- This cycle keeps the Local MVP ticket readable after the swipe-to-buy/sell UI changes.
+
+Frontend/proof files touched:
+
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/src/__tests__/tradeTicketHeaderDensityContract.test.ts`
+- `docs/mobile/audits/cycle-RE-ticket-header-density.md`
+
+Important functions/services touched:
+
+- `TradeTicket` header layout only.
+- The selected market/source metadata now renders in a separate `ticketSourceRow` under the selected outcome line.
+- No API client, order submission, provider, Portfolio, Home, Event Detail, auth, or backend function changed.
+
+User interactions supported/proven:
+
+- User opens a market ticket on S23 and sees the event title, selected outcome, source badge, odds/balance, keypad, and swipe area without the header badge clipping the title line.
+- Cycle RD swipe behavior remains intact by focused contract test.
+
+State transitions:
+
+- No order, Portfolio, auth, navigation, provider, or backend state transition changed.
+- Ticket amount entry and swipe-submit state are unchanged.
+
+Validation:
+
+- Mobile typecheck passed.
+- Focused header density and swipe motion contract tests passed.
+- Samsung S23 proof captured the ticket screen and XML markers.
+
+Known limitations:
+
+- Broad smoke still has an older post-capture `ticket-settings` expectation; RE evidence is scoped to the captured ticket header.
+- Native Google OAuth callback/session/logout remains future auth work.
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
