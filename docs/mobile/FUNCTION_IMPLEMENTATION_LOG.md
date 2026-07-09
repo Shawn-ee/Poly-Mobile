@@ -2,6 +2,46 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle PS - Provider-Backed Line Market Gap
+
+Feature/page worked on:
+
+- Current Local MVP Event Detail provider line-market readiness for `argentina-vs-egypt`.
+- Provider evidence for whether Spread/Totals/Team Total lines are Polymarket-backed or contract fixtures.
+
+Frontend/services touched:
+
+- No mobile UI source changed.
+- No backend route, Prisma schema, order route, order book, chat, live stats, or social source changed.
+- Added audit/proof documentation only.
+
+Important functions/services exercised:
+
+- `scripts/prove_mobile_provider_match_line_availability.ts`
+- `/api/mobile/events/argentina-vs-egypt/live-detail`
+- Polymarket Gamma public event fetch for `fifwc-arg-egy-2026-07-07`
+
+User interactions supported/proven:
+
+- No new visible interaction was implemented in this inspection cycle.
+- The latest visible route proof remains Cycle PR: Home -> Event Detail -> contract-shaped line market -> simple ticket -> fake-token/server-backed order -> Portfolio/history.
+
+State transitions:
+
+- No application state transition changed.
+- Proof confirmed the current route state: Regulation Winner is provider-backed from Polymarket, while Spread/Totals/Team Total rows remain Local MVP contract fixtures.
+
+Known limitations:
+
+- Polymarket Gamma exposes 0 Spread/Totals/Team Total markets for the current MVP match.
+- The existing line fixtures are acceptable only for Local MVP UI/order proof and must not be treated as Polymarket parity.
+- Older Colombia/Ghana provider-line probes should not be used as current Home-match evidence without parameterization.
+
+Evidence:
+
+- Audit doc: `docs/mobile/audits/cycle-PS-provider-backed-line-market-gap.md`
+- Route/provider proof: `docs/mobile/harness/cycle-PS-provider-backed-line-market-gap/cycle-PS-provider-match-line-availability.json`
+
 ## Cycle OV - Nation Top Goalscorer Provider Breadth And Classification Guard
 
 Feature/page worked on:
