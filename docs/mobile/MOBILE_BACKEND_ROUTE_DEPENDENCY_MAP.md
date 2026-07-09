@@ -2,6 +2,24 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle QL - Provider Line Structural Inspection
+
+Cycle QL changes no backend route or schema. It refreshes proof for the current backend contracts and hardens the S23 proof harness.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home match discovery | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` | GET | Public/mobile event browse | Query params only | Event slug/title/type/status, `marketSourceSummary.regulationWinner`, `marketSourceSummary.lineMarkets`, source counts | Existing `Event`, `Market`, `Outcome` | None for provider winner; line counts include contract fixtures | Additional real current match breadth remains limited to the seeded/imported MVP match. |
+| Event Detail line readiness | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile event browse | Event slug `argentina-vs-egypt` | `markets[]`, market type, period, line, outcome identity, `referenceSource`, provider ids, `marketSourceSummary.lineMarkets.providerAvailability` | Existing `Event`, `Market`, `Outcome`, provider reference metadata | Spread/Totals/Team Total stay contract-shaped fixtures | Real provider-backed Spread/Totals/Team Total line markets are unavailable from current Polymarket Gamma/CLOB data. |
+| Provider availability proof | Polymarket Gamma `/events?slug=fifwc-arg-egy-2026-07-07` and broad `/markets`/`/events` searches | GET | Public provider API | Query params only | Provider event markets, ids, slugs, questions, condition ids, token/outcome identity where available | No local schema change | None | Current provider data exposes 3 match-winner markets and 0 line markets. |
+| S23 line order proof | Existing ticket/order/Portfolio routes used by mobile server mode | GET/POST | Mobile dev credential/API key | Ticket/order payload preserving event slug, market id, outcome id, market type `spread`, line `1.5`, period, side, amount, and fake-token mode | Portfolio History row with order-time selection identity and `contract-fixture` source | Existing user/API credential/order/position/history models | Fake-token server-backed line order remains allowed for Local MVP proof | Production wallet/liquidity/auth policy remains future work. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-QL-provider-line-structural-inspection/cycle-QL-current-state.json`
+- `docs/mobile/harness/cycle-QL-provider-line-structural-inspection/cycle-QL-provider-match-line-availability.json`
+- `docs/mobile/harness/cycle-QL-provider-line-structural-inspection/cycle-QL-provider-line-breadth-scan.json`
+- `docs/mobile/harness/cycle-QL-provider-line-structural-inspection/cycle-QL-current-mvp-s23-visible-flow.json`
+
 ## Cycle QK - Search Source Copy
 
 Cycle QK changes no backend route or schema. It keeps the existing Search event-feed contract and only changes mobile-facing source labels.

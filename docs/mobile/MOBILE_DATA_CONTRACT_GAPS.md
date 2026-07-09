@@ -2,6 +2,31 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle QL - Provider Line Structural Inspection
+
+Closed or narrowed:
+
+- Fresh current-state proof confirms the Local MVP service is ready for provider-backed Regulation Winner plus contract-shaped Holiwyn line orders.
+- Broad provider scan confirms no attach-ready World Cup Spread/Totals/Team Total line candidates are currently available from Polymarket Gamma.
+- S23 proof harness no longer fails early when Expo Go stays on splash or shows the developer menu after bundle load.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed line market fields for Spread/Totals/Team Total: provider market ids, condition ids, token ids, line values, outcome ids, top prices, and liquidity.
+
+Route mismatch:
+
+- No route mismatch introduced.
+- `/api/mobile/events/:slug/live-detail` accurately reports line markets as `contract-fixture`, not provider-backed.
+
+Temporary mock/static data:
+
+- Current line markets are contract-shaped Holiwyn fixtures with backend-replaceable identity fields.
+
+Future migration concern:
+
+- Do not remove line fixtures from the Local MVP until provider-backed line rows exist, but do not mark line parity complete while `providerBackedLineMarketCount` remains 0.
+
 ## Cycle QK - Search Source Copy
 
 Closed or narrowed:
