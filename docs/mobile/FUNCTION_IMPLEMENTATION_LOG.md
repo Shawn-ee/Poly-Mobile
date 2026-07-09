@@ -9623,3 +9623,42 @@ Known limitations:
 
 - No backend route/schema changed.
 - Provider-backed chart history remains dependent on existing market chart routes; this cycle improves visible interaction, not provider history breadth.
+
+## Cycle PR - Current MVP Service Readiness Inspection
+
+Feature/page worked on:
+
+- Current Local MVP route proof for Home -> Event Detail -> Spread line -> Trade Ticket -> server order -> Portfolio/history.
+- No product UI redesign; this cycle tightened proof and documentation around the service state.
+
+Frontend/proof files touched:
+
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+- `docs/mobile/audits/cycle-PR-service-readiness-inspection.md`
+- `docs/mobile/harness/cycle-PR-service-readiness-inspection/`
+- `docs/mobile/screenshots/cycle-PR-service-readiness-inspection/`
+
+Important functions/services touched:
+
+- S23 proof harness now tolerates expected config warning output from mobile dev credential creation while still checking the exit code.
+- S23 proof harness expects the current visible source wording: `Test line - fake USDT`.
+
+User interactions supported/proven:
+
+- User opens Home, sees the current World Cup match, opens Event Detail, selects a Spread line, opens the simple ticket, enters a preset amount, swipes to buy, and reaches Portfolio/history.
+
+State transitions:
+
+- Server-mode ticket submit creates a fake-token order against seeded local liquidity.
+- The selected line identity remains `spread`, `line=1.5`, `period=regulation`, `referenceSource=contract-fixture` through order, position, and history.
+
+Validation:
+
+- Current state inspection passed.
+- Backend line order lifecycle proof passed.
+- Samsung S23 visible flow proof passed with `cycle-PR-current-mvp-s23-visible-flow.json`.
+
+Known limitations:
+
+- Regulation Winner is provider-backed, but Spread/Totals/Team Totals are Local MVP contract fixtures for `argentina-vs-egypt`.
+- The current worktree lacks a committed local `.env`; proof commands loaded `DATABASE_URL` from the original local repo env without committing it.

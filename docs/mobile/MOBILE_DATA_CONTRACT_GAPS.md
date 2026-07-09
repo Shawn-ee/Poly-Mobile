@@ -7144,6 +7144,38 @@ Future migration concern:
 - Standalone bot proof runs must carry `LIVE_SYSTEM_LIQUIDITY_ENABLED=true`; backend helper env alone does not arm a separate bot process.
 - Production/staging bot enablement must not reuse local fake-token proof flags without separate review.
 
+## Cycle PR - Current MVP Service Readiness Inspection
+
+Closed or narrowed:
+
+- Current Local MVP route state is now proven with backend inspection, backend order lifecycle, and Samsung S23 visible proof.
+- `argentina-vs-egypt` is match-only in Home and has provider-backed Regulation Winner data.
+- Contract-fixture Spread line order flow preserves `marketId`, `outcomeId`, `marketType`, `line`, `period`, `referenceSource`, condition, and token-like fixture identity through order, Portfolio, and history.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed spread/totals/team-total market ids and token ids for the current match.
+- Provider-backed chart history for current-match line markets.
+- Provider-backed line prices that can replace contract-fixture pricing without changing mobile selection shape.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch for the current contract-fixture line lifecycle proof.
+- `mobile_backend_readiness.ps1` fails in this worktree unless `DATABASE_URL` is supplied externally, because this worktree intentionally does not contain a local `.env`.
+
+Temporary mock/static data:
+
+- Spread/Totals/Team Total remain explicit Local MVP contract fixtures. They are not claimed as Polymarket-backed.
+
+Future migration concern:
+
+- The next backend milestone should either attach real Polymarket-backed line markets when available or define an approved non-Polymarket enrichment provider. Until then, line market parity remains a known P1 gap.
+- Expo Go launch continues to add automation noise; dev build/APK remains recommended for stable proof runs.
+
 ## Cycle PP - Mobile Google Account Entry
 
 Closed or narrowed:
