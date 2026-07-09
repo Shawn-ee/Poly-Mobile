@@ -6719,6 +6719,31 @@ Remaining P1:
 
 - Native Google OAuth callback/session/logout remains separate auth work.
 
+## Cycle QS - Market Card Chinese Source Copy
+
+Result: Pass for QS scope.
+
+Checked:
+
+- Chinese Home market card source-readiness line is visible.
+- Mixed source state renders readable `Polymarket / 利云体育` copy instead of mojibake.
+- Existing provider/contract-fixture audit markers remain available in the UI hierarchy.
+- No backend route, schema, ticket, order, Portfolio, order book, chat, live stats, or social work was touched.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-QS-market-card-chinese-source-copy.md`
+- `docs/mobile/harness/cycle-QS-market-card-chinese-source-copy/cycle-QS-market-card-chinese-source-copy-proof.json`
+- `docs/mobile/harness/cycle-QS-market-card-chinese-source-copy/cycle-QS-home.xml`
+- `docs/mobile/screenshots/cycle-QS-market-card-chinese-source-copy/cycle-QS-chinese-home-source-card.png`
+
+Unresolved P0 gaps: 0 for QS scope.
+
+Remaining P1:
+
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Native Google OAuth callback/session/logout remains separate auth work.
+
 ## Cycle PI - Search Deep-Link Provider Futures Proof
 
 Result: Pass for PI scope.

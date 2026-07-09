@@ -10670,3 +10670,40 @@ Known limitations:
 
 - Native Google OAuth callback/session/logout remains separate auth work.
 - This cycle improves visibility only; it does not implement a new auth provider route.
+
+## Cycle QS - Market Card Chinese Source Copy
+
+Feature/page worked on:
+
+- Shared Home/Live/Search market-card source-readiness copy in Chinese mode.
+- This fixes visible mojibake in the Local MVP card source line for Polymarket winner markets plus Holiwyn line markets.
+
+Frontend/proof files touched:
+
+- `mobile/src/components/MarketLists.tsx`
+- `mobile/src/__tests__/marketListChineseSourceCopy.test.ts`
+- `docs/mobile/audits/cycle-QS-market-card-chinese-source-copy.md`
+
+Important functions/services touched:
+
+- `eventSourceReadiness(event, locale)` now wraps the existing raw source-state helper and returns clean Chinese copy for rendered market cards.
+
+User interactions supported/proven:
+
+- User opens Chinese Home/Live/Search card surfaces and sees readable source copy instead of corrupted text.
+
+State transitions:
+
+- No order, quote, portfolio, auth, backend, or provider state transition changed.
+- Existing provider-backed/contract-fixture source markers are preserved for audit/proof.
+
+Validation:
+
+- Mobile typecheck passed.
+- Focused Chinese market-card/source-copy tests passed.
+- Samsung S23 Chinese Home source-card proof passed with `cycle-QS-market-card-chinese-source-copy-proof.json`.
+
+Known limitations:
+
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Some legacy seed/mock copy outside the currently rendered Local MVP path may still need cleanup.

@@ -7717,6 +7717,33 @@ Future migration concern:
 
 - Account screen will need a mobile-safe signed-in profile route, auth callback/deep-link contract, and logout/session-clear route before production auth parity.
 
+## Cycle QS - Market Card Chinese Source Copy
+
+Closed or narrowed:
+
+- Chinese rendered market cards no longer show corrupted source-readiness text for the Local MVP mixed source state.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- No new fields required.
+- Real provider-backed current-match Spread/Totals/Team Total market ids, token ids, prices, and chart history remain missing.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced. Existing event feed/search/live routes already expose the `marketSourceSummary` fields used by mobile.
+
+Temporary mock/static data:
+
+- Existing Local MVP contract-fixture line rows remain in use for non-winner line markets.
+
+Future migration concern:
+
+- When real provider-backed line markets become available, the same market-card helper should switch from mixed `Polymarket / Holiwyn lines` copy to provider-backed `Markets: Polymarket` copy through the existing route fields.
+
 ## Cycle QP - Chinese MVP Source Copy Continuity
 
 Closed or narrowed:

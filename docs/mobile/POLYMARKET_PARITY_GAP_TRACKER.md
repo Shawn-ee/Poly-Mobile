@@ -1060,3 +1060,12 @@ For every UI element or interaction, answer:
 - QR proves on Samsung S23 that Portfolio exposes account/profile and Google login entries and Account still exposes Google login/connect.
 - Unresolved P0 for QR scope: 0.
 - Remaining P1: native Google OAuth callback/session/logout remains separate auth work.
+
+## Cycle QS Gap Tracker Update
+
+- PM-GAP-154 is opened and closed for Chinese market-card source-readiness mojibake.
+- QS fixes shared Home/Live/Search card source copy so mixed Polymarket winner plus Holiwyn line state renders clean Chinese.
+- QS proves on Samsung S23 Chinese Home that the card source line shows clean `Polymarket / 利云体育` copy and old mojibake is absent.
+- Unresolved P0 for QS scope: 0.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Remaining P1: native Google OAuth callback/session/logout remains separate auth work.

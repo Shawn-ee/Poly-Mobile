@@ -1,0 +1,19 @@
+﻿{
+    "cycle":  "cycle-QS-market-card-chinese-source-copy",
+    "result":  "pass",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "expoPort":  8304,
+    "expoHost":  "172.16.200.14",
+    "checks":  {
+                   "homeLoaded":  true,
+                   "chineseMode":  true,
+                   "sourceReadinessVisible":  true,
+                   "cleanMixedSourceCopy":  true,
+                   "oldMojibakeAbsent":  true,
+                   "noDevMenu":  true
+               },
+    "screenshots":  [
+                        "docs/mobile/screenshots/cycle-QS-market-card-chinese-source-copy/cycle-QS-chinese-home-source-card.png"
+                    ]
+}
