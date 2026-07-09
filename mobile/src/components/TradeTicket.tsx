@@ -69,6 +69,12 @@ type TradeTicketCopy = {
   swipeBuyOrder: string;
   swipeSellOrder: string;
   finalCostMayVary: string;
+  chooseAmount: string;
+  toWin: string;
+  odds: string;
+  available: string;
+  marketUnavailable: string;
+  tradingDisabledForMarket: string;
 };
 
 const SWIPE_SUBMIT_THRESHOLD = 150;
@@ -557,8 +563,8 @@ export function TradeTicket({
   const availabilityTone = marketAvailabilityTone(ticket.market);
   const availabilityStatus = ticket.market.availability?.status ?? "unknown";
   const marketTradable = availabilityTone !== "blocked";
-  const submitLabel = !marketTradable ? availabilityLabel ?? "Market unavailable" : numericAmount <= 0 ? "Choose an amount" : swipeLabel;
-  const submitHelper = !marketTradable ? "Trading is disabled for this market." : t.finalCostMayVary;
+  const submitLabel = !marketTradable ? availabilityLabel ?? t.marketUnavailable : numericAmount <= 0 ? t.chooseAmount : swipeLabel;
+  const submitHelper = !marketTradable ? t.tradingDisabledForMarket : t.finalCostMayVary;
   const activeSubmitProgress = marketTradable ? swipeSubmitProgress : 0;
   const footerBaseHeight = usePhoneTicketFit ? 172 : 184;
   const submitSheetHeight = footerBaseHeight + activeSubmitProgress * Math.max(viewportHeight - footerBaseHeight, 0);
@@ -728,7 +734,7 @@ export function TradeTicket({
               </Text>
             </View>
             <View accessibilityLabel="ticket-to-win-line" testID="ticket-to-win-line" style={styles.toWinBlock}>
-              <Text style={[styles.toWinText, numericAmount <= 0 && styles.toWinTextEmpty]}>to win <Text style={numericAmount > 0 ? styles.toWinValue : styles.toWinValueEmpty}>{toWinDisplay}</Text></Text>
+              <Text style={[styles.toWinText, numericAmount <= 0 && styles.toWinTextEmpty]}>{t.toWin} <Text style={numericAmount > 0 ? styles.toWinValue : styles.toWinValueEmpty}>{toWinDisplay}</Text></Text>
             </View>
             <View
               accessibilityLabel={`ticket-order-review market-${reviewMarketType} line-${reviewLine} period-${reviewPeriod} price-${contractProbability} shares-${reviewShares} payout-${reviewPayout} ${providerIdentityLabel}`}
@@ -768,7 +774,7 @@ export function TradeTicket({
               testID="ticket-odds-available"
               style={[styles.oddsAvailableLine, usePhoneTicketFit && styles.oddsAvailableLinePhone]}
             >
-              <Text accessibilityLabel="ticket-price-line" testID="ticket-price-line" style={styles.oddsAvailableText}>Odds {contractProbability}% | {money(balance)} available</Text>
+              <Text accessibilityLabel="ticket-price-line" testID="ticket-price-line" style={styles.oddsAvailableText}>{t.odds} {contractProbability}% | {money(balance)} {t.available}</Text>
             </View>
             <View style={[styles.presetRow, usePhoneTicketFit && styles.presetRowPhone]}>
               {amountPresets.map((preset) => (
