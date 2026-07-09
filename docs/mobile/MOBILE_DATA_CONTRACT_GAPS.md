@@ -8348,3 +8348,30 @@ Future migration concern:
 
 - Fake-token trading still works without Google login during Local MVP.
 - Native OAuth session handoff should be handled in a dedicated auth milestone.
+
+## Cycle QV - Event Detail Source Disclosure Compact
+
+Closed or narrowed:
+
+- Event Detail no longer lets source/debug explanation dominate the Game Lines area.
+- Hidden provider/local-line readiness markers remain available for audit and backend migration.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed current-match Spread/Totals/Team Total line market ids, outcome ids, provider token ids, chart history, and prices.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- Compact visible source copy should switch to provider-line wording once attach-ready provider lines exist.

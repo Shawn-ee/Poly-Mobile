@@ -6719,6 +6719,31 @@ Remaining P1:
 
 - Native Google OAuth callback/session/logout remains separate auth work.
 
+## Cycle QV - Event Detail Source Disclosure Compact
+
+Result: Pass for QV scope.
+
+Checked:
+
+- Event Detail Game Lines source disclosure is compact instead of a large card.
+- Visible copy is concise: `Winner: Polymarket. Lines: Holiwyn.`
+- Hidden source markers still expose provider-backed winner, contract-fixture line state, provider availability, and line-family readiness.
+- The old visible `Market source` heading is absent.
+- No backend route, schema, ticket, order, Portfolio, order book, chat, live stats, social, deposit, or withdraw work was touched.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-QV-event-detail-source-compact.md`
+- `docs/mobile/harness/cycle-QV-event-detail-source-compact/cycle-QV-event-detail-source-compact-proof.json`
+- `docs/mobile/harness/cycle-QV-event-detail-source-compact/cycle-QV-event-detail-source-compact.xml`
+- `docs/mobile/screenshots/cycle-QV-event-detail-source-compact/cycle-QV-event-detail-source-compact.png`
+
+Unresolved P0 gaps: 0 for QV scope.
+
+Remaining P1:
+
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
 ## Cycle QS - Market Card Chinese Source Copy
 
 Result: Pass for QS scope.

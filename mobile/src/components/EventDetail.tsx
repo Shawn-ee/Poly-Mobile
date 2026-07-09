@@ -231,15 +231,6 @@ const marketStats = (event: Event) => {
   };
 };
 
-const lineFamilyDisplay = (family: string, locale: Locale) => {
-  if (locale !== "zh") return family.replace(/_/g, " ");
-  if (family === "spread") return "让球";
-  if (family === "totals") return "大小球";
-  if (family === "team_total") return "球队大小球";
-  if (family === "team-total") return "球队大小球";
-  return family.replace(/_/g, " ");
-};
-
 const lineSourceCopy = (event: Event, locale: Locale) => {
   const summary = event.marketSourceSummary;
   if (!summary) return null;
@@ -247,11 +238,6 @@ const lineSourceCopy = (event: Event, locale: Locale) => {
   const lineStatus = summary.lineMarkets.status;
   const lineCount = summary.lineMarkets.totalCount;
   const lineAvailability = summary.lineMarkets.providerAvailability;
-  const localFamilies = summary.lineMarkets.familyReadiness
-    ?.filter((family) => family.status === "contract-fixture")
-    .map((family) => lineFamilyDisplay(family.family, locale))
-    .slice(0, 3)
-    .join(", ");
   const lineAvailabilityMarker = lineAvailability
     ? [
       `line-provider-availability-${lineAvailability.status}`,
@@ -267,7 +253,7 @@ const lineSourceCopy = (event: Event, locale: Locale) => {
     : "";
   if (lineStatus === "provider-backed") {
     return {
-      label: locale === "zh" ? "市场来源" : "Market source",
+      label: locale === "zh" ? "来源" : "Source",
       text: locale === "zh"
         ? winnerReady ? "胜负和盘口: Polymarket" : "盘口: Polymarket"
         : winnerReady ? "Winner + lines: Polymarket" : "Lines: Polymarket",
@@ -277,18 +263,15 @@ const lineSourceCopy = (event: Event, locale: Locale) => {
     };
   }
   if (lineStatus === "contract-fixture") {
-    const familyCopy = localFamilies
-      ? locale === "zh" ? ` 利云体育盘口: ${localFamilies}。` : ` Holiwyn lines: ${localFamilies}.`
-      : "";
     return {
-      label: locale === "zh" ? "市场来源" : "Market source",
+      label: locale === "zh" ? "来源" : "Source",
       text: locale === "zh"
         ? winnerReady
-          ? `胜负: Polymarket。盘口: 利云体育。${familyCopy}`
-          : `利云体育盘口。${familyCopy}`
+          ? "胜负: Polymarket。盘口: 利云体育。"
+          : "利云体育盘口。"
         : winnerReady
-          ? `Winner: Polymarket. Lines: Holiwyn pricing.${familyCopy}`
-          : `Holiwyn lines.${familyCopy}`,
+          ? "Winner: Polymarket. Lines: Holiwyn."
+          : "Holiwyn lines.",
       tone: "fixture" as const,
       accessibility:
         `event-detail-line-source-banner line-source-contract-fixture line-source-local-test-fake-token regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount} ${lineAvailabilityMarker}${familyMarker}`,
@@ -296,7 +279,7 @@ const lineSourceCopy = (event: Event, locale: Locale) => {
   }
   if (lineStatus === "missing") {
     return {
-      label: locale === "zh" ? "市场来源" : "Market source",
+      label: locale === "zh" ? "来源" : "Source",
       text: locale === "zh" ? "盘口暂不可用" : "Lines unavailable",
       tone: "missing" as const,
       accessibility:
@@ -304,7 +287,7 @@ const lineSourceCopy = (event: Event, locale: Locale) => {
     };
   }
   return {
-    label: locale === "zh" ? "市场来源" : "Market source",
+    label: locale === "zh" ? "来源" : "Source",
     text: locale === "zh" ? "正在检查市场来源" : "Checking market source",
     tone: "missing" as const,
     accessibility:
@@ -2019,16 +2002,16 @@ export function EventDetail({
               <View
                 accessibilityLabel={sourceCopy.accessibility}
                 style={[
-                  styles.lineSourceBanner,
-                  sourceCopy.tone === "ready" && styles.lineSourceBannerReady,
-                  sourceCopy.tone === "missing" && styles.lineSourceBannerMissing,
+                  styles.lineSourceCompact,
+                  sourceCopy.tone === "ready" && styles.lineSourceCompactReady,
+                  sourceCopy.tone === "missing" && styles.lineSourceCompactMissing,
                 ]}
                 testID="event-detail-line-source-banner"
               >
-                <View>
-                  <Text style={styles.lineSourceLabel}>{sourceCopy.label}</Text>
-                  <Text style={styles.lineSourceText}>{sourceCopy.text}</Text>
-                </View>
+                <Text style={styles.lineSourceCompactText} numberOfLines={1}>
+                  <Text style={styles.lineSourceCompactLabel}>{sourceCopy.label}: </Text>
+                  {sourceCopy.text}
+                </Text>
               </View>
             )}
             <View accessibilityLabel="event-detail-market-summary" style={styles.hiddenStats} testID="event-detail-market-summary">
@@ -2331,11 +2314,11 @@ const styles = StyleSheet.create({
   marketTabText: { color: "#6b7280", fontSize: 16, fontWeight: "800" },
   marketTabTextActive: { color: "#f8fafc" },
   lineSectionCleanStart: { height: 24, backgroundColor: "#060b14", borderTopWidth: 1, borderTopColor: "#172033" },
-  lineSourceBanner: { marginHorizontal: 18, marginBottom: 10, paddingHorizontal: 14, paddingVertical: 11, borderRadius: 8, backgroundColor: "#101826", borderWidth: 1, borderColor: "#263244" },
-  lineSourceBannerReady: { borderColor: "rgba(34, 197, 94, 0.35)", backgroundColor: "rgba(10, 88, 48, 0.28)" },
-  lineSourceBannerMissing: { borderColor: "rgba(248, 113, 113, 0.34)", backgroundColor: "rgba(127, 29, 29, 0.24)" },
-  lineSourceLabel: { color: "#9ca3af", fontSize: 11, fontWeight: "800", textTransform: "uppercase" },
-  lineSourceText: { marginTop: 3, color: "#e5e7eb", fontSize: 13, lineHeight: 18, fontWeight: "700" },
+  lineSourceCompact: { minHeight: 20, justifyContent: "center", marginHorizontal: 18, marginBottom: 4, paddingHorizontal: 9, borderRadius: 999, backgroundColor: "rgba(15, 23, 42, 0.72)", borderWidth: 1, borderColor: "rgba(148, 163, 184, 0.18)" },
+  lineSourceCompactReady: { borderColor: "rgba(34, 197, 94, 0.24)", backgroundColor: "rgba(10, 88, 48, 0.18)" },
+  lineSourceCompactMissing: { borderColor: "rgba(248, 113, 113, 0.24)", backgroundColor: "rgba(127, 29, 29, 0.16)" },
+  lineSourceCompactText: { color: "#9ca3af", fontSize: 10, lineHeight: 13, fontWeight: "800" },
+  lineSourceCompactLabel: { color: "#cbd5e1", fontWeight: "900" },
   emptyProps: { minHeight: 280, alignItems: "center", justifyContent: "center" },
   emptyPropsText: { color: "#6b7280", fontSize: 18, fontWeight: "800" },
   hiddenStats: { height: 1, overflow: "hidden", opacity: 0.01 },

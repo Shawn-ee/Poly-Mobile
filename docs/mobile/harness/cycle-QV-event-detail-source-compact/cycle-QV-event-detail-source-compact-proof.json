@@ -1,0 +1,31 @@
+{
+  "cycle": "QV",
+  "result": "pass",
+  "generatedAt": "2026-07-09T06:24:00.5215083Z",
+  "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+  "model": "SM-S911U1",
+  "expoPort": 8308,
+  "apiBase": "http://172.16.200.14:3002",
+  "eventSlug": "argentina-vs-egypt",
+  "sourceNodeHeight": 60,
+  "sourceTextHeight": 39,
+  "checks": {
+    "eventDetailLoaded": true,
+    "gameLinesVisible": true,
+    "compactSourceVisible": true,
+    "compactSourceParentUnder64": true,
+    "compactSourceTextUnder44": true,
+    "sourceLabelVisible": true,
+    "conciseCopy": true,
+    "contractFixtureMarker": true,
+    "providerWinnerMarker": true,
+    "providerAvailabilityMarker": true,
+    "noOldMarketSourceHeader": true,
+    "noDevMenu": true
+  },
+  "failedChecks": [],
+  "artifacts": [
+    "docs/mobile/screenshots/cycle-QV-event-detail-source-compact/cycle-QV-event-detail-source-compact.png",
+    "docs/mobile/harness/cycle-QV-event-detail-source-compact/cycle-QV-event-detail-source-compact.xml"
+  ]
+}

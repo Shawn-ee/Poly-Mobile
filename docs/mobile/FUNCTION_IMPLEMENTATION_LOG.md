@@ -10669,6 +10669,44 @@ Validation:
 Known limitations:
 
 - Native Google OAuth callback/session/logout remains separate auth work.
+
+## Cycle QV - Event Detail Source Disclosure Compact
+
+Feature/page worked on:
+
+- Event Detail Game Lines source disclosure.
+- This keeps provider/local-line audit state available while reducing visible debug weight on the game page.
+
+Frontend/proof files touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts`
+- `docs/mobile/audits/cycle-QV-event-detail-source-compact.md`
+
+Important functions/services touched:
+
+- `lineSourceCopy()` visible text now uses concise user-facing source copy.
+- Event Detail source disclosure styles now render as a compact pill row instead of a large card.
+- No API client, service, backend, order, or portfolio function changed.
+
+User interactions supported/proven:
+
+- User opens current-match Event Detail and sees Game Lines without the old bulky source explanation interrupting the market list.
+
+State transitions:
+
+- No state transition changed.
+- Hidden source markers still preserve provider-backed winner and contract-fixture line readiness for audit/migration.
+
+Validation:
+
+- Mobile typecheck passed.
+- Focused Event Detail source/no-chat tests passed.
+- Samsung S23 proof passed with `cycle-QV-event-detail-source-compact-proof.json`.
+
+Known limitations:
+
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - This cycle improves visibility only; it does not implement a new auth provider route.
 
 ## Cycle QS - Market Card Chinese Source Copy
