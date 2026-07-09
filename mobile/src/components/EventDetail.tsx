@@ -520,6 +520,7 @@ export function EventDetail({
   const [refreshingDepthMarketId, setRefreshingDepthMarketId] = useState<string | null>(null);
   const [compactHeaderVisible, setCompactHeaderVisible] = useState(false);
   const [selectedPrimaryOutcomeId, setSelectedPrimaryOutcomeId] = useState<string | null>(null);
+  const [selectedChartPoint, setSelectedChartPoint] = useState<"current" | "target">("current");
   const isLiveEvent = event.status === "live";
   const gameLineMarkets = useMemo(() => event.markets.filter((market) => market.type !== "prop" && market.type !== "future"), [event.markets]);
   const propMarkets = useMemo(() => event.markets.filter((market) => market.type === "prop"), [event.markets]);
@@ -1554,7 +1555,7 @@ export function EventDetail({
   const renderProbabilityChart = () => {
     const homeOutcome = primaryOutcomes[0];
     const awayOutcome = primaryOutcomes[1];
-    if (!homeOutcome || !awayOutcome) return null;
+    if (!homeOutcome || !awayOutcome || !primaryMarket) return null;
 
     const history = event.chartHistory?.length
       ? event.chartHistory.slice(-8).map((point) => ({ value: point.probability }))
@@ -1565,15 +1566,33 @@ export function EventDetail({
           { value: Math.min(95, homeOutcome.probability + 3) },
           { value: homeOutcome.probability },
         ];
+    const selectedOutcome = selectedPrimaryOutcome ?? homeOutcome;
+    const selectedOutcomeIndex = Math.max(0, primaryMarket.outcomes.findIndex((outcome) => outcome.id === selectedOutcome.id));
+    const selectedSelection = orderBookTicketSelection(primaryMarket, selectedOutcome, selectedOutcomeIndex, label(locale, primaryMarket));
+    const selectedProbability = selectedChartPoint === "target"
+      ? Math.max(1, Math.min(99, selectedOutcome.probability + (selectedOutcome.id === homeOutcome.id ? 2 : -2)))
+      : selectedOutcome.probability;
+    const selectedPointLabel = selectedChartPoint === "target" ? "Target line" : "Current";
 
     return (
-      <Pressable
-        accessibilityLabel={`event-detail-price-chart event-detail-probability-chart ${teamCode(homeOutcome.label)} ${homeOutcome.probability}% ${teamCode(awayOutcome.label)} ${awayOutcome.probability}% chart-history-points-${history.length} chart-source-${event.chartHistorySource ?? "fallback"} chart-status-${event.chartHistoryStatus ?? "fallback"} chart-range-${event.chartHistoryRange ?? "none"}`}
-        onPress={() => setSelectedPrimaryOutcomeId(selectedPrimaryOutcome?.id === awayOutcome.id ? homeOutcome.id : awayOutcome.id)}
+      <View
+        accessibilityLabel={`event-detail-price-chart event-detail-probability-chart ${teamCode(homeOutcome.label)} ${homeOutcome.probability}% ${teamCode(awayOutcome.label)} ${awayOutcome.probability}% chart-history-points-${history.length} chart-source-${event.chartHistorySource ?? "fallback"} chart-status-${event.chartHistoryStatus ?? "fallback"} chart-range-${event.chartHistoryRange ?? "none"} event-detail-chart-selected-point-${selectedChartPoint} chart-selected-point-${selectedChartPoint}`}
         style={styles.chartBlock}
         testID="event-detail-price-chart"
       >
-        <View style={styles.dualChart}>
+        <Text
+          accessibilityLabel={`event-detail-chart-route-state chart-status-${event.chartHistoryStatus ?? "fallback"} chart-source-${event.chartHistorySource ?? "fallback"} chart-range-${event.chartHistoryRange ?? "none"}`}
+          style={styles.chartReferenceText}
+          testID="event-detail-chart-route-state"
+        >
+          chart route state
+        </Text>
+        <Pressable
+          accessibilityLabel={`event-detail-chart-surface event-detail-chart-selected-point-${selectedChartPoint} chart-selected-point-${selectedChartPoint} ${selectedPointLabel} ${selectedProbability}%`}
+          onPress={() => setSelectedChartPoint((current) => current === "target" ? "current" : "target")}
+          style={styles.dualChart}
+          testID="event-detail-chart-surface"
+        >
           <View style={styles.chartReferenceLine} />
           {history.map((point, index) => (
             <View
@@ -1605,6 +1624,56 @@ export function EventDetail({
             ))}
             <View style={[styles.chartDot, { backgroundColor: rightOutcomeColor }]} />
           </View>
+          <View
+            accessibilityLabel={`event-detail-chart-selected-point-${selectedChartPoint} chart-selected-point-${selectedChartPoint}`}
+            style={[
+              styles.chartSelectedPoint,
+              { borderColor: primaryOutcomeDisplayColor(selectedOutcome) },
+              selectedChartPoint === "target" ? styles.chartSelectedPointTarget : styles.chartSelectedPointMid,
+            ]}
+            testID={`event-detail-chart-selected-point-${selectedChartPoint}`}
+          />
+          <View
+            accessibilityLabel={`event-detail-chart-contract-point chart-selected-point-${selectedChartPoint} ${selectedPointLabel} ${selectedProbability}%`}
+            style={styles.chartTooltip}
+            testID="event-detail-chart-contract-point"
+          >
+            <Text style={styles.chartTooltipLabel}>{selectedPointLabel}</Text>
+            <Text style={[styles.chartTooltipValue, { color: primaryOutcomeDisplayColor(selectedOutcome) }]}>{selectedProbability}%</Text>
+            <Text style={styles.chartTooltipTime}>{selectedChartPoint === "target" ? "Target" : "Now"}</Text>
+          </View>
+        </Pressable>
+        <View style={styles.chartPointSelector}>
+          {(["current", "target"] as const).map((point) => (
+            <Pressable
+              accessibilityLabel={`event-detail-chart-point-${point} ${selectedChartPoint === point ? `event-detail-chart-selected-point-${point} chart-selected-point-${point}` : "chart-point-inactive"}`}
+              key={point}
+              onPress={() => setSelectedChartPoint(point)}
+              style={[styles.chartPointChip, selectedChartPoint === point && styles.chartPointChipActive]}
+              testID={`event-detail-chart-point-${point}`}
+            >
+              <Text style={[styles.chartPointText, selectedChartPoint === point && styles.chartPointTextActive]}>{point === "target" ? "Target" : "Current"}</Text>
+            </Pressable>
+          ))}
+        </View>
+        <View
+          accessibilityLabel={`event-detail-chart-ticket-handoff-status provider-lifecycle-${primaryMarket.referenceSource?.includes("polymarket") ? "ready" : "local"} ${ticketSelectionIdentityLabel(selectedSelection)}`}
+          style={styles.chartContractRail}
+          testID="event-detail-chart-ticket-handoff-status"
+        >
+          <View style={styles.chartContractTextBlock}>
+            <Text style={styles.chartContractEyebrow}>Chart selection</Text>
+            <Text style={styles.chartContractTitle}>{teamCode(selectedOutcome.label)} {selectedProbability}%</Text>
+            <Text style={styles.chartContractPoint}>{selectedPointLabel} - {label(locale, primaryMarket)}</Text>
+          </View>
+          <Pressable
+            accessibilityLabel={`event-detail-chart-open-ticket event-detail-chart-open-ticket-${selectedOutcome.id} ${ticketSelectionIdentityLabel(selectedSelection)}`}
+            onPress={() => openTicket(primaryMarket, selectedOutcome, event, defaultSide, selectedSelection)}
+            style={[styles.chartTradeButton, { backgroundColor: primaryOutcomeDisplayColor(selectedOutcome) }]}
+            testID="event-detail-chart-open-ticket"
+          >
+            <Text style={styles.chartTradeButtonText}>Trade</Text>
+          </Pressable>
         </View>
         <View style={styles.chartLabel}>
           <Text style={[styles.chartName, { color: primaryOutcomeDisplayColor(selectedPrimaryOutcome) }]}>
@@ -1614,7 +1683,7 @@ export function EventDetail({
             {selectedPrimaryOutcome?.probability ?? homeOutcome.probability}%
           </Text>
         </View>
-      </Pressable>
+      </View>
     );
   };
   return (
@@ -2102,7 +2171,7 @@ const styles = StyleSheet.create({
   liveDataText: { color: "#93c5fd", fontSize: 12, fontWeight: "900" },
   liveDataTextWarning: { color: "#fde68a" },
   liveDataMeta: { color: "#94a3b8", fontSize: 10, fontWeight: "800" },
-  chartBlock: { minHeight: 132, paddingHorizontal: 0, paddingTop: 14, paddingBottom: 8, borderBottomWidth: 1, borderBottomColor: "#101827" },
+  chartBlock: { minHeight: 218, paddingHorizontal: 0, paddingTop: 14, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: "#101827" },
   liveChartBlock: { minHeight: 168, paddingTop: 20 },
   liveMatchStrip: { minHeight: 64, marginHorizontal: 24, marginTop: 10, padding: 12, borderRadius: 14, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   liveStripLabel: { color: "#ef4444", fontSize: 11, fontWeight: "900" },

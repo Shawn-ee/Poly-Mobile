@@ -9586,3 +9586,40 @@ Known limitations:
 
 - The mobile app opens the server OAuth flow but does not yet complete a native deep-link session callback.
 - Deposits, withdrawals, location verification, and real-money gates remain out of scope for Local MVP.
+
+## Cycle PQ - Event Detail Chart Touch Handoff
+
+Feature/page worked on:
+
+- Event Detail probability chart interaction for the Local MVP retail flow.
+- Restored a visible chart point selector and ticket handoff so the chart is not only a passive/static display.
+
+Frontend/proof files touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `docs/mobile/audits/cycle-PQ-event-detail-chart-touch-handoff.md`
+
+Important functions/services touched:
+
+- `renderProbabilityChart` now keeps `selectedChartPoint` state (`current` / `target`).
+- The chart point target updates the selected point/tooltip-equivalent.
+- `event-detail-chart-open-ticket` opens the normal Trade Ticket with the selected primary market/outcome and `TicketSelection` identity.
+
+User interactions supported/proven:
+
+- User opens Event Detail, taps the chart target, sees the selected point change to `Target line`, and can open a Trade Ticket from the chart selection.
+
+State transitions:
+
+- `selectedChartPoint=current` -> `selectedChartPoint=target`.
+- Chart ticket handoff preserves market id, outcome id, market family, line/period if present, provider source, condition, and token metadata through `orderBookTicketSelection`.
+
+Validation:
+
+- Mobile typecheck passed.
+- Samsung S23 Event Detail chart proof passed with `cycle-PQ-event-detail-chart-touch-handoff-proof.json`.
+
+Known limitations:
+
+- No backend route/schema changed.
+- Provider-backed chart history remains dependent on existing market chart routes; this cycle improves visible interaction, not provider history breadth.

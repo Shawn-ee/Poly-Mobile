@@ -1,0 +1,33 @@
+{
+    "cycle":  "PQ",
+    "scenario":  "Event Detail chart selected-point handoff to simple ticket on Samsung S23",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke.ps1 -Deep -LocalMvpStatusFlow -Port 8266 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -ExpoHost 172.16.200.14 -OutputDir docs/mobile/screenshots/cycle-PQ-event-detail-chart-touch-handoff -HierarchyOutputDir docs/mobile/harness/cycle-PQ-event-detail-chart-touch-handoff",
+    "orderbookDebug":  "unset",
+    "result":  "pass",
+    "assertions":  {
+                       "chartCurrent":  [
+                                            "chart exposes current selected point",
+                                            "ticket handoff rail",
+                                            "provider-backed ticket identity"
+                                        ],
+                       "chartTarget":  [
+                                           "tapping chart target changes selected point and readout to Target line"
+                                       ],
+                       "ticket":  [
+                                      "chart Trade opens the normal simple Buy/Sell ticket"
+                                  ],
+                       "marketRows":  [
+                                          "Game Lines, Spread, and Totals remain visible without orderbook UI"
+                                      ]
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-PQ-event-detail-chart-touch-handoff/cycle-ER-holiwyn-local-mvp-status-top.png",
+                      "docs/mobile/harness/cycle-PQ-event-detail-chart-touch-handoff/cycle-ER-holiwyn-local-mvp-status-top.xml",
+                      "docs/mobile/screenshots/cycle-PQ-event-detail-chart-touch-handoff/cycle-GB-holiwyn-event-detail-chart-target.png",
+                      "docs/mobile/harness/cycle-PQ-event-detail-chart-touch-handoff/cycle-GB-holiwyn-event-detail-chart-target.xml",
+                      "docs/mobile/screenshots/cycle-PQ-event-detail-chart-touch-handoff/cycle-GB-holiwyn-event-detail-chart-ticket.png",
+                      "docs/mobile/harness/cycle-PQ-event-detail-chart-touch-handoff/cycle-GB-holiwyn-event-detail-chart-ticket.xml",
+                      "docs/mobile/screenshots/cycle-PQ-event-detail-chart-touch-handoff/cycle-ER-holiwyn-local-mvp-status-market-lines.png",
+                      "docs/mobile/harness/cycle-PQ-event-detail-chart-touch-handoff/cycle-ER-holiwyn-local-mvp-status-market-lines.xml"
+                  ]
+}
