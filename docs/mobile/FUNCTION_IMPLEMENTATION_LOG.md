@@ -2,6 +2,42 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle QZ - Search Retail Source Cleanup
+
+Feature/page worked on:
+
+- Search result rows for the Local MVP retail flow.
+
+Frontend/backend touched:
+
+- `mobile/src/components/SearchScreen.tsx`
+- `mobile/src/__tests__/searchResultStatsContract.test.ts`
+- No backend route, provider import service, Prisma schema, order logic, orderbook UI, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- Search result source readiness remains available as hidden `search-result-source-*` audit markers.
+- Visible source/debug row copy was removed from the retail Search result card.
+
+User interactions supported:
+
+- User opens Search and sees clean World Cup result rows with title, probability/outcome, save entry, and navigation affordance.
+- Internal provider/local source information remains available to proof harnesses without dominating the tester UI.
+
+State transitions:
+
+- No runtime state transition changed.
+- Search route/service loading remains unchanged.
+
+Known limitations:
+
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+Evidence:
+
+- Audit doc: `docs/mobile/audits/cycle-QZ-search-retail-source-cleanup.md`
+- S23 screenshot/XML: `docs/mobile/screenshots/cycle-QZ-search-retail-source-cleanup/cycle-QZ-search.png`, `docs/mobile/harness/cycle-QZ-search-retail-source-cleanup/cycle-QZ-search.xml`
+
 ## Cycle QO - Chinese Source Copy Cleanup
 
 Feature/page worked on:
