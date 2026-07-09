@@ -3829,3 +3829,9 @@ Cycle OW implementation notes:
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Portfolio account/login entry | `/api/auth/google/start?returnTo=%2Fportfolio` only after user opens Account and taps Google sign-in | GET/browser redirect | Public auth-start route; Google provider credentials required on backend | `returnTo=/portfolio` query param; no JSON request body | Mobile consumes no JSON from the auth-start route; browser follows redirect/session flow | Existing backend auth/session/user tables implied | Fake-token trading remains available without Google login. | Native app deep-link callback/session/logout is still not implemented. |
+
+## Cycle QS - Market Card Chinese Source Copy
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Chinese Home/Live/Search market-card source line | Existing `/api/events?...mobileMvpMatches=1`, `/api/events` Search route, and Live feed route data when server mode is active | GET | Public viewing | Existing event feed/search/live query params | `marketSourceSummary.regulationWinner.status`, `marketSourceSummary.lineMarkets.status`, `marketSourceSummary.lineMarkets.families` | `Event`, `Market`, `Outcome`; no new tables | Local/static mode keeps existing event fixtures. | No new backend support needed for copy fix; real provider-backed current-match line markets remain missing. |

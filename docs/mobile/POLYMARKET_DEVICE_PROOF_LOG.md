@@ -2147,3 +2147,34 @@ Pass for focused Portfolio login-entry clarity scope.
 
 Remaining gaps:
 Native Google OAuth callback/session/logout proof remains separate auth work.
+
+## Cycle QS - Market Card Chinese Source Copy
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket app reference-device action. This was a Holiwyn Chinese copy regression cleanup on shared MVP market cards.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go server mode. Backend `http://127.0.0.1:3002` remained healthy; mobile API used LAN backend `http://172.16.200.14:3002`. Expo was stopped after proof.
+
+Holiwyn actions:
+Opened Holiwyn with Chinese mode, confirmed Home loaded, captured the shared market-card source-readiness line, and checked the UI hierarchy for clean Chinese/Holiwyn source copy.
+
+Evidence:
+- `docs/mobile/harness/cycle-QS-market-card-chinese-source-copy/cycle-QS-market-card-chinese-source-copy-proof.json`
+- `docs/mobile/screenshots/cycle-QS-market-card-chinese-source-copy/cycle-QS-chinese-home-source-card.png`
+- `docs/mobile/harness/cycle-QS-market-card-chinese-source-copy/cycle-QS-home.xml`
+
+Smoke/tests:
+Mobile typecheck passed. Focused Chinese market-card/source-copy tests passed. S23 XML checks confirmed clean mixed-source Chinese copy, absence of old mojibake, and no developer menu overlay.
+
+Result:
+Pass for focused shared market-card Chinese source-copy scope.
+
+Remaining gaps:
+Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable. Native Google OAuth callback/session/logout proof remains separate auth work.

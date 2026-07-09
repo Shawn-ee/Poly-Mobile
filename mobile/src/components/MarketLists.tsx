@@ -49,7 +49,7 @@ const isOutrightEvent = (event: Event) =>
 const tradableOutrightOutcome = (market: Market) =>
   market.outcomes.find((outcome) => outcome.side !== "no" && !/^no$/i.test(outcome.label)) ?? market.outcomes[0];
 
-export const eventSourceReadiness = (event: Event, locale: Locale) => {
+const rawEventSourceReadiness = (event: Event, locale: Locale) => {
   const summary = event.marketSourceSummary;
   if (!summary) return null;
   const winnerStatus = summary.regulationWinner?.status;
@@ -80,6 +80,21 @@ export const eventSourceReadiness = (event: Event, locale: Locale) => {
     };
   }
   return null;
+};
+
+export const eventSourceReadiness = (event: Event, locale: Locale) => {
+  const readiness = rawEventSourceReadiness(event, locale);
+  if (!readiness || locale !== "zh") return readiness;
+  if (readiness.accessibility.includes("home-card-source-provider-winner-local-lines")) {
+    return { ...readiness, text: "\u80dc\u8d1f: Polymarket / \u76d8\u53e3: \u5229\u4e91\u4f53\u80b2" };
+  }
+  if (readiness.accessibility.includes("home-card-source-provider-backed")) {
+    return { ...readiness, text: "\u5e02\u573a: Polymarket" };
+  }
+  if (readiness.accessibility.includes("home-card-source-local-lines")) {
+    return { ...readiness, text: "\u5229\u4e91\u4f53\u80b2\u76d8\u53e3" };
+  }
+  return readiness;
 };
 
 export function MarketList({
