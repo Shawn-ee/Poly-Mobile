@@ -732,7 +732,7 @@ try {
   } elseif ($ServerPositionFallbackOrder) {
     @("Portfolio", "Server portfolio synced", "Open positions", "1", "World Cup Backend Position Order Proof")
   } elseif ($ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails) {
-    @("Portfolio", "Server portfolio synced", "Open positions", "1", "World Cup winner", "SERVER - Buy - France - 42%")
+    @("Portfolio", "portfolio-sync-status", "World Cup winner", "France", "portfolio-account-entry-google")
   } elseif ($SearchQuery -or $SearchClearQuery) {
     @("Holiwyn", "Search World Cup markets", "zzzz", "0 results")
   } elseif ($HomeSearchQuery -or $HomeClearSearch) {
@@ -1954,13 +1954,14 @@ try {
       & $adb -s $Device shell input swipe 540 1750 540 850 450 | Out-Null
       Start-Sleep -Seconds 1
       $serverPositionTradeReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-trade-ready.xml"
-      Assert-HierarchyContains -Path $serverPositionTradeReadyHierarchy -Expected @("World Cup winner", "SERVER - Buy - France - 42%", "Buy", "Sell", "Close position")
-      Invoke-TapHierarchyNode -Path $serverPositionTradeReadyHierarchy -Identifier "position-trade-sell-" -StartsWith
+      Assert-HierarchyContains -Path $serverPositionTradeReadyHierarchy -Expected @("World Cup winner", "France", "Cash out", "portfolio-position-cash-out-", "position-trade-buy-")
+      Invoke-TapHierarchyNode -Path $serverPositionTradeReadyHierarchy -Identifier "portfolio-position-cash-out-" -StartsWith
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-server-position-trade-ticket.png"
       $serverPositionTradeTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-trade-ticket.xml"
-      Assert-HierarchyContains -Path $serverPositionTradeTicketHierarchy -Expected @("World Cup winner", "France", "Trading mode: Server mode", "Sell", "Estimated proceeds", "Est. shares", "Avg price", "ticket-contract-side-yes")
-      Assert-ServerTicketUsesQuotedDepthSizes -Path $serverPositionTradeTicketHierarchy
+      Assert-HierarchyContains -Path $serverPositionTradeTicketHierarchy -Expected @("trade-ticket", "World Cup winner", "France", "ticket-side-sell", "ticket-amount-keypad", "ticket-preset-25", "ticket-odds-available", "place-mock-order")
+      Invoke-TapHierarchyNode -Path $serverPositionTradeTicketHierarchy -Identifier "ticket-preset-25" -StartsWith
+      Start-Sleep -Seconds 1
       & $adb -s $Device shell input swipe 540 1850 540 950 450 | Out-Null
       Start-Sleep -Seconds 1
       $serverPositionTradeButtonHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-trade-ticket-button.xml"

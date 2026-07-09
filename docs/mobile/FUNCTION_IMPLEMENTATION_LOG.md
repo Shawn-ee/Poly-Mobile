@@ -2,6 +2,40 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle RN - Portfolio Cash Out to Sell Ticket
+
+Feature/page worked on:
+
+- Portfolio position action into Trade Ticket amount-entry screen.
+
+Frontend/backend touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/src/__tests__/portfolioPositionTradeContract.test.ts`
+- No backend route, provider service, Prisma schema, orderbook UI, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- `Portfolio()` visible `portfolio-position-cash-out-*` action now opens `openPositionTrade(position, "sell")`.
+- Existing hidden `position-trade-sell-*` affordance also remains on `openPositionTrade(position, "sell")`.
+- Samsung proof path `-ServerPositionTrade` now follows the visible Portfolio cash-out action instead of relying on an off-screen hidden Sell action.
+
+User interactions supported:
+
+- User opens Portfolio, sees a filled World Cup winner position, taps Cash out, lands in the full-screen ticket amount-entry screen, selects a preset amount, and sees `Swipe to sell`.
+
+State transitions:
+
+- Portfolio position state remains server/fixture seeded by the existing proof route.
+- Ticket state moves from amount `$0` / choose amount to preset `$25` / armed swipe-copy state.
+- Backend order submission route is preserved; this cycle does not submit a new order in the focused proof.
+
+Known limitations:
+
+- Google login did not disappear; it was intentionally moved from Home into Portfolio/Account. Portfolio still shows a top-left Account entry and a visible `Continue with Google` row.
+- Ticket sell-mode copy still shows Yes/No outcome pills rather than an explicit retail `Sell` mode label; tracked as P1 copy/side clarity.
+
 ## Cycle RD - Trade Ticket Swipe Motion
 
 Feature/page worked on:
