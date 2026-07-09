@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle RN - Portfolio Cash Out to Sell Ticket
+
+Cycle RN changes no backend route or schema. It routes the visible Portfolio cash-out action into the existing generic Trade Ticket sell path.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio position display | Existing portfolio snapshot/order history route used by the server-mode proof | GET | Existing server-mode API key/session behavior | None from this UI action | Position id, market/outcome identity, side, shares, entry/current price, portfolio/history values | Existing order, position, trade/activity, and portfolio summary models | Server-position proof fixture remains available | None introduced by this UI routing cycle. |
+| Portfolio Cash out -> Trade Ticket Sell | Existing `placeOrder()` route only when user completes the swipe threshold | Existing order route method unchanged | Existing mode-dependent order auth unchanged | Existing ticket order body unchanged; selection identity and side are preserved by the existing Trade Ticket path | Existing order result/open-order/history fields unchanged | Existing order lifecycle models | Fake-token/demo mode remains available | Ticket sell-mode copy/identity should be clearer before production auth/trading. |
+
+Evidence:
+
+- Screenshots: `docs/mobile/screenshots/cycle-RN-position-sell-ticket/`
+- UI hierarchy: `docs/mobile/harness/cycle-RN-position-sell-ticket/`
+
 ## Cycle RD - Trade Ticket Swipe Motion
 
 Cycle RD changes no backend route or schema. It is a visible Trade Ticket gesture/UI change only.

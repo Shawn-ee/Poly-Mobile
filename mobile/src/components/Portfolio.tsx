@@ -1261,7 +1261,7 @@ export function Portfolio({
                   {canCashOutPosition(position) && (
                     <Pressable
                       accessibilityLabel={`portfolio-position-cash-out-${position.id}`}
-                      onPress={() => openCashoutPosition(position)}
+                      onPress={() => openPositionTrade(position, "sell")}
                       style={styles.cashOutButton}
                       testID={`portfolio-position-cash-out-${position.id}`}
                     >
@@ -1345,7 +1345,7 @@ export function Portfolio({
                 {canCashOutPosition(position) && (
                   <Pressable
                     accessibilityLabel={`position-trade-sell-${position.id}`}
-                    onPress={() => openCashoutPosition(position)}
+                    onPress={() => openPositionTrade(position, "sell")}
                     style={styles.positionTradeButton}
                     testID={`position-trade-sell-${position.id}`}
                   >

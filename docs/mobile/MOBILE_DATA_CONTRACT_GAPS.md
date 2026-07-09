@@ -1,5 +1,13 @@
 # Mobile Data Contract Gaps
 
+## Cycle RN - Portfolio Cash Out to Sell Ticket
+
+- No new mobile/backend data contract gap was introduced.
+- Portfolio Cash out now routes to the existing generic Sell Trade Ticket path; order route/schema remains unchanged.
+- Existing P1 gap remains: native Google OAuth callback/session/logout state is not yet proven end-to-end in the native app.
+- Google login did not disappear from code. It remains intentionally owned by Portfolio/Account after the Home cleanup; S23 proof XML still contains `portfolio-account-entry-google` and `Continue with Google`.
+- Remaining P1 UI/data-contract clarity: Sell ticket copy should distinguish order mode (`Sell`) from outcome choice (`Yes/No`) more clearly before production trading.
+
 ## Cycle RD - Trade Ticket Swipe Motion
 
 - No new mobile/backend data contract gap was introduced.

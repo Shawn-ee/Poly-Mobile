@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle RN
+
+Gate status: Pass for focused Portfolio Cash out -> generic Sell ticket routing; not a pass for full Portfolio or full native auth parity.
+
+Scope: make the visible Portfolio position action open the full-screen ticket amount-entry Sell path instead of relying on a hidden/off-screen sell affordance.
+
+Decision:
+
+- P0 failed: 0 for focused RN scope.
+- Implemented change: visible `portfolio-position-cash-out-*` now calls `openPositionTrade(position, "sell")`; hidden `position-trade-sell-*` remains on the same generic ticket path.
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`; proof tapped visible Cash out, opened `trade-ticket`, selected `$25`, and verified `Swipe to sell`.
+- Google-login check: current proof hierarchy still includes `portfolio-account-entry-google` and `Continue with Google`. Login was moved from Home into Portfolio/Account by design.
+- P1 remaining: ticket mode copy should make `Sell` clearer instead of depending on Yes/No outcome pills; full native Google OAuth callback/session/logout proof remains future auth work.
+- Evidence: `docs/mobile/audits/cycle-RN-position-sell-ticket.md`; screenshots/XML in `docs/mobile/screenshots/cycle-RN-position-sell-ticket/` and `docs/mobile/harness/cycle-RN-position-sell-ticket/`.
+
 ## Cycle RD
 
 Gate status: Pass for focused Trade Ticket swipe-motion parity; not a pass for full ticket-header visual parity.
