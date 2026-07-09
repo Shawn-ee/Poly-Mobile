@@ -2,6 +2,39 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle RP - Trade Ticket Source Label Cleanup
+
+Feature/page worked on:
+
+- Trade Ticket header source label on the Portfolio Cash out / Sell ticket path.
+
+Frontend/backend touched:
+
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/src/__tests__/tradeTicketSourceBadge.test.ts`
+- No backend route, provider service, Prisma schema, orderbook UI, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- Added `ticketReferenceSource()` to resolve ticket source from explicit selection/market source or provider token identity.
+- `ticketSourceBadge()` no longer returns visible `Checking` copy for unknown source.
+- Unknown source keeps a hidden audit marker via `ticket-market-source-badge-hidden`, preserving internal proof without cluttering the retail ticket UI.
+
+User interactions supported:
+
+- User opens a Sell ticket and sees a cleaner Polymarket-like amount-entry screen without tester/debug source copy.
+- User still sees `Sell France`, Yes/No selector, keypad, and the red/pink swipe area.
+
+State transitions:
+
+- No order state, quote state, or backend submission transition changed.
+
+Known limitations:
+
+- When source identity is truly missing, the ticket hides source copy rather than inventing a provider/local claim.
+- Full provider identity should still be preserved by backend/selection contracts for production-grade auditability.
+
 ## Cycle RO - Trade Ticket Sell Mode Clarity
 
 Feature/page worked on:
