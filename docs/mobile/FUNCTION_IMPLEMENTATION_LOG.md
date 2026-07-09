@@ -2,6 +2,46 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle RA - Portfolio Google Direct Login
+
+Feature/page worked on:
+
+- Portfolio account/login entry.
+
+Frontend/backend touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/App.tsx`
+- `mobile/src/__tests__/portfolioSettingsContract.test.ts`
+- No backend route, provider service, Prisma schema, order logic, orderbook UI, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- `Portfolio` now receives both `openAccount` and `openGoogleSignIn`.
+- The top-left Portfolio profile/avatar still calls `openAccount`.
+- The visible Portfolio `Google login` chip now calls `openGoogleSignIn` directly.
+- `openGoogleSignIn` remains the existing `Linking.openURL(GOOGLE_AUTH_URL)` callback in `mobile/App.tsx`.
+
+User interactions supported:
+
+- User can open Account from the Portfolio profile/avatar.
+- User can tap the Portfolio `Google login` chip and go directly to the existing Google auth browser flow.
+
+State transitions:
+
+- Portfolio chip tap: Expo/Holiwyn Portfolio -> external browser/auth surface.
+- No mobile session/callback state transition changed in this cycle.
+
+Known limitations:
+
+- Full native Google OAuth callback/session/logout proof remains P1.
+
+Evidence:
+
+- Audit doc: `docs/mobile/audits/cycle-RA-portfolio-google-direct-login.md`
+- S23 proof summary: `docs/mobile/harness/cycle-RA-portfolio-google-direct-login/cycle-RA-portfolio-google-direct-login-proof.json`
+- S23 screenshots/XML: `docs/mobile/screenshots/cycle-RA-portfolio-google-direct-login/`, `docs/mobile/harness/cycle-RA-portfolio-google-direct-login/`
+
 ## Cycle QZ - Search Retail Source Cleanup
 
 Feature/page worked on:

@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle RA - Portfolio Google Direct Login
+
+Cycle RA changes no backend route or schema. It wires the Portfolio Google chip to the existing auth-start launcher.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio Google login chip | `/api/auth/google/start?returnTo=/portfolio` through `Linking.openURL(GOOGLE_AUTH_URL)` | Browser GET | Server auth route owns OAuth policy | None from mobile before browser open | None before callback/session completion | Existing backend auth/user/session models | Demo/fake-token trading remains available without sign-in | Full native OAuth callback/session/logout proof remains P1. |
+| Portfolio top-left account entry | None directly | UI navigation only | None | None | None | None | None | None; this remains local tab navigation to Account. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-RA-portfolio-google-direct-login/cycle-RA-portfolio-google-direct-login-proof.json`
+
 ## Cycle QZ - Search Retail Source Cleanup
 
 Cycle QZ changes no backend route or schema. It keeps the existing Search feed/source-summary contract and removes only visible retail source/debug copy.

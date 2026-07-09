@@ -1861,6 +1861,7 @@ export default function App() {
                   cancelOpenOrder={cancelOpenOrder}
                   loadValueHistory={ORDER_MODE === "server" && runtimeApiKey.length > 0 ? loadPortfolioValueHistory : undefined}
                   openAccount={() => setMainTab("account")}
+                  openGoogleSignIn={openGoogleSignIn}
                 />
               </>
             )}

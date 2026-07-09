@@ -16,6 +16,7 @@ describe("Portfolio settings contract", () => {
     expect(portfolio).toContain("portfolio-account-entry-opens-account");
     expect(portfolio).toContain("portfolio-account-entry-top-left");
     expect(portfolio).toContain("portfolio-account-entry-google");
+    expect(portfolio).toContain("portfolio-account-google-direct-signin");
     expect(portfolio).toContain("portfolio-account-google-badge-visible");
     expect(portfolio).toContain("portfolio-avatar-google-badge");
     expect(portfolio).toContain("portfolio-account-entry-label");
@@ -26,6 +27,8 @@ describe("Portfolio settings contract", () => {
     expect(portfolio).toContain("\\u8d26\\u6237 / Google \\u767b\\u5f55");
     expect(portfolio).toContain("Google \\u767b\\u5f55");
     expect(portfolio).toContain("openAccount: () => void");
+    expect(portfolio).toContain("openGoogleSignIn: () => void");
+    expect(portfolio).toContain("onPress={openGoogleSignIn}");
     expect(portfolio).toContain("PortfolioSparkline");
     expect(portfolio).toContain("portfolio-section-tabs");
   });

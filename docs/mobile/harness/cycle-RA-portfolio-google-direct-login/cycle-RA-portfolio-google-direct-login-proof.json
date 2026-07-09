@@ -1,0 +1,41 @@
+{
+  "cycle": "RA",
+  "feature": "Portfolio Google direct login",
+  "device": {
+    "role": "Holiwyn Android proof",
+    "model": "SM-S911U1",
+    "adbDeviceId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp"
+  },
+  "runtime": {
+    "app": "Expo Go",
+    "backend": "http://127.0.0.1:3002",
+    "mobileApiBaseUrl": "http://172.16.200.14:3002",
+    "expoPort": 8310,
+    "marketDataMode": "server",
+    "orderMode": "server",
+    "proofInitialTab": "portfolio"
+  },
+  "evidence": {
+    "portfolioXml": "docs/mobile/harness/cycle-RA-portfolio-google-direct-login/cycle-RA-portfolio.xml",
+    "portfolioScreenshot": "docs/mobile/screenshots/cycle-RA-portfolio-google-direct-login/cycle-RA-portfolio.png",
+    "afterTapXml": "docs/mobile/harness/cycle-RA-portfolio-google-direct-login/cycle-RA-after-google-tap.xml",
+    "afterTapScreenshot": "docs/mobile/screenshots/cycle-RA-portfolio-google-direct-login/cycle-RA-after-google-tap.png"
+  },
+  "checks": {
+    "portfolioPackageExpo": true,
+    "portfolioScreen": true,
+    "googleChip": true,
+    "directSigninMarker": true,
+    "topLeftAccountEntry": true,
+    "accountScreenBeforeTap": false,
+    "afterTapPackageChrome": true,
+    "afterTapGoogleOrAuthSurface": true,
+    "afterTapStillExpo": false
+  },
+  "result": "pass",
+  "notes": [
+    "Portfolio top-left account entry remains an Account navigation affordance.",
+    "Portfolio Google login chip now launches the existing Google auth URL directly.",
+    "No credentials were entered and no account state was changed during proof."
+  ]
+}
