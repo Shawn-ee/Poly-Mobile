@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle RO - Trade Ticket Sell Mode Clarity
+
+Cycle RO changes no backend route or schema. It is a visible Trade Ticket clarity change only.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Trade Ticket visible Buy/Sell mode badge | Existing ticket order path only after swipe threshold release; no route called by this visual badge | Existing `placeOrder()` path unchanged | Existing mode-dependent order auth unchanged | Existing order body unchanged | Existing ticket/order fields unchanged | Existing order/portfolio models unchanged | Fake-token/demo mode remains available | None for this visible mode-clarity cycle. |
+
+Evidence:
+
+- Screenshots: `docs/mobile/screenshots/cycle-RO-ticket-mode-clarity/`
+- UI hierarchy: `docs/mobile/harness/cycle-RO-ticket-mode-clarity/`
+
 ## Cycle RN - Portfolio Cash Out to Sell Ticket
 
 Cycle RN changes no backend route or schema. It routes the visible Portfolio cash-out action into the existing generic Trade Ticket sell path.

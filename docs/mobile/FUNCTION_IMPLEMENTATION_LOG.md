@@ -2,6 +2,40 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle RO - Trade Ticket Sell Mode Clarity
+
+Feature/page worked on:
+
+- Trade Ticket amount-entry screen opened from Portfolio Cash out / Sell.
+
+Frontend/backend touched:
+
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/src/__tests__/tradeTicketModeClarityContract.test.ts`
+- No backend route, provider service, Prisma schema, orderbook UI, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- `TradeTicket()` now computes `modeLabel` / `modeOutcomeLabel`.
+- The ticket body renders a visible `ticket-order-mode-visible` badge, e.g. `Sell France`, separate from the Yes/No outcome selector.
+- Samsung proof path now requires `ticket-order-mode-sell` and `Sell France` before passing the focused Portfolio-to-Sell-ticket proof.
+
+User interactions supported:
+
+- User taps Portfolio Cash out, lands on the full-screen ticket, and can immediately tell this is a Sell action for the selected outcome.
+- User can still use the Yes/No selector and keypad normally.
+
+State transitions:
+
+- No order state or backend order submission transition changed.
+- Ticket side remains `sell` for the Portfolio cash-out path, and the visible badge reflects that state.
+
+Known limitations:
+
+- This cycle improves mode clarity only. Full native Google OAuth callback/session/logout remains a separate P1 auth milestone.
+- Source badge still shows transient `Checking` while ticket source refresh is resolving; this is not changed in RO.
+
 ## Cycle RN - Portfolio Cash Out to Sell Ticket
 
 Feature/page worked on:
