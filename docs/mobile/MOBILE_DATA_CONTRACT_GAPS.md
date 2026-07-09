@@ -2,6 +2,30 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle PY - Current APK Lane Refresh
+
+Closed or narrowed:
+
+- Current mobile code now has a fresh local release APK build and Samsung S23 install/launch proof.
+- The APK lane no longer depends on stale evidence from the original repo path.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- None introduced by this build/proof cycle.
+
+Route mismatch:
+
+- None introduced. The APK launches the existing app and uses the existing deep-link route handling.
+
+Temporary mock/static data:
+
+- The installed APK can still render Local MVP demo/fake-token Portfolio state when server-mode credentials are not supplied.
+
+Future migration concern:
+
+- A true development-client or production-like distribution lane still needs EAS CLI/dev-client setup, signing policy, and release-channel configuration.
+- Rebuild `mobile/dist/holiwyn-preview.apk` whenever source changes before relying on APK proof for tester signoff.
+
 ## Cycle PX - Account Login Focus Cleanup
 
 Closed or narrowed:

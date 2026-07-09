@@ -2,6 +2,45 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle PY - Current APK Lane Refresh
+
+Feature/page worked on:
+
+- Android installed-app runtime lane for the current Holiwyn mobile build.
+
+Frontend/services touched:
+
+- No source files changed.
+- Generated local APK artifact: `mobile/dist/holiwyn-preview.apk` (ignored; not committed).
+
+Important functions/services touched:
+
+- Local Gradle build path: `mobile/android/gradlew.bat :app:assembleRelease`.
+- APK readiness script: `mobile/scripts/check-android-apk-artifact-readiness.ps1`.
+- Samsung APK smoke script: `mobile/scripts/samsung-apk-smoke.ps1`.
+
+User interactions supported:
+
+- Testers can install and launch the current-code Holiwyn APK on Samsung S23 instead of relying only on Expo Go.
+- The APK smoke launches `holiwyn://qa?forcePortfolio=1`, proving the app foregrounds and renders Portfolio UI.
+
+State transitions:
+
+- No app state, backend route, auth, order, portfolio, provider, schema, orderbook, chat, live stats, social, deposit, or withdrawal state changed.
+
+Known limitations:
+
+- This is a release APK smoke lane, not a full Expo dev-client setup. EAS CLI and `expo-dev-client` remain unavailable in this workspace.
+- The APK artifact is local and ignored by git; rebuild it from source when needed.
+
+Evidence:
+
+- Audit doc: `docs/mobile/audits/cycle-PY-current-apk-lane-refresh.md`
+- APK readiness: `docs/mobile/harness/cycle-current-android-apk-artifact-readiness.json`
+- S23 install/launch proof: `docs/mobile/harness/cycle-current-samsung-apk-smoke.json`
+- S23 visible proof summary: `docs/mobile/harness/cycle-PY-current-apk-lane-refresh/cycle-PY-current-apk-lane-s23-proof.json`
+- S23 screenshot/XML: `docs/mobile/screenshots/cycle-PY-current-apk-lane-refresh/cycle-PY-s23-apk-portfolio.png`, `docs/mobile/harness/cycle-PY-current-apk-lane-refresh/cycle-PY-s23-apk-portfolio.xml`
+
 ## Cycle PX - Account Login Focus Cleanup
 
 Feature/page worked on:

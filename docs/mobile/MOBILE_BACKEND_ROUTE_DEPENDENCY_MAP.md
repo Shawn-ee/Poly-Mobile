@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle PY - Current APK Lane Refresh
+
+Cycle PY changes no backend routes or mobile source. It refreshes the current-code installed Android APK proof lane.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Installed APK smoke on Samsung S23 | Existing mobile app startup and existing `holiwyn://qa?forcePortfolio=1` deep-link handling | Native app launch/deep link | None for launch; existing app route modes unchanged | None | Existing embedded app state and local/server-mode runtime config | No schema change | Existing demo/local fake-token state can render Portfolio if server mode is not configured | Full dev-client/EAS lane remains future tooling work; this cycle proves a local release APK lane only. |
+
 ## Cycle PX - Account Login Focus Cleanup
 
 Cycle PX changes visible Account UI only. It does not change backend routes, auth routes, Prisma schema, provider import, order matching, portfolio sync, or fake-token mechanics.

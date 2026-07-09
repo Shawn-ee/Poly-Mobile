@@ -1,0 +1,23 @@
+{
+  "cycle": "PY",
+  "feature": "Fresh current-code APK lane refresh",
+  "result": "pass",
+  "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+  "model": "SM-S911U1",
+  "packageName": "com.holiwyn.mobile",
+  "apkPath": "mobile/dist/holiwyn-preview.apk",
+  "assertions": {
+    "installedAndLaunched": true,
+    "holiwynVisible": true,
+    "portfolioVisible": true,
+    "bottomNavigationVisible": true
+  },
+  "screenshots": [
+    "docs/mobile/screenshots/cycle-PY-current-apk-lane-refresh/cycle-PY-s23-apk-portfolio.png"
+  ],
+  "xml": [
+    "docs/mobile/harness/cycle-PY-current-apk-lane-refresh/cycle-PY-s23-apk-portfolio.xml"
+  ],
+  "readiness": "docs/mobile/harness/cycle-current-android-apk-artifact-readiness.json",
+  "installLaunch": "docs/mobile/harness/cycle-current-samsung-apk-smoke.json"
+}

@@ -1,85 +1,83 @@
-﻿{
-    "checkedAt":  "2026-07-02T21:00:18.6922090Z",
-    "ready":  true,
-    "nextActions":  [
-                        "Install eas-cli or use an existing generated APK artifact."
-                    ],
-    "apkPath":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\mobile\\.\\dist\\holiwyn-preview.apk",
-    "warnings":  [
-                     "EAS CLI is unavailable; cloud/local EAS builds cannot be launched from this workspace yet.",
-                     "expo-dev-client is not installed; the immediate path is preview-apk rather than a dev-client APK."
-                 ],
-    "mobileRoot":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\mobile",
-    "buildCapabilities":  {
-                              "canAttemptCloudEasBuild":  false,
-                              "canAttemptLocalGradleBuild":  true,
-                              "canRunApkSmoke":  true
-                          },
-    "findings":  [
-                     {
-                         "id":  "apk-file",
-                         "ready":  true,
-                         "detail":  "APK exists at C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\mobile\\.\\dist\\holiwyn-preview.apk."
-                     },
-                     {
-                         "id":  "expo-config",
-                         "ready":  true,
-                         "detail":  "mobile/app.json exists."
-                     },
-                     {
-                         "id":  "eas-config",
-                         "ready":  true,
-                         "detail":  "mobile/eas.json exists."
-                     },
-                     {
-                         "id":  "package-config",
-                         "ready":  true,
-                         "detail":  "mobile/package.json exists."
-                     },
-                     {
-                         "id":  "local-expo-cli",
-                         "ready":  true,
-                         "detail":  "Local Expo CLI shim exists."
-                     },
-                     {
-                         "id":  "eas-cli",
-                         "ready":  false,
-                         "detail":  "EAS CLI is not installed locally or globally."
-                     },
-                     {
-                         "id":  "android-sdk",
-                         "ready":  true,
-                         "detail":  "Android SDK exists at C:\\Users\\hecto\\AppData\\Local\\Android\\Sdk."
-                     },
-                     {
-                         "id":  "android-platform-tools",
-                         "ready":  true,
-                         "detail":  "Android platform-tools adb.exe exists."
-                     },
-                     {
-                         "id":  "java",
-                         "ready":  true,
-                         "detail":  "Java exists at C:\\Program Files\\Common Files\\Oracle\\Java\\javapath\\java.exe."
-                     },
-                     {
-                         "id":  "native-android-project",
-                         "ready":  true,
-                         "detail":  "mobile/android exists."
-                     },
-                     {
-                         "id":  "gradle-wrapper",
-                         "ready":  true,
-                         "detail":  "Gradle wrapper exists."
-                     },
-                     {
-                         "id":  "expo-dev-client",
-                         "ready":  false,
-                         "detail":  "expo-dev-client is not installed; preview APK is the current managed-build lane."
-                     }
-                 ],
-    "status":  "apk_ready_for_samsung_smoke",
-    "repoRoot":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly",
-    "blockers":  [
-
-                 ]
+{
+  "checkedAt": "2026-07-09T01:48:29.0484761Z",
+  "ready": true,
+  "nextActions": [
+    "Install eas-cli or use an existing generated APK artifact."
+  ],
+  "apkPath": "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\mobile\\.\\dist\\holiwyn-preview.apk",
+  "warnings": [
+    "EAS CLI is unavailable; cloud/local EAS builds cannot be launched from this workspace yet.",
+    "expo-dev-client is not installed; the immediate path is preview-apk rather than a dev-client APK."
+  ],
+  "mobileRoot": "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\mobile",
+  "buildCapabilities": {
+    "canAttemptCloudEasBuild": false,
+    "canAttemptLocalGradleBuild": true,
+    "canRunApkSmoke": true
+  },
+  "findings": [
+    {
+      "id": "apk-file",
+      "ready": true,
+      "detail": "APK exists at C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\mobile\\.\\dist\\holiwyn-preview.apk."
+    },
+    {
+      "id": "expo-config",
+      "ready": true,
+      "detail": "mobile/app.json exists."
+    },
+    {
+      "id": "eas-config",
+      "ready": true,
+      "detail": "mobile/eas.json exists."
+    },
+    {
+      "id": "package-config",
+      "ready": true,
+      "detail": "mobile/package.json exists."
+    },
+    {
+      "id": "local-expo-cli",
+      "ready": true,
+      "detail": "Local Expo CLI shim exists."
+    },
+    {
+      "id": "eas-cli",
+      "ready": false,
+      "detail": "EAS CLI is not installed locally or globally."
+    },
+    {
+      "id": "android-sdk",
+      "ready": true,
+      "detail": "Android SDK exists at C:\\Users\\hecto\\AppData\\Local\\Android\\Sdk."
+    },
+    {
+      "id": "android-platform-tools",
+      "ready": true,
+      "detail": "Android platform-tools adb.exe exists."
+    },
+    {
+      "id": "java",
+      "ready": true,
+      "detail": "Java exists at C:\\Program Files\\Common Files\\Oracle\\Java\\javapath\\java.exe."
+    },
+    {
+      "id": "native-android-project",
+      "ready": true,
+      "detail": "mobile/android exists."
+    },
+    {
+      "id": "gradle-wrapper",
+      "ready": true,
+      "detail": "Gradle wrapper exists."
+    },
+    {
+      "id": "expo-dev-client",
+      "ready": false,
+      "detail": "expo-dev-client is not installed; preview APK is the current managed-build lane."
+    }
+  ],
+  "status": "apk_ready_for_samsung_smoke",
+  "repoRoot": "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main",
+  "blockers": []
 }

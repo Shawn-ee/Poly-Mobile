@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle PY
+
+Gate status: Pass
+
+Scope: Current-code Android APK lane refresh.
+
+Decision:
+
+- P0 failed: 0 for focused APK runtime lane scope.
+- Implemented change: no source behavior changed; the current worktree builds a fresh release APK, installs it on Samsung S23, launches `com.holiwyn.mobile`, and captures visible Portfolio UI proof.
+- P1/P2 remaining: EAS/dev-client distribution remains future tooling work.
+- Evidence: Gradle `:app:assembleRelease` passed; APK readiness passed with `docs/mobile/harness/cycle-current-android-apk-artifact-readiness.json`; Samsung install/launch passed with `docs/mobile/harness/cycle-current-samsung-apk-smoke.json`; S23 visible proof passed with `docs/mobile/harness/cycle-PY-current-apk-lane-refresh/cycle-PY-current-apk-lane-s23-proof.json` and `docs/mobile/screenshots/cycle-PY-current-apk-lane-refresh/cycle-PY-s23-apk-portfolio.png`.
+
 ## Cycle PX
 
 Gate status: Pass
