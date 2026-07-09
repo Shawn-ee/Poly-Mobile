@@ -1176,3 +1176,12 @@ For every UI element or interaction, answer:
 - Unresolved P0 for RJ scope: 0.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Remaining P1: native Google OAuth callback/session/logout remains separate auth work.
+
+## Cycle RK Gap Tracker Update
+
+- PM-GAP-165 is opened and closed for Portfolio row source/debug label visual cleanup.
+- RK keeps source identity and contract-fixture markers in accessibility/XML metadata while hiding row-level source pills and notes from the visible retail Portfolio rows.
+- RK proves on Samsung S23 that the current-route server-filled History row remains readable as `Argentina Over 1.5 goals`, `ARG vs EGY`, `$75`, and `Team Total 1.5`.
+- Unresolved P0 for RK scope: 0.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Remaining P1: native Google OAuth callback/session/logout remains separate auth work.

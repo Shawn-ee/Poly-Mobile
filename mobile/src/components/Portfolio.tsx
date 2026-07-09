@@ -888,6 +888,7 @@ export function Portfolio({
                         styles.portfolioSourcePill,
                         portfolioSourceBadge(order.selection).tone === "provider" && styles.portfolioSourcePillProvider,
                         portfolioSourceBadge(order.selection).tone === "fixture" && styles.portfolioSourcePillFixture,
+                        styles.rowSourceAuditOnly,
                       ]}
                       testID={`open-order-source-badge-${order.id}`}
                     >
@@ -913,6 +914,7 @@ export function Portfolio({
                       styles.portfolioSourceNote,
                       portfolioSourceNote(order.selection, locale)?.tone === "provider" && styles.portfolioSourceNoteProvider,
                       portfolioSourceNote(order.selection, locale)?.tone === "fixture" && styles.portfolioSourceNoteFixture,
+                      styles.rowSourceAuditOnly,
                     ]}
                     testID={`open-order-source-note-${order.id}`}
                   >
@@ -1185,6 +1187,7 @@ export function Portfolio({
                           styles.portfolioSourcePill,
                           portfolioSourceBadge(position.selection).tone === "provider" && styles.portfolioSourcePillProvider,
                           portfolioSourceBadge(position.selection).tone === "fixture" && styles.portfolioSourcePillFixture,
+                          styles.rowSourceAuditOnly,
                         ]}
                         testID={`portfolio-position-source-badge-${position.id}`}
                       >
@@ -1210,6 +1213,7 @@ export function Portfolio({
                         styles.portfolioSourceNote,
                         portfolioSourceNote(position.selection, locale)?.tone === "provider" && styles.portfolioSourceNoteProvider,
                         portfolioSourceNote(position.selection, locale)?.tone === "fixture" && styles.portfolioSourceNoteFixture,
+                        styles.rowSourceAuditOnly,
                       ]}
                       testID={`portfolio-position-source-note-${position.id}`}
                     >
@@ -1386,6 +1390,7 @@ export function Portfolio({
                         styles.portfolioSourcePill,
                         portfolioSourceBadge(activity.selection).tone === "provider" && styles.portfolioSourcePillProvider,
                         portfolioSourceBadge(activity.selection).tone === "fixture" && styles.portfolioSourcePillFixture,
+                        styles.rowSourceAuditOnly,
                       ]}
                       testID={`portfolio-history-source-badge-${activity.id}`}
                     >
@@ -1422,6 +1427,7 @@ export function Portfolio({
                       styles.portfolioSourceNote,
                       portfolioSourceNote(activity.selection, locale)?.tone === "provider" && styles.portfolioSourceNoteProvider,
                       portfolioSourceNote(activity.selection, locale)?.tone === "fixture" && styles.portfolioSourceNoteFixture,
+                      styles.rowSourceAuditOnly,
                     ]}
                     testID={`portfolio-history-source-note-${activity.id}`}
                   >
@@ -1690,6 +1696,7 @@ const styles = StyleSheet.create({
   portfolioSourceNote: { color: "#94a3b8", fontSize: 11, fontWeight: "900", marginTop: 4 },
   portfolioSourceNoteProvider: { color: "#86efac" },
   portfolioSourceNoteFixture: { color: "#fde68a" },
+  rowSourceAuditOnly: { height: 1, minHeight: 1, width: 1, opacity: 0.01, overflow: "hidden", paddingHorizontal: 0, marginTop: 0, position: "absolute" },
   portfolioSourceSummary: { marginHorizontal: 24, marginTop: 14, marginBottom: 4, minHeight: 38, flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 12, borderRadius: 10, borderWidth: 1, borderColor: "#334155", backgroundColor: "#101827" },
   portfolioSourceSummaryProvider: { borderColor: "#166534", backgroundColor: "#052e16" },
   portfolioSourceSummaryFixture: { borderColor: "#854d0e", backgroundColor: "#33280f" },
