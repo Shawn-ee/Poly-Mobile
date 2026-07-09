@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle PT - Portfolio Google Entry Visibility
+
+Cycle PT changes visible mobile navigation only. No backend route, auth route, Prisma schema, or order route changed.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio account entry to Google login screen | Existing Account screen can open `${EXPO_PUBLIC_API_BASE_URL}/api/auth/google/start?returnTo=/portfolio` through `openGoogleSignIn` | Browser/deep-link open from mobile | Server auth route decides Google auth requirements | None from mobile beyond opening URL | None until auth callback/profile sync is implemented | None changed | Fake-token trading remains available without sign-in in Local MVP | Google login success requires a correctly configured backend auth route and mobile API base URL; this cycle only makes the existing entry discoverable. |
+
 ## Cycle PS - Provider-Backed Line Market Gap
 
 Cycle PS does not change backend routes or schemas. It verifies the current match line-market provider gap against Polymarket Gamma and the Holiwyn live-detail route.

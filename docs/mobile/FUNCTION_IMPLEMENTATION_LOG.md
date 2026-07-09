@@ -2,6 +2,42 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle PT - Portfolio Google Entry Visibility
+
+Feature/page worked on:
+
+- Portfolio account entry discoverability for the existing Account screen and Google login button.
+
+Frontend/services touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/src/__tests__/portfolioSettingsContract.test.ts`
+
+Important functions/services touched:
+
+- Existing `openAccount` callback path from `Portfolio` to `AccountScreen`.
+- Existing `openGoogleSignIn` implementation in `mobile/App.tsx` remains unchanged.
+
+User interactions supported:
+
+- Portfolio top-left avatar/name still opens Account.
+- New top-right gear button also opens Account, making the existing `Continue with Google` action easier to find after the Home account button cleanup.
+
+State transitions:
+
+- `mainTab` changes from `portfolio` to `account` through the existing `openAccount` callback.
+- No auth, backend, Google OAuth URL, portfolio, order, schema, provider, or wallet state changed.
+
+Known limitations:
+
+- This restores discoverability only; successful Google OAuth still depends on `EXPO_PUBLIC_API_BASE_URL` pointing at a backend that serves `/api/auth/google/start`.
+
+Evidence:
+
+- Focused contract test: `mobile/src/__tests__/portfolioSettingsContract.test.ts`
+- Audit doc: `docs/mobile/audits/cycle-PT-portfolio-google-entry-visibility.md`
+- S23 proof summary: `docs/mobile/harness/cycle-PT-portfolio-google-entry-visibility/cycle-PT-portfolio-google-entry-visibility-summary.json`
+
 ## Cycle PS - Provider-Backed Line Market Gap
 
 Feature/page worked on:

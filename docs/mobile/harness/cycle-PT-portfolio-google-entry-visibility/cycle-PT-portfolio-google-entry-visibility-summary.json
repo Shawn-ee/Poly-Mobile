@@ -1,0 +1,17 @@
+﻿{
+    "generatedAt":  "2026-07-09T00:58:13.9308257Z",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "scope":  "portfolio-google-entry-visibility",
+    "portfolioGearFound":  true,
+    "accountGoogleFound":  true,
+    "screenshots":  [
+                        "docs/mobile/screenshots/cycle-PT-portfolio-google-entry-visibility/cycle-PT-portfolio-account-entry.png",
+                        "docs/mobile/screenshots/cycle-PT-portfolio-google-entry-visibility/cycle-PT-account-google-entry.png"
+                    ],
+    "hierarchies":  [
+                        "docs/mobile/harness/cycle-PT-portfolio-google-entry-visibility/cycle-PT-portfolio-account-entry.xml",
+                        "docs/mobile/harness/cycle-PT-portfolio-google-entry-visibility/cycle-PT-account-google-entry.xml"
+                    ],
+    "pass":  true
+}

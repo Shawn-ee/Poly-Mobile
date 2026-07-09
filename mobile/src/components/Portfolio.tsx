@@ -973,6 +973,16 @@ export function Portfolio({
           <PortfolioAvatar />
           <Text style={styles.profileName}>{pageCopy.profile}</Text>
         </Pressable>
+        <Pressable
+          accessibilityLabel="portfolio-account-entry-gear portfolio-account-entry-opens-account"
+          accessibilityRole="button"
+          hitSlop={10}
+          onPress={openAccount}
+          style={({ pressed }) => [styles.accountGearButton, pressed && styles.accountGearButtonPressed]}
+          testID="portfolio-account-entry-gear"
+        >
+          <Ionicons name="settings-outline" size={27} color="#f8fafc" />
+        </Pressable>
       </View>
       <View accessibilityLabel="fake-balance-card portfolio-value-retail-density portfolio-header-dollar-value" testID="fake-balance-card" style={styles.valueBlock}>
         <Text style={styles.portfolioValue}>{portfolioHeaderMoney(portfolioValue)}</Text>
@@ -1516,6 +1526,8 @@ const styles = StyleSheet.create({
   scrollPad: { width: "100%", maxWidth: 480, alignSelf: "center", paddingHorizontal: 0, paddingBottom: 110 },
   profileHeader: { minHeight: 58, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 24, paddingTop: 4 },
   profileLeft: { flexDirection: "row", alignItems: "center", gap: 12, flex: 1 },
+  accountGearButton: { width: 48, height: 48, borderRadius: 999, alignItems: "center", justifyContent: "center" },
+  accountGearButtonPressed: { backgroundColor: "#111827", transform: [{ scale: 0.97 }] },
   avatarGradient: { width: 46, height: 46, borderRadius: 999, overflow: "hidden", backgroundColor: "#f43f5e", position: "relative" },
   avatarColorStop: { position: "absolute", borderRadius: 999 },
   avatarColorStopPink: { left: -8, top: -5, width: 48, height: 48, backgroundColor: "#f43f5e" },
