@@ -7224,3 +7224,13 @@ Remaining P1:
 - Mobile proof: mapper test passes and proves backend `displayTitle` becomes `PortfolioActivity.marketTitle`.
 - Visible proof: Portfolio XML contains `portfolio-tab-history portfolio-tab-selected`, `Sold`, `PAR vs AUS`, `Match Winner`, `$25`, and `Just now`.
 - Remaining P1: native Google OAuth callback/session/logout and production liquidity/public trading policy remain future work.
+
+# Cycle RT Audit Gate - Generic Cashout Sell Ticket
+
+- Scope: Local MVP cashout interaction consolidation onto the generic Sell Trade Ticket.
+- P0 result: PASS.
+- Android proof: Samsung S23 `SM-S911U1`.
+- Visible proof: cashout ticket XML contains `trade-ticket`, `ticket-side-sell`, `swipe-to-submit-order`, and `ticket-retail-reference-layout`.
+- Submit proof: ready XML contains `Swipe to sell`, `$25`, and `swipe-submit-gesture-required`; History XML contains `activity-sold`, `portfolio-market-type-spread`, and `portfolio-line-1.5`.
+- Negative proof: RT XML rejects old `cashout-ticket` and `swipe-to-cashout` markers.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

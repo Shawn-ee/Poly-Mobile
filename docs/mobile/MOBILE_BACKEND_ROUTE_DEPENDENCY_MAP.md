@@ -4055,3 +4055,9 @@ Cycle OW implementation notes:
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Portfolio History canonical event/market display | `/api/portfolio/history` | GET | Mobile API key for app proof; session user for web route use | Auth header only | `market.title`, `market.displayTitle`, `market.eventTitle`, `market.eventSlug`, outcome, selection identity, trade/order timestamps and amounts | `User`, `ApiCredential`, `Event`, `Market`, `Outcome`, `Order`, `Trade`, `Position`, `LedgerEntry` for resolved rows | Older/mobile fixture payloads without `displayTitle` still use fallback title parsing | No route gap remains for readable event/market display fields. |
+
+# Cycle RT - Generic Cashout Sell Ticket
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Cash out through generic Sell Trade Ticket | `/api/markets/:marketId/quote`; `/api/orders`; `/api/portfolio`; `/api/portfolio/history` | GET/POST | Mobile API key in server mode | Generic ticket submits `SELL` order with selected `marketId`, `outcomeId`, price/size derived from amount and quote, and order-time selection identity | Quote price, filled sell order, refreshed positions, sold history activity, selected market/outcome/line/source identity | `User`, `ApiCredential`, `Market`, `Outcome`, `Order`, `Trade`, `Position`, balances | Mock/local mode continues to use generic ticket local order handling | No new backend route gap; production liquidity/public policy remains future work. |

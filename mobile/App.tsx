@@ -7,7 +7,6 @@ import { PolyApi } from "./src/api";
 import { normalizeEventDetail, normalizeEventSummary } from "./src/adapters/worldCupAdapter";
 import { AccountScreen } from "./src/components/AccountScreen";
 import { BottomTabs } from "./src/components/BottomTabs";
-import { CashoutTicket } from "./src/components/CashoutTicket";
 import { EventDetail } from "./src/components/EventDetail";
 import { Header } from "./src/components/Header";
 import { HomeScreen, type HomeFilter } from "./src/components/HomeScreen";
@@ -35,8 +34,8 @@ import {
 import type { PortfolioValueHistoryRange } from "./src/types";
 import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 import { appendUniqueActivity, cancelOpenOrderOnServer, openOrderCanceledActivity } from "./src/services/openOrderService";
-import { assertCanSellPositionShares, availablePositionShares, canCashOutPosition, closePositionOnServer } from "./src/services/positionCloseService";
-import { serverBackendOnlyPortfolioFixture, serverClosedPortfolioFixture, serverHydratedPortfolioFixture } from "./src/services/portfolioFixtureService";
+import { assertCanSellPositionShares, availablePositionShares } from "./src/services/positionCloseService";
+import { serverBackendOnlyPortfolioFixture, serverHydratedPortfolioFixture } from "./src/services/portfolioFixtureService";
 import { applyServerPortfolioState } from "./src/services/portfolioStateApplyService";
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { loadPortfolioValueHistory as loadPortfolioValueHistoryRoute } from "./src/services/portfolioValueHistoryService";
@@ -334,10 +333,8 @@ export default function App() {
   const [eventDetailForcedSide, setEventDetailForcedSide] = useState<"buy" | "sell" | null>(null);
   const [query, setQuery] = useState("");
   const [ticket, setTicket] = useState<Ticket | null>(null);
-  const [cashoutPosition, setCashoutPosition] = useState<Position | null>(null);
   const [ticketOrderError, setTicketOrderError] = useState<string | null>(null);
   const [ticketOrderErrorDetail, setTicketOrderErrorDetail] = useState<string | null>(null);
-  const [cashoutError, setCashoutError] = useState<string | null>(null);
   const [forceOrderFailure, setForceOrderFailure] = useState(false);
   const [balance, setBalance] = useState(10000);
   const [positions, setPositions] = useState<Position[]>([]);
@@ -380,7 +377,6 @@ export default function App() {
   const searchRequestSeq = useRef(0);
   const liveRequestSeq = useRef(0);
   const skipPortfolioHydration = useRef(false);
-  const forceServerCloseFixture = useRef(false);
   const forceServerOrderProof = useRef(false);
   const forceServerOpenOrderProof = useRef(false);
   const forceServerOrderSide = useRef<"buy" | "sell">("buy");
@@ -633,7 +629,6 @@ export default function App() {
     forceServerOrderOutcomeId.current = url.match(/[?&,]forceServerOrderOutcomeId=([^&,]+)/)?.[1]
       ? decodeURIComponent(url.match(/[?&,]forceServerOrderOutcomeId=([^&,]+)/)?.[1] ?? "")
       : null;
-    forceServerCloseFixture.current = url.includes("forceServerCloseFixture=1");
     if (apiKeyMatch?.[1]) {
       setRuntimeApiKey(decodeURIComponent(apiKeyMatch[1]));
     }
@@ -1677,86 +1672,6 @@ export default function App() {
     }
   };
 
-  const closePosition = async (position: Position) => {
-    if (ORDER_MODE === "server" && forceServerCloseFixture.current) {
-      const fixture = serverClosedPortfolioFixture(position);
-      setBalance(fixture.balance);
-      setPositions(fixture.positions);
-      setLatestOrder(fixture.latestOrder);
-      setOpenOrders(fixture.openOrders);
-      setActivities(fixture.activities);
-      setPortfolioSyncStatus("synced");
-      const snapshot: StoredPortfolio = {
-        balance: fixture.balance,
-        positions: fixture.positions,
-        latestOrder: fixture.latestOrder,
-        openOrders: fixture.openOrders,
-        activities: fixture.activities,
-      };
-      AsyncStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(snapshot)).catch(() => undefined);
-      return true;
-    }
-    try {
-      await closePositionOnServer({ mode: ORDER_MODE, api, position });
-    } catch (error) {
-      if (mounted.current) setPortfolioSyncStatus("error");
-      setCashoutError(error instanceof Error ? error.message : "Cash out failed. Try again.");
-      return false;
-    }
-    if (ORDER_MODE === "server") {
-      await refreshServerPortfolio().catch(() => {
-        if (mounted.current) setPortfolioSyncStatus("error");
-      });
-      return true;
-    }
-    const value = portfolioPositionValue(position);
-    setBalance((current) => current + value);
-    setPositions((current) => current.filter((item) => item.id !== position.id));
-    setActivities((current) => [
-      {
-        id: `${position.id}-closed`,
-        action: "closed",
-        title: position.title,
-        outcome: position.outcome,
-        amount: value,
-        entryAmount: position.amount,
-        side: position.side,
-        probability: position.probability,
-        isLive: position.isLive,
-        liveClock: position.liveClock,
-        timestamp: t.justNow,
-      },
-      ...current,
-    ]);
-    return true;
-  };
-
-  const openCashoutPosition = (position: Position) => {
-    setTicket(null);
-    setTicketOrderError(null);
-    setTicketOrderErrorDetail(null);
-    setCashoutError(null);
-    if (!canCashOutPosition(position)) {
-      setCashoutError("No position is available to cash out.");
-      setCashoutPosition(position);
-      return;
-    }
-    setCashoutPosition(position);
-  };
-
-  const cashOutFullPosition = async (position: Position) => {
-    setCashoutError(null);
-    if (!canCashOutPosition(position)) {
-      setCashoutError("No position is available to cash out.");
-      return;
-    }
-    const closed = await closePosition(position);
-    if (!closed) return;
-    setCashoutPosition(null);
-    setSelectedEvent(null);
-    setMainTab("portfolio");
-  };
-
   const openPositionTrade = (position: Position, side: "buy" | "sell") => {
     if (side === "sell" && availablePositionShares(position) <= 0) {
       setTicketOrderError(t.orderFailed);
@@ -1851,7 +1766,6 @@ export default function App() {
             toggleSavedEvent={toggleSavedEvent}
             requestMarketDepth={setSelectedDepthMarketId}
             positions={positions}
-            openCashoutPosition={openCashoutPosition}
             openPositionTrade={openPositionTrade}
           />
         ) : (
@@ -1900,7 +1814,6 @@ export default function App() {
                   openOrders={openOrders}
                   activities={activities}
                   syncStatus={portfolioSyncStatus}
-                  openCashoutPosition={openCashoutPosition}
                   openPositionTrade={openPositionTrade}
                   cancelOpenOrder={cancelOpenOrder}
                   loadValueHistory={ORDER_MODE === "server" && runtimeApiKey.length > 0 ? loadPortfolioValueHistory : undefined}
@@ -1967,15 +1880,6 @@ export default function App() {
           setTicket(null);
         }}
         placeOrder={placeOrder}
-      />
-      <CashoutTicket
-        position={cashoutPosition}
-        error={cashoutError}
-        close={() => {
-          setCashoutError(null);
-          setCashoutPosition(null);
-        }}
-        cashOut={cashOutFullPosition}
       />
     </SafeAreaView>
     </SafeAreaProvider>

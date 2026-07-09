@@ -523,7 +523,6 @@ export function EventDetail({
   toggleSavedEvent,
   requestMarketDepth,
   positions = [],
-  openCashoutPosition,
   openPositionTrade,
 }: {
   event: Event;
@@ -536,7 +535,6 @@ export function EventDetail({
   toggleSavedEvent: (event: Event) => void;
   requestMarketDepth?: (marketId: string) => void;
   positions?: Position[];
-  openCashoutPosition?: (position: Position) => void;
   openPositionTrade?: (position: Position, side: "buy" | "sell") => void;
 }) {
   const [activeTab, setActiveTab] = useState<"game-lines" | "exact-score" | "halves" | "player-props">("game-lines");
@@ -1947,8 +1945,8 @@ export function EventDetail({
                 </Pressable>
                 {hasSellablePositionShares(position) && (
                   <Pressable
-                    accessibilityLabel="event-detail-position-cash-out"
-                    onPress={() => openCashoutPosition?.(position)}
+                    accessibilityLabel="event-detail-position-cash-out event-detail-position-cash-out-generic-sell-ticket"
+                    onPress={() => openPositionTrade?.(position, "sell")}
                     style={styles.cashOutButton}
                     testID="event-detail-position-cash-out"
                   >

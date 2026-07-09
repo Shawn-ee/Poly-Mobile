@@ -2714,3 +2714,13 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Portfolio XML: `docs/mobile/harness/cycle-RS-history-display-contract/cycle-RS-portfolio-history.xml`.
 - Screenshots: `docs/mobile/screenshots/cycle-RS-history-display-contract/`.
 - Result: PASS. XML shows `PAR vs AUS`, `Match Winner`, `Sold`, `$25`, and `Just now`.
+
+# Cycle RT - S23 Generic Cashout Sell Ticket Proof
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.
+- Flow: Home -> Live -> Event Detail -> Spread buy ticket -> swipe buy -> Portfolio position -> Cash out -> generic Sell ticket -> `$25` -> swipe sell -> Portfolio History.
+- Proof summary: `docs/mobile/harness/cycle-RT-generic-cashout-ticket/cycle-RT-current-mvp-s23-visible-flow.json`.
+- Cashout ticket XML: `docs/mobile/harness/cycle-RT-generic-cashout-ticket/cycle-RT-current-mvp-line-cashout-ticket.xml`.
+- Ready ticket XML: `docs/mobile/harness/cycle-RT-generic-cashout-ticket/cycle-RT-current-mvp-line-cashout-ticket-ready.xml`.
+- History XML: `docs/mobile/harness/cycle-RT-generic-cashout-ticket/cycle-RT-current-mvp-line-cashout-history.xml`.
+- Result: PASS. XML shows generic `trade-ticket`, `ticket-side-sell`, `Swipe to sell`, `$25`, `activity-sold`, and no old `cashout-ticket` marker.

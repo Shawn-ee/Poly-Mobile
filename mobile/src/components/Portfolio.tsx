@@ -761,7 +761,6 @@ export function Portfolio({
   openOrders,
   activities,
   syncStatus,
-  openCashoutPosition,
   openPositionTrade,
   cancelOpenOrder,
   loadValueHistory,
@@ -776,7 +775,6 @@ export function Portfolio({
   openOrders: OpenOrder[];
   activities: PortfolioActivity[];
   syncStatus: PortfolioSyncStatus;
-  openCashoutPosition: (position: Position) => void;
   openPositionTrade: (position: Position, side: "buy" | "sell") => void;
   cancelOpenOrder: (order: OpenOrder) => void;
   loadValueHistory?: (range: PortfolioValueHistoryRange) => Promise<PortfolioValueHistory>;
@@ -1364,16 +1362,6 @@ export function Portfolio({
                     testID={`position-trade-sell-${position.id}`}
                   >
                     <Text style={styles.positionTradeButtonText}>{t.sell}</Text>
-                  </Pressable>
-                )}
-                {canCashOutPosition(position) && (
-                  <Pressable
-                    accessibilityLabel={`close-position-${position.id}`}
-                    onPress={() => openCashoutPosition(position)}
-                    style={styles.closeButton}
-                    testID={`close-position-${position.id}`}
-                  >
-                    <Text style={styles.closeButtonText}>{t.closePosition}</Text>
                   </Pressable>
                 )}
               </View>

@@ -264,7 +264,7 @@ try {
     }
   }
   if ($SeedCounterparty) {
-    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=spread" "--line=1.5" "--outcomeSide=away" "--askPrice=0.52" "--askSize=80" "--cleanupProofBids" "--proofUserPrefix=holiwyn-mobile-" "--output=$counterpartyProofPath" | Out-Null
+    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=spread" "--line=1.5" "--outcomeSide=away" "--askPrice=0.52" "--askSize=80" "--cleanupProofBids" "--cleanupBlockingBids" "--proofUserPrefix=holiwyn-mobile-" "--output=$counterpartyProofPath" | Out-Null
     if ($LASTEXITCODE -ne 0) {
       throw "Counterparty seed failed for $EventSlug."
     }
@@ -564,9 +564,14 @@ try {
     Start-Sleep -Seconds 2
     Save-Screenshot -Name "cycle-$Cycle-current-mvp-line-cashout-ticket.png" | Out-Null
     $cashoutTicketXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-line-cashout-ticket.xml"
-    Assert-Contains -Path $cashoutTicketXml -Expected @("cashout-ticket", "cashout-full-position", "cashout-current-price", "cashout-estimated-proceeds", "swipe-to-cashout")
-    Assert-NotContains -Path $cashoutTicketXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
+    Assert-Contains -Path $cashoutTicketXml -Expected @("trade-ticket", "ticket-side-sell", "swipe-to-submit-order", "Choose an amount", "ticket-retail-reference-layout")
+    Assert-NotContains -Path $cashoutTicketXml -Unexpected @("cashout-ticket", "swipe-to-cashout", "Order Book", "event-detail-open-order-book", "Chat")
 
+    Invoke-TapNode -Path $cashoutTicketXml -Identifier "ticket-preset-25"
+    Start-Sleep -Milliseconds 500
+    $cashoutTicketReadyXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-line-cashout-ticket-ready.xml"
+    Assert-Contains -Path $cashoutTicketReadyXml -Expected @("trade-ticket", "ticket-side-sell", "Swipe to sell", '$25', "swipe-submit-gesture-required")
+    Assert-NotContains -Path $cashoutTicketReadyXml -Unexpected @("cashout-ticket", "swipe-to-cashout", "Order Book", "event-detail-open-order-book", "Chat")
     & $adb -s $Device shell input swipe 540 2070 540 1450 2400 | Out-Null
     Start-Sleep -Seconds 7
     Save-Screenshot -Name "cycle-$Cycle-current-mvp-after-line-cashout.png" | Out-Null
@@ -662,6 +667,7 @@ try {
   } elseif ($ExpectCashout) {
     $summary.artifacts.Add("$OutputDir\cycle-$Cycle-current-mvp-line-cashout-ticket.png")
     $summary.artifacts.Add("$HierarchyOutputDir\cycle-$Cycle-current-mvp-line-cashout-ticket.xml")
+    $summary.artifacts.Add("$HierarchyOutputDir\cycle-$Cycle-current-mvp-line-cashout-ticket-ready.xml")
     $summary.artifacts.Add("$OutputDir\cycle-$Cycle-current-mvp-after-line-cashout.png")
     $summary.artifacts.Add("$HierarchyOutputDir\cycle-$Cycle-current-mvp-after-line-cashout.xml")
     $summary.artifacts.Add("$OutputDir\cycle-$Cycle-current-mvp-line-cashout-history.png")
