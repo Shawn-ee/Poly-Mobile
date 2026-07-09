@@ -8402,3 +8402,30 @@ Temporary mock/static data:
 Future migration concern:
 
 - The Portfolio badge is only an entry cue. Real signed-in profile identity should replace demo profile text after native auth/session work is complete.
+
+## Cycle QX - Portfolio Proof Launch Reliability
+
+Closed or narrowed:
+
+- S23 proof can now start on Portfolio deterministically without relying on Expo Go to forward launch query params.
+- Stale installed-app proof capture is documented as a proof risk; future proof runs should force-stop `com.holiwyn.mobile` before Expo Go evidence.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Native app Google OAuth callback/session/logout state.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- None added. `EXPO_PUBLIC_PROOF_INITIAL_TAB` is a proof-runtime startup selector, not user data.
+
+Future migration concern:
+
+- Once native dev-build/APK proof replaces Expo Go for normal QA, proof launch should move from Expo-specific startup flags to app-owned deep links or test intents.
