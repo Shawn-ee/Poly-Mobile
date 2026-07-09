@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle QH - Chart Status UI
+
+Cycle QH changes no backend route. It makes existing chart route state visible and readable in the mobile Event Detail chart area.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail chart status UI | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile event browse | Event slug `argentina-vs-egypt` | `event.chartHistorySource`, `event.chartHistoryStatus`, `event.chartHistoryRange`, `event.chartHistoryLastUpdated` | None beyond existing `MarketOutcomeSnapshot` chart route state | No new fallback | Fresh provider chart history still depends on Polymarket CLOB availability. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-QH-chart-status-ui/cycle-QH-provider-winner-s23-visible-flow.json`
+
 ## Cycle QG - Provider Chart History
 
 Cycle QG makes real Polymarket CLOB price history available to the mobile Event Detail chart when the short `1D` CLOB window is empty but wider provider history exists.

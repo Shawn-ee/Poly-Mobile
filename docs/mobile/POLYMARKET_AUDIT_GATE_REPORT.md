@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle QH
+
+Gate status: Pass for focused chart status UI clarity and provider-backed winner buy/cashout regression.
+
+Scope: visible Event Detail chart source/status/date copy.
+
+Decision:
+
+- P0 failed: 0 for focused QH scope.
+- Implemented change: replaced tester-facing debug copy with a compact readable chart status line while preserving accessibility proof markers.
+- Runtime finding: S23 XML contains `Polymarket chart`, `Stale`, `Jul 7`, `chart-provider-status-visible`, `chart-source-polymarket-clob-prices-history`, and `chart-status-stale`.
+- Android proof: Samsung S23 `SM-S911U1` passed Event Detail top view plus provider winner ticket, swipe buy, Portfolio, cashout ticket, swipe sell, and Portfolio History.
+- P1/P2 remaining: chart freshness and real provider-backed line markets.
+- Evidence: `docs/mobile/harness/cycle-QH-chart-status-ui/cycle-QH-provider-winner-s23-visible-flow.json`; screenshot `docs/mobile/screenshots/cycle-QH-chart-status-ui/cycle-QH-current-mvp-detail-top.png`; XML `docs/mobile/harness/cycle-QH-chart-status-ui/cycle-QH-current-mvp-detail-top.xml`.
+
 ## Cycle QG
 
 Gate status: Pass for focused provider chart-history readiness and provider-backed winner buy/cashout regression.

@@ -366,6 +366,30 @@ const providerBadgeFromRoute = (
   };
 };
 
+const chartSourceLabel = (source?: string | null) => {
+  if (source === "polymarket-clob-prices-history") return "Polymarket chart";
+  if (source === "market-outcome-snapshot") return "Market chart";
+  if (source === "empty") return "Chart unavailable";
+  return "Chart";
+};
+
+const chartStatusLabel = (status?: string | null) => {
+  if (status === "ready") return "Live";
+  if (status === "refresh_due") return "Refresh due";
+  if (status === "stale") return "Stale";
+  if (status === "loading") return "Loading";
+  if (status === "error") return "Unavailable";
+  if (status === "unavailable" || status === "empty") return "No history";
+  return "Checking";
+};
+
+const compactDateLabel = (value?: string | null) => {
+  if (!value) return null;
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return parsed.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+};
+
 const teamCode = (name: string) => {
   const words = name
     .replace(/[^A-Za-z\s]/g, " ")
@@ -1580,6 +1604,10 @@ export function EventDetail({
       ? Math.max(1, Math.min(99, selectedOutcome.probability + (selectedOutcome.id === homeOutcome.id ? 2 : -2)))
       : selectedOutcome.probability;
     const selectedPointLabel = selectedChartPoint === "target" ? "Target line" : "Current";
+    const chartSourceText = chartSourceLabel(event.chartHistorySource);
+    const chartStatusText = chartStatusLabel(event.chartHistoryStatus);
+    const chartDateText = compactDateLabel(event.chartHistoryLastUpdated);
+    const chartMetaText = [chartSourceText, chartStatusText, chartDateText].filter(Boolean).join(" - ");
 
     return (
       <View
@@ -1588,11 +1616,11 @@ export function EventDetail({
         testID="event-detail-price-chart"
       >
         <Text
-          accessibilityLabel={`event-detail-chart-route-state chart-status-${event.chartHistoryStatus ?? "fallback"} chart-source-${event.chartHistorySource ?? "fallback"} chart-range-${event.chartHistoryRange ?? "none"}`}
+          accessibilityLabel={`event-detail-chart-route-state chart-status-${event.chartHistoryStatus ?? "fallback"} chart-source-${event.chartHistorySource ?? "fallback"} chart-range-${event.chartHistoryRange ?? "none"} chart-last-updated-${event.chartHistoryLastUpdated ?? "none"} chart-provider-status-visible`}
           style={styles.chartReferenceText}
           testID="event-detail-chart-route-state"
         >
-          chart route state
+          {chartMetaText}
         </Text>
         <Pressable
           accessibilityLabel={`event-detail-chart-surface event-detail-chart-selected-point-${selectedChartPoint} chart-selected-point-${selectedChartPoint} ${selectedPointLabel} ${selectedProbability}%`}
@@ -2196,7 +2224,7 @@ const styles = StyleSheet.create({
   chartRouteStateTextEmpty: { color: "#fde68a" },
   chartRouteStateTextError: { color: "#fecaca" },
   chartReferenceLine: { position: "absolute", left: 0, right: 42, top: 63, borderTopWidth: 1, borderStyle: "dashed", borderColor: "#64748b", opacity: 0.65 },
-  chartReferenceText: { width: 1, height: 1, overflow: "hidden", opacity: 0, color: "transparent", fontSize: 1 },
+  chartReferenceText: { alignSelf: "flex-start", minHeight: 22, marginLeft: 24, marginBottom: 6, color: "#8ea0b8", fontSize: 11, fontWeight: "900" },
   chartOutcomeSelector: { minHeight: 36, flexDirection: "row", alignItems: "center", justifyContent: "flex-end", gap: 8, marginRight: 22, marginBottom: 8 },
   chartOutcomeChip: { minHeight: 32, flexDirection: "row", alignItems: "center", gap: 6, borderRadius: 999, paddingHorizontal: 10, backgroundColor: "#111827", borderWidth: 1, borderColor: "#1f2937" },
   chartOutcomeChipActive: { backgroundColor: "#172033", borderColor: "#94a3b8" },

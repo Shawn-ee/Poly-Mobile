@@ -2,6 +2,43 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle QH - Chart Status UI
+
+Feature/page worked on:
+
+- Event Detail chart status line for provider-backed Regulation Winner markets.
+- S23 regression proof for provider-backed winner ticket, buy, Portfolio cashout, and History.
+
+Frontend/backend touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- No backend route, schema, orderbook UI, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- Added local chart display helpers for source label, status label, and compact last-updated date.
+- The Event Detail chart status text now shows human-readable provider state while preserving hidden Audit Gate markers in accessibility labels.
+
+User interactions supported:
+
+- User opens Event Detail and sees `Polymarket chart - Stale - Jul 7` instead of debug-style chart route copy.
+- Existing provider-backed buy/cashout flow remains intact.
+
+State transitions:
+
+- No order or portfolio state transition changed.
+- Chart state remains route-driven from `event.chartHistorySource`, `event.chartHistoryStatus`, and `event.chartHistoryLastUpdated`.
+
+Known limitations:
+
+- The displayed status is still `Stale` because the current provider chart history remains stale.
+- Real provider-backed line markets remain unavailable.
+
+Evidence:
+
+- S23 proof: `docs/mobile/harness/cycle-QH-chart-status-ui/cycle-QH-provider-winner-s23-visible-flow.json`
+- Event Detail XML/screenshot: `docs/mobile/harness/cycle-QH-chart-status-ui/cycle-QH-current-mvp-detail-top.xml`, `docs/mobile/screenshots/cycle-QH-chart-status-ui/cycle-QH-current-mvp-detail-top.png`
+
 ## Cycle QG - Provider Chart History
 
 Feature/page worked on:

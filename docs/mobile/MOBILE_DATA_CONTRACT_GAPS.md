@@ -2,6 +2,29 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle QH - Chart Status UI
+
+Closed or narrowed:
+
+- Tester-facing Event Detail chart copy no longer displays debug wording. It now shows provider chart source/status/date in plain text while preserving audit markers.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Fresh provider chart status for the current match.
+- Real provider-backed Spread/Totals/Team Total line identities.
+
+Route mismatch:
+
+- No route mismatch introduced.
+
+Temporary mock/static data:
+
+- None.
+
+Future migration concern:
+
+- If range fallback becomes tester-facing, mobile should expose both requested and effective chart ranges from the standalone chart route.
+
 ## Cycle QG - Provider Chart History
 
 Closed or narrowed:
