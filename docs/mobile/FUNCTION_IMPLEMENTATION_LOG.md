@@ -2,6 +2,49 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle QG - Provider Chart History
+
+Feature/page worked on:
+
+- Event Detail chart/probability history for provider-backed Regulation Winner markets.
+- Regression proof for Home -> Event Detail -> provider-backed winner ticket -> buy -> Portfolio cashout -> History.
+
+Frontend/backend touched:
+
+- `src/server/services/polymarketPriceHistorySnapshots.ts`
+- `src/app/api/mobile/events/[slug]/live-detail/route.ts`
+- `src/app/api/markets/[id]/chart/route.ts`
+- `scripts/prove_current_match_polymarket_chart_history.ts`
+- `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1`
+- No mobile UI layout, orderbook UI, chat, live stats, social, deposit, withdrawal, or schema code changed.
+
+Important functions/services touched:
+
+- `refreshPolymarketPriceHistorySnapshots()` now retries wider Polymarket CLOB history windows when the requested short window is empty.
+- Mobile live-detail chart loading now gathers a bounded history slice per compact market so one market cannot crowd out another.
+- Market chart route now exposes `requestedRange`, effective `range`, and `rangeFallbackApplied`.
+
+User interactions supported:
+
+- User opens Event Detail and sees a route-backed probability chart with `polymarket-clob-prices-history` instead of an empty placeholder.
+- Existing provider-backed buy/cashout flow remains intact on S23.
+
+State transitions:
+
+- Before QG: current-match chart route returned empty for `1D`, and live-detail could miss primary-market history even after snapshots existed.
+- After QG: `1D` requests fall back to `1W` when necessary, CLOB snapshots populate `MarketOutcomeSnapshot`, and live-detail exposes 240 chart points for each provider-backed winner market in the compact page.
+
+Known limitations:
+
+- The QG chart status is `stale`, not `ready`, because the latest CLOB point is `2026-07-07T18:30:09.000Z`.
+- Spread/Totals/Team Total markets remain Local MVP contract fixtures.
+
+Evidence:
+
+- Route proof: `docs/mobile/harness/cycle-QG-provider-chart-history/current-match-polymarket-chart-history.json`
+- S23 proof: `docs/mobile/harness/cycle-QG-provider-chart-history/cycle-QG-provider-winner-s23-visible-flow.json`
+- Screenshots/XML: `docs/mobile/screenshots/cycle-QG-provider-chart-history/`, `docs/mobile/harness/cycle-QG-provider-chart-history/`
+
 ## Cycle QF - Provider Winner Cashout Refresh
 
 Feature/page worked on:

@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 const CLOB_BASE_URL = "https://clob.polymarket.com";
 const DEFAULT_INTERVAL = "1d";
 const DEFAULT_FIDELITY_MINUTES = 5;
+const DEFAULT_EMPTY_FALLBACK_INTERVALS: PriceHistoryInterval[] = ["1w", "max"];
 
 type PricesHistoryWire = {
   history?: unknown;
@@ -16,10 +17,13 @@ type PricesHistoryPointWire = {
 
 export type RefreshPolymarketPriceHistoryOptions = {
   marketIds: string[];
-  interval?: "1h" | "6h" | "1d" | "1w" | "1m" | "max" | "all";
+  interval?: PriceHistoryInterval;
   fidelityMinutes?: number;
   fetchImpl?: typeof fetch;
+  emptyFallbackIntervals?: PriceHistoryInterval[];
 };
+
+type PriceHistoryInterval = "1h" | "6h" | "1d" | "1w" | "1m" | "max" | "all";
 
 export async function refreshPolymarketPriceHistorySnapshots(options: RefreshPolymarketPriceHistoryOptions) {
   const interval = options.interval ?? DEFAULT_INTERVAL;
@@ -53,9 +57,10 @@ export async function refreshPolymarketPriceHistorySnapshots(options: RefreshPol
         continue;
       }
 
-      const history = await fetchClobPricesHistory({
+      const history = await fetchClobPricesHistoryWithFallback({
         tokenId: outcome.referenceTokenId,
         interval,
+        fallbackIntervals: options.emptyFallbackIntervals ?? DEFAULT_EMPTY_FALLBACK_INTERVALS,
         fidelityMinutes,
         fetchImpl,
       }).catch((error) => ({
@@ -83,6 +88,8 @@ export async function refreshPolymarketPriceHistorySnapshots(options: RefreshPol
           tokenId: outcome.referenceTokenId,
           historyPointCount: 0,
           createdSnapshots: 0,
+          interval: history.interval,
+          attemptedIntervals: history.attemptedIntervals,
           firstTimestamp: null,
           lastTimestamp: null,
         });
@@ -112,6 +119,8 @@ export async function refreshPolymarketPriceHistorySnapshots(options: RefreshPol
         tokenId: outcome.referenceTokenId,
         historyPointCount: history.points.length,
         createdSnapshots: created.count,
+        interval: history.interval,
+        attemptedIntervals: history.attemptedIntervals,
         firstTimestamp: firstTimestamp.toISOString(),
         lastTimestamp: lastTimestamp.toISOString(),
       });
@@ -157,6 +166,39 @@ async function fetchClobPricesHistory(params: {
   }
   const payload = (await response.json()) as PricesHistoryWire;
   return { points: parseHistoryPoints(payload.history) };
+}
+
+async function fetchClobPricesHistoryWithFallback(params: {
+  tokenId: string;
+  interval: string;
+  fallbackIntervals: string[];
+  fidelityMinutes: number;
+  fetchImpl: typeof fetch;
+}) {
+  const attemptedIntervals = uniqueIntervals([params.interval, ...params.fallbackIntervals]);
+  const errors: string[] = [];
+  for (const interval of attemptedIntervals) {
+    const history = await fetchClobPricesHistory({
+      tokenId: params.tokenId,
+      interval,
+      fidelityMinutes: params.fidelityMinutes,
+      fetchImpl: params.fetchImpl,
+    }).catch((error) => {
+      errors.push(`${interval}: ${error instanceof Error ? error.message : String(error)}`);
+      return null;
+    });
+    if (history && history.points.length > 0) {
+      return { ...history, interval, attemptedIntervals };
+    }
+  }
+  if (errors.length === attemptedIntervals.length) {
+    throw new Error(errors.join("; "));
+  }
+  return { points: [], interval: params.interval, attemptedIntervals };
+}
+
+function uniqueIntervals(values: string[]) {
+  return values.filter((value, index) => value.trim().length > 0 && values.indexOf(value) === index);
 }
 
 function parseHistoryPoints(value: unknown) {

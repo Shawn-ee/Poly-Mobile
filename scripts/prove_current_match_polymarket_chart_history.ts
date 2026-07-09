@@ -6,6 +6,7 @@ import { selectCompactLiveMarkets, serializeMobileLiveEventDetail } from "@/serv
 
 const DEFAULT_EVENT_SLUG = "argentina-vs-egypt";
 const DEFAULT_OUTPUT_PATH = "docs/mobile/harness/cycle-NK-current-match-chart-history/current-match-polymarket-chart-history.json";
+const CHART_SNAPSHOTS_PER_MARKET = 240;
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
@@ -57,11 +58,17 @@ async function main() {
   const compactMarkets = selectCompactLiveMarkets(event.markets);
   const compactMarketIds = compactMarkets.map((market) => market.id);
   const chartSnapshots = compactMarketIds.length
-    ? await prisma.marketOutcomeSnapshot.findMany({
-        where: { marketId: { in: compactMarketIds } },
-        orderBy: [{ marketId: "asc" }, { ts: "asc" }],
-        take: compactMarketIds.length * 240,
-      })
+    ? (await Promise.all(
+        compactMarketIds.map((marketId) =>
+          prisma.marketOutcomeSnapshot.findMany({
+            where: { marketId },
+            orderBy: { ts: "desc" },
+            take: CHART_SNAPSHOTS_PER_MARKET,
+          }),
+        ),
+      )).flat().sort((left, right) =>
+        left.marketId.localeCompare(right.marketId) || left.ts.getTime() - right.ts.getTime()
+      )
     : [];
   const liveDetail = await serializeMobileLiveEventDetail({ event, chartSnapshots });
   const primaryMarketId = liveDetail.contract.primaryMarketId as string | null;
@@ -140,12 +147,17 @@ async function main() {
 }
 
 async function chartRouteSummary(marketId: string) {
+  const requestedRange = "1D";
+  const effectiveRange = await effectiveChartRangeForMarket(marketId, requestedRange);
   const market = await prisma.market.findUnique({
     where: { id: marketId },
     select: { referenceSource: true },
   });
   const snapshots = await prisma.marketOutcomeSnapshot.findMany({
-    where: { marketId },
+    where: {
+      marketId,
+      ...(effectiveRange.cutoff ? { ts: { gte: effectiveRange.cutoff } } : {}),
+    },
     orderBy: { ts: "asc" },
   });
   const history = snapshots.flatMap((snapshot) => {
@@ -165,11 +177,33 @@ async function chartRouteSummary(marketId: string) {
       : history.length > 0
         ? "market-outcome-snapshot"
         : "empty",
-    range: "1D",
+    requestedRange,
+    range: effectiveRange.range,
+    rangeFallbackApplied: effectiveRange.range !== requestedRange,
     historyPointCount: history.length,
     emptyState: history.length === 0 ? "no-history" : null,
     lastUpdated: history.at(-1)?.timestamp ?? null,
   };
+}
+
+async function effectiveChartRangeForMarket(marketId: string, requestedRange: "1D" | "1W" | "MAX") {
+  const now = Date.now();
+  const candidates = requestedRange === "1D" ? ["1D", "1W", "MAX"] as const : [requestedRange] as const;
+  for (const range of candidates) {
+    const cutoff = range === "1D"
+      ? new Date(now - 24 * 60 * 60 * 1000)
+      : range === "1W"
+        ? new Date(now - 7 * 24 * 60 * 60 * 1000)
+        : null;
+    const count = await prisma.marketOutcomeSnapshot.count({
+      where: {
+        marketId,
+        ...(cutoff ? { ts: { gte: cutoff } } : {}),
+      },
+    });
+    if (count > 0) return { range, cutoff };
+  }
+  return { range: requestedRange, cutoff: new Date(now - 24 * 60 * 60 * 1000) };
 }
 
 function parseArgs(args: string[]) {

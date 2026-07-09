@@ -2,6 +2,31 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle QG - Provider Chart History
+
+Closed or narrowed:
+
+- Provider-backed Regulation Winner chart history is no longer empty for the current match after CLOB fallback. The QG proof created `5,784` Polymarket CLOB price-history snapshots and live-detail exposes `240` chart points per provider-backed winner market.
+- `/api/markets/:id/chart?range=1D` now reports `requestedRange=1D`, effective `range=1W`, and `rangeFallbackApplied=true` when the short range is empty but wider provider history exists.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Fresh provider chart points for the current match. Current latest CLOB point is `2026-07-07T18:30:09.000Z`, so status remains `stale`.
+- Real provider-backed Spread/Totals/Team Total line identities.
+
+Route mismatch:
+
+- No mismatch introduced. The route now makes fallback range behavior explicit.
+
+Temporary mock/static data:
+
+- None for QG chart history. Data comes from Polymarket CLOB `/prices-history`.
+
+Future migration concern:
+
+- If the UI displays a selected range label, it should distinguish requested range from effective fallback range when fallback is applied.
+- Do not treat stale chart history as live-fresh chart parity.
+
 ## Cycle QF - Provider Winner Cashout Refresh
 
 Closed or narrowed:

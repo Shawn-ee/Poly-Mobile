@@ -1,0 +1,143 @@
+{
+  "generatedAt": "2026-07-09T03:18:28.856Z",
+  "eventSlug": "argentina-vs-egypt",
+  "eventTitle": "Argentina vs. Egypt",
+  "source": "polymarket-gamma-local-mapping plus clob.polymarket.com/prices-history",
+  "providerWinnerMarketCount": 3,
+  "providerWinnerMarkets": [
+    {
+      "id": "2b3c820f-19f5-476a-9f91-0e43eb26c6d7",
+      "title": "Will Argentina win on 2026-07-07?",
+      "marketType": "match_winner_1x2",
+      "marketGroupKey": "main",
+      "referenceSource": "polymarket",
+      "tokenizedOutcomeCount": 2
+    },
+    {
+      "id": "0a725cc6-ec1d-4d33-92aa-584aa3ff23e5",
+      "title": "Will Argentina vs. Egypt end in a draw?",
+      "marketType": "match_winner_1x2",
+      "marketGroupKey": "main",
+      "referenceSource": "polymarket",
+      "tokenizedOutcomeCount": 2
+    },
+    {
+      "id": "35a8e3d4-a699-4000-920a-bfa5eb6d1eb8",
+      "title": "Will Egypt win on 2026-07-07?",
+      "marketType": "match_winner_1x2",
+      "marketGroupKey": "main",
+      "referenceSource": "polymarket",
+      "tokenizedOutcomeCount": 2
+    }
+  ],
+  "lineMarketStatus": {
+    "totalCount": 4,
+    "providerBackedCount": 0,
+    "contractFixtureCount": 4,
+    "reason": "Current route-visible spread/totals/team-total markets remain contract fixtures; do not claim provider parity for line markets."
+  },
+  "refresh": {
+    "source": "polymarket-clob-prices-history",
+    "interval": "1d",
+    "fidelityMinutes": 5,
+    "requestedMarketCount": 3,
+    "refreshedCount": 3,
+    "snapshotsCreated": 5784,
+    "skippedCount": 0,
+    "skipped": []
+  },
+  "liveDetail": {
+    "primaryMarketId": "2b3c820f-19f5-476a-9f91-0e43eb26c6d7",
+    "eventChartPointCount": 240,
+    "eventChartHistorySource": "polymarket-clob-prices-history",
+    "eventChartHistoryStatus": "stale",
+    "eventChartHistoryLastUpdated": "2026-07-07T18:30:09.000Z",
+    "contractChartHistorySource": "polymarket-clob-prices-history",
+    "batchedChartHistorySource": "polymarket-clob-prices-history",
+    "batchedChartHistoryMarketCount": 3,
+    "batchedChartHistoryPointCount": 720,
+    "marketStatuses": [
+      {
+        "id": "2b3c820f-19f5-476a-9f91-0e43eb26c6d7",
+        "title": "Will Argentina win on 2026-07-07?",
+        "referenceSource": "polymarket",
+        "marketType": "match_winner_1x2",
+        "marketGroupKey": "main",
+        "chartSource": "polymarket-clob-prices-history",
+        "chartStatus": "stale",
+        "pointCount": 240
+      },
+      {
+        "id": "b658ace7-eed8-4e16-9633-4f100c7d995f",
+        "title": "Argentina vs. Egypt: Egypt +1.5",
+        "referenceSource": "contract-fixture",
+        "marketType": "spread",
+        "marketGroupKey": "spread",
+        "chartSource": "empty",
+        "chartStatus": "unavailable",
+        "pointCount": 0
+      },
+      {
+        "id": "871ecb31-02ac-44bf-b187-8936d4651938",
+        "title": "Argentina vs. Egypt: Total goals 2.5",
+        "referenceSource": "contract-fixture",
+        "marketType": "total_goals",
+        "marketGroupKey": "totals",
+        "chartSource": "empty",
+        "chartStatus": "unavailable",
+        "pointCount": 0
+      },
+      {
+        "id": "f605df0d-087c-473b-9838-2b52ea0444f1",
+        "title": "Argentina vs. Egypt: Argentina total goals 1.5",
+        "referenceSource": "contract-fixture",
+        "marketType": "team_total_goals",
+        "marketGroupKey": "team-totals",
+        "chartSource": "empty",
+        "chartStatus": "unavailable",
+        "pointCount": 0
+      },
+      {
+        "id": "0a725cc6-ec1d-4d33-92aa-584aa3ff23e5",
+        "title": "Will Argentina vs. Egypt end in a draw?",
+        "referenceSource": "polymarket",
+        "marketType": "match_winner_1x2",
+        "marketGroupKey": "main",
+        "chartSource": "polymarket-clob-prices-history",
+        "chartStatus": "stale",
+        "pointCount": 240
+      },
+      {
+        "id": "35a8e3d4-a699-4000-920a-bfa5eb6d1eb8",
+        "title": "Will Egypt win on 2026-07-07?",
+        "referenceSource": "polymarket",
+        "marketType": "match_winner_1x2",
+        "marketGroupKey": "main",
+        "chartSource": "polymarket-clob-prices-history",
+        "chartStatus": "stale",
+        "pointCount": 240
+      },
+      {
+        "id": "23eaa980-3ccb-40ba-847f-b617c650f4e7",
+        "title": "Argentina vs. Egypt: Argentina +0.5",
+        "referenceSource": "contract-fixture",
+        "marketType": "spread",
+        "marketGroupKey": "spread",
+        "chartSource": "empty",
+        "chartStatus": "unavailable",
+        "pointCount": 0
+      }
+    ]
+  },
+  "chartRoute": {
+    "marketId": "2b3c820f-19f5-476a-9f91-0e43eb26c6d7",
+    "source": "polymarket-clob-prices-history",
+    "requestedRange": "1D",
+    "range": "1W",
+    "rangeFallbackApplied": true,
+    "historyPointCount": 1930,
+    "emptyState": null,
+    "lastUpdated": "2026-07-07T18:30:09.000Z"
+  },
+  "pass": true
+}

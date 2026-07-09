@@ -2,6 +2,21 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle QG - Provider Chart History
+
+Cycle QG makes real Polymarket CLOB price history available to the mobile Event Detail chart when the short `1D` CLOB window is empty but wider provider history exists.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail chart history | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile event browse | Event slug `argentina-vs-egypt` | `event.chartHistory`, `event.chartHistorySource`, `event.chartHistoryStatus`, market `chartHistory`, market `chartHistoryStatus`, contract `batchedChartHistorySource`, `batchedChartHistoryPointCount` | `Market`, `Outcome`, `MarketOutcomeSnapshot` | None. History points are fetched from Polymarket CLOB and stored as snapshots. | Latest history can still be stale if Polymarket has no fresh points. |
+| Standalone market chart route | `/api/markets/:id/chart?range=1D` | GET | Market visibility guard | Query `range` | `source`, `requestedRange`, effective `range`, `rangeFallbackApplied`, `history`, `series`, `lastUpdated`, `emptyState` | `Market`, `Outcome`, `MarketOutcomeSnapshot` | None | Route falls back to wider provider history; future UI may expose range labels more explicitly. |
+| Provider CLOB history refresh | Polymarket CLOB `/prices-history` through `refreshPolymarketPriceHistorySnapshots()` | GET/provider service | Public provider read | Token ID, requested interval, fidelity | History points `t` and `p`, converted to market outcome snapshots | `MarketOutcomeSnapshot` | None | If all provider ranges are empty, chart remains explicitly unavailable. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-QG-provider-chart-history/current-match-polymarket-chart-history.json`
+- `docs/mobile/harness/cycle-QG-provider-chart-history/cycle-QG-provider-winner-s23-visible-flow.json`
+
 ## Cycle QF - Provider Winner Cashout Refresh
 
 Cycle QF changes no backend route or schema. It proves the existing route contract can support the provider-backed winner buy/sell lifecycle on S23.

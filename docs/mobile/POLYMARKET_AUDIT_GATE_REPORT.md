@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle QG
+
+Gate status: Pass for focused provider chart-history readiness and provider-backed winner buy/cashout regression.
+
+Scope: Event Detail chart history for provider-backed Regulation Winner markets, plus S23 regression of the Local MVP buy/cashout flow.
+
+Decision:
+
+- P0 failed: 0 for focused QG scope.
+- Implemented change: CLOB history refresh now falls back from empty short windows to wider provider windows; live-detail loads chart snapshots per compact market; chart route reports requested/effective range metadata.
+- Runtime finding: current match CLOB `1d` was empty, but `1w` contained real provider history. QG stored `5,784` CLOB history snapshots and live-detail now exposes `polymarket-clob-prices-history` with `240` points per provider-backed winner market.
+- Android proof: Samsung S23 `SM-S911U1` passed Event Detail chart evidence plus provider winner ticket, swipe buy, Portfolio, cashout ticket, swipe sell, and Portfolio History.
+- P1/P2 remaining: chart status is `stale` because provider history is not fresh; provider-backed line markets remain unavailable.
+- Evidence: `docs/mobile/harness/cycle-QG-provider-chart-history/current-match-polymarket-chart-history.json`; `docs/mobile/harness/cycle-QG-provider-chart-history/cycle-QG-provider-winner-s23-visible-flow.json`; screenshots `docs/mobile/screenshots/cycle-QG-provider-chart-history/`; XML `docs/mobile/harness/cycle-QG-provider-chart-history/`.
+
 ## Cycle QF
 
 Gate status: Pass for focused provider-backed Regulation Winner buy/sell lifecycle; not a pass for provider-backed line-market parity or full chart-history parity.

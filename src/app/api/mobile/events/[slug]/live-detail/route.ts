@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { selectCompactLiveMarkets, serializeMobileLiveEventDetail } from "@/server/services/mobileLiveEventDetail";
 
 type Ctx = { params: Promise<{ slug: string }> };
+const CHART_SNAPSHOTS_PER_MARKET = 240;
 
 export async function GET(_request: Request, context: Ctx) {
   const { slug } = await context.params;
@@ -34,11 +35,17 @@ export async function GET(_request: Request, context: Ctx) {
   const compactMarkets = selectCompactLiveMarkets(event.markets);
   const compactMarketIds = compactMarkets.map((market) => market.id);
   const chartSnapshots = compactMarketIds.length
-    ? await prisma.marketOutcomeSnapshot.findMany({
-        where: { marketId: { in: compactMarketIds } },
-        orderBy: [{ marketId: "asc" }, { ts: "asc" }],
-        take: compactMarketIds.length * 240,
-      })
+    ? (await Promise.all(
+        compactMarketIds.map((marketId) =>
+          prisma.marketOutcomeSnapshot.findMany({
+            where: { marketId },
+            orderBy: { ts: "desc" },
+            take: CHART_SNAPSHOTS_PER_MARKET,
+          }),
+        ),
+      )).flat().sort((left, right) =>
+        left.marketId.localeCompare(right.marketId) || left.ts.getTime() - right.ts.getTime()
+      )
     : [];
 
   return NextResponse.json(await serializeMobileLiveEventDetail({ event, chartSnapshots }));

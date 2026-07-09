@@ -19,6 +19,19 @@ const probabilityFromPrice = (price: number) => {
   return Math.max(1, Math.min(99, Math.round(price * 100)));
 };
 
+const cutoffForRange = (range: ChartRange, now: number) => {
+  if (range === "1D") return new Date(now - 24 * 60 * 60 * 1000);
+  if (range === "1W") return new Date(now - 7 * 24 * 60 * 60 * 1000);
+  if (range === "1M") return new Date(now - 30 * 24 * 60 * 60 * 1000);
+  return null;
+};
+
+const fallbackRangesFor = (range: ChartRange): ChartRange[] => {
+  if (range === "1D") return ["1D", "1W", "MAX"];
+  if (range === "1W") return ["1W", "MAX"];
+  return [range];
+};
+
 export async function GET(
   request: NextRequest,
   context: { params: Promise<{ id: string }> }
@@ -29,12 +42,6 @@ export async function GET(
   const range = chartRange(url.searchParams.get("range"));
 
   const now = Date.now();
-  const cutoff = (() => {
-    if (range === "1D") return new Date(now - 24 * 60 * 60 * 1000);
-    if (range === "1W") return new Date(now - 7 * 24 * 60 * 60 * 1000);
-    if (range === "1M") return new Date(now - 30 * 24 * 60 * 60 * 1000);
-    return null;
-  })();
 
   const market = await prisma.market.findUnique({
     where: { id },
@@ -55,13 +62,20 @@ export async function GET(
     return NextResponse.json(response.body, { status: response.status });
   }
 
-  const snapshots = await prisma.marketOutcomeSnapshot.findMany({
-    where: {
-      marketId: id,
-      ...(cutoff ? { ts: { gte: cutoff } } : {}),
-    },
-    orderBy: { ts: "asc" },
-  });
+  let effectiveRange = range;
+  let snapshots: Awaited<ReturnType<typeof prisma.marketOutcomeSnapshot.findMany>> = [];
+  for (const candidateRange of fallbackRangesFor(range)) {
+    const cutoff = cutoffForRange(candidateRange, now);
+    snapshots = await prisma.marketOutcomeSnapshot.findMany({
+      where: {
+        marketId: id,
+        ...(cutoff ? { ts: { gte: cutoff } } : {}),
+      },
+      orderBy: { ts: "asc" },
+    });
+    effectiveRange = candidateRange;
+    if (snapshots.length > 0) break;
+  }
 
   const capped =
     snapshots.length > 5000
@@ -91,7 +105,9 @@ export async function GET(
       : history.length > 0
         ? "market-outcome-snapshot"
         : "empty",
-    range,
+    range: effectiveRange,
+    requestedRange: range,
+    rangeFallbackApplied: effectiveRange !== range,
     ranges: CHART_RANGES,
     generatedAt: new Date(now).toISOString(),
     lastUpdated,

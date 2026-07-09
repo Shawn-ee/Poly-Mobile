@@ -293,7 +293,7 @@ try {
   }
   Assert-Contains -Path $detailTopXml -Expected @("event-detail-back", "Game", "ARG", "EGY", "Argentina", "Egypt", "provider-regulation-1x2-composed", "provider-regulation-1x2-outcome-ARG", "provider-regulation-1x2-outcome-DRA", "provider-regulation-1x2-outcome-EGY", "event-detail-price-chart")
   Assert-AnyContains -Path $detailTopXml -AnyExpected @("chart-source-polymarket-clob-prices-history", "chart-source-empty") -Reason "route-backed chart source state"
-  Assert-AnyContains -Path $detailTopXml -AnyExpected @("chart-status-ready", "chart-status-unavailable") -Reason "route-backed chart status state"
+  Assert-AnyContains -Path $detailTopXml -AnyExpected @("chart-status-ready", "chart-status-refresh_due", "chart-status-stale", "chart-status-unavailable") -Reason "route-backed chart status state"
   Assert-NotContains -Path $detailTopXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "event-detail-chat")
 
   $winnerXml = $null
