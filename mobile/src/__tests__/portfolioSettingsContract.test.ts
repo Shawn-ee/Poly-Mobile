@@ -17,9 +17,12 @@ describe("Portfolio settings contract", () => {
     expect(portfolio).toContain("portfolio-account-entry-top-left");
     expect(portfolio).toContain("portfolio-account-entry-google");
     expect(portfolio).toContain("portfolio-account-entry-label");
-    expect(portfolio).toContain("Account & login");
-    expect(portfolio).toContain("Sign in with Google");
-    expect(portfolio).toContain("\\u4f7f\\u7528 Google \\u767b\\u5f55");
+    expect(portfolio).toContain("portfolio-account-google-login-label-visible");
+    expect(portfolio).toContain("portfolio-google-login-button-visible");
+    expect(portfolio).toContain("Account / Google login");
+    expect(portfolio).toContain("Google login");
+    expect(portfolio).toContain("\\u8d26\\u6237 / Google \\u767b\\u5f55");
+    expect(portfolio).toContain("Google \\u767b\\u5f55");
     expect(portfolio).toContain("openAccount: () => void");
     expect(portfolio).toContain("PortfolioSparkline");
     expect(portfolio).toContain("portfolio-section-tabs");

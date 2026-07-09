@@ -603,8 +603,8 @@ type PortfolioTab = "positions" | "orders" | "history";
 const portfolioPageCopy = {
   en: {
     profile: "holiwynplayer7067",
-    account: "Account & login",
-    googleSignIn: "Sign in with Google",
+    account: "Account / Google login",
+    googleSignIn: "Google login",
     cash: "cash",
     deposit: "Deposit",
     withdraw: "Withdraw",
@@ -618,8 +618,8 @@ const portfolioPageCopy = {
   },
   zh: {
     profile: "liyunplayer7067",
-    account: "\u8d26\u6237 / \u767b\u5f55",
-    googleSignIn: "\u4f7f\u7528 Google \u767b\u5f55",
+    account: "\u8d26\u6237 / Google \u767b\u5f55",
+    googleSignIn: "Google \u767b\u5f55",
     cash: "\u73b0\u91d1",
     deposit: "\u5145\u503c",
     withdraw: "\u63d0\u73b0",
@@ -970,7 +970,7 @@ export function Portfolio({
     <ScrollView ref={scrollRef} accessibilityLabel={`portfolio-screen ${latestOrder ? "portfolio-result-content-landing portfolio-result-lands-at-account-header" : "portfolio-normal-browse"}`} testID="portfolio-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
       <View accessibilityLabel="portfolio-profile-header portfolio-header-retail-density" testID="portfolio-profile-header" style={styles.profileHeader}>
         <Pressable
-          accessibilityLabel="portfolio-account-entry-top-left portfolio-account-entry-opens-account"
+          accessibilityLabel="portfolio-account-entry-top-left portfolio-account-entry-opens-account portfolio-account-google-login-label-visible"
           accessibilityRole="button"
           onPress={openAccount}
           style={styles.profileLeft}
@@ -987,7 +987,7 @@ export function Portfolio({
           </View>
         </Pressable>
         <Pressable
-          accessibilityLabel="portfolio-account-entry-google portfolio-account-entry-opens-account"
+          accessibilityLabel="portfolio-account-entry-google portfolio-account-entry-opens-account portfolio-google-login-button-visible"
           accessibilityRole="button"
           hitSlop={10}
           onPress={openAccount}
@@ -1538,10 +1538,10 @@ export function Portfolio({
 const styles = StyleSheet.create({
   content: { flex: 1 },
   scrollPad: { width: "100%", maxWidth: 480, alignSelf: "center", paddingHorizontal: 0, paddingBottom: 110 },
-  profileHeader: { minHeight: 58, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 24, paddingTop: 4 },
+  profileHeader: { minHeight: 58, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10, paddingHorizontal: 24, paddingTop: 4 },
   profileLeft: { flexDirection: "row", alignItems: "center", gap: 12, flex: 1 },
   profileCopy: { flex: 1, minWidth: 0 },
-  accountGoogleButton: { minHeight: 44, maxWidth: 190, borderRadius: 999, paddingHorizontal: 14, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 7, backgroundColor: "#f8fafc" },
+  accountGoogleButton: { minHeight: 44, maxWidth: 150, borderRadius: 999, paddingHorizontal: 14, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 7, backgroundColor: "#f8fafc" },
   accountGoogleButtonPressed: { opacity: 0.84, transform: [{ scale: 0.97 }] },
   accountGoogleButtonText: { color: "#111827", fontSize: 13, fontWeight: "900", flexShrink: 1 },
   avatarGradient: { width: 46, height: 46, borderRadius: 999, overflow: "hidden", backgroundColor: "#f43f5e", position: "relative" },

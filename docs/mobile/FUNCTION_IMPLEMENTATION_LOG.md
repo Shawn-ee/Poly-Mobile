@@ -10746,3 +10746,40 @@ Known limitations:
 
 - Player Props functionality remains intentionally blank for this MVP.
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle QU - Portfolio Google Login Visibility
+
+Feature/page worked on:
+
+- Portfolio account/login header and Account entry path.
+- This keeps Home clean while making Google login discoverable from Portfolio.
+
+Frontend/proof files touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/src/__tests__/portfolioSettingsContract.test.ts`
+- `docs/mobile/audits/cycle-QU-portfolio-google-login-visibility.md`
+
+Important functions/services touched:
+
+- Portfolio render copy and accessibility markers for `portfolio-account-entry-top-left` and `portfolio-account-entry-google`.
+- No service, API client, order, or backend function changed.
+
+User interactions supported/proven:
+
+- User opens Portfolio, sees explicit Google login wording, taps the Portfolio Google login entry, and lands on Account with the Google login action visible.
+
+State transitions:
+
+- `openAccount()` still moves `mainTab` from `portfolio` to `account`.
+- No ticket, order, portfolio data, auth session, backend, or provider state transition changed.
+
+Validation:
+
+- Mobile typecheck passed.
+- Focused Portfolio settings contract test passed.
+- Samsung S23 proof passed with `cycle-QU-portfolio-google-login-visibility-proof.json`.
+
+Known limitations:
+
+- Native Google OAuth callback/session/logout remains separate auth work.

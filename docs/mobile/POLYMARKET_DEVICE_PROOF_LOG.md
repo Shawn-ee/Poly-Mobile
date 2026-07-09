@@ -2211,3 +2211,36 @@ Pass for focused Event Detail Player Props Chinese empty-state scope.
 
 Remaining gaps:
 Player Props functionality remains intentionally blank for Local MVP. Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle QU - Portfolio Google Login Visibility
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket app reference-device action. This was a Holiwyn tester-discoverability cleanup after Home account entry removal.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go server mode. Backend `http://127.0.0.1:3002` remained healthy; mobile API used LAN backend `http://172.16.200.14:3002`. Expo was stopped after proof.
+
+Holiwyn actions:
+Opened Portfolio directly, confirmed visible Google login wording and account-entry markers, tapped the Portfolio Google login entry, and confirmed Account exposes the Google login action.
+
+Evidence:
+- `docs/mobile/harness/cycle-QU-portfolio-google-login-visibility/cycle-QU-portfolio-google-login-visibility-proof.json`
+- `docs/mobile/screenshots/cycle-QU-portfolio-google-login-visibility/cycle-QU-portfolio-google-login-visible.png`
+- `docs/mobile/harness/cycle-QU-portfolio-google-login-visibility/cycle-QU-portfolio-google-login-visible.xml`
+- `docs/mobile/screenshots/cycle-QU-portfolio-google-login-visibility/cycle-QU-account-google-login-screen.png`
+- `docs/mobile/harness/cycle-QU-portfolio-google-login-visibility/cycle-QU-account-google-login-screen.xml`
+
+Smoke/tests:
+Mobile typecheck passed. Focused Portfolio settings contract test passed. S23 XML checks confirmed Portfolio account entry, explicit Google login copy, Account screen, Account Google login action, and no developer menu overlay.
+
+Result:
+Pass for focused Portfolio Google login visibility scope.
+
+Remaining gaps:
+Native Google OAuth callback/session/logout remains separate auth work.
