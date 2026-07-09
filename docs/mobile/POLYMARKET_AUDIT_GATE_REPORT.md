@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle QC
+
+Gate status: Pass for focused Local MVP line tradable flow and duplicate-tabs regression.
+
+Scope: Event Detail Game Lines tab rendering plus Local MVP line-ticket/order/Portfolio proof.
+
+Decision:
+
+- P0 failed: 0 for the focused Local MVP line tradable flow scope.
+- Implemented change: inline market tabs no longer render while the sticky compact market tabs are visible, removing the duplicate Game Lines / Player Props row on S23.
+- Runtime finding: first S23 order proof failed because the backend was running with `TRADING_KILL_SWITCH` active. After restarting the local backend in internal beta mode, the same Local MVP line ticket proof passed.
+- Android proof: Samsung S23 shows one market tab row, Local line source copy, ticket line preservation, swipe submit, and Portfolio filled position with Local line source.
+- P1/P2 remaining: real provider-backed line markets remain unavailable for this match; production trading/wallet mode remains future work.
+- Evidence: duplicate-tab proof `docs/mobile/harness/cycle-QC-local-line-tradable-flow/cycle-QC-no-duplicate-tabs-summary.json`; full S23 flow `docs/mobile/harness/cycle-QC-local-line-tradable-flow/cycle-QC-current-mvp-s23-visible-flow.json`; screenshots `docs/mobile/screenshots/cycle-QC-local-line-tradable-flow/`.
+
 ## Cycle QB
 
 Gate status: Pass for focused provider-line discovery runtime summary; not a pass for real provider-backed line-market parity.

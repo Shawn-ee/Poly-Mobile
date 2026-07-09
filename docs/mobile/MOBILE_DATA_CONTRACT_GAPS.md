@@ -2,6 +2,31 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle QC - Local Line Tradable Flow And Tab Regression
+
+Closed or narrowed:
+
+- Event Detail no longer shows duplicate Game Lines / Player Props tab rows in the scrolled compact-header state.
+- S23 proof confirms the Local MVP Spread line can be selected, carried into the ticket, submitted, and represented in Portfolio as a Local line position.
+- The runtime dependency on internal trading beta mode is now explicitly documented.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total line identities remain missing for this match.
+- Production trading, wallet, deposit, withdrawal, and compliance states remain intentionally out of Local MVP scope.
+
+Route mismatch:
+
+- No route mismatch introduced. The failed first proof showed the backend was correctly enforcing `TRADING_KILL_SWITCH`; after restarting local backend with the internal beta gate open, the same flow passed.
+
+Temporary mock/static data:
+
+- Local MVP line markets remain backend-shaped `contract-fixture` rows.
+
+Future migration concern:
+
+- Local/dev startup scripts should make the intended internal beta mode explicit before manual QA so testers do not hit the kill-switch failure path by accident.
+
 ## Cycle QB - Provider Line Discovery Runtime Summary
 
 Closed or narrowed:

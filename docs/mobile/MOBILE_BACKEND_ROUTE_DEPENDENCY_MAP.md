@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle QC - Local Line Tradable Flow And Tab Regression
+
+Cycle QC changes mobile UI tab rendering and proves the existing fake-token/server-backed Local MVP line order flow.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Local MVP line ticket submit | Existing quote/order/portfolio routes used by the mobile ticket flow, including canonical fake-token order placement and Portfolio snapshot/history refresh | GET/POST | Mobile API key/dev credential; backend must run with internal trading beta enabled and kill switch off for local proof | Existing ticket/order payload preserving event slug, market id, outcome id, market type, line, period, side, reference source, and amount | Portfolio balance/cash, positions, local-line source badge, line/market selection snapshot, position cost/current/to-win fields | Existing `User`, `ApiCredential`, `Event`, `Market`, `Outcome`, order/position/portfolio tables | Local MVP line markets remain `contract-fixture` rows because provider line markets are unavailable | Production trading policy is still not implemented. Local proof requires explicit internal beta runtime; real provider-backed line markets remain open. |
+| Event Detail duplicate tab fix | None | UI only | None | None | No API fields changed | No schema change | None | None. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-QC-local-line-tradable-flow/cycle-QC-current-mvp-s23-visible-flow.json`
+- `docs/mobile/harness/cycle-QC-local-line-tradable-flow/cycle-QC-no-duplicate-tabs-summary.json`
+
 ## Cycle QB - Provider Line Discovery Runtime Summary
 
 Cycle QB extends the provider-candidates service/route contract with a line-specific discovery summary for the Local MVP Event Detail line-market gap.

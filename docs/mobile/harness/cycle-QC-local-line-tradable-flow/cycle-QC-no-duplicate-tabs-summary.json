@@ -1,0 +1,12 @@
+{
+  "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+  "model": "SM-S911U1",
+  "screenshot": "docs/mobile/screenshots/cycle-QC-local-line-tradable-flow/cycle-QC-no-duplicate-tabs.png",
+  "xml": "docs/mobile/harness/cycle-QC-local-line-tradable-flow/cycle-QC-no-duplicate-tabs.xml",
+  "hasGameLines": true,
+  "hasPlayerProps": true,
+  "marketTabsMarkerCount": 1,
+  "noDuplicateMarketTabs": true,
+  "hasLineSourceBanner": true,
+  "hasLocalLineCopy": true
+}

@@ -1944,7 +1944,7 @@ export function EventDetail({
         </View>
         )}
 
-        {!isOutrightEvent && renderMarketTabs()}
+        {!isOutrightEvent && !compactHeaderVisible && renderMarketTabs()}
 
         {!isOutrightEvent && (activeTab === "player-props" ? (
           <View

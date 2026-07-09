@@ -2,6 +2,47 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle QC - Local Line Tradable Flow And Tab Regression
+
+Feature/page worked on:
+
+- Event Detail Game Lines tab behavior.
+- Local MVP line market -> ticket -> fake-token/server-backed order -> Portfolio position flow on Samsung S23.
+
+Frontend/backend touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/__tests__/eventDetailMarketTabsContract.test.ts`
+- No backend source changed; local backend runtime was restarted with internal trading beta enabled and kill switch off for proof.
+
+Important functions/services touched:
+
+- `renderMarketTabs()` usage now hides the inline tab row when `compactHeaderVisible` is true, leaving only the sticky compact tab row in scrolled Game Lines state.
+- Existing order routes and ticket services were exercised without source changes.
+
+User interactions supported:
+
+- User opens Event Detail, scrolls into Game Lines, and sees one Game Lines / Player Props tab row instead of duplicate rows.
+- User selects a Local MVP Spread line, opens the ticket, swipes to buy, and lands in Portfolio with a filled local-line position.
+
+State transitions:
+
+- Event Detail scroll state: inline tabs -> sticky tabs without duplication.
+- Ticket state: selected local line -> amount-ready ticket -> swipe submit.
+- Backend/order state: server-backed fake-token order accepted in internal beta mode.
+- Portfolio state: cash balance changes from 10,000 USDT to 9,975 USDT, and a Local line Spread position appears.
+
+Known limitations:
+
+- Real provider-backed line markets remain unavailable for this match. This cycle proves the Local MVP fixture-line trade path, not provider-line parity.
+- The backend must be started in internal beta mode (`TRADING_BETA_ENABLED=true`, `TRADING_KILL_SWITCH=false`) for local order proof. The first proof attempt correctly failed while the kill switch was active.
+
+Evidence:
+
+- S23 duplicate-tab proof: `docs/mobile/harness/cycle-QC-local-line-tradable-flow/cycle-QC-no-duplicate-tabs-summary.json`
+- S23 line trade proof: `docs/mobile/harness/cycle-QC-local-line-tradable-flow/cycle-QC-current-mvp-s23-visible-flow.json`
+- S23 screenshots/XML: `docs/mobile/screenshots/cycle-QC-local-line-tradable-flow/`, `docs/mobile/harness/cycle-QC-local-line-tradable-flow/`
+
 ## Cycle QB - Provider Line Discovery Runtime Summary
 
 Feature/page worked on:
