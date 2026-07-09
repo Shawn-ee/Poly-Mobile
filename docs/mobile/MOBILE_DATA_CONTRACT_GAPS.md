@@ -1,5 +1,11 @@
 # Mobile Data Contract Gaps
 
+## Cycle RC - Portfolio Account Login Clarity
+
+- No new mobile/backend data contract gap was introduced.
+- Existing P1 gap remains: Google OAuth callback/session/logout state is not yet proven end-to-end in the native app.
+- Fake-token trading remains available without sign-in during Local MVP testing.
+
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
 ## Cycle RB - Event Chart History Readout

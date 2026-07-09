@@ -975,26 +975,38 @@ export function Portfolio({
 
   return (
     <ScrollView ref={scrollRef} accessibilityLabel={`portfolio-screen ${latestOrder ? "portfolio-result-content-landing portfolio-result-lands-at-account-header" : "portfolio-normal-browse"}`} testID="portfolio-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
-      <View accessibilityLabel="portfolio-profile-header portfolio-header-retail-density" testID="portfolio-profile-header" style={styles.profileHeader}>
+      <View accessibilityLabel="portfolio-profile-header portfolio-header-retail-density portfolio-account-google-login-label-visible" testID="portfolio-profile-header" style={styles.profileHeaderWrap}>
+        <View style={styles.profileHeader}>
+          <Pressable
+            accessibilityLabel="portfolio-account-entry-top-left portfolio-account-entry-opens-account portfolio-account-google-badge-visible"
+            accessibilityRole="button"
+            onPress={openAccount}
+            style={styles.profileLeft}
+            testID="portfolio-account-entry-top-left"
+          >
+            <PortfolioAvatar />
+            <View style={styles.profileCopy}>
+              <Text adjustsFontSizeToFit minimumFontScale={0.72} numberOfLines={1} style={styles.profileName}>
+                {pageCopy.profile}
+              </Text>
+              <Text accessibilityLabel="portfolio-account-entry-label" testID="portfolio-account-entry-label" style={styles.profileAccountLabel}>
+                {pageCopy.account}
+              </Text>
+            </View>
+          </Pressable>
+          <Pressable
+            accessibilityLabel="portfolio-account-settings-gear portfolio-account-entry-opens-account"
+            accessibilityRole="button"
+            hitSlop={10}
+            onPress={openAccount}
+            style={({ pressed }) => [styles.accountGearButton, pressed && styles.accountGearButtonPressed]}
+            testID="portfolio-account-settings-gear"
+          >
+            <Ionicons name="settings-outline" size={27} color="#f8fafc" />
+          </Pressable>
+        </View>
         <Pressable
-          accessibilityLabel="portfolio-account-entry-top-left portfolio-account-entry-opens-account portfolio-account-google-login-label-visible portfolio-account-google-badge-visible"
-          accessibilityRole="button"
-          onPress={openAccount}
-          style={styles.profileLeft}
-          testID="portfolio-account-entry-top-left"
-        >
-          <PortfolioAvatar />
-          <View style={styles.profileCopy}>
-            <Text adjustsFontSizeToFit minimumFontScale={0.72} numberOfLines={1} style={styles.profileName}>
-              {pageCopy.profile}
-            </Text>
-            <Text accessibilityLabel="portfolio-account-entry-label" testID="portfolio-account-entry-label" style={styles.profileAccountLabel}>
-              {pageCopy.account}
-            </Text>
-          </View>
-        </Pressable>
-        <Pressable
-          accessibilityLabel="portfolio-account-entry-google portfolio-account-google-direct-signin portfolio-google-login-button-visible"
+          accessibilityLabel="portfolio-account-entry-google portfolio-account-google-direct-signin portfolio-google-login-button-visible portfolio-google-login-row-visible"
           accessibilityRole="button"
           hitSlop={10}
           onPress={openGoogleSignIn}
@@ -1545,10 +1557,13 @@ export function Portfolio({
 const styles = StyleSheet.create({
   content: { flex: 1 },
   scrollPad: { width: "100%", maxWidth: 480, alignSelf: "center", paddingHorizontal: 0, paddingBottom: 110 },
-  profileHeader: { minHeight: 58, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10, paddingHorizontal: 24, paddingTop: 4 },
+  profileHeaderWrap: { paddingHorizontal: 24, paddingTop: 4, gap: 10 },
+  profileHeader: { minHeight: 58, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10 },
   profileLeft: { flexDirection: "row", alignItems: "center", gap: 12, flex: 1 },
   profileCopy: { flex: 1, minWidth: 0 },
-  accountGoogleButton: { minHeight: 44, maxWidth: 150, borderRadius: 999, paddingHorizontal: 14, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 7, backgroundColor: "#f8fafc" },
+  accountGearButton: { width: 46, height: 46, alignItems: "center", justifyContent: "center", borderRadius: 999 },
+  accountGearButtonPressed: { opacity: 0.74, transform: [{ scale: 0.96 }] },
+  accountGoogleButton: { minHeight: 46, borderRadius: 15, paddingHorizontal: 14, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, backgroundColor: "#f8fafc" },
   accountGoogleButtonPressed: { opacity: 0.84, transform: [{ scale: 0.97 }] },
   accountGoogleButtonText: { color: "#111827", fontSize: 13, fontWeight: "900", flexShrink: 1 },
   avatarWrap: { width: 50, height: 50, position: "relative", justifyContent: "center" },

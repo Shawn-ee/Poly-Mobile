@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle RC
+
+Gate status: Pass for focused Portfolio account/login clarity; not a pass for full native OAuth/session parity.
+
+Scope: make the Portfolio-owned account/login entry harder to miss after the Home account button was intentionally removed.
+
+Decision:
+
+- P0 failed: 0 for focused RC scope.
+- Implemented change: Portfolio now has a Polymarket-like top-right settings gear, keeps the avatar/name Account entry, and exposes a full-width `Google login` row.
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`; Portfolio XML confirmed `portfolio-account-entry-top-left`, `portfolio-account-settings-gear`, `portfolio-account-entry-google`, and `portfolio-google-login-row-visible`.
+- Tap proof: tapping `Google login` changed Android focus to Chrome auth surface.
+- P1 remaining: full native Google OAuth callback/session/logout proof.
+- Evidence: `docs/mobile/audits/cycle-RC-portfolio-account-login-clarity.md`; S23 proof `docs/mobile/harness/cycle-RC-portfolio-account-login-clarity/cycle-RC-portfolio-account-login-clarity-proof.json`.
+
 ## Cycle RB
 
 Gate status: Pass for focused Event Detail chart-history readout; not a pass for full drag-nearest-point native chart parity.

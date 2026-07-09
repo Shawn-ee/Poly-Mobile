@@ -1,0 +1,33 @@
+{
+  "cycle": "RC",
+  "feature": "Portfolio account/login clarity",
+  "device": {
+    "id": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model": "SM-S911U1"
+  },
+  "result": "pass",
+  "changedVisibleFlow": "Portfolio now owns the account/login entry with a Polymarket-like top-right settings gear and a full-width Google login row.",
+  "backendApiChanged": false,
+  "routesUsed": [
+    {
+      "route": "/api/auth/google/start?returnTo=/portfolio",
+      "method": "GET via browser/deep-link",
+      "status": "existing route, unchanged"
+    }
+  ],
+  "proof": {
+    "portfolioScreenshot": "docs/mobile/screenshots/cycle-RC-portfolio-account-login-clarity/cycle-RC-portfolio-account-login-clarity.png",
+    "portfolioHierarchy": "docs/mobile/harness/cycle-RC-portfolio-account-login-clarity/cycle-RC-portfolio-account-login-clarity.xml",
+    "afterTapScreenshot": "docs/mobile/screenshots/cycle-RC-portfolio-account-login-clarity/cycle-RC-after-google-login-tap.png",
+    "afterTapHierarchy": "docs/mobile/harness/cycle-RC-portfolio-account-login-clarity/cycle-RC-after-google-login-tap.xml",
+    "afterTapFocus": "com.android.chrome/org.chromium.chrome.browser.ChromeTabbedActivity"
+  },
+  "validation": {
+    "typecheck": "pass",
+    "focusedMobileContracts": "pass",
+    "s23Proof": "pass"
+  },
+  "limitations": [
+    "Full native Google OAuth callback/session/logout proof remains P1."
+  ]
+}
