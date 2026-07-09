@@ -18,12 +18,16 @@ describe("Account auth visibility contract", () => {
     expect(account).toContain("const signedIn = Boolean(forceSignedIn)");
     expect(account).toContain("account-login-google");
     expect(account).toContain("account-login-google-connected");
+    expect(account).toContain("account-login-google-status-signed-out");
+    expect(account).toContain("account-login-google-status-connected");
     expect(account).toContain("openGoogleSignIn");
     expect(account).toContain("account-login-unavailable");
     expect(copy).not.toContain("Mock login active");
     expect(copy).not.toContain("Mock login ready");
     expect(copy).toContain("Continue with Google");
+    expect(copy).toContain("Google account");
     expect(copy).toContain("Google connected");
+    expect(copy).toContain("Connected");
     expect(copy).toContain("Server profile loaded");
     expect(copy).toContain("Deposits and withdrawals remain disabled");
   });

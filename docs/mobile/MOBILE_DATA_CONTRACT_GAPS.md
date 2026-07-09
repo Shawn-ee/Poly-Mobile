@@ -2,6 +2,31 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle QN - Account Google Entry Clarity
+
+Closed or narrowed:
+
+- Portfolio no longer leaves the Google/account path looking like it disappeared after Home account-button cleanup.
+- Account signed-out state now labels the Google account section and status explicitly.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Native mobile proof of Google OAuth callback/session/logout lifecycle.
+- Clear server-provided account identity once real auth is enabled beyond the current profile summary/demo state.
+
+Route mismatch:
+
+- No route mismatch introduced.
+- The existing Google auth start route remains unchanged.
+
+Temporary mock/static data:
+
+- Account still uses MVP/demo profile display where real mobile OAuth session state is not yet available.
+
+Future migration concern:
+
+- Do not treat QN as full authentication parity. It only makes the existing account route visible and understandable.
+
 ## Cycle QM - Provider Chart Freshness Copy
 
 Closed or narrowed:

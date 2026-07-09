@@ -1,0 +1,20 @@
+﻿{
+    "cycle":  "QN",
+    "feature":  "Portfolio to Account Google entry clarity",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "backendRoutesChanged":  false,
+    "androidProof":  "pass",
+    "portfolioProof":  "docs/mobile/harness/cycle-QN-account-google-entry-clarity/cycle-QN-portfolio-account-entry.xml",
+    "accountProof":  "docs/mobile/harness/cycle-QN-account-google-entry-clarity/cycle-current-holiwyn-account.xml",
+    "assertions":  {
+                       "portfolioShowsAccountLogin":  true,
+                       "portfolioShowsGoogleAccount":  true,
+                       "portfolioAccountEntryClickableMarker":  true,
+                       "accountShowsGoogleAccountTitle":  true,
+                       "accountShowsContinueWithGoogle":  true,
+                       "accountShowsSignedOutStatusMarker":  true,
+                       "backendAuthLogicChanged":  false
+                   },
+    "result":  "pass"
+}

@@ -2,6 +2,22 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle QN - Account Google Entry Clarity
+
+Cycle QN changes no backend route or schema. It keeps the existing Google auth/profile route dependencies and improves the mobile entry-point copy.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio -> Account entry | None directly | UI navigation only | None | None | None | None | None | None; this is local tab navigation to Account. |
+| Google sign-in launcher | `/api/auth/google/start?returnTo=/portfolio` | Browser/deep-link open | Server auth route owns OAuth provider policy | None from mobile before browser open | None before callback/session completion | Existing backend auth/user/session models | Demo/fake-token trading remains available without sign-in | Full native OAuth callback/session/logout proof remains P1. |
+| Connected Account display | `/api/profile/summary` indirectly controls `forceSignedIn` in server mode | GET through existing profile summary service | Mobile API key/session depending on runtime mode | None for this UI-only change | Existing profile summary success sets signed-in display | Existing user/profile summary models | Forced signed-in proof state for harness only | Real end-to-end mobile Google session lifecycle remains future work. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-QN-account-google-entry-clarity/cycle-QN-account-google-entry-clarity-proof.json`
+- `docs/mobile/harness/cycle-QN-account-google-entry-clarity/cycle-QN-portfolio-account-entry.xml`
+- `docs/mobile/harness/cycle-QN-account-google-entry-clarity/cycle-current-holiwyn-account.xml`
+
 ## Cycle QM - Provider Chart Freshness Copy
 
 Cycle QM changes no backend route or schema. It documents and consumes the existing Event Detail chart-history contract more clearly in the mobile UI.

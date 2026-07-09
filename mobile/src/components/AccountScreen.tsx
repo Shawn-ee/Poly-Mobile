@@ -22,8 +22,11 @@ type AccountCopy = {
   loginMethodGoogle: string;
   loginConnected: string;
   loginUnavailable: string;
+  loginGoogleTitle: string;
   loginGoogleBody: string;
   loginGoogleConnected: string;
+  loginGoogleStatusSignedOut: string;
+  loginGoogleStatusConnected: string;
   preferences: string;
   languagePreference: string;
   ticketDefaultPreference: string;
@@ -119,6 +122,16 @@ export function AccountScreen({
         testID="account-login-card"
         style={styles.loginCard}
       >
+        <View
+          accessibilityLabel={signedIn ? "account-login-google-status-connected" : "account-login-google-status-signed-out"}
+          testID="account-login-google-status-row"
+          style={styles.loginTitleRow}
+        >
+          <Text style={styles.loginTitle}>{t.loginGoogleTitle}</Text>
+          <Text style={[styles.loginStatus, signedIn ? styles.loginStatusConnected : styles.loginStatusSignedOut]}>
+            {signedIn ? t.loginGoogleStatusConnected : t.loginGoogleStatusSignedOut}
+          </Text>
+        </View>
         {signedIn ? (
           <View
             accessibilityLabel="account-login-google-connected"
@@ -237,6 +250,11 @@ const styles = StyleSheet.create({
   profileName: { color: "#f8fafc", fontSize: 22, fontWeight: "900", marginTop: 5 },
   tier: { color: "#22c55e", fontWeight: "900" },
   loginCard: { marginTop: 14, padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", gap: 10 },
+  loginTitleRow: { minHeight: 30, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10 },
+  loginTitle: { color: "#f8fafc", fontSize: 16, fontWeight: "900" },
+  loginStatus: { flexShrink: 0, borderRadius: 999, paddingHorizontal: 10, paddingVertical: 5, fontSize: 12, fontWeight: "900", overflow: "hidden" },
+  loginStatusSignedOut: { color: "#bfdbfe", backgroundColor: "#172554" },
+  loginStatusConnected: { color: "#bbf7d0", backgroundColor: "#14532d" },
   googleButton: { minHeight: 54, borderRadius: 13, backgroundColor: "#f8fafc", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10 },
   googleButtonPressed: { opacity: 0.82, transform: [{ scale: 0.99 }] },
   googleButtonText: { color: "#111827", fontSize: 17, fontWeight: "900" },
