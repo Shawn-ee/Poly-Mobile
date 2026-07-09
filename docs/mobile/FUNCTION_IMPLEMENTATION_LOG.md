@@ -2,6 +2,50 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle QN - Account Google Entry Clarity
+
+Feature/page worked on:
+
+- Portfolio -> Account entry discoverability for Google login.
+- Account signed-out Google section clarity.
+
+Frontend/backend touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/src/components/AccountScreen.tsx`
+- `mobile/src/localization/appCopy.ts`
+- `mobile/src/__tests__/accountAuthContract.test.ts`
+- `mobile/src/__tests__/portfolioSettingsContract.test.ts`
+- No backend route, OAuth handler, profile/session service, Prisma schema, order logic, orderbook UI, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- Portfolio `openAccount` wiring remains unchanged.
+- Account `openGoogleSignIn` wiring remains unchanged.
+- Visible copy now makes the path explicit: `Account & login`, `Google account`, and a signed-out/connected status chip.
+
+User interactions supported:
+
+- User opens Portfolio and sees the account/login entry at the top-left profile area plus a Google account entry button.
+- User opens Account and sees a clearly labeled Google account card with `Continue with Google`.
+
+State transitions:
+
+- No auth/session state transition changed.
+- Signed-in display still depends on `forceSignedIn`/profile summary state.
+- Signed-out display still exposes the existing Google auth launcher.
+
+Known limitations:
+
+- This is UI clarity only. It does not prove full Google OAuth callback/session/logout on native mobile.
+
+Evidence:
+
+- Audit doc: `docs/mobile/audits/cycle-QN-account-google-entry-clarity.md`
+- S23 proof summary: `docs/mobile/harness/cycle-QN-account-google-entry-clarity/cycle-QN-account-google-entry-clarity-proof.json`
+- S23 Portfolio proof: `docs/mobile/harness/cycle-QN-account-google-entry-clarity/cycle-QN-portfolio-account-entry.xml`
+- S23 Account proof: `docs/mobile/harness/cycle-QN-account-google-entry-clarity/cycle-current-holiwyn-account.xml`
+
 ## Cycle QM - Provider Chart Freshness Copy
 
 Feature/page worked on:

@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle QN
+
+Gate status: Pass for focused Portfolio -> Account Google entry clarity; not a pass for full Google OAuth/session parity.
+
+Scope: make the existing Google login path visible after Home cleanup moved account entry into Portfolio.
+
+Decision:
+
+- P0 failed: 0 for focused QN scope.
+- Implemented change: Portfolio now shows `Account & login` and `Google account`; Account now has a persistent `Google account` section title and signed-out/connected status chip.
+- Runtime finding: `openGoogleSignIn()` and `/api/auth/google/start?returnTo=/portfolio` remain unchanged.
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`; Portfolio XML contains `Account & login`, `Google account`, and `portfolio-account-entry-google`; Account XML contains `Google account`, `Continue with Google`, and `account-login-google-status-signed-out`.
+- P1 remaining: full native Google OAuth callback/session/logout proof.
+- Evidence: `docs/mobile/audits/cycle-QN-account-google-entry-clarity.md`; S23 proof `docs/mobile/harness/cycle-QN-account-google-entry-clarity/cycle-QN-account-google-entry-clarity-proof.json`.
+
 ## Cycle QM
 
 Gate status: Pass for focused provider chart freshness copy; not a pass for real-time live chart freshness or provider-backed line-market parity.

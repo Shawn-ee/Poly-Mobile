@@ -601,8 +601,8 @@ type PortfolioTab = "positions" | "orders" | "history";
 const portfolioPageCopy = {
   en: {
     profile: "holiwynplayer7067",
-    account: "Account",
-    googleSignIn: "Google sign-in",
+    account: "Account & login",
+    googleSignIn: "Google account",
     cash: "cash",
     deposit: "Deposit",
     withdraw: "Withdraw",
@@ -616,8 +616,8 @@ const portfolioPageCopy = {
   },
   zh: {
     profile: "liyunplayer7067",
-    account: "\u6211\u7684",
-    googleSignIn: "Google \u767b\u5f55",
+    account: "\u8d26\u6237 / \u767b\u5f55",
+    googleSignIn: "Google \u8d26\u6237",
     cash: "\u73b0\u91d1",
     deposit: "\u5145\u503c",
     withdraw: "\u63d0\u73b0",
