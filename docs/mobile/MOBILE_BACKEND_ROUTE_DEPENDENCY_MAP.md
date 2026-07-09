@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle QO - Chinese Source Copy Cleanup
+
+Cycle QO changes no backend route or schema. It keeps the existing Home/Live event-feed source contract and changes only Chinese visible copy.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Chinese Home/Live card source label | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` through existing mobile feed service | GET | Public/mobile event browse | Query params only | `marketSourceSummary.regulationWinner.status`, `marketSourceSummary.lineMarkets.status`, line families, provider/fixture counts | Existing `Event`, `Market`, `Outcome` | Contract-shaped line markets display with 利云体育 branding when provider-backed line markets are unavailable | Real provider-backed Spread/Totals/Team Total line markets remain unavailable for the current match. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-QO-chinese-source-copy/cycle-QO-chinese-source-copy-proof.json`
+- `docs/mobile/harness/cycle-QO-chinese-source-copy/cycle-QO-chinese-home-source.xml`
+
 ## Cycle QN - Account Google Entry Clarity
 
 Cycle QN changes no backend route or schema. It keeps the existing Google auth/profile route dependencies and improves the mobile entry-point copy.

@@ -2,6 +2,43 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle QO - Chinese Source Copy Cleanup
+
+Feature/page worked on:
+
+- Chinese Home/Live card source-readiness copy for the Local MVP match card.
+
+Frontend/backend touched:
+
+- `mobile/src/components/MarketLists.tsx`
+- `mobile/src/__tests__/homeCardChineseSourceCopy.test.ts`
+- No backend route, provider import service, Prisma schema, order logic, orderbook UI, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- `eventSourceReadiness(event, locale)` now uses Chinese Holiwyn-branded source copy for contract-shaped line markets.
+- Hidden accessibility markers still preserve `home-card-source-local-test-fake-token` and line family markers for audit/migration.
+
+User interactions supported:
+
+- User switches the app to Chinese and sees the Home match card source label as `胜负: Polymarket / 盘口: 利云体育`.
+
+State transitions:
+
+- No runtime state transition changed.
+- Language switching remains the existing `toggleLanguage` behavior.
+
+Known limitations:
+
+- This is a focused Home/Live card copy cleanup, not a full app-wide Chinese translation pass.
+- Real provider-backed Spread/Totals/Team Total line markets remain P1.
+
+Evidence:
+
+- Audit doc: `docs/mobile/audits/cycle-QO-chinese-source-copy.md`
+- S23 proof summary: `docs/mobile/harness/cycle-QO-chinese-source-copy/cycle-QO-chinese-source-copy-proof.json`
+- S23 screenshot/XML: `docs/mobile/screenshots/cycle-QO-chinese-source-copy/cycle-QO-chinese-home-source.png`, `docs/mobile/harness/cycle-QO-chinese-source-copy/cycle-QO-chinese-home-source.xml`
+
 ## Cycle QN - Account Google Entry Clarity
 
 Feature/page worked on:

@@ -2,6 +2,30 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle QO - Chinese Source Copy Cleanup
+
+Closed or narrowed:
+
+- Chinese Home/Live source copy no longer exposes old local/test-token wording for contract-shaped line markets.
+- Hidden source markers still preserve contract-fixture identity for audit and backend migration.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total market ids, outcome ids, token ids, line values, probabilities, and top prices.
+
+Route mismatch:
+
+- No route mismatch introduced.
+- Existing `marketSourceSummary` fields remain sufficient for this copy layer.
+
+Temporary mock/static data:
+
+- Contract-shaped Holiwyn line rows remain the Local MVP fallback while Polymarket-backed lines are unavailable.
+
+Future migration concern:
+
+- When real provider-backed line markets arrive, the same `marketSourceSummary` shape should let Chinese Home/Live switch from 利云体育 line copy to Polymarket/provider-backed copy without reworking the component.
+
 ## Cycle QN - Account Google Entry Clarity
 
 Closed or narrowed:
