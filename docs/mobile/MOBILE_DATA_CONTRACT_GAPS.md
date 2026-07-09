@@ -2,6 +2,32 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle QD - Local Line History Flow
+
+Closed or narrowed:
+
+- S23 proof now confirms the Local MVP Spread line flow can land in Portfolio History after a filled fake-token/server-backed order.
+- The filled history row preserves market identity enough for testers to read the event, market type, line, source state, amount, and execution context.
+- Google login did not disappear from code; it was intentionally moved from Home into Portfolio/Account during earlier Home cleanup. This remains a visibility risk if testers expect it on Home.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total market identities with provider market IDs, condition IDs, token IDs, line values, periods, probabilities, and refresh status.
+- Production Google session/profile hydration for native mobile after the browser auth callback.
+
+Route mismatch:
+
+- No route mismatch introduced. The proof uses existing mobile order, Portfolio, and Portfolio History routes.
+
+Temporary mock/static data:
+
+- Local MVP line markets remain contract-shaped fixtures. They are acceptable for current UI/order proof but are not provider parity.
+
+Future migration concern:
+
+- Do not mark provider-line parity complete until a real provider-backed line order can preserve provider/outcome/token identity through ticket, order, position, and history.
+- The Portfolio Google entry should stay obvious while Home remains focused on World Cup/Matches/Live.
+
 ## Cycle QC - Local Line Tradable Flow And Tab Regression
 
 Closed or narrowed:

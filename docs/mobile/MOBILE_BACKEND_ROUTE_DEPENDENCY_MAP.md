@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle QD - Local Line History Flow
+
+Cycle QD changes no backend source. It proves the existing backend/mobile route contract can carry a Local MVP line order into Portfolio History after a filled fake-token/server-backed trade.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Local line filled-order history | Existing mobile quote/order/portfolio/history routes used by the simple ticket flow, including `/api/portfolio` and `/api/portfolio/history` through the mobile API client | GET/POST | Mobile API key/dev credential; backend must run with internal trading beta enabled and kill switch off for local proof | Existing ticket/order payload preserving event slug, market id, outcome id, market type, line, period, side, reference source, and amount | Portfolio cash, positions, history rows, trade side, amount, shares, probability, event title, outcome, market type, line, period, source markers | Existing `User`, `ApiCredential`, `Event`, `Market`, `Outcome`, order/position/portfolio/history models | Local MVP line markets remain backend-shaped `contract-fixture` rows until provider-backed line markets are available | Real provider-backed Spread/Totals/Team Total markets remain missing. Production trading and wallet auth remain future work. |
+| Portfolio -> Account Google entry | Existing Account screen opens `${EXPO_PUBLIC_API_BASE_URL}/api/auth/google/start?returnTo=/portfolio` through `openGoogleSignIn` | Browser/deep-link open | Server auth route decides Google requirements | None from Portfolio entry | None until auth callback/profile sync is implemented | No schema change | Demo trading remains available without sign-in | End-to-end Google OAuth callback/session proof is not complete. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-QD-local-line-history-flow/cycle-QD-current-mvp-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-QD-local-line-history-flow/cycle-QD-current-mvp-portfolio-history.png`
+
 ## Cycle QC - Local Line Tradable Flow And Tab Regression
 
 Cycle QC changes mobile UI tab rendering and proves the existing fake-token/server-backed Local MVP line order flow.

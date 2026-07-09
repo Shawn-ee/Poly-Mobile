@@ -16,6 +16,22 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle QD
+
+Gate status: Pass for focused Local MVP line history flow; not a pass for real provider-backed line-market parity.
+
+Scope: Home -> Event Detail -> Local MVP Spread line -> simple ticket -> fake-token/server-backed filled order -> Portfolio History.
+
+Decision:
+
+- P0 failed: 0 for the focused Local MVP line history scope.
+- Source change: none. This cycle records and gates the S23 proof for the already-implemented filled-history path.
+- Runtime finding: with seeded counterparty and internal beta mode enabled, the local line ticket submission filled and Portfolio History displayed the filled row.
+- Android proof: Samsung S23 `SM-S911U1` shows Home, Live, Event Detail top, Game Lines, ticket, submit result, and Portfolio History.
+- Google login note: the login function is still present, but its entry was moved from Home to Portfolio/Account in earlier MVP cleanup. If testers perceive it as missing, that is a discoverability issue, not a deleted function.
+- P1/P2 remaining: real provider-backed line markets remain unavailable for this match; native Google OAuth callback/session hydration remains future auth work.
+- Evidence: flow summary `docs/mobile/harness/cycle-QD-local-line-history-flow/cycle-QD-current-mvp-s23-visible-flow.json`; screenshots `docs/mobile/screenshots/cycle-QD-local-line-history-flow/`; XML `docs/mobile/harness/cycle-QD-local-line-history-flow/`.
+
 ## Cycle QC
 
 Gate status: Pass for focused Local MVP line tradable flow and duplicate-tabs regression.

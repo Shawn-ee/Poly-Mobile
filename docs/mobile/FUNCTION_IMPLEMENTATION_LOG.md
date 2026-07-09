@@ -2,6 +2,51 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle QD - Local Line History Flow
+
+Feature/page worked on:
+
+- Local MVP line market -> ticket -> fake-token/server-backed filled order -> Portfolio History proof on Samsung S23.
+- Google login visibility inspection after user report that login seemed to disappear.
+
+Frontend/backend touched:
+
+- No source code changed in this cycle.
+- New S23 proof artifacts were captured under `docs/mobile/screenshots/cycle-QD-local-line-history-flow/` and `docs/mobile/harness/cycle-QD-local-line-history-flow/`.
+- The existing local backend runtime was used in internal trading beta mode with the kill switch off.
+
+Important functions/services exercised:
+
+- Existing Event Detail line selection and ticket identity preservation.
+- Existing `submitTicketOrder()` path through the server order route.
+- Existing Portfolio snapshot/history refresh through the mobile API client.
+- Existing Portfolio account entry wiring: `Portfolio` -> `openAccount` -> `AccountScreen` -> `openGoogleSignIn`.
+
+User interactions supported:
+
+- User opens Home, opens a live World Cup match, selects a Local MVP Spread line, opens the simple ticket, swipes to buy, and lands in Portfolio.
+- User can switch to Portfolio History and see the filled local-line trade with line/market context preserved.
+- Google login remains available from Portfolio, not Home: tap the Portfolio top-left account area or the Google sign-in chip to open Account, then use Continue with Google.
+
+State transitions:
+
+- Event Detail: provider-backed winner plus Local MVP line market state remains visible.
+- Ticket: selected line identity is carried into amount entry and swipe submit.
+- Backend/order: a seeded counterparty fills the fake-token/server-backed line order in local beta mode.
+- Portfolio: filled position/history state becomes visible after submit; History includes line-market context instead of losing selection identity.
+
+Known limitations:
+
+- No new provider-backed line markets were created. Spread/Totals/Team Total are still Local MVP contract fixtures for this match.
+- Real Google OAuth callback/session hydration remains future auth work; this cycle only confirms the mobile entry still exists.
+- Production trading, wallet, deposit, withdrawal, orderbook UI, chat, live stats, and social features remain out of Local MVP scope.
+
+Evidence:
+
+- S23 flow summary: `docs/mobile/harness/cycle-QD-local-line-history-flow/cycle-QD-current-mvp-s23-visible-flow.json`
+- Portfolio History screenshot/XML: `docs/mobile/screenshots/cycle-QD-local-line-history-flow/cycle-QD-current-mvp-portfolio-history.png`, `docs/mobile/harness/cycle-QD-local-line-history-flow/cycle-QD-current-mvp-portfolio-history.xml`
+- Full S23 screenshots/XML: `docs/mobile/screenshots/cycle-QD-local-line-history-flow/`, `docs/mobile/harness/cycle-QD-local-line-history-flow/`
+
 ## Cycle QC - Local Line Tradable Flow And Tab Regression
 
 Feature/page worked on:
