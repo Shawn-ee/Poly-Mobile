@@ -11669,3 +11669,13 @@ Known limitations:
 - User interactions supported: buy a current route line position, tap Cash out, open the generic Sell Trade Ticket, choose `$25`, swipe to sell, and land on Portfolio History.
 - State transitions: server-backed buy fill -> Portfolio position -> generic Sell ticket -> server-backed sell fill -> History sold activity.
 - Known limitations: legacy `CashoutTicket.tsx` remains as dormant/internal code but is no longer mounted in the default Local MVP runtime.
+
+# Cycle RU - Current-Match Provider Line Readiness Probe
+
+- Feature/page worked on: Local MVP provider-readiness evidence for current Event Detail line markets.
+- Frontend components touched: none.
+- Backend/proof scripts touched: `scripts/prove_mobile_provider_line_source_probe.ts`, `scripts/prove_mobile_provider_line_market_availability.ts`.
+- Tests touched: `src/server/services/__tests__/mobile.provider.line.probe.contract.test.ts`.
+- User-visible behavior supported: the current Event Detail can continue showing Regulation Winner as Polymarket-backed and Spread/Totals/Team Total as contract fixtures without relying on stale provider proof from another match.
+- State transitions: no runtime state transition changed; this cycle validates provider discovery/readiness before the existing visible Home -> Event Detail -> line ticket -> order -> Portfolio/history flow.
+- Known limitations: Polymarket Gamma currently exposes only Argentina/Egypt Regulation Winner markets for `fifwc-arg-egy-2026-07-07`; no attach-ready provider-backed line markets were found.

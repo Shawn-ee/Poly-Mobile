@@ -1,0 +1,66 @@
+{
+  "pass": true,
+  "eventSlug": "argentina-vs-egypt",
+  "market": {
+    "id": "b658ace7-eed8-4e16-9633-4f100c7d995f",
+    "title": "Argentina vs. Egypt: Egypt +1.5",
+    "marketType": "spread",
+    "marketGroupKey": "spread",
+    "period": "regulation",
+    "line": "1.5",
+    "referenceSource": "contract-fixture",
+    "externalMarketId": "contract-argentina-vs-egypt-spread-away-1-5",
+    "conditionId": "condition-argentina-vs-egypt-spread-away-1-5"
+  },
+  "outcome": {
+    "id": "1116c2c5-9244-4d92-8d04-eff3d1a66ddf",
+    "name": "Egypt +1.5",
+    "side": "away",
+    "referenceTokenId": "contract-argentina-vs-egypt-spread-away-1-5-away",
+    "referenceOutcomeLabel": "Egypt +1.5"
+  },
+  "cleanupOnly": false,
+  "maker": {
+    "id": "2835ec41-ea5d-4ef5-a1c5-5612dedc9bd5",
+    "username": "mobile_route_fill_maker_9e123464"
+  },
+  "cleanup": {
+    "enabled": true,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": [],
+    "cleanupBlockingBids": true,
+    "canceledBlockingBids": [
+      {
+        "id": "d20e66dd-b055-41b5-b4a1-fc69cab65a0b",
+        "username": "mobile_route_fill_maker_0f51f6ad",
+        "previousStatus": "PARTIAL",
+        "price": "0.6",
+        "remaining": "38.33",
+        "canceledStatus": "CANCELED"
+      }
+    ],
+    "cleanupBlockingMarketBids": false,
+    "canceledBlockingMarketBids": [],
+    "cleanupProofAsks": false,
+    "canceledProofAsks": [],
+    "cleanupBlockingAsks": false,
+    "canceledBlockingAsks": []
+  },
+  "makerOrder": {
+    "id": "c1511325-d092-42e9-87b9-a51db4a31709",
+    "marketId": "b658ace7-eed8-4e16-9633-4f100c7d995f",
+    "outcomeId": "1116c2c5-9244-4d92-8d04-eff3d1a66ddf",
+    "side": "SELL",
+    "price": "0.52",
+    "size": "80",
+    "remaining": "80",
+    "reservedNotional": "0",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "SELL",
+    "price": "0.52",
+    "size": "80",
+    "intendedMobileTaker": "BUY $25 route-backed spread ticket"
+  }
+}

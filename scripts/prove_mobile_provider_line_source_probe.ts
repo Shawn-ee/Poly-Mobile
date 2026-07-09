@@ -11,22 +11,45 @@ import {
   summarizeProviderCandidateFamilies,
 } from "@/server/services/mobileLiveProviderCandidates";
 
-const DEFAULT_PROVIDER_EVENT_SLUG = "fifwc-col-gha-2026-07-03";
+const DEFAULT_PROVIDER_EVENT_SLUG = "fifwc-arg-egy-2026-07-07";
 const DEFAULT_OUTPUT_PATH = "docs/mobile/harness/cycle-current-mobile-provider-line-source-probe.json";
+const TEAM_NAME_BY_CODE: Record<string, string> = {
+  arg: "Argentina",
+  aus: "Australia",
+  bra: "Brazil",
+  col: "Colombia",
+  cro: "Croatia",
+  ecu: "Ecuador",
+  egy: "Egypt",
+  fra: "France",
+  gha: "Ghana",
+  mex: "Mexico",
+  nor: "Norway",
+  par: "Paraguay",
+  por: "Portugal",
+  usa: "USA",
+};
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const providerEventSlug = args.providerEventSlug ?? DEFAULT_PROVIDER_EVENT_SLUG;
   const outputPath = args.output ?? DEFAULT_OUTPUT_PATH;
-  const lineTargets = buildLineTargets();
 
   const exactEventCandidates = await fetchProviderCandidatesFromSportsEvents({
     eventSlugs: [providerEventSlug],
     tagSlugs: [],
   });
+  const teamContext = deriveTeamContext({
+    providerEventSlug,
+    eventTitle: exactEventCandidates[0]?.eventTitle ?? null,
+    homeTeam: args.homeTeam,
+    awayTeam: args.awayTeam,
+  });
+  const lineTargets = buildLineTargets(teamContext);
   const exactEventFamilySummary = summarizeProviderCandidateFamilies(exactEventCandidates);
 
-  const exactSlugCandidates = await fetchProviderCandidatesForSlugs(buildExactLineSlugGuesses(providerEventSlug));
+  const exactSlugGuesses = buildExactLineSlugGuesses(providerEventSlug, teamContext);
+  const exactSlugCandidates = await fetchProviderCandidatesForSlugs(exactSlugGuesses);
   const exactSlugFamilySummary = summarizeProviderCandidateFamilies(exactSlugCandidates);
 
   const targetResults = [];
@@ -48,7 +71,7 @@ async function main() {
       title: target.market.title,
       period: target.market.period,
       line: target.market.line?.toString() ?? null,
-      exactSlugGuesses: buildExactLineSlugGuesses(providerEventSlug).filter((slug) =>
+      exactSlugGuesses: exactSlugGuesses.filter((slug) =>
         target.slugHintMatchers.some((matcher) => slug.includes(matcher))
       ),
       queries,
@@ -97,7 +120,7 @@ async function main() {
       },
       exactSlugGuesses: {
         source: "gamma-api.polymarket.com/markets?slug",
-        guessedSlugCount: buildExactLineSlugGuesses(providerEventSlug).length,
+        guessedSlugCount: exactSlugGuesses.length,
         candidateCount: exactSlugCandidates.length,
         familySummary: exactSlugFamilySummary,
         lineCandidateCount: exactSlugLineCandidateCount,
@@ -135,56 +158,59 @@ async function main() {
   process.stdout.write(`${JSON.stringify(summary, null, 2)}\n`);
 }
 
-function buildLineTargets() {
+function buildLineTargets(teamContext: TeamContext) {
+  const { homeTeam, awayTeam, homeCode, awayCode } = teamContext;
+  const teamPair = `${homeTeam} ${awayTeam}`;
   const base = {
     id: "line-target",
+    eventTitle: `${homeTeam} vs ${awayTeam}`,
     unit: "goals",
     marketGroupKey: "game-lines",
     marketGroupTitle: "Game Lines",
   };
   return [
-    lineTarget("spread-colombia-plus-1-5", "Colombia +1.5", "spread", "1.5", null, yesNoOutcomes(), [
-      "Colombia Ghana spread",
-      "Colombia Ghana handicap",
-      "Colombia +1.5 Ghana",
-      "Colombia cover 1.5 Ghana",
+    lineTarget(`spread-${homeCode}-plus-1-5`, `${homeTeam} +1.5`, "spread", "1.5", null, yesNoOutcomes(), [
+      `${teamPair} spread`,
+      `${teamPair} handicap`,
+      `${homeTeam} +1.5 ${awayTeam}`,
+      `${homeTeam} cover 1.5 ${awayTeam}`,
     ], ["spread", "handicap"]),
-    lineTarget("spread-ghana-minus-1-5", "Ghana -1.5", "spread", "-1.5", null, yesNoOutcomes(), [
-      "Ghana Colombia spread",
-      "Ghana Colombia handicap",
-      "Ghana -1.5 Colombia",
-      "Ghana cover 1.5 Colombia",
+    lineTarget(`spread-${awayCode}-minus-1-5`, `${awayTeam} -1.5`, "spread", "-1.5", null, yesNoOutcomes(), [
+      `${awayTeam} ${homeTeam} spread`,
+      `${awayTeam} ${homeTeam} handicap`,
+      `${awayTeam} -1.5 ${homeTeam}`,
+      `${awayTeam} cover 1.5 ${homeTeam}`,
     ], ["spread", "handicap"]),
-    lineTarget("total-goals-2-5", "Colombia vs Ghana total goals 2.5", "total_goals", "2.5", null, overUnderOutcomes("2.5"), [
-      "Colombia Ghana total goals",
-      "Colombia Ghana over under",
-      "Colombia Ghana over 2.5",
-      "Colombia Ghana goals over 2.5",
+    lineTarget("total-goals-2-5", `${homeTeam} vs ${awayTeam} total goals 2.5`, "total_goals", "2.5", null, overUnderOutcomes("2.5"), [
+      `${teamPair} total goals`,
+      `${teamPair} over under`,
+      `${teamPair} over 2.5`,
+      `${teamPair} goals over 2.5`,
     ], ["total", "goals", "over", "under"]),
-    lineTarget("team-total-colombia-1-5", "Colombia team total goals 1.5", "team_total_goals", "1.5", null, overUnderOutcomes("1.5"), [
-      "Colombia Ghana team total",
-      "Colombia team goals over 1.5 Ghana",
-      "Colombia total goals Ghana",
-    ], ["col", "team-total", "team-goals"]),
-    lineTarget("team-total-ghana-1-5", "Ghana team total goals 1.5", "team_total_goals", "1.5", null, overUnderOutcomes("1.5"), [
-      "Ghana Colombia team total",
-      "Ghana team goals over 1.5 Colombia",
-      "Ghana total goals Colombia",
-    ], ["gha", "team-total", "team-goals"]),
+    lineTarget(`team-total-${homeCode}-1-5`, `${homeTeam} team total goals 1.5`, "team_total_goals", "1.5", null, overUnderOutcomes("1.5"), [
+      `${teamPair} team total`,
+      `${homeTeam} team goals over 1.5 ${awayTeam}`,
+      `${homeTeam} total goals ${awayTeam}`,
+    ], [homeCode, "team-total", "team-goals"]),
+    lineTarget(`team-total-${awayCode}-1-5`, `${awayTeam} team total goals 1.5`, "team_total_goals", "1.5", null, overUnderOutcomes("1.5"), [
+      `${awayTeam} ${homeTeam} team total`,
+      `${awayTeam} team goals over 1.5 ${homeTeam}`,
+      `${awayTeam} total goals ${homeTeam}`,
+    ], [awayCode, "team-total", "team-goals"]),
     lineTarget("first-half-total-goals-1-5", "First half total goals 1.5", "total_goals", "1.5", "first-half", overUnderOutcomes("1.5"), [
-      "Colombia Ghana first half total goals",
-      "Colombia Ghana first half over under",
-      "Colombia Ghana 1h over 1.5",
+      `${teamPair} first half total goals`,
+      `${teamPair} first half over under`,
+      `${teamPair} 1h over 1.5`,
     ], ["first-half", "1h"]),
-    lineTarget("first-half-winner-colombia", "First half Colombia winner", "first_half_winner", null, "first-half", yesNoOutcomes(), [
-      "Colombia Ghana first half winner",
-      "Colombia first half Ghana",
-      "Colombia Ghana 1h winner",
+    lineTarget(`first-half-winner-${homeCode}`, `First half ${homeTeam} winner`, "first_half_winner", null, "first-half", yesNoOutcomes(), [
+      `${teamPair} first half winner`,
+      `${homeTeam} first half ${awayTeam}`,
+      `${teamPair} 1h winner`,
     ], ["first-half", "1h"]),
-    lineTarget("corners-8-5", "Colombia vs Ghana corners 8.5", "corners", "8.5", null, overUnderOutcomes("8.5"), [
-      "Colombia Ghana corners",
-      "Colombia Ghana corner kicks over 8.5",
-      "Colombia Ghana total corners",
+    lineTarget("corners-8-5", `${homeTeam} vs ${awayTeam} corners 8.5`, "corners", "8.5", null, overUnderOutcomes("8.5"), [
+      `${teamPair} corners`,
+      `${teamPair} corner kicks over 8.5`,
+      `${teamPair} total corners`,
     ], ["corner", "corners"]),
   ].map((target) => ({
     ...target,
@@ -220,24 +246,51 @@ function lineTarget(
   };
 }
 
-function buildExactLineSlugGuesses(providerEventSlug: string) {
+type TeamContext = {
+  homeTeam: string;
+  awayTeam: string;
+  homeCode: string;
+  awayCode: string;
+};
+
+function deriveTeamContext(params: {
+  providerEventSlug: string;
+  eventTitle?: string | null;
+  homeTeam?: string;
+  awayTeam?: string;
+}): TeamContext {
+  const slugCodes = params.providerEventSlug.match(/fifwc-([a-z]{3})-([a-z]{3})-\d{4}-\d{2}-\d{2}/i);
+  const titleTeams = params.eventTitle?.match(/\b(.+?)\s+(?:vs\.?|v\.?)\s+(.+?)$/i);
+  const homeCode = slugCodes?.[1]?.toLowerCase() ?? codeForTeam(params.homeTeam ?? titleTeams?.[1] ?? "home");
+  const awayCode = slugCodes?.[2]?.toLowerCase() ?? codeForTeam(params.awayTeam ?? titleTeams?.[2] ?? "away");
+  return {
+    homeCode,
+    awayCode,
+    homeTeam: cleanTeamName(params.homeTeam ?? titleTeams?.[1]) ?? TEAM_NAME_BY_CODE[homeCode] ?? homeCode.toUpperCase(),
+    awayTeam: cleanTeamName(params.awayTeam ?? titleTeams?.[2]) ?? TEAM_NAME_BY_CODE[awayCode] ?? awayCode.toUpperCase(),
+  };
+}
+
+function buildExactLineSlugGuesses(providerEventSlug: string, teamContext: TeamContext) {
   const slug = providerEventSlug.trim();
+  const homeName = slugify(teamContext.homeTeam);
+  const awayName = slugify(teamContext.awayTeam);
   return Array.from(new Set([
     `${slug}-spread`,
     `${slug}-handicap`,
-    `${slug}-col-spread`,
-    `${slug}-gha-spread`,
-    `${slug}-colombia-spread`,
-    `${slug}-ghana-spread`,
+    `${slug}-${teamContext.homeCode}-spread`,
+    `${slug}-${teamContext.awayCode}-spread`,
+    `${slug}-${homeName}-spread`,
+    `${slug}-${awayName}-spread`,
     `${slug}-total-goals`,
     `${slug}-total-goals-25`,
     `${slug}-over-under`,
     `${slug}-over-25`,
     `${slug}-under-25`,
-    `${slug}-team-total-col`,
-    `${slug}-team-total-gha`,
-    `${slug}-col-team-total`,
-    `${slug}-gha-team-total`,
+    `${slug}-team-total-${teamContext.homeCode}`,
+    `${slug}-team-total-${teamContext.awayCode}`,
+    `${slug}-${teamContext.homeCode}-team-total`,
+    `${slug}-${teamContext.awayCode}-team-total`,
     `${slug}-first-half`,
     `${slug}-first-half-winner`,
     `${slug}-1h`,
@@ -247,6 +300,21 @@ function buildExactLineSlugGuesses(providerEventSlug: string) {
     `${slug}-total-corners`,
     `${slug}-correct-score`,
   ]));
+}
+
+function cleanTeamName(value?: string | null) {
+  const cleaned = value?.replace(/\s+/g, " ").trim();
+  return cleaned && !["home", "away"].includes(cleaned.toLowerCase()) ? cleaned : null;
+}
+
+function codeForTeam(value: string) {
+  const normalized = value.toLowerCase().replace(/[^a-z]+/g, " ").trim();
+  const matched = Object.entries(TEAM_NAME_BY_CODE).find(([, name]) => name.toLowerCase() === normalized);
+  return (matched?.[0] ?? normalized.slice(0, 3)) || "tbd";
+}
+
+function slugify(value: string) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
 
 function countLineFamilies(summary: ReturnType<typeof summarizeProviderCandidateFamilies>) {
@@ -288,7 +356,11 @@ function parseArgs(argv: string[]) {
   for (let index = 0; index < argv.length; index += 1) {
     const part = argv[index];
     if (!part.startsWith("--")) continue;
-    const key = part.slice(2);
+    const [key, ...inlineParts] = part.slice(2).split("=");
+    if (inlineParts.length > 0) {
+      args[key] = inlineParts.join("=");
+      continue;
+    }
     const next = argv[index + 1];
     if (!next || next.startsWith("--")) {
       args[key] = "true";
