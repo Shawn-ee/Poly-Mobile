@@ -148,7 +148,7 @@ describe("GET /api/portfolio/history canceled orders", () => {
     const { GET } = await import("@/app/api/portfolio/history/route");
     const response = await GET(
       new NextRequest("http://localhost/api/portfolio/history", {
-        headers: { Authorization: "Bearer pk_live_test.secret" },
+        headers: { Authorization: "Bearer test-api-key-fixture" },
       }),
     );
     const body = await response.json();
@@ -316,7 +316,8 @@ describe("GET /api/portfolio/history canceled orders", () => {
     };
     const driftedMarket = {
       id: "market-ef-spread",
-      title: "Spain vs Japan moneyline after provider refresh",
+      title: "Spain vs Japan: Spread",
+      event: { title: "Spain vs Japan", slug: "spain-vs-japan" },
       status: "LIVE",
       marketGroupKey: "moneyline",
       marketType: "match_winner_1x2",
@@ -386,6 +387,16 @@ describe("GET /api/portfolio/history canceled orders", () => {
     expect(JSON.stringify(body.recentTrades[0].selection)).not.toContain("refreshed");
     expect(body.canceledOrders[0].selection.tokenId).toBe("token-ef-spread-yes-original");
     expect(body.recentTrades[0].selection.marketGroupId).toBe("spreads");
+    expect(body.canceledOrders[0].market).toMatchObject({
+      eventTitle: "Spain vs Japan",
+      eventSlug: "spain-vs-japan",
+      displayTitle: "Spread",
+    });
+    expect(body.recentTrades[0].market).toMatchObject({
+      eventTitle: "Spain vs Japan",
+      eventSlug: "spain-vs-japan",
+      displayTitle: "Spread",
+    });
     expect(body.canceledOrders[0].selection.limitPrice).toBe(0.44);
     expect(body.recentTrades[0].selection.limitSide).toBe("ask");
     expect(body.recentTrades[0].selection.limitShares).toBe(125.5);
