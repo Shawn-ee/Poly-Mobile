@@ -1,6 +1,7 @@
 param(
   [string]$Device = "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
   [int]$Port = 8108,
+  [int]$BackendPort = 3002,
   [string]$ExpoHost = "",
   [switch]$FutureListClose,
   [switch]$FutureListOrder,
@@ -78,10 +79,12 @@ function Resolve-LanIpv4 {
 }
 
 $resolvedExpoHost = if ($ExpoHost) { $ExpoHost } else { Resolve-LanIpv4 }
+$resolvedBackendBaseUrl = "http://${resolvedExpoHost}:$BackendPort"
 
 Write-Host "Samsung smoke target: $Device"
 Write-Host "Expo host: $resolvedExpoHost"
 Write-Host "Expo port: $Port"
+Write-Host "Backend base: $resolvedBackendBaseUrl"
 
 if ($FutureListOrder) {
   & "$PSScriptRoot\smoke.ps1" -Deep -FutureListOrder -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
@@ -146,7 +149,7 @@ if ($FutureListOrder) {
   $previousOrderMode = $env:EXPO_PUBLIC_ORDER_MODE
   $previousApiBaseUrl = $env:EXPO_PUBLIC_API_BASE_URL
   $env:EXPO_PUBLIC_ORDER_MODE = "server"
-  $env:EXPO_PUBLIC_API_BASE_URL = "http://${resolvedExpoHost}:3000"
+  $env:EXPO_PUBLIC_API_BASE_URL = $resolvedBackendBaseUrl
   try {
     if ($ServerOpenOrderCancel) {
       & "$PSScriptRoot\smoke.ps1" -Deep -ServerOpenOrderCancel -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear

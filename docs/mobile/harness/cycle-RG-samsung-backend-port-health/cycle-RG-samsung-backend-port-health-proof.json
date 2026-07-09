@@ -1,0 +1,60 @@
+{
+  "cycle": "RG",
+  "feature": "samsung-backend-port-health",
+  "date": "2026-07-09",
+  "device": {
+    "role": "Holiwyn proof",
+    "adbId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model": "SM-S911U1"
+  },
+  "command": "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-samsung.ps1 -EventDetailTrade -Port 8333 -Device \"adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp\" -ExpoHost 172.16.200.14",
+  "startupEvidence": {
+    "backendBase": "http://172.16.200.14:3002",
+    "backendHealth": "ok",
+    "previousIncorrectDefault": "http://127.0.0.1:3000 / http://<host>:3000"
+  },
+  "visibleUserFlowChanged": "No app UI changed. Samsung proof startup now correctly sees the active backend before running Event Detail -> Trade Ticket UI proof.",
+  "backendRouteChanged": false,
+  "apiDependencies": [
+    {
+      "route": "/api/health",
+      "method": "GET",
+      "purpose": "Samsung smoke preflight now checks the active backend on port 3002."
+    },
+    {
+      "route": "/api/mobile/events/:slug/live-detail",
+      "method": "GET",
+      "purpose": "Existing Event Detail data route; no contract change."
+    },
+    {
+      "route": "/api/orders",
+      "method": "POST",
+      "purpose": "Unchanged; only used in separate order-placement proofs."
+    }
+  ],
+  "proofArtifacts": [
+    "docs/mobile/screenshots/cycle-RG-samsung-backend-port-health/cycle-RG-event-detail-ticket.png",
+    "docs/mobile/screenshots/cycle-RG-samsung-backend-port-health/cycle-RG-event-detail-ticket-amount.png",
+    "docs/mobile/screenshots/cycle-RG-samsung-backend-port-health/cycle-RG-event-detail-away-ticket.png",
+    "docs/mobile/harness/cycle-RG-samsung-backend-port-health/cycle-RG-event-detail-ticket.xml",
+    "docs/mobile/harness/cycle-RG-samsung-backend-port-health/cycle-RG-event-detail-ticket-amount.xml",
+    "docs/mobile/harness/cycle-RG-samsung-backend-port-health/cycle-RG-event-detail-away-ticket.xml"
+  ],
+  "validation": {
+    "mobileTypecheck": "passed",
+    "focusedTests": [
+      "samsungSmokeBackendPortContract.test.ts",
+      "eventDetailTradeSmokeCurrentTicketContract.test.ts"
+    ],
+    "s23Proof": "passed"
+  },
+  "unresolved": {
+    "p0": [],
+    "p1": [
+      "Native Google OAuth callback/session/logout remains future auth work.",
+      "Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.",
+      "Event Detail Trade UI proof is not itself a server order-placement proof."
+    ],
+    "p2": []
+  }
+}
