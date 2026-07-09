@@ -1097,3 +1097,14 @@ For every UI element or interaction, answer:
 - QV proves on Samsung S23 that the source row is compact and the old `Market source` heading is absent.
 - Unresolved P0 for QV scope: 0.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle QX Gap Tracker Update
+
+- PM-GAP-158 is opened and closed for Portfolio proof launch reliability after Google login appeared missing from Home.
+- QX confirms Google login was not removed; it remains under Portfolio -> Account by Local MVP direction.
+- QX adds a proof-only startup tab override so S23 evidence can open current Expo Go directly to Portfolio without manual tab tap.
+- QX documents that stale `com.holiwyn.mobile` can remain foreground and must be force-stopped before Expo Go proof.
+- QX proves on Samsung S23 that Portfolio shows the Google/account entry, tapping it opens Account, and Account still shows Google login.
+- Unresolved P0 for QX scope: 0.
+- Remaining P1: native Google OAuth callback/session/logout remains separate auth work.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

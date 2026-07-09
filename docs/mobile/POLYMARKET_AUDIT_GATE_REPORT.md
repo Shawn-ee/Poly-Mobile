@@ -6719,6 +6719,36 @@ Remaining P1:
 
 - Native Google OAuth callback/session/logout remains separate auth work.
 
+## Cycle QX - Portfolio Proof Launch Reliability
+
+Result: Pass for QX scope.
+
+Checked:
+
+- Cold/warm Expo Go URL query-param launch was observed as unreliable for `forcePortfolio=1` on this S23 session.
+- Current Expo Go runtime can start directly on Portfolio through `EXPO_PUBLIC_PROOF_INITIAL_TAB=portfolio`.
+- The stale installed `com.holiwyn.mobile` development build is force-stopped before proof so device evidence is not captured from an old bundle.
+- S23 XML showed `host.exp.exponent`, `portfolio-screen`, `portfolio-account-entry-top-left`, and `portfolio-account-entry-google`.
+- S23 XML did not show `home-world-cup-games-focus` in the passing proof.
+- Tapping the Portfolio Google/account entry opened Account and Account showed `account-login-google`.
+- No backend route, order flow, schema, provider, Home, Event Detail, ticket, order book, chat, live stats, social, deposit, or withdraw behavior was changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-QX-portfolio-deeplink-proof-reliability.md`
+- `docs/mobile/harness/cycle-QX-portfolio-deeplink-proof-reliability/cycle-QX-portfolio-proof-launch-reliability-proof.json`
+- `docs/mobile/harness/cycle-QX-portfolio-deeplink-proof-reliability/cycle-QX-expo-proof-initial-tab.xml`
+- `docs/mobile/harness/cycle-QX-portfolio-deeplink-proof-reliability/cycle-QX-account-google-login.xml`
+- `docs/mobile/screenshots/cycle-QX-portfolio-deeplink-proof-reliability/cycle-QX-expo-proof-initial-tab.png`
+- `docs/mobile/screenshots/cycle-QX-portfolio-deeplink-proof-reliability/cycle-QX-account-google-login.png`
+
+Unresolved P0 gaps: 0 for QX scope.
+
+Remaining P1:
+
+- Native Google OAuth callback/session/logout remains separate auth work.
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
 ## Cycle QW - Portfolio Google Badge Visibility
 
 Result: Pass for QW scope.

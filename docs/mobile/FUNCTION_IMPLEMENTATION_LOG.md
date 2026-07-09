@@ -10858,3 +10858,46 @@ Validation:
 Known limitations:
 
 - Native Google OAuth callback/session/logout remains separate auth work.
+
+## Cycle QX - Portfolio Proof Launch Reliability
+
+Feature/page worked on:
+
+- Portfolio proof launch reliability for the Local MVP audit loop.
+- This ensures automated S23 proof can land on Portfolio without a manual tab tap, even when Expo Go does not forward cold-launch query params.
+
+Frontend/proof files touched:
+
+- `mobile/App.tsx`
+- `mobile/src/__tests__/deepLinkResetContract.test.ts`
+- `docs/mobile/audits/cycle-QX-portfolio-deeplink-proof-reliability.md`
+
+Important functions/services touched:
+
+- `handleLaunchUrl()` now reapplies `setMainTab("portfolio")` after reset when `forcePortfolio=1` is present.
+- `PROOF_INITIAL_TAB` reads `EXPO_PUBLIC_PROOF_INITIAL_TAB` and defaults to Home, giving proof runs a deterministic startup tab without changing normal user startup.
+- No service, API client, order, provider, or backend function changed.
+
+User interactions supported/proven:
+
+- S23 proof starts the current Expo Go runtime on Portfolio without manual tab tap.
+- Portfolio Google/account entry remains visible.
+- Tapping the Portfolio Google/account entry opens Account, where the Google login button remains visible.
+
+State transitions:
+
+- Reset still clears runtime state and storage.
+- When the launch URL explicitly requests Portfolio, the UI tab returns to Portfolio after the reset completes.
+- When proof runs set `EXPO_PUBLIC_PROOF_INITIAL_TAB=portfolio`, the initial `mainTab` starts at Portfolio; normal runtime defaults to Home.
+
+Validation:
+
+- Mobile typecheck passed.
+- Focused deep-link reset contract test passed.
+- Samsung S23 proof passed with `cycle-QX-portfolio-proof-launch-reliability-proof.json`.
+
+Known limitations:
+
+- Native Google OAuth callback/session/logout remains separate auth work.
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Expo Go launch URL forwarding remains unreliable on this S23 session; stop stale `com.holiwyn.mobile` and use the proof initial-tab override when a deterministic proof starting screen is needed.

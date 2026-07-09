@@ -2308,3 +2308,36 @@ Pass for focused Portfolio Google badge visibility scope.
 
 Remaining gaps:
 Native Google OAuth callback/session/logout remains separate auth work.
+
+## Cycle QX - Portfolio Proof Launch Reliability
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket app reference-device action. This was an audit-gate harness reliability cycle for Holiwyn Portfolio/account proof.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go server mode. Backend `http://127.0.0.1:3002` remained healthy; mobile API used LAN backend `http://172.16.200.14:3002`. Expo ran on port `8309` with `EXPO_PUBLIC_PROOF_INITIAL_TAB=portfolio`.
+
+Holiwyn actions:
+Stopped stale `com.holiwyn.mobile` and `host.exp.exponent`, launched the current Expo Go runtime, confirmed it opened directly to Portfolio without manual tab tap, tapped the Portfolio Google/account entry, and confirmed Account still exposes Google login.
+
+Evidence:
+- `docs/mobile/harness/cycle-QX-portfolio-deeplink-proof-reliability/cycle-QX-portfolio-proof-launch-reliability-proof.json`
+- `docs/mobile/screenshots/cycle-QX-portfolio-deeplink-proof-reliability/cycle-QX-expo-proof-initial-tab.png`
+- `docs/mobile/harness/cycle-QX-portfolio-deeplink-proof-reliability/cycle-QX-expo-proof-initial-tab.xml`
+- `docs/mobile/screenshots/cycle-QX-portfolio-deeplink-proof-reliability/cycle-QX-account-google-login.png`
+- `docs/mobile/harness/cycle-QX-portfolio-deeplink-proof-reliability/cycle-QX-account-google-login.xml`
+
+Smoke/tests:
+Mobile typecheck passed. Focused deep-link reset contract test passed. S23 XML checks confirmed `host.exp.exponent`, `portfolio-screen`, absence of `home-world-cup-games-focus`, `portfolio-account-entry-top-left`, `portfolio-account-entry-google`, `account-screen`, and `account-login-google`.
+
+Result:
+Pass for QX proof launch reliability scope.
+
+Remaining gaps:
+Native Google OAuth callback/session/logout remains separate auth work. Expo Go launch URL forwarding remains unreliable on this S23 session, so deterministic proof starts should use `EXPO_PUBLIC_PROOF_INITIAL_TAB` after force-stopping stale runtimes.

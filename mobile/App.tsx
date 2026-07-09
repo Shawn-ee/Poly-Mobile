@@ -64,6 +64,11 @@ const GOOGLE_AUTH_URL = `${DEFAULT_API_BASE.replace(/\/+$/, "")}/api/auth/google
 const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? "server" : "mock";
 const MARKET_DATA_MODE: "mock" | "server" =
   ORDER_MODE === "server" || process.env.EXPO_PUBLIC_MARKET_DATA_MODE === "server" ? "server" : "mock";
+const PROOF_INITIAL_TAB = (["home", "live", "portfolio", "search", "account"] as const).includes(
+  process.env.EXPO_PUBLIC_PROOF_INITIAL_TAB as MainTab
+)
+  ? (process.env.EXPO_PUBLIC_PROOF_INITIAL_TAB as MainTab)
+  : "home";
 const SMOKE_OPEN_SERVER_ORDER_PRICE = 1;
 const SMOKE_OPEN_SERVER_ORDER_AMOUNT = "1";
 const HOME_EVENT_PAGE_SIZE = 10;
@@ -322,7 +327,7 @@ type ProfilePreferencesSyncStatus = "hidden" | "syncing" | "synced" | "error";
 export default function App() {
   const [locale, setLocale] = useState<Locale>("en");
   const [localeHydrated, setLocaleHydrated] = useState(false);
-  const [mainTab, setMainTab] = useState<MainTab>("home");
+  const [mainTab, setMainTab] = useState<MainTab>(PROOF_INITIAL_TAB);
   const [homeFilter, setHomeFilter] = useState<HomeFilter>("all");
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [selectedDepthMarketId, setSelectedDepthMarketId] = useState<string | null>(null);
@@ -684,6 +689,11 @@ export default function App() {
         PORTFOLIO_STORAGE_KEY,
         TICKET_DEFAULTS_STORAGE_KEY,
       ]).catch(() => undefined);
+      if (shouldForcePortfolio) {
+        setTimeout(() => {
+          if (mounted.current) setMainTab("portfolio");
+        }, 100);
+      }
     }
     if (shouldForcePortfolio) {
       setMainTab("portfolio");

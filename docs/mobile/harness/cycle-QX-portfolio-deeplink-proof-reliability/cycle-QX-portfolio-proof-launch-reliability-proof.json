@@ -1,0 +1,40 @@
+{
+  "cycle": "QX",
+  "scope": "Portfolio proof launch reliability",
+  "device": {
+    "adbId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model": "SM-S911U1"
+  },
+  "runtime": {
+    "backend": "http://172.16.200.14:3002",
+    "expoPort": 8309,
+    "marketDataMode": "server",
+    "orderMode": "server",
+    "proofInitialTab": "portfolio",
+    "package": "host.exp.exponent"
+  },
+  "result": "pass",
+  "checks": {
+    "typecheck": "passed",
+    "focusedTest": "passed",
+    "staleDevelopmentBuildStopped": true,
+    "expoGoCurrentRuntime": true,
+    "portfolioScreenVisible": true,
+    "homeScreenAbsent": true,
+    "portfolioAccountEntryVisible": true,
+    "portfolioGoogleEntryVisible": true,
+    "accountScreenAfterTap": true,
+    "accountGoogleLoginVisible": true
+  },
+  "evidence": {
+    "portfolioXml": "docs/mobile/harness/cycle-QX-portfolio-deeplink-proof-reliability/cycle-QX-expo-proof-initial-tab.xml",
+    "portfolioScreenshot": "docs/mobile/screenshots/cycle-QX-portfolio-deeplink-proof-reliability/cycle-QX-expo-proof-initial-tab.png",
+    "accountXml": "docs/mobile/harness/cycle-QX-portfolio-deeplink-proof-reliability/cycle-QX-account-google-login.xml",
+    "accountScreenshot": "docs/mobile/screenshots/cycle-QX-portfolio-deeplink-proof-reliability/cycle-QX-account-google-login.png"
+  },
+  "notes": [
+    "Cold and warm Expo Go URL query-param launches did not reliably deliver forcePortfolio=1 to React Native Linking on this S23 session.",
+    "The installed com.holiwyn.mobile development build can remain foreground with stale UI if it is not force-stopped before proof.",
+    "Normal app startup remains Home because EXPO_PUBLIC_PROOF_INITIAL_TAB defaults to home."
+  ]
+}

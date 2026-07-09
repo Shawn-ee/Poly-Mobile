@@ -3859,3 +3859,9 @@ Cycle OW implementation notes:
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Portfolio account/login entry | `/api/auth/google/start?returnTo=%2Fportfolio` only after the user opens Account and taps Google sign-in | GET/browser redirect | Public auth-start route; Google provider credentials required on backend | `returnTo=/portfolio` query param; no JSON request body | Mobile consumes no JSON from the Portfolio badge; Account sign-in follows the existing browser redirect path | Existing backend auth/session/user tables implied | Fake-token trading remains available without Google login. | Native app deep-link callback/session/logout remains a future auth milestone. |
+
+## Cycle QX - Portfolio Proof Launch Reliability
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio proof startup and Account Google visibility | No new backend route. Existing `/api/auth/google/start?returnTo=%2Fportfolio` remains used only if the tester taps Google sign-in on Account. | N/A for proof startup; GET/browser redirect for auth-start | None for proof startup; public auth-start route for Google | `EXPO_PUBLIC_PROOF_INITIAL_TAB=portfolio` for proof runtime only; `returnTo=/portfolio` only after Google sign-in tap | Mobile consumes no backend JSON for proof startup; Account still exposes existing Google sign-in action | No new database model implied | Fake-token trading remains available without Google login. | Native app deep-link callback/session/logout remains a future auth milestone. |
