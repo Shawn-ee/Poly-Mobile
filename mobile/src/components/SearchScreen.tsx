@@ -68,14 +68,14 @@ export function SearchScreen({
     const lineStatus = summary.lineMarkets?.status;
     if (providerCount > 0 && fixtureCount > 0) {
       return locale === "zh"
-        ? `Polymarket ${providerCount} / \u6d4b\u8bd5\u76d8\u53e3 ${fixtureCount}`
+        ? `Polymarket ${providerCount} / \u5229\u4e91\u4f53\u80b2\u76d8\u53e3 ${fixtureCount}`
         : `Polymarket ${providerCount} / Holiwyn lines ${fixtureCount}`;
     }
     if (providerCount > 0) {
       return locale === "zh" ? `Polymarket ${providerCount} \u4e2a\u5e02\u573a` : `Polymarket ${providerCount} markets`;
     }
     if (lineStatus === "contract-fixture" || fixtureCount > 0) {
-      return locale === "zh" ? "Holiwyn lines" : "Holiwyn lines";
+      return locale === "zh" ? "\u5229\u4e91\u4f53\u80b2\u76d8\u53e3" : "Holiwyn lines";
     }
     return locale === "zh" ? "\u5e02\u573a\u6765\u6e90\u672a\u5c31\u7eea" : "Source unavailable";
   };
@@ -86,11 +86,11 @@ export function SearchScreen({
     const fixtureCount = summary?.contractFixtureMarketCount ?? 0;
     const status =
       providerCount > 0 && fixtureCount > 0
-        ? "mixed-provider-test-lines"
+        ? "mixed-provider-holiwyn-lines"
         : providerCount > 0
           ? "provider-backed"
           : fixtureCount > 0
-            ? "test-lines"
+            ? "holiwyn-lines"
             : "unknown";
     return `search-result-source-${event.id} source-${status} polymarket-count-${providerCount} contract-fixture-count-${fixtureCount}`;
   };

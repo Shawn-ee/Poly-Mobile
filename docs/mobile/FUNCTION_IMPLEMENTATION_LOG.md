@@ -2,6 +2,45 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle QK - Search Source Copy
+
+Feature/page worked on:
+
+- Search tab source disclosure for mixed Polymarket provider markets plus Holiwyn line markets.
+- No Home, Event Detail, ticket, Portfolio, backend route, schema, orderbook UI, chat, live stats, social, deposit, or withdrawal behavior changed.
+
+Frontend/backend touched:
+
+- `mobile/src/components/SearchScreen.tsx`
+- `mobile/src/__tests__/searchResultStatsContract.test.ts`
+- No backend source changed.
+
+Important functions/services touched:
+
+- Search source labeling now uses Holiwyn-branded `Holiwyn lines` / `利云体育盘口` copy for contract-shaped line markets.
+- Accessibility/source markers changed from `test-lines` wording to `holiwyn-lines` wording so test/proof labels do not leak prototype language.
+
+User interactions supported:
+
+- User searches for `argentina` and sees the existing `Argentina vs. Egypt` mixed-provider result with `Polymarket 3 / Holiwyn lines 4`.
+- Search navigation and result tapping remain unchanged.
+
+State transitions:
+
+- No state transition changed.
+- Search still consumes the existing event feed/search data and keeps provider/local source counts.
+
+Known limitations:
+
+- This cycle does not import additional provider-backed line markets.
+- Real Polymarket-backed Spread/Totals/Team Total breadth remains P1.
+
+Evidence:
+
+- S23 proof summary: `docs/mobile/harness/cycle-QK-search-source-copy/cycle-QK-search-source-copy-proof.json`
+- S23 screenshot/XML: `docs/mobile/screenshots/cycle-QK-search-source-copy/cycle-QK-s23-search-argentina.png`, `docs/mobile/harness/cycle-QK-search-source-copy/cycle-QK-s23-search-argentina.xml`
+- Audit doc: `docs/mobile/audits/cycle-QK-search-source-copy.md`
+
 ## Cycle QJ - Holiwyn Line Copy
 
 Feature/page worked on:

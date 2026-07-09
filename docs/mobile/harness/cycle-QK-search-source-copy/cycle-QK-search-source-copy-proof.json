@@ -1,0 +1,30 @@
+{
+  "cycle": "QK",
+  "scope": "Search source copy cleanup",
+  "device": {
+    "role": "Holiwyn proof",
+    "adbId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model": "SM-S911U1"
+  },
+  "screenshots": [
+    "docs/mobile/screenshots/cycle-QK-search-source-copy/cycle-QK-s23-search-argentina.png"
+  ],
+  "xml": [
+    "docs/mobile/harness/cycle-QK-search-source-copy/cycle-QK-s23-search-argentina.xml"
+  ],
+  "proof": {
+    "searchQuery": "argentina",
+    "mixedResult": "Argentina vs. Egypt",
+    "visibleSourceLabel": "Polymarket 3 / Holiwyn lines 4",
+    "containsNewMixedMarker": true,
+    "containsOldMixedTestMarker": false,
+    "containsOldTestLineMarker": false,
+    "typecheckPassed": true,
+    "focusedSearchTestsPassed": true
+  },
+  "result": "pass",
+  "limitations": [
+    "This cycle does not add new provider-backed line markets.",
+    "This cycle does not change order, portfolio, orderbook, chat, live stats, backend routes, or schemas."
+  ]
+}
