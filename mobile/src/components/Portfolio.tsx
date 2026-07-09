@@ -50,6 +50,7 @@ export type PortfolioActivity = {
   action: "opened" | "sold" | "closed" | "canceled";
   title: string;
   eventTitle?: string;
+  marketTitle?: string;
   outcome: string;
   selection?: TicketSelection;
   contractSide?: BinaryContractSide;
@@ -615,6 +616,7 @@ const activityMarketSubline = (activity: PortfolioActivity) => {
   if (activity.selection?.marketType === "totals" && line) return `Total Goals ${line}`;
   if (activity.selection?.marketType === "spread" && line) return `Spread ${line}`;
   if (activity.selection?.marketType === "team-total" && line) return `Team Total ${line}`;
+  if (activity.marketTitle) return activity.marketTitle;
   if (activity.selection?.marketType === "winner" || /winner/i.test(activity.title)) {
     return splitBackendMarketTitle(activity.title)?.marketTitle ?? "Match Winner";
   }

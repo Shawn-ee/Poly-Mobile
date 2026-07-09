@@ -244,6 +244,7 @@ export type PortfolioHistoryItem = {
   market: {
     id: string;
     title: string;
+    displayTitle?: string | null;
     eventTitle?: string | null;
     eventSlug?: string | null;
     status: string;
@@ -265,6 +266,7 @@ export type PortfolioCanceledOrderItem = {
   market: {
     id: string;
     title: string;
+    displayTitle?: string | null;
     eventTitle?: string | null;
     eventSlug?: string | null;
     status: string;
@@ -307,6 +309,7 @@ export type PortfolioRecentTradeItem = {
   market: {
     id: string;
     title: string;
+    displayTitle?: string | null;
     eventTitle?: string | null;
     eventSlug?: string | null;
     status: string;

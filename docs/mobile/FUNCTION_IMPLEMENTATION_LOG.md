@@ -11649,3 +11649,13 @@ Known limitations:
 - State transitions: seeded sellable position -> `/api/orders` FILLED SELL -> `/api/portfolio/history` activity -> History row shows `PAR vs AUS` and `Match Winner`.
 - Google login visibility note: the Home account button was intentionally removed earlier; RR proof confirms the Google sign-in row remains visible at the top of Portfolio.
 - Known limitations: mobile still falls back to parsing backend market titles shaped as `Event: Market` when canonical history `eventTitle` / `marketTitle` fields are missing.
+
+# Cycle RS - Portfolio History Display Contract
+
+- Feature/page worked on: Local MVP Portfolio History data contract and visible market context.
+- Frontend components/services touched: `mobile/src/components/Portfolio.tsx`, `mobile/src/services/portfolioHistoryService.ts`, `mobile/src/types.ts`.
+- Backend route touched: `src/app/api/portfolio/history/route.ts`.
+- Tests touched: `src/__tests__/portfolio.history.route.test.ts`, `mobile/src/__tests__/portfolioHistoryService.test.ts`.
+- User interactions supported: Home visible Match Winner outcome -> Sell ticket -> vertical swipe-to-sell -> Portfolio History selected.
+- State transitions: `/api/portfolio/history` now supplies canonical `market.displayTitle`; mobile maps it to `PortfolioActivity.marketTitle`; Portfolio History prefers that field before fallback parsing.
+- Known limitations: older payloads without `displayTitle` still use the fallback parser.

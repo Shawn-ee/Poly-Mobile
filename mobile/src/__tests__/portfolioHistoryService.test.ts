@@ -508,7 +508,8 @@ describe("portfolio history activity mapping", () => {
           id: "team-total-trade-1",
           market: {
             id: "argentina-egypt-team-total",
-            title: "Team Totals",
+            title: "Argentina vs. Egypt: Team Totals",
+            displayTitle: "Team Totals",
             eventTitle: "Argentina vs. Egypt",
             eventSlug: "argentina-vs-egypt",
             status: "ACTIVE",
@@ -540,8 +541,9 @@ describe("portfolio history activity mapping", () => {
       ]),
     ).toEqual([
       expect.objectContaining({
-        title: "Team Totals",
+        title: "Argentina vs. Egypt: Team Totals",
         eventTitle: "Argentina vs. Egypt",
+        marketTitle: "Team Totals",
         outcome: "Argentina Over 1.5",
         selection: expect.objectContaining({
           marketType: "team-total",

@@ -7,6 +7,14 @@ import { buildTicketSelectionMetadata } from "@/server/services/ticketSelectionM
 
 export const dynamic = "force-dynamic";
 
+function marketDisplayTitle(title: string, eventTitle?: string | null) {
+  const prefix = eventTitle ? `${eventTitle}:` : "";
+  if (prefix && title.toLowerCase().startsWith(prefix.toLowerCase())) {
+    return title.slice(prefix.length).trim() || title;
+  }
+  return title;
+}
+
 async function getPortfolioHistoryUserId(request: NextRequest) {
   if (request.headers.get("Authorization")) {
     const actor = await requireCanonicalActor(request, ["account:read"]);
@@ -27,7 +35,7 @@ export async function GET(request: NextRequest) {
       market: { status: "RESOLVED" },
     },
     include: {
-      market: { include: { outcomes: true } },
+      market: { include: { outcomes: true, event: { select: { slug: true, title: true } } } },
     },
     orderBy: { createdAt: "desc" },
   });
@@ -148,6 +156,9 @@ export async function GET(request: NextRequest) {
         resolveTime: Date | null;
         resolvedOutcomeId: string | null;
         createdAt: Date;
+        eventTitle: string | null;
+        eventSlug: string | null;
+        displayTitle: string;
         outcomes: { id: string; name: string }[];
       };
       totalBuyCost: number;
@@ -165,6 +176,9 @@ export async function GET(request: NextRequest) {
         resolveTime: trade.market.resolveTime,
         resolvedOutcomeId: trade.market.resolvedOutcomeId ?? null,
         createdAt: trade.market.createdAt,
+        eventTitle: trade.market.event?.title ?? null,
+        eventSlug: trade.market.event?.slug ?? null,
+        displayTitle: marketDisplayTitle(trade.market.title, trade.market.event?.title),
         outcomes: trade.market.outcomes.map((o) => ({ id: o.id, name: o.name })),
       },
       totalBuyCost: 0,
@@ -218,6 +232,9 @@ export async function GET(request: NextRequest) {
       market: {
         id: row.market.id,
         title: row.market.title,
+        displayTitle: row.market.displayTitle,
+        eventTitle: row.market.eventTitle,
+        eventSlug: row.market.eventSlug,
         status: row.market.status,
         resolveTime: row.market.resolveTime,
         resolvedOutcomeId: row.market.resolvedOutcomeId,
@@ -245,6 +262,7 @@ export async function GET(request: NextRequest) {
       ...order.market,
       eventTitle: order.market.event?.title ?? null,
       eventSlug: order.market.event?.slug ?? null,
+      displayTitle: marketDisplayTitle(order.market.title, order.market.event?.title),
     },
     outcome: order.outcome,
     selection: buildTicketSelectionMetadata({
@@ -265,6 +283,7 @@ export async function GET(request: NextRequest) {
       ...trade.market,
       eventTitle: trade.market.event?.title ?? null,
       eventSlug: trade.market.event?.slug ?? null,
+      displayTitle: marketDisplayTitle(trade.market.title, trade.market.event?.title),
     },
     outcome: trade.outcome,
     selection: buildTicketSelectionMetadata({
