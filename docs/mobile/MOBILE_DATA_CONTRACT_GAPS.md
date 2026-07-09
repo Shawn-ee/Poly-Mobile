@@ -2,6 +2,29 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle PT - Portfolio Google Entry Visibility
+
+Closed or narrowed:
+
+- The account/profile entry is visibly reachable from Portfolio again through a top-right gear button.
+- The existing Google login button remains in Account; no auth code was removed.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Auth callback/profile hydration needs full end-to-end proof against a configured backend auth environment before Google login can be considered complete.
+
+Route mismatch:
+
+- Mobile still builds the Google auth start URL from `EXPO_PUBLIC_API_BASE_URL`; if the S23 app is launched with the wrong base URL, Google login will appear broken even though the button is present.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- When production auth is finalized, Portfolio should show signed-in profile state from `/api/profile/summary` instead of only the Local MVP demo name.
+
 ## Cycle PS - Provider-Backed Line Market Gap
 
 Closed or narrowed:
