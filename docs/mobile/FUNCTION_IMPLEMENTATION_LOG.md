@@ -9546,3 +9546,43 @@ Known limitations:
 
 - Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
 - Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
+
+## Cycle PP - Mobile Google Account Entry
+
+Feature/page worked on:
+
+- Portfolio account entry and Account screen authentication entry.
+- Restored a visible Google sign-in action after the Local MVP account screen had been reduced to an unavailable-login notice.
+
+Frontend/proof files touched:
+
+- `mobile/App.tsx`
+- `mobile/src/components/AccountScreen.tsx`
+- `mobile/src/localization/appCopy.ts`
+- `mobile/src/__tests__/accountAuthContract.test.ts`
+- `docs/mobile/audits/cycle-PP-mobile-google-account-entry.md`
+
+Important functions/services touched:
+
+- `AccountScreen` now renders `account-login-google` when signed out.
+- `openGoogleSignIn` in `mobile/App.tsx` opens the backend Google OAuth start URL through React Native `Linking`.
+- Existing backend auth route `/api/auth/google/start` is reused; no backend source or schema changed.
+
+User interactions supported/proven:
+
+- User opens Portfolio, taps the top-left account entry, and sees a Google sign-in action in Account.
+- Tapping Google opens the configured Holiwyn backend auth route in the system browser.
+
+State transitions:
+
+- Signed-out account state no longer dead-ends at "login unavailable".
+- Successful profile/session hydration after OAuth is still a future auth-callback/mobile-session task; fake-token trading remains available independently.
+
+Validation:
+
+- Pending for this cycle: mobile typecheck, focused account auth contract test, and S23 account screen proof.
+
+Known limitations:
+
+- The mobile app opens the server OAuth flow but does not yet complete a native deep-link session callback.
+- Deposits, withdrawals, location verification, and real-money gates remain out of scope for Local MVP.

@@ -7144,6 +7144,34 @@ Future migration concern:
 - Standalone bot proof runs must carry `LIVE_SYSTEM_LIQUIDITY_ENABLED=true`; backend helper env alone does not arm a separate bot process.
 - Production/staging bot enablement must not reuse local fake-token proof flags without separate review.
 
+## Cycle PP - Mobile Google Account Entry
+
+Closed or narrowed:
+
+- Mobile Account no longer hides authentication completely; signed-out users can launch the existing Holiwyn Google OAuth start route.
+- The old local mock phone/email login remains removed, which keeps account state server-owned.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- A native mobile session handoff contract after browser OAuth completes, such as a deep link carrying a short-lived mobile exchange code or a server-issued mobile API credential.
+- Clear response/error states for canceled Google auth, provider misconfiguration, or backend session creation failure.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- `/api/auth/google/start` is a browser redirect route, not a mobile JSON route. That is acceptable for this entry-point cycle, but insufficient for a complete native login lifecycle.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- When real-money account scope starts, Google auth must be joined with production eligibility, wallet/funding policy, and EBPay onboarding. This cycle intentionally does not implement those flows.
+
 ## Cycle PN - Provider Proof Harness And Mbappe Tradable Flow
 
 Closed or narrowed:
