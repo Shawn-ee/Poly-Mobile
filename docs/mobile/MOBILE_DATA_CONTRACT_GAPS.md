@@ -7720,6 +7720,33 @@ Future migration concern:
 
 - Contract-fixture line market copy is localized as `利云体育盘口` for tester clarity, but internal markers must continue to distinguish it from provider-backed Polymarket line markets until real provider line rows exist.
 
+## Cycle QQ - Chinese Trade Ticket Amount Copy
+
+Closed or narrowed:
+
+- Chinese Trade Ticket amount-entry copy no longer depends on hardcoded English strings for choose amount, to-win, odds, available balance, market unavailable, or disabled trading helper text.
+- No new frontend-only data shape was introduced.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real Polymarket provider-backed current-match Spread/Totals/Team Total market ids, token ids, prices, and chart history remain missing for the current match.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- The cycle keeps existing probability/balance display semantics. Future real-money or wallet work should revisit units/currency copy separately.
+
 ## Cycle PR - Current MVP Service Readiness Inspection
 
 Closed or narrowed:

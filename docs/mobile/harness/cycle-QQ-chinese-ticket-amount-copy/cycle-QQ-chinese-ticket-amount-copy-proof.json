@@ -1,0 +1,27 @@
+{
+    "cycle":  "QQ",
+    "result":  "pass",
+    "generatedAt":  "2026-07-09T05:29:51.5413541Z",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "scope":  "Chinese Trade Ticket amount-entry copy",
+    "checks":  {
+                   "homeChinese":  true,
+                   "ticketEmptyChineseChooseAmount":  true,
+                   "ticketEmptyChineseToWin":  true,
+                   "ticketReadyChineseSwipeBuy":  true,
+                   "ticketReadyChineseOddsAvailable":  true,
+                   "oldEnglishAmountCopyAbsent":  true,
+                   "developerMenuAbsent":  true
+               },
+    "screenshots":  [
+                        "docs/mobile/screenshots/cycle-QQ-chinese-ticket-amount-copy/cycle-QQ-home.png",
+                        "docs/mobile/screenshots/cycle-QQ-chinese-ticket-amount-copy/cycle-QQ-ticket-empty.png",
+                        "docs/mobile/screenshots/cycle-QQ-chinese-ticket-amount-copy/cycle-QQ-ticket-ready.png"
+                    ],
+    "hierarchies":  [
+                        "docs/mobile/harness/cycle-QQ-chinese-ticket-amount-copy/cycle-QQ-home.xml",
+                        "docs/mobile/harness/cycle-QQ-chinese-ticket-amount-copy/cycle-QQ-ticket-empty.xml",
+                        "docs/mobile/harness/cycle-QQ-chinese-ticket-amount-copy/cycle-QQ-ticket-ready.xml"
+                    ]
+}

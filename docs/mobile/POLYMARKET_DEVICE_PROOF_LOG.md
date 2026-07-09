@@ -2084,3 +2084,35 @@ Pass for focused Chinese MVP source-copy continuity scope.
 
 Remaining gaps:
 Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable. Full native Google OAuth callback/session/logout proof remains separate auth work.
+
+## Cycle QQ - Chinese Trade Ticket Amount Copy
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket app reference-device action. This was a Holiwyn Chinese copy parity cleanup on the already-audited Polymarket-like amount ticket flow.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go server mode. Backend `http://127.0.0.1:3002` remained healthy; mobile API used LAN backend `http://172.16.200.14:3002`. Expo was stopped after proof.
+
+Holiwyn actions:
+Opened Holiwyn with Chinese mode, confirmed Chinese Home, tapped the first event outcome to open Trade Ticket, captured zero-amount ticket state, tapped `+$25`, and captured ready swipe-to-buy state.
+
+Evidence:
+- `docs/mobile/harness/cycle-QQ-chinese-ticket-amount-copy/cycle-QQ-chinese-ticket-amount-copy-proof.json`
+- `docs/mobile/screenshots/cycle-QQ-chinese-ticket-amount-copy/cycle-QQ-home.png`
+- `docs/mobile/screenshots/cycle-QQ-chinese-ticket-amount-copy/cycle-QQ-ticket-empty.png`
+- `docs/mobile/screenshots/cycle-QQ-chinese-ticket-amount-copy/cycle-QQ-ticket-ready.png`
+
+Smoke/tests:
+Mobile typecheck passed. Focused Chinese ticket/source-copy tests passed. S23 XML checks confirmed localized amount-entry copy, localized ready-state swipe copy, absence of old English amount-flow labels, and no developer menu overlay.
+
+Result:
+Pass for focused Chinese Trade Ticket amount-entry scope.
+
+Remaining gaps:
+Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable. Full native Google OAuth callback/session/logout proof remains separate auth work.

@@ -10591,3 +10591,43 @@ Known limitations:
 
 - No backend route/schema changed.
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle QQ - Chinese Trade Ticket Amount Copy
+
+Feature/page worked on:
+
+- Chinese Trade Ticket amount-entry screen in the Local MVP retail flow.
+- This closes the visible English fallback copy that remained after Chinese source-label cleanup.
+
+Frontend/proof files touched:
+
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/src/localization/appCopy.ts`
+- `mobile/src/__tests__/chineseTradeTicketAmountCopy.test.ts`
+- `docs/mobile/audits/cycle-QQ-chinese-ticket-amount-copy.md`
+
+Important functions/services touched:
+
+- `TradeTicketCopy` now includes `chooseAmount`, `toWin`, `odds`, `available`, `marketUnavailable`, and `tradingDisabledForMarket`.
+- `TradeTicket` amount, odds, availability, and swipe-submit visible labels now use localized copy.
+
+User interactions supported/proven:
+
+- User opens a Chinese Trade Ticket, sees localized zero-amount guidance, taps a preset amount, and sees localized swipe-to-buy and amount metadata.
+
+State transitions:
+
+- No order, quote, portfolio, auth, or backend state transition changed.
+- Existing swipe threshold and submit behavior are unchanged.
+
+Validation:
+
+- Mobile typecheck passed.
+- Focused ticket/source-copy tests passed.
+- Samsung S23 empty and ready Trade Ticket proof passed with `cycle-QQ-chinese-ticket-amount-copy-proof.json`.
+
+Known limitations:
+
+- No backend route/schema changed.
+- Yes/No contract side labels remain as trading contract labels.
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

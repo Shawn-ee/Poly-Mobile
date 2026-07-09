@@ -6219,6 +6219,33 @@ Remaining P1:
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Full native Google OAuth callback/session/logout proof remains separate auth work.
 
+## Cycle QQ - Chinese Trade Ticket Amount Copy
+
+Result: Pass for focused Chinese Trade Ticket amount-entry scope.
+
+Checked:
+
+- Chinese Home launched cleanly on Samsung S23 with no Expo developer menu.
+- Empty Trade Ticket shows `请选择金额`, `预计可赢`, `概率`, and `可用`.
+- Ready Trade Ticket after tapping `+$25` shows `滑动买入`, `预计可赢`, `概率`, `可用`, and `最终成本可能变动`.
+- Checked ticket XML does not show old English `Choose an amount`, `to win`, or `Swipe to buy`.
+- No backend route, order logic, orderbook UI, chat, live stats, social, deposit, withdrawal, auth, or schema files changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-QQ-chinese-ticket-amount-copy.md`
+- `docs/mobile/harness/cycle-QQ-chinese-ticket-amount-copy/cycle-QQ-chinese-ticket-amount-copy-proof.json`
+- `docs/mobile/screenshots/cycle-QQ-chinese-ticket-amount-copy/cycle-QQ-home.png`
+- `docs/mobile/screenshots/cycle-QQ-chinese-ticket-amount-copy/cycle-QQ-ticket-empty.png`
+- `docs/mobile/screenshots/cycle-QQ-chinese-ticket-amount-copy/cycle-QQ-ticket-ready.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Full native Google OAuth callback/session/logout proof remains separate auth work.
+
 ## Cycle PL - Current Match Line Provider Gate
 
 Result: Pass for provider-line honesty gate.
