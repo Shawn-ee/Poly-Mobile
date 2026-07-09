@@ -8850,3 +8850,12 @@ Future migration concern:
 - Route mismatch: no route mismatch was introduced.
 - Temporary mock/static data: no new mock data added.
 - Future migration concern: keep the mobile fallback parser only for old payloads or offline fixtures; normal server-mode rows should use `displayTitle`.
+
+# Cycle RT - Generic Cashout Sell Ticket Notes
+
+- No schema migration was added.
+- Closed or narrowed: visible cashout no longer needs a separate cashout-specific data contract; it reuses the generic Trade Ticket order contract.
+- Fields Holiwyn still needs but backend does not fully provide: no new field for this cycle.
+- Route mismatch: no route mismatch was introduced.
+- Temporary mock/static data: S23 proof still uses deterministic local route-shaped line liquidity because real provider-backed current line markets remain unavailable.
+- Future migration concern: when real provider-backed current line markets arrive, the same generic sell ticket path should preserve provider token/source identity through order and history.

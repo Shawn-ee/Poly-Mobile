@@ -23,4 +23,11 @@ describe("Portfolio position trade actions", () => {
     expect(cashOutActionBlock).toContain('openPositionTrade(position, "sell")');
     expect(cashOutActionBlock).not.toContain("openCashoutPosition(position)");
   });
+
+  test("does not keep a hidden dedicated close-position fallback in the default MVP path", () => {
+    const source = portfolioSource();
+
+    expect(source).not.toContain("close-position-");
+    expect(source).not.toContain("openCashoutPosition");
+  });
 });

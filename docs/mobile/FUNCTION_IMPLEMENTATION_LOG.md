@@ -11659,3 +11659,13 @@ Known limitations:
 - User interactions supported: Home visible Match Winner outcome -> Sell ticket -> vertical swipe-to-sell -> Portfolio History selected.
 - State transitions: `/api/portfolio/history` now supplies canonical `market.displayTitle`; mobile maps it to `PortfolioActivity.marketTitle`; Portfolio History prefers that field before fallback parsing.
 - Known limitations: older payloads without `displayTitle` still use the fallback parser.
+
+# Cycle RT - Generic Cashout Sell Ticket
+
+- Feature/page worked on: Local MVP Portfolio/Event Detail cashout interaction.
+- Frontend components touched: `mobile/App.tsx`, `mobile/src/components/EventDetail.tsx`, `mobile/src/components/Portfolio.tsx`.
+- Harness/scripts touched: `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`.
+- Tests touched: `mobile/src/__tests__/portfolioPositionTradeContract.test.ts`, `mobile/src/__tests__/eventDetailPositionTradeContract.test.ts`.
+- User interactions supported: buy a current route line position, tap Cash out, open the generic Sell Trade Ticket, choose `$25`, swipe to sell, and land on Portfolio History.
+- State transitions: server-backed buy fill -> Portfolio position -> generic Sell ticket -> server-backed sell fill -> History sold activity.
+- Known limitations: legacy `CashoutTicket.tsx` remains as dormant/internal code but is no longer mounted in the default Local MVP runtime.

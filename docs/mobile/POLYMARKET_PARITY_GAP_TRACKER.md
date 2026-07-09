@@ -1235,3 +1235,10 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Canonical history event/market display fields | P1 | Verified | Backend now returns `market.displayTitle`, `market.eventTitle`, and `market.eventSlug`; mobile maps `displayTitle` to `PortfolioActivity.marketTitle`. | `src/__tests__/portfolio.history.route.test.ts`; `mobile/src/__tests__/portfolioHistoryService.test.ts`; `docs/mobile/harness/cycle-RS-history-display-contract/cycle-RS-portfolio-history.xml` |
 | S23 sell-to-history path after display contract change | P0 | Verified | Home -> Sell ticket -> filled server order -> Portfolio History still passes on S23. | `docs/mobile/harness/cycle-RS-history-display-contract/cycle-RS-sell-history-proof.json` |
+
+# Cycle RT - Generic Cashout Sell Ticket
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Cashout uses a dedicated cashout ticket instead of generic Buy/Sell ticket | P1 | Verified | Default visible cashout now opens the generic Sell Trade Ticket from Portfolio and Event Detail. | `docs/mobile/harness/cycle-RT-generic-cashout-ticket/cycle-RT-current-mvp-line-cashout-ticket.xml`; `mobile/src/__tests__/eventDetailPositionTradeContract.test.ts` |
+| Cashout proof still allowed old cashout sheet markers | P0 | Verified | Current S23 proof rejects `cashout-ticket` and `swipe-to-cashout` while proving `trade-ticket`, `ticket-side-sell`, `Swipe to sell`, and History sold state. | `docs/mobile/harness/cycle-RT-generic-cashout-ticket/cycle-RT-current-mvp-s23-visible-flow.json` |
