@@ -2178,3 +2178,36 @@ Pass for focused shared market-card Chinese source-copy scope.
 
 Remaining gaps:
 Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable. Native Google OAuth callback/session/logout proof remains separate auth work.
+
+## Cycle QT - Event Detail Player Props Chinese Empty State
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket app reference-device action. This was a focused Holiwyn localization cleanup for the existing Player Props tab/blank state, preserving the prior product decision to keep Player Props visible but intentionally blank for Local MVP.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go server mode. Backend `http://127.0.0.1:3002` remained healthy; mobile API used LAN backend `http://172.16.200.14:3002`. Expo was stopped after proof.
+
+Holiwyn actions:
+Opened `argentina-vs-egypt` Event Detail in Chinese mode, captured the Game Lines tab state, tapped Player Props, and captured the localized blank state.
+
+Evidence:
+- `docs/mobile/harness/cycle-QT-event-detail-player-props-chinese-empty/cycle-QT-event-detail-player-props-chinese-empty-proof.json`
+- `docs/mobile/screenshots/cycle-QT-event-detail-player-props-chinese-empty/cycle-QT-event-detail-game-lines-chinese.png`
+- `docs/mobile/harness/cycle-QT-event-detail-player-props-chinese-empty/cycle-QT-detail-game-lines.xml`
+- `docs/mobile/screenshots/cycle-QT-event-detail-player-props-chinese-empty/cycle-QT-player-props-empty-chinese.png`
+- `docs/mobile/harness/cycle-QT-event-detail-player-props-chinese-empty/cycle-QT-player-props.xml`
+
+Smoke/tests:
+Mobile typecheck passed. Focused Event Detail Player Props Chinese copy tests passed. S23 XML checks confirmed localized Game Lines and Player Props tab copy, localized blank-state copy, absence of the old English blank copy, and no developer menu overlay.
+
+Result:
+Pass for focused Event Detail Player Props Chinese empty-state scope.
+
+Remaining gaps:
+Player Props functionality remains intentionally blank for Local MVP. Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

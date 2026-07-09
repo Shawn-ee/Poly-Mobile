@@ -7744,6 +7744,33 @@ Future migration concern:
 
 - When real provider-backed line markets become available, the same market-card helper should switch from mixed `Polymarket / Holiwyn lines` copy to provider-backed `Markets: Polymarket` copy through the existing route fields.
 
+## Cycle QT - Event Detail Player Props Chinese Empty State
+
+Closed or narrowed:
+
+- Chinese Event Detail no longer falls back to English text when the user opens the intentionally blank Player Props tab.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed player prop market groups remain outside current MVP scope.
+- Real provider-backed current-match Spread/Totals/Team Total market ids, token ids, prices, and chart history remain missing.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced. The existing event-detail route is sufficient for the blank Player Props tab.
+
+Temporary mock/static data:
+
+- Player Props remains a frontend blank state, not mock tradable prop data.
+
+Future migration concern:
+
+- When Player Props become in scope, add backend market-group contracts before rendering tradable prop rows in mobile.
+
 ## Cycle QP - Chinese MVP Source Copy Continuity
 
 Closed or narrowed:

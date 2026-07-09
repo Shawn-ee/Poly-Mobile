@@ -10707,3 +10707,42 @@ Known limitations:
 
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Some legacy seed/mock copy outside the currently rendered Local MVP path may still need cleanup.
+
+## Cycle QT - Event Detail Player Props Chinese Empty State
+
+Feature/page worked on:
+
+- Event Detail market tabs and intentionally blank Player Props tab in Chinese mode.
+- This keeps the game-page structure closer to Polymarket while respecting the current MVP rule that Player Props stay blank.
+
+Frontend/proof files touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/localization/appCopy.ts`
+- `mobile/src/__tests__/eventDetailPlayerPropsChineseCopy.test.ts`
+- `docs/mobile/audits/cycle-QT-event-detail-player-props-chinese-empty.md`
+
+Important functions/services touched:
+
+- `renderMarketTabs()` now uses localized tab copy.
+- Event Detail Player Props empty state now uses localized copy from `appCopy`.
+
+User interactions supported/proven:
+
+- User opens Chinese Event Detail, taps Player Props, and sees a localized blank state instead of English-only placeholder text.
+
+State transitions:
+
+- No ticket, order, portfolio, auth, backend, or provider state transition changed.
+- Player Props remains an empty MVP tab; no unfinished prop trading route is exposed.
+
+Validation:
+
+- Mobile typecheck passed.
+- Focused Event Detail tab/copy tests passed.
+- Samsung S23 proof passed with `cycle-QT-event-detail-player-props-chinese-empty-proof.json`.
+
+Known limitations:
+
+- Player Props functionality remains intentionally blank for this MVP.
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
