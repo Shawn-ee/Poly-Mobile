@@ -26,6 +26,7 @@ export type Position = {
   marketId?: string;
   outcomeId?: string;
   title: string;
+  eventTitle?: string;
   outcome: string;
   selection?: TicketSelection;
   contractSide?: BinaryContractSide;
@@ -48,6 +49,7 @@ export type PortfolioActivity = {
   id: string;
   action: "opened" | "sold" | "closed" | "canceled";
   title: string;
+  eventTitle?: string;
   outcome: string;
   selection?: TicketSelection;
   contractSide?: BinaryContractSide;
@@ -65,6 +67,7 @@ export type PortfolioActivity = {
 export type OpenOrder = {
   id: string;
   title: string;
+  eventTitle?: string;
   outcome: string;
   selection?: TicketSelection;
   contractSide?: BinaryContractSide;
@@ -200,17 +203,20 @@ const providerBreadthCodes = (item: { title: string; outcome: string; selection?
   return isProviderBreadth ? { home: "BHO", away: "BAW" } : null;
 };
 
-const compactPortfolioScoreLine = (item: { title: string; outcome: string; selection?: TicketSelection }) => {
+const portfolioMatchTitle = (item: { title: string; eventTitle?: string; outcome: string; selection?: TicketSelection }) => item.eventTitle ?? item.title;
+
+const compactPortfolioScoreLine = (item: { title: string; eventTitle?: string; outcome: string; selection?: TicketSelection }) => {
   const breadth = providerBreadthCodes(item);
   if (breadth) return `${breadth.home} 0 - ${breadth.away} 0`;
-  return scoreLineForTitle(item.title);
+  return scoreLineForTitle(portfolioMatchTitle(item));
 };
 
-const compactPortfolioEventSubline = (item: { title: string; outcome: string; selection?: TicketSelection }) => {
+const compactPortfolioEventSubline = (item: { title: string; eventTitle?: string; outcome: string; selection?: TicketSelection }) => {
   const breadth = providerBreadthCodes(item);
   if (breadth) return `${breadth.home} vs ${breadth.away}`;
-  const [home, away] = item.title.split(/\s+v(?:s\.?|\.?)\s+/i).map((value) => value.trim());
-  if (!home || !away) return item.title;
+  const title = portfolioMatchTitle(item);
+  const [home, away] = title.split(/\s+v(?:s\.?|\.?)\s+/i).map((value) => value.trim());
+  if (!home || !away) return title;
   return `${teamAbbrev(home)} vs ${teamAbbrev(away)}`;
 };
 

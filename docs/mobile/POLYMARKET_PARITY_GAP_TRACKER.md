@@ -1154,3 +1154,15 @@ For every UI element or interaction, answer:
 - Remaining P1: native Google OAuth callback/session/logout remains separate auth work.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Remaining P1: Event Detail Trade UI proof is not itself a server order-placement proof.
+
+## Cycle RI Gap Tracker Update
+
+- PM-GAP-163 is opened and closed for current-route server-filled Local MVP proof.
+- RI proves the actual current route `argentina-vs-egypt` can run Home -> Event Detail -> Team Total line -> Trade Ticket -> server fake-token buy -> Portfolio -> History on Samsung S23.
+- RI preserves Polymarket-backed Regulation Winner data while using future-backend-shaped contract fixtures for missing line markets.
+- RI updates Portfolio/History data contracts to include parent event title/slug, so line-market rows preserve match context.
+- RI proof seeding cleans stale fillable maker asks before each run, preventing proof pollution from repeated failed attempts.
+- Unresolved P0 for RI scope: 0.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable after provider breadth scan found zero attach-ready line markets.
+- Remaining P1: Portfolio/history Team Total wording should be cleaned without changing order/portfolio identity contracts.
+- Remaining P1: native Google OAuth callback/session/logout remains separate auth work.

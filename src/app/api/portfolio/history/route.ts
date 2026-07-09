@@ -42,6 +42,7 @@ export async function GET(request: NextRequest) {
         select: {
           id: true,
           title: true,
+          event: { select: { slug: true, title: true } },
           status: true,
           marketGroupKey: true,
           marketType: true,
@@ -82,6 +83,7 @@ export async function GET(request: NextRequest) {
         select: {
           id: true,
           title: true,
+          event: { select: { slug: true, title: true } },
           status: true,
           marketGroupKey: true,
           marketType: true,
@@ -239,7 +241,11 @@ export async function GET(request: NextRequest) {
 
   const canceledOrderItems = canceledOrders.map((order) => ({
     id: order.id,
-    market: order.market,
+    market: {
+      ...order.market,
+      eventTitle: order.market.event?.title ?? null,
+      eventSlug: order.market.event?.slug ?? null,
+    },
     outcome: order.outcome,
     selection: buildTicketSelectionMetadata({
       requestBody: order.apiOrderRequest?.requestBody,
@@ -255,7 +261,11 @@ export async function GET(request: NextRequest) {
   }));
   const recentTradeItems = recentTrades.map((trade) => ({
     id: trade.id,
-    market: trade.market,
+    market: {
+      ...trade.market,
+      eventTitle: trade.market.event?.title ?? null,
+      eventSlug: trade.market.event?.slug ?? null,
+    },
     outcome: trade.outcome,
     selection: buildTicketSelectionMetadata({
       requestBody: recentTradeSelectionByMarketOutcome.get(`${trade.marketId}:${trade.outcomeId}`),
