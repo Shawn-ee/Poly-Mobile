@@ -2619,3 +2619,35 @@ Pass for RK Portfolio source label visual cleanup.
 
 Remaining gaps:
 Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable. Native Google OAuth callback/session/logout remains separate auth work.
+
+## Cycle RL - Portfolio Google Entry and Source Summary Cleanup
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket reference-device action. This cycle applies prior Portfolio/account direction: account access belongs in Portfolio for the Local MVP, but it must be visibly discoverable.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM_S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go proof on port `8340`. Backend health OK on `http://127.0.0.1:3002`; Samsung runtime API base `http://172.16.200.14:3002`. Order mode `server`; market data mode `server`.
+
+Holiwyn actions:
+Repeated the current-route Local MVP flow: Home, Argentina vs. Egypt Event Detail, Game Lines, blank Player Props, Argentina Over 1.5 Team Total ticket, `$75` swipe buy, Portfolio, Orders, and History.
+
+Evidence:
+- `docs/mobile/harness/cycle-RL-portfolio-google-source-cleanup/cycle-RL-local-mvp-current-route-server-filled-flow-proof.json`
+- `docs/mobile/screenshots/cycle-RL-portfolio-google-source-cleanup/cycle-RL-holiwyn-route-server-mvp-portfolio-top.png`
+- `docs/mobile/harness/cycle-RL-portfolio-google-source-cleanup/cycle-RL-holiwyn-route-server-mvp-portfolio-top.xml`
+- `docs/mobile/screenshots/cycle-RL-portfolio-google-source-cleanup/cycle-RL-holiwyn-route-server-mvp-portfolio-history.png`
+
+Smoke/tests:
+Mobile typecheck passed. Focused mobile vitest suite passed. S23 current-route filled flow proof passed.
+
+Result:
+Pass for RL Portfolio Google entry/source summary cleanup.
+
+Remaining gaps:
+Native Google OAuth callback/session/logout remains separate auth work. Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

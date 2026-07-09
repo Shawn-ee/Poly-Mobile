@@ -1185,3 +1185,15 @@ For every UI element or interaction, answer:
 - Unresolved P0 for RK scope: 0.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Remaining P1: native Google OAuth callback/session/logout remains separate auth work.
+
+## Cycle RL Gap Tracker Update
+
+- PM-GAP-166 is opened and closed for Portfolio Google entry discoverability after Home account controls were intentionally removed.
+- RL changes the Portfolio header action from a small `Google login` row to an obvious `Continue with Google` action with helper text.
+- RL keeps the top-left Portfolio profile row as the Account entry.
+- RL hides the large Portfolio source summary banner from the visible tester UI while preserving audit/XML source markers.
+- RL fixes S23 proof reliability for partially clipped Team Total rows by nudging the row upward before tapping.
+- RL proves on Samsung S23 that the current-route Local MVP flow still completes: Home -> Event Detail -> Team Total ticket -> swipe buy -> Portfolio -> Orders -> History.
+- Unresolved P0 for RL scope: 0.
+- Remaining P1: native Google OAuth callback/session/logout remains separate auth work.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

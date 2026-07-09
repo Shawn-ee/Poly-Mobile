@@ -618,8 +618,9 @@ type PortfolioTab = "positions" | "orders" | "history";
 const portfolioPageCopy = {
   en: {
     profile: "holiwynplayer7067",
-    account: "Account / Google login",
-    googleSignIn: "Google login",
+    account: "Account",
+    googleSignIn: "Continue with Google",
+    googleSignInHint: "Load your server profile",
     cash: "cash",
     deposit: "Deposit",
     withdraw: "Withdraw",
@@ -633,8 +634,9 @@ const portfolioPageCopy = {
   },
   zh: {
     profile: "liyunplayer7067",
-    account: "\u8d26\u6237 / Google \u767b\u5f55",
-    googleSignIn: "Google \u767b\u5f55",
+    account: "\u8d26\u6237",
+    googleSignIn: "\u4f7f\u7528 Google \u7ee7\u7eed",
+    googleSignInHint: "\u52a0\u8f7d\u670d\u52a1\u5668\u4e2a\u4eba\u8d44\u6599",
     cash: "\u73b0\u91d1",
     deposit: "\u5145\u503c",
     withdraw: "\u63d0\u73b0",
@@ -1018,15 +1020,21 @@ export function Portfolio({
           </Pressable>
         </View>
         <Pressable
-          accessibilityLabel="portfolio-account-entry-google portfolio-account-google-direct-signin portfolio-google-login-button-visible portfolio-google-login-row-visible"
+          accessibilityLabel="portfolio-account-entry-google portfolio-account-google-direct-signin portfolio-google-login-button-visible portfolio-google-login-row-visible Continue with Google"
           accessibilityRole="button"
           hitSlop={10}
           onPress={openGoogleSignIn}
           style={({ pressed }) => [styles.accountGoogleButton, pressed && styles.accountGoogleButtonPressed]}
           testID="portfolio-account-entry-google"
         >
-          <Ionicons name="logo-google" size={17} color="#111827" />
-          <Text style={styles.accountGoogleButtonText}>{pageCopy.googleSignIn}</Text>
+          <View style={styles.accountGoogleIconWrap}>
+            <Ionicons name="logo-google" size={19} color="#111827" />
+          </View>
+          <View style={styles.accountGoogleCopy}>
+            <Text style={styles.accountGoogleButtonText}>{pageCopy.googleSignIn}</Text>
+            <Text style={styles.accountGoogleHint}>{pageCopy.googleSignInHint}</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={18} color="#111827" />
         </Pressable>
       </View>
       <View accessibilityLabel="fake-balance-card portfolio-value-retail-density portfolio-header-dollar-value" testID="fake-balance-card" style={styles.valueBlock}>
@@ -1073,6 +1081,7 @@ export function Portfolio({
             sourceSummary.tone === "provider" && styles.portfolioSourceSummaryProvider,
             sourceSummary.tone === "fixture" && styles.portfolioSourceSummaryFixture,
             sourceSummary.tone === "mixed" && styles.portfolioSourceSummaryMixed,
+            styles.sourceSummaryAuditOnly,
           ]}
           testID="portfolio-selection-source-summary"
         >
@@ -1579,9 +1588,12 @@ const styles = StyleSheet.create({
   profileCopy: { flex: 1, minWidth: 0 },
   accountGearButton: { width: 46, height: 46, alignItems: "center", justifyContent: "center", borderRadius: 999 },
   accountGearButtonPressed: { opacity: 0.74, transform: [{ scale: 0.96 }] },
-  accountGoogleButton: { minHeight: 46, borderRadius: 15, paddingHorizontal: 14, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, backgroundColor: "#f8fafc" },
+  accountGoogleButton: { minHeight: 58, borderRadius: 15, paddingHorizontal: 14, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10, backgroundColor: "#f8fafc" },
   accountGoogleButtonPressed: { opacity: 0.84, transform: [{ scale: 0.97 }] },
-  accountGoogleButtonText: { color: "#111827", fontSize: 13, fontWeight: "900", flexShrink: 1 },
+  accountGoogleIconWrap: { width: 32, height: 32, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "#e5e7eb" },
+  accountGoogleCopy: { flex: 1, minWidth: 0 },
+  accountGoogleButtonText: { color: "#111827", fontSize: 15, fontWeight: "900", flexShrink: 1 },
+  accountGoogleHint: { color: "#475569", fontSize: 11, fontWeight: "800", marginTop: 2 },
   avatarWrap: { width: 50, height: 50, position: "relative", justifyContent: "center" },
   avatarGradient: { width: 46, height: 46, borderRadius: 999, overflow: "hidden", backgroundColor: "#f43f5e", position: "relative" },
   avatarColorStop: { position: "absolute", borderRadius: 999 },
@@ -1697,6 +1709,7 @@ const styles = StyleSheet.create({
   portfolioSourceNoteProvider: { color: "#86efac" },
   portfolioSourceNoteFixture: { color: "#fde68a" },
   rowSourceAuditOnly: { height: 1, minHeight: 1, width: 1, opacity: 0.01, overflow: "hidden", paddingHorizontal: 0, marginTop: 0, position: "absolute" },
+  sourceSummaryAuditOnly: { height: 1, minHeight: 1, width: 1, opacity: 0.01, overflow: "hidden", paddingHorizontal: 0, marginTop: 0, marginBottom: 0, position: "absolute" },
   portfolioSourceSummary: { marginHorizontal: 24, marginTop: 14, marginBottom: 4, minHeight: 38, flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 12, borderRadius: 10, borderWidth: 1, borderColor: "#334155", backgroundColor: "#101827" },
   portfolioSourceSummaryProvider: { borderColor: "#166534", backgroundColor: "#052e16" },
   portfolioSourceSummaryFixture: { borderColor: "#854d0e", backgroundColor: "#33280f" },

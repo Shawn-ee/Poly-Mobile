@@ -8746,3 +8746,32 @@ Temporary mock/static data:
 Future migration concern:
 
 - Keep source/identity metadata available to audit tooling even when retail UI hides debug-like labels.
+
+## Cycle RL - Portfolio Google Entry and Source Summary Cleanup
+
+Closed or narrowed:
+
+- Portfolio now makes the Google/account entry obvious with a visible `Continue with Google` action.
+- The large Portfolio source summary banner is no longer visible in the tester UI; source/identity metadata remains available in XML/audit markers.
+- S23 proof tapping for Team Total rows is more reliable after moving the partially clipped row away from the bottom edge before tap.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Native app Google OAuth callback/session/logout state.
+- Real provider-backed current-match Spread/Totals/Team Total markets.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- No new mock data added.
+
+Future migration concern:
+
+- When native Google auth is implemented, the visible Portfolio `Continue with Google` action should hand off to the native callback/session flow instead of browser-only redirect.

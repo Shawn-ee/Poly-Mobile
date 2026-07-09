@@ -21,6 +21,7 @@ describe("Portfolio source badges", () => {
     expect(source).toContain("Holiwyn line");
     expect(source).toContain("portfolioSourceSummary");
     expect(source).toContain("portfolio-selection-source-summary");
+    expect(source).toContain("sourceSummaryAuditOnly");
     expect(source).toContain("portfolio-source-summary-local-lines");
     expect(source).toContain("Holiwyn lines");
     expect(source).toContain("portfolio-local-line-count-");

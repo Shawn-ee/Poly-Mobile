@@ -3982,3 +3982,10 @@ Cycle OW implementation notes:
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Portfolio visible row source cleanup | Existing `/api/portfolio`, `/api/portfolio/history` | GET | Mobile API key | Auth header only | Existing selection source and identity fields remain consumed for hidden audit labels and source summaries | Existing `Position`, `Order`, `Trade`; no new model implied | Mock/local mode uses the same hidden row-source markers. | No new backend support needed. |
+
+## Cycle RL - Portfolio Google Entry and Source Summary Cleanup
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio Google/account entry | `/api/auth/google/start?returnTo=%2Fportfolio` only if the user taps `Continue with Google` | GET/browser redirect | Public auth-start route; Google provider credentials required on backend | `returnTo=/portfolio` query param; no JSON request body | Mobile consumes no JSON from this button; the browser follows the backend auth redirect path | Existing backend auth/session/user tables implied | Fake-token trading remains available without Google login. | Native app deep-link callback/session/logout remains future auth work. |
+| Portfolio source summary cleanup | Existing `/api/portfolio`, `/api/portfolio/history` | GET | Mobile API key | Auth header only | Existing selection source and identity fields remain consumed for hidden audit labels | Existing `Position`, `Order`, `Trade`; no new model implied | Mock/local mode keeps the same hidden audit markers. | No new backend support needed. |
