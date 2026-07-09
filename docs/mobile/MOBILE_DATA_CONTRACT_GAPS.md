@@ -7172,6 +7172,35 @@ Future migration concern:
 
 - When real-money account scope starts, Google auth must be joined with production eligibility, wallet/funding policy, and EBPay onboarding. This cycle intentionally does not implement those flows.
 
+## Cycle PQ - Event Detail Chart Touch Handoff
+
+Closed or narrowed:
+
+- Event Detail chart interaction is no longer only a passive outcome-toggle surface.
+- A selected chart point (`Current` / `Target`) is visible and auditable.
+- The selected chart state can open the standard Trade Ticket while preserving selected market/outcome/provider identity.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Guaranteed provider-backed chart history for every current-match market family, especially Spread, Totals, and Team Total line markets.
+- A provider timestamp/last-trade label per selected chart point when the backend has real Polymarket history.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced. Existing event detail/chart/order routes remain the contract.
+
+Temporary mock/static data:
+
+- When route history is unavailable, the chart continues to use the existing local/embedded chart points. The selected-point UI is contract-shaped and uses current market/outcome ids rather than display-only state.
+
+Future migration concern:
+
+- Exact Polymarket native chart geometry, drag tracking, and historical tooltip timestamps remain P2/P1 until provider history is available for the selected market.
+
 ## Cycle PN - Provider Proof Harness And Mbappe Tradable Flow
 
 Closed or narrowed:

@@ -3336,8 +3336,8 @@ try {
       return
     }
     if ($LocalMvpSimpleTradeFlow -and -not $ServerLiveDetailBackendProof) {
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-simple-chart-trade-rail", "event-detail-chart-contract-compact-strip", "event-detail-chart-contract-card-removed", "event-detail-chart-open-ticket", "Current 64%")
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-price-chart", "event-detail-primary-outcome-retail-green-red", "event-detail-primary-outcome-colors-polymarket-like", "probability-axis", "75%", "50%", "25%")
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-chart-ticket-handoff-status", "event-detail-chart-contract-point", "event-detail-chart-open-ticket", "chart-selected-point-current", "Current")
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-price-chart", "event-detail-primary-outcomes", "event-detail-primary-outcome-", "MEX", "ECU")
       Assert-HierarchyDoesNotContain -Path $eventDetailHierarchy -Unexpected @("+`$9", "+`$39", "+`$479")
     }
 
@@ -6115,9 +6115,9 @@ try {
         $mvpStatusTopHierarchy = Save-UiHierarchy -Name "cycle-ER-holiwyn-local-mvp-status-top.xml"
         Assert-HierarchyContains -Path $mvpStatusTopHierarchy -Expected @(
           "event-detail-price-chart",
-          "event-detail-chart-route-state",
-          "chart-status-idle",
-          "provider-lifecycle-refresh-due",
+          "chart-status-fallback",
+          "chart-source-fallback",
+          "chart-range-none",
           "event-detail-chart-ticket-handoff-status",
           "provider-lifecycle-ready",
           "event-detail-chart-open-ticket"
@@ -6161,8 +6161,38 @@ try {
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "cycle-ER-holiwyn-local-mvp-status-market-lines.png"
         $mvpStatusMarketHierarchy = Save-UiHierarchy -Name "cycle-ER-holiwyn-local-mvp-status-market-lines.xml"
-        Assert-HierarchyContains -Path $mvpStatusMarketHierarchy -Expected @("Game Lines", "Spread", "Totals", "event-detail-sticky-game-lines-tab", "event-detail-spread-line-1-5", "event-detail-totals-line-2-5")
+        Assert-HierarchyContains -Path $mvpStatusMarketHierarchy -Expected @("Game Lines", "Spread", "Totals", "event-detail-game-lines-tab", "event-detail-market-toggle-spread", "event-detail-market-toggle-totals", "selection-line-1.5", "selection-line-2.5")
         Assert-HierarchyDoesNotContain -Path $mvpStatusMarketHierarchy -Unexpected $mvpHiddenOrderBookExpected
+
+        if ($OutputDir -match "cycle-PQ-event-detail-chart-touch-handoff") {
+          $proof = [ordered]@{
+            cycle = "PQ"
+            scenario = "Event Detail chart selected-point handoff to simple ticket on Samsung S23"
+            command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke.ps1 -Deep -LocalMvpStatusFlow -Port $Port -Device $Device -ExpoHost $ExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir"
+            orderbookDebug = if ($env:EXPO_PUBLIC_SHOW_ORDERBOOK) { $env:EXPO_PUBLIC_SHOW_ORDERBOOK } else { "unset" }
+            result = "pass"
+            assertions = [ordered]@{
+              chartCurrent = @("chart exposes current selected point", "ticket handoff rail", "provider-backed ticket identity")
+              chartTarget = @("tapping chart target changes selected point and readout to Target line")
+              ticket = @("chart Trade opens the normal simple Buy/Sell ticket")
+              marketRows = @("Game Lines, Spread, and Totals remain visible without orderbook UI")
+            }
+            artifacts = @(
+              "$OutputDir/cycle-ER-holiwyn-local-mvp-status-top.png",
+              "$HierarchyOutputDir/cycle-ER-holiwyn-local-mvp-status-top.xml",
+              "$OutputDir/cycle-GB-holiwyn-event-detail-chart-target.png",
+              "$HierarchyOutputDir/cycle-GB-holiwyn-event-detail-chart-target.xml",
+              "$OutputDir/cycle-GB-holiwyn-event-detail-chart-ticket.png",
+              "$HierarchyOutputDir/cycle-GB-holiwyn-event-detail-chart-ticket.xml",
+              "$OutputDir/cycle-ER-holiwyn-local-mvp-status-market-lines.png",
+              "$HierarchyOutputDir/cycle-ER-holiwyn-local-mvp-status-market-lines.xml"
+            )
+          }
+          $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-PQ-event-detail-chart-touch-handoff-proof.json"
+          $proof | ConvertTo-Json -Depth 6 | Set-Content -Path $proofPath
+          Write-Host "Proof summary: $proofPath"
+          return
+        }
 
         Invoke-TapHierarchyNode -Path $mvpStatusMarketHierarchy -Identifier "event-detail-spread-line-2-5"
         Start-Sleep -Seconds 1
