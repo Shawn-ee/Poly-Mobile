@@ -10821,3 +10821,40 @@ Validation:
 Known limitations:
 
 - Native Google OAuth callback/session/logout remains separate auth work.
+
+## Cycle QW - Portfolio Google Badge Visibility
+
+Feature/page worked on:
+
+- Portfolio account/login entry clarity after tester feedback that Google login looked missing.
+- This keeps Home clean while making the Portfolio top-left account path visually identifiable.
+
+Frontend/proof files touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/src/__tests__/portfolioSettingsContract.test.ts`
+- `docs/mobile/audits/cycle-QW-portfolio-google-badge-visibility.md`
+
+Important functions/services touched:
+
+- `PortfolioAvatar()` now renders a small Google badge inside the existing Portfolio account entry.
+- Portfolio still calls the existing `openAccount()` callback; no auth, order, or provider service changed.
+
+User interactions supported/proven:
+
+- User opens Portfolio, sees the Google/account badge and Google login chip, taps the Portfolio account entry, and reaches Account where Google login is visible.
+
+State transitions:
+
+- `openAccount()` still moves from Portfolio to Account.
+- No Home state, ticket state, order state, portfolio data state, auth session state, backend route, or provider state changed.
+
+Validation:
+
+- Mobile typecheck passed.
+- Focused Portfolio settings and Account auth contract tests passed.
+- Samsung S23 proof passed with `cycle-QW-portfolio-google-badge-visibility-proof.json`.
+
+Known limitations:
+
+- Native Google OAuth callback/session/logout remains separate auth work.

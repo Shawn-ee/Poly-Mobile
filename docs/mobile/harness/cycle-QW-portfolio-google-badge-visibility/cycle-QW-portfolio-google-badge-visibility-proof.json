@@ -1,0 +1,48 @@
+{
+  "cycle": "QW",
+  "feature": "Portfolio Google badge visibility",
+  "device": {
+    "id": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model": "SM-S911U1"
+  },
+  "runtime": {
+    "app": "Expo Go",
+    "package": "host.exp.exponent",
+    "backend": "http://127.0.0.1:3002",
+    "mobileApiBaseUrl": "http://172.16.200.14:3002",
+    "marketDataMode": "server",
+    "orderMode": "server"
+  },
+  "results": {
+    "portfolioVisible": true,
+    "portfolioGoogleBadgeVisible": true,
+    "portfolioGoogleLoginChipVisible": true,
+    "portfolioAccountEntryClickable": true,
+    "accountGoogleLoginVisible": true,
+    "developerOverlayPresent": false,
+    "staleApkCaptureDiscarded": true
+  },
+  "evidence": {
+    "portfolioXml": "docs/mobile/harness/cycle-QW-portfolio-google-badge-visibility/cycle-QW-portfolio-google-badge.xml",
+    "portfolioScreenshot": "docs/mobile/screenshots/cycle-QW-portfolio-google-badge-visibility/cycle-QW-portfolio-google-badge.png",
+    "accountXml": "docs/mobile/harness/cycle-QW-portfolio-google-badge-visibility/cycle-QW-account-google-login.xml",
+    "accountScreenshot": "docs/mobile/screenshots/cycle-QW-portfolio-google-badge-visibility/cycle-QW-account-google-login.png"
+  },
+  "checks": [
+    "portfolio-screen",
+    "portfolio-account-entry-top-left",
+    "portfolio-account-google-badge-visible",
+    "portfolio-avatar-google-badge",
+    "portfolio-account-entry-google",
+    "Account / Google login",
+    "Google login",
+    "account-screen",
+    "account-login-google",
+    "Continue with Google"
+  ],
+  "tests": {
+    "typecheck": "passed",
+    "focusedVitest": "passed"
+  },
+  "status": "passed"
+}

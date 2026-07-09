@@ -6719,6 +6719,35 @@ Remaining P1:
 
 - Native Google OAuth callback/session/logout remains separate auth work.
 
+## Cycle QW - Portfolio Google Badge Visibility
+
+Result: Pass for QW scope.
+
+Checked:
+
+- Portfolio header visibly exposes the top-left account entry.
+- Portfolio avatar/account entry now has a Google badge cue.
+- Portfolio header still exposes the Google login chip.
+- Tapping the Portfolio account entry opens Account.
+- Account exposes `Continue with Google`.
+- Home account entry remains removed per Local MVP cleanup.
+- No backend route, schema, ticket, order, order book, chat, live stats, social, deposit, or withdraw work was touched.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-QW-portfolio-google-badge-visibility.md`
+- `docs/mobile/harness/cycle-QW-portfolio-google-badge-visibility/cycle-QW-portfolio-google-badge-visibility-proof.json`
+- `docs/mobile/harness/cycle-QW-portfolio-google-badge-visibility/cycle-QW-portfolio-google-badge.xml`
+- `docs/mobile/harness/cycle-QW-portfolio-google-badge-visibility/cycle-QW-account-google-login.xml`
+- `docs/mobile/screenshots/cycle-QW-portfolio-google-badge-visibility/cycle-QW-portfolio-google-badge.png`
+- `docs/mobile/screenshots/cycle-QW-portfolio-google-badge-visibility/cycle-QW-account-google-login.png`
+
+Unresolved P0 gaps: 0 for QW scope.
+
+Remaining P1:
+
+- Native Google OAuth callback/session/logout remains separate auth work.
+
 ## Cycle QV - Event Detail Source Disclosure Compact
 
 Result: Pass for QV scope.
