@@ -3847,3 +3847,9 @@ Cycle OW implementation notes:
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Portfolio account/login entry | `/api/auth/google/start?returnTo=%2Fportfolio` only after the user opens Account and taps Google sign-in | GET/browser redirect | Public auth-start route; Google provider credentials required on backend | `returnTo=/portfolio` query param; no JSON request body | Mobile consumes no JSON from the auth-start route; browser follows redirect/session flow | Existing backend auth/session/user tables implied | Fake-token trading remains available without Google login. | Native app deep-link callback/session/logout is still not implemented. |
+
+## Cycle QV - Event Detail Source Disclosure Compact
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail Game Lines source disclosure | Existing `/api/mobile/events/:slug/live-detail` only to hydrate current event/source summary | GET | Public viewing | Event slug | `marketSourceSummary.regulationWinner`, `marketSourceSummary.lineMarkets`, provider availability, line-family readiness | `Event`, `Market`, `Outcome`; provider quote snapshots and contract fixture line markets implied by existing route | Local/static mode keeps existing line source markers. | No new route gap. Real provider-backed current-match Spread/Totals/Team Total line rows remain unavailable. |

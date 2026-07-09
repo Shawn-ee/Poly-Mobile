@@ -19,7 +19,13 @@ describe("Event Detail market source badges", () => {
     expect(source).toContain("market-source-polymarket-readable");
     expect(source).toContain("market-source-local-test-readable");
     expect(source).toContain("event-detail-line-source-banner");
-    expect(source).toContain("Winner: Polymarket. Lines: Holiwyn pricing.");
+    expect(source).toContain("lineSourceCompact");
+    expect(source).toContain("lineSourceCompactText");
+    expect(source).not.toContain("lineSourceBanner:");
+    expect(source).not.toContain("lineSourceLabel:");
+    expect(source).not.toContain("lineSourceText:");
+    expect(source).toContain('label: locale === "zh" ? "来源" : "Source"');
+    expect(source).toContain("Winner: Polymarket. Lines: Holiwyn.");
     expect(source).toContain("line-source-local-test-fake-token");
     expect(source).toContain("line-provider-availability-");
     expect(source).toContain("line-contract-fixture-count-");

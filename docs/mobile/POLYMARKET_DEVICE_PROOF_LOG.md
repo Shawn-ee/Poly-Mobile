@@ -2244,3 +2244,34 @@ Pass for focused Portfolio Google login visibility scope.
 
 Remaining gaps:
 Native Google OAuth callback/session/logout remains separate auth work.
+
+## Cycle QV - Event Detail Source Disclosure Compact
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket app reference-device action. This was a Holiwyn visible-density cleanup based on the Polymarket game-page pattern of keeping the market list dense and betting-focused.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go server mode. Backend `http://127.0.0.1:3002` remained healthy; mobile API used LAN backend `http://172.16.200.14:3002`. Expo was stopped after proof.
+
+Holiwyn actions:
+Opened `argentina-vs-egypt` Event Detail, captured the Game Lines area, and checked the compact source disclosure plus hidden provider/local-line markers.
+
+Evidence:
+- `docs/mobile/harness/cycle-QV-event-detail-source-compact/cycle-QV-event-detail-source-compact-proof.json`
+- `docs/mobile/screenshots/cycle-QV-event-detail-source-compact/cycle-QV-event-detail-source-compact.png`
+- `docs/mobile/harness/cycle-QV-event-detail-source-compact/cycle-QV-event-detail-source-compact.xml`
+
+Smoke/tests:
+Mobile typecheck passed. Focused Event Detail source/no-chat tests passed. S23 XML checks confirmed compact source bounds, concise copy, hidden provider/local-line markers, and no developer menu overlay.
+
+Result:
+Pass for focused Event Detail source-disclosure compactness scope.
+
+Remaining gaps:
+Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

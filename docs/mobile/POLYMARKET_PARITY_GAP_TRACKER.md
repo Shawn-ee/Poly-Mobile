@@ -1087,3 +1087,12 @@ For every UI element or interaction, answer:
 - QU proves on Samsung S23 that Portfolio shows Google login, tapping it opens Account, and Account still shows the Google login action.
 - Unresolved P0 for QU scope: 0.
 - Remaining P1: native Google OAuth callback/session/logout remains separate auth work.
+
+## Cycle QV Gap Tracker Update
+
+- PM-GAP-157 is opened and closed for Event Detail source/debug disclosure density.
+- QV changes the visible Game Lines source disclosure from a large card to a compact row.
+- QV keeps provider/local-line audit markers for `line-source-contract-fixture`, `regulation-winner-provider-backed`, provider availability, and line-family readiness.
+- QV proves on Samsung S23 that the source row is compact and the old `Market source` heading is absent.
+- Unresolved P0 for QV scope: 0.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
