@@ -2,6 +2,49 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle QI - Account Google Status Visibility
+
+Feature/page worked on:
+
+- Portfolio -> Account Google auth visibility.
+- S23 proof for signed-out Google entry and signed-in Google connected state.
+
+Frontend/backend touched:
+
+- `mobile/src/components/AccountScreen.tsx`
+- `mobile/src/localization/appCopy.ts`
+- `mobile/src/__tests__/accountAuthContract.test.ts`
+- `mobile/scripts/smoke.ps1`
+- No backend route, schema, provider, orderbook UI, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- `AccountScreen` now renders a persistent Google auth card in both auth states.
+- Signed-out users still see `account-login-google` and `Continue with Google`.
+- Signed-in/profile-loaded users now see `account-login-google-connected` and `Google connected`, so Google auth no longer appears to disappear after profile load.
+
+User interactions supported:
+
+- User opens Portfolio -> Account while signed out and can still start Google sign-in.
+- User opens Account after a server/profile-loaded state and sees that Google is connected instead of losing the auth section.
+
+State transitions:
+
+- No auth/session state transition changed.
+- `forceSignedIn` still controls signed-in display.
+- The visible auth card changes from actionable Google button to connected Google status.
+
+Known limitations:
+
+- End-to-end Google OAuth callback/session/logout remains P1 and depends on backend auth environment configuration.
+- Deposits, withdrawals, KYC, and sign-out remain out of this Local MVP cycle.
+
+Evidence:
+
+- S23 signed-out proof: `docs/mobile/harness/cycle-QI-account-google-status/cycle-QI-account-signed-out-google.xml`, screenshot `docs/mobile/screenshots/cycle-QI-account-google-status/cycle-QI-account-signed-out-google.png`
+- S23 signed-in proof: `docs/mobile/harness/cycle-QI-account-google-status/cycle-QI-account-google-connected.xml`, screenshot `docs/mobile/screenshots/cycle-QI-account-google-status/cycle-QI-account-google-connected.png`
+- S23 restored signed-out proof: `docs/mobile/harness/cycle-QI-account-google-status/cycle-QI-account-restored-google.xml`, screenshot `docs/mobile/screenshots/cycle-QI-account-google-status/cycle-QI-account-restored-google.png`
+
 ## Cycle QH - Chart Status UI
 
 Feature/page worked on:

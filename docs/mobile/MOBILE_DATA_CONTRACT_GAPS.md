@@ -2,6 +2,30 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle QI - Account Google Status Visibility
+
+Closed or narrowed:
+
+- Google auth no longer visually disappears after Account enters signed-in/profile-loaded display. The Account screen now shows an explicit `Google connected` status row.
+- Signed-out Account still shows the `Continue with Google` action.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Mobile-consumable authenticated profile/session status that distinguishes Google OAuth connected, expired, and disconnected states.
+- Mobile logout/switch-account route and callback proof, if Account grows beyond this Local MVP status display.
+
+Route mismatch:
+
+- No route mismatch introduced.
+
+Temporary mock/static data:
+
+- S23 signed-in proof uses the existing forced Account state harness to prove the connected status rendering.
+
+Future migration concern:
+
+- Replace forced/harness signed-in display with real session-derived Google account status once the auth callback/session route is ready for mobile.
+
 ## Cycle QH - Chart Status UI
 
 Closed or narrowed:

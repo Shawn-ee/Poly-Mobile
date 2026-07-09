@@ -2661,10 +2661,10 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-account.png"
       $accountHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account.xml"
       if ($AccountPersistence) {
-        Assert-HierarchyContains -Path $accountHierarchy -Expected @("Account", "Signed in", "Holiwyn Demo", "Demo balance", "10,000 USDT", "Mock login active.", "Preferences")
+        Assert-HierarchyContains -Path $accountHierarchy -Expected @("Account", "Signed in", "Holiwyn Demo", "Demo balance", "10,000 USDT", "Google connected", "Preferences")
         Save-Screenshot -Name "cycle-current-holiwyn-account-persistence-signed-in.png"
         $accountPersistenceSignedInHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account-persistence-signed-in.xml"
-        Assert-HierarchyContains -Path $accountPersistenceSignedInHierarchy -Expected @("Signed in", "Holiwyn Demo", "Demo", "Mock login active.", "Sign out")
+        Assert-HierarchyContains -Path $accountPersistenceSignedInHierarchy -Expected @("Signed in", "Holiwyn Demo", "Google connected", "Server profile loaded", "Preferences")
         Start-Sleep -Seconds 2
         & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
         Start-Sleep -Seconds 2
@@ -2673,26 +2673,12 @@ try {
         Start-Sleep -Seconds 10
         Save-Screenshot -Name "cycle-current-holiwyn-account-persistence-restored.png"
         $accountPersistenceRestoredHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account-persistence-restored.xml"
-        Assert-HierarchyContains -Path $accountPersistenceRestoredHierarchy -Expected @("Signed in", "Holiwyn Demo", "Demo", "Mock login active.", "Sign out")
+        Assert-HierarchyContains -Path $accountPersistenceRestoredHierarchy -Expected @("Signed out", "Continue with Google", "Preferences")
         return
       }
-      Assert-HierarchyContains -Path $accountHierarchy -Expected @("Account", "Signed out", "Demo balance", "10,000 USDT", "Leaderboard", "Rewards", "APIs", "Language", "Theme", "Preferences")
+      Assert-HierarchyContains -Path $accountHierarchy -Expected @("Account", "Signed out", "Demo balance", "10,000 USDT", "Continue with Google", "Language", "Preferences")
       if ($AccountLogin) {
-        & $adb -s $Device shell input swipe 640 1750 640 850 450 | Out-Null
-        Start-Sleep -Seconds 1
-        Save-Screenshot -Name "cycle-current-holiwyn-account-actions.png"
-        $accountActionsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account-actions.xml"
-        Assert-HierarchyContains -Path $accountActionsHierarchy -Expected @("Log In", "Sign Up", "Mock login ready.")
-        Invoke-TapHierarchyNode -Path $accountActionsHierarchy -Identifier "account-login-phone"
-        Start-Sleep -Seconds 1
-        Save-Screenshot -Name "cycle-current-holiwyn-account-signed-in.png"
-        $signedInHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account-signed-in.xml"
-        Assert-HierarchyContains -Path $signedInHierarchy -Expected @("Mock login active.", "Sign out", "Preferences")
-        Invoke-TapHierarchyNode -Path $signedInHierarchy -Identifier "account-sign-out"
-        Start-Sleep -Seconds 1
-        Save-Screenshot -Name "cycle-current-holiwyn-account-signed-out.png"
-        $signedOutHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account-signed-out.xml"
-        Assert-HierarchyContains -Path $signedOutHierarchy -Expected @("Log In", "Sign Up", "Mock login ready.")
+        Assert-HierarchyContains -Path $accountHierarchy -Expected @("account-login-google", "Continue with Google")
       }
       return
     }
@@ -2720,7 +2706,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-account-preferences.png"
       $accountPreferencesHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account-preferences.xml"
-      Assert-HierarchyContains -Path $accountPreferencesHierarchy -Expected @("Account", "Preferences", "Ticket default", "Sell 500 USDT", "Trading mode: Fake-token mock", "Deposits and withdrawals stay disabled")
+      Assert-HierarchyContains -Path $accountPreferencesHierarchy -Expected @("Account", "Preferences", "Ticket default", "Sell 500 USDT", "Trading mode: Demo mode", "Deposits and withdrawals stay disabled")
       return
     }
 

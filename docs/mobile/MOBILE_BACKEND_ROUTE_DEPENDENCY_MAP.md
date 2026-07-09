@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle QI - Account Google Status Visibility
+
+Cycle QI changes no backend route or schema. It clarifies the mobile Account UI state around the existing Google auth route.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Signed-out Google account entry | `/api/auth/google/start?returnTo=/portfolio` through `openGoogleSignIn()` | Browser/deep-link open | Server auth route owns OAuth provider policy | None from mobile before browser open | None before callback/session completion | Existing backend auth/user/session models | Demo trading remains available without sign-in | Native callback/session/logout proof remains P1. |
+| Signed-in Google connected status | `/api/profile/summary` indirectly controls `forceSignedIn` in server mode | GET through existing profile summary service | Mobile API key/session depending on runtime mode | None for this UI-only change | Existing profile summary success sets signed-in display | Existing user/profile summary models | Forced signed-in proof state for harness only | Full Google OAuth session state is not yet proven end to end on mobile. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-QI-account-google-status/cycle-QI-account-google-status-proof.json`
+
 ## Cycle QH - Chart Status UI
 
 Cycle QH changes no backend route. It makes existing chart route state visible and readable in the mobile Event Detail chart area.
