@@ -551,6 +551,8 @@ export function TradeTicket({
   const sideLabel = contractSide === "yes" ? "Yes" : "No";
   const selectionLabel = ticket.selection?.displayLabel ?? outcomeLabel;
   const marketLabel = ticket.selection?.displayLabel ?? label(locale, ticket.market);
+  const modeLabel = side === "sell" ? t.sell : t.buy;
+  const modeOutcomeLabel = `${modeLabel} ${outcomeLabel}`;
   const teamCode = teamCodeForTicket(ticket);
   const teamFlag = teamCode ? teamFlags[teamCode] : undefined;
   const fallbackMarketIcon = marketIconForTicket(ticket);
@@ -739,6 +741,15 @@ export function TradeTicket({
               <Text style={[styles.toWinText, numericAmount <= 0 && styles.toWinTextEmpty]}>{t.toWin} <Text style={numericAmount > 0 ? styles.toWinValue : styles.toWinValueEmpty}>{toWinDisplay}</Text></Text>
             </View>
             <View
+              accessibilityLabel={`ticket-order-mode-visible ticket-order-mode-${side} ${modeOutcomeLabel}`}
+              testID="ticket-order-mode-visible"
+              style={[styles.orderModeBadge, side === "sell" && styles.orderModeBadgeSell]}
+            >
+              <Text style={[styles.orderModeText, side === "sell" && styles.orderModeTextSell]} numberOfLines={1}>
+                {modeOutcomeLabel}
+              </Text>
+            </View>
+            <View
               accessibilityLabel={`ticket-order-review market-${reviewMarketType} line-${reviewLine} period-${reviewPeriod} price-${contractProbability} shares-${reviewShares} payout-${reviewPayout} ${providerIdentityLabel}`}
               style={styles.orderReviewA11y}
               testID="ticket-order-review"
@@ -920,6 +931,10 @@ const styles = StyleSheet.create({
   toWinTextEmpty: { color: "#293140" },
   toWinValue: { color: "#22c55e", fontSize: 18, fontWeight: "800" },
   toWinValueEmpty: { color: "#293140", fontSize: 18, fontWeight: "800" },
+  orderModeBadge: { alignSelf: "center", maxWidth: "86%", minHeight: 30, justifyContent: "center", paddingHorizontal: 14, borderRadius: 999, backgroundColor: "#052e16", borderWidth: 1, borderColor: "#166534", marginTop: 4 },
+  orderModeBadgeSell: { backgroundColor: "#3a0f15", borderColor: "#b91c1c" },
+  orderModeText: { color: "#bbf7d0", fontSize: 13, fontWeight: "900" },
+  orderModeTextSell: { color: "#fecaca" },
   priceText: { color: "#8b94a5", fontSize: 15, fontWeight: "800", marginTop: 3 },
   orderReviewA11y: { height: 1, overflow: "hidden", opacity: 0.01 },
   orderReviewCard: { marginTop: 8, padding: 12, borderRadius: 16, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247", gap: 10 },

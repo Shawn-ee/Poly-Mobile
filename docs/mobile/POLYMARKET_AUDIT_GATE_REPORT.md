@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle RO
+
+Gate status: Pass for focused Trade Ticket Sell-mode clarity; not a pass for full native auth/session parity.
+
+Scope: make the full-screen ticket visibly distinguish order mode (`Sell`) from binary outcome selection (`Yes/No`) after Portfolio Cash out opens a sell ticket.
+
+Decision:
+
+- P0 failed: 0 for focused RO scope.
+- Implemented change: Trade Ticket now renders a visible `ticket-order-mode-visible` badge such as `Sell France` above the Yes/No selector.
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`; proof confirmed `ticket-order-mode-sell`, `Sell France`, `ticket-side-sell`, `$25`, and `Swipe to sell`.
+- Backend impact: none. Existing `placeOrder()` and order route/schema behavior remain unchanged.
+- P1 remaining: full native Google OAuth callback/session/logout proof remains future auth work.
+- Evidence: `docs/mobile/audits/cycle-RO-ticket-mode-clarity.md`; screenshots/XML in `docs/mobile/screenshots/cycle-RO-ticket-mode-clarity/` and `docs/mobile/harness/cycle-RO-ticket-mode-clarity/`.
+
 ## Cycle RN
 
 Gate status: Pass for focused Portfolio Cash out -> generic Sell ticket routing; not a pass for full Portfolio or full native auth parity.

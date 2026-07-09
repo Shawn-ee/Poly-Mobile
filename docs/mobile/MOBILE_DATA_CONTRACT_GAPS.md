@@ -1,5 +1,12 @@
 # Mobile Data Contract Gaps
 
+## Cycle RO - Trade Ticket Sell Mode Clarity
+
+- No new mobile/backend data contract gap was introduced.
+- Existing ticket/order request and response contracts remain unchanged.
+- Closed focused P1 UI clarity gap from RN: Sell tickets now show a visible `Sell France` mode badge separate from the Yes/No outcome selector.
+- Remaining P1 auth gap: native Google OAuth callback/session/logout state is not yet proven end-to-end in the native app.
+
 ## Cycle RN - Portfolio Cash Out to Sell Ticket
 
 - No new mobile/backend data contract gap was introduced.
