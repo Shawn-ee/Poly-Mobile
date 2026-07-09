@@ -2050,3 +2050,37 @@ Pass for selected France Nation Top Goalscorer provider-visible-to-tradable scop
 
 Remaining gaps:
 Home/Live remain match-only. Current-match line markets remain contract fixtures. Broad futures chart history remains P1.
+
+## Cycle QP - Chinese MVP Source Copy Continuity
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket app reference-device action. This was a Holiwyn bilingual continuity cleanup against the already-audited Polymarket-like Local MVP flow.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go server mode. Backend `http://127.0.0.1:3002` was healthy; mobile API used LAN backend `http://172.16.200.14:3002`. Expo was stopped after proof.
+
+Holiwyn actions:
+Opened Holiwyn with Chinese mode, confirmed Chinese Home, opened Event Detail, captured top source banner, scrolled to Game Lines, captured localized line source notes, captured Trade Ticket source note, and captured Portfolio source copy using the existing open-order proof state.
+
+Evidence:
+- `docs/mobile/harness/cycle-QP-chinese-mvp-source-copy/cycle-QP-chinese-mvp-source-copy-proof.json`
+- `docs/mobile/screenshots/cycle-QP-chinese-mvp-source-copy/cycle-QP-home-initial.png`
+- `docs/mobile/screenshots/cycle-QP-chinese-mvp-source-copy/cycle-QP-event-detail-top.png`
+- `docs/mobile/screenshots/cycle-QP-chinese-mvp-source-copy/cycle-QP-event-detail-lines.png`
+- `docs/mobile/screenshots/cycle-QP-chinese-mvp-source-copy/cycle-QP-ticket-initial.png`
+- `docs/mobile/screenshots/cycle-QP-chinese-mvp-source-copy/cycle-QP-portfolio-source-clean.png`
+
+Smoke/tests:
+Mobile typecheck passed. Focused Chinese/source-copy tests passed. S23 XML checks confirmed Chinese source copy, preserved source markers, no old English source notes on checked surfaces, and no developer menu in final Portfolio proof.
+
+Result:
+Pass for focused Chinese MVP source-copy continuity scope.
+
+Remaining gaps:
+Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable. Full native Google OAuth callback/session/logout proof remains separate auth work.

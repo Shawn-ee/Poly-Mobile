@@ -1,0 +1,32 @@
+{
+    "cycle":  "QP",
+    "result":  "pass",
+    "generatedAt":  "2026-07-09T05:21:56.0055347Z",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "scope":  "Chinese MVP source copy continuity across Event Detail, Trade Ticket, and Portfolio",
+    "checks":  {
+                   "homeChinese":  true,
+                   "eventDetailTopChineseSource":  true,
+                   "eventDetailLinesChineseSource":  true,
+                   "ticketChineseSource":  true,
+                   "portfolioChineseSource":  true,
+                   "oldEnglishSourceNotesAbsent":  true,
+                   "internalSourceMarkersPreserved":  true,
+                   "developerMenuAbsentInFinalPortfolioProof":  true
+               },
+    "screenshots":  [
+                        "docs/mobile/screenshots/cycle-QP-chinese-mvp-source-copy/cycle-QP-home-initial.png",
+                        "docs/mobile/screenshots/cycle-QP-chinese-mvp-source-copy/cycle-QP-event-detail-top.png",
+                        "docs/mobile/screenshots/cycle-QP-chinese-mvp-source-copy/cycle-QP-event-detail-lines.png",
+                        "docs/mobile/screenshots/cycle-QP-chinese-mvp-source-copy/cycle-QP-ticket-initial.png",
+                        "docs/mobile/screenshots/cycle-QP-chinese-mvp-source-copy/cycle-QP-portfolio-source-clean.png"
+                    ],
+    "hierarchies":  [
+                        "docs/mobile/harness/cycle-QP-chinese-mvp-source-copy/cycle-QP-home-initial.xml",
+                        "docs/mobile/harness/cycle-QP-chinese-mvp-source-copy/cycle-QP-event-detail-top.xml",
+                        "docs/mobile/harness/cycle-QP-chinese-mvp-source-copy/cycle-QP-event-detail-lines.xml",
+                        "docs/mobile/harness/cycle-QP-chinese-mvp-source-copy/cycle-QP-ticket-initial.xml",
+                        "docs/mobile/harness/cycle-QP-chinese-mvp-source-copy/cycle-QP-portfolio-source-clean.xml"
+                    ]
+}

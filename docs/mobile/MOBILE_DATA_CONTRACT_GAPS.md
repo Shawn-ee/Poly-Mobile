@@ -7691,6 +7691,35 @@ Future migration concern:
 - Standalone bot proof runs must carry `LIVE_SYSTEM_LIQUIDITY_ENABLED=true`; backend helper env alone does not arm a separate bot process.
 - Production/staging bot enablement must not reuse local fake-token proof flags without separate review.
 
+## Cycle QP - Chinese MVP Source Copy Continuity
+
+Closed or narrowed:
+
+- Chinese source/status copy now uses the same existing source identity fields already carried by Event Detail, Trade Ticket, Portfolio, and History.
+- No new frontend-only display structure was introduced.
+- Internal markers still preserve `contract-fixture`, local-test fake-token, provider-backed, market id, outcome id, line, period, condition id, token id, and provider market identity for future backend migration.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real Polymarket provider-backed current-match Spread/Totals/Team Total market ids, token ids, prices, and chart history remain missing for the current match.
+- Native Google OAuth callback/session/logout proof remains outside this source-copy cycle.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- Contract-fixture line market copy is localized as `利云体育盘口` for tester clarity, but internal markers must continue to distinguish it from provider-backed Polymarket line markets until real provider line rows exist.
+
 ## Cycle PR - Current MVP Service Readiness Inspection
 
 Closed or narrowed:

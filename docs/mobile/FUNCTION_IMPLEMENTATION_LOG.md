@@ -10549,3 +10549,45 @@ Known limitations:
 
 - Regulation Winner is provider-backed, but Spread/Totals/Team Totals are Local MVP contract fixtures for `argentina-vs-egypt`.
 - The current worktree lacks a committed local `.env`; proof commands loaded `DATABASE_URL` from the original local repo env without committing it.
+
+## Cycle QP - Chinese MVP Source Copy Continuity
+
+Feature/page worked on:
+
+- Chinese Local MVP visible path copy for Event Detail -> Trade Ticket -> Portfolio/history.
+- This continues the Home/Live Chinese cleanup so the same user flow does not switch back to English source labels.
+
+Frontend/proof files touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/src/__tests__/chineseMvpSourceCopy.test.ts`
+- `docs/mobile/audits/cycle-QP-chinese-mvp-source-copy.md`
+
+Important functions/services touched:
+
+- `lineSourceCopy(event, locale)` localizes Event Detail source banner copy.
+- `marketSourceHeaderNote(market, locale)` localizes line market row source notes.
+- `ticketSourceNote(ticket, locale)` localizes Trade Ticket source notes.
+- `portfolioSourceNote(selection, locale)` and `portfolioSourceSummary(..., locale)` localize Portfolio source notes and summary.
+
+User interactions supported/proven:
+
+- User can keep the app in Chinese across Home, Event Detail, Ticket, and Portfolio without seeing English-only source labels on the MVP source/status surfaces.
+
+State transitions:
+
+- No order, quote, portfolio, or auth state transition changed.
+- Existing source identity still flows from event/market/selection snapshots through ticket/order/portfolio/history.
+
+Validation:
+
+- Mobile typecheck passed.
+- Focused source-copy tests passed.
+- Samsung S23 proof pending in this cycle until captured.
+
+Known limitations:
+
+- No backend route/schema changed.
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

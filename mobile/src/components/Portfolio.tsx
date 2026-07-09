@@ -365,18 +365,18 @@ const portfolioSourceBadge = (selection?: TicketSelection) => {
   };
 };
 
-const portfolioSourceNote = (selection?: TicketSelection) => {
+const portfolioSourceNote = (selection: TicketSelection | undefined, locale: Locale) => {
   const source = selection?.referenceSource ?? "";
   if (source.includes("contract-fixture")) {
     return {
-      text: "Holiwyn line",
+      text: locale === "zh" ? "利云体育盘口" : "Holiwyn line",
       accessibility: "portfolio-local-test-pricing",
       tone: "fixture" as const,
     };
   }
   if (source.includes("polymarket")) {
     return {
-      text: "Polymarket market",
+      text: locale === "zh" ? "Polymarket 市场" : "Polymarket market",
       accessibility: "portfolio-provider-backed-pricing",
       tone: "provider" as const,
     };
@@ -388,10 +388,12 @@ const portfolioSourceSummary = ({
   positions,
   openOrders,
   activities,
+  locale,
 }: {
   positions: Position[];
   openOrders: OpenOrder[];
   activities: PortfolioActivity[];
+  locale: Locale;
 }) => {
   const selections = [
     ...positions.map((item) => item.selection),
@@ -413,8 +415,8 @@ const portfolioSourceSummary = ({
 
   if (providerCount > 0 && localLineCount > 0) {
     return {
-      label: "Source",
-      text: "Polymarket winner / Holiwyn lines",
+      label: locale === "zh" ? "来源" : "Source",
+      text: locale === "zh" ? "Polymarket 胜负 / 利云体育盘口" : "Polymarket winner / Holiwyn lines",
       tone: "mixed" as const,
       accessibility:
         `portfolio-selection-source-summary portfolio-source-summary-mixed portfolio-provider-count-${providerCount} portfolio-local-line-count-${localLineCount} portfolio-line-families-${lineFamilies.join("-") || "none"}`,
@@ -422,16 +424,16 @@ const portfolioSourceSummary = ({
   }
   if (localLineCount > 0) {
     return {
-      label: "Source",
-      text: "Holiwyn lines",
+      label: locale === "zh" ? "来源" : "Source",
+      text: locale === "zh" ? "利云体育盘口" : "Holiwyn lines",
       tone: "fixture" as const,
       accessibility:
         `portfolio-selection-source-summary portfolio-source-summary-local-lines portfolio-provider-count-${providerCount} portfolio-local-line-count-${localLineCount} portfolio-line-families-${lineFamilies.join("-") || "none"}`,
     };
   }
   return {
-    label: "Source",
-    text: "Polymarket pricing",
+    label: locale === "zh" ? "来源" : "Source",
+    text: locale === "zh" ? "Polymarket 定价" : "Polymarket pricing",
     tone: "provider" as const,
     accessibility:
       `portfolio-selection-source-summary portfolio-source-summary-provider portfolio-provider-count-${providerCount} portfolio-local-line-count-${localLineCount}`,
@@ -762,7 +764,7 @@ export function Portfolio({
   const portfolioValue = balance + currentValueTotal(positions);
   const portfolioPnl = pnlTotal(positions);
   const portfolioPnlPercent = investedTotal(positions) > 0 ? (portfolioPnl / investedTotal(positions)) * 100 : 0;
-  const sourceSummary = portfolioSourceSummary({ positions, openOrders, activities });
+  const sourceSummary = portfolioSourceSummary({ positions, openOrders, activities, locale });
   const valueHistory = deterministicPortfolioValueHistory({
     range: activeRange,
     cash: balance,
@@ -887,17 +889,17 @@ export function Portfolio({
                 <Text style={styles.openOrderMeta}>
                   {order.side === "buy" ? t.buy : t.sell} - {displayOutcome(order)} - {order.status}
                 </Text>
-                {portfolioSourceNote(order.selection) && (
+                {portfolioSourceNote(order.selection, locale) && (
                   <Text
-                    accessibilityLabel={`open-order-source-note-${order.id} ${portfolioSourceNote(order.selection)?.accessibility}`}
+                    accessibilityLabel={`open-order-source-note-${order.id} ${portfolioSourceNote(order.selection, locale)?.accessibility}`}
                     style={[
                       styles.portfolioSourceNote,
-                      portfolioSourceNote(order.selection)?.tone === "provider" && styles.portfolioSourceNoteProvider,
-                      portfolioSourceNote(order.selection)?.tone === "fixture" && styles.portfolioSourceNoteFixture,
+                      portfolioSourceNote(order.selection, locale)?.tone === "provider" && styles.portfolioSourceNoteProvider,
+                      portfolioSourceNote(order.selection, locale)?.tone === "fixture" && styles.portfolioSourceNoteFixture,
                     ]}
                     testID={`open-order-source-note-${order.id}`}
                   >
-                    {portfolioSourceNote(order.selection)?.text}
+                    {portfolioSourceNote(order.selection, locale)?.text}
                   </Text>
                 )}
                 <View
@@ -1127,7 +1129,7 @@ export function Portfolio({
             </View>
           </View>
           {positions.map((position) => (
-            <View accessibilityLabel={`position-card-${position.id} portfolio-position-retail-density-fit portfolio-position-tabs-gap-closed-s23 portfolio-first-position-first-screen-fit portfolio-row-dollar-amounts portfolio-position-to-win-payout portfolio-position-outcome-compact-label portfolio-position-market-context-readable portfolio-outcome-compact-${compactVisibleOutcomeLabel(position)} portfolio-position-visible-label-${displayPositionChoice(position)} ${portfolioSourceNote(position.selection)?.accessibility ?? ""} ${providerBreadthCodes(position) ? "portfolio-event-title-compact-provider" : ""} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
+            <View accessibilityLabel={`position-card-${position.id} portfolio-position-retail-density-fit portfolio-position-tabs-gap-closed-s23 portfolio-first-position-first-screen-fit portfolio-row-dollar-amounts portfolio-position-to-win-payout portfolio-position-outcome-compact-label portfolio-position-market-context-readable portfolio-outcome-compact-${compactVisibleOutcomeLabel(position)} portfolio-position-visible-label-${displayPositionChoice(position)} ${portfolioSourceNote(position.selection, locale)?.accessibility ?? ""} ${providerBreadthCodes(position) ? "portfolio-event-title-compact-provider" : ""} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
               <View style={styles.positionEventLine}>
                 <Text style={styles.positionScoreLine}>{compactPortfolioScoreLine(position)}</Text>
                 {(position.isLive || position.liveClock) && (
@@ -1172,17 +1174,17 @@ export function Portfolio({
                   <Text style={styles.positionMeta}>
                     Cost {portfolioRowMoney(position.amount)} | To win {portfolioRowMoney(positionPotentialPayout(position))} | Entry {position.probability}%
                   </Text>
-                  {portfolioSourceNote(position.selection) && (
+                  {portfolioSourceNote(position.selection, locale) && (
                     <Text
-                      accessibilityLabel={`portfolio-position-source-note-${position.id} ${portfolioSourceNote(position.selection)?.accessibility}`}
+                      accessibilityLabel={`portfolio-position-source-note-${position.id} ${portfolioSourceNote(position.selection, locale)?.accessibility}`}
                       style={[
                         styles.portfolioSourceNote,
-                        portfolioSourceNote(position.selection)?.tone === "provider" && styles.portfolioSourceNoteProvider,
-                        portfolioSourceNote(position.selection)?.tone === "fixture" && styles.portfolioSourceNoteFixture,
+                        portfolioSourceNote(position.selection, locale)?.tone === "provider" && styles.portfolioSourceNoteProvider,
+                        portfolioSourceNote(position.selection, locale)?.tone === "fixture" && styles.portfolioSourceNoteFixture,
                       ]}
                       testID={`portfolio-position-source-note-${position.id}`}
                     >
-                      {portfolioSourceNote(position.selection)?.text}
+                      {portfolioSourceNote(position.selection, locale)?.text}
                     </Text>
                   )}
                 </View>
@@ -1336,7 +1338,7 @@ export function Portfolio({
         <View style={styles.activityBlock}>
           {activities.slice(0, 5).map((activity) => (
             <Pressable
-              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity portfolio-history-dollar-amounts portfolio-history-outcome-compact-label portfolio-history-market-context-readable portfolio-history-outcome-compact-${compactVisibleOutcomeLabel(activity)} portfolio-history-visible-label-${activityDisplayTitle(activity)} portfolio-history-fill-count-${activity.fillCount ?? 1} ${portfolioSourceNote(activity.selection)?.accessibility ?? ""} ${providerBreadthCodes(activity) ? "portfolio-history-event-title-compact-provider" : ""} ${selectionIdentityLabel(activity)}`}
+              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity portfolio-history-dollar-amounts portfolio-history-outcome-compact-label portfolio-history-market-context-readable portfolio-history-outcome-compact-${compactVisibleOutcomeLabel(activity)} portfolio-history-visible-label-${activityDisplayTitle(activity)} portfolio-history-fill-count-${activity.fillCount ?? 1} ${portfolioSourceNote(activity.selection, locale)?.accessibility ?? ""} ${providerBreadthCodes(activity) ? "portfolio-history-event-title-compact-provider" : ""} ${selectionIdentityLabel(activity)}`}
               key={activity.id}
               onPress={() => setExpandedActivityId((current) => (current === activity.id ? null : activity.id))}
               style={[styles.activityItem, expandedActivityId === activity.id && styles.rowExpanded]}
@@ -1384,17 +1386,17 @@ export function Portfolio({
                     {t.liveNow}
                   </Text>
                 )}
-                {portfolioSourceNote(activity.selection) && (
+                {portfolioSourceNote(activity.selection, locale) && (
                   <Text
-                    accessibilityLabel={`portfolio-history-source-note-${activity.id} ${portfolioSourceNote(activity.selection)?.accessibility}`}
+                    accessibilityLabel={`portfolio-history-source-note-${activity.id} ${portfolioSourceNote(activity.selection, locale)?.accessibility}`}
                     style={[
                       styles.portfolioSourceNote,
-                      portfolioSourceNote(activity.selection)?.tone === "provider" && styles.portfolioSourceNoteProvider,
-                      portfolioSourceNote(activity.selection)?.tone === "fixture" && styles.portfolioSourceNoteFixture,
+                      portfolioSourceNote(activity.selection, locale)?.tone === "provider" && styles.portfolioSourceNoteProvider,
+                      portfolioSourceNote(activity.selection, locale)?.tone === "fixture" && styles.portfolioSourceNoteFixture,
                     ]}
                     testID={`portfolio-history-source-note-${activity.id}`}
                   >
-                    {portfolioSourceNote(activity.selection)?.text}
+                    {portfolioSourceNote(activity.selection, locale)?.text}
                   </Text>
                 )}
                 {activity.liveClock && (

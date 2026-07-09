@@ -6189,6 +6189,36 @@ Remaining P1:
 - Provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Broad futures remain Search/detail-only while Home/Live stay match-only.
 
+## Cycle QP - Chinese MVP Source Copy Continuity
+
+Result: Pass for focused Chinese MVP source-copy continuity scope.
+
+Checked:
+
+- Event Detail top source banner shows Chinese source copy and no old English `Market source` / `Holiwyn line` source note.
+- Event Detail lower Game Lines area shows Chinese source copy and preserves source markers.
+- Trade Ticket shows Chinese source note and preserves ticket source markers.
+- Portfolio proof state shows Chinese source summary/row source copy and preserves portfolio source markers.
+- The final Portfolio proof has no Expo developer menu overlay.
+- No backend route, order logic, orderbook UI, chat, live stats, social, deposit, withdrawal, or schema files changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-QP-chinese-mvp-source-copy.md`
+- `docs/mobile/harness/cycle-QP-chinese-mvp-source-copy/cycle-QP-chinese-mvp-source-copy-proof.json`
+- `docs/mobile/screenshots/cycle-QP-chinese-mvp-source-copy/cycle-QP-home-initial.png`
+- `docs/mobile/screenshots/cycle-QP-chinese-mvp-source-copy/cycle-QP-event-detail-top.png`
+- `docs/mobile/screenshots/cycle-QP-chinese-mvp-source-copy/cycle-QP-event-detail-lines.png`
+- `docs/mobile/screenshots/cycle-QP-chinese-mvp-source-copy/cycle-QP-ticket-initial.png`
+- `docs/mobile/screenshots/cycle-QP-chinese-mvp-source-copy/cycle-QP-portfolio-source-clean.png`
+
+Unresolved P0 gaps: 0 for this cycle scope.
+
+Remaining P1:
+
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Full native Google OAuth callback/session/logout proof remains separate auth work.
+
 ## Cycle PL - Current Match Line Provider Gate
 
 Result: Pass for provider-line honesty gate.
