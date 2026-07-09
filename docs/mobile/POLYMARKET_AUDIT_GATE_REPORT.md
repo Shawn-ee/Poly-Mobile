@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle QO
+
+Gate status: Pass for focused Chinese Home/Live source-copy cleanup; not a pass for real provider-backed line-market parity.
+
+Scope: Chinese source label for Home/Live match cards when Regulation Winner is provider-backed and line markets are Holiwyn contract-shaped rows.
+
+Decision:
+
+- P0 failed: 0 for focused QO scope.
+- Implemented change: Chinese copy now says `胜负: Polymarket / 盘口: 利云体育` and `利云体育盘口` instead of old local/test-token wording.
+- Runtime finding: hidden source markers remain present for audit and backend migration.
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`; screenshot shows Chinese Home with `盘口: 利云体育`; XML proof confirms old `本地测试` wording is absent.
+- P1 remaining: real provider-backed Spread/Totals/Team Total line markets; full app-wide Chinese copy polish.
+- Evidence: `docs/mobile/audits/cycle-QO-chinese-source-copy.md`; S23 proof `docs/mobile/harness/cycle-QO-chinese-source-copy/cycle-QO-chinese-source-copy-proof.json`.
+
 ## Cycle QN
 
 Gate status: Pass for focused Portfolio -> Account Google entry clarity; not a pass for full Google OAuth/session parity.

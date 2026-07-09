@@ -1,0 +1,17 @@
+﻿{
+    "cycle":  "QO",
+    "feature":  "Chinese Home source-label copy cleanup",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "backendRoutesChanged":  false,
+    "androidProof":  "pass",
+    "screenshot":  "docs/mobile/screenshots/cycle-QO-chinese-source-copy/cycle-QO-chinese-home-source.png",
+    "xml":  "docs/mobile/harness/cycle-QO-chinese-source-copy/cycle-QO-chinese-home-source.xml",
+    "assertions":  {
+                       "chineseHomeVisible":  true,
+                       "liyunSportsSourceVisible":  true,
+                       "oldLocalTestCopyAbsent":  true,
+                       "internalSourceMarkerPreserved":  true
+                   },
+    "result":  "pass"
+}
