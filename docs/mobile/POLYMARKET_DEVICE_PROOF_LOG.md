@@ -2116,3 +2116,34 @@ Pass for focused Chinese Trade Ticket amount-entry scope.
 
 Remaining gaps:
 Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable. Full native Google OAuth callback/session/logout proof remains separate auth work.
+
+## Cycle QR - Portfolio Login Entry Clarity
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket app reference-device action. This was a Holiwyn visible-account-entry cleanup after Home account entry removal.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go server mode. Backend `http://127.0.0.1:3002` remained healthy; mobile launched through LAN host `172.16.200.14`. Expo was stopped after proof.
+
+Holiwyn actions:
+Opened Portfolio directly, captured the visible account/login header and Google login entry, then opened Account directly and captured the Google login/connect area.
+
+Evidence:
+- `docs/mobile/harness/cycle-QR-portfolio-login-entry-clarity/cycle-QR-portfolio-login-entry-clarity-proof.json`
+- `docs/mobile/screenshots/cycle-QR-portfolio-login-entry-clarity/cycle-QR-portfolio-login-entry.png`
+- `docs/mobile/screenshots/cycle-QR-portfolio-login-entry-clarity/cycle-QR-account-google-login.png`
+
+Smoke/tests:
+Mobile typecheck passed. Focused Portfolio settings and Account auth contract tests passed. S23 XML checks confirmed Portfolio account entry, Portfolio Google entry, Account screen, Account Google login/connect area, and no developer menu overlay.
+
+Result:
+Pass for focused Portfolio login-entry clarity scope.
+
+Remaining gaps:
+Native Google OAuth callback/session/logout proof remains separate auth work.

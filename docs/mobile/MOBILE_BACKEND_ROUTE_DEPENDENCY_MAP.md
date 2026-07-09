@@ -3823,3 +3823,9 @@ Cycle OW implementation notes:
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Chinese Trade Ticket amount entry | Existing `/api/mobile/events/:slug/live-detail` for event/market data; `/api/orders` only after submit | GET/POST | Public viewing for event data; mobile API key for server order submit | Event slug for detail; normal order payload only if user swipes above threshold | Market probability, balance from app state/account route, selected market/outcome/source identity, order result after submit | `Event`, `Market`, `Outcome`, `Order`, `Trade`, `Position`, `UserBalance`, `ApiCredential` | Mock mode still keeps local fake-token order behavior. | No new backend support needed. This cycle changes display copy only. |
+
+## Cycle QR - Portfolio Login Entry Clarity
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio account/login entry | `/api/auth/google/start?returnTo=%2Fportfolio` only after user opens Account and taps Google sign-in | GET/browser redirect | Public auth-start route; Google provider credentials required on backend | `returnTo=/portfolio` query param; no JSON request body | Mobile consumes no JSON from the auth-start route; browser follows redirect/session flow | Existing backend auth/session/user tables implied | Fake-token trading remains available without Google login. | Native app deep-link callback/session/logout is still not implemented. |

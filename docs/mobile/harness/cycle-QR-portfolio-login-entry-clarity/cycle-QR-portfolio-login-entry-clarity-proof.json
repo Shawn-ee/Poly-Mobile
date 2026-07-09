@@ -1,0 +1,19 @@
+﻿{
+    "cycle":  "cycle-QR-portfolio-login-entry-clarity",
+    "result":  "pass",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "evidenceFrom":  "captured-s23-xml-screenshots",
+    "checks":  {
+                   "portfolioAccountEntry":  true,
+                   "portfolioGoogleEntry":  true,
+                   "portfolioClearGoogleCopy":  true,
+                   "accountScreen":  true,
+                   "accountGoogleLogin":  true,
+                   "noDevMenu":  true
+               },
+    "screenshots":  [
+                        "docs/mobile/screenshots/cycle-QR-portfolio-login-entry-clarity/cycle-QR-portfolio-login-entry.png",
+                        "docs/mobile/screenshots/cycle-QR-portfolio-login-entry-clarity/cycle-QR-account-google-login.png"
+                    ]
+}

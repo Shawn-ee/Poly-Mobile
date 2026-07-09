@@ -7691,6 +7691,32 @@ Future migration concern:
 - Standalone bot proof runs must carry `LIVE_SYSTEM_LIQUIDITY_ENABLED=true`; backend helper env alone does not arm a separate bot process.
 - Production/staging bot enablement must not reuse local fake-token proof flags without separate review.
 
+## Cycle QR - Portfolio Login Entry Clarity
+
+Closed or narrowed:
+
+- The Portfolio entry point now makes the existing Google login path visible again after the Home account button cleanup.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Native-app Google OAuth completion/session state remains undefined for Expo/native builds.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- Existing `/api/auth/google/start?returnTo=%2Fportfolio` is browser-redirect based. It does not yet provide a native deep-link callback/session handoff contract.
+
+Temporary mock/static data:
+
+- Portfolio profile display remains static Local MVP copy.
+
+Future migration concern:
+
+- Account screen will need a mobile-safe signed-in profile route, auth callback/deep-link contract, and logout/session-clear route before production auth parity.
+
 ## Cycle QP - Chinese MVP Source Copy Continuity
 
 Closed or narrowed:

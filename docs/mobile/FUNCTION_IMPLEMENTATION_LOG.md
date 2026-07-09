@@ -10631,3 +10631,42 @@ Known limitations:
 - No backend route/schema changed.
 - Yes/No contract side labels remain as trading contract labels.
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle QR - Portfolio Login Entry Clarity
+
+Feature/page worked on:
+
+- Portfolio account/login entry in the Local MVP visible flow.
+- This fixes the UX regression where Google login looked like it disappeared after Home account entry cleanup.
+
+Frontend/proof files touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/src/__tests__/portfolioSettingsContract.test.ts`
+- `docs/mobile/audits/cycle-QR-portfolio-login-entry-clarity.md`
+
+Important functions/services touched:
+
+- Portfolio `openAccount` wiring remains unchanged and still routes to `AccountScreen`.
+- `portfolioPageCopy` now uses action-oriented Google login copy in English and Chinese.
+
+User interactions supported/proven:
+
+- User can identify the Google login path from Portfolio instead of expecting it on Home.
+- User taps Portfolio account/profile or Google sign-in entry to open the Account screen.
+
+State transitions:
+
+- No order, quote, portfolio, auth session, or backend state transition changed.
+- Existing browser-based Google auth start behavior remains in `App.openGoogleSignIn`.
+
+Validation:
+
+- Mobile typecheck passed.
+- Focused Portfolio/Account auth contract tests passed.
+- Samsung S23 Portfolio and Account proof passed with `cycle-QR-portfolio-login-entry-clarity-proof.json`.
+
+Known limitations:
+
+- Native Google OAuth callback/session/logout remains separate auth work.
+- This cycle improves visibility only; it does not implement a new auth provider route.
