@@ -263,12 +263,12 @@ const lineSourceCopy = (event: Event) => {
     };
   }
   if (lineStatus === "contract-fixture") {
-    const familyCopy = localFamilies ? ` Local lines: ${localFamilies}.` : "";
+    const familyCopy = localFamilies ? ` Holiwyn lines: ${localFamilies}.` : "";
     return {
       label: "Market source",
       text: winnerReady
-        ? `Winner: Polymarket / local lines.${familyCopy}`
-        : `Local lines.${familyCopy}`,
+        ? `Winner: Polymarket. Lines: Holiwyn pricing.${familyCopy}`
+        : `Holiwyn lines.${familyCopy}`,
       tone: "fixture" as const,
       accessibility:
         `event-detail-line-source-banner line-source-contract-fixture line-source-local-test-fake-token regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount} ${lineAvailabilityMarker}${familyMarker}`,
@@ -454,7 +454,7 @@ const marketSourceHeaderNote = (market?: Market) => {
   const source = market?.referenceSource ?? "";
   if (source.includes("contract-fixture")) {
     return {
-      text: "Local line",
+      text: "Holiwyn line",
       accessibility: "line-market-local-test-pricing line-market-local-test-fake-token",
     };
   }
@@ -478,7 +478,7 @@ const marketSourceBadge = (market?: Market) => {
   }
   if (source.includes("contract-fixture")) {
     return {
-      label: "Local",
+      label: "Holiwyn",
       tone: "fixture" as const,
       accessibility: `market-source-badge-local market-source-local-test-readable market-source-${source}`,
     };

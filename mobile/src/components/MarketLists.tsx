@@ -60,7 +60,7 @@ export const eventSourceReadiness = (event: Event, locale: Locale) => {
       text:
         locale === "zh"
           ? "胜负: Polymarket / 盘口: 本地测试"
-          : "Winner: Polymarket / local lines",
+          : "Winner: Polymarket / Holiwyn lines",
       accessibility: `home-card-source-provider-winner-local-lines home-card-source-local-test-fake-token line-families-${lineFamilies.join("-") || "none"}`,
       tone: "mixed" as const,
     };
@@ -74,7 +74,7 @@ export const eventSourceReadiness = (event: Event, locale: Locale) => {
   }
   if (lineStatus === "contract-fixture") {
     return {
-      text: locale === "zh" ? "本地测试代币盘口" : "Local lines",
+      text: locale === "zh" ? "本地测试代币盘口" : "Holiwyn lines",
       accessibility: `home-card-source-local-lines home-card-source-local-test-fake-token line-families-${lineFamilies.join("-") || "none"}`,
       tone: "local" as const,
     };

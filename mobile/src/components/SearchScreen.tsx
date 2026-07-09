@@ -69,13 +69,13 @@ export function SearchScreen({
     if (providerCount > 0 && fixtureCount > 0) {
       return locale === "zh"
         ? `Polymarket ${providerCount} / \u6d4b\u8bd5\u76d8\u53e3 ${fixtureCount}`
-        : `Polymarket ${providerCount} / local lines ${fixtureCount}`;
+        : `Polymarket ${providerCount} / Holiwyn lines ${fixtureCount}`;
     }
     if (providerCount > 0) {
       return locale === "zh" ? `Polymarket ${providerCount} \u4e2a\u5e02\u573a` : `Polymarket ${providerCount} markets`;
     }
     if (lineStatus === "contract-fixture" || fixtureCount > 0) {
-      return locale === "zh" ? "\u6d4b\u8bd5\u76d8\u53e3" : "Local lines";
+      return locale === "zh" ? "Holiwyn lines" : "Holiwyn lines";
     }
     return locale === "zh" ? "\u5e02\u573a\u6765\u6e90\u672a\u5c31\u7eea" : "Source unavailable";
   };

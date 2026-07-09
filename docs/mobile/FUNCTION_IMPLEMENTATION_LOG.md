@@ -2,6 +2,53 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle QJ - Holiwyn Line Copy
+
+Feature/page worked on:
+
+- Home/Live/Event Detail/Search/Trade Ticket/Portfolio visible source wording for Local MVP line markets.
+- S23 full-flow regression for Home -> Event Detail -> Spread line -> ticket -> fake-token order -> Portfolio History.
+
+Frontend/backend touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/components/MarketLists.tsx`
+- `mobile/src/components/SearchScreen.tsx`
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/src/components/Portfolio.tsx`
+- Focused mobile tests for Event Detail, Home/Live source contracts, Trade Ticket, and Portfolio source badges.
+- Proof scripts: `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`, `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1`
+- No backend route, schema, orderbook UI, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- Contract-fixture line source display now uses Holiwyn-branded visible wording instead of tester-facing `Local line(s)` copy.
+- Internal source markers remain intact for Audit Gate proof and future backend replacement.
+- The S23 proof harness now accepts a real filled-history result after a successful fake-token line order and can resolve the backend `.env` from the main repo path.
+
+User interactions supported:
+
+- User opens Home/Live and sees provider winner plus Holiwyn line disclosure.
+- User opens Event Detail, selects Spread `1.5`, opens a simple ticket, swipes to buy, and sees the filled fake-token trade in Portfolio History.
+- User can still enter Account/Google from Portfolio; the Google button/status was not removed in this cycle.
+
+State transitions:
+
+- No app state transition changed.
+- Selected market/line/outcome identity still travels through ticket, order submit, Portfolio, and History.
+- The proof harness now records filled History as the default successful order outcome when the local backend fills immediately.
+
+Known limitations:
+
+- Real provider-backed Spread/Totals/Team Total markets are still unavailable for the current Polymarket-backed match.
+- Google OAuth callback/session/logout remains P1; visible Google entry remains under Portfolio -> Account.
+
+Evidence:
+
+- Provider reinspection: `docs/mobile/harness/cycle-QJ-provider-line-reinspection/`
+- S23 proof: `docs/mobile/harness/cycle-QJ-holiwyn-line-copy/cycle-QJ-current-mvp-s23-visible-flow.json`
+- Screenshots/XML: `docs/mobile/screenshots/cycle-QJ-holiwyn-line-copy/`, `docs/mobile/harness/cycle-QJ-holiwyn-line-copy/`
+
 ## Cycle QI - Account Google Status Visibility
 
 Feature/page worked on:

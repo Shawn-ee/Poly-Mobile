@@ -11,6 +11,7 @@ param(
   [string]$Cycle = "MQ",
   [string]$OutputDir = "docs\mobile\screenshots\cycle-MQ-provider-winner-s23-visible-flow",
   [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-MQ-provider-winner-s23-visible-flow",
+  [string]$DotenvPath = "",
   [switch]$SeedCounterparty,
   [switch]$ExpectFilledHistory,
   [switch]$ExpectCashout
@@ -29,6 +30,25 @@ $adb = "adb"
 New-Item -ItemType Directory -Force -Path $resolvedOutputDir | Out-Null
 New-Item -ItemType Directory -Force -Path $resolvedHierarchyOutputDir | Out-Null
 New-Item -ItemType Directory -Force -Path (Split-Path -Parent $expoOut) | Out-Null
+
+function Set-ProofDotenvPath {
+  if ($DotenvPath -and (Test-Path -LiteralPath $DotenvPath)) {
+    $env:DOTENV_CONFIG_PATH = (Resolve-Path -LiteralPath $DotenvPath).Path
+    return
+  }
+  if ($env:DOTENV_CONFIG_PATH -and (Test-Path -LiteralPath $env:DOTENV_CONFIG_PATH)) {
+    return
+  }
+  $repoEnv = Join-Path $repoRoot ".env"
+  if (Test-Path -LiteralPath $repoEnv) {
+    $env:DOTENV_CONFIG_PATH = $repoEnv
+    return
+  }
+  $defaultProjectEnv = "C:\Users\hecto\Desktop\projects\PolyProj\Poly\.env"
+  if (Test-Path -LiteralPath $defaultProjectEnv) {
+    $env:DOTENV_CONFIG_PATH = $defaultProjectEnv
+  }
+}
 
 function Assert-Contains {
   param([string]$Path, [string[]]$Expected)
@@ -249,7 +269,8 @@ try {
   $env:MOBILE_DEV_MAX_ORDER_SIZE = "10000.000000"
   $env:MOBILE_DEV_MAX_ORDER_NOTIONAL = "10000.000000"
   $env:MOBILE_DEV_DAILY_NOTIONAL = "50000.000000"
-  $credentialRaw = cmd /c npm.cmd run mobile:dev-credential 2>&1 | Out-String
+  Set-ProofDotenvPath
+  $credentialRaw = cmd /c npx.cmd tsx -r dotenv/config scripts/create_mobile_dev_credential.ts 2>&1 | Out-String
   if ($LASTEXITCODE -ne 0) {
     throw "Mobile dev credential creation failed."
   }

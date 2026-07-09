@@ -9,7 +9,7 @@ describe("Live source readiness contract", () => {
     const marketLists = source("mobile/src/components/MarketLists.tsx");
 
     expect(marketLists).toContain("export const eventSourceReadiness");
-    expect(marketLists).toContain("Winner: Polymarket / local lines");
+    expect(marketLists).toContain("Winner: Polymarket / Holiwyn lines");
     expect(marketLists).toContain("home-card-source-provider-winner-local-lines");
     expect(live).toContain("live-source-readiness");
     expect(live).toContain("eventSourceReadiness(event, locale)");
