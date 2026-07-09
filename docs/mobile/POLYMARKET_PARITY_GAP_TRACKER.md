@@ -1242,3 +1242,10 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Cashout uses a dedicated cashout ticket instead of generic Buy/Sell ticket | P1 | Verified | Default visible cashout now opens the generic Sell Trade Ticket from Portfolio and Event Detail. | `docs/mobile/harness/cycle-RT-generic-cashout-ticket/cycle-RT-current-mvp-line-cashout-ticket.xml`; `mobile/src/__tests__/eventDetailPositionTradeContract.test.ts` |
 | Cashout proof still allowed old cashout sheet markers | P0 | Verified | Current S23 proof rejects `cashout-ticket` and `swipe-to-cashout` while proving `trade-ticket`, `ticket-side-sell`, `Swipe to sell`, and History sold state. | `docs/mobile/harness/cycle-RT-generic-cashout-ticket/cycle-RT-current-mvp-s23-visible-flow.json` |
+
+# Cycle RU - Current-Match Provider Line Readiness
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Provider line proof used stale non-current match assumptions | P0 | Verified | Provider line-source and line-availability probes now default to Argentina/Egypt and derive team-aware search terms/slug guesses from the provider event or explicit args. | `src/server/services/__tests__/mobile.provider.line.probe.contract.test.ts`; `docs/mobile/harness/cycle-RU-provider-line-current-match/cycle-RU-provider-line-source-probe.json` |
+| Current match has no provider-backed Spread/Totals/Team Total markets | P1 | Open | Polymarket Gamma returned 3 Regulation Winner markets and 0 line-family markets for `fifwc-arg-egy-2026-07-07`; Holiwyn route correctly marks line rows as contract fixtures. | `docs/mobile/harness/cycle-RU-provider-line-current-match/cycle-RU-provider-match-line-availability.json` |

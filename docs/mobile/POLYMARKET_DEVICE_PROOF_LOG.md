@@ -2724,3 +2724,13 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Ready ticket XML: `docs/mobile/harness/cycle-RT-generic-cashout-ticket/cycle-RT-current-mvp-line-cashout-ticket-ready.xml`.
 - History XML: `docs/mobile/harness/cycle-RT-generic-cashout-ticket/cycle-RT-current-mvp-line-cashout-history.xml`.
 - Result: PASS. XML shows generic `trade-ticket`, `ticket-side-sell`, `Swipe to sell`, `$25`, `activity-sold`, and no old `cashout-ticket` marker.
+
+# Cycle RU - S23 Current-Match Provider Line Readiness Proof
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.
+- Flow: Home -> Live -> Event Detail -> Game Lines -> line ticket -> `$25` swipe buy -> Portfolio History.
+- Event/market scope: `argentina-vs-egypt`; Regulation Winner is provider-backed, Spread/Totals/Team Total rows are contract fixtures because Polymarket Gamma exposed no current-match line markets.
+- Proof summary: `docs/mobile/harness/cycle-RU-provider-line-current-match/cycle-RU-current-mvp-s23-visible-flow.json`.
+- Provider proof: `docs/mobile/harness/cycle-RU-provider-line-current-match/cycle-RU-provider-match-line-availability.json`.
+- Screenshots: `docs/mobile/screenshots/cycle-RU-provider-line-current-match/`.
+- Result: PASS. Assertions show current match, provider-winner/local-line disclosure, hidden order book, ticket line preservation, swipe submit, and filled Portfolio History.

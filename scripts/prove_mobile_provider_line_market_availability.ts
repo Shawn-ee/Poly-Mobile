@@ -10,8 +10,24 @@ import {
   summarizeProviderCandidateFamilies,
 } from "@/server/services/mobileLiveProviderCandidates";
 
-const DEFAULT_PROVIDER_EVENT_SLUG = "fifwc-col-gha-2026-07-03";
+const DEFAULT_PROVIDER_EVENT_SLUG = "fifwc-arg-egy-2026-07-07";
 const DEFAULT_OUTPUT_PATH = "docs/mobile/harness/cycle-current-mobile-provider-line-market-availability.json";
+const TEAM_NAME_BY_CODE: Record<string, string> = {
+  arg: "Argentina",
+  aus: "Australia",
+  bra: "Brazil",
+  col: "Colombia",
+  cro: "Croatia",
+  ecu: "Ecuador",
+  egy: "Egypt",
+  fra: "France",
+  gha: "Ghana",
+  mex: "Mexico",
+  nor: "Norway",
+  par: "Paraguay",
+  por: "Portugal",
+  usa: "USA",
+};
 
 type LineTarget = ReturnType<typeof buildLineTargets>[number];
 
@@ -25,7 +41,13 @@ async function main() {
     tagSlugs: [],
   });
   const exactFamilySummary = summarizeProviderCandidateFamilies(exactCandidates);
-  const lineTargets = buildLineTargets();
+  const teamContext = deriveTeamContext({
+    providerEventSlug,
+    eventTitle: exactCandidates[0]?.eventTitle ?? null,
+    homeTeam: args.homeTeam,
+    awayTeam: args.awayTeam,
+  });
+  const lineTargets = buildLineTargets(teamContext);
   const targetResults = [];
 
   for (const target of lineTargets) {
@@ -77,6 +99,7 @@ async function main() {
     generatedAt: new Date().toISOString(),
     provider: "polymarket-gamma",
     providerEventSlug,
+    teamContext,
     exactEvent: {
       candidateCount: exactCandidates.length,
       familySummary: exactFamilySummary,
@@ -114,49 +137,48 @@ async function main() {
   process.stdout.write(`${JSON.stringify(summary, null, 2)}\n`);
 }
 
-function buildLineTargets() {
-  const teams = {
-    home: "Colombia",
-    away: "Ghana",
-  };
+function buildLineTargets(teamContext: TeamContext) {
+  const { homeTeam, awayTeam, homeCode, awayCode } = teamContext;
+  const teamPair = `${homeTeam} ${awayTeam}`;
   const base = {
     id: "line-target",
     period: null,
+    eventTitle: `${homeTeam} vs ${awayTeam}`,
     unit: "goals",
     marketGroupKey: "game-lines",
     marketGroupTitle: "Game Lines",
   };
   return [
     {
-      key: "spread-colombia-plus-1-5",
+      key: `spread-${homeCode}-plus-1-5`,
       market: {
         ...base,
-        id: "line-target-spread-col",
-        title: "Colombia +1.5",
+        id: `line-target-spread-${homeCode}`,
+        title: `${homeTeam} +1.5`,
         marketType: "spread",
         line: new Prisma.Decimal("1.5"),
         outcomes: yesNoOutcomes(),
       },
       extraQueries: [
-        "Colombia Ghana spread",
-        "Colombia Ghana handicap",
-        "Colombia cover 1.5 Ghana",
+        `${teamPair} spread`,
+        `${teamPair} handicap`,
+        `${homeTeam} cover 1.5 ${awayTeam}`,
       ],
     },
     {
-      key: "spread-ghana-minus-1-5",
+      key: `spread-${awayCode}-minus-1-5`,
       market: {
         ...base,
-        id: "line-target-spread-gha",
-        title: "Ghana -1.5",
+        id: `line-target-spread-${awayCode}`,
+        title: `${awayTeam} -1.5`,
         marketType: "spread",
         line: new Prisma.Decimal("-1.5"),
         outcomes: yesNoOutcomes(),
       },
       extraQueries: [
-        "Ghana Colombia spread",
-        "Ghana Colombia handicap",
-        "Ghana cover 1.5 Colombia",
+        `${awayTeam} ${homeTeam} spread`,
+        `${awayTeam} ${homeTeam} handicap`,
+        `${awayTeam} cover 1.5 ${homeTeam}`,
       ],
     },
     {
@@ -164,46 +186,46 @@ function buildLineTargets() {
       market: {
         ...base,
         id: "line-target-total-25",
-        title: "Total goals 2.5",
+        title: `${homeTeam} vs ${awayTeam} total goals 2.5`,
         marketType: "total_goals",
         line: new Prisma.Decimal("2.5"),
         outcomes: overUnderOutcomes("2.5"),
       },
       extraQueries: [
-        "Colombia Ghana total goals",
-        "Colombia Ghana over under",
-        "Colombia Ghana goals over 2.5",
+        `${teamPair} total goals`,
+        `${teamPair} over under`,
+        `${teamPair} goals over 2.5`,
       ],
     },
     {
-      key: "team-total-colombia-1-5",
+      key: `team-total-${homeCode}-1-5`,
       market: {
         ...base,
-        id: "line-target-team-total-col",
-        title: "Colombia goals 1.5",
+        id: `line-target-team-total-${homeCode}`,
+        title: `${homeTeam} goals 1.5`,
         marketType: "team_total_goals",
         line: new Prisma.Decimal("1.5"),
         outcomes: overUnderOutcomes("1.5"),
       },
       extraQueries: [
-        "Colombia Ghana team total",
-        "Colombia team goals over 1.5 Ghana",
+        `${teamPair} team total`,
+        `${homeTeam} team goals over 1.5 ${awayTeam}`,
       ],
     },
     {
-      key: "first-half-winner-colombia",
+      key: `first-half-winner-${homeCode}`,
       market: {
         ...base,
         id: "line-target-first-half",
-        title: "First half Colombia winner",
+        title: `First half ${homeTeam} winner`,
         marketType: "first_half_winner",
         period: "first-half",
         line: null,
         outcomes: yesNoOutcomes(),
       },
       extraQueries: [
-        "Colombia Ghana first half",
-        "Colombia first half winner Ghana",
+        `${teamPair} first half`,
+        `${homeTeam} first half winner ${awayTeam}`,
       ],
     },
     {
@@ -211,17 +233,53 @@ function buildLineTargets() {
       market: {
         ...base,
         id: "line-target-corners",
-        title: "Corners 8.5",
+        title: `${homeTeam} vs ${awayTeam} corners 8.5`,
         marketType: "corners",
         line: new Prisma.Decimal("8.5"),
         outcomes: overUnderOutcomes("8.5"),
       },
       extraQueries: [
-        "Colombia Ghana corners",
-        "Colombia Ghana corner kicks over 8.5",
+        `${teamPair} corners`,
+        `${teamPair} corner kicks over 8.5`,
       ],
     },
   ];
+}
+
+type TeamContext = {
+  homeTeam: string;
+  awayTeam: string;
+  homeCode: string;
+  awayCode: string;
+};
+
+function deriveTeamContext(params: {
+  providerEventSlug: string;
+  eventTitle?: string | null;
+  homeTeam?: string;
+  awayTeam?: string;
+}): TeamContext {
+  const slugCodes = params.providerEventSlug.match(/fifwc-([a-z]{3})-([a-z]{3})-\d{4}-\d{2}-\d{2}/i);
+  const titleTeams = params.eventTitle?.match(/\b(.+?)\s+(?:vs\.?|v\.?)\s+(.+?)$/i);
+  const homeCode = slugCodes?.[1]?.toLowerCase() ?? codeForTeam(params.homeTeam ?? titleTeams?.[1] ?? "home");
+  const awayCode = slugCodes?.[2]?.toLowerCase() ?? codeForTeam(params.awayTeam ?? titleTeams?.[2] ?? "away");
+  return {
+    homeCode,
+    awayCode,
+    homeTeam: cleanTeamName(params.homeTeam ?? titleTeams?.[1]) ?? TEAM_NAME_BY_CODE[homeCode] ?? homeCode.toUpperCase(),
+    awayTeam: cleanTeamName(params.awayTeam ?? titleTeams?.[2]) ?? TEAM_NAME_BY_CODE[awayCode] ?? awayCode.toUpperCase(),
+  };
+}
+
+function cleanTeamName(value?: string | null) {
+  const cleaned = value?.replace(/\s+/g, " ").trim();
+  return cleaned && !["home", "away"].includes(cleaned.toLowerCase()) ? cleaned : null;
+}
+
+function codeForTeam(value: string) {
+  const normalized = value.toLowerCase().replace(/[^a-z]+/g, " ").trim();
+  const matched = Object.entries(TEAM_NAME_BY_CODE).find(([, name]) => name.toLowerCase() === normalized);
+  return (matched?.[0] ?? normalized.slice(0, 3)) || "tbd";
 }
 
 function yesNoOutcomes() {
@@ -243,7 +301,11 @@ function parseArgs(argv: string[]) {
   for (let index = 0; index < argv.length; index += 1) {
     const part = argv[index];
     if (!part.startsWith("--")) continue;
-    const key = part.slice(2);
+    const [key, ...inlineParts] = part.slice(2).split("=");
+    if (inlineParts.length > 0) {
+      args[key] = inlineParts.join("=");
+      continue;
+    }
     const next = argv[index + 1];
     if (!next || next.startsWith("--")) {
       args[key] = "true";

@@ -8859,3 +8859,12 @@ Future migration concern:
 - Route mismatch: no route mismatch was introduced.
 - Temporary mock/static data: S23 proof still uses deterministic local route-shaped line liquidity because real provider-backed current line markets remain unavailable.
 - Future migration concern: when real provider-backed current line markets arrive, the same generic sell ticket path should preserve provider token/source identity through order and history.
+
+# Cycle RU - Current-Match Provider Line Readiness Notes
+
+- No schema migration was added.
+- Closed or narrowed: provider line-market availability proof now targets the active Local MVP match (`fifwc-arg-egy-2026-07-07`) and derives team names/codes from the provider event instead of using stale Colombia/Ghana search targets.
+- Fields Holiwyn still needs but backend does not fully provide: real provider-backed Spread/Totals/Team Total markets with provider `marketId`, `conditionId`, token ids, line, period, source, and probability/quote fields for the current match.
+- Route mismatch: no route mismatch was introduced; `/api/mobile/events/argentina-vs-egypt/live-detail` honestly reports Regulation Winner as `provider-backed` and line markets as `contract-fixture`.
+- Temporary mock/static data: current Spread/Totals/Team Total rows remain contract fixtures shaped like future provider rows.
+- Future migration concern: when Polymarket Gamma/CLOB exposes attach-ready line markets, replace the fixture rows without changing ticket/order/portfolio/history identity fields.

@@ -7234,3 +7234,14 @@ Remaining P1:
 - Submit proof: ready XML contains `Swipe to sell`, `$25`, and `swipe-submit-gesture-required`; History XML contains `activity-sold`, `portfolio-market-type-spread`, and `portfolio-line-1.5`.
 - Negative proof: RT XML rejects old `cashout-ticket` and `swipe-to-cashout` markers.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+# Cycle RU Audit Gate - Current-Match Provider Line Readiness
+
+- Scope: provider-readiness evidence for current Local MVP Event Detail line markets.
+- P0 result: PASS for provider proof correctness.
+- Backend/provider proof: Polymarket Gamma exact event `fifwc-arg-egy-2026-07-07` returned 3 Regulation Winner markets and 0 line-family markets; team-aware broad searches found no attach-ready line market candidates.
+- Holiwyn route proof: `/api/mobile/events/argentina-vs-egypt/live-detail` returns 3 `polymarket` markets and 4 `contract-fixture` line markets with `marketSourceSummary.regulationWinner.status=provider-backed` and `lineMarkets.status=contract-fixture`.
+- Test proof: `src/server/services/__tests__/mobile.provider.line.probe.contract.test.ts` passed.
+- Android proof: Samsung S23 `SM-S911U1` passed the visible Local MVP flow for this cycle.
+- Visible proof: `docs/mobile/harness/cycle-RU-provider-line-current-match/cycle-RU-current-mvp-s23-visible-flow.json` reports Home/Live current match, Event Detail Game Lines, provider-winner/local-line split, line contract fixtures, hidden order book, ticket line preservation, swipe submit, and filled Portfolio History.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

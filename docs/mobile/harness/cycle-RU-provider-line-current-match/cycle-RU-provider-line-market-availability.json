@@ -1,0 +1,1385 @@
+{
+  "generatedAt": "2026-07-09T13:15:05.177Z",
+  "provider": "polymarket-gamma",
+  "providerEventSlug": "fifwc-arg-egy-2026-07-07",
+  "teamContext": {
+    "homeCode": "arg",
+    "awayCode": "egy",
+    "homeTeam": "Argentina",
+    "awayTeam": "Egypt"
+  },
+  "exactEvent": {
+    "candidateCount": 3,
+    "familySummary": {
+      "match_winner": 3,
+      "spread": 0,
+      "total_goals": 0,
+      "team_total_goals": 0,
+      "corners": 0,
+      "first_half": 0,
+      "second_half": 0,
+      "correct_score": 0,
+      "other": 0
+    },
+    "lineCandidateCount": 0,
+    "candidates": [
+      {
+        "slug": "fifwc-arg-egy-2026-07-07-arg",
+        "question": "Will Argentina win on 2026-07-07?",
+        "family": "match_winner",
+        "outcomeCount": 2,
+        "tokenComplete": true
+      },
+      {
+        "slug": "fifwc-arg-egy-2026-07-07-draw",
+        "question": "Will Argentina vs. Egypt end in a draw?",
+        "family": "match_winner",
+        "outcomeCount": 2,
+        "tokenComplete": true
+      },
+      {
+        "slug": "fifwc-arg-egy-2026-07-07-egy",
+        "question": "Will Egypt win on 2026-07-07?",
+        "family": "match_winner",
+        "outcomeCount": 2,
+        "tokenComplete": true
+      }
+    ]
+  },
+  "lineSearch": {
+    "targetCount": 6,
+    "broadCandidateCount": 60,
+    "attachReadyCandidateCount": 0,
+    "insufficientRelevanceCount": 48,
+    "targets": [
+      {
+        "key": "spread-arg-plus-1-5",
+        "marketType": "spread",
+        "title": "Argentina +1.5",
+        "line": "1.5",
+        "queries": [
+          "Argentina +1.5",
+          "Argentina",
+          "Argentina vs Egypt",
+          "Argentina vs Egypt spread",
+          "Argentina spread",
+          "Argentina Game Lines",
+          "Argentina Egypt spread",
+          "Argentina Egypt handicap"
+        ],
+        "candidateCount": 10,
+        "attachReadyCandidateCount": 0,
+        "insufficientRelevanceCount": 8,
+        "ranked": [
+          {
+            "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+            "question": "Will bitcoin hit $1m before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 76.9,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "spread",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 76.9
+            }
+          },
+          {
+            "slug": "will-jesus-christ-return-before-gta-vi-665",
+            "question": "Will Jesus Christ return before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 76,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "spread",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 76
+            }
+          },
+          {
+            "slug": "new-rhianna-album-before-gta-vi-926",
+            "question": "New Rihanna Album before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 70.91408701,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "spread",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 70.91
+            }
+          },
+          {
+            "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+            "question": "Will China invades Taiwan before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 68.6638,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "spread",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 68.66
+            }
+          },
+          {
+            "slug": "trump-out-as-president-before-gta-vi-846",
+            "question": "Trump out as President before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 67.0980235,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "spread",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 67.1
+            }
+          },
+          {
+            "slug": "will-harvey-weinstein-be-sentenced-to-between-5-and-10-years-in-prison",
+            "question": "Will Harvey Weinstein be sentenced to between 5 and 10 years in prison?",
+            "eventTitle": "Harvey Weinstein prison time?",
+            "family": "other",
+            "score": 66.9901,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "spread",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 66.99
+            }
+          },
+          {
+            "slug": "new-playboi-carti-album-before-gta-vi-421",
+            "question": "New Playboi Carti Album before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 66.39295305,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "spread",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 66.39
+            }
+          },
+          {
+            "slug": "will-harvey-weinstein-be-sentenced-to-no-prison-time",
+            "question": "Will Harvey Weinstein be sentenced to no prison time?",
+            "eventTitle": "Harvey Weinstein prison time?",
+            "family": "other",
+            "score": 63.6128,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "spread",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 63.61
+            }
+          }
+        ]
+      },
+      {
+        "key": "spread-egy-minus-1-5",
+        "marketType": "spread",
+        "title": "Egypt -1.5",
+        "line": "-1.5",
+        "queries": [
+          "Egypt -1.5",
+          "Egypt",
+          "Argentina vs Egypt",
+          "Argentina vs Egypt spread",
+          "Egypt spread",
+          "Egypt Game Lines",
+          "Egypt Argentina spread",
+          "Egypt Argentina handicap"
+        ],
+        "candidateCount": 10,
+        "attachReadyCandidateCount": 0,
+        "insufficientRelevanceCount": 8,
+        "ranked": [
+          {
+            "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+            "question": "Will bitcoin hit $1m before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 76.9,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "spread",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 76.9
+            }
+          },
+          {
+            "slug": "will-jesus-christ-return-before-gta-vi-665",
+            "question": "Will Jesus Christ return before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 76,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "spread",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 76
+            }
+          },
+          {
+            "slug": "new-rhianna-album-before-gta-vi-926",
+            "question": "New Rihanna Album before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 70.91408701,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "spread",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 70.91
+            }
+          },
+          {
+            "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+            "question": "Will China invades Taiwan before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 68.6638,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "spread",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 68.66
+            }
+          },
+          {
+            "slug": "trump-out-as-president-before-gta-vi-846",
+            "question": "Trump out as President before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 67.0980235,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "spread",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 67.1
+            }
+          },
+          {
+            "slug": "will-harvey-weinstein-be-sentenced-to-between-5-and-10-years-in-prison",
+            "question": "Will Harvey Weinstein be sentenced to between 5 and 10 years in prison?",
+            "eventTitle": "Harvey Weinstein prison time?",
+            "family": "other",
+            "score": 66.9901,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "spread",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 66.99
+            }
+          },
+          {
+            "slug": "new-playboi-carti-album-before-gta-vi-421",
+            "question": "New Playboi Carti Album before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 66.39295305,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "spread",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 66.39
+            }
+          },
+          {
+            "slug": "will-harvey-weinstein-be-sentenced-to-no-prison-time",
+            "question": "Will Harvey Weinstein be sentenced to no prison time?",
+            "eventTitle": "Harvey Weinstein prison time?",
+            "family": "other",
+            "score": 63.6128,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "spread",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 63.61
+            }
+          }
+        ]
+      },
+      {
+        "key": "total-goals-2-5",
+        "marketType": "total_goals",
+        "title": "Argentina vs Egypt total goals 2.5",
+        "line": "2.5",
+        "queries": [
+          "Argentina vs Egypt total goals 2.5",
+          "Argentina vs Egypt total goals",
+          "Argentina vs Egypt",
+          "Argentina vs Egypt over under",
+          "Over 2.5 Under 2.5",
+          "Over 2.5 Under 2.5 over under",
+          "argentina Under 2.5",
+          "argentina Under 2.5 total goals"
+        ],
+        "candidateCount": 10,
+        "attachReadyCandidateCount": 0,
+        "insufficientRelevanceCount": 8,
+        "ranked": [
+          {
+            "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+            "question": "Will bitcoin hit $1m before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 76.9,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "total_goals",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 76.9
+            }
+          },
+          {
+            "slug": "will-jesus-christ-return-before-gta-vi-665",
+            "question": "Will Jesus Christ return before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 76,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "total_goals",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 76
+            }
+          },
+          {
+            "slug": "new-rhianna-album-before-gta-vi-926",
+            "question": "New Rihanna Album before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 70.91408701,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "total_goals",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 70.91
+            }
+          },
+          {
+            "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+            "question": "Will China invades Taiwan before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 68.6638,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "total_goals",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 68.66
+            }
+          },
+          {
+            "slug": "trump-out-as-president-before-gta-vi-846",
+            "question": "Trump out as President before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 67.0980235,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "total_goals",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 67.1
+            }
+          },
+          {
+            "slug": "will-harvey-weinstein-be-sentenced-to-between-5-and-10-years-in-prison",
+            "question": "Will Harvey Weinstein be sentenced to between 5 and 10 years in prison?",
+            "eventTitle": "Harvey Weinstein prison time?",
+            "family": "other",
+            "score": 66.9901,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "total_goals",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 66.99
+            }
+          },
+          {
+            "slug": "new-playboi-carti-album-before-gta-vi-421",
+            "question": "New Playboi Carti Album before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 66.39295305,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "total_goals",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 66.39
+            }
+          },
+          {
+            "slug": "will-harvey-weinstein-be-sentenced-to-no-prison-time",
+            "question": "Will Harvey Weinstein be sentenced to no prison time?",
+            "eventTitle": "Harvey Weinstein prison time?",
+            "family": "other",
+            "score": 63.6128,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "total_goals",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 63.61
+            }
+          }
+        ]
+      },
+      {
+        "key": "team-total-arg-1-5",
+        "marketType": "team_total_goals",
+        "title": "Argentina goals 1.5",
+        "line": "1.5",
+        "queries": [
+          "Argentina goals 1.5",
+          "Argentina goals",
+          "Argentina vs Egypt",
+          "Argentina vs Egypt team total",
+          "Over 1.5 Under 1.5",
+          "Over 1.5 Under 1.5 team total",
+          "argentina Under 1.5",
+          "argentina Under 1.5 team total"
+        ],
+        "candidateCount": 10,
+        "attachReadyCandidateCount": 0,
+        "insufficientRelevanceCount": 8,
+        "ranked": [
+          {
+            "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+            "question": "Will bitcoin hit $1m before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 76.9,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "team_total_goals",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 76.9
+            }
+          },
+          {
+            "slug": "will-jesus-christ-return-before-gta-vi-665",
+            "question": "Will Jesus Christ return before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 76,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "team_total_goals",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 76
+            }
+          },
+          {
+            "slug": "new-rhianna-album-before-gta-vi-926",
+            "question": "New Rihanna Album before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 70.91408701,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "team_total_goals",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 70.91
+            }
+          },
+          {
+            "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+            "question": "Will China invades Taiwan before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 68.6638,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "team_total_goals",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 68.66
+            }
+          },
+          {
+            "slug": "trump-out-as-president-before-gta-vi-846",
+            "question": "Trump out as President before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 67.0980235,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "team_total_goals",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 67.1
+            }
+          },
+          {
+            "slug": "will-harvey-weinstein-be-sentenced-to-between-5-and-10-years-in-prison",
+            "question": "Will Harvey Weinstein be sentenced to between 5 and 10 years in prison?",
+            "eventTitle": "Harvey Weinstein prison time?",
+            "family": "other",
+            "score": 66.9901,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "team_total_goals",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 66.99
+            }
+          },
+          {
+            "slug": "new-playboi-carti-album-before-gta-vi-421",
+            "question": "New Playboi Carti Album before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 66.39295305,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "team_total_goals",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 66.39
+            }
+          },
+          {
+            "slug": "will-harvey-weinstein-be-sentenced-to-no-prison-time",
+            "question": "Will Harvey Weinstein be sentenced to no prison time?",
+            "eventTitle": "Harvey Weinstein prison time?",
+            "family": "other",
+            "score": 63.6128,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "team_total_goals",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 63.61
+            }
+          }
+        ]
+      },
+      {
+        "key": "first-half-winner-arg",
+        "marketType": "first_half_winner",
+        "title": "First half Argentina winner",
+        "line": null,
+        "queries": [
+          "First half Argentina winner",
+          "Argentina vs Egypt",
+          "Argentina vs Egypt first half winner",
+          "First half Argentina winner first half winner",
+          "First half Argentina winner Game Lines",
+          "First half Argentina winner first half",
+          "Argentina Egypt first half",
+          "Argentina first half winner Egypt"
+        ],
+        "candidateCount": 10,
+        "attachReadyCandidateCount": 0,
+        "insufficientRelevanceCount": 8,
+        "ranked": [
+          {
+            "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+            "question": "Will bitcoin hit $1m before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 76.9,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "first_half",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 76.9
+            }
+          },
+          {
+            "slug": "will-jesus-christ-return-before-gta-vi-665",
+            "question": "Will Jesus Christ return before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 76,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "first_half",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 76
+            }
+          },
+          {
+            "slug": "new-rhianna-album-before-gta-vi-926",
+            "question": "New Rihanna Album before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 70.91408701,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "first_half",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 70.91
+            }
+          },
+          {
+            "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+            "question": "Will China invades Taiwan before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 68.6638,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "first_half",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 68.66
+            }
+          },
+          {
+            "slug": "trump-out-as-president-before-gta-vi-846",
+            "question": "Trump out as President before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 67.0980235,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "first_half",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 67.1
+            }
+          },
+          {
+            "slug": "will-harvey-weinstein-be-sentenced-to-between-5-and-10-years-in-prison",
+            "question": "Will Harvey Weinstein be sentenced to between 5 and 10 years in prison?",
+            "eventTitle": "Harvey Weinstein prison time?",
+            "family": "other",
+            "score": 66.9901,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "first_half",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 66.99
+            }
+          },
+          {
+            "slug": "new-playboi-carti-album-before-gta-vi-421",
+            "question": "New Playboi Carti Album before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 66.39295305,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "first_half",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 66.39
+            }
+          },
+          {
+            "slug": "will-harvey-weinstein-be-sentenced-to-no-prison-time",
+            "question": "Will Harvey Weinstein be sentenced to no prison time?",
+            "eventTitle": "Harvey Weinstein prison time?",
+            "family": "other",
+            "score": 63.6128,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "first_half",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 2,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 63.61
+            }
+          }
+        ]
+      },
+      {
+        "key": "corners-8-5",
+        "marketType": "corners",
+        "title": "Argentina vs Egypt corners 8.5",
+        "line": "8.5",
+        "queries": [
+          "Argentina vs Egypt corners 8.5",
+          "Argentina vs Egypt corners",
+          "Argentina vs Egypt",
+          "Over 8.5 Under 8.5",
+          "Over 8.5 Under 8.5 corners",
+          "argentina Under 8.5",
+          "argentina Under 8.5 soccer",
+          "argentina Under 8.5 world cup"
+        ],
+        "candidateCount": 10,
+        "attachReadyCandidateCount": 0,
+        "insufficientRelevanceCount": 8,
+        "ranked": [
+          {
+            "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+            "question": "Will bitcoin hit $1m before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 76.9,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "corners",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 3,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 76.9
+            }
+          },
+          {
+            "slug": "will-jesus-christ-return-before-gta-vi-665",
+            "question": "Will Jesus Christ return before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 76,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "corners",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 3,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 76
+            }
+          },
+          {
+            "slug": "new-rhianna-album-before-gta-vi-926",
+            "question": "New Rihanna Album before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 70.91408701,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "corners",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 3,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 70.91
+            }
+          },
+          {
+            "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+            "question": "Will China invades Taiwan before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 68.6638,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "corners",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 3,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 68.66
+            }
+          },
+          {
+            "slug": "trump-out-as-president-before-gta-vi-846",
+            "question": "Trump out as President before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 67.0980235,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "corners",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 3,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 67.1
+            }
+          },
+          {
+            "slug": "will-harvey-weinstein-be-sentenced-to-between-5-and-10-years-in-prison",
+            "question": "Will Harvey Weinstein be sentenced to between 5 and 10 years in prison?",
+            "eventTitle": "Harvey Weinstein prison time?",
+            "family": "other",
+            "score": 66.9901,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "corners",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 3,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 66.99
+            }
+          },
+          {
+            "slug": "new-playboi-carti-album-before-gta-vi-421",
+            "question": "New Playboi Carti Album before GTA VI?",
+            "eventTitle": "What will happen before GTA VI?",
+            "family": "other",
+            "score": 66.39295305,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "corners",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 3,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 66.39
+            }
+          },
+          {
+            "slug": "will-harvey-weinstein-be-sentenced-to-no-prison-time",
+            "question": "Will Harvey Weinstein be sentenced to no prison time?",
+            "eventTitle": "Harvey Weinstein prison time?",
+            "family": "other",
+            "score": 63.6128,
+            "attachReady": false,
+            "reasons": [
+              "provider_family_mismatch",
+              "insufficient_market_relevance"
+            ],
+            "relevance": {
+              "relevant": false,
+              "lineFamilyRelevant": false,
+              "binaryQuestionRelevant": false,
+              "binaryQuestionSubjectRelevant": false,
+              "expectedFamily": "corners",
+              "candidateFamily": "other",
+              "matchedImportantTokens": [],
+              "importantTokenCount": 3,
+              "outcomeNameMatches": 0,
+              "requiredOutcomeMatches": 1,
+              "score": 63.61
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "nextRequiredAction": "provider_line_markets_not_available_or_not_relevant_for_exact_event",
+  "pass": true
+}
