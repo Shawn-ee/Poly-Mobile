@@ -1,0 +1,61 @@
+{
+  "cycle": "RF",
+  "feature": "event-detail-trade-smoke-current-ticket-gate",
+  "date": "2026-07-09",
+  "device": {
+    "role": "Holiwyn proof",
+    "adbId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model": "SM-S911U1"
+  },
+  "command": "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-samsung.ps1 -EventDetailTrade -Port 8332 -Device \"adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp\" -ExpoHost 172.16.200.14",
+  "visibleUserFlowChanged": "No user-facing app code changed. The S23 proof gate now validates the current Event Detail -> Trade Ticket flow instead of stale removed ticket-settings UI.",
+  "backendRouteChanged": false,
+  "apiDependencies": [
+    {
+      "route": "/api/mobile/events/:slug/live-detail",
+      "method": "GET",
+      "purpose": "Hydrates Event Detail before opening the ticket; smoke wrapper used app mock fallback when backend health check was unavailable."
+    },
+    {
+      "route": "/api/orders",
+      "method": "POST",
+      "purpose": "Unchanged and not submitted in this proof; used only after swipe threshold in order-placement flows."
+    }
+  ],
+  "proofArtifacts": [
+    "docs/mobile/screenshots/cycle-RF-event-detail-trade-smoke-current-ticket/cycle-RF-event-detail-ticket.png",
+    "docs/mobile/screenshots/cycle-RF-event-detail-trade-smoke-current-ticket/cycle-RF-event-detail-ticket-amount.png",
+    "docs/mobile/screenshots/cycle-RF-event-detail-trade-smoke-current-ticket/cycle-RF-event-detail-away-ticket.png",
+    "docs/mobile/harness/cycle-RF-event-detail-trade-smoke-current-ticket/cycle-RF-event-detail-ticket.xml",
+    "docs/mobile/harness/cycle-RF-event-detail-trade-smoke-current-ticket/cycle-RF-event-detail-ticket-amount.xml",
+    "docs/mobile/harness/cycle-RF-event-detail-trade-smoke-current-ticket/cycle-RF-event-detail-away-ticket.xml"
+  ],
+  "markers": {
+    "ticket-retail-reference-layout": true,
+    "ticket-header-retail-readable": true,
+    "ticket-market-source-badge-inline-safe": true,
+    "ticket-header-source-pill-no-clip": true,
+    "ticket-preset-25": true,
+    "ticket-preset-50": true,
+    "ticket-swipe-area-fixed-bottom": true,
+    "swipe-submit-gesture-required": true
+  },
+  "validation": {
+    "mobileTypecheck": "passed",
+    "focusedTests": [
+      "eventDetailTradeSmokeCurrentTicketContract.test.ts",
+      "tradeTicketHeaderDensityContract.test.ts",
+      "tradeTicketSwipeMotionContract.test.ts"
+    ],
+    "s23Proof": "passed",
+    "backendHealthInSmokeWrapper": "unavailable; app mock fallback used for UI proof"
+  },
+  "unresolved": {
+    "p0": [],
+    "p1": [
+      "Native Google OAuth callback/session/logout remains future auth work.",
+      "Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable."
+    ],
+    "p2": []
+  }
+}

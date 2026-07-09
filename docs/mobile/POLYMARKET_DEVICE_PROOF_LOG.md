@@ -2411,3 +2411,38 @@ Pass for RE Trade Ticket header density scope.
 
 Remaining gaps:
 Native Google OAuth callback/session/logout remains separate auth work. Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle RF - Event Detail Trade Smoke Current Ticket Gate
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket reference-device action. This was a Holiwyn proof-gate repair based on the current Polymarket-style ticket requirements already audited in prior ticket cycles.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go. Backend `http://127.0.0.1:3002` remained intentionally running; the smoke wrapper reported backend health unavailable and used app mock fallback for this UI proof.
+
+Holiwyn actions:
+Ran `smoke-samsung.ps1 -EventDetailTrade` on port `8332`, opened Event Detail, opened Mexico ticket, tapped `$25`, closed the ticket, opened Ecuador ticket, and validated current ticket layout markers.
+
+Evidence:
+- `docs/mobile/harness/cycle-RF-event-detail-trade-smoke-current-ticket/cycle-RF-event-detail-trade-smoke-current-ticket-proof.json`
+- `docs/mobile/screenshots/cycle-RF-event-detail-trade-smoke-current-ticket/cycle-RF-event-detail-ticket.png`
+- `docs/mobile/harness/cycle-RF-event-detail-trade-smoke-current-ticket/cycle-RF-event-detail-ticket.xml`
+- `docs/mobile/screenshots/cycle-RF-event-detail-trade-smoke-current-ticket/cycle-RF-event-detail-ticket-amount.png`
+- `docs/mobile/harness/cycle-RF-event-detail-trade-smoke-current-ticket/cycle-RF-event-detail-ticket-amount.xml`
+- `docs/mobile/screenshots/cycle-RF-event-detail-trade-smoke-current-ticket/cycle-RF-event-detail-away-ticket.png`
+- `docs/mobile/harness/cycle-RF-event-detail-trade-smoke-current-ticket/cycle-RF-event-detail-away-ticket.xml`
+
+Smoke/tests:
+Mobile typecheck passed. Focused smoke contract, Trade Ticket header density, and Trade Ticket swipe motion tests passed. S23 Event Detail Trade smoke passed.
+
+Result:
+Pass for RF Event Detail Trade smoke current-ticket gate.
+
+Remaining gaps:
+Native Google OAuth callback/session/logout remains separate auth work. Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

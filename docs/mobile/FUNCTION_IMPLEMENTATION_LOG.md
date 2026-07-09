@@ -11165,3 +11165,44 @@ Known limitations:
 - Broad smoke still has an older post-capture `ticket-settings` expectation; RE evidence is scoped to the captured ticket header.
 - Native Google OAuth callback/session/logout remains future auth work.
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+## Cycle RF - Event Detail Trade Smoke Current Ticket Gate
+
+Feature/page worked on:
+
+- Event Detail -> Trade Ticket S23 proof gate.
+- This keeps the Local MVP proof loop aligned with the current Polymarket-style ticket instead of stale advanced ticket UI.
+
+Frontend/proof files touched:
+
+- `mobile/scripts/smoke.ps1`
+- `mobile/src/__tests__/eventDetailTradeSmokeCurrentTicketContract.test.ts`
+- `docs/mobile/audits/cycle-RF-event-detail-trade-smoke-current-ticket.md`
+
+Important functions/services touched:
+
+- No app runtime component or service changed.
+- `EventDetailTrade` proof assertions now check current ticket markers and `$25/$50` presets.
+- Removed stale proof expectations for `ticket-settings`, `ticket-advanced-details`, `$5`, and `$10` in this proof path.
+
+User interactions supported/proven:
+
+- S23 proof opens Event Detail, opens the Mexico ticket, validates current ticket layout, taps `$25`, validates amount/swipe state, closes, opens Ecuador ticket, and validates current ticket layout.
+
+State transitions:
+
+- No app state transition changed.
+- Proof path now closes the ticket directly instead of trying to open a removed advanced settings panel.
+
+Validation:
+
+- Mobile typecheck passed.
+- Focused smoke contract, header density, and swipe motion tests passed.
+- Samsung S23 `EventDetailTrade` proof passed on port `8332`.
+
+Known limitations:
+
+- This was a proof-gate repair rather than a new user-facing UI change.
+- Smoke wrapper reported backend health unavailable and used app mock fallback for this UI proof path.
+- Native Google OAuth callback/session/logout remains future auth work.
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
