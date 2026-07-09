@@ -2,6 +2,31 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle RA - Portfolio Google Direct Login
+
+Closed or narrowed:
+
+- Portfolio `Google login` no longer behaves as only an indirect Account-navigation alias.
+- Portfolio now has two distinct account actions: top-left profile opens Account, and the Google chip launches Google auth.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Native mobile Google OAuth callback/session/logout lifecycle proof.
+- Clear server-provided signed-in identity once real mobile auth is fully configured.
+
+Route mismatch:
+
+- No route mismatch introduced.
+- Existing `/api/auth/google/start?returnTo=/portfolio` remains the route used by mobile.
+
+Temporary mock/static data:
+
+- Demo/fake-token trading remains available without sign-in.
+
+Future migration concern:
+
+- The native callback/session handoff needs a dedicated auth milestone before production login can be considered complete.
+
 ## Cycle QZ - Search Retail Source Cleanup
 
 Closed or narrowed:

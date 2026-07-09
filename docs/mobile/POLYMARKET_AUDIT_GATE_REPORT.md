@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle RA
+
+Gate status: Pass for focused Portfolio Google direct-login entry; not a pass for full native OAuth/session parity.
+
+Scope: make the Portfolio `Google login` chip launch the existing Google auth flow directly while preserving Portfolio top-left Account navigation.
+
+Decision:
+
+- P0 failed: 0 for focused RA scope.
+- Implemented change: Portfolio now distinguishes `openAccount` from `openGoogleSignIn`.
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`; Portfolio XML confirms `portfolio-account-entry-google`, `portfolio-account-google-direct-signin`, and `portfolio-account-entry-top-left`.
+- After tapping the Google chip, the S23 left Expo Go and opened Chrome/auth surface.
+- P1 remaining: full native Google OAuth callback/session/logout proof.
+- Evidence: `docs/mobile/audits/cycle-RA-portfolio-google-direct-login.md`; S23 proof `docs/mobile/harness/cycle-RA-portfolio-google-direct-login/cycle-RA-portfolio-google-direct-login-proof.json`.
+
 ## Cycle QZ
 
 Gate status: Pass for focused Search retail source cleanup; not a pass for real provider-backed line-market parity.

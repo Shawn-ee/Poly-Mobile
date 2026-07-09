@@ -740,6 +740,7 @@ export function Portfolio({
   cancelOpenOrder,
   loadValueHistory,
   openAccount,
+  openGoogleSignIn,
 }: {
   locale: Locale;
   t: PortfolioCopy;
@@ -754,6 +755,7 @@ export function Portfolio({
   cancelOpenOrder: (order: OpenOrder) => void;
   loadValueHistory?: (range: PortfolioValueHistoryRange) => Promise<PortfolioValueHistory>;
   openAccount: () => void;
+  openGoogleSignIn: () => void;
 }) {
   const scrollRef = useRef<ScrollView | null>(null);
   const [expandedPositionId, setExpandedPositionId] = useState<string | null>(null);
@@ -992,10 +994,10 @@ export function Portfolio({
           </View>
         </Pressable>
         <Pressable
-          accessibilityLabel="portfolio-account-entry-google portfolio-account-entry-opens-account portfolio-google-login-button-visible"
+          accessibilityLabel="portfolio-account-entry-google portfolio-account-google-direct-signin portfolio-google-login-button-visible"
           accessibilityRole="button"
           hitSlop={10}
-          onPress={openAccount}
+          onPress={openGoogleSignIn}
           style={({ pressed }) => [styles.accountGoogleButton, pressed && styles.accountGoogleButtonPressed]}
           testID="portfolio-account-entry-google"
         >
