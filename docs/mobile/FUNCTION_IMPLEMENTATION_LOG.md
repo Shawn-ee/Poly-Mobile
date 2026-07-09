@@ -2,6 +2,45 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle RB - Event Chart History Readout
+
+Feature/page worked on:
+
+- Event Detail probability/chart interaction.
+
+Frontend/backend touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/__tests__/eventDetailChartInteractionContract.test.ts`
+- No backend route, provider service, Prisma schema, order logic, orderbook UI, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- `renderProbabilityChart()` now tracks chart selection as `early`, `mid`, or `latest`.
+- The visible chart tooltip/readout uses `event.chartHistory` points filtered to the selected outcome when available.
+- `compactChartPointTimeLabel()` formats route-provided chart timestamps for the selected readout.
+
+User interactions supported:
+
+- User opens Event Detail and sees the chart readout on the latest chart point.
+- User taps the chart and the selected point/readout moves to another history point without navigating away.
+
+State transitions:
+
+- `selectedChartPoint=latest` -> `mid` -> `early` -> `latest` on repeated chart taps.
+- Ticket handoff identity remains tied to the selected market/outcome; order submit behavior is unchanged.
+
+Known limitations:
+
+- This is tap-to-cycle history selection, not continuous drag-to-nearest-point chart tracking.
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+Evidence:
+
+- Audit doc: `docs/mobile/audits/cycle-RB-event-chart-history-readout.md`
+- S23 proof summary: `docs/mobile/harness/cycle-RB-event-chart-history-readout/cycle-RB-event-chart-history-readout-proof.json`
+- S23 screenshots/XML: `docs/mobile/screenshots/cycle-RB-event-chart-history-readout/`, `docs/mobile/harness/cycle-RB-event-chart-history-readout/`
+
 ## Cycle RA - Portfolio Google Direct Login
 
 Feature/page worked on:

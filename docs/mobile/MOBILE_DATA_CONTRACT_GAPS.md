@@ -2,6 +2,31 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle RB - Event Chart History Readout
+
+Closed or narrowed:
+
+- Event Detail chart taps no longer show synthetic `Target line` odds when chart history exists.
+- The visible chart readout now uses route-backed chart-history probability/timestamp points.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Per-line/per-outcome chart history for every displayed line market when real provider-backed line markets become available.
+- Native-grade nearest-point gesture metadata if continuous chart drag behavior becomes P0.
+
+Route mismatch:
+
+- No route mismatch introduced.
+- Existing Event Detail chart-history fields are sufficient for the tap-to-cycle readout.
+
+Temporary mock/static data:
+
+- Deterministic fallback chart points remain only when no route-backed `chartHistory` exists.
+
+Future migration concern:
+
+- When provider-backed Spread/Totals/Team Total markets arrive, chart selection should switch with selected market/line/outcome rather than only primary outcome context.
+
 ## Cycle RA - Portfolio Google Direct Login
 
 Closed or narrowed:
