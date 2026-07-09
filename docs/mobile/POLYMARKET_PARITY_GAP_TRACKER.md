@@ -1219,3 +1219,12 @@ For every UI element or interaction, answer:
 | Completed sell does not reliably land tester on Portfolio History | P0 | Verified | Portfolio now auto-focuses History for `sold`/`closed`/`canceled` latest activity when no open orders remain. | `docs/mobile/harness/cycle-RQ-history-autofocus/cycle-RQ-sell-history-proof.json`; `docs/mobile/harness/cycle-RQ-history-autofocus/cycle-RQ-portfolio-history.xml` |
 | S23 server sell proof targeted stale/static market instead of seeded liquidity | P0 | Verified | Wrapper passes seeded target IDs and proof enters visible Home outcome before Sell ticket. | `scripts/mobile_samsung_server_order_proof.ps1`; `mobile/scripts/smoke.ps1`; RQ proof summary |
 | Production liquidity for public sell/cashout | P1 | Open | Local MVP still uses deterministic proof liquidity. | Data contract notes |
+
+# Cycle RR - Portfolio History Context
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Portfolio History sell row lacks readable match context after backend-filled Match Winner sells | P0 | Verified | History now derives and shows `PAR vs AUS` for backend titles shaped as `Event: Market` when no explicit event title is present. | `docs/mobile/harness/cycle-RR-history-market-context/cycle-RR-portfolio-history.xml` |
+| Portfolio History sell row lacks readable market context for Match Winner | P0 | Verified | History now shows `Match Winner` as the market subline instead of relying only on the outcome label. | `docs/mobile/harness/cycle-RR-history-market-context/cycle-RR-portfolio-history.xml` |
+| Google login appears missing after Home account removal | P0 | Verified | Google login was moved to Portfolio by product direction; RR S23 proof shows visible `Continue with Google` in the Portfolio header. | `docs/mobile/harness/cycle-RR-history-market-context/cycle-RR-portfolio-history.xml` |
+| Canonical history event/market display fields | P1 | Open | Backend should provide explicit `eventTitle` and `marketTitle`; mobile currently uses a fallback parser. | `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md` |
