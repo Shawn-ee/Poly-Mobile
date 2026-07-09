@@ -6,6 +6,7 @@ param(
   [string]$ProviderEventSlug = "fifwc-arg-egy-2026-07-07",
   [string]$OutputDir = "docs\mobile\screenshots\cycle-RI-current-route-server-filled",
   [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-RI-current-route-server-filled",
+  [string]$CycleLabel = "RI",
   [switch]$TradeTicketScreenProofOnly
 )
 
@@ -28,10 +29,11 @@ function Read-JsonStringField {
 
 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..")
 $stamp = Get-Date -Format "yyyyMMddHHmmss"
-$proofUsername = "holiwyn-mobile-ri-$stamp"
-$restoreProofPath = "docs/mobile/harness/cycle-RI-current-route-server-filled/cycle-RI-current-match-restore.json"
-$lineProofPath = "docs/mobile/harness/cycle-RI-current-route-server-filled/cycle-RI-current-match-line-markets.json"
-$counterpartyProofPath = "docs/mobile/harness/cycle-RI-current-route-server-filled/cycle-RI-current-route-counterparty.json"
+$cycle = $CycleLabel.ToUpperInvariant()
+$proofUsername = "holiwyn-mobile-$($cycle.ToLowerInvariant())-$stamp"
+$restoreProofPath = "$HierarchyOutputDir/cycle-$cycle-current-match-restore.json"
+$lineProofPath = "$HierarchyOutputDir/cycle-$cycle-current-match-line-markets.json"
+$counterpartyProofPath = "$HierarchyOutputDir/cycle-$cycle-current-route-counterparty.json"
 
 $previousProofUsername = $env:MOBILE_DEV_USERNAME
 $previousApiKey = $env:EXPO_PUBLIC_API_KEY
@@ -52,7 +54,7 @@ try {
       throw "Current MVP provider match restore failed."
     }
 
-    cmd /c npx.cmd tsx -r dotenv/config scripts/seed_mobile_mvp_match_line_markets.ts --eventSlug=$EventSlug --cycle=RI --output=$lineProofPath | Out-Null
+    cmd /c npx.cmd tsx -r dotenv/config scripts/seed_mobile_mvp_match_line_markets.ts --eventSlug=$EventSlug --cycle=$cycle --output=$lineProofPath | Out-Null
     if ($LASTEXITCODE -ne 0) {
       throw "Current MVP line market seed failed."
     }
@@ -87,7 +89,8 @@ try {
       "-BackendBaseUrl", "$BackendBaseUrl",
       "-ServerEventSlug", "$EventSlug",
       "-OutputDir", "$OutputDir",
-      "-HierarchyOutputDir", "$HierarchyOutputDir"
+      "-HierarchyOutputDir", "$HierarchyOutputDir",
+      "-CycleLabel", "$cycle"
     )
     if ($TradeTicketScreenProofOnly) {
       $smokeArgs += "-TradeTicketScreenProofOnly"

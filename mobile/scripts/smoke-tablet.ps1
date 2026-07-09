@@ -6,6 +6,7 @@ param(
   [string]$ServerEventSlug = "world-cup-2026-curacao-vs-cote-divoire-2026-06-25",
   [string]$OutputDir = "docs\mobile\screenshots",
   [string]$HierarchyOutputDir = "docs\mobile\harness",
+  [string]$CycleLabel = "",
   [switch]$EventDetailSummary,
   [switch]$EventDetailTrade,
   [switch]$EventDetailChat,
@@ -129,7 +130,7 @@ if ($LocalMvpRouteStatusFlow) {
 } elseif ($LocalMvpRouteServerFilledFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteServerFilledFlow -TradeTicketScreenProofOnly:$($TradeTicketScreenProofOnly.IsPresent) -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpCurrentRouteServerFilledFlow) {
-  & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpCurrentRouteServerFilledFlow -TradeTicketScreenProofOnly:$($TradeTicketScreenProofOnly.IsPresent) -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+  & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpCurrentRouteServerFilledFlow -TradeTicketScreenProofOnly:$($TradeTicketScreenProofOnly.IsPresent) -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir -CycleLabel $CycleLabel
 } elseif ($LocalMvpRouteServerFilledTotalsFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteServerFilledTotalsFlow -TradeTicketScreenProofOnly:$($TradeTicketScreenProofOnly.IsPresent) -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpRouteServerFilledTeamTotalFlow) {

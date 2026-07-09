@@ -11353,3 +11353,48 @@ Known limitations:
 
 - Regulation Winner is provider-backed from Polymarket; Spread/Totals/Team Total remain contract fixtures because the provider breadth scan found zero attach-ready Polymarket line markets for the current World Cup live route.
 - Native Google OAuth callback/session/logout remains future auth work, though Portfolio still exposes the Google login entry.
+
+## Cycle RJ - Portfolio Team Total Wording Cleanup
+
+Feature/page worked on:
+
+- Local MVP Portfolio positions/history wording after a server-filled Team Total order.
+- The visible user-flow impact is in Portfolio/history after Home -> Event Detail -> Team Total line -> Trade Ticket -> server fake-token buy.
+
+Frontend/proof files touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/scripts/local-mvp-current-route-server-filled-proof.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/scripts/smoke.ps1`
+- `mobile/src/__tests__/currentRouteFilledWrapperContract.test.ts`
+- `mobile/src/__tests__/routeServerFilledWrapperEnvContract.test.ts`
+
+Backend/proof files touched:
+
+- No backend route or schema changed.
+
+Important functions/services touched:
+
+- Portfolio display helper now formats Team Total selections from `referenceOutcomeLabel`/outcome identity, producing readable labels such as `Argentina Over 1.5 goals` instead of `Team Total Goals team goals`.
+- Current-route proof wrapper now accepts `CycleLabel`, so repeated cycle proofs can write clean cycle-specific evidence paths.
+
+User interactions supported/proven:
+
+- S23 repeats the current-route filled order flow and verifies Portfolio/history shows the cleaned Team Total label while preserving market id, outcome id, line, period, source, and provider token identity.
+
+State transitions:
+
+- No order lifecycle state changed.
+- The same server-mode fake-token buy fills against a seeded maker ask and lands in Portfolio/history.
+
+Validation:
+
+- Mobile typecheck passed.
+- Focused mobile vitest suite passed: current route wrapper, route server-filled wrapper contract, portfolio snapshot service, portfolio history service.
+- Samsung S23 proof passed using device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM_S911U1` on Expo port `8336`.
+
+Known limitations:
+
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Native Google OAuth callback/session/logout remains future auth work.
