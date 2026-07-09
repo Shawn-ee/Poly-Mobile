@@ -2,6 +2,33 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle QF - Provider Winner Cashout Refresh
+
+Closed or narrowed:
+
+- S23 proof now confirms a provider-backed Regulation Winner market can be bought, cashed out/sold, and rendered in Portfolio History with `providerSource=polymarket`, `marketType=winner`, and `line=none` preserved.
+- The proof script no longer blocks the buy/sell lifecycle solely because chart history is unavailable. It requires an explicit chart route state instead.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Route-backed Polymarket CLOB chart history for the selected provider-backed winner when available.
+- Real provider-backed Spread/Totals/Team Total line identities with provider market IDs, condition IDs, token IDs, line values, periods, probabilities, and refresh status.
+
+Route mismatch:
+
+- No route mismatch introduced.
+- Current chart contract can report `chart-source-empty` and `chart-status-unavailable`; this is acceptable as honest state disclosure but not full Polymarket chart parity.
+
+Temporary mock/static data:
+
+- Fake-token order/cashout proof uses seeded local counterparty liquidity in internal beta mode.
+- Local MVP line markets remain contract-shaped fixtures.
+
+Future migration concern:
+
+- Do not mark chart-history parity complete until provider token history is available and displayed as a movement chart.
+- Do not mark provider line parity complete until provider-backed line identities pass ticket/order/portfolio/history lifecycle proof.
+
 ## Cycle QE - Provider Line Breadth Scan
 
 Closed or narrowed:

@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle QF - Provider Winner Cashout Refresh
+
+Cycle QF changes no backend route or schema. It proves the existing route contract can support the provider-backed winner buy/sell lifecycle on S23.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider-backed winner buy | Existing mobile Event Detail, quote/order, Portfolio, and History routes used by the simple ticket flow, including `/api/mobile/events/:slug/live-detail`, order submit, `/api/portfolio`, and `/api/portfolio/history` through the mobile API client | GET/POST | Mobile API key/dev credential; backend must run with internal trading beta enabled and kill switch off for local proof | Ticket/order payload preserving event slug, provider market id `2793741`, market type `winner`, line `none`, provider source `polymarket`, selected outcome, side, amount, and price | Event title, provider winner market/outcome/token identity, ticket price, filled order, Portfolio position, Portfolio History row | Existing `User`, `ApiCredential`, `Event`, `Market`, `Outcome`, order/position/portfolio/history models | Seeded local counterparty liquidity fills the fake-token order | Production liquidity, wallet funding, and public trading policy remain future work. |
+| Provider-backed winner cashout/sell | Existing cashout/sell ticket path plus order/Portfolio/History routes | POST/GET | Same mobile API key/dev credential and internal beta runtime | Cashout/sell payload preserving the original provider-backed winner selection and position identity | Cashout ticket fields, estimated proceeds, sell/fill activity, history source and market identity | Existing position/order/history models | Seeded local bid-side counterparty fills the cashout proof | Real production cashout pricing/liquidity policy remains future work. |
+| Event Detail chart state | `/api/mobile/events/:slug/live-detail` chart fields consumed by mobile | GET | Public/mobile event browse | Event slug | `chartHistorySource`, `chartHistoryStatus`, `chartHistoryRange`, chart point count | Existing event/market/provider snapshot models | UI shows explicit unavailable/empty chart state when route history is not available | Route-backed Polymarket CLOB chart history is still P1 for this event proof. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-QF-provider-winner-cashout-refresh/cycle-QF-provider-winner-s23-visible-flow.json`
+
 ## Cycle QE - Provider Line Breadth Scan
 
 Cycle QE adds a read-only provider breadth proof script and records current-match plus broad Gamma evidence for World Cup line-market availability.

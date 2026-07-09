@@ -2,6 +2,46 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle QF - Provider Winner Cashout Refresh
+
+Feature/page worked on:
+
+- Provider-backed Regulation Winner buy/sell lifecycle for the Local MVP retail path.
+- Home -> Event Detail -> provider-backed winner ticket -> fake-token/server-backed buy -> Portfolio cashout -> Portfolio History.
+
+Frontend/backend touched:
+
+- Updated `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1` only.
+- No mobile UI, backend route, schema, orderbook, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- The proof exercises the existing mobile Event Detail, Trade Ticket, Portfolio, cashout, and History flows.
+- The proof uses existing backend order, portfolio, and local counterparty seeding helpers.
+- Chart proof now accepts the current explicit route-backed chart state: ready CLOB history or known unavailable/empty source. This keeps the cashout lifecycle proof from failing before the selected user flow is reached.
+
+User interactions supported:
+
+- User opens the current match, selects the Polymarket-backed Egypt Regulation Winner outcome, enters `$25`, swipes to buy, lands in Portfolio, taps Cash out, swipes to sell, and sees the sold activity in History.
+
+State transitions:
+
+- Event Detail exposes provider-backed winner identity.
+- Ticket carries `marketType=winner`, `line=none`, and `providerSource=polymarket`.
+- Backend fills the local fake-token order using seeded counterparty liquidity.
+- Portfolio shows the filled provider-backed position.
+- Cashout creates the sell-side action and Portfolio History renders `portfolio-market-type-winner`, `portfolio-line-none`, and `portfolio-provider-source-polymarket`.
+
+Known limitations:
+
+- Chart history currently reported `chart-source-empty` and `chart-status-unavailable` in the QF proof. This is accepted only as an explicit P1 data gap, not chart-history parity.
+- Real provider-backed Spread/Totals/Team Total markets remain unavailable for this match.
+
+Evidence:
+
+- Summary: `docs/mobile/harness/cycle-QF-provider-winner-cashout-refresh/cycle-QF-provider-winner-s23-visible-flow.json`
+- Screenshots/XML: `docs/mobile/screenshots/cycle-QF-provider-winner-cashout-refresh/`, `docs/mobile/harness/cycle-QF-provider-winner-cashout-refresh/`
+
 ## Cycle QE - Provider Line Breadth Scan
 
 Feature/page worked on:

@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle QF
+
+Gate status: Pass for focused provider-backed Regulation Winner buy/sell lifecycle; not a pass for provider-backed line-market parity or full chart-history parity.
+
+Scope: Home -> Event Detail -> provider-backed winner -> simple ticket -> fake-token/server-backed buy -> Portfolio cashout/sell -> Portfolio History.
+
+Decision:
+
+- P0 failed: 0 for the focused QF scope.
+- Implemented change: updated the S23 proof script so chart evidence accepts either ready CLOB history or explicit unavailable/empty chart route state, while still requiring the provider-backed winner market and source identity.
+- Runtime finding: `Argentina vs. Egypt` exposes provider-backed Regulation Winner markets; the selected Egypt provider market `2793741` can be bought and then cashed out/sold with seeded local counterparty liquidity.
+- Android proof: Samsung S23 `SM-S911U1` passed Home, Event Detail, provider winner ticket, swipe buy, Portfolio, cashout ticket, swipe sell, and Portfolio History.
+- P1/P2 remaining: chart route currently reports empty/unavailable history in this proof; real provider-backed Spread/Totals/Team Total markets remain unavailable.
+- Evidence: `docs/mobile/harness/cycle-QF-provider-winner-cashout-refresh/cycle-QF-provider-winner-s23-visible-flow.json`; screenshots `docs/mobile/screenshots/cycle-QF-provider-winner-cashout-refresh/`; XML `docs/mobile/harness/cycle-QF-provider-winner-cashout-refresh/`.
+
 ## Cycle QE
 
 Gate status: Pass for focused provider-line breadth evidence; not a pass for real provider-backed line-market parity.

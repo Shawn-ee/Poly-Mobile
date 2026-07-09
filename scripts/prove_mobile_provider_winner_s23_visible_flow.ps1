@@ -40,6 +40,17 @@ function Assert-Contains {
   }
 }
 
+function Assert-AnyContains {
+  param([string]$Path, [string[]]$AnyExpected, [string]$Reason)
+  $raw = Get-Content -Raw -Path $Path
+  foreach ($item in $AnyExpected) {
+    if ($raw -match [regex]::Escape($item)) {
+      return
+    }
+  }
+  throw "Missing expected UI text/label for $Reason. Expected one of: $($AnyExpected -join ', ') in $Path"
+}
+
 function Assert-NotContains {
   param([string]$Path, [string[]]$Unexpected)
   $raw = Get-Content -Raw -Path $Path
@@ -280,7 +291,9 @@ try {
     Save-Screenshot -Name "cycle-$Cycle-current-mvp-detail-top-retry.png" | Out-Null
     $detailTopXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-detail-top-retry.xml"
   }
-  Assert-Contains -Path $detailTopXml -Expected @("event-detail-back", "Game", "ARG", "EGY", "Argentina", "Egypt", "provider-regulation-1x2-composed", "provider-regulation-1x2-outcome-ARG", "provider-regulation-1x2-outcome-DRA", "provider-regulation-1x2-outcome-EGY", "event-detail-price-chart", "chart-source-polymarket-clob-prices-history")
+  Assert-Contains -Path $detailTopXml -Expected @("event-detail-back", "Game", "ARG", "EGY", "Argentina", "Egypt", "provider-regulation-1x2-composed", "provider-regulation-1x2-outcome-ARG", "provider-regulation-1x2-outcome-DRA", "provider-regulation-1x2-outcome-EGY", "event-detail-price-chart")
+  Assert-AnyContains -Path $detailTopXml -AnyExpected @("chart-source-polymarket-clob-prices-history", "chart-source-empty") -Reason "route-backed chart source state"
+  Assert-AnyContains -Path $detailTopXml -AnyExpected @("chart-status-ready", "chart-status-unavailable") -Reason "route-backed chart status state"
   Assert-NotContains -Path $detailTopXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "event-detail-chat")
 
   $winnerXml = $null

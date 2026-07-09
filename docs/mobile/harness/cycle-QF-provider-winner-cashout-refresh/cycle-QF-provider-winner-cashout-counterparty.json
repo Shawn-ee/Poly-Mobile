@@ -1,0 +1,74 @@
+{
+  "pass": true,
+  "eventSlug": "argentina-vs-egypt",
+  "market": {
+    "id": "35a8e3d4-a699-4000-920a-bfa5eb6d1eb8",
+    "title": "Will Egypt win on 2026-07-07?",
+    "marketType": "match_winner_1x2",
+    "marketGroupKey": "main",
+    "period": "regulation",
+    "line": null,
+    "referenceSource": "polymarket",
+    "externalMarketId": "2793741",
+    "conditionId": "0x971eb98daab3a11a1dd3b76e14ae962f8e5980ec6a3d499529b5f19b75108d4a"
+  },
+  "outcome": {
+    "id": "44397141-392a-4fe0-aa55-c12a6968c84d",
+    "name": "Egypt",
+    "side": "yes",
+    "referenceTokenId": "115321303982678629228305623888886288749804075736763407098365012911341798952806",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "cleanupOnly": false,
+  "maker": {
+    "id": "581d2fca-4712-42aa-b757-ae1b5d6747d0",
+    "username": "mobile_route_fill_maker_eeecccd1"
+  },
+  "cleanup": {
+    "enabled": false,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": [],
+    "cleanupBlockingBids": false,
+    "canceledBlockingBids": [],
+    "cleanupBlockingMarketBids": true,
+    "canceledBlockingMarketBids": [],
+    "cleanupProofAsks": true,
+    "canceledProofAsks": [],
+    "cleanupBlockingAsks": true,
+    "canceledBlockingAsks": [
+      {
+        "id": "1d048d43-eec2-4aa6-8b50-21a5829a3fdc",
+        "username": "mobile_route_fill_maker_2fc5eaeb",
+        "previousStatus": "PARTIAL",
+        "price": "0.7",
+        "remaining": "44.29",
+        "canceledStatus": "CANCELED"
+      },
+      {
+        "id": "ae93e133-b27d-4674-afa5-02f9ac59e7ea",
+        "username": "mobile_route_fill_maker_32e29acd",
+        "previousStatus": "OPEN",
+        "price": "0.7",
+        "remaining": "80",
+        "canceledStatus": "CANCELED"
+      }
+    ]
+  },
+  "makerOrder": {
+    "id": "2ba54d46-d9a8-4ad9-a43a-b4b85083c625",
+    "marketId": "35a8e3d4-a699-4000-920a-bfa5eb6d1eb8",
+    "outcomeId": "44397141-392a-4fe0-aa55-c12a6968c84d",
+    "side": "BUY",
+    "price": "0.7",
+    "size": "80",
+    "remaining": "80",
+    "reservedNotional": "56",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "BUY",
+    "price": "0.70",
+    "size": "80",
+    "intendedMobileTaker": "SELL/cashout route-backed main position"
+  }
+}
