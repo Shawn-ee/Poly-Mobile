@@ -20,6 +20,6 @@ describe("Home card stats contract", () => {
     expect(marketLists).toContain("event-card-retail-outcome-rail");
     expect(marketLists).toContain("eventSourceReadiness(event, locale)");
     expect(marketLists).toContain("home-card-source-provider-winner-local-lines");
-    expect(marketLists).toContain("Winner from Polymarket");
+    expect(marketLists).toContain("Winner: Polymarket / test lines");
   });
 });

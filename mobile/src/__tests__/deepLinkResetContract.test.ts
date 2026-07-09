@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, test } from "vitest";
 
-const appSource = () => readFileSync("App.tsx", "utf8");
+const appSource = () => readFileSync("mobile/App.tsx", "utf8");
 
 describe("deep link reset contract", () => {
   test("does not wipe forced Search/Home query launch state with the delayed reset", () => {
