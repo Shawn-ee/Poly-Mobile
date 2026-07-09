@@ -22,6 +22,8 @@ const askPrice = argValue("askPrice") ?? "0.52";
 const bidPrice = argValue("bidPrice") ?? askPrice;
 const askSize = argValue("askSize") ?? "60";
 const bidSize = argValue("bidSize") ?? askSize;
+const mintQuantity = argValue("mintQuantity") ?? "80";
+const makerBalance = argValue("makerBalance") ?? "100";
 const makerSideValue = (argValue("makerSide") ?? "SELL").toUpperCase();
 const line = argValue("line");
 const cleanupProofBids = process.argv.includes("--cleanupProofBids");
@@ -45,7 +47,7 @@ async function createMaker() {
     },
   });
   await prisma.userBalance.create({
-    data: { userId: user.id, availableUSDC: dec("100"), lockedUSDC: dec("0") },
+    data: { userId: user.id, availableUSDC: dec(makerBalance), lockedUSDC: dec("0") },
   });
   return user;
 }
@@ -211,7 +213,7 @@ async function main() {
 
   const maker = cleanupOnly ? null : await createMaker();
   if (maker && makerSide === "SELL") {
-    await mintCompleteSetForPublicOrderbook({ marketId: market.id, userId: maker.id, quantity: "80" });
+    await mintCompleteSetForPublicOrderbook({ marketId: market.id, userId: maker.id, quantity: mintQuantity });
   }
   const makerPrice = makerSide === "BUY" ? bidPrice : askPrice;
   const makerSize = makerSide === "BUY" ? bidSize : askSize;

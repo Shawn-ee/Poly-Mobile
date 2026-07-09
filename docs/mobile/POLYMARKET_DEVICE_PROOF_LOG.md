@@ -2481,3 +2481,39 @@ Pass for RG Samsung backend port health scope.
 
 Remaining gaps:
 Native Google OAuth callback/session/logout remains separate auth work. Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable. Event Detail Trade UI proof is not itself a server order-placement proof.
+
+## Cycle RH - Route-Backed Team Total Filled Order Proof
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket reference-device action. This cycle validates Holiwyn Local MVP server-mode behavior against the existing Polymarket-style retail flow criteria: line market, simple ticket, swipe submit, Portfolio, Orders, and History.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM_S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go proof on port `8334`. Backend health OK on `http://127.0.0.1:3002`; Samsung runtime API base `http://172.16.200.14:3002`. Order mode `server`; market data mode `server`.
+
+Holiwyn actions:
+Generated a disposable provider-backed event, seeded a matching Team Total 1.5 maker ask, opened the event on S23, verified Game Lines and blank Player Props, opened the Team Total ticket, tapped `$25` and `$50`, swiped up to buy `$75`, landed in Portfolio, verified no open orders after full fill, and verified one $75 filled History activity.
+
+Evidence:
+- `docs/mobile/harness/cycle-RH-s23-route-server-filled/cycle-EX-local-mvp-route-server-filled-flow-proof.json`
+- `docs/mobile/harness/cycle-RH-s23-route-server-filled/cycle-EX-local-mvp-route-server-filled-flow-wrapper.json`
+- `docs/mobile/screenshots/cycle-RH-s23-route-server-filled/cycle-EX-holiwyn-route-server-mvp-line-markets.png`
+- `docs/mobile/screenshots/cycle-RH-s23-route-server-filled/cycle-EX-holiwyn-route-server-mvp-team-total-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-RH-s23-route-server-filled/cycle-EX-holiwyn-route-server-mvp-team-total-ticket-swipe-progress.png`
+- `docs/mobile/screenshots/cycle-RH-s23-route-server-filled/cycle-EX-holiwyn-route-server-mvp-portfolio.png`
+- `docs/mobile/screenshots/cycle-RH-s23-route-server-filled/cycle-EX-holiwyn-route-server-mvp-portfolio-orders.png`
+- `docs/mobile/screenshots/cycle-RH-s23-route-server-filled/cycle-EX-holiwyn-route-server-mvp-portfolio-history.png`
+
+Smoke/tests:
+Mobile typecheck passed. Focused route-server-filled wrapper and Samsung backend port contract tests passed. S23 route-backed filled flow proof passed.
+
+Result:
+Pass for RH route-backed Team Total filled order proof.
+
+Remaining gaps:
+Production live World Cup provider mappings still need real Gamma/CLOB discovery beyond disposable proof markets. Portfolio team-total wording should be cleaned in a future visible UI cycle. Native Google OAuth callback/session/logout remains separate auth work.
