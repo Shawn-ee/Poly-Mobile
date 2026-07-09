@@ -8717,3 +8717,32 @@ Temporary mock/static data:
 Future migration concern:
 
 - When real provider-backed Team Total rows arrive, they should continue populating `referenceOutcomeLabel`/outcome identity so Portfolio/history wording remains readable without another UI special case.
+
+## Cycle RK - Portfolio Source Label Visual Cleanup
+
+Closed or narrowed:
+
+- Portfolio rows no longer need visible source/debug chips to preserve order-time selection identity.
+- Source and pricing markers remain in accessibility/XML metadata for audit gates.
+- The visible History row is closer to Polymarket's clean retail Portfolio rows while still documenting Holiwyn contract-fixture line identity.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed current-match Spread/Totals/Team Total markets.
+- Native app Google OAuth callback/session/logout state.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- No new mock data added.
+
+Future migration concern:
+
+- Keep source/identity metadata available to audit tooling even when retail UI hides debug-like labels.

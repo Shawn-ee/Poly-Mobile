@@ -3976,3 +3976,9 @@ Cycle OW implementation notes:
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Portfolio/history readable Team Total label | Existing `/api/portfolio`, `/api/portfolio/history` | GET | Mobile API key | Auth header only | Existing `selection.referenceOutcomeLabel`, `outcome`, `selection.marketType`, `selection.line`, `selection.period`, and identity/source fields | Existing `Position`, `Order`, `Trade`; no new model implied | Mock/local mode uses the same display helper when selection identity exists. | No new backend support needed for wording. Real provider-backed line-market breadth remains a separate provider gap. |
+
+## Cycle RK - Portfolio Source Label Visual Cleanup
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio visible row source cleanup | Existing `/api/portfolio`, `/api/portfolio/history` | GET | Mobile API key | Auth header only | Existing selection source and identity fields remain consumed for hidden audit labels and source summaries | Existing `Position`, `Order`, `Trade`; no new model implied | Mock/local mode uses the same hidden row-source markers. | No new backend support needed. |

@@ -15,6 +15,7 @@ describe("Portfolio source badges", () => {
     expect(source).toContain("portfolio-history-source-badge");
     expect(source).toContain("portfolio-source-badge-provider");
     expect(source).toContain("portfolio-source-badge-local");
+    expect(source).toContain("rowSourceAuditOnly");
     expect(source).toContain('label: "Polymarket"');
     expect(source).toContain('label: "Holiwyn"');
     expect(source).toContain("Holiwyn line");

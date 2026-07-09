@@ -2588,3 +2588,34 @@ Pass for RJ Portfolio Team Total wording cleanup.
 
 Remaining gaps:
 Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable. Native Google OAuth callback/session/logout remains separate auth work.
+
+## Cycle RK - Portfolio Source Label Visual Cleanup
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket reference-device action. This cycle applies the existing Polymarket Portfolio direction that retail rows should be cleaner and not dominated by source/debug labels.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM_S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go proof on port `8337`. Backend health OK on `http://127.0.0.1:3002`; Samsung runtime API base `http://172.16.200.14:3002`. Order mode `server`; market data mode `server`.
+
+Holiwyn actions:
+Repeated the current-route Local MVP flow: Home, Argentina vs. Egypt Event Detail, Game Lines, blank Player Props, Argentina Over 1.5 Team Total ticket, `$75` swipe buy, Portfolio, Orders, and History.
+
+Evidence:
+- `docs/mobile/harness/cycle-RK-portfolio-source-cleanup/cycle-RK-local-mvp-current-route-server-filled-flow-proof.json`
+- `docs/mobile/screenshots/cycle-RK-portfolio-source-cleanup/cycle-RK-holiwyn-route-server-mvp-portfolio-history.png`
+- `docs/mobile/harness/cycle-RK-portfolio-source-cleanup/cycle-RK-holiwyn-route-server-mvp-portfolio-history.xml`
+
+Smoke/tests:
+Mobile typecheck passed. Focused mobile vitest suite passed. S23 current-route filled flow proof passed.
+
+Result:
+Pass for RK Portfolio source label visual cleanup.
+
+Remaining gaps:
+Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable. Native Google OAuth callback/session/logout remains separate auth work.

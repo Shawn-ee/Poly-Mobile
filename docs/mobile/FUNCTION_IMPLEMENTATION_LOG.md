@@ -11398,3 +11398,44 @@ Known limitations:
 
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Native Google OAuth callback/session/logout remains future auth work.
+
+## Cycle RK - Portfolio Source Label Visual Cleanup
+
+Feature/page worked on:
+
+- Local MVP Portfolio positions/open orders/history row presentation after server-backed fake-token trades.
+- This cycle reduces tester-facing source/debug labels in Portfolio rows while keeping audit metadata.
+
+Frontend/proof files touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/src/__tests__/portfolioSourceBadge.test.ts`
+
+Backend/proof files touched:
+
+- No backend route or schema changed.
+
+Important functions/services touched:
+
+- Portfolio row source pills and source notes now use a visually hidden audit style on position, open-order, and history rows.
+- Accessibility labels and XML markers still preserve `portfolio-source-*`, `portfolio-local-test-pricing`, and selection identity fields.
+
+User interactions supported/proven:
+
+- S23 repeats the current-route Local MVP order flow through Portfolio/history.
+- History keeps readable retail copy (`Argentina Over 1.5 goals`, `ARG vs EGY`, `$75`, `Team Total 1.5`) while hiding the row-level source/debug pill from the visible layout.
+
+State transitions:
+
+- No order, position, or history state changed.
+
+Validation:
+
+- Mobile typecheck passed.
+- Focused mobile vitest suite passed: portfolio source badge, current route wrapper, route server-filled wrapper contract, portfolio snapshot service, portfolio history service.
+- Samsung S23 proof passed using device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM_S911U1` on Expo port `8337`.
+
+Known limitations:
+
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+- Native Google OAuth callback/session/logout remains future auth work.
