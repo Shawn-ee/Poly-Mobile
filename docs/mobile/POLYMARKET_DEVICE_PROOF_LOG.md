@@ -2694,3 +2694,13 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Proof summary: `docs/mobile/harness/cycle-RQ-history-autofocus/cycle-RQ-sell-history-proof.json`.
 - Screenshots: `docs/mobile/screenshots/cycle-RQ-history-autofocus/`.
 - Result: PASS.
+
+# Cycle RR - S23 Portfolio History Context Proof
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.
+- Flow: Home visible Match Winner outcome -> Sell ticket -> vertical swipe-to-sell -> `/api/orders` FILLED SELL -> Portfolio History selected.
+- Event/market/outcome: `Paraguay vs Australia`; `Paraguay vs Australia: Match Winner`; `Paraguay`.
+- Proof summary: `docs/mobile/harness/cycle-RR-history-market-context/cycle-RR-sell-history-proof.json`.
+- Portfolio XML: `docs/mobile/harness/cycle-RR-history-market-context/cycle-RR-portfolio-history.xml`.
+- Screenshots: `docs/mobile/screenshots/cycle-RR-history-market-context/`.
+- Result: PASS. XML shows `PAR vs AUS`, `Match Winner`, `Sold`, `$25`, `Just now`, and visible Portfolio `Continue with Google`.

@@ -11639,3 +11639,13 @@ Known limitations:
 - User interactions supported: tap visible Home outcome, switch ticket to Sell, enter preset amount, vertical swipe-to-sell, land on Portfolio History after filled sell.
 - State transitions: seeded position -> Sell ticket -> `/api/orders` filled SELL -> server portfolio refresh -> latest sold activity -> Portfolio tab auto-focuses History when no open orders remain.
 - Known limitations: proof uses local deterministic proof liquidity; production liquidity and wallet policy remain out of scope for this Local MVP cycle.
+
+# Cycle RR - Portfolio History Match/Market Context
+
+- Feature/page worked on: Local MVP Portfolio History after a server-backed fake-token sell fill.
+- Frontend components touched: `mobile/src/components/Portfolio.tsx`.
+- Tests touched: `mobile/src/__tests__/portfolioHistoryMarketContextContract.test.ts`.
+- User interactions supported: Home visible Match Winner outcome -> Sell ticket -> vertical swipe-to-sell -> Portfolio History selected with readable match and market context.
+- State transitions: seeded sellable position -> `/api/orders` FILLED SELL -> `/api/portfolio/history` activity -> History row shows `PAR vs AUS` and `Match Winner`.
+- Google login visibility note: the Home account button was intentionally removed earlier; RR proof confirms the Google sign-in row remains visible at the top of Portfolio.
+- Known limitations: mobile still falls back to parsing backend market titles shaped as `Event: Market` when canonical history `eventTitle` / `marketTitle` fields are missing.

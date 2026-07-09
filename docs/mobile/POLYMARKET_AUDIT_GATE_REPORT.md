@@ -7204,3 +7204,13 @@ Remaining P1:
 - Backend proof: one FILLED SELL order for the proof user; pre/post noise gates passed.
 - Visible proof: Portfolio XML contains `portfolio-screen`, `portfolio-tab-history portfolio-tab-selected`, `activity-row-`, `Sold`, `portfolio-history-retail-row-parity`, `portfolio-history-dollar-amounts`, and `portfolio-history-relative-time`.
 - Remaining P1: production liquidity and public trading policy.
+
+# Cycle RR Audit Gate - Portfolio History Context
+
+- Scope: Portfolio History context after Local MVP server-backed sell fill.
+- P0 result: PASS.
+- Android proof: Samsung S23 `SM-S911U1`.
+- Backend proof: one FILLED SELL order for the proof user; pre/post noise gates passed.
+- Visible proof: Portfolio XML contains `portfolio-tab-history portfolio-tab-selected`, `Sold`, `PAR vs AUS`, `Match Winner`, `$25`, and `Just now`.
+- Google visibility proof: Portfolio XML contains visible `Continue with Google` in `portfolio-account-entry-google`; the Google login function did not disappear, it moved from Home to Portfolio.
+- Remaining P1: backend should provide canonical history event/market display fields instead of requiring mobile fallback parsing.

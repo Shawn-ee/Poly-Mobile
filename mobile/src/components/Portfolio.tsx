@@ -207,7 +207,16 @@ const providerBreadthCodes = (item: { title: string; outcome: string; selection?
   return isProviderBreadth ? { home: "BHO", away: "BAW" } : null;
 };
 
-const portfolioMatchTitle = (item: { title: string; eventTitle?: string; outcome: string; selection?: TicketSelection }) => item.eventTitle ?? item.title;
+const splitBackendMarketTitle = (title: string) => {
+  const [eventPart, ...marketParts] = title.split(":");
+  const eventTitle = eventPart?.trim() ?? "";
+  const marketTitle = marketParts.join(":").trim();
+  if (!eventTitle || !marketTitle || !/\bvs?\.?\b/i.test(eventTitle)) return null;
+  return { eventTitle, marketTitle };
+};
+
+const portfolioMatchTitle = (item: { title: string; eventTitle?: string; outcome: string; selection?: TicketSelection }) =>
+  item.eventTitle ?? splitBackendMarketTitle(item.title)?.eventTitle ?? item.title;
 
 const compactPortfolioScoreLine = (item: { title: string; eventTitle?: string; outcome: string; selection?: TicketSelection }) => {
   const breadth = providerBreadthCodes(item);
@@ -606,6 +615,9 @@ const activityMarketSubline = (activity: PortfolioActivity) => {
   if (activity.selection?.marketType === "totals" && line) return `Total Goals ${line}`;
   if (activity.selection?.marketType === "spread" && line) return `Spread ${line}`;
   if (activity.selection?.marketType === "team-total" && line) return `Team Total ${line}`;
+  if (activity.selection?.marketType === "winner" || /winner/i.test(activity.title)) {
+    return splitBackendMarketTitle(activity.title)?.marketTitle ?? "Match Winner";
+  }
   return activity.outcome;
 };
 
@@ -1380,7 +1392,7 @@ export function Portfolio({
         <View style={styles.activityBlock}>
           {activities.slice(0, 5).map((activity) => (
             <Pressable
-              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity portfolio-history-dollar-amounts portfolio-history-outcome-compact-label portfolio-history-market-context-readable portfolio-history-outcome-compact-${compactVisibleOutcomeLabel(activity)} portfolio-history-visible-label-${activityDisplayTitle(activity)} portfolio-history-fill-count-${activity.fillCount ?? 1} ${portfolioSourceNote(activity.selection, locale)?.accessibility ?? ""} ${providerBreadthCodes(activity) ? "portfolio-history-event-title-compact-provider" : ""} ${selectionIdentityLabel(activity)}`}
+              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity portfolio-history-dollar-amounts portfolio-history-outcome-compact-label portfolio-history-market-context-readable portfolio-history-event-context-${activityEventSubline(activity)} portfolio-history-market-context-${activityMarketSubline(activity)} portfolio-history-outcome-compact-${compactVisibleOutcomeLabel(activity)} portfolio-history-visible-label-${activityDisplayTitle(activity)} portfolio-history-fill-count-${activity.fillCount ?? 1} ${portfolioSourceNote(activity.selection, locale)?.accessibility ?? ""} ${providerBreadthCodes(activity) ? "portfolio-history-event-title-compact-provider" : ""} ${selectionIdentityLabel(activity)}`}
               key={activity.id}
               onPress={() => setExpandedActivityId((current) => (current === activity.id ? null : activity.id))}
               style={[styles.activityItem, expandedActivityId === activity.id && styles.rowExpanded]}

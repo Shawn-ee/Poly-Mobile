@@ -8832,3 +8832,12 @@ Future migration concern:
 - Required existing server fields: event id/slug/title, market id/title/type, outcome id/name, order status/side/size/remaining/notional, position shares/reserved shares, activity action `sold`, history row amount and relative time.
 - Contract gap kept as P1: production liquidity and real market-maker/user-liquidity policy are not implemented; proof uses deterministic local liquidity shaped like backend order/position data.
 - Contract gap closed for this cycle: mobile proof route can carry forced event/market/outcome identity into the ticket/order proof instead of relying on whichever compact Home market loads first.
+
+# Cycle RR - Portfolio History Context Data Contract Notes
+
+- No schema migration was added.
+- Closed or narrowed: Portfolio History now has readable event and market context after a filled sell, even when the history activity only carries a backend market title like `Paraguay vs Australia: Match Winner`.
+- Fields Holiwyn still needs but backend does not fully provide: canonical `eventTitle` and `marketTitle` fields on `/api/portfolio/history` rows.
+- Route mismatch: no route mismatch was introduced.
+- Temporary mock/static data: no new mock data added.
+- Future migration concern: remove title parsing once the backend history contract returns explicit event and market display fields.

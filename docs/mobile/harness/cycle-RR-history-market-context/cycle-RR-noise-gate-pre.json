@@ -1,0 +1,170 @@
+{
+  "generatedAt": "2026-07-09T12:44:19.271Z",
+  "proofPrefixes": [
+    "holiwyn-mobile-proof-",
+    "holiwyn-mobile-open-cancel-"
+  ],
+  "totals": {
+    "users": 9,
+    "orders": 2,
+    "trades": 2,
+    "takerFills": 2,
+    "makerFills": 0,
+    "apiCredentials": 9
+  },
+  "prefixCounts": {
+    "holiwyn-mobile-proof-": 9
+  },
+  "orderStatusCounts": {
+    "FILLED": 2
+  },
+  "orderSideCounts": {
+    "SELL": 2
+  },
+  "fillRoleCounts": {
+    "taker": 2,
+    "maker": 0
+  },
+  "openOrderCountsByUser": {},
+  "harnessGate": {
+    "enabled": true,
+    "passed": true,
+    "checks": {
+      "openOrders": {
+        "enabled": true,
+        "passed": true,
+        "affectedUsers": 0
+      },
+      "lockedBalance": {
+        "enabled": true,
+        "passed": true,
+        "affectedUsers": 0,
+        "users": []
+      }
+    }
+  },
+  "latestUsers": [
+    {
+      "username": "holiwyn-mobile-proof-sell-20260709073738",
+      "userId": "7fc629b2-140f-49c0-be57-dc5a6c1a6a6e",
+      "createdAt": "2026-07-09T12:37:51.720Z",
+      "availableUSDC": "10024.75",
+      "lockedUSDC": "0",
+      "orders": 1,
+      "trades": 1,
+      "apiCredentials": 1
+    },
+    {
+      "username": "holiwyn-mobile-proof-sell-20260709073515",
+      "userId": "99326785-4d75-4e84-a896-6e66475c0240",
+      "createdAt": "2026-07-09T12:35:29.692Z",
+      "availableUSDC": "10024.75",
+      "lockedUSDC": "0",
+      "orders": 1,
+      "trades": 1,
+      "apiCredentials": 1
+    },
+    {
+      "username": "holiwyn-mobile-proof-sell-20260709073215",
+      "userId": "4cb1446a-299f-4b10-bf52-0a6d03f750ea",
+      "createdAt": "2026-07-09T12:32:28.042Z",
+      "availableUSDC": "10000",
+      "lockedUSDC": "0",
+      "orders": 0,
+      "trades": 0,
+      "apiCredentials": 1
+    },
+    {
+      "username": "holiwyn-mobile-proof-sell-20260709072943",
+      "userId": "4586a7b1-bbf4-4ff9-a21f-d57cfd7cc6e4",
+      "createdAt": "2026-07-09T12:29:55.759Z",
+      "availableUSDC": "10000",
+      "lockedUSDC": "0",
+      "orders": 0,
+      "trades": 0,
+      "apiCredentials": 1
+    },
+    {
+      "username": "holiwyn-mobile-proof-sell-20260709072647",
+      "userId": "9b38b179-8e7d-4c89-a26d-ac64cab5118e",
+      "createdAt": "2026-07-09T12:26:59.992Z",
+      "availableUSDC": "10000",
+      "lockedUSDC": "0",
+      "orders": 0,
+      "trades": 0,
+      "apiCredentials": 1
+    },
+    {
+      "username": "holiwyn-mobile-proof-sell-20260709072307",
+      "userId": "ed346041-9864-43ea-9aee-a47393b2b1c8",
+      "createdAt": "2026-07-09T12:23:21.650Z",
+      "availableUSDC": "10000",
+      "lockedUSDC": "0",
+      "orders": 0,
+      "trades": 0,
+      "apiCredentials": 1
+    },
+    {
+      "username": "holiwyn-mobile-proof-sell-20260709071925",
+      "userId": "6f5722ea-35c8-443e-9a98-1ec3ecde59f0",
+      "createdAt": "2026-07-09T12:19:38.945Z",
+      "availableUSDC": "10000",
+      "lockedUSDC": "0",
+      "orders": 0,
+      "trades": 0,
+      "apiCredentials": 1
+    },
+    {
+      "username": "holiwyn-mobile-proof-sell-20260709071509",
+      "userId": "9aa0bde7-b070-4a9d-8177-bab0268d67d1",
+      "createdAt": "2026-07-09T12:15:22.997Z",
+      "availableUSDC": "10000",
+      "lockedUSDC": "0",
+      "orders": 0,
+      "trades": 0,
+      "apiCredentials": 1
+    },
+    {
+      "username": "holiwyn-mobile-proof-sell-20260709065825",
+      "userId": "91ed8c84-e17e-426d-b5f5-b76ea06d724b",
+      "createdAt": "2026-07-09T11:58:44.022Z",
+      "availableUSDC": "10000",
+      "lockedUSDC": "0",
+      "orders": 0,
+      "trades": 0,
+      "apiCredentials": 1
+    }
+  ],
+  "latestOrders": [
+    {
+      "id": "b2e0ff3d-f11c-4218-a115-f8b5baa30fde",
+      "username": "holiwyn-mobile-proof-sell-20260709073738",
+      "side": "SELL",
+      "status": "FILLED",
+      "price": "0.5",
+      "size": "50",
+      "remaining": "0",
+      "notional": "25",
+      "remainingNotional": "0",
+      "createdAt": "2026-07-09T12:38:59.621Z",
+      "updatedAt": "2026-07-09T12:38:59.645Z"
+    },
+    {
+      "id": "47e5f640-2b97-43a7-b97f-810301c108c3",
+      "username": "holiwyn-mobile-proof-sell-20260709073515",
+      "side": "SELL",
+      "status": "FILLED",
+      "price": "0.5",
+      "size": "50",
+      "remaining": "0",
+      "notional": "25",
+      "remainingNotional": "0",
+      "createdAt": "2026-07-09T12:36:57.748Z",
+      "updatedAt": "2026-07-09T12:36:57.774Z"
+    }
+  ],
+  "cleanupGuidance": {
+    "destructiveActionTaken": false,
+    "recommendation": "Proof state is still manageable; keep using isolated proof usernames."
+  }
+}
