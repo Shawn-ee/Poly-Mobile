@@ -21,6 +21,10 @@ describe("Search result stats contract", () => {
     expect(search).toContain("contractFixtureMarketCount");
     expect(search).toContain("search-result-source-");
     expect(search).toContain("Polymarket ${providerCount} markets");
+    expect(search).toContain("mixed-provider-holiwyn-lines");
+    expect(search).toContain("holiwyn-lines");
+    expect(search).not.toContain("mixed-provider-test-lines");
+    expect(search).not.toContain("test-lines");
     expect(search).toContain("save-event-");
     expect(search).toContain("search-result-");
   });

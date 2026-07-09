@@ -2,6 +2,31 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle QK - Search Source Copy
+
+Closed or narrowed:
+
+- Search no longer exposes old `test-lines` wording in visible mixed-source labels or accessibility/source markers.
+- Mixed Polymarket plus contract-fixture Search results now use Holiwyn-branded source wording while preserving provider/fixture counts.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total market ids, outcome ids, token ids, line values, probabilities, and top prices for the current World Cup match set.
+
+Route mismatch:
+
+- No route mismatch introduced.
+- Existing `/api/events` search/feed fields remain sufficient for this UI source-copy cycle.
+
+Temporary mock/static data:
+
+- Contract-shaped line markets still exist as Holiwyn line fixtures where Polymarket-backed line markets are unavailable.
+- Internal source counts and fixture markers remain so later backend migration can replace fixture rows honestly.
+
+Future migration concern:
+
+- When real provider-backed line markets become available, Search should continue consuming the same source-summary shape and simply report provider-backed line counts instead of Holiwyn fixture counts.
+
 ## Cycle QJ - Holiwyn Line Copy
 
 Closed or narrowed:

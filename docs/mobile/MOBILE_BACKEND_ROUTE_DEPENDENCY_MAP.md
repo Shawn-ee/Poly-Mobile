@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle QK - Search Source Copy
+
+Cycle QK changes no backend route or schema. It keeps the existing Search event-feed contract and only changes mobile-facing source labels.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Search mixed-source result disclosure | `/api/events` through existing mobile search/feed service | GET | Public/mobile event browse | Search query such as `argentina`; status/filter query when applicable | Event slug/title/status, provider count, contract-fixture count, `marketSourceSummary`, provider/local market source counts | Existing `Event`, `Market`, `Outcome` | Contract-shaped line fixtures display as Holiwyn lines when provider-backed lines are unavailable | Real provider-backed Spread/Totals/Team Total imports remain P1. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-QK-search-source-copy/cycle-QK-search-source-copy-proof.json`
+- `docs/mobile/audits/cycle-QK-search-source-copy.md`
+
 ## Cycle QJ - Holiwyn Line Copy
 
 Cycle QJ changes no backend route or schema. It keeps existing Local MVP route contracts and improves visible source wording around current contract-fixture line markets.

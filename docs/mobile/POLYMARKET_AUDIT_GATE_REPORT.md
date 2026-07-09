@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle QK
+
+Gate status: Pass for focused Search source-copy cleanup; not a pass for broader provider-backed line-market parity.
+
+Scope: Search result source disclosure for mixed Polymarket provider markets plus Holiwyn contract-shaped line markets.
+
+Decision:
+
+- P0 failed: 0 for focused QK scope.
+- Implemented change: Search visible copy and accessibility/source markers no longer expose `test-lines` wording. Mixed results now report Holiwyn-branded line counts.
+- Runtime finding: S23 Search for `argentina` shows `Argentina vs. Egypt` with `Polymarket 3 / Holiwyn lines 4` and XML marker `source-mixed-provider-holiwyn-lines`.
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`.
+- P1 remaining: real provider-backed Spread/Totals/Team Total imports; non-Search Chinese source copy pass if needed.
+- Evidence: `docs/mobile/audits/cycle-QK-search-source-copy.md`; S23 proof `docs/mobile/harness/cycle-QK-search-source-copy/cycle-QK-search-source-copy-proof.json`.
+
 ## Cycle QJ
 
 Gate status: Pass for focused Holiwyn line-copy clarity and Local MVP full-flow regression; not a pass for real provider-backed line-market parity.
