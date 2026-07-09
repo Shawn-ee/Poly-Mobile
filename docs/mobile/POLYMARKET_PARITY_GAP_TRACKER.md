@@ -1212,3 +1212,10 @@ For every UI element or interaction, answer:
 - Remaining P1: cashout still uses a dedicated cashout ticket rather than the generic Buy/Sell amount-entry ticket.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 - Remaining P1: native Google OAuth callback/session/logout remains separate auth work.
+# Cycle RQ - Local MVP Sell History Landing
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Completed sell does not reliably land tester on Portfolio History | P0 | Verified | Portfolio now auto-focuses History for `sold`/`closed`/`canceled` latest activity when no open orders remain. | `docs/mobile/harness/cycle-RQ-history-autofocus/cycle-RQ-sell-history-proof.json`; `docs/mobile/harness/cycle-RQ-history-autofocus/cycle-RQ-portfolio-history.xml` |
+| S23 server sell proof targeted stale/static market instead of seeded liquidity | P0 | Verified | Wrapper passes seeded target IDs and proof enters visible Home outcome before Sell ticket. | `scripts/mobile_samsung_server_order_proof.ps1`; `mobile/scripts/smoke.ps1`; RQ proof summary |
+| Production liquidity for public sell/cashout | P1 | Open | Local MVP still uses deterministic proof liquidity. | Data contract notes |

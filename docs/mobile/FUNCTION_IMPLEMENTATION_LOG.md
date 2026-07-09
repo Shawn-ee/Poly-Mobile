@@ -11631,3 +11631,11 @@ Known limitations:
 
 - Cashout still uses the dedicated cashout ticket rather than the generic amount-entry Trade Ticket.
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+# Cycle RQ - Portfolio Sell History Autofocus
+
+- Feature/page worked on: Local MVP sell lifecycle from Home visible match outcome to Trade Ticket to Portfolio History.
+- Frontend components touched: `mobile/App.tsx`, `mobile/src/components/Portfolio.tsx`, `mobile/src/components/TradeTicket.tsx`.
+- Harness/scripts touched: `mobile/scripts/smoke.ps1`, `scripts/mobile_samsung_server_order_proof.ps1`, `scripts/prepare_mobile_server_sell_fill.ts`.
+- User interactions supported: tap visible Home outcome, switch ticket to Sell, enter preset amount, vertical swipe-to-sell, land on Portfolio History after filled sell.
+- State transitions: seeded position -> Sell ticket -> `/api/orders` filled SELL -> server portfolio refresh -> latest sold activity -> Portfolio tab auto-focuses History when no open orders remain.
+- Known limitations: proof uses local deterministic proof liquidity; production liquidity and wallet policy remain out of scope for this Local MVP cycle.

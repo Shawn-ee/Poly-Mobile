@@ -2686,3 +2686,11 @@ Pass for RM current MVP cashout ticket retail pass.
 
 Remaining gaps:
 Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket. Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable. Native Google OAuth callback/session/logout remains separate auth work.
+# Cycle RQ - S23 Sell To History Proof
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.
+- Flow: Home visible Match Winner outcome -> Sell ticket -> vertical swipe-to-sell -> `/api/orders` FILLED SELL -> Portfolio History selected.
+- Event/market/outcome: `Paraguay vs Australia`; `Paraguay vs Australia: Match Winner`; `Paraguay`.
+- Proof summary: `docs/mobile/harness/cycle-RQ-history-autofocus/cycle-RQ-sell-history-proof.json`.
+- Screenshots: `docs/mobile/screenshots/cycle-RQ-history-autofocus/`.
+- Result: PASS.

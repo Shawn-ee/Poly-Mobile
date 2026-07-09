@@ -1,0 +1,135 @@
+﻿{
+    "ready":  true,
+    "side":  "sell",
+    "username":  "holiwyn-mobile-proof-sell-20260709073738",
+    "userId":  "7fc629b2-140f-49c0-be57-dc5a6c1a6a6e",
+    "keyId":  "pk_live_8cf3afad5c6af103",
+    "port":  8345,
+    "event":  {
+                  "id":  "d21b527e-935f-4079-9fbe-425fa132fbd4",
+                  "slug":  "world-cup-2026-paraguay-vs-australia-2026-06-25",
+                  "title":  "Paraguay vs Australia"
+              },
+    "market":  {
+                   "id":  "5b8848d0-e2bc-4ef1-a29e-93da42dbd14c",
+                   "title":  "Paraguay vs Australia: Match Winner"
+               },
+    "outcome":  {
+                    "id":  "24426104-7c0f-4d56-8c9c-9dbf093a1c35",
+                    "name":  "Paraguay"
+                },
+    "makerOrder":  {
+                       "id":  "4daa676f-a620-44fc-9777-6b802cd1ffac",
+                       "status":  "OPEN",
+                       "price":  "0.50",
+                       "size":  "500",
+                       "requiredRemaining":  "250",
+                       "remaining":  "500"
+                   },
+    "mobileUser":  {
+                       "id":  "7fc629b2-140f-49c0-be57-dc5a6c1a6a6e",
+                       "username":  "holiwyn-mobile-proof-sell-20260709073738",
+                       "shares":  "300",
+                       "reservedShares":  "0"
+                   },
+    "orderSummary":  {
+                         "username":  "holiwyn-mobile-proof-sell-20260709073738",
+                         "userId":  "7fc629b2-140f-49c0-be57-dc5a6c1a6a6e",
+                         "orderCount":  1,
+                         "statusCounts":  {
+                                              "FILLED":  1
+                                          },
+                         "latestOrder":  {
+                                             "id":  "b2e0ff3d-f11c-4218-a115-f8b5baa30fde",
+                                             "status":  "FILLED",
+                                             "side":  "SELL",
+                                             "market":  {
+                                                            "id":  "5b8848d0-e2bc-4ef1-a29e-93da42dbd14c",
+                                                            "title":  "Paraguay vs Australia: Match Winner"
+                                                        },
+                                             "outcome":  {
+                                                             "id":  "24426104-7c0f-4d56-8c9c-9dbf093a1c35",
+                                                             "name":  "Paraguay"
+                                                         },
+                                             "price":  "0.5",
+                                             "size":  "50",
+                                             "remaining":  "0",
+                                             "reservedNotional":  "0",
+                                             "notional":  "25",
+                                             "remainingNotional":  "0",
+                                             "apiKeyId":  "pk_live_8cf3afad5c6af103",
+                                             "canceledByApiKeyId":  null,
+                                             "createdAt":  "2026-07-09T12:38:59.621Z",
+                                             "updatedAt":  "2026-07-09T12:38:59.645Z"
+                                         },
+                         "latestCanceledOrder":  null,
+                         "recentOrders":  [
+                                              {
+                                                  "id":  "b2e0ff3d-f11c-4218-a115-f8b5baa30fde",
+                                                  "status":  "FILLED",
+                                                  "side":  "SELL",
+                                                  "market":  {
+                                                                 "id":  "5b8848d0-e2bc-4ef1-a29e-93da42dbd14c",
+                                                                 "title":  "Paraguay vs Australia: Match Winner"
+                                                             },
+                                                  "outcome":  {
+                                                                  "id":  "24426104-7c0f-4d56-8c9c-9dbf093a1c35",
+                                                                  "name":  "Paraguay"
+                                                              },
+                                                  "price":  "0.5",
+                                                  "size":  "50",
+                                                  "remaining":  "0",
+                                                  "reservedNotional":  "0",
+                                                  "notional":  "25",
+                                                  "remainingNotional":  "0",
+                                                  "apiKeyId":  "pk_live_8cf3afad5c6af103",
+                                                  "canceledByApiKeyId":  null,
+                                                  "createdAt":  "2026-07-09T12:38:59.621Z",
+                                                  "updatedAt":  "2026-07-09T12:38:59.645Z"
+                                              }
+                                          ]
+                     },
+    "proofNoiseGate":  {
+                           "pre":  {
+                                       "enabled":  true,
+                                       "passed":  true,
+                                       "checks":  {
+                                                      "openOrders":  {
+                                                                         "enabled":  true,
+                                                                         "passed":  true,
+                                                                         "affectedUsers":  0
+                                                                     },
+                                                      "lockedBalance":  {
+                                                                            "enabled":  true,
+                                                                            "passed":  true,
+                                                                            "affectedUsers":  0,
+                                                                            "users":  [
+
+                                                                                      ]
+                                                                        }
+                                                  }
+                                   },
+                           "post":  {
+                                        "enabled":  true,
+                                        "passed":  true,
+                                        "checks":  {
+                                                       "openOrders":  {
+                                                                          "enabled":  true,
+                                                                          "passed":  true,
+                                                                          "affectedUsers":  0
+                                                                      },
+                                                       "lockedBalance":  {
+                                                                             "enabled":  true,
+                                                                             "passed":  true,
+                                                                             "affectedUsers":  0,
+                                                                             "users":  [
+
+                                                                                       ]
+                                                                         }
+                                                   }
+                                    },
+                           "preSummaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof-noise-gate-pre.json",
+                           "postSummaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof-noise-gate.json"
+                       },
+    "summaryPath":  "docs/mobile/harness/cycle-RQ-history-autofocus/cycle-RQ-sell-history-proof.json"
+}

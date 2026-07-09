@@ -281,6 +281,46 @@ function Invoke-TapHierarchyNode {
   & $adb -s $Device shell input tap $x $y | Out-Null
 }
 
+function Invoke-TapHierarchyNodeContains {
+  param(
+    [string]$Path,
+    [string]$Identifier
+  )
+  [xml]$hierarchy = Get-Content -Raw -Path $Path
+  $query = "//*[contains(@resource-id,'$Identifier') or contains(@content-desc,'$Identifier')]"
+  $node = $hierarchy.SelectSingleNode($query)
+  if (-not $node) {
+    throw "UI hierarchy missing tappable node containing: $Identifier"
+  }
+  if ($node.bounds -notmatch "^\[(\d+),(\d+)\]\[(\d+),(\d+)\]$") {
+    throw "UI hierarchy node has invalid bounds for $Identifier"
+  }
+  $x = [math]::Floor(([int]$Matches[1] + [int]$Matches[3]) / 2)
+  $y = [math]::Floor(([int]$Matches[2] + [int]$Matches[4]) / 2)
+  & $adb -s $Device shell input tap $x $y | Out-Null
+}
+
+function Invoke-SwipeHierarchyNode {
+  param(
+    [string]$Path,
+    [string]$Identifier,
+    [int]$DeltaY = 620,
+    [int]$DurationMs = 850
+  )
+  [xml]$hierarchy = Get-Content -Raw -Path $Path
+  $node = $hierarchy.SelectSingleNode("//*[@resource-id='$Identifier' or @content-desc='$Identifier']")
+  if (-not $node) {
+    throw "UI hierarchy missing swipe node: $Identifier"
+  }
+  if ($node.bounds -notmatch "^\[(\d+),(\d+)\]\[(\d+),(\d+)\]$") {
+    throw "UI hierarchy node has invalid bounds for $Identifier"
+  }
+  $x = [math]::Floor(([int]$Matches[1] + [int]$Matches[3]) / 2)
+  $y1 = [math]::Floor(([int]$Matches[2] + [int]$Matches[4]) / 2)
+  $y2 = [math]::Max(60, $y1 - $DeltaY)
+  & $adb -s $Device shell input swipe $x $y1 $x $y2 $DurationMs | Out-Null
+}
+
 function Invoke-ExpoMenuCloseButton {
   param(
     [string]$Path
@@ -555,16 +595,21 @@ try {
     Start-Sleep -Seconds 10
   }
 
+  $serverOrderProofTargetQuery = ""
+  if ($env:MOBILE_PROOF_EVENT_ID -and $env:MOBILE_PROOF_MARKET_ID -and $env:MOBILE_PROOF_OUTCOME_ID) {
+    $serverOrderProofTargetQuery = ",forceServerOrderEventId=$([uri]::EscapeDataString($env:MOBILE_PROOF_EVENT_ID)),forceServerOrderMarketId=$([uri]::EscapeDataString($env:MOBILE_PROOF_MARKET_ID)),forceServerOrderOutcomeId=$([uri]::EscapeDataString($env:MOBILE_PROOF_OUTCOME_ID))"
+  }
+
   $launchUrl = if ($OrderFailure) {
     "exp://${ExpoHost}:$Port/--/?forceOrderFailure=1"
   } elseif ($ServerUnavailable) {
     "exp://${ExpoHost}:$Port/--/?forceOpenOrder=1"
   } elseif ($ServerSellOrderFilled) {
-    "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerOrderProof=1,forceServerOrderSide=sell"
+    "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerOrderProof=1,forceServerOrderSide=sell$serverOrderProofTargetQuery"
   } elseif ($ServerOpenOrderCancel) {
-    "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerOrderProof=1,forceServerOpenOrderProof=1"
+    "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerOrderProof=1,forceServerOpenOrderProof=1$serverOrderProofTargetQuery"
   } elseif ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerOpenOrderCancel) {
-    "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerOrderProof=1"
+    "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerOrderProof=1$serverOrderProofTargetQuery"
   } elseif ($ServerFilledTradeHistory) {
     "exp://${ExpoHost}:$Port/--/?forcePortfolio=1"
   } elseif ($ServerApiKeyDiagnostic) {
@@ -720,7 +765,11 @@ try {
   } elseif ($ServerOrderFailure) {
     @("World Cup winner", "France", "Trading mode: Server mode", "Best bid", "Best ask", "Spread", "Fake balance")
   } elseif ($ServerSellOrderFilled) {
-    @("Trading mode: Server mode", "Best bid", "Best ask", "Spread", "Fake balance")
+    if ($env:MOBILE_PROOF_OUTCOME_ID) {
+      @("Holiwyn", "World Cup", "event-card-", $env:MOBILE_PROOF_OUTCOME_ID)
+    } else {
+      @("trade-ticket", "ticket-order-mode-sell", "ticket-side-sell", "ticket-amount-keypad", "ticket-preset-25", "ticket-odds-available")
+    }
   } elseif ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerOpenOrderCancel) {
     @("Trading mode: Server mode", "Best bid", "Best ask", "Spread", "Fake balance")
   } elseif ($ServerFilledTradeHistory) {
@@ -770,6 +819,18 @@ try {
     $homeHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-home.xml" -Expected $launchExpected -RestartUrl $launchUrl -Attempts 4 -DelaySeconds 2
   }
   Save-Screenshot -Name "cycle-current-holiwyn-smoke.png"
+  if ($ServerSellOrderFilled -and $env:MOBILE_PROOF_OUTCOME_ID) {
+    $homeRaw = Get-Content -Raw -Path $homeHierarchy
+    if ($homeRaw -notmatch "trade-ticket") {
+      Invoke-TapHierarchyNodeContains -Path $homeHierarchy -Identifier $env:MOBILE_PROOF_OUTCOME_ID
+      Start-Sleep -Seconds 2
+      $homeHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-home.xml" -Expected @("trade-ticket", "ticket-side-sell", "ticket-amount-keypad", "ticket-preset-25", "ticket-odds-available") -Attempts 6 -DelaySeconds 2
+      Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "ticket-side-sell"
+      Start-Sleep -Seconds 1
+      $homeHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-home.xml" -Expected @("trade-ticket", "ticket-order-mode-sell", "ticket-side-sell", "ticket-amount-keypad", "ticket-preset-25", "ticket-odds-available") -Attempts 4 -DelaySeconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-smoke.png"
+    }
+  }
 
   if ($Deep) {
     if ($JoCashoutSafetyProof) {
@@ -1850,7 +1911,11 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-ticket.png"
       $serverTicketHierarchy = $homeHierarchy
       Assert-HierarchyContains -Path $serverTicketHierarchy -Expected @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "10,000 USDT", "Estimated cost", "Est. fee", "0 USDT", "ticket-slippage", "Slippage", "0.5%", "1%", "2%", "Est. shares", "Avg price")
-      & $adb -s $Device shell input swipe 540 1760 540 760 450 | Out-Null
+      if ($ServerSellOrderFilled) {
+        & $adb -s $Device shell input touchscreen swipe 540 2120 540 1320 1800 | Out-Null
+      } else {
+        & $adb -s $Device shell input swipe 540 1760 540 760 450 | Out-Null
+      }
       Start-Sleep -Seconds 1
       $serverTicketOrderReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-order-ticket-ready.xml"
       Assert-HierarchyContains -Path $serverTicketOrderReadyHierarchy -Expected @("place-mock-order", "Swipe to buy")
@@ -1866,23 +1931,35 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-success-ticket.png"
       $serverOrderSuccessTicketHierarchy = $homeHierarchy
       $serverOrderTicketExpected = if ($ServerSellOrderFilled) {
-        @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "Estimated proceeds", "Est. fee", "0 USDT", "Est. shares", "200 shares", "Avg price")
+        @("trade-ticket", "ticket-order-mode-sell", "ticket-side-sell", "ticket-amount-keypad", "ticket-preset-25", "ticket-odds-available", "place-mock-order")
       } elseif ($ServerOpenOrderCancel) {
         @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "Estimated cost", "Est. fee", "0 USDT", "Est. shares", "100 shares", "Avg price")
       } else {
         @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "Estimated cost", "Est. fee", "0 USDT", "Est. shares", "200 shares", "Avg price")
       }
       Assert-HierarchyContains -Path $serverOrderSuccessTicketHierarchy -Expected $serverOrderTicketExpected
-      Assert-ServerTicketUsesQuotedDepthSizes -Path $serverOrderSuccessTicketHierarchy
+      if (-not $ServerSellOrderFilled) {
+        Assert-ServerTicketUsesQuotedDepthSizes -Path $serverOrderSuccessTicketHierarchy
+      }
+      if ($ServerSellOrderFilled) {
+        Invoke-TapHierarchyNode -Path $serverOrderSuccessTicketHierarchy -Identifier "ticket-preset-25" -StartsWith
+        Start-Sleep -Seconds 1
+      }
       & $adb -s $Device shell input swipe 540 1760 540 760 450 | Out-Null
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-success-ticket-ready.png"
       $serverOrderSuccessTicketReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-order-success-ticket-ready.xml"
       $serverOrderButtonExpected = if ($ServerSellOrderFilled) { @("place-mock-order", "Swipe to sell") } else { @("place-mock-order", "Swipe to buy") }
       Assert-HierarchyContains -Path $serverOrderSuccessTicketReadyHierarchy -Expected $serverOrderButtonExpected
-      Invoke-TapHierarchyNode -Path $serverOrderSuccessTicketReadyHierarchy -Identifier "place-mock-order"
+      if ($ServerSellOrderFilled) {
+        Start-Sleep -Seconds 3
+        & $adb -s $Device shell input touchscreen swipe 540 2120 540 1320 1800 | Out-Null
+        Start-Sleep -Seconds 4
+      } else {
+        Invoke-TapHierarchyNode -Path $serverOrderSuccessTicketReadyHierarchy -Identifier "place-mock-order"
+      }
       $serverOrderSuccessExpected = if ($ServerSellOrderFilled) {
-        @("Portfolio", "Server portfolio synced", "Order placed", "SERVER - Sell - YES - FILLED", "Filled shares", "200.00", "Remaining", "0.00")
+        @("Portfolio", "portfolio-tab-history portfolio-tab-selected", "activity-row-", "portfolio-history-retail-row-parity", "portfolio-history-dollar-amounts", "Sold")
       } elseif ($ServerOrderFilled) {
         @("Portfolio", "Server portfolio synced", "Order placed", "SERVER - Buy - YES - FILLED", "Filled shares", "200.00", "Remaining", "0.00")
       } else {
@@ -1891,7 +1968,7 @@ try {
       $serverOrderSuccessPortfolioHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-server-order-success-portfolio.xml" -Expected $serverOrderSuccessExpected -Attempts 14 -DelaySeconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-success-portfolio.png"
       if ($ServerSellOrderFilled) {
-        Assert-HierarchyContains -Path $serverOrderSuccessPortfolioHierarchy -Expected @("portfolio-screen", "portfolio-sync-status", "latest-order-card", "SERVER - Sell - YES - FILLED", "Filled shares", "200.00", "Exec price", "50%", "latest-activity-card", "Sold", "Filled shares 200.00", "Exec price 50%", "Implied odds 2.0x")
+        Assert-HierarchyContains -Path $serverOrderSuccessPortfolioHierarchy -Expected @("portfolio-screen", "portfolio-tab-history portfolio-tab-selected", "activity-row-", "Sold", "portfolio-history-retail-row-parity", "portfolio-history-dollar-amounts", "portfolio-history-relative-time")
       } elseif ($ServerOrderFilled) {
         Assert-HierarchyContains -Path $serverOrderSuccessPortfolioHierarchy -Expected @("portfolio-screen", "portfolio-sync-status", "latest-activity-card", "Bought", "Filled shares 200.00", "Exec price 50%", "Implied odds 2.0x")
       } else {

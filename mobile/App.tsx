@@ -384,6 +384,10 @@ export default function App() {
   const forceServerOrderProof = useRef(false);
   const forceServerOpenOrderProof = useRef(false);
   const forceServerOrderSide = useRef<"buy" | "sell">("buy");
+  const forceServerOrderEventId = useRef<string | null>(null);
+  const forceServerOrderMarketId = useRef<string | null>(null);
+  const forceServerOrderOutcomeId = useRef<string | null>(null);
+  const forceServerOrderFetchRequested = useRef(false);
   const shouldSyncProfilePreferences = ORDER_MODE === "server" && runtimeApiKey.length > 0;
   const accountPortfolioValue = useMemo(
     () => balance + positions.reduce((total, position) => total + portfolioPositionValue(position), 0),
@@ -617,8 +621,18 @@ export default function App() {
     const shouldForceRuntimePortfolioSync =
       url.includes("forceRuntimePortfolioSync=1") || (shouldForcePortfolio && Boolean(apiKeyMatch?.[1]));
     forceServerOrderProof.current = url.includes("forceServerOrderProof=1");
+    forceServerOrderFetchRequested.current = false;
     forceServerOpenOrderProof.current = url.includes("forceServerOpenOrderProof=1");
     forceServerOrderSide.current = url.includes("forceServerOrderSide=sell") ? "sell" : "buy";
+    forceServerOrderEventId.current = url.match(/[?&,]forceServerOrderEventId=([^&,]+)/)?.[1]
+      ? decodeURIComponent(url.match(/[?&,]forceServerOrderEventId=([^&,]+)/)?.[1] ?? "")
+      : null;
+    forceServerOrderMarketId.current = url.match(/[?&,]forceServerOrderMarketId=([^&,]+)/)?.[1]
+      ? decodeURIComponent(url.match(/[?&,]forceServerOrderMarketId=([^&,]+)/)?.[1] ?? "")
+      : null;
+    forceServerOrderOutcomeId.current = url.match(/[?&,]forceServerOrderOutcomeId=([^&,]+)/)?.[1]
+      ? decodeURIComponent(url.match(/[?&,]forceServerOrderOutcomeId=([^&,]+)/)?.[1] ?? "")
+      : null;
     forceServerCloseFixture.current = url.includes("forceServerCloseFixture=1");
     if (apiKeyMatch?.[1]) {
       setRuntimeApiKey(decodeURIComponent(apiKeyMatch[1]));
@@ -988,13 +1002,43 @@ export default function App() {
 
   useEffect(() => {
     if (!forceServerOrderProof.current || ORDER_MODE !== "server") return;
-    const event = events.find(
-      (item) =>
-        !worldCupEvents.some((mockEvent) => mockEvent.id === item.id) &&
-        item.markets.some((market) => market.outcomes.length > 0),
-    );
-    const market = event?.markets.find((item) => item.outcomes.length > 0);
-    const outcome = market?.outcomes[0];
+    const forcedEventId = forceServerOrderEventId.current;
+    const forcedMarketId = forceServerOrderMarketId.current;
+    const forcedOutcomeId = forceServerOrderOutcomeId.current;
+    const event = forcedEventId
+      ? events.find((item) => item.id === forcedEventId)
+      : events.find(
+          (item) =>
+            !worldCupEvents.some((mockEvent) => mockEvent.id === item.id) &&
+            item.markets.some((market) => market.outcomes.length > 0),
+        );
+    const eventHasForcedTarget =
+      Boolean(event) &&
+      (!forcedMarketId || Boolean(event?.markets.some((item) => item.id === forcedMarketId))) &&
+      (!forcedOutcomeId || Boolean(event?.markets.some((item) => item.outcomes.some((outcome) => outcome.id === forcedOutcomeId))));
+    if (forcedEventId && !eventHasForcedTarget && !forceServerOrderFetchRequested.current) {
+      forceServerOrderFetchRequested.current = true;
+      api.listWorldCupEvents({ limit: 50, leagueKey: "world_cup", mobileMvpMatches: true })
+        .then(async (payload) => {
+          if (!mounted.current) return;
+          const forced = payload.events.find((item) => item.id === forcedEventId);
+          if (!forced) return;
+          const normalized =
+            normalizeEventDetail(await api.getEvent(forced.slug)) ??
+            normalizeEventSummary(forced, forced.markets ?? []);
+          setEvents((current) => [normalized, ...current.filter((item) => item.id !== normalized.id)]);
+        })
+        .catch(() => {
+          forceServerOrderFetchRequested.current = false;
+        });
+      return;
+    }
+    const market = forcedMarketId
+      ? event?.markets.find((item) => item.id === forcedMarketId)
+      : event?.markets.find((item) => item.outcomes.length > 0);
+    const outcome = forcedOutcomeId
+      ? market?.outcomes.find((item) => item.id === forcedOutcomeId)
+      : market?.outcomes[0];
     if (!event || !market || !outcome) return;
     forceServerOrderProof.current = false;
     const ticketOutcome = forceServerOpenOrderProof.current

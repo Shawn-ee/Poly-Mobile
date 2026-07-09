@@ -841,7 +841,7 @@ export function Portfolio({
   }, [latestOrder?.id, latestOrder?.status, openOrders.length, positions.length]);
 
   useEffect(() => {
-    if (latestActivity?.action === "canceled" && openOrders.length === 0) {
+    if ((latestActivity?.action === "canceled" || latestActivity?.action === "sold" || latestActivity?.action === "closed") && openOrders.length === 0) {
       setActiveTab("history");
     }
   }, [latestActivity?.action, latestActivity?.id, openOrders.length]);

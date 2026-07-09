@@ -8826,3 +8826,9 @@ Temporary mock/static data:
 Future migration concern:
 
 - Cashout currently uses the dedicated `CashoutTicket`; future UI parity may consolidate cashout into the same generic Buy/Sell amount-entry ticket once sell sizing and full-position selection are unified.
+# Cycle RQ - Sell History Data Contract Notes
+
+- No schema migration was added.
+- Required existing server fields: event id/slug/title, market id/title/type, outcome id/name, order status/side/size/remaining/notional, position shares/reserved shares, activity action `sold`, history row amount and relative time.
+- Contract gap kept as P1: production liquidity and real market-maker/user-liquidity policy are not implemented; proof uses deterministic local liquidity shaped like backend order/position data.
+- Contract gap closed for this cycle: mobile proof route can carry forced event/market/outcome identity into the ticket/order proof instead of relying on whichever compact Home market loads first.
