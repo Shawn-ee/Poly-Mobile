@@ -1,0 +1,43 @@
+{
+  "cycle": "QY",
+  "scope": "Home/Live retail source cleanup",
+  "device": {
+    "adbId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model": "SM-S911U1"
+  },
+  "runtime": {
+    "backend": "http://172.16.200.14:3002",
+    "expoPort": 8309,
+    "marketDataMode": "server",
+    "orderMode": "server",
+    "package": "host.exp.exponent"
+  },
+  "result": "pass",
+  "checks": {
+    "typecheck": "passed",
+    "focusedTests": "passed",
+    "homeScreenVisible": true,
+    "homeEventCardVisible": true,
+    "homeOutcomeRailVisible": true,
+    "homeSourceAuditMarkerPreserved": true,
+    "homeVisibleWinnerPolymarketHoliwynLinesAbsent": true,
+    "homeVisibleMarketsPolymarketAbsent": true,
+    "homeVisibleHoliwynLinesAbsent": true,
+    "liveScreenVisible": true,
+    "liveVisibleWinnerPolymarketHoliwynLinesAbsent": true,
+    "liveVisibleMarketsPolymarketAbsent": true,
+    "liveVisibleHoliwynLinesAbsent": true,
+    "liveSourceMarkerPresent": false
+  },
+  "evidence": {
+    "homeXml": "docs/mobile/harness/cycle-QY-home-live-retail-source-cleanup/cycle-QY-home.xml",
+    "homeScreenshot": "docs/mobile/screenshots/cycle-QY-home-live-retail-source-cleanup/cycle-QY-home.png",
+    "liveXml": "docs/mobile/harness/cycle-QY-home-live-retail-source-cleanup/cycle-QY-live.xml",
+    "liveScreenshot": "docs/mobile/screenshots/cycle-QY-home-live-retail-source-cleanup/cycle-QY-live.png"
+  },
+  "notes": [
+    "Home keeps hidden event-card-source-readiness markers while removing visible source/debug copy.",
+    "Live had no live source-readiness marker in this proof because the current backend Live view did not expose a ready live event marker, but the visible source/debug copy was absent.",
+    "No backend route, order, schema, ticket, order book, chat, live stats, social, deposit, or withdraw behavior changed."
+  ]
+}

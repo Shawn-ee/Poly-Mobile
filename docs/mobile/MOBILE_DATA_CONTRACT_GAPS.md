@@ -8429,3 +8429,30 @@ Temporary mock/static data:
 Future migration concern:
 
 - Once native dev-build/APK proof replaces Expo Go for normal QA, proof launch should move from Expo-specific startup flags to app-owned deep links or test intents.
+
+## Cycle QY - Home/Live Retail Source Cleanup
+
+Closed or narrowed:
+
+- Home and Live no longer expose provider/source readiness as prominent tester-facing card copy.
+- Source readiness remains available as hidden audit markers for backend migration and proof.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed current-match Spread/Totals/Team Total line market ids, outcome ids, provider token ids, chart history, and prices.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch was introduced.
+
+Temporary mock/static data:
+
+- None added.
+
+Future migration concern:
+
+- When real provider-backed line markets exist, the hidden marker state can be used for audit without reintroducing visible debug copy on retail cards.

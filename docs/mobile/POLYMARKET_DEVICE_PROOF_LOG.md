@@ -2341,3 +2341,36 @@ Pass for QX proof launch reliability scope.
 
 Remaining gaps:
 Native Google OAuth callback/session/logout remains separate auth work. Expo Go launch URL forwarding remains unreliable on this S23 session, so deterministic proof starts should use `EXPO_PUBLIC_PROOF_INITIAL_TAB` after force-stopping stale runtimes.
+
+## Cycle QY - Home/Live Retail Source Cleanup
+
+Date:
+2026-07-09
+
+Reference device:
+No new Polymarket app reference-device action. This was a Holiwyn retail cleanup based on the Polymarket pattern that match cards focus on event identity and probabilities, not provider/debug source copy.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app/backend mode:
+Expo Go server mode. Backend `http://127.0.0.1:3002` remained healthy; mobile API used LAN backend `http://172.16.200.14:3002`. Expo ran on port `8309` and was stopped after proof.
+
+Holiwyn actions:
+Force-stopped stale `com.holiwyn.mobile` and `host.exp.exponent`, launched the current Expo Go runtime, captured Home, tapped Live, and captured Live.
+
+Evidence:
+- `docs/mobile/harness/cycle-QY-home-live-retail-source-cleanup/cycle-QY-home-live-retail-source-cleanup-proof.json`
+- `docs/mobile/screenshots/cycle-QY-home-live-retail-source-cleanup/cycle-QY-home.png`
+- `docs/mobile/harness/cycle-QY-home-live-retail-source-cleanup/cycle-QY-home.xml`
+- `docs/mobile/screenshots/cycle-QY-home-live-retail-source-cleanup/cycle-QY-live.png`
+- `docs/mobile/harness/cycle-QY-home-live-retail-source-cleanup/cycle-QY-live.xml`
+
+Smoke/tests:
+Mobile typecheck passed. Focused source-readiness and Search contract tests passed. S23 XML checks confirmed Home event card, outcome rail, hidden source marker, absent visible source/debug copy, and Live screen with absent visible source/debug copy.
+
+Result:
+Pass for QY Home/Live retail source cleanup scope.
+
+Remaining gaps:
+Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.

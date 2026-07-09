@@ -49,7 +49,7 @@ const isOutrightEvent = (event: Event) =>
 const tradableOutrightOutcome = (market: Market) =>
   market.outcomes.find((outcome) => outcome.side !== "no" && !/^no$/i.test(outcome.label)) ?? market.outcomes[0];
 
-const rawEventSourceReadiness = (event: Event, locale: Locale) => {
+const rawEventSourceReadiness = (event: Event) => {
   const summary = event.marketSourceSummary;
   if (!summary) return null;
   const winnerStatus = summary.regulationWinner?.status;
@@ -57,24 +57,18 @@ const rawEventSourceReadiness = (event: Event, locale: Locale) => {
   const lineFamilies = summary.lineMarkets?.families ?? [];
   if (winnerStatus === "provider-backed" && lineStatus === "contract-fixture") {
     return {
-      text:
-        locale === "zh"
-          ? "胜负: Polymarket / 盘口: 利云体育"
-          : "Winner: Polymarket / Holiwyn lines",
       accessibility: `home-card-source-provider-winner-local-lines home-card-source-local-test-fake-token line-families-${lineFamilies.join("-") || "none"}`,
       tone: "mixed" as const,
     };
   }
   if (winnerStatus === "provider-backed" && lineStatus === "provider-backed") {
     return {
-      text: locale === "zh" ? "市场: Polymarket" : "Markets: Polymarket",
       accessibility: "home-card-source-provider-backed",
       tone: "provider" as const,
     };
   }
   if (lineStatus === "contract-fixture") {
     return {
-      text: locale === "zh" ? "利云体育盘口" : "Holiwyn lines",
       accessibility: `home-card-source-local-lines home-card-source-local-test-fake-token line-families-${lineFamilies.join("-") || "none"}`,
       tone: "local" as const,
     };
@@ -83,18 +77,8 @@ const rawEventSourceReadiness = (event: Event, locale: Locale) => {
 };
 
 export const eventSourceReadiness = (event: Event, locale: Locale) => {
-  const readiness = rawEventSourceReadiness(event, locale);
-  if (!readiness || locale !== "zh") return readiness;
-  if (readiness.accessibility.includes("home-card-source-provider-winner-local-lines")) {
-    return { ...readiness, text: "\u80dc\u8d1f: Polymarket / \u76d8\u53e3: \u5229\u4e91\u4f53\u80b2" };
-  }
-  if (readiness.accessibility.includes("home-card-source-provider-backed")) {
-    return { ...readiness, text: "\u5e02\u573a: Polymarket" };
-  }
-  if (readiness.accessibility.includes("home-card-source-local-lines")) {
-    return { ...readiness, text: "\u5229\u4e91\u4f53\u80b2\u76d8\u53e3" };
-  }
-  return readiness;
+  void locale;
+  return rawEventSourceReadiness(event);
 };
 
 export function MarketList({
@@ -156,26 +140,19 @@ export function MarketList({
                     }}
                     style={[styles.saveButton, isSaved && styles.saveButtonActive]}
                   >
-                    <Text style={[styles.saveText, isSaved && styles.saveTextActive]}>{isSaved ? "★" : "☆"}</Text>
+                    <Text style={[styles.saveText, isSaved && styles.saveTextActive]}>{isSaved ? "*" : "+"}</Text>
                   </Pressable>
                 )}
               </View>
             </View>
             <Text style={styles.eventTitle}>{label(locale, event)}</Text>
             {sourceReadiness && (
-              <Text
+              <View
+                accessible
                 accessibilityLabel={`event-card-source-readiness-${event.id} ${sourceReadiness.accessibility}`}
-                numberOfLines={1}
-                style={[
-                  styles.sourceReadiness,
-                  sourceReadiness.tone === "provider" && styles.sourceReadinessProvider,
-                  sourceReadiness.tone === "mixed" && styles.sourceReadinessMixed,
-                  sourceReadiness.tone === "local" && styles.sourceReadinessLocal,
-                ]}
+                style={styles.sourceReadinessHidden}
                 testID={`event-card-source-readiness-${event.id}`}
-              >
-                {sourceReadiness.text}
-              </Text>
+              />
             )}
             {outrightSelections.length > 0 ? (
               <View
@@ -271,7 +248,7 @@ export function MarketList({
             {winner && winner.outcomes.map((outcome) => (
               <View key={outcome.id} style={styles.teamRow}>
                 <Text style={styles.teamName}>
-                  {outcome.label === "Draw" ? "🤝" : event.teams.find((team) => team.name === outcome.label)?.flag ?? "•"} {label(locale, outcome)}
+                  {outcome.label === "Draw" ? "Draw" : event.teams.find((team) => team.name === outcome.label)?.flag ?? "*"} {label(locale, outcome)}
                 </Text>
                 <Text style={styles.oddsText}>{(100 / outcome.probability).toFixed(1)}x</Text>
                 <Pressable
@@ -304,10 +281,7 @@ const styles = StyleSheet.create({
   saveText: { color: "#94a3b8", fontSize: 19, fontWeight: "900" },
   saveTextActive: { color: "#101827" },
   eventTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginBottom: 5 },
-  sourceReadiness: { color: "#94a3b8", fontSize: 10, fontWeight: "800", marginBottom: 3 },
-  sourceReadinessProvider: { color: "#86efac" },
-  sourceReadinessMixed: { color: "#fde68a" },
-  sourceReadinessLocal: { color: "#fca5a5" },
+  sourceReadinessHidden: { width: 1, height: 1, opacity: 0.01, overflow: "hidden" },
   teamRow: { display: "none", height: 0, opacity: 0, overflow: "hidden", flexDirection: "row", alignItems: "center", gap: 10, marginTop: 0 },
   teamName: { flex: 1, color: "#f8fafc", fontSize: 18, fontWeight: "800" },
   oddsText: { color: "#a7b1c2", width: 48, textAlign: "right", fontSize: 17, fontWeight: "800" },

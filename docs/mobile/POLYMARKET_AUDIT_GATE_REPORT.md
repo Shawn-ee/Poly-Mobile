@@ -6749,6 +6749,33 @@ Remaining P1:
 - Native Google OAuth callback/session/logout remains separate auth work.
 - Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
 
+## Cycle QY - Home/Live Retail Source Cleanup
+
+Result: Pass for QY scope.
+
+Checked:
+
+- Home match cards no longer visibly show `Winner: Polymarket / Holiwyn lines`, `Markets: Polymarket`, or `Holiwyn lines`.
+- Home still shows event cards and retail outcome rails.
+- Home still exposes hidden `event-card-source-readiness` markers for audit.
+- Live screen no longer visibly shows source/debug copy.
+- No backend route, order flow, schema, provider, Event Detail, ticket, Portfolio data, order book, chat, live stats, social, deposit, or withdraw behavior was changed.
+
+Pass evidence:
+
+- `docs/mobile/audits/cycle-QY-home-live-retail-source-cleanup.md`
+- `docs/mobile/harness/cycle-QY-home-live-retail-source-cleanup/cycle-QY-home-live-retail-source-cleanup-proof.json`
+- `docs/mobile/harness/cycle-QY-home-live-retail-source-cleanup/cycle-QY-home.xml`
+- `docs/mobile/harness/cycle-QY-home-live-retail-source-cleanup/cycle-QY-live.xml`
+- `docs/mobile/screenshots/cycle-QY-home-live-retail-source-cleanup/cycle-QY-home.png`
+- `docs/mobile/screenshots/cycle-QY-home-live-retail-source-cleanup/cycle-QY-live.png`
+
+Unresolved P0 gaps: 0 for QY scope.
+
+Remaining P1:
+
+- Real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
 ## Cycle QW - Portfolio Google Badge Visibility
 
 Result: Pass for QW scope.
