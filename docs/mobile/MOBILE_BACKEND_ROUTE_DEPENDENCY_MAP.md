@@ -2,6 +2,21 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle QM - Provider Chart Freshness Copy
+
+Cycle QM changes no backend route or schema. It documents and consumes the existing Event Detail chart-history contract more clearly in the mobile UI.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail chart/probability display | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile event browse | Event slug `argentina-vs-egypt` | `chartHistory`, `chartHistorySource`, `chartHistoryStatus`, `chartHistoryLastUpdated`, selected outcome probabilities | Existing provider snapshot/chart-history tables behind the route; no schema change | None for provider winner chart history in this proof | Fresh/current live chart status for an active provider event remains future work. |
+| Chart history route proof | Existing mobile/provider chart-history route used by `scripts/prove_current_match_polymarket_chart_history.ts` | GET/runtime script | Local backend env/API setup | Event slug only | Polymarket CLOB source, history point counts, latest provider timestamp, route status | Existing provider market/outcome snapshot models | None | Provider history may legitimately be stale when Polymarket has no newer points for the ended/old event. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-QM-provider-chart-freshness/cycle-QM-current-match-polymarket-chart-history.json`
+- `docs/mobile/harness/cycle-QM-provider-chart-freshness/cycle-QM-current-match-polymarket-chart-history-after-copy.json`
+- `docs/mobile/harness/cycle-QM-provider-chart-freshness/cycle-QM-current-mvp-s23-visible-flow.json`
+
 ## Cycle QL - Provider Line Structural Inspection
 
 Cycle QL changes no backend route or schema. It refreshes proof for the current backend contracts and hardens the S23 proof harness.

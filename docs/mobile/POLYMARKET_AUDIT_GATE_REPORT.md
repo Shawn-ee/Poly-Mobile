@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle QM
+
+Gate status: Pass for focused provider chart freshness copy; not a pass for real-time live chart freshness or provider-backed line-market parity.
+
+Scope: Event Detail visible chart/probability status copy for `argentina-vs-egypt` when the route has real Polymarket CLOB history but the provider timestamp is stale.
+
+Decision:
+
+- P0 failed: 0 for focused QM scope.
+- Implemented change: Event Detail shows stale Polymarket CLOB chart history as visible `History` instead of tester-facing `Stale`.
+- Runtime finding: provider chart proof still reports Polymarket CLOB source with route status `stale`, latest provider timestamp `2026-07-07T18:30:09.000Z`, 720 live-detail chart points, and 1,930 chart-route history points.
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`; Event Detail XML contains `Polymarket chart - History`, `chart-status-stale`, `chart-source-polymarket-clob-prices-history`, and `chart-provider-status-visible`.
+- P1 remaining: real fresh/current chart status for active provider events; real provider-backed Spread/Totals/Team Total line markets.
+- Evidence: `docs/mobile/audits/cycle-QM-provider-chart-freshness.md`; S23 proof `docs/mobile/harness/cycle-QM-provider-chart-freshness/cycle-QM-current-mvp-s23-visible-flow.json`.
+
 ## Cycle QL
 
 Gate status: Pass for provider-line structural inspection and S23 proof-harness hardening; fail remains for real provider-backed line parity.
