@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle RC - Portfolio Account Login Clarity
+
+Cycle RC changes no backend route or schema. It makes the existing Portfolio auth entry visually clearer and preserves the current auth-start route.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio full-width Google login row | `/api/auth/google/start?returnTo=/portfolio` through `Linking.openURL(GOOGLE_AUTH_URL)` | Browser GET | Server auth route owns OAuth policy | None from mobile before browser open | None before callback/session completion | Existing backend auth/user/session models | Demo/fake-token trading remains available without sign-in | Full native OAuth callback/session/logout proof remains P1. |
+| Portfolio avatar/settings gear Account entry | None directly | UI navigation only | None | None | None | None | None | Account screen remains a local tab; no server profile/session dependency added. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-RC-portfolio-account-login-clarity/cycle-RC-portfolio-account-login-clarity-proof.json`
+
 ## Cycle RB - Event Chart History Readout
 
 Cycle RB changes no backend route or schema. It consumes the existing Event Detail chart-history contract more directly in the visible chart readout.

@@ -2,6 +2,39 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle RC - Portfolio Account Login Clarity
+
+Feature/page worked on:
+
+- Portfolio account/login header.
+
+Frontend/backend touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/src/__tests__/portfolioSettingsContract.test.ts`
+- No backend route, provider service, Prisma schema, order logic, Trade Ticket, Event Detail, orderbook UI, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- Existing `Portfolio` props `openAccount` and `openGoogleSignIn` remain unchanged.
+- Existing `openGoogleSignIn()` in `mobile/App.tsx` remains the browser/deep-link launcher for Google auth.
+
+User interactions supported:
+
+- User opens Portfolio and can tap the top-left avatar/name to enter Account.
+- User can tap the new top-right settings gear to enter Account.
+- User can tap the full-width `Google login` row to launch the existing Google auth flow.
+
+State transitions:
+
+- `mainTab=portfolio` -> `mainTab=account` when avatar/name or gear is tapped.
+- `mainTab=portfolio` -> external Chrome/auth surface when `Google login` is tapped.
+
+Known limitations:
+
+- Full native Google OAuth callback/session/logout proof remains P1.
+- This cycle does not change portfolio positions, orders, history, or ticket/order behavior.
+
 ## Cycle RB - Event Chart History Readout
 
 Feature/page worked on:
