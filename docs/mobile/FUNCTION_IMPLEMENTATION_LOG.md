@@ -2,6 +2,38 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle RD - Trade Ticket Swipe Motion
+
+Feature/page worked on:
+
+- Trade Ticket swipe-to-buy/sell interaction.
+
+Frontend/backend touched:
+
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/src/__tests__/tradeTicketSwipeMotionContract.test.ts`
+- No backend route, provider service, Prisma schema, order logic, orderbook UI, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- `SwipeSubmitControl()` visual progress mapping.
+- Existing `placeOrder()` call path and threshold logic remain unchanged.
+
+User interactions supported:
+
+- User opens a ticket, enters an amount, and sees a centered handle in the swipe area.
+- User drags upward and the handle has a larger progress-linked vertical travel range.
+
+State transitions:
+
+- `swipeProgress=0` still starts idle.
+- Dragging still moves through waiting/armed/submitting states using the existing threshold logic.
+
+Known limitations:
+
+- S23 evidence includes screenshot/XML plus source contract; full gesture video proof remains better future evidence.
+- Ticket header source pill can still clip at the far right on S23 and remains P1.
+
 ## Cycle RC - Portfolio Account Login Clarity
 
 Feature/page worked on:

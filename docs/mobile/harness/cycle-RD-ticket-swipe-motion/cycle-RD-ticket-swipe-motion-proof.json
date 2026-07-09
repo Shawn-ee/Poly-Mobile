@@ -1,0 +1,29 @@
+{
+  "cycle": "RD",
+  "feature": "Trade Ticket swipe motion",
+  "device": {
+    "id": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model": "SM_S911U1"
+  },
+  "result": "pass",
+  "changedVisibleFlow": "Trade Ticket swipe-to-buy/sell handle is now centered in the red/pink swipe zone and has a larger progress-linked vertical travel range.",
+  "backendApiChanged": false,
+  "routesUsed": [],
+  "proof": {
+    "initialScreenshot": "docs/mobile/screenshots/cycle-RD-ticket-swipe-motion/cycle-RD-ticket-swipe-initial.png",
+    "initialHierarchy": "docs/mobile/harness/cycle-RD-ticket-swipe-motion/cycle-RD-ticket-swipe-initial.xml",
+    "readyScreenshot": "docs/mobile/screenshots/cycle-RD-ticket-swipe-motion/cycle-RD-ticket-swipe-ready.png",
+    "readyHierarchy": "docs/mobile/harness/cycle-RD-ticket-swipe-motion/cycle-RD-ticket-swipe-ready.xml",
+    "draggingScreenshot": "docs/mobile/screenshots/cycle-RD-ticket-swipe-motion/cycle-RD-ticket-swipe-dragging.png",
+    "afterDragHierarchy": "docs/mobile/harness/cycle-RD-ticket-swipe-motion/cycle-RD-ticket-after-drag.xml"
+  },
+  "validation": {
+    "typecheck": "pass",
+    "focusedMobileContract": "pass",
+    "s23Proof": "pass"
+  },
+  "limitations": [
+    "Legacy broad smoke failed on an old ticket-settings expectation after capturing the ticket screen; focused S23 evidence was retained.",
+    "Ticket header source pill can still clip at the far right on S23 and should be handled in a later ticket-header density cycle."
+  ]
+}
