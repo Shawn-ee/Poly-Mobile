@@ -7280,3 +7280,15 @@ Remaining P1:
 - Test proof: mobile typecheck passed and focused auth-return tests passed.
 - Unresolved P0: 0 for RX scope.
 - Remaining P1: real interactive Google consent on S23, logout/token revocation, and provider-backed current-match line markets.
+
+# Cycle RY Audit Gate - Provider Breadth Runtime Cleanup
+
+- Scope: mobile-visible provider breadth cleanup, Event Detail chart metadata removal, and S23 provider-backed winner journey.
+- P0 result: PASS for RY scope.
+- Backend proof: `docs/mobile/harness/cycle-RY-provider-breadth-runtime/cycle-RY-provider-breadth-runtime-route.json` passes. Broad World Cup provider browsing returns one provider-backed match and three provider-backed futures on the first page; strict Local MVP route remains match-only.
+- Android proof: passed on Samsung S23 `SM-S911U1`.
+- Visible proof: `docs/mobile/harness/cycle-RY-provider-breadth-runtime/cycle-RY-provider-winner-s23-visible-flow.json` reports Home current match, provider-backed composed Regulation Winner, hidden order book/chat, ticket provider winner preservation, swipe submit, Portfolio position, and filled History.
+- Negative proof: Home XML rejects `Provider Breadth`, `EL-A Provider Breadth`, and `mobile-el-a-provider-breadth`; Event Detail XML rejects `event-detail-price-chart`, chart source/status markers, order book, and chat.
+- Test proof: focused mobile contract tests passed and mobile typecheck passed.
+- Unresolved P0: 0 for RY scope.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets; interactive Google consent; production liquidity/public market-maker policy.
