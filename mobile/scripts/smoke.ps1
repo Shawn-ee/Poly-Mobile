@@ -550,6 +550,11 @@ try {
       $env:EXPO_PUBLIC_API_KEY = "pk_test_mobile_harness"
     }
   }
+  if ($SearchSort) {
+    $env:EXPO_PUBLIC_API_BASE_URL = "http://${ExpoHost}:3002"
+    $env:EXPO_PUBLIC_MARKET_DATA_MODE = "server"
+    Remove-Item Env:\EXPO_PUBLIC_ORDER_MODE -ErrorAction SilentlyContinue
+  }
   if ($LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $LocalMvpHomeRouteServerFilledFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow) {
     $env:EXPO_PUBLIC_API_BASE_URL = $BackendBaseUrl
     $env:EXPO_PUBLIC_MARKET_DATA_MODE = "server"
@@ -669,6 +674,8 @@ try {
   } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
     $liveReset = if ($LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { ",forceResetState=1" } else { "" }
     "exp://${ExpoHost}:$Port/--/?forceLive=1$liveReset"
+  } elseif ($SearchSort) {
+    "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceSearch=1"
   } elseif ($SearchQuery -or $SearchClearQuery) {
     "exp://${ExpoHost}:$Port/--/?forceSearchQuery=zzzz"
   } elseif ($HomeSearchQuery -or $HomeClearSearch) {
@@ -784,6 +791,8 @@ try {
     @("Portfolio", "portfolio-sync-status", "World Cup winner", "France", "portfolio-account-entry-google")
   } elseif ($SearchQuery -or $SearchClearQuery) {
     @("Holiwyn", "Search World Cup markets", "zzzz", "0 results")
+  } elseif ($SearchSort) {
+    @("Holiwyn", "Search World Cup markets", "Top results", "search-result-")
   } elseif ($HomeSearchQuery -or $HomeClearSearch) {
     @("Holiwyn", "Search World Cup markets", "clean", "Games")
   } elseif ($AccountPersistence) {
@@ -3265,12 +3274,15 @@ try {
     }
 
     if ($SearchSort) {
-      Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "holiwyn-search-tab"
-      Start-Sleep -Seconds 1
-      $searchSortScreenHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search-sort-screen.xml"
+      $searchSortScreenHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-search-sort-screen.xml" -Expected @("Search World Cup markets", "Top results", "search-result-") -RestartUrl $launchUrl -Attempts 8 -DelaySeconds 3
       Save-Screenshot -Name "cycle-current-holiwyn-search-no-filter-sort.png"
-      Assert-HierarchyContains -Path $searchSortScreenHierarchy -Expected @("Search World Cup markets", "Top results", "search-filter-controls-hidden-local-mvp", "search-sort-controls-hidden-local-mvp")
-      Assert-HierarchyDoesNotContain -Path $searchSortScreenHierarchy -Unexpected @("Filter", "search-filter-sheet", "search-filter-panel", "search-filter-live", "search-filter-saved", "search-sort-live", "Popular", "Live first")
+      Assert-HierarchyContains -Path $searchSortScreenHierarchy -Expected @("Search World Cup markets", "Top results", "search-result-", "search-filter-controls-hidden-local-mvp", "search-sort-controls-hidden-local-mvp")
+      Assert-HierarchyDoesNotContain -Path $searchSortScreenHierarchy -Unexpected @("search-filter-sheet", "search-filter-panel", "search-filter-live", "search-filter-saved", "search-sort-live", "Popular", "Live first")
+      Invoke-TapHierarchyNode -Path $searchSortScreenHierarchy -Identifier "search-result-" -StartsWith
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-search-open-result.png"
+      $searchOpenResultHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search-open-result.xml"
+      Assert-HierarchyContains -Path $searchOpenResultHierarchy -Expected @("Game Lines", "Player Props")
       return
     }
 
