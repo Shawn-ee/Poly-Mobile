@@ -7330,3 +7330,17 @@ Remaining P1:
 - Test proof: mobile typecheck passed and focused Google/logout tests passed.
 - Unresolved P0: 0 for SB scope.
 - Remaining P1: real interactive Google consent on S23, provider-backed current-match line markets, and production liquidity/public market-maker policy.
+
+# Cycle SC Audit Gate - Event Detail Chart Removal Hardening
+
+- Scope: Local MVP Event Detail market page.
+- P0 result: PASS for SC scope.
+- Implementation proof: `mobile/src/components/EventDetail.tsx` no longer contains the probability chart renderer, chart point state, chart route-state UI, or chart styles.
+- Harness proof update: `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1` now fails if Event Detail XML contains `event-detail-price-chart`, `event-detail-chart-route-state`, or `Chart selection`.
+- Android proof: passed on Samsung S23 `SM-S911U1`.
+- Visible proof: `docs/mobile/screenshots/cycle-SC-event-detail-chart-removal/cycle-SC-current-mvp-detail-top.png` and `docs/mobile/screenshots/cycle-SC-event-detail-chart-removal/cycle-SC-current-mvp-lines.png` show Event Detail without the market-page chart while preserving Game Lines.
+- XML proof: `docs/mobile/harness/cycle-SC-event-detail-chart-removal/cycle-SC-current-mvp-detail-top.xml` and line-attempt XML reject chart markers, order book, and chat.
+- Journey proof: `docs/mobile/harness/cycle-SC-event-detail-chart-removal/cycle-SC-current-mvp-s23-visible-flow.json` passes Home -> Live -> Event Detail -> line ticket -> fake-token buy -> Portfolio -> cashout sell -> History.
+- Test proof: mobile typecheck passed and 13 Event Detail/mobile proof contract test files passed.
+- Unresolved P0: 0 for SC scope.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets and production liquidity/public market-maker policy.

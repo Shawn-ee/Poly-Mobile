@@ -2797,3 +2797,12 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Screenshots: `docs/mobile/screenshots/cycle-SB-secure-auth-storage/cycle-SB-google-auth-return-portfolio.png`, `docs/mobile/screenshots/cycle-SB-secure-auth-storage/cycle-SB-google-auth-persisted-portfolio.png`, `docs/mobile/screenshots/cycle-SB-secure-auth-storage/cycle-SB-google-auth-account-signed-out.png`.
 - XML: `docs/mobile/harness/cycle-SB-secure-auth-storage/cycle-SB-google-auth-return-portfolio.xml`, `docs/mobile/harness/cycle-SB-secure-auth-storage/cycle-SB-google-auth-persisted-portfolio.xml`, `docs/mobile/harness/cycle-SB-secure-auth-storage/cycle-SB-google-auth-account-connected.xml`, `docs/mobile/harness/cycle-SB-secure-auth-storage/cycle-SB-google-auth-account-signed-out.xml`.
 - Result: PASS. Summary reports persisted credential after restart and `logoutClearsPersistedCredential=true`; signed-out XML shows `Continue with Google`.
+
+# Cycle SC - S23 Event Detail Chart-Free Local MVP Proof
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.
+- Flow: Home -> Live -> Argentina vs Egypt Event Detail -> Game Lines -> line ticket -> `$25` swipe buy -> Portfolio -> Cash out -> generic Sell ticket -> swipe sell -> Portfolio History.
+- Proof summary: `docs/mobile/harness/cycle-SC-event-detail-chart-removal/cycle-SC-current-mvp-s23-visible-flow.json`.
+- Screenshots: `docs/mobile/screenshots/cycle-SC-event-detail-chart-removal/cycle-SC-current-mvp-home.png`, `docs/mobile/screenshots/cycle-SC-event-detail-chart-removal/cycle-SC-current-mvp-detail-top.png`, `docs/mobile/screenshots/cycle-SC-event-detail-chart-removal/cycle-SC-current-mvp-lines.png`, `docs/mobile/screenshots/cycle-SC-event-detail-chart-removal/cycle-SC-current-mvp-ticket-ready.png`, `docs/mobile/screenshots/cycle-SC-event-detail-chart-removal/cycle-SC-current-mvp-line-cashout-history.png`.
+- XML: `docs/mobile/harness/cycle-SC-event-detail-chart-removal/cycle-SC-current-mvp-detail-top.xml`, `docs/mobile/harness/cycle-SC-event-detail-chart-removal/cycle-SC-current-mvp-lines-attempt-*.xml`, `docs/mobile/harness/cycle-SC-event-detail-chart-removal/cycle-SC-current-mvp-line-cashout-history.xml`.
+- Result: PASS. Summary reports chart-free Event Detail assertions, hidden order book/chat, ticket line preservation, filled History, cashout ticket opened, sell submitted, and cashout History visible.

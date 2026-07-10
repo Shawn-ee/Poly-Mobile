@@ -4115,3 +4115,9 @@ Cycle OW implementation notes:
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Secure persisted mobile credential | `/api/auth/google/callback`; `/api/profile/summary`; `/api/auth/mobile/logout` | Callback/deep link plus API GET/POST | Backend-created Holiwyn mobile API key | Deep-link `apiKey=<redacted>` from backend callback; no route body for storage | Stored API key loads server profile and is removed on logout | Existing `User`, `ApiCredential`; no schema change | If SecureStore is unavailable, mobile falls back to legacy AsyncStorage after attempting migration | Real interactive Google consent remains future proof work. |
+
+# Cycle SC - Event Detail Chart Removal Hardening
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Chart-free Local MVP Event Detail | `/api/mobile/events/:slug/live-detail`; `/api/markets/:marketId/quote`; `/api/orders`; `/api/portfolio`; `/api/portfolio/history` | GET/POST | Public viewing; mobile API key for server-mode order/Portfolio routes | Event slug, selected market/outcome/line identity, fake-token order body | Event/market/line rows, quote/ticket pricing, order result, Portfolio position/history | Existing `Event`, `Market`, `Outcome`, `Order`, `Trade`, `Position`, `UserBalance`, `ApiCredential` | Local/mock mode unchanged. Chart UI removal does not change data mapping. | Real provider-backed current-match Spread/Totals/Team Total markets remain unavailable. Chart history data is not a Local MVP UI dependency. |
