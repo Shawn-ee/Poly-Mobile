@@ -1323,6 +1323,12 @@ For every UI element or interaction, answer:
 | S23 proof should fail if chart markers return | P0 | Verified | Current MVP proof script now rejects `event-detail-price-chart`, `event-detail-chart-route-state`, and `Chart selection` in Event Detail top/lines XML. | `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1` |
 | Current match has no provider-backed Spread/Totals/Team Total markets | P1 | Open | SC does not change provider breadth; line rows remain contract fixtures until attach-ready Polymarket line markets exist. | Provider readiness notes |
 
+# Cycle SV - Event Detail Chart-Free MVP Cleanup
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Stale chart layout code remained after chart removal | P0 | Verified | Removed the unused `liveChartBlock` style, revalidated the chart-free Event Detail source contract, and passed S23 Local MVP proof. | `mobile/src/components/EventDetail.tsx`; `mobile/src/__tests__/eventDetailChartInteractionContract.test.ts`; `mobile/src/__tests__/eventDetailChartStatusCopy.test.ts`; `docs/mobile/audits/cycle-SV-event-detail-chart-free-mvp.md`; `docs/mobile/harness/cycle-SV-event-detail-chart-free-mvp/cycle-SV-current-mvp-s23-visible-flow.json` |
+
 # Cycle SD - Account Fake-Token Funding Copy and Google Credential Alignment
 
 | Gap | Priority | Status | Note | Evidence |

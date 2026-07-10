@@ -11930,3 +11930,12 @@ Known limitations:
 - User interactions supported: visible open-order rows now use a denser Polymarket-like structure with market icon, Buy/Sell pill, event/market context, limit price, order value, remaining shares, potential payout/proceeds, and the existing Cancel action.
 - State transitions: unchanged. Existing fake-token open-order state drives the denser Orders row; tapping a row still expands the detail panel and Cancel still calls the existing cancel path.
 - Known limitations: this improves Orders row density only. Full real Polymarket account/wallet parity and native Google OAuth manual proof remain separate gaps.
+
+# Cycle SV - Event Detail Chart-Free MVP Cleanup
+
+- Feature/page worked on: Event Detail market page top area for the Local MVP retail betting flow.
+- Frontend components touched: `mobile/src/components/EventDetail.tsx`, `mobile/src/__tests__/eventDetailChartInteractionContract.test.ts`, `mobile/src/__tests__/eventDetailChartStatusCopy.test.ts`.
+- Backend/API routes touched: none. Existing market/event, chart-history, and provider routes remain available internally, but chart rendering is not part of the default Local MVP mobile event page.
+- User interactions supported: Event Detail keeps the simplified flow focused on team probabilities, user position, outcome buttons, Game Lines, line selectors, Trade Ticket, and Portfolio/history. The removed chart surface cannot intercept taps or distract from the betting flow.
+- State transitions: unchanged. Market/outcome/line identity still flows from Event Detail rows and outcome buttons into the Trade Ticket and then Portfolio/history.
+- Known limitations: this intentionally does not implement Polymarket chart-touch parity. Chart/history data contracts remain backend/internal for future use, while the current MVP hides that surface by product decision.

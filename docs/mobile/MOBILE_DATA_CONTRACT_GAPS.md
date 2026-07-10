@@ -9097,3 +9097,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new Orders row fields for this cycle.
 - Temporary mock/static data: none added.
 - Future migration concern: if production Orders needs partial-fill timeline, expiry, or venue/source labels, add explicit backend fields instead of encoding them into display strings.
+
+# Cycle SV - Event Detail Chart-Free MVP Cleanup Notes
+
+- No schema migration was added.
+- Closed or narrowed: the Local MVP Event Detail page is explicitly chart-free, and the last unused chart layout style was removed so chart UI is less likely to drift back into the retail betting page.
+- Route mismatch: none. Existing chart-history/provider fields may still exist in backend payloads, but the default mobile MVP does not consume them for Event Detail rendering.
+- Fields Holiwyn still needs but backend does not fully provide: no new fields for chart removal. Rich chart-history contracts remain future/internal and should not block Home -> Event Detail -> line ticket -> fake-token order -> Portfolio/history.
+- Temporary mock/static data: none added.
+- Future migration concern: if charts return later, they should be reintroduced behind a new acceptance gate and backed by explicit route/source/status fields rather than dormant placeholder UI.
