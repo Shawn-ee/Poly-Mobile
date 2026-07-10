@@ -4,7 +4,9 @@ $MobileRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 $AppPath = Join-Path $MobileRoot "App.tsx"
 $ApiPath = Join-Path $MobileRoot "src\api.ts"
 $EnvPath = Join-Path $MobileRoot ".env.example"
+$ReadmePath = Join-Path $MobileRoot "README.md"
 $RepoRoot = Resolve-Path (Join-Path $MobileRoot "..")
+$RootEnvExamplePath = Join-Path $RepoRoot ".env.example"
 $GoogleStartPath = Join-Path $RepoRoot "src\app\api\auth\google\start\route.ts"
 $GoogleCallbackPath = Join-Path $RepoRoot "src\app\api\auth\google\callback\route.ts"
 $MobileReturnAllowlistPath = Join-Path $RepoRoot "src\lib\mobileReturnUrl.ts"
@@ -12,6 +14,8 @@ $MobileReturnAllowlistPath = Join-Path $RepoRoot "src\lib\mobileReturnUrl.ts"
 $app = Get-Content -Raw -LiteralPath $AppPath
 $api = Get-Content -Raw -LiteralPath $ApiPath
 $envExample = Get-Content -Raw -LiteralPath $EnvPath
+$readme = Get-Content -Raw -LiteralPath $ReadmePath
+$rootEnvExample = Get-Content -Raw -LiteralPath $RootEnvExamplePath
 $googleStart = Get-Content -Raw -LiteralPath $GoogleStartPath
 $googleCallback = Get-Content -Raw -LiteralPath $GoogleCallbackPath
 $mobileReturnAllowlist = Get-Content -Raw -LiteralPath $MobileReturnAllowlistPath
@@ -32,7 +36,10 @@ $checks = @(
   @{ Name = "Backend allowlists Holiwyn and dev Expo return links"; Pass = $mobileReturnAllowlist -match 'url\.protocol === "holiwyn:"' -and $mobileReturnAllowlist -match 'url\.protocol === "exp:"' -and $mobileReturnAllowlist -match 'nodeEnv !== "production"' },
   @{ Name = "Env example uses Android emulator host backend"; Pass = $envExample -match "EXPO_PUBLIC_API_BASE_URL=http://10\.0\.2\.2:3002" },
   @{ Name = "Env example keeps Google Cloud credentials off mobile"; Pass = $envExample -match "Google Cloud client IDs, secrets, and Google tokens must stay on the backend" },
-  @{ Name = "Env example declares order mode"; Pass = $envExample -match "EXPO_PUBLIC_ORDER_MODE=mock" }
+  @{ Name = "Env example declares order mode"; Pass = $envExample -match "EXPO_PUBLIC_ORDER_MODE=mock" },
+  @{ Name = "Root env example owns the shared Poly Google OAuth credential"; Pass = $rootEnvExample -match "GOOGLE_CLIENT_ID" -and $rootEnvExample -match "GOOGLE_CLIENT_SECRET" -and $rootEnvExample -match "NEXTAUTH_URL controls the callback URL sent to Google" },
+  @{ Name = "Mobile README documents reuse of the same backend Google Cloud OAuth client"; Pass = $readme -match "same backend-owned Google Cloud OAuth flow" -and $readme -match "same Google Cloud OAuth client already configured for the Poly/Holiwyn backend" },
+  @{ Name = "Mobile README says mobile receives only a Holiwyn API credential"; Pass = $readme -match "mobile receives only .*Holiwyn API credential" -and $readme -match "Do not add Google Cloud client secrets.*Google access tokens to the mobile app" }
 )
 
 $failed = $checks | Where-Object { -not $_.Pass }

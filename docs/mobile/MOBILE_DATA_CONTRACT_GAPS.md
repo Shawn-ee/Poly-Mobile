@@ -9196,3 +9196,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new fields for this cleanup.
 - Temporary mock/static data: removed placeholder inline order book/graph/about display values rather than adding new mock data.
 - Future migration concern: keep advanced chart/order book/about experiences out of the Local MVP Event Detail path unless a future audit-gated milestone explicitly reintroduces them with real route/data contracts.
+
+# Cycle TH - Google Auth Poly Credential Setup Notes
+
+- No schema migration was added.
+- Closed or narrowed: Google login setup is now explicitly documented and checked as a backend-owned Poly/Holiwyn OAuth flow. Mobile does not need a separate Google OAuth client secret or Google token.
+- Route mismatch: none. `/api/auth/google/start` and `/api/auth/google/callback` already support mobile return links and mobile API credential creation.
+- Fields Holiwyn still needs but backend does not fully provide: none for the auth handoff. The mobile app needs only the returned Holiwyn API credential plus profile/Portfolio route responses.
+- Temporary mock/static data: none added.
+- Future migration concern: production native builds should use the `holiwyn://auth/google` return scheme and the backend callback URL registered in the same Google Cloud OAuth client. Expo return links must remain development/test only.
