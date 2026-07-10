@@ -43,7 +43,7 @@ Reference docs:
 | --- | --- | --- | --- |
 | LMVP-GP-P1-01 | Real provider-backed Spread/Totals/Team Total current-match line markets remain unavailable from Polymarket Gamma. | Open | Continue Local MVP with explicit contract fixtures, or configure/review an approved secondary provider contract. |
 | LMVP-GP-P1-02 | Full real Google consent proof on S23 remains manual/setup-dependent. | Open | Run when backend auth origin and Google Cloud callback URL are reachable and registered. |
-| LMVP-GP-P1-03 | More closed/suspended/unavailable market states need visible Android proof. | In progress | Cycle UE added a visible read-only Trade Ticket state and source/typecheck proof; S23 proof is still required because no Android device was attached. |
+| LMVP-GP-P1-03 | More closed/suspended/unavailable market states need visible Android proof. | In progress | Cycle UE added a visible read-only Trade Ticket state. Cycle UF added `forceUnavailableTradeTicket=1` so S23 proof can open the state deterministically; device proof is still required because no Android device was attached. |
 
 ## Audit Gate Notes
 
