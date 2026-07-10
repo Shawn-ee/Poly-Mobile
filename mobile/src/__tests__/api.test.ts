@@ -70,36 +70,6 @@ describe("Holiwyn mobile API client", () => {
     expect(headers.get("Authorization")).toBe("Bearer test-api-key");
   });
 
-  test("loads range-aware market chart history", async () => {
-    const fetchImpl = vi.fn(async () =>
-      jsonResponse({
-        marketId: "market-1",
-        range: "1D",
-        ranges: ["1D", "1W", "1M", "MAX"],
-        generatedAt: "2026-06-15T12:00:00.000Z",
-        lastUpdated: "2026-06-15T11:59:00.000Z",
-        emptyState: null,
-        outcomes: [{ id: "yes", name: "Yes" }],
-        history: [{ outcomeId: "yes", timestamp: "2026-06-15T11:59:00.000Z", price: 0.57, probability: 57 }],
-        series: { yes: [{ ts: "2026-06-15T11:59:00.000Z", price: 0.57 }] },
-      }),
-    );
-    vi.stubGlobal("fetch", fetchImpl);
-
-    const chart = await new PolyApi("https://api.example.test", "test-api-key").getMarketChart("market/1", "1D");
-
-    const [url, init] = fetchImpl.mock.calls[0] as unknown as [string, RequestInit];
-    const headers = init.headers as Headers;
-    expect(url).toBe("https://api.example.test/api/markets/market%2F1/chart?range=1D");
-    expect(headers.get("Authorization")).toBe("Bearer test-api-key");
-    expect(chart.history[0]).toEqual({
-      outcomeId: "yes",
-      timestamp: "2026-06-15T11:59:00.000Z",
-      price: 0.57,
-      probability: 57,
-    });
-  });
-
   test("loads range-aware portfolio value history", async () => {
     const fetchImpl = vi.fn(async () =>
       jsonResponse({

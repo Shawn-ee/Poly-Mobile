@@ -1,4 +1,4 @@
-import type { AccountBalance, EventDetail, EventSummary, Market, MarketChart, MarketChartRange, OrderbookBook, PortfolioCanceledOrderItem, PortfolioHistoryItem, PortfolioRecentTradeItem, PortfolioSnapshot, PortfolioValueHistory, PortfolioValueHistoryRange, ProfilePreferences, ProfileSummary, Quote } from "./types";
+import type { AccountBalance, EventDetail, EventSummary, Market, OrderbookBook, PortfolioCanceledOrderItem, PortfolioHistoryItem, PortfolioRecentTradeItem, PortfolioSnapshot, PortfolioValueHistory, PortfolioValueHistoryRange, ProfilePreferences, ProfileSummary, Quote } from "./types";
 
 const trimSlash = (value: string) => value.replace(/\/+$/, "");
 const REQUEST_TIMEOUT_MS = 12000;
@@ -86,13 +86,6 @@ export class PolyApi {
     const suffix = params.toString() ? `?${params.toString()}` : "";
     return this.request<{ marketId: string; quotes: Quote[] }>(
       `/api/markets/${encodeURIComponent(marketId)}/quote${suffix}`,
-    );
-  }
-
-  getMarketChart(marketId: string, range: MarketChartRange = "1W") {
-    const params = new URLSearchParams({ range });
-    return this.request<MarketChart>(
-      `/api/markets/${encodeURIComponent(marketId)}/chart?${params.toString()}`,
     );
   }
 
