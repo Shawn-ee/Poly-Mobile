@@ -70,6 +70,7 @@ const GOOGLE_AUTH_URL = `${GOOGLE_AUTH_BASE.replace(/\/+$/, "")}/api/auth/google
 const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? "server" : "mock";
 const MARKET_DATA_MODE: "mock" | "server" =
   ORDER_MODE === "server" || process.env.EXPO_PUBLIC_MARKET_DATA_MODE === "server" ? "server" : "mock";
+const SHOW_ORDERBOOK_DEBUG = process.env.EXPO_PUBLIC_SHOW_ORDERBOOK === "1";
 const PROOF_INITIAL_TAB = (["home", "live", "portfolio", "search", "account"] as const).includes(
   process.env.EXPO_PUBLIC_PROOF_INITIAL_TAB as MainTab
 )
@@ -1571,7 +1572,7 @@ export default function App() {
   }, [api, selectedEvent?.id]);
 
   useEffect(() => {
-    if (MARKET_DATA_MODE !== "server" || !selectedEvent) return undefined;
+    if (!SHOW_ORDERBOOK_DEBUG || MARKET_DATA_MODE !== "server" || !selectedEvent) return undefined;
     let cancelled = false;
     const eventId = selectedEvent.id;
     setSelectedEvent((current) => {
@@ -1844,7 +1845,7 @@ export default function App() {
               setEventDetailForcedSide(null);
               setSelectedEvent(null);
             }}
-            requestMarketDepth={setSelectedDepthMarketId}
+            requestMarketDepth={SHOW_ORDERBOOK_DEBUG ? setSelectedDepthMarketId : undefined}
             positions={positions}
             openPositionTrade={openPositionTrade}
           />

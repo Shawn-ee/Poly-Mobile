@@ -1542,3 +1542,10 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Provider line breadth scan did not prove current-event-specific Gamma searches and exact slug guesses | P0 | Verified | The read-only scan now probes current MVP event/team query shapes and exact line-market slug guesses, records raw source hits, and keeps relevance gates strict. | `scripts/prove_mobile_provider_line_breadth_scan.ts`; `src/server/services/__tests__/mobile.provider.line.probe.contract.test.ts`; `docs/mobile/harness/cycle-UI-provider-line-breadth-event-specific-scan/cycle-UI-provider-line-breadth-scan.json` |
 | Real provider-backed spread/totals/team-total current-match rows | P1 | Open | Event-specific Polymarket Gamma searches returned 231 raw World Cup hits but 0 raw line-family hits, 0 provider line candidates, and 0 attach-ready line candidates. Local MVP line-selector UI should continue using backend-shaped contract fixtures until Polymarket exposes line markets or an approved secondary provider is configured. | `docs/mobile/audits/cycle-UI-provider-line-breadth-event-specific-scan.md` |
+
+# Cycle UJ - Disable Default Orderbook Depth Fetch
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Default Event Detail still fetched order-book depth even though order book is not MVP-facing | P0 | Verified | Automatic depth loading now requires `EXPO_PUBLIC_SHOW_ORDERBOOK=1`; the default retail path continues loading quote/probability data only. | `mobile/App.tsx`; `src/__tests__/mobile.local-mvp-orderbook-debug-gate.test.ts`; `docs/mobile/audits/cycle-UJ-disable-default-orderbook-depth-fetch.md` |
+| S23 visible journey reproof after source-only order-book cleanup | P1 | Open | No Android device was attached and no visible UI changed. Next visible Local MVP cycle should reprove Home/Live -> Event Detail -> ticket -> Portfolio/history. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |

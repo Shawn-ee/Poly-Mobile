@@ -4476,3 +4476,10 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Provider line discovery proof | Polymarket Gamma `/markets?search`, `/markets?slug`, `/events?tag_slug` | GET | Public provider data | Generic World Cup line queries, event-specific current-match queries, exact slug guesses | Proof-only counts for raw source hits, raw line-family hits, provider line candidates, attach-ready line candidates | None; read-only provider proof | Existing contract-fixture line rows remain the honest Local MVP fallback | Public Polymarket Gamma did not return attach-ready Spread/Totals/Team Total line markets for the checked current event probes. |
+
+# Cycle UJ - Disable Default Orderbook Depth Fetch
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail quote/probability display | `/api/quotes` / existing quote route through `loadMarketQuotesById` | GET | Public market browse or configured mobile API key depending backend mode | selected event market ids | quote probability/price fields used by ticket display | Existing market/outcome quote models | Local mock/event fixtures still provide probabilities | None for this cycle. |
+| Event Detail order-book depth | `/api/orderbook/:marketId/book` | GET | Public/internal route depending backend mode | market id, max levels | Not consumed by default Local MVP UI after this cycle | Existing orderbook infrastructure only | Debug-only if `EXPO_PUBLIC_SHOW_ORDERBOOK=1` | Not a Local MVP blocker; keep hidden/internal unless explicitly approved. |
