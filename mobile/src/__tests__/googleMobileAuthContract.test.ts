@@ -12,6 +12,9 @@ describe("Google mobile auth contract", () => {
   test("mobile launches the backend Google flow with a Holiwyn app return target", () => {
     const source = appSource();
 
+    expect(source).toContain("EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL");
+    expect(source).toContain("const GOOGLE_AUTH_BASE");
+    expect(source).toContain("GOOGLE_AUTH_BASE.replace");
     expect(source).toContain('process.env.EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL || "holiwyn://auth/google"');
     expect(source).toContain("mobileReturnTo=");
     expect(source).toContain("GOOGLE_AUTH_URL");

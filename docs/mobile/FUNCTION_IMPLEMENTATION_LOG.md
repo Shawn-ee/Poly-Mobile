@@ -11845,3 +11845,13 @@ Known limitations:
 - State transitions: unchanged. The same swipe progress, armed threshold, haptic-on-arm, and submit-on-release-above-threshold behavior remain in `SwipeSubmitControl`.
 - Proof: Samsung S23 proof passed in `docs/mobile/harness/cycle-SL-ticket-swipe-handle-spacing/cycle-SL-current-mvp-s23-visible-flow.json`; ticket screenshot `docs/mobile/screenshots/cycle-SL-ticket-swipe-handle-spacing/cycle-SL-current-mvp-ticket-ready.png`.
 - Known limitations: source-disclosure proof stops before order submit; full order lifecycle remains covered by separate server-order/cancel proofs.
+
+# Cycle SM - Google Auth Shared Backend Base
+
+- Feature/page worked on: Portfolio/Account Google login setup for mobile.
+- Frontend/docs touched: `mobile/App.tsx`, `mobile/.env.example`, `mobile/README.md`, `mobile/src/__tests__/googleMobileAuthContract.test.ts`, `mobile/scripts/check-server-auth-config.ps1`.
+- Backend/API routes touched: none. This continues using the existing backend-owned `/api/auth/google/start` and `/api/auth/google/callback` routes.
+- User interactions supported: `Continue with Google` still opens the backend Google OAuth start route. The mobile app can now point Google login at a shared Poly/Holiwyn auth backend through `EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL` while market/order API calls continue using `EXPO_PUBLIC_API_BASE_URL`.
+- State transitions: Google Cloud OAuth client ID, client secret, Google token exchange, Google userinfo fetch, user linking, and Holiwyn mobile API-key minting remain server-owned. Mobile stores only the returned Holiwyn API key.
+- Proof: `npm run check:server-auth` passed; focused Google mobile auth/return allowlist tests passed.
+- Known limitations: no interactive real Google consent was run in this cycle. Manual S23 proof still requires the backend `NEXTAUTH_URL` callback to be authorized in the same Google Cloud OAuth client.
