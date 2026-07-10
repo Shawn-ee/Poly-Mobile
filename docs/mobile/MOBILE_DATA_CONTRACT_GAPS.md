@@ -8976,6 +8976,17 @@ Future migration concern:
 - Temporary mock/static data: none introduced. Existing non-consent proof harnesses may still use generated backend-shaped credentials for automated S23 proof.
 - Future migration concern: real interactive Google consent on S23 still needs manual/browser proof with a Google Cloud authorized redirect URI matching the reachable backend auth origin.
 
+# Cycle TV - Ticket Submit Reproof Tracker Cleanup Notes
+
+- No schema migration was added.
+- Closed or narrowed: the stale Cycle TO follow-up gap for full submit -> Portfolio/history reproof is closed by existing Cycle TP Samsung S23 proof.
+- Fields Holiwyn still needs but backend does not fully provide: none for the Local MVP submit-to-history route path.
+- Fields backend provides but mobile ignores: no new ignored fields.
+- Schema mismatch: none. Existing fake-token order, Portfolio, and History models remain sufficient for the proven Local MVP flow.
+- Route mismatch: none. The proof path uses `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+- Temporary mock/static data: no new fixtures added. Cycle TP used the existing explicit contract-shaped line fixture and seeded local counterparty liquidity for fake-token fill proof.
+- Future migration concern: replace the current contract-shaped spread/totals/team-total line rows with real provider-backed Polymarket line markets when attach-ready markets become available.
+
 # Cycle SC - Event Detail Chart Removal Hardening Notes
 
 - No schema migration was added.

@@ -12184,3 +12184,13 @@ Known limitations:
 - State transitions: unchanged. `/api/orders` and `/api/portfolio/history` continue preserving selected market/outcome identity; the cleanup only corrects tracker and contract documentation that still described the Cycle RR fallback parser gap as current.
 - Proof: focused backend route and mobile mapper tests passed. No Android proof was required because this cycle did not change visible UI or runtime behavior; Cycle RS remains the S23 device proof for this contract.
 - Known limitations: fallback parsing remains intentionally available for old/offline payloads. Provider-backed current-match line breadth remains the separate open P1.
+
+# Cycle TV - Ticket Submit Reproof Tracker Cleanup
+
+- Feature/page worked on: Trade Ticket submit-to-Portfolio proof tracking after the Cycle TO armed-copy update.
+- Frontend components touched: none. Existing `mobile/src/components/TradeTicket.tsx` and `mobile/src/localization/appCopy.ts` behavior remains unchanged.
+- Backend/API routes touched: none. Existing `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` remain unchanged.
+- User interactions supported: unchanged. The previously completed Cycle TP S23 proof already demonstrates line ticket -> swipe submit -> server fake-token fill -> Portfolio History after the Cycle TO copy change.
+- State transitions: unchanged. Selected line/outcome identity still passes from Event Detail into Trade Ticket, `/api/orders`, and Portfolio/history.
+- Proof: reused authoritative Cycle TP Samsung S23 proof with `swipeSubmitReachedPortfolio=true` and `filledHistoryVisible=true`; no new Android proof was required because this cycle only corrects stale tracker status.
+- Known limitations: real provider-backed spread/totals/team-total current-match lines remain unavailable from Polymarket Gamma and are still the separate open P1.
