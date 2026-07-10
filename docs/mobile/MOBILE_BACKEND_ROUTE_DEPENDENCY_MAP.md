@@ -4510,3 +4510,9 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Event Detail localized source copy | `/api/mobile/events/:slug/live-detail` | GET | Public event browse | selected event slug | Existing `marketSourceSummary.lineMarkets.status`, `marketSourceSummary.regulationWinner.status`, and provider availability counts/families | Existing `Event`, `Market`, `Outcome`; no schema change | Mock/server fixtures with the same `marketSourceSummary` shape | None for copy correction. Real provider-backed Spread/Totals/Team Total rows remain unavailable. |
+
+# Cycle UO - Event Detail Exact Score Copy
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail Exact Score display copy | Existing Event Detail data from `/api/mobile/events/:slug/live-detail` or local fixture event | GET | Public event browse | selected event slug | Existing event/market display data only; Exact Score copy is currently local UI display text | Existing `Event`, `Market`, `Outcome`; no schema change | Existing Local MVP static Exact Score rows remain | None for copy correction. Real provider-backed Exact Score rows are not required for the Local MVP path. |

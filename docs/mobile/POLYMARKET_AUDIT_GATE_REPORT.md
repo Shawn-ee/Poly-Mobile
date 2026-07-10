@@ -7484,3 +7484,13 @@ Remaining P1:
 - Android proof: not rerun because no ADB device was attached.
 - Unresolved P0: 0 for source/contract scope.
 - Remaining P1: S23 Chinese-language Event Detail proof when a device is visible.
+
+# Cycle UO Audit Gate - Event Detail Exact Score Copy
+
+- Scope: Event Detail lower Game Lines / Exact Score display copy.
+- P0 result: PASS for source/contract scope after validation.
+- Source proof: Exact Score buttons in `mobile/src/components/EventDetail.tsx` use ASCII `c` cents copy.
+- Contract proof: `mobile/src/__tests__/eventDetailExactScoreCopyContract.test.ts` rejects the cent/mojibake sequence.
+- Android proof: not rerun because no ADB device was attached.
+- Unresolved P0: 0 for source/contract scope.
+- Remaining P1: S23 lower Game Lines / Exact Score visible proof when a device is visible.

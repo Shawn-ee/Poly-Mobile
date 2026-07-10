@@ -987,7 +987,7 @@ export function EventDetail({
           <View key={score} style={styles.exactScoreRow}>
             <Text style={styles.exactScoreText}>{score}</Text>
             <Pressable accessibilityLabel={`event-detail-exact-score-${score}`} style={styles.exactScoreButton} testID={`event-detail-exact-score-${score}`}>
-              <Text style={styles.exactScoreButtonText}>{[11, 14, 13, 16][index]}¢</Text>
+              <Text style={styles.exactScoreButtonText}>{[11, 14, 13, 16][index]}c</Text>
             </Pressable>
           </View>
         ))}

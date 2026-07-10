@@ -12373,3 +12373,13 @@ Known limitations:
 - State transitions: unchanged. `marketSourceSummary.lineMarkets.status === "partial-provider-backed"` still produces the same hidden audit markers and fixture/provider identity; only the visible Chinese copy string is corrected.
 - Proof: pending final Cycle UN focused tests/typecheck. Android proof remains pending because no ADB device is attached.
 - Known limitations: real provider-backed Spread/Totals/Team Total current-match rows remain unavailable; this cycle only fixes visible localized copy.
+
+# Cycle UO - Event Detail Exact Score Copy
+
+- Feature/page worked on: Event Detail lower Game Lines / Exact Score copy.
+- Frontend components touched: `mobile/src/components/EventDetail.tsx`, `mobile/src/__tests__/eventDetailExactScoreCopyContract.test.ts`.
+- Backend/API routes touched: none.
+- User interactions supported: unchanged Event Detail market browsing and ticket flow. Exact Score price buttons now use ASCII `c` cents copy instead of a cent glyph that can render as mojibake on Windows/Android proof paths.
+- State transitions: unchanged. This is display-copy only; no market/outcome/line/order/Portfolio identity changed.
+- Proof: pending final Cycle UO focused tests/typecheck. Android proof remains pending because no ADB device is attached.
+- Known limitations: Exact Score remains a simple local MVP row set; real provider-backed Spread/Totals/Team Total current-match rows remain unavailable.

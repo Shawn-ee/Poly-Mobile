@@ -9495,3 +9495,12 @@ Future migration concern:
 - Fields Holiwyn still needs: real provider-backed current-match Spread, Total, and Team Total market ids/tokens/prices remain the open line-market data gap.
 - Temporary mock/static data: none added.
 - Future migration concern: keep visible localized copy human-readable while preserving hidden source markers for Audit Gate proof.
+
+# Cycle UO - Event Detail Exact Score Copy Notes
+
+- No schema migration was added.
+- Closed or narrowed: Exact Score button prices now use ASCII `c` cents copy to avoid Android/Windows mojibake.
+- Route mismatch: none. This cycle changes display copy only.
+- Fields Holiwyn still needs: real provider-backed Spread, Total, and Team Total current-match rows remain the open line-market data gap. Exact Score provider data remains non-P0 for the Local MVP flow.
+- Temporary mock/static data: none added.
+- Future migration concern: if Exact Score becomes provider-backed later, replace the local rows with backend-shaped market/outcome data and keep text encoding ASCII-safe.
