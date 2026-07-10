@@ -59,7 +59,8 @@ import {
 
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
 const DEFAULT_API_KEY = process.env.EXPO_PUBLIC_API_KEY || "";
-const GOOGLE_AUTH_URL = `${DEFAULT_API_BASE.replace(/\/+$/, "")}/api/auth/google/start?returnTo=${encodeURIComponent("/portfolio")}`;
+const GOOGLE_MOBILE_RETURN_URL = process.env.EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL || "holiwyn://auth/google";
+const GOOGLE_AUTH_URL = `${DEFAULT_API_BASE.replace(/\/+$/, "")}/api/auth/google/start?returnTo=${encodeURIComponent("/portfolio")}&mobileReturnTo=${encodeURIComponent(GOOGLE_MOBILE_RETURN_URL)}`;
 const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? "server" : "mock";
 const MARKET_DATA_MODE: "mock" | "server" =
   ORDER_MODE === "server" || process.env.EXPO_PUBLIC_MARKET_DATA_MODE === "server" ? "server" : "mock";
@@ -634,6 +635,11 @@ export default function App() {
     }
     if (shouldForceRuntimePortfolioSync) {
       setForcedRuntimePortfolioSyncNonce((value) => value + 1);
+    }
+    if (url.includes("googleAuth=success")) {
+      setForceAccountSignedIn(true);
+      setPortfolioSyncStatus(ORDER_MODE === "server" && apiKeyMatch?.[1] ? "syncing" : "hidden");
+      setMainTab("portfolio");
     }
     if (url.includes("forceApiKeyDiagnostic=1")) {
       setApiKeyDiagnosticEnabled(true);
