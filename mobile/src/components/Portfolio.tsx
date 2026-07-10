@@ -150,6 +150,12 @@ export { portfolioPositionValue };
 
 const estimatedPnl = estimatedPositionPnl;
 
+const isPositiveRealizedActivity = (activity: PortfolioActivity) =>
+  activity.action === "closed" || activity.action === "sold";
+
+const activityAmountDisplay = (activity: PortfolioActivity) =>
+  `${isPositiveRealizedActivity(activity) ? "+" : ""}${portfolioRowMoney(activity.amount)}`;
+
 const displayOutcome = (item: { outcome: string; selection?: TicketSelection; contractSide?: BinaryContractSide }) => {
   const contractSide = item.contractSide ?? item.selection?.contractSide;
   const display = item.selection?.displayLabel ?? item.outcome;
@@ -1474,7 +1480,12 @@ export function Portfolio({
                 style={styles.activitySideMeta}
                 testID={`portfolio-history-side-meta-${activity.id}`}
               >
-                <Text style={styles.activityAmount}>{portfolioRowMoney(activity.amount)}</Text>
+                <Text
+                  accessibilityLabel={`activity-amount-${activity.id} portfolio-history-realized-amount ${isPositiveRealizedActivity(activity) ? "portfolio-history-realized-positive" : "portfolio-history-realized-neutral"}`}
+                  style={[styles.activityAmount, isPositiveRealizedActivity(activity) && styles.activityAmountPositive]}
+                >
+                  {activityAmountDisplay(activity)}
+                </Text>
                 {activity.timestamp && (
                   <Text accessibilityLabel={`activity-time-${activity.id} activity-time-relative portfolio-history-relative-time-format activity-time-raw-${activity.timestamp}`} style={styles.activityTime}>
                     {activityRelativeTime(activity.timestamp)}
@@ -1798,5 +1809,6 @@ const styles = StyleSheet.create({
   activityMarketMeta: { color: "#6f7a8d", fontSize: 14, fontWeight: "500", marginTop: 2 },
   activityExecution: { color: "#93c5fd", fontSize: 11, fontWeight: "900", marginTop: 4 },
   activityAmount: { color: "#dbeafe", fontSize: 18, fontWeight: "500", textAlign: "right" },
+  activityAmountPositive: { color: "#22c55e" },
   activityDetailPanel: { width: "100%", gap: 4, marginTop: 2, marginLeft: 38, padding: 10, borderRadius: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#29476d" },
 });

@@ -11865,3 +11865,13 @@ Known limitations:
 - State transitions: unchanged. Google auth-return, persisted mobile API key rehydration, Portfolio sync, and fake-token Portfolio state continue using the same runtime state.
 - Proof: focused Portfolio contract tests passed; mobile typecheck passed; Samsung S23 proof passed in `docs/mobile/harness/cycle-SN-portfolio-header-density/cycle-SN-google-auth-return-summary.json`.
 - Known limitations: this improves Portfolio first-screen density only. It does not redesign position rows, orders, history, or real interactive Google browser consent.
+
+# Cycle SO - Portfolio History Realized Proceeds
+
+- Feature/page worked on: Portfolio History rows after fake-token buy/cashout.
+- Frontend components touched: `mobile/src/components/Portfolio.tsx`, `mobile/src/__tests__/portfolioHistoryMarketContextContract.test.ts`.
+- Backend/API routes touched: none. This keeps the existing fake-token order, cashout/sell, Portfolio, and history routes unchanged.
+- User interactions supported: after a user buys a line-market outcome and cashes it out, the History tab now renders sold/closed rows as positive realized proceeds with a green `+$...` amount, while bought rows remain neutral.
+- State transitions: unchanged. The same ticket/order/Portfolio/history state drives activity rows; this cycle only changes the visible amount formatting for realized proceeds rows.
+- Proof: focused Portfolio history tests passed; mobile typecheck passed; Samsung S23 full MVP buy/cashout proof passed in `docs/mobile/harness/cycle-SO-portfolio-history-realized-proceeds/cycle-SO-current-mvp-s23-visible-flow.json`.
+- Known limitations: this is a visible retail history treatment, not a backend realized-P/L schema change. Future backend work should provide explicit row-level realized P/L fields if exact profit display is needed.

@@ -13,4 +13,13 @@ describe("Portfolio history market context", () => {
     expect(source).toContain("portfolio-history-market-context-${activityMarketSubline(activity)}");
     expect(source).toContain("splitBackendMarketTitle(activity.title)?.marketTitle ?? \"Match Winner\"");
   });
+
+  test("renders realized positive history amounts like retail winnings", () => {
+    const source = portfolioSource();
+
+    expect(source).toContain("isPositiveRealizedActivity");
+    expect(source).toContain("activityAmountDisplay");
+    expect(source).toContain("portfolio-history-realized-positive");
+    expect(source).toContain("activityAmountPositive");
+  });
 });
