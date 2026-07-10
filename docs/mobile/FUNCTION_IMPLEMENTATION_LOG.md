@@ -12040,3 +12040,13 @@ Known limitations:
 - State transitions: unchanged. Team to Advance still opens the simple Trade Ticket with selected market/outcome identity; the server fake-token order and Portfolio/history path remains intact.
 - Proof: focused Event Detail tests passed, root/mobile typechecks passed, and Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-TG-event-detail-advance-strip-cleanup/cycle-TG-current-mvp-s23-visible-flow.json`.
 - Known limitations: this does not change provider line availability. Real Polymarket-backed spread/totals/team-total line markets remain a P1 gap.
+
+# Cycle TH - Google Auth Poly Credential Setup
+
+- Feature/page worked on: Portfolio/account Google login configuration path for the Local MVP.
+- Frontend/config touched: `mobile/README.md`, `mobile/scripts/check-server-auth-config.ps1`, `docs/mobile/audits/cycle-th-google-auth-poly-credential-setup.md`.
+- Backend/API routes touched: no route handler changed. Existing `/api/auth/google/start`, `/api/auth/google/callback`, `/api/auth/mobile/logout`, profile, Portfolio, and order routes remain unchanged.
+- User interactions supported: tapping Continue with Google in Portfolio/account still opens the backend Google OAuth start route, returns to mobile through an allowlisted deep link, stores the returned Holiwyn API credential, and uses that credential for server profile/Portfolio/order calls.
+- State transitions: signed out -> backend Google OAuth -> backend-created Holiwyn mobile API credential -> mobile stores credential -> authenticated API Bearer state -> sign out clears local credential and revokes through `/api/auth/mobile/logout`.
+- Proof: source/config auth check and focused Google auth tests passed. No visible Android UI changed in this cycle, so S23 proof was not rerun.
+- Known limitations: manual S23 Google login still depends on the backend auth origin and Google Cloud authorized callback URL being configured to the same device-reachable backend host.

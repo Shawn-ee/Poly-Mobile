@@ -4,7 +4,7 @@ Holiwyn Mobile is an Android-first Expo/React Native app for World Cup predictio
 
 The backend/server is not included in this repo. The app can run with local mock data, or it can point at a hosted/local Holiwyn API for server-backed market data and fake-token order flows.
 
-Google login uses the same backend-owned Google Cloud OAuth flow as the Poly/Holiwyn web app. The mobile app opens the backend `/api/auth/google/start` route, the backend exchanges the Google code with `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`, and mobile receives only a Holiwyn API credential through the return deep link. Do not add Google Cloud client secrets or Google access tokens to the mobile app.
+Google login uses the same backend-owned Google Cloud OAuth flow as the Poly/Holiwyn web app. Reuse the same Google Cloud OAuth client, redirect URI, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and backend token-exchange logic that already appear in Poly/Holiwyn. The mobile app opens the backend `/api/auth/google/start` route, the backend exchanges the Google code with Google, and mobile receives only a Holiwyn API credential through the return deep link. Do not add Google Cloud client secrets, Google refresh tokens, or Google access tokens to the mobile app.
 
 ## Setup
 
