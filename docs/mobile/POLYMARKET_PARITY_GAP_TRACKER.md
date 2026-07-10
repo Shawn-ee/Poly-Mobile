@@ -1623,3 +1623,10 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Google login setup must reuse the Poly/Holiwyn backend Google Cloud OAuth credential and token exchange | P0 | Verified | Mobile opens backend `/api/auth/google/start`; backend owns `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, token exchange, userinfo fetch, and Holiwyn mobile API credential creation. Mobile stores only the returned Holiwyn API key. | `docs/mobile/audits/cycle-UT-google-login-setup-validation.md`; `mobile/scripts/check-server-auth-config.ps1`; focused Google auth contract tests |
 | Real Google consent on Samsung S23 | P1 | Open | Source/setup contract is verified, but ADB currently shows no attached S23. Manual real-account consent proof should run after the device is visible and `NEXTAUTH_URL/api/auth/google/callback` is registered in Google Cloud. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |
+
+# Cycle UV - Google Auth Runtime Preflight
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Google login runtime readiness was source-verified but did not have a no-secret route/callback preflight | P0 | Verified | Added `mobile/scripts/google-auth-runtime-preflight.ps1` plus package scripts. The preflight verifies configured server-owned Google env, `/api/auth/google/start` redirect to Google, and `redirect_uri === NEXTAUTH_URL/api/auth/google/callback` without printing credentials. | `mobile/scripts/google-auth-runtime-preflight.ps1`; `mobile/src/__tests__/googleAuthRuntimePreflightContract.test.ts`; `docs/mobile/audits/cycle-UV-google-auth-runtime-preflight.md` |
+| Strict S23-ready Google runtime preflight and real consent proof | P1 | Open | Non-strict runtime preflight passes on the running backend. Strict physical-device mode and real S23 consent still require an ADB-visible S23 and a callback URL reachable by the S23 browser. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |

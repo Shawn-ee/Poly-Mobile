@@ -2935,3 +2935,10 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Flow covered by source/contract proof: Portfolio/account Google entry -> backend `/api/auth/google/start` -> shared Poly/Holiwyn Google Cloud OAuth callback via `NEXTAUTH_URL` -> backend token exchange/userinfo -> mobile deep-link return with Holiwyn API credential -> SecureStore persistence/logout contracts.
 - Result: PASS for setup/source/contract scope.
 - Remaining P1: manual real-account S23 consent proof with a reachable backend auth origin and registered Google Cloud callback URL.
+
+# Cycle UV - Google Auth Runtime Preflight
+
+- Device: no Android run; `adb devices -l` showed no attached device.
+- Flow covered by runtime/source proof: configured backend auth origin -> `/api/auth/google/start` -> no-redirect HTTP check -> Google Location header -> `redirect_uri` checked against `NEXTAUTH_URL/api/auth/google/callback`.
+- Result: PASS for runtime preflight/source scope.
+- Remaining P1: run strict preflight and real S23 consent proof when the phone is visible and the callback origin is reachable from Android.

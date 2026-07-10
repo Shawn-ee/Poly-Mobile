@@ -8,6 +8,13 @@
 - `EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL` must be a Holiwyn app scheme in production. `exp:` and `exps:` returns are development/test-only.
 - Remaining P1 data/setup gap: real S23 consent proof depends on a reachable backend `NEXTAUTH_URL` and a matching `/api/auth/google/callback` URI registered in the same Google Cloud OAuth client.
 
+## Cycle UV - Google Auth Runtime Preflight
+
+- Added a no-secret runtime preflight for the Google auth start route and callback redirect shape.
+- Preflight confirms the configured route redirects to `accounts.google.com` and that Google sees `redirect_uri` as `NEXTAUTH_URL/api/auth/google/callback`.
+- The preflight intentionally does not complete Google consent, does not fetch tokens, does not create/link a user, and does not print Google credential values.
+- Remaining P1 setup gap: strict physical-device mode should pass only when `NEXTAUTH_URL` is an HTTPS hosted origin or LAN IP reachable from the S23 browser.
+
 ## Cycle TN - Provider Line Breadth Current Matches
 
 Closed or narrowed:

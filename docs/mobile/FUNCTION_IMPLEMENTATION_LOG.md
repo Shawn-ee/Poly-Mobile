@@ -12433,3 +12433,13 @@ Known limitations:
 - State transitions: signed-out Portfolio/account -> backend Google OAuth -> mobile deep-link return with `googleAuth=success` and Holiwyn API key -> SecureStore persistence -> runtime `PolyApi` Bearer auth -> sign-out clears local credential and best-effort server logout.
 - Proof: focused Google auth/return/logout/account tests and `mobile/scripts/check-server-auth-config.ps1`. Android proof remains pending because no ADB device is attached.
 - Known limitations: real Google consent on S23 still needs manual/device proof with a reachable backend `NEXTAUTH_URL` callback registered in the same Google Cloud OAuth client.
+
+# Cycle UV - Google Auth Runtime Preflight
+
+- Feature/page worked on: Portfolio/account Google login proof readiness.
+- Frontend components touched: no runtime screen component changed. Added `mobile/scripts/google-auth-runtime-preflight.ps1`, package scripts, and `mobile/src/__tests__/googleAuthRuntimePreflightContract.test.ts`.
+- Backend/API routes touched: no backend route code changed. The preflight exercises existing `/api/auth/google/start` and verifies its Google redirect/callback shape.
+- User interactions supported: unchanged. The user still taps `Continue with Google`; this cycle gives testers a preflight before attempting real browser consent on Android.
+- State transitions: no app state changed. Preflight checks configuration and redirect shape only, then stops before Google consent/token exchange.
+- Proof: `npm run check:google-auth-runtime`, focused preflight/auth contract tests, and mobile typecheck all passed.
+- Known limitations: strict physical-device preflight and real S23 Google consent remain P1 until the S23 is visible to ADB and `NEXTAUTH_URL` is reachable by the phone browser.

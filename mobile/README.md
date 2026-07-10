@@ -74,6 +74,7 @@ Android device URL tips:
 npm run typecheck
 npm run start
 npm run android
+npm run check:google-auth-runtime
 npm run check:android-dev-build
 npm run smoke:tablet
 ```

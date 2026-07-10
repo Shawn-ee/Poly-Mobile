@@ -7544,3 +7544,14 @@ Remaining P1:
 - Android proof: not rerun because `adb devices -l` showed no attached device.
 - Unresolved P0: 0 for setup/source/contract scope.
 - Remaining P1: real S23 Google consent proof after a device is visible and the backend callback URL is registered in Google Cloud.
+
+# Cycle UV Audit Gate - Google Auth Runtime Preflight
+
+- Scope: no-secret runtime preflight for backend-owned Google login.
+- P0 result: PASS for runtime preflight/source scope.
+- Source proof: `mobile/scripts/google-auth-runtime-preflight.ps1` checks configured backend auth base, mobile return URL, server-owned Google env, allowed mobile return scheme, Google start route redirect, and callback `redirect_uri`.
+- Runtime proof: `npm run check:google-auth-runtime` passed against the running backend and confirmed a redirect to `accounts.google.com` with `redirect_uri` matching `NEXTAUTH_URL/api/auth/google/callback`.
+- Contract proof: focused preflight/auth tests passed; mobile typecheck passed.
+- Android proof: not rerun because `adb devices -l` showed no attached device.
+- Unresolved P0: 0 for runtime preflight/source scope.
+- Remaining P1: strict S23-ready preflight plus real Google consent proof.
