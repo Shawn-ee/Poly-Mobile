@@ -4,6 +4,8 @@ Holiwyn Mobile is an Android-first Expo/React Native app for World Cup predictio
 
 The backend/server is not included in this repo. The app can run with local mock data, or it can point at a hosted/local Holiwyn API for server-backed market data and fake-token order flows.
 
+Google login uses the same backend-owned Google Cloud OAuth flow as the Poly/Holiwyn web app. The mobile app opens the backend `/api/auth/google/start` route, the backend exchanges the Google code with `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`, and mobile receives only a Holiwyn API credential through the return deep link. Do not add Google Cloud client secrets or Google access tokens to the mobile app.
+
 ## Setup
 
 ```powershell
@@ -40,8 +42,22 @@ Supported public Expo variables:
 | `EXPO_PUBLIC_API_KEY` | Server order/portfolio mode | `your-development-api-key` | Development API key for fake-token server order and Portfolio sync. Do not commit it. |
 | `EXPO_PUBLIC_ORDER_MODE` | Optional | `mock` or `server` | Selects local fake-token orders or server-backed fake-token orders. |
 | `EXPO_PUBLIC_MARKET_DATA_MODE` | Optional | `mock` or `server` | Selects local market fixtures or backend market/event routes. |
-| `EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL` | Optional for Google login | `holiwyn://auth/google` | Deep link returned to after backend Google OAuth succeeds. Keep Google Cloud credentials on the backend. Expo Go may need an Expo-specific deep link override. |
+| `EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL` | Optional for Google login | `holiwyn://auth/google` | Deep link returned to after backend Google OAuth succeeds. This is not a Google credential. Keep Google Cloud client IDs/secrets/tokens on the backend. |
 | `EXPO_PUBLIC_SHOW_ORDERBOOK` | Debug only | `1` | Shows internal order book surfaces. Leave unset for the Local MVP retail UI. |
+
+Backend Google OAuth variables belong in the server repo/env, not here:
+
+```powershell
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+NEXTAUTH_URL=http://127.0.0.1:3002
+```
+
+The Google Cloud authorized redirect URI must point at the backend callback, for example:
+
+```text
+http://127.0.0.1:3002/api/auth/google/callback
+```
 
 Android device URL tips:
 
