@@ -9142,3 +9142,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new fields for this cleanup. A future watchlist milestone would need an explicit saved-market route/contract before returning visible controls.
 - Temporary mock/static data: none added.
 - Future migration concern: keep saved/watchlist storage out of default Search/Home UI until an audit-gated saved/watchlist product cycle defines behavior, persistence, empty states, and backend sync.
+
+# Cycle TB - Polymarket-First Line Readiness Notes
+
+- No schema migration was added.
+- Closed or narrowed: compact line-market readiness now treats Polymarket as the primary provider when the route-visible market has `referenceSource=polymarket`, `externalMarketId` or `conditionId`, and every outcome has a `referenceTokenId`.
+- Route mismatch: narrowed. The readiness summary now reflects the actual mobile live-detail contract instead of requiring optional Optic Odds metadata before calling a line market ready.
+- Fields Holiwyn still needs but backend does not fully provide: additional real attach-ready Polymarket spread, totals, and team-total markets for the current user-facing World Cup match set. When Polymarket has no matching line market, the route should expose a clear unavailable/source reason.
+- Temporary mock/static data: none added. The proof used an existing provider-breadth seeded event with Polymarket-shaped IDs/tokens.
+- Future migration concern: keep optional external provider identity in a separate enrichment lane. Do not make `OPTIC_ODDS_API_KEY` a P0 blocker for Polymarket parity while Gamma/CLOB market IDs and token IDs are available.

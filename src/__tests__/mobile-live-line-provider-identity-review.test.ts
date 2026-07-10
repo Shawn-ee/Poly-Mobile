@@ -37,7 +37,7 @@ describe("mobile live line provider identity review", () => {
     ]));
   });
 
-  test("readiness counts reviewed market and outcome identities", () => {
+  test("readiness counts reviewed external market and outcome identities as optional enrichment", () => {
     const readyMarket = {
       ...lineMarket(),
       referenceMetadata: {
@@ -59,8 +59,42 @@ describe("mobile live line provider identity review", () => {
 
     expect(summarizeLineProviderIdentityReadiness([readyMarket])).toEqual(expect.objectContaining({
       lineMarketCount: 1,
+      polymarketLineMarketReadyCount: 0,
+      optionalExternalLineProviderReadyCount: 1,
       lineProviderReadyMarketCount: 1,
-      nextRequiredAction: "optional_optic_odds_enrichment_ready",
+      nextRequiredAction: "optional_external_line_provider_enrichment_ready",
+    }));
+  });
+
+  test("readiness treats route-visible Polymarket line markets as primary-ready without Optic Odds", () => {
+    const readyMarket = {
+      ...lineMarket(),
+      referenceSource: "polymarket",
+      externalMarketId: "gamma-total-market",
+      conditionId: "condition-total-market",
+      outcomes: lineMarket().outcomes.map((outcome) => ({
+        ...outcome,
+        referenceSource: "polymarket",
+        referenceTokenId: `token-${outcome.id}`,
+      })),
+    };
+
+    expect(summarizeLineProviderIdentityReadiness([readyMarket])).toEqual(expect.objectContaining({
+      lineMarketCount: 1,
+      polymarketLineMarketReadyCount: 1,
+      optionalExternalLineProviderReadyCount: 0,
+      lineProviderReadyMarketCount: 1,
+      nextRequiredAction: "polymarket_line_markets_ready",
+    }));
+  });
+
+  test("readiness does not block on missing Optic Odds when Polymarket line identity is absent", () => {
+    expect(summarizeLineProviderIdentityReadiness([lineMarket()])).toEqual(expect.objectContaining({
+      lineMarketCount: 1,
+      polymarketLineMarketReadyCount: 0,
+      optionalExternalLineProviderReadyCount: 0,
+      lineProviderReadyMarketCount: 0,
+      nextRequiredAction: "discover_attach_ready_polymarket_line_markets_or_configure_approved_line_provider",
     }));
   });
 

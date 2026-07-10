@@ -11977,3 +11977,14 @@ Known limitations:
 - State transitions: unchanged for trading. Search row tap still moves to Event Detail; Event Detail/ticket/order/Portfolio state is untouched. Account/profile saved preference state remains in App for future account work but is not exposed as a Search result control.
 - Proof: focused Search/Home tests passed; mobile typecheck passed; Samsung S23 `SM-S911U1` proof reached Search and confirmed no saved/bookmark markers in the Search shell XML, but the runtime had 0 top results so populated Search row tap remains source-tested rather than device-proven.
 - Known limitations: this does not remove account-level saved preference storage or implement a future watchlist feature. Watchlist/saved behavior remains out of the Local MVP path until explicitly scoped.
+
+# Cycle TB - Polymarket-First Line Readiness
+
+- Feature/page worked on: backend/provider readiness for compact live line markets in the Local MVP Event Detail path.
+- Frontend components touched: none. No visible mobile UI changed.
+- Backend/API routes touched: no route handler changed, but route-adjacent readiness logic changed in `src/server/services/mobileLiveLineProviderIdentityReview.ts`; proof uses compact markets selected from `/api/mobile/events/:slug/live-detail` shape.
+- Scripts/tests touched: `scripts/prove_mobile_line_provider_identity_review.ts`, `src/__tests__/mobile-live-line-provider-identity-review.test.ts`.
+- User interactions supported: line-market Event Detail rows can be treated as provider-ready for ticket/order/Portfolio identity when they are Polymarket-sourced and carry market IDs/condition IDs plus outcome token IDs. Missing Optic Odds no longer blocks the current Polymarket parity milestone.
+- State transitions: compact live markets -> Polymarket readiness summary -> optional external line-provider review remains strict enrichment -> invalid reviews still block.
+- Proof: route/provider proof passed in `docs/mobile/harness/cycle-TB-polymarket-first-line-readiness/cycle-TB-line-provider-identity-review.json` with 7 Polymarket-ready line markets and no DB mutation.
+- Known limitations: this proves provider-breadth seeded line markets. The exact current MVP match still needs more real attach-ready Polymarket spread/totals/team-total markets or explicit unavailable states when Polymarket does not expose them.
