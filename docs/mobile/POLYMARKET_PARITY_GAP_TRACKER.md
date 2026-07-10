@@ -1233,7 +1233,7 @@ For every UI element or interaction, answer:
 | Portfolio History sell row lacks readable match context after backend-filled Match Winner sells | P0 | Verified | History now derives and shows `PAR vs AUS` for backend titles shaped as `Event: Market` when no explicit event title is present. | `docs/mobile/harness/cycle-RR-history-market-context/cycle-RR-portfolio-history.xml` |
 | Portfolio History sell row lacks readable market context for Match Winner | P0 | Verified | History now shows `Match Winner` as the market subline instead of relying only on the outcome label. | `docs/mobile/harness/cycle-RR-history-market-context/cycle-RR-portfolio-history.xml` |
 | Google login appears missing after Home account removal | P0 | Verified | Google login was moved to Portfolio by product direction; RR S23 proof shows visible `Continue with Google` in the Portfolio header. | `docs/mobile/harness/cycle-RR-history-market-context/cycle-RR-portfolio-history.xml` |
-| Canonical history event/market display fields | P1 | Open | Backend should provide explicit `eventTitle` and `marketTitle`; mobile currently uses a fallback parser. | `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md` |
+| Canonical history event/market display fields | P1 | Verified | Superseded by Cycle RS: backend now returns `market.displayTitle`, `market.eventTitle`, and `market.eventSlug`; mobile maps `displayTitle` to `PortfolioActivity.marketTitle`. | `src/__tests__/portfolio.history.route.test.ts`; `mobile/src/__tests__/portfolioHistoryService.test.ts`; `docs/mobile/audits/cycle-RS-history-display-contract.md` |
 
 # Cycle RS - Portfolio History Display Contract
 
