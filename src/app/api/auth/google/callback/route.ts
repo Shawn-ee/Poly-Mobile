@@ -7,6 +7,7 @@ import {
   setUserIdCookie,
 } from "@/lib/auth";
 import { createApiCredential } from "@/lib/canonicalAuth";
+import { isAllowedMobileReturnUrl } from "@/lib/mobileReturnUrl";
 
 const STATE_COOKIE = "poly_oauth_state";
 const MODE_COOKIE = "poly_oauth_mode";
@@ -28,19 +29,6 @@ const appendMobileAuthParams = (returnTo: string, params: Record<string, string>
     target.searchParams.set(key, value);
   }
   return target.toString();
-};
-
-const isAllowedMobileReturnTo = (value: string) => {
-  try {
-    const parsed = new URL(value);
-    if (parsed.protocol === "holiwyn:") return true;
-    if (process.env.NODE_ENV !== "production" && (parsed.protocol === "exp:" || parsed.protocol === "exps:")) {
-      return true;
-    }
-    return false;
-  } catch {
-    return false;
-  }
 };
 
 export async function GET(request: Request) {
@@ -175,7 +163,7 @@ export async function GET(request: Request) {
   }
 
   await setUserIdCookie(userId);
-  if (mobileReturnTo && isAllowedMobileReturnTo(mobileReturnTo)) {
+  if (mobileReturnTo && isAllowedMobileReturnUrl(mobileReturnTo)) {
     const mobileCredential = await createApiCredential({
       userId,
       name: "Holiwyn Mobile Google",

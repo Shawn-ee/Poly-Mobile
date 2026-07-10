@@ -11784,3 +11784,12 @@ Known limitations:
 - User interactions supported: testers can keep using the same backend-owned Google OAuth start/callback flow while configuring an Expo Go return link for manual S23 testing, or the `holiwyn://auth/google` return for dev build/APK.
 - State transitions: Google Cloud credential and token exchange remain server-owned; backend stores the approved mobile return target in the OAuth cookie and returns only a Holiwyn API key to that target after callback.
 - Known limitations: this cycle does not perform interactive Google consent; it removes a return-link compatibility blocker so that manual consent proof can be attempted with the configured backend credentials.
+
+# Cycle SF - Google Mobile Return Allowlist Contract
+
+- Feature/page worked on: backend Google mobile return policy for Local MVP auth safety.
+- Frontend/tests touched: `mobile/src/__tests__/googleMobileAuthContract.test.ts`, `mobile/src/__tests__/googleMobileReturnAllowlist.test.ts`.
+- Backend/API routes touched: `src/app/api/auth/google/start/route.ts`, `src/app/api/auth/google/callback/route.ts`, `src/lib/mobileReturnUrl.ts`.
+- User interactions supported: unchanged from SE; Google login still opens the backend auth flow and returns only a Holiwyn mobile API key after callback.
+- State transitions: route-level return allowlisting is now centralized so start and callback enforce the same rule: `holiwyn:` always allowed, `exp:` / `exps:` only outside production, web/javascript/malformed return targets rejected.
+- Known limitations: no new interactive Google consent proof in this cycle. It hardens the contract beneath the existing S23 callback-shaped proof.

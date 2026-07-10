@@ -7367,3 +7367,14 @@ Remaining P1:
 - Test proof: mobile typecheck and focused Google/auth tests passed.
 - Unresolved P0: 0 for SE scope.
 - Remaining P1: real interactive Google consent on S23 using configured backend credentials and either Expo Go return URL or dev-build `holiwyn://auth/google`.
+
+# Cycle SF Audit Gate - Google Mobile Return Allowlist Contract
+
+- Scope: backend Google OAuth mobile return allowlist safety.
+- P0 result: PASS for SF scope.
+- Implementation proof: `src/lib/mobileReturnUrl.ts` centralizes return policy; auth start and callback both call it.
+- Contract proof: `mobile/src/__tests__/googleMobileReturnAllowlist.test.ts` verifies `holiwyn:` is always allowed, `exp:` / `exps:` are allowed only outside production, and `http:`, `https:`, `javascript:`, and malformed values are rejected.
+- Android proof: no new screenshot required because mobile UI rendering is unchanged; the visible return/persistence/logout path was re-proved on S23 in Cycle SE and this cycle hardens backend policy beneath it.
+- Test proof: mobile typecheck, root TypeScript check, focused auth tests, and return allowlist tests passed.
+- Unresolved P0: 0 for SF scope.
+- Remaining P1: real interactive Google consent on S23.
