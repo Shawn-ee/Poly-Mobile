@@ -245,22 +245,6 @@ export function MarketList({
                 ))}
               </View>
             )}
-            {winner && winner.outcomes.map((outcome) => (
-              <View key={outcome.id} style={styles.teamRow}>
-                <Text style={styles.teamName}>
-                  {outcome.label === "Draw" ? "Draw" : event.teams.find((team) => team.name === outcome.label)?.flag ?? "*"} {label(locale, outcome)}
-                </Text>
-                <Text style={styles.oddsText}>{(100 / outcome.probability).toFixed(1)}x</Text>
-                <Pressable
-                  accessibilityLabel={`event-outcome-${event.id}-${winner.id}-${outcome.id}`}
-                  style={[styles.probButton, { backgroundColor: outcome.color }]}
-                  testID={`event-outcome-${event.id}-${winner.id}-${outcome.id}`}
-                  onPress={() => openTicket(winner, outcome, event)}
-                >
-                  <Text style={styles.probButtonText}>{outcome.probability}%</Text>
-                </Pressable>
-              </View>
-            ))}
           </Pressable>
         );
       })}
@@ -282,11 +266,6 @@ const styles = StyleSheet.create({
   saveTextActive: { color: "#101827" },
   eventTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginBottom: 5 },
   sourceReadinessHidden: { width: 1, height: 1, opacity: 0.01, overflow: "hidden" },
-  teamRow: { display: "none", height: 0, opacity: 0, overflow: "hidden", flexDirection: "row", alignItems: "center", gap: 10, marginTop: 0 },
-  teamName: { flex: 1, color: "#f8fafc", fontSize: 18, fontWeight: "800" },
-  oddsText: { color: "#a7b1c2", width: 48, textAlign: "right", fontSize: 17, fontWeight: "800" },
-  probButton: { minWidth: 86, alignItems: "center", paddingVertical: 12, paddingHorizontal: 14, borderRadius: 12 },
-  probButtonText: { color: "#ffffff", fontSize: 18, fontWeight: "900" },
   eventOutcomeRail: { flexDirection: "row", gap: 7, marginTop: 8 },
   retailOutcomeButton: { flex: 1, minHeight: 54, alignItems: "center", justifyContent: "center", borderRadius: 10, paddingHorizontal: 6, shadowColor: "#000000", shadowOpacity: 0.18, shadowRadius: 8 },
   retailOutcomeButtonHome: { backgroundColor: "#008000" },
