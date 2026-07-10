@@ -8887,3 +8887,12 @@ Future migration concern:
 - Route mismatch: none introduced. `/api/auth/google/start` accepts a Holiwyn mobile return URL; `/api/auth/google/callback` still owns Google token exchange server-side.
 - Temporary mock/static data: active-route line markets remain contract fixtures because Polymarket Gamma scan found no attach-ready line markets for the current match.
 - Future migration concern: add native logout/token revocation and, if testing in Expo Go, configure `EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL` to the current Expo deep link instead of the default real-app `holiwyn://auth/google`.
+
+# Cycle RX - Google Auth Return Portfolio Connected State Notes
+
+- No schema migration was added.
+- Closed or narrowed: a successful mobile auth-return deep link no longer leaves Portfolio visually looking signed out.
+- Fields Holiwyn still needs but backend does not fully provide: token revocation/logout endpoint and a production native OAuth return proof.
+- Route mismatch: none introduced. The proof uses the same mobile API credential shape created by the backend Google callback in RW.
+- Temporary mock/static data: proof uses a generated local mobile dev credential instead of interactive Google consent.
+- Future migration concern: when moving from Expo Go to dev build/APK, validate the real `holiwyn://auth/google` callback against Google consent and add logout/revoke UX.

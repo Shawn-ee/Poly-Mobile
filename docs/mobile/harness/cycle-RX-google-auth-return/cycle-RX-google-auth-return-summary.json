@@ -1,0 +1,21 @@
+﻿{
+    "cycle":  "RX",
+    "result":  "pass",
+    "generatedAt":  "2026-07-10T05:52:38.0866872Z",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "mobileApiBaseUrl":  "http://172.16.200.14:3002",
+    "expoPort":  8295,
+    "keyId":  "pk_live_8ecf2faf9d961a8d",
+    "apiKey":  "redacted",
+    "assertions":  {
+                       "portfolioOpened":  true,
+                       "googleConnectedVisible":  true,
+                       "serverProfileLoadedVisible":  true,
+                       "portfolioRouteReadableWithReturnedKey":  true
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\harness\\cycle-RX-google-auth-return\\cycle-RX-google-auth-return-portfolio.xml",
+                      "docs\\mobile\\screenshots\\cycle-RX-google-auth-return\\cycle-RX-google-auth-return-portfolio.png"
+                  ]
+}

@@ -11700,3 +11700,13 @@ Known limitations:
 - State transitions: Google login remains server-owned through `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`; after Google callback succeeds, backend links/creates the user, creates a Holiwyn mobile API credential, and redirects to `holiwyn://auth/google?...apiKey=...` so mobile can refresh Portfolio in server mode.
 - Provider inspection: current provider line scan found provider-backed Regulation Winner only for the active Argentina/Egypt route; Spread/Totals/Team Total remain contract fixtures.
 - Known limitations: Expo Go may need `EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL` set to an Expo-specific deep link for manual OAuth return testing; the default real-app return is `holiwyn://auth/google`. Real provider-backed current-match line markets remain unavailable.
+
+# Cycle RX - Google Auth Return Portfolio Connected State
+
+- Feature/page worked on: Portfolio account/login state after a mobile Google auth return.
+- Frontend components touched: `mobile/App.tsx`, `mobile/src/components/Portfolio.tsx`.
+- Proof script touched: `scripts/prove_mobile_google_auth_return_s23.ps1`.
+- Tests touched: `mobile/src/__tests__/portfolioGoogleAuthReturnContract.test.ts`, plus focused auth visibility tests.
+- User interactions supported: after the backend Google callback returns to the app with `googleAuth=success` and a server API key, Portfolio shows `Google connected` and `Server profile loaded` instead of continuing to look signed out.
+- State transitions: launch URL sets runtime API key, resets local state, then applies Google-auth-return state after reset so the connected state is not cleared.
+- Known limitations: RX proves the mobile return/deep-link/API-key handoff with a generated dev credential; it does not perform interactive Google account consent.

@@ -350,6 +350,7 @@ export default function App() {
     ORDER_MODE === "server" && DEFAULT_API_KEY.length > 0 ? "syncing" : "hidden"
   );
   const [accountSummary, setAccountSummary] = useState<AccountSummaryViewModel | null>(null);
+  const [googleAuthReturnConnected, setGoogleAuthReturnConnected] = useState(false);
   const [events, setEvents] = useState<Event[]>(() => MARKET_DATA_MODE === "server" ? [] : worldCupEvents);
   const [eventNextCursor, setEventNextCursor] = useState<string | null>(null);
   const [isLoadingMoreEvents, setIsLoadingMoreEvents] = useState(false);
@@ -613,6 +614,7 @@ export default function App() {
     const forcedSearchQuery = url.match(/[?&,]forceSearchQuery=([^&,]+)/)?.[1];
     const forcedHomeQuery = url.match(/[?&,]forceHomeQuery=([^&,]+)/)?.[1];
     const shouldForceSearch = url.includes("forceSearch=1");
+    const shouldApplyGoogleAuthReturn = url.includes("googleAuth=success");
     const forcedOpenOrder = url.includes("forceOpenOrderSide=sell") ? SMOKE_OPEN_SELL_ORDER : SMOKE_OPEN_ORDER;
     const apiKeyMatch = url.match(/[?&,]apiKey=([^&,]+)/);
     const shouldForceRuntimePortfolioSync =
@@ -635,11 +637,6 @@ export default function App() {
     }
     if (shouldForceRuntimePortfolioSync) {
       setForcedRuntimePortfolioSyncNonce((value) => value + 1);
-    }
-    if (url.includes("googleAuth=success")) {
-      setForceAccountSignedIn(true);
-      setPortfolioSyncStatus(ORDER_MODE === "server" && apiKeyMatch?.[1] ? "syncing" : "hidden");
-      setMainTab("portfolio");
     }
     if (url.includes("forceApiKeyDiagnostic=1")) {
       setApiKeyDiagnosticEnabled(true);
@@ -668,6 +665,7 @@ export default function App() {
         setTicketDefaults({ amount: "100", side: "buy", slippage: "1%" });
         setSavedEventIds(new Set());
         setForceAccountSignedIn(false);
+        setGoogleAuthReturnConnected(false);
         setPortfolioSyncStatus(ORDER_MODE === "server" ? "syncing" : "hidden");
         setProfilePreferencesSyncStatus(ORDER_MODE === "server" ? "syncing" : "hidden");
       };
@@ -711,6 +709,12 @@ export default function App() {
       }
     }
     if (shouldForcePortfolio) {
+      setMainTab("portfolio");
+    }
+    if (shouldApplyGoogleAuthReturn) {
+      setForceAccountSignedIn(true);
+      setGoogleAuthReturnConnected(true);
+      setPortfolioSyncStatus(ORDER_MODE === "server" && apiKeyMatch?.[1] ? "syncing" : "hidden");
       setMainTab("portfolio");
     }
     if (shouldForceLive) {
@@ -1825,6 +1829,7 @@ export default function App() {
                   loadValueHistory={ORDER_MODE === "server" && runtimeApiKey.length > 0 ? loadPortfolioValueHistory : undefined}
                   openAccount={() => setMainTab("account")}
                   openGoogleSignIn={openGoogleSignIn}
+                  googleAuthConnected={googleAuthReturnConnected || forceAccountSignedIn || Boolean(accountSummary)}
                 />
               </>
             )}
