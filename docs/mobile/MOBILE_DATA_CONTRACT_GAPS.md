@@ -9102,27 +9102,27 @@ Future migration concern:
 - No schema migration was added.
 - Closed or narrowed: Portfolio History now visually distinguishes realized sold/closed proceeds from neutral bought activity rows, matching the retail Polymarket-style history treatment more closely.
 - Route mismatch: none. The same fake-token order, cashout, Portfolio, and history routes are used.
-- Fields Holiwyn still needs but backend does not fully provide: an explicit row-level `realizedPnl` or `proceeds` display contract would make future history rows more precise. Current mobile uses `action` to distinguish sold/closed proceeds from bought cost.
+- Fields Holiwyn still needs but backend does not fully provide: superseded by Cycles SQ/SR for normal fake-token trade history. Recent SELL rows now expose `proceedsTokens` and reconstructable `realizedPnlTokens`; incomplete basis remains `null` by design.
 - Temporary mock/static data: none added. The S23 proof creates a real local fake-token buy/cashout sequence through the existing server-mode proof path.
-- Future migration concern: when backend history returns explicit realized P/L, replace action-derived display logic with contract fields while preserving the green positive proceeds/winnings visual treatment.
+- Future migration concern: keep the green positive proceeds/winnings visual treatment while preferring backend `proceedsTokens` / `realizedPnlTokens` when present.
 
 # Cycle SP - Portfolio History Realized P/L Contract Notes
 
 - No schema migration was added.
 - Closed or narrowed: resolved `/api/portfolio/history` items already expose `realizedPnLTokens`; mobile now preserves that value as `PortfolioActivity.realizedPnl` and carries `proceedsAmount` for display.
 - Route mismatch: narrowed for resolved history rows. Mobile no longer drops the backend realized P/L field where it exists.
-- Fields Holiwyn still needs but backend does not fully provide: recent trade/cashout rows still lack explicit realized P/L/proceeds display fields. The UI still treats sold recent-trade rows as proceeds until a backend field exists.
+- Fields Holiwyn still needs but backend does not fully provide: superseded by Cycles SQ/SR. Recent SELL/cashout rows now expose explicit proceeds and reconstructable realized P/L when basis is available.
 - Temporary mock/static data: none added.
-- Future migration concern: add row-level realized P/L/proceeds to recent trade/cashout history payloads, then switch sold-row display to backend-provided fields rather than action-derived proceeds.
+- Future migration concern: keep `realizedPnlTokens` nullable for rows whose basis cannot be reconstructed; do not display guessed realized P/L.
 
 # Cycle SQ - Recent Trade Proceeds Contract Notes
 
 - No schema migration was added.
 - Closed or narrowed: `/api/portfolio/history` recent trade rows now expose explicit `proceedsTokens` for SELL/cashout rows and explicit `realizedPnlTokens: null` until exact basis data exists. Mobile maps `proceedsTokens` to `PortfolioActivity.proceedsAmount`.
 - Route mismatch: narrowed. The Portfolio History sold-row display can now consume a backend-provided proceeds field for recent trades instead of deriving proceeds entirely from the activity action.
-- Fields Holiwyn still needs but backend does not fully provide: exact row-level recent-trade realized P/L before market resolution. Current `Trade` rows do not preserve execution-time cost basis for the shares sold, so the route cannot honestly calculate exact per-fill profit/loss yet.
+- Fields Holiwyn still needs but backend does not fully provide: superseded by Cycle SR for reconstructable normal fake-token trades. Incomplete or inconsistent history still returns `realizedPnlTokens: null` rather than a guessed value.
 - Temporary mock/static data: none added.
-- Future migration concern: add a basis/proceeds ledger or execution-basis snapshot to trade/order records if exact Polymarket-style realized P/L is required immediately after cashout rather than after resolved history aggregation.
+- Future migration concern: add a persisted basis/proceeds ledger later if route-time reconstruction becomes too expensive for production-scale history.
 
 # Cycle SR - Recent Trade Realized P/L Replay Notes
 
@@ -9132,6 +9132,17 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: none for normal fake-token trades with complete trade history. If historical data is incomplete or inconsistent, `realizedPnlTokens` remains `null` by design.
 - Temporary mock/static data: none added.
 - Future migration concern: if production history grows very large, move this replay into a persisted execution-basis/realized-P/L field or paginated aggregation service instead of doing route-time reconstruction.
+
+# Cycle TX - Realized P/L Tracker Cleanup Notes
+
+- No schema migration was added.
+- Closed or narrowed: stale Cycle SO/SP/SQ tracker/data-contract text that still described row-level realized P/L as missing now points to the verified SQ/SR route and mobile mapper evidence.
+- Fields Holiwyn still needs but backend does not fully provide: none for normal fake-token trades with complete trade history.
+- Fields backend provides but mobile ignores: none introduced. Mobile consumes recent SELL `proceedsTokens` and `realizedPnlTokens` through `PortfolioActivity.proceedsAmount` and `PortfolioActivity.realizedPnl`.
+- Schema mismatch: none. Existing trade/order/position history is enough for reconstructable fake-token realized P/L.
+- Route mismatch: none. `/api/portfolio/history` remains the canonical route for recent trades, canceled orders, and resolved history.
+- Temporary mock/static data: none added.
+- Future migration concern: if imported legacy trades lack basis data, keep `realizedPnlTokens` null instead of inventing a number.
 
 # Cycle SS - Portfolio Position Row Density Notes
 
