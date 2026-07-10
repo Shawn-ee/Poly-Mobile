@@ -2840,3 +2840,9 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Screenshot: `docs/mobile/screenshots/cycle-SH-home-local-mvp-focus/cycle-SH-current-mvp-home.png`.
 - XML: `docs/mobile/harness/cycle-SH-home-local-mvp-focus/cycle-SH-current-mvp-home.xml`.
 - Result: PASS. Home shows World Cup, Matches, match count, live count, and no visible `home-filter-*` controls; order book and chat remain hidden.
+
+# Cycle UG - Chart-Free MVP Doc Alignment Proof
+
+- Device: no new Android run; no runtime UI changed and no ADB device was attached during this cleanup.
+- Flow covered by source/contract proof: current FD/FE criteria -> Event Detail chart-free source contracts -> S23 proof harness negative assertions for `event-detail-price-chart`.
+- Result: PASS for documentation/contract scope. Prior S23 visible chart-free proof remains Cycle SC and should be rerun on the next Event Detail visual cycle.

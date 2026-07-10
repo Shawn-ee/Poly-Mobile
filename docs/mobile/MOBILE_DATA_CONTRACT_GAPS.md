@@ -9423,3 +9423,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: none for the fixture. Future real provider unavailable states should carry the same status, marketStatus, and reason fields.
 - Temporary mock/static data: the forced launch path creates an in-memory proof market with `availability.status="unavailable"` and `marketStatus="PROOF_UNAVAILABLE"`.
 - Future migration concern: use this fixture only for proof repeatability; do not treat it as real provider unavailable evidence.
+
+# Cycle UG - Chart-Free MVP Doc Alignment Notes
+
+- No schema migration was added.
+- Closed or narrowed: current Local MVP criteria no longer require a market-page chart marker for Event Detail proof. They now require probability/outcome display, Game Lines, and explicit absence of `event-detail-price-chart`.
+- Route mismatch: none. `/api/mobile/events/:slug/live-detail` may still return chart-history fields for internal/future use, but the default mobile market page does not consume them as a P0 dependency.
+- Fields Holiwyn still needs but backend does not fully provide: real provider-backed current-match Spread/Totals/Team Total line markets remain the active P1 data gap.
+- Temporary mock/static data: none added.
+- Future migration concern: do not rebuild or require the Polymarket-style chart during Local MVP cycles unless product direction explicitly reopens chart work.
