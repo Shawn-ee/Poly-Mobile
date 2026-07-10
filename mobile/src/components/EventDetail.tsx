@@ -2053,7 +2053,6 @@ const styles = StyleSheet.create({
   liveDataText: { color: "#93c5fd", fontSize: 12, fontWeight: "900" },
   liveDataTextWarning: { color: "#fde68a" },
   liveDataMeta: { color: "#94a3b8", fontSize: 10, fontWeight: "800" },
-  liveChartBlock: { minHeight: 168, paddingTop: 20 },
   liveMatchStrip: { minHeight: 64, marginHorizontal: 24, marginTop: 10, padding: 12, borderRadius: 14, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   liveStripLabel: { color: "#ef4444", fontSize: 11, fontWeight: "900" },
   liveStripScore: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginTop: 2 },

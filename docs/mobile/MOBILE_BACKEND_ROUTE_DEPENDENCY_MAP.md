@@ -4228,3 +4228,9 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SK-ticket-sourc
 | Trade Ticket swipe footer visual spacing | No new route; existing submit path remains `/api/orders` when the user completes a server-mode swipe | POST only on successful submit | Mobile API key for server-mode order placement | Existing fake-token order body with selected event/market/outcome/line/source identity | Existing order result when submitted; this cycle only changes pre-submit footer layout | Existing `Order`, `Trade`, `Position`, `UserBalance`, `ApiCredential`; no schema change | Mock mode still uses the same local fake-token order path | No missing backend support. This is a visible mobile layout fix only. |
 
 Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe-handle-spacing/cycle-SL-current-mvp-s23-visible-flow.json`. No route contract changed.
+
+# Cycle SV - Event Detail Chart-Free MVP Cleanup
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Chart-free Event Detail market page hardening | Existing Event Detail routes; no chart route consumed by default MVP UI | GET | Existing public/server-mode viewing | Event slug and existing market/outcome identity only | Existing event teams, primary outcomes, market groups, line options, and selected outcome probabilities | Existing `Event`, `Market`, `Outcome`; no schema change | Existing mock/contract event fixtures remain unchanged | None for this cleanup. Chart-history routes can remain internal/future but must not block the Local MVP trading path. |
