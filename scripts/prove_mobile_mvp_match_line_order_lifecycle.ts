@@ -1,16 +1,18 @@
 import fs from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { NextRequest } from "next/server";
-import { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 
 process.env.INTERNAL_TRADING_BETA_ENABLED = "true";
 process.env.TRADING_KILL_SWITCH = "false";
 
 const DEFAULT_EVENT_SLUG = "switzerland-vs-colombia";
 const DEFAULT_OUTPUT_PATH = "docs/mobile/harness/cycle-LO-match-line-order-lifecycle/cycle-LO-match-line-order-lifecycle.json";
+const DEFAULT_PROOF_PRICE = "0.99";
 
-const dec = (value: Prisma.Decimal.Value) => new Prisma.Decimal(value);
+const dec = (value: Prisma.Decimal.Value) => value;
 
 const argValue = (name: string) => {
   const prefix = `--${name}=`;
@@ -20,6 +22,28 @@ const argValue = (name: string) => {
 const assert = (condition: unknown, message: string): asserts condition => {
   if (!condition) throw new Error(message);
 };
+
+function loadLocalDatabaseUrlIfNeeded() {
+  if (process.env.DATABASE_URL) return;
+  try {
+    const envFile = readFileSync(".env", "utf8");
+    const line = envFile
+      .split(/\r?\n/)
+      .map((entry) => entry.replace(/^\uFEFF/, "").trimStart())
+      .find((entry) => entry.startsWith("DATABASE_URL="));
+    if (!line) return;
+    let value = line.slice("DATABASE_URL=".length).trim();
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+    process.env.DATABASE_URL = value;
+  } catch {
+    // Leave the original Prisma error if local env loading is unavailable.
+  }
+}
 
 const responseJson = async (response: Response) => {
   const body = await response.json().catch(() => ({}));
@@ -202,13 +226,14 @@ async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to run local MVP lifecycle proof in production.");
   }
+  loadLocalDatabaseUrlIfNeeded();
 
   const eventSlug = argValue("eventSlug") ?? DEFAULT_EVENT_SLUG;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
   const cycle = argValue("cycle") ?? "LO";
   const suffix = randomUUID().slice(0, 8);
   const target = await loadTarget(eventSlug);
-  const askPrice = argValue("price") ?? "0.52";
+  const askPrice = argValue("price") ?? DEFAULT_PROOF_PRICE;
   const size = argValue("size") ?? "10";
   const { credential } = await createUserWithCredential(suffix);
   const maker = await createMakerForMarket({

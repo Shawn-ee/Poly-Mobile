@@ -2872,3 +2872,10 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Flow covered by backend/API proof: Home match feed -> selected `argentina-vs-egypt` Event Detail route -> provider-backed Regulation Winner -> contract-fixture Spread/Totals/Team Total rows -> route diagnosis for remaining provider-line gap.
 - Proof summary: `docs/mobile/harness/cycle-UK-local-mvp-route-baseline-proof/cycle-UK-state-inspection.json`.
 - Result: PASS for backend/API route baseline scope. S23 visible journey proof remains the next required visible gate.
+
+# Cycle UL - Local MVP Order To Portfolio History Proof
+
+- Device: no new Android run; no visible mobile UI changed and no ADB device was attached.
+- Flow covered by backend/API proof: selected `argentina-vs-egypt` Spread line -> `POST /api/orders` fake-token fill -> `/api/portfolio` position -> `/api/portfolio/history` recent trade -> selected line/source/token identity preserved.
+- Proof summary: `docs/mobile/harness/cycle-UL-local-mvp-order-history-proof/cycle-UL-match-line-order-lifecycle.json`.
+- Result: PASS for backend/API lifecycle scope. S23 visible journey proof remains the next required visible gate.

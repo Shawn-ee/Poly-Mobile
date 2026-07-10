@@ -1557,3 +1557,11 @@ For every UI element or interaction, answer:
 | Current backend route baseline needed after order-book debug gating | P0 | Verified | Route inspection passed: Home query returns 7 match events and 0 futures; selected MVP event `argentina-vs-egypt` has provider-backed Regulation Winner and contract-fixture line rows. | `docs/mobile/harness/cycle-UK-local-mvp-route-baseline-proof/cycle-UK-state-inspection.json`; `docs/mobile/audits/cycle-UK-local-mvp-route-baseline-proof.md` |
 | S23 visible journey proof against current route data | P1 | Open | The proof is backend/API only because no Android device is attached. Next visible cycle should prove the route-backed journey on S23. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |
 | Real provider-backed spread/totals/team-total current-match rows | P1 | Open | Route diagnosis still reports 0 provider-backed line markets and 4 contract-fixture line markets. | `docs/mobile/harness/cycle-UK-local-mvp-route-baseline-proof/cycle-UK-state-inspection.json` |
+
+# Cycle UL - Local MVP Order To Portfolio History Proof
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Current route-selected line market needed server order -> Portfolio/history lifecycle proof | P0 | Verified | Server fake-token BUY on `argentina-vs-egypt` Spread `Egypt +1.5` filled through `/api/orders`; Portfolio position and History recent trade preserved market/outcome/line/period/source/token identity. | `docs/mobile/harness/cycle-UL-local-mvp-order-history-proof/cycle-UL-match-line-order-lifecycle.json`; `docs/mobile/audits/cycle-UL-local-mvp-order-history-proof.md` |
+| Lifecycle proof harness depended on shell-provided `DATABASE_URL` and a mid-price maker quote | P0 | Verified | Harness now loads local `.env` when needed, handles a BOM, and defaults to a high local proof price to avoid accidental pre-crossing with existing local liquidity. | `scripts/prove_mobile_mvp_match_line_order_lifecycle.ts` |
+| S23 visible journey proof against current route data | P1 | Open | Backend lifecycle proof passed, but the Android UI journey still needs S23 proof when a device is attached. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |

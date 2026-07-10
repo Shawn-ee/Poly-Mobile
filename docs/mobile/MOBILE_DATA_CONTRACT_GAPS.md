@@ -9468,3 +9468,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: real provider-backed current-match Spread, Total, and Team Total market ids, condition ids, token ids, prices, and quote freshness from a provider source.
 - Temporary mock/static data: no new fixture data was added. Existing line rows remain contract-shaped fixtures by design.
 - Future migration concern: next visible proof should use `argentina-vs-egypt` current route data instead of stale disposable proof events.
+
+# Cycle UL - Local MVP Order To Portfolio History Proof Notes
+
+- No schema migration was added.
+- Closed or narrowed: server order, Portfolio, and Portfolio History routes preserve selected contract-fixture Spread line identity for the current MVP event.
+- Route mismatch: none. `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` accept and return the selection fields mobile needs for the line-ticket lifecycle.
+- Fields Holiwyn still needs but backend does not fully provide: real provider-backed line-market IDs/tokens for Spread/Totals/Team Total. The proven lifecycle currently uses contract-fixture identity fields.
+- Temporary mock/static data: the proof creates disposable local users/liquidity and a server fake-token order. It does not add mobile UI fixtures.
+- Future migration concern: when provider-backed line rows exist, rerun this lifecycle proof against provider-backed IDs and then pair it with S23 visible proof.

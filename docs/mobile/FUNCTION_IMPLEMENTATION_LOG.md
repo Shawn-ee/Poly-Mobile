@@ -12343,3 +12343,13 @@ Known limitations:
 - State transitions: no runtime state changed. The inspection proves provider-backed Regulation Winner is ready while line rows remain explicit `contract-fixture` rows.
 - Proof: `docs/mobile/harness/cycle-UK-local-mvp-route-baseline-proof/cycle-UK-state-inspection.json`.
 - Known limitations: no Android proof because no device is attached. Real provider-backed Spread/Totals/Team Total rows remain unavailable.
+
+# Cycle UL - Local MVP Order To Portfolio History Proof
+
+- Feature/page worked on: backend order lifecycle for the Local MVP line-ticket path.
+- Frontend components touched: none.
+- Backend/API routes touched: no route handler changed. Hardened `scripts/prove_mobile_mvp_match_line_order_lifecycle.ts` so local proof can load `DATABASE_URL` from `.env` and avoid maker-liquidity pre-crossing.
+- User interactions supported: backend evidence for Event Detail line selection -> server fake-token order -> Portfolio position -> Portfolio History recent trade.
+- State transitions: temporary proof user submits a BUY on `argentina-vs-egypt` Spread `Egypt +1.5`; order fills; Portfolio shows a position; History shows the recent trade; selected line/source/token identity remains stable.
+- Proof: `docs/mobile/harness/cycle-UL-local-mvp-order-history-proof/cycle-UL-match-line-order-lifecycle.json`.
+- Known limitations: no Android proof because no device is attached. Real provider-backed Spread/Totals/Team Total rows remain unavailable.
