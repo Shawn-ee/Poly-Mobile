@@ -1528,3 +1528,10 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Current criteria still described the removed market-page chart as required Event Detail proof | P0 | Verified | FD/FE criteria now require route-backed probability/outcome display, Game Lines, provider markers, and explicit absence of `event-detail-price-chart`. | `docs/mobile/POLYMARKET_FEATURE_CRITERIA.md`; `mobile/src/__tests__/localMvpGameTrackerContract.test.ts`; `docs/mobile/audits/cycle-UG-chart-free-mvp-doc-alignment.md` |
 | Real provider-backed spread/totals/team-total current-match rows | P1 | Open | Unchanged. Chart-free criteria do not solve provider line breadth. | `docs/mobile/audits/cycle-TW-provider-line-source-reprobe.md` |
+
+# Cycle UH - Partial Provider Line Readiness
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Partial provider-backed line coverage could be mistaken for full line parity | P0 | Verified | Backend/mobile contract now uses `partial-provider-backed` and `providerAvailability.status=partial` unless all expected MVP line families are provider-backed. | `src/server/services/mobileLiveEventDetail.ts`; `src/__tests__/mobile-live-event-detail.test.ts`; `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts`; `docs/mobile/audits/cycle-UH-partial-provider-line-readiness.md` |
+| Real provider-backed spread/totals/team-total current-match rows | P1 | Open | Still needs real provider rows for every expected MVP line family. | `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md` |

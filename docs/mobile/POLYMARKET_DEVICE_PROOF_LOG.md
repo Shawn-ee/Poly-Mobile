@@ -2846,3 +2846,9 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Device: no new Android run; no runtime UI changed and no ADB device was attached during this cleanup.
 - Flow covered by source/contract proof: current FD/FE criteria -> Event Detail chart-free source contracts -> S23 proof harness negative assertions for `event-detail-price-chart`.
 - Result: PASS for documentation/contract scope. Prior S23 visible chart-free proof remains Cycle SC and should be rerun on the next Event Detail visual cycle.
+
+# Cycle UH - Partial Provider Line Readiness Proof
+
+- Device: no new Android run; no runtime UI changed and no ADB device was attached.
+- Flow covered by source/contract proof: live-detail market source summary -> `partial-provider-backed` route state -> Event Detail hidden source markers.
+- Result: PASS for backend/data-contract scope. Run Android proof when a real or seeded partial-provider line state is visible on device.

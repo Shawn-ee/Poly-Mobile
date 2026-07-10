@@ -538,7 +538,7 @@ describe("mobile live event detail contract", () => {
         totalCount: 2,
         polymarketCount: 1,
         contractFixtureCount: 1,
-        status: "provider-backed",
+        status: "partial-provider-backed",
         familyReadiness: [
           expect.objectContaining({
             family: "spread",
@@ -557,15 +557,15 @@ describe("mobile live event detail contract", () => {
           }),
         ],
         providerAvailability: {
-          status: "available",
+          status: "partial",
           expectedFamilies: ["spread", "total", "team_total"],
           providerBackedFamilies: ["spread"],
           contractFixtureFamilies: ["total"],
           providerUnavailableFamilies: ["total", "team_total"],
           fixtureOnlyFamilies: ["total"],
           missingFamilies: ["team_total"],
-          nextProviderAction: "use_route_visible_provider_line_markets",
-          reason: "Route includes provider-backed line markets; missing provider-backed families: total, team_total.",
+          nextProviderAction: "replace_remaining_fixture_line_families_with_provider_markets",
+          reason: "Route includes partial provider-backed line markets; remaining provider-backed families needed: total, team_total.",
         },
       },
     });
@@ -598,7 +598,7 @@ describe("mobile live event detail contract", () => {
         polymarketCount: 0,
         approvedLineProviderCount: 1,
         contractFixtureCount: 1,
-        status: "provider-backed",
+        status: "partial-provider-backed",
         familyReadiness: [
           expect.objectContaining({
             family: "spread",
@@ -618,7 +618,7 @@ describe("mobile live event detail contract", () => {
         ],
         providerAvailability: {
           source: "polymarket-gamma-or-approved-line-provider",
-          status: "available",
+          status: "partial",
           providerBackedLineMarketCount: 1,
           approvedLineProviderMarketCount: 1,
           contractFixtureLineMarketCount: 1,
@@ -627,8 +627,55 @@ describe("mobile live event detail contract", () => {
           providerUnavailableFamilies: ["total", "team_total"],
           fixtureOnlyFamilies: ["total"],
           missingFamilies: ["team_total"],
-          nextProviderAction: "use_route_visible_provider_line_markets",
+          nextProviderAction: "replace_remaining_fixture_line_families_with_provider_markets",
         },
+      },
+    });
+  });
+
+  test("classifies line markets as fully provider-backed only when all expected MVP families are provider-backed", () => {
+    expect(buildMobileMarketSourceSummary([
+      {
+        marketType: "match_winner_1x2",
+        marketGroupKey: "main",
+        marketGroupTitle: "Regulation Winner",
+        referenceSource: "polymarket",
+      },
+      {
+        marketType: "spread",
+        marketGroupKey: "spread",
+        marketGroupTitle: "Spread",
+        referenceSource: "polymarket",
+      },
+      {
+        marketType: "total_goals",
+        marketGroupKey: "totals",
+        marketGroupTitle: "Totals",
+        referenceSource: "polymarket",
+      },
+      {
+        marketType: "team_total_goals",
+        marketGroupKey: "team-totals",
+        marketGroupTitle: "Team Totals",
+        referenceSource: "polymarket",
+      },
+    ])).toMatchObject({
+      lineMarkets: {
+        totalCount: 3,
+        polymarketCount: 3,
+        contractFixtureCount: 0,
+        status: "provider-backed",
+        providerAvailability: {
+          status: "available",
+          providerBackedLineMarketCount: 3,
+          providerBackedFamilies: ["spread", "total", "team_total"],
+          providerUnavailableFamilies: [],
+          fixtureOnlyFamilies: [],
+          missingFamilies: [],
+          nextProviderAction: "use_route_visible_provider_line_markets",
+          reason: "Route includes provider-backed line markets for all expected MVP line families.",
+        },
+        reason: "All expected MVP line market families are provider-backed.",
       },
     });
   });
