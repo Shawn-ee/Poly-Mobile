@@ -533,6 +533,9 @@ const positionPotentialPayout = (position: Position) => {
   return position.amount / entryPrice;
 };
 
+const positionCurrentProbability = (position: Position) =>
+  Math.round(position.currentPrice ? position.currentPrice * 100 : position.probability);
+
 const monthIndexByShortName: Record<string, number> = {
   Jan: 0,
   Feb: 1,
@@ -1198,7 +1201,7 @@ export function Portfolio({
             </View>
           </View>
           {positions.map((position) => (
-            <View accessibilityLabel={`position-card-${position.id} portfolio-position-retail-density-fit portfolio-position-tabs-gap-closed-s23 portfolio-first-position-first-screen-fit portfolio-row-dollar-amounts portfolio-position-to-win-payout portfolio-position-outcome-compact-label portfolio-position-market-context-readable portfolio-outcome-compact-${compactVisibleOutcomeLabel(position)} portfolio-position-visible-label-${displayPositionChoice(position)} ${portfolioSourceNote(position.selection, locale)?.accessibility ?? ""} ${providerBreadthCodes(position) ? "portfolio-event-title-compact-provider" : ""} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
+            <View accessibilityLabel={`position-card-${position.id} portfolio-position-retail-density-fit portfolio-position-polymarket-row-parity portfolio-position-metric-strip portfolio-position-tabs-gap-closed-s23 portfolio-first-position-first-screen-fit portfolio-row-dollar-amounts portfolio-position-to-win-payout portfolio-position-outcome-compact-label portfolio-position-market-context-readable portfolio-outcome-compact-${compactVisibleOutcomeLabel(position)} portfolio-position-visible-label-${displayPositionChoice(position)} ${portfolioSourceNote(position.selection, locale)?.accessibility ?? ""} ${providerBreadthCodes(position) ? "portfolio-event-title-compact-provider" : ""} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
               <View style={styles.positionEventLine}>
                 <Text style={styles.positionScoreLine}>{compactPortfolioScoreLine(position)}</Text>
                 {(position.isLive || position.liveClock) && (
@@ -1217,7 +1220,10 @@ export function Portfolio({
                 <PositionFlag item={position} />
                 <View style={styles.positionTextColumn}>
                   <View style={styles.positionTitleRow}>
-                    <Text numberOfLines={1} style={styles.positionTitle}><Text style={styles.yesBadge}>{position.contractSide === "no" ? "No" : "Yes"}</Text> {displayPositionChoice(position)}</Text>
+                    <Text style={[styles.positionSidePill, position.contractSide === "no" && styles.positionSidePillNo]}>
+                      {position.contractSide === "no" ? "No" : "Yes"}
+                    </Text>
+                    <Text numberOfLines={1} style={styles.positionTitle}>{displayPositionChoice(position)}</Text>
                     {position.selection && (
                       <View
                         accessibilityLabel={`portfolio-position-source-badge-${position.id} ${portfolioSourceBadge(position.selection).accessibility}`}
@@ -1241,9 +1247,6 @@ export function Portfolio({
                       </View>
                     )}
                   </View>
-                  <Text style={styles.positionMeta}>
-                    Cost {portfolioRowMoney(position.amount)} | To win {portfolioRowMoney(positionPotentialPayout(position))} | Entry {position.probability}%
-                  </Text>
                   {portfolioSourceNote(position.selection, locale) && (
                     <Text
                       accessibilityLabel={`portfolio-position-source-note-${position.id} ${portfolioSourceNote(position.selection, locale)?.accessibility}`}
@@ -1258,6 +1261,26 @@ export function Portfolio({
                       {portfolioSourceNote(position.selection, locale)?.text}
                     </Text>
                   )}
+                </View>
+              </View>
+              <View accessibilityLabel={`portfolio-position-metric-strip-${position.id}`} testID={`portfolio-position-metric-strip-${position.id}`} style={styles.positionMetricStrip}>
+                <View style={styles.positionMetricItem}>
+                  <Text style={styles.positionMetricLabel}>Cost {position.probability}%</Text>
+                  <Text adjustsFontSizeToFit minimumFontScale={0.76} numberOfLines={1} style={styles.positionMetricValue}>
+                    {portfolioRowMoney(position.amount)}
+                  </Text>
+                </View>
+                <View style={styles.positionMetricItem}>
+                  <Text style={styles.positionMetricLabel}>Current {positionCurrentProbability(position)}%</Text>
+                  <Text adjustsFontSizeToFit minimumFontScale={0.76} numberOfLines={1} style={styles.positionMetricValue}>
+                    {portfolioRowMoney(portfolioPositionValue(position))} <Text style={estimatedPnl(position) >= 0 ? styles.pnlPositive : styles.pnlNegative}>{estimatedPnl(position) >= 0 ? "+" : ""}{portfolioRowMoney(estimatedPnl(position))}</Text>
+                  </Text>
+                </View>
+                <View style={[styles.positionMetricItem, styles.positionMetricItemRight]}>
+                  <Text style={styles.positionMetricLabel}>To win</Text>
+                  <Text adjustsFontSizeToFit minimumFontScale={0.76} numberOfLines={1} style={styles.positionMetricValue}>
+                    {portfolioRowMoney(positionPotentialPayout(position))}
+                  </Text>
                 </View>
               </View>
               {position.selection && (
@@ -1282,10 +1305,6 @@ export function Portfolio({
                 <Text style={styles.detailToggleText}>{expandedPositionId === position.id ? detailCopy.hideDetails : detailCopy.actionHint}</Text>
               </Pressable>
               <View accessibilityLabel="portfolio-position-actions-fit-phone" testID="portfolio-position-actions-fit-phone" style={styles.positionValueRow}>
-                <View style={styles.positionValueBlock}>
-                  <Text adjustsFontSizeToFit minimumFontScale={0.78} numberOfLines={1} style={styles.positionValue}>{portfolioRowMoney(portfolioPositionValue(position))} <Text style={estimatedPnl(position) >= 0 ? styles.pnlPositive : styles.pnlNegative}>{estimatedPnl(position) >= 0 ? "+" : ""}{portfolioRowMoney(estimatedPnl(position))}</Text></Text>
-                  <Text style={styles.positionChance}>{Math.round(position.currentPrice ? position.currentPrice * 100 : position.probability)}% {pageCopy.chance}</Text>
-                </View>
                 <View style={styles.positionQuickActions}>
                   {canCashOutPosition(position) && (
                     <Pressable
@@ -1695,7 +1714,7 @@ const styles = StyleSheet.create({
   summaryItem: { flex: 1, minHeight: 92, padding: 10, borderRadius: 10, backgroundColor: "#111b2d", borderWidth: 1, borderColor: "#2b3b55" },
   summaryLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "800" },
   summaryValue: { color: "#f8fafc", fontSize: 13, fontWeight: "900", marginTop: 8 },
-  positionCard: { paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
+  positionCard: { paddingHorizontal: 20, paddingVertical: 15, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   detailToggle: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, marginTop: 8, paddingHorizontal: 9, paddingVertical: 6, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
   detailToggleText: { color: "#93c5fd", fontSize: 11, fontWeight: "900" },
   rowHint: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, paddingHorizontal: 8, paddingVertical: 5, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
@@ -1721,7 +1740,9 @@ const styles = StyleSheet.create({
   positionScoreLine: { color: "#a8b0bf", fontSize: 14, fontWeight: "500" },
   yesBadge: { color: "#22c55e", backgroundColor: "#052e16" },
   positionTitleRow: { flexDirection: "row", alignItems: "center", gap: 7 },
-  positionTitle: { flex: 1, minWidth: 0, color: "#f8fafc", fontSize: 18, fontWeight: "500" },
+  positionSidePill: { overflow: "hidden", borderRadius: 6, paddingHorizontal: 7, paddingVertical: 2, color: "#22c55e", backgroundColor: "#052e16", fontSize: 14, fontWeight: "800" },
+  positionSidePillNo: { color: "#ef4444", backgroundColor: "#3a0f15" },
+  positionTitle: { flex: 1, minWidth: 0, color: "#f8fafc", fontSize: 18, fontWeight: "600" },
   positionMeta: { color: "#a8b0bf", marginTop: 4, fontSize: 14, fontWeight: "500" },
   portfolioSourcePill: { minHeight: 22, justifyContent: "center", borderRadius: 999, paddingHorizontal: 8, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155", flexShrink: 0 },
   portfolioSourcePillProvider: { backgroundColor: "#052e16", borderColor: "#166534" },
@@ -1742,14 +1763,19 @@ const styles = StyleSheet.create({
   portfolioSourceSummaryText: { flex: 1, minWidth: 0, color: "#dbeafe", fontSize: 13, fontWeight: "800" },
   portfolioSourceSummaryTextProvider: { color: "#86efac" },
   portfolioSourceSummaryTextFixture: { color: "#fde68a" },
-  positionValueRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8, marginTop: 14 },
+  positionMetricStrip: { flexDirection: "row", alignItems: "stretch", gap: 8, marginTop: 12, paddingTop: 10, borderTopWidth: 1, borderTopColor: "#172033" },
+  positionMetricItem: { flex: 1, minWidth: 0, minHeight: 46, justifyContent: "center" },
+  positionMetricItemRight: { alignItems: "flex-end" },
+  positionMetricLabel: { color: "#8b94a5", fontSize: 11, fontWeight: "700", marginBottom: 3 },
+  positionMetricValue: { color: "#f8fafc", fontSize: 16, fontWeight: "700" },
+  positionValueRow: { flexDirection: "row", alignItems: "center", justifyContent: "flex-end", gap: 8, marginTop: 10 },
   positionValueBlock: { flex: 1, minWidth: 0 },
   positionValue: { color: "#f8fafc", fontSize: 18, fontWeight: "500" },
   positionChance: { color: "#a8b0bf", fontSize: 14, fontWeight: "500", marginTop: 3 },
-  positionQuickActions: { flexDirection: "row", alignItems: "center", gap: 8, flexShrink: 0 },
-  cashOutButton: { minWidth: 104, minHeight: 54, alignItems: "center", justifyContent: "center", paddingHorizontal: 14, borderRadius: 17, borderWidth: 1, borderColor: "#263247", backgroundColor: "#0b1220" },
+  positionQuickActions: { flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "flex-end", gap: 10 },
+  cashOutButton: { flex: 1, minHeight: 48, alignItems: "center", justifyContent: "center", paddingHorizontal: 14, borderRadius: 15, borderWidth: 1, borderColor: "#263247", backgroundColor: "#0b1220" },
   cashOutText: { color: "#f8fafc", fontSize: 16, fontWeight: "500" },
-  addPositionButton: { width: 54, height: 54, alignItems: "center", justifyContent: "center", borderRadius: 17, backgroundColor: "#1238ff" },
+  addPositionButton: { width: 48, height: 48, alignItems: "center", justifyContent: "center", borderRadius: 15, backgroundColor: "#1238ff" },
   positionDetailGrid: { flexDirection: "row", gap: 8, marginTop: 12 },
   positionDetailItem: { flex: 1, padding: 10, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
   positionDetailLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "800" },
