@@ -9289,3 +9289,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: none for this interaction-state copy. Real provider-backed spread/totals/team-total current-match line IDs remain the active P1 provider gap.
 - Temporary mock/static data: none added. The copy uses localized app strings and existing ticket state.
 - Future migration concern: keep the armed-state copy tied to gesture threshold state, not to backend submit status, so a failed order cannot appear as submitted before release.
+
+# Cycle TP - Ticket Submit To Portfolio Reproof Notes
+
+- No schema migration was added.
+- Closed: full S23 submit -> Portfolio History proof was rerun after the Trade Ticket armed-state copy change.
+- Route mismatch: none. Existing mobile event/detail/quote/order/Portfolio/history routes support the Local MVP proof path.
+- Fields Holiwyn still needs but backend does not fully provide: real provider-backed current-match spread/totals/team-total IDs and CLOB token IDs remain open.
+- Temporary mock/static data: TP still uses the explicit backend-shaped contract fixture line row for the selected spread market, with source markers preserved in ticket and Portfolio History.
+- Future migration concern: when real provider-backed line markets are imported, keep the selected market/outcome/line/source identity fields stable through ticket, order, Portfolio, and history.

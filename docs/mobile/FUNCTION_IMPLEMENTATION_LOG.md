@@ -12143,3 +12143,13 @@ Known limitations:
 - State transitions: unchanged except for visible armed copy. `idle/dragging` keeps `Swipe to buy/sell`; `armed` shows `Release to buy/sell`; `release above threshold` calls the existing order submit handler.
 - Proof: focused Trade Ticket/Event Detail/Google auth tests passed, root/mobile typechecks passed, and Samsung S23 `SM-S911U1` source-disclosure proof passed in `docs/mobile/harness/cycle-TO-ticket-armed-swipe-copy/cycle-TO-current-mvp-s23-visible-flow.json`.
 - Known limitations: proof intentionally stopped at ticket-ready. The next broader Local MVP cycle should rerun full submit -> Portfolio/history proof.
+
+# Cycle TP - Ticket Submit To Portfolio Reproof
+
+- Feature/page worked on: no source change; full Local MVP user-flow proof after the Trade Ticket armed-copy update.
+- Frontend components touched: none.
+- Backend/API routes touched: none. The proof exercised existing `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+- User interactions supported: S23 proof walks Home/Live -> Event Detail -> Game Lines -> Trade Ticket -> swipe submit -> Portfolio History.
+- State transitions: selected spread line -> ticket amount ready -> swipe submit -> server fake-token order fill via seeded local counterparty -> Portfolio History activity row.
+- Proof: Samsung S23 `SM-S911U1` full proof passed in `docs/mobile/harness/cycle-TP-ticket-submit-portfolio-reproof/cycle-TP-current-mvp-s23-visible-flow.json` with `swipeSubmitReachedPortfolio=true` and `filledHistoryVisible=true`.
+- Known limitations: no new provider line breadth. The proof still uses explicitly marked backend-shaped contract fixtures for spread lines.

@@ -1468,3 +1468,10 @@ For every UI element or interaction, answer:
 | Local MVP Event Detail chart should stay removed | P0 | Verified | Focused chart-free contracts pass and Event Detail has no chart renderer or chart-status UI in the Local MVP market page. | `mobile/src/__tests__/eventDetailChartInteractionContract.test.ts`; `mobile/src/__tests__/eventDetailChartStatusCopy.test.ts` |
 | Full submit -> Portfolio/history reproof after ticket copy change | P1 | Open | Source-disclosure proof reached ticket-ready on S23 and stopped before submit by design. Reuse the full flow proof in the next broader Local MVP cycle. | `docs/mobile/harness/cycle-TO-ticket-armed-swipe-copy/cycle-TO-current-mvp-s23-visible-flow.json` |
 | Real provider-backed spread/totals/team-total current-match lines | P1 | Open | Unchanged from TD/TE/TF/TG. | `docs/mobile/audits/cycle-TD-real-worldcup-line-discovery.md` |
+
+# Cycle TP - Ticket Submit To Portfolio Reproof
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Full submit -> Portfolio/history reproof after ticket copy change | P1 | Verified | S23 proof now covers the full Local MVP path after Cycle TO: line ticket -> swipe submit -> Portfolio History with filled activity visible. | `docs/mobile/harness/cycle-TP-ticket-submit-portfolio-reproof/cycle-TP-current-mvp-s23-visible-flow.json`; `docs/mobile/screenshots/cycle-TP-ticket-submit-portfolio-reproof/` |
+| Real provider-backed spread/totals/team-total current-match lines | P1 | Open | Unchanged from TD/TE/TF/TG/TO. The proof still uses explicit contract fixtures because Polymarket Gamma has not exposed attach-ready current-match line markets. | `docs/mobile/audits/cycle-TD-real-worldcup-line-discovery.md` |
