@@ -51,6 +51,7 @@ P2:
 - Removed stale `marketSearch`, `clearSearch`, `searchAll`, `searchLive`, and `today` fields from `HomeScreenCopy`.
 - Added source-contract guards to `homeLocalMvpFocusContract.test.ts`.
 - Updated function, route, and data-contract docs.
+- Hardened `mobile/scripts/check-mobile-audit-gate.ps1` so it can read current `# Cycle...` audit sections, legacy `P0 result: PASS` sections, and pending Android-proof details.
 
 ## Audit Gate
 
@@ -60,6 +61,7 @@ Passed:
 - Source contract aligns with the current Home visual behavior.
 - No backend/API/schema behavior changed.
 - No orderbook/chat/live-stats work touched.
+- Audit helper accepts a known passed cycle, fails Cycle VW without `-AllowPending`, and allows Cycle VW only with explicit pending mode.
 
 Pending:
 - Android/S23 visual proof, because `adb devices -l` currently reports no attached devices.

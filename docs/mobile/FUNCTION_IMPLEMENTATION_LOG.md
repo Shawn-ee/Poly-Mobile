@@ -12427,11 +12427,11 @@ Known limitations:
 # Cycle VW - Home Copy Contract Cleanup
 
 - Feature/page worked on: Home page Local MVP match-only contract.
-- Frontend components touched: `mobile/src/components/HomeScreen.tsx`, `mobile/src/__tests__/homeLocalMvpFocusContract.test.ts`.
+- Frontend/tooling files touched: `mobile/src/components/HomeScreen.tsx`, `mobile/src/__tests__/homeLocalMvpFocusContract.test.ts`, `mobile/scripts/check-mobile-audit-gate.ps1`.
 - Backend/API routes touched: none.
 - User interactions supported: unchanged Home -> Event Detail -> line market -> simple ticket flow. Home still renders World Cup, Matches, live count, paged match cards, and load-more behavior.
 - State transitions: unchanged. The cycle removes stale Home search/filter copy props that were no longer rendered, so Home's component contract now matches the visible page.
-- Proof: focused Home Local MVP source contract and mobile typecheck. Android proof is pending because no ADB device is currently attached.
+- Proof: focused Home Local MVP source contract, mobile typecheck, known-pass audit-gate check, VW expected-fail audit-gate check, and VW allow-pending audit-gate check. Android proof is pending because no ADB device is currently attached.
 - Known limitations: no S23 screenshot in this cycle. This cycle does not close the real provider-backed Spread/Totals/Team Total data gap.
 
 # Cycle UT - Google Login Setup Validation
