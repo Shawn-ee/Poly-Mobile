@@ -19,8 +19,10 @@ describe("Demo trading copy contract", () => {
     expect(copy).not.toContain("Fake-token trading stays available");
     expect(copy).not.toContain("Fake-token mock");
 
-    expect(portfolio).toContain("Demo trade");
     expect(portfolio).toContain("fake-token-test");
+    expect(portfolio).toContain("latest-order-snapshot");
+    expect(portfolio).toContain("styles.a11yOnly");
+    expect(portfolio).not.toContain("Demo trade");
     expect(portfolio).not.toContain("Fake-token test");
   });
 });

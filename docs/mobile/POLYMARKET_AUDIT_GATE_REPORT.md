@@ -7494,3 +7494,13 @@ Remaining P1:
 - Android proof: not rerun because no ADB device was attached.
 - Unresolved P0: 0 for source/contract scope.
 - Remaining P1: S23 lower Game Lines / Exact Score visible proof when a device is visible.
+
+# Cycle UP Audit Gate - Portfolio Demo Copy Cleanup
+
+- Scope: Portfolio latest-order/activity status copy after Local MVP trade submit.
+- P0 result: PASS for source/contract scope after validation.
+- Source proof: visible Portfolio latest-order status no longer renders `Demo trade`; fake-token identity remains in hidden/accessibility markers.
+- Contract proof: `mobile/src/__tests__/demoTradingCopyContract.test.ts` rejects `Demo trade` in Portfolio source while preserving `fake-token-test`.
+- Android proof: not rerun because no ADB device was attached.
+- Unresolved P0: 0 for source/contract scope.
+- Remaining P1: S23 Portfolio/latest-order visible proof when a device is visible.

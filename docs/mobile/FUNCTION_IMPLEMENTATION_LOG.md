@@ -12383,3 +12383,13 @@ Known limitations:
 - State transitions: unchanged. This is display-copy only; no market/outcome/line/order/Portfolio identity changed.
 - Proof: pending final Cycle UO focused tests/typecheck. Android proof remains pending because no ADB device is attached.
 - Known limitations: Exact Score remains a simple local MVP row set; real provider-backed Spread/Totals/Team Total current-match rows remain unavailable.
+
+# Cycle UP - Portfolio Demo Copy Cleanup
+
+- Feature/page worked on: Portfolio latest-order/activity status copy after the fake-token order flow.
+- Frontend components touched: `mobile/src/components/Portfolio.tsx`, `mobile/src/__tests__/demoTradingCopyContract.test.ts`.
+- Backend/API routes touched: none.
+- User interactions supported: unchanged server/mock order flow. After a trade, the Portfolio latest-order card shows clean lifecycle status instead of visible `Demo trade` debug copy.
+- State transitions: unchanged. Order confirmation, Portfolio positions, and history still consume the same order/selection/source fields; fake-token proof markers remain in accessibility labels.
+- Proof: pending final Cycle UP focused tests/typecheck. Android proof remains pending because no ADB device is attached.
+- Known limitations: S23 visible Portfolio proof remains P1 when device connectivity returns.

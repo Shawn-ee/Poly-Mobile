@@ -1588,3 +1588,10 @@ For every UI element or interaction, answer:
 | Exact Score price buttons could render cent copy as mojibake on Android/Windows proof paths | P0 | Verified | Exact Score now uses ASCII `c` cents notation and a focused source contract rejects the old cent/mojibake sequence. | `mobile/src/components/EventDetail.tsx`; `mobile/src/__tests__/eventDetailExactScoreCopyContract.test.ts` |
 | S23 lower Game Lines / Exact Score proof | P1 | Open | No Android device is attached. Run lower Game Lines visible proof when S23 is visible to ADB. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |
 | Real provider-backed spread/totals/team-total current-match rows | P1 | Open | Unchanged. This cycle fixes display copy only. | `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md` |
+
+# Cycle UP - Portfolio Demo Copy Cleanup
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Portfolio latest-order status showed visible `Demo trade` debug copy after submit | P0 | Verified | Latest-order card now shows lifecycle status only; fake-token proof identity remains hidden/accessibility-only. | `mobile/src/components/Portfolio.tsx`; `mobile/src/__tests__/demoTradingCopyContract.test.ts` |
+| S23 Portfolio/latest-order visible proof | P1 | Open | No Android device is attached. Run Portfolio proof after a fake-token submit when S23 is visible to ADB. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |
