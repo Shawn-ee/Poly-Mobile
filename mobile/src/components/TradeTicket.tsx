@@ -602,6 +602,7 @@ export function TradeTicket({
   const availabilityTone = marketAvailabilityTone(ticket.market);
   const availabilityStatus = ticket.market.availability?.status ?? "unknown";
   const marketTradable = availabilityTone !== "blocked";
+  const ticketReadOnly = !marketTradable;
   const submitLabel = !marketTradable ? availabilityLabel ?? t.marketUnavailable : numericAmount <= 0 ? t.chooseAmount : swipeLabel;
   const submitHelper = !marketTradable ? t.tradingDisabledForMarket : t.finalCostMayVary;
   const submitArmedLabel = side === "buy" ? t.releaseBuyOrder : t.releaseSellOrder;
@@ -724,11 +725,14 @@ export function TradeTicket({
             </View>
             {availabilityLabel && availabilityTone === "blocked" && (
               <View
-                accessibilityLabel={`ticket-market-status ticket-availability-${availabilityStatus} ticket-market-status-${ticket.market.availability?.marketStatus ?? "unknown"} ${providerIdentityLabel} ${availabilityLabel}`}
-                style={styles.orderReviewA11y}
+                accessibilityLabel={`ticket-market-status ticket-market-status-visible ticket-readonly-market-state ticket-amount-entry-disabled ticket-availability-${availabilityStatus} ticket-market-status-${ticket.market.availability?.marketStatus ?? "unknown"} ${providerIdentityLabel} ${availabilityLabel}`}
+                style={[styles.marketStatusPill, styles.marketStatusPillBlocked, styles.marketStatusPillVisible]}
                 testID="ticket-market-status"
               >
-                <Text>{availabilityLabel}</Text>
+                <Ionicons name="alert-circle-outline" color="#fecaca" size={14} />
+                <Text style={[styles.marketStatusText, styles.marketStatusTextBlocked]} numberOfLines={1}>
+                  {availabilityLabel}
+                </Text>
               </View>
             )}
             {availabilityLabel && availabilityTone === "warning" && (
@@ -781,10 +785,12 @@ export function TradeTicket({
                 const isContractActive = contractSide === "no" ? option === "sell" : side === option;
                 return (
                   <Pressable
-                    accessibilityLabel={`ticket-side-${option}`}
+                    accessibilityLabel={`ticket-side-${option} ${ticketReadOnly ? "ticket-side-disabled-readonly" : "ticket-side-enabled"}`}
+                    disabled={ticketReadOnly}
                     key={option}
-                    style={[styles.sideButton, isContractActive && styles.sideButtonActive]}
+                    style={[styles.sideButton, isContractActive && styles.sideButtonActive, ticketReadOnly && styles.sideButtonDisabled]}
                     onPress={() => {
+                      if (ticketReadOnly) return;
                       if (ticket.selection?.marketType === "future") {
                         setActiveContractSide(option === "sell" ? "no" : "yes");
                         setSide("buy");
@@ -795,7 +801,7 @@ export function TradeTicket({
                     }}
                     testID={`ticket-side-${option}`}
                   >
-                    <Text style={[styles.sideText, isContractActive && styles.sideTextActive]}>{option === "buy" ? "Yes" : "No"}</Text>
+                    <Text style={[styles.sideText, isContractActive && styles.sideTextActive, ticketReadOnly && styles.sideTextDisabled]}>{option === "buy" ? "Yes" : "No"}</Text>
                   </Pressable>
                 );
               })}
@@ -810,32 +816,40 @@ export function TradeTicket({
             <View style={[styles.presetRow, usePhoneTicketFit && styles.presetRowPhone]}>
               {amountPresets.map((preset) => (
                 <Pressable
-                  accessibilityLabel={`ticket-preset-${preset}`}
+                  accessibilityLabel={`ticket-preset-${preset} ${ticketReadOnly ? "ticket-preset-disabled-readonly" : "ticket-preset-enabled"}`}
+                  disabled={ticketReadOnly}
                   key={preset}
                   onPress={() => setAmount(String(numericAmount + preset))}
-                  style={styles.presetButton}
+                  style={[styles.presetButton, ticketReadOnly && styles.presetButtonDisabled]}
                   testID={`ticket-preset-${preset}`}
                 >
-                  <Text style={styles.presetText}>+${preset}</Text>
+                  <Text style={[styles.presetText, ticketReadOnly && styles.presetTextDisabled]}>+${preset}</Text>
                 </Pressable>
               ))}
-              <Pressable accessibilityLabel="ticket-max-amount" testID="ticket-max-amount" onPress={() => setAmount(String(Math.floor(balance)))} style={styles.presetButton}>
-                <Text style={styles.presetText}>{t.max}</Text>
+              <Pressable
+                accessibilityLabel={`ticket-max-amount ${ticketReadOnly ? "ticket-preset-disabled-readonly" : "ticket-preset-enabled"}`}
+                disabled={ticketReadOnly}
+                testID="ticket-max-amount"
+                onPress={() => setAmount(String(Math.floor(balance)))}
+                style={[styles.presetButton, ticketReadOnly && styles.presetButtonDisabled]}
+              >
+                <Text style={[styles.presetText, ticketReadOnly && styles.presetTextDisabled]}>{t.max}</Text>
               </Pressable>
             </View>
-            <View accessibilityLabel="ticket-amount-keypad ticket-s23-keypad-footer-gap" testID="ticket-amount-keypad" style={[styles.keypadGrid, usePhoneTicketFit && styles.keypadGridPhone]}>
+            <View accessibilityLabel={`ticket-amount-keypad ticket-s23-keypad-footer-gap ${ticketReadOnly ? "ticket-keypad-readonly-disabled" : "ticket-keypad-enabled"}`} testID="ticket-amount-keypad" style={[styles.keypadGrid, usePhoneTicketFit && styles.keypadGridPhone]}>
               {keypadKeys.map((key) => (
                 <Pressable
-                  accessibilityLabel={`ticket-keypad-${key}`}
+                  accessibilityLabel={`ticket-keypad-${key} ${ticketReadOnly ? "ticket-keypad-disabled-readonly" : "ticket-keypad-enabled"}`}
+                  disabled={ticketReadOnly}
                   key={key}
                   onPress={() => applyKeypadInput(key)}
-                  style={[styles.keypadButton, usePhoneTicketFit && styles.keypadButtonPhone]}
+                  style={[styles.keypadButton, usePhoneTicketFit && styles.keypadButtonPhone, ticketReadOnly && styles.keypadButtonDisabled]}
                   testID={`ticket-keypad-${key}`}
                 >
                   {key === "backspace" ? (
-                    <Ionicons name="backspace-outline" color="#dbeafe" size={20} />
+                    <Ionicons name="backspace-outline" color={ticketReadOnly ? "#475569" : "#dbeafe"} size={20} />
                   ) : (
-                    <Text style={styles.keypadText}>{key}</Text>
+                    <Text style={[styles.keypadText, ticketReadOnly && styles.keypadTextDisabled]}>{key}</Text>
                   )}
                 </Pressable>
               ))}
@@ -921,6 +935,7 @@ const styles = StyleSheet.create({
   selectionTextBlock: { flex: 1, minWidth: 0 },
   ticketSelectionMetaRow: { minHeight: 23, flexDirection: "row", alignItems: "flex-start", marginTop: 2 },
   marketStatusPill: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 999, backgroundColor: "#052e1b", borderWidth: 1, borderColor: "#166534" },
+  marketStatusPillVisible: { maxWidth: "100%", marginTop: 6, marginBottom: 0 },
   marketStatusPillWarning: { backgroundColor: "#2b2106", borderColor: "#854d0e" },
   marketStatusPillBlocked: { backgroundColor: "#2a0d0d", borderColor: "#7f1d1d" },
   marketStatusText: { color: "#bbf7d0", fontSize: 12, fontWeight: "900" },
@@ -961,8 +976,10 @@ const styles = StyleSheet.create({
   ticketSideRowPhone: { marginTop: 4 },
   sideButton: { flex: 1, minHeight: 34, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "transparent" },
   sideButtonActive: { backgroundColor: "#0b111d" },
+  sideButtonDisabled: { opacity: 0.52 },
   sideText: { color: "#8b94a5", fontSize: 15, fontWeight: "700" },
   sideTextActive: { color: "#ffffff" },
+  sideTextDisabled: { color: "#64748b" },
   oddsAvailableLine: { alignItems: "center", justifyContent: "center", minHeight: 28, marginTop: 12 },
   oddsAvailableLinePhone: { marginTop: 6 },
   oddsAvailableText: { color: "#a8b0bf", fontSize: 15, fontWeight: "500" },
@@ -975,12 +992,16 @@ const styles = StyleSheet.create({
   presetRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 8, marginTop: 10 },
   presetRowPhone: { marginTop: 7 },
   presetButton: { flex: 1, minHeight: 40, alignItems: "center", justifyContent: "center" },
+  presetButtonDisabled: { opacity: 0.44 },
   presetText: { color: "#d7dce6", fontSize: 23, fontWeight: "500" },
+  presetTextDisabled: { color: "#64748b" },
   keypadGrid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", rowGap: 8, marginTop: 10, paddingBottom: 20 },
   keypadGridPhone: { rowGap: 6, marginTop: 8, paddingBottom: 26 },
   keypadButton: { width: "31.5%", minHeight: 43, alignItems: "center", justifyContent: "center" },
   keypadButtonPhone: { minHeight: 37 },
+  keypadButtonDisabled: { opacity: 0.36 },
   keypadText: { color: "#f8fafc", fontSize: 29, fontWeight: "500" },
+  keypadTextDisabled: { color: "#64748b" },
   errorCard: { flexDirection: "row", alignItems: "center", gap: 8, padding: 10, borderRadius: 10, backgroundColor: "#1f1a0b", borderWidth: 1, borderColor: "#854d0e", marginTop: 12 },
   errorTextBlock: { flex: 1, gap: 3 },
   errorText: { color: "#fde68a", fontWeight: "800" },

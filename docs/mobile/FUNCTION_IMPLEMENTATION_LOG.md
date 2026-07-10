@@ -12274,3 +12274,13 @@ Known limitations:
 - State transitions: unchanged. This cycle aligns documentation and proof contracts with the already-current state: chart/chat/social/default order-book surfaces are removed or debug-only, while ticket/order/Portfolio identity flow remains the active MVP path.
 - Proof: focused Local MVP tracker contract test, Event Detail no-chat/chart tests, proof-noise contract test, and mobile typecheck passed. No Android proof was required because no visible UI changed.
 - Known limitations: real provider-backed Spread/Totals/Team Total current-match line markets remain P1 until Polymarket exposes attach-ready lines or an approved secondary provider contract is configured.
+
+# Cycle UE - Unavailable Trade Ticket Readonly State
+
+- Feature/page worked on: Trade Ticket unavailable/blocked market state in the Local MVP retail betting flow.
+- Frontend components touched: `mobile/src/components/TradeTicket.tsx`, `mobile/src/__tests__/tradeTicketUnavailableReadonlyContract.test.ts`.
+- Backend/API routes touched: none. Existing market availability data and order-submit blocking behavior are consumed as-is.
+- User interactions supported: when a selected market is suspended or unavailable, the ticket now shows a visible blocked-market status, disables side switching, disables amount presets, disables the keypad, and keeps the swipe submit control unavailable.
+- State transitions: selected market/outcome with `market.availability.status` of `suspended` or `unavailable` -> `marketTradable=false` -> visible read-only ticket state -> no amount entry or submit; ready/stale/delayed markets keep the existing editable ticket path.
+- Proof: focused Trade Ticket unavailable-readonly contract test, existing Trade Ticket swipe motion/source tests, and mobile typecheck passed. Android proof is still pending because no S23/tablet ADB device was attached or discoverable during this cycle.
+- Known limitations: device proof for a real unavailable ticket state remains required before marking the visual unavailable-state gap fully closed.

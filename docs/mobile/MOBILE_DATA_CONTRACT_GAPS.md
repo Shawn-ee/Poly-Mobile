@@ -9405,3 +9405,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: real provider-backed Spread/Totals/Team Total current-match lines remain open P1.
 - Temporary mock/static data: none added.
 - Future migration concern: keep contract-shaped fixture lines honest. Do not mark fixture rows as Polymarket-backed unless the backend route has real Polymarket or reviewed approved-provider identity.
+
+# Cycle UE - Unavailable Trade Ticket Readonly State Notes
+
+- No schema migration was added.
+- Closed or narrowed: blocked market availability now produces a visible read-only ticket state instead of leaving keypad/preset/side controls looking usable.
+- Route mismatch: none. The mobile app consumes the existing `market.availability.status` contract.
+- Fields Holiwyn still needs but backend does not fully provide: no new fields. For richer unavailable proof, backend fixtures should expose representative `suspended` and `unavailable` market states through the same availability shape.
+- Temporary mock/static data: none added.
+- Future migration concern: unavailable/suspended market handling should remain driven by route availability fields, not frontend-only local flags.
