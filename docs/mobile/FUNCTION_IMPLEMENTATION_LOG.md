@@ -11957,3 +11957,13 @@ Known limitations:
 - User interactions supported: no new visible interaction. This cycle protects the Local MVP user flow by proving the backend should keep contract-shaped line fixtures instead of attaching irrelevant Gamma candidates.
 - State transitions: provider discovery scan/probe -> route readiness summary -> documented decision that match winner stays Polymarket-backed and line markets stay contract-shaped until attach-ready provider markets exist.
 - Known limitations: SX does not import a new match line market because no attach-ready Polymarket line market was found for the current MVP match.
+
+# Cycle SZ - Event Detail Social Shell Cleanup
+
+- Feature/page worked on: Event Detail game page for the Local MVP retail betting flow.
+- Frontend components touched: `mobile/src/components/EventDetail.tsx`, `mobile/App.tsx`, `mobile/src/__tests__/eventDetailNoChatStatsContract.test.ts`.
+- Backend/API routes touched: none. Existing Event Detail, quote, order, Portfolio, history, provider, and Google auth routes remain unchanged.
+- User interactions supported: Event Detail stays focused on match prediction and trading. The position card no longer shows a nonfunctional social share affordance, and dormant share/watchlist panels can no longer appear on the game page.
+- State transitions: unchanged. Market/outcome/line identity still flows from Event Detail rows and outcome buttons into Trade Ticket, server fake-token order placement, and Portfolio/history.
+- Proof: focused Event Detail contract tests passed; mobile typecheck passed; Samsung S23 `SM-S911U1` proof passed in `docs/mobile/harness/cycle-SZ-event-detail-social-shell-cleanup/cycle-SZ-current-mvp-s23-visible-flow.json`.
+- Known limitations: this does not solve real provider-backed line availability. Spread/totals/team-total rows remain contract-shaped fixtures until an attach-ready Polymarket or approved secondary-provider contract exists.

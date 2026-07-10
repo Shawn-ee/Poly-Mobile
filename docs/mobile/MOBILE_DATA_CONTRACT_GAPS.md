@@ -9124,3 +9124,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: real provider IDs/tokens for current-match spread, totals, and team-total markets. Gamma exact event returns only match-winner markets for `fifwc-arg-egy-2026-07-07`.
 - Temporary mock/static data: Local MVP line rows remain contract-shaped fixtures. SX explicitly rejects broad irrelevant candidates instead of attaching them.
 - Future migration concern: if Polymarket does not expose match line markets, define and approve a secondary provider contract for line-market enrichment; do not map random Gamma futures or unrelated broad-search markets into match lines.
+
+# Cycle SZ - Event Detail Social Shell Cleanup Notes
+
+- No schema migration was added.
+- Closed or narrowed: Event Detail no longer carries dormant share/watchlist UI or visible position-card share icon in the default Local MVP game page.
+- Route mismatch: none. The cycle removes unused UI shell only; it does not change `/api/mobile/events/:slug/live-detail`, `/api/orders`, `/api/portfolio`, or `/api/portfolio/history`.
+- Fields Holiwyn still needs but backend does not fully provide: no new fields for this cleanup. Real provider-backed line-market IDs/tokens remain the active P1 gap from SX.
+- Temporary mock/static data: none added.
+- Future migration concern: if share/watchlist returns later, define a real saved/share contract and gate it separately instead of leaving dormant panels on the prediction/trade page.
