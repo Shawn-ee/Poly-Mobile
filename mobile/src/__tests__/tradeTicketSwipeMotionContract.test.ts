@@ -16,5 +16,13 @@ describe("Trade Ticket swipe motion contract", () => {
     expect(ticket).not.toContain("marginLeft: -19");
     expect(ticket).toContain("swipe-submit-handle-progress-linked");
     expect(ticket).toContain("swipe-submit-handle-s23-visible-travel");
+    expect(ticket).toContain("swipe-submit-release-below-threshold-restores");
+    expect(ticket).toContain("swipe-submit-release-above-threshold-submits");
+    expect(ticket).toContain("swipe-submit-armed-copy-visible");
+    expect(ticket).toContain("const visibleLabel = isSubmitting ? label : isArmed && !unavailable ? armedLabel : label;");
+    expect(ticket).toContain("const visibleHelper = isArmed && !unavailable ? armedHelper : helper;");
+    expect(ticket).toContain("t.releaseBuyOrder");
+    expect(ticket).toContain("t.releaseSellOrder");
+    expect(ticket).toContain("t.releaseToSubmit");
   });
 });

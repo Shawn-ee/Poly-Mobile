@@ -9280,3 +9280,12 @@ Future migration concern:
 - Schema mismatch narrowed: Search discovery now treats quote decoration as non-blocking. `/api/events` event/market/outcome rows are enough to render a result; quote routes can enrich prices later without hiding the row.
 - Temporary mock/static data: none added.
 - Future migration concern: if `/api/events` is empty in local server mode, Search proofs should fail or explicitly fall back to mock mode rather than silently counting empty-state screenshots as result-navigation proof.
+
+# Cycle TO - Trade Ticket Armed Swipe Copy Notes
+
+- No schema migration was added.
+- Closed or narrowed: the Trade Ticket now exposes the armed threshold state visibly before release, which makes the swipe confirmation model clearer and closer to the Polymarket-style gesture flow.
+- Route mismatch: none. Existing quote/order/Portfolio routes and request/response contracts are unchanged.
+- Fields Holiwyn still needs but backend does not fully provide: none for this interaction-state copy. Real provider-backed spread/totals/team-total current-match line IDs remain the active P1 provider gap.
+- Temporary mock/static data: none added. The copy uses localized app strings and existing ticket state.
+- Future migration concern: keep the armed-state copy tied to gesture threshold state, not to backend submit status, so a failed order cannot appear as submitted before release.

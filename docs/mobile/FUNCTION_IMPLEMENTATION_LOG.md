@@ -12133,3 +12133,13 @@ Known limitations:
 - State/data resilience: route-backed Search rows remain visible if quote decoration is temporarily unavailable.
 - Proof: focused Search tests passed, mobile/root typechecks passed, and Samsung S23 `SM-S911U1` deep Search proof passed. Evidence: `docs/mobile/screenshots/cycle-TM-search-populated-navigation/cycle-current-holiwyn-search-no-filter-sort.png`, `docs/mobile/screenshots/cycle-TM-search-populated-navigation/cycle-current-holiwyn-search-open-result.png`, `docs/mobile/harness/cycle-TM-search-populated-navigation/cycle-current-holiwyn-search-sort-screen.xml`, `docs/mobile/harness/cycle-TM-search-populated-navigation/cycle-current-holiwyn-search-open-result.xml`.
 - Known limitations: this improves proof coverage only; it does not add Search filters, saved/watchlist, social features, or provider-backed line-market breadth.
+
+# Cycle TO - Trade Ticket Armed Swipe Copy
+
+- Feature/page worked on: Trade Ticket swipe-to-buy/sell threshold state in the Local MVP retail betting flow.
+- Frontend components touched: `mobile/src/components/TradeTicket.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/src/__tests__/tradeTicketSwipeMotionContract.test.ts`.
+- Backend/API routes touched: none. Existing `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history`, and Google auth routes remain unchanged.
+- User interactions supported: after choosing a line/outcome and entering an amount, dragging the swipe submit control past the threshold now visibly changes the instruction to `Release to buy` or `Release to sell`, with `Release to submit` helper copy. Below-threshold release continues to restore without submission; above-threshold release still uses the existing submit path.
+- State transitions: unchanged except for visible armed copy. `idle/dragging` keeps `Swipe to buy/sell`; `armed` shows `Release to buy/sell`; `release above threshold` calls the existing order submit handler.
+- Proof: focused Trade Ticket/Event Detail/Google auth tests passed, root/mobile typechecks passed, and Samsung S23 `SM-S911U1` source-disclosure proof passed in `docs/mobile/harness/cycle-TO-ticket-armed-swipe-copy/cycle-TO-current-mvp-s23-visible-flow.json`.
+- Known limitations: proof intentionally stopped at ticket-ready. The next broader Local MVP cycle should rerun full submit -> Portfolio/history proof.

@@ -1459,3 +1459,12 @@ For every UI element or interaction, answer:
 | Team to Advance card still carried debug-only inline order book/graph/about placeholders | P0 | Verified | Removed the `activeLineDetailTab` state, line detail tabs, inline order book, inline graph, and inline about placeholders from Event Detail. | `mobile/src/components/EventDetail.tsx`; `mobile/src/__tests__/eventDetailChartInteractionContract.test.ts` |
 | Full Local MVP proof needed after Event Detail cleanup | P0 | Verified | S23 proof passes Home/Live -> Event Detail Game Lines -> Trade Ticket -> server fake-token submit -> Portfolio History after the cleanup. | `docs/mobile/harness/cycle-TG-event-detail-advance-strip-cleanup/cycle-TG-current-mvp-s23-visible-flow.json`; `docs/mobile/screenshots/cycle-TG-event-detail-advance-strip-cleanup/` |
 | Real provider-backed spread/totals/team-total current-match lines | P1 | Open | Unchanged from TD/TE/TF. | `docs/mobile/audits/cycle-TG-event-detail-advance-strip-cleanup.md` |
+
+# Cycle TO - Trade Ticket Armed Swipe Copy
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Swipe-to-buy/sell threshold state did not visibly change the submit instruction before release | P0 | Verified | The Trade Ticket now switches visible copy from `Swipe to buy/sell` to `Release to buy/sell` when the drag crosses the armed threshold, with lower-contrast helper copy updated to `Release to submit`. | `mobile/src/components/TradeTicket.tsx`; `mobile/src/localization/appCopy.ts`; `mobile/src/__tests__/tradeTicketSwipeMotionContract.test.ts` |
+| Local MVP Event Detail chart should stay removed | P0 | Verified | Focused chart-free contracts pass and Event Detail has no chart renderer or chart-status UI in the Local MVP market page. | `mobile/src/__tests__/eventDetailChartInteractionContract.test.ts`; `mobile/src/__tests__/eventDetailChartStatusCopy.test.ts` |
+| Full submit -> Portfolio/history reproof after ticket copy change | P1 | Open | Source-disclosure proof reached ticket-ready on S23 and stopped before submit by design. Reuse the full flow proof in the next broader Local MVP cycle. | `docs/mobile/harness/cycle-TO-ticket-armed-swipe-copy/cycle-TO-current-mvp-s23-visible-flow.json` |
+| Real provider-backed spread/totals/team-total current-match lines | P1 | Open | Unchanged from TD/TE/TF/TG. | `docs/mobile/audits/cycle-TD-real-worldcup-line-discovery.md` |

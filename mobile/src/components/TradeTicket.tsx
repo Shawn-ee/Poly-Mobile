@@ -68,6 +68,9 @@ type TradeTicketCopy = {
   shares: string;
   swipeBuyOrder: string;
   swipeSellOrder: string;
+  releaseBuyOrder: string;
+  releaseSellOrder: string;
+  releaseToSubmit: string;
   finalCostMayVary: string;
   chooseAmount: string;
   toWin: string;
@@ -86,6 +89,8 @@ function SwipeSubmitControl({
   tone,
   label,
   helper,
+  armedLabel,
+  armedHelper,
   onSubmit,
   onProgressChange,
 }: {
@@ -94,6 +99,8 @@ function SwipeSubmitControl({
   tone: "buy" | "sell";
   label: string;
   helper: string;
+  armedLabel: string;
+  armedHelper: string;
   onSubmit: () => void | Promise<void>;
   onProgressChange?: (progress: number) => void;
 }) {
@@ -203,14 +210,16 @@ function SwipeSubmitControl({
   const progressBucket = disabled ? "disabled" : isSubmitting ? "submitting" : isArmed ? "armed" : swipeProgress > 0 ? "dragging" : "idle";
   const handleLift = -118 * swipeProgress;
   const handleIconSize = unavailable ? 22 : 18;
+  const visibleLabel = isSubmitting ? label : isArmed && !unavailable ? armedLabel : label;
+  const visibleHelper = isArmed && !unavailable ? armedHelper : helper;
 
   return (
       <View
         accessible
         accessibilityRole="button"
         accessibilityState={{ disabled: disabled || isSubmitting }}
-        accessibilityHint={helper}
-      accessibilityLabel={`swipe-to-submit-order swipe-submit-gesture-required swipe-submit-threshold-clear swipe-submit-tap-disabled swipe-submit-handle-progress-linked swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-handle-long-travel swipe-submit-handle-above-label-s23 swipe-submit-state-${progressBucket} swipe-submit-progress-${Math.round(swipeProgress * 100)}`}
+        accessibilityHint={visibleHelper}
+      accessibilityLabel={`swipe-to-submit-order swipe-submit-gesture-required swipe-submit-threshold-clear swipe-submit-release-below-threshold-restores swipe-submit-release-above-threshold-submits swipe-submit-armed-copy-visible swipe-submit-tap-disabled swipe-submit-handle-progress-linked swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-handle-long-travel swipe-submit-handle-above-label-s23 swipe-submit-state-${progressBucket} swipe-submit-progress-${Math.round(swipeProgress * 100)}`}
       style={[
         styles.swipeSubmit,
         !unavailable && tone === "buy" && styles.swipeSubmitBuy,
@@ -245,8 +254,20 @@ function SwipeSubmitControl({
         <Ionicons name={unavailable ? "alert-circle-outline" : isSubmitting ? "hourglass-outline" : "chevron-up"} color={unavailable ? "#fecaca" : "#ffffff"} size={handleIconSize} />
       </View>
       <View style={[styles.swipeTextBlock, unavailable && styles.swipeTextBlockUnavailable, { transform: [{ translateY: unavailable ? 0 : Math.min(0, handleLift * 0.25) }] }]}>
-        <Text style={[styles.swipeLabel, unavailable && styles.swipeLabelUnavailable]}>{isSubmitting ? label : label}</Text>
-        <Text style={[styles.swipeHelper, unavailable && styles.swipeHelperUnavailable]}>{helper}</Text>
+        <Text
+          accessibilityLabel={`swipe-submit-visible-label swipe-submit-visible-label-state-${progressBucket}`}
+          style={[styles.swipeLabel, isArmed && !unavailable && styles.swipeLabelArmed, unavailable && styles.swipeLabelUnavailable]}
+          testID="swipe-submit-visible-label"
+        >
+          {visibleLabel}
+        </Text>
+        <Text
+          accessibilityLabel={`swipe-submit-visible-helper swipe-submit-visible-helper-state-${progressBucket}`}
+          style={[styles.swipeHelper, isArmed && !unavailable && styles.swipeHelperArmed, unavailable && styles.swipeHelperUnavailable]}
+          testID="swipe-submit-visible-helper"
+        >
+          {visibleHelper}
+        </Text>
       </View>
     </View>
   );
@@ -583,6 +604,7 @@ export function TradeTicket({
   const marketTradable = availabilityTone !== "blocked";
   const submitLabel = !marketTradable ? availabilityLabel ?? t.marketUnavailable : numericAmount <= 0 ? t.chooseAmount : swipeLabel;
   const submitHelper = !marketTradable ? t.tradingDisabledForMarket : t.finalCostMayVary;
+  const submitArmedLabel = side === "buy" ? t.releaseBuyOrder : t.releaseSellOrder;
   const activeSubmitProgress = marketTradable ? swipeSubmitProgress : 0;
   const footerBaseHeight = usePhoneTicketFit ? 172 : 184;
   const submitSheetHeight = footerBaseHeight + activeSubmitProgress * Math.max(viewportHeight - footerBaseHeight, 0);
@@ -860,6 +882,8 @@ export function TradeTicket({
               tone={side}
               helper={submitHelper}
               label={submitLabel}
+              armedLabel={submitArmedLabel}
+              armedHelper={t.releaseToSubmit}
               onProgressChange={setSwipeSubmitProgress}
               onSubmit={() => placeOrder(numericAmount, side, contractSide)}
             />
@@ -983,7 +1007,9 @@ const styles = StyleSheet.create({
   swipeTextBlock: { alignItems: "center", zIndex: 1 },
   swipeTextBlockUnavailable: { flex: 1, alignItems: "flex-start" },
   swipeLabel: { color: "#ffffff", fontSize: 18, fontWeight: "900" },
+  swipeLabelArmed: { color: "#ffffff", fontSize: 20 },
   swipeLabelUnavailable: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
   swipeHelper: { color: "rgba(255,255,255,0.72)", fontSize: 11, fontWeight: "800", marginTop: 4 },
+  swipeHelperArmed: { color: "rgba(255,255,255,0.88)" },
   swipeHelperUnavailable: { color: "#8b94a5", marginTop: 3 },
 });
