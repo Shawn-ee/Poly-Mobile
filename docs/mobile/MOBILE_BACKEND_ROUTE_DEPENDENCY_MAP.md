@@ -4534,3 +4534,9 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Account trading state display copy | `/api/profile/summary` when signed in; local runtime mode when signed out/offline | GET for profile summary | Mobile API credential when server mode/profile sync is enabled | Existing profile summary request only | Existing `tradingMode` view-model value (`mock` or `server`) | Existing `ApiCredential`/profile summary data; no schema change | Local runtime mode displays as `On this device` | None for this copy cleanup. |
+
+# Cycle US - Chinese Source Copy Mojibake Cleanup
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail / Trade Ticket Chinese source copy | Existing Event Detail data from `/api/mobile/events/:slug/live-detail` or local fixture event | GET | Public event browse | selected event slug | Existing `marketSourceSummary`, `referenceSource`, market/outcome/line/source identity | Existing `Event`, `Market`, `Outcome`; no schema change | Local fixtures keep the same source identity and readable Chinese copy | None for copy cleanup. Real provider-backed line rows remain separate P1. |

@@ -260,13 +260,13 @@ const lineSourceCopy = (event: Event, locale: Locale) => {
     const approvedProviderLineCount = lineAvailability?.approvedLineProviderMarketCount ?? summary.lineMarkets.approvedLineProviderCount ?? 0;
     const hasApprovedProviderLines = approvedProviderLineCount > 0;
     return {
-      label: locale === "zh" ? "来源" : "Source",
+      label: locale === "zh" ? "\u6765\u6e90" : "Source",
       text: hasApprovedProviderLines
         ? locale === "zh"
           ? winnerReady ? "\u80dc\u8d1f: Polymarket\u3002\u76d8\u53e3: \u5229\u4e91\u4f53\u80b2\u3002" : "\u5229\u4e91\u4f53\u80b2\u76d8\u53e3\u3002"
           : winnerReady ? "Winner: Polymarket. Lines: Holiwyn." : "Holiwyn lines."
         : locale === "zh"
-        ? winnerReady ? "胜负和盘口: Polymarket" : "盘口: Polymarket"
+        ? winnerReady ? "\u80dc\u8d1f\u548c\u76d8\u53e3: Polymarket" : "\u76d8\u53e3: Polymarket"
         : winnerReady ? "Winner + lines: Polymarket" : "Lines: Polymarket",
       tone: "ready" as const,
       accessibility:
@@ -290,11 +290,11 @@ const lineSourceCopy = (event: Event, locale: Locale) => {
   }
   if (lineStatus === "contract-fixture") {
     return {
-      label: locale === "zh" ? "来源" : "Source",
+      label: locale === "zh" ? "\u6765\u6e90" : "Source",
       text: locale === "zh"
         ? winnerReady
-          ? "胜负: Polymarket。盘口: 利云体育。"
-          : "利云体育盘口。"
+          ? "\u80dc\u8d1f: Polymarket\u3002\u76d8\u53e3: \u5229\u4e91\u4f53\u80b2\u3002"
+          : "\u5229\u4e91\u4f53\u80b2\u76d8\u53e3\u3002"
         : winnerReady
           ? "Winner: Polymarket. Lines: Holiwyn."
           : "Holiwyn lines.",
@@ -305,22 +305,21 @@ const lineSourceCopy = (event: Event, locale: Locale) => {
   }
   if (lineStatus === "missing") {
     return {
-      label: locale === "zh" ? "来源" : "Source",
-      text: locale === "zh" ? "盘口暂不可用" : "Lines unavailable",
+      label: locale === "zh" ? "\u6765\u6e90" : "Source",
+      text: locale === "zh" ? "\u76d8\u53e3\u6682\u4e0d\u53ef\u7528" : "Lines unavailable",
       tone: "missing" as const,
       accessibility:
         `event-detail-line-source-banner line-source-missing regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}`,
     };
   }
   return {
-    label: locale === "zh" ? "来源" : "Source",
-    text: locale === "zh" ? "正在检查市场来源" : "Checking market source",
+    label: locale === "zh" ? "\u6765\u6e90" : "Source",
+    text: locale === "zh" ? "\u6b63\u5728\u68c0\u67e5\u5e02\u573a\u6765\u6e90" : "Checking market source",
     tone: "missing" as const,
     accessibility:
       `event-detail-line-source-banner line-source-unknown regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount}${lineAvailabilityMarker}`,
   };
 };
-
 type RouteStatus = "idle" | "loading" | "ready" | "refresh_due" | "stale" | "unavailable" | "empty" | "error" | string;
 type AvailabilityStatus = NonNullable<NonNullable<Event["liveDataStatus"]>["status"]>;
 type ProviderLifecycle = "ready" | "refresh-due" | "refreshing" | "not-ready";
@@ -422,7 +421,7 @@ const liveClockLabel = (startsAt: string) => {
   if (clock) return clock[0];
   const compact = startsAt
     .replace(/live/ig, "")
-    .replace(/[·•]/g, "")
+    .replace(/[Â·â€¢]/g, "")
     .trim();
   return compact || "Live";
 };
@@ -466,13 +465,13 @@ const marketSourceHeaderNote = (market: Market | undefined, locale: Locale) => {
   const source = market?.referenceSource ?? "";
   if (source.includes("contract-fixture")) {
     return {
-      text: locale === "zh" ? "利云体育盘口" : "Holiwyn line",
+      text: locale === "zh" ? "\u5229\u4e91\u4f53\u80b2\u76d8\u53e3" : "Holiwyn line",
       accessibility: "line-market-local-test-pricing line-market-local-test-fake-token",
     };
   }
   if (source.includes("polymarket")) {
     return {
-      text: locale === "zh" ? "Polymarket 市场" : "Polymarket market",
+      text: locale === "zh" ? "Polymarket \u5e02\u573a" : "Polymarket market",
       accessibility: "line-market-provider-backed",
     };
   }

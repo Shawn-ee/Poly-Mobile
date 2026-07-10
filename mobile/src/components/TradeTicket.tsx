@@ -363,14 +363,14 @@ function ticketSourceNote(ticket: Ticket, locale: Locale) {
   const source = ticketReferenceSource(ticket);
   if (source.includes("contract-fixture")) {
     return {
-      text: locale === "zh" ? "利云体育盘口" : "Holiwyn line",
+      text: locale === "zh" ? "\u5229\u4e91\u4f53\u80b2\u76d8\u53e3" : "Holiwyn line",
       accessibility: "ticket-local-test-pricing",
       tone: "fixture" as const,
     };
   }
   if (source.includes("polymarket")) {
     return {
-      text: locale === "zh" ? "Polymarket 市场" : "Polymarket market",
+      text: locale === "zh" ? "Polymarket \u5e02\u573a" : "Polymarket market",
       accessibility: "ticket-provider-backed-pricing",
       tone: "provider" as const,
     };

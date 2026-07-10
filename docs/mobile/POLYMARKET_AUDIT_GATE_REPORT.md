@@ -7524,3 +7524,13 @@ Remaining P1:
 - Android proof: not rerun because no ADB device was attached.
 - Unresolved P0: 0 for source/contract scope.
 - Remaining P1: S23 Account visible proof when a device is visible.
+
+# Cycle US Audit Gate - Chinese Source Copy Mojibake Cleanup
+
+- Scope: Chinese Event Detail and Trade Ticket source/status copy.
+- P0 result: PASS for source/contract scope after validation.
+- Source proof: remaining Event Detail source-copy branches and Trade Ticket source notes now use clean escaped Chinese strings.
+- Contract proof: focused Chinese/source-badge tests reject mojibake in the source-copy helper and ticket source note.
+- Android proof: not rerun because no ADB device was attached.
+- Unresolved P0: 0 for source/contract scope.
+- Remaining P1: S23 Chinese Event Detail/Ticket visible proof when a device is visible.
