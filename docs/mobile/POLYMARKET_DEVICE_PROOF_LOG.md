@@ -2893,3 +2893,10 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Flow covered by source/contract proof: Event Detail partial-provider source copy -> Chinese locale text -> hidden source/audit markers remain unchanged.
 - Proof summary: focused source contract and mobile typecheck.
 - Result: PASS for source/contract scope. S23 Chinese-language visible proof remains required when a device is attached.
+
+# Cycle UO - Event Detail Exact Score Copy
+
+- Device: no Android run; `adb devices -l` showed no attached device.
+- Flow covered by source/contract proof: Event Detail -> lower Game Lines / Exact Score -> price button copy uses ASCII `c` cents notation.
+- Proof summary: focused Exact Score source contract and mobile typecheck.
+- Result: PASS for source/contract scope. S23 lower Game Lines visible proof remains required when a device is attached.

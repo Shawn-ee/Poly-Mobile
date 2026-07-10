@@ -1580,3 +1580,11 @@ For every UI element or interaction, answer:
 | Partial-provider Event Detail source copy showed mojibake in Chinese mode | P0 | Verified | Corrected the partial-provider branch to valid Chinese escaped strings and added a guard against the mojibake sequences. | `mobile/src/components/EventDetail.tsx`; `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts` |
 | S23 Chinese-language Event Detail proof | P1 | Open | No Android device is attached. Run Chinese locale Event Detail top/lines proof when S23 is visible to ADB. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |
 | Real provider-backed spread/totals/team-total current-match rows | P1 | Open | Unchanged. This cycle fixes localized copy only. | `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md` |
+
+# Cycle UO - Event Detail Exact Score Copy
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Exact Score price buttons could render cent copy as mojibake on Android/Windows proof paths | P0 | Verified | Exact Score now uses ASCII `c` cents notation and a focused source contract rejects the old cent/mojibake sequence. | `mobile/src/components/EventDetail.tsx`; `mobile/src/__tests__/eventDetailExactScoreCopyContract.test.ts` |
+| S23 lower Game Lines / Exact Score proof | P1 | Open | No Android device is attached. Run lower Game Lines visible proof when S23 is visible to ADB. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |
+| Real provider-backed spread/totals/team-total current-match rows | P1 | Open | Unchanged. This cycle fixes display copy only. | `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md` |
