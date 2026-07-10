@@ -9,10 +9,14 @@ describe("Demo trading copy contract", () => {
     const copy = copySource();
     const portfolio = portfolioSource();
 
-    expect(copy).toContain('balance: "Demo balance"');
-    expect(copy).toContain("Place a practice trade to see it here.");
-    expect(copy).toContain("Demo trading stays available during MVP testing.");
-    expect(copy).toContain('tradingModeMock: "Demo mode"');
+    expect(copy).toContain('balance: "Balance"');
+    expect(copy).toContain("Place a trade to see it here.");
+    expect(copy).toContain("Trading remains available during MVP testing.");
+    expect(copy).toContain('tradingModeMock: "Local mode"');
+    expect(copy).not.toContain('balance: "Demo balance"');
+    expect(copy).not.toContain("Place a practice trade to see it here.");
+    expect(copy).not.toContain("Demo trading stays available during MVP testing.");
+    expect(copy).not.toContain('tradingModeMock: "Demo mode"');
     expect(copy).not.toContain("Fake balance");
     expect(copy).not.toContain("Place a mock trade");
     expect(copy).not.toContain("Showing local fake-token portfolio.");

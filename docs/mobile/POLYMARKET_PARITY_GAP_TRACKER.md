@@ -1595,3 +1595,10 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Portfolio latest-order status showed visible `Demo trade` debug copy after submit | P0 | Verified | Latest-order card now shows lifecycle status only; fake-token proof identity remains hidden/accessibility-only. | `mobile/src/components/Portfolio.tsx`; `mobile/src/__tests__/demoTradingCopyContract.test.ts` |
 | S23 Portfolio/latest-order visible proof | P1 | Open | No Android device is attached. Run Portfolio proof after a fake-token submit when S23 is visible to ADB. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |
+
+# Cycle UQ - Account Balance Copy Cleanup
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Account/Portfolio visible balance copy still used `Demo balance` / `Fake-token trading` wording | P0 | Verified | Visible copy now uses `Balance`, `Trading balance`, and cleaner funding-availability language while preserving internal fake-token behavior. | `mobile/src/localization/appCopy.ts`; `mobile/src/__tests__/demoTradingCopyContract.test.ts`; `mobile/src/__tests__/accountAuthContract.test.ts`; `mobile/src/__tests__/portfolioFundingHiddenContract.test.ts` |
+| S23 Account/Portfolio balance-copy proof | P1 | Open | No Android device is attached. Run Account/Portfolio visible proof when S23 is visible to ADB. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |

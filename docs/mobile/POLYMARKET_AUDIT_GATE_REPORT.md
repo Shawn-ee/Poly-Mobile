@@ -7504,3 +7504,13 @@ Remaining P1:
 - Android proof: not rerun because no ADB device was attached.
 - Unresolved P0: 0 for source/contract scope.
 - Remaining P1: S23 Portfolio/latest-order visible proof when a device is visible.
+
+# Cycle UQ Audit Gate - Account Balance Copy Cleanup
+
+- Scope: Account/Portfolio visible balance and funding-availability copy.
+- P0 result: PASS for source/contract scope after validation.
+- Source proof: `mobile/src/localization/appCopy.ts` now uses retail balance copy and no longer shows fake-token/demo wording in default visible account copy.
+- Contract proof: focused account/demo/funding copy tests reject the old visible fake-token wording.
+- Android proof: not rerun because no ADB device was attached.
+- Unresolved P0: 0 for source/contract scope.
+- Remaining P1: S23 Account/Portfolio visible proof when a device is visible.

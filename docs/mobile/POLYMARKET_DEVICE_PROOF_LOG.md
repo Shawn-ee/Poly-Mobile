@@ -2907,3 +2907,10 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Flow covered by source/contract proof: Trade submit -> Portfolio latest-order card -> lifecycle status remains visible while `fake-token-test` stays audit-only.
 - Proof summary: focused demo-trading copy contract and mobile typecheck.
 - Result: PASS for source/contract scope. S23 Portfolio/latest-order proof remains required when a device is attached.
+
+# Cycle UQ - Account Balance Copy Cleanup
+
+- Device: no Android run; `adb devices -l` showed no attached device.
+- Flow covered by source/contract proof: Portfolio -> Account entry -> balance/funding copy now uses retail wording while the fake-token implementation remains internal.
+- Proof summary: focused account/demo/funding copy contracts and mobile typecheck.
+- Result: PASS for source/contract scope. S23 Account/Portfolio visible proof remains required when a device is attached.

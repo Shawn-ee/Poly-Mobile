@@ -14,8 +14,10 @@ describe("Portfolio funding hidden contract", () => {
     expect(portfolio).not.toContain('withdraw: "Withdraw"');
     expect(portfolio).not.toContain("depositButton");
     expect(portfolio).not.toContain("withdrawButton");
-    expect(copy).toContain("Fake-token trading balance for local MVP testing.");
-    expect(copy).toContain("Fake-token trading is available without funding setup.");
+    expect(copy).toContain("Available for Holiwyn market testing.");
+    expect(copy).toContain("Trading is available without funding setup.");
+    expect(copy).not.toContain("Fake-token trading balance for local MVP testing.");
+    expect(copy).not.toContain("Fake-token trading is available without funding setup.");
     expect(copy).not.toContain("Deposits and withdrawals stay disabled");
     expect(copy).not.toContain("Deposits and withdrawals remain disabled");
   });

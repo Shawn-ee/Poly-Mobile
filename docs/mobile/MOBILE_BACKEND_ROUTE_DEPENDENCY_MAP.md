@@ -4522,3 +4522,9 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Portfolio latest-order status display | `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | POST/GET/GET | Mobile API credential for order and account routes | Existing order submit and portfolio/history requests | Existing order status, activity action, selection/source identity | Existing `Order`, `Trade`, `Position`, `ApiCredential`; no schema change | Local mock Portfolio state still uses the same view model fields | None for copy cleanup. |
+
+# Cycle UQ - Account Balance Copy Cleanup
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Account/Portfolio balance display copy | `/api/profile/summary`, `/api/account/balance`, `/api/portfolio` | GET | Mobile API credential when server mode/profile sync is enabled | Existing account/profile/Portfolio requests | Existing balance, portfolio value, open-order value, exposure, sign-in state | Existing `UserBalance`, `ApiCredential`, `Position`, `Order`; no schema change | Local balance remains available for mock/local mode | None for copy cleanup. Real deposit/withdraw remains out of Local MVP scope. |

@@ -12393,3 +12393,13 @@ Known limitations:
 - State transitions: unchanged. Order confirmation, Portfolio positions, and history still consume the same order/selection/source fields; fake-token proof markers remain in accessibility labels.
 - Proof: pending final Cycle UP focused tests/typecheck. Android proof remains pending because no ADB device is attached.
 - Known limitations: S23 visible Portfolio proof remains P1 when device connectivity returns.
+
+# Cycle UQ - Account Balance Copy Cleanup
+
+- Feature/page worked on: Account/Portfolio visible balance and funding-availability copy.
+- Frontend components touched: `mobile/src/localization/appCopy.ts`, `mobile/src/__tests__/demoTradingCopyContract.test.ts`, `mobile/src/__tests__/accountAuthContract.test.ts`, `mobile/src/__tests__/portfolioFundingHiddenContract.test.ts`.
+- Backend/API routes touched: none.
+- User interactions supported: unchanged Portfolio -> Account entry, Google sign-in entry, and fake-token/server-backed trading flow. Visible copy now reads like a retail balance instead of a local fake-token test harness.
+- State transitions: unchanged. Account summary, balance, order, Portfolio, and history state still use the same fields and fake-token implementation where configured.
+- Proof: pending final Cycle UQ focused tests/typecheck. Android proof remains pending because no ADB device is attached.
+- Known limitations: real funding/deposit/withdraw remains out of scope; S23 visible proof remains P1.
