@@ -9115,3 +9115,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: real attach-ready Polymarket line market mappings for spread, totals, and team-total rows. Current line rows are contract-shaped fixtures with stable `marketGroupId`, `marketId`, `outcomeId`, `marketType`, `period`, `line`, `side`, `label`, `probability`, provider source, condition, and token-style identifiers.
 - Temporary mock/static data: line rows are not arbitrary frontend mocks; they are backend-shaped contract fixtures seeded by local proof setup until provider discovery finds real Polymarket line markets for the selected event.
 - Future migration concern: the next provider breadth cycle should replace contract fixtures with Polymarket Gamma/CLOB-attached markets where available and mark unavailable line families explicitly when Polymarket has no matching market.
+
+# Cycle SX - Provider Breadth Readiness Notes
+
+- No schema migration was added.
+- Closed or narrowed: broad World Cup routes prove multiple Polymarket-backed events, and exact current-match probes prove the line-market gap is not caused by `OPTIC_ODDS_API_KEY`.
+- Route mismatch: none. `/api/events` and `/api/mobile/events/:slug/live-detail` already expose enough source/status metadata to keep the app honest about Polymarket-backed winner markets versus contract-fixture line markets.
+- Fields Holiwyn still needs but backend does not fully provide: real provider IDs/tokens for current-match spread, totals, and team-total markets. Gamma exact event returns only match-winner markets for `fifwc-arg-egy-2026-07-07`.
+- Temporary mock/static data: Local MVP line rows remain contract-shaped fixtures. SX explicitly rejects broad irrelevant candidates instead of attaching them.
+- Future migration concern: if Polymarket does not expose match line markets, define and approve a secondary provider contract for line-market enrichment; do not map random Gamma futures or unrelated broad-search markets into match lines.

@@ -13,8 +13,14 @@ const SEARCH_QUERIES = [
   "world cup team total",
   "world cup corners",
   "world cup correct score",
+  "world cup first half",
+  "world cup 1h",
+  "world cup goals over 2.5",
+  "world cup both teams score",
   "fifa world cup spread",
   "fifa world cup total goals",
+  "fifa world cup first half",
+  "fifa world cup goals over",
   "fifwc spread",
   "fifwc total goals",
 ];
@@ -108,6 +114,26 @@ async function main() {
   const attachReadyLineCandidates = lineCandidates.filter((candidate) => candidate.attachIdentityComplete);
   const familySummary = summarizeFamilies(worldCupCandidates);
   const lineFamilySummary = summarizeFamilies(lineCandidates);
+  const lineLikeRejectedCandidates = worldCupCandidates
+    .filter((candidate) => !LINE_FAMILIES.has(candidate.family) && isLineLikeRejectedCandidate(candidate))
+    .sort((left, right) => (Number(right.attachIdentityComplete) - Number(left.attachIdentityComplete)) || ((right.volume24hr ?? 0) - (left.volume24hr ?? 0)))
+    .slice(0, 25)
+    .map((candidate) => ({
+      slug: candidate.slug,
+      question: candidate.question,
+      eventTitle: candidate.eventTitle,
+      family: candidate.family,
+      lineLikeReason: classifyLineLikeRejectedCandidate(candidate),
+      source: candidate.source,
+      queryOrTag: candidate.queryOrTag,
+      acceptingOrders: candidate.acceptingOrders,
+      attachIdentityComplete: candidate.attachIdentityComplete,
+      conditionIdPresent: Boolean(candidate.conditionId),
+      tokenCount: candidate.tokenCount,
+      outcomeCount: candidate.outcomeCount,
+      volume24hr: candidate.volume24hr,
+      liquidity: candidate.liquidity,
+    }));
   const topLineCandidates = lineCandidates
     .sort((left, right) => (Number(right.acceptingOrders) - Number(left.acceptingOrders)) || ((right.volume24hr ?? 0) - (left.volume24hr ?? 0)))
     .slice(0, 20);
@@ -130,6 +156,7 @@ async function main() {
       providerLineCandidateCount: lineCandidates.length,
       attachReadyProviderLineCandidateCount: attachReadyLineCandidates.length,
       providerLineCandidateFamilies: Array.from(new Set(lineCandidates.map((candidate) => candidate.family))),
+      lineLikeRejectedCandidateCount: lineLikeRejectedCandidates.length,
     },
     familySummary,
     lineFamilySummary,
@@ -138,9 +165,11 @@ async function main() {
         ? "review_attach_ready_provider_line_candidates_before_replacing_local_fixtures"
         : "no_attach_ready_world_cup_line_markets_found_keep_local_contract_fixtures_for_mvp",
     topLineCandidates,
+    lineLikeRejectedCandidates,
     limitations: [
       "Read-only scan. No local events, markets, mappings, orders, or fixtures are created or modified.",
       "A provider line candidate here is not enough for parity; it must still be reviewed against a specific Holiwyn event/market/outcome/line identity before attachment.",
+      "Line-like rejected candidates are diagnostic only. They are not attach-ready until classifier family, event relevance, outcome identity, and CLOB token identity all match a Holiwyn target market.",
       "If attach-ready line candidates remain zero, Local MVP contract fixtures are still the honest path for spread/totals/team-total UI and fake-token order proof.",
     ],
   };
@@ -249,6 +278,28 @@ function summarizeFamilies(candidates: ScanCandidate[]) {
     correct_score: 0,
     other: 0,
   });
+}
+
+function isLineLikeRejectedCandidate(candidate: ScanCandidate) {
+  return classifyLineLikeRejectedCandidate(candidate).length > 0;
+}
+
+function classifyLineLikeRejectedCandidate(candidate: ScanCandidate) {
+  const text = [
+    candidate.slug,
+    candidate.question,
+    candidate.eventTitle,
+  ].filter(Boolean).join(" ").toLowerCase().replaceAll("-", " ");
+  const reasons: string[] = [];
+  if (/\b(spread|handicap|cover|covers)\b/.test(text)) reasons.push("spread_keyword");
+  if (/\b(total goals|goals over|goals under|over under|over \d|under \d)\b/.test(text)) reasons.push("total_goals_keyword");
+  if (/\b(team total|team goals|team goal)\b/.test(text)) reasons.push("team_total_keyword");
+  if (/\b(first half|1st half|1h)\b/.test(text)) reasons.push("first_half_keyword");
+  if (/\b(second half|2nd half|2h)\b/.test(text)) reasons.push("second_half_keyword");
+  if (/\b(corner|corners)\b/.test(text)) reasons.push("corners_keyword");
+  if (/\b(correct score|final score|exact score)\b/.test(text)) reasons.push("correct_score_keyword");
+  if (/\bboth teams (to )?score\b|\bbtts\b/.test(text)) reasons.push("btts_prop_keyword");
+  return reasons;
 }
 
 function parseEventTitle(input: GammaWire): string | null {

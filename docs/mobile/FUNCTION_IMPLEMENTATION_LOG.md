@@ -11948,3 +11948,12 @@ Known limitations:
 - User interactions supported: S23 opens the current match, selects a team-total line, opens the simple ticket, enters `$75`, swipes to submit, and lands in Portfolio with filled position, Orders tab, and History tab evidence.
 - State transitions: provider-normalized event and contract-shaped line markets -> selected market/outcome/line/source/token -> server fake-token order -> matched local counterparty fill -> Portfolio position and history rows with preserved identity.
 - Known limitations: regulation winner is provider-backed by Polymarket, while spread/totals/team-total line markets remain backend-shaped contract fixtures until real attach-ready Polymarket line markets are discovered and normalized.
+
+# Cycle SX - Provider Breadth Readiness
+
+- Feature/page worked on: backend/provider readiness for World Cup market breadth and current-match line-market availability.
+- Frontend/harness touched: no app UI components. `scripts/prove_mobile_provider_line_breadth_scan.ts` now emits diagnostic line-like rejected candidate samples and broader line/half queries while keeping attach-readiness strict.
+- Backend/API routes touched: no source route or schema changes. Proof uses `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1`, `/api/events?...mobileMvpMatches=1`, and `/api/mobile/events/:slug/live-detail`.
+- User interactions supported: no new visible interaction. This cycle protects the Local MVP user flow by proving the backend should keep contract-shaped line fixtures instead of attaching irrelevant Gamma candidates.
+- State transitions: provider discovery scan/probe -> route readiness summary -> documented decision that match winner stays Polymarket-backed and line markets stay contract-shaped until attach-ready provider markets exist.
+- Known limitations: SX does not import a new match line market because no attach-ready Polymarket line market was found for the current MVP match.
