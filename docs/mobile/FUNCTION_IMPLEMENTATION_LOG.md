@@ -12264,3 +12264,13 @@ Known limitations:
 - State transitions: signed out -> `/api/auth/google/start` -> Google consent -> `/api/auth/google/callback` backend token exchange/user linking -> backend mints Holiwyn mobile API credential -> callback deep link includes `holiwynApiKey` and compatibility `apiKey` -> mobile SecureStore persistence -> server-mode profile/Portfolio/order/history requests.
 - Proof: focused Google mobile auth contract test and mobile typecheck passed. No Android proof was required because this cycle changed auth-return contract naming only, not visible UI; manual S23 Google consent remains a separate P1 setup proof.
 - Known limitations: the reachable backend still must have the same Google Cloud OAuth callback URL registered in Google Cloud. Google access tokens and refresh tokens remain backend-only and are never mobile environment variables.
+
+# Cycle UD - Local MVP Game Tracker Realignment
+
+- Feature/page worked on: Event Detail/game-page parity tracking for the current Local MVP.
+- Frontend components touched: no runtime component changed. Added `mobile/src/__tests__/localMvpGameTrackerContract.test.ts` to guard the tracker against old chart/chat/order-book P0 claims.
+- Backend/API routes touched: none.
+- User interactions supported: unchanged. The current app remains focused on Home/Live -> Event Detail -> line market -> Trade Ticket -> fake-token order -> Portfolio/history.
+- State transitions: unchanged. This cycle aligns documentation and proof contracts with the already-current state: chart/chat/social/default order-book surfaces are removed or debug-only, while ticket/order/Portfolio identity flow remains the active MVP path.
+- Proof: focused Local MVP tracker contract test, Event Detail no-chat/chart tests, proof-noise contract test, and mobile typecheck passed. No Android proof was required because no visible UI changed.
+- Known limitations: real provider-backed Spread/Totals/Team Total current-match line markets remain P1 until Polymarket exposes attach-ready lines or an approved secondary provider contract is configured.

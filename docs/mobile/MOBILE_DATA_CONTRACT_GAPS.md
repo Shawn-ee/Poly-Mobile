@@ -9396,3 +9396,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: none for the auth handoff.
 - Temporary mock/static data: none added.
 - Future migration concern: do not put `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, Google access tokens, or Google refresh tokens in Expo/mobile config. The only mobile-stored credential is the backend-minted Holiwyn API key.
+
+# Cycle UD - Local MVP Game Tracker Realignment Notes
+
+- No schema migration was added.
+- Closed or narrowed: the game-page tracker no longer treats removed chart/chat/social/default order-book surfaces as current P0 completion evidence.
+- Route mismatch: none. The tracker now points to the current Local MVP path and existing route contracts.
+- Fields Holiwyn still needs but backend does not fully provide: real provider-backed Spread/Totals/Team Total current-match lines remain open P1.
+- Temporary mock/static data: none added.
+- Future migration concern: keep contract-shaped fixture lines honest. Do not mark fixture rows as Polymarket-backed unless the backend route has real Polymarket or reviewed approved-provider identity.
