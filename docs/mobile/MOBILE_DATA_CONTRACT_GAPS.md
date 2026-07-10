@@ -8854,7 +8854,7 @@ Temporary mock/static data:
 
 Future migration concern:
 
-- Cashout currently uses the dedicated `CashoutTicket`; future UI parity may consolidate cashout into the same generic Buy/Sell amount-entry ticket once sell sizing and full-position selection are unified.
+- Superseded by Cycle RT/TQ: visible cashout now uses the generic Buy/Sell `TradeTicket`; the dormant dedicated `CashoutTicket` source was removed in Cycle TQ.
 # Cycle RQ - Sell History Data Contract Notes
 
 - No schema migration was added.
@@ -9298,3 +9298,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: real provider-backed current-match spread/totals/team-total IDs and CLOB token IDs remain open.
 - Temporary mock/static data: TP still uses the explicit backend-shaped contract fixture line row for the selected spread market, with source markers preserved in ticket and Portfolio History.
 - Future migration concern: when real provider-backed line markets are imported, keep the selected market/outcome/line/source identity fields stable through ticket, order, Portfolio, and history.
+
+# Cycle TQ - Remove Dormant Cashout Sheet Notes
+
+- No schema migration was added.
+- Closed or narrowed: the dormant dedicated `CashoutTicket` source is removed, so cashout/close-position behavior cannot accidentally drift away from the generic Buy/Sell Trade Ticket path.
+- Route mismatch: none. Cashout still uses the existing Sell order route path and Portfolio/history routes.
+- Fields Holiwyn still needs but backend does not fully provide: none for the cashout sheet cleanup. Real provider-backed current-match line IDs remain open.
+- Temporary mock/static data: none added.
+- Future migration concern: keep cashout/close-position sizing and source identity on the generic ticket/order contract instead of reintroducing a separate cashout-only UI state model.

@@ -12153,3 +12153,14 @@ Known limitations:
 - State transitions: selected spread line -> ticket amount ready -> swipe submit -> server fake-token order fill via seeded local counterparty -> Portfolio History activity row.
 - Proof: Samsung S23 `SM-S911U1` full proof passed in `docs/mobile/harness/cycle-TP-ticket-submit-portfolio-reproof/cycle-TP-current-mvp-s23-visible-flow.json` with `swipeSubmitReachedPortfolio=true` and `filledHistoryVisible=true`.
 - Known limitations: no new provider line breadth. The proof still uses explicitly marked backend-shaped contract fixtures for spread lines.
+
+# Cycle TQ - Remove Dormant Cashout Sheet
+
+- Feature/page worked on: Local MVP Portfolio/Event Detail cashout path hygiene.
+- Frontend components touched: removed dormant `mobile/src/components/CashoutTicket.tsx`; added `mobile/src/__tests__/cashoutGenericSellOnlyContract.test.ts`.
+- Harness/scripts touched: `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1` now expects provider-winner cashout to open the generic Sell `TradeTicket` and rejects old `cashout-ticket` / `swipe-to-cashout` markers.
+- Backend/API routes touched: none. Existing `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` remain unchanged.
+- User interactions supported: Portfolio and Event Detail `Cash out` stay on the generic Sell ticket path, so close-position behavior uses the same amount-entry and swipe-confirmation model as normal Buy/Sell.
+- State transitions: unchanged. Filled position -> generic Sell ticket -> server-backed fake-token sell -> Portfolio History remains the intended flow.
+- Proof: focused tests and typechecks passed; Samsung S23 `SM-S911U1` full cashout proof passed in `docs/mobile/harness/cycle-TQ-remove-dormant-cashout-sheet/cycle-TQ-current-mvp-s23-visible-flow.json`.
+- Known limitations: provider-backed line markets remain unavailable for current-match spread/totals/team-total rows.

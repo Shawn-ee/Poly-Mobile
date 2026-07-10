@@ -1475,3 +1475,12 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Full submit -> Portfolio/history reproof after ticket copy change | P1 | Verified | S23 proof now covers the full Local MVP path after Cycle TO: line ticket -> swipe submit -> Portfolio History with filled activity visible. | `docs/mobile/harness/cycle-TP-ticket-submit-portfolio-reproof/cycle-TP-current-mvp-s23-visible-flow.json`; `docs/mobile/screenshots/cycle-TP-ticket-submit-portfolio-reproof/` |
 | Real provider-backed spread/totals/team-total current-match lines | P1 | Open | Unchanged from TD/TE/TF/TG/TO. The proof still uses explicit contract fixtures because Polymarket Gamma has not exposed attach-ready current-match line markets. | `docs/mobile/audits/cycle-TD-real-worldcup-line-discovery.md` |
+
+# Cycle TQ - Remove Dormant Cashout Sheet
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Dormant dedicated cashout sheet still existed in source after visible cashout moved to generic Sell ticket | P0 | Verified | Removed `CashoutTicket.tsx` and replaced its stale contract with a guard that rejects dedicated cashout source/proof expectations. | `mobile/src/__tests__/cashoutGenericSellOnlyContract.test.ts` |
+| Provider-winner cashout proof still expected old cashout sheet markers | P0 | Verified | Provider-winner cashout proof now expects generic Sell ticket markers and rejects `cashout-ticket` / `swipe-to-cashout`. | `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1` |
+| Full S23 cashout/sell proof after dormant sheet removal | P0 | Verified | Samsung S23 proof passed with `cashoutTicketOpened=true`, `cashoutSellSubmitted=true`, and `cashoutHistoryVisible=true`. | `docs/mobile/harness/cycle-TQ-remove-dormant-cashout-sheet/cycle-TQ-current-mvp-s23-visible-flow.json` |
+| Real provider-backed spread/totals/team-total current-match lines | P1 | Open | Unchanged from TD/TE/TF/TG/TO/TP. | `docs/mobile/audits/cycle-TD-real-worldcup-line-discovery.md` |

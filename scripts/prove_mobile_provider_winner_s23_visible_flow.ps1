@@ -403,8 +403,14 @@ try {
     Start-Sleep -Seconds 2
     Save-Screenshot -Name "cycle-$Cycle-provider-winner-cashout-ticket.png" | Out-Null
     $cashoutTicketXml = Save-Hierarchy -Name "cycle-$Cycle-provider-winner-cashout-ticket.xml"
-    Assert-Contains -Path $cashoutTicketXml -Expected @("cashout-ticket", "cashout-full-position", "cashout-current-price", "cashout-estimated-proceeds", "swipe-to-cashout")
-    Assert-NotContains -Path $cashoutTicketXml -Unexpected @("Order Book", "Chat")
+    Assert-Contains -Path $cashoutTicketXml -Expected @("trade-ticket", "ticket-side-sell", "swipe-to-submit-order", "Choose an amount", "ticket-retail-reference-layout")
+    Assert-NotContains -Path $cashoutTicketXml -Unexpected @("cashout-ticket", "swipe-to-cashout", "Order Book", "Chat")
+
+    Invoke-TapNode -Path $cashoutTicketXml -Identifier "ticket-preset-25"
+    Start-Sleep -Milliseconds 500
+    $cashoutTicketReadyXml = Save-Hierarchy -Name "cycle-$Cycle-provider-winner-cashout-ticket-ready.xml"
+    Assert-Contains -Path $cashoutTicketReadyXml -Expected @("trade-ticket", "ticket-side-sell", "Swipe to sell", '$25', "swipe-submit-gesture-required")
+    Assert-NotContains -Path $cashoutTicketReadyXml -Unexpected @("cashout-ticket", "swipe-to-cashout", "Order Book", "Chat")
 
     & $adb -s $Device shell input swipe 540 2070 540 1450 2400 | Out-Null
     Start-Sleep -Seconds 7
@@ -429,6 +435,28 @@ try {
       Assert-Contains -Path $historyXml -Expected @("activity-row-", "portfolio-history-source-badge")
       Assert-NotContains -Path $historyXml -Unexpected @("No history")
     }
+  }
+
+  $artifacts = @(
+    "$OutputDir\cycle-$Cycle-current-mvp-home.png",
+    "$HierarchyOutputDir\cycle-$Cycle-current-mvp-home.xml",
+    "$OutputDir\cycle-$Cycle-current-mvp-detail-top.png",
+    "$HierarchyOutputDir\cycle-$Cycle-current-mvp-detail-top.xml",
+    "$OutputDir\cycle-$Cycle-provider-winner.png",
+    "$OutputDir\cycle-$Cycle-provider-winner-ticket-ready.png",
+    "$HierarchyOutputDir\cycle-$Cycle-provider-winner-ticket-ready.xml",
+    "$OutputDir\cycle-$Cycle-provider-winner-after-submit.png",
+    "$HierarchyOutputDir\cycle-$Cycle-provider-winner-after-submit.xml"
+  )
+  if ($ExpectCashout) {
+    $artifacts += "$OutputDir\cycle-$Cycle-provider-winner-cashout-ticket.png"
+    $artifacts += "$HierarchyOutputDir\cycle-$Cycle-provider-winner-cashout-ticket.xml"
+    $artifacts += "$HierarchyOutputDir\cycle-$Cycle-provider-winner-cashout-ticket-ready.xml"
+    $artifacts += "$OutputDir\cycle-$Cycle-provider-winner-cashout-history.png"
+    $artifacts += "$HierarchyOutputDir\cycle-$Cycle-provider-winner-cashout-history.xml"
+  } else {
+    $artifacts += "$OutputDir\cycle-$Cycle-provider-winner-portfolio-history.png"
+    $artifacts += "$HierarchyOutputDir\cycle-$Cycle-provider-winner-portfolio-history.xml"
   }
 
   $summary = [ordered]@{
@@ -464,21 +492,7 @@ try {
       cashoutSellSubmitted = [bool]$ExpectCashout
       cashoutHistoryVisible = [bool]$ExpectCashout
     }
-    artifacts = @(
-      "$OutputDir\cycle-$Cycle-current-mvp-home.png",
-      "$HierarchyOutputDir\cycle-$Cycle-current-mvp-home.xml",
-      "$OutputDir\cycle-$Cycle-current-mvp-detail-top.png",
-      "$HierarchyOutputDir\cycle-$Cycle-current-mvp-detail-top.xml",
-      "$OutputDir\cycle-$Cycle-provider-winner.png",
-      "$OutputDir\cycle-$Cycle-provider-winner-ticket-ready.png",
-      "$HierarchyOutputDir\cycle-$Cycle-provider-winner-ticket-ready.xml",
-      "$OutputDir\cycle-$Cycle-provider-winner-after-submit.png",
-      "$HierarchyOutputDir\cycle-$Cycle-provider-winner-after-submit.xml",
-      $(if ($ExpectCashout) { "$OutputDir\cycle-$Cycle-provider-winner-cashout-ticket.png" } else { "$OutputDir\cycle-$Cycle-provider-winner-portfolio-history.png" }),
-      $(if ($ExpectCashout) { "$HierarchyOutputDir\cycle-$Cycle-provider-winner-cashout-ticket.xml" } else { "$HierarchyOutputDir\cycle-$Cycle-provider-winner-portfolio-history.xml" }),
-      $(if ($ExpectCashout) { "$OutputDir\cycle-$Cycle-provider-winner-cashout-history.png" } else { "$OutputDir\cycle-$Cycle-provider-winner-portfolio-history.png" }),
-      $(if ($ExpectCashout) { "$HierarchyOutputDir\cycle-$Cycle-provider-winner-cashout-history.xml" } else { "$HierarchyOutputDir\cycle-$Cycle-provider-winner-portfolio-history.xml" })
-    )
+    artifacts = $artifacts
   }
   $summaryPath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-provider-winner-s23-visible-flow.json"
   Write-JsonNoBom -Value $summary -Path $summaryPath -Depth 6
