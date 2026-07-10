@@ -275,11 +275,11 @@ const lineSourceCopy = (event: Event, locale: Locale) => {
   }
   if (lineStatus === "partial-provider-backed") {
     return {
-      label: locale === "zh" ? "æ¥æº" : "Source",
+      label: locale === "zh" ? "\u6765\u6e90" : "Source",
       text: locale === "zh"
         ? winnerReady
-          ? "èƒœè´Ÿ: Polymarketã€‚ç›˜å£: åˆ©äº‘ä½“è‚²ã€‚"
-          : "åˆ©äº‘ä½“è‚²ç›˜å£ã€‚"
+          ? "\u80dc\u8d1f: Polymarket\u3002\u76d8\u53e3: \u5229\u4e91\u4f53\u80b2\u3002"
+          : "\u5229\u4e91\u4f53\u80b2\u76d8\u53e3\u3002"
         : winnerReady
           ? "Winner: Polymarket. Lines: Holiwyn."
           : "Holiwyn lines.",

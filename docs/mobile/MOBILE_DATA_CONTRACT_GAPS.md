@@ -9486,3 +9486,12 @@ Future migration concern:
 - Fields Holiwyn still needs: current probability/top price and line identity for ticket pricing remain required; chart-history point arrays are not P0 for the current MVP.
 - Temporary mock/static data: none added.
 - Future migration concern: do not reintroduce chart UI or chart proof gates unless the user explicitly approves a new chart milestone.
+
+# Cycle UN - Event Detail Chinese Source Copy Notes
+
+- No schema migration was added.
+- Closed or narrowed: the partial-provider Event Detail source-copy branch now uses valid Chinese copy instead of mojibake.
+- Route mismatch: none. The app still consumes the existing `marketSourceSummary` route fields and hidden audit markers.
+- Fields Holiwyn still needs: real provider-backed current-match Spread, Total, and Team Total market ids/tokens/prices remain the open line-market data gap.
+- Temporary mock/static data: none added.
+- Future migration concern: keep visible localized copy human-readable while preserving hidden source markers for Audit Gate proof.

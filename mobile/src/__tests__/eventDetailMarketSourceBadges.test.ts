@@ -34,6 +34,9 @@ describe("Event Detail market source metadata", () => {
     expect(source).toContain("partial-provider-backed");
     expect(source).toContain("line-source-partial-provider-backed");
     expect(source).toContain("line-source-mixed-provider-holiwyn-lines");
+    expect(source).toContain("\\u6765\\u6e90");
+    expect(source).toContain("\\u80dc\\u8d1f: Polymarket\\u3002\\u76d8\\u53e3: \\u5229\\u4e91\\u4f53\\u80b2\\u3002");
+    expect(source).not.toMatch(/[\u00c3\u00c2]|\u00e6\u009d\u00a5|\u00e8\u0083\u0153|\u00e5\u02c6\u00a9|\u00e7\u203a\u02dc/);
     expect(source).toContain("line-provider-availability-");
     expect(source).toContain("line-approved-provider-count-");
     expect(source).toContain("line-contract-fixture-count-");

@@ -4504,3 +4504,9 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Event Detail chart-free Local MVP surface | Existing Event Detail routes such as `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/quotes`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | Existing GET/POST retail flow | Public browse; mobile API credential for order/Portfolio routes | No request changed | Event teams, outcome probabilities, Game Lines, line/outcome identity, ticket/order/Portfolio fields | Existing `Event`, `Market`, `Outcome`, `Order`, `Trade`, `Position`; no schema change | Local/mock Event Detail remains chart-free in default MVP mode | None. Chart-history fields may remain internal/future data, but are not required by the market page. |
+
+# Cycle UN - Event Detail Chinese Source Copy
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail localized source copy | `/api/mobile/events/:slug/live-detail` | GET | Public event browse | selected event slug | Existing `marketSourceSummary.lineMarkets.status`, `marketSourceSummary.regulationWinner.status`, and provider availability counts/families | Existing `Event`, `Market`, `Outcome`; no schema change | Mock/server fixtures with the same `marketSourceSummary` shape | None for copy correction. Real provider-backed Spread/Totals/Team Total rows remain unavailable. |

@@ -1572,3 +1572,11 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Stale smoke harness paths still expected or tapped the removed market-page chart | P0 | Verified | `mobile/scripts/smoke.ps1` now uses chart absence checks and no longer has positive chart assertions/taps for market-page proof. | `mobile/scripts/smoke.ps1`; `mobile/src/__tests__/eventDetailChartInteractionContract.test.ts` |
 | S23 visible chart-free Event Detail proof | P1 | Open | No Android device is attached. Run Event Detail top/lines proof when S23 is visible to ADB. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |
+
+# Cycle UN - Event Detail Chinese Source Copy
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Partial-provider Event Detail source copy showed mojibake in Chinese mode | P0 | Verified | Corrected the partial-provider branch to valid Chinese escaped strings and added a guard against the mojibake sequences. | `mobile/src/components/EventDetail.tsx`; `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts` |
+| S23 Chinese-language Event Detail proof | P1 | Open | No Android device is attached. Run Chinese locale Event Detail top/lines proof when S23 is visible to ADB. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |
+| Real provider-backed spread/totals/team-total current-match rows | P1 | Open | Unchanged. This cycle fixes localized copy only. | `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md` |
