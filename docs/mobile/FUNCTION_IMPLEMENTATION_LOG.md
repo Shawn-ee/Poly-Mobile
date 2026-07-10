@@ -12254,3 +12254,13 @@ Known limitations:
 - State transitions: `approvedLineProviderMarketCount > 0` or `approvedLineProviderCount > 0` -> `hasApprovedProviderLines=true` -> visible Holiwyn line copy plus hidden `line-source-approved-provider` marker.
 - Proof: focused Event Detail source-marker test and mobile typecheck passed.
 - Known limitations: current MVP match still has zero approved-provider line rows, so no new visible S23 state was available to capture.
+
+# Cycle UC - Google Login Poly Credential Hardening
+
+- Feature/page worked on: Portfolio/account Google login mobile return contract.
+- Frontend components touched: `mobile/App.tsx`, `mobile/src/__tests__/googleMobileAuthContract.test.ts`.
+- Backend/API routes touched: `src/app/api/auth/google/callback/route.ts`; no schema, order, Portfolio, market, order book, chat, or live-stats behavior changed.
+- User interactions supported: unchanged. Tapping `Continue with Google` still opens the backend Poly/Holiwyn Google auth flow; after callback, the mobile app accepts the clearer `holiwynApiKey` return parameter and keeps the older `apiKey` alias for existing proof links.
+- State transitions: signed out -> `/api/auth/google/start` -> Google consent -> `/api/auth/google/callback` backend token exchange/user linking -> backend mints Holiwyn mobile API credential -> callback deep link includes `holiwynApiKey` and compatibility `apiKey` -> mobile SecureStore persistence -> server-mode profile/Portfolio/order/history requests.
+- Proof: focused Google mobile auth contract test and mobile typecheck passed. No Android proof was required because this cycle changed auth-return contract naming only, not visible UI; manual S23 Google consent remains a separate P1 setup proof.
+- Known limitations: the reachable backend still must have the same Google Cloud OAuth callback URL registered in Google Cloud. Google access tokens and refresh tokens remain backend-only and are never mobile environment variables.
