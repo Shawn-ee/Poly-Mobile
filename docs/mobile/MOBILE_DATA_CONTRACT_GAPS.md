@@ -9133,3 +9133,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new fields for this cleanup. Real provider-backed line-market IDs/tokens remain the active P1 gap from SX.
 - Temporary mock/static data: none added.
 - Future migration concern: if share/watchlist returns later, define a real saved/share contract and gate it separately instead of leaving dormant panels on the prediction/trade page.
+
+# Cycle TA - Search Saved Control Cleanup Notes
+
+- No schema migration was added.
+- Closed or narrowed: Search results no longer expose visible bookmark/watchlist controls in the default Local MVP route.
+- Route mismatch: none. Existing `/api/events` Search loading remains unchanged; profile preference routes and saved-event state are not modified.
+- Fields Holiwyn still needs but backend does not fully provide: no new fields for this cleanup. A future watchlist milestone would need an explicit saved-market route/contract before returning visible controls.
+- Temporary mock/static data: none added.
+- Future migration concern: keep saved/watchlist storage out of default Search/Home UI until an audit-gated saved/watchlist product cycle defines behavior, persistence, empty states, and backend sync.

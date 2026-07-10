@@ -11,8 +11,6 @@ type HomeScreenCopy = {
   searchAll: string;
   searchLive: string;
   today: string;
-  saved: string;
-  noSavedMarkets: string;
 };
 
 export function HomeScreen({
@@ -33,8 +31,6 @@ export function HomeScreen({
   canLoadMoreEvents?: boolean;
   isLoadingMoreEvents?: boolean;
   loadMoreEvents?: () => void;
-  savedEventIds: Set<string>;
-  toggleSavedEvent: (event: Event) => void;
 }) {
   const [visibleMatchCount, setVisibleMatchCount] = useState(initialHomeMatchCount);
   useEffect(() => {
@@ -119,5 +115,4 @@ const styles = StyleSheet.create({
   loadMoreButton: { minHeight: 48, alignItems: "center", justifyContent: "center", marginTop: 12, borderRadius: 12, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   loadMoreText: { color: "#dbeafe", fontSize: 15, fontWeight: "900" },
   mvpHiddenState: { width: 1, height: 1, opacity: 0.01 },
-  savedEmptyText: { color: "#94a3b8", fontWeight: "900", textAlign: "center", marginTop: 2, marginBottom: 14 },
 });

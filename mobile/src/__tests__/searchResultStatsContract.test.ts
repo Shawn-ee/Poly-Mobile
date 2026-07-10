@@ -28,7 +28,8 @@ describe("Search result stats contract", () => {
     expect(search).not.toContain("Source unavailable");
     expect(search).not.toContain("mixed-provider-test-lines");
     expect(search).not.toContain("test-lines");
-    expect(search).toContain("save-event-");
+    expect(search).not.toContain("save-event-");
+    expect(search).not.toContain("bookmark-outline");
     expect(search).toContain("search-result-");
   });
 });
