@@ -1,0 +1,35 @@
+{
+    "cycle":  "SL",
+    "result":  "pass",
+    "generatedAt":  "2026-07-10T08:05:23.7822664Z",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "mobileApiBaseUrl":  "http://172.16.200.14:3002",
+    "expoPort":  8299,
+    "keyId":  "redacted",
+    "apiKey":  "redacted",
+    "eventSlug":  "argentina-vs-egypt",
+    "proofMode":  "source-disclosure-only",
+    "assertions":  {
+                       "homeShowsFakeTokenLineDisclosure":  true,
+                       "liveEmptyStateDoesNotBlockProof":  true,
+                       "detailShowsFakeTokenLineBanner":  true,
+                       "lineRowsShowFakeTokenSourceNote":  true,
+                       "ticketShowsFakeTokenSourceNote":  true,
+                       "orderbookHidden":  true,
+                       "chatHidden":  true
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\screenshots\\cycle-SL-ticket-swipe-handle-spacing\\cycle-SL-current-mvp-home.png",
+                      "docs\\mobile\\harness\\cycle-SL-ticket-swipe-handle-spacing\\cycle-SL-current-mvp-home.xml",
+                      "docs\\mobile\\screenshots\\cycle-SL-ticket-swipe-handle-spacing\\cycle-SL-current-mvp-lines.png",
+                      "docs\\mobile\\harness\\cycle-SL-ticket-swipe-handle-spacing\\cycle-SL-current-mvp-lines-settled.xml",
+                      "docs\\mobile\\screenshots\\cycle-SL-ticket-swipe-handle-spacing\\cycle-SL-current-mvp-ticket-ready.png",
+                      "docs\\mobile\\harness\\cycle-SL-ticket-swipe-handle-spacing\\cycle-SL-current-mvp-ticket-ready.xml"
+                  ],
+    "limitations":  [
+                        "Source disclosure proof stops before order submit.",
+                        "Fixture-line order lifecycle remains covered by separate server-order/cancel proofs and should be rechecked after backend order-book cleanup."
+                    ]
+}

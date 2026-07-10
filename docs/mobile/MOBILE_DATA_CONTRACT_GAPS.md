@@ -9007,3 +9007,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: real provider-backed line markets remain the repeated P1 gap.
 - Temporary mock/static data: none added.
 - Future migration concern: when provider-backed line markets are available, keep source identity in payload/contracts while avoiding visible debug labels in the final retail ticket.
+
+# Cycle SL - Ticket Swipe Handle Spacing Notes
+
+- No schema migration was added.
+- Closed or narrowed: the S23 swipe footer no longer overlays the handle on top of the `Swipe to buy` / `Swipe to sell` label.
+- Route mismatch: none. The same fake-token order body and Portfolio/history contracts remain in place.
+- Fields Holiwyn still needs but backend does not fully provide: no new fields for this cycle; real provider-backed line markets remain the repeated P1 data gap.
+- Temporary mock/static data: none added.
+- Future migration concern: a broader swipe-motion cycle should add mid-drag Android proof, but the submit contract should remain backend/order-route compatible.

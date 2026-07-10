@@ -4166,3 +4166,11 @@ Cycle OW implementation notes:
 | Trade Ticket source identity hidden from retail header | Existing quote/order routes only when ticket is priced/submitted: `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | GET/POST | Public viewing; mobile API key for server-mode order/Portfolio routes | Selected event/market/outcome/line/source identity; fake-token order body | Outcome probability, best bid/ask when available, order result, Portfolio/history source identity | Existing `Market`, `Outcome`, `Order`, `Trade`, `Position`; no schema change | Mock mode keeps source markers from local fixtures | No new backend support. This cycle changes only whether source labels are visible in the ticket header. |
 
 Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SK-ticket-source-audit-only/cycle-SK-current-mvp-s23-visible-flow.json`. No route contract changed.
+
+# Cycle SL - Ticket Swipe Handle Spacing
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Trade Ticket swipe footer visual spacing | No new route; existing submit path remains `/api/orders` when the user completes a server-mode swipe | POST only on successful submit | Mobile API key for server-mode order placement | Existing fake-token order body with selected event/market/outcome/line/source identity | Existing order result when submitted; this cycle only changes pre-submit footer layout | Existing `Order`, `Trade`, `Position`, `UserBalance`, `ApiCredential`; no schema change | Mock mode still uses the same local fake-token order path | No missing backend support. This is a visible mobile layout fix only. |
+
+Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe-handle-spacing/cycle-SL-current-mvp-s23-visible-flow.json`. No route contract changed.
