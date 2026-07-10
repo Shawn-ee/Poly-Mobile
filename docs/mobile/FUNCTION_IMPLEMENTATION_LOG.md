@@ -12050,3 +12050,13 @@ Known limitations:
 - State transitions: signed out -> backend Google OAuth -> backend-created Holiwyn mobile API credential -> mobile stores credential -> authenticated API Bearer state -> sign out clears local credential and revokes through `/api/auth/mobile/logout`.
 - Proof: source/config auth check and focused Google auth tests passed. No visible Android UI changed in this cycle, so S23 proof was not rerun.
 - Known limitations: manual S23 Google login still depends on the backend auth origin and Google Cloud authorized callback URL being configured to the same device-reachable backend host.
+
+# Cycle TI - Event Detail Sticky Match Context
+
+- Feature/page worked on: Event Detail lower Game Lines browsing in the Local MVP retail betting flow.
+- Frontend components touched: `mobile/src/components/EventDetail.tsx`, `mobile/src/__tests__/eventDetailStickyContextContract.test.ts`, `mobile/src/__tests__/routeServerFilledWrapperEnvContract.test.ts`, `mobile/scripts/smoke.ps1`.
+- Backend/API routes touched: none. Existing `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` remain unchanged.
+- User interactions supported: when the user scrolls into market rows, the compact sticky game header now appears earlier so team/probability/date context remains visible while selecting a line/outcome.
+- State transitions: unchanged. Event Detail row selection still opens Trade Ticket with the same market/outcome/line identity and continues through server fake-token order placement and Portfolio/history.
+- Proof: focused tests and typechecks passed; Samsung S23 `SM-S911U1` full visible MVP proof passed in `docs/mobile/harness/cycle-TI-event-detail-sticky-context/cycle-TI-current-mvp-s23-visible-flow.json`.
+- Known limitations: this cycle improves visible trading context only; it does not change provider line availability.

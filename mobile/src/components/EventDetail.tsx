@@ -712,7 +712,7 @@ export function EventDetail({
   const detailStatusToken = `event-detail-status-${event.status}`;
   const scoreboard = event.status === "live" ? "0 - 1" : "0 - 0";
   const handleScroll = (eventScroll: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const shouldShow = eventScroll.nativeEvent.contentOffset.y > 360;
+    const shouldShow = eventScroll.nativeEvent.contentOffset.y > 180;
     setCompactHeaderVisible((visible) => visible === shouldShow ? visible : shouldShow);
   };
   const marketProfile = event.marketProfile ?? "regulation_90";
