@@ -29,6 +29,8 @@ describe("Event Detail market source metadata", () => {
     expect(source).toContain('label: locale === "zh" ? "来源" : "Source"');
     expect(source).toContain("Winner: Polymarket. Lines: Holiwyn.");
     expect(source).toContain("line-source-local-test-fake-token");
+    expect(source).toContain("line-source-approved-provider");
+    expect(source).toContain("line-source-polymarket-provider");
     expect(source).toContain("line-provider-availability-");
     expect(source).toContain("line-approved-provider-count-");
     expect(source).toContain("line-contract-fixture-count-");
@@ -42,5 +44,8 @@ describe("Event Detail market source metadata", () => {
     expect(source).toContain("familyReadiness.map");
     expect(source).toContain("line-family-readiness-${family.family}-${family.status}");
     expect(source).toContain("line-family-approved-provider-count-${family.family}-${family.approvedLineProviderCount ?? 0}");
+    expect(source).toContain("Winner: Polymarket. Lines: Holiwyn.");
+    expect(source).toContain("Holiwyn lines.");
+    expect(source).toContain("\\u80dc\\u8d1f: Polymarket\\u3002\\u76d8\\u53e3: \\u5229\\u4e91\\u4f53\\u80b2\\u3002");
   });
 });

@@ -1513,3 +1513,10 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Mobile could not audit approved secondary-provider line counts separately from Polymarket/fixture counts | P0 | Verified | Mobile types, mock route data, and Event Detail hidden source markers now carry `approvedLineProviderCount` and `approvedLineProviderMarketCount`. | `mobile/src/types.ts`; `mobile/src/mocks/worldCup.ts`; `mobile/src/components/EventDetail.tsx`; `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts` |
 | Real approved-provider spread/totals/team-total current-match rows | P1 | Open | Mobile is ready to carry the count, but current MVP line rows still need real reviewed provider identity to become nonzero/provider-backed. | `docs/mobile/audits/cycle-UA-mobile-approved-line-provider-markers.md` |
+
+# Cycle UB - Approved Line Provider Source Copy
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Approved secondary-provider lines would be visibly mislabeled as Polymarket lines | P0 | Verified | Event Detail now uses Polymarket copy only for Polymarket-backed lines; approved secondary-provider lines use Holiwyn-branded line copy and hidden `line-source-approved-provider` audit markers. | `mobile/src/components/EventDetail.tsx`; `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts` |
+| Real approved-provider spread/totals/team-total current-match rows | P1 | Open | Source copy is ready, but current MVP line rows still need real reviewed provider identity before the approved-provider path is visible on S23. | `docs/mobile/audits/cycle-UB-approved-line-provider-source-copy.md` |

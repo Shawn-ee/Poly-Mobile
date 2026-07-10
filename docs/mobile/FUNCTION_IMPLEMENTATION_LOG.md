@@ -12244,3 +12244,13 @@ Known limitations:
 - State transitions: backend `approvedLineProviderCount` / `approvedLineProviderMarketCount` -> mobile typed `MarketSourceSummary` -> Event Detail hidden audit labels -> proof harness can distinguish Polymarket-backed, approved-provider-backed, and fixture-only line states.
 - Proof: focused mobile source-marker tests and mobile typecheck passed.
 - Known limitations: current MVP line rows still report zero approved-provider count until a real reviewed provider identity is attached.
+
+# Cycle UB - Approved Line Provider Source Copy
+
+- Feature/page worked on: Event Detail source copy for provider-backed line markets.
+- Frontend components touched: `mobile/src/components/EventDetail.tsx`, `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts`.
+- Backend/API routes touched: none. This consumes Cycle TZ/UA source-summary fields without changing routes.
+- User interactions supported: unchanged. When a future approved secondary-provider line row is attached, Event Detail will show Holiwyn-branded line source copy instead of incorrectly saying the line is Polymarket-backed.
+- State transitions: `approvedLineProviderMarketCount > 0` or `approvedLineProviderCount > 0` -> `hasApprovedProviderLines=true` -> visible Holiwyn line copy plus hidden `line-source-approved-provider` marker.
+- Proof: focused Event Detail source-marker test and mobile typecheck passed.
+- Known limitations: current MVP match still has zero approved-provider line rows, so no new visible S23 state was available to capture.

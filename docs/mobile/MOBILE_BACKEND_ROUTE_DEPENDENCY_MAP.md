@@ -4427,3 +4427,9 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Event Detail approved line-provider audit markers | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile event browse | Event slug | `marketSourceSummary.lineMarkets.approvedLineProviderCount`, `providerAvailability.approvedLineProviderMarketCount`, `familyReadiness[].approvedLineProviderCount` | Existing `Event`, `Market`, `Outcome`; no schema change | Mock route data includes zero approved-provider counts to mirror current backend fixture state | Real approved provider identities still need to be attached before counts become nonzero. |
+
+# Cycle UB - Approved Line Provider Source Copy
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail source copy for approved-provider lines | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile event browse | Event slug | `marketSourceSummary.lineMarkets.approvedLineProviderCount`, `providerAvailability.approvedLineProviderMarketCount`, `providerAvailability.providerBackedLineMarketCount` | Existing `Event`, `Market`, `Outcome`; no schema change | Mock route data keeps approved-provider counts at zero, so normal mock copy remains fixture/Holiwyn line copy | Real approved provider identities still need to be attached before this path appears on device. |

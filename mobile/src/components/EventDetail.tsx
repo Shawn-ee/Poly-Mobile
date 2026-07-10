@@ -257,14 +257,20 @@ const lineSourceCopy = (event: Event, locale: Locale) => {
     ? ` ${summary.lineMarkets.familyReadiness.map((family) => `line-family-readiness-${family.family}-${family.status} line-family-approved-provider-count-${family.family}-${family.approvedLineProviderCount ?? 0}`).join(" ")}`
     : "";
   if (lineStatus === "provider-backed") {
+    const approvedProviderLineCount = lineAvailability?.approvedLineProviderMarketCount ?? summary.lineMarkets.approvedLineProviderCount ?? 0;
+    const hasApprovedProviderLines = approvedProviderLineCount > 0;
     return {
       label: locale === "zh" ? "来源" : "Source",
-      text: locale === "zh"
+      text: hasApprovedProviderLines
+        ? locale === "zh"
+          ? winnerReady ? "\u80dc\u8d1f: Polymarket\u3002\u76d8\u53e3: \u5229\u4e91\u4f53\u80b2\u3002" : "\u5229\u4e91\u4f53\u80b2\u76d8\u53e3\u3002"
+          : winnerReady ? "Winner: Polymarket. Lines: Holiwyn." : "Holiwyn lines."
+        : locale === "zh"
         ? winnerReady ? "胜负和盘口: Polymarket" : "盘口: Polymarket"
         : winnerReady ? "Winner + lines: Polymarket" : "Lines: Polymarket",
       tone: "ready" as const,
       accessibility:
-        `event-detail-line-source-banner line-source-provider-backed regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount} ${lineAvailabilityMarker}${familyMarker}`,
+        `event-detail-line-source-banner line-source-provider-backed ${hasApprovedProviderLines ? "line-source-approved-provider" : "line-source-polymarket-provider"} regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount} ${lineAvailabilityMarker}${familyMarker}`,
     };
   }
   if (lineStatus === "contract-fixture") {
