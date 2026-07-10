@@ -9504,3 +9504,12 @@ Future migration concern:
 - Fields Holiwyn still needs: real provider-backed Spread, Total, and Team Total current-match rows remain the open line-market data gap. Exact Score provider data remains non-P0 for the Local MVP flow.
 - Temporary mock/static data: none added.
 - Future migration concern: if Exact Score becomes provider-backed later, replace the local rows with backend-shaped market/outcome data and keep text encoding ASCII-safe.
+
+# Cycle UP - Portfolio Demo Copy Cleanup Notes
+
+- No schema migration was added.
+- Closed or narrowed: visible Portfolio latest-order status no longer exposes `Demo trade` debug copy.
+- Route mismatch: none. Order, Portfolio, and history routes still provide the same lifecycle/status and selection identity fields.
+- Fields Holiwyn still needs: no new fields for this copy cleanup. Existing server-backed order/Portfolio/history identity remains sufficient.
+- Temporary mock/static data: none added.
+- Future migration concern: keep proof markers like `fake-token-test` hidden/accessibility-only so tester UI remains retail-like while harnesses can still audit fake-token mode.

@@ -2900,3 +2900,10 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Flow covered by source/contract proof: Event Detail -> lower Game Lines / Exact Score -> price button copy uses ASCII `c` cents notation.
 - Proof summary: focused Exact Score source contract and mobile typecheck.
 - Result: PASS for source/contract scope. S23 lower Game Lines visible proof remains required when a device is attached.
+
+# Cycle UP - Portfolio Demo Copy Cleanup
+
+- Device: no Android run; `adb devices -l` showed no attached device.
+- Flow covered by source/contract proof: Trade submit -> Portfolio latest-order card -> lifecycle status remains visible while `fake-token-test` stays audit-only.
+- Proof summary: focused demo-trading copy contract and mobile typecheck.
+- Result: PASS for source/contract scope. S23 Portfolio/latest-order proof remains required when a device is attached.

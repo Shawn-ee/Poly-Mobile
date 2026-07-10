@@ -4516,3 +4516,9 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Event Detail Exact Score display copy | Existing Event Detail data from `/api/mobile/events/:slug/live-detail` or local fixture event | GET | Public event browse | selected event slug | Existing event/market display data only; Exact Score copy is currently local UI display text | Existing `Event`, `Market`, `Outcome`; no schema change | Existing Local MVP static Exact Score rows remain | None for copy correction. Real provider-backed Exact Score rows are not required for the Local MVP path. |
+
+# Cycle UP - Portfolio Demo Copy Cleanup
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio latest-order status display | `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | POST/GET/GET | Mobile API credential for order and account routes | Existing order submit and portfolio/history requests | Existing order status, activity action, selection/source identity | Existing `Order`, `Trade`, `Position`, `ApiCredential`; no schema change | Local mock Portfolio state still uses the same view model fields | None for copy cleanup. |
