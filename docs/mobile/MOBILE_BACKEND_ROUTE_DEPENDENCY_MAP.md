@@ -4165,6 +4165,12 @@ Cycle OW implementation notes:
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Portfolio History buy/cashout rows | Existing fake-token order and Portfolio/history routes used by the Local MVP proof | Existing POST/GET route flow | Existing mobile API key/server-mode proof auth | No new request fields | Existing activity `action`, `amount`, `entryAmount`, `side`, `selection`, `timestamp`; no new response fields | Existing `Order`, `Trade`, `Position`, `UserBalance`/history models; no schema change | Local MVP still supports contract-shaped fake-token activity rows | Explicit row-level realized P/L is still a future backend/data contract gap if exact profit rather than proceeds should be shown per row. |
 
+## Cycle SP - Portfolio History Realized P/L Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body/query | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Resolved Portfolio History rows | `/api/portfolio/history` | GET | Existing mobile API key/server-mode proof auth | No new request fields | Existing resolved history fields `realizedPnLTokens`, `winningsTokens`, `refundsTokens`, `netInvestedTokens`, market title/event/display fields | Existing history/market/trade/position models; no schema change | Local fake-token recent trades remain available without resolved history | Recent trade/cashout rows still need explicit row-level realized P/L/proceeds fields if backend should drive exact display before market resolution. |
+
 # Cycle SH - Home Local MVP Focus
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

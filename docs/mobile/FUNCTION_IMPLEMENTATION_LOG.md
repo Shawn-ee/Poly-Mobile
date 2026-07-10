@@ -11875,3 +11875,13 @@ Known limitations:
 - State transitions: unchanged. The same ticket/order/Portfolio/history state drives activity rows; this cycle only changes the visible amount formatting for realized proceeds rows.
 - Proof: focused Portfolio history tests passed; mobile typecheck passed; Samsung S23 full MVP buy/cashout proof passed in `docs/mobile/harness/cycle-SO-portfolio-history-realized-proceeds/cycle-SO-current-mvp-s23-visible-flow.json`.
 - Known limitations: this is a visible retail history treatment, not a backend realized-P/L schema change. Future backend work should provide explicit row-level realized P/L fields if exact profit display is needed.
+
+# Cycle SP - Portfolio History Realized P/L Contract
+
+- Feature/page worked on: Portfolio History resolved-market activity mapping.
+- Frontend components/services touched: `mobile/src/components/Portfolio.tsx`, `mobile/src/services/portfolioHistoryService.ts`, `mobile/src/__tests__/portfolioHistoryService.test.ts`.
+- Backend/API routes touched: none. This cycle consumes the existing `/api/portfolio/history` `realizedPnLTokens` field already provided for resolved history items.
+- User interactions supported: Portfolio History still displays sold/closed rows as realized proceeds. Resolved history rows now preserve explicit backend `realizedPnLTokens` and proceeds amount in mobile state so the UI no longer depends only on action labels when backend data is available.
+- State transitions: `/api/portfolio/history` resolved items -> `PortfolioActivity.realizedPnl` / `PortfolioActivity.proceedsAmount` -> History row amount display.
+- Proof: focused Portfolio history tests passed; mobile typecheck passed; Samsung S23 Local MVP buy/cashout regression proof passed in `docs/mobile/harness/cycle-SP-portfolio-realized-contract/cycle-SP-current-mvp-s23-visible-flow.json`.
+- Known limitations: recent trade/cashout rows still do not receive explicit row-level realized P/L from backend; they remain proceeds-based until the backend route exposes a resolved P/L field for recent trade activity.
