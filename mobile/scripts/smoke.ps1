@@ -5638,7 +5638,7 @@ try {
           $mvpRouteLineHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-line-markets.xml"
         }
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
-        Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-market-tabs-local-mvp", "event-detail-core-full-game-lines-before-halves-local-mvp", "event-detail-sticky-tab-content-clearance", "event-detail-line-section-clean-start", "event-detail-no-clipped-market-fragment", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
+        Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-compact-game-header", "event-detail-header-team-identity-fit", "event-detail-market-tabs-local-mvp", "event-detail-core-full-game-lines-before-halves-local-mvp", "event-detail-sticky-tab-content-clearance", "event-detail-line-section-clean-start", "event-detail-no-clipped-market-fragment", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
         if ($LocalMvpRouteServerFilledTeamTotalFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpCurrentRouteServerFilledFlow) {
           $mvpRouteTeamTotalExpected = if ($LocalMvpCurrentRouteServerFilledFlow) { @("event-detail-line-header-compact-retail", "visible-title-Team Total Goals", "Team Total Goals", "Argentina Over", "1.5") } else { @("event-detail-line-header-compact-retail", "visible-title-Team Total Goals", "Team Total Goals", "Breadth Home Over", "1.5") }
           Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteTeamTotalExpected
@@ -5682,7 +5682,7 @@ try {
           }
         }
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
-        Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-market-tabs-local-mvp", "event-detail-core-full-game-lines-before-halves-local-mvp", "event-detail-sticky-tab-content-clearance", "event-detail-line-section-clean-start", "event-detail-no-clipped-market-fragment", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
+        Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-compact-game-header", "event-detail-header-team-identity-fit", "event-detail-market-tabs-local-mvp", "event-detail-core-full-game-lines-before-halves-local-mvp", "event-detail-sticky-tab-content-clearance", "event-detail-line-section-clean-start", "event-detail-no-clipped-market-fragment", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
         if ($LocalMvpRouteServerFilledTeamTotalFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpCurrentRouteServerFilledFlow) {
           $mvpRouteTeamTotalExpected = if ($LocalMvpCurrentRouteServerFilledFlow) { @("event-detail-line-header-compact-retail", "visible-title-Team Total Goals", "Team Total Goals", "Argentina Over", "1.5") } else { @("event-detail-line-header-compact-retail", "visible-title-Team Total Goals", "Team Total Goals", "Breadth Home Over", "1.5") }
           Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteTeamTotalExpected

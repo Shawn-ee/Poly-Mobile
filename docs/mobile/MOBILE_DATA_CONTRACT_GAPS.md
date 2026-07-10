@@ -9205,3 +9205,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: none for the auth handoff. The mobile app needs only the returned Holiwyn API credential plus profile/Portfolio route responses.
 - Temporary mock/static data: none added.
 - Future migration concern: production native builds should use the `holiwyn://auth/google` return scheme and the backend callback URL registered in the same Google Cloud OAuth client. Expo return links must remain development/test only.
+
+# Cycle TI - Event Detail Sticky Match Context Notes
+
+- No schema migration was added.
+- Closed or narrowed: Event Detail now surfaces compact match identity earlier while the user scrolls through Game Lines, reducing the chance of placing a trade without visible match context.
+- Route mismatch: none. The UI uses existing event/team/time/probability fields already present in the Event Detail contract.
+- Fields Holiwyn still needs but backend does not fully provide: no new fields for sticky context. Real provider-backed spread/totals/team-total IDs remain the active P1 provider gap.
+- Temporary mock/static data: none added.
+- Future migration concern: if the sticky header later needs live score/clock from provider data, add explicit live-score fields to the Event Detail route instead of deriving them from UI-only strings.
