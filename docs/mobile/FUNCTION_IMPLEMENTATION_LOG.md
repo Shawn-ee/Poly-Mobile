@@ -11999,3 +11999,14 @@ Known limitations:
 - State transitions: Polymarket Gamma event discovery -> live-detail market source summary -> audit-only Event Detail markers -> Trade Ticket preserves fixture/source identity without confusing it as real Polymarket line data.
 - Proof: route proof passed in `docs/mobile/harness/cycle-TC-line-provider-unavailable-contract/cycle-TC-provider-match-line-availability.json`; S23 `SM-S911U1` source-disclosure proof passed in `docs/mobile/harness/cycle-TC-line-provider-unavailable-contract/cycle-TC-current-mvp-s23-visible-flow.json`.
 - Known limitations: source-disclosure proof stops before order submit. Full fixture-line order/portfolio lifecycle remains covered by prior Local MVP proofs; real Polymarket line parity is still P1.
+
+# Cycle TD - Real World Cup Line Discovery
+
+- Feature/page worked on: provider discovery for real Polymarket-backed World Cup soccer line markets.
+- Frontend components touched: none. No visible mobile UI changed.
+- Backend/API routes touched: no route handler changed. Read-only proof uses Polymarket Gamma `/markets` search and `/events` tag scans.
+- Scripts/tests touched: `scripts/prove_mobile_provider_line_breadth_scan.ts`, `src/server/services/__tests__/mobile.provider.line.probe.contract.test.ts`.
+- User interactions supported: no new visible interaction. This cycle protects the Event Detail -> line ticket path from falsely claiming fixture rows are real Polymarket line markets.
+- State transitions: Polymarket Gamma scan -> provider family summaries -> decision to keep explicit contract-fixture line rows because no attach-ready provider line candidates exist.
+- Proof: `docs/mobile/harness/cycle-TD-real-worldcup-line-discovery/cycle-TD-provider-line-breadth-scan.json` shows 3,773 raw candidates, 2,674 World Cup-relevant candidates, 0 provider line candidates, and 0 attach-ready line candidates.
+- Known limitations: no S23 proof was run because no visible mobile surface changed after TC. The next visible proof should run when a line-market import or UI state changes.

@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 
 const sourceProbe = () => readFileSync("scripts/prove_mobile_provider_line_source_probe.ts", "utf8");
 const availabilityProbe = () => readFileSync("scripts/prove_mobile_provider_line_market_availability.ts", "utf8");
+const breadthScan = () => readFileSync("scripts/prove_mobile_provider_line_breadth_scan.ts", "utf8");
 
 describe("mobile provider line-market proof scripts", () => {
   test("default to the current Local MVP match instead of stale provider events", () => {
@@ -25,5 +26,15 @@ describe("mobile provider line-market proof scripts", () => {
     expect(source).toContain("`${slug}-${teamContext.homeCode}-spread`");
     expect(source).toContain("`${slug}-${teamContext.awayCode}-team-total`");
     expect(source).toContain("teamContext");
+  });
+
+  test("line breadth scan records diagnostics for line-oriented query misses", () => {
+    const source = breadthScan();
+
+    expect(source).toContain("lineQueryFamilySummary");
+    expect(source).toContain("lineQueryOtherCandidateSamples");
+    expect(source).toContain("lineQueryOtherCandidateSampleCount");
+    expect(source).toContain("candidateDiagnostic");
+    expect(source).toContain("no_attach_ready_world_cup_line_markets_found_keep_local_contract_fixtures_for_mvp");
   });
 });

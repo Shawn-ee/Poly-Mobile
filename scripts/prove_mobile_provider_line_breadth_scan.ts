@@ -134,9 +134,17 @@ async function main() {
       volume24hr: candidate.volume24hr,
       liquidity: candidate.liquidity,
     }));
+  const lineQueryOtherCandidateSamples = worldCupCandidates
+    .filter((candidate) => candidate.source === "market-search" && SEARCH_QUERIES.includes(candidate.queryOrTag) && candidate.family === "other")
+    .sort((left, right) => (Number(right.attachIdentityComplete) - Number(left.attachIdentityComplete)) || ((right.volume24hr ?? 0) - (left.volume24hr ?? 0)))
+    .slice(0, 25)
+    .map(candidateDiagnostic);
   const topLineCandidates = lineCandidates
     .sort((left, right) => (Number(right.acceptingOrders) - Number(left.acceptingOrders)) || ((right.volume24hr ?? 0) - (left.volume24hr ?? 0)))
     .slice(0, 20);
+  const lineQueryFamilySummary = summarizeFamilies(
+    worldCupCandidates.filter((candidate) => candidate.source === "market-search" && SEARCH_QUERIES.includes(candidate.queryOrTag)),
+  );
 
   const summary = {
     cycle,
@@ -157,15 +165,18 @@ async function main() {
       attachReadyProviderLineCandidateCount: attachReadyLineCandidates.length,
       providerLineCandidateFamilies: Array.from(new Set(lineCandidates.map((candidate) => candidate.family))),
       lineLikeRejectedCandidateCount: lineLikeRejectedCandidates.length,
+      lineQueryOtherCandidateSampleCount: lineQueryOtherCandidateSamples.length,
     },
     familySummary,
     lineFamilySummary,
+    lineQueryFamilySummary,
     currentMvpInterpretation:
       attachReadyLineCandidates.length > 0
         ? "review_attach_ready_provider_line_candidates_before_replacing_local_fixtures"
         : "no_attach_ready_world_cup_line_markets_found_keep_local_contract_fixtures_for_mvp",
     topLineCandidates,
     lineLikeRejectedCandidates,
+    lineQueryOtherCandidateSamples,
     limitations: [
       "Read-only scan. No local events, markets, mappings, orders, or fixtures are created or modified.",
       "A provider line candidate here is not enough for parity; it must still be reviewed against a specific Holiwyn event/market/outcome/line identity before attachment.",
@@ -260,6 +271,24 @@ function normalizeCandidate(
     liquidity: asNumber(input.liquidity ?? input.liquidityNum),
     worldCupRelevant,
     attachIdentityComplete: Boolean(asString(input.conditionId) && (asString(input.id) ?? asString(input.marketId) ?? asString(input.questionID)) && outcomes.length > 0 && clobTokenIds.length >= outcomes.length),
+  };
+}
+
+function candidateDiagnostic(candidate: ScanCandidate) {
+  return {
+    slug: candidate.slug,
+    question: candidate.question,
+    eventTitle: candidate.eventTitle,
+    family: candidate.family,
+    source: candidate.source,
+    queryOrTag: candidate.queryOrTag,
+    acceptingOrders: candidate.acceptingOrders,
+    attachIdentityComplete: candidate.attachIdentityComplete,
+    conditionIdPresent: Boolean(candidate.conditionId),
+    tokenCount: candidate.tokenCount,
+    outcomeCount: candidate.outcomeCount,
+    volume24hr: candidate.volume24hr,
+    liquidity: candidate.liquidity,
   };
 }
 
