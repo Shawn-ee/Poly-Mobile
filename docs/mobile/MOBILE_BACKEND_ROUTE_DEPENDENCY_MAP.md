@@ -4528,3 +4528,9 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Account/Portfolio balance display copy | `/api/profile/summary`, `/api/account/balance`, `/api/portfolio` | GET | Mobile API credential when server mode/profile sync is enabled | Existing account/profile/Portfolio requests | Existing balance, portfolio value, open-order value, exposure, sign-in state | Existing `UserBalance`, `ApiCredential`, `Position`, `Order`; no schema change | Local balance remains available for mock/local mode | None for copy cleanup. Real deposit/withdraw remains out of Local MVP scope. |
+
+# Cycle UR - Account Trading Copy Cleanup
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Account trading state display copy | `/api/profile/summary` when signed in; local runtime mode when signed out/offline | GET for profile summary | Mobile API credential when server mode/profile sync is enabled | Existing profile summary request only | Existing `tradingMode` view-model value (`mock` or `server`) | Existing `ApiCredential`/profile summary data; no schema change | Local runtime mode displays as `On this device` | None for this copy cleanup. |

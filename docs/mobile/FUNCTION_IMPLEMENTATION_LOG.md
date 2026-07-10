@@ -12403,3 +12403,13 @@ Known limitations:
 - State transitions: unchanged. Account summary, balance, order, Portfolio, and history state still use the same fields and fake-token implementation where configured.
 - Proof: pending final Cycle UQ focused tests/typecheck. Android proof remains pending because no ADB device is attached.
 - Known limitations: real funding/deposit/withdraw remains out of scope; S23 visible proof remains P1.
+
+# Cycle UR - Account Trading Copy Cleanup
+
+- Feature/page worked on: Portfolio -> Account settings/details copy.
+- Frontend components touched: `mobile/src/localization/appCopy.ts`, `mobile/src/__tests__/demoTradingCopyContract.test.ts`.
+- Backend/API routes touched: none.
+- User interactions supported: unchanged Portfolio account entry, Google sign-in row, and Local MVP trading flow. The account trading row now uses customer-facing copy (`Trading: On this device` or `Trading: Synced`) instead of technical mode labels.
+- State transitions: unchanged. `tradingMode` is still derived from the existing mock/server runtime mode and profile summary state.
+- Proof: focused copy contract and mobile typecheck. Android proof remains pending because no ADB device is attached.
+- Known limitations: no device screenshot in this cycle; real provider-backed line breadth and full S23 journey proof remain open P1 items.
