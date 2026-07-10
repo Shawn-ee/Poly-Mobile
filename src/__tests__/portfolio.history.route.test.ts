@@ -66,6 +66,18 @@ describe("GET /api/portfolio/history canceled orders", () => {
             referenceOutcomeLabel: "France",
           },
         },
+      ])
+      .mockResolvedValueOnce([
+        {
+          id: "trade-1",
+          marketId: "market-world-cup-winner",
+          outcomeId: "yes",
+          side: "BUY",
+          shares: 200,
+          cost: 100,
+          fee: 0,
+          createdAt: new Date("2026-07-02T06:10:00.000Z"),
+        },
       ]);
     mockPrisma.ledgerEntry.findMany.mockResolvedValue([]);
     mockPrisma.order.findMany
@@ -165,12 +177,31 @@ describe("GET /api/portfolio/history canceled orders", () => {
         take: 50,
       }),
     );
-    expect(mockPrisma.trade.findMany).toHaveBeenLastCalledWith(
+    expect(mockPrisma.trade.findMany).toHaveBeenNthCalledWith(
+      2,
       expect.objectContaining({
         where: {
           userId: "api-user-1",
         },
         take: 50,
+      }),
+    );
+    expect(mockPrisma.trade.findMany).toHaveBeenNthCalledWith(
+      3,
+      expect.objectContaining({
+        where: {
+          userId: "api-user-1",
+          OR: [{ marketId: "market-world-cup-winner", outcomeId: "yes" }],
+        },
+        select: expect.objectContaining({
+          id: true,
+          marketId: true,
+          outcomeId: true,
+          side: true,
+          shares: true,
+          cost: true,
+          fee: true,
+        }),
       }),
     );
     expect(body).toEqual({
@@ -354,6 +385,18 @@ describe("GET /api/portfolio/history canceled orders", () => {
           market: driftedMarket,
           outcome: driftedOutcome,
         },
+      ])
+      .mockResolvedValueOnce([
+        {
+          id: "trade-ef-filled",
+          marketId: "market-ef-spread",
+          outcomeId: "outcome-ef-spread-yes",
+          side: "BUY",
+          shares: 12,
+          cost: 5.28,
+          fee: 0,
+          createdAt: new Date("2026-07-04T12:10:00.000Z"),
+        },
       ]);
     mockPrisma.order.findMany
       .mockResolvedValueOnce([
@@ -482,6 +525,28 @@ describe("GET /api/portfolio/history canceled orders", () => {
           market: totalsMarket,
           outcome: totalsOutcome,
         },
+      ])
+      .mockResolvedValueOnce([
+        {
+          id: "trade-eo-buy-filled",
+          marketId: "market-eo-totals",
+          outcomeId: "outcome-eo-over",
+          side: "BUY",
+          shares: 20,
+          cost: 8.8,
+          fee: 0,
+          createdAt: new Date("2026-07-04T13:00:00.000Z"),
+        },
+        {
+          id: "trade-eo-sell-filled",
+          marketId: "market-eo-totals",
+          outcomeId: "outcome-eo-over",
+          side: "SELL",
+          shares: 12,
+          cost: 7.08,
+          fee: 0,
+          createdAt: new Date("2026-07-04T13:10:00.000Z"),
+        },
       ]);
     mockPrisma.order.findMany
       .mockResolvedValueOnce([
@@ -521,7 +586,7 @@ describe("GET /api/portfolio/history canceled orders", () => {
       side: "SELL",
       selection: normalizedSellBidTotalsSelection,
       proceedsTokens: 7.08,
-      realizedPnlTokens: null,
+      realizedPnlTokens: 1.8,
     }));
     expect(body.canceledOrders[0].selection.marketGroupId).toBe("totals");
     expect(body.recentTrades[0].selection.limitSide).toBe("bid");

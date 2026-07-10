@@ -11894,3 +11894,12 @@ Known limitations:
 - User interactions supported: after the Local MVP fake-token buy/cashout flow, recent SELL/cashout activity rows now receive explicit backend `proceedsTokens` and mobile maps that value to `PortfolioActivity.proceedsAmount` for the visible History amount.
 - State transitions: `/api/portfolio/history.recentTrades[]` -> `proceedsTokens` / `realizedPnlTokens` -> `recentTradesToActivity()` -> Portfolio History sold row display.
 - Known limitations: `realizedPnlTokens` is intentionally explicit `null` for recent trades until the backend stores enough per-fill cost-basis data to calculate exact row-level realized P/L before resolution.
+
+# Cycle SR - Recent Trade Realized P/L Replay
+
+- Feature/page worked on: Portfolio History recent SELL/cashout activity rows.
+- Backend/API routes touched: `src/app/api/portfolio/history/route.ts`, `src/__tests__/portfolio.history.route.test.ts`.
+- Frontend components touched: none. Existing mobile `recentTradesToActivity()` already consumes `recentTrades[].realizedPnlTokens` when present.
+- User interactions supported: after fake-token buy/cashout, the backend can now provide exact realized P/L for recent SELL rows by replaying the user's market/outcome trade history in chronological order.
+- State transitions: `/api/portfolio/history` recent market/outcome selections -> targeted cost-basis trade replay -> `recentTrades[].realizedPnlTokens` -> existing Portfolio History activity mapping.
+- Known limitations: if the route cannot safely reconstruct basis because trade history is invalid or incomplete, the field remains `null` rather than returning a guessed profit/loss.
