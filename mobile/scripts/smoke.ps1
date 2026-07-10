@@ -5565,8 +5565,8 @@ try {
         $mvpRoutePortfolioScore = if ($LocalMvpCurrentRouteServerFilledFlow) { "ARG 0 - EGY 0" } else { "BHO 0 - BAW 0" }
         $mvpRoutePortfolioHistoryEvent = if ($LocalMvpCurrentRouteServerFilledFlow) { "ARG vs EGY" } else { "BHO vs BAW" }
         $mvpRoutePortfolioContext = if ($LocalMvpCurrentRouteServerFilledFlow) { "Argentina Over 1.5 goals" } elseif ($LocalMvpRouteServerFilledTeamTotalFlow -or $LocalMvpRouteServerFilledFlow) { "Breadth Home Over 1.5 goals" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "Over 2.5 total goals" } else { "Spread" }
-        $mvpRoutePortfolioCost = if ($LocalMvpCurrentRouteServerFilledFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow) { 'Cost $75' } else { 'Cost $31.2' }
-        $mvpRoutePortfolioToWin = if ($LocalMvpCurrentRouteServerFilledFlow) { 'To win $144.23' } elseif ($LocalMvpRouteServerFilledFlow) { 'To win $144.23' } elseif ($LocalMvpRouteServerFilledTotalsFlow) { 'To win $163.04' } else { 'To win $60' }
+        $mvpRoutePortfolioCost = if ($LocalMvpCurrentRouteServerFilledFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow) { '$75' } else { '$31.2' }
+        $mvpRoutePortfolioToWin = if ($LocalMvpCurrentRouteServerFilledFlow) { '$144.23' } elseif ($LocalMvpRouteServerFilledFlow) { '$144.23' } elseif ($LocalMvpRouteServerFilledTotalsFlow) { '$163.04' } else { '$60' }
         $mvpRouteLineExpected = @(
           "Game Lines",
           $mvpRouteTargetOutcomeId,

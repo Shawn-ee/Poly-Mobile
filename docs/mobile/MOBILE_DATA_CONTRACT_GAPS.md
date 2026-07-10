@@ -9106,3 +9106,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new fields for chart removal. Rich chart-history contracts remain future/internal and should not block Home -> Event Detail -> line ticket -> fake-token order -> Portfolio/history.
 - Temporary mock/static data: none added.
 - Future migration concern: if charts return later, they should be reintroduced behind a new acceptance gate and backed by explicit route/source/status fields rather than dormant placeholder UI.
+
+# Cycle SW - Current Route Server-Filled Line Readiness Notes
+
+- No schema migration was added.
+- Closed or narrowed: the current MVP match can now be proven end-to-end on S23 with provider-backed regulation winner data, line-market selection, server fake-token submit, and Portfolio/history identity preservation.
+- Route mismatch: none for the Local MVP proof path. `/api/mobile/events/:slug/live-detail`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` carry enough identity to keep the selected team-total line through ticket, order, position, and history.
+- Fields Holiwyn still needs but backend does not fully provide: real attach-ready Polymarket line market mappings for spread, totals, and team-total rows. Current line rows are contract-shaped fixtures with stable `marketGroupId`, `marketId`, `outcomeId`, `marketType`, `period`, `line`, `side`, `label`, `probability`, provider source, condition, and token-style identifiers.
+- Temporary mock/static data: line rows are not arbitrary frontend mocks; they are backend-shaped contract fixtures seeded by local proof setup until provider discovery finds real Polymarket line markets for the selected event.
+- Future migration concern: the next provider breadth cycle should replace contract fixtures with Polymarket Gamma/CLOB-attached markets where available and mark unavailable line families explicitly when Polymarket has no matching market.

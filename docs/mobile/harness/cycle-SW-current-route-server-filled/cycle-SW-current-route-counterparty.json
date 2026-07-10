@@ -1,0 +1,73 @@
+{
+  "pass": true,
+  "liquidityPurpose": "buy-fill",
+  "routeContract": {
+    "mobileFlow": "Event Detail line market -> generic Buy ticket -> /api/orders BUY -> Portfolio History",
+    "expectedRestingSide": "SELL",
+    "source": "local-mvp-internal-liquidity"
+  },
+  "eventSlug": "argentina-vs-egypt",
+  "market": {
+    "id": "f605df0d-087c-473b-9838-2b52ea0444f1",
+    "title": "Argentina vs. Egypt: Argentina total goals 1.5",
+    "marketType": "team_total_goals",
+    "marketGroupKey": "team-totals",
+    "period": "regulation",
+    "line": "1.5",
+    "referenceSource": "contract-fixture",
+    "externalMarketId": "contract-argentina-vs-egypt-team-total-home-1-5",
+    "conditionId": "condition-argentina-vs-egypt-team-total-home-1-5"
+  },
+  "outcome": {
+    "id": "b685ff32-6a8c-490b-9389-799b6ed74999",
+    "name": "Argentina Over 1.5",
+    "side": "over",
+    "referenceTokenId": "contract-argentina-vs-egypt-team-total-home-1-5-over",
+    "referenceOutcomeLabel": "Argentina Over 1.5"
+  },
+  "cleanupOnly": false,
+  "maker": {
+    "id": "73a8d89a-dbed-491b-bd38-a683424bbdf7",
+    "username": "mobile_route_fill_maker_0488c4f1"
+  },
+  "cleanup": {
+    "enabled": true,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": [],
+    "cleanupBlockingBids": false,
+    "canceledBlockingBids": [],
+    "cleanupBlockingMarketBids": false,
+    "cleanupBlockingMarketBidsForcedByPurpose": true,
+    "canceledBlockingMarketBids": [],
+    "cleanupProofAsks": true,
+    "canceledProofAsks": [],
+    "cleanupBlockingAsks": true,
+    "canceledBlockingAsks": [
+      {
+        "id": "6862e073-d7c7-41a2-b4ac-746105d7c6c7",
+        "username": "mobile_route_fill_maker_b9e185c4",
+        "previousStatus": "PARTIAL",
+        "price": "0.52",
+        "remaining": "55.77",
+        "canceledStatus": "CANCELED"
+      }
+    ]
+  },
+  "makerOrder": {
+    "id": "6481d17a-828d-45ff-961d-04c8588217ca",
+    "marketId": "f605df0d-087c-473b-9838-2b52ea0444f1",
+    "outcomeId": "b685ff32-6a8c-490b-9389-799b6ed74999",
+    "side": "SELL",
+    "price": "0.52",
+    "size": "200",
+    "remaining": "200",
+    "reservedNotional": "0",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "SELL",
+    "price": "0.52",
+    "size": "200",
+    "intendedMobileTaker": "BUY $25 route-backed team-totals ticket"
+  }
+}

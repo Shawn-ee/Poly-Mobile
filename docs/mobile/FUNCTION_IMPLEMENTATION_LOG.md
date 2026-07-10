@@ -11939,3 +11939,12 @@ Known limitations:
 - User interactions supported: Event Detail keeps the simplified flow focused on team probabilities, user position, outcome buttons, Game Lines, line selectors, Trade Ticket, and Portfolio/history. The removed chart surface cannot intercept taps or distract from the betting flow.
 - State transitions: unchanged. Market/outcome/line identity still flows from Event Detail rows and outcome buttons into the Trade Ticket and then Portfolio/history.
 - Known limitations: this intentionally does not implement Polymarket chart-touch parity. Chart/history data contracts remain backend/internal for future use, while the current MVP hides that surface by product decision.
+
+# Cycle SW - Current Route Server-Filled Line Readiness
+
+- Feature/page worked on: Local MVP provider-readiness proof for the current World Cup match route, Event Detail line rows, Trade Ticket submit, and Portfolio/history sync.
+- Frontend/harness touched: `mobile/scripts/smoke.ps1` was narrowed so Portfolio proof checks visible value/identity markers instead of brittle combined text nodes.
+- Backend/API routes touched: no source route or schema changes. The proof uses the existing local backend, provider restore/seed scripts, `/api/mobile/events/:slug/live-detail`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+- User interactions supported: S23 opens the current match, selects a team-total line, opens the simple ticket, enters `$75`, swipes to submit, and lands in Portfolio with filled position, Orders tab, and History tab evidence.
+- State transitions: provider-normalized event and contract-shaped line markets -> selected market/outcome/line/source/token -> server fake-token order -> matched local counterparty fill -> Portfolio position and history rows with preserved identity.
+- Known limitations: regulation winner is provider-backed by Polymarket, while spread/totals/team-total line markets remain backend-shaped contract fixtures until real attach-ready Polymarket line markets are discovered and normalized.
