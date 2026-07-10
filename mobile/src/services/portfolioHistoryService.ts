@@ -134,17 +134,22 @@ export const recentTradesToActivity = (trades: PortfolioRecentTradeItem[] = []):
   Array.from(
     trades.reduce((groups, trade) => {
       const key = recentTradeGroupKey(trade);
+      const proceeds = trade.side === "SELL" ? trade.proceedsTokens ?? trade.cost : null;
+      const realizedPnl = typeof trade.realizedPnlTokens === "number" ? trade.realizedPnlTokens : null;
       const existing = groups.get(key);
       if (!existing) {
-        groups.set(key, { first: trade, cost: trade.cost, shares: trade.shares, count: 1 });
+        groups.set(key, { first: trade, cost: trade.cost, shares: trade.shares, count: 1, proceeds, realizedPnl });
         return groups;
       }
 
       existing.cost += trade.cost;
       existing.shares += trade.shares;
       existing.count += 1;
+      existing.proceeds = existing.proceeds === null || proceeds === null ? existing.proceeds : existing.proceeds + proceeds;
+      existing.realizedPnl =
+        existing.realizedPnl === null || realizedPnl === null ? existing.realizedPnl : existing.realizedPnl + realizedPnl;
       return groups;
-    }, new Map<string, { first: PortfolioRecentTradeItem; cost: number; shares: number; count: number }>()),
+    }, new Map<string, { first: PortfolioRecentTradeItem; cost: number; shares: number; count: number; proceeds: number | null; realizedPnl: number | null }>()),
   ).map(([key, group]) => {
     const trade = group.first;
     const executionPrice = group.shares > 0 ? group.cost / group.shares : 0;
@@ -158,6 +163,8 @@ export const recentTradesToActivity = (trades: PortfolioRecentTradeItem[] = []):
       outcome: trade.outcome.name,
       selection: selectionFromBackend(trade.selection),
       amount: group.cost,
+      ...(trade.side === "SELL" ? { proceedsAmount: group.proceeds ?? group.cost } : {}),
+      ...(typeof group.realizedPnl === "number" ? { realizedPnl: group.realizedPnl } : {}),
       shares: group.shares,
       side: trade.side === "SELL" ? "sell" : "buy",
       probability: Math.round(executionPrice * 100),

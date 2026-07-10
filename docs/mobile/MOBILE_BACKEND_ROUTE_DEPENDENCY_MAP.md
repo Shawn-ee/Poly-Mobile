@@ -4171,6 +4171,12 @@ Cycle OW implementation notes:
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Resolved Portfolio History rows | `/api/portfolio/history` | GET | Existing mobile API key/server-mode proof auth | No new request fields | Existing resolved history fields `realizedPnLTokens`, `winningsTokens`, `refundsTokens`, `netInvestedTokens`, market title/event/display fields | Existing history/market/trade/position models; no schema change | Local fake-token recent trades remain available without resolved history | Recent trade/cashout rows still need explicit row-level realized P/L/proceeds fields if backend should drive exact display before market resolution. |
 
+## Cycle SQ - Recent Trade Proceeds Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body/query | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Recent Portfolio History sold/cashout rows | `/api/portfolio/history` | GET | Existing mobile API key/server-mode proof auth | No new request fields | `recentTrades[].proceedsTokens`, `recentTrades[].realizedPnlTokens`, trade cost/shares/fee, market/outcome/selection identity | Existing `Trade`, `Market`, `Outcome`, `Order`, `ApiOrderRequest`; no schema change | Mock mode can still render local activity rows without route data | Exact row-level recent-trade realized P/L remains unavailable until trades store or can reconstruct execution-time cost basis. |
+
 # Cycle SH - Home Local MVP Focus
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

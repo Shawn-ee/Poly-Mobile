@@ -11885,3 +11885,12 @@ Known limitations:
 - State transitions: `/api/portfolio/history` resolved items -> `PortfolioActivity.realizedPnl` / `PortfolioActivity.proceedsAmount` -> History row amount display.
 - Proof: focused Portfolio history tests passed; mobile typecheck passed; Samsung S23 Local MVP buy/cashout regression proof passed in `docs/mobile/harness/cycle-SP-portfolio-realized-contract/cycle-SP-current-mvp-s23-visible-flow.json`.
 - Known limitations: recent trade/cashout rows still do not receive explicit row-level realized P/L from backend; they remain proceeds-based until the backend route exposes a resolved P/L field for recent trade activity.
+
+# Cycle SQ - Recent Trade Proceeds Contract
+
+- Feature/page worked on: Portfolio History recent trade/cashout activity rows.
+- Frontend services/types touched: `mobile/src/services/portfolioHistoryService.ts`, `mobile/src/types.ts`, `mobile/src/__tests__/portfolioHistoryService.test.ts`.
+- Backend/API routes touched: `src/app/api/portfolio/history/route.ts`, `src/__tests__/portfolio.history.route.test.ts`.
+- User interactions supported: after the Local MVP fake-token buy/cashout flow, recent SELL/cashout activity rows now receive explicit backend `proceedsTokens` and mobile maps that value to `PortfolioActivity.proceedsAmount` for the visible History amount.
+- State transitions: `/api/portfolio/history.recentTrades[]` -> `proceedsTokens` / `realizedPnlTokens` -> `recentTradesToActivity()` -> Portfolio History sold row display.
+- Known limitations: `realizedPnlTokens` is intentionally explicit `null` for recent trades until the backend stores enough per-fill cost-basis data to calculate exact row-level realized P/L before resolution.
