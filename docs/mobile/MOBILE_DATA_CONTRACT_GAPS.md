@@ -8989,3 +8989,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new Home fields. Provider-backed line-market breadth remains a separate gap.
 - Temporary mock/static data: local/mock mode still uses bundled World Cup match fixtures and 10-at-a-time display.
 - Future migration concern: if visible Home filters return later, they need a fresh audit gate and backend route criteria rather than reusing the removed chip state.
+
+# Cycle SJ - Market Page Chart Removal Notes
+
+- No schema migration was added.
+- Closed or narrowed: Event Detail no longer depends on a mobile chart-history client/service for the default Local MVP market page.
+- Route mismatch: intentional removal. Backend chart routes can remain internal, but mobile does not consume `/api/markets/:id/chart` for this milestone.
+- Fields Holiwyn still needs but backend does not fully provide: real provider-backed Spread/Totals/Team Total line markets remain the active P1 data gap; chart history is not required for Local MVP completion.
+- Temporary mock/static data: none added.
+- Future migration concern: if chart UX returns later, define a new mobile data contract and proof gate instead of reviving the removed app-side chart service silently.

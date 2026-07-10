@@ -11812,3 +11812,14 @@ Known limitations:
 - User interactions supported: Home now presents only the World Cup/Matches/Live match feed with 10-at-a-time progressive loading; visible All/Live/Today filter chips are removed so testers stay on the Local MVP retail path.
 - State transitions: server-mode Home route requests use `filter: "all"`; pagination cursor state and local progressive loading remain unchanged.
 - Known limitations: Search remains the separate discovery surface; this cycle does not alter Event Detail, Trade Ticket, Portfolio, or provider breadth.
+
+# Cycle SJ - Market Page Chart Removal
+
+- Feature/page worked on: Event Detail Local MVP market page.
+- Frontend components touched: `mobile/src/api.ts`, `mobile/src/components/EventDetail.tsx`, `mobile/src/__tests__/api.test.ts`.
+- Frontend services removed: `mobile/src/services/marketChartService.ts`.
+- Tests removed/updated: removed `mobile/src/__tests__/marketChartService.test.ts`; updated API client tests so the default mobile client no longer proves market-chart fetching.
+- Backend/API routes touched: none. Backend `/api/markets/:id/chart` may remain internal, but the mobile app no longer exposes or fetches it for the default market page.
+- User interactions supported: Event Detail stays focused on match identity, primary outcome buttons, Game Lines, line selectors, ticket entry, fake-token order placement, and Portfolio/history instead of a Polymarket-style chart.
+- State transitions: unchanged for ticket/order/Portfolio. Chart-history state is no longer a mobile market-page runtime dependency.
+- Known limitations: this intentionally removes chart parity from the Local MVP. If charts return later, they need a new audit-gated milestone and explicit product approval.

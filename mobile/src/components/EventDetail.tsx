@@ -295,7 +295,7 @@ const lineSourceCopy = (event: Event, locale: Locale) => {
   };
 };
 
-type RouteStatus = NonNullable<Event["chartHistoryStatus"]>;
+type RouteStatus = "idle" | "loading" | "ready" | "refresh_due" | "stale" | "unavailable" | "empty" | "error" | string;
 type AvailabilityStatus = NonNullable<NonNullable<Event["liveDataStatus"]>["status"]>;
 type ProviderLifecycle = "ready" | "refresh-due" | "refreshing" | "not-ready";
 

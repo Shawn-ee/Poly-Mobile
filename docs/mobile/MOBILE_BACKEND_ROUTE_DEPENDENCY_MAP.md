@@ -4152,3 +4152,9 @@ Cycle OW implementation notes:
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Home World Cup match feed | `/api/events` via `api.listWorldCupEvents()` | GET | Public viewing | `limit=10`, `cursor`, `source=polymarket`, `leagueKey=world_cup`, `mobileMvpMatches=true`, `filter=all` | event id/slug/title/status/liveStatus/home/away teams, compact market summaries, `nextCursor` | Existing `Event`, `Market`, `Outcome`; no schema change | Local/mock mode uses bundled `worldCupEvents` and reveals 10 at a time | More real provider-backed match events and line markets remain separate provider breadth work. |
+
+# Cycle SJ - Market Page Chart Removal
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Chart-free Event Detail market page | `/api/mobile/events/:slug/live-detail`; `/api/events/:slug`; `/api/markets/:marketId/quote`; `/api/orders`; `/api/portfolio`; `/api/portfolio/history` | GET/POST | Public viewing; mobile API key for server-mode order/Portfolio routes | Event slug, market/outcome/line identity, fake-token order payload | Event teams/status, market groups, selected outcome probability/quote, order result, Portfolio positions/history | Existing `Event`, `Market`, `Outcome`, `Order`, `Trade`, `Position`, `UserBalance`, `ApiCredential` | Mock mode still uses bundled match fixtures and local fake-token order state | No missing chart backend support for Local MVP. `/api/markets/:id/chart` is intentionally not consumed by the mobile market page. |
