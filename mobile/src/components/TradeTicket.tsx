@@ -202,6 +202,7 @@ function SwipeSubmitControl({
   );
   const progressBucket = disabled ? "disabled" : isSubmitting ? "submitting" : isArmed ? "armed" : swipeProgress > 0 ? "dragging" : "idle";
   const handleLift = -118 * swipeProgress;
+  const handleIconSize = unavailable ? 22 : 18;
 
   return (
       <View
@@ -209,7 +210,7 @@ function SwipeSubmitControl({
         accessibilityRole="button"
         accessibilityState={{ disabled: disabled || isSubmitting }}
         accessibilityHint={helper}
-      accessibilityLabel={`swipe-to-submit-order swipe-submit-gesture-required swipe-submit-threshold-clear swipe-submit-tap-disabled swipe-submit-handle-progress-linked swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-handle-long-travel swipe-submit-state-${progressBucket} swipe-submit-progress-${Math.round(swipeProgress * 100)}`}
+      accessibilityLabel={`swipe-to-submit-order swipe-submit-gesture-required swipe-submit-threshold-clear swipe-submit-tap-disabled swipe-submit-handle-progress-linked swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-handle-long-travel swipe-submit-handle-above-label-s23 swipe-submit-state-${progressBucket} swipe-submit-progress-${Math.round(swipeProgress * 100)}`}
       style={[
         styles.swipeSubmit,
         !unavailable && tone === "buy" && styles.swipeSubmitBuy,
@@ -237,11 +238,11 @@ function SwipeSubmitControl({
         />
       )}
       <View
-        accessibilityLabel={`swipe-submit-handle swipe-submit-handle-centered swipe-submit-handle-progress-linked swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-handle-s23-visible-travel swipe-submit-handle-s23-large-travel swipe-submit-handle-starts-near-footer-top swipe-submit-state-${progressBucket} swipe-submit-handle-translate-y-${Math.round(handleLift)}`}
+        accessibilityLabel={`swipe-submit-handle swipe-submit-handle-centered swipe-submit-handle-above-label-s23 swipe-submit-handle-progress-linked swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-handle-s23-visible-travel swipe-submit-handle-s23-large-travel swipe-submit-handle-starts-near-footer-top swipe-submit-state-${progressBucket} swipe-submit-handle-translate-y-${Math.round(handleLift)}`}
         style={[styles.swipeIcon, unavailable && styles.swipeIconUnavailable, isArmed && styles.swipeIconArmed, { transform: [{ translateY: unavailable ? 0 : handleLift }] }]}
         testID="swipe-submit-handle"
       >
-        <Ionicons name={unavailable ? "alert-circle-outline" : isSubmitting ? "hourglass-outline" : "chevron-up"} color={unavailable ? "#fecaca" : "#ffffff"} size={22} />
+        <Ionicons name={unavailable ? "alert-circle-outline" : isSubmitting ? "hourglass-outline" : "chevron-up"} color={unavailable ? "#fecaca" : "#ffffff"} size={handleIconSize} />
       </View>
       <View style={[styles.swipeTextBlock, unavailable && styles.swipeTextBlockUnavailable, { transform: [{ translateY: unavailable ? 0 : Math.min(0, handleLift * 0.25) }] }]}>
         <Text style={[styles.swipeLabel, unavailable && styles.swipeLabelUnavailable]}>{isSubmitting ? label : label}</Text>
@@ -968,13 +969,13 @@ const styles = StyleSheet.create({
   ticketFooterDarkBand: { display: "none" },
   swipeExpansionSheet: { display: "none" },
   swipeExpansionSheetSell: { display: "none" },
-  swipeSubmit: { minHeight: 72, alignItems: "center", justifyContent: "center", paddingHorizontal: 18, borderRadius: 12, position: "relative", borderWidth: 1, shadowColor: "#000000", shadowOpacity: 0.18, shadowRadius: 14, shadowOffset: { width: 0, height: 8 }, elevation: 8, zIndex: 2 },
+  swipeSubmit: { minHeight: 72, alignItems: "center", justifyContent: "flex-start", paddingHorizontal: 18, paddingTop: 6, paddingBottom: 10, borderRadius: 12, position: "relative", borderWidth: 1, shadowColor: "#000000", shadowOpacity: 0.18, shadowRadius: 14, shadowOffset: { width: 0, height: 8 }, elevation: 8, zIndex: 2 },
   swipeSubmitBuy: { backgroundColor: "#ff2b72", borderColor: "#ff5a91" },
   swipeSubmitSell: { backgroundColor: "#dc143f", borderColor: "#fb7185" },
-  swipeSubmitUnavailable: { minHeight: 72, flexDirection: "row", gap: 12, paddingHorizontal: 18, backgroundColor: "#111827", borderColor: "#2f1820" },
+  swipeSubmitUnavailable: { minHeight: 72, flexDirection: "row", justifyContent: "center", gap: 12, paddingHorizontal: 18, backgroundColor: "#111827", borderColor: "#2f1820" },
   swipeSubmitArmed: { shadowOpacity: 0.32, elevation: 12 },
   swipeSubmitDisabled: { opacity: 0.48 },
-  swipeIcon: { position: "absolute", left: "50%", marginLeft: -19, top: 17, width: 38, height: 38, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.13)", zIndex: 2 },
+  swipeIcon: { position: "relative", width: 34, height: 20, borderRadius: 999, alignItems: "center", justifyContent: "center", marginBottom: 4, backgroundColor: "rgba(255,255,255,0.08)", zIndex: 2 },
   swipeIconUnavailable: { position: "relative", right: 0, top: 0, width: 38, height: 38, borderRadius: 19, backgroundColor: "#2a1117" },
   swipeIconArmed: { backgroundColor: "rgba(255,255,255,0.22)" },
   swipeThresholdLine: { position: "absolute", top: 8, width: 58, height: 2, borderRadius: 999, backgroundColor: "rgba(255,255,255,0.22)" },

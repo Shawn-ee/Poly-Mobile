@@ -11834,3 +11834,14 @@ Known limitations:
 - State transitions: unchanged. Source/market identity still flows through `TicketSelection`, order payloads, Portfolio/history, and hidden audit XML markers.
 - Proof: Samsung S23 proof passed in `docs/mobile/harness/cycle-SK-ticket-source-audit-only/cycle-SK-current-mvp-s23-visible-flow.json`; ticket screenshot `docs/mobile/screenshots/cycle-SK-ticket-source-audit-only/cycle-SK-current-mvp-ticket-ready.png`.
 - Known limitations: this is visible header cleanup only. It does not change provider-backed line availability or order execution.
+
+# Cycle SL - Ticket Swipe Handle Spacing
+
+- Feature/page worked on: Trade Ticket amount-entry swipe-to-buy/sell footer.
+- Frontend components touched: `mobile/src/components/TradeTicket.tsx`.
+- Tests touched: `mobile/src/__tests__/tradeTicketSwipeMotionContract.test.ts`.
+- Backend/API routes touched: none.
+- User interactions supported: amount-entry ticket still shows the fixed bottom swipe-to-buy/sell area, but the swipe handle now sits above the submit label instead of overlapping it on S23.
+- State transitions: unchanged. The same swipe progress, armed threshold, haptic-on-arm, and submit-on-release-above-threshold behavior remain in `SwipeSubmitControl`.
+- Proof: Samsung S23 proof passed in `docs/mobile/harness/cycle-SL-ticket-swipe-handle-spacing/cycle-SL-current-mvp-s23-visible-flow.json`; ticket screenshot `docs/mobile/screenshots/cycle-SL-ticket-swipe-handle-spacing/cycle-SL-current-mvp-ticket-ready.png`.
+- Known limitations: source-disclosure proof stops before order submit; full order lifecycle remains covered by separate server-order/cancel proofs.
