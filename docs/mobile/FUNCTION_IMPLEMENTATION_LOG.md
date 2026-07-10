@@ -12030,3 +12030,13 @@ Known limitations:
 - State transitions: unchanged. Home/Live card outcome rail still opens the same selected market/outcome ticket, then the existing server fake-token order and Portfolio/history flow.
 - Proof: focused mobile tests passed, root/mobile typechecks passed, and Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-TF-home-live-card-simplification/cycle-TF-current-mvp-s23-visible-flow.json`.
 - Known limitations: this does not change provider line availability. Real Polymarket-backed spread/totals/team-total line markets remain a P1 gap.
+
+# Cycle TG - Event Detail Advance Strip Cleanup
+
+- Feature/page worked on: Event Detail Team to Advance card and Local MVP game-page focus.
+- Frontend components touched: `mobile/src/components/EventDetail.tsx`, `mobile/src/__tests__/eventDetailChartInteractionContract.test.ts`.
+- Backend/API routes touched: none. Existing event, live-detail, quote, order, Portfolio, and history routes remain unchanged.
+- User interactions supported: Event Detail keeps the prediction rows and ticket path while removing the obsolete debug-only inline order book, graph, and about strip from the Team to Advance card.
+- State transitions: unchanged. Team to Advance still opens the simple Trade Ticket with selected market/outcome identity; the server fake-token order and Portfolio/history path remains intact.
+- Proof: focused Event Detail tests passed, root/mobile typechecks passed, and Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-TG-event-detail-advance-strip-cleanup/cycle-TG-current-mvp-s23-visible-flow.json`.
+- Known limitations: this does not change provider line availability. Real Polymarket-backed spread/totals/team-total line markets remain a P1 gap.

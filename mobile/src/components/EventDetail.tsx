@@ -520,7 +520,6 @@ export function EventDetail({
   const [winnerPeriod, setWinnerPeriod] = useState<LinePeriod>("Reg. Time");
   const [totalsPeriod, setTotalsPeriod] = useState<LinePeriod>("Reg. Time");
   const [totalsLine, setTotalsLine] = useState("2.5");
-  const [activeLineDetailTab, setActiveLineDetailTab] = useState<"order-book" | "graph" | "about">("order-book");
   const activeHeaderTab = "game";
   const activeBodyTab = "market";
   const [orderBookVisible, setOrderBookVisible] = useState(false);
@@ -952,50 +951,7 @@ export function EventDetail({
             </Pressable>
           ))}
         </View>
-        {showOrderBookDebug && <>
-        <View accessibilityLabel="event-detail-line-detail-tabs prediction-tabs-only Graph About" style={styles.lineDetailTabs} testID="event-detail-line-detail-tabs">
-          {[
-            ...(showOrderBookDebug ? [{ id: "order-book", label: "Order Book" }] : []),
-            { id: "graph", label: "Graph" },
-            { id: "about", label: "About" },
-          ].map((tab) => (
-            <Pressable
-              accessibilityLabel={`event-detail-line-detail-${tab.id}`}
-              key={tab.id}
-              onPress={() => setActiveLineDetailTab(tab.id as typeof activeLineDetailTab)}
-              style={styles.lineDetailTab}
-              testID={`event-detail-line-detail-${tab.id}`}
-            >
-              <Text style={[styles.lineDetailTabText, activeLineDetailTab === tab.id && styles.lineDetailTabTextActive]}>{tab.label}</Text>
-            </Pressable>
-          ))}
-        </View>
-        {activeLineDetailTab === "order-book" ? (
-          <View accessibilityLabel="event-detail-inline-order-book" style={styles.inlineOrderBook} testID="event-detail-inline-order-book">
-            <View style={styles.inlineOrderBookHeader}>
-              <Text style={styles.inlineBookHeaderText}>PRICE</Text>
-              <Text style={styles.inlineBookHeaderText}>SHARES</Text>
-              <Text style={styles.inlineBookHeaderText}>TOTAL</Text>
-            </View>
-            {[55, 54].map((price, index) => (
-              <View key={price} style={styles.inlineBookRow}>
-                <Text style={styles.inlineBookPrice}>{price}¢</Text>
-                <Text style={styles.inlineBookText}>{index === 0 ? "8,070.50" : "246,972.30"}</Text>
-                <Text style={styles.inlineBookText}>{index === 0 ? "$293,440.88" : "$289,002.10"}</Text>
-              </View>
-            ))}
-          </View>
-        ) : activeLineDetailTab === "graph" ? (
-          <View accessibilityLabel="event-detail-inline-graph" style={styles.inlineGraph} testID="event-detail-inline-graph">
-            <View style={styles.inlineGraphLine} />
-            <Text style={styles.inlineGraphText}>Line movement for Team to Advance</Text>
-          </View>
-        ) : (
-          <View accessibilityLabel="event-detail-inline-about" style={styles.inlineAbout} testID="event-detail-inline-about">
-            <Text style={styles.inlineAboutText}>{isLiveEvent ? "This live market resolves from the selected World Cup in-game contract at settlement." : "This market resolves to the team that advances from this World Cup matchup."}</Text>
-          </View>
-        )}
-        </>}
+
       </View>
     );
   };
@@ -2081,21 +2037,6 @@ const styles = StyleSheet.create({
   lineOutcomeButton: { flex: 1, minHeight: 62, alignItems: "center", justifyContent: "center", borderRadius: 13, backgroundColor: "#25303a", borderBottomWidth: 5, borderBottomColor: "#1c2630" },
   lineOutcomeButtonSelected: { borderWidth: 2, borderColor: "#dbeafe", borderBottomColor: "#dbeafe" },
   lineOutcomeButtonText: { color: "#d1d5db", fontSize: 18, fontWeight: "900" },
-  lineDetailTabs: { flexDirection: "row", alignItems: "center", gap: 14, marginTop: 20, paddingTop: 16, borderTopWidth: 1, borderTopColor: "#26313f" },
-  lineDetailTab: { minHeight: 34, justifyContent: "center" },
-  lineDetailTabText: { color: "#7b8494", fontSize: 16, fontWeight: "900" },
-  lineDetailTabTextActive: { color: "#f8fafc" },
-  inlineOrderBook: { marginTop: 10, borderTopWidth: 1, borderTopColor: "#26313f" },
-  inlineOrderBookHeader: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 12 },
-  inlineBookHeaderText: { width: "30%", color: "#7b8494", fontSize: 12, fontWeight: "900", textAlign: "right" },
-  inlineBookRow: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 9, borderTopWidth: 1, borderTopColor: "#172033" },
-  inlineBookPrice: { width: "30%", color: "#ef4444", fontSize: 18, fontWeight: "900", textAlign: "right" },
-  inlineBookText: { width: "30%", color: "#d1d5db", fontSize: 15, fontWeight: "800", textAlign: "right" },
-  inlineGraph: { minHeight: 86, justifyContent: "center", marginTop: 12, borderTopWidth: 1, borderTopColor: "#26313f" },
-  inlineGraphLine: { height: 5, borderRadius: 999, backgroundColor: "#38bdf8", marginHorizontal: 10 },
-  inlineGraphText: { color: "#94a3b8", fontSize: 13, fontWeight: "800", marginTop: 10, textAlign: "center" },
-  inlineAbout: { marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: "#26313f" },
-  inlineAboutText: { color: "#cbd5e1", fontSize: 14, fontWeight: "700", lineHeight: 20 },
   exactScoreRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", minHeight: 54, borderTopWidth: 1, borderTopColor: "#26313f" },
   exactScoreText: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
   exactScoreButton: { minWidth: 116, minHeight: 40, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#25303a" },

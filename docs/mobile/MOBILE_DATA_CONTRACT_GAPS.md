@@ -9187,3 +9187,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new fields for this cleanup.
 - Temporary mock/static data: none added.
 - Future migration concern: keep the Home/Live card data contract centered on stable event, market, outcome, probability, and source-readiness fields; do not add parallel hidden ticket controls to paper over missing feed behavior.
+
+# Cycle TG - Event Detail Advance Strip Cleanup Notes
+
+- No schema migration was added.
+- Closed or narrowed: Event Detail no longer carries a frontend-only inline order book/graph/about strip on the Team to Advance card.
+- Route mismatch: none. Existing Event Detail data still maps to market rows and ticket selection; no route field was added or removed.
+- Fields Holiwyn still needs but backend does not fully provide: no new fields for this cleanup.
+- Temporary mock/static data: removed placeholder inline order book/graph/about display values rather than adding new mock data.
+- Future migration concern: keep advanced chart/order book/about experiences out of the Local MVP Event Detail path unless a future audit-gated milestone explicitly reintroduces them with real route/data contracts.
