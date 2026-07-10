@@ -7388,3 +7388,14 @@ Remaining P1:
 - Android proof: not rerun because this is not a visible UI change; Cycle SE already proved the visible S23 Google return/persistence/logout path. Real interactive Google consent remains a manual environment proof.
 - Unresolved P0: 0 for SG setup scope.
 - Remaining P1: run real S23 Google consent after `NEXTAUTH_URL` and the Google Cloud authorized callback are confirmed.
+
+# Cycle SH Audit Gate - Home Local MVP Focus
+
+- Scope: Home page match-feed cleanup.
+- P0 result: PASS.
+- Implementation proof: `mobile/src/components/HomeScreen.tsx` no longer renders Home filter chips; `mobile/App.tsx` no longer owns `homeFilter` state and calls `loadHomeEventFeedPage()` with `filter: "all"`.
+- Contract proof: `mobile/src/__tests__/homeLocalMvpFocusContract.test.ts`.
+- Android proof: passed on Samsung S23 `SM-S911U1`; summary at `docs/mobile/harness/cycle-SH-home-local-mvp-focus/cycle-SH-current-mvp-s23-visible-flow.json`.
+- Visible proof: `docs/mobile/screenshots/cycle-SH-home-local-mvp-focus/cycle-SH-current-mvp-home.png` and XML show World Cup, Matches, match count, live count, and reject `home-filter-all`, `home-filter-live`, and `home-filter-today`.
+- Test proof: mobile typecheck passed; focused Home/service tests passed.
+- Unresolved P0: 0 for SH scope.

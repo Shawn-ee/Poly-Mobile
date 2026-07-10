@@ -2831,3 +2831,12 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Flow covered by source/contract proof: Portfolio/Account Google entry -> backend `/api/auth/google/start` -> configured Poly/Holiwyn Google Cloud callback via `NEXTAUTH_URL` -> backend token exchange -> mobile deep-link return with Holiwyn API key.
 - Test proof: focused Google auth contract and mobile return allowlist tests.
 - Result: PASS for setup/contract scope. Manual real-account S23 consent remains P1 once `NEXTAUTH_URL` is confirmed against Google Cloud authorized redirect URIs.
+
+# Cycle SH - Home Local MVP Focus Proof
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.
+- Flow: launch Holiwyn in server mode -> Home first screen.
+- Proof summary: `docs/mobile/harness/cycle-SH-home-local-mvp-focus/cycle-SH-current-mvp-s23-visible-flow.json`.
+- Screenshot: `docs/mobile/screenshots/cycle-SH-home-local-mvp-focus/cycle-SH-current-mvp-home.png`.
+- XML: `docs/mobile/harness/cycle-SH-home-local-mvp-focus/cycle-SH-current-mvp-home.xml`.
+- Result: PASS. Home shows World Cup, Matches, match count, live count, and no visible `home-filter-*` controls; order book and chat remain hidden.

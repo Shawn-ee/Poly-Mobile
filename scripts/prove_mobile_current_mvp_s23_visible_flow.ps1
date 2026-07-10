@@ -17,7 +17,8 @@ param(
   [switch]$ExpectCashout,
   [switch]$ExpectLiveEmptyOnly,
   [switch]$ExpectDetailStaleOnly,
-  [switch]$SourceDisclosureOnly
+  [switch]$SourceDisclosureOnly,
+  [switch]$HomeOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -305,12 +306,44 @@ try {
 
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-home.png" | Out-Null
   $homeXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-home.xml"
-  Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Argentina vs. Egypt", "event-card-$EventSlug", "home-compact-retail-feed", "home-card-source-provider-winner-local-lines", "home-card-source-local-test-fake-token")
+  Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Matches", "Argentina vs. Egypt", "event-card-$EventSlug", "home-compact-retail-feed", "home-filter-controls-hidden-local-mvp", "home-card-source-provider-winner-local-lines", "home-card-source-local-test-fake-token")
   if ($ExpectLiveEmptyOnly -or $ExpectDetailStaleOnly) {
     Assert-Contains -Path $homeXml -Expected @("Time TBD", "Active")
   }
   Assert-NotContains -Path $homeXml -Unexpected @("This is the developer menu", "SDK version")
-  Assert-NotContains -Path $homeXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "Provider Breadth", "EL-A Provider Breadth", "mobile-el-a-provider-breadth")
+  Assert-NotContains -Path $homeXml -Unexpected @("home-filter-all", "home-filter-live", "home-filter-today", "Order Book", "event-detail-open-order-book", "Chat", "Provider Breadth", "EL-A Provider Breadth", "mobile-el-a-provider-breadth")
+
+  if ($HomeOnly) {
+    $summary = [ordered]@{
+      cycle = $Cycle
+      result = "pass"
+      generatedAt = (Get-Date).ToUniversalTime().ToString("o")
+      device = $Device
+      model = $deviceInfo
+      backendBaseUrl = $BackendBaseUrl
+      mobileApiBaseUrl = $MobileApiBaseUrl
+      expoPort = $Port
+      keyId = "redacted"
+      apiKey = "redacted"
+      eventSlug = $EventSlug
+      assertions = [ordered]@{
+        homeShowsWorldCupMatches = $true
+        homeShowsLiveCount = $true
+        homeFilterControlsHidden = $true
+        homeProgressiveFeedVisible = $true
+        orderbookHidden = $true
+        chatHidden = $true
+      }
+      artifacts = [System.Collections.Generic.List[string]]@(
+        "$OutputDir\cycle-$Cycle-current-mvp-home.png",
+        "$HierarchyOutputDir\cycle-$Cycle-current-mvp-home.xml"
+      )
+    }
+    $summaryPath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-current-mvp-s23-visible-flow.json"
+    Write-JsonNoBom -Value $summary -Path $summaryPath -Depth 6
+    Write-Host "Proof summary: $summaryPath"
+    return
+  }
 
   if ($ExpectDetailStaleOnly) {
     Invoke-TapNode -Path $homeXml -Identifier "event-card-$EventSlug" -StartsWith -YRatio 0.28

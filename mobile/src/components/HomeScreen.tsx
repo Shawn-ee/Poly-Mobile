@@ -1,11 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View, type NativeScrollEvent, type NativeSyntheticEvent } from "react-native";
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { MarketList } from "./MarketLists";
 import { initialHomeMatchCount, nextHomeMatchCount } from "../services/homePaginationService";
-import type { HomeEventFeedFilter } from "../services/homeEventFeedService";
-
-export type HomeFilter = Extract<HomeEventFeedFilter, "all" | "live" | "today">;
 
 type HomeScreenCopy = {
   marketSearch: string;
@@ -24,8 +21,6 @@ export function HomeScreen({
   events,
   openEvent,
   openTicket,
-  homeFilter,
-  setHomeFilter,
   canLoadMoreEvents,
   isLoadingMoreEvents = false,
   loadMoreEvents,
@@ -35,8 +30,6 @@ export function HomeScreen({
   events: Event[];
   openEvent: (event: Event) => void;
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
-  homeFilter: HomeFilter;
-  setHomeFilter: (filter: HomeFilter) => void;
   canLoadMoreEvents?: boolean;
   isLoadingMoreEvents?: boolean;
   loadMoreEvents?: () => void;
@@ -46,24 +39,9 @@ export function HomeScreen({
   const [visibleMatchCount, setVisibleMatchCount] = useState(initialHomeMatchCount);
   useEffect(() => {
     setVisibleMatchCount(initialHomeMatchCount());
-  }, [homeFilter]);
-  const homeFilters: Array<[HomeFilter, string]> = [
-    ["all", t.searchAll],
-    ["live", t.searchLive],
-    ["today", t.today],
-  ];
+  }, [events.length]);
   const usesServerPaging = Boolean(loadMoreEvents);
-  const visibleEvents = useMemo(
-    () =>
-      usesServerPaging
-        ? events
-        : homeFilter === "live"
-          ? events.filter((event) => event.status === "live")
-          : homeFilter === "today"
-            ? events.filter((event) => event.status === "today")
-            : events,
-    [events, homeFilter, usesServerPaging],
-  );
+  const visibleEvents = events;
   const pagedEvents = usesServerPaging ? visibleEvents : visibleEvents.slice(0, visibleMatchCount);
   const canLoadMore = usesServerPaging ? Boolean(canLoadMoreEvents) : visibleMatchCount < visibleEvents.length;
   const loadMoreMatches = () => {
@@ -99,24 +77,9 @@ export function HomeScreen({
           <Text style={[styles.gamesFocusStat, liveCount > 0 && styles.gamesFocusLive]}>{liveCount} {locale === "zh" ? "\u6eda\u7403" : "live"}</Text>
         </View>
       </View>
-      <View style={styles.filterRow}>
-        {homeFilters.map(([value, text]) => (
-          <Pressable
-            key={value}
-            accessibilityLabel={`home-filter-${value}`}
-            testID={`home-filter-${value}`}
-            style={[styles.filterChip, homeFilter === value && styles.filterChipActive]}
-            onPress={() => {
-              if (homeFilter !== value) setHomeFilter(value);
-            }}
-          >
-            <Text style={[styles.filterText, homeFilter === value && styles.filterTextActive]}>{text}</Text>
-          </Pressable>
-        ))}
-      </View>
       <View
         accessible
-        accessibilityLabel="home-secondary-markets-hidden-local-mvp home-games-only-retail-flow"
+        accessibilityLabel="home-secondary-markets-hidden-local-mvp home-games-only-retail-flow home-filter-controls-hidden-local-mvp"
         style={styles.mvpHiddenState}
         testID="home-secondary-markets-hidden-local-mvp"
       />
@@ -153,11 +116,6 @@ const styles = StyleSheet.create({
   gamesFocusStats: { alignItems: "flex-end", gap: 4 },
   gamesFocusStat: { color: "#cbd5e1", fontSize: 12, fontWeight: "900" },
   gamesFocusLive: { color: "#ef4444" },
-  filterRow: { flexDirection: "row", gap: 8, marginBottom: 8 },
-  filterChip: { minHeight: 34, justifyContent: "center", paddingHorizontal: 13, borderRadius: 999, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
-  filterChipActive: { backgroundColor: "#1d6dff", borderColor: "#1d6dff" },
-  filterText: { color: "#8ea0b8", fontWeight: "900" },
-  filterTextActive: { color: "#ffffff" },
   loadMoreButton: { minHeight: 48, alignItems: "center", justifyContent: "center", marginTop: 12, borderRadius: 12, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   loadMoreText: { color: "#dbeafe", fontSize: 15, fontWeight: "900" },
   mvpHiddenState: { width: 1, height: 1, opacity: 0.01 },
