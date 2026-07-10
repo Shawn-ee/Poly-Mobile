@@ -91,12 +91,20 @@ async function main() {
       nextRequiredAction: badDryRun.nextRequiredAction,
     },
     finalReadiness,
+    providerPolicy: {
+      primaryProvider: "polymarket-gamma-clob",
+      optionalExternalLineProvider: "optic_odds",
+      opticOddsRequiredForCurrentMilestone: false,
+    },
     mutatedDatabase: JSON.stringify(initialReadiness) !== JSON.stringify(finalReadiness),
     pass:
       goodDryRun.applied === false &&
       goodDryRun.blocked === false &&
       goodDryRun.validation.valid === true &&
       goodDryRun.after?.lineProviderReadyMarketCount === lineMarkets.length &&
+      ["polymarket_line_markets_ready", "optional_external_line_provider_enrichment_ready"].includes(
+        goodDryRun.after?.nextRequiredAction ?? "",
+      ) &&
       badDryRun.blocked === true &&
       badDryRun.validation.valid === false &&
       JSON.stringify(initialReadiness) === JSON.stringify(finalReadiness),

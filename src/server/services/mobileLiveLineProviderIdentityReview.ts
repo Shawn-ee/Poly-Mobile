@@ -36,11 +36,16 @@ type CompactMarketForLineReview = {
   marketType: string;
   line: Prisma.Decimal | null;
   period: string | null;
+  referenceSource?: string | null;
+  externalMarketId?: string | null;
+  conditionId?: string | null;
   referenceMetadata: unknown;
   outcomes: Array<{
     id: string;
     name: string;
     side: string | null;
+    referenceSource?: string | null;
+    referenceTokenId?: string | null;
     referenceMetadata: unknown;
   }>;
 };
@@ -113,7 +118,7 @@ export async function reviewMobileLiveLineProviderIdentities(
     validation,
     before: summarizeLineProviderIdentityReadiness(compactMarkets),
     after: summarizeLineProviderIdentityReadiness(reloaded),
-    nextRequiredAction: "optional_optic_odds_enrichment_ready",
+    nextRequiredAction: "optional_external_line_provider_enrichment_ready",
   };
 }
 
@@ -182,20 +187,25 @@ export function validateLineProviderIdentityReviews(params: {
 
 export function summarizeLineProviderIdentityReadiness(compactMarkets: CompactMarketForLineReview[]) {
   const lineMarkets = compactMarkets.filter((market) => isLineMarketType(market.marketType));
-  const readyMarkets = lineMarkets.filter((market) => {
-    const identity = parseLineProviderIdentity(market.referenceMetadata);
-    return identity?.providerSource === "optic_odds" &&
-      market.outcomes.every((outcome) => parseLineProviderIdentity(outcome.referenceMetadata)?.providerSource === "optic_odds");
-  });
+  const polymarketReadyMarkets = lineMarkets.filter(isPolymarketLineMarketReady);
+  const externalReadyMarkets = lineMarkets.filter(isExternalLineProviderReady);
+  const readyMarkets = Array.from(new Map([...polymarketReadyMarkets, ...externalReadyMarkets].map((market) => [market.id, market])).values());
   return {
     compactMarketCount: compactMarkets.length,
     lineMarketCount: lineMarkets.length,
+    polymarketLineMarketReadyCount: polymarketReadyMarkets.length,
+    optionalExternalLineProviderReadyCount: externalReadyMarkets.length,
     lineProviderReadyMarketCount: readyMarkets.length,
     lineProviderMissingMarketCount: Math.max(0, lineMarkets.length - readyMarkets.length),
     readyMarketIds: readyMarkets.map((market) => market.id),
-    nextRequiredAction: readyMarkets.length === lineMarkets.length && lineMarkets.length > 0
-      ? "optional_optic_odds_enrichment_ready"
-      : "review_and_apply_line_provider_identity",
+    nextRequiredAction:
+      lineMarkets.length === 0
+        ? "discover_line_market_provider_contract"
+        : polymarketReadyMarkets.length === lineMarkets.length
+          ? "polymarket_line_markets_ready"
+          : readyMarkets.length === lineMarkets.length
+            ? "optional_external_line_provider_enrichment_ready"
+            : "discover_attach_ready_polymarket_line_markets_or_configure_approved_line_provider",
   };
 }
 
@@ -287,6 +297,21 @@ function parseLineProviderIdentity(value: unknown) {
   return identity && typeof identity === "object" && !Array.isArray(identity)
     ? identity as Record<string, unknown>
     : null;
+}
+
+function isPolymarketLineMarketReady(market: CompactMarketForLineReview) {
+  return market.referenceSource === "polymarket" &&
+    Boolean(market.externalMarketId || market.conditionId) &&
+    market.outcomes.length > 0 &&
+    market.outcomes.every((outcome) =>
+      Boolean(outcome.referenceTokenId),
+    );
+}
+
+function isExternalLineProviderReady(market: CompactMarketForLineReview) {
+  const identity = parseLineProviderIdentity(market.referenceMetadata);
+  return identity?.providerSource === "optic_odds" &&
+    market.outcomes.every((outcome) => parseLineProviderIdentity(outcome.referenceMetadata)?.providerSource === "optic_odds");
 }
 
 function providerMarketMatchesLocalType(providerMarketId: string | null | undefined, marketType: string) {

@@ -1,0 +1,128 @@
+{
+  "generatedAt": "2026-07-10T10:51:33.108Z",
+  "eventSlug": "mobile-el-a-provider-breadth-75321796",
+  "providerEventSlug": "el-a-provider-event-75321796",
+  "opticOddsFixtureId": "optic-fixture-el-a-75321796",
+  "mode": "line-provider-identity-review-dry-run",
+  "lineMarketCount": 7,
+  "reviewedMarketCount": 7,
+  "initialReadiness": {
+    "compactMarketCount": 11,
+    "lineMarketCount": 7,
+    "polymarketLineMarketReadyCount": 7,
+    "optionalExternalLineProviderReadyCount": 0,
+    "lineProviderReadyMarketCount": 7,
+    "lineProviderMissingMarketCount": 0,
+    "readyMarketIds": [
+      "c94bcba3-76bf-441d-9e54-e97b56358f7c",
+      "d1d0d47d-624a-46f6-b9d4-fee11e28e3c1",
+      "994a741e-9f81-4645-9d36-811a51ad2102",
+      "34c8fd87-77df-4686-aa1b-7d8e4a4e8142",
+      "ba0db61e-b7d9-44db-9855-aa991acbbb89",
+      "950ef478-0898-4f12-8ad8-65c28e6a38a1",
+      "1ea10ef7-bad1-48ab-8a5d-9b3aecdcf6e2"
+    ],
+    "nextRequiredAction": "polymarket_line_markets_ready"
+  },
+  "goodDryRun": {
+    "applied": false,
+    "blocked": false,
+    "validation": {
+      "valid": true,
+      "compactMarketCount": 11,
+      "reviewedMarketCount": 7,
+      "reviewedOutcomeCount": 14,
+      "errors": []
+    },
+    "before": {
+      "compactMarketCount": 11,
+      "lineMarketCount": 7,
+      "polymarketLineMarketReadyCount": 7,
+      "optionalExternalLineProviderReadyCount": 0,
+      "lineProviderReadyMarketCount": 7,
+      "lineProviderMissingMarketCount": 0,
+      "readyMarketIds": [
+        "c94bcba3-76bf-441d-9e54-e97b56358f7c",
+        "d1d0d47d-624a-46f6-b9d4-fee11e28e3c1",
+        "994a741e-9f81-4645-9d36-811a51ad2102",
+        "34c8fd87-77df-4686-aa1b-7d8e4a4e8142",
+        "ba0db61e-b7d9-44db-9855-aa991acbbb89",
+        "950ef478-0898-4f12-8ad8-65c28e6a38a1",
+        "1ea10ef7-bad1-48ab-8a5d-9b3aecdcf6e2"
+      ],
+      "nextRequiredAction": "polymarket_line_markets_ready"
+    },
+    "after": {
+      "compactMarketCount": 11,
+      "lineMarketCount": 7,
+      "polymarketLineMarketReadyCount": 7,
+      "optionalExternalLineProviderReadyCount": 7,
+      "lineProviderReadyMarketCount": 7,
+      "lineProviderMissingMarketCount": 0,
+      "readyMarketIds": [
+        "c94bcba3-76bf-441d-9e54-e97b56358f7c",
+        "d1d0d47d-624a-46f6-b9d4-fee11e28e3c1",
+        "994a741e-9f81-4645-9d36-811a51ad2102",
+        "34c8fd87-77df-4686-aa1b-7d8e4a4e8142",
+        "ba0db61e-b7d9-44db-9855-aa991acbbb89",
+        "950ef478-0898-4f12-8ad8-65c28e6a38a1",
+        "1ea10ef7-bad1-48ab-8a5d-9b3aecdcf6e2"
+      ],
+      "nextRequiredAction": "polymarket_line_markets_ready"
+    },
+    "nextRequiredAction": "confirm_apply_line_provider_identity_reviews"
+  },
+  "badDryRun": {
+    "applied": false,
+    "blocked": true,
+    "validation": {
+      "valid": false,
+      "compactMarketCount": 11,
+      "reviewedMarketCount": 1,
+      "reviewedOutcomeCount": 1,
+      "errors": [
+        {
+          "marketId": "c94bcba3-76bf-441d-9e54-e97b56358f7c",
+          "field": "providerMarketId",
+          "reason": "provider_market_type_mismatch"
+        },
+        {
+          "marketId": "c94bcba3-76bf-441d-9e54-e97b56358f7c",
+          "field": "points",
+          "reason": "provider_line_value_mismatch"
+        },
+        {
+          "marketId": "c94bcba3-76bf-441d-9e54-e97b56358f7c",
+          "reason": "review_must_include_every_compact_market_outcome"
+        }
+      ]
+    },
+    "blockReason": "line_provider_review_has_failed_items",
+    "nextRequiredAction": "fix_failed_line_provider_identity_reviews"
+  },
+  "finalReadiness": {
+    "compactMarketCount": 11,
+    "lineMarketCount": 7,
+    "polymarketLineMarketReadyCount": 7,
+    "optionalExternalLineProviderReadyCount": 0,
+    "lineProviderReadyMarketCount": 7,
+    "lineProviderMissingMarketCount": 0,
+    "readyMarketIds": [
+      "c94bcba3-76bf-441d-9e54-e97b56358f7c",
+      "d1d0d47d-624a-46f6-b9d4-fee11e28e3c1",
+      "994a741e-9f81-4645-9d36-811a51ad2102",
+      "34c8fd87-77df-4686-aa1b-7d8e4a4e8142",
+      "ba0db61e-b7d9-44db-9855-aa991acbbb89",
+      "950ef478-0898-4f12-8ad8-65c28e6a38a1",
+      "1ea10ef7-bad1-48ab-8a5d-9b3aecdcf6e2"
+    ],
+    "nextRequiredAction": "polymarket_line_markets_ready"
+  },
+  "providerPolicy": {
+    "primaryProvider": "polymarket-gamma-clob",
+    "optionalExternalLineProvider": "optic_odds",
+    "opticOddsRequiredForCurrentMilestone": false
+  },
+  "mutatedDatabase": false,
+  "pass": true
+}
