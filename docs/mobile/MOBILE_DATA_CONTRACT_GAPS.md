@@ -8943,17 +8943,17 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: logout/token revocation and a production native OAuth return proof.
 - Route mismatch: none introduced. Mobile still opens `/api/auth/google/start`; backend still exchanges Google tokens using server-side `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`; mobile stores only the Holiwyn API key returned by the backend callback.
 - Temporary mock/static data: S23 proof uses a generated local mobile dev credential shaped like the callback credential, not real interactive Google consent.
-- Future migration concern: move the stored key into a secure native storage mechanism when the app shifts from Expo Go to a production/dev build, and add logout/revoke UX before broader tester distribution.
+- Future migration concern: secure native storage and logout/revoke UX were completed in Cycles SB/SA for the Local MVP path. Remaining auth proof gap is real interactive Google consent on S23 with a configured device-reachable backend callback.
 
 # Cycle SA - Google Account Sign-Out and Mobile Credential Revocation Notes
 
 - No schema migration was added.
 - Closed or narrowed: Local MVP logout/revoke UX now exists. Mobile calls `/api/auth/mobile/logout`, clears the persisted Holiwyn key, resets runtime auth state, and returns to the visible `Continue with Google` entry.
 - Closed or narrowed: backend can revoke the current mobile API credential by authenticating the request with the same key and calling existing `revokeApiCredential`.
-- Fields Holiwyn still needs but backend does not fully provide: production-grade Google session/logout proof against an actual Google consent flow and secure native storage integration.
+- Fields Holiwyn still needs but backend does not fully provide: production-grade Google session/logout proof against an actual Google consent flow. Secure native storage integration was completed in Cycle SB.
 - Route mismatch: none introduced. Existing `/api/auth/google/callback` still creates the mobile credential; the new `/api/auth/mobile/logout` route reverses the local mobile credential state.
 - Temporary mock/static data: S23 proof uses a generated local credential shaped like the backend callback credential.
-- Future migration concern: replace AsyncStorage with secure native storage and decide whether logout should also revoke all `Holiwyn Mobile Google` credentials or only the current key.
+- Future migration concern: SecureStore is now the primary mobile credential storage when available. Later production hardening should decide whether logout should revoke all `Holiwyn Mobile Google` credentials or only the current key.
 
 # Cycle SB - Secure Mobile Auth Credential Storage Notes
 
@@ -8964,6 +8964,17 @@ Future migration concern:
 - Route mismatch: none introduced. Backend still owns Google token exchange and API credential creation; mobile only stores the returned Holiwyn API key.
 - Temporary mock/static data: S23 proof uses a generated local credential shaped like the backend callback credential.
 - Future migration concern: when moving to a production build, decide whether SecureStore should require biometric/device authentication and whether logout should revoke all mobile Google credentials for the user or only the current key.
+
+# Cycle TR - Google Auth Tracker Cleanup Notes
+
+- No schema migration was added.
+- Closed or narrowed: stale tracker rows from Cycles RZ/SA that still described secure native credential storage as open were updated to the Cycle SB verified state.
+- Fields Holiwyn still needs but backend does not fully provide: no new fields. Mobile still needs only the Holiwyn API key created by backend `createApiCredential`; Google access/refresh tokens remain outside the mobile data contract.
+- Fields backend provides but mobile ignores: no new ignored fields.
+- Schema mismatch: none. Existing `User`, `Account`, and `ApiCredential` models continue to support the mobile Google return path.
+- Route mismatch: none. Mobile continues to start Google auth at `/api/auth/google/start`; backend continues to complete it at `/api/auth/google/callback` and return only a Holiwyn API key to an allowlisted mobile deep link.
+- Temporary mock/static data: none introduced. Existing non-consent proof harnesses may still use generated backend-shaped credentials for automated S23 proof.
+- Future migration concern: real interactive Google consent on S23 still needs manual/browser proof with a Google Cloud authorized redirect URI matching the reachable backend auth origin.
 
 # Cycle SC - Event Detail Chart Removal Hardening Notes
 
