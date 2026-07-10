@@ -25,6 +25,11 @@ const SEARCH_QUERIES = [
   "fifwc total goals",
 ];
 const EVENT_TAG_SLUGS = ["fifa-world-cup", "2026-fifa-world-cup", "soccer"];
+const EVENT_SPECIFIC_PROBES = [
+  { eventSlug: "fifwc-arg-egy-2026-07-07", homeTeam: "Argentina", awayTeam: "Egypt", homeCode: "arg", awayCode: "egy" },
+  { eventSlug: "fifwc-par-fra-2026-07-04", homeTeam: "Paraguay", awayTeam: "France", homeCode: "par", awayCode: "fra" },
+  { eventSlug: "fifwc-bra-nor-2026-07-05", homeTeam: "Brazil", awayTeam: "Norway", homeCode: "bra", awayCode: "nor" },
+] as const;
 const LINE_FAMILIES = new Set<ProviderMarketFamily>([
   "spread",
   "total_goals",
@@ -38,7 +43,7 @@ const LINE_FAMILIES = new Set<ProviderMarketFamily>([
 type GammaWire = Record<string, unknown>;
 
 type ScanCandidate = {
-  source: "market-search" | "event-tag";
+  source: "market-search" | "event-tag" | "event-specific-search" | "exact-slug";
   queryOrTag: string;
   slug: string;
   question: string;
@@ -72,12 +77,28 @@ async function main() {
   const limit = parsePositiveInt(argValue("limit"), DEFAULT_LIMIT);
   const bySlug = new Map<string, ScanCandidate>();
   const errors: Array<{ source: string; queryOrTag: string; error: string }> = [];
+  const rawSourceHits = {
+    marketSearch: 0,
+    eventTag: 0,
+    eventSpecificSearch: 0,
+    exactSlug: 0,
+  };
+  const rawLineSourceHits = {
+    marketSearch: 0,
+    eventTag: 0,
+    eventSpecificSearch: 0,
+    exactSlug: 0,
+  };
 
   for (const query of SEARCH_QUERIES) {
     try {
       const markets = await fetchGammaMarketsBySearch(query, limit);
       for (const market of markets) {
         const candidate = normalizeCandidate(market, "market-search", query);
+        if (candidate?.worldCupRelevant) {
+          rawSourceHits.marketSearch += 1;
+          if (LINE_FAMILIES.has(candidate.family)) rawLineSourceHits.marketSearch += 1;
+        }
         if (candidate && !bySlug.has(candidate.slug)) {
           bySlug.set(candidate.slug, candidate);
         }
@@ -98,6 +119,10 @@ async function main() {
         for (const market of markets) {
           if (!market || typeof market !== "object") continue;
           const candidate = normalizeCandidate(market as GammaWire, "event-tag", tagSlug, { eventTitle, tags, category });
+          if (candidate?.worldCupRelevant) {
+            rawSourceHits.eventTag += 1;
+            if (LINE_FAMILIES.has(candidate.family)) rawLineSourceHits.eventTag += 1;
+          }
           if (candidate && !bySlug.has(candidate.slug)) {
             bySlug.set(candidate.slug, candidate);
           }
@@ -105,6 +130,47 @@ async function main() {
       }
     } catch (error) {
       errors.push({ source: "event-tag", queryOrTag: tagSlug, error: error instanceof Error ? error.message : String(error) });
+    }
+  }
+
+  const eventSpecificSearchQueries = EVENT_SPECIFIC_PROBES.flatMap(buildEventSpecificSearchQueries);
+  const exactSlugGuesses = EVENT_SPECIFIC_PROBES.flatMap(buildEventSpecificSlugGuesses);
+
+  for (const probe of EVENT_SPECIFIC_PROBES) {
+    for (const query of buildEventSpecificSearchQueries(probe)) {
+      try {
+        const markets = await fetchGammaMarketsBySearch(query, Math.min(limit, 50));
+        for (const market of markets) {
+          const candidate = normalizeCandidate(market, "event-specific-search", `${probe.eventSlug}:${query}`);
+          if (candidate?.worldCupRelevant) {
+            rawSourceHits.eventSpecificSearch += 1;
+            if (LINE_FAMILIES.has(candidate.family)) rawLineSourceHits.eventSpecificSearch += 1;
+          }
+          if (candidate && !bySlug.has(candidate.slug)) {
+            bySlug.set(candidate.slug, candidate);
+          }
+        }
+      } catch (error) {
+        errors.push({ source: "event-specific-search", queryOrTag: `${probe.eventSlug}:${query}`, error: error instanceof Error ? error.message : String(error) });
+      }
+    }
+  }
+
+  for (const slug of exactSlugGuesses) {
+    try {
+      const markets = await fetchGammaMarketsBySlug(slug);
+      for (const market of markets) {
+        const candidate = normalizeCandidate(market, "exact-slug", slug);
+        if (candidate?.worldCupRelevant) {
+          rawSourceHits.exactSlug += 1;
+          if (LINE_FAMILIES.has(candidate.family)) rawLineSourceHits.exactSlug += 1;
+        }
+        if (candidate && !bySlug.has(candidate.slug)) {
+          bySlug.set(candidate.slug, candidate);
+        }
+      }
+    } catch (error) {
+      errors.push({ source: "exact-slug", queryOrTag: slug, error: error instanceof Error ? error.message : String(error) });
     }
   }
 
@@ -155,15 +221,24 @@ async function main() {
     sources: {
       searchQueries: SEARCH_QUERIES,
       eventTagSlugs: EVENT_TAG_SLUGS,
+      eventSpecificProbes: EVENT_SPECIFIC_PROBES,
+      eventSpecificSearchQueries,
+      exactSlugGuesses,
       limit,
     },
     errors,
     totals: {
       rawCandidateCount: allCandidates.length,
       worldCupRelevantCandidateCount: worldCupCandidates.length,
+      rawSourceHits,
+      rawLineSourceHits,
       providerLineCandidateCount: lineCandidates.length,
       attachReadyProviderLineCandidateCount: attachReadyLineCandidates.length,
       providerLineCandidateFamilies: Array.from(new Set(lineCandidates.map((candidate) => candidate.family))),
+      eventSpecificSearchCandidateCount: worldCupCandidates.filter((candidate) => candidate.source === "event-specific-search").length,
+      exactSlugCandidateCount: worldCupCandidates.filter((candidate) => candidate.source === "exact-slug").length,
+      eventSpecificLineCandidateCount: lineCandidates.filter((candidate) => candidate.source === "event-specific-search").length,
+      exactSlugLineCandidateCount: lineCandidates.filter((candidate) => candidate.source === "exact-slug").length,
       lineLikeRejectedCandidateCount: lineLikeRejectedCandidates.length,
       lineQueryOtherCandidateSampleCount: lineQueryOtherCandidateSamples.length,
     },
@@ -179,6 +254,7 @@ async function main() {
     lineQueryOtherCandidateSamples,
     limitations: [
       "Read-only scan. No local events, markets, mappings, orders, or fixtures are created or modified.",
+      "Event-specific search queries and exact slug guesses are diagnostic only; they do not attach provider identities.",
       "A provider line candidate here is not enough for parity; it must still be reviewed against a specific Holiwyn event/market/outcome/line identity before attachment.",
       "Line-like rejected candidates are diagnostic only. They are not attach-ready until classifier family, event relevance, outcome identity, and CLOB token identity all match a Holiwyn target market.",
       "If attach-ready line candidates remain zero, Local MVP contract fixtures are still the honest path for spread/totals/team-total UI and fake-token order proof.",
@@ -201,6 +277,20 @@ async function fetchGammaMarketsBySearch(query: string, limit: number) {
   if (!response.ok) throw new Error(`Gamma market search failed: ${response.status} ${response.statusText}`);
   const payload = await response.json() as unknown;
   if (!Array.isArray(payload)) throw new Error("Gamma market search response was not an array.");
+  return payload.filter((entry): entry is GammaWire => Boolean(entry) && typeof entry === "object");
+}
+
+async function fetchGammaMarketsBySlug(slug: string) {
+  const url = new URL("/markets", GAMMA_BASE_URL);
+  url.searchParams.set("active", "true");
+  url.searchParams.set("closed", "false");
+  url.searchParams.set("archived", "false");
+  url.searchParams.set("limit", "20");
+  url.searchParams.set("slug", slug);
+  const response = await fetch(url.toString(), { headers: { Accept: "application/json" } });
+  if (!response.ok) throw new Error(`Gamma market slug lookup failed: ${response.status} ${response.statusText}`);
+  const payload = await response.json() as unknown;
+  if (!Array.isArray(payload)) throw new Error("Gamma market slug response was not an array.");
   return payload.filter((entry): entry is GammaWire => Boolean(entry) && typeof entry === "object");
 }
 
@@ -389,6 +479,62 @@ function asBoolean(value: unknown): boolean {
 
 function computeSpread(bestBid: number | null, bestAsk: number | null) {
   return bestBid != null && bestAsk != null ? Math.max(0, bestAsk - bestBid) : null;
+}
+
+function buildEventSpecificSearchQueries(probe: typeof EVENT_SPECIFIC_PROBES[number]) {
+  const teamPair = `${probe.homeTeam} ${probe.awayTeam}`;
+  return [
+    `${teamPair} spread`,
+    `${teamPair} handicap`,
+    `${teamPair} total goals`,
+    `${teamPair} over under`,
+    `${teamPair} over 2.5`,
+    `${probe.homeTeam} team total ${probe.awayTeam}`,
+    `${probe.awayTeam} team total ${probe.homeTeam}`,
+    `${teamPair} first half`,
+    `${teamPair} 1h`,
+    `${teamPair} corners`,
+    `${teamPair} correct score`,
+  ];
+}
+
+function buildEventSpecificSlugGuesses(probe: typeof EVENT_SPECIFIC_PROBES[number]) {
+  const teams = [probe.homeCode, probe.awayCode];
+  const lineValues = ["1-5", "2-5", "3-5"];
+  const baseGuesses = [
+    `${probe.eventSlug}-spread`,
+    `${probe.eventSlug}-handicap`,
+    `${probe.eventSlug}-total-goals`,
+    `${probe.eventSlug}-over-under`,
+    `${probe.eventSlug}-team-total`,
+    `${probe.eventSlug}-team-goals`,
+    `${probe.eventSlug}-first-half`,
+    `${probe.eventSlug}-1h`,
+    `${probe.eventSlug}-corners`,
+    `${probe.eventSlug}-correct-score`,
+  ];
+  const teamGuesses = teams.flatMap((team) => [
+    `${probe.eventSlug}-${team}-spread`,
+    `${probe.eventSlug}-${team}-handicap`,
+    `${probe.eventSlug}-spread-${team}`,
+    `${probe.eventSlug}-${team}-team-total`,
+    `${probe.eventSlug}-team-total-${team}`,
+    `${probe.eventSlug}-${team}-team-goals`,
+  ]);
+  const lineGuesses = lineValues.flatMap((line) => [
+    `${probe.eventSlug}-spread-${line}`,
+    `${probe.eventSlug}-handicap-${line}`,
+    `${probe.eventSlug}-total-goals-${line}`,
+    `${probe.eventSlug}-over-${line}`,
+    `${probe.eventSlug}-under-${line}`,
+    ...teams.flatMap((team) => [
+      `${probe.eventSlug}-${team}-spread-${line}`,
+      `${probe.eventSlug}-${team}-handicap-${line}`,
+      `${probe.eventSlug}-${team}-team-goals-${line}`,
+      `${probe.eventSlug}-${team}-team-total-${line}`,
+    ]),
+  ]);
+  return Array.from(new Set([...baseGuesses, ...teamGuesses, ...lineGuesses]));
 }
 
 function parsePositiveInt(value: string | undefined, fallback: number) {

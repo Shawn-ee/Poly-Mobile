@@ -35,6 +35,17 @@ describe("mobile provider line-market proof scripts", () => {
     expect(source).toContain("lineQueryOtherCandidateSamples");
     expect(source).toContain("lineQueryOtherCandidateSampleCount");
     expect(source).toContain("candidateDiagnostic");
+    expect(source).toContain("EVENT_SPECIFIC_PROBES");
+    expect(source).toContain("buildEventSpecificSearchQueries");
+    expect(source).toContain("buildEventSpecificSlugGuesses");
+    expect(source).toContain("eventSpecificSearchQueries");
+    expect(source).toContain("exactSlugGuesses");
+    expect(source).toContain("fetchGammaMarketsBySlug");
+    expect(source).toContain("eventSpecificLineCandidateCount");
+    expect(source).toContain("exactSlugLineCandidateCount");
+    expect(source).toContain("rawSourceHits");
+    expect(source).toContain("rawLineSourceHits");
+    expect(source).toContain("fifwc-arg-egy-2026-07-07");
     expect(source).toContain("no_attach_ready_world_cup_line_markets_found_keep_local_contract_fixtures_for_mvp");
   });
 });

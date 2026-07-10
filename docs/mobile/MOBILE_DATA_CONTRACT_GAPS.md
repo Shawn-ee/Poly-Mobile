@@ -9441,3 +9441,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: real provider-backed current-match Spread, Total, and Team Total market ids, outcome ids, provider token ids, and prices.
 - Temporary mock/static data: none added.
 - Future migration concern: when only one line family becomes provider-backed, do not mark the full line-market milestone complete. Replace the remaining fixture/missing families before claiming full line parity.
+
+# Cycle UI - Provider Line Breadth Event-Specific Scan Notes
+
+- No schema migration was added.
+- Closed or narrowed: the provider-line gap is now checked against generic World Cup search, event tags, event-specific current-match queries, and exact line slug guesses.
+- Route mismatch: none. Runtime mobile routes still honestly report line markets as contract fixtures when no provider-backed rows are available.
+- Fields Holiwyn still needs but backend does not fully provide: real provider-backed current-match Spread, Total, and Team Total market ids, condition ids, token ids, line/period fields, prices, and quote freshness.
+- Temporary mock/static data: none added. The scan is read-only and proof-only.
+- Future migration concern: unless Polymarket Gamma begins exposing attach-ready line-family rows, the next real path is an explicit approved secondary provider contract. Do not map match-winner/futures candidates into line markets.

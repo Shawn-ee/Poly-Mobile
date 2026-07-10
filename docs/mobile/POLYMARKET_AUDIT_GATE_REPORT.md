@@ -7420,3 +7420,14 @@ Remaining P1:
 - Android proof: not rerun because no visible UI changed and no ADB device was attached.
 - Unresolved P0: 0 for UH scope.
 - Remaining P1: real provider-backed current-match line rows for all expected MVP families.
+
+# Cycle UI Audit Gate - Provider Line Breadth Event-Specific Scan
+
+- Scope: read-only Polymarket Gamma provider discovery for current MVP line-market availability.
+- P0 result: PASS for backend/provider evidence scope.
+- Implementation proof: `scripts/prove_mobile_provider_line_breadth_scan.ts` now adds current-event-specific search probes, exact line slug guesses, and raw source/line-family hit counters without attaching markets or changing mobile UI.
+- Contract proof: `src/server/services/__tests__/mobile.provider.line.probe.contract.test.ts` passed and asserts the new probes/counters stay present.
+- Live provider proof: `docs/mobile/harness/cycle-UI-provider-line-breadth-event-specific-scan/cycle-UI-provider-line-breadth-scan.json` records 2,674 World Cup relevant candidates, 231 raw event-specific search hits, 0 exact-slug hits, 0 provider line candidates, and 0 attach-ready line candidates.
+- Android proof: not rerun because this cycle changed no visible UI and no ADB device was attached.
+- Unresolved P0: 0 for UI scope.
+- Remaining P1: real provider-backed Spread/Totals/Team Total current-match rows are still unavailable from this Polymarket-first scan.

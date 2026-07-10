@@ -1535,3 +1535,10 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Partial provider-backed line coverage could be mistaken for full line parity | P0 | Verified | Backend/mobile contract now uses `partial-provider-backed` and `providerAvailability.status=partial` unless all expected MVP line families are provider-backed. | `src/server/services/mobileLiveEventDetail.ts`; `src/__tests__/mobile-live-event-detail.test.ts`; `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts`; `docs/mobile/audits/cycle-UH-partial-provider-line-readiness.md` |
 | Real provider-backed spread/totals/team-total current-match rows | P1 | Open | Still needs real provider rows for every expected MVP line family. | `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md` |
+
+# Cycle UI - Provider Line Breadth Event-Specific Scan
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Provider line breadth scan did not prove current-event-specific Gamma searches and exact slug guesses | P0 | Verified | The read-only scan now probes current MVP event/team query shapes and exact line-market slug guesses, records raw source hits, and keeps relevance gates strict. | `scripts/prove_mobile_provider_line_breadth_scan.ts`; `src/server/services/__tests__/mobile.provider.line.probe.contract.test.ts`; `docs/mobile/harness/cycle-UI-provider-line-breadth-event-specific-scan/cycle-UI-provider-line-breadth-scan.json` |
+| Real provider-backed spread/totals/team-total current-match rows | P1 | Open | Event-specific Polymarket Gamma searches returned 231 raw World Cup hits but 0 raw line-family hits, 0 provider line candidates, and 0 attach-ready line candidates. Local MVP line-selector UI should continue using backend-shaped contract fixtures until Polymarket exposes line markets or an approved secondary provider is configured. | `docs/mobile/audits/cycle-UI-provider-line-breadth-event-specific-scan.md` |
