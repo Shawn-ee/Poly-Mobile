@@ -4458,3 +4458,9 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Unavailable Trade Ticket proof deep link | None beyond app launch/deep link | N/A | None | `forceUnavailableTradeTicket=1` launch URL param | Local proof fixture sets `market.availability.status="unavailable"`, `marketStatus="PROOF_UNAVAILABLE"`, and selected market/outcome/line identity | No database model implied | Uses bundled World Cup event/market data plus route-shaped availability fields | None for fixture setup. Device proof still needs an attached Android device. |
+
+# Cycle UG - Chart-Free MVP Doc Alignment
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail chart-free Local MVP criteria | Existing `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | Existing GET/POST retail flow | Public event browse; mobile API key for order/Portfolio routes | No request changed | Event teams, current outcome probabilities, Game Lines market/outcome/line identity, quote/order/Portfolio fields | Existing `Event`, `Market`, `Outcome`, `Order`, `Trade`, `Position`, `UserBalance`, `ApiCredential`; no schema change | Mock/offline path unchanged. Bundled fixtures still provide probability/outcome and Game Lines rows. | None for chart-free MVP. `/api/markets/:id/chart` and chart-history rows can remain internal/future, but are not required by the current mobile market page. |

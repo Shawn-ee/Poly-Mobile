@@ -32,7 +32,7 @@ describe("Route server-filled wrapper env contract", () => {
     expect(branch.indexOf("$LocalMvpRouteServerFilledFlow")).toBeLessThan(branch.indexOf("$ServerLiveDetailBackendProof"));
   });
 
-  test("allows Local MVP route server proof to keep chart and probability display while hiding social/depth UI", () => {
+  test("keeps Local MVP route server proof on probability display while hiding chart/social/depth UI", () => {
     const smoke = readFileSync("mobile/scripts/smoke.ps1", "utf8");
     const hiddenBlock = smoke.slice(smoke.indexOf("$mvpHiddenChartChatExpected = @("), smoke.indexOf("$mvpRouteTargetOutcomeId"));
 

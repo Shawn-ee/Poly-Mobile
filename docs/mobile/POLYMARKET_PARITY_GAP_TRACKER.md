@@ -1521,3 +1521,10 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Approved secondary-provider lines would be visibly mislabeled as Polymarket lines | P0 | Verified | Event Detail now uses Polymarket copy only for Polymarket-backed lines; approved secondary-provider lines use Holiwyn-branded line copy and hidden `line-source-approved-provider` audit markers. | `mobile/src/components/EventDetail.tsx`; `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts` |
 | Real approved-provider spread/totals/team-total current-match rows | P1 | Open | Source copy is ready, but current MVP line rows still need real reviewed provider identity before the approved-provider path is visible on S23. | `docs/mobile/audits/cycle-UB-approved-line-provider-source-copy.md` |
+
+# Cycle UG - Chart-Free MVP Doc Alignment
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Current criteria still described the removed market-page chart as required Event Detail proof | P0 | Verified | FD/FE criteria now require route-backed probability/outcome display, Game Lines, provider markers, and explicit absence of `event-detail-price-chart`. | `docs/mobile/POLYMARKET_FEATURE_CRITERIA.md`; `mobile/src/__tests__/localMvpGameTrackerContract.test.ts`; `docs/mobile/audits/cycle-UG-chart-free-mvp-doc-alignment.md` |
+| Real provider-backed spread/totals/team-total current-match rows | P1 | Open | Unchanged. Chart-free criteria do not solve provider line breadth. | `docs/mobile/audits/cycle-TW-provider-line-source-reprobe.md` |

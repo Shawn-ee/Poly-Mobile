@@ -12294,3 +12294,13 @@ Known limitations:
 - State transitions: deep link -> deterministic match/market selection -> proof-shaped unavailable availability state -> `TradeTicket` read-only state from Cycle UE.
 - Proof: focused deep-link contract test and mobile typecheck passed. Android proof remains pending because no S23/tablet ADB device was attached or discoverable during this cycle.
 - Known limitations: this is a deterministic proof fixture, not evidence that a live provider has produced a real suspended market. Real provider unavailable states should continue to use the same `market.availability` contract.
+
+# Cycle UG - Chart-Free MVP Doc Alignment
+
+- Feature/page worked on: Event Detail market-page criteria and proof-contract alignment.
+- Frontend components touched: no runtime component changed. Updated `mobile/src/__tests__/localMvpGameTrackerContract.test.ts` and `mobile/src/__tests__/routeServerFilledWrapperEnvContract.test.ts` to keep current criteria aligned with the already chart-free Local MVP page.
+- Backend/API routes touched: none. Existing chart-history routes remain internal/future infrastructure and are not consumed by the default mobile market page.
+- User interactions supported: unchanged. The visible Local MVP path remains Home/Live -> Event Detail probability/outcome display -> Game Lines/line selector -> Trade Ticket -> fake-token order -> Portfolio/history.
+- State transitions: unchanged. Selected market/outcome/line identity still flows through ticket/order/Portfolio; chart selection state is not part of the current tester-facing Event Detail UI.
+- Proof: focused chart-free Event Detail, tracker, proof-noise, and wrapper contract tests passed. No Android proof was rerun because this cycle changed docs/test wording only.
+- Known limitations: real provider-backed Spread/Totals/Team Total current-match line markets remain P1. If future chart work returns, it should be behind a separately approved scope and not block the Local MVP retail flow.

@@ -7399,3 +7399,13 @@ Remaining P1:
 - Visible proof: `docs/mobile/screenshots/cycle-SH-home-local-mvp-focus/cycle-SH-current-mvp-home.png` and XML show World Cup, Matches, match count, live count, and reject `home-filter-all`, `home-filter-live`, and `home-filter-today`.
 - Test proof: mobile typecheck passed; focused Home/service tests passed.
 - Unresolved P0: 0 for SH scope.
+
+# Cycle UG Audit Gate - Chart-Free MVP Doc Alignment
+
+- Scope: Event Detail Local MVP criteria/docs alignment after the market-page chart removal.
+- P0 result: PASS for source/contract cleanup scope.
+- Implementation proof: `docs/mobile/POLYMARKET_FEATURE_CRITERIA.md` now requires probability/outcome display plus Game Lines and explicit absence of `event-detail-price-chart`; `mobile/src/__tests__/localMvpGameTrackerContract.test.ts` guards that wording.
+- Contract proof: focused chart-free Event Detail, tracker, proof-noise, and wrapper tests passed.
+- Android proof: not rerun because no runtime UI changed and no Android device was attached during this cleanup. Prior S23 chart-free proof remains Cycle SC.
+- Unresolved P0: 0 for UG scope.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets.
