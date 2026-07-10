@@ -11802,3 +11802,13 @@ Known limitations:
 - User interactions supported: Portfolio/Account `Continue with Google` still opens the same backend `/api/auth/google/start` route; backend now uses configured `NEXTAUTH_URL` whenever present, so mobile testing can reuse the same Google Cloud OAuth client/callback setup as Poly/Holiwyn instead of deriving a callback from the phone-facing request host.
 - State transitions: Google Cloud OAuth credentials and Google token exchange stay server-owned; mobile receives only the Holiwyn API key returned by `/api/auth/google/callback`.
 - Known limitations: this is a setup/contract fix, not a new real Google consent proof. Manual S23 OAuth still requires `NEXTAUTH_URL` to match an authorized Google Cloud callback URL reachable by the phone/browser.
+
+# Cycle SH - Home Local MVP Focus
+
+- Feature/page worked on: Home page Local MVP match feed.
+- Frontend components touched: `mobile/App.tsx`, `mobile/src/components/HomeScreen.tsx`.
+- Tests touched: `mobile/src/__tests__/homeLocalMvpFocusContract.test.ts`.
+- Backend/API routes touched: none. Home still uses `loadHomeEventFeedPage()` and the existing `/api/events` World Cup route.
+- User interactions supported: Home now presents only the World Cup/Matches/Live match feed with 10-at-a-time progressive loading; visible All/Live/Today filter chips are removed so testers stay on the Local MVP retail path.
+- State transitions: server-mode Home route requests use `filter: "all"`; pagination cursor state and local progressive loading remain unchanged.
+- Known limitations: Search remains the separate discovery surface; this cycle does not alter Event Detail, Trade Ticket, Portfolio, or provider breadth.

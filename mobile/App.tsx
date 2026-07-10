@@ -9,7 +9,7 @@ import { AccountScreen } from "./src/components/AccountScreen";
 import { BottomTabs } from "./src/components/BottomTabs";
 import { EventDetail } from "./src/components/EventDetail";
 import { Header } from "./src/components/Header";
-import { HomeScreen, type HomeFilter } from "./src/components/HomeScreen";
+import { HomeScreen } from "./src/components/HomeScreen";
 import { LiveScreen } from "./src/components/LiveScreen";
 import {
   OpenOrder,
@@ -83,11 +83,6 @@ const SAVED_EVENTS_STORAGE_KEY = "holiwyn.savedEventIds.v1";
 const LANGUAGE_STORAGE_KEY = "holiwyn.language.v1";
 const PORTFOLIO_STORAGE_KEY = "holiwyn.portfolio.v1";
 const TICKET_DEFAULTS_STORAGE_KEY = "holiwyn.ticketDefaults.v1";
-
-const matchesHomeFilter = (event: Event, filter: HomeFilter) => {
-  if (filter === "all") return true;
-  return event.status === filter;
-};
 
 const SMOKE_OPEN_ORDER: OpenOrder = {
   id: "smoke-open-order",
@@ -333,7 +328,6 @@ export default function App() {
   const [locale, setLocale] = useState<Locale>("en");
   const [localeHydrated, setLocaleHydrated] = useState(false);
   const [mainTab, setMainTab] = useState<MainTab>(PROOF_INITIAL_TAB);
-  const [homeFilter, setHomeFilter] = useState<HomeFilter>("all");
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [selectedDepthMarketId, setSelectedDepthMarketId] = useState<string | null>(null);
   const [eventDetailForcedSide, setEventDetailForcedSide] = useState<"buy" | "sell" | null>(null);
@@ -1130,7 +1124,7 @@ export default function App() {
     try {
       const page = await loadHomeEventFeedPage({
         api,
-        filter: homeFilter,
+        filter: "all",
         limit: HOME_EVENT_PAGE_SIZE,
         cursor,
       });
@@ -1183,7 +1177,7 @@ export default function App() {
         setEventNextCursor(null);
       }
     }
-  }, [api, homeFilter]);
+  }, [api]);
 
   const loadMoreBackendEvents = useCallback(() => {
     if (MARKET_DATA_MODE !== "server" || !eventNextCursor || isLoadingMoreEvents) return;
@@ -1825,8 +1819,6 @@ export default function App() {
                 events={events}
                 openEvent={openEventDetail}
                 openTicket={openTicket}
-                homeFilter={homeFilter}
-                setHomeFilter={setHomeFilter}
                 canLoadMoreEvents={MARKET_DATA_MODE === "server" ? Boolean(eventNextCursor) : undefined}
                 isLoadingMoreEvents={isLoadingMoreEvents}
                 loadMoreEvents={MARKET_DATA_MODE === "server" ? loadMoreBackendEvents : undefined}

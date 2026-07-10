@@ -8980,3 +8980,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: none for the contract. Real consent proof still depends on environment setup rather than schema.
 - Temporary mock/static data: none.
 - Future migration concern: for S23 local testing, `NEXTAUTH_URL` must be reachable from the phone/browser and the exact `/api/auth/google/callback` URL must be authorized in the same Google Cloud OAuth client.
+
+# Cycle SH - Home Local MVP Focus Notes
+
+- No schema migration was added.
+- Closed or narrowed: Home no longer exposes local visible filter state that can diverge from the Local MVP match-only backend feed.
+- Route mismatch: narrowed. Home always asks for the default match feed with `filter: "all"`; Live remains its own tab and Search remains its own discovery surface.
+- Fields Holiwyn still needs but backend does not fully provide: no new Home fields. Provider-backed line-market breadth remains a separate gap.
+- Temporary mock/static data: local/mock mode still uses bundled World Cup match fixtures and 10-at-a-time display.
+- Future migration concern: if visible Home filters return later, they need a fresh audit gate and backend route criteria rather than reusing the removed chip state.
