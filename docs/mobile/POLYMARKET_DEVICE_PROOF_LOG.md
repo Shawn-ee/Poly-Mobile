@@ -2824,3 +2824,10 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Screenshots: `docs/mobile/screenshots/cycle-SE-google-return-compatibility/cycle-SE-google-auth-return-portfolio.png`, `docs/mobile/screenshots/cycle-SE-google-return-compatibility/cycle-SE-google-auth-persisted-portfolio.png`, `docs/mobile/screenshots/cycle-SE-google-return-compatibility/cycle-SE-google-auth-account-signed-out.png`.
 - XML: `docs/mobile/harness/cycle-SE-google-return-compatibility/cycle-SE-google-auth-return-portfolio.xml`, `docs/mobile/harness/cycle-SE-google-return-compatibility/cycle-SE-google-auth-persisted-portfolio.xml`, `docs/mobile/harness/cycle-SE-google-return-compatibility/cycle-SE-google-auth-account-connected.xml`, `docs/mobile/harness/cycle-SE-google-return-compatibility/cycle-SE-google-auth-account-signed-out.xml`.
 - Result: PASS. This verifies the visible mobile Google return/persistence/logout path still works after the backend return allowlist update.
+
+# Cycle SG - Google OAuth Base URL Alignment Proof
+
+- Device: no new Android run; visible mobile UI is unchanged.
+- Flow covered by source/contract proof: Portfolio/Account Google entry -> backend `/api/auth/google/start` -> configured Poly/Holiwyn Google Cloud callback via `NEXTAUTH_URL` -> backend token exchange -> mobile deep-link return with Holiwyn API key.
+- Test proof: focused Google auth contract and mobile return allowlist tests.
+- Result: PASS for setup/contract scope. Manual real-account S23 consent remains P1 once `NEXTAUTH_URL` is confirmed against Google Cloud authorized redirect URIs.

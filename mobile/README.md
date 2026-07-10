@@ -45,7 +45,7 @@ Supported public Expo variables:
 | `EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL` | Optional for Google login | `holiwyn://auth/google` | Deep link returned to after backend Google OAuth succeeds. This is not a Google credential. Keep Google Cloud client IDs/secrets/tokens on the backend. |
 | `EXPO_PUBLIC_SHOW_ORDERBOOK` | Debug only | `1` | Shows internal order book surfaces. Leave unset for the Local MVP retail UI. |
 
-Backend Google OAuth variables belong in the server repo/env, not here:
+Backend Google OAuth variables belong in the server repo/env, not here. Use the same Google Cloud OAuth client already configured for the Poly/Holiwyn backend:
 
 ```powershell
 GOOGLE_CLIENT_ID=...
@@ -59,7 +59,7 @@ The Google Cloud authorized redirect URI must point at the backend callback, for
 http://127.0.0.1:3002/api/auth/google/callback
 ```
 
-For Expo Go manual OAuth testing, keep the Google Cloud redirect URI pointed at the backend callback above, then set `EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL` to the Expo deep link shown by Expo with `/--/auth/google` appended. The backend accepts `exp:` / `exps:` mobile return links only outside production; production returns must use the Holiwyn app scheme.
+For Expo Go manual OAuth testing on a physical Android device, `NEXTAUTH_URL` must be a backend URL the phone/browser can reach, such as a LAN IP or the hosted Holiwyn domain. Add that exact callback URL to the same Google Cloud OAuth client. Then set `EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL` to the Expo deep link shown by Expo with `/--/auth/google` appended. The backend accepts `exp:` / `exps:` mobile return links only outside production; production returns must use the Holiwyn app scheme.
 
 Android device URL tips:
 

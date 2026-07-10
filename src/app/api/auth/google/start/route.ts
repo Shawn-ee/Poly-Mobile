@@ -44,10 +44,7 @@ export async function GET(request: Request) {
     }
   }
   const configuredBaseUrl = process.env.NEXTAUTH_URL?.trim();
-  const baseUrl =
-    process.env.NODE_ENV === "production"
-      ? configuredBaseUrl || requestUrl.origin
-      : requestUrl.origin;
+  const baseUrl = configuredBaseUrl || requestUrl.origin;
   const redirectUri = `${baseUrl}/api/auth/google/callback`;
 
   const params = new URLSearchParams({

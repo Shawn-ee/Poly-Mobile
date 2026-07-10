@@ -8971,3 +8971,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: none for this policy contract.
 - Temporary mock/static data: none.
 - Future migration concern: if new mobile schemes are introduced, they must be added to the helper with direct tests before being accepted by OAuth callback.
+
+# Cycle SG - Google OAuth Base URL Alignment Notes
+
+- No schema migration was added.
+- Closed or narrowed: Google OAuth start/callback now use configured `NEXTAUTH_URL` whenever it is present, instead of only in production, so physical Android/Expo testing can share the same Google Cloud OAuth callback configuration as Poly/Holiwyn.
+- Route mismatch: narrowed. Mobile opens the backend route; Google redirects to the configured backend callback; backend returns to the mobile deep link only after server-side token exchange.
+- Fields Holiwyn still needs but backend does not fully provide: none for the contract. Real consent proof still depends on environment setup rather than schema.
+- Temporary mock/static data: none.
+- Future migration concern: for S23 local testing, `NEXTAUTH_URL` must be reachable from the phone/browser and the exact `/api/auth/google/callback` URL must be authorized in the same Google Cloud OAuth client.

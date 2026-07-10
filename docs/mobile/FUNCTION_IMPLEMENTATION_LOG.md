@@ -11793,3 +11793,12 @@ Known limitations:
 - User interactions supported: unchanged from SE; Google login still opens the backend auth flow and returns only a Holiwyn mobile API key after callback.
 - State transitions: route-level return allowlisting is now centralized so start and callback enforce the same rule: `holiwyn:` always allowed, `exp:` / `exps:` only outside production, web/javascript/malformed return targets rejected.
 - Known limitations: no new interactive Google consent proof in this cycle. It hardens the contract beneath the existing S23 callback-shaped proof.
+
+# Cycle SG - Google OAuth Base URL Alignment
+
+- Feature/page worked on: backend-owned Google OAuth setup for mobile Google login.
+- Frontend/docs touched: `mobile/README.md`, `mobile/src/__tests__/googleMobileAuthContract.test.ts`.
+- Backend/API routes touched: `src/app/api/auth/google/start/route.ts`, `src/app/api/auth/google/callback/route.ts`, `.env.example`.
+- User interactions supported: Portfolio/Account `Continue with Google` still opens the same backend `/api/auth/google/start` route; backend now uses configured `NEXTAUTH_URL` whenever present, so mobile testing can reuse the same Google Cloud OAuth client/callback setup as Poly/Holiwyn instead of deriving a callback from the phone-facing request host.
+- State transitions: Google Cloud OAuth credentials and Google token exchange stay server-owned; mobile receives only the Holiwyn API key returned by `/api/auth/google/callback`.
+- Known limitations: this is a setup/contract fix, not a new real Google consent proof. Manual S23 OAuth still requires `NEXTAUTH_URL` to match an authorized Google Cloud callback URL reachable by the phone/browser.

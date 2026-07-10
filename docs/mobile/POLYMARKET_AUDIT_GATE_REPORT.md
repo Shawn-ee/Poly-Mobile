@@ -7378,3 +7378,13 @@ Remaining P1:
 - Test proof: mobile typecheck, root TypeScript check, focused auth tests, and return allowlist tests passed.
 - Unresolved P0: 0 for SF scope.
 - Remaining P1: real interactive Google consent on S23.
+
+# Cycle SG Audit Gate - Google OAuth Base URL Alignment
+
+- Scope: backend-owned Google OAuth setup used by the mobile Portfolio/Account login entry.
+- P0 result: PASS for setup/contract scope.
+- Implementation proof: `/api/auth/google/start` and `/api/auth/google/callback` now both use `NEXTAUTH_URL` whenever configured, so Google receives the same backend callback base configured for Poly/Holiwyn instead of a request-origin callback that may differ on physical Android.
+- Contract proof: focused Google auth tests verify mobile still has no `EXPO_PUBLIC_GOOGLE_CLIENT_ID` / `EXPO_PUBLIC_GOOGLE_CLIENT_SECRET`, backend owns `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`, and callback returns only the Holiwyn mobile API key.
+- Android proof: not rerun because this is not a visible UI change; Cycle SE already proved the visible S23 Google return/persistence/logout path. Real interactive Google consent remains a manual environment proof.
+- Unresolved P0: 0 for SG setup scope.
+- Remaining P1: run real S23 Google consent after `NEXTAUTH_URL` and the Google Cloud authorized callback are confirmed.
