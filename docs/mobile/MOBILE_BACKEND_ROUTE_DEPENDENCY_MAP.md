@@ -4159,6 +4159,12 @@ Cycle OW implementation notes:
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Portfolio account header / compact Google entry | No new endpoint. Existing Google entry still opens `/api/auth/google/start`; Portfolio data still uses existing Portfolio/profile routes in server mode. | Existing browser GET plus existing Portfolio GET routes | Unchanged from prior Portfolio/auth cycles | No new request fields | No new response fields | No new database model or migration | Local fake-token Portfolio remains available without Google sign-in | None introduced. Full real Google browser consent remains a P1 proof gap, not a route/schema gap. |
 
+## Cycle SO - Portfolio History Realized Proceeds
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body/query | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio History buy/cashout rows | Existing fake-token order and Portfolio/history routes used by the Local MVP proof | Existing POST/GET route flow | Existing mobile API key/server-mode proof auth | No new request fields | Existing activity `action`, `amount`, `entryAmount`, `side`, `selection`, `timestamp`; no new response fields | Existing `Order`, `Trade`, `Position`, `UserBalance`/history models; no schema change | Local MVP still supports contract-shaped fake-token activity rows | Explicit row-level realized P/L is still a future backend/data contract gap if exact profit rather than proceeds should be shown per row. |
+
 # Cycle SH - Home Local MVP Focus
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

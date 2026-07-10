@@ -1355,3 +1355,11 @@ For every UI element or interaction, answer:
 | Portfolio Google login/connected row consumed too much first-screen space | P0 | Verified | Google entry now renders as a compact header chip next to the account gear, while the avatar/name account entry remains top-left and clickable. | `mobile/src/components/Portfolio.tsx`; `docs/mobile/screenshots/cycle-SN-portfolio-header-density/cycle-SN-google-auth-return-portfolio.png` |
 | Portfolio account entry could regress back to hidden or detached Google state | P0 | Verified | Contract test requires the Google entry, connected marker, top-left account entry, gear, and compact header chip marker. | `mobile/src/__tests__/portfolioSettingsContract.test.ts`; `docs/mobile/harness/cycle-SN-portfolio-header-density/cycle-SN-google-auth-return-summary.json` |
 | Full Polymarket-like Portfolio rows/history parity | P1 | Open | SN only improves the header density. Position row styling, history density, and post-trade Portfolio parity remain future Local MVP cycles. | `docs/mobile/audits/cycle-SN-portfolio-header-density.md` |
+
+# Cycle SO - Portfolio History Realized Proceeds
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Cashout/sold history rows looked like neutral cost entries | P0 | Verified | Sold/closed History rows now render green positive proceeds with `+$...`; bought rows stay neutral. | `mobile/src/components/Portfolio.tsx`; `docs/mobile/screenshots/cycle-SO-portfolio-history-realized-proceeds/cycle-SO-current-mvp-line-cashout-history.png` |
+| Full MVP trade -> cashout -> Portfolio history proof was needed after row change | P0 | Verified | S23 proof covers Home -> Event Detail -> line ticket -> fake-token buy -> cashout -> Portfolio History with sold and bought rows. | `docs/mobile/harness/cycle-SO-portfolio-history-realized-proceeds/cycle-SO-current-mvp-s23-visible-flow.json` |
+| Exact backend row-level realized P/L contract | P1 | Open | Mobile currently distinguishes realized proceeds by activity action. Backend should eventually expose explicit row-level `realizedPnl`/proceeds display fields. | `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md`; `docs/mobile/audits/cycle-SO-portfolio-history-realized-proceeds.md` |

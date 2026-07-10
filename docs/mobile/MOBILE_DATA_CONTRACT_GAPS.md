@@ -9034,3 +9034,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new fields for this header density cycle.
 - Temporary mock/static data: S23 proof still uses the backend-shaped generated mobile credential for connected Portfolio state.
 - Future migration concern: position rows and history still need separate Polymarket-style density work without changing the auth route contract.
+
+# Cycle SO - Portfolio History Realized Proceeds Notes
+
+- No schema migration was added.
+- Closed or narrowed: Portfolio History now visually distinguishes realized sold/closed proceeds from neutral bought activity rows, matching the retail Polymarket-style history treatment more closely.
+- Route mismatch: none. The same fake-token order, cashout, Portfolio, and history routes are used.
+- Fields Holiwyn still needs but backend does not fully provide: an explicit row-level `realizedPnl` or `proceeds` display contract would make future history rows more precise. Current mobile uses `action` to distinguish sold/closed proceeds from bought cost.
+- Temporary mock/static data: none added. The S23 proof creates a real local fake-token buy/cashout sequence through the existing server-mode proof path.
+- Future migration concern: when backend history returns explicit realized P/L, replace action-derived display logic with contract fields while preserving the green positive proceeds/winnings visual treatment.
