@@ -9513,3 +9513,12 @@ Future migration concern:
 - Fields Holiwyn still needs: no new fields for this copy cleanup. Existing server-backed order/Portfolio/history identity remains sufficient.
 - Temporary mock/static data: none added.
 - Future migration concern: keep proof markers like `fake-token-test` hidden/accessibility-only so tester UI remains retail-like while harnesses can still audit fake-token mode.
+
+# Cycle UQ - Account Balance Copy Cleanup Notes
+
+- No schema migration was added.
+- Closed or narrowed: visible account/balance copy no longer says `Demo balance` or `Fake-token trading balance for local MVP testing`.
+- Route mismatch: none. Existing account/profile/Portfolio routes continue to provide the same balance and account state fields.
+- Fields Holiwyn still needs: no new fields for this copy cleanup. Real deposit/withdraw fields remain intentionally out of Local MVP scope.
+- Temporary mock/static data: none added.
+- Future migration concern: when real funding starts, keep wallet/deposit copy behind a separate approved milestone; do not reintroduce debug/fake-token wording in the default tester UI.

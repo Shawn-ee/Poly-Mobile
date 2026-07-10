@@ -31,7 +31,8 @@ describe("Account auth visibility contract", () => {
     expect(copy).toContain("Connected");
     expect(copy).toContain("Server profile loaded");
     expect(copy).toContain("Tap the connected Google row to sign out.");
-    expect(copy).toContain("Fake-token trading is available without funding setup.");
+    expect(copy).toContain("Trading is available without funding setup.");
+    expect(copy).not.toContain("Fake-token trading is available without funding setup.");
     expect(copy).not.toContain("Deposits and withdrawals remain disabled");
   });
 });
