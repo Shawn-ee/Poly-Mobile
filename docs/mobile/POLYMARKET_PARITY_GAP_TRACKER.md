@@ -1347,3 +1347,11 @@ For every UI element or interaction, answer:
 | Google auth start/callback return allowlists could drift independently | P0 | Verified | Shared `isAllowedMobileReturnUrl` helper now drives both routes. | `src/lib/mobileReturnUrl.ts`; `src/app/api/auth/google/start/route.ts`; `src/app/api/auth/google/callback/route.ts` |
 | Unsafe mobile return targets could be accepted without direct tests | P0 | Verified | Direct contract test rejects web, javascript, and malformed return values, and confirms Expo links are non-production only. | `mobile/src/__tests__/googleMobileReturnAllowlist.test.ts` |
 | Real interactive Google account consent on S23 | P1 | Open | SF hardens the backend policy but still does not perform manual Google consent. | Audit notes |
+
+# Cycle SN - Portfolio Header Density
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Portfolio Google login/connected row consumed too much first-screen space | P0 | Verified | Google entry now renders as a compact header chip next to the account gear, while the avatar/name account entry remains top-left and clickable. | `mobile/src/components/Portfolio.tsx`; `docs/mobile/screenshots/cycle-SN-portfolio-header-density/cycle-SN-google-auth-return-portfolio.png` |
+| Portfolio account entry could regress back to hidden or detached Google state | P0 | Verified | Contract test requires the Google entry, connected marker, top-left account entry, gear, and compact header chip marker. | `mobile/src/__tests__/portfolioSettingsContract.test.ts`; `docs/mobile/harness/cycle-SN-portfolio-header-density/cycle-SN-google-auth-return-summary.json` |
+| Full Polymarket-like Portfolio rows/history parity | P1 | Open | SN only improves the header density. Position row styling, history density, and post-trade Portfolio parity remain future Local MVP cycles. | `docs/mobile/audits/cycle-SN-portfolio-header-density.md` |

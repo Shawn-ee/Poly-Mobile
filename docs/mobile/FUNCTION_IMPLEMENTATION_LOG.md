@@ -11855,3 +11855,13 @@ Known limitations:
 - State transitions: Google Cloud OAuth client ID, client secret, Google token exchange, Google userinfo fetch, user linking, and Holiwyn mobile API-key minting remain server-owned. Mobile stores only the returned Holiwyn API key.
 - Proof: `npm run check:server-auth` passed; focused Google mobile auth/return allowlist tests passed.
 - Known limitations: no interactive real Google consent was run in this cycle. Manual S23 proof still requires the backend `NEXTAUTH_URL` callback to be authorized in the same Google Cloud OAuth client.
+
+# Cycle SN - Portfolio Header Density
+
+- Feature/page worked on: Portfolio account header and Google sign-in/connected entry.
+- Frontend components touched: `mobile/src/components/Portfolio.tsx`, `mobile/src/__tests__/portfolioSettingsContract.test.ts`.
+- Backend/API routes touched: none. The cycle keeps the existing backend-owned Google auth routes and Portfolio/profile routes unchanged.
+- User interactions supported: top-left Portfolio avatar/name still opens Account; gear still opens Account; Google login/connected state remains directly tappable, but now appears as a compact header chip instead of a full-width strip.
+- State transitions: unchanged. Google auth-return, persisted mobile API key rehydration, Portfolio sync, and fake-token Portfolio state continue using the same runtime state.
+- Proof: focused Portfolio contract tests passed; mobile typecheck passed; Samsung S23 proof passed in `docs/mobile/harness/cycle-SN-portfolio-header-density/cycle-SN-google-auth-return-summary.json`.
+- Known limitations: this improves Portfolio first-screen density only. It does not redesign position rows, orders, history, or real interactive Google browser consent.
