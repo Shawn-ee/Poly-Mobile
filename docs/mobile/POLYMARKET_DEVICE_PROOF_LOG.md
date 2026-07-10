@@ -2734,3 +2734,10 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Provider proof: `docs/mobile/harness/cycle-RU-provider-line-current-match/cycle-RU-provider-match-line-availability.json`.
 - Screenshots: `docs/mobile/screenshots/cycle-RU-provider-line-current-match/`.
 - Result: PASS. Assertions show current match, provider-winner/local-line disclosure, hidden order book, ticket line preservation, swipe submit, and filled Portfolio History.
+# Cycle RV - Local MVP Liquidity Purpose Harness
+
+- Device target: Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model expected `SM-S911U1`.
+- Proof status: Pass.
+- Device id used: `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`.
+- Result: `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1` passed with `-SeedCounterparty -ExpectFilledHistory -ExpectCashout`.
+- Evidence: `docs/mobile/harness/cycle-RV-local-mvp-liquidity-contract/cycle-RV-current-mvp-s23-visible-flow.json`.

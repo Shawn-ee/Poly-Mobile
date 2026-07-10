@@ -11679,3 +11679,13 @@ Known limitations:
 - User-visible behavior supported: the current Event Detail can continue showing Regulation Winner as Polymarket-backed and Spread/Totals/Team Total as contract fixtures without relying on stale provider proof from another match.
 - State transitions: no runtime state transition changed; this cycle validates provider discovery/readiness before the existing visible Home -> Event Detail -> line ticket -> order -> Portfolio/history flow.
 - Known limitations: Polymarket Gamma currently exposes only Argentina/Egypt Regulation Winner markets for `fifwc-arg-egy-2026-07-07`; no attach-ready provider-backed line markets were found.
+
+# Cycle RV - Local MVP Liquidity Purpose Harness
+
+- Feature/page worked on: Local MVP fake-token liquidity preparation for the visible buy and cashout/sell flow.
+- Frontend components touched: none.
+- Backend/proof scripts touched: `scripts/seed_mobile_route_spread_counterparty.ts`, `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`.
+- Tests touched: `src/server/services/__tests__/mobile.localMvpLiquidityHarness.contract.test.ts`.
+- User-visible behavior supported: the same Event Detail line ticket and Portfolio cashout/sell journey now has explicit proof-side liquidity contracts: `buy-fill` prepares a resting SELL ask for the mobile BUY ticket, and `cashout-sell-fill` prepares a resting BUY bid for the mobile SELL ticket.
+- State transitions covered by the harness: Event Detail line ticket -> `/api/orders` BUY fill -> Portfolio position; Portfolio cashout/generic Sell ticket -> `/api/orders` SELL fill -> Portfolio History.
+- Known limitations: S23 proof passed for the local proof-liquidity contract. Production liquidity/public market-maker policy remains future work.

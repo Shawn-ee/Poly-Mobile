@@ -258,13 +258,13 @@ try {
   $cleanupProofPath = Join-Path $HierarchyOutputDir "cycle-$Cycle-current-mvp-line-cleanup.json"
   if ($expectOpenOrderState) {
     $cleanupProofAbsolutePath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-current-mvp-line-cleanup.json"
-    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=spread" "--line=1.5" "--outcomeSide=away" "--cleanupBlockingMarketBids" "--cleanupOnly" "--proofUserPrefix=holiwyn-mobile-" "--output=$cleanupProofAbsolutePath" | Out-Null
+    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=spread" "--line=1.5" "--outcomeSide=away" "--cleanupBlockingMarketBids" "--cleanupOnly" "--liquidityPurpose=cleanup" "--proofUserPrefix=holiwyn-mobile-" "--output=$cleanupProofAbsolutePath" | Out-Null
     if ($LASTEXITCODE -ne 0) {
       throw "Line proof cleanup failed for $EventSlug."
     }
   }
   if ($SeedCounterparty) {
-    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=spread" "--line=1.5" "--outcomeSide=away" "--askPrice=0.52" "--askSize=80" "--cleanupProofBids" "--cleanupBlockingBids" "--proofUserPrefix=holiwyn-mobile-" "--output=$counterpartyProofPath" | Out-Null
+    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=spread" "--line=1.5" "--outcomeSide=away" "--askPrice=0.52" "--askSize=80" "--cleanupProofBids" "--cleanupBlockingBids" "--cleanupBlockingMarketBids" "--liquidityPurpose=buy-fill" "--proofUserPrefix=holiwyn-mobile-" "--output=$counterpartyProofPath" | Out-Null
     if ($LASTEXITCODE -ne 0) {
       throw "Counterparty seed failed for $EventSlug."
     }
@@ -556,7 +556,7 @@ try {
     Assert-Contains -Path $afterSubmitXml -Expected @("position-card-", "portfolio-position-cash-out-", "portfolio-position-source-badge")
     $cashoutCounterpartyProofPath = Join-Path $HierarchyOutputDir "cycle-$Cycle-current-mvp-line-cashout-counterparty.json"
     $cashoutCounterpartyProofAbsolutePath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-current-mvp-line-cashout-counterparty.json"
-    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=spread" "--line=1.5" "--outcomeSide=away" "--makerSide=BUY" "--bidPrice=$CashoutBidPrice" "--bidSize=80" "--cleanupBlockingMarketBids" "--cleanupProofAsks" "--cleanupBlockingAsks" "--proofUserPrefix=holiwyn-mobile-" "--output=$cashoutCounterpartyProofAbsolutePath" | Out-Null
+    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=spread" "--line=1.5" "--outcomeSide=away" "--makerSide=BUY" "--bidPrice=$CashoutBidPrice" "--bidSize=80" "--cleanupBlockingMarketBids" "--cleanupProofAsks" "--cleanupBlockingAsks" "--liquidityPurpose=cashout-sell-fill" "--proofUserPrefix=holiwyn-mobile-" "--output=$cashoutCounterpartyProofAbsolutePath" | Out-Null
     if ($LASTEXITCODE -ne 0) {
       throw "Line cashout counterparty seed failed for $EventSlug."
     }
