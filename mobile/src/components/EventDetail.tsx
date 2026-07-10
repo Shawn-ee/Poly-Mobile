@@ -273,6 +273,21 @@ const lineSourceCopy = (event: Event, locale: Locale) => {
         `event-detail-line-source-banner line-source-provider-backed ${hasApprovedProviderLines ? "line-source-approved-provider" : "line-source-polymarket-provider"} regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount} ${lineAvailabilityMarker}${familyMarker}`,
     };
   }
+  if (lineStatus === "partial-provider-backed") {
+    return {
+      label: locale === "zh" ? "æ¥æº" : "Source",
+      text: locale === "zh"
+        ? winnerReady
+          ? "èƒœè´Ÿ: Polymarketã€‚ç›˜å£: åˆ©äº‘ä½“è‚²ã€‚"
+          : "åˆ©äº‘ä½“è‚²ç›˜å£ã€‚"
+        : winnerReady
+          ? "Winner: Polymarket. Lines: Holiwyn."
+          : "Holiwyn lines.",
+      tone: "fixture" as const,
+      accessibility:
+        `event-detail-line-source-banner line-source-partial-provider-backed line-source-mixed-provider-holiwyn-lines regulation-winner-${summary.regulationWinner.status} line-market-count-${lineCount} ${lineAvailabilityMarker}${familyMarker}`,
+    };
+  }
   if (lineStatus === "contract-fixture") {
     return {
       label: locale === "zh" ? "来源" : "Source",

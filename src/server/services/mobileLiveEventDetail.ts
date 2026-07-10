@@ -485,6 +485,8 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
   const missingFamilies = expectedLineFamilies.filter((family) =>
     !providerBackedLineFamilies.includes(family) && !contractFixtureLineFamilies.includes(family)
   );
+  const providerCoversEveryExpectedFamily = expectedLineFamilies.length > 0 &&
+    expectedLineFamilies.every((family) => providerBackedLineFamilies.includes(family));
   const familyReadiness = expectedLineFamilies.map((family) => {
     const familyMarkets = lineMarkets.filter((market) => marketFamilyForMarket(market) === family);
     const polymarketCount = familyMarkets.filter((market) => market.referenceSource === "polymarket").length;
@@ -514,14 +516,18 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
   const lineMarketStatus =
     lineMarkets.length === 0
       ? "missing"
-      : providerBackedLineMarkets.length > 0
+      : providerBackedLineMarkets.length > 0 && providerCoversEveryExpectedFamily
         ? "provider-backed"
+        : providerBackedLineMarkets.length > 0
+          ? "partial-provider-backed"
         : contractFixtureLineMarkets.length > 0
           ? "contract-fixture"
           : "unknown";
   const nextProviderAction =
     providerBackedLineMarkets.length > 0
-      ? "use_route_visible_provider_line_markets"
+      ? providerUnavailableFamilies.length > 0
+        ? "replace_remaining_fixture_line_families_with_provider_markets"
+        : "use_route_visible_provider_line_markets"
       : contractFixtureLineMarkets.length > 0
         ? "discover_attach_ready_polymarket_line_markets_or_configure_approved_line_provider"
         : "discover_line_market_provider_contract";
@@ -552,7 +558,9 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
       familyReadiness,
       providerAvailability: {
         source: approvedLineProviderMarkets.length > 0 ? "polymarket-gamma-or-approved-line-provider" : "polymarket-gamma",
-        status: providerBackedLineMarkets.length > 0 ? "available" : contractFixtureLineMarkets.length > 0 ? "unavailable" : "unknown",
+        status: providerBackedLineMarkets.length > 0
+          ? providerCoversEveryExpectedFamily ? "available" : "partial"
+          : contractFixtureLineMarkets.length > 0 ? "unavailable" : "unknown",
         providerBackedLineMarketCount: providerBackedLineMarkets.length,
         approvedLineProviderMarketCount: approvedLineProviderMarkets.length,
         contractFixtureLineMarketCount: contractFixtureLineMarkets.length,
@@ -566,7 +574,7 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
         reason:
           providerBackedLineMarkets.length > 0
             ? providerUnavailableFamilies.length > 0
-              ? `Route includes provider-backed line markets; missing provider-backed families: ${providerUnavailableFamilies.join(", ")}.`
+              ? `Route includes partial provider-backed line markets; remaining provider-backed families needed: ${providerUnavailableFamilies.join(", ")}.`
               : "Route includes provider-backed line markets for all expected MVP line families."
             : contractFixtureLineMarkets.length > 0
               ? `No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures for: ${fixtureOnlyFamilies.join(", ") || "none"}.`
@@ -574,7 +582,9 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
       },
       reason:
         lineMarketStatus === "provider-backed"
-          ? "At least one line market is provider-backed."
+          ? "All expected MVP line market families are provider-backed."
+          : lineMarketStatus === "partial-provider-backed"
+            ? "Some line markets are provider-backed, but at least one expected MVP line family is still fixture-only or missing."
           : lineMarketStatus === "contract-fixture"
             ? "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured."
             : lineMarketStatus === "missing"

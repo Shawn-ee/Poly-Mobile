@@ -7409,3 +7409,14 @@ Remaining P1:
 - Android proof: not rerun because no runtime UI changed and no Android device was attached during this cleanup. Prior S23 chart-free proof remains Cycle SC.
 - Unresolved P0: 0 for UG scope.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets.
+
+# Cycle UH Audit Gate - Partial Provider Line Readiness
+
+- Scope: backend/mobile data contract for current-match line market readiness.
+- P0 result: PASS for backend/data-contract scope.
+- Implementation proof: `buildMobileMarketSourceSummary()` now returns `partial-provider-backed` when only some expected line families are provider-backed; full `provider-backed` requires coverage for Spread, Total, and Team Total.
+- Mobile proof contract: Event Detail hidden audit markers now include `line-source-partial-provider-backed` / `line-source-mixed-provider-holiwyn-lines`; no visible retail debug label was added.
+- Test proof: backend live-detail contract test passed, focused mobile source-marker tests passed, and mobile typecheck passed.
+- Android proof: not rerun because no visible UI changed and no ADB device was attached.
+- Unresolved P0: 0 for UH scope.
+- Remaining P1: real provider-backed current-match line rows for all expected MVP families.

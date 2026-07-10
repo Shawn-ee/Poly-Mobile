@@ -9432,3 +9432,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: real provider-backed current-match Spread/Totals/Team Total line markets remain the active P1 data gap.
 - Temporary mock/static data: none added.
 - Future migration concern: do not rebuild or require the Polymarket-style chart during Local MVP cycles unless product direction explicitly reopens chart work.
+
+# Cycle UH - Partial Provider Line Readiness Notes
+
+- No schema migration was added.
+- Closed or narrowed: partial provider line coverage can no longer be mistaken for full provider-backed line parity. The backend now returns `lineMarkets.status=partial-provider-backed` and `providerAvailability.status=partial` when some expected line families are still fixture-only or missing.
+- Route mismatch: narrowed. `/api/mobile/events/:slug/live-detail` and the compact event summary now share a stricter meaning for `provider-backed`: every expected MVP line family must have provider-backed coverage.
+- Fields Holiwyn still needs but backend does not fully provide: real provider-backed current-match Spread, Total, and Team Total market ids, outcome ids, provider token ids, and prices.
+- Temporary mock/static data: none added.
+- Future migration concern: when only one line family becomes provider-backed, do not mark the full line-market milestone complete. Replace the remaining fixture/missing families before claiming full line parity.

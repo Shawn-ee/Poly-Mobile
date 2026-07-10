@@ -31,6 +31,9 @@ describe("Event Detail market source metadata", () => {
     expect(source).toContain("line-source-local-test-fake-token");
     expect(source).toContain("line-source-approved-provider");
     expect(source).toContain("line-source-polymarket-provider");
+    expect(source).toContain("partial-provider-backed");
+    expect(source).toContain("line-source-partial-provider-backed");
+    expect(source).toContain("line-source-mixed-provider-holiwyn-lines");
     expect(source).toContain("line-provider-availability-");
     expect(source).toContain("line-approved-provider-count-");
     expect(source).toContain("line-contract-fixture-count-");

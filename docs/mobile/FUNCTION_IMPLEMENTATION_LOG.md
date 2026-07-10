@@ -12304,3 +12304,13 @@ Known limitations:
 - State transitions: unchanged. Selected market/outcome/line identity still flows through ticket/order/Portfolio; chart selection state is not part of the current tester-facing Event Detail UI.
 - Proof: focused chart-free Event Detail, tracker, proof-noise, and wrapper contract tests passed. No Android proof was rerun because this cycle changed docs/test wording only.
 - Known limitations: real provider-backed Spread/Totals/Team Total current-match line markets remain P1. If future chart work returns, it should be behind a separately approved scope and not block the Local MVP retail flow.
+
+# Cycle UH - Partial Provider Line Readiness
+
+- Feature/page worked on: Event Detail line-market source readiness contract for the Local MVP game page.
+- Frontend components touched: `mobile/src/types.ts`, `mobile/src/mocks/worldCup.ts`, `mobile/src/components/EventDetail.tsx`, `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts`, `mobile/src/__tests__/worldCupAdapter.test.ts`.
+- Backend/API routes touched: `src/server/services/mobileLiveEventDetail.ts`; no route handler, schema, order, Portfolio, order book, chat, live stats, or chart UI changed.
+- User interactions supported: unchanged. The current visible flow remains Home/Live -> Event Detail -> Game Lines -> Trade Ticket -> fake-token order -> Portfolio/history.
+- State transitions: line summary now separates `contract-fixture`, `partial-provider-backed`, and fully `provider-backed` states. A route with only one provider-backed line family keeps remaining fixture/missing families explicit and tells the loop to replace those families before claiming full line parity.
+- Proof: focused backend live-detail contract test, mobile source-marker tests, and mobile typecheck passed. Android proof was not run because no ADB device was attached and no visible UI changed.
+- Known limitations: current-match Spread/Totals/Team Total remain P1 until real provider-backed rows are available for all required MVP line families.
