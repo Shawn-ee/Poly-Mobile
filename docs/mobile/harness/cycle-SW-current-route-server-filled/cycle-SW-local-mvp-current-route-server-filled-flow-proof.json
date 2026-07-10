@@ -1,0 +1,53 @@
+{
+    "cycle":  "SW",
+    "scenario":  "Local MVP Android current route-backed server fake-token team-total filled trade/history flow with provider winner and contract-fixture lines",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/local-mvp-current-route-server-filled-proof.ps1 -Port 8338 -BackendBaseUrl http://172.16.200.14:3002 -OutputDir docs\\mobile\\screenshots\\cycle-SW-current-route-server-filled -HierarchyOutputDir docs\\mobile\\harness\\cycle-SW-current-route-server-filled",
+    "backendBaseUrl":  "http://172.16.200.14:3002",
+    "serverEventSlug":  "argentina-vs-egypt",
+    "orderbookDebug":  "unset",
+    "marketDataMode":  "server",
+    "orderMode":  "server",
+    "apiKey":  "in-process-mobile-dev-credential-redacted",
+    "result":  "pass",
+    "assertions":  {
+                       "routeBackedEvent":  [
+                                                "live-detail loaded through forceBackendEventSlug",
+                                                "winner source is Polymarket-backed",
+                                                "line markets are contract fixtures"
+                                            ],
+                       "retailRows":  [
+                                          "team-total row preserves route source identity",
+                                          "provider-source-contract-fixture visible",
+                                          "no default Book/orderbook entry points"
+                                      ],
+                       "ticket":  [
+                                      "simple ticket opens from route-backed team-total",
+                                      "provider token/source visible",
+                                      "server fake-token buy uses swipe-style submit"
+                                  ],
+                       "serverPortfolio":  [
+                                               "POST /api/orders succeeds through mobile",
+                                               "Portfolio sync returns server filled position and recent activity",
+                                               "selected line/provider identity preserved"
+                                           ],
+                       "serverHistory":  [
+                                             "seeded counterparty fills the mobile order",
+                                             "Portfolio sync returns position and recent trade activity",
+                                             "filled activity/history preserves selected line/provider identity"
+                                         ]
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\screenshots\\cycle-SW-current-route-server-filled/cycle-SW-holiwyn-route-server-mvp-line-markets.png",
+                      "docs\\mobile\\harness\\cycle-SW-current-route-server-filled/cycle-SW-holiwyn-route-server-mvp-line-markets.xml",
+                      "docs\\mobile\\screenshots\\cycle-SW-current-route-server-filled/cycle-SW-holiwyn-route-server-mvp-team-total-ticket-ready.png",
+                      "docs\\mobile\\harness\\cycle-SW-current-route-server-filled/cycle-SW-holiwyn-route-server-mvp-team-total-ticket-ready.xml",
+                      "docs\\mobile\\screenshots\\cycle-SW-current-route-server-filled/cycle-SW-holiwyn-route-server-mvp-portfolio.png",
+                      "docs\\mobile\\harness\\cycle-SW-current-route-server-filled/cycle-SW-holiwyn-route-server-mvp-portfolio.xml",
+                      "docs\\mobile\\screenshots\\cycle-SW-current-route-server-filled/cycle-SW-holiwyn-route-server-mvp-portfolio-top.png",
+                      "docs\\mobile\\harness\\cycle-SW-current-route-server-filled/cycle-SW-holiwyn-route-server-mvp-portfolio-top.xml",
+                      "docs\\mobile\\screenshots\\cycle-SW-current-route-server-filled/cycle-SW-holiwyn-route-server-mvp-portfolio-orders.png",
+                      "docs\\mobile\\harness\\cycle-SW-current-route-server-filled/cycle-SW-holiwyn-route-server-mvp-portfolio-orders.xml",
+                      "docs\\mobile\\screenshots\\cycle-SW-current-route-server-filled/cycle-SW-holiwyn-route-server-mvp-portfolio-history.png",
+                      "docs\\mobile\\harness\\cycle-SW-current-route-server-filled/cycle-SW-holiwyn-route-server-mvp-portfolio-history.xml"
+                  ]
+}
