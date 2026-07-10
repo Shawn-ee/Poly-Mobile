@@ -1319,3 +1319,12 @@ For every UI element or interaction, answer:
 | Dormant market-page chart renderer can leak back into Local MVP Event Detail | P0 | Verified | Removed the chart renderer, chart point state, chart source/status copy, and chart styles from `EventDetail.tsx`. | `mobile/src/components/EventDetail.tsx`; `mobile/src/__tests__/eventDetailChartInteractionContract.test.ts`; `mobile/src/__tests__/eventDetailChartStatusCopy.test.ts` |
 | S23 proof should fail if chart markers return | P0 | Verified | Current MVP proof script now rejects `event-detail-price-chart`, `event-detail-chart-route-state`, and `Chart selection` in Event Detail top/lines XML. | `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1` |
 | Current match has no provider-backed Spread/Totals/Team Total markets | P1 | Open | SC does not change provider breadth; line rows remain contract fixtures until attach-ready Polymarket line markets exist. | Provider readiness notes |
+
+# Cycle SD - Account Fake-Token Funding Copy and Google Credential Alignment
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Account copy still referenced deposit/withdraw-disabled behavior during Local MVP | P0 | Verified | Account copy now describes fake-token MVP trading balance instead of deposits/withdrawals. | `mobile/src/localization/appCopy.ts`; `docs/mobile/harness/cycle-SD-account-fake-token-copy/cycle-SD-google-auth-account-connected.xml` |
+| Portfolio retained dormant funding button copy/styles | P1 | Verified | Unused `Deposit`/`Withdraw` Portfolio copy and button styles were removed; hidden MVP funding marker remains for regression proof. | `mobile/src/components/Portfolio.tsx`; `mobile/src/__tests__/portfolioFundingHiddenContract.test.ts` |
+| Google Cloud credentials must not move into mobile | P0 | Verified | Contract tests assert mobile has no public Google client ID/secret path; backend owns `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, token exchange, and callback credential creation. | `mobile/src/__tests__/googleMobileAuthContract.test.ts`; `src/app/api/auth/google/start/route.ts`; `src/app/api/auth/google/callback/route.ts` |
+| Real interactive Google account consent on S23 | P1 | Open | SD re-proves the backend-shaped return/persistence/logout path, but actual Google browser consent still needs real-session proof with configured Google Cloud redirect URI. | `docs/mobile/harness/cycle-SD-account-fake-token-copy/cycle-SD-google-auth-return-summary.json` |

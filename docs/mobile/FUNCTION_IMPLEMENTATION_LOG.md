@@ -11765,3 +11765,13 @@ Known limitations:
 - User interactions supported: Event Detail continues to show the compact match header, outcome buttons, Game Lines, line selectors, Trade Ticket, fake-token order, and Portfolio/History path without a market-page probability chart.
 - State transitions: unchanged. Ticket/order/Portfolio state still flows through existing market/outcome/line selection and `/api/orders`, `/api/portfolio`, `/api/portfolio/history`.
 - Known limitations: chart history backend data may still exist as internal route data, but the Local MVP Event Detail page no longer contains the chart renderer or chart route-state UI.
+
+# Cycle SD - Account Fake-Token Funding Copy and Google Credential Alignment
+
+- Feature/page worked on: Portfolio/Account Local MVP account and Google login surfaces.
+- Frontend components touched: `mobile/src/localization/appCopy.ts`, `mobile/src/components/Portfolio.tsx`, `mobile/src/__tests__/accountAuthContract.test.ts`, `mobile/src/__tests__/portfolioFundingHiddenContract.test.ts`.
+- Backend/API routes touched: none. This cycle keeps the existing server-owned Google flow through `/api/auth/google/start`, `/api/auth/google/callback`, `/api/profile/summary`, and `/api/auth/mobile/logout`.
+- Proof script touched: `scripts/prove_mobile_google_auth_return_s23.ps1`.
+- User interactions supported: Portfolio still exposes `Continue with Google`; callback-shaped Google return still shows `Google connected`; persisted restart keeps the server profile visible; sign-out clears the mobile credential and returns to the visible Portfolio Google sign-in row.
+- State transitions: Google Cloud OAuth credentials and Google token exchange remain backend-owned through `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`; mobile stores only the Holiwyn API key returned by the backend callback through SecureStore.
+- Known limitations: S23 proof uses a generated local credential shaped like the backend Google callback. Real interactive Google consent with the configured Google Cloud OAuth client remains a manual/real-session P1 proof item.

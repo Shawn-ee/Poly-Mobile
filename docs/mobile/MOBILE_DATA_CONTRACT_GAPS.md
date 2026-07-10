@@ -8944,3 +8944,12 @@ Future migration concern:
 - Route mismatch: none introduced. Existing live-detail/chart-history backend data can remain internal, but the visible MVP page does not consume chart history.
 - Temporary mock/static data: current line markets remain contract-shaped fixtures when real Polymarket line markets are unavailable.
 - Future migration concern: if a chart returns later, it should be introduced as an explicitly approved MVP feature with fresh Polymarket audit criteria and S23 proof, not by reusing the removed dormant renderer.
+
+# Cycle SD - Account Fake-Token Funding Copy and Google Credential Alignment Notes
+
+- No schema migration was added.
+- Closed or narrowed: visible Account copy no longer references deposits or withdrawals during the Local MVP; Portfolio dormant funding button copy/styles are removed while the hidden `portfolio-funding-hidden-local-mvp` marker remains for regression proof.
+- Route mismatch: none introduced. Mobile continues to open the backend Google auth route and never receives Google Cloud client secrets or Google access tokens.
+- Fields Holiwyn still needs but backend does not fully provide: real interactive Google consent proof with the production/dev-build return URL and future EBPay funding contracts after the MVP user flow is stable.
+- Temporary mock/static data: S23 proof uses a generated local mobile credential shaped like the backend callback credential.
+- Future migration concern: when EBPay/deposit/withdraw work starts, create a separate backend/schema contract and do not reintroduce funding UI into the Local MVP account screen without a fresh audit gate.
