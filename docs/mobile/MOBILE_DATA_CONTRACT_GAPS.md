@@ -9414,3 +9414,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new fields. For richer unavailable proof, backend fixtures should expose representative `suspended` and `unavailable` market states through the same availability shape.
 - Temporary mock/static data: none added.
 - Future migration concern: unavailable/suspended market handling should remain driven by route availability fields, not frontend-only local flags.
+
+# Cycle UF - Unavailable Ticket Proof Fixture Notes
+
+- No schema migration was added.
+- Closed or narrowed: unavailable-ticket Android proof now has a deterministic app launch fixture instead of depending on a live provider to expose a suspended market at proof time.
+- Route mismatch: none. The fixture uses the same `market.availability` shape consumed from real routes.
+- Fields Holiwyn still needs but backend does not fully provide: none for the fixture. Future real provider unavailable states should carry the same status, marketStatus, and reason fields.
+- Temporary mock/static data: the forced launch path creates an in-memory proof market with `availability.status="unavailable"` and `marketStatus="PROOF_UNAVAILABLE"`.
+- Future migration concern: use this fixture only for proof repeatability; do not treat it as real provider unavailable evidence.

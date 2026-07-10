@@ -627,6 +627,7 @@ export default function App() {
     if (!mounted.current || !url) return;
     const shouldForceWorldCupWinnerFranceTicket = url.includes("forceWorldCupWinnerFranceTicket=1");
     const shouldForceClosedWorldCupWinnerFrance = url.includes("forceClosedWorldCupWinnerFrance=1");
+    const shouldForceUnavailableTradeTicket = url.includes("forceUnavailableTradeTicket=1");
     const shouldForceServerPortfolioFixture = url.includes("forceServerPortfolioFixture=1");
     const shouldForceZeroSharePosition = url.includes("forceZeroSharePosition=1");
     const shouldForceTinySharePosition = url.includes("forceTinySharePosition=1");
@@ -706,6 +707,7 @@ export default function App() {
       if (
         !shouldForceWorldCupWinnerFranceTicket &&
         !shouldForceClosedWorldCupWinnerFrance &&
+        !shouldForceUnavailableTradeTicket &&
         !shouldForceServerPortfolioFixture &&
         !shouldForceZeroSharePosition &&
         !shouldForceTinySharePosition &&
@@ -797,6 +799,51 @@ export default function App() {
       const market = worldCupFutures[0];
       const outcome = market.outcomes[0];
       setTicket({ market, outcome, side: "buy" });
+    }
+    if (shouldForceUnavailableTradeTicket) {
+      const event = worldCupEvents.find((item) => item.id === "mexico-ecuador") ?? worldCupEvents[0];
+      const sourceMarket = event?.markets.find((item) => item.marketType === "spread") ?? event?.markets[0] ?? worldCupFutures[0];
+      const sourceOutcome = sourceMarket.outcomes[0];
+      const market = {
+        ...sourceMarket,
+        availability: {
+          source: "local-mvp-proof",
+          status: "unavailable" as const,
+          marketStatus: "PROOF_UNAVAILABLE",
+          lastUpdated: null,
+          stalenessSeconds: null,
+          staleAfterSeconds: 0,
+          isStale: false,
+          isSuspended: false,
+          isDelayed: false,
+          reason: "Proof market unavailable for read-only ticket validation.",
+        },
+      };
+      setTicket({
+        event,
+        market,
+        outcome: sourceOutcome,
+        side: "buy",
+        selection: {
+          marketType: market.marketType === "spread" || market.marketType === "totals" || market.marketType === "team-total" || market.marketType === "future"
+            ? market.marketType
+            : "winner",
+          marketId: market.id,
+          outcomeId: sourceOutcome.id,
+          marketGroupId: market.marketGroupId,
+          line: market.line ?? undefined,
+          period: market.period,
+          side: sourceOutcome.side,
+          displayLabel: sourceOutcome.label,
+          contractSide: sourceOutcome.side === "no" ? "no" : "yes",
+          referenceSource: market.referenceSource ?? undefined,
+          externalSlug: market.externalSlug ?? undefined,
+          externalMarketId: market.externalMarketId ?? undefined,
+          conditionId: market.conditionId ?? undefined,
+          referenceTokenId: sourceOutcome.referenceTokenId ?? undefined,
+          referenceOutcomeLabel: sourceOutcome.referenceOutcomeLabel ?? undefined,
+        },
+      });
     }
     if (shouldForceMexicoEcuadorDetail) {
       const event = worldCupEvents.find((item) => item.id === "mexico-ecuador");

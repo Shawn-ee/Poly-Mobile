@@ -12284,3 +12284,13 @@ Known limitations:
 - State transitions: selected market/outcome with `market.availability.status` of `suspended` or `unavailable` -> `marketTradable=false` -> visible read-only ticket state -> no amount entry or submit; ready/stale/delayed markets keep the existing editable ticket path.
 - Proof: focused Trade Ticket unavailable-readonly contract test, existing Trade Ticket swipe motion/source tests, and mobile typecheck passed. Android proof is still pending because no S23/tablet ADB device was attached or discoverable during this cycle.
 - Known limitations: device proof for a real unavailable ticket state remains required before marking the visual unavailable-state gap fully closed.
+
+# Cycle UF - Unavailable Ticket Proof Fixture
+
+- Feature/page worked on: Android proof setup for the Trade Ticket unavailable/blocked state.
+- Frontend components touched: `mobile/App.tsx`, `mobile/src/__tests__/unavailableTicketDeepLinkContract.test.ts`.
+- Backend/API routes touched: none. The fixture uses the existing mobile `Market.availability` shape and does not call order routes.
+- User interactions supported: proof harnesses can launch `forceUnavailableTradeTicket=1` to open a deterministic read-only Trade Ticket with `availability.status="unavailable"`, making the pending S23 proof repeatable.
+- State transitions: deep link -> deterministic match/market selection -> proof-shaped unavailable availability state -> `TradeTicket` read-only state from Cycle UE.
+- Proof: focused deep-link contract test and mobile typecheck passed. Android proof remains pending because no S23/tablet ADB device was attached or discoverable during this cycle.
+- Known limitations: this is a deterministic proof fixture, not evidence that a live provider has produced a real suspended market. Real provider unavailable states should continue to use the same `market.availability` contract.
