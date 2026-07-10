@@ -1,4 +1,4 @@
-param(
+﻿param(
   [string]$Device = "emulator-5554",
   [int]$Port = 8082,
   [string]$ExpoHost = "10.0.2.2",
@@ -913,7 +913,7 @@ try {
       Start-Sleep -Seconds 4
       Save-Screenshot -Name "cycle-FD-route-discovery-detail-open.png"
       $routeDiscoveryDetailHierarchy = Save-UiHierarchy -Name "cycle-FD-route-discovery-detail-open.xml"
-      Assert-HierarchyContains -Path $routeDiscoveryDetailHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "event-detail-price-chart", "Game Lines", "Breadth Home", "Breadth Away", "provider-source-polymarket")
+      Assert-HierarchyContains -Path $routeDiscoveryDetailHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "Game Lines", "Breadth Home", "Breadth Away", "provider-source-polymarket")
       Assert-HierarchyDoesNotContain -Path $routeDiscoveryDetailHierarchy -Unexpected @("Mexico vs. Ecuador", "selected-market-mexico-ecuador", "event-detail-top-order-book", "event-detail-chart-open-book", "event-detail-inline-order-book", "Route depth")
 
       $proof = [ordered]@{
@@ -990,7 +990,7 @@ try {
       Start-Sleep -Seconds 4
       Save-Screenshot -Name "cycle-FE-home-route-ticket-detail-top.png"
       $homeRouteTicketDetailTopHierarchy = Save-UiHierarchy -Name "cycle-FE-home-route-ticket-detail-top.xml"
-      Assert-HierarchyContains -Path $homeRouteTicketDetailTopHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "event-detail-price-chart", "Game Lines")
+      Assert-HierarchyContains -Path $homeRouteTicketDetailTopHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "Game Lines")
       $homeRouteTicketUnexpected = @("Mexico vs. Ecuador", "selected-market-mexico-ecuador") + $mvpHiddenOrderBookExpected
       Assert-HierarchyDoesNotContain -Path $homeRouteTicketDetailTopHierarchy -Unexpected $homeRouteTicketUnexpected
 
@@ -1120,7 +1120,7 @@ try {
       Start-Sleep -Seconds 4
       Save-Screenshot -Name "cycle-FF-home-route-order-detail-top.png"
       $homeRouteOrderDetailTopHierarchy = Save-UiHierarchy -Name "cycle-FF-home-route-order-detail-top.xml"
-      Assert-HierarchyContains -Path $homeRouteOrderDetailTopHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "event-detail-price-chart", "Game Lines")
+      Assert-HierarchyContains -Path $homeRouteOrderDetailTopHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "Game Lines")
       $homeRouteOrderUnexpected = @("Mexico vs. Ecuador", "selected-market-mexico-ecuador") + $mvpHiddenOrderBookExpected
       Assert-HierarchyDoesNotContain -Path $homeRouteOrderDetailTopHierarchy -Unexpected $homeRouteOrderUnexpected
 
@@ -1311,11 +1311,11 @@ try {
       Save-Screenshot -Name "$homeRouteServerArtifact-detail-top.png"
       $homeRouteServerDetailTopHierarchy = Save-UiHierarchy -Name "$homeRouteServerArtifact-detail-top.xml"
       $homeRouteServerDetailTopExpected = if ($LocalMvpHomeRealProviderServerOrderFlow) {
-        @("World Cup Winner", "event-detail-price-chart", "Game Lines", "live-data-source-polymarket-gamma")
+        @("World Cup Winner", "Game Lines", "live-data-source-polymarket-gamma")
       } elseif ($isCurrentMvpHomeRoute) {
-        @("Argentina vs. Egypt", "event-detail-price-chart", "Game Lines")
+        @("Argentina vs. Egypt", "Game Lines")
       } else {
-        @("EL-A Provider Breadth World Cup Live", "event-detail-price-chart", "Game Lines")
+        @("EL-A Provider Breadth World Cup Live", "Game Lines")
       }
       Assert-HierarchyContains -Path $homeRouteServerDetailTopHierarchy -Expected $homeRouteServerDetailTopExpected
       $homeRouteServerUnexpected = @("Mexico vs. Ecuador", "selected-market-mexico-ecuador") + $mvpHiddenOrderBookExpected
@@ -2138,7 +2138,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-live-summary-detail.png"
       $liveSummaryDetailHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-summary-detail.xml"
-      Assert-HierarchyContains -Path $liveSummaryDetailHierarchy -Expected @("Australia vs. Egypt", "event-detail-price-chart", "Live Winner", "Winner market", "Game Lines")
+      Assert-HierarchyContains -Path $liveSummaryDetailHierarchy -Expected @("Australia vs. Egypt", "Live Winner", "Winner market", "Game Lines")
       return
     }
 
@@ -2159,7 +2159,6 @@ try {
         "63'",
         "event-detail-live-match-strip",
         "LIVE WORLD CUP",
-        "event-detail-price-chart",
         "event-detail-chat-preview",
         "event-detail-primary-outcomes",
         "event-detail-primary-outcome-france-argentina-live-australia",
@@ -2168,25 +2167,7 @@ try {
         "Player Props"
       )
 
-      Invoke-TapHierarchyNode -Path $dyTopHierarchy -Identifier "event-detail-price-chart"
-      Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-EB-B-holiwyn-game-page-chart-mid.png"
-      $ebChartMidHierarchy = Save-UiHierarchy -Name "cycle-EB-B-holiwyn-game-page-chart-mid.xml"
-      Assert-HierarchyContains -Path $ebChartMidHierarchy -Expected @("event-detail-price-chart", "event-detail-chart-tooltip", "chart-selected-point-mid", "2H", "Mid chart")
-      Invoke-TapHierarchyNode -Path $ebChartMidHierarchy -Identifier "event-detail-price-chart"
-      Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-EB-B-holiwyn-game-page-chart-target.png"
-      $ebChartTargetHierarchy = Save-UiHierarchy -Name "cycle-EB-B-holiwyn-game-page-chart-target.xml"
-      Assert-HierarchyContains -Path $ebChartTargetHierarchy -Expected @("event-detail-price-chart", "event-detail-chart-tooltip", "chart-selected-point-target", "Target", "Target line")
-      Invoke-TapHierarchyNode -Path $ebChartTargetHierarchy -Identifier "event-detail-chart-filter-All"
-      Start-Sleep -Seconds 1
-      $ebChartAllHierarchy = Save-UiHierarchy -Name "cycle-EB-B-holiwyn-game-page-chart-filter-all.xml"
-      Assert-HierarchyContains -Path $ebChartAllHierarchy -Expected @("event-detail-price-chart", "chart-filter-All", "All", "Game", "Live")
-      Invoke-TapHierarchyNode -Path $ebChartAllHierarchy -Identifier "event-detail-chart-filter-Live"
-      Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-EB-B-holiwyn-game-page-chart-filter-live.png"
-      $ebChartLiveHierarchy = Save-UiHierarchy -Name "cycle-EB-B-holiwyn-game-page-chart-filter-live.xml"
-      Assert-HierarchyContains -Path $ebChartLiveHierarchy -Expected @("event-detail-price-chart", "chart-filter-Live", "event-detail-chart-tooltip")
+      Assert-HierarchyDoesNotContain -Path $dyTopHierarchy -Unexpected @("event-detail-chart-tooltip", "event-detail-chart-route-state", "Chart selection")
 
       Invoke-TapHierarchyNode -Path $dyTopHierarchy -Identifier "event-detail-top-order-book"
       Start-Sleep -Seconds 2
@@ -2339,7 +2320,7 @@ try {
           headerActions = @("event-detail-back", "event-detail-top-order-book", "event-detail-share")
           gameChatSegment = @("event-detail-tab-game", "event-detail-tab-chat")
           topMatchContext = @("AUS 40%", "EGY 61%", "0 - 1", "63'", "LIVE WORLD CUP")
-          chart = @("event-detail-price-chart", "event-detail-chart-tooltip", "chart-selected-point-mid", "chart-selected-point-target", "chart-filter-All", "chart-filter-Live")
+          chart = @("event-detail-chart-tooltip", "chart-selected-point-mid", "chart-selected-point-target", "chart-filter-All", "chart-filter-Live")
           chat = @("event-detail-chat-preview", "event-detail-chat-page", "event-detail-chat-feed")
           primaryOutcomes = @("event-detail-team-advance-australia", "event-detail-team-advance-egypt")
           compactPinnedContext = @("event-detail-compact-game-header", "event-detail-sticky-market-shell", "event-detail-sticky-market-tabs")
@@ -2404,7 +2385,7 @@ try {
           "provider-lifecycle-not-ready",
           "live-data-source-polymarket-gamma",
           "Live not ready",
-          "event-detail-price-chart",
+
           "event-detail-chart-route-state",
           "chart-status-",
           "event-detail-chart-ticket-handoff-status",
@@ -2420,7 +2401,7 @@ try {
           "provider-lifecycle-ready",
           "live-data-source-polymarket-gamma",
           "Live provider ready",
-          "event-detail-price-chart",
+
           "event-detail-chart-route-state",
           "chart-status-ready",
           "provider-lifecycle-ready",
@@ -2452,7 +2433,7 @@ try {
       }
       Assert-HierarchyDoesNotContain -Path $providerStatusTopHierarchy -Unexpected $providerStatusTopUnexpected
 
-      Invoke-TapHierarchyNode -Path $providerStatusTopHierarchy -Identifier "event-detail-chart-open-book"
+      Invoke-TapHierarchyNode -Path $providerStatusTopHierarchy -Identifier "event-detail-top-order-book"
       Start-Sleep -Milliseconds 250
       Save-Screenshot -Name "$ProviderStatusArtifactPrefix-book-refreshing.png"
       $providerStatusBookRefreshingHierarchy = Save-UiHierarchy -Name "$ProviderStatusArtifactPrefix-book-refreshing.xml"
@@ -2482,8 +2463,9 @@ try {
         Invoke-TapHierarchyNode -Path $providerStatusBookRefreshingHierarchy -Identifier "event-detail-order-book-close"
         Start-Sleep -Milliseconds 500
         $providerStatusAfterRefreshHierarchy = Save-UiHierarchy -Name "$ProviderStatusArtifactPrefix-after-refresh-live.xml"
-        Assert-HierarchyContains -Path $providerStatusAfterRefreshHierarchy -Expected @("event-detail-chart-open-book", "live-data-source-polymarket-gamma")
-        Invoke-TapHierarchyNode -Path $providerStatusAfterRefreshHierarchy -Identifier "event-detail-chart-open-book"
+        Assert-HierarchyContains -Path $providerStatusAfterRefreshHierarchy -Expected @("event-detail-top-order-book", "live-data-source-polymarket-gamma")
+        Assert-HierarchyDoesNotContain -Path $providerStatusAfterRefreshHierarchy -Unexpected @("event-detail-chart-open-book", "event-detail-chart-route-state")
+        Invoke-TapHierarchyNode -Path $providerStatusAfterRefreshHierarchy -Identifier "event-detail-top-order-book"
         Start-Sleep -Milliseconds 750
       }
 
@@ -2610,7 +2592,7 @@ try {
     if ($LiveDetail) {
       Save-Screenshot -Name "cycle-current-holiwyn-live-detail-top.png"
       $liveDetailTopHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-detail-top.xml"
-      Assert-HierarchyContains -Path $liveDetailTopHierarchy -Expected @("Australia vs. Egypt", "AUS 40%", "EGY 61%", "0 - 1", "63'", "event-detail-live-match-strip", "LIVE WORLD CUP", "event-detail-live-provider-copy-hidden-local-mvp", "event-detail-price-chart", "Live Winner", "Winner market", "Game Lines", "Player Props")
+      Assert-HierarchyContains -Path $liveDetailTopHierarchy -Expected @("Australia vs. Egypt", "AUS 40%", "EGY 61%", "0 - 1", "63'", "event-detail-live-match-strip", "LIVE WORLD CUP", "event-detail-live-provider-copy-hidden-local-mvp", "Live Winner", "Winner market", "Game Lines", "Player Props")
       Assert-HierarchyDoesNotContain -Path $liveDetailTopHierarchy -Unexpected @("Live provider ready", "Refresh due", "deterministic-status-fixture -", "polymarket-gamma -", "Live World Cup - prices moving")
       Invoke-TapHierarchyNode -Path $liveDetailTopHierarchy -Identifier "event-detail-team-advance-australia"
       Start-Sleep -Seconds 1
@@ -3345,7 +3327,7 @@ try {
     if ($JoMarketRulesProof) {
       $joMarketProfileName = if ($ServerEventSlug -like "*regulation-90*") { "cycle-JO-regulation-90-draw" } elseif ($ServerEventSlug -like "*to-advance*") { "cycle-JO-to-advance-no-draw" } else { "cycle-JO-market-rules" }
       $joHiddenMvpUi = @(
-        "event-detail-price-chart",
+
         "event-detail-chart-retail-surface-fit",
         "event-detail-chart-contract-rail",
         "event-detail-chart-point-selector",
@@ -3408,8 +3390,8 @@ try {
       return
     }
     if ($LocalMvpSimpleTradeFlow -and -not $ServerLiveDetailBackendProof) {
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-chart-ticket-handoff-status", "event-detail-chart-contract-point", "event-detail-chart-open-ticket", "chart-selected-point-current", "Current")
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-price-chart", "event-detail-primary-outcomes", "event-detail-primary-outcome-", "MEX", "ECU")
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-primary-outcomes", "event-detail-primary-outcome-", "MEX", "ECU")
+      Assert-HierarchyDoesNotContain -Path $eventDetailHierarchy -Unexpected @("event-detail-chart-ticket-handoff-status", "event-detail-chart-contract-point", "event-detail-chart-open-ticket", "chart-selected-point-current")
       Assert-HierarchyDoesNotContain -Path $eventDetailHierarchy -Unexpected @("+`$9", "+`$39", "+`$479")
     }
 
@@ -3425,37 +3407,17 @@ try {
     }
 
     if ($EventDetailChart) {
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-price-chart", "event-detail-chart-tooltip", "Target", "Current", "All", "Game", "Live")
-      Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-chart-point-mid"
-      Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-chart-pressed.png"
-      $eventDetailChartPressedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-chart-pressed.xml"
-      Assert-HierarchyContains -Path $eventDetailChartPressedHierarchy -Expected @("event-detail-price-chart", "event-detail-chart-selected-point-mid", "Mid chart", "event-detail-chart-tooltip")
-      Invoke-TapHierarchyNode -Path $eventDetailChartPressedHierarchy -Identifier "event-detail-chart-filter-live"
-      Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-chart-live.png"
-      $eventDetailChartLiveHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-chart-live.xml"
-      Assert-HierarchyContains -Path $eventDetailChartLiveHierarchy -Expected @("event-detail-price-chart", "Live", "Ecuador", "36%", "event-detail-chart-tooltip")
+      Assert-HierarchyDoesNotContain -Path $eventDetailHierarchy -Unexpected @("event-detail-chart-tooltip", "event-detail-chart-selected-point", "chart-selected-point", "event-detail-chart-filter", "Target line")
       return
     }
 
     if ($EventDetailVisibleLiveParity) {
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-price-chart", "event-detail-chart-outcome-selector", "event-detail-chart-point-selector", "event-detail-chart-contract-rail", "chart-selected-contract-moneyline", "chart-selected-point-latest", "event-detail-chart-open-book", "event-detail-chart-open-ticket")
-
-      Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-chart-filter-live"
-      Start-Sleep -Seconds 1
-      $chartLiveHierarchy = Save-UiHierarchy -Name "cycle-EG-B-holiwyn-chart-live-filter.xml"
-      Assert-HierarchyContains -Path $chartLiveHierarchy -Expected @("event-detail-price-chart", "chart-filter-Live", "Ecuador", "36%")
-      Invoke-TapHierarchyNode -Path $chartLiveHierarchy -Identifier "event-detail-chart-point-target"
-      Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-EG-B-holiwyn-chart-outcome-target.png"
-      $chartTargetHierarchy = Save-UiHierarchy -Name "cycle-EG-B-holiwyn-chart-outcome-target.xml"
-      Assert-HierarchyContains -Path $chartTargetHierarchy -Expected @("event-detail-price-chart", "chart-filter-Live", "Ecuador", "36%", "chart-selected-point-target", "Target line")
+      Assert-HierarchyDoesNotContain -Path $eventDetailHierarchy -Unexpected @("event-detail-chart-outcome-selector", "event-detail-chart-point-selector", "event-detail-chart-contract-rail", "chart-selected-point-latest", "event-detail-chart-open-book", "event-detail-chart-open-ticket")
 
       & $adb -s $Device shell input swipe 540 1800 540 930 450 | Out-Null
       Start-Sleep -Seconds 1
       $lineSelectorHierarchy = Save-UiHierarchy -Name "cycle-EG-B-holiwyn-line-selector-before.xml"
-      Assert-HierarchyContains -Path $lineSelectorHierarchy -Expected @("event-detail-spread-line-2.5", "event-detail-spread-line-1.5", "chart-contract-spread", "event-detail-spread-period-1st Half")
+      Assert-HierarchyContains -Path $lineSelectorHierarchy -Expected @("event-detail-spread-line-2.5", "event-detail-spread-line-1.5", "event-detail-spread-period-1st Half")
       Invoke-TapHierarchyNode -Path $lineSelectorHierarchy -Identifier "event-detail-spread-line-2-5"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-EG-B-holiwyn-line-selector-25.png"
@@ -3469,56 +3431,30 @@ try {
 
       & $adb -s $Device shell input swipe 540 720 540 1760 500 | Out-Null
       Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-EG-B-holiwyn-chart-spread-linked.png"
-      $chartSpreadHierarchy = Save-UiHierarchy -Name "cycle-EG-B-holiwyn-chart-spread-linked.xml"
-      Assert-HierarchyContains -Path $chartSpreadHierarchy -Expected @("event-detail-price-chart", "event-detail-chart-contract-rail", "chart-selected-contract-spread", "chart-selected-market-mexico-ecuador-spread", "chart-selected-line-1.5", "chart-selected-period-regulation", "MEX -1.5 RT")
-
-      Invoke-TapHierarchyNode -Path $chartSpreadHierarchy -Identifier "event-detail-chart-open-book"
-      Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-EG-B-holiwyn-chart-book-spread.png"
-      $chartBookHierarchy = Save-UiHierarchy -Name "cycle-EG-B-holiwyn-chart-book-spread.xml"
-      Assert-HierarchyContains -Path $chartBookHierarchy -Expected @("event-detail-order-book-screen", "selected-market-mexico-ecuador-spread", "selected-family-Spreads", "selected-line-1.5", "selected-period-regulation", "order-book-ladder", "Price", "Shares", "Value", "Buy", "Sell")
-
-      Invoke-TapHierarchyNode -Path $chartBookHierarchy -Identifier "event-detail-order-book-close"
-      Start-Sleep -Seconds 1
-      $chartAfterBookHierarchy = Save-UiHierarchy -Name "cycle-EG-B-holiwyn-chart-after-book-close.xml"
-      Invoke-TapHierarchyNode -Path $chartAfterBookHierarchy -Identifier "event-detail-chart-open-ticket"
-      Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-EG-B-holiwyn-chart-spread-ticket.png"
-      $chartTicketHierarchy = Save-UiHierarchy -Name "cycle-EG-B-holiwyn-chart-spread-ticket.xml"
-      Assert-HierarchyContains -Path $chartTicketHierarchy -Expected @("trade-ticket", "ticket-selection-summary", "Mexico -1.5 spread", "Mexico vs. Ecuador", "ticket-selection-line", "provider-source-polymarket-fixture", "provider-market-gamma-mexico-ecuador-spread-15", "provider-condition-condition-mexico-ecuador-spread-15", "provider-token-token-spread-yes-15", "ticket-side-buy", "ticket-side-sell", "Choose an amount")
+      Save-Screenshot -Name "cycle-EG-B-holiwyn-line-selector-chart-free.png"
+      $chartFreeHierarchy = Save-UiHierarchy -Name "cycle-EG-B-holiwyn-line-selector-chart-free.xml"
+      Assert-HierarchyDoesNotContain -Path $chartFreeHierarchy -Unexpected @("event-detail-chart-contract-rail", "event-detail-chart-open-book", "event-detail-chart-open-ticket")
 
       $proof = [ordered]@{
         cycle = "EG-B"
-        scope = "Visible chart, line selector, orderbook ladder, and ticket carry-through parity"
+        scope = "Visible chart-free line selector parity"
         command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleLiveParity -Port $Port -OutputDir docs/mobile/screenshots/cycle-EG-B-visible-live-parity -HierarchyOutputDir docs/mobile/harness/cycle-EG-B-visible-live-parity"
         eventIdentity = "Mexico vs. Ecuador"
         result = "pass"
         assertions = [ordered]@{
-          chartOutcomeTouch = "Chart Live filter changes the selected chart outcome to Ecuador and keeps target tooltip visible."
-          chartPointTouch = "Point selector changes chart-selected-point-target with Target line tooltip."
           lineSelector = "Spread line rail visibly changes 2.5 then returns to backend-shaped 1.5."
-          chartContractRail = "Chart rail carries chart-selected-contract-spread chart-selected-market-mexico-ecuador-spread chart-selected-line-1.5 chart-selected-period-regulation."
-          bookCarryThrough = "Chart Book opens Spreads order book with selected line/period and ladder columns."
-          ticketCarryThrough = "Chart Trade opens ticket with provider fixture market/condition/token for Mexico -1.5 spread."
+          chartRemoved = "Market-page chart, chart book, and chart ticket handoff markers remain absent."
         }
         artifacts = @(
-          "docs/mobile/screenshots/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-chart-outcome-target.png",
-          "docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-chart-outcome-target.xml",
           "docs/mobile/screenshots/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-line-selector-25.png",
           "docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-line-selector-25.xml",
           "docs/mobile/screenshots/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-line-selector-15.png",
           "docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-line-selector-15.xml",
-          "docs/mobile/screenshots/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-chart-spread-linked.png",
-          "docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-chart-spread-linked.xml",
-          "docs/mobile/screenshots/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-chart-book-spread.png",
-          "docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-chart-book-spread.xml",
-          "docs/mobile/screenshots/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-chart-spread-ticket.png",
-          "docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-chart-spread-ticket.xml"
+          "docs/mobile/screenshots/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-line-selector-chart-free.png",
+          "docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-line-selector-chart-free.xml"
         )
         remainingGaps = @(
-          "Chart geometry is still rendered with React Native layout primitives rather than a true pan/zoom chart engine.",
-          "Real provider-backed line-family chart history remains dependent on backend/provider market history coverage."
+          "Real provider-backed line-family history remains backend-only/internal data for now, not a default mobile chart surface."
         )
       }
       $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-EG-B-visible-live-parity-proof.json"
@@ -3533,7 +3469,7 @@ try {
         $eoEventTitle = "EL-A Provider Breadth World Cup Live"
         $eoNoFallback = @("Mexico -1.5 spread", "Mexico vs. Ecuador", "Team to Advance", "portfolio-display-label-Match Winner")
 
-        Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @($eoEventTitle, "event-detail-top-order-book", "event-detail-price-chart", "event-detail-game-lines", "live-data-source-polymarket-gamma")
+        Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @($eoEventTitle, "event-detail-top-order-book", "event-detail-game-lines", "live-data-source-polymarket-gamma")
         Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-top-order-book"
         $eoBookBaselineHierarchy = Wait-HierarchyContains -Name "$eoPrefix-moneyline-book.xml" -Expected @("event-detail-order-book-screen", "order-book-grouped-market-selector", "selected-family-Moneyline", "selected-market-type-winner", "selected-line-none", "selected-period-full-game", "orderbook-source-orderbook-route", "orderbook-status-ready") -Attempts 8 -DelaySeconds 1
         Save-Screenshot -Name "$eoPrefix-moneyline-book.png"
@@ -3841,7 +3777,7 @@ try {
         $enEventTitle = "EL-A Provider Breadth World Cup Live"
         $enNoFallback = @("Mexico -1.5 spread", "Mexico vs. Ecuador", "Team to Advance", "portfolio-display-label-Match Winner")
 
-        Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @($enEventTitle, "event-detail-top-order-book", "event-detail-price-chart", "event-detail-game-lines", "live-data-source-polymarket-gamma")
+        Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @($enEventTitle, "event-detail-top-order-book", "event-detail-game-lines", "live-data-source-polymarket-gamma")
         Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-top-order-book"
         $enBookBaselineHierarchy = Wait-HierarchyContains -Name "$enPrefix-book-baseline.xml" -Expected @("event-detail-order-book-screen", "order-book-grouped-market-selector", "order-book-ladder", "orderbook-source-orderbook-route", "orderbook-status-ready") -Attempts 8 -DelaySeconds 1
         Save-Screenshot -Name "$enPrefix-book-baseline.png"
@@ -4148,7 +4084,7 @@ try {
       )
       $emNoFallback = @("Team to Advance", "MOCK - Buy - Mexico (Reg. Time)", "Mexico vs. Ecuador winner")
 
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Mexico vs. Ecuador", "event-detail-top-order-book", "event-detail-price-chart", "event-detail-game-lines")
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Mexico vs. Ecuador", "event-detail-top-order-book", "event-detail-game-lines")
       Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-top-order-book"
       $emBookBaselineHierarchy = Wait-HierarchyContains -Name "cycle-EM-B-visible-limit-lifecycle-book-baseline.xml" -Expected @("event-detail-order-book-screen", "order-book-grouped-market-selector", "order-book-ladder") -Attempts 8 -DelaySeconds 1
       Save-Screenshot -Name "cycle-EM-B-visible-limit-lifecycle-book-baseline.png"
@@ -4328,7 +4264,7 @@ try {
         "Visible mobile live Book ladder staged price and Buy/Sell ticket handoff"
       }
 
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @($depthEventTitle, "event-detail-top-order-book", "event-detail-price-chart", "event-detail-game-lines")
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @($depthEventTitle, "event-detail-top-order-book", "event-detail-game-lines")
       Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-top-order-book"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-EL-B-visible-live-depth-book-baseline.png"
@@ -4421,15 +4357,10 @@ try {
     if ($EventDetailFullPage) {
       $gamePageResetUrl = "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceMexicoEcuadorDetail=1"
       Save-Screenshot -Name "cycle-current-holiwyn-game-page-full-top.png"
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-price-chart", "event-detail-chat-preview", "event-detail-primary-outcomes", "MEX", "ECU", "Game Lines", "Player Props", "event-detail-top-order-book", "event-detail-share")
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-chat-preview", "event-detail-primary-outcomes", "MEX", "ECU", "Game Lines", "Player Props", "event-detail-top-order-book", "event-detail-share")
+      Assert-HierarchyDoesNotContain -Path $eventDetailHierarchy -Unexpected @("event-detail-chart-filter-game", "event-detail-chart-tooltip", "event-detail-chart-open-ticket")
 
-      Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-chart-filter-game"
-      Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-current-holiwyn-game-page-full-chart-game.png"
-      $gamePageChartHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-game-page-full-chart-game.xml"
-      Assert-HierarchyContains -Path $gamePageChartHierarchy -Expected @("event-detail-price-chart", "Game", "Mexico vs. Ecuador")
-
-      Invoke-TapHierarchyNode -Path $gamePageChartHierarchy -Identifier "event-detail-top-order-book"
+      Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-top-order-book"
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-game-page-full-top-order-book.png"
       $gamePageTopOrderBookHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-game-page-full-top-order-book.xml"
@@ -5222,12 +5153,9 @@ try {
       Invoke-TapHierarchyNode -Path $marketTabsLiveStatsHierarchy -Identifier "event-detail-body-tab-market"
       Start-Sleep -Seconds 1
       $marketTabsMarketReturnHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-market-tabs-market-return.xml"
-      Assert-HierarchyContains -Path $marketTabsMarketReturnHierarchy -Expected @("event-detail-price-chart", "event-detail-market-tabs", "Game Lines", "Team to Advance")
-      Invoke-TapHierarchyNode -Path $marketTabsGameHierarchy -Identifier "event-detail-line-detail-graph"
-      Start-Sleep -Seconds 1
-      $marketTabsGraphHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-market-tabs-graph.xml"
-      Assert-HierarchyContains -Path $marketTabsGraphHierarchy -Expected @("event-detail-inline-graph", "Line movement for Team to Advance")
-      Invoke-TapHierarchyNode -Path $marketTabsGraphHierarchy -Identifier "event-detail-exact-score-tab"
+      Assert-HierarchyContains -Path $marketTabsMarketReturnHierarchy -Expected @("event-detail-market-tabs", "Game Lines", "Team to Advance")
+      Assert-HierarchyDoesNotContain -Path $marketTabsMarketReturnHierarchy -Unexpected @("event-detail-inline-graph", "Line movement for Team to Advance")
+      Invoke-TapHierarchyNode -Path $marketTabsMarketReturnHierarchy -Identifier "event-detail-exact-score-tab"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-market-tabs-exact-score.png"
       $marketTabsExactHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-market-tabs-exact-score.xml"
@@ -5422,8 +5350,8 @@ try {
 
         Save-Screenshot -Name "cycle-FA-holiwyn-route-status-top.png"
         $mvpRouteStatusTopHierarchy = Save-UiHierarchy -Name "cycle-FA-holiwyn-route-status-top.xml"
-        Assert-HierarchyContains -Path $mvpRouteStatusTopHierarchy -Expected @("event-detail-chart-route-state", "event-detail-live-data-inline", "live-data-source-polymarket-gamma")
-        Assert-HierarchyDoesNotContain -Path $mvpRouteStatusTopHierarchy -Unexpected $mvpHiddenOrderBookExpected
+        Assert-HierarchyContains -Path $mvpRouteStatusTopHierarchy -Expected @("event-detail-live-data-inline", "live-data-source-polymarket-gamma")
+        Assert-HierarchyDoesNotContain -Path $mvpRouteStatusTopHierarchy -Unexpected ($mvpHiddenOrderBookExpected + @("event-detail-chart-route-state", "event-detail-chart-ticket-handoff-status"))
 
         & $adb -s $Device shell input swipe 540 2100 540 520 500 | Out-Null
         Start-Sleep -Seconds 1
@@ -6004,8 +5932,8 @@ try {
 
         Save-Screenshot -Name "cycle-EU-holiwyn-route-mvp-top.png"
         $mvpRouteTopHierarchy = Save-UiHierarchy -Name "cycle-EU-holiwyn-route-mvp-top.xml"
-        Assert-HierarchyContains -Path $mvpRouteTopHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "event-detail-chart-route-state", "live-data-source-polymarket-gamma")
-        Assert-HierarchyDoesNotContain -Path $mvpRouteTopHierarchy -Unexpected $mvpHiddenOrderBookExpected
+        Assert-HierarchyContains -Path $mvpRouteTopHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "live-data-source-polymarket-gamma")
+        Assert-HierarchyDoesNotContain -Path $mvpRouteTopHierarchy -Unexpected ($mvpHiddenOrderBookExpected + @("event-detail-chart-route-state", "event-detail-chart-ticket-handoff-status"))
 
         & $adb -s $Device shell input swipe 540 2100 540 520 500 | Out-Null
         Start-Sleep -Seconds 1
@@ -6197,44 +6125,11 @@ try {
         Save-Screenshot -Name "cycle-ER-holiwyn-local-mvp-status-top.png"
         $mvpStatusTopHierarchy = Save-UiHierarchy -Name "cycle-ER-holiwyn-local-mvp-status-top.xml"
         Assert-HierarchyContains -Path $mvpStatusTopHierarchy -Expected @(
-          "event-detail-price-chart",
-          "chart-status-fallback",
-          "chart-source-fallback",
-          "chart-range-none",
-          "event-detail-chart-ticket-handoff-status",
           "provider-lifecycle-ready",
-          "event-detail-chart-open-ticket"
+          "event-detail-primary-outcomes",
+          "Game Lines"
         )
-        Assert-HierarchyDoesNotContain -Path $mvpStatusTopHierarchy -Unexpected $mvpHiddenOrderBookExpected
-
-        Invoke-TapHierarchyNode -Path $mvpStatusTopHierarchy -Identifier "event-detail-chart-point-target"
-        Start-Sleep -Seconds 1
-        Save-Screenshot -Name "cycle-GB-holiwyn-event-detail-chart-target.png"
-        $mvpStatusChartTargetHierarchy = Save-UiHierarchy -Name "cycle-GB-holiwyn-event-detail-chart-target.xml"
-        Assert-HierarchyContains -Path $mvpStatusChartTargetHierarchy -Expected @(
-          "event-detail-price-chart",
-          "event-detail-chart-selected-point-target",
-          "event-detail-chart-contract-point",
-          "chart-selected-point-target",
-          "Target line",
-          "event-detail-chart-open-ticket"
-        )
-        Assert-HierarchyDoesNotContain -Path $mvpStatusChartTargetHierarchy -Unexpected $mvpHiddenOrderBookExpected
-
-        Invoke-TapHierarchyNode -Path $mvpStatusChartTargetHierarchy -Identifier "event-detail-chart-open-ticket"
-        Start-Sleep -Seconds 1
-        Save-Screenshot -Name "cycle-GB-holiwyn-event-detail-chart-ticket.png"
-        $mvpStatusChartTicketHierarchy = Save-UiHierarchy -Name "cycle-GB-holiwyn-event-detail-chart-ticket.xml"
-        Assert-HierarchyContains -Path $mvpStatusChartTicketHierarchy -Expected @(
-          "trade-ticket",
-          "ticket-selection-summary",
-          "ticket-order-review",
-          "ticket-side-buy",
-          "ticket-side-sell",
-          "swipe-to-submit-order"
-        )
-        Invoke-TapHierarchyNode -Path $mvpStatusChartTicketHierarchy -Identifier "ticket-close"
-        Start-Sleep -Seconds 1
+        Assert-HierarchyDoesNotContain -Path $mvpStatusTopHierarchy -Unexpected ($mvpHiddenOrderBookExpected + @("event-detail-chart-route-state", "event-detail-chart-ticket-handoff-status", "event-detail-chart-open-ticket", "chart-source-fallback", "chart-status-fallback", "Chart selection"))
 
         & $adb -s $Device shell input swipe 540 520 540 1900 450 | Out-Null
         Start-Sleep -Milliseconds 500

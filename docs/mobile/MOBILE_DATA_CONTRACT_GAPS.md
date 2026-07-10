@@ -9477,3 +9477,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: real provider-backed line-market IDs/tokens for Spread/Totals/Team Total. The proven lifecycle currently uses contract-fixture identity fields.
 - Temporary mock/static data: the proof creates disposable local users/liquidity and a server fake-token order. It does not add mobile UI fixtures.
 - Future migration concern: when provider-backed line rows exist, rerun this lifecycle proof against provider-backed IDs and then pair it with S23 visible proof.
+
+# Cycle UM - Remove Market Page Chart Harness Debt Notes
+
+- No schema migration was added.
+- Closed or narrowed: the default market/Event Detail page no longer has any chart UI requirement in source or smoke proof contracts.
+- Route mismatch: none. Existing chart-history/provider fields can remain in backend/mobile data contracts as internal/future data, but they are not required by Local MVP visible UI.
+- Fields Holiwyn still needs: current probability/top price and line identity for ticket pricing remain required; chart-history point arrays are not P0 for the current MVP.
+- Temporary mock/static data: none added.
+- Future migration concern: do not reintroduce chart UI or chart proof gates unless the user explicitly approves a new chart milestone.

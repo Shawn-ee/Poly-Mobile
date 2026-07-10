@@ -1565,3 +1565,10 @@ For every UI element or interaction, answer:
 | Current route-selected line market needed server order -> Portfolio/history lifecycle proof | P0 | Verified | Server fake-token BUY on `argentina-vs-egypt` Spread `Egypt +1.5` filled through `/api/orders`; Portfolio position and History recent trade preserved market/outcome/line/period/source/token identity. | `docs/mobile/harness/cycle-UL-local-mvp-order-history-proof/cycle-UL-match-line-order-lifecycle.json`; `docs/mobile/audits/cycle-UL-local-mvp-order-history-proof.md` |
 | Lifecycle proof harness depended on shell-provided `DATABASE_URL` and a mid-price maker quote | P0 | Verified | Harness now loads local `.env` when needed, handles a BOM, and defaults to a high local proof price to avoid accidental pre-crossing with existing local liquidity. | `scripts/prove_mobile_mvp_match_line_order_lifecycle.ts` |
 | S23 visible journey proof against current route data | P1 | Open | Backend lifecycle proof passed, but the Android UI journey still needs S23 proof when a device is attached. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |
+
+# Cycle UM - Remove Market Page Chart Harness Debt
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Stale smoke harness paths still expected or tapped the removed market-page chart | P0 | Verified | `mobile/scripts/smoke.ps1` now uses chart absence checks and no longer has positive chart assertions/taps for market-page proof. | `mobile/scripts/smoke.ps1`; `mobile/src/__tests__/eventDetailChartInteractionContract.test.ts` |
+| S23 visible chart-free Event Detail proof | P1 | Open | No Android device is attached. Run Event Detail top/lines proof when S23 is visible to ADB. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |
