@@ -1401,3 +1401,10 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Event Detail still carried dormant share/watchlist panels after Local MVP social scope was removed | P0 | Verified | Removed share sheet, share actions, save/watchlist notice, unused EventDetail saved props, and the visible position-card share icon; S23 proof passed the full Local MVP visible flow afterward. | `mobile/src/components/EventDetail.tsx`; `mobile/App.tsx`; `mobile/src/__tests__/eventDetailNoChatStatsContract.test.ts`; `docs/mobile/audits/cycle-SZ-event-detail-social-shell-cleanup.md`; `docs/mobile/harness/cycle-SZ-event-detail-social-shell-cleanup/cycle-SZ-current-mvp-s23-visible-flow.json` |
 | Real provider-backed spread/totals/team-total match lines | P1 | Open | Unchanged from SX. This cleanup keeps Event Detail focused, but does not change provider line availability. | `docs/mobile/audits/cycle-SX-provider-breadth-readiness.md` |
+
+# Cycle TA - Search Saved Control Cleanup
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Search results still exposed bookmark/watchlist controls outside the Local MVP path | P0 | Verified by source/tests; partial S23 proof | Removed `save-event-*` bookmark controls from Search result rows and removed unused saved props from Home/Search call sites. S23 proof reached Search and confirmed no saved/bookmark markers in the shell XML, but top results were empty in that runtime. | `mobile/src/components/SearchScreen.tsx`; `mobile/src/components/HomeScreen.tsx`; `mobile/App.tsx`; `mobile/src/__tests__/searchScreenContract.test.ts`; `mobile/src/__tests__/searchResultStatsContract.test.ts`; `docs/mobile/audits/cycle-TA-search-saved-control-cleanup.md`; `docs/mobile/harness/cycle-TA-search-saved-control-cleanup/cycle-TA-search-saved-control-proof.json` |
+| Real provider-backed spread/totals/team-total match lines | P1 | Open | Unchanged from SX/SZ. | `docs/mobile/audits/cycle-SX-provider-breadth-readiness.md` |

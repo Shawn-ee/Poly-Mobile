@@ -10,8 +10,6 @@ type SearchScreenCopy = {
   topResults: string;
   clearSearch: string;
   noResults: string;
-  noSavedMarkets: string;
-  saved: string;
   volume: string;
   liquidity: string;
 };
@@ -24,8 +22,6 @@ export function SearchScreen({
   events,
   openEvent,
   openTicket,
-  savedEventIds,
-  toggleSavedEvent,
   canLoadMoreEvents,
   isLoadingMoreEvents = false,
   loadMoreEvents,
@@ -37,8 +33,6 @@ export function SearchScreen({
   events: Event[];
   openEvent: (event: Event) => void;
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
-  savedEventIds: Set<string>;
-  toggleSavedEvent: (event: Event) => void;
   canLoadMoreEvents?: boolean;
   isLoadingMoreEvents?: boolean;
   loadMoreEvents?: () => void;
@@ -128,7 +122,6 @@ export function SearchScreen({
             {visibleEvents.map((event) => {
               const topMarket = event.markets[0];
               const topOutcome = topMarket.outcomes[0];
-              const isSaved = savedEventIds.has(event.id);
               return (
                 <Pressable
                   accessibilityLabel={`search-result-${event.id}`}
@@ -155,19 +148,6 @@ export function SearchScreen({
                     <Text style={styles.resultProbability}>{topOutcome.probability}%</Text>
                     <Text style={styles.resultOutcome}>{label(locale, topOutcome)}</Text>
                     <View style={styles.resultActions}>
-                      {toggleSavedEvent && (
-                        <Pressable
-                          accessibilityLabel={`save-event-${event.id}`}
-                          onPress={(pressEvent) => {
-                            pressEvent.stopPropagation();
-                            toggleSavedEvent(event);
-                          }}
-                          style={styles.compactSaveButton}
-                          testID={`save-event-${event.id}`}
-                        >
-                          <Ionicons name={isSaved ? "bookmark" : "bookmark-outline"} color={isSaved ? "#fbbf24" : "#8ea0b8"} size={23} />
-                        </Pressable>
-                      )}
                       <Ionicons name="chevron-forward" color="#8ea0b8" size={22} />
                     </View>
                   </View>
@@ -218,7 +198,6 @@ const styles = StyleSheet.create({
   resultProbability: { color: "#f8fafc", fontSize: 31, lineHeight: 36, fontWeight: "900" },
   resultOutcome: { color: "#8ea0b8", fontSize: 13, fontWeight: "900", marginTop: 2, textAlign: "right" },
   resultActions: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 12 },
-  compactSaveButton: { width: 30, height: 30, alignItems: "center", justifyContent: "center" },
   loadMoreButton: { minHeight: 48, alignItems: "center", justifyContent: "center", marginTop: 12, borderRadius: 12, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   loadMoreText: { color: "#dbeafe", fontSize: 15, fontWeight: "900" },
   empty: { color: "#94a3b8", textAlign: "center", marginTop: 30, fontWeight: "800" },

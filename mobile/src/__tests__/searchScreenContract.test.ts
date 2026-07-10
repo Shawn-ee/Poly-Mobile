@@ -11,6 +11,11 @@ describe("SearchScreen route contract", () => {
     expect(source).not.toContain("search-category-");
     expect(source).not.toContain("setSort");
     expect(source).not.toContain("categoryChips");
+    expect(source).not.toContain("save-event-");
+    expect(source).not.toContain("bookmark-outline");
+    expect(source).not.toContain("bookmark");
+    expect(source).not.toContain("toggleSavedEvent");
+    expect(source).not.toContain("savedEventIds");
     expect(source).toContain("search-world-cup-markets");
     expect(source).toContain("search-load-more-results");
   });

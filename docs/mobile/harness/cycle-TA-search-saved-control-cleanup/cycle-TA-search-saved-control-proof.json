@@ -1,0 +1,19 @@
+{
+  "cycle": "TA",
+  "result": "partial-pass",
+  "generatedAt": "2026-07-10T10:36:00.0000000Z",
+  "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+  "model": "SM-S911U1",
+  "expoPort": 8362,
+  "screenshot": "docs/mobile/screenshots/cycle-TA-search-saved-control-cleanup/cycle-TA-search-top-results.png",
+  "hierarchy": "docs/mobile/harness/cycle-TA-search-saved-control-cleanup/cycle-TA-search-top-results.xml",
+  "assertions": {
+    "searchScreenVisible": true,
+    "savedFilterAbsentInDeviceXml": true,
+    "saveEventAbsentInDeviceXml": true,
+    "bookmarkAbsentInDeviceXml": true,
+    "searchResultRowsVisibleOnDevice": false,
+    "searchResultRowsCoveredBySourceContract": true
+  },
+  "limitation": "The S23 launch reached Search but displayed 0 top results in that runtime, so device XML proves the Search shell has no saved/bookmark controls. Result-row bookmark removal is proven by source contract and typecheck, not by a populated S23 row in this proof."
+}

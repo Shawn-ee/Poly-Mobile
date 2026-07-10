@@ -1547,18 +1547,6 @@ export default function App() {
     };
   }, [api, selectedEvent?.id, selectedDepthMarketId]);
 
-  const toggleSavedEvent = (event: Event) => {
-    setSavedEventIds((current) => {
-      const next = new Set(current);
-      if (next.has(event.id)) {
-        next.delete(event.id);
-      } else {
-        next.add(event.id);
-      }
-      return next;
-    });
-  };
-
   const placeOrder = async (amount: number, side: "buy" | "sell", contractSide?: Ticket["contractSide"]) => {
     if (!ticket || amount <= 0) return;
     const cost = Math.min(amount, balance);
@@ -1821,8 +1809,6 @@ export default function App() {
                 canLoadMoreEvents={MARKET_DATA_MODE === "server" ? Boolean(eventNextCursor) : undefined}
                 isLoadingMoreEvents={isLoadingMoreEvents}
                 loadMoreEvents={MARKET_DATA_MODE === "server" ? loadMoreBackendEvents : undefined}
-                savedEventIds={savedEventIds}
-                toggleSavedEvent={toggleSavedEvent}
               />
             )}
             {mainTab === "live" && (
@@ -1871,8 +1857,6 @@ export default function App() {
                 events={MARKET_DATA_MODE === "server" ? searchEvents : filteredEvents}
                 openEvent={openEventDetail}
                 openTicket={openTicket}
-                savedEventIds={savedEventIds}
-                toggleSavedEvent={toggleSavedEvent}
                 canLoadMoreEvents={MARKET_DATA_MODE === "server" ? Boolean(searchNextCursor) : undefined}
                 isLoadingMoreEvents={isLoadingSearchEvents}
                 loadMoreEvents={MARKET_DATA_MODE === "server" ? loadMoreSearchEvents : undefined}

@@ -11967,3 +11967,13 @@ Known limitations:
 - State transitions: unchanged. Market/outcome/line identity still flows from Event Detail rows and outcome buttons into Trade Ticket, server fake-token order placement, and Portfolio/history.
 - Proof: focused Event Detail contract tests passed; mobile typecheck passed; Samsung S23 `SM-S911U1` proof passed in `docs/mobile/harness/cycle-SZ-event-detail-social-shell-cleanup/cycle-SZ-current-mvp-s23-visible-flow.json`.
 - Known limitations: this does not solve real provider-backed line availability. Spread/totals/team-total rows remain contract-shaped fixtures until an attach-ready Polymarket or approved secondary-provider contract exists.
+
+# Cycle TA - Search Saved Control Cleanup
+
+- Feature/page worked on: Search results and Home feed prop surface for the Local MVP retail betting flow.
+- Frontend components touched: `mobile/src/components/SearchScreen.tsx`, `mobile/src/components/HomeScreen.tsx`, `mobile/App.tsx`, `mobile/src/__tests__/searchScreenContract.test.ts`, `mobile/src/__tests__/searchResultStatsContract.test.ts`.
+- Backend/API routes touched: none. Existing Search/Home event routes, profile preference routes, order routes, Portfolio routes, and Google auth routes remain unchanged.
+- User interactions supported: Search results remain tappable into Event Detail, but no longer expose bookmark/watchlist buttons in the default retail MVP route. Home no longer receives unused saved/watchlist props.
+- State transitions: unchanged for trading. Search row tap still moves to Event Detail; Event Detail/ticket/order/Portfolio state is untouched. Account/profile saved preference state remains in App for future account work but is not exposed as a Search result control.
+- Proof: focused Search/Home tests passed; mobile typecheck passed; Samsung S23 `SM-S911U1` proof reached Search and confirmed no saved/bookmark markers in the Search shell XML, but the runtime had 0 top results so populated Search row tap remains source-tested rather than device-proven.
+- Known limitations: this does not remove account-level saved preference storage or implement a future watchlist feature. Watchlist/saved behavior remains out of the Local MVP path until explicitly scoped.
