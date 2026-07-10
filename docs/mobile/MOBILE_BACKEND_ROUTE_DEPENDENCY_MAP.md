@@ -10,6 +10,12 @@ Purpose: document what the mobile app needs from backend routes, auth, request/r
 | Google OAuth callback to mobile | `/api/auth/google/callback` | `GET` | Google OAuth `code`/`state` | Query params from Google. | Mobile deep link query: `googleAuth=success`, `forcePortfolio=1`, `forceRuntimePortfolioSync=1`, `holiwynApiKey`, compatibility `apiKey`. | User, linked Google identity, API credential/token model. | None. Mobile must not fabricate Google identity. | None for source contract. |
 | Google mobile logout | `/api/auth/mobile/logout` | `POST` | Bearer Holiwyn API key | No required body in current mobile usage. | Best-effort logout; mobile clears SecureStore regardless of network result. | API credential/session revocation. | Local credential clear still works if server call fails. | None for MVP. |
 
+## Cycle UV - Google Auth Runtime Preflight
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Google auth runtime preflight | `/api/auth/google/start` | `GET` | None | Query params: `returnTo=/portfolio`, `mobileReturnTo=<configured mobile return URL>` | The preflight consumes only the 3xx Location header and checks host plus `redirect_uri`; it does not follow to Google. | OAuth state cookies may be created by the route; no user records are created during preflight. | Non-strict mode reports missing/unreachable setup without failing local dev loops. | None for current route shape. Real S23 proof still needs a phone-reachable callback URL registered in Google Cloud. |
+
 ## Cycle TN - Provider Line Breadth Current Matches
 
 Cycle TN changes provider discovery normalization and docs only. It does not add or change API route signatures.

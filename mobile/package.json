@@ -10,6 +10,8 @@
     "gate:mobile-audit": "powershell -ExecutionPolicy Bypass -File ./scripts/check-mobile-audit-gate.ps1",
     "gate:mobile-audit:allow-pending": "powershell -ExecutionPolicy Bypass -File ./scripts/check-mobile-audit-gate.ps1 -AllowPending",
     "check:server-auth": "powershell -ExecutionPolicy Bypass -File ./scripts/check-server-auth-config.ps1",
+    "check:google-auth-runtime": "powershell -ExecutionPolicy Bypass -File ./scripts/google-auth-runtime-preflight.ps1",
+    "check:google-auth-runtime:strict": "powershell -ExecutionPolicy Bypass -File ./scripts/google-auth-runtime-preflight.ps1 -RequireConfigured -RequirePhysicalDeviceCallback",
     "check:android-dev-build": "powershell -ExecutionPolicy Bypass -File ./scripts/check-android-dev-build-readiness.ps1",
     "check:android-apk-artifact": "powershell -ExecutionPolicy Bypass -File ./scripts/check-android-apk-artifact-readiness.ps1",
     "smoke:samsung:apk": "powershell -ExecutionPolicy Bypass -File ./scripts/samsung-apk-smoke.ps1",
