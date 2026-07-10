@@ -11743,3 +11743,14 @@ Known limitations:
 - User interactions supported: tester can start from a backend-returned Google connected state, reopen with the persisted Holiwyn key, tap the connected Google row in Account, and see `Continue with Google` again.
 - State transitions: stored Holiwyn API key -> Account connected state -> `POST /api/auth/mobile/logout` -> current API credential revoked best-effort -> local key removed -> runtime key reset -> connected state cleared.
 - Known limitations: logout proof still uses a generated local dev credential shaped like the backend callback; real Google browser consent remains P1. Current Expo storage should move to native secure storage before wider distribution.
+
+# Cycle SB - Secure Mobile Auth Credential Storage
+
+- Feature/page worked on: secure storage for the backend-returned Holiwyn mobile API credential.
+- Frontend components touched: `mobile/App.tsx`, `mobile/src/services/mobileCredentialStore.ts`, `mobile/package.json`, `mobile/package-lock.json`.
+- Backend/API routes touched: none; this continues using `/api/auth/google/callback`, `/api/profile/summary`, and `/api/auth/mobile/logout`.
+- Proof script touched: existing `scripts/prove_mobile_google_auth_return_s23.ps1`.
+- Tests touched: `mobile/src/__tests__/googleMobileAuthContract.test.ts`, `mobile/src/__tests__/mobileGoogleLogoutContract.test.ts`.
+- User interactions supported: Google-returned Holiwyn key is stored through Expo SecureStore when available, survives app restart on S23, and is cleared on sign-out.
+- State transitions: callback-shaped return -> `storeMobileAuthApiKey()` -> SecureStore persistence -> restart -> `loadMobileAuthApiKey()` -> Portfolio connected state -> logout -> `clearMobileAuthApiKey()` -> signed-out state.
+- Known limitations: proof still uses a generated backend-shaped local credential instead of real Google consent; SecureStore fallback to legacy AsyncStorage remains only for environments where SecureStore is unavailable.

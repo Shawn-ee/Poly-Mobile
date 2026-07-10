@@ -56,6 +56,11 @@ import {
   loadMarketQuotesById,
   loadTicketQuotes,
 } from "./src/services/quoteService";
+import {
+  clearMobileAuthApiKey,
+  loadMobileAuthApiKey,
+  storeMobileAuthApiKey,
+} from "./src/services/mobileCredentialStore";
 
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
 const DEFAULT_API_KEY = process.env.EXPO_PUBLIC_API_KEY || "";
@@ -78,7 +83,6 @@ const SAVED_EVENTS_STORAGE_KEY = "holiwyn.savedEventIds.v1";
 const LANGUAGE_STORAGE_KEY = "holiwyn.language.v1";
 const PORTFOLIO_STORAGE_KEY = "holiwyn.portfolio.v1";
 const TICKET_DEFAULTS_STORAGE_KEY = "holiwyn.ticketDefaults.v1";
-const MOBILE_AUTH_API_KEY_STORAGE_KEY = "holiwyn.mobileAuthApiKey.v1";
 
 const matchesHomeFilter = (event: Event, filter: HomeFilter) => {
   if (filter === "all") return true;
@@ -380,7 +384,7 @@ export default function App() {
     if (keyToRevoke) {
       new PolyApi(DEFAULT_API_BASE, keyToRevoke).logoutMobile().catch(() => undefined);
     }
-    AsyncStorage.removeItem(MOBILE_AUTH_API_KEY_STORAGE_KEY).catch(() => undefined);
+    clearMobileAuthApiKey().catch(() => undefined);
     setRuntimeApiKey(DEFAULT_API_KEY);
     setGoogleAuthReturnConnected(false);
     setForceAccountSignedIn(false);
@@ -419,7 +423,7 @@ export default function App() {
   useEffect(() => {
     if (DEFAULT_API_KEY.length > 0) return undefined;
     let cancelled = false;
-    AsyncStorage.getItem(MOBILE_AUTH_API_KEY_STORAGE_KEY)
+    loadMobileAuthApiKey()
       .then((storedKey) => {
         if (cancelled || !mounted.current || !storedKey) return;
         setRuntimeApiKey(storedKey);
@@ -667,7 +671,7 @@ export default function App() {
     if (apiKeyMatch?.[1]) {
       const returnedApiKey = decodeURIComponent(apiKeyMatch[1]);
       setRuntimeApiKey(returnedApiKey);
-      AsyncStorage.setItem(MOBILE_AUTH_API_KEY_STORAGE_KEY, returnedApiKey).catch(() => undefined);
+      storeMobileAuthApiKey(returnedApiKey).catch(() => undefined);
     }
     if (shouldForceRuntimePortfolioSync) {
       setForcedRuntimePortfolioSyncNonce((value) => value + 1);

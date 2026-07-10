@@ -15,7 +15,7 @@ describe("Mobile Google logout contract", () => {
 
     expect(app).toContain("signOutGoogle");
     expect(app).toContain("logoutMobile().catch");
-    expect(app).toContain("AsyncStorage.removeItem(MOBILE_AUTH_API_KEY_STORAGE_KEY)");
+    expect(app).toContain("clearMobileAuthApiKey().catch");
     expect(app).toContain("setRuntimeApiKey(DEFAULT_API_KEY)");
     expect(app).toContain("setGoogleAuthReturnConnected(false)");
     expect(app).toContain("setForceAccountSignedIn(false)");

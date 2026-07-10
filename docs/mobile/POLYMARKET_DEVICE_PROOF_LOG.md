@@ -2788,3 +2788,12 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Screenshots: `docs/mobile/screenshots/cycle-SA-google-auth-logout/cycle-SA-google-auth-return-portfolio.png`, `docs/mobile/screenshots/cycle-SA-google-auth-logout/cycle-SA-google-auth-persisted-portfolio.png`, `docs/mobile/screenshots/cycle-SA-google-auth-logout/cycle-SA-google-auth-account-signed-out.png`.
 - XML: `docs/mobile/harness/cycle-SA-google-auth-logout/cycle-SA-google-auth-account-connected.xml`, `docs/mobile/harness/cycle-SA-google-auth-logout/cycle-SA-google-auth-account-signed-out.xml`.
 - Result: PASS. Summary reports `logoutClearsPersistedCredential=true`; signed-out XML shows `Continue with Google` and no connected Google markers.
+
+# Cycle SB - S23 Secure Mobile Auth Credential Storage Proof
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM_S911U1`.
+- Flow: generated local mobile credential shaped like backend Google callback -> deep link with `googleAuth=success` and `apiKey` -> Portfolio connected state -> app force-stop -> reopen Portfolio without `apiKey` -> connected state still visible from secure credential store -> Account connected row -> sign out -> signed-out Google entry visible.
+- Proof summary: `docs/mobile/harness/cycle-SB-secure-auth-storage/cycle-SB-google-auth-return-summary.json`.
+- Screenshots: `docs/mobile/screenshots/cycle-SB-secure-auth-storage/cycle-SB-google-auth-return-portfolio.png`, `docs/mobile/screenshots/cycle-SB-secure-auth-storage/cycle-SB-google-auth-persisted-portfolio.png`, `docs/mobile/screenshots/cycle-SB-secure-auth-storage/cycle-SB-google-auth-account-signed-out.png`.
+- XML: `docs/mobile/harness/cycle-SB-secure-auth-storage/cycle-SB-google-auth-return-portfolio.xml`, `docs/mobile/harness/cycle-SB-secure-auth-storage/cycle-SB-google-auth-persisted-portfolio.xml`, `docs/mobile/harness/cycle-SB-secure-auth-storage/cycle-SB-google-auth-account-connected.xml`, `docs/mobile/harness/cycle-SB-secure-auth-storage/cycle-SB-google-auth-account-signed-out.xml`.
+- Result: PASS. Summary reports persisted credential after restart and `logoutClearsPersistedCredential=true`; signed-out XML shows `Continue with Google`.

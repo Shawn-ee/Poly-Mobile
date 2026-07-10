@@ -4109,3 +4109,9 @@ Cycle OW implementation notes:
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Account Google sign-out | `/api/auth/mobile/logout` | POST | Holiwyn mobile API key with `account:write`; session also supported | No body | `ok`, `revokedApiCredential` | Existing `User`, `ApiCredential`; route calls existing `revokeApiCredential` and clears user cookie | If the network call fails, mobile still clears local MVP credential state so testers are not trapped signed in | Production secure storage and real Google consent/logout session proof remain future hardening. |
+
+# Cycle SB - Secure Mobile Auth Credential Storage
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Secure persisted mobile credential | `/api/auth/google/callback`; `/api/profile/summary`; `/api/auth/mobile/logout` | Callback/deep link plus API GET/POST | Backend-created Holiwyn mobile API key | Deep-link `apiKey=<redacted>` from backend callback; no route body for storage | Stored API key loads server profile and is removed on logout | Existing `User`, `ApiCredential`; no schema change | If SecureStore is unavailable, mobile falls back to legacy AsyncStorage after attempting migration | Real interactive Google consent remains future proof work. |
