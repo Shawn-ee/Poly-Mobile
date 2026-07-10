@@ -176,6 +176,22 @@ const activityPrimaryMetricValue = (activity: PortfolioActivity) =>
 const activityPriceMetricValue = (activity: PortfolioActivity) =>
   typeof activity.probability === "number" ? `${activity.probability}%` : "--";
 
+const openOrderSideLabel = (order: OpenOrder) => order.side === "sell" ? "Sell" : "Buy";
+
+const openOrderDisplayTitle = (order: OpenOrder) =>
+  displayPositionChoice(order).replace(/^(Yes|No)\s*-\s*/i, "");
+
+const openOrderMarketSubline = (order: OpenOrder) => {
+  const line = order.selection?.line;
+  if (order.selection?.marketType === "totals" && line) return `Total Goals ${line}`;
+  if (order.selection?.marketType === "spread" && line) return `Spread ${line}`;
+  if (order.selection?.marketType === "team-total" && line) return `Team Total ${line}`;
+  if (order.selection?.marketType === "winner" || /winner/i.test(order.title)) {
+    return splitBackendMarketTitle(order.title)?.marketTitle ?? "Match Winner";
+  }
+  return order.outcome;
+};
+
 const displayOutcome = (item: { outcome: string; selection?: TicketSelection; contractSide?: BinaryContractSide }) => {
   const contractSide = item.contractSide ?? item.selection?.contractSide;
   const display = item.selection?.displayLabel ?? item.outcome;
@@ -916,16 +932,20 @@ export function Portfolio({
         <Text style={styles.openOrdersTitle}>{t.openOrders}</Text>
         {openOrders.slice(0, 5).map((order) => (
           <Pressable
-            accessibilityLabel={`open-order-row-${order.id} open-order-row-retail-simple ${selectionIdentityLabel(order)}`}
+            accessibilityLabel={`open-order-row-${order.id} open-order-row-retail-simple open-order-polymarket-row-parity open-order-metric-strip open-order-event-context-${compactPortfolioEventSubline(order)} open-order-market-context-${openOrderMarketSubline(order)} open-order-visible-label-${openOrderDisplayTitle(order)} ${selectionIdentityLabel(order)}`}
             key={order.id}
             onPress={() => setExpandedOrderId((current) => (current === order.id ? null : order.id))}
             style={[styles.openOrderItem, expandedOrderId === order.id && styles.rowExpanded]}
             testID={`open-order-row-${order.id}`}
           >
             <View style={styles.openOrderHeader}>
+              <PositionFlag context="history" item={order} />
               <View style={styles.openOrderMain}>
                 <View style={styles.openOrderTitleRow}>
-                  <Text numberOfLines={1} style={styles.openOrderTitle}>{order.title}</Text>
+                  <Text style={[styles.openOrderSidePill, order.side === "sell" && styles.openOrderSidePillSell]}>
+                    {openOrderSideLabel(order)}
+                  </Text>
+                  <Text numberOfLines={1} style={styles.openOrderTitle}>{openOrderDisplayTitle(order)}</Text>
                   {order.selection && (
                     <View
                       accessibilityLabel={`open-order-source-badge-${order.id} ${portfolioSourceBadge(order.selection).accessibility}`}
@@ -950,7 +970,10 @@ export function Portfolio({
                   )}
                 </View>
                 <Text style={styles.openOrderMeta}>
-                  {order.side === "buy" ? t.buy : t.sell} - {displayOutcome(order)} - {order.status}
+                  {compactPortfolioEventSubline(order)}
+                </Text>
+                <Text style={styles.openOrderMarketMeta}>
+                  {openOrderMarketSubline(order)} - {order.status}
                 </Text>
                 {portfolioSourceNote(order.selection, locale) && (
                   <Text
@@ -990,8 +1013,14 @@ export function Portfolio({
                 <Text style={styles.openOrderMetricLabel}>{t.orderValue}</Text>
                 <Text style={styles.openOrderMetricValue}>{money(openOrderValue(order))}</Text>
               </View>
+              <View style={styles.openOrderMetricBox}>
+                <Text style={styles.openOrderMetricLabel}>{t.remaining}</Text>
+                <Text style={styles.openOrderMetricValue}>
+                  {openOrderRemainingShares(order).toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                </Text>
+              </View>
             </View>
-            <Text accessibilityLabel={`open-order-remaining-value-${order.id}`} style={styles.openOrderRemaining}>
+            <Text accessibilityLabel={`open-order-remaining-value-${order.id}`} style={[styles.openOrderRemaining, styles.a11yOnly]}>
               {openOrderRemainingShares(order).toLocaleString(undefined, { maximumFractionDigits: 2 })} {t.shares} {t.remaining.toLowerCase()}
             </Text>
             <Text accessibilityLabel={`open-order-potential-payout-${order.id}`} style={styles.openOrderRemaining}>
@@ -1763,7 +1792,6 @@ const styles = StyleSheet.create({
   detailPanel: { gap: 4, marginTop: 10, padding: 10, borderRadius: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#29476d" },
   detailPanelTitle: { color: "#dbeafe", fontSize: 12, fontWeight: "900", textTransform: "uppercase" },
   detailPanelText: { color: "#94a3b8", fontSize: 12, fontWeight: "800" },
-  openOrderTitleRow: { flexDirection: "row", alignItems: "center", gap: 7 },
   liveBadge: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, marginBottom: 8, paddingHorizontal: 9, paddingVertical: 5, borderRadius: 999, backgroundColor: "#451a1a", borderWidth: 1, borderColor: "#7f1d1d" },
   liveBadgeText: { color: "#fecaca", fontSize: 11, fontWeight: "900", textTransform: "uppercase" },
   liveClock: { alignSelf: "flex-start", color: "#fca5a5", fontSize: 12, fontWeight: "900", marginBottom: 8 },
@@ -1847,13 +1875,17 @@ const styles = StyleSheet.create({
   openOrderItem: { gap: 8, paddingHorizontal: 24, paddingVertical: 18, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   openOrderHeader: { flexDirection: "row", alignItems: "flex-start", gap: 10 },
   openOrderMain: { flex: 1 },
+  openOrderTitleRow: { flexDirection: "row", alignItems: "center", gap: 7 },
+  openOrderSidePill: { overflow: "hidden", borderRadius: 6, paddingHorizontal: 7, paddingVertical: 2, color: "#22c55e", backgroundColor: "#052e16", fontSize: 13, fontWeight: "800" },
+  openOrderSidePillSell: { color: "#ef4444", backgroundColor: "#3a0f15" },
   openOrderTitle: { flex: 1, minWidth: 0, color: "#f8fafc", fontWeight: "900" },
   openOrderMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 3 },
+  openOrderMarketMeta: { color: "#6f7a8d", fontSize: 12, fontWeight: "700", marginTop: 2 },
   statusPillRow: { flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 6 },
   statusPill: { alignSelf: "flex-start", paddingHorizontal: 7, paddingVertical: 3, borderRadius: 999, overflow: "hidden", backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#29476d", color: "#bfdbfe", fontSize: 10, fontWeight: "900" },
   snapshotText: { alignSelf: "flex-start", marginTop: 6, paddingHorizontal: 7, paddingVertical: 3, borderRadius: 999, overflow: "hidden", backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#29476d", color: "#bfdbfe", fontSize: 10, fontWeight: "900" },
   openOrderPrice: { color: "#dbeafe", fontWeight: "900" },
-  openOrderMetricGrid: { flexDirection: "row", gap: 6 },
+  openOrderMetricGrid: { flexDirection: "row", gap: 6, marginTop: 2 },
   openOrderMetricBox: { flex: 1, minHeight: 50, padding: 8, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
   openOrderMetricLabel: { color: "#64748b", fontSize: 10, fontWeight: "900" },
   openOrderMetricValue: { color: "#dbeafe", fontSize: 11, fontWeight: "900", marginTop: 5 },

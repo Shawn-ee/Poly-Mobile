@@ -9088,3 +9088,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new History row fields for this cycle.
 - Temporary mock/static data: none added.
 - Future migration concern: if production history needs exact fee-adjusted row labels or execution venue/source badges, add explicit backend fields rather than deriving them from display copy.
+
+# Cycle SU - Portfolio Orders Row Density Notes
+
+- No schema migration was added.
+- Closed or narrowed: Portfolio Orders rows now consume existing open-order metrics in a denser Polymarket-like visible structure instead of exposing only two boxed values plus hidden placed/filled details.
+- Route mismatch: none. The cycle does not change `/api/portfolio` or cancel routes; it improves how existing `price`, `orderValue`, `remainingShares`, `originalShares`, `status`, and selection identity fields are rendered.
+- Fields Holiwyn still needs but backend does not fully provide: no new Orders row fields for this cycle.
+- Temporary mock/static data: none added.
+- Future migration concern: if production Orders needs partial-fill timeline, expiry, or venue/source labels, add explicit backend fields instead of encoding them into display strings.
