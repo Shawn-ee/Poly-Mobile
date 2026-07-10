@@ -1,6 +1,6 @@
 # Holiwyn Mobile
 
-Holiwyn Mobile is an Android-first Expo/React Native app for World Cup prediction markets. The current MVP focuses on the user flow: browse World Cup markets, open an event, view probability/chart context, choose an outcome, open a Buy/Sell ticket, place a fake-token order, and review Portfolio/history.
+Holiwyn Mobile is an Android-first Expo/React Native app for World Cup prediction markets. The current MVP focuses on the user flow: browse World Cup markets, open an event, choose a match/line outcome, open a Buy/Sell ticket, place a fake-token order, and review Portfolio/history.
 
 The backend/server is not included in this repo. The app can run with local mock data, or it can point at a hosted/local Holiwyn API for server-backed market data and fake-token order flows.
 
@@ -40,6 +40,7 @@ Supported public Expo variables:
 | `EXPO_PUBLIC_API_KEY` | Server order/portfolio mode | `your-development-api-key` | Development API key for fake-token server order and Portfolio sync. Do not commit it. |
 | `EXPO_PUBLIC_ORDER_MODE` | Optional | `mock` or `server` | Selects local fake-token orders or server-backed fake-token orders. |
 | `EXPO_PUBLIC_MARKET_DATA_MODE` | Optional | `mock` or `server` | Selects local market fixtures or backend market/event routes. |
+| `EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL` | Optional for Google login | `holiwyn://auth/google` | Deep link returned to after backend Google OAuth succeeds. Keep Google Cloud credentials on the backend. Expo Go may need an Expo-specific deep link override. |
 | `EXPO_PUBLIC_SHOW_ORDERBOOK` | Debug only | `1` | Shows internal order book surfaces. Leave unset for the Local MVP retail UI. |
 
 Android device URL tips:
@@ -65,16 +66,16 @@ Most smoke scripts assume a connected Android device with Expo Go installed. Som
 Implemented/mobile-visible:
 
 - Home discovery for World Cup markets.
-- Event Detail page with chart/probability context.
+- Event Detail page with compact match/outcome context and Game Lines.
 - Outcome and line-market ticket handoff.
 - Buy/Sell ticket with fake-token amount presets and swipe-style submit button.
 - Portfolio open positions, open orders, activity/history cards.
 - English/Chinese UI support.
-- Server-mode hooks for backend event data, fake-token orders, and Portfolio sync.
+- Server-mode hooks for backend event data, fake-token orders, Google login return, and Portfolio sync.
 
 Still evolving:
 
-- Polymarket parity is ongoing, especially around live event density, chart interaction, and richer market grouping.
+- Polymarket parity is ongoing, especially around live event density, real provider-backed line markets, and richer market grouping.
 - Deposits/withdrawals are intentionally out of scope for this MVP.
 - Order book UI is hidden by default and kept only for internal/debug use.
 

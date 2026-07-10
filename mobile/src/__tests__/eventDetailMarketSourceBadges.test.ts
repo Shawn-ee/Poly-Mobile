@@ -3,14 +3,15 @@ import { describe, expect, test } from "vitest";
 
 const eventDetailSource = () => readFileSync("mobile/src/components/EventDetail.tsx", "utf8");
 
-describe("Event Detail market source badges", () => {
-  test("keeps visible source labels for provider-backed and local-priced line markets", () => {
+describe("Event Detail market source metadata", () => {
+  test("keeps source metadata audit-only instead of visible retail labels", () => {
     const source = eventDetailSource();
 
     expect(source).toContain("marketSourceBadge");
     expect(source).toContain("market-source-badge-provider");
     expect(source).toContain("market-source-badge-local");
     expect(source).toContain("event-detail-market-source-");
+    expect(source).toContain("sourceAuditOnly");
     expect(source).toContain("Polymarket market");
     expect(source).toContain("Holiwyn line");
     expect(source).toContain("line-market-local-test-fake-token");
@@ -21,6 +22,7 @@ describe("Event Detail market source badges", () => {
     expect(source).toContain("event-detail-line-source-banner");
     expect(source).toContain("lineSourceCompact");
     expect(source).toContain("lineSourceCompactText");
+    expect(source).toContain("styles.sourceAuditOnly");
     expect(source).not.toContain("lineSourceBanner:");
     expect(source).not.toContain("lineSourceLabel:");
     expect(source).not.toContain("lineSourceText:");

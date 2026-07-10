@@ -2741,3 +2741,13 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Device id used: `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`.
 - Result: `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1` passed with `-SeedCounterparty -ExpectFilledHistory -ExpectCashout`.
 - Evidence: `docs/mobile/harness/cycle-RV-local-mvp-liquidity-contract/cycle-RV-current-mvp-s23-visible-flow.json`.
+
+# Cycle RW - S23 Simple Event Detail Market Page Proof
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.
+- Flow: Home -> Live -> Argentina vs Egypt Event Detail -> Game Lines -> spread line ticket -> `$25` swipe buy -> Portfolio -> cashout/generic sell ticket -> swipe sell -> Portfolio History.
+- UI change proven: visible market-page chart removed; Event Detail moves from compact match header/outcome buttons directly into Game Lines.
+- Proof summary: `docs/mobile/harness/cycle-RW-event-detail-simple-market-page/cycle-RW-current-mvp-s23-visible-flow.json`.
+- Key screenshots: `docs/mobile/screenshots/cycle-RW-event-detail-simple-market-page/cycle-RW-current-mvp-detail-top.png`, `docs/mobile/screenshots/cycle-RW-event-detail-simple-market-page/cycle-RW-current-mvp-lines.png`, `docs/mobile/screenshots/cycle-RW-event-detail-simple-market-page/cycle-RW-current-mvp-ticket-ready.png`, `docs/mobile/screenshots/cycle-RW-event-detail-simple-market-page/cycle-RW-current-mvp-line-cashout-history.png`.
+- Result: PASS. Summary shows `result=pass`, hidden order book, ticket line preservation, swipe submit, filled History, cashout ticket opened, sell submitted, and cashout History visible.
+- Google auth note: route contract was type/test validated but not manually completed against Google on-device in this cycle because it needs interactive account consent.

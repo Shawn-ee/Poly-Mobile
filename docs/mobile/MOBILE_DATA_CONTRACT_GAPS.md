@@ -8877,3 +8877,13 @@ Future migration concern:
 - Route mismatch: no mobile API route changed. `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` continue to own the server-mode fake-token order lifecycle.
 - Temporary mock/static data: Local MVP proof liquidity remains deterministic internal liquidity, not public user liquidity.
 - Future migration concern: replace proof-only maker users with approved local-MM/runtime liquidity once production policy and risk controls are ready.
+
+# Cycle RW - Event Detail Simple Market Page and Google Mobile Auth Notes
+
+- No schema migration was added.
+- Closed or narrowed: visible Event Detail no longer depends on a complex market-page chart for the Local MVP trading path; chart history route metadata remains hidden for audit/internal regression only.
+- Closed or narrowed: mobile Google login now uses the same backend Google Cloud OAuth credentials and callback route as the web app, then receives a server-created Holiwyn mobile API credential for API-key based Portfolio/order routes.
+- Fields Holiwyn still needs but backend does not fully provide: real provider-backed current-match Spread/Totals/Team Total markets with provider ids, condition ids, token ids, line, period, side, price/probability, and quote fields.
+- Route mismatch: none introduced. `/api/auth/google/start` accepts a Holiwyn mobile return URL; `/api/auth/google/callback` still owns Google token exchange server-side.
+- Temporary mock/static data: active-route line markets remain contract fixtures because Polymarket Gamma scan found no attach-ready line markets for the current match.
+- Future migration concern: add native logout/token revocation and, if testing in Expo Go, configure `EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL` to the current Expo deep link instead of the default real-app `holiwyn://auth/google`.

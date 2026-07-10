@@ -6,10 +6,29 @@ import {
   getExistingUserId,
   setUserIdCookie,
 } from "@/lib/auth";
+import { createApiCredential } from "@/lib/canonicalAuth";
 
 const STATE_COOKIE = "poly_oauth_state";
 const MODE_COOKIE = "poly_oauth_mode";
 const RETURN_TO_COOKIE = "poly_oauth_return_to";
+const MOBILE_RETURN_TO_COOKIE = "poly_oauth_mobile_return_to";
+
+const mobileApiScopes = [
+  "orders:read",
+  "orders:write",
+  "fills:read",
+  "account:read",
+  "account:write",
+  "markets:read",
+] as const;
+
+const appendMobileAuthParams = (returnTo: string, params: Record<string, string>) => {
+  const target = new URL(returnTo);
+  for (const [key, value] of Object.entries(params)) {
+    target.searchParams.set(key, value);
+  }
+  return target.toString();
+};
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -29,6 +48,7 @@ export async function GET(request: Request) {
   const expectedState = cookieStore.get(STATE_COOKIE)?.value;
   const mode = cookieStore.get(MODE_COOKIE)?.value === "link" ? "link" : "login";
   const returnTo = cookieStore.get(RETURN_TO_COOKIE)?.value ?? null;
+  const mobileReturnTo = cookieStore.get(MOBILE_RETURN_TO_COOKIE)?.value || null;
   cookieStore.set(STATE_COOKIE, "", {
     httpOnly: true,
     sameSite: "lax",
@@ -44,6 +64,13 @@ export async function GET(request: Request) {
     maxAge: 0,
   });
   cookieStore.set(RETURN_TO_COOKIE, "", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: 0,
+  });
+  cookieStore.set(MOBILE_RETURN_TO_COOKIE, "", {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
@@ -135,6 +162,22 @@ export async function GET(request: Request) {
   }
 
   await setUserIdCookie(userId);
+  if (mobileReturnTo?.startsWith("holiwyn:")) {
+    const mobileCredential = await createApiCredential({
+      userId,
+      name: "Holiwyn Mobile Google",
+      scopes: mobileApiScopes,
+    });
+    return NextResponse.redirect(
+      appendMobileAuthParams(mobileReturnTo, {
+        googleAuth: "success",
+        forcePortfolio: "1",
+        forceRuntimePortfolioSync: "1",
+        apiKey: mobileCredential.token,
+      })
+    );
+  }
+
   const fallback = mode === "link" ? `${baseUrl}/?linked=google` : `${baseUrl}/`;
   const redirectTo = returnTo?.startsWith("/") ? `${baseUrl}${returnTo}` : fallback;
   return NextResponse.redirect(redirectTo);

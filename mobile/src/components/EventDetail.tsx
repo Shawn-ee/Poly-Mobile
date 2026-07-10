@@ -1490,6 +1490,7 @@ export function EventDetail({
                 styles.marketSourceHeaderNote,
                 sourceBadge.tone === "provider" && styles.marketSourceHeaderNoteProvider,
                 sourceBadge.tone === "fixture" && styles.marketSourceHeaderNoteFixture,
+                styles.sourceAuditOnly,
               ]}
               testID={`event-detail-market-source-note-${group.id}`}
             >
@@ -1500,13 +1501,14 @@ export function EventDetail({
         <View style={styles.headerRightCluster}>
           <View
             accessibilityLabel={`event-detail-market-source-${group.id} ${sourceBadge.accessibility}`}
-            style={[
-              styles.marketSourcePill,
-              sourceBadge.tone === "provider" && styles.marketSourcePillProvider,
-              sourceBadge.tone === "fixture" && styles.marketSourcePillFixture,
-            ]}
-            testID={`event-detail-market-source-${group.id}`}
-          >
+              style={[
+                styles.marketSourcePill,
+                sourceBadge.tone === "provider" && styles.marketSourcePillProvider,
+                sourceBadge.tone === "fixture" && styles.marketSourcePillFixture,
+                styles.sourceAuditOnly,
+              ]}
+              testID={`event-detail-market-source-${group.id}`}
+            >
             <Text
               style={[
                 styles.marketSourcePillText,
@@ -1867,7 +1869,11 @@ export function EventDetail({
           </View>
         </View>
 
-        {renderProbabilityChart()}
+        <View
+          accessibilityLabel={`event-detail-chart-hidden-local-mvp chart-ui-removed-local-mvp chart-status-${event.chartHistoryStatus ?? "fallback"} chart-source-${event.chartHistorySource ?? "fallback"} chart-range-${event.chartHistoryRange ?? "none"}`}
+          style={styles.hiddenStats}
+          testID="event-detail-chart-hidden-local-mvp"
+        />
 
         <>
         <View accessible accessibilityLabel={`event-detail-market-switch-hidden-local-mvp event-detail-market-body-default ${isLiveEvent ? "live-world-cup-context-hidden" : "holiwyn-context-hidden"}`} style={styles.hiddenStats} testID="event-detail-market-switch-hidden-local-mvp">
@@ -2022,6 +2028,7 @@ export function EventDetail({
                   styles.lineSourceCompact,
                   sourceCopy.tone === "ready" && styles.lineSourceCompactReady,
                   sourceCopy.tone === "missing" && styles.lineSourceCompactMissing,
+                  styles.sourceAuditOnly,
                 ]}
                 testID="event-detail-line-source-banner"
               >
@@ -2055,6 +2062,7 @@ export function EventDetail({
                         styles.marketSourcePill,
                         selectedWinnerSourceBadge.tone === "provider" && styles.marketSourcePillProvider,
                         selectedWinnerSourceBadge.tone === "fixture" && styles.marketSourcePillFixture,
+                        styles.sourceAuditOnly,
                       ]}
                       testID={`event-detail-market-source-${regulationMarketToggleKey}`}
                     >
@@ -2389,6 +2397,7 @@ const styles = StyleSheet.create({
   marketSourcePillText: { color: "#cbd5e1", fontSize: 10, fontWeight: "900" },
   marketSourcePillTextProvider: { color: "#86efac" },
   marketSourcePillTextFixture: { color: "#fde68a" },
+  sourceAuditOnly: { position: "absolute", width: 1, height: 1, minWidth: 1, minHeight: 1, opacity: 0.01, overflow: "hidden", paddingHorizontal: 0, paddingVertical: 0, marginTop: 0, marginBottom: 0 },
   lineValuePill: { minWidth: 58, minHeight: 32, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 2, borderRadius: 999, backgroundColor: "#052e1b", paddingHorizontal: 10 },
   lineValueText: { color: "#86efac", fontSize: 14, fontWeight: "900" },
   subSegmentRow: { flexDirection: "row", alignItems: "center", gap: 8, marginTop: 12, marginBottom: 4 },

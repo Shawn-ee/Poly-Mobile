@@ -5,6 +5,17 @@ import { randomBytes } from "crypto";
 const STATE_COOKIE = "poly_oauth_state";
 const MODE_COOKIE = "poly_oauth_mode";
 const RETURN_TO_COOKIE = "poly_oauth_return_to";
+const MOBILE_RETURN_TO_COOKIE = "poly_oauth_mobile_return_to";
+
+const parseMobileReturnTo = (value: string | null) => {
+  if (!value) return null;
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === "holiwyn:" ? parsed.toString() : null;
+  } catch {
+    return null;
+  }
+};
 
 export async function GET(request: Request) {
   const clientId = process.env.GOOGLE_CLIENT_ID;
@@ -19,6 +30,7 @@ export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const mode = requestUrl.searchParams.get("mode") === "link" ? "link" : "login";
   const rawReturnTo = requestUrl.searchParams.get("returnTo");
+  const mobileReturnTo = parseMobileReturnTo(requestUrl.searchParams.get("mobileReturnTo"));
   let returnToPath = "/";
   if (rawReturnTo) {
     try {
@@ -67,6 +79,13 @@ export async function GET(request: Request) {
     secure: process.env.NODE_ENV === "production",
     path: "/",
     maxAge: 60 * 10,
+  });
+  cookieStore.set(MOBILE_RETURN_TO_COOKIE, mobileReturnTo ?? "", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: mobileReturnTo ? 60 * 10 : 0,
   });
 
   return NextResponse.redirect(

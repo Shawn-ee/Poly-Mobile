@@ -7255,3 +7255,16 @@ Remaining P1:
 - Visible proof: `docs/mobile/harness/cycle-RV-local-mvp-liquidity-contract/cycle-RV-current-mvp-s23-visible-flow.json` reports buy submit to Portfolio, cashout ticket opened, sell submitted, History visible, and order book hidden.
 - Unresolved P0: 0.
 - Remaining P1: production liquidity/public market-maker policy remains future work.
+
+# Cycle RW Audit Gate - Simple Event Detail Page and Google Mobile Auth
+
+- Scope: Local MVP Event Detail market-page simplification, source/debug visual cleanup, current provider line inspection, and Google mobile auth contract setup.
+- P0 result: PASS for RW scope.
+- Reference/user direction applied: user explicitly requested removing the Polymarket-style chart from the market page because it is too complicated for the Local MVP.
+- Android proof: passed on Samsung S23 `SM-S911U1`.
+- Visible proof: `docs/mobile/harness/cycle-RW-event-detail-simple-market-page/cycle-RW-current-mvp-s23-visible-flow.json` reports Home/Live current match, Game Lines, hidden order book, ticket line preservation, swipe submit, filled History, cashout sell submit, and History visible.
+- Screenshot proof: `docs/mobile/screenshots/cycle-RW-event-detail-simple-market-page/cycle-RW-current-mvp-detail-top.png` shows no visible market-page chart and direct transition into Game Lines.
+- Google auth proof: focused source-contract test passed and confirms mobile uses `/api/auth/google/start` with a Holiwyn mobile return target while backend keeps Google credential/token exchange server-side and issues a Holiwyn mobile API credential after callback success.
+- Provider proof: current match line-availability and broad provider-breadth scan found no attach-ready provider-backed line markets, so line markets remain contract fixtures by design.
+- Unresolved P0: 0 for RW scope.
+- Remaining P1: manual S23 Google consent proof; real provider-backed current-match Spread/Totals/Team Total line markets; production liquidity/public market-maker policy.

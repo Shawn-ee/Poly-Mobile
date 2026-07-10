@@ -11689,3 +11689,14 @@ Known limitations:
 - User-visible behavior supported: the same Event Detail line ticket and Portfolio cashout/sell journey now has explicit proof-side liquidity contracts: `buy-fill` prepares a resting SELL ask for the mobile BUY ticket, and `cashout-sell-fill` prepares a resting BUY bid for the mobile SELL ticket.
 - State transitions covered by the harness: Event Detail line ticket -> `/api/orders` BUY fill -> Portfolio position; Portfolio cashout/generic Sell ticket -> `/api/orders` SELL fill -> Portfolio History.
 - Known limitations: S23 proof passed for the local proof-liquidity contract. Production liquidity/public market-maker policy remains future work.
+
+# Cycle RW - Event Detail Simple Market Page and Google Mobile Auth Setup
+
+- Feature/page worked on: Local MVP Event Detail market page and Portfolio Google login entry.
+- Frontend components touched: `mobile/App.tsx`, `mobile/src/components/EventDetail.tsx`.
+- Backend auth routes touched: `src/app/api/auth/google/start/route.ts`, `src/app/api/auth/google/callback/route.ts`.
+- Tests touched: `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts`, `mobile/src/__tests__/eventDetailChartStatusCopy.test.ts`, `mobile/src/__tests__/eventDetailChartInteractionContract.test.ts`, `mobile/src/__tests__/googleMobileAuthContract.test.ts`.
+- User interactions supported: Event Detail now opens directly into compact header/outcome buttons/Game Lines without the visible market chart; Portfolio Google sign-in launches the existing backend Google OAuth flow with a Holiwyn mobile return target.
+- State transitions: Google login remains server-owned through `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`; after Google callback succeeds, backend links/creates the user, creates a Holiwyn mobile API credential, and redirects to `holiwyn://auth/google?...apiKey=...` so mobile can refresh Portfolio in server mode.
+- Provider inspection: current provider line scan found provider-backed Regulation Winner only for the active Argentina/Egypt route; Spread/Totals/Team Total remain contract fixtures.
+- Known limitations: Expo Go may need `EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL` set to an Expo-specific deep link for manual OAuth return testing; the default real-app return is `holiwyn://auth/google`. Real provider-backed current-match line markets remain unavailable.
