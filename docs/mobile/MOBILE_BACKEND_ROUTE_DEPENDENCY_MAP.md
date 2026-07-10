@@ -4446,3 +4446,9 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Event Detail Local MVP tracker/proof contract | Existing `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | Existing GET/POST flow | Public event browse; mobile API key for order/Portfolio routes | No route request changed | No response fields changed | No schema change | Existing contract fixtures remain for current-match line rows when no provider-backed line identity exists | None for this documentation/proof-contract cycle. Real provider-backed line breadth remains the open P1. |
+
+# Cycle UE - Unavailable Trade Ticket Readonly State
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Trade Ticket unavailable/blocked state | Existing Event Detail payload from `/api/mobile/events/:slug/live-detail` or mock event data; order route intentionally not called when blocked | GET for event/detail only | Public event browse; no order auth needed because submit remains disabled | No request body changed | `market.availability.status`, `market.availability.marketStatus`, selected market/outcome/line/source identity | Existing `Event`, `Market`, `Outcome`; no schema change | Mock/server-shaped events can set `availability.status` to `suspended` or `unavailable` for proof | No route gap for read-only ticket behavior. A device proof fixture/deep link for unavailable markets remains useful. |
