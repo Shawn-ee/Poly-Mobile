@@ -616,7 +616,7 @@ try {
     Start-Sleep -Seconds 2
     Save-Screenshot -Name "cycle-$Cycle-current-mvp-line-cashout-history.png" | Out-Null
     $cashoutHistoryXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-line-cashout-history.xml"
-    Assert-Contains -Path $cashoutHistoryXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "activity-sold", "portfolio-history-market-context-readable", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
+    Assert-Contains -Path $cashoutHistoryXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "activity-sold", "portfolio-history-market-context-readable", "portfolio-history-visible-label-Egypt +1.5", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-provider-outcome-Egypt +1.5", "portfolio-local-test-pricing")
     Assert-NotContains -Path $cashoutHistoryXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
   } elseif (-not $expectOpenOrderState) {
     Invoke-TapNode -Path $afterSubmitXml -Identifier "portfolio-tab-history"
@@ -626,11 +626,11 @@ try {
   }
   $defaultHistoryLandedAsFilled = $false
   if ($ExpectFilledHistory -and (-not $ExpectCashout)) {
-    Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "portfolio-history-market-context-readable", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
+    Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "portfolio-history-market-context-readable", "portfolio-history-visible-label-Egypt +1.5", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-provider-outcome-Egypt +1.5", "portfolio-local-test-pricing")
   } elseif ((-not $expectOpenOrderState) -and (-not $ExpectCancel) -and (-not $ExpectCashout)) {
     $historyRaw = Get-Content -Raw -Path $historyXml
     if ($historyRaw -match [regex]::Escape("activity-row-")) {
-      Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "portfolio-history-market-context-readable", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
+      Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "portfolio-history-market-context-readable", "portfolio-history-visible-label-Egypt +1.5", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-provider-outcome-Egypt +1.5", "portfolio-local-test-pricing")
       $defaultHistoryLandedAsFilled = $true
     } else {
       Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "No history", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture")

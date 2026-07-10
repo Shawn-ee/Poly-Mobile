@@ -14,6 +14,21 @@ describe("Portfolio history market context", () => {
     expect(source).toContain("splitBackendMarketTitle(activity.title)?.marketTitle ?? \"Match Winner\"");
   });
 
+  test("shows selected spread outcome labels instead of generic spread titles", () => {
+    const source = portfolioSource();
+    const spreadBlock = source.slice(
+      source.indexOf('if (item.selection?.marketType === "spread" && line)'),
+      source.indexOf('if (item.selection?.marketType === "team-total" && line)'),
+    );
+
+    expect(spreadBlock).toContain("item.selection.referenceOutcomeLabel");
+    expect(spreadBlock).toContain("!/^yes$|^no$|^spread$/i.test(outcomeLabel)");
+    expect(spreadBlock).toContain("outcomeLabel.includes(line) ? outcomeLabel : `${outcomeLabel} ${line}`");
+    expect(source).toContain("portfolio-history-visible-label-${activityDisplayTitle(activity)}");
+    expect(source).toContain("portfolio-position-visible-label-${displayPositionChoice(position)}");
+    expect(source).toContain("open-order-visible-label-${openOrderDisplayTitle(order)}");
+  });
+
   test("renders realized positive history amounts like retail winnings", () => {
     const source = portfolioSource();
 

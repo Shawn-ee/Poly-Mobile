@@ -12070,3 +12070,13 @@ Known limitations:
 - State transitions: unchanged. Event/team display normalization does not affect market/outcome/line identity, Trade Ticket submit, fake-token order placement, Portfolio, or history.
 - Proof: focused adapter tests and typechecks passed; Samsung S23 `SM-S911U1` full visible MVP proof passed in `docs/mobile/harness/cycle-TJ-provider-team-flags/cycle-TJ-current-mvp-s23-visible-flow.json`.
 - Known limitations: text/emoji/code flags are a mobile display normalization, not backend-owned image assets.
+
+# Cycle TK - Portfolio Line Outcome Labels
+
+- Feature/page worked on: Portfolio Positions/Orders/History line-market labels in the Local MVP retail betting flow.
+- Frontend components touched: `mobile/src/components/Portfolio.tsx`, `mobile/src/__tests__/portfolioHistoryMarketContextContract.test.ts`, `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`.
+- Backend/API routes touched: none. Existing `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` continue carrying selected market/outcome/line identity.
+- User interactions supported: after a user selects a spread line, submits a fake-token/server-backed order, and opens Portfolio History, the row now exposes the concrete selected outcome label such as `Egypt +1.5` instead of only generic `Spread`.
+- State transitions: unchanged. Event Detail selection -> Trade Ticket -> `/api/orders` -> Portfolio sync/history still preserves `selection.referenceOutcomeLabel`, `marketType`, `line`, `period`, provider token, and source fields; Portfolio now renders those fields more clearly.
+- Proof: focused Portfolio tests, root/mobile typechecks, and Samsung S23 `SM-S911U1` full visible MVP proof passed in `docs/mobile/harness/cycle-TK-portfolio-line-labels/cycle-TK-current-mvp-s23-visible-flow.json`.
+- Known limitations: this does not add real Polymarket-backed spread/totals/team-total markets. It only improves how existing contract-shaped selected line identity is displayed after trading.
