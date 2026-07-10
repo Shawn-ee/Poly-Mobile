@@ -11921,3 +11921,12 @@ Known limitations:
 - User interactions supported: visible History rows now use a denser Polymarket-like structure with event/market context, Yes/No side pill, amount/proceeds, shares, and execution price/probability visible without expanding details.
 - State transitions: unchanged. Existing fake-token buy/sell/cashout activity state drives the denser History row; tapping a row still expands the detail panel.
 - Known limitations: this improves History row density only. Orders tab density and native Google OAuth manual proof remain separate gaps.
+
+# Cycle SU - Portfolio Orders Row Density
+
+- Feature/page worked on: Portfolio Orders tab after a Local MVP server-backed open order.
+- Frontend components touched: `mobile/src/components/Portfolio.tsx`, `mobile/src/__tests__/portfolioOrdersDensityContract.test.ts`.
+- Backend/API routes touched: none. The row uses existing `OpenOrder` values already mapped from `/api/portfolio`.
+- User interactions supported: visible open-order rows now use a denser Polymarket-like structure with market icon, Buy/Sell pill, event/market context, limit price, order value, remaining shares, potential payout/proceeds, and the existing Cancel action.
+- State transitions: unchanged. Existing fake-token open-order state drives the denser Orders row; tapping a row still expands the detail panel and Cancel still calls the existing cancel path.
+- Known limitations: this improves Orders row density only. Full real Polymarket account/wallet parity and native Google OAuth manual proof remain separate gaps.

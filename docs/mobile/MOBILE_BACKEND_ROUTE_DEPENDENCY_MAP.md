@@ -4195,6 +4195,12 @@ Cycle OW implementation notes:
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Portfolio History tab row parity | `/api/portfolio/history`; `/api/portfolio` during server-mode sync/proof | GET | Existing mobile API key/server-mode proof auth | No new request fields | Existing activity fields: `amount`, `proceedsAmount`, `shares`, `probability`, `action`, `side`, `selection`, event/market/outcome identity | Existing `Trade`, `Order`, `Market`, `Outcome`, `ApiCredential`; no schema change | Mock mode renders the same history metric strip from local activities | No new backend field required for this visual cycle. Full Orders tab density remains separate UI work. |
 
+## Cycle SU - Portfolio Orders Row Density
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body/query | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio Orders tab row parity | `/api/portfolio`; cancel path uses existing order cancel route through `cancelOpenOrderOnServer` | GET/POST | Existing mobile API key/server-mode proof auth | No new request fields; existing cancel request when user taps Cancel | Existing open-order fields: `title`, `outcome`, `side`, `status`, `price`, `remaining`, `originalShares`, `remainingShares`, `orderValue`, `placedAt`, `selection` | Existing `Order`, `Market`, `Outcome`, `ApiCredential`; no schema change | Mock mode renders the same open-order metric strip from local open orders | No new backend field required for this visual cycle. |
+
 # Cycle SH - Home Local MVP Focus
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
