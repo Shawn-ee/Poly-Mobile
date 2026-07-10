@@ -2760,3 +2760,13 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Screenshot: `docs/mobile/screenshots/cycle-RX-google-auth-return/cycle-RX-google-auth-return-portfolio.png`.
 - XML: `docs/mobile/harness/cycle-RX-google-auth-return/cycle-RX-google-auth-return-portfolio.xml`.
 - Result: PASS. XML/screenshot show `Google connected` and `Server profile loaded`; backend `/api/portfolio` was readable with the returned key.
+
+# Cycle RY - S23 Provider Breadth Runtime Cleanup Proof
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.
+- Flow: Home -> Argentina/Egypt Event Detail -> provider-backed Regulation Winner -> ticket -> `$25` swipe buy -> Portfolio -> History.
+- Backend route proof: `docs/mobile/harness/cycle-RY-provider-breadth-runtime/cycle-RY-provider-breadth-runtime-route.json`.
+- Search/provider proof: `docs/mobile/harness/cycle-RY-provider-breadth-runtime/cycle-RY-search-provider-breadth-route.json`.
+- Android proof summary: `docs/mobile/harness/cycle-RY-provider-breadth-runtime/cycle-RY-provider-winner-s23-visible-flow.json`.
+- Key screenshots: `docs/mobile/screenshots/cycle-RY-provider-breadth-runtime/cycle-RY-current-mvp-home.png`, `docs/mobile/screenshots/cycle-RY-provider-breadth-runtime/cycle-RY-current-mvp-detail-top.png`, `docs/mobile/screenshots/cycle-RY-provider-breadth-runtime/cycle-RY-provider-winner-ticket-ready.png`, `docs/mobile/screenshots/cycle-RY-provider-breadth-runtime/cycle-RY-provider-winner-after-submit.png`, `docs/mobile/screenshots/cycle-RY-provider-breadth-runtime/cycle-RY-provider-winner-portfolio-history.png`.
+- Result: PASS. Route proof shows proof events filtered from mobile-visible provider breadth, broad World Cup provider browsing includes provider-backed futures, Home remains match-only, Event Detail has no chart metadata in Android hierarchy, order book/chat remain hidden, and Portfolio History preserves provider winner source.

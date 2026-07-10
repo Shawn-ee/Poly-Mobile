@@ -1869,12 +1869,6 @@ export function EventDetail({
           </View>
         </View>
 
-        <View
-          accessibilityLabel={`event-detail-chart-hidden-local-mvp chart-ui-removed-local-mvp chart-status-${event.chartHistoryStatus ?? "fallback"} chart-source-${event.chartHistorySource ?? "fallback"} chart-range-${event.chartHistoryRange ?? "none"}`}
-          style={styles.hiddenStats}
-          testID="event-detail-chart-hidden-local-mvp"
-        />
-
         <>
         <View accessible accessibilityLabel={`event-detail-market-switch-hidden-local-mvp event-detail-market-body-default ${isLiveEvent ? "live-world-cup-context-hidden" : "holiwyn-context-hidden"}`} style={styles.hiddenStats} testID="event-detail-market-switch-hidden-local-mvp">
           {liveDataStatus && (

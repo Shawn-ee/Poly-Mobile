@@ -11710,3 +11710,14 @@ Known limitations:
 - User interactions supported: after the backend Google callback returns to the app with `googleAuth=success` and a server API key, Portfolio shows `Google connected` and `Server profile loaded` instead of continuing to look signed out.
 - State transitions: launch URL sets runtime API key, resets local state, then applies Google-auth-return state after reset so the connected state is not cleared.
 - Known limitations: RX proves the mobile return/deep-link/API-key handoff with a generated dev credential; it does not perform interactive Google account consent.
+
+# Cycle RY - Provider Breadth Runtime Cleanup
+
+- Feature/page worked on: mobile-visible provider breadth for the Local MVP World Cup runtime.
+- Frontend components touched: `mobile/src/components/EventDetail.tsx`.
+- Backend/API routes touched: `src/app/api/events/route.ts`.
+- Proof script touched: `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1`.
+- Tests touched: `mobile/src/__tests__/mobileEventRouteProofNoiseContract.test.ts`, `mobile/src/__tests__/eventDetailChartStatusCopy.test.ts`, `mobile/src/__tests__/eventDetailChartInteractionContract.test.ts`, `mobile/src/__tests__/googleMobileAuthContract.test.ts`.
+- User interactions supported: Home remains match-only and opens the current Polymarket-backed Argentina/Egypt match; broad provider browsing no longer returns stale `mobile-*` proof events ahead of real provider-backed World Cup futures; Event Detail is now truly chart-free in Android hierarchy; provider-backed winner ticket -> swipe buy -> Portfolio History still passes on S23.
+- State transitions: route query -> mobile event feed -> Event Detail -> provider-backed winner ticket -> `/api/orders` server fill -> `/api/portfolio` and `/api/portfolio/history` refresh.
+- Known limitations: current match Spread/Totals/Team Total remain contract fixtures because real attach-ready Polymarket line markets are still unavailable; interactive Google consent remains P1.

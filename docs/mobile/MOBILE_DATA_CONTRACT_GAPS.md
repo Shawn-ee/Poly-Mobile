@@ -8896,3 +8896,13 @@ Future migration concern:
 - Route mismatch: none introduced. The proof uses the same mobile API credential shape created by the backend Google callback in RW.
 - Temporary mock/static data: proof uses a generated local mobile dev credential instead of interactive Google consent.
 - Future migration concern: when moving from Expo Go to dev build/APK, validate the real `holiwyn://auth/google` callback against Google consent and add logout/revoke UX.
+
+# Cycle RY - Provider Breadth Runtime Cleanup Notes
+
+- No schema migration was added.
+- Closed or narrowed: mobile-visible `/api/events?includeMobileMarkets=1` now filters disposable proof/runtime events such as `mobile-*`, `proof`, and `provider breadth`, so real provider-backed World Cup events are no longer pushed off the first page by old proof data.
+- Closed or narrowed: Event Detail no longer renders hidden chart source/status metadata in the Android UI hierarchy; the Local MVP market page is actually chart-free.
+- Fields Holiwyn still needs but backend does not fully provide: real provider-backed current-match Spread/Totals/Team Total market ids, condition ids, token ids, line/period/source fields, and route-ready quotes when Polymarket exposes attach-ready line markets.
+- Route mismatch: none introduced. Broad provider browsing includes provider-backed futures; strict Home feed remains match-only.
+- Temporary mock/static data: proof uses seeded counterparty liquidity for the provider-backed winner order. Current line markets remain contract-shaped fixtures.
+- Future migration concern: replace contract fixtures with real provider-backed line rows when available, and keep proof event cleanup/filtering in place so runtime QA is not polluted by old disposable data.

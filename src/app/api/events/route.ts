@@ -32,6 +32,17 @@ const eventCursorFilter = (cursor: { updatedAt: Date; createdAt: Date; id: strin
       }
     : {};
 
+const mobileProofNoiseFilter = (): Prisma.EventWhereInput => ({
+  NOT: [
+    { slug: { startsWith: "mobile-", mode: Prisma.QueryMode.insensitive } },
+    { source: { contains: "proof", mode: Prisma.QueryMode.insensitive } },
+    { eventType: { contains: "proof", mode: Prisma.QueryMode.insensitive } },
+    { title: { contains: "proof", mode: Prisma.QueryMode.insensitive } },
+    { title: { contains: "provider breadth", mode: Prisma.QueryMode.insensitive } },
+    { description: { contains: "proof", mode: Prisma.QueryMode.insensitive } },
+  ],
+});
+
 const mobileMvpMatchFilter = (enabled: boolean): Prisma.EventWhereInput =>
   enabled
     ? {
@@ -145,6 +156,7 @@ export async function GET(request: NextRequest) {
 
   const eventFilters: Prisma.EventWhereInput[] = [
     eventCursorFilter(cursor),
+    includeMobileMarkets ? mobileProofNoiseFilter() : {},
     mobileMvpMatchFilter(mobileMvpMatches),
     {
     ...(search
