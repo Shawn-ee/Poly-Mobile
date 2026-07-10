@@ -11823,3 +11823,14 @@ Known limitations:
 - User interactions supported: Event Detail stays focused on match identity, primary outcome buttons, Game Lines, line selectors, ticket entry, fake-token order placement, and Portfolio/history instead of a Polymarket-style chart.
 - State transitions: unchanged for ticket/order/Portfolio. Chart-history state is no longer a mobile market-page runtime dependency.
 - Known limitations: this intentionally removes chart parity from the Local MVP. If charts return later, they need a new audit-gated milestone and explicit product approval.
+
+# Cycle SK - Ticket Source Audit-Only Header
+
+- Feature/page worked on: Trade Ticket amount-entry screen.
+- Frontend components touched: `mobile/src/components/TradeTicket.tsx`.
+- Tests/proof harness touched: `mobile/src/__tests__/tradeTicketHeaderDensityContract.test.ts`, `mobile/src/__tests__/tradeTicketSourceBadge.test.ts`, `mobile/src/__tests__/eventDetailTradeSmokeCurrentTicketContract.test.ts`, `mobile/scripts/smoke.ps1`.
+- Backend/API routes touched: none.
+- User interactions supported: ticket header stays simpler while preserving event title, selected outcome, amount entry, odds/balance, keypad, and swipe-to-buy/sell.
+- State transitions: unchanged. Source/market identity still flows through `TicketSelection`, order payloads, Portfolio/history, and hidden audit XML markers.
+- Proof: Samsung S23 proof passed in `docs/mobile/harness/cycle-SK-ticket-source-audit-only/cycle-SK-current-mvp-s23-visible-flow.json`; ticket screenshot `docs/mobile/screenshots/cycle-SK-ticket-source-audit-only/cycle-SK-current-mvp-ticket-ready.png`.
+- Known limitations: this is visible header cleanup only. It does not change provider-backed line availability or order execution.

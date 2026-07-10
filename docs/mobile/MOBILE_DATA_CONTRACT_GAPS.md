@@ -8998,3 +8998,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: real provider-backed Spread/Totals/Team Total line markets remain the active P1 data gap; chart history is not required for Local MVP completion.
 - Temporary mock/static data: none added.
 - Future migration concern: if chart UX returns later, define a new mobile data contract and proof gate instead of reviving the removed app-side chart service silently.
+
+# Cycle SK - Ticket Source Audit-Only Header Notes
+
+- No schema migration was added.
+- Closed or narrowed: source/provider identity no longer appears as visible ticket-header clutter, but it remains in hidden audit XML and order/Portfolio identity fields.
+- Route mismatch: none. The ticket still uses the same quote/order/Portfolio routes.
+- Fields Holiwyn still needs but backend does not fully provide: real provider-backed line markets remain the repeated P1 gap.
+- Temporary mock/static data: none added.
+- Future migration concern: when provider-backed line markets are available, keep source identity in payload/contracts while avoiding visible debug labels in the final retail ticket.
