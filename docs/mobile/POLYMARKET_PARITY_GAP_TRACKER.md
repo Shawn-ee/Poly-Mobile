@@ -1448,3 +1448,11 @@ For every UI element or interaction, answer:
 | Home/Live match cards still carried duplicate hidden legacy outcome controls behind the compact rail | P0 | Verified | Removed the hidden `teamRow`/`probButton` block and styles from `MarketLists`, leaving one compact retail outcome rail control path for Home/Live. | `mobile/src/components/MarketLists.tsx`; `mobile/src/__tests__/homeCardStatsContract.test.ts` |
 | Full Local MVP proof needed after Home/Live card cleanup | P0 | Verified | S23 proof passes Home/Live -> Event Detail Game Lines -> Trade Ticket -> server fake-token submit -> Portfolio History after the card hierarchy cleanup. | `docs/mobile/harness/cycle-TF-home-live-card-simplification/cycle-TF-current-mvp-s23-visible-flow.json`; `docs/mobile/screenshots/cycle-TF-home-live-card-simplification/` |
 | Real provider-backed spread/totals/team-total current-match lines | P1 | Open | Unchanged from TD/TE. | `docs/mobile/audits/cycle-TF-home-live-card-simplification.md` |
+
+# Cycle TG - Event Detail Advance Strip Cleanup
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Team to Advance card still carried debug-only inline order book/graph/about placeholders | P0 | Verified | Removed the `activeLineDetailTab` state, line detail tabs, inline order book, inline graph, and inline about placeholders from Event Detail. | `mobile/src/components/EventDetail.tsx`; `mobile/src/__tests__/eventDetailChartInteractionContract.test.ts` |
+| Full Local MVP proof needed after Event Detail cleanup | P0 | Verified | S23 proof passes Home/Live -> Event Detail Game Lines -> Trade Ticket -> server fake-token submit -> Portfolio History after the cleanup. | `docs/mobile/harness/cycle-TG-event-detail-advance-strip-cleanup/cycle-TG-current-mvp-s23-visible-flow.json`; `docs/mobile/screenshots/cycle-TG-event-detail-advance-strip-cleanup/` |
+| Real provider-backed spread/totals/team-total current-match lines | P1 | Open | Unchanged from TD/TE/TF. | `docs/mobile/audits/cycle-TG-event-detail-advance-strip-cleanup.md` |

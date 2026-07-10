@@ -21,5 +21,11 @@ describe("EventDetail chart interaction contract", () => {
     expect(source).not.toContain("Chart selection");
     expect(source).not.toContain("Polymarket chart");
     expect(source).not.toContain("Target line");
+    expect(source).not.toContain("activeLineDetailTab");
+    expect(source).not.toContain("event-detail-line-detail-tabs");
+    expect(source).not.toContain("event-detail-inline-graph");
+    expect(source).not.toContain("Line movement for Team to Advance");
+    expect(source).not.toContain("event-detail-inline-order-book");
+    expect(source).not.toContain("event-detail-inline-about");
   });
 });
