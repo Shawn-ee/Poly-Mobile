@@ -12080,3 +12080,13 @@ Known limitations:
 - State transitions: unchanged. Event Detail selection -> Trade Ticket -> `/api/orders` -> Portfolio sync/history still preserves `selection.referenceOutcomeLabel`, `marketType`, `line`, `period`, provider token, and source fields; Portfolio now renders those fields more clearly.
 - Proof: focused Portfolio tests, root/mobile typechecks, and Samsung S23 `SM-S911U1` full visible MVP proof passed in `docs/mobile/harness/cycle-TK-portfolio-line-labels/cycle-TK-current-mvp-s23-visible-flow.json`.
 - Known limitations: this does not add real Polymarket-backed spread/totals/team-total markets. It only improves how existing contract-shaped selected line identity is displayed after trading.
+
+# Cycle TL - Search Filter Removal Guard
+
+- Feature/page worked on: Search tab cleanup/harness alignment for the Local MVP discovery surface.
+- Frontend components touched: `mobile/src/components/SearchScreen.tsx`, `mobile/src/__tests__/searchScreenContract.test.ts`, `mobile/scripts/smoke.ps1`.
+- Backend/API routes touched: none. Existing Search event loading and fallback filtering remain unchanged.
+- User interactions supported: Search still supports typed query, clear, result rows, load-more pagination, and opening an event, while filter/sort/saved/social controls stay absent from the visible MVP UI.
+- State transitions: unchanged. Search query text -> result list/empty state -> clear -> result list; row tap still opens Event Detail.
+- Proof: focused Search tests and typechecks passed; Samsung S23 `SM-S911U1` no-filter proof partially passed in `docs/mobile/harness/cycle-TL-search-filter-removal/cycle-TL-search-filter-removal-proof.json`.
+- Known limitations: this is Search cleanup only. It does not change the core Home -> Event Detail -> ticket -> order -> Portfolio/history flow or provider-backed line-market availability. Search result-row navigation was not re-proven because the S23 proof landed in an empty Search state.
