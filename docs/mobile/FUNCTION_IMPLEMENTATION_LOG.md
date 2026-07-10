@@ -12164,3 +12164,13 @@ Known limitations:
 - State transitions: unchanged. Filled position -> generic Sell ticket -> server-backed fake-token sell -> Portfolio History remains the intended flow.
 - Proof: focused tests and typechecks passed; Samsung S23 `SM-S911U1` full cashout proof passed in `docs/mobile/harness/cycle-TQ-remove-dormant-cashout-sheet/cycle-TQ-current-mvp-s23-visible-flow.json`.
 - Known limitations: provider-backed line markets remain unavailable for current-match spread/totals/team-total rows.
+
+# Cycle TR - Google Auth Tracker Cleanup
+
+- Feature/page worked on: Portfolio/account Google login setup documentation and parity debt cleanup.
+- Frontend components touched: none. Existing `mobile/App.tsx` still opens the backend `/api/auth/google/start` route and stores only the returned Holiwyn mobile API key through `mobile/src/services/mobileCredentialStore.ts`.
+- Backend/API routes touched: none. Existing `/api/auth/google/start`, `/api/auth/google/callback`, `/api/auth/mobile/logout`, `/api/profile/summary`, `/api/portfolio`, and `/api/portfolio/history` remain unchanged.
+- User interactions supported: unchanged. Portfolio/account Google entry still uses the backend-owned Poly/Holiwyn Google OAuth flow rather than a separate mobile Google client credential.
+- State transitions: Google Cloud client ID, client secret, Google code exchange, userinfo fetch, account linking, and mobile API-key minting remain server-owned. Mobile receives a Holiwyn API key through an allowlisted deep link, stores it with SecureStore when available, migrates legacy AsyncStorage keys, and clears both secure and legacy storage on sign-out.
+- Proof: focused Google auth contract tests passed, and `npm run check:server-auth --if-present` passed. No Android proof was required because this cycle did not change visible UI or runtime behavior.
+- Known limitations: real interactive Google consent on S23 remains a manual P1 proof item that requires the configured Google Cloud redirect URI to match a reachable backend auth origin.
