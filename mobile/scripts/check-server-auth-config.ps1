@@ -21,6 +21,7 @@ $checks = @(
   @{ Name = "App passes runtime API key into PolyApi"; Pass = $app -match "new PolyApi\(DEFAULT_API_BASE,\s*runtimeApiKey\)" },
   @{ Name = "App can store returned mobile auth API key"; Pass = $app -match "storeMobileAuthApiKey\(returnedApiKey\)" },
   @{ Name = "App launches backend Google OAuth start route"; Pass = $app -match "/api/auth/google/start" -and $app -match "mobileReturnTo=" },
+  @{ Name = "App can use shared backend Google auth base"; Pass = $app -match "EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL" -and $app -match "GOOGLE_AUTH_BASE" },
   @{ Name = "App does not expose Google OAuth secrets"; Pass = $app -notmatch "EXPO_PUBLIC_GOOGLE_CLIENT_SECRET" -and $app -notmatch "EXPO_PUBLIC_GOOGLE_ACCESS_TOKEN" },
   @{ Name = "App does not use a separate mobile Google OAuth client"; Pass = $app -notmatch "EXPO_PUBLIC_GOOGLE_CLIENT_ID" -and $app -notmatch "androidClientId" -and $app -notmatch "webClientId" },
   @{ Name = "PolyApi sends Bearer Authorization"; Pass = $api.Contains('headers.set("Authorization", `Bearer ${this.apiKey}`);') },

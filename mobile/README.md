@@ -42,6 +42,7 @@ Supported public Expo variables:
 | `EXPO_PUBLIC_API_KEY` | Server order/portfolio mode | `your-development-api-key` | Development API key for fake-token server order and Portfolio sync. Do not commit it. |
 | `EXPO_PUBLIC_ORDER_MODE` | Optional | `mock` or `server` | Selects local fake-token orders or server-backed fake-token orders. |
 | `EXPO_PUBLIC_MARKET_DATA_MODE` | Optional | `mock` or `server` | Selects local market fixtures or backend market/event routes. |
+| `EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL` | Optional for Google login | `https://holiwyn.online` | Backend auth host that serves `/api/auth/google/start`. Defaults to `EXPO_PUBLIC_API_BASE_URL`. Use this when reusing the same Google Cloud OAuth callback/credential from the Poly/Holiwyn backend while local API testing points elsewhere. This is not a Google credential. |
 | `EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL` | Optional for Google login | `holiwyn://auth/google` | Deep link returned to after backend Google OAuth succeeds. This is not a Google credential. Keep Google Cloud client IDs/secrets/tokens on the backend. |
 | `EXPO_PUBLIC_SHOW_ORDERBOOK` | Debug only | `1` | Shows internal order book surfaces. Leave unset for the Local MVP retail UI. |
 
@@ -59,7 +60,7 @@ The Google Cloud authorized redirect URI must point at the backend callback, for
 http://127.0.0.1:3002/api/auth/google/callback
 ```
 
-For Expo Go manual OAuth testing on a physical Android device, `NEXTAUTH_URL` must be a backend URL the phone/browser can reach, such as a LAN IP or the hosted Holiwyn domain. Add that exact callback URL to the same Google Cloud OAuth client. Then set `EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL` to the Expo deep link shown by Expo with `/--/auth/google` appended. The backend accepts `exp:` / `exps:` mobile return links only outside production; production returns must use the Holiwyn app scheme.
+For Expo Go manual OAuth testing on a physical Android device, `NEXTAUTH_URL` must be a backend URL the phone/browser can reach, such as a LAN IP or the hosted Holiwyn domain. Add that exact callback URL to the same Google Cloud OAuth client. If your market/order API is local but Google login should reuse the hosted Poly/Holiwyn OAuth credential, set `EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL` to that hosted backend auth origin. Then set `EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL` to the Expo deep link shown by Expo with `/--/auth/google` appended. The backend accepts `exp:` / `exps:` mobile return links only outside production; production returns must use the Holiwyn app scheme.
 
 Android device URL tips:
 

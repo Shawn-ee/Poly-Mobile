@@ -4147,6 +4147,12 @@ Cycle OW implementation notes:
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Mobile Google sign-in using the shared Poly/Holiwyn Google Cloud client | `/api/auth/google/start`; `https://accounts.google.com/o/oauth2/v2/auth`; `/api/auth/google/callback`; Google token/userinfo endpoints | GET/browser redirect plus backend POST to Google token endpoint | Public auth start; backend has `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and configured `NEXTAUTH_URL` | `returnTo=/portfolio`; `mobileReturnTo=holiwyn://auth/google` or non-production Expo return URL | Deep-link params `googleAuth=success`, `forcePortfolio=1`, `forceRuntimePortfolioSync=1`, `apiKey=<redacted>` | Existing `User`, `Account`, `ApiCredential`; no schema change | Local fake-token trading still works without Google sign-in | Real Google consent proof still needs a reachable `NEXTAUTH_URL` whose `/api/auth/google/callback` is authorized on the same Google Cloud OAuth client. |
 
+## Cycle SM - Google Auth Shared Backend Base
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body/query | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio/Account Google login with shared Poly/Holiwyn OAuth credential | `${EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL || EXPO_PUBLIC_API_BASE_URL}/api/auth/google/start`; `https://accounts.google.com/o/oauth2/v2/auth`; `/api/auth/google/callback`; Google token/userinfo endpoints | Browser GET plus backend POST to Google token endpoint | Public auth start; backend owns `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and `NEXTAUTH_URL` | `returnTo=/portfolio`; `mobileReturnTo=holiwyn://auth/google` or allowed non-production Expo return URL | Deep-link params `googleAuth=success`, `forcePortfolio=1`, `forceRuntimePortfolioSync=1`, `apiKey=<redacted>` | Existing `User`, `Account`, `ApiCredential`; no schema change | Local fake-token trading still works without Google sign-in | Real interactive S23 Google consent still requires the backend `NEXTAUTH_URL/api/auth/google/callback` to be authorized in the same Google Cloud OAuth client. |
+
 # Cycle SH - Home Local MVP Focus
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

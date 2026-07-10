@@ -1,0 +1,25 @@
+﻿{
+    "cycle":  "SM",
+    "result":  "pass",
+    "generatedAt":  "2026-07-10T08:15:03.1295102Z",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "mobileApiBaseUrl":  "http://172.16.200.14:3002",
+    "expoPort":  8293,
+    "keyId":  "redacted",
+    "apiKey":  "redacted",
+    "assertions":  {
+                       "portfolioOpened":  true,
+                       "googleConnectedVisible":  true,
+                       "serverProfileLoadedVisible":  true,
+                       "portfolioRouteReadableWithReturnedKey":  true,
+                       "persistedReturnedKeyAfterRestart":  true,
+                       "logoutClearsPersistedCredential":  false
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\harness\\cycle-SM-google-auth-shared-backend-base\\cycle-SM-google-auth-return-portfolio.xml",
+                      "docs\\mobile\\screenshots\\cycle-SM-google-auth-shared-backend-base\\cycle-SM-google-auth-return-portfolio.png",
+                      "docs\\mobile\\harness\\cycle-SM-google-auth-shared-backend-base\\cycle-SM-google-auth-persisted-portfolio.xml",
+                      "docs\\mobile\\screenshots\\cycle-SM-google-auth-shared-backend-base\\cycle-SM-google-auth-persisted-portfolio.png"
+                  ]
+}
