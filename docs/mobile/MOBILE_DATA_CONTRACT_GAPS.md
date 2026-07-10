@@ -9043,3 +9043,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: an explicit row-level `realizedPnl` or `proceeds` display contract would make future history rows more precise. Current mobile uses `action` to distinguish sold/closed proceeds from bought cost.
 - Temporary mock/static data: none added. The S23 proof creates a real local fake-token buy/cashout sequence through the existing server-mode proof path.
 - Future migration concern: when backend history returns explicit realized P/L, replace action-derived display logic with contract fields while preserving the green positive proceeds/winnings visual treatment.
+
+# Cycle SP - Portfolio History Realized P/L Contract Notes
+
+- No schema migration was added.
+- Closed or narrowed: resolved `/api/portfolio/history` items already expose `realizedPnLTokens`; mobile now preserves that value as `PortfolioActivity.realizedPnl` and carries `proceedsAmount` for display.
+- Route mismatch: narrowed for resolved history rows. Mobile no longer drops the backend realized P/L field where it exists.
+- Fields Holiwyn still needs but backend does not fully provide: recent trade/cashout rows still lack explicit realized P/L/proceeds display fields. The UI still treats sold recent-trade rows as proceeds until a backend field exists.
+- Temporary mock/static data: none added.
+- Future migration concern: add row-level realized P/L/proceeds to recent trade/cashout history payloads, then switch sold-row display to backend-provided fields rather than action-derived proceeds.

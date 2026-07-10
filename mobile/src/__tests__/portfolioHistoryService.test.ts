@@ -31,6 +31,8 @@ describe("portfolio history activity mapping", () => {
         outcome: "France",
         amount: 172.5,
         entryAmount: 100,
+        realizedPnl: 72.5,
+        proceedsAmount: 172.5,
         timestamp: "Jul 19, 5:30 PM",
       }),
     ]);
@@ -52,6 +54,7 @@ describe("portfolio history activity mapping", () => {
           winningsTokens: 0,
           refundsTokens: 0,
           netInvestedTokens: 64,
+          realizedPnLTokens: -64,
         }),
       ]),
     ).toEqual([
@@ -60,6 +63,8 @@ describe("portfolio history activity mapping", () => {
         outcome: "Resolved",
         amount: 64,
         entryAmount: 64,
+        realizedPnl: -64,
+        proceedsAmount: 64,
         timestamp: "Jun 12, 1:05 PM",
       }),
     ]);

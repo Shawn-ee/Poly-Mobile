@@ -56,6 +56,8 @@ export type PortfolioActivity = {
   contractSide?: BinaryContractSide;
   amount: number;
   entryAmount?: number;
+  realizedPnl?: number;
+  proceedsAmount?: number;
   shares?: number;
   side?: "buy" | "sell";
   probability?: number;
@@ -151,10 +153,12 @@ export { portfolioPositionValue };
 const estimatedPnl = estimatedPositionPnl;
 
 const isPositiveRealizedActivity = (activity: PortfolioActivity) =>
-  activity.action === "closed" || activity.action === "sold";
+  typeof activity.realizedPnl === "number"
+    ? activity.realizedPnl > 0
+    : activity.action === "closed" || activity.action === "sold";
 
 const activityAmountDisplay = (activity: PortfolioActivity) =>
-  `${isPositiveRealizedActivity(activity) ? "+" : ""}${portfolioRowMoney(activity.amount)}`;
+  `${isPositiveRealizedActivity(activity) ? "+" : ""}${portfolioRowMoney(activity.proceedsAmount ?? activity.amount)}`;
 
 const displayOutcome = (item: { outcome: string; selection?: TicketSelection; contractSide?: BinaryContractSide }) => {
   const contractSide = item.contractSide ?? item.selection?.contractSide;
