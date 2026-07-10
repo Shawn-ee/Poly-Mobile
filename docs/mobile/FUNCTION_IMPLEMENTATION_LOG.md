@@ -12090,3 +12090,14 @@ Known limitations:
 - State transitions: unchanged. Search query text -> result list/empty state -> clear -> result list; row tap still opens Event Detail.
 - Proof: focused Search tests and typechecks passed; Samsung S23 `SM-S911U1` no-filter proof partially passed in `docs/mobile/harness/cycle-TL-search-filter-removal/cycle-TL-search-filter-removal-proof.json`.
 - Known limitations: this is Search cleanup only. It does not change the core Home -> Event Detail -> ticket -> order -> Portfolio/history flow or provider-backed line-market availability. Search result-row navigation was not re-proven because the S23 proof landed in an empty Search state.
+
+# Cycle TM - Search Populated Result Navigation
+
+- Feature/page worked on: Search populated-results proof and result-row navigation in the Local MVP discovery surface.
+- Frontend/harness touched: `mobile/App.tsx`, `mobile/scripts/smoke.ps1`, `mobile/src/__tests__/searchScreenContract.test.ts`, `docs/mobile/audits/cycle-TM-search-populated-navigation.md`.
+- Backend/API routes touched: none. Existing `/api/events` / Search event loading remains unchanged.
+- User interactions supported: S23 Search proof now starts from a populated Search route, confirms Filter/sort controls stay absent, taps the first result row, and verifies Event Detail opens.
+- State transitions: Search tab -> populated result list -> result row tap -> Event Detail.
+- State/data resilience: route-backed Search rows remain visible if quote decoration is temporarily unavailable.
+- Proof: focused Search tests passed, mobile/root typechecks passed, and Samsung S23 `SM-S911U1` deep Search proof passed. Evidence: `docs/mobile/screenshots/cycle-TM-search-populated-navigation/cycle-current-holiwyn-search-no-filter-sort.png`, `docs/mobile/screenshots/cycle-TM-search-populated-navigation/cycle-current-holiwyn-search-open-result.png`, `docs/mobile/harness/cycle-TM-search-populated-navigation/cycle-current-holiwyn-search-sort-screen.xml`, `docs/mobile/harness/cycle-TM-search-populated-navigation/cycle-current-holiwyn-search-open-result.xml`.
+- Known limitations: this improves proof coverage only; it does not add Search filters, saved/watchlist, social features, or provider-backed line-market breadth.

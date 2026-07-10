@@ -9241,3 +9241,13 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: none for filter removal. If saved/watchlist or richer filter facets return later, they need a dedicated backend route/data contract instead of frontend-only controls.
 - Temporary mock/static data: none added.
 - Future migration concern: keep Search focused on World Cup discovery while the Local MVP trading flow is Home/Live -> Event Detail -> ticket -> Portfolio. Do not reintroduce filter/sort controls without a same-cycle Polymarket audit and backend contract.
+
+# Cycle TM - Search Populated Result Navigation Notes
+
+- No schema migration was added.
+- Closed: the Search no-filter proof path now requires at least one result row and result-row navigation to Event Detail, instead of accepting an empty Search page as enough evidence.
+- Route mismatch: none. The proof still uses the existing Search event feed route and Event Detail opening behavior.
+- Fields Holiwyn still needs but backend does not fully provide: none for populated Search navigation. Real provider-backed line-family markets remain a separate provider gap.
+- Schema mismatch narrowed: Search discovery now treats quote decoration as non-blocking. `/api/events` event/market/outcome rows are enough to render a result; quote routes can enrich prices later without hiding the row.
+- Temporary mock/static data: none added.
+- Future migration concern: if `/api/events` is empty in local server mode, Search proofs should fail or explicitly fall back to mock mode rather than silently counting empty-state screenshots as result-navigation proof.

@@ -1212,8 +1212,12 @@ export default function App() {
     if (ORDER_MODE !== "server") return normalized;
     return Promise.all(
       normalized.map(async (event) => {
-        const quotesByMarketId = await loadMarketQuotesById(api, event.markets.map((market) => market.id));
-        return applyTicketQuotesToEvent(event, quotesByMarketId);
+        try {
+          const quotesByMarketId = await loadMarketQuotesById(api, event.markets.map((market) => market.id));
+          return applyTicketQuotesToEvent(event, quotesByMarketId);
+        } catch {
+          return event;
+        }
       }),
     );
   }, [api]);

@@ -4336,3 +4336,9 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Search without filter/sort controls | Existing Search event feed path through `loadSearchEventPage` / `/api/events` when server mode is available | GET | Public viewing | Existing query/cursor/limit params | event id/title/teams/start time, top market/outcome, `marketSourceSummary` hidden audit fields | Existing `Event`, `Market`, `Outcome`; no schema change | Local fallback search still filters bundled events by query text | None for Local MVP Search. Saved/watchlist/filter facets remain out of scope until a dedicated backend contract exists. |
+
+# Cycle TM - Search Populated Result Navigation
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Populated Search row navigation | `/api/events` through `loadSearchEventPage` when server market-data mode is active | GET | Public viewing | Search feed params with blank query, limit, cursor, source, `includeMobileMarkets=1` | event id/slug/title, team names, start/status, mobile markets/outcomes, source summary | Existing `Event`, `Market`, `Outcome`; no schema change | Mock mode uses bundled World Cup events; server Search keeps route-backed rows visible if quote decoration is unavailable | None for Search navigation. A populated proof requires the local backend to return at least one World Cup event. |
