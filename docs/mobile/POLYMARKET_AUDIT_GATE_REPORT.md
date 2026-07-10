@@ -7441,3 +7441,13 @@ Remaining P1:
 - Android proof: not rerun because this cycle changed no visible UI and no ADB device was attached.
 - Unresolved P0: 0 for UJ scope.
 - Remaining P1: next visible MVP cycle should run S23 proof for the full retail journey.
+
+# Cycle UK Audit Gate - Local MVP Route Baseline Proof
+
+- Scope: backend/API route baseline for the current Local MVP retail journey.
+- P0 result: PASS for backend/API inspection scope.
+- Route proof: `docs/mobile/harness/cycle-UK-local-mvp-route-baseline-proof/cycle-UK-state-inspection.json` shows Home returns 7 match events, 0 futures, and selected event `argentina-vs-egypt`.
+- Event Detail proof: `argentina-vs-egypt` has `regulationWinner.status=provider-backed`, `lineMarkets.status=contract-fixture`, 3 provider winner markets, 0 provider line markets, and 4 fixture line markets.
+- Android proof: not rerun because no ADB device was attached.
+- Unresolved P0: 0 for UK backend/API scope.
+- Remaining P1: S23 visible full journey proof against this current route data; real provider-backed Spread/Totals/Team Total line rows.

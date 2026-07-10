@@ -12333,3 +12333,13 @@ Known limitations:
 - User interactions supported: unchanged Home/Live -> Event Detail -> line selector -> simple ticket -> fake-token order -> Portfolio/history path. Quote/probability loading remains active.
 - State transitions: selected Event Detail no longer enters orderbook depth `loading` / `ready` / `empty` states unless `EXPO_PUBLIC_SHOW_ORDERBOOK=1` is explicitly enabled for debug.
 - Known limitations: no Android proof because no device is attached and no visible UI changed. Reprove the full S23 Local MVP journey on the next visible cycle.
+
+# Cycle UK - Local MVP Route Baseline Proof
+
+- Feature/page worked on: backend route baseline for Home feed and Event Detail Local MVP market readiness.
+- Frontend components touched: none.
+- Backend/API routes touched: no handler changed. Inspected `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` and `/api/mobile/events/argentina-vs-egypt/live-detail`.
+- User interactions supported: confirms the current backend route state supports Home/Live -> Event Detail -> line selector -> simple ticket -> server fake-token order -> Portfolio/history, pending visible S23 proof.
+- State transitions: no runtime state changed. The inspection proves provider-backed Regulation Winner is ready while line rows remain explicit `contract-fixture` rows.
+- Proof: `docs/mobile/harness/cycle-UK-local-mvp-route-baseline-proof/cycle-UK-state-inspection.json`.
+- Known limitations: no Android proof because no device is attached. Real provider-backed Spread/Totals/Team Total rows remain unavailable.

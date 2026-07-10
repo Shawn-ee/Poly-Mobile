@@ -1549,3 +1549,11 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Default Event Detail still fetched order-book depth even though order book is not MVP-facing | P0 | Verified | Automatic depth loading now requires `EXPO_PUBLIC_SHOW_ORDERBOOK=1`; the default retail path continues loading quote/probability data only. | `mobile/App.tsx`; `src/__tests__/mobile.local-mvp-orderbook-debug-gate.test.ts`; `docs/mobile/audits/cycle-UJ-disable-default-orderbook-depth-fetch.md` |
 | S23 visible journey reproof after source-only order-book cleanup | P1 | Open | No Android device was attached and no visible UI changed. Next visible Local MVP cycle should reprove Home/Live -> Event Detail -> ticket -> Portfolio/history. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |
+
+# Cycle UK - Local MVP Route Baseline Proof
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Current backend route baseline needed after order-book debug gating | P0 | Verified | Route inspection passed: Home query returns 7 match events and 0 futures; selected MVP event `argentina-vs-egypt` has provider-backed Regulation Winner and contract-fixture line rows. | `docs/mobile/harness/cycle-UK-local-mvp-route-baseline-proof/cycle-UK-state-inspection.json`; `docs/mobile/audits/cycle-UK-local-mvp-route-baseline-proof.md` |
+| S23 visible journey proof against current route data | P1 | Open | The proof is backend/API only because no Android device is attached. Next visible cycle should prove the route-backed journey on S23. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |
+| Real provider-backed spread/totals/team-total current-match rows | P1 | Open | Route diagnosis still reports 0 provider-backed line markets and 4 contract-fixture line markets. | `docs/mobile/harness/cycle-UK-local-mvp-route-baseline-proof/cycle-UK-state-inspection.json` |
