@@ -5,12 +5,7 @@ import { MarketList } from "./MarketLists";
 import { initialHomeMatchCount, nextHomeMatchCount } from "../services/homePaginationService";
 
 type HomeScreenCopy = {
-  marketSearch: string;
-  clearSearch: string;
   noResults: string;
-  searchAll: string;
-  searchLive: string;
-  today: string;
 };
 
 export function HomeScreen({

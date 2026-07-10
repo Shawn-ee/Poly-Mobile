@@ -4554,3 +4554,9 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Event Detail / Trade Ticket Chinese source copy | Existing Event Detail data from `/api/mobile/events/:slug/live-detail` or local fixture event | GET | Public event browse | selected event slug | Existing `marketSourceSummary`, `referenceSource`, market/outcome/line/source identity | Existing `Event`, `Market`, `Outcome`; no schema change | Local fixtures keep the same source identity and readable Chinese copy | None for copy cleanup. Real provider-backed line rows remain separate P1. |
+
+# Cycle VW - Home Copy Contract Cleanup
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home match-only feed | `/api/events` in server mode; local World Cup fixtures in mock mode | GET | Public event browse | `sportKey=soccer`, `leagueKey=world_cup`, `includeMobileMarkets=1`, `mobileMvpMatches=1`, pagination cursor/limit when server-backed | Event title, status, teams, compact markets, source summary, next cursor | Existing `Event`, `Market`, `Outcome`; no schema change | Local fixture feed still supports Home when server mode is unavailable | None for this cleanup. Search/filter copy and routes are intentionally not part of Home. Real provider-backed line rows remain separate P1. |

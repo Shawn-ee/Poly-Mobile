@@ -21,6 +21,11 @@ describe("Home Local MVP focus contract", () => {
     expect(home).not.toContain("home-filter-all");
     expect(home).not.toContain("home-filter-live");
     expect(home).not.toContain("home-filter-today");
+    expect(home).not.toContain("marketSearch: string");
+    expect(home).not.toContain("clearSearch: string");
+    expect(home).not.toContain("searchAll: string");
+    expect(home).not.toContain("searchLive: string");
+    expect(home).not.toContain("today: string");
     expect(home).not.toContain("filterChip");
     expect(home).not.toContain("filterRow");
   });
