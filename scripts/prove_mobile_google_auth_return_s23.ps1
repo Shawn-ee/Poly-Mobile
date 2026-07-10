@@ -272,12 +272,20 @@ try {
     Assert-Contains -Path $logoutAccountXml -Expected @(
       "account-screen",
       "account-login-google-connected",
-      "account-sign-out-google"
+      "account-sign-out-google",
+      "Fake-token trading balance for local MVP testing."
+    )
+    Assert-NotContains -Path $logoutAccountXml -Unexpected @(
+      "Deposits and withdrawals",
+      "Deposit",
+      "Withdraw"
     )
     Tap-UiNode -Path $logoutAccountXml -Marker "account-sign-out-google"
     Start-Sleep -Seconds 8
     $logoutSignedOutXml = Save-UiHierarchy -Name "cycle-$Cycle-google-auth-account-signed-out.xml"
     Assert-Contains -Path $logoutSignedOutXml -Expected @(
+      "portfolio-screen",
+      "portfolio-google-login-button-visible",
       "Continue with Google"
     )
     Assert-NotContains -Path $logoutSignedOutXml -Unexpected @(
@@ -285,7 +293,10 @@ try {
       "account-sign-out-google",
       "portfolio-account-google-connected",
       "portfolio-google-login-connected-visible",
-      "Server profile loaded"
+      "Server profile loaded",
+      "Deposits and withdrawals",
+      "Deposit",
+      "Withdraw"
     )
     $logoutSignedOutPng = Save-Screenshot -Name "cycle-$Cycle-google-auth-account-signed-out.png"
   }

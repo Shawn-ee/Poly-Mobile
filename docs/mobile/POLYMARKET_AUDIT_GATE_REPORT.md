@@ -7344,3 +7344,15 @@ Remaining P1:
 - Test proof: mobile typecheck passed and 13 Event Detail/mobile proof contract test files passed.
 - Unresolved P0: 0 for SC scope.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets and production liquidity/public market-maker policy.
+
+# Cycle SD Audit Gate - Account Fake-Token Funding Copy and Google Credential Alignment
+
+- Scope: Local MVP Portfolio/Account funding copy and Google login credential handling.
+- P0 result: PASS for SD scope.
+- Implementation proof: `mobile/src/localization/appCopy.ts` replaces deposit/withdraw-disabled account copy with fake-token MVP copy; `mobile/src/components/Portfolio.tsx` removes unused deposit/withdraw copy/styles; Google auth still routes through backend-owned `/api/auth/google/start` and `/api/auth/google/callback`.
+- Android proof: passed on Samsung S23 `SM_S911U1`.
+- Visible proof: `docs/mobile/screenshots/cycle-SD-account-fake-token-copy/cycle-SD-google-auth-return-portfolio.png`, `cycle-SD-google-auth-persisted-portfolio.png`, and `cycle-SD-google-auth-account-signed-out.png`.
+- XML proof: `docs/mobile/harness/cycle-SD-account-fake-token-copy/cycle-SD-google-auth-account-connected.xml` contains the fake-token account copy; signed-out XML shows `portfolio-google-login-button-visible` / `Continue with Google` and rejects connected/deposit/withdraw markers.
+- Test proof: mobile typecheck passed; focused Google/account/Portfolio tests passed.
+- Unresolved P0: 0 for SD scope.
+- Remaining P1: real interactive Google consent on S23, provider-backed current-match line markets, and production liquidity/public market-maker policy.
