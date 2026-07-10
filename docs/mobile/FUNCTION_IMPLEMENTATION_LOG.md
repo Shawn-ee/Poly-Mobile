@@ -11754,3 +11754,14 @@ Known limitations:
 - User interactions supported: Google-returned Holiwyn key is stored through Expo SecureStore when available, survives app restart on S23, and is cleared on sign-out.
 - State transitions: callback-shaped return -> `storeMobileAuthApiKey()` -> SecureStore persistence -> restart -> `loadMobileAuthApiKey()` -> Portfolio connected state -> logout -> `clearMobileAuthApiKey()` -> signed-out state.
 - Known limitations: proof still uses a generated backend-shaped local credential instead of real Google consent; SecureStore fallback to legacy AsyncStorage remains only for environments where SecureStore is unavailable.
+
+# Cycle SC - Event Detail Chart Removal Hardening
+
+- Feature/page worked on: Local MVP Event Detail market page.
+- Frontend components touched: `mobile/src/components/EventDetail.tsx`.
+- Backend/API routes touched: none.
+- Proof script touched: `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`.
+- Tests touched: `mobile/src/__tests__/eventDetailChartStatusCopy.test.ts`, `mobile/src/__tests__/eventDetailChartInteractionContract.test.ts`.
+- User interactions supported: Event Detail continues to show the compact match header, outcome buttons, Game Lines, line selectors, Trade Ticket, fake-token order, and Portfolio/History path without a market-page probability chart.
+- State transitions: unchanged. Ticket/order/Portfolio state still flows through existing market/outcome/line selection and `/api/orders`, `/api/portfolio`, `/api/portfolio/history`.
+- Known limitations: chart history backend data may still exist as internal route data, but the Local MVP Event Detail page no longer contains the chart renderer or chart route-state UI.

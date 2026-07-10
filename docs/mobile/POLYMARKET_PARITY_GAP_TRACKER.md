@@ -1311,3 +1311,11 @@ For every UI element or interaction, answer:
 | Secure native credential storage | P1 | Verified | Mobile credential storage now uses `expo-secure-store` when available, migrates legacy AsyncStorage data, and deletes both secure and legacy storage on sign-out. | `mobile/src/services/mobileCredentialStore.ts`; `mobile/src/__tests__/googleMobileAuthContract.test.ts` |
 | S23 proof for secure-store-backed auth persistence and logout | P0 | Verified | S23 proof passes callback-shaped return, persisted restart without `apiKey`, connected Account row, sign-out tap, and signed-out `Continue with Google` state. | `docs/mobile/harness/cycle-SB-secure-auth-storage/cycle-SB-google-auth-return-summary.json`; `docs/mobile/screenshots/cycle-SB-secure-auth-storage/cycle-SB-google-auth-persisted-portfolio.png`; `docs/mobile/screenshots/cycle-SB-secure-auth-storage/cycle-SB-google-auth-account-signed-out.png` |
 | Interactive Google account consent on S23 | P1 | Open | SB still proves the backend-returned mobile credential handoff with a generated local credential; actual browser consent needs manual/real Google session proof. | `docs/mobile/audits/cycle-SB-secure-auth-storage.md` |
+
+# Cycle SC - Event Detail Chart Removal Hardening
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Dormant market-page chart renderer can leak back into Local MVP Event Detail | P0 | Verified | Removed the chart renderer, chart point state, chart source/status copy, and chart styles from `EventDetail.tsx`. | `mobile/src/components/EventDetail.tsx`; `mobile/src/__tests__/eventDetailChartInteractionContract.test.ts`; `mobile/src/__tests__/eventDetailChartStatusCopy.test.ts` |
+| S23 proof should fail if chart markers return | P0 | Verified | Current MVP proof script now rejects `event-detail-price-chart`, `event-detail-chart-route-state`, and `Chart selection` in Event Detail top/lines XML. | `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1` |
+| Current match has no provider-backed Spread/Totals/Team Total markets | P1 | Open | SC does not change provider breadth; line rows remain contract fixtures until attach-ready Polymarket line markets exist. | Provider readiness notes |

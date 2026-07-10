@@ -8935,3 +8935,12 @@ Future migration concern:
 - Route mismatch: none introduced. Backend still owns Google token exchange and API credential creation; mobile only stores the returned Holiwyn API key.
 - Temporary mock/static data: S23 proof uses a generated local credential shaped like the backend callback credential.
 - Future migration concern: when moving to a production build, decide whether SecureStore should require biometric/device authentication and whether logout should revoke all mobile Google credentials for the user or only the current key.
+
+# Cycle SC - Event Detail Chart Removal Hardening Notes
+
+- No schema migration was added.
+- Closed or narrowed: the Local MVP Event Detail page no longer keeps a dormant chart renderer, chart selection state, or chart route-state UI in `EventDetail.tsx`.
+- Fields Holiwyn still needs but backend does not fully provide: real provider-backed current-match Spread/Totals/Team Total market ids, line/period/source fields, and quotes when Polymarket exposes attach-ready line markets.
+- Route mismatch: none introduced. Existing live-detail/chart-history backend data can remain internal, but the visible MVP page does not consume chart history.
+- Temporary mock/static data: current line markets remain contract-shaped fixtures when real Polymarket line markets are unavailable.
+- Future migration concern: if a chart returns later, it should be introduced as an explicitly approved MVP feature with fresh Polymarket audit criteria and S23 proof, not by reusing the removed dormant renderer.
