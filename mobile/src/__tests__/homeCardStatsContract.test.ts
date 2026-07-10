@@ -18,6 +18,10 @@ describe("Home card stats contract", () => {
     expect(home).not.toContain("liquidity: string");
     expect(marketLists).toContain("homeCardMarket(event)");
     expect(marketLists).toContain("event-card-retail-outcome-rail");
+    expect(marketLists).toContain("event-outcome-retail-");
+    expect(marketLists).not.toContain("teamRow");
+    expect(marketLists).not.toContain("probButton");
+    expect(marketLists).not.toContain("event-outcome-${event.id}-${winner.id}-${outcome.id}");
     expect(marketLists).toContain("eventSourceReadiness(event, locale)");
     expect(marketLists).toContain("home-card-source-provider-winner-local-lines");
     expect(marketLists).toContain("sourceReadinessHidden");

@@ -9178,3 +9178,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: real Polymarket market IDs/condition IDs/CLOB token IDs for current-match spread, total, and team-total rows.
 - Temporary mock/static data: the line rows used in TE are backend-shaped contract fixtures, not arbitrary frontend-only strings. They remain explicitly marked fixture-only/provider-unavailable until a real provider source can be attached.
 - Future migration concern: the next provider milestone should either import real Polymarket line markets if they become available or define an approved secondary-provider line contract; do not hide the fixture/source distinction in tester-facing proof.
+
+# Cycle TF - Home/Live Card Simplification Notes
+
+- No schema migration was added.
+- Closed or narrowed: Home/Live cards no longer carry duplicate hidden legacy outcome row controls in addition to the compact retail outcome rail.
+- Route mismatch: none. The existing event feed data still maps to the same compact Home/Live outcome rail and ticket selection.
+- Fields Holiwyn still needs but backend does not fully provide: no new fields for this cleanup.
+- Temporary mock/static data: none added.
+- Future migration concern: keep the Home/Live card data contract centered on stable event, market, outcome, probability, and source-readiness fields; do not add parallel hidden ticket controls to paper over missing feed behavior.

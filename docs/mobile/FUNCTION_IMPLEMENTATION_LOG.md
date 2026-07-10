@@ -12020,3 +12020,13 @@ Known limitations:
 - State transitions: `/api/mobile/events/:slug/live-detail` market/source disclosure -> selected line market/outcome identity -> `/api/markets/:marketId/quote` -> `/api/orders` with seeded local counterparty fill -> `/api/portfolio/history` filled History row.
 - Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-TE-current-mvp-full-flow-reproof/cycle-TE-current-mvp-s23-visible-flow.json` with `detailShowsProviderUnavailableLineFamilies=true`, `ticketPreservesLine=true`, `swipeSubmitReachedPortfolio=true`, `filledHistoryVisible=true`, and `orderbookHidden=true`.
 - Known limitations: real Polymarket-backed spread/totals/team-total line markets remain unavailable for the current match set, so the Local MVP uses backend-shaped contract fixtures with explicit provider-unavailable disclosure.
+
+# Cycle TF - Home/Live Card Simplification
+
+- Feature/page worked on: Home and Live match cards in the Local MVP retail flow.
+- Frontend components touched: `mobile/src/components/MarketLists.tsx`, `mobile/src/__tests__/homeCardStatsContract.test.ts`.
+- Backend/API routes touched: none. Existing event, live-detail, quote, order, Portfolio, and history routes remain unchanged.
+- User interactions supported: users now have one clean card-level outcome path on Home/Live: the compact retail outcome rail. The obsolete hidden legacy team row/probability button controls were removed so card hierarchy and source are less cluttered.
+- State transitions: unchanged. Home/Live card outcome rail still opens the same selected market/outcome ticket, then the existing server fake-token order and Portfolio/history flow.
+- Proof: focused mobile tests passed, root/mobile typechecks passed, and Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-TF-home-live-card-simplification/cycle-TF-current-mvp-s23-visible-flow.json`.
+- Known limitations: this does not change provider line availability. Real Polymarket-backed spread/totals/team-total line markets remain a P1 gap.
