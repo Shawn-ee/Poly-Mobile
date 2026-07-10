@@ -9232,3 +9232,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new fields for this label fix. Real Polymarket-backed spread/totals/team-total markets remain unavailable for the current match and still require provider import/normalization work when Polymarket exposes attach-ready line markets.
 - Temporary mock/static data: none added. The S23 proof continues using the existing backend-shaped contract fixture path with explicit provider/source markers.
 - Future migration concern: do not remove `referenceOutcomeLabel` from Portfolio/history payloads when replacing fixtures with real provider-backed markets; the UI depends on that field to keep selected line/outcome labels readable after order placement.
+
+# Cycle TL - Search Filter Removal Guard Notes
+
+- No schema migration was added.
+- Closed or narrowed: stale Search audit/harness expectations no longer require a visible Filter button, filter panel, sort controls, saved filters, or social/chat controls in the Local MVP Search tab.
+- Route mismatch: none. Search still uses the existing event feed/search route shape and local fallback search service.
+- Fields Holiwyn still needs but backend does not fully provide: none for filter removal. If saved/watchlist or richer filter facets return later, they need a dedicated backend route/data contract instead of frontend-only controls.
+- Temporary mock/static data: none added.
+- Future migration concern: keep Search focused on World Cup discovery while the Local MVP trading flow is Home/Live -> Event Detail -> ticket -> Portfolio. Do not reintroduce filter/sort controls without a same-cycle Polymarket audit and backend contract.

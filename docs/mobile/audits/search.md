@@ -1,12 +1,12 @@
 # Search Polymarket Audit
 
-Status: Cycle AB P0 pass for focused Search/Explore discovery, filtering, sorting, and result navigation.
+Status: Cycle TL partial P0 pass for focused Search discovery and removal of non-MVP filter/sort controls.
 
 ## Scope
 
 - Search/Explore entry point.
 - Default result page layout.
-- Category/filter/sort controls.
+- No visible filter/sort/saved/social controls in the Local MVP Search tab.
 - Search query and clear state remain supported in Holiwyn.
 - Market/event row navigation.
 - Empty state for unmatched queries.
@@ -52,8 +52,8 @@ Screenshots/UI hierarchy:
 | --- | --- | --- | --- | --- |
 | SE-P0-01 | P0 | Search bottom tab opens a dedicated Search/Explore surface with an Explore-style headline and horizontal category chips. | Tablet screenshot/XML | Pass |
 | SE-P0-02 | P0 | Search results use dense rows with sport/category, title, volume/today/liquidity metadata, chat/end metadata, right-side probability/outcome, save control, and chevron. | Tablet screenshot/XML | Pass |
-| SE-P0-03 | P0 | Search Filter control is visible as a floating pill and opens a real filter panel with status and sort controls. | Tablet smoke | Pass |
-| SE-P0-04 | P0 | Sort/filter controls mutate result ordering/state without leaving Search. | Tablet smoke | Pass |
+| SE-P0-03 | P0 | Search filter/sort controls are intentionally absent from the Local MVP UI. | Source contract and S23 XML | Pass |
+| SE-P0-04 | P0 | Query/clear still works without Search filter/sort controls. Result navigation remains covered by prior proofs and should be refreshed in a populated Search cycle. | Source/harness contract and S23 empty-state proof | Partial |
 | SE-P0-05 | P0 | Tapping a result row opens the correct Holiwyn game page. | Tablet smoke | Pass |
 | SE-P0-06 | P0 | Typed query and clear behavior remain functional, and unmatched query has an empty state. | Existing device smoke | Pass |
 | SE-P1-01 | P1 | Polymarket signed-in/native Search should be recaptured when reference app is no longer location-gated. | Reference audit | Deferred |
@@ -82,9 +82,15 @@ Evidence:
 
 ## Audit Gate
 
-Result: Pass for focused Search/Explore P0 parity baseline.
+Result: Cycle AB pass is superseded by Cycle TL for the current Local MVP Search direction.
 
 Unresolved P0 gaps: 0 for focused Search/Explore scope.
+
+Cycle TL update:
+
+- The user removed the Search filter button as useless for the Local MVP.
+- `SearchScreen` keeps search input, clear, result rows, hidden source markers, pagination, and result navigation.
+- Search filter/sort/saved/social controls are now treated as out of scope unless a future milestone defines their backend contract and Polymarket reference behavior.
 
 Remaining P1/P2 gaps:
 

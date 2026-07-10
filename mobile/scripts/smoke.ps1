@@ -2736,7 +2736,8 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-search-clear-query-after.png"
       $searchClearQueryHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search-clear-query-after.xml"
-      Assert-HierarchyContains -Path $searchClearQueryHierarchy -Expected @("Top results", "3 results", "Mexico vs. Ecuador", "Popular", "Live first")
+      Assert-HierarchyContains -Path $searchClearQueryHierarchy -Expected @("Top results", "3 results", "Mexico vs. Ecuador", "search-filter-controls-hidden-local-mvp", "search-sort-controls-hidden-local-mvp")
+      Assert-HierarchyDoesNotContain -Path $searchClearQueryHierarchy -Unexpected @("Filter", "search-filter-sheet", "search-filter-panel", "search-filter-live", "search-filter-saved", "search-sort-live", "Popular", "Live first")
       return
     }
 
@@ -3267,25 +3268,9 @@ try {
       Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "holiwyn-search-tab"
       Start-Sleep -Seconds 1
       $searchSortScreenHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search-sort-screen.xml"
-      Assert-HierarchyContains -Path $searchSortScreenHierarchy -Expected @("Explore World Cup predictions", "Top results", "Popular", "Live first", "Mexico vs. Ecuador", "Filter")
-      Invoke-TapHierarchyNode -Path $searchSortScreenHierarchy -Identifier "search-filter-sheet"
-      Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-current-holiwyn-search-filter-panel.png"
-      $searchFilterPanelHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search-filter-panel.xml"
-      Assert-HierarchyContains -Path $searchFilterPanelHierarchy -Expected @("search-filter-panel", "Status", "Sort", "All", "Saved", "Popular", "Live first")
-      Invoke-TapHierarchyNode -Path $searchFilterPanelHierarchy -Identifier "close-search-filter-panel"
-      Start-Sleep -Seconds 1
-      $searchSortReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search-sort-ready.xml"
-      Invoke-TapHierarchyNode -Path $searchSortReadyHierarchy -Identifier "search-sort-live"
-      Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-current-holiwyn-search-sort-live.png"
-      $searchSortLiveHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search-sort-live.xml"
-      Assert-HierarchyContains -Path $searchSortLiveHierarchy -Expected @("Live first", "Australia vs. Egypt", "Sports", "Soccer", "Vol.", "Liq.")
-      Invoke-TapHierarchyNode -Path $searchSortLiveHierarchy -Identifier "search-result-france-argentina-final"
-      Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-current-holiwyn-search-open-result.png"
-      $searchOpenResultHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search-open-result.xml"
-      Assert-HierarchyContains -Path $searchOpenResultHierarchy -Expected @("Australia vs. Egypt", "Game Lines", "Player Props", "Markets")
+      Save-Screenshot -Name "cycle-current-holiwyn-search-no-filter-sort.png"
+      Assert-HierarchyContains -Path $searchSortScreenHierarchy -Expected @("Search World Cup markets", "Top results", "search-filter-controls-hidden-local-mvp", "search-sort-controls-hidden-local-mvp")
+      Assert-HierarchyDoesNotContain -Path $searchSortScreenHierarchy -Unexpected @("Filter", "search-filter-sheet", "search-filter-panel", "search-filter-live", "search-filter-saved", "search-sort-live", "Popular", "Live first")
       return
     }
 
