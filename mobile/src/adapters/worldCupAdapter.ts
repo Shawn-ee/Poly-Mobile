@@ -152,6 +152,57 @@ const zhPassthrough = (value: string) => value;
 
 const isGenericFixtureTitle = (title: string) => /^fixture\b/i.test(title.trim());
 
+const teamCode = (name: string) => {
+  const clean = name
+    .replace(/\([^)]*\)/g, "")
+    .replace(/[^a-zA-Z\s]/g, " ")
+    .trim();
+  const words = clean.split(/\s+/).filter(Boolean);
+  if (words.length === 0) return "TBD";
+  if (words.length > 1 && words[0].length <= 3) return words[0].slice(0, 3).toUpperCase();
+  return words[words.length - 1].slice(0, 3).toUpperCase();
+};
+
+const countryFlagByName: Record<string, string> = {
+  argentina: "\uD83C\uDDE6\uD83C\uDDF7",
+  australia: "\uD83C\uDDE6\uD83C\uDDFA",
+  belgium: "\uD83C\uDDE7\uD83C\uDDEA",
+  brazil: "\uD83C\uDDE7\uD83C\uDDF7",
+  canada: "\uD83C\uDDE8\uD83C\uDDE6",
+  colombia: "\uD83C\uDDE8\uD83C\uDDF4",
+  "congo dr": "\uD83C\uDDE8\uD83C\uDDE9",
+  croatia: "\uD83C\uDDED\uD83C\uDDF7",
+  ecuador: "\uD83C\uDDEA\uD83C\uDDE8",
+  egypt: "\uD83C\uDDEA\uD83C\uDDEC",
+  england: "\uD83C\uDFF4",
+  france: "\uD83C\uDDEB\uD83C\uDDF7",
+  germany: "\uD83C\uDDE9\uD83C\uDDEA",
+  italy: "\uD83C\uDDEE\uD83C\uDDF9",
+  japan: "\uD83C\uDDEF\uD83C\uDDF5",
+  mexico: "\uD83C\uDDF2\uD83C\uDDFD",
+  morocco: "\uD83C\uDDF2\uD83C\uDDE6",
+  netherlands: "\uD83C\uDDF3\uD83C\uDDF1",
+  norway: "\uD83C\uDDF3\uD83C\uDDF4",
+  paraguay: "\uD83C\uDDF5\uD83C\uDDFE",
+  portugal: "\uD83C\uDDF5\uD83C\uDDF9",
+  spain: "\uD83C\uDDEA\uD83C\uDDF8",
+  switzerland: "\uD83C\uDDE8\uD83C\uDDED",
+  usa: "\uD83C\uDDFA\uD83C\uDDF8",
+  "united states": "\uD83C\uDDFA\uD83C\uDDF8",
+  uruguay: "\uD83C\uDDFA\uD83C\uDDFE",
+};
+
+const normalizedTeamNameKey = (name: string) =>
+  name
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+
+const teamFlagForName = (name: string) => countryFlagByName[normalizedTeamNameKey(name)] ?? teamCode(name);
+
 const normalizeOutcome = (outcome: BackendOutcome, index: number, total: number): Outcome => ({
   id: outcome.id,
   label: outcome.label || outcome.name || `Outcome ${index + 1}`,
@@ -299,8 +350,8 @@ export const normalizeEventSummary = (event: BackendEventSummary, markets: Backe
     tag: event.displayStatus?.label ?? (status === "live" ? "Live" : asTitleCase(event.status, "World Cup")),
     zhTag: status === "live" ? "滚球" : asTitleCase(event.status, "世界杯"),
     teams: [
-      { name: home, zhName: zhPassthrough(home), flag: "•" },
-      { name: away, zhName: zhPassthrough(away), flag: "•" },
+      { name: home, zhName: zhPassthrough(home), flag: teamFlagForName(home) },
+      { name: away, zhName: zhPassthrough(away), flag: teamFlagForName(away) },
     ],
     liveStats: event.liveStats,
     liveDataStatus: event.liveDataStatus,

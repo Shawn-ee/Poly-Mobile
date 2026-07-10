@@ -12060,3 +12060,13 @@ Known limitations:
 - State transitions: unchanged. Event Detail row selection still opens Trade Ticket with the same market/outcome/line identity and continues through server fake-token order placement and Portfolio/history.
 - Proof: focused tests and typechecks passed; Samsung S23 `SM-S911U1` full visible MVP proof passed in `docs/mobile/harness/cycle-TI-event-detail-sticky-context/cycle-TI-current-mvp-s23-visible-flow.json`.
 - Known limitations: this cycle improves visible trading context only; it does not change provider line availability.
+
+# Cycle TJ - Provider Team Flag Normalization
+
+- Feature/page worked on: provider-backed team identity display across Home/Event Detail/Search/Portfolio contexts that consume normalized `Event.teams`.
+- Frontend components touched: no component layouts changed. `mobile/src/adapters/worldCupAdapter.ts` now normalizes provider team flags, and `mobile/src/__tests__/worldCupAdapter.test.ts` covers known and fallback behavior.
+- Backend/API routes touched: none. Existing `/api/events` and `/api/mobile/events/:slug/live-detail` continue returning team names; mobile maps those names into display flags/team codes.
+- User interactions supported: the user can open a provider-backed match and see recognizable team identity instead of placeholder bullet glyphs before choosing a market/outcome.
+- State transitions: unchanged. Event/team display normalization does not affect market/outcome/line identity, Trade Ticket submit, fake-token order placement, Portfolio, or history.
+- Proof: focused adapter tests and typechecks passed; Samsung S23 `SM-S911U1` full visible MVP proof passed in `docs/mobile/harness/cycle-TJ-provider-team-flags/cycle-TJ-current-mvp-s23-visible-flow.json`.
+- Known limitations: text/emoji/code flags are a mobile display normalization, not backend-owned image assets.

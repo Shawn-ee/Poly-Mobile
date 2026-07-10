@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { normalizeEventDetail, normalizeMarket } from "../adapters/worldCupAdapter";
+import { normalizeEventDetail, normalizeEventSummary, normalizeMarket } from "../adapters/worldCupAdapter";
 import type { EventDetail, Market } from "../types";
 
 const baseMarket: Market = {
@@ -22,6 +22,66 @@ const baseMarket: Market = {
 };
 
 describe("world cup adapter", () => {
+  test("normalizes provider team flags instead of bullet placeholders", () => {
+    const normalized = normalizeEventSummary({
+      id: "arg-egy",
+      slug: "argentina-vs-egypt",
+      title: "Argentina vs. Egypt",
+      description: null,
+      category: "sports",
+      sportKey: "soccer",
+      leagueKey: "world_cup",
+      homeTeamName: "Argentina",
+      awayTeamName: "Egypt",
+      startTime: "2026-07-07T20:00:00.000Z",
+      status: "active",
+      liveStatus: null,
+      period: null,
+      clock: null,
+      homeScore: null,
+      awayScore: null,
+      imageUrl: null,
+      marketCount: 0,
+      activeMarketCount: 0,
+    }, []);
+
+    expect(normalized.teams).toEqual([
+      expect.objectContaining({ name: "Argentina", flag: "\uD83C\uDDE6\uD83C\uDDF7" }),
+      expect.objectContaining({ name: "Egypt", flag: "\uD83C\uDDEA\uD83C\uDDEC" }),
+    ]);
+    expect(normalized.teams.map((team) => team.flag)).not.toContain("•");
+    expect(normalized.teams.map((team) => team.flag)).not.toContain("â€¢");
+  });
+
+  test("uses a readable team code fallback for unknown provider teams", () => {
+    const normalized = normalizeEventSummary({
+      id: "breadth",
+      slug: "breadth-home-vs-breadth-away",
+      title: "Breadth Home vs. Breadth Away",
+      description: null,
+      category: "sports",
+      sportKey: "soccer",
+      leagueKey: "world_cup",
+      homeTeamName: "Breadth Home",
+      awayTeamName: "Breadth Away",
+      startTime: "2026-07-07T20:00:00.000Z",
+      status: "active",
+      liveStatus: null,
+      period: null,
+      clock: null,
+      homeScore: null,
+      awayScore: null,
+      imageUrl: null,
+      marketCount: 0,
+      activeMarketCount: 0,
+    }, []);
+
+    expect(normalized.teams).toEqual([
+      expect.objectContaining({ name: "Breadth Home", flag: "HOM" }),
+      expect.objectContaining({ name: "Breadth Away", flag: "AWA" }),
+    ]);
+  });
+
   test("uses positive bid ask midpoint when backend outcome price is zero", () => {
     const normalized = normalizeMarket({
       ...baseMarket,
