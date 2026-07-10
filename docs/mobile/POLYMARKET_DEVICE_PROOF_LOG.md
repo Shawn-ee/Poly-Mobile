@@ -2886,3 +2886,10 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Flow covered by source/harness proof: Event Detail remains chart-free; smoke proof paths no longer require chart controls and assert chart absence instead.
 - Proof summary: focused contract test and source search.
 - Result: PASS for source/harness scope. S23 visible proof remains required for final visible page gate.
+
+# Cycle UN - Event Detail Chinese Source Copy
+
+- Device: no Android run; `adb devices -l` showed no attached device.
+- Flow covered by source/contract proof: Event Detail partial-provider source copy -> Chinese locale text -> hidden source/audit markers remain unchanged.
+- Proof summary: focused source contract and mobile typecheck.
+- Result: PASS for source/contract scope. S23 Chinese-language visible proof remains required when a device is attached.

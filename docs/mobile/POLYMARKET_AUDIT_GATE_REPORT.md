@@ -7474,3 +7474,13 @@ Remaining P1:
 - Android proof: not rerun because no ADB device was attached.
 - Unresolved P0: 0 for source/harness scope.
 - Remaining P1: S23 visible Event Detail proof showing no chart markers in top/lines XML.
+
+# Cycle UN Audit Gate - Event Detail Chinese Source Copy
+
+- Scope: Event Detail localized source/status copy for the Local MVP market page.
+- P0 result: PASS for source/contract scope after validation.
+- Source proof: `mobile/src/components/EventDetail.tsx` partial-provider source-copy branch now uses escaped valid Chinese strings.
+- Contract proof: `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts` checks the escaped Chinese copy and rejects known mojibake sequences.
+- Android proof: not rerun because no ADB device was attached.
+- Unresolved P0: 0 for source/contract scope.
+- Remaining P1: S23 Chinese-language Event Detail proof when a device is visible.

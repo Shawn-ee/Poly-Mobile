@@ -12363,3 +12363,13 @@ Known limitations:
 - State transitions: no runtime state change. Proof harness paths that used to tap chart controls now assert chart absence or continue through Game Lines.
 - Proof: focused chart-free source/harness contract test.
 - Known limitations: no Android proof because no device is attached. Run S23 Event Detail proof before marking the visible page gate complete.
+
+# Cycle UN - Event Detail Chinese Source Copy
+
+- Feature/page worked on: Event Detail source/status copy in Chinese mode for the Local MVP match page.
+- Frontend components touched: `mobile/src/components/EventDetail.tsx`, `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts`.
+- Backend/API routes touched: none.
+- User interactions supported: unchanged Home/Live -> Event Detail -> Game Lines -> Trade Ticket -> fake-token order -> Portfolio/history flow. Chinese-language Event Detail partial-provider source copy now renders readable text instead of mojibake.
+- State transitions: unchanged. `marketSourceSummary.lineMarkets.status === "partial-provider-backed"` still produces the same hidden audit markers and fixture/provider identity; only the visible Chinese copy string is corrected.
+- Proof: pending final Cycle UN focused tests/typecheck. Android proof remains pending because no ADB device is attached.
+- Known limitations: real provider-backed Spread/Totals/Team Total current-match rows remain unavailable; this cycle only fixes visible localized copy.
