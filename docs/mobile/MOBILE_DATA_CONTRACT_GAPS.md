@@ -8866,10 +8866,10 @@ Future migration concern:
 
 - No schema migration was added.
 - Closed or narrowed: Portfolio History now has readable event and market context after a filled sell, even when the history activity only carries a backend market title like `Paraguay vs Australia: Match Winner`.
-- Fields Holiwyn still needs but backend does not fully provide: canonical `eventTitle` and `marketTitle` fields on `/api/portfolio/history` rows.
+- Fields Holiwyn still needs but backend does not fully provide: superseded by Cycle RS for the Local MVP path. `/api/portfolio/history` now returns `market.displayTitle`, `market.eventTitle`, and `market.eventSlug`; older/offline payloads may still use fallback title parsing.
 - Route mismatch: no route mismatch was introduced.
 - Temporary mock/static data: no new mock data added.
-- Future migration concern: remove title parsing once the backend history contract returns explicit event and market display fields.
+- Future migration concern: keep title parsing only as a compatibility fallback for older/offline payloads; normal server-mode rows should use the Cycle RS display fields.
 
 # Cycle RS - Portfolio History Display Contract Notes
 

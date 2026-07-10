@@ -12174,3 +12174,13 @@ Known limitations:
 - State transitions: Google Cloud client ID, client secret, Google code exchange, userinfo fetch, account linking, and mobile API-key minting remain server-owned. Mobile receives a Holiwyn API key through an allowlisted deep link, stores it with SecureStore when available, migrates legacy AsyncStorage keys, and clears both secure and legacy storage on sign-out.
 - Proof: focused Google auth contract tests passed, and `npm run check:server-auth --if-present` passed. No Android proof was required because this cycle did not change visible UI or runtime behavior.
 - Known limitations: real interactive Google consent on S23 remains a manual P1 proof item that requires the configured Google Cloud redirect URI to match a reachable backend auth origin.
+
+# Cycle TU - History Display Contract Tracker Cleanup
+
+- Feature/page worked on: Portfolio History display-contract documentation and stale gap cleanup.
+- Frontend components touched: none. Existing `mobile/src/services/portfolioHistoryService.ts` still maps backend `market.displayTitle` to `PortfolioActivity.marketTitle`, and `mobile/src/components/Portfolio.tsx` still prefers `marketTitle` before fallback parsing.
+- Backend/API routes touched: none. Existing `/api/portfolio/history` still returns canonical `market.displayTitle`, `market.eventTitle`, and `market.eventSlug` for recent trades/canceled orders and resolved rows where the parent event exists.
+- User interactions supported: unchanged. After a fake-token/server-backed trade or sell/cashout, Portfolio History has backend-provided readable event/market context rather than relying on title parsing in normal server mode.
+- State transitions: unchanged. `/api/orders` and `/api/portfolio/history` continue preserving selected market/outcome identity; the cleanup only corrects tracker and contract documentation that still described the Cycle RR fallback parser gap as current.
+- Proof: focused backend route and mobile mapper tests passed. No Android proof was required because this cycle did not change visible UI or runtime behavior; Cycle RS remains the S23 device proof for this contract.
+- Known limitations: fallback parsing remains intentionally available for old/offline payloads. Provider-backed current-match line breadth remains the separate open P1.
