@@ -1484,3 +1484,11 @@ For every UI element or interaction, answer:
 | Provider-winner cashout proof still expected old cashout sheet markers | P0 | Verified | Provider-winner cashout proof now expects generic Sell ticket markers and rejects `cashout-ticket` / `swipe-to-cashout`. | `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1` |
 | Full S23 cashout/sell proof after dormant sheet removal | P0 | Verified | Samsung S23 proof passed with `cashoutTicketOpened=true`, `cashoutSellSubmitted=true`, and `cashoutHistoryVisible=true`. | `docs/mobile/harness/cycle-TQ-remove-dormant-cashout-sheet/cycle-TQ-current-mvp-s23-visible-flow.json` |
 | Real provider-backed spread/totals/team-total current-match lines | P1 | Open | Unchanged from TD/TE/TF/TG/TO/TP. | `docs/mobile/audits/cycle-TD-real-worldcup-line-discovery.md` |
+
+# Cycle TW - Provider Line Source Reprobe
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Fresh Polymarket-first provider scan for current MVP match line markets | P1 | Verified | July 10 Gamma evidence for `fifwc-arg-egy-2026-07-07` still exposes 3 match-winner markets and 0 exact line-family candidates. Broad World Cup scan saw 2,674 relevant candidates but 0 provider line candidates and 0 attach-ready provider line candidates. | `docs/mobile/harness/cycle-TW-provider-line-source-reprobe/cycle-TW-provider-line-source-probe.json`; `docs/mobile/harness/cycle-TW-provider-line-source-reprobe/cycle-TW-provider-line-breadth-scan.json` |
+| Route honesty for fixture-only line markets | P1 | Verified | `/api/mobile/events/argentina-vs-egypt/live-detail` returns provider-backed Regulation Winner markets and explicitly reports Spread/Totals/Team Total as `contract-fixture`, with provider-unavailable and fixture-only families listed and no missing fixture families. | `docs/mobile/harness/cycle-TW-provider-line-source-reprobe/cycle-TW-provider-match-line-availability.json` |
+| Real provider-backed spread/totals/team-total current-match lines | P1 | Open | Still unavailable from Polymarket Gamma. The next path is either continue Local MVP with explicit contract fixtures or configure/review an approved secondary provider source for line odds. | `docs/mobile/audits/cycle-TW-provider-line-source-reprobe.md` |

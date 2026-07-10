@@ -12194,3 +12194,13 @@ Known limitations:
 - State transitions: unchanged. Selected line/outcome identity still passes from Event Detail into Trade Ticket, `/api/orders`, and Portfolio/history.
 - Proof: reused authoritative Cycle TP Samsung S23 proof with `swipeSubmitReachedPortfolio=true` and `filledHistoryVisible=true`; no new Android proof was required because this cycle only corrects stale tracker status.
 - Known limitations: real provider-backed spread/totals/team-total current-match lines remain unavailable from Polymarket Gamma and are still the separate open P1.
+
+# Cycle TW - Provider Line Source Reprobe
+
+- Feature/page worked on: provider/data readiness for the Local MVP Event Detail line markets.
+- Frontend components touched: none. The visible app still shows provider-backed Regulation Winner plus explicit contract-shaped Spread/Totals/Team Total rows.
+- Backend/API routes touched: none. The cycle exercised existing provider proof scripts and `/api/mobile/events/argentina-vs-egypt/live-detail`; it did not change schema, routes, order logic, order book UI, chat, live stats, or social features.
+- User interactions supported: unchanged. Local MVP users can still choose line rows, open the generic Trade Ticket, submit fake-token orders, and see Portfolio/history; the source disclosure remains honest that line rows are fixtures, not provider-backed Polymarket line markets.
+- State transitions: unchanged. The proof confirms current route state: Regulation Winner is `provider-backed`; Spread/Totals/Team Total are `contract-fixture`; expected line families are present; provider-unavailable and fixture-only families are explicitly listed; no fixture family is missing.
+- Proof: `prove_mobile_provider_line_source_probe.ts`, `prove_mobile_provider_line_breadth_scan.ts`, and `prove_mobile_provider_match_line_availability.ts` passed for Cycle TW artifacts in `docs/mobile/harness/cycle-TW-provider-line-source-reprobe/`.
+- Known limitations: Polymarket Gamma still exposes no attach-ready current-match line markets for the MVP match. Next meaningful product path is either keep explicit Local MVP contract fixtures or configure/review an approved secondary line provider contract.
