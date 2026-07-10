@@ -249,6 +249,8 @@ describe("GET /api/portfolio/history canceled orders", () => {
           shares: 200,
           cost: 100,
           fee: 0,
+          proceedsTokens: null,
+          realizedPnlTokens: null,
           createdAt: "2026-07-02T06:10:00.000Z",
         },
       ],
@@ -518,6 +520,8 @@ describe("GET /api/portfolio/history canceled orders", () => {
       id: "trade-eo-sell-filled",
       side: "SELL",
       selection: normalizedSellBidTotalsSelection,
+      proceedsTokens: 7.08,
+      realizedPnlTokens: null,
     }));
     expect(body.canceledOrders[0].selection.marketGroupId).toBe("totals");
     expect(body.recentTrades[0].selection.limitSide).toBe("bid");

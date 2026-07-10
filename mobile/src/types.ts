@@ -342,6 +342,8 @@ export type PortfolioRecentTradeItem = {
   shares: number;
   cost: number;
   fee: number;
+  proceedsTokens?: number | null;
+  realizedPnlTokens?: number | null;
   createdAt: string;
 };
 

@@ -277,26 +277,33 @@ export async function GET(request: NextRequest) {
     remaining: Number(order.remaining),
     canceledAt: order.updatedAt,
   }));
-  const recentTradeItems = recentTrades.map((trade) => ({
-    id: trade.id,
-    market: {
-      ...trade.market,
-      eventTitle: trade.market.event?.title ?? null,
-      eventSlug: trade.market.event?.slug ?? null,
-      displayTitle: marketDisplayTitle(trade.market.title, trade.market.event?.title),
-    },
-    outcome: trade.outcome,
-    selection: buildTicketSelectionMetadata({
-      requestBody: recentTradeSelectionByMarketOutcome.get(`${trade.marketId}:${trade.outcomeId}`),
-      market: trade.market,
+  const recentTradeItems = recentTrades.map((trade) => {
+    const isSell = trade.side === "SELL";
+    const costTokens = Number(trade.cost);
+    const feeTokens = Number(trade.fee);
+    return {
+      id: trade.id,
+      market: {
+        ...trade.market,
+        eventTitle: trade.market.event?.title ?? null,
+        eventSlug: trade.market.event?.slug ?? null,
+        displayTitle: marketDisplayTitle(trade.market.title, trade.market.event?.title),
+      },
       outcome: trade.outcome,
-    }),
-    side: trade.side,
-    shares: Number(trade.shares),
-    cost: Number(trade.cost),
-    fee: Number(trade.fee),
-    createdAt: trade.createdAt,
-  }));
+      selection: buildTicketSelectionMetadata({
+        requestBody: recentTradeSelectionByMarketOutcome.get(`${trade.marketId}:${trade.outcomeId}`),
+        market: trade.market,
+        outcome: trade.outcome,
+      }),
+      side: trade.side,
+      shares: Number(trade.shares),
+      cost: costTokens,
+      fee: feeTokens,
+      proceedsTokens: isSell ? costTokens - feeTokens : null,
+      realizedPnlTokens: null,
+      createdAt: trade.createdAt,
+    };
+  });
 
   return NextResponse.json({
     history: items.slice(0, 50),
