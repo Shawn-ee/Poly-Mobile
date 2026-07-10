@@ -7514,3 +7514,13 @@ Remaining P1:
 - Android proof: not rerun because no ADB device was attached.
 - Unresolved P0: 0 for source/contract scope.
 - Remaining P1: S23 Account/Portfolio visible proof when a device is visible.
+
+# Cycle UR Audit Gate - Account Trading Copy Cleanup
+
+- Scope: Portfolio -> Account trading state row copy.
+- P0 result: PASS for source/contract scope after validation.
+- Source proof: `mobile/src/localization/appCopy.ts` now maps account trading state to `Trading: On this device` or `Trading: Synced` instead of `Trading mode: Local mode` / `Server mode`.
+- Contract proof: `mobile/src/__tests__/demoTradingCopyContract.test.ts` rejects the old technical labels.
+- Android proof: not rerun because no ADB device was attached.
+- Unresolved P0: 0 for source/contract scope.
+- Remaining P1: S23 Account visible proof when a device is visible.

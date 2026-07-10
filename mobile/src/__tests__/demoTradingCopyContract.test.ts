@@ -12,7 +12,9 @@ describe("Demo trading copy contract", () => {
     expect(copy).toContain('balance: "Balance"');
     expect(copy).toContain("Place a trade to see it here.");
     expect(copy).toContain("Trading remains available during MVP testing.");
-    expect(copy).toContain('tradingModeMock: "Local mode"');
+    expect(copy).toContain('tradingMode: "Trading"');
+    expect(copy).toContain('tradingModeMock: "On this device"');
+    expect(copy).toContain('tradingModeServer: "Synced"');
     expect(copy).not.toContain('balance: "Demo balance"');
     expect(copy).not.toContain("Place a practice trade to see it here.");
     expect(copy).not.toContain("Demo trading stays available during MVP testing.");
@@ -22,6 +24,9 @@ describe("Demo trading copy contract", () => {
     expect(copy).not.toContain("Showing local fake-token portfolio.");
     expect(copy).not.toContain("Fake-token trading stays available");
     expect(copy).not.toContain("Fake-token mock");
+    expect(copy).not.toContain('tradingMode: "Trading mode"');
+    expect(copy).not.toContain('tradingModeMock: "Local mode"');
+    expect(copy).not.toContain('tradingModeServer: "Server mode"');
 
     expect(portfolio).toContain("fake-token-test");
     expect(portfolio).toContain("latest-order-snapshot");

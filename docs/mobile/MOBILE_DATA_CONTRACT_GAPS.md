@@ -9522,3 +9522,12 @@ Future migration concern:
 - Fields Holiwyn still needs: no new fields for this copy cleanup. Real deposit/withdraw fields remain intentionally out of Local MVP scope.
 - Temporary mock/static data: none added.
 - Future migration concern: when real funding starts, keep wallet/deposit copy behind a separate approved milestone; do not reintroduce debug/fake-token wording in the default tester UI.
+
+# Cycle UR - Account Trading Copy Cleanup Notes
+
+- No schema migration was added.
+- Closed or narrowed: visible Account copy no longer exposes technical `Local mode` / `Server mode` labels.
+- Route mismatch: none. The app still consumes the same `tradingMode` view-model value from runtime/profile summary state.
+- Fields Holiwyn still needs: no new fields for this copy cleanup.
+- Temporary mock/static data: none added.
+- Future migration concern: if account mode becomes a deeper settings surface, keep implementation details hidden from default tester UI and use separate admin/debug labels for proofs.
