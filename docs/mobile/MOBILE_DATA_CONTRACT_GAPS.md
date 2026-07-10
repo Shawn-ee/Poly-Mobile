@@ -9070,3 +9070,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: none for normal fake-token trades with complete trade history. If historical data is incomplete or inconsistent, `realizedPnlTokens` remains `null` by design.
 - Temporary mock/static data: none added.
 - Future migration concern: if production history grows very large, move this replay into a persisted execution-basis/realized-P/L field or paginated aggregation service instead of doing route-time reconstruction.
+
+# Cycle SS - Portfolio Position Row Density Notes
+
+- No schema migration was added.
+- Closed or narrowed: Portfolio position rows now consume existing position metrics in a denser Polymarket-like visible structure instead of a plain title/meta/value row.
+- Route mismatch: none. The cycle does not change `/api/portfolio` or `/api/portfolio/history`; it improves how existing `amount`, `currentValue`, `pnl`, `probability`, `currentPrice`, `shares`, and selection identity fields are rendered.
+- Fields Holiwyn still needs but backend does not fully provide: no new position-row fields for this cycle.
+- Temporary mock/static data: none added.
+- Future migration concern: if Portfolio Orders/History density work needs additional realized-profit labels, use the existing SQ/SR history fields rather than reintroducing action-derived guessing.

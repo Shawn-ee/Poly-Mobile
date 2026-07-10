@@ -11903,3 +11903,12 @@ Known limitations:
 - User interactions supported: after fake-token buy/cashout, the backend can now provide exact realized P/L for recent SELL rows by replaying the user's market/outcome trade history in chronological order.
 - State transitions: `/api/portfolio/history` recent market/outcome selections -> targeted cost-basis trade replay -> `recentTrades[].realizedPnlTokens` -> existing Portfolio History activity mapping.
 - Known limitations: if the route cannot safely reconstruct basis because trade history is invalid or incomplete, the field remains `null` rather than returning a guessed profit/loss.
+
+# Cycle SS - Portfolio Position Row Density
+
+- Feature/page worked on: Portfolio Positions tab after Local MVP buy/fill.
+- Frontend components touched: `mobile/src/components/Portfolio.tsx`, `mobile/src/__tests__/portfolioPositionDensityContract.test.ts`.
+- Backend/API routes touched: none. The row uses existing Portfolio snapshot/history state.
+- User interactions supported: the visible position row now uses a Polymarket-like compact structure with event score/clock context, separate Yes/No pill, outcome title, three-column Cost/Current/To win strip, Cash out, and `+` buy-more action.
+- State transitions: unchanged. Existing Portfolio position state drives the denser visual row; Cash out still opens the generic Sell Trade Ticket and `+` still opens Buy.
+- Known limitations: this improves position-row parity only. Orders tab, History row density, and full native Google OAuth proof remain separate gaps.

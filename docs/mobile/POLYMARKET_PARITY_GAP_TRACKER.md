@@ -1354,7 +1354,7 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Portfolio Google login/connected row consumed too much first-screen space | P0 | Verified | Google entry now renders as a compact header chip next to the account gear, while the avatar/name account entry remains top-left and clickable. | `mobile/src/components/Portfolio.tsx`; `docs/mobile/screenshots/cycle-SN-portfolio-header-density/cycle-SN-google-auth-return-portfolio.png` |
 | Portfolio account entry could regress back to hidden or detached Google state | P0 | Verified | Contract test requires the Google entry, connected marker, top-left account entry, gear, and compact header chip marker. | `mobile/src/__tests__/portfolioSettingsContract.test.ts`; `docs/mobile/harness/cycle-SN-portfolio-header-density/cycle-SN-google-auth-return-summary.json` |
-| Full Polymarket-like Portfolio rows/history parity | P1 | Open | SN only improves the header density. Position row styling, history density, and post-trade Portfolio parity remain future Local MVP cycles. | `docs/mobile/audits/cycle-SN-portfolio-header-density.md` |
+| Full Polymarket-like Portfolio rows/history parity | P1 | Partial | Cycle SS improves the visible Positions tab row with a Polymarket-like event header, Yes/No pill, Cost/Current/To win metric strip, Cash out, and buy-more action. History and Orders row density remain future Local MVP cycles. | `mobile/src/components/Portfolio.tsx`; `mobile/src/__tests__/portfolioPositionDensityContract.test.ts`; `docs/mobile/audits/cycle-SS-portfolio-position-density.md` |
 
 # Cycle SO - Portfolio History Realized Proceeds
 

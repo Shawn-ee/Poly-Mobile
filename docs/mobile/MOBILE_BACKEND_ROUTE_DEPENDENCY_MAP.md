@@ -4183,6 +4183,12 @@ Cycle OW implementation notes:
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Recent Portfolio History realized P/L rows | `/api/portfolio/history` | GET | Existing mobile API key/server-mode proof auth | No new request fields; route internally queries full trade history for recent market/outcome selections | `recentTrades[].realizedPnlTokens`, `recentTrades[].proceedsTokens`, `recentTrades[].cost`, `shares`, `fee` | Existing `Trade`, `Market`, `Outcome`, `Order`, `ApiOrderRequest`; no schema change | Mock mode still supports local activity rows; server mode now returns richer recent-trade fields when basis is reconstructable | No schema gap for normal fake-token trade replay. Exact P/L remains `null` only for inconsistent/incomplete trade history. |
 
+## Cycle SS - Portfolio Position Row Density
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body/query | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio Positions tab row parity | `/api/portfolio`; `/api/portfolio/history` during server-mode sync/proof | GET | Existing mobile API key/server-mode proof auth | No new request fields | Existing position fields: `amount`, `probability`, `currentPrice`, `currentValue`, `pnl`, `shares`, `selection`, event/market/outcome identity | Existing `Position`, `Market`, `Outcome`, `Trade`, `ApiCredential`; no schema change | Mock mode renders the same position row from local Portfolio state | No new backend field required. Full Polymarket-like Portfolio Orders/History density remains separate UI work. |
+
 # Cycle SH - Home Local MVP Focus
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
