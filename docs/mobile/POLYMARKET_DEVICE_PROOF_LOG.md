@@ -2942,3 +2942,10 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Flow covered by runtime/source proof: configured backend auth origin -> `/api/auth/google/start` -> no-redirect HTTP check -> Google Location header -> `redirect_uri` checked against `NEXTAUTH_URL/api/auth/google/callback`.
 - Result: PASS for runtime preflight/source scope.
 - Remaining P1: run strict preflight and real S23 consent proof when the phone is visible and the callback origin is reachable from Android.
+
+# Cycle VW - Home Copy Contract Cleanup
+
+- Device: no Android run; `adb devices -l` showed no attached device.
+- Flow covered by source proof: Home Local MVP component contract -> World Cup / Matches / live-count feed remains the only Home surface -> stale search/filter/today copy props removed from Home.
+- Result: PARTIAL. Focused source proof and mobile typecheck passed, but the Audit Gate remains pending until Samsung S23 visual proof is captured.
+- Required follow-up proof: launch Home on Samsung S23, capture screenshot/XML, and confirm World Cup, Matches, match count, live count, no Home search/filter/account controls, and progressive match loading still render correctly.

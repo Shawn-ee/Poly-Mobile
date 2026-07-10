@@ -7555,3 +7555,15 @@ Remaining P1:
 - Android proof: not rerun because `adb devices -l` showed no attached device.
 - Unresolved P0: 0 for runtime preflight/source scope.
 - Remaining P1: strict S23-ready preflight plus real Google consent proof.
+
+# Cycle VW Audit Gate - Home Copy Contract Cleanup
+
+- Scope: Home Local MVP match-only component contract cleanup.
+- Gate status: Pending Android proof.
+- P0 result: PARTIAL. Source/contract proof passed, but the cycle is not complete under the visual Audit Gate because no Android device is attached.
+- Implementation proof: `mobile/src/components/HomeScreen.tsx` no longer requires stale `marketSearch`, `clearSearch`, `searchAll`, `searchLive`, or `today` copy fields after the Home page search/filter controls were removed.
+- Contract proof: `npm run test:mobile-api -- mobile/src/__tests__/homeLocalMvpFocusContract.test.ts` passed.
+- Type proof: `cd mobile && npm run typecheck` passed.
+- Android proof: pending. `adb devices -l` returned no attached devices during the cycle.
+- Unresolved P0: 1 Android/S23 visual proof for the Home screen after the component-contract cleanup.
+- Remaining P1: none for this cleanup scope. Real provider-backed Spread/Totals/Team Total rows remain a separate provider-data gap.
