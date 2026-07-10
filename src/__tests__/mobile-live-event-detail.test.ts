@@ -500,10 +500,72 @@ describe("mobile live event detail contract", () => {
           status: "unavailable",
           providerBackedLineMarketCount: 0,
           contractFixtureLineMarketCount: 3,
+          expectedFamilies: ["spread", "total", "team_total"],
           providerBackedFamilies: [],
           contractFixtureFamilies: ["spread", "total", "team_total"],
+          providerUnavailableFamilies: ["spread", "total", "team_total"],
+          fixtureOnlyFamilies: ["spread", "total", "team_total"],
+          missingFamilies: [],
           nextProviderAction: "discover_attach_ready_polymarket_line_markets_or_configure_approved_line_provider",
-          reason: "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures.",
+          reason: "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures for: spread, total, team_total.",
+        },
+      },
+    });
+  });
+
+  test("reports expected line families still unavailable when provider-backed coverage is partial", () => {
+    expect(buildMobileMarketSourceSummary([
+      {
+        marketType: "match_winner_1x2",
+        marketGroupKey: "main",
+        marketGroupTitle: "Regulation Winner",
+        referenceSource: "polymarket",
+      },
+      {
+        marketType: "spread",
+        marketGroupKey: "spread",
+        marketGroupTitle: "Spread",
+        referenceSource: "polymarket",
+      },
+      {
+        marketType: "total_goals",
+        marketGroupKey: "totals",
+        marketGroupTitle: "Totals",
+        referenceSource: "contract-fixture",
+      },
+    ])).toMatchObject({
+      lineMarkets: {
+        totalCount: 2,
+        polymarketCount: 1,
+        contractFixtureCount: 1,
+        status: "provider-backed",
+        familyReadiness: [
+          expect.objectContaining({
+            family: "spread",
+            polymarketCount: 1,
+            status: "provider-backed",
+          }),
+          expect.objectContaining({
+            family: "total",
+            contractFixtureCount: 1,
+            status: "contract-fixture",
+          }),
+          expect.objectContaining({
+            family: "team_total",
+            totalCount: 0,
+            status: "missing",
+          }),
+        ],
+        providerAvailability: {
+          status: "available",
+          expectedFamilies: ["spread", "total", "team_total"],
+          providerBackedFamilies: ["spread"],
+          contractFixtureFamilies: ["total"],
+          providerUnavailableFamilies: ["total", "team_total"],
+          fixtureOnlyFamilies: ["total"],
+          missingFamilies: ["team_total"],
+          nextProviderAction: "use_route_visible_provider_line_markets",
+          reason: "Route includes provider-backed Polymarket line markets; missing provider-backed families: total, team_total.",
         },
       },
     });

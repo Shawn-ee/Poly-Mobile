@@ -11988,3 +11988,14 @@ Known limitations:
 - State transitions: compact live markets -> Polymarket readiness summary -> optional external line-provider review remains strict enrichment -> invalid reviews still block.
 - Proof: route/provider proof passed in `docs/mobile/harness/cycle-TB-polymarket-first-line-readiness/cycle-TB-line-provider-identity-review.json` with 7 Polymarket-ready line markets and no DB mutation.
 - Known limitations: this proves provider-breadth seeded line markets. The exact current MVP match still needs more real attach-ready Polymarket spread/totals/team-total markets or explicit unavailable states when Polymarket does not expose them.
+
+# Cycle TC - Line Provider Unavailable Contract
+
+- Feature/page worked on: current MVP Event Detail route contract and audit-only mobile source markers for line-market provider availability.
+- Frontend components touched: `mobile/src/components/EventDetail.tsx`, `mobile/src/types.ts`, `mobile/src/mocks/worldCup.ts`, `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts`.
+- Backend/API routes touched: route serializer logic in `src/server/services/mobileLiveEventDetail.ts`; `/api/mobile/events/:slug/live-detail` now exposes expected/unavailable/fixture-only/missing line family lists.
+- Scripts/tests touched: `scripts/prove_mobile_provider_match_line_availability.ts`, `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`, `src/__tests__/mobile-live-event-detail.test.ts`.
+- User interactions supported: Event Detail still shows a simple Local MVP line market flow, but the route and S23 XML now prove spread/totals/team-total are not Polymarket-backed for `argentina-vs-egypt`; they are explicit fixture-backed local MVP rows.
+- State transitions: Polymarket Gamma event discovery -> live-detail market source summary -> audit-only Event Detail markers -> Trade Ticket preserves fixture/source identity without confusing it as real Polymarket line data.
+- Proof: route proof passed in `docs/mobile/harness/cycle-TC-line-provider-unavailable-contract/cycle-TC-provider-match-line-availability.json`; S23 `SM-S911U1` source-disclosure proof passed in `docs/mobile/harness/cycle-TC-line-provider-unavailable-contract/cycle-TC-current-mvp-s23-visible-flow.json`.
+- Known limitations: source-disclosure proof stops before order submit. Full fixture-line order/portfolio lifecycle remains covered by prior Local MVP proofs; real Polymarket line parity is still P1.

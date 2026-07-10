@@ -76,6 +76,7 @@ const STALE_AFTER_SECONDS = 90;
 const CHART_REFRESH_TTL_SECONDS = 60;
 const DEPTH_BATCH_CACHE_TTL_SECONDS = 3;
 const LINE_MARKET_TYPES = new Set(["spread", "total_goals", "totals", "team_total_goals", "team-total", "team_total"]);
+const EXPECTED_MVP_LINE_FAMILIES = ["spread", "total", "team_total"] as const;
 
 type LiveAvailabilityStatus = "ready" | "stale" | "suspended" | "delayed" | "unavailable";
 type ProviderLifecycleStatus = "ready" | "refresh_due" | "stale" | "unavailable";
@@ -441,7 +442,18 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
   const contractFixtureLineMarkets = lineMarkets.filter((market) => market.referenceSource === "contract-fixture");
   const providerBackedLineFamilies = Array.from(new Set(realLineMarkets.map(marketFamilyForMarket).filter(Boolean)));
   const contractFixtureLineFamilies = Array.from(new Set(contractFixtureLineMarkets.map(marketFamilyForMarket).filter(Boolean)));
-  const familyReadiness = Array.from(new Set(lineMarkets.map(marketFamilyForMarket).filter(Boolean))).map((family) => {
+  const expectedLineFamilies = Array.from(new Set([
+    ...EXPECTED_MVP_LINE_FAMILIES,
+    ...lineMarkets.map(marketFamilyForMarket).filter(Boolean),
+  ]));
+  const providerUnavailableFamilies = expectedLineFamilies.filter((family) => !providerBackedLineFamilies.includes(family));
+  const fixtureOnlyFamilies = expectedLineFamilies.filter((family) =>
+    contractFixtureLineFamilies.includes(family) && !providerBackedLineFamilies.includes(family)
+  );
+  const missingFamilies = expectedLineFamilies.filter((family) =>
+    !providerBackedLineFamilies.includes(family) && !contractFixtureLineFamilies.includes(family)
+  );
+  const familyReadiness = expectedLineFamilies.map((family) => {
     const familyMarkets = lineMarkets.filter((market) => marketFamilyForMarket(market) === family);
     const polymarketCount = familyMarkets.filter((market) => market.referenceSource === "polymarket").length;
     const contractFixtureCount = familyMarkets.filter((market) => market.referenceSource === "contract-fixture").length;
@@ -450,7 +462,7 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
         ? "provider-backed"
         : contractFixtureCount > 0
           ? "contract-fixture"
-          : "unknown";
+          : "missing";
     return {
       family,
       totalCount: familyMarkets.length,
@@ -462,7 +474,7 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
           ? `${family} has route-visible provider-backed Polymarket markets.`
           : status === "contract-fixture"
             ? `${family} is served by Local MVP contract fixtures for this event.`
-            : `${family} source is not classified for this event.`,
+            : `${family} is unavailable from the current Polymarket-backed route for this event.`,
     };
   });
   const lineMarketStatus =
@@ -508,15 +520,21 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
         status: realLineMarkets.length > 0 ? "available" : contractFixtureLineMarkets.length > 0 ? "unavailable" : "unknown",
         providerBackedLineMarketCount: realLineMarkets.length,
         contractFixtureLineMarketCount: contractFixtureLineMarkets.length,
+        expectedFamilies: expectedLineFamilies,
         providerBackedFamilies: providerBackedLineFamilies,
         contractFixtureFamilies: contractFixtureLineFamilies,
+        providerUnavailableFamilies,
+        fixtureOnlyFamilies,
+        missingFamilies,
         nextProviderAction,
         reason:
           realLineMarkets.length > 0
-            ? "Route includes provider-backed Polymarket line markets."
+            ? providerUnavailableFamilies.length > 0
+              ? `Route includes provider-backed Polymarket line markets; missing provider-backed families: ${providerUnavailableFamilies.join(", ")}.`
+              : "Route includes provider-backed Polymarket line markets for all expected MVP line families."
             : contractFixtureLineMarkets.length > 0
-              ? "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures."
-              : "Line-market provider availability is unknown because no route-visible line markets are present.",
+              ? `No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures for: ${fixtureOnlyFamilies.join(", ") || "none"}.`
+              : `No route-visible line markets are present; unavailable provider families: ${providerUnavailableFamilies.join(", ")}.`,
       },
       reason:
         lineMarketStatus === "provider-backed"

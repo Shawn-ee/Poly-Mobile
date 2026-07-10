@@ -74,7 +74,7 @@ export type MarketSourceSummary = {
       totalCount: number;
       polymarketCount: number;
       contractFixtureCount: number;
-      status: "provider-backed" | "contract-fixture" | "unknown" | string;
+      status: "provider-backed" | "contract-fixture" | "missing" | "unknown" | string;
       reason: string;
     }>;
     providerAvailability?: {
@@ -82,8 +82,12 @@ export type MarketSourceSummary = {
       status: "available" | "unavailable" | "unknown" | string;
       providerBackedLineMarketCount: number;
       contractFixtureLineMarketCount: number;
+      expectedFamilies?: string[];
       providerBackedFamilies?: string[];
       contractFixtureFamilies?: string[];
+      providerUnavailableFamilies?: string[];
+      fixtureOnlyFamilies?: string[];
+      missingFamilies?: string[];
       nextProviderAction?: string;
       reason: string;
     };
