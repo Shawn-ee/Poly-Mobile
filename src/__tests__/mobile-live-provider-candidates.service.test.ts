@@ -448,6 +448,56 @@ describe("mobile live provider candidates", () => {
     ]));
   });
 
+  test("builds exact fallback slugs for current World Cup team code coverage", () => {
+    expect(buildProviderCandidateManualSlugFallbacks({
+      title: "Egypt +1.5",
+      marketType: "spread",
+      outcomes: [
+        { id: "yes", name: "Yes", side: "yes", displayOrder: 0 },
+        { id: "no", name: "No", side: "no", displayOrder: 1 },
+      ],
+    }, ["fifwc-arg-egy-2026-07-07"])).toEqual(expect.arrayContaining([
+      "fifwc-arg-egy-2026-07-07-egy-spread",
+      "fifwc-arg-egy-2026-07-07-egy-handicap-1-5",
+    ]));
+
+    expect(buildProviderCandidateManualSlugFallbacks({
+      title: "Paraguay team total goals 1.5",
+      marketType: "team_total_goals",
+      outcomes: [
+        { id: "over", name: "Over 1.5", side: "over", displayOrder: 0 },
+        { id: "under", name: "Under 1.5", side: "under", displayOrder: 1 },
+      ],
+    }, ["fifwc-par-fra-2026-07-04"])).toEqual(expect.arrayContaining([
+      "fifwc-par-fra-2026-07-04-par-team-total",
+      "fifwc-par-fra-2026-07-04-par-team-goals-1-5",
+    ]));
+
+    expect(buildProviderCandidateManualSlugFallbacks({
+      title: "Norway total goals 2.5",
+      marketType: "team_total_goals",
+      outcomes: [
+        { id: "over", name: "Over 2.5", side: "over", displayOrder: 0 },
+        { id: "under", name: "Under 2.5", side: "under", displayOrder: 1 },
+      ],
+    }, ["fifwc-bra-nor-2026-07-05"])).toEqual(expect.arrayContaining([
+      "fifwc-bra-nor-2026-07-05-nor-team-total",
+      "fifwc-bra-nor-2026-07-05-nor-team-goals-2-5",
+    ]));
+
+    expect(buildProviderCandidateManualSlugFallbacks({
+      title: "Cote d'Ivoire +1.5",
+      marketType: "spread",
+      outcomes: [
+        { id: "yes", name: "Yes", side: "yes", displayOrder: 0 },
+        { id: "no", name: "No", side: "no", displayOrder: 1 },
+      ],
+    }, ["fifwc-cuw-civ-2026-06-25"])).toEqual(expect.arrayContaining([
+      "fifwc-cuw-civ-2026-06-25-civ-spread",
+      "fifwc-cuw-civ-2026-06-25-civ-handicap-1-5",
+    ]));
+  });
+
   test("adds normalized soccer event phrases to provider search queries", () => {
     expect(buildProviderCandidateSearchQueries({
       id: "market-col",

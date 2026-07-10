@@ -1,5 +1,34 @@
 # Mobile Data Contract Gaps
 
+## Cycle TN - Provider Line Breadth Current Matches
+
+Closed or narrowed:
+
+- Provider discovery now generates exact line-market fallback slugs for more World Cup teams, including Egypt, Paraguay, Norway, Curacao, and Cote d'Ivoire.
+- Current-match proof now records that Argentina vs Egypt has three provider-backed Regulation Winner markets and zero provider-backed line markets.
+- The route-level line-market disclosure remains explicit: spread, totals, and team totals are contract fixtures for the Local MVP.
+
+Fields Holiwyn still needs but backend/provider does not fully provide:
+
+- Real provider-backed spread/totals/team-total market ids.
+- Provider condition ids and CLOB token ids for those line-market outcomes.
+- Provider prices/top probability fields for those line markets.
+
+Route mismatch:
+
+- No route mismatch introduced.
+- `/api/mobile/events/:slug/live-detail` already reports `marketSourceSummary.lineMarkets.providerAvailability`.
+
+Temporary mock/static data:
+
+- Contract-shaped line fixtures remain in use for spread, totals, and team totals.
+- These fixtures must keep backend-shaped fields (`marketId`, `outcomeId`, `marketType`, `line`, `period`, `referenceSource`) so they can be replaced by real provider data later.
+
+Future migration concern:
+
+- If Polymarket begins exposing attach-ready line markets, replace matching contract fixtures through provider mapping before changing the visible ticket/order path.
+- If another provider is approved for live line pricing, define a route/schema contract before wiring it into mobile.
+
 ## Cycle RP - Trade Ticket Source Label Cleanup
 
 - No new mobile/backend data contract gap was introduced.

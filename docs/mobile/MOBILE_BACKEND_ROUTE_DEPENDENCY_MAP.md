@@ -2,6 +2,21 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle TN - Provider Line Breadth Current Matches
+
+Cycle TN changes provider discovery normalization and docs only. It does not add or change API route signatures.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail line-market source decision | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile event browse | Event slug | `markets[].referenceSource`, `markets[].marketType`, `markets[].line`, `markets[].period`, `event.marketSourceSummary.lineMarkets.providerAvailability` | Existing `Event`, `Market`, `Outcome` provider identity fields | Spread/totals/team-total rows remain `contract-fixture` when Polymarket has no attach-ready line markets | Real Polymarket-backed spread/totals/team-total markets are not available for the current event. |
+| Provider discovery/manual fallback proof | Internal service `discoverMobileLiveProviderCandidates()` and Gamma `/markets` / `/events` calls | Internal/runtime proof | Local backend proof environment; no user auth | Event slug plus inferred provider event slugs | `providerEventSlugs`, `manualSlugFallbacks`, `lineDiscoverySummary`, `attachReadyCandidateCount` | Existing `Event.externalSlug`, `Market.marketType`, `Market.line`, `Outcome.referenceTokenId` | No local fixture is attached as provider-backed data | Continue expanding provider discovery as real Polymarket line-market slugs appear. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-TN-provider-line-breadth-current-matches/cycle-TN-provider-line-breadth-scan.json`
+- `docs/mobile/harness/cycle-TN-provider-line-breadth-current-matches/cycle-TN-provider-match-line-availability.json`
+- `docs/mobile/harness/cycle-TN-provider-line-breadth-current-matches/cycle-TN-current-match-provider-discovery.json`
+
 ## Cycle RP - Trade Ticket Source Label Cleanup
 
 Cycle RP changes no backend route or schema. It improves how the mobile ticket consumes existing source identity fields.

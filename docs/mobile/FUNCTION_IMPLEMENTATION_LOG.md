@@ -2,6 +2,38 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle TN - Provider Line Breadth Current Matches
+
+Feature/page worked on:
+
+- Backend/provider discovery support for current World Cup match line markets used by Event Detail -> line selector -> Trade Ticket.
+
+Frontend/backend touched:
+
+- `src/server/services/mobileLiveProviderCandidates.ts`
+- `src/__tests__/mobile-live-provider-candidates.service.test.ts`
+- No mobile UI, order route, order book UI, chat, live stats, social, deposit, withdrawal, or Prisma schema code changed.
+
+Important functions/services touched:
+
+- Expanded `PROVIDER_MARKET_SLUG_CODE_BY_NAME` so manual Polymarket fallback slugs cover more World Cup teams.
+- `buildProviderCandidateManualSlugFallbacks()` now benefits from Egypt, Paraguay, Norway, Curacao, and Cote d'Ivoire code coverage.
+- Existing relevance gates remain unchanged; this cycle improves discovery breadth without permitting irrelevant candidates.
+
+User interactions supported:
+
+- No visible user interaction changed in this provider-only cycle.
+- The future-visible impact is safer Event Detail line-market sourcing: Holiwyn checks more exact provider fallback possibilities before keeping Local MVP contract fixtures.
+
+State transitions:
+
+- No runtime mobile state, order state, portfolio state, auth state, or database mutation path changed.
+
+Known limitations:
+
+- Polymarket Gamma still exposes zero attach-ready spread/totals/team-total line markets for Argentina vs Egypt and the broad World Cup scan.
+- Local MVP line markets remain contract fixtures until real provider line markets exist or an approved secondary provider is configured.
+
 ## Cycle RP - Trade Ticket Source Label Cleanup
 
 Feature/page worked on:
