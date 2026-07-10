@@ -52,6 +52,7 @@ P2:
 - Added source-contract guards to `homeLocalMvpFocusContract.test.ts`.
 - Updated function, route, and data-contract docs.
 - Hardened `mobile/scripts/check-mobile-audit-gate.ps1` so it can read current `# Cycle...` audit sections, legacy `P0 result: PASS` sections, and pending Android-proof details.
+- Added `mobile/scripts/s23-proof-preflight.ps1` and package scripts so the loop can detect the required Samsung S23 proof device before launching screenshot/XML proof.
 
 ## Audit Gate
 
@@ -62,6 +63,7 @@ Passed:
 - No backend/API/schema behavior changed.
 - No orderbook/chat/live-stats work touched.
 - Audit helper accepts a known passed cycle, fails Cycle VW without `-AllowPending`, and allows Cycle VW only with explicit pending mode.
+- S23 preflight reports the missing ADB/mdns device state and passes only in expected-blocked mode while no phone is attached.
 
 Pending:
 - Android/S23 visual proof, because `adb devices -l` currently reports no attached devices.

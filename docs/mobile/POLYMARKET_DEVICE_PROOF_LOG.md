@@ -2947,5 +2947,6 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 
 - Device: no Android run; `adb devices -l` showed no attached device.
 - Flow covered by source proof: Home Local MVP component contract -> World Cup / Matches / live-count feed remains the only Home surface -> stale search/filter/today copy props removed from Home.
-- Result: PARTIAL. Focused source proof and mobile typecheck passed, but the Audit Gate remains pending until Samsung S23 visual proof is captured.
+- Preflight: `mobile/scripts/s23-proof-preflight.ps1 -ExpectBlocked` reports the required S23 is not attached/discoverable and passes only as an expected-blocked readiness check.
+- Result: PARTIAL. Focused source proof, S23 preflight contract, and mobile typecheck passed, but the Audit Gate remains pending until Samsung S23 visual proof is captured.
 - Required follow-up proof: launch Home on Samsung S23, capture screenshot/XML, and confirm World Cup, Matches, match count, live count, no Home search/filter/account controls, and progressive match loading still render correctly.
