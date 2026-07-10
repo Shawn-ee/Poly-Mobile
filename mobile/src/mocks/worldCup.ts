@@ -30,6 +30,7 @@ export type MarketSourceSummary = {
   lineMarkets: {
     totalCount: number;
     polymarketCount: number;
+    approvedLineProviderCount?: number;
     contractFixtureCount: number;
     status: "provider-backed" | "contract-fixture" | "missing" | "unknown" | string;
     families: string[];
@@ -37,6 +38,7 @@ export type MarketSourceSummary = {
       family: string;
       totalCount: number;
       polymarketCount: number;
+      approvedLineProviderCount?: number;
       contractFixtureCount: number;
       status: "provider-backed" | "contract-fixture" | "missing" | "unknown" | string;
       reason: string;
@@ -45,6 +47,7 @@ export type MarketSourceSummary = {
       source: "polymarket-gamma" | string;
       status: "available" | "unavailable" | "unknown" | string;
       providerBackedLineMarketCount: number;
+      approvedLineProviderMarketCount?: number;
       contractFixtureLineMarketCount: number;
       expectedFamilies?: string[];
       providerBackedFamilies?: string[];
@@ -397,6 +400,7 @@ export const worldCupEvents: Event[] = [
       lineMarkets: {
         totalCount: 7,
         polymarketCount: 0,
+        approvedLineProviderCount: 0,
         contractFixtureCount: 7,
         status: "contract-fixture",
         families: ["spread", "totals", "team-total"],
@@ -405,6 +409,7 @@ export const worldCupEvents: Event[] = [
             family: "spread",
             totalCount: 5,
             polymarketCount: 0,
+            approvedLineProviderCount: 0,
             contractFixtureCount: 5,
             status: "contract-fixture",
             reason: "spread is served by Local MVP contract fixtures for this event.",
@@ -413,6 +418,7 @@ export const worldCupEvents: Event[] = [
             family: "total",
             totalCount: 1,
             polymarketCount: 0,
+            approvedLineProviderCount: 0,
             contractFixtureCount: 1,
             status: "contract-fixture",
             reason: "total is served by Local MVP contract fixtures for this event.",
@@ -421,6 +427,7 @@ export const worldCupEvents: Event[] = [
             family: "team_total",
             totalCount: 1,
             polymarketCount: 0,
+            approvedLineProviderCount: 0,
             contractFixtureCount: 1,
             status: "contract-fixture",
             reason: "team_total is served by Local MVP contract fixtures for this event.",
@@ -430,6 +437,7 @@ export const worldCupEvents: Event[] = [
           source: "polymarket-gamma",
           status: "unavailable",
           providerBackedLineMarketCount: 0,
+          approvedLineProviderMarketCount: 0,
           contractFixtureLineMarketCount: 7,
           expectedFamilies: ["spread", "total", "team_total"],
           providerBackedFamilies: [],

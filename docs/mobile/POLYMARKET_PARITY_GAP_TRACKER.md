@@ -1506,3 +1506,10 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Approved secondary line-provider markets would still be summarized as fixture-only | P0 | Verified | `buildMobileMarketSourceSummary()` now counts reviewed approved line-provider markets as provider-backed line coverage and reports approved-provider counts separately from Polymarket and fixture counts. | `src/server/services/mobileLiveEventDetail.ts`; `src/__tests__/mobile-live-event-detail.test.ts` |
 | Real provider-backed spread/totals/team-total current-match lines | P1 | Open | Current-match line rows still need real reviewed provider identity before they can leave fixture-only status. This cycle creates the route-summary path; it does not attach a live provider identity. | `docs/mobile/audits/cycle-TZ-approved-line-provider-summary.md` |
+
+# Cycle UA - Mobile Approved Line Provider Markers
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Mobile could not audit approved secondary-provider line counts separately from Polymarket/fixture counts | P0 | Verified | Mobile types, mock route data, and Event Detail hidden source markers now carry `approvedLineProviderCount` and `approvedLineProviderMarketCount`. | `mobile/src/types.ts`; `mobile/src/mocks/worldCup.ts`; `mobile/src/components/EventDetail.tsx`; `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts` |
+| Real approved-provider spread/totals/team-total current-match rows | P1 | Open | Mobile is ready to carry the count, but current MVP line rows still need real reviewed provider identity to become nonzero/provider-backed. | `docs/mobile/audits/cycle-UA-mobile-approved-line-provider-markers.md` |
