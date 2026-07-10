@@ -4470,3 +4470,9 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Event Detail line-market readiness summary | `/api/mobile/events/:slug/live-detail`; `/api/events?includeMobileMarkets=1` summary path | GET | Public event browse | Event slug or event-list query | `marketSourceSummary.lineMarkets.status`, `providerAvailability.status`, `providerBackedFamilies`, `fixtureOnlyFamilies`, `missingFamilies`, `nextProviderAction`, `familyReadiness[]` | Existing `Event`, `Market`, `Outcome`; no schema change | Existing fixture lines stay `contract-fixture`. Mixed provider/fixture state now returns `partial-provider-backed`, not full `provider-backed`. | Real provider-backed rows for every expected MVP line family: Spread, Total, Team Total. |
+
+# Cycle UI - Provider Line Breadth Event-Specific Scan
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider line discovery proof | Polymarket Gamma `/markets?search`, `/markets?slug`, `/events?tag_slug` | GET | Public provider data | Generic World Cup line queries, event-specific current-match queries, exact slug guesses | Proof-only counts for raw source hits, raw line-family hits, provider line candidates, attach-ready line candidates | None; read-only provider proof | Existing contract-fixture line rows remain the honest Local MVP fallback | Public Polymarket Gamma did not return attach-ready Spread/Totals/Team Total line markets for the checked current event probes. |

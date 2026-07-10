@@ -12314,3 +12314,13 @@ Known limitations:
 - State transitions: line summary now separates `contract-fixture`, `partial-provider-backed`, and fully `provider-backed` states. A route with only one provider-backed line family keeps remaining fixture/missing families explicit and tells the loop to replace those families before claiming full line parity.
 - Proof: focused backend live-detail contract test, mobile source-marker tests, and mobile typecheck passed. Android proof was not run because no ADB device was attached and no visible UI changed.
 - Known limitations: current-match Spread/Totals/Team Total remain P1 until real provider-backed rows are available for all required MVP line families.
+
+# Cycle UI - Provider Line Breadth Event-Specific Scan
+
+- Feature/page worked on: backend/provider discovery proof for Local MVP current-match line-market readiness.
+- Frontend components touched: none.
+- Backend/API routes touched: no route handler, schema, order, Portfolio, order book, chat, live stats, or chart UI changed. Updated read-only proof script `scripts/prove_mobile_provider_line_breadth_scan.ts`.
+- User interactions supported: unchanged. The visible line-selector flow still uses explicit backend-shaped contract fixtures when Polymarket line markets are unavailable.
+- State transitions: unchanged at runtime. The proof loop now has stronger evidence that current event-specific Gamma search and exact slug guesses still produce zero attach-ready line-family candidates.
+- Proof: focused source-contract test passed and live read-only Gamma scan wrote `docs/mobile/harness/cycle-UI-provider-line-breadth-event-specific-scan/cycle-UI-provider-line-breadth-scan.json`.
+- Known limitations: real provider-backed current-match Spread/Totals/Team Total rows remain missing. This cycle improves discovery evidence; it does not create a provider source.

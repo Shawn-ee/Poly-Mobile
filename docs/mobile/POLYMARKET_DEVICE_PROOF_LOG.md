@@ -2852,3 +2852,10 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Device: no new Android run; no runtime UI changed and no ADB device was attached.
 - Flow covered by source/contract proof: live-detail market source summary -> `partial-provider-backed` route state -> Event Detail hidden source markers.
 - Result: PASS for backend/data-contract scope. Run Android proof when a real or seeded partial-provider line state is visible on device.
+
+# Cycle UI - Provider Line Breadth Event-Specific Scan Proof
+
+- Device: no new Android run; no visible mobile UI changed and no ADB device was attached.
+- Flow covered by source/contract proof: Polymarket Gamma read-only discovery -> current-event-specific query probes -> exact line slug guesses -> strict line-family relevance gate -> proof JSON.
+- Proof summary: `docs/mobile/harness/cycle-UI-provider-line-breadth-event-specific-scan/cycle-UI-provider-line-breadth-scan.json`.
+- Result: PASS for backend/provider discovery scope. The scan found World Cup candidates but no attach-ready provider line markets, so no user-visible line row changed on device.
