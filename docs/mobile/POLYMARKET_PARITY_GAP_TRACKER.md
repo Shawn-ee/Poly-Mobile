@@ -1267,3 +1267,11 @@ For every UI element or interaction, answer:
 | Google login should use the same backend Google Cloud OAuth credential flow | P0 | Verified | Mobile launches `/api/auth/google/start` with `mobileReturnTo`; backend callback exchanges Google tokens server-side, creates/links the user, then issues a Holiwyn mobile API credential. | `mobile/src/__tests__/googleMobileAuthContract.test.ts`; `src/app/api/auth/google/start/route.ts`; `src/app/api/auth/google/callback/route.ts` |
 | Manual Google consent proof on S23 | P1 | Open | Code contract is validated, but completing Google account consent is an interactive manual proof. Expo Go may need `EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL`; real app/dev build uses `holiwyn://auth/google`. | Function log / data contract notes |
 | Current match has no provider-backed Spread/Totals/Team Total markets | P1 | Open | Broad provider scan found many World Cup candidates but zero attach-ready line markets; current route remains provider Winner plus contract-fixture line markets. | `docs/mobile/harness/cycle-RW-provider-line-breadth/cycle-RW-current-match-line-availability.json`; `docs/mobile/harness/cycle-RW-provider-line-breadth/cycle-RW-provider-line-breadth-scan.json` |
+
+# Cycle RX - Google Auth Return Connected State
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Google auth return leaves Portfolio looking signed out | P0 | Verified | Portfolio now switches the Google row to `Google connected` / `Server profile loaded` after `googleAuth=success` arrives with a returned key. | `docs/mobile/screenshots/cycle-RX-google-auth-return/cycle-RX-google-auth-return-portfolio.png`; `mobile/src/__tests__/portfolioGoogleAuthReturnContract.test.ts` |
+| Reset-state proof links clear Google auth-return state | P0 | Verified | App now applies the Google auth-return state after reset, so proof/real callback links are not immediately cleared. | `mobile/App.tsx`; `docs/mobile/harness/cycle-RX-google-auth-return/cycle-RX-google-auth-return-summary.json` |
+| Interactive Google account consent on S23 | P1 | Open | RX proves the mobile return/API-key handoff with a dev credential, but not a real Google consent browser session. | `docs/mobile/audits/cycle-RX-google-auth-return.md` |

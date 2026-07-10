@@ -7268,3 +7268,15 @@ Remaining P1:
 - Provider proof: current match line-availability and broad provider-breadth scan found no attach-ready provider-backed line markets, so line markets remain contract fixtures by design.
 - Unresolved P0: 0 for RW scope.
 - Remaining P1: manual S23 Google consent proof; real provider-backed current-match Spread/Totals/Team Total line markets; production liquidity/public market-maker policy.
+
+# Cycle RX Audit Gate - Google Auth Return Connected State
+
+- Scope: visible Portfolio state after a mobile Google auth return/deep-link with a server API key.
+- P0 result: PASS for RX scope.
+- Android proof: passed on Samsung S23.
+- Visible proof: `docs/mobile/screenshots/cycle-RX-google-auth-return/cycle-RX-google-auth-return-portfolio.png` shows `Google connected` and `Server profile loaded`.
+- XML proof: `docs/mobile/harness/cycle-RX-google-auth-return/cycle-RX-google-auth-return-portfolio.xml` contains `portfolio-account-google-connected` and `portfolio-google-login-connected-visible`.
+- Backend proof: `scripts/prove_mobile_google_auth_return_s23.ps1` confirmed `/api/portfolio` was readable using the returned key before launching the app.
+- Test proof: mobile typecheck passed and focused auth-return tests passed.
+- Unresolved P0: 0 for RX scope.
+- Remaining P1: real interactive Google consent on S23, logout/token revocation, and provider-backed current-match line markets.

@@ -2751,3 +2751,12 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Key screenshots: `docs/mobile/screenshots/cycle-RW-event-detail-simple-market-page/cycle-RW-current-mvp-detail-top.png`, `docs/mobile/screenshots/cycle-RW-event-detail-simple-market-page/cycle-RW-current-mvp-lines.png`, `docs/mobile/screenshots/cycle-RW-event-detail-simple-market-page/cycle-RW-current-mvp-ticket-ready.png`, `docs/mobile/screenshots/cycle-RW-event-detail-simple-market-page/cycle-RW-current-mvp-line-cashout-history.png`.
 - Result: PASS. Summary shows `result=pass`, hidden order book, ticket line preservation, swipe submit, filled History, cashout ticket opened, sell submitted, and cashout History visible.
 - Google auth note: route contract was type/test validated but not manually completed against Google on-device in this cycle because it needs interactive account consent.
+
+# Cycle RX - S23 Google Auth Return Connected State Proof
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`.
+- Flow: generated local mobile credential -> deep link shaped like backend Google callback return -> Portfolio opens -> connected Google state visible.
+- Proof summary: `docs/mobile/harness/cycle-RX-google-auth-return/cycle-RX-google-auth-return-summary.json`.
+- Screenshot: `docs/mobile/screenshots/cycle-RX-google-auth-return/cycle-RX-google-auth-return-portfolio.png`.
+- XML: `docs/mobile/harness/cycle-RX-google-auth-return/cycle-RX-google-auth-return-portfolio.xml`.
+- Result: PASS. XML/screenshot show `Google connected` and `Server profile loaded`; backend `/api/portfolio` was readable with the returned key.

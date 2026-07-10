@@ -635,6 +635,8 @@ const portfolioPageCopy = {
     account: "Account",
     googleSignIn: "Continue with Google",
     googleSignInHint: "Load your server profile",
+    googleConnected: "Google connected",
+    googleConnectedHint: "Server profile loaded",
     cash: "cash",
     deposit: "Deposit",
     withdraw: "Withdraw",
@@ -651,6 +653,8 @@ const portfolioPageCopy = {
     account: "\u8d26\u6237",
     googleSignIn: "\u4f7f\u7528 Google \u7ee7\u7eed",
     googleSignInHint: "\u52a0\u8f7d\u670d\u52a1\u5668\u4e2a\u4eba\u8d44\u6599",
+    googleConnected: "Google \u5df2\u8fde\u63a5",
+    googleConnectedHint: "\u670d\u52a1\u5668\u4e2a\u4eba\u8d44\u6599\u5df2\u52a0\u8f7d",
     cash: "\u73b0\u91d1",
     deposit: "\u5145\u503c",
     withdraw: "\u63d0\u73b0",
@@ -766,6 +770,7 @@ export function Portfolio({
   loadValueHistory,
   openAccount,
   openGoogleSignIn,
+  googleAuthConnected = false,
 }: {
   locale: Locale;
   t: PortfolioCopy;
@@ -780,6 +785,7 @@ export function Portfolio({
   loadValueHistory?: (range: PortfolioValueHistoryRange) => Promise<PortfolioValueHistory>;
   openAccount: () => void;
   openGoogleSignIn: () => void;
+  googleAuthConnected?: boolean;
 }) {
   const scrollRef = useRef<ScrollView | null>(null);
   const [expandedPositionId, setExpandedPositionId] = useState<string | null>(null);
@@ -1032,21 +1038,25 @@ export function Portfolio({
           </Pressable>
         </View>
         <Pressable
-          accessibilityLabel="portfolio-account-entry-google portfolio-account-google-direct-signin portfolio-google-login-button-visible portfolio-google-login-row-visible Continue with Google"
+          accessibilityLabel={googleAuthConnected ? "portfolio-account-entry-google portfolio-account-google-connected portfolio-google-login-connected-visible Google connected" : "portfolio-account-entry-google portfolio-account-google-direct-signin portfolio-google-login-button-visible portfolio-google-login-row-visible Continue with Google"}
           accessibilityRole="button"
           hitSlop={10}
           onPress={openGoogleSignIn}
-          style={({ pressed }) => [styles.accountGoogleButton, pressed && styles.accountGoogleButtonPressed]}
+          style={({ pressed }) => [styles.accountGoogleButton, googleAuthConnected && styles.accountGoogleButtonConnected, pressed && styles.accountGoogleButtonPressed]}
           testID="portfolio-account-entry-google"
         >
-          <View style={styles.accountGoogleIconWrap}>
-            <Ionicons name="logo-google" size={19} color="#111827" />
+          <View style={[styles.accountGoogleIconWrap, googleAuthConnected && styles.accountGoogleIconWrapConnected]}>
+            <Ionicons name={googleAuthConnected ? "checkmark-circle" : "logo-google"} size={19} color={googleAuthConnected ? "#22c55e" : "#111827"} />
           </View>
           <View style={styles.accountGoogleCopy}>
-            <Text style={styles.accountGoogleButtonText}>{pageCopy.googleSignIn}</Text>
-            <Text style={styles.accountGoogleHint}>{pageCopy.googleSignInHint}</Text>
+            <Text style={[styles.accountGoogleButtonText, googleAuthConnected && styles.accountGoogleButtonTextConnected]}>
+              {googleAuthConnected ? pageCopy.googleConnected : pageCopy.googleSignIn}
+            </Text>
+            <Text style={[styles.accountGoogleHint, googleAuthConnected && styles.accountGoogleHintConnected]}>
+              {googleAuthConnected ? pageCopy.googleConnectedHint : pageCopy.googleSignInHint}
+            </Text>
           </View>
-          <Ionicons name="chevron-forward" size={18} color="#111827" />
+          <Ionicons name={googleAuthConnected ? "shield-checkmark-outline" : "chevron-forward"} size={18} color={googleAuthConnected ? "#dbeafe" : "#111827"} />
         </Pressable>
       </View>
       <View accessibilityLabel="fake-balance-card portfolio-value-retail-density portfolio-header-dollar-value" testID="fake-balance-card" style={styles.valueBlock}>
@@ -1591,11 +1601,15 @@ const styles = StyleSheet.create({
   accountGearButton: { width: 46, height: 46, alignItems: "center", justifyContent: "center", borderRadius: 999 },
   accountGearButtonPressed: { opacity: 0.74, transform: [{ scale: 0.96 }] },
   accountGoogleButton: { minHeight: 58, borderRadius: 15, paddingHorizontal: 14, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10, backgroundColor: "#f8fafc" },
+  accountGoogleButtonConnected: { borderWidth: 1, borderColor: "#1d4ed8", backgroundColor: "#0f172a" },
   accountGoogleButtonPressed: { opacity: 0.84, transform: [{ scale: 0.97 }] },
   accountGoogleIconWrap: { width: 32, height: 32, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "#e5e7eb" },
+  accountGoogleIconWrapConnected: { backgroundColor: "#12351f" },
   accountGoogleCopy: { flex: 1, minWidth: 0 },
   accountGoogleButtonText: { color: "#111827", fontSize: 15, fontWeight: "900", flexShrink: 1 },
+  accountGoogleButtonTextConnected: { color: "#e5e7eb" },
   accountGoogleHint: { color: "#475569", fontSize: 11, fontWeight: "800", marginTop: 2 },
+  accountGoogleHintConnected: { color: "#93c5fd" },
   avatarWrap: { width: 50, height: 50, position: "relative", justifyContent: "center" },
   avatarGradient: { width: 46, height: 46, borderRadius: 999, overflow: "hidden", backgroundColor: "#f43f5e", position: "relative" },
   avatarColorStop: { position: "absolute", borderRadius: 999 },
