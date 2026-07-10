@@ -166,11 +166,14 @@ export async function GET(request: Request) {
       name: "Holiwyn Mobile Google",
       scopes: mobileApiScopes,
     });
+    // `holiwynApiKey` is the mobile app credential. It is not a Google access
+    // token; Google OAuth client credentials and token exchange remain here.
     return NextResponse.redirect(
       appendMobileAuthParams(mobileReturnTo, {
         googleAuth: "success",
         forcePortfolio: "1",
         forceRuntimePortfolioSync: "1",
+        holiwynApiKey: mobileCredential.token,
         apiKey: mobileCredential.token,
       })
     );

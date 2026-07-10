@@ -59,10 +59,12 @@ describe("Google mobile auth contract", () => {
     expect(callback).toContain("createApiCredential");
     expect(callback).toContain("Holiwyn Mobile Google");
     expect(callback).toContain('googleAuth: "success"');
+    expect(callback).toContain('holiwynApiKey: mobileCredential.token');
     expect(callback).toContain('apiKey: mobileCredential.token');
     expect(callback).toContain("https://oauth2.googleapis.com/token");
     expect(callback).toContain("https://openidconnect.googleapis.com/v1/userinfo");
     expect(callback).not.toContain("GOOGLE_CLIENT_SECRET=");
+    expect(callback).toContain("It is not a Google access");
   });
 
   test("S23 proof verifies the returned Holiwyn key survives an app restart", () => {
@@ -82,6 +84,7 @@ describe("Google mobile auth contract", () => {
     expect(doc).toContain("GOOGLE_CLIENT_SECRET");
     expect(doc).toContain("Backend route `/api/auth/google/callback`");
     expect(doc).toContain("Mobile stores only the returned Holiwyn API key");
+    expect(doc).toContain("The returned `holiwynApiKey` is a Holiwyn API credential, not a Google access token or refresh token.");
     expect(doc).toContain("Do not put `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, Google access tokens, or Google refresh tokens in the Expo/mobile `.env`.");
     expect(doc).toContain("EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL");
     expect(doc).toContain("EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL");

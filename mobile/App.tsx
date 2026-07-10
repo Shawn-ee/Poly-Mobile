@@ -647,7 +647,7 @@ export default function App() {
     const shouldForceSearch = url.includes("forceSearch=1");
     const shouldApplyGoogleAuthReturn = url.includes("googleAuth=success");
     const forcedOpenOrder = url.includes("forceOpenOrderSide=sell") ? SMOKE_OPEN_SELL_ORDER : SMOKE_OPEN_ORDER;
-    const apiKeyMatch = url.match(/[?&,]apiKey=([^&,]+)/);
+    const apiKeyMatch = url.match(/[?&,](?:holiwynApiKey|apiKey)=([^&,]+)/);
     const shouldForceRuntimePortfolioSync =
       url.includes("forceRuntimePortfolioSync=1") || (shouldForcePortfolio && Boolean(apiKeyMatch?.[1]));
     forceServerOrderProof.current = url.includes("forceServerOrderProof=1");

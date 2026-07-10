@@ -13,6 +13,8 @@ Holiwyn mobile should use the same Google OAuth setup that already appears in Po
 | Mobile API credential | Backend route `/api/auth/google/callback` | Backend mints a Holiwyn API key after successful Google auth. |
 | Stored mobile credential | Mobile SecureStore | Mobile stores only the returned Holiwyn API key. |
 
+The returned `holiwynApiKey` is a Holiwyn API credential, not a Google access token or refresh token. The backend still performs the Google code exchange with the same Poly/Holiwyn Google Cloud OAuth client and never sends Google tokens to Expo/mobile.
+
 ## Backend Environment
 
 Set these on the backend server, using the same values and Google Cloud project/client already used by Poly/Holiwyn:
@@ -79,6 +81,8 @@ holiwyn://auth/google
 ```text
 googleAuth=success&forcePortfolio=1&forceRuntimePortfolioSync=1&apiKey=<Holiwyn API key>
 ```
+
+The callback also sends `holiwynApiKey=<Holiwyn API key>` as the clearer mobile-owned credential name while keeping `apiKey` as a compatibility alias for older proof links.
 
 7. Mobile stores the Holiwyn API key in SecureStore and uses it as the Bearer credential for profile, Portfolio, order, and history routes.
 

@@ -9387,3 +9387,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: real current-match approved provider identities for Spread/Totals/Team Total rows.
 - Temporary mock/static data: none added.
 - Future migration concern: if future line providers are added beyond the current approved provider list, source copy should stay Holiwyn-branded unless the line is truly Polymarket-backed.
+
+# Cycle UC - Google Login Poly Credential Hardening Notes
+
+- No schema migration was added.
+- Closed or narrowed: the mobile Google callback now has an explicit `holiwynApiKey` parameter for the Holiwyn mobile API credential, while keeping `apiKey` as a compatibility alias for older proof links.
+- Route mismatch: none. Mobile still opens `/api/auth/google/start`, and the backend still owns `/api/auth/google/callback`, Google code exchange, user creation/linking, and API credential creation.
+- Fields Holiwyn still needs but backend does not fully provide: none for the auth handoff.
+- Temporary mock/static data: none added.
+- Future migration concern: do not put `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, Google access tokens, or Google refresh tokens in Expo/mobile config. The only mobile-stored credential is the backend-minted Holiwyn API key.
