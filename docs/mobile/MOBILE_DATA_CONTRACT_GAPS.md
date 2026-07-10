@@ -8915,3 +8915,13 @@ Future migration concern:
 - Route mismatch: none introduced. Mobile still opens `/api/auth/google/start`; backend still exchanges Google tokens using server-side `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`; mobile stores only the Holiwyn API key returned by the backend callback.
 - Temporary mock/static data: S23 proof uses a generated local mobile dev credential shaped like the callback credential, not real interactive Google consent.
 - Future migration concern: move the stored key into a secure native storage mechanism when the app shifts from Expo Go to a production/dev build, and add logout/revoke UX before broader tester distribution.
+
+# Cycle SA - Google Account Sign-Out and Mobile Credential Revocation Notes
+
+- No schema migration was added.
+- Closed or narrowed: Local MVP logout/revoke UX now exists. Mobile calls `/api/auth/mobile/logout`, clears the persisted Holiwyn key, resets runtime auth state, and returns to the visible `Continue with Google` entry.
+- Closed or narrowed: backend can revoke the current mobile API credential by authenticating the request with the same key and calling existing `revokeApiCredential`.
+- Fields Holiwyn still needs but backend does not fully provide: production-grade Google session/logout proof against an actual Google consent flow and secure native storage integration.
+- Route mismatch: none introduced. Existing `/api/auth/google/callback` still creates the mobile credential; the new `/api/auth/mobile/logout` route reverses the local mobile credential state.
+- Temporary mock/static data: S23 proof uses a generated local credential shaped like the backend callback credential.
+- Future migration concern: replace AsyncStorage with secure native storage and decide whether logout should also revoke all `Holiwyn Mobile Google` credentials or only the current key.

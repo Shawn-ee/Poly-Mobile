@@ -7305,3 +7305,16 @@ Remaining P1:
 - Test proof: mobile typecheck passed and focused Google/Portfolio/profile tests passed.
 - Unresolved P0: 0 for RZ scope.
 - Remaining P1: real interactive Google consent on S23, logout/token revocation, secure native token storage for dev build/APK, provider-backed current-match line markets, and production liquidity/public market-maker policy.
+
+# Cycle SA Audit Gate - Google Account Sign-Out and Mobile Credential Revocation
+
+- Scope: Local MVP Account sign-out after a persisted backend-returned Google mobile credential.
+- P0 result: PASS for SA scope.
+- Implementation proof: `mobile/App.tsx` clears `holiwyn.mobileAuthApiKey.v1`, resets runtime API key and connected account state, and calls `PolyApi.logoutMobile()`. `src/app/api/auth/mobile/logout/route.ts` authenticates the current mobile key and revokes it when present.
+- Android proof: passed on Samsung S23 `SM_S911U1`.
+- Visible proof: `docs/mobile/screenshots/cycle-SA-google-auth-logout/cycle-SA-google-auth-account-signed-out.png` shows the signed-out `Continue with Google` entry after tapping sign out.
+- XML proof: `docs/mobile/harness/cycle-SA-google-auth-logout/cycle-SA-google-auth-account-signed-out.xml` contains `Continue with Google` and rejects `account-sign-out-google`, `portfolio-account-google-connected`, and `Server profile loaded`.
+- Backend proof: proof flow used `/api/portfolio` with the returned key before logout; logout route contract test verifies current-key revocation.
+- Test proof: mobile typecheck passed and focused account/auth/logout tests passed.
+- Unresolved P0: 0 for SA scope.
+- Remaining P1: real interactive Google consent on S23, secure native credential storage, provider-backed current-match line markets, and production liquidity/public market-maker policy.
