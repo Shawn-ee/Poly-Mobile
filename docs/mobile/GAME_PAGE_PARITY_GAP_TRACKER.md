@@ -1,109 +1,57 @@
-# Holiwyn Game Page Parity Gap Tracker
+# Holiwyn Local MVP Game Page Gap Tracker
 
-Date: 2026-07-02
+Date: 2026-07-10
 
-Scope: single soccer game page parity against the real Polymarket Android app on Samsung S23.
+Scope: current Local MVP game/event detail page for the retail betting path:
 
-Reference audit: `docs/mobile/POLYMARKET_GAME_PAGE_REFERENCE_AUDIT.md`
+Home or Live -> Event Detail -> line market -> simple Buy/Sell ticket -> fake-token/server-backed order -> Portfolio/history.
 
-Criteria: `docs/mobile/HOLIWYN_GAME_PAGE_PARITY_CRITERIA.md`
+This tracker supersedes the older July 2 full Polymarket game-page parity tracker. That older tracker treated chart, chat, share/watchlist, and order-book surfaces as P0 parity work. The current product direction explicitly removes those from the default MVP path.
 
-Status meanings:
+Authoritative current rules:
 
-- `Open`: missing or not implemented deeply enough.
-- `Partial`: visible or partly interactive, but below the P0 criterion.
-- `Verified`: proven by current Holiwyn Samsung evidence and an audit pass.
+- Do not show the Polymarket-style price chart on the Event Detail market page.
+- Do not show chat, line chat, social preview cards, live sports statistics, or share/watchlist panels.
+- Do not show order book UI by default. Existing order-book backend/routes may remain internal/debug-only.
+- Keep the page focused on match context, current probabilities, Game Lines, Player Props tab shell, ticket entry, fake-token submit, and Portfolio/history.
+- Keep source disclosure honest: provider-backed Regulation Winner may be Polymarket-backed; Spread/Totals/Team Total rows remain contract-shaped fixtures unless real reviewed provider identity exists.
 
-## P0 Gaps
+Reference docs:
 
-| ID | Current Holiwyn Status | State | Evidence Needed | Next Cycle |
-| --- | --- | --- | --- | --- |
-| GP-P0-01 | Header presence is now proven on Samsung with back, Game/Chat segmented control, badge, book/rules, and share icons. Tappable behavior for book/share remains tracked under GP-P0-18. | Verified | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png` and `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`. | Done |
-| GP-P0-02 | Live scoreboard is now proven on Samsung with flags, team abbreviations, `0 - 0`, `15'`, and both team probabilities. | Verified | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png` and XML. | Done |
-| GP-P0-03 | Chart now renders two independent outcome traces with selected label/percent. It is still local deterministic data, which remains GP-P1-01. | Verified | Samsung screenshot/XML show two traces and selected outcome label/percent. | Done |
-| GP-P0-04 | Chart now shows trade/value markers and `All / Game / Live` filter controls. | Verified | Samsung screenshot/XML show `+$9`, `+$39`, `+$479`, `All`, `Game`, and `Live`. | Done |
-| GP-P0-05 | Social preview card is now proven with chatting count, avatar, username, trade badge, and message. | Verified | Samsung screenshot/XML show `78914 chatting`, `gigglyeel0550`, `BTTS $36`, and `VAMOS`. | Done |
-| GP-P0-06 | Primary team buttons now open the correct Polymarket-style ticket for both sides. Samsung smoke taps Mexico, closes the sheet, then taps Ecuador and proves the selected side/outcome changes correctly. | Verified | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`, `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket.xml`, `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-away-ticket.png`, and `docs/mobile/harness/cycle-current-holiwyn-event-detail-away-ticket.xml`. | Done |
-| GP-P0-07 | Regulation Time Winner group is now separated from the generic winner market and includes the required subtitle. | Verified | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-game-line-expanded.png` and XML. | Done |
-| GP-P0-08 | Three-row regulation-time winner is now proven with home, tie, away rows, icons, mini-lines, odds, and probability buttons. | Verified | Samsung focused smoke `smoke:samsung:event-detail-outcome-depth` passed. | Done |
-| GP-P0-09 | Spread group now includes dynamic sentence, line-value pill, Reg. Time / 1st Half / 2nd Half segmented controls, and Yes/No rows. Full selector behavior remains GP-P1-03/04. | Verified | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-game-line-groups.png` and XML. | Done |
-| GP-P0-10 | Totals group now shows Over/Under rows with odds and probability buttons. | Verified | Samsung scroll proof shows `Totals`, `Total goals over 2.5`, `Over 2.5`, and `Under 2.5`. | Done |
-| GP-P0-11 | 1st Half Winner now shows three rows. | Verified | Samsung scroll proof shows `1st Half Winner`, `Mexico 1H`, `Tie 1H`, and `Ecuador 1H`. | Done |
-| GP-P0-12 | 2nd Half Winner now shows three rows. | Verified | Samsung scroll proof shows `2nd Half Winner`, `Mexico 2H`, `Tie 2H`, and `Ecuador 2H`. | Done |
-| GP-P0-13 | Full Game Team Total Goals now shows Over/Under rows. | Verified | Samsung scroll proof shows `Full Game Team Total Goals (Reg. Time)`, `MEX Over 1.5`, and `MEX Under 1.5`. | Done |
-| GP-P0-14 | Player Props now shows `Goals (Reg. Time)`, team filter chips, player rows, stat-line dropdowns, odds multipliers, probability buttons, `Show all`, and additional collapsed prop groups. | Verified | Samsung props proof captures header, rows, and lower prop groups. | Done |
-| GP-P0-15 | Expand/collapse behavior is proven for Regulation Time Winner; richer groups still need their own rows in later cycles. | Verified | Samsung focused smoke captures expanded and collapsed states. | Done |
-| GP-P0-16 | Ticket overlay now matches the P0 Polymarket-style numeric-entry sheet: close, event title, selected side/outcome, settings icon, large `$0` amount, Yes/No toggle, odds/available line, `+$5`/`+$10`/`+$25`, numeric keypad, and disabled `Choose an amount` prompt. | Verified | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png` and `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket.xml`. | Done |
-| GP-P0-17 | Chat tab is now a real page state with scoreboard context, message feed, typing indicator, quick reactions, input placeholder, emoji row, and sticky primary outcomes. | Verified | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-chat.png`, `docs/mobile/harness/cycle-current-holiwyn-event-detail-chat.xml`, `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-chat-lower.png`, and `docs/mobile/harness/cycle-current-holiwyn-event-detail-chat-lower.xml`. | Done |
-| GP-P0-18 | Top book and share controls are tappable and non-breaking. The top book action now opens Order Book for the current event/market; share opens a dismissible share panel while preserving the game page underneath. Saved/watchlist behavior is handled outside the top event book action. | Verified | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-top-order-book.png`, `docs/mobile/harness/cycle-current-holiwyn-event-detail-top-order-book.xml`, `docs/mobile/harness/cycle-current-holiwyn-event-detail-top-order-book-dismissed.xml`, `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-share-sheet.png`, `docs/mobile/harness/cycle-current-holiwyn-event-detail-share-sheet.xml`, `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-share-dismissed.png`, and `docs/mobile/harness/cycle-current-holiwyn-event-detail-share-dismissed.xml`. | Done |
-| GP-P0-19 | Market Rules and More Events now appear after market/prop groups. | Verified | Samsung proof `cycle-current-holiwyn-event-detail-props-rules-more.png` / XML shows rules, `View Full Rules`, `More Events`, and event rows. | Done |
-| GP-P0-20 | Full-page Holiwyn scroll proof now exists across top, Game Lines, Player Props, rules, and More Events. | Verified | Combined Samsung evidence from Cycle C, Cycle D, and Cycle E. | Done |
-| GP-P0-21 | Final audit gate maps every P0 criterion to Samsung evidence and leaves zero unresolved P0 gaps. Independent Reviewer Agent audit completed with no P0 downgrades required. | Verified | Final audit section below plus Reviewer Agent result in Cycle I notes. | Done |
+- Main workflow tracker: `docs/mobile/POLYMARKET_PARITY_GAP_TRACKER.md`
+- Current function log: `docs/mobile/FUNCTION_IMPLEMENTATION_LOG.md`
+- Backend route map: `docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md`
+- Data contract gaps: `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md`
 
-## P1 Gaps
+## P0 Criteria
 
-| ID | Current Holiwyn Status | State | Notes |
+| ID | Requirement | State | Evidence |
 | --- | --- | --- | --- |
-| GP-P1-01 | Chart data is not proven backend-backed. | Open | Can remain P1 if deterministic local series passes P0 visual parity. |
-| GP-P1-02 | Chart press/hold tooltip is not implemented. | Open | Reference proof did not capture a persistent tooltip; keep tracked without blocking P0. |
-| GP-P1-03 | Spread line selector is not implemented. | Open | P0 needs visible pill; selector can follow. |
-| GP-P1-04 | Spread time segments do not yet change data. | Open | P0 needs visible segments and rows; behavior can follow. |
-| GP-P1-05 | Amount-entered ticket submit/swipe state is incomplete. | Open | Avoid accidental real trades in reference; safe Holiwyn proof can be added. |
-| GP-P1-06 | Native share state is unproven. | Open | Needs dismissible smoke proof. |
-| GP-P1-07 | Rules sheet from book icon is unproven. | Open | Lower Market Rules section is P0; icon sheet remains P1. |
-| GP-P1-08 | Chat reactions/input interactions are unproven. | Open | Chat visual page is P0; richer safe input behavior is P1. |
-| GP-P1-09 | Liquidity/order-depth expansion is missing. | Open | Useful after P0 layout parity. |
+| LMVP-GP-P0-01 | Event Detail opens from Home/Live using current route-backed event data. | Verified | Latest full-flow proof: `docs/mobile/harness/cycle-TE-current-mvp-full-flow-reproof/cycle-TE-current-mvp-s23-visible-flow.json`; ongoing route/server proofs in main tracker. |
+| LMVP-GP-P0-02 | Header and match context are compact: back navigation, teams, flags/abbreviations, date/time/status, and current probabilities. | Verified | Event Detail source and S23 Local MVP proofs in `docs/mobile/POLYMARKET_PARITY_GAP_TRACKER.md`. |
+| LMVP-GP-P0-03 | Chart is absent from default Event Detail UI. | Verified | `mobile/src/__tests__/eventDetailChartStatusCopy.test.ts`; `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1` rejects `event-detail-price-chart`. |
+| LMVP-GP-P0-04 | Chat, social preview, share/watchlist, and live-stat surfaces are absent from default Event Detail UI. | Verified | `mobile/src/__tests__/eventDetailNoChatStatsContract.test.ts`; S23 proof script rejects chat/order-book/social markers. |
+| LMVP-GP-P0-05 | Order book UI is hidden by default and only available behind debug/internal gates. | Verified | `mobile/src/components/EventDetail.tsx` gates order-book opening through `EXPO_PUBLIC_SHOW_ORDERBOOK === "1"`; S23 proof rejects default order-book markers. |
+| LMVP-GP-P0-06 | Regulation Winner and line groups are visible and open the simple Trade Ticket with selected market/outcome/line identity preserved. | Verified | Current MVP full-flow and ticket proof artifacts listed in the main tracker. |
+| LMVP-GP-P0-07 | Trade Ticket supports amount entry and gesture-only swipe submit for Buy/Sell without changing backend order routes. | Verified | Trade Ticket swipe/submit cycles in `docs/mobile/POLYMARKET_PARITY_GAP_TRACKER.md`; full submit proof in Cycle TE/TP evidence. |
+| LMVP-GP-P0-08 | Server-backed fake-token order appears in Portfolio/history with selected market/outcome/line/source identity preserved. | Verified | Cycle TE/TP full-flow proof and Portfolio density/History contracts in main tracker. |
+| LMVP-GP-P0-09 | Real provider-backed line markets are not falsely claimed when Polymarket Gamma exposes none for the current match. | Verified | Provider line source reprobe and approved-provider source copy cycles in main tracker. |
 
-## P2 Gaps
+## Open P1 Gaps
 
-| ID | Current Holiwyn Status | State | Notes |
+| ID | Gap | Status | Next Useful Work |
 | --- | --- | --- | --- |
-| GP-P2-01 | Pixel-level spacing and animation parity is not yet audited. | Open | Requires side-by-side audit after P0. |
-| GP-P2-02 | Real-time chat badge/count updates are not proven. | Open | Requires timed proof. |
-| GP-P2-03 | Smooth chart animation is not proven. | Open | Requires video or screenshot sequence. |
-| GP-P2-04 | Closed/suspended/no-liquidity states are not implemented. | Open | Outside current P0 capture. |
-| GP-P2-05 | Comprehensive real soccer player props are not implemented. | Open | P0 requires representative player props only. |
+| LMVP-GP-P1-01 | Real provider-backed Spread/Totals/Team Total current-match line markets remain unavailable from Polymarket Gamma. | Open | Continue Local MVP with explicit contract fixtures, or configure/review an approved secondary provider contract. |
+| LMVP-GP-P1-02 | Full real Google consent proof on S23 remains manual/setup-dependent. | Open | Run when backend auth origin and Google Cloud callback URL are reachable and registered. |
+| LMVP-GP-P1-03 | More closed/suspended/unavailable market states need visible Android proof. | Open | Add focused state proof only if it affects the Home -> Event Detail -> ticket -> Portfolio path. |
 
-## Cycle Notes
+## Audit Gate Notes
 
-- Cycle A produced the real Samsung Polymarket reference audit.
-- Cycle B produced criteria and this initial gap tracker. It intentionally marks the game page as not complete because the old prototype Definition of Done is not strict enough for Polymarket parity.
-- Cycle C upgraded the visible top game page and Regulation Time Winner rows. Verified on Samsung with `npm run smoke:samsung:event-detail-summary`, `npm run smoke:samsung:event-detail-outcome-depth`, and `npm run typecheck`. Remaining P0 work is still substantial: ticket parity, Spread/Totals/half markets/team totals, Player Props rows, Chat page, book/share behavior, rules, More Events, full-page scroll proof, and final independent audit.
-- Cycle D added the remaining P0 Game Lines market groups: Spread, Totals, 1st Half Winner, 2nd Half Winner, and Full Game Team Total Goals. Verified on Samsung with `npm run smoke:samsung:event-detail-outcome-depth` and `npm run typecheck`. Remaining P0 work: Player Props rows, ticket parity, Chat page, book/share behavior, lower Market Rules/More Events, full-page proof, and final audit.
-- Cycle E added Player Props rows, collapsed prop groups, Market Rules, and More Events. Verified on Samsung with `npm run smoke:samsung:event-detail-props` and `npm run typecheck`. Remaining P0 work: ticket parity, Chat tab page, book/share behavior, and final independent audit.
-- Cycle F rebuilt the game-page ticket into a Polymarket-style numeric sheet and expanded the Samsung proof to tap both primary outcomes. Verified on Samsung with `npm run smoke:samsung:event-detail-buy-ticket` and `npm run typecheck`. Remaining P0 work: Chat tab page, book/share behavior, and final independent audit.
-- Cycle G added the real Chat tab page state and Samsung two-screen proof for feed, typing, reactions, input, emoji row, and sticky outcomes. Verified on Samsung with `npm run smoke:samsung:event-detail-chat` and `npm run typecheck`. Remaining P0 work: book/share behavior and final independent audit.
-- Cycle H added tappable book/save and share states with dismissible UI, plus Samsung proof that the game page remains intact after dismissing. Verified on Samsung with `npm run smoke:samsung:event-detail-actions` and `npm run typecheck`. Remaining P0 work: final independent audit.
-- Cycle I completed the final P0 audit gate. The implementation agent mapped all P0 criteria to Samsung evidence, then an independent Reviewer Agent checked the criteria/tracker/evidence set. No P0 criteria remain Open or Partial. Remaining differences stay tracked as P1/P2.
+The old full-parity rows for chart, chat, social preview, share/watchlist, and default order-book UI must not be used as completion evidence for the current Local MVP.
 
-## Final P0 Audit Map
+A future cycle fails the gate if it:
 
-Audit date: 2026-07-02
-
-Audit result: `0` unresolved P0 gaps.
-
-| P0 ID | Audit Evidence |
-| --- | --- |
-| GP-P0-01 | Header controls: `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`, `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`. |
-| GP-P0-02 | Scoreboard flags/teams/score/clock/probabilities: `cycle-current-holiwyn-event-detail.png` and XML. |
-| GP-P0-03 | Dual probability chart: `cycle-current-holiwyn-event-detail.png` and XML. |
-| GP-P0-04 | Chart markers and `All / Game / Live`: `cycle-current-holiwyn-event-detail.png` and XML. |
-| GP-P0-05 | Social preview card: `cycle-current-holiwyn-event-detail.png` and XML. |
-| GP-P0-06 | Primary buttons opening both ticket sides: `cycle-current-holiwyn-event-detail-ticket.png` / `.xml`, `cycle-current-holiwyn-event-detail-away-ticket.png` / `.xml`. |
-| GP-P0-07 | Regulation Time Winner title/subtitle: `cycle-current-holiwyn-event-detail-game-line-expanded.png` / `.xml`. |
-| GP-P0-08 | Regulation-time home/tie/away rows: `cycle-current-holiwyn-event-detail-game-line-expanded.png` / `.xml`. |
-| GP-P0-09 | Spread group, line pill, period controls, Yes/No rows: `cycle-current-holiwyn-event-detail-game-line-groups.png` / `.xml`. |
-| GP-P0-10 | Totals Over/Under rows: `cycle-current-holiwyn-event-detail-game-line-groups.png` / `.xml`. |
-| GP-P0-11 | 1st Half Winner rows: `cycle-current-holiwyn-event-detail-game-line-groups.png` / `.xml`. |
-| GP-P0-12 | 2nd Half Winner rows: `cycle-current-holiwyn-event-detail-game-line-deeper-groups.png` / `.xml`. |
-| GP-P0-13 | Full Game Team Total Goals rows: `cycle-current-holiwyn-event-detail-game-line-deeper-groups.png` / `.xml`. |
-| GP-P0-14 | Player Props rows and collapsed lower props: `cycle-current-holiwyn-event-detail-props.png`, `cycle-current-holiwyn-event-detail-props-rows.png`, `cycle-current-holiwyn-event-detail-props-lower.png`, and matching XML. |
-| GP-P0-15 | Expand/collapse behavior: `cycle-current-holiwyn-event-detail-game-line-expanded.png` / `.xml`, `cycle-current-holiwyn-event-detail-game-line-collapsed.png` / `.xml`. |
-| GP-P0-16 | Polymarket-style ticket sheet: `cycle-current-holiwyn-event-detail-ticket.png` / `.xml`. |
-| GP-P0-17 | Chat page: `cycle-current-holiwyn-event-detail-chat.png` / `.xml`, `cycle-current-holiwyn-event-detail-chat-lower.png` / `.xml`. |
-| GP-P0-18 | Top book/order-book and share tap proof: `cycle-current-holiwyn-event-detail-top-order-book.png` / `.xml`, `cycle-current-holiwyn-event-detail-top-order-book-dismissed.xml`, `cycle-current-holiwyn-event-detail-share-sheet.png` / `.xml`, `cycle-current-holiwyn-event-detail-share-dismissed.png` / `.xml`. |
-| GP-P0-19 | Market Rules and More Events: `cycle-current-holiwyn-event-detail-props-rules-more.png` / `.xml`. |
-| GP-P0-20 | Full-page scroll proof: combined top, game-line, deeper game-line, props, rules, and more-events evidence from Cycles C-E. |
-| GP-P0-21 | This final audit map plus independent Reviewer Agent check. |
-
-Remaining non-blocking gaps are intentionally left in P1/P2: backend-backed chart history, chart press tooltip, spread selector behavior, spread period data changes, amount-entered ticket submit proof, native share integration, book/rules sheet, richer chat interactions, liquidity expansion, pixel-level polish, real-time updates, animation proof, closed/suspended states, and comprehensive real player-prop coverage.
+- Reintroduces chart/chat/order-book/social surfaces into the default Event Detail UI.
+- Marks fixture line rows as Polymarket-backed without real provider identity.
+- Claims Event Detail completion without a current S23 proof or a clear reason why no visible UI changed.
+- Changes backend order or Portfolio behavior without updating route/data-contract documentation.
