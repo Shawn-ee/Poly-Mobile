@@ -2865,3 +2865,10 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Device: no new Android run; no visible mobile UI changed and no ADB device was attached.
 - Flow covered by source/contract proof: Event Detail server mode -> quote/probability refresh remains active -> order-book depth route is skipped by default -> order-book debug handoff remains available only behind `EXPO_PUBLIC_SHOW_ORDERBOOK=1`.
 - Result: PASS for source/data-contract scope. Reprove the full S23 retail journey on the next visible Local MVP cycle.
+
+# Cycle UK - Local MVP Route Baseline Proof
+
+- Device: no new Android run; no visible mobile UI changed and no ADB device was attached.
+- Flow covered by backend/API proof: Home match feed -> selected `argentina-vs-egypt` Event Detail route -> provider-backed Regulation Winner -> contract-fixture Spread/Totals/Team Total rows -> route diagnosis for remaining provider-line gap.
+- Proof summary: `docs/mobile/harness/cycle-UK-local-mvp-route-baseline-proof/cycle-UK-state-inspection.json`.
+- Result: PASS for backend/API route baseline scope. S23 visible journey proof remains the next required visible gate.

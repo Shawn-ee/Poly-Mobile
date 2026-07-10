@@ -9459,3 +9459,12 @@ Future migration concern:
 - Fields Holiwyn still needs: current probability/top price/quote freshness for ticket pricing remain important. Depth ladder fields are debug-only for now.
 - Temporary mock/static data: none added.
 - Future migration concern: if order book becomes user-facing again, reintroduce it through an explicit approved milestone with Android proof instead of default background route calls.
+
+# Cycle UK - Local MVP Route Baseline Proof Notes
+
+- No schema migration was added.
+- Closed or narrowed: current backend route evidence proves the Home feed is match-only for the Local MVP query and the selected Event Detail route has provider-backed Regulation Winner plus explicit contract-fixture line rows.
+- Route mismatch: none. `/api/events` and `/api/mobile/events/:slug/live-detail` expose the fields mobile needs for the current MVP flow.
+- Fields Holiwyn still needs but backend does not fully provide: real provider-backed current-match Spread, Total, and Team Total market ids, condition ids, token ids, prices, and quote freshness from a provider source.
+- Temporary mock/static data: no new fixture data was added. Existing line rows remain contract-shaped fixtures by design.
+- Future migration concern: next visible proof should use `argentina-vs-egypt` current route data instead of stale disposable proof events.

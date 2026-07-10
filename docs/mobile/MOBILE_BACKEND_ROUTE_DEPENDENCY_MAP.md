@@ -4483,3 +4483,10 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Event Detail quote/probability display | `/api/quotes` / existing quote route through `loadMarketQuotesById` | GET | Public market browse or configured mobile API key depending backend mode | selected event market ids | quote probability/price fields used by ticket display | Existing market/outcome quote models | Local mock/event fixtures still provide probabilities | None for this cycle. |
 | Event Detail order-book depth | `/api/orderbook/:marketId/book` | GET | Public/internal route depending backend mode | market id, max levels | Not consumed by default Local MVP UI after this cycle | Existing orderbook infrastructure only | Debug-only if `EXPO_PUBLIC_SHOW_ORDERBOOK=1` | Not a Local MVP blocker; keep hidden/internal unless explicitly approved. |
+
+# Cycle UK - Local MVP Route Baseline Proof
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home World Cup match feed | `/api/events` | GET | Public event browse | `sportKey=soccer`, `leagueKey=world_cup`, `includeMobileMarkets=1`, `mobileMvpMatches=1`, `limit=10` | event slug/title/type/status, market count, `marketSourceSummary` | Existing `Event`, `Market`, `Outcome` | Mock Home feed still exists for offline mode | None for match-only feed baseline; proof returned 7 match events and 0 futures. |
+| Event Detail Local MVP market readiness | `/api/mobile/events/:slug/live-detail` | GET | Public event browse | selected event slug `argentina-vs-egypt` | market groups, outcomes, `marketSourceSummary.regulationWinner`, `marketSourceSummary.lineMarkets`, `providerAvailability` | Existing `Event`, `Market`, `Outcome`, provider reference fields | Contract-fixture line markets remain the fallback for line-ticket proof | Real provider-backed Spread/Totals/Team Total line rows remain unavailable. |
