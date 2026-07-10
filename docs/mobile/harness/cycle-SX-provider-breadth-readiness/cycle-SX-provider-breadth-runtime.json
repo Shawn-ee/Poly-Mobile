@@ -1,0 +1,1649 @@
+{
+  "generatedAt": "2026-07-10T10:04:21.914Z",
+  "cycle": "SX",
+  "scope": "provider-breadth-runtime-loop",
+  "routes": {
+    "broadMobileWorldCup": "http://127.0.0.1:3002/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10",
+    "localMvpMatchOnly": "http://127.0.0.1:3002/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10",
+    "liveDetail": "/api/mobile/events/:slug/live-detail"
+  },
+  "broadMobileWorldCup": {
+    "eventCount": 10,
+    "providerBackedEventCount": 4,
+    "providerBackedMatchEventCount": 1,
+    "providerBackedOutrightEventCount": 3,
+    "events": [
+      {
+        "slug": "argentina-vs-egypt",
+        "title": "Argentina vs. Egypt",
+        "eventType": "match",
+        "source": "polymarket",
+        "marketCount": 7,
+        "polymarketMarketCount": 3,
+        "contractFixtureMarketCount": 4,
+        "regulationWinnerStatus": "provider-backed",
+        "lineMarketStatus": "contract-fixture",
+        "lineFamilies": [
+          "spread",
+          "team_total_goals",
+          "total_goals"
+        ],
+        "markets": [
+          {
+            "marketId": "2b3c820f-19f5-476a-9f91-0e43eb26c6d7",
+            "title": "Will Argentina win on 2026-07-07?",
+            "marketType": "match_winner_1x2",
+            "marketGroupKey": "main",
+            "referenceSource": "polymarket",
+            "externalSlug": "fifwc-arg-egy-2026-07-07-arg",
+            "externalMarketId": "2793738",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "0a725cc6-ec1d-4d33-92aa-584aa3ff23e5",
+            "title": "Will Argentina vs. Egypt end in a draw?",
+            "marketType": "match_winner_1x2",
+            "marketGroupKey": "main",
+            "referenceSource": "polymarket",
+            "externalSlug": "fifwc-arg-egy-2026-07-07-draw",
+            "externalMarketId": "2793739",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "35a8e3d4-a699-4000-920a-bfa5eb6d1eb8",
+            "title": "Will Egypt win on 2026-07-07?",
+            "marketType": "match_winner_1x2",
+            "marketGroupKey": "main",
+            "referenceSource": "polymarket",
+            "externalSlug": "fifwc-arg-egy-2026-07-07-egy",
+            "externalMarketId": "2793741",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "23eaa980-3ccb-40ba-847f-b617c650f4e7",
+            "title": "Argentina vs. Egypt: Argentina +0.5",
+            "marketType": "spread",
+            "marketGroupKey": "spread",
+            "referenceSource": "contract-fixture",
+            "externalSlug": "argentina-vs-egypt-spread-home-0-5",
+            "externalMarketId": "contract-argentina-vs-egypt-spread-home-0-5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "b658ace7-eed8-4e16-9633-4f100c7d995f",
+            "title": "Argentina vs. Egypt: Egypt +1.5",
+            "marketType": "spread",
+            "marketGroupKey": "spread",
+            "referenceSource": "contract-fixture",
+            "externalSlug": "argentina-vs-egypt-spread-away-1-5",
+            "externalMarketId": "contract-argentina-vs-egypt-spread-away-1-5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "f605df0d-087c-473b-9838-2b52ea0444f1",
+            "title": "Argentina vs. Egypt: Argentina total goals 1.5",
+            "marketType": "team_total_goals",
+            "marketGroupKey": "team-totals",
+            "referenceSource": "contract-fixture",
+            "externalSlug": "argentina-vs-egypt-team-total-home-1-5",
+            "externalMarketId": "contract-argentina-vs-egypt-team-total-home-1-5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "871ecb31-02ac-44bf-b187-8936d4651938",
+            "title": "Argentina vs. Egypt: Total goals 2.5",
+            "marketType": "total_goals",
+            "marketGroupKey": "totals",
+            "referenceSource": "contract-fixture",
+            "externalSlug": "argentina-vs-egypt-total-goals-2-5",
+            "externalMarketId": "contract-argentina-vs-egypt-total-goals-2-5",
+            "outcomeCount": 2
+          }
+        ]
+      },
+      {
+        "slug": "world-cup-nation-of-top-goalscorer",
+        "title": "World Cup: Nation of Top Goalscorer",
+        "eventType": "future",
+        "source": "polymarket",
+        "marketCount": 8,
+        "polymarketMarketCount": 8,
+        "contractFixtureMarketCount": 0,
+        "regulationWinnerStatus": "missing",
+        "lineMarketStatus": "missing",
+        "lineFamilies": [],
+        "markets": [
+          {
+            "marketId": "0630a89a-e281-412d-8121-c8ad032037ba",
+            "title": "Will a player representing Switzerland be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-a-player-representing-switzerland-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2070956",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "b5466ed5-31ba-4ed2-9c4c-d786244bb69d",
+            "title": "Will a player representing Morocco be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-a-player-representing-morocco-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2070960",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "84ac4db8-436b-4076-b1e1-cfc6f05c0639",
+            "title": "Will a player representing Belgium be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-a-player-representing-belgium-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2070975",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "019e01c4-fa4a-4be3-bd35-1cf132c7cf83",
+            "title": "Will a player representing Spain be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-a-player-representing-spain-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2070979",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "42203d58-497f-49e6-a660-87eca202bd59",
+            "title": "Will a player representing France be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-a-player-representing-france-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2070983",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "3c089b24-8a2e-42f4-97fb-3e7422bdfa65",
+            "title": "Will a player representing Norway be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-a-player-representing-norway-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2070985",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "94644351-61b3-474d-9f08-7f9b9ab169d3",
+            "title": "Will a player representing Argentina be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-a-player-representing-argentina-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2070987",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "1ed8362b-4f0e-4c23-9f04-2f3720e4a4e2",
+            "title": "Will a player representing England be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-a-player-representing-england-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2070995",
+            "outcomeCount": 2
+          }
+        ]
+      },
+      {
+        "slug": "world-cup-golden-boot-winner",
+        "title": "World Cup: Golden Boot Winner",
+        "eventType": "future",
+        "source": "polymarket",
+        "marketCount": 12,
+        "polymarketMarketCount": 12,
+        "contractFixtureMarketCount": 0,
+        "regulationWinnerStatus": "missing",
+        "lineMarketStatus": "missing",
+        "lineFamilies": [],
+        "markets": [
+          {
+            "marketId": "6e0eac54-df5e-4cb0-bab8-cb575ea5b4f0",
+            "title": "Will Lionel Messi be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-lionel-messi-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069635",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "70612733-f5d4-4fcb-8561-c1e7f93be924",
+            "title": "Will Erling Haaland be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-erling-haaland-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069636",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "99caf629-cb24-4fda-ae7f-3249e98778d6",
+            "title": "Will Kylian Mbappe be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-kylian-mbappe-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069638",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "07cda5aa-9ff4-4549-afa8-f2cdeb3f0f99",
+            "title": "Will Jude Bellingham be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-jude-bellingham-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069639",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "11f71904-2042-4a10-ae8a-ba76d12e3916",
+            "title": "Will Lamine Yamal be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-lamine-yamal-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069640",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "f1cbb00d-93ad-4746-a385-2f56ff6e6321",
+            "title": "Will Noah Okafor be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-noah-okafor-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069643",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "81957c43-f808-4d4d-a277-7220331ad952",
+            "title": "Will Ferran Torres be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-ferran-torres-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069656",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "31065c58-a8ce-493f-a75a-9b581770604a",
+            "title": "Will Dani Olmo be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-dani-olmo-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069657",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "59366f69-e7e8-4652-a1c5-c1be9b8e29de",
+            "title": "Will Marcus Thuram be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-marcus-thuram-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069658",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "0c055207-00f4-4e83-bcb5-6f7676ca56e2",
+            "title": "Will Desire Doue be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-desire-doue-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069659",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "115ee4f1-81f3-4e2c-9c63-c9bac343e1c0",
+            "title": "Will Ousmane Dembele be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-ousmane-dembele-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069660",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "247f7021-f204-489c-99d2-336d9e6613b4",
+            "title": "Will Bradley Barcola be the top goalscorer at the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-bradley-barcola-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+            "externalMarketId": "2069661",
+            "outcomeCount": 2
+          }
+        ]
+      },
+      {
+        "slug": "provider-breadth-world-cup-winner",
+        "title": "World Cup Winner",
+        "eventType": "future",
+        "source": "polymarket",
+        "marketCount": 8,
+        "polymarketMarketCount": 8,
+        "contractFixtureMarketCount": 0,
+        "regulationWinnerStatus": "missing",
+        "lineMarketStatus": "missing",
+        "lineFamilies": [],
+        "markets": [
+          {
+            "marketId": "bd114913-161d-43c0-9770-58e90846f172",
+            "title": "Will Switzerland win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-switzerland-win-the-2026-fifa-world-cup",
+            "externalMarketId": "558974",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "d0e4713c-623d-4bcd-9431-5b1501148a5f",
+            "title": "Will Spain win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-spain-win-the-2026-fifa-world-cup-963",
+            "externalMarketId": "558934",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "8210401b-3b19-49fa-bf50-ba985a8843e2",
+            "title": "Will Argentina win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-argentina-win-the-2026-fifa-world-cup-245",
+            "externalMarketId": "558938",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+            "title": "Will England win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-england-win-the-2026-fifa-world-cup-937",
+            "externalMarketId": "558935",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "162bc614-c644-49fd-a2bc-3a1f2ceb3d04",
+            "title": "Will France win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-france-win-the-2026-fifa-world-cup-924",
+            "externalMarketId": "558936",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "67da89c1-2c5e-4cba-b259-e725a6ddcb09",
+            "title": "Will Belgium win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-belgium-win-the-2026-fifa-world-cup-358",
+            "externalMarketId": "558946",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "9df96723-3ef2-4b49-89fb-e9507da3ada4",
+            "title": "Will Norway win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-norway-win-the-2026-fifa-world-cup-893",
+            "externalMarketId": "558951",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+            "title": "Will Morocco win the 2026 FIFA World Cup?",
+            "marketType": "outright",
+            "marketGroupKey": "outrights",
+            "referenceSource": "polymarket",
+            "externalSlug": "will-morocco-win-the-2026-fifa-world-cup-464",
+            "externalMarketId": "558963",
+            "outcomeCount": 2
+          }
+        ]
+      }
+    ]
+  },
+  "localMvpMatchOnly": {
+    "eventCount": 7,
+    "nonMatchCount": 0,
+    "providerBackedMatchEventCount": 1,
+    "events": [
+      {
+        "slug": "argentina-vs-egypt",
+        "title": "Argentina vs. Egypt",
+        "eventType": "match",
+        "source": "polymarket",
+        "marketCount": 7,
+        "polymarketMarketCount": 3,
+        "contractFixtureMarketCount": 4,
+        "regulationWinnerStatus": "provider-backed",
+        "lineMarketStatus": "contract-fixture",
+        "lineFamilies": [
+          "spread",
+          "team_total_goals",
+          "total_goals"
+        ],
+        "markets": [
+          {
+            "marketId": "2b3c820f-19f5-476a-9f91-0e43eb26c6d7",
+            "title": "Will Argentina win on 2026-07-07?",
+            "marketType": "match_winner_1x2",
+            "marketGroupKey": "main",
+            "referenceSource": "polymarket",
+            "externalSlug": "fifwc-arg-egy-2026-07-07-arg",
+            "externalMarketId": "2793738",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "0a725cc6-ec1d-4d33-92aa-584aa3ff23e5",
+            "title": "Will Argentina vs. Egypt end in a draw?",
+            "marketType": "match_winner_1x2",
+            "marketGroupKey": "main",
+            "referenceSource": "polymarket",
+            "externalSlug": "fifwc-arg-egy-2026-07-07-draw",
+            "externalMarketId": "2793739",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "35a8e3d4-a699-4000-920a-bfa5eb6d1eb8",
+            "title": "Will Egypt win on 2026-07-07?",
+            "marketType": "match_winner_1x2",
+            "marketGroupKey": "main",
+            "referenceSource": "polymarket",
+            "externalSlug": "fifwc-arg-egy-2026-07-07-egy",
+            "externalMarketId": "2793741",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "23eaa980-3ccb-40ba-847f-b617c650f4e7",
+            "title": "Argentina vs. Egypt: Argentina +0.5",
+            "marketType": "spread",
+            "marketGroupKey": "spread",
+            "referenceSource": "contract-fixture",
+            "externalSlug": "argentina-vs-egypt-spread-home-0-5",
+            "externalMarketId": "contract-argentina-vs-egypt-spread-home-0-5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "b658ace7-eed8-4e16-9633-4f100c7d995f",
+            "title": "Argentina vs. Egypt: Egypt +1.5",
+            "marketType": "spread",
+            "marketGroupKey": "spread",
+            "referenceSource": "contract-fixture",
+            "externalSlug": "argentina-vs-egypt-spread-away-1-5",
+            "externalMarketId": "contract-argentina-vs-egypt-spread-away-1-5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "f605df0d-087c-473b-9838-2b52ea0444f1",
+            "title": "Argentina vs. Egypt: Argentina total goals 1.5",
+            "marketType": "team_total_goals",
+            "marketGroupKey": "team-totals",
+            "referenceSource": "contract-fixture",
+            "externalSlug": "argentina-vs-egypt-team-total-home-1-5",
+            "externalMarketId": "contract-argentina-vs-egypt-team-total-home-1-5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "871ecb31-02ac-44bf-b187-8936d4651938",
+            "title": "Argentina vs. Egypt: Total goals 2.5",
+            "marketType": "total_goals",
+            "marketGroupKey": "totals",
+            "referenceSource": "contract-fixture",
+            "externalSlug": "argentina-vs-egypt-total-goals-2-5",
+            "externalMarketId": "contract-argentina-vs-egypt-total-goals-2-5",
+            "outcomeCount": 2
+          }
+        ]
+      },
+      {
+        "slug": "world-cup-2026-paraguay-vs-australia-2026-06-25",
+        "title": "Paraguay vs Australia",
+        "eventType": "match",
+        "source": "fifa_schedule",
+        "marketCount": 37,
+        "polymarketMarketCount": 0,
+        "contractFixtureMarketCount": 0,
+        "regulationWinnerStatus": "non-provider",
+        "lineMarketStatus": "unknown",
+        "lineFamilies": [
+          "spread",
+          "team_total_goals",
+          "total_goals"
+        ],
+        "markets": [
+          {
+            "marketId": "5b8848d0-e2bc-4ef1-a29e-93da42dbd14c",
+            "title": "Paraguay vs Australia: Match Winner",
+            "marketType": "match_winner_1x2",
+            "marketGroupKey": "main",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-paraguay-vs-australia-2026-06-25-match-winner",
+            "externalMarketId": "M60-match-winner",
+            "outcomeCount": 3
+          },
+          {
+            "marketId": "a278762f-8b6d-46d5-b980-94e761596b15",
+            "title": "Paraguay vs Australia: Paraguay draw no bet",
+            "marketType": "draw_no_bet",
+            "marketGroupKey": "main",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-paraguay-vs-australia-2026-06-25-home-draw-no-bet",
+            "externalMarketId": "M60-home-draw-no-bet",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "e754731f-58d5-47b3-8b0d-cdb3ca542f33",
+            "title": "Paraguay vs Australia: Australia draw no bet",
+            "marketType": "draw_no_bet",
+            "marketGroupKey": "main",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-paraguay-vs-australia-2026-06-25-away-draw-no-bet",
+            "externalMarketId": "M60-away-draw-no-bet",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "5f1e1b1f-d41b-492e-b979-e7b25d9cbde9",
+            "title": "Paraguay vs Australia: Paraguay +0.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-paraguay-vs-australia-2026-06-25-home-spread-plus0_5",
+            "externalMarketId": "M60-home-spread-plus0_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "0e2af0de-b4c9-432b-9b1a-82569f0cfcc2",
+            "title": "Paraguay vs Australia: Paraguay +1.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-paraguay-vs-australia-2026-06-25-home-spread-plus1_5",
+            "externalMarketId": "M60-home-spread-plus1_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "b2eba798-3a8f-4ba3-a65c-2a43811717a9",
+            "title": "Paraguay vs Australia: Paraguay +2.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-paraguay-vs-australia-2026-06-25-home-spread-plus2_5",
+            "externalMarketId": "M60-home-spread-plus2_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "5ba65841-bcce-40cb-b9a8-c99834a979c8",
+            "title": "Paraguay vs Australia: Paraguay +3.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-paraguay-vs-australia-2026-06-25-home-spread-plus3_5",
+            "externalMarketId": "M60-home-spread-plus3_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "05e141b1-c5e7-4cac-b51a-3a93a667bf2c",
+            "title": "Paraguay vs Australia: Paraguay +4.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-paraguay-vs-australia-2026-06-25-home-spread-plus4_5",
+            "externalMarketId": "M60-home-spread-plus4_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "08b138db-12f5-4f0d-b2f8-573e7cda4223",
+            "title": "Paraguay vs Australia: Paraguay +5.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-paraguay-vs-australia-2026-06-25-home-spread-plus5_5",
+            "externalMarketId": "M60-home-spread-plus5_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "8f069a91-8816-4659-834d-dcc48cedfd7a",
+            "title": "Paraguay vs Australia: Australia -0.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-paraguay-vs-australia-2026-06-25-away-spread-minus0_5",
+            "externalMarketId": "M60-away-spread-minus0_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "3b8b7e36-8dc6-41ed-973e-2fa6cb41c8b3",
+            "title": "Paraguay vs Australia: Australia -1.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-paraguay-vs-australia-2026-06-25-away-spread-minus1_5",
+            "externalMarketId": "M60-away-spread-minus1_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "63d9a56f-4fa0-443c-ab38-ee16e554eca5",
+            "title": "Paraguay vs Australia: Australia -2.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-paraguay-vs-australia-2026-06-25-away-spread-minus2_5",
+            "externalMarketId": "M60-away-spread-minus2_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "1d857536-f7df-43d9-af6a-3df1a61c5f01",
+            "title": "Paraguay vs Australia: Paraguay goals 1.5",
+            "marketType": "team_total_goals",
+            "marketGroupKey": "team-totals",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-paraguay-vs-australia-2026-06-25-home-team-total-1.5",
+            "externalMarketId": "M60-home-team-total-1.5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "7ae187c3-9129-4623-b3b9-cacba9036000",
+            "title": "Paraguay vs Australia: Total goals 2.5",
+            "marketType": "total_goals",
+            "marketGroupKey": "totals",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-paraguay-vs-australia-2026-06-25-total-goals-2.5",
+            "externalMarketId": "M60-total-goals-2.5",
+            "outcomeCount": 2
+          }
+        ]
+      },
+      {
+        "slug": "world-cup-2026-turkiye-vs-usa-2026-06-25",
+        "title": "Türkiye vs USA",
+        "eventType": "match",
+        "source": "fifa_schedule",
+        "marketCount": 37,
+        "polymarketMarketCount": 0,
+        "contractFixtureMarketCount": 0,
+        "regulationWinnerStatus": "non-provider",
+        "lineMarketStatus": "unknown",
+        "lineFamilies": [
+          "spread",
+          "team_total_goals",
+          "total_goals"
+        ],
+        "markets": [
+          {
+            "marketId": "a55ff393-cbce-4238-b8aa-a6efe2ae6061",
+            "title": "Türkiye vs USA: Match Winner",
+            "marketType": "match_winner_1x2",
+            "marketGroupKey": "main",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-turkiye-vs-usa-2026-06-25-match-winner",
+            "externalMarketId": "M59-match-winner",
+            "outcomeCount": 3
+          },
+          {
+            "marketId": "43095785-9f74-497c-b2e9-a07a8c269999",
+            "title": "Türkiye vs USA: Türkiye draw no bet",
+            "marketType": "draw_no_bet",
+            "marketGroupKey": "main",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-turkiye-vs-usa-2026-06-25-home-draw-no-bet",
+            "externalMarketId": "M59-home-draw-no-bet",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "376a6e0b-085b-429a-a2e2-3e4032df4caf",
+            "title": "Türkiye vs USA: USA draw no bet",
+            "marketType": "draw_no_bet",
+            "marketGroupKey": "main",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-turkiye-vs-usa-2026-06-25-away-draw-no-bet",
+            "externalMarketId": "M59-away-draw-no-bet",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "6342b8c0-8be3-4a61-8241-504433b774a9",
+            "title": "Türkiye vs USA: Türkiye +0.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-turkiye-vs-usa-2026-06-25-home-spread-plus0_5",
+            "externalMarketId": "M59-home-spread-plus0_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "96a8c409-0c1b-4589-896d-bbc6b695e1d7",
+            "title": "Türkiye vs USA: Türkiye +1.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-turkiye-vs-usa-2026-06-25-home-spread-plus1_5",
+            "externalMarketId": "M59-home-spread-plus1_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "f1b56444-a345-4041-863c-eac355c1c6a0",
+            "title": "Türkiye vs USA: Türkiye +2.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-turkiye-vs-usa-2026-06-25-home-spread-plus2_5",
+            "externalMarketId": "M59-home-spread-plus2_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "14ace375-e21c-40d7-bbc5-b895996842c1",
+            "title": "Türkiye vs USA: Türkiye +3.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-turkiye-vs-usa-2026-06-25-home-spread-plus3_5",
+            "externalMarketId": "M59-home-spread-plus3_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "5d3fb921-ebf5-4110-b29f-4ed041f919e4",
+            "title": "Türkiye vs USA: Türkiye +4.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-turkiye-vs-usa-2026-06-25-home-spread-plus4_5",
+            "externalMarketId": "M59-home-spread-plus4_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "a1cd4033-2ea4-41b8-a2fd-7b6182cd501f",
+            "title": "Türkiye vs USA: Türkiye +5.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-turkiye-vs-usa-2026-06-25-home-spread-plus5_5",
+            "externalMarketId": "M59-home-spread-plus5_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "974b6944-d492-4e17-a7e5-b058cabfb1c9",
+            "title": "Türkiye vs USA: USA -0.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-turkiye-vs-usa-2026-06-25-away-spread-minus0_5",
+            "externalMarketId": "M59-away-spread-minus0_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "f876dd64-f05d-41f7-a4ed-da352fb1b2ef",
+            "title": "Türkiye vs USA: USA -1.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-turkiye-vs-usa-2026-06-25-away-spread-minus1_5",
+            "externalMarketId": "M59-away-spread-minus1_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "cdd2127e-8adc-42b8-956d-283e646616de",
+            "title": "Türkiye vs USA: USA -2.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-turkiye-vs-usa-2026-06-25-away-spread-minus2_5",
+            "externalMarketId": "M59-away-spread-minus2_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "bbe1aa74-a155-474e-ad66-cbb0038e3e4b",
+            "title": "Türkiye vs USA: Türkiye goals 1.5",
+            "marketType": "team_total_goals",
+            "marketGroupKey": "team-totals",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-turkiye-vs-usa-2026-06-25-home-team-total-1.5",
+            "externalMarketId": "M59-home-team-total-1.5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "1460922c-dbaa-47d0-b5ce-56be8408a2e6",
+            "title": "Türkiye vs USA: Total goals 2.5",
+            "marketType": "total_goals",
+            "marketGroupKey": "totals",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-turkiye-vs-usa-2026-06-25-total-goals-2.5",
+            "externalMarketId": "M59-total-goals-2.5",
+            "outcomeCount": 2
+          }
+        ]
+      },
+      {
+        "slug": "world-cup-2026-tunisia-vs-netherlands-2026-06-25",
+        "title": "Tunisia vs Netherlands",
+        "eventType": "match",
+        "source": "fifa_schedule",
+        "marketCount": 37,
+        "polymarketMarketCount": 0,
+        "contractFixtureMarketCount": 0,
+        "regulationWinnerStatus": "non-provider",
+        "lineMarketStatus": "unknown",
+        "lineFamilies": [
+          "spread",
+          "team_total_goals",
+          "total_goals"
+        ],
+        "markets": [
+          {
+            "marketId": "51077b6b-6312-41a7-a29e-776922170f3c",
+            "title": "Tunisia vs Netherlands: Match Winner",
+            "marketType": "match_winner_1x2",
+            "marketGroupKey": "main",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-tunisia-vs-netherlands-2026-06-25-match-winner",
+            "externalMarketId": "M58-match-winner",
+            "outcomeCount": 3
+          },
+          {
+            "marketId": "dfb3c279-fe09-4eb5-8e49-41eba812b390",
+            "title": "Tunisia vs Netherlands: Tunisia draw no bet",
+            "marketType": "draw_no_bet",
+            "marketGroupKey": "main",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-tunisia-vs-netherlands-2026-06-25-home-draw-no-bet",
+            "externalMarketId": "M58-home-draw-no-bet",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "6e2ce904-6756-4f45-afdf-7480128ba23e",
+            "title": "Tunisia vs Netherlands: Netherlands draw no bet",
+            "marketType": "draw_no_bet",
+            "marketGroupKey": "main",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-tunisia-vs-netherlands-2026-06-25-away-draw-no-bet",
+            "externalMarketId": "M58-away-draw-no-bet",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "49bd0b90-c32f-4ba0-a485-4521d68f042c",
+            "title": "Tunisia vs Netherlands: Tunisia +0.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-tunisia-vs-netherlands-2026-06-25-home-spread-plus0_5",
+            "externalMarketId": "M58-home-spread-plus0_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "3b9350c4-c9bd-4749-892c-d38200f9ee85",
+            "title": "Tunisia vs Netherlands: Tunisia +1.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-tunisia-vs-netherlands-2026-06-25-home-spread-plus1_5",
+            "externalMarketId": "M58-home-spread-plus1_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "f64fa45a-8e0a-4c86-848f-83272abd4f08",
+            "title": "Tunisia vs Netherlands: Tunisia +2.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-tunisia-vs-netherlands-2026-06-25-home-spread-plus2_5",
+            "externalMarketId": "M58-home-spread-plus2_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "1d533f9c-7ebb-40a1-9b3a-8087a366c4d0",
+            "title": "Tunisia vs Netherlands: Tunisia +3.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-tunisia-vs-netherlands-2026-06-25-home-spread-plus3_5",
+            "externalMarketId": "M58-home-spread-plus3_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "b3b22aa4-13ef-4a65-89a0-56d1d6d813b6",
+            "title": "Tunisia vs Netherlands: Tunisia +4.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-tunisia-vs-netherlands-2026-06-25-home-spread-plus4_5",
+            "externalMarketId": "M58-home-spread-plus4_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "8897a4a4-0a1c-4d31-b45d-2a52db1fa475",
+            "title": "Tunisia vs Netherlands: Tunisia +5.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-tunisia-vs-netherlands-2026-06-25-home-spread-plus5_5",
+            "externalMarketId": "M58-home-spread-plus5_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "cbc1504d-3516-44b5-8676-e15b54d0d850",
+            "title": "Tunisia vs Netherlands: Netherlands -0.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-tunisia-vs-netherlands-2026-06-25-away-spread-minus0_5",
+            "externalMarketId": "M58-away-spread-minus0_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "3f3fad6e-7930-49e2-8033-a15b1de569b4",
+            "title": "Tunisia vs Netherlands: Netherlands -1.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-tunisia-vs-netherlands-2026-06-25-away-spread-minus1_5",
+            "externalMarketId": "M58-away-spread-minus1_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "39997111-d9ee-472a-a1ab-24a59e69fe80",
+            "title": "Tunisia vs Netherlands: Netherlands -2.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-tunisia-vs-netherlands-2026-06-25-away-spread-minus2_5",
+            "externalMarketId": "M58-away-spread-minus2_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "186cedb6-691a-422d-ba41-7f4dde211ae2",
+            "title": "Tunisia vs Netherlands: Tunisia goals 1.5",
+            "marketType": "team_total_goals",
+            "marketGroupKey": "team-totals",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-tunisia-vs-netherlands-2026-06-25-home-team-total-1.5",
+            "externalMarketId": "M58-home-team-total-1.5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "e9fdc97b-c6cc-4bab-ad5d-494c8f74c37e",
+            "title": "Tunisia vs Netherlands: Total goals 2.5",
+            "marketType": "total_goals",
+            "marketGroupKey": "totals",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-tunisia-vs-netherlands-2026-06-25-total-goals-2.5",
+            "externalMarketId": "M58-total-goals-2.5",
+            "outcomeCount": 2
+          }
+        ]
+      },
+      {
+        "slug": "world-cup-2026-japan-vs-sweden-2026-06-25",
+        "title": "Japan vs Sweden",
+        "eventType": "match",
+        "source": "fifa_schedule",
+        "marketCount": 37,
+        "polymarketMarketCount": 0,
+        "contractFixtureMarketCount": 0,
+        "regulationWinnerStatus": "non-provider",
+        "lineMarketStatus": "unknown",
+        "lineFamilies": [
+          "spread",
+          "team_total_goals",
+          "total_goals"
+        ],
+        "markets": [
+          {
+            "marketId": "2ec8211a-c89e-4386-9b0e-53a08f768324",
+            "title": "Japan vs Sweden: Match Winner",
+            "marketType": "match_winner_1x2",
+            "marketGroupKey": "main",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-japan-vs-sweden-2026-06-25-match-winner",
+            "externalMarketId": "M57-match-winner",
+            "outcomeCount": 3
+          },
+          {
+            "marketId": "1cb8a7f0-da59-448c-903c-0c62e00022fb",
+            "title": "Japan vs Sweden: Japan draw no bet",
+            "marketType": "draw_no_bet",
+            "marketGroupKey": "main",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-japan-vs-sweden-2026-06-25-home-draw-no-bet",
+            "externalMarketId": "M57-home-draw-no-bet",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "3f74c789-50e7-4a41-b5db-469f6758343f",
+            "title": "Japan vs Sweden: Sweden draw no bet",
+            "marketType": "draw_no_bet",
+            "marketGroupKey": "main",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-japan-vs-sweden-2026-06-25-away-draw-no-bet",
+            "externalMarketId": "M57-away-draw-no-bet",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "8d43e9af-905d-4a75-ad61-a0946d3b7e78",
+            "title": "Japan vs Sweden: Japan +0.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-japan-vs-sweden-2026-06-25-home-spread-plus0_5",
+            "externalMarketId": "M57-home-spread-plus0_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "86fc9475-b775-4772-a263-6fdc600654c7",
+            "title": "Japan vs Sweden: Japan +1.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-japan-vs-sweden-2026-06-25-home-spread-plus1_5",
+            "externalMarketId": "M57-home-spread-plus1_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "7923ca7c-5a10-4a07-9213-0d7ccb020ecd",
+            "title": "Japan vs Sweden: Japan +2.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-japan-vs-sweden-2026-06-25-home-spread-plus2_5",
+            "externalMarketId": "M57-home-spread-plus2_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "dfe6afbd-839c-4a2e-96ca-682ebcb3f16c",
+            "title": "Japan vs Sweden: Japan +3.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-japan-vs-sweden-2026-06-25-home-spread-plus3_5",
+            "externalMarketId": "M57-home-spread-plus3_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "f1d980f2-d115-4556-9b3e-957ba6b19e4f",
+            "title": "Japan vs Sweden: Japan +4.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-japan-vs-sweden-2026-06-25-home-spread-plus4_5",
+            "externalMarketId": "M57-home-spread-plus4_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "fede4f7d-bbc0-4e45-aa87-f2fc9a3f9b21",
+            "title": "Japan vs Sweden: Japan +5.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-japan-vs-sweden-2026-06-25-home-spread-plus5_5",
+            "externalMarketId": "M57-home-spread-plus5_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "5972bbf3-21ee-4b80-9528-b1f37f5b575d",
+            "title": "Japan vs Sweden: Sweden -0.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-japan-vs-sweden-2026-06-25-away-spread-minus0_5",
+            "externalMarketId": "M57-away-spread-minus0_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "7bc8c184-c888-4616-9ddb-367b84fc54ff",
+            "title": "Japan vs Sweden: Sweden -1.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-japan-vs-sweden-2026-06-25-away-spread-minus1_5",
+            "externalMarketId": "M57-away-spread-minus1_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "5d4af5f0-8dd6-4843-8885-e3d8b4ae5e31",
+            "title": "Japan vs Sweden: Sweden -2.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-japan-vs-sweden-2026-06-25-away-spread-minus2_5",
+            "externalMarketId": "M57-away-spread-minus2_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "fa2694b7-6c7b-4d32-aaff-90aa5e65619e",
+            "title": "Japan vs Sweden: Japan goals 1.5",
+            "marketType": "team_total_goals",
+            "marketGroupKey": "team-totals",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-japan-vs-sweden-2026-06-25-home-team-total-1.5",
+            "externalMarketId": "M57-home-team-total-1.5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "b187f4f3-b9b4-4bf7-a08f-1ed573867b47",
+            "title": "Japan vs Sweden: Total goals 2.5",
+            "marketType": "total_goals",
+            "marketGroupKey": "totals",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-japan-vs-sweden-2026-06-25-total-goals-2.5",
+            "externalMarketId": "M57-total-goals-2.5",
+            "outcomeCount": 2
+          }
+        ]
+      },
+      {
+        "slug": "world-cup-2026-ecuador-vs-germany-2026-06-25",
+        "title": "Ecuador vs Germany",
+        "eventType": "match",
+        "source": "fifa_schedule",
+        "marketCount": 37,
+        "polymarketMarketCount": 0,
+        "contractFixtureMarketCount": 0,
+        "regulationWinnerStatus": "non-provider",
+        "lineMarketStatus": "unknown",
+        "lineFamilies": [
+          "spread",
+          "team_total_goals",
+          "total_goals"
+        ],
+        "markets": [
+          {
+            "marketId": "89f9c286-6873-4862-9aaf-8220455f47b8",
+            "title": "Ecuador vs Germany: Match Winner",
+            "marketType": "match_winner_1x2",
+            "marketGroupKey": "main",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-ecuador-vs-germany-2026-06-25-match-winner",
+            "externalMarketId": "M56-match-winner",
+            "outcomeCount": 3
+          },
+          {
+            "marketId": "9dd12e82-e6d6-45f0-9f7a-6017366739b8",
+            "title": "Ecuador vs Germany: Ecuador draw no bet",
+            "marketType": "draw_no_bet",
+            "marketGroupKey": "main",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-ecuador-vs-germany-2026-06-25-home-draw-no-bet",
+            "externalMarketId": "M56-home-draw-no-bet",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "23cf37ad-4ca6-47c0-9759-4625e45a5e49",
+            "title": "Ecuador vs Germany: Germany draw no bet",
+            "marketType": "draw_no_bet",
+            "marketGroupKey": "main",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-ecuador-vs-germany-2026-06-25-away-draw-no-bet",
+            "externalMarketId": "M56-away-draw-no-bet",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "3bf034e2-4eb7-4a79-a06c-e253d46ff84f",
+            "title": "Ecuador vs Germany: Ecuador +0.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-ecuador-vs-germany-2026-06-25-home-spread-plus0_5",
+            "externalMarketId": "M56-home-spread-plus0_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "a52a6124-ecd7-4c97-ba09-b597aa534961",
+            "title": "Ecuador vs Germany: Ecuador +1.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-ecuador-vs-germany-2026-06-25-home-spread-plus1_5",
+            "externalMarketId": "M56-home-spread-plus1_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "2a58326d-3295-45c1-9e52-c18489dda729",
+            "title": "Ecuador vs Germany: Ecuador +2.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-ecuador-vs-germany-2026-06-25-home-spread-plus2_5",
+            "externalMarketId": "M56-home-spread-plus2_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "d533e3aa-2fc0-4b50-bc90-625da9445b04",
+            "title": "Ecuador vs Germany: Ecuador +3.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-ecuador-vs-germany-2026-06-25-home-spread-plus3_5",
+            "externalMarketId": "M56-home-spread-plus3_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "e315e4ac-932f-4fc4-b944-24567f07f07e",
+            "title": "Ecuador vs Germany: Ecuador +4.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-ecuador-vs-germany-2026-06-25-home-spread-plus4_5",
+            "externalMarketId": "M56-home-spread-plus4_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "a3913e59-3e0e-417d-b0ee-9d966672b14d",
+            "title": "Ecuador vs Germany: Ecuador +5.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-ecuador-vs-germany-2026-06-25-home-spread-plus5_5",
+            "externalMarketId": "M56-home-spread-plus5_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "3361bd03-332b-4d28-8de3-3bd0b28c003e",
+            "title": "Ecuador vs Germany: Germany -0.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-ecuador-vs-germany-2026-06-25-away-spread-minus0_5",
+            "externalMarketId": "M56-away-spread-minus0_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "c6ec0541-a1f7-4efe-ac7b-25051ac2ded0",
+            "title": "Ecuador vs Germany: Germany -1.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-ecuador-vs-germany-2026-06-25-away-spread-minus1_5",
+            "externalMarketId": "M56-away-spread-minus1_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "981c22e3-4822-4b18-bfe8-d49d48272b06",
+            "title": "Ecuador vs Germany: Germany -2.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-ecuador-vs-germany-2026-06-25-away-spread-minus2_5",
+            "externalMarketId": "M56-away-spread-minus2_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "ba041eac-4956-4de9-8eac-a74a6c3596e3",
+            "title": "Ecuador vs Germany: Ecuador goals 1.5",
+            "marketType": "team_total_goals",
+            "marketGroupKey": "team-totals",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-ecuador-vs-germany-2026-06-25-home-team-total-1.5",
+            "externalMarketId": "M56-home-team-total-1.5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "b80b461a-f29b-4336-814f-51ecaa4d2c57",
+            "title": "Ecuador vs Germany: Total goals 2.5",
+            "marketType": "total_goals",
+            "marketGroupKey": "totals",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-ecuador-vs-germany-2026-06-25-total-goals-2.5",
+            "externalMarketId": "M56-total-goals-2.5",
+            "outcomeCount": 2
+          }
+        ]
+      },
+      {
+        "slug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25",
+        "title": "Curaçao vs Côte d'Ivoire",
+        "eventType": "match",
+        "source": "fifa_schedule",
+        "marketCount": 37,
+        "polymarketMarketCount": 0,
+        "contractFixtureMarketCount": 0,
+        "regulationWinnerStatus": "non-provider",
+        "lineMarketStatus": "unknown",
+        "lineFamilies": [
+          "spread",
+          "team_total_goals",
+          "total_goals"
+        ],
+        "markets": [
+          {
+            "marketId": "5adab5c0-2f48-44d2-934d-774385d0b3e9",
+            "title": "Curaçao vs Côte d'Ivoire: Match Winner",
+            "marketType": "match_winner_1x2",
+            "marketGroupKey": "main",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-match-winner",
+            "externalMarketId": "M55-match-winner",
+            "outcomeCount": 3
+          },
+          {
+            "marketId": "ad245980-b7dd-48b2-a34c-6029c63d3eb1",
+            "title": "Curaçao vs Côte d'Ivoire: Curaçao draw no bet",
+            "marketType": "draw_no_bet",
+            "marketGroupKey": "main",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-draw-no-bet",
+            "externalMarketId": "M55-home-draw-no-bet",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "31c24d50-43a4-4ed4-b853-016e7a0de9c8",
+            "title": "Curaçao vs Côte d'Ivoire: Côte d'Ivoire draw no bet",
+            "marketType": "draw_no_bet",
+            "marketGroupKey": "main",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-away-draw-no-bet",
+            "externalMarketId": "M55-away-draw-no-bet",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "2ad552bd-e2a6-4bde-b4c5-f125eac9e446",
+            "title": "Curaçao vs Côte d'Ivoire: Curaçao +0.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-spread-plus0_5",
+            "externalMarketId": "M55-home-spread-plus0_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "3ec2df8c-c101-4137-8c8b-6410d02a3281",
+            "title": "Curaçao vs Côte d'Ivoire: Curaçao +1.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-spread-plus1_5",
+            "externalMarketId": "M55-home-spread-plus1_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "58149521-cdb8-477e-a3af-a339ac6b8c8d",
+            "title": "Curaçao vs Côte d'Ivoire: Curaçao +2.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-spread-plus2_5",
+            "externalMarketId": "M55-home-spread-plus2_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "32cfc951-7fc7-44a1-841c-596cc8395bc4",
+            "title": "Curaçao vs Côte d'Ivoire: Curaçao +3.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-spread-plus3_5",
+            "externalMarketId": "M55-home-spread-plus3_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "0d211b4d-3fa0-4ada-8bd9-467df664e1e1",
+            "title": "Curaçao vs Côte d'Ivoire: Curaçao +4.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-spread-plus4_5",
+            "externalMarketId": "M55-home-spread-plus4_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "e2f2448a-14ed-4ceb-bcc9-423d450ffd69",
+            "title": "Curaçao vs Côte d'Ivoire: Curaçao +5.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-spread-plus5_5",
+            "externalMarketId": "M55-home-spread-plus5_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "e9a9f2e8-ac3f-4f64-a7f0-86525c7debed",
+            "title": "Curaçao vs Côte d'Ivoire: Côte d'Ivoire -0.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-away-spread-minus0_5",
+            "externalMarketId": "M55-away-spread-minus0_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "b0905265-3bec-4f4e-8c02-c02425af914a",
+            "title": "Curaçao vs Côte d'Ivoire: Côte d'Ivoire -1.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-away-spread-minus1_5",
+            "externalMarketId": "M55-away-spread-minus1_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "397d62c5-b8f6-4cfa-b0fd-d772c0bde0c9",
+            "title": "Curaçao vs Côte d'Ivoire: Côte d'Ivoire -2.5",
+            "marketType": "spread",
+            "marketGroupKey": "spreads",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-away-spread-minus2_5",
+            "externalMarketId": "M55-away-spread-minus2_5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "fe935d17-7998-48da-91fe-9c6a61f6f375",
+            "title": "Curaçao vs Côte d'Ivoire: Curaçao goals 1.5",
+            "marketType": "team_total_goals",
+            "marketGroupKey": "team-totals",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-home-team-total-1.5",
+            "externalMarketId": "M55-home-team-total-1.5",
+            "outcomeCount": 2
+          },
+          {
+            "marketId": "5d71b252-bd7b-4721-ae63-ea0cc1c0bb73",
+            "title": "Curaçao vs Côte d'Ivoire: Total goals 2.5",
+            "marketType": "total_goals",
+            "marketGroupKey": "totals",
+            "referenceSource": "fifa_schedule",
+            "externalSlug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-total-goals-2.5",
+            "externalMarketId": "M55-total-goals-2.5",
+            "outcomeCount": 2
+          }
+        ]
+      }
+    ]
+  },
+  "liveDetailChecks": [
+    {
+      "slug": "argentina-vs-egypt",
+      "url": "http://127.0.0.1:3002/api/mobile/events/argentina-vs-egypt/live-detail",
+      "status": "ok",
+      "marketCount": 7,
+      "polymarketMarketCount": 3,
+      "contractFixtureMarketCount": 4,
+      "providerLifecycleSources": [
+        "mobile-live-detail-market"
+      ],
+      "marketSourceSummary": {
+        "totalMarketCount": 7,
+        "sourceBreakdown": {
+          "polymarket": 3,
+          "contract-fixture": 4
+        },
+        "polymarketMarketCount": 3,
+        "contractFixtureMarketCount": 4,
+        "unknownSourceMarketCount": 0,
+        "regulationWinner": {
+          "totalCount": 3,
+          "polymarketCount": 3,
+          "contractFixtureCount": 0,
+          "status": "provider-backed"
+        },
+        "lineMarkets": {
+          "totalCount": 4,
+          "polymarketCount": 0,
+          "contractFixtureCount": 4,
+          "status": "contract-fixture",
+          "families": [
+            "spread",
+            "total_goals",
+            "team_total_goals"
+          ],
+          "familyReadiness": [
+            {
+              "family": "spread",
+              "totalCount": 2,
+              "polymarketCount": 0,
+              "contractFixtureCount": 2,
+              "status": "contract-fixture",
+              "reason": "spread is served by Local MVP contract fixtures for this event."
+            },
+            {
+              "family": "total",
+              "totalCount": 1,
+              "polymarketCount": 0,
+              "contractFixtureCount": 1,
+              "status": "contract-fixture",
+              "reason": "total is served by Local MVP contract fixtures for this event."
+            },
+            {
+              "family": "team_total",
+              "totalCount": 1,
+              "polymarketCount": 0,
+              "contractFixtureCount": 1,
+              "status": "contract-fixture",
+              "reason": "team_total is served by Local MVP contract fixtures for this event."
+            }
+          ],
+          "providerAvailability": {
+            "source": "polymarket-gamma",
+            "status": "unavailable",
+            "providerBackedLineMarketCount": 0,
+            "contractFixtureLineMarketCount": 4,
+            "providerBackedFamilies": [],
+            "contractFixtureFamilies": [
+              "spread",
+              "total",
+              "team_total"
+            ],
+            "nextProviderAction": "discover_attach_ready_polymarket_line_markets_or_configure_approved_line_provider",
+            "reason": "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures."
+          },
+          "reason": "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured."
+        }
+      }
+    },
+    {
+      "slug": "world-cup-nation-of-top-goalscorer",
+      "url": "http://127.0.0.1:3002/api/mobile/events/world-cup-nation-of-top-goalscorer/live-detail",
+      "status": "ok",
+      "marketCount": 8,
+      "polymarketMarketCount": 8,
+      "contractFixtureMarketCount": 0,
+      "providerLifecycleSources": [
+        "mobile-live-detail-market"
+      ],
+      "marketSourceSummary": {
+        "totalMarketCount": 8,
+        "sourceBreakdown": {
+          "polymarket": 8
+        },
+        "polymarketMarketCount": 8,
+        "contractFixtureMarketCount": 0,
+        "unknownSourceMarketCount": 0,
+        "regulationWinner": {
+          "totalCount": 0,
+          "polymarketCount": 0,
+          "contractFixtureCount": 0,
+          "status": "missing"
+        },
+        "lineMarkets": {
+          "totalCount": 0,
+          "polymarketCount": 0,
+          "contractFixtureCount": 0,
+          "status": "missing",
+          "families": [],
+          "familyReadiness": [],
+          "providerAvailability": {
+            "source": "polymarket-gamma",
+            "status": "unknown",
+            "providerBackedLineMarketCount": 0,
+            "contractFixtureLineMarketCount": 0,
+            "providerBackedFamilies": [],
+            "contractFixtureFamilies": [],
+            "nextProviderAction": "discover_line_market_provider_contract",
+            "reason": "Line-market provider availability is unknown because no route-visible line markets are present."
+          },
+          "reason": "No route-visible line markets are available."
+        }
+      }
+    },
+    {
+      "slug": "world-cup-golden-boot-winner",
+      "url": "http://127.0.0.1:3002/api/mobile/events/world-cup-golden-boot-winner/live-detail",
+      "status": "ok",
+      "marketCount": 12,
+      "polymarketMarketCount": 12,
+      "contractFixtureMarketCount": 0,
+      "providerLifecycleSources": [
+        "mobile-live-detail-market"
+      ],
+      "marketSourceSummary": {
+        "totalMarketCount": 12,
+        "sourceBreakdown": {
+          "polymarket": 12
+        },
+        "polymarketMarketCount": 12,
+        "contractFixtureMarketCount": 0,
+        "unknownSourceMarketCount": 0,
+        "regulationWinner": {
+          "totalCount": 0,
+          "polymarketCount": 0,
+          "contractFixtureCount": 0,
+          "status": "missing"
+        },
+        "lineMarkets": {
+          "totalCount": 0,
+          "polymarketCount": 0,
+          "contractFixtureCount": 0,
+          "status": "missing",
+          "families": [],
+          "familyReadiness": [],
+          "providerAvailability": {
+            "source": "polymarket-gamma",
+            "status": "unknown",
+            "providerBackedLineMarketCount": 0,
+            "contractFixtureLineMarketCount": 0,
+            "providerBackedFamilies": [],
+            "contractFixtureFamilies": [],
+            "nextProviderAction": "discover_line_market_provider_contract",
+            "reason": "Line-market provider availability is unknown because no route-visible line markets are present."
+          },
+          "reason": "No route-visible line markets are available."
+        }
+      }
+    }
+  ],
+  "decisions": {
+    "providerBreadthReadyInBroadRuntime": true,
+    "localMvpStillMatchOnly": true,
+    "providerLineMarketsRemainGap": true,
+    "noOpticOddsBlocker": "unconfigured_optional_non_blocking"
+  },
+  "pass": true
+}

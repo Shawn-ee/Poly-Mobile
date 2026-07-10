@@ -1,0 +1,74 @@
+{
+  "cycle": "SX",
+  "result": "pass",
+  "generatedAt": "2026-07-10T10:03:28.032Z",
+  "provider": "polymarket-gamma",
+  "scope": "world-cup-provider-line-breadth-scan",
+  "sources": {
+    "searchQueries": [
+      "world cup spread",
+      "world cup handicap",
+      "world cup total goals",
+      "world cup over under",
+      "world cup team total",
+      "world cup corners",
+      "world cup correct score",
+      "world cup first half",
+      "world cup 1h",
+      "world cup goals over 2.5",
+      "world cup both teams score",
+      "fifa world cup spread",
+      "fifa world cup total goals",
+      "fifa world cup first half",
+      "fifa world cup goals over",
+      "fifwc spread",
+      "fifwc total goals"
+    ],
+    "eventTagSlugs": [
+      "fifa-world-cup",
+      "2026-fifa-world-cup",
+      "soccer"
+    ],
+    "limit": 150
+  },
+  "errors": [],
+  "totals": {
+    "rawCandidateCount": 3773,
+    "worldCupRelevantCandidateCount": 2674,
+    "providerLineCandidateCount": 0,
+    "attachReadyProviderLineCandidateCount": 0,
+    "providerLineCandidateFamilies": [],
+    "lineLikeRejectedCandidateCount": 0
+  },
+  "familySummary": {
+    "match_winner": 481,
+    "spread": 0,
+    "total_goals": 0,
+    "team_total_goals": 0,
+    "corners": 0,
+    "first_half": 0,
+    "second_half": 0,
+    "correct_score": 0,
+    "other": 2193
+  },
+  "lineFamilySummary": {
+    "match_winner": 0,
+    "spread": 0,
+    "total_goals": 0,
+    "team_total_goals": 0,
+    "corners": 0,
+    "first_half": 0,
+    "second_half": 0,
+    "correct_score": 0,
+    "other": 0
+  },
+  "currentMvpInterpretation": "no_attach_ready_world_cup_line_markets_found_keep_local_contract_fixtures_for_mvp",
+  "topLineCandidates": [],
+  "lineLikeRejectedCandidates": [],
+  "limitations": [
+    "Read-only scan. No local events, markets, mappings, orders, or fixtures are created or modified.",
+    "A provider line candidate here is not enough for parity; it must still be reviewed against a specific Holiwyn event/market/outcome/line identity before attachment.",
+    "Line-like rejected candidates are diagnostic only. They are not attach-ready until classifier family, event relevance, outcome identity, and CLOB token identity all match a Holiwyn target market.",
+    "If attach-ready line candidates remain zero, Local MVP contract fixtures are still the honest path for spread/totals/team-total UI and fake-token order proof."
+  ]
+}
