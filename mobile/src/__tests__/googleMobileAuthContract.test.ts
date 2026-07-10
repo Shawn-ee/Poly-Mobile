@@ -5,6 +5,7 @@ const appSource = () => readFileSync("mobile/App.tsx", "utf8");
 const googleStartSource = () => readFileSync("src/app/api/auth/google/start/route.ts", "utf8");
 const googleCallbackSource = () => readFileSync("src/app/api/auth/google/callback/route.ts", "utf8");
 const googleProofSource = () => readFileSync("scripts/prove_mobile_google_auth_return_s23.ps1", "utf8");
+const credentialStoreSource = () => readFileSync("mobile/src/services/mobileCredentialStore.ts", "utf8");
 
 describe("Google mobile auth contract", () => {
   test("mobile launches the backend Google flow with a Holiwyn app return target", () => {
@@ -16,12 +17,22 @@ describe("Google mobile auth contract", () => {
     expect(source).toContain('url.includes("googleAuth=success")');
     expect(source).toContain("setForcedRuntimePortfolioSyncNonce");
     expect(source).toContain('setMainTab("portfolio")');
-    expect(source).toContain("MOBILE_AUTH_API_KEY_STORAGE_KEY");
-    expect(source).toContain("holiwyn.mobileAuthApiKey.v1");
-    expect(source).toContain("AsyncStorage.setItem(MOBILE_AUTH_API_KEY_STORAGE_KEY, returnedApiKey)");
-    expect(source).toContain("AsyncStorage.getItem(MOBILE_AUTH_API_KEY_STORAGE_KEY)");
+    expect(source).toContain("storeMobileAuthApiKey(returnedApiKey)");
+    expect(source).toContain("loadMobileAuthApiKey()");
     expect(source).not.toContain("EXPO_PUBLIC_GOOGLE_CLIENT_ID");
     expect(source).not.toContain("EXPO_PUBLIC_GOOGLE_CLIENT_SECRET");
+  });
+
+  test("mobile stores the returned Holiwyn key through secure storage with legacy migration", () => {
+    const store = credentialStoreSource();
+
+    expect(store).toContain('import * as SecureStore from "expo-secure-store"');
+    expect(store).toContain("SecureStore.isAvailableAsync");
+    expect(store).toContain("SecureStore.setItemAsync");
+    expect(store).toContain("SecureStore.getItemAsync");
+    expect(store).toContain("SecureStore.deleteItemAsync");
+    expect(store).toContain("AsyncStorage.getItem(MOBILE_AUTH_API_KEY_STORAGE_KEY)");
+    expect(store).toContain("AsyncStorage.removeItem(MOBILE_AUTH_API_KEY_STORAGE_KEY)");
   });
 
   test("backend keeps the Poly Google Cloud OAuth credential/token exchange on the server", () => {

@@ -8925,3 +8925,13 @@ Future migration concern:
 - Route mismatch: none introduced. Existing `/api/auth/google/callback` still creates the mobile credential; the new `/api/auth/mobile/logout` route reverses the local mobile credential state.
 - Temporary mock/static data: S23 proof uses a generated local credential shaped like the backend callback credential.
 - Future migration concern: replace AsyncStorage with secure native storage and decide whether logout should also revoke all `Holiwyn Mobile Google` credentials or only the current key.
+
+# Cycle SB - Secure Mobile Auth Credential Storage Notes
+
+- No schema migration was added.
+- Closed or narrowed: Local MVP mobile auth credential storage now uses Expo SecureStore when available.
+- Closed or narrowed: legacy `holiwyn.mobileAuthApiKey.v1` data in AsyncStorage is migrated into SecureStore and then removed.
+- Fields Holiwyn still needs but backend does not fully provide: real interactive Google consent proof with the production/dev-build return URL.
+- Route mismatch: none introduced. Backend still owns Google token exchange and API credential creation; mobile only stores the returned Holiwyn API key.
+- Temporary mock/static data: S23 proof uses a generated local credential shaped like the backend callback credential.
+- Future migration concern: when moving to a production build, decide whether SecureStore should require biometric/device authentication and whether logout should revoke all mobile Google credentials for the user or only the current key.

@@ -1303,3 +1303,11 @@ For every UI element or interaction, answer:
 | S23 proof for sign-out after persisted auth return | P0 | Verified | S23 proof passes callback-shaped return, persisted restart, Account connected row, sign-out tap, and signed-out `Continue with Google` state. | `docs/mobile/screenshots/cycle-SA-google-auth-logout/cycle-SA-google-auth-account-signed-out.png`; `docs/mobile/harness/cycle-SA-google-auth-logout/cycle-SA-google-auth-account-signed-out.xml` |
 | Interactive Google account consent on S23 | P1 | Open | SA still uses a generated backend-shaped local credential; actual browser consent needs manual/real Google session proof. | Audit notes |
 | Secure native credential storage | P1 | Open | Current Expo MVP uses AsyncStorage for the Holiwyn API key; dev build/APK should migrate to secure storage. | Data contract notes |
+
+# Cycle SB - Secure Mobile Auth Credential Storage
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Secure native credential storage | P1 | Verified | Mobile credential storage now uses `expo-secure-store` when available, migrates legacy AsyncStorage data, and deletes both secure and legacy storage on sign-out. | `mobile/src/services/mobileCredentialStore.ts`; `mobile/src/__tests__/googleMobileAuthContract.test.ts` |
+| S23 proof for secure-store-backed auth persistence and logout | P0 | Verified | S23 proof passes callback-shaped return, persisted restart without `apiKey`, connected Account row, sign-out tap, and signed-out `Continue with Google` state. | `docs/mobile/harness/cycle-SB-secure-auth-storage/cycle-SB-google-auth-return-summary.json`; `docs/mobile/screenshots/cycle-SB-secure-auth-storage/cycle-SB-google-auth-persisted-portfolio.png`; `docs/mobile/screenshots/cycle-SB-secure-auth-storage/cycle-SB-google-auth-account-signed-out.png` |
+| Interactive Google account consent on S23 | P1 | Open | SB still proves the backend-returned mobile credential handoff with a generated local credential; actual browser consent needs manual/real Google session proof. | `docs/mobile/audits/cycle-SB-secure-auth-storage.md` |

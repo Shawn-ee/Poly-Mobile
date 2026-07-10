@@ -7318,3 +7318,15 @@ Remaining P1:
 - Test proof: mobile typecheck passed and focused account/auth/logout tests passed.
 - Unresolved P0: 0 for SA scope.
 - Remaining P1: real interactive Google consent on S23, secure native credential storage, provider-backed current-match line markets, and production liquidity/public market-maker policy.
+
+# Cycle SB Audit Gate - Secure Mobile Auth Credential Storage
+
+- Scope: Local MVP secure storage for the backend-returned Holiwyn mobile API credential.
+- P0 result: PASS for SB scope.
+- Implementation proof: `mobile/src/services/mobileCredentialStore.ts` uses `expo-secure-store` when available, migrates legacy AsyncStorage credential data, and removes both secure and legacy data on sign-out.
+- Android proof: passed on Samsung S23 `SM_S911U1`.
+- Visible proof: `docs/mobile/screenshots/cycle-SB-secure-auth-storage/cycle-SB-google-auth-persisted-portfolio.png` shows the profile connected after restart; `docs/mobile/screenshots/cycle-SB-secure-auth-storage/cycle-SB-google-auth-account-signed-out.png` shows sign-out clears the connected state.
+- XML proof: `docs/mobile/harness/cycle-SB-secure-auth-storage/cycle-SB-google-auth-persisted-portfolio.xml` contains connected profile markers after restart; `cycle-SB-google-auth-account-signed-out.xml` returns to `Continue with Google`.
+- Test proof: mobile typecheck passed and focused Google/logout tests passed.
+- Unresolved P0: 0 for SB scope.
+- Remaining P1: real interactive Google consent on S23, provider-backed current-match line markets, and production liquidity/public market-maker policy.
