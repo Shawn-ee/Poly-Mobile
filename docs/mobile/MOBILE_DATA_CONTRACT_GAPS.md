@@ -9378,3 +9378,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: real reviewed approved-provider identity for current-match line rows.
 - Temporary mock/static data: existing bundled mock data now includes zero-valued approved-provider counts to match the current backend route shape.
 - Future migration concern: proof harnesses can now require `line-approved-provider-count-*` markers before claiming an approved secondary-provider line is visible on mobile.
+
+# Cycle UB - Approved Line Provider Source Copy Notes
+
+- No schema migration was added.
+- Closed or narrowed: Event Detail no longer risks labeling approved secondary-provider-backed line markets as Polymarket lines.
+- Route mismatch: none. Mobile consumes the approved-provider count fields already added to the route contract.
+- Fields Holiwyn still needs but backend does not fully provide: real current-match approved provider identities for Spread/Totals/Team Total rows.
+- Temporary mock/static data: none added.
+- Future migration concern: if future line providers are added beyond the current approved provider list, source copy should stay Holiwyn-branded unless the line is truly Polymarket-backed.
