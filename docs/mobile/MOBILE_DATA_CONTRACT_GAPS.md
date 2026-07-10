@@ -9214,3 +9214,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new fields for sticky context. Real provider-backed spread/totals/team-total IDs remain the active P1 provider gap.
 - Temporary mock/static data: none added.
 - Future migration concern: if the sticky header later needs live score/clock from provider data, add explicit live-score fields to the Event Detail route instead of deriving them from UI-only strings.
+
+# Cycle TJ - Provider Team Flag Normalization Notes
+
+- No schema migration was added.
+- Closed or narrowed: provider-backed matches no longer render bullet placeholders for teams in the mobile normalized event model.
+- Route mismatch: none. Current backend event routes already expose `homeTeamName` and `awayTeamName`; mobile derives a display flag/team code from those fields.
+- Fields Holiwyn still needs but backend does not fully provide: optional future `homeTeamFlagUrl`/`awayTeamFlagUrl` or team ISO country codes would support richer image-based flags, but this is not required for the Local MVP.
+- Temporary mock/static data: none added. The country map is deterministic mobile display logic.
+- Future migration concern: if backend later owns team metadata, replace the mobile name map with backend-provided country/team display fields while preserving the same `Event.teams[].flag` UI contract.

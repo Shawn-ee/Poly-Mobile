@@ -4317,3 +4317,9 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Event Detail sticky match context while browsing Game Lines | Existing Event Detail data from `/api/mobile/events/:slug/live-detail` or `/api/events/:slug` | GET | Public viewing | Event slug | Existing event teams, start time/status, selected winner probabilities, market groups, line rows | Existing `Event`, `Market`, `Outcome`; no schema change | Bundled fixtures still provide the same team/probability/date fields in mock mode | None for sticky context. Provider-backed line market availability remains a separate P1 gap. |
 | Full Local MVP line ticket/order/Portfolio regression path | `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | GET/POST/GET/GET | Mobile API key for server-mode order/Portfolio routes | Existing selected market/outcome/line identity and fake-token order body | Existing quote/order/fill/Portfolio/history fields | Existing `ApiCredential`, `UserBalance`, `Order`, `Trade`, `Position`, `Market`, `Outcome`; no schema change | Mock mode unchanged | None. |
+
+# Cycle TJ - Provider Team Flag Normalization
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider-backed team identity display | `/api/events`; `/api/mobile/events/:slug/live-detail` | GET | Public viewing | Event feed/detail params | `homeTeamName`, `awayTeamName`, `title` fallback | Existing `Event`; no schema change | Mock fixtures can still provide explicit `teams[].flag` values | None. Mobile derives display flags/team codes from existing provider team names. |
