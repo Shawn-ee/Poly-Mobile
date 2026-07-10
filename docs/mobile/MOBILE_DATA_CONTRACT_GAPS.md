@@ -9151,3 +9151,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: additional real attach-ready Polymarket spread, totals, and team-total markets for the current user-facing World Cup match set. When Polymarket has no matching line market, the route should expose a clear unavailable/source reason.
 - Temporary mock/static data: none added. The proof used an existing provider-breadth seeded event with Polymarket-shaped IDs/tokens.
 - Future migration concern: keep optional external provider identity in a separate enrichment lane. Do not make `OPTIC_ODDS_API_KEY` a P0 blocker for Polymarket parity while Gamma/CLOB market IDs and token IDs are available.
+
+# Cycle TC - Line Provider Unavailable Contract Notes
+
+- No schema migration was added.
+- Closed or narrowed: `/api/mobile/events/:slug/live-detail` now identifies expected MVP line families and explicitly reports which families are unavailable from Polymarket and fixture-only for the current match.
+- Route mismatch: narrowed. Mobile no longer has to infer line provider gaps from generic `contract-fixture` counts; the route provides `expectedFamilies`, `providerUnavailableFamilies`, `fixtureOnlyFamilies`, and `missingFamilies`.
+- Fields Holiwyn still needs but backend does not fully provide: real Polymarket market IDs/condition IDs/token IDs for current-match spread, total, and team-total markets. Gamma currently returns only match-winner markets for `fifwc-arg-egy-2026-07-07`.
+- Temporary mock/static data: no new arbitrary mocks. Existing mock World Cup fixture metadata was updated to match the backend route contract shape.
+- Future migration concern: when real line markets are imported, remove those families from `providerUnavailableFamilies` and `fixtureOnlyFamilies`; do not leave stale fixture-only labels on real provider-backed rows.

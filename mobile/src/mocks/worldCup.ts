@@ -38,7 +38,7 @@ export type MarketSourceSummary = {
       totalCount: number;
       polymarketCount: number;
       contractFixtureCount: number;
-      status: "provider-backed" | "contract-fixture" | "unknown" | string;
+      status: "provider-backed" | "contract-fixture" | "missing" | "unknown" | string;
       reason: string;
     }>;
     providerAvailability?: {
@@ -46,8 +46,12 @@ export type MarketSourceSummary = {
       status: "available" | "unavailable" | "unknown" | string;
       providerBackedLineMarketCount: number;
       contractFixtureLineMarketCount: number;
+      expectedFamilies?: string[];
       providerBackedFamilies?: string[];
       contractFixtureFamilies?: string[];
+      providerUnavailableFamilies?: string[];
+      fixtureOnlyFamilies?: string[];
+      missingFamilies?: string[];
       nextProviderAction?: string;
       reason: string;
     };
@@ -427,10 +431,14 @@ export const worldCupEvents: Event[] = [
           status: "unavailable",
           providerBackedLineMarketCount: 0,
           contractFixtureLineMarketCount: 7,
+          expectedFamilies: ["spread", "total", "team_total"],
           providerBackedFamilies: [],
           contractFixtureFamilies: ["spread", "total", "team_total"],
+          providerUnavailableFamilies: ["spread", "total", "team_total"],
+          fixtureOnlyFamilies: ["spread", "total", "team_total"],
+          missingFamilies: [],
           nextProviderAction: "discover_attach_ready_polymarket_line_markets_or_configure_approved_line_provider",
-          reason: "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures.",
+          reason: "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures for: spread, total, team_total.",
         },
         reason: "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured.",
       },

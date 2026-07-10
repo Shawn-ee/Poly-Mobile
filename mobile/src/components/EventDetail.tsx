@@ -243,8 +243,12 @@ const lineSourceCopy = (event: Event, locale: Locale) => {
       `line-provider-availability-${lineAvailability.status}`,
       `line-provider-backed-count-${lineAvailability.providerBackedLineMarketCount}`,
       `line-contract-fixture-count-${lineAvailability.contractFixtureLineMarketCount}`,
+      `line-expected-families-${(lineAvailability.expectedFamilies ?? []).join("_") || "none"}`,
       `line-provider-families-${(lineAvailability.providerBackedFamilies ?? []).join("_") || "none"}`,
       `line-contract-fixture-families-${(lineAvailability.contractFixtureFamilies ?? []).join("_") || "none"}`,
+      `line-provider-unavailable-families-${(lineAvailability.providerUnavailableFamilies ?? []).join("_") || "none"}`,
+      `line-fixture-only-families-${(lineAvailability.fixtureOnlyFamilies ?? []).join("_") || "none"}`,
+      `line-missing-families-${(lineAvailability.missingFamilies ?? []).join("_") || "none"}`,
       lineAvailability.nextProviderAction ? `line-next-provider-action-${lineAvailability.nextProviderAction}` : "",
     ].filter(Boolean).join(" ")
     : "";

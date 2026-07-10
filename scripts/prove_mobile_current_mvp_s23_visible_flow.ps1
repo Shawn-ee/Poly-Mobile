@@ -492,7 +492,7 @@ try {
   Start-Sleep -Seconds 1
   $lineXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-lines-settled.xml"
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-lines.png" | Out-Null
-  Assert-Contains -Path $lineXml -Expected @("Spread", "Totals", "Holiwyn line", "line-market-local-test-pricing", "line-market-local-test-fake-token", "event-detail-line-section-clearance-24", "event-detail-line-source-banner", "line-source-contract-fixture", "line-source-local-test-fake-token", "line-family-readiness-spread-contract-fixture", "line-family-readiness-total-contract-fixture", "line-family-readiness-team_total-contract-fixture", "selection-market-type-spread", "selection-line-1.5", "provider-source-contract-fixture")
+  Assert-Contains -Path $lineXml -Expected @("Spread", "Totals", "Holiwyn line", "line-market-local-test-pricing", "line-market-local-test-fake-token", "event-detail-line-section-clearance-24", "event-detail-line-source-banner", "line-source-contract-fixture", "line-source-local-test-fake-token", "line-expected-families-spread_total_team_total", "line-provider-unavailable-families-spread_total_team_total", "line-fixture-only-families-spread_total_team_total", "line-missing-families-none", "line-family-readiness-spread-contract-fixture", "line-family-readiness-total-contract-fixture", "line-family-readiness-team_total-contract-fixture", "selection-market-type-spread", "selection-line-1.5", "provider-source-contract-fixture")
   Assert-NotContains -Path $lineXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "event-detail-price-chart", "event-detail-chart-route-state", "Chart selection")
 
   Invoke-TapNode -Path $lineXml -Identifier "event-detail-outcome-spread-" -StartsWith

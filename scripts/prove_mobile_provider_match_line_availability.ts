@@ -92,6 +92,8 @@ async function main() {
   if (liveDetail.status !== 200) {
     throw new Error(`Live detail route returned ${liveDetail.status}: ${JSON.stringify(liveDetail.payload)}`);
   }
+  const marketSourceSummary = liveDetail.payload.event?.marketSourceSummary ?? liveDetail.payload.contract?.marketSourceSummary ?? null;
+  const lineProviderAvailability = marketSourceSummary?.lineMarkets?.providerAvailability ?? null;
   const localMarkets = Array.isArray(liveDetail.payload.markets) ? liveDetail.payload.markets : [];
   const localSummary = localMarkets.map((market) => ({
     title: market.title,
@@ -142,7 +144,8 @@ async function main() {
       realPolymarketMarketCount: localRealPolymarketMarkets.length,
       contractFixtureMarketCount: localContractFixtureMarkets.length,
       contractLineFamilies: localContractLineFamilies,
-      marketSourceSummary: liveDetail.payload.event?.marketSourceSummary ?? liveDetail.payload.contract?.marketSourceSummary ?? null,
+      marketSourceSummary,
+      lineProviderAvailability,
       markets: localSummary,
     },
     decision: {
@@ -155,8 +158,20 @@ async function main() {
         localContractLineFamilies.includes("total_goals") &&
         localContractLineFamilies.includes("team_total_goals"),
       routeSourceSummaryMatches:
-        liveDetail.payload.event?.marketSourceSummary?.regulationWinner?.status === "provider-backed" &&
-        liveDetail.payload.event?.marketSourceSummary?.lineMarkets?.status === "contract-fixture",
+        marketSourceSummary?.regulationWinner?.status === "provider-backed" &&
+        marketSourceSummary?.lineMarkets?.status === "contract-fixture",
+      routeReportsExpectedLineFamilies:
+        Array.isArray(lineProviderAvailability?.expectedFamilies) &&
+        ["spread", "total", "team_total"].every((family) => lineProviderAvailability.expectedFamilies.includes(family)),
+      routeReportsUnavailableProviderFamilies:
+        Array.isArray(lineProviderAvailability?.providerUnavailableFamilies) &&
+        ["spread", "total", "team_total"].every((family) => lineProviderAvailability.providerUnavailableFamilies.includes(family)),
+      routeReportsFixtureOnlyFamilies:
+        Array.isArray(lineProviderAvailability?.fixtureOnlyFamilies) &&
+        ["spread", "total", "team_total"].every((family) => lineProviderAvailability.fixtureOnlyFamilies.includes(family)),
+      routeReportsNoMissingFixtureFamilies:
+        Array.isArray(lineProviderAvailability?.missingFamilies) &&
+        lineProviderAvailability.missingFamilies.length === 0,
       nextPath:
         gammaLineMarketCount > 0
           ? "map_real_gamma_line_markets_before_using_fixtures"
@@ -170,8 +185,16 @@ async function main() {
       localContractLineFamilies.includes("spread") &&
       localContractLineFamilies.includes("total_goals") &&
       localContractLineFamilies.includes("team_total_goals") &&
-      liveDetail.payload.event?.marketSourceSummary?.regulationWinner?.status === "provider-backed" &&
-      liveDetail.payload.event?.marketSourceSummary?.lineMarkets?.status === "contract-fixture",
+      marketSourceSummary?.regulationWinner?.status === "provider-backed" &&
+      marketSourceSummary?.lineMarkets?.status === "contract-fixture" &&
+      Array.isArray(lineProviderAvailability?.expectedFamilies) &&
+      ["spread", "total", "team_total"].every((family) => lineProviderAvailability.expectedFamilies.includes(family)) &&
+      Array.isArray(lineProviderAvailability?.providerUnavailableFamilies) &&
+      ["spread", "total", "team_total"].every((family) => lineProviderAvailability.providerUnavailableFamilies.includes(family)) &&
+      Array.isArray(lineProviderAvailability?.fixtureOnlyFamilies) &&
+      ["spread", "total", "team_total"].every((family) => lineProviderAvailability.fixtureOnlyFamilies.includes(family)) &&
+      Array.isArray(lineProviderAvailability?.missingFamilies) &&
+      lineProviderAvailability.missingFamilies.length === 0,
     limitations: [
       "This is a backend/provider availability proof only; Android proof is handled by the visible Local MVP journey harness.",
       "Contract-fixture line markets are acceptable for local MVP UI/order proof but are not Polymarket-backed parity.",
