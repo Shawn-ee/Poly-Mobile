@@ -8987,6 +8987,17 @@ Future migration concern:
 - Temporary mock/static data: no new fixtures added. Cycle TP used the existing explicit contract-shaped line fixture and seeded local counterparty liquidity for fake-token fill proof.
 - Future migration concern: replace the current contract-shaped spread/totals/team-total line rows with real provider-backed Polymarket line markets when attach-ready markets become available.
 
+# Cycle TW - Provider Line Source Reprobe Notes
+
+- No schema migration was added.
+- Closed or narrowed: current Polymarket-first evidence is fresh for July 10. Exact Gamma event `fifwc-arg-egy-2026-07-07` has 3 match-winner candidates and 0 line-family candidates; broad World Cup Gamma scan found 0 provider line candidates and 0 attach-ready provider line candidates.
+- Fields Holiwyn still needs but backend does not fully provide: real provider-backed current-match `marketId`, `outcomeId`, `conditionId`, token IDs, prices, and line identity for Spread/Totals/Team Total rows. These are not available from Polymarket Gamma for the current MVP match.
+- Fields backend provides but mobile ignores: none introduced. `/api/mobile/events/argentina-vs-egypt/live-detail` already returns `marketSourceSummary.lineMarkets.providerAvailability` fields that explain the fixture-only state.
+- Schema mismatch: none. Current `Event`, `Market`, and `Outcome` rows can represent provider-backed lines when a valid provider source exists; Cycle TW proves the provider source is missing, not that the schema is missing.
+- Route mismatch: none. The live-detail route correctly reports Regulation Winner as `provider-backed` and line families as `contract-fixture`, `providerUnavailableFamilies`, and `fixtureOnlyFamilies`.
+- Temporary mock/static data: no new fixtures added. Existing line rows remain backend-shaped contract fixtures with explicit `referenceSource=contract-fixture`.
+- Future migration concern: before replacing fixtures, add/review an approved secondary provider contract or wait for Polymarket Gamma/CLOB to expose attach-ready line markets. Do not mark fixture lines as Polymarket-backed.
+
 # Cycle SC - Event Detail Chart Removal Hardening Notes
 
 - No schema migration was added.

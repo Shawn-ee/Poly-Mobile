@@ -1,0 +1,253 @@
+{
+  "generatedAt": "2026-07-10T13:37:58.894Z",
+  "cycle": "TW",
+  "scope": "provider-match-line-availability",
+  "event": {
+    "slug": "argentina-vs-egypt",
+    "title": "Argentina vs. Egypt",
+    "source": "polymarket",
+    "providerEventSlug": "fifwc-arg-egy-2026-07-07"
+  },
+  "provider": {
+    "source": "polymarket-gamma",
+    "url": "https://gamma-api.polymarket.com/events?slug=fifwc-arg-egy-2026-07-07",
+    "eventTitle": "Argentina vs. Egypt",
+    "marketCount": 3,
+    "familyCounts": {
+      "match_winner_1x2": 3
+    },
+    "lineMarketCount": 0,
+    "markets": [
+      {
+        "id": "2793738",
+        "slug": "fifwc-arg-egy-2026-07-07-arg",
+        "question": "Will Argentina win on 2026-07-07?",
+        "conditionId": "0xa7b5b123f9fd38f83fbe19773a5d04e38208b370ca66be27b9688155e7b5c60a",
+        "family": "match_winner_1x2"
+      },
+      {
+        "id": "2793739",
+        "slug": "fifwc-arg-egy-2026-07-07-draw",
+        "question": "Will Argentina vs. Egypt end in a draw?",
+        "conditionId": "0x4d39d238893ea8f7e0f4d53822a594129b9a98a1fc18744dab57351742e6a702",
+        "family": "match_winner_1x2"
+      },
+      {
+        "id": "2793741",
+        "slug": "fifwc-arg-egy-2026-07-07-egy",
+        "question": "Will Egypt win on 2026-07-07?",
+        "conditionId": "0x971eb98daab3a11a1dd3b76e14ae962f8e5980ec6a3d499529b5f19b75108d4a",
+        "family": "match_winner_1x2"
+      }
+    ]
+  },
+  "holiwynRoute": {
+    "route": "/api/mobile/events/argentina-vs-egypt/live-detail",
+    "status": 200,
+    "marketCount": 7,
+    "realPolymarketMarketCount": 3,
+    "contractFixtureMarketCount": 4,
+    "contractLineFamilies": [
+      "spread",
+      "total_goals",
+      "team_total_goals"
+    ],
+    "marketSourceSummary": {
+      "totalMarketCount": 7,
+      "sourceBreakdown": {
+        "polymarket": 3,
+        "contract-fixture": 4
+      },
+      "polymarketMarketCount": 3,
+      "contractFixtureMarketCount": 4,
+      "unknownSourceMarketCount": 0,
+      "regulationWinner": {
+        "totalCount": 3,
+        "polymarketCount": 3,
+        "contractFixtureCount": 0,
+        "status": "provider-backed"
+      },
+      "lineMarkets": {
+        "totalCount": 4,
+        "polymarketCount": 0,
+        "contractFixtureCount": 4,
+        "status": "contract-fixture",
+        "families": [
+          "spread",
+          "total_goals",
+          "team_total_goals"
+        ],
+        "familyReadiness": [
+          {
+            "family": "spread",
+            "totalCount": 2,
+            "polymarketCount": 0,
+            "contractFixtureCount": 2,
+            "status": "contract-fixture",
+            "reason": "spread is served by Local MVP contract fixtures for this event."
+          },
+          {
+            "family": "total",
+            "totalCount": 1,
+            "polymarketCount": 0,
+            "contractFixtureCount": 1,
+            "status": "contract-fixture",
+            "reason": "total is served by Local MVP contract fixtures for this event."
+          },
+          {
+            "family": "team_total",
+            "totalCount": 1,
+            "polymarketCount": 0,
+            "contractFixtureCount": 1,
+            "status": "contract-fixture",
+            "reason": "team_total is served by Local MVP contract fixtures for this event."
+          }
+        ],
+        "providerAvailability": {
+          "source": "polymarket-gamma",
+          "status": "unavailable",
+          "providerBackedLineMarketCount": 0,
+          "contractFixtureLineMarketCount": 4,
+          "expectedFamilies": [
+            "spread",
+            "total",
+            "team_total"
+          ],
+          "providerBackedFamilies": [],
+          "contractFixtureFamilies": [
+            "spread",
+            "total",
+            "team_total"
+          ],
+          "providerUnavailableFamilies": [
+            "spread",
+            "total",
+            "team_total"
+          ],
+          "fixtureOnlyFamilies": [
+            "spread",
+            "total",
+            "team_total"
+          ],
+          "missingFamilies": [],
+          "nextProviderAction": "discover_attach_ready_polymarket_line_markets_or_configure_approved_line_provider",
+          "reason": "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures for: spread, total, team_total."
+        },
+        "reason": "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured."
+      }
+    },
+    "lineProviderAvailability": {
+      "source": "polymarket-gamma",
+      "status": "unavailable",
+      "providerBackedLineMarketCount": 0,
+      "contractFixtureLineMarketCount": 4,
+      "expectedFamilies": [
+        "spread",
+        "total",
+        "team_total"
+      ],
+      "providerBackedFamilies": [],
+      "contractFixtureFamilies": [
+        "spread",
+        "total",
+        "team_total"
+      ],
+      "providerUnavailableFamilies": [
+        "spread",
+        "total",
+        "team_total"
+      ],
+      "fixtureOnlyFamilies": [
+        "spread",
+        "total",
+        "team_total"
+      ],
+      "missingFamilies": [],
+      "nextProviderAction": "discover_attach_ready_polymarket_line_markets_or_configure_approved_line_provider",
+      "reason": "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures for: spread, total, team_total."
+    },
+    "markets": [
+      {
+        "title": "Will Argentina win on 2026-07-07?",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Winner",
+        "line": null,
+        "period": "regulation",
+        "referenceSource": "polymarket",
+        "externalMarketId": "2793738"
+      },
+      {
+        "title": "Argentina vs. Egypt: Egypt +1.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "1.5",
+        "period": "regulation",
+        "referenceSource": "contract-fixture",
+        "externalMarketId": "contract-argentina-vs-egypt-spread-away-1-5"
+      },
+      {
+        "title": "Argentina vs. Egypt: Total goals 2.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Totals",
+        "line": "2.5",
+        "period": "regulation",
+        "referenceSource": "contract-fixture",
+        "externalMarketId": "contract-argentina-vs-egypt-total-goals-2-5"
+      },
+      {
+        "title": "Argentina vs. Egypt: Argentina total goals 1.5",
+        "marketType": "team_total_goals",
+        "marketGroupTitle": "Team Totals",
+        "line": "1.5",
+        "period": "regulation",
+        "referenceSource": "contract-fixture",
+        "externalMarketId": "contract-argentina-vs-egypt-team-total-home-1-5"
+      },
+      {
+        "title": "Will Argentina vs. Egypt end in a draw?",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Winner",
+        "line": null,
+        "period": "regulation",
+        "referenceSource": "polymarket",
+        "externalMarketId": "2793739"
+      },
+      {
+        "title": "Will Egypt win on 2026-07-07?",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Winner",
+        "line": null,
+        "period": "regulation",
+        "referenceSource": "polymarket",
+        "externalMarketId": "2793741"
+      },
+      {
+        "title": "Argentina vs. Egypt: Argentina +0.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "0.5",
+        "period": "regulation",
+        "referenceSource": "contract-fixture",
+        "externalMarketId": "contract-argentina-vs-egypt-spread-home-0-5"
+      }
+    ]
+  },
+  "decision": {
+    "realRegulationWinnerAvailable": true,
+    "realLineMarketsAvailableFromGamma": false,
+    "contractFixturesJustifiedForLocalMvp": true,
+    "routeSourceSummaryMatches": true,
+    "routeReportsExpectedLineFamilies": true,
+    "routeReportsUnavailableProviderFamilies": true,
+    "routeReportsFixtureOnlyFamilies": true,
+    "routeReportsNoMissingFixtureFamilies": true,
+    "nextPath": "continue_local_mvp_with_contract_fixture_lines_until_real_provider_line_markets_exist"
+  },
+  "pass": true,
+  "limitations": [
+    "This is a backend/provider availability proof only; Android proof is handled by the visible Local MVP journey harness.",
+    "Contract-fixture line markets are acceptable for local MVP UI/order proof but are not Polymarket-backed parity.",
+    "If a future Polymarket event exposes line markets through Gamma/CLOB, those real mappings should replace the fixture rows.",
+    "The default event slug intentionally follows the current Home MVP match so stale disposable-event defaults do not hide real service readiness."
+  ]
+}

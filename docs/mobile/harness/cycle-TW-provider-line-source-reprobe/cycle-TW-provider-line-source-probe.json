@@ -1,0 +1,2458 @@
+{
+  "generatedAt": "2026-07-10T13:37:40.405Z",
+  "provider": "polymarket-gamma",
+  "providerEventSlug": "fifwc-arg-egy-2026-07-07",
+  "surfaces": {
+    "exactEvent": {
+      "source": "gamma-api.polymarket.com/events?slug",
+      "candidateCount": 3,
+      "familySummary": {
+        "match_winner": 3,
+        "spread": 0,
+        "total_goals": 0,
+        "team_total_goals": 0,
+        "corners": 0,
+        "first_half": 0,
+        "second_half": 0,
+        "correct_score": 0,
+        "other": 0
+      },
+      "lineCandidateCount": 0,
+      "samples": [
+        {
+          "slug": "fifwc-arg-egy-2026-07-07-arg",
+          "question": "Will Argentina win on 2026-07-07?",
+          "family": "match_winner",
+          "tokenComplete": true
+        },
+        {
+          "slug": "fifwc-arg-egy-2026-07-07-draw",
+          "question": "Will Argentina vs. Egypt end in a draw?",
+          "family": "match_winner",
+          "tokenComplete": true
+        },
+        {
+          "slug": "fifwc-arg-egy-2026-07-07-egy",
+          "question": "Will Egypt win on 2026-07-07?",
+          "family": "match_winner",
+          "tokenComplete": true
+        }
+      ]
+    },
+    "exactSlugGuesses": {
+      "source": "gamma-api.polymarket.com/markets?slug",
+      "guessedSlugCount": 23,
+      "candidateCount": 0,
+      "familySummary": {
+        "match_winner": 0,
+        "spread": 0,
+        "total_goals": 0,
+        "team_total_goals": 0,
+        "corners": 0,
+        "first_half": 0,
+        "second_half": 0,
+        "correct_score": 0,
+        "other": 0
+      },
+      "lineCandidateCount": 0,
+      "candidates": []
+    },
+    "broadLineQueries": {
+      "source": "gamma-api.polymarket.com/markets?search",
+      "targetCount": 8,
+      "totalBroadCandidateCount": 96,
+      "attachReadyLineTargetCount": 0,
+      "targets": [
+        {
+          "key": "spread-arg-plus-1-5",
+          "marketType": "spread",
+          "title": "Argentina +1.5",
+          "period": null,
+          "line": "1.5",
+          "exactSlugGuesses": [
+            "fifwc-arg-egy-2026-07-07-spread",
+            "fifwc-arg-egy-2026-07-07-handicap",
+            "fifwc-arg-egy-2026-07-07-arg-spread",
+            "fifwc-arg-egy-2026-07-07-egy-spread",
+            "fifwc-arg-egy-2026-07-07-argentina-spread",
+            "fifwc-arg-egy-2026-07-07-egypt-spread"
+          ],
+          "queries": [
+            "Argentina +1.5",
+            "Argentina",
+            "Argentina vs Egypt",
+            "Argentina vs Egypt spread",
+            "argentina egypt",
+            "argentina egypt spread",
+            "argentina egypt handicap",
+            "argentina egypt asian handicap",
+            "world cup argentina egypt spread",
+            "world cup argentina egypt handicap",
+            "argentina egypt spread 1-5",
+            "argentina egypt handicap 1-5"
+          ],
+          "broadCandidateCount": 12,
+          "mergedCandidateCount": 15,
+          "attachReadyCandidateCount": 0,
+          "familyMismatchCount": 10,
+          "insufficientRelevanceCount": 8,
+          "ranked": [
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-draw",
+              "question": "Will Argentina vs. Egypt end in a draw?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 89.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch"
+              ],
+              "relevance": {
+                "relevant": true,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": true,
+                "binaryQuestionSubjectRelevant": true,
+                "expectedFamily": "spread",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 89.9
+              }
+            },
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-arg",
+              "question": "Will Argentina win on 2026-07-07?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 81.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch"
+              ],
+              "relevance": {
+                "relevant": true,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": true,
+                "binaryQuestionSubjectRelevant": true,
+                "expectedFamily": "spread",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 81.9
+              }
+            },
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-egy",
+              "question": "Will Egypt win on 2026-07-07?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 81.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 81.9
+              }
+            },
+            {
+              "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+              "question": "Will bitcoin hit $1m before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.9
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-between-10-and-20-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to between 10 and 20 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 76.4,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.4
+              }
+            },
+            {
+              "slug": "will-jesus-christ-return-before-gta-vi-665",
+              "question": "Will Jesus Christ return before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-more-than-30-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to more than 30 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 75.4974,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 75.5
+              }
+            },
+            {
+              "slug": "new-rhianna-album-before-gta-vi-926",
+              "question": "New Rihanna Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 75.00701366999999,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 75.01
+              }
+            },
+            {
+              "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+              "question": "Will China invades Taiwan before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 70.6662,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 70.67
+              }
+            },
+            {
+              "slug": "new-playboi-carti-album-before-gta-vi-421",
+              "question": "New Playboi Carti Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 67.38297642,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 67.38
+              }
+            }
+          ]
+        },
+        {
+          "key": "spread-egy-minus-1-5",
+          "marketType": "spread",
+          "title": "Egypt -1.5",
+          "period": null,
+          "line": "-1.5",
+          "exactSlugGuesses": [
+            "fifwc-arg-egy-2026-07-07-spread",
+            "fifwc-arg-egy-2026-07-07-handicap",
+            "fifwc-arg-egy-2026-07-07-arg-spread",
+            "fifwc-arg-egy-2026-07-07-egy-spread",
+            "fifwc-arg-egy-2026-07-07-argentina-spread",
+            "fifwc-arg-egy-2026-07-07-egypt-spread"
+          ],
+          "queries": [
+            "Egypt -1.5",
+            "Egypt",
+            "Argentina vs Egypt",
+            "Argentina vs Egypt spread",
+            "argentina egypt",
+            "argentina egypt spread",
+            "argentina egypt handicap",
+            "argentina egypt asian handicap",
+            "world cup argentina egypt spread",
+            "world cup argentina egypt handicap",
+            "argentina egypt spread 1-5",
+            "argentina egypt handicap 1-5"
+          ],
+          "broadCandidateCount": 12,
+          "mergedCandidateCount": 15,
+          "attachReadyCandidateCount": 0,
+          "familyMismatchCount": 10,
+          "insufficientRelevanceCount": 8,
+          "ranked": [
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-draw",
+              "question": "Will Argentina vs. Egypt end in a draw?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 89.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch"
+              ],
+              "relevance": {
+                "relevant": true,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": true,
+                "binaryQuestionSubjectRelevant": true,
+                "expectedFamily": "spread",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 89.9
+              }
+            },
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-egy",
+              "question": "Will Egypt win on 2026-07-07?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 81.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch"
+              ],
+              "relevance": {
+                "relevant": true,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": true,
+                "binaryQuestionSubjectRelevant": true,
+                "expectedFamily": "spread",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 81.9
+              }
+            },
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-arg",
+              "question": "Will Argentina win on 2026-07-07?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 81.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 81.9
+              }
+            },
+            {
+              "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+              "question": "Will bitcoin hit $1m before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.9
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-between-10-and-20-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to between 10 and 20 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 76.4,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.4
+              }
+            },
+            {
+              "slug": "will-jesus-christ-return-before-gta-vi-665",
+              "question": "Will Jesus Christ return before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-more-than-30-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to more than 30 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 75.4974,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 75.5
+              }
+            },
+            {
+              "slug": "new-rhianna-album-before-gta-vi-926",
+              "question": "New Rihanna Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 75.00701366999999,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 75.01
+              }
+            },
+            {
+              "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+              "question": "Will China invades Taiwan before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 70.6662,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 70.67
+              }
+            },
+            {
+              "slug": "new-playboi-carti-album-before-gta-vi-421",
+              "question": "New Playboi Carti Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 67.38297642,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "spread",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 67.38
+              }
+            }
+          ]
+        },
+        {
+          "key": "total-goals-2-5",
+          "marketType": "total_goals",
+          "title": "Argentina vs Egypt total goals 2.5",
+          "period": null,
+          "line": "2.5",
+          "exactSlugGuesses": [
+            "fifwc-arg-egy-2026-07-07-total-goals",
+            "fifwc-arg-egy-2026-07-07-total-goals-25",
+            "fifwc-arg-egy-2026-07-07-over-under",
+            "fifwc-arg-egy-2026-07-07-over-25",
+            "fifwc-arg-egy-2026-07-07-under-25",
+            "fifwc-arg-egy-2026-07-07-team-total-arg",
+            "fifwc-arg-egy-2026-07-07-team-total-egy",
+            "fifwc-arg-egy-2026-07-07-arg-team-total",
+            "fifwc-arg-egy-2026-07-07-egy-team-total",
+            "fifwc-arg-egy-2026-07-07-first-half-total-goals",
+            "fifwc-arg-egy-2026-07-07-total-corners"
+          ],
+          "queries": [
+            "Argentina vs Egypt total goals 2.5",
+            "Argentina vs Egypt total goals",
+            "Argentina vs Egypt",
+            "Argentina vs Egypt over under",
+            "Over 2.5 Under 2.5",
+            "Over 2.5 Under 2.5 over under",
+            "argentina egypt",
+            "argentina egypt total goals",
+            "argentina egypt over under",
+            "argentina egypt total goals 2-5",
+            "argentina egypt total goals 25",
+            "world cup argentina egypt total goals"
+          ],
+          "broadCandidateCount": 12,
+          "mergedCandidateCount": 15,
+          "attachReadyCandidateCount": 0,
+          "familyMismatchCount": 10,
+          "insufficientRelevanceCount": 10,
+          "ranked": [
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-draw",
+              "question": "Will Argentina vs. Egypt end in a draw?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 89.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": true,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 89.9
+              }
+            },
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-arg",
+              "question": "Will Argentina win on 2026-07-07?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 81.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 81.9
+              }
+            },
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-egy",
+              "question": "Will Egypt win on 2026-07-07?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 81.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 81.9
+              }
+            },
+            {
+              "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+              "question": "Will bitcoin hit $1m before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.9
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-between-10-and-20-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to between 10 and 20 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 76.4,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.4
+              }
+            },
+            {
+              "slug": "will-jesus-christ-return-before-gta-vi-665",
+              "question": "Will Jesus Christ return before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-more-than-30-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to more than 30 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 75.4974,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 75.5
+              }
+            },
+            {
+              "slug": "new-rhianna-album-before-gta-vi-926",
+              "question": "New Rihanna Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 75.00701366999999,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 75.01
+              }
+            },
+            {
+              "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+              "question": "Will China invades Taiwan before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 70.6662,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 70.67
+              }
+            },
+            {
+              "slug": "new-playboi-carti-album-before-gta-vi-421",
+              "question": "New Playboi Carti Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 67.38297642,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 67.38
+              }
+            }
+          ]
+        },
+        {
+          "key": "team-total-arg-1-5",
+          "marketType": "team_total_goals",
+          "title": "Argentina team total goals 1.5",
+          "period": null,
+          "line": "1.5",
+          "exactSlugGuesses": [
+            "fifwc-arg-egy-2026-07-07-spread",
+            "fifwc-arg-egy-2026-07-07-handicap",
+            "fifwc-arg-egy-2026-07-07-arg-spread",
+            "fifwc-arg-egy-2026-07-07-egy-spread",
+            "fifwc-arg-egy-2026-07-07-argentina-spread",
+            "fifwc-arg-egy-2026-07-07-egypt-spread",
+            "fifwc-arg-egy-2026-07-07-total-goals",
+            "fifwc-arg-egy-2026-07-07-total-goals-25",
+            "fifwc-arg-egy-2026-07-07-over-under",
+            "fifwc-arg-egy-2026-07-07-over-25",
+            "fifwc-arg-egy-2026-07-07-under-25",
+            "fifwc-arg-egy-2026-07-07-team-total-arg",
+            "fifwc-arg-egy-2026-07-07-team-total-egy",
+            "fifwc-arg-egy-2026-07-07-arg-team-total",
+            "fifwc-arg-egy-2026-07-07-egy-team-total",
+            "fifwc-arg-egy-2026-07-07-first-half",
+            "fifwc-arg-egy-2026-07-07-first-half-winner",
+            "fifwc-arg-egy-2026-07-07-1h",
+            "fifwc-arg-egy-2026-07-07-1h-winner",
+            "fifwc-arg-egy-2026-07-07-first-half-total-goals",
+            "fifwc-arg-egy-2026-07-07-corners",
+            "fifwc-arg-egy-2026-07-07-total-corners",
+            "fifwc-arg-egy-2026-07-07-correct-score"
+          ],
+          "queries": [
+            "Argentina team total goals 1.5",
+            "Argentina team total goals",
+            "Argentina vs Egypt",
+            "Argentina vs Egypt team total",
+            "Over 1.5 Under 1.5",
+            "Over 1.5 Under 1.5 team total",
+            "argentina egypt",
+            "argentina egypt team total",
+            "argentina egypt team goals",
+            "world cup argentina egypt team total",
+            "world cup argentina egypt team goals",
+            "argentina egypt team total 1-5"
+          ],
+          "broadCandidateCount": 12,
+          "mergedCandidateCount": 15,
+          "attachReadyCandidateCount": 0,
+          "familyMismatchCount": 10,
+          "insufficientRelevanceCount": 10,
+          "ranked": [
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-draw",
+              "question": "Will Argentina vs. Egypt end in a draw?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 89.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": true,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 89.9
+              }
+            },
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-arg",
+              "question": "Will Argentina win on 2026-07-07?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 81.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": true,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 81.9
+              }
+            },
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-egy",
+              "question": "Will Egypt win on 2026-07-07?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 81.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 81.9
+              }
+            },
+            {
+              "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+              "question": "Will bitcoin hit $1m before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.9
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-between-10-and-20-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to between 10 and 20 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 76.4,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.4
+              }
+            },
+            {
+              "slug": "will-jesus-christ-return-before-gta-vi-665",
+              "question": "Will Jesus Christ return before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-more-than-30-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to more than 30 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 75.4974,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 75.5
+              }
+            },
+            {
+              "slug": "new-rhianna-album-before-gta-vi-926",
+              "question": "New Rihanna Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 75.00701366999999,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 75.01
+              }
+            },
+            {
+              "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+              "question": "Will China invades Taiwan before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 70.6662,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 70.67
+              }
+            },
+            {
+              "slug": "new-playboi-carti-album-before-gta-vi-421",
+              "question": "New Playboi Carti Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 67.38297642,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 67.38
+              }
+            }
+          ]
+        },
+        {
+          "key": "team-total-egy-1-5",
+          "marketType": "team_total_goals",
+          "title": "Egypt team total goals 1.5",
+          "period": null,
+          "line": "1.5",
+          "exactSlugGuesses": [
+            "fifwc-arg-egy-2026-07-07-spread",
+            "fifwc-arg-egy-2026-07-07-handicap",
+            "fifwc-arg-egy-2026-07-07-arg-spread",
+            "fifwc-arg-egy-2026-07-07-egy-spread",
+            "fifwc-arg-egy-2026-07-07-argentina-spread",
+            "fifwc-arg-egy-2026-07-07-egypt-spread",
+            "fifwc-arg-egy-2026-07-07-total-goals",
+            "fifwc-arg-egy-2026-07-07-total-goals-25",
+            "fifwc-arg-egy-2026-07-07-over-under",
+            "fifwc-arg-egy-2026-07-07-over-25",
+            "fifwc-arg-egy-2026-07-07-under-25",
+            "fifwc-arg-egy-2026-07-07-team-total-arg",
+            "fifwc-arg-egy-2026-07-07-team-total-egy",
+            "fifwc-arg-egy-2026-07-07-arg-team-total",
+            "fifwc-arg-egy-2026-07-07-egy-team-total",
+            "fifwc-arg-egy-2026-07-07-first-half",
+            "fifwc-arg-egy-2026-07-07-first-half-winner",
+            "fifwc-arg-egy-2026-07-07-1h",
+            "fifwc-arg-egy-2026-07-07-1h-winner",
+            "fifwc-arg-egy-2026-07-07-first-half-total-goals",
+            "fifwc-arg-egy-2026-07-07-corners",
+            "fifwc-arg-egy-2026-07-07-total-corners",
+            "fifwc-arg-egy-2026-07-07-correct-score"
+          ],
+          "queries": [
+            "Egypt team total goals 1.5",
+            "Egypt team total goals",
+            "Argentina vs Egypt",
+            "Argentina vs Egypt team total",
+            "Over 1.5 Under 1.5",
+            "Over 1.5 Under 1.5 team total",
+            "argentina egypt",
+            "argentina egypt team total",
+            "argentina egypt team goals",
+            "world cup argentina egypt team total",
+            "world cup argentina egypt team goals",
+            "argentina egypt team total 1-5"
+          ],
+          "broadCandidateCount": 12,
+          "mergedCandidateCount": 15,
+          "attachReadyCandidateCount": 0,
+          "familyMismatchCount": 10,
+          "insufficientRelevanceCount": 10,
+          "ranked": [
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-draw",
+              "question": "Will Argentina vs. Egypt end in a draw?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 89.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": true,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 89.9
+              }
+            },
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-arg",
+              "question": "Will Argentina win on 2026-07-07?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 81.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 81.9
+              }
+            },
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-egy",
+              "question": "Will Egypt win on 2026-07-07?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 81.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": true,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 81.9
+              }
+            },
+            {
+              "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+              "question": "Will bitcoin hit $1m before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.9
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-between-10-and-20-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to between 10 and 20 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 76.4,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.4
+              }
+            },
+            {
+              "slug": "will-jesus-christ-return-before-gta-vi-665",
+              "question": "Will Jesus Christ return before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-more-than-30-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to more than 30 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 75.4974,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 75.5
+              }
+            },
+            {
+              "slug": "new-rhianna-album-before-gta-vi-926",
+              "question": "New Rihanna Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 75.00701366999999,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 75.01
+              }
+            },
+            {
+              "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+              "question": "Will China invades Taiwan before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 70.6662,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 70.67
+              }
+            },
+            {
+              "slug": "new-playboi-carti-album-before-gta-vi-421",
+              "question": "New Playboi Carti Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 67.38297642,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "team_total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 67.38
+              }
+            }
+          ]
+        },
+        {
+          "key": "first-half-total-goals-1-5",
+          "marketType": "total_goals",
+          "title": "First half total goals 1.5",
+          "period": "first-half",
+          "line": "1.5",
+          "exactSlugGuesses": [
+            "fifwc-arg-egy-2026-07-07-first-half",
+            "fifwc-arg-egy-2026-07-07-first-half-winner",
+            "fifwc-arg-egy-2026-07-07-1h",
+            "fifwc-arg-egy-2026-07-07-1h-winner",
+            "fifwc-arg-egy-2026-07-07-first-half-total-goals"
+          ],
+          "queries": [
+            "First half total goals 1.5",
+            "First half total goals",
+            "Argentina vs Egypt",
+            "Argentina vs Egypt over under",
+            "Over 1.5 Under 1.5",
+            "Over 1.5 Under 1.5 over under",
+            "argentina egypt",
+            "argentina egypt total goals",
+            "argentina egypt over under",
+            "argentina egypt total goals 1-5",
+            "argentina egypt total goals 15",
+            "world cup argentina egypt total goals"
+          ],
+          "broadCandidateCount": 12,
+          "mergedCandidateCount": 15,
+          "attachReadyCandidateCount": 0,
+          "familyMismatchCount": 10,
+          "insufficientRelevanceCount": 10,
+          "ranked": [
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-draw",
+              "question": "Will Argentina vs. Egypt end in a draw?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 89.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 89.9
+              }
+            },
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-arg",
+              "question": "Will Argentina win on 2026-07-07?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 81.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 81.9
+              }
+            },
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-egy",
+              "question": "Will Egypt win on 2026-07-07?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 81.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 81.9
+              }
+            },
+            {
+              "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+              "question": "Will bitcoin hit $1m before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.9
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-between-10-and-20-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to between 10 and 20 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 76.4,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.4
+              }
+            },
+            {
+              "slug": "will-jesus-christ-return-before-gta-vi-665",
+              "question": "Will Jesus Christ return before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-more-than-30-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to more than 30 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 75.4974,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 75.5
+              }
+            },
+            {
+              "slug": "new-rhianna-album-before-gta-vi-926",
+              "question": "New Rihanna Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 75.00701366999999,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 75.01
+              }
+            },
+            {
+              "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+              "question": "Will China invades Taiwan before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 70.6662,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 70.67
+              }
+            },
+            {
+              "slug": "new-playboi-carti-album-before-gta-vi-421",
+              "question": "New Playboi Carti Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 67.38297642,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "total_goals",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 67.38
+              }
+            }
+          ]
+        },
+        {
+          "key": "first-half-winner-arg",
+          "marketType": "first_half_winner",
+          "title": "First half Argentina winner",
+          "period": "first-half",
+          "line": null,
+          "exactSlugGuesses": [
+            "fifwc-arg-egy-2026-07-07-first-half",
+            "fifwc-arg-egy-2026-07-07-first-half-winner",
+            "fifwc-arg-egy-2026-07-07-1h",
+            "fifwc-arg-egy-2026-07-07-1h-winner",
+            "fifwc-arg-egy-2026-07-07-first-half-total-goals"
+          ],
+          "queries": [
+            "First half Argentina winner",
+            "Argentina vs Egypt",
+            "Argentina vs Egypt first half winner",
+            "argentina egypt",
+            "argentina egypt soccer",
+            "argentina egypt world cup",
+            "argentina egypt first half winner",
+            "world cup argentina egypt first half winner",
+            "fifa world cup argentina egypt first half winner",
+            "First half Argentina winner first half winner",
+            "First half Argentina winner Game Lines",
+            "First half Argentina winner first half"
+          ],
+          "broadCandidateCount": 12,
+          "mergedCandidateCount": 15,
+          "attachReadyCandidateCount": 0,
+          "familyMismatchCount": 10,
+          "insufficientRelevanceCount": 8,
+          "ranked": [
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-draw",
+              "question": "Will Argentina vs. Egypt end in a draw?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 89.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch"
+              ],
+              "relevance": {
+                "relevant": true,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": true,
+                "binaryQuestionSubjectRelevant": true,
+                "expectedFamily": "first_half",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 89.9
+              }
+            },
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-arg",
+              "question": "Will Argentina win on 2026-07-07?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 81.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch"
+              ],
+              "relevance": {
+                "relevant": true,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": true,
+                "binaryQuestionSubjectRelevant": true,
+                "expectedFamily": "first_half",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 81.9
+              }
+            },
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-egy",
+              "question": "Will Egypt win on 2026-07-07?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 81.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "first_half",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 81.9
+              }
+            },
+            {
+              "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+              "question": "Will bitcoin hit $1m before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "first_half",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.9
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-between-10-and-20-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to between 10 and 20 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 76.4,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "first_half",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.4
+              }
+            },
+            {
+              "slug": "will-jesus-christ-return-before-gta-vi-665",
+              "question": "Will Jesus Christ return before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "first_half",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-more-than-30-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to more than 30 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 75.4974,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "first_half",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 75.5
+              }
+            },
+            {
+              "slug": "new-rhianna-album-before-gta-vi-926",
+              "question": "New Rihanna Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 75.00701366999999,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "first_half",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 75.01
+              }
+            },
+            {
+              "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+              "question": "Will China invades Taiwan before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 70.6662,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "first_half",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 70.67
+              }
+            },
+            {
+              "slug": "new-playboi-carti-album-before-gta-vi-421",
+              "question": "New Playboi Carti Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 67.38297642,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "first_half",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 2,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 67.38
+              }
+            }
+          ]
+        },
+        {
+          "key": "corners-8-5",
+          "marketType": "corners",
+          "title": "Argentina vs Egypt corners 8.5",
+          "period": null,
+          "line": "8.5",
+          "exactSlugGuesses": [
+            "fifwc-arg-egy-2026-07-07-corners",
+            "fifwc-arg-egy-2026-07-07-total-corners"
+          ],
+          "queries": [
+            "Argentina vs Egypt corners 8.5",
+            "Argentina vs Egypt corners",
+            "Argentina vs Egypt",
+            "Over 8.5 Under 8.5",
+            "Over 8.5 Under 8.5 corners",
+            "argentina egypt",
+            "argentina egypt soccer",
+            "argentina egypt world cup",
+            "argentina egypt corners",
+            "world cup argentina egypt corners",
+            "fifa world cup argentina egypt corners",
+            "Argentina vs Egypt corners corners"
+          ],
+          "broadCandidateCount": 12,
+          "mergedCandidateCount": 15,
+          "attachReadyCandidateCount": 0,
+          "familyMismatchCount": 10,
+          "insufficientRelevanceCount": 10,
+          "ranked": [
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-draw",
+              "question": "Will Argentina vs. Egypt end in a draw?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 89.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 89.9
+              }
+            },
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-arg",
+              "question": "Will Argentina win on 2026-07-07?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 81.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 81.9
+              }
+            },
+            {
+              "slug": "fifwc-arg-egy-2026-07-07-egy",
+              "question": "Will Egypt win on 2026-07-07?",
+              "eventTitle": "Argentina vs. Egypt",
+              "family": "match_winner",
+              "score": 81.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "match_winner",
+                "matchedImportantTokens": [
+                  "argentina",
+                  "egypt"
+                ],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 81.9
+              }
+            },
+            {
+              "slug": "will-bitcoin-hit-1m-before-gta-vi-872-424",
+              "question": "Will bitcoin hit $1m before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76.9,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.9
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-between-10-and-20-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to between 10 and 20 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 76.4,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76.4
+              }
+            },
+            {
+              "slug": "will-jesus-christ-return-before-gta-vi-665",
+              "question": "Will Jesus Christ return before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 76,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 76
+              }
+            },
+            {
+              "slug": "will-harvey-weinstein-be-sentenced-to-more-than-30-years-in-prison",
+              "question": "Will Harvey Weinstein be sentenced to more than 30 years in prison?",
+              "eventTitle": "Harvey Weinstein prison time?",
+              "family": "other",
+              "score": 75.4974,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 75.5
+              }
+            },
+            {
+              "slug": "new-rhianna-album-before-gta-vi-926",
+              "question": "New Rihanna Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 75.00701366999999,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 75.01
+              }
+            },
+            {
+              "slug": "will-china-invades-taiwan-before-gta-vi-716-644",
+              "question": "Will China invades Taiwan before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 70.6662,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 70.67
+              }
+            },
+            {
+              "slug": "new-playboi-carti-album-before-gta-vi-421",
+              "question": "New Playboi Carti Album before GTA VI?",
+              "eventTitle": "What will happen before GTA VI?",
+              "family": "other",
+              "score": 67.38297642,
+              "attachReady": false,
+              "reasons": [
+                "provider_family_mismatch",
+                "insufficient_market_relevance"
+              ],
+              "relevance": {
+                "relevant": false,
+                "lineFamilyRelevant": false,
+                "binaryQuestionRelevant": false,
+                "binaryQuestionSubjectRelevant": false,
+                "expectedFamily": "corners",
+                "candidateFamily": "other",
+                "matchedImportantTokens": [],
+                "importantTokenCount": 3,
+                "outcomeNameMatches": 0,
+                "requiredOutcomeMatches": 1,
+                "score": 67.38
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "nextRequiredAction": "line_provider_source_still_missing_use_operator_review_or_alternate_provider_source",
+  "pass": true
+}
