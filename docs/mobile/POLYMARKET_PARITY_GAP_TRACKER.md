@@ -1499,3 +1499,10 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Google login setup should use the same Poly/Holiwyn Google Cloud credential and backend token exchange | P0 | Verified | Mobile opens backend `/api/auth/google/start`; backend owns `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, Google token exchange, userinfo fetch, and Holiwyn mobile API credential creation. Setup docs now make this explicit. | `docs/mobile/GOOGLE_LOGIN_SETUP.md`; `mobile/README.md`; `mobile/src/__tests__/googleMobileAuthContract.test.ts` |
 | Real interactive Google consent on S23 | P1 | Open | Source/setup contract is verified, but real consent still needs a manual browser/account proof against a reachable backend callback URL registered in the same Google Cloud OAuth client. | `docs/mobile/audits/cycle-TY-google-login-poly-setup.md` |
+
+# Cycle TZ - Approved Line Provider Source Summary
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Approved secondary line-provider markets would still be summarized as fixture-only | P0 | Verified | `buildMobileMarketSourceSummary()` now counts reviewed approved line-provider markets as provider-backed line coverage and reports approved-provider counts separately from Polymarket and fixture counts. | `src/server/services/mobileLiveEventDetail.ts`; `src/__tests__/mobile-live-event-detail.test.ts` |
+| Real provider-backed spread/totals/team-total current-match lines | P1 | Open | Current-match line rows still need real reviewed provider identity before they can leave fixture-only status. This cycle creates the route-summary path; it does not attach a live provider identity. | `docs/mobile/audits/cycle-TZ-approved-line-provider-summary.md` |

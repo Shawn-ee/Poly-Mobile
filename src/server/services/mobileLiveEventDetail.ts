@@ -29,6 +29,7 @@ type MarketInput = {
   title: string;
   description: string | null;
   status: string;
+  referenceMetadata?: Prisma.JsonValue | null;
   referenceSource?: string | null;
   externalSlug?: string | null;
   externalMarketId?: string | null;
@@ -54,6 +55,7 @@ type OutcomeInput = {
   side: string | null;
   displayOrder: number;
   isTradable: boolean;
+  referenceMetadata?: Prisma.JsonValue | null;
   referenceTokenId?: string | null;
   referenceOutcomeLabel?: string | null;
 };
@@ -422,7 +424,33 @@ type SourceSummaryMarket = {
   marketGroupKey?: string | null;
   marketGroupTitle?: string | null;
   referenceSource?: string | null;
+  approvedLineProviderReady?: boolean;
 };
+
+const APPROVED_LINE_PROVIDER_SOURCES = new Set(["optic_odds"]);
+
+const lineProviderIdentitySource = (value: unknown) => {
+  const root = value && typeof value === "object" && !Array.isArray(value)
+    ? value as Record<string, unknown>
+    : null;
+  const identity = root?.lineProviderIdentity;
+  if (!identity || typeof identity !== "object" || Array.isArray(identity)) return null;
+  const providerSource = (identity as Record<string, unknown>).providerSource;
+  return typeof providerSource === "string" ? providerSource : null;
+};
+
+const hasApprovedLineProviderIdentity = (value: unknown) => {
+  const providerSource = lineProviderIdentitySource(value);
+  return Boolean(providerSource && APPROVED_LINE_PROVIDER_SOURCES.has(providerSource));
+};
+
+const hasApprovedLineProviderReady = (market: {
+  referenceMetadata?: unknown;
+  outcomes?: Array<{ referenceMetadata?: unknown }>;
+}) =>
+  hasApprovedLineProviderIdentity(market.referenceMetadata) &&
+  Boolean(market.outcomes?.length) &&
+  market.outcomes.every((outcome) => hasApprovedLineProviderIdentity(outcome.referenceMetadata));
 
 export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) => {
   const sourceBreakdown = markets.reduce<Record<string, number>>((result, market) => {
@@ -438,9 +466,13 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
     const key = `${market.marketType ?? ""} ${market.marketGroupKey ?? ""} ${market.marketGroupTitle ?? ""}`.toLowerCase();
     return market.marketType === "match_winner_1x2" || key.includes("regulation") || key.includes("winner") || key.includes("moneyline");
   });
-  const realLineMarkets = lineMarkets.filter((market) => market.referenceSource === "polymarket");
-  const contractFixtureLineMarkets = lineMarkets.filter((market) => market.referenceSource === "contract-fixture");
-  const providerBackedLineFamilies = Array.from(new Set(realLineMarkets.map(marketFamilyForMarket).filter(Boolean)));
+  const polymarketLineMarkets = lineMarkets.filter((market) => market.referenceSource === "polymarket");
+  const approvedLineProviderMarkets = lineMarkets.filter((market) => market.approvedLineProviderReady);
+  const providerBackedLineMarkets = Array.from(
+    new Map([...polymarketLineMarkets, ...approvedLineProviderMarkets].map((market) => [market, market])).values(),
+  );
+  const contractFixtureLineMarkets = lineMarkets.filter((market) => market.referenceSource === "contract-fixture" && !market.approvedLineProviderReady);
+  const providerBackedLineFamilies = Array.from(new Set(providerBackedLineMarkets.map(marketFamilyForMarket).filter(Boolean)));
   const contractFixtureLineFamilies = Array.from(new Set(contractFixtureLineMarkets.map(marketFamilyForMarket).filter(Boolean)));
   const expectedLineFamilies = Array.from(new Set([
     ...EXPECTED_MVP_LINE_FAMILIES,
@@ -456,9 +488,10 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
   const familyReadiness = expectedLineFamilies.map((family) => {
     const familyMarkets = lineMarkets.filter((market) => marketFamilyForMarket(market) === family);
     const polymarketCount = familyMarkets.filter((market) => market.referenceSource === "polymarket").length;
-    const contractFixtureCount = familyMarkets.filter((market) => market.referenceSource === "contract-fixture").length;
+    const approvedLineProviderCount = familyMarkets.filter((market) => market.approvedLineProviderReady).length;
+    const contractFixtureCount = familyMarkets.filter((market) => market.referenceSource === "contract-fixture" && !market.approvedLineProviderReady).length;
     const status =
-      polymarketCount > 0
+      polymarketCount > 0 || approvedLineProviderCount > 0
         ? "provider-backed"
         : contractFixtureCount > 0
           ? "contract-fixture"
@@ -467,11 +500,12 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
       family,
       totalCount: familyMarkets.length,
       polymarketCount,
+      approvedLineProviderCount,
       contractFixtureCount,
       status,
       reason:
         status === "provider-backed"
-          ? `${family} has route-visible provider-backed Polymarket markets.`
+          ? `${family} has route-visible provider-backed line markets.`
           : status === "contract-fixture"
             ? `${family} is served by Local MVP contract fixtures for this event.`
             : `${family} is unavailable from the current Polymarket-backed route for this event.`,
@@ -480,13 +514,13 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
   const lineMarketStatus =
     lineMarkets.length === 0
       ? "missing"
-      : realLineMarkets.length > 0
+      : providerBackedLineMarkets.length > 0
         ? "provider-backed"
         : contractFixtureLineMarkets.length > 0
           ? "contract-fixture"
           : "unknown";
   const nextProviderAction =
-    realLineMarkets.length > 0
+    providerBackedLineMarkets.length > 0
       ? "use_route_visible_provider_line_markets"
       : contractFixtureLineMarkets.length > 0
         ? "discover_attach_ready_polymarket_line_markets_or_configure_approved_line_provider"
@@ -510,15 +544,17 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
     },
     lineMarkets: {
       totalCount: lineMarkets.length,
-      polymarketCount: realLineMarkets.length,
+      polymarketCount: polymarketLineMarkets.length,
+      approvedLineProviderCount: approvedLineProviderMarkets.length,
       contractFixtureCount: contractFixtureLineMarkets.length,
       status: lineMarketStatus,
       families: Array.from(new Set(lineMarkets.map((market) => market.marketType).filter((value): value is string => Boolean(value)))),
       familyReadiness,
       providerAvailability: {
-        source: "polymarket-gamma",
-        status: realLineMarkets.length > 0 ? "available" : contractFixtureLineMarkets.length > 0 ? "unavailable" : "unknown",
-        providerBackedLineMarketCount: realLineMarkets.length,
+        source: approvedLineProviderMarkets.length > 0 ? "polymarket-gamma-or-approved-line-provider" : "polymarket-gamma",
+        status: providerBackedLineMarkets.length > 0 ? "available" : contractFixtureLineMarkets.length > 0 ? "unavailable" : "unknown",
+        providerBackedLineMarketCount: providerBackedLineMarkets.length,
+        approvedLineProviderMarketCount: approvedLineProviderMarkets.length,
         contractFixtureLineMarketCount: contractFixtureLineMarkets.length,
         expectedFamilies: expectedLineFamilies,
         providerBackedFamilies: providerBackedLineFamilies,
@@ -528,10 +564,10 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
         missingFamilies,
         nextProviderAction,
         reason:
-          realLineMarkets.length > 0
+          providerBackedLineMarkets.length > 0
             ? providerUnavailableFamilies.length > 0
-              ? `Route includes provider-backed Polymarket line markets; missing provider-backed families: ${providerUnavailableFamilies.join(", ")}.`
-              : "Route includes provider-backed Polymarket line markets for all expected MVP line families."
+              ? `Route includes provider-backed line markets; missing provider-backed families: ${providerUnavailableFamilies.join(", ")}.`
+              : "Route includes provider-backed line markets for all expected MVP line families."
             : contractFixtureLineMarkets.length > 0
               ? `No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures for: ${fixtureOnlyFamilies.join(", ") || "none"}.`
               : `No route-visible line markets are present; unavailable provider families: ${providerUnavailableFamilies.join(", ")}.`,
@@ -886,6 +922,7 @@ export async function serializeMobileLiveEventDetail(input: {
         line: market.line?.toString() ?? null,
         unit: market.unit,
         referenceSource: market.referenceSource,
+        approvedLineProviderReady: hasApprovedLineProviderReady(market),
         externalSlug: market.externalSlug,
         externalMarketId: market.externalMarketId,
         conditionId: market.conditionId,

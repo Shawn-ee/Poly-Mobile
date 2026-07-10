@@ -9360,3 +9360,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: none for the mobile auth handoff.
 - Temporary mock/static data: none added.
 - Future migration concern: native builds should use `holiwyn://auth/google`; Expo `exp:` / `exps:` return URLs should remain development/test only. Do not add Google Cloud secrets or Google tokens to mobile environment files.
+
+# Cycle TZ - Approved Line Provider Source Summary Notes
+
+- No schema migration was added.
+- Closed or narrowed: Event Detail source summaries can now classify approved secondary-provider line markets as provider-backed when reviewed provider identity exists on the market and every outcome.
+- Route mismatch: narrowed. Existing line-provider review/refresh services already know about optional external line-provider readiness; `/api/mobile/events/:slug/live-detail` now has a route summary path that can expose those rows as provider-backed instead of fixture-only.
+- Fields Holiwyn still needs but backend does not fully provide: real reviewed provider identities for current-match Spread/Totals/Team Total markets. Current MVP fixtures remain fixture-only until such identity is attached.
+- Temporary mock/static data: none added.
+- Future migration concern: do not count arbitrary local fixtures as provider-backed. The provider-backed classification requires reviewed approved provider identity on both market and outcomes, or Polymarket identity.
