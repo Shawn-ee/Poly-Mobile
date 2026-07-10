@@ -375,6 +375,21 @@ export default function App() {
   const openGoogleSignIn = useCallback(() => {
     Linking.openURL(GOOGLE_AUTH_URL).catch(() => undefined);
   }, []);
+  const signOutGoogle = useCallback(() => {
+    const keyToRevoke = runtimeApiKey;
+    if (keyToRevoke) {
+      new PolyApi(DEFAULT_API_BASE, keyToRevoke).logoutMobile().catch(() => undefined);
+    }
+    AsyncStorage.removeItem(MOBILE_AUTH_API_KEY_STORAGE_KEY).catch(() => undefined);
+    setRuntimeApiKey(DEFAULT_API_KEY);
+    setGoogleAuthReturnConnected(false);
+    setForceAccountSignedIn(false);
+    setAccountSummary(null);
+    setApiKeyDiagnosticEnabled(false);
+    setApiKeyDiagnostic(null);
+    setProfilePreferencesSyncStatus(ORDER_MODE === "server" && DEFAULT_API_KEY.length > 0 ? "syncing" : "hidden");
+    setPortfolioSyncStatus(ORDER_MODE === "server" && DEFAULT_API_KEY.length > 0 ? "syncing" : "hidden");
+  }, [runtimeApiKey]);
   const mounted = useRef(true);
   const profilePreferencesReady = useRef(false);
   const searchRequestSeq = useRef(0);
@@ -1886,6 +1901,7 @@ export default function App() {
                 portfolioValue={accountDisplayPortfolioValue}
                 tradingMode={accountDisplayTradingMode}
                 openGoogleSignIn={openGoogleSignIn}
+                signOut={signOutGoogle}
               />
             )}
           </>

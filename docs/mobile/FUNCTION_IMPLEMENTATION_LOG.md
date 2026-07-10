@@ -11732,3 +11732,14 @@ Known limitations:
 - User interactions supported: after the backend callback returns with a Holiwyn mobile API key, Portfolio shows `Google connected`; after app restart without passing `apiKey` again, the app reloads the stored Holiwyn key and keeps the server profile visible.
 - State transitions: Google callback/deep link -> runtime PolyApi key -> local mobile credential storage -> app restart -> stored key hydration -> `/api/profile/summary` and Portfolio connected state.
 - Known limitations: this proves the mobile credential handoff and persistence using a generated local dev credential shaped like the backend callback; real interactive Google account consent and logout/token revocation remain P1.
+
+# Cycle SA - Google Account Sign-Out and Mobile Credential Revocation
+
+- Feature/page worked on: Account/Portfolio Google connected-state reversal for the Local MVP.
+- Frontend components touched: `mobile/App.tsx`, `mobile/src/components/AccountScreen.tsx`, `mobile/src/api.ts`, `mobile/src/localization/appCopy.ts`.
+- Backend/API routes touched: `src/app/api/auth/mobile/logout/route.ts`.
+- Proof script touched: `scripts/prove_mobile_google_auth_return_s23.ps1`.
+- Tests touched: `mobile/src/__tests__/accountAuthContract.test.ts`, `mobile/src/__tests__/mobileGoogleLogoutContract.test.ts`.
+- User interactions supported: tester can start from a backend-returned Google connected state, reopen with the persisted Holiwyn key, tap the connected Google row in Account, and see `Continue with Google` again.
+- State transitions: stored Holiwyn API key -> Account connected state -> `POST /api/auth/mobile/logout` -> current API credential revoked best-effort -> local key removed -> runtime key reset -> connected state cleared.
+- Known limitations: logout proof still uses a generated local dev credential shaped like the backend callback; real Google browser consent remains P1. Current Expo storage should move to native secure storage before wider distribution.

@@ -1292,4 +1292,14 @@ For every UI element or interaction, answer:
 | Google auth-return connected state is lost after app restart | P0 | Verified | App now stores the backend-returned Holiwyn mobile API key and rehydrates it when reopening without a build-time API key. | `mobile/App.tsx`; `docs/mobile/harness/cycle-RZ-google-auth-persistence/cycle-RZ-google-auth-return-summary.json` |
 | S23 proof for persisted connected Portfolio state | P0 | Verified | S23 proof passes both immediate callback-shaped return and force-stop/reopen without passing `apiKey` again. | `docs/mobile/screenshots/cycle-RZ-google-auth-persistence/cycle-RZ-google-auth-persisted-portfolio.png`; `docs/mobile/harness/cycle-RZ-google-auth-persistence/cycle-RZ-google-auth-persisted-portfolio.xml` |
 | Interactive Google account consent on S23 | P1 | Open | RZ still uses a generated backend-shaped local credential; actual browser consent needs manual/real Google session proof. | `scripts/prove_mobile_google_auth_return_s23.ps1` |
-| Secure native credential storage and logout/revoke | P1 | Open | Current Expo MVP persists the Holiwyn API key in app storage. Dev build/APK should move this to secure native storage and expose logout/revoke. | Data contract notes |
+| Secure native credential storage | P1 | Open | Current Expo MVP persists the Holiwyn API key in app storage. Dev build/APK should move this to secure native storage. Local MVP logout/revoke is handled in Cycle SA. | Data contract notes |
+
+# Cycle SA - Google Account Sign-Out and Mobile Credential Revocation
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Tester cannot clear a persisted Google-returned mobile credential | P0 | Verified | Account connected row now exposes sign out; mobile clears stored key and runtime connected state. | `mobile/App.tsx`; `mobile/src/components/AccountScreen.tsx`; `docs/mobile/harness/cycle-SA-google-auth-logout/cycle-SA-google-auth-return-summary.json` |
+| Backend has no mobile current-key logout/revoke route | P0 | Verified | `/api/auth/mobile/logout` revokes the current API credential when the actor is authenticated by that key and clears the user cookie. | `src/app/api/auth/mobile/logout/route.ts`; `mobile/src/__tests__/mobileGoogleLogoutContract.test.ts` |
+| S23 proof for sign-out after persisted auth return | P0 | Verified | S23 proof passes callback-shaped return, persisted restart, Account connected row, sign-out tap, and signed-out `Continue with Google` state. | `docs/mobile/screenshots/cycle-SA-google-auth-logout/cycle-SA-google-auth-account-signed-out.png`; `docs/mobile/harness/cycle-SA-google-auth-logout/cycle-SA-google-auth-account-signed-out.xml` |
+| Interactive Google account consent on S23 | P1 | Open | SA still uses a generated backend-shaped local credential; actual browser consent needs manual/real Google session proof. | Audit notes |
+| Secure native credential storage | P1 | Open | Current Expo MVP uses AsyncStorage for the Holiwyn API key; dev build/APK should migrate to secure storage. | Data contract notes |

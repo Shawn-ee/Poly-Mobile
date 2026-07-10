@@ -4103,3 +4103,9 @@ Cycle OW implementation notes:
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Persisted Portfolio connected state after Google mobile callback | `/api/auth/google/start`; `/api/auth/google/callback`; `/api/profile/summary`; `/api/portfolio` in proof preflight | GET/browser redirect plus API GET | Backend Google OAuth credentials for callback; Holiwyn mobile API key after callback | `mobileReturnTo`; callback returns deep-link params `googleAuth=success`, `forcePortfolio=1`, `forceRuntimePortfolioSync=1`, `apiKey=<redacted>` | Stored Holiwyn API key, profile summary, Portfolio connected label, account balance/profile state | Existing `User`, `Account`, `ApiCredential`, `UserBalance`; no schema change | Proof uses generated local mobile dev credential that matches the callback credential shape | Interactive Google consent and logout/token revocation remain future auth work. |
+
+# Cycle SA - Google Account Sign-Out and Mobile Credential Revocation
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Account Google sign-out | `/api/auth/mobile/logout` | POST | Holiwyn mobile API key with `account:write`; session also supported | No body | `ok`, `revokedApiCredential` | Existing `User`, `ApiCredential`; route calls existing `revokeApiCredential` and clears user cookie | If the network call fails, mobile still clears local MVP credential state so testers are not trapped signed in | Production secure storage and real Google consent/logout session proof remain future hardening. |

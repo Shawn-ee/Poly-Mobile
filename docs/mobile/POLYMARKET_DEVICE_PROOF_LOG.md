@@ -2779,3 +2779,12 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Screenshots: `docs/mobile/screenshots/cycle-RZ-google-auth-persistence/cycle-RZ-google-auth-return-portfolio.png`, `docs/mobile/screenshots/cycle-RZ-google-auth-persistence/cycle-RZ-google-auth-persisted-portfolio.png`.
 - XML: `docs/mobile/harness/cycle-RZ-google-auth-persistence/cycle-RZ-google-auth-return-portfolio.xml`, `docs/mobile/harness/cycle-RZ-google-auth-persistence/cycle-RZ-google-auth-persisted-portfolio.xml`.
 - Result: PASS. XML/screenshot show `Google connected` and `Server profile loaded` both immediately after auth return and after restart without passing the key again.
+
+# Cycle SA - S23 Google Account Sign-Out Proof
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM_S911U1`.
+- Flow: generated local mobile credential shaped like backend Google callback -> Portfolio connected state -> app restart with persisted key -> Account connected row -> tap sign out -> signed-out Google entry visible.
+- Proof summary: `docs/mobile/harness/cycle-SA-google-auth-logout/cycle-SA-google-auth-return-summary.json`.
+- Screenshots: `docs/mobile/screenshots/cycle-SA-google-auth-logout/cycle-SA-google-auth-return-portfolio.png`, `docs/mobile/screenshots/cycle-SA-google-auth-logout/cycle-SA-google-auth-persisted-portfolio.png`, `docs/mobile/screenshots/cycle-SA-google-auth-logout/cycle-SA-google-auth-account-signed-out.png`.
+- XML: `docs/mobile/harness/cycle-SA-google-auth-logout/cycle-SA-google-auth-account-connected.xml`, `docs/mobile/harness/cycle-SA-google-auth-logout/cycle-SA-google-auth-account-signed-out.xml`.
+- Result: PASS. Summary reports `logoutClearsPersistedCredential=true`; signed-out XML shows `Continue with Google` and no connected Google markers.

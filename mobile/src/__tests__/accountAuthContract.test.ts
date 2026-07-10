@@ -5,7 +5,7 @@ const accountSource = () => readFileSync("mobile/src/components/AccountScreen.ts
 const appCopySource = () => readFileSync("mobile/src/localization/appCopy.ts", "utf8");
 
 describe("Account auth visibility contract", () => {
-  test("does not expose local mock login or logout actions", () => {
+  test("exposes backend Google sign-in and sign-out without local mock auth", () => {
     const account = accountSource();
     const copy = appCopySource();
 
@@ -13,11 +13,12 @@ describe("Account auth visibility contract", () => {
     expect(account).not.toContain("holiwyn.accountSignedIn.v1");
     expect(account).not.toContain("account-login-phone");
     expect(account).not.toContain("account-login-email");
-    expect(account).not.toContain("account-sign-out");
     expect(account).not.toContain("updateSignedIn");
     expect(account).toContain("const signedIn = Boolean(forceSignedIn)");
     expect(account).toContain("account-login-google");
     expect(account).toContain("account-login-google-connected");
+    expect(account).toContain("account-sign-out-google");
+    expect(account).toContain("onPress={signOut}");
     expect(account).toContain("account-login-google-status-signed-out");
     expect(account).toContain("account-login-google-status-connected");
     expect(account).toContain("openGoogleSignIn");
@@ -29,6 +30,7 @@ describe("Account auth visibility contract", () => {
     expect(copy).toContain("Google connected");
     expect(copy).toContain("Connected");
     expect(copy).toContain("Server profile loaded");
+    expect(copy).toContain("Tap the connected Google row to sign out.");
     expect(copy).toContain("Deposits and withdrawals remain disabled");
   });
 });

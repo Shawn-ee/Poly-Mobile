@@ -169,4 +169,10 @@ export class PolyApi {
   getProfileSummary() {
     return this.request<ProfileSummary>(`/api/profile/summary`);
   }
+
+  logoutMobile() {
+    return this.request<{ ok: boolean; revokedApiCredential?: boolean }>(`/api/auth/mobile/logout`, {
+      method: "POST",
+    });
+  }
 }

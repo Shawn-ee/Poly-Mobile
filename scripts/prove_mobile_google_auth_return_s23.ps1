@@ -7,7 +7,8 @@ param(
   [string]$Cycle = "RX",
   [string]$OutputDir = "docs\mobile\screenshots\cycle-RX-google-auth-return",
   [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-RX-google-auth-return",
-  [switch]$VerifyPersistence
+  [switch]$VerifyPersistence,
+  [switch]$VerifyLogout
 )
 
 $ErrorActionPreference = "Stop"
@@ -95,6 +96,35 @@ function Assert-Contains {
       throw "Missing expected UI marker: $value"
     }
   }
+}
+
+function Assert-NotContains {
+  param(
+    [string]$Path,
+    [string[]]$Unexpected
+  )
+  $content = Get-Content -Raw -Path $Path
+  foreach ($value in $Unexpected) {
+    if ($content -match [regex]::Escape($value)) {
+      throw "Unexpected UI marker: $value"
+    }
+  }
+}
+
+function Tap-UiNode {
+  param(
+    [string]$Path,
+    [string]$Marker
+  )
+  [xml]$hierarchy = Get-Content -Raw -Path $Path
+  $escaped = $Marker.Replace("'", "&apos;")
+  $node = $hierarchy.SelectSingleNode("//*[contains(@content-desc,'$escaped') or @resource-id='$escaped' or @text='$escaped']")
+  if (-not $node -or $node.bounds -notmatch "^\[(\d+),(\d+)\]\[(\d+),(\d+)\]$") {
+    throw "Unable to tap UI marker: $Marker"
+  }
+  $x = [math]::Floor(([int]$Matches[1] + [int]$Matches[3]) / 2)
+  $y = [math]::Floor(([int]$Matches[2] + [int]$Matches[4]) / 2)
+  & $adb -s $Device shell input tap $x $y | Out-Null
 }
 
 function Dismiss-ExpoMenuIfPresent {
@@ -231,6 +261,35 @@ try {
     $persistencePng = Save-Screenshot -Name "cycle-$Cycle-google-auth-persisted-portfolio.png"
   }
 
+  $logoutAccountXml = $null
+  $logoutSignedOutXml = $null
+  $logoutSignedOutPng = $null
+  if ($VerifyLogout) {
+    $accountUrl = "exp://${ExpoHost}:$Port/--/?forceAccount=1"
+    & $adb -s $Device shell am start -a android.intent.action.VIEW -d "'$accountUrl'" | Out-Null
+    Start-Sleep -Seconds 8
+    $logoutAccountXml = Save-UiHierarchy -Name "cycle-$Cycle-google-auth-account-connected.xml"
+    Assert-Contains -Path $logoutAccountXml -Expected @(
+      "account-screen",
+      "account-login-google-connected",
+      "account-sign-out-google"
+    )
+    Tap-UiNode -Path $logoutAccountXml -Marker "account-sign-out-google"
+    Start-Sleep -Seconds 8
+    $logoutSignedOutXml = Save-UiHierarchy -Name "cycle-$Cycle-google-auth-account-signed-out.xml"
+    Assert-Contains -Path $logoutSignedOutXml -Expected @(
+      "Continue with Google"
+    )
+    Assert-NotContains -Path $logoutSignedOutXml -Unexpected @(
+      "account-login-google-connected",
+      "account-sign-out-google",
+      "portfolio-account-google-connected",
+      "portfolio-google-login-connected-visible",
+      "Server profile loaded"
+    )
+    $logoutSignedOutPng = Save-Screenshot -Name "cycle-$Cycle-google-auth-account-signed-out.png"
+  }
+
   $summary = [ordered]@{
     cycle = $Cycle
     result = "pass"
@@ -247,6 +306,7 @@ try {
       serverProfileLoadedVisible = $true
       portfolioRouteReadableWithReturnedKey = $true
       persistedReturnedKeyAfterRestart = [bool]$VerifyPersistence
+      logoutClearsPersistedCredential = [bool]$VerifyLogout
     }
     artifacts = @(
       $portfolioXml.Replace("$repoRoot\", ""),
@@ -257,6 +317,13 @@ try {
     $summary.artifacts += @(
       $persistenceXml.Replace("$repoRoot\", ""),
       $persistencePng.Replace("$repoRoot\", "")
+    )
+  }
+  if ($VerifyLogout) {
+    $summary.artifacts += @(
+      $logoutAccountXml.Replace("$repoRoot\", ""),
+      $logoutSignedOutXml.Replace("$repoRoot\", ""),
+      $logoutSignedOutPng.Replace("$repoRoot\", "")
     )
   }
   $summaryPath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-google-auth-return-summary.json"
