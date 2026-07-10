@@ -527,6 +527,7 @@ try {
         liveEmptyStateDoesNotBlockProof = $true
         detailShowsFakeTokenLineBanner = $true
         lineRowsShowFakeTokenSourceNote = $true
+        detailShowsProviderUnavailableLineFamilies = $true
         ticketShowsFakeTokenSourceNote = $true
         orderbookHidden = $true
         chatHidden = $true
@@ -659,6 +660,7 @@ try {
       liveShowsProviderWinnerLocalLinesDisclosure = $true
       detailShowsGameLines = $true
       detailShowsLineFamilyReadiness = $true
+      detailShowsProviderUnavailableLineFamilies = $true
       detailShowsProviderWinnerLocalLineSplit = $true
       lineMarketsAreContractFixture = $true
       orderbookHidden = $true

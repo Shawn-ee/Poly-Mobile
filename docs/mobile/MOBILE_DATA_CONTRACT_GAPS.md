@@ -9169,3 +9169,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: real Polymarket market IDs/condition IDs/token IDs for spread, total, and team-total markets. Current provider scan does not find those markets.
 - Temporary mock/static data: none added.
 - Future migration concern: if Polymarket line markets appear later, importer and route contracts must replace fixture-only family status with real provider-backed family status. If not, any secondary provider must be explicit, reviewed, and contract-shaped.
+
+# Cycle TE - Current MVP Full Flow Reproof Notes
+
+- No schema migration was added.
+- Closed or narrowed: the current Local MVP S23 proof now explicitly asserts provider-unavailable line-family disclosure and then proves the same contract-shaped line can flow through ticket, server fake-token order placement, and Portfolio History.
+- Route mismatch: none for the Local MVP proof path. `/api/mobile/events/:slug/live-detail` carries line-family readiness/source state, while `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` preserve selected market/outcome/line identity enough for internal MVP testing.
+- Fields Holiwyn still needs but backend does not fully provide: real Polymarket market IDs/condition IDs/CLOB token IDs for current-match spread, total, and team-total rows.
+- Temporary mock/static data: the line rows used in TE are backend-shaped contract fixtures, not arbitrary frontend-only strings. They remain explicitly marked fixture-only/provider-unavailable until a real provider source can be attached.
+- Future migration concern: the next provider milestone should either import real Polymarket line markets if they become available or define an approved secondary-provider line contract; do not hide the fixture/source distinction in tester-facing proof.
