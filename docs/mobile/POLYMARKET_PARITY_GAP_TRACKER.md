@@ -1616,3 +1616,10 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Event Detail / Trade Ticket Chinese source-copy branches still contained mojibake | P0 | Verified | Remaining Chinese source/status strings now use clean escaped Chinese text and tests reject mojibake in the source-copy helper and ticket source note. | `mobile/src/components/EventDetail.tsx`; `mobile/src/components/TradeTicket.tsx`; focused source-copy tests |
 | S23 Chinese source-copy proof | P1 | Open | No Android device is attached. Run Chinese Event Detail/Ticket visible proof when S23 is visible to ADB. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |
+
+# Cycle UT - Google Login Setup Validation
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Google login setup must reuse the Poly/Holiwyn backend Google Cloud OAuth credential and token exchange | P0 | Verified | Mobile opens backend `/api/auth/google/start`; backend owns `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, token exchange, userinfo fetch, and Holiwyn mobile API credential creation. Mobile stores only the returned Holiwyn API key. | `docs/mobile/audits/cycle-UT-google-login-setup-validation.md`; `mobile/scripts/check-server-auth-config.ps1`; focused Google auth contract tests |
+| Real Google consent on Samsung S23 | P1 | Open | Source/setup contract is verified, but ADB currently shows no attached S23. Manual real-account consent proof should run after the device is visible and `NEXTAUTH_URL/api/auth/google/callback` is registered in Google Cloud. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |

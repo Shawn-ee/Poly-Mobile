@@ -1,5 +1,13 @@
 # Mobile Data Contract Gaps
 
+## Cycle UT - Google Login Setup Validation
+
+- Google credentials remain backend-only: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, Google access tokens, and Google refresh tokens must not appear in Expo/mobile env or source.
+- Mobile consumes a Holiwyn API credential returned as `holiwynApiKey` and compatibility `apiKey`; this is not a Google token.
+- `EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL` is a backend auth origin only, useful when the market/order API base and Google auth base differ during local testing.
+- `EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL` must be a Holiwyn app scheme in production. `exp:` and `exps:` returns are development/test-only.
+- Remaining P1 data/setup gap: real S23 consent proof depends on a reachable backend `NEXTAUTH_URL` and a matching `/api/auth/google/callback` URI registered in the same Google Cloud OAuth client.
+
 ## Cycle TN - Provider Line Breadth Current Matches
 
 Closed or narrowed:

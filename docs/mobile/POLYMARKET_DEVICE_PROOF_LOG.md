@@ -2928,3 +2928,10 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Flow covered by source/contract proof: Chinese Event Detail source/status copy and Trade Ticket source notes now use clean escaped Chinese strings while hidden audit markers remain.
 - Proof summary: focused Chinese source-copy contracts and mobile typecheck.
 - Result: PASS for source/contract scope. S23 Chinese Event Detail/Ticket visible proof remains required when a device is attached.
+
+# Cycle UT - Google Login Setup Validation
+
+- Device: no Android run; `adb devices -l` showed no attached device and `adb mdns services` showed no discovered services.
+- Flow covered by source/contract proof: Portfolio/account Google entry -> backend `/api/auth/google/start` -> shared Poly/Holiwyn Google Cloud OAuth callback via `NEXTAUTH_URL` -> backend token exchange/userinfo -> mobile deep-link return with Holiwyn API credential -> SecureStore persistence/logout contracts.
+- Result: PASS for setup/source/contract scope.
+- Remaining P1: manual real-account S23 consent proof with a reachable backend auth origin and registered Google Cloud callback URL.

@@ -7534,3 +7534,13 @@ Remaining P1:
 - Android proof: not rerun because no ADB device was attached.
 - Unresolved P0: 0 for source/contract scope.
 - Remaining P1: S23 Chinese Event Detail/Ticket visible proof when a device is visible.
+
+# Cycle UT Audit Gate - Google Login Setup Validation
+
+- Scope: Portfolio/account Google login setup using the same Poly/Holiwyn backend Google Cloud OAuth credential and token exchange.
+- P0 result: PASS for setup/source/contract scope.
+- Source proof: mobile opens `/api/auth/google/start` with `mobileReturnTo`; mobile source does not expose Google client secrets or Google tokens; backend start/callback routes own `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, token exchange, userinfo fetch, and Holiwyn mobile API credential creation.
+- Contract proof: focused Google auth, mobile return allowlist, Portfolio return, logout, account, and Portfolio settings tests passed. Auth preflight script passed.
+- Android proof: not rerun because `adb devices -l` showed no attached device.
+- Unresolved P0: 0 for setup/source/contract scope.
+- Remaining P1: real S23 Google consent proof after a device is visible and the backend callback URL is registered in Google Cloud.
