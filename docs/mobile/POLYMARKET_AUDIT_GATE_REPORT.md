@@ -7292,3 +7292,16 @@ Remaining P1:
 - Test proof: focused mobile contract tests passed and mobile typecheck passed.
 - Unresolved P0: 0 for RY scope.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total markets; interactive Google consent; production liquidity/public market-maker policy.
+
+# Cycle RZ Audit Gate - Google Auth Return Persistence
+
+- Scope: Local MVP Portfolio/account continuity after backend-owned Google auth return.
+- P0 result: PASS for RZ scope.
+- Implementation proof: `mobile/App.tsx` persists the returned Holiwyn mobile API key under `holiwyn.mobileAuthApiKey.v1`, rehydrates it on app start when no build-time API key exists, and keeps Google Cloud credential/token exchange server-side.
+- Android proof: passed on Samsung S23 `SM-S911U1`.
+- Visible proof: `docs/mobile/screenshots/cycle-RZ-google-auth-persistence/cycle-RZ-google-auth-return-portfolio.png` shows the connected Portfolio state after a callback-shaped return; `docs/mobile/screenshots/cycle-RZ-google-auth-persistence/cycle-RZ-google-auth-persisted-portfolio.png` shows the connected state after app restart without passing `apiKey` again.
+- XML proof: `docs/mobile/harness/cycle-RZ-google-auth-persistence/cycle-RZ-google-auth-persisted-portfolio.xml` contains `portfolio-account-google-connected` and `portfolio-google-login-connected-visible`.
+- Backend proof: proof preflight confirmed `/api/portfolio` was readable with the backend-shaped returned key.
+- Test proof: mobile typecheck passed and focused Google/Portfolio/profile tests passed.
+- Unresolved P0: 0 for RZ scope.
+- Remaining P1: real interactive Google consent on S23, logout/token revocation, secure native token storage for dev build/APK, provider-backed current-match line markets, and production liquidity/public market-maker policy.

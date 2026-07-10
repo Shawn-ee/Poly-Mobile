@@ -4,6 +4,7 @@ import { describe, expect, test } from "vitest";
 const appSource = () => readFileSync("mobile/App.tsx", "utf8");
 const googleStartSource = () => readFileSync("src/app/api/auth/google/start/route.ts", "utf8");
 const googleCallbackSource = () => readFileSync("src/app/api/auth/google/callback/route.ts", "utf8");
+const googleProofSource = () => readFileSync("scripts/prove_mobile_google_auth_return_s23.ps1", "utf8");
 
 describe("Google mobile auth contract", () => {
   test("mobile launches the backend Google flow with a Holiwyn app return target", () => {
@@ -15,6 +16,10 @@ describe("Google mobile auth contract", () => {
     expect(source).toContain('url.includes("googleAuth=success")');
     expect(source).toContain("setForcedRuntimePortfolioSyncNonce");
     expect(source).toContain('setMainTab("portfolio")');
+    expect(source).toContain("MOBILE_AUTH_API_KEY_STORAGE_KEY");
+    expect(source).toContain("holiwyn.mobileAuthApiKey.v1");
+    expect(source).toContain("AsyncStorage.setItem(MOBILE_AUTH_API_KEY_STORAGE_KEY, returnedApiKey)");
+    expect(source).toContain("AsyncStorage.getItem(MOBILE_AUTH_API_KEY_STORAGE_KEY)");
     expect(source).not.toContain("EXPO_PUBLIC_GOOGLE_CLIENT_ID");
     expect(source).not.toContain("EXPO_PUBLIC_GOOGLE_CLIENT_SECRET");
   });
@@ -34,5 +39,14 @@ describe("Google mobile auth contract", () => {
     expect(callback).toContain("https://oauth2.googleapis.com/token");
     expect(callback).toContain("https://openidconnect.googleapis.com/v1/userinfo");
     expect(callback).not.toContain("GOOGLE_CLIENT_SECRET=");
+  });
+
+  test("S23 proof verifies the returned Holiwyn key survives an app restart", () => {
+    const proof = googleProofSource();
+
+    expect(proof).toContain("[switch]$VerifyPersistence");
+    expect(proof).toContain("cycle-$Cycle-google-auth-persisted-portfolio.xml");
+    expect(proof).toContain("persistedReturnedKeyAfterRestart");
+    expect(proof).toContain("forcePortfolio=1");
   });
 });

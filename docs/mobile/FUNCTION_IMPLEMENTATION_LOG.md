@@ -11721,3 +11721,14 @@ Known limitations:
 - User interactions supported: Home remains match-only and opens the current Polymarket-backed Argentina/Egypt match; broad provider browsing no longer returns stale `mobile-*` proof events ahead of real provider-backed World Cup futures; Event Detail is now truly chart-free in Android hierarchy; provider-backed winner ticket -> swipe buy -> Portfolio History still passes on S23.
 - State transitions: route query -> mobile event feed -> Event Detail -> provider-backed winner ticket -> `/api/orders` server fill -> `/api/portfolio` and `/api/portfolio/history` refresh.
 - Known limitations: current match Spread/Totals/Team Total remain contract fixtures because real attach-ready Polymarket line markets are still unavailable; interactive Google consent remains P1.
+
+# Cycle RZ - Google Auth Return Persistence
+
+- Feature/page worked on: Portfolio account continuity after the backend-owned Google auth return.
+- Frontend components touched: `mobile/App.tsx`.
+- Backend/API routes touched: none; this reuses `/api/auth/google/start`, `/api/auth/google/callback`, and `/api/profile/summary`.
+- Proof script touched: `scripts/prove_mobile_google_auth_return_s23.ps1`.
+- Tests touched: `mobile/src/__tests__/googleMobileAuthContract.test.ts`, `mobile/src/__tests__/portfolioGoogleAuthReturnContract.test.ts`, `mobile/src/__tests__/profileSummaryService.test.ts`.
+- User interactions supported: after the backend callback returns with a Holiwyn mobile API key, Portfolio shows `Google connected`; after app restart without passing `apiKey` again, the app reloads the stored Holiwyn key and keeps the server profile visible.
+- State transitions: Google callback/deep link -> runtime PolyApi key -> local mobile credential storage -> app restart -> stored key hydration -> `/api/profile/summary` and Portfolio connected state.
+- Known limitations: this proves the mobile credential handoff and persistence using a generated local dev credential shaped like the backend callback; real interactive Google account consent and logout/token revocation remain P1.

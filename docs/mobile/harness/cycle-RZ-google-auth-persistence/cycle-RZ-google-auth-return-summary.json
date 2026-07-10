@@ -1,0 +1,24 @@
+{
+  "cycle": "RZ",
+  "result": "pass",
+  "generatedAt": "2026-07-10T06:19:12.7707023Z",
+  "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+  "backendBaseUrl": "http://127.0.0.1:3002",
+  "mobileApiBaseUrl": "http://172.16.200.14:3002",
+  "expoPort": 8292,
+  "keyId": "redacted",
+  "apiKey": "redacted",
+  "assertions": {
+    "portfolioOpened": true,
+    "googleConnectedVisible": true,
+    "serverProfileLoadedVisible": true,
+    "portfolioRouteReadableWithReturnedKey": true,
+    "persistedReturnedKeyAfterRestart": true
+  },
+  "artifacts": [
+    "docs\\mobile\\harness\\cycle-RZ-google-auth-persistence\\cycle-RZ-google-auth-return-portfolio.xml",
+    "docs\\mobile\\screenshots\\cycle-RZ-google-auth-persistence\\cycle-RZ-google-auth-return-portfolio.png",
+    "docs\\mobile\\harness\\cycle-RZ-google-auth-persistence\\cycle-RZ-google-auth-persisted-portfolio.xml",
+    "docs\\mobile\\screenshots\\cycle-RZ-google-auth-persistence\\cycle-RZ-google-auth-persisted-portfolio.png"
+  ]
+}

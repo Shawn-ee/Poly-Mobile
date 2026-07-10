@@ -4,8 +4,10 @@ param(
   [string]$ExpoHost = "172.16.200.14",
   [string]$BackendBaseUrl = "http://127.0.0.1:3002",
   [string]$MobileApiBaseUrl = "http://172.16.200.14:3002",
+  [string]$Cycle = "RX",
   [string]$OutputDir = "docs\mobile\screenshots\cycle-RX-google-auth-return",
-  [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-RX-google-auth-return"
+  [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-RX-google-auth-return",
+  [switch]$VerifyPersistence
 )
 
 $ErrorActionPreference = "Stop"
@@ -194,9 +196,9 @@ try {
   & $adb -s $Device shell am start -a android.intent.action.VIEW -d "'$launchUrl'" | Out-Null
   Start-Sleep -Seconds 18
 
-  $portfolioXml = Save-UiHierarchy -Name "cycle-RX-google-auth-return-portfolio.xml"
+  $portfolioXml = Save-UiHierarchy -Name "cycle-$Cycle-google-auth-return-portfolio.xml"
   if (Dismiss-ExpoMenuIfPresent -Path $portfolioXml) {
-    $portfolioXml = Save-UiHierarchy -Name "cycle-RX-google-auth-return-portfolio.xml"
+    $portfolioXml = Save-UiHierarchy -Name "cycle-$Cycle-google-auth-return-portfolio.xml"
   }
   Assert-Contains -Path $portfolioXml -Expected @(
     "portfolio-screen",
@@ -205,30 +207,59 @@ try {
     "Google connected",
     "Server profile loaded"
   )
-  $portfolioPng = Save-Screenshot -Name "cycle-RX-google-auth-return-portfolio.png"
+  $portfolioPng = Save-Screenshot -Name "cycle-$Cycle-google-auth-return-portfolio.png"
+
+  $persistenceXml = $null
+  $persistencePng = $null
+  if ($VerifyPersistence) {
+    & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
+    Start-Sleep -Seconds 2
+    $portfolioOnlyUrl = "exp://${ExpoHost}:$Port/--/?forcePortfolio=1"
+    & $adb -s $Device shell am start -a android.intent.action.VIEW -d "'$portfolioOnlyUrl'" | Out-Null
+    Start-Sleep -Seconds 16
+    $persistenceXml = Save-UiHierarchy -Name "cycle-$Cycle-google-auth-persisted-portfolio.xml"
+    if (Dismiss-ExpoMenuIfPresent -Path $persistenceXml) {
+      $persistenceXml = Save-UiHierarchy -Name "cycle-$Cycle-google-auth-persisted-portfolio.xml"
+    }
+    Assert-Contains -Path $persistenceXml -Expected @(
+      "portfolio-screen",
+      "portfolio-account-google-connected",
+      "portfolio-google-login-connected-visible",
+      "Google connected",
+      "Server profile loaded"
+    )
+    $persistencePng = Save-Screenshot -Name "cycle-$Cycle-google-auth-persisted-portfolio.png"
+  }
 
   $summary = [ordered]@{
-    cycle = "RX"
+    cycle = $Cycle
     result = "pass"
     generatedAt = (Get-Date).ToUniversalTime().ToString("o")
     device = $Device
     backendBaseUrl = $BackendBaseUrl
     mobileApiBaseUrl = $MobileApiBaseUrl
     expoPort = $Port
-    keyId = $credential.keyId
+    keyId = "redacted"
     apiKey = "redacted"
     assertions = [ordered]@{
       portfolioOpened = $true
       googleConnectedVisible = $true
       serverProfileLoadedVisible = $true
       portfolioRouteReadableWithReturnedKey = $true
+      persistedReturnedKeyAfterRestart = [bool]$VerifyPersistence
     }
     artifacts = @(
       $portfolioXml.Replace("$repoRoot\", ""),
       $portfolioPng.Replace("$repoRoot\", "")
     )
   }
-  $summaryPath = Join-Path $resolvedHierarchyOutputDir "cycle-RX-google-auth-return-summary.json"
+  if ($VerifyPersistence) {
+    $summary.artifacts += @(
+      $persistenceXml.Replace("$repoRoot\", ""),
+      $persistencePng.Replace("$repoRoot\", "")
+    )
+  }
+  $summaryPath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-google-auth-return-summary.json"
   $summary | ConvertTo-Json -Depth 8 | Set-Content -Encoding UTF8 -Path $summaryPath
   Write-Host "Proof summary: $summaryPath"
 } finally {
