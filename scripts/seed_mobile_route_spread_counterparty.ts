@@ -33,6 +33,8 @@ const cleanupProofAsks = process.argv.includes("--cleanupProofAsks");
 const cleanupBlockingAsks = process.argv.includes("--cleanupBlockingAsks");
 const cleanupOnly = process.argv.includes("--cleanupOnly");
 const proofUserPrefix = argValue("proofUserPrefix") ?? "holiwyn-mobile-";
+const liquidityPurpose = argValue("liquidityPurpose") ?? (makerSideValue === "BUY" ? "cashout-sell-fill" : "buy-fill");
+const shouldCleanupBlockingMarketBids = cleanupBlockingMarketBids || liquidityPurpose === "buy-fill";
 
 const assert: (condition: unknown, message: string) => asserts condition = (condition, message) => {
   if (!condition) throw new Error(message);
@@ -58,6 +60,16 @@ async function main() {
   }
   assert(eventSlug, "--eventSlug is required.");
   assert(makerSideValue === "BUY" || makerSideValue === "SELL", "--makerSide must be BUY or SELL.");
+  assert(
+    ["buy-fill", "cashout-sell-fill", "cleanup"].includes(liquidityPurpose),
+    "--liquidityPurpose must be buy-fill, cashout-sell-fill, or cleanup.",
+  );
+  if (!cleanupOnly && liquidityPurpose === "buy-fill") {
+    assert(makerSideValue === "SELL", "buy-fill liquidity must seed a resting SELL ask for the mobile BUY ticket.");
+  }
+  if (!cleanupOnly && liquidityPurpose === "cashout-sell-fill") {
+    assert(makerSideValue === "BUY", "cashout-sell-fill liquidity must seed a resting BUY bid for the mobile SELL ticket.");
+  }
   const makerSide = makerSideValue;
 
   const event = await prisma.event.findUnique({
@@ -134,7 +146,7 @@ async function main() {
   }
 
   const canceledBlockingMarketBids = [];
-  if (cleanupBlockingMarketBids) {
+  if (shouldCleanupBlockingMarketBids) {
     const blockingMarketBids = await prisma.order.findMany({
       where: {
         marketId: market.id,
@@ -235,6 +247,22 @@ async function main() {
 
   const summary = {
     pass: true,
+    liquidityPurpose: cleanupOnly ? "cleanup" : liquidityPurpose,
+    routeContract: {
+      mobileFlow:
+        liquidityPurpose === "cashout-sell-fill"
+          ? "Portfolio cashout/generic Sell ticket -> /api/orders SELL -> Portfolio History"
+          : liquidityPurpose === "buy-fill"
+            ? "Event Detail line market -> generic Buy ticket -> /api/orders BUY -> Portfolio History"
+            : "cleanup only",
+      expectedRestingSide:
+        liquidityPurpose === "cashout-sell-fill"
+          ? "BUY"
+          : liquidityPurpose === "buy-fill"
+            ? "SELL"
+            : null,
+      source: "local-mvp-internal-liquidity",
+    },
     eventSlug,
     market: {
       id: market.id,
@@ -268,6 +296,7 @@ async function main() {
       cleanupBlockingBids,
       canceledBlockingBids,
       cleanupBlockingMarketBids,
+      cleanupBlockingMarketBidsForcedByPurpose: shouldCleanupBlockingMarketBids && !cleanupBlockingMarketBids,
       canceledBlockingMarketBids,
       cleanupProofAsks,
       canceledProofAsks,

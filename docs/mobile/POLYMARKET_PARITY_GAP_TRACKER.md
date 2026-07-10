@@ -1249,3 +1249,11 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Provider line proof used stale non-current match assumptions | P0 | Verified | Provider line-source and line-availability probes now default to Argentina/Egypt and derive team-aware search terms/slug guesses from the provider event or explicit args. | `src/server/services/__tests__/mobile.provider.line.probe.contract.test.ts`; `docs/mobile/harness/cycle-RU-provider-line-current-match/cycle-RU-provider-line-source-probe.json` |
 | Current match has no provider-backed Spread/Totals/Team Total markets | P1 | Open | Polymarket Gamma returned 3 Regulation Winner markets and 0 line-family markets for `fifwc-arg-egy-2026-07-07`; Holiwyn route correctly marks line rows as contract fixtures. | `docs/mobile/harness/cycle-RU-provider-line-current-match/cycle-RU-provider-match-line-availability.json` |
+
+# Cycle RV - Local MVP Liquidity Purpose Harness
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Proof liquidity side was implicit and could be seeded in the wrong order | P0 | Verified | Harness now requires `buy-fill` to rest a SELL ask and `cashout-sell-fill` to rest a BUY bid. | `src/server/services/__tests__/mobile.localMvpLiquidityHarness.contract.test.ts`; `docs/mobile/harness/cycle-RV-local-mvp-liquidity-contract/cycle-RV-current-mvp-s23-visible-flow.json` |
+| S23 visible proof for the buy -> cashout/sell -> History journey | P0 | Verified | S23 proof passed with seeded buy-fill and cashout-sell-fill liquidity, Portfolio landing, cashout sell submit, and History visible. | `docs/mobile/harness/cycle-RV-local-mvp-liquidity-contract/cycle-RV-current-mvp-s23-visible-flow.json` |
+| Production liquidity/public market-maker policy | P1 | Open | RV only clarifies internal proof liquidity; it does not implement production liquidity. | Data contract notes |

@@ -7245,3 +7245,13 @@ Remaining P1:
 - Android proof: Samsung S23 `SM-S911U1` passed the visible Local MVP flow for this cycle.
 - Visible proof: `docs/mobile/harness/cycle-RU-provider-line-current-match/cycle-RU-current-mvp-s23-visible-flow.json` reports Home/Live current match, Event Detail Game Lines, provider-winner/local-line split, line contract fixtures, hidden order book, ticket line preservation, swipe submit, and filled Portfolio History.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line markets remain unavailable.
+
+# Cycle RV Audit Gate - Local MVP Liquidity Purpose Harness
+
+- Scope: proof-liquidity contract for visible Local MVP buy and cashout/sell flow.
+- P0 result: PASS.
+- Backend/proof result: targeted contract test passed, and direct local helper runs proved `buy-fill` creates a resting SELL ask while `cashout-sell-fill` creates a resting BUY bid.
+- Android proof: passed on Samsung S23 `SM-S911U1` with `-SeedCounterparty -ExpectFilledHistory -ExpectCashout`.
+- Visible proof: `docs/mobile/harness/cycle-RV-local-mvp-liquidity-contract/cycle-RV-current-mvp-s23-visible-flow.json` reports buy submit to Portfolio, cashout ticket opened, sell submitted, History visible, and order book hidden.
+- Unresolved P0: 0.
+- Remaining P1: production liquidity/public market-maker policy remains future work.

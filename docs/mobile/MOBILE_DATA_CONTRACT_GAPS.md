@@ -8868,3 +8868,12 @@ Future migration concern:
 - Route mismatch: no route mismatch was introduced; `/api/mobile/events/argentina-vs-egypt/live-detail` honestly reports Regulation Winner as `provider-backed` and line markets as `contract-fixture`.
 - Temporary mock/static data: current Spread/Totals/Team Total rows remain contract fixtures shaped like future provider rows.
 - Future migration concern: when Polymarket Gamma/CLOB exposes attach-ready line markets, replace the fixture rows without changing ticket/order/portfolio/history identity fields.
+
+# Cycle RV - Local MVP Liquidity Purpose Harness Notes
+
+- No schema migration was added.
+- Closed or narrowed: proof liquidity is no longer an ambiguous one-off counterparty seed. The harness now states and enforces the liquidity purpose and expected resting side for buy-fill and cashout/sell-fill.
+- Fields Holiwyn still needs but backend does not fully provide: production/user liquidity policy, public market-maker service controls, and durable non-proof liquidity source for real users.
+- Route mismatch: no mobile API route changed. `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` continue to own the server-mode fake-token order lifecycle.
+- Temporary mock/static data: Local MVP proof liquidity remains deterministic internal liquidity, not public user liquidity.
+- Future migration concern: replace proof-only maker users with approved local-MM/runtime liquidity once production policy and risk controls are ready.
