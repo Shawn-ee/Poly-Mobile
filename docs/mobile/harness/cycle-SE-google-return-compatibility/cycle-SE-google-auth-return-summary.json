@@ -1,0 +1,28 @@
+{
+  "cycle": "SE",
+  "result": "pass",
+  "generatedAt": "2026-07-10T07:19:14.5149265Z",
+  "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+  "backendBaseUrl": "http://127.0.0.1:3002",
+  "mobileApiBaseUrl": "http://172.16.200.14:3002",
+  "expoPort": 8298,
+  "keyId": "redacted",
+  "apiKey": "redacted",
+  "assertions": {
+    "portfolioOpened": true,
+    "googleConnectedVisible": true,
+    "serverProfileLoadedVisible": true,
+    "portfolioRouteReadableWithReturnedKey": true,
+    "persistedReturnedKeyAfterRestart": true,
+    "logoutClearsPersistedCredential": true
+  },
+  "artifacts": [
+    "docs\\mobile\\harness\\cycle-SE-google-return-compatibility\\cycle-SE-google-auth-return-portfolio.xml",
+    "docs\\mobile\\screenshots\\cycle-SE-google-return-compatibility\\cycle-SE-google-auth-return-portfolio.png",
+    "docs\\mobile\\harness\\cycle-SE-google-return-compatibility\\cycle-SE-google-auth-persisted-portfolio.xml",
+    "docs\\mobile\\screenshots\\cycle-SE-google-return-compatibility\\cycle-SE-google-auth-persisted-portfolio.png",
+    "docs\\mobile\\harness\\cycle-SE-google-return-compatibility\\cycle-SE-google-auth-account-connected.xml",
+    "docs\\mobile\\harness\\cycle-SE-google-return-compatibility\\cycle-SE-google-auth-account-signed-out.xml",
+    "docs\\mobile\\screenshots\\cycle-SE-google-return-compatibility\\cycle-SE-google-auth-account-signed-out.png"
+  ]
+}

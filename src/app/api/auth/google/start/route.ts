@@ -7,11 +7,19 @@ const MODE_COOKIE = "poly_oauth_mode";
 const RETURN_TO_COOKIE = "poly_oauth_return_to";
 const MOBILE_RETURN_TO_COOKIE = "poly_oauth_mobile_return_to";
 
+const isAllowedMobileReturnUrl = (url: URL) => {
+  if (url.protocol === "holiwyn:") return true;
+  if (process.env.NODE_ENV !== "production" && (url.protocol === "exp:" || url.protocol === "exps:")) {
+    return true;
+  }
+  return false;
+};
+
 const parseMobileReturnTo = (value: string | null) => {
   if (!value) return null;
   try {
     const parsed = new URL(value);
-    return parsed.protocol === "holiwyn:" ? parsed.toString() : null;
+    return isAllowedMobileReturnUrl(parsed) ? parsed.toString() : null;
   } catch {
     return null;
   }

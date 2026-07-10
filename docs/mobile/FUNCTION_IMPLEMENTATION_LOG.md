@@ -11775,3 +11775,12 @@ Known limitations:
 - User interactions supported: Portfolio still exposes `Continue with Google`; callback-shaped Google return still shows `Google connected`; persisted restart keeps the server profile visible; sign-out clears the mobile credential and returns to the visible Portfolio Google sign-in row.
 - State transitions: Google Cloud OAuth credentials and Google token exchange remain backend-owned through `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`; mobile stores only the Holiwyn API key returned by the backend callback through SecureStore.
 - Known limitations: S23 proof uses a generated local credential shaped like the backend Google callback. Real interactive Google consent with the configured Google Cloud OAuth client remains a manual/real-session P1 proof item.
+
+# Cycle SE - Google Mobile Return Compatibility
+
+- Feature/page worked on: Portfolio/Account Google login return compatibility for real-device MVP testing.
+- Frontend/docs touched: `mobile/.env.example`, `mobile/README.md`, `mobile/src/__tests__/googleMobileAuthContract.test.ts`.
+- Backend/API routes touched: `src/app/api/auth/google/start/route.ts`, `src/app/api/auth/google/callback/route.ts`.
+- User interactions supported: testers can keep using the same backend-owned Google OAuth start/callback flow while configuring an Expo Go return link for manual S23 testing, or the `holiwyn://auth/google` return for dev build/APK.
+- State transitions: Google Cloud credential and token exchange remain server-owned; backend stores the approved mobile return target in the OAuth cookie and returns only a Holiwyn API key to that target after callback.
+- Known limitations: this cycle does not perform interactive Google consent; it removes a return-link compatibility blocker so that manual consent proof can be attempted with the configured backend credentials.

@@ -40,9 +40,13 @@ describe("Google mobile auth contract", () => {
     const callback = googleCallbackSource();
 
     expect(start).toContain("GOOGLE_CLIENT_ID");
-    expect(start).toContain('parsed.protocol === "holiwyn:"');
+    expect(start).toContain('url.protocol === "holiwyn:"');
+    expect(start).toContain('url.protocol === "exp:"');
+    expect(start).toContain('url.protocol === "exps:"');
+    expect(start).toContain('process.env.NODE_ENV !== "production"');
     expect(start).toContain("MOBILE_RETURN_TO_COOKIE");
     expect(callback).toContain("GOOGLE_CLIENT_SECRET");
+    expect(callback).toContain("isAllowedMobileReturnTo");
     expect(callback).toContain("createApiCredential");
     expect(callback).toContain("Holiwyn Mobile Google");
     expect(callback).toContain('googleAuth: "success"');

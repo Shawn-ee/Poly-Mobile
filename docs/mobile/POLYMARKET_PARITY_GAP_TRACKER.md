@@ -1328,3 +1328,11 @@ For every UI element or interaction, answer:
 | Portfolio retained dormant funding button copy/styles | P1 | Verified | Unused `Deposit`/`Withdraw` Portfolio copy and button styles were removed; hidden MVP funding marker remains for regression proof. | `mobile/src/components/Portfolio.tsx`; `mobile/src/__tests__/portfolioFundingHiddenContract.test.ts` |
 | Google Cloud credentials must not move into mobile | P0 | Verified | Contract tests assert mobile has no public Google client ID/secret path; backend owns `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, token exchange, and callback credential creation. | `mobile/src/__tests__/googleMobileAuthContract.test.ts`; `src/app/api/auth/google/start/route.ts`; `src/app/api/auth/google/callback/route.ts` |
 | Real interactive Google account consent on S23 | P1 | Open | SD re-proves the backend-shaped return/persistence/logout path, but actual Google browser consent still needs real-session proof with configured Google Cloud redirect URI. | `docs/mobile/harness/cycle-SD-account-fake-token-copy/cycle-SD-google-auth-return-summary.json` |
+
+# Cycle SE - Google Mobile Return Compatibility
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Expo Go Google OAuth return target was rejected by backend allowlist | P1 | Verified | Backend now permits `exp:` / `exps:` mobile return URLs only outside production, while production remains restricted to `holiwyn:`. | `src/app/api/auth/google/start/route.ts`; `src/app/api/auth/google/callback/route.ts`; `mobile/src/__tests__/googleMobileAuthContract.test.ts` |
+| Google Cloud credential/token exchange could drift into mobile setup | P0 | Verified | README and contract tests keep Google Cloud client ID/secret/token exchange on backend; mobile receives only a Holiwyn API key after callback. | `mobile/README.md`; `mobile/.env.example`; `mobile/src/__tests__/googleMobileAuthContract.test.ts` |
+| Real interactive Google account consent on S23 | P1 | Open | SE removes the return-link blocker but still does not perform manual Google consent. | Audit notes |
