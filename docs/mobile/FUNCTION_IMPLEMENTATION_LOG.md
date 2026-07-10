@@ -12413,3 +12413,13 @@ Known limitations:
 - State transitions: unchanged. `tradingMode` is still derived from the existing mock/server runtime mode and profile summary state.
 - Proof: focused copy contract and mobile typecheck. Android proof remains pending because no ADB device is attached.
 - Known limitations: no device screenshot in this cycle; real provider-backed line breadth and full S23 journey proof remain open P1 items.
+
+# Cycle US - Chinese Source Copy Mojibake Cleanup
+
+- Feature/page worked on: Chinese Event Detail and Trade Ticket source/status copy in the Local MVP market/ticket path.
+- Frontend components touched: `mobile/src/components/EventDetail.tsx`, `mobile/src/components/TradeTicket.tsx`, `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts`, `mobile/src/__tests__/tradeTicketSourceBadge.test.ts`, `mobile/src/__tests__/chineseMvpSourceCopy.test.ts`.
+- Backend/API routes touched: none.
+- User interactions supported: unchanged Home/Live -> Event Detail -> line market -> Trade Ticket -> fake-token order -> Portfolio/history flow. Chinese users now see readable source/status copy instead of mojibake in remaining source-copy branches.
+- State transitions: unchanged. Market source, selected line/outcome identity, ticket submission, and Portfolio history state are not changed.
+- Proof: focused Chinese source-copy contracts and mobile typecheck. Android proof remains pending because no ADB device is attached.
+- Known limitations: real provider-backed Spread/Totals/Team Total lines remain the repeated P1 data gap; S23 Chinese visible proof remains P1.

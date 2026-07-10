@@ -4,8 +4,12 @@ import { describe, expect, test } from "vitest";
 const eventDetailSource = () => readFileSync("mobile/src/components/EventDetail.tsx", "utf8");
 
 describe("Event Detail market source metadata", () => {
-  test("keeps source metadata audit-only instead of visible retail labels", () => {
+  test("keeps source metadata audit-only with clean Chinese source copy", () => {
     const source = eventDetailSource();
+    const sourceCopyBlock = source.slice(
+      source.indexOf("const lineSourceCopy"),
+      source.indexOf("type RouteStatus"),
+    );
 
     expect(source).toContain("marketSourceBadge");
     expect(source).toContain("market-source-badge-provider");
@@ -26,8 +30,9 @@ describe("Event Detail market source metadata", () => {
     expect(source).not.toContain("lineSourceBanner:");
     expect(source).not.toContain("lineSourceLabel:");
     expect(source).not.toContain("lineSourceText:");
-    expect(source).toContain('label: locale === "zh" ? "来源" : "Source"');
+    expect(source).toContain('label: locale === "zh" ? "\\u6765\\u6e90" : "Source"');
     expect(source).toContain("Winner: Polymarket. Lines: Holiwyn.");
+    expect(source).toContain("Holiwyn lines.");
     expect(source).toContain("line-source-local-test-fake-token");
     expect(source).toContain("line-source-approved-provider");
     expect(source).toContain("line-source-polymarket-provider");
@@ -36,7 +41,11 @@ describe("Event Detail market source metadata", () => {
     expect(source).toContain("line-source-mixed-provider-holiwyn-lines");
     expect(source).toContain("\\u6765\\u6e90");
     expect(source).toContain("\\u80dc\\u8d1f: Polymarket\\u3002\\u76d8\\u53e3: \\u5229\\u4e91\\u4f53\\u80b2\\u3002");
-    expect(source).not.toMatch(/[\u00c3\u00c2]|\u00e6\u009d\u00a5|\u00e8\u0083\u0153|\u00e5\u02c6\u00a9|\u00e7\u203a\u02dc/);
+    expect(source).toContain("\\u80dc\\u8d1f\\u548c\\u76d8\\u53e3: Polymarket");
+    expect(source).toContain("\\u5229\\u4e91\\u4f53\\u80b2\\u76d8\\u53e3");
+    expect(source).toContain("\\u76d8\\u53e3\\u6682\\u4e0d\\u53ef\\u7528");
+    expect(source).toContain("\\u6b63\\u5728\\u68c0\\u67e5\\u5e02\\u573a\\u6765\\u6e90");
+    expect(sourceCopyBlock).not.toMatch(/[\u00c3\u00c2]|\u00e6\u009d\u00a5|\u00e8\u0083\u0153|\u00e5\u02c6\u00a9|\u00e7\u203a\u02dc/);
     expect(source).toContain("line-provider-availability-");
     expect(source).toContain("line-approved-provider-count-");
     expect(source).toContain("line-contract-fixture-count-");
@@ -50,8 +59,5 @@ describe("Event Detail market source metadata", () => {
     expect(source).toContain("familyReadiness.map");
     expect(source).toContain("line-family-readiness-${family.family}-${family.status}");
     expect(source).toContain("line-family-approved-provider-count-${family.family}-${family.approvedLineProviderCount ?? 0}");
-    expect(source).toContain("Winner: Polymarket. Lines: Holiwyn.");
-    expect(source).toContain("Holiwyn lines.");
-    expect(source).toContain("\\u80dc\\u8d1f: Polymarket\\u3002\\u76d8\\u53e3: \\u5229\\u4e91\\u4f53\\u80b2\\u3002");
   });
 });

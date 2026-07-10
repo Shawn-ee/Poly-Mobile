@@ -1609,3 +1609,10 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Account trading row exposed technical `Local mode` / `Server mode` copy | P0 | Verified | Visible account copy now uses customer-facing state labels: `Trading: On this device` and `Trading: Synced`. | `mobile/src/localization/appCopy.ts`; `mobile/src/__tests__/demoTradingCopyContract.test.ts` |
 | S23 Account trading-copy proof | P1 | Open | No Android device is attached. Run Account visible proof when S23 is visible to ADB. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |
+
+# Cycle US - Chinese Source Copy Mojibake Cleanup
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Event Detail / Trade Ticket Chinese source-copy branches still contained mojibake | P0 | Verified | Remaining Chinese source/status strings now use clean escaped Chinese text and tests reject mojibake in the source-copy helper and ticket source note. | `mobile/src/components/EventDetail.tsx`; `mobile/src/components/TradeTicket.tsx`; focused source-copy tests |
+| S23 Chinese source-copy proof | P1 | Open | No Android device is attached. Run Chinese Event Detail/Ticket visible proof when S23 is visible to ADB. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |

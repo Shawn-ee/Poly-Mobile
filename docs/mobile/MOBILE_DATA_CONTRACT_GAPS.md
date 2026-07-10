@@ -9531,3 +9531,12 @@ Future migration concern:
 - Fields Holiwyn still needs: no new fields for this copy cleanup.
 - Temporary mock/static data: none added.
 - Future migration concern: if account mode becomes a deeper settings surface, keep implementation details hidden from default tester UI and use separate admin/debug labels for proofs.
+
+# Cycle US - Chinese Source Copy Mojibake Cleanup Notes
+
+- No schema migration was added.
+- Closed or narrowed: remaining Chinese Event Detail / Trade Ticket source-copy branches no longer contain mojibake strings.
+- Route mismatch: none. Existing route/source fields continue to drive the same readable copy and hidden audit labels.
+- Fields Holiwyn still needs: no new fields for this copy cleanup.
+- Temporary mock/static data: none added.
+- Future migration concern: keep Chinese source copy ASCII-escaped in source files where possible to avoid Windows/Android proof encoding regressions.

@@ -2921,3 +2921,10 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Flow covered by source/contract proof: Portfolio -> Account entry -> trading status row now uses customer-facing copy instead of technical runtime labels.
 - Proof summary: focused copy contract and mobile typecheck.
 - Result: PASS for source/contract scope. S23 Account visible proof remains required when a device is attached.
+
+# Cycle US - Chinese Source Copy Mojibake Cleanup
+
+- Device: no Android run; `adb devices -l` showed no attached device.
+- Flow covered by source/contract proof: Chinese Event Detail source/status copy and Trade Ticket source notes now use clean escaped Chinese strings while hidden audit markers remain.
+- Proof summary: focused Chinese source-copy contracts and mobile typecheck.
+- Result: PASS for source/contract scope. S23 Chinese Event Detail/Ticket visible proof remains required when a device is attached.
