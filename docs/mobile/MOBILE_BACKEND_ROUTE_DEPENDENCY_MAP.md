@@ -4421,3 +4421,9 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Event Detail line-market source summary | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile event browse | Event slug | `markets[].approvedLineProviderReady`, `marketSourceSummary.lineMarkets.approvedLineProviderCount`, `providerAvailability.approvedLineProviderMarketCount`, provider-backed/fixture family lists | Existing `Event`, `Market`, `Outcome` `referenceMetadata.lineProviderIdentity`; no migration | Existing contract fixtures stay fixture-only unless reviewed provider identity exists on market and every outcome | Real approved provider identities for current-match Spread/Totals/Team Total rows are still not attached. |
+
+# Cycle UA - Mobile Approved Line Provider Markers
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail approved line-provider audit markers | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile event browse | Event slug | `marketSourceSummary.lineMarkets.approvedLineProviderCount`, `providerAvailability.approvedLineProviderMarketCount`, `familyReadiness[].approvedLineProviderCount` | Existing `Event`, `Market`, `Outcome`; no schema change | Mock route data includes zero approved-provider counts to mirror current backend fixture state | Real approved provider identities still need to be attached before counts become nonzero. |

@@ -12234,3 +12234,13 @@ Known limitations:
 - State transitions: reviewed line provider identity on market/outcomes -> `approvedLineProviderReady=true` in serialized live-detail market -> `marketSourceSummary.lineMarkets.status=provider-backed` for that family -> mobile can render provider-backed source status through the existing contract.
 - Proof: focused live-detail and line-provider tests passed.
 - Known limitations: current `argentina-vs-egypt` still has no real provider-backed Spread/Totals/Team Total identities attached. Android proof was not rerun because no visible UI changed.
+
+# Cycle UA - Mobile Approved Line Provider Markers
+
+- Feature/page worked on: Event Detail mobile source-summary contract markers for approved secondary line-provider readiness.
+- Frontend components touched: `mobile/src/types.ts`, `mobile/src/mocks/worldCup.ts`, `mobile/src/components/EventDetail.tsx`, `mobile/src/__tests__/eventDetailMarketSourceBadges.test.ts`.
+- Backend/API routes touched: none. This consumes the route shape added in Cycle TZ.
+- User interactions supported: unchanged. Future approved line-provider markets can be audited on mobile through hidden source markers while the visible tester UI remains simple.
+- State transitions: backend `approvedLineProviderCount` / `approvedLineProviderMarketCount` -> mobile typed `MarketSourceSummary` -> Event Detail hidden audit labels -> proof harness can distinguish Polymarket-backed, approved-provider-backed, and fixture-only line states.
+- Proof: focused mobile source-marker tests and mobile typecheck passed.
+- Known limitations: current MVP line rows still report zero approved-provider count until a real reviewed provider identity is attached.

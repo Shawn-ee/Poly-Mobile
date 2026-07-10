@@ -9369,3 +9369,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: real reviewed provider identities for current-match Spread/Totals/Team Total markets. Current MVP fixtures remain fixture-only until such identity is attached.
 - Temporary mock/static data: none added.
 - Future migration concern: do not count arbitrary local fixtures as provider-backed. The provider-backed classification requires reviewed approved provider identity on both market and outcomes, or Polymarket identity.
+
+# Cycle UA - Mobile Approved Line Provider Markers Notes
+
+- No schema migration was added.
+- Closed or narrowed: mobile types and Event Detail audit markers now understand approved-provider line counts added by the backend route summary.
+- Route mismatch: narrowed. The mobile contract no longer drops the distinction between Polymarket provider-backed lines, approved secondary-provider-backed lines, and fixture-only lines.
+- Fields Holiwyn still needs but backend does not fully provide: real reviewed approved-provider identity for current-match line rows.
+- Temporary mock/static data: existing bundled mock data now includes zero-valued approved-provider counts to match the current backend route shape.
+- Future migration concern: proof harnesses can now require `line-approved-provider-count-*` markers before claiming an approved secondary-provider line is visible on mobile.

@@ -242,6 +242,7 @@ const lineSourceCopy = (event: Event, locale: Locale) => {
     ? [
       `line-provider-availability-${lineAvailability.status}`,
       `line-provider-backed-count-${lineAvailability.providerBackedLineMarketCount}`,
+      `line-approved-provider-count-${lineAvailability.approvedLineProviderMarketCount ?? 0}`,
       `line-contract-fixture-count-${lineAvailability.contractFixtureLineMarketCount}`,
       `line-expected-families-${(lineAvailability.expectedFamilies ?? []).join("_") || "none"}`,
       `line-provider-families-${(lineAvailability.providerBackedFamilies ?? []).join("_") || "none"}`,
@@ -253,7 +254,7 @@ const lineSourceCopy = (event: Event, locale: Locale) => {
     ].filter(Boolean).join(" ")
     : "";
   const familyMarker = summary.lineMarkets.familyReadiness
-    ? ` ${summary.lineMarkets.familyReadiness.map((family) => `line-family-readiness-${family.family}-${family.status}`).join(" ")}`
+    ? ` ${summary.lineMarkets.familyReadiness.map((family) => `line-family-readiness-${family.family}-${family.status} line-family-approved-provider-count-${family.family}-${family.approvedLineProviderCount ?? 0}`).join(" ")}`
     : "";
   if (lineStatus === "provider-backed") {
     return {
