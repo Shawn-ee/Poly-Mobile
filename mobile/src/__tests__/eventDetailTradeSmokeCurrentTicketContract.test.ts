@@ -10,8 +10,8 @@ describe("Event Detail trade smoke current ticket contract", () => {
 
     expect(eventDetailTradeBlock).toContain("ticket-retail-reference-layout");
     expect(eventDetailTradeBlock).toContain("ticket-header-retail-readable");
-    expect(eventDetailTradeBlock).toContain("ticket-market-source-badge-inline-safe");
-    expect(eventDetailTradeBlock).toContain("ticket-header-source-pill-no-clip");
+    expect(eventDetailTradeBlock).toContain("ticket-market-source-badge-hidden");
+    expect(eventDetailTradeBlock).toContain("ticket-header-source-pill-hidden-local-mvp");
     expect(eventDetailTradeBlock).toContain("ticket-preset-25");
     expect(eventDetailTradeBlock).toContain("swipe-submit-gesture-required");
     expect(eventDetailTradeBlock).not.toContain("ticket-settings");
@@ -30,8 +30,8 @@ describe("Event Detail trade smoke current ticket contract", () => {
     expect(awayTicketBlock).toContain("Mexico vs Ecuador");
     expect(awayTicketBlock).toContain("ticket-retail-reference-layout");
     expect(awayTicketBlock).toContain("ticket-header-retail-readable");
-    expect(awayTicketBlock).toContain("ticket-market-source-badge-inline-safe");
-    expect(awayTicketBlock).toContain("ticket-header-source-pill-no-clip");
+    expect(awayTicketBlock).toContain("ticket-market-source-badge-hidden");
+    expect(awayTicketBlock).toContain("ticket-header-source-pill-hidden-local-mvp");
     expect(awayTicketBlock).toContain("ticket-preset-25");
     expect(awayTicketBlock).toContain("ticket-swipe-area-fixed-bottom");
     expect(awayTicketBlock).not.toContain("Mexico vs. Ecuador");

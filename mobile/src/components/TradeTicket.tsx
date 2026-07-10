@@ -679,46 +679,15 @@ export function TradeTicket({
                     <Text style={styles.ticketOutcomeSide}>{sideLabel}</Text> <Text style={styles.ticketOutcomeDot}>-</Text> {selectionLabel}
                   </Text>
                 </View>
-                <View style={styles.ticketSourceRow}>
-                  {sourceBadge.visible && (
-                    <View
-                      accessibilityLabel={`ticket-market-source-badge ticket-market-source-badge-inline-safe ticket-header-source-pill-no-clip ${sourceBadge.accessibility}`}
-                      style={[
-                        styles.ticketSourcePill,
-                        sourceBadge.tone === "provider" && styles.ticketSourcePillProvider,
-                        sourceBadge.tone === "fixture" && styles.ticketSourcePillFixture,
-                      ]}
-                      testID="ticket-market-source-badge"
-                    >
-                      <Text
-                        style={[
-                          styles.ticketSourcePillText,
-                          sourceBadge.tone === "provider" && styles.ticketSourcePillTextProvider,
-                          sourceBadge.tone === "fixture" && styles.ticketSourcePillTextFixture,
-                        ]}
-                      >
-                        {sourceBadge.label}
-                      </Text>
-                    </View>
-                  )}
-                  {!sourceBadge.visible && (
-                    <View
-                      accessibilityLabel={`ticket-market-source-badge-hidden ticket-header-source-pill-hidden-local-mvp ${sourceBadge.accessibility}`}
-                      style={styles.orderReviewA11y}
-                      testID="ticket-market-source-badge-hidden"
-                    >
-                      <Text>ticket-source-hidden</Text>
-                    </View>
-                  )}
+                <View
+                  accessibilityLabel={`ticket-source-audit-only ticket-market-source-badge-hidden ticket-header-source-pill-hidden-local-mvp ${sourceBadge.accessibility} ${sourceNote?.accessibility ?? ""}`}
+                  style={styles.orderReviewA11y}
+                  testID="ticket-market-source-badge-hidden"
+                >
+                  <Text>ticket-source-hidden</Text>
                   {sourceNote && (
                     <Text
-                      accessibilityLabel={`ticket-source-note ticket-source-note-inline ${sourceNote.accessibility}`}
-                      numberOfLines={1}
-                      style={[
-                        styles.ticketSourceNote,
-                        sourceNote.tone === "provider" && styles.ticketSourceNoteProvider,
-                        sourceNote.tone === "fixture" && styles.ticketSourceNoteFixture,
-                      ]}
+                      accessibilityLabel={`ticket-source-note ticket-source-note-audit-only ${sourceNote.accessibility}`}
                       testID="ticket-source-note"
                     >
                       {sourceNote.text}
@@ -926,16 +895,6 @@ const styles = StyleSheet.create({
   marketIconText: { color: "#dbeafe", fontSize: 20, fontWeight: "900" },
   selectionTextBlock: { flex: 1, minWidth: 0 },
   ticketSelectionMetaRow: { minHeight: 23, flexDirection: "row", alignItems: "flex-start", marginTop: 2 },
-  ticketSourceRow: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4, maxWidth: "100%" },
-  ticketSourcePill: { minHeight: 22, justifyContent: "center", borderRadius: 999, paddingHorizontal: 8, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155", flexShrink: 0, maxWidth: 96 },
-  ticketSourcePillProvider: { backgroundColor: "#052e16", borderColor: "#166534" },
-  ticketSourcePillFixture: { backgroundColor: "#33280f", borderColor: "#854d0e" },
-  ticketSourcePillText: { color: "#cbd5e1", fontSize: 9, fontWeight: "900" },
-  ticketSourcePillTextProvider: { color: "#86efac" },
-  ticketSourcePillTextFixture: { color: "#fde68a" },
-  ticketSourceNote: { flex: 1, minWidth: 0, color: "#94a3b8", fontSize: 10, fontWeight: "900" },
-  ticketSourceNoteProvider: { color: "#86efac" },
-  ticketSourceNoteFixture: { color: "#fde68a" },
   marketStatusPill: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 999, backgroundColor: "#052e1b", borderWidth: 1, borderColor: "#166534" },
   marketStatusPillWarning: { backgroundColor: "#2b2106", borderColor: "#854d0e" },
   marketStatusPillBlocked: { backgroundColor: "#2a0d0d", borderColor: "#7f1d1d" },

@@ -4158,3 +4158,11 @@ Cycle OW implementation notes:
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Chart-free Event Detail market page | `/api/mobile/events/:slug/live-detail`; `/api/events/:slug`; `/api/markets/:marketId/quote`; `/api/orders`; `/api/portfolio`; `/api/portfolio/history` | GET/POST | Public viewing; mobile API key for server-mode order/Portfolio routes | Event slug, market/outcome/line identity, fake-token order payload | Event teams/status, market groups, selected outcome probability/quote, order result, Portfolio positions/history | Existing `Event`, `Market`, `Outcome`, `Order`, `Trade`, `Position`, `UserBalance`, `ApiCredential` | Mock mode still uses bundled match fixtures and local fake-token order state | No missing chart backend support for Local MVP. `/api/markets/:id/chart` is intentionally not consumed by the mobile market page. |
+
+# Cycle SK - Ticket Source Audit-Only Header
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Trade Ticket source identity hidden from retail header | Existing quote/order routes only when ticket is priced/submitted: `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | GET/POST | Public viewing; mobile API key for server-mode order/Portfolio routes | Selected event/market/outcome/line/source identity; fake-token order body | Outcome probability, best bid/ask when available, order result, Portfolio/history source identity | Existing `Market`, `Outcome`, `Order`, `Trade`, `Position`; no schema change | Mock mode keeps source markers from local fixtures | No new backend support. This cycle changes only whether source labels are visible in the ticket header. |
+
+Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SK-ticket-source-audit-only/cycle-SK-current-mvp-s23-visible-flow.json`. No route contract changed.

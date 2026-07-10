@@ -6703,7 +6703,7 @@ try {
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-ticket.png"
       $eventDetailTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-ticket.xml"
-      Assert-HierarchyContains -Path $eventDetailTicketHierarchy -Expected @("trade-ticket", "ticket-retail-reference-layout", "ticket-body-rounded-above-swipe", "ticket-keypad-swipe-separated", "ticket-swipe-area-fixed-bottom", "ticket-red-swipe-area-fixed-bottom", "ticket-drag-handle", "ticket-close", "ticket-side-pill", "Buy", "ticket-selection-summary", "ticket-header-retail-readable", "ticket-selection-line", "ticket-market-source-badge-inline-safe", "ticket-header-source-pill-no-clip", "Mexico", "Mexico vs Ecuador", "ticket-amount-display", "$0", "ticket-to-win-line", "ticket-selected-outcome-choice", "ticket-order-review", "market-winner", "line-Main", "period-regulation", "ticket-side-buy", "ticket-side-sell", "ticket-preset-25", "+$25", "ticket-preset-50", "+$50", "ticket-max-amount", "Max", "ticket-amount-keypad", "Choose an amount")
+      Assert-HierarchyContains -Path $eventDetailTicketHierarchy -Expected @("trade-ticket", "ticket-retail-reference-layout", "ticket-body-rounded-above-swipe", "ticket-keypad-swipe-separated", "ticket-swipe-area-fixed-bottom", "ticket-red-swipe-area-fixed-bottom", "ticket-drag-handle", "ticket-close", "ticket-side-pill", "Buy", "ticket-selection-summary", "ticket-header-retail-readable", "ticket-selection-line", "ticket-market-source-badge-hidden", "ticket-header-source-pill-hidden-local-mvp", "Mexico", "Mexico vs Ecuador", "ticket-amount-display", "$0", "ticket-to-win-line", "ticket-selected-outcome-choice", "ticket-order-review", "market-winner", "line-Main", "period-regulation", "ticket-side-buy", "ticket-side-sell", "ticket-preset-25", "+$25", "ticket-preset-50", "+$50", "ticket-max-amount", "Max", "ticket-amount-keypad", "Choose an amount")
       Invoke-TapHierarchyNode -Path $eventDetailTicketHierarchy -Identifier "ticket-preset-25"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-ticket-amount.png"
@@ -6716,7 +6716,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-away-ticket.png"
       $eventDetailAwayTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-away-ticket.xml"
-      Assert-HierarchyContains -Path $eventDetailAwayTicketHierarchy -Expected @("trade-ticket", "ticket-retail-reference-layout", "ticket-header-retail-readable", "ticket-selection-line", "ticket-market-source-badge-inline-safe", "ticket-header-source-pill-no-clip", "Mexico vs Ecuador", "Ecuador", "ticket-amount-display", "$0", "ticket-order-review", "ticket-preset-25", "ticket-preset-50", "ticket-swipe-area-fixed-bottom", "Choose an amount")
+      Assert-HierarchyContains -Path $eventDetailAwayTicketHierarchy -Expected @("trade-ticket", "ticket-retail-reference-layout", "ticket-header-retail-readable", "ticket-selection-line", "ticket-market-source-badge-hidden", "ticket-header-source-pill-hidden-local-mvp", "Mexico vs Ecuador", "Ecuador", "ticket-amount-display", "$0", "ticket-order-review", "ticket-preset-25", "ticket-preset-50", "ticket-swipe-area-fixed-bottom", "Choose an amount")
       return
     }
 
