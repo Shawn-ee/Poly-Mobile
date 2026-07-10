@@ -12224,3 +12224,13 @@ Known limitations:
 - State transitions: signed out -> backend Google OAuth start -> Google consent -> backend callback/token exchange/userinfo -> Holiwyn mobile API credential minted -> mobile SecureStore persistence -> authenticated profile/Portfolio/order/history calls.
 - Proof: focused Google auth contract tests passed. No Android proof was required because this cycle only tightened setup documentation and contract guards, with no visible UI or runtime behavior change.
 - Known limitations: manual S23 Google consent remains a P1 proof item and depends on the same Google Cloud OAuth client having the reachable backend callback URL registered.
+
+# Cycle TZ - Approved Line Provider Source Summary
+
+- Feature/page worked on: Event Detail backend source-summary contract for line markets.
+- Backend/API routes touched: `src/server/services/mobileLiveEventDetail.ts`; no route handler, schema, order logic, order book UI, chat, or live stats changed.
+- Frontend components touched: none. Visible mobile UI is unchanged until a real reviewed approved line-provider market is attached.
+- User interactions supported: future Local MVP line rows with approved provider identity can flow through the existing Event Detail -> ticket -> fake-token order -> Portfolio/history path while being classified as provider-backed instead of fixture-only.
+- State transitions: reviewed line provider identity on market/outcomes -> `approvedLineProviderReady=true` in serialized live-detail market -> `marketSourceSummary.lineMarkets.status=provider-backed` for that family -> mobile can render provider-backed source status through the existing contract.
+- Proof: focused live-detail and line-provider tests passed.
+- Known limitations: current `argentina-vs-egypt` still has no real provider-backed Spread/Totals/Team Total identities attached. Android proof was not rerun because no visible UI changed.

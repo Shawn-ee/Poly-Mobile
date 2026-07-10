@@ -565,7 +565,69 @@ describe("mobile live event detail contract", () => {
           fixtureOnlyFamilies: ["total"],
           missingFamilies: ["team_total"],
           nextProviderAction: "use_route_visible_provider_line_markets",
-          reason: "Route includes provider-backed Polymarket line markets; missing provider-backed families: total, team_total.",
+          reason: "Route includes provider-backed line markets; missing provider-backed families: total, team_total.",
+        },
+      },
+    });
+  });
+
+  test("treats approved external line provider identity as route-visible provider-backed line coverage", () => {
+    expect(buildMobileMarketSourceSummary([
+      {
+        marketType: "match_winner_1x2",
+        marketGroupKey: "main",
+        marketGroupTitle: "Regulation Winner",
+        referenceSource: "polymarket",
+      },
+      {
+        marketType: "spread",
+        marketGroupKey: "spread",
+        marketGroupTitle: "Spread",
+        referenceSource: "contract-fixture",
+        approvedLineProviderReady: true,
+      },
+      {
+        marketType: "total_goals",
+        marketGroupKey: "totals",
+        marketGroupTitle: "Totals",
+        referenceSource: "contract-fixture",
+      },
+    ])).toMatchObject({
+      lineMarkets: {
+        totalCount: 2,
+        polymarketCount: 0,
+        approvedLineProviderCount: 1,
+        contractFixtureCount: 1,
+        status: "provider-backed",
+        familyReadiness: [
+          expect.objectContaining({
+            family: "spread",
+            approvedLineProviderCount: 1,
+            contractFixtureCount: 0,
+            status: "provider-backed",
+          }),
+          expect.objectContaining({
+            family: "total",
+            contractFixtureCount: 1,
+            status: "contract-fixture",
+          }),
+          expect.objectContaining({
+            family: "team_total",
+            status: "missing",
+          }),
+        ],
+        providerAvailability: {
+          source: "polymarket-gamma-or-approved-line-provider",
+          status: "available",
+          providerBackedLineMarketCount: 1,
+          approvedLineProviderMarketCount: 1,
+          contractFixtureLineMarketCount: 1,
+          providerBackedFamilies: ["spread"],
+          contractFixtureFamilies: ["total"],
+          providerUnavailableFamilies: ["total", "team_total"],
+          fixtureOnlyFamilies: ["total"],
+          missingFamilies: ["team_total"],
+          nextProviderAction: "use_route_visible_provider_line_markets",
         },
       },
     });
