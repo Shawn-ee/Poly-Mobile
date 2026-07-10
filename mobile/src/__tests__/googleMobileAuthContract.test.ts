@@ -42,9 +42,11 @@ describe("Google mobile auth contract", () => {
     const allowlist = mobileReturnUrlSource();
 
     expect(start).toContain("GOOGLE_CLIENT_ID");
+    expect(start).toContain("const baseUrl = configuredBaseUrl || requestUrl.origin");
     expect(start).toContain("isAllowedMobileReturnUrl(parsed)");
     expect(start).toContain("MOBILE_RETURN_TO_COOKIE");
     expect(callback).toContain("GOOGLE_CLIENT_SECRET");
+    expect(callback).toContain("const baseUrl = configuredBaseUrl || url.origin");
     expect(callback).toContain("isAllowedMobileReturnUrl(mobileReturnTo)");
     expect(allowlist).toContain('url.protocol === "holiwyn:"');
     expect(allowlist).toContain('url.protocol === "exp:"');

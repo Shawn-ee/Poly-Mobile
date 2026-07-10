@@ -34,10 +34,7 @@ const appendMobileAuthParams = (returnTo: string, params: Record<string, string>
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const configuredBaseUrl = process.env.NEXTAUTH_URL?.trim();
-  const baseUrl =
-    process.env.NODE_ENV === "production"
-      ? configuredBaseUrl || url.origin
-      : url.origin;
+  const baseUrl = configuredBaseUrl || url.origin;
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
 
