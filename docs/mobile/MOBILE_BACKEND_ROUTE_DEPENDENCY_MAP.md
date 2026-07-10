@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle UT - Google Login Setup Validation
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio/account Google login entry | `/api/auth/google/start` | `GET` | None | Query params: `returnTo=/portfolio`, `mobileReturnTo=<encoded holiwyn:/exp: return URL>` | Redirect only; no JSON consumed. | OAuth state cookies; user/session state is backend-owned. | None. If Google is unavailable, user can continue MVP fake-token trading without account sync. | None for source contract. Real S23 consent requires configured Google Cloud callback URL. |
+| Google OAuth callback to mobile | `/api/auth/google/callback` | `GET` | Google OAuth `code`/`state` | Query params from Google. | Mobile deep link query: `googleAuth=success`, `forcePortfolio=1`, `forceRuntimePortfolioSync=1`, `holiwynApiKey`, compatibility `apiKey`. | User, linked Google identity, API credential/token model. | None. Mobile must not fabricate Google identity. | None for source contract. |
+| Google mobile logout | `/api/auth/mobile/logout` | `POST` | Bearer Holiwyn API key | No required body in current mobile usage. | Best-effort logout; mobile clears SecureStore regardless of network result. | API credential/session revocation. | Local credential clear still works if server call fails. | None for MVP. |
+
 ## Cycle TN - Provider Line Breadth Current Matches
 
 Cycle TN changes provider discovery normalization and docs only. It does not add or change API route signatures.

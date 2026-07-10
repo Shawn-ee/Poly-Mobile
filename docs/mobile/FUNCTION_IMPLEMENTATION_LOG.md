@@ -12423,3 +12423,13 @@ Known limitations:
 - State transitions: unchanged. Market source, selected line/outcome identity, ticket submission, and Portfolio history state are not changed.
 - Proof: focused Chinese source-copy contracts and mobile typecheck. Android proof remains pending because no ADB device is attached.
 - Known limitations: real provider-backed Spread/Totals/Team Total lines remain the repeated P1 data gap; S23 Chinese visible proof remains P1.
+
+# Cycle UT - Google Login Setup Validation
+
+- Feature/page worked on: Portfolio/account Google login setup validation.
+- Frontend components touched: no runtime component changed. Validated existing `mobile/App.tsx`, `mobile/src/services/mobileCredentialStore.ts`, Portfolio/Account Google entry wiring, and setup docs.
+- Backend/API routes touched: no route code changed. Validated existing `/api/auth/google/start`, `/api/auth/google/callback`, and `/api/auth/mobile/logout` ownership contracts.
+- User interactions supported: unchanged. User taps `Continue with Google`, mobile opens the backend-owned Google auth route, backend completes Google token exchange, and mobile receives/stores only a Holiwyn API credential.
+- State transitions: signed-out Portfolio/account -> backend Google OAuth -> mobile deep-link return with `googleAuth=success` and Holiwyn API key -> SecureStore persistence -> runtime `PolyApi` Bearer auth -> sign-out clears local credential and best-effort server logout.
+- Proof: focused Google auth/return/logout/account tests and `mobile/scripts/check-server-auth-config.ps1`. Android proof remains pending because no ADB device is attached.
+- Known limitations: real Google consent on S23 still needs manual/device proof with a reachable backend `NEXTAUTH_URL` callback registered in the same Google Cloud OAuth client.
