@@ -1022,38 +1022,39 @@ export function Portfolio({
               </Text>
             </View>
           </Pressable>
-          <Pressable
-            accessibilityLabel="portfolio-account-settings-gear portfolio-account-entry-opens-account"
-            accessibilityRole="button"
-            hitSlop={10}
-            onPress={openAccount}
-            style={({ pressed }) => [styles.accountGearButton, pressed && styles.accountGearButtonPressed]}
-            testID="portfolio-account-settings-gear"
-          >
-            <Ionicons name="settings-outline" size={27} color="#f8fafc" />
-          </Pressable>
+          <View accessibilityLabel="portfolio-header-actions portfolio-google-login-compact-header-chip" style={styles.profileActions}>
+            <Pressable
+              accessibilityLabel={googleAuthConnected ? "portfolio-account-entry-google portfolio-account-google-connected portfolio-google-login-connected-visible portfolio-google-login-compact-header-chip Google connected" : "portfolio-account-entry-google portfolio-account-google-direct-signin portfolio-google-login-button-visible portfolio-google-login-row-visible portfolio-google-login-compact-header-chip Continue with Google"}
+              accessibilityRole="button"
+              hitSlop={10}
+              onPress={openGoogleSignIn}
+              style={({ pressed }) => [styles.accountGoogleButton, googleAuthConnected && styles.accountGoogleButtonConnected, pressed && styles.accountGoogleButtonPressed]}
+              testID="portfolio-account-entry-google"
+            >
+              <View style={[styles.accountGoogleIconWrap, googleAuthConnected && styles.accountGoogleIconWrapConnected]}>
+                <Ionicons name={googleAuthConnected ? "checkmark-circle" : "logo-google"} size={16} color={googleAuthConnected ? "#22c55e" : "#111827"} />
+              </View>
+              <View style={styles.accountGoogleCopy}>
+                <Text adjustsFontSizeToFit minimumFontScale={0.76} numberOfLines={1} style={[styles.accountGoogleButtonText, googleAuthConnected && styles.accountGoogleButtonTextConnected]}>
+                  {googleAuthConnected ? pageCopy.googleConnected : pageCopy.googleSignIn}
+                </Text>
+                <Text style={[styles.accountGoogleHint, styles.a11yOnly, googleAuthConnected && styles.accountGoogleHintConnected]}>
+                  {googleAuthConnected ? pageCopy.googleConnectedHint : pageCopy.googleSignInHint}
+                </Text>
+              </View>
+            </Pressable>
+            <Pressable
+              accessibilityLabel="portfolio-account-settings-gear portfolio-account-entry-opens-account"
+              accessibilityRole="button"
+              hitSlop={10}
+              onPress={openAccount}
+              style={({ pressed }) => [styles.accountGearButton, pressed && styles.accountGearButtonPressed]}
+              testID="portfolio-account-settings-gear"
+            >
+              <Ionicons name="settings-outline" size={25} color="#f8fafc" />
+            </Pressable>
+          </View>
         </View>
-        <Pressable
-          accessibilityLabel={googleAuthConnected ? "portfolio-account-entry-google portfolio-account-google-connected portfolio-google-login-connected-visible Google connected" : "portfolio-account-entry-google portfolio-account-google-direct-signin portfolio-google-login-button-visible portfolio-google-login-row-visible Continue with Google"}
-          accessibilityRole="button"
-          hitSlop={10}
-          onPress={openGoogleSignIn}
-          style={({ pressed }) => [styles.accountGoogleButton, googleAuthConnected && styles.accountGoogleButtonConnected, pressed && styles.accountGoogleButtonPressed]}
-          testID="portfolio-account-entry-google"
-        >
-          <View style={[styles.accountGoogleIconWrap, googleAuthConnected && styles.accountGoogleIconWrapConnected]}>
-            <Ionicons name={googleAuthConnected ? "checkmark-circle" : "logo-google"} size={19} color={googleAuthConnected ? "#22c55e" : "#111827"} />
-          </View>
-          <View style={styles.accountGoogleCopy}>
-            <Text style={[styles.accountGoogleButtonText, googleAuthConnected && styles.accountGoogleButtonTextConnected]}>
-              {googleAuthConnected ? pageCopy.googleConnected : pageCopy.googleSignIn}
-            </Text>
-            <Text style={[styles.accountGoogleHint, googleAuthConnected && styles.accountGoogleHintConnected]}>
-              {googleAuthConnected ? pageCopy.googleConnectedHint : pageCopy.googleSignInHint}
-            </Text>
-          </View>
-          <Ionicons name={googleAuthConnected ? "shield-checkmark-outline" : "chevron-forward"} size={18} color={googleAuthConnected ? "#dbeafe" : "#111827"} />
-        </Pressable>
       </View>
       <View accessibilityLabel="fake-balance-card portfolio-value-retail-density portfolio-header-dollar-value" testID="fake-balance-card" style={styles.valueBlock}>
         <Text style={styles.portfolioValue}>{portfolioHeaderMoney(portfolioValue)}</Text>
@@ -1590,19 +1591,20 @@ export function Portfolio({
 const styles = StyleSheet.create({
   content: { flex: 1 },
   scrollPad: { width: "100%", maxWidth: 480, alignSelf: "center", paddingHorizontal: 0, paddingBottom: 110 },
-  profileHeaderWrap: { paddingHorizontal: 24, paddingTop: 4, gap: 10 },
-  profileHeader: { minHeight: 58, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10 },
-  profileLeft: { flexDirection: "row", alignItems: "center", gap: 12, flex: 1 },
+  profileHeaderWrap: { paddingHorizontal: 24, paddingTop: 4 },
+  profileHeader: { minHeight: 58, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8 },
+  profileLeft: { flexDirection: "row", alignItems: "center", gap: 12, flex: 1, minWidth: 0 },
   profileCopy: { flex: 1, minWidth: 0 },
-  accountGearButton: { width: 46, height: 46, alignItems: "center", justifyContent: "center", borderRadius: 999 },
+  profileActions: { flexShrink: 0, flexDirection: "row", alignItems: "center", justifyContent: "flex-end", gap: 8 },
+  accountGearButton: { width: 42, height: 42, alignItems: "center", justifyContent: "center", borderRadius: 999 },
   accountGearButtonPressed: { opacity: 0.74, transform: [{ scale: 0.96 }] },
-  accountGoogleButton: { minHeight: 58, borderRadius: 15, paddingHorizontal: 14, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10, backgroundColor: "#f8fafc" },
+  accountGoogleButton: { width: 112, minHeight: 40, borderRadius: 999, paddingHorizontal: 9, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 7, backgroundColor: "#f8fafc" },
   accountGoogleButtonConnected: { borderWidth: 1, borderColor: "#1d4ed8", backgroundColor: "#0f172a" },
   accountGoogleButtonPressed: { opacity: 0.84, transform: [{ scale: 0.97 }] },
-  accountGoogleIconWrap: { width: 32, height: 32, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "#e5e7eb" },
+  accountGoogleIconWrap: { width: 24, height: 24, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "#e5e7eb" },
   accountGoogleIconWrapConnected: { backgroundColor: "#12351f" },
   accountGoogleCopy: { flex: 1, minWidth: 0 },
-  accountGoogleButtonText: { color: "#111827", fontSize: 15, fontWeight: "900", flexShrink: 1 },
+  accountGoogleButtonText: { color: "#111827", fontSize: 11, fontWeight: "900", flexShrink: 1 },
   accountGoogleButtonTextConnected: { color: "#e5e7eb" },
   accountGoogleHint: { color: "#475569", fontSize: 11, fontWeight: "800", marginTop: 2 },
   accountGoogleHintConnected: { color: "#93c5fd" },

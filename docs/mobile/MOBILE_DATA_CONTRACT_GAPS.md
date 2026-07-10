@@ -9016,3 +9016,21 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new fields for this cycle; real provider-backed line markets remain the repeated P1 data gap.
 - Temporary mock/static data: none added.
 - Future migration concern: a broader swipe-motion cycle should add mid-drag Android proof, but the submit contract should remain backend/order-route compatible.
+
+# Cycle SM - Google Auth Shared Backend Base Notes
+
+- No schema migration was added.
+- Closed or narrowed: mobile Google login can now use a shared backend auth origin through `EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL` while keeping market/order API traffic on `EXPO_PUBLIC_API_BASE_URL`.
+- Route mismatch: narrowed. Google OAuth still starts at the backend, Google redirects to the backend callback, and the callback returns only a Holiwyn mobile API key to the allowed mobile deep link.
+- Fields Holiwyn still needs but backend does not fully provide: none for this config contract.
+- Temporary mock/static data: S23 proof uses a generated local mobile credential shaped like the backend callback credential; real Google consent remains manual P1 proof.
+- Future migration concern: keep Google Cloud client ID/secret and Google access tokens out of mobile even when moving from Expo Go to dev build/APK.
+
+# Cycle SN - Portfolio Header Density Notes
+
+- No schema migration was added.
+- Closed or narrowed: Portfolio no longer uses a full-width Google login/connected row that pushes the first-screen Portfolio tabs downward.
+- Route mismatch: none. The compact chip still calls the existing `openGoogleSignIn` handler and uses the same backend auth route.
+- Fields Holiwyn still needs but backend does not fully provide: no new fields for this header density cycle.
+- Temporary mock/static data: S23 proof still uses the backend-shaped generated mobile credential for connected Portfolio state.
+- Future migration concern: position rows and history still need separate Polymarket-style density work without changing the auth route contract.
