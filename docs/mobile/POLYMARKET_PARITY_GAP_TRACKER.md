@@ -1284,3 +1284,12 @@ For every UI element or interaction, answer:
 | Event Detail still exposed chart source/status markers after visible chart removal | P0 | Verified | Hidden chart marker block was removed, and S23 proof rejects chart source/status markers in the Event Detail XML. | `docs/mobile/harness/cycle-RY-provider-breadth-runtime/cycle-RY-current-mvp-detail-top.xml`; `mobile/src/__tests__/eventDetailChartStatusCopy.test.ts` |
 | Provider-backed winner ticket/order/history regression after route cleanup | P0 | Verified | S23 proof passes Home -> Event Detail -> provider winner ticket -> swipe buy -> Portfolio History with source identity preserved. | `docs/mobile/harness/cycle-RY-provider-breadth-runtime/cycle-RY-provider-winner-s23-visible-flow.json` |
 | Current match has no provider-backed Spread/Totals/Team Total markets | P1 | Open | The route still reports current match lines as contract fixtures; this is accurate until Polymarket exposes attach-ready line markets or another approved provider is configured. | `docs/mobile/harness/cycle-RY-provider-breadth-runtime/cycle-RY-provider-breadth-runtime-route.json` |
+
+# Cycle RZ - Google Auth Return Persistence
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Google auth-return connected state is lost after app restart | P0 | Verified | App now stores the backend-returned Holiwyn mobile API key and rehydrates it when reopening without a build-time API key. | `mobile/App.tsx`; `docs/mobile/harness/cycle-RZ-google-auth-persistence/cycle-RZ-google-auth-return-summary.json` |
+| S23 proof for persisted connected Portfolio state | P0 | Verified | S23 proof passes both immediate callback-shaped return and force-stop/reopen without passing `apiKey` again. | `docs/mobile/screenshots/cycle-RZ-google-auth-persistence/cycle-RZ-google-auth-persisted-portfolio.png`; `docs/mobile/harness/cycle-RZ-google-auth-persistence/cycle-RZ-google-auth-persisted-portfolio.xml` |
+| Interactive Google account consent on S23 | P1 | Open | RZ still uses a generated backend-shaped local credential; actual browser consent needs manual/real Google session proof. | `scripts/prove_mobile_google_auth_return_s23.ps1` |
+| Secure native credential storage and logout/revoke | P1 | Open | Current Expo MVP persists the Holiwyn API key in app storage. Dev build/APK should move this to secure native storage and expose logout/revoke. | Data contract notes |

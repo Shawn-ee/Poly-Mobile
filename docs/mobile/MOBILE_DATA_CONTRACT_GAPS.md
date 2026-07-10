@@ -8906,3 +8906,12 @@ Future migration concern:
 - Route mismatch: none introduced. Broad provider browsing includes provider-backed futures; strict Home feed remains match-only.
 - Temporary mock/static data: proof uses seeded counterparty liquidity for the provider-backed winner order. Current line markets remain contract-shaped fixtures.
 - Future migration concern: replace contract fixtures with real provider-backed line rows when available, and keep proof event cleanup/filtering in place so runtime QA is not polluted by old disposable data.
+
+# Cycle RZ - Google Auth Return Persistence Notes
+
+- No schema migration was added.
+- Closed or narrowed: returned Holiwyn mobile API credentials from the backend-owned Google callback are now persisted on-device and rehydrated after app restart when no build-time API key is configured.
+- Fields Holiwyn still needs but backend does not fully provide: logout/token revocation and a production native OAuth return proof.
+- Route mismatch: none introduced. Mobile still opens `/api/auth/google/start`; backend still exchanges Google tokens using server-side `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`; mobile stores only the Holiwyn API key returned by the backend callback.
+- Temporary mock/static data: S23 proof uses a generated local mobile dev credential shaped like the callback credential, not real interactive Google consent.
+- Future migration concern: move the stored key into a secure native storage mechanism when the app shifts from Expo Go to a production/dev build, and add logout/revoke UX before broader tester distribution.

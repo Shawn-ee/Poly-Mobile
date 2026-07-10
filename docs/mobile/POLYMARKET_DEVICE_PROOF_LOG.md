@@ -2770,3 +2770,12 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Android proof summary: `docs/mobile/harness/cycle-RY-provider-breadth-runtime/cycle-RY-provider-winner-s23-visible-flow.json`.
 - Key screenshots: `docs/mobile/screenshots/cycle-RY-provider-breadth-runtime/cycle-RY-current-mvp-home.png`, `docs/mobile/screenshots/cycle-RY-provider-breadth-runtime/cycle-RY-current-mvp-detail-top.png`, `docs/mobile/screenshots/cycle-RY-provider-breadth-runtime/cycle-RY-provider-winner-ticket-ready.png`, `docs/mobile/screenshots/cycle-RY-provider-breadth-runtime/cycle-RY-provider-winner-after-submit.png`, `docs/mobile/screenshots/cycle-RY-provider-breadth-runtime/cycle-RY-provider-winner-portfolio-history.png`.
 - Result: PASS. Route proof shows proof events filtered from mobile-visible provider breadth, broad World Cup provider browsing includes provider-backed futures, Home remains match-only, Event Detail has no chart metadata in Android hierarchy, order book/chat remain hidden, and Portfolio History preserves provider winner source.
+
+# Cycle RZ - S23 Google Auth Return Persistence Proof
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM_S911U1`.
+- Flow: generated local mobile credential shaped like backend Google callback -> deep link with `googleAuth=success` and `apiKey` -> Portfolio connected state -> app force-stop -> reopen Portfolio without `apiKey` -> connected state still visible from stored Holiwyn credential.
+- Proof summary: `docs/mobile/harness/cycle-RZ-google-auth-persistence/cycle-RZ-google-auth-return-summary.json`.
+- Screenshots: `docs/mobile/screenshots/cycle-RZ-google-auth-persistence/cycle-RZ-google-auth-return-portfolio.png`, `docs/mobile/screenshots/cycle-RZ-google-auth-persistence/cycle-RZ-google-auth-persisted-portfolio.png`.
+- XML: `docs/mobile/harness/cycle-RZ-google-auth-persistence/cycle-RZ-google-auth-return-portfolio.xml`, `docs/mobile/harness/cycle-RZ-google-auth-persistence/cycle-RZ-google-auth-persisted-portfolio.xml`.
+- Result: PASS. XML/screenshot show `Google connected` and `Server profile loaded` both immediately after auth return and after restart without passing the key again.
