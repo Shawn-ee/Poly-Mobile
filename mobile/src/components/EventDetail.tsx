@@ -495,8 +495,6 @@ export function EventDetail({
   openTicket,
   defaultSide,
   goBack,
-  isSaved,
-  toggleSavedEvent,
   requestMarketDepth,
   positions = [],
   openPositionTrade,
@@ -507,8 +505,6 @@ export function EventDetail({
   openTicket: (market: Market, outcome: Outcome, event?: Event, side?: "buy" | "sell", selection?: TicketSelection) => void;
   defaultSide: "buy" | "sell";
   goBack: () => void;
-  isSaved: boolean;
-  toggleSavedEvent: (event: Event) => void;
   requestMarketDepth?: (marketId: string) => void;
   positions?: Position[];
   openPositionTrade?: (position: Position, side: "buy" | "sell") => void;
@@ -523,8 +519,6 @@ export function EventDetail({
   const [activeLineDetailTab, setActiveLineDetailTab] = useState<"order-book" | "graph" | "about">("order-book");
   const activeHeaderTab = "game";
   const activeBodyTab = "market";
-  const [savedNoticeVisible, setSavedNoticeVisible] = useState(false);
-  const [shareSheetVisible, setShareSheetVisible] = useState(false);
   const [orderBookVisible, setOrderBookVisible] = useState(false);
   const [orderBookMarketId, setOrderBookMarketId] = useState<string | null>(null);
   const [orderBookOutcomeId, setOrderBookOutcomeId] = useState<string | null>(null);
@@ -674,7 +668,6 @@ export function EventDetail({
     const ticketOutcome = providerSelection?.outcome ?? outcome;
     if (!ticketMarket) return;
     setSelectedPrimaryOutcomeId(outcome.id);
-    setShareSheetVisible(false);
     setOrderBookVisible(false);
     const outcomeIndex = ticketMarket.outcomes.findIndex((item) => item.id === ticketOutcome.id);
     const contractSide = orderBookOutcomeSide(ticketMarket, ticketOutcome, outcomeIndex);
@@ -943,7 +936,6 @@ export function EventDetail({
               key={outcome.id}
               onPress={() => {
                 setSelectedPrimaryOutcomeId(outcome.id);
-                setShareSheetVisible(false);
                 openTicket(advanceMarket, outcome, event, defaultSide, {
                   ...orderBookTicketSelection(advanceMarket, outcome, index, "Team to Advance"),
                   marketType: "to_advance",
@@ -1589,7 +1581,6 @@ export function EventDetail({
               accessibilityLabel="event-detail-top-order-book"
               onPress={() => {
                 setOrderBookVisible(true);
-                setShareSheetVisible(false);
               }}
               style={styles.iconButton}
               testID="event-detail-top-order-book"
@@ -1599,33 +1590,6 @@ export function EventDetail({
           )}
         </View>
       </View>
-      {savedNoticeVisible && (
-        <Pressable accessibilityLabel="event-detail-save-notice" onPress={() => setSavedNoticeVisible(false)} style={styles.actionNotice} testID="event-detail-save-notice">
-          <Ionicons name={isSaved ? "book" : "book-outline"} size={18} color="#bfdbfe" />
-          <Text style={styles.actionNoticeText}>{isSaved ? "Saved to watchlist" : "Removed from watchlist"}</Text>
-          <Text style={styles.actionNoticeDismiss}>Dismiss</Text>
-        </Pressable>
-      )}
-      {shareSheetVisible && (
-        <View accessibilityLabel="event-detail-share-sheet" style={styles.shareSheet} testID="event-detail-share-sheet">
-          <View style={styles.shareSheetHeader}>
-            <View>
-              <Text style={styles.shareSheetTitle}>Share this market</Text>
-              <Text style={styles.shareSheetSub}>{label(locale, event)}</Text>
-            </View>
-            <Pressable accessibilityLabel="event-detail-share-dismiss" onPress={() => setShareSheetVisible(false)} style={styles.shareDismissButton} testID="event-detail-share-dismiss">
-              <Ionicons name="close" size={20} color="#f8fafc" />
-            </Pressable>
-          </View>
-          <View style={styles.shareActionsRow}>
-            {["Copy link", "Share", "Invite"].map((item) => (
-              <Pressable accessibilityLabel={`event-detail-share-action-${item}`} key={item} style={styles.shareActionButton} testID={`event-detail-share-action-${item.replace(/\s+/g, "-").toLowerCase()}`}>
-                <Text style={styles.shareActionText}>{item}</Text>
-              </Pressable>
-            ))}
-          </View>
-        </View>
-      )}
       {showOrderBookDebug && orderBookVisible && renderOrderBook()}
       {compactHeaderVisible && activeHeaderTab === "game" && (
         <View accessibilityLabel="event-detail-sticky-market-shell" style={styles.stickyMarketShell} testID="event-detail-sticky-market-shell">
@@ -1741,7 +1705,6 @@ export function EventDetail({
                   </Text>
                   <Text style={styles.positionTitle} numberOfLines={1}>{position.title}</Text>
                 </View>
-                <Ionicons name="share-outline" color="#cbd5e1" size={18} />
               </View>
               <View style={styles.positionStats}>
                 <View style={styles.positionStatBlock}>
@@ -1999,17 +1962,6 @@ const styles = StyleSheet.create({
   segmentActive: { backgroundColor: "#0b1220" },
   segmentText: { color: "#8d94a3", fontSize: 15, fontWeight: "800" },
   segmentTextActive: { color: "#ffffff" },
-  actionNotice: { minHeight: 48, flexDirection: "row", alignItems: "center", gap: 10, paddingHorizontal: 18, backgroundColor: "#0f1b2e", borderBottomWidth: 1, borderBottomColor: "#263247" },
-  actionNoticeText: { flex: 1, color: "#f8fafc", fontSize: 14, fontWeight: "900" },
-  actionNoticeDismiss: { color: "#93c5fd", fontSize: 13, fontWeight: "900" },
-  shareSheet: { padding: 16, backgroundColor: "#0b1220", borderBottomWidth: 1, borderBottomColor: "#263247" },
-  shareSheetHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
-  shareSheetTitle: { color: "#f8fafc", fontSize: 17, fontWeight: "900" },
-  shareSheetSub: { color: "#94a3b8", fontSize: 12, fontWeight: "800", marginTop: 3 },
-  shareDismissButton: { width: 38, height: 38, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#111827" },
-  shareActionsRow: { flexDirection: "row", gap: 8, marginTop: 12 },
-  shareActionButton: { flex: 1, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#172033", borderWidth: 1, borderColor: "#293548" },
-  shareActionText: { color: "#e5e7eb", fontSize: 12, fontWeight: "900" },
   stickyMarketShell: { backgroundColor: "#060b14", borderBottomWidth: 1, borderBottomColor: "#1f2937", paddingBottom: 4 },
   compactGameHeader: { minHeight: 58, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 18, backgroundColor: "#060b14", borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   compactTeamSide: { width: 112, flexDirection: "row", alignItems: "center", gap: 7 },

@@ -1394,3 +1394,10 @@ For every UI element or interaction, answer:
 | Current-match line-market provider availability was unclear | P1 | Verified | Exact event has three match-winner candidates and zero line candidates; manual slug guesses return zero; broad search has no attach-ready line targets. | `docs/mobile/harness/cycle-SX-provider-breadth-readiness/cycle-SX-provider-line-source-probe.json`; `docs/mobile/harness/cycle-SX-provider-breadth-readiness/cycle-SX-provider-line-breadth-scan.json` |
 | Scan could hide classifier/query misses by reporting only zero line candidates | P1 | Verified | Scan now records broader line/half queries and diagnostic line-like rejected candidate samples while still refusing irrelevant candidates as attach-ready. | `scripts/prove_mobile_provider_line_breadth_scan.ts`; `docs/mobile/harness/cycle-SX-provider-breadth-readiness/cycle-SX-provider-line-breadth-scan.json` |
 | Real provider-backed spread/totals/team-total match lines | P1 | Open | Still unavailable from Polymarket Gamma for the current MVP match; keep contract-shaped fixtures or configure an approved secondary provider contract. | `docs/mobile/audits/cycle-SX-provider-breadth-readiness.md` |
+
+# Cycle SZ - Event Detail Social Shell Cleanup
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Event Detail still carried dormant share/watchlist panels after Local MVP social scope was removed | P0 | Verified | Removed share sheet, share actions, save/watchlist notice, unused EventDetail saved props, and the visible position-card share icon; S23 proof passed the full Local MVP visible flow afterward. | `mobile/src/components/EventDetail.tsx`; `mobile/App.tsx`; `mobile/src/__tests__/eventDetailNoChatStatsContract.test.ts`; `docs/mobile/audits/cycle-SZ-event-detail-social-shell-cleanup.md`; `docs/mobile/harness/cycle-SZ-event-detail-social-shell-cleanup/cycle-SZ-current-mvp-s23-visible-flow.json` |
+| Real provider-backed spread/totals/team-total match lines | P1 | Open | Unchanged from SX. This cleanup keeps Event Detail focused, but does not change provider line availability. | `docs/mobile/audits/cycle-SX-provider-breadth-readiness.md` |

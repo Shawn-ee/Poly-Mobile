@@ -1805,8 +1805,6 @@ export default function App() {
               setEventDetailForcedSide(null);
               setSelectedEvent(null);
             }}
-            isSaved={savedEventIds.has(selectedEvent.id)}
-            toggleSavedEvent={toggleSavedEvent}
             requestMarketDepth={setSelectedDepthMarketId}
             positions={positions}
             openPositionTrade={openPositionTrade}
