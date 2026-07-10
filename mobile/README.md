@@ -59,6 +59,8 @@ The Google Cloud authorized redirect URI must point at the backend callback, for
 http://127.0.0.1:3002/api/auth/google/callback
 ```
 
+For Expo Go manual OAuth testing, keep the Google Cloud redirect URI pointed at the backend callback above, then set `EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL` to the Expo deep link shown by Expo with `/--/auth/google` appended. The backend accepts `exp:` / `exps:` mobile return links only outside production; production returns must use the Holiwyn app scheme.
+
 Android device URL tips:
 
 - Android emulator talking to a local backend on the same computer: `http://10.0.2.2:3002`.

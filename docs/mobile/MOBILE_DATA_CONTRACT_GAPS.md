@@ -8953,3 +8953,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: real interactive Google consent proof with the production/dev-build return URL and future EBPay funding contracts after the MVP user flow is stable.
 - Temporary mock/static data: S23 proof uses a generated local mobile credential shaped like the backend callback credential.
 - Future migration concern: when EBPay/deposit/withdraw work starts, create a separate backend/schema contract and do not reintroduce funding UI into the Local MVP account screen without a fresh audit gate.
+
+# Cycle SE - Google Mobile Return Compatibility Notes
+
+- No schema migration was added.
+- Closed or narrowed: backend Google auth start/callback can now preserve and return to Expo Go `exp:` / `exps:` links in non-production, while production remains restricted to the Holiwyn app scheme.
+- Route mismatch: none introduced. Google Cloud redirect URI remains the backend callback route; `mobileReturnTo` is only the post-callback app deep link.
+- Fields Holiwyn still needs but backend does not fully provide: no new fields. The returned mobile credential remains the existing Holiwyn API key token created by `createApiCredential`.
+- Temporary mock/static data: none.
+- Future migration concern: when moving to APK/dev build, prefer `holiwyn://auth/google`; keep Expo return links for local testing only.

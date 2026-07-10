@@ -30,6 +30,19 @@ const appendMobileAuthParams = (returnTo: string, params: Record<string, string>
   return target.toString();
 };
 
+const isAllowedMobileReturnTo = (value: string) => {
+  try {
+    const parsed = new URL(value);
+    if (parsed.protocol === "holiwyn:") return true;
+    if (process.env.NODE_ENV !== "production" && (parsed.protocol === "exp:" || parsed.protocol === "exps:")) {
+      return true;
+    }
+    return false;
+  } catch {
+    return false;
+  }
+};
+
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const configuredBaseUrl = process.env.NEXTAUTH_URL?.trim();
@@ -162,7 +175,7 @@ export async function GET(request: Request) {
   }
 
   await setUserIdCookie(userId);
-  if (mobileReturnTo?.startsWith("holiwyn:")) {
+  if (mobileReturnTo && isAllowedMobileReturnTo(mobileReturnTo)) {
     const mobileCredential = await createApiCredential({
       userId,
       name: "Holiwyn Mobile Google",

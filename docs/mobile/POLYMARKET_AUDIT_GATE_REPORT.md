@@ -7356,3 +7356,14 @@ Remaining P1:
 - Test proof: mobile typecheck passed; focused Google/account/Portfolio tests passed.
 - Unresolved P0: 0 for SD scope.
 - Remaining P1: real interactive Google consent on S23, provider-backed current-match line markets, and production liquidity/public market-maker policy.
+
+# Cycle SE Audit Gate - Google Mobile Return Compatibility
+
+- Scope: backend-owned Google OAuth return target compatibility for mobile real-device testing.
+- P0 result: PASS for SE scope.
+- Implementation proof: `/api/auth/google/start` now accepts `holiwyn:` mobile return targets always and `exp:` / `exps:` targets only when `NODE_ENV !== "production"`; `/api/auth/google/callback` uses the same allowlist before appending the returned Holiwyn API key.
+- Security proof: mobile docs/tests still reject Google Cloud client ID/secret placement in mobile; backend still owns Google token exchange.
+- Android proof: S23 callback-shaped return proof passed for Cycle SE after this route compatibility change.
+- Test proof: mobile typecheck and focused Google/auth tests passed.
+- Unresolved P0: 0 for SE scope.
+- Remaining P1: real interactive Google consent on S23 using configured backend credentials and either Expo Go return URL or dev-build `holiwyn://auth/google`.

@@ -2815,3 +2815,12 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Screenshots: `docs/mobile/screenshots/cycle-SD-account-fake-token-copy/cycle-SD-google-auth-return-portfolio.png`, `docs/mobile/screenshots/cycle-SD-account-fake-token-copy/cycle-SD-google-auth-persisted-portfolio.png`, `docs/mobile/screenshots/cycle-SD-account-fake-token-copy/cycle-SD-google-auth-account-signed-out.png`.
 - XML: `docs/mobile/harness/cycle-SD-account-fake-token-copy/cycle-SD-google-auth-return-portfolio.xml`, `docs/mobile/harness/cycle-SD-account-fake-token-copy/cycle-SD-google-auth-persisted-portfolio.xml`, `docs/mobile/harness/cycle-SD-account-fake-token-copy/cycle-SD-google-auth-account-connected.xml`, `docs/mobile/harness/cycle-SD-account-fake-token-copy/cycle-SD-google-auth-account-signed-out.xml`.
 - Result: PASS. Summary reports persisted returned key after restart and `logoutClearsPersistedCredential=true`; connected Account XML contains fake-token copy and signed-out Portfolio XML shows `Continue with Google` with no connected/funding markers.
+
+# Cycle SE - S23 Google Return Compatibility Regression Proof
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM_S911U1`.
+- Flow: generated local mobile credential shaped like backend Google callback -> deep link with `googleAuth=success` and `apiKey` -> Portfolio connected state -> app restart without `apiKey` -> connected state persists -> Account connected row -> sign out -> Portfolio signed-out Google entry visible.
+- Proof summary: `docs/mobile/harness/cycle-SE-google-return-compatibility/cycle-SE-google-auth-return-summary.json`.
+- Screenshots: `docs/mobile/screenshots/cycle-SE-google-return-compatibility/cycle-SE-google-auth-return-portfolio.png`, `docs/mobile/screenshots/cycle-SE-google-return-compatibility/cycle-SE-google-auth-persisted-portfolio.png`, `docs/mobile/screenshots/cycle-SE-google-return-compatibility/cycle-SE-google-auth-account-signed-out.png`.
+- XML: `docs/mobile/harness/cycle-SE-google-return-compatibility/cycle-SE-google-auth-return-portfolio.xml`, `docs/mobile/harness/cycle-SE-google-return-compatibility/cycle-SE-google-auth-persisted-portfolio.xml`, `docs/mobile/harness/cycle-SE-google-return-compatibility/cycle-SE-google-auth-account-connected.xml`, `docs/mobile/harness/cycle-SE-google-return-compatibility/cycle-SE-google-auth-account-signed-out.xml`.
+- Result: PASS. This verifies the visible mobile Google return/persistence/logout path still works after the backend return allowlist update.
