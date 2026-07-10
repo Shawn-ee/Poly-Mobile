@@ -447,10 +447,14 @@ const hasApprovedLineProviderIdentity = (value: unknown) => {
 const hasApprovedLineProviderReady = (market: {
   referenceMetadata?: unknown;
   outcomes?: Array<{ referenceMetadata?: unknown }>;
-}) =>
-  hasApprovedLineProviderIdentity(market.referenceMetadata) &&
-  Boolean(market.outcomes?.length) &&
-  market.outcomes.every((outcome) => hasApprovedLineProviderIdentity(outcome.referenceMetadata));
+}) => {
+  const outcomes = market.outcomes ?? [];
+  return (
+    hasApprovedLineProviderIdentity(market.referenceMetadata) &&
+    outcomes.length > 0 &&
+    outcomes.every((outcome) => hasApprovedLineProviderIdentity(outcome.referenceMetadata))
+  );
+};
 
 export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) => {
   const sourceBreakdown = markets.reduce<Record<string, number>>((result, market) => {

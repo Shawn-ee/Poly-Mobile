@@ -88,10 +88,14 @@ describe("sports event market model", () => {
     expect(mockPrisma.event.findMany).toHaveBeenCalledWith(
       expect.objectContaining({
         where: expect.objectContaining({
-          category: "sports",
-          sportKey: "soccer",
-          leagueKey: "world_cup",
-          status: "scheduled",
+          AND: expect.arrayContaining([
+            expect.objectContaining({
+              category: "sports",
+              sportKey: "soccer",
+              leagueKey: "world_cup",
+              status: "scheduled",
+            }),
+          ]),
         }),
       }),
     );

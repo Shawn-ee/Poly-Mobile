@@ -61,6 +61,14 @@ jobs:
       - name: Run Jest smoke tests
         run: npm run test:ci
 
+      - name: Install mobile dependencies
+        working-directory: mobile
+        run: npm ci
+
+      - name: Typecheck mobile
+        working-directory: mobile
+        run: npm run typecheck
+
       # Playwright is intentionally not part of this first CI phase.
       # Broader DB-backed Jest, Vitest, and browser tests should be added
       # after those suites are isolated and stable in CI.
