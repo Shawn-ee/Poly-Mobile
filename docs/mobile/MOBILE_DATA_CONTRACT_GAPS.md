@@ -9061,3 +9061,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: exact row-level recent-trade realized P/L before market resolution. Current `Trade` rows do not preserve execution-time cost basis for the shares sold, so the route cannot honestly calculate exact per-fill profit/loss yet.
 - Temporary mock/static data: none added.
 - Future migration concern: add a basis/proceeds ledger or execution-basis snapshot to trade/order records if exact Polymarket-style realized P/L is required immediately after cashout rather than after resolved history aggregation.
+
+# Cycle SR - Recent Trade Realized P/L Replay Notes
+
+- No schema migration was added.
+- Closed or narrowed: `/api/portfolio/history` now replays existing user trades for recent market/outcome selections and calculates exact recent SELL `realizedPnlTokens` with the same average-cost formula used by the matching engine.
+- Route mismatch: narrowed. The recent-trade payload can now drive sold-row proceeds and realized P/L without requiring frontend inference.
+- Fields Holiwyn still needs but backend does not fully provide: none for normal fake-token trades with complete trade history. If historical data is incomplete or inconsistent, `realizedPnlTokens` remains `null` by design.
+- Temporary mock/static data: none added.
+- Future migration concern: if production history grows very large, move this replay into a persisted execution-basis/realized-P/L field or paginated aggregation service instead of doing route-time reconstruction.

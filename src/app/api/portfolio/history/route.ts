@@ -15,6 +15,59 @@ function marketDisplayTitle(title: string, eventTitle?: string | null) {
   return title;
 }
 
+type CostBasisTrade = {
+  id: string;
+  marketId: string;
+  outcomeId: string;
+  side: "BUY" | "SELL";
+  shares: unknown;
+  cost: unknown;
+  fee: unknown;
+};
+
+const roundTokens = (value: number) => Math.round(value * 1_000_000) / 1_000_000;
+
+function buildRecentTradeRealizedPnlMap(trades: CostBasisTrade[]) {
+  const stateBySelection = new Map<string, { shares: number; avgCost: number }>();
+  const realizedByTradeId = new Map<string, number | null>();
+
+  for (const trade of trades) {
+    const selectionKey = `${trade.marketId}:${trade.outcomeId}`;
+    const current = stateBySelection.get(selectionKey) ?? { shares: 0, avgCost: 0 };
+    const shares = Number(trade.shares);
+    const cost = Number(trade.cost);
+    const fee = Number(trade.fee);
+    if (!Number.isFinite(shares) || shares <= 0 || !Number.isFinite(cost) || !Number.isFinite(fee)) {
+      if (trade.side === "SELL") realizedByTradeId.set(trade.id, null);
+      continue;
+    }
+
+    if (trade.side === "BUY") {
+      const nextShares = current.shares + shares;
+      const nextAvgCost = nextShares > 0 ? (current.avgCost * current.shares + cost) / nextShares : 0;
+      stateBySelection.set(selectionKey, { shares: nextShares, avgCost: nextAvgCost });
+      continue;
+    }
+
+    if (current.shares + 0.000001 < shares) {
+      realizedByTradeId.set(trade.id, null);
+      stateBySelection.set(selectionKey, { shares: Math.max(0, current.shares - shares), avgCost: current.avgCost });
+      continue;
+    }
+
+    const sellPrice = cost / shares;
+    const realizedPnl = (sellPrice - current.avgCost) * shares - fee;
+    realizedByTradeId.set(trade.id, roundTokens(realizedPnl));
+    const remainingShares = current.shares - shares;
+    stateBySelection.set(selectionKey, {
+      shares: remainingShares <= 0.000001 ? 0 : remainingShares,
+      avgCost: remainingShares <= 0.000001 ? 0 : current.avgCost,
+    });
+  }
+
+  return realizedByTradeId;
+}
+
 async function getPortfolioHistoryUserId(request: NextRequest) {
   if (request.headers.get("Authorization")) {
     const actor = await requireCanonicalActor(request, ["account:read"]);
@@ -145,6 +198,32 @@ export async function GET(request: NextRequest) {
       recentTradeSelectionByMarketOutcome.set(key, order.apiOrderRequest?.requestBody);
     }
   }
+  const recentTradeSelections = Array.from(
+    new Set(recentTrades.map((trade: { marketId: string; outcomeId: string }) => `${trade.marketId}:${trade.outcomeId}`)),
+  ).map((key) => {
+    const [marketId, outcomeId] = key.split(":");
+    return { marketId, outcomeId };
+  });
+  const costBasisTrades = recentTradeSelections.length
+    ? await prisma.trade.findMany({
+        where: {
+          userId,
+          OR: recentTradeSelections,
+        },
+        select: {
+          id: true,
+          marketId: true,
+          outcomeId: true,
+          side: true,
+          shares: true,
+          cost: true,
+          fee: true,
+          createdAt: true,
+        },
+        orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+      })
+    : [];
+  const recentTradeRealizedPnlById = buildRecentTradeRealizedPnlMap(costBasisTrades);
 
   const marketMap = new Map<
     string,
@@ -300,7 +379,7 @@ export async function GET(request: NextRequest) {
       cost: costTokens,
       fee: feeTokens,
       proceedsTokens: isSell ? costTokens - feeTokens : null,
-      realizedPnlTokens: null,
+      realizedPnlTokens: isSell ? recentTradeRealizedPnlById.get(trade.id) ?? null : null,
       createdAt: trade.createdAt,
     };
   });
