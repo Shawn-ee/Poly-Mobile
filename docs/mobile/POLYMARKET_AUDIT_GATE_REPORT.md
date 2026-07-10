@@ -7451,3 +7451,15 @@ Remaining P1:
 - Android proof: not rerun because no ADB device was attached.
 - Unresolved P0: 0 for UK backend/API scope.
 - Remaining P1: S23 visible full journey proof against this current route data; real provider-backed Spread/Totals/Team Total line rows.
+
+# Cycle UL Audit Gate - Local MVP Order To Portfolio History Proof
+
+- Scope: backend/API order lifecycle for the current Local MVP line-ticket path.
+- P0 result: PASS for backend/API lifecycle scope.
+- Order proof: `docs/mobile/harness/cycle-UL-local-mvp-order-history-proof/cycle-UL-match-line-order-lifecycle.json` shows `POST /api/orders` filled a BUY on `argentina-vs-egypt` Spread `Egypt +1.5`.
+- Portfolio proof: `/api/portfolio` returned a filled position preserving selected line, period, source, external market id, condition id, and token id.
+- History proof: `/api/portfolio/history` returned a recent trade preserving the same selected identity and classifying the line as `contract-fixture`.
+- Harness proof: `scripts/prove_mobile_mvp_match_line_order_lifecycle.ts` now self-loads local `DATABASE_URL` and defaults to a high proof price for stable local maker liquidity.
+- Android proof: not rerun because no ADB device was attached.
+- Unresolved P0: 0 for UL backend/API lifecycle scope.
+- Remaining P1: S23 visible full journey proof; real provider-backed Spread/Totals/Team Total line rows.
