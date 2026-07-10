@@ -12214,3 +12214,13 @@ Known limitations:
 - State transitions: unchanged. BUY rows keep `realizedPnlTokens=null`; SELL rows return `realizedPnlTokens` when cost basis can be reconstructed; incomplete basis stays `null` rather than a guessed value.
 - Proof: focused backend route and mobile mapper tests passed. No Android proof was required because this cycle only corrects stale tracker status; Cycle SR remains the S23 visible proof for this path.
 - Known limitations: none for normal fake-token trades with complete trade history. Production liquidity policy remains a separate open P1.
+
+# Cycle TY - Google Login Poly Setup Alignment
+
+- Feature/page worked on: Portfolio/account Google login setup alignment.
+- Frontend/docs touched: `mobile/README.md`, `docs/mobile/GOOGLE_LOGIN_SETUP.md`, `mobile/src/__tests__/googleMobileAuthContract.test.ts`, `docs/mobile/audits/cycle-TY-google-login-poly-setup.md`.
+- Backend/API routes touched: no route handler changed. Existing `/api/auth/google/start`, `/api/auth/google/callback`, and `/api/auth/mobile/logout` remain the source of truth.
+- User interactions supported: unchanged. Tapping `Continue with Google` opens the backend Google start route; backend owns Google Cloud credential use and returns a Holiwyn mobile API credential to the app.
+- State transitions: signed out -> backend Google OAuth start -> Google consent -> backend callback/token exchange/userinfo -> Holiwyn mobile API credential minted -> mobile SecureStore persistence -> authenticated profile/Portfolio/order/history calls.
+- Proof: focused Google auth contract tests passed. No Android proof was required because this cycle only tightened setup documentation and contract guards, with no visible UI or runtime behavior change.
+- Known limitations: manual S23 Google consent remains a P1 proof item and depends on the same Google Cloud OAuth client having the reachable backend callback URL registered.

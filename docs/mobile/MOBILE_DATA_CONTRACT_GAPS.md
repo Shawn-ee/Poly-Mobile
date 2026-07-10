@@ -9351,3 +9351,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: none for the cashout sheet cleanup. Real provider-backed current-match line IDs remain open.
 - Temporary mock/static data: none added.
 - Future migration concern: keep cashout/close-position sizing and source identity on the generic ticket/order contract instead of reintroducing a separate cashout-only UI state model.
+
+# Cycle TY - Google Login Poly Setup Alignment Notes
+
+- No schema migration was added.
+- Closed or narrowed: Google login setup now has a dedicated mobile setup guide requiring the same Poly/Holiwyn backend Google Cloud OAuth credential, callback URL, and token-exchange logic.
+- Route mismatch: none. Existing `/api/auth/google/start` and `/api/auth/google/callback` already match the desired model: mobile opens backend auth, backend exchanges Google tokens, and mobile receives a Holiwyn API credential.
+- Fields Holiwyn still needs but backend does not fully provide: none for the mobile auth handoff.
+- Temporary mock/static data: none added.
+- Future migration concern: native builds should use `holiwyn://auth/google`; Expo `exp:` / `exps:` return URLs should remain development/test only. Do not add Google Cloud secrets or Google tokens to mobile environment files.
