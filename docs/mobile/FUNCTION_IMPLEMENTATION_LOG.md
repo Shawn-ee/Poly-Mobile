@@ -12010,3 +12010,13 @@ Known limitations:
 - State transitions: Polymarket Gamma scan -> provider family summaries -> decision to keep explicit contract-fixture line rows because no attach-ready provider line candidates exist.
 - Proof: `docs/mobile/harness/cycle-TD-real-worldcup-line-discovery/cycle-TD-provider-line-breadth-scan.json` shows 3,773 raw candidates, 2,674 World Cup-relevant candidates, 0 provider line candidates, and 0 attach-ready line candidates.
 - Known limitations: no S23 proof was run because no visible mobile surface changed after TC. The next visible proof should run when a line-market import or UI state changes.
+
+# Cycle TE - Current MVP Full Flow Reproof
+
+- Feature/page worked on: S23 proof harness for the Local MVP visible flow after provider-readiness, chart-free Event Detail, and social-shell cleanup cycles.
+- Frontend/harness touched: `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1` now reports `detailShowsProviderUnavailableLineFamilies` in its proof summary when the existing XML assertions pass.
+- Backend/API routes touched: no route handler, schema, provider service, order logic, Portfolio logic, order book UI, chat, live stats, social, deposit, or withdrawal source changed.
+- User interactions supported: Samsung S23 opens Home/Live, opens the current World Cup match, verifies Game Lines/source readiness, opens the simple Trade Ticket from a contract-shaped line market, swipes to submit a server fake-token order, and verifies Portfolio History.
+- State transitions: `/api/mobile/events/:slug/live-detail` market/source disclosure -> selected line market/outcome identity -> `/api/markets/:marketId/quote` -> `/api/orders` with seeded local counterparty fill -> `/api/portfolio/history` filled History row.
+- Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-TE-current-mvp-full-flow-reproof/cycle-TE-current-mvp-s23-visible-flow.json` with `detailShowsProviderUnavailableLineFamilies=true`, `ticketPreservesLine=true`, `swipeSubmitReachedPortfolio=true`, `filledHistoryVisible=true`, and `orderbookHidden=true`.
+- Known limitations: real Polymarket-backed spread/totals/team-total line markets remain unavailable for the current match set, so the Local MVP uses backend-shaped contract fixtures with explicit provider-unavailable disclosure.
