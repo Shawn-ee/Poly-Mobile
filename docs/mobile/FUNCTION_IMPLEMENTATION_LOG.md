@@ -12324,3 +12324,12 @@ Known limitations:
 - State transitions: unchanged at runtime. The proof loop now has stronger evidence that current event-specific Gamma search and exact slug guesses still produce zero attach-ready line-family candidates.
 - Proof: focused source-contract test passed and live read-only Gamma scan wrote `docs/mobile/harness/cycle-UI-provider-line-breadth-event-specific-scan/cycle-UI-provider-line-breadth-scan.json`.
 - Known limitations: real provider-backed current-match Spread/Totals/Team Total rows remain missing. This cycle improves discovery evidence; it does not create a provider source.
+
+# Cycle UJ - Disable Default Orderbook Depth Fetch
+
+- Feature/page worked on: Event Detail Local MVP route behavior.
+- Frontend components touched: `mobile/App.tsx`; source contract `src/__tests__/mobile.local-mvp-orderbook-debug-gate.test.ts`.
+- Backend/API routes touched: none. This specifically avoids default calls to `/api/orderbook/:marketId/book` from the retail Event Detail path.
+- User interactions supported: unchanged Home/Live -> Event Detail -> line selector -> simple ticket -> fake-token order -> Portfolio/history path. Quote/probability loading remains active.
+- State transitions: selected Event Detail no longer enters orderbook depth `loading` / `ready` / `empty` states unless `EXPO_PUBLIC_SHOW_ORDERBOOK=1` is explicitly enabled for debug.
+- Known limitations: no Android proof because no device is attached and no visible UI changed. Reprove the full S23 Local MVP journey on the next visible cycle.

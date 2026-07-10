@@ -2859,3 +2859,9 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Flow covered by source/contract proof: Polymarket Gamma read-only discovery -> current-event-specific query probes -> exact line slug guesses -> strict line-family relevance gate -> proof JSON.
 - Proof summary: `docs/mobile/harness/cycle-UI-provider-line-breadth-event-specific-scan/cycle-UI-provider-line-breadth-scan.json`.
 - Result: PASS for backend/provider discovery scope. The scan found World Cup candidates but no attach-ready provider line markets, so no user-visible line row changed on device.
+
+# Cycle UJ - Disable Default Orderbook Depth Fetch Proof
+
+- Device: no new Android run; no visible mobile UI changed and no ADB device was attached.
+- Flow covered by source/contract proof: Event Detail server mode -> quote/probability refresh remains active -> order-book depth route is skipped by default -> order-book debug handoff remains available only behind `EXPO_PUBLIC_SHOW_ORDERBOOK=1`.
+- Result: PASS for source/data-contract scope. Reprove the full S23 retail journey on the next visible Local MVP cycle.

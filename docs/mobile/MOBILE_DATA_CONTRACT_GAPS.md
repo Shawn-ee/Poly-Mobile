@@ -9450,3 +9450,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: real provider-backed current-match Spread, Total, and Team Total market ids, condition ids, token ids, line/period fields, prices, and quote freshness.
 - Temporary mock/static data: none added. The scan is read-only and proof-only.
 - Future migration concern: unless Polymarket Gamma begins exposing attach-ready line-family rows, the next real path is an explicit approved secondary provider contract. Do not map match-winner/futures candidates into line markets.
+
+# Cycle UJ - Disable Default Orderbook Depth Fetch Notes
+
+- No schema migration was added.
+- Closed or narrowed: the default mobile Event Detail path no longer depends on order-book depth data.
+- Route mismatch: none. `/api/orderbook/:marketId/book` still exists as internal/debug infrastructure, but it is not required for Local MVP retail trading.
+- Fields Holiwyn still needs: current probability/top price/quote freshness for ticket pricing remain important. Depth ladder fields are debug-only for now.
+- Temporary mock/static data: none added.
+- Future migration concern: if order book becomes user-facing again, reintroduce it through an explicit approved milestone with Android proof instead of default background route calls.

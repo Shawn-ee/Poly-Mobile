@@ -7431,3 +7431,13 @@ Remaining P1:
 - Android proof: not rerun because this cycle changed no visible UI and no ADB device was attached.
 - Unresolved P0: 0 for UI scope.
 - Remaining P1: real provider-backed Spread/Totals/Team Total current-match rows are still unavailable from this Polymarket-first scan.
+
+# Cycle UJ Audit Gate - Disable Default Orderbook Depth Fetch
+
+- Scope: Local MVP Event Detail route behavior.
+- P0 result: PASS for source/data-contract scope.
+- Implementation proof: `mobile/App.tsx` now gates automatic `loadMarketDepthState()` and `requestMarketDepth` handoff behind `EXPO_PUBLIC_SHOW_ORDERBOOK=1`.
+- Contract proof: `src/__tests__/mobile.local-mvp-orderbook-debug-gate.test.ts` verifies the default retail Event Detail path keeps quote loading while disabling order-book depth loading unless the debug flag is explicitly enabled.
+- Android proof: not rerun because this cycle changed no visible UI and no ADB device was attached.
+- Unresolved P0: 0 for UJ scope.
+- Remaining P1: next visible MVP cycle should run S23 proof for the full retail journey.
