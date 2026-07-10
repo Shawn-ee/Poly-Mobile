@@ -7,6 +7,7 @@ const googleCallbackSource = () => readFileSync("src/app/api/auth/google/callbac
 const googleProofSource = () => readFileSync("scripts/prove_mobile_google_auth_return_s23.ps1", "utf8");
 const credentialStoreSource = () => readFileSync("mobile/src/services/mobileCredentialStore.ts", "utf8");
 const mobileReturnUrlSource = () => readFileSync("src/lib/mobileReturnUrl.ts", "utf8");
+const googleSetupDoc = () => readFileSync("docs/mobile/GOOGLE_LOGIN_SETUP.md", "utf8");
 
 describe("Google mobile auth contract", () => {
   test("mobile launches the backend Google flow with a Holiwyn app return target", () => {
@@ -71,5 +72,18 @@ describe("Google mobile auth contract", () => {
     expect(proof).toContain("cycle-$Cycle-google-auth-persisted-portfolio.xml");
     expect(proof).toContain("persistedReturnedKeyAfterRestart");
     expect(proof).toContain("forcePortfolio=1");
+  });
+
+  test("setup docs keep Google Cloud credentials in the Poly/Holiwyn backend", () => {
+    const doc = googleSetupDoc();
+
+    expect(doc).toContain("same Google OAuth setup that already appears in Poly/Holiwyn web");
+    expect(doc).toContain("GOOGLE_CLIENT_ID");
+    expect(doc).toContain("GOOGLE_CLIENT_SECRET");
+    expect(doc).toContain("Backend route `/api/auth/google/callback`");
+    expect(doc).toContain("Mobile stores only the returned Holiwyn API key");
+    expect(doc).toContain("Do not put `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, Google access tokens, or Google refresh tokens in the Expo/mobile `.env`.");
+    expect(doc).toContain("EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL");
+    expect(doc).toContain("EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL");
   });
 });
