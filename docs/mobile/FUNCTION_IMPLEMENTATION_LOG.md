@@ -12353,3 +12353,13 @@ Known limitations:
 - State transitions: temporary proof user submits a BUY on `argentina-vs-egypt` Spread `Egypt +1.5`; order fills; Portfolio shows a position; History shows the recent trade; selected line/source/token identity remains stable.
 - Proof: `docs/mobile/harness/cycle-UL-local-mvp-order-history-proof/cycle-UL-match-line-order-lifecycle.json`.
 - Known limitations: no Android proof because no device is attached. Real provider-backed Spread/Totals/Team Total rows remain unavailable.
+
+# Cycle UM - Remove Market Page Chart Harness Debt
+
+- Feature/page worked on: Event Detail / market page chart-free Local MVP behavior.
+- Frontend components touched: no visible component code changed because `EventDetail.tsx` was already chart-free. Updated `mobile/scripts/smoke.ps1` and `mobile/src/__tests__/eventDetailChartInteractionContract.test.ts`.
+- Backend/API routes touched: none.
+- User interactions supported: Home/Live -> Event Detail now remains focused on probability/outcome display, Game Lines, and simple ticket flow; older chart tap/filter proof paths no longer demand chart UI.
+- State transitions: no runtime state change. Proof harness paths that used to tap chart controls now assert chart absence or continue through Game Lines.
+- Proof: focused chart-free source/harness contract test.
+- Known limitations: no Android proof because no device is attached. Run S23 Event Detail proof before marking the visible page gate complete.

@@ -2879,3 +2879,10 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Flow covered by backend/API proof: selected `argentina-vs-egypt` Spread line -> `POST /api/orders` fake-token fill -> `/api/portfolio` position -> `/api/portfolio/history` recent trade -> selected line/source/token identity preserved.
 - Proof summary: `docs/mobile/harness/cycle-UL-local-mvp-order-history-proof/cycle-UL-match-line-order-lifecycle.json`.
 - Result: PASS for backend/API lifecycle scope. S23 visible journey proof remains the next required visible gate.
+
+# Cycle UM - Remove Market Page Chart Harness Debt
+
+- Device: no Android run; `adb devices -l` showed no attached device.
+- Flow covered by source/harness proof: Event Detail remains chart-free; smoke proof paths no longer require chart controls and assert chart absence instead.
+- Proof summary: focused contract test and source search.
+- Result: PASS for source/harness scope. S23 visible proof remains required for final visible page gate.

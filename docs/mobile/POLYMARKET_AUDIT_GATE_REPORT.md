@@ -7463,3 +7463,14 @@ Remaining P1:
 - Android proof: not rerun because no ADB device was attached.
 - Unresolved P0: 0 for UL backend/API lifecycle scope.
 - Remaining P1: S23 visible full journey proof; real provider-backed Spread/Totals/Team Total line rows.
+
+# Cycle UM Audit Gate - Remove Market Page Chart Harness Debt
+
+- Scope: Event Detail / market page chart-free Local MVP behavior.
+- P0 result: PASS for source/harness contract scope.
+- Source proof: `EventDetail.tsx` has no market-page chart renderer or chart UI markers.
+- Harness proof: `mobile/scripts/smoke.ps1` no longer positively expects or taps chart controls; chart-related checks are absence checks.
+- Contract proof: `mobile/src/__tests__/eventDetailChartInteractionContract.test.ts` guards both component source and smoke harness.
+- Android proof: not rerun because no ADB device was attached.
+- Unresolved P0: 0 for source/harness scope.
+- Remaining P1: S23 visible Event Detail proof showing no chart markers in top/lines XML.
