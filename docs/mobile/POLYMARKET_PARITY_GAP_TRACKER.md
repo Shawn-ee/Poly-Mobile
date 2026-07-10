@@ -1336,3 +1336,11 @@ For every UI element or interaction, answer:
 | Expo Go Google OAuth return target was rejected by backend allowlist | P1 | Verified | Backend now permits `exp:` / `exps:` mobile return URLs only outside production, while production remains restricted to `holiwyn:`. | `src/app/api/auth/google/start/route.ts`; `src/app/api/auth/google/callback/route.ts`; `mobile/src/__tests__/googleMobileAuthContract.test.ts` |
 | Google Cloud credential/token exchange could drift into mobile setup | P0 | Verified | README and contract tests keep Google Cloud client ID/secret/token exchange on backend; mobile receives only a Holiwyn API key after callback. | `mobile/README.md`; `mobile/.env.example`; `mobile/src/__tests__/googleMobileAuthContract.test.ts` |
 | Real interactive Google account consent on S23 | P1 | Open | SE removes the return-link blocker but still does not perform manual Google consent. | Audit notes |
+
+# Cycle SF - Google Mobile Return Allowlist Contract
+
+| Gap | Priority | Status | Note | Evidence |
+| --- | --- | --- | --- | --- |
+| Google auth start/callback return allowlists could drift independently | P0 | Verified | Shared `isAllowedMobileReturnUrl` helper now drives both routes. | `src/lib/mobileReturnUrl.ts`; `src/app/api/auth/google/start/route.ts`; `src/app/api/auth/google/callback/route.ts` |
+| Unsafe mobile return targets could be accepted without direct tests | P0 | Verified | Direct contract test rejects web, javascript, and malformed return values, and confirms Expo links are non-production only. | `mobile/src/__tests__/googleMobileReturnAllowlist.test.ts` |
+| Real interactive Google account consent on S23 | P1 | Open | SF hardens the backend policy but still does not perform manual Google consent. | Audit notes |

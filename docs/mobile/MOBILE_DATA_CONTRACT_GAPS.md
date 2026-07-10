@@ -8962,3 +8962,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new fields. The returned mobile credential remains the existing Holiwyn API key token created by `createApiCredential`.
 - Temporary mock/static data: none.
 - Future migration concern: when moving to APK/dev build, prefer `holiwyn://auth/google`; keep Expo return links for local testing only.
+
+# Cycle SF - Google Mobile Return Allowlist Contract Notes
+
+- No schema migration was added.
+- Closed or narrowed: Google mobile return URL policy is centralized in `src/lib/mobileReturnUrl.ts`, so auth start and callback cannot drift independently.
+- Route mismatch: none introduced. The backend still exchanges Google code/token server-side and returns a Holiwyn API key only to an allowed mobile return target.
+- Fields Holiwyn still needs but backend does not fully provide: none for this policy contract.
+- Temporary mock/static data: none.
+- Future migration concern: if new mobile schemes are introduced, they must be added to the helper with direct tests before being accepted by OAuth callback.

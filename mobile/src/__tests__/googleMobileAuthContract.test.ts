@@ -6,6 +6,7 @@ const googleStartSource = () => readFileSync("src/app/api/auth/google/start/rout
 const googleCallbackSource = () => readFileSync("src/app/api/auth/google/callback/route.ts", "utf8");
 const googleProofSource = () => readFileSync("scripts/prove_mobile_google_auth_return_s23.ps1", "utf8");
 const credentialStoreSource = () => readFileSync("mobile/src/services/mobileCredentialStore.ts", "utf8");
+const mobileReturnUrlSource = () => readFileSync("src/lib/mobileReturnUrl.ts", "utf8");
 
 describe("Google mobile auth contract", () => {
   test("mobile launches the backend Google flow with a Holiwyn app return target", () => {
@@ -38,15 +39,17 @@ describe("Google mobile auth contract", () => {
   test("backend keeps the Poly Google Cloud OAuth credential/token exchange on the server", () => {
     const start = googleStartSource();
     const callback = googleCallbackSource();
+    const allowlist = mobileReturnUrlSource();
 
     expect(start).toContain("GOOGLE_CLIENT_ID");
-    expect(start).toContain('url.protocol === "holiwyn:"');
-    expect(start).toContain('url.protocol === "exp:"');
-    expect(start).toContain('url.protocol === "exps:"');
-    expect(start).toContain('process.env.NODE_ENV !== "production"');
+    expect(start).toContain("isAllowedMobileReturnUrl(parsed)");
     expect(start).toContain("MOBILE_RETURN_TO_COOKIE");
     expect(callback).toContain("GOOGLE_CLIENT_SECRET");
-    expect(callback).toContain("isAllowedMobileReturnTo");
+    expect(callback).toContain("isAllowedMobileReturnUrl(mobileReturnTo)");
+    expect(allowlist).toContain('url.protocol === "holiwyn:"');
+    expect(allowlist).toContain('url.protocol === "exp:"');
+    expect(allowlist).toContain('url.protocol === "exps:"');
+    expect(allowlist).toContain('nodeEnv !== "production"');
     expect(callback).toContain("createApiCredential");
     expect(callback).toContain("Holiwyn Mobile Google");
     expect(callback).toContain('googleAuth: "success"');
