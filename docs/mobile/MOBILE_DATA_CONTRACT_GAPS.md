@@ -9223,3 +9223,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: optional future `homeTeamFlagUrl`/`awayTeamFlagUrl` or team ISO country codes would support richer image-based flags, but this is not required for the Local MVP.
 - Temporary mock/static data: none added. The country map is deterministic mobile display logic.
 - Future migration concern: if backend later owns team metadata, replace the mobile name map with backend-provided country/team display fields while preserving the same `Event.teams[].flag` UI contract.
+
+# Cycle TK - Portfolio Line Outcome Labels Notes
+
+- No schema migration was added.
+- Closed or narrowed: Portfolio Positions/Orders/History now prefer concrete selected spread outcome labels from `selection.referenceOutcomeLabel`, so a filled `Egypt +1.5` spread no longer degrades to a generic `Spread` display label.
+- Route mismatch: none. The current mobile Portfolio/order contracts already preserve `marketType`, `line`, `period`, provider token/source identity, and `referenceOutcomeLabel`; this cycle only consumes those fields more faithfully in the UI.
+- Fields Holiwyn still needs but backend does not fully provide: no new fields for this label fix. Real Polymarket-backed spread/totals/team-total markets remain unavailable for the current match and still require provider import/normalization work when Polymarket exposes attach-ready line markets.
+- Temporary mock/static data: none added. The S23 proof continues using the existing backend-shaped contract fixture path with explicit provider/source markers.
+- Future migration concern: do not remove `referenceOutcomeLabel` from Portfolio/history payloads when replacing fixtures with real provider-backed markets; the UI depends on that field to keep selected line/outcome labels readable after order placement.

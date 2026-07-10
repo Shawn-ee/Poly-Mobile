@@ -210,6 +210,13 @@ const displayPositionChoice = (item: { outcome: string; selection?: TicketSelect
     const side = /^under\b/i.test(compact) ? "Under" : "Over";
     return `${side} ${line} total goals`;
   }
+  if (item.selection?.marketType === "spread" && line) {
+    const outcomeLabel = (item.selection.referenceOutcomeLabel ?? item.outcome ?? compact).replace(/\s+(RT|1H|2H)$/i, "");
+    if (outcomeLabel && !/^yes$|^no$|^spread$/i.test(outcomeLabel)) {
+      return outcomeLabel.includes(line) ? outcomeLabel : `${outcomeLabel} ${line}`;
+    }
+    return compact.includes(line) ? compact : `Spread ${line}`;
+  }
   if (item.selection?.marketType === "team-total" && line) {
     const outcomeLabel = (item.selection.referenceOutcomeLabel ?? item.outcome ?? compact).replace(/\s+(RT|1H|2H)$/i, "");
     if (/\b(over|under)\b/i.test(outcomeLabel)) {
@@ -1474,7 +1481,9 @@ export function Portfolio({
                 <View style={styles.activityTitleRow}>
                   <Text style={styles.activityActionVerb}>{activityActionLabel(activity, t)}</Text>
                   <Text style={[styles.activitySidePill, activitySideLabel(activity) === "No" && styles.activitySidePillNo]}>{activitySideLabel(activity)}</Text>
-                  <Text numberOfLines={1} style={styles.activityAction}>{activityDisplayTitle(activity)}</Text>
+                  <Text adjustsFontSizeToFit minimumFontScale={0.72} numberOfLines={1} style={styles.activityAction}>
+                    {activityDisplayTitle(activity)}
+                  </Text>
                   {activity.selection && (
                     <View
                       accessibilityLabel={`portfolio-history-source-badge-${activity.id} ${portfolioSourceBadge(activity.selection).accessibility}`}
@@ -1898,11 +1907,11 @@ const styles = StyleSheet.create({
   activityItem: { flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 10, paddingHorizontal: 24, paddingVertical: 18, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   activityIcon: { width: 50, height: 50, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937" },
   activityMain: { flex: 1, minWidth: 0 },
-  activityTitleRow: { flexDirection: "row", alignItems: "center", gap: 6 },
-  activityActionVerb: { color: "#f8fafc", fontSize: 16, fontWeight: "500" },
-  activitySidePill: { overflow: "hidden", borderRadius: 6, paddingHorizontal: 6, paddingVertical: 2, color: "#22c55e", backgroundColor: "#052e16", fontSize: 13, fontWeight: "700" },
+  activityTitleRow: { flexDirection: "row", alignItems: "center", gap: 5 },
+  activityActionVerb: { color: "#f8fafc", fontSize: 15, fontWeight: "500" },
+  activitySidePill: { overflow: "hidden", borderRadius: 6, paddingHorizontal: 5, paddingVertical: 2, color: "#22c55e", backgroundColor: "#052e16", fontSize: 12, fontWeight: "700" },
   activitySidePillNo: { color: "#ef4444", backgroundColor: "#3a0f15" },
-  activityAction: { flex: 1, minWidth: 0, color: "#f8fafc", fontSize: 17, fontWeight: "500" },
+  activityAction: { flex: 1, minWidth: 0, color: "#f8fafc", fontSize: 16, fontWeight: "500" },
   activitySideMeta: { minWidth: 82, alignItems: "flex-end", gap: 6 },
   activityTime: { color: "#8b94a5", fontSize: 14, fontWeight: "500", textAlign: "right" },
   activityLiveText: { alignSelf: "flex-start", color: "#fecaca", fontSize: 11, fontWeight: "900", marginTop: 3, textTransform: "uppercase" },
