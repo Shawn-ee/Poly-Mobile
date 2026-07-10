@@ -4189,6 +4189,12 @@ Cycle OW implementation notes:
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Portfolio Positions tab row parity | `/api/portfolio`; `/api/portfolio/history` during server-mode sync/proof | GET | Existing mobile API key/server-mode proof auth | No new request fields | Existing position fields: `amount`, `probability`, `currentPrice`, `currentValue`, `pnl`, `shares`, `selection`, event/market/outcome identity | Existing `Position`, `Market`, `Outcome`, `Trade`, `ApiCredential`; no schema change | Mock mode renders the same position row from local Portfolio state | No new backend field required. Full Polymarket-like Portfolio Orders/History density remains separate UI work. |
 
+## Cycle ST - Portfolio History Row Density
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body/query | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio History tab row parity | `/api/portfolio/history`; `/api/portfolio` during server-mode sync/proof | GET | Existing mobile API key/server-mode proof auth | No new request fields | Existing activity fields: `amount`, `proceedsAmount`, `shares`, `probability`, `action`, `side`, `selection`, event/market/outcome identity | Existing `Trade`, `Order`, `Market`, `Outcome`, `ApiCredential`; no schema change | Mock mode renders the same history metric strip from local activities | No new backend field required for this visual cycle. Full Orders tab density remains separate UI work. |
+
 # Cycle SH - Home Local MVP Focus
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

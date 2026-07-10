@@ -9079,3 +9079,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new position-row fields for this cycle.
 - Temporary mock/static data: none added.
 - Future migration concern: if Portfolio Orders/History density work needs additional realized-profit labels, use the existing SQ/SR history fields rather than reintroducing action-derived guessing.
+
+# Cycle ST - Portfolio History Row Density Notes
+
+- No schema migration was added.
+- Closed or narrowed: Portfolio History rows now consume existing activity metrics in a denser Polymarket-like visible structure instead of hiding shares/execution price in expandable details.
+- Route mismatch: none. The cycle does not change `/api/portfolio` or `/api/portfolio/history`; it improves how existing `amount`, `proceedsAmount`, `shares`, `probability`, `action`, and selection identity fields are rendered.
+- Fields Holiwyn still needs but backend does not fully provide: no new History row fields for this cycle.
+- Temporary mock/static data: none added.
+- Future migration concern: if production history needs exact fee-adjusted row labels or execution venue/source badges, add explicit backend fields rather than deriving them from display copy.

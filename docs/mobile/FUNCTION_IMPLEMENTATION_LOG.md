@@ -11912,3 +11912,12 @@ Known limitations:
 - User interactions supported: the visible position row now uses a Polymarket-like compact structure with event score/clock context, separate Yes/No pill, outcome title, three-column Cost/Current/To win strip, Cash out, and `+` buy-more action.
 - State transitions: unchanged. Existing Portfolio position state drives the denser visual row; Cash out still opens the generic Sell Trade Ticket and `+` still opens Buy.
 - Known limitations: this improves position-row parity only. Orders tab, History row density, and full native Google OAuth proof remain separate gaps.
+
+# Cycle ST - Portfolio History Row Density
+
+- Feature/page worked on: Portfolio History tab after Local MVP buy/cashout.
+- Frontend components touched: `mobile/src/components/Portfolio.tsx`, `mobile/src/__tests__/portfolioHistoryDensityContract.test.ts`.
+- Backend/API routes touched: none. The row uses existing `PortfolioActivity` values already mapped from `/api/portfolio/history`.
+- User interactions supported: visible History rows now use a denser Polymarket-like structure with event/market context, Yes/No side pill, amount/proceeds, shares, and execution price/probability visible without expanding details.
+- State transitions: unchanged. Existing fake-token buy/sell/cashout activity state drives the denser History row; tapping a row still expands the detail panel.
+- Known limitations: this improves History row density only. Orders tab density and native Google OAuth manual proof remain separate gaps.

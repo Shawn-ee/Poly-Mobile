@@ -160,6 +160,22 @@ const isPositiveRealizedActivity = (activity: PortfolioActivity) =>
 const activityAmountDisplay = (activity: PortfolioActivity) =>
   `${isPositiveRealizedActivity(activity) ? "+" : ""}${portfolioRowMoney(activity.proceedsAmount ?? activity.amount)}`;
 
+const activityPrimaryMetricLabel = (activity: PortfolioActivity, locale: Locale) => {
+  if (activity.action === "sold" || activity.action === "closed") {
+    return locale === "zh" ? "\u6536\u76ca" : "Proceeds";
+  }
+  if (activity.action === "canceled") {
+    return locale === "zh" ? "\u4ef7\u503c" : "Value";
+  }
+  return locale === "zh" ? "\u6210\u672c" : "Cost";
+};
+
+const activityPrimaryMetricValue = (activity: PortfolioActivity) =>
+  portfolioRowMoney(activity.proceedsAmount ?? activity.amount);
+
+const activityPriceMetricValue = (activity: PortfolioActivity) =>
+  typeof activity.probability === "number" ? `${activity.probability}%` : "--";
+
 const displayOutcome = (item: { outcome: string; selection?: TicketSelection; contractSide?: BinaryContractSide }) => {
   const contractSide = item.contractSide ?? item.selection?.contractSide;
   const display = item.selection?.displayLabel ?? item.outcome;
@@ -1418,7 +1434,7 @@ export function Portfolio({
         <View style={styles.activityBlock}>
           {activities.slice(0, 5).map((activity) => (
             <Pressable
-              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity portfolio-history-dollar-amounts portfolio-history-outcome-compact-label portfolio-history-market-context-readable portfolio-history-event-context-${activityEventSubline(activity)} portfolio-history-market-context-${activityMarketSubline(activity)} portfolio-history-outcome-compact-${compactVisibleOutcomeLabel(activity)} portfolio-history-visible-label-${activityDisplayTitle(activity)} portfolio-history-fill-count-${activity.fillCount ?? 1} ${portfolioSourceNote(activity.selection, locale)?.accessibility ?? ""} ${providerBreadthCodes(activity) ? "portfolio-history-event-title-compact-provider" : ""} ${selectionIdentityLabel(activity)}`}
+              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity portfolio-history-polymarket-row-parity portfolio-history-metric-strip portfolio-history-dollar-amounts portfolio-history-outcome-compact-label portfolio-history-market-context-readable portfolio-history-event-context-${activityEventSubline(activity)} portfolio-history-market-context-${activityMarketSubline(activity)} portfolio-history-outcome-compact-${compactVisibleOutcomeLabel(activity)} portfolio-history-visible-label-${activityDisplayTitle(activity)} portfolio-history-fill-count-${activity.fillCount ?? 1} ${portfolioSourceNote(activity.selection, locale)?.accessibility ?? ""} ${providerBreadthCodes(activity) ? "portfolio-history-event-title-compact-provider" : ""} ${selectionIdentityLabel(activity)}`}
               key={activity.id}
               onPress={() => setExpandedActivityId((current) => (current === activity.id ? null : activity.id))}
               style={[styles.activityItem, expandedActivityId === activity.id && styles.rowExpanded]}
@@ -1492,6 +1508,30 @@ export function Portfolio({
                 <Text numberOfLines={1} style={styles.activityMarketMeta}>
                   {activityMarketSubline(activity)}
                 </Text>
+                <View
+                  accessibilityLabel={`portfolio-history-metric-strip-${activity.id}`}
+                  style={styles.activityMetricStrip}
+                  testID={`portfolio-history-metric-strip-${activity.id}`}
+                >
+                  <View style={styles.activityMetricItem}>
+                    <Text numberOfLines={1} style={styles.activityMetricLabel}>{activityPrimaryMetricLabel(activity, locale)}</Text>
+                    <Text adjustsFontSizeToFit minimumFontScale={0.76} numberOfLines={1} style={styles.activityMetricValue}>
+                      {activityPrimaryMetricValue(activity)}
+                    </Text>
+                  </View>
+                  <View style={styles.activityMetricItem}>
+                    <Text numberOfLines={1} style={styles.activityMetricLabel}>{t.shares}</Text>
+                    <Text adjustsFontSizeToFit minimumFontScale={0.76} numberOfLines={1} style={styles.activityMetricValue}>
+                      {activityShares(activity).toFixed(2)}
+                    </Text>
+                  </View>
+                  <View style={[styles.activityMetricItem, styles.activityMetricItemRight]}>
+                    <Text numberOfLines={1} style={styles.activityMetricLabel}>{t.executionPrice}</Text>
+                    <Text adjustsFontSizeToFit minimumFontScale={0.76} numberOfLines={1} style={styles.activityMetricValue}>
+                      {activityPriceMetricValue(activity)}
+                    </Text>
+                  </View>
+                </View>
                 {hasActivityExecutionDetails(activity) && (
                   <Text accessibilityLabel={`activity-execution-${activity.id}`} style={[styles.activityExecution, styles.a11yOnly]}>
                     {activityExecutionText(activity, t)}
@@ -1837,6 +1877,11 @@ const styles = StyleSheet.create({
   activityLiveClock: { alignSelf: "flex-start", color: "#fca5a5", fontSize: 11, fontWeight: "900", marginTop: 2 },
   activityMeta: { color: "#94a3b8", fontSize: 15, fontWeight: "500", marginTop: 6 },
   activityMarketMeta: { color: "#6f7a8d", fontSize: 14, fontWeight: "500", marginTop: 2 },
+  activityMetricStrip: { flexDirection: "row", alignItems: "stretch", gap: 8, marginTop: 10, paddingTop: 9, borderTopWidth: 1, borderTopColor: "#172033" },
+  activityMetricItem: { flex: 1, minWidth: 0, minHeight: 42, justifyContent: "center" },
+  activityMetricItemRight: { alignItems: "flex-end" },
+  activityMetricLabel: { color: "#6f7a8d", fontSize: 10, fontWeight: "800", marginBottom: 3 },
+  activityMetricValue: { color: "#dbeafe", fontSize: 14, fontWeight: "800" },
   activityExecution: { color: "#93c5fd", fontSize: 11, fontWeight: "900", marginTop: 4 },
   activityAmount: { color: "#dbeafe", fontSize: 18, fontWeight: "500", textAlign: "right" },
   activityAmountPositive: { color: "#22c55e" },
