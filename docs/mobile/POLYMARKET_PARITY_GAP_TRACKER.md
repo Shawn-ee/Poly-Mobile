@@ -1371,7 +1371,7 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Cashout/sold history rows looked like neutral cost entries | P0 | Verified | Sold/closed History rows now render green positive proceeds with `+$...`; bought rows stay neutral. | `mobile/src/components/Portfolio.tsx`; `docs/mobile/screenshots/cycle-SO-portfolio-history-realized-proceeds/cycle-SO-current-mvp-line-cashout-history.png` |
 | Full MVP trade -> cashout -> Portfolio history proof was needed after row change | P0 | Verified | S23 proof covers Home -> Event Detail -> line ticket -> fake-token buy -> cashout -> Portfolio History with sold and bought rows. | `docs/mobile/harness/cycle-SO-portfolio-history-realized-proceeds/cycle-SO-current-mvp-s23-visible-flow.json` |
-| Exact backend row-level realized P/L contract | P1 | Open | Mobile currently distinguishes realized proceeds by activity action. Backend should eventually expose explicit row-level `realizedPnl`/proceeds display fields. | `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md`; `docs/mobile/audits/cycle-SO-portfolio-history-realized-proceeds.md` |
+| Exact backend row-level realized P/L contract | P1 | Verified | Superseded by Cycles SQ/SR: recent SELL/cashout rows now expose `proceedsTokens` and reconstructable `realizedPnlTokens`; mobile maps them to `proceedsAmount` and `realizedPnl`. Incomplete basis returns `null` rather than guessed P/L. | `src/app/api/portfolio/history/route.ts`; `src/__tests__/portfolio.history.route.test.ts`; `mobile/src/services/portfolioHistoryService.ts`; `mobile/src/__tests__/portfolioHistoryService.test.ts`; `docs/mobile/audits/cycle-SR-recent-trade-realized-pnl.md` |
 
 # Cycle SP - Portfolio History Realized P/L Contract
 

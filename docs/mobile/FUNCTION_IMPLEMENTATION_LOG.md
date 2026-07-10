@@ -12204,3 +12204,13 @@ Known limitations:
 - State transitions: unchanged. The proof confirms current route state: Regulation Winner is `provider-backed`; Spread/Totals/Team Total are `contract-fixture`; expected line families are present; provider-unavailable and fixture-only families are explicitly listed; no fixture family is missing.
 - Proof: `prove_mobile_provider_line_source_probe.ts`, `prove_mobile_provider_line_breadth_scan.ts`, and `prove_mobile_provider_match_line_availability.ts` passed for Cycle TW artifacts in `docs/mobile/harness/cycle-TW-provider-line-source-reprobe/`.
 - Known limitations: Polymarket Gamma still exposes no attach-ready current-match line markets for the MVP match. Next meaningful product path is either keep explicit Local MVP contract fixtures or configure/review an approved secondary line provider contract.
+
+# Cycle TX - Realized P/L Tracker Cleanup
+
+- Feature/page worked on: Portfolio History realized proceeds/P&L contract tracking.
+- Frontend components touched: none. Existing `mobile/src/services/portfolioHistoryService.ts` still maps recent SELL `proceedsTokens` to `PortfolioActivity.proceedsAmount` and `realizedPnlTokens` to `PortfolioActivity.realizedPnl`.
+- Backend/API routes touched: none. Existing `/api/portfolio/history` still returns `proceedsTokens` for SELL rows and exact `realizedPnlTokens` when trade history is reconstructable.
+- User interactions supported: unchanged. After a fake-token buy and cashout/sell, Portfolio History can display backend-provided proceeds and realized P/L instead of guessing from the UI action.
+- State transitions: unchanged. BUY rows keep `realizedPnlTokens=null`; SELL rows return `realizedPnlTokens` when cost basis can be reconstructed; incomplete basis stays `null` rather than a guessed value.
+- Proof: focused backend route and mobile mapper tests passed. No Android proof was required because this cycle only corrects stale tracker status; Cycle SR remains the S23 visible proof for this path.
+- Known limitations: none for normal fake-token trades with complete trade history. Production liquidity policy remains a separate open P1.
