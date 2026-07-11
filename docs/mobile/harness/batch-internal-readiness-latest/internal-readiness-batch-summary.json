@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T07:31:10.4754909Z",
+  "generatedAt": "2026-07-11T07:40:24.0179501Z",
   "scope": "mobile-internal-readiness-batch",
   "cycle": "BATCHREADINESS",
   "backendBaseUrl": "http://127.0.0.1:3002",
@@ -66,10 +66,43 @@
       "producedJson": true
     }
   ],
+  "environmentHealthCaptured": "before-batch-steps",
+  "environmentHealth": {
+    "git": {
+      "branch": "main",
+      "status": "## main...poly-mobile/main [ahead 1]",
+      "worktreeClean": true
+    },
+    "android": {
+      "targetDeviceId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+      "targetModel": "SM_S911U1",
+      "s23Connected": true,
+      "adbDevices": "List of devices attached\r\nadb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp device product:dm1quew model:SM_S911U1 device:dm1q transport_id:4"
+    },
+    "docker": {
+      "polyPostgresHealthy": true,
+      "polyPostgresStatus": "poly_postgres Up 6 days (healthy) 0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp"
+    },
+    "localServices": {
+      "backendPort3002Listening": true,
+      "expoRunning": false,
+      "proofPort8289Listening": false,
+      "listeningPortsJson": "{\"LocalPort\":3002,\"OwningProcess\":36752}"
+    },
+    "bot": {
+      "runningContinuously": false,
+      "matchingProcessesJson": ""
+    }
+  },
   "readiness": {
     "localMvpReadyForInternalTesting": true,
     "providerBackedExchangeReady": false,
     "backendReady": true,
+    "worktreeClean": true,
+    "dbContainerHealthy": true,
+    "s23Connected": true,
+    "expoRunning": false,
+    "botRunningContinuously": false,
     "currentRouteLocalMvpReady": true,
     "mobileCredentialCanBeCreated": true,
     "ambientApiKeyReadyForManualServerMode": false,
