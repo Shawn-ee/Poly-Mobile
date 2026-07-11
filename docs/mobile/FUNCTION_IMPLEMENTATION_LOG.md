@@ -109,6 +109,23 @@ Purpose: document the app functions, services, API calls, state transitions, and
 - Known limitations:
   - Harness/control-plane change only. It does not alter provider data, mobile UI, backend routes, or the remaining Polymarket provider parity P1 wait.
 
+## Cycle WAITPLAN - Machine-Readable Autonomous Wait Guidance
+
+- Feature/page worked on: autonomous next-action planner wait semantics.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/plan_mobile_autonomous_next_action.ts`
+  - `src/__tests__/mobile-autonomous-next-action.contract.test.ts`
+- User interactions supported: unchanged.
+- State transitions:
+  - When the loop is in `provider-parity-wait`, the next-action plan now includes a `wait` block with `shouldWait`, `wakeAt`, trigger kind/name, countdown seconds, poll interval, and resume command.
+  - The command output also prints `WAIT_UNTIL` and `POLL_AFTER_SECONDS` for supervising agents.
+  - When actionable work is due, such as provider evidence refresh, the wait block is disabled so the loop runs commands instead of sleeping.
+- Proof:
+  - `npx jest --runInBand src/__tests__/mobile-autonomous-next-action.contract.test.ts`
+- Known limitations:
+  - Harness/control-plane change only. It does not fetch providers, spend quota, alter mobile UI, or close the remaining Polymarket provider parity P1 debt.
+
 ## Cycle NEXTSTALEFIX - Earliest Proof Refresh Forecast
 
 - Feature/page worked on: internal readiness S23/provider proof freshness forecasting for the autonomous loop.

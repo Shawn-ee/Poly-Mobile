@@ -1,10 +1,19 @@
 {
-  "generatedAt": "2026-07-11T22:16:37.874Z",
+  "generatedAt": "2026-07-11T22:43:35.022Z",
   "status": "provider-parity-wait",
   "priority": "P1",
   "reason": "Provider-backed Polymarket parity is the only remaining partial criterion, but provider evidence is fresh.",
-  "recommendedAction": "Do not open a new provider scan. Keep Local MVP internal testing/regression proof ready while waiting for provider evidence to become stale or a real candidate signal. Next wait trigger: provider-evidence 'provider-visible-tradable-flow' at 2026-07-12T13:50:21.2740000Z (15.56 hours).",
+  "recommendedAction": "Do not open a new provider scan. Keep Local MVP internal testing/regression proof ready while waiting for provider evidence to become stale or a real candidate signal. Next wait trigger: provider-evidence 'provider-visible-tradable-flow' at 2026-07-12T13:50:21.2740000Z (15.11 hours).",
   "commands": [],
+  "wait": {
+    "shouldWait": true,
+    "wakeAt": "2026-07-12T13:50:21.2740000Z",
+    "triggerKind": "provider-evidence",
+    "triggerName": "provider-visible-tradable-flow",
+    "waitSeconds": 54396,
+    "pollAfterSeconds": 900,
+    "resumeCommand": "npm run mobile:autonomous-next-action"
+  },
   "sourceEvidence": {
     "readinessSummaryPath": "docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json",
     "providerEvidencePlanPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-evidence-refresh-plan.json",
@@ -25,11 +34,11 @@
     ],
     "s23ProofReady": true,
     "s23ProofNextStaleName": "filled-buy-history",
-    "s23ProofHoursUntilStale": 23.46,
+    "s23ProofHoursUntilStale": 23.01,
     "providerPlanStatus": "skip-refresh",
-    "providerEvidenceHoursUntilStale": 15.56,
+    "providerEvidenceHoursUntilStale": 15.11,
     "temporaryProviderBackendProofReady": true,
-    "temporaryProviderBackendProofHoursUntilStale": 23.25,
+    "temporaryProviderBackendProofHoursUntilStale": 22.8,
     "readyToDeclareDone": false,
     "dodCounts": {
       "verified": 12,
@@ -46,7 +55,7 @@
       "kind": "provider-evidence",
       "name": "provider-visible-tradable-flow",
       "staleAt": "2026-07-12T13:50:21.2740000Z",
-      "hoursUntilStale": 15.56
+      "hoursUntilStale": 15.11
     }
   }
 }

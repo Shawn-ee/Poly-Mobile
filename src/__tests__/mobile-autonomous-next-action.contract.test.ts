@@ -25,6 +25,9 @@ describe("mobile autonomous next-action planner", () => {
     expect(script).toContain("temporarySportsbookBackendProofReady");
     expect(script).toContain("nextWaitTrigger");
     expect(script).toContain("earliestWaitTrigger");
+    expect(script).toContain("waitPlanForStatus");
+    expect(script).toContain("WAIT_UNTIL");
+    expect(script).toContain("POLL_AFTER_SECONDS");
     expect(script).toContain("hoursUntilStale");
     expect(script).toContain("samePlanIgnoringVolatileWaitFields");
     expect(script).toContain("stripVolatileWaitFields");
@@ -150,6 +153,15 @@ describe("mobile autonomous next-action planner", () => {
 
       const plan = JSON.parse(readFileSync(outputPath, "utf8"));
       expect(plan.status).toBe("provider-parity-wait");
+      expect(plan.wait).toEqual({
+        shouldWait: true,
+        wakeAt: "2026-07-12T14:00:00.000Z",
+        triggerKind: "provider-evidence",
+        triggerName: "provider-visible-tradable-flow",
+        waitSeconds: 57600,
+        pollAfterSeconds: 900,
+        resumeCommand: "npm run mobile:autonomous-next-action",
+      });
       expect(plan.state.nextWaitTrigger).toEqual({
         kind: "provider-evidence",
         name: "provider-visible-tradable-flow",
@@ -246,6 +258,8 @@ describe("mobile autonomous next-action planner", () => {
       const plan = JSON.parse(readFileSync(outputPath, "utf8"));
       expect(plan.status).toBe("refresh-provider-evidence");
       expect(plan.priority).toBe("P1");
+      expect(plan.wait.shouldWait).toBe(false);
+      expect(plan.wait.wakeAt).toBeNull();
       expect(plan.state.providerEvidenceHoursUntilStale).toBe(-0.5);
       expect(plan.state.nextWaitTrigger).toEqual({
         kind: "provider-evidence",

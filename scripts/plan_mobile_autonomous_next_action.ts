@@ -107,6 +107,15 @@ type NextActionPlan = {
   reason: string;
   recommendedAction: string;
   commands: string[];
+  wait: {
+    shouldWait: boolean;
+    wakeAt: string | null;
+    triggerKind: "s23-proof" | "provider-evidence" | "temporary-provider-proof" | null;
+    triggerName: string | null;
+    waitSeconds: number | null;
+    pollAfterSeconds: number | null;
+    resumeCommand: string;
+  };
   sourceEvidence: {
     readinessSummaryPath: string;
     providerEvidencePlanPath: string;
@@ -179,6 +188,8 @@ function stripVolatileWaitFields(value: unknown): unknown {
     if (
       key === "generatedAt" ||
       key === "hoursUntilStale" ||
+      key === "waitSeconds" ||
+      key === "pollAfterSeconds" ||
       key.endsWith("HoursUntilStale")
     ) {
       continue;
@@ -213,6 +224,30 @@ function hoursUntilStale(staleAt: string | null | undefined, fallbackHours: unkn
     }
   }
   return numberOrNull(fallbackHours);
+}
+
+function secondsUntilStale(hours: number | null): number | null {
+  if (hours === null || !Number.isFinite(hours)) {
+    return null;
+  }
+  return Math.max(0, Math.round(hours * 3600));
+}
+
+function waitPlanForStatus(
+  status: NextActionPlan["status"],
+  nextWaitTrigger: NextActionPlan["state"]["nextWaitTrigger"],
+): NextActionPlan["wait"] {
+  const shouldWait = status === "provider-parity-wait" && Boolean(nextWaitTrigger.kind);
+  const waitSeconds = shouldWait ? secondsUntilStale(nextWaitTrigger.hoursUntilStale) : null;
+  return {
+    shouldWait,
+    wakeAt: shouldWait ? nextWaitTrigger.staleAt : null,
+    triggerKind: shouldWait ? nextWaitTrigger.kind : null,
+    triggerName: shouldWait ? nextWaitTrigger.name : null,
+    waitSeconds,
+    pollAfterSeconds: shouldWait && waitSeconds !== null ? Math.max(60, Math.min(waitSeconds, 15 * 60)) : null,
+    resumeCommand: "npm run mobile:autonomous-next-action",
+  };
 }
 
 function earliestWaitTrigger(
@@ -394,6 +429,7 @@ function buildPlan(
     reason,
     recommendedAction,
     commands,
+    wait: waitPlanForStatus(status, nextWaitTrigger),
     sourceEvidence: paths,
     state: {
       localMvpReady: readinessState.localMvpReadyForInternalTesting === true,
@@ -478,3 +514,7 @@ console.log(`PLAN ${outputPath}`);
 console.log(`STATUS ${plan.status}`);
 console.log(`PRIORITY ${plan.priority}`);
 console.log(`RECOMMENDED ${plan.recommendedAction}`);
+if (plan.wait.shouldWait) {
+  console.log(`WAIT_UNTIL ${plan.wait.wakeAt ?? "unknown"}`);
+  console.log(`POLL_AFTER_SECONDS ${plan.wait.pollAfterSeconds ?? "unknown"}`);
+}
