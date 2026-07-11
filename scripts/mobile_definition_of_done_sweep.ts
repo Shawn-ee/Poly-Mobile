@@ -38,6 +38,7 @@ const evidence = {
   ticketScreenshot: "docs/mobile/screenshots/cycle-current-holiwyn-server-position-fallback-order-ticket.png",
   internalReadinessBatch: "docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json",
   internalReadinessGapList: "docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md",
+  providerEvidencePlan: "docs/mobile/harness/batch-internal-readiness-latest/provider-evidence-refresh-plan.json",
 };
 
 const readJson = <T,>(file: string): T | null => {
@@ -68,6 +69,22 @@ const internalReadiness = readJson<{
 }>(evidence.internalReadinessBatch);
 const internalReadinessP0Count = internalReadiness?.blockers?.p0?.length ?? 0;
 const internalReadinessP1Count = internalReadiness?.blockers?.p1?.length ?? 0;
+const providerEvidencePlan = readJson<{
+  status?: string;
+  shouldRefreshProviderEvidence?: boolean;
+  nextStaleName?: string | null;
+  nextStaleAt?: string | null;
+  hoursUntilStale?: number | null;
+  providerRefreshCommand?: string;
+  providerBlockers?: string[];
+  providerEvidenceCounts?: {
+    worldCupTeamMatchEventCount?: number | null;
+    usableWorldCupTeamMatchEventCount?: number | null;
+    attachReadyProviderLineCandidateCount?: number | null;
+  };
+}>(evidence.providerEvidencePlan);
+const providerPlanStatus = providerEvidencePlan?.status ?? "missing";
+const providerPlanFreshEnough = providerEvidencePlan?.shouldRefreshProviderEvidence === false;
 const localMvpBatchReady =
   internalReadiness?.readiness?.localMvpReadyForInternalTesting === true &&
   internalReadiness?.readiness?.backendReady === true &&
@@ -158,11 +175,11 @@ const criteria: Criterion[] = [
     id: "dod-provider-polymarket-parity",
     criterion: "Provider-backed Polymarket match/line parity is current, tradable, and not relying on contract fixtures for MVP line markets.",
     status: internalReadiness?.readiness?.providerBackedExchangeReady === true && internalReadinessP1Count === 0 ? "verified" : "partial",
-    evidence: [evidence.internalReadinessBatch, evidence.internalReadinessGapList],
+    evidence: [evidence.internalReadinessBatch, evidence.internalReadinessGapList, evidence.providerEvidencePlan],
     notes:
       internalReadiness?.readiness?.providerBackedExchangeReady === true && internalReadinessP1Count === 0
         ? "Provider-backed exchange readiness has no current P1 blockers."
-        : `Current batch still tracks ${internalReadinessP1Count} provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity.`,
+        : `Current batch still tracks ${internalReadinessP1Count} provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity. Provider refresh plan status is ${providerPlanStatus}${providerPlanFreshEnough ? ", so another provider refresh should be skipped until the next stale window or a real candidate signal appears" : ", so run the provider refresh recovery before making provider-backed parity decisions"}.`,
   },
   {
     id: "dod-final-cycle",
@@ -205,7 +222,11 @@ const summary = {
         ...(localMvpBatchReady ? [] : ["Fix current internal-readiness P0 blockers before manual Local MVP testing."]),
         ...(internalReadinessP1Count === 0
           ? []
-          : ["Keep Local MVP testing on the contract-shaped line-market flow; do not declare full Polymarket/provider parity until the provider P1 blockers clear."]),
+          : [
+              providerPlanFreshEnough
+                ? "Keep Local MVP testing on the contract-shaped line-market flow; provider evidence is fresh, so do not rerun provider discovery until the plan says refresh-soon/refresh-due or a real candidate signal appears."
+                : `Refresh provider evidence with ${providerEvidencePlan?.providerRefreshCommand ?? "npm run mobile:internal-readiness-batch:provider-refresh"} before making provider-backed parity decisions.`,
+            ]),
         ...(hasPassingFinalSignoff ? [] : ["Run a final QA/review signoff pass and close or explicitly downgrade remaining P0 debt."]),
         ...(hasPassingSamsungApkSmoke ? [] : ["Generate or provide dist/holiwyn-preview.apk, then run npm run smoke:samsung:apk."]),
         "Keep Samsung server-order proof as the main real-device trading regression until the APK lane exists.",

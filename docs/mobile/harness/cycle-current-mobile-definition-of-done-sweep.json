@@ -6,7 +6,7 @@
     "partial": 2,
     "blocked": 0
   },
-  "generatedAt": "2026-07-11T13:57:45.746Z",
+  "generatedAt": "2026-07-11T14:20:48.693Z",
   "criteria": [
     {
       "id": "dod-android-runtime",
@@ -105,9 +105,10 @@
       "status": "partial",
       "evidence": [
         "docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json",
-        "docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md"
+        "docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md",
+        "docs/mobile/harness/batch-internal-readiness-latest/provider-evidence-refresh-plan.json"
       ],
-      "notes": "Current batch still tracks 4 provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity."
+      "notes": "Current batch still tracks 4 provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity. Provider refresh plan status is skip-refresh, so another provider refresh should be skipped until the next stale window or a real candidate signal appears."
     },
     {
       "id": "dod-final-cycle",
@@ -134,7 +135,7 @@
     }
   ],
   "nextActions": [
-    "Keep Local MVP testing on the contract-shaped line-market flow; do not declare full Polymarket/provider parity until the provider P1 blockers clear.",
+    "Keep Local MVP testing on the contract-shaped line-market flow; provider evidence is fresh, so do not rerun provider discovery until the plan says refresh-soon/refresh-due or a real candidate signal appears.",
     "Run a final QA/review signoff pass and close or explicitly downgrade remaining P0 debt.",
     "Keep Samsung server-order proof as the main real-device trading regression until the APK lane exists."
   ]

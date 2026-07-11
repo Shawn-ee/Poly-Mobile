@@ -1,6 +1,6 @@
 # Mobile Final Review Signoff
 
-Generated: 2026-07-11T13:57:46.119Z
+Generated: 2026-07-11T14:20:55.537Z
 
 Result: FAIL
 
@@ -18,4 +18,4 @@ Unresolved P0 gaps:
 
 Definition of Done blockers:
 
-- dod-provider-polymarket-parity: partial - Current batch still tracks 4 provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity.
+- dod-provider-polymarket-parity: partial - Current batch still tracks 4 provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity. Provider refresh plan status is skip-refresh, so another provider refresh should be skipped until the next stale window or a real candidate signal appears.

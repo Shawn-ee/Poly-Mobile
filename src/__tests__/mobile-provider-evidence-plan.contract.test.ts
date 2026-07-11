@@ -60,4 +60,13 @@ describe("mobile provider evidence refresh planner", () => {
     expect(functionLog()).toContain("Cycle PROVIDERPLAN - Provider Evidence Refresh Planner");
     expect(functionLog()).toContain("No provider-backed parity feature is marked complete by this planner.");
   });
+
+  it("is consumed by final Definition of Done reporting", () => {
+    const sweep = readFileSync("scripts/mobile_definition_of_done_sweep.ts", "utf8");
+
+    expect(sweep).toContain("provider-evidence-refresh-plan.json");
+    expect(sweep).toContain("providerPlanStatus");
+    expect(sweep).toContain("providerPlanFreshEnough");
+    expect(sweep).toContain("do not rerun provider discovery until the plan says refresh-soon/refresh-due");
+  });
 });

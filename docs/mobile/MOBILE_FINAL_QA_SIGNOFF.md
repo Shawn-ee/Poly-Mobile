@@ -1,6 +1,6 @@
 # Mobile Final QA Signoff
 
-Generated: 2026-07-11T13:57:46.119Z
+Generated: 2026-07-11T14:20:55.537Z
 
 Result: FAIL
 
@@ -24,13 +24,14 @@ Required evidence reviewed:
 - Samsung backend server-order proof: docs/mobile/harness/cycle-current-mobile-samsung-backend-position-order-proof.json
 - Android dev-build readiness: docs/mobile/harness/cycle-current-android-dev-build-readiness.json
 - Samsung APK smoke install/launch evidence: docs/mobile/harness/cycle-current-samsung-apk-smoke.json
+- Provider evidence refresh plan: docs/mobile/harness/batch-internal-readiness-latest/provider-evidence-refresh-plan.json
 - Mobile API regression: cmd /c npm.cmd run test:mobile-api
 - Mobile TypeScript check: cmd /c npm.cmd run typecheck (mobile)
 
 Residual risks:
 
 - Final signoff is blocked by non-final Definition of Done criteria that remain partial or blocked.
-- dod-provider-polymarket-parity: Current batch still tracks 4 provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity.
+- dod-provider-polymarket-parity: Current batch still tracks 4 provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity. Provider refresh plan status is skip-refresh, so another provider refresh should be skipped until the next stale window or a real candidate signal appears.
 - Samsung APK smoke now installs and launches dist/holiwyn-preview.apk; future production signing/release-channel hardening remains separate.
 - Emulator reliability remains partial in this workstation environment; Samsung is the stronger QA target.
 - Deposit, withdraw, and EBPay remain intentionally out of scope.

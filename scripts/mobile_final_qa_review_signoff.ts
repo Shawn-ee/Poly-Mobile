@@ -87,6 +87,7 @@ const evidence = {
   samsungServerOrder: "docs/mobile/harness/cycle-current-mobile-samsung-backend-position-order-proof.json",
   androidReadiness: "docs/mobile/harness/cycle-current-android-dev-build-readiness.json",
   samsungApkSmoke: "docs/mobile/harness/cycle-current-samsung-apk-smoke.json",
+  providerEvidencePlan: "docs/mobile/harness/batch-internal-readiness-latest/provider-evidence-refresh-plan.json",
   mobileApiTests: "cmd /c npm.cmd run test:mobile-api",
   mobileTypecheck: "cmd /c npm.cmd run typecheck (mobile)",
 };
@@ -144,6 +145,7 @@ Required evidence reviewed:
 - Samsung backend server-order proof: ${evidence.samsungServerOrder}
 - Android dev-build readiness: ${evidence.androidReadiness}
 - Samsung APK smoke install/launch evidence: ${evidence.samsungApkSmoke}
+- Provider evidence refresh plan: ${evidence.providerEvidencePlan}
 - Mobile API regression: ${evidence.mobileApiTests}
 - Mobile TypeScript check: ${evidence.mobileTypecheck}
 

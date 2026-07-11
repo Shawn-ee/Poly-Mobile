@@ -8,13 +8,16 @@ Purpose: document the app functions, services, API calls, state transitions, and
 - Frontend components touched: none.
 - Important functions/services touched:
   - `scripts/plan_mobile_provider_evidence_refresh.ts`
+  - `scripts/mobile_definition_of_done_sweep.ts`
+  - `scripts/mobile_final_qa_review_signoff.ts`
   - root `package.json` `mobile:provider-evidence-plan`
   - `src/__tests__/mobile-provider-evidence-plan.contract.test.ts`
+  - `src/__tests__/mobile-final-qa-review-signoff.contract.test.ts`
   - `docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md`
 - User interactions supported: unchanged. The Local MVP path remains Home -> Event Detail -> line market -> Trade Ticket -> fake-token order -> Portfolio/history.
 - State transitions: no mobile, backend, database, order, provider, or bot state changes. The planner reads `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json` and writes `provider-evidence-refresh-plan.json` with a skip/refresh decision, next stale time, provider blockers, and recovery commands.
 - API/data dependencies: no runtime API calls. The planner consumes the existing batch fields `readiness.cachedProviderEvidenceFresh`, `readiness.cachedProviderEvidenceHoursUntilStale`, `readiness.cachedProviderEvidence[]`, `blockers.p1`, and `recovery.providerRefreshCommand`.
-- Proof: run `npm run mobile:provider-evidence-plan` and confirm the plan reports `skip-refresh` while cached provider evidence is fresh. The Jest contract test verifies the command does not contain direct Gamma/CLOB fetch logic and writes a machine-readable plan from the committed batch summary.
+- Proof: run `npm run mobile:provider-evidence-plan` and confirm the plan reports `skip-refresh` while cached provider evidence is fresh. The final Definition of Done sweep consumes that plan so the final parity report can say whether the correct next provider action is wait or refresh. The Jest contract tests verify the command does not contain direct Gamma/CLOB fetch logic, writes a machine-readable plan from the committed batch summary, and is included in final signoff evidence.
 - Known limitations: No provider-backed parity feature is marked complete by this planner. It only helps the long-running loop avoid repeated provider scans until evidence is stale, nearly stale, missing, or a real provider candidate appears.
 
 ## Cycle S23PROOFFORECAST - S23 Proof Staleness Forecast

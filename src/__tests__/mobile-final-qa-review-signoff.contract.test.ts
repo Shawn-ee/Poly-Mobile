@@ -12,6 +12,13 @@ describe("mobile final QA/review signoff contract", () => {
     expect(script).toContain("unresolvedP0Gaps.length === 0 && definitionOfDoneSweepPresent");
   });
 
+  it("includes the provider evidence refresh plan in final signoff evidence", () => {
+    const script = source();
+
+    expect(script).toContain("provider-evidence-refresh-plan.json");
+    expect(script).toContain("Provider evidence refresh plan");
+  });
+
   it("excludes the final-cycle criterion to avoid a circular signoff lock", () => {
     const script = source();
 

@@ -1,6 +1,6 @@
 {
   "ready": false,
-  "generatedAt": "2026-07-11T13:57:46.119Z",
+  "generatedAt": "2026-07-11T14:20:55.537Z",
   "p0GapCount": 55,
   "verifiedP0GapCount": 55,
   "unresolvedP0GapCount": 0,
@@ -19,9 +19,10 @@
       "status": "partial",
       "evidence": [
         "docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json",
-        "docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md"
+        "docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md",
+        "docs/mobile/harness/batch-internal-readiness-latest/provider-evidence-refresh-plan.json"
       ],
-      "notes": "Current batch still tracks 4 provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity."
+      "notes": "Current batch still tracks 4 provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity. Provider refresh plan status is skip-refresh, so another provider refresh should be skipped until the next stale window or a real candidate signal appears."
     }
   ],
   "qaSignoff": "fail",
@@ -33,12 +34,13 @@
     "samsungServerOrder": "docs/mobile/harness/cycle-current-mobile-samsung-backend-position-order-proof.json",
     "androidReadiness": "docs/mobile/harness/cycle-current-android-dev-build-readiness.json",
     "samsungApkSmoke": "docs/mobile/harness/cycle-current-samsung-apk-smoke.json",
+    "providerEvidencePlan": "docs/mobile/harness/batch-internal-readiness-latest/provider-evidence-refresh-plan.json",
     "mobileApiTests": "cmd /c npm.cmd run test:mobile-api",
     "mobileTypecheck": "cmd /c npm.cmd run typecheck (mobile)"
   },
   "residualRisks": [
     "Final signoff is blocked by non-final Definition of Done criteria that remain partial or blocked.",
-    "dod-provider-polymarket-parity: Current batch still tracks 4 provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity.",
+    "dod-provider-polymarket-parity: Current batch still tracks 4 provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity. Provider refresh plan status is skip-refresh, so another provider refresh should be skipped until the next stale window or a real candidate signal appears.",
     "Samsung APK smoke now installs and launches dist/holiwyn-preview.apk; future production signing/release-channel hardening remains separate.",
     "Emulator reliability remains partial in this workstation environment; Samsung is the stronger QA target.",
     "Deposit, withdraw, and EBPay remain intentionally out of scope."
