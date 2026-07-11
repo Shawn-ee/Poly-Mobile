@@ -37,24 +37,28 @@ const createMarket = async (overrides: {
   referenceSource?: string | null;
   externalMarketId?: string | null;
   conditionId?: string | null;
+  status?: "UPCOMING" | "LIVE" | "PAUSED" | "CLOSED" | "RESOLVED" | "CANCELED";
+  isCanceled?: boolean;
+  isListed?: boolean;
+  outcomeIsTradable?: boolean;
 } = {}) =>
   prisma.market.create({
     data: {
       title: "Canonical Phase5 Market",
       description: "phase5 test market",
-      status: "LIVE",
+      status: overrides.status ?? "LIVE",
       mechanism: "ORDERBOOK",
       visibility: "PUBLIC",
       kind: "ORDERBOOK",
-      isCanceled: false,
-      isListed: true,
+      isCanceled: overrides.isCanceled ?? false,
+      isListed: overrides.isListed ?? true,
       referenceSource: overrides.referenceSource ?? undefined,
       externalMarketId: overrides.externalMarketId ?? undefined,
       conditionId: overrides.conditionId ?? undefined,
       outcomes: {
         create: [
-          { name: "YES", slug: `phase5-yes-${Math.random()}`, displayOrder: 0, isActive: true },
-          { name: "NO", slug: `phase5-no-${Math.random()}`, displayOrder: 1, isActive: true },
+          { name: "YES", slug: `phase5-yes-${Math.random()}`, displayOrder: 0, isActive: true, isTradable: overrides.outcomeIsTradable ?? true },
+          { name: "NO", slug: `phase5-no-${Math.random()}`, displayOrder: 1, isActive: true, isTradable: overrides.outcomeIsTradable ?? true },
         ],
       },
     },
@@ -416,6 +420,57 @@ describe("Phase 5 canonical order submission", () => {
     })).toMatchObject({
       status: "FAILED",
       errorCode: "MARKET_UNAVAILABLE",
+      responseStatus: 409,
+    });
+  });
+
+  test("local mobile unavailable markets are stored as MARKET_UNAVAILABLE before matching", async () => {
+    const user = await createUser("local_unavailable_user");
+    const market = await createMarket({ status: "PAUSED" });
+    const credential = await createApiCredential({ userId: user.id });
+    await fundUser(user.id, "100.000000");
+
+    const result = await submitCanonicalOrder({
+      userId: user.id,
+      apiCredentialId: credential.id,
+      apiKeyId: credential.keyId,
+      body: {
+        marketId: market.id,
+        outcomeId: market.outcomes[0].id,
+        side: "BUY",
+        type: "LIMIT",
+        price: "0.45",
+        size: "10.000000",
+        selection: {
+          marketId: market.id,
+          outcomeId: market.outcomes[0].id,
+          marketType: "spread",
+          line: "1.5",
+          period: "regulation",
+          side: "away",
+          displayLabel: "Egypt +1.5",
+          referenceSource: "contract-fixture",
+          referenceTokenId: "contract-paused-line-token",
+        },
+      },
+      idempotencyKeyHeader: "local-unavailable-key",
+    });
+
+    expect(result.status).toBe(409);
+    expect(result.body).toMatchObject({
+      error: {
+        code: "MARKET_UNAVAILABLE",
+        message: "Market is not open for trading.",
+      },
+    });
+    expect(await prisma.order.count({ where: { marketId: market.id } })).toBe(0);
+    expect(await prisma.apiOrderRequest.findFirst({
+      where: { userId: user.id, idempotencyKey: "local-unavailable-key" },
+      select: { status: true, errorCode: true, errorMessage: true, responseStatus: true },
+    })).toMatchObject({
+      status: "FAILED",
+      errorCode: "MARKET_UNAVAILABLE",
+      errorMessage: "Market is not open for trading.",
       responseStatus: 409,
     });
   });
