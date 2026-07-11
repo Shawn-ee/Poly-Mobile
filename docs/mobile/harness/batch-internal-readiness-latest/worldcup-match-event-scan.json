@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T08:57:54.915Z",
+  "generatedAt": "2026-07-11T09:06:54.053Z",
   "source": "gamma-api.polymarket.com/events",
   "readOnly": true,
   "scope": "world-cup-match-only-provider-breadth",
@@ -26,7 +26,7 @@
     "matchEventCount": 4,
     "usableMatchEventCount": 0,
     "futuresEventCount": 35,
-    "nonWorldCupOrPropUsableCount": 126,
+    "nonWorldCupOrPropUsableCount": 125,
     "pass": false
   },
   "usableMatchEvents": [],
@@ -359,39 +359,6 @@
   "diagnostics": {
     "futuresEvents": [
       {
-        "slug": "pro-football-2026-mvp-winner",
-        "title": "Pro Football: 2026 MVP Winner",
-        "tags": [
-          "nfl",
-          "mvp",
-          "football",
-          "awards",
-          "nfl-awards"
-        ],
-        "matchLike": false,
-        "worldCupRelevant": false,
-        "playerPropLike": true,
-        "futuresLike": true,
-        "marketCount": 40,
-        "usableMarketCount": 19,
-        "acceptingOrderMarketCount": 40,
-        "sampleUsableMarket": {
-          "slug": "will-josh-allen-win-the-2026-nfl-mvp",
-          "question": "Will Josh Allen win the 2026 NFL MVP?",
-          "acceptingOrders": true,
-          "active": true,
-          "closed": false,
-          "archived": false,
-          "outcomeCount": 2,
-          "tokenCount": 2,
-          "bestBid": 0.14,
-          "bestAsk": 0.15,
-          "spread": 0.01,
-          "usableBook": true,
-          "rejectionReasons": []
-        }
-      },
-      {
         "slug": "2026-womens-us-open-winner-tennis",
         "title": "2026 Women’s US Open Winner (Tennis)",
         "tags": [
@@ -454,6 +421,39 @@
         }
       },
       {
+        "slug": "pro-football-2026-mvp-winner",
+        "title": "Pro Football: 2026 MVP Winner",
+        "tags": [
+          "nfl",
+          "mvp",
+          "football",
+          "awards",
+          "nfl-awards"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 40,
+        "usableMarketCount": 16,
+        "acceptingOrderMarketCount": 40,
+        "sampleUsableMarket": {
+          "slug": "will-josh-allen-win-the-2026-nfl-mvp",
+          "question": "Will Josh Allen win the 2026 NFL MVP?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.14,
+          "bestAsk": 0.15,
+          "spread": 0.01,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
         "slug": "2026-mens-us-open-winner-tennis",
         "title": "2026 Men’s US Open Winner (Tennis)",
         "tags": [
@@ -500,7 +500,7 @@
         "playerPropLike": true,
         "futuresLike": true,
         "marketCount": 41,
-        "usableMarketCount": 10,
+        "usableMarketCount": 11,
         "acceptingOrderMarketCount": 41,
         "sampleUsableMarket": {
           "slug": "will-kylian-mbappe-win-the-bronze-ball-at-the-2026-fifa-world-cup-20260603194939941",
@@ -617,6 +617,40 @@
         }
       },
       {
+        "slug": "world-cup-fair-play-award-winner-20260603201520240",
+        "title": "World Cup: Fair Play Award Winner",
+        "tags": [
+          "soccer",
+          "sports",
+          "world-cup",
+          "fifa-world-cup",
+          "2026-fifa-world-cup",
+          "world-cup-awards"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": true,
+        "playerPropLike": false,
+        "futuresLike": true,
+        "marketCount": 54,
+        "usableMarketCount": 7,
+        "acceptingOrderMarketCount": 54,
+        "sampleUsableMarket": {
+          "slug": "will-cape-verde-win-the-fair-play-award-for-the-2026-fifa-world-cup-20260603201521197",
+          "question": "Will Cape Verde win the Fair Play Award for the 2026 FIFA World Cup?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.019,
+          "bestAsk": 0.028,
+          "spread": 0.009,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
         "slug": "mls-2026-golden-boot-winner",
         "title": "MLS: 2026 Golden Boot Winner",
         "tags": [
@@ -646,40 +680,6 @@
           "bestBid": 0.011,
           "bestAsk": 0.019,
           "spread": 0.008,
-          "usableBook": true,
-          "rejectionReasons": []
-        }
-      },
-      {
-        "slug": "world-cup-fair-play-award-winner-20260603201520240",
-        "title": "World Cup: Fair Play Award Winner",
-        "tags": [
-          "soccer",
-          "sports",
-          "world-cup",
-          "fifa-world-cup",
-          "2026-fifa-world-cup",
-          "world-cup-awards"
-        ],
-        "matchLike": false,
-        "worldCupRelevant": true,
-        "playerPropLike": false,
-        "futuresLike": true,
-        "marketCount": 54,
-        "usableMarketCount": 6,
-        "acceptingOrderMarketCount": 54,
-        "sampleUsableMarket": {
-          "slug": "will-cape-verde-win-the-fair-play-award-for-the-2026-fifa-world-cup-20260603201521197",
-          "question": "Will Cape Verde win the Fair Play Award for the 2026 FIFA World Cup?",
-          "acceptingOrders": true,
-          "active": true,
-          "closed": false,
-          "archived": false,
-          "outcomeCount": 2,
-          "tokenCount": 2,
-          "bestBid": 0.019,
-          "bestAsk": 0.028,
-          "spread": 0.009,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -755,39 +755,6 @@
         }
       },
       {
-        "slug": "pro-football-2026-mvp-winner",
-        "title": "Pro Football: 2026 MVP Winner",
-        "tags": [
-          "nfl",
-          "mvp",
-          "football",
-          "awards",
-          "nfl-awards"
-        ],
-        "matchLike": false,
-        "worldCupRelevant": false,
-        "playerPropLike": true,
-        "futuresLike": true,
-        "marketCount": 40,
-        "usableMarketCount": 19,
-        "acceptingOrderMarketCount": 40,
-        "sampleUsableMarket": {
-          "slug": "will-josh-allen-win-the-2026-nfl-mvp",
-          "question": "Will Josh Allen win the 2026 NFL MVP?",
-          "acceptingOrders": true,
-          "active": true,
-          "closed": false,
-          "archived": false,
-          "outcomeCount": 2,
-          "tokenCount": 2,
-          "bestBid": 0.14,
-          "bestAsk": 0.15,
-          "spread": 0.01,
-          "usableBook": true,
-          "rejectionReasons": []
-        }
-      },
-      {
         "slug": "2026-womens-us-open-winner-tennis",
         "title": "2026 Women’s US Open Winner (Tennis)",
         "tags": [
@@ -845,6 +812,39 @@
           "bestBid": 0.013,
           "bestAsk": 0.014,
           "spread": 0.001,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "pro-football-2026-mvp-winner",
+        "title": "Pro Football: 2026 MVP Winner",
+        "tags": [
+          "nfl",
+          "mvp",
+          "football",
+          "awards",
+          "nfl-awards"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 40,
+        "usableMarketCount": 16,
+        "acceptingOrderMarketCount": 40,
+        "sampleUsableMarket": {
+          "slug": "will-josh-allen-win-the-2026-nfl-mvp",
+          "question": "Will Josh Allen win the 2026 NFL MVP?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.14,
+          "bestAsk": 0.15,
+          "spread": 0.01,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -977,9 +977,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.045,
-          "bestAsk": 0.073,
-          "spread": 0.028,
+          "bestBid": 0.046,
+          "bestAsk": 0.076,
+          "spread": 0.03,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -1013,8 +1013,8 @@
           "outcomeCount": 2,
           "tokenCount": 2,
           "bestBid": 0.09,
-          "bestAsk": 0.12,
-          "spread": 0.03,
+          "bestAsk": 0.11,
+          "spread": 0.01,
           "usableBook": true,
           "rejectionReasons": []
         }

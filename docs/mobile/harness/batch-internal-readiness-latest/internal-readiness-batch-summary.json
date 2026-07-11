@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T08:58:01.4693397Z",
+  "generatedAt": "2026-07-11T09:07:56.3395004Z",
   "scope": "mobile-internal-readiness-batch",
   "cycle": "BATCHREADINESS",
   "backendBaseUrl": "http://127.0.0.1:3002",
@@ -53,6 +53,16 @@
       "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.json",
       "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.stdout.log",
       "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.stderr.log",
+      "producedJson": true
+    },
+    {
+      "name": "local-match-breadth",
+      "command": "npx.cmd tsx scripts/seed_mobile_mvp_local_match_breadth.ts --baseUrl=http://127.0.0.1:3002 --summaryPath=\"docs/mobile/harness/batch-internal-readiness-latest/mobile-mvp-local-match-breadth.json\"",
+      "exitCode": 0,
+      "allowedNonZero": false,
+      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/mobile-mvp-local-match-breadth.json",
+      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/local-match-breadth.stdout.log",
+      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/local-match-breadth.stderr.log",
       "producedJson": true
     },
     {
@@ -120,7 +130,7 @@
   "environmentHealth": {
     "git": {
       "branch": "main",
-      "status": "## main...poly-mobile/main\n M docs/mobile/FUNCTION_IMPLEMENTATION_LOG.md\n M docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md\n M docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.json\n M docs/mobile/harness/batch-internal-readiness-latest/google-auth-physical-callback-preflight.json\n M docs/mobile/harness/batch-internal-readiness-latest/google-auth-runtime-preflight.json\n M docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.json\n M docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json\n M docs/mobile/harness/batch-internal-readiness-latest/mobile-backend-readiness.json\n M docs/mobile/harness/batch-internal-readiness-latest/mobile-credential-readiness.json\n M docs/mobile/harness/batch-internal-readiness-latest/mobile-current-state-inspection.json\n M docs/mobile/harness/batch-internal-readiness-latest/provider-line-breadth-scan.json\n M docs/mobile/harness/batch-internal-readiness-latest/provider-snapshot-refresh.json\n M docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json\n M docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-event-scan.json\n M scripts/mobile_internal_readiness_batch.ps1\n?? docs/mobile/harness/batch-internal-readiness-latest/internal-beta-backend-lan-auth-restart.json",
+      "status": "## main...poly-mobile/main\n M docs/mobile/FUNCTION_IMPLEMENTATION_LOG.md\n M docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md\n M docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md\n M package.json\n M scripts/mobile_internal_readiness_batch.ps1\n?? docs/mobile/harness/batch-internal-readiness-latest/mobile-mvp-local-match-breadth.json\n?? scripts/seed_mobile_mvp_local_match_breadth.ts",
       "worktreeClean": false
     },
     "android": {
@@ -169,7 +179,9 @@
     ],
     "googleLanCallbackReady": true,
     "googleLanFailedChecks": [],
-    "mobileVisibleEventCount": 1,
+    "localMatchBreadthReady": true,
+    "localMatchBreadthEventCount": 4,
+    "mobileVisibleEventCount": 4,
     "providerVisibleMarketCount": 3,
     "providerLocalMmReadyMarketCount": 0,
     "providerBooksUnavailableOrClosed": true,

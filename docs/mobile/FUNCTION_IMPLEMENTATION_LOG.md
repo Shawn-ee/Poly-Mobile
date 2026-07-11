@@ -12878,3 +12878,12 @@ Known limitations:
 - User interactions supported: S23 Google consent setup is now reported from the phone-reachable LAN preflight when that proof passes.
 - State transitions: localhost Google preflight mismatch remains visible in raw diagnostics, but no longer creates a P1 blocker when the LAN callback proof is ready.
 - Known limitations: real consent still requires the exact LAN or hosted callback URL to be registered in Google Cloud before manual browser login.
+
+# Batch Local MVP Match Breadth
+
+- Feature/page worked on: Home/Live/Event Detail internal testing breadth for the Local MVP retail flow.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/seed_mobile_mvp_local_match_breadth.ts`, `scripts/mobile_internal_readiness_batch.ps1`, root `mobile:mvp-local-match-breadth` package script.
+- User interactions supported: testers can see multiple World Cup match cards in Home/Live and open route-backed Event Detail pages with Regulation Winner, Spread, Totals, and Team Totals.
+- State transitions: the batch now seeds idempotent `contract-fixture` match rows before current-state inspection and records `localMatchBreadthReady` plus the post-seed Home event count.
+- Known limitations: these added matches are explicitly local contract fixtures for internal fake-token testing. They do not close real Polymarket provider-backed match-book or line-market P1 debt.

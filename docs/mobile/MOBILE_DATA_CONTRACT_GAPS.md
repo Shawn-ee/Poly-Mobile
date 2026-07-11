@@ -9677,3 +9677,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new response field. Real consent still needs runtime `NEXTAUTH_URL` alignment and Google Cloud Authorized redirect URI setup.
 - Temporary mock/static data: none added. The summary is URL-only and redacted.
 - Future migration concern: once the backend is started with LAN/hosted `NEXTAUTH_URL` and Google Cloud is aligned, the same preflight should move from mismatch to ready before manual S23 consent proof.
+
+## Batch Local MVP Match Breadth
+
+- Fields Holiwyn needs but backend/provider does not fully provide: multiple open, attach-ready World Cup soccer match books with spread, total, and team-total line markets.
+- Temporary contract shape: `Event.source=contract-fixture`, `Market.referenceSource=contract-fixture`, deterministic `externalMarketId=contract-*`, `conditionId=condition-*`, outcome `referenceTokenId=contract-*`, and `ReferenceQuoteSnapshot.source=contract-fixture`.
+- Mock/static data: local match fixtures for internal Home/Live/Event Detail breadth only.
+- Schema mismatch: none introduced. The fixture rows use the same `Event`, `Market`, `Outcome`, and `ReferenceQuoteSnapshot` tables as future provider-backed rows.
+- Future migration concern: replace these rows with approved provider-backed World Cup match/line markets when Polymarket or another approved provider exposes attach-ready books. Do not classify these fixture rows as provider-backed parity.

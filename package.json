@@ -81,6 +81,7 @@
     "mobile:mvp:inspect": "tsx scripts/inspect_mobile_mvp_current_state.ts --summaryPath=docs/mobile/harness/cycle-current-state-inspection/cycle-current-state-inspection.json",
     "mobile:mvp-home-to-portfolio-journey": "tsx scripts/prove_mobile_mvp_home_to_portfolio_journey.ts --summaryPath=docs/mobile/harness/cycle-current-mobile-mvp-home-to-portfolio-journey.json",
     "mobile:provider-visible-tradable-flow": "tsx scripts/prove_mobile_provider_visible_tradable_flow.ts",
+    "mobile:mvp-local-match-breadth": "tsx scripts/seed_mobile_mvp_local_match_breadth.ts",
     "poly:internal-exchange-readiness": "tsx scripts/check_poly_internal_exchange_readiness.ts",
     "poly:mobile-rehearsal:start": "powershell -ExecutionPolicy Bypass -File scripts/start_poly_mobile_rehearsal.ps1",
     "mobile:mvp-s23:start": "powershell -ExecutionPolicy Bypass -File scripts/start_poly_mobile_rehearsal.ps1 -CreateMobileDevCredential -RestartExpo -SkipSnapshotWatch -SkipBots",

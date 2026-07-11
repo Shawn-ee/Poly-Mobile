@@ -27,6 +27,7 @@ docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-sum
 - Google auth runtime preflight without printing Google credentials.
 - Google physical-device callback preflight without printing Google credentials.
 - Google LAN callback preflight for S23/manual consent setup without printing Google credentials.
+- Local MVP match breadth seeding for multiple Home/Live match cards while provider books are unavailable.
 - Current MVP route shape for `mobileMvpMatches=1`.
 - Provider-backed Regulation Winner plus contract-shaped line-market state.
 - Fresh Polymarket reference snapshot refresh for the current MVP match.
@@ -54,6 +55,7 @@ Known provider availability gaps are tracked as P1, not P0:
 - Google auth runtime warnings such as a callback/redirect URI mismatch
 - Google physical callback warnings such as a local `127.0.0.1` callback that the S23 browser cannot reach
 - Google LAN callback warnings such as backend `redirect_uri` still pointing to localhost instead of the LAN callback
+- Local MVP fixture breadth failure, if the batch cannot create route-visible match fixtures for internal testing
 
 This is intentional. The Local MVP fake-token user flow remains testable with contract-shaped line markets while provider-backed breadth and line parity remain open.
 
@@ -132,6 +134,14 @@ npm run mobile:google-auth-lan-preflight
 This detects the PC LAN IP, runs the same no-secret preflight with `NEXTAUTH_URL=http://<lan-ip>:3002`, and writes `google-auth-lan-callback-preflight.json`. If this reports a redirect mismatch, restart the backend with that LAN auth origin and register the exact callback URL in Google Cloud before attempting real S23 consent.
 
 When the LAN callback preflight passes, it becomes the authoritative Google callback readiness signal for S23 manual consent testing. The batch may still keep the localhost and localhost-physical probe results in raw JSON, but it should not report their expected localhost redirect mismatch as a P1 blocker while the LAN proof is passing.
+
+## Local Match Breadth
+
+```powershell
+npm run mobile:mvp-local-match-breadth
+```
+
+This idempotently seeds a small set of `contract-fixture` World Cup match rows with Regulation Winner, Spread, Totals, and Team Totals. It exists only for Local MVP internal testing when real Polymarket World Cup match books are closed or unavailable. The batch records `localMatchBreadthReady` and the Home route event count after seeding; provider-backed market debt remains tracked separately.
 
 ## Why This Exists
 

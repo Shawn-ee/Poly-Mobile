@@ -152,6 +152,7 @@ $credentialPath = Join-Path $ResolvedOutputDir "mobile-credential-readiness.json
 $googleAuthPath = Join-Path $ResolvedOutputDir "google-auth-runtime-preflight.json"
 $googlePhysicalPath = Join-Path $ResolvedOutputDir "google-auth-physical-callback-preflight.json"
 $googleLanPhysicalPath = Join-Path $ResolvedOutputDir "google-auth-lan-callback-preflight.json"
+$localMatchBreadthPath = Join-Path $ResolvedOutputDir "mobile-mvp-local-match-breadth.json"
 $currentStatePath = Join-Path $ResolvedOutputDir "mobile-current-state-inspection.json"
 $providerSnapshotRefreshPath = Join-Path $ResolvedOutputDir "provider-snapshot-refresh.json"
 $exchangePath = Join-Path $ResolvedOutputDir "internal-exchange-readiness.json"
@@ -163,6 +164,7 @@ $credentialRepoPath = ConvertTo-RepoPath $credentialPath
 $googleAuthRepoPath = ConvertTo-RepoPath $googleAuthPath
 $googlePhysicalRepoPath = ConvertTo-RepoPath $googlePhysicalPath
 $googleLanPhysicalRepoPath = ConvertTo-RepoPath $googleLanPhysicalPath
+$localMatchBreadthRepoPath = ConvertTo-RepoPath $localMatchBreadthPath
 $currentStateRepoPath = ConvertTo-RepoPath $currentStatePath
 $providerSnapshotRefreshRepoPath = ConvertTo-RepoPath $providerSnapshotRefreshPath
 $exchangeRepoPath = ConvertTo-RepoPath $exchangePath
@@ -178,6 +180,7 @@ $steps.Add((Invoke-BatchCommand -Name "credential-readiness" -Command "powershel
 $steps.Add((Invoke-BatchCommand -Name "google-auth-runtime-preflight" -Command "powershell -ExecutionPolicy Bypass -File mobile\scripts\google-auth-runtime-preflight.ps1 -BackendAuthBase `"$BackendBaseUrl`" -NextAuthUrl `"$BackendBaseUrl`" -SummaryPath `"$googleAuthRepoPath`"" -OutputPath $googleAuthPath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "google-auth-physical-callback-preflight" -Command "powershell -ExecutionPolicy Bypass -File mobile\scripts\google-auth-runtime-preflight.ps1 -BackendAuthBase `"$BackendBaseUrl`" -NextAuthUrl `"$BackendBaseUrl`" -RequirePhysicalDeviceCallback -SummaryPath `"$googlePhysicalRepoPath`"" -OutputPath $googlePhysicalPath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "google-auth-lan-callback-preflight" -Command "powershell -ExecutionPolicy Bypass -File scripts\mobile_google_lan_auth_preflight.ps1 -BackendPort 3002 -SummaryPath `"$googleLanPhysicalRepoPath`"" -OutputPath $googleLanPhysicalPath -AllowNonZero))
+$steps.Add((Invoke-BatchCommand -Name "local-match-breadth" -Command "npx.cmd tsx scripts/seed_mobile_mvp_local_match_breadth.ts --baseUrl=$BackendBaseUrl --summaryPath=`"$localMatchBreadthRepoPath`"" -OutputPath $localMatchBreadthPath))
 $steps.Add((Invoke-BatchCommand -Name "current-state" -Command "npx.cmd tsx scripts/inspect_mobile_mvp_current_state.ts --baseUrl=$BackendBaseUrl --summaryPath=`"$currentStateRepoPath`" --cycle=$Cycle" -OutputPath $currentStatePath))
 $steps.Add((Invoke-BatchCommand -Name "provider-snapshot-refresh" -Command "npm.cmd run reference:snapshot-refresh -- --once true --eventSlug argentina-vs-egypt --summaryPath `"$providerSnapshotRefreshRepoPath`"" -OutputPath $providerSnapshotRefreshPath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "internal-exchange-readiness" -Command "npm.cmd run poly:internal-exchange-readiness -- --summaryPath `"$exchangeRepoPath`"" -OutputPath $exchangePath -AllowNonZero))
@@ -190,6 +193,7 @@ $credential = Read-JsonFile $credentialPath
 $googleAuth = Read-JsonFile $googleAuthPath
 $googlePhysical = Read-JsonFile $googlePhysicalPath
 $googleLanPhysical = Read-JsonFile $googleLanPhysicalPath
+$localMatchBreadth = Read-JsonFile $localMatchBreadthPath
 $currentState = Read-JsonFile $currentStatePath
 $providerSnapshotRefresh = Read-JsonFile $providerSnapshotRefreshPath
 $exchange = Read-JsonFile $exchangePath
@@ -199,6 +203,7 @@ $lineScan = Read-JsonFile $lineScanPath
 
 $backendReady = [bool]($backend -and $backend.dockerCliAvailable -and $backend.dockerDaemonReachable -and $backend.databaseTcpReachable)
 $localMvpReady = [bool]($currentState -and $currentState.diagnosis.serviceReadiness.localMvpPathReady)
+$localMatchBreadthReady = [bool]($localMatchBreadth -and $localMatchBreadth.pass)
 $providerExchangeReady = [bool]($exchange -and $exchange.readyForInternalMobileExchange)
 $providerSnapshotRefreshSucceeded = [bool]($providerSnapshotRefresh -and $providerSnapshotRefresh.summary -and ([int]$providerSnapshotRefresh.summary.errorCount -eq 0))
 $providerSnapshotRefreshUpdatedCount = if ($providerSnapshotRefresh -and $providerSnapshotRefresh.summary) { [int]$providerSnapshotRefresh.summary.snapshotsUpdated } else { $null }
@@ -241,6 +246,7 @@ if ($googleLanPhysical -and $googleLanPhysical.failedChecks) {
 
 $p0Blockers = @()
 if (-not $backendReady) { $p0Blockers += "backend_or_local_database_not_ready" }
+if (-not $localMatchBreadthReady) { $p0Blockers += "local_mvp_match_breadth_not_ready" }
 if (-not $localMvpReady) { $p0Blockers += "local_mvp_route_not_ready" }
 
 $p1Blockers = @()
@@ -329,6 +335,8 @@ $summary = [ordered]@{
     googlePhysicalFailedChecks = $googlePhysicalFailedChecks.ToArray()
     googleLanCallbackReady = $googleLanCallbackReady
     googleLanFailedChecks = $googleLanFailedChecks.ToArray()
+    localMatchBreadthReady = $localMatchBreadthReady
+    localMatchBreadthEventCount = if ($localMatchBreadth) { $localMatchBreadth.after.eventCount } else { $null }
     mobileVisibleEventCount = if ($exchange) { $exchange.mobileExposure.mobileVisibleEventCount } else { $null }
     providerVisibleMarketCount = if ($exchange) { $exchange.providerMarkets.mobileVisibleCount } else { $null }
     providerLocalMmReadyMarketCount = if ($exchange) { $exchange.providerMarkets.localMmReadyCount } else { $null }

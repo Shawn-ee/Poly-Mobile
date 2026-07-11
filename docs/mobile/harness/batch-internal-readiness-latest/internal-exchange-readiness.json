@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T08:57:49.387Z",
+  "generatedAt": "2026-07-11T09:06:46.790Z",
   "readOnly": true,
   "scope": "poly-internal-exchange-runtime-readiness",
   "thresholds": {
@@ -9,14 +9,35 @@
   },
   "database": {
     "connected": true,
-    "eventCount": 1,
-    "marketCount": 7,
-    "outcomeCount": 14
+    "eventCount": 4,
+    "marketCount": 22,
+    "outcomeCount": 44
   },
   "mobileExposure": {
-    "mobileVisibleEventCount": 1,
+    "mobileVisibleEventCount": 4,
     "mobileVisibleProviderEventCount": 1,
     "sampleEvents": [
+      {
+        "slug": "holiwyn-local-australia-vs-egypt",
+        "title": "Australia vs. Egypt",
+        "status": "active",
+        "listedMarketCount": 5,
+        "providerMarketCount": 0
+      },
+      {
+        "slug": "holiwyn-local-england-vs-congo-dr",
+        "title": "England vs. Congo DR",
+        "status": "active",
+        "listedMarketCount": 5,
+        "providerMarketCount": 0
+      },
+      {
+        "slug": "holiwyn-local-mexico-vs-ecuador",
+        "title": "Mexico vs. Ecuador",
+        "status": "active",
+        "listedMarketCount": 5,
+        "providerMarketCount": 0
+      },
       {
         "slug": "argentina-vs-egypt",
         "title": "Argentina vs. Egypt",
@@ -57,7 +78,7 @@
         "mmEnabled": true,
         "outcomeCount": 2,
         "mappedOutcomeCount": 2,
-        "latestSnapshotAt": "2026-07-11T08:57:48.503Z",
+        "latestSnapshotAt": "2026-07-11T09:06:46.116Z",
         "snapshotAgeSeconds": 1,
         "snapshotReady": false,
         "snapshotQualityStatus": "missing_book",
@@ -96,7 +117,7 @@
         "mmEnabled": true,
         "outcomeCount": 2,
         "mappedOutcomeCount": 2,
-        "latestSnapshotAt": "2026-07-11T08:57:48.246Z",
+        "latestSnapshotAt": "2026-07-11T09:06:45.872Z",
         "snapshotAgeSeconds": 1,
         "snapshotReady": false,
         "snapshotQualityStatus": "missing_book",
@@ -135,7 +156,7 @@
         "mmEnabled": true,
         "outcomeCount": 2,
         "mappedOutcomeCount": 2,
-        "latestSnapshotAt": "2026-07-11T08:57:48.473Z",
+        "latestSnapshotAt": "2026-07-11T09:06:45.964Z",
         "snapshotAgeSeconds": 1,
         "snapshotReady": false,
         "snapshotQualityStatus": "invalid_price",
@@ -164,11 +185,9 @@
   },
   "readyForInternalMobileExchange": false,
   "blockers": [
-    "mobile_event_count_below_2",
     "provider_books_unavailable_or_closed"
   ],
   "nextActions": [
-    "Import, classify, and list more backend events before expecting Home/Search breadth.",
     "Keep Local MVP contract-fixture trading active and do not seed local MM against closed/unusable Polymarket books.",
     "Continue provider discovery only when the batch finds a new usable World Cup match candidate."
   ]
