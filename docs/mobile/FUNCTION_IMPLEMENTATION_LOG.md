@@ -2,6 +2,40 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Batch Internal Readiness - Audit/Fix/Proof
+
+Feature/page worked on:
+
+- Full Local MVP readiness audit across Home, Search, Event Detail, Trade Ticket, Portfolio/history/orders, Google/account startup, backend health, local DB, provider winner markets, local fixture lines, bot/runtime readiness, and S23 visible flow.
+
+Frontend/backend touched:
+
+- `scripts/start_holiwyn_internal_beta_backend.ps1`
+- `mobile/src/__tests__/internalBetaBackendStartupContract.test.ts`
+- `docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md`
+- No mobile page UI, order route, provider route, Prisma schema, order book UI, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- The local internal beta backend helper now sets `NEXTAUTH_URL` to `http://127.0.0.1:$Port` by default so Google OAuth start/callback use the same selected local backend port during internal testing.
+- The helper accepts `-AuthBaseUrl` when a hosted backend auth origin should be reused instead.
+
+User interactions supported:
+
+- The S23 full proof passed Home -> Event Detail -> Team Total line -> ticket -> swipe submit -> Portfolio filled position -> Portfolio History.
+- Portfolio/Account Google entry remains backend-owned; this batch narrows the local callback-port setup gap but does not perform real Google consent.
+
+State transitions:
+
+- Fake-token server-backed order submit still reaches Portfolio/history on S23.
+- Local backend startup state now includes the selected `NEXTAUTH_URL` in its summary.
+
+Known limitations:
+
+- Provider-backed line markets remain unavailable for the current event; Spread/Totals/Team Total use explicit contract fixtures.
+- Provider/internal exchange readiness remains P1 because only one mobile-visible event exists, provider snapshots are stale, and no provider market is local-MM-ready.
+- Bot is not proven as a continuous running process in this batch; proof liquidity is still one-shot/harness driven.
+
 ## Cycle WH - Trade Ticket Header Simplification
 
 Feature/page worked on:
