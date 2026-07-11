@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T08:11:58.3460454Z",
+  "generatedAt": "2026-07-11T08:11:59.4226977Z",
   "scope": "google-auth-runtime-preflight",
   "backendAuthBaseConfigured": true,
   "mobileReturnUrlScheme": "holiwyn",
@@ -14,9 +14,11 @@
   "redirectUriMatchesExpected": true,
   "fixHint": "",
   "requireConfigured": false,
-  "requirePhysicalDeviceCallback": false,
-  "readyForRuntimeStart": true,
-  "failedChecks": [],
+  "requirePhysicalDeviceCallback": true,
+  "readyForRuntimeStart": false,
+  "failedChecks": [
+    "NEXTAUTH_URL is reachable by a physical Android browser"
+  ],
   "checks": [
     {
       "name": "Backend auth base is configured",
@@ -47,6 +49,11 @@
       "name": "Mobile return URL uses an allowed app/dev scheme",
       "pass": true,
       "detail": "Allowed schemes are holiwyn:, exp:, and exps:."
+    },
+    {
+      "name": "NEXTAUTH_URL is reachable by a physical Android browser",
+      "pass": false,
+      "detail": "Use HTTPS hosted auth or a LAN IP callback for S23 Expo/manual testing."
     },
     {
       "name": "Google start route returns a redirect",

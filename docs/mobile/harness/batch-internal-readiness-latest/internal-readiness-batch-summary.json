@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T08:05:57.3671445Z",
+  "generatedAt": "2026-07-11T08:13:14.1351616Z",
   "scope": "mobile-internal-readiness-batch",
   "cycle": "BATCHREADINESS",
   "backendBaseUrl": "http://127.0.0.1:3002",
@@ -33,6 +33,16 @@
       "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-runtime-preflight.json",
       "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-runtime-preflight.stdout.log",
       "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-runtime-preflight.stderr.log",
+      "producedJson": true
+    },
+    {
+      "name": "google-auth-physical-callback-preflight",
+      "command": "powershell -ExecutionPolicy Bypass -File mobile\\scripts\\google-auth-runtime-preflight.ps1 -BackendAuthBase \"http://127.0.0.1:3002\" -NextAuthUrl \"http://127.0.0.1:3002\" -RequirePhysicalDeviceCallback -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/google-auth-physical-callback-preflight.json\"",
+      "exitCode": 0,
+      "allowedNonZero": true,
+      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-physical-callback-preflight.json",
+      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-physical-callback-preflight.stdout.log",
+      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-physical-callback-preflight.stderr.log",
       "producedJson": true
     },
     {
@@ -120,6 +130,10 @@
     "localRuntimeEnvReadyForManualServerMode": true,
     "googleAuthRuntimeReady": true,
     "googleAuthFailedChecks": [],
+    "googlePhysicalCallbackReady": false,
+    "googlePhysicalFailedChecks": [
+      "NEXTAUTH_URL is reachable by a physical Android browser"
+    ],
     "mobileVisibleEventCount": 1,
     "providerVisibleMarketCount": 3,
     "providerLocalMmReadyMarketCount": 0,
@@ -132,7 +146,8 @@
     "p1": [
       "provider_worldcup_match_books_unavailable_or_closed",
       "no_usable_polymarket_worldcup_team_match_books",
-      "no_attach_ready_polymarket_worldcup_line_markets"
+      "no_attach_ready_polymarket_worldcup_line_markets",
+      "google_physical_callback_not_phone_reachable"
     ]
   },
   "interpretation": "Local MVP fake-token flow is ready for internal testing; provider-backed breadth/line/MM readiness remains tracked P1 debt.",
@@ -141,6 +156,6 @@
     "Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.",
     "Re-run this batch after provider imports, provider refresh, or line-market discovery changes.",
     "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token.",
-    "For real Google consent proof, fix any google_* P1 blocker first, then run npm run mobile:google-auth-runtime-preflight:strict before manual S23 login."
+    "For real Google consent proof, use a hosted or LAN NEXTAUTH_URL callback that the S23 browser can reach, register that callback in Google Cloud, then run npm run mobile:google-auth-runtime-preflight:strict before manual S23 login."
   ]
 }
