@@ -25,6 +25,53 @@ function Read-JsonFile {
   return Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json
 }
 
+function Get-JsonGeneratedAt {
+  param([object]$Json)
+  if (-not $Json) {
+    return $null
+  }
+  if ($Json.generatedAt) {
+    return [string]$Json.generatedAt
+  }
+  if ($Json.summary -and $Json.summary.generatedAt) {
+    return [string]$Json.summary.generatedAt
+  }
+  return $null
+}
+
+function Get-CachedProviderEvidence {
+  param(
+    [string]$Name,
+    [string]$Path,
+    [object]$Json,
+    [int]$MaxAgeHours
+  )
+
+  $generatedAt = Get-JsonGeneratedAt $Json
+  $ageHours = $null
+  $fresh = $false
+  if ($generatedAt) {
+    try {
+      $parsed = [datetimeoffset]::Parse($generatedAt)
+      $ageHours = [math]::Round(((Get-Date).ToUniversalTime() - $parsed.UtcDateTime).TotalHours, 2)
+      $fresh = [bool]($ageHours -ge 0 -and $ageHours -le $MaxAgeHours)
+    } catch {
+      $ageHours = $null
+      $fresh = $false
+    }
+  }
+
+  return [ordered]@{
+    name = $Name
+    summaryPath = ConvertTo-RepoPath $Path
+    generatedAt = $generatedAt
+    ageHours = $ageHours
+    maxAgeHours = $MaxAgeHours
+    fresh = $fresh
+    present = [bool]$Json
+  }
+}
+
 function Resolve-RepoArtifactPath {
   param([string]$ArtifactPath)
   if ([string]::IsNullOrWhiteSpace($ArtifactPath)) {
@@ -319,6 +366,7 @@ $cashoutS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-XI-cashout
 $totalsS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-WF-line-family-s23-proof\cycle-WF-current-mvp-s23-visible-flow.json"
 $teamTotalsS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-WG-team-total-s23-proof\cycle-WG-current-mvp-s23-visible-flow.json"
 $s23ProofMaxAgeHours = 24
+$cachedProviderEvidenceMaxAgeHours = 24
 $backendRepoPath = ConvertTo-RepoPath $backendPath
 $credentialRepoPath = ConvertTo-RepoPath $credentialPath
 $googleAuthRepoPath = ConvertTo-RepoPath $googleAuthPath
@@ -400,6 +448,14 @@ $lineScan = Read-JsonFile $lineScanPath
 $rootTypecheck = Read-JsonFile $rootTypecheckMarkerPath
 $jestCi = Read-JsonFile $jestCiMarkerPath
 $mobileTypecheck = Read-JsonFile $mobileTypecheckMarkerPath
+$cachedProviderEvidence = @(
+  (Get-CachedProviderEvidence -Name "provider-snapshot-refresh" -Path $providerSnapshotRefreshPath -Json $providerSnapshotRefresh -MaxAgeHours $cachedProviderEvidenceMaxAgeHours),
+  (Get-CachedProviderEvidence -Name "internal-exchange-readiness" -Path $exchangePath -Json $exchange -MaxAgeHours $cachedProviderEvidenceMaxAgeHours),
+  (Get-CachedProviderEvidence -Name "provider-visible-tradable-flow" -Path $providerTradableFlowPath -Json $providerTradableFlow -MaxAgeHours $cachedProviderEvidenceMaxAgeHours),
+  (Get-CachedProviderEvidence -Name "worldcup-match-scan" -Path $matchScanPath -Json $matchScan -MaxAgeHours $cachedProviderEvidenceMaxAgeHours),
+  (Get-CachedProviderEvidence -Name "provider-line-scan" -Path $lineScanPath -Json $lineScan -MaxAgeHours $cachedProviderEvidenceMaxAgeHours)
+)
+$cachedProviderEvidenceFresh = [bool](($cachedProviderEvidence | Where-Object { -not $_.fresh }).Count -eq 0)
 $lineFamilyFilledAssertions = @("homeShowsCurrentMatch", "detailShowsGameLines", "detailShowsLineFamilyReadiness", "detailShowsProviderUnavailableLineFamilies", "detailShowsProviderWinnerLocalLineSplit", "lineMarketsAreContractFixture", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden")
 $s23Proofs = @(
   (Get-S23ProofEvidence -Name "filled-buy-history" -SummaryPath $filledS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden") -MaxAgeHours $s23ProofMaxAgeHours),
@@ -517,6 +573,7 @@ if ($providerTradableFlow -and -not $providerMvpTradableFlowReady) {
 }
 if ($usableMatchCount -lt 1) { $p1Blockers += "no_usable_polymarket_worldcup_team_match_books" }
 if ($attachReadyLineCount -lt 1) { $p1Blockers += "no_attach_ready_polymarket_worldcup_line_markets" }
+if ($ProviderDiscoveryMode -eq "cached" -and -not $cachedProviderEvidenceFresh) { $p1Blockers += "provider_cached_evidence_stale" }
 if ($credential -and -not $credential.readyForServerBackedSamsungProof) { $p1Blockers += "manual_server_mode_needs_generated_mobile_api_key" }
 if ($googleAuth -and -not $googleAuthRuntimeReady) {
   if ($googleLanCallbackReady -and $googleAuthFailedChecks.Contains("Google redirect_uri matches NEXTAUTH_URL callback")) {
@@ -600,6 +657,9 @@ $summary = [ordered]@{
     providerBooksUnavailableOrClosed = $providerBooksUnavailableOrClosed
     providerSnapshotRefreshSucceeded = $providerSnapshotRefreshSucceeded
     providerSnapshotRefreshUpdatedCount = $providerSnapshotRefreshUpdatedCount
+    cachedProviderEvidenceFresh = $cachedProviderEvidenceFresh
+    cachedProviderEvidenceMaxAgeHours = $cachedProviderEvidenceMaxAgeHours
+    cachedProviderEvidence = $cachedProviderEvidence
     providerMvpTradableFlowReady = $providerMvpTradableFlowReady
     providerMvpTradableFlowBlocker = $providerMvpTradableFlowBlocker
     usableWorldCupTeamMatchEventCount = $usableMatchCount
@@ -611,6 +671,7 @@ $summary = [ordered]@{
   }
   recovery = [ordered]@{
     s23ProofRefreshCommands = $s23ProofRecoveryCommands
+    providerRefreshCommand = "npm run mobile:internal-readiness-batch:provider-refresh"
     rerunBatchCommand = "npm run mobile:internal-readiness-batch"
   }
   interpretation = if ($p0Blockers.Count -eq 0) {
@@ -623,6 +684,7 @@ $summary = [ordered]@{
     "Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.",
     'If `s23_local_mvp_device_proof_not_ready` appears, run the S23 proof refresh commands in `recovery.s23ProofRefreshCommands`, then rerun `npm run mobile:internal-readiness-batch`.',
     'Use `npm run mobile:internal-readiness-batch:provider-refresh` after provider imports, provider refresh, or line-market discovery changes.',
+    'If `provider_cached_evidence_stale` appears, run `npm run mobile:internal-readiness-batch:provider-refresh` before making provider-backed parity decisions.',
     "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token.",
     "For real Google consent proof, run npm run mobile:google-auth-lan-preflight, restart the backend with the LAN NEXTAUTH_URL it reports if needed, register that exact callback in Google Cloud, then run npm run mobile:google-auth-runtime-preflight:strict before manual S23 login."
   )

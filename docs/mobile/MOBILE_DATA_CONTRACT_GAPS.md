@@ -1,5 +1,19 @@
 # Mobile Data Contract Gaps
 
+## Cycle PROVIDERFRESHGATE - Cached Provider Evidence Freshness
+
+- No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider runtime contract changed.
+- The batch summary contract now exposes provider-cache freshness fields:
+  - `readiness.cachedProviderEvidenceFresh`
+  - `readiness.cachedProviderEvidenceMaxAgeHours`
+  - `readiness.cachedProviderEvidence[].name`
+  - `readiness.cachedProviderEvidence[].generatedAt`
+  - `readiness.cachedProviderEvidence[].ageHours`
+  - `readiness.cachedProviderEvidence[].fresh`
+  - `recovery.providerRefreshCommand`
+- New behavior: stale cached provider evidence reports P1 `provider_cached_evidence_stale` so provider-backed parity decisions are not made from old cached Polymarket evidence.
+- Remaining provider data gaps are unchanged: usable accepting-order World Cup match books and attach-ready spread/totals/team-total line markets are still unavailable in current evidence.
+
 ## Cycle S23GOOGLEGATE - S23 Google Consent Readiness Summary
 
 - No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider contract changed.

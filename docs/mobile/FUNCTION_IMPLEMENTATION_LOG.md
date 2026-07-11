@@ -2,6 +2,19 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle PROVIDERFRESHGATE - Cached Provider Evidence Freshness
+
+- Feature/page worked on: internal readiness batch provider-evidence audit gate.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/mobile_internal_readiness_batch.ps1`
+  - `scripts/write_mobile_internal_readiness_gap_list.ts`
+  - `docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md`
+- User interactions supported: unchanged. The Local MVP path remains Home -> Event Detail -> line market -> Trade Ticket -> fake-token order -> Portfolio/history.
+- State transitions: no runtime/backend/database state changes. The batch now computes age/freshness for cached provider snapshot, exchange, tradable-flow, match-scan, and line-scan summaries. Stale cached provider evidence becomes a P1 audit blocker, not a Local MVP P0 blocker.
+- Proof: run `npm run mobile:internal-readiness-batch` and confirm `readiness.cachedProviderEvidenceFresh=true` plus per-summary freshness rows in `readiness.cachedProviderEvidence[]`.
+- Known limitations: this does not refresh provider data by itself. If stale, use `npm run mobile:internal-readiness-batch:provider-refresh`.
+
 ## Cycle S23GOOGLEGATE - S23 Google Consent Readiness Summary
 
 - Feature/page worked on: Portfolio account / Google sign-in readiness reporting for S23 manual testing.

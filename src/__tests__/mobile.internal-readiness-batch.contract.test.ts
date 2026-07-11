@@ -20,6 +20,7 @@ describe("mobile internal readiness batch harness", () => {
     expect(source).toContain("provider_books_unavailable_or_closed");
     expect(source).toContain("no_usable_polymarket_worldcup_team_match_books");
     expect(source).toContain("no_attach_ready_polymarket_worldcup_line_markets");
+    expect(source).toContain("provider_cached_evidence_stale");
     expect(source).toContain("exit 1");
   });
 
@@ -71,6 +72,18 @@ describe("mobile internal readiness batch harness", () => {
     expect(source).toContain("backendPort3002Listening");
   });
 
+  it("tracks cached provider evidence freshness before trusting cached provider blockers", () => {
+    const source = harness();
+    const gapWriter = readFileSync("scripts/write_mobile_internal_readiness_gap_list.ts", "utf8");
+
+    expect(source).toContain("Get-CachedProviderEvidence");
+    expect(source).toContain("cachedProviderEvidenceFresh");
+    expect(source).toContain("cachedProviderEvidenceMaxAgeHours");
+    expect(source).toContain("providerRefreshCommand");
+    expect(gapWriter).toContain("Cached provider evidence fresh");
+    expect(gapWriter).toContain("Provider Evidence Recovery");
+  });
+
   it("documents that the harness does not fake match breadth with off-scope markets", () => {
     const doc = auditDoc();
 
@@ -79,5 +92,6 @@ describe("mobile internal readiness batch harness", () => {
     expect(doc).toContain("Known provider availability gaps are tracked as P1");
     expect(doc).toContain("Local environment health snapshot");
     expect(doc).toContain("googleS23ConsentReady");
+    expect(doc).toContain("cachedProviderEvidenceFresh");
   });
 });

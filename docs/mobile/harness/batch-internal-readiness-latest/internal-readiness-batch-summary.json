@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T12:00:54.5192860Z",
+  "generatedAt": "2026-07-11T12:10:52.4977985Z",
   "scope": "mobile-internal-readiness-batch",
   "cycle": "BATCHREADINESS",
   "backendBaseUrl": "http://127.0.0.1:3002",
@@ -249,7 +249,7 @@
         "pass": true,
         "reason": "pass",
         "generatedAt": "2026-07-11T09:32:05.5117425Z",
-        "proofAgeHours": 2.48,
+        "proofAgeHours": 2.65,
         "maxAgeHours": 24,
         "fresh": true,
         "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -267,7 +267,7 @@
         "pass": true,
         "reason": "pass",
         "generatedAt": "2026-07-11T09:45:19.0371695Z",
-        "proofAgeHours": 2.26,
+        "proofAgeHours": 2.43,
         "maxAgeHours": 24,
         "fresh": true,
         "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -285,7 +285,7 @@
         "pass": true,
         "reason": "pass",
         "generatedAt": "2026-07-11T09:59:42.7891761Z",
-        "proofAgeHours": 2.02,
+        "proofAgeHours": 2.19,
         "maxAgeHours": 24,
         "fresh": true,
         "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -303,7 +303,7 @@
         "pass": true,
         "reason": "pass",
         "generatedAt": "2026-07-11T05:12:16.5919824Z",
-        "proofAgeHours": 6.81,
+        "proofAgeHours": 6.98,
         "maxAgeHours": 24,
         "fresh": true,
         "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -321,7 +321,7 @@
         "pass": true,
         "reason": "pass",
         "generatedAt": "2026-07-11T05:18:54.1737804Z",
-        "proofAgeHours": 6.7,
+        "proofAgeHours": 6.87,
         "maxAgeHours": 24,
         "fresh": true,
         "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -343,6 +343,55 @@
     "providerBooksUnavailableOrClosed": true,
     "providerSnapshotRefreshSucceeded": true,
     "providerSnapshotRefreshUpdatedCount": 6,
+    "cachedProviderEvidenceFresh": true,
+    "cachedProviderEvidenceMaxAgeHours": 24,
+    "cachedProviderEvidence": [
+      {
+        "name": "provider-snapshot-refresh",
+        "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-snapshot-refresh.json",
+        "generatedAt": "2026-07-11T11:22:25.735Z",
+        "ageHours": 0.81,
+        "maxAgeHours": 24,
+        "fresh": true,
+        "present": true
+      },
+      {
+        "name": "internal-exchange-readiness",
+        "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.json",
+        "generatedAt": "2026-07-11T11:22:26.823Z",
+        "ageHours": 0.81,
+        "maxAgeHours": 24,
+        "fresh": true,
+        "present": true
+      },
+      {
+        "name": "provider-visible-tradable-flow",
+        "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json",
+        "generatedAt": "2026-07-11T11:22:28.487Z",
+        "ageHours": 0.81,
+        "maxAgeHours": 24,
+        "fresh": true,
+        "present": true
+      },
+      {
+        "name": "worldcup-match-scan",
+        "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-event-scan.json",
+        "generatedAt": "2026-07-11T11:22:31.281Z",
+        "ageHours": 0.81,
+        "maxAgeHours": 24,
+        "fresh": true,
+        "present": true
+      },
+      {
+        "name": "provider-line-scan",
+        "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-line-breadth-scan.json",
+        "generatedAt": "2026-07-11T11:22:36.170Z",
+        "ageHours": 0.8,
+        "maxAgeHours": 24,
+        "fresh": true,
+        "present": true
+      }
+    ],
     "providerMvpTradableFlowReady": false,
     "providerMvpTradableFlowBlocker": "provider_mvp_match_snapshot_not_mm_safe",
     "usableWorldCupTeamMatchEventCount": 0,
@@ -385,6 +434,7 @@
         "command": "powershell -ExecutionPolicy Bypass -File scripts\\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WG -OutputDir docs\\mobile\\screenshots\\cycle-WG-team-total-s23-proof -HierarchyOutputDir docs\\mobile\\harness\\cycle-WG-team-total-s23-proof -LineMarketGroupKey team-totals -LineMarketType team-total -LineValue 1.5 -LineOutcomeSide over -LineOutcomeLabel \"Argentina Over 1.5\" -LineTapPrefix event-detail-outcome-team-total-goals- -SeedCounterparty -ExpectFilledHistory"
       }
     ],
+    "providerRefreshCommand": "npm run mobile:internal-readiness-batch:provider-refresh",
     "rerunBatchCommand": "npm run mobile:internal-readiness-batch"
   },
   "interpretation": "Local MVP fake-token flow is ready for internal testing; provider-backed breadth/line/MM readiness remains tracked P1 debt.",
@@ -393,6 +443,7 @@
     "Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.",
     "If `s23_local_mvp_device_proof_not_ready` appears, run the S23 proof refresh commands in `recovery.s23ProofRefreshCommands`, then rerun `npm run mobile:internal-readiness-batch`.",
     "Use `npm run mobile:internal-readiness-batch:provider-refresh` after provider imports, provider refresh, or line-market discovery changes.",
+    "If `provider_cached_evidence_stale` appears, run `npm run mobile:internal-readiness-batch:provider-refresh` before making provider-backed parity decisions.",
     "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token.",
     "For real Google consent proof, run npm run mobile:google-auth-lan-preflight, restart the backend with the LAN NEXTAUTH_URL it reports if needed, register that exact callback in Google Cloud, then run npm run mobile:google-auth-runtime-preflight:strict before manual S23 login."
   ]

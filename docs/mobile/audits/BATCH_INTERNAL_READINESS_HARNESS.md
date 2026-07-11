@@ -81,6 +81,8 @@ Before looking for a local bot quote, the proof checks the latest provider quote
 
 Provider discovery has two modes. The normal mode, `cached`, reuses the committed provider snapshot/exchange/tradable-flow/match-scan/line-scan summaries so the loop does not keep rediscovering the same closed or unavailable Polymarket books. The explicit `refresh` mode refreshes Polymarket reference snapshots for `argentina-vs-egypt`, reruns provider exchange readiness, reruns the provider-visible tradable-flow proof, and reruns World Cup match/line scans. Use refresh mode after provider imports, provider refresh work, line-market discovery changes, or a new candidate signal.
 
+Cached provider summaries are still freshness-gated. The batch records `readiness.cachedProviderEvidenceFresh`, `readiness.cachedProviderEvidenceMaxAgeHours`, and `readiness.cachedProviderEvidence[]` for the provider snapshot, exchange, tradable-flow, match-scan, and line-scan artifacts. If cached evidence is stale, the batch reports `provider_cached_evidence_stale` as P1 and prints `recovery.providerRefreshCommand`. This keeps provider decisions current without forcing every Local MVP readiness run to hit public provider APIs.
+
 ## Local Environment Snapshot
 
 The summary includes `environmentHealth` so the Lead Agent can report the batch handoff from one artifact instead of reassembling it from ad hoc terminal checks. The snapshot is captured before the batch steps rewrite their JSON artifacts, so `worktreeClean` is not polluted by the harness output itself:

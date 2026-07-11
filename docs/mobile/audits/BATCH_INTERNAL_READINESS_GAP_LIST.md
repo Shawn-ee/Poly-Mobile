@@ -1,6 +1,6 @@
 # Batch Internal Readiness Gap List
 
-Generated: 2026-07-11T12:00:56.433Z
+Generated: 2026-07-11T12:10:54.508Z
 
 Source summary: `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`
 
@@ -30,6 +30,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - S23 Google consent path ready: yes (lan-callback-preflight)
 - Provider-backed exchange ready: no
 - Provider discovery mode: cached
+- Cached provider evidence fresh: yes (max age 24 hours)
 - P0 blocker count: 0
 - P1 blocker count: 4
 - P2 blocker count: 0
@@ -43,6 +44,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Local MVP match breadth ready: yes (4 events)
 - Provider books unavailable or closed: yes
 - Provider snapshot refresh succeeded: yes (6 updated)
+- Cached provider evidence: provider-snapshot-refresh:fresh(0.81h), internal-exchange-readiness:fresh(0.81h), provider-visible-tradable-flow:fresh(0.81h), worldcup-match-scan:fresh(0.81h), provider-line-scan:fresh(0.8h)
 - Provider MVP tradable flow ready: no (provider_mvp_match_snapshot_not_mm_safe)
 - Usable World Cup team-match provider events: 0
 - Attach-ready provider line candidates: 0
@@ -68,6 +70,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 | Local match breadth | yes | `mobile-mvp-local-match-breadth.json`. |
 | S23 full MVP proof | yes | XG Spread filled buy/history, XH Spread open-order cancel, XI Spread cashout/sell, WF Totals filled buy/history, WG Team Totals filled buy/history summaries. |
 | S23 Google consent callback | yes | `google-auth-lan-callback-preflight.json` when LAN-ready; localhost probes remain raw diagnostics only. |
+| Cached provider evidence | yes | Provider snapshot, exchange, tradable-flow, match-scan, and line-scan summaries must be within the freshness window. |
 | Root typecheck | yes | `root-typecheck.json`. |
 | Jest CI | yes | `jest-ci.json`. |
 | Mobile typecheck | yes | `mobile-typecheck.json`. |
@@ -126,11 +129,20 @@ After refreshing the required S23 proofs:
 npm run mobile:internal-readiness-batch
 ```
 
+## Provider Evidence Recovery
+
+Run this when `provider_cached_evidence_stale` is reported, or after provider import/refresh/discovery work:
+
+```powershell
+npm run mobile:internal-readiness-batch:provider-refresh
+```
+
 ## Next Actions From Batch
 
 - For internal user-flow testing, keep using Home -> Event Detail -> contract-shaped line market -> Trade Ticket -> fake-token order -> Portfolio/history.
 - Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.
 - If `s23_local_mvp_device_proof_not_ready` appears, run the S23 proof refresh commands in `recovery.s23ProofRefreshCommands`, then rerun `npm run mobile:internal-readiness-batch`.
 - Use `npm run mobile:internal-readiness-batch:provider-refresh` after provider imports, provider refresh, or line-market discovery changes.
+- If `provider_cached_evidence_stale` appears, run `npm run mobile:internal-readiness-batch:provider-refresh` before making provider-backed parity decisions.
 - Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token.
 - For real Google consent proof, run npm run mobile:google-auth-lan-preflight, restart the backend with the LAN NEXTAUTH_URL it reports if needed, register that exact callback in Google Cloud, then run npm run mobile:google-auth-runtime-preflight:strict before manual S23 login.

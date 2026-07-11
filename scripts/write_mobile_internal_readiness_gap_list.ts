@@ -55,6 +55,7 @@ type ReadinessSummary = {
       summaryPath?: string;
       command?: string;
     }[];
+    providerRefreshCommand?: string;
     rerunBatchCommand?: string;
   };
   interpretation?: string;
@@ -179,6 +180,14 @@ const blockerRows: Record<string, Omit<GapRow, "priority">> = {
     proofNeeded: "`provider-line-breadth-scan.json` showing attach-ready line candidates.",
     blocksInternalTesting: false,
   },
+  provider_cached_evidence_stale: {
+    pageFunction: "Provider cached evidence freshness",
+    actualBehavior: "The default cached provider evidence is older than the allowed freshness window, so provider-backed parity decisions may be stale.",
+    expectedBehavior: "Cached provider summaries should be fresh enough for audit decisions, or the batch should be rerun in provider refresh mode.",
+    affectedFilesRoutes: "`scripts/mobile_internal_readiness_batch.ps1`; `provider-snapshot-refresh.json`; `internal-exchange-readiness.json`; `provider-visible-tradable-flow.json`; `worldcup-match-event-scan.json`; `provider-line-breadth-scan.json`.",
+    proofNeeded: "`internal-readiness-batch-summary.json` with `cachedProviderEvidenceFresh=true`, or a fresh `npm run mobile:internal-readiness-batch:provider-refresh` run.",
+    blocksInternalTesting: false,
+  },
   google_redirect_uri_mismatch: {
     pageFunction: "Google/account login",
     actualBehavior: "Google auth preflight reports the emitted redirect URI does not match the configured OAuth callback.",
@@ -281,6 +290,7 @@ const markdown: string[] = [
   `- S23 Google consent path ready: ${boolText(readiness.googleS23ConsentReady)}${readiness.googleS23ConsentSource ? ` (${readiness.googleS23ConsentSource})` : ""}`,
   `- Provider-backed exchange ready: ${boolText(readiness.providerBackedExchangeReady)}`,
   `- Provider discovery mode: ${summary.providerDiscoveryMode ?? "unknown"}`,
+  `- Cached provider evidence fresh: ${boolText(readiness.cachedProviderEvidenceFresh)} (max age ${readiness.cachedProviderEvidenceMaxAgeHours ?? "unknown"} hours)`,
   `- P0 blocker count: ${p0Rows.length}`,
   `- P1 blocker count: ${p1Rows.length}`,
   `- P2 blocker count: ${p2Rows.length}`,
@@ -294,6 +304,7 @@ const markdown: string[] = [
   `- Local MVP match breadth ready: ${boolText(readiness.localMatchBreadthReady)} (${readiness.localMatchBreadthEventCount ?? "unknown"} events)`,
   `- Provider books unavailable or closed: ${boolText(readiness.providerBooksUnavailableOrClosed)}`,
   `- Provider snapshot refresh succeeded: ${boolText(readiness.providerSnapshotRefreshSucceeded)} (${readiness.providerSnapshotRefreshUpdatedCount ?? "unknown"} updated)`,
+  `- Cached provider evidence: ${Array.isArray(readiness.cachedProviderEvidence) ? readiness.cachedProviderEvidence.map((entry: any) => `${entry.name}:${entry.fresh ? "fresh" : "stale"}${typeof entry.ageHours === "number" ? `(${entry.ageHours}h)` : ""}`).join(", ") : "unknown"}`,
   `- Provider MVP tradable flow ready: ${boolText(readiness.providerMvpTradableFlowReady)}${readiness.providerMvpTradableFlowBlocker ? ` (${readiness.providerMvpTradableFlowBlocker})` : ""}`,
   `- Usable World Cup team-match provider events: ${readiness.usableWorldCupTeamMatchEventCount ?? "unknown"}`,
   `- Attach-ready provider line candidates: ${readiness.attachReadyProviderLineCandidateCount ?? "unknown"}`,
@@ -328,6 +339,7 @@ markdown.push(
   `| Local match breadth | ${boolText(readiness.localMatchBreadthReady)} | \`mobile-mvp-local-match-breadth.json\`. |`,
   `| S23 full MVP proof | ${boolText(readiness.s23LocalMvpDeviceProofReady)} | XG Spread filled buy/history, XH Spread open-order cancel, XI Spread cashout/sell, WF Totals filled buy/history, WG Team Totals filled buy/history summaries. |`,
   `| S23 Google consent callback | ${boolText(readiness.googleS23ConsentReady)} | \`google-auth-lan-callback-preflight.json\` when LAN-ready; localhost probes remain raw diagnostics only. |`,
+  `| Cached provider evidence | ${boolText(readiness.cachedProviderEvidenceFresh)} | Provider snapshot, exchange, tradable-flow, match-scan, and line-scan summaries must be within the freshness window. |`,
   `| Root typecheck | ${boolText(readiness.rootTypecheckReady)} | \`root-typecheck.json\`. |`,
   `| Jest CI | ${boolText(readiness.jestCiReady)} | \`jest-ci.json\`. |`,
   `| Mobile typecheck | ${boolText(readiness.mobileTypecheckReady)} | \`mobile-typecheck.json\`. |`,
@@ -364,6 +376,22 @@ if (s23ProofRefreshCommands.length === 0) {
     markdown.push("```");
     markdown.push("");
   }
+}
+
+markdown.push(
+  "## Provider Evidence Recovery",
+  "",
+);
+
+if (summary.recovery?.providerRefreshCommand) {
+  markdown.push("Run this when `provider_cached_evidence_stale` is reported, or after provider import/refresh/discovery work:");
+  markdown.push("");
+  markdown.push("```powershell");
+  markdown.push(summary.recovery.providerRefreshCommand);
+  markdown.push("```");
+  markdown.push("");
+} else {
+  markdown.push("No provider refresh command was provided by the latest batch summary.", "");
 }
 
 markdown.push(

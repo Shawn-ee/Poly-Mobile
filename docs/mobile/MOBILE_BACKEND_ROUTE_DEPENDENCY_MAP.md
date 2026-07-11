@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle PROVIDERFRESHGATE - Cached Provider Evidence Freshness
+
+Cycle PROVIDERFRESHGATE changes readiness harness reporting only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Cached provider freshness gate | Local command `npm run mobile:internal-readiness-batch`; optional refresh command `npm run mobile:internal-readiness-batch:provider-refresh` | Local proof aggregation | None beyond local backend/DB for refreshed mode | None in cached mode; refreshed mode reruns existing provider scripts | Batch fields `readiness.cachedProviderEvidenceFresh`, `readiness.cachedProviderEvidenceMaxAgeHours`, `readiness.cachedProviderEvidence[]`, and recovery `providerRefreshCommand` | Existing provider/reference snapshot tables are read only in cached mode; refreshed mode uses existing provider refresh scripts | None; stale cache is P1 audit debt, not runtime mock data | None. Real provider-backed parity still needs usable Polymarket match books or attach-ready line markets. |
+
 ## Cycle S23GOOGLEGATE - S23 Google Consent Readiness Summary
 
 Cycle S23GOOGLEGATE changes readiness harness reporting only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
