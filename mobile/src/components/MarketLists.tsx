@@ -67,6 +67,12 @@ const rawEventSourceReadiness = (event: Event) => {
       tone: "provider" as const,
     };
   }
+  if (winnerStatus === "provider-backed" && lineStatus === "partial-provider-backed") {
+    return {
+      accessibility: `home-card-source-provider-backed home-card-source-partial-provider-backed home-card-source-sportsbook-odds line-families-${lineFamilies.join("-") || "none"}`,
+      tone: "provider" as const,
+    };
+  }
   if (lineStatus === "contract-fixture") {
     return {
       accessibility: `home-card-source-local-lines home-card-source-local-test-fake-token line-families-${lineFamilies.join("-") || "none"}`,

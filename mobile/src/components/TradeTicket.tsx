@@ -343,6 +343,14 @@ function ticketSourceBadge(ticket: Ticket) {
       accessibility: `ticket-source-badge-provider ticket-source-${source}`,
     };
   }
+  if (source.includes("sportsbook-odds")) {
+    return {
+      label: "Sportsbook",
+      tone: "provider" as const,
+      visible: true,
+      accessibility: `ticket-source-badge-provider ticket-source-${source}`,
+    };
+  }
   if (source.includes("contract-fixture")) {
     return {
       label: "Holiwyn",
@@ -372,6 +380,13 @@ function ticketSourceNote(ticket: Ticket, locale: Locale) {
     return {
       text: locale === "zh" ? "Polymarket \u5e02\u573a" : "Polymarket market",
       accessibility: "ticket-provider-backed-pricing",
+      tone: "provider" as const,
+    };
+  }
+  if (source.includes("sportsbook-odds")) {
+    return {
+      text: locale === "zh" ? "\u4f53\u80b2\u76d8\u53e3" : "Sportsbook odds",
+      accessibility: "ticket-provider-backed-pricing ticket-sportsbook-odds-pricing",
       tone: "provider" as const,
     };
   }

@@ -19,9 +19,12 @@ describe("Event Detail market source metadata", () => {
     expect(source).toContain("Polymarket market");
     expect(source).toContain("Holiwyn line");
     expect(source).toContain("line-market-local-test-fake-token");
+    expect(source).toContain("line-market-sportsbook-odds");
     expect(source).toContain('label: "Polymarket"');
+    expect(source).toContain('label: "Sportsbook"');
     expect(source).toContain('label: "Holiwyn"');
     expect(source).toContain("market-source-polymarket-readable");
+    expect(source).toContain("market-source-sportsbook-readable");
     expect(source).toContain("market-source-local-test-readable");
     expect(source).toContain("event-detail-line-source-banner");
     expect(source).toContain("lineSourceCompact");

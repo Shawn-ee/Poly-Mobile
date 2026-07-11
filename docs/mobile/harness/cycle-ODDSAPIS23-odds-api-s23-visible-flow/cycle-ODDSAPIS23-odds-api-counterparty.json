@@ -1,0 +1,64 @@
+{
+  "pass": true,
+  "liquidityPurpose": "buy-fill",
+  "routeContract": {
+    "mobileFlow": "Event Detail line market -> generic Buy ticket -> /api/orders BUY -> Portfolio History",
+    "expectedRestingSide": "SELL",
+    "source": "local-mvp-internal-liquidity"
+  },
+  "eventSlug": "odds-api-single-soccer-test",
+  "market": {
+    "id": "29346e58-158a-4260-953d-259c98fa24ff",
+    "title": "Switzerland vs. Argentina: Spread +0.5",
+    "marketType": "spread",
+    "marketGroupKey": "spread",
+    "period": "regulation",
+    "line": "0.5",
+    "referenceSource": "sportsbook-odds",
+    "externalMarketId": "200d9cd5eda092c7eb778cc104cd2fd2:betonlineag:spreads:0.5",
+    "conditionId": "odds-api-02da927e1babf505d936e7c8"
+  },
+  "outcome": {
+    "id": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
+    "name": "Argentina -0.5",
+    "side": "home",
+    "referenceTokenId": "odds-api-38b7b87cb420684a05351898",
+    "referenceOutcomeLabel": "Argentina -0.5"
+  },
+  "cleanupOnly": false,
+  "maker": {
+    "id": "ee48a288-3212-4542-a24f-19222f331131",
+    "username": "mobile_route_fill_maker_79d2c988"
+  },
+  "cleanup": {
+    "enabled": true,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": [],
+    "cleanupBlockingBids": true,
+    "canceledBlockingBids": [],
+    "cleanupBlockingMarketBids": true,
+    "cleanupBlockingMarketBidsForcedByPurpose": false,
+    "canceledBlockingMarketBids": [],
+    "cleanupProofAsks": false,
+    "canceledProofAsks": [],
+    "cleanupBlockingAsks": false,
+    "canceledBlockingAsks": []
+  },
+  "makerOrder": {
+    "id": "3cddb37b-74fa-427d-bc70-f8bb38ea88b7",
+    "marketId": "29346e58-158a-4260-953d-259c98fa24ff",
+    "outcomeId": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
+    "side": "SELL",
+    "price": "0.58",
+    "size": "100",
+    "remaining": "100",
+    "reservedNotional": "0",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "SELL",
+    "price": "0.58",
+    "size": "100",
+    "intendedMobileTaker": "BUY $25 route-backed spread ticket"
+  }
+}

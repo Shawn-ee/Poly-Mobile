@@ -19,7 +19,7 @@
 - event-odds: /v4/sports/soccer_fifa_world_cup/events/200d9cd5eda092c7eb778cc104cd2fd2/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso | status 200 | used 7 | remaining 493 | last 6
 
 ## Markets
-- Available market keys: h2h, h2h_3_way, spreads, alternate_spreads, totals, alternate_totals, team_totals, alternate_team_totals, btts, draw_no_bet, h2h_3_way_h1, totals_h1, correct_score, plus other soccer/player/corners/cards markets recorded in `available-markets.redacted.json`
+- Available market keys: none
 - Imported market keys: h2h, spreads, totals, alternate_spreads, alternate_totals, h2h_3_way
 - Normalized markets: 10
 - Normalized outcomes: 22
@@ -30,9 +30,10 @@
 - Detail visible: true
 - Sportsbook market count: 10
 - Tradable outcome count: 22
-- Fake-token order/Portfolio proof: passed in `docs/mobile/harness/the-odds-api-single-event/mobile-flow-proof.redacted.json`
-- S23 reachability proof: passed in `docs/mobile/harness/the-odds-api-single-event/s23-device-reachability.redacted.json`
 
 ## Result
 - Pass: true
-- Remaining blocker: full visible S23 walkthrough of the seeded event is still recommended before treating this as human-tested UI proof.
+- S23 visible proof: pass.
+- S23 proof summary: `docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json`
+- S23 proof screenshots: `docs/mobile/screenshots/cycle-ODDSAPIS23-odds-api-s23-visible-flow/`
+- Remaining blocker: none for the temporary sportsbook Local MVP bridge. This still does not claim Polymarket-backed provider parity.

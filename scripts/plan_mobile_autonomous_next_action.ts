@@ -74,6 +74,19 @@ type S23ReachabilityProof = {
   proofLimitations?: string[];
 };
 
+type OddsApiS23VisibleProof = {
+  result?: string;
+  assertions?: {
+    homeShowsTemporarySportsbookEvent?: boolean;
+    detailShowsGameLines?: boolean;
+    sportsbookSpreadLineVisible?: boolean;
+    ticketPreservesSportsbookLineIdentity?: boolean;
+    swipeSubmitReachedPortfolio?: boolean;
+    portfolioPreservesSportsbookLineIdentity?: boolean;
+    historyPreservesSportsbookLineIdentity?: boolean;
+  };
+};
+
 type NextActionPlan = {
   generatedAt: string;
   status:
@@ -96,6 +109,7 @@ type NextActionPlan = {
     oddsApiSingleEventSummaryPath: string;
     oddsApiMobileFlowProofPath: string;
     oddsApiS23ReachabilityPath: string;
+    oddsApiS23VisibleProofPath: string;
   };
   state: {
     localMvpReady: boolean;
@@ -151,6 +165,7 @@ function buildPlan(
   oddsApiSummary: OddsApiSingleEventProof | null,
   oddsApiMobileFlowProof: OddsApiSingleEventProof | null,
   oddsApiS23Reachability: S23ReachabilityProof | null,
+  oddsApiS23VisibleProof: OddsApiS23VisibleProof | null,
   paths: NextActionPlan["sourceEvidence"],
   s23RefreshWindowHours: number,
 ): NextActionPlan {
@@ -172,8 +187,18 @@ function buildPlan(
     oddsApiMobileFlowProof.checks?.fakeTokenOrderFilled === true &&
     oddsApiMobileFlowProof.checks?.portfolioPositionVisible === true &&
     oddsApiMobileFlowProof.checks?.historyTradeVisible === true;
+  const temporaryProviderS23VisibleProofReady =
+    oddsApiS23VisibleProof?.result === "pass" &&
+    oddsApiS23VisibleProof.assertions?.homeShowsTemporarySportsbookEvent === true &&
+    oddsApiS23VisibleProof.assertions?.detailShowsGameLines === true &&
+    oddsApiS23VisibleProof.assertions?.sportsbookSpreadLineVisible === true &&
+    oddsApiS23VisibleProof.assertions?.ticketPreservesSportsbookLineIdentity === true &&
+    oddsApiS23VisibleProof.assertions?.swipeSubmitReachedPortfolio === true &&
+    oddsApiS23VisibleProof.assertions?.portfolioPreservesSportsbookLineIdentity === true &&
+    oddsApiS23VisibleProof.assertions?.historyPreservesSportsbookLineIdentity === true;
   const temporaryProviderNeedsS23VisualProof =
     temporaryProviderReady &&
+    !temporaryProviderS23VisibleProofReady &&
     (oddsApiS23Reachability?.pass === true) &&
     (oddsApiS23Reachability.proofLimitations ?? []).some((item) => item.toLowerCase().includes("not a full visual walkthrough"));
 
@@ -221,7 +246,7 @@ function buildPlan(
     recommendedAction = "Run a focused S23 visible proof for odds-api-single-soccer-test: Home -> Event Detail -> sportsbook spread/total line -> ticket -> fake-token order -> Portfolio/history. Do not spend more provider quota unless the redacted replay evidence is missing.";
     commands = [
       "npm run mobile:the-odds-api-single-event -- --fromRedactedOdds=docs/mobile/harness/the-odds-api-single-event/event-odds.redacted.json",
-      "npm run mobile:the-odds-api-single-event-flow",
+      "npm run mobile:the-odds-api-s23-visible-flow",
     ];
   } else if (remainingPartialCriteria.length === 0 && p1Blockers.length === 0) {
     status = "manual-local-mvp-ready";
@@ -270,6 +295,9 @@ const oddsApiMobileFlowProofPath =
   args.get("oddsApiMobileFlowProofPath") ?? "docs/mobile/harness/the-odds-api-single-event/mobile-flow-proof.redacted.json";
 const oddsApiS23ReachabilityPath =
   args.get("oddsApiS23ReachabilityPath") ?? "docs/mobile/harness/the-odds-api-single-event/s23-device-reachability.redacted.json";
+const oddsApiS23VisibleProofPath =
+  args.get("oddsApiS23VisibleProofPath") ??
+  "docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json";
 const outputPath = args.get("output") ?? "docs/mobile/harness/batch-internal-readiness-latest/mobile-autonomous-next-action-plan.json";
 const s23RefreshWindowHours = Number(args.get("s23RefreshWindowHours") ?? "2");
 
@@ -284,6 +312,7 @@ const paths = {
   oddsApiSingleEventSummaryPath,
   oddsApiMobileFlowProofPath,
   oddsApiS23ReachabilityPath,
+  oddsApiS23VisibleProofPath,
 };
 const plan = buildPlan(
   readJson<ReadinessSummary>(readinessSummaryPath),
@@ -292,6 +321,7 @@ const plan = buildPlan(
   readJson<OddsApiSingleEventProof>(oddsApiSingleEventSummaryPath),
   readJson<OddsApiSingleEventProof>(oddsApiMobileFlowProofPath),
   readJson<S23ReachabilityProof>(oddsApiS23ReachabilityPath),
+  readJson<OddsApiS23VisibleProof>(oddsApiS23VisibleProofPath),
   paths,
   s23RefreshWindowHours,
 );

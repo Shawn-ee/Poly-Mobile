@@ -9906,3 +9906,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: open FIFA/soccer World Cup team-match books with provider market/outcome/token ids, accepting-order state, and non-edge price data.
 - Temporary mock/static data: none added. Generic World Cup provider matches are only diagnostic evidence and must not be attached to the Local MVP soccer path.
 - Future migration concern: if a future scanner sees usable generic World Cup markets, they still cannot close Holiwyn soccer MVP parity unless the FIFA/soccer classifier also passes.
+
+## Cycle ODDSAPIS23 - Temporary Sportsbook S23 Visible Flow
+
+- Closed or narrowed: S23 now proves a route-visible sportsbook-derived event can carry `marketGroupKey`, `marketType`, `line`, outcome side, `referenceSource=sportsbook-odds`, external market ids, condition ids, and token-like ids through Event Detail, Trade Ticket, order submit, Portfolio, and History.
+- Route mismatch: none found for the temporary bridge. `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` all expose or preserve the selected sportsbook spread identity.
+- Fields Holiwyn still needs but backend/provider does not fully provide: Polymarket-backed World Cup soccer match line markets with accepting-order CLOB data and safe local fake-token liquidity. The sportsbook bridge is an interim internal-test source only.
+- Temporary mock/static data: the proof replays `event-odds.redacted.json` and seeds disposable local maker liquidity; the fixture shape uses real backend `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `Order`, `Trade`, and `Position` rows.
+- Future migration concern: do not merge sportsbook `referenceSource=sportsbook-odds` into Polymarket parity accounting. When Polymarket-backed match lines become available, the same S23 harness pattern should pass with `referenceSource=polymarket` and real provider token ids.

@@ -425,6 +425,13 @@ const portfolioSourceBadge = (selection?: TicketSelection) => {
       accessibility: `portfolio-source-badge-provider portfolio-source-${source}`,
     };
   }
+  if (source.includes("sportsbook-odds")) {
+    return {
+      label: "Sportsbook",
+      tone: "provider" as const,
+      accessibility: `portfolio-source-badge-provider portfolio-source-${source}`,
+    };
+  }
   if (source.includes("contract-fixture")) {
     return {
       label: "Holiwyn",
@@ -455,6 +462,13 @@ const portfolioSourceNote = (selection: TicketSelection | undefined, locale: Loc
       tone: "provider" as const,
     };
   }
+  if (source.includes("sportsbook-odds")) {
+    return {
+      accessibility: "portfolio-provider-backed-pricing portfolio-sportsbook-odds-pricing",
+      text: locale === "zh" ? "\u4f53\u80b2\u76d8\u53e3" : "Sportsbook odds",
+      tone: "provider" as const,
+    };
+  }
   return null;
 };
 
@@ -476,7 +490,9 @@ const portfolioSourceSummary = ({
   ].filter((selection): selection is TicketSelection => Boolean(selection));
   if (selections.length === 0) return null;
 
-  const providerCount = selections.filter((selection) => selection.referenceSource?.includes("polymarket")).length;
+  const providerCount = selections.filter((selection) =>
+    selection.referenceSource?.includes("polymarket") || selection.referenceSource?.includes("sportsbook-odds")
+  ).length;
   const localLineCount = selections.filter((selection) => selection.referenceSource?.includes("contract-fixture")).length;
   const lineFamilies = Array.from(
     new Set(

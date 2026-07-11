@@ -1,0 +1,49 @@
+{
+    "cycle":  "ODDSAPIS23",
+    "result":  "pass",
+    "generatedAt":  "2026-07-11T19:41:50.5002735Z",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model":  "SM-S911U1",
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "mobileApiBaseUrl":  "http://172.16.200.14:3002",
+    "expoPort":  8289,
+    "keyId":  "pk_live_5843c6fab1abde1a",
+    "apiKey":  "redacted",
+    "eventSlug":  "odds-api-single-soccer-test",
+    "selectedMarket":  {
+                           "marketGroupKey":  "spread",
+                           "marketType":  "spread",
+                           "line":  "0.5",
+                           "outcomeSide":  "home",
+                           "outcomeLabel":  "Argentina -0.5",
+                           "referenceSource":  "sportsbook-odds"
+                       },
+    "counterpartyProof":  "docs\\mobile\\harness\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-odds-api-counterparty.json",
+    "assertions":  {
+                       "homeShowsTemporarySportsbookEvent":  true,
+                       "homeKeepsMvpFeedClean":  true,
+                       "detailShowsGameLines":  true,
+                       "detailHidesOrderBookAndChat":  true,
+                       "sportsbookSpreadLineVisible":  true,
+                       "ticketPreservesSportsbookLineIdentity":  true,
+                       "swipeSubmitReachedPortfolio":  true,
+                       "portfolioPreservesSportsbookLineIdentity":  true,
+                       "historyPreservesSportsbookLineIdentity":  true
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\screenshots\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-home.png",
+                      "docs\\mobile\\harness\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-home.xml",
+                      "docs\\mobile\\screenshots\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-detail-top.png",
+                      "docs\\mobile\\harness\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-detail-top.xml",
+                      "docs\\mobile\\screenshots\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-line-market.png",
+                      "docs\\mobile\\harness\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-line-attempt-1.xml",
+                      "docs\\mobile\\screenshots\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-ticket-initial.png",
+                      "docs\\mobile\\harness\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-ticket-initial.xml",
+                      "docs\\mobile\\screenshots\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-ticket-ready.png",
+                      "docs\\mobile\\harness\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-ticket-ready.xml",
+                      "docs\\mobile\\screenshots\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-after-submit.png",
+                      "docs\\mobile\\harness\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-after-submit.xml",
+                      "docs\\mobile\\screenshots\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-portfolio-history.png",
+                      "docs\\mobile\\harness\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-portfolio-history.xml"
+                  ]
+}

@@ -6,7 +6,7 @@
     "partial": 1,
     "blocked": 0
   },
-  "generatedAt": "2026-07-11T19:27:58.861Z",
+  "generatedAt": "2026-07-11T19:45:25.594Z",
   "criteria": [
     {
       "id": "dod-android-runtime",
@@ -118,9 +118,10 @@
         "docs/mobile/audits/BATCH_THE_ODDS_API_SINGLE_EVENT.md",
         "docs/mobile/harness/the-odds-api-single-event/single-event-replay-summary.redacted.json",
         "docs/mobile/harness/the-odds-api-single-event/mobile-flow-proof.redacted.json",
-        "docs/mobile/harness/the-odds-api-single-event/s23-device-reachability.redacted.json"
+        "docs/mobile/harness/the-odds-api-single-event/s23-device-reachability.redacted.json",
+        "docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json"
       ],
-      "notes": "The Odds API single-event bridge is seeded and fake-token order/Portfolio/history proof passed, but S23 evidence is reachability only; run a full visible S23 walkthrough before treating the seeded provider as human-tested UI proof."
+      "notes": "The Odds API single-event bridge is seeded and has provider, fake-token order, Portfolio/history, and S23 evidence."
     },
     {
       "id": "dod-final-cycle",
@@ -147,7 +148,7 @@
     }
   ],
   "nextActions": [
-    "Run a focused S23 visible walkthrough for odds-api-single-soccer-test before spending more provider quota or opening another provider-discovery cycle.",
+    "Keep Local MVP testing on the contract-shaped line-market flow; provider evidence is fresh, so do not rerun provider discovery until the plan says refresh-soon/refresh-due or a real candidate signal appears.",
     "Keep Samsung APK smoke for install/launch coverage and Samsung server-order proof for the real-device trading regression."
   ]
 }

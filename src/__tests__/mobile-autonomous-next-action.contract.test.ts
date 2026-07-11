@@ -37,6 +37,7 @@ describe("mobile autonomous next-action planner", () => {
           "tsx",
           "scripts/plan_mobile_autonomous_next_action.ts",
           `--output=${outputPath}`,
+          `--oddsApiS23VisibleProofPath=${path.join(tempDir, "missing-s23-visible-proof.json")}`,
           "--s23RefreshWindowHours=2",
         ],
         { encoding: "utf8" },
@@ -49,7 +50,7 @@ describe("mobile autonomous next-action planner", () => {
       expect(plan.state.remainingPartialCriteria).toContain("dod-provider-polymarket-parity");
       expect(plan.state.temporaryProviderReady).toBe(true);
       expect(plan.state.temporaryProviderNeedsS23VisualProof).toBe(true);
-      expect(plan.commands).toContain("npm run mobile:the-odds-api-single-event-flow");
+      expect(plan.commands).toContain("npm run mobile:the-odds-api-s23-visible-flow");
     } finally {
       rmSync(tempDir, { recursive: true, force: true });
     }

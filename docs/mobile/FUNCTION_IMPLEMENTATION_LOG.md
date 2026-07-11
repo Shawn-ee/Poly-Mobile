@@ -13207,3 +13207,27 @@ Known limitations:
 - User interactions supported: unchanged. This improves the provider gate that decides when Home/Event Detail can claim real Polymarket-backed World Cup match breadth.
 - State transitions: the scanner now treats provider match readiness as FIFA/soccer World Cup only. Generic non-soccer World Cup matches are excluded into diagnostic evidence instead of being counted as Local MVP team-match candidates.
 - Known limitations: this does not create usable provider markets. If Polymarket has no open FIFA World Cup team-match books, Local MVP internal testing continues to use contract-shaped fixture lines.
+
+# Cycle ODDSAPIS23 - Temporary Sportsbook S23 Visible Flow
+
+- Feature/page worked on: Local MVP Home -> Event Detail -> sportsbook spread line -> Trade Ticket -> fake-token order -> Portfolio History.
+- Frontend components touched:
+  - `mobile/src/components/MarketLists.tsx`
+  - `mobile/src/components/EventDetail.tsx`
+  - `mobile/src/components/TradeTicket.tsx`
+  - `mobile/src/components/Portfolio.tsx`
+- Important functions/services touched:
+  - `scripts/prove_mobile_odds_api_s23_visible_flow.ps1`
+  - `scripts/plan_mobile_autonomous_next_action.ts`
+  - `scripts/mobile_definition_of_done_sweep.ts`
+- User interactions supported: Samsung S23 visible proof opens `odds-api-single-soccer-test`, selects `Argentina -0.5`, opens the ticket, presets `$25`, swipes to buy, and verifies Portfolio plus History keep `sportsbook-odds` spread line identity.
+- State transitions:
+  - Home source disclosure treats `sportsbook-odds` as a provider-backed internal sportsbook bridge instead of an unknown source.
+  - Event Detail line banners, market badges, ticket source notes, and Portfolio source notes preserve `referenceSource=sportsbook-odds`.
+  - The proof seeds replayed Odds API event data and disposable local maker liquidity without spending more provider quota.
+  - The planner now stops requesting the same temporary-provider S23 proof after `cycle-ODDSAPIS23-odds-api-s23-visible-flow.json` passes.
+- Proof:
+  - `docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json`
+  - Screenshots under `docs/mobile/screenshots/cycle-ODDSAPIS23-odds-api-s23-visible-flow/`
+- Known limitations:
+  - This is a temporary sportsbook-derived internal MVP bridge. It does not claim Polymarket-backed parity and does not close the remaining provider-backed Polymarket line-market P1 debt.

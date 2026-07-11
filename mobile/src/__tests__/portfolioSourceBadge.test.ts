@@ -24,6 +24,9 @@ describe("Portfolio source badges", () => {
     expect(source).toContain("sourceSummaryAuditOnly");
     expect(source).toContain("portfolio-source-summary-local-lines");
     expect(source).toContain("Holiwyn lines");
+    expect(source).toContain('label: "Sportsbook"');
+    expect(source).toContain("Sportsbook odds");
+    expect(source).toContain("portfolio-sportsbook-odds-pricing");
     expect(source).toContain("portfolio-local-line-count-");
   });
 });

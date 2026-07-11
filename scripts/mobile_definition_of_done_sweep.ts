@@ -43,6 +43,7 @@ const evidence = {
   oddsApiSingleEventSummary: "docs/mobile/harness/the-odds-api-single-event/single-event-replay-summary.redacted.json",
   oddsApiMobileFlowProof: "docs/mobile/harness/the-odds-api-single-event/mobile-flow-proof.redacted.json",
   oddsApiS23Reachability: "docs/mobile/harness/the-odds-api-single-event/s23-device-reachability.redacted.json",
+  oddsApiS23VisibleProof: "docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json",
 };
 
 const readJson = <T,>(file: string): T | null => {
@@ -110,15 +111,37 @@ const oddsApiS23Reachability = readJson<{
   pass?: boolean;
   proofLimitations?: string[];
 }>(evidence.oddsApiS23Reachability);
+const oddsApiS23VisibleProof = readJson<{
+  result?: string;
+  assertions?: {
+    homeShowsTemporarySportsbookEvent?: boolean;
+    detailShowsGameLines?: boolean;
+    sportsbookSpreadLineVisible?: boolean;
+    ticketPreservesSportsbookLineIdentity?: boolean;
+    swipeSubmitReachedPortfolio?: boolean;
+    portfolioPreservesSportsbookLineIdentity?: boolean;
+    historyPreservesSportsbookLineIdentity?: boolean;
+  };
+}>(evidence.oddsApiS23VisibleProof);
 const temporarySportsbookProviderBridgeReady =
   oddsApiSummary?.pass === true &&
   (oddsApiSummary.mobile?.sportsbookMarketCount ?? 0) > 0 &&
   oddsApiMobileFlowProof?.pass === true &&
-  oddsApiMobileFlowProof.checks?.fakeTokenOrderFilled === true &&
-  oddsApiMobileFlowProof.checks?.portfolioPositionVisible === true &&
-  oddsApiMobileFlowProof.checks?.historyTradeVisible === true;
+    oddsApiMobileFlowProof.checks?.fakeTokenOrderFilled === true &&
+    oddsApiMobileFlowProof.checks?.portfolioPositionVisible === true &&
+    oddsApiMobileFlowProof.checks?.historyTradeVisible === true;
+const temporarySportsbookProviderS23VisibleReady =
+  oddsApiS23VisibleProof?.result === "pass" &&
+  oddsApiS23VisibleProof.assertions?.homeShowsTemporarySportsbookEvent === true &&
+  oddsApiS23VisibleProof.assertions?.detailShowsGameLines === true &&
+  oddsApiS23VisibleProof.assertions?.sportsbookSpreadLineVisible === true &&
+  oddsApiS23VisibleProof.assertions?.ticketPreservesSportsbookLineIdentity === true &&
+  oddsApiS23VisibleProof.assertions?.swipeSubmitReachedPortfolio === true &&
+  oddsApiS23VisibleProof.assertions?.portfolioPreservesSportsbookLineIdentity === true &&
+  oddsApiS23VisibleProof.assertions?.historyPreservesSportsbookLineIdentity === true;
 const temporarySportsbookProviderNeedsVisibleS23 =
   temporarySportsbookProviderBridgeReady &&
+  !temporarySportsbookProviderS23VisibleReady &&
   oddsApiS23Reachability?.pass === true &&
   (oddsApiS23Reachability.proofLimitations ?? []).some((item) => item.toLowerCase().includes("not a full visual walkthrough"));
 const localMvpBatchReady =
@@ -228,7 +251,13 @@ const criteria: Criterion[] = [
     id: "dod-temporary-sportsbook-provider-bridge",
     criterion: "Temporary sportsbook provider bridge is available for Local MVP testing without claiming Polymarket-backed parity.",
     status: temporarySportsbookProviderBridgeReady ? "verified" : "partial",
-    evidence: [evidence.oddsApiSingleEventAudit, evidence.oddsApiSingleEventSummary, evidence.oddsApiMobileFlowProof, evidence.oddsApiS23Reachability],
+    evidence: [
+      evidence.oddsApiSingleEventAudit,
+      evidence.oddsApiSingleEventSummary,
+      evidence.oddsApiMobileFlowProof,
+      evidence.oddsApiS23Reachability,
+      evidence.oddsApiS23VisibleProof,
+    ],
     notes: temporarySportsbookProviderBridgeReady
       ? temporarySportsbookProviderNeedsVisibleS23
         ? "The Odds API single-event bridge is seeded and fake-token order/Portfolio/history proof passed, but S23 evidence is reachability only; run a full visible S23 walkthrough before treating the seeded provider as human-tested UI proof."

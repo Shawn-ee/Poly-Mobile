@@ -475,6 +475,12 @@ const marketSourceHeaderNote = (market: Market | undefined, locale: Locale) => {
       accessibility: "line-market-provider-backed",
     };
   }
+  if (source.includes("sportsbook-odds")) {
+    return {
+      text: locale === "zh" ? "\u4f53\u80b2\u76d8\u53e3" : "Sportsbook odds",
+      accessibility: "line-market-provider-backed line-market-sportsbook-odds",
+    };
+  }
   return null;
 };
 
@@ -485,6 +491,13 @@ const marketSourceBadge = (market?: Market) => {
       label: "Polymarket",
       tone: "provider" as const,
       accessibility: `market-source-badge-provider market-source-polymarket-readable market-source-${source}`,
+    };
+  }
+  if (source.includes("sportsbook-odds")) {
+    return {
+      label: "Sportsbook",
+      tone: "provider" as const,
+      accessibility: `market-source-badge-provider market-source-sportsbook-readable market-source-${source}`,
     };
   }
   if (source.includes("contract-fixture")) {

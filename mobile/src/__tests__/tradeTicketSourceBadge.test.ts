@@ -17,9 +17,12 @@ describe("Trade Ticket market source audit marker", () => {
     expect(source).toContain("ticket-header-source-pill-hidden-local-mvp");
     expect(source).toContain("ticket-source-note-audit-only");
     expect(source).toContain('label: "Polymarket"');
+    expect(source).toContain('label: "Sportsbook"');
     expect(source).toContain('label: "Holiwyn"');
     expect(source).not.toContain('label: "Checking"');
     expect(source).toContain("Holiwyn line");
+    expect(source).toContain("Sportsbook odds");
+    expect(source).toContain("ticket-sportsbook-odds-pricing");
     expect(source).toContain("\\u5229\\u4e91\\u4f53\\u80b2\\u76d8\\u53e3");
     expect(source).toContain("Polymarket \\u5e02\\u573a");
     expect(source).not.toMatch(/[\u00c3\u00c2]|\u00e5\u02c6\u00a9|\u00e7\u203a\u02dc|\u00e5\u00b8\u201a|\u00e5\u0153\u00ba/);
