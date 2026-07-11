@@ -7569,3 +7569,17 @@ Remaining P1:
 - XML proof: `docs/mobile/harness/cycle-VW-home-copy-contract-cleanup/cycle-VW-home.xml` shows World Cup, Matches, 3 matches, 1 live, and rejects Home search/filter/account controls, Trending, stale search empty-state copy, and Expo developer-menu overlay labels.
 - Unresolved P0: 0.
 - Remaining P1: none for this cleanup scope. Real provider-backed Spread/Totals/Team Total rows remain a separate provider-data gap.
+
+# Cycle VX Audit Gate - Unavailable Ticket S23 Proof
+
+- Scope: close the pending Android visual Audit Gate for the unavailable/read-only Trade Ticket state.
+- Gate status: Pass.
+- P0 result: PASS.
+- Implementation proof: `mobile/scripts/s23-unavailable-ticket-proof.ps1` launches `forceResetState=1&forceUnavailableTradeTicket=1`; `mobile/package.json` exposes `npm run proof:s23:unavailable-ticket`; `mobile/src/__tests__/s23UnavailableTicketProofContract.test.ts` guards the proof contract.
+- Contract proof: `npm run test:mobile-api -- mobile/src/__tests__/s23UnavailableTicketProofContract.test.ts mobile/src/__tests__/unavailableTicketDeepLinkContract.test.ts mobile/src/__tests__/tradeTicketUnavailableReadonlyContract.test.ts` passed.
+- Type proof: `cd mobile && npm run typecheck` passed inside `npm run proof:s23:unavailable-ticket`.
+- Android proof: passed on Samsung S23 `SM_S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`.
+- Visible proof: `docs/mobile/screenshots/cycle-VX-unavailable-ticket-s23-proof/cycle-VX-unavailable-ticket.png`.
+- XML proof: `docs/mobile/harness/cycle-VX-unavailable-ticket-s23-proof/cycle-VX-unavailable-ticket.xml` shows visible `Market unavailable`, disabled side/preset/keypad markers, `ticket-availability-unavailable`, `ticket-market-status-PROOF_UNAVAILABLE`, `swipe-submit-state-disabled`, and selected Spread `1.5` identity markers.
+- Unresolved P0: 0.
+- Remaining P1: none for this unavailable-ticket scope. Real provider-backed Spread/Totals/Team Total rows remain a separate provider-data gap.

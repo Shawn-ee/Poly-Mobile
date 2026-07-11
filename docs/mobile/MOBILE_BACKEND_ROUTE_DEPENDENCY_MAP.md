@@ -4473,6 +4473,12 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Unavailable Trade Ticket proof deep link | None beyond app launch/deep link | N/A | None | `forceUnavailableTradeTicket=1` launch URL param | Local proof fixture sets `market.availability.status="unavailable"`, `marketStatus="PROOF_UNAVAILABLE"`, and selected market/outcome/line identity | No database model implied | Uses bundled World Cup event/market data plus route-shaped availability fields | None for fixture setup. Device proof still needs an attached Android device. |
 
+# Cycle VX - Unavailable Ticket S23 Proof
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| S23 proof for unavailable Trade Ticket | None beyond app launch/deep link; no order route is called | N/A | None | `forceResetState=1&forceUnavailableTradeTicket=1` launch URL params | Existing `market.availability.status`, `market.availability.marketStatus`, selected market/outcome/line/source identity, and disabled ticket controls | No database model implied | Cycle UF proof fixture supplies route-shaped unavailable market data | None for this proof. Real provider-backed unavailable states should use the same availability fields. |
+
 # Cycle UG - Chart-Free MVP Doc Alignment
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

@@ -2951,3 +2951,11 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Proof command: `npm run proof:s23:home`.
 - Evidence: screenshot `docs/mobile/screenshots/cycle-VW-home-copy-contract-cleanup/cycle-VW-home.png`; XML `docs/mobile/harness/cycle-VW-home-copy-contract-cleanup/cycle-VW-home.xml`; intermediate Expo-menu-dismiss hierarchy `docs/mobile/harness/cycle-VW-home-copy-contract-cleanup/cycle-VW-home-expo-menu.xml`.
 - Result: PASS. S23 proof shows World Cup, Matches, 3 matches, 1 live, and no Home search/filter/account controls, Trending, stale search empty-state copy, or Expo developer-menu overlay labels.
+
+# Cycle VX - Unavailable Ticket S23 Proof
+
+- Device: Samsung S23 `SM_S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`.
+- Flow covered by device proof: deep link -> unavailable Trade Ticket fixture -> visible `Market unavailable` state -> disabled side/preset/keypad/swipe submit controls.
+- Proof command: `npm run proof:s23:unavailable-ticket`.
+- Evidence: screenshot `docs/mobile/screenshots/cycle-VX-unavailable-ticket-s23-proof/cycle-VX-unavailable-ticket.png`; XML `docs/mobile/harness/cycle-VX-unavailable-ticket-s23-proof/cycle-VX-unavailable-ticket.xml`; intermediate Expo-menu-dismiss hierarchy `docs/mobile/harness/cycle-VX-unavailable-ticket-s23-proof/cycle-VX-unavailable-ticket-expo-menu.xml`.
+- Result: PASS. XML verifies `ticket-market-status-visible`, `ticket-readonly-market-state`, `ticket-amount-entry-disabled`, `ticket-availability-unavailable`, `ticket-market-status-PROOF_UNAVAILABLE`, disabled side/preset/keypad markers, and `swipe-submit-state-disabled`.

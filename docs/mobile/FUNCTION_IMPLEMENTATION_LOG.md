@@ -12282,8 +12282,8 @@ Known limitations:
 - Backend/API routes touched: none. Existing market availability data and order-submit blocking behavior are consumed as-is.
 - User interactions supported: when a selected market is suspended or unavailable, the ticket now shows a visible blocked-market status, disables side switching, disables amount presets, disables the keypad, and keeps the swipe submit control unavailable.
 - State transitions: selected market/outcome with `market.availability.status` of `suspended` or `unavailable` -> `marketTradable=false` -> visible read-only ticket state -> no amount entry or submit; ready/stale/delayed markets keep the existing editable ticket path.
-- Proof: focused Trade Ticket unavailable-readonly contract test, existing Trade Ticket swipe motion/source tests, and mobile typecheck passed. Android proof is still pending because no S23/tablet ADB device was attached or discoverable during this cycle.
-- Known limitations: device proof for a real unavailable ticket state remains required before marking the visual unavailable-state gap fully closed.
+- Proof: focused Trade Ticket unavailable-readonly contract test, existing Trade Ticket swipe motion/source tests, and mobile typecheck passed. Cycle VX later closed the Android visual proof on Samsung S23.
+- Known limitations: real provider-backed unavailable states should continue using the same `market.availability` contract; this cycle did not add provider breadth.
 
 # Cycle UF - Unavailable Ticket Proof Fixture
 
@@ -12292,8 +12292,18 @@ Known limitations:
 - Backend/API routes touched: none. The fixture uses the existing mobile `Market.availability` shape and does not call order routes.
 - User interactions supported: proof harnesses can launch `forceUnavailableTradeTicket=1` to open a deterministic read-only Trade Ticket with `availability.status="unavailable"`, making the pending S23 proof repeatable.
 - State transitions: deep link -> deterministic match/market selection -> proof-shaped unavailable availability state -> `TradeTicket` read-only state from Cycle UE.
-- Proof: focused deep-link contract test and mobile typecheck passed. Android proof remains pending because no S23/tablet ADB device was attached or discoverable during this cycle.
+- Proof: focused deep-link contract test and mobile typecheck passed. Cycle VX later proved the fixture on Samsung S23.
 - Known limitations: this is a deterministic proof fixture, not evidence that a live provider has produced a real suspended market. Real provider unavailable states should continue to use the same `market.availability` contract.
+
+# Cycle VX - Unavailable Ticket S23 Proof
+
+- Feature/page worked on: Trade Ticket unavailable/read-only state in the Local MVP retail betting flow.
+- Frontend/tooling files touched: `mobile/scripts/s23-unavailable-ticket-proof.ps1`, `mobile/src/__tests__/s23UnavailableTicketProofContract.test.ts`, `mobile/package.json`.
+- Backend/API routes touched: none.
+- User interactions supported: S23 proof launches `forceResetState=1&forceUnavailableTradeTicket=1` and verifies the visible ticket is read-only when the selected market is unavailable.
+- State transitions: deep link -> deterministic Mexico vs Ecuador Spread ticket -> route-shaped `availability.status="unavailable"` -> visible `Market unavailable` -> disabled side buttons, presets/Max, keypad, and swipe submit. No order route is called.
+- Proof: `npm run proof:s23:unavailable-ticket` passed on Samsung S23 `SM_S911U1`. Evidence: `docs/mobile/screenshots/cycle-VX-unavailable-ticket-s23-proof/cycle-VX-unavailable-ticket.png` and `docs/mobile/harness/cycle-VX-unavailable-ticket-s23-proof/cycle-VX-unavailable-ticket.xml`.
+- Known limitations: this cycle closes the unavailable-ticket visual P0 only. Real provider-backed Spread/Totals/Team Total line markets remain a separate provider-data gap.
 
 # Cycle UG - Chart-Free MVP Doc Alignment
 

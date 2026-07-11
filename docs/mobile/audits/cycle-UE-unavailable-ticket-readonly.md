@@ -1,6 +1,6 @@
 # Cycle UE - Unavailable Trade Ticket Readonly State
 
-Status: source/contract pass, Android visual proof pending because no ADB device was attached or discoverable during the cycle.
+Status: pass after Cycle VX S23 proof.
 
 ## Scope
 
@@ -15,7 +15,7 @@ Improve the Local MVP unavailable/suspended market state for the Trade Ticket wi
 | UE-TT-P0-03 | P0 | Amount presets and Max must be disabled when the selected market is unavailable/suspended. | Pass by source/test |
 | UE-TT-P0-04 | P0 | Numeric keypad entry must be disabled when the selected market is unavailable/suspended. | Pass by source/test |
 | UE-TT-P0-05 | P0 | Swipe submit must remain disabled/unavailable and must not call order routes. | Pass by source/test |
-| UE-TT-P0-06 | P0 | Samsung S23 proof must capture the unavailable ticket state. | Pending |
+| UE-TT-P0-06 | P0 | Samsung S23 proof must capture the unavailable ticket state. | Pass in Cycle VX |
 
 ## Implementation Notes
 
@@ -30,6 +30,10 @@ Improve the Local MVP unavailable/suspended market state for the Trade Ticket wi
 - Existing Trade Ticket contract tests passed.
 - Mobile typecheck passed.
 
-## Remaining Gap
+## Cycle VX Device Proof
 
-Run S23 proof once an Android device is attached/discoverable. The visual unavailable-state gap should remain open until that proof exists.
+- Samsung S23 `SM_S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`.
+- Proof command: `npm run proof:s23:unavailable-ticket`.
+- Screenshot: `docs/mobile/screenshots/cycle-VX-unavailable-ticket-s23-proof/cycle-VX-unavailable-ticket.png`.
+- XML: `docs/mobile/harness/cycle-VX-unavailable-ticket-s23-proof/cycle-VX-unavailable-ticket.xml`.
+- Result: pass. The ticket shows `Market unavailable`, disables side switching, presets/Max, keypad entry, and swipe submit, and preserves selected market/line/source identity.
