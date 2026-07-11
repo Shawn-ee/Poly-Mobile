@@ -9930,3 +9930,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: Polymarket-backed World Cup soccer match line markets with accepting-order CLOB data and real provider token ids. The sportsbook ids are deliberately `odds-api-*` token-like placeholders for internal fake-token testing.
 - Temporary mock/static data: disposable maker liquidity was seeded for the proof order; the provider event and prices came from the live sportsbook provider and were stored as redacted harness evidence.
 - Future migration concern: keep `referenceSource=sportsbook-odds` separate from `referenceSource=polymarket` in readiness, Portfolio, and History. Passing this refresh keeps the Local MVP test bridge useful but does not close Polymarket provider parity.
+
+## Cycle ODDSBATCHFRESH - Sportsbook Backend Proof Freshness Gate
+
+- Closed or narrowed: the internal readiness batch now checks whether the temporary sportsbook seed and backend fake-token flow proof are fresh before reporting the bridge as healthy.
+- Route mismatch: none. This cycle adds harness aggregation fields only.
+- Fields Holiwyn still needs but backend/provider does not fully provide: Polymarket-backed World Cup soccer match line markets with accepting-order CLOB data and real provider token ids remain the true provider-parity gap.
+- Temporary mock/static data: none added. The batch reads the existing redacted sportsbook seed and fake-token flow proof artifacts.
+- Future migration concern: when Polymarket match/line markets become attach-ready, this temporary sportsbook freshness gate should remain separate from Polymarket provider readiness so `sportsbook-odds` never satisfies `polymarket` parity by accident.

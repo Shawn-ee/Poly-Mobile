@@ -45,6 +45,7 @@ The gap list is generated from the latest summary by `scripts/write_mobile_inter
 - Provider snapshot, internal exchange, tradable-flow, World Cup match breadth, and provider line-market breadth from cached evidence by default, or freshly regenerated evidence when `-ProviderDiscoveryMode refresh` is used.
 - Committed Samsung S23 Local MVP device proof summaries for Spread filled buy/history, Spread open-order cancel, Spread position cashout/sell, Totals filled buy/history, Team Totals filled buy/history, and the temporary sportsbook bridge filled buy/history flow.
 - Freshness of committed Samsung S23 Local MVP device proofs, so old passing screenshots cannot satisfy readiness forever.
+- Freshness of the temporary sportsbook backend proof artifacts, so the one-event sportsbook bridge cannot silently rely on old seed/order/Portfolio evidence.
 - Root TypeScript typecheck, Jest CI smoke suite, and mobile TypeScript typecheck.
 - Local environment health snapshot: git cleanliness, S23 reachability, Docker/Postgres status, backend/Expo/proof ports, and continuous bot process status.
 
@@ -65,6 +66,7 @@ Known provider availability gaps are tracked as P1, not P0:
 - provider/internal exchange not local-MM-ready
 - provider-visible match market has an unsafe/missing/non-accepting provider snapshot for local-MM fake-token fill proof
 - provider-visible match market has no bot SELL quote for a fake-token fill proof
+- temporary sportsbook backend proof is missing or stale while the sportsbook bridge is being used for Local MVP internal testing
 - manual server mode missing an ambient `EXPO_PUBLIC_API_KEY`
 - Google auth runtime warnings such as a callback/redirect URI mismatch
 - Google physical callback warnings such as a local `127.0.0.1` callback that the S23 browser cannot reach
@@ -118,6 +120,8 @@ The batch also reports `readiness.s23ProofNextStaleName`, `readiness.s23ProofNex
 If any of those checks fail, the batch records `s23_local_mvp_device_proof_not_ready` as a P0 blocker. This keeps the batch honest: Local MVP readiness requires both route/backend readiness and real Android proof evidence, while still avoiding unnecessary repeated screenshot generation when the committed evidence is already current.
 
 The batch summary also includes `recovery.s23ProofRefreshCommands`. The generated gap list prints those exact commands so the loop can refresh the Spread, Totals, Team Totals, and temporary sportsbook proof set on the S23, then rerun `npm run mobile:internal-readiness-batch` without guessing which proof folders need to be regenerated.
+
+The temporary sportsbook backend bridge is freshness-gated separately from S23 screenshots. The batch records `readiness.temporarySportsbookBackendProofReady`, `readiness.temporarySportsbookBackendProofs[]`, and next-stale fields for `single-event-summary.redacted.json` and `mobile-flow-proof.redacted.json`. If either artifact is missing, failed, or stale, the batch reports `temporary_sportsbook_backend_proof_stale_or_missing` as P1 and the loop should rerun `npm run mobile:the-odds-api-single-event` with `THE_ODDS_API_KEY` in the process environment, then `npm run mobile:the-odds-api-single-event-flow`.
 
 ## Local Validation Gates
 

@@ -105,6 +105,20 @@ describe("mobile internal readiness batch harness", () => {
     expect(gapWriter).toContain("Provider Evidence Recovery");
   });
 
+  it("tracks temporary sportsbook backend proof freshness separately from S23 screenshots", () => {
+    const source = harness();
+    const gapWriter = readFileSync("scripts/write_mobile_internal_readiness_gap_list.ts", "utf8");
+
+    expect(source).toContain("sportsbookSingleEventSummaryPath");
+    expect(source).toContain("sportsbookMobileFlowProofPath");
+    expect(source).toContain("sportsbookBackendProofMaxAgeHours");
+    expect(source).toContain("temporarySportsbookBackendProofReady");
+    expect(source).toContain("temporarySportsbookBackendProofs");
+    expect(source).toContain("temporary_sportsbook_backend_proof_stale_or_missing");
+    expect(gapWriter).toContain("Temporary sportsbook backend proof freshness");
+    expect(gapWriter).toContain("Temporary sportsbook backend proof ready");
+  });
+
   it("surfaces generic non-soccer World Cup exclusions in provider match evidence", () => {
     const source = harness();
     const gapWriter = readFileSync("scripts/write_mobile_internal_readiness_gap_list.ts", "utf8");
@@ -135,6 +149,7 @@ describe("mobile internal readiness batch harness", () => {
     expect(doc).toContain("googleS23ConsentReady");
     expect(doc).toContain("cachedProviderEvidenceFresh");
     expect(doc).toContain("Temporary sportsbook bridge filled buy/history proof");
+    expect(doc).toContain("temporarySportsbookBackendProofReady");
   });
 
   it("documents clean evidence output and CI coverage for the batch guard", () => {

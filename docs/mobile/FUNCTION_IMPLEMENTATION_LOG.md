@@ -13271,3 +13271,20 @@ Known limitations:
   - `docs/mobile/harness/the-odds-api-single-event/mobile-flow-proof.redacted.json`
 - Known limitations:
   - This remains an internal temporary sportsbook bridge. It does not claim Polymarket-backed parity and must not be used as evidence that Polymarket World Cup match/line markets are attach-ready.
+
+# Cycle ODDSBATCHFRESH - Sportsbook Backend Proof Freshness Gate
+
+- Feature/page worked on: internal readiness batch freshness tracking for the temporary sportsbook backend bridge.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/mobile_internal_readiness_batch.ps1`
+  - `scripts/write_mobile_internal_readiness_gap_list.ts`
+  - `src/__tests__/mobile.internal-readiness-batch.contract.test.ts`
+  - `docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md`
+- User interactions supported: unchanged. The batch now verifies that the backend/provider evidence behind the temporary sportsbook flow is still fresh before relying on that bridge for Local MVP internal testing.
+- State transitions:
+  - The readiness summary exposes `temporarySportsbookBackendProofReady`.
+  - The summary lists freshness rows for `single-event-summary.redacted.json` and `mobile-flow-proof.redacted.json`.
+  - If either proof is missing, failed, or stale, the batch reports `temporary_sportsbook_backend_proof_stale_or_missing` as P1.
+- Known limitations:
+  - This is a harness/readiness improvement only. It does not add new sportsbook markets, does not spend provider quota, and does not close Polymarket-backed provider parity.

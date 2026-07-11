@@ -413,8 +413,11 @@ $cashoutS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-XI-cashout
 $totalsS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-WF-line-family-s23-proof\cycle-WF-current-mvp-s23-visible-flow.json"
 $teamTotalsS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-WG-team-total-s23-proof\cycle-WG-current-mvp-s23-visible-flow.json"
 $sportsbookS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-ODDSAPIS23-odds-api-s23-visible-flow\cycle-ODDSAPIS23-odds-api-s23-visible-flow.json"
+$sportsbookSingleEventSummaryPath = Join-Path $RepoRoot "docs\mobile\harness\the-odds-api-single-event\single-event-summary.redacted.json"
+$sportsbookMobileFlowProofPath = Join-Path $RepoRoot "docs\mobile\harness\the-odds-api-single-event\mobile-flow-proof.redacted.json"
 $s23ProofMaxAgeHours = 24
 $cachedProviderEvidenceMaxAgeHours = 24
+$sportsbookBackendProofMaxAgeHours = 24
 $backendRepoPath = ConvertTo-RepoPath $backendPath
 $credentialRepoPath = ConvertTo-RepoPath $credentialPath
 $googleAuthRepoPath = ConvertTo-RepoPath $googleAuthPath
@@ -501,6 +504,8 @@ $lineScan = Read-JsonFile $lineScanPath
 $rootTypecheck = Read-JsonFile $rootTypecheckMarkerPath
 $jestCi = Read-JsonFile $jestCiMarkerPath
 $mobileTypecheck = Read-JsonFile $mobileTypecheckMarkerPath
+$sportsbookSingleEventSummary = Read-JsonFile $sportsbookSingleEventSummaryPath
+$sportsbookMobileFlowProof = Read-JsonFile $sportsbookMobileFlowProofPath
 $cachedProviderEvidence = @(
   (Get-CachedProviderEvidence -Name "provider-snapshot-refresh" -Path $providerSnapshotRefreshPath -Json $providerSnapshotRefresh -MaxAgeHours $cachedProviderEvidenceMaxAgeHours),
   (Get-CachedProviderEvidence -Name "internal-exchange-readiness" -Path $exchangePath -Json $exchange -MaxAgeHours $cachedProviderEvidenceMaxAgeHours),
@@ -510,6 +515,14 @@ $cachedProviderEvidence = @(
 )
 $cachedProviderEvidenceFresh = [bool](($cachedProviderEvidence | Where-Object { -not $_.fresh }).Count -eq 0)
 $providerEvidenceNextStale = $cachedProviderEvidence |
+  Where-Object { $null -ne $_.hoursUntilStale } |
+  Sort-Object hoursUntilStale |
+  Select-Object -First 1
+$sportsbookBackendProofs = @(
+  (Get-CachedProviderEvidence -Name "sportsbook-single-event-live-seed" -Path $sportsbookSingleEventSummaryPath -Json $sportsbookSingleEventSummary -MaxAgeHours $sportsbookBackendProofMaxAgeHours),
+  (Get-CachedProviderEvidence -Name "sportsbook-mobile-fake-token-flow" -Path $sportsbookMobileFlowProofPath -Json $sportsbookMobileFlowProof -MaxAgeHours $sportsbookBackendProofMaxAgeHours)
+)
+$sportsbookBackendProofNextStale = $sportsbookBackendProofs |
   Where-Object { $null -ne $_.hoursUntilStale } |
   Sort-Object hoursUntilStale |
   Select-Object -First 1
@@ -533,6 +546,11 @@ $localMvpReady = [bool]($currentState -and $currentState.diagnosis.serviceReadin
 $localMatchBreadthReady = [bool]($localMatchBreadth -and $localMatchBreadth.pass)
 $s23LocalMvpDeviceProofReady = [bool](($s23Proofs | Where-Object { -not $_.pass }).Count -eq 0)
 $sportsbookS23BridgeProofReady = [bool](@($s23Proofs | Where-Object { $_.name -eq "temporary-sportsbook-filled-buy-history" -and $_.pass }).Count -eq 1)
+$sportsbookBackendProofReady = [bool](
+  ($sportsbookSingleEventSummary -and $sportsbookSingleEventSummary.pass) -and
+  ($sportsbookMobileFlowProof -and $sportsbookMobileFlowProof.pass) -and
+  (($sportsbookBackendProofs | Where-Object { -not $_.fresh }).Count -eq 0)
+)
 $rootTypecheckReady = [bool]($rootTypecheck -and $rootTypecheck.pass)
 $jestCiReady = [bool]($jestCi -and $jestCi.pass)
 $mobileTypecheckReady = [bool]($mobileTypecheck -and $mobileTypecheck.pass)
@@ -648,6 +666,7 @@ if ($providerTradableFlow -and -not $providerMvpTradableFlowReady) {
 if ($usableMatchCount -lt 1) { $p1Blockers += "no_usable_polymarket_worldcup_team_match_books" }
 if ($attachReadyLineCount -lt 1) { $p1Blockers += "no_attach_ready_polymarket_worldcup_line_markets" }
 if ($ProviderDiscoveryMode -eq "cached" -and -not $cachedProviderEvidenceFresh) { $p1Blockers += "provider_cached_evidence_stale" }
+if (-not $sportsbookBackendProofReady) { $p1Blockers += "temporary_sportsbook_backend_proof_stale_or_missing" }
 if ($credential -and -not $credential.readyForServerBackedSamsungProof) { $p1Blockers += "manual_server_mode_needs_generated_mobile_api_key" }
 if ($googleAuth -and -not $googleAuthRuntimeReady) {
   if ($googleLanCallbackReady -and $googleAuthFailedChecks.Contains("Google redirect_uri matches NEXTAUTH_URL callback")) {
@@ -726,6 +745,12 @@ $summary = [ordered]@{
     s23ProofHoursUntilStale = if ($s23NextStaleProof) { $s23NextStaleProof.hoursUntilStale } else { $null }
     s23Proofs = $s23Proofs
     temporarySportsbookS23BridgeProofReady = $sportsbookS23BridgeProofReady
+    temporarySportsbookBackendProofReady = $sportsbookBackendProofReady
+    temporarySportsbookBackendProofMaxAgeHours = $sportsbookBackendProofMaxAgeHours
+    temporarySportsbookBackendProofNextStaleName = if ($sportsbookBackendProofNextStale) { $sportsbookBackendProofNextStale.name } else { $null }
+    temporarySportsbookBackendProofNextStaleAt = if ($sportsbookBackendProofNextStale) { $sportsbookBackendProofNextStale.staleAt } else { $null }
+    temporarySportsbookBackendProofHoursUntilStale = if ($sportsbookBackendProofNextStale) { $sportsbookBackendProofNextStale.hoursUntilStale } else { $null }
+    temporarySportsbookBackendProofs = $sportsbookBackendProofs
     rootTypecheckReady = $rootTypecheckReady
     jestCiReady = $jestCiReady
     mobileTypecheckReady = $mobileTypecheckReady
