@@ -9595,3 +9595,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new fields. Existing `Market.status`, `isCanceled`, `isListed`, `Outcome.isActive`, `isTradable`, and `status` are sufficient for this guard.
 - Temporary mock/static data: S23 proof still uses the deterministic unavailable-ticket fixture to force visible disabled UI. The server guard itself is backed by persisted DB status.
 - Future migration concern: when real provider-backed line markets exist, provider lifecycle should map suspended/unavailable provider state into these persisted market/outcome fields or a reviewed route-level equivalent before enabling order submit.
+
+# Cycle WB - Portfolio History Selection Snapshot Notes
+
+- Closed or narrowed: `/api/portfolio/history` recent trade rows now choose the `ApiOrderRequest.requestBody.selection` that existed when the trade filled, rather than blindly using the latest order for the same `marketId:outcomeId`.
+- Route mismatch: narrowed. Mobile already expects `recentTrades[].selection` to describe the actual filled line/outcome; the backend route now better matches that expectation when later same-outcome orders exist.
+- Fields Holiwyn still needs but backend does not fully provide: a direct immutable `Trade.orderId` relation or trade-level selection snapshot remains the clean future contract.
+- Temporary mock/static data: none added. The route continues to use persisted `Trade`, `Order`, and `ApiOrderRequest` data.
+- Future migration concern: when schema work is reopened, store the selected market/outcome/line/provider token snapshot directly with the trade/fill so Portfolio History no longer needs temporal reconstruction.

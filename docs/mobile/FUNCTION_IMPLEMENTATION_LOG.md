@@ -12512,3 +12512,24 @@ Known limitations:
   - no `Order` row is created and matching is not reached.
 - Known limitations:
   - This cycle covers local/mobile contract-fixture unavailable state and canonical market/outcome status. Broader live provider status matrix can be repeated when real provider unavailable examples are available.
+
+# Cycle WB - Portfolio History Selection Snapshots
+
+- Feature/page worked on: Portfolio History after fake-token/server-backed order fills.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `src/app/api/portfolio/history/route.ts`
+  - `src/__tests__/portfolio.history.route.test.ts`
+- User interactions supported:
+  - A user can place multiple trades on the same market/outcome over time and still see the original line/outcome identity for each recent History trade.
+  - Portfolio History no longer drifts to a later same-market/order selection when reconstructing `recentTrades[].selection`.
+- State transitions:
+  - `/api/orders` still records the submitted ticket `selection` on `ApiOrderRequest.requestBody`.
+  - `/api/portfolio/history` now buckets candidate orders by `marketId:outcomeId` and prefers the order snapshot created at or before the trade timestamp.
+  - If no historical candidate exists, the route falls back to the newest available request snapshot for backward compatibility.
+- Proof:
+  - Focused route test passed: `npx jest src/__tests__/portfolio.history.route.test.ts --runInBand`.
+  - S23 proof passed on `SM-S911U1`: Home -> Event Detail -> Spread `1.5` -> seeded fake-token fill -> Portfolio History.
+  - Evidence: `docs/mobile/harness/cycle-WB-portfolio-history-selection-snapshots/cycle-WB-current-mvp-s23-visible-flow.json` and screenshots under `docs/mobile/screenshots/cycle-WB-portfolio-history-selection-snapshots/`.
+- Known limitations:
+  - This cycle does not add a direct `Trade.orderId` schema link. The route-level temporal lookup is a safer MVP bridge until a future schema migration can store immutable trade-level selection snapshots directly.

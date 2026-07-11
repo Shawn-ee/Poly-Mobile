@@ -7645,3 +7645,30 @@ P0 gaps:
 P1 gaps:
 
 - Repeat with live provider-backed unavailable line-market examples when available.
+
+# Cycle WB Audit Gate - Portfolio History Selection Snapshots
+
+Gate status: Pass.
+
+What became materially closer:
+
+- Portfolio History now keeps each filled trade tied to the ticket selection that existed when that trade filled.
+- Later same-market/outcome orders no longer rewrite older recent-trade line/provider/token identity in `/api/portfolio/history`.
+
+Evidence:
+
+- Route implementation: `src/app/api/portfolio/history/route.ts`
+- Regression test: `src/__tests__/portfolio.history.route.test.ts`
+- Focused proof: `npx jest src/__tests__/portfolio.history.route.test.ts --runInBand`
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`
+- Visible journey proof: `docs/mobile/harness/cycle-WB-portfolio-history-selection-snapshots/cycle-WB-current-mvp-s23-visible-flow.json`
+- Screenshots/XML: `docs/mobile/screenshots/cycle-WB-portfolio-history-selection-snapshots/` and `docs/mobile/harness/cycle-WB-portfolio-history-selection-snapshots/`
+
+P0 gaps:
+
+- None for recent-trade selection reconstruction.
+
+P1 gaps:
+
+- Add a direct immutable `Trade.orderId` or trade-level selection snapshot in a future schema cycle.
+- Real provider-backed Spread/Totals/Team Total current-match line rows remain unavailable and unchanged.

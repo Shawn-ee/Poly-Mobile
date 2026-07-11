@@ -1634,3 +1634,11 @@ For every UI element or interaction, answer:
 | --- | --- | --- | --- | --- |
 | Google login runtime readiness was source-verified but did not have a no-secret route/callback preflight | P0 | Verified | Added `mobile/scripts/google-auth-runtime-preflight.ps1` plus package scripts. The preflight verifies configured server-owned Google env, `/api/auth/google/start` redirect to Google, and `redirect_uri === NEXTAUTH_URL/api/auth/google/callback` without printing credentials. | `mobile/scripts/google-auth-runtime-preflight.ps1`; `mobile/src/__tests__/googleAuthRuntimePreflightContract.test.ts`; `docs/mobile/audits/cycle-UV-google-auth-runtime-preflight.md` |
 | Strict S23-ready Google runtime preflight and real consent proof | P1 | Open | Non-strict runtime preflight passes on the running backend. Strict physical-device mode and real S23 consent still require an ADB-visible S23 and a callback URL reachable by the S23 browser. | `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md` |
+
+# Cycle WB - Portfolio History Selection Snapshots
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Portfolio History recent trades could drift to a later same-market/outcome ticket selection | P0 | Verified | `/api/portfolio/history` now uses a time-aware `ApiOrderRequest` lookup and prefers the order snapshot created at or before the trade timestamp. | `src/app/api/portfolio/history/route.ts`; `src/__tests__/portfolio.history.route.test.ts` |
+| Direct immutable trade-level selection snapshot | P1 | Open | Current MVP route uses temporal reconstruction from existing persisted order requests. A future schema cycle should add a direct trade/fill selection snapshot or `Trade.orderId` link. | `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md` |
+| Real provider-backed spread/totals/team-total current-match lines | P1 | Open | Unchanged. This cycle protects Portfolio History identity for existing order/trade data; it does not import new provider line rows. | `docs/mobile/audits/cycle-TW-provider-line-source-reprobe.md` |

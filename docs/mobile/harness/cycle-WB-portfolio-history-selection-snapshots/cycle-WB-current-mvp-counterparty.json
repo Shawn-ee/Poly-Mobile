@@ -1,0 +1,73 @@
+{
+  "pass": true,
+  "liquidityPurpose": "buy-fill",
+  "routeContract": {
+    "mobileFlow": "Event Detail line market -> generic Buy ticket -> /api/orders BUY -> Portfolio History",
+    "expectedRestingSide": "SELL",
+    "source": "local-mvp-internal-liquidity"
+  },
+  "eventSlug": "argentina-vs-egypt",
+  "market": {
+    "id": "95c8642d-686f-4d41-9b79-42ce013984a3",
+    "title": "Argentina vs. Egypt: Egypt +1.5",
+    "marketType": "spread",
+    "marketGroupKey": "spread",
+    "period": "regulation",
+    "line": "1.5",
+    "referenceSource": "contract-fixture",
+    "externalMarketId": "contract-argentina-vs-egypt-spread-away-1-5",
+    "conditionId": "condition-argentina-vs-egypt-spread-away-1-5"
+  },
+  "outcome": {
+    "id": "76177206-75b2-431e-a7ac-5e354b65339f",
+    "name": "Egypt +1.5",
+    "side": "away",
+    "referenceTokenId": "contract-argentina-vs-egypt-spread-away-1-5-away",
+    "referenceOutcomeLabel": "Egypt +1.5"
+  },
+  "cleanupOnly": false,
+  "maker": {
+    "id": "6a005765-1849-45fa-b55d-c04b88d0a5fd",
+    "username": "mobile_route_fill_maker_31bfcd91"
+  },
+  "cleanup": {
+    "enabled": true,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": [
+      {
+        "id": "dc6af8a2-6ef1-4156-adf2-3455e7f4ce98",
+        "username": "holiwyn-mobile-wb-s23-20260710231316",
+        "previousStatus": "OPEN",
+        "price": "0.66",
+        "remaining": "37.88",
+        "canceledStatus": "CANCELED"
+      }
+    ],
+    "cleanupBlockingBids": true,
+    "canceledBlockingBids": [],
+    "cleanupBlockingMarketBids": true,
+    "cleanupBlockingMarketBidsForcedByPurpose": false,
+    "canceledBlockingMarketBids": [],
+    "cleanupProofAsks": false,
+    "canceledProofAsks": [],
+    "cleanupBlockingAsks": false,
+    "canceledBlockingAsks": []
+  },
+  "makerOrder": {
+    "id": "3fa2d92b-b560-4ffe-961c-e9d516639c89",
+    "marketId": "95c8642d-686f-4d41-9b79-42ce013984a3",
+    "outcomeId": "76177206-75b2-431e-a7ac-5e354b65339f",
+    "side": "SELL",
+    "price": "0.52",
+    "size": "80",
+    "remaining": "80",
+    "reservedNotional": "0",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "SELL",
+    "price": "0.52",
+    "size": "80",
+    "intendedMobileTaker": "BUY $25 route-backed spread ticket"
+  }
+}

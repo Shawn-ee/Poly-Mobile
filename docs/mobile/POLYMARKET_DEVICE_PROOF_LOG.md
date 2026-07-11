@@ -2974,3 +2974,12 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Flow proven: deterministic unavailable Trade Ticket remains visible and disabled while backend now rejects forced unavailable submissions.
 - Screenshot: `docs/mobile/screenshots/cycle-WA-unavailable-order-server-guard/cycle-VX-unavailable-ticket.png`
 - XML: `docs/mobile/harness/cycle-WA-unavailable-order-server-guard/cycle-VX-unavailable-ticket.xml`
+
+# Cycle WB - Portfolio History Selection Snapshots
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.
+- Result: Pass after restoring the current local MVP match and seeding a counterparty for a filled order.
+- Flow proven: Home -> Live -> Event Detail -> Spread `1.5` -> Trade Ticket -> fake-token filled order -> Portfolio History with `activity-row-`, `portfolio-line-1.5`, `portfolio-provider-source-contract-fixture`, and `portfolio-provider-outcome-Egypt +1.5`.
+- Summary: `docs/mobile/harness/cycle-WB-portfolio-history-selection-snapshots/cycle-WB-current-mvp-s23-visible-flow.json`
+- Screenshots: `docs/mobile/screenshots/cycle-WB-portfolio-history-selection-snapshots/`
+- Initial blockers resolved: the local Home route first returned 0 matches until `scripts/restore_current_mobile_mvp_match.ts` and `scripts/seed_mobile_mvp_match_line_markets.ts` restored the current MVP match; a second attempt produced an open order until the proof was rerun with `-SeedCounterparty`.
