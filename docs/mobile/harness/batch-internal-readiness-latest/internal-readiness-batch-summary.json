@@ -1,5 +1,5 @@
 {
-    "generatedAt":  "2026-07-11T14:08:05.0641415Z",
+    "generatedAt":  "2026-07-11T19:55:19.5728190Z",
     "scope":  "mobile-internal-readiness-batch",
     "cycle":  "BATCHREADINESS",
     "backendBaseUrl":  "http://127.0.0.1:3002",
@@ -182,7 +182,7 @@
     "environmentHealth":  {
                               "git":  {
                                           "branch":  "main",
-                                          "status":  "## main...poly-mobile/main",
+                                          "status":  "## main...poly-mobile/main [ahead 1]",
                                           "worktreeClean":  true
                                       },
                               "android":  {
@@ -193,7 +193,7 @@
                                           },
                               "docker":  {
                                              "polyPostgresHealthy":  true,
-                                             "polyPostgresStatus":  "poly_postgres Up 6 days (healthy) 0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
+                                             "polyPostgresStatus":  "poly_postgres Up 7 days (healthy) 0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
                                          },
                               "localServices":  {
                                                     "backendPort3002Listening":  true,
@@ -241,12 +241,12 @@
                       "internalMvpStartupBackendAuthBaseUrl":  "http://172.16.200.14:3002",
                       "internalMvpStartupExpectedGoogleCallback":  "http://172.16.200.14:3002/api/auth/google/callback",
                       "localMatchBreadthReady":  true,
-                      "localMatchBreadthEventCount":  4,
+                      "localMatchBreadthEventCount":  5,
                       "s23LocalMvpDeviceProofReady":  true,
                       "s23ProofMaxAgeHours":  24,
                       "s23ProofNextStaleName":  "totals-filled-buy-history",
                       "s23ProofNextStaleAt":  "2026-07-12T05:12:16.5919824Z",
-                      "s23ProofHoursUntilStale":  15.07,
+                      "s23ProofHoursUntilStale":  9.28,
                       "s23Proofs":  [
                                         {
                                             "name":  "filled-buy-history",
@@ -254,10 +254,10 @@
                                             "pass":  true,
                                             "reason":  "pass",
                                             "generatedAt":  "2026-07-11T09:32:05.5117425Z",
-                                            "proofAgeHours":  4.6,
+                                            "proofAgeHours":  10.39,
                                             "maxAgeHours":  24,
                                             "staleAt":  "2026-07-12T09:32:05.5117425Z",
-                                            "hoursUntilStale":  19.4,
+                                            "hoursUntilStale":  13.61,
                                             "fresh":  true,
                                             "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
                                             "model":  "SM-S911U1",
@@ -278,10 +278,10 @@
                                             "pass":  true,
                                             "reason":  "pass",
                                             "generatedAt":  "2026-07-11T09:45:19.0371695Z",
-                                            "proofAgeHours":  4.38,
+                                            "proofAgeHours":  10.17,
                                             "maxAgeHours":  24,
                                             "staleAt":  "2026-07-12T09:45:19.0371695Z",
-                                            "hoursUntilStale":  19.62,
+                                            "hoursUntilStale":  13.83,
                                             "fresh":  true,
                                             "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
                                             "model":  "SM-S911U1",
@@ -302,10 +302,10 @@
                                             "pass":  true,
                                             "reason":  "pass",
                                             "generatedAt":  "2026-07-11T09:59:42.7891761Z",
-                                            "proofAgeHours":  4.14,
+                                            "proofAgeHours":  9.93,
                                             "maxAgeHours":  24,
                                             "staleAt":  "2026-07-12T09:59:42.7891761Z",
-                                            "hoursUntilStale":  19.86,
+                                            "hoursUntilStale":  14.07,
                                             "fresh":  true,
                                             "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
                                             "model":  "SM-S911U1",
@@ -326,10 +326,10 @@
                                             "pass":  true,
                                             "reason":  "pass",
                                             "generatedAt":  "2026-07-11T05:12:16.5919824Z",
-                                            "proofAgeHours":  8.93,
+                                            "proofAgeHours":  14.72,
                                             "maxAgeHours":  24,
                                             "staleAt":  "2026-07-12T05:12:16.5919824Z",
-                                            "hoursUntilStale":  15.07,
+                                            "hoursUntilStale":  9.28,
                                             "fresh":  true,
                                             "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
                                             "model":  "SM-S911U1",
@@ -350,10 +350,10 @@
                                             "pass":  true,
                                             "reason":  "pass",
                                             "generatedAt":  "2026-07-11T05:18:54.1737804Z",
-                                            "proofAgeHours":  8.82,
+                                            "proofAgeHours":  14.61,
                                             "maxAgeHours":  24,
                                             "staleAt":  "2026-07-12T05:18:54.1737804Z",
-                                            "hoursUntilStale":  15.18,
+                                            "hoursUntilStale":  9.39,
                                             "fresh":  true,
                                             "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
                                             "model":  "SM-S911U1",
@@ -367,8 +367,33 @@
                                             "failedAssertions":  [
 
                                                                  ]
+                                        },
+                                        {
+                                            "name":  "temporary-sportsbook-filled-buy-history",
+                                            "summaryPath":  "docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json",
+                                            "pass":  true,
+                                            "reason":  "pass",
+                                            "generatedAt":  "2026-07-11T19:41:50.5002735Z",
+                                            "proofAgeHours":  0.22,
+                                            "maxAgeHours":  24,
+                                            "staleAt":  "2026-07-12T19:41:50.5002735Z",
+                                            "hoursUntilStale":  23.78,
+                                            "fresh":  true,
+                                            "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+                                            "model":  "SM-S911U1",
+                                            "eventSlug":  "odds-api-single-soccer-test",
+                                            "lineMarketGroupKey":  null,
+                                            "lineValue":  null,
+                                            "lineOutcomeLabel":  null,
+                                            "missingArtifacts":  [
+
+                                                                 ],
+                                            "failedAssertions":  [
+
+                                                                 ]
                                         }
                                     ],
+                      "temporarySportsbookS23BridgeProofReady":  true,
                       "rootTypecheckReady":  true,
                       "jestCiReady":  true,
                       "mobileTypecheckReady":  true,
@@ -382,16 +407,16 @@
                       "cachedProviderEvidenceMaxAgeHours":  24,
                       "cachedProviderEvidenceNextStaleName":  "worldcup-match-scan",
                       "cachedProviderEvidenceNextStaleAt":  "2026-07-12T13:50:41.6680000Z",
-                      "cachedProviderEvidenceHoursUntilStale":  23.71,
+                      "cachedProviderEvidenceHoursUntilStale":  17.92,
                       "cachedProviderEvidence":  [
                                                      {
                                                          "name":  "provider-snapshot-refresh",
                                                          "summaryPath":  "docs/mobile/harness/batch-internal-readiness-latest/provider-snapshot-refresh.json",
                                                          "generatedAt":  "2026-07-11T13:50:17.866Z",
-                                                         "ageHours":  0.3,
+                                                         "ageHours":  6.08,
                                                          "maxAgeHours":  24,
                                                          "staleAt":  "2026-07-12T13:50:17.8660000Z",
-                                                         "hoursUntilStale":  23.7,
+                                                         "hoursUntilStale":  17.92,
                                                          "fresh":  true,
                                                          "present":  true
                                                      },
@@ -399,10 +424,10 @@
                                                          "name":  "internal-exchange-readiness",
                                                          "summaryPath":  "docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.json",
                                                          "generatedAt":  "2026-07-11T13:50:19.555Z",
-                                                         "ageHours":  0.3,
+                                                         "ageHours":  6.08,
                                                          "maxAgeHours":  24,
                                                          "staleAt":  "2026-07-12T13:50:19.5550000Z",
-                                                         "hoursUntilStale":  23.7,
+                                                         "hoursUntilStale":  17.92,
                                                          "fresh":  true,
                                                          "present":  true
                                                      },
@@ -410,10 +435,10 @@
                                                          "name":  "provider-visible-tradable-flow",
                                                          "summaryPath":  "docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json",
                                                          "generatedAt":  "2026-07-11T13:50:21.274Z",
-                                                         "ageHours":  0.3,
+                                                         "ageHours":  6.08,
                                                          "maxAgeHours":  24,
                                                          "staleAt":  "2026-07-12T13:50:21.2740000Z",
-                                                         "hoursUntilStale":  23.7,
+                                                         "hoursUntilStale":  17.92,
                                                          "fresh":  true,
                                                          "present":  true
                                                      },
@@ -421,10 +446,10 @@
                                                          "name":  "worldcup-match-scan",
                                                          "summaryPath":  "docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-event-scan.json",
                                                          "generatedAt":  "2026-07-11T13:50:41.668Z",
-                                                         "ageHours":  0.29,
+                                                         "ageHours":  6.08,
                                                          "maxAgeHours":  24,
                                                          "staleAt":  "2026-07-12T13:50:41.6680000Z",
-                                                         "hoursUntilStale":  23.71,
+                                                         "hoursUntilStale":  17.92,
                                                          "fresh":  true,
                                                          "present":  true
                                                      },
@@ -432,10 +457,10 @@
                                                          "name":  "provider-line-scan",
                                                          "summaryPath":  "docs/mobile/harness/batch-internal-readiness-latest/provider-line-breadth-scan.json",
                                                          "generatedAt":  "2026-07-11T13:52:22.453Z",
-                                                         "ageHours":  0.26,
+                                                         "ageHours":  6.05,
                                                          "maxAgeHours":  24,
                                                          "staleAt":  "2026-07-12T13:52:22.4530000Z",
-                                                         "hoursUntilStale":  23.74,
+                                                         "hoursUntilStale":  17.95,
                                                          "fresh":  true,
                                                          "present":  true
                                                      }
@@ -492,6 +517,11 @@
                                                          "name":  "team-totals-filled-buy-history",
                                                          "summaryPath":  "docs/mobile/harness/cycle-WG-team-total-s23-proof/cycle-WG-current-mvp-s23-visible-flow.json",
                                                          "command":  "powershell -ExecutionPolicy Bypass -File scripts\\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WG -OutputDir docs\\mobile\\screenshots\\cycle-WG-team-total-s23-proof -HierarchyOutputDir docs\\mobile\\harness\\cycle-WG-team-total-s23-proof -LineMarketGroupKey team-totals -LineMarketType team-total -LineValue 1.5 -LineOutcomeSide over -LineOutcomeLabel \"Argentina Over 1.5\" -LineTapPrefix event-detail-outcome-team-total-goals- -SeedCounterparty -ExpectFilledHistory"
+                                                     },
+                                                     {
+                                                         "name":  "temporary-sportsbook-filled-buy-history",
+                                                         "summaryPath":  "docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json",
+                                                         "command":  "npm run mobile:the-odds-api-s23-visible-flow"
                                                      }
                                                  ],
                      "providerRefreshCommand":  "npm run mobile:internal-readiness-batch:provider-refresh",

@@ -1,12 +1,12 @@
 {
     "cycle":  "BATCHREADINESS",
     "result":  "inspection-pass",
-    "inspectedAt":  "2026-07-11T14:07:52.463Z",
+    "inspectedAt":  "2026-07-11T19:55:04.446Z",
     "baseUrl":  "http://127.0.0.1:3002",
     "homeRoute":  {
                       "url":  "http://127.0.0.1:3002/api/events?sportKey=soccer\u0026leagueKey=world_cup\u0026includeMobileMarkets=1\u0026mobileMvpMatches=1\u0026limit=10",
-                      "eventCount":  4,
-                      "matchEventCount":  4,
+                      "eventCount":  5,
+                      "matchEventCount":  5,
                       "futuresCount":  0,
                       "events":  [
                                      {
@@ -52,6 +52,19 @@
                                                           ]
                                      },
                                      {
+                                         "slug":  "odds-api-single-soccer-test",
+                                         "title":  "Switzerland vs. Argentina",
+                                         "eventType":  "match",
+                                         "liveStatus":  "LIVE",
+                                         "marketCount":  10,
+                                         "regulationWinnerStatus":  "provider-backed",
+                                         "lineMarketStatus":  "partial-provider-backed",
+                                         "lineFamilies":  [
+                                                              "spread",
+                                                              "total_goals"
+                                                          ]
+                                     },
+                                     {
                                          "slug":  "argentina-vs-egypt",
                                          "title":  "Argentina vs. Egypt",
                                          "eventType":  "match",
@@ -82,6 +95,7 @@
                                                          "regulationWinner":  {
                                                                                   "totalCount":  3,
                                                                                   "polymarketCount":  3,
+                                                                                  "providerBackedCount":  3,
                                                                                   "contractFixtureCount":  0,
                                                                                   "status":  "provider-backed"
                                                                               },
@@ -178,6 +192,7 @@
                                                     "regulationWinner":  {
                                                                              "totalCount":  3,
                                                                              "polymarketCount":  3,
+                                                                             "providerBackedCount":  3,
                                                                              "contractFixtureCount":  0,
                                                                              "status":  "provider-backed"
                                                                          },

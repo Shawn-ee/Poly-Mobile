@@ -1,6 +1,6 @@
 {
     "pass":  true,
-    "generatedAt":  "2026-07-11T14:07:49.857Z",
+    "generatedAt":  "2026-07-11T19:55:03.074Z",
     "scope":  "mobile-mvp-local-match-breadth",
     "baseUrl":  "http://127.0.0.1:3002",
     "policy":  {
@@ -15,7 +15,7 @@
                },
     "before":  {
                    "status":  200,
-                   "eventCount":  4,
+                   "eventCount":  5,
                    "events":  [
                                   {
                                       "slug":  "holiwyn-local-australia-vs-egypt",
@@ -36,6 +36,12 @@
                                       "marketCount":  5
                                   },
                                   {
+                                      "slug":  "odds-api-single-soccer-test",
+                                      "title":  "Switzerland vs. Argentina",
+                                      "eventType":  "match",
+                                      "marketCount":  10
+                                  },
+                                  {
                                       "slug":  "argentina-vs-egypt",
                                       "title":  "Argentina vs. Egypt",
                                       "eventType":  "match",
@@ -45,7 +51,7 @@
                },
     "after":  {
                   "status":  200,
-                  "eventCount":  4,
+                  "eventCount":  5,
                   "events":  [
                                  {
                                      "slug":  "holiwyn-local-australia-vs-egypt",
@@ -64,6 +70,12 @@
                                      "title":  "Mexico vs. Ecuador",
                                      "eventType":  "match",
                                      "marketCount":  5
+                                 },
+                                 {
+                                     "slug":  "odds-api-single-soccer-test",
+                                     "title":  "Switzerland vs. Argentina",
+                                     "eventType":  "match",
+                                     "marketCount":  10
                                  },
                                  {
                                      "slug":  "argentina-vs-egypt",
