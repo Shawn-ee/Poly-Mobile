@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T09:19:00.157Z",
+  "generatedAt": "2026-07-11T09:52:36.199Z",
   "source": "gamma-api.polymarket.com/events",
   "readOnly": true,
   "scope": "world-cup-match-only-provider-breadth",
@@ -500,7 +500,7 @@
         "playerPropLike": true,
         "futuresLike": true,
         "marketCount": 41,
-        "usableMarketCount": 10,
+        "usableMarketCount": 11,
         "acceptingOrderMarketCount": 41,
         "sampleUsableMarket": {
           "slug": "will-kylian-mbappe-win-the-bronze-ball-at-the-2026-fifa-world-cup-20260603194939941",
@@ -580,43 +580,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.41,
-          "bestAsk": 0.42,
+          "bestBid": 0.4,
+          "bestAsk": 0.41,
           "spread": 0.01,
-          "usableBook": true,
-          "rejectionReasons": []
-        }
-      },
-      {
-        "slug": "world-cup-fair-play-award-winner-20260603201520240",
-        "title": "World Cup: Fair Play Award Winner",
-        "tags": [
-          "soccer",
-          "sports",
-          "world-cup",
-          "fifa-world-cup",
-          "2026-fifa-world-cup",
-          "world-cup-awards"
-        ],
-        "matchLike": false,
-        "worldCupRelevant": true,
-        "playerPropLike": false,
-        "futuresLike": true,
-        "marketCount": 54,
-        "usableMarketCount": 8,
-        "acceptingOrderMarketCount": 54,
-        "sampleUsableMarket": {
-          "slug": "will-cape-verde-win-the-fair-play-award-for-the-2026-fifa-world-cup-20260603201521197",
-          "question": "Will Cape Verde win the Fair Play Award for the 2026 FIFA World Cup?",
-          "acceptingOrders": true,
-          "active": true,
-          "closed": false,
-          "archived": false,
-          "outcomeCount": 2,
-          "tokenCount": 2,
-          "bestBid": 0.019,
-          "bestAsk": 0.028,
-          "spread": 0.009,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -683,6 +649,40 @@
           "usableBook": true,
           "rejectionReasons": []
         }
+      },
+      {
+        "slug": "world-cup-fair-play-award-winner-20260603201520240",
+        "title": "World Cup: Fair Play Award Winner",
+        "tags": [
+          "soccer",
+          "sports",
+          "world-cup",
+          "fifa-world-cup",
+          "2026-fifa-world-cup",
+          "world-cup-awards"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": true,
+        "playerPropLike": false,
+        "futuresLike": true,
+        "marketCount": 54,
+        "usableMarketCount": 6,
+        "acceptingOrderMarketCount": 54,
+        "sampleUsableMarket": {
+          "slug": "will-cape-verde-win-the-fair-play-award-for-the-2026-fifa-world-cup-20260603201521197",
+          "question": "Will Cape Verde win the Fair Play Award for the 2026 FIFA World Cup?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.019,
+          "bestAsk": 0.028,
+          "spread": 0.009,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
       }
     ],
     "usableNonMatchEvents": [
@@ -716,7 +716,7 @@
           "tokenCount": 2,
           "bestBid": 0.5,
           "bestAsk": 0.52,
-          "spread": 0.02,
+          "spread": 0.01,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -977,9 +977,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.045,
-          "bestAsk": 0.066,
-          "spread": 0.021,
+          "bestBid": 0.05,
+          "bestAsk": 0.079,
+          "spread": 0.029,
           "usableBook": true,
           "rejectionReasons": []
         }
