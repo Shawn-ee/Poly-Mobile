@@ -12533,3 +12533,31 @@ Known limitations:
   - Evidence: `docs/mobile/harness/cycle-WB-portfolio-history-selection-snapshots/cycle-WB-current-mvp-s23-visible-flow.json` and screenshots under `docs/mobile/screenshots/cycle-WB-portfolio-history-selection-snapshots/`.
 - Known limitations:
   - This cycle does not add a direct `Trade.orderId` schema link. The route-level temporal lookup is a safer MVP bridge until a future schema migration can store immutable trade-level selection snapshots directly.
+
+# Cycle WC - Trade-Level Selection Snapshot Storage
+
+- Feature/page worked on: server-backed order fill -> Portfolio History identity.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `prisma/schema.prisma`
+  - `prisma/migrations/20260711043000_add_trade_selection_snapshot/migration.sql`
+  - `src/server/services/matching.ts`
+  - `src/server/services/canonicalOrderSubmission.ts`
+  - `src/app/api/portfolio/history/route.ts`
+  - `src/server/services/__tests__/canonical_order_submission.phase5.test.ts`
+  - `src/__tests__/portfolio.history.route.test.ts`
+- User interactions supported:
+  - A filled fake-token line order now writes immutable selection identity directly to the `Trade` row.
+  - Portfolio History prefers `Trade.selectionSnapshot` and only falls back to order-request reconstruction for older rows.
+- State transitions:
+  - `POST /api/orders` sanitizes ticket `selection`.
+  - `placeOrderAndMatch()` receives that snapshot and stores it on the taker trade with the matched `orderId`.
+  - If the maker order was created through the canonical API, the maker trade can also inherit its order snapshot.
+  - `/api/portfolio/history` reads the stored trade snapshot first, preserving line/provider/token identity without depending on later order lookup.
+- Proof:
+  - Focused canonical/matching test passed: `npx jest src/server/services/__tests__/canonical_order_submission.phase5.test.ts --runInBand`.
+  - Focused history route test passed: `npx jest src/__tests__/portfolio.history.route.test.ts --runInBand`.
+  - S23 proof passed on `SM-S911U1`: Home -> Event Detail -> line market -> Trade Ticket -> seeded fake-token fill -> Portfolio History.
+  - Evidence: `docs/mobile/harness/cycle-WC-trade-selection-snapshot-storage/cycle-WC-current-mvp-s23-visible-flow.json` and screenshots under `docs/mobile/screenshots/cycle-WC-trade-selection-snapshot-storage/`.
+- Known limitations:
+  - Existing historical trades created before Cycle WC still rely on the Cycle WB temporal fallback unless a future backfill is run.

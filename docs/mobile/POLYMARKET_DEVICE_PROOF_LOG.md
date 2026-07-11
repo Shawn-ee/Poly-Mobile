@@ -2983,3 +2983,12 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Summary: `docs/mobile/harness/cycle-WB-portfolio-history-selection-snapshots/cycle-WB-current-mvp-s23-visible-flow.json`
 - Screenshots: `docs/mobile/screenshots/cycle-WB-portfolio-history-selection-snapshots/`
 - Initial blockers resolved: the local Home route first returned 0 matches until `scripts/restore_current_mobile_mvp_match.ts` and `scripts/seed_mobile_mvp_match_line_markets.ts` restored the current MVP match; a second attempt produced an open order until the proof was rerun with `-SeedCounterparty`.
+
+# Cycle WC - Trade-Level Selection Snapshot Storage
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.
+- Result: Pass after restoring the current local MVP match, seeding contract-shaped line markets, and seeding a counterparty for a filled order.
+- Flow proven: Home -> Live -> Event Detail -> Game Lines -> line ticket -> swipe submit -> fake-token filled order -> Portfolio History.
+- Summary: `docs/mobile/harness/cycle-WC-trade-selection-snapshot-storage/cycle-WC-current-mvp-s23-visible-flow.json`
+- Screenshots: `docs/mobile/screenshots/cycle-WC-trade-selection-snapshot-storage/`
+- Key assertions: `ticketPreservesLine`, `swipeSubmitReachedPortfolio`, `filledHistoryVisible`, and `orderbookHidden` passed.

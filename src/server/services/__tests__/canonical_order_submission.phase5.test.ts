@@ -298,6 +298,85 @@ describe("Phase 5 canonical order submission", () => {
     );
   });
 
+  test("filled canonical orders persist immutable trade selection snapshots", async () => {
+    const taker = await createUser("trade_snapshot_taker");
+    const maker = await createUser("trade_snapshot_maker");
+    const market = await createMarket();
+    const credential = await createApiCredential({ userId: taker.id });
+    await fundUser(taker.id, "100.000000");
+    await fundUser(maker.id, "100.000000");
+    await mintCompleteSetForPublicOrderbook({
+      marketId: market.id,
+      userId: maker.id,
+      quantity: "20.000000",
+    });
+    const makerOrder = await placeOrderAndMatch({
+      marketId: market.id,
+      outcomeId: market.outcomes[0].id,
+      userId: maker.id,
+      side: "SELL",
+      type: "LIMIT",
+      price: "0.45",
+      size: "10.000000",
+    });
+
+    const selection = {
+      marketId: market.id,
+      outcomeId: market.outcomes[0].id,
+      marketGroupId: "spreads",
+      marketType: "spread",
+      line: "-0.5",
+      period: "regulation",
+      side: "home",
+      displayLabel: "Brazil -0.5",
+      contractSide: "yes",
+      providerSource: "polymarket",
+      externalMarketId: "gamma-trade-snapshot",
+      conditionId: "condition-trade-snapshot",
+      tokenId: "token-trade-snapshot-home",
+    };
+    const expectedSelection = {
+      ...selection,
+      referenceSource: "polymarket",
+      referenceTokenId: "token-trade-snapshot-home",
+    };
+
+    const result = await submitCanonicalOrder({
+      userId: taker.id,
+      apiCredentialId: credential.id,
+      apiKeyId: credential.keyId,
+      body: {
+        marketId: market.id,
+        outcomeId: market.outcomes[0].id,
+        side: "BUY",
+        type: "LIMIT",
+        price: "0.45",
+        size: "5.000000",
+        clientOrderId: "trade-selection-snapshot-1",
+        contractSide: "YES",
+        selection,
+      },
+      idempotencyKeyHeader: "trade-selection-snapshot-key",
+    });
+
+    expect(result.status).toBe(200);
+    expect(result.body.order.status).toBe("FILLED");
+
+    const takerTrade = await prisma.trade.findFirstOrThrow({
+      where: { userId: taker.id, marketId: market.id, outcomeId: market.outcomes[0].id, side: "BUY" },
+      select: { orderId: true, selectionSnapshot: true },
+    });
+    expect(takerTrade.orderId).toBe(result.body.order.id);
+    expect(takerTrade.selectionSnapshot).toEqual(expectedSelection);
+
+    const makerTrade = await prisma.trade.findFirstOrThrow({
+      where: { userId: maker.id, marketId: market.id, outcomeId: market.outcomes[0].id, side: "SELL" },
+      select: { orderId: true, selectionSnapshot: true },
+    });
+    expect(makerTrade.orderId).toBe(makerOrder.order.id);
+    expect(makerTrade.selectionSnapshot).toBeNull();
+  });
+
   test("disabled and read-only API keys are blocked before order creation", async () => {
     const user = await createUser("policy_user");
     const market = await createMarket();

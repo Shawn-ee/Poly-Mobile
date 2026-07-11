@@ -7672,3 +7672,32 @@ P1 gaps:
 
 - Add a direct immutable `Trade.orderId` or trade-level selection snapshot in a future schema cycle.
 - Real provider-backed Spread/Totals/Team Total current-match line rows remain unavailable and unchanged.
+
+# Cycle WC Audit Gate - Trade-Level Selection Snapshot Storage
+
+Gate status: Pass.
+
+What became materially closer:
+
+- New server-backed fake-token fills now store selected market/line/provider identity directly on the `Trade` row.
+- Portfolio History no longer has to reconstruct new trade identity from later order requests.
+
+Evidence:
+
+- Schema/migration: `prisma/schema.prisma`, `prisma/migrations/20260711043000_add_trade_selection_snapshot/migration.sql`
+- Matching implementation: `src/server/services/matching.ts`
+- History route: `src/app/api/portfolio/history/route.ts`
+- Focused route proof: `npx jest src/__tests__/portfolio.history.route.test.ts --runInBand`
+- Focused canonical/matching proof: `npx jest src/server/services/__tests__/canonical_order_submission.phase5.test.ts --runInBand`
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`
+- Visible journey proof: `docs/mobile/harness/cycle-WC-trade-selection-snapshot-storage/cycle-WC-current-mvp-s23-visible-flow.json`
+- Screenshots/XML: `docs/mobile/screenshots/cycle-WC-trade-selection-snapshot-storage/` and `docs/mobile/harness/cycle-WC-trade-selection-snapshot-storage/`
+
+P0 gaps:
+
+- None for new filled-trade selection snapshot storage and Portfolio History display.
+
+P1/P2 gaps:
+
+- P2: Optional backfill for pre-WC historical trades.
+- P1: Real provider-backed Spread/Totals/Team Total current-match line rows remain unavailable and unchanged.

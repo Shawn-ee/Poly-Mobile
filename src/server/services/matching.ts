@@ -2,6 +2,7 @@ import { Prisma, type OrderStatus, type TradeSide } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { MarketGuardError } from "@/lib/marketGuards";
 import { assertPublicOrderbookCollateralInvariant } from "@/server/services/orderbookCollateral";
+import { selectionSnapshotFromRequestBody } from "@/server/services/ticketSelectionMetadata";
 
 const ZERO = new Prisma.Decimal(0);
 const ONE_HUNDRED = new Prisma.Decimal(100);
@@ -45,6 +46,8 @@ type LockedPositionRow = {
   reservedShares: Prisma.Decimal;
   realizedPnl: Prisma.Decimal;
 };
+
+type SelectionSnapshot = Prisma.InputJsonObject | null;
 
 const toDec = (value: string | number | Prisma.Decimal) => new Prisma.Decimal(value);
 const normalizeSize = (value: Prisma.Decimal) => value.div(DECIMAL_SCALE).floor().mul(DECIMAL_SCALE);
@@ -495,6 +498,7 @@ export const placeOrderAndMatch = async (params: {
   userId: string;
   outcomeId: string;
   apiCredentialId?: string | null;
+  selectionSnapshot?: SelectionSnapshot;
   side: "BUY" | "SELL";
   type?: "LIMIT" | "MARKET";
   price: string | number | Prisma.Decimal;
@@ -615,6 +619,21 @@ export const placeOrderAndMatch = async (params: {
       userId: params.userId,
       price,
     });
+    const makerSelectionSnapshots = new Map<string, SelectionSnapshot>();
+    if (makers.length > 0) {
+      const makerRequests = await tx.apiOrderRequest.findMany({
+        where: { orderId: { in: makers.map((maker) => maker.id) } },
+        select: { orderId: true, requestBody: true },
+      });
+      for (const request of makerRequests) {
+        if (!request.orderId) continue;
+        const snapshot = selectionSnapshotFromRequestBody(request.requestBody, {
+          marketId: params.marketId,
+          outcomeId: params.outcomeId,
+        });
+        makerSelectionSnapshots.set(request.orderId, snapshot as SelectionSnapshot);
+      }
+    }
 
     for (const maker of makers) {
       if (incomingRemaining.lte(0)) break;
@@ -640,6 +659,10 @@ export const placeOrderAndMatch = async (params: {
       const sellerId = params.side === "SELL" ? params.userId : maker.userId;
       const buyerOrderId = params.side === "BUY" ? incoming.id : maker.id;
       const sellerOrderId = params.side === "SELL" ? incoming.id : maker.id;
+      const buyerSelectionSnapshot =
+        params.side === "BUY" ? params.selectionSnapshot ?? null : makerSelectionSnapshots.get(maker.id) ?? null;
+      const sellerSelectionSnapshot =
+        params.side === "SELL" ? params.selectionSnapshot ?? null : makerSelectionSnapshots.get(maker.id) ?? null;
       const buyerLimitPrice = params.side === "BUY"
         ? toDec(incoming.price)
         : toDec(maker.price);
@@ -794,19 +817,23 @@ export const placeOrderAndMatch = async (params: {
             userId: buyerId,
             marketId: params.marketId,
             outcomeId: params.outcomeId,
+            orderId: buyerOrderId,
             side: "BUY",
             shares: fillSize,
             cost: notionalUSDC,
             fee: ZERO,
+            selectionSnapshot: buyerSelectionSnapshot ?? undefined,
           },
           {
             userId: sellerId,
             marketId: params.marketId,
             outcomeId: params.outcomeId,
+            orderId: sellerOrderId,
             side: "SELL",
             shares: fillSize,
             cost: notionalUSDC,
             fee: feeUSDC,
+            selectionSnapshot: sellerSelectionSnapshot ?? undefined,
           },
         ],
       });

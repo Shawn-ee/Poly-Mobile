@@ -403,6 +403,9 @@ export async function GET(request: NextRequest) {
     const isSell = trade.side === "SELL";
     const costTokens = Number(trade.cost);
     const feeTokens = Number(trade.fee);
+    const tradeSelectionRequestBody = trade.selectionSnapshot
+      ? { selection: trade.selectionSnapshot }
+      : selectionRequestBodyForTrade(trade, recentTradeSelectionBuckets);
     return {
       id: trade.id,
       market: {
@@ -413,7 +416,7 @@ export async function GET(request: NextRequest) {
       },
       outcome: trade.outcome,
       selection: buildTicketSelectionMetadata({
-        requestBody: selectionRequestBodyForTrade(trade, recentTradeSelectionBuckets),
+        requestBody: tradeSelectionRequestBody,
         market: trade.market,
         outcome: trade.outcome,
       }),

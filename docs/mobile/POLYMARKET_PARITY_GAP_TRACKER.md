@@ -1642,3 +1642,11 @@ For every UI element or interaction, answer:
 | Portfolio History recent trades could drift to a later same-market/outcome ticket selection | P0 | Verified | `/api/portfolio/history` now uses a time-aware `ApiOrderRequest` lookup and prefers the order snapshot created at or before the trade timestamp. | `src/app/api/portfolio/history/route.ts`; `src/__tests__/portfolio.history.route.test.ts` |
 | Direct immutable trade-level selection snapshot | P1 | Open | Current MVP route uses temporal reconstruction from existing persisted order requests. A future schema cycle should add a direct trade/fill selection snapshot or `Trade.orderId` link. | `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md` |
 | Real provider-backed spread/totals/team-total current-match lines | P1 | Open | Unchanged. This cycle protects Portfolio History identity for existing order/trade data; it does not import new provider line rows. | `docs/mobile/audits/cycle-TW-provider-line-source-reprobe.md` |
+
+# Cycle WC - Trade-Level Selection Snapshot Storage
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Direct immutable trade-level selection snapshot for new fills | P1 | Verified | `Trade.orderId` and `Trade.selectionSnapshot` were added; canonical filled orders now store sanitized ticket selection on the trade row and Portfolio History prefers that snapshot. | `prisma/migrations/20260711043000_add_trade_selection_snapshot/migration.sql`; `src/server/services/matching.ts`; `src/app/api/portfolio/history/route.ts`; focused tests |
+| Backfill old pre-WC trades | P2 | Open | Existing historical trades created before the migration still rely on the Cycle WB temporal fallback. Backfill can be added later if historical proof requires it. | `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md` |
+| Real provider-backed spread/totals/team-total current-match lines | P1 | Open | Unchanged. WC improves lifecycle durability for selected lines; it does not import new provider line rows. | `docs/mobile/audits/cycle-TW-provider-line-source-reprobe.md` |

@@ -492,18 +492,23 @@ model Position {
 }
 
 model Trade {
-  id        String    @id @default(uuid())
-  userId    String
-  marketId  String
-  outcomeId String
-  side      TradeSide
-  shares    Decimal   @db.Decimal(36, 6)
-  cost      Decimal   @db.Decimal(36, 6)
-  fee       Decimal   @default(0) @db.Decimal(36, 6)
-  createdAt DateTime  @default(now())
-  user      User      @relation(fields: [userId], references: [id])
-  market    Market    @relation(fields: [marketId], references: [id])
-  outcome   Outcome   @relation(fields: [outcomeId], references: [id])
+  id                String    @id @default(uuid())
+  userId            String
+  marketId          String
+  outcomeId         String
+  orderId           String?
+  side              TradeSide
+  shares            Decimal   @db.Decimal(36, 6)
+  cost              Decimal   @db.Decimal(36, 6)
+  fee               Decimal   @default(0) @db.Decimal(36, 6)
+  selectionSnapshot Json?
+  createdAt         DateTime  @default(now())
+  user              User      @relation(fields: [userId], references: [id])
+  market            Market    @relation(fields: [marketId], references: [id])
+  outcome           Outcome   @relation(fields: [outcomeId], references: [id])
+  order             Order?    @relation(fields: [orderId], references: [id], onDelete: SetNull)
+
+  @@index([orderId])
 }
 
 model Order {
@@ -525,6 +530,7 @@ model Order {
   user                      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   outcome                   Outcome          @relation(fields: [outcomeId], references: [id], onDelete: Cascade)
   apiOrderRequest           ApiOrderRequest?
+  trades                    Trade[]
   createdApiCredential      ApiCredential?   @relation("ApiCredentialCreatedOrders", fields: [createdApiCredentialId], references: [id], onDelete: SetNull)
   canceledByApiCredential   ApiCredential?   @relation("ApiCredentialCanceledOrders", fields: [canceledByApiCredentialId], references: [id], onDelete: SetNull)
 
