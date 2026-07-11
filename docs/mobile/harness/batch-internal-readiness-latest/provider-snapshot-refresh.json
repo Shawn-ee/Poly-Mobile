@@ -1,7 +1,7 @@
 {
   "summary": {
     "cycle": 1,
-    "generatedAt": "2026-07-11T11:22:25.735Z",
+    "generatedAt": "2026-07-11T12:56:14.421Z",
     "marketsRefreshed": 3,
     "marketsSkipped": 0,
     "snapshotsUpdated": 6,
@@ -11,7 +11,7 @@
     "errorCount": 0
   },
   "report": {
-    "generatedAt": "2026-07-11T11:22:25.735Z",
+    "generatedAt": "2026-07-11T12:56:14.421Z",
     "dryRun": true,
     "snapshotWritesApplied": true,
     "liveOrdersEnabled": false,

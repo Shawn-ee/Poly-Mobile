@@ -1,5 +1,5 @@
 {
   "pass": true,
   "command": "npm --prefix mobile run typecheck",
-  "generatedAt": "2026-07-11T12:43:20.953Z"
+  "generatedAt": "2026-07-11T12:58:33.335Z"
 }
