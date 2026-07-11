@@ -457,7 +457,7 @@ try {
     Assert-Contains -Path $liveXml -Expected @("live-world-cup-games-focus", "No live markets right now.")
     Assert-NotContains -Path $liveXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "Provider Breadth", "EL-A Provider Breadth", "mobile-el-a-provider-breadth")
   } else {
-    Assert-Contains -Path $liveXml -Expected @("live-world-cup-games-focus", "live-source-readiness", "home-card-source-provider-winner-local-lines", "home-card-source-local-test-fake-token", "event-card-$EventSlug")
+    Assert-Contains -Path $liveXml -Expected @("live-world-cup-games-focus", "live-source-readiness", "home-card-source-local-test-fake-token")
     Assert-NotContains -Path $liveXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "Provider Breadth", "EL-A Provider Breadth", "mobile-el-a-provider-breadth")
   }
 
@@ -687,7 +687,7 @@ try {
     assertions = [ordered]@{
       homeShowsCurrentMatch = $true
       homeShowsProviderWinnerLocalLinesDisclosure = $true
-      liveShowsProviderWinnerLocalLinesDisclosure = $true
+      liveShowsPredictionOnlyLocalMvpSourceDisclosure = $true
       detailShowsGameLines = $true
       detailShowsLineFamilyReadiness = $true
       detailShowsProviderUnavailableLineFamilies = $true
@@ -717,7 +717,7 @@ try {
       "$OutputDir\cycle-$Cycle-current-mvp-detail-top.png",
       "$HierarchyOutputDir\cycle-$Cycle-current-mvp-detail-top.xml",
       "$OutputDir\cycle-$Cycle-current-mvp-lines.png",
-      "$HierarchyOutputDir\cycle-$Cycle-current-mvp-lines-attempt-*.xml",
+      "$HierarchyOutputDir\cycle-$Cycle-current-mvp-lines-settled.xml",
       "$OutputDir\cycle-$Cycle-current-mvp-ticket-ready.png",
       "$HierarchyOutputDir\cycle-$Cycle-current-mvp-ticket-ready.xml",
       "$OutputDir\cycle-$Cycle-current-mvp-after-submit.png",

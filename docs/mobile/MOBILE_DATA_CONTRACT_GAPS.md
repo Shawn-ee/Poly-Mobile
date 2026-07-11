@@ -9686,3 +9686,11 @@ Future migration concern:
 - Schema mismatch: none introduced. The fixture rows use the same `Event`, `Market`, `Outcome`, and `ReferenceQuoteSnapshot` tables as future provider-backed rows.
 - Future migration concern: replace these rows with approved provider-backed World Cup match/line markets when Polymarket or another approved provider exposes attach-ready books. Do not classify these fixture rows as provider-backed parity.
 - Route/client alignment: mobile Home must not force `source=polymarket` while using `mobileMvpMatches=1`, otherwise the app hides valid Local MVP `contract-fixture` match rows that the backend batch has already proven.
+
+## Cycle XG - Full Local MVP S23 Flow Reproof
+
+- Closed or narrowed: Live hidden audit markers now reflect whichever source mix is actually visible (`provider-backed` or `contract-fixture`) instead of disappearing when the Live page contains only local fixture match cards.
+- Route mismatch: none. No backend route changed.
+- Fields Holiwyn still needs but backend/provider does not fully provide: real provider-backed World Cup match line markets with safe CLOB books for spread, totals, and team totals.
+- Temporary mock/static data: the S23 proof still uses contract-shaped fake-token spread liquidity for the filled order and Portfolio History proof.
+- Future migration concern: when provider-backed line rows are attached, the same Live/Event Detail/Ticket/Portfolio proof should pass with provider source identity instead of `contract-fixture` source identity.

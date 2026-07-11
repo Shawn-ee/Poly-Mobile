@@ -2972,6 +2972,22 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Assertions: Home shows `visible-4-of-4`, `4 matches`, hides filter controls, hides order book/chat, and keeps source disclosure for provider-backed winner plus local fake-token lines.
 - Limitations: This proof covers Home breadth only. Contract-fixture match rows remain internal fake-token route data and do not close provider-backed Polymarket match-book or line-market P1 debt.
 
+# Cycle XG - Full Local MVP S23 Flow Reproof
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` (`SM-S911U1`).
+- Scope: full Local MVP retail flow after Home match-breadth and Live source-readiness alignment.
+- Result: Pass.
+- Flow proven: Home -> Live -> Event Detail -> Spread `1.5` / `Egypt +1.5` -> Trade Ticket -> swipe buy -> Portfolio History.
+- Evidence:
+  - `docs/mobile/harness/cycle-XG-full-local-mvp-s23-flow/cycle-XG-current-mvp-s23-visible-flow.json`
+  - `docs/mobile/harness/cycle-XG-full-local-mvp-s23-flow/cycle-XG-current-mvp-home.xml`
+  - `docs/mobile/harness/cycle-XG-full-local-mvp-s23-flow/cycle-XG-current-mvp-live.xml`
+  - `docs/mobile/harness/cycle-XG-full-local-mvp-s23-flow/cycle-XG-current-mvp-lines-settled.xml`
+  - `docs/mobile/harness/cycle-XG-full-local-mvp-s23-flow/cycle-XG-current-mvp-portfolio-history.xml`
+  - Screenshots under `docs/mobile/screenshots/cycle-XG-full-local-mvp-s23-flow/`
+- Key assertions: `homeShowsCurrentMatch`, `liveShowsPredictionOnlyLocalMvpSourceDisclosure`, `lineMarketsAreContractFixture`, `ticketPreservesLine`, `swipeSubmitReachedPortfolio`, `filledPositionVisible`, `filledHistoryVisible`, and `orderbookHidden` passed.
+- Limitations: this is still the contract-fixture fake-token Local MVP flow. Provider-backed World Cup match books and provider line markets remain P1.
+
 # Cycle VZ - Current MVP Route Reproof
 
 - Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.

@@ -12896,3 +12896,12 @@ Known limitations:
 - User interactions supported: S23 Home can show provider-backed match rows and internal `contract-fixture` match rows together, while still excluding futures/outrights through the match-only route filter.
 - State transitions: backend batch readiness and visible mobile Home now agree on match breadth.
 - Known limitations: contract-fixture rows are still local fake-token testing rows and must not be counted as provider-backed Polymarket parity.
+
+# Cycle XG - Full Local MVP S23 Flow Reproof
+
+- Feature/page worked on: Live source-readiness audit marker and full Local MVP retail flow proof.
+- Frontend components touched: `mobile/src/components/LiveScreen.tsx` and `mobile/src/__tests__/liveSourceReadinessContract.test.ts`.
+- Important functions/services touched: `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`.
+- User interactions supported: Home -> Live -> Event Detail -> Spread `1.5` -> Trade Ticket -> swipe buy -> Portfolio History on Samsung S23.
+- State transitions: Live now exposes the first available hidden source-readiness marker for either provider-backed or `contract-fixture` Local MVP live cards. The S23 proof accepts prediction-only Local MVP live source disclosure while Home/Event Detail still verify provider-winner plus local-line disclosure where applicable.
+- Known limitations: the filled order remains a contract-shaped fake-token line flow. Provider-backed Polymarket match books and line markets remain P1 until a safe, accepting-order provider market exists.

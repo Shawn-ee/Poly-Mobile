@@ -38,7 +38,7 @@ export function LiveScreen({
   );
   const readiness = events
     .map((event) => eventSourceReadiness(event, locale))
-    .find((item) => item?.accessibility.includes("home-card-source-provider-winner-local-lines")) ?? null;
+    .find((item) => item?.accessibility) ?? null;
 
   return (
     <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>

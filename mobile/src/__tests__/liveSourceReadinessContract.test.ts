@@ -10,10 +10,12 @@ describe("Live source readiness contract", () => {
 
     expect(marketLists).toContain("export const eventSourceReadiness");
     expect(marketLists).toContain("home-card-source-provider-winner-local-lines");
+    expect(marketLists).toContain("home-card-source-local-lines");
     expect(marketLists).toContain("sourceReadinessHidden");
     expect(marketLists).not.toContain("Winner: Polymarket / Holiwyn lines");
     expect(live).toContain("live-source-readiness");
     expect(live).toContain("eventSourceReadiness(event, locale)");
+    expect(live).toContain(".find((item) => item?.accessibility)");
     expect(live).not.toContain("sourceReadinessText");
   });
 });
