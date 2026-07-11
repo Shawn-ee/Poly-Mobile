@@ -1,0 +1,64 @@
+{
+  "pass": true,
+  "liquidityPurpose": "buy-fill",
+  "routeContract": {
+    "mobileFlow": "Event Detail line market -> generic Buy ticket -> /api/orders BUY -> Portfolio History",
+    "expectedRestingSide": "SELL",
+    "source": "local-mvp-internal-liquidity"
+  },
+  "eventSlug": "argentina-vs-egypt",
+  "market": {
+    "id": "0970151f-eeed-4c58-9be6-9e4d097b04bc",
+    "title": "Argentina vs. Egypt: Argentina total goals 1.5",
+    "marketType": "team_total_goals",
+    "marketGroupKey": "team-totals",
+    "period": "regulation",
+    "line": "1.5",
+    "referenceSource": "contract-fixture",
+    "externalMarketId": "contract-argentina-vs-egypt-team-total-home-1-5",
+    "conditionId": "condition-argentina-vs-egypt-team-total-home-1-5"
+  },
+  "outcome": {
+    "id": "c7db5263-443d-4697-a3cd-88730c16db4c",
+    "name": "Argentina Over 1.5",
+    "side": "over",
+    "referenceTokenId": "contract-argentina-vs-egypt-team-total-home-1-5-over",
+    "referenceOutcomeLabel": "Argentina Over 1.5"
+  },
+  "cleanupOnly": false,
+  "maker": {
+    "id": "db110bc0-3f69-4ebf-8af9-ce1338c19bbe",
+    "username": "mobile_route_fill_maker_6d3c251e"
+  },
+  "cleanup": {
+    "enabled": true,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": [],
+    "cleanupBlockingBids": true,
+    "canceledBlockingBids": [],
+    "cleanupBlockingMarketBids": true,
+    "cleanupBlockingMarketBidsForcedByPurpose": false,
+    "canceledBlockingMarketBids": [],
+    "cleanupProofAsks": false,
+    "canceledProofAsks": [],
+    "cleanupBlockingAsks": false,
+    "canceledBlockingAsks": []
+  },
+  "makerOrder": {
+    "id": "4a51ea64-6aba-41ff-969b-f729a16defa8",
+    "marketId": "0970151f-eeed-4c58-9be6-9e4d097b04bc",
+    "outcomeId": "c7db5263-443d-4697-a3cd-88730c16db4c",
+    "side": "SELL",
+    "price": "0.52",
+    "size": "80",
+    "remaining": "80",
+    "reservedNotional": "0",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "SELL",
+    "price": "0.52",
+    "size": "80",
+    "intendedMobileTaker": "BUY $25 route-backed team-totals ticket"
+  }
+}

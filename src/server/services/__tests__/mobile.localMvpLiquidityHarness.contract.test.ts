@@ -43,11 +43,13 @@ describe("mobile Local MVP liquidity proof harness", () => {
     expect(source).toContain('[string]$LineValue = "1.5"');
     expect(source).toContain('[string]$LineOutcomeSide = "away"');
     expect(source).toContain('[string]$LineOutcomeLabel = "Egypt +1.5"');
+    expect(source).toContain('[string]$LineTapPrefix = ""');
     expect(source).toContain('"--marketGroupKey=$LineMarketGroupKey"');
     expect(source).toContain('"--line=$LineValue"');
     expect(source).toContain('"--outcomeSide=$LineOutcomeSide"');
     expect(source).toContain('$lineSelectionTypeLabel = "selection-market-type-$LineMarketType"');
     expect(source).toContain('$lineSelectionSideLabel = "selection-side-$LineOutcomeSide"');
+    expect(source).toContain('$lineTapPrefix = if ($LineTapPrefix) { $LineTapPrefix } else { "event-detail-outcome-$LineMarketGroupKey-" }');
     expect(source).toContain('"portfolio-history-visible-label-$LineOutcomeLabel"');
   });
 });
