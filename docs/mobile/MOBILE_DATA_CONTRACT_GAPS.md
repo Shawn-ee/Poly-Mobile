@@ -1,5 +1,16 @@
 # Mobile Data Contract Gaps
 
+## Cycle ODDSAPIPLAN - Temporary Provider Next-Action Planning
+
+- No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider runtime contract changed.
+- The autonomous planner now consumes the redacted temporary provider evidence and exposes:
+  - `state.temporaryProviderReady`
+  - `state.temporaryProviderNeedsS23VisualProof`
+  - `state.temporaryProviderEventSlug`
+  - `status = "prove-temporary-provider-on-s23"` when backend/mobile-service proof exists but full visible S23 proof is not yet present
+- The Definition of Done sweep now includes `dod-temporary-sportsbook-provider-bridge` as a separate verified bridge criterion while leaving `dod-provider-polymarket-parity` partial.
+- Remaining gap: full visible S23 proof must still exercise the seeded event in the actual app. Backend proof alone is not enough to mark the temporary provider bridge human-tested.
+
 ## Cycle ODDSAPI1 - The Odds API Single-Event Temporary Provider
 
 - New temporary provider contract:

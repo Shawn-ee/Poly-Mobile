@@ -2,11 +2,11 @@
   "ready": true,
   "readyToDeclareDone": false,
   "counts": {
-    "verified": 11,
+    "verified": 12,
     "partial": 1,
     "blocked": 0
   },
-  "generatedAt": "2026-07-11T14:30:16.280Z",
+  "generatedAt": "2026-07-11T19:27:58.861Z",
   "criteria": [
     {
       "id": "dod-android-runtime",
@@ -111,6 +111,18 @@
       "notes": "Current batch still tracks 4 provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity. Provider refresh plan status is skip-refresh, so another provider refresh should be skipped until the next stale window or a real candidate signal appears."
     },
     {
+      "id": "dod-temporary-sportsbook-provider-bridge",
+      "criterion": "Temporary sportsbook provider bridge is available for Local MVP testing without claiming Polymarket-backed parity.",
+      "status": "verified",
+      "evidence": [
+        "docs/mobile/audits/BATCH_THE_ODDS_API_SINGLE_EVENT.md",
+        "docs/mobile/harness/the-odds-api-single-event/single-event-replay-summary.redacted.json",
+        "docs/mobile/harness/the-odds-api-single-event/mobile-flow-proof.redacted.json",
+        "docs/mobile/harness/the-odds-api-single-event/s23-device-reachability.redacted.json"
+      ],
+      "notes": "The Odds API single-event bridge is seeded and fake-token order/Portfolio/history proof passed, but S23 evidence is reachability only; run a full visible S23 walkthrough before treating the seeded provider as human-tested UI proof."
+    },
+    {
       "id": "dod-final-cycle",
       "criterion": "Final cycle includes passing required harnesses, final QA report, final review report, final feature gap tracker, screenshots, and no unresolved P0 debt.",
       "status": "verified",
@@ -135,7 +147,7 @@
     }
   ],
   "nextActions": [
-    "Keep Local MVP testing on the contract-shaped line-market flow; provider evidence is fresh, so do not rerun provider discovery until the plan says refresh-soon/refresh-due or a real candidate signal appears.",
+    "Run a focused S23 visible walkthrough for odds-api-single-soccer-test before spending more provider quota or opening another provider-discovery cycle.",
     "Keep Samsung APK smoke for install/launch coverage and Samsung server-order proof for the real-device trading regression."
   ]
 }

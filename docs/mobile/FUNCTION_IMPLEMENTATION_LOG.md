@@ -2,6 +2,23 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ODDSAPIPLAN - Temporary Provider Next-Action Planning
+
+- Feature/page worked on: autonomous loop steering after the The Odds API single-event provider bridge.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/plan_mobile_autonomous_next_action.ts`
+  - `scripts/mobile_definition_of_done_sweep.ts`
+  - `src/__tests__/mobile-autonomous-next-action.contract.test.ts`
+  - `src/__tests__/mobile-definition-of-done-sweep.contract.test.ts`
+  - `docs/mobile/harness/batch-internal-readiness-latest/mobile-autonomous-next-action-plan.json`
+  - `docs/mobile/harness/cycle-current-mobile-definition-of-done-sweep.json`
+- User interactions supported: unchanged. The planner now selects the next user-visible proof target: open `odds-api-single-soccer-test` on S23 and verify Home -> Event Detail -> sportsbook line -> ticket -> fake-token order -> Portfolio/history.
+- State transitions: no mobile, backend, database, provider, or order state changes. The planner reads the redacted Odds API single-event seed/proof files and distinguishes backend/mobile-service proof from full visible S23 proof.
+- API/data dependencies: no runtime API calls. It consumes `single-event-replay-summary.redacted.json`, `mobile-flow-proof.redacted.json`, and `s23-device-reachability.redacted.json`.
+- Proof: `npm run mobile:autonomous-next-action` now reports `prove-temporary-provider-on-s23`; `npm run mobile:definition-of-done-sweep` verifies the temporary sportsbook provider bridge while keeping `dod-provider-polymarket-parity` partial.
+- Known limitations: This does not close Polymarket-backed parity and does not create new S23 screenshots. It prevents the loop from wasting another provider scan before the visible seeded-event proof is done.
+
 ## Cycle ODDSAPI1 - The Odds API Single-Event Temporary Provider
 
 - Feature/page worked on: Local MVP Home -> Event Detail -> line market -> Trade Ticket -> fake-token order -> Portfolio/history using one sportsbook-derived soccer event.

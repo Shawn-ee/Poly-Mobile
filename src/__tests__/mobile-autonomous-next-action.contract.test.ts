@@ -17,11 +17,13 @@ describe("mobile autonomous next-action planner", () => {
     expect(script).toContain("cycle-current-mobile-definition-of-done-sweep.json");
     expect(script).toContain("refresh-s23-proof");
     expect(script).toContain("refresh-provider-evidence");
+    expect(script).toContain("prove-temporary-provider-on-s23");
     expect(script).toContain("provider-parity-wait");
+    expect(script).toContain("the-odds-api-single-event");
     expect(script).not.toContain("fetch(");
   });
 
-  it("writes a wait plan when Local MVP is ready and provider evidence is fresh", () => {
+  it("writes an S23 visible-proof plan when temporary sportsbook provider evidence is backend-proven only", () => {
     const tempDir = mkdtempSync(path.join(os.tmpdir(), "mobile-next-action-"));
     const outputPath = path.join(tempDir, "plan.json");
     const command = process.platform === "win32" ? "cmd.exe" : "npx";
@@ -41,11 +43,13 @@ describe("mobile autonomous next-action planner", () => {
       );
 
       const plan = JSON.parse(readFileSync(outputPath, "utf8"));
-      expect(plan.status).toBe("provider-parity-wait");
+      expect(plan.status).toBe("prove-temporary-provider-on-s23");
       expect(plan.priority).toBe("P1");
       expect(plan.state.localMvpReady).toBe(true);
       expect(plan.state.remainingPartialCriteria).toContain("dod-provider-polymarket-parity");
-      expect(plan.commands).toEqual([]);
+      expect(plan.state.temporaryProviderReady).toBe(true);
+      expect(plan.state.temporaryProviderNeedsS23VisualProof).toBe(true);
+      expect(plan.commands).toContain("npm run mobile:the-odds-api-single-event-flow");
     } finally {
       rmSync(tempDir, { recursive: true, force: true });
     }

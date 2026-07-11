@@ -11,6 +11,15 @@ describe("mobile Definition of Done sweep contract", () => {
     expect(script).toContain("Provider refresh plan status is");
   });
 
+  it("tracks The Odds API as a temporary provider bridge without closing Polymarket parity", () => {
+    const script = source();
+
+    expect(script).toContain("dod-temporary-sportsbook-provider-bridge");
+    expect(script).toContain("temporarySportsbookProviderBridgeReady");
+    expect(script).toContain("The Odds API single-event bridge is seeded");
+    expect(script).toContain("does not block Local MVP readiness");
+  });
+
   it("does not double-count provider P1 debt as missing final-cycle artifacts", () => {
     const script = source();
 

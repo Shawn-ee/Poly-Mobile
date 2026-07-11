@@ -51,12 +51,36 @@ type DefinitionOfDoneSweep = {
   criteria?: { id?: string; status?: string; notes?: string }[];
 };
 
+type OddsApiSingleEventProof = {
+  pass?: boolean;
+  mobile?: {
+    homeVisible?: boolean;
+    detailVisible?: boolean;
+    sportsbookMarketCount?: number;
+    tradableOutcomeCount?: number;
+    eventSlug?: string;
+  };
+  checks?: {
+    homeVisible?: boolean;
+    detailVisible?: boolean;
+    fakeTokenOrderFilled?: boolean;
+    portfolioPositionVisible?: boolean;
+    historyTradeVisible?: boolean;
+  };
+};
+
+type S23ReachabilityProof = {
+  pass?: boolean;
+  proofLimitations?: string[];
+};
+
 type NextActionPlan = {
   generatedAt: string;
   status:
     | "fix-p0-readiness"
     | "refresh-s23-proof"
     | "refresh-provider-evidence"
+    | "prove-temporary-provider-on-s23"
     | "manual-local-mvp-ready"
     | "provider-parity-wait"
     | "done"
@@ -69,6 +93,9 @@ type NextActionPlan = {
     readinessSummaryPath: string;
     providerEvidencePlanPath: string;
     definitionOfDoneSweepPath: string;
+    oddsApiSingleEventSummaryPath: string;
+    oddsApiMobileFlowProofPath: string;
+    oddsApiS23ReachabilityPath: string;
   };
   state: {
     localMvpReady: boolean;
@@ -82,6 +109,9 @@ type NextActionPlan = {
     readyToDeclareDone: boolean;
     dodCounts: DefinitionOfDoneSweep["counts"];
     remainingPartialCriteria: string[];
+    temporaryProviderReady: boolean;
+    temporaryProviderNeedsS23VisualProof: boolean;
+    temporaryProviderEventSlug: string | null;
   };
 };
 
@@ -118,6 +148,9 @@ function buildPlan(
   readiness: ReadinessSummary | null,
   providerPlan: ProviderEvidencePlan | null,
   dod: DefinitionOfDoneSweep | null,
+  oddsApiSummary: OddsApiSingleEventProof | null,
+  oddsApiMobileFlowProof: OddsApiSingleEventProof | null,
+  oddsApiS23Reachability: S23ReachabilityProof | null,
   paths: NextActionPlan["sourceEvidence"],
   s23RefreshWindowHours: number,
 ): NextActionPlan {
@@ -132,6 +165,17 @@ function buildPlan(
     readinessState.s23LocalMvpDeviceProofReady !== true ||
     (s23ProofHoursUntilStale !== null && s23ProofHoursUntilStale <= s23RefreshWindowHours);
   const providerRefreshDue = providerPlan?.shouldRefreshProviderEvidence === true;
+  const temporaryProviderReady =
+    oddsApiSummary?.pass === true &&
+    (oddsApiSummary.mobile?.sportsbookMarketCount ?? 0) > 0 &&
+    oddsApiMobileFlowProof?.pass === true &&
+    oddsApiMobileFlowProof.checks?.fakeTokenOrderFilled === true &&
+    oddsApiMobileFlowProof.checks?.portfolioPositionVisible === true &&
+    oddsApiMobileFlowProof.checks?.historyTradeVisible === true;
+  const temporaryProviderNeedsS23VisualProof =
+    temporaryProviderReady &&
+    (oddsApiS23Reachability?.pass === true) &&
+    (oddsApiS23Reachability.proofLimitations ?? []).some((item) => item.toLowerCase().includes("not a full visual walkthrough"));
 
   let status: NextActionPlan["status"] = "provider-parity-wait";
   let priority: NextActionPlan["priority"] = "P1";
@@ -170,6 +214,15 @@ function buildPlan(
     reason = "Provider evidence is stale, nearly stale, missing, or explicitly due for refresh.";
     recommendedAction = "Refresh provider evidence and only begin provider-backed work if refreshed evidence shows a real attach-ready World Cup match or line market.";
     commands = [providerPlan.providerRefreshCommand ?? readiness.recovery?.providerRefreshCommand ?? "npm run mobile:internal-readiness-batch:provider-refresh"];
+  } else if (temporaryProviderNeedsS23VisualProof) {
+    status = "prove-temporary-provider-on-s23";
+    priority = "P1";
+    reason = "The temporary sportsbook provider bridge is seeded and backend/mobile-service proven, but the S23 proof is only reachability, not a visible seeded-event walkthrough.";
+    recommendedAction = "Run a focused S23 visible proof for odds-api-single-soccer-test: Home -> Event Detail -> sportsbook spread/total line -> ticket -> fake-token order -> Portfolio/history. Do not spend more provider quota unless the redacted replay evidence is missing.";
+    commands = [
+      "npm run mobile:the-odds-api-single-event -- --fromRedactedOdds=docs/mobile/harness/the-odds-api-single-event/event-odds.redacted.json",
+      "npm run mobile:the-odds-api-single-event-flow",
+    ];
   } else if (remainingPartialCriteria.length === 0 && p1Blockers.length === 0) {
     status = "manual-local-mvp-ready";
     priority = "P2";
@@ -197,6 +250,9 @@ function buildPlan(
       readyToDeclareDone: dod?.readyToDeclareDone === true,
       dodCounts: dod?.counts,
       remainingPartialCriteria,
+      temporaryProviderReady,
+      temporaryProviderNeedsS23VisualProof,
+      temporaryProviderEventSlug: oddsApiSummary?.mobile?.eventSlug ?? oddsApiMobileFlowProof?.mobile?.eventSlug ?? null,
     },
   };
 }
@@ -208,6 +264,12 @@ const providerEvidencePlanPath =
   args.get("providerEvidencePlanPath") ?? "docs/mobile/harness/batch-internal-readiness-latest/provider-evidence-refresh-plan.json";
 const definitionOfDoneSweepPath =
   args.get("definitionOfDoneSweepPath") ?? "docs/mobile/harness/cycle-current-mobile-definition-of-done-sweep.json";
+const oddsApiSingleEventSummaryPath =
+  args.get("oddsApiSingleEventSummaryPath") ?? "docs/mobile/harness/the-odds-api-single-event/single-event-replay-summary.redacted.json";
+const oddsApiMobileFlowProofPath =
+  args.get("oddsApiMobileFlowProofPath") ?? "docs/mobile/harness/the-odds-api-single-event/mobile-flow-proof.redacted.json";
+const oddsApiS23ReachabilityPath =
+  args.get("oddsApiS23ReachabilityPath") ?? "docs/mobile/harness/the-odds-api-single-event/s23-device-reachability.redacted.json";
 const outputPath = args.get("output") ?? "docs/mobile/harness/batch-internal-readiness-latest/mobile-autonomous-next-action-plan.json";
 const s23RefreshWindowHours = Number(args.get("s23RefreshWindowHours") ?? "2");
 
@@ -219,11 +281,17 @@ const paths = {
   readinessSummaryPath,
   providerEvidencePlanPath,
   definitionOfDoneSweepPath,
+  oddsApiSingleEventSummaryPath,
+  oddsApiMobileFlowProofPath,
+  oddsApiS23ReachabilityPath,
 };
 const plan = buildPlan(
   readJson<ReadinessSummary>(readinessSummaryPath),
   readJson<ProviderEvidencePlan>(providerEvidencePlanPath),
   readJson<DefinitionOfDoneSweep>(definitionOfDoneSweepPath),
+  readJson<OddsApiSingleEventProof>(oddsApiSingleEventSummaryPath),
+  readJson<OddsApiSingleEventProof>(oddsApiMobileFlowProofPath),
+  readJson<S23ReachabilityProof>(oddsApiS23ReachabilityPath),
   paths,
   s23RefreshWindowHours,
 );

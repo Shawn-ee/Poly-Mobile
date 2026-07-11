@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ODDSAPIPLAN - Temporary Provider Next-Action Planning
+
+Cycle ODDSAPIPLAN changes local planning/reporting only. It does not add or change backend route handlers, Prisma schema, mobile UI, order logic, provider fetch calls, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Temporary provider next-action planner | Local commands `npm run mobile:autonomous-next-action` and `npm run mobile:definition-of-done-sweep` | Local proof aggregation | None | None | Planner fields `status=prove-temporary-provider-on-s23`, `temporaryProviderReady`, `temporaryProviderNeedsS23VisualProof`, plus DoD criterion `dod-temporary-sportsbook-provider-bridge` | No database access or writes | None | None. Next required proof is visible S23 UI evidence for the already-seeded `odds-api-single-soccer-test` event. |
+
 ## Cycle ODDSAPI1 - The Odds API Single-Event Temporary Provider
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

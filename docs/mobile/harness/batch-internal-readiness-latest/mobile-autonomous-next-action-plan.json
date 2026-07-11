@@ -1,14 +1,20 @@
 {
-  "generatedAt": "2026-07-11T14:36:58.996Z",
-  "status": "provider-parity-wait",
+  "generatedAt": "2026-07-11T19:27:58.889Z",
+  "status": "prove-temporary-provider-on-s23",
   "priority": "P1",
-  "reason": "Provider-backed Polymarket parity is the only remaining partial criterion, but provider evidence is fresh.",
-  "recommendedAction": "Do not open a new provider scan. Keep Local MVP internal testing/regression proof ready while waiting for provider evidence to become stale or a real candidate signal.",
-  "commands": [],
+  "reason": "The temporary sportsbook provider bridge is seeded and backend/mobile-service proven, but the S23 proof is only reachability, not a visible seeded-event walkthrough.",
+  "recommendedAction": "Run a focused S23 visible proof for odds-api-single-soccer-test: Home -> Event Detail -> sportsbook spread/total line -> ticket -> fake-token order -> Portfolio/history. Do not spend more provider quota unless the redacted replay evidence is missing.",
+  "commands": [
+    "npm run mobile:the-odds-api-single-event -- --fromRedactedOdds=docs/mobile/harness/the-odds-api-single-event/event-odds.redacted.json",
+    "npm run mobile:the-odds-api-single-event-flow"
+  ],
   "sourceEvidence": {
     "readinessSummaryPath": "docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json",
     "providerEvidencePlanPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-evidence-refresh-plan.json",
-    "definitionOfDoneSweepPath": "docs/mobile/harness/cycle-current-mobile-definition-of-done-sweep.json"
+    "definitionOfDoneSweepPath": "docs/mobile/harness/cycle-current-mobile-definition-of-done-sweep.json",
+    "oddsApiSingleEventSummaryPath": "docs/mobile/harness/the-odds-api-single-event/single-event-replay-summary.redacted.json",
+    "oddsApiMobileFlowProofPath": "docs/mobile/harness/the-odds-api-single-event/mobile-flow-proof.redacted.json",
+    "oddsApiS23ReachabilityPath": "docs/mobile/harness/the-odds-api-single-event/s23-device-reachability.redacted.json"
   },
   "state": {
     "localMvpReady": true,
@@ -26,12 +32,15 @@
     "providerEvidenceHoursUntilStale": 23.71,
     "readyToDeclareDone": false,
     "dodCounts": {
-      "verified": 11,
+      "verified": 12,
       "partial": 1,
       "blocked": 0
     },
     "remainingPartialCriteria": [
       "dod-provider-polymarket-parity"
-    ]
+    ],
+    "temporaryProviderReady": true,
+    "temporaryProviderNeedsS23VisualProof": true,
+    "temporaryProviderEventSlug": "odds-api-single-soccer-test"
   }
 }

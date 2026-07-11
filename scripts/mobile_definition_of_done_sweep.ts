@@ -39,6 +39,10 @@ const evidence = {
   internalReadinessBatch: "docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json",
   internalReadinessGapList: "docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md",
   providerEvidencePlan: "docs/mobile/harness/batch-internal-readiness-latest/provider-evidence-refresh-plan.json",
+  oddsApiSingleEventAudit: "docs/mobile/audits/BATCH_THE_ODDS_API_SINGLE_EVENT.md",
+  oddsApiSingleEventSummary: "docs/mobile/harness/the-odds-api-single-event/single-event-replay-summary.redacted.json",
+  oddsApiMobileFlowProof: "docs/mobile/harness/the-odds-api-single-event/mobile-flow-proof.redacted.json",
+  oddsApiS23Reachability: "docs/mobile/harness/the-odds-api-single-event/s23-device-reachability.redacted.json",
 };
 
 const readJson = <T,>(file: string): T | null => {
@@ -90,6 +94,33 @@ const providerEvidencePlan = readJson<{
 }>(evidence.providerEvidencePlan);
 const providerPlanStatus = providerEvidencePlan?.status ?? "missing";
 const providerPlanFreshEnough = providerEvidencePlan?.shouldRefreshProviderEvidence === false;
+const oddsApiSummary = readJson<{
+  pass?: boolean;
+  mobile?: { sportsbookMarketCount?: number; eventSlug?: string };
+}>(evidence.oddsApiSingleEventSummary);
+const oddsApiMobileFlowProof = readJson<{
+  pass?: boolean;
+  checks?: {
+    fakeTokenOrderFilled?: boolean;
+    portfolioPositionVisible?: boolean;
+    historyTradeVisible?: boolean;
+  };
+}>(evidence.oddsApiMobileFlowProof);
+const oddsApiS23Reachability = readJson<{
+  pass?: boolean;
+  proofLimitations?: string[];
+}>(evidence.oddsApiS23Reachability);
+const temporarySportsbookProviderBridgeReady =
+  oddsApiSummary?.pass === true &&
+  (oddsApiSummary.mobile?.sportsbookMarketCount ?? 0) > 0 &&
+  oddsApiMobileFlowProof?.pass === true &&
+  oddsApiMobileFlowProof.checks?.fakeTokenOrderFilled === true &&
+  oddsApiMobileFlowProof.checks?.portfolioPositionVisible === true &&
+  oddsApiMobileFlowProof.checks?.historyTradeVisible === true;
+const temporarySportsbookProviderNeedsVisibleS23 =
+  temporarySportsbookProviderBridgeReady &&
+  oddsApiS23Reachability?.pass === true &&
+  (oddsApiS23Reachability.proofLimitations ?? []).some((item) => item.toLowerCase().includes("not a full visual walkthrough"));
 const localMvpBatchReady =
   internalReadiness?.readiness?.localMvpReadyForInternalTesting === true &&
   internalReadiness?.readiness?.backendReady === true &&
@@ -194,6 +225,17 @@ const criteria: Criterion[] = [
         : `Current batch still tracks ${internalReadinessP1Count} provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity. Provider refresh plan status is ${providerPlanStatus}${providerPlanFreshEnough ? ", so another provider refresh should be skipped until the next stale window or a real candidate signal appears" : ", so run the provider refresh recovery before making provider-backed parity decisions"}.`,
   },
   {
+    id: "dod-temporary-sportsbook-provider-bridge",
+    criterion: "Temporary sportsbook provider bridge is available for Local MVP testing without claiming Polymarket-backed parity.",
+    status: temporarySportsbookProviderBridgeReady ? "verified" : "partial",
+    evidence: [evidence.oddsApiSingleEventAudit, evidence.oddsApiSingleEventSummary, evidence.oddsApiMobileFlowProof, evidence.oddsApiS23Reachability],
+    notes: temporarySportsbookProviderBridgeReady
+      ? temporarySportsbookProviderNeedsVisibleS23
+        ? "The Odds API single-event bridge is seeded and fake-token order/Portfolio/history proof passed, but S23 evidence is reachability only; run a full visible S23 walkthrough before treating the seeded provider as human-tested UI proof."
+        : "The Odds API single-event bridge is seeded and has provider, fake-token order, Portfolio/history, and S23 evidence."
+      : "The temporary sportsbook provider bridge is missing or not fully proven. This does not block Local MVP readiness but should be recovered before using sportsbook-derived markets for manual testing.",
+  },
+  {
     id: "dod-final-cycle",
     criterion: "Final cycle includes passing required harnesses, final QA report, final review report, final feature gap tracker, screenshots, and no unresolved P0 debt.",
     status: hasCurrentFinalCycleAudit ? "verified" : "partial",
@@ -235,6 +277,9 @@ const summary = {
         ...(internalReadinessP1Count === 0
           ? []
           : [
+              temporarySportsbookProviderNeedsVisibleS23
+                ? "Run a focused S23 visible walkthrough for odds-api-single-soccer-test before spending more provider quota or opening another provider-discovery cycle."
+                :
               providerPlanFreshEnough
                 ? "Keep Local MVP testing on the contract-shaped line-market flow; provider evidence is fresh, so do not rerun provider discovery until the plan says refresh-soon/refresh-due or a real candidate signal appears."
                 : `Refresh provider evidence with ${providerEvidencePlan?.providerRefreshCommand ?? "npm run mobile:internal-readiness-batch:provider-refresh"} before making provider-backed parity decisions.`,
