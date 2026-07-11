@@ -1,24 +1,22 @@
 {
-  "generatedAt": "2026-07-11T07:56:32.4527614Z",
+  "generatedAt": "2026-07-11T08:05:44.0512441Z",
   "scope": "google-auth-runtime-preflight",
   "backendAuthBaseConfigured": true,
   "mobileReturnUrlScheme": "holiwyn",
   "nextAuthUrlConfigured": true,
   "googleClientIdConfigured": true,
   "googleClientSecretConfigured": true,
-  "expectedCallback": "http://localhost:3000/api/auth/google/callback",
+  "expectedCallback": "http://127.0.0.1:3002/api/auth/google/callback",
   "observedGoogleRedirectUri": "http://127.0.0.1:3002/api/auth/google/callback",
   "observedGoogleRedirectHost": "accounts.google.com",
-  "redirectUriOriginMatches": false,
+  "redirectUriOriginMatches": true,
   "redirectUriPathMatches": true,
-  "redirectUriMatchesExpected": false,
-  "fixHint": "Set the running backend NEXTAUTH_URL and the preflight config to the same origin, restart the backend, then register the exact redirect_uri emitted by /api/auth/google/start in Google Cloud Authorized redirect URIs.",
+  "redirectUriMatchesExpected": true,
+  "fixHint": "",
   "requireConfigured": false,
   "requirePhysicalDeviceCallback": false,
-  "readyForRuntimeStart": false,
-  "failedChecks": [
-    "Google redirect_uri matches NEXTAUTH_URL callback"
-  ],
+  "readyForRuntimeStart": true,
+  "failedChecks": [],
   "checks": [
     {
       "name": "Backend auth base is configured",
@@ -62,7 +60,7 @@
     },
     {
       "name": "Google redirect_uri matches NEXTAUTH_URL callback",
-      "pass": false,
+      "pass": true,
       "detail": "Google Cloud authorized redirect URI should match this callback exactly."
     }
   ]

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T07:57:44.1220604Z",
+  "generatedAt": "2026-07-11T08:05:57.3671445Z",
   "scope": "mobile-internal-readiness-batch",
   "cycle": "BATCHREADINESS",
   "backendBaseUrl": "http://127.0.0.1:3002",
@@ -27,7 +27,7 @@
     },
     {
       "name": "google-auth-runtime-preflight",
-      "command": "powershell -ExecutionPolicy Bypass -File mobile\\scripts\\google-auth-runtime-preflight.ps1 -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/google-auth-runtime-preflight.json\"",
+      "command": "powershell -ExecutionPolicy Bypass -File mobile\\scripts\\google-auth-runtime-preflight.ps1 -BackendAuthBase \"http://127.0.0.1:3002\" -NextAuthUrl \"http://127.0.0.1:3002\" -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/google-auth-runtime-preflight.json\"",
       "exitCode": 0,
       "allowedNonZero": true,
       "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-runtime-preflight.json",
@@ -118,10 +118,8 @@
     "ambientApiKeyReadyForManualServerMode": false,
     "serverModeApiKeySource": "local-runtime-env",
     "localRuntimeEnvReadyForManualServerMode": true,
-    "googleAuthRuntimeReady": false,
-    "googleAuthFailedChecks": [
-      "Google redirect_uri matches NEXTAUTH_URL callback"
-    ],
+    "googleAuthRuntimeReady": true,
+    "googleAuthFailedChecks": [],
     "mobileVisibleEventCount": 1,
     "providerVisibleMarketCount": 3,
     "providerLocalMmReadyMarketCount": 0,
@@ -134,8 +132,7 @@
     "p1": [
       "provider_worldcup_match_books_unavailable_or_closed",
       "no_usable_polymarket_worldcup_team_match_books",
-      "no_attach_ready_polymarket_worldcup_line_markets",
-      "google_redirect_uri_mismatch"
+      "no_attach_ready_polymarket_worldcup_line_markets"
     ]
   },
   "interpretation": "Local MVP fake-token flow is ready for internal testing; provider-backed breadth/line/MM readiness remains tracked P1 debt.",
