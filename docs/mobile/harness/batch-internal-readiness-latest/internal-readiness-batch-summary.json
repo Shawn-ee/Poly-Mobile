@@ -1,5 +1,5 @@
 ﻿{
-    "generatedAt":  "2026-07-11T06:56:16.5940750Z",
+    "generatedAt":  "2026-07-11T07:03:41.3158789Z",
     "scope":  "mobile-internal-readiness-batch",
     "cycle":  "BATCHREADINESS",
     "backendBaseUrl":  "http://127.0.0.1:3002",
@@ -73,6 +73,8 @@
                       "currentRouteLocalMvpReady":  true,
                       "mobileCredentialCanBeCreated":  true,
                       "ambientApiKeyReadyForManualServerMode":  false,
+                      "serverModeApiKeySource":  "local-runtime-env",
+                      "localRuntimeEnvReadyForManualServerMode":  true,
                       "mobileVisibleEventCount":  1,
                       "providerVisibleMarketCount":  3,
                       "providerLocalMmReadyMarketCount":  0,
@@ -86,8 +88,7 @@
                      "p1":  [
                                 "provider_internal_exchange_not_ready",
                                 "no_usable_polymarket_worldcup_team_match_books",
-                                "no_attach_ready_polymarket_worldcup_line_markets",
-                                "manual_server_mode_needs_generated_mobile_api_key"
+                                "no_attach_ready_polymarket_worldcup_line_markets"
                             ]
                  },
     "interpretation":  "Local MVP fake-token flow is ready for internal testing; provider-backed breadth/line/MM readiness remains tracked P1 debt.",
@@ -95,6 +96,6 @@
                         "For internal user-flow testing, keep using Home -\u003e Event Detail -\u003e contract-shaped line market -\u003e Trade Ticket -\u003e fake-token order -\u003e Portfolio/history.",
                         "Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.",
                         "Re-run this batch after provider imports, provider refresh, or line-market discovery changes.",
-                        "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set."
+                        "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token."
                     ]
 }

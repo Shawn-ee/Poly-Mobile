@@ -58,6 +58,8 @@ npm run mobile:manual-testing-env
 
 This creates a mobile dev credential, funds the local fake-token test account, and writes a local-only `.runtime/mobile-manual-testing/server-mode-env.ps1` file. The committed summary redacts the token; the local env file must not be committed.
 
+The batch readiness command can recognize that local runtime env file and report `serverModeApiKeySource=local-runtime-env` without copying the token into committed JSON. If the file is absent and `EXPO_PUBLIC_API_KEY` is not exported, the batch keeps `manual_server_mode_needs_generated_mobile_api_key` as a P1 manual-testing gap.
+
 Then use the generated summary commands:
 
 ```powershell

@@ -93,6 +93,9 @@ $localMvpReady = [bool]($currentState -and $currentState.diagnosis.serviceReadin
 $providerExchangeReady = [bool]($exchange -and $exchange.readyForInternalMobileExchange)
 $usableMatchCount = if ($matchScan) { [int]$matchScan.summary.usableMatchEventCount } else { 0 }
 $attachReadyLineCount = if ($lineScan) { [int]$lineScan.totals.attachReadyProviderLineCandidateCount } else { 0 }
+$serverModeApiKeySource = if ($credential) { [string]$credential.apiKeySource } else { $null }
+$ambientServerModeReady = [bool]($credential -and $credential.readyForServerBackedSamsungProof -and ($serverModeApiKeySource -eq "environment"))
+$localRuntimeServerModeReady = [bool]($credential -and $credential.readyForServerBackedSamsungProof -and ($serverModeApiKeySource -eq "local-runtime-env"))
 
 $p0Blockers = @()
 if (-not $backendReady) { $p0Blockers += "backend_or_local_database_not_ready" }
@@ -117,7 +120,9 @@ $summary = [ordered]@{
     backendReady = $backendReady
     currentRouteLocalMvpReady = $localMvpReady
     mobileCredentialCanBeCreated = [bool]($credential -and $credential.readyToCreateCredential)
-    ambientApiKeyReadyForManualServerMode = [bool]($credential -and $credential.readyForServerBackedSamsungProof)
+    ambientApiKeyReadyForManualServerMode = $ambientServerModeReady
+    serverModeApiKeySource = $serverModeApiKeySource
+    localRuntimeEnvReadyForManualServerMode = $localRuntimeServerModeReady
     mobileVisibleEventCount = if ($exchange) { $exchange.mobileExposure.mobileVisibleEventCount } else { $null }
     providerVisibleMarketCount = if ($exchange) { $exchange.providerMarkets.mobileVisibleCount } else { $null }
     providerLocalMmReadyMarketCount = if ($exchange) { $exchange.providerMarkets.localMmReadyCount } else { $null }
@@ -137,7 +142,7 @@ $summary = [ordered]@{
     "For internal user-flow testing, keep using Home -> Event Detail -> contract-shaped line market -> Trade Ticket -> fake-token order -> Portfolio/history.",
     "Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.",
     "Re-run this batch after provider imports, provider refresh, or line-market discovery changes.",
-    "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set."
+    "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token."
   )
 }
 
