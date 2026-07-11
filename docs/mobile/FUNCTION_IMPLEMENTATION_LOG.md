@@ -12495,3 +12495,20 @@ Known limitations:
 - Known limitations:
   - Spread/Totals/Team Total remain contract fixtures because Polymarket Gamma has not exposed attach-ready line rows for this current match.
   - S23 submit requires the local internal beta backend helper; a plain `npm run dev -p 3002` backend returns `Internal trading beta is temporarily disabled.`
+# Cycle WA - Unavailable Order Server Guard
+
+- Feature/page worked on: Trade Ticket unavailable-market lifecycle, backend enforcement layer.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `src/server/services/canonicalOrderSubmission.ts`
+  - `src/server/services/__tests__/canonical_order_submission.phase5.test.ts`
+- User interactions supported:
+  - Mobile continues to show unavailable markets as disabled/read-only.
+  - Forced order submissions against unavailable markets are rejected server-side.
+- State transitions:
+  - `/api/orders` creates an `ApiOrderRequest` audit row.
+  - unavailable market/outcome request transitions to `FAILED`.
+  - response stores `responseStatus=409`, `errorCode=MARKET_UNAVAILABLE`.
+  - no `Order` row is created and matching is not reached.
+- Known limitations:
+  - This cycle covers local/mobile contract-fixture unavailable state and canonical market/outcome status. Broader live provider status matrix can be repeated when real provider unavailable examples are available.

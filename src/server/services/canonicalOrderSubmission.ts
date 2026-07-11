@@ -204,6 +204,48 @@ const hasMatchingLocalLiquidity = async (
   return Boolean(resting);
 };
 
+const assertMarketAcceptsOrders = async (
+  order: Pick<NormalizedOrderRequest, "marketId" | "outcomeId">,
+) => {
+  const market = await prisma.market.findUnique({
+    where: { id: order.marketId },
+    select: {
+      id: true,
+      status: true,
+      isCanceled: true,
+      isListed: true,
+      outcomes: {
+        where: { id: order.outcomeId },
+        select: {
+          id: true,
+          isActive: true,
+          isTradable: true,
+          status: true,
+        },
+      },
+    },
+  });
+
+  if (!market) return;
+
+  if (market.isCanceled || !market.isListed || market.status !== "LIVE") {
+    throw new CanonicalApiError(
+      "MARKET_UNAVAILABLE",
+      "Market is not open for trading.",
+      409,
+    );
+  }
+
+  const outcome = market.outcomes[0] ?? null;
+  if (!outcome || !outcome.isActive || !outcome.isTradable || outcome.status !== "active") {
+    throw new CanonicalApiError(
+      "MARKET_UNAVAILABLE",
+      "Outcome is not open for trading.",
+      409,
+    );
+  }
+};
+
 const assertProviderMarketAcceptsOrders = async (
   order: Pick<NormalizedOrderRequest, "marketId" | "outcomeId" | "side" | "type" | "price">,
 ) => {
@@ -524,6 +566,7 @@ export const submitCanonicalOrder = async (params: {
   });
 
   try {
+    await assertMarketAcceptsOrders(normalized);
     await assertProviderMarketAcceptsOrders(normalized);
     const matchingPrice = getMatchingPrice(normalized);
     const result = await placeOrderAndMatch({

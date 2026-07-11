@@ -7622,3 +7622,26 @@ P0 gaps:
 P1 gaps:
 
 - Real provider-backed Spread/Totals/Team Total current-match line markets are still not available. Contract fixtures remain the honest MVP line path.
+# Cycle WA Audit Gate - Unavailable Order Server Guard
+
+Gate status: Pass
+
+What became materially closer:
+
+- The backend now enforces the same unavailable-market state that the mobile ticket already shows.
+- A forced order request against a paused/local unavailable line market stores a failed canonical request and creates no order.
+- S23 proof confirms the visible unavailable ticket remains disabled.
+
+Evidence:
+
+- Audit: `docs/mobile/audits/cycle-WA-unavailable-order-server-guard.md`
+- Backend test: `src/server/services/__tests__/canonical_order_submission.phase5.test.ts`
+- S23 screenshot/XML: `docs/mobile/screenshots/cycle-WA-unavailable-order-server-guard/cycle-VX-unavailable-ticket.png`, `docs/mobile/harness/cycle-WA-unavailable-order-server-guard/cycle-VX-unavailable-ticket.xml`
+
+P0 gaps:
+
+- None for unavailable order rejection.
+
+P1 gaps:
+
+- Repeat with live provider-backed unavailable line-market examples when available.

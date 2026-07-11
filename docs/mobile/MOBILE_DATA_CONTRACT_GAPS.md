@@ -9588,3 +9588,10 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: real provider-backed current-match Spread, Total, and Team Total market ids/tokens/prices remain unavailable from Polymarket Gamma for the checked event.
 - Temporary mock/static data: line rows are contract-shaped backend fixtures with stable ids/source fields; they are not claimed as Polymarket-backed.
 - Future migration concern: when real provider-backed line rows exist, rerun this same route and S23 proof against provider market ids/tokens instead of fixture identities.
+# Cycle WA - Unavailable Order Server Guard Notes
+
+- Closed or narrowed: server-side canonical order submission now has a stable unavailable-market guard that matches the mobile disabled Trade Ticket state.
+- Route mismatch: narrowed. `/api/orders` now returns/stores `MARKET_UNAVAILABLE` for non-live/canceled/unlisted/untradable market or outcome state instead of relying on lower-level matching errors.
+- Fields Holiwyn still needs but backend does not fully provide: no new fields. Existing `Market.status`, `isCanceled`, `isListed`, `Outcome.isActive`, `isTradable`, and `status` are sufficient for this guard.
+- Temporary mock/static data: S23 proof still uses the deterministic unavailable-ticket fixture to force visible disabled UI. The server guard itself is backed by persisted DB status.
+- Future migration concern: when real provider-backed line markets exist, provider lifecycle should map suspended/unavailable provider state into these persisted market/outcome fields or a reviewed route-level equivalent before enabling order submit.

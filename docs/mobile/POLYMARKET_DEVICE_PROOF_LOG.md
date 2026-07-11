@@ -2967,3 +2967,10 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Summary: `docs/mobile/harness/cycle-VZ-current-mvp-route-reproof/cycle-VZ-current-mvp-s23-visible-flow.json`
 - Screenshots: `docs/mobile/screenshots/cycle-VZ-current-mvp-route-reproof/`
 - Initial failure: plain local dev backend returned `Internal trading beta is temporarily disabled.` This was corrected by `scripts/start_holiwyn_internal_beta_backend.ps1`.
+# Cycle WA - Unavailable Order Server Guard
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.
+- Result: Pass.
+- Flow proven: deterministic unavailable Trade Ticket remains visible and disabled while backend now rejects forced unavailable submissions.
+- Screenshot: `docs/mobile/screenshots/cycle-WA-unavailable-order-server-guard/cycle-VX-unavailable-ticket.png`
+- XML: `docs/mobile/harness/cycle-WA-unavailable-order-server-guard/cycle-VX-unavailable-ticket.xml`
