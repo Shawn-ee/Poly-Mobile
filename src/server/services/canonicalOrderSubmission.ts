@@ -574,6 +574,7 @@ export const submitCanonicalOrder = async (params: {
       userId: normalized.userId,
       outcomeId: normalized.outcomeId,
       apiCredentialId: params.apiCredentialId,
+      selectionSnapshot: normalized.requestBody.selection as Prisma.InputJsonObject | null,
       side: normalized.side,
       price: matchingPrice,
       size: normalized.size,

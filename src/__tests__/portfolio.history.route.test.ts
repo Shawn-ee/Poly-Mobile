@@ -713,6 +713,119 @@ describe("GET /api/portfolio/history canceled orders", () => {
     });
   });
 
+  test("prefers immutable trade selection snapshot over reconstructed order lookup", async () => {
+    mockPrisma.trade.findMany.mockReset();
+    mockPrisma.order.findMany.mockReset();
+    mockPrisma.ledgerEntry.findMany.mockResolvedValue([]);
+
+    const immutableSelection = {
+      marketId: "market-snapshot-spread",
+      outcomeId: "outcome-snapshot-home",
+      marketGroupId: "spreads",
+      marketType: "spread",
+      line: "+0.5",
+      period: "regulation",
+      side: "home",
+      displayLabel: "France +0.5",
+      contractSide: "yes",
+      providerSource: "polymarket",
+      externalMarketId: "gamma-snapshot-original",
+      conditionId: "condition-snapshot-original",
+      tokenId: "token-snapshot-original",
+      referenceOutcomeLabel: "France +0.5",
+    };
+    const laterOrderSelection = {
+      ...immutableSelection,
+      line: "+1.5",
+      displayLabel: "France +1.5",
+      externalMarketId: "gamma-snapshot-later",
+      conditionId: "condition-snapshot-later",
+      tokenId: "token-snapshot-later",
+      referenceOutcomeLabel: "France +1.5",
+    };
+    const market = {
+      id: "market-snapshot-spread",
+      title: "France vs Paraguay: Spread",
+      event: { title: "France vs Paraguay", slug: "france-vs-paraguay" },
+      status: "LIVE",
+      marketGroupKey: "spreads",
+      marketType: "spread",
+      line: { toString: () => "+1.5" },
+      period: "regulation",
+      referenceSource: "polymarket",
+      externalSlug: "snapshot-later",
+      externalMarketId: "gamma-snapshot-later",
+      conditionId: "condition-snapshot-later",
+    };
+    const outcome = {
+      id: "outcome-snapshot-home",
+      name: "YES",
+      label: "France +1.5",
+      side: "home",
+      referenceTokenId: "token-snapshot-later",
+      referenceOutcomeLabel: "France +1.5",
+    };
+
+    mockPrisma.trade.findMany
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([
+        {
+          id: "trade-snapshot-original",
+          marketId: "market-snapshot-spread",
+          outcomeId: "outcome-snapshot-home",
+          side: "BUY",
+          shares: 15,
+          cost: 7.5,
+          fee: 0,
+          selectionSnapshot: immutableSelection,
+          createdAt: new Date("2026-07-05T13:00:00.000Z"),
+          market,
+          outcome,
+        },
+      ])
+      .mockResolvedValueOnce([
+        {
+          id: "trade-snapshot-original",
+          marketId: "market-snapshot-spread",
+          outcomeId: "outcome-snapshot-home",
+          side: "BUY",
+          shares: 15,
+          cost: 7.5,
+          fee: 0,
+          createdAt: new Date("2026-07-05T13:00:00.000Z"),
+        },
+      ]);
+    mockPrisma.order.findMany
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([
+        {
+          id: "order-snapshot-later",
+          marketId: "market-snapshot-spread",
+          outcomeId: "outcome-snapshot-home",
+          createdAt: new Date("2026-07-05T13:10:00.000Z"),
+          updatedAt: new Date("2026-07-05T13:10:05.000Z"),
+          apiOrderRequest: { requestBody: { selection: laterOrderSelection } },
+        },
+      ]);
+
+    const { GET } = await import("@/app/api/portfolio/history/route");
+    const response = await GET(new NextRequest("http://localhost/api/portfolio/history"));
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.recentTrades[0].selection).toMatchObject({
+      line: "+0.5",
+      displayLabel: "France +0.5",
+      externalMarketId: "gamma-snapshot-original",
+      conditionId: "condition-snapshot-original",
+      tokenId: "token-snapshot-original",
+    });
+    expect(body.recentTrades[0].selection).not.toMatchObject({
+      line: "+1.5",
+      tokenId: "token-snapshot-later",
+    });
+  });
+
   test("blocks anonymous history reads before canceled-order lookup", async () => {
     mockGetUserId.mockResolvedValue(null);
 

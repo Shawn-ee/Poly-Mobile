@@ -9603,3 +9603,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: a direct immutable `Trade.orderId` relation or trade-level selection snapshot remains the clean future contract.
 - Temporary mock/static data: none added. The route continues to use persisted `Trade`, `Order`, and `ApiOrderRequest` data.
 - Future migration concern: when schema work is reopened, store the selected market/outcome/line/provider token snapshot directly with the trade/fill so Portfolio History no longer needs temporal reconstruction.
+
+# Cycle WC - Trade-Level Selection Snapshot Notes
+
+- Closed or narrowed: new filled trades now have first-class `Trade.orderId` and `Trade.selectionSnapshot` storage for selected market/outcome/line/provider token identity.
+- Route mismatch: narrowed. `/api/portfolio/history` now prefers the trade-level snapshot and uses the older Cycle WB temporal lookup only for rows created before this migration or non-canonical/direct matching rows.
+- Fields Holiwyn still needs but backend does not fully provide: no new field gap for new server-backed fake-token line trades. A future backfill can populate old historical trades if needed.
+- Temporary mock/static data: none added. Snapshot data is the sanitized order selection already submitted by mobile.
+- Future migration concern: if fill-level history becomes user-visible later, consider adding a fill-level snapshot too. The current Local MVP History route is trade-level, so `Trade.selectionSnapshot` is sufficient.
