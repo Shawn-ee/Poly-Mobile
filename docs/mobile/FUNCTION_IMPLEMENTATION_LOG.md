@@ -2,6 +2,25 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle NEXTACTIONCLEAN - Clean Autonomous Planner Checks
+
+- Feature/page worked on: autonomous next-action planner hygiene for long-running loop control.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/plan_mobile_autonomous_next_action.ts`
+  - `src/__tests__/mobile-autonomous-next-action.contract.test.ts`
+- User interactions supported: unchanged. The planner still reports the current next action, which remains `provider-parity-wait` while provider evidence is fresh and Polymarket-backed match/line markets are unavailable.
+- State transitions:
+  - The planner now compares the existing output to the new plan while ignoring `generatedAt`.
+  - If the only difference is the timestamp, the planner leaves `mobile-autonomous-next-action-plan.json` untouched.
+  - This keeps routine status checks from creating false dirty worktree state during autonomous loops.
+- Proof:
+  - `npx jest --runInBand src/__tests__/mobile-autonomous-next-action.contract.test.ts`
+  - `npx tsc --noEmit --pretty false --incremental false`
+  - `npm run mobile:autonomous-next-action` returned `provider-parity-wait` and did not modify the existing plan file.
+- Known limitations:
+  - This is harness hygiene only. It does not add markets, spend provider quota, start Expo, or close Polymarket-backed provider parity.
+
 ## Cycle ODDSREPLAYAUDIT - Odds API Replay Audit Preservation
 
 - Feature/page worked on: temporary sportsbook provider proof replay and audit evidence for the Local MVP provider bridge.

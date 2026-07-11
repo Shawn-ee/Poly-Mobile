@@ -1,5 +1,14 @@
 # Mobile Data Contract Gaps
 
+## Cycle NEXTACTIONCLEAN - Clean Autonomous Planner Checks
+
+- No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider runtime contract changed.
+- Closed or narrowed: routine autonomous planner checks no longer dirty `mobile-autonomous-next-action-plan.json` when only `generatedAt` would change.
+- Route mismatch: none. This cycle only changes local planner output hygiene.
+- Fields Holiwyn still needs but backend/provider does not fully provide: real Polymarket-backed World Cup match and line markets with stable provider event, market, outcome, token, price, and accepting-order identity.
+- Temporary mock/static data: none added.
+- Future migration concern: keep planner outputs stable so true data-contract diffs are visible during long-running provider parity work.
+
 ## Cycle ODDSAPIPLAN - Temporary Provider Next-Action Planning
 
 - No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider runtime contract changed.

@@ -161,6 +161,24 @@ function ensureParentDir(filePath: string) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
 }
 
+function stripGeneratedAt(value: unknown): unknown {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return value;
+  }
+  const clone = { ...(value as Record<string, unknown>) };
+  delete clone.generatedAt;
+  return clone;
+}
+
+function samePlanIgnoringGeneratedAt(existingJson: string, plan: NextActionPlan) {
+  try {
+    const existing = JSON.parse(existingJson.replace(/^\uFEFF/, ""));
+    return JSON.stringify(stripGeneratedAt(existing)) === JSON.stringify(stripGeneratedAt(plan));
+  } catch {
+    return false;
+  }
+}
+
 function numberOrNull(value: unknown): number | null {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
@@ -351,7 +369,10 @@ const plan = buildPlan(
 
 const resolvedOutputPath = path.resolve(repoRoot, outputPath);
 ensureParentDir(resolvedOutputPath);
-fs.writeFileSync(resolvedOutputPath, `${JSON.stringify(plan, null, 2)}\n`, "utf8");
+const existingPlanJson = fs.existsSync(resolvedOutputPath) ? fs.readFileSync(resolvedOutputPath, "utf8") : null;
+if (!existingPlanJson || !samePlanIgnoringGeneratedAt(existingPlanJson, plan)) {
+  fs.writeFileSync(resolvedOutputPath, `${JSON.stringify(plan, null, 2)}\n`, "utf8");
+}
 
 console.log(`PLAN ${outputPath}`);
 console.log(`STATUS ${plan.status}`);

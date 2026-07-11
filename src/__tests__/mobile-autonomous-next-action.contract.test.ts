@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, statSync, utimesSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
@@ -23,6 +23,8 @@ describe("mobile autonomous next-action planner", () => {
     expect(script).toContain("the-odds-api-single-event");
     expect(script).toContain("single-event-summary.redacted.json");
     expect(script).toContain("temporarySportsbookBackendProofReady");
+    expect(script).toContain("samePlanIgnoringGeneratedAt");
+    expect(script).toContain("stripGeneratedAt");
     expect(script).not.toContain("fetch(");
   });
 
@@ -127,6 +129,50 @@ describe("mobile autonomous next-action planner", () => {
       expect(plan.state.temporaryProviderBackendProofReady).toBe(false);
       expect(plan.commands).toContain("npm run mobile:the-odds-api-single-event");
       expect(plan.commands).toContain("npm run mobile:the-odds-api-single-event-flow");
+    } finally {
+      rmSync(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("does not rewrite the committed plan when only generatedAt would change", () => {
+    const tempDir = mkdtempSync(path.join(os.tmpdir(), "mobile-next-action-"));
+    const outputPath = path.join(tempDir, "plan.json");
+    const command = process.platform === "win32" ? "cmd.exe" : "npx";
+    const commandArgs = process.platform === "win32" ? ["/c", "npx"] : [];
+
+    try {
+      execFileSync(
+        command,
+        [
+          ...commandArgs,
+          "tsx",
+          "scripts/plan_mobile_autonomous_next_action.ts",
+          `--output=${outputPath}`,
+          "--s23RefreshWindowHours=2",
+        ],
+        { encoding: "utf8" },
+      );
+      const firstPlan = JSON.parse(readFileSync(outputPath, "utf8"));
+      firstPlan.generatedAt = "2000-01-01T00:00:00.000Z";
+      writeFileSync(outputPath, `${JSON.stringify(firstPlan, null, 2)}\n`);
+      const oldTime = new Date("2001-01-01T00:00:00.000Z");
+      utimesSync(outputPath, oldTime, oldTime);
+      const before = statSync(outputPath).mtimeMs;
+
+      execFileSync(
+        command,
+        [
+          ...commandArgs,
+          "tsx",
+          "scripts/plan_mobile_autonomous_next_action.ts",
+          `--output=${outputPath}`,
+          "--s23RefreshWindowHours=2",
+        ],
+        { encoding: "utf8" },
+      );
+
+      expect(statSync(outputPath).mtimeMs).toBe(before);
+      expect(JSON.parse(readFileSync(outputPath, "utf8")).generatedAt).toBe("2000-01-01T00:00:00.000Z");
     } finally {
       rmSync(tempDir, { recursive: true, force: true });
     }

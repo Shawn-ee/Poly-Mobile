@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle NEXTACTIONCLEAN - Clean Autonomous Planner Checks
+
+Cycle NEXTACTIONCLEAN changes local planning/reporting only. It does not add or change backend route handlers, Prisma schema, mobile UI, order logic, provider fetch calls, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Autonomous next-action clean check | Local command `npm run mobile:autonomous-next-action` | Local proof aggregation | None | None | Planner fields `status`, `priority`, `recommendedAction`, `state.*`; existing output is compared ignoring `generatedAt` before writing | No database access or writes | None | None for harness hygiene. Provider parity still requires real Polymarket-backed World Cup match/line data. |
+
 ## Cycle ODDSAPIPLAN - Temporary Provider Next-Action Planning
 
 Cycle ODDSAPIPLAN changes local planning/reporting only. It does not add or change backend route handlers, Prisma schema, mobile UI, order logic, provider fetch calls, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
