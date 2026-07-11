@@ -1,6 +1,6 @@
 # Batch Internal Readiness Gap List
 
-Generated: 2026-07-11T19:55:20.399Z
+Generated: 2026-07-11T20:18:08.237Z
 
 Source summary: `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`
 
@@ -26,14 +26,15 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Mobile typecheck: yes
 - S23 Local MVP proof ready: yes
 - Temporary sportsbook S23 bridge proof ready: yes
+- Temporary sportsbook backend proof ready: yes (next stale: sportsbook-mobile-fake-token-flow in 23.8 hours)
 - S23 proof max age: 24 hours
-- S23 proof next stale: totals-filled-buy-history in 9.28 hours (2026-07-12T05:12:16.5919824Z)
+- S23 proof next stale: totals-filled-buy-history in 8.9 hours (2026-07-12T05:12:16.5919824Z)
 - S23 startup contract ready: yes
 - S23 Google consent path ready: yes (lan-callback-preflight)
 - Provider-backed exchange ready: no
 - Provider discovery mode: cached
 - Cached provider evidence fresh: yes (max age 24 hours)
-- Cached provider evidence next stale: worldcup-match-scan in 17.92 hours (2026-07-12T13:50:41.6680000Z)
+- Cached provider evidence next stale: worldcup-match-scan in 17.54 hours (2026-07-12T13:50:41.6680000Z)
 - P0 blocker count: 0
 - P1 blocker count: 4
 - P2 blocker count: 0
@@ -47,7 +48,8 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Local MVP match breadth ready: yes (5 events)
 - Provider books unavailable or closed: yes
 - Provider snapshot refresh succeeded: yes (6 updated)
-- Cached provider evidence: provider-snapshot-refresh:fresh(6.08h), internal-exchange-readiness:fresh(6.08h), provider-visible-tradable-flow:fresh(6.08h), worldcup-match-scan:fresh(6.08h), provider-line-scan:fresh(6.05h)
+- Temporary sportsbook backend proofs: sportsbook-single-event-live-seed:fresh(0.21h), sportsbook-mobile-fake-token-flow:fresh(0.2h)
+- Cached provider evidence: provider-snapshot-refresh:fresh(6.46h), internal-exchange-readiness:fresh(6.46h), provider-visible-tradable-flow:fresh(6.46h), worldcup-match-scan:fresh(6.46h), provider-line-scan:fresh(6.43h)
 - Provider MVP tradable flow ready: no (provider_mvp_match_snapshot_not_mm_safe)
 - World Cup team-match provider events scanned: 422 (0 open/upcoming, 422 closed/ended)
 - Generic non-soccer World Cup matches excluded: 0
@@ -77,6 +79,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 | Local match breadth | yes | `mobile-mvp-local-match-breadth.json`. |
 | S23 full MVP proof | yes | XG Spread filled buy/history, XH Spread open-order cancel, XI Spread cashout/sell, WF Totals filled buy/history, WG Team Totals filled buy/history, and ODDSAPIS23 temporary sportsbook filled buy/history summaries. |
 | Temporary sportsbook bridge | yes | ODDSAPIS23 verifies Home -> Event Detail -> sportsbook spread line -> ticket -> fake-token order -> Portfolio/history on the S23. |
+| Temporary sportsbook backend proof | yes | `single-event-summary.redacted.json` plus `mobile-flow-proof.redacted.json` must pass and remain fresh. |
 | S23 Google consent callback | yes | `google-auth-lan-callback-preflight.json` when LAN-ready; localhost probes remain raw diagnostics only. |
 | Cached provider evidence | yes | Provider snapshot, exchange, tradable-flow, match-scan, and line-scan summaries must be within the freshness window. |
 | Root typecheck | yes | `root-typecheck.json`. |
