@@ -1,9 +1,9 @@
 {
   "pass": true,
-  "liquidityPurpose": "buy-fill",
+  "liquidityPurpose": "cashout-sell-fill",
   "routeContract": {
-    "mobileFlow": "Event Detail line market -> generic Buy ticket -> /api/orders BUY -> Portfolio History",
-    "expectedRestingSide": "SELL",
+    "mobileFlow": "Portfolio cashout/generic Sell ticket -> /api/orders SELL -> Portfolio History",
+    "expectedRestingSide": "BUY",
     "source": "local-mvp-internal-liquidity"
   },
   "eventSlug": "odds-api-single-soccer-test",
@@ -27,47 +27,47 @@
   },
   "cleanupOnly": false,
   "maker": {
-    "id": "6409cc93-0cf1-4059-b7a1-468cb99a0cc0",
-    "username": "mobile_route_fill_maker_715d5fdf"
+    "id": "b58ec3a0-86cf-4197-9b03-ddd2826dd0e8",
+    "username": "mobile_route_fill_maker_285f8d39"
   },
   "cleanup": {
-    "enabled": true,
+    "enabled": false,
     "proofUserPrefix": "holiwyn-mobile-",
     "canceledProofBids": [],
-    "cleanupBlockingBids": true,
-    "canceledBlockingBids": [
-      {
-        "id": "52784d22-a3aa-458f-a89f-fc1c2098eead",
-        "username": "mobile_route_fill_maker_4bfe86ec",
-        "previousStatus": "OPEN",
-        "price": "0.58",
-        "remaining": "80",
-        "canceledStatus": "CANCELED"
-      }
-    ],
+    "cleanupBlockingBids": false,
+    "canceledBlockingBids": [],
     "cleanupBlockingMarketBids": true,
     "cleanupBlockingMarketBidsForcedByPurpose": false,
     "canceledBlockingMarketBids": [],
-    "cleanupProofAsks": false,
+    "cleanupProofAsks": true,
     "canceledProofAsks": [],
-    "cleanupBlockingAsks": false,
-    "canceledBlockingAsks": []
+    "cleanupBlockingAsks": true,
+    "canceledBlockingAsks": [
+      {
+        "id": "375b82f3-07dd-49c0-8655-8785293d5fb9",
+        "username": "mobile_route_fill_maker_715d5fdf",
+        "previousStatus": "PARTIAL",
+        "price": "0.58",
+        "remaining": "56.9",
+        "canceledStatus": "CANCELED"
+      }
+    ]
   },
   "makerOrder": {
-    "id": "375b82f3-07dd-49c0-8655-8785293d5fb9",
+    "id": "6df5e8ac-3463-4bd8-ae81-1eb4cb717449",
     "marketId": "29346e58-158a-4260-953d-259c98fa24ff",
     "outcomeId": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
-    "side": "SELL",
+    "side": "BUY",
     "price": "0.58",
-    "size": "100",
-    "remaining": "100",
-    "reservedNotional": "0",
+    "size": "80",
+    "remaining": "80",
+    "reservedNotional": "46.4",
     "status": "OPEN"
   },
   "seededAsk": {
-    "side": "SELL",
+    "side": "BUY",
     "price": "0.58",
-    "size": "100",
-    "intendedMobileTaker": "BUY $25 route-backed spread ticket"
+    "size": "80",
+    "intendedMobileTaker": "SELL/cashout route-backed spread position"
   }
 }

@@ -2,11 +2,11 @@
   "ready": true,
   "readyToDeclareDone": false,
   "counts": {
-    "verified": 12,
-    "partial": 1,
+    "verified": 11,
+    "partial": 2,
     "blocked": 0
   },
-  "generatedAt": "2026-07-11T22:16:38.626Z",
+  "generatedAt": "2026-07-11T23:56:36.032Z",
   "criteria": [
     {
       "id": "dod-android-runtime",
@@ -113,7 +113,7 @@
     {
       "id": "dod-temporary-sportsbook-provider-bridge",
       "criterion": "Temporary sportsbook provider bridge is available for Local MVP testing without claiming Polymarket-backed parity.",
-      "status": "verified",
+      "status": "partial",
       "evidence": [
         "docs/mobile/audits/BATCH_THE_ODDS_API_SINGLE_EVENT.md",
         "docs/mobile/harness/the-odds-api-single-event/single-event-summary.redacted.json",
@@ -121,7 +121,7 @@
         "docs/mobile/harness/the-odds-api-single-event/s23-device-reachability.redacted.json",
         "docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json"
       ],
-      "notes": "The Odds API single-event bridge is seeded and has fresh backend proof, fake-token order, Portfolio/history, and S23 evidence. Backend proof hours until stale: 23.59."
+      "notes": "The temporary sportsbook provider bridge is missing, stale, or not fully proven. This does not block Local MVP readiness but should be recovered before using sportsbook-derived markets for manual testing."
     },
     {
       "id": "dod-final-cycle",

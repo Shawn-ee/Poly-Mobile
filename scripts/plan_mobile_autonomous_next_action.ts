@@ -70,6 +70,8 @@ type OddsApiSingleEventProof = {
     fakeTokenOrderFilled?: boolean;
     portfolioPositionVisible?: boolean;
     historyTradeVisible?: boolean;
+    buyHistoryTradeVisible?: boolean;
+    sellHistoryTradeVisible?: boolean;
   };
 };
 
@@ -321,7 +323,13 @@ function buildPlan(
     oddsApiMobileFlowProof?.pass === true &&
     oddsApiMobileFlowProof.checks?.fakeTokenOrderFilled === true &&
     oddsApiMobileFlowProof.checks?.portfolioPositionVisible === true &&
-    oddsApiMobileFlowProof.checks?.historyTradeVisible === true;
+    (
+      oddsApiMobileFlowProof.checks?.historyTradeVisible === true ||
+      (
+        oddsApiMobileFlowProof.checks?.buyHistoryTradeVisible === true &&
+        oddsApiMobileFlowProof.checks?.sellHistoryTradeVisible === true
+      )
+    );
   const temporaryProviderS23VisibleProofReady =
     oddsApiS23VisibleProof?.result === "pass" &&
     oddsApiS23VisibleProof.assertions?.homeShowsTemporarySportsbookEvent === true &&
@@ -330,6 +338,9 @@ function buildPlan(
     oddsApiS23VisibleProof.assertions?.ticketPreservesSportsbookLineIdentity === true &&
     oddsApiS23VisibleProof.assertions?.swipeSubmitReachedPortfolio === true &&
     oddsApiS23VisibleProof.assertions?.portfolioPreservesSportsbookLineIdentity === true &&
+    oddsApiS23VisibleProof.assertions?.cashoutTicketOpened === true &&
+    oddsApiS23VisibleProof.assertions?.cashoutSellSubmitted === true &&
+    oddsApiS23VisibleProof.assertions?.cashoutHistoryVisible === true &&
     oddsApiS23VisibleProof.assertions?.historyPreservesSportsbookLineIdentity === true;
   const temporaryProviderNeedsS23VisualProof =
     temporaryProviderReady &&

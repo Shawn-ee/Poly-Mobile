@@ -1,6 +1,6 @@
 # Batch Internal Readiness Gap List
 
-Generated: 2026-07-11T21:55:52.023Z
+Generated: 2026-07-11T23:54:38.744Z
 
 Source summary: `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`
 
@@ -20,21 +20,21 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - S23 connected: yes (adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp, SM_S911U1)
 - Expo running: no
 - Continuous bot running: no
-- Worktree clean at batch start: yes
+- Worktree clean at batch start: no
 - Root typecheck: yes
 - Jest CI: yes
 - Mobile typecheck: yes
 - S23 Local MVP proof ready: yes
 - Temporary sportsbook S23 bridge proof ready: yes
-- Temporary sportsbook backend proof ready: yes (next stale: sportsbook-mobile-fake-token-flow in 23.59 hours)
+- Temporary sportsbook backend proof ready: yes (next stale: sportsbook-single-event-live-seed in 22.9 hours)
 - S23 proof max age: 24 hours
-- S23 proof next stale: filled-buy-history in 23.8 hours (2026-07-12T21:44:06.1159252Z)
+- S23 proof next stale: filled-buy-history in 21.82 hours (2026-07-12T21:44:06.1159252Z)
 - S23 startup contract ready: yes
 - S23 Google consent path ready: yes (lan-callback-preflight)
 - Provider-backed exchange ready: no
 - Provider discovery mode: cached
 - Cached provider evidence fresh: yes (max age 24 hours)
-- Cached provider evidence next stale: provider-visible-tradable-flow in 15.91 hours (2026-07-12T13:50:21.2740000Z)
+- Cached provider evidence next stale: provider-visible-tradable-flow in 13.93 hours (2026-07-12T13:50:21.2740000Z)
 - P0 blocker count: 0
 - P1 blocker count: 4
 - P2 blocker count: 0
@@ -48,8 +48,8 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Local MVP match breadth ready: yes (5 events)
 - Provider books unavailable or closed: yes
 - Provider snapshot refresh succeeded: yes (6 updated)
-- Temporary sportsbook backend proofs: sportsbook-single-event-live-seed:fresh(0.41h), sportsbook-mobile-fake-token-flow:fresh(0.41h)
-- Cached provider evidence: provider-snapshot-refresh:fresh(8.09h), internal-exchange-readiness:fresh(8.09h), provider-visible-tradable-flow:fresh(8.09h), worldcup-match-scan:fresh(8.09h), provider-line-scan:fresh(8.06h)
+- Temporary sportsbook backend proofs: sportsbook-single-event-live-seed:fresh(1.1h), sportsbook-mobile-fake-token-flow:fresh(0.14h)
+- Cached provider evidence: provider-snapshot-refresh:fresh(10.07h), internal-exchange-readiness:fresh(10.07h), provider-visible-tradable-flow:fresh(10.07h), worldcup-match-scan:fresh(10.07h), provider-line-scan:fresh(10.04h)
 - Provider MVP tradable flow ready: no (provider_mvp_match_snapshot_not_mm_safe)
 - World Cup team-match provider events scanned: 422 (0 open/upcoming, 422 closed/ended)
 - Generic non-soccer World Cup matches excluded: 0

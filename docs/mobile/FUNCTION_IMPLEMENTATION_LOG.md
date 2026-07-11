@@ -13518,3 +13518,29 @@ Known limitations:
   - S23 totals proof was refreshed and passed.
 - Known limitations:
   - This does not add new provider markets and does not close Polymarket-backed provider parity. It keeps the Local MVP regression proof fresh while provider evidence remains unavailable.
+
+# Cycle ODDSINTERNALUSABLE - Sportsbook Internal Usability Cashout Gate
+
+- Feature/page worked on: one-event Odds API sportsbook bridge for internal mobile usability.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/prove_mobile_the_odds_api_single_event_flow.ts`
+  - `scripts/prove_mobile_odds_api_s23_visible_flow.ps1`
+  - `docs/mobile/audits/BATCH_ODDS_API_INTERNAL_USABILITY.md`
+  - `docs/mobile/audits/BATCH_THE_ODDS_API_SINGLE_EVENT.md`
+- User interactions supported:
+  - Home opens the backend-owned `odds-api-single-soccer-test` match.
+  - Event Detail exposes sportsbook-derived spread line `0.5`.
+  - Trade Ticket submits a fake-token Buy.
+  - Portfolio exposes Cash out on the filled position.
+  - Cash out opens the generic Sell ticket and submits a fake-token Sell.
+  - Portfolio History shows the sold activity while preserving `sportsbook-odds` line identity.
+- State transitions:
+  - Redacted Odds API fixture replay seeds one backend event without spending provider quota.
+  - Disposable local maker SELL liquidity fills the Buy.
+  - Disposable local maker BUY liquidity fills the Cash out/Sell.
+  - Backend proof verifies route identity through Home, Event Detail, quote, order, Portfolio, and History.
+  - S23 proof verifies the same visible flow on `SM-S911U1`.
+- Known limitations:
+  - This is internal fake-token usability, not Polymarket-backed provider parity.
+  - Team totals were available in provider metadata but not fetched in the one-event odds payload to preserve the original quota cap.

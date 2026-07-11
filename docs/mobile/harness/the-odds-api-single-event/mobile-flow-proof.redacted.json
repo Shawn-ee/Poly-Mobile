@@ -1,6 +1,6 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-11T22:49:02.801Z",
+  "generatedAt": "2026-07-11T23:45:56.667Z",
   "scope": "the-odds-api-single-event-mobile-fake-token-flow",
   "policy": {
     "providerSource": "the-odds-api",
@@ -39,7 +39,7 @@
     "referenceOutcomeLabel": "Argentina -0.5"
   },
   "makerQuote": {
-    "orderId": "e6961bca-1609-4b55-b92c-fc6382623e07",
+    "orderId": "d78a75d3-ec78-4a34-a21a-a9ee828a1ead",
     "price": "0.58",
     "remaining": "200"
   },
@@ -50,10 +50,14 @@
     "ticketOrderSubmitted": true,
     "fakeTokenOrderFilled": true,
     "portfolioPositionVisible": true,
-    "historyTradeVisible": true
+    "cashoutEligible": true,
+    "cashoutSellSubmitted": true,
+    "portfolioPositionReducedAfterCashout": true,
+    "buyHistoryTradeVisible": true,
+    "sellHistoryTradeVisible": true
   },
   "orderResult": {
-    "id": "bcd03a58-7ef2-4f04-bdf6-781c289d8612",
+    "id": "960f3765-663b-4d22-adeb-8da6c239244a",
     "mode": "server",
     "title": "Switzerland vs. Argentina",
     "outcome": "Argentina -0.5",
@@ -120,67 +124,132 @@
     "bestBid": null,
     "bestAsk": 58,
     "bestBidSize": null,
-    "bestAskSize": 1753.42,
+    "bestAskSize": 1749.1,
     "currentValue": 1.2528,
     "pnl": 0
   },
-  "historyTrade": {
-    "id": "117528e9-e665-4724-9620-44f3027fbba2",
-    "market": {
-      "id": "29346e58-158a-4260-953d-259c98fa24ff",
-      "title": "Switzerland vs. Argentina: Spread +0.5",
-      "event": {
-        "slug": "odds-api-single-soccer-test",
-        "title": "Switzerland vs. Argentina"
+  "cashout": {
+    "makerBidOrderId": "c6d4bd13-9f62-4e79-b1ec-8aff9282af1d",
+    "makerBidPrice": "0.58",
+    "makerBidRemaining": "200",
+    "positionSharesBefore": 2.16,
+    "positionSharesAfter": 0
+  },
+  "historyTrades": {
+    "buy": {
+      "id": "1e74372b-9d03-43b9-b996-d88494521c87",
+      "market": {
+        "id": "29346e58-158a-4260-953d-259c98fa24ff",
+        "title": "Switzerland vs. Argentina: Spread +0.5",
+        "event": {
+          "slug": "odds-api-single-soccer-test",
+          "title": "Switzerland vs. Argentina"
+        },
+        "status": "LIVE",
+        "marketGroupKey": "spread",
+        "marketType": "spread",
+        "line": "0.5",
+        "period": "regulation",
+        "referenceSource": "sportsbook-odds",
+        "externalSlug": "soccer_fifa_world_cup-200d9cd5eda092c7eb778cc104cd2fd2",
+        "externalMarketId": "200d9cd5eda092c7eb778cc104cd2fd2:betonlineag:spreads:0.5",
+        "conditionId": "odds-api-02da927e1babf505d936e7c8",
+        "eventTitle": "Switzerland vs. Argentina",
+        "eventSlug": "odds-api-single-soccer-test",
+        "displayTitle": "Spread +0.5"
       },
-      "status": "LIVE",
-      "marketGroupKey": "spread",
-      "marketType": "spread",
-      "line": "0.5",
-      "period": "regulation",
-      "referenceSource": "sportsbook-odds",
-      "externalSlug": "soccer_fifa_world_cup-200d9cd5eda092c7eb778cc104cd2fd2",
-      "externalMarketId": "200d9cd5eda092c7eb778cc104cd2fd2:betonlineag:spreads:0.5",
-      "conditionId": "odds-api-02da927e1babf505d936e7c8",
-      "eventTitle": "Switzerland vs. Argentina",
-      "eventSlug": "odds-api-single-soccer-test",
-      "displayTitle": "Spread +0.5"
+      "outcome": {
+        "id": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
+        "name": "Argentina -0.5",
+        "label": "Argentina -0.5",
+        "side": "home",
+        "referenceTokenId": "odds-api-38b7b87cb420684a05351898",
+        "referenceOutcomeLabel": "Argentina -0.5"
+      },
+      "selection": {
+        "marketId": "29346e58-158a-4260-953d-259c98fa24ff",
+        "outcomeId": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
+        "marketGroupId": "spread",
+        "marketType": "spread",
+        "line": "0.5",
+        "period": "regulation",
+        "side": "home",
+        "displayLabel": "Argentina -0.5",
+        "contractSide": "yes",
+        "referenceSource": "sportsbook-odds",
+        "providerSource": "sportsbook-odds",
+        "externalSlug": "soccer_fifa_world_cup-200d9cd5eda092c7eb778cc104cd2fd2",
+        "externalMarketId": "200d9cd5eda092c7eb778cc104cd2fd2:betonlineag:spreads:0.5",
+        "conditionId": "odds-api-02da927e1babf505d936e7c8",
+        "referenceTokenId": "odds-api-38b7b87cb420684a05351898",
+        "tokenId": "odds-api-38b7b87cb420684a05351898",
+        "referenceOutcomeLabel": "Argentina -0.5",
+        "limitPrice": 0.5835,
+        "limitSide": "ask"
+      },
+      "side": "BUY",
+      "shares": 2.16,
+      "cost": 1.2528,
+      "fee": 0,
+      "proceedsTokens": null,
+      "realizedPnlTokens": null,
+      "createdAt": "2026-07-11T23:45:56.271Z"
     },
-    "outcome": {
-      "id": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
-      "name": "Argentina -0.5",
-      "label": "Argentina -0.5",
-      "side": "home",
-      "referenceTokenId": "odds-api-38b7b87cb420684a05351898",
-      "referenceOutcomeLabel": "Argentina -0.5"
-    },
-    "selection": {
-      "marketId": "29346e58-158a-4260-953d-259c98fa24ff",
-      "outcomeId": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
-      "marketGroupId": "spread",
-      "marketType": "spread",
-      "line": "0.5",
-      "period": "regulation",
-      "side": "home",
-      "displayLabel": "Argentina -0.5",
-      "contractSide": "yes",
-      "referenceSource": "sportsbook-odds",
-      "providerSource": "sportsbook-odds",
-      "externalSlug": "soccer_fifa_world_cup-200d9cd5eda092c7eb778cc104cd2fd2",
-      "externalMarketId": "200d9cd5eda092c7eb778cc104cd2fd2:betonlineag:spreads:0.5",
-      "conditionId": "odds-api-02da927e1babf505d936e7c8",
-      "referenceTokenId": "odds-api-38b7b87cb420684a05351898",
-      "tokenId": "odds-api-38b7b87cb420684a05351898",
-      "referenceOutcomeLabel": "Argentina -0.5",
-      "limitPrice": 0.5835,
-      "limitSide": "ask"
-    },
-    "side": "BUY",
-    "shares": 2.16,
-    "cost": 1.2528,
-    "fee": 0,
-    "proceedsTokens": null,
-    "realizedPnlTokens": null,
-    "createdAt": "2026-07-11T22:49:02.677Z"
+    "sell": {
+      "id": "3b1021dd-fc51-439d-879b-a4a72e6c18ce",
+      "market": {
+        "id": "29346e58-158a-4260-953d-259c98fa24ff",
+        "title": "Switzerland vs. Argentina: Spread +0.5",
+        "event": {
+          "slug": "odds-api-single-soccer-test",
+          "title": "Switzerland vs. Argentina"
+        },
+        "status": "LIVE",
+        "marketGroupKey": "spread",
+        "marketType": "spread",
+        "line": "0.5",
+        "period": "regulation",
+        "referenceSource": "sportsbook-odds",
+        "externalSlug": "soccer_fifa_world_cup-200d9cd5eda092c7eb778cc104cd2fd2",
+        "externalMarketId": "200d9cd5eda092c7eb778cc104cd2fd2:betonlineag:spreads:0.5",
+        "conditionId": "odds-api-02da927e1babf505d936e7c8",
+        "eventTitle": "Switzerland vs. Argentina",
+        "eventSlug": "odds-api-single-soccer-test",
+        "displayTitle": "Spread +0.5"
+      },
+      "outcome": {
+        "id": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
+        "name": "Argentina -0.5",
+        "label": "Argentina -0.5",
+        "side": "home",
+        "referenceTokenId": "odds-api-38b7b87cb420684a05351898",
+        "referenceOutcomeLabel": "Argentina -0.5"
+      },
+      "selection": {
+        "marketId": "29346e58-158a-4260-953d-259c98fa24ff",
+        "outcomeId": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
+        "marketGroupId": "spread",
+        "marketType": "spread",
+        "line": "0.5",
+        "period": "regulation",
+        "side": "home",
+        "displayLabel": "Argentina -0.5 0.5 regulation",
+        "referenceSource": "sportsbook-odds",
+        "providerSource": "sportsbook-odds",
+        "externalSlug": "soccer_fifa_world_cup-200d9cd5eda092c7eb778cc104cd2fd2",
+        "externalMarketId": "200d9cd5eda092c7eb778cc104cd2fd2:betonlineag:spreads:0.5",
+        "conditionId": "odds-api-02da927e1babf505d936e7c8",
+        "referenceTokenId": "odds-api-38b7b87cb420684a05351898",
+        "tokenId": "odds-api-38b7b87cb420684a05351898",
+        "referenceOutcomeLabel": "Argentina -0.5"
+      },
+      "side": "SELL",
+      "shares": 2.16,
+      "cost": 1.2528,
+      "fee": 0.012528,
+      "proceedsTokens": 1.2402719999999998,
+      "realizedPnlTokens": -0.012528,
+      "createdAt": "2026-07-11T23:45:56.550Z"
+    }
   }
 }

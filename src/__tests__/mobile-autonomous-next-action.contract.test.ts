@@ -23,6 +23,8 @@ describe("mobile autonomous next-action planner", () => {
     expect(script).toContain("the-odds-api-single-event");
     expect(script).toContain("single-event-summary.redacted.json");
     expect(script).toContain("temporarySportsbookBackendProofReady");
+    expect(script).toContain("buyHistoryTradeVisible");
+    expect(script).toContain("cashoutHistoryVisible");
     expect(script).toContain("nextWaitTrigger");
     expect(script).toContain("earliestWaitTrigger");
     expect(script).toContain("waitPlanForStatus");
@@ -120,7 +122,7 @@ describe("mobile autonomous next-action planner", () => {
       );
       writeFileSync(dodPath, JSON.stringify({ readyToDeclareDone: false, criteria: [{ id: "dod-provider-polymarket-parity", status: "partial" }] }));
       writeFileSync(oddsSummaryPath, JSON.stringify({ pass: true, mobile: { sportsbookMarketCount: 1, eventSlug: "odds-api-single-soccer-test" } }));
-      writeFileSync(oddsFlowPath, JSON.stringify({ pass: true, checks: { fakeTokenOrderFilled: true, portfolioPositionVisible: true, historyTradeVisible: true } }));
+      writeFileSync(oddsFlowPath, JSON.stringify({ pass: true, checks: { fakeTokenOrderFilled: true, portfolioPositionVisible: true, buyHistoryTradeVisible: true, sellHistoryTradeVisible: true } }));
       writeFileSync(reachabilityPath, JSON.stringify({ pass: true, proofLimitations: [] }));
       writeFileSync(visiblePath, JSON.stringify({ result: "pass", assertions: {
         homeShowsTemporarySportsbookEvent: true,
@@ -129,6 +131,9 @@ describe("mobile autonomous next-action planner", () => {
         ticketPreservesSportsbookLineIdentity: true,
         swipeSubmitReachedPortfolio: true,
         portfolioPreservesSportsbookLineIdentity: true,
+        cashoutTicketOpened: true,
+        cashoutSellSubmitted: true,
+        cashoutHistoryVisible: true,
         historyPreservesSportsbookLineIdentity: true,
       } }));
 
@@ -224,7 +229,7 @@ describe("mobile autonomous next-action planner", () => {
       );
       writeFileSync(dodPath, JSON.stringify({ readyToDeclareDone: false, criteria: [{ id: "dod-provider-polymarket-parity", status: "partial" }] }));
       writeFileSync(oddsSummaryPath, JSON.stringify({ pass: true, mobile: { sportsbookMarketCount: 1, eventSlug: "odds-api-single-soccer-test" } }));
-      writeFileSync(oddsFlowPath, JSON.stringify({ pass: true, checks: { fakeTokenOrderFilled: true, portfolioPositionVisible: true, historyTradeVisible: true } }));
+      writeFileSync(oddsFlowPath, JSON.stringify({ pass: true, checks: { fakeTokenOrderFilled: true, portfolioPositionVisible: true, buyHistoryTradeVisible: true, sellHistoryTradeVisible: true } }));
       writeFileSync(reachabilityPath, JSON.stringify({ pass: true, proofLimitations: [] }));
       writeFileSync(visiblePath, JSON.stringify({ result: "pass", assertions: {
         homeShowsTemporarySportsbookEvent: true,
@@ -233,6 +238,9 @@ describe("mobile autonomous next-action planner", () => {
         ticketPreservesSportsbookLineIdentity: true,
         swipeSubmitReachedPortfolio: true,
         portfolioPreservesSportsbookLineIdentity: true,
+        cashoutTicketOpened: true,
+        cashoutSellSubmitted: true,
+        cashoutHistoryVisible: true,
         historyPreservesSportsbookLineIdentity: true,
       } }));
 
@@ -305,7 +313,7 @@ describe("mobile autonomous next-action planner", () => {
       writeFileSync(providerPlanPath, JSON.stringify({ status: "skip-refresh", shouldRefreshProviderEvidence: false }));
       writeFileSync(dodPath, JSON.stringify({ readyToDeclareDone: false, criteria: [{ id: "dod-provider-polymarket-parity", status: "partial" }] }));
       writeFileSync(oddsSummaryPath, JSON.stringify({ pass: true, mobile: { sportsbookMarketCount: 1, eventSlug: "odds-api-single-soccer-test" } }));
-      writeFileSync(oddsFlowPath, JSON.stringify({ pass: true, checks: { fakeTokenOrderFilled: true, portfolioPositionVisible: true, historyTradeVisible: true } }));
+      writeFileSync(oddsFlowPath, JSON.stringify({ pass: true, checks: { fakeTokenOrderFilled: true, portfolioPositionVisible: true, buyHistoryTradeVisible: true, sellHistoryTradeVisible: true } }));
       writeFileSync(reachabilityPath, JSON.stringify({ pass: true, proofLimitations: [] }));
       writeFileSync(visiblePath, JSON.stringify({ result: "pass", assertions: {
         homeShowsTemporarySportsbookEvent: true,
@@ -314,6 +322,9 @@ describe("mobile autonomous next-action planner", () => {
         ticketPreservesSportsbookLineIdentity: true,
         swipeSubmitReachedPortfolio: true,
         portfolioPreservesSportsbookLineIdentity: true,
+        cashoutTicketOpened: true,
+        cashoutSellSubmitted: true,
+        cashoutHistoryVisible: true,
         historyPreservesSportsbookLineIdentity: true,
       } }));
 

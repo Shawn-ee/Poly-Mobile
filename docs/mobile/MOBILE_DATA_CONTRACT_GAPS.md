@@ -9988,3 +9988,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: real Polymarket-backed World Cup match and line markets with stable provider event, market, outcome, token, price, and accepting-order identity.
 - Temporary mock/static data: the refreshed proof still uses contract-shaped Local MVP line fixtures and disposable local maker liquidity. The fixture data preserves backend-style `eventSlug`, market type, line, side, source, external market id, condition id, and token identity for later provider replacement.
 - Future migration concern: keep visible-match proof targeting parameterized. Home ordering can change as provider/local match breadth changes, so recovery commands should not assume a specific offscreen fixture is still tappable on S23.
+
+## Cycle ODDSINTERNALUSABLE - Sportsbook Internal Usability Cashout Gate
+
+- Closed or narrowed: the temporary sportsbook bridge now proves the full internal user path including Cash out/Sell, not only Buy/order/Portfolio.
+- Route mismatch: none found. `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` preserve the same sportsbook event/market/outcome/line identity.
+- Fields Holiwyn still needs but backend/provider does not fully provide: Polymarket-backed World Cup match/line markets remain unavailable for parity; team totals were available from Odds API metadata but were not fetched in the capped one-event odds request.
+- Temporary mock/static data: provider event/odds data is from the redacted Odds API fixture; fake-token orders, positions, cashout liquidity, and history are local backend runtime data.
+- Future migration concern: keep `sportsbook-odds` separate from `polymarket` in all readiness, Portfolio, History, and DoD accounting. This bridge makes internal testing usable but must not close Polymarket provider parity.

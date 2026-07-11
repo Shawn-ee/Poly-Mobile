@@ -9,6 +9,7 @@ param(
   [string]$LineValue = "0.5",
   [string]$LineOutcomeSide = "home",
   [string]$LineOutcomeLabel = "Argentina -0.5",
+  [string]$CashoutBidPrice = "0.58",
   [string]$Cycle = "ODDSAPIS23",
   [string]$OutputDir = "docs\mobile\screenshots\cycle-ODDSAPIS23-odds-api-s23-visible-flow",
   [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-ODDSAPIS23-odds-api-s23-visible-flow",
@@ -363,14 +364,42 @@ try {
   Save-Screenshot -Name "cycle-$Cycle-after-submit.png" | Out-Null
   $afterSubmitXml = Save-Hierarchy -Name "cycle-$Cycle-after-submit.xml"
   Assert-Contains -Path $afterSubmitXml -Expected @("Portfolio", "portfolio-market-type-spread", "portfolio-line-$LineValue", "portfolio-provider-source-sportsbook-odds", "portfolio-provider-backed-pricing", "portfolio-sportsbook-odds-pricing")
-  Assert-AnyContains -Path $afterSubmitXml -AnyExpected @("position-card-", "open-order-row-") -Reason "portfolio position or open order after sportsbook fake-token order"
+  Assert-Contains -Path $afterSubmitXml -Expected @("position-card-", "portfolio-position-cash-out-", "portfolio-position-source-badge")
   Assert-NotContains -Path $afterSubmitXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
-  Tap-Node -Path $afterSubmitXml -Identifier "portfolio-tab-history"
+  $cashoutCounterpartyProofPath = Join-Path $HierarchyOutputDir "cycle-$Cycle-odds-api-cashout-counterparty.json"
+  $cashoutCounterpartyProofAbsolutePath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-odds-api-cashout-counterparty.json"
+  cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=$LineMarketGroupKey" "--line=$LineValue" "--outcomeSide=$LineOutcomeSide" "--makerSide=BUY" "--bidPrice=$CashoutBidPrice" "--bidSize=80" "--cleanupBlockingMarketBids" "--cleanupProofAsks" "--cleanupBlockingAsks" "--liquidityPurpose=cashout-sell-fill" "--proofUserPrefix=holiwyn-mobile-" "--output=$cashoutCounterpartyProofAbsolutePath" | Out-Null
+  if ($LASTEXITCODE -ne 0) {
+    throw "Sportsbook line cashout counterparty seed failed for $EventSlug."
+  }
+
+  Tap-Node -Path $afterSubmitXml -Identifier "portfolio-position-cash-out-" -StartsWith
+  Start-Sleep -Seconds 2
+  Save-Screenshot -Name "cycle-$Cycle-cashout-ticket.png" | Out-Null
+  $cashoutTicketXml = Save-Hierarchy -Name "cycle-$Cycle-cashout-ticket.xml"
+  Assert-Contains -Path $cashoutTicketXml -Expected @("trade-ticket", "ticket-side-sell", "swipe-to-submit-order", "Choose an amount", "ticket-provider-source-sportsbook-odds", "ticket-line-$LineValue")
+  Assert-NotContains -Path $cashoutTicketXml -Unexpected @("cashout-ticket", "swipe-to-cashout", "Order Book", "event-detail-open-order-book", "Chat")
+
+  Tap-Node -Path $cashoutTicketXml -Identifier "ticket-keypad-1"
+  Start-Sleep -Milliseconds 800
+  Save-Screenshot -Name "cycle-$Cycle-cashout-ticket-ready.png" | Out-Null
+  $cashoutTicketReadyXml = Save-Hierarchy -Name "cycle-$Cycle-cashout-ticket-ready.xml"
+  Assert-Contains -Path $cashoutTicketReadyXml -Expected @("trade-ticket", "ticket-side-sell", "Swipe to sell", '$1', "swipe-submit-gesture-required", "ticket-provider-source-sportsbook-odds", "ticket-line-$LineValue")
+  Assert-NotContains -Path $cashoutTicketReadyXml -Unexpected @("cashout-ticket", "swipe-to-cashout", "Order Book", "event-detail-open-order-book", "Chat")
+
+  & $adb -s $Device shell input swipe 540 2070 540 1450 2400 | Out-Null
+  Start-Sleep -Seconds 7
+  Save-Screenshot -Name "cycle-$Cycle-after-cashout.png" | Out-Null
+  $afterCashoutXml = Save-Hierarchy -Name "cycle-$Cycle-after-cashout.xml"
+  Assert-Contains -Path $afterCashoutXml -Expected @("Portfolio")
+  Assert-NotContains -Path $afterCashoutXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
+
+  Tap-Node -Path $afterCashoutXml -Identifier "portfolio-tab-history"
   Start-Sleep -Seconds 2
   Save-Screenshot -Name "cycle-$Cycle-portfolio-history.png" | Out-Null
   $historyXml = Save-Hierarchy -Name "cycle-$Cycle-portfolio-history.xml"
-  Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "portfolio-market-type-spread", "portfolio-line-$LineValue", "portfolio-provider-source-sportsbook-odds")
+  Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "activity-sold", "portfolio-market-type-spread", "portfolio-line-$LineValue", "portfolio-provider-source-sportsbook-odds")
   Assert-NotContains -Path $historyXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
   $artifacts = @(
@@ -386,6 +415,12 @@ try {
     "$HierarchyOutputDir\cycle-$Cycle-ticket-ready.xml",
     "$OutputDir\cycle-$Cycle-after-submit.png",
     "$HierarchyOutputDir\cycle-$Cycle-after-submit.xml",
+    "$OutputDir\cycle-$Cycle-cashout-ticket.png",
+    "$HierarchyOutputDir\cycle-$Cycle-cashout-ticket.xml",
+    "$OutputDir\cycle-$Cycle-cashout-ticket-ready.png",
+    "$HierarchyOutputDir\cycle-$Cycle-cashout-ticket-ready.xml",
+    "$OutputDir\cycle-$Cycle-after-cashout.png",
+    "$HierarchyOutputDir\cycle-$Cycle-after-cashout.xml",
     "$OutputDir\cycle-$Cycle-portfolio-history.png",
     "$HierarchyOutputDir\cycle-$Cycle-portfolio-history.xml"
   )
@@ -411,6 +446,8 @@ try {
       referenceSource = "sportsbook-odds"
     }
     counterpartyProof = $counterpartyProofPath
+    cashoutBidPrice = $CashoutBidPrice
+    cashoutCounterpartyProof = $cashoutCounterpartyProofPath
     assertions = [ordered]@{
       homeShowsTemporarySportsbookEvent = $true
       homeKeepsMvpFeedClean = $true
@@ -420,6 +457,9 @@ try {
       ticketPreservesSportsbookLineIdentity = $true
       swipeSubmitReachedPortfolio = $true
       portfolioPreservesSportsbookLineIdentity = $true
+      cashoutTicketOpened = $true
+      cashoutSellSubmitted = $true
+      cashoutHistoryVisible = $true
       historyPreservesSportsbookLineIdentity = $true
     }
     artifacts = $artifacts

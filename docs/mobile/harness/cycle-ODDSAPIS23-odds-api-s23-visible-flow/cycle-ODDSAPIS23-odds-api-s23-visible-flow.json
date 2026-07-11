@@ -1,13 +1,13 @@
 {
     "cycle":  "ODDSAPIS23",
     "result":  "pass",
-    "generatedAt":  "2026-07-11T21:53:37.1457610Z",
+    "generatedAt":  "2026-07-11T23:50:15.6952293Z",
     "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
     "model":  "SM-S911U1",
     "backendBaseUrl":  "http://127.0.0.1:3002",
     "mobileApiBaseUrl":  "http://172.16.200.14:3002",
     "expoPort":  8289,
-    "keyId":  "pk_live_82350a22ad077244",
+    "keyId":  "pk_live_99430af3bd335b15",
     "apiKey":  "redacted",
     "eventSlug":  "odds-api-single-soccer-test",
     "selectedMarket":  {
@@ -19,6 +19,8 @@
                            "referenceSource":  "sportsbook-odds"
                        },
     "counterpartyProof":  "docs\\mobile\\harness\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-odds-api-counterparty.json",
+    "cashoutBidPrice":  "0.58",
+    "cashoutCounterpartyProof":  "docs\\mobile\\harness\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-odds-api-cashout-counterparty.json",
     "assertions":  {
                        "homeShowsTemporarySportsbookEvent":  true,
                        "homeKeepsMvpFeedClean":  true,
@@ -28,6 +30,9 @@
                        "ticketPreservesSportsbookLineIdentity":  true,
                        "swipeSubmitReachedPortfolio":  true,
                        "portfolioPreservesSportsbookLineIdentity":  true,
+                       "cashoutTicketOpened":  true,
+                       "cashoutSellSubmitted":  true,
+                       "cashoutHistoryVisible":  true,
                        "historyPreservesSportsbookLineIdentity":  true
                    },
     "artifacts":  [
@@ -43,6 +48,12 @@
                       "docs\\mobile\\harness\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-ticket-ready.xml",
                       "docs\\mobile\\screenshots\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-after-submit.png",
                       "docs\\mobile\\harness\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-after-submit.xml",
+                      "docs\\mobile\\screenshots\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-cashout-ticket.png",
+                      "docs\\mobile\\harness\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-cashout-ticket.xml",
+                      "docs\\mobile\\screenshots\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-cashout-ticket-ready.png",
+                      "docs\\mobile\\harness\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-cashout-ticket-ready.xml",
+                      "docs\\mobile\\screenshots\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-after-cashout.png",
+                      "docs\\mobile\\harness\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-after-cashout.xml",
                       "docs\\mobile\\screenshots\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-portfolio-history.png",
                       "docs\\mobile\\harness\\cycle-ODDSAPIS23-odds-api-s23-visible-flow\\cycle-ODDSAPIS23-portfolio-history.xml"
                   ]

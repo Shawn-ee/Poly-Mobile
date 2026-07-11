@@ -5,9 +5,10 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { API_KEY_SCOPES, createApiCredential } from "@/lib/canonicalAuth";
 import { mintCompleteSetForPublicOrderbook } from "@/server/services/orderbookCollateral";
-import { placeOrderAndMatch } from "@/server/services/matching";
+import { cancelOrderAndUnlock, placeOrderAndMatch } from "@/server/services/matching";
 import { oddsApiSingleEventSlug } from "@/server/services/theOddsApiSingleEventProvider";
 import { submitTicketOrder } from "../mobile/src/services/orderService";
+import { closePositionOnServer } from "../mobile/src/services/positionCloseService";
 import { loadPortfolioSnapshot } from "../mobile/src/services/portfolioSnapshotService";
 import type { PolyApi } from "../mobile/src/api";
 
@@ -218,14 +219,56 @@ async function main() {
   const portfolio = await loadPortfolioSnapshot(api);
   const position = portfolio.positions.find((item) => item.marketId === market.id && item.outcomeId === outcome.id);
   assert(position, "Portfolio did not show the filled sportsbook-derived position.");
+
+  await cancelOrderAndUnlock({ orderId: makerOrder.order.id, userId: maker.id });
+  const blockingAsks = await prisma.order.findMany({
+    where: {
+      marketId: market.id,
+      outcomeId: outcome.id,
+      side: "SELL",
+      status: { in: ["OPEN", "PARTIAL"] },
+      price: { lte: dec(price.toFixed(2)) },
+    },
+    select: { id: true, userId: true },
+  });
+  for (const order of blockingAsks) {
+    await cancelOrderAndUnlock({ orderId: order.id, userId: order.userId });
+  }
+  const cashoutMaker = await createUser("odds_api_single_event_cashout_maker", "1000");
+  const cashoutBid = await placeOrderAndMatch({
+    marketId: market.id,
+    userId: cashoutMaker.id,
+    outcomeId: outcome.id,
+    side: "BUY",
+    price: price.toFixed(2),
+    size: "200",
+    type: "LIMIT",
+  });
+  assert(
+    cashoutBid.order.status === "OPEN" || cashoutBid.order.status === "PARTIAL",
+    "Expected local maker buy bid to rest for the fake-token mobile cashout.",
+  );
+  await closePositionOnServer({ mode: "server", api, position });
+
+  const portfolioAfterCashout = await loadPortfolioSnapshot(api);
+  const positionAfterCashout = portfolioAfterCashout.positions.find(
+    (item) => item.marketId === market.id && item.outcomeId === outcome.id,
+  );
+  assert(
+    !positionAfterCashout || positionAfterCashout.shares < position.shares,
+    "Portfolio position did not reduce after sportsbook-derived cashout sell.",
+  );
   const historyPayload = await fetchJson(`${baseUrl}/api/portfolio/history`, {
     headers: { Authorization: `Bearer ${credential.token}` },
   });
-  const historyTrade = (Array.isArray(historyPayload.recentTrades) ? historyPayload.recentTrades : []).find(
+  const matchingHistoryTrades = (Array.isArray(historyPayload.recentTrades) ? historyPayload.recentTrades : []).filter(
     (item: { market?: { id?: string }; outcome?: { id?: string } }) =>
       item.market?.id === market.id && item.outcome?.id === outcome.id,
   );
-  assert(historyTrade, "Portfolio history did not show the filled sportsbook-derived trade.");
+  const buyHistoryTrade = matchingHistoryTrades.find((item: { side?: string }) => item.side === "BUY");
+  const sellHistoryTrade = matchingHistoryTrades.find((item: { side?: string }) => item.side === "SELL");
+  assert(buyHistoryTrade, "Portfolio history did not show the filled sportsbook-derived buy trade.");
+  assert(sellHistoryTrade, "Portfolio history did not show the filled sportsbook-derived cashout sell trade.");
 
   const summary = {
     pass: true,
@@ -275,11 +318,25 @@ async function main() {
       ticketOrderSubmitted: true,
       fakeTokenOrderFilled: orderResult.status === "FILLED",
       portfolioPositionVisible: Boolean(position),
-      historyTradeVisible: Boolean(historyTrade),
+      cashoutEligible: true,
+      cashoutSellSubmitted: true,
+      portfolioPositionReducedAfterCashout: !positionAfterCashout || positionAfterCashout.shares < position.shares,
+      buyHistoryTradeVisible: Boolean(buyHistoryTrade),
+      sellHistoryTradeVisible: Boolean(sellHistoryTrade),
     },
     orderResult,
     portfolioPosition: position,
-    historyTrade,
+    cashout: {
+      makerBidOrderId: cashoutBid.order.id,
+      makerBidPrice: cashoutBid.order.price,
+      makerBidRemaining: cashoutBid.order.remaining,
+      positionSharesBefore: position.shares,
+      positionSharesAfter: positionAfterCashout?.shares ?? 0,
+    },
+    historyTrades: {
+      buy: buyHistoryTrade,
+      sell: sellHistoryTrade,
+    },
   };
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
   await fs.writeFile(outputPath, `${JSON.stringify(summary, null, 2)}\n`, "utf8");
