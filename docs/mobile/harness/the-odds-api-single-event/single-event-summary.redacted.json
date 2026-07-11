@@ -1,6 +1,6 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-11T21:31:08.129Z",
+  "generatedAt": "2026-07-11T22:48:47.413Z",
   "dryRun": false,
   "scope": "the-odds-api-single-event-temporary-provider",
   "policy": {
@@ -31,19 +31,19 @@
       "path": "/v4/sports",
       "status": 200,
       "quota": {
-        "requestsUsed": "14",
-        "requestsRemaining": "486",
+        "requestsUsed": "21",
+        "requestsRemaining": "479",
         "requestsLast": "0"
       }
     },
     {
       "name": "events:soccer_fifa_world_cup",
       "method": "GET",
-      "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z&eventIds=200d9cd5eda092c7eb778cc104cd2fd2",
+      "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z",
       "status": 200,
       "quota": {
-        "requestsUsed": "14",
-        "requestsRemaining": "486",
+        "requestsUsed": "21",
+        "requestsRemaining": "479",
         "requestsLast": "0"
       }
     },
@@ -53,8 +53,8 @@
       "path": "/v4/sports/soccer_fifa_world_cup/events/200d9cd5eda092c7eb778cc104cd2fd2/markets?regions=us&dateFormat=iso",
       "status": 200,
       "quota": {
-        "requestsUsed": "15",
-        "requestsRemaining": "485",
+        "requestsUsed": "22",
+        "requestsRemaining": "478",
         "requestsLast": "1"
       }
     },
@@ -64,8 +64,8 @@
       "path": "/v4/sports/soccer_fifa_world_cup/events/200d9cd5eda092c7eb778cc104cd2fd2/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso",
       "status": 200,
       "quota": {
-        "requestsUsed": "21",
-        "requestsRemaining": "479",
+        "requestsUsed": "28",
+        "requestsRemaining": "472",
         "requestsLast": "6"
       }
     }
@@ -73,8 +73,8 @@
   "quota": {
     "totalLastCost": 7,
     "latest": {
-      "requestsUsed": "21",
-      "requestsRemaining": "479",
+      "requestsUsed": "28",
+      "requestsRemaining": "472",
       "requestsLast": "6"
     }
   },
@@ -288,7 +288,7 @@
     "path": "docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json",
     "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
     "model": "SM-S911U1",
-    "generatedAt": "2026-07-11T19:41:50.5002735Z",
+    "generatedAt": "2026-07-11T21:53:37.1457610Z",
     "screenshotsPath": "docs/mobile/screenshots/cycle-ODDSAPIS23-odds-api-s23-visible-flow/"
   },
   "resultNotes": [
