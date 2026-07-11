@@ -167,19 +167,35 @@ function ensureParentDir(filePath: string) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
 }
 
-function stripGeneratedAt(value: unknown): unknown {
-  if (!value || typeof value !== "object" || Array.isArray(value)) {
+function stripVolatileWaitFields(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value.map(stripVolatileWaitFields);
+  }
+  if (!value || typeof value !== "object") {
     return value;
   }
-  const clone = { ...(value as Record<string, unknown>) };
-  delete clone.generatedAt;
+  const clone: Record<string, unknown> = {};
+  for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
+    if (
+      key === "generatedAt" ||
+      key === "hoursUntilStale" ||
+      key.endsWith("HoursUntilStale")
+    ) {
+      continue;
+    }
+    if (key === "recommendedAction" && typeof child === "string") {
+      clone[key] = child.replace(/\(-?\d+(?:\.\d+)? hours\)/g, "(<hours>)");
+      continue;
+    }
+    clone[key] = stripVolatileWaitFields(child);
+  }
   return clone;
 }
 
-function samePlanIgnoringGeneratedAt(existingJson: string, plan: NextActionPlan) {
+function samePlanIgnoringVolatileWaitFields(existingJson: string, plan: NextActionPlan) {
   try {
     const existing = JSON.parse(existingJson.replace(/^\uFEFF/, ""));
-    return JSON.stringify(stripGeneratedAt(existing)) === JSON.stringify(stripGeneratedAt(plan));
+    return JSON.stringify(stripVolatileWaitFields(existing)) === JSON.stringify(stripVolatileWaitFields(plan));
   } catch {
     return false;
   }
@@ -454,7 +470,7 @@ const plan = buildPlan(
 const resolvedOutputPath = path.resolve(repoRoot, outputPath);
 ensureParentDir(resolvedOutputPath);
 const existingPlanJson = fs.existsSync(resolvedOutputPath) ? fs.readFileSync(resolvedOutputPath, "utf8") : null;
-if (!existingPlanJson || !samePlanIgnoringGeneratedAt(existingPlanJson, plan)) {
+if (!existingPlanJson || !samePlanIgnoringVolatileWaitFields(existingPlanJson, plan)) {
   fs.writeFileSync(resolvedOutputPath, `${JSON.stringify(plan, null, 2)}\n`, "utf8");
 }
 

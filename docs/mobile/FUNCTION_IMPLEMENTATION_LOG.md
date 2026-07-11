@@ -56,6 +56,25 @@ Purpose: document the app functions, services, API calls, state transitions, and
 - Known limitations:
   - Harness/control-plane change only. It does not call providers, fetch odds, alter mobile UI, alter backend routes, or close the remaining Polymarket provider parity P1 debt.
 
+## Cycle PLANNERQUIET - Countdown-Only Planner Cleanliness
+
+- Feature/page worked on: autonomous loop planner cleanliness while waiting on provider evidence.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/plan_mobile_provider_evidence_refresh.ts`
+  - `scripts/plan_mobile_autonomous_next_action.ts`
+  - `src/__tests__/mobile-provider-evidence-plan.contract.test.ts`
+  - `src/__tests__/mobile-autonomous-next-action.contract.test.ts`
+- User interactions supported: unchanged.
+- State transitions:
+  - Provider and autonomous planner commands still compute and print current wait timing.
+  - Tracked planner artifacts are no longer rewritten when only `generatedAt`, `hoursUntilStale`, or recommendation countdown text changes.
+  - Real decision changes such as `skip-refresh` to `refresh-due`, new commands, blockers, or proof status still rewrite the artifact.
+- Proof:
+  - `npx jest --runInBand src/__tests__/mobile-provider-evidence-plan.contract.test.ts src/__tests__/mobile-autonomous-next-action.contract.test.ts`
+- Known limitations:
+  - Harness/control-plane change only. It deliberately avoids provider refresh, mobile UI work, backend route changes, or quota-using provider calls while cached provider evidence remains fresh.
+
 ## Cycle NEXTSTALEFIX - Earliest Proof Refresh Forecast
 
 - Feature/page worked on: internal readiness S23/provider proof freshness forecasting for the autonomous loop.

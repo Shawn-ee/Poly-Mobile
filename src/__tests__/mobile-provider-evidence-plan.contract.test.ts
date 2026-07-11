@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, statSync, utimesSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
@@ -16,6 +16,7 @@ describe("mobile provider evidence refresh planner", () => {
     const source = scriptSource();
     expect(source).toContain("cachedProviderEvidenceHoursUntilStale");
     expect(source).toContain("computeHoursUntilStale");
+    expect(source).toContain("samePlanIgnoringVolatileWaitFields");
     expect(source).toContain("providerRefreshCommand");
     expect(source).toContain("Only start provider-backed trading work if the refreshed evidence shows a real attach-ready World Cup match or line market.");
     expect(source).not.toContain("fetch(");
@@ -111,6 +112,63 @@ describe("mobile provider evidence refresh planner", () => {
       expect(plan.hoursUntilStale).toBe(-0.5);
       expect(plan.providerEvidence[0].hoursUntilStale).toBe(-0.5);
       expect(plan.reason).toBe("Cached provider evidence is missing or stale.");
+    } finally {
+      rmSync(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("does not rewrite the plan when only countdown wait fields change", () => {
+    const tempDir = mkdtempSync(path.join(os.tmpdir(), "provider-evidence-plan-"));
+    const summaryPath = path.join(tempDir, "summary.json");
+    const outputPath = path.join(tempDir, "plan.json");
+    const command = process.platform === "win32" ? "cmd.exe" : "npx";
+    const commandArgs = process.platform === "win32" ? ["/c", "npx"] : [];
+
+    try {
+      writeFileSync(
+        summaryPath,
+        JSON.stringify({
+          providerDiscoveryMode: "cached",
+          readiness: {
+            cachedProviderEvidenceFresh: true,
+            cachedProviderEvidenceNextStaleName: "provider-visible-tradable-flow",
+            cachedProviderEvidenceNextStaleAt: "2026-07-12T14:00:00.000Z",
+            cachedProviderEvidenceHoursUntilStale: 16,
+            cachedProviderEvidence: [
+              {
+                name: "provider-visible-tradable-flow",
+                staleAt: "2026-07-12T14:00:00.000Z",
+                hoursUntilStale: 16,
+                fresh: true,
+                present: true,
+              },
+            ],
+          },
+          blockers: { p0: [], p1: ["provider_mvp_match_snapshot_not_mm_safe"], p2: [] },
+          recovery: { providerRefreshCommand: "npm run mobile:internal-readiness-batch:provider-refresh" },
+        }),
+      );
+
+      const baseArgs = [
+        ...commandArgs,
+        "tsx",
+        "scripts/plan_mobile_provider_evidence_refresh.ts",
+        `--summaryPath=${summaryPath}`,
+        `--output=${outputPath}`,
+        "--refreshWindowHours=2",
+      ];
+
+      execFileSync(command, [...baseArgs, "--now=2026-07-11T22:00:00.000Z"], { encoding: "utf8" });
+      const oldTime = new Date("2001-01-01T00:00:00.000Z");
+      utimesSync(outputPath, oldTime, oldTime);
+      const before = statSync(outputPath).mtimeMs;
+
+      execFileSync(command, [...baseArgs, "--now=2026-07-11T22:30:00.000Z"], { encoding: "utf8" });
+
+      expect(statSync(outputPath).mtimeMs).toBe(before);
+      const plan = JSON.parse(readFileSync(outputPath, "utf8"));
+      expect(plan.status).toBe("skip-refresh");
+      expect(plan.hoursUntilStale).toBe(16);
     } finally {
       rmSync(tempDir, { recursive: true, force: true });
     }

@@ -113,6 +113,32 @@ function ensureParentDir(filePath: string) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
 }
 
+function stripVolatileWaitFields(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value.map(stripVolatileWaitFields);
+  }
+  if (!value || typeof value !== "object") {
+    return value;
+  }
+  const clone: Record<string, unknown> = {};
+  for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
+    if (key === "generatedAt" || key === "hoursUntilStale" || key.endsWith("HoursUntilStale")) {
+      continue;
+    }
+    clone[key] = stripVolatileWaitFields(child);
+  }
+  return clone;
+}
+
+function samePlanIgnoringVolatileWaitFields(existingJson: string, plan: ProviderEvidencePlan) {
+  try {
+    const existing = JSON.parse(existingJson.replace(/^\uFEFF/, ""));
+    return JSON.stringify(stripVolatileWaitFields(existing)) === JSON.stringify(stripVolatileWaitFields(plan));
+  } catch {
+    return false;
+  }
+}
+
 function buildPlan(
   summary: InternalReadinessSummary | null,
   sourceSummaryPath: string,
@@ -212,7 +238,10 @@ const summary = readJsonFile<InternalReadinessSummary>(summaryPath);
 const plan = buildPlan(summary, summaryPath, refreshWindowHours, now);
 const resolvedOutputPath = path.resolve(repoRoot, outputPath);
 ensureParentDir(resolvedOutputPath);
-fs.writeFileSync(resolvedOutputPath, `${JSON.stringify(plan, null, 2)}\n`, "utf8");
+const existingPlanJson = fs.existsSync(resolvedOutputPath) ? fs.readFileSync(resolvedOutputPath, "utf8") : null;
+if (!existingPlanJson || !samePlanIgnoringVolatileWaitFields(existingPlanJson, plan)) {
+  fs.writeFileSync(resolvedOutputPath, `${JSON.stringify(plan, null, 2)}\n`, "utf8");
+}
 
 console.log(`SUMMARY ${summaryPath}`);
 console.log(`PLAN ${outputPath}`);

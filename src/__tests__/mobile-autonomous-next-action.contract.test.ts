@@ -26,8 +26,8 @@ describe("mobile autonomous next-action planner", () => {
     expect(script).toContain("nextWaitTrigger");
     expect(script).toContain("earliestWaitTrigger");
     expect(script).toContain("hoursUntilStale");
-    expect(script).toContain("samePlanIgnoringGeneratedAt");
-    expect(script).toContain("stripGeneratedAt");
+    expect(script).toContain("samePlanIgnoringVolatileWaitFields");
+    expect(script).toContain("stripVolatileWaitFields");
     expect(script).not.toContain("fetch(");
   });
 
@@ -333,7 +333,7 @@ describe("mobile autonomous next-action planner", () => {
     }
   });
 
-  it("does not rewrite the committed plan when only generatedAt would change", () => {
+  it("does not rewrite the committed plan when only wait countdown fields would change", () => {
     const tempDir = mkdtempSync(path.join(os.tmpdir(), "mobile-next-action-"));
     const outputPath = path.join(tempDir, "plan.json");
     const command = process.platform === "win32" ? "cmd.exe" : "npx";
@@ -348,7 +348,7 @@ describe("mobile autonomous next-action planner", () => {
           "scripts/plan_mobile_autonomous_next_action.ts",
           `--output=${outputPath}`,
           "--s23RefreshWindowHours=2",
-          "--now=2026-07-11T12:00:00.000Z",
+          "--now=2026-07-11T12:30:00.000Z",
         ],
         { encoding: "utf8" },
       );
