@@ -106,4 +106,16 @@ describe("mobile internal readiness batch harness", () => {
     expect(doc).toContain("googleS23ConsentReady");
     expect(doc).toContain("cachedProviderEvidenceFresh");
   });
+
+  it("documents clean evidence output and CI coverage for the batch guard", () => {
+    const doc = auditDoc();
+    const pkg = packageJson();
+
+    expect(doc).toContain("## Evidence Hygiene");
+    expect(doc).toContain("no-BOM UTF-8 writer");
+    expect(doc).toContain("only normalizes JSON summaries produced by the current run");
+    expect(doc).toContain("Cached provider evidence is intentionally left untouched");
+    expect(doc).toContain("src/__tests__/mobile.internal-readiness-batch.contract.test.ts");
+    expect(pkg).toContain("src/__tests__/mobile.internal-readiness-batch.contract.test.ts");
+  });
 });

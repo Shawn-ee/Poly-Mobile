@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle BATCHJSONGUARD - Readiness Evidence Hygiene Guard
+
+Cycle BATCHJSONGUARD changes local readiness harness output hygiene and CI coverage only. It does not add or change backend route handlers, Prisma schema, provider mapping, order logic, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Internal readiness evidence hygiene | Local command `npm run mobile:internal-readiness-batch`; CI command `npm run test:ci` | Local proof aggregation and contract test | None | None | Batch JSON summaries remain no-BOM UTF-8 and current-run scoped; cached provider artifacts are not reformatted by default cached mode | No database access or writes | None | None. Provider-backed parity still requires usable provider match books or attach-ready line markets, tracked separately as P1. |
+
 ## Cycle PROVIDERSCANDEPTH - Match/Line Provider Scan Depth
 
 Cycle PROVIDERSCANDEPTH changes provider audit/readiness scripts only. It does not add or change backend route handlers, Prisma schema, order logic, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.

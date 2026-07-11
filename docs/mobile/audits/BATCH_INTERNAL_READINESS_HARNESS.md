@@ -126,6 +126,14 @@ Each command writes a small marker JSON in `docs/mobile/harness/batch-internal-r
 
 This keeps the batch from saying the Local MVP is ready when the runtime is healthy but the checked-in code is not.
 
+## Evidence Hygiene
+
+The batch writes machine-readable JSON evidence with a no-BOM UTF-8 writer and normalized line endings. This prevents Windows PowerShell JSON output from creating noisy trailing-whitespace or BOM-only diffs.
+
+The batch only normalizes JSON summaries produced by the current run. Cached provider evidence is intentionally left untouched in default cached mode so a Local MVP readiness check does not reformat large provider scan artifacts or make provider churn look like new discovery work.
+
+The regression guard for this behavior lives in `src/__tests__/mobile.internal-readiness-batch.contract.test.ts`, and that test is included in `npm run test:ci`. If a future edit replaces the clean writer with broad `*.json` output-folder normalization, CI should fail before the change reaches `main`.
+
 ## Manual Server-Mode Prep
 
 When the batch reports `manual_server_mode_needs_generated_mobile_api_key`, prepare the local-only Expo/server-mode environment with:

@@ -2,6 +2,20 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle BATCHJSONGUARD - Readiness Evidence Hygiene Guard
+
+- Feature/page worked on: internal readiness batch evidence hygiene and CI coverage.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/mobile_internal_readiness_batch.ps1`
+  - `src/__tests__/mobile.internal-readiness-batch.contract.test.ts`
+  - root `package.json` `test:ci` coverage list
+  - `docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md`
+- User interactions supported: unchanged. The Local MVP path remains Home -> Event Detail -> line market -> Trade Ticket -> fake-token order -> Portfolio/history.
+- State transitions: no runtime/backend/database state changes. The batch writes no-BOM UTF-8 JSON, normalizes only current-run JSON summaries, and skips cached provider artifacts so a default Local MVP readiness run cannot create broad provider evidence churn.
+- Proof: targeted Jest contract test passes and `npm run test:ci` now includes `src/__tests__/mobile.internal-readiness-batch.contract.test.ts`, so GitHub CI protects the clean-evidence behavior.
+- Known limitations: this does not close provider-backed match/line availability P1 gaps. It keeps the audit harness cleaner and more reliable while those provider gaps remain open.
+
 ## Cycle PROVIDERSCANDEPTH - Match/Line Provider Scan Depth
 
 - Feature/page worked on: provider-backed World Cup match and line-market readiness evidence.
