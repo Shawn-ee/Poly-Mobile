@@ -7701,3 +7701,33 @@ P1/P2 gaps:
 
 - P2: Optional backfill for pre-WC historical trades.
 - P1: Real provider-backed Spread/Totals/Team Total current-match line rows remain unavailable and unchanged.
+
+# Cycle WD Audit Gate - Portfolio Position Selection Snapshots
+
+Gate status: Pass.
+
+What became materially closer:
+
+- Portfolio Position cards now use immutable filled-trade selection snapshots before falling back to later order requests.
+- Position identity is more Polymarket-like: the visible row keeps the traded line/outcome/source and can open a sell/cashout ticket from that same position.
+- Portfolio Chinese source labels no longer show broken mojibake text.
+
+Evidence:
+
+- Route implementation: `src/app/api/portfolio/route.ts`
+- Regression test: `src/__tests__/portfolio.open-orders.route.test.ts`
+- Mobile source-copy guard: `mobile/src/__tests__/chineseMvpSourceCopy.test.ts`
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`
+- Visible journey proof: `docs/mobile/harness/cycle-WD-portfolio-position-snapshots/cycle-WD-current-mvp-s23-visible-flow.json`
+- Position XML proof: `docs/mobile/harness/cycle-WD-portfolio-position-snapshots/cycle-WD-current-mvp-after-submit.xml`
+- Screenshots/XML: `docs/mobile/screenshots/cycle-WD-portfolio-position-snapshots/` and `docs/mobile/harness/cycle-WD-portfolio-position-snapshots/`
+
+P0 gaps:
+
+- None for Portfolio Position selection snapshot preservation and source-copy cleanup.
+
+P1/P2 gaps:
+
+- P1: Update `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1` so cashout-branch proofs set `filledPositionVisible=true`.
+- P2: Optional backfill for older positions/trades without direct snapshots.
+- P1: Real provider-backed Spread/Totals/Team Total current-match line rows remain unavailable and unchanged.

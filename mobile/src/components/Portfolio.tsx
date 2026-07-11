@@ -443,15 +443,15 @@ const portfolioSourceNote = (selection: TicketSelection | undefined, locale: Loc
   const source = selection?.referenceSource ?? "";
   if (source.includes("contract-fixture")) {
     return {
-      text: locale === "zh" ? "利云体育盘口" : "Holiwyn line",
       accessibility: "portfolio-local-test-pricing",
+      text: locale === "zh" ? "\u5229\u4e91\u4f53\u80b2\u76d8\u53e3" : "Holiwyn line",
       tone: "fixture" as const,
     };
   }
   if (source.includes("polymarket")) {
     return {
-      text: locale === "zh" ? "Polymarket 市场" : "Polymarket market",
       accessibility: "portfolio-provider-backed-pricing",
+      text: locale === "zh" ? "Polymarket \u5e02\u573a" : "Polymarket market",
       tone: "provider" as const,
     };
   }
@@ -489,26 +489,26 @@ const portfolioSourceSummary = ({
 
   if (providerCount > 0 && localLineCount > 0) {
     return {
-      label: locale === "zh" ? "来源" : "Source",
-      text: locale === "zh" ? "Polymarket 胜负 / 利云体育盘口" : "Polymarket winner / Holiwyn lines",
       tone: "mixed" as const,
+      label: locale === "zh" ? "\u6765\u6e90" : "Source",
+      text: locale === "zh" ? "Polymarket \u80dc\u8d1f / \u5229\u4e91\u4f53\u80b2\u76d8\u53e3" : "Polymarket winner / Holiwyn lines",
       accessibility:
         `portfolio-selection-source-summary portfolio-source-summary-mixed portfolio-provider-count-${providerCount} portfolio-local-line-count-${localLineCount} portfolio-line-families-${lineFamilies.join("-") || "none"}`,
     };
   }
   if (localLineCount > 0) {
     return {
-      label: locale === "zh" ? "来源" : "Source",
-      text: locale === "zh" ? "利云体育盘口" : "Holiwyn lines",
       tone: "fixture" as const,
+      label: locale === "zh" ? "\u6765\u6e90" : "Source",
+      text: locale === "zh" ? "\u5229\u4e91\u4f53\u80b2\u76d8\u53e3" : "Holiwyn lines",
       accessibility:
         `portfolio-selection-source-summary portfolio-source-summary-local-lines portfolio-provider-count-${providerCount} portfolio-local-line-count-${localLineCount} portfolio-line-families-${lineFamilies.join("-") || "none"}`,
     };
   }
   return {
-    label: locale === "zh" ? "来源" : "Source",
-    text: locale === "zh" ? "Polymarket 定价" : "Polymarket pricing",
     tone: "provider" as const,
+    label: locale === "zh" ? "\u6765\u6e90" : "Source",
+    text: locale === "zh" ? "Polymarket \u5b9a\u4ef7" : "Polymarket pricing",
     accessibility:
       `portfolio-selection-source-summary portfolio-source-summary-provider portfolio-provider-count-${providerCount} portfolio-local-line-count-${localLineCount}`,
   };

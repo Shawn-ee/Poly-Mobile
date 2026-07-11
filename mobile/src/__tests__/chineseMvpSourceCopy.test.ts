@@ -18,9 +18,10 @@ describe("Chinese MVP source copy", () => {
     expect(tradeTicket).toContain("Polymarket \\u5e02\\u573a");
     expect(tradeTicket).toContain("ticket-local-test-pricing");
 
-    expect(portfolio).toContain("\u6765\u6e90");
-    expect(portfolio).toContain("Polymarket \u80dc\u8d1f / \u5229\u4e91\u4f53\u80b2\u76d8\u53e3");
-    expect(portfolio).toContain("\u5229\u4e91\u4f53\u80b2\u76d8\u53e3");
+    expect(portfolio).toContain("\\u6765\\u6e90");
+    expect(portfolio).toContain("Polymarket \\u80dc\\u8d1f / \\u5229\\u4e91\\u4f53\\u80b2\\u76d8\\u53e3");
+    expect(portfolio).toContain("\\u5229\\u4e91\\u4f53\\u80b2\\u76d8\\u53e3");
+    expect(portfolio).not.toMatch(/å|ä|æ|è|ç|œ|ƒ|º|©|¥/);
     expect(portfolio).toContain("portfolio-local-test-pricing");
   });
 });

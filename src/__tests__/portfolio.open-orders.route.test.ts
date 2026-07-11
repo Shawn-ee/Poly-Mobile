@@ -15,6 +15,9 @@ const prismaMock = {
   order: {
     findMany: jest.fn(),
   },
+  trade: {
+    findMany: jest.fn(),
+  },
   comboOrder: {
     findMany: jest.fn(),
   },
@@ -48,6 +51,7 @@ describe("GET /api/portfolio open order display data", () => {
       lockedUSDC: 25,
     });
     prismaMock.order.findMany.mockResolvedValue([]);
+    prismaMock.trade.findMany.mockResolvedValue([]);
     prismaMock.comboOrder.findMany.mockResolvedValue([]);
   });
 
@@ -429,6 +433,117 @@ describe("GET /api/portfolio open order display data", () => {
         totalCount: 2,
         polymarketCount: 2,
         status: "provider-backed",
+        families: ["spread"],
+      },
+    });
+  });
+
+  test("prefers immutable trade selection snapshot for positions over later order lookup", async () => {
+    getUserId.mockResolvedValue("user-1");
+    const originalSnapshot = {
+      marketId: "market-wd-spread",
+      outcomeId: "outcome-wd-away",
+      marketGroupId: "spreads",
+      marketType: "spread",
+      line: "+0.5",
+      period: "regulation",
+      side: "away",
+      displayLabel: "Egypt +0.5",
+      contractSide: "yes",
+      providerSource: "contract-fixture",
+      referenceSource: "contract-fixture",
+      externalMarketId: "contract-egypt-plus-05",
+      conditionId: "condition-egypt-plus-05",
+      tokenId: "token-egypt-plus-05",
+      referenceTokenId: "token-egypt-plus-05",
+      referenceOutcomeLabel: "Egypt +0.5",
+    };
+    const laterOrderSnapshot = {
+      ...originalSnapshot,
+      line: "+1.5",
+      displayLabel: "Egypt +1.5",
+      externalMarketId: "contract-egypt-plus-15",
+      conditionId: "condition-egypt-plus-15",
+      tokenId: "token-egypt-plus-15",
+      referenceTokenId: "token-egypt-plus-15",
+      referenceOutcomeLabel: "Egypt +1.5",
+    };
+
+    prismaMock.trade.findMany.mockResolvedValue([
+      {
+        id: "trade-wd-filled",
+        marketId: "market-wd-spread",
+        outcomeId: "outcome-wd-away",
+        selectionSnapshot: originalSnapshot,
+      },
+    ]);
+    prismaMock.order.findMany
+      .mockResolvedValueOnce([
+        {
+          marketId: "market-wd-spread",
+          outcomeId: "outcome-wd-away",
+          apiOrderRequest: { requestBody: { selection: laterOrderSnapshot } },
+        },
+      ])
+      .mockResolvedValueOnce([]);
+    getOutcomeQuotes.mockResolvedValue(
+      new Map([
+        [
+          "outcome-wd-away",
+          { bestBid: 0.58, bestAsk: 0.62, bestBidSize: 900, bestAskSize: 1000, mid: 0.6, spread: 0.04 },
+        ],
+      ]),
+    );
+    prismaMock.position.findMany.mockResolvedValue([
+      {
+        marketId: "market-wd-spread",
+        outcomeId: "outcome-wd-away",
+        shares: 20,
+        avgCost: 0.5,
+        market: {
+          id: "market-wd-spread",
+          title: "Argentina vs Egypt: Egypt +0.5",
+          status: "LIVE",
+          mechanism: "ORDERBOOK",
+          marketGroupKey: "spreads",
+          marketType: "spread",
+          line: { toString: () => "+0.5" },
+          period: "regulation",
+          referenceSource: "contract-fixture",
+          externalSlug: "arg-egy-spread-away-05",
+          externalMarketId: "current-drifted-market-id",
+          conditionId: "current-drifted-condition",
+          resolveTime: null,
+          createdAt: new Date("2026-07-10T12:00:00Z"),
+        },
+        outcome: {
+          id: "outcome-wd-away",
+          name: "Egypt",
+          label: "Egypt +0.5",
+          side: "away",
+          referenceTokenId: "current-drifted-token",
+          referenceOutcomeLabel: "Egypt current",
+        },
+      },
+    ]);
+
+    const { GET } = await import("@/app/api/portfolio/route");
+    const response = await GET(new NextRequest("http://localhost/api/portfolio"));
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.positions[0].selection).toEqual(expect.objectContaining(originalSnapshot));
+    expect(body.positions[0].selection.line).toBe("+0.5");
+    expect(body.positions[0].selection.referenceTokenId).toBe("token-egypt-plus-05");
+    expect(JSON.stringify(body.positions[0].selection)).not.toContain("+1.5");
+    expect(JSON.stringify(body.positions[0].selection)).not.toContain("token-egypt-plus-15");
+    expect(body.selectionSourceSummary.positions).toMatchObject({
+      totalSelectionCount: 1,
+      contractFixtureSelectionCount: 1,
+      lineMarkets: {
+        totalCount: 1,
+        contractFixtureCount: 1,
+        status: "contract-fixture",
         families: ["spread"],
       },
     });

@@ -9611,3 +9611,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new field gap for new server-backed fake-token line trades. A future backfill can populate old historical trades if needed.
 - Temporary mock/static data: none added. Snapshot data is the sanitized order selection already submitted by mobile.
 - Future migration concern: if fill-level history becomes user-visible later, consider adding a fill-level snapshot too. The current Local MVP History route is trade-level, so `Trade.selectionSnapshot` is sufficient.
+
+# Cycle WD - Portfolio Position Selection Snapshot Notes
+
+- Closed or narrowed: `/api/portfolio` position rows now prefer immutable `Trade.selectionSnapshot` identity for new filled trades instead of relying first on the latest same-market/outcome order request.
+- Route mismatch: narrowed. Mobile Position cards already expect their `selection` to describe the actual filled line/outcome; the backend now matches that contract for new filled trades.
+- Fields Holiwyn still needs but backend does not fully provide: no new field gap for new server-backed fake-token line positions.
+- Temporary mock/static data: none added. Existing line rows remain contract-shaped fixtures until real provider-backed line rows exist.
+- Future migration concern: pre-WD positions/trades without trade snapshots still rely on the order-request fallback unless a future backfill is run.

@@ -1650,3 +1650,13 @@ For every UI element or interaction, answer:
 | Direct immutable trade-level selection snapshot for new fills | P1 | Verified | `Trade.orderId` and `Trade.selectionSnapshot` were added; canonical filled orders now store sanitized ticket selection on the trade row and Portfolio History prefers that snapshot. | `prisma/migrations/20260711043000_add_trade_selection_snapshot/migration.sql`; `src/server/services/matching.ts`; `src/app/api/portfolio/history/route.ts`; focused tests |
 | Backfill old pre-WC trades | P2 | Open | Existing historical trades created before the migration still rely on the Cycle WB temporal fallback. Backfill can be added later if historical proof requires it. | `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md` |
 | Real provider-backed spread/totals/team-total current-match lines | P1 | Open | Unchanged. WC improves lifecycle durability for selected lines; it does not import new provider line rows. | `docs/mobile/audits/cycle-TW-provider-line-source-reprobe.md` |
+
+# Cycle WD - Portfolio Position Selection Snapshots
+
+| Gap | Priority | Status | Notes | Evidence |
+| --- | --- | --- | --- | --- |
+| Portfolio Positions could drift to a later same-market/outcome order snapshot | P0 | Verified | `/api/portfolio` now prefers `Trade.selectionSnapshot` for position selection identity and only falls back to order-request lookup when no trade snapshot exists. | `src/app/api/portfolio/route.ts`; `src/__tests__/portfolio.open-orders.route.test.ts` |
+| Portfolio Chinese source labels could show mojibake | P0 | Verified | Portfolio source labels now use ASCII-escaped Chinese strings and the source-copy test rejects mojibake fragments. | `mobile/src/components/Portfolio.tsx`; `mobile/src/__tests__/chineseMvpSourceCopy.test.ts` |
+| S23 Position card cashout/sell proof after snapshot change | P0 | Verified | S23 proof opened the line Position card, launched sell/cashout, submitted the sell, and showed Portfolio History. | `docs/mobile/harness/cycle-WD-portfolio-position-snapshots/cycle-WD-current-mvp-s23-visible-flow.json`; `docs/mobile/harness/cycle-WD-portfolio-position-snapshots/cycle-WD-current-mvp-after-submit.xml` |
+| Proof script underreports cashout-branch filled position boolean | P1 | Open | The XML and completed cashout flow prove the position exists, but `filledPositionVisible` remains false because the summary flag is only set in the open-order branch. | `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1` |
+| Real provider-backed spread/totals/team-total current-match lines | P1 | Open | Unchanged. WD improves Portfolio position durability; it does not import new provider line rows. | `docs/mobile/audits/cycle-TW-provider-line-source-reprobe.md` |
