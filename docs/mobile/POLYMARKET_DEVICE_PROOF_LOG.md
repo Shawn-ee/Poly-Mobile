@@ -3002,3 +3002,10 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Position XML proof: `docs/mobile/harness/cycle-WD-portfolio-position-snapshots/cycle-WD-current-mvp-after-submit.xml`
 - Screenshots: `docs/mobile/screenshots/cycle-WD-portfolio-position-snapshots/`
 - Key assertions: line ticket preserved, orderbook hidden, cashout ticket opened, cashout sell submitted, and cashout history visible. The XML includes `position-card-`, `portfolio-position-cash-out-`, `portfolio-line-1.5`, and `snapshot-source-order-time`.
+# Cycle WE - S23 Position Proof Summary
+
+- Device: Samsung S23 `SM-S911U1` (`adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`).
+- Flow: Home -> Event Detail -> line ticket -> filled Position -> Cash out/Sell -> Portfolio History.
+- Result: pass.
+- Evidence: `docs/mobile/harness/cycle-WE-s23-position-proof-summary/cycle-WE-current-mvp-s23-visible-flow.json`; screenshots/XML under `docs/mobile/screenshots/cycle-WE-s23-position-proof-summary/` and `docs/mobile/harness/cycle-WE-s23-position-proof-summary/`.
+- Key assertions: `filledPositionVisible=true`, `cashoutHistoryVisible=true`, `ticketPreservesLine=true`, `orderbookHidden=true`.

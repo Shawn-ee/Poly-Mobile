@@ -12589,3 +12589,15 @@ Known limitations:
 - Known limitations:
   - The proof script underreports `filledPositionVisible` in the cashout branch even though the XML and completed cashout flow prove the Position card.
   - Positions created before direct trade snapshots still use the order-request fallback unless a future backfill is run.
+
+# Cycle WE - S23 Position Proof Summary
+
+- Feature/page worked on: S23 Local MVP proof summary for Portfolio Positions and cashout.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+  - `src/server/services/__tests__/mobile.localMvpLiquidityHarness.contract.test.ts`
+- User interactions supported: unchanged. The same Home -> Event Detail -> line market -> Trade Ticket -> filled Position -> Cash out/Sell -> Portfolio History proof path is used.
+- State transitions: unchanged. The harness now reports the filled Position card from the post-submit XML before opening the cashout ticket, so `filledPositionVisible` matches the device evidence.
+- Proof: PowerShell parser check passed, focused harness contract passed, and S23 proof passed on `SM-S911U1`. Evidence: `docs/mobile/harness/cycle-WE-s23-position-proof-summary/cycle-WE-current-mvp-s23-visible-flow.json`; the summary reports `filledPositionVisible=true`, `cashoutHistoryVisible=true`, and `ticketPreservesLine=true`.
+- Known limitations: real provider-backed Spread/Totals/Team Total current-match rows remain unavailable from Polymarket source data, so the Local MVP line path still uses contract-shaped fixtures.
