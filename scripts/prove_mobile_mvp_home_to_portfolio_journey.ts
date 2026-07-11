@@ -15,7 +15,7 @@ const dec = (value: Prisma.Decimal.Value) => new Prisma.Decimal(value);
 
 const argValue = (name: string) => {
   const prefix = `--${name}=`;
-  return process.argv.find((arg) => arg.startsWith(prefix))?.slice(prefix.length);
+  return process.argv.slice().reverse().find((arg) => arg.startsWith(prefix))?.slice(prefix.length);
 };
 
 const assert = (condition: unknown, message: string): asserts condition => {
@@ -62,6 +62,7 @@ async function createMakerForMarket(params: {
   outcomeId: string;
   askPrice: string;
   askSize: string;
+  minRemainingSize: string;
 }) {
   const [{ mintCompleteSetForPublicOrderbook }, { cancelOrderAndUnlock, placeOrderAndMatch }] = await Promise.all([
     import("@/server/services/orderbookCollateral"),
@@ -77,7 +78,11 @@ async function createMakerForMarket(params: {
       price: { gte: dec(params.askPrice) },
       user: {
         OR: [
+          { email: { endsWith: "@local.test" } },
+          { username: { startsWith: "cycle_" } },
+          { username: { startsWith: "cycle-" } },
           { username: { startsWith: "cycle_lt_home_journey_" } },
+          { username: { startsWith: "cycle_lt_maker_" } },
           { username: { startsWith: "holiwyn-mobile-" } },
         ],
       },
@@ -111,7 +116,15 @@ async function createMakerForMarket(params: {
     price: params.askPrice,
     size: params.askSize,
   });
-  assert(makerOrder.order.status === "OPEN", `Expected maker ask OPEN, got ${makerOrder.order.status}.`);
+  const makerRemaining = dec(makerOrder.order.remaining);
+  assert(
+    makerOrder.order.status === "OPEN" || makerOrder.order.status === "PARTIAL",
+    `Expected maker ask OPEN/PARTIAL, got ${makerOrder.order.status}.`,
+  );
+  assert(
+    makerRemaining.greaterThanOrEqualTo(dec(params.minRemainingSize)),
+    `Expected maker ask to leave at least ${params.minRemainingSize} shares, got ${makerRemaining.toString()}.`,
+  );
   return { user, makerOrder };
 }
 
@@ -249,6 +262,7 @@ async function main() {
     outcomeId: selectedOutcome.id,
     askPrice,
     askSize: "25",
+    minRemainingSize: size,
   });
   const orderResponse = await placeRouteOrder({
     token: credential.token,

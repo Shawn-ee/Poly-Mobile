@@ -12474,3 +12474,24 @@ Known limitations:
 - State transitions: no app state changed. Preflight checks configuration and redirect shape only, then stops before Google consent/token exchange.
 - Proof: `npm run check:google-auth-runtime`, focused preflight/auth contract tests, and mobile typecheck all passed.
 - Known limitations: strict physical-device preflight and real S23 Google consent remain P1 until the S23 is visible to ADB and `NEXTAUTH_URL` is reachable by the phone browser.
+# Cycle VZ - Current MVP Route Reproof
+
+- Feature/page worked on: Local MVP route proof for Home -> Event Detail -> line ticket -> fake-token order -> Portfolio/History.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/prove_mobile_mvp_home_to_portfolio_journey.ts`
+  - `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1` was used as device proof, not modified.
+- User interactions supported:
+  - Open current World Cup match on S23.
+  - Scroll to Game Lines.
+  - Select Spread `1.5` line.
+  - Enter amount and swipe to buy.
+  - Land in Portfolio History after submit.
+- State transitions:
+  - Home route exposes `argentina-vs-egypt`.
+  - Detail route exposes provider-backed Regulation Winner plus contract-fixture line markets.
+  - Buy order transitions to `FILLED`.
+  - Portfolio position/history preserve selected `marketId`, `outcomeId`, `line`, `period`, `referenceSource`, and `referenceTokenId`.
+- Known limitations:
+  - Spread/Totals/Team Total remain contract fixtures because Polymarket Gamma has not exposed attach-ready line rows for this current match.
+  - S23 submit requires the local internal beta backend helper; a plain `npm run dev -p 3002` backend returns `Internal trading beta is temporarily disabled.`

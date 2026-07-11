@@ -2959,3 +2959,11 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Proof command: `npm run proof:s23:unavailable-ticket`.
 - Evidence: screenshot `docs/mobile/screenshots/cycle-VX-unavailable-ticket-s23-proof/cycle-VX-unavailable-ticket.png`; XML `docs/mobile/harness/cycle-VX-unavailable-ticket-s23-proof/cycle-VX-unavailable-ticket.xml`; intermediate Expo-menu-dismiss hierarchy `docs/mobile/harness/cycle-VX-unavailable-ticket-s23-proof/cycle-VX-unavailable-ticket-expo-menu.xml`.
 - Result: PASS. XML verifies `ticket-market-status-visible`, `ticket-readonly-market-state`, `ticket-amount-entry-disabled`, `ticket-availability-unavailable`, `ticket-market-status-PROOF_UNAVAILABLE`, disabled side/preset/keypad markers, and `swipe-submit-state-disabled`.
+# Cycle VZ - Current MVP Route Reproof
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.
+- Result: Pass after restarting the backend with the internal MVP helper.
+- Flow proven: Home -> Live -> Event Detail -> Game Lines -> ticket amount-ready -> swipe submit -> Portfolio History.
+- Summary: `docs/mobile/harness/cycle-VZ-current-mvp-route-reproof/cycle-VZ-current-mvp-s23-visible-flow.json`
+- Screenshots: `docs/mobile/screenshots/cycle-VZ-current-mvp-route-reproof/`
+- Initial failure: plain local dev backend returned `Internal trading beta is temporarily disabled.` This was corrected by `scripts/start_holiwyn_internal_beta_backend.ps1`.

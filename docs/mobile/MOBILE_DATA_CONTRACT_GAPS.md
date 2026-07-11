@@ -9581,3 +9581,10 @@ Future migration concern:
 - Fields Holiwyn still needs: no new fields for this cleanup. Real provider-backed Spread/Totals/Team Total current-match line rows remain the repeated P1 data gap.
 - Temporary mock/static data: none added.
 - Future migration concern: keep Home match-only and avoid reintroducing Search/filter/account props unless a future audit-gated product direction explicitly reopens them.
+# Cycle VZ - Current MVP Route Reproof Notes
+
+- Closed or narrowed: current `main` now has fresh route and S23 evidence that the Local MVP service path works when the internal beta backend helper is used. Home/detail, ticket submit, Portfolio, and History preserve selected Spread line identity.
+- Route mismatch: local S23 submit fails if the backend is started with plain `npm run dev -p 3002`, because the order route sees `INTERNAL_TRADING_BETA_ENABLED` as disabled. Use `scripts/start_holiwyn_internal_beta_backend.ps1` for local fake-token MVP testing.
+- Fields Holiwyn still needs but backend does not fully provide: real provider-backed current-match Spread, Total, and Team Total market ids/tokens/prices remain unavailable from Polymarket Gamma for the checked event.
+- Temporary mock/static data: line rows are contract-shaped backend fixtures with stable ids/source fields; they are not claimed as Polymarket-backed.
+- Future migration concern: when real provider-backed line rows exist, rerun this same route and S23 proof against provider market ids/tokens instead of fixture identities.
