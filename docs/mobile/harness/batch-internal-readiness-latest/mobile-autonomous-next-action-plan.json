@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-07-11T14:36:58.996Z",
+  "status": "provider-parity-wait",
+  "priority": "P1",
+  "reason": "Provider-backed Polymarket parity is the only remaining partial criterion, but provider evidence is fresh.",
+  "recommendedAction": "Do not open a new provider scan. Keep Local MVP internal testing/regression proof ready while waiting for provider evidence to become stale or a real candidate signal.",
+  "commands": [],
+  "sourceEvidence": {
+    "readinessSummaryPath": "docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json",
+    "providerEvidencePlanPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-evidence-refresh-plan.json",
+    "definitionOfDoneSweepPath": "docs/mobile/harness/cycle-current-mobile-definition-of-done-sweep.json"
+  },
+  "state": {
+    "localMvpReady": true,
+    "p0Blockers": [],
+    "p1Blockers": [
+      "provider_worldcup_match_books_unavailable_or_closed",
+      "provider_mvp_match_snapshot_not_mm_safe",
+      "no_usable_polymarket_worldcup_team_match_books",
+      "no_attach_ready_polymarket_worldcup_line_markets"
+    ],
+    "s23ProofReady": true,
+    "s23ProofNextStaleName": "totals-filled-buy-history",
+    "s23ProofHoursUntilStale": 15.07,
+    "providerPlanStatus": "skip-refresh",
+    "providerEvidenceHoursUntilStale": 23.71,
+    "readyToDeclareDone": false,
+    "dodCounts": {
+      "verified": 11,
+      "partial": 1,
+      "blocked": 0
+    },
+    "remainingPartialCriteria": [
+      "dod-provider-polymarket-parity"
+    ]
+  }
+}

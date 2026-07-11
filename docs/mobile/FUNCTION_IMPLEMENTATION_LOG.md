@@ -47,6 +47,20 @@ Purpose: document the app functions, services, API calls, state transitions, and
 - Proof: run `npm run mobile:definition-of-done-sweep`; expected next actions should keep APK smoke for install/launch coverage and server-order proof for trading regression.
 - Known limitations: this does not close the provider P1 blockers. It keeps the loop from chasing stale APK-lane work.
 
+## Cycle NEXTACTION - Autonomous Next-Action Planner
+
+- Feature/page worked on: autonomous loop next-action selection.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/plan_mobile_autonomous_next_action.ts`
+  - root `package.json` `mobile:autonomous-next-action`
+  - `src/__tests__/mobile-autonomous-next-action.contract.test.ts`
+- User interactions supported: unchanged. The Local MVP path remains Home -> Event Detail -> line market -> Trade Ticket -> fake-token order -> Portfolio/history.
+- State transitions: no mobile, backend, database, provider, order, or bot state changes. The planner reads existing readiness artifacts and writes `mobile-autonomous-next-action-plan.json` with one status such as `fix-p0-readiness`, `refresh-s23-proof`, `refresh-provider-evidence`, or `provider-parity-wait`.
+- API/data dependencies: no runtime API calls. It consumes `internal-readiness-batch-summary.json`, `provider-evidence-refresh-plan.json`, and `cycle-current-mobile-definition-of-done-sweep.json`.
+- Proof: run `npm run mobile:autonomous-next-action`; with the current evidence, expected status is `provider-parity-wait`, meaning Local MVP is ready, S23 proof is not near stale, provider evidence is fresh, and provider-backed Polymarket parity remains the only partial criterion.
+- Known limitations: this does not close provider-backed Polymarket parity. It makes the loop's next action explicit so future cycles do not drift into repeated scans or stale proof work.
+
 ## Cycle S23PROOFFORECAST - S23 Proof Staleness Forecast
 
 - Feature/page worked on: internal readiness batch S23 proof freshness forecasting.
