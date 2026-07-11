@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T07:50:43.635Z",
+  "generatedAt": "2026-07-11T07:56:40.555Z",
   "source": "gamma-api.polymarket.com/events",
   "readOnly": true,
   "scope": "world-cup-match-only-provider-breadth",
@@ -26,7 +26,7 @@
     "matchEventCount": 4,
     "usableMatchEventCount": 0,
     "futuresEventCount": 35,
-    "nonWorldCupOrPropUsableCount": 126,
+    "nonWorldCupOrPropUsableCount": 123,
     "pass": false
   },
   "usableMatchEvents": [],
@@ -511,9 +511,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.189,
+          "bestBid": 0.188,
           "bestAsk": 0.193,
-          "spread": 0.004,
+          "spread": 0.005,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -545,9 +545,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.054,
+          "bestBid": 0.064,
           "bestAsk": 0.109,
-          "spread": 0.055,
+          "spread": 0.045,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -644,8 +644,8 @@
           "outcomeCount": 2,
           "tokenCount": 2,
           "bestBid": 0.018,
-          "bestAsk": 0.029,
-          "spread": 0.011,
+          "bestAsk": 0.055,
+          "spread": 0.037,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -788,6 +788,40 @@
         }
       },
       {
+        "slug": "pro-football-team-to-draft-brendan-sorsby-20260620180654958",
+        "title": "Pro Football: Team To Draft Brendan Sorsby",
+        "tags": [
+          "nfl",
+          "draft",
+          "sports",
+          "football",
+          "nfl-draft",
+          "nfl-next-team"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": false,
+        "futuresLike": false,
+        "marketCount": 36,
+        "usableMarketCount": 18,
+        "acceptingOrderMarketCount": 36,
+        "sampleUsableMarket": {
+          "slug": "will-the-buffalo-bills-draft-brendan-sorsby-in-the-2026-nfl-supplemental-draft-20260620180914406",
+          "question": "Will the Buffalo Bills draft Brendan Sorsby in the 2026 NFL Supplemental Draft?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.01,
+          "bestAsk": 0.044,
+          "spread": 0.034,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
         "slug": "2026-womens-us-open-winner-tennis",
         "title": "2026 Women’s US Open Winner (Tennis)",
         "tags": [
@@ -814,40 +848,6 @@
           "bestBid": 0.22,
           "bestAsk": 0.23,
           "spread": 0.01,
-          "usableBook": true,
-          "rejectionReasons": []
-        }
-      },
-      {
-        "slug": "pro-football-team-to-draft-brendan-sorsby-20260620180654958",
-        "title": "Pro Football: Team To Draft Brendan Sorsby",
-        "tags": [
-          "nfl",
-          "draft",
-          "sports",
-          "football",
-          "nfl-draft",
-          "nfl-next-team"
-        ],
-        "matchLike": false,
-        "worldCupRelevant": false,
-        "playerPropLike": false,
-        "futuresLike": false,
-        "marketCount": 36,
-        "usableMarketCount": 17,
-        "acceptingOrderMarketCount": 36,
-        "sampleUsableMarket": {
-          "slug": "will-the-buffalo-bills-draft-brendan-sorsby-in-the-2026-nfl-supplemental-draft-20260620180914406",
-          "question": "Will the Buffalo Bills draft Brendan Sorsby in the 2026 NFL Supplemental Draft?",
-          "acceptingOrders": true,
-          "active": true,
-          "closed": false,
-          "archived": false,
-          "outcomeCount": 2,
-          "tokenCount": 2,
-          "bestBid": 0.01,
-          "bestAsk": 0.044,
-          "spread": 0.034,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -977,9 +977,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.05,
-          "bestAsk": 0.088,
-          "spread": 0.018,
+          "bestBid": 0.045,
+          "bestAsk": 0.089,
+          "spread": 0.001,
           "usableBook": true,
           "rejectionReasons": []
         }
