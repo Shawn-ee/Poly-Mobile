@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle WH
+
+Gate status: Pass for focused Trade Ticket header simplification; not a pass for all remaining ticket visual polish.
+
+Scope: make the amount-entry ticket header show the actual selected line/outcome and remove the extra visible `Buy/Sell <outcome>` badge from the middle of the ticket.
+
+Decision:
+
+- P0 failed: 0 for focused WH scope.
+- Implemented change: Trade Ticket now uses `ticket.selection?.referenceOutcomeLabel ?? outcomeLabel` in the header, labels the header as the actual outcome, and moves the order-mode marker to audit-only accessibility metadata.
+- Android proof: Samsung S23 `SM-S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`; proof confirmed `Argentina Over 1.5` appears in the header, the old visible mode marker is absent, and chat/orderbook stay hidden.
+- Backend impact: none. Existing fake-token order route/schema behavior remain unchanged.
+- P1 remaining: stronger continuous gesture/video proof for swipe motion and further ticket visual polish against latest logged-in Polymarket ticket references.
+- Evidence: `docs/mobile/audits/cycle-WH-ticket-header-simplification.md`; screenshots/XML in `docs/mobile/screenshots/cycle-WH-ticket-header-simplification/` and `docs/mobile/harness/cycle-WH-ticket-header-simplification/`.
+
 ## Cycle RP
 
 Gate status: Pass for focused Trade Ticket source-label cleanup; not a pass for all backend source identity completeness.
