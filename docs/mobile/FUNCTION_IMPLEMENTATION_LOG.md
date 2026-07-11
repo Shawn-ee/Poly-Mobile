@@ -2,6 +2,24 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle NEXTTRIGGER - Autonomous Wait Trigger
+
+- Feature/page worked on: long-running loop control while provider-backed Polymarket parity is waiting on fresh evidence.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/plan_mobile_autonomous_next_action.ts`
+  - `src/__tests__/mobile-autonomous-next-action.contract.test.ts`
+- User interactions supported: unchanged. The planner still keeps Local MVP internal testing ready while avoiding unnecessary provider scans and S23 proof churn.
+- State transitions:
+  - Added `nextWaitTrigger` to the autonomous next-action plan state.
+  - The planner now compares S23 proof freshness, cached provider evidence freshness, and temporary sportsbook backend proof freshness, then records the earliest stale window.
+  - When the loop is in `provider-parity-wait`, the recommended action names the exact next wait trigger, stale time, and hours remaining.
+- Proof:
+  - `npx jest --runInBand src/__tests__/mobile-autonomous-next-action.contract.test.ts`
+- Known limitations:
+  - Harness/control-plane change only. No frontend behavior, backend route, provider discovery, API schema, database schema, or order flow changed.
+  - Does not close `dod-provider-polymarket-parity`; it reduces pointless cycles until provider evidence becomes stale or a real candidate signal appears.
+
 ## Cycle NEXTSTALEFIX - Earliest Proof Refresh Forecast
 
 - Feature/page worked on: internal readiness S23/provider proof freshness forecasting for the autonomous loop.

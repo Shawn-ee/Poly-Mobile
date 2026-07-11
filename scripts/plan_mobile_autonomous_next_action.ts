@@ -133,6 +133,12 @@ type NextActionPlan = {
     temporaryProviderReady: boolean;
     temporaryProviderNeedsS23VisualProof: boolean;
     temporaryProviderEventSlug: string | null;
+    nextWaitTrigger: {
+      kind: "s23-proof" | "provider-evidence" | "temporary-provider-proof" | null;
+      name: string | null;
+      staleAt: string | null;
+      hoursUntilStale: number | null;
+    };
   };
 };
 
@@ -183,6 +189,27 @@ function numberOrNull(value: unknown): number | null {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
+function earliestWaitTrigger(
+  triggers: {
+    kind: NextActionPlan["state"]["nextWaitTrigger"]["kind"];
+    name?: string | null;
+    staleAt?: string | null;
+    hoursUntilStale?: number | null;
+  }[],
+): NextActionPlan["state"]["nextWaitTrigger"] {
+  const candidates = triggers
+    .filter((trigger) => trigger.kind && trigger.hoursUntilStale !== null && trigger.hoursUntilStale !== undefined)
+    .filter((trigger) => Number.isFinite(trigger.hoursUntilStale))
+    .sort((left, right) => Number(left.hoursUntilStale) - Number(right.hoursUntilStale));
+  const next = candidates[0];
+  return {
+    kind: next?.kind ?? null,
+    name: next?.name ?? null,
+    staleAt: next?.staleAt ?? null,
+    hoursUntilStale: numberOrNull(next?.hoursUntilStale),
+  };
+}
+
 function buildPlan(
   readiness: ReadinessSummary | null,
   providerPlan: ProviderEvidencePlan | null,
@@ -205,6 +232,7 @@ function buildPlan(
     readinessState.s23LocalMvpDeviceProofReady !== true ||
     (s23ProofHoursUntilStale !== null && s23ProofHoursUntilStale <= s23RefreshWindowHours);
   const providerRefreshDue = providerPlan?.shouldRefreshProviderEvidence === true;
+  const providerEvidenceHoursUntilStale = numberOrNull(providerPlan?.hoursUntilStale ?? readinessState.cachedProviderEvidenceHoursUntilStale);
   const temporaryProviderBackendProofHoursUntilStale = numberOrNull(readinessState.temporarySportsbookBackendProofHoursUntilStale);
   const temporaryProviderBackendProofReady = readinessState.temporarySportsbookBackendProofReady === true;
   const temporaryProviderBackendProofDue = temporaryProviderBackendProofReady !== true;
@@ -230,6 +258,26 @@ function buildPlan(
     !temporaryProviderS23VisibleProofReady &&
     (oddsApiS23Reachability?.pass === true) &&
     (oddsApiS23Reachability.proofLimitations ?? []).some((item) => item.toLowerCase().includes("not a full visual walkthrough"));
+  const nextWaitTrigger = earliestWaitTrigger([
+    {
+      kind: "s23-proof",
+      name: readinessState.s23ProofNextStaleName ?? "s23-proof",
+      staleAt: readinessState.s23ProofNextStaleAt ?? null,
+      hoursUntilStale: s23ProofHoursUntilStale,
+    },
+    {
+      kind: "provider-evidence",
+      name: providerPlan?.nextStaleName ?? readinessState.cachedProviderEvidenceNextStaleName ?? "provider-evidence",
+      staleAt: providerPlan?.nextStaleAt ?? readinessState.cachedProviderEvidenceNextStaleAt ?? null,
+      hoursUntilStale: providerEvidenceHoursUntilStale,
+    },
+    {
+      kind: "temporary-provider-proof",
+      name: readinessState.temporarySportsbookBackendProofNextStaleName ?? "temporary-provider-proof",
+      staleAt: readinessState.temporarySportsbookBackendProofNextStaleAt ?? null,
+      hoursUntilStale: temporaryProviderBackendProofHoursUntilStale,
+    },
+  ]);
 
   let status: NextActionPlan["status"] = "provider-parity-wait";
   let priority: NextActionPlan["priority"] = "P1";
@@ -292,6 +340,8 @@ function buildPlan(
     priority = "P2";
     reason = "Local MVP is ready and no provider P1 blockers are present, but final done was not declared.";
     recommendedAction = "Run manual internal Local MVP testing or final signoff review.";
+  } else if (nextWaitTrigger.kind && nextWaitTrigger.name) {
+    recommendedAction = `${recommendedAction} Next wait trigger: ${nextWaitTrigger.kind} '${nextWaitTrigger.name}' at ${nextWaitTrigger.staleAt ?? "unknown time"} (${nextWaitTrigger.hoursUntilStale ?? "unknown"} hours).`;
   }
 
   return {
@@ -310,7 +360,7 @@ function buildPlan(
       s23ProofNextStaleName: readinessState.s23ProofNextStaleName ?? null,
       s23ProofHoursUntilStale,
       providerPlanStatus: providerPlan?.status ?? null,
-      providerEvidenceHoursUntilStale: numberOrNull(providerPlan?.hoursUntilStale ?? readinessState.cachedProviderEvidenceHoursUntilStale),
+      providerEvidenceHoursUntilStale,
       temporaryProviderBackendProofReady,
       temporaryProviderBackendProofHoursUntilStale,
       readyToDeclareDone: dod?.readyToDeclareDone === true,
@@ -319,6 +369,7 @@ function buildPlan(
       temporaryProviderReady,
       temporaryProviderNeedsS23VisualProof,
       temporaryProviderEventSlug: oddsApiSummary?.mobile?.eventSlug ?? oddsApiMobileFlowProof?.mobile?.eventSlug ?? null,
+      nextWaitTrigger,
     },
   };
 }

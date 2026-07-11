@@ -23,6 +23,8 @@ describe("mobile autonomous next-action planner", () => {
     expect(script).toContain("the-odds-api-single-event");
     expect(script).toContain("single-event-summary.redacted.json");
     expect(script).toContain("temporarySportsbookBackendProofReady");
+    expect(script).toContain("nextWaitTrigger");
+    expect(script).toContain("earliestWaitTrigger");
     expect(script).toContain("samePlanIgnoringGeneratedAt");
     expect(script).toContain("stripGeneratedAt");
     expect(script).not.toContain("fetch(");
@@ -56,6 +58,102 @@ describe("mobile autonomous next-action planner", () => {
       expect(plan.state.temporaryProviderReady).toBe(true);
       expect(plan.state.temporaryProviderNeedsS23VisualProof).toBe(true);
       expect(plan.commands).toContain("npm run mobile:the-odds-api-s23-visible-flow");
+    } finally {
+      rmSync(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("records the earliest wait trigger when provider parity is waiting on fresh evidence", () => {
+    const tempDir = mkdtempSync(path.join(os.tmpdir(), "mobile-next-action-"));
+    const outputPath = path.join(tempDir, "plan.json");
+    const readinessPath = path.join(tempDir, "readiness.json");
+    const providerPlanPath = path.join(tempDir, "provider-plan.json");
+    const dodPath = path.join(tempDir, "dod.json");
+    const oddsSummaryPath = path.join(tempDir, "odds-summary.json");
+    const oddsFlowPath = path.join(tempDir, "odds-flow.json");
+    const reachabilityPath = path.join(tempDir, "reachability.json");
+    const visiblePath = path.join(tempDir, "visible.json");
+    const command = process.platform === "win32" ? "cmd.exe" : "npx";
+    const commandArgs = process.platform === "win32" ? ["/c", "npx"] : [];
+
+    try {
+      writeFileSync(
+        readinessPath,
+        JSON.stringify({
+          readiness: {
+            localMvpReadyForInternalTesting: true,
+            s23LocalMvpDeviceProofReady: true,
+            s23ProofNextStaleName: "filled-buy-history",
+            s23ProofNextStaleAt: "2026-07-12T22:00:00.000Z",
+            s23ProofHoursUntilStale: 24,
+            cachedProviderEvidenceFresh: true,
+            cachedProviderEvidenceNextStaleName: "provider-visible-tradable-flow",
+            cachedProviderEvidenceNextStaleAt: "2026-07-12T14:00:00.000Z",
+            cachedProviderEvidenceHoursUntilStale: 16,
+            temporarySportsbookBackendProofReady: true,
+            temporarySportsbookBackendProofNextStaleName: "sportsbook-mobile-fake-token-flow",
+            temporarySportsbookBackendProofNextStaleAt: "2026-07-12T21:30:00.000Z",
+            temporarySportsbookBackendProofHoursUntilStale: 23.5,
+          },
+          blockers: {
+            p0: [],
+            p1: ["provider_worldcup_match_books_unavailable_or_closed"],
+            p2: [],
+          },
+          recovery: { rerunBatchCommand: "npm run mobile:internal-readiness-batch" },
+        }),
+      );
+      writeFileSync(
+        providerPlanPath,
+        JSON.stringify({
+          status: "skip-refresh",
+          shouldRefreshProviderEvidence: false,
+          nextStaleName: "provider-visible-tradable-flow",
+          nextStaleAt: "2026-07-12T14:00:00.000Z",
+          hoursUntilStale: 16,
+        }),
+      );
+      writeFileSync(dodPath, JSON.stringify({ readyToDeclareDone: false, criteria: [{ id: "dod-provider-polymarket-parity", status: "partial" }] }));
+      writeFileSync(oddsSummaryPath, JSON.stringify({ pass: true, mobile: { sportsbookMarketCount: 1, eventSlug: "odds-api-single-soccer-test" } }));
+      writeFileSync(oddsFlowPath, JSON.stringify({ pass: true, checks: { fakeTokenOrderFilled: true, portfolioPositionVisible: true, historyTradeVisible: true } }));
+      writeFileSync(reachabilityPath, JSON.stringify({ pass: true, proofLimitations: [] }));
+      writeFileSync(visiblePath, JSON.stringify({ result: "pass", assertions: {
+        homeShowsTemporarySportsbookEvent: true,
+        detailShowsGameLines: true,
+        sportsbookSpreadLineVisible: true,
+        ticketPreservesSportsbookLineIdentity: true,
+        swipeSubmitReachedPortfolio: true,
+        portfolioPreservesSportsbookLineIdentity: true,
+        historyPreservesSportsbookLineIdentity: true,
+      } }));
+
+      execFileSync(
+        command,
+        [
+          ...commandArgs,
+          "tsx",
+          "scripts/plan_mobile_autonomous_next_action.ts",
+          `--output=${outputPath}`,
+          `--readinessSummaryPath=${readinessPath}`,
+          `--providerEvidencePlanPath=${providerPlanPath}`,
+          `--definitionOfDoneSweepPath=${dodPath}`,
+          `--oddsApiSingleEventSummaryPath=${oddsSummaryPath}`,
+          `--oddsApiMobileFlowProofPath=${oddsFlowPath}`,
+          `--oddsApiS23ReachabilityPath=${reachabilityPath}`,
+          `--oddsApiS23VisibleProofPath=${visiblePath}`,
+        ],
+        { encoding: "utf8" },
+      );
+
+      const plan = JSON.parse(readFileSync(outputPath, "utf8"));
+      expect(plan.status).toBe("provider-parity-wait");
+      expect(plan.state.nextWaitTrigger).toEqual({
+        kind: "provider-evidence",
+        name: "provider-visible-tradable-flow",
+        staleAt: "2026-07-12T14:00:00.000Z",
+        hoursUntilStale: 16,
+      });
+      expect(plan.recommendedAction).toContain("Next wait trigger: provider-evidence");
     } finally {
       rmSync(tempDir, { recursive: true, force: true });
     }
