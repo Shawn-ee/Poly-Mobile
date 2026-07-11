@@ -1,0 +1,88 @@
+{
+  "generatedAt": "2026-07-11T14:15:10.186Z",
+  "sourceSummaryPath": "docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json",
+  "refreshWindowHours": 2,
+  "providerDiscoveryMode": "cached",
+  "status": "skip-refresh",
+  "shouldRefreshProviderEvidence": false,
+  "reason": "Cached provider evidence is fresh and outside the refresh window.",
+  "providerRefreshCommand": "npm run mobile:internal-readiness-batch:provider-refresh",
+  "rerunBatchCommand": "npm run mobile:internal-readiness-batch",
+  "nextStaleName": "worldcup-match-scan",
+  "nextStaleAt": "2026-07-12T13:50:41.6680000Z",
+  "hoursUntilStale": 23.71,
+  "cachedProviderEvidenceFresh": true,
+  "providerBackedExchangeReady": false,
+  "providerMvpTradableFlowReady": false,
+  "providerBlockers": [
+    "provider_worldcup_match_books_unavailable_or_closed",
+    "provider_mvp_match_snapshot_not_mm_safe"
+  ],
+  "providerEvidence": [
+    {
+      "name": "provider-snapshot-refresh",
+      "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-snapshot-refresh.json",
+      "generatedAt": "2026-07-11T13:50:17.866Z",
+      "ageHours": 0.3,
+      "maxAgeHours": 24,
+      "staleAt": "2026-07-12T13:50:17.8660000Z",
+      "hoursUntilStale": 23.7,
+      "fresh": true,
+      "present": true
+    },
+    {
+      "name": "internal-exchange-readiness",
+      "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.json",
+      "generatedAt": "2026-07-11T13:50:19.555Z",
+      "ageHours": 0.3,
+      "maxAgeHours": 24,
+      "staleAt": "2026-07-12T13:50:19.5550000Z",
+      "hoursUntilStale": 23.7,
+      "fresh": true,
+      "present": true
+    },
+    {
+      "name": "provider-visible-tradable-flow",
+      "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json",
+      "generatedAt": "2026-07-11T13:50:21.274Z",
+      "ageHours": 0.3,
+      "maxAgeHours": 24,
+      "staleAt": "2026-07-12T13:50:21.2740000Z",
+      "hoursUntilStale": 23.7,
+      "fresh": true,
+      "present": true
+    },
+    {
+      "name": "worldcup-match-scan",
+      "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-event-scan.json",
+      "generatedAt": "2026-07-11T13:50:41.668Z",
+      "ageHours": 0.29,
+      "maxAgeHours": 24,
+      "staleAt": "2026-07-12T13:50:41.6680000Z",
+      "hoursUntilStale": 23.71,
+      "fresh": true,
+      "present": true
+    },
+    {
+      "name": "provider-line-scan",
+      "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-line-breadth-scan.json",
+      "generatedAt": "2026-07-11T13:52:22.453Z",
+      "ageHours": 0.26,
+      "maxAgeHours": 24,
+      "staleAt": "2026-07-12T13:52:22.4530000Z",
+      "hoursUntilStale": 23.74,
+      "fresh": true,
+      "present": true
+    }
+  ],
+  "providerEvidenceCounts": {
+    "worldCupTeamMatchEventCount": 422,
+    "usableWorldCupTeamMatchEventCount": 0,
+    "attachReadyProviderLineCandidateCount": 0
+  },
+  "nextActions": [
+    "Skip provider refresh for this loop pass.",
+    "Continue Local MVP testing or wait until the next provider evidence stale time before rerunning provider discovery.",
+    "Do not open new provider scans unless a real candidate signal appears."
+  ]
+}
