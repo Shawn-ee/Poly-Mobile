@@ -12613,3 +12613,15 @@ Known limitations:
 - State transitions: unchanged. The selected Totals line/outcome/source identity travels through ticket submission and Portfolio History using existing order/selection snapshot behavior.
 - Proof: S23 proof passed on `SM-S911U1`; summary `docs/mobile/harness/cycle-WF-line-family-s23-proof/cycle-WF-current-mvp-s23-visible-flow.json` reports `lineMarketGroupKey=totals`, `lineValue=2.5`, `lineOutcomeLabel=Over 2.5`, `filledHistoryVisible=true`, and `ticketPreservesLine=true`.
 - Known limitations: Team Totals still needs the same Android end-to-end proof. Real provider-backed Spread/Totals/Team Total current-match rows remain unavailable from Polymarket source data.
+
+# Cycle WG - Team Totals S23 Proof
+
+- Feature/page worked on: Event Detail Team Totals line-market proof coverage for the Local MVP retail flow.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+  - `src/server/services/__tests__/mobile.localMvpLiquidityHarness.contract.test.ts`
+- User interactions supported: the S23 proof harness now targets the Team Totals row prefix and proves Home -> Event Detail -> Team Total Goals `Argentina Over 1.5` -> Trade Ticket -> fake-token order -> Portfolio History.
+- State transitions: unchanged. The selected Team Totals line/outcome/source identity travels through ticket submission and Portfolio History using existing order/selection snapshot behavior.
+- Proof: S23 proof passed on `SM-S911U1`; summary `docs/mobile/harness/cycle-WG-team-total-s23-proof/cycle-WG-current-mvp-s23-visible-flow.json` reports `lineMarketGroupKey=team-totals`, `lineMarketType=team-total`, `lineValue=1.5`, `lineOutcomeLabel=Argentina Over 1.5`, `filledHistoryVisible=true`, and `ticketPreservesLine=true`.
+- Known limitations: real provider-backed Spread/Totals/Team Total current-match rows remain unavailable from Polymarket source data.

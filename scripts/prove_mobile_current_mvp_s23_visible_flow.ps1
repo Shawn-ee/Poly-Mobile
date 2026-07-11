@@ -11,6 +11,7 @@ param(
   [string]$LineValue = "1.5",
   [string]$LineOutcomeSide = "away",
   [string]$LineOutcomeLabel = "Egypt +1.5",
+  [string]$LineTapPrefix = "",
   [string]$Cycle = "MB",
   [string]$OutputDir = "docs\mobile\screenshots\cycle-MB-current-mvp-s23-visible-flow",
   [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-MB-current-mvp-s23-visible-flow",
@@ -477,7 +478,7 @@ try {
   $lineSelectionTypeLabel = "selection-market-type-$LineMarketType"
   $lineSelectionLineLabel = "selection-line-$LineValue"
   $lineSelectionSideLabel = "selection-side-$LineOutcomeSide"
-  $lineTapPrefix = "event-detail-outcome-$LineMarketGroupKey-"
+  $lineTapPrefix = if ($LineTapPrefix) { $LineTapPrefix } else { "event-detail-outcome-$LineMarketGroupKey-" }
   for ($attempt = 1; $attempt -le 5; $attempt++) {
     & $adb -s $Device shell input swipe 540 2100 540 760 450 | Out-Null
     Start-Sleep -Seconds 1
@@ -671,6 +672,7 @@ try {
     lineValue = $LineValue
     lineOutcomeSide = $LineOutcomeSide
     lineOutcomeLabel = $LineOutcomeLabel
+    lineTapPrefix = $lineTapPrefix
     seededCounterparty = [bool]$SeedCounterparty
     counterpartyProof = if ($SeedCounterparty) { $counterpartyProofPath } else { $null }
     cleanupProof = if ($expectOpenOrderState) { $cleanupProofPath } else { $null }

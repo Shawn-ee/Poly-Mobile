@@ -7731,6 +7731,14 @@ P1/P2 gaps:
 - P1: Update `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1` so cashout-branch proofs set `filledPositionVisible=true`.
 - P2: Optional backfill for older positions/trades without direct snapshots.
 - P1: Real provider-backed Spread/Totals/Team Total current-match line rows remain unavailable and unchanged.
+# Cycle WG - Team Totals S23 Proof
+
+- Result: pass.
+- Scope: S23 proof harness and evidence for visible Team Totals line-market order flow.
+- Audit Gate: the current Local MVP proof now targets Team Total Goals `Argentina Over 1.5`, opens the ticket, submits a fake-token order, and verifies Portfolio History preserves the selected team-total line/source/outcome.
+- Evidence: `docs/mobile/harness/cycle-WG-team-total-s23-proof/cycle-WG-current-mvp-s23-visible-flow.json`.
+- Remaining P1: real provider-backed line-market availability from Polymarket source data.
+
 # Cycle WF - Line Family S23 Proof
 
 - Result: pass.
