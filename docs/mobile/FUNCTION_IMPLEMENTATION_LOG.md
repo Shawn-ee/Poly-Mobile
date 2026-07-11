@@ -2,6 +2,28 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ODDSREPLAYAUDIT - Odds API Replay Audit Preservation
+
+- Feature/page worked on: temporary sportsbook provider proof replay and audit evidence for the Local MVP provider bridge.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/seed_the_odds_api_single_event.ts`
+  - `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+  - `docs/mobile/audits/BATCH_THE_ODDS_API_SINGLE_EVENT.md`
+  - `docs/mobile/harness/the-odds-api-single-event/single-event-replay-summary.redacted.json`
+- User interactions supported: unchanged. This protects the existing Home -> Event Detail -> sportsbook line -> ticket -> fake-token order -> Portfolio/history bridge from losing audit evidence when the no-quota replay path is used.
+- State transitions:
+  - Replay mode now reuses `available-markets.redacted.json` so the audit does not collapse available market keys to `none`.
+  - Replay mode records existing S23 proof summary metadata when the ODDSAPIS23 visible flow has passed.
+  - Audit result notes now distinguish no-quota replay evidence, live-key refresh header evidence, backend fake-token flow evidence, and S23 visible proof evidence.
+- Proof:
+  - `npx jest --runInBand src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+  - `npm run mobile:the-odds-api-single-event -- --fromRedactedOdds=docs/mobile/harness/the-odds-api-single-event/event-odds.redacted.json`
+  - `npm run mobile:the-odds-api-single-event-flow`
+  - `npx tsc --noEmit --pretty false --incremental false`
+- Known limitations:
+  - This is harness/audit hardening only. It does not spend provider quota, add markets, or close Polymarket-backed provider parity.
+
 ## Cycle ODDSAPIPLAN - Temporary Provider Next-Action Planning
 
 - Feature/page worked on: autonomous loop steering after the The Odds API single-event provider bridge.

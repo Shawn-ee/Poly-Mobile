@@ -9883,6 +9883,14 @@ Future migration concern:
 - Temporary mock/static data: the S23 proof still uses contract-shaped fake-token spread liquidity for the filled order and Portfolio History proof.
 - Future migration concern: when provider-backed line rows are attached, the same Live/Event Detail/Ticket/Portfolio proof should pass with provider source identity instead of `contract-fixture` source identity.
 
+## Cycle ODDSREPLAYAUDIT - Odds API Replay Audit Preservation
+
+- Closed or narrowed: no-quota sportsbook replay evidence now preserves available market keys, selected/imported market keys, and the existing S23 proof pointer instead of downgrading the audit to `Available market keys: none`.
+- Route mismatch: none. This cycle changes local harness/audit behavior only.
+- Fields Holiwyn still needs but backend/provider does not fully provide: real Polymarket-backed World Cup match and line markets with stable provider event, market, outcome, token, price, and accepting-order identity.
+- Temporary mock/static data: no new fixture data was added. Replay continues to use `event-odds.redacted.json` and existing ODDSAPIS23 proof artifacts, with no provider API calls.
+- Future migration concern: keep replayed `sportsbook-odds` evidence useful for internal testing while preventing it from satisfying `referenceSource=polymarket` parity gates.
+
 ## Cycle XH - Open Order Cancel S23 Flow
 
 - Closed or narrowed: Local MVP open-order cancel is now re-proven on S23 after the Home/Live match-breadth changes.
