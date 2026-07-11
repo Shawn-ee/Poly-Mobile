@@ -1,102 +1,100 @@
-﻿{
-    "generatedAt":  "2026-07-11T07:12:10.0887848Z",
-    "scope":  "mobile-internal-readiness-batch",
-    "cycle":  "BATCHREADINESS",
-    "backendBaseUrl":  "http://127.0.0.1:3002",
-    "outputDir":  "docs/mobile/harness/batch-internal-readiness-latest",
-    "steps":  [
-                  {
-                      "name":  "backend-readiness",
-                      "command":  "powershell -ExecutionPolicy Bypass -File scripts\\mobile_backend_readiness.ps1 -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/mobile-backend-readiness.json\"",
-                      "exitCode":  0,
-                      "allowedNonZero":  false,
-                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/mobile-backend-readiness.json",
-                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/backend-readiness.stdout.log",
-                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/backend-readiness.stderr.log",
-                      "producedJson":  true
-                  },
-                  {
-                      "name":  "credential-readiness",
-                      "command":  "powershell -ExecutionPolicy Bypass -File scripts\\mobile_credential_readiness.ps1 -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/mobile-credential-readiness.json\"",
-                      "exitCode":  0,
-                      "allowedNonZero":  true,
-                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/mobile-credential-readiness.json",
-                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/credential-readiness.stdout.log",
-                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/credential-readiness.stderr.log",
-                      "producedJson":  true
-                  },
-                  {
-                      "name":  "current-state",
-                      "command":  "npx.cmd tsx scripts/inspect_mobile_mvp_current_state.ts --baseUrl=http://127.0.0.1:3002 --summaryPath=\"docs/mobile/harness/batch-internal-readiness-latest/mobile-current-state-inspection.json\" --cycle=BATCHREADINESS",
-                      "exitCode":  0,
-                      "allowedNonZero":  false,
-                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/mobile-current-state-inspection.json",
-                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/current-state.stdout.log",
-                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/current-state.stderr.log",
-                      "producedJson":  true
-                  },
-                  {
-                      "name":  "internal-exchange-readiness",
-                      "command":  "npm.cmd run poly:internal-exchange-readiness -- --summaryPath \"docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.json\"",
-                      "exitCode":  1,
-                      "allowedNonZero":  true,
-                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.json",
-                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.stdout.log",
-                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.stderr.log",
-                      "producedJson":  true
-                  },
-                  {
-                      "name":  "worldcup-match-scan",
-                      "command":  "npm.cmd run inspect:polymarket-worldcup-matches -- --output \"docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-event-scan.json\"",
-                      "exitCode":  0,
-                      "allowedNonZero":  false,
-                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-event-scan.json",
-                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-scan.stdout.log",
-                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-scan.stderr.log",
-                      "producedJson":  true
-                  },
-                  {
-                      "name":  "provider-line-scan",
-                      "command":  "npm.cmd run mobile:provider-line-breadth-scan -- --summaryPath=\"docs/mobile/harness/batch-internal-readiness-latest/provider-line-breadth-scan.json\" --cycle=BATCHREADINESS",
-                      "exitCode":  0,
-                      "allowedNonZero":  false,
-                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/provider-line-breadth-scan.json",
-                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/provider-line-scan.stdout.log",
-                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/provider-line-scan.stderr.log",
-                      "producedJson":  true
-                  }
-              ],
-    "readiness":  {
-                      "localMvpReadyForInternalTesting":  true,
-                      "providerBackedExchangeReady":  false,
-                      "backendReady":  true,
-                      "currentRouteLocalMvpReady":  true,
-                      "mobileCredentialCanBeCreated":  true,
-                      "ambientApiKeyReadyForManualServerMode":  false,
-                      "serverModeApiKeySource":  "local-runtime-env",
-                      "localRuntimeEnvReadyForManualServerMode":  true,
-                      "mobileVisibleEventCount":  1,
-                      "providerVisibleMarketCount":  3,
-                      "providerLocalMmReadyMarketCount":  0,
-                      "providerBooksUnavailableOrClosed":  true,
-                      "usableWorldCupTeamMatchEventCount":  0,
-                      "attachReadyProviderLineCandidateCount":  0
-                  },
-    "blockers":  {
-                     "p0":  [
-
-                            ],
-                     "p1":  [
-                                "provider_worldcup_match_books_unavailable_or_closed",
-                                "no_usable_polymarket_worldcup_team_match_books",
-                                "no_attach_ready_polymarket_worldcup_line_markets"
-                            ]
-                 },
-    "interpretation":  "Local MVP fake-token flow is ready for internal testing; provider-backed breadth/line/MM readiness remains tracked P1 debt.",
-    "nextActions":  [
-                        "For internal user-flow testing, keep using Home -\u003e Event Detail -\u003e contract-shaped line market -\u003e Trade Ticket -\u003e fake-token order -\u003e Portfolio/history.",
-                        "Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.",
-                        "Re-run this batch after provider imports, provider refresh, or line-market discovery changes.",
-                        "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token."
-                    ]
+{
+  "generatedAt": "2026-07-11T07:31:10.4754909Z",
+  "scope": "mobile-internal-readiness-batch",
+  "cycle": "BATCHREADINESS",
+  "backendBaseUrl": "http://127.0.0.1:3002",
+  "outputDir": "docs/mobile/harness/batch-internal-readiness-latest",
+  "steps": [
+    {
+      "name": "backend-readiness",
+      "command": "powershell -ExecutionPolicy Bypass -File scripts\\mobile_backend_readiness.ps1 -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/mobile-backend-readiness.json\"",
+      "exitCode": 0,
+      "allowedNonZero": false,
+      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/mobile-backend-readiness.json",
+      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/backend-readiness.stdout.log",
+      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/backend-readiness.stderr.log",
+      "producedJson": true
+    },
+    {
+      "name": "credential-readiness",
+      "command": "powershell -ExecutionPolicy Bypass -File scripts\\mobile_credential_readiness.ps1 -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/mobile-credential-readiness.json\"",
+      "exitCode": 0,
+      "allowedNonZero": true,
+      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/mobile-credential-readiness.json",
+      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/credential-readiness.stdout.log",
+      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/credential-readiness.stderr.log",
+      "producedJson": true
+    },
+    {
+      "name": "current-state",
+      "command": "npx.cmd tsx scripts/inspect_mobile_mvp_current_state.ts --baseUrl=http://127.0.0.1:3002 --summaryPath=\"docs/mobile/harness/batch-internal-readiness-latest/mobile-current-state-inspection.json\" --cycle=BATCHREADINESS",
+      "exitCode": 0,
+      "allowedNonZero": false,
+      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/mobile-current-state-inspection.json",
+      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/current-state.stdout.log",
+      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/current-state.stderr.log",
+      "producedJson": true
+    },
+    {
+      "name": "internal-exchange-readiness",
+      "command": "npm.cmd run poly:internal-exchange-readiness -- --summaryPath \"docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.json\"",
+      "exitCode": 1,
+      "allowedNonZero": true,
+      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.json",
+      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.stdout.log",
+      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.stderr.log",
+      "producedJson": true
+    },
+    {
+      "name": "worldcup-match-scan",
+      "command": "npm.cmd run inspect:polymarket-worldcup-matches -- --output \"docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-event-scan.json\"",
+      "exitCode": 0,
+      "allowedNonZero": false,
+      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-event-scan.json",
+      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-scan.stdout.log",
+      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-scan.stderr.log",
+      "producedJson": true
+    },
+    {
+      "name": "provider-line-scan",
+      "command": "npm.cmd run mobile:provider-line-breadth-scan -- --summaryPath=\"docs/mobile/harness/batch-internal-readiness-latest/provider-line-breadth-scan.json\" --cycle=BATCHREADINESS",
+      "exitCode": 0,
+      "allowedNonZero": false,
+      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-line-breadth-scan.json",
+      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-line-scan.stdout.log",
+      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-line-scan.stderr.log",
+      "producedJson": true
+    }
+  ],
+  "readiness": {
+    "localMvpReadyForInternalTesting": true,
+    "providerBackedExchangeReady": false,
+    "backendReady": true,
+    "currentRouteLocalMvpReady": true,
+    "mobileCredentialCanBeCreated": true,
+    "ambientApiKeyReadyForManualServerMode": false,
+    "serverModeApiKeySource": "local-runtime-env",
+    "localRuntimeEnvReadyForManualServerMode": true,
+    "mobileVisibleEventCount": 1,
+    "providerVisibleMarketCount": 3,
+    "providerLocalMmReadyMarketCount": 0,
+    "providerBooksUnavailableOrClosed": true,
+    "usableWorldCupTeamMatchEventCount": 0,
+    "attachReadyProviderLineCandidateCount": 0
+  },
+  "blockers": {
+    "p0": [],
+    "p1": [
+      "provider_worldcup_match_books_unavailable_or_closed",
+      "no_usable_polymarket_worldcup_team_match_books",
+      "no_attach_ready_polymarket_worldcup_line_markets"
+    ]
+  },
+  "interpretation": "Local MVP fake-token flow is ready for internal testing; provider-backed breadth/line/MM readiness remains tracked P1 debt.",
+  "nextActions": [
+    "For internal user-flow testing, keep using Home -> Event Detail -> contract-shaped line market -> Trade Ticket -> fake-token order -> Portfolio/history.",
+    "Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.",
+    "Re-run this batch after provider imports, provider refresh, or line-market discovery changes.",
+    "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token."
+  ]
 }

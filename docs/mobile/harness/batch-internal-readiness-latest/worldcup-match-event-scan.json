@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T07:11:06.498Z",
+  "generatedAt": "2026-07-11T07:30:06.140Z",
   "source": "gamma-api.polymarket.com/events",
   "readOnly": true,
   "scope": "world-cup-match-only-provider-breadth",
@@ -26,7 +26,7 @@
     "matchEventCount": 4,
     "usableMatchEventCount": 0,
     "futuresEventCount": 35,
-    "nonWorldCupOrPropUsableCount": 125,
+    "nonWorldCupOrPropUsableCount": 124,
     "pass": false
   },
   "usableMatchEvents": [],
@@ -373,7 +373,7 @@
         "playerPropLike": true,
         "futuresLike": true,
         "marketCount": 40,
-        "usableMarketCount": 20,
+        "usableMarketCount": 19,
         "acceptingOrderMarketCount": 40,
         "sampleUsableMarket": {
           "slug": "will-josh-allen-win-the-2026-nfl-mvp",
@@ -545,9 +545,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.073,
+          "bestBid": 0.089,
           "bestAsk": 0.109,
-          "spread": 0.036,
+          "spread": 0.02,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -715,8 +715,8 @@
           "outcomeCount": 2,
           "tokenCount": 2,
           "bestBid": 0.5,
-          "bestAsk": 0.51,
-          "spread": 0.01,
+          "bestAsk": 0.52,
+          "spread": 0.02,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -769,7 +769,7 @@
         "playerPropLike": true,
         "futuresLike": true,
         "marketCount": 40,
-        "usableMarketCount": 20,
+        "usableMarketCount": 19,
         "acceptingOrderMarketCount": 40,
         "sampleUsableMarket": {
           "slug": "will-josh-allen-win-the-2026-nfl-mvp",
@@ -966,20 +966,20 @@
         "playerPropLike": false,
         "futuresLike": false,
         "marketCount": 17,
-        "usableMarketCount": 15,
+        "usableMarketCount": 14,
         "acceptingOrderMarketCount": 17,
         "sampleUsableMarket": {
-          "slug": "will-dallas-cowboys-win-the-2027-nfl-nfc-championship-584",
-          "question": "Will Dallas Cowboys win the 2027 NFL NFC Championship?",
+          "slug": "will-new-york-giants-win-the-2027-nfl-nfc-championship-866",
+          "question": "Will New York Giants win the 2027 NFL NFC Championship?",
           "acceptingOrders": true,
           "active": true,
           "closed": false,
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.044,
-          "bestAsk": 0.098,
-          "spread": 0.054,
+          "bestBid": 0.026,
+          "bestAsk": 0.101,
+          "spread": 0.075,
           "usableBook": true,
           "rejectionReasons": []
         }
