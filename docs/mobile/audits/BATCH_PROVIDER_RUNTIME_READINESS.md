@@ -52,3 +52,4 @@ This is not a blocker for internal Local MVP fixture-line testing because the pr
 3. Re-run `scripts/check_poly_internal_exchange_readiness.ts`.
 4. Only seed/enable bot liquidity when at least one provider market reports no snapshot blockers.
 
+Follow-up result: `docs/mobile/audits/BATCH_PROVIDER_MATCH_BREADTH.md` adds a match-only scanner and confirms the currently scanned World Cup team-match events still have zero usable accepting-order provider books. Do not satisfy match breadth with World Cup Winner futures or player props.

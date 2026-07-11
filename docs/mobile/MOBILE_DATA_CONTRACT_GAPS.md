@@ -9627,3 +9627,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: at least one match-only Polymarket-backed market with fresh, accepting-order, non-edge best bid/ask data suitable for local MM seeding.
 - Temporary mock/static data: none added. The Local MVP fixture-line path remains the intentional fallback for internal testing.
 - Future migration concern: do not mark provider-backed local MM ready until `ReferenceQuoteSnapshot` rows have no snapshot blockers and bot initialization metadata is seeded for an allowlisted market.
+
+# Batch Provider Match Breadth Notes
+
+- Closed or narrowed: the loop now has a read-only scanner that separates World Cup team-match events from off-scope futures, awards, player H2H props, and non-World-Cup soccer matches.
+- Route mismatch: none. No mobile route contract changed in this batch.
+- Fields Holiwyn still needs but backend does not fully provide: active World Cup team-match provider events with accepting-order, non-edge best bid/ask books.
+- Temporary mock/static data: none added. The batch explicitly avoids using futures/player props as fake match breadth.
+- Future migration concern: when `usableMatchEventCount > 0`, import only those team-match provider slugs and rerun snapshot/internal-exchange readiness before exposing them as provider-backed tradable matches.

@@ -12710,3 +12710,21 @@ Known limitations:
 - Known limitations:
   - Current provider-backed Regulation Winner rows are visible but not ready for local MM.
   - Local MVP fake-token testing remains supported through contract-shaped line markets and proof-seeded liquidity.
+
+# Batch Provider Match Breadth
+
+- Feature/page worked on: read-only provider discovery gate for World Cup team-match breadth.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/scan_polymarket_worldcup_match_events.ts`
+  - `package.json`
+- User interactions supported: unchanged. This batch prevents the loop from treating off-scope futures/props as valid Home/Event Detail match breadth.
+- State transitions:
+  - No database rows were imported or modified.
+  - The scanner fetches Polymarket Gamma events by sports/World Cup tags and exact known match slugs, classifies team-match events, excludes futures/player props, and records provider book usability.
+- Proof:
+  - `npm run inspect:polymarket-worldcup-matches -- --output docs/mobile/harness/batch-provider-match-breadth/worldcup-match-event-scan.json`
+  - Result: 193 events inspected, 4 World Cup team-match events, 0 usable World Cup team-match events.
+- Known limitations:
+  - The scan is only as current as Polymarket Gamma at run time. Re-run it when new World Cup match events appear.
+  - This batch intentionally does not import futures, awards, player H2H props, or non-World-Cup matches.

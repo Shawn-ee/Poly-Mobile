@@ -1,0 +1,1021 @@
+{
+  "generatedAt": "2026-07-11T06:15:03.285Z",
+  "source": "gamma-api.polymarket.com/events",
+  "readOnly": true,
+  "scope": "world-cup-match-only-provider-breadth",
+  "inputs": {
+    "tagSlugs": [
+      "soccer",
+      "football",
+      "world-cup",
+      "fifa-world-cup",
+      "sports"
+    ],
+    "eventSlugs": [
+      "fifwc-arg-egy-2026-07-07",
+      "fifwc-col-gha-2026-07-03",
+      "fifwc-che-col-2026-07-07",
+      "fifwc-bra-nor-2026-07-05",
+      "fifwc-par-fra-2026-07-05",
+      "fifwc-can-mar-2026-07-05"
+    ],
+    "limit": 50
+  },
+  "summary": {
+    "eventsInspected": 193,
+    "matchEventCount": 4,
+    "usableMatchEventCount": 0,
+    "futuresEventCount": 35,
+    "nonWorldCupOrPropUsableCount": 128,
+    "pass": false
+  },
+  "usableMatchEvents": [],
+  "matchEvents": [
+    {
+      "slug": "fifwc-arg-egy-2026-07-07",
+      "title": "Argentina vs. Egypt",
+      "category": null,
+      "tags": [
+        "sports",
+        "games",
+        "soccer",
+        "fifa-world-cup"
+      ],
+      "active": true,
+      "closed": true,
+      "archived": false,
+      "matchLike": true,
+      "worldCupRelevant": true,
+      "playerPropLike": false,
+      "futuresLike": false,
+      "marketCount": 3,
+      "usableMarketCount": 0,
+      "acceptingOrderMarketCount": 0,
+      "usableMarkets": [],
+      "sampleRejectedMarkets": [
+        {
+          "slug": "fifwc-arg-egy-2026-07-07-arg",
+          "question": "Will Argentina win on 2026-07-07?",
+          "acceptingOrders": false,
+          "active": true,
+          "closed": true,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.999,
+          "bestAsk": 1,
+          "spread": 0.001,
+          "usableBook": false,
+          "rejectionReasons": [
+            "closed",
+            "not_accepting_orders",
+            "best_ask_too_high"
+          ]
+        },
+        {
+          "slug": "fifwc-arg-egy-2026-07-07-draw",
+          "question": "Will Argentina vs. Egypt end in a draw?",
+          "acceptingOrders": false,
+          "active": true,
+          "closed": true,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": null,
+          "bestAsk": 0.001,
+          "spread": 0.001,
+          "usableBook": false,
+          "rejectionReasons": [
+            "closed",
+            "not_accepting_orders",
+            "missing_best_bid"
+          ]
+        },
+        {
+          "slug": "fifwc-arg-egy-2026-07-07-egy",
+          "question": "Will Egypt win on 2026-07-07?",
+          "acceptingOrders": false,
+          "active": true,
+          "closed": true,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": null,
+          "bestAsk": 0.001,
+          "spread": 0.001,
+          "usableBook": false,
+          "rejectionReasons": [
+            "closed",
+            "not_accepting_orders",
+            "missing_best_bid"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "fifwc-bra-nor-2026-07-05",
+      "title": "Brazil vs. Norway",
+      "category": null,
+      "tags": [
+        "sports",
+        "games",
+        "soccer",
+        "fifa-world-cup"
+      ],
+      "active": true,
+      "closed": true,
+      "archived": false,
+      "matchLike": true,
+      "worldCupRelevant": true,
+      "playerPropLike": false,
+      "futuresLike": false,
+      "marketCount": 3,
+      "usableMarketCount": 0,
+      "acceptingOrderMarketCount": 0,
+      "usableMarkets": [],
+      "sampleRejectedMarkets": [
+        {
+          "slug": "fifwc-bra-nor-2026-07-05-bra",
+          "question": "Will Brazil win on 2026-07-05?",
+          "acceptingOrders": false,
+          "active": true,
+          "closed": true,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": null,
+          "bestAsk": 0.001,
+          "spread": 0.001,
+          "usableBook": false,
+          "rejectionReasons": [
+            "closed",
+            "not_accepting_orders",
+            "missing_best_bid"
+          ]
+        },
+        {
+          "slug": "fifwc-bra-nor-2026-07-05-draw",
+          "question": "Will Brazil vs. Norway end in a draw?",
+          "acceptingOrders": false,
+          "active": true,
+          "closed": true,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": null,
+          "bestAsk": 0.001,
+          "spread": 0.001,
+          "usableBook": false,
+          "rejectionReasons": [
+            "closed",
+            "not_accepting_orders",
+            "missing_best_bid"
+          ]
+        },
+        {
+          "slug": "fifwc-bra-nor-2026-07-05-nor",
+          "question": "Will Norway win on 2026-07-05?",
+          "acceptingOrders": false,
+          "active": true,
+          "closed": true,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.999,
+          "bestAsk": 1,
+          "spread": 0.001,
+          "usableBook": false,
+          "rejectionReasons": [
+            "closed",
+            "not_accepting_orders",
+            "best_ask_too_high"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "fifwc-col-gha-2026-07-03",
+      "title": "Colombia vs. Ghana",
+      "category": null,
+      "tags": [
+        "sports",
+        "games",
+        "soccer",
+        "fifa-world-cup"
+      ],
+      "active": true,
+      "closed": true,
+      "archived": false,
+      "matchLike": true,
+      "worldCupRelevant": true,
+      "playerPropLike": false,
+      "futuresLike": false,
+      "marketCount": 3,
+      "usableMarketCount": 0,
+      "acceptingOrderMarketCount": 0,
+      "usableMarkets": [],
+      "sampleRejectedMarkets": [
+        {
+          "slug": "fifwc-col-gha-2026-07-03-col",
+          "question": "Will Colombia win on 2026-07-03?",
+          "acceptingOrders": false,
+          "active": true,
+          "closed": true,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.999,
+          "bestAsk": 1,
+          "spread": 0.001,
+          "usableBook": false,
+          "rejectionReasons": [
+            "closed",
+            "not_accepting_orders",
+            "best_ask_too_high"
+          ]
+        },
+        {
+          "slug": "fifwc-col-gha-2026-07-03-draw",
+          "question": "Will Colombia vs. Ghana end in a draw?",
+          "acceptingOrders": false,
+          "active": true,
+          "closed": true,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": null,
+          "bestAsk": 0.001,
+          "spread": 0.001,
+          "usableBook": false,
+          "rejectionReasons": [
+            "closed",
+            "not_accepting_orders",
+            "missing_best_bid"
+          ]
+        },
+        {
+          "slug": "fifwc-col-gha-2026-07-03-gha",
+          "question": "Will Ghana win on 2026-07-03?",
+          "acceptingOrders": false,
+          "active": true,
+          "closed": true,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": null,
+          "bestAsk": 0.001,
+          "spread": 0.001,
+          "usableBook": false,
+          "rejectionReasons": [
+            "closed",
+            "not_accepting_orders",
+            "missing_best_bid"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "fifwc-che-col-2026-07-07",
+      "title": "Switzerland vs. Colombia",
+      "category": null,
+      "tags": [
+        "sports",
+        "games",
+        "soccer",
+        "fifa-world-cup"
+      ],
+      "active": true,
+      "closed": true,
+      "archived": false,
+      "matchLike": true,
+      "worldCupRelevant": true,
+      "playerPropLike": false,
+      "futuresLike": false,
+      "marketCount": 3,
+      "usableMarketCount": 0,
+      "acceptingOrderMarketCount": 0,
+      "usableMarkets": [],
+      "sampleRejectedMarkets": [
+        {
+          "slug": "fifwc-che-col-2026-07-07-che",
+          "question": "Will Switzerland win on 2026-07-07?",
+          "acceptingOrders": false,
+          "active": true,
+          "closed": true,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": null,
+          "bestAsk": 0.001,
+          "spread": 0.001,
+          "usableBook": false,
+          "rejectionReasons": [
+            "closed",
+            "not_accepting_orders",
+            "missing_best_bid"
+          ]
+        },
+        {
+          "slug": "fifwc-che-col-2026-07-07-draw",
+          "question": "Will Switzerland vs. Colombia end in a draw?",
+          "acceptingOrders": false,
+          "active": true,
+          "closed": true,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.999,
+          "bestAsk": 1,
+          "spread": 0.001,
+          "usableBook": false,
+          "rejectionReasons": [
+            "closed",
+            "not_accepting_orders",
+            "best_ask_too_high"
+          ]
+        },
+        {
+          "slug": "fifwc-che-col-2026-07-07-col",
+          "question": "Will Colombia win on 2026-07-07?",
+          "acceptingOrders": false,
+          "active": true,
+          "closed": true,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": null,
+          "bestAsk": 0.001,
+          "spread": 0.001,
+          "usableBook": false,
+          "rejectionReasons": [
+            "closed",
+            "not_accepting_orders",
+            "missing_best_bid"
+          ]
+        }
+      ]
+    }
+  ],
+  "diagnostics": {
+    "futuresEvents": [
+      {
+        "slug": "pro-football-2026-mvp-winner",
+        "title": "Pro Football: 2026 MVP Winner",
+        "tags": [
+          "nfl",
+          "mvp",
+          "football",
+          "awards",
+          "nfl-awards"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 40,
+        "usableMarketCount": 19,
+        "acceptingOrderMarketCount": 40,
+        "sampleUsableMarket": {
+          "slug": "will-josh-allen-win-the-2026-nfl-mvp",
+          "question": "Will Josh Allen win the 2026 NFL MVP?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.14,
+          "bestAsk": 0.15,
+          "spread": 0.01,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "2026-womens-us-open-winner-tennis",
+        "title": "2026 Women’s US Open Winner (Tennis)",
+        "tags": [
+          "sports",
+          "wta",
+          "tennis"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 67,
+        "usableMarketCount": 17,
+        "acceptingOrderMarketCount": 67,
+        "sampleUsableMarket": {
+          "slug": "will-aryna-sabalenka-win-the-2026-womens-us-open",
+          "question": "Will Aryna Sabalenka win the 2026 Women’s US Open?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.22,
+          "bestAsk": 0.23,
+          "spread": 0.01,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "mls-cup-winner-2026",
+        "title": "MLS Cup Winner 2026",
+        "tags": [
+          "mls",
+          "sports",
+          "soccer"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": false,
+        "futuresLike": true,
+        "marketCount": 31,
+        "usableMarketCount": 17,
+        "acceptingOrderMarketCount": 31,
+        "sampleUsableMarket": {
+          "slug": "will-charlotte-fc-win-the-2026-mls-cup",
+          "question": "Will Charlotte FC win the 2026 MLS Cup?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.013,
+          "bestAsk": 0.014,
+          "spread": 0.001,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "2026-mens-us-open-winner-tennis",
+        "title": "2026 Men’s US Open Winner (Tennis)",
+        "tags": [
+          "sports",
+          "atp",
+          "tennis"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 49,
+        "usableMarketCount": 13,
+        "acceptingOrderMarketCount": 49,
+        "sampleUsableMarket": {
+          "slug": "will-jannik-sinner-win-the-2026-mens-us-open",
+          "question": "Will Jannik Sinner win the 2026 Men's US Open?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.46,
+          "bestAsk": 0.48,
+          "spread": 0.02,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "world-cup-silver-ball-winner-20260603194459107",
+        "title": "World Cup: Silver Ball Winner",
+        "tags": [
+          "soccer",
+          "sports",
+          "silver-ball",
+          "fifa-world-cup",
+          "2026-fifa-world-cup",
+          "world-cup-awards"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": true,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 41,
+        "usableMarketCount": 11,
+        "acceptingOrderMarketCount": 41,
+        "sampleUsableMarket": {
+          "slug": "will-kylian-mbappe-win-the-silver-ball-at-the-2026-fifa-world-cup-20260603194503872",
+          "question": "Will Kylian Mbappé win the Silver Ball at the 2026 FIFA World Cup?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.188,
+          "bestAsk": 0.193,
+          "spread": 0.005,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "world-cup-bronze-ball-winner-20260603194938828",
+        "title": "World Cup: Bronze Ball Winner",
+        "tags": [
+          "soccer",
+          "sports",
+          "world-cup",
+          "fifa-world-cup",
+          "2026-fifa-world-cup",
+          "world-cup-awards"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": true,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 41,
+        "usableMarketCount": 9,
+        "acceptingOrderMarketCount": 41,
+        "sampleUsableMarket": {
+          "slug": "will-kylian-mbappe-win-the-bronze-ball-at-the-2026-fifa-world-cup-20260603194939941",
+          "question": "Will Kylian Mbappé win the Bronze Ball at the 2026 FIFA World Cup?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.045,
+          "bestAsk": 0.11,
+          "spread": 0.065,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "world-cup-golden-ball-winner-20260603194031758",
+        "title": "World Cup: Golden Ball Winner",
+        "tags": [
+          "soccer",
+          "sports",
+          "world-cup",
+          "golden-ball",
+          "fifa-world-cup",
+          "2026-fifa-world-cup",
+          "world-cup-awards"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": true,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 41,
+        "usableMarketCount": 9,
+        "acceptingOrderMarketCount": 41,
+        "sampleUsableMarket": {
+          "slug": "will-kylian-mbappe-win-the-golden-ball-at-the-2026-fifa-world-cup-20260603194032279",
+          "question": "Will Kylian Mbappé win the Golden Ball at the 2026 FIFA World Cup?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.41,
+          "bestAsk": 0.42,
+          "spread": 0.01,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "ballon-dor-winner-2026",
+        "title": "Ballon d'Or Winner 2026",
+        "tags": [
+          "soccer"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": false,
+        "futuresLike": true,
+        "marketCount": 89,
+        "usableMarketCount": 7,
+        "acceptingOrderMarketCount": 89,
+        "sampleUsableMarket": {
+          "slug": "will-kylian-mbapp-win-the-2026-ballon-dor",
+          "question": "Will Kylian Mbappé win the 2026 Ballon d'Or?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.3,
+          "bestAsk": 0.31,
+          "spread": 0.01,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "world-cup-fair-play-award-winner-20260603201520240",
+        "title": "World Cup: Fair Play Award Winner",
+        "tags": [
+          "soccer",
+          "sports",
+          "world-cup",
+          "fifa-world-cup",
+          "2026-fifa-world-cup",
+          "world-cup-awards"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": true,
+        "playerPropLike": false,
+        "futuresLike": true,
+        "marketCount": 54,
+        "usableMarketCount": 7,
+        "acceptingOrderMarketCount": 54,
+        "sampleUsableMarket": {
+          "slug": "will-cape-verde-win-the-fair-play-award-for-the-2026-fifa-world-cup-20260603201521197",
+          "question": "Will Cape Verde win the Fair Play Award for the 2026 FIFA World Cup?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.019,
+          "bestAsk": 0.025,
+          "spread": 0.006,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "mls-2026-golden-boot-winner",
+        "title": "MLS: 2026 Golden Boot Winner",
+        "tags": [
+          "sports",
+          "goals",
+          "soccer",
+          "mls",
+          "awards",
+          "golden-boot"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 59,
+        "usableMarketCount": 6,
+        "acceptingOrderMarketCount": 59,
+        "sampleUsableMarket": {
+          "slug": "will-tadeo-allende-win-the-2026-mls-golden-boot-865",
+          "question": "Will Tadeo Allende win the 2026 MLS Golden Boot?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.018,
+          "bestAsk": 0.029,
+          "spread": 0.011,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      }
+    ],
+    "usableNonMatchEvents": [
+      {
+        "slug": "world-cup-player-to-score",
+        "title": "World Cup: Player to score",
+        "tags": [
+          "soccer",
+          "fifa-world-cup",
+          "sports",
+          "scoring",
+          "2026-fifa-world-cup",
+          "goals",
+          "wc-player-futures"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": true,
+        "playerPropLike": true,
+        "futuresLike": false,
+        "marketCount": 155,
+        "usableMarketCount": 28,
+        "acceptingOrderMarketCount": 30,
+        "sampleUsableMarket": {
+          "slug": "will-julin-lvarez-score-a-goal-at-the-2026-fifa-world-cup",
+          "question": "Will Julián Álvarez score a goal at the 2026 FIFA World Cup?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.5,
+          "bestAsk": 0.52,
+          "spread": 0.01,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "big-game-champion-2027",
+        "title": "NFL Champion 2027",
+        "tags": [
+          "sports",
+          "nfl",
+          "football",
+          "super-bowl",
+          "nfl-team-futures"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": false,
+        "futuresLike": false,
+        "marketCount": 33,
+        "usableMarketCount": 24,
+        "acceptingOrderMarketCount": 33,
+        "sampleUsableMarket": {
+          "slug": "will-the-baltimore-ravens-win-the-2027-nfl-league-championship",
+          "question": "Will the Baltimore Ravens win the 2027 NFL league championship?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.069,
+          "bestAsk": 0.07,
+          "spread": 0.001,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "pro-football-2026-mvp-winner",
+        "title": "Pro Football: 2026 MVP Winner",
+        "tags": [
+          "nfl",
+          "mvp",
+          "football",
+          "awards",
+          "nfl-awards"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 40,
+        "usableMarketCount": 19,
+        "acceptingOrderMarketCount": 40,
+        "sampleUsableMarket": {
+          "slug": "will-josh-allen-win-the-2026-nfl-mvp",
+          "question": "Will Josh Allen win the 2026 NFL MVP?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.14,
+          "bestAsk": 0.15,
+          "spread": 0.01,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "2026-womens-us-open-winner-tennis",
+        "title": "2026 Women’s US Open Winner (Tennis)",
+        "tags": [
+          "sports",
+          "wta",
+          "tennis"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 67,
+        "usableMarketCount": 17,
+        "acceptingOrderMarketCount": 67,
+        "sampleUsableMarket": {
+          "slug": "will-aryna-sabalenka-win-the-2026-womens-us-open",
+          "question": "Will Aryna Sabalenka win the 2026 Women’s US Open?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.22,
+          "bestAsk": 0.23,
+          "spread": 0.01,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "pro-football-team-to-draft-brendan-sorsby-20260620180654958",
+        "title": "Pro Football: Team To Draft Brendan Sorsby",
+        "tags": [
+          "nfl",
+          "draft",
+          "sports",
+          "football",
+          "nfl-draft",
+          "nfl-next-team"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": false,
+        "futuresLike": false,
+        "marketCount": 36,
+        "usableMarketCount": 17,
+        "acceptingOrderMarketCount": 36,
+        "sampleUsableMarket": {
+          "slug": "will-the-buffalo-bills-draft-brendan-sorsby-in-the-2026-nfl-supplemental-draft-20260620180914406",
+          "question": "Will the Buffalo Bills draft Brendan Sorsby in the 2026 NFL Supplemental Draft?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.01,
+          "bestAsk": 0.044,
+          "spread": 0.034,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "mls-cup-winner-2026",
+        "title": "MLS Cup Winner 2026",
+        "tags": [
+          "mls",
+          "sports",
+          "soccer"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": false,
+        "futuresLike": true,
+        "marketCount": 31,
+        "usableMarketCount": 17,
+        "acceptingOrderMarketCount": 31,
+        "sampleUsableMarket": {
+          "slug": "will-charlotte-fc-win-the-2026-mls-cup",
+          "question": "Will Charlotte FC win the 2026 MLS Cup?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.013,
+          "bestAsk": 0.014,
+          "spread": 0.001,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "pro-football-2027-afc-champion",
+        "title": "Pro Football: 2027 AFC Champion",
+        "tags": [
+          "football",
+          "sports",
+          "afc",
+          "nfl-playoffs",
+          "nfl",
+          "nfl-team-futures"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": false,
+        "futuresLike": false,
+        "marketCount": 17,
+        "usableMarketCount": 16,
+        "acceptingOrderMarketCount": 17,
+        "sampleUsableMarket": {
+          "slug": "will-buffalo-bills-win-the-2027-nfl-afc-championship-542",
+          "question": "Will Buffalo Bills win the 2027 NFL AFC Championship?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.11,
+          "bestAsk": 0.13,
+          "spread": 0.02,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "mlb-world-series-champion-2026",
+        "title": "MLB World Series Champion 2026",
+        "tags": [
+          "sports",
+          "world-series",
+          "mlb",
+          "mlb-playoffs",
+          "baseball"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": false,
+        "futuresLike": false,
+        "marketCount": 31,
+        "usableMarketCount": 15,
+        "acceptingOrderMarketCount": 31,
+        "sampleUsableMarket": {
+          "slug": "will-the-new-york-yankees-win-the-2026-world-series",
+          "question": "Will the New York Yankees win the 2026 World Series?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.12,
+          "bestAsk": 0.13,
+          "spread": 0.01,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "pro-football-2027-nfc-champion",
+        "title": "Pro Football: 2027 NFC Champion",
+        "tags": [
+          "nfl",
+          "sports",
+          "nfl-playoffs",
+          "football",
+          "nfc",
+          "nfl-team-futures"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": false,
+        "futuresLike": false,
+        "marketCount": 17,
+        "usableMarketCount": 15,
+        "acceptingOrderMarketCount": 17,
+        "sampleUsableMarket": {
+          "slug": "will-dallas-cowboys-win-the-2027-nfl-nfc-championship-584",
+          "question": "Will Dallas Cowboys win the 2027 NFL NFC Championship?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.055,
+          "bestAsk": 0.094,
+          "spread": 0.001,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "2026-mens-us-open-winner-tennis",
+        "title": "2026 Men’s US Open Winner (Tennis)",
+        "tags": [
+          "sports",
+          "atp",
+          "tennis"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 49,
+        "usableMarketCount": 13,
+        "acceptingOrderMarketCount": 49,
+        "sampleUsableMarket": {
+          "slug": "will-jannik-sinner-win-the-2026-mens-us-open",
+          "question": "Will Jannik Sinner win the 2026 Men's US Open?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.46,
+          "bestAsk": 0.48,
+          "spread": 0.02,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      }
+    ]
+  },
+  "nextAction": "Do not import futures to fake match breadth. Continue Local MVP fixture-line testing and expand provider discovery queries."
+}
