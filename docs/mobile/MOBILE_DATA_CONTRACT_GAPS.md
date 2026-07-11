@@ -1,5 +1,16 @@
 # Mobile Data Contract Gaps
 
+## Cycle PROOFFRESH - S23 Proof Freshness Gate
+
+- No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider contract changed.
+- The batch summary contract now includes S23 proof freshness fields:
+  - `readiness.s23ProofMaxAgeHours`
+  - `readiness.s23Proofs[].proofAgeHours`
+  - `readiness.s23Proofs[].maxAgeHours`
+  - `readiness.s23Proofs[].fresh`
+- New behavior: stale or unparseable S23 proof timestamps make `s23_local_mvp_device_proof_not_ready` a P0 blocker.
+- This closes a verification-data gap where old proof files could continue to satisfy Local MVP readiness after the app had moved on.
+
 ## Cycle STARTUPBATCH - S23 Startup Contract Batch Gate
 
 - No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider contract changed.

@@ -40,6 +40,7 @@ The gap list is generated from the latest summary by `scripts/write_mobile_inter
 - Polymarket World Cup team-match breadth.
 - Polymarket provider line-market breadth.
 - Committed Samsung S23 Local MVP device proof summaries for filled buy/history, open-order cancel, and position cashout/sell.
+- Freshness of committed Samsung S23 Local MVP device proofs, so old passing screenshots cannot satisfy readiness forever.
 - Root TypeScript typecheck, Jest CI smoke suite, and mobile TypeScript typecheck.
 - Local environment health snapshot: git cleanliness, S23 reachability, Docker/Postgres status, backend/Expo/proof ports, and continuous bot process status.
 
@@ -50,7 +51,7 @@ P0 blockers fail the command:
 - backend or local database unavailable
 - S23 Local MVP startup command contract unavailable or mismatched
 - current Local MVP route unavailable or not MVP-ready
-- latest committed S23 Local MVP device proof summaries are missing, failed, from the wrong device, or reference missing artifacts
+- latest committed S23 Local MVP device proof summaries are missing, failed, stale, from the wrong device, or reference missing artifacts
 - root typecheck, Jest CI suite, or mobile typecheck fails
 
 Known provider availability gaps are tracked as P1, not P0:
@@ -98,6 +99,8 @@ The batch does not rerun full S23 UI proof every time. Instead, it verifies the 
 - position cashout/sell proof: `docs/mobile/harness/cycle-XI-cashout-sell-s23-flow/cycle-XI-current-mvp-s23-visible-flow.json`
 
 Each proof must be from the Samsung S23 device id `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`, have `result=pass`, include required Local MVP assertions, and point only to existing evidence files.
+
+Each proof must also be fresh. The batch records `proofAgeHours`, `fresh`, and `maxAgeHours` for each S23 proof and currently treats proofs older than 24 hours as stale. If this fails, rerun the physical S23 proof set instead of weakening the gate.
 
 If any of those checks fail, the batch records `s23_local_mvp_device_proof_not_ready` as a P0 blocker. This keeps the batch honest: Local MVP readiness requires both route/backend readiness and real Android proof evidence, while still avoiding unnecessary repeated screenshot generation when the committed evidence is already current.
 

@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle PROOFFRESH - S23 Proof Freshness Gate
+
+Cycle PROOFFRESH changes readiness harness verification only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| S23 Local MVP proof freshness | Local command `npm run mobile:internal-readiness-batch`; committed S23 proof JSON under `docs/mobile/harness/cycle-XG-*`, `cycle-XH-*`, and `cycle-XI-*` | Local proof aggregation | None | None | Batch `s23Proofs[].proofAgeHours`, `s23Proofs[].fresh`, `s23Proofs[].maxAgeHours`, and `readiness.s23ProofMaxAgeHours` | No database access or writes | None; stale proof is a P0 readiness blocker rather than a mock fallback | None. If stale, rerun the physical S23 proof set. |
+
 ## Cycle STARTUPBATCH - S23 Startup Contract Batch Gate
 
 Cycle STARTUPBATCH changes readiness harness verification only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.

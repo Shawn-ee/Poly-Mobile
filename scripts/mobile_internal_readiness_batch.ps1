@@ -38,7 +38,8 @@ function Get-S23ProofEvidence {
   param(
     [string]$Name,
     [string]$SummaryPath,
-    [string[]]$RequiredAssertions
+    [string[]]$RequiredAssertions,
+    [int]$MaxAgeHours = 24
   )
 
   $summary = Read-JsonFile $SummaryPath
@@ -84,13 +85,27 @@ function Get-S23ProofEvidence {
   $resultPass = [bool]($summary.result -eq "pass")
   $deviceMatches = [bool]($summary.device -eq "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp")
   $modelMatches = [bool]($summary.model -eq "SM-S911U1")
-  $pass = [bool]($resultPass -and $deviceMatches -and $modelMatches -and $missingArtifacts.Count -eq 0 -and $failedAssertions.Count -eq 0)
+  $proofAgeHours = $null
+  $proofFresh = $false
+  if ($summary.generatedAt) {
+    try {
+      $proofGeneratedAt = [datetimeoffset]::Parse([string]$summary.generatedAt)
+      $proofAgeHours = [math]::Round(((Get-Date).ToUniversalTime() - $proofGeneratedAt.UtcDateTime).TotalHours, 2)
+      $proofFresh = [bool]($proofAgeHours -ge 0 -and $proofAgeHours -le $MaxAgeHours)
+    } catch {
+      $proofAgeHours = $null
+      $proofFresh = $false
+    }
+  }
+  $pass = [bool]($resultPass -and $deviceMatches -and $modelMatches -and $proofFresh -and $missingArtifacts.Count -eq 0 -and $failedAssertions.Count -eq 0)
   $reason = if ($pass) {
     "pass"
   } elseif (-not $resultPass) {
     "summary_result_not_pass"
   } elseif (-not $deviceMatches -or -not $modelMatches) {
     "wrong_device"
+  } elseif (-not $proofFresh) {
+    "proof_stale_or_unparseable"
   } elseif ($missingArtifacts.Count -gt 0) {
     "artifact_missing"
   } else {
@@ -103,6 +118,9 @@ function Get-S23ProofEvidence {
     pass = $pass
     reason = $reason
     generatedAt = $summary.generatedAt
+    proofAgeHours = $proofAgeHours
+    maxAgeHours = $MaxAgeHours
+    fresh = $proofFresh
     device = $summary.device
     model = $summary.model
     eventSlug = $summary.eventSlug
@@ -257,6 +275,7 @@ $mobileTypecheckMarkerPath = Join-Path $ResolvedOutputDir "mobile-typecheck.json
 $filledS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-XG-full-local-mvp-s23-flow\cycle-XG-current-mvp-s23-visible-flow.json"
 $cancelS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-XH-open-order-cancel-s23-flow\cycle-XH-current-mvp-s23-visible-flow.json"
 $cashoutS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-XI-cashout-sell-s23-flow\cycle-XI-current-mvp-s23-visible-flow.json"
+$s23ProofMaxAgeHours = 24
 $backendRepoPath = ConvertTo-RepoPath $backendPath
 $credentialRepoPath = ConvertTo-RepoPath $credentialPath
 $googleAuthRepoPath = ConvertTo-RepoPath $googleAuthPath
@@ -311,9 +330,9 @@ $rootTypecheck = Read-JsonFile $rootTypecheckMarkerPath
 $jestCi = Read-JsonFile $jestCiMarkerPath
 $mobileTypecheck = Read-JsonFile $mobileTypecheckMarkerPath
 $s23Proofs = @(
-  (Get-S23ProofEvidence -Name "filled-buy-history" -SummaryPath $filledS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden")),
-  (Get-S23ProofEvidence -Name "open-order-cancel" -SummaryPath $cancelS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "openOrderVisible", "openOrderSourceBadgeVisible", "cancelSubmitted", "canceledHistoryVisible", "orderbookHidden")),
-  (Get-S23ProofEvidence -Name "cashout-sell-history" -SummaryPath $cashoutS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "cashoutTicketOpened", "cashoutSellSubmitted", "cashoutHistoryVisible", "orderbookHidden"))
+  (Get-S23ProofEvidence -Name "filled-buy-history" -SummaryPath $filledS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden") -MaxAgeHours $s23ProofMaxAgeHours),
+  (Get-S23ProofEvidence -Name "open-order-cancel" -SummaryPath $cancelS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "openOrderVisible", "openOrderSourceBadgeVisible", "cancelSubmitted", "canceledHistoryVisible", "orderbookHidden") -MaxAgeHours $s23ProofMaxAgeHours),
+  (Get-S23ProofEvidence -Name "cashout-sell-history" -SummaryPath $cashoutS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "cashoutTicketOpened", "cashoutSellSubmitted", "cashoutHistoryVisible", "orderbookHidden") -MaxAgeHours $s23ProofMaxAgeHours)
 )
 
 $backendReady = [bool]($backend -and $backend.dockerCliAvailable -and $backend.dockerDaemonReachable -and $backend.databaseTcpReachable)
@@ -477,6 +496,7 @@ $summary = [ordered]@{
     localMatchBreadthReady = $localMatchBreadthReady
     localMatchBreadthEventCount = if ($localMatchBreadth) { $localMatchBreadth.after.eventCount } else { $null }
     s23LocalMvpDeviceProofReady = $s23LocalMvpDeviceProofReady
+    s23ProofMaxAgeHours = $s23ProofMaxAgeHours
     s23Proofs = $s23Proofs
     rootTypecheckReady = $rootTypecheckReady
     jestCiReady = $jestCiReady

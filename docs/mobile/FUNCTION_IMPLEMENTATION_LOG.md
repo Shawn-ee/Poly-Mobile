@@ -2,6 +2,18 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle PROOFFRESH - S23 Proof Freshness Gate
+
+- Feature/page worked on: Local MVP S23 proof freshness inside the internal readiness batch.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/mobile_internal_readiness_batch.ps1`
+  - `scripts/write_mobile_internal_readiness_gap_list.ts`
+- User interactions supported: unchanged. The batch now requires the committed S23 proofs for filled buy/history, open-order cancel, and cashout/sell to be recent, not merely present.
+- State transitions: no runtime or backend state changes. The harness parses each S23 proof `generatedAt`, computes `proofAgeHours`, requires `fresh=true` within the configured max age, and records the result in the batch summary.
+- Proof: full `npm run mobile:internal-readiness-batch` passed. The batch recorded `s23ProofMaxAgeHours=24` and all three S23 proof summaries with `fresh=true`, including proof ages for filled buy/history, open-order cancel, and cashout/sell.
+- Known limitations: this does not create new S23 screenshots by itself. If proofs become stale, the next useful cycle is to rerun the S23 full MVP proof set rather than bypass the gate.
+
 ## Cycle STARTUPBATCH - S23 Startup Contract Batch Gate
 
 - Feature/page worked on: Local MVP S23 startup readiness batch gate.

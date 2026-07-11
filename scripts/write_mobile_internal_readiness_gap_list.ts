@@ -108,10 +108,10 @@ const blockerRows: Record<string, Omit<GapRow, "priority">> = {
   },
   s23_local_mvp_device_proof_not_ready: {
     pageFunction: "S23 full MVP proof",
-    actualBehavior: "One or more committed S23 Local MVP proof summaries is missing, failed, from the wrong device, or references missing artifacts.",
-    expectedBehavior: "Committed S23 proofs for filled buy/history, open-order cancel, and cashout/sell should all pass on `SM_S911U1`.",
+    actualBehavior: "One or more committed S23 Local MVP proof summaries is missing, failed, stale, from the wrong device, or references missing artifacts.",
+    expectedBehavior: "Committed S23 proofs for filled buy/history, open-order cancel, and cashout/sell should all pass recently on `SM_S911U1`.",
     affectedFilesRoutes: "`docs/mobile/harness/cycle-XG-full-local-mvp-s23-flow`; `cycle-XH-open-order-cancel-s23-flow`; `cycle-XI-cashout-sell-s23-flow`.",
-    proofNeeded: "Fresh S23 proof summaries with `result=pass` and referenced artifacts present.",
+    proofNeeded: "Fresh S23 proof summaries with `result=pass`, `fresh=true`, and referenced artifacts present.",
     blocksInternalTesting: true,
   },
   root_typecheck_failed: {
@@ -267,6 +267,7 @@ const markdown: string[] = [
   `- Jest CI: ${boolText(readiness.jestCiReady)}`,
   `- Mobile typecheck: ${boolText(readiness.mobileTypecheckReady)}`,
   `- S23 Local MVP proof ready: ${boolText(readiness.s23LocalMvpDeviceProofReady)}`,
+  `- S23 proof max age: ${readiness.s23ProofMaxAgeHours ?? "unknown"} hours`,
   `- S23 startup contract ready: ${boolText(readiness.internalMvpStartupReady)}`,
   `- Provider-backed exchange ready: ${boolText(readiness.providerBackedExchangeReady)}`,
   `- P0 blocker count: ${p0Rows.length}`,

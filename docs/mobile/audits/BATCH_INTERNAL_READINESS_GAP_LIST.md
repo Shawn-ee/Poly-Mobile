@@ -1,6 +1,6 @@
 # Batch Internal Readiness Gap List
 
-Generated: 2026-07-11T11:14:38.718Z
+Generated: 2026-07-11T11:22:49.944Z
 
 Source summary: `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`
 
@@ -25,6 +25,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Jest CI: yes
 - Mobile typecheck: yes
 - S23 Local MVP proof ready: yes
+- S23 proof max age: 24 hours
 - S23 startup contract ready: yes
 - Provider-backed exchange ready: no
 - P0 blocker count: 0
