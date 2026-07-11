@@ -34,4 +34,20 @@ describe("mobile Local MVP liquidity proof harness", () => {
     );
     expect(source).toContain("filledPositionVisible = $fixtureOrderLandedAsPosition");
   });
+
+  test("S23 current MVP proof can target line families beyond spread", () => {
+    const source = s23Proof();
+
+    expect(source).toContain('[string]$LineMarketGroupKey = "spread"');
+    expect(source).toContain('[string]$LineMarketType = "spread"');
+    expect(source).toContain('[string]$LineValue = "1.5"');
+    expect(source).toContain('[string]$LineOutcomeSide = "away"');
+    expect(source).toContain('[string]$LineOutcomeLabel = "Egypt +1.5"');
+    expect(source).toContain('"--marketGroupKey=$LineMarketGroupKey"');
+    expect(source).toContain('"--line=$LineValue"');
+    expect(source).toContain('"--outcomeSide=$LineOutcomeSide"');
+    expect(source).toContain('$lineSelectionTypeLabel = "selection-market-type-$LineMarketType"');
+    expect(source).toContain('$lineSelectionSideLabel = "selection-side-$LineOutcomeSide"');
+    expect(source).toContain('"portfolio-history-visible-label-$LineOutcomeLabel"');
+  });
 });

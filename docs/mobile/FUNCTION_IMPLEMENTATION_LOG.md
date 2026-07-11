@@ -12601,3 +12601,15 @@ Known limitations:
 - State transitions: unchanged. The harness now reports the filled Position card from the post-submit XML before opening the cashout ticket, so `filledPositionVisible` matches the device evidence.
 - Proof: PowerShell parser check passed, focused harness contract passed, and S23 proof passed on `SM-S911U1`. Evidence: `docs/mobile/harness/cycle-WE-s23-position-proof-summary/cycle-WE-current-mvp-s23-visible-flow.json`; the summary reports `filledPositionVisible=true`, `cashoutHistoryVisible=true`, and `ticketPreservesLine=true`.
 - Known limitations: real provider-backed Spread/Totals/Team Total current-match rows remain unavailable from Polymarket source data, so the Local MVP line path still uses contract-shaped fixtures.
+
+# Cycle WF - Line Family S23 Proof
+
+- Feature/page worked on: Event Detail line-market proof coverage for the Local MVP retail flow.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+  - `src/server/services/__tests__/mobile.localMvpLiquidityHarness.contract.test.ts`
+- User interactions supported: the S23 proof harness can now target a line family other than Spread. Cycle WF proved Home -> Event Detail -> Totals `Over 2.5` -> Trade Ticket -> fake-token order -> Portfolio History.
+- State transitions: unchanged. The selected Totals line/outcome/source identity travels through ticket submission and Portfolio History using existing order/selection snapshot behavior.
+- Proof: S23 proof passed on `SM-S911U1`; summary `docs/mobile/harness/cycle-WF-line-family-s23-proof/cycle-WF-current-mvp-s23-visible-flow.json` reports `lineMarketGroupKey=totals`, `lineValue=2.5`, `lineOutcomeLabel=Over 2.5`, `filledHistoryVisible=true`, and `ticketPreservesLine=true`.
+- Known limitations: Team Totals still needs the same Android end-to-end proof. Real provider-backed Spread/Totals/Team Total current-match rows remain unavailable from Polymarket source data.

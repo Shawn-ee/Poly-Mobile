@@ -5,6 +5,12 @@ param(
   [string]$MobileApiBaseUrl = "http://172.16.200.14:3002",
   [string]$BackendBaseUrl = "http://127.0.0.1:3002",
   [string]$EventSlug = "argentina-vs-egypt",
+  [string]$LineMarketGroupKey = "spread",
+  [string]$LineMarketType = "spread",
+  [string]$LineGroupTitle = "Spread",
+  [string]$LineValue = "1.5",
+  [string]$LineOutcomeSide = "away",
+  [string]$LineOutcomeLabel = "Egypt +1.5",
   [string]$Cycle = "MB",
   [string]$OutputDir = "docs\mobile\screenshots\cycle-MB-current-mvp-s23-visible-flow",
   [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-MB-current-mvp-s23-visible-flow",
@@ -259,13 +265,13 @@ try {
   $cleanupProofPath = Join-Path $HierarchyOutputDir "cycle-$Cycle-current-mvp-line-cleanup.json"
   if ($expectOpenOrderState) {
     $cleanupProofAbsolutePath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-current-mvp-line-cleanup.json"
-    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=spread" "--line=1.5" "--outcomeSide=away" "--cleanupBlockingMarketBids" "--cleanupOnly" "--liquidityPurpose=cleanup" "--proofUserPrefix=holiwyn-mobile-" "--output=$cleanupProofAbsolutePath" | Out-Null
+    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=$LineMarketGroupKey" "--line=$LineValue" "--outcomeSide=$LineOutcomeSide" "--cleanupBlockingMarketBids" "--cleanupOnly" "--liquidityPurpose=cleanup" "--proofUserPrefix=holiwyn-mobile-" "--output=$cleanupProofAbsolutePath" | Out-Null
     if ($LASTEXITCODE -ne 0) {
       throw "Line proof cleanup failed for $EventSlug."
     }
   }
   if ($SeedCounterparty) {
-    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=spread" "--line=1.5" "--outcomeSide=away" "--askPrice=0.52" "--askSize=80" "--cleanupProofBids" "--cleanupBlockingBids" "--cleanupBlockingMarketBids" "--liquidityPurpose=buy-fill" "--proofUserPrefix=holiwyn-mobile-" "--output=$counterpartyProofPath" | Out-Null
+    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=$LineMarketGroupKey" "--line=$LineValue" "--outcomeSide=$LineOutcomeSide" "--askPrice=0.52" "--askSize=80" "--cleanupProofBids" "--cleanupBlockingBids" "--cleanupBlockingMarketBids" "--liquidityPurpose=buy-fill" "--proofUserPrefix=holiwyn-mobile-" "--output=$counterpartyProofPath" | Out-Null
     if ($LASTEXITCODE -ne 0) {
       throw "Counterparty seed failed for $EventSlug."
     }
@@ -468,14 +474,19 @@ try {
   Assert-NotContains -Path $detailTopXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "event-detail-chat", "event-detail-price-chart", "event-detail-chart-route-state", "Chart selection")
 
   $lineXml = $null
+  $lineSelectionTypeLabel = "selection-market-type-$LineMarketType"
+  $lineSelectionLineLabel = "selection-line-$LineValue"
+  $lineSelectionSideLabel = "selection-side-$LineOutcomeSide"
+  $lineTapPrefix = "event-detail-outcome-$LineMarketGroupKey-"
   for ($attempt = 1; $attempt -le 5; $attempt++) {
     & $adb -s $Device shell input swipe 540 2100 540 760 450 | Out-Null
     Start-Sleep -Seconds 1
     $candidate = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-lines-attempt-$attempt.xml"
     $candidateRaw = Get-Content -Raw -Path $candidate
     if (
-      $candidateRaw -match [regex]::Escape("selection-market-type-spread") -and
-      $candidateRaw -match [regex]::Escape("selection-line-1.5") -and
+      $candidateRaw -match [regex]::Escape($lineSelectionTypeLabel) -and
+      $candidateRaw -match [regex]::Escape($lineSelectionLineLabel) -and
+      $candidateRaw -match [regex]::Escape($lineSelectionSideLabel) -and
       $candidateRaw -match [regex]::Escape("provider-source-contract-fixture") -and
       $candidateRaw -match [regex]::Escape("line-market-local-test-pricing") -and
       $candidateRaw -match [regex]::Escape("line-market-local-test-fake-token")
@@ -486,27 +497,33 @@ try {
   }
   if (-not $lineXml) {
     Save-Screenshot -Name "cycle-$Cycle-current-mvp-lines-failed.png" | Out-Null
-    throw "Could not find current MVP spread line market on S23."
+    throw "Could not find current MVP $LineMarketGroupKey $LineValue $LineOutcomeSide line market on S23."
   }
-  & $adb -s $Device shell input swipe 540 920 540 1450 320 | Out-Null
-  Start-Sleep -Seconds 1
+  if ($LineMarketGroupKey -eq "spread") {
+    & $adb -s $Device shell input swipe 540 920 540 1450 320 | Out-Null
+    Start-Sleep -Seconds 1
+  }
   $lineXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-lines-settled.xml"
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-lines.png" | Out-Null
-  Assert-Contains -Path $lineXml -Expected @("Spread", "Totals", "Holiwyn line", "line-market-local-test-pricing", "line-market-local-test-fake-token", "event-detail-line-section-clearance-24", "event-detail-line-source-banner", "line-source-contract-fixture", "line-source-local-test-fake-token", "line-expected-families-spread_total_team_total", "line-provider-unavailable-families-spread_total_team_total", "line-fixture-only-families-spread_total_team_total", "line-missing-families-none", "line-family-readiness-spread-contract-fixture", "line-family-readiness-total-contract-fixture", "line-family-readiness-team_total-contract-fixture", "selection-market-type-spread", "selection-line-1.5", "provider-source-contract-fixture")
+  $lineExpected = @($LineGroupTitle, "Holiwyn line", "line-market-local-test-pricing", "line-market-local-test-fake-token", $lineSelectionTypeLabel, $lineSelectionLineLabel, $lineSelectionSideLabel, "provider-source-contract-fixture")
+  if ($LineMarketGroupKey -eq "spread") {
+    $lineExpected += @("event-detail-line-section-clearance-24", "event-detail-line-source-banner", "line-source-local-test-fake-token", "line-expected-families-spread_total_team_total", "line-provider-unavailable-families-spread_total_team_total", "line-fixture-only-families-spread_total_team_total", "line-missing-families-none", "line-family-readiness-spread-contract-fixture", "line-family-readiness-total-contract-fixture", "line-family-readiness-team_total-contract-fixture")
+  }
+  Assert-Contains -Path $lineXml -Expected $lineExpected
   Assert-NotContains -Path $lineXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "event-detail-price-chart", "event-detail-chart-route-state", "Chart selection")
 
-  Invoke-TapNode -Path $lineXml -Identifier "event-detail-outcome-spread-" -StartsWith
+  Invoke-TapNode -Path $lineXml -Identifier $lineTapPrefix -StartsWith
   Start-Sleep -Seconds 2
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-ticket.png" | Out-Null
   $ticketXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-ticket.xml"
-  Assert-Contains -Path $ticketXml -Expected @("trade-ticket", "Choose an amount", "ticket-preset-25", "ticket-market-type-spread", "ticket-line-1.5", "provider-source-contract-fixture", "ticket-local-test-pricing")
+  Assert-Contains -Path $ticketXml -Expected @("trade-ticket", "Choose an amount", "ticket-preset-25", "ticket-market-type-$LineMarketType", "ticket-line-$LineValue", "provider-source-contract-fixture", "ticket-local-test-pricing")
   Assert-NotContains -Path $ticketXml -Unexpected @("Order Book", "Chat")
 
   Invoke-TapNode -Path $ticketXml -Identifier "ticket-preset-25"
   Start-Sleep -Milliseconds 800
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-ticket-ready.png" | Out-Null
   $ticketReadyXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-ticket-ready.xml"
-  Assert-Contains -Path $ticketReadyXml -Expected @('$25', "Swipe to buy", "place-mock-order", "ticket-line-1.5", "provider-source-contract-fixture", "ticket-local-test-pricing")
+  Assert-Contains -Path $ticketReadyXml -Expected @('$25', "Swipe to buy", "place-mock-order", "ticket-line-$LineValue", "provider-source-contract-fixture", "ticket-local-test-pricing")
 
   if ($SourceDisclosureOnly) {
     $summary = [ordered]@{
@@ -555,7 +572,7 @@ try {
   Start-Sleep -Seconds 7
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-after-submit.png" | Out-Null
   $afterSubmitXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-after-submit.xml"
-  Assert-Contains -Path $afterSubmitXml -Expected @("Portfolio", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
+  Assert-Contains -Path $afterSubmitXml -Expected @("Portfolio", "portfolio-market-type-$LineMarketType", "portfolio-line-$LineValue", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
   $afterSubmitRaw = Get-Content -Raw -Path $afterSubmitXml
   $fixtureOrderLandedAsOpenOrder = $false
   $fixtureOrderLandedAsPosition = $afterSubmitRaw -match [regex]::Escape("position-card-")
@@ -564,7 +581,7 @@ try {
       Assert-Contains -Path $afterSubmitXml -Expected @("portfolio-tab-orders", "open-order-row-", "open-order-source-badge", "open-order-source-note", "portfolio-source-badge-local", "cancel-open-order-")
       $fixtureOrderLandedAsOpenOrder = $true
     } else {
-      Assert-Contains -Path $afterSubmitXml -Expected @("position-card-", "portfolio-position-source-badge", "position-shares-", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
+      Assert-Contains -Path $afterSubmitXml -Expected @("position-card-", "portfolio-position-source-badge", "position-shares-", "portfolio-market-type-$LineMarketType", "portfolio-line-$LineValue", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
       $fixtureOrderLandedAsPosition = $true
     }
   }
@@ -585,12 +602,12 @@ try {
     Start-Sleep -Seconds 2
     Save-Screenshot -Name "cycle-$Cycle-current-mvp-canceled-history.png" | Out-Null
     $cancelHistoryXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-canceled-history.xml"
-    Assert-Contains -Path $cancelHistoryXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "Canceled", "portfolio-history-market-context-readable", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
+    Assert-Contains -Path $cancelHistoryXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "Canceled", "portfolio-history-market-context-readable", "portfolio-market-type-$LineMarketType", "portfolio-line-$LineValue", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
   } elseif ($ExpectCashout) {
     Assert-Contains -Path $afterSubmitXml -Expected @("position-card-", "portfolio-position-cash-out-", "portfolio-position-source-badge")
     $cashoutCounterpartyProofPath = Join-Path $HierarchyOutputDir "cycle-$Cycle-current-mvp-line-cashout-counterparty.json"
     $cashoutCounterpartyProofAbsolutePath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-current-mvp-line-cashout-counterparty.json"
-    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=spread" "--line=1.5" "--outcomeSide=away" "--makerSide=BUY" "--bidPrice=$CashoutBidPrice" "--bidSize=80" "--cleanupBlockingMarketBids" "--cleanupProofAsks" "--cleanupBlockingAsks" "--liquidityPurpose=cashout-sell-fill" "--proofUserPrefix=holiwyn-mobile-" "--output=$cashoutCounterpartyProofAbsolutePath" | Out-Null
+    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=$LineMarketGroupKey" "--line=$LineValue" "--outcomeSide=$LineOutcomeSide" "--makerSide=BUY" "--bidPrice=$CashoutBidPrice" "--bidSize=80" "--cleanupBlockingMarketBids" "--cleanupProofAsks" "--cleanupBlockingAsks" "--liquidityPurpose=cashout-sell-fill" "--proofUserPrefix=holiwyn-mobile-" "--output=$cashoutCounterpartyProofAbsolutePath" | Out-Null
     if ($LASTEXITCODE -ne 0) {
       throw "Line cashout counterparty seed failed for $EventSlug."
     }
@@ -616,7 +633,7 @@ try {
     Start-Sleep -Seconds 2
     Save-Screenshot -Name "cycle-$Cycle-current-mvp-line-cashout-history.png" | Out-Null
     $cashoutHistoryXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-line-cashout-history.xml"
-    Assert-Contains -Path $cashoutHistoryXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "activity-sold", "portfolio-history-market-context-readable", "portfolio-history-visible-label-Egypt +1.5", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-provider-outcome-Egypt +1.5", "portfolio-local-test-pricing")
+    Assert-Contains -Path $cashoutHistoryXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "activity-sold", "portfolio-history-market-context-readable", "portfolio-history-visible-label-$LineOutcomeLabel", "portfolio-market-type-$LineMarketType", "portfolio-line-$LineValue", "portfolio-provider-source-contract-fixture", "portfolio-provider-outcome-$LineOutcomeLabel", "portfolio-local-test-pricing")
     Assert-NotContains -Path $cashoutHistoryXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
   } elseif (-not $expectOpenOrderState) {
     Invoke-TapNode -Path $afterSubmitXml -Identifier "portfolio-tab-history"
@@ -626,14 +643,14 @@ try {
   }
   $defaultHistoryLandedAsFilled = $false
   if ($ExpectFilledHistory -and (-not $ExpectCashout)) {
-    Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "portfolio-history-market-context-readable", "portfolio-history-visible-label-Egypt +1.5", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-provider-outcome-Egypt +1.5", "portfolio-local-test-pricing")
+    Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "portfolio-history-market-context-readable", "portfolio-history-visible-label-$LineOutcomeLabel", "portfolio-market-type-$LineMarketType", "portfolio-line-$LineValue", "portfolio-provider-source-contract-fixture", "portfolio-provider-outcome-$LineOutcomeLabel", "portfolio-local-test-pricing")
   } elseif ((-not $expectOpenOrderState) -and (-not $ExpectCancel) -and (-not $ExpectCashout)) {
     $historyRaw = Get-Content -Raw -Path $historyXml
     if ($historyRaw -match [regex]::Escape("activity-row-")) {
-      Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "portfolio-history-market-context-readable", "portfolio-history-visible-label-Egypt +1.5", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-provider-outcome-Egypt +1.5", "portfolio-local-test-pricing")
+      Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "portfolio-history-market-context-readable", "portfolio-history-visible-label-$LineOutcomeLabel", "portfolio-market-type-$LineMarketType", "portfolio-line-$LineValue", "portfolio-provider-source-contract-fixture", "portfolio-provider-outcome-$LineOutcomeLabel", "portfolio-local-test-pricing")
       $defaultHistoryLandedAsFilled = $true
     } else {
-      Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "No history", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture")
+      Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "No history", "portfolio-market-type-$LineMarketType", "portfolio-line-$LineValue", "portfolio-provider-source-contract-fixture")
     }
   }
 
@@ -649,6 +666,11 @@ try {
     keyId = "redacted"
     apiKey = "redacted"
     eventSlug = $EventSlug
+    lineMarketGroupKey = $LineMarketGroupKey
+    lineMarketType = $LineMarketType
+    lineValue = $LineValue
+    lineOutcomeSide = $LineOutcomeSide
+    lineOutcomeLabel = $LineOutcomeLabel
     seededCounterparty = [bool]$SeedCounterparty
     counterpartyProof = if ($SeedCounterparty) { $counterpartyProofPath } else { $null }
     cleanupProof = if ($expectOpenOrderState) { $cleanupProofPath } else { $null }
