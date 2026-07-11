@@ -13250,3 +13250,24 @@ Known limitations:
 - Known limitations:
   - This cycle documents and gates the proof artifact. It does not import new provider markets, spend sportsbook quota, or change user-visible app behavior.
   - The bridge remains temporary until a Polymarket-backed match/line market can satisfy the same Event Detail -> Ticket -> Order -> Portfolio/history proof.
+
+# Cycle ODDSLIVEREFRESH - The Odds API Live-Key Refresh
+
+- Feature/page worked on: temporary sportsbook provider refresh for the Local MVP user path.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/seed_the_odds_api_single_event.ts`
+  - `scripts/prove_mobile_the_odds_api_single_event_flow.ts`
+  - `src/server/services/theOddsApiSingleEventProvider.ts`
+  - `docs/mobile/audits/BATCH_THE_ODDS_API_SINGLE_EVENT.md`
+- User interactions supported: unchanged from ODDSAPIS23. The refreshed event remains visible as `odds-api-single-soccer-test`, exposing Regulation Winner, Spread, Total Goals, alternate spread lines, and alternate total lines for Home -> Event Detail -> Ticket -> fake-token order -> Portfolio/history testing.
+- State transitions:
+  - The live provider call used `THE_ODDS_API_KEY` from the process environment only.
+  - The refresh selected `soccer_fifa_world_cup` / `Switzerland vs. Argentina`.
+  - The route/backend proof filled `Argentina -0.5` on the spread market and verified the resulting Portfolio position and History trade.
+  - Refreshed evidence increased sportsbook-backed route markets from 6 to 10 by expanding alternate spread/total lines into individual backend-shaped markets.
+- Proof:
+  - `docs/mobile/harness/the-odds-api-single-event/single-event-summary.redacted.json`
+  - `docs/mobile/harness/the-odds-api-single-event/mobile-flow-proof.redacted.json`
+- Known limitations:
+  - This remains an internal temporary sportsbook bridge. It does not claim Polymarket-backed parity and must not be used as evidence that Polymarket World Cup match/line markets are attach-ready.

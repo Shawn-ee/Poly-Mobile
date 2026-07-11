@@ -1,6 +1,6 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-11T19:15:55.130Z",
+  "generatedAt": "2026-07-11T20:05:46.475Z",
   "dryRun": false,
   "scope": "the-odds-api-single-event-temporary-provider",
   "policy": {
@@ -31,8 +31,8 @@
       "path": "/v4/sports",
       "status": 200,
       "quota": {
-        "requestsUsed": "0",
-        "requestsRemaining": "500",
+        "requestsUsed": "7",
+        "requestsRemaining": "493",
         "requestsLast": "0"
       }
     },
@@ -42,8 +42,8 @@
       "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z",
       "status": 200,
       "quota": {
-        "requestsUsed": "0",
-        "requestsRemaining": "500",
+        "requestsUsed": "7",
+        "requestsRemaining": "493",
         "requestsLast": "0"
       }
     },
@@ -53,8 +53,8 @@
       "path": "/v4/sports/soccer_fifa_world_cup/events/200d9cd5eda092c7eb778cc104cd2fd2/markets?regions=us&dateFormat=iso",
       "status": 200,
       "quota": {
-        "requestsUsed": "1",
-        "requestsRemaining": "499",
+        "requestsUsed": "8",
+        "requestsRemaining": "492",
         "requestsLast": "1"
       }
     },
@@ -64,8 +64,8 @@
       "path": "/v4/sports/soccer_fifa_world_cup/events/200d9cd5eda092c7eb778cc104cd2fd2/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso",
       "status": 200,
       "quota": {
-        "requestsUsed": "7",
-        "requestsRemaining": "493",
+        "requestsUsed": "14",
+        "requestsRemaining": "486",
         "requestsLast": "6"
       }
     }
@@ -73,8 +73,8 @@
   "quota": {
     "totalLastCost": 7,
     "latest": {
-      "requestsUsed": "7",
-      "requestsRemaining": "493",
+      "requestsUsed": "14",
+      "requestsRemaining": "486",
       "requestsLast": "6"
     }
   },
@@ -160,7 +160,7 @@
   ],
   "unavailablePreferredMarketKeys": [],
   "normalized": {
-    "marketCount": 6,
+    "marketCount": 10,
     "outcomeCount": 22,
     "marketTypes": [
       "match_winner_1x2",
@@ -174,7 +174,7 @@
       "slug": "odds-api-single-soccer-test",
       "title": "Switzerland vs. Argentina"
     },
-    "marketCount": 6,
+    "marketCount": 10,
     "outcomeCount": 22,
     "markets": [
       {
@@ -205,22 +205,58 @@
         "outcomeCount": 2
       },
       {
-        "id": "83a8b853-5a20-4cd7-93ef-6c22ce0f47d9",
-        "slug": "odds-api-single-soccer-test-alternate-spreads-41ebac0995",
-        "title": "Switzerland vs. Argentina: Spread",
+        "id": "8a3ac122-bf88-48ef-aad0-a94d612b64f2",
+        "slug": "odds-api-single-soccer-test-alternate-spreads-8e0e8f8fa8",
+        "title": "Switzerland vs. Argentina: Spread 0.25",
         "marketType": "spread",
         "marketGroupTitle": "Spread",
-        "line": null,
-        "outcomeCount": 6
+        "line": "0.25",
+        "outcomeCount": 2
       },
       {
-        "id": "2b1c3d1e-53a4-4ceb-a5cf-4179e4b9b02e",
-        "slug": "odds-api-single-soccer-test-alternate-totals-2f77ed1ea7",
-        "title": "Switzerland vs. Argentina: Total Goals",
+        "id": "b21af47b-14bd-4d5a-b147-094e2cef5c9f",
+        "slug": "odds-api-single-soccer-test-alternate-spreads-1c7d4e9cdd",
+        "title": "Switzerland vs. Argentina: Spread 0.75",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "0.75",
+        "outcomeCount": 2
+      },
+      {
+        "id": "e05c670a-a98b-4075-bb24-ad7da9106e59",
+        "slug": "odds-api-single-soccer-test-alternate-spreads-ff4e4640b5",
+        "title": "Switzerland vs. Argentina: Spread 1",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "1",
+        "outcomeCount": 2
+      },
+      {
+        "id": "ce29edfc-b049-4895-8d88-5d5a08f4b132",
+        "slug": "odds-api-single-soccer-test-alternate-totals-7e2d38ccbc",
+        "title": "Switzerland vs. Argentina: Total Goals 1.75",
         "marketType": "total_goals",
         "marketGroupTitle": "Total Goals",
-        "line": null,
-        "outcomeCount": 6
+        "line": "1.75",
+        "outcomeCount": 2
+      },
+      {
+        "id": "d2e128af-7e7c-4888-8c3a-1a6c0f827e3c",
+        "slug": "odds-api-single-soccer-test-alternate-totals-fabec35f90",
+        "title": "Switzerland vs. Argentina: Total Goals 2.25",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "2.25",
+        "outcomeCount": 2
+      },
+      {
+        "id": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
+        "slug": "odds-api-single-soccer-test-alternate-totals-38ad59c0f2",
+        "title": "Switzerland vs. Argentina: Total Goals 2.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "2.5",
+        "outcomeCount": 2
       },
       {
         "id": "00b3d2c5-50c7-465e-9ffa-6428886a8e25",
@@ -236,7 +272,7 @@
   "mobile": {
     "homeVisible": true,
     "detailVisible": true,
-    "sportsbookMarketCount": 6,
+    "sportsbookMarketCount": 10,
     "tradableOutcomeCount": 22,
     "routeMode": "database-proof",
     "eventSlug": "odds-api-single-soccer-test",

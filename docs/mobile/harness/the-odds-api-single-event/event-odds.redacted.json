@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T19:15:54.870Z",
+  "generatedAt": "2026-07-11T20:05:46.200Z",
   "source": "the-odds-api",
   "redacted": true,
   "event": {
@@ -22,7 +22,7 @@
       "marketKey": "h2h",
       "bookmakerKey": "betonlineag",
       "bookmakerTitle": "BetOnline.ag",
-      "lastUpdate": "2026-07-11T19:15:52Z",
+      "lastUpdate": "2026-07-11T20:05:07Z",
       "displayOrder": 10,
       "marketType": "match_winner_1x2",
       "marketGroupKey": "regulation-winner",
@@ -69,7 +69,7 @@
       "marketKey": "spreads",
       "bookmakerKey": "betonlineag",
       "bookmakerTitle": "BetOnline.ag",
-      "lastUpdate": "2026-07-11T19:15:52Z",
+      "lastUpdate": "2026-07-11T20:05:07Z",
       "displayOrder": 20,
       "marketType": "spread",
       "marketGroupKey": "spread",
@@ -106,7 +106,7 @@
       "marketKey": "totals",
       "bookmakerKey": "betonlineag",
       "bookmakerTitle": "BetOnline.ag",
-      "lastUpdate": "2026-07-11T19:15:52Z",
+      "lastUpdate": "2026-07-11T20:05:07Z",
       "displayOrder": 30,
       "marketType": "total_goals",
       "marketGroupKey": "totals",
@@ -121,9 +121,9 @@
           "code": "over-2",
           "name": "Over +2",
           "side": "over",
-          "decimalOdds": 1.71,
-          "impliedProbability": 0.5848,
-          "normalizedProbability": 0.566,
+          "decimalOdds": 1.72,
+          "impliedProbability": 0.5814,
+          "normalizedProbability": 0.5635,
           "point": 2,
           "description": null
         },
@@ -131,9 +131,9 @@
           "code": "under-2",
           "name": "Under +2",
           "side": "under",
-          "decimalOdds": 2.23,
-          "impliedProbability": 0.4484,
-          "normalizedProbability": 0.434,
+          "decimalOdds": 2.22,
+          "impliedProbability": 0.4505,
+          "normalizedProbability": 0.4365,
           "point": 2,
           "description": null
         }
@@ -143,14 +143,51 @@
       "marketKey": "alternate_spreads",
       "bookmakerKey": "betonlineag",
       "bookmakerTitle": "BetOnline.ag",
-      "lastUpdate": "2026-07-11T19:15:52Z",
+      "lastUpdate": "2026-07-11T20:05:07Z",
       "displayOrder": 40,
       "marketType": "spread",
       "marketGroupKey": "spread",
       "marketGroupTitle": "Spread",
-      "title": "Spread",
+      "title": "Spread 0.25",
       "period": "regulation",
-      "line": null,
+      "line": 0.25,
+      "unit": "goals",
+      "participantName": "Argentina",
+      "outcomes": [
+        {
+          "code": "argentina-0-25",
+          "name": "Argentina -0.25",
+          "side": "home",
+          "decimalOdds": 1.49,
+          "impliedProbability": 0.6711,
+          "normalizedProbability": 0.6519,
+          "point": -0.25,
+          "description": null
+        },
+        {
+          "code": "switzerland-0-25",
+          "name": "Switzerland +0.25",
+          "side": "away",
+          "decimalOdds": 2.79,
+          "impliedProbability": 0.3584,
+          "normalizedProbability": 0.3481,
+          "point": 0.25,
+          "description": null
+        }
+      ]
+    },
+    {
+      "marketKey": "alternate_spreads",
+      "bookmakerKey": "betonlineag",
+      "bookmakerTitle": "BetOnline.ag",
+      "lastUpdate": "2026-07-11T20:05:07Z",
+      "displayOrder": 41,
+      "marketType": "spread",
+      "marketGroupKey": "spread",
+      "marketGroupTitle": "Spread",
+      "title": "Spread 0.75",
+      "period": "regulation",
+      "line": 0.75,
       "unit": "goals",
       "participantName": "Argentina",
       "outcomes": [
@@ -158,40 +195,47 @@
           "code": "argentina-0-75",
           "name": "Argentina -0.75",
           "side": "home",
-          "decimalOdds": 1.91,
-          "impliedProbability": 0.5236,
-          "normalizedProbability": 0.1688,
+          "decimalOdds": 1.93,
+          "impliedProbability": 0.5181,
+          "normalizedProbability": 0.5,
           "point": -0.75,
-          "description": null
-        },
-        {
-          "code": "argentina-1",
-          "name": "Argentina -1",
-          "side": "home",
-          "decimalOdds": 2.39,
-          "impliedProbability": 0.4184,
-          "normalizedProbability": 0.1349,
-          "point": -1,
-          "description": null
-        },
-        {
-          "code": "argentina-0-25",
-          "name": "Argentina -0.25",
-          "side": "home",
-          "decimalOdds": 1.48,
-          "impliedProbability": 0.6757,
-          "normalizedProbability": 0.2179,
-          "point": -0.25,
           "description": null
         },
         {
           "code": "switzerland-0-75",
           "name": "Switzerland +0.75",
           "side": "away",
-          "decimalOdds": 1.94,
-          "impliedProbability": 0.5155,
-          "normalizedProbability": 0.1662,
+          "decimalOdds": 1.93,
+          "impliedProbability": 0.5181,
+          "normalizedProbability": 0.5,
           "point": 0.75,
+          "description": null
+        }
+      ]
+    },
+    {
+      "marketKey": "alternate_spreads",
+      "bookmakerKey": "betonlineag",
+      "bookmakerTitle": "BetOnline.ag",
+      "lastUpdate": "2026-07-11T20:05:07Z",
+      "displayOrder": 42,
+      "marketType": "spread",
+      "marketGroupKey": "spread",
+      "marketGroupTitle": "Spread",
+      "title": "Spread 1",
+      "period": "regulation",
+      "line": 1,
+      "unit": "goals",
+      "participantName": "Argentina",
+      "outcomes": [
+        {
+          "code": "argentina-1",
+          "name": "Argentina -1",
+          "side": "home",
+          "decimalOdds": 2.39,
+          "impliedProbability": 0.4184,
+          "normalizedProbability": 0.4055,
+          "point": -1,
           "description": null
         },
         {
@@ -200,18 +244,8 @@
           "side": "away",
           "decimalOdds": 1.63,
           "impliedProbability": 0.6135,
-          "normalizedProbability": 0.1978,
+          "normalizedProbability": 0.5945,
           "point": 1,
-          "description": null
-        },
-        {
-          "code": "switzerland-0-25",
-          "name": "Switzerland +0.25",
-          "side": "away",
-          "decimalOdds": 2.82,
-          "impliedProbability": 0.3546,
-          "normalizedProbability": 0.1143,
-          "point": 0.25,
           "description": null
         }
       ]
@@ -220,14 +254,51 @@
       "marketKey": "alternate_totals",
       "bookmakerKey": "betonlineag",
       "bookmakerTitle": "BetOnline.ag",
-      "lastUpdate": "2026-07-11T19:15:52Z",
+      "lastUpdate": "2026-07-11T20:05:07Z",
       "displayOrder": 50,
       "marketType": "total_goals",
       "marketGroupKey": "totals",
       "marketGroupTitle": "Total Goals",
-      "title": "Total Goals",
+      "title": "Total Goals 1.75",
       "period": "regulation",
-      "line": null,
+      "line": 1.75,
+      "unit": "goals",
+      "participantName": null,
+      "outcomes": [
+        {
+          "code": "over-1-75",
+          "name": "Over +1.75",
+          "side": "over",
+          "decimalOdds": 1.56,
+          "impliedProbability": 0.641,
+          "normalizedProbability": 0.6232,
+          "point": 1.75,
+          "description": null
+        },
+        {
+          "code": "under-1-75",
+          "name": "Under +1.75",
+          "side": "under",
+          "decimalOdds": 2.58,
+          "impliedProbability": 0.3876,
+          "normalizedProbability": 0.3768,
+          "point": 1.75,
+          "description": null
+        }
+      ]
+    },
+    {
+      "marketKey": "alternate_totals",
+      "bookmakerKey": "betonlineag",
+      "bookmakerTitle": "BetOnline.ag",
+      "lastUpdate": "2026-07-11T20:05:07Z",
+      "displayOrder": 51,
+      "marketType": "total_goals",
+      "marketGroupKey": "totals",
+      "marketGroupTitle": "Total Goals",
+      "title": "Total Goals 2.25",
+      "period": "regulation",
+      "line": 2.25,
       "unit": "goals",
       "participantName": null,
       "outcomes": [
@@ -235,60 +306,57 @@
           "code": "over-2-25",
           "name": "Over +2.25",
           "side": "over",
-          "decimalOdds": 2.01,
-          "impliedProbability": 0.4975,
-          "normalizedProbability": 0.1605,
+          "decimalOdds": 2.03,
+          "impliedProbability": 0.4926,
+          "normalizedProbability": 0.4755,
           "point": 2.25,
-          "description": null
-        },
-        {
-          "code": "over-2-5",
-          "name": "Over +2.5",
-          "side": "over",
-          "decimalOdds": 2.33,
-          "impliedProbability": 0.4292,
-          "normalizedProbability": 0.1385,
-          "point": 2.5,
-          "description": null
-        },
-        {
-          "code": "over-1-75",
-          "name": "Over +1.75",
-          "side": "over",
-          "decimalOdds": 1.53,
-          "impliedProbability": 0.6536,
-          "normalizedProbability": 0.2109,
-          "point": 1.75,
           "description": null
         },
         {
           "code": "under-2-25",
           "name": "Under +2.25",
           "side": "under",
-          "decimalOdds": 1.85,
-          "impliedProbability": 0.5405,
-          "normalizedProbability": 0.1744,
+          "decimalOdds": 1.84,
+          "impliedProbability": 0.5435,
+          "normalizedProbability": 0.5245,
           "point": 2.25,
+          "description": null
+        }
+      ]
+    },
+    {
+      "marketKey": "alternate_totals",
+      "bookmakerKey": "betonlineag",
+      "bookmakerTitle": "BetOnline.ag",
+      "lastUpdate": "2026-07-11T20:05:07Z",
+      "displayOrder": 52,
+      "marketType": "total_goals",
+      "marketGroupKey": "totals",
+      "marketGroupTitle": "Total Goals",
+      "title": "Total Goals 2.5",
+      "period": "regulation",
+      "line": 2.5,
+      "unit": "goals",
+      "participantName": null,
+      "outcomes": [
+        {
+          "code": "over-2-5",
+          "name": "Over +2.5",
+          "side": "over",
+          "decimalOdds": 2.37,
+          "impliedProbability": 0.4219,
+          "normalizedProbability": 0.409,
+          "point": 2.5,
           "description": null
         },
         {
           "code": "under-2-5",
           "name": "Under +2.5",
           "side": "under",
-          "decimalOdds": 1.66,
-          "impliedProbability": 0.6024,
-          "normalizedProbability": 0.1944,
+          "decimalOdds": 1.64,
+          "impliedProbability": 0.6098,
+          "normalizedProbability": 0.591,
           "point": 2.5,
-          "description": null
-        },
-        {
-          "code": "under-1-75",
-          "name": "Under +1.75",
-          "side": "under",
-          "decimalOdds": 2.66,
-          "impliedProbability": 0.3759,
-          "normalizedProbability": 0.1213,
-          "point": 1.75,
           "description": null
         }
       ]
@@ -297,7 +365,7 @@
       "marketKey": "h2h_3_way",
       "bookmakerKey": "betonlineag",
       "bookmakerTitle": "BetOnline.ag",
-      "lastUpdate": "2026-07-11T19:15:52Z",
+      "lastUpdate": "2026-07-11T20:05:07Z",
       "displayOrder": 60,
       "marketType": "match_winner_1x2",
       "marketGroupKey": "regulation-winner",
@@ -348,8 +416,8 @@
       "path": "/v4/sports",
       "status": 200,
       "quota": {
-        "requestsUsed": "0",
-        "requestsRemaining": "500",
+        "requestsUsed": "7",
+        "requestsRemaining": "493",
         "requestsLast": "0"
       }
     },
@@ -359,8 +427,8 @@
       "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z",
       "status": 200,
       "quota": {
-        "requestsUsed": "0",
-        "requestsRemaining": "500",
+        "requestsUsed": "7",
+        "requestsRemaining": "493",
         "requestsLast": "0"
       }
     },
@@ -370,8 +438,8 @@
       "path": "/v4/sports/soccer_fifa_world_cup/events/200d9cd5eda092c7eb778cc104cd2fd2/markets?regions=us&dateFormat=iso",
       "status": 200,
       "quota": {
-        "requestsUsed": "1",
-        "requestsRemaining": "499",
+        "requestsUsed": "8",
+        "requestsRemaining": "492",
         "requestsLast": "1"
       }
     },
@@ -381,8 +449,8 @@
       "path": "/v4/sports/soccer_fifa_world_cup/events/200d9cd5eda092c7eb778cc104cd2fd2/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso",
       "status": 200,
       "quota": {
-        "requestsUsed": "7",
-        "requestsRemaining": "493",
+        "requestsUsed": "14",
+        "requestsRemaining": "486",
         "requestsLast": "6"
       }
     }

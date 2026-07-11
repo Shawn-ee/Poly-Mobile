@@ -9922,3 +9922,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: Polymarket-backed World Cup soccer match line markets with accepting-order CLOB data, real provider token ids, and safe local fake-token liquidity.
 - Temporary mock/static data: no new temporary data was added. The gate reads the existing ODDSAPIS23 proof artifact and recovery command; it does not replay odds data unless the recovery command is explicitly run.
 - Future migration concern: the readiness batch should eventually pass this same full user-flow proof with `referenceSource=polymarket`. Until then, `temporarySportsbookS23BridgeProofReady=true` supports internal Local MVP testing only and does not close provider parity P1 debt.
+
+## Cycle ODDSLIVEREFRESH - The Odds API Live-Key Refresh
+
+- Closed or narrowed: the temporary sportsbook provider bridge was refreshed from live provider data with the key supplied through `THE_ODDS_API_KEY`, confirming the bridge still has route-visible winner, spread, total, alternate spread, and alternate total markets.
+- Route mismatch: none. The refreshed rows continue to flow through `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+- Fields Holiwyn still needs but backend/provider does not fully provide: Polymarket-backed World Cup soccer match line markets with accepting-order CLOB data and real provider token ids. The sportsbook ids are deliberately `odds-api-*` token-like placeholders for internal fake-token testing.
+- Temporary mock/static data: disposable maker liquidity was seeded for the proof order; the provider event and prices came from the live sportsbook provider and were stored as redacted harness evidence.
+- Future migration concern: keep `referenceSource=sportsbook-odds` separate from `referenceSource=polymarket` in readiness, Portfolio, and History. Passing this refresh keeps the Local MVP test bridge useful but does not close Polymarket provider parity.
