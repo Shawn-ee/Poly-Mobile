@@ -4479,6 +4479,12 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | S23 proof for unavailable Trade Ticket | None beyond app launch/deep link; no order route is called | N/A | None | `forceResetState=1&forceUnavailableTradeTicket=1` launch URL params | Existing `market.availability.status`, `market.availability.marketStatus`, selected market/outcome/line/source identity, and disabled ticket controls | No database model implied | Cycle UF proof fixture supplies route-shaped unavailable market data | None for this proof. Real provider-backed unavailable states should use the same availability fields. |
 
+# Cycle VY - Dynamic Provider Line Probes
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider line breadth scan | Polymarket Gamma `/markets` and `/events`; no Holiwyn route changed | GET | Public provider data | Search queries, tag slugs, event-specific queries, exact slug guesses where real `fifwc-...date` slugs are known | Provider slug, question, event title, family classification, active/closed/archived/acceptingOrders, condition id, market id, outcomes, CLOB token ids, bid/ask/liquidity | No database model implied; read-only proof | Current mobile fixture titles generate additional provider search probes only | Real provider-backed current-match Spread/Totals/Team Total rows remain missing from scanned Gamma data. |
+
 # Cycle UG - Chart-Free MVP Doc Alignment
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

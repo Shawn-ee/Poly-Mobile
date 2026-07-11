@@ -7583,3 +7583,17 @@ Remaining P1:
 - XML proof: `docs/mobile/harness/cycle-VX-unavailable-ticket-s23-proof/cycle-VX-unavailable-ticket.xml` shows visible `Market unavailable`, disabled side/preset/keypad markers, `ticket-availability-unavailable`, `ticket-market-status-PROOF_UNAVAILABLE`, `swipe-submit-state-disabled`, and selected Spread `1.5` identity markers.
 - Unresolved P0: 0.
 - Remaining P1: none for this unavailable-ticket scope. Real provider-backed Spread/Totals/Team Total rows remain a separate provider-data gap.
+
+# Cycle VY Audit Gate - Dynamic Provider Line Probes
+
+- Scope: backend/provider evidence for current-match line-market breadth.
+- Gate status: Pass for provider evidence scope.
+- P0 result: PASS.
+- Implementation proof: `scripts/prove_mobile_provider_line_breadth_scan.ts` now derives local fixture event probes and records static/dynamic/local fixture probe counts; `src/__tests__/mobile.provider-line-breadth-scan.contract.test.ts` guards the scanner contract.
+- Contract proof: `npx jest src/__tests__/mobile.provider-line-breadth-scan.contract.test.ts --runInBand` passed.
+- Type proof: `npx tsc --noEmit --pretty false --incremental false` passed.
+- Provider proof: `npm run mobile:provider-line-breadth-scan -- --cycle=VY --limit=120 --summaryPath=docs/mobile/harness/cycle-VY-dynamic-provider-line-probes/cycle-VY-provider-line-breadth-scan.json` passed.
+- Provider result: scan covers 3 static Polymarket probes and 3 local fixture probes; `providerLineCandidateCount=0`, `attachReadyProviderLineCandidateCount=0`, and interpretation remains `no_attach_ready_world_cup_line_markets_found_keep_local_contract_fixtures_for_mvp`.
+- Android proof: not run because no visible mobile UI changed in this backend/provider evidence cycle.
+- Unresolved P0: 0 for this provider scan scope.
+- Remaining P1: real provider-backed current-match Spread/Totals/Team Total line rows remain unavailable.
