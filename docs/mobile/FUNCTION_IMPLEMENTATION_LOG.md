@@ -20,6 +20,20 @@ Purpose: document the app functions, services, API calls, state transitions, and
 - Proof: run `npm run mobile:provider-evidence-plan` and confirm the plan reports `skip-refresh` while cached provider evidence is fresh. The final Definition of Done sweep consumes that plan so the final parity report can say whether the correct next provider action is wait or refresh. The Jest contract tests verify the command does not contain direct Gamma/CLOB fetch logic, writes a machine-readable plan from the committed batch summary, and is included in final signoff evidence.
 - Known limitations: No provider-backed parity feature is marked complete by this planner. It only helps the long-running loop avoid repeated provider scans until evidence is stale, nearly stale, missing, or a real provider candidate appears.
 
+## Cycle DODDEDUP - Final DoD Provider Debt De-duplication
+
+- Feature/page worked on: final Definition of Done reporting accuracy.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/mobile_definition_of_done_sweep.ts`
+  - `src/__tests__/mobile-definition-of-done-sweep.contract.test.ts`
+  - root `package.json` `test:ci`
+- User interactions supported: unchanged. The Local MVP path remains Home -> Event Detail -> line market -> Trade Ticket -> fake-token order -> Portfolio/history.
+- State transitions: no mobile, backend, database, provider, order, or bot state changes. The final DoD sweep now verifies the final-cycle artifact set when final QA/review docs exist and unresolved P0 debt is zero, while keeping provider-backed Polymarket parity as the single explicit partial criterion.
+- API/data dependencies: no runtime API calls. The sweep consumes the existing final signoff JSON, QA/review markdown, gap tracker, internal readiness batch, and provider evidence refresh plan.
+- Proof: run `npm run mobile:definition-of-done-sweep`; expected result is one remaining partial criterion, `dod-provider-polymarket-parity`, with the final-cycle artifact criterion verified. The Jest contract test protects this from regressing into duplicate provider-debt reporting.
+- Known limitations: this does not close the provider P1 blockers. It makes the final audit cleaner so the loop's next work is unambiguous.
+
 ## Cycle S23PROOFFORECAST - S23 Proof Staleness Forecast
 
 - Feature/page worked on: internal readiness batch S23 proof freshness forecasting.

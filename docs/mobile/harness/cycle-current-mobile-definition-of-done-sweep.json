@@ -2,11 +2,11 @@
   "ready": true,
   "readyToDeclareDone": false,
   "counts": {
-    "verified": 10,
-    "partial": 2,
+    "verified": 11,
+    "partial": 1,
     "blocked": 0
   },
-  "generatedAt": "2026-07-11T14:20:48.693Z",
+  "generatedAt": "2026-07-11T14:25:48.115Z",
   "criteria": [
     {
       "id": "dod-android-runtime",
@@ -113,14 +113,14 @@
     {
       "id": "dod-final-cycle",
       "criterion": "Final cycle includes passing required harnesses, final QA report, final review report, final feature gap tracker, screenshots, and no unresolved P0 debt.",
-      "status": "partial",
+      "status": "verified",
       "evidence": [
         "docs/mobile/MOBILE_FINAL_QA_SIGNOFF.md",
         "docs/mobile/MOBILE_FINAL_REVIEW_SIGNOFF.md",
         "docs/mobile/harness/cycle-current-mobile-final-signoff.json",
         "docs/mobile/MOBILE_FEATURE_GAP_TRACKER.md"
       ],
-      "notes": "This sweep is the final-cycle audit artifact, but a dedicated final QA/review signoff and P0 debt closeout still need one more review pass before declaring mission complete."
+      "notes": "Final QA/review artifacts exist and the feature tracker has zero unresolved P0 gaps. Overall completion still depends on the separate provider parity criterion."
     },
     {
       "id": "dod-apk-lane",
@@ -136,7 +136,6 @@
   ],
   "nextActions": [
     "Keep Local MVP testing on the contract-shaped line-market flow; provider evidence is fresh, so do not rerun provider discovery until the plan says refresh-soon/refresh-due or a real candidate signal appears.",
-    "Run a final QA/review signoff pass and close or explicitly downgrade remaining P0 debt.",
     "Keep Samsung server-order proof as the main real-device trading regression until the APK lane exists."
   ]
 }

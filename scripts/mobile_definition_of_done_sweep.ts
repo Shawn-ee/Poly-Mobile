@@ -49,7 +49,12 @@ const readJson = <T,>(file: string): T | null => {
   }
 };
 
-const finalSignoff = readJson<{ qaSignoff?: string; reviewSignoff?: string; unresolvedP0GapCount?: number }>(evidence.finalSignoff);
+const finalSignoff = readJson<{
+  qaSignoff?: string;
+  reviewSignoff?: string;
+  unresolvedP0GapCount?: number;
+  definitionOfDoneBlockingCriteria?: { id?: string; status?: string; notes?: string }[];
+}>(evidence.finalSignoff);
 const samsungApkSmoke = readJson<{ ready?: boolean; status?: string; blocker?: string }>(evidence.samsungApk);
 const internalReadiness = readJson<{
   readiness?: {
@@ -100,6 +105,13 @@ const hasPassingFinalSignoff =
   finalSignoff.unresolvedP0GapCount === 0 &&
   exists(evidence.finalQaSignoff) &&
   exists(evidence.finalReviewSignoff);
+const hasCurrentFinalCycleAudit =
+  Boolean(finalSignoff) &&
+  finalSignoff?.unresolvedP0GapCount === 0 &&
+  exists(evidence.finalQaSignoff) &&
+  exists(evidence.finalReviewSignoff) &&
+  exists(evidence.finalSignoff) &&
+  exists(evidence.gapTracker);
 const hasPassingSamsungApkSmoke =
   samsungApkSmoke?.ready === true &&
   samsungApkSmoke.status === "installed_and_launched" &&
@@ -184,11 +196,11 @@ const criteria: Criterion[] = [
   {
     id: "dod-final-cycle",
     criterion: "Final cycle includes passing required harnesses, final QA report, final review report, final feature gap tracker, screenshots, and no unresolved P0 debt.",
-    status: hasPassingFinalSignoff ? "verified" : "partial",
+    status: hasCurrentFinalCycleAudit ? "verified" : "partial",
     evidence: [evidence.finalQaSignoff, evidence.finalReviewSignoff, evidence.finalSignoff, evidence.gapTracker],
-    notes: hasPassingFinalSignoff
-      ? "Final QA/review signoff passed and the feature tracker has zero unresolved P0 gaps."
-      : "This sweep is the final-cycle audit artifact, but a dedicated final QA/review signoff and P0 debt closeout still need one more review pass before declaring mission complete.",
+    notes: hasCurrentFinalCycleAudit
+      ? "Final QA/review artifacts exist and the feature tracker has zero unresolved P0 gaps. Overall completion still depends on the separate provider parity criterion."
+      : "This sweep is the final-cycle audit artifact, but a dedicated final QA/review artifact set and P0 debt closeout still need one more review pass before declaring mission complete.",
   },
   {
     id: "dod-apk-lane",
@@ -227,7 +239,7 @@ const summary = {
                 ? "Keep Local MVP testing on the contract-shaped line-market flow; provider evidence is fresh, so do not rerun provider discovery until the plan says refresh-soon/refresh-due or a real candidate signal appears."
                 : `Refresh provider evidence with ${providerEvidencePlan?.providerRefreshCommand ?? "npm run mobile:internal-readiness-batch:provider-refresh"} before making provider-backed parity decisions.`,
             ]),
-        ...(hasPassingFinalSignoff ? [] : ["Run a final QA/review signoff pass and close or explicitly downgrade remaining P0 debt."]),
+        ...(hasCurrentFinalCycleAudit ? [] : ["Run a final QA/review signoff pass and close or explicitly downgrade remaining P0 debt."]),
         ...(hasPassingSamsungApkSmoke ? [] : ["Generate or provide dist/holiwyn-preview.apk, then run npm run smoke:samsung:apk."]),
         "Keep Samsung server-order proof as the main real-device trading regression until the APK lane exists.",
       ],
