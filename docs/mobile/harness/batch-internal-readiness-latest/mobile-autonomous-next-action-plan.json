@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T20:57:57.269Z",
+  "generatedAt": "2026-07-11T21:25:52.261Z",
   "status": "provider-parity-wait",
   "priority": "P1",
   "reason": "Provider-backed Polymarket parity is the only remaining partial criterion, but provider evidence is fresh.",
@@ -24,12 +24,12 @@
       "no_attach_ready_polymarket_worldcup_line_markets"
     ],
     "s23ProofReady": true,
-    "s23ProofNextStaleName": "totals-filled-buy-history",
-    "s23ProofHoursUntilStale": 23.92,
+    "s23ProofNextStaleName": "filled-buy-history",
+    "s23ProofHoursUntilStale": 12.11,
     "providerPlanStatus": "skip-refresh",
     "providerEvidenceHoursUntilStale": 17.92,
     "temporaryProviderBackendProofReady": true,
-    "temporaryProviderBackendProofHoursUntilStale": 23.19,
+    "temporaryProviderBackendProofHoursUntilStale": 22.67,
     "readyToDeclareDone": false,
     "dodCounts": {
       "verified": 12,
