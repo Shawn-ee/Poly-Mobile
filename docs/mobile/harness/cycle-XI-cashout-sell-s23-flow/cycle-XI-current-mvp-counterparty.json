@@ -6,29 +6,29 @@
     "expectedRestingSide": "SELL",
     "source": "local-mvp-internal-liquidity"
   },
-  "eventSlug": "argentina-vs-egypt",
+  "eventSlug": "holiwyn-local-australia-vs-egypt",
   "market": {
-    "id": "b3229ef9-2b18-49e3-a895-9e0d15634791",
-    "title": "Argentina vs. Egypt: Egypt +1.5",
+    "id": "b95f7de8-9b64-40f3-97a6-d10934358ff3",
+    "title": "Australia vs. Egypt: Egypt +1.5",
     "marketType": "spread",
     "marketGroupKey": "spread",
     "period": "regulation",
     "line": "1.5",
     "referenceSource": "contract-fixture",
-    "externalMarketId": "contract-argentina-vs-egypt-spread-away-1-5",
-    "conditionId": "condition-argentina-vs-egypt-spread-away-1-5"
+    "externalMarketId": "contract-holiwyn-local-australia-vs-egypt-spread-away-1-5",
+    "conditionId": "condition-holiwyn-local-australia-vs-egypt-spread-away-1-5"
   },
   "outcome": {
-    "id": "27d89d66-8761-4db2-b2ef-9ab0bd12aab4",
+    "id": "053af1f3-de83-478d-a88c-cfd42e161cc6",
     "name": "Egypt +1.5",
     "side": "away",
-    "referenceTokenId": "contract-argentina-vs-egypt-spread-away-1-5-away",
+    "referenceTokenId": "contract-holiwyn-local-australia-vs-egypt-spread-away-1-5-away",
     "referenceOutcomeLabel": "Egypt +1.5"
   },
   "cleanupOnly": false,
   "maker": {
-    "id": "e74afab9-3843-456c-8358-669887cfa5fa",
-    "username": "mobile_route_fill_maker_556e9ed7"
+    "id": "0140a2de-4ff0-4bc1-8113-37cbb621176a",
+    "username": "mobile_route_fill_maker_ae0dcaee"
   },
   "cleanup": {
     "enabled": true,
@@ -45,9 +45,9 @@
     "canceledBlockingAsks": []
   },
   "makerOrder": {
-    "id": "8e053071-d354-4508-9441-b2b5aa5b31f8",
-    "marketId": "b3229ef9-2b18-49e3-a895-9e0d15634791",
-    "outcomeId": "27d89d66-8761-4db2-b2ef-9ab0bd12aab4",
+    "id": "9cf25d84-23aa-4850-b931-0e53ddd9f241",
+    "marketId": "b95f7de8-9b64-40f3-97a6-d10934358ff3",
+    "outcomeId": "053af1f3-de83-478d-a88c-cfd42e161cc6",
     "side": "SELL",
     "price": "0.52",
     "size": "80",

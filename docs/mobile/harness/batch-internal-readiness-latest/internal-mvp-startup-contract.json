@@ -1,5 +1,5 @@
 {
-    "generatedAt":  "2026-07-11T21:37:49.1132270Z",
+    "generatedAt":  "2026-07-11T21:54:03.0167667Z",
     "backendHealthUrl":  "http://127.0.0.1:3002/api/health",
     "mobileApiBaseUrl":  "http://172.16.200.14:3002",
     "backendAuthBaseUrl":  "http://172.16.200.14:3002",
