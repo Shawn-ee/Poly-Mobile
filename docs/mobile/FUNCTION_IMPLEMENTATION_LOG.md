@@ -12823,10 +12823,12 @@ Known limitations:
   - The provider tradable-flow proof defaults to `argentina-vs-egypt`.
   - If no `marketId` is supplied, it selects the first listed Polymarket-backed market with tradable token ids for that match.
   - Non-match provider events are rejected by default unless `--allowNonMvpProviderEvent` is passed for an explicit non-MVP audit.
-  - If the selected provider-backed match market has no open bot SELL quote, the proof writes `provider_mvp_match_bot_quote_unavailable` instead of throwing before producing JSON.
+  - Before checking local bot quotes, the proof reads the latest `ReferenceQuoteSnapshot`.
+  - If the provider book is missing, closed/not accepting orders, invalidly priced, missing a side, or not MM eligible, the proof writes `provider_mvp_match_snapshot_not_mm_safe`.
+  - If the provider snapshot is safe but no open bot SELL quote exists, the proof writes `provider_mvp_match_bot_quote_unavailable` instead of throwing before producing JSON.
 - Proof:
   - Standalone guard proof wrote `docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json`.
-  - The current result is a P1 blocker, not P0: `argentina-vs-egypt` has a Polymarket-backed Regulation Winner market, but no open local bot SELL quote for provider-backed fill proof.
+  - The current result is a P1 blocker, not P0: `argentina-vs-egypt` has a Polymarket-backed Regulation Winner market, but its provider snapshot/book is not safe for local-MM fake-token fill proof.
 - Known limitations:
   - This does not seed provider local-MM liquidity. It only prevents non-MVP futures proof from being mistaken for match-only readiness.
   - Local MVP internal testing remains supported through the already-proven contract-fixture line flow.

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T08:22:38.903Z",
+  "generatedAt": "2026-07-11T08:30:42.140Z",
   "source": "gamma-api.polymarket.com/events",
   "readOnly": true,
   "scope": "world-cup-match-only-provider-breadth",
@@ -373,7 +373,7 @@
         "playerPropLike": true,
         "futuresLike": true,
         "marketCount": 40,
-        "usableMarketCount": 20,
+        "usableMarketCount": 19,
         "acceptingOrderMarketCount": 40,
         "sampleUsableMarket": {
           "slug": "will-josh-allen-win-the-2026-nfl-mvp",
@@ -511,9 +511,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.088,
-          "bestAsk": 0.105,
-          "spread": 0.017,
+          "bestBid": 0.068,
+          "bestAsk": 0.098,
+          "spread": 0.03,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -545,9 +545,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.188,
+          "bestBid": 0.189,
           "bestAsk": 0.193,
-          "spread": 0.005,
+          "spread": 0.004,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -643,42 +643,43 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.01,
+          "bestBid": 0.011,
           "bestAsk": 0.019,
-          "spread": 0.009,
+          "spread": 0.008,
           "usableBook": true,
           "rejectionReasons": []
         }
       },
       {
-        "slug": "world-cup-golden-glove-winner-20260603195306910",
-        "title": "World Cup: Golden Glove Winner",
+        "slug": "world-cup-fair-play-award-winner-20260603201520240",
+        "title": "World Cup: Fair Play Award Winner",
         "tags": [
           "soccer",
           "sports",
           "world-cup",
           "fifa-world-cup",
-          "2026-fifa-world-cup"
+          "2026-fifa-world-cup",
+          "world-cup-awards"
         ],
         "matchLike": false,
         "worldCupRelevant": true,
-        "playerPropLike": true,
+        "playerPropLike": false,
         "futuresLike": true,
-        "marketCount": 41,
+        "marketCount": 54,
         "usableMarketCount": 6,
-        "acceptingOrderMarketCount": 41,
+        "acceptingOrderMarketCount": 54,
         "sampleUsableMarket": {
-          "slug": "will-mike-maignan-win-the-golden-glove-at-the-2026-fifa-world-cup-20260603195307476",
-          "question": "Will Mike Maignan win the Golden Glove at the 2026 FIFA World Cup?",
+          "slug": "will-cape-verde-win-the-fair-play-award-for-the-2026-fifa-world-cup-20260603201521197",
+          "question": "Will Cape Verde win the Fair Play Award for the 2026 FIFA World Cup?",
           "acceptingOrders": true,
           "active": true,
           "closed": false,
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.31,
-          "bestAsk": 0.33,
-          "spread": 0.02,
+          "bestBid": 0.019,
+          "bestAsk": 0.028,
+          "spread": 0.009,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -714,8 +715,8 @@
           "outcomeCount": 2,
           "tokenCount": 2,
           "bestBid": 0.5,
-          "bestAsk": 0.52,
-          "spread": 0.02,
+          "bestAsk": 0.51,
+          "spread": 0.01,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -768,7 +769,7 @@
         "playerPropLike": true,
         "futuresLike": true,
         "marketCount": 40,
-        "usableMarketCount": 20,
+        "usableMarketCount": 19,
         "acceptingOrderMarketCount": 40,
         "sampleUsableMarket": {
           "slug": "will-josh-allen-win-the-2026-nfl-mvp",
@@ -976,9 +977,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.048,
+          "bestBid": 0.053,
           "bestAsk": 0.089,
-          "spread": 0.021,
+          "spread": 0.001,
           "usableBook": true,
           "rejectionReasons": []
         }

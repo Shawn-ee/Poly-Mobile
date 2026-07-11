@@ -1,7 +1,7 @@
 {
   "pass": false,
   "cycle": "BATCHREADINESS",
-  "generatedAt": "2026-07-11T08:22:34.833Z",
+  "generatedAt": "2026-07-11T08:30:37.657Z",
   "scope": "provider-visible-market-to-internal-test-tradable-mobile-flow",
   "localMvpPolicy": {
     "defaultEventSlug": "argentina-vs-egypt",
@@ -21,8 +21,8 @@
     "eventSlug": "argentina-vs-egypt",
     "marketId": "8e03bb8a-d1e0-4067-966f-c05e3969ab7d"
   },
-  "blocker": "provider_mvp_match_bot_quote_unavailable",
-  "message": "The selected provider-backed match market is visible, but it has no open bot SELL quote for the mobile fake-token fill proof.",
+  "blocker": "provider_mvp_match_snapshot_not_mm_safe",
+  "message": "The selected provider-backed match market is visible, but its provider snapshot/book is not safe for local-MM fake-token fill proof.",
   "event": {
     "id": "b459cdb1-6c7b-46e2-ac07-6b4a4747d70b",
     "slug": "argentina-vs-egypt",
@@ -42,11 +42,27 @@
     "conditionId": "0xa7b5b123f9fd38f83fbe19773a5d04e38208b370ca66be27b9688155e7b5c60a"
   },
   "tradableOutcomeCount": 2,
-  "openOrderCount": 0,
+  "snapshot": {
+    "fetchedAt": "2026-07-11T07:08:26.039Z",
+    "ageSeconds": 4932,
+    "bestBid": "0.999",
+    "bestAsk": "1",
+    "acceptingOrders": false,
+    "qualityStatus": "invalid_price",
+    "reason": "reference_invalid_price",
+    "mmEligible": false,
+    "blockers": [
+      "snapshot_not_accepting_orders",
+      "snapshot_stale",
+      "snapshot_not_mm_eligible",
+      "snapshot_reason_reference_invalid_price",
+      "snapshot_quality_invalid_price"
+    ]
+  },
   "checks": {
     "selectedEventIsMatch": true,
     "selectedProviderMarketExists": true,
-    "botSellQuoteAvailable": false,
+    "providerSnapshotSafeForLocalMm": false,
     "localMvpMatchOnlyPreserved": true
   }
 }

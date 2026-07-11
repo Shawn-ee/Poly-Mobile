@@ -1,7 +1,7 @@
 {
   "cycle": "BATCHREADINESS",
   "result": "pass",
-  "generatedAt": "2026-07-11T08:23:41.712Z",
+  "generatedAt": "2026-07-11T08:31:46.461Z",
   "provider": "polymarket-gamma",
   "scope": "world-cup-provider-line-breadth-scan",
   "sources": {

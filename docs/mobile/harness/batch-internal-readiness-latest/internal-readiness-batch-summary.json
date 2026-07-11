@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T08:23:41.8163195Z",
+  "generatedAt": "2026-07-11T08:31:47.3885561Z",
   "scope": "mobile-internal-readiness-batch",
   "cycle": "BATCHREADINESS",
   "backendBaseUrl": "http://127.0.0.1:3002",
@@ -100,7 +100,7 @@
   "environmentHealth": {
     "git": {
       "branch": "main",
-      "status": "## main...poly-mobile/main\n M docs/mobile/FUNCTION_IMPLEMENTATION_LOG.md\n M docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md\n M docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md\n M package.json\n M scripts/mobile_internal_readiness_batch.ps1\n M scripts/prove_mobile_provider_visible_tradable_flow.ts\n?? docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json",
+      "status": "## main...poly-mobile/main\n M docs/mobile/FUNCTION_IMPLEMENTATION_LOG.md\n M docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md\n M docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md\n M docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json\n M scripts/mobile_internal_readiness_batch.ps1\n M scripts/prove_mobile_provider_visible_tradable_flow.ts",
       "worktreeClean": false
     },
     "android": {
@@ -149,7 +149,7 @@
     "providerLocalMmReadyMarketCount": 0,
     "providerBooksUnavailableOrClosed": true,
     "providerMvpTradableFlowReady": false,
-    "providerMvpTradableFlowBlocker": "provider_mvp_match_bot_quote_unavailable",
+    "providerMvpTradableFlowBlocker": "provider_mvp_match_snapshot_not_mm_safe",
     "usableWorldCupTeamMatchEventCount": 0,
     "attachReadyProviderLineCandidateCount": 0
   },
@@ -157,7 +157,7 @@
     "p0": [],
     "p1": [
       "provider_worldcup_match_books_unavailable_or_closed",
-      "provider_mvp_match_bot_quote_unavailable",
+      "provider_mvp_match_snapshot_not_mm_safe",
       "no_usable_polymarket_worldcup_team_match_books",
       "no_attach_ready_polymarket_worldcup_line_markets",
       "google_physical_callback_not_phone_reachable"

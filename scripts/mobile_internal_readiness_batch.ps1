@@ -235,6 +235,8 @@ if (-not $providerExchangeReady) {
 if ($providerTradableFlow -and -not $providerMvpTradableFlowReady) {
   if ($providerMvpTradableFlowBlocker -eq "provider_mvp_match_bot_quote_unavailable") {
     $p1Blockers += "provider_mvp_match_bot_quote_unavailable"
+  } elseif ($providerMvpTradableFlowBlocker -eq "provider_mvp_match_snapshot_not_mm_safe") {
+    $p1Blockers += "provider_mvp_match_snapshot_not_mm_safe"
   } elseif ($providerMvpTradableFlowBlocker -eq "provider_mvp_match_market_not_found") {
     $p1Blockers += "provider_mvp_match_market_not_found"
   } elseif ($providerMvpTradableFlowBlocker -eq "non_mvp_provider_event_rejected") {

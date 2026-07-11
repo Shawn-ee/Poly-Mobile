@@ -46,6 +46,7 @@ Known provider availability gaps are tracked as P1, not P0:
 - no usable accepting-order Polymarket World Cup team-match books
 - no attach-ready Polymarket World Cup line markets
 - provider/internal exchange not local-MM-ready
+- provider-visible match market has an unsafe/missing/non-accepting provider snapshot for local-MM fake-token fill proof
 - provider-visible match market has no bot SELL quote for a fake-token fill proof
 - manual server mode missing an ambient `EXPO_PUBLIC_API_KEY`
 - Google auth runtime warnings such as a callback/redirect URI mismatch
@@ -56,6 +57,8 @@ This is intentional. The Local MVP fake-token user flow remains testable with co
 Do not import futures, awards, player props, or non-World-Cup events to make the match breadth numbers look better. The harness should keep those markets as provider diagnostics unless the product scope explicitly changes.
 
 The provider-visible tradable-flow proof is now match-only by default. It selects the Local MVP match event (`argentina-vs-egypt`) unless an explicit event is passed, and it rejects non-match provider futures unless the caller uses `--allowNonMvpProviderEvent` for a separate non-MVP audit. This prevents old World Cup Winner futures proof from being mistaken for Local MVP match readiness.
+
+Before looking for a local bot quote, the proof checks the latest provider quote snapshot. If the provider book is missing, closed/not accepting orders, invalidly priced, missing a side, or marked not MM eligible, the batch reports `provider_mvp_match_snapshot_not_mm_safe`. This keeps the next action honest: do not seed a local bot quote against an unsafe provider book.
 
 ## Local Environment Snapshot
 

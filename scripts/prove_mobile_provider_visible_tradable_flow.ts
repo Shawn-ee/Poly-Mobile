@@ -24,6 +24,61 @@ const assert = (condition: unknown, message: string): asserts condition => {
   if (!condition) throw new Error(message);
 };
 
+function secondsSince(date: Date | null, now: Date) {
+  if (!date) return null;
+  return Math.max(0, Math.round((now.getTime() - date.getTime()) / 1000));
+}
+
+function deriveSnapshotBlockers(params: {
+  latest: {
+    fetchedAt: Date;
+    bestBid: Prisma.Decimal | null;
+    bestAsk: Prisma.Decimal | null;
+    acceptingOrders: boolean;
+    qualityStatus: string | null;
+    mmEligible: boolean;
+    reason: string | null;
+  } | null;
+  snapshotAgeSeconds: number | null;
+  staleAfterSeconds: number;
+}) {
+  const { latest, snapshotAgeSeconds, staleAfterSeconds } = params;
+  if (!latest) return ["snapshot_missing"];
+
+  const blockers = [
+    latest.bestBid == null ? "snapshot_missing_bid" : null,
+    latest.bestAsk == null ? "snapshot_missing_ask" : null,
+    latest.acceptingOrders ? null : "snapshot_not_accepting_orders",
+    snapshotAgeSeconds == null || snapshotAgeSeconds > staleAfterSeconds ? "snapshot_stale" : null,
+    latest.mmEligible ? null : "snapshot_not_mm_eligible",
+  ].filter((value): value is string => Boolean(value));
+
+  const reason = latest.reason?.trim();
+  if (reason) blockers.push(`snapshot_reason_${reason}`);
+
+  const qualityStatus = latest.qualityStatus?.trim();
+  if (qualityStatus && qualityStatus !== "high_quality" && qualityStatus !== "available" && qualityStatus !== "approved") {
+    blockers.push(`snapshot_quality_${qualityStatus}`);
+  }
+
+  return [...new Set(blockers)];
+}
+
+function snapshotBlocksSafeLocalMm(blockers: string[]) {
+  return blockers.some(
+    (blocker) =>
+      blocker === "snapshot_missing" ||
+      blocker === "snapshot_missing_bid" ||
+      blocker === "snapshot_missing_ask" ||
+      blocker === "snapshot_not_accepting_orders" ||
+      blocker === "snapshot_not_mm_eligible" ||
+      blocker === "snapshot_reason_reference_missing_book" ||
+      blocker === "snapshot_reason_reference_invalid_price" ||
+      blocker === "snapshot_quality_missing_book" ||
+      blocker === "snapshot_quality_invalid_price",
+  );
+}
+
 async function writeBlockedSummary(params: {
   outputPath: string;
   cycleLabel: string;
@@ -116,6 +171,8 @@ async function createProofCredential(cycleLabel: string) {
 }
 
 async function main() {
+  const staleAfterSeconds = Number(argValue("staleAfterSeconds") ?? "90");
+  assert(Number.isFinite(staleAfterSeconds) && staleAfterSeconds >= 0, "staleAfterSeconds must be non-negative.");
   const cycleLabel = argValue("cycle") ?? "OW";
   const safeCycleLabel = cycleLabel.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "cycle";
   const baseUrl = argValue("baseUrl") ?? DEFAULT_BASE_URL;
@@ -148,6 +205,19 @@ async function main() {
       orders: {
         where: { status: { in: ["OPEN", "PARTIAL"] } },
         orderBy: { createdAt: "asc" },
+      },
+      referenceQuoteSnapshots: {
+        orderBy: [{ fetchedAt: "desc" }, { updatedAt: "desc" }],
+        take: 1,
+        select: {
+          fetchedAt: true,
+          bestBid: true,
+          bestAsk: true,
+          acceptingOrders: true,
+          qualityStatus: true,
+          mmEligible: true,
+          reason: true,
+        },
       },
     },
   });
@@ -212,6 +282,70 @@ async function main() {
   assert(market.isListed, "Selected market is not listed.");
 
   const tradableOutcomes = market.outcomes.filter((outcome) => outcome.isTradable && outcome.referenceTokenId);
+  const latestSnapshot = market.referenceQuoteSnapshots[0] ?? null;
+  const snapshotAgeSeconds = secondsSince(latestSnapshot?.fetchedAt ?? null, new Date());
+  const snapshotBlockers = deriveSnapshotBlockers({
+    latest: latestSnapshot,
+    snapshotAgeSeconds,
+    staleAfterSeconds,
+  });
+  if (snapshotBlocksSafeLocalMm(snapshotBlockers)) {
+    await writeBlockedSummary({
+      outputPath,
+      cycleLabel,
+      baseUrl,
+      eventSlug,
+      requestedMarketId: market.id,
+      blocker: "provider_mvp_match_snapshot_not_mm_safe",
+      message:
+        "The selected provider-backed match market is visible, but its provider snapshot/book is not safe for local-MM fake-token fill proof.",
+      event: {
+        id: market.event.id,
+        slug: market.event.slug,
+        title: market.event.title,
+        eventType: market.event.eventType,
+        sportKey: market.event.sportKey,
+        leagueKey: market.event.leagueKey,
+      },
+      market: {
+        id: market.id,
+        slug: market.slug,
+        title: market.title,
+        marketType: market.marketType,
+        referenceSource: market.referenceSource,
+        externalSlug: market.externalSlug,
+        externalMarketId: market.externalMarketId,
+        conditionId: market.conditionId,
+      },
+      extra: {
+        tradableOutcomeCount: tradableOutcomes.length,
+        snapshot: latestSnapshot
+          ? {
+              fetchedAt: latestSnapshot.fetchedAt.toISOString(),
+              ageSeconds: snapshotAgeSeconds,
+              bestBid: latestSnapshot.bestBid?.toString() ?? null,
+              bestAsk: latestSnapshot.bestAsk?.toString() ?? null,
+              acceptingOrders: latestSnapshot.acceptingOrders,
+              qualityStatus: latestSnapshot.qualityStatus,
+              reason: latestSnapshot.reason,
+              mmEligible: latestSnapshot.mmEligible,
+              blockers: snapshotBlockers,
+            }
+          : {
+              fetchedAt: null,
+              ageSeconds: null,
+              blockers: snapshotBlockers,
+            },
+        checks: {
+          selectedEventIsMatch: market.event.eventType === "match",
+          selectedProviderMarketExists: true,
+          providerSnapshotSafeForLocalMm: false,
+          localMvpMatchOnlyPreserved: true,
+        },
+      },
+    });
+    return;
+  }
   const botAsk = market.orders.find(
     (order) =>
       order.side === "SELL" &&
