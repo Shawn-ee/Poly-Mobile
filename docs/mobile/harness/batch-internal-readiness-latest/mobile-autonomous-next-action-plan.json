@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-07-11T22:03:53.182Z",
+  "generatedAt": "2026-07-11T22:10:00.260Z",
   "status": "provider-parity-wait",
   "priority": "P1",
   "reason": "Provider-backed Polymarket parity is the only remaining partial criterion, but provider evidence is fresh.",
-  "recommendedAction": "Do not open a new provider scan. Keep Local MVP internal testing/regression proof ready while waiting for provider evidence to become stale or a real candidate signal. Next wait trigger: provider-evidence 'provider-visible-tradable-flow' at 2026-07-12T13:50:21.2740000Z (15.91 hours).",
+  "recommendedAction": "Do not open a new provider scan. Keep Local MVP internal testing/regression proof ready while waiting for provider evidence to become stale or a real candidate signal. Next wait trigger: provider-evidence 'provider-visible-tradable-flow' at 2026-07-12T13:50:21.2740000Z (15.67 hours).",
   "commands": [],
   "sourceEvidence": {
     "readinessSummaryPath": "docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json",
@@ -25,11 +25,11 @@
     ],
     "s23ProofReady": true,
     "s23ProofNextStaleName": "filled-buy-history",
-    "s23ProofHoursUntilStale": 23.8,
+    "s23ProofHoursUntilStale": 23.57,
     "providerPlanStatus": "skip-refresh",
-    "providerEvidenceHoursUntilStale": 15.91,
+    "providerEvidenceHoursUntilStale": 15.67,
     "temporaryProviderBackendProofReady": true,
-    "temporaryProviderBackendProofHoursUntilStale": 23.59,
+    "temporaryProviderBackendProofHoursUntilStale": 23.36,
     "readyToDeclareDone": false,
     "dodCounts": {
       "verified": 12,
@@ -46,7 +46,7 @@
       "kind": "provider-evidence",
       "name": "provider-visible-tradable-flow",
       "staleAt": "2026-07-12T13:50:21.2740000Z",
-      "hoursUntilStale": 15.91
+      "hoursUntilStale": 15.67
     }
   }
 }

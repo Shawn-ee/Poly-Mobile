@@ -189,6 +189,16 @@ function numberOrNull(value: unknown): number | null {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
+function hoursUntilStale(staleAt: string | null | undefined, fallbackHours: unknown, now: Date): number | null {
+  if (staleAt) {
+    const staleAtMs = Date.parse(staleAt);
+    if (Number.isFinite(staleAtMs)) {
+      return Number(((staleAtMs - now.getTime()) / 3_600_000).toFixed(2));
+    }
+  }
+  return numberOrNull(fallbackHours);
+}
+
 function earliestWaitTrigger(
   triggers: {
     kind: NextActionPlan["state"]["nextWaitTrigger"]["kind"];
@@ -220,6 +230,7 @@ function buildPlan(
   oddsApiS23VisibleProof: OddsApiS23VisibleProof | null,
   paths: NextActionPlan["sourceEvidence"],
   s23RefreshWindowHours: number,
+  now: Date,
 ): NextActionPlan {
   const p0Blockers = readiness?.blockers?.p0 ?? [];
   const p1Blockers = readiness?.blockers?.p1 ?? [];
@@ -227,15 +238,31 @@ function buildPlan(
   const remainingPartialCriteria = (dod?.criteria ?? [])
     .filter((criterion) => criterion.status === "partial" || criterion.status === "blocked")
     .map((criterion) => criterion.id ?? "unknown");
-  const s23ProofHoursUntilStale = numberOrNull(readinessState.s23ProofHoursUntilStale);
+  const s23ProofHoursUntilStale = hoursUntilStale(
+    readinessState.s23ProofNextStaleAt,
+    readinessState.s23ProofHoursUntilStale,
+    now,
+  );
   const s23RefreshDue =
     readinessState.s23LocalMvpDeviceProofReady !== true ||
     (s23ProofHoursUntilStale !== null && s23ProofHoursUntilStale <= s23RefreshWindowHours);
-  const providerRefreshDue = providerPlan?.shouldRefreshProviderEvidence === true;
-  const providerEvidenceHoursUntilStale = numberOrNull(providerPlan?.hoursUntilStale ?? readinessState.cachedProviderEvidenceHoursUntilStale);
-  const temporaryProviderBackendProofHoursUntilStale = numberOrNull(readinessState.temporarySportsbookBackendProofHoursUntilStale);
+  const providerEvidenceHoursUntilStale = hoursUntilStale(
+    providerPlan?.nextStaleAt ?? readinessState.cachedProviderEvidenceNextStaleAt,
+    providerPlan?.hoursUntilStale ?? readinessState.cachedProviderEvidenceHoursUntilStale,
+    now,
+  );
+  const temporaryProviderBackendProofHoursUntilStale = hoursUntilStale(
+    readinessState.temporarySportsbookBackendProofNextStaleAt,
+    readinessState.temporarySportsbookBackendProofHoursUntilStale,
+    now,
+  );
   const temporaryProviderBackendProofReady = readinessState.temporarySportsbookBackendProofReady === true;
-  const temporaryProviderBackendProofDue = temporaryProviderBackendProofReady !== true;
+  const providerRefreshDue =
+    providerPlan?.shouldRefreshProviderEvidence === true ||
+    (providerEvidenceHoursUntilStale !== null && providerEvidenceHoursUntilStale <= 0);
+  const temporaryProviderBackendProofDue =
+    temporaryProviderBackendProofReady !== true ||
+    (temporaryProviderBackendProofHoursUntilStale !== null && temporaryProviderBackendProofHoursUntilStale <= 0);
   const temporaryProviderReady =
     temporaryProviderBackendProofReady &&
     oddsApiSummary?.pass === true &&
@@ -345,7 +372,7 @@ function buildPlan(
   }
 
   return {
-    generatedAt: new Date().toISOString(),
+    generatedAt: now.toISOString(),
     status,
     priority,
     reason,
@@ -392,9 +419,14 @@ const oddsApiS23VisibleProofPath =
   "docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json";
 const outputPath = args.get("output") ?? "docs/mobile/harness/batch-internal-readiness-latest/mobile-autonomous-next-action-plan.json";
 const s23RefreshWindowHours = Number(args.get("s23RefreshWindowHours") ?? "2");
+const nowArg = args.get("now");
+const now = nowArg ? new Date(nowArg) : new Date();
 
 if (!Number.isFinite(s23RefreshWindowHours) || s23RefreshWindowHours < 0) {
   throw new Error("--s23RefreshWindowHours must be a non-negative number");
+}
+if (Number.isNaN(now.getTime())) {
+  throw new Error("--now must be a valid date/time string");
 }
 
 const paths = {
@@ -416,6 +448,7 @@ const plan = buildPlan(
   readJson<OddsApiS23VisibleProof>(oddsApiS23VisibleProofPath),
   paths,
   s23RefreshWindowHours,
+  now,
 );
 
 const resolvedOutputPath = path.resolve(repoRoot, outputPath);

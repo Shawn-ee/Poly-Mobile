@@ -14,8 +14,10 @@ Purpose: document the app functions, services, API calls, state transitions, and
   - Added `nextWaitTrigger` to the autonomous next-action plan state.
   - The planner now compares S23 proof freshness, cached provider evidence freshness, and temporary sportsbook backend proof freshness, then records the earliest stale window.
   - When the loop is in `provider-parity-wait`, the recommended action names the exact next wait trigger, stale time, and hours remaining.
+  - The planner now recomputes hours remaining from absolute `staleAt` timestamps, so long-running waits wake provider refresh after stale time passes even if the last batch's cached `hoursUntilStale` value is old.
 - Proof:
   - `npx jest --runInBand src/__tests__/mobile-autonomous-next-action.contract.test.ts`
+  - `npx tsc --noEmit --pretty false --incremental false`
 - Known limitations:
   - Harness/control-plane change only. No frontend behavior, backend route, provider discovery, API schema, database schema, or order flow changed.
   - Does not close `dod-provider-polymarket-parity`; it reduces pointless cycles until provider evidence becomes stale or a real candidate signal appears.
