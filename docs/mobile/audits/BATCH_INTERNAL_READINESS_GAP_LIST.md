@@ -1,6 +1,6 @@
 # Batch Internal Readiness Gap List
 
-Generated: 2026-07-11T12:10:54.508Z
+Generated: 2026-07-11T12:17:09.594Z
 
 Source summary: `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`
 
@@ -44,7 +44,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Local MVP match breadth ready: yes (4 events)
 - Provider books unavailable or closed: yes
 - Provider snapshot refresh succeeded: yes (6 updated)
-- Cached provider evidence: provider-snapshot-refresh:fresh(0.81h), internal-exchange-readiness:fresh(0.81h), provider-visible-tradable-flow:fresh(0.81h), worldcup-match-scan:fresh(0.81h), provider-line-scan:fresh(0.8h)
+- Cached provider evidence: provider-snapshot-refresh:fresh(0.91h), internal-exchange-readiness:fresh(0.91h), provider-visible-tradable-flow:fresh(0.91h), worldcup-match-scan:fresh(0.91h), provider-line-scan:fresh(0.91h)
 - Provider MVP tradable flow ready: no (provider_mvp_match_snapshot_not_mm_safe)
 - Usable World Cup team-match provider events: 0
 - Attach-ready provider line candidates: 0

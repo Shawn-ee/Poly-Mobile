@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T12:10:52.4977985Z",
+  "generatedAt": "2026-07-11T12:17:08.3012453Z",
   "scope": "mobile-internal-readiness-batch",
   "cycle": "BATCHREADINESS",
   "backendBaseUrl": "http://127.0.0.1:3002",
@@ -182,7 +182,7 @@
   "environmentHealth": {
     "git": {
       "branch": "main",
-      "status": "## main...poly-mobile/main [ahead 1]",
+      "status": "## main...poly-mobile/main",
       "worktreeClean": true
     },
     "android": {
@@ -249,7 +249,7 @@
         "pass": true,
         "reason": "pass",
         "generatedAt": "2026-07-11T09:32:05.5117425Z",
-        "proofAgeHours": 2.65,
+        "proofAgeHours": 2.75,
         "maxAgeHours": 24,
         "fresh": true,
         "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -267,7 +267,7 @@
         "pass": true,
         "reason": "pass",
         "generatedAt": "2026-07-11T09:45:19.0371695Z",
-        "proofAgeHours": 2.43,
+        "proofAgeHours": 2.53,
         "maxAgeHours": 24,
         "fresh": true,
         "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -285,7 +285,7 @@
         "pass": true,
         "reason": "pass",
         "generatedAt": "2026-07-11T09:59:42.7891761Z",
-        "proofAgeHours": 2.19,
+        "proofAgeHours": 2.29,
         "maxAgeHours": 24,
         "fresh": true,
         "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -303,7 +303,7 @@
         "pass": true,
         "reason": "pass",
         "generatedAt": "2026-07-11T05:12:16.5919824Z",
-        "proofAgeHours": 6.98,
+        "proofAgeHours": 7.08,
         "maxAgeHours": 24,
         "fresh": true,
         "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -321,7 +321,7 @@
         "pass": true,
         "reason": "pass",
         "generatedAt": "2026-07-11T05:18:54.1737804Z",
-        "proofAgeHours": 6.87,
+        "proofAgeHours": 6.97,
         "maxAgeHours": 24,
         "fresh": true,
         "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -350,7 +350,7 @@
         "name": "provider-snapshot-refresh",
         "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-snapshot-refresh.json",
         "generatedAt": "2026-07-11T11:22:25.735Z",
-        "ageHours": 0.81,
+        "ageHours": 0.91,
         "maxAgeHours": 24,
         "fresh": true,
         "present": true
@@ -359,7 +359,7 @@
         "name": "internal-exchange-readiness",
         "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.json",
         "generatedAt": "2026-07-11T11:22:26.823Z",
-        "ageHours": 0.81,
+        "ageHours": 0.91,
         "maxAgeHours": 24,
         "fresh": true,
         "present": true
@@ -368,7 +368,7 @@
         "name": "provider-visible-tradable-flow",
         "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json",
         "generatedAt": "2026-07-11T11:22:28.487Z",
-        "ageHours": 0.81,
+        "ageHours": 0.91,
         "maxAgeHours": 24,
         "fresh": true,
         "present": true
@@ -377,7 +377,7 @@
         "name": "worldcup-match-scan",
         "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-event-scan.json",
         "generatedAt": "2026-07-11T11:22:31.281Z",
-        "ageHours": 0.81,
+        "ageHours": 0.91,
         "maxAgeHours": 24,
         "fresh": true,
         "present": true
@@ -386,7 +386,7 @@
         "name": "provider-line-scan",
         "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-line-breadth-scan.json",
         "generatedAt": "2026-07-11T11:22:36.170Z",
-        "ageHours": 0.8,
+        "ageHours": 0.91,
         "maxAgeHours": 24,
         "fresh": true,
         "present": true
