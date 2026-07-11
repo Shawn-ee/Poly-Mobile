@@ -18,6 +18,7 @@ describe("Home Local MVP focus contract", () => {
     expect(home).toContain("Matches");
     expect(home).toContain("live");
     expect(home).toContain("home-filter-controls-hidden-local-mvp");
+    expect(home).toContain("No World Cup matches available.");
     expect(home).not.toContain("home-filter-all");
     expect(home).not.toContain("home-filter-live");
     expect(home).not.toContain("home-filter-today");
@@ -26,6 +27,7 @@ describe("Home Local MVP focus contract", () => {
     expect(home).not.toContain("searchAll: string");
     expect(home).not.toContain("searchLive: string");
     expect(home).not.toContain("today: string");
+    expect(home).not.toContain("const emptyCopy = t.noResults");
     expect(home).not.toContain("filterChip");
     expect(home).not.toContain("filterRow");
   });

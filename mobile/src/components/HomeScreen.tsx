@@ -48,7 +48,7 @@ export function HomeScreen({
     const distanceFromBottom = contentSize.height - (contentOffset.y + layoutMeasurement.height);
     if (distanceFromBottom < 160) loadMoreMatches();
   };
-  const emptyCopy = t.noResults;
+  const emptyCopy = locale === "zh" ? "\u6682\u65e0\u4e16\u754c\u676f\u6bd4\u8d5b" : "No World Cup matches available.";
   const liveCount = events.filter((event) => event.status === "live").length;
   const availableGameCount = events.length;
 

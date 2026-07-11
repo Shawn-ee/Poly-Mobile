@@ -9559,7 +9559,7 @@ Future migration concern:
 # Cycle VW - Home Copy Contract Cleanup Notes
 
 - No schema migration was added.
-- Closed or narrowed: Home's component copy contract no longer includes stale search/filter/today fields after those controls were removed from the Local MVP Home page.
+- Closed or narrowed: Home's component copy contract no longer includes stale search/filter/today fields after those controls were removed from the Local MVP Home page; the empty state no longer references search.
 - Route mismatch: none. Home still consumes the `/api/events` match-feed route in server mode and does not depend on Search route state.
 - Fields Holiwyn still needs: no new fields for this cleanup. Real provider-backed Spread/Totals/Team Total current-match line rows remain the repeated P1 data gap.
 - Temporary mock/static data: none added.

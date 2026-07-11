@@ -2945,8 +2945,9 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 
 # Cycle VW - Home Copy Contract Cleanup
 
-- Device: no Android run; `adb devices -l` showed no attached device.
-- Flow covered by source proof: Home Local MVP component contract -> World Cup / Matches / live-count feed remains the only Home surface -> stale search/filter/today copy props removed from Home.
-- Preflight: `mobile/scripts/s23-proof-preflight.ps1 -ExpectBlocked` reports the required S23 is not attached/discoverable and passes only as an expected-blocked readiness check.
-- Result: PARTIAL. Focused source proof, S23 preflight contract, and mobile typecheck passed, but the Audit Gate remains pending until Samsung S23 visual proof is captured.
-- Required follow-up proof: launch Home on Samsung S23, capture screenshot/XML, and confirm World Cup, Matches, match count, live count, no Home search/filter/account controls, and progressive match loading still render correctly.
+- Device: Samsung S23 `SM_S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`.
+- Flow covered by source/device proof: Home Local MVP component contract -> World Cup / Matches / live-count feed remains the only Home surface -> stale search/filter/today copy props removed from Home -> match-only empty state replaces stale search empty-state copy.
+- Preflight: `npm run preflight:s23-proof` passed after the S23 returned to ADB.
+- Proof command: `npm run proof:s23:home`.
+- Evidence: screenshot `docs/mobile/screenshots/cycle-VW-home-copy-contract-cleanup/cycle-VW-home.png`; XML `docs/mobile/harness/cycle-VW-home-copy-contract-cleanup/cycle-VW-home.xml`; intermediate Expo-menu-dismiss hierarchy `docs/mobile/harness/cycle-VW-home-copy-contract-cleanup/cycle-VW-home-expo-menu.xml`.
+- Result: PASS. S23 proof shows World Cup, Matches, 3 matches, 1 live, and no Home search/filter/account controls, Trending, stale search empty-state copy, or Expo developer-menu overlay labels.
