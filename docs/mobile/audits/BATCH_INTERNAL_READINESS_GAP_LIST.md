@@ -1,6 +1,6 @@
 # Batch Internal Readiness Gap List
 
-Generated: 2026-07-11T11:44:03.304Z
+Generated: 2026-07-11T11:51:31.528Z
 
 Source summary: `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`
 
@@ -64,7 +64,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 | S23 startup contract | yes | `internal-mvp-startup-contract.json`. |
 | Local MVP route | yes | `mobile-current-state-inspection.json`. |
 | Local match breadth | yes | `mobile-mvp-local-match-breadth.json`. |
-| S23 full MVP proof | yes | XG filled buy/history, XH open-order cancel, XI cashout/sell summaries. |
+| S23 full MVP proof | yes | XG Spread filled buy/history, XH Spread open-order cancel, XI Spread cashout/sell, WF Totals filled buy/history, WG Team Totals filled buy/history summaries. |
 | Root typecheck | yes | `root-typecheck.json`. |
 | Jest CI | yes | `jest-ci.json`. |
 | Mobile typecheck | yes | `mobile-typecheck.json`. |
@@ -99,6 +99,22 @@ Expected summary: `docs/mobile/harness/cycle-XI-cashout-sell-s23-flow/cycle-XI-c
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XI -OutputDir docs\mobile\screenshots\cycle-XI-cashout-sell-s23-flow -HierarchyOutputDir docs\mobile\harness\cycle-XI-cashout-sell-s23-flow -SeedCounterparty -ExpectFilledHistory -ExpectCashout
+```
+
+### totals-filled-buy-history
+
+Expected summary: `docs/mobile/harness/cycle-WF-line-family-s23-proof/cycle-WF-current-mvp-s23-visible-flow.json`
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WF -OutputDir docs\mobile\screenshots\cycle-WF-line-family-s23-proof -HierarchyOutputDir docs\mobile\harness\cycle-WF-line-family-s23-proof -LineMarketGroupKey totals -LineMarketType totals -LineValue 2.5 -LineOutcomeSide over -LineOutcomeLabel "Over 2.5" -SeedCounterparty -ExpectFilledHistory
+```
+
+### team-totals-filled-buy-history
+
+Expected summary: `docs/mobile/harness/cycle-WG-team-total-s23-proof/cycle-WG-current-mvp-s23-visible-flow.json`
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WG -OutputDir docs\mobile\screenshots\cycle-WG-team-total-s23-proof -HierarchyOutputDir docs\mobile\harness\cycle-WG-team-total-s23-proof -LineMarketGroupKey team-totals -LineMarketType team-total -LineValue 1.5 -LineOutcomeSide over -LineOutcomeLabel "Argentina Over 1.5" -LineTapPrefix event-detail-outcome-team-total-goals- -SeedCounterparty -ExpectFilledHistory
 ```
 
 After refreshing the required S23 proofs:

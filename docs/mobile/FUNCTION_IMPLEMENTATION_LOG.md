@@ -2,6 +2,18 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle LINEFAMILYGATE - S23 Line-Family Proof Gate
+
+- Feature/page worked on: Local MVP S23 proof aggregation for line-family coverage.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/mobile_internal_readiness_batch.ps1`
+  - `scripts/write_mobile_internal_readiness_gap_list.ts`
+- User interactions supported: unchanged in-app. The readiness batch now requires committed S23 evidence for Spread filled buy/history, Spread open-order cancel, Spread cashout/sell, Totals filled buy/history, and Team Totals filled buy/history.
+- State transitions: no runtime/backend state changes. The harness now treats the WF Totals and WG Team Totals S23 summaries as required proof evidence, validates their artifact paths including intentional wildcard attempt XML evidence, and emits recovery commands for refreshing them.
+- Proof: run `npm run mobile:internal-readiness-batch` and confirm `readiness.s23Proofs` includes `totals-filled-buy-history` and `team-totals-filled-buy-history` with `pass=true`.
+- Known limitations: this does not create new screenshots unless the recovery commands are run. It makes existing S23 line-family evidence part of the readiness gate so stale/missing Totals or Team Totals proof blocks Local MVP readiness.
+
 ## Cycle PROVIDERCACHE - Cached Provider Discovery Mode
 
 - Feature/page worked on: internal readiness batch loop control for provider availability checks.

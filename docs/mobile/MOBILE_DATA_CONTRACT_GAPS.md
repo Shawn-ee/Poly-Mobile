@@ -1,5 +1,13 @@
 # Mobile Data Contract Gaps
 
+## Cycle LINEFAMILYGATE - S23 Line-Family Proof Gate
+
+- No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider contract changed.
+- The batch summary `readiness.s23Proofs[]` contract now includes required Totals and Team Totals proof entries in addition to the existing Spread proof set.
+- The artifact checker now accepts intentional wildcard artifact paths such as `cycle-WF-current-mvp-lines-attempt-*.xml` when at least one matching evidence file exists.
+- New behavior: stale, missing, wrong-device, failed, or artifact-broken Totals/Team Totals S23 proof makes `s23_local_mvp_device_proof_not_ready` a P0 blocker.
+- This closes a verification contract gap where Local MVP readiness could pass with Spread-only S23 evidence while Totals and Team Totals were not gated.
+
 ## Cycle PROVIDERCACHE - Cached Provider Discovery Mode
 
 - No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider data contract changed.

@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle LINEFAMILYGATE - S23 Line-Family Proof Gate
+
+Cycle LINEFAMILYGATE changes readiness harness verification only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| S23 Local MVP line-family proof gate | Local command `npm run mobile:internal-readiness-batch`; committed S23 proof JSON under `cycle-XG-*`, `cycle-XH-*`, `cycle-XI-*`, `cycle-WF-*`, and `cycle-WG-*` | Local proof aggregation | None | None | Batch `s23Proofs[]` entries for Spread, Totals, and Team Totals with `proofAgeHours`, `fresh`, `missingArtifacts`, and required assertion status | No database access or writes | None; stale/missing family proof is a P0 readiness blocker | None. If stale, rerun the generated physical S23 proof refresh command for the affected family. |
+
 ## Cycle PROVIDERCACHE - Cached Provider Discovery Mode
 
 Cycle PROVIDERCACHE changes readiness harness loop control only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.

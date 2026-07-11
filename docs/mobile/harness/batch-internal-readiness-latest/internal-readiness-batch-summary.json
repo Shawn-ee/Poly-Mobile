@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T11:44:02.1669196Z",
+  "generatedAt": "2026-07-11T11:51:30.7394910Z",
   "scope": "mobile-internal-readiness-batch",
   "cycle": "BATCHREADINESS",
   "backendBaseUrl": "http://127.0.0.1:3002",
@@ -246,7 +246,7 @@
         "pass": true,
         "reason": "pass",
         "generatedAt": "2026-07-11T09:32:05.5117425Z",
-        "proofAgeHours": 2.2,
+        "proofAgeHours": 2.32,
         "maxAgeHours": 24,
         "fresh": true,
         "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -264,7 +264,7 @@
         "pass": true,
         "reason": "pass",
         "generatedAt": "2026-07-11T09:45:19.0371695Z",
-        "proofAgeHours": 1.98,
+        "proofAgeHours": 2.1,
         "maxAgeHours": 24,
         "fresh": true,
         "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -282,7 +282,7 @@
         "pass": true,
         "reason": "pass",
         "generatedAt": "2026-07-11T09:59:42.7891761Z",
-        "proofAgeHours": 1.74,
+        "proofAgeHours": 1.86,
         "maxAgeHours": 24,
         "fresh": true,
         "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -291,6 +291,42 @@
         "lineMarketGroupKey": "spread",
         "lineValue": "1.5",
         "lineOutcomeLabel": "Egypt +1.5",
+        "missingArtifacts": [],
+        "failedAssertions": []
+      },
+      {
+        "name": "totals-filled-buy-history",
+        "summaryPath": "docs/mobile/harness/cycle-WF-line-family-s23-proof/cycle-WF-current-mvp-s23-visible-flow.json",
+        "pass": true,
+        "reason": "pass",
+        "generatedAt": "2026-07-11T05:12:16.5919824Z",
+        "proofAgeHours": 6.65,
+        "maxAgeHours": 24,
+        "fresh": true,
+        "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+        "model": "SM-S911U1",
+        "eventSlug": "argentina-vs-egypt",
+        "lineMarketGroupKey": "totals",
+        "lineValue": "2.5",
+        "lineOutcomeLabel": "Over 2.5",
+        "missingArtifacts": [],
+        "failedAssertions": []
+      },
+      {
+        "name": "team-totals-filled-buy-history",
+        "summaryPath": "docs/mobile/harness/cycle-WG-team-total-s23-proof/cycle-WG-current-mvp-s23-visible-flow.json",
+        "pass": true,
+        "reason": "pass",
+        "generatedAt": "2026-07-11T05:18:54.1737804Z",
+        "proofAgeHours": 6.54,
+        "maxAgeHours": 24,
+        "fresh": true,
+        "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+        "model": "SM-S911U1",
+        "eventSlug": "argentina-vs-egypt",
+        "lineMarketGroupKey": "team-totals",
+        "lineValue": "1.5",
+        "lineOutcomeLabel": "Argentina Over 1.5",
         "missingArtifacts": [],
         "failedAssertions": []
       }
@@ -334,6 +370,16 @@
         "name": "cashout-sell-history",
         "summaryPath": "docs/mobile/harness/cycle-XI-cashout-sell-s23-flow/cycle-XI-current-mvp-s23-visible-flow.json",
         "command": "powershell -ExecutionPolicy Bypass -File scripts\\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XI -OutputDir docs\\mobile\\screenshots\\cycle-XI-cashout-sell-s23-flow -HierarchyOutputDir docs\\mobile\\harness\\cycle-XI-cashout-sell-s23-flow -SeedCounterparty -ExpectFilledHistory -ExpectCashout"
+      },
+      {
+        "name": "totals-filled-buy-history",
+        "summaryPath": "docs/mobile/harness/cycle-WF-line-family-s23-proof/cycle-WF-current-mvp-s23-visible-flow.json",
+        "command": "powershell -ExecutionPolicy Bypass -File scripts\\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WF -OutputDir docs\\mobile\\screenshots\\cycle-WF-line-family-s23-proof -HierarchyOutputDir docs\\mobile\\harness\\cycle-WF-line-family-s23-proof -LineMarketGroupKey totals -LineMarketType totals -LineValue 2.5 -LineOutcomeSide over -LineOutcomeLabel \"Over 2.5\" -SeedCounterparty -ExpectFilledHistory"
+      },
+      {
+        "name": "team-totals-filled-buy-history",
+        "summaryPath": "docs/mobile/harness/cycle-WG-team-total-s23-proof/cycle-WG-current-mvp-s23-visible-flow.json",
+        "command": "powershell -ExecutionPolicy Bypass -File scripts\\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WG -OutputDir docs\\mobile\\screenshots\\cycle-WG-team-total-s23-proof -HierarchyOutputDir docs\\mobile\\harness\\cycle-WG-team-total-s23-proof -LineMarketGroupKey team-totals -LineMarketType team-total -LineValue 1.5 -LineOutcomeSide over -LineOutcomeLabel \"Argentina Over 1.5\" -LineTapPrefix event-detail-outcome-team-total-goals- -SeedCounterparty -ExpectFilledHistory"
       }
     ],
     "rerunBatchCommand": "npm run mobile:internal-readiness-batch"

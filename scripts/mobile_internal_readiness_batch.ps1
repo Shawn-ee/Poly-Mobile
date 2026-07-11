@@ -36,6 +36,18 @@ function Resolve-RepoArtifactPath {
   return Join-Path $RepoRoot ($ArtifactPath.Replace("/", "\"))
 }
 
+function Test-RepoArtifactExists {
+  param([string]$ArtifactPath)
+  $resolvedArtifact = Resolve-RepoArtifactPath $ArtifactPath
+  if (-not $resolvedArtifact) {
+    return $false
+  }
+  if ($resolvedArtifact -match "[\*\?]") {
+    return [bool](Get-ChildItem -Path $resolvedArtifact -ErrorAction SilentlyContinue | Select-Object -First 1)
+  }
+  return Test-Path -LiteralPath $resolvedArtifact
+}
+
 function Get-S23ProofEvidence {
   param(
     [string]$Name,
@@ -63,16 +75,14 @@ function Get-S23ProofEvidence {
   }
 
   foreach ($artifact in @($summary.artifacts)) {
-    $resolvedArtifact = Resolve-RepoArtifactPath ([string]$artifact)
-    if ($resolvedArtifact -and -not (Test-Path -LiteralPath $resolvedArtifact)) {
+    if (-not (Test-RepoArtifactExists ([string]$artifact))) {
       $missingArtifacts.Add([string]$artifact) | Out-Null
     }
   }
   foreach ($artifactField in @("counterpartyProof", "cleanupProof", "cashoutCounterpartyProof")) {
     $artifactValue = $summary.$artifactField
     if ($artifactValue) {
-      $resolvedArtifact = Resolve-RepoArtifactPath ([string]$artifactValue)
-      if ($resolvedArtifact -and -not (Test-Path -LiteralPath $resolvedArtifact)) {
+      if (-not (Test-RepoArtifactExists ([string]$artifactValue))) {
         $missingArtifacts.Add([string]$artifactValue) | Out-Null
       }
     }
@@ -306,6 +316,8 @@ $mobileTypecheckMarkerPath = Join-Path $ResolvedOutputDir "mobile-typecheck.json
 $filledS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-XG-full-local-mvp-s23-flow\cycle-XG-current-mvp-s23-visible-flow.json"
 $cancelS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-XH-open-order-cancel-s23-flow\cycle-XH-current-mvp-s23-visible-flow.json"
 $cashoutS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-XI-cashout-sell-s23-flow\cycle-XI-current-mvp-s23-visible-flow.json"
+$totalsS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-WF-line-family-s23-proof\cycle-WF-current-mvp-s23-visible-flow.json"
+$teamTotalsS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-WG-team-total-s23-proof\cycle-WG-current-mvp-s23-visible-flow.json"
 $s23ProofMaxAgeHours = 24
 $backendRepoPath = ConvertTo-RepoPath $backendPath
 $credentialRepoPath = ConvertTo-RepoPath $credentialPath
@@ -338,6 +350,16 @@ $s23ProofRecoveryCommands = @(
     name = "cashout-sell-history"
     summaryPath = ConvertTo-RepoPath $cashoutS23ProofPath
     command = "powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XI -OutputDir docs\mobile\screenshots\cycle-XI-cashout-sell-s23-flow -HierarchyOutputDir docs\mobile\harness\cycle-XI-cashout-sell-s23-flow -SeedCounterparty -ExpectFilledHistory -ExpectCashout"
+  },
+  [ordered]@{
+    name = "totals-filled-buy-history"
+    summaryPath = ConvertTo-RepoPath $totalsS23ProofPath
+    command = "powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WF -OutputDir docs\mobile\screenshots\cycle-WF-line-family-s23-proof -HierarchyOutputDir docs\mobile\harness\cycle-WF-line-family-s23-proof -LineMarketGroupKey totals -LineMarketType totals -LineValue 2.5 -LineOutcomeSide over -LineOutcomeLabel `"Over 2.5`" -SeedCounterparty -ExpectFilledHistory"
+  },
+  [ordered]@{
+    name = "team-totals-filled-buy-history"
+    summaryPath = ConvertTo-RepoPath $teamTotalsS23ProofPath
+    command = "powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WG -OutputDir docs\mobile\screenshots\cycle-WG-team-total-s23-proof -HierarchyOutputDir docs\mobile\harness\cycle-WG-team-total-s23-proof -LineMarketGroupKey team-totals -LineMarketType team-total -LineValue 1.5 -LineOutcomeSide over -LineOutcomeLabel `"Argentina Over 1.5`" -LineTapPrefix event-detail-outcome-team-total-goals- -SeedCounterparty -ExpectFilledHistory"
   }
 )
 
@@ -378,10 +400,13 @@ $lineScan = Read-JsonFile $lineScanPath
 $rootTypecheck = Read-JsonFile $rootTypecheckMarkerPath
 $jestCi = Read-JsonFile $jestCiMarkerPath
 $mobileTypecheck = Read-JsonFile $mobileTypecheckMarkerPath
+$lineFamilyFilledAssertions = @("homeShowsCurrentMatch", "detailShowsGameLines", "detailShowsLineFamilyReadiness", "detailShowsProviderUnavailableLineFamilies", "detailShowsProviderWinnerLocalLineSplit", "lineMarketsAreContractFixture", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden")
 $s23Proofs = @(
   (Get-S23ProofEvidence -Name "filled-buy-history" -SummaryPath $filledS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden") -MaxAgeHours $s23ProofMaxAgeHours),
   (Get-S23ProofEvidence -Name "open-order-cancel" -SummaryPath $cancelS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "openOrderVisible", "openOrderSourceBadgeVisible", "cancelSubmitted", "canceledHistoryVisible", "orderbookHidden") -MaxAgeHours $s23ProofMaxAgeHours),
-  (Get-S23ProofEvidence -Name "cashout-sell-history" -SummaryPath $cashoutS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "cashoutTicketOpened", "cashoutSellSubmitted", "cashoutHistoryVisible", "orderbookHidden") -MaxAgeHours $s23ProofMaxAgeHours)
+  (Get-S23ProofEvidence -Name "cashout-sell-history" -SummaryPath $cashoutS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "cashoutTicketOpened", "cashoutSellSubmitted", "cashoutHistoryVisible", "orderbookHidden") -MaxAgeHours $s23ProofMaxAgeHours),
+  (Get-S23ProofEvidence -Name "totals-filled-buy-history" -SummaryPath $totalsS23ProofPath -RequiredAssertions $lineFamilyFilledAssertions -MaxAgeHours $s23ProofMaxAgeHours),
+  (Get-S23ProofEvidence -Name "team-totals-filled-buy-history" -SummaryPath $teamTotalsS23ProofPath -RequiredAssertions $lineFamilyFilledAssertions -MaxAgeHours $s23ProofMaxAgeHours)
 )
 
 $backendReady = [bool]($backend -and $backend.dockerCliAvailable -and $backend.dockerDaemonReachable -and $backend.databaseTcpReachable)
