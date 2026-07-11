@@ -16,6 +16,7 @@ type GapRow = {
 type ReadinessSummary = {
   generatedAt?: string;
   backendBaseUrl?: string;
+  providerDiscoveryMode?: string;
   outputDir?: string;
   gapListPath?: string;
   readiness?: Record<string, unknown>;
@@ -278,6 +279,7 @@ const markdown: string[] = [
   `- S23 proof max age: ${readiness.s23ProofMaxAgeHours ?? "unknown"} hours`,
   `- S23 startup contract ready: ${boolText(readiness.internalMvpStartupReady)}`,
   `- Provider-backed exchange ready: ${boolText(readiness.providerBackedExchangeReady)}`,
+  `- Provider discovery mode: ${summary.providerDiscoveryMode ?? "unknown"}`,
   `- P0 blocker count: ${p0Rows.length}`,
   `- P1 blocker count: ${p1Rows.length}`,
   `- P2 blocker count: ${p2Rows.length}`,

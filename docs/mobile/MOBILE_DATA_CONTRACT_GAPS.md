@@ -1,5 +1,16 @@
 # Mobile Data Contract Gaps
 
+## Cycle PROVIDERCACHE - Cached Provider Discovery Mode
+
+- No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider data contract changed.
+- The batch summary contract now includes:
+  - `providerDiscoveryMode`
+  - `steps[].cached`
+  - `steps[].reason=provider_discovery_mode_cached`
+- Default behavior: Local MVP readiness checks stay current while provider snapshot/exchange/tradable-flow/match/line scan evidence is reused from committed summaries.
+- Explicit refresh behavior: `npm run mobile:internal-readiness-batch:provider-refresh` regenerates provider evidence when provider imports, provider refresh work, line discovery changes, or a new provider candidate signal exists.
+- Remaining provider contract gaps are unchanged: real provider-backed World Cup match books and attach-ready line markets are still unavailable in current evidence.
+
 ## Cycle PROOFRECOVERY - S23 Proof Recovery Commands
 
 - No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider contract changed.

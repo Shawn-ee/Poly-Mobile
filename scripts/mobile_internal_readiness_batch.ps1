@@ -1,7 +1,9 @@
 param(
   [string]$OutputDir = "docs\mobile\harness\batch-internal-readiness-latest",
   [string]$BackendBaseUrl = "http://127.0.0.1:3002",
-  [string]$Cycle = "BATCHREADINESS"
+  [string]$Cycle = "BATCHREADINESS",
+  [ValidateSet("cached", "refresh")]
+  [string]$ProviderDiscoveryMode = "cached"
 )
 
 $ErrorActionPreference = "Stop"
@@ -169,6 +171,35 @@ function Invoke-BatchCommand {
   }
 }
 
+function Add-CachedOrRunBatchCommand {
+  param(
+    [System.Collections.Generic.List[object]]$StepList,
+    [string]$Name,
+    [string]$Command,
+    [string]$OutputPath,
+    [bool]$UseCached,
+    [switch]$AllowNonZero
+  )
+
+  if ($UseCached -and (Test-Path -LiteralPath $OutputPath)) {
+    $StepList.Add([ordered]@{
+      name = $Name
+      command = "cached:$Name"
+      exitCode = 0
+      allowedNonZero = [bool]$AllowNonZero
+      outputPath = ConvertTo-RepoPath $OutputPath
+      stdoutPath = $null
+      stderrPath = $null
+      producedJson = $true
+      cached = $true
+      reason = "provider_discovery_mode_cached"
+    }) | Out-Null
+    return
+  }
+
+  $StepList.Add((Invoke-BatchCommand -Name $Name -Command $Command -OutputPath $OutputPath -AllowNonZero:$AllowNonZero)) | Out-Null
+}
+
 function Invoke-OptionalTextCommand {
   param(
     [string]$Command,
@@ -311,6 +342,7 @@ $s23ProofRecoveryCommands = @(
 )
 
 $environmentHealth = Get-EnvironmentHealthSnapshot
+$providerDiscoveryRefresh = [bool]($ProviderDiscoveryMode -eq "refresh")
 
 $steps = New-Object System.Collections.Generic.List[object]
 $steps.Add((Invoke-BatchCommand -Name "backend-readiness" -Command "powershell -ExecutionPolicy Bypass -File scripts\mobile_backend_readiness.ps1 -SummaryPath `"$backendRepoPath`"" -OutputPath $backendPath))
@@ -321,11 +353,11 @@ $steps.Add((Invoke-BatchCommand -Name "google-auth-lan-callback-preflight" -Comm
 $steps.Add((Invoke-BatchCommand -Name "internal-mvp-startup-contract" -Command "powershell -ExecutionPolicy Bypass -File scripts\start_poly_mobile_rehearsal.ps1 -SkipBackend -SkipSnapshotWatch -SkipBots -SkipExpo -SummaryPath `"$internalMvpStartupRepoPath`"" -OutputPath $internalMvpStartupPath))
 $steps.Add((Invoke-BatchCommand -Name "local-match-breadth" -Command "npx.cmd tsx scripts/seed_mobile_mvp_local_match_breadth.ts --baseUrl=$BackendBaseUrl --summaryPath=`"$localMatchBreadthRepoPath`"" -OutputPath $localMatchBreadthPath))
 $steps.Add((Invoke-BatchCommand -Name "current-state" -Command "npx.cmd tsx scripts/inspect_mobile_mvp_current_state.ts --baseUrl=$BackendBaseUrl --summaryPath=`"$currentStateRepoPath`" --cycle=$Cycle" -OutputPath $currentStatePath))
-$steps.Add((Invoke-BatchCommand -Name "provider-snapshot-refresh" -Command "npm.cmd run reference:snapshot-refresh -- --once true --eventSlug argentina-vs-egypt --summaryPath `"$providerSnapshotRefreshRepoPath`"" -OutputPath $providerSnapshotRefreshPath -AllowNonZero))
-$steps.Add((Invoke-BatchCommand -Name "internal-exchange-readiness" -Command "npm.cmd run poly:internal-exchange-readiness -- --summaryPath `"$exchangeRepoPath`"" -OutputPath $exchangePath -AllowNonZero))
-$steps.Add((Invoke-BatchCommand -Name "provider-visible-tradable-flow" -Command "npx.cmd tsx scripts/prove_mobile_provider_visible_tradable_flow.ts --cycle=$Cycle --baseUrl=$BackendBaseUrl --summaryPath=`"$providerTradableFlowRepoPath`"" -OutputPath $providerTradableFlowPath -AllowNonZero))
-$steps.Add((Invoke-BatchCommand -Name "worldcup-match-scan" -Command "npm.cmd run inspect:polymarket-worldcup-matches -- --output `"$matchScanRepoPath`"" -OutputPath $matchScanPath))
-$steps.Add((Invoke-BatchCommand -Name "provider-line-scan" -Command "npm.cmd run mobile:provider-line-breadth-scan -- --summaryPath=`"$lineScanRepoPath`" --cycle=$Cycle" -OutputPath $lineScanPath))
+Add-CachedOrRunBatchCommand -StepList $steps -Name "provider-snapshot-refresh" -Command "npm.cmd run reference:snapshot-refresh -- --once true --eventSlug argentina-vs-egypt --summaryPath `"$providerSnapshotRefreshRepoPath`"" -OutputPath $providerSnapshotRefreshPath -AllowNonZero -UseCached:(-not $providerDiscoveryRefresh)
+Add-CachedOrRunBatchCommand -StepList $steps -Name "internal-exchange-readiness" -Command "npm.cmd run poly:internal-exchange-readiness -- --summaryPath `"$exchangeRepoPath`"" -OutputPath $exchangePath -AllowNonZero -UseCached:(-not $providerDiscoveryRefresh)
+Add-CachedOrRunBatchCommand -StepList $steps -Name "provider-visible-tradable-flow" -Command "npx.cmd tsx scripts/prove_mobile_provider_visible_tradable_flow.ts --cycle=$Cycle --baseUrl=$BackendBaseUrl --summaryPath=`"$providerTradableFlowRepoPath`"" -OutputPath $providerTradableFlowPath -AllowNonZero -UseCached:(-not $providerDiscoveryRefresh)
+Add-CachedOrRunBatchCommand -StepList $steps -Name "worldcup-match-scan" -Command "npm.cmd run inspect:polymarket-worldcup-matches -- --output `"$matchScanRepoPath`"" -OutputPath $matchScanPath -UseCached:(-not $providerDiscoveryRefresh)
+Add-CachedOrRunBatchCommand -StepList $steps -Name "provider-line-scan" -Command "npm.cmd run mobile:provider-line-breadth-scan -- --summaryPath=`"$lineScanRepoPath`" --cycle=$Cycle" -OutputPath $lineScanPath -UseCached:(-not $providerDiscoveryRefresh)
 $steps.Add((Invoke-BatchCommand -Name "root-typecheck" -Command "npx.cmd tsc --noEmit --pretty false --incremental false && node -e `"require('fs').writeFileSync('$rootTypecheckMarkerRepoPath', JSON.stringify({ pass: true, command: 'npx tsc --noEmit --pretty false --incremental false', generatedAt: new Date().toISOString() }, null, 2) + '\n')`"" -OutputPath $rootTypecheckMarkerPath))
 $steps.Add((Invoke-BatchCommand -Name "jest-ci" -Command "npm.cmd run test:ci && node -e `"require('fs').writeFileSync('$jestCiMarkerRepoPath', JSON.stringify({ pass: true, command: 'npm run test:ci', generatedAt: new Date().toISOString() }, null, 2) + '\n')`"" -OutputPath $jestCiMarkerPath))
 $steps.Add((Invoke-BatchCommand -Name "mobile-typecheck" -Command "npm.cmd --prefix mobile run typecheck && node -e `"require('fs').writeFileSync('$mobileTypecheckMarkerRepoPath', JSON.stringify({ pass: true, command: 'npm --prefix mobile run typecheck', generatedAt: new Date().toISOString() }, null, 2) + '\n')`"" -OutputPath $mobileTypecheckMarkerPath))
@@ -481,6 +513,7 @@ $summary = [ordered]@{
   scope = "mobile-internal-readiness-batch"
   cycle = $Cycle
   backendBaseUrl = $BackendBaseUrl
+  providerDiscoveryMode = $ProviderDiscoveryMode
   outputDir = ConvertTo-RepoPath $ResolvedOutputDir
   gapListPath = "docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md"
   steps = $steps
@@ -546,7 +579,7 @@ $summary = [ordered]@{
     "For internal user-flow testing, keep using Home -> Event Detail -> contract-shaped line market -> Trade Ticket -> fake-token order -> Portfolio/history.",
     "Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.",
     'If `s23_local_mvp_device_proof_not_ready` appears, run the S23 proof refresh commands in `recovery.s23ProofRefreshCommands`, then rerun `npm run mobile:internal-readiness-batch`.',
-    "Re-run this batch after provider imports, provider refresh, or line-market discovery changes.",
+    'Use `npm run mobile:internal-readiness-batch:provider-refresh` after provider imports, provider refresh, or line-market discovery changes.',
     "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token.",
     "For real Google consent proof, run npm run mobile:google-auth-lan-preflight, restart the backend with the LAN NEXTAUTH_URL it reports if needed, register that exact callback in Google Cloud, then run npm run mobile:google-auth-runtime-preflight:strict before manual S23 login."
   )

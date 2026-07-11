@@ -14,6 +14,14 @@ It does not change mobile UI, backend schema, order logic, order book UI, chat, 
 npm run mobile:internal-readiness-batch
 ```
 
+By default, the batch runs with cached provider-discovery evidence. It still checks backend, DB, Local MVP route shape, S23 proof freshness, startup contract, root typecheck, Jest, and mobile typecheck every time, but it does not repeatedly refresh Polymarket provider scans when the last committed provider evidence already says the current books are closed/unusable.
+
+Use the explicit provider refresh mode only after provider imports, provider refresh work, or a real new candidate signal:
+
+```powershell
+npm run mobile:internal-readiness-batch:provider-refresh
+```
+
 Default output:
 
 ```text
@@ -34,11 +42,7 @@ The gap list is generated from the latest summary by `scripts/write_mobile_inter
 - Local MVP match breadth seeding for multiple Home/Live match cards while provider books are unavailable.
 - Current MVP route shape for `mobileMvpMatches=1`.
 - Provider-backed Regulation Winner plus contract-shaped line-market state.
-- Fresh Polymarket reference snapshot refresh for the current MVP match.
-- Provider/internal exchange readiness.
-- Provider-visible tradable-flow readiness for the match-only MVP path.
-- Polymarket World Cup team-match breadth.
-- Polymarket provider line-market breadth.
+- Provider snapshot, internal exchange, tradable-flow, World Cup match breadth, and provider line-market breadth from cached evidence by default, or freshly regenerated evidence when `-ProviderDiscoveryMode refresh` is used.
 - Committed Samsung S23 Local MVP device proof summaries for filled buy/history, open-order cancel, and position cashout/sell.
 - Freshness of committed Samsung S23 Local MVP device proofs, so old passing screenshots cannot satisfy readiness forever.
 - Root TypeScript typecheck, Jest CI smoke suite, and mobile TypeScript typecheck.
@@ -75,7 +79,7 @@ The provider-visible tradable-flow proof is now match-only by default. It select
 
 Before looking for a local bot quote, the proof checks the latest provider quote snapshot. If the provider book is missing, closed/not accepting orders, invalidly priced, missing a side, or marked not MM eligible, the batch reports `provider_mvp_match_snapshot_not_mm_safe`. This keeps the next action honest: do not seed a local bot quote against an unsafe provider book.
 
-The batch refreshes Polymarket reference snapshots for `argentina-vs-egypt` before running internal exchange readiness and provider tradable-flow checks. This keeps the provider blocker current. If the refreshed book remains closed, missing, or invalidly priced, the batch records that as P1 provider data debt rather than letting stale snapshots masquerade as the reason.
+Provider discovery has two modes. The normal mode, `cached`, reuses the committed provider snapshot/exchange/tradable-flow/match-scan/line-scan summaries so the loop does not keep rediscovering the same closed or unavailable Polymarket books. The explicit `refresh` mode refreshes Polymarket reference snapshots for `argentina-vs-egypt`, reruns provider exchange readiness, reruns the provider-visible tradable-flow proof, and reruns World Cup match/line scans. Use refresh mode after provider imports, provider refresh work, line-market discovery changes, or a new candidate signal.
 
 ## Local Environment Snapshot
 

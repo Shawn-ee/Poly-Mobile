@@ -2,6 +2,15 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle PROVIDERCACHE - Cached Provider Discovery Mode
+
+Cycle PROVIDERCACHE changes readiness harness loop control only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Internal readiness with cached provider debt | Local command `npm run mobile:internal-readiness-batch`; committed provider summaries under `docs/mobile/harness/batch-internal-readiness-latest/` | Local proof aggregation | None beyond local repo access | Optional `-ProviderDiscoveryMode cached` default | Batch `providerDiscoveryMode`, provider step `cached=true`, existing provider summary fields for P1 blockers | No database writes in cached provider mode | None; cached evidence is only audit evidence, not mobile runtime data | None. Use `npm run mobile:internal-readiness-batch:provider-refresh` when provider data should be regenerated. |
+| Provider refresh readiness | Local command `npm run mobile:internal-readiness-batch:provider-refresh` | Local proof/refresh command | Existing local backend/DB and public Polymarket provider access | `-ProviderDiscoveryMode refresh` | Fresh provider snapshot, exchange, tradable-flow, match-scan, and line-scan summaries | Existing reference snapshot/provider mapping tables through current scripts | None | Provider books/line markets remain external availability P1 debt when Polymarket exposes no usable candidates. |
+
 ## Cycle PROOFRECOVERY - S23 Proof Recovery Commands
 
 Cycle PROOFRECOVERY changes readiness harness metadata only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.

@@ -1,6 +1,6 @@
 # Batch Internal Readiness Gap List
 
-Generated: 2026-07-11T11:34:04.984Z
+Generated: 2026-07-11T11:44:03.304Z
 
 Source summary: `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`
 
@@ -28,6 +28,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - S23 proof max age: 24 hours
 - S23 startup contract ready: yes
 - Provider-backed exchange ready: no
+- Provider discovery mode: cached
 - P0 blocker count: 0
 - P1 blocker count: 4
 - P2 blocker count: 0
@@ -111,6 +112,6 @@ npm run mobile:internal-readiness-batch
 - For internal user-flow testing, keep using Home -> Event Detail -> contract-shaped line market -> Trade Ticket -> fake-token order -> Portfolio/history.
 - Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.
 - If `s23_local_mvp_device_proof_not_ready` appears, run the S23 proof refresh commands in `recovery.s23ProofRefreshCommands`, then rerun `npm run mobile:internal-readiness-batch`.
-- Re-run this batch after provider imports, provider refresh, or line-market discovery changes.
+- Use `npm run mobile:internal-readiness-batch:provider-refresh` after provider imports, provider refresh, or line-market discovery changes.
 - Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token.
 - For real Google consent proof, run npm run mobile:google-auth-lan-preflight, restart the backend with the LAN NEXTAUTH_URL it reports if needed, register that exact callback in Google Cloud, then run npm run mobile:google-auth-runtime-preflight:strict before manual S23 login.

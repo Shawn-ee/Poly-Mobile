@@ -73,6 +73,7 @@
     "mobile:google-auth-lan-preflight": "powershell -ExecutionPolicy Bypass -File scripts/mobile_google_lan_auth_preflight.ps1",
     "mobile:backend-readiness": "powershell -ExecutionPolicy Bypass -File scripts/mobile_backend_readiness.ps1",
     "mobile:internal-readiness-batch": "powershell -ExecutionPolicy Bypass -File scripts/mobile_internal_readiness_batch.ps1",
+    "mobile:internal-readiness-batch:provider-refresh": "powershell -ExecutionPolicy Bypass -File scripts/mobile_internal_readiness_batch.ps1 -ProviderDiscoveryMode refresh",
     "mobile:backend-readiness:summary": "powershell -ExecutionPolicy Bypass -File scripts/mobile_backend_readiness.ps1 -SummaryPath docs/mobile/harness/cycle-current-mobile-backend-readiness.json",
     "mobile:backend-readiness:start": "powershell -ExecutionPolicy Bypass -File scripts/mobile_backend_readiness.ps1 -StartDb",
     "mobile:internal-beta-backend:start": "powershell -ExecutionPolicy Bypass -File scripts/start_holiwyn_internal_beta_backend.ps1",

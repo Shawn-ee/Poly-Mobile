@@ -2,6 +2,19 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle PROVIDERCACHE - Cached Provider Discovery Mode
+
+- Feature/page worked on: internal readiness batch loop control for provider availability checks.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/mobile_internal_readiness_batch.ps1`
+  - `scripts/write_mobile_internal_readiness_gap_list.ts`
+  - root `package.json`
+- User interactions supported: unchanged. The Local MVP path remains Home -> Event Detail -> line market -> Trade Ticket -> fake-token order -> Portfolio/history.
+- State transitions: default batch mode now reuses committed provider-discovery summaries for provider snapshot/exchange/tradable-flow/match-scan/line-scan evidence. Explicit `-ProviderDiscoveryMode refresh`, exposed as `npm run mobile:internal-readiness-batch:provider-refresh`, still reruns the provider scans when provider work or a new candidate signal makes that useful.
+- Proof: run default `npm run mobile:internal-readiness-batch` and confirm provider steps are marked `cached=true`; run provider refresh mode when provider evidence should be regenerated.
+- Known limitations: cached mode intentionally does not discover new Polymarket provider candidates. It prevents repeated re-investigation of the same known provider P1 debt; it does not solve unavailable/closed provider books.
+
 ## Cycle PROOFRECOVERY - S23 Proof Recovery Commands
 
 - Feature/page worked on: Local MVP S23 proof recovery guidance inside the internal readiness batch.
