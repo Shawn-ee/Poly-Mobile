@@ -48,6 +48,25 @@ This is intentional. The Local MVP fake-token user flow remains testable with co
 
 Do not import futures, awards, player props, or non-World-Cup events to make the match breadth numbers look better. The harness should keep those markets as provider diagnostics unless the product scope explicitly changes.
 
+## Manual Server-Mode Prep
+
+When the batch reports `manual_server_mode_needs_generated_mobile_api_key`, prepare the local-only Expo/server-mode environment with:
+
+```powershell
+npm run mobile:manual-testing-env
+```
+
+This creates a mobile dev credential, funds the local fake-token test account, and writes a local-only `.runtime/mobile-manual-testing/server-mode-env.ps1` file. The committed summary redacts the token; the local env file must not be committed.
+
+Then use the generated summary commands:
+
+```powershell
+. .runtime/mobile-manual-testing/server-mode-env.ps1
+npm run mobile:internal-beta-backend:start -- -Port 3002
+cd mobile
+npm run start -- --host lan --port 8081
+```
+
 ## Why This Exists
 
 The loop should not keep reopening small source-label or one-screen proof cycles just to rediscover the same provider-state facts. This batch harness gives the Lead Agent one current-state command before choosing the next meaningful milestone.

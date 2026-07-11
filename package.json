@@ -66,6 +66,8 @@
     "bots:generate-sim-credentials": "tsx scripts/create_sim_bot_credentials.ts",
     "mobile:dev-credential": "tsx scripts/create_mobile_dev_credential.ts",
     "mobile:dev-credential:dry-run": "tsx scripts/create_mobile_dev_credential.ts --dry-run",
+    "mobile:manual-testing-env": "powershell -ExecutionPolicy Bypass -File scripts/prepare_mobile_manual_testing_env.ps1",
+    "mobile:manual-testing-env:dry-run": "powershell -ExecutionPolicy Bypass -File scripts/prepare_mobile_manual_testing_env.ps1 -DryRun",
     "mobile:backend-readiness": "powershell -ExecutionPolicy Bypass -File scripts/mobile_backend_readiness.ps1",
     "mobile:internal-readiness-batch": "powershell -ExecutionPolicy Bypass -File scripts/mobile_internal_readiness_batch.ps1",
     "mobile:backend-readiness:summary": "powershell -ExecutionPolicy Bypass -File scripts/mobile_backend_readiness.ps1 -SummaryPath docs/mobile/harness/cycle-current-mobile-backend-readiness.json",
