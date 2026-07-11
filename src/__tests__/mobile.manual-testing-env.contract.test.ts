@@ -3,6 +3,8 @@ import { readFileSync } from "node:fs";
 describe("mobile manual testing env helper", () => {
   const packageJson = () => readFileSync("package.json", "utf8");
   const helper = () => readFileSync("scripts/prepare_mobile_manual_testing_env.ps1", "utf8");
+  const credentialReadiness = () => readFileSync("scripts/mobile_credential_readiness.ps1", "utf8");
+  const batch = () => readFileSync("scripts/mobile_internal_readiness_batch.ps1", "utf8");
   const doc = () => readFileSync("docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md", "utf8");
 
   it("exposes safe package scripts for real and dry-run manual server-mode prep", () => {
@@ -46,5 +48,19 @@ describe("mobile manual testing env helper", () => {
     expect(text).toContain("npm run mobile:manual-testing-env");
     expect(text).toContain(".runtime/mobile-manual-testing/server-mode-env.ps1");
     expect(text).toContain("local-only");
+  });
+
+  it("lets the batch detect a local runtime API key without committing the secret", () => {
+    const credentialSource = credentialReadiness();
+    const batchSource = batch();
+
+    expect(credentialSource).toContain(".runtime\\mobile-manual-testing\\server-mode-env.ps1");
+    expect(credentialSource).toContain("Read-ExpoApiKeyFromRuntimeEnv");
+    expect(credentialSource).toContain("apiKeySource");
+    expect(credentialSource).toContain("local-runtime-env");
+    expect(credentialSource).toContain("localRuntimeApiKeyPresent");
+    expect(credentialSource).not.toContain("token = $trimmedApiKey");
+    expect(batchSource).toContain("serverModeApiKeySource");
+    expect(batchSource).toContain("localRuntimeEnvReadyForManualServerMode");
   });
 });

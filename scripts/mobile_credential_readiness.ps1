@@ -1,6 +1,7 @@
 param(
   [string]$ReadinessPath = "docs\mobile\harness\cycle-current-mobile-backend-readiness.json",
   [string]$ApiKey = $env:EXPO_PUBLIC_API_KEY,
+  [string]$LocalRuntimeEnvPath = ".runtime\mobile-manual-testing\server-mode-env.ps1",
   [string]$SummaryPath = ""
 )
 
@@ -18,6 +19,25 @@ if (-not (Test-Path $resolvedReadinessPath)) {
 }
 $resolvedReadinessPath = (Resolve-Path $resolvedReadinessPath).Path
 $readiness = Get-Content -Raw $resolvedReadinessPath | ConvertFrom-Json
+
+$resolvedLocalRuntimeEnvPath = if ([System.IO.Path]::IsPathRooted($LocalRuntimeEnvPath)) {
+  $LocalRuntimeEnvPath
+} else {
+  Join-Path $RepoRoot $LocalRuntimeEnvPath
+}
+
+function Read-ExpoApiKeyFromRuntimeEnv {
+  param([string]$Path)
+  if (-not (Test-Path -LiteralPath $Path)) {
+    return ""
+  }
+  $source = Get-Content -Raw -LiteralPath $Path
+  $match = [regex]::Match($source, "EXPO_PUBLIC_API_KEY='([^']+)'")
+  if ($match.Success) {
+    return $match.Groups[1].Value.Replace("''", "'").Trim()
+  }
+  return ""
+}
 
 $requiredCredentialScopes = @(
   "orders:read",
@@ -54,7 +74,16 @@ try {
   $dryRunError = $_.Exception.Message
 }
 
-$trimmedApiKey = if ($null -eq $ApiKey) { "" } else { $ApiKey.Trim() }
+$ambientApiKey = if ($null -eq $ApiKey) { "" } else { $ApiKey.Trim() }
+$localRuntimeApiKey = if ($ambientApiKey) { "" } else { Read-ExpoApiKeyFromRuntimeEnv -Path $resolvedLocalRuntimeEnvPath }
+$trimmedApiKey = if ($ambientApiKey) { $ambientApiKey } else { $localRuntimeApiKey }
+$apiKeySource = if ($ambientApiKey) {
+  "environment"
+} elseif ($localRuntimeApiKey) {
+  "local-runtime-env"
+} else {
+  "missing"
+}
 $apiKeyLooksValid = $trimmedApiKey -match "^pk_live_[^.]+\..+"
 $canCreateCredential = [bool](
   $readiness.dockerCliAvailable -and
@@ -82,7 +111,7 @@ if (-not $readiness.usesDefaultLocalComposePort) {
   $blockers.Add("DATABASE_URL does not point at the default local compose port.")
 }
 if (-not $trimmedApiKey) {
-  $blockers.Add("EXPO_PUBLIC_API_KEY is missing for server-backed Samsung proof.")
+  $blockers.Add("EXPO_PUBLIC_API_KEY is missing for server-backed Samsung proof; run npm run mobile:manual-testing-env or export a valid key.")
 } elseif (-not $apiKeyLooksValid) {
   $blockers.Add("EXPO_PUBLIC_API_KEY must look like pk_live_<id>.<secret>.")
 }
@@ -106,6 +135,11 @@ $summary = [ordered]@{
   databaseHost = $readiness.databaseHost
   databasePort = $readiness.databasePort
   apiKeyPresent = [bool]$trimmedApiKey
+  ambientApiKeyPresent = [bool]$ambientApiKey
+  localRuntimeEnvPresent = Test-Path -LiteralPath $resolvedLocalRuntimeEnvPath
+  localRuntimeApiKeyPresent = [bool]$localRuntimeApiKey
+  localRuntimeEnvPath = $resolvedLocalRuntimeEnvPath.Replace($RepoRoot.Path + "\", "").Replace("\", "/")
+  apiKeySource = $apiKeySource
   apiKeyLooksValid = [bool]$apiKeyLooksValid
   requiredCredentialScopes = @($requiredCredentialScopes)
   dryRunScopes = @($dryRunScopes)
@@ -122,8 +156,8 @@ $summary = [ordered]@{
     "Run npm run mobile:backend-readiness:summary.",
     "Start Docker Desktop and local Postgres if Docker daemon or DB TCP are unavailable.",
     "Confirm npm run mobile:dev-credential:dry-run includes account:write before creating new mobile credentials.",
-    "Run npm run mobile:dev-credential after database readiness passes.",
-    "Export the generated EXPO_PUBLIC_API_KEY before successful Samsung server proof."
+    "Run npm run mobile:manual-testing-env after database readiness passes to create a local-only server-mode env file.",
+    "Dot-source .runtime/mobile-manual-testing/server-mode-env.ps1 or export EXPO_PUBLIC_API_KEY before starting Expo for Samsung server proof."
   )
 }
 
