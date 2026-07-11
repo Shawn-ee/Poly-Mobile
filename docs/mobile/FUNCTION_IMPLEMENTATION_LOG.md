@@ -2,6 +2,15 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle BATCHS23 - Current MVP S23 Proof
+
+- Feature/page worked on: Local MVP visible flow proof across Home, Live, Event Detail, Trade Ticket, Portfolio, and History.
+- Frontend components touched: none.
+- Important functions/services touched: no runtime code changed; proof used existing `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1` with seeded counterparty liquidity.
+- User interactions supported: Home -> Live -> Event Detail -> Spread line market -> Trade Ticket -> swipe-to-buy -> Portfolio -> History passed on Samsung S23.
+- State transitions: server-mode fake-token order was submitted through the existing backend order path, filled against seeded counterparty liquidity, and appeared as Portfolio position plus History.
+- Known limitations: provider-backed World Cup books remain closed/unavailable and line markets remain contract fixtures for Local MVP testing.
+
 ## Batch Readiness - Provider Unavailable Classification
 
 - Feature/page worked on: Local MVP provider/internal exchange readiness reporting.
