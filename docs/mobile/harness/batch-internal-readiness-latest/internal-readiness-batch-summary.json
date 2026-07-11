@@ -1,5 +1,5 @@
 ﻿{
-    "generatedAt":  "2026-07-11T10:09:06.7621846Z",
+    "generatedAt":  "2026-07-11T10:16:21.6002133Z",
     "scope":  "mobile-internal-readiness-batch",
     "cycle":  "BATCHREADINESS",
     "backendBaseUrl":  "http://127.0.0.1:3002",
@@ -124,6 +124,36 @@
                       "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/provider-line-scan.stdout.log",
                       "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/provider-line-scan.stderr.log",
                       "producedJson":  true
+                  },
+                  {
+                      "name":  "root-typecheck",
+                      "command":  "npx.cmd tsc --noEmit --pretty false --incremental false \u0026\u0026 node -e \"require(\u0027fs\u0027).writeFileSync(\u0027docs/mobile/harness/batch-internal-readiness-latest/root-typecheck.json\u0027, JSON.stringify({ pass: true, command: \u0027npx tsc --noEmit --pretty false --incremental false\u0027, generatedAt: new Date().toISOString() }, null, 2) + \u0027\\n\u0027)\"",
+                      "exitCode":  0,
+                      "allowedNonZero":  false,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/root-typecheck.json",
+                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/root-typecheck.stdout.log",
+                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/root-typecheck.stderr.log",
+                      "producedJson":  true
+                  },
+                  {
+                      "name":  "jest-ci",
+                      "command":  "npm.cmd run test:ci \u0026\u0026 node -e \"require(\u0027fs\u0027).writeFileSync(\u0027docs/mobile/harness/batch-internal-readiness-latest/jest-ci.json\u0027, JSON.stringify({ pass: true, command: \u0027npm run test:ci\u0027, generatedAt: new Date().toISOString() }, null, 2) + \u0027\\n\u0027)\"",
+                      "exitCode":  0,
+                      "allowedNonZero":  false,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/jest-ci.json",
+                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/jest-ci.stdout.log",
+                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/jest-ci.stderr.log",
+                      "producedJson":  true
+                  },
+                  {
+                      "name":  "mobile-typecheck",
+                      "command":  "npm.cmd --prefix mobile run typecheck \u0026\u0026 node -e \"require(\u0027fs\u0027).writeFileSync(\u0027docs/mobile/harness/batch-internal-readiness-latest/mobile-typecheck.json\u0027, JSON.stringify({ pass: true, command: \u0027npm --prefix mobile run typecheck\u0027, generatedAt: new Date().toISOString() }, null, 2) + \u0027\\n\u0027)\"",
+                      "exitCode":  0,
+                      "allowedNonZero":  false,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/mobile-typecheck.json",
+                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/mobile-typecheck.stdout.log",
+                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/mobile-typecheck.stderr.log",
+                      "producedJson":  true
                   }
               ],
     "environmentHealthCaptured":  "before-batch-steps",
@@ -243,6 +273,9 @@
                                                                  ]
                                         }
                                     ],
+                      "rootTypecheckReady":  true,
+                      "jestCiReady":  true,
+                      "mobileTypecheckReady":  true,
                       "mobileVisibleEventCount":  4,
                       "providerVisibleMarketCount":  3,
                       "providerLocalMmReadyMarketCount":  0,

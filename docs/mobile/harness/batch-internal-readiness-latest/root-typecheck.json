@@ -1,0 +1,5 @@
+{
+  "pass": true,
+  "command": "npx tsc --noEmit --pretty false --incremental false",
+  "generatedAt": "2026-07-11T10:16:15.066Z"
+}

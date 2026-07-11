@@ -36,6 +36,7 @@ docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-sum
 - Polymarket World Cup team-match breadth.
 - Polymarket provider line-market breadth.
 - Committed Samsung S23 Local MVP device proof summaries for filled buy/history, open-order cancel, and position cashout/sell.
+- Root TypeScript typecheck, Jest CI smoke suite, and mobile TypeScript typecheck.
 - Local environment health snapshot: git cleanliness, S23 reachability, Docker/Postgres status, backend/Expo/proof ports, and continuous bot process status.
 
 ## Gate Behavior
@@ -45,6 +46,7 @@ P0 blockers fail the command:
 - backend or local database unavailable
 - current Local MVP route unavailable or not MVP-ready
 - latest committed S23 Local MVP device proof summaries are missing, failed, from the wrong device, or reference missing artifacts
+- root typecheck, Jest CI suite, or mobile typecheck fails
 
 Known provider availability gaps are tracked as P1, not P0:
 
@@ -93,6 +95,18 @@ The batch does not rerun full S23 UI proof every time. Instead, it verifies the 
 Each proof must be from the Samsung S23 device id `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`, have `result=pass`, include required Local MVP assertions, and point only to existing evidence files.
 
 If any of those checks fail, the batch records `s23_local_mvp_device_proof_not_ready` as a P0 blocker. This keeps the batch honest: Local MVP readiness requires both route/backend readiness and real Android proof evidence, while still avoiding unnecessary repeated screenshot generation when the committed evidence is already current.
+
+## Local Validation Gates
+
+The batch also runs the same local validation gates that protect `main` before pushing:
+
+- `npx tsc --noEmit --pretty false --incremental false`
+- `npm run test:ci`
+- `npm --prefix mobile run typecheck`
+
+Each command writes a small marker JSON in `docs/mobile/harness/batch-internal-readiness-latest/` when it passes. If any command fails, the batch command fails and reports the corresponding P0 blocker: `root_typecheck_failed`, `jest_ci_failed`, or `mobile_typecheck_failed`.
+
+This keeps the batch from saying the Local MVP is ready when the runtime is healthy but the checked-in code is not.
 
 ## Manual Server-Mode Prep
 

@@ -250,6 +250,9 @@ $exchangePath = Join-Path $ResolvedOutputDir "internal-exchange-readiness.json"
 $providerTradableFlowPath = Join-Path $ResolvedOutputDir "provider-visible-tradable-flow.json"
 $matchScanPath = Join-Path $ResolvedOutputDir "worldcup-match-event-scan.json"
 $lineScanPath = Join-Path $ResolvedOutputDir "provider-line-breadth-scan.json"
+$rootTypecheckMarkerPath = Join-Path $ResolvedOutputDir "root-typecheck.json"
+$jestCiMarkerPath = Join-Path $ResolvedOutputDir "jest-ci.json"
+$mobileTypecheckMarkerPath = Join-Path $ResolvedOutputDir "mobile-typecheck.json"
 $filledS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-XG-full-local-mvp-s23-flow\cycle-XG-current-mvp-s23-visible-flow.json"
 $cancelS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-XH-open-order-cancel-s23-flow\cycle-XH-current-mvp-s23-visible-flow.json"
 $cashoutS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-XI-cashout-sell-s23-flow\cycle-XI-current-mvp-s23-visible-flow.json"
@@ -265,6 +268,9 @@ $exchangeRepoPath = ConvertTo-RepoPath $exchangePath
 $providerTradableFlowRepoPath = ConvertTo-RepoPath $providerTradableFlowPath
 $matchScanRepoPath = ConvertTo-RepoPath $matchScanPath
 $lineScanRepoPath = ConvertTo-RepoPath $lineScanPath
+$rootTypecheckMarkerRepoPath = ConvertTo-RepoPath $rootTypecheckMarkerPath
+$jestCiMarkerRepoPath = ConvertTo-RepoPath $jestCiMarkerPath
+$mobileTypecheckMarkerRepoPath = ConvertTo-RepoPath $mobileTypecheckMarkerPath
 
 $environmentHealth = Get-EnvironmentHealthSnapshot
 
@@ -281,6 +287,9 @@ $steps.Add((Invoke-BatchCommand -Name "internal-exchange-readiness" -Command "np
 $steps.Add((Invoke-BatchCommand -Name "provider-visible-tradable-flow" -Command "npx.cmd tsx scripts/prove_mobile_provider_visible_tradable_flow.ts --cycle=$Cycle --baseUrl=$BackendBaseUrl --summaryPath=`"$providerTradableFlowRepoPath`"" -OutputPath $providerTradableFlowPath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "worldcup-match-scan" -Command "npm.cmd run inspect:polymarket-worldcup-matches -- --output `"$matchScanRepoPath`"" -OutputPath $matchScanPath))
 $steps.Add((Invoke-BatchCommand -Name "provider-line-scan" -Command "npm.cmd run mobile:provider-line-breadth-scan -- --summaryPath=`"$lineScanRepoPath`" --cycle=$Cycle" -OutputPath $lineScanPath))
+$steps.Add((Invoke-BatchCommand -Name "root-typecheck" -Command "npx.cmd tsc --noEmit --pretty false --incremental false && node -e `"require('fs').writeFileSync('$rootTypecheckMarkerRepoPath', JSON.stringify({ pass: true, command: 'npx tsc --noEmit --pretty false --incremental false', generatedAt: new Date().toISOString() }, null, 2) + '\n')`"" -OutputPath $rootTypecheckMarkerPath))
+$steps.Add((Invoke-BatchCommand -Name "jest-ci" -Command "npm.cmd run test:ci && node -e `"require('fs').writeFileSync('$jestCiMarkerRepoPath', JSON.stringify({ pass: true, command: 'npm run test:ci', generatedAt: new Date().toISOString() }, null, 2) + '\n')`"" -OutputPath $jestCiMarkerPath))
+$steps.Add((Invoke-BatchCommand -Name "mobile-typecheck" -Command "npm.cmd --prefix mobile run typecheck && node -e `"require('fs').writeFileSync('$mobileTypecheckMarkerRepoPath', JSON.stringify({ pass: true, command: 'npm --prefix mobile run typecheck', generatedAt: new Date().toISOString() }, null, 2) + '\n')`"" -OutputPath $mobileTypecheckMarkerPath))
 
 $backend = Read-JsonFile $backendPath
 $credential = Read-JsonFile $credentialPath
@@ -294,6 +303,9 @@ $exchange = Read-JsonFile $exchangePath
 $providerTradableFlow = Read-JsonFile $providerTradableFlowPath
 $matchScan = Read-JsonFile $matchScanPath
 $lineScan = Read-JsonFile $lineScanPath
+$rootTypecheck = Read-JsonFile $rootTypecheckMarkerPath
+$jestCi = Read-JsonFile $jestCiMarkerPath
+$mobileTypecheck = Read-JsonFile $mobileTypecheckMarkerPath
 $s23Proofs = @(
   (Get-S23ProofEvidence -Name "filled-buy-history" -SummaryPath $filledS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden")),
   (Get-S23ProofEvidence -Name "open-order-cancel" -SummaryPath $cancelS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "openOrderVisible", "openOrderSourceBadgeVisible", "cancelSubmitted", "canceledHistoryVisible", "orderbookHidden")),
@@ -304,6 +316,9 @@ $backendReady = [bool]($backend -and $backend.dockerCliAvailable -and $backend.d
 $localMvpReady = [bool]($currentState -and $currentState.diagnosis.serviceReadiness.localMvpPathReady)
 $localMatchBreadthReady = [bool]($localMatchBreadth -and $localMatchBreadth.pass)
 $s23LocalMvpDeviceProofReady = [bool](($s23Proofs | Where-Object { -not $_.pass }).Count -eq 0)
+$rootTypecheckReady = [bool]($rootTypecheck -and $rootTypecheck.pass)
+$jestCiReady = [bool]($jestCi -and $jestCi.pass)
+$mobileTypecheckReady = [bool]($mobileTypecheck -and $mobileTypecheck.pass)
 $providerExchangeReady = [bool]($exchange -and $exchange.readyForInternalMobileExchange)
 $providerSnapshotRefreshSucceeded = [bool]($providerSnapshotRefresh -and $providerSnapshotRefresh.summary -and ([int]$providerSnapshotRefresh.summary.errorCount -eq 0))
 $providerSnapshotRefreshUpdatedCount = if ($providerSnapshotRefresh -and $providerSnapshotRefresh.summary) { [int]$providerSnapshotRefresh.summary.snapshotsUpdated } else { $null }
@@ -349,6 +364,9 @@ if (-not $backendReady) { $p0Blockers += "backend_or_local_database_not_ready" }
 if (-not $localMatchBreadthReady) { $p0Blockers += "local_mvp_match_breadth_not_ready" }
 if (-not $localMvpReady) { $p0Blockers += "local_mvp_route_not_ready" }
 if (-not $s23LocalMvpDeviceProofReady) { $p0Blockers += "s23_local_mvp_device_proof_not_ready" }
+if (-not $rootTypecheckReady) { $p0Blockers += "root_typecheck_failed" }
+if (-not $jestCiReady) { $p0Blockers += "jest_ci_failed" }
+if (-not $mobileTypecheckReady) { $p0Blockers += "mobile_typecheck_failed" }
 
 $p1Blockers = @()
 if (-not $providerExchangeReady) {
@@ -440,6 +458,9 @@ $summary = [ordered]@{
     localMatchBreadthEventCount = if ($localMatchBreadth) { $localMatchBreadth.after.eventCount } else { $null }
     s23LocalMvpDeviceProofReady = $s23LocalMvpDeviceProofReady
     s23Proofs = $s23Proofs
+    rootTypecheckReady = $rootTypecheckReady
+    jestCiReady = $jestCiReady
+    mobileTypecheckReady = $mobileTypecheckReady
     mobileVisibleEventCount = if ($exchange) { $exchange.mobileExposure.mobileVisibleEventCount } else { $null }
     providerVisibleMarketCount = if ($exchange) { $exchange.providerMarkets.mobileVisibleCount } else { $null }
     providerLocalMmReadyMarketCount = if ($exchange) { $exchange.providerMarkets.localMmReadyCount } else { $null }
