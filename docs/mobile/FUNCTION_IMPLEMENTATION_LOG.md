@@ -2,6 +2,19 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle FINALSIGNOFFGATE - DoD-Aware Final Signoff
+
+- Feature/page worked on: final QA/review signoff harness for the whole-app Polymarket parity loop.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/mobile_final_qa_review_signoff.ts`
+  - `src/__tests__/mobile-final-qa-review-signoff.contract.test.ts`
+  - root `package.json` `test:ci` coverage list
+- User interactions supported: unchanged. The Local MVP path remains Home -> Event Detail -> line market -> Trade Ticket -> fake-token order -> Portfolio/history.
+- State transitions: no runtime, backend, or database state changes. The final signoff summary now consumes `docs/mobile/harness/cycle-current-mobile-definition-of-done-sweep.json`, fails when non-final DoD criteria remain partial/blocked, and intentionally ignores only the `dod-final-cycle` criterion to avoid a circular signoff lock.
+- Proof: run `npm run mobile:definition-of-done-sweep`, then `npm run mobile:final-qa-review-signoff`. With current provider-backed Polymarket parity P1 debt, final QA/review signoff should be `fail` instead of accidentally passing on zero unresolved P0 feature rows.
+- Known limitations: this does not solve provider-backed World Cup match/line availability. It prevents the loop from declaring whole-app parity while that provider criterion remains partial.
+
 ## Cycle PROVIDERFRESHGATE - Cached Provider Evidence Freshness
 
 - Feature/page worked on: internal readiness batch provider-evidence audit gate.

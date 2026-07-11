@@ -1,5 +1,19 @@
 # Mobile Data Contract Gaps
 
+## Cycle FINALSIGNOFFGATE - DoD-Aware Final Signoff
+
+- No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider runtime contract changed.
+- The final signoff summary contract now consumes the Definition of Done sweep and exposes:
+  - `definitionOfDoneSweepPresent`
+  - `definitionOfDoneReadyToDeclareDone`
+  - `definitionOfDoneCounts`
+  - `definitionOfDoneBlockingCriteria[]`
+  - `qaSignoff`
+  - `reviewSignoff`
+- New behavior: final QA/review signoff fails when any non-final DoD criterion is still partial or blocked, even if the feature gap tracker has zero unresolved P0 rows.
+- Circular-lock guard: `dod-final-cycle` is excluded from the signoff blocker list so a future run can pass the final signoff after the real provider/runtime criteria are satisfied.
+- Remaining provider data gaps are unchanged: usable accepting-order World Cup match books and attach-ready spread/totals/team-total line markets are still unavailable in current evidence.
+
 ## Cycle PROVIDERFRESHGATE - Cached Provider Evidence Freshness
 
 - No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider runtime contract changed.

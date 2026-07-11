@@ -1,14 +1,34 @@
 {
-  "ready": true,
-  "generatedAt": "2026-07-02T14:41:03.554Z",
-  "p0GapCount": 54,
-  "verifiedP0GapCount": 54,
+  "ready": false,
+  "generatedAt": "2026-07-11T12:23:45.217Z",
+  "p0GapCount": 55,
+  "verifiedP0GapCount": 55,
   "unresolvedP0GapCount": 0,
   "unresolvedP0Gaps": [],
-  "qaSignoff": "pass",
-  "reviewSignoff": "pass",
+  "definitionOfDoneSweepPresent": true,
+  "definitionOfDoneReadyToDeclareDone": false,
+  "definitionOfDoneCounts": {
+    "verified": 10,
+    "partial": 2,
+    "blocked": 0
+  },
+  "definitionOfDoneBlockingCriteria": [
+    {
+      "id": "dod-provider-polymarket-parity",
+      "criterion": "Provider-backed Polymarket match/line parity is current, tradable, and not relying on contract fixtures for MVP line markets.",
+      "status": "partial",
+      "evidence": [
+        "docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json",
+        "docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md"
+      ],
+      "notes": "Current batch still tracks 4 provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity."
+    }
+  ],
+  "qaSignoff": "fail",
+  "reviewSignoff": "fail",
   "evidence": {
     "paritySweep": "docs/mobile/MOBILE_FINAL_PARITY_SWEEP.md",
+    "definitionOfDoneSweep": "docs/mobile/harness/cycle-current-mobile-definition-of-done-sweep.json",
     "gapTracker": "docs/mobile/MOBILE_FEATURE_GAP_TRACKER.md",
     "samsungServerOrder": "docs/mobile/harness/cycle-current-mobile-samsung-backend-position-order-proof.json",
     "androidReadiness": "docs/mobile/harness/cycle-current-android-dev-build-readiness.json",
@@ -17,6 +37,8 @@
     "mobileTypecheck": "cmd /c npm.cmd run typecheck (mobile)"
   },
   "residualRisks": [
+    "Final signoff is blocked by non-final Definition of Done criteria that remain partial or blocked.",
+    "dod-provider-polymarket-parity: Current batch still tracks 4 provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity.",
     "Samsung APK smoke now installs and launches dist/holiwyn-preview.apk; future production signing/release-channel hardening remains separate.",
     "Emulator reliability remains partial in this workstation environment; Samsung is the stronger QA target.",
     "Deposit, withdraw, and EBPay remain intentionally out of scope."
