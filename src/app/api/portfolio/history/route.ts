@@ -25,6 +25,15 @@ type CostBasisTrade = {
   fee: unknown;
 };
 
+type RecentTradeSelectionOrder = {
+  id?: string;
+  marketId: string;
+  outcomeId: string;
+  createdAt?: Date | string | null;
+  updatedAt?: Date | string | null;
+  apiOrderRequest?: { requestBody: unknown } | null;
+};
+
 const roundTokens = (value: number) => Math.round(value * 1_000_000) / 1_000_000;
 
 function buildRecentTradeRealizedPnlMap(trades: CostBasisTrade[]) {
@@ -74,6 +83,43 @@ async function getPortfolioHistoryUserId(request: NextRequest) {
     return actor.userId;
   }
   return getUserId();
+}
+
+const timestampValue = (value: Date | string | null | undefined) => {
+  if (!value) return Number.NEGATIVE_INFINITY;
+  const timestamp = value instanceof Date ? value.getTime() : new Date(value).getTime();
+  return Number.isFinite(timestamp) ? timestamp : Number.NEGATIVE_INFINITY;
+};
+
+function buildSelectionOrderBuckets(orders: RecentTradeSelectionOrder[]) {
+  const buckets = new Map<string, RecentTradeSelectionOrder[]>();
+  for (const order of orders) {
+    const key = `${order.marketId}:${order.outcomeId}`;
+    const bucket = buckets.get(key) ?? [];
+    bucket.push(order);
+    buckets.set(key, bucket);
+  }
+  for (const bucket of buckets.values()) {
+    bucket.sort((a, b) => {
+      const updatedDiff = timestampValue(b.updatedAt) - timestampValue(a.updatedAt);
+      if (updatedDiff !== 0) return updatedDiff;
+      const createdDiff = timestampValue(b.createdAt) - timestampValue(a.createdAt);
+      if (createdDiff !== 0) return createdDiff;
+      return String(b.id ?? "").localeCompare(String(a.id ?? ""));
+    });
+  }
+  return buckets;
+}
+
+function selectionRequestBodyForTrade(
+  trade: { marketId: string; outcomeId: string; createdAt: Date | string },
+  buckets: Map<string, RecentTradeSelectionOrder[]>,
+) {
+  const candidates = buckets.get(`${trade.marketId}:${trade.outcomeId}`) ?? [];
+  if (!candidates.length) return undefined;
+  const tradeCreatedAt = timestampValue(trade.createdAt);
+  const historicalCandidate = candidates.find((order) => timestampValue(order.createdAt) <= tradeCreatedAt);
+  return (historicalCandidate ?? candidates[0]).apiOrderRequest?.requestBody;
 }
 
 export async function GET(request: NextRequest) {
@@ -185,19 +231,16 @@ export async function GET(request: NextRequest) {
         },
         orderBy: [{ updatedAt: "desc" }, { id: "desc" }],
         select: {
+          id: true,
           marketId: true,
           outcomeId: true,
+          createdAt: true,
+          updatedAt: true,
           apiOrderRequest: { select: { requestBody: true } },
         },
       })
     : [];
-  const recentTradeSelectionByMarketOutcome = new Map<string, unknown>();
-  for (const order of recentTradeSelectionOrders) {
-    const key = `${order.marketId}:${order.outcomeId}`;
-    if (!recentTradeSelectionByMarketOutcome.has(key)) {
-      recentTradeSelectionByMarketOutcome.set(key, order.apiOrderRequest?.requestBody);
-    }
-  }
+  const recentTradeSelectionBuckets = buildSelectionOrderBuckets(recentTradeSelectionOrders);
   const recentTradeSelections = Array.from(
     new Set(recentTrades.map((trade: { marketId: string; outcomeId: string }) => `${trade.marketId}:${trade.outcomeId}`)),
   ).map((key) => {
@@ -370,7 +413,7 @@ export async function GET(request: NextRequest) {
       },
       outcome: trade.outcome,
       selection: buildTicketSelectionMetadata({
-        requestBody: recentTradeSelectionByMarketOutcome.get(`${trade.marketId}:${trade.outcomeId}`),
+        requestBody: selectionRequestBodyForTrade(trade, recentTradeSelectionBuckets),
         market: trade.market,
         outcome: trade.outcome,
       }),

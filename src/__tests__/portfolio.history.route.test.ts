@@ -593,6 +593,126 @@ describe("GET /api/portfolio/history canceled orders", () => {
     expect(body.recentTrades[0].selection.tokenId).toBe("token-eo-over-35");
   });
 
+  test("keeps recent trade selection tied to the order snapshot that existed when the trade filled", async () => {
+    mockPrisma.trade.findMany.mockReset();
+    mockPrisma.order.findMany.mockReset();
+    mockPrisma.ledgerEntry.findMany.mockResolvedValue([]);
+
+    const originalSelection = {
+      marketId: "market-rg-spread",
+      outcomeId: "outcome-rg-home",
+      marketGroupId: "spreads",
+      marketType: "spread",
+      line: "-0.5",
+      period: "regulation",
+      side: "home",
+      displayLabel: "Germany -0.5",
+      contractSide: "yes",
+      providerSource: "polymarket",
+      externalMarketId: "gamma-rg-spread-original",
+      conditionId: "condition-rg-spread-original",
+      tokenId: "token-rg-home-original",
+      referenceOutcomeLabel: "Germany -0.5",
+    };
+    const laterSelection = {
+      ...originalSelection,
+      line: "-1.5",
+      displayLabel: "Germany -1.5",
+      externalMarketId: "gamma-rg-spread-later",
+      conditionId: "condition-rg-spread-later",
+      tokenId: "token-rg-home-later",
+      referenceOutcomeLabel: "Germany -1.5",
+    };
+    const market = {
+      id: "market-rg-spread",
+      title: "Germany vs Mexico: Spread",
+      event: { title: "Germany vs Mexico", slug: "germany-vs-mexico" },
+      status: "LIVE",
+      marketGroupKey: "spreads",
+      marketType: "spread",
+      line: { toString: () => "-1.5" },
+      period: "regulation",
+      referenceSource: "polymarket",
+      externalSlug: "rg-spread-refreshed",
+      externalMarketId: "gamma-rg-spread-later",
+      conditionId: "condition-rg-spread-later",
+    };
+    const outcome = {
+      id: "outcome-rg-home",
+      name: "YES",
+      label: "Germany -1.5",
+      side: "home",
+      referenceTokenId: "token-rg-home-later",
+      referenceOutcomeLabel: "Germany -1.5",
+    };
+
+    mockPrisma.trade.findMany
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([
+        {
+          id: "trade-rg-original",
+          marketId: "market-rg-spread",
+          outcomeId: "outcome-rg-home",
+          side: "BUY",
+          shares: 20,
+          cost: 10,
+          fee: 0,
+          createdAt: new Date("2026-07-05T12:00:00.000Z"),
+          market,
+          outcome,
+        },
+      ])
+      .mockResolvedValueOnce([
+        {
+          id: "trade-rg-original",
+          marketId: "market-rg-spread",
+          outcomeId: "outcome-rg-home",
+          side: "BUY",
+          shares: 20,
+          cost: 10,
+          fee: 0,
+          createdAt: new Date("2026-07-05T12:00:00.000Z"),
+        },
+      ]);
+    mockPrisma.order.findMany
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([
+        {
+          id: "order-rg-later",
+          marketId: "market-rg-spread",
+          outcomeId: "outcome-rg-home",
+          createdAt: new Date("2026-07-05T12:08:00.000Z"),
+          updatedAt: new Date("2026-07-05T12:08:05.000Z"),
+          apiOrderRequest: { requestBody: { selection: laterSelection } },
+        },
+        {
+          id: "order-rg-original",
+          marketId: "market-rg-spread",
+          outcomeId: "outcome-rg-home",
+          createdAt: new Date("2026-07-05T11:59:00.000Z"),
+          updatedAt: new Date("2026-07-05T12:00:05.000Z"),
+          apiOrderRequest: { requestBody: { selection: originalSelection } },
+        },
+      ]);
+
+    const { GET } = await import("@/app/api/portfolio/history/route");
+    const response = await GET(new NextRequest("http://localhost/api/portfolio/history"));
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.recentTrades[0].selection).toMatchObject({
+      line: "-0.5",
+      displayLabel: "Germany -0.5",
+      externalMarketId: "gamma-rg-spread-original",
+      conditionId: "condition-rg-spread-original",
+      tokenId: "token-rg-home-original",
+    });
+    expect(body.recentTrades[0].selection).not.toMatchObject({
+      line: "-1.5",
+      tokenId: "token-rg-home-later",
+    });
+  });
+
   test("blocks anonymous history reads before canceled-order lookup", async () => {
     mockGetUserId.mockResolvedValue(null);
 
