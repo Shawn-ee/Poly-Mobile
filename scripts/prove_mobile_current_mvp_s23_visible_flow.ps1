@@ -267,7 +267,7 @@ try {
   $cleanupProofPath = Join-Path $HierarchyOutputDir "cycle-$Cycle-current-mvp-line-cleanup.json"
   if ($expectOpenOrderState) {
     $cleanupProofAbsolutePath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-current-mvp-line-cleanup.json"
-    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=$LineMarketGroupKey" "--line=$LineValue" "--outcomeSide=$LineOutcomeSide" "--cleanupBlockingMarketBids" "--cleanupOnly" "--liquidityPurpose=cleanup" "--proofUserPrefix=holiwyn-mobile-" "--output=$cleanupProofAbsolutePath" | Out-Null
+    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=$LineMarketGroupKey" "--line=$LineValue" "--outcomeSide=$LineOutcomeSide" "--cleanupBlockingMarketBids" "--cleanupBlockingAsks" "--cleanupProofAsks" "--cleanupOnly" "--liquidityPurpose=cleanup" "--proofUserPrefix=holiwyn-mobile-" "--output=$cleanupProofAbsolutePath" | Out-Null
     if ($LASTEXITCODE -ne 0) {
       throw "Line proof cleanup failed for $EventSlug."
     }
@@ -596,6 +596,7 @@ try {
 
   $historyXml = $null
   $cancelHistoryXml = $null
+  $cancelHistoryArtifactsCreated = $false
   $cashoutCounterpartyProofPath = $null
   $cashoutTicketXml = $null
   $cashoutHistoryXml = $null
@@ -604,11 +605,17 @@ try {
     Start-Sleep -Seconds 5
     Save-Screenshot -Name "cycle-$Cycle-current-mvp-after-cancel.png" | Out-Null
     $afterCancelXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-after-cancel.xml"
-    Assert-Contains -Path $afterCancelXml -Expected @("Portfolio", "portfolio-tab-orders", "No open orders")
-    Invoke-TapNode -Path $afterCancelXml -Identifier "portfolio-tab-history"
-    Start-Sleep -Seconds 2
-    Save-Screenshot -Name "cycle-$Cycle-current-mvp-canceled-history.png" | Out-Null
-    $cancelHistoryXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-canceled-history.xml"
+    Assert-Contains -Path $afterCancelXml -Expected @("Portfolio", "portfolio-tab-orders", "portfolio-open-order-count")
+    Assert-NotContains -Path $afterCancelXml -Unexpected @("open-order-row-", "cancel-open-order-")
+    if ((Get-Content -Raw -Path $afterCancelXml) -match [regex]::Escape("activity-row-")) {
+      $cancelHistoryXml = $afterCancelXml
+    } else {
+      Invoke-TapNode -Path $afterCancelXml -Identifier "portfolio-tab-history"
+      Start-Sleep -Seconds 2
+      Save-Screenshot -Name "cycle-$Cycle-current-mvp-canceled-history.png" | Out-Null
+      $cancelHistoryXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-canceled-history.xml"
+      $cancelHistoryArtifactsCreated = $true
+    }
     Assert-Contains -Path $cancelHistoryXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "Canceled", "portfolio-history-market-context-readable", "portfolio-market-type-$LineMarketType", "portfolio-line-$LineValue", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
   } elseif ($ExpectCashout) {
     Assert-Contains -Path $afterSubmitXml -Expected @("position-card-", "portfolio-position-cash-out-", "portfolio-position-source-badge")
@@ -727,8 +734,10 @@ try {
   if ($ExpectCancel) {
     $summary.artifacts.Add("$OutputDir\cycle-$Cycle-current-mvp-after-cancel.png")
     $summary.artifacts.Add("$HierarchyOutputDir\cycle-$Cycle-current-mvp-after-cancel.xml")
-    $summary.artifacts.Add("$OutputDir\cycle-$Cycle-current-mvp-canceled-history.png")
-    $summary.artifacts.Add("$HierarchyOutputDir\cycle-$Cycle-current-mvp-canceled-history.xml")
+    if ($cancelHistoryArtifactsCreated) {
+      $summary.artifacts.Add("$OutputDir\cycle-$Cycle-current-mvp-canceled-history.png")
+      $summary.artifacts.Add("$HierarchyOutputDir\cycle-$Cycle-current-mvp-canceled-history.xml")
+    }
   } elseif ($ExpectCashout) {
     $summary.artifacts.Add("$OutputDir\cycle-$Cycle-current-mvp-line-cashout-ticket.png")
     $summary.artifacts.Add("$HierarchyOutputDir\cycle-$Cycle-current-mvp-line-cashout-ticket.xml")

@@ -9694,3 +9694,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: real provider-backed World Cup match line markets with safe CLOB books for spread, totals, and team totals.
 - Temporary mock/static data: the S23 proof still uses contract-shaped fake-token spread liquidity for the filled order and Portfolio History proof.
 - Future migration concern: when provider-backed line rows are attached, the same Live/Event Detail/Ticket/Portfolio proof should pass with provider source identity instead of `contract-fixture` source identity.
+
+## Cycle XH - Open Order Cancel S23 Flow
+
+- Closed or narrowed: Local MVP open-order cancel is now re-proven on S23 after the Home/Live match-breadth changes.
+- Route mismatch: none found. The existing order, Portfolio, cancel, and history contracts preserve the selected spread line/source identity through cancel activity.
+- Fields Holiwyn still needs but backend/provider does not fully provide: safe provider-backed match/line liquidity for the same cancel lifecycle with real Polymarket token identity.
+- Temporary mock/static data: harness uses contract-fixture spread market rows and cleans disposable maker asks/bids before proof to force the intended open-order state.
+- Future migration concern: when provider-backed local trading becomes safe, rerun this cancel proof against provider-token selections and confirm Portfolio History records provider market/condition/token fields after cancel.

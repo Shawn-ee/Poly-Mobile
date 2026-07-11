@@ -12905,3 +12905,12 @@ Known limitations:
 - User interactions supported: Home -> Live -> Event Detail -> Spread `1.5` -> Trade Ticket -> swipe buy -> Portfolio History on Samsung S23.
 - State transitions: Live now exposes the first available hidden source-readiness marker for either provider-backed or `contract-fixture` Local MVP live cards. The S23 proof accepts prediction-only Local MVP live source disclosure while Home/Event Detail still verify provider-winner plus local-line disclosure where applicable.
 - Known limitations: the filled order remains a contract-shaped fake-token line flow. Provider-backed Polymarket match books and line markets remain P1 until a safe, accepting-order provider market exists.
+
+# Cycle XH - Open Order Cancel S23 Flow
+
+- Feature/page worked on: Portfolio Orders cancel lifecycle for the Local MVP retail path.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`.
+- User interactions supported: Home -> Live -> Event Detail -> Spread `1.5` -> Trade Ticket -> swipe buy -> Portfolio open order -> cancel -> Portfolio History canceled activity.
+- State transitions: the proof harness now cleans both blocking BUY bids and blocking SELL asks before open-order/cancel proof so prior filled-flow maker liquidity cannot accidentally fill the test order. The cancel proof accepts the dense Portfolio layout where `portfolio-open-order-count` reaches zero and the canceled activity row is visible without requiring the exact `No open orders` empty-state copy.
+- Known limitations: this validates contract-fixture fake-token open-order cancel behavior. Provider-backed cancellation remains blocked until a safe provider-backed market can be traded locally.
