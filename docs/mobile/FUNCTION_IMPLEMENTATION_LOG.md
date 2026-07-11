@@ -13231,3 +13231,22 @@ Known limitations:
   - Screenshots under `docs/mobile/screenshots/cycle-ODDSAPIS23-odds-api-s23-visible-flow/`
 - Known limitations:
   - This is a temporary sportsbook-derived internal MVP bridge. It does not claim Polymarket-backed parity and does not close the remaining provider-backed Polymarket line-market P1 debt.
+
+# Cycle SPORTSBATCHGATE - Sportsbook Proof Readiness Batch Gate
+
+- Feature/page worked on: internal readiness harness aggregation for the temporary sportsbook S23 bridge.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/mobile_internal_readiness_batch.ps1`
+  - `scripts/write_mobile_internal_readiness_gap_list.ts`
+  - `src/__tests__/mobile.internal-readiness-batch.contract.test.ts`
+  - `docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md`
+- User interactions supported: unchanged. The batch now verifies that the already-proven S23 flow, Home -> Event Detail -> sportsbook spread line -> Trade Ticket -> fake-token order -> Portfolio History, is present and fresh enough for internal Local MVP testing.
+- State transitions:
+  - The readiness summary exposes `temporarySportsbookS23BridgeProofReady`.
+  - The S23 proof list includes `temporary-sportsbook-filled-buy-history`.
+  - The recovery command points to `npm run mobile:the-odds-api-s23-visible-flow` when the sportsbook proof is missing or stale.
+  - Provider-backed Polymarket parity remains P1 debt and is not converted to ready by this temporary bridge.
+- Known limitations:
+  - This cycle documents and gates the proof artifact. It does not import new provider markets, spend sportsbook quota, or change user-visible app behavior.
+  - The bridge remains temporary until a Polymarket-backed match/line market can satisfy the same Event Detail -> Ticket -> Order -> Portfolio/history proof.

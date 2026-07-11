@@ -9914,3 +9914,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: Polymarket-backed World Cup soccer match line markets with accepting-order CLOB data and safe local fake-token liquidity. The sportsbook bridge is an interim internal-test source only.
 - Temporary mock/static data: the proof replays `event-odds.redacted.json` and seeds disposable local maker liquidity; the fixture shape uses real backend `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `Order`, `Trade`, and `Position` rows.
 - Future migration concern: do not merge sportsbook `referenceSource=sportsbook-odds` into Polymarket parity accounting. When Polymarket-backed match lines become available, the same S23 harness pattern should pass with `referenceSource=polymarket` and real provider token ids.
+
+## Cycle SPORTSBATCHGATE - Sportsbook Proof Readiness Batch Gate
+
+- Closed or narrowed: the internal readiness batch now treats the temporary sportsbook S23 bridge as a named proof gate instead of an informal standalone artifact.
+- Route mismatch: none. This cycle changes harness aggregation and reporting only.
+- Fields Holiwyn still needs but backend/provider does not fully provide: Polymarket-backed World Cup soccer match line markets with accepting-order CLOB data, real provider token ids, and safe local fake-token liquidity.
+- Temporary mock/static data: no new temporary data was added. The gate reads the existing ODDSAPIS23 proof artifact and recovery command; it does not replay odds data unless the recovery command is explicitly run.
+- Future migration concern: the readiness batch should eventually pass this same full user-flow proof with `referenceSource=polymarket`. Until then, `temporarySportsbookS23BridgeProofReady=true` supports internal Local MVP testing only and does not close provider parity P1 debt.
