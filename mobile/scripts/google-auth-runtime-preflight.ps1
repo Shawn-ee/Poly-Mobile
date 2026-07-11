@@ -112,6 +112,12 @@ $resolvedMobileReturnUrl = if ($MobileReturnUrl) {
 $nextAuthUrl = Resolve-ConfigValue $mobileEnv $rootEnv @("NEXTAUTH_URL") ""
 $googleClientId = Resolve-ConfigValue $mobileEnv $rootEnv @("GOOGLE_CLIENT_ID") ""
 $googleClientSecret = Resolve-ConfigValue $mobileEnv $rootEnv @("GOOGLE_CLIENT_SECRET") ""
+$expectedCallback = if ($nextAuthUrl) { "$($nextAuthUrl.TrimEnd('/'))/api/auth/google/callback" } else { "" }
+$observedRedirectUri = ""
+$observedRedirectHost = ""
+$redirectUriOriginMatches = $false
+$redirectUriPathMatches = $false
+$redirectUriMatchesExpected = $false
 
 $checks = New-Object System.Collections.Generic.List[object]
 $checks.Add([pscustomobject]@{
@@ -180,7 +186,18 @@ if ($canProbeRoute) {
     $location = $response.Headers.Location
     $redirectHost = if ($location) { $location.Host } else { "" }
     $redirectUriParam = if ($location) { Get-QueryValue $location.Query "redirect_uri" } else { "" }
-    $expectedCallback = "$($nextAuthUrl.TrimEnd('/'))/api/auth/google/callback"
+    $observedRedirectUri = $redirectUriParam
+    $observedRedirectHost = $redirectHost
+    try {
+      $expectedCallbackUri = [Uri]$expectedCallback
+      $observedCallbackUri = [Uri]$observedRedirectUri
+      $redirectUriOriginMatches = $observedCallbackUri.GetLeftPart([System.UriPartial]::Authority) -eq $expectedCallbackUri.GetLeftPart([System.UriPartial]::Authority)
+      $redirectUriPathMatches = $observedCallbackUri.AbsolutePath -eq $expectedCallbackUri.AbsolutePath
+    } catch {
+      $redirectUriOriginMatches = $false
+      $redirectUriPathMatches = $false
+    }
+    $redirectUriMatchesExpected = $redirectUriParam -eq $expectedCallback
     $checks.Add([pscustomobject]@{
       Name = "Google start route returns a redirect"
       Pass = [int]$response.StatusCode -ge 300 -and [int]$response.StatusCode -lt 400
@@ -193,7 +210,7 @@ if ($canProbeRoute) {
     })
     $checks.Add([pscustomobject]@{
       Name = "Google redirect_uri matches NEXTAUTH_URL callback"
-      Pass = $redirectUriParam -eq $expectedCallback
+      Pass = $redirectUriMatchesExpected
       Detail = "Google Cloud authorized redirect URI should match this callback exactly."
     })
   } catch {
@@ -223,6 +240,17 @@ $summary = [ordered]@{
   nextAuthUrlConfigured = Test-ConfiguredSecret $nextAuthUrl
   googleClientIdConfigured = Test-ConfiguredSecret $googleClientId
   googleClientSecretConfigured = Test-ConfiguredSecret $googleClientSecret
+  expectedCallback = $expectedCallback
+  observedGoogleRedirectUri = $observedRedirectUri
+  observedGoogleRedirectHost = $observedRedirectHost
+  redirectUriOriginMatches = $redirectUriOriginMatches
+  redirectUriPathMatches = $redirectUriPathMatches
+  redirectUriMatchesExpected = $redirectUriMatchesExpected
+  fixHint = if ($observedRedirectUri -and -not $redirectUriMatchesExpected) {
+    "Set the running backend NEXTAUTH_URL and the preflight config to the same origin, restart the backend, then register the exact redirect_uri emitted by /api/auth/google/start in Google Cloud Authorized redirect URIs."
+  } else {
+    ""
+  }
   requireConfigured = [bool]$RequireConfigured
   requirePhysicalDeviceCallback = [bool]$RequirePhysicalDeviceCallback
   readyForRuntimeStart = ($failed.Count -eq 0)

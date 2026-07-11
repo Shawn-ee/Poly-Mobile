@@ -20,6 +20,12 @@ describe("Google auth runtime preflight contract", () => {
     expect(source).toContain("SummaryPath");
     expect(source).toContain("readyForRuntimeStart");
     expect(source).toContain("failedChecks");
+    expect(source).toContain("expectedCallback");
+    expect(source).toContain("observedGoogleRedirectUri");
+    expect(source).toContain("redirectUriOriginMatches");
+    expect(source).toContain("redirectUriPathMatches");
+    expect(source).toContain("redirectUriMatchesExpected");
+    expect(source).toContain("Authorized redirect URIs");
     expect(source).toContain("holiwyn");
     expect(source).toContain("exp");
     expect(source).toContain("exps");

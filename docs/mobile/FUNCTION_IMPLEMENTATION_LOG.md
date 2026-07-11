@@ -2,6 +2,15 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Batch Readiness - Google Redirect Diagnostic Fields
+
+- Feature/page worked on: Portfolio/Account Google sign-in readiness diagnostics.
+- Frontend components touched: none.
+- Important functions/services touched: `mobile/scripts/google-auth-runtime-preflight.ps1` now writes URL-only mismatch diagnostics: `expectedCallback`, `observedGoogleRedirectUri`, `redirectUriOriginMatches`, `redirectUriPathMatches`, and `redirectUriMatchesExpected`.
+- User interactions supported: none changed directly. The manual S23 Google consent path now has enough non-secret evidence to align `NEXTAUTH_URL` and Google Cloud Authorized redirect URI before testing.
+- State transitions: none changed in mobile runtime, backend OAuth routes, SecureStore persistence, logout, or trading state.
+- Known limitations: this does not complete real Google consent; it makes the current P1 setup blocker actionable.
+
 ## Batch Readiness - Google Runtime Preflight Summary
 
 - Feature/page worked on: Portfolio/Account Google sign-in readiness reporting.

@@ -103,6 +103,8 @@ The root commands delegate to the existing mobile preflight under `mobile/`, so 
 
 The batch command runs the non-strict preflight and writes `google-auth-runtime-preflight.json`. If it finds a redirect mismatch or other runtime warning, the summary records a P1 blocker such as `google_redirect_uri_mismatch`; this does not block the Local MVP fake-token trade path, but it must be fixed before claiming real Google consent readiness.
 
+The Google summary includes URL-only diagnostics, not Google credentials: `expectedCallback`, `observedGoogleRedirectUri`, `redirectUriOriginMatches`, `redirectUriPathMatches`, and `redirectUriMatchesExpected`. Use those fields to set `NEXTAUTH_URL` and the Google Cloud Authorized redirect URI to the same callback.
+
 ## Why This Exists
 
 The loop should not keep reopening small source-label or one-screen proof cycles just to rediscover the same provider-state facts. This batch harness gives the Lead Agent one current-state command before choosing the next meaningful milestone.
