@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T20:05:46.063Z",
+  "generatedAt": "2026-07-11T21:31:07.699Z",
   "source": "the-odds-api",
   "redacted": true,
   "sportKey": "soccer_fifa_world_cup",
@@ -92,19 +92,19 @@
       "path": "/v4/sports",
       "status": 200,
       "quota": {
-        "requestsUsed": "7",
-        "requestsRemaining": "493",
+        "requestsUsed": "14",
+        "requestsRemaining": "486",
         "requestsLast": "0"
       }
     },
     {
       "name": "events:soccer_fifa_world_cup",
       "method": "GET",
-      "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z",
+      "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z&eventIds=200d9cd5eda092c7eb778cc104cd2fd2",
       "status": 200,
       "quota": {
-        "requestsUsed": "7",
-        "requestsRemaining": "493",
+        "requestsUsed": "14",
+        "requestsRemaining": "486",
         "requestsLast": "0"
       }
     },
@@ -114,8 +114,8 @@
       "path": "/v4/sports/soccer_fifa_world_cup/events/200d9cd5eda092c7eb778cc104cd2fd2/markets?regions=us&dateFormat=iso",
       "status": 200,
       "quota": {
-        "requestsUsed": "8",
-        "requestsRemaining": "492",
+        "requestsUsed": "15",
+        "requestsRemaining": "485",
         "requestsLast": "1"
       }
     }

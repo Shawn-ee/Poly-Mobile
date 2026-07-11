@@ -1,6 +1,6 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-11T20:05:46.475Z",
+  "generatedAt": "2026-07-11T21:31:08.129Z",
   "dryRun": false,
   "scope": "the-odds-api-single-event-temporary-provider",
   "policy": {
@@ -31,19 +31,19 @@
       "path": "/v4/sports",
       "status": 200,
       "quota": {
-        "requestsUsed": "7",
-        "requestsRemaining": "493",
+        "requestsUsed": "14",
+        "requestsRemaining": "486",
         "requestsLast": "0"
       }
     },
     {
       "name": "events:soccer_fifa_world_cup",
       "method": "GET",
-      "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z",
+      "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z&eventIds=200d9cd5eda092c7eb778cc104cd2fd2",
       "status": 200,
       "quota": {
-        "requestsUsed": "7",
-        "requestsRemaining": "493",
+        "requestsUsed": "14",
+        "requestsRemaining": "486",
         "requestsLast": "0"
       }
     },
@@ -53,8 +53,8 @@
       "path": "/v4/sports/soccer_fifa_world_cup/events/200d9cd5eda092c7eb778cc104cd2fd2/markets?regions=us&dateFormat=iso",
       "status": 200,
       "quota": {
-        "requestsUsed": "8",
-        "requestsRemaining": "492",
+        "requestsUsed": "15",
+        "requestsRemaining": "485",
         "requestsLast": "1"
       }
     },
@@ -64,8 +64,8 @@
       "path": "/v4/sports/soccer_fifa_world_cup/events/200d9cd5eda092c7eb778cc104cd2fd2/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso",
       "status": 200,
       "quota": {
-        "requestsUsed": "14",
-        "requestsRemaining": "486",
+        "requestsUsed": "21",
+        "requestsRemaining": "479",
         "requestsLast": "6"
       }
     }
@@ -73,8 +73,8 @@
   "quota": {
     "totalLastCost": 7,
     "latest": {
-      "requestsUsed": "14",
-      "requestsRemaining": "486",
+      "requestsUsed": "21",
+      "requestsRemaining": "479",
       "requestsLast": "6"
     }
   },
@@ -282,5 +282,21 @@
       "spread",
       "total_goals"
     ]
-  }
+  },
+  "s23Proof": {
+    "pass": true,
+    "path": "docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json",
+    "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model": "SM-S911U1",
+    "generatedAt": "2026-07-11T19:41:50.5002735Z",
+    "screenshotsPath": "docs/mobile/screenshots/cycle-ODDSAPIS23-odds-api-s23-visible-flow/"
+  },
+  "resultNotes": [
+    "Live-key refresh: pass. The key was supplied through the process environment only and was not written to repo files.",
+    "Backend fake-token flow: pass. Home, Event Detail, quote, order, Portfolio, and History preserve `sportsbook-odds` line identity.",
+    "S23 visible proof: pass.",
+    "S23 proof summary: `docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json`",
+    "S23 proof screenshots: `docs/mobile/screenshots/cycle-ODDSAPIS23-odds-api-s23-visible-flow/`",
+    "Remaining blocker: none for the temporary sportsbook Local MVP bridge. This still does not claim Polymarket-backed provider parity."
+  ]
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T21:25:52.261Z",
+  "generatedAt": "2026-07-11T21:34:01.948Z",
   "status": "provider-parity-wait",
   "priority": "P1",
   "reason": "Provider-backed Polymarket parity is the only remaining partial criterion, but provider evidence is fresh.",
@@ -25,11 +25,11 @@
     ],
     "s23ProofReady": true,
     "s23ProofNextStaleName": "filled-buy-history",
-    "s23ProofHoursUntilStale": 12.11,
+    "s23ProofHoursUntilStale": 11.97,
     "providerPlanStatus": "skip-refresh",
-    "providerEvidenceHoursUntilStale": 17.92,
+    "providerEvidenceHoursUntilStale": 16.41,
     "temporaryProviderBackendProofReady": true,
-    "temporaryProviderBackendProofHoursUntilStale": 22.67,
+    "temporaryProviderBackendProofHoursUntilStale": 23.96,
     "readyToDeclareDone": false,
     "dodCounts": {
       "verified": 12,
