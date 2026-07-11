@@ -14,8 +14,8 @@ Purpose: document the app functions, services, API calls, state transitions, and
   - `src/__tests__/mobile-provider-scan-depth.contract.test.ts`
   - root `package.json` `test:ci` coverage list
 - User interactions supported: unchanged. Home -> Event Detail -> line market -> Trade Ticket -> fake-token order -> Portfolio/history remains Local MVP-ready through contract-shaped line markets.
-- State transitions: no runtime, backend, database, order, or mobile UI state changes. The provider audit now pages deeper through Polymarket Gamma event data, records open/upcoming versus closed/ended match events, and refuses to count closed or non-accepting line identities as attach-ready provider line markets.
-- Proof: refreshed match scan inspected 2,137 provider events and found 442 World Cup match-like events, but 0 open/upcoming and 0 usable match books. Refreshed line scan found 2,483 line-family identity-complete candidates, but 0 attach-ready usable candidates because all were closed/unavailable.
+- State transitions: no runtime, backend, database, order, or mobile UI state changes. The provider audit now pages deeper through Polymarket Gamma event data, records open/upcoming versus closed/ended match events, separates usable open non-match World Cup markets from Local MVP match-eligible markets, and refuses to count closed or non-accepting line identities as attach-ready provider line markets.
+- Proof: refreshed match scan inspected 2,137 provider events and found 442 World Cup match-like events, but 0 open/upcoming and 0 usable match books. The same scan found 64 open World Cup provider events and 55 usable open World Cup provider events, but all 55 usable open events are non-match futures/props excluded from the Local MVP match flow. Refreshed line scan found 2,483 line-family identity-complete candidates, but 0 attach-ready usable candidates because all were closed/unavailable.
 - Known limitations: this narrows the provider P1 blocker instead of closing it. Provider-backed match/line parity remains blocked by current Polymarket availability, not by missing local fixture UI.
 
 ## Cycle FINALSIGNOFFGATE - DoD-Aware Final Signoff

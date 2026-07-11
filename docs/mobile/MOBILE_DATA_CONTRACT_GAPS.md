@@ -7,6 +7,10 @@
   - `inputs.pages`
   - `summary.openMatchEventCount`
   - `summary.closedOrEndedMatchEventCount`
+  - `summary.openWorldCupEventCount`
+  - `summary.usableOpenWorldCupEventCount`
+  - `summary.usableOpenNonMatchWorldCupEventCount`
+  - `diagnostics.usableOpenNonMatchWorldCupEvents[]`
   - `matchEvents[].startDate`
   - `matchEvents[].endDate`
   - `matchEvents[].ended`
@@ -19,7 +23,7 @@
   - `totals.closedOrUnavailableIdentityLineCandidateCount`
   - `totals.attachReadyProviderLineCandidateCount`
 - New behavior: closed or non-accepting provider line identities no longer count as attach-ready line markets. They remain useful evidence that Polymarket has had line markets for match pages, but they cannot replace Local MVP contract fixtures or satisfy provider parity.
-- Current refreshed evidence narrows the gap: 442 World Cup match-like events were scanned and all were closed/ended; 2,483 line-family identity-complete candidates were found and all were closed/unavailable. Provider-backed match/line parity remains open until Polymarket exposes open/accepting match and line books or an approved secondary provider contract is added.
+- Current refreshed evidence narrows the gap: 442 World Cup match-like events were scanned and all were closed/ended. Polymarket does expose open usable World Cup provider markets, but the 55 usable open markets found in this batch are non-match futures/props, so they are diagnostics only and cannot satisfy the Local MVP match flow. 2,483 line-family identity-complete candidates were found and all were closed/unavailable. Provider-backed match/line parity remains open until Polymarket exposes open/accepting match and line books or an approved secondary provider contract is added.
 
 ## Cycle FINALSIGNOFFGATE - DoD-Aware Final Signoff
 

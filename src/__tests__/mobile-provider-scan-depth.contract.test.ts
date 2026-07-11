@@ -12,6 +12,8 @@ describe("mobile provider scan depth contracts", () => {
     expect(source).toContain('url.searchParams.set("offset"');
     expect(source).toContain("openMatchEventCount");
     expect(source).toContain("closedOrEndedMatchEventCount");
+    expect(source).toContain("usableOpenNonMatchWorldCupEventCount");
+    expect(source).toContain("usableOpenNonMatchWorldCupEvents");
     expect(source).toContain("matchEventEvidenceOmittedCount");
     expect(source).toContain("upcomingOrLive");
     expect(source).toContain("isPastDate");

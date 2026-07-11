@@ -308,6 +308,7 @@ const markdown: string[] = [
   `- Provider MVP tradable flow ready: ${boolText(readiness.providerMvpTradableFlowReady)}${readiness.providerMvpTradableFlowBlocker ? ` (${readiness.providerMvpTradableFlowBlocker})` : ""}`,
   `- World Cup team-match provider events scanned: ${readiness.worldCupTeamMatchEventCount ?? "unknown"} (${readiness.openWorldCupTeamMatchEventCount ?? "unknown"} open/upcoming, ${readiness.closedOrEndedWorldCupTeamMatchEventCount ?? "unknown"} closed/ended)`,
   `- Usable World Cup team-match provider events: ${readiness.usableWorldCupTeamMatchEventCount ?? "unknown"}`,
+  `- Open World Cup provider events scanned: ${readiness.openWorldCupProviderEventCount ?? "unknown"} (${readiness.usableOpenWorldCupProviderEventCount ?? "unknown"} usable, ${readiness.usableOpenNonMatchWorldCupProviderEventCount ?? "unknown"} usable non-match/futures/props excluded from Local MVP match flow)`,
   `- Provider line-family candidates scanned: ${readiness.providerLineCandidateCount ?? "unknown"} (${readiness.identityCompleteProviderLineCandidateCount ?? "unknown"} identity-complete, ${readiness.closedOrUnavailableProviderLineIdentityCount ?? "unknown"} closed/unavailable identity candidates)`,
   `- Attach-ready provider line candidates: ${readiness.attachReadyProviderLineCandidateCount ?? "unknown"}`,
   `- Internal MVP startup callback: ${readiness.internalMvpStartupExpectedGoogleCallback ? `\`${readiness.internalMvpStartupExpectedGoogleCallback}\`` : "unknown"}`,

@@ -63,6 +63,9 @@ async function main() {
   const events = await scanEvents(args);
   const matchEvents = events.filter((event) => event.matchLike && event.worldCupRelevant && !event.playerPropLike && !event.futuresLike);
   const usableMatchEvents = matchEvents.filter((event) => event.usableMarketCount > 0);
+  const openWorldCupEvents = events.filter((event) => event.worldCupRelevant && event.upcomingOrLive && !event.closed && !event.archived);
+  const usableOpenWorldCupEvents = openWorldCupEvents.filter((event) => event.usableMarketCount > 0);
+  const usableOpenNonMatchWorldCupEvents = usableOpenWorldCupEvents.filter((event) => !matchEvents.includes(event));
   const futuresEvents = events.filter((event) => event.futuresLike);
 
   const payload = {
@@ -83,6 +86,9 @@ async function main() {
       usableMatchEventCount: usableMatchEvents.length,
       openMatchEventCount: matchEvents.filter((event) => event.upcomingOrLive && !event.closed && !event.archived).length,
       closedOrEndedMatchEventCount: matchEvents.filter((event) => event.closed || event.ended).length,
+      openWorldCupEventCount: openWorldCupEvents.length,
+      usableOpenWorldCupEventCount: usableOpenWorldCupEvents.length,
+      usableOpenNonMatchWorldCupEventCount: usableOpenNonMatchWorldCupEvents.length,
       futuresEventCount: futuresEvents.length,
       nonWorldCupOrPropUsableCount: events.filter((event) => event.usableMarketCount > 0 && !matchEvents.includes(event)).length,
       pass: usableMatchEvents.length > 0,
@@ -91,6 +97,7 @@ async function main() {
     matchEventEvidence: matchEvents.slice(0, args.matchEventEvidenceLimit),
     diagnostics: {
       matchEventEvidenceOmittedCount: Math.max(0, matchEvents.length - args.matchEventEvidenceLimit),
+      usableOpenNonMatchWorldCupEvents: usableOpenNonMatchWorldCupEvents.slice(0, 10).map(toCompactEvent),
       futuresEvents: futuresEvents.slice(0, 10).map(toCompactEvent),
       usableNonMatchEvents: events
         .filter((event) => event.usableMarketCount > 0 && !matchEvents.includes(event))
