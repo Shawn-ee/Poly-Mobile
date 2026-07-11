@@ -56,7 +56,34 @@ export async function GET(request: NextRequest) {
         },
       })
     : [];
+  const positionSelections = Array.from(
+    new Set(positions.map((position: { marketId: string; outcomeId: string }) => `${position.marketId}:${position.outcomeId}`)),
+  ).map((key) => {
+    const [marketId, outcomeId] = key.split(":");
+    return { marketId, outcomeId };
+  });
+  const positionSelectionTrades = positionSelections.length
+    ? await prisma.trade.findMany({
+        where: {
+          userId,
+          OR: positionSelections,
+        },
+        orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+        select: {
+          id: true,
+          marketId: true,
+          outcomeId: true,
+          selectionSnapshot: true,
+        },
+      })
+    : [];
   const positionSelectionByMarketOutcome = new Map<string, unknown>();
+  for (const trade of positionSelectionTrades) {
+    const key = `${trade.marketId}:${trade.outcomeId}`;
+    if (!positionSelectionByMarketOutcome.has(key) && trade.selectionSnapshot) {
+      positionSelectionByMarketOutcome.set(key, { selection: trade.selectionSnapshot });
+    }
+  }
   for (const order of positionSelectionOrders) {
     const key = `${order.marketId}:${order.outcomeId}`;
     if (!positionSelectionByMarketOutcome.has(key)) {

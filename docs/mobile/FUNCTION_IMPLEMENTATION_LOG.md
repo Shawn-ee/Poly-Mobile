@@ -12561,3 +12561,31 @@ Known limitations:
   - Evidence: `docs/mobile/harness/cycle-WC-trade-selection-snapshot-storage/cycle-WC-current-mvp-s23-visible-flow.json` and screenshots under `docs/mobile/screenshots/cycle-WC-trade-selection-snapshot-storage/`.
 - Known limitations:
   - Existing historical trades created before Cycle WC still rely on the Cycle WB temporal fallback unless a future backfill is run.
+
+# Cycle WD - Portfolio Position Selection Snapshots
+
+- Feature/page worked on: Portfolio Positions after fake-token/server-backed line fills.
+- Frontend components touched:
+  - `mobile/src/components/Portfolio.tsx`
+  - `mobile/src/__tests__/chineseMvpSourceCopy.test.ts`
+- Important functions/services touched:
+  - `src/app/api/portfolio/route.ts`
+  - `src/__tests__/portfolio.open-orders.route.test.ts`
+- User interactions supported:
+  - A filled line position keeps the original traded line/source/token identity on the Position card.
+  - The Position card can open a sell/cashout ticket and complete a server-backed fake-token sell on S23.
+  - Chinese Portfolio source labels render readable Chinese instead of mojibake.
+- State transitions:
+  - `/api/portfolio` reads the user's open positions.
+  - For each position, the route prefers the newest matching `Trade.selectionSnapshot`.
+  - If no trade snapshot exists, it falls back to the existing `ApiOrderRequest.requestBody` selection lookup.
+  - Mobile renders the position from the server snapshot and preserves the selected line through cashout/sell.
+- Proof:
+  - Focused route test passed: `npx jest src/__tests__/portfolio.open-orders.route.test.ts --runInBand`.
+  - Mobile typecheck passed: `cd mobile && npm run typecheck`.
+  - Chinese source-copy contract passed: `npx vitest run --config vitest.mobile.config.mts mobile/src/__tests__/chineseMvpSourceCopy.test.ts`.
+  - S23 proof passed on `SM-S911U1`: Home -> Event Detail -> line market -> Trade Ticket -> filled Position -> Cash out/Sell -> Portfolio History.
+  - Evidence: `docs/mobile/harness/cycle-WD-portfolio-position-snapshots/cycle-WD-current-mvp-s23-visible-flow.json`, `docs/mobile/harness/cycle-WD-portfolio-position-snapshots/cycle-WD-current-mvp-after-submit.xml`, and screenshots under `docs/mobile/screenshots/cycle-WD-portfolio-position-snapshots/`.
+- Known limitations:
+  - The proof script underreports `filledPositionVisible` in the cashout branch even though the XML and completed cashout flow prove the Position card.
+  - Positions created before direct trade snapshots still use the order-request fallback unless a future backfill is run.

@@ -2992,3 +2992,13 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Summary: `docs/mobile/harness/cycle-WC-trade-selection-snapshot-storage/cycle-WC-current-mvp-s23-visible-flow.json`
 - Screenshots: `docs/mobile/screenshots/cycle-WC-trade-selection-snapshot-storage/`
 - Key assertions: `ticketPreservesLine`, `swipeSubmitReachedPortfolio`, `filledHistoryVisible`, and `orderbookHidden` passed.
+
+# Cycle WD - Portfolio Position Selection Snapshots
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.
+- Result: Pass after restoring the current local MVP match, seeding contract-shaped line markets, seeding a counterparty for a filled buy, and seeding a counterparty bid for cashout/sell.
+- Flow proven: Home -> Live -> Event Detail -> Game Lines -> line ticket -> swipe buy -> Portfolio Position -> Cash out/Sell ticket -> swipe sell -> Portfolio History.
+- Summary: `docs/mobile/harness/cycle-WD-portfolio-position-snapshots/cycle-WD-current-mvp-s23-visible-flow.json`
+- Position XML proof: `docs/mobile/harness/cycle-WD-portfolio-position-snapshots/cycle-WD-current-mvp-after-submit.xml`
+- Screenshots: `docs/mobile/screenshots/cycle-WD-portfolio-position-snapshots/`
+- Key assertions: line ticket preserved, orderbook hidden, cashout ticket opened, cashout sell submitted, and cashout history visible. The XML includes `position-card-`, `portfolio-position-cash-out-`, `portfolio-line-1.5`, and `snapshot-source-order-time`.
