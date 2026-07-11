@@ -17,6 +17,9 @@ describe("Google auth runtime preflight contract", () => {
     expect(source).toContain("accounts.google.com");
     expect(source).toContain("redirect_uri");
     expect(source).toContain("RequirePhysicalDeviceCallback");
+    expect(source).toContain("SummaryPath");
+    expect(source).toContain("readyForRuntimeStart");
+    expect(source).toContain("failedChecks");
     expect(source).toContain("holiwyn");
     expect(source).toContain("exp");
     expect(source).toContain("exps");

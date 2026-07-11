@@ -2,6 +2,15 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Batch Readiness - Google Runtime Preflight Summary
+
+- Feature/page worked on: Portfolio/Account Google sign-in readiness reporting.
+- Frontend components touched: none.
+- Important functions/services touched: `mobile/scripts/google-auth-runtime-preflight.ps1` can now write a redacted JSON summary; `scripts/mobile_internal_readiness_batch.ps1` runs that preflight and records `googleAuthRuntimeReady`, `googleAuthFailedChecks`, and P1 blockers such as `google_redirect_uri_mismatch`.
+- User interactions supported: none changed directly. The existing Portfolio -> Account -> Continue with Google path is unchanged, but the batch now reports whether real Google consent setup is ready before manual S23 testing.
+- State transitions: none changed in mobile runtime, backend OAuth routes, API credential creation, SecureStore persistence, logout, or trading state.
+- Known limitations: the current runtime preflight can still report a Google redirect URI mismatch if `NEXTAUTH_URL/api/auth/google/callback` is not exactly registered in Google Cloud. This remains P1 and does not block Local MVP fake-token trading.
+
 ## Batch Readiness - Environment Health Snapshot
 
 - Feature/page worked on: Local MVP internal-readiness harness reporting.

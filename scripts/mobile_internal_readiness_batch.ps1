@@ -149,12 +149,14 @@ function Get-EnvironmentHealthSnapshot {
 
 $backendPath = Join-Path $ResolvedOutputDir "mobile-backend-readiness.json"
 $credentialPath = Join-Path $ResolvedOutputDir "mobile-credential-readiness.json"
+$googleAuthPath = Join-Path $ResolvedOutputDir "google-auth-runtime-preflight.json"
 $currentStatePath = Join-Path $ResolvedOutputDir "mobile-current-state-inspection.json"
 $exchangePath = Join-Path $ResolvedOutputDir "internal-exchange-readiness.json"
 $matchScanPath = Join-Path $ResolvedOutputDir "worldcup-match-event-scan.json"
 $lineScanPath = Join-Path $ResolvedOutputDir "provider-line-breadth-scan.json"
 $backendRepoPath = ConvertTo-RepoPath $backendPath
 $credentialRepoPath = ConvertTo-RepoPath $credentialPath
+$googleAuthRepoPath = ConvertTo-RepoPath $googleAuthPath
 $currentStateRepoPath = ConvertTo-RepoPath $currentStatePath
 $exchangeRepoPath = ConvertTo-RepoPath $exchangePath
 $matchScanRepoPath = ConvertTo-RepoPath $matchScanPath
@@ -165,6 +167,7 @@ $environmentHealth = Get-EnvironmentHealthSnapshot
 $steps = New-Object System.Collections.Generic.List[object]
 $steps.Add((Invoke-BatchCommand -Name "backend-readiness" -Command "powershell -ExecutionPolicy Bypass -File scripts\mobile_backend_readiness.ps1 -SummaryPath `"$backendRepoPath`"" -OutputPath $backendPath))
 $steps.Add((Invoke-BatchCommand -Name "credential-readiness" -Command "powershell -ExecutionPolicy Bypass -File scripts\mobile_credential_readiness.ps1 -SummaryPath `"$credentialRepoPath`"" -OutputPath $credentialPath -AllowNonZero))
+$steps.Add((Invoke-BatchCommand -Name "google-auth-runtime-preflight" -Command "powershell -ExecutionPolicy Bypass -File mobile\scripts\google-auth-runtime-preflight.ps1 -SummaryPath `"$googleAuthRepoPath`"" -OutputPath $googleAuthPath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "current-state" -Command "npx.cmd tsx scripts/inspect_mobile_mvp_current_state.ts --baseUrl=$BackendBaseUrl --summaryPath=`"$currentStateRepoPath`" --cycle=$Cycle" -OutputPath $currentStatePath))
 $steps.Add((Invoke-BatchCommand -Name "internal-exchange-readiness" -Command "npm.cmd run poly:internal-exchange-readiness -- --summaryPath `"$exchangeRepoPath`"" -OutputPath $exchangePath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "worldcup-match-scan" -Command "npm.cmd run inspect:polymarket-worldcup-matches -- --output `"$matchScanRepoPath`"" -OutputPath $matchScanPath))
@@ -172,6 +175,7 @@ $steps.Add((Invoke-BatchCommand -Name "provider-line-scan" -Command "npm.cmd run
 
 $backend = Read-JsonFile $backendPath
 $credential = Read-JsonFile $credentialPath
+$googleAuth = Read-JsonFile $googleAuthPath
 $currentState = Read-JsonFile $currentStatePath
 $exchange = Read-JsonFile $exchangePath
 $matchScan = Read-JsonFile $matchScanPath
@@ -187,6 +191,8 @@ $attachReadyLineCount = if ($lineScan) { [int]$lineScan.totals.attachReadyProvid
 $serverModeApiKeySource = if ($credential) { [string]$credential.apiKeySource } else { $null }
 $ambientServerModeReady = [bool]($credential -and $credential.readyForServerBackedSamsungProof -and ($serverModeApiKeySource -eq "environment"))
 $localRuntimeServerModeReady = [bool]($credential -and $credential.readyForServerBackedSamsungProof -and ($serverModeApiKeySource -eq "local-runtime-env"))
+$googleAuthRuntimeReady = [bool]($googleAuth -and $googleAuth.readyForRuntimeStart)
+$googleAuthFailedChecks = if ($googleAuth -and $googleAuth.failedChecks) { @($googleAuth.failedChecks) } else { @() }
 
 $p0Blockers = @()
 if (-not $backendReady) { $p0Blockers += "backend_or_local_database_not_ready" }
@@ -203,6 +209,13 @@ if (-not $providerExchangeReady) {
 if ($usableMatchCount -lt 1) { $p1Blockers += "no_usable_polymarket_worldcup_team_match_books" }
 if ($attachReadyLineCount -lt 1) { $p1Blockers += "no_attach_ready_polymarket_worldcup_line_markets" }
 if ($credential -and -not $credential.readyForServerBackedSamsungProof) { $p1Blockers += "manual_server_mode_needs_generated_mobile_api_key" }
+if ($googleAuth -and -not $googleAuthRuntimeReady) {
+  if ($googleAuthFailedChecks -contains "Google redirect_uri matches NEXTAUTH_URL callback") {
+    $p1Blockers += "google_redirect_uri_mismatch"
+  } else {
+    $p1Blockers += "google_auth_runtime_preflight_has_warnings"
+  }
+}
 
 $summary = [ordered]@{
   generatedAt = (Get-Date).ToUniversalTime().ToString("o")
@@ -227,6 +240,8 @@ $summary = [ordered]@{
     ambientApiKeyReadyForManualServerMode = $ambientServerModeReady
     serverModeApiKeySource = $serverModeApiKeySource
     localRuntimeEnvReadyForManualServerMode = $localRuntimeServerModeReady
+    googleAuthRuntimeReady = $googleAuthRuntimeReady
+    googleAuthFailedChecks = [object[]]$googleAuthFailedChecks
     mobileVisibleEventCount = if ($exchange) { $exchange.mobileExposure.mobileVisibleEventCount } else { $null }
     providerVisibleMarketCount = if ($exchange) { $exchange.providerMarkets.mobileVisibleCount } else { $null }
     providerLocalMmReadyMarketCount = if ($exchange) { $exchange.providerMarkets.localMmReadyCount } else { $null }
@@ -247,7 +262,8 @@ $summary = [ordered]@{
     "For internal user-flow testing, keep using Home -> Event Detail -> contract-shaped line market -> Trade Ticket -> fake-token order -> Portfolio/history.",
     "Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.",
     "Re-run this batch after provider imports, provider refresh, or line-market discovery changes.",
-    "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token."
+    "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token.",
+    "For real Google consent proof, fix any google_* P1 blocker first, then run npm run mobile:google-auth-runtime-preflight:strict before manual S23 login."
   )
 }
 

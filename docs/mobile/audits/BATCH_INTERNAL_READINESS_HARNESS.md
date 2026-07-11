@@ -24,6 +24,7 @@ docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-sum
 
 - Local backend/Docker/Postgres readiness.
 - Mobile credential readiness.
+- Google auth runtime preflight without printing Google credentials.
 - Current MVP route shape for `mobileMvpMatches=1`.
 - Provider-backed Regulation Winner plus contract-shaped line-market state.
 - Provider/internal exchange readiness.
@@ -44,6 +45,7 @@ Known provider availability gaps are tracked as P1, not P0:
 - no attach-ready Polymarket World Cup line markets
 - provider/internal exchange not local-MM-ready
 - manual server mode missing an ambient `EXPO_PUBLIC_API_KEY`
+- Google auth runtime warnings such as a callback/redirect URI mismatch
 
 This is intentional. The Local MVP fake-token user flow remains testable with contract-shaped line markets while provider-backed breadth and line parity remain open.
 
@@ -98,6 +100,8 @@ npm run mobile:google-auth-runtime-preflight:strict
 ```
 
 The root commands delegate to the existing mobile preflight under `mobile/`, so testers do not need to remember a separate working directory. The check does not print Google secrets.
+
+The batch command runs the non-strict preflight and writes `google-auth-runtime-preflight.json`. If it finds a redirect mismatch or other runtime warning, the summary records a P1 blocker such as `google_redirect_uri_mismatch`; this does not block the Local MVP fake-token trade path, but it must be fixed before claiming real Google consent readiness.
 
 ## Why This Exists
 

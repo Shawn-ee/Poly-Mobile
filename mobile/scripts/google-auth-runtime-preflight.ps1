@@ -1,6 +1,7 @@
 param(
   [string]$BackendAuthBase = "",
   [string]$MobileReturnUrl = "",
+  [string]$SummaryPath = "",
   [switch]$RequireConfigured,
   [switch]$RequirePhysicalDeviceCallback,
   [int]$TimeoutSeconds = 10
@@ -208,6 +209,45 @@ $failed = $checks | Where-Object { -not $_.Pass }
 foreach ($check in $checks) {
   $prefix = if ($check.Pass) { "PASS" } else { "FAIL" }
   Write-Host "$prefix $($check.Name) - $($check.Detail)"
+}
+
+$summary = [ordered]@{
+  generatedAt = (Get-Date).ToUniversalTime().ToString("o")
+  scope = "google-auth-runtime-preflight"
+  backendAuthBaseConfigured = -not [string]::IsNullOrWhiteSpace($resolvedBackendAuthBase)
+  mobileReturnUrlScheme = if ($resolvedMobileReturnUrl) {
+    try { ([Uri]$resolvedMobileReturnUrl).Scheme } catch { "invalid" }
+  } else {
+    ""
+  }
+  nextAuthUrlConfigured = Test-ConfiguredSecret $nextAuthUrl
+  googleClientIdConfigured = Test-ConfiguredSecret $googleClientId
+  googleClientSecretConfigured = Test-ConfiguredSecret $googleClientSecret
+  requireConfigured = [bool]$RequireConfigured
+  requirePhysicalDeviceCallback = [bool]$RequirePhysicalDeviceCallback
+  readyForRuntimeStart = ($failed.Count -eq 0)
+  failedChecks = @($failed | ForEach-Object { $_.Name })
+  checks = @($checks | ForEach-Object {
+    [ordered]@{
+      name = $_.Name
+      pass = [bool]$_.Pass
+      detail = $_.Detail
+    }
+  })
+}
+
+if ($SummaryPath.Trim()) {
+  $resolvedSummaryPath = if ([System.IO.Path]::IsPathRooted($SummaryPath)) {
+    $SummaryPath
+  } else {
+    Join-Path $RepoRoot $SummaryPath
+  }
+  $summaryDirectory = Split-Path -Parent $resolvedSummaryPath
+  if ($summaryDirectory -and -not (Test-Path -LiteralPath $summaryDirectory)) {
+    New-Item -ItemType Directory -Path $summaryDirectory -Force | Out-Null
+  }
+  $summary | ConvertTo-Json -Depth 8 | Set-Content -Path $resolvedSummaryPath -Encoding UTF8
+  Write-Host "SUMMARY written to $resolvedSummaryPath"
 }
 
 if ($RequireConfigured -and $failed.Count -gt 0) {

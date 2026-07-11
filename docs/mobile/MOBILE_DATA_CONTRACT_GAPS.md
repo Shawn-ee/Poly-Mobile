@@ -22,6 +22,14 @@
 - The preflight intentionally does not complete Google consent, does not fetch tokens, does not create/link a user, and does not print Google credential values.
 - Remaining P1 setup gap: strict physical-device mode should pass only when `NEXTAUTH_URL` is an HTTPS hosted origin or LAN IP reachable from the S23 browser.
 
+## Batch Readiness - Google Runtime Preflight Summary
+
+- The batch harness now consumes a redacted `google-auth-runtime-preflight.json` summary.
+- Summary fields added for the batch: `googleAuthRuntimeReady` and `googleAuthFailedChecks`.
+- If the configured backend reaches Google but `redirect_uri` does not match the configured callback, the batch records `google_redirect_uri_mismatch` as P1.
+- No mobile data contract changed: mobile still opens backend `/api/auth/google/start` and stores only the returned Holiwyn API key after a successful callback.
+- Remaining P1 setup gap: real S23 Google consent still depends on registering the exact `NEXTAUTH_URL/api/auth/google/callback` in Google Cloud and using a callback origin reachable by the phone browser.
+
 ## Cycle TN - Provider Line Breadth Current Matches
 
 Closed or narrowed:

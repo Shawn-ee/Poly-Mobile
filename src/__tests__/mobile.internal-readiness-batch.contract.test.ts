@@ -26,11 +26,23 @@ describe("mobile internal readiness batch harness", () => {
   it("runs the current-state, match breadth, line breadth, and exchange readiness probes", () => {
     const source = harness();
 
+    expect(source).toContain("google-auth-runtime-preflight.ps1");
+    expect(source).toContain("google-auth-runtime-preflight.json");
     expect(source).toContain("inspect_mobile_mvp_current_state.ts");
     expect(source).toContain("poly:internal-exchange-readiness");
     expect(source).toContain("inspect:polymarket-worldcup-matches");
     expect(source).toContain("mobile:provider-line-breadth-scan");
     expect(source).toContain("internal-readiness-batch-summary.json");
+  });
+
+  it("keeps Google runtime warnings as P1 diagnostics instead of blocking Local MVP trading", () => {
+    const source = harness();
+
+    expect(source).toContain("googleAuthRuntimeReady");
+    expect(source).toContain("googleAuthFailedChecks");
+    expect(source).toContain("google_redirect_uri_mismatch");
+    expect(source).toContain("google_auth_runtime_preflight_has_warnings");
+    expect(source).toContain("mobile:google-auth-runtime-preflight:strict");
   });
 
   it("records local environment health needed for batch handoff reports", () => {
