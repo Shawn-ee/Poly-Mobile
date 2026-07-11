@@ -1,4 +1,7 @@
-import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { mkdtempSync, readFileSync, rmSync, statSync, utimesSync } from "node:fs";
+import os from "node:os";
+import path from "node:path";
 
 describe("mobile Definition of Done sweep contract", () => {
   const source = () => readFileSync("scripts/mobile_definition_of_done_sweep.ts", "utf8");
@@ -37,5 +40,50 @@ describe("mobile Definition of Done sweep contract", () => {
 
     expect(script).toContain("Keep Samsung APK smoke for install/launch coverage and Samsung server-order proof for the real-device trading regression.");
     expect(script).not.toContain("Keep Samsung server-order proof as the main real-device trading regression until the APK lane exists.");
+  });
+
+  it("does not rewrite sweep artifacts when only generated timestamps change", () => {
+    const tempDir = mkdtempSync(path.join(os.tmpdir(), "mobile-dod-sweep-"));
+    const summaryPath = path.join(tempDir, "summary.json");
+    const reportPath = path.join(tempDir, "report.md");
+    const command = process.platform === "win32" ? "cmd.exe" : "npx";
+    const commandArgs = process.platform === "win32" ? ["/c", "npx"] : [];
+
+    try {
+      execFileSync(
+        command,
+        [
+          ...commandArgs,
+          "tsx",
+          "scripts/mobile_definition_of_done_sweep.ts",
+          `--summaryPath=${summaryPath}`,
+          `--reportPath=${reportPath}`,
+        ],
+        { encoding: "utf8" },
+      );
+
+      const oldTime = new Date("2001-01-01T00:00:00.000Z");
+      utimesSync(summaryPath, oldTime, oldTime);
+      utimesSync(reportPath, oldTime, oldTime);
+      const summaryMtime = statSync(summaryPath).mtimeMs;
+      const reportMtime = statSync(reportPath).mtimeMs;
+
+      execFileSync(
+        command,
+        [
+          ...commandArgs,
+          "tsx",
+          "scripts/mobile_definition_of_done_sweep.ts",
+          `--summaryPath=${summaryPath}`,
+          `--reportPath=${reportPath}`,
+        ],
+        { encoding: "utf8" },
+      );
+
+      expect(statSync(summaryPath).mtimeMs).toBe(summaryMtime);
+      expect(statSync(reportPath).mtimeMs).toBe(reportMtime);
+    } finally {
+      rmSync(tempDir, { recursive: true, force: true });
+    }
   });
 });

@@ -75,6 +75,23 @@ Purpose: document the app functions, services, API calls, state transitions, and
 - Known limitations:
   - Harness/control-plane change only. It deliberately avoids provider refresh, mobile UI work, backend route changes, or quota-using provider calls while cached provider evidence remains fresh.
 
+## Cycle DODQUIET - Definition Sweep Timestamp Cleanliness
+
+- Feature/page worked on: final Definition of Done sweep artifact cleanliness during autonomous wait loops.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/mobile_definition_of_done_sweep.ts`
+  - `src/__tests__/mobile-definition-of-done-sweep.contract.test.ts`
+- User interactions supported: unchanged.
+- State transitions:
+  - `npm run mobile:definition-of-done-sweep` still prints the current Definition of Done result.
+  - The tracked JSON sweep and markdown report are no longer rewritten when only `generatedAt` or the markdown `Generated:` line changes.
+  - Real criterion/count/next-action changes still rewrite the artifacts.
+- Proof:
+  - `npx jest --runInBand src/__tests__/mobile-definition-of-done-sweep.contract.test.ts`
+- Known limitations:
+  - Harness/control-plane change only. It does not alter provider data, mobile UI, backend routes, or remaining Polymarket provider parity status.
+
 ## Cycle NEXTSTALEFIX - Earliest Proof Refresh Forecast
 
 - Feature/page worked on: internal readiness S23/provider proof freshness forecasting for the autonomous loop.

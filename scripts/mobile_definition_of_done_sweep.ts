@@ -54,6 +54,52 @@ const readJson = <T,>(file: string): T | null => {
   }
 };
 
+const stripGeneratedAt = (value: unknown): unknown => {
+  if (Array.isArray(value)) {
+    return value.map(stripGeneratedAt);
+  }
+  if (!value || typeof value !== "object") {
+    return value;
+  }
+  const clone: Record<string, unknown> = {};
+  for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
+    if (key === "generatedAt") {
+      continue;
+    }
+    clone[key] = stripGeneratedAt(child);
+  }
+  return clone;
+};
+
+const sameJsonIgnoringGeneratedAt = (existingJson: string, nextValue: unknown) => {
+  try {
+    const existing = JSON.parse(existingJson.replace(/^\uFEFF/, ""));
+    return JSON.stringify(stripGeneratedAt(existing)) === JSON.stringify(stripGeneratedAt(nextValue));
+  } catch {
+    return false;
+  }
+};
+
+const normalizeGeneratedMarkdownLine = (markdownValue: string) =>
+  markdownValue.replace(/^Generated: .+$/m, "Generated: <timestamp>");
+
+const writeJsonIfMeaningfullyChanged = (file: string, value: unknown) => {
+  const resolved = path.resolve(file);
+  const nextJson = `${JSON.stringify(value, null, 2)}\n`;
+  const existingJson = fs.existsSync(resolved) ? fs.readFileSync(resolved, "utf8") : null;
+  if (!existingJson || !sameJsonIgnoringGeneratedAt(existingJson, value)) {
+    fs.writeFileSync(resolved, nextJson);
+  }
+};
+
+const writeMarkdownIfMeaningfullyChanged = (file: string, markdownValue: string) => {
+  const resolved = path.resolve(file);
+  const existingMarkdown = fs.existsSync(resolved) ? fs.readFileSync(resolved, "utf8") : null;
+  if (!existingMarkdown || normalizeGeneratedMarkdownLine(existingMarkdown) !== normalizeGeneratedMarkdownLine(markdownValue)) {
+    fs.writeFileSync(resolved, markdownValue);
+  }
+};
+
 const finalSignoff = readJson<{
   qaSignoff?: string;
   reviewSignoff?: string;
@@ -345,6 +391,6 @@ ${summary.nextActions.map((item) => `- ${item}`).join("\n")}
 `;
 
 fs.mkdirSync(path.dirname(path.resolve(summaryPath)), { recursive: true });
-fs.writeFileSync(path.resolve(summaryPath), `${JSON.stringify(summary, null, 2)}\n`);
-fs.writeFileSync(path.resolve(reportPath), markdown);
+writeJsonIfMeaningfullyChanged(summaryPath, summary);
+writeMarkdownIfMeaningfullyChanged(reportPath, markdown);
 console.log(JSON.stringify(summary, null, 2));
