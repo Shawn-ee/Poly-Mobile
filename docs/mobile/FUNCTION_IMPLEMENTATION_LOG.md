@@ -2,6 +2,24 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle NEXTSTALEFIX - Earliest Proof Refresh Forecast
+
+- Feature/page worked on: internal readiness S23/provider proof freshness forecasting for the autonomous loop.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/mobile_internal_readiness_batch.ps1`
+  - `src/__tests__/mobile.internal-readiness-batch.contract.test.ts`
+- User interactions supported: unchanged. The batch now points the loop at the actual earliest expiring proof before S23 evidence becomes stale.
+- State transitions:
+  - Added `Select-NextStaleEvidence`, which sorts freshness rows by numeric `hoursUntilStale`.
+  - Replaced direct `Sort-Object hoursUntilStale` use for S23 proof, temporary sportsbook backend proof, and cached provider evidence.
+  - Verified the batch now reports `filled-buy-history` as the next S23 proof to expire instead of the later totals proof.
+- Proof:
+  - `npx jest --runInBand src/__tests__/mobile.internal-readiness-batch.contract.test.ts`
+  - `npm run mobile:internal-readiness-batch`
+- Known limitations:
+  - This is readiness harness logic only. It does not refresh S23 screenshots, add provider markets, spend provider quota, or close Polymarket-backed provider parity.
+
 ## Cycle NEXTACTIONCLEAN - Clean Autonomous Planner Checks
 
 - Feature/page worked on: autonomous next-action planner hygiene for long-running loop control.

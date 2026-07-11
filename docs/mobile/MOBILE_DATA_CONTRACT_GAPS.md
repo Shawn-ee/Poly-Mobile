@@ -1,5 +1,14 @@
 # Mobile Data Contract Gaps
 
+## Cycle NEXTSTALEFIX - Earliest Proof Refresh Forecast
+
+- No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider runtime contract changed.
+- Closed or narrowed: the readiness batch now numerically selects the earliest `hoursUntilStale` row for S23 proofs, cached provider evidence, and temporary sportsbook backend proof.
+- Route mismatch: none. This cycle only changes local readiness aggregation.
+- Fields Holiwyn still needs but backend/provider does not fully provide: real Polymarket-backed World Cup match and line markets with stable provider event, market, outcome, token, price, and accepting-order identity.
+- Temporary mock/static data: none added.
+- Future migration concern: stale-proof recovery should target the actual next expiring proof, otherwise overnight loops can wait too long and unexpectedly lose Local MVP readiness.
+
 ## Cycle NEXTACTIONCLEAN - Clean Autonomous Planner Checks
 
 - No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider runtime contract changed.

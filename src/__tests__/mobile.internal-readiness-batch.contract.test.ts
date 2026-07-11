@@ -81,6 +81,9 @@ describe("mobile internal readiness batch harness", () => {
     expect(source).toContain("s23ProofNextStaleName");
     expect(source).toContain("s23ProofNextStaleAt");
     expect(source).toContain("s23ProofHoursUntilStale");
+    expect(source).toContain("function Select-NextStaleEvidence");
+    expect(source).toContain("Sort-Object { [double]$_.hoursUntilStale }");
+    expect(source).toContain("$s23NextStaleProof = Select-NextStaleEvidence -Evidence $s23Proofs");
     expect(source).toContain("temporary-sportsbook-filled-buy-history");
     expect(source).toContain("temporarySportsbookS23BridgeProofReady");
     expect(gapWriter).toContain("S23 proof next stale");
@@ -97,6 +100,7 @@ describe("mobile internal readiness batch harness", () => {
     expect(source).toContain("cachedProviderEvidenceNextStaleName");
     expect(source).toContain("cachedProviderEvidenceNextStaleAt");
     expect(source).toContain("cachedProviderEvidenceHoursUntilStale");
+    expect(source).toContain("$providerEvidenceNextStale = Select-NextStaleEvidence -Evidence $cachedProviderEvidence");
     expect(source).toContain("staleAt");
     expect(source).toContain("hoursUntilStale");
     expect(source).toContain("providerRefreshCommand");
@@ -114,6 +118,7 @@ describe("mobile internal readiness batch harness", () => {
     expect(source).toContain("sportsbookBackendProofMaxAgeHours");
     expect(source).toContain("temporarySportsbookBackendProofReady");
     expect(source).toContain("temporarySportsbookBackendProofs");
+    expect(source).toContain("$sportsbookBackendProofNextStale = Select-NextStaleEvidence -Evidence $sportsbookBackendProofs");
     expect(source).toContain("temporary_sportsbook_backend_proof_stale_or_missing");
     expect(gapWriter).toContain("Temporary sportsbook backend proof freshness");
     expect(gapWriter).toContain("Temporary sportsbook backend proof ready");

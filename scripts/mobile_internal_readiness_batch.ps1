@@ -109,6 +109,15 @@ function Get-CachedProviderEvidence {
   }
 }
 
+function Select-NextStaleEvidence {
+  param([object[]]$Evidence)
+
+  return $Evidence |
+    Where-Object { $null -ne $_.hoursUntilStale } |
+    Sort-Object { [double]$_.hoursUntilStale } |
+    Select-Object -First 1
+}
+
 function Resolve-RepoArtifactPath {
   param([string]$ArtifactPath)
   if ([string]::IsNullOrWhiteSpace($ArtifactPath)) {
@@ -514,18 +523,12 @@ $cachedProviderEvidence = @(
   (Get-CachedProviderEvidence -Name "provider-line-scan" -Path $lineScanPath -Json $lineScan -MaxAgeHours $cachedProviderEvidenceMaxAgeHours)
 )
 $cachedProviderEvidenceFresh = [bool](($cachedProviderEvidence | Where-Object { -not $_.fresh }).Count -eq 0)
-$providerEvidenceNextStale = $cachedProviderEvidence |
-  Where-Object { $null -ne $_.hoursUntilStale } |
-  Sort-Object hoursUntilStale |
-  Select-Object -First 1
+$providerEvidenceNextStale = Select-NextStaleEvidence -Evidence $cachedProviderEvidence
 $sportsbookBackendProofs = @(
   (Get-CachedProviderEvidence -Name "sportsbook-single-event-live-seed" -Path $sportsbookSingleEventSummaryPath -Json $sportsbookSingleEventSummary -MaxAgeHours $sportsbookBackendProofMaxAgeHours),
   (Get-CachedProviderEvidence -Name "sportsbook-mobile-fake-token-flow" -Path $sportsbookMobileFlowProofPath -Json $sportsbookMobileFlowProof -MaxAgeHours $sportsbookBackendProofMaxAgeHours)
 )
-$sportsbookBackendProofNextStale = $sportsbookBackendProofs |
-  Where-Object { $null -ne $_.hoursUntilStale } |
-  Sort-Object hoursUntilStale |
-  Select-Object -First 1
+$sportsbookBackendProofNextStale = Select-NextStaleEvidence -Evidence $sportsbookBackendProofs
 $lineFamilyFilledAssertions = @("homeShowsCurrentMatch", "detailShowsGameLines", "detailShowsLineFamilyReadiness", "detailShowsProviderUnavailableLineFamilies", "detailShowsProviderAndFixtureLineSplit", "lineMarketsAreContractFixture", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden")
 $sportsbookFilledAssertions = @("homeShowsTemporarySportsbookEvent", "homeKeepsMvpFeedClean", "detailShowsGameLines", "detailHidesOrderBookAndChat", "sportsbookSpreadLineVisible", "ticketPreservesSportsbookLineIdentity", "swipeSubmitReachedPortfolio", "portfolioPreservesSportsbookLineIdentity", "historyPreservesSportsbookLineIdentity")
 $s23Proofs = @(
@@ -536,10 +539,7 @@ $s23Proofs = @(
   (Get-S23ProofEvidence -Name "team-totals-filled-buy-history" -SummaryPath $teamTotalsS23ProofPath -RequiredAssertions $lineFamilyFilledAssertions -MaxAgeHours $s23ProofMaxAgeHours),
   (Get-S23ProofEvidence -Name "temporary-sportsbook-filled-buy-history" -SummaryPath $sportsbookS23ProofPath -RequiredAssertions $sportsbookFilledAssertions -MaxAgeHours $s23ProofMaxAgeHours)
 )
-$s23NextStaleProof = $s23Proofs |
-  Where-Object { $null -ne $_.hoursUntilStale } |
-  Sort-Object hoursUntilStale |
-  Select-Object -First 1
+$s23NextStaleProof = Select-NextStaleEvidence -Evidence $s23Proofs
 
 $backendReady = [bool]($backend -and $backend.dockerCliAvailable -and $backend.dockerDaemonReachable -and $backend.databaseTcpReachable)
 $localMvpReady = [bool]($currentState -and $currentState.diagnosis.serviceReadiness.localMvpPathReady)

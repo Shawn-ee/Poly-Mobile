@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle NEXTSTALEFIX - Earliest Proof Refresh Forecast
+
+Cycle NEXTSTALEFIX changes local readiness aggregation only. It does not add or change backend route handlers, Prisma schema, mobile UI, order logic, provider fetch calls, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Earliest proof refresh forecast | Local command `npm run mobile:internal-readiness-batch` | Local proof aggregation | None | None | `readiness.s23ProofNextStaleName`, `readiness.s23ProofHoursUntilStale`, `readiness.cachedProviderEvidenceNextStaleName`, and `readiness.temporarySportsbookBackendProofNextStaleName` are selected by numeric `hoursUntilStale` | No database access or writes beyond the underlying batch checks | None | None for readiness forecasting. Provider parity still requires real Polymarket-backed World Cup match/line data. |
+
 ## Cycle NEXTACTIONCLEAN - Clean Autonomous Planner Checks
 
 Cycle NEXTACTIONCLEAN changes local planning/reporting only. It does not add or change backend route handlers, Prisma schema, mobile UI, order logic, provider fetch calls, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
