@@ -13318,3 +13318,20 @@ Known limitations:
   - The generated notes include sportsbook backend proof freshness timing.
 - Known limitations:
   - This is audit/DoD logic only. It does not create new provider markets and does not close the separate Polymarket provider parity criterion.
+
+# Cycle S23VISIBLEMATCH - Current Visible-Match S23 Proof Recovery
+
+- Feature/page worked on: S23 Local MVP proof harness and internal readiness recovery commands for the current Home -> Event Detail -> line market -> ticket -> order -> Portfolio/history path.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+  - `scripts/mobile_internal_readiness_batch.ps1`
+- User interactions supported:
+  - Refreshed S23 proof targets the currently visible `holiwyn-local-australia-vs-egypt` Home card.
+  - The proof opens Event Detail, selects Total 2.5 Over, opens the trade ticket, submits a fake-token buy, and verifies Portfolio History preserves the selected line/source/outcome.
+- State transitions:
+  - The proof harness now accepts event title/team/source expectations as parameters instead of hardcoding `Argentina vs. Egypt`.
+  - Readiness recovery commands now include the visible event parameters so future stale-proof refreshes can self-heal against the current match feed.
+  - S23 totals proof was refreshed and passed.
+- Known limitations:
+  - This does not add new provider markets and does not close Polymarket-backed provider parity. It keeps the Local MVP regression proof fresh while provider evidence remains unavailable.

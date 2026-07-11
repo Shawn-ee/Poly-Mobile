@@ -1,6 +1,6 @@
 # Batch Internal Readiness Gap List
 
-Generated: 2026-07-11T20:36:00.375Z
+Generated: 2026-07-11T20:54:14.087Z
 
 Source summary: `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`
 
@@ -26,15 +26,15 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Mobile typecheck: yes
 - S23 Local MVP proof ready: yes
 - Temporary sportsbook S23 bridge proof ready: yes
-- Temporary sportsbook backend proof ready: yes (next stale: sportsbook-mobile-fake-token-flow in 23.5 hours)
+- Temporary sportsbook backend proof ready: yes (next stale: sportsbook-mobile-fake-token-flow in 23.19 hours)
 - S23 proof max age: 24 hours
-- S23 proof next stale: totals-filled-buy-history in 8.6 hours (2026-07-12T05:12:16.5919824Z)
+- S23 proof next stale: totals-filled-buy-history in 23.92 hours (2026-07-12T20:49:19.2619574Z)
 - S23 startup contract ready: yes
 - S23 Google consent path ready: yes (lan-callback-preflight)
 - Provider-backed exchange ready: no
 - Provider discovery mode: cached
 - Cached provider evidence fresh: yes (max age 24 hours)
-- Cached provider evidence next stale: worldcup-match-scan in 17.25 hours (2026-07-12T13:50:41.6680000Z)
+- Cached provider evidence next stale: worldcup-match-scan in 16.94 hours (2026-07-12T13:50:41.6680000Z)
 - P0 blocker count: 0
 - P1 blocker count: 4
 - P2 blocker count: 0
@@ -48,8 +48,8 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Local MVP match breadth ready: yes (5 events)
 - Provider books unavailable or closed: yes
 - Provider snapshot refresh succeeded: yes (6 updated)
-- Temporary sportsbook backend proofs: sportsbook-single-event-live-seed:fresh(0.5h), sportsbook-mobile-fake-token-flow:fresh(0.5h)
-- Cached provider evidence: provider-snapshot-refresh:fresh(6.76h), internal-exchange-readiness:fresh(6.76h), provider-visible-tradable-flow:fresh(6.76h), worldcup-match-scan:fresh(6.75h), provider-line-scan:fresh(6.73h)
+- Temporary sportsbook backend proofs: sportsbook-single-event-live-seed:fresh(0.81h), sportsbook-mobile-fake-token-flow:fresh(0.81h)
+- Cached provider evidence: provider-snapshot-refresh:fresh(7.07h), internal-exchange-readiness:fresh(7.06h), provider-visible-tradable-flow:fresh(7.06h), worldcup-match-scan:fresh(7.06h), provider-line-scan:fresh(7.03h)
 - Provider MVP tradable flow ready: no (provider_mvp_match_snapshot_not_mm_safe)
 - World Cup team-match provider events scanned: 422 (0 open/upcoming, 422 closed/ended)
 - Generic non-soccer World Cup matches excluded: 0
@@ -99,7 +99,7 @@ Run these only when `s23_local_mvp_device_proof_not_ready` is reported, then rer
 Expected summary: `docs/mobile/harness/cycle-XG-full-local-mvp-s23-flow/cycle-XG-current-mvp-s23-visible-flow.json`
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XG -OutputDir docs\mobile\screenshots\cycle-XG-full-local-mvp-s23-flow -HierarchyOutputDir docs\mobile\harness\cycle-XG-full-local-mvp-s23-flow -SeedCounterparty -ExpectFilledHistory
+powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XG -OutputDir docs\mobile\screenshots\cycle-XG-full-local-mvp-s23-flow -HierarchyOutputDir docs\mobile\harness\cycle-XG-full-local-mvp-s23-flow -EventSlug holiwyn-local-australia-vs-egypt -ExpectedHomeTitle "Australia vs. Egypt" -ExpectedHomeSourceMarker home-card-source-local-lines -ExpectedHomeTeamCode AUS -ExpectedAwayTeamCode EGY -ExpectedHomeTeamName Australia -ExpectedAwayTeamName Egypt -LineOutcomeLabel "Egypt +1.5" -SeedCounterparty -ExpectFilledHistory
 ```
 
 ### open-order-cancel
@@ -107,7 +107,7 @@ powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_vi
 Expected summary: `docs/mobile/harness/cycle-XH-open-order-cancel-s23-flow/cycle-XH-current-mvp-s23-visible-flow.json`
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XH -OutputDir docs\mobile\screenshots\cycle-XH-open-order-cancel-s23-flow -HierarchyOutputDir docs\mobile\harness\cycle-XH-open-order-cancel-s23-flow -ExpectOpenOrder -ExpectCancel
+powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XH -OutputDir docs\mobile\screenshots\cycle-XH-open-order-cancel-s23-flow -HierarchyOutputDir docs\mobile\harness\cycle-XH-open-order-cancel-s23-flow -EventSlug holiwyn-local-australia-vs-egypt -ExpectedHomeTitle "Australia vs. Egypt" -ExpectedHomeSourceMarker home-card-source-local-lines -ExpectedHomeTeamCode AUS -ExpectedAwayTeamCode EGY -ExpectedHomeTeamName Australia -ExpectedAwayTeamName Egypt -LineOutcomeLabel "Egypt +1.5" -ExpectOpenOrder -ExpectCancel
 ```
 
 ### cashout-sell-history
@@ -115,7 +115,7 @@ powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_vi
 Expected summary: `docs/mobile/harness/cycle-XI-cashout-sell-s23-flow/cycle-XI-current-mvp-s23-visible-flow.json`
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XI -OutputDir docs\mobile\screenshots\cycle-XI-cashout-sell-s23-flow -HierarchyOutputDir docs\mobile\harness\cycle-XI-cashout-sell-s23-flow -SeedCounterparty -ExpectFilledHistory -ExpectCashout
+powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XI -OutputDir docs\mobile\screenshots\cycle-XI-cashout-sell-s23-flow -HierarchyOutputDir docs\mobile\harness\cycle-XI-cashout-sell-s23-flow -EventSlug holiwyn-local-australia-vs-egypt -ExpectedHomeTitle "Australia vs. Egypt" -ExpectedHomeSourceMarker home-card-source-local-lines -ExpectedHomeTeamCode AUS -ExpectedAwayTeamCode EGY -ExpectedHomeTeamName Australia -ExpectedAwayTeamName Egypt -LineOutcomeLabel "Egypt +1.5" -SeedCounterparty -ExpectFilledHistory -ExpectCashout
 ```
 
 ### totals-filled-buy-history
@@ -123,7 +123,7 @@ powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_vi
 Expected summary: `docs/mobile/harness/cycle-WF-line-family-s23-proof/cycle-WF-current-mvp-s23-visible-flow.json`
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WF -OutputDir docs\mobile\screenshots\cycle-WF-line-family-s23-proof -HierarchyOutputDir docs\mobile\harness\cycle-WF-line-family-s23-proof -LineMarketGroupKey totals -LineMarketType totals -LineValue 2.5 -LineOutcomeSide over -LineOutcomeLabel "Over 2.5" -SeedCounterparty -ExpectFilledHistory
+powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WF -OutputDir docs\mobile\screenshots\cycle-WF-line-family-s23-proof -HierarchyOutputDir docs\mobile\harness\cycle-WF-line-family-s23-proof -EventSlug holiwyn-local-australia-vs-egypt -ExpectedHomeTitle "Australia vs. Egypt" -ExpectedHomeSourceMarker home-card-source-local-lines -ExpectedHomeTeamCode AUS -ExpectedAwayTeamCode EGY -ExpectedHomeTeamName Australia -ExpectedAwayTeamName Egypt -LineMarketGroupKey totals -LineMarketType totals -LineGroupTitle Total -LineValue 2.5 -LineOutcomeSide over -LineOutcomeLabel "Over 2.5" -SeedCounterparty -ExpectFilledHistory
 ```
 
 ### team-totals-filled-buy-history
@@ -131,7 +131,7 @@ powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_vi
 Expected summary: `docs/mobile/harness/cycle-WG-team-total-s23-proof/cycle-WG-current-mvp-s23-visible-flow.json`
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WG -OutputDir docs\mobile\screenshots\cycle-WG-team-total-s23-proof -HierarchyOutputDir docs\mobile\harness\cycle-WG-team-total-s23-proof -LineMarketGroupKey team-totals -LineMarketType team-total -LineValue 1.5 -LineOutcomeSide over -LineOutcomeLabel "Argentina Over 1.5" -LineTapPrefix event-detail-outcome-team-total-goals- -SeedCounterparty -ExpectFilledHistory
+powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WG -OutputDir docs\mobile\screenshots\cycle-WG-team-total-s23-proof -HierarchyOutputDir docs\mobile\harness\cycle-WG-team-total-s23-proof -EventSlug holiwyn-local-australia-vs-egypt -ExpectedHomeTitle "Australia vs. Egypt" -ExpectedHomeSourceMarker home-card-source-local-lines -ExpectedHomeTeamCode AUS -ExpectedAwayTeamCode EGY -ExpectedHomeTeamName Australia -ExpectedAwayTeamName Egypt -LineMarketGroupKey team-totals -LineMarketType team-total -LineValue 1.5 -LineOutcomeSide over -LineOutcomeLabel "Australia Over 1.5" -LineTapPrefix event-detail-outcome-team-total-goals- -SeedCounterparty -ExpectFilledHistory
 ```
 
 ### temporary-sportsbook-filled-buy-history

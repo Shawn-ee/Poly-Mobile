@@ -5,6 +5,13 @@ param(
   [string]$MobileApiBaseUrl = "http://172.16.200.14:3002",
   [string]$BackendBaseUrl = "http://127.0.0.1:3002",
   [string]$EventSlug = "argentina-vs-egypt",
+  [string]$ExpectedHomeTitle = "Argentina vs. Egypt",
+  [string]$ExpectedHomeSourceMarker = "home-card-source-provider-winner-local-lines",
+  [string]$ExpectedHomeFakeTokenMarker = "home-card-source-local-test-fake-token",
+  [string]$ExpectedHomeTeamCode = "ARG",
+  [string]$ExpectedAwayTeamCode = "EGY",
+  [string]$ExpectedHomeTeamName = "Argentina",
+  [string]$ExpectedAwayTeamName = "Egypt",
   [string]$LineMarketGroupKey = "spread",
   [string]$LineMarketType = "spread",
   [string]$LineGroupTitle = "Spread",
@@ -314,7 +321,11 @@ try {
 
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-home.png" | Out-Null
   $homeXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-home.xml"
-  Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Matches", "Argentina vs. Egypt", "event-card-$EventSlug", "home-compact-retail-feed", "home-filter-controls-hidden-local-mvp", "home-card-source-provider-winner-local-lines", "home-card-source-local-test-fake-token")
+  $homeExpected = @("Holiwyn", "World Cup", "Matches", "event-card-$EventSlug", "home-compact-retail-feed", "home-filter-controls-hidden-local-mvp", $ExpectedHomeSourceMarker, $ExpectedHomeFakeTokenMarker)
+  if ($ExpectedHomeTitle) {
+    $homeExpected += $ExpectedHomeTitle
+  }
+  Assert-Contains -Path $homeXml -Expected $homeExpected
   if ($ExpectedHomeEventCount -gt 0) {
     Assert-Contains -Path $homeXml -Expected @("visible-$ExpectedHomeEventCount-of-$ExpectedHomeEventCount", "$ExpectedHomeEventCount matches")
   }
@@ -370,7 +381,7 @@ try {
       Save-Screenshot -Name "cycle-$Cycle-current-mvp-detail-stale-top-retry.png" | Out-Null
       $detailStaleXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-detail-stale-top-retry.xml"
     }
-    Assert-Contains -Path $detailStaleXml -Expected @("event-detail-back", "event-detail-status-future", "Active", "Time TBD", "ARG", "EGY", "Argentina", "Egypt", "Game Lines", "Player Props")
+    Assert-Contains -Path $detailStaleXml -Expected @("event-detail-back", "event-detail-status-future", "Active", "Time TBD", $ExpectedHomeTeamCode, $ExpectedAwayTeamCode, $ExpectedHomeTeamName, $ExpectedAwayTeamName, "Game Lines", "Player Props")
     Assert-NotContains -Path $detailStaleXml -Unexpected @("15'", "LIVE WORLD CUP", "Order Book", "event-detail-open-order-book", "Chat", "event-detail-chat")
 
     $summary = [ordered]@{
@@ -417,7 +428,7 @@ try {
     Invoke-TapNode -Path $liveXml -Identifier "holiwyn-home-tab"
     Start-Sleep -Seconds 1
     $homeReturnXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-home-return.xml"
-    Assert-Contains -Path $homeReturnXml -Expected @("event-card-$EventSlug", "home-card-source-provider-winner-local-lines", "home-card-source-local-test-fake-token")
+    Assert-Contains -Path $homeReturnXml -Expected @("event-card-$EventSlug", $ExpectedHomeSourceMarker, $ExpectedHomeFakeTokenMarker)
 
     $summary = [ordered]@{
       cycle = $Cycle
@@ -436,7 +447,7 @@ try {
         homeLabelsStaleMatchAsActive = $true
         liveRouteHidesStaleMatch = $true
         liveShowsEmptyState = $true
-        homeStillShowsProviderWinnerLocalLinesDisclosure = $true
+        homeStillShowsLineSourceDisclosure = $true
         orderbookHidden = $true
       }
       artifacts = [System.Collections.Generic.List[string]]@(
@@ -464,7 +475,7 @@ try {
   Invoke-TapNode -Path $liveXml -Identifier "holiwyn-home-tab"
   Start-Sleep -Seconds 1
   $homeXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-home-return.xml"
-  Assert-Contains -Path $homeXml -Expected @("event-card-$EventSlug", "home-card-source-provider-winner-local-lines", "home-card-source-local-test-fake-token")
+  Assert-Contains -Path $homeXml -Expected @("event-card-$EventSlug", $ExpectedHomeSourceMarker, $ExpectedHomeFakeTokenMarker)
 
   Invoke-TapNode -Path $homeXml -Identifier "event-card-$EventSlug" -StartsWith -YRatio 0.28
   Start-Sleep -Seconds 5
@@ -477,7 +488,7 @@ try {
     Save-Screenshot -Name "cycle-$Cycle-current-mvp-detail-top-retry.png" | Out-Null
     $detailTopXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-detail-top-retry.xml"
   }
-  Assert-Contains -Path $detailTopXml -Expected @("event-detail-back", "Game", "ARG", "EGY", "Argentina", "Egypt")
+  Assert-Contains -Path $detailTopXml -Expected @("event-detail-back", "Game", $ExpectedHomeTeamCode, $ExpectedAwayTeamCode, $ExpectedHomeTeamName, $ExpectedAwayTeamName)
   Assert-NotContains -Path $detailTopXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "event-detail-chat", "event-detail-price-chart", "event-detail-chart-route-state", "Chart selection")
 
   $lineXml = $null
@@ -693,12 +704,12 @@ try {
     cashoutCounterpartyProof = $cashoutCounterpartyProofPath
     assertions = [ordered]@{
       homeShowsCurrentMatch = $true
-      homeShowsProviderWinnerLocalLinesDisclosure = $true
+      homeShowsLineSourceDisclosure = $true
       liveShowsPredictionOnlyLocalMvpSourceDisclosure = $true
       detailShowsGameLines = $true
       detailShowsLineFamilyReadiness = $true
       detailShowsProviderUnavailableLineFamilies = $true
-      detailShowsProviderWinnerLocalLineSplit = $true
+      detailShowsProviderAndFixtureLineSplit = $true
       lineMarketsAreContractFixture = $true
       orderbookHidden = $true
       ticketPreservesLine = $true

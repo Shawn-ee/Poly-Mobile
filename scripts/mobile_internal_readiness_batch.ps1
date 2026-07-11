@@ -438,27 +438,27 @@ $s23ProofRecoveryCommands = @(
   [ordered]@{
     name = "filled-buy-history"
     summaryPath = ConvertTo-RepoPath $filledS23ProofPath
-    command = "powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XG -OutputDir docs\mobile\screenshots\cycle-XG-full-local-mvp-s23-flow -HierarchyOutputDir docs\mobile\harness\cycle-XG-full-local-mvp-s23-flow -SeedCounterparty -ExpectFilledHistory"
+    command = "powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XG -OutputDir docs\mobile\screenshots\cycle-XG-full-local-mvp-s23-flow -HierarchyOutputDir docs\mobile\harness\cycle-XG-full-local-mvp-s23-flow -EventSlug holiwyn-local-australia-vs-egypt -ExpectedHomeTitle `"Australia vs. Egypt`" -ExpectedHomeSourceMarker home-card-source-local-lines -ExpectedHomeTeamCode AUS -ExpectedAwayTeamCode EGY -ExpectedHomeTeamName Australia -ExpectedAwayTeamName Egypt -LineOutcomeLabel `"Egypt +1.5`" -SeedCounterparty -ExpectFilledHistory"
   },
   [ordered]@{
     name = "open-order-cancel"
     summaryPath = ConvertTo-RepoPath $cancelS23ProofPath
-    command = "powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XH -OutputDir docs\mobile\screenshots\cycle-XH-open-order-cancel-s23-flow -HierarchyOutputDir docs\mobile\harness\cycle-XH-open-order-cancel-s23-flow -ExpectOpenOrder -ExpectCancel"
+    command = "powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XH -OutputDir docs\mobile\screenshots\cycle-XH-open-order-cancel-s23-flow -HierarchyOutputDir docs\mobile\harness\cycle-XH-open-order-cancel-s23-flow -EventSlug holiwyn-local-australia-vs-egypt -ExpectedHomeTitle `"Australia vs. Egypt`" -ExpectedHomeSourceMarker home-card-source-local-lines -ExpectedHomeTeamCode AUS -ExpectedAwayTeamCode EGY -ExpectedHomeTeamName Australia -ExpectedAwayTeamName Egypt -LineOutcomeLabel `"Egypt +1.5`" -ExpectOpenOrder -ExpectCancel"
   },
   [ordered]@{
     name = "cashout-sell-history"
     summaryPath = ConvertTo-RepoPath $cashoutS23ProofPath
-    command = "powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XI -OutputDir docs\mobile\screenshots\cycle-XI-cashout-sell-s23-flow -HierarchyOutputDir docs\mobile\harness\cycle-XI-cashout-sell-s23-flow -SeedCounterparty -ExpectFilledHistory -ExpectCashout"
+    command = "powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XI -OutputDir docs\mobile\screenshots\cycle-XI-cashout-sell-s23-flow -HierarchyOutputDir docs\mobile\harness\cycle-XI-cashout-sell-s23-flow -EventSlug holiwyn-local-australia-vs-egypt -ExpectedHomeTitle `"Australia vs. Egypt`" -ExpectedHomeSourceMarker home-card-source-local-lines -ExpectedHomeTeamCode AUS -ExpectedAwayTeamCode EGY -ExpectedHomeTeamName Australia -ExpectedAwayTeamName Egypt -LineOutcomeLabel `"Egypt +1.5`" -SeedCounterparty -ExpectFilledHistory -ExpectCashout"
   },
   [ordered]@{
     name = "totals-filled-buy-history"
     summaryPath = ConvertTo-RepoPath $totalsS23ProofPath
-    command = "powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WF -OutputDir docs\mobile\screenshots\cycle-WF-line-family-s23-proof -HierarchyOutputDir docs\mobile\harness\cycle-WF-line-family-s23-proof -LineMarketGroupKey totals -LineMarketType totals -LineValue 2.5 -LineOutcomeSide over -LineOutcomeLabel `"Over 2.5`" -SeedCounterparty -ExpectFilledHistory"
+    command = "powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WF -OutputDir docs\mobile\screenshots\cycle-WF-line-family-s23-proof -HierarchyOutputDir docs\mobile\harness\cycle-WF-line-family-s23-proof -EventSlug holiwyn-local-australia-vs-egypt -ExpectedHomeTitle `"Australia vs. Egypt`" -ExpectedHomeSourceMarker home-card-source-local-lines -ExpectedHomeTeamCode AUS -ExpectedAwayTeamCode EGY -ExpectedHomeTeamName Australia -ExpectedAwayTeamName Egypt -LineMarketGroupKey totals -LineMarketType totals -LineGroupTitle Total -LineValue 2.5 -LineOutcomeSide over -LineOutcomeLabel `"Over 2.5`" -SeedCounterparty -ExpectFilledHistory"
   },
   [ordered]@{
     name = "team-totals-filled-buy-history"
     summaryPath = ConvertTo-RepoPath $teamTotalsS23ProofPath
-    command = "powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WG -OutputDir docs\mobile\screenshots\cycle-WG-team-total-s23-proof -HierarchyOutputDir docs\mobile\harness\cycle-WG-team-total-s23-proof -LineMarketGroupKey team-totals -LineMarketType team-total -LineValue 1.5 -LineOutcomeSide over -LineOutcomeLabel `"Argentina Over 1.5`" -LineTapPrefix event-detail-outcome-team-total-goals- -SeedCounterparty -ExpectFilledHistory"
+    command = "powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WG -OutputDir docs\mobile\screenshots\cycle-WG-team-total-s23-proof -HierarchyOutputDir docs\mobile\harness\cycle-WG-team-total-s23-proof -EventSlug holiwyn-local-australia-vs-egypt -ExpectedHomeTitle `"Australia vs. Egypt`" -ExpectedHomeSourceMarker home-card-source-local-lines -ExpectedHomeTeamCode AUS -ExpectedAwayTeamCode EGY -ExpectedHomeTeamName Australia -ExpectedAwayTeamName Egypt -LineMarketGroupKey team-totals -LineMarketType team-total -LineValue 1.5 -LineOutcomeSide over -LineOutcomeLabel `"Australia Over 1.5`" -LineTapPrefix event-detail-outcome-team-total-goals- -SeedCounterparty -ExpectFilledHistory"
   },
   [ordered]@{
     name = "temporary-sportsbook-filled-buy-history"
@@ -526,7 +526,7 @@ $sportsbookBackendProofNextStale = $sportsbookBackendProofs |
   Where-Object { $null -ne $_.hoursUntilStale } |
   Sort-Object hoursUntilStale |
   Select-Object -First 1
-$lineFamilyFilledAssertions = @("homeShowsCurrentMatch", "detailShowsGameLines", "detailShowsLineFamilyReadiness", "detailShowsProviderUnavailableLineFamilies", "detailShowsProviderWinnerLocalLineSplit", "lineMarketsAreContractFixture", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden")
+$lineFamilyFilledAssertions = @("homeShowsCurrentMatch", "detailShowsGameLines", "detailShowsLineFamilyReadiness", "detailShowsProviderUnavailableLineFamilies", "detailShowsProviderAndFixtureLineSplit", "lineMarketsAreContractFixture", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden")
 $sportsbookFilledAssertions = @("homeShowsTemporarySportsbookEvent", "homeKeepsMvpFeedClean", "detailShowsGameLines", "detailHidesOrderBookAndChat", "sportsbookSpreadLineVisible", "ticketPreservesSportsbookLineIdentity", "swipeSubmitReachedPortfolio", "portfolioPreservesSportsbookLineIdentity", "historyPreservesSportsbookLineIdentity")
 $s23Proofs = @(
   (Get-S23ProofEvidence -Name "filled-buy-history" -SummaryPath $filledS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden") -MaxAgeHours $s23ProofMaxAgeHours),

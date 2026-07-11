@@ -9954,3 +9954,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: real Polymarket match/line provider data remains incomplete and is still held by `dod-provider-polymarket-parity`.
 - Temporary mock/static data: none added. The sweep only reads redacted proof artifacts and current batch evidence.
 - Future migration concern: the temporary sportsbook bridge must remain a separate DoD criterion from Polymarket provider parity, so stale or fresh sportsbook evidence never closes `dod-provider-polymarket-parity`.
+
+## Cycle S23VISIBLEMATCH - Current Visible-Match S23 Proof Recovery
+
+- Closed or narrowed: the S23 proof harness now follows the currently visible Local MVP match feed and refreshes the Total 2.5 fake-token order/Portfolio/history proof against `holiwyn-local-australia-vs-egypt`.
+- Route mismatch: none. The cycle updates proof targeting and recovery commands only.
+- Fields Holiwyn still needs but backend/provider does not fully provide: real Polymarket-backed World Cup match and line markets with stable provider event, market, outcome, token, price, and accepting-order identity.
+- Temporary mock/static data: the refreshed proof still uses contract-shaped Local MVP line fixtures and disposable local maker liquidity. The fixture data preserves backend-style `eventSlug`, market type, line, side, source, external market id, condition id, and token identity for later provider replacement.
+- Future migration concern: keep visible-match proof targeting parameterized. Home ordering can change as provider/local match breadth changes, so recovery commands should not assume a specific offscreen fixture is still tappable on S23.

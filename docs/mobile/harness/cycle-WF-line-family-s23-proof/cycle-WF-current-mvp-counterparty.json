@@ -6,29 +6,29 @@
     "expectedRestingSide": "SELL",
     "source": "local-mvp-internal-liquidity"
   },
-  "eventSlug": "argentina-vs-egypt",
+  "eventSlug": "holiwyn-local-australia-vs-egypt",
   "market": {
-    "id": "3bb14385-3e59-41f4-9068-ebf2a563245a",
-    "title": "Argentina vs. Egypt: Total goals 2.5",
+    "id": "2d2dda9e-88fe-449c-8de0-fc1ddb5c99e6",
+    "title": "Australia vs. Egypt: Total goals 2.5",
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "period": "regulation",
     "line": "2.5",
     "referenceSource": "contract-fixture",
-    "externalMarketId": "contract-argentina-vs-egypt-total-goals-2-5",
-    "conditionId": "condition-argentina-vs-egypt-total-goals-2-5"
+    "externalMarketId": "contract-holiwyn-local-australia-vs-egypt-total-goals-2-5",
+    "conditionId": "condition-holiwyn-local-australia-vs-egypt-total-goals-2-5"
   },
   "outcome": {
-    "id": "7b27519e-c1e2-48e9-b168-0dc738d686c7",
+    "id": "f251326d-58b0-475d-9c67-ee4f0bb64264",
     "name": "Over 2.5",
     "side": "over",
-    "referenceTokenId": "contract-argentina-vs-egypt-total-goals-2-5-over",
+    "referenceTokenId": "contract-holiwyn-local-australia-vs-egypt-total-goals-2-5-over",
     "referenceOutcomeLabel": "Over 2.5"
   },
   "cleanupOnly": false,
   "maker": {
-    "id": "3a9709ec-110f-4fd8-a8eb-8804d131e3b2",
-    "username": "mobile_route_fill_maker_34590341"
+    "id": "17f87d0a-666b-47d8-a1ca-d33a89d51392",
+    "username": "mobile_route_fill_maker_ad0f1f5d"
   },
   "cleanup": {
     "enabled": true,
@@ -45,9 +45,9 @@
     "canceledBlockingAsks": []
   },
   "makerOrder": {
-    "id": "ccbec921-46fb-423f-bb76-d34e2bfc62a3",
-    "marketId": "3bb14385-3e59-41f4-9068-ebf2a563245a",
-    "outcomeId": "7b27519e-c1e2-48e9-b168-0dc738d686c7",
+    "id": "4ee3b9bc-24ec-4913-a54c-154201454d70",
+    "marketId": "2d2dda9e-88fe-449c-8de0-fc1ddb5c99e6",
+    "outcomeId": "f251326d-58b0-475d-9c67-ee4f0bb64264",
     "side": "SELL",
     "price": "0.52",
     "size": "80",

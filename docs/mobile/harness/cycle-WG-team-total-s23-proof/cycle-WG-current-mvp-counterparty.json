@@ -6,29 +6,29 @@
     "expectedRestingSide": "SELL",
     "source": "local-mvp-internal-liquidity"
   },
-  "eventSlug": "argentina-vs-egypt",
+  "eventSlug": "holiwyn-local-australia-vs-egypt",
   "market": {
-    "id": "0970151f-eeed-4c58-9be6-9e4d097b04bc",
-    "title": "Argentina vs. Egypt: Argentina total goals 1.5",
+    "id": "3303cc55-452a-44cc-bce7-111c5badedc0",
+    "title": "Australia vs. Egypt: Australia total goals 1.5",
     "marketType": "team_total_goals",
     "marketGroupKey": "team-totals",
     "period": "regulation",
     "line": "1.5",
     "referenceSource": "contract-fixture",
-    "externalMarketId": "contract-argentina-vs-egypt-team-total-home-1-5",
-    "conditionId": "condition-argentina-vs-egypt-team-total-home-1-5"
+    "externalMarketId": "contract-holiwyn-local-australia-vs-egypt-team-total-home-1-5",
+    "conditionId": "condition-holiwyn-local-australia-vs-egypt-team-total-home-1-5"
   },
   "outcome": {
-    "id": "c7db5263-443d-4697-a3cd-88730c16db4c",
-    "name": "Argentina Over 1.5",
+    "id": "42f6eab7-deea-4d7e-a0e4-5345e7d55082",
+    "name": "Australia Over 1.5",
     "side": "over",
-    "referenceTokenId": "contract-argentina-vs-egypt-team-total-home-1-5-over",
-    "referenceOutcomeLabel": "Argentina Over 1.5"
+    "referenceTokenId": "contract-holiwyn-local-australia-vs-egypt-team-total-home-1-5-over",
+    "referenceOutcomeLabel": "Australia Over 1.5"
   },
   "cleanupOnly": false,
   "maker": {
-    "id": "db110bc0-3f69-4ebf-8af9-ce1338c19bbe",
-    "username": "mobile_route_fill_maker_6d3c251e"
+    "id": "7ad43b8b-3ccd-42db-a046-0f2750874f0b",
+    "username": "mobile_route_fill_maker_1aa3ec23"
   },
   "cleanup": {
     "enabled": true,
@@ -45,9 +45,9 @@
     "canceledBlockingAsks": []
   },
   "makerOrder": {
-    "id": "4a51ea64-6aba-41ff-969b-f729a16defa8",
-    "marketId": "0970151f-eeed-4c58-9be6-9e4d097b04bc",
-    "outcomeId": "c7db5263-443d-4697-a3cd-88730c16db4c",
+    "id": "047ccdb9-36fa-4e48-9466-90cca5274be0",
+    "marketId": "3303cc55-452a-44cc-bce7-111c5badedc0",
+    "outcomeId": "42f6eab7-deea-4d7e-a0e4-5345e7d55082",
     "side": "SELL",
     "price": "0.52",
     "size": "80",
