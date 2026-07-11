@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T12:17:08.3012453Z",
+  "generatedAt": "2026-07-11T12:43:22.0814472Z",
   "scope": "mobile-internal-readiness-batch",
   "cycle": "BATCHREADINESS",
   "backendBaseUrl": "http://127.0.0.1:3002",
@@ -182,8 +182,8 @@
   "environmentHealth": {
     "git": {
       "branch": "main",
-      "status": "## main...poly-mobile/main",
-      "worktreeClean": true
+      "status": "## main...poly-mobile/main\n M docs/mobile/FUNCTION_IMPLEMENTATION_LOG.md\n M docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md\n M docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md\n M docs/mobile/MOBILE_FEATURE_GAP_TRACKER.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md\n M docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.json\n M docs/mobile/harness/batch-internal-readiness-latest/google-auth-physical-callback-preflight.json\n M docs/mobile/harness/batch-internal-readiness-latest/google-auth-runtime-preflight.json\n M docs/mobile/harness/batch-internal-readiness-latest/internal-mvp-startup-contract.json\n M docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json\n M docs/mobile/harness/batch-internal-readiness-latest/jest-ci.json\n M docs/mobile/harness/batch-internal-readiness-latest/mobile-current-state-inspection.json\n M docs/mobile/harness/batch-internal-readiness-latest/mobile-mvp-local-match-breadth.json\n M docs/mobile/harness/batch-internal-readiness-latest/mobile-typecheck.json\n M docs/mobile/harness/batch-internal-readiness-latest/provider-line-breadth-scan.json\n M docs/mobile/harness/batch-internal-readiness-latest/root-typecheck.json\n M docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-event-scan.json\n M package.json\n M scripts/mobile_internal_readiness_batch.ps1\n M scripts/prove_mobile_provider_line_breadth_scan.ts\n M scripts/scan_polymarket_worldcup_match_events.ts\n M scripts/write_mobile_internal_readiness_gap_list.ts\n?? src/__tests__/mobile-provider-scan-depth.contract.test.ts",
+      "worktreeClean": false
     },
     "android": {
       "targetDeviceId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -210,7 +210,7 @@
     "localMvpReadyForInternalTesting": true,
     "providerBackedExchangeReady": false,
     "backendReady": true,
-    "worktreeClean": true,
+    "worktreeClean": false,
     "dbContainerHealthy": true,
     "s23Connected": true,
     "expoRunning": false,
@@ -249,7 +249,7 @@
         "pass": true,
         "reason": "pass",
         "generatedAt": "2026-07-11T09:32:05.5117425Z",
-        "proofAgeHours": 2.75,
+        "proofAgeHours": 3.19,
         "maxAgeHours": 24,
         "fresh": true,
         "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -267,7 +267,7 @@
         "pass": true,
         "reason": "pass",
         "generatedAt": "2026-07-11T09:45:19.0371695Z",
-        "proofAgeHours": 2.53,
+        "proofAgeHours": 2.97,
         "maxAgeHours": 24,
         "fresh": true,
         "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -285,7 +285,7 @@
         "pass": true,
         "reason": "pass",
         "generatedAt": "2026-07-11T09:59:42.7891761Z",
-        "proofAgeHours": 2.29,
+        "proofAgeHours": 2.73,
         "maxAgeHours": 24,
         "fresh": true,
         "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -303,7 +303,7 @@
         "pass": true,
         "reason": "pass",
         "generatedAt": "2026-07-11T05:12:16.5919824Z",
-        "proofAgeHours": 7.08,
+        "proofAgeHours": 7.52,
         "maxAgeHours": 24,
         "fresh": true,
         "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -321,7 +321,7 @@
         "pass": true,
         "reason": "pass",
         "generatedAt": "2026-07-11T05:18:54.1737804Z",
-        "proofAgeHours": 6.97,
+        "proofAgeHours": 7.41,
         "maxAgeHours": 24,
         "fresh": true,
         "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -350,7 +350,7 @@
         "name": "provider-snapshot-refresh",
         "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-snapshot-refresh.json",
         "generatedAt": "2026-07-11T11:22:25.735Z",
-        "ageHours": 0.91,
+        "ageHours": 1.35,
         "maxAgeHours": 24,
         "fresh": true,
         "present": true
@@ -359,7 +359,7 @@
         "name": "internal-exchange-readiness",
         "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.json",
         "generatedAt": "2026-07-11T11:22:26.823Z",
-        "ageHours": 0.91,
+        "ageHours": 1.35,
         "maxAgeHours": 24,
         "fresh": true,
         "present": true
@@ -368,7 +368,7 @@
         "name": "provider-visible-tradable-flow",
         "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json",
         "generatedAt": "2026-07-11T11:22:28.487Z",
-        "ageHours": 0.91,
+        "ageHours": 1.35,
         "maxAgeHours": 24,
         "fresh": true,
         "present": true
@@ -376,8 +376,8 @@
       {
         "name": "worldcup-match-scan",
         "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-event-scan.json",
-        "generatedAt": "2026-07-11T11:22:31.281Z",
-        "ageHours": 0.91,
+        "generatedAt": "2026-07-11T12:42:35.984Z",
+        "ageHours": 0.01,
         "maxAgeHours": 24,
         "fresh": true,
         "present": true
@@ -385,8 +385,8 @@
       {
         "name": "provider-line-scan",
         "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-line-breadth-scan.json",
-        "generatedAt": "2026-07-11T11:22:36.170Z",
-        "ageHours": 0.91,
+        "generatedAt": "2026-07-11T12:36:52.866Z",
+        "ageHours": 0.11,
         "maxAgeHours": 24,
         "fresh": true,
         "present": true
@@ -394,7 +394,13 @@
     ],
     "providerMvpTradableFlowReady": false,
     "providerMvpTradableFlowBlocker": "provider_mvp_match_snapshot_not_mm_safe",
+    "worldCupTeamMatchEventCount": 442,
+    "openWorldCupTeamMatchEventCount": 0,
+    "closedOrEndedWorldCupTeamMatchEventCount": 442,
     "usableWorldCupTeamMatchEventCount": 0,
+    "providerLineCandidateCount": 2483,
+    "identityCompleteProviderLineCandidateCount": 2483,
+    "closedOrUnavailableProviderLineIdentityCount": 2483,
     "attachReadyProviderLineCandidateCount": 0
   },
   "blockers": {

@@ -2,6 +2,22 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle PROVIDERSCANDEPTH - Match/Line Provider Scan Depth
+
+- Feature/page worked on: provider-backed World Cup match and line-market readiness evidence.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/scan_polymarket_worldcup_match_events.ts`
+  - `scripts/prove_mobile_provider_line_breadth_scan.ts`
+  - `scripts/mobile_internal_readiness_batch.ps1`
+  - `scripts/write_mobile_internal_readiness_gap_list.ts`
+  - `src/__tests__/mobile-provider-scan-depth.contract.test.ts`
+  - root `package.json` `test:ci` coverage list
+- User interactions supported: unchanged. Home -> Event Detail -> line market -> Trade Ticket -> fake-token order -> Portfolio/history remains Local MVP-ready through contract-shaped line markets.
+- State transitions: no runtime, backend, database, order, or mobile UI state changes. The provider audit now pages deeper through Polymarket Gamma event data, records open/upcoming versus closed/ended match events, and refuses to count closed or non-accepting line identities as attach-ready provider line markets.
+- Proof: refreshed match scan inspected 2,137 provider events and found 442 World Cup match-like events, but 0 open/upcoming and 0 usable match books. Refreshed line scan found 2,483 line-family identity-complete candidates, but 0 attach-ready usable candidates because all were closed/unavailable.
+- Known limitations: this narrows the provider P1 blocker instead of closing it. Provider-backed match/line parity remains blocked by current Polymarket availability, not by missing local fixture UI.
+
 ## Cycle FINALSIGNOFFGATE - DoD-Aware Final Signoff
 
 - Feature/page worked on: final QA/review signoff harness for the whole-app Polymarket parity loop.

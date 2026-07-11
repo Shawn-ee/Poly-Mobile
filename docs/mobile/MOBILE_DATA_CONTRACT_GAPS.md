@@ -1,5 +1,26 @@
 # Mobile Data Contract Gaps
 
+## Cycle PROVIDERSCANDEPTH - Match/Line Provider Scan Depth
+
+- No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or runtime provider ingestion contract changed.
+- The match breadth scan summary now exposes:
+  - `inputs.pages`
+  - `summary.openMatchEventCount`
+  - `summary.closedOrEndedMatchEventCount`
+  - `matchEvents[].startDate`
+  - `matchEvents[].endDate`
+  - `matchEvents[].ended`
+  - `matchEvents[].upcomingOrLive`
+- The line breadth scan summary now exposes:
+  - `sources.eventTagPages`
+  - `sources.dynamicEventProbeLimit`
+  - `sources.exactSlugGuessLimit`
+  - `totals.identityCompleteProviderLineCandidateCount`
+  - `totals.closedOrUnavailableIdentityLineCandidateCount`
+  - `totals.attachReadyProviderLineCandidateCount`
+- New behavior: closed or non-accepting provider line identities no longer count as attach-ready line markets. They remain useful evidence that Polymarket has had line markets for match pages, but they cannot replace Local MVP contract fixtures or satisfy provider parity.
+- Current refreshed evidence narrows the gap: 442 World Cup match-like events were scanned and all were closed/ended; 2,483 line-family identity-complete candidates were found and all were closed/unavailable. Provider-backed match/line parity remains open until Polymarket exposes open/accepting match and line books or an approved secondary provider contract is added.
+
 ## Cycle FINALSIGNOFFGATE - DoD-Aware Final Signoff
 
 - No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider runtime contract changed.

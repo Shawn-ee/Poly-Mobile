@@ -5,6 +5,9 @@ import { classifyProviderMarketFamily, type ProviderMarketFamily } from "@/serve
 const GAMMA_BASE_URL = "https://gamma-api.polymarket.com";
 const DEFAULT_OUTPUT_PATH = "docs/mobile/harness/cycle-QE-provider-line-breadth-scan/cycle-QE-provider-line-breadth-scan.json";
 const DEFAULT_LIMIT = 100;
+const DEFAULT_EVENT_TAG_PAGES = 12;
+const DEFAULT_DYNAMIC_EVENT_PROBE_LIMIT = 8;
+const DEFAULT_EXACT_SLUG_GUESS_LIMIT = 240;
 const SEARCH_QUERIES = [
   "world cup spread",
   "world cup handicap",
@@ -83,6 +86,9 @@ async function main() {
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
   const cycle = argValue("cycle") ?? "QE";
   const limit = parsePositiveInt(argValue("limit"), DEFAULT_LIMIT);
+  const eventTagPages = parsePositiveInt(argValue("eventTagPages"), DEFAULT_EVENT_TAG_PAGES);
+  const dynamicEventProbeLimit = parsePositiveInt(argValue("dynamicEventProbeLimit"), DEFAULT_DYNAMIC_EVENT_PROBE_LIMIT);
+  const exactSlugGuessLimit = parsePositiveInt(argValue("exactSlugGuessLimit"), DEFAULT_EXACT_SLUG_GUESS_LIMIT);
   const bySlug = new Map<string, ScanCandidate>();
   const errors: Array<{ source: string; queryOrTag: string; error: string }> = [];
   const rawSourceHits = {
@@ -120,10 +126,10 @@ async function main() {
 
   for (const tagSlug of EVENT_TAG_SLUGS) {
     try {
-      const events = await fetchGammaEventsByTag(tagSlug, Math.min(limit, 50));
+      const events = await fetchGammaEventsByTag(tagSlug, Math.min(limit, 50), eventTagPages);
       for (const event of events) {
         const dynamicProbe = buildEventProbeFromGammaEvent(event);
-        if (dynamicProbe && !dynamicEventProbeBySlug.has(dynamicProbe.eventSlug)) {
+        if (dynamicProbe && dynamicEventProbeBySlug.size < dynamicEventProbeLimit && !dynamicEventProbeBySlug.has(dynamicProbe.eventSlug)) {
           dynamicEventProbeBySlug.set(dynamicProbe.eventSlug, dynamicProbe);
         }
         const eventTitle = asString(event.title) ?? asString(event.name);
@@ -153,7 +159,7 @@ async function main() {
     ...dynamicEventProbeBySlug.values(),
   ]);
   const eventSpecificSearchQueries = eventSpecificProbes.flatMap(buildEventSpecificSearchQueries);
-  const exactSlugGuesses = eventSpecificProbes.flatMap(buildEventSpecificSlugGuesses);
+  const exactSlugGuesses = eventSpecificProbes.flatMap(buildEventSpecificSlugGuesses).slice(0, exactSlugGuessLimit);
 
   for (const probe of eventSpecificProbes) {
     for (const query of buildEventSpecificSearchQueries(probe)) {
@@ -196,7 +202,8 @@ async function main() {
   const allCandidates = Array.from(bySlug.values());
   const worldCupCandidates = allCandidates.filter((candidate) => candidate.worldCupRelevant);
   const lineCandidates = worldCupCandidates.filter((candidate) => LINE_FAMILIES.has(candidate.family));
-  const attachReadyLineCandidates = lineCandidates.filter((candidate) => candidate.attachIdentityComplete);
+  const identityCompleteLineCandidates = lineCandidates.filter((candidate) => candidate.attachIdentityComplete);
+  const attachReadyLineCandidates = lineCandidates.filter(isUsableAttachReadyLineCandidate);
   const familySummary = summarizeFamilies(worldCupCandidates);
   const lineFamilySummary = summarizeFamilies(lineCandidates);
   const lineLikeRejectedCandidates = worldCupCandidates
@@ -236,6 +243,9 @@ async function main() {
   const providerLineDiscoveryBlockers = [
     lineCandidates.length === 0 ? "no_world_cup_line_family_markets_found" : null,
     attachReadyLineCandidates.length === 0 ? "no_attach_ready_line_market_identity" : null,
+    identityCompleteLineCandidates.length > 0 && attachReadyLineCandidates.length === 0
+      ? "line_identity_candidates_closed_or_not_accepting_orders"
+      : null,
     rawLineSourceHits.exactSlug === 0 ? "exact_slug_line_guesses_returned_zero" : null,
     rawLineSourceHits.eventSpecificSearch === 0 ? "event_specific_line_search_returned_zero" : null,
     syntheticLocalFixtureProbeCount > 0 ? "local_fixture_probes_are_search_only_not_attachable_provider_slugs" : null,
@@ -265,6 +275,9 @@ async function main() {
       staticEventSpecificProbeCount: EVENT_SPECIFIC_PROBES.length,
       dynamicEventSpecificProbeCount: dynamicEventProbeBySlug.size,
       localFixtureEventSpecificProbeCount: localFixtureProbes.length,
+      eventTagPages,
+      dynamicEventProbeLimit,
+      exactSlugGuessLimit,
       eventSpecificSearchQueries,
       exactSlugGuesses,
       limit,
@@ -277,7 +290,9 @@ async function main() {
       rawSourceHits,
       rawLineSourceHits,
       providerLineCandidateCount: lineCandidates.length,
+      identityCompleteProviderLineCandidateCount: identityCompleteLineCandidates.length,
       attachReadyProviderLineCandidateCount: attachReadyLineCandidates.length,
+      closedOrUnavailableIdentityLineCandidateCount: identityCompleteLineCandidates.length - attachReadyLineCandidates.length,
       providerLineCandidateFamilies: Array.from(new Set(lineCandidates.map((candidate) => candidate.family))),
       eventSpecificSearchCandidateCount: worldCupCandidates.filter((candidate) => candidate.source === "event-specific-search").length,
       exactSlugCandidateCount: worldCupCandidates.filter((candidate) => candidate.source === "exact-slug").length,
@@ -339,18 +354,25 @@ async function fetchGammaMarketsBySlug(slug: string) {
   return payload.filter((entry): entry is GammaWire => Boolean(entry) && typeof entry === "object");
 }
 
-async function fetchGammaEventsByTag(tagSlug: string, limit: number) {
-  const url = new URL("/events", GAMMA_BASE_URL);
-  url.searchParams.set("active", "true");
-  url.searchParams.set("closed", "false");
-  url.searchParams.set("archived", "false");
-  url.searchParams.set("limit", String(Math.min(Math.max(limit, 1), 50)));
-  url.searchParams.set("tag_slug", tagSlug);
-  const response = await fetch(url.toString(), { headers: { Accept: "application/json" } });
-  if (!response.ok) throw new Error(`Gamma event tag fetch failed: ${response.status} ${response.statusText}`);
-  const payload = await response.json() as unknown;
-  if (!Array.isArray(payload)) throw new Error("Gamma event tag response was not an array.");
-  return payload.filter((entry): entry is GammaWire => Boolean(entry) && typeof entry === "object");
+async function fetchGammaEventsByTag(tagSlug: string, limit: number, pages: number) {
+  const normalizedLimit = Math.min(Math.max(limit, 1), 50);
+  const results: GammaWire[] = [];
+  for (let page = 0; page < Math.max(1, pages); page += 1) {
+    const url = new URL("/events", GAMMA_BASE_URL);
+    url.searchParams.set("active", "true");
+    url.searchParams.set("archived", "false");
+    url.searchParams.set("limit", String(normalizedLimit));
+    url.searchParams.set("offset", String(page * normalizedLimit));
+    url.searchParams.set("tag_slug", tagSlug);
+    const response = await fetch(url.toString(), { headers: { Accept: "application/json" } });
+    if (!response.ok) throw new Error(`Gamma event tag fetch failed: ${response.status} ${response.statusText}`);
+    const payload = await response.json() as unknown;
+    if (!Array.isArray(payload)) throw new Error("Gamma event tag response was not an array.");
+    const pageResults = payload.filter((entry): entry is GammaWire => Boolean(entry) && typeof entry === "object");
+    results.push(...pageResults);
+    if (pageResults.length < normalizedLimit) break;
+  }
+  return results;
 }
 
 function normalizeCandidate(
@@ -454,6 +476,16 @@ function summarizeProbeSources(probes: EventSpecificProbe[]) {
     "gamma-event": 0,
     "local-fixture": 0,
   });
+}
+
+function isUsableAttachReadyLineCandidate(candidate: ScanCandidate) {
+  return (
+    candidate.attachIdentityComplete &&
+    candidate.active &&
+    !candidate.closed &&
+    !candidate.archived &&
+    candidate.acceptingOrders
+  );
 }
 
 function isLineLikeRejectedCandidate(candidate: ScanCandidate) {

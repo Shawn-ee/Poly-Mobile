@@ -1,6 +1,6 @@
 # Batch Internal Readiness Gap List
 
-Generated: 2026-07-11T12:17:09.594Z
+Generated: 2026-07-11T12:43:23.436Z
 
 Source summary: `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`
 
@@ -20,7 +20,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - S23 connected: yes (adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp, SM_S911U1)
 - Expo running: no
 - Continuous bot running: no
-- Worktree clean at batch start: yes
+- Worktree clean at batch start: no
 - Root typecheck: yes
 - Jest CI: yes
 - Mobile typecheck: yes
@@ -44,9 +44,11 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Local MVP match breadth ready: yes (4 events)
 - Provider books unavailable or closed: yes
 - Provider snapshot refresh succeeded: yes (6 updated)
-- Cached provider evidence: provider-snapshot-refresh:fresh(0.91h), internal-exchange-readiness:fresh(0.91h), provider-visible-tradable-flow:fresh(0.91h), worldcup-match-scan:fresh(0.91h), provider-line-scan:fresh(0.91h)
+- Cached provider evidence: provider-snapshot-refresh:fresh(1.35h), internal-exchange-readiness:fresh(1.35h), provider-visible-tradable-flow:fresh(1.35h), worldcup-match-scan:fresh(0.01h), provider-line-scan:fresh(0.11h)
 - Provider MVP tradable flow ready: no (provider_mvp_match_snapshot_not_mm_safe)
+- World Cup team-match provider events scanned: 442 (0 open/upcoming, 442 closed/ended)
 - Usable World Cup team-match provider events: 0
+- Provider line-family candidates scanned: 2483 (2483 identity-complete, 2483 closed/unavailable identity candidates)
 - Attach-ready provider line candidates: 0
 - Internal MVP startup callback: `http://172.16.200.14:3002/api/auth/google/callback`
 - S23 Google callback: `http://172.16.200.14:3002/api/auth/google/callback`

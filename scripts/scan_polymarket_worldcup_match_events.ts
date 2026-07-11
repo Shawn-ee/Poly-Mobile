@@ -4,6 +4,8 @@ import path from "node:path";
 const GAMMA_BASE_URL = "https://gamma-api.polymarket.com";
 const DEFAULT_OUTPUT_PATH = "docs/mobile/harness/batch-provider-match-breadth/worldcup-match-event-scan.json";
 const DEFAULT_LIMIT = 50;
+const DEFAULT_PAGES = 12;
+const DEFAULT_MATCH_EVENT_EVIDENCE_LIMIT = 60;
 const MAX_SPREAD = 0.1;
 
 type GammaWire = Record<string, unknown>;
@@ -11,6 +13,8 @@ type GammaWire = Record<string, unknown>;
 type Args = {
   output: string;
   limit: number;
+  pages: number;
+  matchEventEvidenceLimit: number;
   tagSlugs: string[];
   eventSlugs: string[];
 };
@@ -39,6 +43,10 @@ type EventSummary = {
   active: boolean;
   closed: boolean;
   archived: boolean;
+  startDate: string | null;
+  endDate: string | null;
+  ended: boolean;
+  upcomingOrLive: boolean;
   matchLike: boolean;
   worldCupRelevant: boolean;
   playerPropLike: boolean;
@@ -66,18 +74,23 @@ async function main() {
       tagSlugs: args.tagSlugs,
       eventSlugs: args.eventSlugs,
       limit: args.limit,
+      pages: args.pages,
+      matchEventEvidenceLimit: args.matchEventEvidenceLimit,
     },
     summary: {
       eventsInspected: events.length,
       matchEventCount: matchEvents.length,
       usableMatchEventCount: usableMatchEvents.length,
+      openMatchEventCount: matchEvents.filter((event) => event.upcomingOrLive && !event.closed && !event.archived).length,
+      closedOrEndedMatchEventCount: matchEvents.filter((event) => event.closed || event.ended).length,
       futuresEventCount: futuresEvents.length,
       nonWorldCupOrPropUsableCount: events.filter((event) => event.usableMarketCount > 0 && !matchEvents.includes(event)).length,
       pass: usableMatchEvents.length > 0,
     },
     usableMatchEvents,
-    matchEvents,
+    matchEventEvidence: matchEvents.slice(0, args.matchEventEvidenceLimit),
     diagnostics: {
+      matchEventEvidenceOmittedCount: Math.max(0, matchEvents.length - args.matchEventEvidenceLimit),
       futuresEvents: futuresEvents.slice(0, 10).map(toCompactEvent),
       usableNonMatchEvents: events
         .filter((event) => event.usableMarketCount > 0 && !matchEvents.includes(event))
@@ -99,7 +112,7 @@ async function scanEvents(args: Args) {
   const bySlug = new Map<string, EventSummary>();
 
   for (const tagSlug of args.tagSlugs) {
-    const events = await fetchEventsByTag(tagSlug, args.limit);
+    const events = await fetchEventsByTag(tagSlug, args.limit, args.pages);
     for (const event of events) {
       const summary = normalizeEvent(event);
       if (summary) bySlug.set(summary.slug, summary);
@@ -117,14 +130,21 @@ async function scanEvents(args: Args) {
   return Array.from(bySlug.values()).sort(compareEvents);
 }
 
-async function fetchEventsByTag(tagSlug: string, limit: number) {
-  const url = new URL("/events", GAMMA_BASE_URL);
-  url.searchParams.set("active", "true");
-  url.searchParams.set("closed", "false");
-  url.searchParams.set("archived", "false");
-  url.searchParams.set("limit", String(Math.min(Math.max(limit, 1), 50)));
-  url.searchParams.set("tag_slug", tagSlug);
-  return fetchEventArray(url, `Gamma events tag fetch failed for ${tagSlug}`);
+async function fetchEventsByTag(tagSlug: string, limit: number, pages: number) {
+  const normalizedLimit = Math.min(Math.max(limit, 1), 50);
+  const results: GammaWire[] = [];
+  for (let page = 0; page < Math.max(1, pages); page += 1) {
+    const url = new URL("/events", GAMMA_BASE_URL);
+    url.searchParams.set("active", "true");
+    url.searchParams.set("archived", "false");
+    url.searchParams.set("limit", String(normalizedLimit));
+    url.searchParams.set("offset", String(page * normalizedLimit));
+    url.searchParams.set("tag_slug", tagSlug);
+    const events = await fetchEventArray(url, `Gamma events tag fetch failed for ${tagSlug} page ${page}`);
+    results.push(...events);
+    if (events.length < normalizedLimit) break;
+  }
+  return results;
 }
 
 async function fetchEventsBySlug(eventSlug: string) {
@@ -147,6 +167,9 @@ function normalizeEvent(input: GammaWire): EventSummary | null {
   if (!slug || !title) return null;
 
   const tags = parseTags(input.tags);
+  const startDate = asString(input.startDate);
+  const endDate = asString(input.endDate);
+  const ended = isPastDate(endDate);
   const markets = Array.isArray(input.markets)
     ? input.markets.filter((entry): entry is GammaWire => Boolean(entry) && typeof entry === "object").map(normalizeMarket).filter((market): market is MarketSummary => Boolean(market))
     : [];
@@ -170,6 +193,10 @@ function normalizeEvent(input: GammaWire): EventSummary | null {
     active: asBoolean(input.active),
     closed: asBoolean(input.closed),
     archived: asBoolean(input.archived),
+    startDate,
+    endDate,
+    ended,
+    upcomingOrLive: !ended,
     matchLike,
     worldCupRelevant,
     playerPropLike,
@@ -230,6 +257,7 @@ function normalizeMarket(input: GammaWire): MarketSummary | null {
 function compareEvents(a: EventSummary, b: EventSummary) {
   return (
     Number(b.matchLike && !b.futuresLike) - Number(a.matchLike && !a.futuresLike) ||
+    Number(b.upcomingOrLive && !b.closed && !b.archived) - Number(a.upcomingOrLive && !a.closed && !a.archived) ||
     b.usableMarketCount - a.usableMarketCount ||
     b.acceptingOrderMarketCount - a.acceptingOrderMarketCount ||
     b.marketCount - a.marketCount ||
@@ -241,6 +269,10 @@ function toCompactEvent(event: EventSummary) {
   return {
     slug: event.slug,
     title: event.title,
+    startDate: event.startDate,
+    endDate: event.endDate,
+    ended: event.ended,
+    upcomingOrLive: event.upcomingOrLive,
     tags: event.tags,
     matchLike: event.matchLike,
     worldCupRelevant: event.worldCupRelevant,
@@ -264,6 +296,8 @@ function parseArgs(argv: string[]): Args {
   return {
     output: raw.get("output") ?? DEFAULT_OUTPUT_PATH,
     limit: parsePositiveInt(raw.get("limit"), DEFAULT_LIMIT),
+    pages: parsePositiveInt(raw.get("pages"), DEFAULT_PAGES),
+    matchEventEvidenceLimit: parsePositiveInt(raw.get("matchEventEvidenceLimit"), DEFAULT_MATCH_EVENT_EVIDENCE_LIMIT),
     tagSlugs: parseList(raw.get("tagSlugs"), ["soccer", "football", "world-cup", "fifa-world-cup", "sports"]),
     eventSlugs: parseList(raw.get("eventSlugs"), [
       "fifwc-arg-egy-2026-07-07",
@@ -336,6 +370,12 @@ function asBoolean(value: unknown) {
   if (typeof value === "boolean") return value;
   if (typeof value === "string") return value.toLowerCase() === "true";
   return false;
+}
+
+function isPastDate(value: string | null) {
+  if (!value) return false;
+  const parsed = Date.parse(value);
+  return Number.isFinite(parsed) && parsed < Date.now();
 }
 
 main().catch((error) => {

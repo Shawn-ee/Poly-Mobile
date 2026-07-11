@@ -2,6 +2,15 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle PROVIDERSCANDEPTH - Match/Line Provider Scan Depth
+
+Cycle PROVIDERSCANDEPTH changes provider audit/readiness scripts only. It does not add or change backend route handlers, Prisma schema, order logic, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| World Cup match provider breadth scan | Polymarket Gamma `/events?tag_slug=...&limit=...&offset=...` plus exact event slug lookups | `GET` public provider reads | None | Tag slugs, explicit event slugs, page count, limit | Summary fields `matchEventCount`, `openMatchEventCount`, `closedOrEndedMatchEventCount`, `usableMatchEventCount`, and rejected market reasons | No database access or writes | None; futures/non-match events remain diagnostics only | No backend support changed. Current evidence shows no open usable provider match books. |
+| World Cup line provider breadth scan | Polymarket Gamma `/markets?search=...`, `/markets?slug=...`, `/events?tag_slug=...&offset=...` | `GET` public provider reads | None | Search queries, tag slugs, static/dynamic event probes, capped exact slug guesses | Summary fields `providerLineCandidateCount`, `identityCompleteProviderLineCandidateCount`, `closedOrUnavailableIdentityLineCandidateCount`, `attachReadyProviderLineCandidateCount`, and `providerLineDiscoveryBlockers` | No database access or writes | Existing contract-shaped line fixtures remain the honest Local MVP source | Current evidence shows closed/unavailable provider line identities; no usable attach-ready line provider support exists yet. |
+
 ## Cycle FINALSIGNOFFGATE - DoD-Aware Final Signoff
 
 Cycle FINALSIGNOFFGATE changes final audit harness reporting only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
