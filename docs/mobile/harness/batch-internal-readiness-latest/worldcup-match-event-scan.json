@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T06:45:40.812Z",
+  "generatedAt": "2026-07-11T06:55:13.302Z",
   "source": "gamma-api.polymarket.com/events",
   "readOnly": true,
   "scope": "world-cup-match-only-provider-breadth",
@@ -26,7 +26,7 @@
     "matchEventCount": 4,
     "usableMatchEventCount": 0,
     "futuresEventCount": 35,
-    "nonWorldCupOrPropUsableCount": 125,
+    "nonWorldCupOrPropUsableCount": 126,
     "pass": false
   },
   "usableMatchEvents": [],
@@ -545,9 +545,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.06,
+          "bestBid": 0.063,
           "bestAsk": 0.109,
-          "spread": 0.049,
+          "spread": 0.046,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -977,44 +977,40 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.048,
-          "bestAsk": 0.073,
-          "spread": 0.013,
+          "bestBid": 0.046,
+          "bestAsk": 0.117,
+          "spread": 0.001,
           "usableBook": true,
           "rejectionReasons": []
         }
       },
       {
-        "slug": "ncaa-football-2026-national-champion",
-        "title": "NCAA Football: 2027 National Champion",
+        "slug": "2026-mens-us-open-winner-tennis",
+        "title": "2026 Men’s US Open Winner (Tennis)",
         "tags": [
-          "college-football-playoffs",
-          "national-championship",
           "sports",
-          "football",
-          "ncaa",
-          "college-football",
-          "cfb"
+          "atp",
+          "tennis"
         ],
         "matchLike": false,
         "worldCupRelevant": false,
-        "playerPropLike": false,
-        "futuresLike": false,
-        "marketCount": 109,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 49,
         "usableMarketCount": 13,
-        "acceptingOrderMarketCount": 109,
+        "acceptingOrderMarketCount": 49,
         "sampleUsableMarket": {
-          "slug": "will-ohio-state-buckeyes-win-the-2027-cfp-national-championship",
-          "question": "Will Ohio State Buckeyes win the 2027 CFP National Championship?",
+          "slug": "will-jannik-sinner-win-the-2026-mens-us-open",
+          "question": "Will Jannik Sinner win the 2026 Men's US Open?",
           "acceptingOrders": true,
           "active": true,
           "closed": false,
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.09,
-          "bestAsk": 0.12,
-          "spread": 0.03,
+          "bestBid": 0.46,
+          "bestAsk": 0.48,
+          "spread": 0.02,
           "usableBook": true,
           "rejectionReasons": []
         }

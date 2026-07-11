@@ -67,6 +67,22 @@ cd mobile
 npm run start -- --host lan --port 8081
 ```
 
+## Account / Google Runtime Preflight
+
+The Portfolio account entry and Google sign-in runtime check can be run from the repo root:
+
+```powershell
+npm run mobile:google-auth-runtime-preflight
+```
+
+For strict S23/manual testing, use:
+
+```powershell
+npm run mobile:google-auth-runtime-preflight:strict
+```
+
+The root commands delegate to the existing mobile preflight under `mobile/`, so testers do not need to remember a separate working directory. The check does not print Google secrets.
+
 ## Why This Exists
 
 The loop should not keep reopening small source-label or one-screen proof cycles just to rediscover the same provider-state facts. This batch harness gives the Lead Agent one current-state command before choosing the next meaningful milestone.

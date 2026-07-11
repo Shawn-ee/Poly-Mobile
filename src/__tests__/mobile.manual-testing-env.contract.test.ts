@@ -10,6 +10,9 @@ describe("mobile manual testing env helper", () => {
 
     expect(pkg).toContain("mobile:manual-testing-env");
     expect(pkg).toContain("mobile:manual-testing-env:dry-run");
+    expect(pkg).toContain("mobile:google-auth-runtime-preflight");
+    expect(pkg).toContain("mobile:google-auth-runtime-preflight:strict");
+    expect(pkg).toContain("npm --prefix mobile run check:google-auth-runtime");
     expect(pkg).toContain("prepare_mobile_manual_testing_env.ps1");
   });
 

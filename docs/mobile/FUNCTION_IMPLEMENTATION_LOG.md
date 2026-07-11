@@ -2,6 +2,15 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Batch Readiness - Root Google Preflight Wrapper
+
+- Feature/page worked on: Local MVP internal-readiness tooling for Portfolio -> Account -> Google sign-in verification.
+- Frontend components touched: none.
+- Important functions/services touched: no app runtime functions changed; root `package.json` now delegates `mobile:google-auth-runtime-preflight` and `mobile:google-auth-runtime-preflight:strict` to the existing mobile Google auth preflight.
+- User interactions supported: testers can verify the existing Portfolio/Account Google auth runtime setup from the repo root before S23 manual testing.
+- State transitions: none changed in mobile runtime. The existing sign-in/sign-out path remains backend-owned.
+- Known limitations: this does not prove real Google consent by itself; strict mode still requires configured Google Cloud callback/redirect settings and a physical-device-reachable auth origin.
+
 ## Batch Internal Readiness - Audit/Fix/Proof
 
 Feature/page worked on:
