@@ -137,7 +137,7 @@ $summary = [ordered]@{
     "For internal user-flow testing, keep using Home -> Event Detail -> contract-shaped line market -> Trade Ticket -> fake-token order -> Portfolio/history.",
     "Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.",
     "Re-run this batch after provider imports, provider refresh, or line-market discovery changes.",
-    "Generate a mobile dev credential before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set."
+    "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set."
   )
 }
 

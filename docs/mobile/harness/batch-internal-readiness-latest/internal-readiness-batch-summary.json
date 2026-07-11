@@ -1,5 +1,5 @@
 ﻿{
-    "generatedAt":  "2026-07-11T06:39:22.9253037Z",
+    "generatedAt":  "2026-07-11T06:46:45.6492707Z",
     "scope":  "mobile-internal-readiness-batch",
     "cycle":  "BATCHREADINESS",
     "backendBaseUrl":  "http://127.0.0.1:3002",
@@ -95,6 +95,6 @@
                         "For internal user-flow testing, keep using Home -\u003e Event Detail -\u003e contract-shaped line market -\u003e Trade Ticket -\u003e fake-token order -\u003e Portfolio/history.",
                         "Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.",
                         "Re-run this batch after provider imports, provider refresh, or line-market discovery changes.",
-                        "Generate a mobile dev credential before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set."
+                        "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set."
                     ]
 }

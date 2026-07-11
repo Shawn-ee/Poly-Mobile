@@ -1,7 +1,7 @@
 {
   "cycle": "BATCHREADINESS",
   "result": "inspection-pass",
-  "inspectedAt": "2026-07-11T06:39:10.274Z",
+  "inspectedAt": "2026-07-11T06:45:34.737Z",
   "baseUrl": "http://127.0.0.1:3002",
   "homeRoute": {
     "url": "http://127.0.0.1:3002/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10",
