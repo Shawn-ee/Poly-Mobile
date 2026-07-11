@@ -81,7 +81,10 @@ describe("mobile internal readiness batch harness", () => {
     expect(source).toContain("s23ProofNextStaleName");
     expect(source).toContain("s23ProofNextStaleAt");
     expect(source).toContain("s23ProofHoursUntilStale");
+    expect(source).toContain("temporary-sportsbook-filled-buy-history");
+    expect(source).toContain("temporarySportsbookS23BridgeProofReady");
     expect(gapWriter).toContain("S23 proof next stale");
+    expect(gapWriter).toContain("Temporary sportsbook S23 bridge proof ready");
   });
 
   it("tracks cached provider evidence freshness before trusting cached provider blockers", () => {
@@ -131,6 +134,7 @@ describe("mobile internal readiness batch harness", () => {
     expect(doc).toContain("Local environment health snapshot");
     expect(doc).toContain("googleS23ConsentReady");
     expect(doc).toContain("cachedProviderEvidenceFresh");
+    expect(doc).toContain("Temporary sportsbook bridge filled buy/history proof");
   });
 
   it("documents clean evidence output and CI coverage for the batch guard", () => {

@@ -412,6 +412,7 @@ $cancelS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-XH-open-ord
 $cashoutS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-XI-cashout-sell-s23-flow\cycle-XI-current-mvp-s23-visible-flow.json"
 $totalsS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-WF-line-family-s23-proof\cycle-WF-current-mvp-s23-visible-flow.json"
 $teamTotalsS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-WG-team-total-s23-proof\cycle-WG-current-mvp-s23-visible-flow.json"
+$sportsbookS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-ODDSAPIS23-odds-api-s23-visible-flow\cycle-ODDSAPIS23-odds-api-s23-visible-flow.json"
 $s23ProofMaxAgeHours = 24
 $cachedProviderEvidenceMaxAgeHours = 24
 $backendRepoPath = ConvertTo-RepoPath $backendPath
@@ -455,6 +456,11 @@ $s23ProofRecoveryCommands = @(
     name = "team-totals-filled-buy-history"
     summaryPath = ConvertTo-RepoPath $teamTotalsS23ProofPath
     command = "powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WG -OutputDir docs\mobile\screenshots\cycle-WG-team-total-s23-proof -HierarchyOutputDir docs\mobile\harness\cycle-WG-team-total-s23-proof -LineMarketGroupKey team-totals -LineMarketType team-total -LineValue 1.5 -LineOutcomeSide over -LineOutcomeLabel `"Argentina Over 1.5`" -LineTapPrefix event-detail-outcome-team-total-goals- -SeedCounterparty -ExpectFilledHistory"
+  },
+  [ordered]@{
+    name = "temporary-sportsbook-filled-buy-history"
+    summaryPath = ConvertTo-RepoPath $sportsbookS23ProofPath
+    command = "npm run mobile:the-odds-api-s23-visible-flow"
   }
 )
 
@@ -508,12 +514,14 @@ $providerEvidenceNextStale = $cachedProviderEvidence |
   Sort-Object hoursUntilStale |
   Select-Object -First 1
 $lineFamilyFilledAssertions = @("homeShowsCurrentMatch", "detailShowsGameLines", "detailShowsLineFamilyReadiness", "detailShowsProviderUnavailableLineFamilies", "detailShowsProviderWinnerLocalLineSplit", "lineMarketsAreContractFixture", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden")
+$sportsbookFilledAssertions = @("homeShowsTemporarySportsbookEvent", "homeKeepsMvpFeedClean", "detailShowsGameLines", "detailHidesOrderBookAndChat", "sportsbookSpreadLineVisible", "ticketPreservesSportsbookLineIdentity", "swipeSubmitReachedPortfolio", "portfolioPreservesSportsbookLineIdentity", "historyPreservesSportsbookLineIdentity")
 $s23Proofs = @(
   (Get-S23ProofEvidence -Name "filled-buy-history" -SummaryPath $filledS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden") -MaxAgeHours $s23ProofMaxAgeHours),
   (Get-S23ProofEvidence -Name "open-order-cancel" -SummaryPath $cancelS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "openOrderVisible", "openOrderSourceBadgeVisible", "cancelSubmitted", "canceledHistoryVisible", "orderbookHidden") -MaxAgeHours $s23ProofMaxAgeHours),
   (Get-S23ProofEvidence -Name "cashout-sell-history" -SummaryPath $cashoutS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "cashoutTicketOpened", "cashoutSellSubmitted", "cashoutHistoryVisible", "orderbookHidden") -MaxAgeHours $s23ProofMaxAgeHours),
   (Get-S23ProofEvidence -Name "totals-filled-buy-history" -SummaryPath $totalsS23ProofPath -RequiredAssertions $lineFamilyFilledAssertions -MaxAgeHours $s23ProofMaxAgeHours),
-  (Get-S23ProofEvidence -Name "team-totals-filled-buy-history" -SummaryPath $teamTotalsS23ProofPath -RequiredAssertions $lineFamilyFilledAssertions -MaxAgeHours $s23ProofMaxAgeHours)
+  (Get-S23ProofEvidence -Name "team-totals-filled-buy-history" -SummaryPath $teamTotalsS23ProofPath -RequiredAssertions $lineFamilyFilledAssertions -MaxAgeHours $s23ProofMaxAgeHours),
+  (Get-S23ProofEvidence -Name "temporary-sportsbook-filled-buy-history" -SummaryPath $sportsbookS23ProofPath -RequiredAssertions $sportsbookFilledAssertions -MaxAgeHours $s23ProofMaxAgeHours)
 )
 $s23NextStaleProof = $s23Proofs |
   Where-Object { $null -ne $_.hoursUntilStale } |
@@ -524,6 +532,7 @@ $backendReady = [bool]($backend -and $backend.dockerCliAvailable -and $backend.d
 $localMvpReady = [bool]($currentState -and $currentState.diagnosis.serviceReadiness.localMvpPathReady)
 $localMatchBreadthReady = [bool]($localMatchBreadth -and $localMatchBreadth.pass)
 $s23LocalMvpDeviceProofReady = [bool](($s23Proofs | Where-Object { -not $_.pass }).Count -eq 0)
+$sportsbookS23BridgeProofReady = [bool](@($s23Proofs | Where-Object { $_.name -eq "temporary-sportsbook-filled-buy-history" -and $_.pass }).Count -eq 1)
 $rootTypecheckReady = [bool]($rootTypecheck -and $rootTypecheck.pass)
 $jestCiReady = [bool]($jestCi -and $jestCi.pass)
 $mobileTypecheckReady = [bool]($mobileTypecheck -and $mobileTypecheck.pass)
@@ -716,6 +725,7 @@ $summary = [ordered]@{
     s23ProofNextStaleAt = if ($s23NextStaleProof) { $s23NextStaleProof.staleAt } else { $null }
     s23ProofHoursUntilStale = if ($s23NextStaleProof) { $s23NextStaleProof.hoursUntilStale } else { $null }
     s23Proofs = $s23Proofs
+    temporarySportsbookS23BridgeProofReady = $sportsbookS23BridgeProofReady
     rootTypecheckReady = $rootTypecheckReady
     jestCiReady = $jestCiReady
     mobileTypecheckReady = $mobileTypecheckReady
