@@ -1,6 +1,6 @@
 # Mobile Final Parity Sweep
 
-Generated: 2026-07-11T14:25:48.115Z
+Generated: 2026-07-11T14:30:16.280Z
 
 Ready to declare done: No
 
@@ -28,4 +28,4 @@ Counts:
 ## Next Actions
 
 - Keep Local MVP testing on the contract-shaped line-market flow; provider evidence is fresh, so do not rerun provider discovery until the plan says refresh-soon/refresh-due or a real candidate signal appears.
-- Keep Samsung server-order proof as the main real-device trading regression until the APK lane exists.
+- Keep Samsung APK smoke for install/launch coverage and Samsung server-order proof for the real-device trading regression.

@@ -20,6 +20,7 @@ Status:
 
 | ID | Area | Feature | Priority | Reference Observed | Holiwyn Status | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
+| GAP-309 | Harness | Final DoD next-action accuracy | P1 | No | Implemented | Cycle DODACTION updates the final DoD next actions so the verified APK smoke lane is treated as install/launch coverage while Samsung server-order proof remains the trading regression, avoiding stale guidance that says the APK lane does not exist. |
 | GAP-308 | Harness | Final DoD provider debt de-duplication | P1 | No | Implemented | Cycle DODDEDUP updates the final Definition of Done sweep so final-cycle audit artifacts can be verified when P0 debt is zero, while provider-backed Polymarket match/line parity remains the single explicit partial criterion. |
 | GAP-307 | Harness | Provider evidence refresh planner | P1 | No | Verified | Cycle PROVIDERPLAN adds `npm run mobile:provider-evidence-plan`, a no-provider-call planner that reads the latest batch summary and tells the autonomous loop whether to skip provider refresh, refresh soon, refresh now, or recover a missing summary before opening another provider cycle. The final Definition of Done sweep consumes the plan so provider parity debt reports the correct wait-vs-refresh next action. |
 | GAP-306 | Harness | S23 proof staleness forecast | P1 | No | Verified | Cycle S23PROOFFORECAST exposes per-proof `staleAt`/`hoursUntilStale` plus top-level next-stale S23 proof fields so long-running loops can refresh physical Android evidence before it becomes a P0 readiness blocker. |

@@ -34,6 +34,19 @@ Purpose: document the app functions, services, API calls, state transitions, and
 - Proof: run `npm run mobile:definition-of-done-sweep`; expected result is one remaining partial criterion, `dod-provider-polymarket-parity`, with the final-cycle artifact criterion verified. The Jest contract test protects this from regressing into duplicate provider-debt reporting.
 - Known limitations: this does not close the provider P1 blockers. It makes the final audit cleaner so the loop's next work is unambiguous.
 
+## Cycle DODACTION - Final DoD Next-Action Accuracy
+
+- Feature/page worked on: final Definition of Done next-action guidance.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/mobile_definition_of_done_sweep.ts`
+  - `src/__tests__/mobile-definition-of-done-sweep.contract.test.ts`
+- User interactions supported: unchanged. The Local MVP path remains Home -> Event Detail -> line market -> Trade Ticket -> fake-token order -> Portfolio/history.
+- State transitions: no mobile, backend, database, provider, order, or bot state changes. The DoD next actions now distinguish between the verified APK install/launch lane and the Samsung server-order trading regression instead of saying the loop is still waiting for an APK lane that already exists.
+- API/data dependencies: no runtime API calls. The sweep consumes the existing Samsung APK smoke and server-order proof artifacts.
+- Proof: run `npm run mobile:definition-of-done-sweep`; expected next actions should keep APK smoke for install/launch coverage and server-order proof for trading regression.
+- Known limitations: this does not close the provider P1 blockers. It keeps the loop from chasing stale APK-lane work.
+
 ## Cycle S23PROOFFORECAST - S23 Proof Staleness Forecast
 
 - Feature/page worked on: internal readiness batch S23 proof freshness forecasting.

@@ -240,8 +240,9 @@ const summary = {
                 : `Refresh provider evidence with ${providerEvidencePlan?.providerRefreshCommand ?? "npm run mobile:internal-readiness-batch:provider-refresh"} before making provider-backed parity decisions.`,
             ]),
         ...(hasCurrentFinalCycleAudit ? [] : ["Run a final QA/review signoff pass and close or explicitly downgrade remaining P0 debt."]),
-        ...(hasPassingSamsungApkSmoke ? [] : ["Generate or provide dist/holiwyn-preview.apk, then run npm run smoke:samsung:apk."]),
-        "Keep Samsung server-order proof as the main real-device trading regression until the APK lane exists.",
+        ...(hasPassingSamsungApkSmoke
+          ? ["Keep Samsung APK smoke for install/launch coverage and Samsung server-order proof for the real-device trading regression."]
+          : ["Generate or provide dist/holiwyn-preview.apk, then run npm run smoke:samsung:apk."]),
       ],
 };
 
