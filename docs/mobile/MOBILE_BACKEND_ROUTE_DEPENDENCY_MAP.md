@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle PROOFRECOVERY - S23 Proof Recovery Commands
+
+Cycle PROOFRECOVERY changes readiness harness metadata only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| S23 Local MVP proof recovery | Local command `npm run mobile:internal-readiness-batch`; generated commands for `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1` | Local proof guidance | None in the batch; physical S23 proof commands use the existing local proof environment | None in the batch summary | `recovery.s23ProofRefreshCommands[].name`, `summaryPath`, `command`, and `recovery.rerunBatchCommand` | No database access or writes from the batch | None; stale proof remains a P0 blocker until physical S23 evidence is regenerated | None. Backend routes are unchanged; if proof refresh fails, debug the existing S23 proof path rather than changing schemas. |
+
 ## Cycle PROOFFRESH - S23 Proof Freshness Gate
 
 Cycle PROOFFRESH changes readiness harness verification only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.

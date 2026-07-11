@@ -48,6 +48,14 @@ type ReadinessSummary = {
       runningContinuously?: boolean;
     };
   };
+  recovery?: {
+    s23ProofRefreshCommands?: {
+      name?: string;
+      summaryPath?: string;
+      command?: string;
+    }[];
+    rerunBatchCommand?: string;
+  };
   interpretation?: string;
   nextActions?: string[];
 };
@@ -111,7 +119,7 @@ const blockerRows: Record<string, Omit<GapRow, "priority">> = {
     actualBehavior: "One or more committed S23 Local MVP proof summaries is missing, failed, stale, from the wrong device, or references missing artifacts.",
     expectedBehavior: "Committed S23 proofs for filled buy/history, open-order cancel, and cashout/sell should all pass recently on `SM_S911U1`.",
     affectedFilesRoutes: "`docs/mobile/harness/cycle-XG-full-local-mvp-s23-flow`; `cycle-XH-open-order-cancel-s23-flow`; `cycle-XI-cashout-sell-s23-flow`.",
-    proofNeeded: "Fresh S23 proof summaries with `result=pass`, `fresh=true`, and referenced artifacts present.",
+    proofNeeded: "Fresh S23 proof summaries with `result=pass`, `fresh=true`, and referenced artifacts present. Use the generated S23 proof recovery commands below when this gate fails.",
     blocksInternalTesting: true,
   },
   root_typecheck_failed: {
@@ -323,6 +331,37 @@ markdown.push(
   "",
   summary.interpretation ?? "No interpretation was provided by the batch summary.",
   "",
+  "## S23 Proof Recovery Commands",
+  "",
+);
+
+const s23ProofRefreshCommands = summary.recovery?.s23ProofRefreshCommands ?? [];
+if (s23ProofRefreshCommands.length === 0) {
+  markdown.push("No S23 proof recovery commands were provided by the latest batch summary.", "");
+} else {
+  markdown.push("Run these only when `s23_local_mvp_device_proof_not_ready` is reported, then rerun the batch.");
+  markdown.push("");
+  for (const proofCommand of s23ProofRefreshCommands) {
+    markdown.push(`### ${proofCommand.name ?? "unnamed-proof"}`);
+    markdown.push("");
+    markdown.push(`Expected summary: \`${proofCommand.summaryPath ?? "unknown"}\``);
+    markdown.push("");
+    markdown.push("```powershell");
+    markdown.push(proofCommand.command ?? "# missing command");
+    markdown.push("```");
+    markdown.push("");
+  }
+  if (summary.recovery?.rerunBatchCommand) {
+    markdown.push("After refreshing the required S23 proofs:");
+    markdown.push("");
+    markdown.push("```powershell");
+    markdown.push(summary.recovery.rerunBatchCommand);
+    markdown.push("```");
+    markdown.push("");
+  }
+}
+
+markdown.push(
   "## Next Actions From Batch",
   "",
 );

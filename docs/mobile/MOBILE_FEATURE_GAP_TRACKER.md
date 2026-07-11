@@ -323,3 +323,4 @@ Status:
 | GAP-268 | Event detail | Samsung prop market close proof | P1 | Yes | Verified | Cycle 255 adds a Samsung proof that opens a prop position, closes it from Portfolio, and verifies closed activity. |
 | GAP-269 | Event detail | Prop position market title | P1 | Yes | Verified | Cycle 256 changes prop orders to use the prop market title in Portfolio and updates Samsung prop proof assertions. |
 | GAP-270 | Event detail | Prop close market-title proof | P1 | Yes | Verified | Cycle 257 verifies the prop close flow still carries `Both teams to score` through open position and closed activity. |
+| GAP-271 | Harness | S23 proof recovery commands | P1 | No | Verified | Cycle PROOFRECOVERY adds generated recovery commands for the filled buy/history, open-order cancel, and cashout/sell S23 proofs, so a stale-proof batch failure has a concrete refresh path before rerunning readiness. |

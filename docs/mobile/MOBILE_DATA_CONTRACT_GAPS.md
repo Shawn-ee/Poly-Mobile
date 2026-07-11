@@ -1,5 +1,16 @@
 # Mobile Data Contract Gaps
 
+## Cycle PROOFRECOVERY - S23 Proof Recovery Commands
+
+- No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider contract changed.
+- The batch summary contract now includes recovery metadata:
+  - `recovery.s23ProofRefreshCommands[].name`
+  - `recovery.s23ProofRefreshCommands[].summaryPath`
+  - `recovery.s23ProofRefreshCommands[].command`
+  - `recovery.rerunBatchCommand`
+- New behavior: when `s23_local_mvp_device_proof_not_ready` appears, the generated gap list contains concrete S23 proof refresh commands instead of a vague instruction to rerun proof.
+- This closes an audit-loop data gap only. The physical proof scripts still own screenshots/XML and device interaction evidence.
+
 ## Cycle PROOFFRESH - S23 Proof Freshness Gate
 
 - No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider contract changed.

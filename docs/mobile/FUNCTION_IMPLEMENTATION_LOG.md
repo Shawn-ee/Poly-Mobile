@@ -2,6 +2,18 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle PROOFRECOVERY - S23 Proof Recovery Commands
+
+- Feature/page worked on: Local MVP S23 proof recovery guidance inside the internal readiness batch.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/mobile_internal_readiness_batch.ps1`
+  - `scripts/write_mobile_internal_readiness_gap_list.ts`
+- User interactions supported: unchanged. If the batch detects stale/missing/failed S23 proof, the generated summary and gap list now name the exact physical S23 proof commands for filled buy/history, open-order cancel, and cashout/sell.
+- State transitions: no runtime, backend, or database state changes during the batch itself. The recovery commands are documented actions only; they still require the real S23 proof script to regenerate evidence before readiness can pass.
+- Proof: run `npm run mobile:internal-readiness-batch` and confirm the summary includes `recovery.s23ProofRefreshCommands` plus the gap list includes an S23 proof recovery section.
+- Known limitations: this does not refresh S23 screenshots automatically during the batch. It intentionally keeps physical UI proof as an explicit recovery step when the 24-hour freshness gate expires.
+
 ## Cycle PROOFFRESH - S23 Proof Freshness Gate
 
 - Feature/page worked on: Local MVP S23 proof freshness inside the internal readiness batch.

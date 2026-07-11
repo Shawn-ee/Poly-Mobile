@@ -104,6 +104,8 @@ Each proof must also be fresh. The batch records `proofAgeHours`, `fresh`, and `
 
 If any of those checks fail, the batch records `s23_local_mvp_device_proof_not_ready` as a P0 blocker. This keeps the batch honest: Local MVP readiness requires both route/backend readiness and real Android proof evidence, while still avoiding unnecessary repeated screenshot generation when the committed evidence is already current.
 
+The batch summary also includes `recovery.s23ProofRefreshCommands`. The generated gap list prints those exact commands so the loop can refresh the filled buy/history proof, open-order cancel proof, and cashout/sell proof on the S23, then rerun `npm run mobile:internal-readiness-batch` without guessing which proof folders need to be regenerated.
+
 ## Local Validation Gates
 
 The batch also runs the same local validation gates that protect `main` before pushing:

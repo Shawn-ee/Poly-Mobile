@@ -1,6 +1,6 @@
 # Batch Internal Readiness Gap List
 
-Generated: 2026-07-11T11:22:49.944Z
+Generated: 2026-07-11T11:34:04.984Z
 
 Source summary: `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`
 
@@ -72,10 +72,45 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 
 Local MVP fake-token flow is ready for internal testing; provider-backed breadth/line/MM readiness remains tracked P1 debt.
 
+## S23 Proof Recovery Commands
+
+Run these only when `s23_local_mvp_device_proof_not_ready` is reported, then rerun the batch.
+
+### filled-buy-history
+
+Expected summary: `docs/mobile/harness/cycle-XG-full-local-mvp-s23-flow/cycle-XG-current-mvp-s23-visible-flow.json`
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XG -OutputDir docs\mobile\screenshots\cycle-XG-full-local-mvp-s23-flow -HierarchyOutputDir docs\mobile\harness\cycle-XG-full-local-mvp-s23-flow -SeedCounterparty -ExpectFilledHistory
+```
+
+### open-order-cancel
+
+Expected summary: `docs/mobile/harness/cycle-XH-open-order-cancel-s23-flow/cycle-XH-current-mvp-s23-visible-flow.json`
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XH -OutputDir docs\mobile\screenshots\cycle-XH-open-order-cancel-s23-flow -HierarchyOutputDir docs\mobile\harness\cycle-XH-open-order-cancel-s23-flow -ExpectOpenOrder -ExpectCancel
+```
+
+### cashout-sell-history
+
+Expected summary: `docs/mobile/harness/cycle-XI-cashout-sell-s23-flow/cycle-XI-current-mvp-s23-visible-flow.json`
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XI -OutputDir docs\mobile\screenshots\cycle-XI-cashout-sell-s23-flow -HierarchyOutputDir docs\mobile\harness\cycle-XI-cashout-sell-s23-flow -SeedCounterparty -ExpectFilledHistory -ExpectCashout
+```
+
+After refreshing the required S23 proofs:
+
+```powershell
+npm run mobile:internal-readiness-batch
+```
+
 ## Next Actions From Batch
 
 - For internal user-flow testing, keep using Home -> Event Detail -> contract-shaped line market -> Trade Ticket -> fake-token order -> Portfolio/history.
 - Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.
+- If `s23_local_mvp_device_proof_not_ready` appears, run the S23 proof refresh commands in `recovery.s23ProofRefreshCommands`, then rerun `npm run mobile:internal-readiness-batch`.
 - Re-run this batch after provider imports, provider refresh, or line-market discovery changes.
 - Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token.
 - For real Google consent proof, run npm run mobile:google-auth-lan-preflight, restart the backend with the LAN NEXTAUTH_URL it reports if needed, register that exact callback in Google Cloud, then run npm run mobile:google-auth-runtime-preflight:strict before manual S23 login.
