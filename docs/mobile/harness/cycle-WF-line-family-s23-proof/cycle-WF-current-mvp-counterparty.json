@@ -1,0 +1,64 @@
+{
+  "pass": true,
+  "liquidityPurpose": "buy-fill",
+  "routeContract": {
+    "mobileFlow": "Event Detail line market -> generic Buy ticket -> /api/orders BUY -> Portfolio History",
+    "expectedRestingSide": "SELL",
+    "source": "local-mvp-internal-liquidity"
+  },
+  "eventSlug": "argentina-vs-egypt",
+  "market": {
+    "id": "3bb14385-3e59-41f4-9068-ebf2a563245a",
+    "title": "Argentina vs. Egypt: Total goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "period": "regulation",
+    "line": "2.5",
+    "referenceSource": "contract-fixture",
+    "externalMarketId": "contract-argentina-vs-egypt-total-goals-2-5",
+    "conditionId": "condition-argentina-vs-egypt-total-goals-2-5"
+  },
+  "outcome": {
+    "id": "7b27519e-c1e2-48e9-b168-0dc738d686c7",
+    "name": "Over 2.5",
+    "side": "over",
+    "referenceTokenId": "contract-argentina-vs-egypt-total-goals-2-5-over",
+    "referenceOutcomeLabel": "Over 2.5"
+  },
+  "cleanupOnly": false,
+  "maker": {
+    "id": "3a9709ec-110f-4fd8-a8eb-8804d131e3b2",
+    "username": "mobile_route_fill_maker_34590341"
+  },
+  "cleanup": {
+    "enabled": true,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": [],
+    "cleanupBlockingBids": true,
+    "canceledBlockingBids": [],
+    "cleanupBlockingMarketBids": true,
+    "cleanupBlockingMarketBidsForcedByPurpose": false,
+    "canceledBlockingMarketBids": [],
+    "cleanupProofAsks": false,
+    "canceledProofAsks": [],
+    "cleanupBlockingAsks": false,
+    "canceledBlockingAsks": []
+  },
+  "makerOrder": {
+    "id": "ccbec921-46fb-423f-bb76-d34e2bfc62a3",
+    "marketId": "3bb14385-3e59-41f4-9068-ebf2a563245a",
+    "outcomeId": "7b27519e-c1e2-48e9-b168-0dc738d686c7",
+    "side": "SELL",
+    "price": "0.52",
+    "size": "80",
+    "remaining": "80",
+    "reservedNotional": "0",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "SELL",
+    "price": "0.52",
+    "size": "80",
+    "intendedMobileTaker": "BUY $25 route-backed totals ticket"
+  }
+}

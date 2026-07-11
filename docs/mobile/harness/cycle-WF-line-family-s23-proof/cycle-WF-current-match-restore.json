@@ -1,0 +1,39 @@
+{
+  "pass": true,
+  "generatedAt": "2026-07-11T05:06:47.577Z",
+  "eventSlug": "argentina-vs-egypt",
+  "providerEventSlug": "fifwc-arg-egy-2026-07-07",
+  "eventId": "b459cdb1-6c7b-46e2-ac07-6b4a4747d70b",
+  "eventTitle": "Argentina vs. Egypt",
+  "restoredProviderMarketCount": 3,
+  "restoredMarkets": [
+    {
+      "id": "8e03bb8a-d1e0-4067-966f-c05e3969ab7d",
+      "slug": "argentina-vs-egypt-fifwc-arg-egy-2026-07-07-arg",
+      "externalSlug": "fifwc-arg-egy-2026-07-07-arg",
+      "externalMarketId": "2793738",
+      "participantName": "Argentina",
+      "yesOutcomeId": "7e0b0b76-f461-4629-b884-9f751c55818e",
+      "noOutcomeId": "67586eb2-a896-4f3e-b0d0-0ea4c63bfa3c"
+    },
+    {
+      "id": "83087617-7787-40df-a09f-f03665a67ff2",
+      "slug": "argentina-vs-egypt-fifwc-arg-egy-2026-07-07-draw",
+      "externalSlug": "fifwc-arg-egy-2026-07-07-draw",
+      "externalMarketId": "2793739",
+      "participantName": "Draw (Argentina vs. Egypt)",
+      "yesOutcomeId": "c57c083f-0aa5-4752-9ba3-1928cb3fbfe7",
+      "noOutcomeId": "b100b729-0fbf-403f-a17e-fbd85454d6df"
+    },
+    {
+      "id": "0f66af64-8f00-4013-8cc8-338d155b3ed4",
+      "slug": "argentina-vs-egypt-fifwc-arg-egy-2026-07-07-egy",
+      "externalSlug": "fifwc-arg-egy-2026-07-07-egy",
+      "externalMarketId": "2793741",
+      "participantName": "Egypt",
+      "yesOutcomeId": "3e385dee-4cf4-465d-b843-f5f8e48881e2",
+      "noOutcomeId": "ccc2660e-7677-40af-a204-3bf1d48d0c39"
+    }
+  ],
+  "note": "Restores the current Local MVP World Cup match after integration tests reset local markets. Line markets are seeded by seed_mobile_mvp_match_line_markets.ts."
+}
