@@ -2,6 +2,15 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Batch Readiness - Provider Unavailable Classification
+
+- Feature/page worked on: Local MVP provider/internal exchange readiness reporting.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/check_poly_internal_exchange_readiness.ts` now distinguishes unavailable/closed Polymarket books from generic stale setup; `scripts/mobile_internal_readiness_batch.ps1` maps that condition to `provider_worldcup_match_books_unavailable_or_closed`.
+- User interactions supported: none changed directly. The batch now gives a clearer reason why Local MVP should continue using contract-shaped fixture line trading while provider books are unavailable.
+- State transitions: none changed in mobile, backend order logic, provider import, or local MM state.
+- Known limitations: this does not make closed Polymarket books tradable and does not import futures/non-match markets to fake breadth.
+
 ## Batch Readiness - Local Runtime API Key Detection
 
 - Feature/page worked on: Local MVP manual server-mode readiness for S23 testing.

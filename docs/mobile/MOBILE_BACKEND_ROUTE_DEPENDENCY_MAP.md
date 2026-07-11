@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Batch Readiness - Provider Unavailable Classification
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider/internal exchange readiness batch | Internal script `npm run poly:internal-exchange-readiness`; batch wrapper `npm run mobile:internal-readiness-batch` | Local proof command | Local backend/DB only | None | `providerMarkets.providerBooksUnavailableOrClosed`, `providerMarkets.providerUnavailableOrClosedCount`, batch P1 `provider_worldcup_match_books_unavailable_or_closed` | Existing `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, reference bot metadata | Local MVP remains on contract-shaped fixtures when provider books are unavailable | Need a real accepting-order World Cup match book or attach-ready line market before provider-backed local-MM readiness can pass. |
+
 ## Cycle UT - Google Login Setup Validation
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

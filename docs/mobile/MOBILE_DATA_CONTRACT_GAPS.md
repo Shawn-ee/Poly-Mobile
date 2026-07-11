@@ -1,5 +1,12 @@
 # Mobile Data Contract Gaps
 
+## Batch Readiness - Provider Unavailable Classification
+
+- The batch now separates provider setup failure from external provider unavailability.
+- Current Polymarket World Cup match winner markets are mapped in the backend but their books are closed/unusable (`not_accepting_orders`, missing book, or invalid terminal price), so they cannot honestly become local-MM-ready.
+- No new fields are required by mobile for this classification; the readiness JSON now exposes `providerBooksUnavailableOrClosed` and `provider_worldcup_match_books_unavailable_or_closed`.
+- Contract-shaped line fixtures remain the Local MVP testing path until Polymarket exposes usable World Cup match books or attach-ready line markets.
+
 ## Cycle UT - Google Login Setup Validation
 
 - Google credentials remain backend-only: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, Google access tokens, and Google refresh tokens must not appear in Expo/mobile env or source.

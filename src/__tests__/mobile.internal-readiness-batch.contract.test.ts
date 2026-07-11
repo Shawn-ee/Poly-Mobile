@@ -16,6 +16,8 @@ describe("mobile internal readiness batch harness", () => {
     expect(source).toContain("local_mvp_route_not_ready");
     expect(source).toContain("backend_or_local_database_not_ready");
     expect(source).toContain("provider_internal_exchange_not_ready");
+    expect(source).toContain("provider_worldcup_match_books_unavailable_or_closed");
+    expect(source).toContain("provider_books_unavailable_or_closed");
     expect(source).toContain("no_usable_polymarket_worldcup_team_match_books");
     expect(source).toContain("no_attach_ready_polymarket_worldcup_line_markets");
     expect(source).toContain("exit 1");
