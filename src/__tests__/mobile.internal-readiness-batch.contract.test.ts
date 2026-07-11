@@ -84,6 +84,18 @@ describe("mobile internal readiness batch harness", () => {
     expect(gapWriter).toContain("Provider Evidence Recovery");
   });
 
+  it("writes commit-clean JSON without reformatting cached provider evidence", () => {
+    const source = harness();
+
+    expect(source).toContain("function Write-JsonFile");
+    expect(source).toContain("[System.Text.UTF8Encoding]::new($false)");
+    expect(source).toContain("function Normalize-JsonFile");
+    expect(source).toContain("Write-JsonFile -Value $summary -Path $summaryPath -Depth 20");
+    expect(source).toContain("if ($step.cached -eq $true)");
+    expect(source).toContain("Normalize-JsonFile $stepOutputPath");
+    expect(source).not.toContain('Get-ChildItem -LiteralPath $ResolvedOutputDir -Filter "*.json"');
+  });
+
   it("documents that the harness does not fake match breadth with off-scope markets", () => {
     const doc = auditDoc();
 
