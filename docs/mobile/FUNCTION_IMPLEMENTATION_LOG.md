@@ -2,6 +2,15 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle BATCHSTART - Internal MVP S23 Startup Path
+
+- Feature/page worked on: Local MVP internal testing startup and manual proof instructions.
+- Frontend components touched: none.
+- Important functions/services touched: root `package.json` now exposes `mobile:internal-mvp:start` as the clear S23 Local MVP startup command and keeps `mobile:mvp-s23:start` as an alias. It uses `scripts/start_poly_mobile_rehearsal.ps1` with `-CreateMobileDevCredential -RestartExpo -SkipSnapshotWatch -SkipBots`.
+- User interactions supported: no UI behavior changed. Testers get a documented path to start backend + Expo server mode, then manually prove Home -> Event Detail -> line market -> ticket -> fake-token order -> Portfolio/history on S23.
+- State transitions: local mobile dev credential can be created before Expo starts; app runs in server market/order mode; backend remains the only intentionally persistent service; snapshot watch and bot processes remain off for Local MVP manual testing.
+- Known limitations: provider-backed exchange readiness remains P1 because current Polymarket World Cup match books are unavailable/closed and line markets remain contract fixtures.
+
 ## Batch Readiness - Google Physical Callback Classification
 
 - Feature/page worked on: Portfolio/Account Google sign-in readiness harness.

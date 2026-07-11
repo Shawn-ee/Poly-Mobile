@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T10:26:26.617Z",
+  "generatedAt": "2026-07-11T10:32:40.765Z",
   "source": "gamma-api.polymarket.com/events",
   "readOnly": true,
   "scope": "world-cup-match-only-provider-breadth",
@@ -359,6 +359,39 @@
   "diagnostics": {
     "futuresEvents": [
       {
+        "slug": "pro-football-2026-mvp-winner",
+        "title": "Pro Football: 2026 MVP Winner",
+        "tags": [
+          "nfl",
+          "mvp",
+          "football",
+          "awards",
+          "nfl-awards"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 40,
+        "usableMarketCount": 20,
+        "acceptingOrderMarketCount": 40,
+        "sampleUsableMarket": {
+          "slug": "will-josh-allen-win-the-2026-nfl-mvp",
+          "question": "Will Josh Allen win the 2026 NFL MVP?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.14,
+          "bestAsk": 0.15,
+          "spread": 0.01,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
         "slug": "2026-womens-us-open-winner-tennis",
         "title": "2026 Women’s US Open Winner (Tennis)",
         "tags": [
@@ -384,39 +417,6 @@
           "tokenCount": 2,
           "bestBid": 0.22,
           "bestAsk": 0.23,
-          "spread": 0.01,
-          "usableBook": true,
-          "rejectionReasons": []
-        }
-      },
-      {
-        "slug": "pro-football-2026-mvp-winner",
-        "title": "Pro Football: 2026 MVP Winner",
-        "tags": [
-          "nfl",
-          "mvp",
-          "football",
-          "awards",
-          "nfl-awards"
-        ],
-        "matchLike": false,
-        "worldCupRelevant": false,
-        "playerPropLike": true,
-        "futuresLike": true,
-        "marketCount": 40,
-        "usableMarketCount": 17,
-        "acceptingOrderMarketCount": 40,
-        "sampleUsableMarket": {
-          "slug": "will-josh-allen-win-the-2026-nfl-mvp",
-          "question": "Will Josh Allen win the 2026 NFL MVP?",
-          "acceptingOrders": true,
-          "active": true,
-          "closed": false,
-          "archived": false,
-          "outcomeCount": 2,
-          "tokenCount": 2,
-          "bestBid": 0.14,
-          "bestAsk": 0.15,
           "spread": 0.01,
           "usableBook": true,
           "rejectionReasons": []
@@ -511,9 +511,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.055,
-          "bestAsk": 0.096,
-          "spread": 0.041,
+          "bestBid": 0.061,
+          "bestAsk": 0.09,
+          "spread": 0.029,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -545,9 +545,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.192,
-          "bestAsk": 0.198,
-          "spread": 0.006,
+          "bestBid": 0.193,
+          "bestAsk": 0.194,
+          "spread": 0.001,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -755,6 +755,39 @@
         }
       },
       {
+        "slug": "pro-football-2026-mvp-winner",
+        "title": "Pro Football: 2026 MVP Winner",
+        "tags": [
+          "nfl",
+          "mvp",
+          "football",
+          "awards",
+          "nfl-awards"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 40,
+        "usableMarketCount": 20,
+        "acceptingOrderMarketCount": 40,
+        "sampleUsableMarket": {
+          "slug": "will-josh-allen-win-the-2026-nfl-mvp",
+          "question": "Will Josh Allen win the 2026 NFL MVP?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.14,
+          "bestAsk": 0.15,
+          "spread": 0.01,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
         "slug": "2026-womens-us-open-winner-tennis",
         "title": "2026 Women’s US Open Winner (Tennis)",
         "tags": [
@@ -780,39 +813,6 @@
           "tokenCount": 2,
           "bestBid": 0.22,
           "bestAsk": 0.23,
-          "spread": 0.01,
-          "usableBook": true,
-          "rejectionReasons": []
-        }
-      },
-      {
-        "slug": "pro-football-2026-mvp-winner",
-        "title": "Pro Football: 2026 MVP Winner",
-        "tags": [
-          "nfl",
-          "mvp",
-          "football",
-          "awards",
-          "nfl-awards"
-        ],
-        "matchLike": false,
-        "worldCupRelevant": false,
-        "playerPropLike": true,
-        "futuresLike": true,
-        "marketCount": 40,
-        "usableMarketCount": 17,
-        "acceptingOrderMarketCount": 40,
-        "sampleUsableMarket": {
-          "slug": "will-josh-allen-win-the-2026-nfl-mvp",
-          "question": "Will Josh Allen win the 2026 NFL MVP?",
-          "acceptingOrders": true,
-          "active": true,
-          "closed": false,
-          "archived": false,
-          "outcomeCount": 2,
-          "tokenCount": 2,
-          "bestBid": 0.14,
-          "bestAsk": 0.15,
           "spread": 0.01,
           "usableBook": true,
           "rejectionReasons": []
@@ -977,8 +977,8 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.045,
-          "bestAsk": 0.071,
+          "bestBid": 0.046,
+          "bestAsk": 0.072,
           "spread": 0.026,
           "usableBook": true,
           "rejectionReasons": []

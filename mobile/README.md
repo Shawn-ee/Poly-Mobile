@@ -26,6 +26,14 @@ Open the Expo Go app on your Android device and connect to the LAN URL shown by 
 npm run android
 ```
 
+For the current server-backed Local MVP test path on Samsung S23, start from the repo root instead:
+
+```powershell
+npm run mobile:internal-mvp:start
+```
+
+This starts the backend if needed, creates a local mobile dev credential, starts Expo in server mode, keeps bots off, and leaves order book UI hidden. See [Internal MVP Testing](../docs/mobile/INTERNAL_MVP_TESTING.md).
+
 ## Environment
 
 Create a local `.env` from `.env.example` if you want server mode:
@@ -74,12 +82,14 @@ Android device URL tips:
 npm run typecheck
 npm run start
 npm run android
+npm run mobile:internal-mvp:start
+npm run mobile:internal-readiness-batch
 npm run check:google-auth-runtime
 npm run check:android-dev-build
 npm run smoke:tablet
 ```
 
-Most smoke scripts assume a connected Android device with Expo Go installed. Some server-mode smoke scripts also require a running backend and `EXPO_PUBLIC_API_KEY`.
+Most smoke scripts assume a connected Android device with Expo Go installed. Some server-mode smoke scripts also require a running backend and `EXPO_PUBLIC_API_KEY`. For Local MVP S23 testing, prefer the root `npm run mobile:internal-mvp:start` command so server mode and the local-only API key are prepared together.
 
 ## Current MVP Status
 
