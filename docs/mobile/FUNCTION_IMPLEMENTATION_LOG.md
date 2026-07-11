@@ -12851,3 +12851,21 @@ Known limitations:
 - Known limitations:
   - A fresh provider snapshot can still be unsafe if Polymarket is not accepting orders or the price is at an invalid edge.
   - This does not import new provider events or create local-MM quotes.
+
+# Batch Google LAN Callback Preflight
+
+- Feature/page worked on: Portfolio/Account Google login readiness for real S23 consent setup.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/mobile_google_lan_auth_preflight.ps1`
+  - `scripts/mobile_internal_readiness_batch.ps1`
+  - `package.json`
+- User interactions supported: unchanged. The same Portfolio account Google entry is still used when manual testing begins.
+- State transitions:
+  - The new root helper detects the PC LAN IPv4 address and runs the existing no-secret Google preflight with `BackendAuthBase` and `NEXTAUTH_URL` set to `http://<lan-ip>:3002`.
+  - The consolidated batch writes `google-auth-lan-callback-preflight.json` and records `googleLanCallbackReady` / `googleLanFailedChecks`.
+  - If the running backend still emits a localhost callback, the batch records `google_lan_callback_redirect_uri_mismatch` instead of only saying the localhost callback is not phone-reachable.
+- Proof:
+  - Full batch output writes `docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.json`.
+- Known limitations:
+  - This does not complete real Google consent. The backend must be restarted with the LAN or hosted `NEXTAUTH_URL`, and that exact callback must be registered in Google Cloud before manual S23 consent can pass.

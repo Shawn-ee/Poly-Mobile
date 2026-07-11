@@ -26,6 +26,7 @@ docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-sum
 - Mobile credential readiness.
 - Google auth runtime preflight without printing Google credentials.
 - Google physical-device callback preflight without printing Google credentials.
+- Google LAN callback preflight for S23/manual consent setup without printing Google credentials.
 - Current MVP route shape for `mobileMvpMatches=1`.
 - Provider-backed Regulation Winner plus contract-shaped line-market state.
 - Fresh Polymarket reference snapshot refresh for the current MVP match.
@@ -52,6 +53,7 @@ Known provider availability gaps are tracked as P1, not P0:
 - manual server mode missing an ambient `EXPO_PUBLIC_API_KEY`
 - Google auth runtime warnings such as a callback/redirect URI mismatch
 - Google physical callback warnings such as a local `127.0.0.1` callback that the S23 browser cannot reach
+- Google LAN callback warnings such as backend `redirect_uri` still pointing to localhost instead of the LAN callback
 
 This is intentional. The Local MVP fake-token user flow remains testable with contract-shaped line markets while provider-backed breadth and line parity remain open.
 
@@ -120,6 +122,14 @@ The Google summary includes URL-only diagnostics, not Google credentials: `expec
 For the consolidated batch, the Google preflight is pinned to the same `BackendBaseUrl` the batch is testing. This prevents a stale local `.env` `NEXTAUTH_URL` from causing a false mismatch while a correctly configured internal-beta backend is already running on another port.
 
 The batch also runs a physical-device callback preflight. A local runtime callback such as `http://127.0.0.1:3002/api/auth/google/callback` can be valid for backend route testing while still being unsuitable for real S23 browser consent. In that case the batch keeps Local MVP trading ready, but records `google_physical_callback_not_phone_reachable` as P1 until the callback uses a hosted origin or LAN IP that the phone can reach.
+
+For local S23 Google consent setup, the repo root also exposes:
+
+```powershell
+npm run mobile:google-auth-lan-preflight
+```
+
+This detects the PC LAN IP, runs the same no-secret preflight with `NEXTAUTH_URL=http://<lan-ip>:3002`, and writes `google-auth-lan-callback-preflight.json`. If this reports a redirect mismatch, restart the backend with that LAN auth origin and register the exact callback URL in Google Cloud before attempting real S23 consent.
 
 ## Why This Exists
 

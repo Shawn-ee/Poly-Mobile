@@ -151,6 +151,7 @@ $backendPath = Join-Path $ResolvedOutputDir "mobile-backend-readiness.json"
 $credentialPath = Join-Path $ResolvedOutputDir "mobile-credential-readiness.json"
 $googleAuthPath = Join-Path $ResolvedOutputDir "google-auth-runtime-preflight.json"
 $googlePhysicalPath = Join-Path $ResolvedOutputDir "google-auth-physical-callback-preflight.json"
+$googleLanPhysicalPath = Join-Path $ResolvedOutputDir "google-auth-lan-callback-preflight.json"
 $currentStatePath = Join-Path $ResolvedOutputDir "mobile-current-state-inspection.json"
 $providerSnapshotRefreshPath = Join-Path $ResolvedOutputDir "provider-snapshot-refresh.json"
 $exchangePath = Join-Path $ResolvedOutputDir "internal-exchange-readiness.json"
@@ -161,6 +162,7 @@ $backendRepoPath = ConvertTo-RepoPath $backendPath
 $credentialRepoPath = ConvertTo-RepoPath $credentialPath
 $googleAuthRepoPath = ConvertTo-RepoPath $googleAuthPath
 $googlePhysicalRepoPath = ConvertTo-RepoPath $googlePhysicalPath
+$googleLanPhysicalRepoPath = ConvertTo-RepoPath $googleLanPhysicalPath
 $currentStateRepoPath = ConvertTo-RepoPath $currentStatePath
 $providerSnapshotRefreshRepoPath = ConvertTo-RepoPath $providerSnapshotRefreshPath
 $exchangeRepoPath = ConvertTo-RepoPath $exchangePath
@@ -175,6 +177,7 @@ $steps.Add((Invoke-BatchCommand -Name "backend-readiness" -Command "powershell -
 $steps.Add((Invoke-BatchCommand -Name "credential-readiness" -Command "powershell -ExecutionPolicy Bypass -File scripts\mobile_credential_readiness.ps1 -SummaryPath `"$credentialRepoPath`"" -OutputPath $credentialPath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "google-auth-runtime-preflight" -Command "powershell -ExecutionPolicy Bypass -File mobile\scripts\google-auth-runtime-preflight.ps1 -BackendAuthBase `"$BackendBaseUrl`" -NextAuthUrl `"$BackendBaseUrl`" -SummaryPath `"$googleAuthRepoPath`"" -OutputPath $googleAuthPath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "google-auth-physical-callback-preflight" -Command "powershell -ExecutionPolicy Bypass -File mobile\scripts\google-auth-runtime-preflight.ps1 -BackendAuthBase `"$BackendBaseUrl`" -NextAuthUrl `"$BackendBaseUrl`" -RequirePhysicalDeviceCallback -SummaryPath `"$googlePhysicalRepoPath`"" -OutputPath $googlePhysicalPath -AllowNonZero))
+$steps.Add((Invoke-BatchCommand -Name "google-auth-lan-callback-preflight" -Command "powershell -ExecutionPolicy Bypass -File scripts\mobile_google_lan_auth_preflight.ps1 -BackendPort 3002 -SummaryPath `"$googleLanPhysicalRepoPath`"" -OutputPath $googleLanPhysicalPath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "current-state" -Command "npx.cmd tsx scripts/inspect_mobile_mvp_current_state.ts --baseUrl=$BackendBaseUrl --summaryPath=`"$currentStateRepoPath`" --cycle=$Cycle" -OutputPath $currentStatePath))
 $steps.Add((Invoke-BatchCommand -Name "provider-snapshot-refresh" -Command "npm.cmd run reference:snapshot-refresh -- --once true --eventSlug argentina-vs-egypt --summaryPath `"$providerSnapshotRefreshRepoPath`"" -OutputPath $providerSnapshotRefreshPath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "internal-exchange-readiness" -Command "npm.cmd run poly:internal-exchange-readiness -- --summaryPath `"$exchangeRepoPath`"" -OutputPath $exchangePath -AllowNonZero))
@@ -186,6 +189,7 @@ $backend = Read-JsonFile $backendPath
 $credential = Read-JsonFile $credentialPath
 $googleAuth = Read-JsonFile $googleAuthPath
 $googlePhysical = Read-JsonFile $googlePhysicalPath
+$googleLanPhysical = Read-JsonFile $googleLanPhysicalPath
 $currentState = Read-JsonFile $currentStatePath
 $providerSnapshotRefresh = Read-JsonFile $providerSnapshotRefreshPath
 $exchange = Read-JsonFile $exchangePath
@@ -222,6 +226,15 @@ if ($googlePhysical -and $googlePhysical.failedChecks) {
   foreach ($failedCheck in @($googlePhysical.failedChecks)) {
     if (-not [string]::IsNullOrWhiteSpace([string]$failedCheck)) {
       $googlePhysicalFailedChecks.Add([string]$failedCheck) | Out-Null
+    }
+  }
+}
+$googleLanCallbackReady = [bool]($googleLanPhysical -and $googleLanPhysical.readyForRuntimeStart)
+$googleLanFailedChecks = New-Object System.Collections.Generic.List[string]
+if ($googleLanPhysical -and $googleLanPhysical.failedChecks) {
+  foreach ($failedCheck in @($googleLanPhysical.failedChecks)) {
+    if (-not [string]::IsNullOrWhiteSpace([string]$failedCheck)) {
+      $googleLanFailedChecks.Add([string]$failedCheck) | Out-Null
     }
   }
 }
@@ -271,6 +284,15 @@ if ($googlePhysical -and -not $googlePhysicalCallbackReady) {
     $p1Blockers += "google_physical_callback_preflight_has_warnings"
   }
 }
+if ($googleLanPhysical -and -not $googleLanCallbackReady) {
+  if ($googleLanFailedChecks.Contains("Google redirect_uri matches NEXTAUTH_URL callback")) {
+    $p1Blockers += "google_lan_callback_redirect_uri_mismatch"
+  } elseif ($googleLanFailedChecks.Contains("LAN IPv4 address is detected")) {
+    $p1Blockers += "google_lan_ip_not_detected"
+  } else {
+    $p1Blockers += "google_lan_callback_preflight_has_warnings"
+  }
+}
 
 $summary = [ordered]@{
   generatedAt = (Get-Date).ToUniversalTime().ToString("o")
@@ -299,6 +321,8 @@ $summary = [ordered]@{
     googleAuthFailedChecks = $googleAuthFailedChecks.ToArray()
     googlePhysicalCallbackReady = $googlePhysicalCallbackReady
     googlePhysicalFailedChecks = $googlePhysicalFailedChecks.ToArray()
+    googleLanCallbackReady = $googleLanCallbackReady
+    googleLanFailedChecks = $googleLanFailedChecks.ToArray()
     mobileVisibleEventCount = if ($exchange) { $exchange.mobileExposure.mobileVisibleEventCount } else { $null }
     providerVisibleMarketCount = if ($exchange) { $exchange.providerMarkets.mobileVisibleCount } else { $null }
     providerLocalMmReadyMarketCount = if ($exchange) { $exchange.providerMarkets.localMmReadyCount } else { $null }
@@ -324,7 +348,7 @@ $summary = [ordered]@{
     "Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.",
     "Re-run this batch after provider imports, provider refresh, or line-market discovery changes.",
     "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token.",
-    "For real Google consent proof, use a hosted or LAN NEXTAUTH_URL callback that the S23 browser can reach, register that callback in Google Cloud, then run npm run mobile:google-auth-runtime-preflight:strict before manual S23 login."
+    "For real Google consent proof, run npm run mobile:google-auth-lan-preflight, restart the backend with the LAN NEXTAUTH_URL it reports if needed, register that exact callback in Google Cloud, then run npm run mobile:google-auth-runtime-preflight:strict before manual S23 login."
   )
 }
 

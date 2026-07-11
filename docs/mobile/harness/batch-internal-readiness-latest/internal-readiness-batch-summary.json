@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T08:39:27.1583031Z",
+  "generatedAt": "2026-07-11T08:47:59.8767159Z",
   "scope": "mobile-internal-readiness-batch",
   "cycle": "BATCHREADINESS",
   "backendBaseUrl": "http://127.0.0.1:3002",
@@ -43,6 +43,16 @@
       "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-physical-callback-preflight.json",
       "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-physical-callback-preflight.stdout.log",
       "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-physical-callback-preflight.stderr.log",
+      "producedJson": true
+    },
+    {
+      "name": "google-auth-lan-callback-preflight",
+      "command": "powershell -ExecutionPolicy Bypass -File scripts\\mobile_google_lan_auth_preflight.ps1 -BackendPort 3002 -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.json\"",
+      "exitCode": 0,
+      "allowedNonZero": true,
+      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.json",
+      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.stdout.log",
+      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.stderr.log",
       "producedJson": true
     },
     {
@@ -110,7 +120,7 @@
   "environmentHealth": {
     "git": {
       "branch": "main",
-      "status": "## main...poly-mobile/main\n M docs/mobile/FUNCTION_IMPLEMENTATION_LOG.md\n M docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md\n M docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md\n M scripts/mobile_internal_readiness_batch.ps1\n M scripts/refresh_reference_snapshots.ts",
+      "status": "## main...poly-mobile/main\n M docs/mobile/FUNCTION_IMPLEMENTATION_LOG.md\n M docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md\n M docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md\n M package.json\n M scripts/mobile_internal_readiness_batch.ps1\n?? docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.json\n?? scripts/mobile_google_lan_auth_preflight.ps1",
       "worktreeClean": false
     },
     "android": {
@@ -154,6 +164,10 @@
     "googlePhysicalFailedChecks": [
       "NEXTAUTH_URL is reachable by a physical Android browser"
     ],
+    "googleLanCallbackReady": false,
+    "googleLanFailedChecks": [
+      "Google redirect_uri matches NEXTAUTH_URL callback"
+    ],
     "mobileVisibleEventCount": 1,
     "providerVisibleMarketCount": 3,
     "providerLocalMmReadyMarketCount": 0,
@@ -172,7 +186,8 @@
       "provider_mvp_match_snapshot_not_mm_safe",
       "no_usable_polymarket_worldcup_team_match_books",
       "no_attach_ready_polymarket_worldcup_line_markets",
-      "google_physical_callback_not_phone_reachable"
+      "google_physical_callback_not_phone_reachable",
+      "google_lan_callback_redirect_uri_mismatch"
     ]
   },
   "interpretation": "Local MVP fake-token flow is ready for internal testing; provider-backed breadth/line/MM readiness remains tracked P1 debt.",
@@ -181,6 +196,6 @@
     "Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.",
     "Re-run this batch after provider imports, provider refresh, or line-market discovery changes.",
     "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token.",
-    "For real Google consent proof, use a hosted or LAN NEXTAUTH_URL callback that the S23 browser can reach, register that callback in Google Cloud, then run npm run mobile:google-auth-runtime-preflight:strict before manual S23 login."
+    "For real Google consent proof, run npm run mobile:google-auth-lan-preflight, restart the backend with the LAN NEXTAUTH_URL it reports if needed, register that exact callback in Google Cloud, then run npm run mobile:google-auth-runtime-preflight:strict before manual S23 login."
   ]
 }

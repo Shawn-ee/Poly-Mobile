@@ -9669,3 +9669,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: fresh provider snapshots with accepting-order, non-edge best bid/ask and MM eligibility for at least one match market.
 - Temporary mock/static data: none added. The new `provider-snapshot-refresh.json` artifact is real provider refresh evidence.
 - Future migration concern: when a provider match becomes usable, the refreshed snapshot should allow the same batch to move from `provider_mvp_match_snapshot_not_mm_safe` to the next real readiness gate, such as bot quote availability or filled order proof.
+
+# Batch Google LAN Callback Preflight Notes
+
+- Closed or narrowed: the batch now produces a LAN-specific Google callback preflight instead of only reporting that `127.0.0.1` is not phone-reachable.
+- Route mismatch: if the running backend emits a Google `redirect_uri` with localhost while the LAN preflight expects `http://<lan-ip>:3002/api/auth/google/callback`, the batch records `google_lan_callback_redirect_uri_mismatch`.
+- Fields Holiwyn still needs but backend does not fully provide: no new response field. Real consent still needs runtime `NEXTAUTH_URL` alignment and Google Cloud Authorized redirect URI setup.
+- Temporary mock/static data: none added. The summary is URL-only and redacted.
+- Future migration concern: once the backend is started with LAN/hosted `NEXTAUTH_URL` and Google Cloud is aligned, the same preflight should move from mismatch to ready before manual S23 consent proof.

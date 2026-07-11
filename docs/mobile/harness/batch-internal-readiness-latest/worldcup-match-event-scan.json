@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T08:38:24.159Z",
+  "generatedAt": "2026-07-11T08:46:55.369Z",
   "source": "gamma-api.polymarket.com/events",
   "readOnly": true,
   "scope": "world-cup-match-only-provider-breadth",
@@ -511,9 +511,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.076,
-          "bestAsk": 0.093,
-          "spread": 0.017,
+          "bestBid": 0.078,
+          "bestAsk": 0.086,
+          "spread": 0.008,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -546,8 +546,8 @@
           "outcomeCount": 2,
           "tokenCount": 2,
           "bestBid": 0.192,
-          "bestAsk": 0.208,
-          "spread": 0.016,
+          "bestAsk": 0.205,
+          "spread": 0.013,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -716,7 +716,7 @@
           "tokenCount": 2,
           "bestBid": 0.5,
           "bestAsk": 0.52,
-          "spread": 0.02,
+          "spread": 0.01,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -977,9 +977,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.047,
+          "bestBid": 0.048,
           "bestAsk": 0.07,
-          "spread": 0.016,
+          "spread": 0.022,
           "usableBook": true,
           "rejectionReasons": []
         }

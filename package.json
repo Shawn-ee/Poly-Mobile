@@ -70,6 +70,7 @@
     "mobile:manual-testing-env:dry-run": "powershell -ExecutionPolicy Bypass -File scripts/prepare_mobile_manual_testing_env.ps1 -DryRun",
     "mobile:google-auth-runtime-preflight": "npm --prefix mobile run check:google-auth-runtime",
     "mobile:google-auth-runtime-preflight:strict": "npm --prefix mobile run check:google-auth-runtime:strict",
+    "mobile:google-auth-lan-preflight": "powershell -ExecutionPolicy Bypass -File scripts/mobile_google_lan_auth_preflight.ps1",
     "mobile:backend-readiness": "powershell -ExecutionPolicy Bypass -File scripts/mobile_backend_readiness.ps1",
     "mobile:internal-readiness-batch": "powershell -ExecutionPolicy Bypass -File scripts/mobile_internal_readiness_batch.ps1",
     "mobile:backend-readiness:summary": "powershell -ExecutionPolicy Bypass -File scripts/mobile_backend_readiness.ps1 -SummaryPath docs/mobile/harness/cycle-current-mobile-backend-readiness.json",
