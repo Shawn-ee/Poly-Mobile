@@ -28,8 +28,11 @@ describe("mobile internal readiness batch harness", () => {
 
     expect(source).toContain("google-auth-runtime-preflight.ps1");
     expect(source).toContain("google-auth-runtime-preflight.json");
+    expect(source).toContain("google-auth-physical-callback-preflight");
+    expect(source).toContain("google-auth-physical-callback-preflight.json");
     expect(source).toContain('-BackendAuthBase `"$BackendBaseUrl`"');
     expect(source).toContain('-NextAuthUrl `"$BackendBaseUrl`"');
+    expect(source).toContain("-RequirePhysicalDeviceCallback");
     expect(source).toContain("inspect_mobile_mvp_current_state.ts");
     expect(source).toContain("poly:internal-exchange-readiness");
     expect(source).toContain("inspect:polymarket-worldcup-matches");
@@ -42,8 +45,12 @@ describe("mobile internal readiness batch harness", () => {
 
     expect(source).toContain("googleAuthRuntimeReady");
     expect(source).toContain("googleAuthFailedChecks");
+    expect(source).toContain("googlePhysicalCallbackReady");
+    expect(source).toContain("googlePhysicalFailedChecks");
     expect(source).toContain("google_redirect_uri_mismatch");
     expect(source).toContain("google_auth_runtime_preflight_has_warnings");
+    expect(source).toContain("google_physical_callback_not_phone_reachable");
+    expect(source).toContain("google_physical_callback_preflight_has_warnings");
     expect(source).toContain("mobile:google-auth-runtime-preflight:strict");
   });
 

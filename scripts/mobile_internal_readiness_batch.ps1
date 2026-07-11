@@ -150,6 +150,7 @@ function Get-EnvironmentHealthSnapshot {
 $backendPath = Join-Path $ResolvedOutputDir "mobile-backend-readiness.json"
 $credentialPath = Join-Path $ResolvedOutputDir "mobile-credential-readiness.json"
 $googleAuthPath = Join-Path $ResolvedOutputDir "google-auth-runtime-preflight.json"
+$googlePhysicalPath = Join-Path $ResolvedOutputDir "google-auth-physical-callback-preflight.json"
 $currentStatePath = Join-Path $ResolvedOutputDir "mobile-current-state-inspection.json"
 $exchangePath = Join-Path $ResolvedOutputDir "internal-exchange-readiness.json"
 $matchScanPath = Join-Path $ResolvedOutputDir "worldcup-match-event-scan.json"
@@ -157,6 +158,7 @@ $lineScanPath = Join-Path $ResolvedOutputDir "provider-line-breadth-scan.json"
 $backendRepoPath = ConvertTo-RepoPath $backendPath
 $credentialRepoPath = ConvertTo-RepoPath $credentialPath
 $googleAuthRepoPath = ConvertTo-RepoPath $googleAuthPath
+$googlePhysicalRepoPath = ConvertTo-RepoPath $googlePhysicalPath
 $currentStateRepoPath = ConvertTo-RepoPath $currentStatePath
 $exchangeRepoPath = ConvertTo-RepoPath $exchangePath
 $matchScanRepoPath = ConvertTo-RepoPath $matchScanPath
@@ -168,6 +170,7 @@ $steps = New-Object System.Collections.Generic.List[object]
 $steps.Add((Invoke-BatchCommand -Name "backend-readiness" -Command "powershell -ExecutionPolicy Bypass -File scripts\mobile_backend_readiness.ps1 -SummaryPath `"$backendRepoPath`"" -OutputPath $backendPath))
 $steps.Add((Invoke-BatchCommand -Name "credential-readiness" -Command "powershell -ExecutionPolicy Bypass -File scripts\mobile_credential_readiness.ps1 -SummaryPath `"$credentialRepoPath`"" -OutputPath $credentialPath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "google-auth-runtime-preflight" -Command "powershell -ExecutionPolicy Bypass -File mobile\scripts\google-auth-runtime-preflight.ps1 -BackendAuthBase `"$BackendBaseUrl`" -NextAuthUrl `"$BackendBaseUrl`" -SummaryPath `"$googleAuthRepoPath`"" -OutputPath $googleAuthPath -AllowNonZero))
+$steps.Add((Invoke-BatchCommand -Name "google-auth-physical-callback-preflight" -Command "powershell -ExecutionPolicy Bypass -File mobile\scripts\google-auth-runtime-preflight.ps1 -BackendAuthBase `"$BackendBaseUrl`" -NextAuthUrl `"$BackendBaseUrl`" -RequirePhysicalDeviceCallback -SummaryPath `"$googlePhysicalRepoPath`"" -OutputPath $googlePhysicalPath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "current-state" -Command "npx.cmd tsx scripts/inspect_mobile_mvp_current_state.ts --baseUrl=$BackendBaseUrl --summaryPath=`"$currentStateRepoPath`" --cycle=$Cycle" -OutputPath $currentStatePath))
 $steps.Add((Invoke-BatchCommand -Name "internal-exchange-readiness" -Command "npm.cmd run poly:internal-exchange-readiness -- --summaryPath `"$exchangeRepoPath`"" -OutputPath $exchangePath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "worldcup-match-scan" -Command "npm.cmd run inspect:polymarket-worldcup-matches -- --output `"$matchScanRepoPath`"" -OutputPath $matchScanPath))
@@ -176,6 +179,7 @@ $steps.Add((Invoke-BatchCommand -Name "provider-line-scan" -Command "npm.cmd run
 $backend = Read-JsonFile $backendPath
 $credential = Read-JsonFile $credentialPath
 $googleAuth = Read-JsonFile $googleAuthPath
+$googlePhysical = Read-JsonFile $googlePhysicalPath
 $currentState = Read-JsonFile $currentStatePath
 $exchange = Read-JsonFile $exchangePath
 $matchScan = Read-JsonFile $matchScanPath
@@ -200,6 +204,15 @@ if ($googleAuth -and $googleAuth.failedChecks) {
     }
   }
 }
+$googlePhysicalCallbackReady = [bool]($googlePhysical -and $googlePhysical.readyForRuntimeStart)
+$googlePhysicalFailedChecks = New-Object System.Collections.Generic.List[string]
+if ($googlePhysical -and $googlePhysical.failedChecks) {
+  foreach ($failedCheck in @($googlePhysical.failedChecks)) {
+    if (-not [string]::IsNullOrWhiteSpace([string]$failedCheck)) {
+      $googlePhysicalFailedChecks.Add([string]$failedCheck) | Out-Null
+    }
+  }
+}
 
 $p0Blockers = @()
 if (-not $backendReady) { $p0Blockers += "backend_or_local_database_not_ready" }
@@ -221,6 +234,13 @@ if ($googleAuth -and -not $googleAuthRuntimeReady) {
     $p1Blockers += "google_redirect_uri_mismatch"
   } else {
     $p1Blockers += "google_auth_runtime_preflight_has_warnings"
+  }
+}
+if ($googlePhysical -and -not $googlePhysicalCallbackReady) {
+  if ($googlePhysicalFailedChecks.Contains("NEXTAUTH_URL is reachable by a physical Android browser")) {
+    $p1Blockers += "google_physical_callback_not_phone_reachable"
+  } else {
+    $p1Blockers += "google_physical_callback_preflight_has_warnings"
   }
 }
 
@@ -249,6 +269,8 @@ $summary = [ordered]@{
     localRuntimeEnvReadyForManualServerMode = $localRuntimeServerModeReady
     googleAuthRuntimeReady = $googleAuthRuntimeReady
     googleAuthFailedChecks = $googleAuthFailedChecks.ToArray()
+    googlePhysicalCallbackReady = $googlePhysicalCallbackReady
+    googlePhysicalFailedChecks = $googlePhysicalFailedChecks.ToArray()
     mobileVisibleEventCount = if ($exchange) { $exchange.mobileExposure.mobileVisibleEventCount } else { $null }
     providerVisibleMarketCount = if ($exchange) { $exchange.providerMarkets.mobileVisibleCount } else { $null }
     providerLocalMmReadyMarketCount = if ($exchange) { $exchange.providerMarkets.localMmReadyCount } else { $null }
@@ -270,7 +292,7 @@ $summary = [ordered]@{
     "Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.",
     "Re-run this batch after provider imports, provider refresh, or line-market discovery changes.",
     "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token.",
-    "For real Google consent proof, fix any google_* P1 blocker first, then run npm run mobile:google-auth-runtime-preflight:strict before manual S23 login."
+    "For real Google consent proof, use a hosted or LAN NEXTAUTH_URL callback that the S23 browser can reach, register that callback in Google Cloud, then run npm run mobile:google-auth-runtime-preflight:strict before manual S23 login."
   )
 }
 

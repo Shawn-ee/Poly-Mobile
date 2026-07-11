@@ -2,6 +2,15 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Batch Readiness - Google Physical Callback Classification
+
+- Feature/page worked on: Portfolio/Account Google sign-in readiness harness.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/mobile_internal_readiness_batch.ps1` now runs a second Google preflight with `-RequirePhysicalDeviceCallback` and records `googlePhysicalCallbackReady` plus `googlePhysicalFailedChecks`.
+- User interactions supported: none changed directly. The batch now distinguishes local backend Google route readiness from real S23 browser consent readiness.
+- State transitions: none changed in mobile runtime, backend OAuth routes, SecureStore persistence, logout, or trading state.
+- Known limitations: the current local callback is `127.0.0.1`, so real S23 browser consent remains P1 until a hosted or LAN callback is used and registered in Google Cloud.
+
 ## Batch Readiness - Google Preflight Backend Origin Alignment
 
 - Feature/page worked on: Portfolio/Account Google sign-in readiness harness.

@@ -25,6 +25,7 @@ docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-sum
 - Local backend/Docker/Postgres readiness.
 - Mobile credential readiness.
 - Google auth runtime preflight without printing Google credentials.
+- Google physical-device callback preflight without printing Google credentials.
 - Current MVP route shape for `mobileMvpMatches=1`.
 - Provider-backed Regulation Winner plus contract-shaped line-market state.
 - Provider/internal exchange readiness.
@@ -46,6 +47,7 @@ Known provider availability gaps are tracked as P1, not P0:
 - provider/internal exchange not local-MM-ready
 - manual server mode missing an ambient `EXPO_PUBLIC_API_KEY`
 - Google auth runtime warnings such as a callback/redirect URI mismatch
+- Google physical callback warnings such as a local `127.0.0.1` callback that the S23 browser cannot reach
 
 This is intentional. The Local MVP fake-token user flow remains testable with contract-shaped line markets while provider-backed breadth and line parity remain open.
 
@@ -106,6 +108,8 @@ The batch command runs the non-strict preflight and writes `google-auth-runtime-
 The Google summary includes URL-only diagnostics, not Google credentials: `expectedCallback`, `observedGoogleRedirectUri`, `redirectUriOriginMatches`, `redirectUriPathMatches`, and `redirectUriMatchesExpected`. Use those fields to set `NEXTAUTH_URL` and the Google Cloud Authorized redirect URI to the same callback.
 
 For the consolidated batch, the Google preflight is pinned to the same `BackendBaseUrl` the batch is testing. This prevents a stale local `.env` `NEXTAUTH_URL` from causing a false mismatch while a correctly configured internal-beta backend is already running on another port.
+
+The batch also runs a physical-device callback preflight. A local runtime callback such as `http://127.0.0.1:3002/api/auth/google/callback` can be valid for backend route testing while still being unsuitable for real S23 browser consent. In that case the batch keeps Local MVP trading ready, but records `google_physical_callback_not_phone_reachable` as P1 until the callback uses a hosted origin or LAN IP that the phone can reach.
 
 ## Why This Exists
 

@@ -29,6 +29,7 @@
 - If the configured backend reaches Google but `redirect_uri` does not match the configured callback, the batch records `google_redirect_uri_mismatch` as P1.
 - The preflight summary now includes URL-only mismatch diagnostics: `expectedCallback`, `observedGoogleRedirectUri`, `redirectUriOriginMatches`, `redirectUriPathMatches`, and `redirectUriMatchesExpected`.
 - The consolidated batch passes its `BackendBaseUrl` as the expected `NEXTAUTH_URL` for this preflight, so local internal-beta readiness is checked against the backend under test rather than a stale `.env` origin.
+- The batch separately records physical-device callback readiness through `googlePhysicalCallbackReady` and `googlePhysicalFailedChecks`. A localhost/127.0.0.1 callback can pass local route readiness but still fail S23 browser consent readiness.
 - No mobile data contract changed: mobile still opens backend `/api/auth/google/start` and stores only the returned Holiwyn API key after a successful callback.
 - Remaining P1 setup gap: real S23 Google consent still depends on registering the exact `NEXTAUTH_URL/api/auth/google/callback` in Google Cloud and using a callback origin reachable by the phone browser.
 
