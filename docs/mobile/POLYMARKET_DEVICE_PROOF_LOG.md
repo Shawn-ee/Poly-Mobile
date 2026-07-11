@@ -2942,3 +2942,12 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Flow covered by runtime/source proof: configured backend auth origin -> `/api/auth/google/start` -> no-redirect HTTP check -> Google Location header -> `redirect_uri` checked against `NEXTAUTH_URL/api/auth/google/callback`.
 - Result: PASS for runtime preflight/source scope.
 - Remaining P1: run strict preflight and real S23 consent proof when the phone is visible and the callback origin is reachable from Android.
+
+# Cycle VW - Home Copy Contract Cleanup
+
+- Device: Samsung S23 `SM_S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`.
+- Flow covered by source/device proof: Home Local MVP component contract -> World Cup / Matches / live-count feed remains the only Home surface -> stale search/filter/today copy props removed from Home -> match-only empty state replaces stale search empty-state copy.
+- Preflight: `npm run preflight:s23-proof` passed after the S23 returned to ADB.
+- Proof command: `npm run proof:s23:home`.
+- Evidence: screenshot `docs/mobile/screenshots/cycle-VW-home-copy-contract-cleanup/cycle-VW-home.png`; XML `docs/mobile/harness/cycle-VW-home-copy-contract-cleanup/cycle-VW-home.xml`; intermediate Expo-menu-dismiss hierarchy `docs/mobile/harness/cycle-VW-home-copy-contract-cleanup/cycle-VW-home-expo-menu.xml`.
+- Result: PASS. S23 proof shows World Cup, Matches, 3 matches, 1 live, and no Home search/filter/account controls, Trending, stale search empty-state copy, or Expo developer-menu overlay labels.

@@ -7555,3 +7555,17 @@ Remaining P1:
 - Android proof: not rerun because `adb devices -l` showed no attached device.
 - Unresolved P0: 0 for runtime preflight/source scope.
 - Remaining P1: strict S23-ready preflight plus real Google consent proof.
+
+# Cycle VW Audit Gate - Home Copy Contract Cleanup
+
+- Scope: Home Local MVP match-only component contract cleanup.
+- Gate status: Pass.
+- P0 result: PASS.
+- Implementation proof: `mobile/src/components/HomeScreen.tsx` no longer requires stale `marketSearch`, `clearSearch`, `searchAll`, `searchLive`, or `today` copy fields after the Home page search/filter controls were removed; Home empty state now uses match-only copy instead of search copy.
+- Contract proof: `npm run test:mobile-api -- mobile/src/__tests__/s23HomeProofContract.test.ts mobile/src/__tests__/s23ProofPreflightContract.test.ts mobile/src/__tests__/homeLocalMvpFocusContract.test.ts` passed.
+- Type proof: `cd mobile && npm run typecheck` passed inside `npm run proof:s23:home`.
+- Android proof: passed on Samsung S23 `SM_S911U1`, device `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`.
+- Visible proof: `docs/mobile/screenshots/cycle-VW-home-copy-contract-cleanup/cycle-VW-home.png`.
+- XML proof: `docs/mobile/harness/cycle-VW-home-copy-contract-cleanup/cycle-VW-home.xml` shows World Cup, Matches, 3 matches, 1 live, and rejects Home search/filter/account controls, Trending, stale search empty-state copy, and Expo developer-menu overlay labels.
+- Unresolved P0: 0.
+- Remaining P1: none for this cleanup scope. Real provider-backed Spread/Totals/Team Total rows remain a separate provider-data gap.
