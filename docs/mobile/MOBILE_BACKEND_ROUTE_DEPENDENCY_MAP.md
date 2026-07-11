@@ -2,6 +2,15 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle BATCHSTART - Internal MVP S23 Startup Path
+
+Cycle BATCHSTART changes the tester startup contract only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Local MVP S23 startup command | `npm run mobile:internal-mvp:start`; wrapper for `scripts/start_poly_mobile_rehearsal.ps1 -CreateMobileDevCredential -RestartExpo -SkipSnapshotWatch -SkipBots` | Local startup command | Local backend/DB plus generated local mobile API credential | None from user; script generates server-mode env for Expo | Runtime summary redacts mobile API key and records backend health URL, LAN API base, started/skipped processes, and selected event slugs | Existing dev credential user/API key tables through `scripts/create_mobile_dev_credential.ts`; existing `Event`, `Market`, `Outcome`, order/portfolio tables for manual flow | No frontend mock fallback for this command; the app is started in server market/order mode. Local MVP line markets remain contract-shaped backend fixtures when provider lines are unavailable | None for startup. Provider-backed exchange remains P1 until a real accepting-order World Cup match book or attach-ready line market exists. |
+| Manual S23 proof route stack | `GET /api/events`; `GET /api/mobile/events/:slug/live-detail`; `POST /api/orders`; `GET /api/portfolio`; `GET /api/portfolio/history`; optional account route `GET /api/profile/summary` | Existing route stack | Public browse routes plus bearer Holiwyn API key for order/portfolio/profile sync | Existing ticket/order request body with `marketId`, `outcomeId`, `side`, amount/quantity fields; route-owned portfolio/profile requests | Home match cards, Event Detail outcome/line identity, fake-token order result, Portfolio positions/orders/history, account/profile summary | Existing event/market/outcome/provider identity fields; user/API credential; order, position, activity/history models | Local MVP spread/totals/team-total line rows remain contract fixtures but keep backend-shaped IDs and source metadata | Real provider-backed spread/totals/team-total and usable provider order books are still unavailable for the current World Cup match flow. |
+
 ## Batch Readiness - Provider Unavailable Classification
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

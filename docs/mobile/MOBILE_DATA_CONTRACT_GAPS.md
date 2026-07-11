@@ -1,5 +1,14 @@
 # Mobile Data Contract Gaps
 
+## Cycle BATCHSTART - Internal MVP S23 Startup Path
+
+- No new backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider contract changed.
+- The new startup contract is operational: `mobile:internal-mvp:start` must start Expo in server market/order mode with a generated local-only Holiwyn mobile API credential, while leaving snapshot watch and local-maker bots off.
+- Mobile still depends on the existing route stack for the Local MVP manual flow: `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history`, and optional `/api/profile/summary`.
+- The generated local API credential remains a Holiwyn API key, not a Google token, and must stay in `.runtime` or process environment only.
+- Current Local MVP line-market data remains contract-shaped backend fixture data with stable `marketId`, `outcomeId`, `marketType`, `period`, `line`, `side`, `referenceSource`, and price/probability fields.
+- Remaining P1 provider data gaps are unchanged: no usable accepting-order Polymarket World Cup match books, no safe provider snapshot for local-MM seeding, and no attach-ready Polymarket spread/totals/team-total line markets.
+
 ## Batch Readiness - Provider Unavailable Classification
 
 - The batch now separates provider setup failure from external provider unavailability.
