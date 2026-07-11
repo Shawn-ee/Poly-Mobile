@@ -36,6 +36,8 @@ const evidence = {
   cleanup: "docs/mobile/harness/cycle-current-mobile-backend-position-order-cleanup-after.json",
   portfolioScreenshot: "docs/mobile/screenshots/cycle-current-holiwyn-server-position-fallback-order-portfolio.png",
   ticketScreenshot: "docs/mobile/screenshots/cycle-current-holiwyn-server-position-fallback-order-ticket.png",
+  internalReadinessBatch: "docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json",
+  internalReadinessGapList: "docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md",
 };
 
 const readJson = <T,>(file: string): T | null => {
@@ -48,6 +50,33 @@ const readJson = <T,>(file: string): T | null => {
 
 const finalSignoff = readJson<{ qaSignoff?: string; reviewSignoff?: string; unresolvedP0GapCount?: number }>(evidence.finalSignoff);
 const samsungApkSmoke = readJson<{ ready?: boolean; status?: string; blocker?: string }>(evidence.samsungApk);
+const internalReadiness = readJson<{
+  readiness?: {
+    localMvpReadyForInternalTesting?: boolean;
+    providerBackedExchangeReady?: boolean;
+    backendReady?: boolean;
+    dbContainerHealthy?: boolean;
+    s23Connected?: boolean;
+    rootTypecheckReady?: boolean;
+    jestCiReady?: boolean;
+    mobileTypecheckReady?: boolean;
+  };
+  blockers?: {
+    p0?: string[];
+    p1?: string[];
+  };
+}>(evidence.internalReadinessBatch);
+const internalReadinessP0Count = internalReadiness?.blockers?.p0?.length ?? 0;
+const internalReadinessP1Count = internalReadiness?.blockers?.p1?.length ?? 0;
+const localMvpBatchReady =
+  internalReadiness?.readiness?.localMvpReadyForInternalTesting === true &&
+  internalReadiness?.readiness?.backendReady === true &&
+  internalReadiness?.readiness?.dbContainerHealthy === true &&
+  internalReadiness?.readiness?.s23Connected === true &&
+  internalReadiness?.readiness?.rootTypecheckReady === true &&
+  internalReadiness?.readiness?.jestCiReady === true &&
+  internalReadiness?.readiness?.mobileTypecheckReady === true &&
+  internalReadinessP0Count === 0;
 const hasPassingFinalSignoff =
   finalSignoff?.qaSignoff === "pass" &&
   finalSignoff.reviewSignoff === "pass" &&
@@ -117,6 +146,25 @@ const criteria: Criterion[] = [
     notes: "Cycles 277-279 are documented and locally merged; latest cleanup and proof screenshots are recorded.",
   },
   {
+    id: "dod-current-local-mvp-batch",
+    criterion: "Current Local MVP retail flow is ready for internal testing under the latest batch gate.",
+    status: localMvpBatchReady ? "verified" : "blocked",
+    evidence: [evidence.internalReadinessBatch, evidence.internalReadinessGapList],
+    notes: localMvpBatchReady
+      ? "Latest batch reports backend, DB, S23, root typecheck, Jest CI, mobile typecheck, and committed S23 proof aggregation ready with zero P0 blockers."
+      : "Latest batch has a P0 blocker or missing readiness evidence; do not start manual internal testing until the batch passes.",
+  },
+  {
+    id: "dod-provider-polymarket-parity",
+    criterion: "Provider-backed Polymarket match/line parity is current, tradable, and not relying on contract fixtures for MVP line markets.",
+    status: internalReadiness?.readiness?.providerBackedExchangeReady === true && internalReadinessP1Count === 0 ? "verified" : "partial",
+    evidence: [evidence.internalReadinessBatch, evidence.internalReadinessGapList],
+    notes:
+      internalReadiness?.readiness?.providerBackedExchangeReady === true && internalReadinessP1Count === 0
+        ? "Provider-backed exchange readiness has no current P1 blockers."
+        : `Current batch still tracks ${internalReadinessP1Count} provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity.`,
+  },
+  {
     id: "dod-final-cycle",
     criterion: "Final cycle includes passing required harnesses, final QA report, final review report, final feature gap tracker, screenshots, and no unresolved P0 debt.",
     status: hasPassingFinalSignoff ? "verified" : "partial",
@@ -144,7 +192,7 @@ const counts = criteria.reduce<Record<Status, number>>(
   { verified: 0, partial: 0, blocked: 0 },
 );
 
-const readyToDeclareDone = counts.blocked === 0 && counts.partial === 0;
+const readyToDeclareDone = counts.blocked === 0 && counts.partial === 0 && internalReadinessP0Count === 0 && internalReadinessP1Count === 0;
 const summary = {
   ready: true,
   readyToDeclareDone,
@@ -154,6 +202,10 @@ const summary = {
   nextActions: readyToDeclareDone
     ? ["Declare mobile Definition of Done complete."]
     : [
+        ...(localMvpBatchReady ? [] : ["Fix current internal-readiness P0 blockers before manual Local MVP testing."]),
+        ...(internalReadinessP1Count === 0
+          ? []
+          : ["Keep Local MVP testing on the contract-shaped line-market flow; do not declare full Polymarket/provider parity until the provider P1 blockers clear."]),
         ...(hasPassingFinalSignoff ? [] : ["Run a final QA/review signoff pass and close or explicitly downgrade remaining P0 debt."]),
         ...(hasPassingSamsungApkSmoke ? [] : ["Generate or provide dist/holiwyn-preview.apk, then run npm run smoke:samsung:apk."]),
         "Keep Samsung server-order proof as the main real-device trading regression until the APK lane exists.",

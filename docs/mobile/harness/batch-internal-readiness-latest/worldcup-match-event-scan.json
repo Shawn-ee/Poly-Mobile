@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T10:38:58.368Z",
+  "generatedAt": "2026-07-11T10:48:07.841Z",
   "source": "gamma-api.polymarket.com/events",
   "readOnly": true,
   "scope": "world-cup-match-only-provider-breadth",
@@ -500,7 +500,7 @@
         "playerPropLike": true,
         "futuresLike": true,
         "marketCount": 41,
-        "usableMarketCount": 10,
+        "usableMarketCount": 11,
         "acceptingOrderMarketCount": 41,
         "sampleUsableMarket": {
           "slug": "will-kylian-mbappe-win-the-bronze-ball-at-the-2026-fifa-world-cup-20260603194939941",
@@ -511,9 +511,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.065,
-          "bestAsk": 0.088,
-          "spread": 0.023,
+          "bestBid": 0.069,
+          "bestAsk": 0.084,
+          "spread": 0.015,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -546,7 +546,7 @@
           "outcomeCount": 2,
           "tokenCount": 2,
           "bestBid": 0.193,
-          "bestAsk": 0.194,
+          "bestAsk": 0.198,
           "spread": 0.001,
           "usableBook": true,
           "rejectionReasons": []
@@ -651,35 +651,34 @@
         }
       },
       {
-        "slug": "world-cup-fair-play-award-winner-20260603201520240",
-        "title": "World Cup: Fair Play Award Winner",
+        "slug": "world-cup-golden-glove-winner-20260603195306910",
+        "title": "World Cup: Golden Glove Winner",
         "tags": [
           "soccer",
           "sports",
           "world-cup",
           "fifa-world-cup",
-          "2026-fifa-world-cup",
-          "world-cup-awards"
+          "2026-fifa-world-cup"
         ],
         "matchLike": false,
         "worldCupRelevant": true,
-        "playerPropLike": false,
+        "playerPropLike": true,
         "futuresLike": true,
-        "marketCount": 54,
+        "marketCount": 41,
         "usableMarketCount": 6,
-        "acceptingOrderMarketCount": 54,
+        "acceptingOrderMarketCount": 41,
         "sampleUsableMarket": {
-          "slug": "will-cape-verde-win-the-fair-play-award-for-the-2026-fifa-world-cup-20260603201521197",
-          "question": "Will Cape Verde win the Fair Play Award for the 2026 FIFA World Cup?",
+          "slug": "will-mike-maignan-win-the-golden-glove-at-the-2026-fifa-world-cup-20260603195307476",
+          "question": "Will Mike Maignan win the Golden Glove at the 2026 FIFA World Cup?",
           "acceptingOrders": true,
           "active": true,
           "closed": false,
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.019,
-          "bestAsk": 0.028,
-          "spread": 0.009,
+          "bestBid": 0.31,
+          "bestAsk": 0.33,
+          "spread": 0.01,
           "usableBook": true,
           "rejectionReasons": []
         }

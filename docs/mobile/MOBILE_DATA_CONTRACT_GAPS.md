@@ -1,5 +1,13 @@
 # Mobile Data Contract Gaps
 
+## Cycle DODCURRENT - Batch-Aware Final Parity Sweep
+
+- No new mobile/backend runtime data contract changed.
+- The final parity sweep now consumes the latest batch readiness contract: `readiness.localMvpReadyForInternalTesting`, `readiness.providerBackedExchangeReady`, validation booleans, and `blockers.p0`/`blockers.p1`.
+- This closes a reporting mismatch where older final sweep/signoff artifacts could be read as full completion even though the current batch still tracks provider-backed Polymarket parity P1 blockers.
+- Current Local MVP readiness remains verified for internal testing, but full provider-backed Polymarket parity remains partial while line markets are contract fixtures and provider books/snapshots are unavailable or unsafe.
+- Remaining data gaps are unchanged: real accepting-order Polymarket World Cup match books, safe provider snapshots for local-MM seeding, and attach-ready Polymarket spread/totals/team-total line markets.
+
 ## Cycle BATCHSTART - Internal MVP S23 Startup Path
 
 - No new backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider contract changed.

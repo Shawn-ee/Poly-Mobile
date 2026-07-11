@@ -1,13 +1,13 @@
 # Mobile Final Parity Sweep
 
-Generated: 2026-07-02T14:41:03.391Z
+Generated: 2026-07-11T10:48:38.710Z
 
-Ready to declare done: Yes
+Ready to declare done: No
 
 Counts:
 
-- Verified: 10
-- Partial: 0
+- Verified: 11
+- Partial: 1
 - Blocked: 0
 
 | ID | Status | Criterion | Notes |
@@ -20,13 +20,12 @@ Counts:
 | dod-account-search-localization | verified | Login shell, Search, and English/Simplified Chinese switching work. | Feature tracker marks account shell, search, preference persistence, and bilingual switching as verified. |
 | dod-brand-safety | verified | No copied Polymarket assets or branding. | Holiwyn branding is used; docs preserve the reference-only Polymarket guardrail. |
 | dod-reports | verified | Screenshots, loop reports, technical debt, and branch merge status are up to date. | Cycles 277-279 are documented and locally merged; latest cleanup and proof screenshots are recorded. |
+| dod-current-local-mvp-batch | verified | Current Local MVP retail flow is ready for internal testing under the latest batch gate. | Latest batch reports backend, DB, S23, root typecheck, Jest CI, mobile typecheck, and committed S23 proof aggregation ready with zero P0 blockers. |
+| dod-provider-polymarket-parity | partial | Provider-backed Polymarket match/line parity is current, tradable, and not relying on contract fixtures for MVP line markets. | Current batch still tracks 4 provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity. |
 | dod-final-cycle | verified | Final cycle includes passing required harnesses, final QA report, final review report, final feature gap tracker, screenshots, and no unresolved P0 debt. | Final QA/review signoff passed and the feature tracker has zero unresolved P0 gaps. |
 | dod-apk-lane | verified | Samsung QA is moving off Expo Go toward dev build/APK. | APK artifact exists and the Samsung APK smoke installed, launched, verified foreground focus, and found no crash dialog. |
 
 ## Next Actions
 
-- Declare mobile Definition of Done complete.
-
-## 2026-07-03 Completion Addendum
-
-The later whole-app parity gate also passed with 0 unresolved P0 gaps. See `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` and `docs/mobile/MOBILE_FINAL_COMPLETION_AUDIT_2026-07-03.md`.
+- Keep Local MVP testing on the contract-shaped line-market flow; do not declare full Polymarket/provider parity until the provider P1 blockers clear.
+- Keep Samsung server-order proof as the main real-device trading regression until the APK lane exists.

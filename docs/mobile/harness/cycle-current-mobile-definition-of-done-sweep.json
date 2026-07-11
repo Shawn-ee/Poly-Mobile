@@ -1,12 +1,12 @@
 {
   "ready": true,
-  "readyToDeclareDone": true,
+  "readyToDeclareDone": false,
   "counts": {
-    "verified": 10,
-    "partial": 0,
+    "verified": 11,
+    "partial": 1,
     "blocked": 0
   },
-  "generatedAt": "2026-07-02T14:41:03.391Z",
+  "generatedAt": "2026-07-11T10:48:38.710Z",
   "criteria": [
     {
       "id": "dod-android-runtime",
@@ -90,6 +90,26 @@
       "notes": "Cycles 277-279 are documented and locally merged; latest cleanup and proof screenshots are recorded."
     },
     {
+      "id": "dod-current-local-mvp-batch",
+      "criterion": "Current Local MVP retail flow is ready for internal testing under the latest batch gate.",
+      "status": "verified",
+      "evidence": [
+        "docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json",
+        "docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md"
+      ],
+      "notes": "Latest batch reports backend, DB, S23, root typecheck, Jest CI, mobile typecheck, and committed S23 proof aggregation ready with zero P0 blockers."
+    },
+    {
+      "id": "dod-provider-polymarket-parity",
+      "criterion": "Provider-backed Polymarket match/line parity is current, tradable, and not relying on contract fixtures for MVP line markets.",
+      "status": "partial",
+      "evidence": [
+        "docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json",
+        "docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md"
+      ],
+      "notes": "Current batch still tracks 4 provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity."
+    },
+    {
       "id": "dod-final-cycle",
       "criterion": "Final cycle includes passing required harnesses, final QA report, final review report, final feature gap tracker, screenshots, and no unresolved P0 debt.",
       "status": "verified",
@@ -114,6 +134,7 @@
     }
   ],
   "nextActions": [
-    "Declare mobile Definition of Done complete."
+    "Keep Local MVP testing on the contract-shaped line-market flow; do not declare full Polymarket/provider parity until the provider P1 blockers clear.",
+    "Keep Samsung server-order proof as the main real-device trading regression until the APK lane exists."
   ]
 }

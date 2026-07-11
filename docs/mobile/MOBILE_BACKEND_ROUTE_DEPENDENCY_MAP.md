@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle DODCURRENT - Batch-Aware Final Parity Sweep
+
+Cycle DODCURRENT changes audit reporting only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Final parity sweep | Local command `npm run mobile:definition-of-done-sweep`; reads `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json` | Local proof/report command | None beyond local repo access | None | Batch fields `readiness.localMvpReadyForInternalTesting`, `readiness.providerBackedExchangeReady`, validation booleans, and `blockers.p0`/`blockers.p1` | No database access | None; it consumes committed readiness evidence only | None for the report. Full provider parity still needs the batch P1 provider blockers cleared before completion can be declared. |
+
 ## Cycle BATCHSTART - Internal MVP S23 Startup Path
 
 Cycle BATCHSTART changes the tester startup contract only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.

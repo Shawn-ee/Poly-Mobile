@@ -2,6 +2,15 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle DODCURRENT - Batch-Aware Final Parity Sweep
+
+- Feature/page worked on: Definition of Done/final parity sweep reporting.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/mobile_definition_of_done_sweep.ts` now reads `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json` and `docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md` before deciding whether the app can be declared done.
+- User interactions supported: none changed directly. The audit loop now distinguishes "Local MVP internal testing ready" from "full Polymarket/provider parity complete."
+- State transitions: none changed in app runtime, backend routes, order logic, Portfolio, provider mapping, or auth. This is a reporting/harness correction.
+- Known limitations: current final parity sweep is 11 verified, 1 partial, 0 blocked and `readyToDeclareDone=false` because provider-backed Polymarket match/line parity still has P1 blockers in the current batch.
+
 ## Cycle BATCHSTART - Internal MVP S23 Startup Path
 
 - Feature/page worked on: Local MVP internal testing startup and manual proof instructions.
