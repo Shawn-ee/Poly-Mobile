@@ -2,6 +2,18 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle S23LANSTART - S23 Internal MVP LAN Auth Startup
+
+- Feature/page worked on: Local MVP startup for S23 manual testing and Portfolio/Account Google entry readiness.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/start_poly_mobile_rehearsal.ps1`
+  - root `mobile:internal-mvp:start` package script.
+- User interactions supported: unchanged in-app. The S23 manual testing stack now starts with Expo and backend aligned to the same LAN-reachable origin, so the Portfolio account Google entry can use the same callback origin the phone can reach.
+- State transitions: `mobile:internal-mvp:start` now restarts the backend before Expo and sets backend `NEXTAUTH_URL` to the LAN mobile API/auth origin by default. The rehearsal summary records `backendAuthBaseUrl` and `expectedGoogleCallback`.
+- Proof: no-start startup validation passed with `-SkipBackend -SkipSnapshotWatch -SkipBots -SkipExpo`, proving the script no longer requires the bot repo when bots are skipped and that it emits matching `mobileApiBaseUrl`, `backendAuthBaseUrl`, and `expectedGoogleCallback` fields. This startup wiring does not require new screenshots because no visible UI changed.
+- Known limitations: real Google consent still requires the reported callback URL to be registered in Google Cloud. This does not change order routes, provider discovery, deposits, withdrawals, order book, chat, live stats, or social features.
+
 ## Cycle PROVIDERLINEDECISION - Provider Line Discovery Decision Summary
 
 - Feature/page worked on: Provider-backed line-market discovery proof for the Local MVP Event Detail line markets.

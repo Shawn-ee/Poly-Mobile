@@ -132,6 +132,14 @@ cd mobile
 npm run start -- --host lan --port 8081
 ```
 
+For the normal one-command S23 path, prefer:
+
+```powershell
+npm run mobile:internal-mvp:start
+```
+
+That command restarts the backend and Expo so both use the same LAN origin for the mobile API and Google callback. Its rehearsal summary records `backendAuthBaseUrl` and `expectedGoogleCallback`; register that exact callback in Google Cloud before manual S23 consent proof.
+
 ## Account / Google Runtime Preflight
 
 The Portfolio account entry and Google sign-in runtime check can be run from the repo root:

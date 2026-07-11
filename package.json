@@ -76,7 +76,7 @@
     "mobile:backend-readiness:summary": "powershell -ExecutionPolicy Bypass -File scripts/mobile_backend_readiness.ps1 -SummaryPath docs/mobile/harness/cycle-current-mobile-backend-readiness.json",
     "mobile:backend-readiness:start": "powershell -ExecutionPolicy Bypass -File scripts/mobile_backend_readiness.ps1 -StartDb",
     "mobile:internal-beta-backend:start": "powershell -ExecutionPolicy Bypass -File scripts/start_holiwyn_internal_beta_backend.ps1",
-    "mobile:internal-mvp:start": "powershell -ExecutionPolicy Bypass -File scripts/start_poly_mobile_rehearsal.ps1 -CreateMobileDevCredential -RestartExpo -SkipSnapshotWatch -SkipBots",
+    "mobile:internal-mvp:start": "powershell -ExecutionPolicy Bypass -File scripts/start_poly_mobile_rehearsal.ps1 -CreateMobileDevCredential -RestartBackend -RestartExpo -SkipSnapshotWatch -SkipBots",
     "mobile:credential-readiness": "powershell -ExecutionPolicy Bypass -File scripts/mobile_credential_readiness.ps1",
     "mobile:credential-readiness:summary": "powershell -ExecutionPolicy Bypass -File scripts/mobile_credential_readiness.ps1 -SummaryPath docs/mobile/harness/cycle-current-mobile-credential-readiness.json",
     "mobile:mvp:inspect": "tsx scripts/inspect_mobile_mvp_current_state.ts --summaryPath=docs/mobile/harness/cycle-current-state-inspection/cycle-current-state-inspection.json",

@@ -2,6 +2,15 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle S23LANSTART - S23 Internal MVP LAN Auth Startup
+
+Cycle S23LANSTART changes startup/runtime environment wiring only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| S23 internal MVP starter | `npm run mobile:internal-mvp:start`; wrapper for `scripts/start_poly_mobile_rehearsal.ps1 -CreateMobileDevCredential -RestartBackend -RestartExpo -SkipSnapshotWatch -SkipBots` | Local startup command | Local backend/DB plus generated local mobile API credential | None from user; script generates a local mobile API key when needed | Rehearsal summary now records `mobileApiBaseUrl`, `backendAuthBaseUrl`, `expectedGoogleCallback`, `restartBackend`, started/skipped processes, and redacted credential status | Existing dev credential/API key tables through `scripts/create_mobile_dev_credential.ts`; existing auth route config through `NEXTAUTH_URL` | No frontend mock fallback for startup; the app runs in server market/order mode | None for startup. Google Cloud must still authorize the exact reported callback URL before real S23 consent can pass. |
+| Portfolio account Google entry | `/api/auth/google/start` | `GET` route opened by mobile account entry | None for start; callback creates/links backend account session | Query params include `returnTo` and mobile return URL | Redirect `redirect_uri` now should match the LAN `NEXTAUTH_URL/api/auth/google/callback` when using the one-command S23 starter | OAuth state/callback tables or cookies owned by backend auth implementation | None | Real consent remains an external Google Cloud setup step, not a schema gap. |
+
 ## Cycle PROVIDERLINEDECISION - Provider Line Discovery Decision Summary
 
 Cycle PROVIDERLINEDECISION changes provider proof reporting only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.

@@ -1,5 +1,13 @@
 # Mobile Data Contract Gaps
 
+## Cycle S23LANSTART - S23 Internal MVP LAN Auth Startup
+
+- No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider contract changed.
+- The startup summary contract now includes `backendAuthBaseUrl`, `expectedGoogleCallback`, and `restartBackend`, so manual testers can align S23 Expo, backend auth, and Google Cloud callback setup from one non-secret artifact.
+- `mobile:internal-mvp:start` now defaults backend `NEXTAUTH_URL` to the same LAN origin as `EXPO_PUBLIC_API_BASE_URL`, reducing the mismatch where the phone used LAN API traffic but Google auth emitted a localhost callback.
+- Remaining setup gap: real Google consent still requires the exact reported `expectedGoogleCallback` to be registered in Google Cloud. This is external configuration, not a mobile/server schema gap.
+- Provider data gaps are unchanged: provider-backed match books and line markets remain P1 while Local MVP uses contract-shaped line fixtures.
+
 ## Cycle PROVIDERLINEDECISION - Provider Line Discovery Decision Summary
 
 - No new mobile/backend runtime data contract changed.

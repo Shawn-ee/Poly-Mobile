@@ -7,8 +7,10 @@ param(
   [string]$BotRoot = "",
   [string]$AdminUserId = $env:POLY_DEV_ADMIN_USER_ID,
   [string]$ApiBaseUrl = "",
+  [string]$AuthBaseUrl = "",
   [string]$MobileApiKey = $env:EXPO_PUBLIC_API_KEY,
   [switch]$CreateMobileDevCredential,
+  [switch]$RestartBackend,
   [switch]$RestartExpo,
   [switch]$SkipBackend,
   [switch]$SkipSnapshotWatch,
@@ -19,11 +21,18 @@ param(
 $ErrorActionPreference = "Stop"
 
 $AppRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
-if (-not $BotRoot.Trim()) {
-  $BotRoot = (Resolve-Path (Join-Path $AppRoot "..\poly-bot")).Path
-}
-if (-not (Test-Path $BotRoot)) {
-  throw "poly-bot repo was not found at $BotRoot"
+if (-not $SkipBots) {
+  if (-not $BotRoot.Trim()) {
+    $defaultBotRoot = Join-Path $AppRoot "..\poly-bot"
+    if (Test-Path $defaultBotRoot) {
+      $BotRoot = (Resolve-Path $defaultBotRoot).Path
+    } else {
+      throw "poly-bot repo was not found at $defaultBotRoot. Pass -BotRoot or use -SkipBots for Local MVP startup."
+    }
+  }
+  if (-not (Test-Path $BotRoot)) {
+    throw "poly-bot repo was not found at $BotRoot"
+  }
 }
 
 $RuntimeDir = Join-Path $AppRoot ".runtime\rehearsal"
@@ -183,6 +192,11 @@ if (-not $ApiBaseUrl.Trim()) {
   }
   $ApiBaseUrl = "http://$lanIp`:$BackendPort"
 }
+$resolvedAuthBaseUrl = if ($AuthBaseUrl.Trim()) {
+  $AuthBaseUrl.Trim().TrimEnd("/")
+} else {
+  $ApiBaseUrl.Trim().TrimEnd("/")
+}
 
 if (-not $AdminUserId.Trim()) {
   $AdminUserId = Get-LocalAdminUserId
@@ -200,16 +214,25 @@ $backendHealthUrl = "http://127.0.0.1:$BackendPort/api/health"
 
 if ($SkipBackend) {
   $skipped += [pscustomobject]@{ name = "backend"; reason = "skip flag" }
-} elseif (Test-HttpOk $backendHealthUrl) {
+} elseif ((Test-HttpOk $backendHealthUrl) -and -not $RestartBackend) {
   $skipped += [pscustomobject]@{ name = "backend"; reason = "already healthy"; url = $backendHealthUrl }
 } else {
+  $stoppedBackend = @()
+  if ((Test-PortListening $BackendPort) -and $RestartBackend) {
+    $stoppedBackend = @(Stop-PortListeners $BackendPort)
+  }
 $backendCommand = @"
 `$env:REFERENCE_STALE_MS='90000'
 `$env:INTERNAL_TRADING_BETA_ENABLED='true'
 `$env:TRADING_KILL_SWITCH='false'
+`$env:NEXTAUTH_URL='$resolvedAuthBaseUrl'
 npm run dev -- -p $BackendPort
 "@
-  $started += Start-RehearsalProcess -Name "poly-backend-$BackendPort" -WorkingDirectory $AppRoot -Command $backendCommand
+  $startedBackend = Start-RehearsalProcess -Name "poly-backend-$BackendPort" -WorkingDirectory $AppRoot -Command $backendCommand
+  if ($stoppedBackend.Count -gt 0) {
+    $startedBackend | Add-Member -NotePropertyName stoppedPriorListeners -NotePropertyValue $stoppedBackend
+  }
+  $started += $startedBackend
 }
 
 if ($SkipSnapshotWatch) {
@@ -279,6 +302,8 @@ $summary = [pscustomobject]@{
   generatedAt = (Get-Date).ToUniversalTime().ToString("o")
   backendHealthUrl = $backendHealthUrl
   mobileApiBaseUrl = $ApiBaseUrl
+  backendAuthBaseUrl = $resolvedAuthBaseUrl
+  expectedGoogleCallback = "$resolvedAuthBaseUrl/api/auth/google/callback"
   mobileApiKey = if ($MobileApiKey.Trim()) { "configured" } else { "missing" }
   createdMobileCredential = if ($mobileCredential) {
     [pscustomobject]@{
@@ -294,6 +319,7 @@ $summary = [pscustomobject]@{
   eventSlugs = $EventSlugs
   durationSeconds = $DurationSeconds
   pollMs = $PollMs
+  restartBackend = [bool]$RestartBackend
   restartExpo = [bool]$RestartExpo
   started = $started
   skipped = $skipped

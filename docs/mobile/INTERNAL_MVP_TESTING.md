@@ -40,9 +40,10 @@ npm run mobile:internal-mvp:start
 This starts the local internal MVP stack for physical Android testing:
 
 - creates or refreshes a local mobile dev credential
-- starts the backend if it is not already healthy
+- restarts the backend on port `3002` with the same LAN origin used by the phone
 - starts Expo in server mode on LAN
 - points mobile at the LAN-reachable backend
+- sets the expected Google callback to `http://<lan-ip>:3002/api/auth/google/callback`
 - keeps snapshot watch and local-maker bots off
 
 The older command still works as an alias:
@@ -68,6 +69,8 @@ npm run start -- --host lan --port 8081
 ```
 
 The generated API key stays under `.runtime` and must not be committed.
+
+For S23 Google login testing, use the LAN origin reported by the startup summary as the Google Cloud Authorized redirect URI. A localhost callback can pass backend route checks, but the physical phone cannot complete browser consent against `127.0.0.1`.
 
 ## What To Test Manually
 
