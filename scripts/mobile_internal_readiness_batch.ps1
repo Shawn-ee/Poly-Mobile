@@ -271,14 +271,20 @@ if ($usableMatchCount -lt 1) { $p1Blockers += "no_usable_polymarket_worldcup_tea
 if ($attachReadyLineCount -lt 1) { $p1Blockers += "no_attach_ready_polymarket_worldcup_line_markets" }
 if ($credential -and -not $credential.readyForServerBackedSamsungProof) { $p1Blockers += "manual_server_mode_needs_generated_mobile_api_key" }
 if ($googleAuth -and -not $googleAuthRuntimeReady) {
-  if ($googleAuthFailedChecks.Contains("Google redirect_uri matches NEXTAUTH_URL callback")) {
+  if ($googleLanCallbackReady -and $googleAuthFailedChecks.Contains("Google redirect_uri matches NEXTAUTH_URL callback")) {
+    # A phone-ready backend intentionally emits a LAN callback while the localhost
+    # probe expects localhost. The LAN preflight is authoritative for S23 consent.
+  } elseif ($googleAuthFailedChecks.Contains("Google redirect_uri matches NEXTAUTH_URL callback")) {
     $p1Blockers += "google_redirect_uri_mismatch"
   } else {
     $p1Blockers += "google_auth_runtime_preflight_has_warnings"
   }
 }
 if ($googlePhysical -and -not $googlePhysicalCallbackReady) {
-  if ($googlePhysicalFailedChecks.Contains("NEXTAUTH_URL is reachable by a physical Android browser")) {
+  if ($googleLanCallbackReady -and $googlePhysicalFailedChecks.Contains("NEXTAUTH_URL is reachable by a physical Android browser")) {
+    # The localhost physical probe is expected to fail when the LAN callback is
+    # the active S23-ready path. Keep the failed check in the raw JSON only.
+  } elseif ($googlePhysicalFailedChecks.Contains("NEXTAUTH_URL is reachable by a physical Android browser")) {
     $p1Blockers += "google_physical_callback_not_phone_reachable"
   } else {
     $p1Blockers += "google_physical_callback_preflight_has_warnings"

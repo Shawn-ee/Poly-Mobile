@@ -1,0 +1,39 @@
+{
+  "status": "healthy",
+  "port": 3002,
+  "healthUrl": "http://127.0.0.1:3002/api/health",
+  "lanBaseUrl": "http://172.16.200.14:3002",
+  "nextAuthUrl": "http://172.16.200.14:3002",
+  "internalTradingBetaEnabled": true,
+  "tradingKillSwitch": false,
+  "nextPublicInternalTradingBetaEnabled": true,
+  "polyBotsEnabled": true,
+  "polyBotsLiveTrading": true,
+  "polyBotsGlobalKillSwitch": false,
+  "liveSystemLiquidityEnabled": true,
+  "systemLiquidityDryRun": false,
+  "allowlistEmails": [
+    "system-liquidity-bot@local.test",
+    "holiwyn-mobile-dev@test.local",
+    "holiwyn-bot-admin@test.local"
+  ],
+  "stoppedListeners": [
+    {
+      "pid": 36752,
+      "port": 3002
+    }
+  ],
+  "startedProcess": {
+    "pid": 46168,
+    "port": 3002,
+    "stdout": "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\.runtime\\internal-beta-backend\\backend-3002.out.log",
+    "stderr": "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\.runtime\\internal-beta-backend\\backend-3002.err.log"
+  },
+  "intentionallyKeepsBackendRunning": true,
+  "notes": [
+    "This helper is for local fake-token internal MVP testing only.",
+    "It does not enable production trading or deposit/withdraw flows.",
+    "NEXTAUTH_URL is set to the local backend port by default so Google start/callback use the same local auth origin; pass -AuthBaseUrl to reuse a hosted backend auth origin.",
+    "Keep order book UI hidden; this only starts the backend route layer for simple ticket/order/portfolio proof."
+  ]
+}

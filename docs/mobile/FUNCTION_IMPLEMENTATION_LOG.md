@@ -12869,3 +12869,12 @@ Known limitations:
   - Full batch output writes `docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.json`.
 - Known limitations:
   - This does not complete real Google consent. The backend must be restarted with the LAN or hosted `NEXTAUTH_URL`, and that exact callback must be registered in Google Cloud before manual S23 consent can pass.
+
+# Batch Google LAN Callback Precedence
+
+- Feature/page worked on: internal readiness harness for Google/account runtime proof.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/mobile_internal_readiness_batch.ps1`.
+- User interactions supported: S23 Google consent setup is now reported from the phone-reachable LAN preflight when that proof passes.
+- State transitions: localhost Google preflight mismatch remains visible in raw diagnostics, but no longer creates a P1 blocker when the LAN callback proof is ready.
+- Known limitations: real consent still requires the exact LAN or hosted callback URL to be registered in Google Cloud before manual browser login.

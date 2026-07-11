@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T08:47:59.8767159Z",
+  "generatedAt": "2026-07-11T08:58:01.4693397Z",
   "scope": "mobile-internal-readiness-batch",
   "cycle": "BATCHREADINESS",
   "backendBaseUrl": "http://127.0.0.1:3002",
@@ -120,7 +120,7 @@
   "environmentHealth": {
     "git": {
       "branch": "main",
-      "status": "## main...poly-mobile/main\n M docs/mobile/FUNCTION_IMPLEMENTATION_LOG.md\n M docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md\n M docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md\n M package.json\n M scripts/mobile_internal_readiness_batch.ps1\n?? docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.json\n?? scripts/mobile_google_lan_auth_preflight.ps1",
+      "status": "## main...poly-mobile/main\n M docs/mobile/FUNCTION_IMPLEMENTATION_LOG.md\n M docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md\n M docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.json\n M docs/mobile/harness/batch-internal-readiness-latest/google-auth-physical-callback-preflight.json\n M docs/mobile/harness/batch-internal-readiness-latest/google-auth-runtime-preflight.json\n M docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.json\n M docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json\n M docs/mobile/harness/batch-internal-readiness-latest/mobile-backend-readiness.json\n M docs/mobile/harness/batch-internal-readiness-latest/mobile-credential-readiness.json\n M docs/mobile/harness/batch-internal-readiness-latest/mobile-current-state-inspection.json\n M docs/mobile/harness/batch-internal-readiness-latest/provider-line-breadth-scan.json\n M docs/mobile/harness/batch-internal-readiness-latest/provider-snapshot-refresh.json\n M docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json\n M docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-event-scan.json\n M scripts/mobile_internal_readiness_batch.ps1\n?? docs/mobile/harness/batch-internal-readiness-latest/internal-beta-backend-lan-auth-restart.json",
       "worktreeClean": false
     },
     "android": {
@@ -137,7 +137,7 @@
       "backendPort3002Listening": true,
       "expoRunning": false,
       "proofPort8289Listening": false,
-      "listeningPortsJson": "{\"LocalPort\":3002,\"OwningProcess\":36752}"
+      "listeningPortsJson": "{\"LocalPort\":3002,\"OwningProcess\":37208}"
     },
     "bot": {
       "runningContinuously": false,
@@ -158,16 +158,17 @@
     "ambientApiKeyReadyForManualServerMode": false,
     "serverModeApiKeySource": "local-runtime-env",
     "localRuntimeEnvReadyForManualServerMode": true,
-    "googleAuthRuntimeReady": true,
-    "googleAuthFailedChecks": [],
-    "googlePhysicalCallbackReady": false,
-    "googlePhysicalFailedChecks": [
-      "NEXTAUTH_URL is reachable by a physical Android browser"
-    ],
-    "googleLanCallbackReady": false,
-    "googleLanFailedChecks": [
+    "googleAuthRuntimeReady": false,
+    "googleAuthFailedChecks": [
       "Google redirect_uri matches NEXTAUTH_URL callback"
     ],
+    "googlePhysicalCallbackReady": false,
+    "googlePhysicalFailedChecks": [
+      "NEXTAUTH_URL is reachable by a physical Android browser",
+      "Google redirect_uri matches NEXTAUTH_URL callback"
+    ],
+    "googleLanCallbackReady": true,
+    "googleLanFailedChecks": [],
     "mobileVisibleEventCount": 1,
     "providerVisibleMarketCount": 3,
     "providerLocalMmReadyMarketCount": 0,
@@ -185,9 +186,7 @@
       "provider_worldcup_match_books_unavailable_or_closed",
       "provider_mvp_match_snapshot_not_mm_safe",
       "no_usable_polymarket_worldcup_team_match_books",
-      "no_attach_ready_polymarket_worldcup_line_markets",
-      "google_physical_callback_not_phone_reachable",
-      "google_lan_callback_redirect_uri_mismatch"
+      "no_attach_ready_polymarket_worldcup_line_markets"
     ]
   },
   "interpretation": "Local MVP fake-token flow is ready for internal testing; provider-backed breadth/line/MM readiness remains tracked P1 debt.",

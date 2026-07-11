@@ -131,6 +131,8 @@ npm run mobile:google-auth-lan-preflight
 
 This detects the PC LAN IP, runs the same no-secret preflight with `NEXTAUTH_URL=http://<lan-ip>:3002`, and writes `google-auth-lan-callback-preflight.json`. If this reports a redirect mismatch, restart the backend with that LAN auth origin and register the exact callback URL in Google Cloud before attempting real S23 consent.
 
+When the LAN callback preflight passes, it becomes the authoritative Google callback readiness signal for S23 manual consent testing. The batch may still keep the localhost and localhost-physical probe results in raw JSON, but it should not report their expected localhost redirect mismatch as a P1 blocker while the LAN proof is passing.
+
 ## Why This Exists
 
 The loop should not keep reopening small source-label or one-screen proof cycles just to rediscover the same provider-state facts. This batch harness gives the Lead Agent one current-state command before choosing the next meaningful milestone.
