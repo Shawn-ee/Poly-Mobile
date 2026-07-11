@@ -1,5 +1,5 @@
 ﻿{
-    "generatedAt":  "2026-07-11T09:53:38.2947063Z",
+    "generatedAt":  "2026-07-11T10:09:06.7621846Z",
     "scope":  "mobile-internal-readiness-batch",
     "cycle":  "BATCHREADINESS",
     "backendBaseUrl":  "http://127.0.0.1:3002",
@@ -130,7 +130,7 @@
     "environmentHealth":  {
                               "git":  {
                                           "branch":  "main",
-                                          "status":  "## main...poly-mobile/main",
+                                          "status":  "## main...poly-mobile/main [ahead 1]",
                                           "worktreeClean":  true
                                       },
                               "android":  {
@@ -183,6 +183,66 @@
                                                 ],
                       "localMatchBreadthReady":  true,
                       "localMatchBreadthEventCount":  4,
+                      "s23LocalMvpDeviceProofReady":  true,
+                      "s23Proofs":  [
+                                        {
+                                            "name":  "filled-buy-history",
+                                            "summaryPath":  "docs/mobile/harness/cycle-XG-full-local-mvp-s23-flow/cycle-XG-current-mvp-s23-visible-flow.json",
+                                            "pass":  true,
+                                            "reason":  "pass",
+                                            "generatedAt":  "2026-07-11T09:32:05.5117425Z",
+                                            "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+                                            "model":  "SM-S911U1",
+                                            "eventSlug":  "argentina-vs-egypt",
+                                            "lineMarketGroupKey":  "spread",
+                                            "lineValue":  "1.5",
+                                            "lineOutcomeLabel":  "Egypt +1.5",
+                                            "missingArtifacts":  [
+
+                                                                 ],
+                                            "failedAssertions":  [
+
+                                                                 ]
+                                        },
+                                        {
+                                            "name":  "open-order-cancel",
+                                            "summaryPath":  "docs/mobile/harness/cycle-XH-open-order-cancel-s23-flow/cycle-XH-current-mvp-s23-visible-flow.json",
+                                            "pass":  true,
+                                            "reason":  "pass",
+                                            "generatedAt":  "2026-07-11T09:45:19.0371695Z",
+                                            "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+                                            "model":  "SM-S911U1",
+                                            "eventSlug":  "argentina-vs-egypt",
+                                            "lineMarketGroupKey":  "spread",
+                                            "lineValue":  "1.5",
+                                            "lineOutcomeLabel":  "Egypt +1.5",
+                                            "missingArtifacts":  [
+
+                                                                 ],
+                                            "failedAssertions":  [
+
+                                                                 ]
+                                        },
+                                        {
+                                            "name":  "cashout-sell-history",
+                                            "summaryPath":  "docs/mobile/harness/cycle-XI-cashout-sell-s23-flow/cycle-XI-current-mvp-s23-visible-flow.json",
+                                            "pass":  true,
+                                            "reason":  "pass",
+                                            "generatedAt":  "2026-07-11T09:59:42.7891761Z",
+                                            "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+                                            "model":  "SM-S911U1",
+                                            "eventSlug":  "argentina-vs-egypt",
+                                            "lineMarketGroupKey":  "spread",
+                                            "lineValue":  "1.5",
+                                            "lineOutcomeLabel":  "Egypt +1.5",
+                                            "missingArtifacts":  [
+
+                                                                 ],
+                                            "failedAssertions":  [
+
+                                                                 ]
+                                        }
+                                    ],
                       "mobileVisibleEventCount":  4,
                       "providerVisibleMarketCount":  3,
                       "providerLocalMmReadyMarketCount":  0,

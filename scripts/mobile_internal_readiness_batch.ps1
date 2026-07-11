@@ -23,6 +23,97 @@ function Read-JsonFile {
   return Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json
 }
 
+function Resolve-RepoArtifactPath {
+  param([string]$ArtifactPath)
+  if ([string]::IsNullOrWhiteSpace($ArtifactPath)) {
+    return $null
+  }
+  if ([System.IO.Path]::IsPathRooted($ArtifactPath)) {
+    return $ArtifactPath
+  }
+  return Join-Path $RepoRoot ($ArtifactPath.Replace("/", "\"))
+}
+
+function Get-S23ProofEvidence {
+  param(
+    [string]$Name,
+    [string]$SummaryPath,
+    [string[]]$RequiredAssertions
+  )
+
+  $summary = Read-JsonFile $SummaryPath
+  $missingArtifacts = New-Object System.Collections.Generic.List[string]
+  $failedAssertions = New-Object System.Collections.Generic.List[string]
+
+  if (-not $summary) {
+    return [ordered]@{
+      name = $Name
+      summaryPath = ConvertTo-RepoPath $SummaryPath
+      pass = $false
+      reason = "summary_missing"
+      generatedAt = $null
+      device = $null
+      model = $null
+      missingArtifacts = @()
+      failedAssertions = $RequiredAssertions
+    }
+  }
+
+  foreach ($artifact in @($summary.artifacts)) {
+    $resolvedArtifact = Resolve-RepoArtifactPath ([string]$artifact)
+    if ($resolvedArtifact -and -not (Test-Path -LiteralPath $resolvedArtifact)) {
+      $missingArtifacts.Add([string]$artifact) | Out-Null
+    }
+  }
+  foreach ($artifactField in @("counterpartyProof", "cleanupProof", "cashoutCounterpartyProof")) {
+    $artifactValue = $summary.$artifactField
+    if ($artifactValue) {
+      $resolvedArtifact = Resolve-RepoArtifactPath ([string]$artifactValue)
+      if ($resolvedArtifact -and -not (Test-Path -LiteralPath $resolvedArtifact)) {
+        $missingArtifacts.Add([string]$artifactValue) | Out-Null
+      }
+    }
+  }
+
+  foreach ($assertion in $RequiredAssertions) {
+    if (-not ($summary.assertions -and ($summary.assertions.$assertion -eq $true))) {
+      $failedAssertions.Add($assertion) | Out-Null
+    }
+  }
+
+  $resultPass = [bool]($summary.result -eq "pass")
+  $deviceMatches = [bool]($summary.device -eq "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp")
+  $modelMatches = [bool]($summary.model -eq "SM-S911U1")
+  $pass = [bool]($resultPass -and $deviceMatches -and $modelMatches -and $missingArtifacts.Count -eq 0 -and $failedAssertions.Count -eq 0)
+  $reason = if ($pass) {
+    "pass"
+  } elseif (-not $resultPass) {
+    "summary_result_not_pass"
+  } elseif (-not $deviceMatches -or -not $modelMatches) {
+    "wrong_device"
+  } elseif ($missingArtifacts.Count -gt 0) {
+    "artifact_missing"
+  } else {
+    "assertion_missing"
+  }
+
+  return [ordered]@{
+    name = $Name
+    summaryPath = ConvertTo-RepoPath $SummaryPath
+    pass = $pass
+    reason = $reason
+    generatedAt = $summary.generatedAt
+    device = $summary.device
+    model = $summary.model
+    eventSlug = $summary.eventSlug
+    lineMarketGroupKey = $summary.lineMarketGroupKey
+    lineValue = $summary.lineValue
+    lineOutcomeLabel = $summary.lineOutcomeLabel
+    missingArtifacts = $missingArtifacts.ToArray()
+    failedAssertions = $failedAssertions.ToArray()
+  }
+}
+
 function Invoke-BatchCommand {
   param(
     [string]$Name,
@@ -159,6 +250,9 @@ $exchangePath = Join-Path $ResolvedOutputDir "internal-exchange-readiness.json"
 $providerTradableFlowPath = Join-Path $ResolvedOutputDir "provider-visible-tradable-flow.json"
 $matchScanPath = Join-Path $ResolvedOutputDir "worldcup-match-event-scan.json"
 $lineScanPath = Join-Path $ResolvedOutputDir "provider-line-breadth-scan.json"
+$filledS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-XG-full-local-mvp-s23-flow\cycle-XG-current-mvp-s23-visible-flow.json"
+$cancelS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-XH-open-order-cancel-s23-flow\cycle-XH-current-mvp-s23-visible-flow.json"
+$cashoutS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-XI-cashout-sell-s23-flow\cycle-XI-current-mvp-s23-visible-flow.json"
 $backendRepoPath = ConvertTo-RepoPath $backendPath
 $credentialRepoPath = ConvertTo-RepoPath $credentialPath
 $googleAuthRepoPath = ConvertTo-RepoPath $googleAuthPath
@@ -200,10 +294,16 @@ $exchange = Read-JsonFile $exchangePath
 $providerTradableFlow = Read-JsonFile $providerTradableFlowPath
 $matchScan = Read-JsonFile $matchScanPath
 $lineScan = Read-JsonFile $lineScanPath
+$s23Proofs = @(
+  (Get-S23ProofEvidence -Name "filled-buy-history" -SummaryPath $filledS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden")),
+  (Get-S23ProofEvidence -Name "open-order-cancel" -SummaryPath $cancelS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "openOrderVisible", "openOrderSourceBadgeVisible", "cancelSubmitted", "canceledHistoryVisible", "orderbookHidden")),
+  (Get-S23ProofEvidence -Name "cashout-sell-history" -SummaryPath $cashoutS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "cashoutTicketOpened", "cashoutSellSubmitted", "cashoutHistoryVisible", "orderbookHidden"))
+)
 
 $backendReady = [bool]($backend -and $backend.dockerCliAvailable -and $backend.dockerDaemonReachable -and $backend.databaseTcpReachable)
 $localMvpReady = [bool]($currentState -and $currentState.diagnosis.serviceReadiness.localMvpPathReady)
 $localMatchBreadthReady = [bool]($localMatchBreadth -and $localMatchBreadth.pass)
+$s23LocalMvpDeviceProofReady = [bool](($s23Proofs | Where-Object { -not $_.pass }).Count -eq 0)
 $providerExchangeReady = [bool]($exchange -and $exchange.readyForInternalMobileExchange)
 $providerSnapshotRefreshSucceeded = [bool]($providerSnapshotRefresh -and $providerSnapshotRefresh.summary -and ([int]$providerSnapshotRefresh.summary.errorCount -eq 0))
 $providerSnapshotRefreshUpdatedCount = if ($providerSnapshotRefresh -and $providerSnapshotRefresh.summary) { [int]$providerSnapshotRefresh.summary.snapshotsUpdated } else { $null }
@@ -248,6 +348,7 @@ $p0Blockers = @()
 if (-not $backendReady) { $p0Blockers += "backend_or_local_database_not_ready" }
 if (-not $localMatchBreadthReady) { $p0Blockers += "local_mvp_match_breadth_not_ready" }
 if (-not $localMvpReady) { $p0Blockers += "local_mvp_route_not_ready" }
+if (-not $s23LocalMvpDeviceProofReady) { $p0Blockers += "s23_local_mvp_device_proof_not_ready" }
 
 $p1Blockers = @()
 if (-not $providerExchangeReady) {
@@ -337,6 +438,8 @@ $summary = [ordered]@{
     googleLanFailedChecks = $googleLanFailedChecks.ToArray()
     localMatchBreadthReady = $localMatchBreadthReady
     localMatchBreadthEventCount = if ($localMatchBreadth) { $localMatchBreadth.after.eventCount } else { $null }
+    s23LocalMvpDeviceProofReady = $s23LocalMvpDeviceProofReady
+    s23Proofs = $s23Proofs
     mobileVisibleEventCount = if ($exchange) { $exchange.mobileExposure.mobileVisibleEventCount } else { $null }
     providerVisibleMarketCount = if ($exchange) { $exchange.providerMarkets.mobileVisibleCount } else { $null }
     providerLocalMmReadyMarketCount = if ($exchange) { $exchange.providerMarkets.localMmReadyCount } else { $null }

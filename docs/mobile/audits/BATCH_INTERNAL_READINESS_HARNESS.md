@@ -35,6 +35,7 @@ docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-sum
 - Provider-visible tradable-flow readiness for the match-only MVP path.
 - Polymarket World Cup team-match breadth.
 - Polymarket provider line-market breadth.
+- Committed Samsung S23 Local MVP device proof summaries for filled buy/history, open-order cancel, and position cashout/sell.
 - Local environment health snapshot: git cleanliness, S23 reachability, Docker/Postgres status, backend/Expo/proof ports, and continuous bot process status.
 
 ## Gate Behavior
@@ -43,6 +44,7 @@ P0 blockers fail the command:
 
 - backend or local database unavailable
 - current Local MVP route unavailable or not MVP-ready
+- latest committed S23 Local MVP device proof summaries are missing, failed, from the wrong device, or reference missing artifacts
 
 Known provider availability gaps are tracked as P1, not P0:
 
@@ -79,6 +81,18 @@ The summary includes `environmentHealth` so the Lead Agent can report the batch 
 - `environmentHealth.bot.runningContinuously`
 
 These fields are diagnostic. They do not turn provider availability P1 debt into a P0 failure, and they do not start or stop any services. They only record what is running when the batch command is executed.
+
+## S23 Device Proof Aggregation
+
+The batch does not rerun full S23 UI proof every time. Instead, it verifies the latest committed proof summaries and all artifact paths referenced by those summaries:
+
+- filled buy/history proof: `docs/mobile/harness/cycle-XG-full-local-mvp-s23-flow/cycle-XG-current-mvp-s23-visible-flow.json`
+- open-order cancel proof: `docs/mobile/harness/cycle-XH-open-order-cancel-s23-flow/cycle-XH-current-mvp-s23-visible-flow.json`
+- position cashout/sell proof: `docs/mobile/harness/cycle-XI-cashout-sell-s23-flow/cycle-XI-current-mvp-s23-visible-flow.json`
+
+Each proof must be from the Samsung S23 device id `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`, have `result=pass`, include required Local MVP assertions, and point only to existing evidence files.
+
+If any of those checks fail, the batch records `s23_local_mvp_device_proof_not_ready` as a P0 blocker. This keeps the batch honest: Local MVP readiness requires both route/backend readiness and real Android proof evidence, while still avoiding unnecessary repeated screenshot generation when the committed evidence is already current.
 
 ## Manual Server-Mode Prep
 

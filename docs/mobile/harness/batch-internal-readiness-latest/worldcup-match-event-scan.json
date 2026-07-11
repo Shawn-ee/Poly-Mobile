@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T09:52:36.199Z",
+  "generatedAt": "2026-07-11T10:08:59.605Z",
   "source": "gamma-api.polymarket.com/events",
   "readOnly": true,
   "scope": "world-cup-match-only-provider-breadth",
@@ -373,7 +373,7 @@
         "playerPropLike": true,
         "futuresLike": true,
         "marketCount": 40,
-        "usableMarketCount": 18,
+        "usableMarketCount": 19,
         "acceptingOrderMarketCount": 40,
         "sampleUsableMarket": {
           "slug": "will-josh-allen-win-the-2026-nfl-mvp",
@@ -511,9 +511,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.078,
-          "bestAsk": 0.086,
-          "spread": 0.008,
+          "bestBid": 0.079,
+          "bestAsk": 0.084,
+          "spread": 0.005,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -545,9 +545,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.195,
+          "bestBid": 0.192,
           "bestAsk": 0.202,
-          "spread": 0.007,
+          "spread": 0.01,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -769,7 +769,7 @@
         "playerPropLike": true,
         "futuresLike": true,
         "marketCount": 40,
-        "usableMarketCount": 18,
+        "usableMarketCount": 19,
         "acceptingOrderMarketCount": 40,
         "sampleUsableMarket": {
           "slug": "will-josh-allen-win-the-2026-nfl-mvp",
@@ -977,9 +977,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.05,
-          "bestAsk": 0.079,
-          "spread": 0.029,
+          "bestBid": 0.052,
+          "bestAsk": 0.074,
+          "spread": 0.022,
           "usableBook": true,
           "rejectionReasons": []
         }
