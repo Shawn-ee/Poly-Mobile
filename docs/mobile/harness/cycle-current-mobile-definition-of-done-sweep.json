@@ -6,7 +6,7 @@
     "partial": 1,
     "blocked": 0
   },
-  "generatedAt": "2026-07-11T20:28:32.080Z",
+  "generatedAt": "2026-07-11T20:58:08.401Z",
   "criteria": [
     {
       "id": "dod-android-runtime",
@@ -121,7 +121,7 @@
         "docs/mobile/harness/the-odds-api-single-event/s23-device-reachability.redacted.json",
         "docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json"
       ],
-      "notes": "The Odds API single-event bridge is seeded and has fresh backend proof, fake-token order, Portfolio/history, and S23 evidence. Backend proof hours until stale: 23.8."
+      "notes": "The Odds API single-event bridge is seeded and has fresh backend proof, fake-token order, Portfolio/history, and S23 evidence. Backend proof hours until stale: 23.19."
     },
     {
       "id": "dod-final-cycle",
