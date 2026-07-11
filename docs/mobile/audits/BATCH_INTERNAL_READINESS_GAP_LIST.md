@@ -1,6 +1,6 @@
 # Batch Internal Readiness Gap List
 
-Generated: 2026-07-11T13:04:12.533Z
+Generated: 2026-07-11T13:08:30.100Z
 
 Source summary: `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`
 
@@ -20,7 +20,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - S23 connected: yes (adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp, SM_S911U1)
 - Expo running: no
 - Continuous bot running: no
-- Worktree clean at batch start: no
+- Worktree clean at batch start: yes
 - Root typecheck: yes
 - Jest CI: yes
 - Mobile typecheck: yes
@@ -44,7 +44,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Local MVP match breadth ready: yes (4 events)
 - Provider books unavailable or closed: yes
 - Provider snapshot refresh succeeded: yes (6 updated)
-- Cached provider evidence: provider-snapshot-refresh:fresh(0.13h), internal-exchange-readiness:fresh(0.13h), provider-visible-tradable-flow:fresh(0.13h), worldcup-match-scan:fresh(0.13h), provider-line-scan:fresh(0.1h)
+- Cached provider evidence: provider-snapshot-refresh:fresh(0.2h), internal-exchange-readiness:fresh(0.2h), provider-visible-tradable-flow:fresh(0.2h), worldcup-match-scan:fresh(0.2h), provider-line-scan:fresh(0.17h)
 - Provider MVP tradable flow ready: no (provider_mvp_match_snapshot_not_mm_safe)
 - World Cup team-match provider events scanned: 442 (0 open/upcoming, 442 closed/ended)
 - Usable World Cup team-match provider events: 0
