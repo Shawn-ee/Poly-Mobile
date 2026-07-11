@@ -47,6 +47,9 @@ describe("mobile internal readiness batch harness", () => {
     expect(source).toContain("googleAuthFailedChecks");
     expect(source).toContain("googlePhysicalCallbackReady");
     expect(source).toContain("googlePhysicalFailedChecks");
+    expect(source).toContain("googleS23ConsentReady");
+    expect(source).toContain("googleS23ConsentSource");
+    expect(source).toContain("googleS23ConsentExpectedCallback");
     expect(source).toContain("google_redirect_uri_mismatch");
     expect(source).toContain("google_auth_runtime_preflight_has_warnings");
     expect(source).toContain("google_physical_callback_not_phone_reachable");
@@ -75,5 +78,6 @@ describe("mobile internal readiness batch harness", () => {
     expect(doc).toContain("contract-shaped line markets");
     expect(doc).toContain("Known provider availability gaps are tracked as P1");
     expect(doc).toContain("Local environment health snapshot");
+    expect(doc).toContain("googleS23ConsentReady");
   });
 });

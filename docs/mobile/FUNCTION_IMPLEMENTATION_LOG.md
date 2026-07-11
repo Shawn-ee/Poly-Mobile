@@ -2,6 +2,19 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle S23GOOGLEGATE - S23 Google Consent Readiness Summary
+
+- Feature/page worked on: Portfolio account / Google sign-in readiness reporting for S23 manual testing.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/mobile_internal_readiness_batch.ps1`
+  - `scripts/write_mobile_internal_readiness_gap_list.ts`
+  - `docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md`
+- User interactions supported: unchanged in-app. The batch summary now has an explicit S23 Google consent readiness signal so testers can distinguish a valid LAN callback path from expected localhost-only diagnostic warnings.
+- State transitions: no runtime/backend/database state changes. The harness derives `googleS23ConsentReady`, `googleS23ConsentSource`, and `googleS23ConsentExpectedCallback` from the LAN callback preflight when available, falling back to the raw physical callback probe only if LAN is not ready.
+- Proof: run `npm run mobile:internal-readiness-batch` and confirm the summary/gap list reports `S23 Google consent path ready: yes (lan-callback-preflight)` when the LAN callback preflight passes.
+- Known limitations: this does not complete Google consent or change Google Cloud settings. Real consent still requires the reported callback to be registered in Google Cloud.
+
 ## Cycle LINEFAMILYGATE - S23 Line-Family Proof Gate
 
 - Feature/page worked on: Local MVP S23 proof aggregation for line-family coverage.

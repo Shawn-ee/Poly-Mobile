@@ -455,6 +455,21 @@ if ($googleLanPhysical -and $googleLanPhysical.failedChecks) {
     }
   }
 }
+$googleS23ConsentReady = [bool]($googleLanCallbackReady -or $googlePhysicalCallbackReady)
+$googleS23ConsentSource = if ($googleLanCallbackReady) {
+  "lan-callback-preflight"
+} elseif ($googlePhysicalCallbackReady) {
+  "physical-callback-preflight"
+} else {
+  "not-ready"
+}
+$googleS23ConsentExpectedCallback = if ($googleLanCallbackReady -and $googleLanPhysical -and $googleLanPhysical.expectedCallback) {
+  [string]$googleLanPhysical.expectedCallback
+} elseif ($googlePhysicalCallbackReady -and $googlePhysical -and $googlePhysical.expectedCallback) {
+  [string]$googlePhysical.expectedCallback
+} else {
+  ""
+}
 $internalMvpStartupReady = [bool](
   $internalMvpStartup -and
   $internalMvpStartup.mobileApiBaseUrl -and
@@ -564,6 +579,9 @@ $summary = [ordered]@{
     googlePhysicalFailedChecks = $googlePhysicalFailedChecks.ToArray()
     googleLanCallbackReady = $googleLanCallbackReady
     googleLanFailedChecks = $googleLanFailedChecks.ToArray()
+    googleS23ConsentReady = $googleS23ConsentReady
+    googleS23ConsentSource = $googleS23ConsentSource
+    googleS23ConsentExpectedCallback = $googleS23ConsentExpectedCallback
     internalMvpStartupReady = $internalMvpStartupReady
     internalMvpStartupMobileApiBaseUrl = if ($internalMvpStartup) { $internalMvpStartup.mobileApiBaseUrl } else { $null }
     internalMvpStartupBackendAuthBaseUrl = if ($internalMvpStartup) { $internalMvpStartup.backendAuthBaseUrl } else { $null }

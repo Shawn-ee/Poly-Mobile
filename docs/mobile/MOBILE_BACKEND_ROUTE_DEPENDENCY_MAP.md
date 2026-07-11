@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle S23GOOGLEGATE - S23 Google Consent Readiness Summary
+
+Cycle S23GOOGLEGATE changes readiness harness reporting only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| S23 Google consent readiness summary | `/api/auth/google/start`; local commands `npm run mobile:internal-readiness-batch` and `npm run mobile:google-auth-lan-preflight` | `GET` route preflight plus local proof aggregation | None for start/preflight | Query params include `returnTo=/portfolio` and `mobileReturnTo=<configured mobile return URL>` | Batch fields `readiness.googleS23ConsentReady`, `readiness.googleS23ConsentSource`, and `readiness.googleS23ConsentExpectedCallback`; raw localhost probe fields stay diagnostic | OAuth state/callback implementation only during preflight; no user/token records should be created | None | Real consent still needs the exact LAN/hosted callback registered in Google Cloud. Backend route behavior is unchanged. |
+
 ## Cycle LINEFAMILYGATE - S23 Line-Family Proof Gate
 
 Cycle LINEFAMILYGATE changes readiness harness verification only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.

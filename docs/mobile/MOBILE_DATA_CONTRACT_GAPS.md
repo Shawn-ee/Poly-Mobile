@@ -1,5 +1,15 @@
 # Mobile Data Contract Gaps
 
+## Cycle S23GOOGLEGATE - S23 Google Consent Readiness Summary
+
+- No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider contract changed.
+- The batch summary contract now exposes S23-specific Google consent fields:
+  - `readiness.googleS23ConsentReady`
+  - `readiness.googleS23ConsentSource`
+  - `readiness.googleS23ConsentExpectedCallback`
+- New behavior: when the LAN callback preflight passes, the generated readiness gap list reports the S23 consent path as ready even if localhost callback probes remain failed diagnostics.
+- Remaining setup gap: real Google consent still depends on the exact reported callback being authorized in Google Cloud. This is external configuration, not a mobile/server schema gap.
+
 ## Cycle LINEFAMILYGATE - S23 Line-Family Proof Gate
 
 - No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider contract changed.

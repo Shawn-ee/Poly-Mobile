@@ -1,6 +1,6 @@
 # Batch Internal Readiness Gap List
 
-Generated: 2026-07-11T11:51:31.528Z
+Generated: 2026-07-11T12:00:56.433Z
 
 Source summary: `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`
 
@@ -27,6 +27,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - S23 Local MVP proof ready: yes
 - S23 proof max age: 24 hours
 - S23 startup contract ready: yes
+- S23 Google consent path ready: yes (lan-callback-preflight)
 - Provider-backed exchange ready: no
 - Provider discovery mode: cached
 - P0 blocker count: 0
@@ -46,6 +47,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Usable World Cup team-match provider events: 0
 - Attach-ready provider line candidates: 0
 - Internal MVP startup callback: `http://172.16.200.14:3002/api/auth/google/callback`
+- S23 Google callback: `http://172.16.200.14:3002/api/auth/google/callback`
 
 ## Open Issues
 
@@ -65,6 +67,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 | Local MVP route | yes | `mobile-current-state-inspection.json`. |
 | Local match breadth | yes | `mobile-mvp-local-match-breadth.json`. |
 | S23 full MVP proof | yes | XG Spread filled buy/history, XH Spread open-order cancel, XI Spread cashout/sell, WF Totals filled buy/history, WG Team Totals filled buy/history summaries. |
+| S23 Google consent callback | yes | `google-auth-lan-callback-preflight.json` when LAN-ready; localhost probes remain raw diagnostics only. |
 | Root typecheck | yes | `root-typecheck.json`. |
 | Jest CI | yes | `jest-ci.json`. |
 | Mobile typecheck | yes | `mobile-typecheck.json`. |

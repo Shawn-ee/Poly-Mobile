@@ -187,6 +187,8 @@ This detects the PC LAN IP, runs the same no-secret preflight with `NEXTAUTH_URL
 
 When the LAN callback preflight passes, it becomes the authoritative Google callback readiness signal for S23 manual consent testing. The batch may still keep the localhost and localhost-physical probe results in raw JSON, but it should not report their expected localhost redirect mismatch as a P1 blocker while the LAN proof is passing.
 
+The machine-readable summary exposes this as `readiness.googleS23ConsentReady`, `readiness.googleS23ConsentSource`, and `readiness.googleS23ConsentExpectedCallback`. For local Android testing, use those fields instead of the raw localhost physical probe when deciding whether the Portfolio account entry can attempt real Google consent on the S23.
+
 ## Local Match Breadth
 
 ```powershell
