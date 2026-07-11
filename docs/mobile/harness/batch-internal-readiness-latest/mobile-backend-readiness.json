@@ -1,4 +1,4 @@
-﻿{
+{
     "dockerCliAvailable":  true,
     "dockerDaemonReachable":  true,
     "composeFileFound":  true,

@@ -1,459 +1,483 @@
 {
-  "generatedAt": "2026-07-11T13:08:28.5918009Z",
-  "scope": "mobile-internal-readiness-batch",
-  "cycle": "BATCHREADINESS",
-  "backendBaseUrl": "http://127.0.0.1:3002",
-  "providerDiscoveryMode": "cached",
-  "outputDir": "docs/mobile/harness/batch-internal-readiness-latest",
-  "gapListPath": "docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md",
-  "steps": [
-    {
-      "name": "backend-readiness",
-      "command": "powershell -ExecutionPolicy Bypass -File scripts\\mobile_backend_readiness.ps1 -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/mobile-backend-readiness.json\"",
-      "exitCode": 0,
-      "allowedNonZero": false,
-      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/mobile-backend-readiness.json",
-      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/backend-readiness.stdout.log",
-      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/backend-readiness.stderr.log",
-      "producedJson": true
-    },
-    {
-      "name": "credential-readiness",
-      "command": "powershell -ExecutionPolicy Bypass -File scripts\\mobile_credential_readiness.ps1 -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/mobile-credential-readiness.json\"",
-      "exitCode": 0,
-      "allowedNonZero": true,
-      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/mobile-credential-readiness.json",
-      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/credential-readiness.stdout.log",
-      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/credential-readiness.stderr.log",
-      "producedJson": true
-    },
-    {
-      "name": "google-auth-runtime-preflight",
-      "command": "powershell -ExecutionPolicy Bypass -File mobile\\scripts\\google-auth-runtime-preflight.ps1 -BackendAuthBase \"http://127.0.0.1:3002\" -NextAuthUrl \"http://127.0.0.1:3002\" -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/google-auth-runtime-preflight.json\"",
-      "exitCode": 0,
-      "allowedNonZero": true,
-      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-runtime-preflight.json",
-      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-runtime-preflight.stdout.log",
-      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-runtime-preflight.stderr.log",
-      "producedJson": true
-    },
-    {
-      "name": "google-auth-physical-callback-preflight",
-      "command": "powershell -ExecutionPolicy Bypass -File mobile\\scripts\\google-auth-runtime-preflight.ps1 -BackendAuthBase \"http://127.0.0.1:3002\" -NextAuthUrl \"http://127.0.0.1:3002\" -RequirePhysicalDeviceCallback -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/google-auth-physical-callback-preflight.json\"",
-      "exitCode": 0,
-      "allowedNonZero": true,
-      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-physical-callback-preflight.json",
-      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-physical-callback-preflight.stdout.log",
-      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-physical-callback-preflight.stderr.log",
-      "producedJson": true
-    },
-    {
-      "name": "google-auth-lan-callback-preflight",
-      "command": "powershell -ExecutionPolicy Bypass -File scripts\\mobile_google_lan_auth_preflight.ps1 -BackendPort 3002 -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.json\"",
-      "exitCode": 0,
-      "allowedNonZero": true,
-      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.json",
-      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.stdout.log",
-      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.stderr.log",
-      "producedJson": true
-    },
-    {
-      "name": "internal-mvp-startup-contract",
-      "command": "powershell -ExecutionPolicy Bypass -File scripts\\start_poly_mobile_rehearsal.ps1 -SkipBackend -SkipSnapshotWatch -SkipBots -SkipExpo -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/internal-mvp-startup-contract.json\"",
-      "exitCode": 0,
-      "allowedNonZero": false,
-      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/internal-mvp-startup-contract.json",
-      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/internal-mvp-startup-contract.stdout.log",
-      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/internal-mvp-startup-contract.stderr.log",
-      "producedJson": true
-    },
-    {
-      "name": "local-match-breadth",
-      "command": "npx.cmd tsx scripts/seed_mobile_mvp_local_match_breadth.ts --baseUrl=http://127.0.0.1:3002 --summaryPath=\"docs/mobile/harness/batch-internal-readiness-latest/mobile-mvp-local-match-breadth.json\"",
-      "exitCode": 0,
-      "allowedNonZero": false,
-      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/mobile-mvp-local-match-breadth.json",
-      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/local-match-breadth.stdout.log",
-      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/local-match-breadth.stderr.log",
-      "producedJson": true
-    },
-    {
-      "name": "current-state",
-      "command": "npx.cmd tsx scripts/inspect_mobile_mvp_current_state.ts --baseUrl=http://127.0.0.1:3002 --summaryPath=\"docs/mobile/harness/batch-internal-readiness-latest/mobile-current-state-inspection.json\" --cycle=BATCHREADINESS",
-      "exitCode": 0,
-      "allowedNonZero": false,
-      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/mobile-current-state-inspection.json",
-      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/current-state.stdout.log",
-      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/current-state.stderr.log",
-      "producedJson": true
-    },
-    {
-      "name": "provider-snapshot-refresh",
-      "command": "cached:provider-snapshot-refresh",
-      "exitCode": 0,
-      "allowedNonZero": true,
-      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-snapshot-refresh.json",
-      "stdoutPath": null,
-      "stderrPath": null,
-      "producedJson": true,
-      "cached": true,
-      "reason": "provider_discovery_mode_cached"
-    },
-    {
-      "name": "internal-exchange-readiness",
-      "command": "cached:internal-exchange-readiness",
-      "exitCode": 0,
-      "allowedNonZero": true,
-      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.json",
-      "stdoutPath": null,
-      "stderrPath": null,
-      "producedJson": true,
-      "cached": true,
-      "reason": "provider_discovery_mode_cached"
-    },
-    {
-      "name": "provider-visible-tradable-flow",
-      "command": "cached:provider-visible-tradable-flow",
-      "exitCode": 0,
-      "allowedNonZero": true,
-      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json",
-      "stdoutPath": null,
-      "stderrPath": null,
-      "producedJson": true,
-      "cached": true,
-      "reason": "provider_discovery_mode_cached"
-    },
-    {
-      "name": "worldcup-match-scan",
-      "command": "cached:worldcup-match-scan",
-      "exitCode": 0,
-      "allowedNonZero": false,
-      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-event-scan.json",
-      "stdoutPath": null,
-      "stderrPath": null,
-      "producedJson": true,
-      "cached": true,
-      "reason": "provider_discovery_mode_cached"
-    },
-    {
-      "name": "provider-line-scan",
-      "command": "cached:provider-line-scan",
-      "exitCode": 0,
-      "allowedNonZero": false,
-      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-line-breadth-scan.json",
-      "stdoutPath": null,
-      "stderrPath": null,
-      "producedJson": true,
-      "cached": true,
-      "reason": "provider_discovery_mode_cached"
-    },
-    {
-      "name": "root-typecheck",
-      "command": "npx.cmd tsc --noEmit --pretty false --incremental false && node -e \"require('fs').writeFileSync('docs/mobile/harness/batch-internal-readiness-latest/root-typecheck.json', JSON.stringify({ pass: true, command: 'npx tsc --noEmit --pretty false --incremental false', generatedAt: new Date().toISOString() }, null, 2) + '\\n')\"",
-      "exitCode": 0,
-      "allowedNonZero": false,
-      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/root-typecheck.json",
-      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/root-typecheck.stdout.log",
-      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/root-typecheck.stderr.log",
-      "producedJson": true
-    },
-    {
-      "name": "jest-ci",
-      "command": "npm.cmd run test:ci && node -e \"require('fs').writeFileSync('docs/mobile/harness/batch-internal-readiness-latest/jest-ci.json', JSON.stringify({ pass: true, command: 'npm run test:ci', generatedAt: new Date().toISOString() }, null, 2) + '\\n')\"",
-      "exitCode": 0,
-      "allowedNonZero": false,
-      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/jest-ci.json",
-      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/jest-ci.stdout.log",
-      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/jest-ci.stderr.log",
-      "producedJson": true
-    },
-    {
-      "name": "mobile-typecheck",
-      "command": "npm.cmd --prefix mobile run typecheck && node -e \"require('fs').writeFileSync('docs/mobile/harness/batch-internal-readiness-latest/mobile-typecheck.json', JSON.stringify({ pass: true, command: 'npm --prefix mobile run typecheck', generatedAt: new Date().toISOString() }, null, 2) + '\\n')\"",
-      "exitCode": 0,
-      "allowedNonZero": false,
-      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/mobile-typecheck.json",
-      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/mobile-typecheck.stdout.log",
-      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/mobile-typecheck.stderr.log",
-      "producedJson": true
-    }
-  ],
-  "environmentHealthCaptured": "before-batch-steps",
-  "environmentHealth": {
-    "git": {
-      "branch": "main",
-      "status": "## main...poly-mobile/main",
-      "worktreeClean": true
-    },
-    "android": {
-      "targetDeviceId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
-      "targetModel": "SM_S911U1",
-      "s23Connected": true,
-      "adbDevices": "List of devices attached\r\nadb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp device product:dm1quew model:SM_S911U1 device:dm1q transport_id:4"
-    },
-    "docker": {
-      "polyPostgresHealthy": true,
-      "polyPostgresStatus": "poly_postgres Up 6 days (healthy) 0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp"
-    },
-    "localServices": {
-      "backendPort3002Listening": true,
-      "expoRunning": false,
-      "proofPort8289Listening": false,
-      "listeningPortsJson": "{\"LocalPort\":3002,\"OwningProcess\":37208}"
-    },
-    "bot": {
-      "runningContinuously": false,
-      "matchingProcessesJson": ""
-    }
-  },
-  "readiness": {
-    "localMvpReadyForInternalTesting": true,
-    "providerBackedExchangeReady": false,
-    "backendReady": true,
-    "worktreeClean": true,
-    "dbContainerHealthy": true,
-    "s23Connected": true,
-    "expoRunning": false,
-    "botRunningContinuously": false,
-    "currentRouteLocalMvpReady": true,
-    "mobileCredentialCanBeCreated": true,
-    "ambientApiKeyReadyForManualServerMode": false,
-    "serverModeApiKeySource": "local-runtime-env",
-    "localRuntimeEnvReadyForManualServerMode": true,
-    "googleAuthRuntimeReady": false,
-    "googleAuthFailedChecks": [
-      "Google redirect_uri matches NEXTAUTH_URL callback"
-    ],
-    "googlePhysicalCallbackReady": false,
-    "googlePhysicalFailedChecks": [
-      "NEXTAUTH_URL is reachable by a physical Android browser",
-      "Google redirect_uri matches NEXTAUTH_URL callback"
-    ],
-    "googleLanCallbackReady": true,
-    "googleLanFailedChecks": [],
-    "googleS23ConsentReady": true,
-    "googleS23ConsentSource": "lan-callback-preflight",
-    "googleS23ConsentExpectedCallback": "http://172.16.200.14:3002/api/auth/google/callback",
-    "internalMvpStartupReady": true,
-    "internalMvpStartupMobileApiBaseUrl": "http://172.16.200.14:3002",
-    "internalMvpStartupBackendAuthBaseUrl": "http://172.16.200.14:3002",
-    "internalMvpStartupExpectedGoogleCallback": "http://172.16.200.14:3002/api/auth/google/callback",
-    "localMatchBreadthReady": true,
-    "localMatchBreadthEventCount": 4,
-    "s23LocalMvpDeviceProofReady": true,
-    "s23ProofMaxAgeHours": 24,
-    "s23Proofs": [
-      {
-        "name": "filled-buy-history",
-        "summaryPath": "docs/mobile/harness/cycle-XG-full-local-mvp-s23-flow/cycle-XG-current-mvp-s23-visible-flow.json",
-        "pass": true,
-        "reason": "pass",
-        "generatedAt": "2026-07-11T09:32:05.5117425Z",
-        "proofAgeHours": 3.61,
-        "maxAgeHours": 24,
-        "fresh": true,
-        "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
-        "model": "SM-S911U1",
-        "eventSlug": "argentina-vs-egypt",
-        "lineMarketGroupKey": "spread",
-        "lineValue": "1.5",
-        "lineOutcomeLabel": "Egypt +1.5",
-        "missingArtifacts": [],
-        "failedAssertions": []
-      },
-      {
-        "name": "open-order-cancel",
-        "summaryPath": "docs/mobile/harness/cycle-XH-open-order-cancel-s23-flow/cycle-XH-current-mvp-s23-visible-flow.json",
-        "pass": true,
-        "reason": "pass",
-        "generatedAt": "2026-07-11T09:45:19.0371695Z",
-        "proofAgeHours": 3.39,
-        "maxAgeHours": 24,
-        "fresh": true,
-        "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
-        "model": "SM-S911U1",
-        "eventSlug": "argentina-vs-egypt",
-        "lineMarketGroupKey": "spread",
-        "lineValue": "1.5",
-        "lineOutcomeLabel": "Egypt +1.5",
-        "missingArtifacts": [],
-        "failedAssertions": []
-      },
-      {
-        "name": "cashout-sell-history",
-        "summaryPath": "docs/mobile/harness/cycle-XI-cashout-sell-s23-flow/cycle-XI-current-mvp-s23-visible-flow.json",
-        "pass": true,
-        "reason": "pass",
-        "generatedAt": "2026-07-11T09:59:42.7891761Z",
-        "proofAgeHours": 3.15,
-        "maxAgeHours": 24,
-        "fresh": true,
-        "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
-        "model": "SM-S911U1",
-        "eventSlug": "argentina-vs-egypt",
-        "lineMarketGroupKey": "spread",
-        "lineValue": "1.5",
-        "lineOutcomeLabel": "Egypt +1.5",
-        "missingArtifacts": [],
-        "failedAssertions": []
-      },
-      {
-        "name": "totals-filled-buy-history",
-        "summaryPath": "docs/mobile/harness/cycle-WF-line-family-s23-proof/cycle-WF-current-mvp-s23-visible-flow.json",
-        "pass": true,
-        "reason": "pass",
-        "generatedAt": "2026-07-11T05:12:16.5919824Z",
-        "proofAgeHours": 7.94,
-        "maxAgeHours": 24,
-        "fresh": true,
-        "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
-        "model": "SM-S911U1",
-        "eventSlug": "argentina-vs-egypt",
-        "lineMarketGroupKey": "totals",
-        "lineValue": "2.5",
-        "lineOutcomeLabel": "Over 2.5",
-        "missingArtifacts": [],
-        "failedAssertions": []
-      },
-      {
-        "name": "team-totals-filled-buy-history",
-        "summaryPath": "docs/mobile/harness/cycle-WG-team-total-s23-proof/cycle-WG-current-mvp-s23-visible-flow.json",
-        "pass": true,
-        "reason": "pass",
-        "generatedAt": "2026-07-11T05:18:54.1737804Z",
-        "proofAgeHours": 7.83,
-        "maxAgeHours": 24,
-        "fresh": true,
-        "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
-        "model": "SM-S911U1",
-        "eventSlug": "argentina-vs-egypt",
-        "lineMarketGroupKey": "team-totals",
-        "lineValue": "1.5",
-        "lineOutcomeLabel": "Argentina Over 1.5",
-        "missingArtifacts": [],
-        "failedAssertions": []
-      }
-    ],
-    "rootTypecheckReady": true,
-    "jestCiReady": true,
-    "mobileTypecheckReady": true,
-    "mobileVisibleEventCount": 4,
-    "providerVisibleMarketCount": 3,
-    "providerLocalMmReadyMarketCount": 0,
-    "providerBooksUnavailableOrClosed": true,
-    "providerSnapshotRefreshSucceeded": true,
-    "providerSnapshotRefreshUpdatedCount": 6,
-    "cachedProviderEvidenceFresh": true,
-    "cachedProviderEvidenceMaxAgeHours": 24,
-    "cachedProviderEvidence": [
-      {
-        "name": "provider-snapshot-refresh",
-        "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-snapshot-refresh.json",
-        "generatedAt": "2026-07-11T12:56:14.421Z",
-        "ageHours": 0.2,
-        "maxAgeHours": 24,
-        "fresh": true,
-        "present": true
-      },
-      {
-        "name": "internal-exchange-readiness",
-        "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.json",
-        "generatedAt": "2026-07-11T12:56:16.028Z",
-        "ageHours": 0.2,
-        "maxAgeHours": 24,
-        "fresh": true,
-        "present": true
-      },
-      {
-        "name": "provider-visible-tradable-flow",
-        "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json",
-        "generatedAt": "2026-07-11T12:56:17.297Z",
-        "ageHours": 0.2,
-        "maxAgeHours": 24,
-        "fresh": true,
-        "present": true
-      },
-      {
-        "name": "worldcup-match-scan",
-        "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-event-scan.json",
-        "generatedAt": "2026-07-11T12:56:39.950Z",
-        "ageHours": 0.2,
-        "maxAgeHours": 24,
-        "fresh": true,
-        "present": true
-      },
-      {
-        "name": "provider-line-scan",
-        "summaryPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-line-breadth-scan.json",
-        "generatedAt": "2026-07-11T12:58:20.734Z",
-        "ageHours": 0.17,
-        "maxAgeHours": 24,
-        "fresh": true,
-        "present": true
-      }
-    ],
-    "providerMvpTradableFlowReady": false,
-    "providerMvpTradableFlowBlocker": "provider_mvp_match_snapshot_not_mm_safe",
-    "worldCupTeamMatchEventCount": 442,
-    "openWorldCupTeamMatchEventCount": 0,
-    "closedOrEndedWorldCupTeamMatchEventCount": 442,
-    "usableWorldCupTeamMatchEventCount": 0,
-    "openWorldCupProviderEventCount": 64,
-    "usableOpenWorldCupProviderEventCount": 56,
-    "usableOpenNonMatchWorldCupProviderEventCount": 56,
-    "providerLineCandidateCount": 2483,
-    "identityCompleteProviderLineCandidateCount": 2483,
-    "closedOrUnavailableProviderLineIdentityCount": 2483,
-    "attachReadyProviderLineCandidateCount": 0
-  },
-  "blockers": {
-    "p0": [],
-    "p1": [
-      "provider_worldcup_match_books_unavailable_or_closed",
-      "provider_mvp_match_snapshot_not_mm_safe",
-      "no_usable_polymarket_worldcup_team_match_books",
-      "no_attach_ready_polymarket_worldcup_line_markets"
-    ]
-  },
-  "recovery": {
-    "s23ProofRefreshCommands": [
-      {
-        "name": "filled-buy-history",
-        "summaryPath": "docs/mobile/harness/cycle-XG-full-local-mvp-s23-flow/cycle-XG-current-mvp-s23-visible-flow.json",
-        "command": "powershell -ExecutionPolicy Bypass -File scripts\\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XG -OutputDir docs\\mobile\\screenshots\\cycle-XG-full-local-mvp-s23-flow -HierarchyOutputDir docs\\mobile\\harness\\cycle-XG-full-local-mvp-s23-flow -SeedCounterparty -ExpectFilledHistory"
-      },
-      {
-        "name": "open-order-cancel",
-        "summaryPath": "docs/mobile/harness/cycle-XH-open-order-cancel-s23-flow/cycle-XH-current-mvp-s23-visible-flow.json",
-        "command": "powershell -ExecutionPolicy Bypass -File scripts\\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XH -OutputDir docs\\mobile\\screenshots\\cycle-XH-open-order-cancel-s23-flow -HierarchyOutputDir docs\\mobile\\harness\\cycle-XH-open-order-cancel-s23-flow -ExpectOpenOrder -ExpectCancel"
-      },
-      {
-        "name": "cashout-sell-history",
-        "summaryPath": "docs/mobile/harness/cycle-XI-cashout-sell-s23-flow/cycle-XI-current-mvp-s23-visible-flow.json",
-        "command": "powershell -ExecutionPolicy Bypass -File scripts\\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XI -OutputDir docs\\mobile\\screenshots\\cycle-XI-cashout-sell-s23-flow -HierarchyOutputDir docs\\mobile\\harness\\cycle-XI-cashout-sell-s23-flow -SeedCounterparty -ExpectFilledHistory -ExpectCashout"
-      },
-      {
-        "name": "totals-filled-buy-history",
-        "summaryPath": "docs/mobile/harness/cycle-WF-line-family-s23-proof/cycle-WF-current-mvp-s23-visible-flow.json",
-        "command": "powershell -ExecutionPolicy Bypass -File scripts\\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WF -OutputDir docs\\mobile\\screenshots\\cycle-WF-line-family-s23-proof -HierarchyOutputDir docs\\mobile\\harness\\cycle-WF-line-family-s23-proof -LineMarketGroupKey totals -LineMarketType totals -LineValue 2.5 -LineOutcomeSide over -LineOutcomeLabel \"Over 2.5\" -SeedCounterparty -ExpectFilledHistory"
-      },
-      {
-        "name": "team-totals-filled-buy-history",
-        "summaryPath": "docs/mobile/harness/cycle-WG-team-total-s23-proof/cycle-WG-current-mvp-s23-visible-flow.json",
-        "command": "powershell -ExecutionPolicy Bypass -File scripts\\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WG -OutputDir docs\\mobile\\screenshots\\cycle-WG-team-total-s23-proof -HierarchyOutputDir docs\\mobile\\harness\\cycle-WG-team-total-s23-proof -LineMarketGroupKey team-totals -LineMarketType team-total -LineValue 1.5 -LineOutcomeSide over -LineOutcomeLabel \"Argentina Over 1.5\" -LineTapPrefix event-detail-outcome-team-total-goals- -SeedCounterparty -ExpectFilledHistory"
-      }
-    ],
-    "providerRefreshCommand": "npm run mobile:internal-readiness-batch:provider-refresh",
-    "rerunBatchCommand": "npm run mobile:internal-readiness-batch"
-  },
-  "interpretation": "Local MVP fake-token flow is ready for internal testing; provider-backed breadth/line/MM readiness remains tracked P1 debt.",
-  "nextActions": [
-    "For internal user-flow testing, keep using Home -> Event Detail -> contract-shaped line market -> Trade Ticket -> fake-token order -> Portfolio/history.",
-    "Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.",
-    "If `s23_local_mvp_device_proof_not_ready` appears, run the S23 proof refresh commands in `recovery.s23ProofRefreshCommands`, then rerun `npm run mobile:internal-readiness-batch`.",
-    "Use `npm run mobile:internal-readiness-batch:provider-refresh` after provider imports, provider refresh, or line-market discovery changes.",
-    "If `provider_cached_evidence_stale` appears, run `npm run mobile:internal-readiness-batch:provider-refresh` before making provider-backed parity decisions.",
-    "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token.",
-    "For real Google consent proof, run npm run mobile:google-auth-lan-preflight, restart the backend with the LAN NEXTAUTH_URL it reports if needed, register that exact callback in Google Cloud, then run npm run mobile:google-auth-runtime-preflight:strict before manual S23 login."
-  ]
+    "generatedAt":  "2026-07-11T13:16:59.5938693Z",
+    "scope":  "mobile-internal-readiness-batch",
+    "cycle":  "BATCHREADINESS",
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "providerDiscoveryMode":  "cached",
+    "outputDir":  "docs/mobile/harness/batch-internal-readiness-latest",
+    "gapListPath":  "docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md",
+    "steps":  [
+                  {
+                      "name":  "backend-readiness",
+                      "command":  "powershell -ExecutionPolicy Bypass -File scripts\\mobile_backend_readiness.ps1 -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/mobile-backend-readiness.json\"",
+                      "exitCode":  0,
+                      "allowedNonZero":  false,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/mobile-backend-readiness.json",
+                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/backend-readiness.stdout.log",
+                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/backend-readiness.stderr.log",
+                      "producedJson":  true
+                  },
+                  {
+                      "name":  "credential-readiness",
+                      "command":  "powershell -ExecutionPolicy Bypass -File scripts\\mobile_credential_readiness.ps1 -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/mobile-credential-readiness.json\"",
+                      "exitCode":  0,
+                      "allowedNonZero":  true,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/mobile-credential-readiness.json",
+                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/credential-readiness.stdout.log",
+                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/credential-readiness.stderr.log",
+                      "producedJson":  true
+                  },
+                  {
+                      "name":  "google-auth-runtime-preflight",
+                      "command":  "powershell -ExecutionPolicy Bypass -File mobile\\scripts\\google-auth-runtime-preflight.ps1 -BackendAuthBase \"http://127.0.0.1:3002\" -NextAuthUrl \"http://127.0.0.1:3002\" -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/google-auth-runtime-preflight.json\"",
+                      "exitCode":  0,
+                      "allowedNonZero":  true,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/google-auth-runtime-preflight.json",
+                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/google-auth-runtime-preflight.stdout.log",
+                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/google-auth-runtime-preflight.stderr.log",
+                      "producedJson":  true
+                  },
+                  {
+                      "name":  "google-auth-physical-callback-preflight",
+                      "command":  "powershell -ExecutionPolicy Bypass -File mobile\\scripts\\google-auth-runtime-preflight.ps1 -BackendAuthBase \"http://127.0.0.1:3002\" -NextAuthUrl \"http://127.0.0.1:3002\" -RequirePhysicalDeviceCallback -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/google-auth-physical-callback-preflight.json\"",
+                      "exitCode":  0,
+                      "allowedNonZero":  true,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/google-auth-physical-callback-preflight.json",
+                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/google-auth-physical-callback-preflight.stdout.log",
+                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/google-auth-physical-callback-preflight.stderr.log",
+                      "producedJson":  true
+                  },
+                  {
+                      "name":  "google-auth-lan-callback-preflight",
+                      "command":  "powershell -ExecutionPolicy Bypass -File scripts\\mobile_google_lan_auth_preflight.ps1 -BackendPort 3002 -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.json\"",
+                      "exitCode":  0,
+                      "allowedNonZero":  true,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.json",
+                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.stdout.log",
+                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.stderr.log",
+                      "producedJson":  true
+                  },
+                  {
+                      "name":  "internal-mvp-startup-contract",
+                      "command":  "powershell -ExecutionPolicy Bypass -File scripts\\start_poly_mobile_rehearsal.ps1 -SkipBackend -SkipSnapshotWatch -SkipBots -SkipExpo -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/internal-mvp-startup-contract.json\"",
+                      "exitCode":  0,
+                      "allowedNonZero":  false,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/internal-mvp-startup-contract.json",
+                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/internal-mvp-startup-contract.stdout.log",
+                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/internal-mvp-startup-contract.stderr.log",
+                      "producedJson":  true
+                  },
+                  {
+                      "name":  "local-match-breadth",
+                      "command":  "npx.cmd tsx scripts/seed_mobile_mvp_local_match_breadth.ts --baseUrl=http://127.0.0.1:3002 --summaryPath=\"docs/mobile/harness/batch-internal-readiness-latest/mobile-mvp-local-match-breadth.json\"",
+                      "exitCode":  0,
+                      "allowedNonZero":  false,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/mobile-mvp-local-match-breadth.json",
+                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/local-match-breadth.stdout.log",
+                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/local-match-breadth.stderr.log",
+                      "producedJson":  true
+                  },
+                  {
+                      "name":  "current-state",
+                      "command":  "npx.cmd tsx scripts/inspect_mobile_mvp_current_state.ts --baseUrl=http://127.0.0.1:3002 --summaryPath=\"docs/mobile/harness/batch-internal-readiness-latest/mobile-current-state-inspection.json\" --cycle=BATCHREADINESS",
+                      "exitCode":  0,
+                      "allowedNonZero":  false,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/mobile-current-state-inspection.json",
+                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/current-state.stdout.log",
+                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/current-state.stderr.log",
+                      "producedJson":  true
+                  },
+                  {
+                      "name":  "provider-snapshot-refresh",
+                      "command":  "cached:provider-snapshot-refresh",
+                      "exitCode":  0,
+                      "allowedNonZero":  true,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/provider-snapshot-refresh.json",
+                      "stdoutPath":  null,
+                      "stderrPath":  null,
+                      "producedJson":  true,
+                      "cached":  true,
+                      "reason":  "provider_discovery_mode_cached"
+                  },
+                  {
+                      "name":  "internal-exchange-readiness",
+                      "command":  "cached:internal-exchange-readiness",
+                      "exitCode":  0,
+                      "allowedNonZero":  true,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.json",
+                      "stdoutPath":  null,
+                      "stderrPath":  null,
+                      "producedJson":  true,
+                      "cached":  true,
+                      "reason":  "provider_discovery_mode_cached"
+                  },
+                  {
+                      "name":  "provider-visible-tradable-flow",
+                      "command":  "cached:provider-visible-tradable-flow",
+                      "exitCode":  0,
+                      "allowedNonZero":  true,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json",
+                      "stdoutPath":  null,
+                      "stderrPath":  null,
+                      "producedJson":  true,
+                      "cached":  true,
+                      "reason":  "provider_discovery_mode_cached"
+                  },
+                  {
+                      "name":  "worldcup-match-scan",
+                      "command":  "cached:worldcup-match-scan",
+                      "exitCode":  0,
+                      "allowedNonZero":  false,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-event-scan.json",
+                      "stdoutPath":  null,
+                      "stderrPath":  null,
+                      "producedJson":  true,
+                      "cached":  true,
+                      "reason":  "provider_discovery_mode_cached"
+                  },
+                  {
+                      "name":  "provider-line-scan",
+                      "command":  "cached:provider-line-scan",
+                      "exitCode":  0,
+                      "allowedNonZero":  false,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/provider-line-breadth-scan.json",
+                      "stdoutPath":  null,
+                      "stderrPath":  null,
+                      "producedJson":  true,
+                      "cached":  true,
+                      "reason":  "provider_discovery_mode_cached"
+                  },
+                  {
+                      "name":  "root-typecheck",
+                      "command":  "npx.cmd tsc --noEmit --pretty false --incremental false \u0026\u0026 node -e \"require(\u0027fs\u0027).writeFileSync(\u0027docs/mobile/harness/batch-internal-readiness-latest/root-typecheck.json\u0027, JSON.stringify({ pass: true, command: \u0027npx tsc --noEmit --pretty false --incremental false\u0027, generatedAt: new Date().toISOString() }, null, 2) + \u0027\\n\u0027)\"",
+                      "exitCode":  0,
+                      "allowedNonZero":  false,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/root-typecheck.json",
+                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/root-typecheck.stdout.log",
+                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/root-typecheck.stderr.log",
+                      "producedJson":  true
+                  },
+                  {
+                      "name":  "jest-ci",
+                      "command":  "npm.cmd run test:ci \u0026\u0026 node -e \"require(\u0027fs\u0027).writeFileSync(\u0027docs/mobile/harness/batch-internal-readiness-latest/jest-ci.json\u0027, JSON.stringify({ pass: true, command: \u0027npm run test:ci\u0027, generatedAt: new Date().toISOString() }, null, 2) + \u0027\\n\u0027)\"",
+                      "exitCode":  0,
+                      "allowedNonZero":  false,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/jest-ci.json",
+                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/jest-ci.stdout.log",
+                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/jest-ci.stderr.log",
+                      "producedJson":  true
+                  },
+                  {
+                      "name":  "mobile-typecheck",
+                      "command":  "npm.cmd --prefix mobile run typecheck \u0026\u0026 node -e \"require(\u0027fs\u0027).writeFileSync(\u0027docs/mobile/harness/batch-internal-readiness-latest/mobile-typecheck.json\u0027, JSON.stringify({ pass: true, command: \u0027npm --prefix mobile run typecheck\u0027, generatedAt: new Date().toISOString() }, null, 2) + \u0027\\n\u0027)\"",
+                      "exitCode":  0,
+                      "allowedNonZero":  false,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/mobile-typecheck.json",
+                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/mobile-typecheck.stdout.log",
+                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/mobile-typecheck.stderr.log",
+                      "producedJson":  true
+                  }
+              ],
+    "environmentHealthCaptured":  "before-batch-steps",
+    "environmentHealth":  {
+                              "git":  {
+                                          "branch":  "main",
+                                          "status":  "## main...poly-mobile/main [ahead 1]",
+                                          "worktreeClean":  true
+                                      },
+                              "android":  {
+                                              "targetDeviceId":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+                                              "targetModel":  "SM_S911U1",
+                                              "s23Connected":  true,
+                                              "adbDevices":  "List of devices attached\r\nadb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp device product:dm1quew model:SM_S911U1 device:dm1q transport_id:4"
+                                          },
+                              "docker":  {
+                                             "polyPostgresHealthy":  true,
+                                             "polyPostgresStatus":  "poly_postgres Up 6 days (healthy) 0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
+                                         },
+                              "localServices":  {
+                                                    "backendPort3002Listening":  true,
+                                                    "expoRunning":  false,
+                                                    "proofPort8289Listening":  false,
+                                                    "listeningPortsJson":  "{\"LocalPort\":3002,\"OwningProcess\":37208}"
+                                                },
+                              "bot":  {
+                                          "runningContinuously":  false,
+                                          "matchingProcessesJson":  ""
+                                      }
+                          },
+    "readiness":  {
+                      "localMvpReadyForInternalTesting":  true,
+                      "providerBackedExchangeReady":  false,
+                      "backendReady":  true,
+                      "worktreeClean":  true,
+                      "dbContainerHealthy":  true,
+                      "s23Connected":  true,
+                      "expoRunning":  false,
+                      "botRunningContinuously":  false,
+                      "currentRouteLocalMvpReady":  true,
+                      "mobileCredentialCanBeCreated":  true,
+                      "ambientApiKeyReadyForManualServerMode":  false,
+                      "serverModeApiKeySource":  "local-runtime-env",
+                      "localRuntimeEnvReadyForManualServerMode":  true,
+                      "googleAuthRuntimeReady":  false,
+                      "googleAuthFailedChecks":  [
+                                                     "Google redirect_uri matches NEXTAUTH_URL callback"
+                                                 ],
+                      "googlePhysicalCallbackReady":  false,
+                      "googlePhysicalFailedChecks":  [
+                                                         "NEXTAUTH_URL is reachable by a physical Android browser",
+                                                         "Google redirect_uri matches NEXTAUTH_URL callback"
+                                                     ],
+                      "googleLanCallbackReady":  true,
+                      "googleLanFailedChecks":  [
+
+                                                ],
+                      "googleS23ConsentReady":  true,
+                      "googleS23ConsentSource":  "lan-callback-preflight",
+                      "googleS23ConsentExpectedCallback":  "http://172.16.200.14:3002/api/auth/google/callback",
+                      "internalMvpStartupReady":  true,
+                      "internalMvpStartupMobileApiBaseUrl":  "http://172.16.200.14:3002",
+                      "internalMvpStartupBackendAuthBaseUrl":  "http://172.16.200.14:3002",
+                      "internalMvpStartupExpectedGoogleCallback":  "http://172.16.200.14:3002/api/auth/google/callback",
+                      "localMatchBreadthReady":  true,
+                      "localMatchBreadthEventCount":  4,
+                      "s23LocalMvpDeviceProofReady":  true,
+                      "s23ProofMaxAgeHours":  24,
+                      "s23Proofs":  [
+                                        {
+                                            "name":  "filled-buy-history",
+                                            "summaryPath":  "docs/mobile/harness/cycle-XG-full-local-mvp-s23-flow/cycle-XG-current-mvp-s23-visible-flow.json",
+                                            "pass":  true,
+                                            "reason":  "pass",
+                                            "generatedAt":  "2026-07-11T09:32:05.5117425Z",
+                                            "proofAgeHours":  3.75,
+                                            "maxAgeHours":  24,
+                                            "fresh":  true,
+                                            "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+                                            "model":  "SM-S911U1",
+                                            "eventSlug":  "argentina-vs-egypt",
+                                            "lineMarketGroupKey":  "spread",
+                                            "lineValue":  "1.5",
+                                            "lineOutcomeLabel":  "Egypt +1.5",
+                                            "missingArtifacts":  [
+
+                                                                 ],
+                                            "failedAssertions":  [
+
+                                                                 ]
+                                        },
+                                        {
+                                            "name":  "open-order-cancel",
+                                            "summaryPath":  "docs/mobile/harness/cycle-XH-open-order-cancel-s23-flow/cycle-XH-current-mvp-s23-visible-flow.json",
+                                            "pass":  true,
+                                            "reason":  "pass",
+                                            "generatedAt":  "2026-07-11T09:45:19.0371695Z",
+                                            "proofAgeHours":  3.53,
+                                            "maxAgeHours":  24,
+                                            "fresh":  true,
+                                            "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+                                            "model":  "SM-S911U1",
+                                            "eventSlug":  "argentina-vs-egypt",
+                                            "lineMarketGroupKey":  "spread",
+                                            "lineValue":  "1.5",
+                                            "lineOutcomeLabel":  "Egypt +1.5",
+                                            "missingArtifacts":  [
+
+                                                                 ],
+                                            "failedAssertions":  [
+
+                                                                 ]
+                                        },
+                                        {
+                                            "name":  "cashout-sell-history",
+                                            "summaryPath":  "docs/mobile/harness/cycle-XI-cashout-sell-s23-flow/cycle-XI-current-mvp-s23-visible-flow.json",
+                                            "pass":  true,
+                                            "reason":  "pass",
+                                            "generatedAt":  "2026-07-11T09:59:42.7891761Z",
+                                            "proofAgeHours":  3.29,
+                                            "maxAgeHours":  24,
+                                            "fresh":  true,
+                                            "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+                                            "model":  "SM-S911U1",
+                                            "eventSlug":  "argentina-vs-egypt",
+                                            "lineMarketGroupKey":  "spread",
+                                            "lineValue":  "1.5",
+                                            "lineOutcomeLabel":  "Egypt +1.5",
+                                            "missingArtifacts":  [
+
+                                                                 ],
+                                            "failedAssertions":  [
+
+                                                                 ]
+                                        },
+                                        {
+                                            "name":  "totals-filled-buy-history",
+                                            "summaryPath":  "docs/mobile/harness/cycle-WF-line-family-s23-proof/cycle-WF-current-mvp-s23-visible-flow.json",
+                                            "pass":  true,
+                                            "reason":  "pass",
+                                            "generatedAt":  "2026-07-11T05:12:16.5919824Z",
+                                            "proofAgeHours":  8.08,
+                                            "maxAgeHours":  24,
+                                            "fresh":  true,
+                                            "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+                                            "model":  "SM-S911U1",
+                                            "eventSlug":  "argentina-vs-egypt",
+                                            "lineMarketGroupKey":  "totals",
+                                            "lineValue":  "2.5",
+                                            "lineOutcomeLabel":  "Over 2.5",
+                                            "missingArtifacts":  [
+
+                                                                 ],
+                                            "failedAssertions":  [
+
+                                                                 ]
+                                        },
+                                        {
+                                            "name":  "team-totals-filled-buy-history",
+                                            "summaryPath":  "docs/mobile/harness/cycle-WG-team-total-s23-proof/cycle-WG-current-mvp-s23-visible-flow.json",
+                                            "pass":  true,
+                                            "reason":  "pass",
+                                            "generatedAt":  "2026-07-11T05:18:54.1737804Z",
+                                            "proofAgeHours":  7.97,
+                                            "maxAgeHours":  24,
+                                            "fresh":  true,
+                                            "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+                                            "model":  "SM-S911U1",
+                                            "eventSlug":  "argentina-vs-egypt",
+                                            "lineMarketGroupKey":  "team-totals",
+                                            "lineValue":  "1.5",
+                                            "lineOutcomeLabel":  "Argentina Over 1.5",
+                                            "missingArtifacts":  [
+
+                                                                 ],
+                                            "failedAssertions":  [
+
+                                                                 ]
+                                        }
+                                    ],
+                      "rootTypecheckReady":  true,
+                      "jestCiReady":  true,
+                      "mobileTypecheckReady":  true,
+                      "mobileVisibleEventCount":  4,
+                      "providerVisibleMarketCount":  3,
+                      "providerLocalMmReadyMarketCount":  0,
+                      "providerBooksUnavailableOrClosed":  true,
+                      "providerSnapshotRefreshSucceeded":  true,
+                      "providerSnapshotRefreshUpdatedCount":  6,
+                      "cachedProviderEvidenceFresh":  true,
+                      "cachedProviderEvidenceMaxAgeHours":  24,
+                      "cachedProviderEvidence":  [
+                                                     {
+                                                         "name":  "provider-snapshot-refresh",
+                                                         "summaryPath":  "docs/mobile/harness/batch-internal-readiness-latest/provider-snapshot-refresh.json",
+                                                         "generatedAt":  "2026-07-11T12:56:14.421Z",
+                                                         "ageHours":  0.35,
+                                                         "maxAgeHours":  24,
+                                                         "fresh":  true,
+                                                         "present":  true
+                                                     },
+                                                     {
+                                                         "name":  "internal-exchange-readiness",
+                                                         "summaryPath":  "docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.json",
+                                                         "generatedAt":  "2026-07-11T12:56:16.028Z",
+                                                         "ageHours":  0.35,
+                                                         "maxAgeHours":  24,
+                                                         "fresh":  true,
+                                                         "present":  true
+                                                     },
+                                                     {
+                                                         "name":  "provider-visible-tradable-flow",
+                                                         "summaryPath":  "docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json",
+                                                         "generatedAt":  "2026-07-11T12:56:17.297Z",
+                                                         "ageHours":  0.35,
+                                                         "maxAgeHours":  24,
+                                                         "fresh":  true,
+                                                         "present":  true
+                                                     },
+                                                     {
+                                                         "name":  "worldcup-match-scan",
+                                                         "summaryPath":  "docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-event-scan.json",
+                                                         "generatedAt":  "2026-07-11T12:56:39.950Z",
+                                                         "ageHours":  0.34,
+                                                         "maxAgeHours":  24,
+                                                         "fresh":  true,
+                                                         "present":  true
+                                                     },
+                                                     {
+                                                         "name":  "provider-line-scan",
+                                                         "summaryPath":  "docs/mobile/harness/batch-internal-readiness-latest/provider-line-breadth-scan.json",
+                                                         "generatedAt":  "2026-07-11T12:58:20.734Z",
+                                                         "ageHours":  0.31,
+                                                         "maxAgeHours":  24,
+                                                         "fresh":  true,
+                                                         "present":  true
+                                                     }
+                                                 ],
+                      "providerMvpTradableFlowReady":  false,
+                      "providerMvpTradableFlowBlocker":  "provider_mvp_match_snapshot_not_mm_safe",
+                      "worldCupTeamMatchEventCount":  442,
+                      "openWorldCupTeamMatchEventCount":  0,
+                      "closedOrEndedWorldCupTeamMatchEventCount":  442,
+                      "usableWorldCupTeamMatchEventCount":  0,
+                      "openWorldCupProviderEventCount":  64,
+                      "usableOpenWorldCupProviderEventCount":  56,
+                      "usableOpenNonMatchWorldCupProviderEventCount":  56,
+                      "providerLineCandidateCount":  2483,
+                      "identityCompleteProviderLineCandidateCount":  2483,
+                      "closedOrUnavailableProviderLineIdentityCount":  2483,
+                      "attachReadyProviderLineCandidateCount":  0
+                  },
+    "blockers":  {
+                     "p0":  [
+
+                            ],
+                     "p1":  [
+                                "provider_worldcup_match_books_unavailable_or_closed",
+                                "provider_mvp_match_snapshot_not_mm_safe",
+                                "no_usable_polymarket_worldcup_team_match_books",
+                                "no_attach_ready_polymarket_worldcup_line_markets"
+                            ]
+                 },
+    "recovery":  {
+                     "s23ProofRefreshCommands":  [
+                                                     {
+                                                         "name":  "filled-buy-history",
+                                                         "summaryPath":  "docs/mobile/harness/cycle-XG-full-local-mvp-s23-flow/cycle-XG-current-mvp-s23-visible-flow.json",
+                                                         "command":  "powershell -ExecutionPolicy Bypass -File scripts\\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XG -OutputDir docs\\mobile\\screenshots\\cycle-XG-full-local-mvp-s23-flow -HierarchyOutputDir docs\\mobile\\harness\\cycle-XG-full-local-mvp-s23-flow -SeedCounterparty -ExpectFilledHistory"
+                                                     },
+                                                     {
+                                                         "name":  "open-order-cancel",
+                                                         "summaryPath":  "docs/mobile/harness/cycle-XH-open-order-cancel-s23-flow/cycle-XH-current-mvp-s23-visible-flow.json",
+                                                         "command":  "powershell -ExecutionPolicy Bypass -File scripts\\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XH -OutputDir docs\\mobile\\screenshots\\cycle-XH-open-order-cancel-s23-flow -HierarchyOutputDir docs\\mobile\\harness\\cycle-XH-open-order-cancel-s23-flow -ExpectOpenOrder -ExpectCancel"
+                                                     },
+                                                     {
+                                                         "name":  "cashout-sell-history",
+                                                         "summaryPath":  "docs/mobile/harness/cycle-XI-cashout-sell-s23-flow/cycle-XI-current-mvp-s23-visible-flow.json",
+                                                         "command":  "powershell -ExecutionPolicy Bypass -File scripts\\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle XI -OutputDir docs\\mobile\\screenshots\\cycle-XI-cashout-sell-s23-flow -HierarchyOutputDir docs\\mobile\\harness\\cycle-XI-cashout-sell-s23-flow -SeedCounterparty -ExpectFilledHistory -ExpectCashout"
+                                                     },
+                                                     {
+                                                         "name":  "totals-filled-buy-history",
+                                                         "summaryPath":  "docs/mobile/harness/cycle-WF-line-family-s23-proof/cycle-WF-current-mvp-s23-visible-flow.json",
+                                                         "command":  "powershell -ExecutionPolicy Bypass -File scripts\\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WF -OutputDir docs\\mobile\\screenshots\\cycle-WF-line-family-s23-proof -HierarchyOutputDir docs\\mobile\\harness\\cycle-WF-line-family-s23-proof -LineMarketGroupKey totals -LineMarketType totals -LineValue 2.5 -LineOutcomeSide over -LineOutcomeLabel \"Over 2.5\" -SeedCounterparty -ExpectFilledHistory"
+                                                     },
+                                                     {
+                                                         "name":  "team-totals-filled-buy-history",
+                                                         "summaryPath":  "docs/mobile/harness/cycle-WG-team-total-s23-proof/cycle-WG-current-mvp-s23-visible-flow.json",
+                                                         "command":  "powershell -ExecutionPolicy Bypass -File scripts\\prove_mobile_current_mvp_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle WG -OutputDir docs\\mobile\\screenshots\\cycle-WG-team-total-s23-proof -HierarchyOutputDir docs\\mobile\\harness\\cycle-WG-team-total-s23-proof -LineMarketGroupKey team-totals -LineMarketType team-total -LineValue 1.5 -LineOutcomeSide over -LineOutcomeLabel \"Argentina Over 1.5\" -LineTapPrefix event-detail-outcome-team-total-goals- -SeedCounterparty -ExpectFilledHistory"
+                                                     }
+                                                 ],
+                     "providerRefreshCommand":  "npm run mobile:internal-readiness-batch:provider-refresh",
+                     "rerunBatchCommand":  "npm run mobile:internal-readiness-batch"
+                 },
+    "interpretation":  "Local MVP fake-token flow is ready for internal testing; provider-backed breadth/line/MM readiness remains tracked P1 debt.",
+    "nextActions":  [
+                        "For internal user-flow testing, keep using Home -\u003e Event Detail -\u003e contract-shaped line market -\u003e Trade Ticket -\u003e fake-token order -\u003e Portfolio/history.",
+                        "Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.",
+                        "If `s23_local_mvp_device_proof_not_ready` appears, run the S23 proof refresh commands in `recovery.s23ProofRefreshCommands`, then rerun `npm run mobile:internal-readiness-batch`.",
+                        "Use `npm run mobile:internal-readiness-batch:provider-refresh` after provider imports, provider refresh, or line-market discovery changes.",
+                        "If `provider_cached_evidence_stale` appears, run `npm run mobile:internal-readiness-batch:provider-refresh` before making provider-backed parity decisions.",
+                        "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token.",
+                        "For real Google consent proof, run npm run mobile:google-auth-lan-preflight, restart the backend with the LAN NEXTAUTH_URL it reports if needed, register that exact callback in Google Cloud, then run npm run mobile:google-auth-runtime-preflight:strict before manual S23 login."
+                    ]
 }
