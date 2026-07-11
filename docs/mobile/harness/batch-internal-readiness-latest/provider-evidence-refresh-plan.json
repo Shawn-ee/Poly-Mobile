@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T21:56:04.464Z",
+  "generatedAt": "2026-07-11T22:16:37.864Z",
   "sourceSummaryPath": "docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json",
   "refreshWindowHours": 2,
   "providerDiscoveryMode": "cached",
@@ -10,7 +10,7 @@
   "rerunBatchCommand": "npm run mobile:internal-readiness-batch",
   "nextStaleName": "provider-visible-tradable-flow",
   "nextStaleAt": "2026-07-12T13:50:21.2740000Z",
-  "hoursUntilStale": 15.91,
+  "hoursUntilStale": 15.56,
   "cachedProviderEvidenceFresh": true,
   "providerBackedExchangeReady": false,
   "providerMvpTradableFlowReady": false,

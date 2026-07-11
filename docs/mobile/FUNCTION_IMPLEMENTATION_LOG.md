@@ -22,6 +22,24 @@ Purpose: document the app functions, services, API calls, state transitions, and
   - Harness/control-plane change only. No frontend behavior, backend route, provider discovery, API schema, database schema, or order flow changed.
   - Does not close `dod-provider-polymarket-parity`; it reduces pointless cycles until provider evidence becomes stale or a real candidate signal appears.
 
+## Cycle PROVIDERWAKE - Provider Evidence Wall-Clock Wake
+
+- Feature/page worked on: provider evidence refresh planner for the remaining Polymarket/provider parity lane.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/plan_mobile_provider_evidence_refresh.ts`
+  - `src/__tests__/mobile-provider-evidence-plan.contract.test.ts`
+- User interactions supported: unchanged.
+- State transitions:
+  - The provider evidence planner now recomputes `hoursUntilStale` from `cachedProviderEvidenceNextStaleAt`.
+  - If wall-clock time has passed the provider stale timestamp, the planner reports `refresh-due` even when an old batch summary still has positive cached hours.
+  - This makes the autonomous loop wake provider discovery/refresh at the correct time without needing a full batch rerun first.
+- Proof:
+  - `npx jest --runInBand src/__tests__/mobile-provider-evidence-plan.contract.test.ts`
+- Known limitations:
+  - Harness/control-plane change only. No provider API calls, mobile UI changes, backend routes, schemas, or order flows changed.
+  - Does not close `dod-provider-polymarket-parity`; it makes the refresh trigger more reliable when waiting on provider evidence.
+
 ## Cycle NEXTSTALEFIX - Earliest Proof Refresh Forecast
 
 - Feature/page worked on: internal readiness S23/provider proof freshness forecasting for the autonomous loop.

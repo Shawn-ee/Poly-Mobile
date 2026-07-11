@@ -1,6 +1,6 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-11T21:31:20.292Z",
+  "generatedAt": "2026-07-11T22:17:04.905Z",
   "scope": "the-odds-api-single-event-mobile-fake-token-flow",
   "policy": {
     "providerSource": "the-odds-api",
@@ -39,7 +39,7 @@
     "referenceOutcomeLabel": "Argentina -0.5"
   },
   "makerQuote": {
-    "orderId": "b3a8ee1f-f873-4614-bad5-c7a13a065fab",
+    "orderId": "8c375ddd-0c8d-460e-97a5-0f97c7c9e0a5",
     "price": "0.58",
     "remaining": "200"
   },
@@ -53,7 +53,7 @@
     "historyTradeVisible": true
   },
   "orderResult": {
-    "id": "abaaeb82-8bd3-43cd-b3a9-33824a7eba87",
+    "id": "06de1806-0f23-479b-86f4-c298a75982b4",
     "mode": "server",
     "title": "Switzerland vs. Argentina",
     "outcome": "Argentina -0.5",
@@ -120,12 +120,12 @@
     "bestBid": null,
     "bestAsk": 58,
     "bestBidSize": null,
-    "bestAskSize": 1243.94,
+    "bestAskSize": 1555.58,
     "currentValue": 1.2528,
     "pnl": 0
   },
   "historyTrade": {
-    "id": "b64fce9f-c0fa-4f45-9945-71ef0144aefc",
+    "id": "336cc6ca-ae82-40be-be77-e42a1ca92bc3",
     "market": {
       "id": "29346e58-158a-4260-953d-259c98fa24ff",
       "title": "Switzerland vs. Argentina: Spread +0.5",
@@ -181,6 +181,6 @@
     "fee": 0,
     "proceedsTokens": null,
     "realizedPnlTokens": null,
-    "createdAt": "2026-07-11T21:31:20.148Z"
+    "createdAt": "2026-07-11T22:17:04.772Z"
   }
 }

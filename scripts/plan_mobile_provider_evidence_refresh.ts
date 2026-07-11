@@ -82,6 +82,16 @@ function numberOrNull(value: unknown): number | null {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
+function computeHoursUntilStale(staleAt: string | null | undefined, fallbackHours: unknown, now: Date): number | null {
+  if (staleAt) {
+    const staleAtMs = Date.parse(staleAt);
+    if (Number.isFinite(staleAtMs)) {
+      return Number(((staleAtMs - now.getTime()) / 3_600_000).toFixed(2));
+    }
+  }
+  return numberOrNull(fallbackHours);
+}
+
 function readJsonFile<T>(relativePath: string): T | null {
   const resolved = path.resolve(repoRoot, relativePath);
   if (!fs.existsSync(resolved)) {
@@ -100,15 +110,23 @@ function buildPlan(
   summary: InternalReadinessSummary | null,
   sourceSummaryPath: string,
   refreshWindowHours: number,
+  now: Date,
 ): ProviderEvidencePlan {
   const readiness = summary?.readiness ?? {};
   const p1Blockers = summary?.blockers?.p1 ?? [];
   const providerBlockers = p1Blockers.filter((blocker) => blocker.toLowerCase().includes("provider"));
   const providerEvidence = Array.isArray(readiness.cachedProviderEvidence) ? readiness.cachedProviderEvidence : [];
   const fresh = readiness.cachedProviderEvidenceFresh === true;
-  const hoursUntilStale = numberOrNull(readiness.cachedProviderEvidenceHoursUntilStale);
+  const hoursUntilStale = computeHoursUntilStale(
+    readiness.cachedProviderEvidenceNextStaleAt,
+    readiness.cachedProviderEvidenceHoursUntilStale,
+    now,
+  );
   const hasMissingEvidence = providerEvidence.length === 0 || providerEvidence.some((row) => row.present === false);
-  const hasStaleEvidence = !fresh || providerEvidence.some((row) => row.fresh === false);
+  const hasStaleEvidence =
+    !fresh ||
+    (hoursUntilStale !== null && hoursUntilStale <= 0) ||
+    providerEvidence.some((row) => row.fresh === false);
   const dueSoon = hoursUntilStale !== null && hoursUntilStale <= refreshWindowHours;
 
   let status: ProviderEvidencePlan["status"] = "skip-refresh";
@@ -130,7 +148,7 @@ function buildPlan(
   const rerunBatchCommand = summary?.recovery?.rerunBatchCommand ?? "npm run mobile:internal-readiness-batch";
 
   return {
-    generatedAt: new Date().toISOString(),
+    generatedAt: now.toISOString(),
     sourceSummaryPath,
     refreshWindowHours,
     providerDiscoveryMode: summary?.providerDiscoveryMode ?? null,
@@ -170,13 +188,18 @@ const args = parseArgs(process.argv.slice(2));
 const summaryPath = args.get("summaryPath") ?? "docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json";
 const outputPath = args.get("output") ?? "docs/mobile/harness/batch-internal-readiness-latest/provider-evidence-refresh-plan.json";
 const refreshWindowHours = Number(args.get("refreshWindowHours") ?? "2");
+const nowArg = args.get("now");
+const now = nowArg ? new Date(nowArg) : new Date();
 
 if (!Number.isFinite(refreshWindowHours) || refreshWindowHours < 0) {
   throw new Error("--refreshWindowHours must be a non-negative number");
 }
+if (Number.isNaN(now.getTime())) {
+  throw new Error("--now must be a valid date/time string");
+}
 
 const summary = readJsonFile<InternalReadinessSummary>(summaryPath);
-const plan = buildPlan(summary, summaryPath, refreshWindowHours);
+const plan = buildPlan(summary, summaryPath, refreshWindowHours, now);
 const resolvedOutputPath = path.resolve(repoRoot, outputPath);
 ensureParentDir(resolvedOutputPath);
 fs.writeFileSync(resolvedOutputPath, `${JSON.stringify(plan, null, 2)}\n`, "utf8");
