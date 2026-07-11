@@ -29,6 +29,7 @@ docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-sum
 - Provider/internal exchange readiness.
 - Polymarket World Cup team-match breadth.
 - Polymarket provider line-market breadth.
+- Local environment health snapshot: git cleanliness, S23 reachability, Docker/Postgres status, backend/Expo/proof ports, and continuous bot process status.
 
 ## Gate Behavior
 
@@ -47,6 +48,19 @@ Known provider availability gaps are tracked as P1, not P0:
 This is intentional. The Local MVP fake-token user flow remains testable with contract-shaped line markets while provider-backed breadth and line parity remain open.
 
 Do not import futures, awards, player props, or non-World-Cup events to make the match breadth numbers look better. The harness should keep those markets as provider diagnostics unless the product scope explicitly changes.
+
+## Local Environment Snapshot
+
+The summary includes `environmentHealth` so the Lead Agent can report the batch handoff from one artifact instead of reassembling it from ad hoc terminal checks. The snapshot is captured before the batch steps rewrite their JSON artifacts, so `worktreeClean` is not polluted by the harness output itself:
+
+- `environmentHealth.git.worktreeClean`
+- `environmentHealth.android.s23Connected`
+- `environmentHealth.docker.polyPostgresHealthy`
+- `environmentHealth.localServices.backendPort3002Listening`
+- `environmentHealth.localServices.expoRunning`
+- `environmentHealth.bot.runningContinuously`
+
+These fields are diagnostic. They do not turn provider availability P1 debt into a P0 failure, and they do not start or stop any services. They only record what is running when the batch command is executed.
 
 ## Manual Server-Mode Prep
 

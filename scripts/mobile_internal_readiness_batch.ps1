@@ -60,6 +60,93 @@ function Invoke-BatchCommand {
   }
 }
 
+function Invoke-OptionalTextCommand {
+  param(
+    [string]$Command,
+    [int]$TimeoutSeconds = 8
+  )
+
+  try {
+    $psi = [System.Diagnostics.ProcessStartInfo]::new()
+    $psi.FileName = "cmd.exe"
+    $psi.Arguments = "/c $Command"
+    $psi.WorkingDirectory = $RepoRoot.Path
+    $psi.RedirectStandardOutput = $true
+    $psi.RedirectStandardError = $true
+    $psi.UseShellExecute = $false
+    $process = [System.Diagnostics.Process]::Start($psi)
+    if (-not $process.WaitForExit($TimeoutSeconds * 1000)) {
+      try { $process.Kill($true) } catch {}
+      return [ordered]@{
+        exitCode = $null
+        timedOut = $true
+        stdout = ""
+        stderr = "Timed out after $TimeoutSeconds seconds."
+      }
+    }
+
+    return [ordered]@{
+      exitCode = $process.ExitCode
+      timedOut = $false
+      stdout = $process.StandardOutput.ReadToEnd().Trim()
+      stderr = $process.StandardError.ReadToEnd().Trim()
+    }
+  } catch {
+    return [ordered]@{
+      exitCode = $null
+      timedOut = $false
+      stdout = ""
+      stderr = $_.Exception.Message
+    }
+  }
+}
+
+function Get-EnvironmentHealthSnapshot {
+  $gitBranch = Invoke-OptionalTextCommand "git branch --show-current"
+  $gitStatus = Invoke-OptionalTextCommand "git status --short --branch"
+  $adbDevices = Invoke-OptionalTextCommand "adb devices -l"
+  $dockerDb = Invoke-OptionalTextCommand "docker ps --filter ""name=poly_postgres"" --format ""{{.Names}} {{.Status}} {{.Ports}}"""
+  $ports = Invoke-OptionalTextCommand "powershell -NoProfile -Command ""Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue | Where-Object { `$_.LocalPort -in 3002,8081,8289,19000,19001,19002 } | Select-Object LocalPort,OwningProcess | Sort-Object LocalPort | ConvertTo-Json -Compress"""
+  $botProcesses = Invoke-OptionalTextCommand "powershell -NoProfile -Command ""Get-CimInstance Win32_Process | Where-Object { `$_.Name -match 'node|npm|tsx|powershell' -and `$_.CommandLine -match 'bot:polymarket|reference:snapshot-watch|poly-bot|soak_orderbook|refresh_reference_snapshots' -and `$_.CommandLine -notmatch 'Where-Object' } | Select-Object ProcessId,Name,CommandLine | ConvertTo-Json -Compress"""
+
+  $gitStatusLines = if ($gitStatus.stdout) { @($gitStatus.stdout -split "`r?`n") } else { @() }
+  $dirtyLines = @($gitStatusLines | Where-Object { $_ -and ($_ -notmatch '^## ') })
+  $adbConnected = [bool]($adbDevices.stdout -match "adb-R3CW20LFMLW-7OpoO6\._adb-tls-connect\._tcp\s+device")
+  $dbHealthy = [bool]($dockerDb.stdout -match "poly_postgres" -and $dockerDb.stdout -match "\(healthy\)")
+  $expoRunning = [bool]($ports.stdout -match '"LocalPort":8081' -or $ports.stdout -match '"LocalPort":19000' -or $ports.stdout -match '"LocalPort":19001' -or $ports.stdout -match '"LocalPort":19002')
+  $backendPortListening = [bool]($ports.stdout -match '"LocalPort":3002')
+  $proofPortListening = [bool]($ports.stdout -match '"LocalPort":8289')
+  $botRunning = [bool]($botProcesses.stdout -and $botProcesses.stdout -ne "[]" -and $botProcesses.stdout -ne "null")
+
+  return [ordered]@{
+    git = [ordered]@{
+      branch = $gitBranch.stdout
+      status = $gitStatus.stdout
+      worktreeClean = ($gitStatus.exitCode -eq 0 -and $dirtyLines.Count -eq 0)
+    }
+    android = [ordered]@{
+      targetDeviceId = "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp"
+      targetModel = "SM_S911U1"
+      s23Connected = $adbConnected
+      adbDevices = $adbDevices.stdout
+    }
+    docker = [ordered]@{
+      polyPostgresHealthy = $dbHealthy
+      polyPostgresStatus = $dockerDb.stdout
+    }
+    localServices = [ordered]@{
+      backendPort3002Listening = $backendPortListening
+      expoRunning = $expoRunning
+      proofPort8289Listening = $proofPortListening
+      listeningPortsJson = $ports.stdout
+    }
+    bot = [ordered]@{
+      runningContinuously = $botRunning
+      matchingProcessesJson = $botProcesses.stdout
+    }
+  }
+}
+
 $backendPath = Join-Path $ResolvedOutputDir "mobile-backend-readiness.json"
 $credentialPath = Join-Path $ResolvedOutputDir "mobile-credential-readiness.json"
 $currentStatePath = Join-Path $ResolvedOutputDir "mobile-current-state-inspection.json"
@@ -72,6 +159,8 @@ $currentStateRepoPath = ConvertTo-RepoPath $currentStatePath
 $exchangeRepoPath = ConvertTo-RepoPath $exchangePath
 $matchScanRepoPath = ConvertTo-RepoPath $matchScanPath
 $lineScanRepoPath = ConvertTo-RepoPath $lineScanPath
+
+$environmentHealth = Get-EnvironmentHealthSnapshot
 
 $steps = New-Object System.Collections.Generic.List[object]
 $steps.Add((Invoke-BatchCommand -Name "backend-readiness" -Command "powershell -ExecutionPolicy Bypass -File scripts\mobile_backend_readiness.ps1 -SummaryPath `"$backendRepoPath`"" -OutputPath $backendPath))
@@ -122,10 +211,17 @@ $summary = [ordered]@{
   backendBaseUrl = $BackendBaseUrl
   outputDir = ConvertTo-RepoPath $ResolvedOutputDir
   steps = $steps
+  environmentHealthCaptured = "before-batch-steps"
+  environmentHealth = $environmentHealth
   readiness = [ordered]@{
     localMvpReadyForInternalTesting = ($p0Blockers.Count -eq 0)
     providerBackedExchangeReady = $providerExchangeReady
     backendReady = $backendReady
+    worktreeClean = $environmentHealth.git.worktreeClean
+    dbContainerHealthy = $environmentHealth.docker.polyPostgresHealthy
+    s23Connected = $environmentHealth.android.s23Connected
+    expoRunning = $environmentHealth.localServices.expoRunning
+    botRunningContinuously = $environmentHealth.bot.runningContinuously
     currentRouteLocalMvpReady = $localMvpReady
     mobileCredentialCanBeCreated = [bool]($credential -and $credential.readyToCreateCredential)
     ambientApiKeyReadyForManualServerMode = $ambientServerModeReady

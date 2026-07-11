@@ -33,11 +33,26 @@ describe("mobile internal readiness batch harness", () => {
     expect(source).toContain("internal-readiness-batch-summary.json");
   });
 
+  it("records local environment health needed for batch handoff reports", () => {
+    const source = harness();
+
+    expect(source).toContain("Get-EnvironmentHealthSnapshot");
+    expect(source).toContain("environmentHealthCaptured");
+    expect(source).toContain("before-batch-steps");
+    expect(source).toContain("worktreeClean");
+    expect(source).toContain("s23Connected");
+    expect(source).toContain("expoRunning");
+    expect(source).toContain("botRunningContinuously");
+    expect(source).toContain("polyPostgresHealthy");
+    expect(source).toContain("backendPort3002Listening");
+  });
+
   it("documents that the harness does not fake match breadth with off-scope markets", () => {
     const doc = auditDoc();
 
     expect(doc).toContain("Do not import futures, awards, player props, or non-World-Cup events");
     expect(doc).toContain("contract-shaped line markets");
     expect(doc).toContain("Known provider availability gaps are tracked as P1");
+    expect(doc).toContain("Local environment health snapshot");
   });
 });

@@ -2,6 +2,15 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Batch Readiness - Environment Health Snapshot
+
+- Feature/page worked on: Local MVP internal-readiness harness reporting.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/mobile_internal_readiness_batch.ps1` now records `environmentHealth` in the batch summary before running the batch steps. The snapshot covers git cleanliness, Samsung S23 reachability, Docker/Postgres status, backend/Expo/proof ports, and continuous bot process status.
+- User interactions supported: none changed directly. The Lead Agent can now report readiness from one generated summary artifact before deciding whether another visible Android proof or provider cycle is needed.
+- State transitions: none changed in mobile runtime, backend routes, order logic, provider discovery, portfolio, or auth. This is a proof/reporting harness improvement only.
+- Known limitations: provider-backed World Cup books remain closed/unavailable and line markets remain contract fixtures for Local MVP testing.
+
 ## Cycle BATCHS23 - Current MVP S23 Proof
 
 - Feature/page worked on: Local MVP visible flow proof across Home, Live, Event Detail, Trade Ticket, Portfolio, and History.
