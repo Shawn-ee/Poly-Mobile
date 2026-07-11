@@ -230,6 +230,27 @@ async function main() {
   const lineQueryFamilySummary = summarizeFamilies(
     worldCupCandidates.filter((candidate) => candidate.source === "market-search" && SEARCH_QUERIES.includes(candidate.queryOrTag)),
   );
+  const realProviderProbeCount = eventSpecificProbes.filter((probe) => probe.source !== "local-fixture").length;
+  const syntheticLocalFixtureProbeCount = eventSpecificProbes.filter((probe) => probe.source === "local-fixture").length;
+  const eventSpecificProbeSummary = summarizeProbeSources(eventSpecificProbes);
+  const providerLineDiscoveryBlockers = [
+    lineCandidates.length === 0 ? "no_world_cup_line_family_markets_found" : null,
+    attachReadyLineCandidates.length === 0 ? "no_attach_ready_line_market_identity" : null,
+    rawLineSourceHits.exactSlug === 0 ? "exact_slug_line_guesses_returned_zero" : null,
+    rawLineSourceHits.eventSpecificSearch === 0 ? "event_specific_line_search_returned_zero" : null,
+    syntheticLocalFixtureProbeCount > 0 ? "local_fixture_probes_are_search_only_not_attachable_provider_slugs" : null,
+  ].filter((blocker): blocker is string => Boolean(blocker));
+  const decision = {
+    providerLineParityReady: attachReadyLineCandidates.length > 0,
+    keepLocalContractFixtures: attachReadyLineCandidates.length === 0,
+    realProviderProbeCount,
+    syntheticLocalFixtureProbeCount,
+    providerLineDiscoveryBlockers,
+    nextSafeAction:
+      attachReadyLineCandidates.length > 0
+        ? "Review attach-ready provider line candidates against the Holiwyn event/market/outcome contract before replacing local fixtures."
+        : "Keep Local MVP spread/totals/team-total rows as contract fixtures; do not attach synthetic local fixture probes or unrelated match-winner candidates as provider-backed line markets.",
+  };
 
   const summary = {
     cycle,
@@ -247,6 +268,7 @@ async function main() {
       eventSpecificSearchQueries,
       exactSlugGuesses,
       limit,
+      eventSpecificProbeSummary,
     },
     errors,
     totals: {
@@ -267,6 +289,7 @@ async function main() {
     familySummary,
     lineFamilySummary,
     lineQueryFamilySummary,
+    decision,
     currentMvpInterpretation:
       attachReadyLineCandidates.length > 0
         ? "review_attach_ready_provider_line_candidates_before_replacing_local_fixtures"
@@ -418,6 +441,18 @@ function summarizeFamilies(candidates: ScanCandidate[]) {
     second_half: 0,
     correct_score: 0,
     other: 0,
+  });
+}
+
+function summarizeProbeSources(probes: EventSpecificProbe[]) {
+  return probes.reduce<Record<NonNullable<EventSpecificProbe["source"]>, number>>((summary, probe) => {
+    const source = probe.source ?? "static";
+    summary[source] = (summary[source] ?? 0) + 1;
+    return summary;
+  }, {
+    static: 0,
+    "gamma-event": 0,
+    "local-fixture": 0,
   });
 }
 

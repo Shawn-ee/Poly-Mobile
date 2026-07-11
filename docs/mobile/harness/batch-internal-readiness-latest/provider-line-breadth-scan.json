@@ -1,7 +1,7 @@
 {
   "cycle": "BATCHREADINESS",
   "result": "pass",
-  "generatedAt": "2026-07-11T10:48:14.231Z",
+  "generatedAt": "2026-07-11T10:56:27.375Z",
   "provider": "polymarket-gamma",
   "scope": "world-cup-provider-line-breadth-scan",
   "sources": {
@@ -335,7 +335,12 @@
       "fifwc-bra-nor-2026-07-05-nor-team-goals-3-5",
       "fifwc-bra-nor-2026-07-05-nor-team-total-3-5"
     ],
-    "limit": 100
+    "limit": 100,
+    "eventSpecificProbeSummary": {
+      "static": 3,
+      "gamma-event": 0,
+      "local-fixture": 3
+    }
   },
   "errors": [],
   "totals": {
@@ -395,6 +400,20 @@
     "second_half": 0,
     "correct_score": 0,
     "other": 0
+  },
+  "decision": {
+    "providerLineParityReady": false,
+    "keepLocalContractFixtures": true,
+    "realProviderProbeCount": 3,
+    "syntheticLocalFixtureProbeCount": 3,
+    "providerLineDiscoveryBlockers": [
+      "no_world_cup_line_family_markets_found",
+      "no_attach_ready_line_market_identity",
+      "exact_slug_line_guesses_returned_zero",
+      "event_specific_line_search_returned_zero",
+      "local_fixture_probes_are_search_only_not_attachable_provider_slugs"
+    ],
+    "nextSafeAction": "Keep Local MVP spread/totals/team-total rows as contract fixtures; do not attach synthetic local fixture probes or unrelated match-winner candidates as provider-backed line markets."
   },
   "currentMvpInterpretation": "no_attach_ready_world_cup_line_markets_found_keep_local_contract_fixtures_for_mvp",
   "topLineCandidates": [],

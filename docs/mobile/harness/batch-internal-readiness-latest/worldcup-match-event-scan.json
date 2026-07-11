@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T10:48:07.841Z",
+  "generatedAt": "2026-07-11T10:56:21.809Z",
   "source": "gamma-api.polymarket.com/events",
   "readOnly": true,
   "scope": "world-cup-match-only-provider-breadth",
@@ -511,9 +511,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.069,
-          "bestAsk": 0.084,
-          "spread": 0.015,
+          "bestBid": 0.072,
+          "bestAsk": 0.078,
+          "spread": 0.006,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -547,7 +547,7 @@
           "tokenCount": 2,
           "bestBid": 0.193,
           "bestAsk": 0.198,
-          "spread": 0.001,
+          "spread": 0.005,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -678,7 +678,7 @@
           "tokenCount": 2,
           "bestBid": 0.31,
           "bestAsk": 0.33,
-          "spread": 0.01,
+          "spread": 0.02,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -714,7 +714,7 @@
           "outcomeCount": 2,
           "tokenCount": 2,
           "bestBid": 0.5,
-          "bestAsk": 0.52,
+          "bestAsk": 0.51,
           "spread": 0.01,
           "usableBook": true,
           "rejectionReasons": []
@@ -787,6 +787,40 @@
         }
       },
       {
+        "slug": "pro-football-team-to-draft-brendan-sorsby-20260620180654958",
+        "title": "Pro Football: Team To Draft Brendan Sorsby",
+        "tags": [
+          "nfl",
+          "draft",
+          "sports",
+          "football",
+          "nfl-draft",
+          "nfl-next-team"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": false,
+        "futuresLike": false,
+        "marketCount": 36,
+        "usableMarketCount": 18,
+        "acceptingOrderMarketCount": 36,
+        "sampleUsableMarket": {
+          "slug": "will-the-buffalo-bills-draft-brendan-sorsby-in-the-2026-nfl-supplemental-draft-20260620180914406",
+          "question": "Will the Buffalo Bills draft Brendan Sorsby in the 2026 NFL Supplemental Draft?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.01,
+          "bestAsk": 0.044,
+          "spread": 0.034,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
         "slug": "2026-womens-us-open-winner-tennis",
         "title": "2026 Women’s US Open Winner (Tennis)",
         "tags": [
@@ -844,40 +878,6 @@
           "bestBid": 0.013,
           "bestAsk": 0.014,
           "spread": 0.001,
-          "usableBook": true,
-          "rejectionReasons": []
-        }
-      },
-      {
-        "slug": "pro-football-team-to-draft-brendan-sorsby-20260620180654958",
-        "title": "Pro Football: Team To Draft Brendan Sorsby",
-        "tags": [
-          "nfl",
-          "draft",
-          "sports",
-          "football",
-          "nfl-draft",
-          "nfl-next-team"
-        ],
-        "matchLike": false,
-        "worldCupRelevant": false,
-        "playerPropLike": false,
-        "futuresLike": false,
-        "marketCount": 36,
-        "usableMarketCount": 16,
-        "acceptingOrderMarketCount": 36,
-        "sampleUsableMarket": {
-          "slug": "will-the-buffalo-bills-draft-brendan-sorsby-in-the-2026-nfl-supplemental-draft-20260620180914406",
-          "question": "Will the Buffalo Bills draft Brendan Sorsby in the 2026 NFL Supplemental Draft?",
-          "acceptingOrders": true,
-          "active": true,
-          "closed": false,
-          "archived": false,
-          "outcomeCount": 2,
-          "tokenCount": 2,
-          "bestBid": 0.01,
-          "bestAsk": 0.044,
-          "spread": 0.034,
           "usableBook": true,
           "rejectionReasons": []
         }

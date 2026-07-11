@@ -1,5 +1,19 @@
 # Mobile Data Contract Gaps
 
+## Cycle PROVIDERLINEDECISION - Provider Line Discovery Decision Summary
+
+- No new mobile/backend runtime data contract changed.
+- The provider line breadth scan now emits a machine-readable `decision` contract for the audit loop:
+  - `providerLineParityReady`
+  - `keepLocalContractFixtures`
+  - `realProviderProbeCount`
+  - `syntheticLocalFixtureProbeCount`
+  - `providerLineDiscoveryBlockers`
+  - `nextSafeAction`
+- This closes a provider-proof clarity gap: synthetic local fixture probes are now explicitly classified as search-only diagnostics, not attachable provider slugs.
+- Current result remains partial for full Polymarket parity: no World Cup line-family markets and no attach-ready line identities were found.
+- Remaining data gap: mobile line-market fixtures must keep backend-shaped IDs and source metadata until real provider-backed spread/totals/team-total markets exist.
+
 ## Cycle DODCURRENT - Batch-Aware Final Parity Sweep
 
 - No new mobile/backend runtime data contract changed.

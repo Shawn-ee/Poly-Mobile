@@ -2,6 +2,15 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle PROVIDERLINEDECISION - Provider Line Discovery Decision Summary
+
+- Feature/page worked on: Provider-backed line-market discovery proof for the Local MVP Event Detail line markets.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/prove_mobile_provider_line_breadth_scan.ts` now writes a `decision` object that separates real provider probes from synthetic local-fixture probes, records provider line discovery blockers, and states the next safe action.
+- User interactions supported: none changed directly. The visible Local MVP flow remains Home -> Event Detail -> contract-shaped line market -> ticket -> fake-token order -> Portfolio/history.
+- State transitions: no runtime state changes. The scan remains read-only and does not create events, markets, provider mappings, orders, fixtures, or bot quotes.
+- Known limitations: current provider line parity remains partial because Polymarket Gamma returned zero World Cup line-family candidates and zero attach-ready line identities; local fixture probes are search-only diagnostics and must not be attached as provider-backed markets.
+
 ## Cycle DODCURRENT - Batch-Aware Final Parity Sweep
 
 - Feature/page worked on: Definition of Done/final parity sweep reporting.

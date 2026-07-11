@@ -20,6 +20,7 @@ Status:
 
 | ID | Area | Feature | Priority | Reference Observed | Holiwyn Status | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
+| GAP-300 | Provider | Provider line discovery decision proof | P1 | No | Verified | Cycle PROVIDERLINEDECISION adds a machine-readable `decision` block to the provider line breadth scan so the loop can distinguish real provider probes from synthetic local-fixture search probes and keep Local MVP contract fixtures when no attach-ready Polymarket line markets exist. |
 | GAP-299 | Harness | Current batch-aware Definition of Done sweep | P1 | No | Verified | Cycle DODCURRENT updates the final parity sweep to consume the latest internal-readiness batch and gap list. The current result is 11 verified, 1 partial, 0 blocked, with `readyToDeclareDone=false` while provider-backed Polymarket parity still has P1 blockers. |
 | GAP-298 | Android APK | Samsung APK install/launch proof | P1 | No | Verified | Cycle 284 builds `mobile/dist/holiwyn-preview.apk`, installs it on Samsung S23, launches `com.holiwyn.mobile`, verifies foreground focus, and hardens the smoke harness to fail on Android crash dialogs. |
 | GAP-297 | Android APK | Local native Android build lane | P1 | No | Verified | Cycle 284 generates `mobile/android`, disables new architecture for the baseline release APK to avoid Windows native codegen path failures, pins `expo-font` to the SDK-compatible 14.0.12 version, and produces a local release APK. |

@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle PROVIDERLINEDECISION - Provider Line Discovery Decision Summary
+
+Cycle PROVIDERLINEDECISION changes provider proof reporting only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider line breadth scan | Local command `npm run mobile:provider-line-breadth-scan`; Polymarket Gamma `/markets` and `/events` | Read-only local proof command plus public provider reads | None | Search queries, event tag slugs, exact slug guesses, static provider event probes, and local-fixture search-only probes | Summary fields `decision.providerLineParityReady`, `decision.keepLocalContractFixtures`, `decision.providerLineDiscoveryBlockers`, `decision.realProviderProbeCount`, and `decision.syntheticLocalFixtureProbeCount` | No database writes; local fixture source is read only to build search probes | Local MVP keeps backend-shaped contract fixtures for spread/totals/team-total rows when provider line candidates are unavailable | Real attach-ready provider line markets remain missing. A future provider route/schema change is needed only after Polymarket exposes usable line-family candidates or another approved provider is added. |
+
 ## Cycle DODCURRENT - Batch-Aware Final Parity Sweep
 
 Cycle DODCURRENT changes audit reporting only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
