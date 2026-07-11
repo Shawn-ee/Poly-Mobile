@@ -12914,3 +12914,12 @@ Known limitations:
 - User interactions supported: Home -> Live -> Event Detail -> Spread `1.5` -> Trade Ticket -> swipe buy -> Portfolio open order -> cancel -> Portfolio History canceled activity.
 - State transitions: the proof harness now cleans both blocking BUY bids and blocking SELL asks before open-order/cancel proof so prior filled-flow maker liquidity cannot accidentally fill the test order. The cancel proof accepts the dense Portfolio layout where `portfolio-open-order-count` reaches zero and the canceled activity row is visible without requiring the exact `No open orders` empty-state copy.
 - Known limitations: this validates contract-fixture fake-token open-order cancel behavior. Provider-backed cancellation remains blocked until a safe provider-backed market can be traded locally.
+
+# Cycle XI - Position Cashout/Sell S23 Reproof
+
+- Feature/page worked on: Portfolio position cashout/sell lifecycle for the Local MVP retail path.
+- Frontend components touched: none.
+- Important functions/services touched: no source change; existing `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1` cashout mode was run against current `main`.
+- User interactions supported: Home -> Live -> Event Detail -> Spread `1.5` / `Egypt +1.5` -> Trade Ticket -> swipe buy -> filled Portfolio position -> Cash out/Sell ticket -> swipe sell -> Portfolio History sold activity.
+- State transitions: the harness seeds a disposable maker ask so the buy fills into a position, then seeds a disposable maker bid so the sell/cashout fills and History records `activity-sold` with the selected line/source identity.
+- Known limitations: this remains a contract-fixture fake-token cashout proof. Provider-backed position sell/cashout remains P1 until a safe provider-backed World Cup match/line market is locally tradable.

@@ -3002,6 +3002,20 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Key assertions: `openOrderVisible`, `openOrderSourceBadgeVisible`, `cancelSubmitted`, `canceledHistoryVisible`, `ticketPreservesLine`, and `orderbookHidden` passed.
 - Limitations: this is still a contract-fixture fake-token cancel flow. Provider-backed cancel proof remains P1 until provider-backed match/line markets are locally tradable.
 
+# Cycle XI - Position Cashout/Sell S23 Reproof
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` (`SM-S911U1`).
+- Scope: Local MVP filled-position cashout/sell lifecycle.
+- Result: Pass.
+- Flow proven: Home -> Live -> Event Detail -> Spread `1.5` / `Egypt +1.5` -> Trade Ticket -> swipe buy -> filled Portfolio position -> Cash out/Sell ticket -> swipe sell -> Portfolio History sold activity.
+- Evidence:
+  - `docs/mobile/harness/cycle-XI-cashout-sell-s23-flow/cycle-XI-current-mvp-s23-visible-flow.json`
+  - `docs/mobile/harness/cycle-XI-cashout-sell-s23-flow/cycle-XI-current-mvp-line-cashout-ticket.xml`
+  - `docs/mobile/harness/cycle-XI-cashout-sell-s23-flow/cycle-XI-current-mvp-line-cashout-history.xml`
+  - Screenshots under `docs/mobile/screenshots/cycle-XI-cashout-sell-s23-flow/`
+- Key assertions: `filledPositionVisible`, `cashoutTicketOpened`, `cashoutSellSubmitted`, `cashoutHistoryVisible`, `ticketPreservesLine`, and `orderbookHidden` passed.
+- Limitations: this is still a contract-fixture fake-token sell/cashout flow. Provider-backed sell/cashout proof remains P1 until provider-backed match/line markets are locally tradable.
+
 # Cycle VZ - Current MVP Route Reproof
 
 - Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.

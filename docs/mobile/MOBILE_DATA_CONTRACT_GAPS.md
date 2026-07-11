@@ -9702,3 +9702,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: safe provider-backed match/line liquidity for the same cancel lifecycle with real Polymarket token identity.
 - Temporary mock/static data: harness uses contract-fixture spread market rows and cleans disposable maker asks/bids before proof to force the intended open-order state.
 - Future migration concern: when provider-backed local trading becomes safe, rerun this cancel proof against provider-token selections and confirm Portfolio History records provider market/condition/token fields after cancel.
+
+## Cycle XI - Position Cashout/Sell S23 Reproof
+
+- Closed or narrowed: Local MVP filled-position cashout/sell is re-proven on S23 after the Home/Live/readiness changes.
+- Route mismatch: none found. The existing Event Detail, order submit, Portfolio position, and History contracts preserve the selected spread line/source identity through buy fill, sell fill, and sold activity.
+- Fields Holiwyn still needs but backend/provider does not fully provide: safe provider-backed World Cup match/line liquidity for the same sell/cashout lifecycle with real Polymarket market, condition, outcome, and token identity.
+- Temporary mock/static data: proof uses contract-fixture spread market rows and disposable maker liquidity shaped like the future backend market/outcome contract.
+- Future migration concern: when provider-backed line rows are attach-ready and local-MM-safe, rerun this proof against provider-token selections and confirm the sell ticket and History still preserve provider source fields instead of `contract-fixture`.
