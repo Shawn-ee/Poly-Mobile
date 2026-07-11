@@ -109,6 +109,7 @@ describe("mobile provider evidence refresh planner", () => {
       expect(plan.status).toBe("refresh-due");
       expect(plan.shouldRefreshProviderEvidence).toBe(true);
       expect(plan.hoursUntilStale).toBe(-0.5);
+      expect(plan.providerEvidence[0].hoursUntilStale).toBe(-0.5);
       expect(plan.reason).toBe("Cached provider evidence is missing or stale.");
     } finally {
       rmSync(tempDir, { recursive: true, force: true });

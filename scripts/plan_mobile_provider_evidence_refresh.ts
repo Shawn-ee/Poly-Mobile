@@ -92,6 +92,13 @@ function computeHoursUntilStale(staleAt: string | null | undefined, fallbackHour
   return numberOrNull(fallbackHours);
 }
 
+function normalizeProviderEvidenceRows(rows: ProviderEvidenceRow[], now: Date): ProviderEvidenceRow[] {
+  return rows.map((row) => ({
+    ...row,
+    hoursUntilStale: computeHoursUntilStale(row.staleAt, row.hoursUntilStale, now) ?? undefined,
+  }));
+}
+
 function readJsonFile<T>(relativePath: string): T | null {
   const resolved = path.resolve(repoRoot, relativePath);
   if (!fs.existsSync(resolved)) {
@@ -115,7 +122,10 @@ function buildPlan(
   const readiness = summary?.readiness ?? {};
   const p1Blockers = summary?.blockers?.p1 ?? [];
   const providerBlockers = p1Blockers.filter((blocker) => blocker.toLowerCase().includes("provider"));
-  const providerEvidence = Array.isArray(readiness.cachedProviderEvidence) ? readiness.cachedProviderEvidence : [];
+  const providerEvidence = normalizeProviderEvidenceRows(
+    Array.isArray(readiness.cachedProviderEvidence) ? readiness.cachedProviderEvidence : [],
+    now,
+  );
   const fresh = readiness.cachedProviderEvidenceFresh === true;
   const hoursUntilStale = computeHoursUntilStale(
     readiness.cachedProviderEvidenceNextStaleAt,
