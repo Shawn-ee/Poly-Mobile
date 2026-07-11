@@ -1,123 +1,125 @@
 {
-  "summary": {
-    "cycle": 1,
-    "generatedAt": "2026-07-11T12:56:14.421Z",
-    "marketsRefreshed": 3,
-    "marketsSkipped": 0,
-    "snapshotsUpdated": 6,
-    "staleCount": 0,
-    "wideCount": 0,
-    "missingCount": 4,
-    "errorCount": 0
-  },
-  "report": {
-    "generatedAt": "2026-07-11T12:56:14.421Z",
-    "dryRun": true,
-    "snapshotWritesApplied": true,
-    "liveOrdersEnabled": false,
-    "pollMs": 5000,
-    "refreshedCount": 3,
-    "snapshotsUpdated": 6,
-    "skippedCount": 0,
-    "refreshed": [
-      {
-        "marketId": "83087617-7787-40df-a09f-f03665a67ff2",
-        "title": "Will Argentina vs. Egypt end in a draw?",
-        "slug": "fifwc-arg-egy-2026-07-07-draw",
-        "snapshotsUpdated": 2,
-        "outcomes": [
-          {
-            "outcomeId": "c57c083f-0aa5-4752-9ba3-1928cb3fbfe7",
-            "tokenId": "29252823886591163818892631827503025749306440692725158708119244431095401849247",
-            "bestBid": null,
-            "bestAsk": 0.001,
-            "spread": 0.001,
-            "lastTradePrice": 0.001,
-            "outcomePrice": 0,
-            "qualityStatus": "missing_book",
-            "mmEligible": false,
-            "reason": "reference_missing_book"
-          },
-          {
-            "outcomeId": "b100b729-0fbf-403f-a17e-fbd85454d6df",
-            "tokenId": "34157451043698668319114893878288785488552974792331044909448715557755021200679",
-            "bestBid": null,
-            "bestAsk": 0.001,
-            "spread": 0.001,
-            "lastTradePrice": 0.001,
-            "outcomePrice": 1,
-            "qualityStatus": "missing_book",
-            "mmEligible": false,
-            "reason": "reference_missing_book"
-          }
-        ]
-      },
-      {
-        "marketId": "8e03bb8a-d1e0-4067-966f-c05e3969ab7d",
-        "title": "Will Argentina win on 2026-07-07?",
-        "slug": "fifwc-arg-egy-2026-07-07-arg",
-        "snapshotsUpdated": 2,
-        "outcomes": [
-          {
-            "outcomeId": "7e0b0b76-f461-4629-b884-9f751c55818e",
-            "tokenId": "87390712702935875353084647255226721799646621048501318482801979643152933271064",
-            "bestBid": 0.999,
-            "bestAsk": 1,
-            "spread": 0.001,
-            "lastTradePrice": 0.999,
-            "outcomePrice": 1,
-            "qualityStatus": "invalid_price",
-            "mmEligible": false,
-            "reason": "reference_invalid_price"
-          },
-          {
-            "outcomeId": "67586eb2-a896-4f3e-b0d0-0ea4c63bfa3c",
-            "tokenId": "108484238848648074372041518363480249254156420448181302544958828959135013838825",
-            "bestBid": 0.999,
-            "bestAsk": 1,
-            "spread": 0.001,
-            "lastTradePrice": 0.999,
-            "outcomePrice": 0,
-            "qualityStatus": "invalid_price",
-            "mmEligible": false,
-            "reason": "reference_invalid_price"
-          }
-        ]
-      },
-      {
-        "marketId": "0f66af64-8f00-4013-8cc8-338d155b3ed4",
-        "title": "Will Egypt win on 2026-07-07?",
-        "slug": "fifwc-arg-egy-2026-07-07-egy",
-        "snapshotsUpdated": 2,
-        "outcomes": [
-          {
-            "outcomeId": "3e385dee-4cf4-465d-b843-f5f8e48881e2",
-            "tokenId": "115321303982678629228305623888886288749804075736763407098365012911341798952806",
-            "bestBid": null,
-            "bestAsk": 0.001,
-            "spread": 0.001,
-            "lastTradePrice": 0.001,
-            "outcomePrice": 0,
-            "qualityStatus": "missing_book",
-            "mmEligible": false,
-            "reason": "reference_missing_book"
-          },
-          {
-            "outcomeId": "ccc2660e-7677-40af-a204-3bf1d48d0c39",
-            "tokenId": "34540998510618112670520542034558139652694657466670033556242205558762918802135",
-            "bestBid": null,
-            "bestAsk": 0.001,
-            "spread": 0.001,
-            "lastTradePrice": 0.001,
-            "outcomePrice": 1,
-            "qualityStatus": "missing_book",
-            "mmEligible": false,
-            "reason": "reference_missing_book"
-          }
-        ]
-      }
-    ],
-    "skipped": []
-  },
-  "error": null
+    "summary":  {
+                    "cycle":  1,
+                    "generatedAt":  "2026-07-11T13:50:17.866Z",
+                    "marketsRefreshed":  3,
+                    "marketsSkipped":  0,
+                    "snapshotsUpdated":  6,
+                    "staleCount":  0,
+                    "wideCount":  0,
+                    "missingCount":  4,
+                    "errorCount":  0
+                },
+    "report":  {
+                   "generatedAt":  "2026-07-11T13:50:17.866Z",
+                   "dryRun":  true,
+                   "snapshotWritesApplied":  true,
+                   "liveOrdersEnabled":  false,
+                   "pollMs":  5000,
+                   "refreshedCount":  3,
+                   "snapshotsUpdated":  6,
+                   "skippedCount":  0,
+                   "refreshed":  [
+                                     {
+                                         "marketId":  "83087617-7787-40df-a09f-f03665a67ff2",
+                                         "title":  "Will Argentina vs. Egypt end in a draw?",
+                                         "slug":  "fifwc-arg-egy-2026-07-07-draw",
+                                         "snapshotsUpdated":  2,
+                                         "outcomes":  [
+                                                          {
+                                                              "outcomeId":  "c57c083f-0aa5-4752-9ba3-1928cb3fbfe7",
+                                                              "tokenId":  "29252823886591163818892631827503025749306440692725158708119244431095401849247",
+                                                              "bestBid":  null,
+                                                              "bestAsk":  0.001,
+                                                              "spread":  0.001,
+                                                              "lastTradePrice":  0.001,
+                                                              "outcomePrice":  0,
+                                                              "qualityStatus":  "missing_book",
+                                                              "mmEligible":  false,
+                                                              "reason":  "reference_missing_book"
+                                                          },
+                                                          {
+                                                              "outcomeId":  "b100b729-0fbf-403f-a17e-fbd85454d6df",
+                                                              "tokenId":  "34157451043698668319114893878288785488552974792331044909448715557755021200679",
+                                                              "bestBid":  null,
+                                                              "bestAsk":  0.001,
+                                                              "spread":  0.001,
+                                                              "lastTradePrice":  0.001,
+                                                              "outcomePrice":  1,
+                                                              "qualityStatus":  "missing_book",
+                                                              "mmEligible":  false,
+                                                              "reason":  "reference_missing_book"
+                                                          }
+                                                      ]
+                                     },
+                                     {
+                                         "marketId":  "8e03bb8a-d1e0-4067-966f-c05e3969ab7d",
+                                         "title":  "Will Argentina win on 2026-07-07?",
+                                         "slug":  "fifwc-arg-egy-2026-07-07-arg",
+                                         "snapshotsUpdated":  2,
+                                         "outcomes":  [
+                                                          {
+                                                              "outcomeId":  "7e0b0b76-f461-4629-b884-9f751c55818e",
+                                                              "tokenId":  "87390712702935875353084647255226721799646621048501318482801979643152933271064",
+                                                              "bestBid":  0.999,
+                                                              "bestAsk":  1,
+                                                              "spread":  0.001,
+                                                              "lastTradePrice":  0.999,
+                                                              "outcomePrice":  1,
+                                                              "qualityStatus":  "invalid_price",
+                                                              "mmEligible":  false,
+                                                              "reason":  "reference_invalid_price"
+                                                          },
+                                                          {
+                                                              "outcomeId":  "67586eb2-a896-4f3e-b0d0-0ea4c63bfa3c",
+                                                              "tokenId":  "108484238848648074372041518363480249254156420448181302544958828959135013838825",
+                                                              "bestBid":  0.999,
+                                                              "bestAsk":  1,
+                                                              "spread":  0.001,
+                                                              "lastTradePrice":  0.999,
+                                                              "outcomePrice":  0,
+                                                              "qualityStatus":  "invalid_price",
+                                                              "mmEligible":  false,
+                                                              "reason":  "reference_invalid_price"
+                                                          }
+                                                      ]
+                                     },
+                                     {
+                                         "marketId":  "0f66af64-8f00-4013-8cc8-338d155b3ed4",
+                                         "title":  "Will Egypt win on 2026-07-07?",
+                                         "slug":  "fifwc-arg-egy-2026-07-07-egy",
+                                         "snapshotsUpdated":  2,
+                                         "outcomes":  [
+                                                          {
+                                                              "outcomeId":  "3e385dee-4cf4-465d-b843-f5f8e48881e2",
+                                                              "tokenId":  "115321303982678629228305623888886288749804075736763407098365012911341798952806",
+                                                              "bestBid":  null,
+                                                              "bestAsk":  0.001,
+                                                              "spread":  0.001,
+                                                              "lastTradePrice":  0.001,
+                                                              "outcomePrice":  0,
+                                                              "qualityStatus":  "missing_book",
+                                                              "mmEligible":  false,
+                                                              "reason":  "reference_missing_book"
+                                                          },
+                                                          {
+                                                              "outcomeId":  "ccc2660e-7677-40af-a204-3bf1d48d0c39",
+                                                              "tokenId":  "34540998510618112670520542034558139652694657466670033556242205558762918802135",
+                                                              "bestBid":  null,
+                                                              "bestAsk":  0.001,
+                                                              "spread":  0.001,
+                                                              "lastTradePrice":  0.001,
+                                                              "outcomePrice":  1,
+                                                              "qualityStatus":  "missing_book",
+                                                              "mmEligible":  false,
+                                                              "reason":  "reference_missing_book"
+                                                          }
+                                                      ]
+                                     }
+                                 ],
+                   "skipped":  [
+
+                               ]
+               },
+    "error":  null
 }
