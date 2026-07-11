@@ -12691,3 +12691,22 @@ Known limitations:
 - State transitions: unchanged. The selected Team Totals line/outcome/source identity travels through ticket submission and Portfolio History using existing order/selection snapshot behavior.
 - Proof: S23 proof passed on `SM-S911U1`; summary `docs/mobile/harness/cycle-WG-team-total-s23-proof/cycle-WG-current-mvp-s23-visible-flow.json` reports `lineMarketGroupKey=team-totals`, `lineMarketType=team-total`, `lineValue=1.5`, `lineOutcomeLabel=Argentina Over 1.5`, `filledHistoryVisible=true`, and `ticketPreservesLine=true`.
 - Known limitations: real provider-backed Spread/Totals/Team Total current-match rows remain unavailable from Polymarket source data.
+
+# Batch Provider Runtime Readiness
+
+- Feature/page worked on: provider/runtime readiness for Local MVP internal testing.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/check_poly_internal_exchange_readiness.ts`
+  - `scripts/refresh_reference_snapshots.ts` (proof run only)
+- User interactions supported: unchanged. This batch does not change the Home -> Event Detail -> line market -> ticket -> order -> Portfolio/history flow.
+- State transitions:
+  - The readiness script now reports detailed provider snapshot blockers for each Polymarket-backed market.
+  - Fresh reference snapshots for `argentina-vs-egypt` remain not MM-eligible when the provider book is missing, not accepting orders, or priced at the 0/1 edge.
+  - Local MM seeding remains blocked for unsafe provider snapshots instead of being forced.
+- Proof:
+  - Refresh proof: `scripts/refresh_reference_snapshots.ts --once true --eventSlug argentina-vs-egypt`
+  - Readiness proof: `docs/mobile/harness/provider-runtime-readiness/current-after-refresh-detailed-readiness.json`
+- Known limitations:
+  - Current provider-backed Regulation Winner rows are visible but not ready for local MM.
+  - Local MVP fake-token testing remains supported through contract-shaped line markets and proof-seeded liquidity.

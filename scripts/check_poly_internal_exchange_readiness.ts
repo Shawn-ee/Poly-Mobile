@@ -31,6 +31,13 @@ type MarketReadiness = {
   latestSnapshotAt: string | null;
   snapshotAgeSeconds: number | null;
   snapshotReady: boolean;
+  snapshotQualityStatus: string | null;
+  snapshotReason: string | null;
+  snapshotBestBid: string | null;
+  snapshotBestAsk: string | null;
+  snapshotAcceptingOrders: boolean | null;
+  snapshotMmEligible: boolean | null;
+  snapshotBlockers: string[];
   localOpenOrderCount: number;
   botStatus: string | null;
   botSeeded: boolean;
@@ -144,6 +151,7 @@ async function buildReport(args: Args) {
           acceptingOrders: true,
           qualityStatus: true,
           mmEligible: true,
+          reason: true,
         },
       },
       orders: {
@@ -158,14 +166,12 @@ async function buildReport(args: Args) {
     const bot = parseBotInitializationMetadata(market.referenceMetadata);
     const latest = market.referenceQuoteSnapshots[0] ?? null;
     const snapshotAgeSeconds = secondsSince(latest?.fetchedAt ?? null, now);
-    const snapshotReady = Boolean(
-      latest &&
-        latest.bestBid != null &&
-        latest.bestAsk != null &&
-        latest.acceptingOrders &&
-        snapshotAgeSeconds != null &&
-        snapshotAgeSeconds <= args.staleAfterSeconds,
-    );
+    const snapshotBlockers = deriveSnapshotBlockers({
+      latest,
+      snapshotAgeSeconds,
+      staleAfterSeconds: args.staleAfterSeconds,
+    });
+    const snapshotReady = snapshotBlockers.length === 0;
     const importStatus = stringFromMetadata(metadata, "importStatus");
     const tradable = booleanFromMetadata(metadata, "tradable");
     const mmEnabled = booleanFromMetadata(metadata, "mmEnabled");
@@ -190,7 +196,7 @@ async function buildReport(args: Args) {
       tradable ? null : "not_tradable",
       mmEnabled ? null : "mm_disabled",
       mappedOutcomeCount === market.outcomes.length ? null : "missing_reference_token_mapping",
-      snapshotReady ? null : "snapshot_not_ready",
+      snapshotReady ? null : `snapshot_not_ready:${snapshotBlockers.join(",")}`,
       botSeeded ? null : "bot_not_seeded",
       localMmReady ? null : "not_local_mm_ready",
     ].filter((value): value is string => Boolean(value));
@@ -211,6 +217,13 @@ async function buildReport(args: Args) {
       latestSnapshotAt: latest?.fetchedAt?.toISOString() ?? null,
       snapshotAgeSeconds,
       snapshotReady,
+      snapshotQualityStatus: latest?.qualityStatus ?? null,
+      snapshotReason: latest?.reason ?? null,
+      snapshotBestBid: latest?.bestBid?.toString() ?? null,
+      snapshotBestAsk: latest?.bestAsk?.toString() ?? null,
+      snapshotAcceptingOrders: latest?.acceptingOrders ?? null,
+      snapshotMmEligible: latest?.mmEligible ?? null,
+      snapshotBlockers,
       localOpenOrderCount: market.orders.length,
       botStatus: bot?.status ?? null,
       botSeeded,
@@ -223,6 +236,7 @@ async function buildReport(args: Args) {
   const snapshotReadyMarkets = marketReadiness.filter((market) => market.snapshotReady);
   const localMmReadyMarkets = marketReadiness.filter((market) => market.localMmReady);
   const mobileProviderEvents = new Set(providerVisibleMarkets.map((market) => market.eventSlug).filter(Boolean));
+  const snapshotBlockerSummary = countBlockers(marketReadiness.flatMap((market) => market.snapshotBlockers));
   const blockers = [
     mobileEvents.length >= args.minMobileEvents
       ? null
@@ -266,6 +280,7 @@ async function buildReport(args: Args) {
       snapshotReadyCount: snapshotReadyMarkets.length,
       localMmReadyCount: localMmReadyMarkets.length,
       openOrderBackedCount: marketReadiness.filter((market) => market.localOpenOrderCount > 0).length,
+      snapshotBlockerSummary,
       samples: marketReadiness.slice(0, 20),
     },
     readyForInternalMobileExchange:
@@ -277,6 +292,52 @@ async function buildReport(args: Args) {
     blockers,
     nextActions: deriveNextActions(blockers),
   };
+}
+
+function deriveSnapshotBlockers(params: {
+  latest: {
+    fetchedAt: Date;
+    bestBid: Prisma.Decimal | null;
+    bestAsk: Prisma.Decimal | null;
+    acceptingOrders: boolean;
+    qualityStatus: string | null;
+    mmEligible: boolean;
+    reason: string | null;
+  } | null;
+  snapshotAgeSeconds: number | null;
+  staleAfterSeconds: number;
+}) {
+  const { latest, snapshotAgeSeconds, staleAfterSeconds } = params;
+  if (!latest) {
+    return ["snapshot_missing"];
+  }
+
+  const blockers = [
+    latest.bestBid == null ? "snapshot_missing_bid" : null,
+    latest.bestAsk == null ? "snapshot_missing_ask" : null,
+    latest.acceptingOrders ? null : "snapshot_not_accepting_orders",
+    snapshotAgeSeconds == null || snapshotAgeSeconds > staleAfterSeconds ? "snapshot_stale" : null,
+    latest.mmEligible ? null : "snapshot_not_mm_eligible",
+  ].filter((value): value is string => Boolean(value));
+
+  const reason = latest.reason?.trim();
+  if (reason) {
+    blockers.push(`snapshot_reason_${reason}`);
+  }
+
+  const qualityStatus = latest.qualityStatus?.trim();
+  if (qualityStatus && qualityStatus !== "high_quality" && qualityStatus !== "available" && qualityStatus !== "approved") {
+    blockers.push(`snapshot_quality_${qualityStatus}`);
+  }
+
+  return [...new Set(blockers)];
+}
+
+function countBlockers(blockers: string[]) {
+  return blockers.reduce<Record<string, number>>((summary, blocker) => {
+    summary[blocker] = (summary[blocker] ?? 0) + 1;
+    return summary;
+  }, {});
 }
 
 function deriveNextActions(blockers: string[]) {

@@ -9619,3 +9619,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new field gap for new server-backed fake-token line positions.
 - Temporary mock/static data: none added. Existing line rows remain contract-shaped fixtures until real provider-backed line rows exist.
 - Future migration concern: pre-WD positions/trades without trade snapshots still rely on the order-request fallback unless a future backfill is run.
+
+# Batch Provider Runtime Readiness Notes
+
+- Closed or narrowed: provider readiness now exposes exact snapshot blockers instead of the opaque `snapshot_not_ready` label.
+- Route mismatch: none. No mobile route contract changed in this batch.
+- Fields Holiwyn still needs but backend does not fully provide: at least one match-only Polymarket-backed market with fresh, accepting-order, non-edge best bid/ask data suitable for local MM seeding.
+- Temporary mock/static data: none added. The Local MVP fixture-line path remains the intentional fallback for internal testing.
+- Future migration concern: do not mark provider-backed local MM ready until `ReferenceQuoteSnapshot` rows have no snapshot blockers and bot initialization metadata is seeded for an allowlisted market.
