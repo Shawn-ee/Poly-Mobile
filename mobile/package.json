@@ -23,6 +23,7 @@
     "preflight:s23-proof": "powershell -ExecutionPolicy Bypass -File ./scripts/s23-proof-preflight.ps1",
     "preflight:s23-proof:expect-blocked": "powershell -ExecutionPolicy Bypass -File ./scripts/s23-proof-preflight.ps1 -ExpectBlocked",
     "proof:s23:home": "powershell -ExecutionPolicy Bypass -File ./scripts/s23-home-proof.ps1",
+    "proof:s23:unavailable-ticket": "powershell -ExecutionPolicy Bypass -File ./scripts/s23-unavailable-ticket-proof.ps1",
     "preflight:polymarket-reference-device": "powershell -ExecutionPolicy Bypass -File ./scripts/polymarket-reference-device-preflight.ps1",
     "preflight:polymarket-reference-device:expect-blocked": "powershell -ExecutionPolicy Bypass -File ./scripts/polymarket-reference-device-preflight.ps1 -ExpectBlocked",
     "gate:server-success": "powershell -ExecutionPolicy Bypass -File ./scripts/server-success-gate.ps1",

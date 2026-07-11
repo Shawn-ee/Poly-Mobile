@@ -9439,6 +9439,14 @@ Future migration concern:
 - Temporary mock/static data: the forced launch path creates an in-memory proof market with `availability.status="unavailable"` and `marketStatus="PROOF_UNAVAILABLE"`.
 - Future migration concern: use this fixture only for proof repeatability; do not treat it as real provider unavailable evidence.
 
+# Cycle VX - Unavailable Ticket S23 Proof Notes
+
+- No schema migration was added.
+- Closed or narrowed: Samsung S23 proof now verifies the existing unavailable-market contract visually in the Trade Ticket.
+- Route mismatch: none. The proof uses the existing `market.availability.status`, `marketStatus`, selected market/outcome/line/source identity fields, and disabled submit state.
+- Fields Holiwyn still needs but backend does not fully provide: no new fields for unavailable-ticket behavior.
+- Temporary mock/static data: uses the Cycle UF deterministic proof fixture only to force an unavailable market state; production provider routes should provide the same availability shape.
+
 # Cycle UG - Chart-Free MVP Doc Alignment Notes
 
 - No schema migration was added.
