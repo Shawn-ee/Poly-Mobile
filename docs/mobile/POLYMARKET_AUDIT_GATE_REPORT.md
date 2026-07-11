@@ -7731,3 +7731,10 @@ P1/P2 gaps:
 - P1: Update `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1` so cashout-branch proofs set `filledPositionVisible=true`.
 - P2: Optional backfill for older positions/trades without direct snapshots.
 - P1: Real provider-backed Spread/Totals/Team Total current-match line rows remain unavailable and unchanged.
+# Cycle WE - S23 Position Proof Summary
+
+- Result: pass.
+- Scope: proof harness reporting only; no mobile UI or backend order behavior changed.
+- Audit Gate: the S23 cashout proof now reports the filled Position card as visible from the same post-submit XML that contains `position-card-`.
+- Evidence: `docs/mobile/harness/cycle-WE-s23-position-proof-summary/cycle-WE-current-mvp-s23-visible-flow.json`.
+- Remaining P1: real provider-backed Spread/Totals/Team Total current-match rows are still unavailable from Polymarket source data.

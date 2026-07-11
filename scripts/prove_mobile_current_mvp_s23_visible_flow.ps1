@@ -556,10 +556,10 @@ try {
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-after-submit.png" | Out-Null
   $afterSubmitXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-after-submit.xml"
   Assert-Contains -Path $afterSubmitXml -Expected @("Portfolio", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
+  $afterSubmitRaw = Get-Content -Raw -Path $afterSubmitXml
   $fixtureOrderLandedAsOpenOrder = $false
-  $fixtureOrderLandedAsPosition = $false
+  $fixtureOrderLandedAsPosition = $afterSubmitRaw -match [regex]::Escape("position-card-")
   if ($expectOpenOrderState) {
-    $afterSubmitRaw = Get-Content -Raw -Path $afterSubmitXml
     if ($afterSubmitRaw -match [regex]::Escape("open-order-row-")) {
       Assert-Contains -Path $afterSubmitXml -Expected @("portfolio-tab-orders", "open-order-row-", "open-order-source-badge", "open-order-source-note", "portfolio-source-badge-local", "cancel-open-order-")
       $fixtureOrderLandedAsOpenOrder = $true

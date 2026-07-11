@@ -25,4 +25,13 @@ describe("mobile Local MVP liquidity proof harness", () => {
     expect(source).toContain('"--liquidityPurpose=cashout-sell-fill"');
     expect(source).toContain('"--liquidityPurpose=cleanup"');
   });
+
+  test("S23 current MVP proof reports filled position visibility before cashout", () => {
+    const source = s23Proof();
+
+    expect(source).toContain(
+      '$fixtureOrderLandedAsPosition = $afterSubmitRaw -match [regex]::Escape("position-card-")',
+    );
+    expect(source).toContain("filledPositionVisible = $fixtureOrderLandedAsPosition");
+  });
 });
