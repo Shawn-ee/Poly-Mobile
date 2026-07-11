@@ -209,6 +209,10 @@ npm run mobile:mvp-local-match-breadth
 
 This idempotently seeds a small set of `contract-fixture` World Cup match rows with Regulation Winner, Spread, Totals, and Team Totals. It exists only for Local MVP internal testing when real Polymarket World Cup match books are closed or unavailable. The batch records `localMatchBreadthReady` and the Home route event count after seeding; provider-backed market debt remains tracked separately.
 
+## Provider FIFA/Soccer Scope
+
+Provider match breadth is FIFA/soccer World Cup only. The match scanner may see generic World Cup markets from other sports or off-scope provider categories, but those cannot close Holiwyn's soccer MVP provider gap. The batch summary records `readiness.excludedGenericWorldCupMatchEventCount` and the gap list prints the same diagnostic so future cycles do not mistake generic World Cup liquidity for attach-ready soccer match breadth.
+
 ## Why This Exists
 
 The loop should not keep reopening small source-label or one-screen proof cycles just to rediscover the same provider-state facts. This batch harness gives the Lead Agent one current-state command before choosing the next meaningful milestone.

@@ -14,6 +14,9 @@ describe("mobile provider scan depth contracts", () => {
     expect(source).toContain("closedOrEndedMatchEventCount");
     expect(source).toContain("usableOpenNonMatchWorldCupEventCount");
     expect(source).toContain("usableOpenNonMatchWorldCupEvents");
+    expect(source).toContain("isFifaSoccerWorldCupRelevant");
+    expect(source).toContain("excludedGenericWorldCupMatchEventCount");
+    expect(source).toContain("excludedGenericWorldCupMatchEvents");
     expect(source).toContain("matchEventEvidenceOmittedCount");
     expect(source).toContain("upcomingOrLive");
     expect(source).toContain("isPastDate");

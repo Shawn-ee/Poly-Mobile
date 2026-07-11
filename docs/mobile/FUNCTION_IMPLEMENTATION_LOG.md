@@ -13107,3 +13107,12 @@ Known limitations:
 - User interactions supported: Home -> Live -> Event Detail -> Spread `1.5` / `Egypt +1.5` -> Trade Ticket -> swipe buy -> filled Portfolio position -> Cash out/Sell ticket -> swipe sell -> Portfolio History sold activity.
 - State transitions: the harness seeds a disposable maker ask so the buy fills into a position, then seeds a disposable maker bid so the sell/cashout fills and History records `activity-sold` with the selected line/source identity.
 - Known limitations: this remains a contract-fixture fake-token cashout proof. Provider-backed position sell/cashout remains P1 until a safe provider-backed World Cup match/line market is locally tradable.
+
+# Batch Provider FIFA/Soccer Match Filter
+
+- Feature/page worked on: provider-readiness evidence for the Local MVP match-only path.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/scan_polymarket_worldcup_match_events.ts` and `src/__tests__/mobile-provider-scan-depth.contract.test.ts`.
+- User interactions supported: unchanged. This improves the provider gate that decides when Home/Event Detail can claim real Polymarket-backed World Cup match breadth.
+- State transitions: the scanner now treats provider match readiness as FIFA/soccer World Cup only. Generic non-soccer World Cup matches are excluded into diagnostic evidence instead of being counted as Local MVP team-match candidates.
+- Known limitations: this does not create usable provider markets. If Polymarket has no open FIFA World Cup team-match books, Local MVP internal testing continues to use contract-shaped fixture lines.

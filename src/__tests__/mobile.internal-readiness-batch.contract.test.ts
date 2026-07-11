@@ -96,6 +96,14 @@ describe("mobile internal readiness batch harness", () => {
     expect(gapWriter).toContain("Provider Evidence Recovery");
   });
 
+  it("surfaces generic non-soccer World Cup exclusions in provider match evidence", () => {
+    const source = harness();
+    const gapWriter = readFileSync("scripts/write_mobile_internal_readiness_gap_list.ts", "utf8");
+
+    expect(source).toContain("excludedGenericWorldCupMatchEventCount");
+    expect(gapWriter).toContain("Generic non-soccer World Cup matches excluded");
+  });
+
   it("writes commit-clean JSON without reformatting cached provider evidence", () => {
     const source = harness();
 

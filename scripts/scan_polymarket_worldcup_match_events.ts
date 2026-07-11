@@ -48,6 +48,7 @@ type EventSummary = {
   ended: boolean;
   upcomingOrLive: boolean;
   matchLike: boolean;
+  worldCupLike: boolean;
   worldCupRelevant: boolean;
   playerPropLike: boolean;
   futuresLike: boolean;
@@ -62,6 +63,9 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   const events = await scanEvents(args);
   const matchEvents = events.filter((event) => event.matchLike && event.worldCupRelevant && !event.playerPropLike && !event.futuresLike);
+  const excludedGenericWorldCupMatchEvents = events.filter(
+    (event) => event.matchLike && event.worldCupLike && !event.worldCupRelevant && !event.playerPropLike && !event.futuresLike,
+  );
   const usableMatchEvents = matchEvents.filter((event) => event.usableMarketCount > 0);
   const openWorldCupEvents = events.filter((event) => event.worldCupRelevant && event.upcomingOrLive && !event.closed && !event.archived);
   const usableOpenWorldCupEvents = openWorldCupEvents.filter((event) => event.usableMarketCount > 0);
@@ -86,6 +90,7 @@ async function main() {
       usableMatchEventCount: usableMatchEvents.length,
       openMatchEventCount: matchEvents.filter((event) => event.upcomingOrLive && !event.closed && !event.archived).length,
       closedOrEndedMatchEventCount: matchEvents.filter((event) => event.closed || event.ended).length,
+      excludedGenericWorldCupMatchEventCount: excludedGenericWorldCupMatchEvents.length,
       openWorldCupEventCount: openWorldCupEvents.length,
       usableOpenWorldCupEventCount: usableOpenWorldCupEvents.length,
       usableOpenNonMatchWorldCupEventCount: usableOpenNonMatchWorldCupEvents.length,
@@ -97,6 +102,7 @@ async function main() {
     matchEventEvidence: matchEvents.slice(0, args.matchEventEvidenceLimit),
     diagnostics: {
       matchEventEvidenceOmittedCount: Math.max(0, matchEvents.length - args.matchEventEvidenceLimit),
+      excludedGenericWorldCupMatchEvents: excludedGenericWorldCupMatchEvents.slice(0, 10).map(toCompactEvent),
       usableOpenNonMatchWorldCupEvents: usableOpenNonMatchWorldCupEvents.slice(0, 10).map(toCompactEvent),
       futuresEvents: futuresEvents.slice(0, 10).map(toCompactEvent),
       usableNonMatchEvents: events
@@ -184,7 +190,14 @@ function normalizeEvent(input: GammaWire): EventSummary | null {
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
-  const worldCupRelevant = /\b(world cup|fifa|fifwc|2026-fifa-world-cup)\b/.test(haystack);
+  const worldCupLike = /\b(world cup|fifa|fifwc|2026-fifa-world-cup)\b/.test(haystack);
+  const worldCupRelevant = isFifaSoccerWorldCupRelevant({
+    slug,
+    title,
+    category: asString(input.category),
+    tags,
+    marketQuestions: markets.map((market) => market.question),
+  });
   const playerPropLike = /\b(h2h|player|goal contributions|goals h2h|assists h2h)\b/.test(haystack);
   const matchLike =
     /^fifwc-[a-z]{3}-[a-z]{3}-20\d{2}-\d{2}-\d{2}\b/.test(slug) ||
@@ -205,6 +218,7 @@ function normalizeEvent(input: GammaWire): EventSummary | null {
     ended,
     upcomingOrLive: !ended,
     matchLike,
+    worldCupLike,
     worldCupRelevant,
     playerPropLike,
     futuresLike,
@@ -282,6 +296,7 @@ function toCompactEvent(event: EventSummary) {
     upcomingOrLive: event.upcomingOrLive,
     tags: event.tags,
     matchLike: event.matchLike,
+    worldCupLike: event.worldCupLike,
     worldCupRelevant: event.worldCupRelevant,
     playerPropLike: event.playerPropLike,
     futuresLike: event.futuresLike,
@@ -290,6 +305,35 @@ function toCompactEvent(event: EventSummary) {
     acceptingOrderMarketCount: event.acceptingOrderMarketCount,
     sampleUsableMarket: event.usableMarkets[0] ?? null,
   };
+}
+
+function isFifaSoccerWorldCupRelevant(input: {
+  slug: string;
+  title: string;
+  category: string | null;
+  tags: string[];
+  marketQuestions: string[];
+}) {
+  const normalizedTags = input.tags.map((tag) => tag.toLowerCase());
+  const haystack = [
+    input.slug,
+    input.title,
+    input.category,
+    ...normalizedTags,
+    ...input.marketQuestions,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+  const hasFifaSignal =
+    /\b(fifa|fifwc|2026-fifa-world-cup)\b/.test(haystack) ||
+    normalizedTags.includes("fifa-world-cup") ||
+    normalizedTags.includes("2026-fifa-world-cup");
+  const hasSoccerSignal =
+    /\bsoccer\b/.test(haystack) ||
+    normalizedTags.includes("soccer") ||
+    normalizedTags.includes("football-soccer");
+  return hasFifaSignal || (hasSoccerSignal && /\bworld cup\b/.test(haystack));
 }
 
 function parseArgs(argv: string[]): Args {

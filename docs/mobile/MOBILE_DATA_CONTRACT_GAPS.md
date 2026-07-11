@@ -9865,3 +9865,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: safe provider-backed World Cup match/line liquidity for the same sell/cashout lifecycle with real Polymarket market, condition, outcome, and token identity.
 - Temporary mock/static data: proof uses contract-fixture spread market rows and disposable maker liquidity shaped like the future backend market/outcome contract.
 - Future migration concern: when provider-backed line rows are attach-ready and local-MM-safe, rerun this proof against provider-token selections and confirm the sell ticket and History still preserve provider source fields instead of `contract-fixture`.
+
+## Batch Provider FIFA/Soccer Match Filter
+
+- Closed or narrowed: provider match-breadth evidence now separates FIFA/soccer World Cup matches from generic non-soccer World Cup matches before readiness blockers are calculated.
+- Route mismatch: none. This is read-only provider inspection and does not alter mobile routes.
+- Fields Holiwyn still needs but backend/provider does not fully provide: open FIFA/soccer World Cup team-match books with provider market/outcome/token ids, accepting-order state, and non-edge price data.
+- Temporary mock/static data: none added. Generic World Cup provider matches are only diagnostic evidence and must not be attached to the Local MVP soccer path.
+- Future migration concern: if a future scanner sees usable generic World Cup markets, they still cannot close Holiwyn soccer MVP parity unless the FIFA/soccer classifier also passes.
