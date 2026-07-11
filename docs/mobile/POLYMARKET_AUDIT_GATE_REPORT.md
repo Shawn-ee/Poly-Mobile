@@ -7597,3 +7597,28 @@ Remaining P1:
 - Android proof: not run because no visible mobile UI changed in this backend/provider evidence cycle.
 - Unresolved P0: 0 for this provider scan scope.
 - Remaining P1: real provider-backed current-match Spread/Totals/Team Total line rows remain unavailable.
+# Cycle VZ Audit Gate - Current MVP Route Reproof
+
+Gate status: Pass
+
+Result: Pass for focused Local MVP service/device proof.
+
+What became materially closer:
+
+- The current checked-in service path was reverified from Home/Event Detail through fake-token order placement into Portfolio/History.
+- The proof no longer depends on stale disposable FI event names.
+- The repeated service-readiness concern is documented: use the internal beta backend helper for local MVP testing.
+
+Evidence:
+
+- Route proof: `docs/mobile/harness/cycle-VZ-current-mvp-route-reproof/cycle-VZ-home-to-portfolio-route-journey.json`
+- S23 proof: `docs/mobile/harness/cycle-VZ-current-mvp-route-reproof/cycle-VZ-current-mvp-s23-visible-flow.json`
+- Audit: `docs/mobile/audits/cycle-VZ-current-mvp-route-reproof.md`
+
+P0 gaps:
+
+- None for this focused route reproof.
+
+P1 gaps:
+
+- Real provider-backed Spread/Totals/Team Total current-match line markets are still not available. Contract fixtures remain the honest MVP line path.

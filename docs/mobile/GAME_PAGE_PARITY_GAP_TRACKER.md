@@ -35,6 +35,7 @@ Reference docs:
 | LMVP-GP-P0-06 | Regulation Winner and line groups are visible and open the simple Trade Ticket with selected market/outcome/line identity preserved. | Verified | Current MVP full-flow and ticket proof artifacts listed in the main tracker. |
 | LMVP-GP-P0-07 | Trade Ticket supports amount entry and gesture-only swipe submit for Buy/Sell without changing backend order routes. | Verified | Trade Ticket swipe/submit cycles in `docs/mobile/POLYMARKET_PARITY_GAP_TRACKER.md`; full submit proof in Cycle TE/TP evidence. |
 | LMVP-GP-P0-08 | Server-backed fake-token order appears in Portfolio/history with selected market/outcome/line/source identity preserved. | Verified | Cycle TE/TP full-flow proof and Portfolio density/History contracts in main tracker. |
+| LMVP-GP-P0-08a | Current `main` route and S23 proof still preserve line/source/token identity through Home -> Event Detail -> ticket -> fake-token order -> Portfolio History. | Verified | Cycle VZ route proof: `docs/mobile/harness/cycle-VZ-current-mvp-route-reproof/cycle-VZ-home-to-portfolio-route-journey.json`; S23 proof: `docs/mobile/harness/cycle-VZ-current-mvp-route-reproof/cycle-VZ-current-mvp-s23-visible-flow.json`. |
 | LMVP-GP-P0-09 | Real provider-backed line markets are not falsely claimed when Polymarket Gamma exposes none for the current match. | Verified | Provider line source reprobe and approved-provider source copy cycles in main tracker. |
 
 ## Open P1 Gaps
