@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T20:23:33.015Z",
+  "generatedAt": "2026-07-11T20:33:40.944Z",
   "status": "provider-parity-wait",
   "priority": "P1",
   "reason": "Provider-backed Polymarket parity is the only remaining partial criterion, but provider evidence is fresh.",
