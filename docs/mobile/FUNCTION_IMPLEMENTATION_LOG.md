@@ -12809,3 +12809,24 @@ Known limitations:
 - Known limitations:
   - The scan is only as current as Polymarket Gamma at run time. Re-run it when new World Cup match events appear.
   - This batch intentionally does not import futures, awards, player H2H props, or non-World-Cup matches.
+
+# Batch Provider Visible Tradable Flow Guard
+
+- Feature/page worked on: provider-visible tradable-flow readiness for the match-only Local MVP path.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/prove_mobile_provider_visible_tradable_flow.ts`
+  - `scripts/mobile_internal_readiness_batch.ps1`
+  - `package.json`
+- User interactions supported: unchanged. The harness now protects the Home -> Event Detail -> ticket -> fake-token order -> Portfolio/history proof path from being satisfied by off-scope World Cup Winner futures evidence.
+- State transitions:
+  - The provider tradable-flow proof defaults to `argentina-vs-egypt`.
+  - If no `marketId` is supplied, it selects the first listed Polymarket-backed market with tradable token ids for that match.
+  - Non-match provider events are rejected by default unless `--allowNonMvpProviderEvent` is passed for an explicit non-MVP audit.
+  - If the selected provider-backed match market has no open bot SELL quote, the proof writes `provider_mvp_match_bot_quote_unavailable` instead of throwing before producing JSON.
+- Proof:
+  - Standalone guard proof wrote `docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json`.
+  - The current result is a P1 blocker, not P0: `argentina-vs-egypt` has a Polymarket-backed Regulation Winner market, but no open local bot SELL quote for provider-backed fill proof.
+- Known limitations:
+  - This does not seed provider local-MM liquidity. It only prevents non-MVP futures proof from being mistaken for match-only readiness.
+  - Local MVP internal testing remains supported through the already-proven contract-fixture line flow.

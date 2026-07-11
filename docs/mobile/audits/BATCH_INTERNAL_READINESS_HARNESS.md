@@ -29,6 +29,7 @@ docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-sum
 - Current MVP route shape for `mobileMvpMatches=1`.
 - Provider-backed Regulation Winner plus contract-shaped line-market state.
 - Provider/internal exchange readiness.
+- Provider-visible tradable-flow readiness for the match-only MVP path.
 - Polymarket World Cup team-match breadth.
 - Polymarket provider line-market breadth.
 - Local environment health snapshot: git cleanliness, S23 reachability, Docker/Postgres status, backend/Expo/proof ports, and continuous bot process status.
@@ -45,6 +46,7 @@ Known provider availability gaps are tracked as P1, not P0:
 - no usable accepting-order Polymarket World Cup team-match books
 - no attach-ready Polymarket World Cup line markets
 - provider/internal exchange not local-MM-ready
+- provider-visible match market has no bot SELL quote for a fake-token fill proof
 - manual server mode missing an ambient `EXPO_PUBLIC_API_KEY`
 - Google auth runtime warnings such as a callback/redirect URI mismatch
 - Google physical callback warnings such as a local `127.0.0.1` callback that the S23 browser cannot reach
@@ -52,6 +54,8 @@ Known provider availability gaps are tracked as P1, not P0:
 This is intentional. The Local MVP fake-token user flow remains testable with contract-shaped line markets while provider-backed breadth and line parity remain open.
 
 Do not import futures, awards, player props, or non-World-Cup events to make the match breadth numbers look better. The harness should keep those markets as provider diagnostics unless the product scope explicitly changes.
+
+The provider-visible tradable-flow proof is now match-only by default. It selects the Local MVP match event (`argentina-vs-egypt`) unless an explicit event is passed, and it rejects non-match provider futures unless the caller uses `--allowNonMvpProviderEvent` for a separate non-MVP audit. This prevents old World Cup Winner futures proof from being mistaken for Local MVP match readiness.
 
 ## Local Environment Snapshot
 

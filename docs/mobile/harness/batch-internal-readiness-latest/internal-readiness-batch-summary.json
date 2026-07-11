@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T08:13:14.1351616Z",
+  "generatedAt": "2026-07-11T08:23:41.8163195Z",
   "scope": "mobile-internal-readiness-batch",
   "cycle": "BATCHREADINESS",
   "backendBaseUrl": "http://127.0.0.1:3002",
@@ -66,6 +66,16 @@
       "producedJson": true
     },
     {
+      "name": "provider-visible-tradable-flow",
+      "command": "npx.cmd tsx scripts/prove_mobile_provider_visible_tradable_flow.ts --cycle=BATCHREADINESS --baseUrl=http://127.0.0.1:3002 --summaryPath=\"docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json\"",
+      "exitCode": 1,
+      "allowedNonZero": true,
+      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json",
+      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.stdout.log",
+      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.stderr.log",
+      "producedJson": true
+    },
+    {
       "name": "worldcup-match-scan",
       "command": "npm.cmd run inspect:polymarket-worldcup-matches -- --output \"docs/mobile/harness/batch-internal-readiness-latest/worldcup-match-event-scan.json\"",
       "exitCode": 0,
@@ -90,8 +100,8 @@
   "environmentHealth": {
     "git": {
       "branch": "main",
-      "status": "## main...poly-mobile/main [ahead 1]",
-      "worktreeClean": true
+      "status": "## main...poly-mobile/main\n M docs/mobile/FUNCTION_IMPLEMENTATION_LOG.md\n M docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md\n M docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md\n M package.json\n M scripts/mobile_internal_readiness_batch.ps1\n M scripts/prove_mobile_provider_visible_tradable_flow.ts\n?? docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json",
+      "worktreeClean": false
     },
     "android": {
       "targetDeviceId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
@@ -118,7 +128,7 @@
     "localMvpReadyForInternalTesting": true,
     "providerBackedExchangeReady": false,
     "backendReady": true,
-    "worktreeClean": true,
+    "worktreeClean": false,
     "dbContainerHealthy": true,
     "s23Connected": true,
     "expoRunning": false,
@@ -138,6 +148,8 @@
     "providerVisibleMarketCount": 3,
     "providerLocalMmReadyMarketCount": 0,
     "providerBooksUnavailableOrClosed": true,
+    "providerMvpTradableFlowReady": false,
+    "providerMvpTradableFlowBlocker": "provider_mvp_match_bot_quote_unavailable",
     "usableWorldCupTeamMatchEventCount": 0,
     "attachReadyProviderLineCandidateCount": 0
   },
@@ -145,6 +157,7 @@
     "p0": [],
     "p1": [
       "provider_worldcup_match_books_unavailable_or_closed",
+      "provider_mvp_match_bot_quote_unavailable",
       "no_usable_polymarket_worldcup_team_match_books",
       "no_attach_ready_polymarket_worldcup_line_markets",
       "google_physical_callback_not_phone_reachable"

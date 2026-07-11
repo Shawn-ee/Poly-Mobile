@@ -9,8 +9,7 @@ import { loadPortfolioSnapshot } from "../mobile/src/services/portfolioSnapshotS
 import type { PolyApi } from "../mobile/src/api";
 
 const DEFAULT_BASE_URL = "http://127.0.0.1:3002";
-const DEFAULT_EVENT_SLUG = "provider-breadth-world-cup-winner";
-const DEFAULT_MARKET_ID = "49ca30ca-afa9-45ee-8962-1941ad7524fe";
+const DEFAULT_EVENT_SLUG = "argentina-vs-egypt";
 
 const dec = (value: Prisma.Decimal.Value) => new Prisma.Decimal(value);
 
@@ -19,9 +18,74 @@ const argValue = (name: string) => {
   return process.argv.find((arg) => arg.startsWith(prefix))?.slice(prefix.length);
 };
 
+const hasFlag = (name: string) => process.argv.includes(`--${name}`);
+
 const assert = (condition: unknown, message: string): asserts condition => {
   if (!condition) throw new Error(message);
 };
+
+async function writeBlockedSummary(params: {
+  outputPath: string;
+  cycleLabel: string;
+  baseUrl: string;
+  eventSlug: string;
+  requestedMarketId?: string;
+  blocker: string;
+  message: string;
+  event?: {
+    id: string;
+    slug: string | null;
+    title: string;
+    eventType: string | null;
+    sportKey: string | null;
+    leagueKey: string | null;
+  } | null;
+  market?: {
+    id: string;
+    slug: string | null;
+    title: string;
+    marketType: string;
+    referenceSource: string | null;
+    externalSlug: string | null;
+    externalMarketId: string | null;
+    conditionId: string | null;
+  } | null;
+  extra?: Record<string, unknown>;
+}) {
+  const summary = {
+    pass: false,
+    cycle: params.cycleLabel,
+    generatedAt: new Date().toISOString(),
+    scope: "provider-visible-market-to-internal-test-tradable-mobile-flow",
+    localMvpPolicy: {
+      defaultEventSlug: DEFAULT_EVENT_SLUG,
+      matchOnlyRequiredByDefault: true,
+      nonMvpProviderEventsRequireFlag: "--allowNonMvpProviderEvent",
+    },
+    routes: {
+      search: "/api/events?source=polymarket&search=:query",
+      detail: "/api/mobile/events/:slug/live-detail",
+      quote: "/api/markets/:marketId/quote",
+      order: "POST /api/orders",
+      portfolio: "/api/portfolio",
+      history: "/api/portfolio/history",
+    },
+    request: {
+      baseUrl: params.baseUrl,
+      eventSlug: params.eventSlug,
+      marketId: params.requestedMarketId ?? null,
+    },
+    blocker: params.blocker,
+    message: params.message,
+    event: params.event ?? null,
+    market: params.market ?? null,
+    ...(params.extra ?? {}),
+  };
+  await fs.mkdir(path.dirname(params.outputPath), { recursive: true });
+  await fs.writeFile(params.outputPath, `${JSON.stringify(summary, null, 2)}\n`, "utf8");
+  process.stdout.write(`${JSON.stringify(summary, null, 2)}\n`);
+  process.exitCode = 1;
+}
 
 async function fetchJson(url: string, init?: RequestInit) {
   const response = await fetch(url, init);
@@ -56,8 +120,9 @@ async function main() {
   const safeCycleLabel = cycleLabel.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "cycle";
   const baseUrl = argValue("baseUrl") ?? DEFAULT_BASE_URL;
   const eventSlug = argValue("eventSlug") ?? DEFAULT_EVENT_SLUG;
-  const marketId = argValue("marketId") ?? DEFAULT_MARKET_ID;
+  const requestedMarketId = argValue("marketId");
   const searchQuery = argValue("search") ?? "England";
+  const allowNonMvpProviderEvent = hasFlag("allowNonMvpProviderEvent");
   const outputPath =
     argValue("output") ??
     argValue("summaryPath") ??
@@ -66,8 +131,17 @@ async function main() {
 
   assert(Number.isFinite(amount) && amount > 0, "amount must be a positive number.");
 
-  const market = await prisma.market.findUnique({
-    where: { id: marketId },
+  const marketWhere: Prisma.MarketWhereInput = requestedMarketId
+    ? { id: requestedMarketId }
+    : {
+        event: { slug: eventSlug },
+        referenceSource: "polymarket",
+        isListed: true,
+        outcomes: { some: { isTradable: true, referenceTokenId: { not: null } } },
+      };
+  const market = await prisma.market.findFirst({
+    where: marketWhere,
+    orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }],
     include: {
       event: true,
       outcomes: { orderBy: { displayOrder: "asc" } },
@@ -77,8 +151,63 @@ async function main() {
       },
     },
   });
-  assert(market, `Market ${marketId} not found.`);
-  assert(market.event?.slug === eventSlug, `Market ${marketId} is not attached to ${eventSlug}.`);
+  if (!market) {
+    await writeBlockedSummary({
+      outputPath,
+      cycleLabel,
+      baseUrl,
+      eventSlug,
+      requestedMarketId,
+      blocker: "provider_mvp_match_market_not_found",
+      message:
+        "No listed Polymarket-backed market with tradable token ids was found for the selected Local MVP event.",
+      extra: {
+        checks: {
+          selectedProviderMarketExists: false,
+          localMvpMatchOnlyPreserved: true,
+        },
+      },
+    });
+    return;
+  }
+  assert(market.event?.slug === eventSlug, `Market ${market.id} is not attached to ${eventSlug}.`);
+  if (!allowNonMvpProviderEvent && market.event.eventType !== "match") {
+    await writeBlockedSummary({
+      outputPath,
+      cycleLabel,
+      baseUrl,
+      eventSlug,
+      requestedMarketId,
+      blocker: "non_mvp_provider_event_rejected",
+      message:
+        "Provider visible/tradable proof is match-only by default. Re-run with --allowNonMvpProviderEvent only for an explicit non-MVP futures audit.",
+      event: {
+        id: market.event.id,
+        slug: market.event.slug,
+        title: market.event.title,
+        eventType: market.event.eventType,
+        sportKey: market.event.sportKey,
+        leagueKey: market.event.leagueKey,
+      },
+      market: {
+        id: market.id,
+        slug: market.slug,
+        title: market.title,
+        marketType: market.marketType,
+        referenceSource: market.referenceSource,
+        externalSlug: market.externalSlug,
+        externalMarketId: market.externalMarketId,
+        conditionId: market.conditionId,
+      },
+      extra: {
+        checks: {
+          selectedEventIsMatch: false,
+          nonMvpOverrideProvided: false,
+        },
+      },
+    });
+    return;
+  }
   assert(market.referenceSource === "polymarket", "Selected market is not Polymarket-backed.");
   assert(market.isListed, "Selected market is not listed.");
 
@@ -89,7 +218,47 @@ async function main() {
       Number(order.remaining) > 0 &&
       tradableOutcomes.some((outcome) => outcome.id === order.outcomeId),
   );
-  assert(botAsk, "Expected an open bot SELL quote before mobile order proof.");
+  if (!botAsk) {
+    await writeBlockedSummary({
+      outputPath,
+      cycleLabel,
+      baseUrl,
+      eventSlug,
+      requestedMarketId: market.id,
+      blocker: "provider_mvp_match_bot_quote_unavailable",
+      message:
+        "The selected provider-backed match market is visible, but it has no open bot SELL quote for the mobile fake-token fill proof.",
+      event: {
+        id: market.event.id,
+        slug: market.event.slug,
+        title: market.event.title,
+        eventType: market.event.eventType,
+        sportKey: market.event.sportKey,
+        leagueKey: market.event.leagueKey,
+      },
+      market: {
+        id: market.id,
+        slug: market.slug,
+        title: market.title,
+        marketType: market.marketType,
+        referenceSource: market.referenceSource,
+        externalSlug: market.externalSlug,
+        externalMarketId: market.externalMarketId,
+        conditionId: market.conditionId,
+      },
+      extra: {
+        tradableOutcomeCount: tradableOutcomes.length,
+        openOrderCount: market.orders.length,
+        checks: {
+          selectedEventIsMatch: market.event.eventType === "match",
+          selectedProviderMarketExists: true,
+          botSellQuoteAvailable: false,
+          localMvpMatchOnlyPreserved: true,
+        },
+      },
+    });
+    return;
+  }
   const yesOutcome = tradableOutcomes.find((outcome) => outcome.id === botAsk.outcomeId);
   assert(yesOutcome, "Selected bot ask outcome is not a tradable provider outcome.");
   assert(yesOutcome.isTradable, "Selected outcome is not tradable.");
@@ -102,7 +271,7 @@ async function main() {
       `${baseUrl}/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&search=${encodeURIComponent(searchQuery)}&limit=10`,
     ),
     fetchJson(`${baseUrl}/api/mobile/events/${encodeURIComponent(eventSlug)}/live-detail`),
-    fetchJson(`${baseUrl}/api/markets/${encodeURIComponent(marketId)}/quote`),
+    fetchJson(`${baseUrl}/api/markets/${encodeURIComponent(market.id)}/quote`),
   ]);
 
   const searchEvents = Array.isArray(searchPayload.events) ? searchPayload.events : [];
@@ -111,7 +280,7 @@ async function main() {
     "Mobile Search route did not expose the provider-backed event.",
   );
   const detailMarkets = Array.isArray(detailPayload.markets) ? detailPayload.markets : [];
-  const detailMarket = detailMarkets.find((item: { id?: string }) => item.id === marketId);
+  const detailMarket = detailMarkets.find((item: { id?: string }) => item.id === market.id);
   assert(detailMarket, "Mobile live-detail route did not expose the provider-backed market.");
 
   const { credential, user } = await createProofCredential(cycleLabel);
@@ -139,13 +308,14 @@ async function main() {
       }),
   } as unknown as PolyApi;
 
+  const marketType = (market.marketType === "future" ? "future" : "moneyline") as "future" | "moneyline";
   const selection = {
-    marketType: "future" as const,
+    marketType,
     marketId: market.id,
     outcomeId: yesOutcome.id,
     marketGroupId: market.marketGroupKey ?? "outrights",
     line: undefined,
-    period: market.period ?? "futures",
+    period: market.period ?? (marketType === "future" ? "futures" : "full-game"),
     side: yesOutcome.side ?? "yes",
     displayLabel: yesOutcome.label ?? yesOutcome.name,
     contractSide,
@@ -166,8 +336,8 @@ async function main() {
       id: market.event.id,
       title: market.event.title,
       status: "future",
-      homeTeam: "World Cup",
-      awayTeam: "Winner",
+      homeTeam: market.event.homeTeamName ?? "World Cup",
+      awayTeam: market.event.awayTeamName ?? "Winner",
       homeFlag: "",
       awayFlag: "",
       time: "Starts Time TBD",
@@ -176,10 +346,10 @@ async function main() {
     market: {
       id: market.id,
       title: market.title,
-      type: "future",
-      marketType: "future",
+      type: marketType,
+      marketType,
       marketGroupId: market.marketGroupKey ?? "outrights",
-      period: market.period ?? "futures",
+      period: market.period ?? (marketType === "future" ? "futures" : "full-game"),
       referenceSource: market.referenceSource ?? undefined,
       externalSlug: market.externalSlug ?? undefined,
       externalMarketId: market.externalMarketId ?? undefined,

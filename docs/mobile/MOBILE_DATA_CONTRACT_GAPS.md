@@ -9653,3 +9653,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: active World Cup team-match provider events with accepting-order, non-edge best bid/ask books.
 - Temporary mock/static data: none added. The batch explicitly avoids using futures/player props as fake match breadth.
 - Future migration concern: when `usableMatchEventCount > 0`, import only those team-match provider slugs and rerun snapshot/internal-exchange readiness before exposing them as provider-backed tradable matches.
+
+# Batch Provider Visible Tradable Flow Guard Notes
+
+- Closed or narrowed: the provider tradable-flow proof no longer defaults to the old `provider-breadth-world-cup-winner` futures event. It defaults to the match-only Local MVP event and rejects non-match provider futures unless explicitly overridden for a separate audit.
+- Route mismatch: none. No mobile route or order schema changed.
+- Fields Holiwyn still needs but backend does not fully provide: safe provider-backed match market liquidity suitable for local-MM/fake-token fill proof. The current selected Polymarket-backed match market is visible and has token identity, but no open bot SELL quote.
+- Temporary mock/static data: none added. The fallback user-flow proof remains the contract-shaped line market path.
+- Future migration concern: when provider snapshots become local-MM-ready, use the same match-only guard to prove provider market -> quote -> ticket -> order -> Portfolio/history without relying on off-scope futures evidence.

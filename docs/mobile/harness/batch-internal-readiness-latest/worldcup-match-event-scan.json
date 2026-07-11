@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T08:12:09.523Z",
+  "generatedAt": "2026-07-11T08:22:38.903Z",
   "source": "gamma-api.polymarket.com/events",
   "readOnly": true,
   "scope": "world-cup-match-only-provider-breadth",
@@ -26,7 +26,7 @@
     "matchEventCount": 4,
     "usableMatchEventCount": 0,
     "futuresEventCount": 35,
-    "nonWorldCupOrPropUsableCount": 125,
+    "nonWorldCupOrPropUsableCount": 126,
     "pass": false
   },
   "usableMatchEvents": [],
@@ -373,7 +373,7 @@
         "playerPropLike": true,
         "futuresLike": true,
         "marketCount": 40,
-        "usableMarketCount": 19,
+        "usableMarketCount": 20,
         "acceptingOrderMarketCount": 40,
         "sampleUsableMarket": {
           "slug": "will-josh-allen-win-the-2026-nfl-mvp",
@@ -485,6 +485,40 @@
         }
       },
       {
+        "slug": "world-cup-bronze-ball-winner-20260603194938828",
+        "title": "World Cup: Bronze Ball Winner",
+        "tags": [
+          "soccer",
+          "sports",
+          "world-cup",
+          "fifa-world-cup",
+          "2026-fifa-world-cup",
+          "world-cup-awards"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": true,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 41,
+        "usableMarketCount": 10,
+        "acceptingOrderMarketCount": 41,
+        "sampleUsableMarket": {
+          "slug": "will-kylian-mbappe-win-the-bronze-ball-at-the-2026-fifa-world-cup-20260603194939941",
+          "question": "Will Kylian Mbappé win the Bronze Ball at the 2026 FIFA World Cup?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.088,
+          "bestAsk": 0.105,
+          "spread": 0.017,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
         "slug": "world-cup-silver-ball-winner-20260603194459107",
         "title": "World Cup: Silver Ball Winner",
         "tags": [
@@ -514,40 +548,6 @@
           "bestBid": 0.188,
           "bestAsk": 0.193,
           "spread": 0.005,
-          "usableBook": true,
-          "rejectionReasons": []
-        }
-      },
-      {
-        "slug": "world-cup-bronze-ball-winner-20260603194938828",
-        "title": "World Cup: Bronze Ball Winner",
-        "tags": [
-          "soccer",
-          "sports",
-          "world-cup",
-          "fifa-world-cup",
-          "2026-fifa-world-cup",
-          "world-cup-awards"
-        ],
-        "matchLike": false,
-        "worldCupRelevant": true,
-        "playerPropLike": true,
-        "futuresLike": true,
-        "marketCount": 41,
-        "usableMarketCount": 9,
-        "acceptingOrderMarketCount": 41,
-        "sampleUsableMarket": {
-          "slug": "will-kylian-mbappe-win-the-bronze-ball-at-the-2026-fifa-world-cup-20260603194939941",
-          "question": "Will Kylian Mbappé win the Bronze Ball at the 2026 FIFA World Cup?",
-          "acceptingOrders": true,
-          "active": true,
-          "closed": false,
-          "archived": false,
-          "outcomeCount": 2,
-          "tokenCount": 2,
-          "bestBid": 0.078,
-          "bestAsk": 0.109,
-          "spread": 0.031,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -643,43 +643,42 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.018,
-          "bestAsk": 0.055,
-          "spread": 0.037,
+          "bestBid": 0.01,
+          "bestAsk": 0.019,
+          "spread": 0.009,
           "usableBook": true,
           "rejectionReasons": []
         }
       },
       {
-        "slug": "world-cup-fair-play-award-winner-20260603201520240",
-        "title": "World Cup: Fair Play Award Winner",
+        "slug": "world-cup-golden-glove-winner-20260603195306910",
+        "title": "World Cup: Golden Glove Winner",
         "tags": [
           "soccer",
           "sports",
           "world-cup",
           "fifa-world-cup",
-          "2026-fifa-world-cup",
-          "world-cup-awards"
+          "2026-fifa-world-cup"
         ],
         "matchLike": false,
         "worldCupRelevant": true,
-        "playerPropLike": false,
+        "playerPropLike": true,
         "futuresLike": true,
-        "marketCount": 54,
+        "marketCount": 41,
         "usableMarketCount": 6,
-        "acceptingOrderMarketCount": 54,
+        "acceptingOrderMarketCount": 41,
         "sampleUsableMarket": {
-          "slug": "will-cape-verde-win-the-fair-play-award-for-the-2026-fifa-world-cup-20260603201521197",
-          "question": "Will Cape Verde win the Fair Play Award for the 2026 FIFA World Cup?",
+          "slug": "will-mike-maignan-win-the-golden-glove-at-the-2026-fifa-world-cup-20260603195307476",
+          "question": "Will Mike Maignan win the Golden Glove at the 2026 FIFA World Cup?",
           "acceptingOrders": true,
           "active": true,
           "closed": false,
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.019,
-          "bestAsk": 0.028,
-          "spread": 0.009,
+          "bestBid": 0.31,
+          "bestAsk": 0.33,
+          "spread": 0.02,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -715,8 +714,8 @@
           "outcomeCount": 2,
           "tokenCount": 2,
           "bestBid": 0.5,
-          "bestAsk": 0.51,
-          "spread": 0.01,
+          "bestAsk": 0.52,
+          "spread": 0.02,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -769,7 +768,7 @@
         "playerPropLike": true,
         "futuresLike": true,
         "marketCount": 40,
-        "usableMarketCount": 19,
+        "usableMarketCount": 20,
         "acceptingOrderMarketCount": 40,
         "sampleUsableMarket": {
           "slug": "will-josh-allen-win-the-2026-nfl-mvp",
@@ -783,40 +782,6 @@
           "bestBid": 0.14,
           "bestAsk": 0.15,
           "spread": 0.01,
-          "usableBook": true,
-          "rejectionReasons": []
-        }
-      },
-      {
-        "slug": "pro-football-team-to-draft-brendan-sorsby-20260620180654958",
-        "title": "Pro Football: Team To Draft Brendan Sorsby",
-        "tags": [
-          "nfl",
-          "draft",
-          "sports",
-          "football",
-          "nfl-draft",
-          "nfl-next-team"
-        ],
-        "matchLike": false,
-        "worldCupRelevant": false,
-        "playerPropLike": false,
-        "futuresLike": false,
-        "marketCount": 36,
-        "usableMarketCount": 18,
-        "acceptingOrderMarketCount": 36,
-        "sampleUsableMarket": {
-          "slug": "will-the-buffalo-bills-draft-brendan-sorsby-in-the-2026-nfl-supplemental-draft-20260620180914406",
-          "question": "Will the Buffalo Bills draft Brendan Sorsby in the 2026 NFL Supplemental Draft?",
-          "acceptingOrders": true,
-          "active": true,
-          "closed": false,
-          "archived": false,
-          "outcomeCount": 2,
-          "tokenCount": 2,
-          "bestBid": 0.01,
-          "bestAsk": 0.044,
-          "spread": 0.034,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -848,6 +813,40 @@
           "bestBid": 0.22,
           "bestAsk": 0.23,
           "spread": 0.01,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "pro-football-team-to-draft-brendan-sorsby-20260620180654958",
+        "title": "Pro Football: Team To Draft Brendan Sorsby",
+        "tags": [
+          "nfl",
+          "draft",
+          "sports",
+          "football",
+          "nfl-draft",
+          "nfl-next-team"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": false,
+        "futuresLike": false,
+        "marketCount": 36,
+        "usableMarketCount": 17,
+        "acceptingOrderMarketCount": 36,
+        "sampleUsableMarket": {
+          "slug": "will-the-buffalo-bills-draft-brendan-sorsby-in-the-2026-nfl-supplemental-draft-20260620180914406",
+          "question": "Will the Buffalo Bills draft Brendan Sorsby in the 2026 NFL Supplemental Draft?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.01,
+          "bestAsk": 0.044,
+          "spread": 0.034,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -977,9 +976,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.051,
-          "bestAsk": 0.086,
-          "spread": 0.017,
+          "bestBid": 0.048,
+          "bestAsk": 0.089,
+          "spread": 0.021,
           "usableBook": true,
           "rejectionReasons": []
         }
