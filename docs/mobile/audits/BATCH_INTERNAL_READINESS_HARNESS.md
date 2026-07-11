@@ -108,7 +108,9 @@ The batch does not rerun full S23 UI proof every time. Instead, it verifies the 
 
 Each proof must be from the Samsung S23 device id `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`, have `result=pass`, include required Local MVP assertions, and point only to existing evidence files.
 
-Each proof must also be fresh. The batch records `proofAgeHours`, `fresh`, and `maxAgeHours` for each S23 proof and currently treats proofs older than 24 hours as stale. If this fails, rerun the physical S23 proof set instead of weakening the gate.
+Each proof must also be fresh. The batch records `proofAgeHours`, `fresh`, `maxAgeHours`, `staleAt`, and `hoursUntilStale` for each S23 proof and currently treats proofs older than 24 hours as stale. If this fails, rerun the physical S23 proof set instead of weakening the gate.
+
+The batch also reports `readiness.s23ProofNextStaleName`, `readiness.s23ProofNextStaleAt`, and `readiness.s23ProofHoursUntilStale`. Use those fields during long-running or overnight loops to refresh S23 proof before it flips into a P0 blocker.
 
 If any of those checks fail, the batch records `s23_local_mvp_device_proof_not_ready` as a P0 blocker. This keeps the batch honest: Local MVP readiness requires both route/backend readiness and real Android proof evidence, while still avoiding unnecessary repeated screenshot generation when the committed evidence is already current.
 

@@ -286,6 +286,7 @@ const markdown: string[] = [
   `- Mobile typecheck: ${boolText(readiness.mobileTypecheckReady)}`,
   `- S23 Local MVP proof ready: ${boolText(readiness.s23LocalMvpDeviceProofReady)}`,
   `- S23 proof max age: ${readiness.s23ProofMaxAgeHours ?? "unknown"} hours`,
+  `- S23 proof next stale: ${readiness.s23ProofNextStaleName ? `${readiness.s23ProofNextStaleName} in ${readiness.s23ProofHoursUntilStale ?? "unknown"} hours (${readiness.s23ProofNextStaleAt ?? "unknown"})` : "unknown"}`,
   `- S23 startup contract ready: ${boolText(readiness.internalMvpStartupReady)}`,
   `- S23 Google consent path ready: ${boolText(readiness.googleS23ConsentReady)}${readiness.googleS23ConsentSource ? ` (${readiness.googleS23ConsentSource})` : ""}`,
   `- Provider-backed exchange ready: ${boolText(readiness.providerBackedExchangeReady)}`,

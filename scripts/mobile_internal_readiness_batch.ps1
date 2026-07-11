@@ -173,14 +173,22 @@ function Get-S23ProofEvidence {
   $modelMatches = [bool]($summary.model -eq "SM-S911U1")
   $proofAgeHours = $null
   $proofFresh = $false
+  $proofStaleAt = $null
+  $hoursUntilStale = $null
   if ($summary.generatedAt) {
     try {
+      $nowUtc = (Get-Date).ToUniversalTime()
       $proofGeneratedAt = [datetimeoffset]::Parse([string]$summary.generatedAt)
-      $proofAgeHours = [math]::Round(((Get-Date).ToUniversalTime() - $proofGeneratedAt.UtcDateTime).TotalHours, 2)
+      $staleAtUtc = $proofGeneratedAt.UtcDateTime.AddHours($MaxAgeHours)
+      $proofAgeHours = [math]::Round(($nowUtc - $proofGeneratedAt.UtcDateTime).TotalHours, 2)
+      $hoursUntilStale = [math]::Round(($staleAtUtc - $nowUtc).TotalHours, 2)
+      $proofStaleAt = $staleAtUtc.ToString("o")
       $proofFresh = [bool]($proofAgeHours -ge 0 -and $proofAgeHours -le $MaxAgeHours)
     } catch {
       $proofAgeHours = $null
       $proofFresh = $false
+      $proofStaleAt = $null
+      $hoursUntilStale = $null
     }
   }
   $pass = [bool]($resultPass -and $deviceMatches -and $modelMatches -and $proofFresh -and $missingArtifacts.Count -eq 0 -and $failedAssertions.Count -eq 0)
@@ -206,6 +214,8 @@ function Get-S23ProofEvidence {
     generatedAt = $summary.generatedAt
     proofAgeHours = $proofAgeHours
     maxAgeHours = $MaxAgeHours
+    staleAt = $proofStaleAt
+    hoursUntilStale = $hoursUntilStale
     fresh = $proofFresh
     device = $summary.device
     model = $summary.model
@@ -491,6 +501,10 @@ $s23Proofs = @(
   (Get-S23ProofEvidence -Name "totals-filled-buy-history" -SummaryPath $totalsS23ProofPath -RequiredAssertions $lineFamilyFilledAssertions -MaxAgeHours $s23ProofMaxAgeHours),
   (Get-S23ProofEvidence -Name "team-totals-filled-buy-history" -SummaryPath $teamTotalsS23ProofPath -RequiredAssertions $lineFamilyFilledAssertions -MaxAgeHours $s23ProofMaxAgeHours)
 )
+$s23NextStaleProof = $s23Proofs |
+  Where-Object { $null -ne $_.hoursUntilStale } |
+  Sort-Object hoursUntilStale |
+  Select-Object -First 1
 
 $backendReady = [bool]($backend -and $backend.dockerCliAvailable -and $backend.dockerDaemonReachable -and $backend.databaseTcpReachable)
 $localMvpReady = [bool]($currentState -and $currentState.diagnosis.serviceReadiness.localMvpPathReady)
@@ -683,6 +697,9 @@ $summary = [ordered]@{
     localMatchBreadthEventCount = if ($localMatchBreadth) { $localMatchBreadth.after.eventCount } else { $null }
     s23LocalMvpDeviceProofReady = $s23LocalMvpDeviceProofReady
     s23ProofMaxAgeHours = $s23ProofMaxAgeHours
+    s23ProofNextStaleName = if ($s23NextStaleProof) { $s23NextStaleProof.name } else { $null }
+    s23ProofNextStaleAt = if ($s23NextStaleProof) { $s23NextStaleProof.staleAt } else { $null }
+    s23ProofHoursUntilStale = if ($s23NextStaleProof) { $s23NextStaleProof.hoursUntilStale } else { $null }
     s23Proofs = $s23Proofs
     rootTypecheckReady = $rootTypecheckReady
     jestCiReady = $jestCiReady

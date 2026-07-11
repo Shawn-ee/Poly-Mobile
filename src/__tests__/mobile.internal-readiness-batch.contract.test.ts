@@ -72,6 +72,18 @@ describe("mobile internal readiness batch harness", () => {
     expect(source).toContain("backendPort3002Listening");
   });
 
+  it("forecasts when S23 proof evidence will go stale", () => {
+    const source = harness();
+    const gapWriter = readFileSync("scripts/write_mobile_internal_readiness_gap_list.ts", "utf8");
+
+    expect(source).toContain("hoursUntilStale");
+    expect(source).toContain("staleAt");
+    expect(source).toContain("s23ProofNextStaleName");
+    expect(source).toContain("s23ProofNextStaleAt");
+    expect(source).toContain("s23ProofHoursUntilStale");
+    expect(gapWriter).toContain("S23 proof next stale");
+  });
+
   it("tracks cached provider evidence freshness before trusting cached provider blockers", () => {
     const source = harness();
     const gapWriter = readFileSync("scripts/write_mobile_internal_readiness_gap_list.ts", "utf8");

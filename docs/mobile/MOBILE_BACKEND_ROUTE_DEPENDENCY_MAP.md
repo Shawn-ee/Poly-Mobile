@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle S23PROOFFORECAST - S23 Proof Staleness Forecast
+
+Cycle S23PROOFFORECAST changes local proof aggregation and reporting only. It does not add or change backend route handlers, Prisma schema, provider mapping, order logic, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| S23 proof freshness forecast | Local command `npm run mobile:internal-readiness-batch`; committed S23 proof summaries under `docs/mobile/harness/cycle-XG-*`, `cycle-XH-*`, `cycle-XI-*`, `cycle-WF-*`, and `cycle-WG-*` | Local proof aggregation | None | None | Per-proof `staleAt` and `hoursUntilStale`; batch fields `s23ProofNextStaleName`, `s23ProofNextStaleAt`, and `s23ProofHoursUntilStale` | No database access or writes | None | None. If proof is near stale or stale, rerun physical S23 proof commands; backend support is unchanged. |
+
 ## Cycle BATCHJSONGUARD - Readiness Evidence Hygiene Guard
 
 Cycle BATCHJSONGUARD changes local readiness harness output hygiene and CI coverage only. It does not add or change backend route handlers, Prisma schema, provider mapping, order logic, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.

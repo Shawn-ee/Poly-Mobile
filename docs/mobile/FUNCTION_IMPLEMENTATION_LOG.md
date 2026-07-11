@@ -2,6 +2,20 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle S23PROOFFORECAST - S23 Proof Staleness Forecast
+
+- Feature/page worked on: internal readiness batch S23 proof freshness forecasting.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/mobile_internal_readiness_batch.ps1`
+  - `scripts/write_mobile_internal_readiness_gap_list.ts`
+  - `src/__tests__/mobile.internal-readiness-batch.contract.test.ts`
+  - `docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md`
+- User interactions supported: unchanged. The Local MVP path remains Home -> Event Detail -> line market -> Trade Ticket -> fake-token order -> Portfolio/history.
+- State transitions: no runtime/backend/database state changes. Each S23 proof summary now carries `staleAt` and `hoursUntilStale`; the batch summary exposes the next proof that will go stale so the autonomous loop can refresh physical Android proof before it becomes a P0 blocker.
+- Proof: run `npm run mobile:internal-readiness-batch` and confirm the summary includes `readiness.s23ProofNextStaleName`, `readiness.s23ProofNextStaleAt`, and `readiness.s23ProofHoursUntilStale`; the gap list prints the same next-stale proof line.
+- Known limitations: this does not regenerate screenshots or close provider-backed match/line availability gaps. It makes proof maintenance more predictable for long-running loops.
+
 ## Cycle BATCHJSONGUARD - Readiness Evidence Hygiene Guard
 
 - Feature/page worked on: internal readiness batch evidence hygiene and CI coverage.
