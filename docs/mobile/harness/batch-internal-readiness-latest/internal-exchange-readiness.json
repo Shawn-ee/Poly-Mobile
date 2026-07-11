@@ -1,0 +1,178 @@
+{
+  "generatedAt": "2026-07-11T06:39:12.226Z",
+  "readOnly": true,
+  "scope": "poly-internal-exchange-runtime-readiness",
+  "thresholds": {
+    "staleAfterSeconds": 90,
+    "minMobileEvents": 2,
+    "minMmReadyMarkets": 1
+  },
+  "database": {
+    "connected": true,
+    "eventCount": 1,
+    "marketCount": 7,
+    "outcomeCount": 14
+  },
+  "mobileExposure": {
+    "mobileVisibleEventCount": 1,
+    "mobileVisibleProviderEventCount": 1,
+    "sampleEvents": [
+      {
+        "slug": "argentina-vs-egypt",
+        "title": "Argentina vs. Egypt",
+        "status": "active",
+        "listedMarketCount": 7,
+        "providerMarketCount": 3
+      }
+    ]
+  },
+  "providerMarkets": {
+    "totalInspected": 3,
+    "mobileVisibleCount": 3,
+    "snapshotReadyCount": 0,
+    "localMmReadyCount": 0,
+    "openOrderBackedCount": 0,
+    "snapshotBlockerSummary": {
+      "snapshot_missing_bid": 2,
+      "snapshot_not_accepting_orders": 3,
+      "snapshot_stale": 3,
+      "snapshot_not_mm_eligible": 3,
+      "snapshot_reason_reference_missing_book": 2,
+      "snapshot_quality_missing_book": 2,
+      "snapshot_reason_reference_invalid_price": 1,
+      "snapshot_quality_invalid_price": 1
+    },
+    "samples": [
+      {
+        "marketId": "0f66af64-8f00-4013-8cc8-338d155b3ed4",
+        "title": "Will Egypt win on 2026-07-07?",
+        "eventSlug": "argentina-vs-egypt",
+        "status": "LIVE",
+        "listed": true,
+        "mobileVisible": true,
+        "providerBacked": true,
+        "importStatus": "approved",
+        "tradable": true,
+        "mmEnabled": true,
+        "outcomeCount": 2,
+        "mappedOutcomeCount": 2,
+        "latestSnapshotAt": "2026-07-11T06:00:55.491Z",
+        "snapshotAgeSeconds": 2297,
+        "snapshotReady": false,
+        "snapshotQualityStatus": "missing_book",
+        "snapshotReason": "reference_missing_book",
+        "snapshotBestBid": null,
+        "snapshotBestAsk": "0.001",
+        "snapshotAcceptingOrders": false,
+        "snapshotMmEligible": false,
+        "snapshotBlockers": [
+          "snapshot_missing_bid",
+          "snapshot_not_accepting_orders",
+          "snapshot_stale",
+          "snapshot_not_mm_eligible",
+          "snapshot_reason_reference_missing_book",
+          "snapshot_quality_missing_book"
+        ],
+        "localOpenOrderCount": 0,
+        "botStatus": null,
+        "botSeeded": false,
+        "localMmReady": false,
+        "blockers": [
+          "snapshot_not_ready:snapshot_missing_bid,snapshot_not_accepting_orders,snapshot_stale,snapshot_not_mm_eligible,snapshot_reason_reference_missing_book,snapshot_quality_missing_book",
+          "bot_not_seeded",
+          "not_local_mm_ready"
+        ]
+      },
+      {
+        "marketId": "83087617-7787-40df-a09f-f03665a67ff2",
+        "title": "Will Argentina vs. Egypt end in a draw?",
+        "eventSlug": "argentina-vs-egypt",
+        "status": "LIVE",
+        "listed": true,
+        "mobileVisible": true,
+        "providerBacked": true,
+        "importStatus": "approved",
+        "tradable": true,
+        "mmEnabled": true,
+        "outcomeCount": 2,
+        "mappedOutcomeCount": 2,
+        "latestSnapshotAt": "2026-07-11T06:00:55.092Z",
+        "snapshotAgeSeconds": 2297,
+        "snapshotReady": false,
+        "snapshotQualityStatus": "missing_book",
+        "snapshotReason": "reference_missing_book",
+        "snapshotBestBid": null,
+        "snapshotBestAsk": "0.001",
+        "snapshotAcceptingOrders": false,
+        "snapshotMmEligible": false,
+        "snapshotBlockers": [
+          "snapshot_missing_bid",
+          "snapshot_not_accepting_orders",
+          "snapshot_stale",
+          "snapshot_not_mm_eligible",
+          "snapshot_reason_reference_missing_book",
+          "snapshot_quality_missing_book"
+        ],
+        "localOpenOrderCount": 0,
+        "botStatus": null,
+        "botSeeded": false,
+        "localMmReady": false,
+        "blockers": [
+          "snapshot_not_ready:snapshot_missing_bid,snapshot_not_accepting_orders,snapshot_stale,snapshot_not_mm_eligible,snapshot_reason_reference_missing_book,snapshot_quality_missing_book",
+          "bot_not_seeded",
+          "not_local_mm_ready"
+        ]
+      },
+      {
+        "marketId": "8e03bb8a-d1e0-4067-966f-c05e3969ab7d",
+        "title": "Will Argentina win on 2026-07-07?",
+        "eventSlug": "argentina-vs-egypt",
+        "status": "LIVE",
+        "listed": true,
+        "mobileVisible": true,
+        "providerBacked": true,
+        "importStatus": "approved",
+        "tradable": true,
+        "mmEnabled": true,
+        "outcomeCount": 2,
+        "mappedOutcomeCount": 2,
+        "latestSnapshotAt": "2026-07-11T06:00:55.331Z",
+        "snapshotAgeSeconds": 2297,
+        "snapshotReady": false,
+        "snapshotQualityStatus": "invalid_price",
+        "snapshotReason": "reference_invalid_price",
+        "snapshotBestBid": "0.999",
+        "snapshotBestAsk": "1",
+        "snapshotAcceptingOrders": false,
+        "snapshotMmEligible": false,
+        "snapshotBlockers": [
+          "snapshot_not_accepting_orders",
+          "snapshot_stale",
+          "snapshot_not_mm_eligible",
+          "snapshot_reason_reference_invalid_price",
+          "snapshot_quality_invalid_price"
+        ],
+        "localOpenOrderCount": 0,
+        "botStatus": null,
+        "botSeeded": false,
+        "localMmReady": false,
+        "blockers": [
+          "snapshot_not_ready:snapshot_not_accepting_orders,snapshot_stale,snapshot_not_mm_eligible,snapshot_reason_reference_invalid_price,snapshot_quality_invalid_price",
+          "bot_not_seeded",
+          "not_local_mm_ready"
+        ]
+      }
+    ]
+  },
+  "readyForInternalMobileExchange": false,
+  "blockers": [
+    "mobile_event_count_below_2",
+    "no_ready_provider_snapshots",
+    "local_mm_ready_market_count_below_1"
+  ],
+  "nextActions": [
+    "Import, classify, and list more backend events before expecting Home/Search breadth.",
+    "Refresh Polymarket reference snapshots for the mobile-visible provider allowlist.",
+    "Seed/enable local market-maker readiness for at least one allowlisted provider market."
+  ]
+}

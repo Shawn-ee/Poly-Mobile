@@ -1,0 +1,18 @@
+﻿{
+    "dockerCliAvailable":  true,
+    "dockerDaemonReachable":  true,
+    "composeFileFound":  true,
+    "databaseUrlSource":  ".env",
+    "databaseHost":  "localhost",
+    "databasePort":  5432,
+    "databaseName":  "polymarket",
+    "databaseUser":  "postgres",
+    "databaseTcpReachable":  true,
+    "usesDefaultLocalComposePort":  true,
+    "canStartLocalDb":  true,
+    "nextSteps":  [
+                      "Run npm run mobile:backend-readiness:start if local Postgres should be started.",
+                      "Run npm run db:push or npm run db:migrate when schema setup is needed.",
+                      "Run npm run mobile:dev-credential after database readiness passes."
+                  ]
+}
