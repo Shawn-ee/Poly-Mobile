@@ -9938,3 +9938,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: Polymarket-backed World Cup soccer match line markets with accepting-order CLOB data and real provider token ids remain the true provider-parity gap.
 - Temporary mock/static data: none added. The batch reads the existing redacted sportsbook seed and fake-token flow proof artifacts.
 - Future migration concern: when Polymarket match/line markets become attach-ready, this temporary sportsbook freshness gate should remain separate from Polymarket provider readiness so `sportsbook-odds` never satisfies `polymarket` parity by accident.
+
+## Cycle NEXTACTIONSPORTSBOOK - Planner Sportsbook Backend Freshness
+
+- Closed or narrowed: the autonomous next-action planner now honors the readiness batch's sportsbook backend proof freshness gate and no longer defaults to the older replay summary artifact.
+- Route mismatch: none. This is local planner control logic.
+- Fields Holiwyn still needs but backend/provider does not fully provide: the real Polymarket-backed match/line provider data contract is still incomplete because current Polymarket evidence has no attach-ready World Cup match/line markets.
+- Temporary mock/static data: none added. The planner only reads existing redacted proof summaries and emits existing proof commands.
+- Future migration concern: keep `refresh-temporary-provider-proof` separate from `refresh-provider-evidence`. The first keeps the internal sportsbook bridge fresh; the second is the Polymarket parity path.

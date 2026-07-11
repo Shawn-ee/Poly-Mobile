@@ -14,6 +14,10 @@ type ReadinessSummary = {
     cachedProviderEvidenceNextStaleAt?: string | null;
     cachedProviderEvidenceHoursUntilStale?: number | null;
     providerBackedExchangeReady?: boolean;
+    temporarySportsbookBackendProofReady?: boolean;
+    temporarySportsbookBackendProofNextStaleName?: string | null;
+    temporarySportsbookBackendProofNextStaleAt?: string | null;
+    temporarySportsbookBackendProofHoursUntilStale?: number | null;
     rootTypecheckReady?: boolean;
     jestCiReady?: boolean;
     mobileTypecheckReady?: boolean;
@@ -93,6 +97,7 @@ type NextActionPlan = {
     | "fix-p0-readiness"
     | "refresh-s23-proof"
     | "refresh-provider-evidence"
+    | "refresh-temporary-provider-proof"
     | "prove-temporary-provider-on-s23"
     | "manual-local-mvp-ready"
     | "provider-parity-wait"
@@ -120,6 +125,8 @@ type NextActionPlan = {
     s23ProofHoursUntilStale: number | null;
     providerPlanStatus: string | null;
     providerEvidenceHoursUntilStale: number | null;
+    temporaryProviderBackendProofReady: boolean;
+    temporaryProviderBackendProofHoursUntilStale: number | null;
     readyToDeclareDone: boolean;
     dodCounts: DefinitionOfDoneSweep["counts"];
     remainingPartialCriteria: string[];
@@ -180,7 +187,11 @@ function buildPlan(
     readinessState.s23LocalMvpDeviceProofReady !== true ||
     (s23ProofHoursUntilStale !== null && s23ProofHoursUntilStale <= s23RefreshWindowHours);
   const providerRefreshDue = providerPlan?.shouldRefreshProviderEvidence === true;
+  const temporaryProviderBackendProofHoursUntilStale = numberOrNull(readinessState.temporarySportsbookBackendProofHoursUntilStale);
+  const temporaryProviderBackendProofReady = readinessState.temporarySportsbookBackendProofReady === true;
+  const temporaryProviderBackendProofDue = temporaryProviderBackendProofReady !== true;
   const temporaryProviderReady =
+    temporaryProviderBackendProofReady &&
     oddsApiSummary?.pass === true &&
     (oddsApiSummary.mobile?.sportsbookMarketCount ?? 0) > 0 &&
     oddsApiMobileFlowProof?.pass === true &&
@@ -239,6 +250,16 @@ function buildPlan(
     reason = "Provider evidence is stale, nearly stale, missing, or explicitly due for refresh.";
     recommendedAction = "Refresh provider evidence and only begin provider-backed work if refreshed evidence shows a real attach-ready World Cup match or line market.";
     commands = [providerPlan.providerRefreshCommand ?? readiness.recovery?.providerRefreshCommand ?? "npm run mobile:internal-readiness-batch:provider-refresh"];
+  } else if (temporaryProviderBackendProofDue) {
+    status = "refresh-temporary-provider-proof";
+    priority = "P1";
+    reason = "Temporary sportsbook provider/backend proof is missing, failed, or stale.";
+    recommendedAction = "Refresh the one-event sportsbook seed and backend fake-token flow proof, then rerun the internal readiness batch. Keep the API key in the process environment only.";
+    commands = [
+      "npm run mobile:the-odds-api-single-event",
+      "npm run mobile:the-odds-api-single-event-flow",
+      readiness.recovery?.rerunBatchCommand ?? "npm run mobile:internal-readiness-batch",
+    ];
   } else if (temporaryProviderNeedsS23VisualProof) {
     status = "prove-temporary-provider-on-s23";
     priority = "P1";
@@ -272,6 +293,8 @@ function buildPlan(
       s23ProofHoursUntilStale,
       providerPlanStatus: providerPlan?.status ?? null,
       providerEvidenceHoursUntilStale: numberOrNull(providerPlan?.hoursUntilStale ?? readinessState.cachedProviderEvidenceHoursUntilStale),
+      temporaryProviderBackendProofReady,
+      temporaryProviderBackendProofHoursUntilStale,
       readyToDeclareDone: dod?.readyToDeclareDone === true,
       dodCounts: dod?.counts,
       remainingPartialCriteria,
@@ -290,7 +313,7 @@ const providerEvidencePlanPath =
 const definitionOfDoneSweepPath =
   args.get("definitionOfDoneSweepPath") ?? "docs/mobile/harness/cycle-current-mobile-definition-of-done-sweep.json";
 const oddsApiSingleEventSummaryPath =
-  args.get("oddsApiSingleEventSummaryPath") ?? "docs/mobile/harness/the-odds-api-single-event/single-event-replay-summary.redacted.json";
+  args.get("oddsApiSingleEventSummaryPath") ?? "docs/mobile/harness/the-odds-api-single-event/single-event-summary.redacted.json";
 const oddsApiMobileFlowProofPath =
   args.get("oddsApiMobileFlowProofPath") ?? "docs/mobile/harness/the-odds-api-single-event/mobile-flow-proof.redacted.json";
 const oddsApiS23ReachabilityPath =

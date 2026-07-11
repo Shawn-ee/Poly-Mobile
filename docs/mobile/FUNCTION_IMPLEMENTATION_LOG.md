@@ -13288,3 +13288,18 @@ Known limitations:
   - If either proof is missing, failed, or stale, the batch reports `temporary_sportsbook_backend_proof_stale_or_missing` as P1.
 - Known limitations:
   - This is a harness/readiness improvement only. It does not add new sportsbook markets, does not spend provider quota, and does not close Polymarket-backed provider parity.
+
+# Cycle NEXTACTIONSPORTSBOOK - Planner Sportsbook Backend Freshness
+
+- Feature/page worked on: autonomous next-action planner for the long-running Local MVP/provider loop.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/plan_mobile_autonomous_next_action.ts`
+  - `src/__tests__/mobile-autonomous-next-action.contract.test.ts`
+- User interactions supported: unchanged. The planner now prevents the loop from waiting on Polymarket provider parity while the temporary sportsbook backend proof is stale or missing.
+- State transitions:
+  - Default sportsbook seed evidence now points at `single-event-summary.redacted.json` instead of the older replay summary.
+  - The planner reads `temporarySportsbookBackendProofReady` and emits `refresh-temporary-provider-proof` when the batch says the sportsbook seed/order/Portfolio evidence is stale.
+  - The recommended commands refresh the one-event sportsbook seed, run the backend fake-token flow proof, and rerun the consolidated batch.
+- Known limitations:
+  - This is planner control logic only. It does not call provider APIs itself and does not close Polymarket-backed parity.
