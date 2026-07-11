@@ -2,6 +2,21 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ODDSAPI1 - The Odds API Single-Event Temporary Provider
+
+- Feature/page worked on: Local MVP Home -> Event Detail -> line market -> Trade Ticket -> fake-token order -> Portfolio/history using one sportsbook-derived soccer event.
+- Frontend components touched: none directly. Existing mobile route consumers now receive `sportsbook-odds` event/market data from backend routes.
+- Important functions/services touched:
+  - `src/server/services/theOddsApiSingleEventProvider.ts`
+  - `scripts/seed_the_odds_api_single_event.ts`
+  - `scripts/prove_mobile_the_odds_api_single_event_flow.ts`
+  - `src/server/services/mobileLiveEventDetail.ts`
+  - `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+  - root `package.json` scripts `mobile:the-odds-api-single-event` and `mobile:the-odds-api-single-event-flow`
+- User interactions supported: the seeded event appears in Home/Event Detail, exposes sportsbook-derived Regulation Winner, Spread, and Total Goals markets, preserves selected line/outcome identity through the ticket order payload, fills a fake-token server order, and shows the result in Portfolio/history.
+- State transitions: The script fetches one The Odds API soccer event, writes redacted provider evidence, upserts one local event slug `odds-api-single-soccer-test`, upserts market/outcome/reference quote rows with `referenceSource=sportsbook-odds`, creates local fake-token maker liquidity for proof, submits a buyer order through `POST /api/orders`, then verifies Portfolio/history.
+- Known limitations: This is a temporary sportsbook-derived provider, not Polymarket-backed parity. It seeds exactly one local MVP test event, uses one region, and does not add real-money behavior, production deployment, chat, order book UI, or live stats.
+
 ## Cycle PROVIDERPLAN - Provider Evidence Refresh Planner
 
 - Feature/page worked on: autonomous loop control for provider evidence refresh timing.

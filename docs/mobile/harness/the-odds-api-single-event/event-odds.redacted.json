@@ -1,0 +1,390 @@
+{
+  "generatedAt": "2026-07-11T19:15:54.870Z",
+  "source": "the-odds-api",
+  "redacted": true,
+  "event": {
+    "id": "200d9cd5eda092c7eb778cc104cd2fd2",
+    "title": "Switzerland vs. Argentina",
+    "homeTeam": "Argentina",
+    "awayTeam": "Switzerland",
+    "startTime": "2026-07-12T01:00:00Z",
+    "sportKey": "soccer_fifa_world_cup",
+    "sportTitle": "FIFA World Cup"
+  },
+  "region": "us",
+  "oddsFormat": "decimal",
+  "selectedBookmaker": {
+    "key": "betonlineag",
+    "title": "BetOnline.ag"
+  },
+  "normalizedMarkets": [
+    {
+      "marketKey": "h2h",
+      "bookmakerKey": "betonlineag",
+      "bookmakerTitle": "BetOnline.ag",
+      "lastUpdate": "2026-07-11T19:15:52Z",
+      "displayOrder": 10,
+      "marketType": "match_winner_1x2",
+      "marketGroupKey": "regulation-winner",
+      "marketGroupTitle": "Regulation Time Winner",
+      "title": "Regulation Time Winner",
+      "period": "regulation",
+      "line": null,
+      "unit": null,
+      "participantName": null,
+      "outcomes": [
+        {
+          "code": "argentina",
+          "name": "Argentina",
+          "side": "home",
+          "decimalOdds": 1.72,
+          "impliedProbability": 0.5814,
+          "normalizedProbability": 0.5638,
+          "point": null,
+          "description": null
+        },
+        {
+          "code": "switzerland",
+          "name": "Switzerland",
+          "side": "away",
+          "decimalOdds": 5.92,
+          "impliedProbability": 0.1689,
+          "normalizedProbability": 0.1638,
+          "point": null,
+          "description": null
+        },
+        {
+          "code": "draw",
+          "name": "Draw",
+          "side": "draw",
+          "decimalOdds": 3.56,
+          "impliedProbability": 0.2809,
+          "normalizedProbability": 0.2724,
+          "point": null,
+          "description": null
+        }
+      ]
+    },
+    {
+      "marketKey": "spreads",
+      "bookmakerKey": "betonlineag",
+      "bookmakerTitle": "BetOnline.ag",
+      "lastUpdate": "2026-07-11T19:15:52Z",
+      "displayOrder": 20,
+      "marketType": "spread",
+      "marketGroupKey": "spread",
+      "marketGroupTitle": "Spread",
+      "title": "Spread +0.5",
+      "period": "regulation",
+      "line": 0.5,
+      "unit": "goals",
+      "participantName": "Argentina",
+      "outcomes": [
+        {
+          "code": "argentina-0-5",
+          "name": "Argentina -0.5",
+          "side": "home",
+          "decimalOdds": 1.72,
+          "impliedProbability": 0.5814,
+          "normalizedProbability": 0.5635,
+          "point": -0.5,
+          "description": null
+        },
+        {
+          "code": "switzerland-0-5",
+          "name": "Switzerland +0.5",
+          "side": "away",
+          "decimalOdds": 2.22,
+          "impliedProbability": 0.4505,
+          "normalizedProbability": 0.4365,
+          "point": 0.5,
+          "description": null
+        }
+      ]
+    },
+    {
+      "marketKey": "totals",
+      "bookmakerKey": "betonlineag",
+      "bookmakerTitle": "BetOnline.ag",
+      "lastUpdate": "2026-07-11T19:15:52Z",
+      "displayOrder": 30,
+      "marketType": "total_goals",
+      "marketGroupKey": "totals",
+      "marketGroupTitle": "Total Goals",
+      "title": "Total Goals 2",
+      "period": "regulation",
+      "line": 2,
+      "unit": "goals",
+      "participantName": null,
+      "outcomes": [
+        {
+          "code": "over-2",
+          "name": "Over +2",
+          "side": "over",
+          "decimalOdds": 1.71,
+          "impliedProbability": 0.5848,
+          "normalizedProbability": 0.566,
+          "point": 2,
+          "description": null
+        },
+        {
+          "code": "under-2",
+          "name": "Under +2",
+          "side": "under",
+          "decimalOdds": 2.23,
+          "impliedProbability": 0.4484,
+          "normalizedProbability": 0.434,
+          "point": 2,
+          "description": null
+        }
+      ]
+    },
+    {
+      "marketKey": "alternate_spreads",
+      "bookmakerKey": "betonlineag",
+      "bookmakerTitle": "BetOnline.ag",
+      "lastUpdate": "2026-07-11T19:15:52Z",
+      "displayOrder": 40,
+      "marketType": "spread",
+      "marketGroupKey": "spread",
+      "marketGroupTitle": "Spread",
+      "title": "Spread",
+      "period": "regulation",
+      "line": null,
+      "unit": "goals",
+      "participantName": "Argentina",
+      "outcomes": [
+        {
+          "code": "argentina-0-75",
+          "name": "Argentina -0.75",
+          "side": "home",
+          "decimalOdds": 1.91,
+          "impliedProbability": 0.5236,
+          "normalizedProbability": 0.1688,
+          "point": -0.75,
+          "description": null
+        },
+        {
+          "code": "argentina-1",
+          "name": "Argentina -1",
+          "side": "home",
+          "decimalOdds": 2.39,
+          "impliedProbability": 0.4184,
+          "normalizedProbability": 0.1349,
+          "point": -1,
+          "description": null
+        },
+        {
+          "code": "argentina-0-25",
+          "name": "Argentina -0.25",
+          "side": "home",
+          "decimalOdds": 1.48,
+          "impliedProbability": 0.6757,
+          "normalizedProbability": 0.2179,
+          "point": -0.25,
+          "description": null
+        },
+        {
+          "code": "switzerland-0-75",
+          "name": "Switzerland +0.75",
+          "side": "away",
+          "decimalOdds": 1.94,
+          "impliedProbability": 0.5155,
+          "normalizedProbability": 0.1662,
+          "point": 0.75,
+          "description": null
+        },
+        {
+          "code": "switzerland-1",
+          "name": "Switzerland +1",
+          "side": "away",
+          "decimalOdds": 1.63,
+          "impliedProbability": 0.6135,
+          "normalizedProbability": 0.1978,
+          "point": 1,
+          "description": null
+        },
+        {
+          "code": "switzerland-0-25",
+          "name": "Switzerland +0.25",
+          "side": "away",
+          "decimalOdds": 2.82,
+          "impliedProbability": 0.3546,
+          "normalizedProbability": 0.1143,
+          "point": 0.25,
+          "description": null
+        }
+      ]
+    },
+    {
+      "marketKey": "alternate_totals",
+      "bookmakerKey": "betonlineag",
+      "bookmakerTitle": "BetOnline.ag",
+      "lastUpdate": "2026-07-11T19:15:52Z",
+      "displayOrder": 50,
+      "marketType": "total_goals",
+      "marketGroupKey": "totals",
+      "marketGroupTitle": "Total Goals",
+      "title": "Total Goals",
+      "period": "regulation",
+      "line": null,
+      "unit": "goals",
+      "participantName": null,
+      "outcomes": [
+        {
+          "code": "over-2-25",
+          "name": "Over +2.25",
+          "side": "over",
+          "decimalOdds": 2.01,
+          "impliedProbability": 0.4975,
+          "normalizedProbability": 0.1605,
+          "point": 2.25,
+          "description": null
+        },
+        {
+          "code": "over-2-5",
+          "name": "Over +2.5",
+          "side": "over",
+          "decimalOdds": 2.33,
+          "impliedProbability": 0.4292,
+          "normalizedProbability": 0.1385,
+          "point": 2.5,
+          "description": null
+        },
+        {
+          "code": "over-1-75",
+          "name": "Over +1.75",
+          "side": "over",
+          "decimalOdds": 1.53,
+          "impliedProbability": 0.6536,
+          "normalizedProbability": 0.2109,
+          "point": 1.75,
+          "description": null
+        },
+        {
+          "code": "under-2-25",
+          "name": "Under +2.25",
+          "side": "under",
+          "decimalOdds": 1.85,
+          "impliedProbability": 0.5405,
+          "normalizedProbability": 0.1744,
+          "point": 2.25,
+          "description": null
+        },
+        {
+          "code": "under-2-5",
+          "name": "Under +2.5",
+          "side": "under",
+          "decimalOdds": 1.66,
+          "impliedProbability": 0.6024,
+          "normalizedProbability": 0.1944,
+          "point": 2.5,
+          "description": null
+        },
+        {
+          "code": "under-1-75",
+          "name": "Under +1.75",
+          "side": "under",
+          "decimalOdds": 2.66,
+          "impliedProbability": 0.3759,
+          "normalizedProbability": 0.1213,
+          "point": 1.75,
+          "description": null
+        }
+      ]
+    },
+    {
+      "marketKey": "h2h_3_way",
+      "bookmakerKey": "betonlineag",
+      "bookmakerTitle": "BetOnline.ag",
+      "lastUpdate": "2026-07-11T19:15:52Z",
+      "displayOrder": 60,
+      "marketType": "match_winner_1x2",
+      "marketGroupKey": "regulation-winner",
+      "marketGroupTitle": "Regulation Time Winner",
+      "title": "Regulation Time Winner",
+      "period": "regulation",
+      "line": null,
+      "unit": null,
+      "participantName": null,
+      "outcomes": [
+        {
+          "code": "argentina",
+          "name": "Argentina",
+          "side": "home",
+          "decimalOdds": 1.72,
+          "impliedProbability": 0.5814,
+          "normalizedProbability": 0.5638,
+          "point": null,
+          "description": null
+        },
+        {
+          "code": "switzerland",
+          "name": "Switzerland",
+          "side": "away",
+          "decimalOdds": 5.92,
+          "impliedProbability": 0.1689,
+          "normalizedProbability": 0.1638,
+          "point": null,
+          "description": null
+        },
+        {
+          "code": "draw",
+          "name": "Draw",
+          "side": "draw",
+          "decimalOdds": 3.56,
+          "impliedProbability": 0.2809,
+          "normalizedProbability": 0.2724,
+          "point": null,
+          "description": null
+        }
+      ]
+    }
+  ],
+  "apiCalls": [
+    {
+      "name": "sports",
+      "method": "GET",
+      "path": "/v4/sports",
+      "status": 200,
+      "quota": {
+        "requestsUsed": "0",
+        "requestsRemaining": "500",
+        "requestsLast": "0"
+      }
+    },
+    {
+      "name": "events:soccer_fifa_world_cup",
+      "method": "GET",
+      "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z",
+      "status": 200,
+      "quota": {
+        "requestsUsed": "0",
+        "requestsRemaining": "500",
+        "requestsLast": "0"
+      }
+    },
+    {
+      "name": "event-markets",
+      "method": "GET",
+      "path": "/v4/sports/soccer_fifa_world_cup/events/200d9cd5eda092c7eb778cc104cd2fd2/markets?regions=us&dateFormat=iso",
+      "status": 200,
+      "quota": {
+        "requestsUsed": "1",
+        "requestsRemaining": "499",
+        "requestsLast": "1"
+      }
+    },
+    {
+      "name": "event-odds",
+      "method": "GET",
+      "path": "/v4/sports/soccer_fifa_world_cup/events/200d9cd5eda092c7eb778cc104cd2fd2/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso",
+      "status": 200,
+      "quota": {
+        "requestsUsed": "7",
+        "requestsRemaining": "493",
+        "requestsLast": "6"
+      }
+    }
+  ]
+}

@@ -427,7 +427,8 @@ type SourceSummaryMarket = {
   approvedLineProviderReady?: boolean;
 };
 
-const APPROVED_LINE_PROVIDER_SOURCES = new Set(["optic_odds"]);
+const APPROVED_LINE_PROVIDER_SOURCES = new Set(["optic_odds", "the_odds_api"]);
+const PROVIDER_BACKED_REFERENCE_SOURCES = new Set(["polymarket", "sportsbook-odds"]);
 
 const lineProviderIdentitySource = (value: unknown) => {
   const root = value && typeof value === "object" && !Array.isArray(value)
@@ -471,7 +472,9 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
     return market.marketType === "match_winner_1x2" || key.includes("regulation") || key.includes("winner") || key.includes("moneyline");
   });
   const polymarketLineMarkets = lineMarkets.filter((market) => market.referenceSource === "polymarket");
-  const approvedLineProviderMarkets = lineMarkets.filter((market) => market.approvedLineProviderReady);
+  const approvedLineProviderMarkets = lineMarkets.filter((market) =>
+    market.approvedLineProviderReady || PROVIDER_BACKED_REFERENCE_SOURCES.has(market.referenceSource ?? "")
+  );
   const providerBackedLineMarkets = Array.from(
     new Map([...polymarketLineMarkets, ...approvedLineProviderMarkets].map((market) => [market, market])).values(),
   );
@@ -494,7 +497,9 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
   const familyReadiness = expectedLineFamilies.map((family) => {
     const familyMarkets = lineMarkets.filter((market) => marketFamilyForMarket(market) === family);
     const polymarketCount = familyMarkets.filter((market) => market.referenceSource === "polymarket").length;
-    const approvedLineProviderCount = familyMarkets.filter((market) => market.approvedLineProviderReady).length;
+    const approvedLineProviderCount = familyMarkets.filter((market) =>
+      market.approvedLineProviderReady || PROVIDER_BACKED_REFERENCE_SOURCES.has(market.referenceSource ?? "")
+    ).length;
     const contractFixtureCount = familyMarkets.filter((market) => market.referenceSource === "contract-fixture" && !market.approvedLineProviderReady).length;
     const status =
       polymarketCount > 0 || approvedLineProviderCount > 0
@@ -545,8 +550,11 @@ export const buildMobileMarketSourceSummary = (markets: SourceSummaryMarket[]) =
     regulationWinner: {
       totalCount: regulationWinnerMarkets.length,
       polymarketCount: regulationWinnerMarkets.filter((market) => market.referenceSource === "polymarket").length,
+      providerBackedCount: regulationWinnerMarkets.filter((market) =>
+        PROVIDER_BACKED_REFERENCE_SOURCES.has(market.referenceSource ?? "")
+      ).length,
       contractFixtureCount: regulationWinnerMarkets.filter((market) => market.referenceSource === "contract-fixture").length,
-      status: regulationWinnerMarkets.some((market) => market.referenceSource === "polymarket")
+      status: regulationWinnerMarkets.some((market) => PROVIDER_BACKED_REFERENCE_SOURCES.has(market.referenceSource ?? ""))
         ? "provider-backed"
         : regulationWinnerMarkets.length > 0
           ? "non-provider"

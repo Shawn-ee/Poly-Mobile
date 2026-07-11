@@ -1,0 +1,123 @@
+{
+  "generatedAt": "2026-07-11T19:15:54.714Z",
+  "source": "the-odds-api",
+  "redacted": true,
+  "sportKey": "soccer_fifa_world_cup",
+  "event": {
+    "id": "200d9cd5eda092c7eb778cc104cd2fd2",
+    "title": "Switzerland vs. Argentina",
+    "homeTeam": "Argentina",
+    "awayTeam": "Switzerland",
+    "startTime": "2026-07-12T01:00:00Z",
+    "sportKey": "soccer_fifa_world_cup",
+    "sportTitle": "FIFA World Cup"
+  },
+  "region": "us",
+  "availableMarketKeys": [
+    "alternate_spreads",
+    "alternate_spreads_cards",
+    "alternate_spreads_corners",
+    "alternate_spreads_h1",
+    "alternate_team_totals",
+    "alternate_team_totals_corners",
+    "alternate_team_totals_h1",
+    "alternate_team_totals_h2",
+    "alternate_totals",
+    "alternate_totals_cards",
+    "alternate_totals_cards_h1",
+    "alternate_totals_corners",
+    "alternate_totals_corners_h1",
+    "alternate_totals_h1",
+    "alternate_totals_h2",
+    "btts",
+    "btts_h1",
+    "btts_h2",
+    "corners_1x2",
+    "correct_score",
+    "correct_score_h1",
+    "double_chance",
+    "double_chance_h1",
+    "double_chance_h2",
+    "draw_no_bet",
+    "draw_no_bet_h1",
+    "h2h",
+    "h2h_3_way",
+    "h2h_3_way_h1",
+    "h2h_3_way_h2",
+    "h2h_h1",
+    "h2h_h2",
+    "h2h_ot",
+    "halftime_fulltime",
+    "odd_even",
+    "odd_even_h1",
+    "player_assists",
+    "player_assists_alternate",
+    "player_first_goal_scorer",
+    "player_fouls",
+    "player_goal_scorer_anytime",
+    "player_goalie_saves_alternate",
+    "player_goals",
+    "player_goals_alternate",
+    "player_goals_and_assists_alternate",
+    "player_last_goal_scorer",
+    "player_shots",
+    "player_shots_alternate",
+    "player_shots_on_target",
+    "player_shots_on_target_alternate",
+    "player_tackles_alternate",
+    "player_to_receive_card",
+    "player_to_receive_red_card",
+    "player_to_score_or_assist",
+    "spreads",
+    "spreads_h1",
+    "team_totals",
+    "team_totals_h1",
+    "to_qualify",
+    "totals",
+    "totals_h1",
+    "totals_h2"
+  ],
+  "selectedMarketKeys": [
+    "h2h",
+    "spreads",
+    "totals",
+    "h2h_3_way",
+    "alternate_spreads",
+    "alternate_totals"
+  ],
+  "apiCalls": [
+    {
+      "name": "sports",
+      "method": "GET",
+      "path": "/v4/sports",
+      "status": 200,
+      "quota": {
+        "requestsUsed": "0",
+        "requestsRemaining": "500",
+        "requestsLast": "0"
+      }
+    },
+    {
+      "name": "events:soccer_fifa_world_cup",
+      "method": "GET",
+      "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z",
+      "status": 200,
+      "quota": {
+        "requestsUsed": "0",
+        "requestsRemaining": "500",
+        "requestsLast": "0"
+      }
+    },
+    {
+      "name": "event-markets",
+      "method": "GET",
+      "path": "/v4/sports/soccer_fifa_world_cup/events/200d9cd5eda092c7eb778cc104cd2fd2/markets?regions=us&dateFormat=iso",
+      "status": 200,
+      "quota": {
+        "requestsUsed": "1",
+        "requestsRemaining": "499",
+        "requestsLast": "1"
+      }
+    }
+  ]
+}

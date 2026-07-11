@@ -1,0 +1,20 @@
+{
+  "pass": true,
+  "generatedAt": "2026-07-11T19:21:30.000Z",
+  "scope": "the-odds-api-single-event-s23-reachability",
+  "device": {
+    "adbId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model": "SM-S911U1",
+    "size": "1080x2340"
+  },
+  "foreground": {
+    "package": "host.exp.exponent",
+    "activity": "host.exp.exponent.experience.ExperienceActivity",
+    "meaning": "Expo Go is foreground on Samsung S23 and reachable for manual Holiwyn UI proof."
+  },
+  "proofLimitations": [
+    "This is device reachability proof, not a full visual walkthrough of the seeded sportsbook event.",
+    "Backend/mobile-service proof for order and portfolio is recorded in mobile-flow-proof.redacted.json.",
+    "Full S23 visible proof should open odds-api-single-soccer-test in Holiwyn and verify Home, Event Detail, ticket, order, Portfolio, and History visually."
+  ]
+}

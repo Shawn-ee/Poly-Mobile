@@ -1,0 +1,202 @@
+{
+  "pass": true,
+  "generatedAt": "2026-07-11T19:17:45.459Z",
+  "dryRun": false,
+  "replayedFromRedactedOdds": true,
+  "scope": "the-odds-api-single-event-temporary-provider-replay",
+  "policy": {
+    "providerSource": "the-odds-api",
+    "referenceSource": "sportsbook-odds",
+    "doesNotClaimPolymarketBacked": true,
+    "noProviderApiCalls": true
+  },
+  "event": {
+    "id": "200d9cd5eda092c7eb778cc104cd2fd2",
+    "title": "Switzerland vs. Argentina",
+    "homeTeam": "Argentina",
+    "awayTeam": "Switzerland",
+    "startTime": "2026-07-12T01:00:00Z",
+    "sportKey": "soccer_fifa_world_cup",
+    "sportTitle": "FIFA World Cup"
+  },
+  "apiCalls": [
+    {
+      "name": "sports",
+      "method": "GET",
+      "path": "/v4/sports",
+      "status": 200,
+      "quota": {
+        "requestsUsed": "0",
+        "requestsRemaining": "500",
+        "requestsLast": "0"
+      }
+    },
+    {
+      "name": "events:soccer_fifa_world_cup",
+      "method": "GET",
+      "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z",
+      "status": 200,
+      "quota": {
+        "requestsUsed": "0",
+        "requestsRemaining": "500",
+        "requestsLast": "0"
+      }
+    },
+    {
+      "name": "event-markets",
+      "method": "GET",
+      "path": "/v4/sports/soccer_fifa_world_cup/events/200d9cd5eda092c7eb778cc104cd2fd2/markets?regions=us&dateFormat=iso",
+      "status": 200,
+      "quota": {
+        "requestsUsed": "1",
+        "requestsRemaining": "499",
+        "requestsLast": "1"
+      }
+    },
+    {
+      "name": "event-odds",
+      "method": "GET",
+      "path": "/v4/sports/soccer_fifa_world_cup/events/200d9cd5eda092c7eb778cc104cd2fd2/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso",
+      "status": 200,
+      "quota": {
+        "requestsUsed": "7",
+        "requestsRemaining": "493",
+        "requestsLast": "6"
+      }
+    }
+  ],
+  "normalized": {
+    "marketCount": 10,
+    "outcomeCount": 22,
+    "marketTypes": [
+      "match_winner_1x2",
+      "spread",
+      "total_goals"
+    ],
+    "lineValues": [
+      0.5,
+      2,
+      0.25,
+      0.75,
+      1,
+      1.75,
+      2.25,
+      2.5
+    ]
+  },
+  "seed": {
+    "event": {
+      "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
+      "slug": "odds-api-single-soccer-test",
+      "title": "Switzerland vs. Argentina"
+    },
+    "marketCount": 10,
+    "outcomeCount": 22,
+    "markets": [
+      {
+        "id": "748a4190-b926-4d65-8074-e69df7eb54b2",
+        "slug": "odds-api-single-soccer-test-h2h-84d970da2c",
+        "title": "Switzerland vs. Argentina: Regulation Time Winner",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Time Winner",
+        "line": null,
+        "outcomeCount": 3
+      },
+      {
+        "id": "29346e58-158a-4260-953d-259c98fa24ff",
+        "slug": "odds-api-single-soccer-test-spreads-02da927e1b",
+        "title": "Switzerland vs. Argentina: Spread +0.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "0.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "54049f4e-3965-488f-a64a-18a7beecd724",
+        "slug": "odds-api-single-soccer-test-totals-7130f44bce",
+        "title": "Switzerland vs. Argentina: Total Goals 2",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "2",
+        "outcomeCount": 2
+      },
+      {
+        "id": "8a3ac122-bf88-48ef-aad0-a94d612b64f2",
+        "slug": "odds-api-single-soccer-test-alternate-spreads-8e0e8f8fa8",
+        "title": "Switzerland vs. Argentina: Spread 0.25",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "0.25",
+        "outcomeCount": 2
+      },
+      {
+        "id": "b21af47b-14bd-4d5a-b147-094e2cef5c9f",
+        "slug": "odds-api-single-soccer-test-alternate-spreads-1c7d4e9cdd",
+        "title": "Switzerland vs. Argentina: Spread 0.75",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "0.75",
+        "outcomeCount": 2
+      },
+      {
+        "id": "e05c670a-a98b-4075-bb24-ad7da9106e59",
+        "slug": "odds-api-single-soccer-test-alternate-spreads-ff4e4640b5",
+        "title": "Switzerland vs. Argentina: Spread 1",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "1",
+        "outcomeCount": 2
+      },
+      {
+        "id": "ce29edfc-b049-4895-8d88-5d5a08f4b132",
+        "slug": "odds-api-single-soccer-test-alternate-totals-7e2d38ccbc",
+        "title": "Switzerland vs. Argentina: Total Goals 1.75",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "1.75",
+        "outcomeCount": 2
+      },
+      {
+        "id": "d2e128af-7e7c-4888-8c3a-1a6c0f827e3c",
+        "slug": "odds-api-single-soccer-test-alternate-totals-fabec35f90",
+        "title": "Switzerland vs. Argentina: Total Goals 2.25",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "2.25",
+        "outcomeCount": 2
+      },
+      {
+        "id": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
+        "slug": "odds-api-single-soccer-test-alternate-totals-38ad59c0f2",
+        "title": "Switzerland vs. Argentina: Total Goals 2.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "2.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "00b3d2c5-50c7-465e-9ffa-6428886a8e25",
+        "slug": "odds-api-single-soccer-test-h2h-3-way-1e33fc4624",
+        "title": "Switzerland vs. Argentina: Regulation Time Winner",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Time Winner",
+        "line": null,
+        "outcomeCount": 3
+      }
+    ]
+  },
+  "mobile": {
+    "homeVisible": true,
+    "detailVisible": true,
+    "sportsbookMarketCount": 10,
+    "tradableOutcomeCount": 22,
+    "routeMode": "database-proof",
+    "eventSlug": "odds-api-single-soccer-test",
+    "title": "Switzerland vs. Argentina",
+    "marketTypes": [
+      "match_winner_1x2",
+      "spread",
+      "total_goals"
+    ]
+  }
+}

@@ -1,5 +1,27 @@
 # Mobile Data Contract Gaps
 
+## Cycle ODDSAPI1 - The Odds API Single-Event Temporary Provider
+
+- New temporary provider contract:
+  - `providerSource = "the-odds-api"`
+  - `referenceSource = "sportsbook-odds"`
+  - `externalEventId = The Odds API event id`
+  - `externalMarketId = event id + bookmaker key + market key + line`
+  - `conditionId = deterministic local odds-api hash`
+  - `referenceMetadata.lineProviderIdentity.providerSource = "the_odds_api"`
+  - outcome `referenceTokenId = deterministic local odds-api token`
+- Backend-supported fields now verified in route proof:
+  - Home and Event Detail expose `sourceBreakdown.sportsbook-odds`
+  - Regulation winner reports `provider-backed`
+  - Spread/total line families report `partial-provider-backed`
+  - Ticket selection preserves `referenceSource`, `externalSlug`, `externalMarketId`, `conditionId`, `referenceTokenId`, `line`, and `period`
+  - Portfolio/history preserve the same selected market/outcome/line identity after a fake-token fill
+- Remaining gaps:
+  - This is not Polymarket-backed data and must not close `dod-provider-polymarket-parity`.
+  - The integration is command-driven, not a user-triggered refresh route.
+  - Team totals, BTTS, draw-no-bet, first-half, and correct-score are only imported if available and selected within the quota budget.
+  - Real-time odds refresh, provider settlement, and production provider lifecycle are still future work.
+
 ## Cycle PROVIDERSCANDEPTH - Match/Line Provider Scan Depth
 
 - No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or runtime provider ingestion contract changed.
