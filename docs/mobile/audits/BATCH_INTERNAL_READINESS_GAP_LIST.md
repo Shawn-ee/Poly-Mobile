@@ -1,6 +1,6 @@
 # Batch Internal Readiness Gap List
 
-Generated: 2026-07-11T13:52:41.062Z
+Generated: 2026-07-11T14:03:14.074Z
 
 Source summary: `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`
 
@@ -26,12 +26,13 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Mobile typecheck: yes
 - S23 Local MVP proof ready: yes
 - S23 proof max age: 24 hours
-- S23 proof next stale: totals-filled-buy-history in 15.33 hours (2026-07-12T05:12:16.5919824Z)
+- S23 proof next stale: totals-filled-buy-history in 15.15 hours (2026-07-12T05:12:16.5919824Z)
 - S23 startup contract ready: yes
 - S23 Google consent path ready: yes (lan-callback-preflight)
 - Provider-backed exchange ready: no
-- Provider discovery mode: refresh
+- Provider discovery mode: cached
 - Cached provider evidence fresh: yes (max age 24 hours)
+- Cached provider evidence next stale: worldcup-match-scan in 23.79 hours (2026-07-12T13:50:41.6680000Z)
 - P0 blocker count: 0
 - P1 blocker count: 4
 - P2 blocker count: 0
@@ -45,7 +46,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Local MVP match breadth ready: yes (4 events)
 - Provider books unavailable or closed: yes
 - Provider snapshot refresh succeeded: yes (6 updated)
-- Cached provider evidence: provider-snapshot-refresh:fresh(0.04h), internal-exchange-readiness:fresh(0.04h), provider-visible-tradable-flow:fresh(0.04h), worldcup-match-scan:fresh(0.03h), provider-line-scan:fresh(0h)
+- Cached provider evidence: provider-snapshot-refresh:fresh(0.22h), internal-exchange-readiness:fresh(0.21h), provider-visible-tradable-flow:fresh(0.21h), worldcup-match-scan:fresh(0.21h), provider-line-scan:fresh(0.18h)
 - Provider MVP tradable flow ready: no (provider_mvp_match_snapshot_not_mm_safe)
 - World Cup team-match provider events scanned: 422 (0 open/upcoming, 422 closed/ended)
 - Generic non-soccer World Cup matches excluded: 0
