@@ -11,6 +11,8 @@ describe("Google auth runtime preflight contract", () => {
     expect(source).toContain("GOOGLE_CLIENT_ID");
     expect(source).toContain("GOOGLE_CLIENT_SECRET");
     expect(source).toContain("NEXTAUTH_URL");
+    expect(source).toContain("NextAuthUrl");
+    expect(source).toContain("NextAuthUrl.Trim().TrimEnd");
     expect(source).toContain("/api/auth/google/start");
     expect(source).toContain("/api/auth/google/callback");
     expect(source).toContain("AllowAutoRedirect = $false");

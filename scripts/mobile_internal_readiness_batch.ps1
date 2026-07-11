@@ -167,7 +167,7 @@ $environmentHealth = Get-EnvironmentHealthSnapshot
 $steps = New-Object System.Collections.Generic.List[object]
 $steps.Add((Invoke-BatchCommand -Name "backend-readiness" -Command "powershell -ExecutionPolicy Bypass -File scripts\mobile_backend_readiness.ps1 -SummaryPath `"$backendRepoPath`"" -OutputPath $backendPath))
 $steps.Add((Invoke-BatchCommand -Name "credential-readiness" -Command "powershell -ExecutionPolicy Bypass -File scripts\mobile_credential_readiness.ps1 -SummaryPath `"$credentialRepoPath`"" -OutputPath $credentialPath -AllowNonZero))
-$steps.Add((Invoke-BatchCommand -Name "google-auth-runtime-preflight" -Command "powershell -ExecutionPolicy Bypass -File mobile\scripts\google-auth-runtime-preflight.ps1 -SummaryPath `"$googleAuthRepoPath`"" -OutputPath $googleAuthPath -AllowNonZero))
+$steps.Add((Invoke-BatchCommand -Name "google-auth-runtime-preflight" -Command "powershell -ExecutionPolicy Bypass -File mobile\scripts\google-auth-runtime-preflight.ps1 -BackendAuthBase `"$BackendBaseUrl`" -NextAuthUrl `"$BackendBaseUrl`" -SummaryPath `"$googleAuthRepoPath`"" -OutputPath $googleAuthPath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "current-state" -Command "npx.cmd tsx scripts/inspect_mobile_mvp_current_state.ts --baseUrl=$BackendBaseUrl --summaryPath=`"$currentStateRepoPath`" --cycle=$Cycle" -OutputPath $currentStatePath))
 $steps.Add((Invoke-BatchCommand -Name "internal-exchange-readiness" -Command "npm.cmd run poly:internal-exchange-readiness -- --summaryPath `"$exchangeRepoPath`"" -OutputPath $exchangePath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "worldcup-match-scan" -Command "npm.cmd run inspect:polymarket-worldcup-matches -- --output `"$matchScanRepoPath`"" -OutputPath $matchScanPath))
@@ -192,7 +192,14 @@ $serverModeApiKeySource = if ($credential) { [string]$credential.apiKeySource } 
 $ambientServerModeReady = [bool]($credential -and $credential.readyForServerBackedSamsungProof -and ($serverModeApiKeySource -eq "environment"))
 $localRuntimeServerModeReady = [bool]($credential -and $credential.readyForServerBackedSamsungProof -and ($serverModeApiKeySource -eq "local-runtime-env"))
 $googleAuthRuntimeReady = [bool]($googleAuth -and $googleAuth.readyForRuntimeStart)
-$googleAuthFailedChecks = if ($googleAuth -and $googleAuth.failedChecks) { @($googleAuth.failedChecks) } else { @() }
+$googleAuthFailedChecks = New-Object System.Collections.Generic.List[string]
+if ($googleAuth -and $googleAuth.failedChecks) {
+  foreach ($failedCheck in @($googleAuth.failedChecks)) {
+    if (-not [string]::IsNullOrWhiteSpace([string]$failedCheck)) {
+      $googleAuthFailedChecks.Add([string]$failedCheck) | Out-Null
+    }
+  }
+}
 
 $p0Blockers = @()
 if (-not $backendReady) { $p0Blockers += "backend_or_local_database_not_ready" }
@@ -210,7 +217,7 @@ if ($usableMatchCount -lt 1) { $p1Blockers += "no_usable_polymarket_worldcup_tea
 if ($attachReadyLineCount -lt 1) { $p1Blockers += "no_attach_ready_polymarket_worldcup_line_markets" }
 if ($credential -and -not $credential.readyForServerBackedSamsungProof) { $p1Blockers += "manual_server_mode_needs_generated_mobile_api_key" }
 if ($googleAuth -and -not $googleAuthRuntimeReady) {
-  if ($googleAuthFailedChecks -contains "Google redirect_uri matches NEXTAUTH_URL callback") {
+  if ($googleAuthFailedChecks.Contains("Google redirect_uri matches NEXTAUTH_URL callback")) {
     $p1Blockers += "google_redirect_uri_mismatch"
   } else {
     $p1Blockers += "google_auth_runtime_preflight_has_warnings"
@@ -241,7 +248,7 @@ $summary = [ordered]@{
     serverModeApiKeySource = $serverModeApiKeySource
     localRuntimeEnvReadyForManualServerMode = $localRuntimeServerModeReady
     googleAuthRuntimeReady = $googleAuthRuntimeReady
-    googleAuthFailedChecks = [object[]]$googleAuthFailedChecks
+    googleAuthFailedChecks = $googleAuthFailedChecks.ToArray()
     mobileVisibleEventCount = if ($exchange) { $exchange.mobileExposure.mobileVisibleEventCount } else { $null }
     providerVisibleMarketCount = if ($exchange) { $exchange.providerMarkets.mobileVisibleCount } else { $null }
     providerLocalMmReadyMarketCount = if ($exchange) { $exchange.providerMarkets.localMmReadyCount } else { $null }

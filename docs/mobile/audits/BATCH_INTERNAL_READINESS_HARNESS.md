@@ -105,6 +105,8 @@ The batch command runs the non-strict preflight and writes `google-auth-runtime-
 
 The Google summary includes URL-only diagnostics, not Google credentials: `expectedCallback`, `observedGoogleRedirectUri`, `redirectUriOriginMatches`, `redirectUriPathMatches`, and `redirectUriMatchesExpected`. Use those fields to set `NEXTAUTH_URL` and the Google Cloud Authorized redirect URI to the same callback.
 
+For the consolidated batch, the Google preflight is pinned to the same `BackendBaseUrl` the batch is testing. This prevents a stale local `.env` `NEXTAUTH_URL` from causing a false mismatch while a correctly configured internal-beta backend is already running on another port.
+
 ## Why This Exists
 
 The loop should not keep reopening small source-label or one-screen proof cycles just to rediscover the same provider-state facts. This batch harness gives the Lead Agent one current-state command before choosing the next meaningful milestone.

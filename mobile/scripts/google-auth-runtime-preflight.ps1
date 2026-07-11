@@ -1,6 +1,7 @@
 param(
   [string]$BackendAuthBase = "",
   [string]$MobileReturnUrl = "",
+  [string]$NextAuthUrl = "",
   [string]$SummaryPath = "",
   [switch]$RequireConfigured,
   [switch]$RequirePhysicalDeviceCallback,
@@ -109,7 +110,11 @@ $resolvedMobileReturnUrl = if ($MobileReturnUrl) {
 } else {
   Resolve-ConfigValue $mobileEnv $rootEnv @("EXPO_PUBLIC_GOOGLE_AUTH_RETURN_URL") "holiwyn://auth/google"
 }
-$nextAuthUrl = Resolve-ConfigValue $mobileEnv $rootEnv @("NEXTAUTH_URL") ""
+$nextAuthUrl = if ($NextAuthUrl.Trim()) {
+  $NextAuthUrl.Trim().TrimEnd("/")
+} else {
+  Resolve-ConfigValue $mobileEnv $rootEnv @("NEXTAUTH_URL") ""
+}
 $googleClientId = Resolve-ConfigValue $mobileEnv $rootEnv @("GOOGLE_CLIENT_ID") ""
 $googleClientSecret = Resolve-ConfigValue $mobileEnv $rootEnv @("GOOGLE_CLIENT_SECRET") ""
 $expectedCallback = if ($nextAuthUrl) { "$($nextAuthUrl.TrimEnd('/'))/api/auth/google/callback" } else { "" }

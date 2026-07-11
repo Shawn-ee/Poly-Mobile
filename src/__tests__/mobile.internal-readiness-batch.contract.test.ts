@@ -28,6 +28,8 @@ describe("mobile internal readiness batch harness", () => {
 
     expect(source).toContain("google-auth-runtime-preflight.ps1");
     expect(source).toContain("google-auth-runtime-preflight.json");
+    expect(source).toContain('-BackendAuthBase `"$BackendBaseUrl`"');
+    expect(source).toContain('-NextAuthUrl `"$BackendBaseUrl`"');
     expect(source).toContain("inspect_mobile_mvp_current_state.ts");
     expect(source).toContain("poly:internal-exchange-readiness");
     expect(source).toContain("inspect:polymarket-worldcup-matches");

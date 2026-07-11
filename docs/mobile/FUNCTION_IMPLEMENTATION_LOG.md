@@ -2,6 +2,15 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Batch Readiness - Google Preflight Backend Origin Alignment
+
+- Feature/page worked on: Portfolio/Account Google sign-in readiness harness.
+- Frontend components touched: none.
+- Important functions/services touched: `mobile/scripts/google-auth-runtime-preflight.ps1` accepts `-NextAuthUrl`; `scripts/mobile_internal_readiness_batch.ps1` passes the batch `BackendBaseUrl` as both auth base and expected callback origin.
+- User interactions supported: none changed directly. The consolidated batch now checks the Google callback URL emitted by the actual internal-beta backend under test instead of comparing it to a stale `.env` origin.
+- State transitions: none changed in mobile runtime, backend OAuth routes, SecureStore persistence, logout, or trading state.
+- Known limitations: this closes the local batch false-mismatch path. Real S23 Google consent still requires the emitted callback URL to be registered in Google Cloud and reachable from the phone browser.
+
 ## Batch Readiness - Google Redirect Diagnostic Fields
 
 - Feature/page worked on: Portfolio/Account Google sign-in readiness diagnostics.
