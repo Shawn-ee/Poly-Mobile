@@ -30,6 +30,7 @@ The gap list is generated from the latest summary by `scripts/write_mobile_inter
 - Google auth runtime preflight without printing Google credentials.
 - Google physical-device callback preflight without printing Google credentials.
 - Google LAN callback preflight for S23/manual consent setup without printing Google credentials.
+- S23 internal MVP startup contract in no-start mode, proving the one-command startup emits matching LAN mobile/auth callback origins without launching backend, Expo, bots, or snapshot watch.
 - Local MVP match breadth seeding for multiple Home/Live match cards while provider books are unavailable.
 - Current MVP route shape for `mobileMvpMatches=1`.
 - Provider-backed Regulation Winner plus contract-shaped line-market state.
@@ -47,6 +48,7 @@ The gap list is generated from the latest summary by `scripts/write_mobile_inter
 P0 blockers fail the command:
 
 - backend or local database unavailable
+- S23 Local MVP startup command contract unavailable or mismatched
 - current Local MVP route unavailable or not MVP-ready
 - latest committed S23 Local MVP device proof summaries are missing, failed, from the wrong device, or reference missing artifacts
 - root typecheck, Jest CI suite, or mobile typecheck fails

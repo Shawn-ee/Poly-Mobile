@@ -9,6 +9,7 @@ param(
   [string]$ApiBaseUrl = "",
   [string]$AuthBaseUrl = "",
   [string]$MobileApiKey = $env:EXPO_PUBLIC_API_KEY,
+  [string]$SummaryPath = "",
   [switch]$CreateMobileDevCredential,
   [switch]$RestartBackend,
   [switch]$RestartExpo,
@@ -326,6 +327,18 @@ $summary = [pscustomobject]@{
   runtimeDir = $RuntimeDir
 }
 
-$summaryPath = Join-Path $RuntimeDir "latest-summary.json"
-$summary | ConvertTo-Json -Depth 6 | Set-Content -Path $summaryPath -Encoding UTF8
+$runtimeSummaryPath = Join-Path $RuntimeDir "latest-summary.json"
+$summary | ConvertTo-Json -Depth 6 | Set-Content -Path $runtimeSummaryPath -Encoding UTF8
+if ($SummaryPath.Trim()) {
+  $resolvedSummaryPath = if ([System.IO.Path]::IsPathRooted($SummaryPath)) {
+    $SummaryPath
+  } else {
+    Join-Path $AppRoot $SummaryPath
+  }
+  $summaryDirectory = Split-Path -Parent $resolvedSummaryPath
+  if ($summaryDirectory -and -not (Test-Path -LiteralPath $summaryDirectory)) {
+    New-Item -ItemType Directory -Path $summaryDirectory -Force | Out-Null
+  }
+  $summary | ConvertTo-Json -Depth 6 | Set-Content -Path $resolvedSummaryPath -Encoding UTF8
+}
 $summary | ConvertTo-Json -Depth 6

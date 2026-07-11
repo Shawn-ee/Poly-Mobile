@@ -243,6 +243,7 @@ $credentialPath = Join-Path $ResolvedOutputDir "mobile-credential-readiness.json
 $googleAuthPath = Join-Path $ResolvedOutputDir "google-auth-runtime-preflight.json"
 $googlePhysicalPath = Join-Path $ResolvedOutputDir "google-auth-physical-callback-preflight.json"
 $googleLanPhysicalPath = Join-Path $ResolvedOutputDir "google-auth-lan-callback-preflight.json"
+$internalMvpStartupPath = Join-Path $ResolvedOutputDir "internal-mvp-startup-contract.json"
 $localMatchBreadthPath = Join-Path $ResolvedOutputDir "mobile-mvp-local-match-breadth.json"
 $currentStatePath = Join-Path $ResolvedOutputDir "mobile-current-state-inspection.json"
 $providerSnapshotRefreshPath = Join-Path $ResolvedOutputDir "provider-snapshot-refresh.json"
@@ -261,6 +262,7 @@ $credentialRepoPath = ConvertTo-RepoPath $credentialPath
 $googleAuthRepoPath = ConvertTo-RepoPath $googleAuthPath
 $googlePhysicalRepoPath = ConvertTo-RepoPath $googlePhysicalPath
 $googleLanPhysicalRepoPath = ConvertTo-RepoPath $googleLanPhysicalPath
+$internalMvpStartupRepoPath = ConvertTo-RepoPath $internalMvpStartupPath
 $localMatchBreadthRepoPath = ConvertTo-RepoPath $localMatchBreadthPath
 $currentStateRepoPath = ConvertTo-RepoPath $currentStatePath
 $providerSnapshotRefreshRepoPath = ConvertTo-RepoPath $providerSnapshotRefreshPath
@@ -280,6 +282,7 @@ $steps.Add((Invoke-BatchCommand -Name "credential-readiness" -Command "powershel
 $steps.Add((Invoke-BatchCommand -Name "google-auth-runtime-preflight" -Command "powershell -ExecutionPolicy Bypass -File mobile\scripts\google-auth-runtime-preflight.ps1 -BackendAuthBase `"$BackendBaseUrl`" -NextAuthUrl `"$BackendBaseUrl`" -SummaryPath `"$googleAuthRepoPath`"" -OutputPath $googleAuthPath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "google-auth-physical-callback-preflight" -Command "powershell -ExecutionPolicy Bypass -File mobile\scripts\google-auth-runtime-preflight.ps1 -BackendAuthBase `"$BackendBaseUrl`" -NextAuthUrl `"$BackendBaseUrl`" -RequirePhysicalDeviceCallback -SummaryPath `"$googlePhysicalRepoPath`"" -OutputPath $googlePhysicalPath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "google-auth-lan-callback-preflight" -Command "powershell -ExecutionPolicy Bypass -File scripts\mobile_google_lan_auth_preflight.ps1 -BackendPort 3002 -SummaryPath `"$googleLanPhysicalRepoPath`"" -OutputPath $googleLanPhysicalPath -AllowNonZero))
+$steps.Add((Invoke-BatchCommand -Name "internal-mvp-startup-contract" -Command "powershell -ExecutionPolicy Bypass -File scripts\start_poly_mobile_rehearsal.ps1 -SkipBackend -SkipSnapshotWatch -SkipBots -SkipExpo -SummaryPath `"$internalMvpStartupRepoPath`"" -OutputPath $internalMvpStartupPath))
 $steps.Add((Invoke-BatchCommand -Name "local-match-breadth" -Command "npx.cmd tsx scripts/seed_mobile_mvp_local_match_breadth.ts --baseUrl=$BackendBaseUrl --summaryPath=`"$localMatchBreadthRepoPath`"" -OutputPath $localMatchBreadthPath))
 $steps.Add((Invoke-BatchCommand -Name "current-state" -Command "npx.cmd tsx scripts/inspect_mobile_mvp_current_state.ts --baseUrl=$BackendBaseUrl --summaryPath=`"$currentStateRepoPath`" --cycle=$Cycle" -OutputPath $currentStatePath))
 $steps.Add((Invoke-BatchCommand -Name "provider-snapshot-refresh" -Command "npm.cmd run reference:snapshot-refresh -- --once true --eventSlug argentina-vs-egypt --summaryPath `"$providerSnapshotRefreshRepoPath`"" -OutputPath $providerSnapshotRefreshPath -AllowNonZero))
@@ -296,6 +299,7 @@ $credential = Read-JsonFile $credentialPath
 $googleAuth = Read-JsonFile $googleAuthPath
 $googlePhysical = Read-JsonFile $googlePhysicalPath
 $googleLanPhysical = Read-JsonFile $googleLanPhysicalPath
+$internalMvpStartup = Read-JsonFile $internalMvpStartupPath
 $localMatchBreadth = Read-JsonFile $localMatchBreadthPath
 $currentState = Read-JsonFile $currentStatePath
 $providerSnapshotRefresh = Read-JsonFile $providerSnapshotRefreshPath
@@ -358,9 +362,20 @@ if ($googleLanPhysical -and $googleLanPhysical.failedChecks) {
     }
   }
 }
+$internalMvpStartupReady = [bool](
+  $internalMvpStartup -and
+  $internalMvpStartup.mobileApiBaseUrl -and
+  $internalMvpStartup.backendAuthBaseUrl -and
+  $internalMvpStartup.expectedGoogleCallback -and
+  ([string]$internalMvpStartup.mobileApiBaseUrl).TrimEnd("/") -eq ([string]$internalMvpStartup.backendAuthBaseUrl).TrimEnd("/") -and
+  ([string]$internalMvpStartup.expectedGoogleCallback) -eq "$(([string]$internalMvpStartup.backendAuthBaseUrl).TrimEnd('/'))/api/auth/google/callback" -and
+  ([string]$internalMvpStartup.mobileApiKey) -eq "missing" -and
+  @($internalMvpStartup.started).Count -eq 0
+)
 
 $p0Blockers = @()
 if (-not $backendReady) { $p0Blockers += "backend_or_local_database_not_ready" }
+if (-not $internalMvpStartupReady) { $p0Blockers += "internal_mvp_startup_contract_not_ready" }
 if (-not $localMatchBreadthReady) { $p0Blockers += "local_mvp_match_breadth_not_ready" }
 if (-not $localMvpReady) { $p0Blockers += "local_mvp_route_not_ready" }
 if (-not $s23LocalMvpDeviceProofReady) { $p0Blockers += "s23_local_mvp_device_proof_not_ready" }
@@ -455,6 +470,10 @@ $summary = [ordered]@{
     googlePhysicalFailedChecks = $googlePhysicalFailedChecks.ToArray()
     googleLanCallbackReady = $googleLanCallbackReady
     googleLanFailedChecks = $googleLanFailedChecks.ToArray()
+    internalMvpStartupReady = $internalMvpStartupReady
+    internalMvpStartupMobileApiBaseUrl = if ($internalMvpStartup) { $internalMvpStartup.mobileApiBaseUrl } else { $null }
+    internalMvpStartupBackendAuthBaseUrl = if ($internalMvpStartup) { $internalMvpStartup.backendAuthBaseUrl } else { $null }
+    internalMvpStartupExpectedGoogleCallback = if ($internalMvpStartup) { $internalMvpStartup.expectedGoogleCallback } else { $null }
     localMatchBreadthReady = $localMatchBreadthReady
     localMatchBreadthEventCount = if ($localMatchBreadth) { $localMatchBreadth.after.eventCount } else { $null }
     s23LocalMvpDeviceProofReady = $s23LocalMvpDeviceProofReady

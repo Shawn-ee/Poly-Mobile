@@ -2,6 +2,19 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle STARTUPBATCH - S23 Startup Contract Batch Gate
+
+- Feature/page worked on: Local MVP S23 startup readiness batch gate.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/start_poly_mobile_rehearsal.ps1`
+  - `scripts/mobile_internal_readiness_batch.ps1`
+  - `scripts/write_mobile_internal_readiness_gap_list.ts`
+- User interactions supported: unchanged in-app. The internal testing path is safer because the batch now proves the one-command S23 startup emits matching mobile API/auth origins and an exact Google callback URL without requiring a visible UI smoke.
+- State transitions: no app/backend runtime state is changed by the new batch proof. The proof runs with backend, Expo, snapshot watch, and bots skipped and expects no started processes.
+- Proof: full `npm run mobile:internal-readiness-batch` passed. The batch produced `docs/mobile/harness/batch-internal-readiness-latest/internal-mvp-startup-contract.json` with matching `mobileApiBaseUrl`, `backendAuthBaseUrl`, and `expectedGoogleCallback`, no started processes, no token, and `internalMvpStartupReady=true`.
+- Known limitations: this does not perform real Google consent and does not clear provider-backed Polymarket P1 data gaps.
+
 ## Cycle S23LANSTART - S23 Internal MVP LAN Auth Startup
 
 - Feature/page worked on: Local MVP startup for S23 manual testing and Portfolio/Account Google entry readiness.

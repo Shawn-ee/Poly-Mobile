@@ -1,6 +1,6 @@
 # Batch Internal Readiness Gap List
 
-Generated: 2026-07-11T10:56:42.088Z
+Generated: 2026-07-11T11:14:38.718Z
 
 Source summary: `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`
 
@@ -25,6 +25,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Jest CI: yes
 - Mobile typecheck: yes
 - S23 Local MVP proof ready: yes
+- S23 startup contract ready: yes
 - Provider-backed exchange ready: no
 - P0 blocker count: 0
 - P1 blocker count: 4
@@ -42,6 +43,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Provider MVP tradable flow ready: no (provider_mvp_match_snapshot_not_mm_safe)
 - Usable World Cup team-match provider events: 0
 - Attach-ready provider line candidates: 0
+- Internal MVP startup callback: `http://172.16.200.14:3002/api/auth/google/callback`
 
 ## Open Issues
 
@@ -57,6 +59,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 | Gate | Status | Evidence |
 | --- | --- | --- |
 | Backend and DB | yes | `mobile-backend-readiness.json`; Docker health snapshot. |
+| S23 startup contract | yes | `internal-mvp-startup-contract.json`. |
 | Local MVP route | yes | `mobile-current-state-inspection.json`. |
 | Local match breadth | yes | `mobile-mvp-local-match-breadth.json`. |
 | S23 full MVP proof | yes | XG filled buy/history, XH open-order cancel, XI cashout/sell summaries. |

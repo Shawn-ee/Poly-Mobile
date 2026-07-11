@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T10:56:21.809Z",
+  "generatedAt": "2026-07-11T11:14:19.345Z",
   "source": "gamma-api.polymarket.com/events",
   "readOnly": true,
   "scope": "world-cup-match-only-provider-breadth",
@@ -26,7 +26,7 @@
     "matchEventCount": 4,
     "usableMatchEventCount": 0,
     "futuresEventCount": 35,
-    "nonWorldCupOrPropUsableCount": 125,
+    "nonWorldCupOrPropUsableCount": 126,
     "pass": false
   },
   "usableMatchEvents": [],
@@ -511,9 +511,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.072,
+          "bestBid": 0.075,
           "bestAsk": 0.078,
-          "spread": 0.006,
+          "spread": 0.003,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -651,34 +651,35 @@
         }
       },
       {
-        "slug": "world-cup-golden-glove-winner-20260603195306910",
-        "title": "World Cup: Golden Glove Winner",
+        "slug": "world-cup-fair-play-award-winner-20260603201520240",
+        "title": "World Cup: Fair Play Award Winner",
         "tags": [
           "soccer",
           "sports",
           "world-cup",
           "fifa-world-cup",
-          "2026-fifa-world-cup"
+          "2026-fifa-world-cup",
+          "world-cup-awards"
         ],
         "matchLike": false,
         "worldCupRelevant": true,
-        "playerPropLike": true,
+        "playerPropLike": false,
         "futuresLike": true,
-        "marketCount": 41,
+        "marketCount": 54,
         "usableMarketCount": 6,
-        "acceptingOrderMarketCount": 41,
+        "acceptingOrderMarketCount": 54,
         "sampleUsableMarket": {
-          "slug": "will-mike-maignan-win-the-golden-glove-at-the-2026-fifa-world-cup-20260603195307476",
-          "question": "Will Mike Maignan win the Golden Glove at the 2026 FIFA World Cup?",
+          "slug": "will-cape-verde-win-the-fair-play-award-for-the-2026-fifa-world-cup-20260603201521197",
+          "question": "Will Cape Verde win the Fair Play Award for the 2026 FIFA World Cup?",
           "acceptingOrders": true,
           "active": true,
           "closed": false,
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.31,
-          "bestAsk": 0.33,
-          "spread": 0.02,
+          "bestBid": 0.019,
+          "bestAsk": 0.028,
+          "spread": 0.009,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -977,39 +978,43 @@
           "outcomeCount": 2,
           "tokenCount": 2,
           "bestBid": 0.046,
-          "bestAsk": 0.073,
-          "spread": 0.027,
+          "bestAsk": 0.075,
+          "spread": 0.029,
           "usableBook": true,
           "rejectionReasons": []
         }
       },
       {
-        "slug": "2026-mens-us-open-winner-tennis",
-        "title": "2026 Men’s US Open Winner (Tennis)",
+        "slug": "ncaa-football-2026-national-champion",
+        "title": "NCAA Football: 2027 National Champion",
         "tags": [
+          "college-football-playoffs",
+          "national-championship",
           "sports",
-          "atp",
-          "tennis"
+          "football",
+          "ncaa",
+          "college-football",
+          "cfb"
         ],
         "matchLike": false,
         "worldCupRelevant": false,
-        "playerPropLike": true,
-        "futuresLike": true,
-        "marketCount": 49,
+        "playerPropLike": false,
+        "futuresLike": false,
+        "marketCount": 109,
         "usableMarketCount": 13,
-        "acceptingOrderMarketCount": 49,
+        "acceptingOrderMarketCount": 109,
         "sampleUsableMarket": {
-          "slug": "will-jannik-sinner-win-the-2026-mens-us-open",
-          "question": "Will Jannik Sinner win the 2026 Men's US Open?",
+          "slug": "will-ohio-state-buckeyes-win-the-2027-cfp-national-championship",
+          "question": "Will Ohio State Buckeyes win the 2027 CFP National Championship?",
           "acceptingOrders": true,
           "active": true,
           "closed": false,
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.46,
-          "bestAsk": 0.48,
-          "spread": 0.02,
+          "bestBid": 0.11,
+          "bestAsk": 0.12,
+          "spread": 0.01,
           "usableBook": true,
           "rejectionReasons": []
         }

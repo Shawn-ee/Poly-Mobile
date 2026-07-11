@@ -1,5 +1,5 @@
 ﻿{
-    "generatedAt":  "2026-07-11T10:56:40.9441122Z",
+    "generatedAt":  "2026-07-11T11:14:36.5010189Z",
     "scope":  "mobile-internal-readiness-batch",
     "cycle":  "BATCHREADINESS",
     "backendBaseUrl":  "http://127.0.0.1:3002",
@@ -54,6 +54,16 @@
                       "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.json",
                       "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.stdout.log",
                       "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/google-auth-lan-callback-preflight.stderr.log",
+                      "producedJson":  true
+                  },
+                  {
+                      "name":  "internal-mvp-startup-contract",
+                      "command":  "powershell -ExecutionPolicy Bypass -File scripts\\start_poly_mobile_rehearsal.ps1 -SkipBackend -SkipSnapshotWatch -SkipBots -SkipExpo -SummaryPath \"docs/mobile/harness/batch-internal-readiness-latest/internal-mvp-startup-contract.json\"",
+                      "exitCode":  0,
+                      "allowedNonZero":  false,
+                      "outputPath":  "docs/mobile/harness/batch-internal-readiness-latest/internal-mvp-startup-contract.json",
+                      "stdoutPath":  "docs/mobile/harness/batch-internal-readiness-latest/internal-mvp-startup-contract.stdout.log",
+                      "stderrPath":  "docs/mobile/harness/batch-internal-readiness-latest/internal-mvp-startup-contract.stderr.log",
                       "producedJson":  true
                   },
                   {
@@ -212,6 +222,10 @@
                       "googleLanFailedChecks":  [
 
                                                 ],
+                      "internalMvpStartupReady":  true,
+                      "internalMvpStartupMobileApiBaseUrl":  "http://172.16.200.14:3002",
+                      "internalMvpStartupBackendAuthBaseUrl":  "http://172.16.200.14:3002",
+                      "internalMvpStartupExpectedGoogleCallback":  "http://172.16.200.14:3002/api/auth/google/callback",
                       "localMatchBreadthReady":  true,
                       "localMatchBreadthEventCount":  4,
                       "s23LocalMvpDeviceProofReady":  true,

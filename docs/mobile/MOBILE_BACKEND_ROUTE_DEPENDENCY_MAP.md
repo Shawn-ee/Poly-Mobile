@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle STARTUPBATCH - S23 Startup Contract Batch Gate
+
+Cycle STARTUPBATCH changes readiness harness verification only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Internal MVP startup contract gate | Local command `npm run mobile:internal-readiness-batch`; no-start wrapper `scripts/start_poly_mobile_rehearsal.ps1 -SkipBackend -SkipSnapshotWatch -SkipBots -SkipExpo` | Local proof command | None; intentionally no credential creation and no service start | None | `internal-mvp-startup-contract.json` fields `mobileApiBaseUrl`, `backendAuthBaseUrl`, `expectedGoogleCallback`, `mobileApiKey`, `started`, and skipped process list | No database access or writes in proof mode | None; this is a startup contract check, not a mobile mock mode | None for startup. Real Google consent still requires the reported callback URL to be registered in Google Cloud. |
+
 ## Cycle S23LANSTART - S23 Internal MVP LAN Auth Startup
 
 Cycle S23LANSTART changes startup/runtime environment wiring only. It does not add or change backend route handlers, Prisma schema, order logic, provider mapping, mobile UI, order book UI, chat, live stats, social, deposit, or withdrawal behavior.

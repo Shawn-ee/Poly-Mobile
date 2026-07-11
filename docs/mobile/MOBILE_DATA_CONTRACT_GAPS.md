@@ -1,5 +1,17 @@
 # Mobile Data Contract Gaps
 
+## Cycle STARTUPBATCH - S23 Startup Contract Batch Gate
+
+- No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider contract changed.
+- The batch summary contract now includes:
+  - `readiness.internalMvpStartupReady`
+  - `readiness.internalMvpStartupMobileApiBaseUrl`
+  - `readiness.internalMvpStartupBackendAuthBaseUrl`
+  - `readiness.internalMvpStartupExpectedGoogleCallback`
+- The batch writes `internal-mvp-startup-contract.json` so the S23 one-command startup path can be audited without launching services or committing a token.
+- New P0 blocker if broken: `internal_mvp_startup_contract_not_ready`.
+- Remaining setup gap: real Google consent still depends on external Google Cloud callback registration. Provider-backed match/line gaps are unchanged.
+
 ## Cycle S23LANSTART - S23 Internal MVP LAN Auth Startup
 
 - No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider contract changed.

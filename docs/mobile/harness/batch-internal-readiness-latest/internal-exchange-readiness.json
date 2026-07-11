@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T10:56:16.881Z",
+  "generatedAt": "2026-07-11T11:14:14.942Z",
   "readOnly": true,
   "scope": "poly-internal-exchange-runtime-readiness",
   "thresholds": {
@@ -78,7 +78,7 @@
         "mmEnabled": true,
         "outcomeCount": 2,
         "mappedOutcomeCount": 2,
-        "latestSnapshotAt": "2026-07-11T10:56:15.840Z",
+        "latestSnapshotAt": "2026-07-11T11:14:14.129Z",
         "snapshotAgeSeconds": 1,
         "snapshotReady": false,
         "snapshotQualityStatus": "missing_book",
@@ -117,7 +117,7 @@
         "mmEnabled": true,
         "outcomeCount": 2,
         "mappedOutcomeCount": 2,
-        "latestSnapshotAt": "2026-07-11T10:56:15.768Z",
+        "latestSnapshotAt": "2026-07-11T11:14:14.056Z",
         "snapshotAgeSeconds": 1,
         "snapshotReady": false,
         "snapshotQualityStatus": "missing_book",
@@ -156,7 +156,7 @@
         "mmEnabled": true,
         "outcomeCount": 2,
         "mappedOutcomeCount": 2,
-        "latestSnapshotAt": "2026-07-11T10:56:15.809Z",
+        "latestSnapshotAt": "2026-07-11T11:14:14.094Z",
         "snapshotAgeSeconds": 1,
         "snapshotReady": false,
         "snapshotQualityStatus": "invalid_price",
