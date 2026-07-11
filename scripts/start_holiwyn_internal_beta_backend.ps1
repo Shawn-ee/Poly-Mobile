@@ -1,5 +1,6 @@
 param(
   [int]$Port = 3002,
+  [string]$AuthBaseUrl = "",
   [string]$AllowlistEmails = "system-liquidity-bot@local.test,holiwyn-mobile-dev@test.local,holiwyn-bot-admin@test.local",
   [string]$SummaryPath = "",
   [int]$WaitSeconds = 45,
@@ -67,6 +68,7 @@ function Get-LanIp {
 }
 
 $healthUrl = "http://127.0.0.1:$Port/api/health"
+$resolvedAuthBaseUrl = if ($AuthBaseUrl.Trim()) { $AuthBaseUrl.Trim().TrimEnd("/") } else { "http://127.0.0.1:$Port" }
 $lanIp = Get-LanIp
 $lanBaseUrl = if ($lanIp) { "http://$lanIp`:$Port" } else { "" }
 $started = $null
@@ -90,6 +92,7 @@ if ($CheckOnly) {
 `$env:INTERNAL_TRADING_BETA_ENABLED='true'
 `$env:TRADING_KILL_SWITCH='false'
 `$env:NEXT_PUBLIC_INTERNAL_TRADING_BETA_ENABLED='true'
+`$env:NEXTAUTH_URL='$resolvedAuthBaseUrl'
 `$env:INTERNAL_TRADING_ALLOWLIST_EMAILS='$AllowlistEmails'
 `$env:POLY_BOTS_ENABLED='true'
 `$env:POLY_BOTS_LIVE_TRADING='true'
@@ -135,6 +138,7 @@ $summary = [ordered]@{
   port = $Port
   healthUrl = $healthUrl
   lanBaseUrl = $lanBaseUrl
+  nextAuthUrl = $resolvedAuthBaseUrl
   internalTradingBetaEnabled = $true
   tradingKillSwitch = $false
   nextPublicInternalTradingBetaEnabled = $true
@@ -150,6 +154,7 @@ $summary = [ordered]@{
   notes = @(
     "This helper is for local fake-token internal MVP testing only.",
     "It does not enable production trading or deposit/withdraw flows.",
+    "NEXTAUTH_URL is set to the local backend port by default so Google start/callback use the same local auth origin; pass -AuthBaseUrl to reuse a hosted backend auth origin.",
     "Keep order book UI hidden; this only starts the backend route layer for simple ticket/order/portfolio proof."
   )
 }

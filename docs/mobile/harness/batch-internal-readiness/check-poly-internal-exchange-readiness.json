@@ -1,0 +1,127 @@
+{
+  "generatedAt": "2026-07-11T05:36:48.682Z",
+  "readOnly": true,
+  "scope": "poly-internal-exchange-runtime-readiness",
+  "thresholds": {
+    "staleAfterSeconds": 90,
+    "minMobileEvents": 2,
+    "minMmReadyMarkets": 1
+  },
+  "database": {
+    "connected": true,
+    "eventCount": 1,
+    "marketCount": 7,
+    "outcomeCount": 14
+  },
+  "mobileExposure": {
+    "mobileVisibleEventCount": 1,
+    "mobileVisibleProviderEventCount": 1,
+    "sampleEvents": [
+      {
+        "slug": "argentina-vs-egypt",
+        "title": "Argentina vs. Egypt",
+        "status": "active",
+        "listedMarketCount": 7,
+        "providerMarketCount": 3
+      }
+    ]
+  },
+  "providerMarkets": {
+    "totalInspected": 3,
+    "mobileVisibleCount": 3,
+    "snapshotReadyCount": 0,
+    "localMmReadyCount": 0,
+    "openOrderBackedCount": 0,
+    "samples": [
+      {
+        "marketId": "0f66af64-8f00-4013-8cc8-338d155b3ed4",
+        "title": "Will Egypt win on 2026-07-07?",
+        "eventSlug": "argentina-vs-egypt",
+        "status": "LIVE",
+        "listed": true,
+        "mobileVisible": true,
+        "providerBacked": true,
+        "importStatus": "approved",
+        "tradable": true,
+        "mmEnabled": true,
+        "outcomeCount": 2,
+        "mappedOutcomeCount": 2,
+        "latestSnapshotAt": "2026-07-11T05:25:34.766Z",
+        "snapshotAgeSeconds": 674,
+        "snapshotReady": false,
+        "localOpenOrderCount": 0,
+        "botStatus": null,
+        "botSeeded": false,
+        "localMmReady": false,
+        "blockers": [
+          "snapshot_not_ready",
+          "bot_not_seeded",
+          "not_local_mm_ready"
+        ]
+      },
+      {
+        "marketId": "83087617-7787-40df-a09f-f03665a67ff2",
+        "title": "Will Argentina vs. Egypt end in a draw?",
+        "eventSlug": "argentina-vs-egypt",
+        "status": "LIVE",
+        "listed": true,
+        "mobileVisible": true,
+        "providerBacked": true,
+        "importStatus": "approved",
+        "tradable": true,
+        "mmEnabled": true,
+        "outcomeCount": 2,
+        "mappedOutcomeCount": 2,
+        "latestSnapshotAt": "2026-07-11T05:25:34.766Z",
+        "snapshotAgeSeconds": 674,
+        "snapshotReady": false,
+        "localOpenOrderCount": 0,
+        "botStatus": null,
+        "botSeeded": false,
+        "localMmReady": false,
+        "blockers": [
+          "snapshot_not_ready",
+          "bot_not_seeded",
+          "not_local_mm_ready"
+        ]
+      },
+      {
+        "marketId": "8e03bb8a-d1e0-4067-966f-c05e3969ab7d",
+        "title": "Will Argentina win on 2026-07-07?",
+        "eventSlug": "argentina-vs-egypt",
+        "status": "LIVE",
+        "listed": true,
+        "mobileVisible": true,
+        "providerBacked": true,
+        "importStatus": "approved",
+        "tradable": true,
+        "mmEnabled": true,
+        "outcomeCount": 2,
+        "mappedOutcomeCount": 2,
+        "latestSnapshotAt": "2026-07-11T05:25:34.766Z",
+        "snapshotAgeSeconds": 674,
+        "snapshotReady": false,
+        "localOpenOrderCount": 0,
+        "botStatus": null,
+        "botSeeded": false,
+        "localMmReady": false,
+        "blockers": [
+          "snapshot_not_ready",
+          "bot_not_seeded",
+          "not_local_mm_ready"
+        ]
+      }
+    ]
+  },
+  "readyForInternalMobileExchange": false,
+  "blockers": [
+    "mobile_event_count_below_2",
+    "no_ready_provider_snapshots",
+    "local_mm_ready_market_count_below_1"
+  ],
+  "nextActions": [
+    "Import, classify, and list more backend events before expecting Home/Search breadth.",
+    "Refresh Polymarket reference snapshots for the mobile-visible provider allowlist.",
+    "Seed/enable local market-maker readiness for at least one allowlisted provider market."
+  ]
+}
