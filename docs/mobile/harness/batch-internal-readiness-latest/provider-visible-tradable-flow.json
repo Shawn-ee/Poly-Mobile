@@ -1,7 +1,7 @@
 {
   "pass": false,
   "cycle": "BATCHREADINESS",
-  "generatedAt": "2026-07-11T08:30:37.657Z",
+  "generatedAt": "2026-07-11T08:38:18.626Z",
   "scope": "provider-visible-market-to-internal-test-tradable-mobile-flow",
   "localMvpPolicy": {
     "defaultEventSlug": "argentina-vs-egypt",
@@ -43,8 +43,8 @@
   },
   "tradableOutcomeCount": 2,
   "snapshot": {
-    "fetchedAt": "2026-07-11T07:08:26.039Z",
-    "ageSeconds": 4932,
+    "fetchedAt": "2026-07-11T08:38:15.361Z",
+    "ageSeconds": 3,
     "bestBid": "0.999",
     "bestAsk": "1",
     "acceptingOrders": false,
@@ -53,7 +53,6 @@
     "mmEligible": false,
     "blockers": [
       "snapshot_not_accepting_orders",
-      "snapshot_stale",
       "snapshot_not_mm_eligible",
       "snapshot_reason_reference_invalid_price",
       "snapshot_quality_invalid_price"

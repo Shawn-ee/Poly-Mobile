@@ -9661,3 +9661,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: safe provider-backed match market liquidity suitable for local-MM/fake-token fill proof. The current selected Polymarket-backed match market is visible and has token identity, but its latest provider snapshot/book is not accepting orders and not MM safe.
 - Temporary mock/static data: none added. The fallback user-flow proof remains the contract-shaped line market path.
 - Future migration concern: when provider snapshots become local-MM-ready, use the same match-only guard to prove provider market -> quote -> ticket -> order -> Portfolio/history without relying on off-scope futures evidence.
+
+# Batch Provider Snapshot Refresh Gate Notes
+
+- Closed or narrowed: the consolidated batch now refreshes `argentina-vs-egypt` Polymarket reference snapshots before checking provider internal-exchange and tradable-flow readiness.
+- Route mismatch: none. No mobile route or order schema changed.
+- Fields Holiwyn still needs but backend does not fully provide: fresh provider snapshots with accepting-order, non-edge best bid/ask and MM eligibility for at least one match market.
+- Temporary mock/static data: none added. The new `provider-snapshot-refresh.json` artifact is real provider refresh evidence.
+- Future migration concern: when a provider match becomes usable, the refreshed snapshot should allow the same batch to move from `provider_mvp_match_snapshot_not_mm_safe` to the next real readiness gate, such as bot quote availability or filled order proof.

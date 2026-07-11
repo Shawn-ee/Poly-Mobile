@@ -12832,3 +12832,22 @@ Known limitations:
 - Known limitations:
   - This does not seed provider local-MM liquidity. It only prevents non-MVP futures proof from being mistaken for match-only readiness.
   - Local MVP internal testing remains supported through the already-proven contract-fixture line flow.
+
+# Batch Provider Snapshot Refresh Gate
+
+- Feature/page worked on: provider snapshot freshness before Local MVP provider-readiness judgments.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/refresh_reference_snapshots.ts`
+  - `scripts/mobile_internal_readiness_batch.ps1`
+- User interactions supported: unchanged. This is backend/provider harness work only.
+- State transitions:
+  - `refresh_reference_snapshots.ts` now accepts `--summaryPath` so batch runs can preserve a committed JSON summary instead of relying only on `test-logs`.
+  - `mobile_internal_readiness_batch.ps1` runs `reference:snapshot-refresh -- --once true --eventSlug argentina-vs-egypt` before internal exchange and provider tradable-flow checks.
+  - The batch summary records whether the refresh completed without script-level errors and how many snapshot rows were updated.
+- Proof:
+  - Full batch output writes `docs/mobile/harness/batch-internal-readiness-latest/provider-snapshot-refresh.json`.
+  - Provider-readiness P1 blockers now reflect refreshed provider book state, not merely stale inherited snapshots.
+- Known limitations:
+  - A fresh provider snapshot can still be unsafe if Polymarket is not accepting orders or the price is at an invalid edge.
+  - This does not import new provider events or create local-MM quotes.

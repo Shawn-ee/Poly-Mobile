@@ -152,6 +152,7 @@ $credentialPath = Join-Path $ResolvedOutputDir "mobile-credential-readiness.json
 $googleAuthPath = Join-Path $ResolvedOutputDir "google-auth-runtime-preflight.json"
 $googlePhysicalPath = Join-Path $ResolvedOutputDir "google-auth-physical-callback-preflight.json"
 $currentStatePath = Join-Path $ResolvedOutputDir "mobile-current-state-inspection.json"
+$providerSnapshotRefreshPath = Join-Path $ResolvedOutputDir "provider-snapshot-refresh.json"
 $exchangePath = Join-Path $ResolvedOutputDir "internal-exchange-readiness.json"
 $providerTradableFlowPath = Join-Path $ResolvedOutputDir "provider-visible-tradable-flow.json"
 $matchScanPath = Join-Path $ResolvedOutputDir "worldcup-match-event-scan.json"
@@ -161,6 +162,7 @@ $credentialRepoPath = ConvertTo-RepoPath $credentialPath
 $googleAuthRepoPath = ConvertTo-RepoPath $googleAuthPath
 $googlePhysicalRepoPath = ConvertTo-RepoPath $googlePhysicalPath
 $currentStateRepoPath = ConvertTo-RepoPath $currentStatePath
+$providerSnapshotRefreshRepoPath = ConvertTo-RepoPath $providerSnapshotRefreshPath
 $exchangeRepoPath = ConvertTo-RepoPath $exchangePath
 $providerTradableFlowRepoPath = ConvertTo-RepoPath $providerTradableFlowPath
 $matchScanRepoPath = ConvertTo-RepoPath $matchScanPath
@@ -174,6 +176,7 @@ $steps.Add((Invoke-BatchCommand -Name "credential-readiness" -Command "powershel
 $steps.Add((Invoke-BatchCommand -Name "google-auth-runtime-preflight" -Command "powershell -ExecutionPolicy Bypass -File mobile\scripts\google-auth-runtime-preflight.ps1 -BackendAuthBase `"$BackendBaseUrl`" -NextAuthUrl `"$BackendBaseUrl`" -SummaryPath `"$googleAuthRepoPath`"" -OutputPath $googleAuthPath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "google-auth-physical-callback-preflight" -Command "powershell -ExecutionPolicy Bypass -File mobile\scripts\google-auth-runtime-preflight.ps1 -BackendAuthBase `"$BackendBaseUrl`" -NextAuthUrl `"$BackendBaseUrl`" -RequirePhysicalDeviceCallback -SummaryPath `"$googlePhysicalRepoPath`"" -OutputPath $googlePhysicalPath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "current-state" -Command "npx.cmd tsx scripts/inspect_mobile_mvp_current_state.ts --baseUrl=$BackendBaseUrl --summaryPath=`"$currentStateRepoPath`" --cycle=$Cycle" -OutputPath $currentStatePath))
+$steps.Add((Invoke-BatchCommand -Name "provider-snapshot-refresh" -Command "npm.cmd run reference:snapshot-refresh -- --once true --eventSlug argentina-vs-egypt --summaryPath `"$providerSnapshotRefreshRepoPath`"" -OutputPath $providerSnapshotRefreshPath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "internal-exchange-readiness" -Command "npm.cmd run poly:internal-exchange-readiness -- --summaryPath `"$exchangeRepoPath`"" -OutputPath $exchangePath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "provider-visible-tradable-flow" -Command "npx.cmd tsx scripts/prove_mobile_provider_visible_tradable_flow.ts --cycle=$Cycle --baseUrl=$BackendBaseUrl --summaryPath=`"$providerTradableFlowRepoPath`"" -OutputPath $providerTradableFlowPath -AllowNonZero))
 $steps.Add((Invoke-BatchCommand -Name "worldcup-match-scan" -Command "npm.cmd run inspect:polymarket-worldcup-matches -- --output `"$matchScanRepoPath`"" -OutputPath $matchScanPath))
@@ -184,6 +187,7 @@ $credential = Read-JsonFile $credentialPath
 $googleAuth = Read-JsonFile $googleAuthPath
 $googlePhysical = Read-JsonFile $googlePhysicalPath
 $currentState = Read-JsonFile $currentStatePath
+$providerSnapshotRefresh = Read-JsonFile $providerSnapshotRefreshPath
 $exchange = Read-JsonFile $exchangePath
 $providerTradableFlow = Read-JsonFile $providerTradableFlowPath
 $matchScan = Read-JsonFile $matchScanPath
@@ -192,6 +196,8 @@ $lineScan = Read-JsonFile $lineScanPath
 $backendReady = [bool]($backend -and $backend.dockerCliAvailable -and $backend.dockerDaemonReachable -and $backend.databaseTcpReachable)
 $localMvpReady = [bool]($currentState -and $currentState.diagnosis.serviceReadiness.localMvpPathReady)
 $providerExchangeReady = [bool]($exchange -and $exchange.readyForInternalMobileExchange)
+$providerSnapshotRefreshSucceeded = [bool]($providerSnapshotRefresh -and $providerSnapshotRefresh.summary -and ([int]$providerSnapshotRefresh.summary.errorCount -eq 0))
+$providerSnapshotRefreshUpdatedCount = if ($providerSnapshotRefresh -and $providerSnapshotRefresh.summary) { [int]$providerSnapshotRefresh.summary.snapshotsUpdated } else { $null }
 $providerMvpTradableFlowReady = [bool]($providerTradableFlow -and $providerTradableFlow.pass)
 $providerMvpTradableFlowBlocker = if ($providerTradableFlow -and $providerTradableFlow.blocker) { [string]$providerTradableFlow.blocker } else { $null }
 $providerExchangeBlockers = if ($exchange -and $exchange.blockers) { @($exchange.blockers) } else { @() }
@@ -231,6 +237,9 @@ if (-not $providerExchangeReady) {
   } else {
     $p1Blockers += "provider_internal_exchange_not_ready"
   }
+}
+if ($providerSnapshotRefresh -and -not $providerSnapshotRefreshSucceeded) {
+  $p1Blockers += "provider_snapshot_refresh_has_errors"
 }
 if ($providerTradableFlow -and -not $providerMvpTradableFlowReady) {
   if ($providerMvpTradableFlowBlocker -eq "provider_mvp_match_bot_quote_unavailable") {
@@ -294,6 +303,8 @@ $summary = [ordered]@{
     providerVisibleMarketCount = if ($exchange) { $exchange.providerMarkets.mobileVisibleCount } else { $null }
     providerLocalMmReadyMarketCount = if ($exchange) { $exchange.providerMarkets.localMmReadyCount } else { $null }
     providerBooksUnavailableOrClosed = $providerBooksUnavailableOrClosed
+    providerSnapshotRefreshSucceeded = $providerSnapshotRefreshSucceeded
+    providerSnapshotRefreshUpdatedCount = $providerSnapshotRefreshUpdatedCount
     providerMvpTradableFlowReady = $providerMvpTradableFlowReady
     providerMvpTradableFlowBlocker = $providerMvpTradableFlowBlocker
     usableWorldCupTeamMatchEventCount = $usableMatchCount

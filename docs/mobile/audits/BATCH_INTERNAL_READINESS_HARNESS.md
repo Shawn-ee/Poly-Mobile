@@ -28,6 +28,7 @@ docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-sum
 - Google physical-device callback preflight without printing Google credentials.
 - Current MVP route shape for `mobileMvpMatches=1`.
 - Provider-backed Regulation Winner plus contract-shaped line-market state.
+- Fresh Polymarket reference snapshot refresh for the current MVP match.
 - Provider/internal exchange readiness.
 - Provider-visible tradable-flow readiness for the match-only MVP path.
 - Polymarket World Cup team-match breadth.
@@ -59,6 +60,8 @@ Do not import futures, awards, player props, or non-World-Cup events to make the
 The provider-visible tradable-flow proof is now match-only by default. It selects the Local MVP match event (`argentina-vs-egypt`) unless an explicit event is passed, and it rejects non-match provider futures unless the caller uses `--allowNonMvpProviderEvent` for a separate non-MVP audit. This prevents old World Cup Winner futures proof from being mistaken for Local MVP match readiness.
 
 Before looking for a local bot quote, the proof checks the latest provider quote snapshot. If the provider book is missing, closed/not accepting orders, invalidly priced, missing a side, or marked not MM eligible, the batch reports `provider_mvp_match_snapshot_not_mm_safe`. This keeps the next action honest: do not seed a local bot quote against an unsafe provider book.
+
+The batch refreshes Polymarket reference snapshots for `argentina-vs-egypt` before running internal exchange readiness and provider tradable-flow checks. This keeps the provider blocker current. If the refreshed book remains closed, missing, or invalidly priced, the batch records that as P1 provider data debt rather than letting stale snapshots masquerade as the reason.
 
 ## Local Environment Snapshot
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T08:30:42.140Z",
+  "generatedAt": "2026-07-11T08:38:24.159Z",
   "source": "gamma-api.polymarket.com/events",
   "readOnly": true,
   "scope": "world-cup-match-only-provider-breadth",
@@ -511,9 +511,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.068,
-          "bestAsk": 0.098,
-          "spread": 0.03,
+          "bestBid": 0.076,
+          "bestAsk": 0.093,
+          "spread": 0.017,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -545,9 +545,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.189,
-          "bestAsk": 0.193,
-          "spread": 0.004,
+          "bestBid": 0.192,
+          "bestAsk": 0.208,
+          "spread": 0.016,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -715,8 +715,8 @@
           "outcomeCount": 2,
           "tokenCount": 2,
           "bestBid": 0.5,
-          "bestAsk": 0.51,
-          "spread": 0.01,
+          "bestAsk": 0.52,
+          "spread": 0.02,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -819,40 +819,6 @@
         }
       },
       {
-        "slug": "pro-football-team-to-draft-brendan-sorsby-20260620180654958",
-        "title": "Pro Football: Team To Draft Brendan Sorsby",
-        "tags": [
-          "nfl",
-          "draft",
-          "sports",
-          "football",
-          "nfl-draft",
-          "nfl-next-team"
-        ],
-        "matchLike": false,
-        "worldCupRelevant": false,
-        "playerPropLike": false,
-        "futuresLike": false,
-        "marketCount": 36,
-        "usableMarketCount": 17,
-        "acceptingOrderMarketCount": 36,
-        "sampleUsableMarket": {
-          "slug": "will-the-buffalo-bills-draft-brendan-sorsby-in-the-2026-nfl-supplemental-draft-20260620180914406",
-          "question": "Will the Buffalo Bills draft Brendan Sorsby in the 2026 NFL Supplemental Draft?",
-          "acceptingOrders": true,
-          "active": true,
-          "closed": false,
-          "archived": false,
-          "outcomeCount": 2,
-          "tokenCount": 2,
-          "bestBid": 0.01,
-          "bestAsk": 0.044,
-          "spread": 0.034,
-          "usableBook": true,
-          "rejectionReasons": []
-        }
-      },
-      {
         "slug": "mls-cup-winner-2026",
         "title": "MLS Cup Winner 2026",
         "tags": [
@@ -879,6 +845,40 @@
           "bestBid": 0.013,
           "bestAsk": 0.014,
           "spread": 0.001,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "pro-football-team-to-draft-brendan-sorsby-20260620180654958",
+        "title": "Pro Football: Team To Draft Brendan Sorsby",
+        "tags": [
+          "nfl",
+          "draft",
+          "sports",
+          "football",
+          "nfl-draft",
+          "nfl-next-team"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": false,
+        "futuresLike": false,
+        "marketCount": 36,
+        "usableMarketCount": 16,
+        "acceptingOrderMarketCount": 36,
+        "sampleUsableMarket": {
+          "slug": "will-the-buffalo-bills-draft-brendan-sorsby-in-the-2026-nfl-supplemental-draft-20260620180914406",
+          "question": "Will the Buffalo Bills draft Brendan Sorsby in the 2026 NFL Supplemental Draft?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.01,
+          "bestAsk": 0.044,
+          "spread": 0.034,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -977,9 +977,9 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.053,
-          "bestAsk": 0.089,
-          "spread": 0.001,
+          "bestBid": 0.047,
+          "bestAsk": 0.07,
+          "spread": 0.016,
           "usableBook": true,
           "rejectionReasons": []
         }

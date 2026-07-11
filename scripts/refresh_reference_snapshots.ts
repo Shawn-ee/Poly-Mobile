@@ -14,6 +14,7 @@ export type RefreshOptions = {
   onlyMmEnabled: boolean;
   slug: string | null;
   eventSlug: string | null;
+  summaryPath: string | null;
 };
 
 export type RefreshCycleSummary = {
@@ -123,7 +124,7 @@ export async function runRefreshLoop(
         });
         lastReport = report;
         const summary = summarizeRefreshReport(report, cycle);
-        await persistLatestReport(report, summary);
+        await persistLatestReport(report, summary, undefined, options.summaryPath);
         process.stdout.write(`${JSON.stringify({ summary, report }, null, 2)}\n`);
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
@@ -138,7 +139,7 @@ export async function runRefreshLoop(
           missingCount: 0,
           errorCount: 1,
         };
-        await persistLatestReport(lastReport, summary, message);
+        await persistLatestReport(lastReport, summary, message, options.summaryPath);
         process.stderr.write(`${JSON.stringify({ summary, error: message }, null, 2)}\n`);
         if (!options.watch && !options.once) {
           throw error;
@@ -177,11 +178,17 @@ export function parseArgs(argv: string[]): RefreshOptions {
     onlyMmEnabled: boolArg(args.get("onlyMmEnabled"), false),
     slug: stringArg(args.get("slug")),
     eventSlug: stringArg(args.get("eventSlug")),
+    summaryPath: stringArg(args.get("summaryPath")),
   };
 }
 
-async function persistLatestReport(report: RefreshReport | null, summary: RefreshCycleSummary, error?: string) {
-  const outputPath = path.resolve(process.cwd(), "test-logs", "reference-snapshot-refresh-latest.json");
+async function persistLatestReport(
+  report: RefreshReport | null,
+  summary: RefreshCycleSummary,
+  error?: string,
+  summaryPath?: string | null,
+) {
+  const outputPath = path.resolve(process.cwd(), summaryPath ?? "test-logs/reference-snapshot-refresh-latest.json");
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, `${JSON.stringify({ summary, report, error: error ?? null }, null, 2)}\n`, "utf8");
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T08:31:47.3885561Z",
+  "generatedAt": "2026-07-11T08:39:27.1583031Z",
   "scope": "mobile-internal-readiness-batch",
   "cycle": "BATCHREADINESS",
   "backendBaseUrl": "http://127.0.0.1:3002",
@@ -56,6 +56,16 @@
       "producedJson": true
     },
     {
+      "name": "provider-snapshot-refresh",
+      "command": "npm.cmd run reference:snapshot-refresh -- --once true --eventSlug argentina-vs-egypt --summaryPath \"docs/mobile/harness/batch-internal-readiness-latest/provider-snapshot-refresh.json\"",
+      "exitCode": 0,
+      "allowedNonZero": true,
+      "outputPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-snapshot-refresh.json",
+      "stdoutPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-snapshot-refresh.stdout.log",
+      "stderrPath": "docs/mobile/harness/batch-internal-readiness-latest/provider-snapshot-refresh.stderr.log",
+      "producedJson": true
+    },
+    {
       "name": "internal-exchange-readiness",
       "command": "npm.cmd run poly:internal-exchange-readiness -- --summaryPath \"docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.json\"",
       "exitCode": 1,
@@ -100,7 +110,7 @@
   "environmentHealth": {
     "git": {
       "branch": "main",
-      "status": "## main...poly-mobile/main\n M docs/mobile/FUNCTION_IMPLEMENTATION_LOG.md\n M docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md\n M docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md\n M docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json\n M scripts/mobile_internal_readiness_batch.ps1\n M scripts/prove_mobile_provider_visible_tradable_flow.ts",
+      "status": "## main...poly-mobile/main\n M docs/mobile/FUNCTION_IMPLEMENTATION_LOG.md\n M docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md\n M docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md\n M scripts/mobile_internal_readiness_batch.ps1\n M scripts/refresh_reference_snapshots.ts",
       "worktreeClean": false
     },
     "android": {
@@ -148,6 +158,8 @@
     "providerVisibleMarketCount": 3,
     "providerLocalMmReadyMarketCount": 0,
     "providerBooksUnavailableOrClosed": true,
+    "providerSnapshotRefreshSucceeded": true,
+    "providerSnapshotRefreshUpdatedCount": 6,
     "providerMvpTradableFlowReady": false,
     "providerMvpTradableFlowBlocker": "provider_mvp_match_snapshot_not_mm_safe",
     "usableWorldCupTeamMatchEventCount": 0,
