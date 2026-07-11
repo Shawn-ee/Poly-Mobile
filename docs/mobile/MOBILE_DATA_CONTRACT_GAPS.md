@@ -9447,6 +9447,15 @@ Future migration concern:
 - Fields Holiwyn still needs but backend does not fully provide: no new fields for unavailable-ticket behavior.
 - Temporary mock/static data: uses the Cycle UF deterministic proof fixture only to force an unavailable market state; production provider routes should provide the same availability shape.
 
+# Cycle VY - Dynamic Provider Line Probes Notes
+
+- No schema migration was added.
+- Closed or narrowed: provider-line discovery now covers current checked-in mobile match fixtures, not only the older static Polymarket event probes.
+- Route mismatch: none. No Holiwyn API route changed.
+- Fields Holiwyn still needs but backend does not fully provide: real provider-backed current-match Spread/Totals/Team Total market ids, outcome ids, provider token ids, prices, and availability.
+- Temporary mock/static data: local fixture match titles are used only to generate provider search queries; they are not attached as provider-backed lines.
+- Future migration concern: if a future scan finds attach-ready line candidates, review and attach them through backend provider identity mapping before replacing contract fixtures.
+
 # Cycle UG - Chart-Free MVP Doc Alignment Notes
 
 - No schema migration was added.

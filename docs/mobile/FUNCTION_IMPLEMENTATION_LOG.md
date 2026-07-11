@@ -12305,6 +12305,17 @@ Known limitations:
 - Proof: `npm run proof:s23:unavailable-ticket` passed on Samsung S23 `SM_S911U1`. Evidence: `docs/mobile/screenshots/cycle-VX-unavailable-ticket-s23-proof/cycle-VX-unavailable-ticket.png` and `docs/mobile/harness/cycle-VX-unavailable-ticket-s23-proof/cycle-VX-unavailable-ticket.xml`.
 - Known limitations: this cycle closes the unavailable-ticket visual P0 only. Real provider-backed Spread/Totals/Team Total line markets remain a separate provider-data gap.
 
+# Cycle VY - Dynamic Provider Line Probes
+
+- Feature/page worked on: backend/provider evidence for current-match line-market breadth.
+- Frontend components touched: none.
+- Backend/provider files touched: `scripts/prove_mobile_provider_line_breadth_scan.ts`, `src/__tests__/mobile.provider-line-breadth-scan.contract.test.ts`.
+- Backend/API routes touched: none.
+- User interactions supported: unchanged. The visible Local MVP path still uses explicit contract fixtures for Spread/Totals/Team Total until provider-backed line rows exist.
+- State transitions: unchanged. The scan now derives event-specific provider-line probes from checked-in mobile fixtures in addition to static Polymarket probes, then records whether any attach-ready provider line identity exists.
+- Proof: focused provider scan contract test, root TypeScript check, and live Polymarket Gamma scan passed. Evidence: `docs/mobile/harness/cycle-VY-dynamic-provider-line-probes/cycle-VY-provider-line-breadth-scan.json`.
+- Known limitations: Gamma still returned `providerLineCandidateCount=0` and `attachReadyProviderLineCandidateCount=0`; this cycle improves discovery evidence, not provider line availability.
+
 # Cycle UG - Chart-Free MVP Doc Alignment
 
 - Feature/page worked on: Event Detail market-page criteria and proof-contract alignment.

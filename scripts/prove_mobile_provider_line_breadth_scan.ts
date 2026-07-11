@@ -30,6 +30,14 @@ const EVENT_SPECIFIC_PROBES = [
   { eventSlug: "fifwc-par-fra-2026-07-04", homeTeam: "Paraguay", awayTeam: "France", homeCode: "par", awayCode: "fra" },
   { eventSlug: "fifwc-bra-nor-2026-07-05", homeTeam: "Brazil", awayTeam: "Norway", homeCode: "bra", awayCode: "nor" },
 ] as const;
+type EventSpecificProbe = {
+  eventSlug: string;
+  homeTeam: string;
+  awayTeam: string;
+  homeCode: string;
+  awayCode: string;
+  source?: "static" | "gamma-event" | "local-fixture";
+};
 const LINE_FAMILIES = new Set<ProviderMarketFamily>([
   "spread",
   "total_goals",
@@ -89,6 +97,8 @@ async function main() {
     eventSpecificSearch: 0,
     exactSlug: 0,
   };
+  const dynamicEventProbeBySlug = new Map<string, EventSpecificProbe>();
+  const localFixtureProbes = await buildLocalFixtureEventProbes();
 
   for (const query of SEARCH_QUERIES) {
     try {
@@ -112,6 +122,10 @@ async function main() {
     try {
       const events = await fetchGammaEventsByTag(tagSlug, Math.min(limit, 50));
       for (const event of events) {
+        const dynamicProbe = buildEventProbeFromGammaEvent(event);
+        if (dynamicProbe && !dynamicEventProbeBySlug.has(dynamicProbe.eventSlug)) {
+          dynamicEventProbeBySlug.set(dynamicProbe.eventSlug, dynamicProbe);
+        }
         const eventTitle = asString(event.title) ?? asString(event.name);
         const tags = parseTags(event.tags);
         const category = asString(event.category);
@@ -133,10 +147,15 @@ async function main() {
     }
   }
 
-  const eventSpecificSearchQueries = EVENT_SPECIFIC_PROBES.flatMap(buildEventSpecificSearchQueries);
-  const exactSlugGuesses = EVENT_SPECIFIC_PROBES.flatMap(buildEventSpecificSlugGuesses);
+  const eventSpecificProbes = mergeEventSpecificProbes([
+    ...EVENT_SPECIFIC_PROBES.map((probe) => ({ ...probe, source: "static" as const })),
+    ...localFixtureProbes,
+    ...dynamicEventProbeBySlug.values(),
+  ]);
+  const eventSpecificSearchQueries = eventSpecificProbes.flatMap(buildEventSpecificSearchQueries);
+  const exactSlugGuesses = eventSpecificProbes.flatMap(buildEventSpecificSlugGuesses);
 
-  for (const probe of EVENT_SPECIFIC_PROBES) {
+  for (const probe of eventSpecificProbes) {
     for (const query of buildEventSpecificSearchQueries(probe)) {
       try {
         const markets = await fetchGammaMarketsBySearch(query, Math.min(limit, 50));
@@ -221,7 +240,10 @@ async function main() {
     sources: {
       searchQueries: SEARCH_QUERIES,
       eventTagSlugs: EVENT_TAG_SLUGS,
-      eventSpecificProbes: EVENT_SPECIFIC_PROBES,
+      eventSpecificProbes,
+      staticEventSpecificProbeCount: EVENT_SPECIFIC_PROBES.length,
+      dynamicEventSpecificProbeCount: dynamicEventProbeBySlug.size,
+      localFixtureEventSpecificProbeCount: localFixtureProbes.length,
       eventSpecificSearchQueries,
       exactSlugGuesses,
       limit,
@@ -481,7 +503,7 @@ function computeSpread(bestBid: number | null, bestAsk: number | null) {
   return bestBid != null && bestAsk != null ? Math.max(0, bestAsk - bestBid) : null;
 }
 
-function buildEventSpecificSearchQueries(probe: typeof EVENT_SPECIFIC_PROBES[number]) {
+function buildEventSpecificSearchQueries(probe: EventSpecificProbe) {
   const teamPair = `${probe.homeTeam} ${probe.awayTeam}`;
   return [
     `${teamPair} spread`,
@@ -498,7 +520,8 @@ function buildEventSpecificSearchQueries(probe: typeof EVENT_SPECIFIC_PROBES[num
   ];
 }
 
-function buildEventSpecificSlugGuesses(probe: typeof EVENT_SPECIFIC_PROBES[number]) {
+function buildEventSpecificSlugGuesses(probe: EventSpecificProbe) {
+  if (probe.source === "local-fixture") return [];
   const teams = [probe.homeCode, probe.awayCode];
   const lineValues = ["1-5", "2-5", "3-5"];
   const baseGuesses = [
@@ -535,6 +558,94 @@ function buildEventSpecificSlugGuesses(probe: typeof EVENT_SPECIFIC_PROBES[numbe
     ]),
   ]);
   return Array.from(new Set([...baseGuesses, ...teamGuesses, ...lineGuesses]));
+}
+
+function mergeEventSpecificProbes(probes: EventSpecificProbe[]) {
+  const bySlug = new Map<string, EventSpecificProbe>();
+  for (const probe of probes) {
+    const existing = bySlug.get(probe.eventSlug);
+    if (!existing || existing.source !== "static") {
+      bySlug.set(probe.eventSlug, probe);
+    }
+  }
+  return Array.from(bySlug.values());
+}
+
+async function buildLocalFixtureEventProbes() {
+  const fixturePath = path.join(process.cwd(), "mobile", "src", "mocks", "worldCup.ts");
+  let source = "";
+  try {
+    source = await fs.readFile(fixturePath, "utf8");
+  } catch {
+    return [];
+  }
+  const probes = new Map<string, EventSpecificProbe>();
+  const titlePattern = /title:\s*"([^"]+\s+vs\.?\s+[^"]+)"/g;
+  for (const match of source.matchAll(titlePattern)) {
+    const teams = parseTeamsFromTitle(match[1]);
+    if (!teams) continue;
+    const homeCode = providerCodeForTeam(teams.homeTeam);
+    const awayCode = providerCodeForTeam(teams.awayTeam);
+    const eventSlug = `fifwc-${homeCode}-${awayCode}-local-fixture`;
+    if (!probes.has(eventSlug)) {
+      probes.set(eventSlug, {
+        eventSlug,
+        homeTeam: teams.homeTeam,
+        awayTeam: teams.awayTeam,
+        homeCode,
+        awayCode,
+        source: "local-fixture",
+      });
+    }
+  }
+  return Array.from(probes.values());
+}
+
+function buildEventProbeFromGammaEvent(event: GammaWire): EventSpecificProbe | null {
+  const eventSlug = asString(event.slug);
+  if (!eventSlug || !/^fifwc-[a-z0-9-]+-\d{4}-\d{2}-\d{2}$/i.test(eventSlug)) return null;
+  const title = asString(event.title) ?? asString(event.name) ?? "";
+  const teamsFromTitle = parseTeamsFromTitle(title);
+  const codeMatch = eventSlug.match(/^fifwc-([a-z0-9]+)-([a-z0-9]+)-\d{4}-\d{2}-\d{2}$/i);
+  if (!teamsFromTitle || !codeMatch) return null;
+  return {
+    eventSlug,
+    homeTeam: teamsFromTitle.homeTeam,
+    awayTeam: teamsFromTitle.awayTeam,
+    homeCode: codeMatch[1].toLowerCase(),
+    awayCode: codeMatch[2].toLowerCase(),
+    source: "gamma-event",
+  };
+}
+
+function parseTeamsFromTitle(title: string) {
+  const normalized = title.replace(/\s+/g, " ").trim();
+  const match = normalized.match(/^(.+?)\s+(?:vs\.?|v\.?|versus)\s+(.+?)$/i);
+  if (!match) return null;
+  const homeTeam = match[1].trim();
+  const awayTeam = match[2].trim();
+  if (!homeTeam || !awayTeam) return null;
+  return { homeTeam, awayTeam };
+}
+
+function providerCodeForTeam(team: string) {
+  const normalized = team.toLowerCase().replace(/\./g, "").replace(/\s+/g, " ").trim();
+  const known: Record<string, string> = {
+    argentina: "arg",
+    australia: "aus",
+    brazil: "bra",
+    "congo dr": "cod",
+    croatia: "cro",
+    ecuador: "ecu",
+    egypt: "egy",
+    england: "eng",
+    france: "fra",
+    mexico: "mex",
+    norway: "nor",
+    paraguay: "par",
+    portugal: "por",
+  };
+  return known[normalized] ?? normalized.replace(/[^a-z0-9]+/g, "").slice(0, 3);
 }
 
 function parsePositiveInt(value: string | undefined, fallback: number) {
