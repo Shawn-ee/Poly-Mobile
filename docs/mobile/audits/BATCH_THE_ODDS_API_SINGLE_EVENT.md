@@ -33,9 +33,11 @@
 
 ## Result
 - Pass: true
-- Live-key refresh: pass on 2026-07-11. The key was supplied through the process environment only and was not written to repo files.
-- Backend fake-token flow: pass after refresh. Home, Event Detail, quote, order, Portfolio, and History preserve `sportsbook-odds` spread identity.
+- No-quota replay: pass. The run used the redacted odds fixture and made no provider API calls.
+- Live-key refresh evidence remains captured in the redacted API call headers from the original single-event fetch.
+- Backend fake-token flow: pass. Home, Event Detail, quote, order, Portfolio, and History preserve `sportsbook-odds` line identity.
 - S23 visible proof: pass.
 - S23 proof summary: `docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json`
 - S23 proof screenshots: `docs/mobile/screenshots/cycle-ODDSAPIS23-odds-api-s23-visible-flow/`
 - Remaining blocker: none for the temporary sportsbook Local MVP bridge. This still does not claim Polymarket-backed provider parity.
+

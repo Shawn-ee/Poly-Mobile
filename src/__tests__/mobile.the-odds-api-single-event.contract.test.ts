@@ -184,4 +184,12 @@ describe("The Odds API single-event temporary provider", () => {
       to: "2026-07-13T00:00:00Z",
     });
   });
+
+  it("keeps replay proofs from downgrading market availability and S23 audit evidence", () => {
+    expect(script()).toContain("available-markets.redacted.json");
+    expect(script()).toContain("readS23ProofSummary");
+    expect(script()).toContain("No-quota replay: pass");
+    expect(script()).toContain("S23 proof summary");
+    expect(script()).not.toContain("availableMarketKeys: [],");
+  });
 });
