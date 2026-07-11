@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T09:07:56.3395004Z",
+  "generatedAt": "2026-07-11T09:20:04.6821343Z",
   "scope": "mobile-internal-readiness-batch",
   "cycle": "BATCHREADINESS",
   "backendBaseUrl": "http://127.0.0.1:3002",
@@ -130,7 +130,7 @@
   "environmentHealth": {
     "git": {
       "branch": "main",
-      "status": "## main...poly-mobile/main\n M docs/mobile/FUNCTION_IMPLEMENTATION_LOG.md\n M docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md\n M docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md\n M docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md\n M package.json\n M scripts/mobile_internal_readiness_batch.ps1\n?? docs/mobile/harness/batch-internal-readiness-latest/mobile-mvp-local-match-breadth.json\n?? scripts/seed_mobile_mvp_local_match_breadth.ts",
+      "status": "## main...poly-mobile/main\n M docs/mobile/FUNCTION_IMPLEMENTATION_LOG.md\n M docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md\n M docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md\n M docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md\n M mobile/src/__tests__/homeEventFeedService.test.ts\n M mobile/src/services/homeEventFeedService.ts\n M scripts/prove_mobile_current_mvp_s23_visible_flow.ps1\n?? docs/mobile/harness/cycle-XF-local-match-breadth-s23-home/\n?? docs/mobile/screenshots/cycle-XF-local-match-breadth-s23-home/",
       "worktreeClean": false
     },
     "android": {

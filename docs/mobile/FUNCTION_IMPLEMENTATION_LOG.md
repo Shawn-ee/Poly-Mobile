@@ -12887,3 +12887,12 @@ Known limitations:
 - User interactions supported: testers can see multiple World Cup match cards in Home/Live and open route-backed Event Detail pages with Regulation Winner, Spread, Totals, and Team Totals.
 - State transitions: the batch now seeds idempotent `contract-fixture` match rows before current-state inspection and records `localMatchBreadthReady` plus the post-seed Home event count.
 - Known limitations: these added matches are explicitly local contract fixtures for internal fake-token testing. They do not close real Polymarket provider-backed match-book or line-market P1 debt.
+
+# Home Local MVP Match Source Filter
+
+- Feature/page worked on: Home World Cup match feed.
+- Frontend components touched: `mobile/src/services/homeEventFeedService.ts` and its focused test.
+- Important functions/services touched: `loadHomeEventFeedPage()` now lets the backend return all `mobileMvpMatches=1` World Cup match sources instead of forcing `source=polymarket`.
+- User interactions supported: S23 Home can show provider-backed match rows and internal `contract-fixture` match rows together, while still excluding futures/outrights through the match-only route filter.
+- State transitions: backend batch readiness and visible mobile Home now agree on match breadth.
+- Known limitations: contract-fixture rows are still local fake-token testing rows and must not be counted as provider-backed Polymarket parity.

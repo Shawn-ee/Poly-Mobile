@@ -25,7 +25,8 @@ param(
   [switch]$ExpectLiveEmptyOnly,
   [switch]$ExpectDetailStaleOnly,
   [switch]$SourceDisclosureOnly,
-  [switch]$HomeOnly
+  [switch]$HomeOnly,
+  [int]$ExpectedHomeEventCount = 0
 )
 
 $ErrorActionPreference = "Stop"
@@ -314,6 +315,9 @@ try {
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-home.png" | Out-Null
   $homeXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-home.xml"
   Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Matches", "Argentina vs. Egypt", "event-card-$EventSlug", "home-compact-retail-feed", "home-filter-controls-hidden-local-mvp", "home-card-source-provider-winner-local-lines", "home-card-source-local-test-fake-token")
+  if ($ExpectedHomeEventCount -gt 0) {
+    Assert-Contains -Path $homeXml -Expected @("visible-$ExpectedHomeEventCount-of-$ExpectedHomeEventCount", "$ExpectedHomeEventCount matches")
+  }
   if ($ExpectLiveEmptyOnly -or $ExpectDetailStaleOnly) {
     Assert-Contains -Path $homeXml -Expected @("Time TBD", "Active")
   }
@@ -333,8 +337,10 @@ try {
       keyId = "redacted"
       apiKey = "redacted"
       eventSlug = $EventSlug
+      expectedHomeEventCount = if ($ExpectedHomeEventCount -gt 0) { $ExpectedHomeEventCount } else { $null }
       assertions = [ordered]@{
         homeShowsWorldCupMatches = $true
+        homeShowsExpectedMatchBreadth = $ExpectedHomeEventCount -gt 0
         homeShowsLiveCount = $true
         homeFilterControlsHidden = $true
         homeProgressiveFeedVisible = $true

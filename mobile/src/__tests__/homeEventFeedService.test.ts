@@ -53,7 +53,7 @@ describe("homeEventFeedService", () => {
       limit: 2,
       cursor: null,
       status: "live",
-      source: "polymarket",
+      source: null,
       leagueKey: "world_cup",
       mobileMvpMatches: true,
     });
@@ -71,7 +71,7 @@ describe("homeEventFeedService", () => {
       limit: 10,
       cursor: null,
       status: null,
-      source: "polymarket",
+      source: null,
       leagueKey: "world_cup",
       mobileMvpMatches: true,
     });
@@ -102,7 +102,7 @@ describe("homeEventFeedService", () => {
       limit: 10,
       cursor: null,
       status: "live",
-      source: "polymarket",
+      source: null,
       leagueKey: "world_cup",
       mobileMvpMatches: true,
     });
@@ -166,6 +166,51 @@ describe("homeEventFeedService", () => {
     ).resolves.toMatchObject({
       source: "server-route",
       events: [{ slug: "switzerland-vs-colombia" }],
+    });
+  });
+
+  test("keeps Local MVP contract-fixture match rows in the Home feed", async () => {
+    const listWorldCupEvents = vi.fn(async () => ({
+      events: [
+        event({
+          id: "match-1",
+          slug: "argentina-vs-egypt",
+          title: "Argentina vs. Egypt",
+          eventType: "match",
+        }),
+        event({
+          id: "match-2",
+          slug: "holiwyn-local-mexico-vs-ecuador",
+          title: "Mexico vs. Ecuador",
+          eventType: "match",
+          homeTeamName: "Mexico",
+          awayTeamName: "Ecuador",
+        }),
+      ],
+      page: { limit: 10, nextCursor: null, hasMore: false },
+    }));
+
+    await expect(
+      loadHomeEventFeedPage({
+        api: { listWorldCupEvents },
+        filter: "all",
+        limit: 10,
+      }),
+    ).resolves.toMatchObject({
+      source: "server-route",
+      events: [
+        { slug: "argentina-vs-egypt" },
+        { slug: "holiwyn-local-mexico-vs-ecuador" },
+      ],
+    });
+
+    expect(listWorldCupEvents).toHaveBeenCalledWith({
+      limit: 10,
+      cursor: null,
+      status: null,
+      source: null,
+      leagueKey: "world_cup",
+      mobileMvpMatches: true,
     });
   });
 

@@ -9685,3 +9685,4 @@ Future migration concern:
 - Mock/static data: local match fixtures for internal Home/Live/Event Detail breadth only.
 - Schema mismatch: none introduced. The fixture rows use the same `Event`, `Market`, `Outcome`, and `ReferenceQuoteSnapshot` tables as future provider-backed rows.
 - Future migration concern: replace these rows with approved provider-backed World Cup match/line markets when Polymarket or another approved provider exposes attach-ready books. Do not classify these fixture rows as provider-backed parity.
+- Route/client alignment: mobile Home must not force `source=polymarket` while using `mobileMvpMatches=1`, otherwise the app hides valid Local MVP `contract-fixture` match rows that the backend batch has already proven.

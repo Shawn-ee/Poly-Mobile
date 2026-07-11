@@ -52,7 +52,7 @@ export const loadHomeEventFeedPage = async ({
   filter = "all",
   limit,
   cursor = null,
-  source = "polymarket",
+  source = null,
   fallbackEvents = [],
 }: LoadHomeEventFeedPageInput): Promise<HomeEventFeedPage> => {
   const safeLimit = Math.max(1, Math.floor(limit));

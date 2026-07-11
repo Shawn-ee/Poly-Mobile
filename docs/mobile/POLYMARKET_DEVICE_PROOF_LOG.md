@@ -2960,6 +2960,18 @@ Cashout uses a dedicated cashout ticket rather than the generic Buy/Sell ticket.
 - Proof command: `npm run proof:s23:unavailable-ticket`.
 - Evidence: screenshot `docs/mobile/screenshots/cycle-VX-unavailable-ticket-s23-proof/cycle-VX-unavailable-ticket.png`; XML `docs/mobile/harness/cycle-VX-unavailable-ticket-s23-proof/cycle-VX-unavailable-ticket.xml`; intermediate Expo-menu-dismiss hierarchy `docs/mobile/harness/cycle-VX-unavailable-ticket-s23-proof/cycle-VX-unavailable-ticket-expo-menu.xml`.
 - Result: PASS. XML verifies `ticket-market-status-visible`, `ticket-readonly-market-state`, `ticket-amount-entry-disabled`, `ticket-availability-unavailable`, `ticket-market-status-PROOF_UNAVAILABLE`, disabled side/preset/keypad markers, and `swipe-submit-state-disabled`.
+# Cycle XF - Local MVP Match Breadth S23 Home Proof
+
+- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` (`SM-S911U1`).
+- Scope: Home visible World Cup match breadth after Local MVP `contract-fixture` match seeding.
+- Result: Pass.
+- Evidence:
+  - `docs/mobile/harness/cycle-XF-local-match-breadth-s23-home/cycle-XF-current-mvp-s23-visible-flow.json`
+  - `docs/mobile/harness/cycle-XF-local-match-breadth-s23-home/cycle-XF-current-mvp-home.xml`
+  - `docs/mobile/screenshots/cycle-XF-local-match-breadth-s23-home/cycle-XF-current-mvp-home.png`
+- Assertions: Home shows `visible-4-of-4`, `4 matches`, hides filter controls, hides order book/chat, and keeps source disclosure for provider-backed winner plus local fake-token lines.
+- Limitations: This proof covers Home breadth only. Contract-fixture match rows remain internal fake-token route data and do not close provider-backed Polymarket match-book or line-market P1 debt.
+
 # Cycle VZ - Current MVP Route Reproof
 
 - Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.

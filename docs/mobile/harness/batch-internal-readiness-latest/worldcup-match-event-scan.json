@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T09:06:54.053Z",
+  "generatedAt": "2026-07-11T09:19:00.157Z",
   "source": "gamma-api.polymarket.com/events",
   "readOnly": true,
   "scope": "world-cup-match-only-provider-breadth",
@@ -359,6 +359,39 @@
   "diagnostics": {
     "futuresEvents": [
       {
+        "slug": "pro-football-2026-mvp-winner",
+        "title": "Pro Football: 2026 MVP Winner",
+        "tags": [
+          "nfl",
+          "mvp",
+          "football",
+          "awards",
+          "nfl-awards"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 40,
+        "usableMarketCount": 18,
+        "acceptingOrderMarketCount": 40,
+        "sampleUsableMarket": {
+          "slug": "will-josh-allen-win-the-2026-nfl-mvp",
+          "question": "Will Josh Allen win the 2026 NFL MVP?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.14,
+          "bestAsk": 0.15,
+          "spread": 0.01,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
         "slug": "2026-womens-us-open-winner-tennis",
         "title": "2026 Women’s US Open Winner (Tennis)",
         "tags": [
@@ -421,39 +454,6 @@
         }
       },
       {
-        "slug": "pro-football-2026-mvp-winner",
-        "title": "Pro Football: 2026 MVP Winner",
-        "tags": [
-          "nfl",
-          "mvp",
-          "football",
-          "awards",
-          "nfl-awards"
-        ],
-        "matchLike": false,
-        "worldCupRelevant": false,
-        "playerPropLike": true,
-        "futuresLike": true,
-        "marketCount": 40,
-        "usableMarketCount": 16,
-        "acceptingOrderMarketCount": 40,
-        "sampleUsableMarket": {
-          "slug": "will-josh-allen-win-the-2026-nfl-mvp",
-          "question": "Will Josh Allen win the 2026 NFL MVP?",
-          "acceptingOrders": true,
-          "active": true,
-          "closed": false,
-          "archived": false,
-          "outcomeCount": 2,
-          "tokenCount": 2,
-          "bestBid": 0.14,
-          "bestAsk": 0.15,
-          "spread": 0.01,
-          "usableBook": true,
-          "rejectionReasons": []
-        }
-      },
-      {
         "slug": "2026-mens-us-open-winner-tennis",
         "title": "2026 Men’s US Open Winner (Tennis)",
         "tags": [
@@ -500,7 +500,7 @@
         "playerPropLike": true,
         "futuresLike": true,
         "marketCount": 41,
-        "usableMarketCount": 11,
+        "usableMarketCount": 10,
         "acceptingOrderMarketCount": 41,
         "sampleUsableMarket": {
           "slug": "will-kylian-mbappe-win-the-bronze-ball-at-the-2026-fifa-world-cup-20260603194939941",
@@ -588,6 +588,40 @@
         }
       },
       {
+        "slug": "world-cup-fair-play-award-winner-20260603201520240",
+        "title": "World Cup: Fair Play Award Winner",
+        "tags": [
+          "soccer",
+          "sports",
+          "world-cup",
+          "fifa-world-cup",
+          "2026-fifa-world-cup",
+          "world-cup-awards"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": true,
+        "playerPropLike": false,
+        "futuresLike": true,
+        "marketCount": 54,
+        "usableMarketCount": 8,
+        "acceptingOrderMarketCount": 54,
+        "sampleUsableMarket": {
+          "slug": "will-cape-verde-win-the-fair-play-award-for-the-2026-fifa-world-cup-20260603201521197",
+          "question": "Will Cape Verde win the Fair Play Award for the 2026 FIFA World Cup?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.019,
+          "bestAsk": 0.028,
+          "spread": 0.009,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
         "slug": "ballon-dor-winner-2026",
         "title": "Ballon d'Or Winner 2026",
         "tags": [
@@ -612,40 +646,6 @@
           "bestBid": 0.3,
           "bestAsk": 0.31,
           "spread": 0.01,
-          "usableBook": true,
-          "rejectionReasons": []
-        }
-      },
-      {
-        "slug": "world-cup-fair-play-award-winner-20260603201520240",
-        "title": "World Cup: Fair Play Award Winner",
-        "tags": [
-          "soccer",
-          "sports",
-          "world-cup",
-          "fifa-world-cup",
-          "2026-fifa-world-cup",
-          "world-cup-awards"
-        ],
-        "matchLike": false,
-        "worldCupRelevant": true,
-        "playerPropLike": false,
-        "futuresLike": true,
-        "marketCount": 54,
-        "usableMarketCount": 7,
-        "acceptingOrderMarketCount": 54,
-        "sampleUsableMarket": {
-          "slug": "will-cape-verde-win-the-fair-play-award-for-the-2026-fifa-world-cup-20260603201521197",
-          "question": "Will Cape Verde win the Fair Play Award for the 2026 FIFA World Cup?",
-          "acceptingOrders": true,
-          "active": true,
-          "closed": false,
-          "archived": false,
-          "outcomeCount": 2,
-          "tokenCount": 2,
-          "bestBid": 0.019,
-          "bestAsk": 0.028,
-          "spread": 0.009,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -716,7 +716,7 @@
           "tokenCount": 2,
           "bestBid": 0.5,
           "bestAsk": 0.52,
-          "spread": 0.01,
+          "spread": 0.02,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -750,6 +750,39 @@
           "bestBid": 0.066,
           "bestAsk": 0.067,
           "spread": 0.001,
+          "usableBook": true,
+          "rejectionReasons": []
+        }
+      },
+      {
+        "slug": "pro-football-2026-mvp-winner",
+        "title": "Pro Football: 2026 MVP Winner",
+        "tags": [
+          "nfl",
+          "mvp",
+          "football",
+          "awards",
+          "nfl-awards"
+        ],
+        "matchLike": false,
+        "worldCupRelevant": false,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 40,
+        "usableMarketCount": 18,
+        "acceptingOrderMarketCount": 40,
+        "sampleUsableMarket": {
+          "slug": "will-josh-allen-win-the-2026-nfl-mvp",
+          "question": "Will Josh Allen win the 2026 NFL MVP?",
+          "acceptingOrders": true,
+          "active": true,
+          "closed": false,
+          "archived": false,
+          "outcomeCount": 2,
+          "tokenCount": 2,
+          "bestBid": 0.14,
+          "bestAsk": 0.15,
+          "spread": 0.01,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -812,39 +845,6 @@
           "bestBid": 0.013,
           "bestAsk": 0.014,
           "spread": 0.001,
-          "usableBook": true,
-          "rejectionReasons": []
-        }
-      },
-      {
-        "slug": "pro-football-2026-mvp-winner",
-        "title": "Pro Football: 2026 MVP Winner",
-        "tags": [
-          "nfl",
-          "mvp",
-          "football",
-          "awards",
-          "nfl-awards"
-        ],
-        "matchLike": false,
-        "worldCupRelevant": false,
-        "playerPropLike": true,
-        "futuresLike": true,
-        "marketCount": 40,
-        "usableMarketCount": 16,
-        "acceptingOrderMarketCount": 40,
-        "sampleUsableMarket": {
-          "slug": "will-josh-allen-win-the-2026-nfl-mvp",
-          "question": "Will Josh Allen win the 2026 NFL MVP?",
-          "acceptingOrders": true,
-          "active": true,
-          "closed": false,
-          "archived": false,
-          "outcomeCount": 2,
-          "tokenCount": 2,
-          "bestBid": 0.14,
-          "bestAsk": 0.15,
-          "spread": 0.01,
           "usableBook": true,
           "rejectionReasons": []
         }
@@ -977,44 +977,40 @@
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.046,
-          "bestAsk": 0.076,
-          "spread": 0.03,
+          "bestBid": 0.045,
+          "bestAsk": 0.066,
+          "spread": 0.021,
           "usableBook": true,
           "rejectionReasons": []
         }
       },
       {
-        "slug": "ncaa-football-2026-national-champion",
-        "title": "NCAA Football: 2027 National Champion",
+        "slug": "2026-mens-us-open-winner-tennis",
+        "title": "2026 Men’s US Open Winner (Tennis)",
         "tags": [
-          "college-football-playoffs",
-          "national-championship",
           "sports",
-          "football",
-          "ncaa",
-          "college-football",
-          "cfb"
+          "atp",
+          "tennis"
         ],
         "matchLike": false,
         "worldCupRelevant": false,
-        "playerPropLike": false,
-        "futuresLike": false,
-        "marketCount": 109,
+        "playerPropLike": true,
+        "futuresLike": true,
+        "marketCount": 49,
         "usableMarketCount": 13,
-        "acceptingOrderMarketCount": 109,
+        "acceptingOrderMarketCount": 49,
         "sampleUsableMarket": {
-          "slug": "will-ohio-state-buckeyes-win-the-2027-cfp-national-championship",
-          "question": "Will Ohio State Buckeyes win the 2027 CFP National Championship?",
+          "slug": "will-jannik-sinner-win-the-2026-mens-us-open",
+          "question": "Will Jannik Sinner win the 2026 Men's US Open?",
           "acceptingOrders": true,
           "active": true,
           "closed": false,
           "archived": false,
           "outcomeCount": 2,
           "tokenCount": 2,
-          "bestBid": 0.09,
-          "bestAsk": 0.11,
-          "spread": 0.01,
+          "bestBid": 0.46,
+          "bestAsk": 0.48,
+          "spread": 0.02,
           "usableBook": true,
           "rejectionReasons": []
         }
