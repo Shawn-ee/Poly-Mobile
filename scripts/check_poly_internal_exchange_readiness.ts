@@ -237,13 +237,30 @@ async function buildReport(args: Args) {
   const localMmReadyMarkets = marketReadiness.filter((market) => market.localMmReady);
   const mobileProviderEvents = new Set(providerVisibleMarkets.map((market) => market.eventSlug).filter(Boolean));
   const snapshotBlockerSummary = countBlockers(marketReadiness.flatMap((market) => market.snapshotBlockers));
+  const providerUnavailableMarkets = providerVisibleMarkets.filter((market) =>
+    market.snapshotBlockers.some((blocker) =>
+      blocker === "snapshot_not_accepting_orders" ||
+      blocker === "snapshot_reason_reference_missing_book" ||
+      blocker === "snapshot_reason_reference_invalid_price" ||
+      blocker === "snapshot_quality_missing_book" ||
+      blocker === "snapshot_quality_invalid_price",
+    ),
+  );
+  const providerBooksUnavailableOrClosed =
+    providerVisibleMarkets.length > 0 &&
+    snapshotReadyMarkets.length === 0 &&
+    providerUnavailableMarkets.length === providerVisibleMarkets.length;
   const blockers = [
     mobileEvents.length >= args.minMobileEvents
       ? null
       : `mobile_event_count_below_${args.minMobileEvents}`,
     providerVisibleMarkets.length > 0 ? null : "no_mobile_visible_provider_markets",
-    snapshotReadyMarkets.length > 0 ? null : "no_ready_provider_snapshots",
-    localMmReadyMarkets.length >= args.minMmReadyMarkets
+    snapshotReadyMarkets.length > 0
+      ? null
+      : providerBooksUnavailableOrClosed
+        ? "provider_books_unavailable_or_closed"
+        : "no_ready_provider_snapshots",
+    providerBooksUnavailableOrClosed || localMmReadyMarkets.length >= args.minMmReadyMarkets
       ? null
       : `local_mm_ready_market_count_below_${args.minMmReadyMarkets}`,
   ].filter((value): value is string => Boolean(value));
@@ -280,6 +297,8 @@ async function buildReport(args: Args) {
       snapshotReadyCount: snapshotReadyMarkets.length,
       localMmReadyCount: localMmReadyMarkets.length,
       openOrderBackedCount: marketReadiness.filter((market) => market.localOpenOrderCount > 0).length,
+      providerUnavailableOrClosedCount: providerUnavailableMarkets.length,
+      providerBooksUnavailableOrClosed,
       snapshotBlockerSummary,
       samples: marketReadiness.slice(0, 20),
     },
@@ -358,6 +377,10 @@ function deriveNextActions(blockers: string[]) {
     }
     if (blocker === "no_ready_provider_snapshots") {
       actions.add("Refresh Polymarket reference snapshots for the mobile-visible provider allowlist.");
+    }
+    if (blocker === "provider_books_unavailable_or_closed") {
+      actions.add("Keep Local MVP contract-fixture trading active and do not seed local MM against closed/unusable Polymarket books.");
+      actions.add("Continue provider discovery only when the batch finds a new usable World Cup match candidate.");
     }
     if (blocker.startsWith("local_mm_ready_market_count")) {
       actions.add("Seed/enable local market-maker readiness for at least one allowlisted provider market.");

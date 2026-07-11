@@ -1,5 +1,5 @@
 ﻿{
-    "generatedAt":  "2026-07-11T07:03:41.3158789Z",
+    "generatedAt":  "2026-07-11T07:12:10.0887848Z",
     "scope":  "mobile-internal-readiness-batch",
     "cycle":  "BATCHREADINESS",
     "backendBaseUrl":  "http://127.0.0.1:3002",
@@ -78,6 +78,7 @@
                       "mobileVisibleEventCount":  1,
                       "providerVisibleMarketCount":  3,
                       "providerLocalMmReadyMarketCount":  0,
+                      "providerBooksUnavailableOrClosed":  true,
                       "usableWorldCupTeamMatchEventCount":  0,
                       "attachReadyProviderLineCandidateCount":  0
                   },
@@ -86,7 +87,7 @@
 
                             ],
                      "p1":  [
-                                "provider_internal_exchange_not_ready",
+                                "provider_worldcup_match_books_unavailable_or_closed",
                                 "no_usable_polymarket_worldcup_team_match_books",
                                 "no_attach_ready_polymarket_worldcup_line_markets"
                             ]

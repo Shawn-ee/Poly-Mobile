@@ -91,6 +91,8 @@ $lineScan = Read-JsonFile $lineScanPath
 $backendReady = [bool]($backend -and $backend.dockerCliAvailable -and $backend.dockerDaemonReachable -and $backend.databaseTcpReachable)
 $localMvpReady = [bool]($currentState -and $currentState.diagnosis.serviceReadiness.localMvpPathReady)
 $providerExchangeReady = [bool]($exchange -and $exchange.readyForInternalMobileExchange)
+$providerExchangeBlockers = if ($exchange -and $exchange.blockers) { @($exchange.blockers) } else { @() }
+$providerBooksUnavailableOrClosed = $providerExchangeBlockers -contains "provider_books_unavailable_or_closed"
 $usableMatchCount = if ($matchScan) { [int]$matchScan.summary.usableMatchEventCount } else { 0 }
 $attachReadyLineCount = if ($lineScan) { [int]$lineScan.totals.attachReadyProviderLineCandidateCount } else { 0 }
 $serverModeApiKeySource = if ($credential) { [string]$credential.apiKeySource } else { $null }
@@ -102,7 +104,13 @@ if (-not $backendReady) { $p0Blockers += "backend_or_local_database_not_ready" }
 if (-not $localMvpReady) { $p0Blockers += "local_mvp_route_not_ready" }
 
 $p1Blockers = @()
-if (-not $providerExchangeReady) { $p1Blockers += "provider_internal_exchange_not_ready" }
+if (-not $providerExchangeReady) {
+  if ($providerBooksUnavailableOrClosed) {
+    $p1Blockers += "provider_worldcup_match_books_unavailable_or_closed"
+  } else {
+    $p1Blockers += "provider_internal_exchange_not_ready"
+  }
+}
 if ($usableMatchCount -lt 1) { $p1Blockers += "no_usable_polymarket_worldcup_team_match_books" }
 if ($attachReadyLineCount -lt 1) { $p1Blockers += "no_attach_ready_polymarket_worldcup_line_markets" }
 if ($credential -and -not $credential.readyForServerBackedSamsungProof) { $p1Blockers += "manual_server_mode_needs_generated_mobile_api_key" }
@@ -126,6 +134,7 @@ $summary = [ordered]@{
     mobileVisibleEventCount = if ($exchange) { $exchange.mobileExposure.mobileVisibleEventCount } else { $null }
     providerVisibleMarketCount = if ($exchange) { $exchange.providerMarkets.mobileVisibleCount } else { $null }
     providerLocalMmReadyMarketCount = if ($exchange) { $exchange.providerMarkets.localMmReadyCount } else { $null }
+    providerBooksUnavailableOrClosed = $providerBooksUnavailableOrClosed
     usableWorldCupTeamMatchEventCount = $usableMatchCount
     attachReadyProviderLineCandidateCount = $attachReadyLineCount
   }

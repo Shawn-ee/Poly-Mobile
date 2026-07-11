@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T07:02:30.740Z",
+  "generatedAt": "2026-07-11T07:10:59.993Z",
   "readOnly": true,
   "scope": "poly-internal-exchange-runtime-readiness",
   "thresholds": {
@@ -32,6 +32,8 @@
     "snapshotReadyCount": 0,
     "localMmReadyCount": 0,
     "openOrderBackedCount": 0,
+    "providerUnavailableOrClosedCount": 3,
+    "providerBooksUnavailableOrClosed": true,
     "snapshotBlockerSummary": {
       "snapshot_missing_bid": 2,
       "snapshot_not_accepting_orders": 3,
@@ -56,8 +58,8 @@
         "mmEnabled": true,
         "outcomeCount": 2,
         "mappedOutcomeCount": 2,
-        "latestSnapshotAt": "2026-07-11T06:00:55.491Z",
-        "snapshotAgeSeconds": 3695,
+        "latestSnapshotAt": "2026-07-11T07:08:26.188Z",
+        "snapshotAgeSeconds": 154,
         "snapshotReady": false,
         "snapshotQualityStatus": "missing_book",
         "snapshotReason": "reference_missing_book",
@@ -96,8 +98,8 @@
         "mmEnabled": true,
         "outcomeCount": 2,
         "mappedOutcomeCount": 2,
-        "latestSnapshotAt": "2026-07-11T06:00:55.092Z",
-        "snapshotAgeSeconds": 3696,
+        "latestSnapshotAt": "2026-07-11T07:08:25.953Z",
+        "snapshotAgeSeconds": 154,
         "snapshotReady": false,
         "snapshotQualityStatus": "missing_book",
         "snapshotReason": "reference_missing_book",
@@ -136,8 +138,8 @@
         "mmEnabled": true,
         "outcomeCount": 2,
         "mappedOutcomeCount": 2,
-        "latestSnapshotAt": "2026-07-11T06:00:55.331Z",
-        "snapshotAgeSeconds": 3695,
+        "latestSnapshotAt": "2026-07-11T07:08:26.039Z",
+        "snapshotAgeSeconds": 154,
         "snapshotReady": false,
         "snapshotQualityStatus": "invalid_price",
         "snapshotReason": "reference_invalid_price",
@@ -167,12 +169,11 @@
   "readyForInternalMobileExchange": false,
   "blockers": [
     "mobile_event_count_below_2",
-    "no_ready_provider_snapshots",
-    "local_mm_ready_market_count_below_1"
+    "provider_books_unavailable_or_closed"
   ],
   "nextActions": [
     "Import, classify, and list more backend events before expecting Home/Search breadth.",
-    "Refresh Polymarket reference snapshots for the mobile-visible provider allowlist.",
-    "Seed/enable local market-maker readiness for at least one allowlisted provider market."
+    "Keep Local MVP contract-fixture trading active and do not seed local MM against closed/unusable Polymarket books.",
+    "Continue provider discovery only when the batch finds a new usable World Cup match candidate."
   ]
 }
