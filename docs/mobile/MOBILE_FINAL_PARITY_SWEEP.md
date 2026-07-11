@@ -1,6 +1,6 @@
 # Mobile Final Parity Sweep
 
-Generated: 2026-07-11T19:55:36.410Z
+Generated: 2026-07-11T20:28:32.080Z
 
 Ready to declare done: No
 
@@ -22,7 +22,7 @@ Counts:
 | dod-reports | verified | Screenshots, loop reports, technical debt, and branch merge status are up to date. | Cycles 277-279 are documented and locally merged; latest cleanup and proof screenshots are recorded. |
 | dod-current-local-mvp-batch | verified | Current Local MVP retail flow is ready for internal testing under the latest batch gate. | Latest batch reports backend, DB, S23, root typecheck, Jest CI, mobile typecheck, and committed S23 proof aggregation ready with zero P0 blockers. |
 | dod-provider-polymarket-parity | partial | Provider-backed Polymarket match/line parity is current, tradable, and not relying on contract fixtures for MVP line markets. | Current batch still tracks 4 provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity. Provider refresh plan status is skip-refresh, so another provider refresh should be skipped until the next stale window or a real candidate signal appears. |
-| dod-temporary-sportsbook-provider-bridge | verified | Temporary sportsbook provider bridge is available for Local MVP testing without claiming Polymarket-backed parity. | The Odds API single-event bridge is seeded and has provider, fake-token order, Portfolio/history, and S23 evidence. |
+| dod-temporary-sportsbook-provider-bridge | verified | Temporary sportsbook provider bridge is available for Local MVP testing without claiming Polymarket-backed parity. | The Odds API single-event bridge is seeded and has fresh backend proof, fake-token order, Portfolio/history, and S23 evidence. Backend proof hours until stale: 23.8. |
 | dod-final-cycle | verified | Final cycle includes passing required harnesses, final QA report, final review report, final feature gap tracker, screenshots, and no unresolved P0 debt. | Final QA/review artifacts exist and the feature tracker has zero unresolved P0 gaps. Overall completion still depends on the separate provider parity criterion. |
 | dod-apk-lane | verified | Samsung QA is moving off Expo Go toward dev build/APK. | APK artifact exists and the Samsung APK smoke installed, launched, verified foreground focus, and found no crash dialog. |
 

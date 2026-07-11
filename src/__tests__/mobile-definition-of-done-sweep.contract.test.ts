@@ -16,6 +16,9 @@ describe("mobile Definition of Done sweep contract", () => {
 
     expect(script).toContain("dod-temporary-sportsbook-provider-bridge");
     expect(script).toContain("temporarySportsbookProviderBridgeReady");
+    expect(script).toContain("temporarySportsbookBackendProofReady");
+    expect(script).toContain("single-event-summary.redacted.json");
+    expect(script).not.toContain("single-event-replay-summary.redacted.json");
     expect(script).toContain("The Odds API single-event bridge is seeded");
     expect(script).toContain("does not block Local MVP readiness");
   });

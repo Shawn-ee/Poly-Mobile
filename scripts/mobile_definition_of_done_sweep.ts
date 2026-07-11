@@ -40,7 +40,7 @@ const evidence = {
   internalReadinessGapList: "docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md",
   providerEvidencePlan: "docs/mobile/harness/batch-internal-readiness-latest/provider-evidence-refresh-plan.json",
   oddsApiSingleEventAudit: "docs/mobile/audits/BATCH_THE_ODDS_API_SINGLE_EVENT.md",
-  oddsApiSingleEventSummary: "docs/mobile/harness/the-odds-api-single-event/single-event-replay-summary.redacted.json",
+  oddsApiSingleEventSummary: "docs/mobile/harness/the-odds-api-single-event/single-event-summary.redacted.json",
   oddsApiMobileFlowProof: "docs/mobile/harness/the-odds-api-single-event/mobile-flow-proof.redacted.json",
   oddsApiS23Reachability: "docs/mobile/harness/the-odds-api-single-event/s23-device-reachability.redacted.json",
   oddsApiS23VisibleProof: "docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json",
@@ -71,6 +71,8 @@ const internalReadiness = readJson<{
     rootTypecheckReady?: boolean;
     jestCiReady?: boolean;
     mobileTypecheckReady?: boolean;
+    temporarySportsbookBackendProofReady?: boolean;
+    temporarySportsbookBackendProofHoursUntilStale?: number | null;
   };
   blockers?: {
     p0?: string[];
@@ -124,6 +126,7 @@ const oddsApiS23VisibleProof = readJson<{
   };
 }>(evidence.oddsApiS23VisibleProof);
 const temporarySportsbookProviderBridgeReady =
+  internalReadiness?.readiness?.temporarySportsbookBackendProofReady === true &&
   oddsApiSummary?.pass === true &&
   (oddsApiSummary.mobile?.sportsbookMarketCount ?? 0) > 0 &&
   oddsApiMobileFlowProof?.pass === true &&
@@ -261,8 +264,8 @@ const criteria: Criterion[] = [
     notes: temporarySportsbookProviderBridgeReady
       ? temporarySportsbookProviderNeedsVisibleS23
         ? "The Odds API single-event bridge is seeded and fake-token order/Portfolio/history proof passed, but S23 evidence is reachability only; run a full visible S23 walkthrough before treating the seeded provider as human-tested UI proof."
-        : "The Odds API single-event bridge is seeded and has provider, fake-token order, Portfolio/history, and S23 evidence."
-      : "The temporary sportsbook provider bridge is missing or not fully proven. This does not block Local MVP readiness but should be recovered before using sportsbook-derived markets for manual testing.",
+        : `The Odds API single-event bridge is seeded and has fresh backend proof, fake-token order, Portfolio/history, and S23 evidence. Backend proof hours until stale: ${internalReadiness?.readiness?.temporarySportsbookBackendProofHoursUntilStale ?? "unknown"}.`
+      : "The temporary sportsbook provider bridge is missing, stale, or not fully proven. This does not block Local MVP readiness but should be recovered before using sportsbook-derived markets for manual testing.",
   },
   {
     id: "dod-final-cycle",

@@ -13303,3 +13303,18 @@ Known limitations:
   - The recommended commands refresh the one-event sportsbook seed, run the backend fake-token flow proof, and rerun the consolidated batch.
 - Known limitations:
   - This is planner control logic only. It does not call provider APIs itself and does not close Polymarket-backed parity.
+
+# Cycle DODSPORTSBOOKFRESH - DoD Sportsbook Backend Freshness
+
+- Feature/page worked on: Definition of Done sweep for the temporary sportsbook bridge.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/mobile_definition_of_done_sweep.ts`
+  - `src/__tests__/mobile-definition-of-done-sweep.contract.test.ts`
+- User interactions supported: unchanged. The sweep now refuses to count the temporary sportsbook bridge as verified unless the consolidated readiness batch reports fresh backend seed/order/Portfolio proof.
+- State transitions:
+  - The sweep now reads `single-event-summary.redacted.json` rather than the older replay summary artifact.
+  - `dod-temporary-sportsbook-provider-bridge` requires `temporarySportsbookBackendProofReady=true` from the readiness batch.
+  - The generated notes include sportsbook backend proof freshness timing.
+- Known limitations:
+  - This is audit/DoD logic only. It does not create new provider markets and does not close the separate Polymarket provider parity criterion.

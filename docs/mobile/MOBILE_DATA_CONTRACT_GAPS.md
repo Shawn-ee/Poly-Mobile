@@ -9946,3 +9946,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: the real Polymarket-backed match/line provider data contract is still incomplete because current Polymarket evidence has no attach-ready World Cup match/line markets.
 - Temporary mock/static data: none added. The planner only reads existing redacted proof summaries and emits existing proof commands.
 - Future migration concern: keep `refresh-temporary-provider-proof` separate from `refresh-provider-evidence`. The first keeps the internal sportsbook bridge fresh; the second is the Polymarket parity path.
+
+## Cycle DODSPORTSBOOKFRESH - DoD Sportsbook Backend Freshness
+
+- Closed or narrowed: the Definition of Done sweep now verifies the temporary sportsbook bridge against the live single-event summary and the readiness batch's backend proof freshness flag.
+- Route mismatch: none. This is local audit logic only.
+- Fields Holiwyn still needs but backend/provider does not fully provide: real Polymarket match/line provider data remains incomplete and is still held by `dod-provider-polymarket-parity`.
+- Temporary mock/static data: none added. The sweep only reads redacted proof artifacts and current batch evidence.
+- Future migration concern: the temporary sportsbook bridge must remain a separate DoD criterion from Polymarket provider parity, so stale or fresh sportsbook evidence never closes `dod-provider-polymarket-parity`.
