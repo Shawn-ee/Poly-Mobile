@@ -1,0 +1,468 @@
+{
+  "generatedAt": "2026-07-11T06:10:58.095Z",
+  "source": "gamma-api.polymarket.com",
+  "targetCount": 20,
+  "selectedCount": 20,
+  "candidates": [
+    {
+      "question": "Will Spain win the 2026 FIFA World Cup?",
+      "slug": "will-spain-win-the-2026-fifa-world-cup-963",
+      "eventTitle": "World Cup Winner",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.2115,
+        0.7885
+      ],
+      "bestBid": 0.211,
+      "bestAsk": 0.212,
+      "spread": 0.001,
+      "lastTradePrice": 0.211,
+      "volume": 102411509.17733587,
+      "volume24hr": 4942135.853204056,
+      "liquidity": 6823679.92563,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Norway win the 2026 FIFA World Cup?",
+      "slug": "will-norway-win-the-2026-fifa-world-cup-893",
+      "eventTitle": "World Cup Winner",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.0585,
+        0.9415
+      ],
+      "bestBid": 0.058,
+      "bestAsk": 0.059,
+      "spread": 0.001,
+      "lastTradePrice": 0.059,
+      "volume": 127354856.25478905,
+      "volume24hr": 3841594.5894409865,
+      "liquidity": 4935000.54573,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will France win the 2026 FIFA World Cup?",
+      "slug": "will-france-win-the-2026-fifa-world-cup-924",
+      "eventTitle": "World Cup Winner",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.3705,
+        0.6295
+      ],
+      "bestBid": 0.37,
+      "bestAsk": 0.371,
+      "spread": 0.001,
+      "lastTradePrice": 0.37,
+      "volume": 110467695.86375153,
+      "volume24hr": 2326073.038625982,
+      "liquidity": 5456809.26549,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Switzerland win the 2026 FIFA World Cup?",
+      "slug": "will-switzerland-win-the-2026-fifa-world-cup",
+      "eventTitle": "World Cup Winner",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.0165,
+        0.9835
+      ],
+      "bestBid": 0.016,
+      "bestAsk": 0.017,
+      "spread": 0.001,
+      "lastTradePrice": 0.016,
+      "volume": 123016354.24337496,
+      "volume24hr": 2245757.6329919915,
+      "liquidity": 3937297.27438,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Argentina win the 2026 FIFA World Cup?",
+      "slug": "will-argentina-win-the-2026-fifa-world-cup-245",
+      "eventTitle": "World Cup Winner",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.1775,
+        0.8225
+      ],
+      "bestBid": 0.177,
+      "bestAsk": 0.178,
+      "spread": 0.001,
+      "lastTradePrice": 0.178,
+      "volume": 123207122.61041589,
+      "volume24hr": 1625906.7681499992,
+      "liquidity": 5699246.49114,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will England win the 2026 FIFA World Cup?",
+      "slug": "will-england-win-the-2026-fifa-world-cup-937",
+      "eventTitle": "World Cup Winner",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.1445,
+        0.8555
+      ],
+      "bestBid": 0.144,
+      "bestAsk": 0.145,
+      "spread": 0.001,
+      "lastTradePrice": 0.145,
+      "volume": 93087319.76427278,
+      "volume24hr": 1533035.9026229947,
+      "liquidity": 5413429.53368,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Pete Buttigieg win the 2028 US Presidential Election?",
+      "slug": "will-pete-buttigieg-win-the-2028-us-presidential-election",
+      "eventTitle": "Presidential Election Winner 2028",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.0225,
+        0.9775
+      ],
+      "bestBid": 0.022,
+      "bestAsk": 0.023,
+      "spread": 0.001,
+      "lastTradePrice": 0.022,
+      "volume": 7156900.870715273,
+      "volume24hr": 285256.3523240036,
+      "liquidity": 490202.41732,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Michelle Obama win the 2028 Democratic presidential nomination?",
+      "slug": "will-michelle-obama-win-the-2028-democratic-presidential-nomination-777",
+      "eventTitle": "Democratic Presidential Nominee 2028",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.0115,
+        0.9885
+      ],
+      "bestBid": 0.011,
+      "bestAsk": 0.012,
+      "spread": 0.001,
+      "lastTradePrice": 0.011,
+      "volume": 25949249.007363297,
+      "volume24hr": 1413.211179,
+      "liquidity": 2108328.99007,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Putin out as President of Russia by December 31, 2026?",
+      "slug": "putin-out-before-2027-346",
+      "eventTitle": "Putin out as President of Russia by...?",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.085,
+        0.915
+      ],
+      "bestBid": 0.08,
+      "bestAsk": 0.09,
+      "spread": 0.01,
+      "lastTradePrice": 0.08,
+      "volume": 16872495.77311606,
+      "volume24hr": 16787.966113,
+      "liquidity": 1663973.8703,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Stephen A. Smith win the 2028 Democratic presidential nomination?",
+      "slug": "will-stephen-a-smith-win-the-2028-democratic-presidential-nomination-914",
+      "eventTitle": "Democratic Presidential Nominee 2028",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.0105,
+        0.9895
+      ],
+      "bestBid": 0.01,
+      "bestAsk": 0.011,
+      "spread": 0.001,
+      "lastTradePrice": 0.01,
+      "volume": 21323572.94163614,
+      "volume24hr": 11050.914999999999,
+      "liquidity": 1150563.73324,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Dwayne 'The Rock' Johnson win the 2028 Democratic presidential nomination?",
+      "slug": "will-dwayne-the-rock-johnson-win-the-2028-democratic-presidential-nomination",
+      "eventTitle": "Democratic Presidential Nominee 2028",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.0125,
+        0.9875
+      ],
+      "bestBid": 0.012,
+      "bestAsk": 0.013,
+      "spread": 0.001,
+      "lastTradePrice": 0.012,
+      "volume": 12261858.173771063,
+      "volume24hr": 967.874333,
+      "liquidity": 891726.29617,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Mark Kelly win the 2028 Democratic presidential nomination?",
+      "slug": "will-mark-kelly-win-the-2028-democratic-presidential-nomination-479",
+      "eventTitle": "Democratic Presidential Nominee 2028",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.0105,
+        0.9895
+      ],
+      "bestBid": 0.01,
+      "bestAsk": 0.011,
+      "spread": 0.001,
+      "lastTradePrice": 0.011,
+      "volume": 16434226.532345463,
+      "volume24hr": 28070.305063000003,
+      "liquidity": 587681.70847,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Rahm Emanuel win the 2028 Democratic presidential nomination?",
+      "slug": "will-rahm-emanuel-win-the-2028-democratic-presidential-nomination-299",
+      "eventTitle": "Democratic Presidential Nominee 2028",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.0175,
+        0.9825
+      ],
+      "bestBid": 0.017,
+      "bestAsk": 0.018,
+      "spread": 0.001,
+      "lastTradePrice": 0.018,
+      "volume": 14275845.603145946,
+      "volume24hr": 5590.224188,
+      "liquidity": 743087.54658,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Wes Moore win the 2028 Democratic presidential nomination?",
+      "slug": "will-wes-moore-win-the-2028-democratic-presidential-nomination-714",
+      "eventTitle": "Democratic Presidential Nominee 2028",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.0135,
+        0.9865
+      ],
+      "bestBid": 0.013,
+      "bestAsk": 0.014,
+      "spread": 0.001,
+      "lastTradePrice": 0.014,
+      "volume": 16831184.97903396,
+      "volume24hr": 1519.756837,
+      "liquidity": 742057.77307,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Donald Trump win the 2028 US Presidential Election?",
+      "slug": "will-donald-trump-win-the-2028-us-presidential-election",
+      "eventTitle": "Presidential Election Winner 2028",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.0135,
+        0.9865
+      ],
+      "bestBid": 0.013,
+      "bestAsk": 0.014,
+      "spread": 0.001,
+      "lastTradePrice": 0.013,
+      "volume": 8799624.477620238,
+      "volume24hr": 1483.254943,
+      "liquidity": 702427.78847,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Andy Beshear win the 2028 Democratic presidential nomination?",
+      "slug": "will-andy-beshear-win-the-2028-democratic-presidential-nomination-832",
+      "eventTitle": "Democratic Presidential Nominee 2028",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.0215,
+        0.9785
+      ],
+      "bestBid": 0.021,
+      "bestAsk": 0.022,
+      "spread": 0.001,
+      "lastTradePrice": 0.021,
+      "volume": 12761583.329516916,
+      "volume24hr": 21682.837900999995,
+      "liquidity": 449103.60513,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Donald Trump Jr. win the 2028 US Presidential Election?",
+      "slug": "will-donald-trump-jr-win-the-2028-us-presidential-election",
+      "eventTitle": "Presidential Election Winner 2028",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.0115,
+        0.9885
+      ],
+      "bestBid": 0.011,
+      "bestAsk": 0.012,
+      "spread": 0.001,
+      "lastTradePrice": 0.012,
+      "volume": 13261889.86713779,
+      "volume24hr": 820.108514,
+      "liquidity": 644622.29982,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Alexandria Ocasio-Cortez win the 2028 US Presidential Election?",
+      "slug": "will-alexandria-ocasio-cortez-win-the-2028-us-presidential-election",
+      "eventTitle": "Presidential Election Winner 2028",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.0775,
+        0.9225
+      ],
+      "bestBid": 0.077,
+      "bestAsk": 0.078,
+      "spread": 0.001,
+      "lastTradePrice": 0.076,
+      "volume": 12562758.879024873,
+      "volume24hr": 28163.354055,
+      "liquidity": 344821.15608,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will JD Vance win the 2028 US Presidential Election?",
+      "slug": "will-jd-vance-win-the-2028-us-presidential-election",
+      "eventTitle": "Presidential Election Winner 2028",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.1995,
+        0.8005
+      ],
+      "bestBid": 0.199,
+      "bestAsk": 0.2,
+      "spread": 0.001,
+      "lastTradePrice": 0.199,
+      "volume": 14604484.267736001,
+      "volume24hr": 17695.398765999995,
+      "liquidity": 448506.18123,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    },
+    {
+      "question": "Will Pete Buttigieg win the 2028 Democratic presidential nomination?",
+      "slug": "will-pete-buttigieg-win-the-2028-democratic-presidential-nomination-687",
+      "eventTitle": "Democratic Presidential Nominee 2028",
+      "outcomes": [
+        "Yes",
+        "No"
+      ],
+      "outcomePrices": [
+        0.0515,
+        0.9485
+      ],
+      "bestBid": 0.05,
+      "bestAsk": 0.053,
+      "spread": 0.003,
+      "lastTradePrice": 0.051,
+      "volume": 11523134.513154587,
+      "volume24hr": 21938.210776,
+      "liquidity": 348280.98495,
+      "acceptingOrders": true,
+      "qualityStatus": "usable",
+      "mmEligibleCandidate": true
+    }
+  ]
+}
