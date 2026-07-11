@@ -1,9 +1,10 @@
 ﻿{
-    "generatedAt":  "2026-07-11T10:16:21.6002133Z",
+    "generatedAt":  "2026-07-11T10:26:45.8881821Z",
     "scope":  "mobile-internal-readiness-batch",
     "cycle":  "BATCHREADINESS",
     "backendBaseUrl":  "http://127.0.0.1:3002",
     "outputDir":  "docs/mobile/harness/batch-internal-readiness-latest",
+    "gapListPath":  "docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md",
     "steps":  [
                   {
                       "name":  "backend-readiness",

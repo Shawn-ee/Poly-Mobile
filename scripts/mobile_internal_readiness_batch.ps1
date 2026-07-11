@@ -431,6 +431,7 @@ $summary = [ordered]@{
   cycle = $Cycle
   backendBaseUrl = $BackendBaseUrl
   outputDir = ConvertTo-RepoPath $ResolvedOutputDir
+  gapListPath = "docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md"
   steps = $steps
   environmentHealthCaptured = "before-batch-steps"
   environmentHealth = $environmentHealth
@@ -492,7 +493,13 @@ $summary = [ordered]@{
 
 $summaryPath = Join-Path $ResolvedOutputDir "internal-readiness-batch-summary.json"
 $summary | ConvertTo-Json -Depth 20 | Out-File -LiteralPath $summaryPath -Encoding utf8
+$gapListPath = Join-Path $RepoRoot "docs\mobile\audits\BATCH_INTERNAL_READINESS_GAP_LIST.md"
+& npx.cmd tsx scripts/write_mobile_internal_readiness_gap_list.ts "--summaryPath=$(ConvertTo-RepoPath $summaryPath)" "--output=$(ConvertTo-RepoPath $gapListPath)"
+if ($LASTEXITCODE -ne 0) {
+  throw "Failed to write mobile internal readiness gap list."
+}
 Write-Host "SUMMARY $(ConvertTo-RepoPath $summaryPath)"
+Write-Host "GAP_LIST $(ConvertTo-RepoPath $gapListPath)"
 Write-Output ($summary | ConvertTo-Json -Depth 20)
 
 if ($p0Blockers.Count -gt 0) {

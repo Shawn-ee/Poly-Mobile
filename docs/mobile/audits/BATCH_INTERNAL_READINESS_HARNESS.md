@@ -18,7 +18,10 @@ Default output:
 
 ```text
 docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json
+docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md
 ```
+
+The gap list is generated from the latest summary by `scripts/write_mobile_internal_readiness_gap_list.ts`. Treat the summary as the authoritative machine-readable result and the gap list as the tester-friendly audit view.
 
 ## What It Checks
 
