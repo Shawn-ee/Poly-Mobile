@@ -91,8 +91,14 @@ describe("mobile internal readiness batch harness", () => {
     expect(source).toContain("Get-CachedProviderEvidence");
     expect(source).toContain("cachedProviderEvidenceFresh");
     expect(source).toContain("cachedProviderEvidenceMaxAgeHours");
+    expect(source).toContain("cachedProviderEvidenceNextStaleName");
+    expect(source).toContain("cachedProviderEvidenceNextStaleAt");
+    expect(source).toContain("cachedProviderEvidenceHoursUntilStale");
+    expect(source).toContain("staleAt");
+    expect(source).toContain("hoursUntilStale");
     expect(source).toContain("providerRefreshCommand");
     expect(gapWriter).toContain("Cached provider evidence fresh");
+    expect(gapWriter).toContain("Cached provider evidence next stale");
     expect(gapWriter).toContain("Provider Evidence Recovery");
   });
 

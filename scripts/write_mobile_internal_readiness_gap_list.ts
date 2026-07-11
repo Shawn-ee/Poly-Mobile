@@ -292,6 +292,7 @@ const markdown: string[] = [
   `- Provider-backed exchange ready: ${boolText(readiness.providerBackedExchangeReady)}`,
   `- Provider discovery mode: ${summary.providerDiscoveryMode ?? "unknown"}`,
   `- Cached provider evidence fresh: ${boolText(readiness.cachedProviderEvidenceFresh)} (max age ${readiness.cachedProviderEvidenceMaxAgeHours ?? "unknown"} hours)`,
+  `- Cached provider evidence next stale: ${readiness.cachedProviderEvidenceNextStaleName ? `${readiness.cachedProviderEvidenceNextStaleName} in ${readiness.cachedProviderEvidenceHoursUntilStale ?? "unknown"} hours (${readiness.cachedProviderEvidenceNextStaleAt ?? "unknown"})` : "unknown"}`,
   `- P0 blocker count: ${p0Rows.length}`,
   `- P1 blocker count: ${p1Rows.length}`,
   `- P2 blocker count: ${p2Rows.length}`,

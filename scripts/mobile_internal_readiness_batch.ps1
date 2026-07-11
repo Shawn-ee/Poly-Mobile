@@ -76,14 +76,22 @@ function Get-CachedProviderEvidence {
 
   $generatedAt = Get-JsonGeneratedAt $Json
   $ageHours = $null
+  $staleAt = $null
+  $hoursUntilStale = $null
   $fresh = $false
   if ($generatedAt) {
     try {
       $parsed = [datetimeoffset]::Parse($generatedAt)
-      $ageHours = [math]::Round(((Get-Date).ToUniversalTime() - $parsed.UtcDateTime).TotalHours, 2)
+      $nowUtc = (Get-Date).ToUniversalTime()
+      $ageHours = [math]::Round(($nowUtc - $parsed.UtcDateTime).TotalHours, 2)
+      $staleAtDate = $parsed.UtcDateTime.AddHours($MaxAgeHours)
+      $staleAt = $staleAtDate.ToString("o")
+      $hoursUntilStale = [math]::Round(($staleAtDate - $nowUtc).TotalHours, 2)
       $fresh = [bool]($ageHours -ge 0 -and $ageHours -le $MaxAgeHours)
     } catch {
       $ageHours = $null
+      $staleAt = $null
+      $hoursUntilStale = $null
       $fresh = $false
     }
   }
@@ -94,6 +102,8 @@ function Get-CachedProviderEvidence {
     generatedAt = $generatedAt
     ageHours = $ageHours
     maxAgeHours = $MaxAgeHours
+    staleAt = $staleAt
+    hoursUntilStale = $hoursUntilStale
     fresh = $fresh
     present = [bool]$Json
   }
@@ -493,6 +503,10 @@ $cachedProviderEvidence = @(
   (Get-CachedProviderEvidence -Name "provider-line-scan" -Path $lineScanPath -Json $lineScan -MaxAgeHours $cachedProviderEvidenceMaxAgeHours)
 )
 $cachedProviderEvidenceFresh = [bool](($cachedProviderEvidence | Where-Object { -not $_.fresh }).Count -eq 0)
+$providerEvidenceNextStale = $cachedProviderEvidence |
+  Where-Object { $null -ne $_.hoursUntilStale } |
+  Sort-Object hoursUntilStale |
+  Select-Object -First 1
 $lineFamilyFilledAssertions = @("homeShowsCurrentMatch", "detailShowsGameLines", "detailShowsLineFamilyReadiness", "detailShowsProviderUnavailableLineFamilies", "detailShowsProviderWinnerLocalLineSplit", "lineMarketsAreContractFixture", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden")
 $s23Proofs = @(
   (Get-S23ProofEvidence -Name "filled-buy-history" -SummaryPath $filledS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden") -MaxAgeHours $s23ProofMaxAgeHours),
@@ -713,6 +727,9 @@ $summary = [ordered]@{
     providerSnapshotRefreshUpdatedCount = $providerSnapshotRefreshUpdatedCount
     cachedProviderEvidenceFresh = $cachedProviderEvidenceFresh
     cachedProviderEvidenceMaxAgeHours = $cachedProviderEvidenceMaxAgeHours
+    cachedProviderEvidenceNextStaleName = if ($providerEvidenceNextStale) { $providerEvidenceNextStale.name } else { $null }
+    cachedProviderEvidenceNextStaleAt = if ($providerEvidenceNextStale) { $providerEvidenceNextStale.staleAt } else { $null }
+    cachedProviderEvidenceHoursUntilStale = if ($providerEvidenceNextStale) { $providerEvidenceNextStale.hoursUntilStale } else { $null }
     cachedProviderEvidence = $cachedProviderEvidence
     providerMvpTradableFlowReady = $providerMvpTradableFlowReady
     providerMvpTradableFlowBlocker = $providerMvpTradableFlowBlocker
