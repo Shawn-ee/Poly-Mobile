@@ -25,6 +25,33 @@ function Read-JsonFile {
   return Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json
 }
 
+function Write-JsonFile {
+  param(
+    [Parameter(Mandatory = $true)] [object]$Value,
+    [Parameter(Mandatory = $true)] [string]$Path,
+    [int]$Depth = 20
+  )
+
+  $directory = Split-Path -Parent $Path
+  if ($directory -and -not (Test-Path -LiteralPath $directory)) {
+    New-Item -ItemType Directory -Path $directory -Force | Out-Null
+  }
+
+  $json = ($Value | ConvertTo-Json -Depth $Depth) -replace "`r`n", "`n"
+  [System.IO.File]::WriteAllText($Path, "$json`n", [System.Text.UTF8Encoding]::new($false))
+}
+
+function Normalize-JsonFile {
+  param([string]$Path)
+  if (-not (Test-Path -LiteralPath $Path)) {
+    return
+  }
+  $json = Read-JsonFile $Path
+  if ($null -ne $json) {
+    Write-JsonFile -Value $json -Path $Path -Depth 20
+  }
+}
+
 function Get-JsonGeneratedAt {
   param([object]$Json)
   if (-not $Json) {
@@ -709,7 +736,18 @@ $summary = [ordered]@{
 }
 
 $summaryPath = Join-Path $ResolvedOutputDir "internal-readiness-batch-summary.json"
-$summary | ConvertTo-Json -Depth 20 | Out-File -LiteralPath $summaryPath -Encoding utf8
+Write-JsonFile -Value $summary -Path $summaryPath -Depth 20
+$stepCount = $steps.Count
+for ($stepIndex = 0; $stepIndex -lt $stepCount; $stepIndex++) {
+  $step = $steps[$stepIndex]
+  if ($step.cached -eq $true) {
+    continue
+  }
+  $stepOutputPath = Resolve-RepoArtifactPath ([string]$step.outputPath)
+  if ($stepOutputPath) {
+    Normalize-JsonFile $stepOutputPath
+  }
+}
 $gapListPath = Join-Path $RepoRoot "docs\mobile\audits\BATCH_INTERNAL_READINESS_GAP_LIST.md"
 & npx.cmd tsx scripts/write_mobile_internal_readiness_gap_list.ts "--summaryPath=$(ConvertTo-RepoPath $summaryPath)" "--output=$(ConvertTo-RepoPath $gapListPath)"
 if ($LASTEXITCODE -ne 0) {
