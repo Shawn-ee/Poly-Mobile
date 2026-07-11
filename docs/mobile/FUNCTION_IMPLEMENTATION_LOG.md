@@ -2,6 +2,38 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle WH - Trade Ticket Header Simplification
+
+Feature/page worked on:
+
+- Trade Ticket amount-entry screen for the Local MVP Home -> Event Detail -> Team Total line -> Buy ticket flow.
+
+Frontend/backend touched:
+
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/src/__tests__/tradeTicketHeaderDensityContract.test.ts`
+- No backend route, provider service, Prisma schema, order route, order book UI, chat, live stats, social, deposit, or withdrawal code changed.
+
+Important functions/services touched:
+
+- `TradeTicket()` now derives the compact header selection from `ticket.selection?.referenceOutcomeLabel ?? outcomeLabel`.
+- The old visible order-mode badge was replaced with hidden audit-only metadata, so automation can still prove order mode without cluttering the retail ticket page.
+
+User interactions supported:
+
+- User selects `Argentina Over 1.5`, opens the Buy ticket, and sees that actual selected line in the header.
+- User still sees amount, to-win, odds/balance, presets, keypad, and swipe-to-buy layout.
+
+State transitions:
+
+- No quote, order, portfolio, auth, route, or database state transition changed.
+- Existing S23 proof still opens the ticket and preserves the fake-token Local MVP path.
+
+Known limitations:
+
+- This is not a full ticket redesign pass; it closes the focused header clutter/selection-label gap.
+- Stronger continuous swipe video proof remains useful for final ticket polish.
+
 ## Cycle TN - Provider Line Breadth Current Matches
 
 Feature/page worked on:

@@ -15,4 +15,15 @@ describe("Trade Ticket header density contract", () => {
     expect(ticket).not.toContain("ticket-market-source-badge-inline-safe");
     expect(ticket).not.toContain("ticket-header-source-pill-no-clip");
   });
+
+  test("shows the selected outcome in the header and hides the extra buy/sell badge", () => {
+    const ticket = ticketSource();
+
+    expect(ticket).toContain("ticket-header-selected-outcome-simple");
+    expect(ticket).toContain("ticket-header-actual-outcome-label");
+    expect(ticket).toContain("ticket.selection?.referenceOutcomeLabel ?? outcomeLabel");
+    expect(ticket).toContain("ticket-order-mode-audit-only");
+    expect(ticket).toContain("ticket-order-mode-visible-hidden-local-mvp");
+    expect(ticket).not.toContain("ticket-order-mode-visible ticket-order-mode-");
+  });
 });

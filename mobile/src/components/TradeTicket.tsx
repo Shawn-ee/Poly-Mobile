@@ -586,7 +586,7 @@ export function TradeTicket({
   const eventLabel = eventTitle.text;
   const outcomeLabel = label(locale, ticket.outcome);
   const sideLabel = contractSide === "yes" ? "Yes" : "No";
-  const selectionLabel = ticket.selection?.displayLabel ?? outcomeLabel;
+  const selectionLabel = ticket.selection?.referenceOutcomeLabel ?? outcomeLabel;
   const marketLabel = ticket.selection?.displayLabel ?? label(locale, ticket.market);
   const modeLabel = side === "sell" ? t.sell : t.buy;
   const modeOutcomeLabel = `${modeLabel} ${outcomeLabel}`;
@@ -699,7 +699,7 @@ export function TradeTicket({
               <View style={styles.selectionTextBlock}>
                 <Text accessibilityLabel={`ticket-event-title ${eventTitle.compacted ? "ticket-event-title-compact-matchup" : "ticket-event-title-full-matchup"}`} numberOfLines={1} style={styles.ticketTitle}>{eventLabel}</Text>
                 <View style={styles.ticketSelectionMetaRow}>
-                  <Text accessibilityLabel="ticket-selection-line" testID="ticket-selection-line" numberOfLines={2} style={styles.ticketOutcome}>
+                  <Text accessibilityLabel="ticket-selection-line ticket-header-selected-outcome-simple ticket-header-actual-outcome-label" testID="ticket-selection-line" numberOfLines={2} style={styles.ticketOutcome}>
                     <Text style={styles.ticketOutcomeSide}>{sideLabel}</Text> <Text style={styles.ticketOutcomeDot}>-</Text> {selectionLabel}
                   </Text>
                 </View>
@@ -762,14 +762,8 @@ export function TradeTicket({
             <View accessibilityLabel="ticket-to-win-line" testID="ticket-to-win-line" style={styles.toWinBlock}>
               <Text style={[styles.toWinText, numericAmount <= 0 && styles.toWinTextEmpty]}>{t.toWin} <Text style={numericAmount > 0 ? styles.toWinValue : styles.toWinValueEmpty}>{toWinDisplay}</Text></Text>
             </View>
-            <View
-              accessibilityLabel={`ticket-order-mode-visible ticket-order-mode-${side} ${modeOutcomeLabel}`}
-              testID="ticket-order-mode-visible"
-              style={[styles.orderModeBadge, side === "sell" && styles.orderModeBadgeSell]}
-            >
-              <Text style={[styles.orderModeText, side === "sell" && styles.orderModeTextSell]} numberOfLines={1}>
-                {modeOutcomeLabel}
-              </Text>
+            <View accessibilityLabel={`ticket-order-mode-audit-only ticket-order-mode-${side} ticket-order-mode-visible-hidden-local-mvp ${modeOutcomeLabel}`} testID="ticket-order-mode-audit-only" style={styles.orderReviewA11y}>
+              <Text>{modeOutcomeLabel}</Text>
             </View>
             <View
               accessibilityLabel={`ticket-order-review market-${reviewMarketType} line-${reviewLine} period-${reviewPeriod} price-${contractProbability} shares-${reviewShares} payout-${reviewPayout} ${providerIdentityLabel}`}
