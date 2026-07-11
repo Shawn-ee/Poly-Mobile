@@ -51,6 +51,53 @@ function readJson<T>(file: string): T | null {
   }
 }
 
+function stripGeneratedAt(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value.map(stripGeneratedAt);
+  }
+  if (!value || typeof value !== "object") {
+    return value;
+  }
+  const clone: Record<string, unknown> = {};
+  for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
+    if (key === "generatedAt") {
+      continue;
+    }
+    clone[key] = stripGeneratedAt(child);
+  }
+  return clone;
+}
+
+function sameJsonIgnoringGeneratedAt(existingJson: string, nextValue: unknown) {
+  try {
+    const existing = JSON.parse(existingJson.replace(/^\uFEFF/, ""));
+    return JSON.stringify(stripGeneratedAt(existing)) === JSON.stringify(stripGeneratedAt(nextValue));
+  } catch {
+    return false;
+  }
+}
+
+function normalizeGeneratedMarkdownLine(markdown: string) {
+  return markdown.replace(/^Generated: .+$/m, "Generated: <timestamp>");
+}
+
+function writeJsonIfMeaningfullyChanged(file: string, value: unknown) {
+  const resolved = path.resolve(file);
+  const nextJson = `${JSON.stringify(value, null, 2)}\n`;
+  const existingJson = fs.existsSync(resolved) ? fs.readFileSync(resolved, "utf8") : null;
+  if (!existingJson || !sameJsonIgnoringGeneratedAt(existingJson, value)) {
+    fs.writeFileSync(resolved, nextJson);
+  }
+}
+
+function writeMarkdownIfMeaningfullyChanged(file: string, markdown: string) {
+  const resolved = path.resolve(file);
+  const existingMarkdown = fs.existsSync(resolved) ? fs.readFileSync(resolved, "utf8") : null;
+  if (!existingMarkdown || normalizeGeneratedMarkdownLine(existingMarkdown) !== normalizeGeneratedMarkdownLine(markdown)) {
+    fs.writeFileSync(resolved, markdown);
+  }
+}
+
 function parseGapTracker(markdown: string): Gap[] {
   return markdown
     .split(/\r?\n/)
@@ -177,14 +224,11 @@ Definition of Done blockers:
 ${definitionOfDoneBlockingCriteria.length === 0 ? "- None." : definitionOfDoneBlockingCriteria.map((criterion) => `- ${criterion.id}: ${criterion.status} - ${criterion.notes}`).join("\n")}
 `;
 
-for (const [file, content] of [
-  [summaryPath, `${JSON.stringify(summary, null, 2)}\n`],
-  [qaPath, qaMarkdown],
-  [reviewPath, reviewMarkdown],
-] as const) {
-  const resolved = path.resolve(file);
-  fs.mkdirSync(path.dirname(resolved), { recursive: true });
-  fs.writeFileSync(resolved, content);
+for (const file of [summaryPath, qaPath, reviewPath]) {
+  fs.mkdirSync(path.dirname(path.resolve(file)), { recursive: true });
 }
+writeJsonIfMeaningfullyChanged(summaryPath, summary);
+writeMarkdownIfMeaningfullyChanged(qaPath, qaMarkdown);
+writeMarkdownIfMeaningfullyChanged(reviewPath, reviewMarkdown);
 
 console.log(JSON.stringify(summary, null, 2));

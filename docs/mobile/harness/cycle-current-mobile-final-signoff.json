@@ -1,6 +1,6 @@
 {
   "ready": false,
-  "generatedAt": "2026-07-11T14:30:22.773Z",
+  "generatedAt": "2026-07-11T22:37:50.488Z",
   "p0GapCount": 55,
   "verifiedP0GapCount": 55,
   "unresolvedP0GapCount": 0,
@@ -8,7 +8,7 @@
   "definitionOfDoneSweepPresent": true,
   "definitionOfDoneReadyToDeclareDone": false,
   "definitionOfDoneCounts": {
-    "verified": 11,
+    "verified": 12,
     "partial": 1,
     "blocked": 0
   },
