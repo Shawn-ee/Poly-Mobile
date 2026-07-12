@@ -26,20 +26,51 @@ describe("mobile provider evidence refresh planner", () => {
 
   it("writes a machine-readable skip plan from fresh cached provider evidence", () => {
     const tempDir = mkdtempSync(path.join(os.tmpdir(), "provider-evidence-plan-"));
+    const summaryPath = path.join(tempDir, "summary.json");
     const outputPath = path.join(tempDir, "plan.json");
     const command = process.platform === "win32" ? "cmd.exe" : "npx";
     const commandArgs = process.platform === "win32" ? ["/c", "npx"] : [];
 
     try {
+      writeFileSync(
+        summaryPath,
+        JSON.stringify({
+          providerDiscoveryMode: "cached",
+          readiness: {
+            cachedProviderEvidenceFresh: true,
+            cachedProviderEvidenceNextStaleName: "provider-visible-tradable-flow",
+            cachedProviderEvidenceNextStaleAt: "2026-07-13T13:50:00.000Z",
+            cachedProviderEvidenceHoursUntilStale: 16,
+            cachedProviderEvidence: [
+              {
+                name: "provider-visible-tradable-flow",
+                staleAt: "2026-07-13T13:50:00.000Z",
+                hoursUntilStale: 16,
+                fresh: true,
+                present: true,
+              },
+            ],
+            providerBackedExchangeReady: false,
+            providerMvpTradableFlowReady: false,
+            worldCupTeamMatchEventCount: 422,
+            usableWorldCupTeamMatchEventCount: 0,
+            attachReadyProviderLineCandidateCount: 0,
+          },
+          blockers: { p0: [], p1: ["provider_worldcup_match_books_unavailable_or_closed"], p2: [] },
+          recovery: { providerRefreshCommand: "npm run mobile:internal-readiness-batch:provider-refresh" },
+        }),
+      );
+
       execFileSync(
         command,
         [
           ...commandArgs,
           "tsx",
           "scripts/plan_mobile_provider_evidence_refresh.ts",
-          "--summaryPath=docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json",
+          `--summaryPath=${summaryPath}`,
           `--output=${outputPath}`,
           "--refreshWindowHours=0",
+          "--now=2026-07-12T13:50:00.000Z",
         ],
         { encoding: "utf8" },
       );
