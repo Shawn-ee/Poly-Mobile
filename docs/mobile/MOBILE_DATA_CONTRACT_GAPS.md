@@ -10181,3 +10181,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable official result records, durable approval records, admin/operator approval UI, installed service monitoring, and production deployment ownership remain P1/P2.
 - Temporary mock/static data: no provider data is added. The proof installs and removes a proof-only Startup launcher and spends no provider quota.
 - Future migration concern: user Startup launchers should stay local/internal. A production path should move these controls into an explicit service manager with secure environment provisioning, durable approvals, and health checks.
+
+## Cycle ONEEVENTRESULTPOLLER - Local Result Polling Runner
+
+- Closed or narrowed: official-result ingestion now has a repeated local runner with heartbeat evidence instead of only one-shot ingestion commands or supervisor options.
+- Route mismatch: none. No mobile API or backend HTTP route changed; the runner composes existing result ingestion and trusted-result settlement scheduler commands.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable official result table, multi-event result queue, installed polling service ownership, provider finality policy across postponed/abandoned games, and operator approval UI remain P1/P2.
+- Temporary mock/static data: default proof uses the redacted Odds API scores-shaped fixture and spends no provider quota. Live mode is explicit and quota-capped.
+- Future migration concern: the trusted result JSON file is a local internal contract. A production path should persist official result evidence and approvals in backend storage before executing settlement.

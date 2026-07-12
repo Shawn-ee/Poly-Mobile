@@ -14220,3 +14220,23 @@ Known limitations:
 - Known limitations:
   - This narrows local unattended ownership but is still a user-logon fallback, not a production service or scheduled daemon.
   - Provider/live-result quota-spending modes still require `THE_ODDS_API_KEY` in the user environment.
+
+# Cycle ONEEVENTRESULTPOLLER - Local Result Polling Runner
+
+- Feature/page worked on: backend official-result polling runtime path.
+- Frontend components touched: none. This is backend/runtime proof only.
+- Important functions/services touched:
+  - `scripts/run_holiwyn_one_event_result_poller.ps1`
+  - `scripts/ingest_odds_api_one_event_result.ts`
+  - `scripts/run_odds_api_one_event_result_settlement_scheduler.ts`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `package.json` scripts `mobile:one-event-result-poller` and `mobile:one-event-result-poller-proof`
+- User/runtime interactions supported:
+  - Operator can run a repeated local result poller that regenerates trusted result JSON and dry-runs settlement scheduling each cycle.
+  - Live result polling is available only through explicit `-RunLiveResultIngestion` plus `THE_ODDS_API_KEY` and quota caps.
+- State transitions:
+  - Replay score evidence -> trusted result JSON -> settlement scheduler dry run.
+  - Active tester market remains `LIVE`; settlement execution is not attempted by the proof.
+- Known limitations:
+  - This is a local runner with heartbeat evidence, not an installed official-result service.
+  - Multi-event result queue and operator UI remain future work.
