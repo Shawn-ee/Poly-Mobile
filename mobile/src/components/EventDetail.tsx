@@ -1787,7 +1787,7 @@ export function EventDetail({
                 </Pressable>
                 {hasSellablePositionShares(position) && (
                   <Pressable
-                    accessibilityLabel="event-detail-position-cash-out event-detail-position-cash-out-generic-sell-ticket"
+                    accessibilityLabel="event-detail-position-cash-out event-detail-position-close-owned-shares-ticket"
                     onPress={() => openPositionTrade?.(position, "sell")}
                     style={styles.cashOutButton}
                     testID="event-detail-position-cash-out"

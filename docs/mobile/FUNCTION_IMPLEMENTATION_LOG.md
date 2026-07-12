@@ -2,6 +2,22 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CASHOUTPOSITIONUX - Position Close Ticket Contract
+
+- Feature/page worked on: Portfolio and Event Detail cashout entry into the mobile Trade Ticket.
+- Frontend components touched:
+  - `mobile/App.tsx`
+  - `mobile/src/components/TradeTicket.tsx`
+  - `mobile/src/components/EventDetail.tsx`
+- Important functions/services touched:
+  - `mobile/src/services/orderService.ts`
+  - `mobile/src/services/positionCloseService.ts`
+  - Focused contract tests under `mobile/src/__tests__/cashoutGenericSellOnlyContract.test.ts`, `portfolioPositionTradeContract.test.ts`, `eventDetailPositionTradeContract.test.ts`, `orderService.test.ts`, `positionCloseService.test.ts`, `tradeTicketModeClarityContract.test.ts`, and `tradeTicketUnavailableReadonlyContract.test.ts`.
+- User interactions supported: tapping `Cash out` on an owned position now opens a close-position ticket mode. The ticket uses owned shares as available quantity, `Max` fills the owned share count, estimated proceeds are calculated from the sell/bid price, and the Yes/No selector is hidden in cashout mode.
+- State transitions: normal tickets remain wallet-cash based. Cashout tickets submit a `SELL` order for the owned `marketId`/`outcomeId`; the input amount is interpreted as share quantity and converted to estimated proceeds for display and order amount.
+- API/data dependencies: reuses `POST /api/orders` through `PolyApi.placeLimitOrder`. Cashout payloads now preserve `side=SELL`, owned `marketId`, owned `outcomeId`, explicit `sizeShares`, and selected bid/limit price.
+- Known limitations: physical S23 proof is currently blocked because ADB has no connected S23 device. Existing backend/server guards still reject no-position and oversell cases.
+
 ## Cycle APPROVALEVIDENCE - Durable Settlement Approval Evidence
 
 - Feature/page worked on: backend live-runtime settlement queue and status evidence.

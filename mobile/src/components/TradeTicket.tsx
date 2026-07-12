@@ -13,6 +13,10 @@ export type Ticket = {
   contractSide?: BinaryContractSide;
   selection?: TicketSelection;
   sourcePositionId?: string;
+  closePosition?: {
+    availableShares: number;
+    sellPrice: number;
+  };
 };
 
 export type BinaryContractSide = "yes" | "no";
@@ -585,9 +589,13 @@ export function TradeTicket({
   const contractSide = activeContractSide;
   const contractProbability = contractSide === "no" ? 100 - ticket.outcome.probability : ticket.outcome.probability;
   const averagePrice = contractProbability / 100;
-  const estimatedShares = averagePrice > 0 ? numericAmount / averagePrice : 0;
-  const estimatedPayout = contractProbability > 0 ? numericAmount * (100 / contractProbability) : 0;
-  const swipeLabel = side === "buy" ? t.swipeBuyOrder : t.swipeSellOrder;
+  const isClosePositionTicket = Boolean(ticket.closePosition && ticket.sourcePositionId && side === "sell");
+  const closeAvailableShares = ticket.closePosition?.availableShares ?? 0;
+  const closeSellPrice = ticket.closePosition?.sellPrice ?? averagePrice;
+  const estimatedShares = isClosePositionTicket ? numericAmount : averagePrice > 0 ? numericAmount / averagePrice : 0;
+  const estimatedPayout = isClosePositionTicket ? numericAmount * closeSellPrice : contractProbability > 0 ? numericAmount * (100 / contractProbability) : 0;
+  const estimatedProceeds = numericAmount * closeSellPrice;
+  const swipeLabel = isClosePositionTicket ? "Swipe to cash out" : side === "buy" ? t.swipeBuyOrder : t.swipeSellOrder;
   const amountPresets = [25, 50];
   const keypadKeys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "backspace"];
   const isLiveTicket = ticket.event?.status === "live";
@@ -611,16 +619,34 @@ export function TradeTicket({
   const fallbackMarketType = ticket.selection?.marketType ?? ticket.market.marketType ?? ticket.market.type ?? "generic";
   const sourceBadge = ticketSourceBadge(ticket);
   const sourceNote = ticketSourceNote(ticket, locale);
-  const amountDisplay = numericAmount > 0 ? compactCash(numericAmount) : "$0";
+  const amountDisplay = isClosePositionTicket
+    ? numericAmount.toLocaleString(undefined, { maximumFractionDigits: 6 })
+    : numericAmount > 0 ? compactCash(numericAmount) : "$0";
   const toWinDisplay = compactCash(estimatedPayout);
   const availabilityLabel = marketAvailabilityLabel(ticket.market);
   const availabilityTone = marketAvailabilityTone(ticket.market);
   const availabilityStatus = ticket.market.availability?.status ?? "unknown";
   const marketTradable = availabilityTone !== "blocked";
   const ticketReadOnly = !marketTradable;
-  const submitLabel = !marketTradable ? availabilityLabel ?? t.marketUnavailable : numericAmount <= 0 ? t.chooseAmount : swipeLabel;
-  const submitHelper = !marketTradable ? t.tradingDisabledForMarket : t.finalCostMayVary;
-  const submitArmedLabel = side === "buy" ? t.releaseBuyOrder : t.releaseSellOrder;
+  const cashoutOversell = isClosePositionTicket && numericAmount > closeAvailableShares;
+  const cashoutUnavailable = isClosePositionTicket && closeAvailableShares <= 0;
+  const inputBlocked = ticketReadOnly || cashoutUnavailable;
+  const submitBlocked = inputBlocked || cashoutOversell;
+  const submitLabel = !marketTradable
+    ? availabilityLabel ?? t.marketUnavailable
+    : cashoutUnavailable
+      ? "No shares available"
+      : cashoutOversell
+        ? "Too many shares"
+        : numericAmount <= 0
+          ? isClosePositionTicket ? "Choose shares" : t.chooseAmount
+          : swipeLabel;
+  const submitHelper = !marketTradable
+    ? t.tradingDisabledForMarket
+    : isClosePositionTicket
+      ? `Sell up to ${closeAvailableShares.toLocaleString(undefined, { maximumFractionDigits: 6 })} shares`
+      : t.finalCostMayVary;
+  const submitArmedLabel = isClosePositionTicket ? "Release to cash out" : side === "buy" ? t.releaseBuyOrder : t.releaseSellOrder;
   const activeSubmitProgress = marketTradable ? swipeSubmitProgress : 0;
   const footerBaseHeight = usePhoneTicketFit ? 172 : 184;
   const submitSheetHeight = footerBaseHeight + activeSubmitProgress * Math.max(viewportHeight - footerBaseHeight, 0);
@@ -700,7 +726,7 @@ export function TradeTicket({
               ]}
             >
             <View accessibilityLabel="ticket-drag-handle" testID="ticket-drag-handle" style={styles.dragHandle} />
-            <View accessibilityLabel={`ticket-selection-summary ticket-retail-order-header ticket-header-retail-readable ${providerIdentityLabel}`} testID="ticket-selection-summary" style={styles.ticketHeader}>
+            <View accessibilityLabel={`ticket-selection-summary ticket-retail-order-header ticket-header-retail-readable ${isClosePositionTicket ? "cashout-ticket-header close-position-ticket-header" : ""} ${providerIdentityLabel}`} testID="ticket-selection-summary" style={styles.ticketHeader}>
               <Pressable accessibilityLabel="ticket-close" onPress={close} style={styles.closeButton} testID="ticket-close">
                 <Ionicons name="close" color="#f8fafc" size={24} />
               </Pressable>
@@ -715,7 +741,11 @@ export function TradeTicket({
                 <Text accessibilityLabel={`ticket-event-title ${eventTitle.compacted ? "ticket-event-title-compact-matchup" : "ticket-event-title-full-matchup"}`} numberOfLines={1} style={styles.ticketTitle}>{eventLabel}</Text>
                 <View style={styles.ticketSelectionMetaRow}>
                   <Text accessibilityLabel="ticket-selection-line ticket-header-selected-outcome-simple ticket-header-actual-outcome-label" testID="ticket-selection-line" numberOfLines={2} style={styles.ticketOutcome}>
-                    <Text style={styles.ticketOutcomeSide}>{sideLabel}</Text> <Text style={styles.ticketOutcomeDot}>-</Text> {selectionLabel}
+                    {isClosePositionTicket ? (
+                      <Text style={styles.ticketOutcomeSide}>Cash out</Text>
+                    ) : (
+                      <><Text style={styles.ticketOutcomeSide}>{sideLabel}</Text> <Text style={styles.ticketOutcomeDot}>-</Text> {selectionLabel}</>
+                    )}
                   </Text>
                 </View>
                 <View
@@ -766,16 +796,19 @@ export function TradeTicket({
             >
               <Text>ticket-advanced-hidden-local-mvp</Text>
             </View>
-            <View accessibilityLabel="ticket-amount-display" testID="ticket-amount-display" style={[styles.amountDisplayBlock, usePhoneTicketFit && styles.amountDisplayBlockPhone, !marketTradable && styles.amountDisplayBlockUnavailable]}>
+            <View accessibilityLabel={`ticket-amount-display ${isClosePositionTicket ? "cashout-share-quantity-display cashout-amount-is-shares" : ""}`} testID="ticket-amount-display" style={[styles.amountDisplayBlock, usePhoneTicketFit && styles.amountDisplayBlockPhone, !marketTradable && styles.amountDisplayBlockUnavailable]}>
               <Text style={[styles.amountDisplayText, usePhoneTicketFit && styles.amountDisplayTextPhone, numericAmount <= 0 && styles.amountDisplayTextEmpty, !marketTradable && styles.amountDisplayTextUnavailable]}>{amountDisplay}</Text>
+              {isClosePositionTicket && <Text style={styles.closeSharesUnit}>shares</Text>}
             </View>
             <View accessibilityLabel={`${sideLabel} - ${outcomeLabel}`} testID="ticket-contract-outcome-row" style={styles.orderReviewA11y}>
               <Text accessibilityLabel="ticket-selected-outcome-choice" testID="ticket-selected-outcome-choice">
                 {outcomeLabel}
               </Text>
             </View>
-            <View accessibilityLabel="ticket-to-win-line" testID="ticket-to-win-line" style={styles.toWinBlock}>
-              <Text style={[styles.toWinText, numericAmount <= 0 && styles.toWinTextEmpty]}>{t.toWin} <Text style={numericAmount > 0 ? styles.toWinValue : styles.toWinValueEmpty}>{toWinDisplay}</Text></Text>
+            <View accessibilityLabel={isClosePositionTicket ? "cashout-estimated-proceeds-line ticket-close-position-proceeds" : "ticket-to-win-line"} testID="ticket-to-win-line" style={styles.toWinBlock}>
+              <Text style={[styles.toWinText, numericAmount <= 0 && styles.toWinTextEmpty]}>
+                {isClosePositionTicket ? t.estimatedProceeds : t.toWin} <Text style={numericAmount > 0 ? styles.toWinValue : styles.toWinValueEmpty}>{isClosePositionTicket ? compactCash(estimatedProceeds) : toWinDisplay}</Text>
+              </Text>
             </View>
             <View accessibilityLabel={`ticket-order-mode-audit-only ticket-order-mode-${side} ticket-order-mode-visible-hidden-local-mvp ${modeOutcomeLabel}`} testID="ticket-order-mode-audit-only" style={styles.orderReviewA11y}>
               <Text>{modeOutcomeLabel}</Text>
@@ -789,7 +822,7 @@ export function TradeTicket({
               <Text accessibilityLabel="ticket-order-review-price" testID="ticket-order-review-price">{priceDisplay}</Text>
               <Text accessibilityLabel="ticket-order-review-payout" testID="ticket-order-review-payout">{reviewPayout}</Text>
             </View>
-            <View style={[styles.ticketSideRow, usePhoneTicketFit && styles.ticketSideRowPhone]}>
+            {!isClosePositionTicket && <View style={[styles.ticketSideRow, usePhoneTicketFit && styles.ticketSideRowPhone]}>
               {(["buy", "sell"] as const).map((option) => {
                 const isContractActive = contractSide === "no" ? option === "sell" : side === option;
                 return (
@@ -814,51 +847,69 @@ export function TradeTicket({
                   </Pressable>
                 );
               })}
-            </View>
+            </View>}
+            {isClosePositionTicket && (
+              <View
+                accessibilityLabel={`cashout-ticket-no-yes-no-selector cashout-close-existing-position cashout-available-shares-${closeAvailableShares.toFixed(6)} cashout-sell-price-${closeSellPrice.toFixed(2)}`}
+                style={styles.closePositionInfo}
+                testID="cashout-position-info"
+              >
+                <Text style={styles.closePositionLabel}>Closing position</Text>
+                <Text style={styles.closePositionValue}>
+                  {closeAvailableShares.toLocaleString(undefined, { maximumFractionDigits: 6 })} shares available at {Math.round(closeSellPrice * 100)}%
+                </Text>
+              </View>
+            )}
             <View
-              accessibilityLabel={`ticket-odds-available ticket-order-review market-${reviewMarketType} line-${reviewLine} period-${reviewPeriod} shares-${reviewShares} payout-${reviewPayout}`}
+              accessibilityLabel={isClosePositionTicket
+                ? `cashout-available-owned-shares ticket-odds-available cashout-available-shares-${closeAvailableShares.toFixed(6)} cashout-proceeds-${estimatedProceeds.toFixed(2)} ticket-order-review market-${reviewMarketType} line-${reviewLine} period-${reviewPeriod} shares-${reviewShares} payout-${reviewPayout}`
+                : `ticket-odds-available ticket-order-review market-${reviewMarketType} line-${reviewLine} period-${reviewPeriod} shares-${reviewShares} payout-${reviewPayout}`}
               testID="ticket-odds-available"
               style={[styles.oddsAvailableLine, usePhoneTicketFit && styles.oddsAvailableLinePhone]}
             >
-              <Text accessibilityLabel="ticket-price-line" testID="ticket-price-line" style={styles.oddsAvailableText}>{t.odds} {contractProbability}% | {money(balance)} {t.available}</Text>
+              <Text accessibilityLabel="ticket-price-line" testID="ticket-price-line" style={styles.oddsAvailableText}>
+                {isClosePositionTicket
+                  ? `${t.odds} ${Math.round(closeSellPrice * 100)}% | ${closeAvailableShares.toLocaleString(undefined, { maximumFractionDigits: 6 })} ${t.shares} ${t.available}`
+                  : `${t.odds} ${contractProbability}% | ${money(balance)} ${t.available}`}
+              </Text>
             </View>
             <View style={[styles.presetRow, usePhoneTicketFit && styles.presetRowPhone]}>
               {amountPresets.map((preset) => (
                 <Pressable
-                  accessibilityLabel={`ticket-preset-${preset} ${ticketReadOnly ? "ticket-preset-disabled-readonly" : "ticket-preset-enabled"}`}
-                  disabled={ticketReadOnly}
+                  accessibilityLabel={`ticket-preset-${preset} ${inputBlocked ? "ticket-preset-disabled-readonly" : "ticket-preset-enabled"}`}
+                  disabled={inputBlocked}
                   key={preset}
-                  onPress={() => setAmount(String(numericAmount + preset))}
-                  style={[styles.presetButton, ticketReadOnly && styles.presetButtonDisabled]}
+                  onPress={() => setAmount(String(isClosePositionTicket ? Math.min(closeAvailableShares, numericAmount + preset) : numericAmount + preset))}
+                  style={[styles.presetButton, inputBlocked && styles.presetButtonDisabled]}
                   testID={`ticket-preset-${preset}`}
                 >
-                  <Text style={[styles.presetText, ticketReadOnly && styles.presetTextDisabled]}>+${preset}</Text>
+                  <Text style={[styles.presetText, inputBlocked && styles.presetTextDisabled]}>{isClosePositionTicket ? `+${preset}` : `+$${preset}`}</Text>
                 </Pressable>
               ))}
               <Pressable
-                accessibilityLabel={`ticket-max-amount ${ticketReadOnly ? "ticket-preset-disabled-readonly" : "ticket-preset-enabled"}`}
-                disabled={ticketReadOnly}
+                accessibilityLabel={`ticket-max-amount ${isClosePositionTicket ? "cashout-max-owned-shares" : ""} ${inputBlocked ? "ticket-preset-disabled-readonly" : "ticket-preset-enabled"}`}
+                disabled={inputBlocked}
                 testID="ticket-max-amount"
-                onPress={() => setAmount(String(Math.floor(balance)))}
-                style={[styles.presetButton, ticketReadOnly && styles.presetButtonDisabled]}
+                onPress={() => setAmount(isClosePositionTicket ? closeAvailableShares.toFixed(6).replace(/\.?0+$/, "") : String(Math.floor(balance)))}
+                style={[styles.presetButton, inputBlocked && styles.presetButtonDisabled]}
               >
-                <Text style={[styles.presetText, ticketReadOnly && styles.presetTextDisabled]}>{t.max}</Text>
+                <Text style={[styles.presetText, inputBlocked && styles.presetTextDisabled]}>{t.max}</Text>
               </Pressable>
             </View>
-            <View accessibilityLabel={`ticket-amount-keypad ticket-s23-keypad-footer-gap ${ticketReadOnly ? "ticket-keypad-readonly-disabled" : "ticket-keypad-enabled"}`} testID="ticket-amount-keypad" style={[styles.keypadGrid, usePhoneTicketFit && styles.keypadGridPhone]}>
+            <View accessibilityLabel={`ticket-amount-keypad ticket-s23-keypad-footer-gap ${isClosePositionTicket ? "cashout-share-keypad" : ""} ${inputBlocked ? "ticket-keypad-readonly-disabled" : "ticket-keypad-enabled"}`} testID="ticket-amount-keypad" style={[styles.keypadGrid, usePhoneTicketFit && styles.keypadGridPhone]}>
               {keypadKeys.map((key) => (
                 <Pressable
-                  accessibilityLabel={`ticket-keypad-${key} ${ticketReadOnly ? "ticket-keypad-disabled-readonly" : "ticket-keypad-enabled"}`}
-                  disabled={ticketReadOnly}
+                  accessibilityLabel={`ticket-keypad-${key} ${inputBlocked ? "ticket-keypad-disabled-readonly" : "ticket-keypad-enabled"}`}
+                  disabled={inputBlocked}
                   key={key}
                   onPress={() => applyKeypadInput(key)}
-                  style={[styles.keypadButton, usePhoneTicketFit && styles.keypadButtonPhone, ticketReadOnly && styles.keypadButtonDisabled]}
+                  style={[styles.keypadButton, usePhoneTicketFit && styles.keypadButtonPhone, inputBlocked && styles.keypadButtonDisabled]}
                   testID={`ticket-keypad-${key}`}
                 >
                   {key === "backspace" ? (
-                    <Ionicons name="backspace-outline" color={ticketReadOnly ? "#475569" : "#dbeafe"} size={20} />
+                    <Ionicons name="backspace-outline" color={inputBlocked ? "#475569" : "#dbeafe"} size={20} />
                   ) : (
-                    <Text style={[styles.keypadText, ticketReadOnly && styles.keypadTextDisabled]}>{key}</Text>
+                    <Text style={[styles.keypadText, inputBlocked && styles.keypadTextDisabled]}>{key}</Text>
                   )}
                 </Pressable>
               ))}
@@ -900,7 +951,7 @@ export function TradeTicket({
             ]}
           >
             <SwipeSubmitControl
-              disabled={numericAmount <= 0 || !marketTradable}
+              disabled={numericAmount <= 0 || submitBlocked}
               unavailable={!marketTradable}
               tone={side}
               helper={submitHelper}
@@ -957,6 +1008,10 @@ const styles = StyleSheet.create({
   amountDisplayTextPhone: { fontSize: 60, lineHeight: 68 },
   amountDisplayTextEmpty: { color: "#1b2230" },
   amountDisplayTextUnavailable: { color: "#151b27", fontSize: 54, lineHeight: 60 },
+  closeSharesUnit: { color: "#64748b", fontSize: 13, fontWeight: "900", marginTop: -4, textTransform: "uppercase" },
+  closePositionInfo: { alignSelf: "center", minWidth: "72%", alignItems: "center", gap: 2, marginTop: 4, paddingHorizontal: 14, paddingVertical: 8, borderRadius: 16, backgroundColor: "#0d1422", borderWidth: 1, borderColor: "#273244" },
+  closePositionLabel: { color: "#cbd5e1", fontSize: 13, fontWeight: "900" },
+  closePositionValue: { color: "#94a3b8", fontSize: 12, fontWeight: "800", textAlign: "center" },
   ticketOutcomeRow: { alignSelf: "center", flexDirection: "row", alignItems: "center", gap: 4, minHeight: 56, padding: 5, borderRadius: 999, backgroundColor: "#1c2330" },
   outcomeChoiceMuted: { minWidth: 86, textAlign: "center", color: "#8b94a5", fontSize: 17, fontWeight: "700", paddingHorizontal: 14 },
   outcomeChoiceActive: { minWidth: 86, textAlign: "center", overflow: "hidden", color: "#f8fafc", fontSize: 17, fontWeight: "800", paddingHorizontal: 14, paddingVertical: 12, borderRadius: 999, backgroundColor: "#0d1422" },

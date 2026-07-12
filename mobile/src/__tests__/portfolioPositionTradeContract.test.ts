@@ -4,7 +4,7 @@ import { describe, expect, test } from "vitest";
 const portfolioSource = () => readFileSync("mobile/src/components/Portfolio.tsx", "utf8");
 
 describe("Portfolio position trade actions", () => {
-  test("keeps explicit Sell trade affordance on the generic trade ticket path", () => {
+  test("keeps explicit Sell trade affordance for manual position adds", () => {
     const source = portfolioSource();
     const sellActionIndex = source.indexOf("position-trade-sell-");
     const sellActionBlock = source.slice(sellActionIndex, sellActionIndex + 500);
@@ -14,20 +14,24 @@ describe("Portfolio position trade actions", () => {
     expect(sellActionBlock).not.toContain("openCashoutPosition(position)");
   });
 
-  test("routes the visible Cash out position action through the generic Sell ticket", () => {
+  test("routes the visible Cash out action into close-position TradeTicket mode", () => {
     const source = portfolioSource();
+    const app = readFileSync("mobile/App.tsx", "utf8");
     const cashOutActionIndex = source.indexOf("portfolio-position-cash-out-");
     const cashOutActionBlock = source.slice(cashOutActionIndex, cashOutActionIndex + 500);
 
     expect(cashOutActionIndex).toBeGreaterThan(0);
     expect(cashOutActionBlock).toContain('openPositionTrade(position, "sell")');
     expect(cashOutActionBlock).not.toContain("openCashoutPosition(position)");
+    expect(app).toContain("closePosition:");
+    expect(app).toContain("sellPrice: positionSellPrice");
+    expect(app).toContain("availableShares: availablePositionShares(position)");
   });
 
-  test("does not keep a hidden dedicated close-position fallback in the default MVP path", () => {
-    const source = portfolioSource();
+  test("does not keep a hidden dedicated cashout component in the default MVP path", () => {
+    const app = readFileSync("mobile/App.tsx", "utf8");
 
-    expect(source).not.toContain("close-position-");
-    expect(source).not.toContain("openCashoutPosition");
+    expect(app).not.toContain("CashoutTicket");
+    expect(app).not.toContain("openCashoutPosition");
   });
 });

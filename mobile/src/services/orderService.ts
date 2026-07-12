@@ -14,6 +14,7 @@ export type TicketOrderInput = {
   contractSide?: BinaryContractSide;
   side: "buy" | "sell";
   amount: number;
+  sizeShares?: number;
 };
 
 export type TicketOrderResult = {
@@ -63,7 +64,9 @@ const contractProbability = (input: TicketOrderInput) => {
 };
 
 const validProbability = (value: number | null | undefined) =>
-  typeof value === "number" && Number.isFinite(value) && value > 0 && value < 100 ? value : null;
+  typeof value === "number" && Number.isFinite(value) && value > 0 && value < 100
+    ? value <= 1 ? Math.round(value * 100) : value
+    : null;
 
 const executionProbability = (input: TicketOrderInput) => {
   if (typeof input.selection?.limitPrice === "number" && Number.isFinite(input.selection.limitPrice) && input.selection.limitPrice > 0) {
@@ -170,13 +173,15 @@ export const submitTicketOrder = async (input: TicketOrderInput): Promise<Ticket
   }
 
   const priceProbability = executionProbability(input);
+  const hasExplicitShareSize = typeof input.sizeShares === "number" && Number.isFinite(input.sizeShares) && input.sizeShares > 0;
+  const orderSize = hasExplicitShareSize ? input.sizeShares! : sharesFromAmount(input.amount, priceProbability);
   const orderInput = {
     marketId: input.market.id,
     outcomeId: input.outcome.id,
     side: input.side.toUpperCase() as "BUY" | "SELL",
     contractSide: contractSideForOrder(input).toUpperCase() as "YES" | "NO",
     price: (priceProbability / 100).toFixed(2),
-    size: sharesFromAmount(input.amount, priceProbability).toFixed(2),
+    size: hasExplicitShareSize ? orderSize.toFixed(6) : orderSize.toFixed(2),
     selection: selectionForOrder(input),
   };
   const payload = await input.api.placeLimitOrder(orderInput);

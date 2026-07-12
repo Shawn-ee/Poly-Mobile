@@ -181,6 +181,65 @@ describe("ticket order service", () => {
     });
   });
 
+  test("uses decimal bid/ask prices as probabilities for server-mode execution", async () => {
+    const placeLimitOrder = vi.fn(async () => ({ order: { id: "server-order-decimal-bid" } }));
+    const api = { placeLimitOrder } as unknown as PolyApi;
+
+    const result = await submitTicketOrder({
+      mode: "server",
+      api,
+      market,
+      outcome: {
+        ...outcome,
+        probability: 58,
+        bestBid: 0.57,
+        bestAsk: 0.61,
+      },
+      side: "sell",
+      amount: 57,
+    });
+
+    expect(placeLimitOrder).toHaveBeenCalledWith(
+      expect.objectContaining({
+        price: "0.57",
+        size: "100.00",
+      }),
+    );
+    expect(result).toMatchObject({
+      id: "server-order-decimal-bid",
+      probability: 57,
+    });
+  });
+
+  test("submits close-position cashout with explicit owned share size", async () => {
+    const placeLimitOrder = vi.fn(async () => ({ order: { id: "server-cashout-order" } }));
+    const api = { placeLimitOrder } as unknown as PolyApi;
+
+    await submitTicketOrder({
+      mode: "server",
+      api,
+      market,
+      outcome: {
+        ...outcome,
+        probability: 58,
+        bestBid: 0.57,
+      },
+      side: "sell",
+      amount: 28.5,
+      sizeShares: 50,
+    });
+
+    expect(placeLimitOrder).toHaveBeenCalledWith(
+      expect.objectContaining({
+        marketId: "world-cup-winner",
+        outcomeId: "france",
+        side: "SELL",
+        price: "0.57",
+        size: "50.000000",
+      }),
+    );
+  });
+
   test("carries Polymarket provider identity through the ticket order payload", async () => {
     const placeLimitOrder = vi.fn(async () => ({ order: { id: "server-provider-order-1" } }));
     const api = { placeLimitOrder } as unknown as PolyApi;

@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CASHOUTPOSITIONUX - Position Close Ticket Contract
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio/Event Detail cashout | `/api/orders` via `PolyApi.placeLimitOrder` | `POST` | Mobile API key in server mode | `marketId`, `outcomeId`, `side="SELL"`, `contractSide`, `price` from current sell/bid price, `size` from owned share quantity, and `selection` identity | Order id/status/size/remaining/fills; follow-up Portfolio sync reads positions/history from existing routes | Existing `Order`, `Fill`, `Trade`, `Position`, `Market`, `Outcome`, and user balance tables | Mock mode reduces the local owned position by sold shares and adds proceeds to local balance | No new backend route required. Backend already rejects no-position and oversell SELL orders; future work can add a dedicated quote/preview route for cashout proceeds if needed. |
+
 ## Cycle LIVEODDS1 - One Event Odds API Live Runtime Proof
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

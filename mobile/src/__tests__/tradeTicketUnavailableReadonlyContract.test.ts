@@ -16,7 +16,9 @@ describe("Trade Ticket unavailable readonly contract", () => {
     expect(source).toContain("ticket-preset-disabled-readonly");
     expect(source).toContain("ticket-keypad-readonly-disabled");
     expect(source).toContain("ticket-keypad-disabled-readonly");
-    expect(source).toContain("disabled={numericAmount <= 0 || !marketTradable}");
+    expect(source).toContain("const inputBlocked = ticketReadOnly || cashoutUnavailable");
+    expect(source).toContain("const submitBlocked = inputBlocked || cashoutOversell");
+    expect(source).toContain("disabled={numericAmount <= 0 || submitBlocked}");
     expect(source).toContain("unavailable={!marketTradable}");
   });
 });

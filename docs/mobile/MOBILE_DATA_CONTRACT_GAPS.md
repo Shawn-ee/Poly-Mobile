@@ -1,5 +1,14 @@
 # Mobile Data Contract Gaps
 
+## Cycle CASHOUTPOSITIONUX - Position Close Ticket Contract
+
+- Closed or narrowed: cashout no longer treats wallet balance as available amount. Mobile cashout mode now uses position `shares`, `currentPrice`/`bestBid`, `marketId`, and `outcomeId`.
+- Backend-supported fields used: Portfolio positions must include positive `shares`, `marketId`, `outcomeId`, and a usable current sell/bid price signal (`bestBid` preferred, then `currentPrice`, then entry probability fallback).
+- Route mismatch: none for this cycle. The existing order route accepts `SELL` orders with explicit share size and already enforces no-position/oversell safety.
+- Fields Holiwyn may still need: a dedicated cashout quote/preview field from backend, such as `cashout.availableShares`, `cashout.bestBid`, `cashout.estimatedProceeds`, and `cashout.canSell`, would remove remaining mobile-side fallback logic.
+- Temporary mock/static data: none added. Mock mode keeps local position-close simulation for offline UI proof only.
+- Future migration concern: once backend exposes a formal cashout preview route, mobile should stop deriving sell price fallback from entry probability.
+
 ## Cycle NEXTSTALEFIX - Earliest Proof Refresh Forecast
 
 - No backend route, Prisma schema, mobile UI payload, ticket request, order response, Portfolio response, or provider runtime contract changed.

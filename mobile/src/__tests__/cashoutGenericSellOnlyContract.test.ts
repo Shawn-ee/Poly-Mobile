@@ -4,26 +4,28 @@ import { describe, expect, test } from "vitest";
 const read = (path: string) => readFileSync(path, "utf8");
 
 describe("cashout generic Sell ticket contract", () => {
-  test("removes the dormant dedicated cashout sheet from the default mobile source", () => {
+  test("uses TradeTicket close-position mode instead of a dormant separate sheet", () => {
     expect(existsSync("mobile/src/components/CashoutTicket.tsx")).toBe(false);
 
     const app = read("mobile/App.tsx");
-    const portfolio = read("mobile/src/components/Portfolio.tsx");
-    const eventDetail = read("mobile/src/components/EventDetail.tsx");
+    const ticket = read("mobile/src/components/TradeTicket.tsx");
 
     expect(app).not.toContain("CashoutTicket");
     expect(app).not.toContain("openCashoutPosition");
-    expect(portfolio).not.toContain("openCashoutPosition");
-    expect(eventDetail).not.toContain("openCashoutPosition");
+    expect(app).toContain("closePosition:");
+    expect(app).toContain("availableShares: availablePositionShares(position)");
+    expect(app).toContain("sizeShares: closeShares");
+    expect(ticket).toContain("cashout-ticket-no-yes-no-selector");
+    expect(ticket).toContain("cashout-max-owned-shares");
   });
 
-  test("keeps provider-winner cashout proof on the generic Sell ticket path", () => {
-    const proof = read("scripts/prove_mobile_provider_winner_s23_visible_flow.ps1");
+  test("cashout ticket is share/proceeds based, not wallet-balance based", () => {
+    const ticket = read("mobile/src/components/TradeTicket.tsx");
 
-    expect(proof).toContain('"trade-ticket", "ticket-side-sell", "swipe-to-submit-order"');
-    expect(proof).toContain('"Swipe to sell", \'$25\', "swipe-submit-gesture-required"');
-    expect(proof).toContain('"cashout-ticket", "swipe-to-cashout", "Order Book", "Chat"');
-    expect(proof).toContain("cycle-$Cycle-provider-winner-cashout-ticket-ready.xml");
-    expect(proof).not.toContain('"cashout-ticket", "cashout-full-position"');
+    expect(ticket).toContain("cashout-share-quantity-display");
+    expect(ticket).toContain("cashout-available-owned-shares");
+    expect(ticket).toContain("estimatedProceeds");
+    expect(ticket).toContain("closeAvailableShares.toFixed(6)");
+    expect(ticket).toContain("numericAmount > closeAvailableShares");
   });
 });

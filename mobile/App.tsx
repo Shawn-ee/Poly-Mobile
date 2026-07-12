@@ -310,6 +310,10 @@ const mexicoEcuadorGamePositionFixture = (): Position | undefined => {
 const openOrderRemainingShares = (order: OpenOrder) => order.remainingShares ?? order.remaining;
 const openOrderValue = (order: OpenOrder) => order.orderValue ?? openOrderRemainingShares(order) * order.price;
 const sharesForTicketAmount = (amount: number, probability: number) => amount / Math.max(probability / 100, 0.01);
+const cashoutSellPrice = (position: Position) => {
+  const price = position.bestBid ?? position.currentPrice ?? position.probability / 100;
+  return Number.isFinite(price) && price > 0 ? price : 0;
+};
 
 type MainTab = "home" | "live" | "portfolio" | "search" | "account";
 type StoredPortfolio = {
@@ -1601,7 +1605,11 @@ export default function App() {
 
   const placeOrder = async (amount: number, side: "buy" | "sell", contractSide?: Ticket["contractSide"]) => {
     if (!ticket || amount <= 0) return;
-    const cost = Math.min(amount, balance);
+    const isClosePositionTicket = Boolean(ticket.closePosition && ticket.sourcePositionId && side === "sell");
+    const closeShares = isClosePositionTicket ? amount : undefined;
+    const closePrice = ticket.closePosition?.sellPrice ?? 0;
+    const closeProceeds = isClosePositionTicket && closeShares ? closeShares * closePrice : 0;
+    const cost = isClosePositionTicket ? closeProceeds : Math.min(amount, balance);
     setTicketOrderError(null);
     setTicketOrderErrorDetail(null);
     const sourcePosition = ticket.sourcePositionId
@@ -1614,7 +1622,10 @@ export default function App() {
         return;
       }
       try {
-        assertCanSellPositionShares(sourcePosition, sharesForTicketAmount(cost, ticket.outcome.probability));
+        assertCanSellPositionShares(
+          sourcePosition,
+          isClosePositionTicket && closeShares !== undefined ? closeShares : sharesForTicketAmount(cost, ticket.outcome.probability),
+        );
       } catch (error) {
         setTicketOrderError(t.orderFailed);
         setTicketOrderErrorDetail(error instanceof Error ? error.message : "Sell amount exceeds available shares.");
@@ -1636,6 +1647,7 @@ export default function App() {
         contractSide: contractSide ?? ticket.contractSide,
         side,
         amount: cost,
+        sizeShares: closeShares,
       });
     } catch (error) {
       setTicketOrderError(t.orderFailed);
@@ -1668,7 +1680,7 @@ export default function App() {
       : null;
     if (ORDER_MODE !== "server") {
       if (result.side === "sell" && ticket.sourcePositionId && sourcePosition) {
-        const soldShares = sharesForTicketAmount(result.amount, result.probability);
+        const soldShares = closeShares ?? sharesForTicketAmount(result.amount, result.probability);
         setBalance((current) => current + result.amount);
         setPositions((current) => current.flatMap((position) => {
           if (position.id !== ticket.sourcePositionId) return [position];
@@ -1734,7 +1746,7 @@ export default function App() {
         selection: result.selection,
         contractSide: result.contractSide,
         amount: result.amount,
-        shares: result.filledSize ?? result.size,
+        shares: isClosePositionTicket ? closeShares : result.filledSize ?? result.size,
         side: result.side,
         probability: result.probability,
         isLive: isLiveOrder,
@@ -1767,6 +1779,15 @@ export default function App() {
       return;
     }
     const tradeIdentity = buildPositionTradeTicketIdentity(position);
+    const positionSellPrice = cashoutSellPrice(position);
+    const closeSelection = side === "sell" && tradeIdentity.selection
+      ? {
+          ...tradeIdentity.selection,
+          limitPrice: positionSellPrice,
+          limitSide: "bid" as const,
+          limitShares: availablePositionShares(position),
+        }
+      : tradeIdentity.selection;
     setSelectedEvent(target.event ?? null);
     setMainTab("portfolio");
     setTicketOrderError(null);
@@ -1777,8 +1798,14 @@ export default function App() {
       event: target.event,
       side,
       contractSide: tradeIdentity.contractSide,
-      selection: tradeIdentity.selection,
+      selection: closeSelection,
       sourcePositionId: position.id,
+      closePosition: side === "sell"
+        ? {
+            availableShares: availablePositionShares(position),
+            sellPrice: positionSellPrice,
+          }
+        : undefined,
     });
   };
 
