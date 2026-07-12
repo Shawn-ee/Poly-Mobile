@@ -38,6 +38,8 @@ const ageHours = (generatedAt: unknown) => {
   return Number(((Date.now() - parsed) / 3_600_000).toFixed(2));
 };
 
+const numberValue = (value: unknown) => (typeof value === "number" && Number.isFinite(value) ? value : null);
+
 export async function getLocalLiveRuntimeStatus() {
   const [completionAudit, phaseAudit, watchdog] = await Promise.all([
     readJson(COMPLETION_AUDIT_PATH),
@@ -48,17 +50,30 @@ export async function getLocalLiveRuntimeStatus() {
   const completionAgeHours = ageHours(completionAudit?.generatedAt);
   const phaseAgeHours = ageHours(phaseAudit?.generatedAt);
   const watchdogAgeHours = ageHours(watchdog?.generatedAt);
+  const liveProofAgeAtCompletionHours = numberValue(getPath(completionAudit, ["answers", "freshness", "liveProofAgeHours"]));
+  const maxLiveProofAgeHours = numberValue(getPath(completionAudit, ["answers", "freshness", "maxLiveProofAgeHours"]));
+  const liveProofCurrentAgeHours =
+    typeof liveProofAgeAtCompletionHours === "number" && typeof completionAgeHours === "number"
+      ? Number((liveProofAgeAtCompletionHours + completionAgeHours).toFixed(2))
+      : null;
   const p0Gaps = asStringArray(getPath(completionAudit, ["gaps", "p0"]));
   const artifactFreshness = {
     maxCompletionAuditAgeHours: 24,
     maxPhaseAuditAgeHours: 24,
     maxWatchdogAgeHours: 24,
+    maxLiveProofAgeHours,
     completionAuditAgeHours: completionAgeHours,
     phaseAuditAgeHours: phaseAgeHours,
     watchdogAgeHours,
+    liveProofAgeAtCompletionHours,
+    liveProofCurrentAgeHours,
     completionAuditFresh: typeof completionAgeHours === "number" && completionAgeHours <= 24,
     phaseAuditFresh: typeof phaseAgeHours === "number" && phaseAgeHours <= 24,
     watchdogFresh: typeof watchdogAgeHours === "number" && watchdogAgeHours <= 24,
+    liveProofFresh:
+      typeof liveProofCurrentAgeHours === "number" &&
+      typeof maxLiveProofAgeHours === "number" &&
+      liveProofCurrentAgeHours <= maxLiveProofAgeHours,
   };
   const ready =
     pass(completionAudit) &&
@@ -67,7 +82,8 @@ export async function getLocalLiveRuntimeStatus() {
     p0Gaps.length === 0 &&
     artifactFreshness.completionAuditFresh &&
     artifactFreshness.phaseAuditFresh &&
-    artifactFreshness.watchdogFresh;
+    artifactFreshness.watchdogFresh &&
+    artifactFreshness.liveProofFresh;
 
   return {
     generatedAt: new Date().toISOString(),

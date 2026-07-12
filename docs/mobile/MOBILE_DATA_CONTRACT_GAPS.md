@@ -10332,3 +10332,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable runtime heartbeats, provider refresh records, result poll records, operator approval state, and production service ownership remain P1/P2. The current route is still proof-file based.
 - Temporary mock/static data: none added. The freshness gate reads existing redacted proof artifacts only and spends no provider quota.
 - Future migration concern: once this moves beyond local internal testing, replace the 24-hour artifact-age rule with durable service heartbeat SLAs and provider/result poll records stored by backend runtime services.
+
+## Cycle LIVERUNTIMEPROVIDERAGE - Provider Proof Wall-Clock Freshness
+
+- Closed or narrowed: the local status API now re-ages the embedded live-provider proof by adding the completion audit's wall-clock age to the live proof age captured when the audit was generated. This prevents a completion audit that is still fresh from masking a provider proof that has since expired.
+- Route mismatch: `/api/internal/live-runtime/status` adds provider freshness fields inside `freshness`: `liveProofAgeAtCompletionHours`, `liveProofCurrentAgeHours`, `maxLiveProofAgeHours`, and `liveProofFresh`.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable provider-poll timestamps and provider-poll freshness stored in backend runtime state remain P1/P2. The current value is still derived from local proof artifacts.
+- Temporary mock/static data: none added. The route does not call The Odds API and spends no quota.
+- Future migration concern: once a production provider refresh service exists, status should read latest provider poll rows directly instead of relying on a completion audit's embedded proof age.

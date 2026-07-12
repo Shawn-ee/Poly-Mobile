@@ -14515,3 +14515,14 @@ Known limitations:
 - API/data dependencies: completion audit now exposes `answers.freshness` and gates live-provider proof/watchdog freshness; status API now exposes a `freshness` object with artifact ages, max age thresholds, and per-artifact fresh booleans.
 - Proof needed: `npm run mobile:live-runtime-completion-audit`, `npm run mobile:one-event-phase-audit`, direct status API check, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this is still local proof-file readiness. Production should replace the artifact freshness contract with durable service heartbeats, provider poll records, result poll records, and operator approval state.
+
+## Cycle LIVERUNTIMEPROVIDERAGE - Provider Proof Wall-Clock Freshness
+
+- Feature/page worked on: backend local internal live-runtime status truth.
+- Frontend components touched: none.
+- Important functions/services touched: updated `src/server/services/liveRuntimeStatus.ts` and `src/__tests__/liveRuntimeStatus.service.test.ts`.
+- User/runtime interactions supported: local operator or internal testing platform can call `GET /api/internal/live-runtime/status` and see whether the live-provider proof is still fresh as of the current request time, not only as of the last completion-audit generation time.
+- State transitions: none. This is a read-only status calculation over existing proof JSON, with no provider API call, no quota spend, no market/order mutation, and no process start/stop.
+- API/data dependencies: status API freshness now includes `liveProofAgeAtCompletionHours`, `liveProofCurrentAgeHours`, `maxLiveProofAgeHours`, and `liveProofFresh`.
+- Proof needed: focused status service tests, route proof, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: live proof freshness still comes from local artifact evidence. Production should persist provider poll timestamps and freshness directly in runtime storage.

@@ -9,7 +9,10 @@ import { getLocalLiveRuntimeStatus } from "@/server/services/liveRuntimeStatus";
 const nowIso = () => new Date().toISOString();
 const staleIso = () => new Date(Date.now() - 25 * 3_600_000).toISOString();
 
-const makeCompletionAudit = (generatedAt = nowIso()) => ({
+const makeCompletionAudit = (
+  generatedAt = nowIso(),
+  freshness: { liveProofAgeHours?: number; maxLiveProofAgeHours?: number } = {},
+) => ({
   generatedAt,
   pass: true,
   event: {
@@ -35,6 +38,12 @@ const makeCompletionAudit = (generatedAt = nowIso()) => ({
     lifecycle: "open paused closed proven",
     activeSettlement: "wait for closed market",
     localWatchdog: "watchdog proof passed",
+    freshness: {
+      liveProofAgeHours: freshness.liveProofAgeHours ?? 1,
+      maxLiveProofAgeHours: freshness.maxLiveProofAgeHours ?? 24,
+      watchdogAgeHours: 1,
+      maxWatchdogAgeHours: 24,
+    },
   },
   checks: {
     internalTesterWatchdogKnown: true,
@@ -83,10 +92,13 @@ describe("live runtime status service", () => {
       maxCompletionAuditAgeHours: 24,
       maxPhaseAuditAgeHours: 24,
       maxWatchdogAgeHours: 24,
+      maxLiveProofAgeHours: 24,
       completionAuditFresh: true,
       phaseAuditFresh: true,
       watchdogFresh: true,
+      liveProofFresh: true,
     });
+    expect(status.freshness.liveProofCurrentAgeHours).toBeGreaterThanOrEqual(1);
     expect(status.gaps.p0).toEqual([]);
     expect(status.runtimeTruth.providerQuotaUsedByStatus).toBe(false);
   });
@@ -105,5 +117,28 @@ describe("live runtime status service", () => {
     expect(status.freshness.completionAuditFresh).toBe(false);
     expect(status.freshness.phaseAuditFresh).toBe(true);
     expect(status.freshness.watchdogFresh).toBe(true);
+  });
+
+  test("returns needs_attention when the embedded live provider proof ages past its limit", async () => {
+    readFile.mockImplementation(async (filePath: string) => {
+      if (filePath.includes("completion-audit")) {
+        return JSON.stringify(
+          makeCompletionAudit(new Date(Date.now() - 2 * 3_600_000).toISOString(), {
+            liveProofAgeHours: 23,
+            maxLiveProofAgeHours: 24,
+          }),
+        );
+      }
+      if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
+      if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      throw new Error(`unexpected path ${filePath}`);
+    });
+
+    const status = await getLocalLiveRuntimeStatus();
+
+    expect(status.status).toBe("needs_attention");
+    expect(status.freshness.completionAuditFresh).toBe(true);
+    expect(status.freshness.liveProofCurrentAgeHours).toBeGreaterThan(24);
+    expect(status.freshness.liveProofFresh).toBe(false);
   });
 });
