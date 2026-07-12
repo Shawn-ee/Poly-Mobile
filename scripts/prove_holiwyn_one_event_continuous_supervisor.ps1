@@ -12,6 +12,7 @@ $HeartbeatPath = "docs\mobile\harness\odds-api-live-runtime\one-event-live-super
 $SupervisorSummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-live-supervisor-summary.redacted.json"
 $ProcessSummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-live-supervisor-process-summary.redacted.json"
 $RuntimeStatusPath = "docs\mobile\harness\odds-api-live-runtime\one-event-runtime-status-summary.redacted.json"
+$BackendStartSummaryPath = "docs\mobile\harness\odds-api-live-runtime\continuous-supervisor-backend-start-summary.redacted.json"
 
 function Resolve-RepoPath {
   param([string]$Path)
@@ -19,6 +20,19 @@ function Resolve-RepoPath {
     return $Path
   }
   return Join-Path $RepoRoot $Path
+}
+
+function Convert-ToRepoRelativePath {
+  param([string]$Path)
+  if (-not $Path) {
+    return $Path
+  }
+  $fullPath = [System.IO.Path]::GetFullPath($Path)
+  $repoFullPath = [System.IO.Path]::GetFullPath($RepoRoot)
+  if ($fullPath.StartsWith($repoFullPath, [System.StringComparison]::OrdinalIgnoreCase)) {
+    return $fullPath.Substring($repoFullPath.Length).TrimStart('\', '/')
+  }
+  return $Path
 }
 
 function Read-JsonFile {
@@ -66,18 +80,131 @@ function Get-NodeProcessCount {
   return @(Get-Process node -ErrorAction SilentlyContinue).Count
 }
 
+function Get-RepoNodeProcessCount {
+  $repoPath = $RepoRoot
+  return @(Get-CimInstance Win32_Process -Filter "name = 'node.exe'" -ErrorAction SilentlyContinue |
+    Where-Object { $_.CommandLine -and $_.CommandLine.Contains($repoPath) }).Count
+}
+
+function Test-BackendHealth {
+  try {
+    $body = Invoke-RestMethod -Uri "http://127.0.0.1:$BackendPort/api/health" -TimeoutSec 5
+    return [bool]($body.status -eq "ok" -and $body.db -eq "connected")
+  } catch {
+    return $false
+  }
+}
+
+function Start-BackendForProof {
+  $runtimeDir = Join-Path $RepoRoot ".runtime\continuous-supervisor-proof-backend"
+  New-Item -ItemType Directory -Force -Path $runtimeDir | Out-Null
+  $stdoutPath = Join-Path $runtimeDir "backend-$BackendPort.out.log"
+  $stderrPath = Join-Path $runtimeDir "backend-$BackendPort.err.log"
+  $command = @"
+`$env:REFERENCE_STALE_MS='90000'
+`$env:INTERNAL_TRADING_BETA_ENABLED='true'
+`$env:TRADING_KILL_SWITCH='false'
+`$env:NEXT_PUBLIC_INTERNAL_TRADING_BETA_ENABLED='true'
+`$env:NEXTAUTH_URL='http://127.0.0.1:$BackendPort'
+`$env:INTERNAL_TRADING_ALLOWLIST_EMAILS='system-liquidity-bot@local.test,holiwyn-mobile-dev@test.local,holiwyn-bot-admin@test.local'
+`$env:POLY_BOTS_ENABLED='true'
+`$env:POLY_BOTS_LIVE_TRADING='true'
+`$env:POLY_BOTS_GLOBAL_KILL_SWITCH='false'
+`$env:LIVE_SYSTEM_LIQUIDITY_ENABLED='true'
+`$env:SYSTEM_LIQUIDITY_DRY_RUN='false'
+npm run dev -- -p $BackendPort
+"@
+  $process = Start-Process `
+    -FilePath "powershell.exe" `
+    -ArgumentList @("-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", $command) `
+    -WorkingDirectory $RepoRoot `
+    -WindowStyle Hidden `
+    -RedirectStandardOutput $stdoutPath `
+    -RedirectStandardError $stderrPath `
+    -PassThru
+  $deadline = (Get-Date).AddSeconds(45)
+  do {
+    if (Test-BackendHealth) {
+      return [ordered]@{
+        status = "healthy"
+        startedProcess = [ordered]@{
+          pid = $process.Id
+          stdout = Convert-ToRepoRelativePath $stdoutPath
+          stderr = Convert-ToRepoRelativePath $stderrPath
+        }
+      }
+    }
+    Start-Sleep -Seconds 1
+  } while ((Get-Date) -lt $deadline)
+  return [ordered]@{
+    status = "unhealthy_after_start"
+    startedProcess = [ordered]@{
+      pid = $process.Id
+      stdout = Convert-ToRepoRelativePath $stdoutPath
+      stderr = Convert-ToRepoRelativePath $stderrPath
+    }
+  }
+}
+
+function Stop-ProcessTree {
+  param([int]$ProcessId)
+  if (-not $ProcessId) {
+    return
+  }
+  $children = @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object { $_.ParentProcessId -eq $ProcessId })
+  foreach ($child in $children) {
+    Stop-ProcessTree -ProcessId ([int]$child.ProcessId)
+  }
+  Stop-Process -Id $ProcessId -Force -ErrorAction SilentlyContinue
+}
+
 $startedAt = (Get-Date).ToUniversalTime()
 $commands = New-Object System.Collections.Generic.List[object]
 $p0 = New-Object System.Collections.Generic.List[object]
 $p1 = New-Object System.Collections.Generic.List[object]
 $p2 = New-Object System.Collections.Generic.List[object]
-$nodeBefore = Get-NodeProcessCount
+$nodeBefore = Get-RepoNodeProcessCount
+$backendStart = $null
+$backendStartedByProof = $false
+$backendStartedProcessStopped = $null
 
 $commands.Add((Invoke-CheckedCommand -Label "pre-stop-existing-supervisor" -Command "npm run mobile:one-event-live-supervisor:stop")) | Out-Null
 Remove-Item -LiteralPath (Resolve-RepoPath $HeartbeatPath) -Force -ErrorAction SilentlyContinue
+$backendHealthyBefore = Test-BackendHealth
+if ($backendHealthyBefore) {
+  $backendStart = [ordered]@{ status = "already_healthy"; startedProcess = $null }
+} else {
+  $backendStart = Start-BackendForProof
+  $backendStartedByProof = [bool]($backendStart.startedProcess -and $backendStart.startedProcess.pid)
+}
+Write-JsonFile -Value $backendStart -Path (Resolve-RepoPath $BackendStartSummaryPath) -Depth 20
+$commands.Add([ordered]@{
+  label = "preflight-backend-health"
+  command = "internal direct backend preflight"
+  exitCode = if ($backendStart.status -in @("healthy", "already_healthy")) { 0 } else { 1 }
+  pass = [bool]($backendStart.status -in @("healthy", "already_healthy"))
+  startedAt = $startedAt.ToString("o")
+  finishedAt = (Get-Date).ToUniversalTime().ToString("o")
+  outputTail = @("backend status: $($backendStart.status)")
+}) | Out-Null
+if ($backendStart.status -notin @("healthy", "already_healthy")) {
+  $p0.Add("Backend did not become healthy for continuous supervisor proof.") | Out-Null
+}
 
-$supervisorCommand = "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_live_supervisor.ps1 -BackendPort $BackendPort -MaxIterations $RequiredIterations -IntervalSeconds $IntervalSeconds -RunResultIngestion -RunResultSettlement"
-$supervisorRun = Invoke-CheckedCommand -Label "foreground-repeated-supervisor" -Command $supervisorCommand
+if ($p0.Count -eq 0) {
+  $supervisorCommand = "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_live_supervisor.ps1 -BackendPort $BackendPort -MaxIterations $RequiredIterations -IntervalSeconds $IntervalSeconds -RunResultIngestion -RunResultSettlement -SkipSleep"
+  $supervisorRun = Invoke-CheckedCommand -Label "foreground-repeated-supervisor" -Command $supervisorCommand
+} else {
+  $supervisorRun = [ordered]@{
+    label = "foreground-repeated-supervisor"
+    command = "skipped because backend preflight failed"
+    exitCode = 1
+    pass = $false
+    startedAt = (Get-Date).ToUniversalTime().ToString("o")
+    finishedAt = (Get-Date).ToUniversalTime().ToString("o")
+    outputTail = @()
+  }
+}
 $commands.Add($supervisorRun) | Out-Null
 
 $heartbeat = Read-JsonFile (Resolve-RepoPath $HeartbeatPath)
@@ -103,8 +230,23 @@ if (-not ($heartbeat -and [int]$heartbeat.completedIterations -ge $RequiredItera
 if (-not ($runtimeStatusCommand.pass -and $runtimeStatus -and $runtimeStatus.pass -eq $true)) {
   $p0.Add("Runtime status did not pass after repeated supervisor proof.") | Out-Null
 }
+if (-not ($runtimeStatus -and $runtimeStatus.provenCapabilities -and $runtimeStatus.provenCapabilities.makerReseedWhileSupervisorRuns -eq $true)) {
+  $p0.Add("Runtime status did not preserve maker reseed capability after repeated supervisor proof.") | Out-Null
+}
 if (-not ($statusCommand.pass -and $processStatus -and $processStatus.process.after.running -eq $false)) {
   $p0.Add("A local supervisor process was still running after the foreground proof.") | Out-Null
+}
+
+if ($backendStartedByProof) {
+  Stop-ProcessTree -ProcessId ([int]$backendStart.startedProcess.pid)
+  Start-Sleep -Seconds 2
+  $backendStartedProcessStopped = [bool](
+    -not (Get-Process -Id ([int]$backendStart.startedProcess.pid) -ErrorAction SilentlyContinue) -and
+    (Get-RepoNodeProcessCount) -eq 0
+  )
+  if (-not $backendStartedProcessStopped) {
+    $p0.Add("Proof-owned backend process tree did not stop cleanly after the continuous supervisor proof.") | Out-Null
+  }
 }
 
 $p1.Add("This proves repeated local supervisor cycles, not an installed OS service.") | Out-Null
@@ -123,6 +265,7 @@ $summary = [ordered]@{
     intervalSeconds = $IntervalSeconds
     requiredIterations = $RequiredIterations
     providerQuotaSpent = $false
+    backendStartedByProof = $backendStartedByProof
   }
   proof = [ordered]@{
     heartbeatPath = $HeartbeatPath
@@ -132,8 +275,10 @@ $summary = [ordered]@{
     processStoppedAfterProof = [bool]($processStatus -and $processStatus.process.after.running -eq $false)
     runtimeStatusPass = [bool]($runtimeStatus -and $runtimeStatus.pass -eq $true)
     runtimeStatusPath = $RuntimeStatusPath
+    backendStartSummaryPath = $BackendStartSummaryPath
+    backendStartedProcessStopped = $backendStartedProcessStopped
     nodeProcessCountBefore = $nodeBefore
-    nodeProcessCountAfter = Get-NodeProcessCount
+    nodeProcessCountAfter = Get-RepoNodeProcessCount
   }
   runtimeTruth = [ordered]@{
     repeatedLocalSupervisorCyclesProven = [bool]($p0.Count -eq 0)

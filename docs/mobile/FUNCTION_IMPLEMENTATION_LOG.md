@@ -14746,3 +14746,14 @@ Known limitations:
 - API/data dependencies: status now returns `marketMakerQuoteRuns.recent`, `recentRunCount`, `repeatedLocalRunCount`, and `repeatedLocalRunsProven`. Phase and completion audits require `repeatedLocalRunsProven=true`.
 - Proof needed: two maker seed runs, status route proof, phase audit, completion audit, focused status Jest test, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: repeated local maker seed runs prove reusable local quote refresh behavior, but they are still not an installed continuous market-maker service, risk-managed production daemon, or multi-event quote scheduler.
+
+## Cycle CONTINUOUSSUPERVISORPROOFHARNESS - Process-Safe Continuous Supervisor Proof
+
+- Feature/page worked on: local internal runtime proof harness for the one-event continuous supervisor.
+- Frontend components touched: none.
+- Important functions/services touched: updated `scripts/prove_holiwyn_one_event_continuous_supervisor.ps1`.
+- User/runtime interactions supported: `npm run mobile:one-event-live-supervisor:continuous-proof` can now start a proof-owned backend directly, wait for `/api/health`, run the repeated supervisor proof with `-SkipSleep`, confirm runtime status, and stop the proof-owned backend process tree at the end.
+- State transitions: the proof may start and stop only the backend process it owns. It does not call The Odds API, spend provider quota, mutate mobile UI state, place user orders, approve settlement, or install a service.
+- API/data dependencies: uses existing `GET /api/health`, existing runtime status/proof scripts, and writes `continuous-supervisor-backend-start-summary.redacted.json` plus the existing continuous supervisor proof summary.
+- Proof needed: continuous supervisor proof, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this fixes proof process safety and repeated local supervisor evidence, but it is still a local foreground/proof harness. Installed unattended backend/provider/maker/lifecycle ownership remains P1.

@@ -1,0 +1,8 @@
+{
+    "status":  "healthy",
+    "startedProcess":  {
+                           "pid":  70432,
+                           "stdout":  ".runtime\\continuous-supervisor-proof-backend\\backend-3002.out.log",
+                           "stderr":  ".runtime\\continuous-supervisor-proof-backend\\backend-3002.err.log"
+                       }
+}

@@ -10503,3 +10503,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: production maker service identity, continuous scheduling cadence, per-event quote inventory/risk state, retry state, and alerting remain P1/P2.
 - Temporary mock/static data: none added. The proof uses stored provider snapshots and the existing fake-token maker seed path twice; no Odds API quota is spent.
 - Future migration concern: production should replace repeated local proof rows with worker-owned maker service run records, risk limits, and per-market quote scheduling state.
+
+## Cycle CONTINUOUSSUPERVISORPROOFHARNESS - Process-Safe Continuous Supervisor Proof
+
+- Closed or narrowed: the continuous supervisor proof no longer wraps backend startup in an output-capturing command that can hang on a long-lived server. It starts a proof-owned backend process directly, polls `GET /api/health`, and stops that process tree after proof completion.
+- Route mismatch: no public mobile route changed. The proof still uses `GET /api/health` and existing local runtime status/proof routes.
+- Fields Holiwyn still needs but backend/provider does not fully provide: installed service ownership, durable production process supervisor state, multi-event runtime control, and production alerting remain P1/P2.
+- Temporary mock/static data: none added. The proof uses existing stored provider snapshots and proof artifacts, and spends no Odds API quota by default.
+- Future migration concern: production should replace local proof-owned process startup with a real service supervisor and durable service lifecycle records.
