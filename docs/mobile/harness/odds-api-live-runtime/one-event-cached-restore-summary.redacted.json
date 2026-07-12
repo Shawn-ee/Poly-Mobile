@@ -1,0 +1,55 @@
+{
+  "generatedAt": "2026-07-12T09:30:28.328Z",
+  "scope": "odds-api-one-event-cached-live-restore",
+  "pass": true,
+  "sourceSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
+  "event": {
+    "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
+    "slug": "odds-api-single-soccer-test",
+    "title": "Spain vs. France",
+    "startTime": "2026-07-14T19:00:00.000Z",
+    "source": "the-odds-api",
+    "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73"
+  },
+  "markets": {
+    "restoredMarketCount": 19,
+    "staleReplayClosedCount": 12,
+    "visibleMarketCount": 19,
+    "visibleTitles": [
+      "Spain vs. France: Team to advance",
+      "Spain vs. France: France in regulation",
+      "Spain vs. France: Spain in regulation",
+      "Spain vs. France: Draw in regulation",
+      "Spain vs. France: Regulation Time Winner",
+      "Spain vs. France: Regulation Time Winner",
+      "Spain vs. France: France -3.5",
+      "Spain vs. France: France -2.5",
+      "Spain vs. France: France -1.5",
+      "Spain vs. France: France +1.5",
+      "Spain vs. France: France +2.5",
+      "Spain vs. France: France +3.5",
+      "Spain vs. France: Total Goals 2.5",
+      "Spain vs. France: Total goals 0.5",
+      "Spain vs. France: Total goals 1.5",
+      "Spain vs. France: Total goals 2.5",
+      "Spain vs. France: Total goals 3.5",
+      "Spain vs. France: Total goals 4.5",
+      "Spain vs. France: Total goals 5.5"
+    ]
+  },
+  "checks": {
+    "eventTitleRestored": true,
+    "eventUpcomingOrCurrent": true,
+    "restoredMarketsVisible": true,
+    "staleReplayMarketsClosed": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "This is a quota-free cached restore; fresh live provider refresh still requires THE_ODDS_API_KEY explicitly."
+    ],
+    "p2": [
+      "Per-provider-event slugs should replace the reusable local test slug before multi-event onboarding."
+    ]
+  }
+}

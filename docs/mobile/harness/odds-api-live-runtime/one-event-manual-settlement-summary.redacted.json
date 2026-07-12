@@ -1,65 +1,65 @@
 {
-  "generatedAt": "2026-07-12T09:16:22.856Z",
+  "generatedAt": "2026-07-12T09:30:45.444Z",
   "scope": "odds-api-one-event-manual-settlement",
   "pass": true,
   "mode": "dry-run",
   "event": {
     "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
     "slug": "odds-api-single-soccer-test",
-    "title": "Switzerland vs. Argentina",
-    "startTime": "2026-07-12T01:00:00.000Z",
-    "status": "active",
-    "liveStatus": "LIVE"
+    "title": "Spain vs. France",
+    "startTime": "2026-07-14T19:00:00.000Z",
+    "status": "ACTIVE",
+    "liveStatus": "scheduled"
   },
   "selectedMarket": {
-    "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-    "slug": "odds-api-single-soccer-test-totals-7439c2d603",
-    "title": "Spain vs. France: Total Goals 2.5",
+    "id": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
+    "slug": "odds-api-single-soccer-test-alternate-totals-38ad59c0f2",
+    "title": "Switzerland vs. Argentina: Total Goals 2.5",
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
     "statusBefore": "CLOSED",
     "resolvedOutcomeIdBefore": null,
-    "collateralUSDCBefore": "6100"
+    "collateralUSDCBefore": "1750"
   },
   "winningOutcome": {
-    "id": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+    "id": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
     "name": "Over +2.5",
     "label": "Over +2.5",
     "side": "over"
   },
   "preview": {
     "marketStatus": "CLOSED",
-    "totalShares": "12200",
-    "totalWinningShares": "6100",
-    "totalPayout": "6100",
-    "collateralUSDC": "6100",
+    "totalShares": "3500",
+    "totalWinningShares": "1750",
+    "totalPayout": "1750",
+    "collateralUSDC": "1750",
     "payoutConservationPass": true,
     "blockers": [],
     "openOrderCleanup": {
       "openOrderCount": 2,
-      "buyOrderLockedUSDCToRelease": "94",
+      "buyOrderLockedUSDCToRelease": "74",
       "sellOrderSharesToRelease": "200"
     },
-    "payoutCount": 33,
-    "loserPositionCount": 31,
+    "payoutCount": 11,
+    "loserPositionCount": 9,
     "mutation": "none"
   },
   "execution": {
     "attempted": false,
     "reason": "dry_run_default",
-    "requiredConfirm": "SETTLE:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace"
+    "requiredConfirm": "SETTLE:47dae8f2-1e6b-4c16-904d-765a610af1c6:d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d"
   },
   "postMarket": {
     "status": "CLOSED",
     "resolvedOutcomeId": null,
-    "settlementStatus": null,
-    "collateralUSDC": "6100"
+    "settlementStatus": "closed_cached_restore_stale_replay",
+    "collateralUSDC": "1750"
   },
   "controls": {
     "dryRunIsDefault": true,
     "executeRequiresFlag": "--execute",
-    "executeRequiresConfirm": "SETTLE:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+    "executeRequiresConfirm": "SETTLE:47dae8f2-1e6b-4c16-904d-765a610af1c6:d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
     "actorUserId": "holiwyn-local-settlement-operator",
     "officialResultProvider": null,
     "officialResultProviderStatus": "missing"

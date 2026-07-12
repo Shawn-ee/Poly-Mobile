@@ -13865,3 +13865,25 @@ Known limitations:
   - Onboarding covers the selected one-event runtime only.
   - It does not install always-on provider refresh, market maker, lifecycle, or settlement daemons.
   - Automatic official result ingestion remains P1.
+
+# Cycle ONEEVENTSTALEGUARD - Cached Restore And Stale Provider Trading Guard
+
+- Feature/page worked on: one-event runtime data safety for internal tester launch.
+- Frontend components touched: none. This is backend/runtime/operator tooling only.
+- Important functions/services touched:
+  - `scripts/onboard_holiwyn_one_event_live_runtime.ps1`
+  - `scripts/restore_odds_api_one_event_from_live_summary.ts`
+  - `scripts/prove_odds_api_one_event_stale_guard.ts`
+  - `package.json` scripts `mobile:one-event-cached-restore` and `mobile:one-event-stale-guard-proof`
+- User interactions supported:
+  - Internal testers keep the latest verified upcoming event instead of seeing an older replay match after onboarding.
+  - If provider snapshots become stale, the local proof shows the market can be paused and order placement rejects cleanly with `MARKET_UNAVAILABLE`.
+- State transitions:
+  - Onboarding checks the redacted replay fixture start time against the latest live-runtime event start time.
+  - If replay is older and `-AllowPastReplay` is not passed, onboarding skips replay import and restores the cached live-runtime event from `one-event-live-runtime-summary.redacted.json`.
+  - Cached restore updates the reusable event metadata, relists cached live markets, and closes stale replay markets under the same local test slug.
+  - Stale guard proof forces selected quote snapshots stale, pauses the selected `LIVE` market with `settlementStatus=paused_provider_stale`, proves order rejection, then restores the market and snapshot timestamps.
+- Known limitations:
+  - Cached restore is not a live provider refresh; it spends no quota and depends on a previously passing live-runtime summary.
+  - Stale guard is a local callable proof and is not yet installed into an unattended production supervisor.
+  - Per-provider-event slugs remain future work before multi-event onboarding.

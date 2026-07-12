@@ -10045,3 +10045,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: multi-event provider selection, per-provider-event slugs, durable provider refresh daemon ownership, durable market-maker daemon ownership, and official result ingestion.
 - Temporary mock/static data: default onboarding uses the existing redacted Odds API replay fixture. This is provider-shaped replay evidence and does not spend quota.
 - Future migration concern: the wrapper's `-RunProviderRefresh` mode should remain explicit and quota guarded; broader scans/imports need owner approval before multi-event onboarding becomes default.
+
+## Cycle ONEEVENTSTALEGUARD - Cached Restore And Stale Provider Trading Guard
+
+- Closed or narrowed: stale replay can no longer silently overwrite the current one-event runtime during default onboarding. The wrapper blocks older replay fixtures and restores the last passing cached live-runtime event instead.
+- Route mismatch: none. Cached restore updates local backend rows directly from the existing live-runtime summary; stale guard proves existing `POST /api/orders` rejects paused markets with `MARKET_UNAVAILABLE`.
+- Fields Holiwyn still needs but backend/provider does not fully provide: installed stale-provider monitor/daemon ownership, per-provider-event slugging, and a fresh live provider refresh when the cached summary becomes too old for internal testing.
+- Temporary mock/static data: no new mock data. Cached restore uses the previously redacted live provider summary for Spain vs. France and spends no Odds API quota.
+- Future migration concern: cached restore is a local safety valve, not a substitute for live provider polling. Multi-event runtime should avoid reusable slug drift by storing provider event ids under stable per-event slugs.

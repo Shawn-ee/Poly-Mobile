@@ -4,6 +4,7 @@ param(
   [string]$ReplayOddsPath = "docs\mobile\harness\the-odds-api-single-event\event-odds.redacted.json",
   [string]$WinningOutcome = "over",
   [switch]$RunProviderRefresh,
+  [switch]$AllowPastReplay,
   [switch]$RestartBackend,
   [switch]$SkipReadiness,
   [switch]$SkipSettlementDryRun
@@ -66,6 +67,52 @@ function Invoke-CheckedCommand {
   }
 }
 
+function New-SkippedCommandResult {
+  param(
+    [Parameter(Mandatory = $true)] [string]$Label,
+    [Parameter(Mandatory = $true)] [string]$Reason
+  )
+  $timestamp = (Get-Date).ToUniversalTime().ToString("o")
+  return [ordered]@{
+    label = $Label
+    command = "skipped"
+    exitCode = 0
+    pass = $true
+    skipped = $true
+    reason = $Reason
+    startedAt = $timestamp
+    finishedAt = $timestamp
+  }
+}
+
+function Get-EventStartTime {
+  param([object]$Json)
+  if (-not $Json) {
+    return $null
+  }
+  $value = $null
+  if ($Json.event) {
+    if ($Json.event.startTime) {
+      $value = $Json.event.startTime
+    } elseif ($Json.event.commenceTime) {
+      $value = $Json.event.commenceTime
+    } elseif ($Json.event.event -and $Json.event.event.commenceTime) {
+      $value = $Json.event.event.commenceTime
+    }
+  }
+  if (-not $value -and $Json.selectedEvent -and $Json.selectedEvent.commenceTime) {
+    $value = $Json.selectedEvent.commenceTime
+  }
+  if (-not $value) {
+    return $null
+  }
+  try {
+    return ([DateTimeOffset]::Parse([string]$value)).ToUniversalTime()
+  } catch {
+    return $null
+  }
+}
+
 function Test-HttpHealth {
   param([string]$BaseUrl)
   try {
@@ -124,17 +171,46 @@ $startedAt = (Get-Date).ToUniversalTime()
 $BackendBaseUrl = "http://127.0.0.1:$BackendPort"
 $commands = New-Object System.Collections.Generic.List[object]
 $failed = New-Object System.Collections.Generic.List[string]
+$replayFixture = Read-JsonFile (Resolve-RepoPath $ReplayOddsPath)
+$runtimeBeforeSeed = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-live-runtime-summary.redacted.json")
+$replayStart = Get-EventStartTime $replayFixture
+$runtimeStart = Get-EventStartTime $runtimeBeforeSeed
+$nowUtc = (Get-Date).ToUniversalTime()
+$skipPastReplay = [bool](
+  -not $RunProviderRefresh -and
+  -not $AllowPastReplay -and
+  $replayStart -and
+  $replayStart.UtcDateTime -lt $nowUtc -and
+  $runtimeStart -and
+  $runtimeStart.UtcDateTime -gt $nowUtc
+)
 
 try {
   if ($RunProviderRefresh) {
     $seedCommand = "npm run mobile:the-odds-api-single-event"
+  } elseif ($skipPastReplay) {
+    $seedCommand = $null
   } else {
     $seedCommand = "npm run mobile:the-odds-api-single-event -- --fromRedactedOdds=$ReplayOddsPath"
   }
-  $seedResult = Invoke-CheckedCommand -Label "seed-or-replay-provider-event" -Command $seedCommand
+  if ($seedCommand) {
+    $seedResult = Invoke-CheckedCommand -Label "seed-or-replay-provider-event" -Command $seedCommand
+  } else {
+    $seedResult = New-SkippedCommandResult `
+      -Label "seed-or-replay-provider-event" `
+      -Reason "Redacted replay fixture is older than current UTC and a newer live-runtime event summary exists; pass -AllowPastReplay to intentionally overwrite local one-event state with the replay fixture."
+  }
   $commands.Add($seedResult) | Out-Null
   if (-not $seedResult.pass) {
     $failed.Add("seed-or-replay-provider-event") | Out-Null
+  }
+
+  if ($skipPastReplay) {
+    $restoreResult = Invoke-CheckedCommand -Label "cached-live-runtime-restore" -Command "npm run mobile:one-event-cached-restore"
+    $commands.Add($restoreResult) | Out-Null
+    if (-not $restoreResult.pass) {
+      $failed.Add("cached-live-runtime-restore") | Out-Null
+    }
   }
 
   if (-not $SkipReadiness) {
@@ -234,6 +310,11 @@ $summary = [ordered]@{
     oneEventOnly = $true
     replayDefaultUsesQuota = $false
     liveRefreshRequiresExplicitFlag = $true
+    pastReplayBlockedByDefault = $true
+    allowPastReplay = [bool]$AllowPastReplay
+    skippedPastReplay = [bool]$skipPastReplay
+    replayEventStartTime = if ($replayStart) { $replayStart.ToString("o") } else { $null }
+    existingLiveRuntimeStartTime = if ($runtimeStart) { $runtimeStart.ToString("o") } else { $null }
     keySource = "THE_ODDS_API_KEY process environment only"
   }
   event = $event
@@ -249,6 +330,7 @@ $summary = [ordered]@{
   artifacts = [ordered]@{
     seedLive = "docs/mobile/harness/the-odds-api-single-event/single-event-summary.redacted.json"
     seedReplay = "docs/mobile/harness/the-odds-api-single-event/single-event-replay-summary.redacted.json"
+    cachedLiveRestore = "docs/mobile/harness/odds-api-live-runtime/one-event-cached-restore-summary.redacted.json"
     readiness = "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json"
     runtimeStatus = "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json"
     settlementReadiness = "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json"
@@ -256,7 +338,13 @@ $summary = [ordered]@{
   }
   runtimeTruth = [ordered]@{
     backendContinuousAfterOnboarding = $true
-    providerRefreshMode = if ($RunProviderRefresh) { "bounded explicit live provider refresh" } else { "redacted replay import; no provider quota spent" }
+    providerRefreshMode = if ($RunProviderRefresh) {
+      "bounded explicit live provider refresh"
+    } elseif ($skipPastReplay) {
+      "freshness-guarded cached live restore; stale replay skipped; no provider quota spent"
+    } else {
+      "redacted replay import; no provider quota spent"
+    }
     marketMakerMode = "shifted local maker seed from readiness command; not an installed daemon"
     lifecycleSchedulerMode = "readiness proof plus local callable scheduler; not installed as a service"
     settlementMode = "manual readiness plus guarded dry-run/execute command; automatic official result settlement not wired"

@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-12T09:16:23.4334047Z",
+    "generatedAt":  "2026-07-12T09:30:45.8707420Z",
     "scope":  "holiwyn-one-event-live-onboarding",
     "pass":  true,
-    "startedAt":  "2026-07-12T09:16:04.7470596Z",
-    "completedAt":  "2026-07-12T09:16:23.4344114Z",
+    "startedAt":  "2026-07-12T09:30:27.7529938Z",
+    "completedAt":  "2026-07-12T09:30:45.8717409Z",
     "mode":  "quota-free-replay",
     "providerPolicy":  {
                            "providerSource":  "the-odds-api",
@@ -11,6 +11,11 @@
                            "oneEventOnly":  true,
                            "replayDefaultUsesQuota":  false,
                            "liveRefreshRequiresExplicitFlag":  true,
+                           "pastReplayBlockedByDefault":  true,
+                           "allowPastReplay":  false,
+                           "skippedPastReplay":  true,
+                           "replayEventStartTime":  "2026-07-12T01:00:00.0000000+00:00",
+                           "existingLiveRuntimeStartTime":  "2026-07-14T19:00:00.0000000+00:00",
                            "keySource":  "THE_ODDS_API_KEY process environment only"
                        },
     "event":  {
@@ -34,43 +39,53 @@
     "commands":  [
                      {
                          "label":  "seed-or-replay-provider-event",
-                         "command":  "npm run mobile:the-odds-api-single-event -- --fromRedactedOdds=docs\\mobile\\harness\\the-odds-api-single-event\\event-odds.redacted.json",
+                         "command":  "skipped",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T09:16:04.7535718Z",
-                         "finishedAt":  "2026-07-12T09:16:07.7039494Z"
+                         "skipped":  true,
+                         "reason":  "Redacted replay fixture is older than current UTC and a newer live-runtime event summary exists; pass -AllowPastReplay to intentionally overwrite local one-event state with the replay fixture.",
+                         "startedAt":  "2026-07-12T09:30:27.7890452Z",
+                         "finishedAt":  "2026-07-12T09:30:27.7890452Z"
+                     },
+                     {
+                         "label":  "cached-live-runtime-restore",
+                         "command":  "npm run mobile:one-event-cached-restore",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T09:30:27.7945485Z",
+                         "finishedAt":  "2026-07-12T09:30:28.3680938Z"
                      },
                      {
                          "label":  "one-event-live-readiness",
                          "command":  "npm run mobile:one-event-live-readiness -- -BackendPort 3002",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T09:16:07.7069524Z",
-                         "finishedAt":  "2026-07-12T09:16:19.8895923Z"
+                         "startedAt":  "2026-07-12T09:30:28.3680938Z",
+                         "finishedAt":  "2026-07-12T09:30:40.9325180Z"
                      },
                      {
                          "label":  "one-event-runtime-status",
                          "command":  "npm run mobile:one-event-runtime-status",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T09:16:19.8905919Z",
-                         "finishedAt":  "2026-07-12T09:16:20.6553829Z"
+                         "startedAt":  "2026-07-12T09:30:40.9325180Z",
+                         "finishedAt":  "2026-07-12T09:30:42.2703057Z"
                      },
                      {
                          "label":  "one-event-settlement-readiness",
                          "command":  "npm run mobile:one-event-settlement-readiness",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T09:16:20.6553829Z",
-                         "finishedAt":  "2026-07-12T09:16:21.7452601Z"
+                         "startedAt":  "2026-07-12T09:30:42.2709036Z",
+                         "finishedAt":  "2026-07-12T09:30:44.8078158Z"
                      },
                      {
                          "label":  "one-event-settlement-dry-run",
                          "command":  "npm run mobile:one-event-settlement -- --winningOutcome=over",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T09:16:21.7452601Z",
-                         "finishedAt":  "2026-07-12T09:16:22.8968698Z"
+                         "startedAt":  "2026-07-12T09:30:44.8098156Z",
+                         "finishedAt":  "2026-07-12T09:30:45.4828685Z"
                      }
                  ],
     "backend":  {
@@ -81,7 +96,7 @@
                                                 "status":  "ok",
                                                 "db":  "connected",
                                                 "env":  "development",
-                                                "timestamp":  "2026-07-12T09:16:22.936Z"
+                                                "timestamp":  "2026-07-12T09:30:45.517Z"
                                             },
                                    "error":  null
                                }
@@ -111,6 +126,7 @@
     "artifacts":  {
                       "seedLive":  "docs/mobile/harness/the-odds-api-single-event/single-event-summary.redacted.json",
                       "seedReplay":  "docs/mobile/harness/the-odds-api-single-event/single-event-replay-summary.redacted.json",
+                      "cachedLiveRestore":  "docs/mobile/harness/odds-api-live-runtime/one-event-cached-restore-summary.redacted.json",
                       "readiness":  "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json",
                       "runtimeStatus":  "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
                       "settlementReadiness":  "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json",
@@ -118,7 +134,7 @@
                   },
     "runtimeTruth":  {
                          "backendContinuousAfterOnboarding":  true,
-                         "providerRefreshMode":  "redacted replay import; no provider quota spent",
+                         "providerRefreshMode":  "freshness-guarded cached live restore; stale replay skipped; no provider quota spent",
                          "marketMakerMode":  "shifted local maker seed from readiness command; not an installed daemon",
                          "lifecycleSchedulerMode":  "readiness proof plus local callable scheduler; not installed as a service",
                          "settlementMode":  "manual readiness plus guarded dry-run/execute command; automatic official result settlement not wired"
