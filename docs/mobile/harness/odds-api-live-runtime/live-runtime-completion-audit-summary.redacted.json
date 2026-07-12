@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T22:11:27.676Z",
+  "generatedAt": "2026-07-12T22:19:45.270Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -28,7 +28,7 @@
     "freshness": {
       "liveProofAgeHours": 14.63,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 6.86,
+      "watchdogAgeHours": 7,
       "maxWatchdogAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -106,6 +106,73 @@
     "launchProfileKnown": true,
     "internalTesterWatchdogKnown": true,
     "internalTesterWatchdogFresh": true
+  },
+  "completionRequirements": {
+    "marketMakerContinuity": {
+      "pass": true,
+      "answer": "Local market making is continuous only while the foreground/local supervisor runs; durable maker quote rows and provider-to-maker handoff are proven, but no installed OS service exists.",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/provider-maker-handoff-summary.redacted.json",
+        "localRuntimeStatus.providerRefreshRuns",
+        "localRuntimeStatus.marketMakerQuoteRuns"
+      ]
+    },
+    "oddsRefreshMode": {
+      "pass": true,
+      "answer": "Cached runtime checks use replay/stored proof without quota; live provider refresh is explicit, key-gated, quota-capped, and persisted as ProviderRefreshRun evidence.",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
+        "localRuntimeStatus.providerRefreshRuns"
+      ]
+    },
+    "quotaProtection": {
+      "pass": true,
+      "answer": "Provider quota is protected by one-event scope, explicit live flags, max credit/min remaining limits, and status/audit routes that do not call the provider.",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
+        "docs/mobile/ODDS_PROVIDER_REFRESH_POLICY.md"
+      ]
+    },
+    "staleOddsHandling": {
+      "pass": true,
+      "answer": "Mobile routes classify ready/refresh_due/stale/unavailable, stale guard can pause stale markets, and order placement rejects stale markets with MARKET_UNAVAILABLE.",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-run-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json"
+      ]
+    },
+    "eventLifecycle": {
+      "pass": true,
+      "answer": "Open, paused, closed, and settlement mechanics are proven locally; active event settlement is guarded until CLOSED with approval and exact confirmation evidence.",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-matrix-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-closed-eligibility-summary.redacted.json",
+        "localSettlementQueue"
+      ]
+    },
+    "oneEventMobileTrading": {
+      "pass": true,
+      "answer": "One real upcoming soccer event is visible and tradable from S23 through event detail, quote, buy, portfolio, cashout/sell, and history proof.",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json",
+        "docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json"
+      ]
+    },
+    "runtimeLaunch": {
+      "pass": true,
+      "answer": "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, and cleaned up after proof.",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/current-runtime-state-proof-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json"
+      ]
+    }
   },
   "gaps": {
     "p0": [],

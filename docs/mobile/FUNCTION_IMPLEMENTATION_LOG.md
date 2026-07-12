@@ -2,6 +2,20 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle COMPLETIONREQS - Machine-Readable Live Runtime Completion Requirements
+
+- Feature/page worked on: backend live-runtime completion/status gate.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/report_holiwyn_live_runtime_completion_audit.ts`
+  - `src/server/services/liveRuntimeStatus.ts`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `src/__tests__/liveRuntimeStatus.service.test.ts`
+- User/runtime interactions supported: the live-runtime completion audit now writes a machine-readable `completionRequirements` matrix for market-maker continuity, odds refresh mode, quota protection, stale odds handling, event lifecycle, one-event mobile trading, and runtime launch. `/api/internal/live-runtime/status` exposes the same matrix and reports `needs_attention` if it is missing or any row fails.
+- State transitions: none. This is read-only audit/status enforcement and does not start loops, call providers, mutate events, execute settlement, or spend quota.
+- API/data dependencies: composes existing runtime proof artifacts, durable `ProviderRefreshRun`, durable `MarketMakerQuoteRun`, lifecycle proof, stale-guard proof, S23 proof, watchdog proof, and phase-audit status evidence.
+- Known limitations: this makes the local phase completion questions objectively auditable. It does not install a production daemon, broaden to multi-event polling, or remove the remaining P1 official-result auto-settlement guard.
+
 ## Cycle STATUSSETTLEMENTQUEUE - Runtime Status Settlement Queue Projection
 
 - Feature/page worked on: backend local live-runtime status control-plane projection.

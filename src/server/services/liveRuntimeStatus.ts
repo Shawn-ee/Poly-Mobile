@@ -61,6 +61,21 @@ const booleanValue = (value: unknown) => (typeof value === "boolean" ? value : n
 const objectValue = (value: unknown): JsonObject =>
   value && typeof value === "object" && !Array.isArray(value) ? (value as JsonObject) : {};
 
+const completionRequirementEntries = (completionAudit: JsonObject | null) =>
+  Object.entries(objectValue(getPath(completionAudit, ["completionRequirements"]))).map(([key, value]) => ({
+    key,
+    ...(objectValue(value) as {
+      pass?: unknown;
+      answer?: unknown;
+      evidence?: unknown;
+    }),
+  }));
+
+const completionRequirementsPass = (completionAudit: JsonObject | null) => {
+  const entries = completionRequirementEntries(completionAudit);
+  return entries.length > 0 && entries.every((entry) => entry.pass === true);
+};
+
 const pidRunning = (pid: number | null) => {
   if (!pid) return false;
   try {
@@ -692,6 +707,8 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
       run.quoteRouteStatus === 200,
   ).length;
   const p0Gaps = asStringArray(getPath(completionAudit, ["gaps", "p0"]));
+  const completionRequirements = completionRequirementEntries(completionAudit);
+  const completionRequirementsReady = completionRequirementsPass(completionAudit);
   const activeSettlementClosedEligibilityReady =
     pass(activeSettlementClosedEligibility) &&
     getPath(activeSettlementClosedEligibility, ["runtimeTruth", "provesActiveEventClosedStateEligibility"]) === true &&
@@ -699,6 +716,9 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     getPath(activeSettlementClosedEligibility, ["runtimeTruth", "activeMarketRestored"]) === true &&
     getPath(activeSettlementClosedEligibility, ["runtimeTruth", "providerQuotaUsed"]) === false;
   const statusP0Gaps = [...p0Gaps];
+  if (!completionRequirementsReady) {
+    statusP0Gaps.push("completion_requirements_missing_or_failed");
+  }
   if (!activeSettlementClosedEligibilityReady) {
     statusP0Gaps.push("active_settlement_closed_eligibility_missing_or_failed");
   }
@@ -969,6 +989,8 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
       answers: completionAudit?.answers ?? {},
       checks: completionAudit?.checks ?? {},
       sourceEvidence: completionAudit?.sourceEvidence ?? {},
+      completionRequirements,
+      completionRequirementsPass: completionRequirementsReady,
       p0: asStringArray(getPath(completionAudit, ["gaps", "p0"])),
       p1: asStringArray(getPath(completionAudit, ["gaps", "p1"])),
       p2: asStringArray(getPath(completionAudit, ["gaps", "p2"])),

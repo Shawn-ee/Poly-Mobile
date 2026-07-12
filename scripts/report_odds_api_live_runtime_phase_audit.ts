@@ -359,6 +359,18 @@ async function main() {
         (getPath(localRuntimeStatusBody, ["phaseCompletion", "p0"]) as unknown[]).length === 0 &&
         Array.isArray(getPath(localRuntimeStatusBody, ["phaseCompletion", "p1"])) &&
         Array.isArray(getPath(localRuntimeStatusBody, ["phaseCompletion", "p2"])) &&
+        getPath(localRuntimeStatusBody, ["phaseCompletion", "completionRequirementsPass"]) === true &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["phaseCompletion", "completionRequirements"])) &&
+        (getPath(localRuntimeStatusBody, ["phaseCompletion", "completionRequirements"]) as unknown[]).length >= 7 &&
+        (getPath(localRuntimeStatusBody, ["phaseCompletion", "completionRequirements"]) as unknown[]).every(
+          (requirement) =>
+            requirement &&
+            typeof requirement === "object" &&
+            typeof getPath(requirement, ["key"]) === "string" &&
+            getPath(requirement, ["pass"]) === true &&
+            typeof getPath(requirement, ["answer"]) === "string" &&
+            Array.isArray(getPath(requirement, ["evidence"])),
+        ) &&
         getPath(localRuntimeStatusBody, ["launchProfile", "checked"]) === true &&
         getPath(localRuntimeStatusBody, ["launchProfile", "pass"]) === true &&
         getPath(localRuntimeStatusBody, ["launchProfile", "runtimeTruth", "localOperatorLaunchProfileDocumented"]) === true &&

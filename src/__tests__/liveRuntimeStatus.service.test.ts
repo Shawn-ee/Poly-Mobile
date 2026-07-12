@@ -269,6 +269,43 @@ const makeCompletionAudit = (
   checks: {
     internalTesterWatchdogKnown: true,
   },
+  completionRequirements: {
+    marketMakerContinuity: {
+      pass: true,
+      answer: "foreground supervisor only",
+      evidence: ["one-event-runtime-status-summary.redacted.json"],
+    },
+    oddsRefreshMode: {
+      pass: true,
+      answer: "cached by default, live explicit",
+      evidence: ["one-event-live-runtime-summary.redacted.json"],
+    },
+    quotaProtection: {
+      pass: true,
+      answer: "quota capped",
+      evidence: ["ODDS_PROVIDER_REFRESH_POLICY.md"],
+    },
+    staleOddsHandling: {
+      pass: true,
+      answer: "stale markets reject orders",
+      evidence: ["one-event-stale-guard-summary.redacted.json"],
+    },
+    eventLifecycle: {
+      pass: true,
+      answer: "open paused closed settlement known",
+      evidence: ["one-event-lifecycle-matrix-summary.redacted.json"],
+    },
+    oneEventMobileTrading: {
+      pass: true,
+      answer: "S23 proof passed",
+      evidence: ["cycle-LIVEODDSS23-odds-api-s23-visible-flow.json"],
+    },
+    runtimeLaunch: {
+      pass: true,
+      answer: "runtime launch proof passed",
+      evidence: ["current-runtime-state-proof-summary.redacted.json"],
+    },
+  },
   gaps: {
     p0: [],
     p1: ["installed service remains open"],
@@ -704,6 +741,31 @@ describe("live runtime status service", () => {
       p2: [],
       note: expect.stringContaining("Read-only projection"),
     });
+    expect(status.phaseCompletion.completionRequirementsPass).toBe(true);
+    expect(status.phaseCompletion.completionRequirements).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          key: "marketMakerContinuity",
+          pass: true,
+          answer: "foreground supervisor only",
+        }),
+        expect.objectContaining({
+          key: "oddsRefreshMode",
+          pass: true,
+          answer: "cached by default, live explicit",
+        }),
+        expect.objectContaining({
+          key: "eventLifecycle",
+          pass: true,
+          answer: "open paused closed settlement known",
+        }),
+        expect.objectContaining({
+          key: "runtimeLaunch",
+          pass: true,
+          answer: "runtime launch proof passed",
+        }),
+      ]),
+    );
     expect(status.launchProfile).toMatchObject({
       checked: true,
       pass: true,
@@ -1034,6 +1096,41 @@ describe("live runtime status service", () => {
         },
       },
     });
+  });
+
+  test("returns needs_attention when a runtime completion requirement fails", async () => {
+    readFile.mockImplementation(async (filePath: string) => {
+      if (filePath.includes("completion-audit")) {
+        const completionAudit = makeCompletionAudit();
+        completionAudit.completionRequirements.oddsRefreshMode.pass = false;
+        completionAudit.completionRequirements.oddsRefreshMode.answer = "live refresh evidence missing";
+        return JSON.stringify(completionAudit);
+      }
+      if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
+      if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
+      if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
+      if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
+      if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
+      if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
+      throw new Error(`unexpected path ${filePath}`);
+    });
+
+    const status = await getLocalLiveRuntimeStatus();
+
+    expect(status.status).toBe("needs_attention");
+    expect(status.gaps.p0).toContain("completion_requirements_missing_or_failed");
+    expect(status.phaseCompletion.completionRequirementsPass).toBe(false);
+    expect(status.phaseCompletion.completionRequirements).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          key: "oddsRefreshMode",
+          pass: false,
+          answer: "live refresh evidence missing",
+        }),
+      ]),
+    );
   });
 
   test("returns needs_attention when a required proof artifact is stale", async () => {

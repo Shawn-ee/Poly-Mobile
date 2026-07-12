@@ -322,10 +322,91 @@ async function main() {
   const p0 = Object.entries(checks)
     .filter(([, value]) => value !== true)
     .map(([key]) => key);
+  const completionRequirements = {
+    marketMakerContinuity: {
+      pass:
+        checks.marketMakerContinuityKnown &&
+        checks.durableMarketMakerQuoteRunKnown &&
+        checks.providerMakerHandoffKnown,
+      answer:
+        "Local market making is continuous only while the foreground/local supervisor runs; durable maker quote rows and provider-to-maker handoff are proven, but no installed OS service exists.",
+      evidence: [
+        PATHS.runtimeStatus,
+        PATHS.providerMakerHandoff,
+        "localRuntimeStatus.providerRefreshRuns",
+        "localRuntimeStatus.marketMakerQuoteRuns",
+      ],
+    },
+    oddsRefreshMode: {
+      pass:
+        checks.liveProviderProofPass &&
+        checks.oddsRefreshModeKnown &&
+        checks.oddsRefreshCadenceKnown &&
+        checks.durableProviderRefreshRunKnown,
+      answer:
+        "Cached runtime checks use replay/stored proof without quota; live provider refresh is explicit, key-gated, quota-capped, and persisted as ProviderRefreshRun evidence.",
+      evidence: [PATHS.runtimeStatus, PATHS.liveProviderProof, "localRuntimeStatus.providerRefreshRuns"],
+    },
+    quotaProtection: {
+      pass: checks.providerQuotaKnownAndProtected,
+      answer:
+        "Provider quota is protected by one-event scope, explicit live flags, max credit/min remaining limits, and status/audit routes that do not call the provider.",
+      evidence: [PATHS.runtimeStatus, PATHS.liveProviderProof, "docs/mobile/ODDS_PROVIDER_REFRESH_POLICY.md"],
+    },
+    staleOddsHandling: {
+      pass: checks.staleHandlingKnown,
+      answer:
+        "Mobile routes classify ready/refresh_due/stale/unavailable, stale guard can pause stale markets, and order placement rejects stale markets with MARKET_UNAVAILABLE.",
+      evidence: [PATHS.staleGuardProof, PATHS.staleGuardRun, PATHS.runtimeStatus],
+    },
+    eventLifecycle: {
+      pass:
+        checks.lifecycleOpenPausedClosedSettledKnown &&
+        checks.activeSettlementDecisionKnown &&
+        checks.activeSettlementClosedEligibilityKnown &&
+        checks.localSettlementQueueApiKnown,
+      answer:
+        "Open, paused, closed, and settlement mechanics are proven locally; active event settlement is guarded until CLOSED with approval and exact confirmation evidence.",
+      evidence: [
+        PATHS.lifecycleMatrix,
+        PATHS.activeSettlementReadiness,
+        PATHS.activeSettlementClosedEligibility,
+        "localSettlementQueue",
+      ],
+    },
+    oneEventMobileTrading: {
+      pass:
+        checks.oneRealUpcomingEventKnown &&
+        checks.makerQuoteAvailable &&
+        checks.mobileS23EndToEndTradeProofPass,
+      answer:
+        "One real upcoming soccer event is visible and tradable from S23 through event detail, quote, buy, portfolio, cashout/sell, and history proof.",
+      evidence: [PATHS.liveReadiness, PATHS.s23Visible],
+    },
+    runtimeLaunch: {
+      pass:
+        checks.launchProfileKnown &&
+        checks.internalTesterWatchdogKnown &&
+        checks.currentRuntimeStateKnown &&
+        checks.currentRuntimeWarmStateProofKnown &&
+        checks.oneCommandRuntimeLoopProofKnown,
+      answer:
+        "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, and cleaned up after proof.",
+      evidence: [
+        PATHS.localRuntimeLaunchProfile,
+        PATHS.internalTesterWatchdog,
+        PATHS.currentRuntimeStateProof,
+        PATHS.onboarding,
+      ],
+    },
+  };
+  const completionRequirementP0 = Object.entries(completionRequirements)
+    .filter(([, value]) => value.pass !== true)
+    .map(([key]) => key);
   const summary = {
     generatedAt: new Date().toISOString(),
     scope: "holiwyn-live-runtime-completion-audit",
-    pass: p0.length === 0,
+    pass: p0.length === 0 && completionRequirementP0.length === 0,
     providerQuotaUsed: false,
     event: {
       title: eventTitle ?? null,
@@ -405,8 +486,9 @@ async function main() {
     },
     sourceEvidence: PATHS,
     checks,
+    completionRequirements,
     gaps: {
-      p0,
+      p0: [...p0, ...completionRequirementP0.map((key) => `completion_requirement_failed:${key}`)],
       p1: [
         "Installed unattended provider/maker/lifecycle service ownership remains open.",
         "Production official-result auto-settlement remains open; active-event execution is still guarded by CLOSED market status and exact confirmation.",
