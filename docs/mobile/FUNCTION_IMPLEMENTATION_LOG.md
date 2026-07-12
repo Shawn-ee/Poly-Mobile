@@ -359,6 +359,15 @@ Purpose: document the app functions, services, API calls, state transitions, and
 - Proof: run `npm run mobile:internal-readiness-batch` and confirm the summary/gap list reports `S23 Google consent path ready: yes (lan-callback-preflight)` when the LAN callback preflight passes.
 - Known limitations: this does not complete Google consent or change Google Cloud settings. Real consent still requires the reported callback to be registered in Google Cloud.
 
+## Cycle ONEEVENTACTIVESETTLEMENTREADINESS - Active Event Settlement Decision
+
+- Feature/page worked on: backend live-runtime active-event settlement readiness.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/report_odds_api_active_event_settlement_readiness.ts` adds a read-only report over the active market, trusted-result settlement preflight, settlement approval audit event, result review trail, supervisor approved-settlement wait proof, and active-event clone settlement proof. `scripts/report_odds_api_live_runtime_phase_audit.ts` now gates on that report.
+- User interactions supported: unchanged in mobile. Operators now have one local command that says whether the active tester market can be settled now, which exact confirmation would be required, and which blocker remains.
+- State transitions: no provider calls, no market/order/portfolio mutation, and no settlement execution. Current proof reports `market_not_closed_for_execution:LIVE`.
+- Known limitations: this is not an operator UI or production approval table. Direct active-event execution remains blocked until the market is `CLOSED` and exact confirmation is used.
+
 ## Cycle ONEEVENTREVIEWTRAILAPPROVAL - Result Review Trail Approval Evidence
 
 - Feature/page worked on: backend live-runtime settlement review trail.

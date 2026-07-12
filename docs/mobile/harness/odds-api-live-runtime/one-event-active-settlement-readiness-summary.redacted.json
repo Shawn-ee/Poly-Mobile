@@ -1,0 +1,89 @@
+{
+  "generatedAt": "2026-07-12T14:57:50.282Z",
+  "scope": "odds-api-active-event-settlement-readiness",
+  "pass": true,
+  "providerQuotaUsed": false,
+  "eventSlug": "odds-api-single-soccer-test",
+  "selectedMarketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+  "winningOutcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+  "activeMarket": {
+    "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "slug": "odds-api-single-soccer-test-totals-7439c2d603",
+    "title": "Spain vs. France: Total Goals 2.5",
+    "status": "LIVE",
+    "settlementStatus": null,
+    "resolvedOutcomeId": null,
+    "event": {
+      "slug": "odds-api-single-soccer-test",
+      "title": "Spain vs. France",
+      "status": "ACTIVE",
+      "liveStatus": "scheduled",
+      "startTime": "2026-07-14T19:00:00.000Z"
+    }
+  },
+  "approvalEvidence": {
+    "id": "180",
+    "eventType": "settlement.trusted_result.approved",
+    "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+    "createdAt": "2026-07-12T14:45:18.630Z",
+    "resultDigest": "f3a5743c73f2",
+    "approvedBy": "holiwyn-local-approval-audit-proof",
+    "approvedAt": "2026-07-12T14:45:18.627Z",
+    "executionRequiresMarketStatus": "CLOSED",
+    "activeTesterSettlementExecution": false
+  },
+  "executionDecision": {
+    "executionEligibleNow": false,
+    "operatorDecision": "wait_for_or_apply_market_close_before_execution",
+    "blockers": [
+      "market_not_closed_for_execution:LIVE"
+    ],
+    "exactConfirmationRequired": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:f3a5743c73f2",
+    "marketMustBeClosed": true,
+    "activeMarketExecutionAttempted": false
+  },
+  "sourceEvidence": {
+    "settlementPreflight": "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-preflight-summary.redacted.json",
+    "settlementAuditEvent": "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-audit-event-summary.redacted.json",
+    "settlementApprovalAuditEvent": "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-approval-audit-event-summary.redacted.json",
+    "resultReviewTrail": "docs/mobile/harness/odds-api-live-runtime/one-event-result-review-trail-summary.redacted.json",
+    "supervisorApprovedSettlement": "docs/mobile/harness/odds-api-live-runtime/one-event-supervisor-approved-settlement-wait-summary.redacted.json",
+    "activeSettlementClone": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-clone-summary.redacted.json"
+  },
+  "runtimeTruth": {
+    "activeEventSettlementExecutionDecisionKnown": true,
+    "activeEventCanExecuteNow": false,
+    "activeEventSettlementExecutionAttempted": false,
+    "activeEventStillLive": true,
+    "disposableCloneSettlementProven": true,
+    "supervisorApprovedSettlementWaitProven": true,
+    "reportIsReadOnly": true,
+    "providerQuotaUsed": false
+  },
+  "checks": {
+    "selectedMarketFound": true,
+    "selectedMarketMatchesEvent": true,
+    "settlementPreflightPassed": true,
+    "settlementPreflightDryRunPassed": true,
+    "settlementApprovalAuditEventFound": true,
+    "resultReviewTrailPassed": true,
+    "approvalDigestMatchesPreflight": true,
+    "supervisorApprovedSettlementWaitProven": true,
+    "activeEventCloneSettlementProofPassed": true,
+    "activeEventExecutionDecisionKnown": true,
+    "activeEventNotMutatedByReport": true,
+    "providerQuotaNotUsed": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "Active tester event settlement remains blocked until the selected market is CLOSED and exact confirmation is used.",
+      "Installed unattended official-result polling remains future work.",
+      "Production approval storage/operator UI remains future work."
+    ],
+    "p2": [
+      "Multi-event settlement queue and lifecycle dashboard remain future work."
+    ]
+  }
+}

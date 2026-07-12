@@ -10230,6 +10230,14 @@ Future migration concern:
 - Temporary mock/static data: none added. The report reads committed/local proof evidence, spends no provider quota, and does not execute settlement.
 - Future migration concern: canonical events are useful audit evidence, but production settlement should promote official result evidence, review decisions, approval state, and execution state into durable first-class backend models.
 
+## Cycle ONEEVENTACTIVESETTLEMENTREADINESS - Active Event Settlement Decision
+
+- Closed or narrowed: active-event settlement now has a read-only decision report that combines current market status, trusted-result preflight, approval audit evidence, result review trail, supervisor approved-settlement wait proof, and active-event clone settlement proof.
+- Route mismatch: none. No mobile API or backend HTTP route changed; the command reads existing DB models and proof summaries.
+- Fields Holiwyn still needs but backend/provider does not fully provide: a first-class official result table, durable approval table, operator approval/review UI, installed official-result polling, and production execution service remain P1/P2.
+- Temporary mock/static data: none added. The report uses existing redacted proof evidence and the active local DB event; it spends no provider quota and does not execute settlement.
+- Future migration concern: production should move the execution decision into durable backend/service-managed state instead of relying on local proof summaries.
+
 ## Cycle ONEEVENTLIFECYCLEMATRIX - One-Event Lifecycle Matrix
 
 - Closed or narrowed: open, paused, closed, and settled/resolved evidence is now visible in one read-only matrix instead of scattered across separate proof summaries.
