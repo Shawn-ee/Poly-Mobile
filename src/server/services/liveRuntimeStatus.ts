@@ -471,6 +471,17 @@ function buildOperatorNextActions(params: {
 
   if (!params.supervisorRunning || !params.resultPollerRunning) {
     actions.push({
+      id: "start_full_internal_tester_runtime",
+      priority: "P1",
+      label: "Start full local internal tester runtime",
+      command:
+        "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
+      requiresProviderKey: false,
+      spendsProviderQuota: false,
+      reason:
+        "Starts or reuses local backend/Expo, then starts the cached supervisor and result-poller with result ingestion and approved-settlement wait mode.",
+    });
+    actions.push({
       id: "prove_one_command_runtime_loops",
       priority: "P0",
       label: "Prove one-command local runtime loops",

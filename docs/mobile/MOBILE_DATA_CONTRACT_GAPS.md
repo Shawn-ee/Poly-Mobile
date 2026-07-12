@@ -10555,3 +10555,12 @@ Future migration concern:
 - Schema mismatch: none. Production should store completion/audit state as durable runtime records rather than reading local redacted JSON artifacts.
 - Temporary mock/static data: none added. The route reads the existing completion audit artifact and spends no provider quota.
 - Remaining gaps: authenticated operator dashboard, production service controls, installed service ownership, and production official-result automation remain P1/P2.
+
+## Cycle RUNTIMESTATUSFULLSTARTACTION - Full Runtime Start Operator Action
+
+- Closed or narrowed: local runtime status now exposes `start_full_internal_tester_runtime`, a no-quota operator action for bringing up backend/Expo plus the cached supervisor and result-poller loops through the existing internal tester runtime manager.
+- Fields added for future operator/runtime contracts: `operatorNextActions.actions[].id=start_full_internal_tester_runtime`, command text, provider-key requirement, quota-spend truth, priority, label, and reason.
+- Route mismatch: this remains a local/dev-only read-only status route. It reports commands but does not execute them.
+- Schema mismatch: none. Production should replace command-string actions with authenticated operation records, role checks, durable job IDs, and service ownership.
+- Temporary mock/static data: none added. The action is derived from current local process state and spends no provider quota.
+- Remaining gaps: authenticated operator dashboard, production service controls, installed service ownership, and production official-result automation remain P1/P2.

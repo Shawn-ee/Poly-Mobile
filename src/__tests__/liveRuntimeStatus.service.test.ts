@@ -623,6 +623,13 @@ describe("live runtime status service", () => {
           spendsProviderQuota: false,
         }),
         expect.objectContaining({
+          id: "start_full_internal_tester_runtime",
+          command:
+            "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
+          requiresProviderKey: false,
+          spendsProviderQuota: false,
+        }),
+        expect.objectContaining({
           id: "prove_one_command_runtime_loops",
           command:
             "npm run mobile:one-event-onboarding -- -AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof",

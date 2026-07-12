@@ -14857,3 +14857,14 @@ Known limitations:
 - API/data dependencies: reads `docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json` and exposes redacted completion data through the existing dev-only status route. Phase audit now requires the `phaseCompletion` block to remain present and P0-clean.
 - Proof needed: focused status service test, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this improves internal operator truth but remains local/dev-only audit projection, not an authenticated production control plane.
+
+## Cycle RUNTIMESTATUSFULLSTARTACTION - Full Runtime Start Operator Action
+
+- Feature/page worked on: backend local internal runtime operator status.
+- Frontend components touched: none.
+- Important functions/services touched: updated `src/server/services/liveRuntimeStatus.ts`, `src/__tests__/liveRuntimeStatus.service.test.ts`, and `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/status` and see `start_full_internal_tester_runtime`, the exact no-quota command that starts or reuses backend/Expo and starts the cached supervisor/result-poller with result ingestion, settlement scheduling, and approved-settlement wait mode.
+- State transitions: none from the status route. The route only reports the operator command; it does not start processes, call The Odds API, spend provider quota, mutate markets, approve settlement, or execute active-event settlement.
+- API/data dependencies: composes current supervisor/result-poller process state and existing operator action metadata. Phase audit now requires the full-runtime start action to remain present with `requiresProviderKey=false` and `spendsProviderQuota=false`.
+- Proof needed: focused status service test, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this narrows local operator guidance but is still command guidance, not authenticated production service control or installed OS service ownership.

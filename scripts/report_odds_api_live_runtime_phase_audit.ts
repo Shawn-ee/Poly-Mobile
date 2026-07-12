@@ -401,6 +401,16 @@ async function main() {
           (action) =>
             action &&
             typeof action === "object" &&
+            getPath(action, ["id"]) === "start_full_internal_tester_runtime" &&
+            getPath(action, ["requiresProviderKey"]) === false &&
+            getPath(action, ["spendsProviderQuota"]) === false &&
+            getPath(action, ["command"]) ===
+              "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
+        ) &&
+        (getPath(localRuntimeStatusBody, ["operatorNextActions", "actions"]) as unknown[]).some(
+          (action) =>
+            action &&
+            typeof action === "object" &&
             getPath(action, ["id"]) === "prove_one_command_runtime_loops" &&
             getPath(action, ["requiresProviderKey"]) === false &&
             getPath(action, ["spendsProviderQuota"]) === false &&
