@@ -147,10 +147,14 @@ async function main() {
         commands: [
           command("runtime status", "npm run mobile:internal-tester-runtime -- -Action status"),
           command(
+            "start cached internal tester runtime",
+            "npm run mobile:internal-tester-runtime:cached-start",
+          ),
+          command(
             "start backend/expo plus supervisor and result poller",
             "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
           ),
-          command("stop manager-owned local runtime", "npm run mobile:internal-tester-runtime -- -Action stop"),
+          command("stop manager-owned local runtime", "npm run mobile:internal-tester-runtime:stop"),
         ],
       },
       scheduledTaskProfile: {
@@ -166,6 +170,7 @@ async function main() {
       liveProviderProfile: {
         command:
           "npm run mobile:one-event-live-supervisor -- -RunProviderProof -Continuous -MaxIterations 0 -MaxProviderProofRuns 1 -ProviderProofEveryIterations 1",
+        internalTesterCommand: "npm run mobile:internal-tester-runtime:live-provider-start",
         quotaMode: "requires THE_ODDS_API_KEY and is capped by run count, cadence, per-run credits, and min remaining quota",
         defaultForInternalTesting: false,
       },

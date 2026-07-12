@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T17:18:14.014Z",
+  "generatedAt": "2026-07-12T21:50:06.038Z",
   "scope": "holiwyn-local-runtime-launch-profile",
   "pass": true,
   "launchProfiles": {
@@ -20,13 +20,18 @@
           "quotaMode": "no provider quota by default"
         },
         {
+          "label": "start cached internal tester runtime",
+          "command": "npm run mobile:internal-tester-runtime:cached-start",
+          "quotaMode": "no provider quota by default"
+        },
+        {
           "label": "start backend/expo plus supervisor and result poller",
           "command": "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
           "quotaMode": "no provider quota by default"
         },
         {
           "label": "stop manager-owned local runtime",
-          "command": "npm run mobile:internal-tester-runtime -- -Action stop",
+          "command": "npm run mobile:internal-tester-runtime:stop",
           "quotaMode": "no provider quota by default"
         }
       ]
@@ -39,6 +44,7 @@
     },
     "liveProviderProfile": {
       "command": "npm run mobile:one-event-live-supervisor -- -RunProviderProof -Continuous -MaxIterations 0 -MaxProviderProofRuns 1 -ProviderProofEveryIterations 1",
+      "internalTesterCommand": "npm run mobile:internal-tester-runtime:live-provider-start",
       "quotaMode": "requires THE_ODDS_API_KEY and is capped by run count, cadence, per-run credits, and min remaining quota",
       "defaultForInternalTesting": false
     }
@@ -56,16 +62,16 @@
     "localRuntimeStartupInstall": "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-install-uninstall-summary.redacted.json"
   },
   "artifactAgesHours": {
-    "runtimeStatus": 0.64,
-    "internalTesterRuntime": 0.2,
-    "supervisorProcess": 0.2,
-    "continuousSupervisor": 6.11,
-    "resultPollerProcess": 0.2,
-    "continuousResultPoller": 3.93,
-    "localRuntimeTask": 0,
-    "localRuntimeTaskInstall": 0,
-    "localRuntimeStartup": 4.99,
-    "localRuntimeStartupInstall": 3.52
+    "runtimeStatus": 0.1,
+    "internalTesterRuntime": 1.49,
+    "supervisorProcess": 0.73,
+    "continuousSupervisor": 2.29,
+    "resultPollerProcess": 0.73,
+    "continuousResultPoller": 8.46,
+    "localRuntimeTask": 4.54,
+    "localRuntimeTaskInstall": 4.53,
+    "localRuntimeStartup": 9.52,
+    "localRuntimeStartupInstall": 8.05
   },
   "checks": {
     "runtimeStatusPass": true,

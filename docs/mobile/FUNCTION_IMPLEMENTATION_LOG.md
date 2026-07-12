@@ -2,6 +2,21 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle RUNTIMEPROFILES - Local Runtime Operator Command Profiles
+
+- Feature/page worked on: backend local internal tester runtime startup profiles.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `package.json`
+  - `scripts/report_holiwyn_local_runtime_launch_profile.ts`
+- User/runtime interactions supported: operators now have first-class commands for cached internal tester startup, explicit live-provider startup, and manager-owned runtime stop: `npm run mobile:internal-tester-runtime:cached-start`, `npm run mobile:internal-tester-runtime:live-provider-start`, and `npm run mobile:internal-tester-runtime:stop`.
+- State transitions:
+  - None by default.
+  - The cached-start command starts backend/Expo/supervisor/result-poller in no-provider-quota mode.
+  - The live-provider-start command is explicit, still key-gated by `THE_ODDS_API_KEY`, and routes through the existing quota-capped supervisor provider proof path.
+- API/data dependencies: no new backend route or schema. The launch profile report now emits the exact operator commands so runtime audit artifacts continue to explain cached-vs-live provider runtime operation.
+- Known limitations: this improves local operator control-plane clarity only. It does not install a production daemon, does not make live provider refresh the default, and does not remove the remaining P1 unattended service ownership gap.
+
 ## Cycle NEXTTRIGGER - Autonomous Wait Trigger
 
 - Feature/page worked on: long-running loop control while provider-backed Polymarket parity is waiting on fresh evidence.
