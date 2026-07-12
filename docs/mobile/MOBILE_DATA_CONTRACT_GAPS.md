@@ -10245,3 +10245,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable service state, durable official-result records, multi-event runtime status, and production service ownership remain P1/P2.
 - Temporary mock/static data: none added. The report reads committed/local proof summaries and spends no provider quota.
 - Future migration concern: report artifacts are local proof state. Production runtime status should eventually come from durable service heartbeats, provider poll records, result records, and explicit operator approval state.
+
+## Cycle ONEEVENTPHASECAPABILITYGATE - Runtime Status Capability Audit Gate
+
+- Closed or narrowed: the live-runtime phase audit now has an explicit P0 gate for runtime status capability truth, so later cycles cannot accidentally pass while hiding proven continuous supervisor/result-poller evidence.
+- Route mismatch: none. No mobile API or backend HTTP route changed; the phase audit still reads existing `/api/health` and selected quote routes plus proof artifacts.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable service heartbeats, provider poll records, official-result records, approval records, and production runtime monitoring remain P1/P2.
+- Temporary mock/static data: none added. The audit reads existing redacted proof summaries and spends no provider quota.
+- Future migration concern: the P0 gate currently relies on local proof JSON. A production runtime should replace this with first-class durable service and provider-poll state while keeping the same pass/fail semantics.

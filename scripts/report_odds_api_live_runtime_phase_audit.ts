@@ -173,6 +173,7 @@ async function main() {
   const continuousSupervisorTruth = getPath(entries.continuousSupervisor, ["runtimeTruth"]);
   const continuousResultPollerTruth = getPath(entries.continuousResultPoller, ["runtimeTruth"]);
   const runtimeStatusTruth = getPath(entries.runtimeStatus, ["modeTruth"]);
+  const runtimeStatusCapabilities = getPath(entries.runtimeStatus, ["provenCapabilities"]);
   const staleRunResult = getPath(entries.staleGuardRun, ["result"]);
   const requirements = [
     requirement({
@@ -203,6 +204,27 @@ async function main() {
       evidence: [PATHS.runtimeStatus, PATHS.onboarding],
       notes:
         "Runtime status also surfaces the trusted-result settlement guard: execution requires CLOSED market status and live-market execution is blocked.",
+    }),
+    requirement({
+      id: "runtime-status-capability-truth",
+      priority: "P0",
+      requirement:
+        "Runtime status separates latest supervisor run profile from proven continuous supervisor/result-poller capabilities.",
+      achieved:
+        pass(entries.runtimeStatus) &&
+        getPath(runtimeStatusTruth, ["latestSupervisorRunProfileOnly"]) === true &&
+        getPath(runtimeStatusCapabilities, ["repeatedSupervisorCycles"]) === true &&
+        getPath(runtimeStatusCapabilities, ["makerReseedWhileSupervisorRuns"]) === true &&
+        getPath(runtimeStatusCapabilities, ["lifecycleSchedulerWhileSupervisorRuns"]) === true &&
+        getPath(runtimeStatusCapabilities, ["resultIngestionWhileSupervisorRuns"]) === true &&
+        getPath(runtimeStatusCapabilities, ["resultSettlementSchedulerWhileSupervisorRuns"]) === true &&
+        getPath(runtimeStatusCapabilities, ["resultPollingBackgroundProof"]) === true &&
+        getPath(runtimeStatusCapabilities, ["resultPollingContinuousWhileRunnerRuns"]) === true &&
+        getPath(runtimeStatusCapabilities, ["resultSettlementSchedulerWhilePollerRuns"]) === true &&
+        getPath(runtimeStatusCapabilities, ["installedOsService"]) === false,
+      evidence: [PATHS.runtimeStatus, PATHS.continuousSupervisor, PATHS.continuousResultPoller],
+      notes:
+        "This prevents narrow latest supervisor proof runs from hiding previously proven repeated maker reseed, lifecycle scheduling, result ingestion, and result-poller behavior.",
     }),
     requirement({
       id: "quota-policy",

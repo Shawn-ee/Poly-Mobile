@@ -14376,3 +14376,19 @@ Known limitations:
 - Known limitations:
   - Provider refresh still requires explicit live-provider flags and quota caps.
   - This reports local internal runtime truth; it does not install an unattended production service.
+
+# Cycle ONEEVENTPHASECAPABILITYGATE - Runtime Status Capability Audit Gate
+
+- Feature/page worked on: backend one-event live-runtime phase audit.
+- Frontend components touched: none. This is backend/runtime audit gating only and does not change mobile UI.
+- Important functions/services touched:
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - Existing runtime status, continuous supervisor, and continuous result-poller proof summaries
+- User/runtime interactions supported:
+  - Operator can run `npm run mobile:one-event-phase-audit` and the phase audit now fails if runtime status stops reporting proven continuous supervisor/result-poller capabilities.
+  - The audit protects the distinction between latest supervisor run profile and broader proven local runtime behavior.
+- State transitions:
+  - No market, order, position, portfolio, provider, lifecycle, or settlement mutation.
+  - Reads existing proof summaries plus local backend health and selected quote route only.
+- Known limitations:
+  - This strengthens audit coverage for local internal runtime truth; installed service ownership and official-result auto-settlement remain P1.
