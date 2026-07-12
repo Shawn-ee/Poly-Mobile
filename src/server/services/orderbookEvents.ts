@@ -405,6 +405,22 @@ export const emitUserUpdate = async (params: { userId: string; marketId?: string
     payload: await buildUserPayload(params),
   });
 
+export const emitMarketSettlementAuditEvent = async (params: {
+  marketId: string;
+  outcomeId?: string | null;
+  type: "settlement.trusted_result.preflight" | "settlement.trusted_result.blocked" | "settlement.trusted_result.executed";
+  payload: Record<string, unknown>;
+}) =>
+  createEvent({
+    stream: "market",
+    topicId: params.marketId,
+    type: params.type,
+    marketId: params.marketId,
+    outcomeId: params.outcomeId ?? null,
+    userId: null,
+    payload: params.payload,
+  });
+
 export const getMarketBootstrapEvent = (params: { marketId: string; outcomeId?: string | null }) =>
   buildBootstrapEvent({
     stream: "market",

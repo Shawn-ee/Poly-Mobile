@@ -3,6 +3,7 @@ import path from "node:path";
 import { createHash } from "node:crypto";
 import { prisma } from "@/lib/db";
 import { MarketGuardError } from "@/lib/marketGuards";
+import { emitMarketSettlementAuditEvent } from "@/server/services/orderbookEvents";
 import { previewOrderbookSettlement, resolveOrderbookMarket } from "@/server/services/settlement";
 
 const DEFAULT_EVENT_SLUG = "odds-api-single-soccer-test";
@@ -217,6 +218,7 @@ async function main() {
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
   const actorUserId = argValue("actorUserId") ?? DEFAULT_ACTOR_USER_ID;
   const execute = hasFlag("execute");
+  const writeAuditEvent = hasFlag("writeAuditEvent");
   const confirm = argValue("confirm");
   const result = await readResult(resultPath);
   assert(result.eventSlug === eventSlug, `Trusted result eventSlug ${result.eventSlug} does not match requested ${eventSlug}.`);
@@ -316,6 +318,46 @@ async function main() {
     execution.ok === true &&
     postMarket?.status === "RESOLVED" &&
     postMarket?.resolvedOutcomeId === mapped.outcome.id;
+  const auditEventType = executePass
+    ? "settlement.trusted_result.executed"
+    : execute && !executePass
+      ? "settlement.trusted_result.blocked"
+      : "settlement.trusted_result.preflight";
+  const auditEvent = writeAuditEvent
+    ? await emitMarketSettlementAuditEvent({
+        marketId: selected.market.id,
+        outcomeId: mapped.outcome.id,
+        type: auditEventType,
+        payload: {
+          eventSlug,
+          eventTitle: selected.event.title,
+          source: result.source,
+          sourceEventId: result.sourceEventId ?? null,
+          resultStatus: result.status,
+          homeTeam: result.homeTeam ?? null,
+          awayTeam: result.awayTeam ?? null,
+          homeScore: result.homeScore,
+          awayScore: result.awayScore,
+          advanceTeam: result.advanceTeam ?? null,
+          selectedMarketId: selected.market.id,
+          selectedMarketTitle: selected.market.title,
+          selectedMarketType: selected.market.marketType,
+          selectedMarketStatusBefore: selected.market.status,
+          winningOutcomeId: mapped.outcome.id,
+          winningOutcomeName: mapped.outcome.name,
+          resultDigest: confirmation.digest,
+          executionMode: executeAllowed ? "execute" : "dry-run",
+          executionAttempted: execution.attempted,
+          executionOk: execution.attempted ? execution.ok : false,
+          executionReason: execution.attempted ? null : execution.reason,
+          previewPayoutConservationPass: preview.payoutConservationPass,
+          previewPayoutCount: preview.payouts.length,
+          executeRequiresMarketStatus: "CLOSED",
+          currentMarketStatus: selected.market.status,
+          actorUserId,
+        },
+      })
+    : null;
   const summary = {
     generatedAt: new Date().toISOString(),
     scope: "odds-api-one-event-result-settlement",
@@ -384,6 +426,7 @@ async function main() {
       : null,
     controls: {
       dryRunIsDefault: true,
+      writeAuditEvent,
       executeRequiresFlag: "--execute",
       executeRequiresConfirm: confirmation.phrase,
       executeRequiresMarketStatus: "CLOSED",
@@ -392,6 +435,17 @@ async function main() {
       actorUserId,
       providerStatus: result.source === "trusted-local-fixture" ? "fixture_only" : "trusted_external_input",
     },
+    auditEvent: auditEvent
+      ? {
+          id: auditEvent.id,
+          sequence: auditEvent.sequence,
+          type: auditEvent.type,
+          stream: auditEvent.stream,
+          marketId: auditEvent.marketId,
+          outcomeId: auditEvent.outcomeId,
+          createdAt: auditEvent.ts,
+        }
+      : null,
     gaps: {
       p0: dryRunPass || executePass ? [] : ["result_settlement_command_failed"],
       p1: [

@@ -14040,6 +14040,26 @@ Known limitations:
 # Cycle ONEEVENTLOCALTASKINSTALL - Scheduled Task Install Permission Audit
 
 - Feature/page worked on: local scheduled-task install/uninstall proof.
+# Cycle ONEEVENTSETTLEMENTAUDIT - Durable Settlement Audit Event
+
+- Feature/page worked on: trusted-result settlement operator evidence.
+- Frontend components touched: none. This is backend/runtime audit evidence only.
+- Important functions/services touched:
+  - `src/server/services/orderbookEvents.ts`
+  - `scripts/settle_odds_api_one_event_from_result.ts`
+  - `scripts/prove_odds_api_settlement_audit_event.ts`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `package.json` script `mobile:one-event-settlement-audit-event-proof`
+- User/runtime interactions supported:
+  - Operators can run trusted-result settlement dry-run with explicit `--writeAuditEvent` to write a durable canonical market event.
+  - The proof verifies a `settlement.trusted_result.preflight` event exists for the selected market/outcome/result digest.
+- State transitions:
+  - Trusted result JSON -> dry-run settlement preview -> optional canonical event write.
+  - Market/order/position settlement state remains unchanged in the proof.
+- Known limitations:
+  - This is durable audit evidence for explicit operator/proof runs, not unattended official-result polling.
+  - Automatic active-event execution remains blocked by the closed-market guard and exact confirmation requirement.
+
 # Cycle ONEEVENTLOCALSTARTUP - User Startup Runtime Launcher Fallback
 
 - Feature/page worked on: local runtime user Startup launcher fallback.

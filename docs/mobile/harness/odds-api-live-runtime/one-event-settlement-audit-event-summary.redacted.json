@@ -1,0 +1,85 @@
+{
+  "generatedAt": "2026-07-12T12:25:54.606Z",
+  "scope": "odds-api-one-event-settlement-audit-event-proof",
+  "pass": true,
+  "providerQuotaUsed": false,
+  "command": {
+    "executable": "C:\\nvm4w\\nodejs\\node.exe",
+    "args": [
+      "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+      "scripts/settle_odds_api_one_event_from_result.ts",
+      "--eventSlug=odds-api-single-soccer-test",
+      "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+      "--output=docs/mobile/harness/odds-api-live-runtime/one-event-settlement-audit-event-dry-run.redacted.json",
+      "--writeAuditEvent"
+    ],
+    "exitCode": 0,
+    "stdoutTail": [
+      "  \"auditEvent\": {",
+      "    \"id\": \"167\",",
+      "    \"sequence\": \"167\",",
+      "    \"type\": \"settlement.trusted_result.preflight\",",
+      "    \"stream\": \"market\",",
+      "    \"marketId\": \"78ea76f1-fc8f-419b-ac21-2554d79093f6\",",
+      "    \"outcomeId\": \"dd0797bc-e297-4c19-b55c-ccf1bb96dace\",",
+      "    \"createdAt\": \"2026-07-12T12:25:54.570Z\"",
+      "  },",
+      "  \"gaps\": {",
+      "    \"p0\": [],",
+      "    \"p1\": [",
+      "      \"Provider-shaped result ingestion can produce trusted result JSON, but this command intentionally consumes only reviewed trusted result JSON.\",",
+      "      \"Automatic unattended result polling and settlement execution are not installed.\"",
+      "    ],",
+      "    \"p2\": [",
+      "      \"Operator settlement UI and multi-event settlement queue remain future work.\"",
+      "    ]",
+      "  }",
+      "}"
+    ],
+    "stderrTail": []
+  },
+  "settlementSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-audit-event-dry-run.redacted.json",
+  "eventSlug": "odds-api-single-soccer-test",
+  "selectedMarketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+  "winningOutcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+  "auditEvent": {
+    "id": "167",
+    "eventType": "settlement.trusted_result.preflight",
+    "stream": "MARKET",
+    "topicKey": "market:78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+    "createdAt": "2026-07-12T12:25:54.570Z",
+    "payload": {
+      "eventSlug": "odds-api-single-soccer-test",
+      "resultDigest": "f3a5743c73f2",
+      "executionMode": "dry-run",
+      "executionAttempted": false,
+      "previewPayoutConservationPass": true,
+      "currentMarketStatus": "LIVE"
+    }
+  },
+  "checks": {
+    "commandPassed": true,
+    "settlementDryRunPassed": true,
+    "summaryIncludesAuditEvent": true,
+    "canonicalEventCreatedAfterStart": true,
+    "canonicalEventTypeMatches": true,
+    "canonicalEventMarketMatches": true,
+    "canonicalEventOutcomeMatches": true,
+    "payloadDigestMatches": true,
+    "payloadDryRunMode": true,
+    "providerQuotaNotUsed": true,
+    "marketNotMutatedByProof": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "Durable settlement audit events are now available for explicit local proof/operator runs, but unattended official-result polling is still not installed.",
+      "Execution remains operator-confirmed rather than automatic."
+    ],
+    "p2": [
+      "Operator settlement UI and multi-event settlement queue remain future work."
+    ]
+  }
+}

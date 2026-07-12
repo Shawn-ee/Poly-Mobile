@@ -10126,6 +10126,14 @@ Future migration concern:
 - Temporary mock/static data: the committed proof uses redacted Odds API scores-shaped trusted result evidence and spends no provider quota. It does not mutate the active tester event.
 - Future migration concern: keep preflight and execution separate. The current active event is not execution eligible until lifecycle closes the market, even though final trusted result evidence and payout preview exist.
 
+## Cycle ONEEVENTSETTLEMENTAUDIT - Durable Settlement Audit Event
+
+- Closed or narrowed: explicit trusted-result settlement dry-runs can now write durable canonical settlement audit events for the selected market/outcome/result digest. The proof verifies the event exists and that the active market was not settled.
+- Route mismatch: none for mobile routes. The audit event uses the existing `CanonicalEvent` stream model instead of adding a new HTTP API.
+- Fields Holiwyn still needs but backend/provider does not fully provide: official result polling, durable official-result source storage beyond reviewed JSON, operator approval UI, and active-event automatic execution policy remain P1/P2.
+- Temporary mock/static data: no new mock provider data. The proof reads existing redacted trusted result evidence and spends no provider quota.
+- Future migration concern: this is backend audit evidence, not an end-user settlement screen. A production path should pair canonical audit events with admin review controls and durable official result ingestion.
+
 ## Cycle ONEEVENTLOCALTASK - Local Runtime Scheduled Task Plan
 
 - Closed or narrowed: local unattended-runtime ownership now has a Windows scheduled-task manager with plan/status/install/uninstall actions. The default proof is dry-run and requires `-Apply` before any OS mutation.
