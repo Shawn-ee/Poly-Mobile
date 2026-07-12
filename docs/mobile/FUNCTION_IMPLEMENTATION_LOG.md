@@ -13735,6 +13735,27 @@ Known limitations:
   - The status report proves foreground/local runtime truth only; it does not install an unattended service.
   - Official-result settlement remains P1.
 
+# Cycle ONEEVENTPROCESS - Local Background Supervisor Process Manager
+
+- Feature/page worked on: local process control for the one-event live supervisor.
+- Frontend components touched: none. This supports internal mobile testing by letting the backend runtime loop run as a hidden local process instead of only an attached foreground terminal.
+- Important functions/services touched:
+  - `scripts/manage_holiwyn_one_event_live_supervisor.ps1`
+  - `package.json` scripts `mobile:one-event-live-supervisor:process`, `mobile:one-event-live-supervisor:status`, and `mobile:one-event-live-supervisor:stop`
+  - Existing child script `scripts/run_holiwyn_one_event_live_supervisor.ps1`
+  - Runtime state/log paths under `.runtime/one-event-live-supervisor`
+- User interactions supported:
+  - Operator can start the one-event supervisor in the background, check whether it is running, and stop it.
+  - Default background path is cached/no-quota unless `RunProviderProof` is explicitly supplied.
+- State transitions:
+  - `start` writes a process state file and starts the supervisor hidden with redirected stdout/stderr.
+  - `status` reads the state file and verifies the process id is still running.
+  - `stop` terminates the managed process if it is still running.
+  - Proof ran a finite hidden background supervisor for two iterations and confirmed it completed with no leftover process.
+- Known limitations:
+  - This is a local background process manager, not an installed Windows service or production daemon.
+  - Official-result settlement remains P1.
+
 # Cycle ONEEVENTLIFECYCLESCHEDULER - One-Event Start-Time Lifecycle Scheduler
 
 - Feature/page worked on: backend event lifecycle automation for the selected sportsbook-backed event.

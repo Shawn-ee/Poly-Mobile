@@ -18,16 +18,19 @@
 3. For only a quota-free restart check, run `npm run mobile:one-event-live-runtime`.
 4. To leave local fake-token liquidity available for testers, run `npm run mobile:one-event-live-runtime -- -SeedMaker`.
 5. To keep the one-event local runtime warm for repeated internal checks, run `npm run mobile:one-event-live-supervisor -- -MaxIterations 2 -IntervalSeconds 1`. This foreground loop runs data hygiene, runtime/maker refresh, and the safe real-time lifecycle scheduler each cycle.
-6. For a live provider refresh proof, set `THE_ODDS_API_KEY` in the local process environment and run `npm run mobile:one-event-live-runtime:provider`.
-7. For a repeated live-provider supervisor, run `npm run mobile:one-event-live-supervisor -- -RunProviderProof -Continuous -MaxIterations 0` only during intentional manual testing.
-8. Confirm the proof reports provider refresh `ready`.
-9. Confirm local shifted maker quotes exist.
-10. Open mobile and trade the selected event with fake tokens.
-11. To prove local lifecycle controls only, run `npm run mobile:one-event-lifecycle-proof`.
-12. To run the safe real-time lifecycle scheduler once, run `npm run mobile:one-event-lifecycle-scheduler-run`.
-13. To prove local start-time lifecycle automation with temporary event-time mutations and restore, run `npm run mobile:one-event-lifecycle-scheduler-proof`.
-14. If provider goes stale, pause/close the market manually until stale-data lifecycle rules are added.
-15. Do not settle automatically unless official result input and admin review are added.
+6. To run the same supervisor as a local hidden background process, run `npm run mobile:one-event-live-supervisor:process -- -Action start -Continuous -MaxIterations 0`.
+7. To check that local background supervisor process, run `npm run mobile:one-event-live-supervisor:status`.
+8. To stop that local background supervisor process, run `npm run mobile:one-event-live-supervisor:stop`.
+9. For a live provider refresh proof, set `THE_ODDS_API_KEY` in the local process environment and run `npm run mobile:one-event-live-runtime:provider`.
+10. For a repeated live-provider supervisor, run `npm run mobile:one-event-live-supervisor -- -RunProviderProof -Continuous -MaxIterations 0` only during intentional manual testing; provider refresh is capped by cadence and max proof runs.
+11. Confirm the proof reports provider refresh `ready`.
+12. Confirm local shifted maker quotes exist.
+13. Open mobile and trade the selected event with fake tokens.
+14. To prove local lifecycle controls only, run `npm run mobile:one-event-lifecycle-proof`.
+15. To run the safe real-time lifecycle scheduler once, run `npm run mobile:one-event-lifecycle-scheduler-run`.
+16. To prove local start-time lifecycle automation with temporary event-time mutations and restore, run `npm run mobile:one-event-lifecycle-scheduler-proof`.
+17. If provider goes stale, pause/close the market manually until stale-data lifecycle rules are added.
+18. Do not settle automatically unless official result input and admin review are added.
 
 ## Completion Boundary
 
@@ -43,6 +46,7 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - Safe lifecycle scheduler run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json`
 - Consolidated readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json`
 - Supervisor summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json`
+- Supervisor process summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-process-summary.redacted.json`
 - S23 visible proof: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`
 - Open state: selected market was `LIVE`, visible on Home, visible on Event Detail, and accepted fake-token orders.
 - Stale state: proof forced selected quote snapshots stale and Event Detail reported stale provider quote lifecycle.
