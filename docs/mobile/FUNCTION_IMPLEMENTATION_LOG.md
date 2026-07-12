@@ -14301,3 +14301,23 @@ Known limitations:
 - Known limitations:
   - This is canonical event-stream evidence, not a dedicated provider-result table.
   - Installed unattended result polling and operator result-review UI remain P1/P2.
+
+# Cycle ONEEVENTSTARTUPRESULTPOLLERPROFILE - Startup Launcher Result Poller Profile
+
+- Feature/page worked on: backend local internal tester runtime startup profile.
+- Frontend components touched: none. This is backend/runtime proof only and does not change mobile UI.
+- Important functions/services touched:
+  - `scripts/manage_holiwyn_local_runtime_startup.ps1`
+  - `scripts/prove_holiwyn_local_runtime_startup_install_uninstall.ps1`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `package.json` script `mobile:local-runtime-startup:install-proof`
+- User/runtime interactions supported:
+  - Operator can generate or install a current-user Startup launcher that starts backend, Expo, the one-event supervisor, and the dedicated result poller at Windows user logon.
+  - Proof verifies generated launcher content includes `-StartResultPoller` and `-ResultPollerIntervalSeconds 15`, installs only a proof launcher, removes it, and confirms no persistent launcher remains.
+- State transitions:
+  - No market, order, position, portfolio, or settlement state changes.
+  - The proof mutates only the current user's Startup folder for a proof `.cmd` file, then removes it.
+  - Provider quota remains unused, and active tester settlement execution remains false.
+- Known limitations:
+  - This is still a local user-logon fallback, not a production Windows service or health-monitored daemon.
+  - Live result ingestion remains explicit and requires `THE_ODDS_API_KEY` in the user environment.

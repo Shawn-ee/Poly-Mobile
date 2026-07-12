@@ -5,6 +5,7 @@ param(
   [int]$BackendPort = 3002,
   [int]$ExpoPort = 8081,
   [switch]$StartSupervisor,
+  [switch]$StartResultPoller,
   [switch]$RunResultIngestion,
   [switch]$RunResultSettlement,
   [switch]$RunApprovedResultSettlement,
@@ -12,6 +13,7 @@ param(
   [string]$ResultSettlementApprovalPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-settlement-approval.redacted.json",
   [switch]$RunProviderProof,
   [switch]$RunLiveResultIngestion,
+  [int]$ResultPollerIntervalSeconds = 15,
   [switch]$Apply,
   [string]$SummaryPath = "docs\mobile\harness\odds-api-live-runtime\local-runtime-startup-summary.redacted.json"
 )
@@ -87,6 +89,11 @@ function Build-RuntimeArguments {
   $args.Add("$ExpoPort") | Out-Null
   $args.Add("-WaitForReady") | Out-Null
   if ($StartSupervisor) { $args.Add("-StartSupervisor") | Out-Null }
+  if ($StartResultPoller) {
+    $args.Add("-StartResultPoller") | Out-Null
+    $args.Add("-ResultPollerIntervalSeconds") | Out-Null
+    $args.Add("$ResultPollerIntervalSeconds") | Out-Null
+  }
   if ($RunResultIngestion) { $args.Add("-RunResultIngestion") | Out-Null }
   if ($RunResultSettlement) { $args.Add("-RunResultSettlement") | Out-Null }
   if ($RunApprovedResultSettlement) {
@@ -169,6 +176,11 @@ try {
     } else {
       "default user Startup launcher spends no provider quota"
     }
+    resultPollerMode = if ($StartResultPoller) {
+      "dedicated result poller will be started by the internal tester runtime manager at user logon"
+    } else {
+      "dedicated result poller not requested"
+    }
     settlementMode = if ($RunApprovedResultSettlement) {
       "approved trusted-result settlement scheduler is requested; execution still waits for CLOSED market and exact approval match"
     } elseif ($RunResultSettlement) {
@@ -237,6 +249,8 @@ $summary = [ordered]@{
     fakeTokenOnly = $true
     activeTesterSettlementExecution = $false
     approvedSettlementModeRequested = [bool]$RunApprovedResultSettlement
+    resultPollerStartRequested = [bool]$StartResultPoller
+    resultPollerIntervalSeconds = if ($StartResultPoller) { $ResultPollerIntervalSeconds } else { 0 }
     userLevelStartupFallback = $true
     installedWindowsService = $false
   }

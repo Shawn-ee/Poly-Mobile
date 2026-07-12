@@ -80,6 +80,9 @@ function Invoke-Manager {
     "-LauncherName",
     $LauncherName,
     "-StartSupervisor",
+    "-StartResultPoller",
+    "-ResultPollerIntervalSeconds",
+    "15",
     "-RunResultIngestion",
     "-RunResultSettlement",
     "-RunApprovedResultSettlement",
@@ -133,11 +136,17 @@ try {
 
 $installSummary = Read-JsonFile $InstallSummaryPath
 $uninstallSummary = Read-JsonFile $UninstallSummaryPath
+$launcherPreview = if ($installSummary -and $installSummary.plan) {
+  [string]$installSummary.plan.launcherContentPreview
+} else { "" }
 $checks = [ordered]@{
   installCommandPassed = [bool]($installStep -and $installStep.exitCode -eq 0 -and $installSummary -and $installSummary.pass -eq $true)
   launcherInstalledAfterApply = [bool]($afterInstall -and $afterInstall.installed -eq $true)
   uninstallCommandPassed = [bool]($uninstallStep -and $uninstallStep.exitCode -eq 0 -and $uninstallSummary -and $uninstallSummary.pass -eq $true)
   launcherRemovedAfterProof = [bool]($afterUninstall -and $afterUninstall.installed -eq $false)
+  launcherStartsResultPoller = [bool]($launcherPreview -match "-StartResultPoller")
+  launcherCarriesResultPollerInterval = [bool]($launcherPreview -match "-ResultPollerIntervalSeconds\s+15")
+  resultPollerModeReported = [bool]($installSummary -and $installSummary.runtimeTruth.resultPollerStartRequested -eq $true)
   providerQuotaNotUsed = $true
   leftPersistentLauncherInstalled = [bool]($afterUninstall -and $afterUninstall.installed -eq $true)
 }
@@ -170,6 +179,7 @@ $summary = [ordered]@{
     startupLauncherInstallWorks = [bool]($checks.installCommandPassed -and $checks.launcherInstalledAfterApply)
     startupLauncherUninstallWorks = [bool]($checks.uninstallCommandPassed -and $checks.launcherRemovedAfterProof)
     noPersistentLauncherLeftInstalled = [bool]$checks.launcherRemovedAfterProof
+    startupLauncherIncludesResultPoller = [bool]($checks.launcherStartsResultPoller -and $checks.resultPollerModeReported)
     providerQuotaUsed = $false
     fakeTokenOnly = $true
     activeTesterSettlementExecution = $false

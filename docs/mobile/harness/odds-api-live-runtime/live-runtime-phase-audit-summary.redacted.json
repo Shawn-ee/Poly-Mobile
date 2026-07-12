@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T13:41:49.839Z",
+  "generatedAt": "2026-07-12T13:48:58.190Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T13:41:49.791Z"
+      "timestamp": "2026-07-12T13:48:58.124Z"
     },
     "error": null
   },
@@ -65,43 +65,43 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 6.59,
-    "onboarding": 2.96,
-    "readiness": 2.96,
-    "runtimeStatus": 1.7,
-    "runtimeLaunch": 0.91,
-    "supervisor": 0.91,
-    "supervisorProcess": 0.16,
-    "internalTesterRuntime": 0.16,
-    "internalTesterResultPoller": 0.16,
-    "localRuntimeTask": 2.08,
-    "localRuntimeTaskInstall": 1.89,
-    "localRuntimeStartup": 1.38,
-    "localRuntimeStartupInstall": 0.74,
-    "continuousSupervisor": 2.5,
-    "staleGuardProof": 4.18,
-    "staleGuardRun": 4.07,
-    "lifecycleControls": 2.96,
-    "lifecycleScheduler": 2.96,
-    "lifecycleSchedulerRun": 2.5,
-    "settlementReadiness": 2.96,
-    "settlementExecution": 2.67,
-    "resultSettlementExecution": 1.82,
-    "resultSettlementLiveBlocked": 1.82,
-    "manualSettlement": 2.96,
-    "resultIngestion": 0.16,
-    "resultIngestionAuditEvent": 0.02,
-    "resultPoller": 0.61,
-    "resultPollerProcess": 0.15,
-    "continuousResultPoller": 0.32,
-    "resultSettlement": 0.16,
-    "resultSettlementRun": 0.16,
-    "settlementPreflight": 1.58,
-    "settlementAuditEvent": 1.27,
-    "approvedAutoSettlement": 1.09,
-    "supervisorApprovedSettlement": 0.91,
-    "makerSeed": 2.5,
-    "s23Visible": 6.41
+    "liveProof": 6.71,
+    "onboarding": 3.07,
+    "readiness": 3.08,
+    "runtimeStatus": 1.82,
+    "runtimeLaunch": 1.03,
+    "supervisor": 1.03,
+    "supervisorProcess": 0.27,
+    "internalTesterRuntime": 0.27,
+    "internalTesterResultPoller": 0.27,
+    "localRuntimeTask": 2.2,
+    "localRuntimeTaskInstall": 2.01,
+    "localRuntimeStartup": 1.5,
+    "localRuntimeStartupInstall": 0.03,
+    "continuousSupervisor": 2.62,
+    "staleGuardProof": 4.3,
+    "staleGuardRun": 4.19,
+    "lifecycleControls": 3.08,
+    "lifecycleScheduler": 3.08,
+    "lifecycleSchedulerRun": 2.62,
+    "settlementReadiness": 3.08,
+    "settlementExecution": 2.79,
+    "resultSettlementExecution": 1.94,
+    "resultSettlementLiveBlocked": 1.94,
+    "manualSettlement": 3.07,
+    "resultIngestion": 0.28,
+    "resultIngestionAuditEvent": 0.14,
+    "resultPoller": 0.73,
+    "resultPollerProcess": 0.27,
+    "continuousResultPoller": 0.44,
+    "resultSettlement": 0.28,
+    "resultSettlementRun": 0.28,
+    "settlementPreflight": 1.7,
+    "settlementAuditEvent": 1.38,
+    "approvedAutoSettlement": 1.21,
+    "supervisorApprovedSettlement": 1.03,
+    "makerSeed": 2.62,
+    "s23Visible": 6.53
   },
   "requirements": [
     {
@@ -355,13 +355,13 @@
     {
       "id": "startup-approved-settlement-profile",
       "priority": "P0",
-      "requirement": "User Startup launcher proof includes the approved-settlement supervisor profile without spending provider quota or leaving a launcher installed.",
+      "requirement": "User Startup launcher proof includes the approved-settlement supervisor profile and dedicated result poller without spending provider quota or leaving a launcher installed.",
       "status": "complete",
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-install-uninstall-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-summary.redacted.json"
       ],
-      "notes": "This narrows the unattended-runtime gap by proving the user-logon fallback can launch backend/Expo/supervisor with result ingestion, settlement scheduling, and approved-settlement wait mode. It is still a local user Startup launcher, not a production service."
+      "notes": "This narrows the unattended-runtime gap by proving the user-logon fallback can launch backend/Expo/supervisor plus the dedicated result poller with result ingestion, settlement scheduling, and approved-settlement wait mode. It is still a local user Startup launcher, not a production service."
     },
     {
       "id": "unattended-service",
@@ -379,7 +379,7 @@
         "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-install-uninstall-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json"
       ],
-      "notes": "Repeated local supervisor cycles, process-tree stop support, an internal tester runtime manager, internal-tester control of the dedicated result poller, a dry-run Windows scheduled-task install plan, a safe scheduled-task permission audit, and a user-level Startup launcher install/uninstall proof are proven. Windows denied scheduled-task registration in the current process context, so no scheduled task remains installed. The Startup launcher can carry the approved-settlement supervisor profile at user logon, but it is not a production service."
+      "notes": "Repeated local supervisor cycles, process-tree stop support, an internal tester runtime manager, internal-tester control of the dedicated result poller, a dry-run Windows scheduled-task install plan, a safe scheduled-task permission audit, and a user-level Startup launcher install/uninstall proof are proven. Windows denied scheduled-task registration in the current process context, so no scheduled task remains installed. The Startup launcher can carry the approved-settlement supervisor profile and dedicated result poller at user logon, but it is not a production service."
     },
     {
       "id": "official-result-auto-settlement",

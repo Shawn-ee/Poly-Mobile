@@ -1,11 +1,11 @@
 {
-    "generatedAt":  "2026-07-12T12:57:17.8078370Z",
+    "generatedAt":  "2026-07-12T13:47:04.8068266Z",
     "scope":  "holiwyn-local-runtime-user-startup-launcher",
     "pass":  true,
     "operation":  {
                       "action":  "uninstall",
                       "apply":  true,
-                      "startedAt":  "2026-07-12T12:57:17.7432958Z",
+                      "startedAt":  "2026-07-12T13:47:04.7415747Z",
                       "result":  "uninstalled_if_present"
                   },
     "plan":  {
@@ -13,8 +13,9 @@
                  "startupDirectory":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup",
                  "launcherPath":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\HoliwynInternalTesterRuntimeProof.cmd",
                  "repoRoot":  "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main",
-                 "launcherContentPreview":  "@echo off\r\ncd /d \"C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\"\r\nstart \"Holiwyn Internal Tester Runtime\" /min powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts\\manage_holiwyn_internal_tester_runtime.ps1 -Action start -BackendPort 3002 -ExpoPort 8081 -WaitForReady -StartSupervisor -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-settlement-approval.redacted.json",
+                 "launcherContentPreview":  "@echo off\r\ncd /d \"C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\"\r\nstart \"Holiwyn Internal Tester Runtime\" /min powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts\\manage_holiwyn_internal_tester_runtime.ps1 -Action start -BackendPort 3002 -ExpoPort 8081 -WaitForReady -StartSupervisor -StartResultPoller -ResultPollerIntervalSeconds 15 -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-settlement-approval.redacted.json",
                  "providerQuotaMode":  "default user Startup launcher spends no provider quota",
+                 "resultPollerMode":  "dedicated result poller will be started by the internal tester runtime manager at user logon",
                  "settlementMode":  "approved trusted-result settlement scheduler is requested; execution still waits for CLOSED market and exact approval match",
                  "startMode":  "runs when the Windows user logs in; not a production Windows service"
              },
@@ -23,7 +24,7 @@
                    "launcherName":  "HoliwynInternalTesterRuntimeProof.cmd",
                    "startupDirectory":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup",
                    "launcherPath":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\HoliwynInternalTesterRuntimeProof.cmd",
-                   "contentSha256":  "58D735F613D5B3E0F70E355752500FDF7BB619CF9C94E6EB9952743E70FF73C6"
+                   "contentSha256":  "B7340B7E45DA1DF791BCA620246988871EFE6D1A3DE2FA7852B6CC66A4F085D3"
                },
     "after":  {
                   "installed":  false,
@@ -41,6 +42,8 @@
                          "fakeTokenOnly":  true,
                          "activeTesterSettlementExecution":  false,
                          "approvedSettlementModeRequested":  true,
+                         "resultPollerStartRequested":  true,
+                         "resultPollerIntervalSeconds":  15,
                          "userLevelStartupFallback":  true,
                          "installedWindowsService":  false
                      },
