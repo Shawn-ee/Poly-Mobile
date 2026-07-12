@@ -649,6 +649,23 @@ describe("live runtime status service", () => {
       },
       note: expect.stringContaining("latestSupervisorProfile"),
     });
+    expect(status.currentRuntimeState).toMatchObject({
+      checked: true,
+      mode: "proven_capability_loops_stopped",
+      localCapabilityReady: true,
+      warmNoQuotaRuntime: false,
+      allLoopsRunning: false,
+      anyLoopRunning: false,
+      supervisorRunning: false,
+      resultPollerRunning: false,
+      quotaSpendingLoopRunning: false,
+      backendProofFresh: true,
+      providerSnapshotFresh: true,
+      testerReadyRightNow: false,
+      p0: [],
+      p1: expect.arrayContaining(["supervisor_loop_not_running_now", "result_poller_loop_not_running_now"]),
+      nextAction: "start_internal_tester_runtime_with_supervisor_and_result_poller",
+    });
     expect(status.managedProcesses).toMatchObject({
       anyLoopRunning: false,
       quotaSpendingLoopRunning: false,

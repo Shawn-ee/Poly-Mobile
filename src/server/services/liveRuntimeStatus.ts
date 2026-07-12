@@ -539,6 +539,67 @@ function buildOperatorNextActions(params: {
   };
 }
 
+function buildCurrentRuntimeState(params: {
+  localCapabilityReady: boolean;
+  supervisorRunning: boolean;
+  resultPollerRunning: boolean;
+  quotaSpendingLoopRunning: boolean;
+  backendProofFresh: boolean;
+  providerSnapshotFresh: boolean;
+}) {
+  const allLoopsRunning = params.supervisorRunning && params.resultPollerRunning;
+  const anyLoopRunning = params.supervisorRunning || params.resultPollerRunning;
+  const noQuotaWarmRuntime =
+    params.localCapabilityReady &&
+    allLoopsRunning &&
+    !params.quotaSpendingLoopRunning &&
+    params.backendProofFresh;
+
+  const mode = noQuotaWarmRuntime
+    ? "warm_no_quota_runtime"
+    : params.localCapabilityReady && !anyLoopRunning
+      ? "proven_capability_loops_stopped"
+      : params.localCapabilityReady && anyLoopRunning
+        ? "partial_runtime_running"
+        : "not_ready";
+
+  const p0 = params.localCapabilityReady ? [] : ["local_capability_not_ready"];
+  const p1 = [];
+  if (params.localCapabilityReady && !params.supervisorRunning) p1.push("supervisor_loop_not_running_now");
+  if (params.localCapabilityReady && !params.resultPollerRunning) p1.push("result_poller_loop_not_running_now");
+  if (params.quotaSpendingLoopRunning) p1.push("quota_spending_loop_running");
+  if (!params.providerSnapshotFresh) p1.push("mobile_provider_snapshot_not_fresh");
+
+  return {
+    checked: true,
+    mode,
+    localCapabilityReady: params.localCapabilityReady,
+    warmNoQuotaRuntime: noQuotaWarmRuntime,
+    allLoopsRunning,
+    anyLoopRunning,
+    supervisorRunning: params.supervisorRunning,
+    resultPollerRunning: params.resultPollerRunning,
+    quotaSpendingLoopRunning: params.quotaSpendingLoopRunning,
+    backendProofFresh: params.backendProofFresh,
+    providerSnapshotFresh: params.providerSnapshotFresh,
+    testerReadyRightNow: noQuotaWarmRuntime && params.providerSnapshotFresh,
+    p0,
+    p1,
+    nextAction:
+      mode === "warm_no_quota_runtime"
+        ? params.providerSnapshotFresh
+          ? "manual_s23_testing"
+          : "keep_cached_testing_or_refresh_live_odds"
+        : mode === "proven_capability_loops_stopped"
+          ? "start_internal_tester_runtime_with_supervisor_and_result_poller"
+          : mode === "partial_runtime_running"
+            ? "start_missing_local_loop_or_run_watchdog"
+            : "rerun_batch_readiness_and_phase_audit",
+    note:
+      "This separates proven local capability from current process warmth. Ready status can be true while loops are stopped; testerReadyRightNow requires both local loops running without provider quota and fresh mobile-visible provider snapshots.",
+  };
+}
+
 export async function getLocalLiveRuntimeStatus() {
   const [
     completionAudit,
@@ -645,6 +706,19 @@ export async function getLocalLiveRuntimeStatus() {
     artifactFreshness.liveProofFresh &&
     providerSnapshots.fresh &&
     resultReviewReady;
+  const quotaSpendingLoopRunning = supervisorProcess.usesProviderQuota || resultPollerProcess.usesProviderQuota;
+  const currentRuntimeState = buildCurrentRuntimeState({
+    localCapabilityReady: ready,
+    supervisorRunning: supervisorProcess.running,
+    resultPollerRunning: resultPollerProcess.running,
+    quotaSpendingLoopRunning,
+    backendProofFresh:
+      artifactFreshness.completionAuditFresh &&
+      artifactFreshness.phaseAuditFresh &&
+      artifactFreshness.watchdogFresh &&
+      artifactFreshness.liveProofFresh,
+    providerSnapshotFresh: providerSnapshots.mobileRouteFresh === true,
+  });
   const operatorNextActions = buildOperatorNextActions({
     providerSnapshots,
     settlementDecision: {
@@ -817,11 +891,12 @@ export async function getLocalLiveRuntimeStatus() {
       },
       currentProcessState: {
         anyLoopRunning: supervisorProcess.running || resultPollerProcess.running,
-        quotaSpendingLoopRunning: supervisorProcess.usesProviderQuota || resultPollerProcess.usesProviderQuota,
+        quotaSpendingLoopRunning,
       },
       note:
         "latestSupervisorProfile describes only the latest supervisor artifact; provenCapabilities describes prior passing repeated supervisor/result-poller proofs.",
     },
+    currentRuntimeState,
     operatorNextActions,
     managedProcesses: {
       supervisor: supervisorProcess,

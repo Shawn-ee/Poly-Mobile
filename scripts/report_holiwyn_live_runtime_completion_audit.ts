@@ -214,6 +214,15 @@ async function main() {
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeRuns", "activeSettlementExecuted"]) === false &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeRuns", "installedOsService"]) === false &&
       workerOwnedRunCount(getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeRuns", "records"])) >= 2,
+    currentRuntimeStateKnown:
+      pass(entries.phaseAudit) &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "currentRuntimeState", "checked"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "currentRuntimeState", "localCapabilityReady"]) === true &&
+      typeof getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "currentRuntimeState", "mode"]) === "string" &&
+      typeof getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "currentRuntimeState", "nextAction"]) === "string" &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "currentRuntimeState", "quotaSpendingLoopRunning"]) === false &&
+      Array.isArray(getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "currentRuntimeState", "p0"])) &&
+      (getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "currentRuntimeState", "p0"]) as unknown[]).length === 0,
     mobileS23EndToEndTradeProofPass:
       pass(entries.s23Visible) &&
       truthy(getPath(entries.s23Visible, ["assertions", "swipeSubmitReachedPortfolio"])) &&
@@ -294,6 +303,8 @@ async function main() {
         "Supervisor and result-poller loops emit worker-owned RuntimeServiceHeartbeat rows; local runtime status preserves that evidence without claiming an installed OS service.",
       runtimeRuns:
         "Supervisor and result-poller loops emit worker-owned RuntimeServiceRun rows when a run finishes; local runtime status requires latest passed rows for both services without quota spend, active settlement execution, or installed-service claims.",
+      currentRuntimeState:
+        "Local runtime status now separates proven capability from current warm-runtime state, including whether the supervisor/result-poller are running now, whether any running loop spends provider quota, and what operator action should happen next.",
       localWatchdog:
         "Internal tester watchdog verifies backend/Expo/Postgres readiness, repeated supervisor proof, background result-poller proof, no-quota default mode, and loop cleanup.",
     },

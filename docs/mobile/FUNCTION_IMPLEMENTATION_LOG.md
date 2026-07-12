@@ -14768,3 +14768,14 @@ Known limitations:
 - API/data dependencies: reads `ProviderRefreshRun` and `MarketMakerQuoteRun`; writes only `docs/mobile/harness/odds-api-live-runtime/provider-maker-handoff-summary.redacted.json`.
 - Proof needed: provider-maker handoff report, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this narrows automatic quote replacement evidence for the selected one-event runtime, but it is still not an installed production maker daemon or multi-event provider-to-maker scheduler.
+
+## Cycle CURRENTRUNTIMESTATE - Current Warm Runtime State
+
+- Feature/page worked on: backend local internal runtime operator status.
+- Frontend components touched: none.
+- Important functions/services touched: updated `src/server/services/liveRuntimeStatus.ts`, `src/__tests__/liveRuntimeStatus.service.test.ts`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, and `scripts/report_holiwyn_live_runtime_completion_audit.ts`.
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/status` and distinguish a previously proven local runtime from a currently warm no-quota runtime with supervisor and result-poller loops running now.
+- State transitions: none. This is read-only status composition. It does not start loops, stop loops, call The Odds API, spend provider quota, place orders, mutate markets, approve settlement, or execute active-event settlement.
+- API/data dependencies: composes existing completion/phase/watchdog proofs, selected-market provider snapshot freshness, supervisor/result-poller process-state checks, and existing local status route data. Phase and completion audits now require this current-runtime decision to be present with zero P0 gaps.
+- Proof needed: focused status Jest test, direct status route proof through phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this makes operator truth clearer, but it does not install an unattended service. If loops are stopped, the route can still report local capability ready while recommending the internal tester runtime start command.
