@@ -222,11 +222,16 @@ async function main() {
       getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "devOnlyRoute"]) === true &&
       getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "usesDurableOfficialResultReviewRows"]) === true &&
       getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "operatorQueueAvailable"]) === true &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "redactedOperatorExecutionPlanAvailable"]) === true &&
       getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "exactConfirmationStringsExposed"]) === false &&
       getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "exactConfirmationStored"]) === false &&
       getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "activeMarketExecutionAttempted"]) === false &&
       typeof getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "itemCount"]) === "number" &&
       (getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "itemCount"]) as number) > 0 &&
+      typeof getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorAction", "label"]) === "string" &&
+      typeof getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorAction", "nextCommand"]) === "string" &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorAction", "exactConfirmationExposed"]) === false &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorAction", "providerQuotaRequired"]) === false &&
       Array.isArray(getPath(entries.phaseAudit, ["localSettlementQueue", "body", "gaps", "p0"])) &&
       (getPath(entries.phaseAudit, ["localSettlementQueue", "body", "gaps", "p0"]) as unknown[]).length === 0,
     durableRuntimeHeartbeatsKnown:

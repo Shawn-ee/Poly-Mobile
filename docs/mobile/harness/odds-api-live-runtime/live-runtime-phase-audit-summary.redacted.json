@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T21:57:31.155Z",
+  "generatedAt": "2026-07-12T22:02:22.386Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T21:57:30.302Z"
+      "timestamp": "2026-07-12T22:02:21.701Z"
     },
     "error": null
   },
@@ -68,7 +68,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-12T21:57:30.864Z",
+      "generatedAt": "2026-07-12T22:02:22.278Z",
       "scope": "holiwyn-local-live-runtime-status",
       "status": "ready",
       "event": {
@@ -123,7 +123,7 @@
         "checked": true,
         "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json",
         "pass": true,
-        "generatedAt": "2026-07-12T21:57:30.474Z",
+        "generatedAt": "2026-07-12T22:02:21.961Z",
         "providerQuotaUsedByStatus": false,
         "phaseCompleteForLocalInternalRuntime": true,
         "fullProductionRuntimeComplete": false,
@@ -154,7 +154,7 @@
           "freshness": {
             "liveProofAgeHours": 14.63,
             "maxLiveProofAgeHours": 24,
-            "watchdogAgeHours": 6.63,
+            "watchdogAgeHours": 6.71,
             "maxWatchdogAgeHours": 24
           },
           "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -349,8 +349,8 @@
         "maxWatchdogAgeHours": 24,
         "maxLiveProofAgeHours": 24,
         "completionAuditAgeHours": 0,
-        "phaseAuditAgeHours": 0.12,
-        "watchdogAgeHours": 6.63,
+        "phaseAuditAgeHours": 0.08,
+        "watchdogAgeHours": 6.71,
         "liveProofAgeAtCompletionHours": 14.63,
         "liveProofCurrentAgeHours": 14.63,
         "completionAuditFresh": true,
@@ -366,8 +366,8 @@
         "reason": null,
         "snapshotCount": 2,
         "latestFetchedAt": "2026-07-12T07:06:18.254Z",
-        "latestAgeHours": 14.85,
-        "latestAgeSeconds": 53473,
+        "latestAgeHours": 14.93,
+        "latestAgeSeconds": 53764,
         "maxAgeHours": 24,
         "sources": [
           "sportsbook-odds"
@@ -912,8 +912,8 @@
             "installedOsService": false,
             "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
             "startedAt": "2026-07-12T21:06:11.454Z",
-            "heartbeatAt": "2026-07-12T21:57:30.847Z",
-            "updatedAt": "2026-07-12T21:57:30.851Z",
+            "heartbeatAt": "2026-07-12T22:02:22.255Z",
+            "updatedAt": "2026-07-12T22:02:22.258Z",
             "metadata": {
               "source": "local-runtime-status-route",
               "workerOwned": true,
@@ -933,8 +933,8 @@
             "installedOsService": false,
             "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
             "startedAt": "2026-07-12T21:06:11.760Z",
-            "heartbeatAt": "2026-07-12T21:57:30.847Z",
-            "updatedAt": "2026-07-12T21:57:30.851Z",
+            "heartbeatAt": "2026-07-12T22:02:22.255Z",
+            "updatedAt": "2026-07-12T22:02:22.258Z",
             "metadata": {
               "source": "local-runtime-status-route",
               "workerOwned": true,
@@ -1014,12 +1014,12 @@
         "completionAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-12T21:57:30.474Z"
+          "generatedAt": "2026-07-12T22:02:21.961Z"
         },
         "phaseAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-12T21:50:35.079Z"
+          "generatedAt": "2026-07-12T21:57:31.155Z"
         },
         "runtimeStatus": {
           "path": "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
@@ -1045,7 +1045,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-12T21:57:30.914Z",
+      "generatedAt": "2026-07-12T22:02:22.331Z",
       "scope": "holiwyn-local-live-runtime-result-review",
       "status": "ready",
       "providerQuotaUsed": false,
@@ -1147,7 +1147,7 @@
         "exactConfirmationStored": false,
         "activeMarketExecutionAttempted": false,
         "providerQuotaUsed": false,
-        "updatedAt": "2026-07-12T21:57:30.909Z"
+        "updatedAt": "2026-07-12T22:02:22.319Z"
       },
       "executionDecision": {
         "activeMarketStatus": "LIVE",
@@ -1197,7 +1197,7 @@
         "phaseAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-12T21:50:35.079Z"
+          "generatedAt": "2026-07-12T21:57:31.155Z"
         }
       }
     },
@@ -1207,7 +1207,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-12T21:57:31.124Z",
+      "generatedAt": "2026-07-12T22:02:22.356Z",
       "scope": "holiwyn-local-live-runtime-settlement-queue",
       "status": "ready",
       "providerQuotaUsed": false,
@@ -1273,7 +1273,7 @@
                 "After lifecycle close, rerun preflight and settlement queue before using the approved execution command."
               ]
             },
-            "updatedAt": "2026-07-12T21:57:30.909Z"
+            "updatedAt": "2026-07-12T22:02:22.319Z"
           }
         ]
       },
@@ -1315,7 +1315,7 @@
     "status": 200,
     "body": {
       "status": "ready",
-      "generatedAt": "2026-07-12T21:57:31.154Z",
+      "generatedAt": "2026-07-12T22:02:22.385Z",
       "providerQuotaUsed": false,
       "event": {
         "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
@@ -1467,57 +1467,57 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 14.85,
-    "onboarding": 0.85,
-    "onboardingRuntimeStart": 0.85,
-    "onboardingRuntimeStatus": 0.85,
-    "onboardingRuntimeStop": 0.85,
-    "readiness": 0.86,
-    "runtimeStatus": 0.22,
-    "runtimeLaunch": 0.85,
-    "supervisor": 3.31,
-    "supervisorProcess": 0.85,
-    "internalTesterRuntime": 1.62,
-    "internalTesterResultPoller": 8.42,
-    "internalTesterWatchdog": 6.63,
-    "currentRuntimeStateProof": 1.66,
-    "localRuntimeTask": 4.66,
-    "localRuntimeTaskInstall": 4.66,
-    "localRuntimeStartup": 9.64,
-    "localRuntimeStartupInstall": 8.17,
-    "localRuntimeLaunchProfile": 0.12,
-    "liveRuntimeCompletionAudit": 0.12,
-    "continuousSupervisor": 2.42,
-    "staleGuardProof": 12.44,
-    "staleGuardRun": 12.33,
-    "lifecycleControls": 0.86,
-    "lifecycleScheduler": 0.86,
-    "lifecycleSchedulerRun": 0.9,
-    "lifecycleMatrix": 7.85,
-    "settlementReadiness": 0.86,
-    "settlementExecution": 10.93,
-    "resultSettlementExecution": 10.08,
-    "resultSettlementLiveBlocked": 10.08,
-    "manualSettlement": 0.86,
-    "resultIngestion": 0.85,
-    "resultIngestionAuditEvent": 8.28,
-    "resultPoller": 3.33,
-    "resultPollerProcess": 0.85,
-    "continuousResultPoller": 8.58,
-    "resultSettlement": 0.85,
-    "resultSettlementRun": 0.85,
-    "settlementPreflight": 9.85,
-    "settlementAuditEvent": 9.53,
-    "settlementApprovalAuditEvent": 7.2,
-    "resultReviewTrail": 7.1,
-    "activeSettlementReadiness": 6.99,
-    "activeSettlementClosedEligibility": 1.41,
-    "approvedAutoSettlement": 9.35,
-    "activeSettlementClone": 7.33,
-    "supervisorApprovedSettlement": 9.17,
-    "makerSeed": 0.85,
-    "providerMakerHandoff": 2.3,
-    "s23Visible": 14.68
+    "liveProof": 14.93,
+    "onboarding": 0.93,
+    "onboardingRuntimeStart": 0.94,
+    "onboardingRuntimeStatus": 0.94,
+    "onboardingRuntimeStop": 0.93,
+    "readiness": 0.94,
+    "runtimeStatus": 0.3,
+    "runtimeLaunch": 0.94,
+    "supervisor": 3.39,
+    "supervisorProcess": 0.93,
+    "internalTesterRuntime": 1.7,
+    "internalTesterResultPoller": 8.5,
+    "internalTesterWatchdog": 6.71,
+    "currentRuntimeStateProof": 1.74,
+    "localRuntimeTask": 4.74,
+    "localRuntimeTaskInstall": 4.74,
+    "localRuntimeStartup": 9.73,
+    "localRuntimeStartupInstall": 8.25,
+    "localRuntimeLaunchProfile": 0.2,
+    "liveRuntimeCompletionAudit": 0.08,
+    "continuousSupervisor": 2.5,
+    "staleGuardProof": 12.52,
+    "staleGuardRun": 12.41,
+    "lifecycleControls": 0.94,
+    "lifecycleScheduler": 0.94,
+    "lifecycleSchedulerRun": 0.98,
+    "lifecycleMatrix": 7.93,
+    "settlementReadiness": 0.94,
+    "settlementExecution": 11.01,
+    "resultSettlementExecution": 10.16,
+    "resultSettlementLiveBlocked": 10.16,
+    "manualSettlement": 0.94,
+    "resultIngestion": 0.93,
+    "resultIngestionAuditEvent": 8.36,
+    "resultPoller": 3.41,
+    "resultPollerProcess": 0.93,
+    "continuousResultPoller": 8.66,
+    "resultSettlement": 0.94,
+    "resultSettlementRun": 0.94,
+    "settlementPreflight": 9.93,
+    "settlementAuditEvent": 9.61,
+    "settlementApprovalAuditEvent": 7.28,
+    "resultReviewTrail": 7.18,
+    "activeSettlementReadiness": 7.08,
+    "activeSettlementClosedEligibility": 1.49,
+    "approvedAutoSettlement": 9.43,
+    "activeSettlementClone": 7.41,
+    "supervisorApprovedSettlement": 9.25,
+    "makerSeed": 0.94,
+    "providerMakerHandoff": 2.38,
+    "s23Visible": 14.76
   },
   "requirements": [
     {
@@ -1605,7 +1605,7 @@
       "evidence": [
         "http://127.0.0.1:3002/api/internal/live-runtime/settlement-queue"
       ],
-      "notes": "This narrows the operator-review/multi-event queue gap by exposing durable pending settlement work through a dev-only read-only backend route. It does not execute settlement or reveal exact confirmation strings."
+      "notes": "This narrows the operator-review/multi-event queue gap by exposing durable pending settlement work plus a redacted safe operator plan through a dev-only read-only backend route. It does not execute settlement or reveal exact confirmation strings."
     },
     {
       "id": "local-lifecycle-api-ready",

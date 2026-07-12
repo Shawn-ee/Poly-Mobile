@@ -523,17 +523,22 @@ async function main() {
         getPath(localSettlementQueueBody, ["runtimeTruth", "devOnlyRoute"]) === true &&
         getPath(localSettlementQueueBody, ["runtimeTruth", "usesDurableOfficialResultReviewRows"]) === true &&
         getPath(localSettlementQueueBody, ["runtimeTruth", "operatorQueueAvailable"]) === true &&
+        getPath(localSettlementQueueBody, ["runtimeTruth", "redactedOperatorExecutionPlanAvailable"]) === true &&
         getPath(localSettlementQueueBody, ["runtimeTruth", "exactConfirmationStringsExposed"]) === false &&
         getPath(localSettlementQueueBody, ["runtimeTruth", "exactConfirmationStored"]) === false &&
         getPath(localSettlementQueueBody, ["runtimeTruth", "activeMarketExecutionAttempted"]) === false &&
         getPath(localSettlementQueueBody, ["queue", "itemCount"]) !== 0 &&
+        typeof getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorAction", "label"]) === "string" &&
+        typeof getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorAction", "nextCommand"]) === "string" &&
+        getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorAction", "exactConfirmationExposed"]) === false &&
+        getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorAction", "providerQuotaRequired"]) === false &&
         Array.isArray(getPath(localSettlementQueueBody, ["gaps", "p0"])) &&
         (getPath(localSettlementQueueBody, ["gaps", "p0"]) as unknown[]).length === 0 &&
         !JSON.stringify(localSettlementQueueBody).includes("SETTLE_FROM_RESULT:") &&
         !JSON.stringify(localSettlementQueueBody).includes("THE_ODDS_API_KEY"),
       evidence: [`${baseUrl}/api/internal/live-runtime/settlement-queue`],
       notes:
-        "This narrows the operator-review/multi-event queue gap by exposing durable pending settlement work through a dev-only read-only backend route. It does not execute settlement or reveal exact confirmation strings.",
+        "This narrows the operator-review/multi-event queue gap by exposing durable pending settlement work plus a redacted safe operator plan through a dev-only read-only backend route. It does not execute settlement or reveal exact confirmation strings.",
     }),
     requirement({
       id: "local-lifecycle-api-ready",

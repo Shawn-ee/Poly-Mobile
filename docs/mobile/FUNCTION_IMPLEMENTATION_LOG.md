@@ -2,6 +2,18 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle SETTLEMENTPLANGATE - Settlement Operator Plan Audit Gate
+
+- Feature/page worked on: backend live-runtime audit gate for official-result settlement queue.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `scripts/report_holiwyn_live_runtime_completion_audit.ts`
+- User/runtime interactions supported: phase and completion audits now fail unless `/api/internal/live-runtime/settlement-queue` includes the redacted per-item `operatorAction` plan, keeps provider quota disabled, and does not expose exact confirmation strings.
+- State transitions: none. This is read-only audit enforcement and does not execute settlement, start processes, or call providers.
+- API/data dependencies: reads the existing dev-only settlement queue route through the phase audit; completion audit consumes phase-audit evidence.
+- Known limitations: this strengthens local proof quality. It does not create an authenticated production operator UI or installed official-result polling service.
+
 ## Cycle SETTLEMENTPLAN - Redacted Settlement Operator Plan
 
 - Feature/page worked on: backend local settlement queue for official-result runtime.
