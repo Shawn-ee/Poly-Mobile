@@ -13681,3 +13681,24 @@ Known limitations:
 - Known limitations:
   - Provider refresh and market maker are still not unattended daemons.
   - Automatic event-start close/suspend and official-result settlement remain P1.
+
+# Cycle ONEEVENTSUPERVISOR - Repeated One-Event Local Runtime
+
+- Feature/page worked on: repeated local runtime loop for the selected sportsbook-backed event.
+- Frontend components touched: none. This cycle supports the existing mobile-visible event and trade ticket by keeping backend checks and local maker quotes refreshed while the supervisor command is running.
+- Important functions/services touched:
+  - `scripts/run_holiwyn_one_event_live_supervisor.ps1`
+  - `package.json` script `mobile:one-event-live-supervisor`
+  - Child command `mobile:one-event-live-runtime`
+  - Optional child path `mobile:one-event-live-runtime -RunProviderProof`
+  - Existing backend health, Docker/Postgres, S23 reachability, provider proof summary, maker seed summary, and quote route proof
+- User interactions supported:
+  - Internal testers can keep the selected event locally tradable over repeated test cycles instead of manually rerunning maker seed after every local runtime check.
+  - The default supervisor run does not spend provider quota; it uses the latest stored provider snapshot and reseeds shifted fake-token maker quotes.
+- State transitions:
+  - Cycle start -> backend health check -> cached provider proof freshness check -> optional live provider refresh -> maker quote cleanup/reseed -> quote route verification.
+  - The supervisor writes a summary that separates "continuous while this command runs" from "installed unattended service."
+- Known limitations:
+  - The supervisor is still a foreground local command, not a service or production daemon.
+  - Automatic event-start close/suspend scheduling and official-result settlement remain P1.
+  - Multi-event polling and inventory-aware maker quoting remain P2.

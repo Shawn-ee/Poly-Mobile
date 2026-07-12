@@ -16,6 +16,7 @@ The current Local MVP is backend-owned and fake-token only. It has proven one sp
 | Provider lifecycle surface | `mobileLiveEventDetail.ts` reports quote/depth/chart lifecycle as `ready`, `refresh_due`, `stale`, or `unavailable`. Quote snapshots are stale after 90 seconds and refresh-due after 60 seconds. | Exists. Needs a provider refresh runner to keep snapshots fresh. |
 | Local matching/order flow | `matching.ts`, canonical order route, Portfolio/history routes. | Proven for fake-token buy/sell and negative sell cases. |
 | One-shot maker liquidity | Internal harnesses mint complete sets and place maker ask/bid orders directly with `placeOrderAndMatch`. | Works for proof. Not continuous by default. |
+| One-event local supervisor | `scripts/run_holiwyn_one_event_live_supervisor.ps1` repeats the proven runtime launch command and can optionally run quota-guarded provider refresh plus local maker reseeding on an interval. | Continuous only while the local command is running. It is not an installed unattended service. |
 | Continuous bot/soak harness | `scripts/soak_orderbook_bots.ts` references a sibling `poly-bot` package. `scripts/create_sim_bot_credentials.ts` writes bot config to `../poly-bot`. | Not self-contained in this repo. Do not assume it is running or available for mobile MVP runtime. |
 | Reference liquidity seeding | `referenceLiquiditySeeding.ts` supports approved Polymarket reference markets only. | Not usable for Odds API sportsbook markets without new source-aware logic. |
 | Event pause/close/resolve | Admin routes can pause/close markets and resolve orderbook markets. | Manual/admin lifecycle exists. No automatic soccer settlement or result ingest exists yet. |
@@ -53,11 +54,13 @@ The backend is close enough for a one-event local live proof because the data mo
 - Reusable maker seed: `scripts/seed_odds_api_live_shifted_maker.ts`.
 - Lifecycle controls proof: `scripts/prove_odds_api_event_lifecycle_controls.ts`.
 - Consolidated readiness gate: `scripts/prove_holiwyn_one_event_live_readiness.ps1`.
+- One-event local supervisor: `scripts/run_holiwyn_one_event_live_supervisor.ps1`.
 - Summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`.
 - Runtime launch summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json`.
 - Maker seed summary: `docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json`.
 - Lifecycle controls summary: `docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json`.
 - Consolidated readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json`.
+- Supervisor summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json`.
 - S23 summary: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`.
 - Result: pass.
 - The proof is bounded and local-only. It proves the minimum live path for one upcoming provider event and now has a reusable local maker-seed command for tester liquidity, but it is not an unattended production daemon.

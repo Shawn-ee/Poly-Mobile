@@ -13,6 +13,7 @@ The Local MVP has deterministic one-shot maker liquidity. A true production daem
 | Reference liquidity seeding | Polymarket-only | `referenceLiquiditySeeding.ts` rejects non-Polymarket markets. |
 | Odds API local shifted maker | Added as proof mode | The one-event live proof places local bid/ask quotes around provider reference price, shifted worse by configurable ticks. |
 | Odds API reusable maker seed | Added for local testing | `npm run mobile:one-event-live-maker-seed` uses the latest stored sportsbook snapshot, cancels prior local shifted-maker quotes for the selected market, and leaves a new fake-token bid/ask resting. |
+| Odds API one-event supervisor | Added for local testing | `npm run mobile:one-event-live-supervisor` repeats runtime checks and maker reseeding while the command is running. With `-RunProviderProof`, it also runs quota-guarded live provider refresh cycles. |
 
 ## Live Proof Strategy
 
@@ -30,7 +31,7 @@ For a selected binary sportsbook market:
 | Gap | Priority |
 | --- | --- |
 | Long-lived source-aware maker daemon with risk state | P1 |
-| Automatic quote replacement on every provider refresh | P1 |
+| Automatic quote replacement on every provider refresh | Partial: supervisor can reseed after each refresh while running; no installed unattended service yet. |
 | Inventory-aware maker across many markets | P2 |
 | Production risk controls and monitoring | P2 |
 
@@ -40,6 +41,7 @@ For a selected binary sportsbook market:
 - Restart/runtime command: `npm run mobile:one-event-live-runtime`
 - Runtime command with maker liquidity: `npm run mobile:one-event-live-runtime -- -SeedMaker`
 - Consolidated readiness command: `npm run mobile:one-event-live-readiness`
+- Repeated local supervisor command: `npm run mobile:one-event-live-supervisor -- -MaxIterations 2 -IntervalSeconds 1`
 - Maker seed command: `npm run mobile:one-event-live-maker-seed`
 - Lifecycle controls command: `npm run mobile:one-event-lifecycle-proof`
 - Live provider wrapper command: `npm run mobile:one-event-live-runtime:provider`
@@ -48,6 +50,7 @@ For a selected binary sportsbook market:
 - Maker seed summary: `docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json`
 - Lifecycle controls summary: `docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json`
 - Consolidated readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json`
+- Supervisor summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json`
 - Result: pass.
 - Provider event: Spain vs. France, `soccer_fifa_world_cup`, starts `2026-07-14T19:00:00Z`.
 - Selected local market: Total Goals 2.5.
@@ -56,4 +59,4 @@ For a selected binary sportsbook market:
 - Reusable maker seed proof: quote route returned best bid `0.47` and best ask `0.55` for the selected provider-backed market after `-SeedMaker`.
 - Trading proof: fake-token buy filled, Portfolio position appeared, sell/cashout filled, History contained both trades.
 - S23 proof: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`.
-- Continuous status: still bounded proof mode, not an unattended production bot.
+- Continuous status: the supervisor can run repeated local maker reseeds while it is open, but there is still no installed unattended production bot.

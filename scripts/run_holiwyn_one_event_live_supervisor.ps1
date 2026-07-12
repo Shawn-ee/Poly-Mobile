@@ -1,0 +1,246 @@
+param(
+  [int]$BackendPort = 3002,
+  [string]$SummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-live-supervisor-summary.redacted.json",
+  [int]$MaxIterations = 2,
+  [int]$IntervalSeconds = 15,
+  [switch]$Continuous,
+  [switch]$RunProviderProof,
+  [switch]$SkipMakerSeed,
+  [switch]$RestartBackend,
+  [int]$RefreshIterations = 1,
+  [int]$MaxCreditsPerProviderProof = 8,
+  [int]$MinRemaining = 2,
+  [switch]$SkipSleep
+)
+
+$ErrorActionPreference = "Stop"
+
+if ($Continuous -and $MaxIterations -gt 0) {
+  throw "Use either -Continuous or -MaxIterations, not both. Pass -MaxIterations 0 with -Continuous for an open-ended local loop."
+}
+
+$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+$BackendBaseUrl = "http://127.0.0.1:$BackendPort"
+
+function Resolve-RepoPath {
+  param([string]$Path)
+  if ([System.IO.Path]::IsPathRooted($Path)) {
+    return $Path
+  }
+  return Join-Path $RepoRoot $Path
+}
+
+function ConvertTo-RepoPath {
+  param([string]$Path)
+  return $Path.Replace($RepoRoot + "\", "").Replace("\", "/")
+}
+
+function Read-JsonFile {
+  param([string]$Path)
+  if (-not (Test-Path -LiteralPath $Path)) {
+    return $null
+  }
+  return Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json
+}
+
+function Write-JsonFile {
+  param(
+    [Parameter(Mandatory = $true)] [object]$Value,
+    [Parameter(Mandatory = $true)] [string]$Path,
+    [int]$Depth = 40
+  )
+  $directory = Split-Path -Parent $Path
+  if ($directory -and -not (Test-Path -LiteralPath $directory)) {
+    New-Item -ItemType Directory -Path $directory -Force | Out-Null
+  }
+  $json = ($Value | ConvertTo-Json -Depth $Depth) -replace "`r`n", "`n"
+  [System.IO.File]::WriteAllText($Path, "$json`n", [System.Text.UTF8Encoding]::new($false))
+}
+
+function Invoke-CheckedCommand {
+  param(
+    [Parameter(Mandatory = $true)] [string]$Label,
+    [Parameter(Mandatory = $true)] [string]$Command
+  )
+  $startedAt = (Get-Date).ToUniversalTime()
+  cmd /c $Command | Out-Null
+  $exitCode = $LASTEXITCODE
+  return [ordered]@{
+    label = $Label
+    command = $Command
+    exitCode = $exitCode
+    pass = [bool]($exitCode -eq 0)
+    startedAt = $startedAt.ToString("o")
+    finishedAt = (Get-Date).ToUniversalTime().ToString("o")
+  }
+}
+
+function Test-HttpHealth {
+  try {
+    $body = Invoke-RestMethod -Uri "$BackendBaseUrl/api/health" -TimeoutSec 8
+    return [ordered]@{
+      ok = [bool]($body.status -eq "ok" -and $body.db -eq "connected")
+      body = $body
+      error = $null
+    }
+  } catch {
+    return [ordered]@{
+      ok = $false
+      body = $null
+      error = $_.Exception.Message
+    }
+  }
+}
+
+function Get-DockerPostgresStatus {
+  try {
+    $rows = @(docker ps --format "{{.Names}}|{{.Status}}|{{.Ports}}" 2>$null)
+    $postgres = $rows | Where-Object { $_ -match "postgres|poly_postgres" } | Select-Object -First 1
+    return [ordered]@{
+      ok = [bool]($postgres -and $postgres -match "healthy|Up")
+      status = if ($postgres) { $postgres } else { "not_found" }
+      raw = @($rows)
+    }
+  } catch {
+    return [ordered]@{ ok = $false; status = "docker_unavailable"; error = $_.Exception.Message; raw = @() }
+  }
+}
+
+function Get-S23Status {
+  try {
+    $devices = @(adb devices -l 2>$null)
+    $line = $devices | Where-Object { $_ -match "adb-R3CW20LFMLW|R3CW20LFMLW|SM_S911U1" } | Select-Object -First 1
+    return [ordered]@{
+      connected = [bool]$line
+      deviceId = if ($line) { "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp" } else { $null }
+      model = if ($line -and $line -match "model:([^ ]+)") { $Matches[1] } else { $null }
+      raw = $line
+    }
+  } catch {
+    return [ordered]@{ connected = $false; deviceId = $null; model = $null; error = $_.Exception.Message }
+  }
+}
+
+if ($RunProviderProof -and [string]::IsNullOrWhiteSpace($env:THE_ODDS_API_KEY)) {
+  throw "RunProviderProof requires THE_ODDS_API_KEY in the process environment. The key is not read from files or printed."
+}
+
+$startedAt = (Get-Date).ToUniversalTime()
+$cycles = New-Object System.Collections.Generic.List[object]
+$iteration = 0
+$loopPass = $true
+$failure = $null
+
+try {
+  do {
+    $iteration += 1
+    $cycleStartedAt = (Get-Date).ToUniversalTime()
+    $command = "npm run mobile:one-event-live-runtime -- -BackendPort $BackendPort"
+    if ($RestartBackend -and $iteration -eq 1) {
+      $command += " -RestartBackend"
+    }
+    if ($RunProviderProof) {
+      $command += " -RunProviderProof -RefreshIterations $RefreshIterations -MaxCredits $MaxCreditsPerProviderProof -MinRemaining $MinRemaining"
+    }
+    if (-not $SkipMakerSeed) {
+      $command += " -SeedMaker"
+    }
+    if ($SkipSleep) {
+      $command += " -SkipSleep"
+    }
+
+    $result = Invoke-CheckedCommand -Label "cycle-$iteration" -Command $command
+    $runtimeSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-runtime-launch-summary.redacted.json"
+    $runtimeSummary = Read-JsonFile $runtimeSummaryPath
+    $cycles.Add([ordered]@{
+      iteration = $iteration
+      startedAt = $cycleStartedAt.ToString("o")
+      finishedAt = (Get-Date).ToUniversalTime().ToString("o")
+      command = $result
+      runtimeSummaryPath = ConvertTo-RepoPath $runtimeSummaryPath
+      runtimePass = [bool]($runtimeSummary -and $runtimeSummary.pass -eq $true)
+      providerProofRan = [bool]$RunProviderProof
+      makerSeeded = [bool](-not $SkipMakerSeed)
+      event = $runtimeSummary.provider.proof.event
+      selectedMarket = $runtimeSummary.provider.proof.selectedMarket
+      maker = $runtimeSummary.runtime.makerSeedSummary
+    }) | Out-Null
+
+    if (-not $result.pass -or -not ($runtimeSummary -and $runtimeSummary.pass -eq $true)) {
+      $loopPass = $false
+      $failure = "Cycle $iteration failed."
+      break
+    }
+
+    if (-not $Continuous -and $iteration -ge $MaxIterations) {
+      break
+    }
+    if ($IntervalSeconds -gt 0) {
+      Start-Sleep -Seconds $IntervalSeconds
+    }
+  } while ($Continuous -or $iteration -lt $MaxIterations)
+} catch {
+  $loopPass = $false
+  $failure = $_.Exception.Message
+}
+
+$p0Gaps = New-Object System.Collections.Generic.List[object]
+if (-not $loopPass) {
+  $p0Gaps.Add($failure) | Out-Null
+}
+$p1Gaps = New-Object System.Collections.Generic.List[object]
+$p1Gaps.Add("supervisor is a local command, not an installed unattended service") | Out-Null
+$p1Gaps.Add("automatic official-result settlement is not complete") | Out-Null
+$p1Gaps.Add("automatic event close/suspend scheduler is not complete") | Out-Null
+$p2Gaps = New-Object System.Collections.Generic.List[object]
+$p2Gaps.Add("multi-event provider polling and inventory-aware multi-market quoting remain future work") | Out-Null
+
+$summary = [ordered]@{
+  generatedAt = (Get-Date).ToUniversalTime().ToString("o")
+  scope = "holiwyn-one-event-live-supervisor"
+  pass = [bool]$loopPass
+  startedAt = $startedAt.ToString("o")
+  completedAt = (Get-Date).ToUniversalTime().ToString("o")
+  backend = [ordered]@{
+    baseUrl = $BackendBaseUrl
+    health = Test-HttpHealth
+  }
+  dockerPostgres = Get-DockerPostgresStatus
+  s23 = Get-S23Status
+  settings = [ordered]@{
+    continuous = [bool]$Continuous
+    maxIterations = $MaxIterations
+    completedIterations = $cycles.Count
+    intervalSeconds = $IntervalSeconds
+    runProviderProof = [bool]$RunProviderProof
+    refreshIterationsPerProviderProof = if ($RunProviderProof) { $RefreshIterations } else { 0 }
+    maxCreditsPerProviderProof = if ($RunProviderProof) { $MaxCreditsPerProviderProof } else { 0 }
+    minRemaining = $MinRemaining
+    makerSeedEnabled = [bool](-not $SkipMakerSeed)
+    cachedModeUsesQuota = $false
+  }
+  runtimeTruth = [ordered]@{
+    backendContinuousWhileSupervisorRuns = $true
+    providerRefreshContinuousWhileSupervisorRuns = [bool]($RunProviderProof -and ($Continuous -or $cycles.Count -gt 1))
+    marketMakerRefreshContinuousWhileSupervisorRuns = [bool]((-not $SkipMakerSeed) -and ($Continuous -or $cycles.Count -gt 1))
+    unattendedServiceInstalled = $false
+    providerRefreshMode = if ($RunProviderProof) { "quota-guarded repeated live provider proof while supervisor runs" } else { "cached provider proof verification; no provider quota spent" }
+    marketMakerMode = if ($SkipMakerSeed) { "not seeded by supervisor" } else { "repeated local shifted maker reseed while supervisor runs" }
+    settlementMode = "manual preview/resolve service; automatic official-result settlement not wired"
+  }
+  failure = $failure
+  cycles = @($cycles | ForEach-Object { $_ })
+  gaps = [ordered]@{
+    p0 = $p0Gaps
+    p1 = $p1Gaps
+    p2 = $p2Gaps
+  }
+}
+
+$resolvedSummaryPath = Resolve-RepoPath $SummaryPath
+Write-JsonFile -Value $summary -Path $resolvedSummaryPath -Depth 60
+$summary | ConvertTo-Json -Depth 60
+
+if (-not $summary.pass) {
+  exit 1
+}
