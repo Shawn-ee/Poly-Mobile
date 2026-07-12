@@ -10487,3 +10487,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable worker-owned lifecycle records, official result records, settlement execution queue state, authenticated operator controls, and multi-event lifecycle status remain P1/P2.
 - Temporary mock/static data: none added. The route reads existing DB event/market rows and redacted proof artifacts, spends no provider quota, and does not execute active-event settlement.
 - Future migration concern: replace proof-artifact-backed lifecycle route fields with durable lifecycle job/event records before production or multi-event operations.
+
+## Cycle MARKETMAKERQUOTERUNS - Durable Market-Maker Quote Run Records
+
+- Closed or narrowed: selected-market shifted maker quote proof now has first-class backend storage in `MarketMakerQuoteRun`, keyed by provider source, market id, outcome id, and run start time.
+- Fields added for future backend/operator use: event slug, market id, outcome id, maker user id, bid/ask order ids, provider reference bid/ask, planned maker bid/ask, quote offset, size, mint quantity, canceled/resting order counts, quote-route status, shifted-worse-than-provider truth, quote-route visibility truth, fresh snapshot truth, local-only metadata, and installed-service truth.
+- Route mismatch: `/api/internal/live-runtime/status` remains dev-only and read-only. It now reports the latest selected-market `MarketMakerQuoteRun`, but it does not start the market maker, place quotes, call The Odds API, or spend quota.
+- Temporary mock/static data: none added. The backfill command reads existing redacted shifted-maker proof JSON; future maker seed runs write this row as part of the existing local fake-token liquidity path.
+- Remaining gaps: installed continuous market-maker service ownership, multi-event quote scheduling, durable risk/exposure dashboarding, retry/alerting, and production liquidity controls remain P1/P2.

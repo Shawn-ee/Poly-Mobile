@@ -5,6 +5,7 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { mintCompleteSetForPublicOrderbook } from "@/server/services/orderbookCollateral";
 import { cancelOrderAndUnlock, placeOrderAndMatch } from "@/server/services/matching";
+import { writeMarketMakerQuoteRun } from "@/server/services/marketMakerQuoteRun";
 
 const DEFAULT_EVENT_SLUG = "odds-api-single-soccer-test";
 const DEFAULT_SUMMARY_PATH = "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json";
@@ -161,6 +162,7 @@ async function main() {
   const marketId = argValue("marketId");
   const baseUrl = argValue("baseUrl") ?? DEFAULT_BASE_URL;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_SUMMARY_PATH;
+  const startedAt = new Date();
   const quoteOffsetTicks = intArg("quoteOffsetTicks", 2);
   const size = argValue("size") ?? "200";
   const mintQuantity = argValue("mintQuantity") ?? size;
@@ -243,6 +245,7 @@ async function main() {
   const summary = {
     pass: Object.values(checks).every(Boolean),
     generatedAt: new Date().toISOString(),
+    startedAt: startedAt.toISOString(),
     scope: "odds-api-one-event-shifted-maker-seed",
     mode: cleanupOnly ? "cleanup-only" : "seed-resting-shifted-maker-quotes",
     event: {
@@ -307,6 +310,45 @@ async function main() {
   };
 
   await writeJson(outputPath, summary);
+  await writeMarketMakerQuoteRun({
+    marketId: summary.selectedMarket.id,
+    outcomeId: summary.selectedMarket.outcomeId,
+    eventSlug: summary.event.slug,
+    status: summary.pass ? "passed" : "failed",
+    mode: summary.mode,
+    startedAt,
+    finishedAt: summary.generatedAt,
+    makerUserId: summary.maker?.id ?? null,
+    bidOrderId: summary.restingOrders.find((order) => order.side === "BUY")?.id ?? null,
+    askOrderId: summary.restingOrders.find((order) => order.side === "SELL")?.id ?? null,
+    providerSource: summary.providerSnapshot.source,
+    referenceBid: summary.providerSnapshot.referenceBid,
+    referenceAsk: summary.providerSnapshot.referenceAsk,
+    outcomePrice: summary.providerSnapshot.outcomePrice,
+    plannedBid: summary.plan.plannedBid,
+    plannedAsk: summary.plan.plannedAsk,
+    quoteOffsetTicks: summary.plan.quoteOffsetTicks,
+    size: summary.plan.size,
+    mintQuantity: summary.plan.mintQuantity,
+    canceledOrderCount: summary.canceledPreviousOrders.length,
+    restingOrderCount: summary.restingOrders.length,
+    quoteRouteStatus: summary.quoteRoute.status,
+    shiftedBidWorseThanProvider: summary.checks.shiftedBidWorseThanProvider,
+    shiftedAskWorseThanProvider: summary.checks.shiftedAskWorseThanProvider,
+    quoteRouteShowsBid: summary.checks.quoteRouteShowsBid,
+    quoteRouteShowsAsk: summary.checks.quoteRouteShowsAsk,
+    snapshotFresh: summary.checks.snapshotFresh,
+    installedOsService: false,
+    metadata: {
+      source: "local-shifted-maker-proof",
+      emittedBy: "scripts/seed_odds_api_live_shifted_maker.ts",
+      localOnly: true,
+      summaryPath: outputPath,
+      selectedMarket: summary.selectedMarket,
+      checks,
+      gaps: summary.gaps,
+    },
+  });
   process.stdout.write(`${JSON.stringify(summary, null, 2)}\n`);
   if (!summary.pass) process.exitCode = 1;
 }

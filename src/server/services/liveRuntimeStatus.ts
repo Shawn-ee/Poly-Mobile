@@ -269,6 +269,90 @@ async function getLatestProviderRefreshRun(eventSlug: string | null) {
   return rows[0] ? compactProviderRefreshRunRow(rows[0]) : null;
 }
 
+const compactMarketMakerQuoteRunRow = (row: {
+  runKey: string;
+  marketId: string;
+  outcomeId: string;
+  eventSlug: string | null;
+  status: string;
+  mode: string;
+  startedAt: Date;
+  finishedAt: Date | null;
+  durationMs: number | null;
+  makerUserId: string | null;
+  bidOrderId: string | null;
+  askOrderId: string | null;
+  providerSource: string;
+  referenceBid: { toString(): string } | null;
+  referenceAsk: { toString(): string } | null;
+  outcomePrice: { toString(): string } | null;
+  plannedBid: { toString(): string } | null;
+  plannedAsk: { toString(): string } | null;
+  quoteOffsetTicks: number;
+  size: { toString(): string } | null;
+  mintQuantity: { toString(): string } | null;
+  canceledOrderCount: number;
+  restingOrderCount: number;
+  quoteRouteStatus: number | null;
+  shiftedBidWorseThanProvider: boolean;
+  shiftedAskWorseThanProvider: boolean;
+  quoteRouteShowsBid: boolean;
+  quoteRouteShowsAsk: boolean;
+  snapshotFresh: boolean;
+  installedOsService: boolean;
+  updatedAt: Date;
+  metadata: unknown;
+}) => ({
+  runKey: row.runKey,
+  marketId: row.marketId,
+  outcomeId: row.outcomeId,
+  eventSlug: row.eventSlug,
+  status: row.status,
+  mode: row.mode,
+  startedAt: row.startedAt.toISOString(),
+  finishedAt: row.finishedAt?.toISOString() ?? null,
+  durationMs: row.durationMs,
+  makerUserId: row.makerUserId,
+  bidOrderId: row.bidOrderId,
+  askOrderId: row.askOrderId,
+  providerSource: row.providerSource,
+  referenceBid: row.referenceBid?.toString() ?? null,
+  referenceAsk: row.referenceAsk?.toString() ?? null,
+  outcomePrice: row.outcomePrice?.toString() ?? null,
+  plannedBid: row.plannedBid?.toString() ?? null,
+  plannedAsk: row.plannedAsk?.toString() ?? null,
+  quoteOffsetTicks: row.quoteOffsetTicks,
+  size: row.size?.toString() ?? null,
+  mintQuantity: row.mintQuantity?.toString() ?? null,
+  canceledOrderCount: row.canceledOrderCount,
+  restingOrderCount: row.restingOrderCount,
+  quoteRouteStatus: row.quoteRouteStatus,
+  shiftedBidWorseThanProvider: row.shiftedBidWorseThanProvider,
+  shiftedAskWorseThanProvider: row.shiftedAskWorseThanProvider,
+  quoteRouteShowsBid: row.quoteRouteShowsBid,
+  quoteRouteShowsAsk: row.quoteRouteShowsAsk,
+  snapshotFresh: row.snapshotFresh,
+  installedOsService: row.installedOsService,
+  updatedAt: row.updatedAt.toISOString(),
+  metadata: {
+    source: stringValue(objectValue(row.metadata).source),
+    emittedBy: stringValue(objectValue(row.metadata).emittedBy),
+    localOnly: objectValue(row.metadata).localOnly === true,
+  },
+});
+
+async function getLatestMarketMakerQuoteRun(marketId: string | null) {
+  const rows = await prisma.marketMakerQuoteRun.findMany({
+    where: {
+      ...(marketId ? { marketId } : {}),
+      providerSource: "sportsbook-odds",
+    },
+    orderBy: { startedAt: "desc" },
+    take: 1,
+  });
+  return rows[0] ? compactMarketMakerQuoteRunRow(rows[0]) : null;
+}
+
 async function getProviderSnapshotFreshness(params: {
   marketId: string | null;
   maxAgeHours: number | null;
@@ -500,6 +584,7 @@ export async function getLocalLiveRuntimeStatus() {
   const providerRefreshRun = await getLatestProviderRefreshRun(
     stringValue(getPath(completionAudit, ["event", "localSlug"])) ?? stringValue(getPath(phaseAudit, ["event", "localSlug"])),
   );
+  const marketMakerQuoteRun = await getLatestMarketMakerQuoteRun(selectedMarketId);
   const p0Gaps = asStringArray(getPath(completionAudit, ["gaps", "p0"]));
   const artifactFreshness = {
     maxCompletionAuditAgeHours: 24,
@@ -668,6 +753,25 @@ export async function getLocalLiveRuntimeStatus() {
       providerQuotaUsedByStatus: false,
       note:
         "This durable row records the latest bounded live provider refresh proof for the selected one-event runtime. The status route reads it but does not call the provider or spend quota.",
+    },
+    marketMakerQuoteRuns: {
+      checked: true,
+      durable: true,
+      source: "MarketMakerQuoteRun",
+      latest: marketMakerQuoteRun,
+      latestRunPassed: marketMakerQuoteRun?.status === "passed",
+      latestRunLocalOnly: marketMakerQuoteRun?.metadata.localOnly === true,
+      latestRunShiftedWorseThanProvider:
+        marketMakerQuoteRun?.shiftedBidWorseThanProvider === true &&
+        marketMakerQuoteRun?.shiftedAskWorseThanProvider === true,
+      latestRunQuoteRouteReady:
+        marketMakerQuoteRun?.quoteRouteShowsBid === true &&
+        marketMakerQuoteRun?.quoteRouteShowsAsk === true &&
+        marketMakerQuoteRun?.quoteRouteStatus === 200,
+      latestRunSnapshotFresh: marketMakerQuoteRun?.snapshotFresh === true,
+      installedOsService: marketMakerQuoteRun?.installedOsService === true,
+      note:
+        "This durable row records the latest local shifted-maker quote cycle for the selected market. It proves local quote placement and quote-route visibility, not installed production daemon ownership.",
     },
     settlementDecision,
     resultReview,

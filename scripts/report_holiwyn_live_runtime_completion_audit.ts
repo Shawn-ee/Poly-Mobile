@@ -133,6 +133,16 @@ async function main() {
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshRuns", "latestRunReadyAfterRefresh"]) === true &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshRuns", "latestRunStaleBeforeRefresh"]) === true &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshRuns", "providerQuotaUsedByStatus"]) === false,
+    durableMarketMakerQuoteRunKnown:
+      pass(entries.phaseAudit) &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "marketMakerQuoteRuns", "checked"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "marketMakerQuoteRuns", "durable"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "marketMakerQuoteRuns", "latestRunPassed"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "marketMakerQuoteRuns", "latestRunLocalOnly"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "marketMakerQuoteRuns", "latestRunShiftedWorseThanProvider"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "marketMakerQuoteRuns", "latestRunQuoteRouteReady"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "marketMakerQuoteRuns", "latestRunSnapshotFresh"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "marketMakerQuoteRuns", "installedOsService"]) === false,
     marketMakerContinuityKnown:
       truthy(getPath(entries.runtimeStatus, ["provenCapabilities", "makerReseedWhileSupervisorRuns"])) &&
       truthy(getPath(entries.runtimeStatus, ["provenCapabilities", "repeatedSupervisorCycles"])) &&
@@ -262,6 +272,8 @@ async function main() {
         "Local result-review API is phase-gated through /api/internal/live-runtime/result-review, reads canonical result/preflight/approval evidence, writes a redacted durable OfficialResultReview row, and does not spend provider quota.",
       providerRefreshRuns:
         "Bounded live provider refresh proof is persisted as ProviderRefreshRun; local runtime status requires the latest selected-event run to be passed, quota-protected, within budget, stale-before-refresh, and ready-after-refresh without spending quota from the status route.",
+      marketMakerQuoteRuns:
+        "Shifted local maker quote proof is persisted as MarketMakerQuoteRun; local runtime status requires the latest selected-market run to be passed, local-only, shifted worse than provider, quote-route visible, and backed by a fresh provider snapshot without claiming an installed OS service.",
       runtimeHeartbeats:
         "Supervisor and result-poller loops emit worker-owned RuntimeServiceHeartbeat rows; local runtime status preserves that evidence without claiming an installed OS service.",
       runtimeRuns:

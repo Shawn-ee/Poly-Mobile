@@ -4,6 +4,7 @@ const runtimeServiceHeartbeatFindUnique = jest.fn();
 const runtimeServiceHeartbeatUpsert = jest.fn();
 const runtimeServiceRunFindMany = jest.fn();
 const providerRefreshRunFindMany = jest.fn();
+const marketMakerQuoteRunFindMany = jest.fn();
 
 jest.mock("node:fs/promises", () => ({
   readFile,
@@ -23,6 +24,9 @@ jest.mock("@/lib/db", () => ({
     },
     providerRefreshRun: {
       findMany: (...args: unknown[]) => providerRefreshRunFindMany(...args),
+    },
+    marketMakerQuoteRun: {
+      findMany: (...args: unknown[]) => marketMakerQuoteRunFindMany(...args),
     },
   },
 }));
@@ -122,6 +126,46 @@ const providerRefreshRunRows = () => [
       source: "local-provider-refresh-proof",
       emittedBy: "scripts/write_provider_refresh_run.ts",
       quotaProtected: true,
+    },
+  },
+];
+const marketMakerQuoteRunRows = () => [
+  {
+    runKey: `sportsbook-odds:phase-market:phase-outcome:${nowIso()}`,
+    marketId: "phase-market",
+    outcomeId: "phase-outcome",
+    eventSlug: "odds-api-single-soccer-test",
+    status: "passed",
+    mode: "seed-resting-shifted-maker-quotes",
+    startedAt: new Date(),
+    finishedAt: new Date(),
+    durationMs: 1000,
+    makerUserId: "maker-user",
+    bidOrderId: "maker-bid",
+    askOrderId: "maker-ask",
+    providerSource: "sportsbook-odds",
+    referenceBid: { toString: () => "0.4891" },
+    referenceAsk: { toString: () => "0.5291" },
+    outcomePrice: { toString: () => "0.5091" },
+    plannedBid: { toString: () => "0.47" },
+    plannedAsk: { toString: () => "0.55" },
+    quoteOffsetTicks: 2,
+    size: { toString: () => "200" },
+    mintQuantity: { toString: () => "200" },
+    canceledOrderCount: 2,
+    restingOrderCount: 2,
+    quoteRouteStatus: 200,
+    shiftedBidWorseThanProvider: true,
+    shiftedAskWorseThanProvider: true,
+    quoteRouteShowsBid: true,
+    quoteRouteShowsAsk: true,
+    snapshotFresh: true,
+    installedOsService: false,
+    updatedAt: new Date(),
+    metadata: {
+      source: "local-shifted-maker-proof",
+      emittedBy: "scripts/write_market_maker_quote_run.ts",
+      localOnly: true,
     },
   },
 ];
@@ -326,9 +370,11 @@ describe("live runtime status service", () => {
     runtimeServiceHeartbeatUpsert.mockReset();
     runtimeServiceRunFindMany.mockReset();
     providerRefreshRunFindMany.mockReset();
+    marketMakerQuoteRunFindMany.mockReset();
     referenceQuoteSnapshotFindMany.mockResolvedValue(freshSnapshot());
     runtimeServiceRunFindMany.mockResolvedValue(runtimeRunRows());
     providerRefreshRunFindMany.mockResolvedValue(providerRefreshRunRows());
+    marketMakerQuoteRunFindMany.mockResolvedValue(marketMakerQuoteRunRows());
     runtimeServiceHeartbeatFindUnique.mockResolvedValue(null);
     runtimeServiceHeartbeatUpsert.mockImplementation(async (args) => ({
       id: "heartbeat-id",
@@ -428,6 +474,33 @@ describe("live runtime status service", () => {
           providerSource: "the-odds-api",
           referenceSource: "sportsbook-odds",
           eventSlug: "odds-api-single-soccer-test",
+        },
+      }),
+    );
+    expect(status.marketMakerQuoteRuns).toMatchObject({
+      checked: true,
+      durable: true,
+      source: "MarketMakerQuoteRun",
+      latestRunPassed: true,
+      latestRunLocalOnly: true,
+      latestRunShiftedWorseThanProvider: true,
+      latestRunQuoteRouteReady: true,
+      latestRunSnapshotFresh: true,
+      installedOsService: false,
+      latest: expect.objectContaining({
+        marketId: "phase-market",
+        outcomeId: "phase-outcome",
+        status: "passed",
+        mode: "seed-resting-shifted-maker-quotes",
+        plannedBid: "0.47",
+        plannedAsk: "0.55",
+      }),
+    });
+    expect(marketMakerQuoteRunFindMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          marketId: "phase-market",
+          providerSource: "sportsbook-odds",
         },
       }),
     );

@@ -14724,3 +14724,14 @@ Known limitations:
 - API/data dependencies: reads redacted lifecycle proof artifacts plus the current `Event` and listed sportsbook `Market` rows for the one-event runtime. It reports active-event no-execution truth, disposable settlement proof truth, and the `CLOSED` execution guard.
 - Proof needed: focused route/service Jest tests, direct local lifecycle route proof, `npm run mobile:one-event-phase-audit`, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this narrows lifecycle visibility for internal tools, but it is still local/dev-only and proof-artifact-backed. Production still needs worker-owned lifecycle records, official-result polling, authenticated operator controls, and multi-event lifecycle queues.
+
+## Cycle MARKETMAKERQUOTERUNS - Durable Market-Maker Quote Run Records
+
+- Feature/page worked on: backend local internal market-maker quote evidence persistence.
+- Frontend components touched: none.
+- Important functions/services touched: added Prisma model `MarketMakerQuoteRun`, migration `20260712193000_add_market_maker_quote_run`, `src/server/services/marketMakerQuoteRun.ts`, and `scripts/write_market_maker_quote_run.ts`; updated `scripts/seed_odds_api_live_shifted_maker.ts`, `src/server/services/liveRuntimeStatus.ts`, `src/__tests__/liveRuntimeStatus.service.test.ts`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, and `scripts/report_holiwyn_live_runtime_completion_audit.ts`.
+- User/runtime interactions supported: local tools can inspect `GET /api/internal/live-runtime/status` and see whether the selected market's latest shifted local maker quote cycle has durable passed evidence, provider-worse pricing, quote-route visibility, local-only metadata, and fresh provider snapshot backing.
+- State transitions: writes/updates only `MarketMakerQuoteRun`. The backfill command reads existing redacted shifted-maker proof JSON and does not call The Odds API. Future shifted maker seed runs write the same durable row after the existing local fake-token maker liquidity path.
+- API/data dependencies: reads `docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json` for backfill, and future maker seed runs read their in-memory summary. Status reads the latest `MarketMakerQuoteRun` for `sportsbook-odds` and the selected market id.
+- Proof needed: Prisma migration deploy, maker quote run backfill, status route proof, phase audit, completion audit, focused status Jest test, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this narrows durable market-maker quote outcome evidence, but it is not an installed market-maker daemon, multi-event quote scheduler, risk dashboard, retry/alerting system, or production liquidity service.

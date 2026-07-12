@@ -486,6 +486,48 @@ model ProviderRefreshRun {
   @@index([status, startedAt])
 }
 
+model MarketMakerQuoteRun {
+  id                         String    @id @default(uuid())
+  runKey                     String    @unique
+  marketId                   String
+  outcomeId                  String
+  eventSlug                  String?
+  status                     String
+  mode                       String
+  startedAt                  DateTime
+  finishedAt                 DateTime?
+  durationMs                 Int?
+  makerUserId                String?
+  bidOrderId                 String?
+  askOrderId                 String?
+  providerSource             String
+  referenceBid               Decimal?  @db.Decimal(20, 8)
+  referenceAsk               Decimal?  @db.Decimal(20, 8)
+  outcomePrice               Decimal?  @db.Decimal(20, 8)
+  plannedBid                 Decimal?  @db.Decimal(20, 8)
+  plannedAsk                 Decimal?  @db.Decimal(20, 8)
+  quoteOffsetTicks           Int       @default(0)
+  size                       Decimal?  @db.Decimal(36, 6)
+  mintQuantity               Decimal?  @db.Decimal(36, 6)
+  canceledOrderCount         Int       @default(0)
+  restingOrderCount          Int       @default(0)
+  quoteRouteStatus           Int?
+  shiftedBidWorseThanProvider Boolean  @default(false)
+  shiftedAskWorseThanProvider Boolean  @default(false)
+  quoteRouteShowsBid         Boolean   @default(false)
+  quoteRouteShowsAsk         Boolean   @default(false)
+  snapshotFresh              Boolean   @default(false)
+  installedOsService         Boolean   @default(false)
+  metadata                   Json
+  createdAt                  DateTime  @default(now())
+  updatedAt                  DateTime  @updatedAt
+
+  @@index([marketId, startedAt])
+  @@index([outcomeId, startedAt])
+  @@index([eventSlug, startedAt])
+  @@index([status, startedAt])
+}
+
 model ReferenceOrderbookDepthSnapshot {
   id               String   @id @default(uuid())
   marketId         String
