@@ -14240,3 +14240,23 @@ Known limitations:
 - Known limitations:
   - This is a local runner with heartbeat evidence, not an installed official-result service.
   - Multi-event result queue and operator UI remain future work.
+
+# Cycle ONEEVENTRESULTPOLLERPROCESS - Background Result Poller Process Manager
+
+- Feature/page worked on: backend official-result polling runtime ownership.
+- Frontend components touched: none. This is backend/runtime proof only and does not change mobile UI.
+- Important functions/services touched:
+  - `scripts/manage_holiwyn_one_event_result_poller.ps1`
+  - `scripts/prove_holiwyn_one_event_continuous_result_poller.ps1`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `package.json` scripts `mobile:one-event-result-poller:process`, `mobile:one-event-result-poller:status`, `mobile:one-event-result-poller:stop`, and `mobile:one-event-result-poller:continuous-proof`
+- User/runtime interactions supported:
+  - Operator can start, check, and stop the dedicated result poller as a hidden local background process.
+  - Proof verifies heartbeat progress while the process is running and then stops the process tree cleanly.
+- State transitions:
+  - Process state is written under `.runtime/one-event-result-poller`.
+  - Result polling remains provider-shaped replay/no-quota by default.
+  - Active tester market remains unexecuted; settlement scheduling is dry-run unless explicit approved/closed execution controls are used.
+- Known limitations:
+  - This is a local background process manager, not an installed OS service.
+  - Live result ingestion still requires explicit `THE_ODDS_API_KEY` in the process environment plus quota caps.

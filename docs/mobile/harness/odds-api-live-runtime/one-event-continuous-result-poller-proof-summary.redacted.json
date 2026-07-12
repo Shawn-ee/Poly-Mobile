@@ -1,0 +1,301 @@
+{
+    "generatedAt":  "2026-07-12T13:22:43.0977111Z",
+    "scope":  "holiwyn-one-event-continuous-result-poller-proof",
+    "pass":  true,
+    "startedAt":  "2026-07-12T13:22:33.8312286Z",
+    "completedAt":  "2026-07-12T13:22:43.0987138Z",
+    "settings":  {
+                     "eventSlug":  "odds-api-single-soccer-test",
+                     "intervalSeconds":  1,
+                     "requiredIterations":  1,
+                     "providerQuotaSpent":  false
+                 },
+    "proof":  {
+                  "heartbeatPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-poller-heartbeat.redacted.json",
+                  "pollerSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-poller-summary.redacted.json",
+                  "processSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-poller-process-summary.redacted.json",
+                  "completedIterations":  2,
+                  "heartbeatIterations":  1,
+                  "processRunningDuringProof":  true,
+                  "processStoppedAfterProof":  true,
+                  "nodeProcessCountBefore":  21,
+                  "nodeProcessCountAfter":  21
+              },
+    "runtimeTruth":  {
+                         "backgroundPollerRan":  true,
+                         "stoppedCleanly":  true,
+                         "resultPollingWhileProcessRuns":  true,
+                         "settlementSchedulerWhileProcessRuns":  true,
+                         "providerQuotaUsed":  false,
+                         "activeTesterSettlementExecution":  false,
+                         "installedOsService":  false,
+                         "fakeTokenOnly":  true
+                     },
+    "commands":  [
+                     {
+                         "label":  "pre-stop-existing-result-poller",
+                         "command":  "npm run mobile:one-event-result-poller:stop",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T13:22:33.8455218Z",
+                         "finishedAt":  "2026-07-12T13:22:34.9419566Z",
+                         "outputTail":  [
+                                            "                         \"localBackgroundProcessRunning\":  false,",
+                                            "                         \"installedOsService\":  false,",
+                                            "                         \"resultPollingMode\":  \"provider-shaped replay polling; no provider quota spent\",",
+                                            "                         \"resultSettlementMode\":  \"trusted result scheduler dry-run while poller runs\",",
+                                            "                         \"activeTesterSettlementExecution\":  false,",
+                                            "                         \"fakeTokenOnly\":  true",
+                                            "                     },",
+                                            "    \"gaps\":  {",
+                                            "                 \"p0\":  [",
+                                            "",
+                                            "                        ],",
+                                            "                 \"p1\":  [",
+                                            "                            \"This is a local background process manager, not an installed OS service.\",",
+                                            "                            \"Live official-result ingestion remains opt-in and quota-capped; unconfirmed active-event settlement execution remains disabled.\"",
+                                            "                        ],",
+                                            "                 \"p2\":  [",
+                                            "                            \"Multi-event result queue supervision remains future work.\"",
+                                            "                        ]",
+                                            "             }",
+                                            "}"
+                                        ]
+                     },
+                     {
+                         "label":  "start-background-result-poller",
+                         "command":  "npm run mobile:one-event-result-poller:process -- -Action start -EventSlug odds-api-single-soccer-test -Continuous -MaxIterations 0 -IntervalSeconds 1 -Force",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T13:22:34.9490678Z",
+                         "finishedAt":  "2026-07-12T13:22:35.8407899Z",
+                         "outputTail":  [
+                                            "                         \"localBackgroundProcessRunning\":  true,",
+                                            "                         \"installedOsService\":  false,",
+                                            "                         \"resultPollingMode\":  \"provider-shaped replay polling; no provider quota spent\",",
+                                            "                         \"resultSettlementMode\":  \"trusted result scheduler dry-run while poller runs\",",
+                                            "                         \"activeTesterSettlementExecution\":  false,",
+                                            "                         \"fakeTokenOnly\":  true",
+                                            "                     },",
+                                            "    \"gaps\":  {",
+                                            "                 \"p0\":  [",
+                                            "",
+                                            "                        ],",
+                                            "                 \"p1\":  [",
+                                            "                            \"This is a local background process manager, not an installed OS service.\",",
+                                            "                            \"Live official-result ingestion remains opt-in and quota-capped; unconfirmed active-event settlement execution remains disabled.\"",
+                                            "                        ],",
+                                            "                 \"p2\":  [",
+                                            "                            \"Multi-event result queue supervision remains future work.\"",
+                                            "                        ]",
+                                            "             }",
+                                            "}"
+                                        ]
+                     },
+                     {
+                         "label":  "status-while-result-poller-running",
+                         "command":  "npm run mobile:one-event-result-poller:status",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T13:22:39.8860347Z",
+                         "finishedAt":  "2026-07-12T13:22:40.9546530Z",
+                         "outputTail":  [
+                                            "                         \"localBackgroundProcessRunning\":  true,",
+                                            "                         \"installedOsService\":  false,",
+                                            "                         \"resultPollingMode\":  \"provider-shaped replay polling; no provider quota spent\",",
+                                            "                         \"resultSettlementMode\":  \"trusted result scheduler dry-run while poller runs\",",
+                                            "                         \"activeTesterSettlementExecution\":  false,",
+                                            "                         \"fakeTokenOnly\":  true",
+                                            "                     },",
+                                            "    \"gaps\":  {",
+                                            "                 \"p0\":  [",
+                                            "",
+                                            "                        ],",
+                                            "                 \"p1\":  [",
+                                            "                            \"This is a local background process manager, not an installed OS service.\",",
+                                            "                            \"Live official-result ingestion remains opt-in and quota-capped; unconfirmed active-event settlement execution remains disabled.\"",
+                                            "                        ],",
+                                            "                 \"p2\":  [",
+                                            "                            \"Multi-event result queue supervision remains future work.\"",
+                                            "                        ]",
+                                            "             }",
+                                            "}"
+                                        ]
+                     },
+                     {
+                         "label":  "stop-background-result-poller",
+                         "command":  "npm run mobile:one-event-result-poller:stop",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T13:22:40.9576525Z",
+                         "finishedAt":  "2026-07-12T13:22:43.0845628Z",
+                         "outputTail":  [
+                                            "                         \"localBackgroundProcessRunning\":  false,",
+                                            "                         \"installedOsService\":  false,",
+                                            "                         \"resultPollingMode\":  \"provider-shaped replay polling; no provider quota spent\",",
+                                            "                         \"resultSettlementMode\":  \"trusted result scheduler dry-run while poller runs\",",
+                                            "                         \"activeTesterSettlementExecution\":  false,",
+                                            "                         \"fakeTokenOnly\":  true",
+                                            "                     },",
+                                            "    \"gaps\":  {",
+                                            "                 \"p0\":  [",
+                                            "",
+                                            "                        ],",
+                                            "                 \"p1\":  [",
+                                            "                            \"This is a local background process manager, not an installed OS service.\",",
+                                            "                            \"Live official-result ingestion remains opt-in and quota-capped; unconfirmed active-event settlement execution remains disabled.\"",
+                                            "                        ],",
+                                            "                 \"p2\":  [",
+                                            "                            \"Multi-event result queue supervision remains future work.\"",
+                                            "                        ]",
+                                            "             }",
+                                            "}"
+                                        ]
+                     }
+                 ],
+    "processSummary":  {
+                           "generatedAt":  "2026-07-12T13:22:43.0432488Z",
+                           "scope":  "holiwyn-one-event-result-poller-process",
+                           "pass":  true,
+                           "operation":  {
+                                             "action":  "stop",
+                                             "startedAt":  "2026-07-12T13:22:41.7394006Z",
+                                             "force":  false,
+                                             "result":  "stopped",
+                                             "pid":  40980
+                                         },
+                           "process":  {
+                                           "statePath":  ".runtime/one-event-result-poller/result-poller-process-state.json",
+                                           "stdout":  ".runtime/one-event-result-poller/result-poller.out.log",
+                                           "stderr":  ".runtime/one-event-result-poller/result-poller.err.log",
+                                           "before":  {
+                                                          "known":  true,
+                                                          "pid":  40980,
+                                                          "running":  true,
+                                                          "process":  {
+                                                                          "id":  40980,
+                                                                          "processName":  "powershell",
+                                                                          "startTime":  "2026-07-12T13:22:35.7641382Z",
+                                                                          "hasExited":  false
+                                                                      },
+                                                          "state":  {
+                                                                        "pid":  40980,
+                                                                        "startedAt":  "2026-07-12T13:22:35.7714976Z",
+                                                                        "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0",
+                                                                        "eventSlug":  "odds-api-single-soccer-test",
+                                                                        "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+                                                                        "continuous":  true,
+                                                                        "maxIterations":  0,
+                                                                        "intervalSeconds":  1,
+                                                                        "runLiveResultIngestion":  false,
+                                                                        "resultIngestionEveryIterations":  0,
+                                                                        "maxLiveResultIngestionRuns":  0,
+                                                                        "maxCreditsPerResultIngestion":  0,
+                                                                        "runApprovedResultSettlement":  false,
+                                                                        "resultSettlementApprovalPath":  null,
+                                                                        "stdout":  ".runtime/one-event-result-poller/result-poller.out.log",
+                                                                        "stderr":  ".runtime/one-event-result-poller/result-poller.err.log"
+                                                                    }
+                                                      },
+                                           "after":  {
+                                                         "known":  true,
+                                                         "pid":  40980,
+                                                         "running":  false,
+                                                         "process":  null,
+                                                         "state":  {
+                                                                       "pid":  40980,
+                                                                       "startedAt":  "2026-07-12T13:22:35.7714976Z",
+                                                                       "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0",
+                                                                       "eventSlug":  "odds-api-single-soccer-test",
+                                                                       "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+                                                                       "continuous":  true,
+                                                                       "maxIterations":  0,
+                                                                       "intervalSeconds":  1,
+                                                                       "runLiveResultIngestion":  false,
+                                                                       "resultIngestionEveryIterations":  0,
+                                                                       "maxLiveResultIngestionRuns":  0,
+                                                                       "maxCreditsPerResultIngestion":  0,
+                                                                       "runApprovedResultSettlement":  false,
+                                                                       "resultSettlementApprovalPath":  null,
+                                                                       "stdout":  ".runtime/one-event-result-poller/result-poller.out.log",
+                                                                       "stderr":  ".runtime/one-event-result-poller/result-poller.err.log"
+                                                                   }
+                                                     }
+                                       },
+                           "poller":  {
+                                          "summaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-poller-summary.redacted.json",
+                                          "digest":  {
+                                                         "generatedAt":  "2026-07-12T13:04:58.9120684Z",
+                                                         "pass":  true,
+                                                         "startedAt":  "2026-07-12T13:04:52.9089302Z",
+                                                         "completedAt":  "2026-07-12T13:04:58.9120684Z",
+                                                         "eventSlug":  "odds-api-single-soccer-test",
+                                                         "settings":  {
+                                                                          "continuous":  false,
+                                                                          "maxIterations":  2,
+                                                                          "completedIterations":  2,
+                                                                          "intervalSeconds":  0,
+                                                                          "runLiveResultIngestion":  false,
+                                                                          "liveResultIngestionRunsCompleted":  0,
+                                                                          "resultIngestionEveryIterations":  0,
+                                                                          "maxLiveResultIngestionRuns":  0,
+                                                                          "maxCreditsPerResultIngestion":  0,
+                                                                          "maxCreditsAcrossResultIngestion":  0,
+                                                                          "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+                                                                          "resultSettlementApprovedMode":  false,
+                                                                          "resultSettlementApprovalPath":  null,
+                                                                          "defaultModeUsesQuota":  false
+                                                                      },
+                                                         "runtimeTruth":  {
+                                                                              "resultPollingRunnerAvailable":  true,
+                                                                              "resultPollingContinuousWhileRunnerRuns":  true,
+                                                                              "resultPollingMode":  "provider-shaped replay polling; no provider quota spent",
+                                                                              "liveResultIngestionQuotaCappedWhileRunning":  false,
+                                                                              "settlementSchedulerContinuousWhileRunnerRuns":  true,
+                                                                              "settlementSchedulerMode":  "trusted result scheduler dry-run while poller runs",
+                                                                              "activeTesterSettlementExecution":  false,
+                                                                              "installedOsService":  false,
+                                                                              "fakeTokenOnly":  true
+                                                                          },
+                                                         "gapCounts":  {
+                                                                           "p0":  0,
+                                                                           "p1":  1,
+                                                                           "p2":  1
+                                                                       }
+                                                     }
+                                      },
+                           "runtimeTruth":  {
+                                                "backgroundProcessManagerAvailable":  true,
+                                                "localBackgroundProcessRunning":  false,
+                                                "installedOsService":  false,
+                                                "resultPollingMode":  "provider-shaped replay polling; no provider quota spent",
+                                                "resultSettlementMode":  "trusted result scheduler dry-run while poller runs",
+                                                "activeTesterSettlementExecution":  false,
+                                                "fakeTokenOnly":  true
+                                            },
+                           "gaps":  {
+                                        "p0":  [
+
+                                               ],
+                                        "p1":  [
+                                                   "This is a local background process manager, not an installed OS service.",
+                                                   "Live official-result ingestion remains opt-in and quota-capped; unconfirmed active-event settlement execution remains disabled."
+                                               ],
+                                        "p2":  [
+                                                   "Multi-event result queue supervision remains future work."
+                                               ]
+                                    }
+                       },
+    "gaps":  {
+                 "p0":  [
+
+                        ],
+                 "p1":  [
+                            "This proves a local background result-poller process, not an installed OS service.",
+                            "Default proof uses provider-shaped replay evidence and spends no Odds API quota; live score polling remains explicit and quota-capped."
+                        ],
+                 "p2":  [
+                            "Multi-event official-result queue supervision remains future work."
+                        ]
+             }
+}

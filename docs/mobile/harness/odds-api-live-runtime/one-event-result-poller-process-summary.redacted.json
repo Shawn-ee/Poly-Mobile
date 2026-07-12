@@ -1,0 +1,127 @@
+{
+    "generatedAt":  "2026-07-12T13:22:59.7216132Z",
+    "scope":  "holiwyn-one-event-result-poller-process",
+    "pass":  true,
+    "operation":  {
+                      "action":  "status",
+                      "startedAt":  "2026-07-12T13:22:59.6793209Z",
+                      "force":  false,
+                      "result":  "not_running"
+                  },
+    "process":  {
+                    "statePath":  ".runtime/one-event-result-poller/result-poller-process-state.json",
+                    "stdout":  ".runtime/one-event-result-poller/result-poller.out.log",
+                    "stderr":  ".runtime/one-event-result-poller/result-poller.err.log",
+                    "before":  {
+                                   "known":  true,
+                                   "pid":  40980,
+                                   "running":  false,
+                                   "process":  null,
+                                   "state":  {
+                                                 "pid":  40980,
+                                                 "startedAt":  "2026-07-12T13:22:35.7714976Z",
+                                                 "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0",
+                                                 "eventSlug":  "odds-api-single-soccer-test",
+                                                 "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+                                                 "continuous":  true,
+                                                 "maxIterations":  0,
+                                                 "intervalSeconds":  1,
+                                                 "runLiveResultIngestion":  false,
+                                                 "resultIngestionEveryIterations":  0,
+                                                 "maxLiveResultIngestionRuns":  0,
+                                                 "maxCreditsPerResultIngestion":  0,
+                                                 "runApprovedResultSettlement":  false,
+                                                 "resultSettlementApprovalPath":  null,
+                                                 "stdout":  ".runtime/one-event-result-poller/result-poller.out.log",
+                                                 "stderr":  ".runtime/one-event-result-poller/result-poller.err.log"
+                                             }
+                               },
+                    "after":  {
+                                  "known":  true,
+                                  "pid":  40980,
+                                  "running":  false,
+                                  "process":  null,
+                                  "state":  {
+                                                "pid":  40980,
+                                                "startedAt":  "2026-07-12T13:22:35.7714976Z",
+                                                "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0",
+                                                "eventSlug":  "odds-api-single-soccer-test",
+                                                "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+                                                "continuous":  true,
+                                                "maxIterations":  0,
+                                                "intervalSeconds":  1,
+                                                "runLiveResultIngestion":  false,
+                                                "resultIngestionEveryIterations":  0,
+                                                "maxLiveResultIngestionRuns":  0,
+                                                "maxCreditsPerResultIngestion":  0,
+                                                "runApprovedResultSettlement":  false,
+                                                "resultSettlementApprovalPath":  null,
+                                                "stdout":  ".runtime/one-event-result-poller/result-poller.out.log",
+                                                "stderr":  ".runtime/one-event-result-poller/result-poller.err.log"
+                                            }
+                              }
+                },
+    "poller":  {
+                   "summaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-poller-summary.redacted.json",
+                   "digest":  {
+                                  "generatedAt":  "2026-07-12T13:04:58.9120684Z",
+                                  "pass":  true,
+                                  "startedAt":  "2026-07-12T13:04:52.9089302Z",
+                                  "completedAt":  "2026-07-12T13:04:58.9120684Z",
+                                  "eventSlug":  "odds-api-single-soccer-test",
+                                  "settings":  {
+                                                   "continuous":  false,
+                                                   "maxIterations":  2,
+                                                   "completedIterations":  2,
+                                                   "intervalSeconds":  0,
+                                                   "runLiveResultIngestion":  false,
+                                                   "liveResultIngestionRunsCompleted":  0,
+                                                   "resultIngestionEveryIterations":  0,
+                                                   "maxLiveResultIngestionRuns":  0,
+                                                   "maxCreditsPerResultIngestion":  0,
+                                                   "maxCreditsAcrossResultIngestion":  0,
+                                                   "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+                                                   "resultSettlementApprovedMode":  false,
+                                                   "resultSettlementApprovalPath":  null,
+                                                   "defaultModeUsesQuota":  false
+                                               },
+                                  "runtimeTruth":  {
+                                                       "resultPollingRunnerAvailable":  true,
+                                                       "resultPollingContinuousWhileRunnerRuns":  true,
+                                                       "resultPollingMode":  "provider-shaped replay polling; no provider quota spent",
+                                                       "liveResultIngestionQuotaCappedWhileRunning":  false,
+                                                       "settlementSchedulerContinuousWhileRunnerRuns":  true,
+                                                       "settlementSchedulerMode":  "trusted result scheduler dry-run while poller runs",
+                                                       "activeTesterSettlementExecution":  false,
+                                                       "installedOsService":  false,
+                                                       "fakeTokenOnly":  true
+                                                   },
+                                  "gapCounts":  {
+                                                    "p0":  0,
+                                                    "p1":  1,
+                                                    "p2":  1
+                                                }
+                              }
+               },
+    "runtimeTruth":  {
+                         "backgroundProcessManagerAvailable":  true,
+                         "localBackgroundProcessRunning":  false,
+                         "installedOsService":  false,
+                         "resultPollingMode":  "provider-shaped replay polling; no provider quota spent",
+                         "resultSettlementMode":  "trusted result scheduler dry-run while poller runs",
+                         "activeTesterSettlementExecution":  false,
+                         "fakeTokenOnly":  true
+                     },
+    "gaps":  {
+                 "p0":  [
+
+                        ],
+                 "p1":  [
+                            "This is a local background process manager, not an installed OS service.",
+                            "Live official-result ingestion remains opt-in and quota-capped; unconfirmed active-event settlement execution remains disabled."
+                        ],
+                 "p2":  [
+                            "Multi-event result queue supervision remains future work."
+                        ]
+             }
+}

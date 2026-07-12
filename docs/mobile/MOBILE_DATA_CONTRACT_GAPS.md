@@ -10189,3 +10189,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable official result table, multi-event result queue, installed polling service ownership, provider finality policy across postponed/abandoned games, and operator approval UI remain P1/P2.
 - Temporary mock/static data: default proof uses the redacted Odds API scores-shaped fixture and spends no provider quota. Live mode is explicit and quota-capped.
 - Future migration concern: the trusted result JSON file is a local internal contract. A production path should persist official result evidence and approvals in backend storage before executing settlement.
+
+## Cycle ONEEVENTRESULTPOLLERPROCESS - Background Result Poller Process Manager
+
+- Closed or narrowed: the dedicated result poller is no longer only a foreground command. It now has local start/status/stop process management and a continuous proof that verifies heartbeat progress plus clean process-tree shutdown.
+- Route mismatch: none. No mobile API or backend HTTP route changed; this wraps the existing result poller command.
+- Fields Holiwyn still needs but backend/provider does not fully provide: installed service ownership, durable official result records, multi-event result queue, and production approval storage remain P1/P2.
+- Temporary mock/static data: the proof uses the existing redacted provider-shaped score fixture and spends no provider quota. Live score mode is still explicit and quota-capped.
+- Future migration concern: `.runtime` process state is local operator state, not durable backend truth. Production official-result polling should persist provider result evidence, poll state, approvals, and audit records in backend storage.
