@@ -180,6 +180,11 @@ async function main() {
     localRuntimeStatus.body && typeof localRuntimeStatus.body === "object"
       ? (localRuntimeStatus.body as JsonObject)
       : null;
+  const localResultReview = await fetchJson(`${baseUrl}/api/internal/live-runtime/result-review`);
+  const localResultReviewBody =
+    localResultReview.body && typeof localResultReview.body === "object"
+      ? (localResultReview.body as JsonObject)
+      : null;
   const liveEventStart = text(getPath(entries.liveProof, ["event", "commenceTime"]));
   const eventUpcoming = liveEventStart ? Date.parse(liveEventStart) > Date.now() : false;
   const quotaUsed = numberValue(getPath(entries.liveProof, ["provider", "quota", "totalLastCost"]));
@@ -296,6 +301,34 @@ async function main() {
       evidence: [`${baseUrl}/api/internal/live-runtime/status`],
       notes:
         "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, latest-run-vs-proven-capability separation, and read-only supervisor/result-poller process state. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
+    }),
+    requirement({
+      id: "local-result-review-api-ready",
+      priority: "P0",
+      requirement:
+        "Local result-review API exposes redacted canonical provider-result, settlement-preflight, and settlement-approval evidence without spending quota or exposing exact settlement confirmation.",
+      achieved:
+        !!localResultReviewBody &&
+        localResultReview.ok === true &&
+        getPath(localResultReviewBody, ["status"]) === "ready" &&
+        getPath(localResultReviewBody, ["providerQuotaUsed"]) === false &&
+        getPath(localResultReviewBody, ["runtimeTruth", "readOnlyRoute"]) === true &&
+        getPath(localResultReviewBody, ["runtimeTruth", "devOnlyRoute"]) === true &&
+        getPath(localResultReviewBody, ["runtimeTruth", "canonicalProviderResultAuditAvailable"]) === true &&
+        getPath(localResultReviewBody, ["runtimeTruth", "canonicalSettlementPreflightAuditAvailable"]) === true &&
+        getPath(localResultReviewBody, ["runtimeTruth", "canonicalSettlementApprovalAuditAvailable"]) === true &&
+        getPath(localResultReviewBody, ["runtimeTruth", "activeTesterSettlementExecutionAttempted"]) === false &&
+        getPath(localResultReviewBody, ["runtimeTruth", "providerQuotaUsed"]) === false &&
+        getPath(localResultReviewBody, ["executionDecision", "exactConfirmationRequiredKnown"]) === true &&
+        getPath(localResultReviewBody, ["executionDecision", "exactConfirmationRedacted"]) === true &&
+        getPath(localResultReviewBody, ["executionDecision", "activeMarketExecutionAttemptedByThisRoute"]) === false &&
+        Array.isArray(getPath(localResultReviewBody, ["gaps", "p0"])) &&
+        (getPath(localResultReviewBody, ["gaps", "p0"]) as unknown[]).length === 0 &&
+        !JSON.stringify(localResultReviewBody).includes("SETTLE_FROM_RESULT:") &&
+        !JSON.stringify(localResultReviewBody).includes("THE_ODDS_API_KEY"),
+      evidence: [`${baseUrl}/api/internal/live-runtime/result-review`],
+      notes:
+        "This narrows the official-result operator-review gap by exposing the canonical result/preflight/approval trail through a dev-only backend route instead of only shell proof scripts. It is read-only and intentionally redacts exact execution confirmation strings.",
     }),
     requirement({
       id: "quota-policy",
@@ -778,6 +811,7 @@ async function main() {
     health,
     quote,
     localRuntimeStatus,
+    localResultReview,
     artifactAgesHours: Object.fromEntries(
       Object.entries(entries).map(([key, value]) => [key, ageHours(value?.generatedAt)]),
     ),

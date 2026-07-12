@@ -10420,3 +10420,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable service heartbeats, official result records, durable settlement approvals, and production service ownership remain P1/P2. Windows task registration is still permission-blocked in this process context.
 - Temporary mock/static data: none added. Existing redacted trusted-result and active approval proof files are reused, no provider quota is spent, and no persistent scheduled task is left installed.
 - Future migration concern: production should replace local JSON approval paths and Windows task profile strings with durable approval records plus a real service supervisor.
+
+## Cycle LIVERUNTIMERESULTREVIEWAPI - Local Result Review API
+
+- Closed or narrowed: canonical provider-result, settlement-preflight, settlement-approval, and settlement-execution evidence can now be inspected through `GET /api/internal/live-runtime/result-review` instead of only local proof scripts/JSON files.
+- Route mismatch: this is intentionally a local/dev-only internal route, not a public mobile API and not a settlement execution route. It is disabled in production or when `HOLIWYN_DISABLE_INTERNAL_RUNTIME_STATUS=1`.
+- Fields Holiwyn still needs but backend/provider does not fully provide: first-class official-result records, durable approval records, operator review UI, installed official-result polling, multi-event result queue, and production execution ownership remain P1/P2.
+- Temporary mock/static data: none added. The route reads `CanonicalEvent` and `Market` rows, reuses the phase-audit selected market, spends no provider quota, and redacts exact confirmation strings.
+- Future migration concern: canonical events are sufficient for local internal audit visibility, but production settlement should promote official result evidence, review decisions, approval state, and execution state into durable first-class models with authenticated operator controls.

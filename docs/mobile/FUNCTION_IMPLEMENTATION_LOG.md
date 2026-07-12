@@ -14636,3 +14636,14 @@ Known limitations:
 - API/data dependencies: no new HTTP route. The generated task calls the existing internal tester runtime manager, which then uses already documented supervisor, result-poller, trusted-result, and approval-file paths.
 - Proof needed: scheduled-task plan, scheduled-task install/uninstall proof, local runtime launch profile, one-event phase audit, live-runtime completion audit, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: actual scheduled-task registration is still blocked by Windows permissions in the current process context, so unattended service ownership remains P1. This cycle narrows the gap by proving the command profile is now complete and safe.
+
+## Cycle LIVERUNTIMERESULTREVIEWAPI - Local Result Review API
+
+- Feature/page worked on: backend local internal official-result/operator-review surface.
+- Frontend components touched: none.
+- Important functions/services touched: added `src/server/services/liveRuntimeResultReview.ts`, `src/app/api/internal/live-runtime/result-review/route.ts`, `src/__tests__/liveRuntimeResultReview.service.test.ts`, `src/__tests__/internal.live-runtime.result-review.route.test.ts`, and updated `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/result-review` to inspect the selected one-event runtime's canonical provider-result, trusted-result settlement preflight, approval, and execution audit evidence without shelling into proof scripts. The route reports current settlement eligibility and deliberately redacts the exact settlement confirmation string.
+- State transitions: none. This is a read-only dev-only route. It does not call The Odds API, spend quota, start loops, place orders, mutate markets, approve settlement, or execute settlement.
+- API/data dependencies: reads the latest phase-audit selected market from `live-runtime-phase-audit-summary.redacted.json`, then reads `Market` and `CanonicalEvent` rows for `provider.result.ingested`, `settlement.trusted_result.preflight`, `settlement.trusted_result.approved`, and `settlement.trusted_result.executed`.
+- Proof needed: focused route/service Jest tests, direct local backend route proof, `npm run mobile:one-event-phase-audit`, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this narrows operator-review visibility but does not install official-result polling, create a first-class official-result table, create an approval UI, or execute active-event settlement.
