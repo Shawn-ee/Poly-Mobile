@@ -2,6 +2,20 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle PROVIDERREFRESHLOOP - Provider Refresh Loop Status Contract
+
+- Feature/page worked on: Local internal live-provider refresh status/control plane.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/manage_holiwyn_one_event_live_supervisor.ps1`
+  - `src/server/services/liveRuntimeStatus.ts`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `scripts/report_holiwyn_live_runtime_completion_audit.ts`
+  - `src/__tests__/liveRuntimeStatus.service.test.ts`
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/status` and read `providerRefreshLoop`, which reports whether live provider refresh is currently enabled, whether it is only configured from the last supervisor state, cadence settings, quota caps, latest durable `ProviderRefreshRun`, mobile freshness thresholds, and P0/P1 gaps.
+- State transitions: none. This cycle is read-only for backend runtime status. It does not start the supervisor, call The Odds API, spend quota, mutate markets, place orders, approve settlement, or execute settlement.
+- Known limitations: live provider refresh still runs only when the local supervisor is explicitly started with `RunProviderProof` and `THE_ODDS_API_KEY` in the process environment. This is not an installed daemon.
+
 ## Cycle SERVICEOWNERSHIP - Live Runtime Service Ownership Status
 
 - Feature/page worked on: Local internal live-runtime status/control plane.

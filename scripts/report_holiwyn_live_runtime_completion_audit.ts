@@ -356,6 +356,102 @@ async function main() {
       Array.isArray(getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "serviceOwnership", "p0"])) &&
       (getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "serviceOwnership", "p0"]) as unknown[]).length ===
         0,
+    providerRefreshLoopKnown:
+      pass(entries.phaseAudit) &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshLoop", "checked"]) === true &&
+      typeof getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshLoop", "mode"]) ===
+        "string" &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "providerRefreshLoop",
+        "statusRouteSpendsProviderQuota",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "providerRefreshLoop",
+        "requiresExplicitRunProviderProofFlag",
+      ]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshLoop", "requiresTheOddsApiKey"]) ===
+        true &&
+      typeof getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "providerRefreshLoop",
+        "cadence",
+        "everyIterations",
+      ]) === "number" &&
+      typeof getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "providerRefreshLoop",
+        "cadence",
+        "maxRuns",
+      ]) === "number" &&
+      typeof getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "providerRefreshLoop",
+        "cadence",
+        "refreshIterationsPerRun",
+      ]) === "number" &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "providerRefreshLoop",
+        "quotaCaps",
+        "latestRunWithinBudget",
+      ]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshLoop", "latestRun", "recorded"]) ===
+        true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshLoop", "latestRun", "status"]) ===
+        "passed" &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "providerRefreshLoop",
+        "latestRun",
+        "staleBeforeRefresh",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "providerRefreshLoop",
+        "latestRun",
+        "readyAfterRefresh",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "providerRefreshLoop",
+        "latestRun",
+        "quotaProtected",
+      ]) === true &&
+      typeof getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "providerRefreshLoop",
+        "mobileFreshness",
+        "status",
+      ]) === "string" &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "providerRefreshLoop",
+        "mobileFreshness",
+        "refreshDueSeconds",
+      ]) === 60 &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "providerRefreshLoop",
+        "mobileFreshness",
+        "staleAfterSeconds",
+      ]) === 90 &&
+      Array.isArray(getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshLoop", "p0"])) &&
+      (getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshLoop", "p0"]) as unknown[]).length ===
+        0,
     currentRuntimeWarmStateProofKnown:
       pass(entries.currentRuntimeStateProof) &&
       getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "warmNoQuotaRuntimeObserved"]) === true &&
@@ -437,10 +533,16 @@ async function main() {
         checks.liveProviderProofPass &&
         checks.oddsRefreshModeKnown &&
         checks.oddsRefreshCadenceKnown &&
-        checks.durableProviderRefreshRunKnown,
+        checks.durableProviderRefreshRunKnown &&
+        checks.providerRefreshLoopKnown,
       answer:
-        "Cached runtime checks use replay/stored proof without quota; live provider refresh is explicit, key-gated, quota-capped, and persisted as ProviderRefreshRun evidence.",
-      evidence: [PATHS.runtimeStatus, PATHS.liveProviderProof, "localRuntimeStatus.providerRefreshRuns"],
+        "Cached runtime checks use replay/stored proof without quota; live provider refresh is explicit, key-gated, quota-capped, persisted as ProviderRefreshRun evidence, and exposed through a machine-readable providerRefreshLoop policy/status block.",
+      evidence: [
+        PATHS.runtimeStatus,
+        PATHS.liveProviderProof,
+        "localRuntimeStatus.providerRefreshRuns",
+        "localRuntimeStatus.providerRefreshLoop",
+      ],
     },
     quotaProtection: {
       pass: checks.providerQuotaKnownAndProtected,

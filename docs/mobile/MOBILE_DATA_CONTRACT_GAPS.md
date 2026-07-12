@@ -1,5 +1,13 @@
 # Mobile Data Contract Gaps
 
+## Cycle PROVIDERREFRESHLOOP - Provider Refresh Loop Status Contract
+
+- Closed or narrowed: `/api/internal/live-runtime/status` now exposes a machine-readable `providerRefreshLoop` contract for live-provider refresh cadence, quota caps, latest durable provider refresh proof, and mobile freshness thresholds.
+- Backend-supported fields used: supervisor process-state file fields, `ProviderRefreshRun`, selected-market `ReferenceQuoteSnapshot` freshness, and existing local runtime proof artifacts.
+- Route mismatch: none for public mobile APIs. This remains a local/dev-only status route and does not call the provider or refresh data.
+- Temporary mock/static data: none added.
+- Future migration concern: production still needs durable provider polling jobs, service ownership, retry/alerting, and quota accounting. The current contract reports local foreground supervisor capability only.
+
 ## Cycle SERVICEOWNERSHIP - Live Runtime Service Ownership Status
 
 - Closed or narrowed: `/api/internal/live-runtime/status` now exposes a single `serviceOwnership` contract instead of requiring operators to infer service ownership from `runtimeCapabilities`, `managedProcesses`, `runtimeHeartbeats`, and `runtimeRuns`.

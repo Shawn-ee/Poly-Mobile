@@ -96,6 +96,11 @@ async function getManagedProcessStatus(params: {
   const continuous = booleanValue(state?.continuous);
   const runProviderProof = booleanValue(state?.runProviderProof);
   const runLiveResultIngestion = booleanValue(state?.runLiveResultIngestion);
+  const providerProofEveryIterations = numberValue(state?.providerProofEveryIterations);
+  const maxProviderProofRuns = numberValue(state?.maxProviderProofRuns);
+  const refreshIterations = numberValue(state?.refreshIterations);
+  const maxCreditsPerProviderProof = numberValue(state?.maxCreditsPerProviderProof);
+  const minRemaining = numberValue(state?.minRemaining);
 
   return {
     kind: params.kind,
@@ -108,6 +113,11 @@ async function getManagedProcessStatus(params: {
     continuous,
     maxIterations: numberValue(state?.maxIterations),
     intervalSeconds: numberValue(state?.intervalSeconds),
+    providerProofEveryIterations,
+    maxProviderProofRuns,
+    refreshIterations,
+    maxCreditsPerProviderProof,
+    minRemaining,
     usesProviderQuota:
       params.kind === "supervisor"
         ? runProviderProof === true || runLiveResultIngestion === true
@@ -149,6 +159,11 @@ async function upsertRuntimeHeartbeat(processStatus: Awaited<ReturnType<typeof g
       known: processStatus.known,
       maxIterations: processStatus.maxIterations,
       intervalSeconds: processStatus.intervalSeconds,
+      providerProofEveryIterations: processStatus.providerProofEveryIterations,
+      maxProviderProofRuns: processStatus.maxProviderProofRuns,
+      refreshIterations: processStatus.refreshIterations,
+      maxCreditsPerProviderProof: processStatus.maxCreditsPerProviderProof,
+      minRemaining: processStatus.minRemaining,
       modes: processStatus.modes,
     },
   });
@@ -754,6 +769,81 @@ function buildServiceOwnership(params: {
   };
 }
 
+function buildProviderRefreshLoop(params: {
+  supervisorProcess: Awaited<ReturnType<typeof getManagedProcessStatus>>;
+  providerRefreshRun: Awaited<ReturnType<typeof getLatestProviderRefreshRun>>;
+  providerSnapshots: Awaited<ReturnType<typeof getProviderSnapshotFreshness>>;
+}) {
+  const enabledNow = params.supervisorProcess.running && params.supervisorProcess.modes.providerProof === true;
+  const configuredInLastState = params.supervisorProcess.modes.providerProof === true;
+  const everyIterations = params.supervisorProcess.providerProofEveryIterations ?? 0;
+  const maxRuns = params.supervisorProcess.maxProviderProofRuns ?? 0;
+  const refreshIterations = params.supervisorProcess.refreshIterations ?? 0;
+  const maxCreditsPerRun = params.supervisorProcess.maxCreditsPerProviderProof ?? 0;
+  const minRemaining = params.supervisorProcess.minRemaining ?? 0;
+
+  return {
+    checked: true,
+    providerSource: params.providerRefreshRun?.providerSource ?? "the-odds-api",
+    mode: enabledNow
+      ? "quota_capped_live_refresh_loop_running"
+      : configuredInLastState
+        ? "quota_capped_live_refresh_configured_but_stopped"
+        : "cached_no_quota_by_default",
+    enabledNow,
+    configuredInLastSupervisorState: configuredInLastState,
+    statusRouteSpendsProviderQuota: false,
+    requiresExplicitRunProviderProofFlag: true,
+    requiresTheOddsApiKey: true,
+    cadence: {
+      everyIterations,
+      maxRuns,
+      refreshIterationsPerRun: refreshIterations,
+      supervisorIntervalSeconds: params.supervisorProcess.intervalSeconds,
+      continuous: params.supervisorProcess.continuous === true,
+    },
+    quotaCaps: {
+      maxCreditsPerRun,
+      maxCreditsAcrossConfiguredRuns: maxCreditsPerRun > 0 && maxRuns > 0 ? maxCreditsPerRun * maxRuns : 0,
+      minRemaining,
+      latestRunQuotaCost: params.providerRefreshRun?.quotaCost ?? null,
+      latestRunRequestsRemaining: params.providerRefreshRun?.requestsRemaining ?? null,
+      latestRunWithinBudget:
+        params.providerRefreshRun != null &&
+        typeof params.providerRefreshRun.maxCredits === "number" &&
+        params.providerRefreshRun.quotaCost <= params.providerRefreshRun.maxCredits,
+    },
+    latestRun: {
+      recorded: params.providerRefreshRun != null,
+      status: params.providerRefreshRun?.status ?? null,
+      mode: params.providerRefreshRun?.mode ?? null,
+      startedAt: params.providerRefreshRun?.startedAt ?? null,
+      finishedAt: params.providerRefreshRun?.finishedAt ?? null,
+      eventSlug: params.providerRefreshRun?.eventSlug ?? null,
+      selectedMarketId: params.providerRefreshRun?.selectedMarketId ?? null,
+      staleBeforeRefresh: params.providerRefreshRun?.staleBeforeRefresh === true,
+      readyAfterRefresh: params.providerRefreshRun?.readyAfterRefresh === true,
+      quotaProtected: params.providerRefreshRun?.metadata.quotaProtected === true,
+      providerCallCount: params.providerRefreshRun?.providerCallCount ?? null,
+    },
+    mobileFreshness: {
+      status: params.providerSnapshots.mobileLifecycleStatus,
+      mobileRouteFresh: params.providerSnapshots.mobileRouteFresh,
+      latestSnapshotAgeSeconds: params.providerSnapshots.latestAgeSeconds,
+      refreshDueSeconds: MOBILE_REFRESH_DUE_SECONDS,
+      staleAfterSeconds: MOBILE_STALE_AFTER_SECONDS,
+      nextProviderAction: params.providerSnapshots.nextProviderAction,
+    },
+    p0: params.providerRefreshRun == null ? ["provider_refresh_run_missing"] : [],
+    p1: [
+      ...(enabledNow ? [] : ["live_provider_refresh_loop_not_running_now"]),
+      ...(params.providerSnapshots.mobileRouteFresh ? [] : ["mobile_visible_provider_snapshots_not_fresh"]),
+    ],
+    note:
+      "This summarizes the local live-provider refresh loop contract. Cached internal testing spends no quota by default; live refresh runs only when the supervisor is started with RunProviderProof and THE_ODDS_API_KEY in the process environment.",
+  };
+}
+
 export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?: boolean } = {}) {
   const [
     completionAudit,
@@ -1115,6 +1205,11 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     marketMakerQuoteRun,
     currentRuntimeState,
   });
+  const providerRefreshLoop = buildProviderRefreshLoop({
+    supervisorProcess,
+    providerRefreshRun,
+    providerSnapshots,
+  });
 
   return {
     generatedAt: new Date().toISOString(),
@@ -1191,6 +1286,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     },
     checks: completionAudit?.checks ?? null,
     serviceOwnership,
+    providerRefreshLoop,
     gaps: {
       p0: statusP0Gaps,
       p1: asStringArray(getPath(completionAudit, ["gaps", "p1"])),

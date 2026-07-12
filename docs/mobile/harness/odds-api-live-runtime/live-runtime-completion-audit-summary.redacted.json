@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T23:05:43.229Z",
+  "generatedAt": "2026-07-12T23:22:29.072Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -28,7 +28,7 @@
     "freshness": {
       "liveProofAgeHours": 14.63,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 7.76,
+      "watchdogAgeHours": 8.04,
       "maxWatchdogAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -101,6 +101,7 @@
     "durableRuntimeRunsKnown": true,
     "currentRuntimeStateKnown": true,
     "serviceOwnershipKnown": true,
+    "providerRefreshLoopKnown": true,
     "currentRuntimeWarmStateProofKnown": true,
     "oneCommandRuntimeLoopProofKnown": true,
     "mobileS23EndToEndTradeProofPass": true,
@@ -121,11 +122,12 @@
     },
     "oddsRefreshMode": {
       "pass": true,
-      "answer": "Cached runtime checks use replay/stored proof without quota; live provider refresh is explicit, key-gated, quota-capped, and persisted as ProviderRefreshRun evidence.",
+      "answer": "Cached runtime checks use replay/stored proof without quota; live provider refresh is explicit, key-gated, quota-capped, persisted as ProviderRefreshRun evidence, and exposed through a machine-readable providerRefreshLoop policy/status block.",
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
-        "localRuntimeStatus.providerRefreshRuns"
+        "localRuntimeStatus.providerRefreshRuns",
+        "localRuntimeStatus.providerRefreshLoop"
       ]
     },
     "quotaProtection": {

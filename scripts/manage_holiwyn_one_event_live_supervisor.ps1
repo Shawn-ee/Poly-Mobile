@@ -251,6 +251,9 @@ if ($Action -eq "start") {
       resultSettlementApprovalPath = if ($RunApprovedResultSettlement) { $ResultSettlementApprovalPath } else { $null }
       providerProofEveryIterations = if ($RunProviderProof) { $ProviderProofEveryIterations } else { 0 }
       maxProviderProofRuns = if ($RunProviderProof) { $MaxProviderProofRuns } else { 0 }
+      refreshIterations = if ($RunProviderProof) { $RefreshIterations } else { 0 }
+      maxCreditsPerProviderProof = if ($RunProviderProof) { $MaxCreditsPerProviderProof } else { 0 }
+      minRemaining = if ($RunProviderProof) { $MinRemaining } else { 0 }
       stdout = ConvertTo-RepoPath $StdoutPath
       stderr = ConvertTo-RepoPath $StderrPath
     }

@@ -1075,6 +1075,51 @@ describe("live runtime status service", () => {
     expect(status.serviceOwnership.localLaunch.manualForegroundCommands).toContain(
       "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
     );
+    expect(status.providerRefreshLoop).toMatchObject({
+      checked: true,
+      providerSource: "the-odds-api",
+      mode: "cached_no_quota_by_default",
+      enabledNow: false,
+      configuredInLastSupervisorState: false,
+      statusRouteSpendsProviderQuota: false,
+      requiresExplicitRunProviderProofFlag: true,
+      requiresTheOddsApiKey: true,
+      cadence: {
+        everyIterations: 0,
+        maxRuns: 0,
+        refreshIterationsPerRun: 0,
+        supervisorIntervalSeconds: 2,
+        continuous: true,
+      },
+      quotaCaps: {
+        maxCreditsPerRun: 0,
+        maxCreditsAcrossConfiguredRuns: 0,
+        minRemaining: 0,
+        latestRunQuotaCost: 13,
+        latestRunRequestsRemaining: "459",
+        latestRunWithinBudget: true,
+      },
+      latestRun: {
+        recorded: true,
+        status: "passed",
+        mode: "bounded-live-provider-proof",
+        eventSlug: "odds-api-single-soccer-test",
+        selectedMarketId: "phase-market",
+        staleBeforeRefresh: true,
+        readyAfterRefresh: true,
+        quotaProtected: true,
+        providerCallCount: 4,
+      },
+      mobileFreshness: {
+        status: "ready",
+        mobileRouteFresh: true,
+        refreshDueSeconds: 60,
+        staleAfterSeconds: 90,
+        nextProviderAction: "none",
+      },
+      p0: [],
+      p1: expect.arrayContaining(["live_provider_refresh_loop_not_running_now"]),
+    });
     expect(status.managedProcesses).toMatchObject({
       anyLoopRunning: false,
       quotaSpendingLoopRunning: false,
