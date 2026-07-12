@@ -51,6 +51,8 @@ const PATHS = {
     "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-preflight-summary.redacted.json",
   settlementAuditEvent:
     "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-audit-event-summary.redacted.json",
+  resultReviewTrail:
+    "docs/mobile/harness/odds-api-live-runtime/one-event-result-review-trail-summary.redacted.json",
   approvedAutoSettlement:
     "docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-summary.redacted.json",
   supervisorApprovedSettlement:
@@ -342,10 +344,14 @@ async function main() {
         pass(entries.resultSettlementRun) &&
         pass(entries.settlementPreflight) &&
         pass(entries.settlementAuditEvent) &&
+        pass(entries.resultReviewTrail) &&
         getPath(entries.settlementPreflight, ["executionPreflight", "dryRunPreviewPass"]) === true &&
         getPath(entries.settlementPreflight, ["executionPreflight", "executionRequiresMarketStatus"]) === "CLOSED" &&
         getPath(entries.settlementAuditEvent, ["checks", "canonicalEventTypeMatches"]) === true &&
-        getPath(entries.settlementAuditEvent, ["checks", "marketNotMutatedByProof"]) === true,
+        getPath(entries.settlementAuditEvent, ["checks", "marketNotMutatedByProof"]) === true &&
+        getPath(entries.resultReviewTrail, ["checks", "providerResultAuditEventFound"]) === true &&
+        getPath(entries.resultReviewTrail, ["checks", "settlementPreflightAuditEventFound"]) === true &&
+        getPath(entries.resultReviewTrail, ["runtimeTruth", "activeTesterSettlementExecution"]) === false,
       evidence: [
         PATHS.settlementReadiness,
         PATHS.manualSettlement,
@@ -358,10 +364,11 @@ async function main() {
         PATHS.resultSettlementRun,
         PATHS.settlementPreflight,
         PATHS.settlementAuditEvent,
+        PATHS.resultReviewTrail,
         "docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md",
       ],
       notes:
-        "Provider-shaped score ingestion can produce trusted result JSON in replay mode, write durable canonical result-ingestion audit evidence, and the local scheduler can dry-run that result. A dedicated local result poller now repeats ingestion plus settlement scheduling and has start/status/stop background process proof. Settlement preflight reports current execution eligibility and blockers. Trusted-result execution is blocked unless the market is CLOSED. Explicit operator/proof runs can write durable canonical settlement audit events. Live score ingestion is explicit and quota-guarded through the command, poller, or supervisor controls; installed unattended official result polling remains P1.",
+        "Provider-shaped score ingestion can produce trusted result JSON in replay mode, write durable canonical result-ingestion audit evidence, and the local scheduler can dry-run that result. A dedicated local result poller now repeats ingestion plus settlement scheduling and has start/status/stop background process proof. Settlement preflight reports current execution eligibility and blockers. Trusted-result execution is blocked unless the market is CLOSED. Explicit operator/proof runs can write durable canonical settlement audit events, and the result review trail report stitches provider result evidence plus settlement preflight evidence into one read-only operator view. Live score ingestion is explicit and quota-guarded through the command, poller, or supervisor controls; installed unattended official result polling remains P1.",
     }),
     requirement({
       id: "settlement-execution-disposable",
@@ -524,6 +531,7 @@ async function main() {
         PATHS.resultSettlementRun,
         PATHS.settlementPreflight,
         PATHS.settlementAuditEvent,
+        PATHS.resultReviewTrail,
         PATHS.approvedAutoSettlement,
         PATHS.supervisorApprovedSettlement,
       ],
