@@ -26,6 +26,8 @@ const PATHS = {
     "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-install-uninstall-summary.redacted.json",
   localRuntimeLaunchProfile:
     "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
+  liveRuntimeCompletionAudit:
+    "docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json",
   continuousSupervisor: "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json",
   staleGuardProof: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json",
   staleGuardRun: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-run-summary.redacted.json",
@@ -585,6 +587,24 @@ async function main() {
       ],
       notes:
         "This consolidates manual foreground, user Startup fallback, scheduled-task blocker, and live-provider opt-in commands into one no-quota operator profile.",
+    }),
+    requirement({
+      id: "live-runtime-completion-truth",
+      priority: "P0",
+      requirement:
+        "One read-only audit directly answers live-runtime completion questions: maker continuity, live/replay odds mode, refresh cadence, quota, stale handling, lifecycle, and S23 trade proof.",
+      achieved:
+        pass(entries.liveRuntimeCompletionAudit) &&
+        getPath(entries.liveRuntimeCompletionAudit, ["runtimeTruth", "phaseCompleteForLocalInternalRuntime"]) === true &&
+        getPath(entries.liveRuntimeCompletionAudit, ["runtimeTruth", "fullProductionRuntimeComplete"]) === false &&
+        getPath(entries.liveRuntimeCompletionAudit, ["checks", "marketMakerContinuityKnown"]) === true &&
+        getPath(entries.liveRuntimeCompletionAudit, ["checks", "oddsRefreshModeKnown"]) === true &&
+        getPath(entries.liveRuntimeCompletionAudit, ["checks", "providerQuotaKnownAndProtected"]) === true &&
+        getPath(entries.liveRuntimeCompletionAudit, ["checks", "staleHandlingKnown"]) === true &&
+        getPath(entries.liveRuntimeCompletionAudit, ["checks", "mobileS23EndToEndTradeProofPass"]) === true,
+      evidence: [PATHS.liveRuntimeCompletionAudit],
+      notes:
+        "This keeps the phase-completion answers in one artifact while preserving P1 truth: no installed production service and no unguarded official-result auto-settlement.",
     }),
     requirement({
       id: "unattended-service",

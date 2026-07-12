@@ -1,0 +1,77 @@
+{
+  "generatedAt": "2026-07-12T15:06:44.635Z",
+  "scope": "holiwyn-live-runtime-completion-audit",
+  "pass": true,
+  "providerQuotaUsed": false,
+  "event": {
+    "title": "Spain vs. France",
+    "providerEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
+    "sportKey": "soccer_fifa_world_cup",
+    "commenceTime": "2026-07-14T19:00:00Z",
+    "localSlug": "odds-api-single-soccer-test"
+  },
+  "answers": {
+    "marketMakerContinuous": "Foreground/local supervisor proof shows maker reseeding while the supervisor runs; no installed OS service exists.",
+    "oddsRefreshLiveOrReplay": "Cached runtime checks use replay/stored proof and no quota. Live provider refresh is proven, explicit, and requires live-provider flags plus THE_ODDS_API_KEY.",
+    "oddsRefreshCadence": {
+      "liveProofIterations": 2,
+      "liveProofIntervalMs": 0,
+      "supervisorProviderProofCadence": "Only when -RunProviderProof is passed; capped by MaxProviderProofRuns and ProviderProofEveryIterations."
+    },
+    "quotaProtection": {
+      "lastLiveProofCost": 13,
+      "requestsRemaining": "459",
+      "maxCredits": 16,
+      "minRemaining": 2,
+      "oneEventOnly": true
+    },
+    "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
+    "lifecycle": "Open/paused/closed are proven on the active event lifecycle controls; settlement mechanics and trusted-result scheduler execution are proven on disposable/clone markets while active event remains guarded.",
+    "mobileTrading": "S23 proof covers Home -> Event Detail -> line market -> ticket -> buy -> Portfolio -> cashout/sell -> History for the provider-backed event.",
+    "activeSettlement": "wait_for_or_apply_market_close_before_execution"
+  },
+  "runtimeTruth": {
+    "phaseCompleteForLocalInternalRuntime": true,
+    "fullProductionRuntimeComplete": false,
+    "installedUnattendedService": false,
+    "providerQuotaUsedByThisAudit": false,
+    "activeTesterSettlementExecutionAttempted": false,
+    "s23ProofDevice": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp"
+  },
+  "sourceEvidence": {
+    "runtimeStatus": "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
+    "liveProviderProof": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
+    "liveReadiness": "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json",
+    "localRuntimeLaunchProfile": "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
+    "staleGuardProof": "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json",
+    "staleGuardRun": "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-run-summary.redacted.json",
+    "lifecycleMatrix": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-matrix-summary.redacted.json",
+    "activeSettlementReadiness": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json",
+    "s23Visible": "docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json"
+  },
+  "checks": {
+    "backendRuntimeStatusPass": true,
+    "oneRealUpcomingEventKnown": true,
+    "liveProviderProofPass": true,
+    "oddsRefreshModeKnown": true,
+    "oddsRefreshCadenceKnown": true,
+    "providerQuotaKnownAndProtected": true,
+    "marketMakerContinuityKnown": true,
+    "makerQuoteAvailable": true,
+    "staleHandlingKnown": true,
+    "lifecycleOpenPausedClosedSettledKnown": true,
+    "activeSettlementDecisionKnown": true,
+    "mobileS23EndToEndTradeProofPass": true,
+    "launchProfileKnown": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "Installed unattended provider/maker/lifecycle service ownership remains open.",
+      "Production official-result auto-settlement remains open; active-event execution is still guarded by CLOSED market status and exact confirmation."
+    ],
+    "p2": [
+      "Multi-event provider polling and production dashboard/operator UI remain future work."
+    ]
+  }
+}
