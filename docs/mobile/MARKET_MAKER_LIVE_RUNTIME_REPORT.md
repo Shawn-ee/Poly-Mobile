@@ -40,10 +40,12 @@ For a selected binary sportsbook market:
 - Restart/runtime command: `npm run mobile:one-event-live-runtime`
 - Runtime command with maker liquidity: `npm run mobile:one-event-live-runtime -- -SeedMaker`
 - Maker seed command: `npm run mobile:one-event-live-maker-seed`
+- Lifecycle controls command: `npm run mobile:one-event-lifecycle-proof`
 - Live provider wrapper command: `npm run mobile:one-event-live-runtime:provider`
 - Summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`
 - Runtime launch summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json`
 - Maker seed summary: `docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json`
+- Lifecycle controls summary: `docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json`
 - Result: pass.
 - Provider event: Spain vs. France, `soccer_fifa_world_cup`, starts `2026-07-14T19:00:00Z`.
 - Selected local market: Total Goals 2.5.

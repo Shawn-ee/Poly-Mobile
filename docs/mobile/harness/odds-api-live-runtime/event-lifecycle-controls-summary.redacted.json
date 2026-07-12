@@ -1,0 +1,211 @@
+{
+  "pass": true,
+  "generatedAt": "2026-07-12T07:42:34.350Z",
+  "scope": "odds-api-one-event-lifecycle-controls",
+  "event": {
+    "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
+    "slug": "odds-api-single-soccer-test",
+    "title": "Spain vs. France",
+    "startTime": "2026-07-14T19:00:00.000Z"
+  },
+  "selectedMarket": {
+    "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "slug": "odds-api-single-soccer-test-totals-7439c2d603",
+    "title": "Spain vs. France: Total Goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "line": "2.5",
+    "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+    "outcomeName": "Over +2.5"
+  },
+  "originalMarket": {
+    "status": "LIVE",
+    "isListed": true,
+    "closeTime": null,
+    "resolvedOutcomeId": null,
+    "settlementStatus": null
+  },
+  "restoredMarket": {
+    "status": "LIVE",
+    "isListed": true,
+    "resolvedOutcomeId": null,
+    "settlementStatus": null
+  },
+  "lifecycle": {
+    "open": {
+      "marketStatus": "LIVE",
+      "orderStatus": 200,
+      "orderBody": {
+        "order": {
+          "id": "4aab20c5-1cc0-4407-ae65-7695a0bd6574",
+          "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+          "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+          "side": "BUY",
+          "price": "0.01",
+          "size": "1",
+          "remaining": "1",
+          "reservedNotional": "0.01",
+          "status": "OPEN",
+          "type": "LIMIT",
+          "clientOrderId": null,
+          "apiKeyId": "pk_live_bd3ac2f72e135bc6",
+          "contractSide": "YES",
+          "selection": null
+        },
+        "fills": [],
+        "balance": {
+          "availableUSDC": "999.99",
+          "lockedUSDC": "0.01"
+        },
+        "position": null
+      },
+      "cleanup": {
+        "id": "4aab20c5-1cc0-4407-ae65-7695a0bd6574",
+        "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+        "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+        "side": "BUY",
+        "price": "0.01",
+        "size": "1",
+        "remaining": "1",
+        "status": "CANCELED"
+      }
+    },
+    "paused": {
+      "marketStatus": "PAUSED",
+      "orderStatus": 409,
+      "orderBody": {
+        "error": {
+          "code": "MARKET_UNAVAILABLE",
+          "message": "Market is not open for trading."
+        }
+      }
+    },
+    "closed": {
+      "marketStatus": "CLOSED",
+      "orderStatus": 409,
+      "orderBody": {
+        "error": {
+          "code": "MARKET_UNAVAILABLE",
+          "message": "Market is not open for trading."
+        }
+      }
+    },
+    "settlementPreview": {
+      "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+      "marketStatus": "CLOSED",
+      "winningOutcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+      "winningOutcomeName": "Over +2.5",
+      "collateralUSDC": "1300",
+      "totalShares": "2600",
+      "totalWinningShares": "1300",
+      "totalPayout": "1300",
+      "payoutConservationPass": true,
+      "blockers": [],
+      "openOrderCleanup": {
+        "openOrderCount": 5,
+        "buyOrderLockedUSDCToRelease": "130.5989",
+        "sellOrderSharesToRelease": "356.9"
+      },
+      "payouts": [
+        {
+          "positionId": "e6d1b57f-bed1-4528-bf87-d1cadd9076c7",
+          "userId": "04ab2ae2-af2e-4082-b47e-102b333222ad",
+          "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+          "shares": "200",
+          "amountPreview": "200"
+        },
+        {
+          "positionId": "089acbf1-04bf-45a2-9360-2f660750f979",
+          "userId": "7f527756-3a90-43e4-a13d-4528e774d061",
+          "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+          "shares": "200",
+          "amountPreview": "200"
+        },
+        {
+          "positionId": "ff0db00f-fa05-47a6-9c45-f8bbdc2d5b4f",
+          "userId": "80f63deb-dca2-4a2b-b1d2-3873b8f62a1c",
+          "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+          "shares": "40.97",
+          "amountPreview": "40.97"
+        },
+        {
+          "positionId": "ab7d3049-5f08-4ad3-aca6-bc86ca4fca2f",
+          "userId": "84811d9e-ecc6-4236-9b0e-a27e0ea724be",
+          "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+          "shares": "200",
+          "amountPreview": "200"
+        },
+        {
+          "positionId": "ae8c09b2-7337-4146-beff-7065f7e18913",
+          "userId": "bb6fdd86-242f-4303-9bdb-cd000ccfa228",
+          "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+          "shares": "200",
+          "amountPreview": "200"
+        },
+        {
+          "positionId": "c1063dfe-ac14-423a-9f5d-2df86c100de8",
+          "userId": "bc391efb-f0c5-42d4-bf85-d496a53a1dac",
+          "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+          "shares": "2.13",
+          "amountPreview": "2.13"
+        },
+        {
+          "positionId": "eeb9a644-72bc-4d09-b5bc-6fa899906910",
+          "userId": "bf2e6274-2c89-4840-b31c-a08226424071",
+          "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+          "shares": "106.9",
+          "amountPreview": "106.9"
+        },
+        {
+          "positionId": "b77cfa82-3d30-443c-9c7c-51ab0d552d5a",
+          "userId": "f74c7e83-1933-4fca-9cb3-59f3c219a177",
+          "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+          "shares": "200",
+          "amountPreview": "200"
+        },
+        {
+          "positionId": "10335c36-b4e5-48ea-8388-895752444150",
+          "userId": "ffcad0c8-eda7-4fee-98bf-fc983c3d9761",
+          "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+          "shares": "150",
+          "amountPreview": "150"
+        }
+      ],
+      "loserPositionCount": 7,
+      "mutation": "none"
+    },
+    "settlementExecution": {
+      "automaticOfficialResultSettlement": false,
+      "manualService": "previewOrderbookSettlement / resolveOrderbookMarket",
+      "adminRoute": "POST /api/admin/markets/resolve",
+      "executedInThisProof": false,
+      "reason": "This proof verifies readiness and non-mutating preview only; official soccer result ingestion is not wired."
+    }
+  },
+  "routes": {
+    "health": "GET /api/health",
+    "order": "POST /api/orders",
+    "quote": "GET /api/markets/:marketId/quote",
+    "adminPause": "POST /api/admin/markets/pause",
+    "adminResolve": "POST /api/admin/markets/resolve"
+  },
+  "checks": {
+    "backendHealth": true,
+    "liveOrderAccepted": true,
+    "liveOrderCanceledOrFilled": true,
+    "pausedOrderRejected": true,
+    "closedOrderRejected": true,
+    "settlementPreviewNonMutating": true,
+    "marketRestored": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "automatic event close/suspend scheduler is not complete; lifecycle control is manual/local",
+      "automatic official-result settlement is not complete; settlement preview/manual resolve service exists"
+    ],
+    "p2": [
+      "operator UI for lifecycle controls remains future admin/internal tooling"
+    ]
+  }
+}

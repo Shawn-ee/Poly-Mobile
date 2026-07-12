@@ -20,8 +20,9 @@
 5. Confirm the proof reports provider refresh `ready`.
 6. Confirm local shifted maker quotes exist.
 7. Open mobile and trade the selected event with fake tokens.
-8. If provider goes stale or event starts, pause/close the market manually.
-9. Do not settle automatically unless official result input and admin review are added.
+8. To prove local lifecycle controls, run `npm run mobile:one-event-lifecycle-proof`.
+9. If provider goes stale or event starts, pause/close the market manually.
+10. Do not settle automatically unless official result input and admin review are added.
 
 ## Completion Boundary
 
@@ -32,9 +33,11 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - Summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`
 - Restart/runtime launch summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json`
 - Maker seed summary: `docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json`
+- Lifecycle controls summary: `docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json`
 - S23 visible proof: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`
 - Open state: selected market was `LIVE`, visible on Home, visible on Event Detail, and accepted fake-token orders.
 - Stale state: proof forced selected quote snapshots stale and Event Detail reported stale provider quote lifecycle.
 - Refreshed state: live Odds API refresh restored selected quote lifecycle to ready.
 - Closed state: temporarily setting the selected market to `CLOSED` caused order placement to fail with `MARKET_UNAVAILABLE`.
-- Settlement readiness: manual resolve route exists, but automatic soccer result ingestion and automatic settlement remain P1.
+- Lifecycle controls proof: selected market accepted an order in `LIVE`, rejected orders in `PAUSED` and `CLOSED`, produced a non-mutating settlement preview, and restored the market to its original state.
+- Settlement readiness: manual settlement preview/resolve service exists, but automatic soccer result ingestion and automatic settlement remain P1.

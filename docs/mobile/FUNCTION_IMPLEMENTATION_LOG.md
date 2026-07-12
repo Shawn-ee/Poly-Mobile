@@ -13635,3 +13635,28 @@ Known limitations:
   - This is a reusable one-shot local maker seed, not a continuous unattended daemon.
   - Provider refresh remains bounded proof mode unless the explicit provider command is run.
   - Multi-market inventory-aware quoting remains future P2.
+
+# Cycle ONELIFECYCLE - One-Event Lifecycle Controls Proof
+
+- Feature/page worked on: backend lifecycle behavior for the selected one-event sportsbook runtime.
+- Frontend components touched: none. This is a backend/runtime proof for trading availability states that the mobile app consumes through existing routes.
+- Important functions/services touched:
+  - `scripts/prove_odds_api_event_lifecycle_controls.ts`
+  - `package.json` script `mobile:one-event-lifecycle-proof`
+  - `POST /api/orders`
+  - `cancelOrderAndUnlock`
+  - `previewOrderbookSettlement`
+  - `Market.status`
+- User interactions supported:
+  - Mobile can trade when the selected market is `LIVE`.
+  - Mobile/order route receives `MARKET_UNAVAILABLE` when the selected market is `PAUSED` or `CLOSED`.
+  - Operators have a repeatable local proof that the selected market can be restored after lifecycle testing.
+- State transitions:
+  - Original market state -> `LIVE` -> accepted low-price test order -> canceled cleanup.
+  - `LIVE` -> `PAUSED` -> order rejected with `MARKET_UNAVAILABLE`.
+  - `PAUSED` -> `CLOSED` -> order rejected with `MARKET_UNAVAILABLE`.
+  - Settlement preview runs with `mutation=none`.
+  - Market is restored to the original state.
+- Known limitations:
+  - This proves local/manual lifecycle controls, not an automatic event-start scheduler.
+  - Settlement execution is intentionally not run; automatic official result ingestion and settlement remain P1.
