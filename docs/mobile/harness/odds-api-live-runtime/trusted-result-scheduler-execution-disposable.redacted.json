@@ -1,7 +1,7 @@
 {
   "source": "trusted-local-fixture",
-  "sourceEventId": "scheduler-settlement-proof-97df442677",
-  "eventSlug": "scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677",
+  "sourceEventId": "scheduler-settlement-proof-9a36abb822",
+  "eventSlug": "scheduler-settlement-proof-trusted-result-scheduler-execution-9a36abb822",
   "eventTitle": "Scheduler Settlement Proof trusted-result-scheduler-execution",
   "status": "final",
   "period": "full_time",
@@ -11,5 +11,5 @@
   "awayScore": 1,
   "advanceTeam": "Proof Home",
   "evidenceUrl": null,
-  "recordedAt": "2026-07-12T11:29:24.090Z"
+  "recordedAt": "2026-07-12T11:52:35.306Z"
 }

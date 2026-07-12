@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-12T11:52:39.068Z",
+  "generatedAt": "2026-07-12T11:52:37.215Z",
   "scope": "odds-api-one-event-result-settlement",
-  "pass": true,
+  "pass": false,
   "mode": "execute",
   "resultInput": {
     "path": "docs/mobile/harness/odds-api-live-runtime/trusted-result-scheduler-execution-disposable.redacted.json",
@@ -32,7 +32,7 @@
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "statusBefore": "CLOSED",
+    "statusBefore": "LIVE",
     "resolvedOutcomeIdBefore": null,
     "collateralUSDCBefore": "5"
   },
@@ -50,7 +50,7 @@
     "code": "OVER"
   },
   "preview": {
-    "marketStatus": "CLOSED",
+    "marketStatus": "LIVE",
     "totalShares": "10",
     "totalWinningShares": "5",
     "totalPayout": "5",
@@ -67,35 +67,30 @@
     "mutation": "none"
   },
   "execution": {
-    "attempted": true,
-    "ok": true,
-    "result": {
-      "marketId": "fc3cdb87-17d8-40f2-b6dd-49ec1ee62397",
-      "winningOutcomeId": "26a1c3ac-9cec-4c6a-8be1-085f89e9dc79",
-      "totalPoolPayout": "5",
-      "totalWinningShares": "5",
-      "payoutCount": 2,
-      "collateralDebitedUSDC": "5"
-    }
+    "attempted": false,
+    "reason": "market_must_be_closed_before_result_settlement:LIVE",
+    "requiredConfirm": "SETTLE_FROM_RESULT:fc3cdb87-17d8-40f2-b6dd-49ec1ee62397:26a1c3ac-9cec-4c6a-8be1-085f89e9dc79:b7890cc74cc7"
   },
   "postMarket": {
-    "status": "RESOLVED",
-    "resolvedOutcomeId": "26a1c3ac-9cec-4c6a-8be1-085f89e9dc79",
-    "settlementStatus": "closed_for_trusted_result_scheduler_execution_proof",
-    "collateralUSDC": "0"
+    "status": "LIVE",
+    "resolvedOutcomeId": null,
+    "settlementStatus": null,
+    "collateralUSDC": "5"
   },
   "controls": {
     "dryRunIsDefault": true,
     "executeRequiresFlag": "--execute",
     "executeRequiresConfirm": "SETTLE_FROM_RESULT:fc3cdb87-17d8-40f2-b6dd-49ec1ee62397:26a1c3ac-9cec-4c6a-8be1-085f89e9dc79:b7890cc74cc7",
     "executeRequiresMarketStatus": "CLOSED",
-    "currentMarketStatus": "CLOSED",
+    "currentMarketStatus": "LIVE",
     "resultDigest": "b7890cc74cc7",
     "actorUserId": "holiwyn-local-result-settlement-operator",
     "providerStatus": "fixture_only"
   },
   "gaps": {
-    "p0": [],
+    "p0": [
+      "result_settlement_command_failed"
+    ],
     "p1": [
       "Provider-shaped result ingestion can produce trusted result JSON, but this command intentionally consumes only reviewed trusted result JSON.",
       "Automatic unattended result polling and settlement execution are not installed."

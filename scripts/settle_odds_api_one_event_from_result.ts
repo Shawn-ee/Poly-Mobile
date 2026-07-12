@@ -266,6 +266,12 @@ async function main() {
       reason: "confirmation_mismatch",
       requiredConfirm: confirmation.phrase,
     };
+  } else if (selected.market.status !== "CLOSED") {
+    execution = {
+      attempted: false,
+      reason: `market_must_be_closed_before_result_settlement:${selected.market.status}`,
+      requiredConfirm: confirmation.phrase,
+    };
   } else {
     try {
       const settle = await resolveOrderbookMarket({
@@ -380,6 +386,8 @@ async function main() {
       dryRunIsDefault: true,
       executeRequiresFlag: "--execute",
       executeRequiresConfirm: confirmation.phrase,
+      executeRequiresMarketStatus: "CLOSED",
+      currentMarketStatus: selected.market.status,
       resultDigest: confirmation.digest,
       actorUserId,
       providerStatus: result.source === "trusted-local-fixture" ? "fixture_only" : "trusted_external_input",

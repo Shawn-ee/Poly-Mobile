@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-07-12T11:29:26.358Z",
+  "generatedAt": "2026-07-12T11:52:39.096Z",
   "scope": "odds-api-one-event-result-settlement-scheduler-run",
   "pass": true,
-  "eventSlug": "scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677",
+  "eventSlug": "scheduler-settlement-proof-trusted-result-scheduler-execution-9a36abb822",
   "resultInput": {
     "path": "docs/mobile/harness/odds-api-live-runtime/trusted-result-scheduler-execution-disposable.redacted.json",
     "source": "trusted-local-fixture",
-    "sourceEventId": "scheduler-settlement-proof-97df442677",
-    "eventSlug": "scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677",
+    "sourceEventId": "scheduler-settlement-proof-9a36abb822",
+    "eventSlug": "scheduler-settlement-proof-trusted-result-scheduler-execution-9a36abb822",
     "status": "final",
     "homeScore": 2,
     "awayScore": 1,
-    "recordedAt": "2026-07-12T11:29:24.090Z"
+    "recordedAt": "2026-07-12T11:52:35.306Z"
   },
   "action": "execute_settlement",
   "executionRequested": true,
@@ -21,20 +21,20 @@
     "args": [
       "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
       "scripts/settle_odds_api_one_event_from_result.ts",
-      "--eventSlug=scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677",
+      "--eventSlug=scheduler-settlement-proof-trusted-result-scheduler-execution-9a36abb822",
       "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-scheduler-execution-disposable.redacted.json",
       "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-result.redacted.json",
       "--execute",
-      "--confirm=SETTLE_FROM_RESULT:511bf7e6-c52e-4ab9-a119-eaac0e71a74f:4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a:766f39cd3bf9"
+      "--confirm=SETTLE_FROM_RESULT:fc3cdb87-17d8-40f2-b6dd-49ec1ee62397:26a1c3ac-9cec-4c6a-8be1-085f89e9dc79:b7890cc74cc7"
     ],
     "exitCode": 0,
     "stdoutTail": [
-      "  },",
-      "  \"controls\": {",
       "    \"dryRunIsDefault\": true,",
       "    \"executeRequiresFlag\": \"--execute\",",
-      "    \"executeRequiresConfirm\": \"SETTLE_FROM_RESULT:511bf7e6-c52e-4ab9-a119-eaac0e71a74f:4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a:766f39cd3bf9\",",
-      "    \"resultDigest\": \"766f39cd3bf9\",",
+      "    \"executeRequiresConfirm\": \"SETTLE_FROM_RESULT:fc3cdb87-17d8-40f2-b6dd-49ec1ee62397:26a1c3ac-9cec-4c6a-8be1-085f89e9dc79:b7890cc74cc7\",",
+      "    \"executeRequiresMarketStatus\": \"CLOSED\",",
+      "    \"currentMarketStatus\": \"CLOSED\",",
+      "    \"resultDigest\": \"b7890cc74cc7\",",
       "    \"actorUserId\": \"holiwyn-local-result-settlement-operator\",",
       "    \"providerStatus\": \"fixture_only\"",
       "  },",
@@ -57,25 +57,25 @@
     "pass": true,
     "mode": "execute",
     "selectedMarket": {
-      "id": "511bf7e6-c52e-4ab9-a119-eaac0e71a74f",
-      "slug": "scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677-total-goals-2-5",
+      "id": "fc3cdb87-17d8-40f2-b6dd-49ec1ee62397",
+      "slug": "scheduler-settlement-proof-trusted-result-scheduler-execution-9a36abb822-total-goals-2-5",
       "title": "Scheduler Settlement Proof trusted-result-scheduler-execution: Total Goals 2.5",
       "marketType": "total_goals",
       "marketGroupKey": "totals",
       "line": "2.5",
-      "statusBefore": "LIVE",
+      "statusBefore": "CLOSED",
       "resolvedOutcomeIdBefore": null,
       "collateralUSDCBefore": "5"
     },
     "winningOutcome": {
-      "id": "4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a",
+      "id": "26a1c3ac-9cec-4c6a-8be1-085f89e9dc79",
       "name": "Over +2.5",
       "label": "Over 2.5 total goals",
       "side": "over",
       "code": "OVER"
     },
     "preview": {
-      "marketStatus": "LIVE",
+      "marketStatus": "CLOSED",
       "totalShares": "10",
       "totalWinningShares": "5",
       "totalPayout": "5",
@@ -95,8 +95,8 @@
       "attempted": true,
       "ok": true,
       "result": {
-        "marketId": "511bf7e6-c52e-4ab9-a119-eaac0e71a74f",
-        "winningOutcomeId": "4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a",
+        "marketId": "fc3cdb87-17d8-40f2-b6dd-49ec1ee62397",
+        "winningOutcomeId": "26a1c3ac-9cec-4c6a-8be1-085f89e9dc79",
         "totalPoolPayout": "5",
         "totalWinningShares": "5",
         "payoutCount": 2,
@@ -106,8 +106,10 @@
     "controls": {
       "dryRunIsDefault": true,
       "executeRequiresFlag": "--execute",
-      "executeRequiresConfirm": "SETTLE_FROM_RESULT:511bf7e6-c52e-4ab9-a119-eaac0e71a74f:4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a:766f39cd3bf9",
-      "resultDigest": "766f39cd3bf9",
+      "executeRequiresConfirm": "SETTLE_FROM_RESULT:fc3cdb87-17d8-40f2-b6dd-49ec1ee62397:26a1c3ac-9cec-4c6a-8be1-085f89e9dc79:b7890cc74cc7",
+      "executeRequiresMarketStatus": "CLOSED",
+      "currentMarketStatus": "CLOSED",
+      "resultDigest": "b7890cc74cc7",
       "actorUserId": "holiwyn-local-result-settlement-operator",
       "providerStatus": "fixture_only"
     }

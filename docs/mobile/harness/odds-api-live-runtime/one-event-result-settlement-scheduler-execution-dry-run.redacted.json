@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-07-12T11:29:25.424Z",
+  "generatedAt": "2026-07-12T11:52:36.399Z",
   "scope": "odds-api-one-event-result-settlement",
   "pass": true,
   "mode": "dry-run",
   "resultInput": {
     "path": "docs/mobile/harness/odds-api-live-runtime/trusted-result-scheduler-execution-disposable.redacted.json",
     "source": "trusted-local-fixture",
-    "sourceEventId": "scheduler-settlement-proof-97df442677",
-    "eventSlug": "scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677",
+    "sourceEventId": "scheduler-settlement-proof-9a36abb822",
+    "eventSlug": "scheduler-settlement-proof-trusted-result-scheduler-execution-9a36abb822",
     "status": "final",
     "period": "full_time",
     "homeTeam": "Proof Home",
@@ -16,18 +16,18 @@
     "awayScore": 1,
     "advanceTeam": "Proof Home",
     "evidenceUrl": null,
-    "recordedAt": "2026-07-12T11:29:24.090Z"
+    "recordedAt": "2026-07-12T11:52:35.306Z"
   },
   "event": {
-    "id": "702f8d1b-573e-4176-9b78-ab8272ed7610",
-    "slug": "scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677",
+    "id": "0200d489-638e-4e3a-aeed-68541ee8e053",
+    "slug": "scheduler-settlement-proof-trusted-result-scheduler-execution-9a36abb822",
     "title": "Scheduler Settlement Proof trusted-result-scheduler-execution",
-    "externalEventId": "scheduler-settlement-proof-97df442677",
-    "startTime": "2026-07-14T11:29:23.967Z"
+    "externalEventId": "scheduler-settlement-proof-9a36abb822",
+    "startTime": "2026-07-14T11:52:35.173Z"
   },
   "selectedMarket": {
-    "id": "511bf7e6-c52e-4ab9-a119-eaac0e71a74f",
-    "slug": "scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677-total-goals-2-5",
+    "id": "fc3cdb87-17d8-40f2-b6dd-49ec1ee62397",
+    "slug": "scheduler-settlement-proof-trusted-result-scheduler-execution-9a36abb822-total-goals-2-5",
     "title": "Scheduler Settlement Proof trusted-result-scheduler-execution: Total Goals 2.5",
     "marketType": "total_goals",
     "marketGroupKey": "totals",
@@ -43,7 +43,7 @@
     "winningSide": "over"
   },
   "winningOutcome": {
-    "id": "4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a",
+    "id": "26a1c3ac-9cec-4c6a-8be1-085f89e9dc79",
     "name": "Over +2.5",
     "label": "Over 2.5 total goals",
     "side": "over",
@@ -69,7 +69,7 @@
   "execution": {
     "attempted": false,
     "reason": "dry_run_default",
-    "requiredConfirm": "SETTLE_FROM_RESULT:511bf7e6-c52e-4ab9-a119-eaac0e71a74f:4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a:766f39cd3bf9"
+    "requiredConfirm": "SETTLE_FROM_RESULT:fc3cdb87-17d8-40f2-b6dd-49ec1ee62397:26a1c3ac-9cec-4c6a-8be1-085f89e9dc79:b7890cc74cc7"
   },
   "postMarket": {
     "status": "LIVE",
@@ -80,8 +80,10 @@
   "controls": {
     "dryRunIsDefault": true,
     "executeRequiresFlag": "--execute",
-    "executeRequiresConfirm": "SETTLE_FROM_RESULT:511bf7e6-c52e-4ab9-a119-eaac0e71a74f:4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a:766f39cd3bf9",
-    "resultDigest": "766f39cd3bf9",
+    "executeRequiresConfirm": "SETTLE_FROM_RESULT:fc3cdb87-17d8-40f2-b6dd-49ec1ee62397:26a1c3ac-9cec-4c6a-8be1-085f89e9dc79:b7890cc74cc7",
+    "executeRequiresMarketStatus": "CLOSED",
+    "currentMarketStatus": "LIVE",
+    "resultDigest": "b7890cc74cc7",
     "actorUserId": "holiwyn-local-result-settlement-operator",
     "providerStatus": "fixture_only"
   },

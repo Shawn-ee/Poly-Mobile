@@ -10112,9 +10112,9 @@ Future migration concern:
 
 ## Cycle ONEEVENTRESULTSETTLEMENTEXECUTION - Trusted Result Scheduler Execution Proof
 
-- Closed or narrowed: trusted-result scheduler execution is now proven end-to-end on a fresh disposable sportsbook-shaped event. The proof dry-runs settlement, captures the exact confirmation phrase, executes through the scheduler, verifies the disposable market resolves, and confirms the active tester event is not mutated.
+- Closed or narrowed: trusted-result scheduler execution is now proven end-to-end on a fresh disposable sportsbook-shaped event. The proof dry-runs settlement, captures the exact confirmation phrase, verifies execution is blocked while the market is still `LIVE`, closes the disposable proof market, executes through the scheduler, verifies the disposable market resolves, and confirms the active tester event is not mutated.
 - Route mismatch: none for mobile routes. The proof uses existing settlement services through the local scheduler command and does not add mobile or backend API routes.
-- Fields Holiwyn still needs but backend/provider does not fully provide: installed unattended official-result polling, official finality policy, active-event operator approval/audit workflow, and unconfirmed active-event execution policy remain P1.
+- Fields Holiwyn still needs but backend/provider does not fully provide: installed unattended official-result polling, official finality policy, active-event operator approval/audit workflow, and active-event execution policy remain P1. The local command contract now requires the selected market to be `CLOSED` before trusted-result execution can mutate settlement state.
 - Temporary mock/static data: the proof writes disposable trusted-local result JSON for the disposable event and spends no provider quota. This is not live official evidence.
 - Future migration concern: keep disposable scheduler execution proof separate from live official settlement. A future production path should require official provider evidence, durable result storage, admin review, audit logs, and explicit active-event execution policy.
 

@@ -13,6 +13,8 @@ const DEFAULT_RESULT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/trusted-result-scheduler-execution-disposable.redacted.json";
 const DEFAULT_DRY_RUN_OUTPUT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-dry-run.redacted.json";
+const DEFAULT_BLOCKED_OUTPUT_PATH =
+  "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json";
 const DEFAULT_EXECUTE_OUTPUT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-result.redacted.json";
 const DEFAULT_SCHEDULER_OUTPUT_PATH =
@@ -223,6 +225,7 @@ async function main() {
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
   const resultPath = argValue("resultPath") ?? DEFAULT_RESULT_PATH;
   const dryRunSettlementOutput = argValue("dryRunSettlementOutput") ?? DEFAULT_DRY_RUN_OUTPUT_PATH;
+  const liveBlockedSettlementOutput = argValue("liveBlockedSettlementOutput") ?? DEFAULT_BLOCKED_OUTPUT_PATH;
   const executeSettlementOutput = argValue("executeSettlementOutput") ?? DEFAULT_EXECUTE_OUTPUT_PATH;
   const schedulerOutput = argValue("schedulerOutput") ?? DEFAULT_SCHEDULER_OUTPUT_PATH;
   const targetEventSlug = argValue("targetEventSlug") ?? DEFAULT_TARGET_EVENT_SLUG;
@@ -288,6 +291,35 @@ async function main() {
     throw new Error("Dry-run scheduler settlement did not produce a valid confirmation phrase.");
   }
 
+  const liveBlockedExecute = runScheduler([
+    `--eventSlug=${disposable.event.slug}`,
+    `--result=${resultPath}`,
+    `--settlementOutput=${liveBlockedSettlementOutput}`,
+    `--output=${schedulerOutput}`,
+    "--execute",
+    `--confirm=${confirmation}`,
+    "--allowTrustedLocalFixture",
+  ]);
+  const liveBlockedSummary = await readJson<Record<string, any>>(liveBlockedSettlementOutput);
+  const liveBlockedMarket = await prisma.market.findUniqueOrThrow({
+    where: { id: disposable.market.id },
+    select: {
+      status: true,
+      resolvedOutcomeId: true,
+      settlementStatus: true,
+      collateralUSDC: true,
+    },
+  });
+
+  await prisma.market.update({
+    where: { id: disposable.market.id },
+    data: {
+      status: "CLOSED",
+      closeTime: new Date(),
+      settlementStatus: "closed_for_trusted_result_scheduler_execution_proof",
+    },
+  });
+
   const execute = runScheduler([
     `--eventSlug=${disposable.event.slug}`,
     `--result=${resultPath}`,
@@ -326,6 +358,15 @@ async function main() {
   const checks = {
     dryRunSchedulerPassed: dryRun.exitCode === 0 && dryRunSummary?.pass === true && dryRunSummary.mode === "dry-run",
     confirmationPhraseProduced: typeof confirmation === "string" && confirmation.startsWith("SETTLE_FROM_RESULT:"),
+    liveMarketExecutionBlocked:
+      liveBlockedExecute.exitCode !== 0 &&
+      liveBlockedSummary?.pass === false &&
+      liveBlockedSummary?.execution?.attempted === false &&
+      String(liveBlockedSummary?.execution?.reason ?? "").startsWith("market_must_be_closed_before_result_settlement:LIVE"),
+    liveMarketNotResolvedByBlockedAttempt:
+      liveBlockedMarket.status === "LIVE" &&
+      liveBlockedMarket.resolvedOutcomeId === null &&
+      liveBlockedMarket.collateralUSDC.gt(ZERO),
     executeSchedulerPassed: execute.exitCode === 0 && schedulerSummary?.pass === true && schedulerSummary.action === "execute_settlement",
     executeSettlementPassed: executeSummary?.pass === true && executeSummary.mode === "execute",
     disposableMarketResolved: marketAfter.status === "RESOLVED" && marketAfter.resolvedOutcomeId === disposable.over.id,
@@ -365,6 +406,13 @@ async function main() {
       command: dryRun,
       settlementSummaryPath: dryRunSettlementOutput,
       confirmationPhraseProduced: typeof confirmation === "string",
+    },
+    liveBlockedExecute: {
+      command: liveBlockedExecute,
+      settlementSummaryPath: liveBlockedSettlementOutput,
+      reason: liveBlockedSummary?.execution?.reason ?? null,
+      marketStatusAfterAttempt: liveBlockedMarket.status,
+      resolvedOutcomeIdAfterAttempt: liveBlockedMarket.resolvedOutcomeId,
     },
     execute: {
       command: execute,

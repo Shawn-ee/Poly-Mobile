@@ -14058,3 +14058,25 @@ Known limitations:
   - Current proof shows Windows denies scheduled-task registration in this process context.
   - This narrows the unattended-service gap to environment permission/elevation, but does not close it.
   - No provider quota is spent and no active tester settlement execution occurs.
+
+# Cycle ONEEVENTSETTLEMENTCLOSEGUARD - Trusted Result Closed-Market Execution Guard
+
+- Feature/page worked on: backend trusted-result settlement lifecycle safety.
+- Frontend components touched: none. This is backend/runtime proof only and does not change mobile UI, order routes, schemas, provider normalization, or S23 flows.
+- Important functions/services touched:
+  - `scripts/settle_odds_api_one_event_from_result.ts`
+  - `scripts/prove_odds_api_trusted_result_settlement_scheduler_execution.ts`
+  - Existing scheduler command `scripts/run_odds_api_one_event_result_settlement_scheduler.ts`
+  - Existing settlement services `previewOrderbookSettlement` and `resolveOrderbookMarket`
+- User/runtime interactions supported:
+  - Operators can still dry-run trusted-result settlement while reviewing a result.
+  - Execution now requires exact confirmation and a `CLOSED` market state.
+  - The disposable scheduler proof verifies a live-market execution attempt is blocked before closing and settling the disposable proof market.
+- State transitions:
+  - Dry-run: trusted result JSON -> result/outcome mapping -> settlement preview -> confirmation phrase.
+  - Guarded live attempt: exact confirmation while market is `LIVE` -> execution blocked -> market remains `LIVE` and unresolved.
+  - Closed execution: disposable market is explicitly set `CLOSED` -> exact confirmation -> settlement executes -> market becomes `RESOLVED`, collateral clears, open orders/active positions clear.
+- Known limitations:
+  - This closes a lifecycle safety hole, but does not install unattended official-result polling.
+  - Active tester event settlement still requires trusted operator confirmation.
+  - Operator UI, audit-log workflow, and multi-event settlement queue remain future work.

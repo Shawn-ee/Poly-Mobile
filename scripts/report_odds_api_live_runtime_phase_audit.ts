@@ -28,6 +28,8 @@ const PATHS = {
   settlementExecution: "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-execution-summary.redacted.json",
   resultSettlementExecution:
     "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
+  resultSettlementLiveBlocked:
+    "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
   manualSettlement: "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json",
   resultIngestion: "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json",
   resultSettlement: "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
@@ -269,7 +271,7 @@ async function main() {
         "docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md",
       ],
       notes:
-        "Provider-shaped score ingestion can produce trusted result JSON in replay mode, and the local scheduler can dry-run that result. Live score ingestion is explicit and quota-guarded through the command or supervisor controls; installed unattended official result polling remains P1.",
+        "Provider-shaped score ingestion can produce trusted result JSON in replay mode, and the local scheduler can dry-run that result. Trusted-result execution is blocked unless the market is CLOSED. Live score ingestion is explicit and quota-guarded through the command or supervisor controls; installed unattended official result polling remains P1.",
     }),
     requirement({
       id: "settlement-execution-disposable",
@@ -294,13 +296,15 @@ async function main() {
         pass(entries.resultSettlementExecution) &&
         getPath(entries.resultSettlementExecution, ["checks", "dryRunSchedulerPassed"]) === true &&
         getPath(entries.resultSettlementExecution, ["checks", "confirmationPhraseProduced"]) === true &&
+        getPath(entries.resultSettlementExecution, ["checks", "liveMarketExecutionBlocked"]) === true &&
+        getPath(entries.resultSettlementExecution, ["checks", "liveMarketNotResolvedByBlockedAttempt"]) === true &&
         getPath(entries.resultSettlementExecution, ["checks", "executeSchedulerPassed"]) === true &&
         getPath(entries.resultSettlementExecution, ["checks", "executeSettlementPassed"]) === true &&
         getPath(entries.resultSettlementExecution, ["checks", "disposableMarketResolved"]) === true &&
         getPath(entries.resultSettlementExecution, ["checks", "targetTesterEventNotMutated"]) === true,
-      evidence: [PATHS.resultSettlementExecution],
+      evidence: [PATHS.resultSettlementExecution, PATHS.resultSettlementLiveBlocked],
       notes:
-        "This proves the scheduler execute path with reviewed trusted result JSON and an exact confirmation phrase. It still does not install unattended official-result polling.",
+        "This proves the scheduler execute path with reviewed trusted result JSON, an exact confirmation phrase, and a CLOSED-market execution guard. It still does not install unattended official-result polling.",
     }),
     requirement({
       id: "backend-runtime-health",
@@ -351,13 +355,14 @@ async function main() {
         PATHS.settlementReadiness,
         PATHS.settlementExecution,
         PATHS.resultSettlementExecution,
+        PATHS.resultSettlementLiveBlocked,
         PATHS.manualSettlement,
         PATHS.resultIngestion,
         PATHS.resultSettlement,
         PATHS.resultSettlementRun,
       ],
       notes:
-        "Provider-shaped result ingestion replay and trusted-result scheduler execution are proven on disposable local evidence. Live score ingestion is available only behind explicit live flags plus THE_ODDS_API_KEY, including the quota-capped supervisor path. Installed unattended provider result polling and unconfirmed active-event execution remain future work.",
+        "Provider-shaped result ingestion replay and trusted-result scheduler execution are proven on disposable local evidence. Execution is blocked while the target market remains LIVE. Live score ingestion is available only behind explicit live flags plus THE_ODDS_API_KEY, including the quota-capped supervisor path. Installed unattended provider result polling and unconfirmed active-event execution remain future work.",
     }),
   ];
   const openP0 = requirements.filter((item) => item.priority === "P0" && item.status !== "complete");

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T11:29:26.384Z",
+  "generatedAt": "2026-07-12T11:52:39.122Z",
   "scope": "odds-api-trusted-result-settlement-scheduler-execution-proof",
   "pass": true,
   "mode": "disposable-scheduler-execution-proof",
@@ -10,12 +10,12 @@
     "mutated": false
   },
   "disposableEvent": {
-    "slug": "scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677",
+    "slug": "scheduler-settlement-proof-trusted-result-scheduler-execution-9a36abb822",
     "title": "Scheduler Settlement Proof trusted-result-scheduler-execution",
-    "marketId": "511bf7e6-c52e-4ab9-a119-eaac0e71a74f",
-    "marketSlug": "scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677-total-goals-2-5",
-    "winningOutcomeId": "4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a",
-    "losingOutcomeId": "b2092b29-5881-4349-afae-a38982b4fa64",
+    "marketId": "fc3cdb87-17d8-40f2-b6dd-49ec1ee62397",
+    "marketSlug": "scheduler-settlement-proof-trusted-result-scheduler-execution-9a36abb822-total-goals-2-5",
+    "winningOutcomeId": "26a1c3ac-9cec-4c6a-8be1-085f89e9dc79",
+    "losingOutcomeId": "c51ed00f-dce7-43c6-aafe-b6cb2778a4b3",
     "operator": "scheduler_settlement_trusted-result-scheduler-execution_operator",
     "users": [
       "scheduler_settlement_trusted-result-scheduler-execution_winner",
@@ -29,7 +29,7 @@
       "args": [
         "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
         "scripts/run_odds_api_one_event_result_settlement_scheduler.ts",
-        "--eventSlug=scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677",
+        "--eventSlug=scheduler-settlement-proof-trusted-result-scheduler-execution-9a36abb822",
         "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-scheduler-execution-disposable.redacted.json",
         "--settlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-dry-run.redacted.json",
         "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-run.redacted.json"
@@ -62,18 +62,62 @@
     "settlementSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-dry-run.redacted.json",
     "confirmationPhraseProduced": true
   },
+  "liveBlockedExecute": {
+    "command": {
+      "executable": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+        "scripts/run_odds_api_one_event_result_settlement_scheduler.ts",
+        "--eventSlug=scheduler-settlement-proof-trusted-result-scheduler-execution-9a36abb822",
+        "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-scheduler-execution-disposable.redacted.json",
+        "--settlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
+        "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-run.redacted.json",
+        "--execute",
+        "--confirm=SETTLE_FROM_RESULT:fc3cdb87-17d8-40f2-b6dd-49ec1ee62397:26a1c3ac-9cec-4c6a-8be1-085f89e9dc79:b7890cc74cc7",
+        "--allowTrustedLocalFixture"
+      ],
+      "exitCode": 1,
+      "stdoutTail": [
+        "    \"canRunFromSupervisorOrCron\": true,",
+        "    \"providerResultIngestionAvailable\": true,",
+        "    \"unattendedResultPollingInstalled\": false,",
+        "    \"dryRunDefault\": true,",
+        "    \"executeRequiresConfirmation\": true,",
+        "    \"fakeTokenOnly\": true",
+        "  },",
+        "  \"gaps\": {",
+        "    \"p0\": [",
+        "      \"Trusted result settlement command failed.\"",
+        "    ],",
+        "    \"p1\": [",
+        "      \"This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.\",",
+        "      \"Dry-run preview is the default; execution still requires explicit confirmation.\"",
+        "    ],",
+        "    \"p2\": [",
+        "      \"Multi-event result queue and operator UI remain future work.\"",
+        "    ]",
+        "  }",
+        "}"
+      ],
+      "stderrTail": []
+    },
+    "settlementSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
+    "reason": "market_must_be_closed_before_result_settlement:LIVE",
+    "marketStatusAfterAttempt": "LIVE",
+    "resolvedOutcomeIdAfterAttempt": null
+  },
   "execute": {
     "command": {
       "executable": "C:\\nvm4w\\nodejs\\node.exe",
       "args": [
         "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
         "scripts/run_odds_api_one_event_result_settlement_scheduler.ts",
-        "--eventSlug=scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677",
+        "--eventSlug=scheduler-settlement-proof-trusted-result-scheduler-execution-9a36abb822",
         "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-scheduler-execution-disposable.redacted.json",
         "--settlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-result.redacted.json",
         "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-run.redacted.json",
         "--execute",
-        "--confirm=SETTLE_FROM_RESULT:511bf7e6-c52e-4ab9-a119-eaac0e71a74f:4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a:766f39cd3bf9",
+        "--confirm=SETTLE_FROM_RESULT:fc3cdb87-17d8-40f2-b6dd-49ec1ee62397:26a1c3ac-9cec-4c6a-8be1-085f89e9dc79:b7890cc74cc7",
         "--allowTrustedLocalFixture"
       ],
       "exitCode": 0,
@@ -108,8 +152,8 @@
   },
   "postSettlement": {
     "marketStatus": "RESOLVED",
-    "resolvedOutcomeId": "4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a",
-    "settlementStatus": null,
+    "resolvedOutcomeId": "26a1c3ac-9cec-4c6a-8be1-085f89e9dc79",
+    "settlementStatus": "closed_for_trusted_result_scheduler_execution_proof",
     "collateralUSDC": "0",
     "openOrdersAfter": 0,
     "activePositionsAfter": 0
@@ -117,6 +161,8 @@
   "checks": {
     "dryRunSchedulerPassed": true,
     "confirmationPhraseProduced": true,
+    "liveMarketExecutionBlocked": true,
+    "liveMarketNotResolvedByBlockedAttempt": true,
     "executeSchedulerPassed": true,
     "executeSettlementPassed": true,
     "disposableMarketResolved": true,
