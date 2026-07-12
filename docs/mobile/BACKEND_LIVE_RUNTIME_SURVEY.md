@@ -21,7 +21,7 @@ The current Local MVP is backend-owned and fake-token only. It has proven one sp
 | Reference liquidity seeding | `referenceLiquiditySeeding.ts` supports approved Polymarket reference markets only. | Not usable for Odds API sportsbook markets without new source-aware logic. |
 | Event pause/close/resolve | Admin routes can pause/close markets and resolve orderbook markets. | Manual/admin lifecycle exists. No automatic soccer settlement or result ingest exists yet. |
 | One-event lifecycle scheduler | `src/server/services/oneEventLifecycleScheduler.ts` can pause the selected event inside the pre-start suspend window and close it at/after start. `scripts/run_odds_api_one_event_lifecycle_scheduler.ts` runs it safely against the real current time; `scripts/prove_odds_api_event_lifecycle_scheduler.ts` proves pause/close by temporarily mutating start times and restoring them. | Proven locally. The supervisor now calls the safe scheduler each cycle while active, but it is not installed as an unattended daemon/service. |
-| Settlement | `settlement.ts`, `previewOrderbookSettlement`, `resolveOrderbookMarket`, and admin preview/resolve routes exist for orderbook markets. | Manual/admin-driven. Non-mutating readiness proof exists for the selected one-event market; automatic sports result ingestion and automatic settlement are not implemented. |
+| Settlement | `settlement.ts`, `previewOrderbookSettlement`, `resolveOrderbookMarket`, admin preview/resolve routes, and `scripts/settle_odds_api_one_event_market.ts` exist for orderbook markets. | Manual/admin-driven. Non-mutating readiness proof and a guarded one-event manual settlement dry run exist; automatic sports result ingestion and automatic settlement are not implemented. |
 
 ## Odds API Usage Classification
 
@@ -38,7 +38,7 @@ The current Local MVP is backend-owned and fake-token only. It has proven one sp
 | Source-aware Odds API refresh loop | P0 for this goal | Need configurable interval, quota cap, stale detection, and failure handling. |
 | Continuous local market maker tied to provider odds | P0 for this goal | Need maker quotes shifted worse than provider, with risk caps and cleanup. |
 | Auto-close/suspend near event start or provider unavailable | P1 | Start-time pause/close now runs inside the foreground supervisor while it is active. It is not an installed always-on daemon, and stale-provider auto-pause remains future work. |
-| Automatic settlement from official result | P1 | Existing settlement is manual/admin. The selected market can be previewed safely, but no final soccer result provider is wired. |
+| Automatic settlement from official result | P1 | Existing settlement is manual/admin. The selected market can be previewed and has a guarded manual command, but no final soccer result provider is wired. |
 | Production bot daemon ownership | P1 | `poly-bot` is not inside this repo, so mobile repo must not claim continuous bot readiness from that script alone. |
 
 ## Survey Conclusion
@@ -59,6 +59,7 @@ The backend is close enough for a one-event local live proof because the data mo
 - Consolidated readiness gate: `scripts/prove_holiwyn_one_event_live_readiness.ps1`.
 - One-event local supervisor: `scripts/run_holiwyn_one_event_live_supervisor.ps1`.
 - Settlement readiness report: `scripts/report_odds_api_one_event_settlement_readiness.ts`.
+- Guarded manual settlement command: `scripts/settle_odds_api_one_event_market.ts`.
 - Summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`.
 - Runtime launch summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json`.
 - Maker seed summary: `docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json`.
@@ -66,6 +67,7 @@ The backend is close enough for a one-event local live proof because the data mo
 - Lifecycle scheduler summary: `docs/mobile/harness/odds-api-live-runtime/event-lifecycle-scheduler-summary.redacted.json`.
 - Safe lifecycle scheduler run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json`.
 - Settlement readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json`.
+- Manual settlement dry-run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json`.
 - Consolidated readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json`.
 - Supervisor summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json`.
 - S23 summary: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`.

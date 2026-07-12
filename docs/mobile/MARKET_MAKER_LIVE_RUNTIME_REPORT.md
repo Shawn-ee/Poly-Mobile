@@ -50,6 +50,7 @@ For a selected binary sportsbook market:
 - Maker seed command: `npm run mobile:one-event-live-maker-seed`
 - Lifecycle controls command: `npm run mobile:one-event-lifecycle-proof`
 - Settlement readiness command: `npm run mobile:one-event-settlement-readiness`
+- Manual settlement dry-run command: `npm run mobile:one-event-settlement -- --winningOutcome=over`
 - Live provider wrapper command: `npm run mobile:one-event-live-runtime:provider`
 - Summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`
 - Runtime launch summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json`
@@ -60,6 +61,7 @@ For a selected binary sportsbook market:
 - Supervisor process summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-process-summary.redacted.json`
 - Runtime status summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`
 - Settlement readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json`
+- Manual settlement dry-run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json`
 - Result: pass.
 - Provider event: Spain vs. France, `soccer_fifa_world_cup`, starts `2026-07-14T19:00:00Z`.
 - Selected local market: Total Goals 2.5.
@@ -68,5 +70,6 @@ For a selected binary sportsbook market:
 - Reusable maker seed proof: quote route returned best bid `0.47` and best ask `0.55` for the selected provider-backed market after `-SeedMaker`.
 - Trading proof: fake-token buy filled, Portfolio position appeared, sell/cashout filled, History contained both trades.
 - Settlement readiness proof: both selected outcomes preview successfully without mutation, payout conservation passes, and automatic official-result settlement remains a separate P1 gap.
+- Manual settlement proof: dry-run command selected `Over +2.5`, proved payout conservation, printed the explicit execution confirmation phrase, and left the market unresolved.
 - S23 proof: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`.
 - Continuous status: the supervisor can run repeated local maker reseeds while it is open, but there is still no installed unattended production bot.

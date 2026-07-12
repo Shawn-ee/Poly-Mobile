@@ -10029,3 +10029,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: official soccer result source, trusted final score/result ingestion, outcome mapping from official result to `Outcome.id`, and automatic resolve execution policy.
 - Temporary mock/static data: none added. The report uses the existing local backend market, positions, orders, and balances and spends no provider quota.
 - Future migration concern: automatic settlement should stay separate from provider odds refresh. Odds snapshots are pricing inputs, not official result sources.
+
+## Cycle ONEEVENTMANUALSETTLEMENT - Guarded One-Event Manual Settlement
+
+- Closed or narrowed: the selected one-event sportsbook market now has a guarded local settlement command. Dry run is default, reports the exact confirmation phrase required for execution, proves payout conservation, and leaves the market unresolved.
+- Route mismatch: none. The command uses the same `previewOrderbookSettlement` and `resolveOrderbookMarket` services as the admin preview/resolve routes.
+- Fields Holiwyn still needs but backend/provider does not fully provide: official soccer result source, final score/result schema, trusted mapping from official result to winning `Outcome.id`, and automatic resolve scheduling.
+- Temporary mock/static data: none added. The command uses the existing local backend event/market/position/order/ledger state and spends no provider quota.
+- Future migration concern: the `--confirm=SETTLE:<marketId>:<outcomeId>` execution gate is an internal safety control, not a production authorization model. A real settlement operator workflow should use admin auth, audit logs, and official result evidence.

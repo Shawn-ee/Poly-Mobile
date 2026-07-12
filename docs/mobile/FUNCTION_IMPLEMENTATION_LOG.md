@@ -13820,3 +13820,25 @@ Known limitations:
   - Official soccer result provider ingestion is not wired.
   - Automatic settlement execution is not implemented.
   - Actual resolution still requires a trusted admin/manual outcome selection before `resolveOrderbookMarket` or admin resolve routes are used.
+
+# Cycle ONEEVENTMANUALSETTLEMENT - Guarded One-Event Manual Settlement Command
+
+- Feature/page worked on: one-event manual settlement operation for the selected sportsbook-backed local event.
+- Frontend components touched: none. This is backend/runtime tooling only.
+- Important functions/services touched:
+  - `scripts/settle_odds_api_one_event_market.ts`
+  - `package.json` script `mobile:one-event-settlement`
+  - `previewOrderbookSettlement`
+  - `resolveOrderbookMarket`
+  - Existing admin resolve route semantics: `POST /api/admin/markets/:id/resolve` and `POST /api/admin/markets/resolve`
+- User interactions supported:
+  - Operators can dry-run settlement for the selected one-event market after a trusted result is known.
+  - The dry run prints the exact `SETTLE:<marketId>:<outcomeId>` confirmation phrase required for execution.
+  - Execution requires both `--execute` and the exact confirmation phrase, so ordinary readiness checks cannot accidentally resolve the live test market.
+- State transitions:
+  - Dry run: selected event/market/outcome -> settlement preview -> summary written -> market remains unresolved.
+  - Execute mode: selected event/market/outcome -> preview -> explicit confirmation gate -> `resolveOrderbookMarket` -> open order cleanup, winner payout ledger entries, positions finalized, market `RESOLVED`.
+- Known limitations:
+  - Official soccer result provider ingestion is still missing.
+  - The command does not decide the winning outcome; a trusted operator must supply it.
+  - Multi-event settlement queue and operator UI remain future work.
