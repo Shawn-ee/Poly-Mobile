@@ -211,7 +211,7 @@ async function main() {
         getPath(continuousSupervisorTruth, ["quotaProtected"]) === true,
       evidence: [PATHS.supervisor, PATHS.continuousSupervisor, PATHS.resultIngestion, PATHS.resultSettlementRun],
       notes:
-        "Replay-mode result ingestion is proven inside repeated supervisor cycles. Live score polling and settlement execution remain explicit P1 work.",
+        "Replay-mode result ingestion is proven inside repeated supervisor cycles. Opt-in live score ingestion is available through quota-capped supervisor controls; installed unattended polling and settlement execution remain P1.",
     }),
     requirement({
       id: "mobile-trading-flow",
@@ -261,7 +261,7 @@ async function main() {
         "docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md",
       ],
       notes:
-        "Provider-shaped score ingestion can produce trusted result JSON in replay mode, and the local scheduler can dry-run that result. Live score ingestion is explicit and quota-guarded; unattended official result polling remains P1.",
+        "Provider-shaped score ingestion can produce trusted result JSON in replay mode, and the local scheduler can dry-run that result. Live score ingestion is explicit and quota-guarded through the command or supervisor controls; installed unattended official result polling remains P1.",
     }),
     requirement({
       id: "settlement-execution-disposable",
@@ -307,7 +307,7 @@ async function main() {
         PATHS.resultSettlementRun,
       ],
       notes:
-        "Provider-shaped result ingestion replay is proven and live score ingestion is available only behind --live plus THE_ODDS_API_KEY. Unattended provider result polling and unconfirmed execution remain future work.",
+        "Provider-shaped result ingestion replay is proven. Live score ingestion is available only behind explicit live flags plus THE_ODDS_API_KEY, including the quota-capped supervisor path. Installed unattended provider result polling and unconfirmed execution remain future work.",
     }),
   ];
   const openP0 = requirements.filter((item) => item.priority === "P0" && item.status !== "complete");
@@ -332,7 +332,7 @@ async function main() {
       phaseCompleteForLocalInternalRuntime: openP0.length === 0,
       fullProductionRuntimeComplete: false,
       runtimeTruth:
-        "Local one-event runtime is internally usable with cached/live-proofed provider data, fake-token trading, supervisor monitoring, provider-shaped result ingestion, and trusted-result settlement dry-run scheduling. It is not a production unattended daemon and does not install unattended official result polling.",
+        "Local one-event runtime is internally usable with cached/live-proofed provider data, fake-token trading, supervisor monitoring, provider-shaped replay result ingestion, opt-in quota-capped live result ingestion controls, and trusted-result settlement dry-run scheduling. It is not a production unattended daemon and does not install unattended official result polling.",
     },
   };
   await writeJson(outputPath, summary);

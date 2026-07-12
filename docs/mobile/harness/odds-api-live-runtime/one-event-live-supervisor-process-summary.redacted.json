@@ -1,10 +1,10 @@
 {
-    "generatedAt":  "2026-07-12T10:44:02.4200110Z",
+    "generatedAt":  "2026-07-12T11:11:47.3271708Z",
     "scope":  "holiwyn-one-event-live-supervisor-process",
     "pass":  true,
     "operation":  {
                       "action":  "status",
-                      "startedAt":  "2026-07-12T10:44:02.3762518Z",
+                      "startedAt":  "2026-07-12T11:11:47.2836512Z",
                       "force":  false,
                       "result":  "not_running"
                   },
@@ -58,10 +58,10 @@
     "supervisor":  {
                        "summaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-live-supervisor-summary.redacted.json",
                        "digest":  {
-                                      "generatedAt":  "2026-07-12T10:43:59.7609784Z",
+                                      "generatedAt":  "2026-07-12T11:11:44.3525569Z",
                                       "pass":  true,
-                                      "startedAt":  "2026-07-12T10:43:41.3967032Z",
-                                      "completedAt":  "2026-07-12T10:43:59.7609784Z",
+                                      "startedAt":  "2026-07-12T11:11:29.0468733Z",
+                                      "completedAt":  "2026-07-12T11:11:44.3525569Z",
                                       "settings":  {
                                                        "continuous":  false,
                                                        "maxIterations":  2,
@@ -81,6 +81,12 @@
                                                        "staleGuardEnabled":  false,
                                                        "staleGuardEnforced":  false,
                                                        "resultIngestionEnabled":  true,
+                                                       "liveResultIngestionEnabled":  false,
+                                                       "liveResultIngestionRunsCompleted":  0,
+                                                       "resultIngestionEveryIterations":  0,
+                                                       "maxLiveResultIngestionRuns":  0,
+                                                       "maxCreditsPerResultIngestion":  0,
+                                                       "maxCreditsAcrossResultIngestion":  0,
                                                        "resultSettlementEnabled":  true,
                                                        "cachedModeUsesQuota":  false
                                                    },
@@ -95,13 +101,15 @@
                                                            "staleGuardMode":  "disabled",
                                                            "resultIngestionContinuousWhileSupervisorRuns":  true,
                                                            "resultIngestionMode":  "provider-shaped result ingestion replay while supervisor runs; no provider quota spent",
+                                                           "liveResultIngestionContinuousWhileSupervisorRuns":  false,
+                                                           "liveResultIngestionQuotaCappedWhileSupervisorRuns":  false,
                                                            "resultSettlementContinuousWhileSupervisorRuns":  true,
                                                            "resultSettlementMode":  "trusted result scheduler dry-run while supervisor runs",
                                                            "unattendedServiceInstalled":  false,
                                                            "providerRefreshMode":  "cached provider proof verification; no provider quota spent",
                                                            "marketMakerMode":  "repeated local shifted maker reseed while supervisor runs",
                                                            "lifecycleSchedulerMode":  "safe real-time scheduler check each cycle; no proof time mutation",
-                                                           "settlementMode":  "manual preview/resolve service; automatic official-result settlement not wired"
+                                                           "settlementMode":  "manual preview/resolve service plus trusted-result dry-run scheduler; unconfirmed automatic settlement execution not wired"
                                                        },
                                       "failure":  null,
                                       "gapCounts":  {
@@ -127,7 +135,7 @@
                         ],
                  "p1":  [
                             "This is a local background process manager, not an installed OS service.",
-                            "Provider-shaped result ingestion and dry-run settlement are available, but unattended official-result polling and execution remain future work."
+                            "Provider-shaped replay ingestion and quota-capped live result ingestion are available, but installed unattended official-result polling and unconfirmed execution remain future work."
                         ],
                  "p2":  [
                             "Multi-event process supervision remains future work."

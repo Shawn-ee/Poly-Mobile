@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-12T10:44:02.4775209Z",
+    "generatedAt":  "2026-07-12T11:11:47.3823633Z",
     "scope":  "holiwyn-one-event-continuous-supervisor-proof",
     "pass":  true,
-    "startedAt":  "2026-07-12T10:43:40.3757377Z",
-    "completedAt":  "2026-07-12T10:44:02.4785211Z",
+    "startedAt":  "2026-07-12T11:11:27.1452958Z",
+    "completedAt":  "2026-07-12T11:11:47.3833674Z",
     "settings":  {
                      "backendPort":  3002,
                      "intervalSeconds":  1,
@@ -38,8 +38,8 @@
                          "command":  "npm run mobile:one-event-live-supervisor:stop",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T10:43:40.3904297Z",
-                         "finishedAt":  "2026-07-12T10:43:40.9169119Z",
+                         "startedAt":  "2026-07-12T11:11:27.1589848Z",
+                         "finishedAt":  "2026-07-12T11:11:28.6888900Z",
                          "outputTail":  [
                                             "                         \"installedOsService\":  false,",
                                             "                         \"providerRefreshMode\":  \"cached provider proof verification; no provider quota spent\",",
@@ -54,7 +54,7 @@
                                             "                        ],",
                                             "                 \"p1\":  [",
                                             "                            \"This is a local background process manager, not an installed OS service.\",",
-                                            "                            \"Provider-shaped result ingestion and dry-run settlement are available, but unattended official-result polling and execution remain future work.\"",
+                                            "                            \"Provider-shaped replay ingestion and quota-capped live result ingestion are available, but installed unattended official-result polling and unconfirmed execution remain future work.\"",
                                             "                        ],",
                                             "                 \"p2\":  [",
                                             "                            \"Multi-event process supervision remains future work.\"",
@@ -68,8 +68,8 @@
                          "command":  "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_live_supervisor.ps1 -BackendPort 3002 -MaxIterations 2 -IntervalSeconds 1 -RunResultIngestion -RunResultSettlement",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T10:43:40.9234250Z",
-                         "finishedAt":  "2026-07-12T10:43:59.9517792Z",
+                         "startedAt":  "2026-07-12T11:11:28.6953913Z",
+                         "finishedAt":  "2026-07-12T11:11:44.9199555Z",
                          "outputTail":  [
                                             "                                                  \"p2\":  [",
                                             "                                                             \"multi-market inventory-aware quoting remains future work\"",
@@ -84,7 +84,7 @@
                                             "                        ],",
                                             "                 \"p1\":  [",
                                             "                            \"supervisor is a local command, not an installed unattended service\",",
-                                            "                            \"provider-shaped result ingestion and dry-run settlement are available, but unattended official-result polling and execution are not complete\"",
+                                            "                            \"provider-shaped replay ingestion and quota-capped live result ingestion are available in the local supervisor, but installed unattended official-result polling and unconfirmed execution are not complete\"",
                                             "                        ],",
                                             "                 \"p2\":  [",
                                             "                            \"multi-event provider polling and inventory-aware multi-market quoting remain future work\"",
@@ -98,8 +98,8 @@
                          "command":  "npm run mobile:one-event-runtime-status",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T10:43:59.9727816Z",
-                         "finishedAt":  "2026-07-12T10:44:01.2067003Z",
+                         "startedAt":  "2026-07-12T11:11:44.9422747Z",
+                         "finishedAt":  "2026-07-12T11:11:46.8534892Z",
                          "outputTail":  [
                                             "    \"quotaKnown\": true,",
                                             "    \"makerSeedPresent\": true,",
@@ -128,8 +128,8 @@
                          "command":  "npm run mobile:one-event-live-supervisor:status",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T10:44:01.2092067Z",
-                         "finishedAt":  "2026-07-12T10:44:02.4650163Z",
+                         "startedAt":  "2026-07-12T11:11:46.8554948Z",
+                         "finishedAt":  "2026-07-12T11:11:47.3702520Z",
                          "outputTail":  [
                                             "                         \"installedOsService\":  false,",
                                             "                         \"providerRefreshMode\":  \"cached provider proof verification; no provider quota spent\",",
@@ -144,7 +144,7 @@
                                             "                        ],",
                                             "                 \"p1\":  [",
                                             "                            \"This is a local background process manager, not an installed OS service.\",",
-                                            "                            \"Provider-shaped result ingestion and dry-run settlement are available, but unattended official-result polling and execution remain future work.\"",
+                                            "                            \"Provider-shaped replay ingestion and quota-capped live result ingestion are available, but installed unattended official-result polling and unconfirmed execution remain future work.\"",
                                             "                        ],",
                                             "                 \"p2\":  [",
                                             "                            \"Multi-event process supervision remains future work.\"",
@@ -161,7 +161,7 @@
                  "p1":  [
                             "This proves repeated local supervisor cycles, not an installed OS service.",
                             "Background start/status/stop is available through the process manager and now stops process trees, but always-on service installation remains future work.",
-                            "Provider-shaped result ingestion is proven in replay mode, but unattended live result polling and settlement execution remain future work."
+                            "Provider-shaped replay result ingestion is proven, and opt-in quota-capped live result ingestion is available through the supervisor; installed unattended live result polling and settlement execution remain future work."
                         ],
                  "p2":  [
                             "Multi-event process supervision remains future work."

@@ -13944,3 +13944,25 @@ Known limitations:
 - Known limitations:
   - The proof uses a trusted local result fixture, not an official result provider API.
   - Unattended result polling and automatic execution remain open P1 work.
+
+# Cycle ONEEVENTLIVERESULTSUPERVISOR - Live Result Ingestion Controls
+
+- Feature/page worked on: backend live runtime supervisor for one-event official-result ingestion.
+- Frontend components touched: none. This cycle is backend/runtime orchestration only.
+- Important functions/services touched:
+  - `scripts/run_holiwyn_one_event_live_supervisor.ps1`
+  - `scripts/manage_holiwyn_one_event_live_supervisor.ps1`
+  - Existing `scripts/ingest_odds_api_one_event_result.ts`
+  - Existing `scripts/run_odds_api_one_event_result_settlement_scheduler.ts`
+- User/runtime interactions supported:
+  - Default supervisor keeps replay/no-quota result ingestion through `-RunResultIngestion`.
+  - Explicit live result ingestion can be enabled with `-RunResultIngestion -RunLiveResultIngestion`.
+  - Live result ingestion is cadence-controlled by `-ResultIngestionEveryIterations`, capped by `-MaxLiveResultIngestionRuns`, and limited by `-MaxCreditsPerResultIngestion`.
+- State transitions:
+  - Replay mode continues writing trusted result JSON from redacted scores fixture.
+  - Live mode calls the Odds API scores endpoint through the existing ingestion command, then writes the same trusted result JSON contract.
+  - Trusted result settlement remains dry-run unless the guarded settlement command is separately executed with exact confirmation.
+- Known limitations:
+  - This is still a local supervisor command/background process manager, not an installed OS service.
+  - Live result ingestion requires `THE_ODDS_API_KEY` in process env and was not run in the committed proof to protect quota.
+  - Unconfirmed active-event settlement execution remains P1.

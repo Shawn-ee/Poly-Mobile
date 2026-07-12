@@ -12,12 +12,16 @@ param(
   [switch]$RunStaleGuard,
   [switch]$EnforceStaleGuard,
   [switch]$RunResultIngestion,
+  [switch]$RunLiveResultIngestion,
   [switch]$RunResultSettlement,
   [switch]$RestartBackend,
   [int]$RefreshIterations = 1,
   [int]$MaxCreditsPerProviderProof = 8,
   [int]$ProviderProofEveryIterations = 1,
   [int]$MaxProviderProofRuns = 1,
+  [int]$ResultIngestionEveryIterations = 1,
+  [int]$MaxLiveResultIngestionRuns = 1,
+  [int]$MaxCreditsPerResultIngestion = 2,
   [int]$MinRemaining = 2,
   [switch]$SkipSleep,
   [switch]$Force,
@@ -158,6 +162,15 @@ function Build-SupervisorArguments {
   if ($RunStaleGuard) { $parts.Add("-RunStaleGuard") | Out-Null }
   if ($EnforceStaleGuard) { $parts.Add("-EnforceStaleGuard") | Out-Null }
   if ($RunResultIngestion) { $parts.Add("-RunResultIngestion") | Out-Null }
+  if ($RunLiveResultIngestion) {
+    $parts.Add("-RunLiveResultIngestion") | Out-Null
+    $parts.Add("-ResultIngestionEveryIterations") | Out-Null
+    $parts.Add("$ResultIngestionEveryIterations") | Out-Null
+    $parts.Add("-MaxLiveResultIngestionRuns") | Out-Null
+    $parts.Add("$MaxLiveResultIngestionRuns") | Out-Null
+    $parts.Add("-MaxCreditsPerResultIngestion") | Out-Null
+    $parts.Add("$MaxCreditsPerResultIngestion") | Out-Null
+  }
   if ($RunResultSettlement) { $parts.Add("-RunResultSettlement") | Out-Null }
   if ($RestartBackend) { $parts.Add("-RestartBackend") | Out-Null }
   if ($SkipSleep) { $parts.Add("-SkipSleep") | Out-Null }
@@ -174,6 +187,15 @@ $operation = [ordered]@{
 $exitCode = 0
 
 if ($Action -eq "start") {
+  if ($RunLiveResultIngestion -and -not $RunResultIngestion) {
+    throw "RunLiveResultIngestion requires RunResultIngestion."
+  }
+  if ($RunLiveResultIngestion -and $MaxLiveResultIngestionRuns -lt 1) {
+    throw "RunLiveResultIngestion requires MaxLiveResultIngestionRuns of at least 1. This keeps live result ingestion quota-capped."
+  }
+  if ($ResultIngestionEveryIterations -lt 1) {
+    throw "ResultIngestionEveryIterations must be at least 1."
+  }
   if ($stateBefore.running -and -not $Force) {
     $operation.result = "already_running"
   } else {
@@ -183,6 +205,9 @@ if ($Action -eq "start") {
     }
     if ($RunProviderProof -and [string]::IsNullOrWhiteSpace($env:THE_ODDS_API_KEY)) {
       throw "RunProviderProof requires THE_ODDS_API_KEY in the process environment. The key is not read from files or printed."
+    }
+    if ($RunLiveResultIngestion -and [string]::IsNullOrWhiteSpace($env:THE_ODDS_API_KEY)) {
+      throw "RunLiveResultIngestion requires THE_ODDS_API_KEY in the process environment. The key is not read from files or printed."
     }
     $argumentList = Build-SupervisorArguments
     $command = "powershell " + ($argumentList -join " ")
@@ -205,6 +230,10 @@ if ($Action -eq "start") {
       runStaleGuard = [bool]$RunStaleGuard
       enforceStaleGuard = [bool]$EnforceStaleGuard
       runResultIngestion = [bool]$RunResultIngestion
+      runLiveResultIngestion = [bool]$RunLiveResultIngestion
+      resultIngestionEveryIterations = if ($RunLiveResultIngestion) { $ResultIngestionEveryIterations } else { 0 }
+      maxLiveResultIngestionRuns = if ($RunLiveResultIngestion) { $MaxLiveResultIngestionRuns } else { 0 }
+      maxCreditsPerResultIngestion = if ($RunLiveResultIngestion) { $MaxCreditsPerResultIngestion } else { 0 }
       runResultSettlement = [bool]$RunResultSettlement
       providerProofEveryIterations = if ($RunProviderProof) { $ProviderProofEveryIterations } else { 0 }
       maxProviderProofRuns = if ($RunProviderProof) { $MaxProviderProofRuns } else { 0 }
@@ -290,13 +319,13 @@ $summary = [ordered]@{
     installedOsService = $false
     providerRefreshMode = if ($RunProviderProof) { "quota-capped live provider proof by cadence" } else { "cached provider proof verification; no provider quota spent" }
     staleGuardMode = if (-not $RunStaleGuard) { "disabled" } elseif ($EnforceStaleGuard) { "enforce stale provider pause while supervisor runs" } else { "dry-run stale monitor while supervisor runs" }
-    resultIngestionMode = if ($RunResultIngestion) { "provider-shaped result ingestion replay while supervisor runs; no provider quota spent" } else { "disabled" }
+    resultIngestionMode = if (-not $RunResultIngestion) { "disabled" } elseif ($RunLiveResultIngestion) { "quota-capped live result ingestion by cadence; replay disabled for result ingestion cycles" } else { "provider-shaped result ingestion replay while supervisor runs; no provider quota spent" }
     resultSettlementMode = if ($RunResultSettlement) { "trusted result scheduler dry-run while supervisor runs" } else { "disabled" }
     fakeTokenOnly = $true
   }
   gaps = [ordered]@{
     p0 = @()
-    p1 = @("This is a local background process manager, not an installed OS service.", "Provider-shaped result ingestion and dry-run settlement are available, but unattended official-result polling and execution remain future work.")
+    p1 = @("This is a local background process manager, not an installed OS service.", "Provider-shaped replay ingestion and quota-capped live result ingestion are available, but installed unattended official-result polling and unconfirmed execution remain future work.")
     p2 = @("Multi-event process supervision remains future work.")
   }
 }

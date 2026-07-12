@@ -10093,3 +10093,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: trusted official-result polling, finality semantics, operator approval/audit workflow, and safe execution policy for active provider events.
 - Temporary mock/static data: none for provider odds. The proof creates a disposable local simulation market and explicitly does not mutate the active one-event tester market.
 - Future migration concern: this closes the backend settlement-mechanics proof gap, not the unattended official-result settlement gap. Keep active-event settlement behind trusted result confirmation until operator controls exist.
+
+## Cycle ONEEVENTLIVERESULTSUPERVISOR - Live Result Ingestion Controls
+
+- Closed or narrowed: the local one-event supervisor can now run live Odds API scores ingestion on an explicit cadence with a max live-ingestion run count and per-run credit cap. Replay/no-quota result ingestion remains the default.
+- Route mismatch: none for mobile routes. This is local runtime orchestration around the existing result-ingestion and trusted-result settlement commands.
+- Fields Holiwyn still needs but backend/provider does not fully provide: installed unattended result polling, official finality policy across postponed/abandoned matches, operator approval UI, audit log workflow, and unconfirmed execution policy.
+- Temporary mock/static data: default proof still uses the redacted scores fixture. Live mode requires `THE_ODDS_API_KEY` in the process environment and does not read secrets from files.
+- Future migration concern: opt-in live result ingestion should remain separate from odds refresh. Scores/final results settle markets; odds snapshots price markets.

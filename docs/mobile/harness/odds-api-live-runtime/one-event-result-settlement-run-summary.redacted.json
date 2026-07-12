@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T10:44:28.131Z",
+  "generatedAt": "2026-07-12T11:11:43.203Z",
   "scope": "odds-api-one-event-result-settlement-scheduler-run",
   "pass": true,
   "eventSlug": "odds-api-single-soccer-test",
@@ -63,7 +63,7 @@
       "line": "2.5",
       "statusBefore": "LIVE",
       "resolvedOutcomeIdBefore": null,
-      "collateralUSDCBefore": "25300"
+      "collateralUSDCBefore": "26500"
     },
     "winningOutcome": {
       "id": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
@@ -74,10 +74,10 @@
     },
     "preview": {
       "marketStatus": "LIVE",
-      "totalShares": "50600",
-      "totalWinningShares": "25300",
-      "totalPayout": "25300",
-      "collateralUSDC": "25300",
+      "totalShares": "53000",
+      "totalWinningShares": "26500",
+      "totalPayout": "26500",
+      "collateralUSDC": "26500",
       "payoutConservationPass": true,
       "blockers": [],
       "openOrderCleanup": {
@@ -85,8 +85,8 @@
         "buyOrderLockedUSDCToRelease": "94",
         "sellOrderSharesToRelease": "200"
       },
-      "payoutCount": 129,
-      "loserPositionCount": 127,
+      "payoutCount": 135,
+      "loserPositionCount": 133,
       "mutation": "none"
     },
     "execution": {

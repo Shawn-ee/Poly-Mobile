@@ -16,6 +16,7 @@ The Local MVP has deterministic one-shot maker liquidity. A true production daem
 | Odds API one-event supervisor | Added for local testing | `npm run mobile:one-event-live-supervisor` repeats runtime checks and maker reseeding while the command is running. With `-RunProviderProof`, it also runs quota-guarded live provider refresh cycles. |
 | Supervisor stale-provider monitor | Added for local testing | `npm run mobile:one-event-live-supervisor -- -RunStaleGuard` reports stale-provider would-pause counts each cycle. Add `-EnforceStaleGuard` to pause stale markets intentionally. |
 | Supervisor trusted-result settlement monitor | Added for local testing | `npm run mobile:one-event-live-supervisor -- -RunResultIngestion -RunResultSettlement` runs provider-shaped result ingestion and the trusted-result settlement scheduler in dry-run mode each cycle. |
+| Supervisor live-result ingestion mode | Added for local testing | `npm run mobile:one-event-live-supervisor -- -RunResultIngestion -RunLiveResultIngestion -RunResultSettlement` makes live Odds API scores ingestion opt-in, quota-capped, and cadence-controlled while keeping settlement dry-run by default. |
 | Provider-shaped result ingestion | Added for local testing | `npm run mobile:one-event-result-ingest` converts an Odds API scores-shaped payload into trusted result JSON. Replay fixture mode is default and quota-free; live mode requires explicit `--live` and `THE_ODDS_API_KEY`. |
 | Disposable settlement execution proof | Added for local testing | `npm run mobile:one-event-settlement-execution-proof` creates a fresh disposable local market, executes settlement, and verifies payout conservation, collateral cleanup, finalized positions, no negative balances, and no stuck locks without mutating the active tester event. |
 | One-event runtime status report | Added for operator safety | `npm run mobile:one-event-runtime-status` reads local proof summaries and backend health/quote routes to report cached-vs-live mode, live proof freshness, quota from the last provider proof, maker quote status, and scheduler state without calling the provider. |
@@ -51,6 +52,7 @@ For a selected binary sportsbook market:
 - Consolidated readiness command: `npm run mobile:one-event-live-readiness`
 - Repeated local supervisor command: `npm run mobile:one-event-live-supervisor -- -MaxIterations 2 -IntervalSeconds 1`
 - Repeated local supervisor with stale monitor: `npm run mobile:one-event-live-supervisor -- -RunStaleGuard -MaxIterations 1 -IntervalSeconds 0 -SkipSleep`
+- Repeated local supervisor with live result ingestion: `npm run mobile:one-event-live-supervisor -- -RunResultIngestion -RunLiveResultIngestion -RunResultSettlement -MaxLiveResultIngestionRuns 1 -ResultIngestionEveryIterations 1`
 - Local background supervisor command: `npm run mobile:one-event-live-supervisor:process -- -Action start -Continuous -MaxIterations 0`
 - Local background supervisor status/stop: `npm run mobile:one-event-live-supervisor:status`, `npm run mobile:one-event-live-supervisor:stop`
 - Continuous local supervisor proof: `npm run mobile:one-event-live-supervisor:continuous-proof`
@@ -88,6 +90,7 @@ For a selected binary sportsbook market:
 - Settlement execution proof: a fresh disposable local market settles with payout conservation passing, collateral zero after settlement, finalized positions, no negative balances, and no stuck locks. The active tester event is not mutated by this proof.
 - Manual settlement proof: dry-run command selected `Over +2.5`, proved payout conservation, printed the explicit execution confirmation phrase, and left the market unresolved.
 - Provider-shaped result ingestion proof: replay mode converts a redacted Odds API scores-shaped payload into trusted result JSON for the selected proof event without spending quota.
+- Live result ingestion supervisor path: available only through explicit `-RunLiveResultIngestion`, with `THE_ODDS_API_KEY`, result-ingestion cadence, max live-result run count, and per-run credit cap. The latest committed proof keeps replay/no-quota mode.
 - Trusted result scheduler proof: dry-run scheduler command reads trusted result JSON and invokes guarded trusted-result settlement without mutating the market.
 - One-command onboarding proof: quota-free replay/import, readiness, runtime status, settlement readiness, and settlement dry-run all passed with S23 connected.
 - Supervisor stale monitor proof: one supervisor cycle ran data hygiene, runtime/maker seed, dry-run stale guard, and safe lifecycle scheduler. It reported 19 cached markets that would pause under the 90-second stale threshold and did not mutate markets.

@@ -109,7 +109,7 @@ if (-not ($statusCommand.pass -and $processStatus -and $processStatus.process.af
 
 $p1.Add("This proves repeated local supervisor cycles, not an installed OS service.") | Out-Null
 $p1.Add("Background start/status/stop is available through the process manager and now stops process trees, but always-on service installation remains future work.") | Out-Null
-$p1.Add("Provider-shaped result ingestion is proven in replay mode, but unattended live result polling and settlement execution remain future work.") | Out-Null
+$p1.Add("Provider-shaped replay result ingestion is proven, and opt-in quota-capped live result ingestion is available through the supervisor; installed unattended live result polling and settlement execution remain future work.") | Out-Null
 $p2.Add("Multi-event process supervision remains future work.") | Out-Null
 
 $summary = [ordered]@{

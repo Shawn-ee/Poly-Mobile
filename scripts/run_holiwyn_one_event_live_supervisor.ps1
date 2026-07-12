@@ -12,12 +12,16 @@ param(
   [switch]$RunStaleGuard,
   [switch]$EnforceStaleGuard,
   [switch]$RunResultIngestion,
+  [switch]$RunLiveResultIngestion,
   [switch]$RunResultSettlement,
   [switch]$RestartBackend,
   [int]$RefreshIterations = 1,
   [int]$MaxCreditsPerProviderProof = 8,
   [int]$ProviderProofEveryIterations = 1,
   [int]$MaxProviderProofRuns = 1,
+  [int]$ResultIngestionEveryIterations = 1,
+  [int]$MaxLiveResultIngestionRuns = 1,
+  [int]$MaxCreditsPerResultIngestion = 2,
   [int]$MinRemaining = 2,
   [switch]$SkipSleep
 )
@@ -32,6 +36,15 @@ if ($ProviderProofEveryIterations -lt 1) {
 }
 if ($RunProviderProof -and $MaxProviderProofRuns -lt 1) {
   throw "RunProviderProof requires MaxProviderProofRuns of at least 1. This keeps live provider refresh quota-capped."
+}
+if ($ResultIngestionEveryIterations -lt 1) {
+  throw "ResultIngestionEveryIterations must be at least 1."
+}
+if ($RunLiveResultIngestion -and -not $RunResultIngestion) {
+  throw "RunLiveResultIngestion requires RunResultIngestion."
+}
+if ($RunLiveResultIngestion -and $MaxLiveResultIngestionRuns -lt 1) {
+  throw "RunLiveResultIngestion requires MaxLiveResultIngestionRuns of at least 1. This keeps live result ingestion quota-capped."
 }
 
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
@@ -100,6 +113,10 @@ function Write-Heartbeat {
       staleGuardEnabled = [bool]$RunStaleGuard
       staleGuardEnforced = [bool]$EnforceStaleGuard
       resultIngestionEnabled = [bool]$RunResultIngestion
+      liveResultIngestionEnabled = [bool]$RunLiveResultIngestion
+      liveResultIngestionRunsCompleted = $liveResultIngestionRunCount
+      resultIngestionEveryIterations = if ($RunLiveResultIngestion) { $ResultIngestionEveryIterations } else { 0 }
+      maxLiveResultIngestionRuns = if ($RunLiveResultIngestion) { $MaxLiveResultIngestionRuns } else { 0 }
       resultSettlementEnabled = [bool]$RunResultSettlement
       cachedModeUsesQuota = $false
     }
@@ -108,7 +125,7 @@ function Write-Heartbeat {
       marketMakerMode = if ($SkipMakerSeed) { "not seeded by supervisor" } else { "repeated local shifted maker reseed while supervisor runs" }
       lifecycleSchedulerMode = if ($SkipLifecycleScheduler) { "not run by supervisor" } else { "safe real-time scheduler check each cycle; no proof time mutation" }
       staleGuardMode = if (-not $RunStaleGuard) { "disabled" } elseif ($EnforceStaleGuard) { "enforce stale provider pause while supervisor runs" } else { "dry-run stale monitor while supervisor runs" }
-      resultIngestionMode = if ($RunResultIngestion) { "provider-shaped result ingestion replay while supervisor runs; no provider quota spent" } else { "disabled" }
+      resultIngestionMode = if (-not $RunResultIngestion) { "disabled" } elseif ($RunLiveResultIngestion) { "quota-capped live result ingestion by cadence; replay disabled for result ingestion cycles" } else { "provider-shaped result ingestion replay while supervisor runs; no provider quota spent" }
       resultSettlementMode = if ($RunResultSettlement) { "trusted result scheduler dry-run while supervisor runs" } else { "disabled" }
       unattendedServiceInstalled = $false
     }
@@ -184,11 +201,15 @@ function Get-S23Status {
 if ($RunProviderProof -and [string]::IsNullOrWhiteSpace($env:THE_ODDS_API_KEY)) {
   throw "RunProviderProof requires THE_ODDS_API_KEY in the process environment. The key is not read from files or printed."
 }
+if ($RunLiveResultIngestion -and [string]::IsNullOrWhiteSpace($env:THE_ODDS_API_KEY)) {
+  throw "RunLiveResultIngestion requires THE_ODDS_API_KEY in the process environment. The key is not read from files or printed."
+}
 
 $startedAt = (Get-Date).ToUniversalTime()
 $cycles = New-Object System.Collections.Generic.List[object]
 $iteration = 0
 $providerProofRunCount = 0
+$liveResultIngestionRunCount = 0
 $loopPass = $true
 $failure = $null
 
@@ -253,8 +274,19 @@ try {
     }
     $resultIngestionResult = $null
     $resultIngestionSummary = $null
+    $runLiveResultThisCycle = $false
     if ($RunResultIngestion) {
-      $resultIngestionResult = Invoke-CheckedCommand -Label "cycle-$iteration-result-ingestion" -Command "npm run mobile:one-event-result-ingest"
+      $runLiveResultThisCycle = [bool](
+        $RunLiveResultIngestion -and
+        (($iteration - 1) % $ResultIngestionEveryIterations -eq 0) -and
+        ($liveResultIngestionRunCount -lt $MaxLiveResultIngestionRuns)
+      )
+      $resultIngestionCommand = "npm run mobile:one-event-result-ingest"
+      if ($runLiveResultThisCycle) {
+        $resultIngestionCommand += " -- --live --maxCredits=$MaxCreditsPerResultIngestion --minRemaining=$MinRemaining"
+        $liveResultIngestionRunCount += 1
+      }
+      $resultIngestionResult = Invoke-CheckedCommand -Label "cycle-$iteration-result-ingestion" -Command $resultIngestionCommand
       $resultIngestionSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-result-ingestion-summary.redacted.json"
       $resultIngestionSummary = Read-JsonFile $resultIngestionSummaryPath
     }
@@ -295,6 +327,11 @@ try {
       resultIngestion = $resultIngestionResult
       resultIngestionPass = [bool]((-not $RunResultIngestion) -or ($resultIngestionSummary -and $resultIngestionSummary.pass -eq $true))
       resultIngestionMode = if ($resultIngestionSummary) { $resultIngestionSummary.mode } else { $null }
+      liveResultIngestionRan = [bool]$runLiveResultThisCycle
+      liveResultIngestionRunCount = $liveResultIngestionRunCount
+      liveResultIngestionSkippedReason = if ($RunLiveResultIngestion -and -not $runLiveResultThisCycle) {
+        if ($liveResultIngestionRunCount -ge $MaxLiveResultIngestionRuns) { "max_live_result_ingestion_runs_reached" } else { "cadence_skip" }
+      } else { $null }
       resultSettlement = $resultSettlementResult
       resultSettlementPass = [bool]((-not $RunResultSettlement) -or ($resultSettlementSummary -and $resultSettlementSummary.pass -eq $true))
       resultSettlementAction = if ($resultSettlementSummary) { $resultSettlementSummary.action } else { $null }
@@ -342,7 +379,7 @@ if (-not $loopPass) {
 }
 $p1Gaps = New-Object System.Collections.Generic.List[object]
 $p1Gaps.Add("supervisor is a local command, not an installed unattended service") | Out-Null
-$p1Gaps.Add("provider-shaped result ingestion and dry-run settlement are available, but unattended official-result polling and execution are not complete") | Out-Null
+$p1Gaps.Add("provider-shaped replay ingestion and quota-capped live result ingestion are available in the local supervisor, but installed unattended official-result polling and unconfirmed execution are not complete") | Out-Null
 $p2Gaps = New-Object System.Collections.Generic.List[object]
 $p2Gaps.Add("multi-event provider polling and inventory-aware multi-market quoting remain future work") | Out-Null
 
@@ -377,6 +414,12 @@ $summary = [ordered]@{
     staleGuardEnabled = [bool]$RunStaleGuard
     staleGuardEnforced = [bool]$EnforceStaleGuard
     resultIngestionEnabled = [bool]$RunResultIngestion
+    liveResultIngestionEnabled = [bool]$RunLiveResultIngestion
+    liveResultIngestionRunsCompleted = $liveResultIngestionRunCount
+    resultIngestionEveryIterations = if ($RunLiveResultIngestion) { $ResultIngestionEveryIterations } else { 0 }
+    maxLiveResultIngestionRuns = if ($RunLiveResultIngestion) { $MaxLiveResultIngestionRuns } else { 0 }
+    maxCreditsPerResultIngestion = if ($RunLiveResultIngestion) { $MaxCreditsPerResultIngestion } else { 0 }
+    maxCreditsAcrossResultIngestion = if ($RunLiveResultIngestion) { $MaxCreditsPerResultIngestion * $MaxLiveResultIngestionRuns } else { 0 }
     resultSettlementEnabled = [bool]$RunResultSettlement
     cachedModeUsesQuota = $false
   }
@@ -390,14 +433,16 @@ $summary = [ordered]@{
     staleGuardContinuousWhileSupervisorRuns = [bool]($RunStaleGuard -and ($Continuous -or $cycles.Count -gt 1))
     staleGuardMode = if (-not $RunStaleGuard) { "disabled" } elseif ($EnforceStaleGuard) { "enforce stale provider pause while supervisor runs" } else { "dry-run stale monitor while supervisor runs" }
     resultIngestionContinuousWhileSupervisorRuns = [bool]($RunResultIngestion -and ($Continuous -or $cycles.Count -gt 1))
-    resultIngestionMode = if ($RunResultIngestion) { "provider-shaped result ingestion replay while supervisor runs; no provider quota spent" } else { "disabled" }
+    resultIngestionMode = if (-not $RunResultIngestion) { "disabled" } elseif ($RunLiveResultIngestion) { "quota-capped live result ingestion by cadence; replay disabled for result ingestion cycles" } else { "provider-shaped result ingestion replay while supervisor runs; no provider quota spent" }
+    liveResultIngestionContinuousWhileSupervisorRuns = [bool]($RunLiveResultIngestion -and $liveResultIngestionRunCount -gt 1)
+    liveResultIngestionQuotaCappedWhileSupervisorRuns = [bool]($RunLiveResultIngestion -and $liveResultIngestionRunCount -gt 0)
     resultSettlementContinuousWhileSupervisorRuns = [bool]($RunResultSettlement -and ($Continuous -or $cycles.Count -gt 1))
     resultSettlementMode = if ($RunResultSettlement) { "trusted result scheduler dry-run while supervisor runs" } else { "disabled" }
     unattendedServiceInstalled = $false
     providerRefreshMode = if ($RunProviderProof) { "quota-capped live provider proof by cadence; cached verification after cap or cadence skips" } else { "cached provider proof verification; no provider quota spent" }
     marketMakerMode = if ($SkipMakerSeed) { "not seeded by supervisor" } else { "repeated local shifted maker reseed while supervisor runs" }
     lifecycleSchedulerMode = if ($SkipLifecycleScheduler) { "not run by supervisor" } else { "safe real-time scheduler check each cycle; no proof time mutation" }
-    settlementMode = "manual preview/resolve service; automatic official-result settlement not wired"
+    settlementMode = "manual preview/resolve service plus trusted-result dry-run scheduler; unconfirmed automatic settlement execution not wired"
   }
   failure = $failure
   cycles = @($cycles | ForEach-Object { $_ })
