@@ -20,6 +20,7 @@ The current Local MVP is backend-owned and fake-token only. It has proven one sp
 | Continuous bot/soak harness | `scripts/soak_orderbook_bots.ts` references a sibling `poly-bot` package. `scripts/create_sim_bot_credentials.ts` writes bot config to `../poly-bot`. | Not self-contained in this repo. Do not assume it is running or available for mobile MVP runtime. |
 | Reference liquidity seeding | `referenceLiquiditySeeding.ts` supports approved Polymarket reference markets only. | Not usable for Odds API sportsbook markets without new source-aware logic. |
 | Event pause/close/resolve | Admin routes can pause/close markets and resolve orderbook markets. | Manual/admin lifecycle exists. No automatic soccer settlement or result ingest exists yet. |
+| One-event lifecycle scheduler | `src/server/services/oneEventLifecycleScheduler.ts` and `scripts/prove_odds_api_event_lifecycle_scheduler.ts` can pause the selected event inside the pre-start suspend window and close it at/after start. | Proven locally. It is callable by `npm run mobile:one-event-lifecycle-scheduler-proof`, but it is not installed as an unattended daemon/service. |
 | Settlement | `settlement.ts` and admin preview/resolve routes exist for orderbook markets. | Manual/admin-driven. Automatic sports settlement is not proven. |
 
 ## Odds API Usage Classification
@@ -53,12 +54,14 @@ The backend is close enough for a one-event local live proof because the data mo
 - Runtime launcher: `scripts/start_holiwyn_one_event_live_runtime.ps1`.
 - Reusable maker seed: `scripts/seed_odds_api_live_shifted_maker.ts`.
 - Lifecycle controls proof: `scripts/prove_odds_api_event_lifecycle_controls.ts`.
+- Lifecycle scheduler proof: `scripts/prove_odds_api_event_lifecycle_scheduler.ts`.
 - Consolidated readiness gate: `scripts/prove_holiwyn_one_event_live_readiness.ps1`.
 - One-event local supervisor: `scripts/run_holiwyn_one_event_live_supervisor.ps1`.
 - Summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`.
 - Runtime launch summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json`.
 - Maker seed summary: `docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json`.
 - Lifecycle controls summary: `docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json`.
+- Lifecycle scheduler summary: `docs/mobile/harness/odds-api-live-runtime/event-lifecycle-scheduler-summary.redacted.json`.
 - Consolidated readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json`.
 - Supervisor summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json`.
 - S23 summary: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`.

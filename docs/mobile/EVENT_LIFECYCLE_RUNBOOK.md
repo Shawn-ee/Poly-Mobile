@@ -7,8 +7,8 @@
 | Open / LIVE | Users can quote, buy, sell, and see Portfolio/history. | Supported by `Market.status=LIVE` and existing order routes. |
 | Refresh due | Provider quote snapshot is still usable but should refresh. | Surfaced by event detail provider lifecycle fields. |
 | Stale | Provider quote snapshot is older than route stale threshold. | Surfaced by event detail provider lifecycle fields. Trading is still governed by market status unless a guard is explicitly added. |
-| Suspended / PAUSED | Trading disabled manually. | Admin pause route sets `Market.status=PAUSED`. |
-| Closed | Trading disabled manually. | Admin close route sets `Market.status=CLOSED` and cancels open orders. |
+| Suspended / PAUSED | Trading disabled near event start or manually. | `runOneEventLifecycleScheduler` can set `Market.status=PAUSED` inside the pre-start suspend window; admin pause route also exists. |
+| Closed | Trading disabled at/after event start or manually. | `runOneEventLifecycleScheduler` can set `Market.status=CLOSED` and cancels open orders; admin close route also exists. |
 | Settled / resolved | Winning outcome selected and collateral settled. | Admin/manual orderbook resolve route exists. Automatic soccer settlement is not implemented. |
 
 ## Operator Steps For One Local Live Event
@@ -24,8 +24,9 @@
 9. Confirm local shifted maker quotes exist.
 10. Open mobile and trade the selected event with fake tokens.
 11. To prove local lifecycle controls only, run `npm run mobile:one-event-lifecycle-proof`.
-12. If provider goes stale or event starts, pause/close the market manually.
-13. Do not settle automatically unless official result input and admin review are added.
+12. To prove local start-time lifecycle automation, run `npm run mobile:one-event-lifecycle-scheduler-proof`.
+13. If provider goes stale, pause/close the market manually until stale-data lifecycle rules are added.
+14. Do not settle automatically unless official result input and admin review are added.
 
 ## Completion Boundary
 
@@ -37,6 +38,7 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - Restart/runtime launch summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json`
 - Maker seed summary: `docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json`
 - Lifecycle controls summary: `docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json`
+- Lifecycle scheduler summary: `docs/mobile/harness/odds-api-live-runtime/event-lifecycle-scheduler-summary.redacted.json`
 - Consolidated readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json`
 - Supervisor summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json`
 - S23 visible proof: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`
@@ -45,4 +47,5 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - Refreshed state: live Odds API refresh restored selected quote lifecycle to ready.
 - Closed state: temporarily setting the selected market to `CLOSED` caused order placement to fail with `MARKET_UNAVAILABLE`.
 - Lifecycle controls proof: selected market accepted an order in `LIVE`, rejected orders in `PAUSED` and `CLOSED`, produced a non-mutating settlement preview, and restored the market to its original state.
+- Lifecycle scheduler proof: selected event had no action outside the suspend window, paused markets inside the suspend window, closed markets after event start, rejected orders in paused/closed states, restored event/market status, and reseeded local maker quotes.
 - Settlement readiness: manual settlement preview/resolve service exists, but automatic soccer result ingestion and automatic settlement remain P1.

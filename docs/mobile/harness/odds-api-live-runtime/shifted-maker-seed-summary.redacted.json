@@ -1,6 +1,6 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-12T07:59:58.933Z",
+  "generatedAt": "2026-07-12T08:06:34.840Z",
   "scope": "odds-api-one-event-shifted-maker-seed",
   "mode": "seed-resting-shifted-maker-quotes",
   "event": {
@@ -22,7 +22,7 @@
   },
   "providerSnapshot": {
     "fetchedAt": "2026-07-12T07:06:18.254Z",
-    "ageMs": 3220155,
+    "ageMs": 3616157,
     "maxSnapshotAgeMs": 86400000,
     "allowStale": false,
     "source": "sportsbook-odds",
@@ -31,8 +31,8 @@
     "outcomePrice": 0.5091
   },
   "maker": {
-    "id": "956558e2-7ffc-4ea2-88c4-0610fc844c81",
-    "username": "odds_live_runtime_shifted_maker_68aca968"
+    "id": "7a14f084-5ebb-4cea-89e5-2f57b5461195",
+    "username": "odds_live_runtime_shifted_maker_5a8e408e"
   },
   "plan": {
     "quoteOffsetTicks": 2,
@@ -41,36 +41,19 @@
     "size": "200",
     "mintQuantity": "200"
   },
-  "canceledPreviousOrders": [
-    {
-      "orderId": "e2cc9e88-8ca9-4245-88cd-5ca87c4ca4fc",
-      "side": "BUY",
-      "price": "0.47",
-      "remaining": "200",
-      "statusBefore": "OPEN",
-      "canceled": true
-    },
-    {
-      "orderId": "bf4a2aae-f6ac-4746-9292-c00a0cf56fb2",
-      "side": "SELL",
-      "price": "0.55",
-      "remaining": "200",
-      "statusBefore": "OPEN",
-      "canceled": true
-    }
-  ],
+  "canceledPreviousOrders": [],
   "restingOrders": [
     {
-      "id": "71e89056-e152-4960-8ba8-33abb436c2bf",
-      "username": "odds_live_runtime_shifted_maker_68aca968",
+      "id": "e2a42a54-65a1-46cc-8031-42c977a5b57d",
+      "username": "odds_live_runtime_shifted_maker_5a8e408e",
       "side": "BUY",
       "price": "0.47",
       "remaining": "200",
       "status": "OPEN"
     },
     {
-      "id": "92201e2c-8881-434a-a99a-0a4ae11d3553",
-      "username": "odds_live_runtime_shifted_maker_68aca968",
+      "id": "55ee7d47-684a-43e0-87db-8652c6828e4c",
+      "username": "odds_live_runtime_shifted_maker_5a8e408e",
       "side": "SELL",
       "price": "0.55",
       "remaining": "200",
@@ -86,7 +69,7 @@
       "outcomeName": "Over +2.5",
       "bestBid": "0.47",
       "bestAsk": "0.55",
-      "bestBidSize": 277.87,
+      "bestBidSize": 200,
       "bestAskSize": 200,
       "midPrice": "0.51",
       "lastPrice": "0.47",

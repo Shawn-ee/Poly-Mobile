@@ -13702,3 +13702,27 @@ Known limitations:
   - The supervisor is still a foreground local command, not a service or production daemon.
   - Automatic event-start close/suspend scheduling and official-result settlement remain P1.
   - Multi-event polling and inventory-aware maker quoting remain P2.
+
+# Cycle ONEEVENTLIFECYCLESCHEDULER - One-Event Start-Time Lifecycle Scheduler
+
+- Feature/page worked on: backend event lifecycle automation for the selected sportsbook-backed event.
+- Frontend components touched: none. Existing mobile order/ticket behavior now has a backend scheduler proof for paused/closed states.
+- Important functions/services touched:
+  - `src/server/services/oneEventLifecycleScheduler.ts`
+  - `scripts/prove_odds_api_event_lifecycle_scheduler.ts`
+  - `package.json` script `mobile:one-event-lifecycle-scheduler-proof`
+  - `POST /api/orders` rejection behavior for paused/closed markets
+  - `cancelOpenOrderbookOrdersTx` for close-time open-order cleanup
+- User interactions supported:
+  - Before the suspend window, event markets remain tradable.
+  - Inside the pre-start suspend window, the scheduler pauses markets and mobile/order submission receives `MARKET_UNAVAILABLE`.
+  - At or after event start, the scheduler closes markets, cancels open orders, and mobile/order submission receives `MARKET_UNAVAILABLE`.
+- State transitions:
+  - Future start outside suspend window -> no scheduler action.
+  - Near start -> `LIVE` markets move to `PAUSED`.
+  - Past start -> `LIVE` markets move to `CLOSED`, `closeTime` is set, and open orders are canceled.
+  - Proof restores the selected event/market state and reseeds shifted maker quotes afterward.
+- Known limitations:
+  - This scheduler is callable local logic and proof harness, not an installed always-on service.
+  - Official-result ingestion and automatic settlement remain future work.
+  - The current proof DB still contains some older mixed-title sportsbook markets under the selected event; mobile-visible MVP filtering still selects the intended Spain vs. France market, but broader provider data cleanup remains P1.

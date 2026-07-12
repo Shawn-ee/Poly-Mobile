@@ -10012,3 +10012,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: a real provider-backed "team to advance" market for knockout/must-advance games. If absent, Holiwyn must show advance unavailable rather than relabeling 90-minute winner as advance.
 - Temporary mock/static data: none added. Existing redacted Odds API replay remains available; new import normalization only changes which provider markets become mobile-visible.
 - Future migration concern: raw provider markets may need a dedicated raw-provider table if we later want full sportsbook audit storage without creating visible `Market` rows. For the current local MVP, hidden raw lines are represented by metadata/policy and are not exposed in the main mobile UI.
+
+## Cycle ONEEVENTLIFECYCLESCHEDULER - Start-Time Lifecycle Scheduler
+
+- Closed or narrowed: backend lifecycle timing now has a local scheduler contract for one event: no action before the suspend window, pause inside the suspend window, and close/cancel open orders at or after start.
+- Route mismatch: none. The proof uses existing `/api/health` and `/api/orders`; the scheduler mutates `Event.startTime`, `Market.status`, and `Market.closeTime` only in the local proof window and restores them afterward.
+- Fields Holiwyn still needs but backend/provider does not fully provide: official-result feed data for automatic settlement and a durable daemon/service ownership model for always-on scheduling.
+- Temporary mock/static data: none added. The proof uses temporary timestamps on the existing event and spends no provider quota.
+- Future migration concern: the current one-event proof database still contains some older mixed-title sportsbook markets under `odds-api-single-soccer-test`. Mobile MVP filtering selects the intended Spain vs. France market, but the import/runtime cleanup path should remove unrelated provider rows before broader internal testing.

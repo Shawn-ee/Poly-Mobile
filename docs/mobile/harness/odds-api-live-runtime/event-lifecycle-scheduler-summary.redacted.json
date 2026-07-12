@@ -1,0 +1,363 @@
+{
+  "pass": true,
+  "generatedAt": "2026-07-12T08:06:33.689Z",
+  "scope": "odds-api-one-event-lifecycle-scheduler",
+  "event": {
+    "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
+    "slug": "odds-api-single-soccer-test",
+    "title": "Spain vs. France",
+    "originalStartTime": "2026-07-14T19:00:00.000Z"
+  },
+  "selectedMarket": {
+    "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "slug": "odds-api-single-soccer-test-totals-7439c2d603",
+    "title": "Spain vs. France: Total Goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "line": "2.5",
+    "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+    "outcomeName": "Over +2.5"
+  },
+  "schedulerPolicy": {
+    "suspendBeforeStartSeconds": 300,
+    "closeAtOrAfterStart": true,
+    "cancelsOpenOrdersOnClose": true,
+    "automaticOfficialSettlement": false,
+    "providerQuotaUsed": false
+  },
+  "runs": {
+    "noAction": {
+      "generatedAt": "2026-07-12T08:06:33.328Z",
+      "eventSlug": "odds-api-single-soccer-test",
+      "eventTitle": "Spain vs. France",
+      "eventStartTime": "2026-07-12T09:06:33.313Z",
+      "status": "completed",
+      "dryRun": false,
+      "now": "2026-07-12T08:06:33.313Z",
+      "suspendBeforeStartSeconds": 300,
+      "referenceSource": "sportsbook-odds",
+      "action": "none",
+      "reason": "Event is not inside the suspend/close window.",
+      "candidateMarketCount": 15,
+      "changedMarketCount": 0,
+      "canceledOrderCount": 0,
+      "changes": []
+    },
+    "pauseRun": {
+      "generatedAt": "2026-07-12T08:06:33.364Z",
+      "eventSlug": "odds-api-single-soccer-test",
+      "eventTitle": "Spain vs. France",
+      "eventStartTime": "2026-07-12T08:07:33.313Z",
+      "status": "completed",
+      "dryRun": false,
+      "now": "2026-07-12T08:06:33.313Z",
+      "suspendBeforeStartSeconds": 300,
+      "referenceSource": "sportsbook-odds",
+      "action": "pause",
+      "reason": "Event is inside the pre-start suspend window; pause trading.",
+      "candidateMarketCount": 15,
+      "changedMarketCount": 15,
+      "canceledOrderCount": 0,
+      "changes": [
+        {
+          "marketId": "748a4190-b926-4d65-8074-e69df7eb54b2",
+          "title": "Switzerland vs. Argentina: Regulation Time Winner",
+          "fromStatus": "LIVE",
+          "toStatus": "PAUSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": null
+        },
+        {
+          "marketId": "378abc5d-144e-4797-9f07-8b271103468b",
+          "title": "Spain vs. France: Regulation Time Winner",
+          "fromStatus": "LIVE",
+          "toStatus": "PAUSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": null
+        },
+        {
+          "marketId": "00b3d2c5-50c7-465e-9ffa-6428886a8e25",
+          "title": "Switzerland vs. Argentina: Regulation Time Winner",
+          "fromStatus": "LIVE",
+          "toStatus": "PAUSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": null
+        },
+        {
+          "marketId": "528f1f87-cc1c-44a0-8732-876ef0676071",
+          "title": "Spain vs. France: Regulation Time Winner",
+          "fromStatus": "LIVE",
+          "toStatus": "PAUSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": null
+        },
+        {
+          "marketId": "29346e58-158a-4260-953d-259c98fa24ff",
+          "title": "Switzerland vs. Argentina: Spread +0.5",
+          "fromStatus": "LIVE",
+          "toStatus": "PAUSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": null
+        },
+        {
+          "marketId": "83a8b853-5a20-4cd7-93ef-6c22ce0f47d9",
+          "title": "Switzerland vs. Argentina: Spread",
+          "fromStatus": "LIVE",
+          "toStatus": "PAUSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": null
+        },
+        {
+          "marketId": "8a3ac122-bf88-48ef-aad0-a94d612b64f2",
+          "title": "Switzerland vs. Argentina: Spread 0.25",
+          "fromStatus": "LIVE",
+          "toStatus": "PAUSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": null
+        },
+        {
+          "marketId": "b21af47b-14bd-4d5a-b147-094e2cef5c9f",
+          "title": "Switzerland vs. Argentina: Spread 0.75",
+          "fromStatus": "LIVE",
+          "toStatus": "PAUSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": null
+        },
+        {
+          "marketId": "e05c670a-a98b-4075-bb24-ad7da9106e59",
+          "title": "Switzerland vs. Argentina: Spread 1",
+          "fromStatus": "LIVE",
+          "toStatus": "PAUSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": null
+        },
+        {
+          "marketId": "54049f4e-3965-488f-a64a-18a7beecd724",
+          "title": "Switzerland vs. Argentina: Total Goals 2",
+          "fromStatus": "LIVE",
+          "toStatus": "PAUSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": null
+        },
+        {
+          "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+          "title": "Spain vs. France: Total Goals 2.5",
+          "fromStatus": "LIVE",
+          "toStatus": "PAUSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": null
+        },
+        {
+          "marketId": "2b1c3d1e-53a4-4ceb-a5cf-4179e4b9b02e",
+          "title": "Switzerland vs. Argentina: Total Goals",
+          "fromStatus": "LIVE",
+          "toStatus": "PAUSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": null
+        },
+        {
+          "marketId": "ce29edfc-b049-4895-8d88-5d5a08f4b132",
+          "title": "Switzerland vs. Argentina: Total Goals 1.75",
+          "fromStatus": "LIVE",
+          "toStatus": "PAUSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": null
+        },
+        {
+          "marketId": "d2e128af-7e7c-4888-8c3a-1a6c0f827e3c",
+          "title": "Switzerland vs. Argentina: Total Goals 2.25",
+          "fromStatus": "LIVE",
+          "toStatus": "PAUSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": null
+        },
+        {
+          "marketId": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
+          "title": "Switzerland vs. Argentina: Total Goals 2.5",
+          "fromStatus": "LIVE",
+          "toStatus": "PAUSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": null
+        }
+      ]
+    },
+    "closeRun": {
+      "generatedAt": "2026-07-12T08:06:33.503Z",
+      "eventSlug": "odds-api-single-soccer-test",
+      "eventTitle": "Spain vs. France",
+      "eventStartTime": "2026-07-12T08:06:32.313Z",
+      "status": "completed",
+      "dryRun": false,
+      "now": "2026-07-12T08:06:33.313Z",
+      "suspendBeforeStartSeconds": 300,
+      "referenceSource": "sportsbook-odds",
+      "action": "close",
+      "reason": "Event startTime has passed or is now; close mobile-tradable markets.",
+      "candidateMarketCount": 15,
+      "changedMarketCount": 15,
+      "canceledOrderCount": 9,
+      "changes": [
+        {
+          "marketId": "748a4190-b926-4d65-8074-e69df7eb54b2",
+          "title": "Switzerland vs. Argentina: Regulation Time Winner",
+          "fromStatus": "LIVE",
+          "toStatus": "CLOSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": "2026-07-12T08:06:33.313Z"
+        },
+        {
+          "marketId": "378abc5d-144e-4797-9f07-8b271103468b",
+          "title": "Spain vs. France: Regulation Time Winner",
+          "fromStatus": "LIVE",
+          "toStatus": "CLOSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": "2026-07-12T08:06:33.313Z"
+        },
+        {
+          "marketId": "00b3d2c5-50c7-465e-9ffa-6428886a8e25",
+          "title": "Switzerland vs. Argentina: Regulation Time Winner",
+          "fromStatus": "LIVE",
+          "toStatus": "CLOSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": "2026-07-12T08:06:33.313Z"
+        },
+        {
+          "marketId": "528f1f87-cc1c-44a0-8732-876ef0676071",
+          "title": "Spain vs. France: Regulation Time Winner",
+          "fromStatus": "LIVE",
+          "toStatus": "CLOSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": "2026-07-12T08:06:33.313Z"
+        },
+        {
+          "marketId": "29346e58-158a-4260-953d-259c98fa24ff",
+          "title": "Switzerland vs. Argentina: Spread +0.5",
+          "fromStatus": "LIVE",
+          "toStatus": "CLOSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": "2026-07-12T08:06:33.313Z"
+        },
+        {
+          "marketId": "83a8b853-5a20-4cd7-93ef-6c22ce0f47d9",
+          "title": "Switzerland vs. Argentina: Spread",
+          "fromStatus": "LIVE",
+          "toStatus": "CLOSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": "2026-07-12T08:06:33.313Z"
+        },
+        {
+          "marketId": "8a3ac122-bf88-48ef-aad0-a94d612b64f2",
+          "title": "Switzerland vs. Argentina: Spread 0.25",
+          "fromStatus": "LIVE",
+          "toStatus": "CLOSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": "2026-07-12T08:06:33.313Z"
+        },
+        {
+          "marketId": "b21af47b-14bd-4d5a-b147-094e2cef5c9f",
+          "title": "Switzerland vs. Argentina: Spread 0.75",
+          "fromStatus": "LIVE",
+          "toStatus": "CLOSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": "2026-07-12T08:06:33.313Z"
+        },
+        {
+          "marketId": "e05c670a-a98b-4075-bb24-ad7da9106e59",
+          "title": "Switzerland vs. Argentina: Spread 1",
+          "fromStatus": "LIVE",
+          "toStatus": "CLOSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": "2026-07-12T08:06:33.313Z"
+        },
+        {
+          "marketId": "54049f4e-3965-488f-a64a-18a7beecd724",
+          "title": "Switzerland vs. Argentina: Total Goals 2",
+          "fromStatus": "LIVE",
+          "toStatus": "CLOSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": "2026-07-12T08:06:33.313Z"
+        },
+        {
+          "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+          "title": "Spain vs. France: Total Goals 2.5",
+          "fromStatus": "LIVE",
+          "toStatus": "CLOSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": "2026-07-12T08:06:33.313Z"
+        },
+        {
+          "marketId": "2b1c3d1e-53a4-4ceb-a5cf-4179e4b9b02e",
+          "title": "Switzerland vs. Argentina: Total Goals",
+          "fromStatus": "LIVE",
+          "toStatus": "CLOSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": "2026-07-12T08:06:33.313Z"
+        },
+        {
+          "marketId": "ce29edfc-b049-4895-8d88-5d5a08f4b132",
+          "title": "Switzerland vs. Argentina: Total Goals 1.75",
+          "fromStatus": "LIVE",
+          "toStatus": "CLOSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": "2026-07-12T08:06:33.313Z"
+        },
+        {
+          "marketId": "d2e128af-7e7c-4888-8c3a-1a6c0f827e3c",
+          "title": "Switzerland vs. Argentina: Total Goals 2.25",
+          "fromStatus": "LIVE",
+          "toStatus": "CLOSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": "2026-07-12T08:06:33.313Z"
+        },
+        {
+          "marketId": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
+          "title": "Switzerland vs. Argentina: Total Goals 2.5",
+          "fromStatus": "LIVE",
+          "toStatus": "CLOSED",
+          "closeTimeBefore": null,
+          "closeTimeAfter": "2026-07-12T08:06:33.313Z"
+        }
+      ]
+    }
+  },
+  "orderGuards": {
+    "paused": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "MARKET_UNAVAILABLE",
+          "message": "Market is not open for trading."
+        }
+      }
+    },
+    "closed": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "MARKET_UNAVAILABLE",
+          "message": "Market is not open for trading."
+        }
+      }
+    }
+  },
+  "checks": {
+    "backendHealth": true,
+    "noActionBeforeWindow": true,
+    "pauseInsideWindow": true,
+    "pausedOrderRejected": true,
+    "closeAfterStart": true,
+    "closeCanceledOrdersFieldPresent": true,
+    "closedOrderRejected": true,
+    "eventRestored": true,
+    "marketStatusesRestored": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "scheduler is a local proof/service function, not yet wired as an always-on Windows/service daemon"
+    ],
+    "p2": [
+      "automatic official-result settlement and multi-event scheduling remain future work"
+    ]
+  }
+}
