@@ -193,6 +193,82 @@ async function getProviderSnapshotFreshness(params: {
   };
 }
 
+function buildOperatorNextActions(params: {
+  providerSnapshots: JsonObject;
+  supervisorRunning: boolean;
+  resultPollerRunning: boolean;
+}) {
+  const mobileLifecycleStatus = stringValue(params.providerSnapshots.mobileLifecycleStatus) ?? "unknown";
+  const nextProviderAction = stringValue(params.providerSnapshots.nextProviderAction) ?? "inspect_status";
+  const actions = [
+    {
+      id: "cached_internal_testing",
+      priority: "P0",
+      label: "Keep cached local internal testing mode",
+      command: "npm run mobile:one-event-onboarding",
+      requiresProviderKey: false,
+      spendsProviderQuota: false,
+      reason: "Replays/restores the selected one-event runtime and verifies readiness without provider quota.",
+    },
+  ];
+
+  if (mobileLifecycleStatus !== "ready") {
+    actions.push({
+      id: "refresh_mobile_live_odds",
+      priority: "P0",
+      label: "Refresh mobile-visible live odds",
+      command: "npm run mobile:one-event-live-runtime:provider",
+      requiresProviderKey: true,
+      spendsProviderQuota: true,
+      reason:
+        mobileLifecycleStatus === "stale"
+          ? "Selected market provider snapshots are stale under the mobile 90-second live-display window."
+          : mobileLifecycleStatus === "refresh_due"
+            ? "Selected market provider snapshots are past the mobile 60-second refresh-due threshold."
+            : "Selected market needs provider snapshots before live mobile display can be fresh.",
+    });
+  }
+
+  if (!params.supervisorRunning) {
+    actions.push({
+      id: "start_cached_supervisor",
+      priority: "P1",
+      label: "Start local cached supervisor loop",
+      command: "npm run mobile:one-event-live-supervisor:process -- -Action start -Continuous -MaxIterations 0",
+      requiresProviderKey: false,
+      spendsProviderQuota: false,
+      reason: "Keeps local maker/lifecycle/result dry-run checks warm in cached no-quota mode while the process is running.",
+    });
+  }
+
+  if (!params.resultPollerRunning) {
+    actions.push({
+      id: "start_cached_result_poller",
+      priority: "P1",
+      label: "Start local cached result poller",
+      command: "npm run mobile:one-event-result-poller:process -- -Action start -Continuous -MaxIterations 0",
+      requiresProviderKey: false,
+      spendsProviderQuota: false,
+      reason: "Repeats provider-shaped result ingestion and settlement scheduling dry-runs without provider quota.",
+    });
+  }
+
+  return {
+    recommendedFirstAction:
+      nextProviderAction === "none"
+        ? "cached_internal_testing"
+        : nextProviderAction === "refresh_provider_snapshots" ||
+            nextProviderAction === "refresh_provider_snapshots_or_keep_cached_test_mode" ||
+            nextProviderAction === "import_or_refresh_provider_snapshots"
+          ? "refresh_mobile_live_odds"
+          : "cached_internal_testing",
+    nextProviderAction,
+    actions,
+    safety:
+      "Commands are local-only. Provider-refresh commands require THE_ODDS_API_KEY in the environment and remain quota-capped by the underlying proof scripts; the status route never returns or reads the key.",
+  };
+}
+
 export async function getLocalLiveRuntimeStatus() {
   const [completionAudit, phaseAudit, watchdog, supervisorProcess, resultPollerProcess] = await Promise.all([
     readJson(COMPLETION_AUDIT_PATH),
@@ -249,6 +325,11 @@ export async function getLocalLiveRuntimeStatus() {
     artifactFreshness.watchdogFresh &&
     artifactFreshness.liveProofFresh &&
     providerSnapshots.fresh;
+  const operatorNextActions = buildOperatorNextActions({
+    providerSnapshots,
+    supervisorRunning: supervisorProcess.running,
+    resultPollerRunning: resultPollerProcess.running,
+  });
 
   return {
     generatedAt: new Date().toISOString(),
@@ -283,6 +364,7 @@ export async function getLocalLiveRuntimeStatus() {
     },
     freshness: artifactFreshness,
     providerSnapshots,
+    operatorNextActions,
     managedProcesses: {
       supervisor: supervisorProcess,
       resultPoller: resultPollerProcess,

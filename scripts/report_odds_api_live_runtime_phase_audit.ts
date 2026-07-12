@@ -265,6 +265,15 @@ async function main() {
         typeof getPath(localRuntimeStatusBody, ["providerSnapshots", "mobileStaleAfterSeconds"]) === "number" &&
         typeof getPath(localRuntimeStatusBody, ["providerSnapshots", "nextProviderAction"]) === "string" &&
         Number(getPath(localRuntimeStatusBody, ["providerSnapshots", "snapshotCount"]) ?? 0) > 0 &&
+        typeof getPath(localRuntimeStatusBody, ["operatorNextActions", "recommendedFirstAction"]) === "string" &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["operatorNextActions", "actions"])) &&
+        (getPath(localRuntimeStatusBody, ["operatorNextActions", "actions"]) as unknown[]).some(
+          (action) =>
+            action &&
+            typeof action === "object" &&
+            getPath(action, ["id"]) === "cached_internal_testing" &&
+            getPath(action, ["spendsProviderQuota"]) === false,
+        ) &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "supervisor", "checked"]) === true &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "resultPoller", "checked"]) === true &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "quotaSpendingLoopRunning"]) === false &&
@@ -272,7 +281,7 @@ async function main() {
         (getPath(localRuntimeStatusBody, ["gaps", "p0"]) as unknown[]).length === 0,
       evidence: [`${baseUrl}/api/internal/live-runtime/status`],
       notes:
-        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, mobile-route freshness/stale thresholds, and read-only supervisor/result-poller process state. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
+        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, mobile-route freshness/stale thresholds, operator next-action guidance, and read-only supervisor/result-poller process state. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
     }),
     requirement({
       id: "quota-policy",

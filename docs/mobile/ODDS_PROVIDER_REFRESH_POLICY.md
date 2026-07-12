@@ -67,6 +67,8 @@ The local internal status route intentionally reports two freshness lenses:
 
 This means `/api/internal/live-runtime/status` can be `ready` for cached local internal testing while also reporting `providerSnapshots.mobileLifecycleStatus=stale`. That is expected in no-quota mode. To refresh mobile-visible live odds, use the explicit quota-capped provider refresh commands.
 
+The same status route also returns `operatorNextActions` with local command guidance. The cached internal testing action is no-quota. The mobile live-odds refresh action explicitly requires `THE_ODDS_API_KEY` in the caller's environment and may spend quota under the existing caps. The route never returns or reads the key.
+
 The live proof intentionally forces the selected market's existing quote snapshots stale before a refresh, then proves the route returns to `ready` after a live provider refresh.
 
 The stale-guard proof intentionally forces the selected market's stored provider snapshots stale, pauses the `LIVE` market with `settlementStatus=paused_provider_stale`, verifies `POST /api/orders` rejects with `MARKET_UNAVAILABLE`, then restores the original market and snapshot timestamps. This proof is local and quota-free.

@@ -10372,3 +10372,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable provider poll run records, next-refresh scheduling state, and multi-event mobile freshness health remain P1/P2. The current route computes freshness from selected-market `ReferenceQuoteSnapshot` rows only.
 - Temporary mock/static data: none added. The route does not call The Odds API or invent provider data.
 - Future migration concern: production/local multi-event runtime should make this freshness model durable and cover all active provider-backed markets, with clear operator actions for stale mobile odds.
+
+## Cycle LIVERUNTIMEOPERATORACTIONS - Runtime Status Operator Actions
+
+- Closed or narrowed: the local live-runtime status route now tells operators which local command to run next when mobile odds are stale, when cached testing is enough, or when background local loops are stopped.
+- Route mismatch: `/api/internal/live-runtime/status` adds an `operatorNextActions` object with command strings and quota/provider-key flags. This remains local/dev-only guidance.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable job dispatch, authenticated operator controls, service heartbeat records, provider-refresh job records, and multi-event action planning remain P1/P2.
+- Temporary mock/static data: none added. The route composes existing status fields and does not execute commands.
+- Future migration concern: production should expose authenticated actions backed by job records instead of returning local shell commands.

@@ -14570,3 +14570,14 @@ Known limitations:
 - API/data dependencies: `providerSnapshots` now includes `freshnessBasis=local_proof_window`, `latestAgeSeconds`, `mobileRouteFresh`, `mobileRouteRefreshDue`, `mobileRouteStale`, `mobileLifecycleStatus`, `mobileRefreshDueSeconds`, `mobileStaleAfterSeconds`, `mobileRefreshDueAt`, `mobileStaleAt`, and `nextProviderAction`.
 - Proof needed: focused status service tests, direct live route proof, `npm run mobile:one-event-phase-audit`, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: local runtime readiness can remain ready while mobile-route provider freshness is stale, because cached local internal testing is intentionally no-quota by default. To get mobile-fresh odds, run the explicit quota-capped provider refresh path.
+
+## Cycle LIVERUNTIMEOPERATORACTIONS - Runtime Status Operator Actions
+
+- Feature/page worked on: backend local internal live-runtime status guidance.
+- Frontend components touched: none.
+- Important functions/services touched: updated `src/server/services/liveRuntimeStatus.ts`, `src/__tests__/liveRuntimeStatus.service.test.ts`, and `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: local operator or internal testing platform can call `GET /api/internal/live-runtime/status` and receive recommended local commands for cached internal testing, mobile-visible live odds refresh, local supervisor startup, and local result-poller startup.
+- State transitions: none. This is read-only guidance. It does not call The Odds API, read provider secrets, start processes, mutate markets, place orders, or change settlement state.
+- API/data dependencies: status response adds `operatorNextActions.recommendedFirstAction`, `nextProviderAction`, `actions[]`, and a safety note. Action entries include command, provider-key requirement, quota-spend flag, priority, label, and reason.
+- Proof needed: focused status service tests, direct live route proof, `npm run mobile:one-event-phase-audit`, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: these are local operator commands, not a production control plane. The provider refresh command still requires `THE_ODDS_API_KEY` in the local environment and remains quota-capped by the underlying proof scripts.

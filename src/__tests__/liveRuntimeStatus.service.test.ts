@@ -190,6 +190,21 @@ describe("live runtime status service", () => {
     );
     expect(status.gaps.p0).toEqual([]);
     expect(status.runtimeTruth.providerQuotaUsedByStatus).toBe(false);
+    expect(status.operatorNextActions).toMatchObject({
+      recommendedFirstAction: "cached_internal_testing",
+      nextProviderAction: "none",
+      safety: expect.stringContaining("THE_ODDS_API_KEY"),
+    });
+    expect(status.operatorNextActions.actions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "cached_internal_testing",
+          command: "npm run mobile:one-event-onboarding",
+          requiresProviderKey: false,
+          spendsProviderQuota: false,
+        }),
+      ]),
+    );
     expect(status.managedProcesses).toMatchObject({
       anyLoopRunning: false,
       quotaSpendingLoopRunning: false,
@@ -311,6 +326,20 @@ describe("live runtime status service", () => {
       mobileStaleAfterSeconds: 90,
       nextProviderAction: "refresh_provider_snapshots",
     });
+    expect(status.operatorNextActions).toMatchObject({
+      recommendedFirstAction: "refresh_mobile_live_odds",
+      nextProviderAction: "refresh_provider_snapshots",
+    });
+    expect(status.operatorNextActions.actions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "refresh_mobile_live_odds",
+          command: "npm run mobile:one-event-live-runtime:provider",
+          requiresProviderKey: true,
+          spendsProviderQuota: true,
+        }),
+      ]),
+    );
   });
 
   test("reports current managed loop process state without spending provider quota", async () => {

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T16:23:01.768Z",
+  "generatedAt": "2026-07-12T16:28:45.488Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T16:23:01.703Z"
+      "timestamp": "2026-07-12T16:28:45.432Z"
     },
     "error": null
   },
@@ -68,7 +68,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-12T16:23:01.765Z",
+      "generatedAt": "2026-07-12T16:28:45.487Z",
       "scope": "holiwyn-local-live-runtime-status",
       "status": "ready",
       "event": {
@@ -150,11 +150,11 @@
         "maxPhaseAuditAgeHours": 24,
         "maxWatchdogAgeHours": 24,
         "maxLiveProofAgeHours": 24,
-        "completionAuditAgeHours": 0.57,
+        "completionAuditAgeHours": 0.67,
         "phaseAuditAgeHours": 0.1,
-        "watchdogAgeHours": 1.05,
+        "watchdogAgeHours": 1.15,
         "liveProofAgeAtCompletionHours": 7.23,
-        "liveProofCurrentAgeHours": 7.8,
+        "liveProofCurrentAgeHours": 7.9,
         "completionAuditFresh": true,
         "phaseAuditFresh": true,
         "watchdogFresh": true,
@@ -168,8 +168,8 @@
         "reason": null,
         "snapshotCount": 2,
         "latestFetchedAt": "2026-07-12T07:06:18.254Z",
-        "latestAgeHours": 9.28,
-        "latestAgeSeconds": 33404,
+        "latestAgeHours": 9.37,
+        "latestAgeSeconds": 33747,
         "maxAgeHours": 24,
         "sources": [
           "sportsbook-odds"
@@ -187,6 +187,49 @@
         "mobileRefreshDueAt": "2026-07-12T07:07:18.254Z",
         "mobileStaleAt": "2026-07-12T07:07:48.254Z",
         "nextProviderAction": "refresh_provider_snapshots_or_keep_cached_test_mode"
+      },
+      "operatorNextActions": {
+        "recommendedFirstAction": "refresh_mobile_live_odds",
+        "nextProviderAction": "refresh_provider_snapshots_or_keep_cached_test_mode",
+        "actions": [
+          {
+            "id": "cached_internal_testing",
+            "priority": "P0",
+            "label": "Keep cached local internal testing mode",
+            "command": "npm run mobile:one-event-onboarding",
+            "requiresProviderKey": false,
+            "spendsProviderQuota": false,
+            "reason": "Replays/restores the selected one-event runtime and verifies readiness without provider quota."
+          },
+          {
+            "id": "refresh_mobile_live_odds",
+            "priority": "P0",
+            "label": "Refresh mobile-visible live odds",
+            "command": "npm run mobile:one-event-live-runtime:provider",
+            "requiresProviderKey": true,
+            "spendsProviderQuota": true,
+            "reason": "Selected market provider snapshots are stale under the mobile 90-second live-display window."
+          },
+          {
+            "id": "start_cached_supervisor",
+            "priority": "P1",
+            "label": "Start local cached supervisor loop",
+            "command": "npm run mobile:one-event-live-supervisor:process -- -Action start -Continuous -MaxIterations 0",
+            "requiresProviderKey": false,
+            "spendsProviderQuota": false,
+            "reason": "Keeps local maker/lifecycle/result dry-run checks warm in cached no-quota mode while the process is running."
+          },
+          {
+            "id": "start_cached_result_poller",
+            "priority": "P1",
+            "label": "Start local cached result poller",
+            "command": "npm run mobile:one-event-result-poller:process -- -Action start -Continuous -MaxIterations 0",
+            "requiresProviderKey": false,
+            "spendsProviderQuota": false,
+            "reason": "Repeats provider-shaped result ingestion and settlement scheduling dry-runs without provider quota."
+          }
+        ],
+        "safety": "Commands are local-only. Provider-refresh commands require THE_ODDS_API_KEY in the environment and remain quota-capped by the underlying proof scripts; the status route never returns or reads the key."
       },
       "managedProcesses": {
         "supervisor": {
@@ -239,7 +282,7 @@
         "phaseAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-12T16:16:59.607Z"
+          "generatedAt": "2026-07-12T16:23:01.768Z"
         },
         "watchdog": {
           "path": "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
@@ -252,51 +295,51 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 9.28,
-    "onboarding": 5.64,
-    "readiness": 5.64,
-    "runtimeStatus": 2.05,
-    "runtimeLaunch": 3.6,
-    "supervisor": 3.6,
-    "supervisorProcess": 2.84,
-    "internalTesterRuntime": 2.84,
-    "internalTesterResultPoller": 2.84,
-    "internalTesterWatchdog": 1.05,
-    "localRuntimeTask": 4.77,
-    "localRuntimeTaskInstall": 4.58,
-    "localRuntimeStartup": 4.07,
-    "localRuntimeStartupInstall": 2.6,
-    "localRuntimeLaunchProfile": 1.91,
-    "liveRuntimeCompletionAudit": 0.57,
-    "continuousSupervisor": 5.19,
-    "staleGuardProof": 6.87,
-    "staleGuardRun": 6.75,
-    "lifecycleControls": 5.65,
-    "lifecycleScheduler": 5.65,
-    "lifecycleSchedulerRun": 5.19,
-    "lifecycleMatrix": 2.28,
-    "settlementReadiness": 5.64,
-    "settlementExecution": 5.35,
-    "resultSettlementExecution": 4.51,
-    "resultSettlementLiveBlocked": 4.51,
-    "manualSettlement": 5.64,
-    "resultIngestion": 2.84,
-    "resultIngestionAuditEvent": 2.71,
-    "resultPoller": 3.3,
-    "resultPollerProcess": 2.84,
-    "continuousResultPoller": 3.01,
-    "resultSettlement": 2.84,
-    "resultSettlementRun": 2.84,
-    "settlementPreflight": 4.27,
-    "settlementAuditEvent": 3.95,
-    "settlementApprovalAuditEvent": 1.63,
-    "resultReviewTrail": 1.53,
-    "activeSettlementReadiness": 1.42,
-    "approvedAutoSettlement": 3.78,
-    "activeSettlementClone": 1.76,
-    "supervisorApprovedSettlement": 3.6,
-    "makerSeed": 5.19,
-    "s23Visible": 9.1
+    "liveProof": 9.37,
+    "onboarding": 5.74,
+    "readiness": 5.74,
+    "runtimeStatus": 2.15,
+    "runtimeLaunch": 3.7,
+    "supervisor": 3.69,
+    "supervisorProcess": 2.94,
+    "internalTesterRuntime": 2.94,
+    "internalTesterResultPoller": 2.94,
+    "internalTesterWatchdog": 1.15,
+    "localRuntimeTask": 4.86,
+    "localRuntimeTaskInstall": 4.68,
+    "localRuntimeStartup": 4.17,
+    "localRuntimeStartupInstall": 2.69,
+    "localRuntimeLaunchProfile": 2.01,
+    "liveRuntimeCompletionAudit": 0.67,
+    "continuousSupervisor": 5.28,
+    "staleGuardProof": 6.96,
+    "staleGuardRun": 6.85,
+    "lifecycleControls": 5.74,
+    "lifecycleScheduler": 5.74,
+    "lifecycleSchedulerRun": 5.28,
+    "lifecycleMatrix": 2.37,
+    "settlementReadiness": 5.74,
+    "settlementExecution": 5.45,
+    "resultSettlementExecution": 4.6,
+    "resultSettlementLiveBlocked": 4.6,
+    "manualSettlement": 5.74,
+    "resultIngestion": 2.94,
+    "resultIngestionAuditEvent": 2.8,
+    "resultPoller": 3.4,
+    "resultPollerProcess": 2.93,
+    "continuousResultPoller": 3.1,
+    "resultSettlement": 2.94,
+    "resultSettlementRun": 2.94,
+    "settlementPreflight": 4.37,
+    "settlementAuditEvent": 4.05,
+    "settlementApprovalAuditEvent": 1.72,
+    "resultReviewTrail": 1.62,
+    "activeSettlementReadiness": 1.52,
+    "approvedAutoSettlement": 3.87,
+    "activeSettlementClone": 1.85,
+    "supervisorApprovedSettlement": 3.69,
+    "makerSeed": 5.28,
+    "s23Visible": 9.2
   },
   "requirements": [
     {
@@ -351,7 +394,7 @@
       "evidence": [
         "http://127.0.0.1:3002/api/internal/live-runtime/status"
       ],
-      "notes": "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, mobile-route freshness/stale thresholds, and read-only supervisor/result-poller process state. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly."
+      "notes": "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, mobile-route freshness/stale thresholds, operator next-action guidance, and read-only supervisor/result-poller process state. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly."
     },
     {
       "id": "quota-policy",
