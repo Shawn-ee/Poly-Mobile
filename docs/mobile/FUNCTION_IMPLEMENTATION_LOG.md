@@ -14471,3 +14471,14 @@ Known limitations:
 - API/data dependencies: uses the local internal tester runtime manager, `/api/health`, the existing supervisor proof, and the existing result-poller proof. No mobile HTTP route or schema changed.
 - Proof: `npm run mobile:internal-tester-watchdog-proof` passed. Latest S23 reachability in the watchdog summary was false, but that is not a P0 for this backend/runtime watchdog proof.
 - Known limitations: this is not an installed OS service. Production runtime ownership, service monitoring, and direct active-event settlement execution remain P1.
+
+## Cycle ONEEVENTWATCHDOGPHASEGATE - Watchdog Phase Audit Gate
+
+- Feature/page worked on: backend live-runtime phase audit gate.
+- Frontend components touched: none.
+- Important functions/services touched: updated `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: operator can run `npm run mobile:one-event-phase-audit` and it now fails if the internal tester watchdog proof stops proving base runtime readiness, supervisor proof, result-poller proof, no-quota default mode, and loop cleanup.
+- State transitions: none. This is a read-only audit change over existing proof JSON plus existing backend health/quote checks.
+- API/data dependencies: no new HTTP route or schema. The audit reads `internal-tester-watchdog-summary.redacted.json`, internal tester runtime evidence, supervisor proof, and result-poller proof.
+- Proof needed: `npm run mobile:one-event-phase-audit` plus standard server/mobile validation before commit.
+- Known limitations: this strengthens local internal runtime gating but still does not install a production service.

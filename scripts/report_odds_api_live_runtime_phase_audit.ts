@@ -17,6 +17,8 @@ const PATHS = {
     "docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json",
   internalTesterResultPoller:
     "docs/mobile/harness/odds-api-live-runtime/internal-tester-result-poller-control-summary.redacted.json",
+  internalTesterWatchdog:
+    "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
   localRuntimeTask: "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-summary.redacted.json",
   localRuntimeTaskInstall:
     "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-install-uninstall-summary.redacted.json",
@@ -180,6 +182,8 @@ async function main() {
   const supervisorTruth = getPath(entries.supervisor, ["runtimeTruth"]);
   const internalTesterTruth = getPath(entries.internalTesterRuntime, ["runtimeTruth"]);
   const internalTesterResultPollerTruth = getPath(entries.internalTesterResultPoller, ["runtimeTruth"]);
+  const internalTesterWatchdogTruth = getPath(entries.internalTesterWatchdog, ["runtimeTruth"]);
+  const internalTesterWatchdogFirstIteration = getPath(entries.internalTesterWatchdog, ["iterations", "0"]);
   const continuousSupervisorTruth = getPath(entries.continuousSupervisor, ["runtimeTruth"]);
   const continuousResultPollerTruth = getPath(entries.continuousResultPoller, ["runtimeTruth"]);
   const runtimeStatusTruth = getPath(entries.runtimeStatus, ["modeTruth"]);
@@ -542,6 +546,37 @@ async function main() {
       evidence: [PATHS.internalTesterResultPoller, PATHS.internalTesterRuntime, PATHS.resultPollerProcess],
       notes:
         "This folds the dedicated result poller into the local tester control plane. It remains a local process manager, not an installed OS service.",
+    }),
+    requirement({
+      id: "internal-tester-watchdog",
+      priority: "P0",
+      requirement:
+        "Local internal tester watchdog verifies base runtime, supervisor proof, result-poller proof, no-quota mode, and loop cleanup.",
+      achieved:
+        pass(entries.internalTesterWatchdog) &&
+        getPath(entries.internalTesterWatchdog, ["requireSupervisor"]) === true &&
+        getPath(entries.internalTesterWatchdog, ["requireResultPoller"]) === true &&
+        getPath(entries.internalTesterWatchdog, ["stopLoopProcessesAfterRun"]) === true &&
+        getPath(internalTesterWatchdogFirstIteration, ["readyBeforeStart", "backend"]) === true &&
+        getPath(internalTesterWatchdogFirstIteration, ["readyBeforeStart", "expo"]) === true &&
+        getPath(internalTesterWatchdogFirstIteration, ["readyBeforeStart", "postgres"]) === true &&
+        getPath(internalTesterWatchdogFirstIteration, ["supervisorProofExitCode"]) === 0 &&
+        getPath(internalTesterWatchdogFirstIteration, ["resultPollerProofExitCode"]) === 0 &&
+        getPath(internalTesterWatchdogFirstIteration, ["runtimePassAfterIteration"]) === true &&
+        getPath(entries.internalTesterWatchdog, ["cleanup", "supervisor", "pass"]) === true &&
+        getPath(entries.internalTesterWatchdog, ["cleanup", "resultPoller", "pass"]) === true &&
+        getPath(internalTesterWatchdogTruth, ["watchdogCanVerifyBaseRuntime"]) === true &&
+        getPath(internalTesterWatchdogTruth, ["noProviderQuotaByDefault"]) === true &&
+        getPath(internalTesterWatchdogTruth, ["stopsLoopProcessesOnly"]) === true &&
+        getPath(internalTesterWatchdogTruth, ["installedOsService"]) === false,
+      evidence: [
+        PATHS.internalTesterWatchdog,
+        PATHS.internalTesterRuntime,
+        PATHS.continuousSupervisor,
+        PATHS.continuousResultPoller,
+      ],
+      notes:
+        "This adds the local watchdog proof to the authoritative phase gate. S23 reachability is still verified by mobile proof artifacts; the watchdog itself gates backend/Expo/Postgres and runtime loop health.",
     }),
     requirement({
       id: "startup-approved-settlement-profile",
