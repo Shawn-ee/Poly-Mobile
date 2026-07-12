@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-12T08:37:16.7861679Z",
+    "generatedAt":  "2026-07-12T08:42:36.8579015Z",
     "scope":  "holiwyn-one-event-live-supervisor",
     "pass":  true,
-    "startedAt":  "2026-07-12T08:37:04.5488822Z",
-    "completedAt":  "2026-07-12T08:37:16.7861679Z",
+    "startedAt":  "2026-07-12T08:42:17.5804425Z",
+    "completedAt":  "2026-07-12T08:42:36.8579015Z",
     "backend":  {
                     "baseUrl":  "http://127.0.0.1:3002",
                     "health":  {
@@ -12,7 +12,7 @@
                                                 "status":  "ok",
                                                 "db":  "connected",
                                                 "env":  "development",
-                                                "timestamp":  "2026-07-12T08:37:16.806Z"
+                                                "timestamp":  "2026-07-12T08:42:36.886Z"
                                             },
                                    "error":  null
                                }
@@ -36,9 +36,13 @@
                      "completedIterations":  2,
                      "intervalSeconds":  1,
                      "runProviderProof":  false,
+                     "providerProofRunsCompleted":  0,
+                     "providerProofEveryIterations":  0,
+                     "maxProviderProofRuns":  0,
                      "dataHygieneEnabled":  true,
                      "refreshIterationsPerProviderProof":  0,
                      "maxCreditsPerProviderProof":  0,
+                     "maxCreditsAcrossProviderProofs":  0,
                      "minRemaining":  2,
                      "makerSeedEnabled":  true,
                      "lifecycleSchedulerEnabled":  true,
@@ -47,6 +51,7 @@
     "runtimeTruth":  {
                          "backendContinuousWhileSupervisorRuns":  true,
                          "providerRefreshContinuousWhileSupervisorRuns":  false,
+                         "providerRefreshQuotaCappedWhileSupervisorRuns":  false,
                          "dataHygieneContinuousWhileSupervisorRuns":  true,
                          "marketMakerRefreshContinuousWhileSupervisorRuns":  true,
                          "lifecycleSchedulerContinuousWhileSupervisorRuns":  true,
@@ -60,15 +65,15 @@
     "cycles":  [
                    {
                        "iteration":  1,
-                       "startedAt":  "2026-07-12T08:37:04.5528877Z",
-                       "finishedAt":  "2026-07-12T08:37:10.9257122Z",
+                       "startedAt":  "2026-07-12T08:42:17.5834443Z",
+                       "finishedAt":  "2026-07-12T08:42:31.6859379Z",
                        "dataHygiene":  {
                                            "label":  "cycle-1-data-hygiene",
                                            "command":  "npm run mobile:one-event-data-hygiene-proof",
                                            "exitCode":  0,
                                            "pass":  true,
-                                           "startedAt":  "2026-07-12T08:37:04.5573989Z",
-                                           "finishedAt":  "2026-07-12T08:37:05.0473427Z"
+                                           "startedAt":  "2026-07-12T08:42:17.5863664Z",
+                                           "finishedAt":  "2026-07-12T08:42:19.4689491Z"
                                        },
                        "dataHygienePass":  true,
                        "command":  {
@@ -76,8 +81,8 @@
                                        "command":  "npm run mobile:one-event-live-runtime -- -BackendPort 3002 -SeedMaker -SkipSleep",
                                        "exitCode":  0,
                                        "pass":  true,
-                                       "startedAt":  "2026-07-12T08:37:05.0704494Z",
-                                       "finishedAt":  "2026-07-12T08:37:08.0004014Z"
+                                       "startedAt":  "2026-07-12T08:42:19.4933662Z",
+                                       "finishedAt":  "2026-07-12T08:42:28.7788830Z"
                                    },
                        "runtimeSummaryPath":  "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json",
                        "runtimePass":  true,
@@ -86,12 +91,14 @@
                                                   "command":  "npm run mobile:one-event-lifecycle-scheduler-run",
                                                   "exitCode":  0,
                                                   "pass":  true,
-                                                  "startedAt":  "2026-07-12T08:37:08.0041041Z",
-                                                  "finishedAt":  "2026-07-12T08:37:10.9247135Z"
+                                                  "startedAt":  "2026-07-12T08:42:28.7818832Z",
+                                                  "finishedAt":  "2026-07-12T08:42:31.6839328Z"
                                               },
                        "lifecycleSchedulerPass":  true,
                        "lifecycleSchedulerAction":  "none",
                        "providerProofRan":  false,
+                       "providerProofRunCount":  0,
+                       "providerProofSkippedReason":  null,
                        "makerSeeded":  true,
                        "event":  {
                                      "providerEventId":  "f9aa13a662d1658e5a02cfc06d6a2d73",
@@ -113,7 +120,7 @@
                                           },
                        "maker":  {
                                      "pass":  true,
-                                     "generatedAt":  "2026-07-12T08:37:06.698Z",
+                                     "generatedAt":  "2026-07-12T08:42:27.424Z",
                                      "scope":  "odds-api-one-event-shifted-maker-seed",
                                      "mode":  "seed-resting-shifted-maker-quotes",
                                      "event":  {
@@ -135,7 +142,7 @@
                                                         },
                                      "providerSnapshot":  {
                                                               "fetchedAt":  "2026-07-12T07:06:18.254Z",
-                                                              "ageMs":  5448295,
+                                                              "ageMs":  5768752,
                                                               "maxSnapshotAgeMs":  86400000,
                                                               "allowStale":  false,
                                                               "source":  "sportsbook-odds",
@@ -144,8 +151,8 @@
                                                               "outcomePrice":  0.5091
                                                           },
                                      "maker":  {
-                                                   "id":  "4415d570-c479-417b-9ecf-01c4d11941ab",
-                                                   "username":  "odds_live_runtime_shifted_maker_c9d75f99"
+                                                   "id":  "20c0c983-c6f3-47fb-8054-b90caf2ead06",
+                                                   "username":  "odds_live_runtime_shifted_maker_cac368b3"
                                                },
                                      "plan":  {
                                                   "quoteOffsetTicks":  2,
@@ -156,7 +163,7 @@
                                               },
                                      "canceledPreviousOrders":  [
                                                                     {
-                                                                        "orderId":  "a2376a10-7b07-4125-b423-f492762272b2",
+                                                                        "orderId":  "ae65d505-0905-49ad-8b95-7589bb2a9413",
                                                                         "side":  "BUY",
                                                                         "price":  "0.47",
                                                                         "remaining":  "200",
@@ -164,7 +171,7 @@
                                                                         "canceled":  true
                                                                     },
                                                                     {
-                                                                        "orderId":  "b8a5d00d-17d7-4a09-abcb-9cdad2e4bcc5",
+                                                                        "orderId":  "27e62578-a652-4a34-a333-3dce91d56653",
                                                                         "side":  "SELL",
                                                                         "price":  "0.55",
                                                                         "remaining":  "200",
@@ -174,16 +181,16 @@
                                                                 ],
                                      "restingOrders":  [
                                                            {
-                                                               "id":  "88012a21-377b-479b-8ad5-3d4a87d23c0c",
-                                                               "username":  "odds_live_runtime_shifted_maker_c9d75f99",
+                                                               "id":  "aa6be5ba-20cf-480f-9970-732095e3f246",
+                                                               "username":  "odds_live_runtime_shifted_maker_cac368b3",
                                                                "side":  "BUY",
                                                                "price":  "0.47",
                                                                "remaining":  "200",
                                                                "status":  "OPEN"
                                                            },
                                                            {
-                                                               "id":  "83286719-cf2f-4c24-8311-610e911d16f4",
-                                                               "username":  "odds_live_runtime_shifted_maker_c9d75f99",
+                                                               "id":  "d5305bd7-573a-49e2-a92b-b3db541b4410",
+                                                               "username":  "odds_live_runtime_shifted_maker_cac368b3",
                                                                "side":  "SELL",
                                                                "price":  "0.55",
                                                                "remaining":  "200",
@@ -233,15 +240,15 @@
                    },
                    {
                        "iteration":  2,
-                       "startedAt":  "2026-07-12T08:37:11.9435031Z",
-                       "finishedAt":  "2026-07-12T08:37:16.7851673Z",
+                       "startedAt":  "2026-07-12T08:42:32.7057394Z",
+                       "finishedAt":  "2026-07-12T08:42:36.8543938Z",
                        "dataHygiene":  {
                                            "label":  "cycle-2-data-hygiene",
                                            "command":  "npm run mobile:one-event-data-hygiene-proof",
                                            "exitCode":  0,
                                            "pass":  true,
-                                           "startedAt":  "2026-07-12T08:37:11.9435031Z",
-                                           "finishedAt":  "2026-07-12T08:37:12.4383478Z"
+                                           "startedAt":  "2026-07-12T08:42:32.7057394Z",
+                                           "finishedAt":  "2026-07-12T08:42:33.4280489Z"
                                        },
                        "dataHygienePass":  true,
                        "command":  {
@@ -249,8 +256,8 @@
                                        "command":  "npm run mobile:one-event-live-runtime -- -BackendPort 3002 -SeedMaker -SkipSleep",
                                        "exitCode":  0,
                                        "pass":  true,
-                                       "startedAt":  "2026-07-12T08:37:12.4390020Z",
-                                       "finishedAt":  "2026-07-12T08:37:16.1293507Z"
+                                       "startedAt":  "2026-07-12T08:42:33.4290464Z",
+                                       "finishedAt":  "2026-07-12T08:42:35.4152153Z"
                                    },
                        "runtimeSummaryPath":  "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json",
                        "runtimePass":  true,
@@ -259,12 +266,14 @@
                                                   "command":  "npm run mobile:one-event-lifecycle-scheduler-run",
                                                   "exitCode":  0,
                                                   "pass":  true,
-                                                  "startedAt":  "2026-07-12T08:37:16.1303508Z",
-                                                  "finishedAt":  "2026-07-12T08:37:16.7841684Z"
+                                                  "startedAt":  "2026-07-12T08:42:35.4162151Z",
+                                                  "finishedAt":  "2026-07-12T08:42:36.8523943Z"
                                               },
                        "lifecycleSchedulerPass":  true,
                        "lifecycleSchedulerAction":  "none",
                        "providerProofRan":  false,
+                       "providerProofRunCount":  0,
+                       "providerProofSkippedReason":  null,
                        "makerSeeded":  true,
                        "event":  {
                                      "providerEventId":  "f9aa13a662d1658e5a02cfc06d6a2d73",
@@ -286,7 +295,7 @@
                                           },
                        "maker":  {
                                      "pass":  true,
-                                     "generatedAt":  "2026-07-12T08:37:15.366Z",
+                                     "generatedAt":  "2026-07-12T08:42:34.645Z",
                                      "scope":  "odds-api-one-event-shifted-maker-seed",
                                      "mode":  "seed-resting-shifted-maker-quotes",
                                      "event":  {
@@ -308,7 +317,7 @@
                                                         },
                                      "providerSnapshot":  {
                                                               "fetchedAt":  "2026-07-12T07:06:18.254Z",
-                                                              "ageMs":  5456950,
+                                                              "ageMs":  5776240,
                                                               "maxSnapshotAgeMs":  86400000,
                                                               "allowStale":  false,
                                                               "source":  "sportsbook-odds",
@@ -317,8 +326,8 @@
                                                               "outcomePrice":  0.5091
                                                           },
                                      "maker":  {
-                                                   "id":  "1f0a4141-daf3-452a-8fb5-a5418bdd4c41",
-                                                   "username":  "odds_live_runtime_shifted_maker_dc16a7b1"
+                                                   "id":  "3698ca55-cdf7-4ca1-a547-53268d891336",
+                                                   "username":  "odds_live_runtime_shifted_maker_89b13aa2"
                                                },
                                      "plan":  {
                                                   "quoteOffsetTicks":  2,
@@ -329,7 +338,7 @@
                                               },
                                      "canceledPreviousOrders":  [
                                                                     {
-                                                                        "orderId":  "88012a21-377b-479b-8ad5-3d4a87d23c0c",
+                                                                        "orderId":  "aa6be5ba-20cf-480f-9970-732095e3f246",
                                                                         "side":  "BUY",
                                                                         "price":  "0.47",
                                                                         "remaining":  "200",
@@ -337,7 +346,7 @@
                                                                         "canceled":  true
                                                                     },
                                                                     {
-                                                                        "orderId":  "83286719-cf2f-4c24-8311-610e911d16f4",
+                                                                        "orderId":  "d5305bd7-573a-49e2-a92b-b3db541b4410",
                                                                         "side":  "SELL",
                                                                         "price":  "0.55",
                                                                         "remaining":  "200",
@@ -347,16 +356,16 @@
                                                                 ],
                                      "restingOrders":  [
                                                            {
-                                                               "id":  "ae65d505-0905-49ad-8b95-7589bb2a9413",
-                                                               "username":  "odds_live_runtime_shifted_maker_dc16a7b1",
+                                                               "id":  "f87c7bdb-5357-4cad-a6eb-6aac8f9702bf",
+                                                               "username":  "odds_live_runtime_shifted_maker_89b13aa2",
                                                                "side":  "BUY",
                                                                "price":  "0.47",
                                                                "remaining":  "200",
                                                                "status":  "OPEN"
                                                            },
                                                            {
-                                                               "id":  "27e62578-a652-4a34-a333-3dce91d56653",
-                                                               "username":  "odds_live_runtime_shifted_maker_dc16a7b1",
+                                                               "id":  "457a23c7-0a48-49b9-86fa-c323cf586ad5",
+                                                               "username":  "odds_live_runtime_shifted_maker_89b13aa2",
                                                                "side":  "SELL",
                                                                "price":  "0.55",
                                                                "remaining":  "200",

@@ -149,6 +149,9 @@ async function main() {
       liveProviderRefreshContinuousWhileSupervisorRuns: bool(
         getPath(supervisorRuntimeTruth, ["providerRefreshContinuousWhileSupervisorRuns"]),
       ),
+      liveProviderRefreshQuotaCappedWhileSupervisorRuns: bool(
+        getPath(supervisorRuntimeTruth, ["providerRefreshQuotaCappedWhileSupervisorRuns"]),
+      ),
       makerRefreshContinuousWhileSupervisorRuns: bool(
         getPath(supervisorRuntimeTruth, ["marketMakerRefreshContinuousWhileSupervisorRuns"]),
       ),

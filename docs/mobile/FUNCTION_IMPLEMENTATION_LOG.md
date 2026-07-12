@@ -13702,9 +13702,11 @@ Known limitations:
 - User interactions supported:
   - Internal testers can keep the selected event locally tradable over repeated test cycles instead of manually rerunning maker seed after every local runtime check.
   - The default supervisor run does not spend provider quota; it uses the latest stored provider snapshot and reseeds shifted fake-token maker quotes.
+  - Live provider refresh inside the supervisor is explicitly capped by `MaxProviderProofRuns` and paced by `ProviderProofEveryIterations`, so a long-running local loop cannot silently refresh forever by default.
   - While the supervisor is active, each cycle also checks data hygiene and applies the real-time lifecycle scheduler for the current event start time.
 - State transitions:
   - Cycle start -> data hygiene guard -> backend health check -> cached provider proof freshness check -> optional live provider refresh -> maker quote cleanup/reseed -> quote route verification -> safe lifecycle scheduler run.
+  - Provider refresh cycle -> run only when `RunProviderProof` is enabled, cadence matches, and the max provider proof run count has not been reached; otherwise use cached proof verification.
   - Scheduler run uses the real current time only; unlike the scheduler proof, it does not temporarily change event start time.
   - The supervisor writes a summary that separates "continuous while this command runs" from "installed unattended service."
 - Known limitations:

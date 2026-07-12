@@ -13,7 +13,7 @@ Temporary Local MVP provider: The Odds API. This policy is for fake-token local 
 - `npm run mobile:one-event-live-runtime -- -SeedMaker` seeds local fake-token maker liquidity from stored provider snapshots and does not spend provider quota.
 - `npm run mobile:one-event-live-runtime:provider` is the explicit live provider proof command and requires `THE_ODDS_API_KEY`.
 - `npm run mobile:one-event-live-supervisor` repeats data hygiene, the local one-event runtime check, maker seed, and safe real-time lifecycle scheduler without spending provider quota unless `-RunProviderProof` is passed.
-- `npm run mobile:one-event-live-supervisor -- -RunProviderProof -Continuous -MaxIterations 0` is the local repeated live-provider mode. Use it only for an intentional manual test because it spends provider quota each cycle.
+- `npm run mobile:one-event-live-supervisor -- -RunProviderProof -Continuous -MaxIterations 0` is the local live-provider supervisor mode. It is quota-capped by `-MaxProviderProofRuns` and paced by `-ProviderProofEveryIterations`; use it only for an intentional manual test.
 - `npm run mobile:one-event-runtime-status` reads local proof summaries plus local backend health/quote routes and reports whether the current runtime is cached-only, how fresh the last live proof is, and what quota the last proof used. It does not call the provider.
 - Do not print or commit `THE_ODDS_API_KEY`.
 - Track provider quota from response headers:
@@ -31,6 +31,8 @@ Temporary Local MVP provider: The Odds API. This policy is for fake-token local 
 | Refresh iterations | 2 |
 | Refresh interval | 15 seconds |
 | Supervisor default iterations | 2 |
+| Supervisor provider proof cadence | Every 1 iteration when `-RunProviderProof` is set |
+| Supervisor max provider proof runs | 1 by default |
 | Stale threshold used by route | 90 seconds |
 | Refresh-due threshold used by route | 60 seconds |
 | Max live provider credits | 16 |

@@ -11,6 +11,8 @@ param(
   [switch]$RestartBackend,
   [int]$RefreshIterations = 1,
   [int]$MaxCreditsPerProviderProof = 8,
+  [int]$ProviderProofEveryIterations = 1,
+  [int]$MaxProviderProofRuns = 1,
   [int]$MinRemaining = 2,
   [switch]$SkipSleep
 )
@@ -19,6 +21,12 @@ $ErrorActionPreference = "Stop"
 
 if ($Continuous -and $MaxIterations -gt 0) {
   throw "Use either -Continuous or -MaxIterations, not both. Pass -MaxIterations 0 with -Continuous for an open-ended local loop."
+}
+if ($ProviderProofEveryIterations -lt 1) {
+  throw "ProviderProofEveryIterations must be at least 1."
+}
+if ($RunProviderProof -and $MaxProviderProofRuns -lt 1) {
+  throw "RunProviderProof requires MaxProviderProofRuns of at least 1. This keeps live provider refresh quota-capped."
 }
 
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
@@ -130,6 +138,7 @@ if ($RunProviderProof -and [string]::IsNullOrWhiteSpace($env:THE_ODDS_API_KEY)) 
 $startedAt = (Get-Date).ToUniversalTime()
 $cycles = New-Object System.Collections.Generic.List[object]
 $iteration = 0
+$providerProofRunCount = 0
 $loopPass = $true
 $failure = $null
 
@@ -161,8 +170,14 @@ try {
     if ($RestartBackend -and $iteration -eq 1) {
       $command += " -RestartBackend"
     }
-    if ($RunProviderProof) {
+    $runProviderThisCycle = [bool](
+      $RunProviderProof -and
+      (($iteration - 1) % $ProviderProofEveryIterations -eq 0) -and
+      ($providerProofRunCount -lt $MaxProviderProofRuns)
+    )
+    if ($runProviderThisCycle) {
       $command += " -RunProviderProof -RefreshIterations $RefreshIterations -MaxCredits $MaxCreditsPerProviderProof -MinRemaining $MinRemaining"
+      $providerProofRunCount += 1
     }
     if (-not $SkipMakerSeed) {
       $command += " -SeedMaker"
@@ -193,7 +208,11 @@ try {
       lifecycleScheduler = $schedulerResult
       lifecycleSchedulerPass = [bool]($SkipLifecycleScheduler -or ($schedulerSummary -and $schedulerSummary.pass -eq $true))
       lifecycleSchedulerAction = $schedulerSummary.scheduler.action
-      providerProofRan = [bool]$RunProviderProof
+      providerProofRan = [bool]$runProviderThisCycle
+      providerProofRunCount = $providerProofRunCount
+      providerProofSkippedReason = if ($RunProviderProof -and -not $runProviderThisCycle) {
+        if ($providerProofRunCount -ge $MaxProviderProofRuns) { "max_provider_proof_runs_reached" } else { "cadence_skip" }
+      } else { $null }
       makerSeeded = [bool](-not $SkipMakerSeed)
       event = $runtimeSummary.provider.proof.event
       selectedMarket = $runtimeSummary.provider.proof.selectedMarket
@@ -250,9 +269,13 @@ $summary = [ordered]@{
     completedIterations = $cycles.Count
     intervalSeconds = $IntervalSeconds
     runProviderProof = [bool]$RunProviderProof
+    providerProofRunsCompleted = $providerProofRunCount
+    providerProofEveryIterations = if ($RunProviderProof) { $ProviderProofEveryIterations } else { 0 }
+    maxProviderProofRuns = if ($RunProviderProof) { $MaxProviderProofRuns } else { 0 }
     dataHygieneEnabled = [bool](-not $SkipDataHygiene)
     refreshIterationsPerProviderProof = if ($RunProviderProof) { $RefreshIterations } else { 0 }
     maxCreditsPerProviderProof = if ($RunProviderProof) { $MaxCreditsPerProviderProof } else { 0 }
+    maxCreditsAcrossProviderProofs = if ($RunProviderProof) { $MaxCreditsPerProviderProof * $MaxProviderProofRuns } else { 0 }
     minRemaining = $MinRemaining
     makerSeedEnabled = [bool](-not $SkipMakerSeed)
     lifecycleSchedulerEnabled = [bool](-not $SkipLifecycleScheduler)
@@ -260,12 +283,13 @@ $summary = [ordered]@{
   }
   runtimeTruth = [ordered]@{
     backendContinuousWhileSupervisorRuns = $true
-    providerRefreshContinuousWhileSupervisorRuns = [bool]($RunProviderProof -and ($Continuous -or $cycles.Count -gt 1))
+    providerRefreshContinuousWhileSupervisorRuns = [bool]($RunProviderProof -and $providerProofRunCount -gt 1)
+    providerRefreshQuotaCappedWhileSupervisorRuns = [bool]($RunProviderProof -and $providerProofRunCount -gt 0)
     dataHygieneContinuousWhileSupervisorRuns = [bool]((-not $SkipDataHygiene) -and ($Continuous -or $cycles.Count -gt 1))
     marketMakerRefreshContinuousWhileSupervisorRuns = [bool]((-not $SkipMakerSeed) -and ($Continuous -or $cycles.Count -gt 1))
     lifecycleSchedulerContinuousWhileSupervisorRuns = [bool]((-not $SkipLifecycleScheduler) -and ($Continuous -or $cycles.Count -gt 1))
     unattendedServiceInstalled = $false
-    providerRefreshMode = if ($RunProviderProof) { "quota-guarded repeated live provider proof while supervisor runs" } else { "cached provider proof verification; no provider quota spent" }
+    providerRefreshMode = if ($RunProviderProof) { "quota-capped live provider proof by cadence; cached verification after cap or cadence skips" } else { "cached provider proof verification; no provider quota spent" }
     marketMakerMode = if ($SkipMakerSeed) { "not seeded by supervisor" } else { "repeated local shifted maker reseed while supervisor runs" }
     lifecycleSchedulerMode = if ($SkipLifecycleScheduler) { "not run by supervisor" } else { "safe real-time scheduler check each cycle; no proof time mutation" }
     settlementMode = "manual preview/resolve service; automatic official-result settlement not wired"
