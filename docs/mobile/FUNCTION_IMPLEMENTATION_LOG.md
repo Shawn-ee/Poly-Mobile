@@ -14692,6 +14692,17 @@ Known limitations:
 - Proof needed: one-iteration supervisor proof, result-poller proof, direct DB heartbeat inspection, status route proof, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this narrows worker-owned heartbeat evidence, but these are still local scripts/processes. Installed OS service ownership, alerting, worker-emitted provider/result poll run records, and multi-event queue supervision remain P1/P2.
 
+## Cycle LIVERUNTIMERUNRECORDS - Worker-Owned Runtime Run Records
+
+- Feature/page worked on: backend local internal runtime run outcome persistence.
+- Frontend components touched: none.
+- Important functions/services touched: added Prisma model `RuntimeServiceRun`, migration `20260712183000_add_runtime_service_run`, `src/server/services/runtimeServiceRun.ts`, and `scripts/write_runtime_service_run.ts`; updated `scripts/run_holiwyn_one_event_live_supervisor.ps1`, `scripts/run_holiwyn_one_event_result_poller.ps1`, `src/server/services/liveRuntimeStatus.ts`, `src/__tests__/liveRuntimeStatus.service.test.ts`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, and `scripts/report_holiwyn_live_runtime_completion_audit.ts`.
+- User/runtime interactions supported: when the supervisor or result poller finishes a local run, it emits a durable worker-owned `RuntimeServiceRun` row. `GET /api/internal/live-runtime/status` exposes the latest row per service, and phase/completion audits require both services to have latest passed no-quota rows.
+- State transitions: writes/updates only `RuntimeServiceRun`. It does not call The Odds API, spend provider quota, start loops, place orders, mutate markets, approve settlement, or execute active-event settlement.
+- API/data dependencies: worker scripts read their just-written local summary JSON to preserve run status, start/finish time, iteration count, event slug, selected market id, result action, summary path, quota-use truth, active-settlement truth, installed-service truth, and worker-owned metadata.
+- Proof needed: Prisma migration deploy, one-iteration supervisor proof, result-poller proof, direct DB run inspection, local runtime status route proof, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this closes the proof-artifact-only outcome gap for local workers, but it still does not install production service ownership, retry/alerting, multi-event job queues, or authenticated operator controls.
+
 ## Cycle LIVERUNTIMELIFECYCLEAPI - Local Lifecycle Status API
 
 - Feature/page worked on: backend local internal event lifecycle status surface.

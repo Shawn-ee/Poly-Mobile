@@ -746,6 +746,33 @@ model RuntimeServiceHeartbeat {
   @@index([heartbeatAt])
 }
 
+model RuntimeServiceRun {
+  id                       String    @id @default(uuid())
+  runKey                   String    @unique
+  serviceKey               String
+  serviceName              String
+  serviceKind              String
+  status                   String
+  startedAt                DateTime
+  finishedAt               DateTime?
+  durationMs               Int?
+  iterationCount           Int       @default(0)
+  providerQuotaUsed        Boolean   @default(false)
+  activeSettlementExecuted Boolean   @default(false)
+  installedOsService       Boolean   @default(false)
+  eventSlug                String?
+  selectedMarketId         String?
+  resultAction             String?
+  summaryPath              String?
+  metadata                 Json
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+
+  @@index([serviceKey, startedAt])
+  @@index([serviceKind, startedAt])
+  @@index([status, startedAt])
+}
+
 model Fill {
   id           String    @id @default(uuid())
   takerOrderId String

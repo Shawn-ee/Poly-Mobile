@@ -143,6 +143,31 @@ function Write-Heartbeat {
   }
 }
 
+function Write-RunRecord {
+  param(
+    [Parameter(Mandatory = $true)] [object]$Summary,
+    [Parameter(Mandatory = $true)] [string]$SummaryPath
+  )
+  $runStatus = if ($Summary.pass) { "passed" } else { "failed" }
+  $runArgs = @(
+    "tsx", "scripts/write_runtime_service_run.ts",
+    "--serviceName=one-event-result-poller",
+    "--serviceKind=result-poller",
+    "--status=$runStatus",
+    "--startedAt=$($Summary.startedAt)",
+    "--finishedAt=$($Summary.completedAt)",
+    "--iterationCount=$($Summary.settings.completedIterations)",
+    "--providerQuotaUsed=$($RunLiveResultIngestion.ToString().ToLowerInvariant())",
+    "--activeSettlementExecuted=false",
+    "--installedOsService=false",
+    "--summaryPath=$SummaryPath"
+  )
+  & npx @runArgs | Out-Null
+  if ($LASTEXITCODE -ne 0) {
+    throw "Failed to write worker-owned result-poller runtime run record."
+  }
+}
+
 $startedAt = (Get-Date).ToUniversalTime()
 $cycles = New-Object System.Collections.Generic.List[object]
 $iteration = 0
@@ -261,6 +286,7 @@ $summary = [ordered]@{
 }
 
 Write-JsonFile -Value $summary -Path $SummaryPath -Depth 90
+Write-RunRecord -Summary $summary -SummaryPath $SummaryPath
 $summary | ConvertTo-Json -Depth 90
 
 if (-not $summary.pass) { exit 1 }

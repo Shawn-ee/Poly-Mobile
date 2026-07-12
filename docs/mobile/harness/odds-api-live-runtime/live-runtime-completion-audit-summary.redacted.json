@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T18:20:19.327Z",
+  "generatedAt": "2026-07-12T18:38:58.473Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -28,7 +28,7 @@
     "freshness": {
       "liveProofAgeHours": 9.56,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 3.01,
+      "watchdogAgeHours": 3.32,
       "maxWatchdogAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -37,6 +37,7 @@
     "activeSettlement": "wait_for_or_apply_market_close_before_execution",
     "resultReview": "Local result-review API is phase-gated through /api/internal/live-runtime/result-review, reads canonical result/preflight/approval evidence, writes a redacted durable OfficialResultReview row, and does not spend provider quota.",
     "runtimeHeartbeats": "Supervisor and result-poller loops emit worker-owned RuntimeServiceHeartbeat rows; local runtime status preserves that evidence without claiming an installed OS service.",
+    "runtimeRuns": "Supervisor and result-poller loops emit worker-owned RuntimeServiceRun rows when a run finishes; local runtime status requires latest passed rows for both services without quota spend, active settlement execution, or installed-service claims.",
     "localWatchdog": "Internal tester watchdog verifies backend/Expo/Postgres readiness, repeated supervisor proof, background result-poller proof, no-quota default mode, and loop cleanup."
   },
   "runtimeTruth": {
@@ -76,6 +77,7 @@
     "activeSettlementDecisionKnown": true,
     "localResultReviewApiKnown": true,
     "durableRuntimeHeartbeatsKnown": true,
+    "durableRuntimeRunsKnown": true,
     "mobileS23EndToEndTradeProofPass": true,
     "launchProfileKnown": true,
     "internalTesterWatchdogKnown": true,

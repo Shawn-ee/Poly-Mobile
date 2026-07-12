@@ -10070,6 +10070,14 @@ Future migration concern:
 - Temporary mock/static data: default supervisor result ingestion uses the redacted Odds API scores-shaped fixture and does not spend quota. Live result ingestion remains explicit through `npm run mobile:one-event-result-ingest -- --live`.
 - Future migration concern: keep score/result ingestion separate from odds refresh. The supervisor can coordinate both, but pricing snapshots and settlement evidence must remain distinct contracts.
 
+## Cycle RUNTIMERUNRECORDS - Durable Local Worker Run Records
+
+- Closed or narrowed: supervisor/result-poller outcomes are no longer only proof JSON. `RuntimeServiceRun` stores latest worker-owned run rows with service identity, passed/failed status, start/finish, iteration count, event/market identity where available, summary path, quota-use truth, active-settlement truth, and installed-service truth.
+- Route mismatch: none. `/api/internal/live-runtime/status` reads the latest `RuntimeServiceRun` per local service and exposes `runtimeRuns`; phase/completion audits require both expected services to have latest passed no-quota rows.
+- Fields Holiwyn still needs but backend/provider does not fully provide: production service ownership, retry/alerting, multi-event job queue state, and official installed provider/result polling schedule state remain P1/P2.
+- Temporary mock/static data: none added. The rows are emitted by local runtime workers after real local proof commands finish and do not spend provider quota.
+- Future migration concern: promote this local row contract into a production job-run/service-run contract before adding multi-event provider polling, so operator tooling can distinguish replay, live-provider, dry-run settlement, and approved execution modes.
+
 ## Cycle ONEEVENTRESULTSETTLEMENT - Trusted Result Settlement Intake
 
 - Closed or narrowed: settlement no longer depends only on a manually supplied outcome id. A trusted soccer result JSON contract can now map score/result evidence to the selected market's winning outcome and produce a guarded dry-run settlement preview.

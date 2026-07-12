@@ -66,6 +66,11 @@ function workerOwnedHeartbeatCount(value: unknown) {
   return value.filter((record) => getPath(record, ["metadata", "workerOwned"]) === true).length;
 }
 
+function workerOwnedRunCount(value: unknown) {
+  if (!Array.isArray(value)) return 0;
+  return value.filter((record) => getPath(record, ["metadata", "workerOwned"]) === true).length;
+}
+
 function pass(entry: JsonObject | null) {
   return entry?.pass === true || entry?.result === "pass";
 }
@@ -165,6 +170,16 @@ async function main() {
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeHeartbeats", "quotaSpendingHeartbeatRunning"]) === false &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeHeartbeats", "installedOsService"]) === false &&
       workerOwnedHeartbeatCount(getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeHeartbeats", "records"])) >= 2,
+    durableRuntimeRunsKnown:
+      pass(entries.phaseAudit) &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeRuns", "checked"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeRuns", "durable"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeRuns", "allExpectedServicesRecorded"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeRuns", "allExpectedServicesPassed"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeRuns", "quotaSpendingRunRecorded"]) === false &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeRuns", "activeSettlementExecuted"]) === false &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeRuns", "installedOsService"]) === false &&
+      workerOwnedRunCount(getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeRuns", "records"])) >= 2,
     mobileS23EndToEndTradeProofPass:
       pass(entries.s23Visible) &&
       truthy(getPath(entries.s23Visible, ["assertions", "swipeSubmitReachedPortfolio"])) &&
@@ -237,6 +252,8 @@ async function main() {
         "Local result-review API is phase-gated through /api/internal/live-runtime/result-review, reads canonical result/preflight/approval evidence, writes a redacted durable OfficialResultReview row, and does not spend provider quota.",
       runtimeHeartbeats:
         "Supervisor and result-poller loops emit worker-owned RuntimeServiceHeartbeat rows; local runtime status preserves that evidence without claiming an installed OS service.",
+      runtimeRuns:
+        "Supervisor and result-poller loops emit worker-owned RuntimeServiceRun rows when a run finishes; local runtime status requires latest passed rows for both services without quota spend, active settlement execution, or installed-service claims.",
       localWatchdog:
         "Internal tester watchdog verifies backend/Expo/Postgres readiness, repeated supervisor proof, background result-poller proof, no-quota default mode, and loop cleanup.",
     },

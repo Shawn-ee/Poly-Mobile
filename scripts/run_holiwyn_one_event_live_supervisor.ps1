@@ -159,6 +159,31 @@ function Write-Heartbeat {
   }
 }
 
+function Write-RunRecord {
+  param(
+    [Parameter(Mandatory = $true)] [object]$Summary,
+    [Parameter(Mandatory = $true)] [string]$SummaryPath
+  )
+  $runStatus = if ($Summary.pass) { "passed" } else { "failed" }
+  $runArgs = @(
+    "tsx", "scripts/write_runtime_service_run.ts",
+    "--serviceName=one-event-live-supervisor",
+    "--serviceKind=supervisor",
+    "--status=$runStatus",
+    "--startedAt=$($Summary.startedAt)",
+    "--finishedAt=$($Summary.completedAt)",
+    "--iterationCount=$($Summary.settings.completedIterations)",
+    "--providerQuotaUsed=$(([bool]($RunProviderProof -or $RunLiveResultIngestion)).ToString().ToLowerInvariant())",
+    "--activeSettlementExecuted=false",
+    "--installedOsService=false",
+    "--summaryPath=$SummaryPath"
+  )
+  & npx @runArgs | Out-Null
+  if ($LASTEXITCODE -ne 0) {
+    throw "Failed to write worker-owned supervisor runtime run record."
+  }
+}
+
 function Invoke-CheckedCommand {
   param(
     [Parameter(Mandatory = $true)] [string]$Label,
@@ -492,6 +517,7 @@ $summary = [ordered]@{
 
 $resolvedSummaryPath = Resolve-RepoPath $SummaryPath
 Write-JsonFile -Value $summary -Path $resolvedSummaryPath -Depth 60
+Write-RunRecord -Summary $summary -SummaryPath $SummaryPath
 $summary | ConvertTo-Json -Depth 60
 
 if (-not $summary.pass) {

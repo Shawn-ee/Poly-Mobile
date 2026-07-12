@@ -206,6 +206,10 @@ async function main() {
   const workerOwnedHeartbeatCount = Array.isArray(runtimeHeartbeatRecords)
     ? runtimeHeartbeatRecords.filter((record) => getPath(record, ["metadata", "workerOwned"]) === true).length
     : 0;
+  const runtimeRunRecords = getPath(localRuntimeStatusBody, ["runtimeRuns", "records"]);
+  const workerOwnedRunCount = Array.isArray(runtimeRunRecords)
+    ? runtimeRunRecords.filter((record) => getPath(record, ["metadata", "workerOwned"]) === true).length
+    : 0;
   const requirements = [
     requirement({
       id: "survey-existing-runtime-services",
@@ -309,11 +313,19 @@ async function main() {
         getPath(localRuntimeStatusBody, ["runtimeHeartbeats", "quotaSpendingHeartbeatRunning"]) === false &&
         getPath(localRuntimeStatusBody, ["runtimeHeartbeats", "installedOsService"]) === false &&
         workerOwnedHeartbeatCount >= 2 &&
+        getPath(localRuntimeStatusBody, ["runtimeRuns", "checked"]) === true &&
+        getPath(localRuntimeStatusBody, ["runtimeRuns", "durable"]) === true &&
+        getPath(localRuntimeStatusBody, ["runtimeRuns", "allExpectedServicesRecorded"]) === true &&
+        getPath(localRuntimeStatusBody, ["runtimeRuns", "allExpectedServicesPassed"]) === true &&
+        getPath(localRuntimeStatusBody, ["runtimeRuns", "quotaSpendingRunRecorded"]) === false &&
+        getPath(localRuntimeStatusBody, ["runtimeRuns", "activeSettlementExecuted"]) === false &&
+        getPath(localRuntimeStatusBody, ["runtimeRuns", "installedOsService"]) === false &&
+        workerOwnedRunCount >= 2 &&
         Array.isArray(getPath(localRuntimeStatusBody, ["gaps", "p0"])) &&
         (getPath(localRuntimeStatusBody, ["gaps", "p0"]) as unknown[]).length === 0,
       evidence: [`${baseUrl}/api/internal/live-runtime/status`],
       notes:
-        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, latest-run-vs-proven-capability separation, read-only supervisor/result-poller process state, durable RuntimeServiceHeartbeat rows, and preserved worker-owned heartbeat metadata. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
+        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, latest-run-vs-proven-capability separation, read-only supervisor/result-poller process state, durable RuntimeServiceHeartbeat rows, worker-owned RuntimeServiceRun rows, and preserved worker-owned metadata. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
     }),
     requirement({
       id: "local-result-review-api-ready",

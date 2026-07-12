@@ -54,6 +54,9 @@ const stringValue = (value: unknown) => (typeof value === "string" && value.leng
 
 const booleanValue = (value: unknown) => (typeof value === "boolean" ? value : null);
 
+const objectValue = (value: unknown): JsonObject =>
+  value && typeof value === "object" && !Array.isArray(value) ? (value as JsonObject) : {};
+
 const pidRunning = (pid: number | null) => {
   if (!pid) return false;
   try {
@@ -130,6 +133,67 @@ async function upsertRuntimeHeartbeat(processStatus: Awaited<ReturnType<typeof g
       modes: processStatus.modes,
     },
   });
+}
+
+const compactRuntimeRunRow = (row: {
+  runKey: string;
+  serviceKey: string;
+  serviceName: string;
+  serviceKind: string;
+  status: string;
+  startedAt: Date;
+  finishedAt: Date | null;
+  durationMs: number | null;
+  iterationCount: number;
+  providerQuotaUsed: boolean;
+  activeSettlementExecuted: boolean;
+  installedOsService: boolean;
+  eventSlug: string | null;
+  selectedMarketId: string | null;
+  resultAction: string | null;
+  summaryPath: string | null;
+  updatedAt: Date;
+  metadata: unknown;
+}) => ({
+  runKey: row.runKey,
+  serviceKey: row.serviceKey,
+  serviceName: row.serviceName,
+  serviceKind: row.serviceKind,
+  status: row.status,
+  startedAt: row.startedAt.toISOString(),
+  finishedAt: row.finishedAt?.toISOString() ?? null,
+  durationMs: row.durationMs,
+  iterationCount: row.iterationCount,
+  providerQuotaUsed: row.providerQuotaUsed,
+  activeSettlementExecuted: row.activeSettlementExecuted,
+  installedOsService: row.installedOsService,
+  eventSlug: row.eventSlug,
+  selectedMarketId: row.selectedMarketId,
+  resultAction: row.resultAction,
+  summaryPath: row.summaryPath,
+  updatedAt: row.updatedAt.toISOString(),
+  metadata: {
+    source: stringValue(objectValue(row.metadata).source),
+    workerOwned: objectValue(row.metadata).workerOwned === true,
+    emittedBy: stringValue(objectValue(row.metadata).emittedBy),
+  },
+});
+
+async function getLatestRuntimeRuns() {
+  const rows = await prisma.runtimeServiceRun.findMany({
+    where: {
+      serviceKey: {
+        in: ["local:one-event-live-supervisor", "local:one-event-result-poller"],
+      },
+    },
+    orderBy: { startedAt: "desc" },
+    take: 10,
+  });
+  const latestByService = new Map<string, (typeof rows)[number]>();
+  for (const row of rows) {
+    if (!latestByService.has(row.serviceKey)) latestByService.set(row.serviceKey, row);
+  }
+  return Array.from(latestByService.values()).map(compactRuntimeRunRow);
 }
 
 async function getProviderSnapshotFreshness(params: {
@@ -359,6 +423,7 @@ export async function getLocalLiveRuntimeStatus() {
     upsertRuntimeHeartbeat(supervisorProcess),
     upsertRuntimeHeartbeat(resultPollerProcess),
   ]);
+  const runtimeRuns = await getLatestRuntimeRuns();
   const p0Gaps = asStringArray(getPath(completionAudit, ["gaps", "p0"]));
   const artifactFreshness = {
     maxCompletionAuditAgeHours: 24,
@@ -565,6 +630,23 @@ export async function getLocalLiveRuntimeStatus() {
       installedOsService: runtimeHeartbeats.some((row) => row.installedOsService),
       note:
         "These durable rows include worker-emitted heartbeat metadata when the local loops run, then the status route mirrors current process-state checks. They do not mean a production OS service is installed.",
+    },
+    runtimeRuns: {
+      checked: true,
+      durable: true,
+      source: "RuntimeServiceRun",
+      records: runtimeRuns,
+      allExpectedServicesRecorded:
+        runtimeRuns.length === 2 &&
+        runtimeRuns.every((row) => row.serviceKey === "local:one-event-live-supervisor" || row.serviceKey === "local:one-event-result-poller"),
+      allExpectedServicesPassed:
+        runtimeRuns.length === 2 && runtimeRuns.every((row) => row.status === "passed"),
+      quotaSpendingRunRecorded: runtimeRuns.some((row) => row.providerQuotaUsed),
+      activeSettlementExecuted: runtimeRuns.some((row) => row.activeSettlementExecuted),
+      installedOsService: runtimeRuns.some((row) => row.installedOsService),
+      workerOwnedRunCount: runtimeRuns.filter((row) => row.metadata.workerOwned).length,
+      note:
+        "These durable rows are emitted by the local runtime workers when a supervisor/result-poller run finishes. They prove latest run outcome, not installed production service ownership.",
     },
     artifacts: {
       completionAudit: {

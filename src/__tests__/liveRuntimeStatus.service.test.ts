@@ -2,6 +2,7 @@ const readFile = jest.fn();
 const referenceQuoteSnapshotFindMany = jest.fn();
 const runtimeServiceHeartbeatFindUnique = jest.fn();
 const runtimeServiceHeartbeatUpsert = jest.fn();
+const runtimeServiceRunFindMany = jest.fn();
 
 jest.mock("node:fs/promises", () => ({
   readFile,
@@ -15,6 +16,9 @@ jest.mock("@/lib/db", () => ({
     runtimeServiceHeartbeat: {
       findUnique: (...args: unknown[]) => runtimeServiceHeartbeatFindUnique(...args),
       upsert: (...args: unknown[]) => runtimeServiceHeartbeatUpsert(...args),
+    },
+    runtimeServiceRun: {
+      findMany: (...args: unknown[]) => runtimeServiceRunFindMany(...args),
     },
   },
 }));
@@ -31,6 +35,56 @@ const freshSnapshot = () => [
     mmEligible: true,
     qualityStatus: "available",
     reason: null,
+  },
+];
+const runtimeRunRows = () => [
+  {
+    runKey: `local:one-event-live-supervisor:${nowIso()}`,
+    serviceKey: "local:one-event-live-supervisor",
+    serviceName: "one-event-live-supervisor",
+    serviceKind: "supervisor",
+    status: "passed",
+    startedAt: new Date(),
+    finishedAt: new Date(),
+    durationMs: 1000,
+    iterationCount: 1,
+    providerQuotaUsed: false,
+    activeSettlementExecuted: false,
+    installedOsService: false,
+    eventSlug: "spain-vs-france",
+    selectedMarketId: "phase-market",
+    resultAction: "trusted result scheduler dry-run while poller runs",
+    summaryPath: "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json",
+    updatedAt: new Date(),
+    metadata: {
+      source: "local-runtime-worker",
+      emittedBy: "scripts/write_runtime_service_run.ts",
+      workerOwned: true,
+    },
+  },
+  {
+    runKey: `local:one-event-result-poller:${nowIso()}`,
+    serviceKey: "local:one-event-result-poller",
+    serviceName: "one-event-result-poller",
+    serviceKind: "result-poller",
+    status: "passed",
+    startedAt: new Date(),
+    finishedAt: new Date(),
+    durationMs: 1000,
+    iterationCount: 1,
+    providerQuotaUsed: false,
+    activeSettlementExecuted: false,
+    installedOsService: false,
+    eventSlug: "spain-vs-france",
+    selectedMarketId: "phase-market",
+    resultAction: "trusted result scheduler dry-run while poller runs",
+    summaryPath: "docs/mobile/harness/odds-api-live-runtime/one-event-result-poller-summary.redacted.json",
+    updatedAt: new Date(),
+    metadata: {
+      source: "local-runtime-worker",
+      emittedBy: "scripts/write_runtime_service_run.ts",
+      workerOwned: true,
+    },
   },
 ];
 const refreshDueSnapshot = () => [
@@ -231,7 +285,9 @@ describe("live runtime status service", () => {
     referenceQuoteSnapshotFindMany.mockReset();
     runtimeServiceHeartbeatFindUnique.mockReset();
     runtimeServiceHeartbeatUpsert.mockReset();
+    runtimeServiceRunFindMany.mockReset();
     referenceQuoteSnapshotFindMany.mockResolvedValue(freshSnapshot());
+    runtimeServiceRunFindMany.mockResolvedValue(runtimeRunRows());
     runtimeServiceHeartbeatFindUnique.mockResolvedValue(null);
     runtimeServiceHeartbeatUpsert.mockImplementation(async (args) => ({
       id: "heartbeat-id",
@@ -448,7 +504,47 @@ describe("live runtime status service", () => {
         }),
       ]),
     });
+    expect(status.runtimeRuns).toMatchObject({
+      checked: true,
+      durable: true,
+      source: "RuntimeServiceRun",
+      allExpectedServicesRecorded: true,
+      allExpectedServicesPassed: true,
+      quotaSpendingRunRecorded: false,
+      activeSettlementExecuted: false,
+      installedOsService: false,
+      workerOwnedRunCount: 2,
+      records: expect.arrayContaining([
+        expect.objectContaining({
+          serviceKey: "local:one-event-live-supervisor",
+          serviceName: "one-event-live-supervisor",
+          serviceKind: "supervisor",
+          status: "passed",
+          providerQuotaUsed: false,
+          activeSettlementExecuted: false,
+          installedOsService: false,
+        }),
+        expect.objectContaining({
+          serviceKey: "local:one-event-result-poller",
+          serviceName: "one-event-result-poller",
+          serviceKind: "result-poller",
+          status: "passed",
+          providerQuotaUsed: false,
+          activeSettlementExecuted: false,
+          installedOsService: false,
+        }),
+      ]),
+    });
     expect(runtimeServiceHeartbeatUpsert).toHaveBeenCalledTimes(2);
+    expect(runtimeServiceRunFindMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          serviceKey: {
+            in: ["local:one-event-live-supervisor", "local:one-event-result-poller"],
+          },
+        },
+      }),
+    );
   });
 
   test("returns needs_attention when a required proof artifact is stale", async () => {
