@@ -356,6 +356,10 @@ export async function getLocalLiveRuntimeStatus() {
     getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalProviderResultAuditAvailable"]) === true &&
     getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementPreflightAuditAvailable"]) === true &&
     getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementApprovalAuditAvailable"]) === true &&
+    getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "durableOfficialResultReviewRecordAvailable"]) === true &&
+    getPath(phaseAudit, ["localResultReview", "body", "officialResultReview", "exactConfirmationStored"]) === false &&
+    getPath(phaseAudit, ["localResultReview", "body", "officialResultReview", "providerQuotaUsed"]) === false &&
+    getPath(phaseAudit, ["localResultReview", "body", "officialResultReview", "activeMarketExecutionAttempted"]) === false &&
     getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "exactConfirmationRequiredKnown"]) === true &&
     getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "exactConfirmationRedacted"]) === true &&
     getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "activeMarketExecutionAttemptedByThisRoute"]) === false &&
@@ -419,6 +423,17 @@ export async function getLocalLiveRuntimeStatus() {
       getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementPreflightAuditAvailable"]) === true,
     canonicalSettlementApprovalAuditAvailable:
       getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementApprovalAuditAvailable"]) === true,
+    durableOfficialResultReviewRecordAvailable:
+      getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "durableOfficialResultReviewRecordAvailable"]) === true,
+    officialResultReview: {
+      reviewKey: getPath(phaseAudit, ["localResultReview", "body", "officialResultReview", "reviewKey"]) ?? null,
+      exactConfirmationStored:
+        getPath(phaseAudit, ["localResultReview", "body", "officialResultReview", "exactConfirmationStored"]) === true,
+      providerQuotaUsed:
+        getPath(phaseAudit, ["localResultReview", "body", "officialResultReview", "providerQuotaUsed"]) === true,
+      activeMarketExecutionAttempted:
+        getPath(phaseAudit, ["localResultReview", "body", "officialResultReview", "activeMarketExecutionAttempted"]) === true,
+    },
     exactConfirmationRequiredKnown:
       getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "exactConfirmationRequiredKnown"]) === true,
     exactConfirmationRedacted:

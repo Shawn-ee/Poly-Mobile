@@ -317,6 +317,10 @@ async function main() {
         getPath(localResultReviewBody, ["runtimeTruth", "canonicalProviderResultAuditAvailable"]) === true &&
         getPath(localResultReviewBody, ["runtimeTruth", "canonicalSettlementPreflightAuditAvailable"]) === true &&
         getPath(localResultReviewBody, ["runtimeTruth", "canonicalSettlementApprovalAuditAvailable"]) === true &&
+        getPath(localResultReviewBody, ["runtimeTruth", "durableOfficialResultReviewRecordAvailable"]) === true &&
+        getPath(localResultReviewBody, ["officialResultReview", "exactConfirmationStored"]) === false &&
+        getPath(localResultReviewBody, ["officialResultReview", "providerQuotaUsed"]) === false &&
+        getPath(localResultReviewBody, ["officialResultReview", "activeMarketExecutionAttempted"]) === false &&
         getPath(localResultReviewBody, ["runtimeTruth", "activeTesterSettlementExecutionAttempted"]) === false &&
         getPath(localResultReviewBody, ["runtimeTruth", "providerQuotaUsed"]) === false &&
         getPath(localResultReviewBody, ["executionDecision", "exactConfirmationRequiredKnown"]) === true &&

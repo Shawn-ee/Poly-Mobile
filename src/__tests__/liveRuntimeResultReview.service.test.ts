@@ -1,6 +1,7 @@
 const readFile = jest.fn();
 const marketFindUnique = jest.fn();
 const canonicalEventFindFirst = jest.fn();
+const officialResultReviewUpsert = jest.fn();
 
 jest.mock("node:fs/promises", () => ({
   readFile,
@@ -13,6 +14,9 @@ jest.mock("@/lib/db", () => ({
     },
     canonicalEvent: {
       findFirst: (...args: unknown[]) => canonicalEventFindFirst(...args),
+    },
+    officialResultReview: {
+      upsert: (...args: unknown[]) => officialResultReviewUpsert(...args),
     },
   },
 }));
@@ -35,6 +39,7 @@ describe("live runtime result review service", () => {
     readFile.mockReset();
     marketFindUnique.mockReset();
     canonicalEventFindFirst.mockReset();
+    officialResultReviewUpsert.mockReset();
     readFile.mockResolvedValue(
       JSON.stringify({
         pass: true,
@@ -54,12 +59,32 @@ describe("live runtime result review service", () => {
       marketGroupKey: "totals",
       line: { toString: () => "2.5" },
       event: {
+        id: "event-1",
         slug: "odds-api-single-soccer-test",
         title: "Spain vs. France",
         status: "ACTIVE",
         liveStatus: "pre_match",
         startTime: new Date("2026-07-14T19:00:00Z"),
+        source: "the-odds-api",
+        externalEventId: "provider-event-1",
       },
+    });
+    officialResultReviewUpsert.mockResolvedValue({
+      id: "review-1",
+      reviewKey: "odds-api-single-soccer-test:market-1:result-digest",
+      eventSlug: "odds-api-single-soccer-test",
+      marketId: "market-1",
+      outcomeId: "outcome-1",
+      resultDigest: "result-digest",
+      trustedResultDigest: "trusted-digest",
+      approvalStatus: "approved",
+      executionDecision: "wait_for_or_apply_market_close_before_execution",
+      executionEligibleNow: false,
+      confirmationRequiredKnown: true,
+      exactConfirmationStored: false,
+      activeMarketExecutionAttempted: false,
+      providerQuotaUsed: false,
+      updatedAt: new Date("2026-07-12T12:05:00Z"),
     });
     canonicalEventFindFirst
       .mockResolvedValueOnce(
@@ -112,8 +137,40 @@ describe("live runtime result review service", () => {
       exactConfirmationRedacted: true,
       activeMarketExecutionAttemptedByThisRoute: false,
     });
+    expect(result.officialResultReview).toMatchObject({
+      id: "review-1",
+      reviewKey: "odds-api-single-soccer-test:market-1:result-digest",
+      exactConfirmationStored: false,
+      activeMarketExecutionAttempted: false,
+      providerQuotaUsed: false,
+    });
     expect(JSON.stringify(result)).not.toContain("SETTLE_FROM_RESULT:");
     expect(canonicalEventFindFirst).toHaveBeenCalledTimes(4);
+    expect(officialResultReviewUpsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { reviewKey: "odds-api-single-soccer-test:market-1:result-digest" },
+        create: expect.objectContaining({
+          eventId: "event-1",
+          providerSource: "the-odds-api",
+          providerEventId: "provider-event-1",
+          approvalStatus: "approved",
+          exactConfirmationStored: false,
+          activeMarketExecutionAttempted: false,
+          providerQuotaUsed: false,
+        }),
+        update: expect.objectContaining({
+          approvalStatus: "approved",
+          exactConfirmationStored: false,
+          activeMarketExecutionAttempted: false,
+          providerQuotaUsed: false,
+        }),
+      }),
+    );
+    expect(
+      JSON.stringify(officialResultReviewUpsert.mock.calls[0], (_key, value) =>
+        typeof value === "bigint" ? value.toString() : value,
+      ),
+    ).not.toContain("SETTLE_FROM_RESULT:");
   });
 
   test("returns needs_attention when approval digest does not match preflight", async () => {

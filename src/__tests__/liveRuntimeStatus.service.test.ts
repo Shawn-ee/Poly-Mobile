@@ -112,6 +112,13 @@ const makePhaseAudit = (generatedAt = nowIso()) => ({
         canonicalProviderResultAuditAvailable: true,
         canonicalSettlementPreflightAuditAvailable: true,
         canonicalSettlementApprovalAuditAvailable: true,
+        durableOfficialResultReviewRecordAvailable: true,
+      },
+      officialResultReview: {
+        reviewKey: "odds-api-single-soccer-test:phase-market:result-digest",
+        exactConfirmationStored: false,
+        providerQuotaUsed: false,
+        activeMarketExecutionAttempted: false,
       },
       executionDecision: {
         exactConfirmationRequiredKnown: true,
@@ -326,6 +333,13 @@ describe("live runtime status service", () => {
       canonicalProviderResultAuditAvailable: true,
       canonicalSettlementPreflightAuditAvailable: true,
       canonicalSettlementApprovalAuditAvailable: true,
+      durableOfficialResultReviewRecordAvailable: true,
+      officialResultReview: {
+        reviewKey: "odds-api-single-soccer-test:phase-market:result-digest",
+        exactConfirmationStored: false,
+        providerQuotaUsed: false,
+        activeMarketExecutionAttempted: false,
+      },
       exactConfirmationRequiredKnown: true,
       exactConfirmationRedacted: true,
       activeMarketExecutionAttemptedByRoute: false,

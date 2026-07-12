@@ -14658,3 +14658,14 @@ Known limitations:
 - API/data dependencies: completion audit consumes the phase audit's embedded `localResultReview`; status route surfaces `resultReview` readiness from the same phase audit evidence.
 - Proof needed: focused status service tests, completion audit, phase audit, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this strengthens local internal truth reporting but still leaves installed official-result polling, first-class result/approval records, and operator review UI as P1/P2.
+
+## Cycle LIVERUNTIMEDURABLEREVIEW - Durable Result Review Record
+
+- Feature/page worked on: backend local internal official-result review persistence.
+- Frontend components touched: none.
+- Important functions/services touched: added Prisma model `OfficialResultReview`, migration `20260712174500_add_official_result_review`, and updated `src/server/services/liveRuntimeResultReview.ts`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, `scripts/report_holiwyn_live_runtime_completion_audit.ts`, `src/server/services/liveRuntimeStatus.ts`, and related tests.
+- User/runtime interactions supported: `GET /api/internal/live-runtime/result-review` now mirrors the selected one-event provider-result, settlement-preflight, and settlement-approval trail into a first-class durable review row while returning a redacted local operator response.
+- State transitions: writes/updates only `OfficialResultReview`. It does not call The Odds API, start loops, place orders, mutate market status, approve settlement, store exact settlement confirmation text, or execute settlement.
+- API/data dependencies: reads `Market`, linked `Event`, and canonical `provider.result.ingested`, `settlement.trusted_result.preflight`, `settlement.trusted_result.approved`, and `settlement.trusted_result.executed` events; writes `OfficialResultReview.reviewSnapshot` with redacted review evidence.
+- Proof needed: Prisma migration deploy, focused result-review/status Jest tests, direct local backend route proof, direct DB row proof, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this narrows the durable official-result/approval storage gap, but operator review UI, multi-event settlement queue, installed official-result polling, and active-event execution remain P1/P2.

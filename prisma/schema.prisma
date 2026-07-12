@@ -688,6 +688,41 @@ model CanonicalEvent {
   @@index([createdAt])
 }
 
+model OfficialResultReview {
+  id                              String   @id @default(uuid())
+  reviewKey                       String   @unique
+  eventSlug                       String
+  eventId                         String?
+  marketId                        String?
+  outcomeId                       String?
+  providerSource                  String?
+  providerEventId                 String?
+  resultStatus                    String?
+  homeScore                       Int?
+  awayScore                       Int?
+  advanceTeam                     String?
+  trustedResultDigest             String?
+  resultDigest                    String?
+  settlementPreflightCanonicalId  BigInt?
+  settlementApprovalCanonicalId   BigInt?
+  settlementExecutedCanonicalId   BigInt?
+  approvalStatus                  String   @default("missing")
+  executionDecision               String
+  executionEligibleNow            Boolean  @default(false)
+  confirmationRequiredKnown       Boolean  @default(false)
+  exactConfirmationStored         Boolean  @default(false)
+  activeMarketExecutionAttempted  Boolean  @default(false)
+  providerQuotaUsed               Boolean  @default(false)
+  reviewSnapshot                  Json
+  createdAt                       DateTime @default(now())
+  updatedAt                       DateTime @updatedAt
+
+  @@index([eventSlug, updatedAt])
+  @@index([marketId, updatedAt])
+  @@index([resultDigest])
+  @@index([trustedResultDigest])
+}
+
 model Fill {
   id           String    @id @default(uuid())
   takerOrderId String

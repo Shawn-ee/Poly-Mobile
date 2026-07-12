@@ -143,6 +143,10 @@ async function main() {
       getPath(entries.phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalProviderResultAuditAvailable"]) === true &&
       getPath(entries.phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementPreflightAuditAvailable"]) === true &&
       getPath(entries.phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementApprovalAuditAvailable"]) === true &&
+      getPath(entries.phaseAudit, ["localResultReview", "body", "runtimeTruth", "durableOfficialResultReviewRecordAvailable"]) === true &&
+      getPath(entries.phaseAudit, ["localResultReview", "body", "officialResultReview", "exactConfirmationStored"]) === false &&
+      getPath(entries.phaseAudit, ["localResultReview", "body", "officialResultReview", "providerQuotaUsed"]) === false &&
+      getPath(entries.phaseAudit, ["localResultReview", "body", "officialResultReview", "activeMarketExecutionAttempted"]) === false &&
       getPath(entries.phaseAudit, ["localResultReview", "body", "executionDecision", "exactConfirmationRequiredKnown"]) === true &&
       getPath(entries.phaseAudit, ["localResultReview", "body", "executionDecision", "exactConfirmationRedacted"]) === true &&
       getPath(entries.phaseAudit, ["localResultReview", "body", "executionDecision", "activeMarketExecutionAttemptedByThisRoute"]) === false &&
@@ -217,7 +221,7 @@ async function main() {
       activeSettlement:
         getPath(entries.activeSettlementReadiness, ["executionDecision", "operatorDecision"]) ?? null,
       resultReview:
-        "Local result-review API is phase-gated through /api/internal/live-runtime/result-review, reads canonical result/preflight/approval evidence, redacts exact confirmation strings, and does not spend provider quota.",
+        "Local result-review API is phase-gated through /api/internal/live-runtime/result-review, reads canonical result/preflight/approval evidence, writes a redacted durable OfficialResultReview row, and does not spend provider quota.",
       localWatchdog:
         "Internal tester watchdog verifies backend/Expo/Postgres readiness, repeated supervisor proof, background result-poller proof, no-quota default mode, and loop cleanup.",
     },

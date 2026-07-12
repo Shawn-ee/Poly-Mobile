@@ -75,6 +75,11 @@ const compactEvent = (
   };
 };
 
+const stableReviewKey = (parts: Array<string | null | undefined>) =>
+  parts
+    .map((part) => (typeof part === "string" && part.length > 0 ? part : "unknown"))
+    .join(":");
+
 export async function getLocalLiveRuntimeResultReview(params: {
   eventSlug?: string | null;
   marketId?: string | null;
@@ -104,11 +109,14 @@ export async function getLocalLiveRuntimeResultReview(params: {
           line: true,
           event: {
             select: {
+              id: true,
               slug: true,
               title: true,
               status: true,
               liveStatus: true,
               startTime: true,
+              source: true,
+              externalEventId: true,
             },
           },
         },
@@ -158,6 +166,7 @@ export async function getLocalLiveRuntimeResultReview(params: {
 
   const preflightPayload = (settlementPreflightEvent?.payload ?? {}) as JsonObject;
   const approvalPayload = (settlementApprovalEvent?.payload ?? {}) as JsonObject;
+  const providerResultPayload = (providerResultEvent?.payload ?? {}) as JsonObject;
   const checks = {
     phaseAuditAvailable: phaseAudit != null,
     selectedMarketKnown: typeof selectedMarketId === "string",
@@ -176,6 +185,95 @@ export async function getLocalLiveRuntimeResultReview(params: {
   const p0 = Object.entries(checks)
     .filter(([, value]) => value !== true)
     .map(([key]) => key);
+  const executionDecision =
+    market?.status === "CLOSED"
+      ? "eligible_for_exact_confirmation_review"
+      : "wait_for_or_apply_market_close_before_execution";
+  const executionEligibleNow =
+    market?.status === "CLOSED" &&
+    checks.approvalDigestMatchesPreflight &&
+    typeof approvalPayload.confirm === "string";
+  const reviewTrail = {
+    providerResultEvent: compactEvent(providerResultEvent, "result"),
+    settlementPreflightEvent: compactEvent(settlementPreflightEvent, "settlement"),
+    settlementApprovalEvent: compactEvent(settlementApprovalEvent, "settlement"),
+    settlementExecutedEvent: compactEvent(settlementExecutedEvent, "settlement"),
+  };
+  const reviewSnapshot = {
+    status: p0.length === 0 ? "ready" : "needs_attention",
+    eventSlug,
+    selectedMarketId,
+    winningOutcomeId,
+    reviewTrail,
+    checks,
+    executionDecision: {
+      activeMarketStatus: market?.status ?? null,
+      executionEligibleNow,
+      operatorDecision: executionDecision,
+      exactConfirmationRequiredKnown: typeof approvalPayload.confirm === "string",
+      exactConfirmationRedacted: true,
+      activeMarketExecutionAttemptedByThisRoute: false,
+    },
+  };
+  const resultDigest = stringValue(preflightPayload.resultDigest);
+  const trustedResultDigest = stringValue(providerResultPayload.trustedResultDigest);
+  const reviewRecord =
+    market && selectedMarketId
+      ? await prisma.officialResultReview.upsert({
+          where: {
+            reviewKey: stableReviewKey([eventSlug, selectedMarketId, resultDigest ?? trustedResultDigest]),
+          },
+          create: {
+            reviewKey: stableReviewKey([eventSlug, selectedMarketId, resultDigest ?? trustedResultDigest]),
+            eventSlug,
+            eventId: market.event?.id ?? null,
+            marketId: selectedMarketId,
+            outcomeId: winningOutcomeId ?? null,
+            providerSource: stringValue(market.event?.source),
+            providerEventId: stringValue(market.event?.externalEventId),
+            resultStatus: stringValue(providerResultPayload.resultStatus),
+            homeScore: typeof providerResultPayload.homeScore === "number" ? providerResultPayload.homeScore : null,
+            awayScore: typeof providerResultPayload.awayScore === "number" ? providerResultPayload.awayScore : null,
+            advanceTeam: stringValue(providerResultPayload.advanceTeam),
+            trustedResultDigest,
+            resultDigest,
+            settlementPreflightCanonicalId: settlementPreflightEvent?.id ?? null,
+            settlementApprovalCanonicalId: settlementApprovalEvent?.id ?? null,
+            settlementExecutedCanonicalId: settlementExecutedEvent?.id ?? null,
+            approvalStatus: settlementApprovalEvent ? "approved" : "missing",
+            executionDecision,
+            executionEligibleNow,
+            confirmationRequiredKnown: typeof approvalPayload.confirm === "string",
+            exactConfirmationStored: false,
+            activeMarketExecutionAttempted: false,
+            providerQuotaUsed: false,
+            reviewSnapshot,
+          },
+          update: {
+            eventId: market.event?.id ?? null,
+            outcomeId: winningOutcomeId ?? null,
+            providerSource: stringValue(market.event?.source),
+            providerEventId: stringValue(market.event?.externalEventId),
+            resultStatus: stringValue(providerResultPayload.resultStatus),
+            homeScore: typeof providerResultPayload.homeScore === "number" ? providerResultPayload.homeScore : null,
+            awayScore: typeof providerResultPayload.awayScore === "number" ? providerResultPayload.awayScore : null,
+            advanceTeam: stringValue(providerResultPayload.advanceTeam),
+            trustedResultDigest,
+            resultDigest,
+            settlementPreflightCanonicalId: settlementPreflightEvent?.id ?? null,
+            settlementApprovalCanonicalId: settlementApprovalEvent?.id ?? null,
+            settlementExecutedCanonicalId: settlementExecutedEvent?.id ?? null,
+            approvalStatus: settlementApprovalEvent ? "approved" : "missing",
+            executionDecision,
+            executionEligibleNow,
+            confirmationRequiredKnown: typeof approvalPayload.confirm === "string",
+            exactConfirmationStored: false,
+            activeMarketExecutionAttempted: false,
+            providerQuotaUsed: false,
+            reviewSnapshot,
+          },
+        })
+      : null;
 
   return {
     generatedAt: new Date().toISOString(),
@@ -203,22 +301,30 @@ export async function getLocalLiveRuntimeResultReview(params: {
           },
         }
       : null,
-    reviewTrail: {
-      providerResultEvent: compactEvent(providerResultEvent, "result"),
-      settlementPreflightEvent: compactEvent(settlementPreflightEvent, "settlement"),
-      settlementApprovalEvent: compactEvent(settlementApprovalEvent, "settlement"),
-      settlementExecutedEvent: compactEvent(settlementExecutedEvent, "settlement"),
-    },
+    reviewTrail,
+    officialResultReview: reviewRecord
+      ? {
+          id: reviewRecord.id,
+          reviewKey: reviewRecord.reviewKey,
+          eventSlug: reviewRecord.eventSlug,
+          marketId: reviewRecord.marketId,
+          outcomeId: reviewRecord.outcomeId,
+          resultDigest: reviewRecord.resultDigest,
+          trustedResultDigest: reviewRecord.trustedResultDigest,
+          approvalStatus: reviewRecord.approvalStatus,
+          executionDecision: reviewRecord.executionDecision,
+          executionEligibleNow: reviewRecord.executionEligibleNow,
+          confirmationRequiredKnown: reviewRecord.confirmationRequiredKnown,
+          exactConfirmationStored: reviewRecord.exactConfirmationStored,
+          activeMarketExecutionAttempted: reviewRecord.activeMarketExecutionAttempted,
+          providerQuotaUsed: reviewRecord.providerQuotaUsed,
+          updatedAt: reviewRecord.updatedAt.toISOString(),
+        }
+      : null,
     executionDecision: {
       activeMarketStatus: market?.status ?? null,
-      executionEligibleNow:
-        market?.status === "CLOSED" &&
-        checks.approvalDigestMatchesPreflight &&
-        typeof approvalPayload.confirm === "string",
-      operatorDecision:
-        market?.status === "CLOSED"
-          ? "eligible_for_exact_confirmation_review"
-          : "wait_for_or_apply_market_close_before_execution",
+      executionEligibleNow,
+      operatorDecision: executionDecision,
       exactConfirmationRequiredKnown: typeof approvalPayload.confirm === "string",
       exactConfirmationRedacted: true,
       activeMarketExecutionAttemptedByThisRoute: false,
@@ -232,7 +338,8 @@ export async function getLocalLiveRuntimeResultReview(params: {
       canonicalSettlementExecutionAuditAvailable: settlementExecutedEvent != null,
       activeTesterSettlementExecutionAttempted: false,
       providerQuotaUsed: false,
-      dedicatedOfficialResultTableExists: false,
+      dedicatedOfficialResultTableExists: reviewRecord != null,
+      durableOfficialResultReviewRecordAvailable: reviewRecord != null,
       operatorReviewUiExists: false,
     },
     checks,
@@ -243,7 +350,7 @@ export async function getLocalLiveRuntimeResultReview(params: {
         "Execution still requires CLOSED market status and exact operator confirmation outside this read-only route.",
       ],
       p2: [
-        "A dedicated official-result table, durable approval model, and operator review UI remain future work.",
+        "Operator review UI and multi-event settlement queue remain future work.",
       ],
     },
     artifacts: {

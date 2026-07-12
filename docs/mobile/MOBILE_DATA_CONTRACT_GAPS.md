@@ -10435,4 +10435,13 @@ Future migration concern:
 - Route mismatch: `/api/internal/live-runtime/status` now includes a `resultReview` object, but it still reads local proof artifacts and remains dev-only. No public mobile API changed.
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable official-result records, durable approval records, production operator review UI, installed result polling, and service-managed result-review state remain P1/P2.
 - Temporary mock/static data: none added. The status route reads the phase-audit embedded result-review proof; completion audit reads the same artifact.
+
+## Cycle LIVERUNTIMEDURABLEREVIEW - Durable Result Review Record
+
+- Closed or narrowed: the selected one-event official-result review trail now has first-class backend storage in `OfficialResultReview`, keyed by event slug, market id, and result digest.
+- Fields added for future backend/operator use: provider source/event id, trusted result digest, settlement result digest, canonical preflight/approval/execution event ids, approval status, execution decision, execution eligibility, redacted confirmation truth, provider-quota truth, and active-execution truth.
+- Schema mismatch: `OfficialResultReview` is local/internal review state and does not replace `CanonicalEvent`; it mirrors canonical evidence so future operator UI and settlement services can stop relying only on proof JSON.
+- Route mismatch: `/api/internal/live-runtime/result-review` is still dev-only and performs the mirror write during a GET. This is acceptable for local internal proof but should become an authenticated operator action or background job before production use.
+- Temporary mock/static data: none added. The route reads existing DB evidence and writes a redacted review row. It stores `exactConfirmationStored=false` and does not expose or persist exact settlement confirmation text.
+- Remaining gaps: operator review UI, multi-event settlement queue, installed official-result polling, and guarded production execution service remain P1/P2.
 - Future migration concern: replace proof-artifact result-review readiness with durable backend/service-managed state before production or multi-event operations.
