@@ -109,7 +109,7 @@ describe("mobile event market rules contract", () => {
     } as never);
 
     expect(event.marketProfile).toBe("regulation_90");
-    expect(event.resultMode).toBe("can_draw");
+    expect(event.resultMode).toBe("can_draw_90");
     expect(event.gameRules).toMatchObject({ allowDraw: true, includesOvertime: false });
     expect(event.supportedMarketTypes).toEqual(expect.arrayContaining(["regulation_90", "spread", "totals"]));
     expect(event.supportedMarketTypes).not.toContain("to_advance");
@@ -147,7 +147,7 @@ describe("mobile event market rules contract", () => {
     } as never);
 
     expect(event.marketProfile).toBe("full_match_with_overtime");
-    expect(event.resultMode).toBe("can_draw");
+    expect(event.resultMode).toBe("can_draw_90");
     expect(event.gameRules).toMatchObject({ allowDraw: true, includesOvertime: true });
     expect(event.supportedMarketTypes).toEqual(expect.arrayContaining(["full_match_with_overtime", "to_advance", "regulation_90"]));
   });
@@ -158,7 +158,7 @@ describe("mobile event market rules contract", () => {
       metadata: {
         normalizedSoccer: {
           marketProfile: "regulation_90",
-          resultMode: "can_draw",
+          resultMode: "can_draw_90",
           gameRules: {
             allowDraw: true,
             includesOvertime: false,
@@ -196,7 +196,7 @@ describe("mobile event market rules contract", () => {
     } as never);
 
     expect(event.marketProfile).toBe("regulation_90");
-    expect(event.resultMode).toBe("can_draw");
+    expect(event.resultMode).toBe("can_draw_90");
     expect(event.gameRules).toMatchObject({ allowDraw: true, includesOvertime: false });
     expect(event.supportedMarketTypes).toEqual(["regulation_90"]);
   });
@@ -207,7 +207,7 @@ describe("mobile event market rules contract", () => {
       metadata: {
         normalizedSoccer: {
           marketProfile: "full_match_with_overtime",
-          resultMode: "no_draw",
+          resultMode: "must_advance",
           gameRules: {
             allowDraw: false,
             includesOvertime: true,
@@ -245,7 +245,7 @@ describe("mobile event market rules contract", () => {
     } as never);
 
     expect(event.marketProfile).toBe("regulation_90");
-    expect(event.resultMode).toBe("can_draw");
+    expect(event.resultMode).toBe("can_draw_90");
     expect(event.gameRules).toMatchObject({ allowDraw: true, includesOvertime: false });
     expect(event.supportedMarketTypes).toEqual(["regulation_90"]);
   });

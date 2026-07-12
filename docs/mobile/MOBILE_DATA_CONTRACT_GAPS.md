@@ -10004,3 +10004,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: multiple current/upcoming sportsbook-backed soccer events and team-total markets are still opt-in because live provider requests spend quota. Full Polymarket-backed match/line data remains deferred P1.
 - Temporary mock/static data: default proof uses committed redacted Odds API replay data and deterministic one-shot local maker liquidity. The rows still use real backend tables and stable provider-style identity fields.
 - Future migration concern: keep replay/import proof separate from live provider refresh proof. Internal testers can use the replay-backed environment safely, but a future multi-event live import should preserve the same `sportsbook-odds` contract and quota guard.
+
+## Cycle SOCCERSEMANTICS - Prediction-Market Soccer Semantics
+
+- Closed or narrowed: The mobile-facing soccer contract no longer treats raw sportsbook Asian lines as first-class prediction markets. Compact live-detail selection filters quarter handicaps and Asian totals before Event Detail renders them.
+- Route mismatch: `/api/events` and `/api/mobile/events/:slug/live-detail` now expose clearer event semantics through `resultMode=can_draw_90|must_advance`, `primaryMarketProfile=regulation_90|advance`, and a legacy alias for old clients.
+- Fields Holiwyn still needs but backend/provider does not fully provide: a real provider-backed "team to advance" market for knockout/must-advance games. If absent, Holiwyn must show advance unavailable rather than relabeling 90-minute winner as advance.
+- Temporary mock/static data: none added. Existing redacted Odds API replay remains available; new import normalization only changes which provider markets become mobile-visible.
+- Future migration concern: raw provider markets may need a dedicated raw-provider table if we later want full sportsbook audit storage without creating visible `Market` rows. For the current local MVP, hidden raw lines are represented by metadata/policy and are not exposed in the main mobile UI.

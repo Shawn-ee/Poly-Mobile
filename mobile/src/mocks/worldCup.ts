@@ -97,7 +97,8 @@ export type Market = {
 };
 
 export type EventMarketProfile = "outright" | "to_advance" | "regulation_90" | "full_match_with_overtime";
-export type EventResultMode = "one_winner" | "can_draw" | "no_draw";
+export type EventPrimaryMarketProfile = "outright" | "advance" | "regulation_90";
+export type EventResultMode = "one_winner" | "can_draw" | "no_draw" | "can_draw_90" | "must_advance";
 export type EventMarketType =
   | "outright"
   | "to_advance"
@@ -137,6 +138,7 @@ export type Event = {
   orderbookDepthEmptyState?: "no-depth" | null;
   orderbookAvailability?: AvailabilityState;
   marketProfile?: EventMarketProfile;
+  primaryMarketProfile?: EventPrimaryMarketProfile;
   resultMode?: EventResultMode;
   gameRules?: {
     allowDraw: boolean;

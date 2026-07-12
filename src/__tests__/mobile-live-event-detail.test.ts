@@ -157,6 +157,7 @@ describe("mobile live event detail contract", () => {
               marketGroupTitle: "Totals",
               displayOrder: index + 1,
               marketType: "total_goals",
+              line: new Prisma.Decimal("2.5"),
             }),
           ),
         ],
@@ -1365,7 +1366,7 @@ describe("mobile live event detail contract", () => {
 
     const compactMarkets = selectCompactLiveMarkets(markets);
 
-    expect(compactMarkets).toHaveLength(14);
+    expect(compactMarkets).toHaveLength(9);
     expect(compactMarkets.map((item) => item.id)).toEqual(expect.arrayContaining([
       "to-advance",
       "market-main",
@@ -1449,7 +1450,7 @@ describe("mobile live event detail contract", () => {
 
     const compactMarkets = selectCompactLiveMarkets(markets);
 
-    expect(compactMarkets).toHaveLength(14);
+    expect(compactMarkets).toHaveLength(9);
     expect(compactMarkets.map((item) => item.id)).toEqual(expect.arrayContaining([
       "first-half-winner",
       "second-half-winner",
@@ -1520,9 +1521,106 @@ describe("mobile live event detail contract", () => {
     });
 
     expect(payload.event.marketProfile).toBe("regulation_90");
-    expect(payload.event.resultMode).toBe("can_draw");
+    expect(payload.event.resultMode).toBe("can_draw_90");
+    expect(payload.event.primaryMarketProfile).toBe("regulation_90");
     expect(payload.event.gameRules).toMatchObject({ allowDraw: true, includesOvertime: false });
     expect(payload.event.supportedMarketTypes).toContain("regulation_90");
     expect(payload.event.supportedMarketTypes).not.toContain("full_match_with_overtime");
+  });
+
+  test("hides raw Asian lines from compact mobile markets but keeps clean totals", async () => {
+    const selected = selectCompactLiveMarkets([
+      market({
+        id: "quarter-spread",
+        title: "France +0.25",
+        marketType: "spread",
+        marketGroupKey: "spread",
+        marketGroupTitle: "Spread",
+        line: new Prisma.Decimal("0.25"),
+        referenceMetadata: { providerMarketType: "alternate_spreads" },
+      }),
+      market({
+        id: "asian-total",
+        title: "Total Goals 2.0",
+        marketType: "total_goals",
+        marketGroupKey: "totals",
+        marketGroupTitle: "Total Goals",
+        line: new Prisma.Decimal("2.0"),
+        referenceMetadata: { providerMarketType: "totals" },
+      }),
+      market({
+        id: "clean-total",
+        title: "Total Goals 2.5",
+        marketType: "total_goals",
+        marketGroupKey: "totals",
+        marketGroupTitle: "Total Goals",
+        line: new Prisma.Decimal("2.5"),
+        referenceMetadata: { providerMarketType: "alternate_totals" },
+      }),
+    ]);
+
+    expect(selected.map((item) => item.id)).toContain("clean-total");
+    expect(selected.map((item) => item.id)).not.toContain("quarter-spread");
+    expect(selected.map((item) => item.id)).not.toContain("asian-total");
+  });
+
+  test("must-advance metadata does not promote regulation draw market as the primary advance market", async () => {
+    const payload = await serializeMobileLiveEventDetail({
+      event: {
+        id: "event-must-advance-without-advance-market",
+        slug: "france-vs-paraguay-knockout",
+        title: "France vs Paraguay",
+        description: "Knockout soccer match with no provider to-advance market attached.",
+        category: "sports",
+        sportKey: "soccer",
+        leagueKey: "world_cup",
+        eventType: "match",
+        homeTeamName: "France",
+        awayTeamName: "Paraguay",
+        startTime: new Date("2026-07-07T20:00:00.000Z"),
+        status: "LIVE",
+        liveStatus: "in_progress",
+        period: "Regulation",
+        clock: null,
+        homeScore: null,
+        awayScore: null,
+        imageUrl: null,
+        metadata: {
+          normalizedSoccer: {
+            version: 2,
+            marketProfile: "full_match_with_overtime",
+            primaryMarketProfile: "advance",
+            resultMode: "must_advance",
+            gameRules: {
+              allowDraw: false,
+              includesOvertime: true,
+              description: "Team to advance market required; provider only attached regulation winner.",
+            },
+            supportedMarketTypes: ["to_advance", "regulation_90"],
+          },
+        },
+        markets: [
+          market({
+            id: "regulation-90",
+            title: "France vs Paraguay - 90 Minute Winner",
+            marketType: "match_winner_1x2",
+            marketGroupKey: "regulation-winner",
+            marketGroupTitle: "Regulation Time Winner",
+            outcomes: [
+              { id: "fra", name: "France", label: "France", side: "home", displayOrder: 0, isTradable: true },
+              { id: "draw", name: "Draw", label: "Draw", side: "draw", displayOrder: 1, isTradable: true },
+              { id: "par", name: "Paraguay", label: "Paraguay", side: "away", displayOrder: 2, isTradable: true },
+            ],
+          }),
+        ],
+      },
+      chartSnapshots: [],
+    });
+
+    expect(payload.event.resultMode).toBe("must_advance");
+    expect(payload.event.primaryMarketProfile).toBe("advance");
+    expect(payload.contract.primaryMarketId).toBe("regulation-90");
+    expect(payload.markets[0]?.marketGroupTitle).toBe("Regulation Time Winner");
+    expect(payload.markets[0]?.outcomes.map((outcome) => outcome.side)).toContain("draw");
   });
 });

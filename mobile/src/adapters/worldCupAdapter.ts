@@ -4,7 +4,7 @@ import type {
   Market as BackendMarket,
   Outcome as BackendOutcome,
 } from "../types";
-import type { Event, EventMarketProfile, EventMarketType, Market, Outcome } from "../mocks/worldCup";
+import type { Event, EventMarketProfile, EventMarketType, EventPrimaryMarketProfile, EventResultMode, Market, Outcome } from "../mocks/worldCup";
 
 const COLORS = ["#2563eb", "#60a5fa", "#ef4444", "#0a8f61", "#f4c20d", "#7c3aed", "#94a3b8"];
 
@@ -114,6 +114,22 @@ const isOutrightProviderEvent = (event: BackendEventSummary) => {
     marketProfile === "outright" ||
     supportedMarketTypes.includes("outright")
   );
+};
+
+const asEventResultMode = (value: unknown): EventResultMode | undefined => {
+  const normalized = `${value ?? ""}`.trim().toLowerCase();
+  if (["one_winner", "can_draw", "no_draw", "can_draw_90", "must_advance"].includes(normalized)) {
+    return normalized as EventResultMode;
+  }
+  return undefined;
+};
+
+const asPrimaryMarketProfile = (value: unknown): EventPrimaryMarketProfile | undefined => {
+  const normalized = `${value ?? ""}`.trim().toLowerCase();
+  if (["outright", "advance", "regulation_90"].includes(normalized)) {
+    return normalized as EventPrimaryMarketProfile;
+  }
+  return undefined;
 };
 
 const eventStatus = (event: BackendEventSummary): Event["status"] => {
@@ -261,6 +277,7 @@ const deriveMarketRules = (event: BackendEventSummary, markets: Market[]) => {
     supported.add("outright");
     return {
       marketProfile: "outright" as const,
+      primaryMarketProfile: "outright" as const,
       resultMode: "one_winner" as const,
       gameRules: {
         allowDraw: false,
@@ -295,7 +312,8 @@ const deriveMarketRules = (event: BackendEventSummary, markets: Market[]) => {
 
   return {
     marketProfile,
-    resultMode: hasDraw ? "can_draw" as const : "no_draw" as const,
+    primaryMarketProfile: hasAdvanceMarket || isTwoWaySoccerWinner ? "advance" as const : "regulation_90" as const,
+    resultMode: hasAdvanceMarket || isTwoWaySoccerWinner ? "must_advance" as const : hasDraw ? "can_draw_90" as const : "must_advance" as const,
     gameRules: {
       allowDraw: hasDraw,
       includesOvertime,
@@ -358,7 +376,8 @@ export const normalizeEventSummary = (event: BackendEventSummary, markets: Backe
     chartHistory: event.chartHistory,
     marketSourceSummary: event.marketSourceSummary,
     marketProfile: event.marketProfile ?? rules.marketProfile,
-    resultMode: event.resultMode ?? rules.resultMode,
+    primaryMarketProfile: asPrimaryMarketProfile(event.primaryMarketProfile) ?? rules.primaryMarketProfile,
+    resultMode: asEventResultMode(event.resultMode) ?? rules.resultMode,
     gameRules: event.gameRules ?? rules.gameRules,
     supportedMarketTypes: event.supportedMarketTypes ?? rules.supportedMarketTypes,
     chartHistorySource: event.chartHistorySource ?? (event.chartHistory?.length ? "embedded" : undefined),

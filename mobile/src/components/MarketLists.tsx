@@ -25,7 +25,7 @@ const hasDrawOutcome = (market: Market) =>
 
 const usesAdvanceDisplay = (event: Event, market: Market) =>
   isAdvanceMarket(market) ||
-  (event.marketProfile === "full_match_with_overtime" && event.resultMode === "no_draw") ||
+  (event.marketProfile === "full_match_with_overtime" && ["no_draw", "must_advance"].includes(event.resultMode ?? "")) ||
   (isRegulationMarket(market) && market.outcomes.length === 2 && !hasDrawOutcome(market));
 
 const homeCardMarket = (event: Event) => {
@@ -36,8 +36,11 @@ const homeCardMarket = (event: Event) => {
     Boolean(advanceMarket) &&
     (event.marketProfile === "to_advance" ||
       event.marketProfile === "full_match_with_overtime" ||
+      event.primaryMarketProfile === "advance" ||
+      event.resultMode === "must_advance" ||
       event.gameRules?.includesOvertime ||
       event.supportedMarketTypes?.includes("to_advance"));
+  if (event.primaryMarketProfile === "advance" && !advanceMarket) return undefined;
   return shouldShowAdvance ? advanceMarket : regulationMarket ?? advanceMarket ?? gameLineMarkets[0] ?? event.markets[0];
 };
 

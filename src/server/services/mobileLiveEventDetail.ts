@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { buildPublicOrderbookSnapshot } from "@/server/services/orderbookSnapshot";
+import { isMobileFacingSoccerPredictionMarket, normalizeSoccerResultMode, primaryMarketProfileForResultMode, sportsbookLineMarketSemantics } from "@/server/services/soccerMarketSemantics";
 
 type EventInput = {
   id: string;
@@ -212,6 +213,32 @@ const stringFromMetadata = (metadata: Record<string, unknown>, key: string) => {
   const value = metadata[key];
   return typeof value === "string" && value.trim() ? value.trim() : null;
 };
+
+const providerMarketTypeFromMetadata = (value: unknown) => {
+  const metadata = value && typeof value === "object" && !Array.isArray(value)
+    ? value as Record<string, unknown>
+    : {};
+  const providerMarketType = metadata.providerMarketType ?? metadata.marketKey;
+  return typeof providerMarketType === "string" && providerMarketType.trim() ? providerMarketType.trim() : null;
+};
+
+const mobileLineSemanticsForMarket = (market: MarketInput) =>
+  sportsbookLineMarketSemantics({
+    marketType: market.marketType,
+    marketGroupKey: market.marketGroupKey,
+    marketGroupTitle: market.marketGroupTitle,
+    providerMarketType: providerMarketTypeFromMetadata(market.referenceMetadata),
+    line: market.line?.toString() ?? null,
+  });
+
+const isMobileFacingCompactMarket = (market: MarketInput) =>
+  isMobileFacingSoccerPredictionMarket({
+    marketType: market.marketType,
+    marketGroupKey: market.marketGroupKey,
+    marketGroupTitle: market.marketGroupTitle,
+    providerMarketType: providerMarketTypeFromMetadata(market.referenceMetadata),
+    line: market.line?.toString() ?? null,
+  });
 
 const booleanFromMetadata = (metadata: Record<string, unknown>, key: string) =>
   typeof metadata[key] === "boolean" ? metadata[key] as boolean : null;
@@ -789,6 +816,7 @@ export const selectCompactLiveMarkets = (markets: MarketInput[]) =>
   {
     const sorted = [...markets]
       .filter((market) => market.outcomes.length > 0)
+      .filter(isMobileFacingCompactMarket)
       .sort((left, right) => {
       const rank = groupRank(left) - groupRank(right);
       if (rank !== 0) return rank;
@@ -930,6 +958,7 @@ export async function serializeMobileLiveEventDetail(input: {
       const bidByOutcome = new Map(depth.snapshot.bids.map((level) => [level.outcomeId, level]));
       const askByOutcome = new Map(depth.snapshot.asks.map((level) => [level.outcomeId, level]));
       const providerQuoteByOutcome = new Map(depth.snapshot.providerQuoteOutcomes.map((quote) => [quote.outcomeId, quote]));
+      const mobileLineSemantics = mobileLineSemanticsForMarket(market);
       return {
         id: market.id,
         title: market.title,
@@ -945,6 +974,7 @@ export async function serializeMobileLiveEventDetail(input: {
         unit: market.unit,
         referenceSource: market.referenceSource,
         approvedLineProviderReady: hasApprovedLineProviderReady(market),
+        mobileDisplayPolicy: mobileLineSemantics,
         externalSlug: market.externalSlug,
         externalMarketId: market.externalMarketId,
         conditionId: market.conditionId,
@@ -1084,6 +1114,15 @@ export async function serializeMobileLiveEventDetail(input: {
   );
   const includesOvertime = hasAdvanceMarket || isAdvance || isTwoWaySoccerWinner || ruleKey.includes("overtime") || ruleKey.includes("full match");
   const isOutrightEvent = isOutrightEventType(input.event.eventType);
+  const metadataRules = metadataObject(metadata.normalizedSoccer as Prisma.JsonValue | null);
+  const metadataResultMode = normalizeSoccerResultMode(
+    metadataRules.resultMode,
+    isOutrightEvent ? "one_winner" : hasAdvanceMarket || includesOvertime ? "must_advance" : ruleAllowDraw ? "can_draw_90" : "must_advance",
+  );
+  const resultMode = isOutrightEvent ? "one_winner" : metadataResultMode;
+  const primaryMarketProfile = typeof metadataRules.primaryMarketProfile === "string"
+    ? metadataRules.primaryMarketProfile
+    : primaryMarketProfileForResultMode(resultMode);
   const marketProfile = isOutrightEvent ? "outright" : isAdvance ? "to_advance" : includesOvertime ? "full_match_with_overtime" : "regulation_90";
   const supportedMarketTypes = Array.from(new Set([
     marketProfile,
@@ -1145,7 +1184,9 @@ export async function serializeMobileLiveEventDetail(input: {
       chartHistoryLastUpdated: primaryChartHistoryStatus?.lastUpdated ?? null,
       chartHistoryEmptyState: primaryChartHistoryStatus?.emptyState ?? (chartHistory.length ? null : "no-history"),
       marketProfile,
-      resultMode: isOutrightEvent ? "one_winner" : ruleAllowDraw ? "can_draw" : "no_draw",
+      primaryMarketProfile,
+      resultMode,
+      legacyResultMode: resultMode === "can_draw_90" ? "can_draw" : resultMode === "must_advance" ? "no_draw" : resultMode,
       gameRules: {
         allowDraw: isOutrightEvent ? false : ruleAllowDraw,
         includesOvertime: isOutrightEvent ? false : includesOvertime,

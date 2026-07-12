@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { upsertReferenceQuoteSnapshots } from "@/server/services/referenceQuoteSnapshots";
+import { sportsbookLineMarketSemantics } from "@/server/services/soccerMarketSemantics";
 
 const API_BASE_URL = "https://api.the-odds-api.com/v4";
 const DEFAULT_REGION = "us";
@@ -109,6 +110,12 @@ export type NormalizedOddsApiMarket = {
   line: number | null;
   unit: string | null;
   participantName: string | null;
+  mobileDisplayPolicy: {
+    visible: boolean;
+    reason: string;
+    normalizedLine: number | null;
+    providerMarketType: string;
+  };
   outcomes: Array<{
     code: string;
     name: string;
@@ -297,6 +304,13 @@ export function normalizeDecimalOddsMarket(params: {
     firstOutcome: outcomes[0]!,
   });
   if (!marketShape) return null;
+  const mobileDisplayPolicy = sportsbookLineMarketSemantics({
+    marketType: marketShape.marketType,
+    marketGroupKey: marketShape.marketGroupKey,
+    marketGroupTitle: marketShape.marketGroupTitle,
+    providerMarketType: params.market.key,
+    line: marketShape.line,
+  });
 
   return {
     marketKey: params.market.key,
@@ -305,6 +319,12 @@ export function normalizeDecimalOddsMarket(params: {
     lastUpdate: params.market.last_update ?? params.bookmaker.last_update ?? null,
     displayOrder: params.displayOrder,
     ...marketShape,
+    mobileDisplayPolicy: {
+      visible: mobileDisplayPolicy.visible,
+      reason: mobileDisplayPolicy.reason,
+      normalizedLine: mobileDisplayPolicy.normalizedLine,
+      providerMarketType: params.market.key,
+    },
     outcomes: outcomes.map((outcome, index) => ({
       code: outcomeCode(outcome, index),
       name: outcomeName(outcome),
@@ -339,7 +359,8 @@ export function normalizeOddsApiEvent(response: OddsApiEventOddsResponse): Norma
         displayOrder: (index + 1) * 10,
       });
       return normalized ? expandLineMarketsByPoint(normalized) : [];
-    });
+    })
+    .filter((market) => market.mobileDisplayPolicy.visible);
 }
 
 export function expandLineMarketsByPoint(market: NormalizedOddsApiMarket): NormalizedOddsApiMarket[] {
@@ -361,11 +382,24 @@ export function expandLineMarketsByPoint(market: NormalizedOddsApiMarket): Norma
   return groups.map(([point, outcomes], index) => {
     const totalImplied = outcomes.reduce((total, outcome) => total + (1 / outcome.decimalOdds), 0);
     const line = Number(point);
+    const mobileDisplayPolicy = sportsbookLineMarketSemantics({
+      marketType: market.marketType,
+      marketGroupKey: market.marketGroupKey,
+      marketGroupTitle: market.marketGroupTitle,
+      providerMarketType: market.marketKey,
+      line,
+    });
     return {
       ...market,
       displayOrder: market.displayOrder + index,
       title: titleWithLine(market.title, line),
       line,
+      mobileDisplayPolicy: {
+        visible: mobileDisplayPolicy.visible,
+        reason: mobileDisplayPolicy.reason,
+        normalizedLine: mobileDisplayPolicy.normalizedLine,
+        providerMarketType: market.marketKey,
+      },
       participantName: market.marketType === "spread" ? outcomes.find((outcome) => outcome.side === "home")?.name.replace(/\s[-+]\d+(\.\d+)?$/, "") ?? market.participantName : market.participantName,
       outcomes: outcomes.map((outcome) => ({
         ...outcome,
@@ -474,6 +508,33 @@ function eventMetadata(params: {
   return {
     providerSource: PROVIDER_SOURCE,
     referenceSource: REFERENCE_SOURCE,
+    sport: "soccer",
+    resultMode: "can_draw_90",
+    primaryMarketProfile: "regulation_90",
+    providerMarketTypes: Array.from(new Set(params.markets.map((market) => market.marketKey))),
+    hiddenProviderMarketPolicy: {
+      quarterAsianHandicapLines: "hidden_from_mobile_main_ui",
+      asianTotalLines: "hidden_from_mobile_main_ui",
+      cleanSpreadLines: ["1.5", "2.5", "3.5"],
+      cleanTotalLines: ["0.5", "1.5", "2.5", "3.5"],
+    },
+    normalizedSoccer: {
+      version: 2,
+      sportKey: "soccer",
+      leagueKey: "world_cup",
+      eventType: "match",
+      marketProfile: "regulation_90",
+      primaryMarketProfile: "regulation_90",
+      resultMode: "can_draw_90",
+      legacyResultMode: "can_draw",
+      providerSource: PROVIDER_SOURCE,
+      gameRules: {
+        allowDraw: true,
+        includesOvertime: false,
+        description: "Regulation-time soccer market can settle as home win, draw, or away win.",
+      },
+      supportedMarketTypes: Array.from(new Set(["regulation_90", ...params.markets.map((market) => market.marketType)])),
+    },
     sportsbookDerived: true,
     temporarySingleEventProvider: true,
     externalEventId: params.oddsEvent.id,
@@ -531,6 +592,8 @@ async function seedOddsMarket(params: {
         source: REFERENCE_SOURCE,
         providerSource: PROVIDER_SOURCE,
         marketKey: params.spec.marketKey,
+        providerMarketType: params.spec.marketKey,
+        mobileDisplayPolicy: params.spec.mobileDisplayPolicy,
         line: params.spec.line,
         period: params.spec.period,
       },
@@ -564,6 +627,8 @@ async function seedOddsMarket(params: {
         source: REFERENCE_SOURCE,
         providerSource: PROVIDER_SOURCE,
         marketKey: params.spec.marketKey,
+        providerMarketType: params.spec.marketKey,
+        mobileDisplayPolicy: params.spec.mobileDisplayPolicy,
         line: params.spec.line,
         period: params.spec.period,
       },
@@ -702,6 +767,8 @@ function marketReferenceMetadata(params: {
       title: params.spec.bookmakerTitle,
     },
     marketKey: params.spec.marketKey,
+    providerMarketType: params.spec.marketKey,
+    mobileDisplayPolicy: params.spec.mobileDisplayPolicy,
     lastUpdate: params.spec.lastUpdate,
     region: params.region,
     oddsFormat: params.oddsFormat,
@@ -721,7 +788,7 @@ function marketShapeForOddsKey(params: {
   event: OddsApiEvent;
   line: number | null;
   firstOutcome: OddsApiOutcome;
-}): Omit<NormalizedOddsApiMarket, "marketKey" | "bookmakerKey" | "bookmakerTitle" | "lastUpdate" | "displayOrder" | "outcomes"> | null {
+}): Omit<NormalizedOddsApiMarket, "marketKey" | "bookmakerKey" | "bookmakerTitle" | "lastUpdate" | "displayOrder" | "mobileDisplayPolicy" | "outcomes"> | null {
   switch (params.key) {
     case "h2h":
     case "h2h_3_way":

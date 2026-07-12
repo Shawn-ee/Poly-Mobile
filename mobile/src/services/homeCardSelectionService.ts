@@ -48,7 +48,7 @@ const selectionFromMarket = (
 };
 
 export const homeCardSelectionsForEvent = (event: Event): HomeCardSelection[] => {
-  if (event.marketProfile !== "regulation_90" || event.resultMode !== "can_draw") {
+  if (event.marketProfile !== "regulation_90" || !["can_draw", "can_draw_90"].includes(event.resultMode ?? "")) {
     return [];
   }
 

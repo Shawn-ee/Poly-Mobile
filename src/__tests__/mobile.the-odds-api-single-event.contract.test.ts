@@ -106,7 +106,50 @@ describe("The Odds API single-event temporary provider", () => {
     expect(markets.map((market) => market.marketType)).toEqual(["match_winner_1x2", "spread"]);
     expect(markets[0]?.outcomes).toHaveLength(3);
     expect(markets[1]?.line).toBe(1.5);
+    expect(markets[1]?.mobileDisplayPolicy).toMatchObject({ visible: true, reason: "clean_half_goal_spread" });
     expect(markets[1]?.outcomes[0]?.normalizedProbability).toBeGreaterThan(0);
+  });
+
+  it("hides raw Asian quarter handicap and total lines from mobile-facing imports", () => {
+    const markets = normalizeOddsApiEvent({
+      id: "event-raw-lines",
+      sport_key: "soccer_epl",
+      sport_title: "EPL",
+      commence_time: "2026-07-12T18:00:00Z",
+      home_team: "France",
+      away_team: "Paraguay",
+      bookmakers: [
+        {
+          key: "draftkings",
+          title: "DraftKings",
+          markets: [
+            {
+              key: "alternate_spreads",
+              outcomes: [
+                { name: "France", price: 1.9, point: -0.25 },
+                { name: "Paraguay", price: 1.9, point: 0.25 },
+                { name: "France", price: 2.1, point: -1.5 },
+                { name: "Paraguay", price: 1.7, point: 1.5 },
+              ],
+            },
+            {
+              key: "alternate_totals",
+              outcomes: [
+                { name: "Over", price: 1.9, point: 1.75 },
+                { name: "Under", price: 1.9, point: 1.75 },
+                { name: "Over", price: 1.8, point: 2 },
+                { name: "Under", price: 2, point: 2 },
+                { name: "Over", price: 2.05, point: 2.5 },
+                { name: "Under", price: 1.75, point: 2.5 },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(markets.map((market) => `${market.marketType}:${market.line}`)).toEqual(["spread:1.5", "total_goals:2.5"]);
+    expect(markets.every((market) => market.mobileDisplayPolicy.visible)).toBe(true);
   });
 
   it("splits alternate line markets into separate selectable line rows", () => {
@@ -124,6 +167,12 @@ describe("The Odds API single-event temporary provider", () => {
       line: null,
       unit: "goals",
       participantName: null,
+      mobileDisplayPolicy: {
+        visible: true,
+        reason: "clean_half_goal_total",
+        normalizedLine: null,
+        providerMarketType: "alternate_totals",
+      },
       outcomes: [
         { code: "over-2-5", name: "Over 2.5", side: "over", decimalOdds: 2, impliedProbability: 0.5, normalizedProbability: 0.25, point: 2.5, description: null },
         { code: "under-2-5", name: "Under 2.5", side: "under", decimalOdds: 1.8, impliedProbability: 0.5556, normalizedProbability: 0.25, point: 2.5, description: null },
@@ -133,6 +182,7 @@ describe("The Odds API single-event temporary provider", () => {
     });
     expect(expanded.map((market) => market.line)).toEqual([2.5, 3.5]);
     expect(expanded.every((market) => market.outcomes.length === 2)).toBe(true);
+    expect(expanded.every((market) => market.mobileDisplayPolicy.visible)).toBe(true);
   });
 
   it("counts The Odds API line markets as approved provider-backed, not contract fixtures", () => {

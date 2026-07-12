@@ -1,0 +1,64 @@
+{
+  "pass": true,
+  "liquidityPurpose": "buy-fill",
+  "routeContract": {
+    "mobileFlow": "Event Detail line market -> generic Buy ticket -> /api/orders BUY -> Portfolio History",
+    "expectedRestingSide": "SELL",
+    "source": "local-mvp-internal-liquidity"
+  },
+  "eventSlug": "holiwyn-local-australia-vs-egypt",
+  "market": {
+    "id": "2d2dda9e-88fe-449c-8de0-fc1ddb5c99e6",
+    "title": "Australia vs. Egypt: Total goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "period": "regulation",
+    "line": "2.5",
+    "referenceSource": "contract-fixture",
+    "externalMarketId": "contract-holiwyn-local-australia-vs-egypt-total-goals-2-5",
+    "conditionId": "condition-holiwyn-local-australia-vs-egypt-total-goals-2-5"
+  },
+  "outcome": {
+    "id": "f251326d-58b0-475d-9c67-ee4f0bb64264",
+    "name": "Over 2.5",
+    "side": "over",
+    "referenceTokenId": "contract-holiwyn-local-australia-vs-egypt-total-goals-2-5-over",
+    "referenceOutcomeLabel": "Over 2.5"
+  },
+  "cleanupOnly": false,
+  "maker": {
+    "id": "82892c7d-d47b-4921-bafc-4cabb19f0aff",
+    "username": "mobile_route_fill_maker_60dceca8"
+  },
+  "cleanup": {
+    "enabled": true,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": [],
+    "cleanupBlockingBids": true,
+    "canceledBlockingBids": [],
+    "cleanupBlockingMarketBids": true,
+    "cleanupBlockingMarketBidsForcedByPurpose": false,
+    "canceledBlockingMarketBids": [],
+    "cleanupProofAsks": false,
+    "canceledProofAsks": [],
+    "cleanupBlockingAsks": false,
+    "canceledBlockingAsks": []
+  },
+  "makerOrder": {
+    "id": "a49a29fc-608b-4dbf-9f4e-4a0eb56ea2be",
+    "marketId": "2d2dda9e-88fe-449c-8de0-fc1ddb5c99e6",
+    "outcomeId": "f251326d-58b0-475d-9c67-ee4f0bb64264",
+    "side": "SELL",
+    "price": "0.52",
+    "size": "80",
+    "remaining": "80",
+    "reservedNotional": "0",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "SELL",
+    "price": "0.52",
+    "size": "80",
+    "intendedMobileTaker": "BUY $25 route-backed totals ticket"
+  }
+}

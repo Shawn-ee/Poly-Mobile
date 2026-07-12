@@ -13563,3 +13563,31 @@ Known limitations:
 - Known limitations:
   - Default harness protects quota by using replay data; multiple live events require explicit provider refresh approval.
   - Continuous bot runtime is not required; proof liquidity is one-shot local maker liquidity.
+
+# Cycle SOCCERSEMANTICS - Prediction-Market Soccer Semantics
+
+- Feature/page worked on: Home/Event Detail market semantics for soccer markets imported from The Odds API.
+- Frontend components touched:
+  - `mobile/src/components/EventDetail.tsx`
+  - `mobile/src/components/MarketLists.tsx`
+  - `mobile/src/services/homeCardSelectionService.ts`
+  - `mobile/src/adapters/worldCupAdapter.ts`
+  - `mobile/src/types.ts`
+  - `mobile/src/mocks/worldCup.ts`
+- Important functions/services touched:
+  - `src/server/services/soccerMarketSemantics.ts`
+  - `src/server/services/theOddsApiSingleEventProvider.ts`
+  - `src/server/services/mobileLiveEventDetail.ts`
+  - `src/server/services/eventReadModel.ts`
+- User interactions supported:
+  - Regulation soccer events keep 90-minute Home/Draw/Away semantics.
+  - Must-advance events can only use a real advance market for the top primary action buttons.
+  - If a must-advance event only has provider 90-minute winner data, the 90-minute market remains a lower Game Lines market and is not relabeled as "to advance."
+  - Mobile-facing line markets hide raw Asian handicap/total lines and show only clean prediction-market half-goal totals/spreads.
+- State transitions:
+  - The Odds API raw provider market -> normalized backend market -> mobile compact market now includes `providerMarketType`, `mobileDisplayPolicy`, and event metadata for `resultMode`, `primaryMarketProfile`, and provider source.
+  - Existing already-seeded raw quarter lines are filtered by `/api/mobile/events/:slug/live-detail` compact selection before they reach Event Detail.
+- Known limitations:
+  - Raw provider sportsbook rows are not promoted as first-class visible markets unless they pass the clean prediction-market policy.
+  - Team-total availability still depends on the capped provider payload.
+  - A real team-to-advance provider market is required before must-advance top buttons can be shown for knockout games.

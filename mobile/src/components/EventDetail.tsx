@@ -584,10 +584,14 @@ export function EventDetail({
     advanceMarket &&
       (event.marketProfile === "to_advance" ||
         event.marketProfile === "full_match_with_overtime" ||
+        event.primaryMarketProfile === "advance" ||
+        event.resultMode === "must_advance" ||
         event.gameRules?.includesOvertime ||
         event.supportedMarketTypes?.includes("to_advance")),
   );
-  const primaryMarket = shouldUseAdvancePrimary ? advanceMarket : regulationMarket ?? advanceMarket ?? gameLineMarkets[0] ?? event.markets[0];
+  const primaryMarket = event.primaryMarketProfile === "advance" && !advanceMarket
+    ? undefined
+    : shouldUseAdvancePrimary ? advanceMarket : regulationMarket ?? advanceMarket ?? gameLineMarkets[0] ?? event.markets[0];
   const orderBookMarket = event.markets.find((market) => market.id === orderBookMarketId) ?? primaryMarket;
   const orderBookSelectedOutcome = orderBookMarket?.outcomes.find((outcome) => outcome.id === orderBookOutcomeId) ?? orderBookMarket?.outcomes[0];
   const providerRegulationSelections = useMemo(() => homeCardSelectionsForEvent(event), [event]);
@@ -750,16 +754,16 @@ export function EventDetail({
     setCompactHeaderVisible((visible) => visible === shouldShow ? visible : shouldShow);
   };
   const marketProfile = event.marketProfile ?? "regulation_90";
-  const resultMode = event.resultMode ?? (primaryMarket?.outcomes.some((outcome) => outcome.side === "draw") ? "can_draw" : "no_draw");
-  const hasAdvanceMarket = Boolean(advanceMarket && (event.supportedMarketTypes?.includes("to_advance") || marketProfile === "to_advance" || isAdvanceMarket(advanceMarket)));
+  const resultMode = event.resultMode ?? (primaryMarket?.outcomes.some((outcome) => outcome.side === "draw") ? "can_draw_90" : "must_advance");
+  const hasAdvanceMarket = Boolean(advanceMarket && (event.supportedMarketTypes?.includes("to_advance") || marketProfile === "to_advance" || event.primaryMarketProfile === "advance" || isAdvanceMarket(advanceMarket)));
   const effectiveMarketProfile = regulationLooksLikeAdvance ? "full_match_with_overtime" : marketProfile;
   const regulationMarketToggleKey = effectiveMarketProfile === "full_match_with_overtime" && (!regulationMarket || regulationLooksLikeAdvance) ? "match-winner" : "regulation-time-winner";
   const regulationMarketTitle = effectiveMarketProfile === "full_match_with_overtime" && (!regulationMarket || regulationLooksLikeAdvance) ? "Who Advances" : "Regulation Time Winner";
-  const isFullMatchNoDrawPrimary = Boolean(primaryMarket && !isAdvanceMarket(primaryMarket) && effectiveMarketProfile === "full_match_with_overtime" && resultMode === "no_draw");
+  const isFullMatchNoDrawPrimary = Boolean(primaryMarket && !isAdvanceMarket(primaryMarket) && effectiveMarketProfile === "full_match_with_overtime" && ["no_draw", "must_advance"].includes(resultMode));
   const primaryMarketTitle = primaryMarket && (isAdvanceMarket(primaryMarket) || isFullMatchNoDrawPrimary) ? "Who Advances" : regulationMarketTitle;
   const primaryMarketSubcopy = primaryMarketTitle === "Who Advances"
     ? "Includes overtime and penalties if needed"
-    : resultMode === "can_draw"
+    : ["can_draw", "can_draw_90"].includes(resultMode)
         ? "90 minutes plus stoppage time"
         : "No draw market for this event";
   const matchingBackendPeriodWinnerMarket = (period: Market["period"]) =>

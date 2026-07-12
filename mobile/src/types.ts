@@ -185,7 +185,8 @@ export type EventSummary = {
   chartHistoryEmptyState?: "no-history" | null;
   marketSourceSummary?: MarketSourceSummary;
   marketProfile?: "outright" | "to_advance" | "regulation_90" | "full_match_with_overtime";
-  resultMode?: "one_winner" | "can_draw" | "no_draw";
+  primaryMarketProfile?: "outright" | "advance" | "regulation_90";
+  resultMode?: "one_winner" | "can_draw" | "no_draw" | "can_draw_90" | "must_advance";
   gameRules?: {
     allowDraw: boolean;
     includesOvertime: boolean;

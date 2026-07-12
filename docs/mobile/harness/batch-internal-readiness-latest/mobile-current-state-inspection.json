@@ -1,7 +1,7 @@
 {
     "cycle":  "BATCHREADINESS",
     "result":  "inspection-pass",
-    "inspectedAt":  "2026-07-12T04:04:37.023Z",
+    "inspectedAt":  "2026-07-12T05:23:04.955Z",
     "baseUrl":  "http://127.0.0.1:3002",
     "homeRoute":  {
                       "url":  "http://127.0.0.1:3002/api/events?sportKey=soccer\u0026leagueKey=world_cup\u0026includeMobileMarkets=1\u0026mobileMvpMatches=1\u0026limit=10",
@@ -60,7 +60,6 @@
                                          "regulationWinnerStatus":  "provider-backed",
                                          "lineMarketStatus":  "partial-provider-backed",
                                          "lineFamilies":  [
-                                                              "spread",
                                                               "total_goals"
                                                           ]
                                      },
@@ -84,13 +83,13 @@
                              "slug":  "argentina-vs-egypt",
                              "title":  "Argentina vs. Egypt",
                              "marketSourceSummary":  {
-                                                         "totalMarketCount":  7,
+                                                         "totalMarketCount":  6,
                                                          "sourceBreakdown":  {
                                                                                  "polymarket":  3,
-                                                                                 "contract-fixture":  4
+                                                                                 "contract-fixture":  3
                                                                              },
                                                          "polymarketMarketCount":  3,
-                                                         "contractFixtureMarketCount":  4,
+                                                         "contractFixtureMarketCount":  3,
                                                          "unknownSourceMarketCount":  0,
                                                          "regulationWinner":  {
                                                                                   "totalCount":  3,
@@ -100,10 +99,10 @@
                                                                                   "status":  "provider-backed"
                                                                               },
                                                          "lineMarkets":  {
-                                                                             "totalCount":  4,
+                                                                             "totalCount":  3,
                                                                              "polymarketCount":  0,
                                                                              "approvedLineProviderCount":  0,
-                                                                             "contractFixtureCount":  4,
+                                                                             "contractFixtureCount":  3,
                                                                              "status":  "contract-fixture",
                                                                              "families":  [
                                                                                               "spread",
@@ -113,10 +112,10 @@
                                                                              "familyReadiness":  [
                                                                                                      {
                                                                                                          "family":  "spread",
-                                                                                                         "totalCount":  2,
+                                                                                                         "totalCount":  1,
                                                                                                          "polymarketCount":  0,
                                                                                                          "approvedLineProviderCount":  0,
-                                                                                                         "contractFixtureCount":  2,
+                                                                                                         "contractFixtureCount":  1,
                                                                                                          "status":  "contract-fixture",
                                                                                                          "reason":  "spread is served by Local MVP contract fixtures for this event."
                                                                                                      },
@@ -144,7 +143,7 @@
                                                                                                           "status":  "unavailable",
                                                                                                           "providerBackedLineMarketCount":  0,
                                                                                                           "approvedLineProviderMarketCount":  0,
-                                                                                                          "contractFixtureLineMarketCount":  4,
+                                                                                                          "contractFixtureLineMarketCount":  3,
                                                                                                           "expectedFamilies":  [
                                                                                                                                    "spread",
                                                                                                                                    "total",
@@ -181,13 +180,13 @@
     "detailRoute":  {
                         "url":  "http://127.0.0.1:3002/api/mobile/events/argentina-vs-egypt/live-detail",
                         "marketSourceSummary":  {
-                                                    "totalMarketCount":  7,
+                                                    "totalMarketCount":  6,
                                                     "sourceBreakdown":  {
                                                                             "polymarket":  3,
-                                                                            "contract-fixture":  4
+                                                                            "contract-fixture":  3
                                                                         },
                                                     "polymarketMarketCount":  3,
-                                                    "contractFixtureMarketCount":  4,
+                                                    "contractFixtureMarketCount":  3,
                                                     "unknownSourceMarketCount":  0,
                                                     "regulationWinner":  {
                                                                              "totalCount":  3,
@@ -197,10 +196,10 @@
                                                                              "status":  "provider-backed"
                                                                          },
                                                     "lineMarkets":  {
-                                                                        "totalCount":  4,
+                                                                        "totalCount":  3,
                                                                         "polymarketCount":  0,
                                                                         "approvedLineProviderCount":  0,
-                                                                        "contractFixtureCount":  4,
+                                                                        "contractFixtureCount":  3,
                                                                         "status":  "contract-fixture",
                                                                         "families":  [
                                                                                          "spread",
@@ -210,10 +209,10 @@
                                                                         "familyReadiness":  [
                                                                                                 {
                                                                                                     "family":  "spread",
-                                                                                                    "totalCount":  2,
+                                                                                                    "totalCount":  1,
                                                                                                     "polymarketCount":  0,
                                                                                                     "approvedLineProviderCount":  0,
-                                                                                                    "contractFixtureCount":  2,
+                                                                                                    "contractFixtureCount":  1,
                                                                                                     "status":  "contract-fixture",
                                                                                                     "reason":  "spread is served by Local MVP contract fixtures for this event."
                                                                                                 },
@@ -241,7 +240,7 @@
                                                                                                      "status":  "unavailable",
                                                                                                      "providerBackedLineMarketCount":  0,
                                                                                                      "approvedLineProviderMarketCount":  0,
-                                                                                                     "contractFixtureLineMarketCount":  4,
+                                                                                                     "contractFixtureLineMarketCount":  3,
                                                                                                      "expectedFamilies":  [
                                                                                                                               "spread",
                                                                                                                               "total",
@@ -276,7 +275,7 @@
                                                 },
                         "providerWinnerMarketCount":  3,
                         "providerLineMarketCount":  0,
-                        "fixtureLineMarketCount":  4,
+                        "fixtureLineMarketCount":  3,
                         "markets":  [
                                         {
                                             "marketGroupTitle":  "Regulation Winner",
@@ -330,15 +329,6 @@
                                             "period":  "regulation",
                                             "referenceSource":  "polymarket",
                                             "externalSlug":  "fifwc-arg-egy-2026-07-07-egy",
-                                            "outcomeCount":  2
-                                        },
-                                        {
-                                            "marketGroupTitle":  "Spread",
-                                            "marketType":  "spread",
-                                            "line":  "0.5",
-                                            "period":  "regulation",
-                                            "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "argentina-vs-egypt-spread-home-0-5",
                                             "outcomeCount":  2
                                         }
                                     ]

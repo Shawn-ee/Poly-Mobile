@@ -1,4 +1,5 @@
 import type { Event } from "@prisma/client";
+import { normalizeSoccerResultMode, primaryMarketProfileForResultMode } from "@/server/services/soccerMarketSemantics";
 
 type EventCounts = {
   markets?: number | { markets?: number };
@@ -35,7 +36,9 @@ type SupportedMarketType =
 
 type EventMarketRules = {
   marketProfile: "outright" | "to_advance" | "regulation_90" | "full_match_with_overtime";
-  resultMode: "one_winner" | "can_draw" | "no_draw";
+  primaryMarketProfile: "outright" | "advance" | "regulation_90";
+  resultMode: "one_winner" | "can_draw_90" | "must_advance";
+  legacyResultMode: "one_winner" | "can_draw" | "no_draw";
   gameRules: {
     allowDraw: boolean;
     includesOvertime: boolean;
@@ -48,7 +51,7 @@ type MarketProfile = EventMarketRules["marketProfile"];
 type ResultMode = EventMarketRules["resultMode"];
 
 const MARKET_PROFILES = ["outright", "to_advance", "regulation_90", "full_match_with_overtime"] as const;
-const RESULT_MODES = ["one_winner", "can_draw", "no_draw"] as const;
+const RESULT_MODES = ["one_winner", "can_draw_90", "must_advance"] as const;
 const SUPPORTED_MARKET_TYPES = [
   "outright",
   "to_advance",
@@ -67,6 +70,12 @@ const isMarketProfile = (value: unknown): value is MarketProfile =>
 
 const isResultMode = (value: unknown): value is ResultMode =>
   typeof value === "string" && RESULT_MODES.includes(value as ResultMode);
+
+const legacyResultMode = (value: ResultMode): EventMarketRules["legacyResultMode"] => {
+  if (value === "can_draw_90") return "can_draw";
+  if (value === "must_advance") return "no_draw";
+  return value;
+};
 
 const isSupportedMarketType = (value: unknown): value is SupportedMarketType =>
   typeof value === "string" && SUPPORTED_MARKET_TYPES.includes(value as SupportedMarketType);
@@ -179,7 +188,7 @@ const isOutrightEventType = (value: string | null | undefined) => {
 const normalizedSoccerRulesFromMetadata = (metadata: Record<string, unknown>): EventMarketRules | null => {
   const normalizedSoccer = metadataObject(metadata.normalizedSoccer);
   const marketProfile = normalizedSoccer.marketProfile;
-  const resultMode = normalizedSoccer.resultMode;
+  const resultMode = normalizeSoccerResultMode(normalizedSoccer.resultMode);
   const gameRules = metadataObject(normalizedSoccer.gameRules);
   const supportedMarketTypes = normalizedSoccer.supportedMarketTypes;
   if (
@@ -191,14 +200,19 @@ const normalizedSoccerRulesFromMetadata = (metadata: Record<string, unknown>): E
 
   return {
     marketProfile,
+    primaryMarketProfile:
+      normalizedSoccer.primaryMarketProfile === "advance" || normalizedSoccer.primaryMarketProfile === "regulation_90" || normalizedSoccer.primaryMarketProfile === "outright"
+        ? normalizedSoccer.primaryMarketProfile
+        : primaryMarketProfileForResultMode(resultMode),
     resultMode,
+    legacyResultMode: legacyResultMode(resultMode),
     gameRules: {
       allowDraw: Boolean(gameRules.allowDraw),
       includesOvertime: Boolean(gameRules.includesOvertime),
       description:
         typeof gameRules.description === "string"
           ? gameRules.description
-          : resultMode === "can_draw"
+          : resultMode === "can_draw_90"
             ? "Regulation market can settle as draw."
             : "Winner market has no draw outcome.",
     },
@@ -217,7 +231,9 @@ const deriveEventMarketRules = (
     supported.add("outright");
     return {
       marketProfile: "outright",
+      primaryMarketProfile: "outright",
       resultMode: "one_winner",
+      legacyResultMode: "one_winner",
       gameRules: {
         allowDraw: false,
         includesOvertime: false,
@@ -262,12 +278,14 @@ const deriveEventMarketRules = (
   );
   const includesOvertime = hasAdvanceMarket || isAdvance || isTwoWaySoccerWinner || mainKey.includes("overtime") || mainKey.includes("full match");
   const marketProfile: MarketProfile = isAdvance ? "to_advance" : includesOvertime ? "full_match_with_overtime" : "regulation_90";
-  const resultMode: ResultMode = allowDraw ? "can_draw" : "no_draw";
+  const resultMode: ResultMode = allowDraw ? "can_draw_90" : "must_advance";
   supported.add(marketProfile);
 
   return {
     marketProfile,
+    primaryMarketProfile: primaryMarketProfileForResultMode(resultMode),
     resultMode,
+    legacyResultMode: legacyResultMode(resultMode),
     gameRules: {
       allowDraw,
       includesOvertime,
@@ -288,26 +306,14 @@ const reconcileMarketRulesWithVisibleMarkets = (rules: EventMarketRules, markets
     return {
       ...rules,
       marketProfile: "regulation_90",
-      resultMode: "can_draw",
+      primaryMarketProfile: "regulation_90",
+      resultMode: "can_draw_90",
+      legacyResultMode: "can_draw",
       gameRules: {
         ...rules.gameRules,
         allowDraw: true,
         includesOvertime: false,
         description: "Regulation-time soccer market can settle as home win, draw, or away win.",
-      },
-      supportedMarketTypes: [...supported],
-    };
-  }
-
-  if (hasDrawMarket && rules.resultMode === "no_draw") {
-    const supported = new Set(rules.supportedMarketTypes);
-    supported.add("regulation_90");
-    return {
-      ...rules,
-      resultMode: "can_draw",
-      gameRules: {
-        ...rules.gameRules,
-        allowDraw: true,
       },
       supportedMarketTypes: [...supported],
     };
@@ -410,7 +416,9 @@ export const serializeEventSummary = (
     liveStats,
     chartHistory,
     marketProfile: marketRules.marketProfile,
+    primaryMarketProfile: marketRules.primaryMarketProfile,
     resultMode: marketRules.resultMode,
+    legacyResultMode: marketRules.legacyResultMode,
     gameRules: marketRules.gameRules,
     supportedMarketTypes: marketRules.supportedMarketTypes,
     metadata: event.metadata,
