@@ -122,6 +122,7 @@
     "mobile:the-odds-api-single-event": "tsx scripts/seed_the_odds_api_single_event.ts",
     "mobile:the-odds-api-single-event-flow": "tsx scripts/prove_mobile_the_odds_api_single_event_flow.ts",
     "mobile:odds-api-internal-env-proof": "tsx scripts/prove_mobile_odds_api_internal_environment.ts",
+    "mobile:odds-api-live-runtime-proof": "tsx scripts/prove_odds_api_one_event_live_runtime.ts",
     "mobile:the-odds-api-s23-visible-flow": "powershell -ExecutionPolicy Bypass -File scripts/prove_mobile_odds_api_s23_visible_flow.ps1",
     "bots:reset-state": "tsx scripts/reset_bot_state.ts",
     "bot:e2e:seed": "tsx tests/bot-e2e/seed.ts",

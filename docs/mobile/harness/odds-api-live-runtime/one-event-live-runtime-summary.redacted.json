@@ -1,0 +1,850 @@
+{
+  "pass": true,
+  "generatedAt": "2026-07-12T07:06:21.133Z",
+  "scope": "odds-api-one-event-live-runtime",
+  "policy": {
+    "fakeTokenOnly": true,
+    "oneEventOnly": true,
+    "providerSource": "the-odds-api",
+    "referenceSource": "sportsbook-odds",
+    "maxCredits": 16,
+    "minRemaining": 2,
+    "refreshIterations": 2,
+    "refreshIntervalMs": 0,
+    "quoteOffsetTicks": 2
+  },
+  "event": {
+    "providerEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
+    "sportKey": "soccer_fifa_world_cup",
+    "title": "Spain vs. France",
+    "commenceTime": "2026-07-14T19:00:00Z",
+    "localSlug": "odds-api-single-soccer-test"
+  },
+  "provider": {
+    "calls": [
+      {
+        "name": "sports",
+        "method": "GET",
+        "path": "/v4/sports",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_fifa_world_cup",
+        "method": "GET",
+        "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_uefa_champs_league_qualification",
+        "method": "GET",
+        "path": "/v4/sports/soccer_uefa_champs_league_qualification/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_usa_mls",
+        "method": "GET",
+        "path": "/v4/sports/soccer_usa_mls/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_england_efl_cup",
+        "method": "GET",
+        "path": "/v4/sports/soccer_england_efl_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_england_league1",
+        "method": "GET",
+        "path": "/v4/sports/soccer_england_league1/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_england_league2",
+        "method": "GET",
+        "path": "/v4/sports/soccer_england_league2/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_epl",
+        "method": "GET",
+        "path": "/v4/sports/soccer_epl/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_argentina_primera_division",
+        "method": "GET",
+        "path": "/v4/sports/soccer_argentina_primera_division/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_austria_bundesliga",
+        "method": "GET",
+        "path": "/v4/sports/soccer_austria_bundesliga/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_brazil_campeonato",
+        "method": "GET",
+        "path": "/v4/sports/soccer_brazil_campeonato/events?dateFormat=iso&commenceTimeFrom=2026-07-12T00%3A00%3A00Z&commenceTimeTo=2026-07-13T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_fifa_world_cup",
+        "method": "GET",
+        "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-13T00%3A00%3A00Z&commenceTimeTo=2026-07-14T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_uefa_champs_league_qualification",
+        "method": "GET",
+        "path": "/v4/sports/soccer_uefa_champs_league_qualification/events?dateFormat=iso&commenceTimeFrom=2026-07-13T00%3A00%3A00Z&commenceTimeTo=2026-07-14T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_usa_mls",
+        "method": "GET",
+        "path": "/v4/sports/soccer_usa_mls/events?dateFormat=iso&commenceTimeFrom=2026-07-13T00%3A00%3A00Z&commenceTimeTo=2026-07-14T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_england_efl_cup",
+        "method": "GET",
+        "path": "/v4/sports/soccer_england_efl_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-13T00%3A00%3A00Z&commenceTimeTo=2026-07-14T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_england_league1",
+        "method": "GET",
+        "path": "/v4/sports/soccer_england_league1/events?dateFormat=iso&commenceTimeFrom=2026-07-13T00%3A00%3A00Z&commenceTimeTo=2026-07-14T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_england_league2",
+        "method": "GET",
+        "path": "/v4/sports/soccer_england_league2/events?dateFormat=iso&commenceTimeFrom=2026-07-13T00%3A00%3A00Z&commenceTimeTo=2026-07-14T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_epl",
+        "method": "GET",
+        "path": "/v4/sports/soccer_epl/events?dateFormat=iso&commenceTimeFrom=2026-07-13T00%3A00%3A00Z&commenceTimeTo=2026-07-14T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_argentina_primera_division",
+        "method": "GET",
+        "path": "/v4/sports/soccer_argentina_primera_division/events?dateFormat=iso&commenceTimeFrom=2026-07-13T00%3A00%3A00Z&commenceTimeTo=2026-07-14T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_austria_bundesliga",
+        "method": "GET",
+        "path": "/v4/sports/soccer_austria_bundesliga/events?dateFormat=iso&commenceTimeFrom=2026-07-13T00%3A00%3A00Z&commenceTimeTo=2026-07-14T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_brazil_campeonato",
+        "method": "GET",
+        "path": "/v4/sports/soccer_brazil_campeonato/events?dateFormat=iso&commenceTimeFrom=2026-07-13T00%3A00%3A00Z&commenceTimeTo=2026-07-14T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_fifa_world_cup",
+        "method": "GET",
+        "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-14T00%3A00%3A00Z&commenceTimeTo=2026-07-15T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "28",
+          "requestsRemaining": "472",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "event-markets",
+        "method": "GET",
+        "path": "/v4/sports/soccer_fifa_world_cup/events/f9aa13a662d1658e5a02cfc06d6a2d73/markets?regions=us&dateFormat=iso",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "29",
+          "requestsRemaining": "471",
+          "requestsLast": "1"
+        }
+      },
+      {
+        "name": "event-odds",
+        "method": "GET",
+        "path": "/v4/sports/soccer_fifa_world_cup/events/f9aa13a662d1658e5a02cfc06d6a2d73/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "35",
+          "requestsRemaining": "465",
+          "requestsLast": "6"
+        }
+      },
+      {
+        "name": "event-odds",
+        "method": "GET",
+        "path": "/v4/sports/soccer_fifa_world_cup/events/f9aa13a662d1658e5a02cfc06d6a2d73/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "41",
+          "requestsRemaining": "459",
+          "requestsLast": "6"
+        }
+      }
+    ],
+    "quota": {
+      "totalLastCost": 13,
+      "latest": {
+        "requestsUsed": "41",
+        "requestsRemaining": "459",
+        "requestsLast": "6"
+      }
+    },
+    "selectedMarketKeys": [
+      "h2h",
+      "spreads",
+      "totals",
+      "h2h_3_way",
+      "alternate_spreads",
+      "alternate_totals"
+    ],
+    "importedMarketKeys": [
+      "h2h",
+      "totals",
+      "h2h_3_way"
+    ],
+    "normalizedMarketCount": 3,
+    "seed": {
+      "event": {
+        "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
+        "slug": "odds-api-single-soccer-test",
+        "title": "Spain vs. France"
+      },
+      "marketCount": 19,
+      "outcomeCount": 40,
+      "markets": [
+        {
+          "id": "378abc5d-144e-4797-9f07-8b271103468b",
+          "slug": "odds-api-single-soccer-test-h2h-c08243d06d",
+          "title": "Spain vs. France: Regulation Time Winner",
+          "marketType": "match_winner_1x2",
+          "marketGroupTitle": "Regulation Time Winner",
+          "line": null,
+          "outcomeCount": 3
+        },
+        {
+          "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+          "slug": "odds-api-single-soccer-test-totals-7439c2d603",
+          "title": "Spain vs. France: Total Goals 2.5",
+          "marketType": "total_goals",
+          "marketGroupTitle": "Total Goals",
+          "line": "2.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "528f1f87-cc1c-44a0-8732-876ef0676071",
+          "slug": "odds-api-single-soccer-test-h2h-3-way-aa0047f81b",
+          "title": "Spain vs. France: Regulation Time Winner",
+          "marketType": "match_winner_1x2",
+          "marketGroupTitle": "Regulation Time Winner",
+          "line": null,
+          "outcomeCount": 3
+        },
+        {
+          "id": "51f895fa-c0ed-4463-b74c-d0e50dc56ecc",
+          "slug": "odds-api-single-soccer-test-holiwyn-advance",
+          "title": "Spain vs. France: Team to advance",
+          "marketType": "to_advance",
+          "marketGroupTitle": "Team To Advance",
+          "line": null,
+          "outcomeCount": 2
+        },
+        {
+          "id": "88a781e9-078c-4d0f-8d01-918186bea1d1",
+          "slug": "odds-api-single-soccer-test-holiwyn-regulation-home",
+          "title": "Spain vs. France: France in regulation",
+          "marketType": "match_winner_1x2",
+          "marketGroupTitle": "Regulation Time Winner",
+          "line": null,
+          "outcomeCount": 2
+        },
+        {
+          "id": "0e407969-0c2a-495e-9c82-ace2fbe5e372",
+          "slug": "odds-api-single-soccer-test-holiwyn-regulation-away",
+          "title": "Spain vs. France: Spain in regulation",
+          "marketType": "match_winner_1x2",
+          "marketGroupTitle": "Regulation Time Winner",
+          "line": null,
+          "outcomeCount": 2
+        },
+        {
+          "id": "132e9436-646a-41c4-b143-98885833003c",
+          "slug": "odds-api-single-soccer-test-holiwyn-regulation-draw",
+          "title": "Spain vs. France: Draw in regulation",
+          "marketType": "match_winner_1x2",
+          "marketGroupTitle": "Regulation Time Winner",
+          "line": null,
+          "outcomeCount": 2
+        },
+        {
+          "id": "8a2fce43-c3fd-428d-8a62-00c36e5a678e",
+          "slug": "odds-api-single-soccer-test-holiwyn-spread-home-neg-3-5",
+          "title": "Spain vs. France: France -3.5",
+          "marketType": "spread",
+          "marketGroupTitle": "Spread",
+          "line": "-3.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "f7076ecf-f097-4069-99f0-b772def0adab",
+          "slug": "odds-api-single-soccer-test-holiwyn-spread-home-neg-2-5",
+          "title": "Spain vs. France: France -2.5",
+          "marketType": "spread",
+          "marketGroupTitle": "Spread",
+          "line": "-2.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "2fe6074d-96a5-4ce5-9599-41c4e5f10dc1",
+          "slug": "odds-api-single-soccer-test-holiwyn-spread-home-neg-1-5",
+          "title": "Spain vs. France: France -1.5",
+          "marketType": "spread",
+          "marketGroupTitle": "Spread",
+          "line": "-1.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "7ab91fec-4e3f-4aeb-bafa-60a16bc88f44",
+          "slug": "odds-api-single-soccer-test-holiwyn-spread-home-1-5",
+          "title": "Spain vs. France: France +1.5",
+          "marketType": "spread",
+          "marketGroupTitle": "Spread",
+          "line": "1.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "a71049ce-f598-4713-9ae5-ff1874cdf448",
+          "slug": "odds-api-single-soccer-test-holiwyn-spread-home-2-5",
+          "title": "Spain vs. France: France +2.5",
+          "marketType": "spread",
+          "marketGroupTitle": "Spread",
+          "line": "2.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "ef2c74a4-0a6c-48b5-b263-738e7718e75a",
+          "slug": "odds-api-single-soccer-test-holiwyn-spread-home-3-5",
+          "title": "Spain vs. France: France +3.5",
+          "marketType": "spread",
+          "marketGroupTitle": "Spread",
+          "line": "3.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "6a04afc7-d661-4f69-946a-6d3eee3ed450",
+          "slug": "odds-api-single-soccer-test-holiwyn-total-goals-0-5",
+          "title": "Spain vs. France: Total goals 0.5",
+          "marketType": "total_goals",
+          "marketGroupTitle": "Total Goals",
+          "line": "0.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "e97678b5-311e-417e-8602-6b8ef40b9b62",
+          "slug": "odds-api-single-soccer-test-holiwyn-total-goals-1-5",
+          "title": "Spain vs. France: Total goals 1.5",
+          "marketType": "total_goals",
+          "marketGroupTitle": "Total Goals",
+          "line": "1.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "9c51b257-917a-4b29-b3c0-3d0ad9102b41",
+          "slug": "odds-api-single-soccer-test-holiwyn-total-goals-2-5",
+          "title": "Spain vs. France: Total goals 2.5",
+          "marketType": "total_goals",
+          "marketGroupTitle": "Total Goals",
+          "line": "2.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "3692dcbc-5c8e-420e-8898-596d35f2d233",
+          "slug": "odds-api-single-soccer-test-holiwyn-total-goals-3-5",
+          "title": "Spain vs. France: Total goals 3.5",
+          "marketType": "total_goals",
+          "marketGroupTitle": "Total Goals",
+          "line": "3.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "48b17b95-d3c8-4935-94df-d2cf6ba4acfe",
+          "slug": "odds-api-single-soccer-test-holiwyn-total-goals-4-5",
+          "title": "Spain vs. France: Total goals 4.5",
+          "marketType": "total_goals",
+          "marketGroupTitle": "Total Goals",
+          "line": "4.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "7babfa24-e0be-4518-8d71-a219d68b7a22",
+          "slug": "odds-api-single-soccer-test-holiwyn-total-goals-5-5",
+          "title": "Spain vs. France: Total goals 5.5",
+          "marketType": "total_goals",
+          "marketGroupTitle": "Total Goals",
+          "line": "5.5",
+          "outcomeCount": 2
+        }
+      ]
+    }
+  },
+  "selectedMarket": {
+    "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "slug": "odds-api-single-soccer-test-totals-7439c2d603",
+    "title": "Spain vs. France: Total Goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "line": "2.5",
+    "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+    "outcomeName": "Over +2.5",
+    "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
+  },
+  "lifecycle": {
+    "forcedStaleAt": "2026-07-12T07:01:17.460Z",
+    "beforeRefresh": {
+      "source": "mobile-live-detail-market",
+      "status": "stale",
+      "ready": false,
+      "stale": true,
+      "refreshDue": false,
+      "refreshing": false,
+      "refreshStarted": false,
+      "unavailable": true,
+      "empty": false,
+      "notReady": true,
+      "fallback": false,
+      "fallbackApplied": false,
+      "fallbackReason": null,
+      "reason": "Provider quote snapshot is older than 90 seconds.",
+      "nextRefreshAt": "2026-07-12T07:02:17.460Z",
+      "lastFetchedAt": "2026-07-12T07:01:17.460Z",
+      "quote": {
+        "source": "sportsbook-odds",
+        "status": "stale",
+        "reason": "Provider quote snapshot is older than 90 seconds.",
+        "nextRefreshAt": "2026-07-12T07:02:17.460Z",
+        "lastFetchedAt": "2026-07-12T07:01:17.460Z",
+        "stalenessSeconds": 301,
+        "shouldRefresh": true,
+        "ready": false,
+        "stale": true,
+        "refreshDue": false,
+        "unavailable": false,
+        "empty": false,
+        "notReady": true
+      },
+      "orderbookDepth": {
+        "source": "reference-orderbook-depth-snapshot",
+        "status": "unavailable",
+        "reason": "No provider orderbook depth snapshot is available.",
+        "nextRefreshAt": null,
+        "lastFetchedAt": null,
+        "stalenessSeconds": null,
+        "shouldRefresh": true,
+        "ready": false,
+        "stale": false,
+        "refreshDue": true,
+        "unavailable": true,
+        "empty": true,
+        "notReady": true
+      },
+      "chartHistory": {
+        "source": "empty",
+        "status": "unavailable",
+        "reason": "No provider chart history snapshot is available for this market.",
+        "nextRefreshAt": null,
+        "lastFetchedAt": null,
+        "stalenessSeconds": null,
+        "shouldRefresh": true,
+        "ready": false,
+        "stale": false,
+        "refreshDue": true,
+        "unavailable": true,
+        "empty": true,
+        "notReady": true
+      }
+    },
+    "afterRefresh": {
+      "source": "mobile-live-detail-market",
+      "status": "unavailable",
+      "ready": false,
+      "stale": false,
+      "refreshDue": false,
+      "refreshing": false,
+      "refreshStarted": false,
+      "unavailable": true,
+      "empty": false,
+      "notReady": true,
+      "fallback": false,
+      "fallbackApplied": false,
+      "fallbackReason": null,
+      "reason": "No provider orderbook depth snapshot is available.",
+      "nextRefreshAt": "2026-07-12T07:07:18.254Z",
+      "lastFetchedAt": "2026-07-12T07:06:18.254Z",
+      "quote": {
+        "source": "sportsbook-odds",
+        "status": "ready",
+        "reason": "Provider quote snapshot is fresh.",
+        "nextRefreshAt": "2026-07-12T07:07:18.254Z",
+        "lastFetchedAt": "2026-07-12T07:06:18.254Z",
+        "stalenessSeconds": 1,
+        "shouldRefresh": false,
+        "ready": true,
+        "stale": false,
+        "refreshDue": false,
+        "unavailable": false,
+        "empty": false,
+        "notReady": false
+      },
+      "orderbookDepth": {
+        "source": "reference-orderbook-depth-snapshot",
+        "status": "unavailable",
+        "reason": "No provider orderbook depth snapshot is available.",
+        "nextRefreshAt": null,
+        "lastFetchedAt": null,
+        "stalenessSeconds": null,
+        "shouldRefresh": true,
+        "ready": false,
+        "stale": false,
+        "refreshDue": true,
+        "unavailable": true,
+        "empty": true,
+        "notReady": true
+      },
+      "chartHistory": {
+        "source": "empty",
+        "status": "unavailable",
+        "reason": "No provider chart history snapshot is available for this market.",
+        "nextRefreshAt": null,
+        "lastFetchedAt": null,
+        "stalenessSeconds": null,
+        "shouldRefresh": true,
+        "ready": false,
+        "stale": false,
+        "refreshDue": true,
+        "unavailable": true,
+        "empty": true,
+        "notReady": true
+      }
+    },
+    "open": {
+      "marketStatus": "LIVE"
+    },
+    "suspended": {
+      "supportedByManualPauseRoute": true,
+      "route": "POST /api/admin/markets/:id/pause"
+    },
+    "closed": {
+      "proofRejectedOrder": 409,
+      "route": "POST /api/admin/markets/:id/close"
+    },
+    "settlementReadiness": {
+      "automaticSettlement": false,
+      "manualResolveRoute": "POST /api/admin/markets/:id/resolve",
+      "reason": "Official soccer result provider and automatic settlement scheduler are not wired for Odds API Local MVP."
+    }
+  },
+  "marketMaker": {
+    "continuous": false,
+    "mode": "bounded-proof-local-shifted-maker",
+    "makerUserId": "7f527756-3a90-43e4-a13d-4528e774d061",
+    "bidOrderId": "aec7c7f7-992a-4a9f-8a83-7bf46c42841f",
+    "askOrderId": "1e7e1167-7ada-44c6-a101-2bff22a8ae4f",
+    "referenceBid": 0.4891,
+    "referenceAsk": 0.5291,
+    "plannedBid": 0.47,
+    "plannedAsk": 0.55
+  },
+  "flow": {
+    "buyOrder": {
+      "id": "1761904a-794d-4d25-bff8-fb79d7344053",
+      "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+      "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+      "side": "BUY",
+      "price": "0.55",
+      "size": "1",
+      "remaining": "0",
+      "reservedNotional": "0",
+      "status": "FILLED",
+      "type": "LIMIT",
+      "clientOrderId": "odds-live-runtime-buy-eaa6845c-a988-4392-8c8e-9ba0e1060d8e",
+      "apiKeyId": "[redacted]",
+      "contractSide": "YES",
+      "selection": {
+        "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+        "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+        "marketGroupId": "totals",
+        "marketType": "totals",
+        "line": "2.5",
+        "period": "regulation",
+        "side": "over",
+        "displayLabel": "Over +2.5",
+        "contractSide": "yes",
+        "referenceSource": "sportsbook-odds",
+        "providerSource": "sportsbook-odds",
+        "externalSlug": "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
+        "externalMarketId": "f9aa13a662d1658e5a02cfc06d6a2d73:betonlineag:totals:2.5",
+        "conditionId": "odds-api-7439c2d6033826e21400f068",
+        "referenceTokenId": "[redacted]",
+        "tokenId": "[redacted]",
+        "referenceOutcomeLabel": "Over +2.5",
+        "limitPrice": 0.55,
+        "limitSide": "ask"
+      }
+    },
+    "sellOrder": {
+      "id": "15be8134-8c97-45b4-adf3-5e84e785b03e",
+      "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+      "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+      "side": "SELL",
+      "price": "0.47",
+      "size": "1",
+      "remaining": "0",
+      "reservedNotional": "0",
+      "status": "FILLED",
+      "type": "LIMIT",
+      "clientOrderId": "odds-live-runtime-cashout-sell-3e1b4501-e56f-4e18-9706-976375dc25c7",
+      "apiKeyId": "[redacted]",
+      "contractSide": "YES",
+      "selection": {
+        "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+        "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+        "marketGroupId": "totals",
+        "marketType": "totals",
+        "line": "2.5",
+        "period": "regulation",
+        "side": "over",
+        "displayLabel": "Over +2.5",
+        "contractSide": "yes",
+        "referenceSource": "sportsbook-odds",
+        "providerSource": "sportsbook-odds",
+        "externalSlug": "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
+        "externalMarketId": "f9aa13a662d1658e5a02cfc06d6a2d73:betonlineag:totals:2.5",
+        "conditionId": "odds-api-7439c2d6033826e21400f068",
+        "referenceTokenId": "[redacted]",
+        "tokenId": "[redacted]",
+        "referenceOutcomeLabel": "Over +2.5",
+        "limitPrice": 0.47,
+        "limitSide": "bid"
+      }
+    },
+    "positionAfterBuy": {
+      "market": {
+        "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+        "title": "Spain vs. France: Total Goals 2.5",
+        "eventTitle": "Spain vs. France",
+        "eventSlug": "odds-api-single-soccer-test",
+        "status": "LIVE",
+        "resolveTime": null,
+        "createdAt": "2026-07-12T07:06:16.843Z"
+      },
+      "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+      "outcome": "Over +2.5",
+      "selection": {
+        "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+        "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+        "marketGroupId": "totals",
+        "marketType": "totals",
+        "line": "2.5",
+        "period": "regulation",
+        "side": "over",
+        "displayLabel": "Over +2.5",
+        "contractSide": "yes",
+        "referenceSource": "sportsbook-odds",
+        "providerSource": "sportsbook-odds",
+        "externalSlug": "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
+        "externalMarketId": "f9aa13a662d1658e5a02cfc06d6a2d73:betonlineag:totals:2.5",
+        "conditionId": "odds-api-7439c2d6033826e21400f068",
+        "referenceTokenId": "[redacted]",
+        "tokenId": "[redacted]",
+        "referenceOutcomeLabel": "Over +2.5",
+        "limitPrice": 0.55,
+        "limitSide": "ask"
+      },
+      "shares": 1,
+      "avgCost": 0.55,
+      "currentPrice": 0.51,
+      "bestBid": 0.47,
+      "bestAsk": 0.55,
+      "bestBidSize": 200,
+      "bestAskSize": 199,
+      "valueTokens": "[redacted]",
+      "costBasisTokens": "[redacted]",
+      "totalCostBasisTokens": "[redacted]",
+      "pnlTokens": "[redacted]"
+    },
+    "portfolioAfterSellPositionCount": 0,
+    "matchingTradeCount": 2,
+    "noPositionSell": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "INSUFFICIENT_BALANCE",
+          "message": "Insufficient shares"
+        }
+      }
+    },
+    "closedMarketOrder": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "MARKET_UNAVAILABLE",
+          "message": "Market is not open for trading."
+        }
+      }
+    }
+  },
+  "routes": {
+    "health": "GET /api/health",
+    "home": "GET /api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1",
+    "detail": "GET /api/mobile/events/:slug/live-detail",
+    "quote": "GET /api/markets/:marketId/quote",
+    "order": "POST /api/orders",
+    "portfolio": "GET /api/portfolio",
+    "history": "GET /api/portfolio/history"
+  },
+  "checks": {
+    "backendHealth": true,
+    "oneUpcomingProviderEventSelected": true,
+    "providerLiveRefreshRan": true,
+    "quotaProtected": true,
+    "staleDetectedBeforeRefresh": true,
+    "readyAfterRefresh": true,
+    "shiftedMakerBidWorseThanProvider": true,
+    "shiftedMakerAskWorseThanProvider": true,
+    "homeVisible": true,
+    "detailVisible": true,
+    "buyFilled": true,
+    "portfolioPositionVisible": true,
+    "noCashoutWithoutPositionRejected": true,
+    "closedMarketRejectsTrading": true,
+    "cashoutSellFilled": true,
+    "historyHasBuyAndSell": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "continuous unattended market-maker daemon is not complete; this proof is bounded",
+      "automatic event close/suspend scheduler is not complete",
+      "automatic official-result settlement is not complete"
+    ],
+    "p2": [
+      "multi-event polling remains out of scope to protect quota"
+    ]
+  }
+}
