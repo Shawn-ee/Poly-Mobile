@@ -124,6 +124,23 @@ describe("mobile internal readiness batch harness", () => {
     expect(gapWriter).toContain("Temporary sportsbook backend proof ready");
   });
 
+  it("promotes the repeatable sportsbook internal environment proof to a P0 batch gate", () => {
+    const source = harness();
+    const gapWriter = readFileSync("scripts/write_mobile_internal_readiness_gap_list.ts", "utf8");
+
+    expect(source).toContain("sportsbookInternalEnvironmentProofPath");
+    expect(source).toContain("temporarySportsbookInternalEnvironmentReady");
+    expect(source).toContain("temporary_sportsbook_internal_environment_not_ready");
+    expect(source).toContain("sportsbookInternalEnvironmentCommand");
+    expect(source).toContain("npm run mobile:odds-api-internal-env-proof");
+    expect(source).toContain("cashoutTicketOpened");
+    expect(source).toContain("cashoutSellSubmitted");
+    expect(source).toContain("cashoutHistoryVisible");
+    expect(gapWriter).toContain("Temporary sportsbook internal environment");
+    expect(gapWriter).toContain("Sportsbook Environment Recovery");
+    expect(gapWriter).toContain("temporary_sportsbook_internal_environment_not_ready");
+  });
+
   it("surfaces generic non-soccer World Cup exclusions in provider match evidence", () => {
     const source = harness();
     const gapWriter = readFileSync("scripts/write_mobile_internal_readiness_gap_list.ts", "utf8");

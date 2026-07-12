@@ -216,6 +216,18 @@ npm run mobile:mvp-local-match-breadth
 
 This idempotently seeds a small set of `contract-fixture` World Cup match rows with Regulation Winner, Spread, Totals, and Team Totals. It exists only for Local MVP internal testing when real Polymarket World Cup match books are closed or unavailable. The batch records `localMatchBreadthReady` and the Home route event count after seeding; provider-backed market debt remains tracked separately.
 
+## Temporary Sportsbook Internal Environment
+
+```powershell
+npm run mobile:odds-api-internal-env-proof
+```
+
+This is the repeatable local environment proof for the temporary Odds API sportsbook bridge. By default it replays the committed redacted one-event odds fixture, so it does not spend provider quota. It imports the backend-owned `sportsbook-odds` event/markets/outcomes, verifies backend health, Postgres health, S23 reachability, Home/Event Detail/quote routes, fake-token Buy, cashout/Sell, Portfolio, History, and the negative order guards.
+
+The batch records this as `temporarySportsbookInternalEnvironmentReady`. Unlike broad Polymarket provider parity, this is a P0 gate for local internal testing: if it fails, rerun the command above, fix any backend/runtime blocker, and rerun `npm run mobile:internal-readiness-batch`.
+
+Continuous bots are not required for this proof. The harness seeds one-shot deterministic maker liquidity for the Buy and cashout/Sell legs, then records that bot mode as `one-shot-proof-liquidity-only`.
+
 ## Provider FIFA/Soccer Scope
 
 Provider match breadth is FIFA/soccer World Cup only. The match scanner may see generic World Cup markets from other sports or off-scope provider categories, but those cannot close Holiwyn's soccer MVP provider gap. The batch summary records `readiness.excludedGenericWorldCupMatchEventCount` and the gap list prints the same diagnostic so future cycles do not mistake generic World Cup liquidity for attach-ready soccer match breadth.

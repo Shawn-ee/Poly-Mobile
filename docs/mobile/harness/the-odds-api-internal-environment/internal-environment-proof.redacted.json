@@ -1,0 +1,470 @@
+{
+  "pass": true,
+  "generatedAt": "2026-07-12T04:04:16.986Z",
+  "scope": "odds-api-repeatable-internal-testing-environment",
+  "policy": {
+    "providerSource": "the-odds-api",
+    "referenceSource": "sportsbook-odds",
+    "noProviderApiCalls": true,
+    "fakeTokenOnly": true,
+    "doesNotClaimPolymarketBacked": true,
+    "fullPolymarketParityDeferredP1": true
+  },
+  "runtime": {
+    "before": {
+      "backendHealth": {
+        "ok": true,
+        "status": 200,
+        "body": {
+          "status": "ok",
+          "db": "connected",
+          "env": "development",
+          "timestamp": "2026-07-12T04:04:13.937Z"
+        }
+      },
+      "postgres": {
+        "healthy": true,
+        "raw": "poly_postgres Up 7 days (healthy) 0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp"
+      },
+      "android": {
+        "s23Connected": true,
+        "targetDeviceId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+        "model": "SM-S911U1",
+        "raw": "List of devices attached\r\nadb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp device product:dm1quew model:SM_S911U1 device:dm1q transport_id:4"
+      },
+      "localServices": {
+        "expoRunning": false,
+        "listeningPorts": "{\"LocalPort\":3002,\"OwningProcess\":37208}"
+      },
+      "bot": {
+        "runningContinuously": false,
+        "mode": "one-shot-proof-liquidity-only",
+        "raw": ""
+      }
+    },
+    "after": {
+      "backendHealth": {
+        "ok": true,
+        "status": 200,
+        "body": {
+          "status": "ok",
+          "db": "connected",
+          "env": "development",
+          "timestamp": "2026-07-12T04:04:16.985Z"
+        }
+      },
+      "postgres": {
+        "healthy": true,
+        "raw": "poly_postgres Up 7 days (healthy) 0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp"
+      },
+      "android": {
+        "s23Connected": true,
+        "targetDeviceId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+        "model": "SM-S911U1",
+        "raw": "List of devices attached\r\nadb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp device product:dm1quew model:SM_S911U1 device:dm1q transport_id:4"
+      },
+      "localServices": {
+        "expoRunning": false,
+        "listeningPorts": "{\"LocalPort\":3002,\"OwningProcess\":37208}"
+      },
+      "bot": {
+        "runningContinuously": false,
+        "mode": "one-shot-proof-liquidity-only",
+        "raw": ""
+      }
+    }
+  },
+  "import": {
+    "fixturePath": "docs/mobile/harness/the-odds-api-single-event/event-odds.redacted.json",
+    "noProviderApiCalls": true,
+    "seed": {
+      "event": {
+        "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
+        "slug": "odds-api-single-soccer-test",
+        "title": "Switzerland vs. Argentina"
+      },
+      "marketCount": 10,
+      "outcomeCount": 22,
+      "markets": [
+        {
+          "id": "748a4190-b926-4d65-8074-e69df7eb54b2",
+          "slug": "odds-api-single-soccer-test-h2h-84d970da2c",
+          "title": "Switzerland vs. Argentina: Regulation Time Winner",
+          "marketType": "match_winner_1x2",
+          "marketGroupTitle": "Regulation Time Winner",
+          "line": null,
+          "outcomeCount": 3
+        },
+        {
+          "id": "29346e58-158a-4260-953d-259c98fa24ff",
+          "slug": "odds-api-single-soccer-test-spreads-02da927e1b",
+          "title": "Switzerland vs. Argentina: Spread +0.5",
+          "marketType": "spread",
+          "marketGroupTitle": "Spread",
+          "line": "0.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "54049f4e-3965-488f-a64a-18a7beecd724",
+          "slug": "odds-api-single-soccer-test-totals-7130f44bce",
+          "title": "Switzerland vs. Argentina: Total Goals 2",
+          "marketType": "total_goals",
+          "marketGroupTitle": "Total Goals",
+          "line": "2",
+          "outcomeCount": 2
+        },
+        {
+          "id": "8a3ac122-bf88-48ef-aad0-a94d612b64f2",
+          "slug": "odds-api-single-soccer-test-alternate-spreads-8e0e8f8fa8",
+          "title": "Switzerland vs. Argentina: Spread 0.25",
+          "marketType": "spread",
+          "marketGroupTitle": "Spread",
+          "line": "0.25",
+          "outcomeCount": 2
+        },
+        {
+          "id": "b21af47b-14bd-4d5a-b147-094e2cef5c9f",
+          "slug": "odds-api-single-soccer-test-alternate-spreads-1c7d4e9cdd",
+          "title": "Switzerland vs. Argentina: Spread 0.75",
+          "marketType": "spread",
+          "marketGroupTitle": "Spread",
+          "line": "0.75",
+          "outcomeCount": 2
+        },
+        {
+          "id": "e05c670a-a98b-4075-bb24-ad7da9106e59",
+          "slug": "odds-api-single-soccer-test-alternate-spreads-ff4e4640b5",
+          "title": "Switzerland vs. Argentina: Spread 1",
+          "marketType": "spread",
+          "marketGroupTitle": "Spread",
+          "line": "1",
+          "outcomeCount": 2
+        },
+        {
+          "id": "ce29edfc-b049-4895-8d88-5d5a08f4b132",
+          "slug": "odds-api-single-soccer-test-alternate-totals-7e2d38ccbc",
+          "title": "Switzerland vs. Argentina: Total Goals 1.75",
+          "marketType": "total_goals",
+          "marketGroupTitle": "Total Goals",
+          "line": "1.75",
+          "outcomeCount": 2
+        },
+        {
+          "id": "d2e128af-7e7c-4888-8c3a-1a6c0f827e3c",
+          "slug": "odds-api-single-soccer-test-alternate-totals-fabec35f90",
+          "title": "Switzerland vs. Argentina: Total Goals 2.25",
+          "marketType": "total_goals",
+          "marketGroupTitle": "Total Goals",
+          "line": "2.25",
+          "outcomeCount": 2
+        },
+        {
+          "id": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
+          "slug": "odds-api-single-soccer-test-alternate-totals-38ad59c0f2",
+          "title": "Switzerland vs. Argentina: Total Goals 2.5",
+          "marketType": "total_goals",
+          "marketGroupTitle": "Total Goals",
+          "line": "2.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "00b3d2c5-50c7-465e-9ffa-6428886a8e25",
+          "slug": "odds-api-single-soccer-test-h2h-3-way-1e33fc4624",
+          "title": "Switzerland vs. Argentina: Regulation Time Winner",
+          "marketType": "match_winner_1x2",
+          "marketGroupTitle": "Regulation Time Winner",
+          "line": null,
+          "outcomeCount": 3
+        }
+      ]
+    },
+    "availableMarketKeys": [
+      "alternate_spreads",
+      "alternate_spreads_cards",
+      "alternate_spreads_corners",
+      "alternate_spreads_h1",
+      "alternate_team_totals",
+      "alternate_team_totals_corners",
+      "alternate_team_totals_h1",
+      "alternate_team_totals_h2",
+      "alternate_totals",
+      "alternate_totals_cards",
+      "alternate_totals_cards_h1",
+      "alternate_totals_corners",
+      "alternate_totals_corners_h1",
+      "alternate_totals_h1",
+      "alternate_totals_h2",
+      "btts",
+      "btts_h1",
+      "btts_h2",
+      "corners_1x2",
+      "correct_score",
+      "correct_score_h1",
+      "double_chance",
+      "double_chance_h1",
+      "double_chance_h2",
+      "draw_no_bet",
+      "draw_no_bet_h1",
+      "h2h",
+      "h2h_3_way",
+      "h2h_3_way_h1",
+      "h2h_3_way_h2",
+      "h2h_h1",
+      "h2h_h2",
+      "h2h_ot",
+      "halftime_fulltime",
+      "odd_even",
+      "odd_even_h1",
+      "player_assists",
+      "player_assists_alternate",
+      "player_first_goal_scorer",
+      "player_fouls",
+      "player_goal_scorer_anytime",
+      "player_goalie_saves_alternate",
+      "player_goals",
+      "player_goals_alternate",
+      "player_goals_and_assists_alternate",
+      "player_last_goal_scorer",
+      "player_shots",
+      "player_shots_alternate",
+      "player_shots_on_target",
+      "player_shots_on_target_alternate",
+      "player_tackles_alternate",
+      "player_to_receive_card",
+      "player_to_receive_red_card",
+      "player_to_score_or_assist",
+      "spreads",
+      "spreads_h1",
+      "team_totals",
+      "team_totals_h1",
+      "to_qualify",
+      "totals",
+      "totals_h1",
+      "totals_h2"
+    ],
+    "selectedMarketKeys": [
+      "h2h",
+      "spreads",
+      "totals",
+      "h2h_3_way",
+      "alternate_spreads",
+      "alternate_totals"
+    ],
+    "importedMarketKeys": [
+      "h2h",
+      "spreads",
+      "totals",
+      "alternate_spreads",
+      "alternate_totals",
+      "h2h_3_way"
+    ],
+    "normalizedMarketCount": 10,
+    "normalizedOutcomeCount": 22
+  },
+  "event": {
+    "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
+    "slug": "odds-api-single-soccer-test",
+    "title": "Switzerland vs. Argentina"
+  },
+  "selectedMarket": {
+    "id": "29346e58-158a-4260-953d-259c98fa24ff",
+    "slug": "odds-api-single-soccer-test-spreads-02da927e1b",
+    "title": "Switzerland vs. Argentina: Spread +0.5",
+    "marketType": "spread",
+    "marketGroupKey": "spread",
+    "line": "0.5",
+    "referenceSource": "sportsbook-odds",
+    "externalMarketId": "200d9cd5eda092c7eb778cc104cd2fd2:betonlineag:spreads:0.5",
+    "conditionId": "odds-api-02da927e1babf505d936e7c8"
+  },
+  "selectedOutcome": {
+    "id": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
+    "name": "Argentina -0.5",
+    "side": "home",
+    "referenceTokenId": "odds-api-38b7b87cb420684a05351898",
+    "referenceOutcomeLabel": "Argentina -0.5"
+  },
+  "routes": {
+    "health": "GET /api/health",
+    "home": "GET /api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1",
+    "detail": "GET /api/mobile/events/:slug/live-detail",
+    "quote": "GET /api/markets/:marketId/quote",
+    "order": "POST /api/orders",
+    "portfolio": "GET /api/portfolio",
+    "history": "GET /api/portfolio/history"
+  },
+  "marketMaker": {
+    "continuousBotRunning": false,
+    "proofMode": "one-shot deterministic local maker liquidity",
+    "makerAskOrderId": "4ef3240f-a9fe-4b8e-bbfb-dbb1f7fb0b42",
+    "cashoutBidOrderId": "afe5fd20-7a19-4223-9a09-4edac98e2d9a"
+  },
+  "positiveFlow": {
+    "buyOrder": {
+      "id": "cf2e7422-94f3-43d9-a5a4-b52970679a70",
+      "marketId": "29346e58-158a-4260-953d-259c98fa24ff",
+      "outcomeId": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
+      "side": "BUY",
+      "price": "0.58",
+      "size": "1.25",
+      "remaining": "0",
+      "reservedNotional": "0",
+      "status": "FILLED",
+      "type": "LIMIT",
+      "clientOrderId": "odds-internal-env-buy-d86e168f-b51e-44f6-82cc-c6a71499cea2",
+      "apiKeyId": "[redacted-api-key-id]",
+      "contractSide": "YES",
+      "selection": {
+        "marketId": "29346e58-158a-4260-953d-259c98fa24ff",
+        "outcomeId": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
+        "marketGroupId": "spread",
+        "marketType": "spread",
+        "line": "0.5",
+        "period": "regulation",
+        "side": "home",
+        "displayLabel": "Argentina -0.5",
+        "contractSide": "yes",
+        "referenceSource": "sportsbook-odds",
+        "providerSource": "sportsbook-odds",
+        "externalSlug": "soccer_fifa_world_cup-200d9cd5eda092c7eb778cc104cd2fd2",
+        "externalMarketId": "200d9cd5eda092c7eb778cc104cd2fd2:betonlineag:spreads:0.5",
+        "conditionId": "odds-api-02da927e1babf505d936e7c8",
+        "referenceTokenId": "odds-api-38b7b87cb420684a05351898",
+        "tokenId": "odds-api-38b7b87cb420684a05351898",
+        "referenceOutcomeLabel": "Argentina -0.5",
+        "limitPrice": 0.5835,
+        "limitSide": "ask"
+      }
+    },
+    "cashoutSellOrder": {
+      "id": "5e7152e9-38e9-46a2-9223-f018f7122cf1",
+      "marketId": "29346e58-158a-4260-953d-259c98fa24ff",
+      "outcomeId": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
+      "side": "SELL",
+      "price": "0.58",
+      "size": "1.25",
+      "remaining": "0",
+      "reservedNotional": "0",
+      "status": "FILLED",
+      "type": "LIMIT",
+      "clientOrderId": "odds-internal-env-cashout-sell-ee380454-efde-4b07-804e-904277d0c93f",
+      "apiKeyId": "[redacted-api-key-id]",
+      "contractSide": "YES",
+      "selection": {
+        "marketId": "29346e58-158a-4260-953d-259c98fa24ff",
+        "outcomeId": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
+        "marketGroupId": "spread",
+        "marketType": "spread",
+        "line": "0.5",
+        "period": "regulation",
+        "side": "home",
+        "displayLabel": "Argentina -0.5",
+        "contractSide": "yes",
+        "referenceSource": "sportsbook-odds",
+        "providerSource": "sportsbook-odds",
+        "externalSlug": "soccer_fifa_world_cup-200d9cd5eda092c7eb778cc104cd2fd2",
+        "externalMarketId": "200d9cd5eda092c7eb778cc104cd2fd2:betonlineag:spreads:0.5",
+        "conditionId": "odds-api-02da927e1babf505d936e7c8",
+        "referenceTokenId": "odds-api-38b7b87cb420684a05351898",
+        "tokenId": "odds-api-38b7b87cb420684a05351898",
+        "referenceOutcomeLabel": "Argentina -0.5",
+        "limitPrice": 0.5835,
+        "limitSide": "bid"
+      }
+    },
+    "positionSharesBeforeCashout": 1.25,
+    "positionSharesAfterCashout": 0,
+    "buyHistoryTradeId": "b640981f-4ddb-4451-94f1-a7a123cf1025",
+    "sellHistoryTradeId": "70bae1f6-ee03-4646-b791-184022b700ec"
+  },
+  "negativeCases": {
+    "noPositionSell": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "INSUFFICIENT_BALANCE",
+          "message": "Insufficient shares"
+        }
+      }
+    },
+    "oversell": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "INSUFFICIENT_BALANCE",
+          "message": "Insufficient available shares"
+        }
+      }
+    },
+    "closedMarketOrder": {
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "MARKET_UNAVAILABLE",
+          "message": "Market is not open for trading."
+        }
+      }
+    },
+    "missingProviderData": {
+      "status": 404,
+      "body": {
+        "error": {
+          "code": "NOT_FOUND",
+          "message": "Market not found."
+        }
+      }
+    }
+  },
+  "mobileS23Proof": {
+    "path": "docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json",
+    "result": "pass",
+    "generatedAt": "2026-07-11T23:50:15.6952293Z",
+    "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model": "SM-S911U1",
+    "assertions": {
+      "homeShowsTemporarySportsbookEvent": true,
+      "homeKeepsMvpFeedClean": true,
+      "detailShowsGameLines": true,
+      "detailHidesOrderBookAndChat": true,
+      "sportsbookSpreadLineVisible": true,
+      "ticketPreservesSportsbookLineIdentity": true,
+      "swipeSubmitReachedPortfolio": true,
+      "portfolioPreservesSportsbookLineIdentity": true,
+      "cashoutTicketOpened": true,
+      "cashoutSellSubmitted": true,
+      "cashoutHistoryVisible": true,
+      "historyPreservesSportsbookLineIdentity": true
+    }
+  },
+  "checks": {
+    "backendHealth": true,
+    "postgresHealth": true,
+    "s23Reachable": true,
+    "replayImportPassed": true,
+    "homeRouteVisible": true,
+    "eventDetailVisible": true,
+    "quoteRouteVisible": true,
+    "buyOrderFilled": true,
+    "positionVisibleAfterBuy": true,
+    "cannotCashoutWithoutPosition": true,
+    "cannotSellMoreThanOwned": true,
+    "staleOrClosedMarketRejected": true,
+    "missingProviderDataFailsGracefully": true,
+    "cashoutSellFilled": true,
+    "positionReducedAfterCashout": true,
+    "buyHistoryVisible": true,
+    "sellHistoryVisible": true,
+    "s23VisibleProofFreshEnough": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "full Polymarket provider parity remains deferred until an attach-ready candidate appears",
+      "team totals are imported only when present in the quota-safe odds payload"
+    ],
+    "p2": [
+      "continuous production-style market-maker bot is still not required for local fake-token testing"
+    ]
+  },
+  "recommendation": "Ready for local internal tester restart/use against the temporary backend-owned sportsbook event."
+}

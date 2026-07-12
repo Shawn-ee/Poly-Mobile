@@ -196,6 +196,14 @@ const blockerRows: Record<string, Omit<GapRow, "priority">> = {
     proofNeeded: "`single-event-summary.redacted.json` and `mobile-flow-proof.redacted.json` with `pass=true`, or rerun `npm run mobile:the-odds-api-single-event` followed by `npm run mobile:the-odds-api-single-event-flow`.",
     blocksInternalTesting: false,
   },
+  temporary_sportsbook_internal_environment_not_ready: {
+    pageFunction: "Temporary sportsbook internal environment",
+    actualBehavior: "The repeatable sportsbook internal environment proof is missing, failed, or stale.",
+    expectedBehavior: "The environment proof should restart/import the sportsbook event, verify backend/Postgres/S23 reachability, prove buy/cashout/history, and prove negative order guards.",
+    affectedFilesRoutes: "`scripts/prove_mobile_odds_api_internal_environment.ts`; `/api/health`; `/api/events`; `/api/mobile/events/:slug/live-detail`; `/api/markets/:marketId/quote`; `/api/orders`; `/api/portfolio`; `/api/portfolio/history`.",
+    proofNeeded: "`internal-environment-proof.redacted.json` with `pass=true`, or rerun `npm run mobile:odds-api-internal-env-proof`.",
+    blocksInternalTesting: true,
+  },
   google_redirect_uri_mismatch: {
     pageFunction: "Google/account login",
     actualBehavior: "Google auth preflight reports the emitted redirect URI does not match the configured OAuth callback.",
@@ -295,6 +303,7 @@ const markdown: string[] = [
   `- S23 Local MVP proof ready: ${boolText(readiness.s23LocalMvpDeviceProofReady)}`,
   `- Temporary sportsbook S23 bridge proof ready: ${boolText(readiness.temporarySportsbookS23BridgeProofReady)}`,
   `- Temporary sportsbook backend proof ready: ${boolText(readiness.temporarySportsbookBackendProofReady)}${readiness.temporarySportsbookBackendProofNextStaleName ? ` (next stale: ${readiness.temporarySportsbookBackendProofNextStaleName} in ${readiness.temporarySportsbookBackendProofHoursUntilStale ?? "unknown"} hours)` : ""}`,
+  `- Temporary sportsbook internal environment ready: ${boolText(readiness.temporarySportsbookInternalEnvironmentReady)}`,
   `- S23 proof max age: ${readiness.s23ProofMaxAgeHours ?? "unknown"} hours`,
   `- S23 proof next stale: ${readiness.s23ProofNextStaleName ? `${readiness.s23ProofNextStaleName} in ${readiness.s23ProofHoursUntilStale ?? "unknown"} hours (${readiness.s23ProofNextStaleAt ?? "unknown"})` : "unknown"}`,
   `- S23 startup contract ready: ${boolText(readiness.internalMvpStartupReady)}`,
@@ -317,6 +326,7 @@ const markdown: string[] = [
   `- Provider books unavailable or closed: ${boolText(readiness.providerBooksUnavailableOrClosed)}`,
   `- Provider snapshot refresh succeeded: ${boolText(readiness.providerSnapshotRefreshSucceeded)} (${readiness.providerSnapshotRefreshUpdatedCount ?? "unknown"} updated)`,
   `- Temporary sportsbook backend proofs: ${Array.isArray(readiness.temporarySportsbookBackendProofs) ? readiness.temporarySportsbookBackendProofs.map((entry: any) => `${entry.name}:${entry.fresh ? "fresh" : "stale"}${typeof entry.ageHours === "number" ? `(${entry.ageHours}h)` : ""}`).join(", ") : "unknown"}`,
+  `- Temporary sportsbook internal environment proof: ${readiness.temporarySportsbookInternalEnvironmentProofPath ? `\`${readiness.temporarySportsbookInternalEnvironmentProofPath}\`` : "unknown"}`,
   `- Cached provider evidence: ${Array.isArray(readiness.cachedProviderEvidence) ? readiness.cachedProviderEvidence.map((entry: any) => `${entry.name}:${entry.fresh ? "fresh" : "stale"}${typeof entry.ageHours === "number" ? `(${entry.ageHours}h)` : ""}`).join(", ") : "unknown"}`,
   `- Provider MVP tradable flow ready: ${boolText(readiness.providerMvpTradableFlowReady)}${readiness.providerMvpTradableFlowBlocker ? ` (${readiness.providerMvpTradableFlowBlocker})` : ""}`,
   `- World Cup team-match provider events scanned: ${readiness.worldCupTeamMatchEventCount ?? "unknown"} (${readiness.openWorldCupTeamMatchEventCount ?? "unknown"} open/upcoming, ${readiness.closedOrEndedWorldCupTeamMatchEventCount ?? "unknown"} closed/ended)`,
@@ -357,6 +367,7 @@ markdown.push(
   `| S23 full MVP proof | ${boolText(readiness.s23LocalMvpDeviceProofReady)} | XG Spread filled buy/history, XH Spread open-order cancel, XI Spread cashout/sell, WF Totals filled buy/history, WG Team Totals filled buy/history, and ODDSAPIS23 temporary sportsbook filled buy/history summaries. |`,
   `| Temporary sportsbook bridge | ${boolText(readiness.temporarySportsbookS23BridgeProofReady)} | ODDSAPIS23 verifies Home -> Event Detail -> sportsbook spread line -> ticket -> fake-token order -> Portfolio/history on the S23. |`,
   `| Temporary sportsbook backend proof | ${boolText(readiness.temporarySportsbookBackendProofReady)} | \`single-event-summary.redacted.json\` plus \`mobile-flow-proof.redacted.json\` must pass and remain fresh. |`,
+  `| Temporary sportsbook internal environment | ${boolText(readiness.temporarySportsbookInternalEnvironmentReady)} | \`internal-environment-proof.redacted.json\` must prove restart/import, backend/Postgres/S23, buy/cashout/history, and negative order guards. |`,
   `| S23 Google consent callback | ${boolText(readiness.googleS23ConsentReady)} | \`google-auth-lan-callback-preflight.json\` when LAN-ready; localhost probes remain raw diagnostics only. |`,
   `| Cached provider evidence | ${boolText(readiness.cachedProviderEvidenceFresh)} | Provider snapshot, exchange, tradable-flow, match-scan, and line-scan summaries must be within the freshness window. |`,
   `| Root typecheck | ${boolText(readiness.rootTypecheckReady)} | \`root-typecheck.json\`. |`,
@@ -395,6 +406,22 @@ if (s23ProofRefreshCommands.length === 0) {
     markdown.push("```");
     markdown.push("");
   }
+}
+
+markdown.push(
+  "## Sportsbook Environment Recovery",
+  "",
+);
+
+if (summary.recovery?.sportsbookInternalEnvironmentCommand) {
+  markdown.push("Run this when `temporary_sportsbook_internal_environment_not_ready` is reported, then rerun the batch:");
+  markdown.push("");
+  markdown.push("```powershell");
+  markdown.push(summary.recovery.sportsbookInternalEnvironmentCommand);
+  markdown.push("```");
+  markdown.push("");
+} else {
+  markdown.push("No sportsbook internal environment recovery command was provided by the latest batch summary.", "");
 }
 
 markdown.push(

@@ -13544,3 +13544,22 @@ Known limitations:
 - Known limitations:
   - This is internal fake-token usability, not Polymarket-backed provider parity.
   - Team totals were available in provider metadata but not fetched in the one-event odds payload to preserve the original quota cap.
+
+# Cycle ODDSENV - Repeatable Sportsbook Internal Environment
+
+- Feature/page worked on: repeatable local internal testing environment for the temporary sportsbook bridge.
+- Frontend components touched: none. This is a backend/runtime/harness cycle; mobile S23 proof is consumed from the existing ODDSAPIS23 artifact.
+- Important functions/services touched:
+  - `scripts/prove_mobile_odds_api_internal_environment.ts`
+  - `src/server/services/theOddsApiSingleEventProvider.ts` through replay seeding
+  - `src/server/services/matching.ts` through one-shot maker liquidity
+  - `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` through route proof
+- User interactions supported:
+  - Home -> Event Detail -> line market -> quote -> Buy ticket submit -> Portfolio -> cashout/sell -> History.
+  - Negative cases for no-position sell, oversell, closed market order, and missing market/provider data.
+- State transitions:
+  - Redacted sportsbook event replay -> `sportsbook-odds` event/market/outcome rows.
+  - Maker ask -> filled BUY -> position -> guard checks -> maker bid -> filled SELL -> reduced position -> buy/sell history.
+- Known limitations:
+  - Default harness protects quota by using replay data; multiple live events require explicit provider refresh approval.
+  - Continuous bot runtime is not required; proof liquidity is one-shot local maker liquidity.

@@ -9996,3 +9996,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: Polymarket-backed World Cup match/line markets remain unavailable for parity; team totals were available from Odds API metadata but were not fetched in the capped one-event odds request.
 - Temporary mock/static data: provider event/odds data is from the redacted Odds API fixture; fake-token orders, positions, cashout liquidity, and history are local backend runtime data.
 - Future migration concern: keep `sportsbook-odds` separate from `polymarket` in all readiness, Portfolio, History, and DoD accounting. This bridge makes internal testing usable but must not close Polymarket provider parity.
+
+## Cycle ODDSENV - Repeatable Sportsbook Internal Environment
+
+- Closed or narrowed: the one-event sportsbook proof is now represented as a restartable environment harness, not only a single buy/cashout proof. The harness replays/imports provider-shaped rows, checks runtime health, proves route visibility, exercises fake-token buy/cashout, and verifies negative order guards.
+- Route mismatch: none expected. The proof uses the same mobile-facing routes: `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+- Fields Holiwyn still needs but backend/provider does not fully provide: multiple current/upcoming sportsbook-backed soccer events and team-total markets are still opt-in because live provider requests spend quota. Full Polymarket-backed match/line data remains deferred P1.
+- Temporary mock/static data: default proof uses committed redacted Odds API replay data and deterministic one-shot local maker liquidity. The rows still use real backend tables and stable provider-style identity fields.
+- Future migration concern: keep replay/import proof separate from live provider refresh proof. Internal testers can use the replay-backed environment safely, but a future multi-event live import should preserve the same `sportsbook-odds` contract and quota guard.

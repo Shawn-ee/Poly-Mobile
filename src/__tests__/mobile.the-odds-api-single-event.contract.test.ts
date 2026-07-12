@@ -14,16 +14,20 @@ import { buildMobileMarketSourceSummary } from "@/server/services/mobileLiveEven
 describe("The Odds API single-event temporary provider", () => {
   const packageJson = () => readFileSync("package.json", "utf8");
   const script = () => readFileSync("scripts/seed_the_odds_api_single_event.ts", "utf8");
+  const internalEnvScript = () => readFileSync("scripts/prove_mobile_odds_api_internal_environment.ts", "utf8");
   const service = () => readFileSync("src/server/services/theOddsApiSingleEventProvider.ts", "utf8");
 
   it("is exposed as an env-var-only script and does not contain a hardcoded API key", () => {
     expect(packageJson()).toContain("mobile:the-odds-api-single-event");
     expect(packageJson()).toContain("mobile:the-odds-api-single-event-flow");
+    expect(packageJson()).toContain("mobile:odds-api-internal-env-proof");
     expect(script()).toContain("process.env.THE_ODDS_API_KEY");
     expect(script()).not.toContain("apiKey: \"");
     expect(service()).not.toContain("apiKey: \"");
     expect(script()).not.toContain("THE_ODDS_API_KEY=");
     expect(service()).not.toContain("THE_ODDS_API_KEY=");
+    expect(internalEnvScript()).not.toContain("THE_ODDS_API_KEY");
+    expect(internalEnvScript()).not.toContain("apiKey: \"");
   });
 
   it("redacts apiKey from recorded request paths", () => {
@@ -191,5 +195,19 @@ describe("The Odds API single-event temporary provider", () => {
     expect(script()).toContain("No-quota replay: pass");
     expect(script()).toContain("S23 proof summary");
     expect(script()).not.toContain("availableMarketKeys: [],");
+  });
+
+  it("has a repeatable no-quota internal environment proof with required negative cases", () => {
+    const proof = internalEnvScript();
+    expect(proof).toContain("DEFAULT_FIXTURE_PATH");
+    expect(proof).toContain("noProviderApiCalls: true");
+    expect(proof).toContain("cannotCashoutWithoutPosition");
+    expect(proof).toContain("cannotSellMoreThanOwned");
+    expect(proof).toContain("staleOrClosedMarketRejected");
+    expect(proof).toContain("missingProviderDataFailsGracefully");
+    expect(proof).toContain("GET /api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1");
+    expect(proof).toContain("POST /api/orders");
+    expect(proof).toContain("GET /api/portfolio/history");
+    expect(proof).toContain("one-shot deterministic local maker liquidity");
   });
 });

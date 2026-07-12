@@ -424,6 +424,7 @@ $teamTotalsS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-WG-team
 $sportsbookS23ProofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-ODDSAPIS23-odds-api-s23-visible-flow\cycle-ODDSAPIS23-odds-api-s23-visible-flow.json"
 $sportsbookSingleEventSummaryPath = Join-Path $RepoRoot "docs\mobile\harness\the-odds-api-single-event\single-event-summary.redacted.json"
 $sportsbookMobileFlowProofPath = Join-Path $RepoRoot "docs\mobile\harness\the-odds-api-single-event\mobile-flow-proof.redacted.json"
+$sportsbookInternalEnvironmentProofPath = Join-Path $RepoRoot "docs\mobile\harness\the-odds-api-internal-environment\internal-environment-proof.redacted.json"
 $s23ProofMaxAgeHours = 24
 $cachedProviderEvidenceMaxAgeHours = 24
 $sportsbookBackendProofMaxAgeHours = 24
@@ -515,6 +516,7 @@ $jestCi = Read-JsonFile $jestCiMarkerPath
 $mobileTypecheck = Read-JsonFile $mobileTypecheckMarkerPath
 $sportsbookSingleEventSummary = Read-JsonFile $sportsbookSingleEventSummaryPath
 $sportsbookMobileFlowProof = Read-JsonFile $sportsbookMobileFlowProofPath
+$sportsbookInternalEnvironmentProof = Read-JsonFile $sportsbookInternalEnvironmentProofPath
 $cachedProviderEvidence = @(
   (Get-CachedProviderEvidence -Name "provider-snapshot-refresh" -Path $providerSnapshotRefreshPath -Json $providerSnapshotRefresh -MaxAgeHours $cachedProviderEvidenceMaxAgeHours),
   (Get-CachedProviderEvidence -Name "internal-exchange-readiness" -Path $exchangePath -Json $exchange -MaxAgeHours $cachedProviderEvidenceMaxAgeHours),
@@ -526,11 +528,12 @@ $cachedProviderEvidenceFresh = [bool](($cachedProviderEvidence | Where-Object { 
 $providerEvidenceNextStale = Select-NextStaleEvidence -Evidence $cachedProviderEvidence
 $sportsbookBackendProofs = @(
   (Get-CachedProviderEvidence -Name "sportsbook-single-event-live-seed" -Path $sportsbookSingleEventSummaryPath -Json $sportsbookSingleEventSummary -MaxAgeHours $sportsbookBackendProofMaxAgeHours),
-  (Get-CachedProviderEvidence -Name "sportsbook-mobile-fake-token-flow" -Path $sportsbookMobileFlowProofPath -Json $sportsbookMobileFlowProof -MaxAgeHours $sportsbookBackendProofMaxAgeHours)
+  (Get-CachedProviderEvidence -Name "sportsbook-mobile-fake-token-flow" -Path $sportsbookMobileFlowProofPath -Json $sportsbookMobileFlowProof -MaxAgeHours $sportsbookBackendProofMaxAgeHours),
+  (Get-CachedProviderEvidence -Name "sportsbook-repeatable-internal-environment" -Path $sportsbookInternalEnvironmentProofPath -Json $sportsbookInternalEnvironmentProof -MaxAgeHours $sportsbookBackendProofMaxAgeHours)
 )
 $sportsbookBackendProofNextStale = Select-NextStaleEvidence -Evidence $sportsbookBackendProofs
 $lineFamilyFilledAssertions = @("homeShowsCurrentMatch", "detailShowsGameLines", "detailShowsLineFamilyReadiness", "detailShowsProviderUnavailableLineFamilies", "detailShowsProviderAndFixtureLineSplit", "lineMarketsAreContractFixture", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden")
-$sportsbookFilledAssertions = @("homeShowsTemporarySportsbookEvent", "homeKeepsMvpFeedClean", "detailShowsGameLines", "detailHidesOrderBookAndChat", "sportsbookSpreadLineVisible", "ticketPreservesSportsbookLineIdentity", "swipeSubmitReachedPortfolio", "portfolioPreservesSportsbookLineIdentity", "historyPreservesSportsbookLineIdentity")
+$sportsbookFilledAssertions = @("homeShowsTemporarySportsbookEvent", "homeKeepsMvpFeedClean", "detailShowsGameLines", "detailHidesOrderBookAndChat", "sportsbookSpreadLineVisible", "ticketPreservesSportsbookLineIdentity", "swipeSubmitReachedPortfolio", "portfolioPreservesSportsbookLineIdentity", "cashoutTicketOpened", "cashoutSellSubmitted", "cashoutHistoryVisible", "historyPreservesSportsbookLineIdentity")
 $s23Proofs = @(
   (Get-S23ProofEvidence -Name "filled-buy-history" -SummaryPath $filledS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden") -MaxAgeHours $s23ProofMaxAgeHours),
   (Get-S23ProofEvidence -Name "open-order-cancel" -SummaryPath $cancelS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "openOrderVisible", "openOrderSourceBadgeVisible", "cancelSubmitted", "canceledHistoryVisible", "orderbookHidden") -MaxAgeHours $s23ProofMaxAgeHours),
@@ -549,7 +552,22 @@ $sportsbookS23BridgeProofReady = [bool](@($s23Proofs | Where-Object { $_.name -e
 $sportsbookBackendProofReady = [bool](
   ($sportsbookSingleEventSummary -and $sportsbookSingleEventSummary.pass) -and
   ($sportsbookMobileFlowProof -and $sportsbookMobileFlowProof.pass) -and
+  ($sportsbookInternalEnvironmentProof -and $sportsbookInternalEnvironmentProof.pass) -and
   (($sportsbookBackendProofs | Where-Object { -not $_.fresh }).Count -eq 0)
+)
+$sportsbookInternalEnvironmentReady = [bool](
+  $sportsbookInternalEnvironmentProof -and
+  $sportsbookInternalEnvironmentProof.pass -and
+  $sportsbookInternalEnvironmentProof.checks.backendHealth -eq $true -and
+  $sportsbookInternalEnvironmentProof.checks.postgresHealth -eq $true -and
+  $sportsbookInternalEnvironmentProof.checks.s23Reachable -eq $true -and
+  $sportsbookInternalEnvironmentProof.checks.replayImportPassed -eq $true -and
+  $sportsbookInternalEnvironmentProof.checks.buyOrderFilled -eq $true -and
+  $sportsbookInternalEnvironmentProof.checks.cashoutSellFilled -eq $true -and
+  $sportsbookInternalEnvironmentProof.checks.cannotCashoutWithoutPosition -eq $true -and
+  $sportsbookInternalEnvironmentProof.checks.cannotSellMoreThanOwned -eq $true -and
+  $sportsbookInternalEnvironmentProof.checks.staleOrClosedMarketRejected -eq $true -and
+  $sportsbookInternalEnvironmentProof.checks.missingProviderDataFailsGracefully -eq $true
 )
 $rootTypecheckReady = [bool]($rootTypecheck -and $rootTypecheck.pass)
 $jestCiReady = [bool]($jestCi -and $jestCi.pass)
@@ -635,6 +653,7 @@ if (-not $internalMvpStartupReady) { $p0Blockers += "internal_mvp_startup_contra
 if (-not $localMatchBreadthReady) { $p0Blockers += "local_mvp_match_breadth_not_ready" }
 if (-not $localMvpReady) { $p0Blockers += "local_mvp_route_not_ready" }
 if (-not $s23LocalMvpDeviceProofReady) { $p0Blockers += "s23_local_mvp_device_proof_not_ready" }
+if (-not $sportsbookInternalEnvironmentReady) { $p0Blockers += "temporary_sportsbook_internal_environment_not_ready" }
 if (-not $rootTypecheckReady) { $p0Blockers += "root_typecheck_failed" }
 if (-not $jestCiReady) { $p0Blockers += "jest_ci_failed" }
 if (-not $mobileTypecheckReady) { $p0Blockers += "mobile_typecheck_failed" }
@@ -751,6 +770,9 @@ $summary = [ordered]@{
     temporarySportsbookBackendProofNextStaleAt = if ($sportsbookBackendProofNextStale) { $sportsbookBackendProofNextStale.staleAt } else { $null }
     temporarySportsbookBackendProofHoursUntilStale = if ($sportsbookBackendProofNextStale) { $sportsbookBackendProofNextStale.hoursUntilStale } else { $null }
     temporarySportsbookBackendProofs = $sportsbookBackendProofs
+    temporarySportsbookInternalEnvironmentReady = $sportsbookInternalEnvironmentReady
+    temporarySportsbookInternalEnvironmentProofPath = ConvertTo-RepoPath $sportsbookInternalEnvironmentProofPath
+    temporarySportsbookInternalEnvironmentChecks = if ($sportsbookInternalEnvironmentProof) { $sportsbookInternalEnvironmentProof.checks } else { $null }
     rootTypecheckReady = $rootTypecheckReady
     jestCiReady = $jestCiReady
     mobileTypecheckReady = $mobileTypecheckReady
@@ -787,6 +809,7 @@ $summary = [ordered]@{
   }
   recovery = [ordered]@{
     s23ProofRefreshCommands = $s23ProofRecoveryCommands
+    sportsbookInternalEnvironmentCommand = "npm run mobile:odds-api-internal-env-proof"
     providerRefreshCommand = "npm run mobile:internal-readiness-batch:provider-refresh"
     rerunBatchCommand = "npm run mobile:internal-readiness-batch"
   }
@@ -799,6 +822,7 @@ $summary = [ordered]@{
     "For internal user-flow testing, keep using Home -> Event Detail -> contract-shaped line market -> Trade Ticket -> fake-token order -> Portfolio/history.",
     "Do not import futures, awards, player props, or non-World-Cup events to fake match breadth.",
     'If `s23_local_mvp_device_proof_not_ready` appears, run the S23 proof refresh commands in `recovery.s23ProofRefreshCommands`, then rerun `npm run mobile:internal-readiness-batch`.',
+    'If `temporary_sportsbook_internal_environment_not_ready` appears, run `npm run mobile:odds-api-internal-env-proof`, then rerun `npm run mobile:internal-readiness-batch`.',
     'Use `npm run mobile:internal-readiness-batch:provider-refresh` after provider imports, provider refresh, or line-market discovery changes.',
     'If `provider_cached_evidence_stale` appears, run `npm run mobile:internal-readiness-batch:provider-refresh` before making provider-backed parity decisions.',
     "Run npm run mobile:manual-testing-env before manual server-mode S23 testing if EXPO_PUBLIC_API_KEY is not already set; the batch can recognize the generated local .runtime env file without committing the token.",
