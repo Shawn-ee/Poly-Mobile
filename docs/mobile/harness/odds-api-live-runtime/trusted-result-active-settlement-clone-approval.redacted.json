@@ -1,0 +1,14 @@
+{
+  "approvals": [
+    {
+      "approved": true,
+      "eventSlug": "odds-api-single-soccer-test-settlement-clone-c07b22db7d",
+      "marketId": "30f2edee-9492-4208-85a9-9c6fbc4830b1",
+      "outcomeId": "a14bd70f-013e-45d6-9a27-bc597240b97e",
+      "resultDigest": "307c626874c9",
+      "confirm": "SETTLE_FROM_RESULT:30f2edee-9492-4208-85a9-9c6fbc4830b1:a14bd70f-013e-45d6-9a27-bc597240b97e:307c626874c9",
+      "approvedBy": "active_settlement_clone_c07b22db7d_operator",
+      "approvedAt": "2026-07-12T14:37:28.270Z"
+    }
+  ]
+}

@@ -1,0 +1,219 @@
+{
+  "generatedAt": "2026-07-12T14:37:29.952Z",
+  "scope": "odds-api-one-event-result-settlement-scheduler-run",
+  "pass": true,
+  "eventSlug": "odds-api-single-soccer-test-settlement-clone-c07b22db7d",
+  "resultInput": {
+    "path": "docs/mobile/harness/odds-api-live-runtime/trusted-result-active-settlement-clone.redacted.json",
+    "source": "the-odds-api-scores-fixture",
+    "sourceEventId": "f9aa13a662d1658e5a02cfc06d6a2d73-settlement-clone-c07b22db7d",
+    "eventSlug": "odds-api-single-soccer-test-settlement-clone-c07b22db7d",
+    "status": "final",
+    "homeScore": 1,
+    "awayScore": 2,
+    "recordedAt": "2026-07-15T00:05:00Z"
+  },
+  "action": "auto_execute_settlement",
+  "executionRequested": false,
+  "autoExecuteApproved": true,
+  "approval": {
+    "path": "docs/mobile/harness/odds-api-live-runtime/trusted-result-active-settlement-clone-approval.redacted.json",
+    "matched": {
+      "eventSlug": "odds-api-single-soccer-test-settlement-clone-c07b22db7d",
+      "marketId": "30f2edee-9492-4208-85a9-9c6fbc4830b1",
+      "outcomeId": "a14bd70f-013e-45d6-9a27-bc597240b97e",
+      "resultDigest": "307c626874c9",
+      "approvedBy": "active_settlement_clone_c07b22db7d_operator",
+      "approvedAt": "2026-07-12T14:37:28.270Z"
+    }
+  },
+  "providerStatus": "trusted_external_input",
+  "command": {
+    "executable": "C:\\nvm4w\\nodejs\\node.exe",
+    "args": [
+      "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+      "scripts/settle_odds_api_one_event_from_result.ts",
+      "--eventSlug=odds-api-single-soccer-test-settlement-clone-c07b22db7d",
+      "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-active-settlement-clone.redacted.json",
+      "--output=docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-clone-execute-result.redacted.json",
+      "--execute",
+      "--confirm=SETTLE_FROM_RESULT:30f2edee-9492-4208-85a9-9c6fbc4830b1:a14bd70f-013e-45d6-9a27-bc597240b97e:307c626874c9",
+      "--writeAuditEvent"
+    ],
+    "exitCode": 0,
+    "stdoutTail": [
+      "  \"auditEvent\": {",
+      "    \"id\": \"178\",",
+      "    \"sequence\": \"178\",",
+      "    \"type\": \"settlement.trusted_result.executed\",",
+      "    \"stream\": \"market\",",
+      "    \"marketId\": \"30f2edee-9492-4208-85a9-9c6fbc4830b1\",",
+      "    \"outcomeId\": \"a14bd70f-013e-45d6-9a27-bc597240b97e\",",
+      "    \"createdAt\": \"2026-07-12T14:37:29.923Z\"",
+      "  },",
+      "  \"gaps\": {",
+      "    \"p0\": [],",
+      "    \"p1\": [",
+      "      \"Provider-shaped result ingestion can produce trusted result JSON, but this command intentionally consumes only reviewed trusted result JSON.\",",
+      "      \"Automatic unattended result polling and settlement execution are not installed.\"",
+      "    ],",
+      "    \"p2\": [",
+      "      \"Operator settlement UI and multi-event settlement queue remain future work.\"",
+      "    ]",
+      "  }",
+      "}"
+    ],
+    "stderrTail": []
+  },
+  "previewCommand": {
+    "executable": "C:\\nvm4w\\nodejs\\node.exe",
+    "args": [
+      "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+      "scripts/settle_odds_api_one_event_from_result.ts",
+      "--eventSlug=odds-api-single-soccer-test-settlement-clone-c07b22db7d",
+      "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-active-settlement-clone.redacted.json",
+      "--output=docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-clone-dry-run.redacted.json",
+      "--writeAuditEvent"
+    ],
+    "exitCode": 0,
+    "stdoutTail": [
+      "  \"auditEvent\": {",
+      "    \"id\": \"177\",",
+      "    \"sequence\": \"177\",",
+      "    \"type\": \"settlement.trusted_result.preflight\",",
+      "    \"stream\": \"market\",",
+      "    \"marketId\": \"30f2edee-9492-4208-85a9-9c6fbc4830b1\",",
+      "    \"outcomeId\": \"a14bd70f-013e-45d6-9a27-bc597240b97e\",",
+      "    \"createdAt\": \"2026-07-12T14:37:29.301Z\"",
+      "  },",
+      "  \"gaps\": {",
+      "    \"p0\": [],",
+      "    \"p1\": [",
+      "      \"Provider-shaped result ingestion can produce trusted result JSON, but this command intentionally consumes only reviewed trusted result JSON.\",",
+      "      \"Automatic unattended result polling and settlement execution are not installed.\"",
+      "    ],",
+      "    \"p2\": [",
+      "      \"Operator settlement UI and multi-event settlement queue remain future work.\"",
+      "    ]",
+      "  }",
+      "}"
+    ],
+    "stderrTail": []
+  },
+  "settlementSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-clone-dry-run.redacted.json",
+  "previewSettlementDigest": {
+    "pass": true,
+    "mode": "dry-run",
+    "selectedMarket": {
+      "id": "30f2edee-9492-4208-85a9-9c6fbc4830b1",
+      "slug": "odds-api-single-soccer-test-settlement-clone-c07b22db7d-total_goals-2-5",
+      "title": "Spain vs. France Settlement Clone: Total Goals 2.5",
+      "marketType": "total_goals",
+      "marketGroupKey": "totals",
+      "line": "2.5",
+      "statusBefore": "CLOSED",
+      "resolvedOutcomeIdBefore": null,
+      "collateralUSDCBefore": "5"
+    },
+    "winningOutcome": {
+      "id": "a14bd70f-013e-45d6-9a27-bc597240b97e",
+      "name": "Over +2.5",
+      "label": "Over +2.5",
+      "side": "over",
+      "code": "over-2-5"
+    },
+    "controls": {
+      "dryRunIsDefault": true,
+      "writeAuditEvent": true,
+      "executeRequiresFlag": "--execute",
+      "executeRequiresConfirm": "SETTLE_FROM_RESULT:30f2edee-9492-4208-85a9-9c6fbc4830b1:a14bd70f-013e-45d6-9a27-bc597240b97e:307c626874c9",
+      "executeRequiresMarketStatus": "CLOSED",
+      "currentMarketStatus": "CLOSED",
+      "resultDigest": "307c626874c9",
+      "actorUserId": "holiwyn-local-result-settlement-operator",
+      "providerStatus": "trusted_external_input"
+    }
+  },
+  "settlementDigest": {
+    "pass": true,
+    "mode": "execute",
+    "selectedMarket": {
+      "id": "30f2edee-9492-4208-85a9-9c6fbc4830b1",
+      "slug": "odds-api-single-soccer-test-settlement-clone-c07b22db7d-total_goals-2-5",
+      "title": "Spain vs. France Settlement Clone: Total Goals 2.5",
+      "marketType": "total_goals",
+      "marketGroupKey": "totals",
+      "line": "2.5",
+      "statusBefore": "CLOSED",
+      "resolvedOutcomeIdBefore": null,
+      "collateralUSDCBefore": "5"
+    },
+    "winningOutcome": {
+      "id": "a14bd70f-013e-45d6-9a27-bc597240b97e",
+      "name": "Over +2.5",
+      "label": "Over +2.5",
+      "side": "over",
+      "code": "over-2-5"
+    },
+    "preview": {
+      "marketStatus": "CLOSED",
+      "totalShares": "10",
+      "totalWinningShares": "5",
+      "totalPayout": "5",
+      "collateralUSDC": "5",
+      "payoutConservationPass": true,
+      "blockers": [],
+      "openOrderCleanup": {
+        "openOrderCount": 0,
+        "buyOrderLockedUSDCToRelease": "0",
+        "sellOrderSharesToRelease": "0"
+      },
+      "payoutCount": 2,
+      "loserPositionCount": 1,
+      "mutation": "none"
+    },
+    "execution": {
+      "attempted": true,
+      "ok": true,
+      "result": {
+        "marketId": "30f2edee-9492-4208-85a9-9c6fbc4830b1",
+        "winningOutcomeId": "a14bd70f-013e-45d6-9a27-bc597240b97e",
+        "totalPoolPayout": "5",
+        "totalWinningShares": "5",
+        "payoutCount": 2,
+        "collateralDebitedUSDC": "5"
+      }
+    },
+    "controls": {
+      "dryRunIsDefault": true,
+      "writeAuditEvent": true,
+      "executeRequiresFlag": "--execute",
+      "executeRequiresConfirm": "SETTLE_FROM_RESULT:30f2edee-9492-4208-85a9-9c6fbc4830b1:a14bd70f-013e-45d6-9a27-bc597240b97e:307c626874c9",
+      "executeRequiresMarketStatus": "CLOSED",
+      "currentMarketStatus": "CLOSED",
+      "resultDigest": "307c626874c9",
+      "actorUserId": "holiwyn-local-result-settlement-operator",
+      "providerStatus": "trusted_external_input"
+    }
+  },
+  "runtimeTruth": {
+    "canRunFromSupervisorOrCron": true,
+    "providerResultIngestionAvailable": true,
+    "unattendedResultPollingInstalled": false,
+    "dryRunDefault": true,
+    "executeRequiresConfirmation": true,
+    "autoExecuteRequiresApprovalFile": true,
+    "autoExecuteRequiresClosedMarket": true,
+    "fakeTokenOnly": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.",
+      "Dry-run preview is the default; execution requires either explicit confirmation or an exact local approval file."
+    ],
+    "p2": [
+      "Multi-event result queue and operator UI remain future work."
+    ]
+  }
+}

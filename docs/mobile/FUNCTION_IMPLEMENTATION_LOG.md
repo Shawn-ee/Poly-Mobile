@@ -14412,3 +14412,13 @@ Known limitations:
 - Known limitations:
   - This narrows local internal runtime operations but does not install a production service.
   - Official-result execution remains guarded by `CLOSED` status, exact approval, and local operator controls.
+## Cycle ONEEVENTACTIVESETTLEMENTCLONE - Active Event Settlement Clone Proof
+
+- Feature/page worked on: backend live runtime settlement proof for the active one-event local tester event.
+- Frontend components touched: none.
+- Important functions/services touched: added `scripts/prove_odds_api_active_event_settlement_clone.ts`; updated `package.json`; updated `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User interactions supported: unchanged. The mobile Local MVP flow remains Home -> Event Detail -> line market -> ticket -> fake-token order -> Portfolio/history.
+- State transitions: the proof creates a disposable clone of the active Spain vs. France selected Total Goals 2.5 market, seeds fake-token positions, writes clone trusted-result and approval JSON, closes only the clone, executes approved trusted-result settlement on the clone, and verifies the active tester market remains `LIVE`, unresolved, and unchanged.
+- API/data dependencies: no mobile HTTP route changed. The proof composes existing local settlement scheduler and settlement service behavior, reads `trusted-result-provider.redacted.json`, and writes `one-event-active-settlement-clone-summary.redacted.json`.
+- Proof: `npm run mobile:one-event-active-settlement-clone-proof` passed; `npm run mobile:one-event-phase-audit` passed with the new P1 evidence item complete.
+- Known limitations: this intentionally does not settle the active tester event. Installed unattended official-result polling and direct active-event execution remain P1.

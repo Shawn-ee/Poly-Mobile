@@ -1,0 +1,163 @@
+{
+  "generatedAt": "2026-07-12T14:37:29.979Z",
+  "scope": "odds-api-active-event-settlement-clone-proof",
+  "pass": true,
+  "providerQuotaUsed": false,
+  "activeEvent": {
+    "slug": "odds-api-single-soccer-test",
+    "title": "Spain vs. France",
+    "providerEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
+    "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "marketTitle": "Spain vs. France: Total Goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "line": "2.5",
+    "statusBefore": "LIVE",
+    "statusAfter": "LIVE",
+    "resolvedOutcomeIdAfter": null
+  },
+  "cloneEvent": {
+    "slug": "odds-api-single-soccer-test-settlement-clone-c07b22db7d",
+    "title": "Spain vs. France Settlement Clone",
+    "marketId": "30f2edee-9492-4208-85a9-9c6fbc4830b1",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "line": "2.5",
+    "winningOutcomeId": "a14bd70f-013e-45d6-9a27-bc597240b97e",
+    "winningOutcomeName": "Over +2.5",
+    "operator": "active_settlement_clone_c07b22db7d_operator"
+  },
+  "paths": {
+    "cloneResultPath": "docs/mobile/harness/odds-api-live-runtime/trusted-result-active-settlement-clone.redacted.json",
+    "approvalPath": "docs/mobile/harness/odds-api-live-runtime/trusted-result-active-settlement-clone-approval.redacted.json",
+    "dryRunOutput": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-clone-dry-run.redacted.json",
+    "executeOutput": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-clone-execute.redacted.json",
+    "executeSettlementOutput": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-clone-execute-result.redacted.json"
+  },
+  "commands": {
+    "dryRun": {
+      "executable": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+        "scripts/run_odds_api_one_event_result_settlement_scheduler.ts",
+        "--eventSlug=odds-api-single-soccer-test-settlement-clone-c07b22db7d",
+        "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-active-settlement-clone.redacted.json",
+        "--settlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-clone-dry-run.redacted.json",
+        "--output=docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-clone-dry-run.redacted.json"
+      ],
+      "exitCode": 0,
+      "stdoutTail": [
+        "      \"providerStatus\": \"trusted_external_input\"",
+        "    }",
+        "  },",
+        "  \"runtimeTruth\": {",
+        "    \"canRunFromSupervisorOrCron\": true,",
+        "    \"providerResultIngestionAvailable\": true,",
+        "    \"unattendedResultPollingInstalled\": false,",
+        "    \"dryRunDefault\": true,",
+        "    \"executeRequiresConfirmation\": true,",
+        "    \"autoExecuteRequiresApprovalFile\": true,",
+        "    \"autoExecuteRequiresClosedMarket\": true,",
+        "    \"fakeTokenOnly\": true",
+        "  },",
+        "  \"gaps\": {",
+        "    \"p0\": [],",
+        "    \"p1\": [",
+        "      \"This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.\",",
+        "      \"Dry-run preview is the default; execution requires either explicit confirmation or an exact local approval file.\"",
+        "    ],",
+        "    \"p2\": [",
+        "      \"Multi-event result queue and operator UI remain future work.\"",
+        "    ]",
+        "  }",
+        "}"
+      ],
+      "stderrTail": []
+    },
+    "execute": {
+      "executable": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+        "scripts/run_odds_api_one_event_result_settlement_scheduler.ts",
+        "--eventSlug=odds-api-single-soccer-test-settlement-clone-c07b22db7d",
+        "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-active-settlement-clone.redacted.json",
+        "--approval=docs/mobile/harness/odds-api-live-runtime/trusted-result-active-settlement-clone-approval.redacted.json",
+        "--settlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-clone-dry-run.redacted.json",
+        "--executeSettlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-clone-execute-result.redacted.json",
+        "--output=docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-clone-execute.redacted.json",
+        "--autoExecuteApproved",
+        "--writeAuditEvent"
+      ],
+      "exitCode": 0,
+      "stdoutTail": [
+        "      \"providerStatus\": \"trusted_external_input\"",
+        "    }",
+        "  },",
+        "  \"runtimeTruth\": {",
+        "    \"canRunFromSupervisorOrCron\": true,",
+        "    \"providerResultIngestionAvailable\": true,",
+        "    \"unattendedResultPollingInstalled\": false,",
+        "    \"dryRunDefault\": true,",
+        "    \"executeRequiresConfirmation\": true,",
+        "    \"autoExecuteRequiresApprovalFile\": true,",
+        "    \"autoExecuteRequiresClosedMarket\": true,",
+        "    \"fakeTokenOnly\": true",
+        "  },",
+        "  \"gaps\": {",
+        "    \"p0\": [],",
+        "    \"p1\": [",
+        "      \"This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.\",",
+        "      \"Dry-run preview is the default; execution requires either explicit confirmation or an exact local approval file.\"",
+        "    ],",
+        "    \"p2\": [",
+        "      \"Multi-event result queue and operator UI remain future work.\"",
+        "    ]",
+        "  }",
+        "}"
+      ],
+      "stderrTail": []
+    }
+  },
+  "postSettlement": {
+    "cloneStatus": "RESOLVED",
+    "cloneResolvedOutcomeId": "a14bd70f-013e-45d6-9a27-bc597240b97e",
+    "cloneSettlementStatus": "closed_for_active_event_settlement_clone",
+    "cloneCollateralUSDC": "0",
+    "openOrdersAfter": 0,
+    "activePositionsAfter": 0,
+    "executedAuditEventId": "178"
+  },
+  "runtimeTruth": {
+    "activeTesterEventMutated": false,
+    "approvedAutoSettlementExecutesWhenClosed": true,
+    "approvalRequiresExactDigestAndConfirm": true,
+    "proofUsesActiveEventMarketShape": true,
+    "providerQuotaUsed": false
+  },
+  "checks": {
+    "activeMarketFound": true,
+    "cloneUsesActiveMarketSemantics": true,
+    "dryRunPassed": true,
+    "approvalFileWritten": true,
+    "cloneClosedBeforeAutoExecute": true,
+    "executeSchedulerPassed": true,
+    "executeSettlementPassed": true,
+    "cloneResolved": true,
+    "cloneCollateralZero": true,
+    "noOpenOrdersAfterSettlement": true,
+    "positionsFinalizedAfterSettlement": true,
+    "executedAuditEventWritten": true,
+    "activeTesterEventNotMutated": true,
+    "providerQuotaNotUsed": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "This proves active-event market semantics through a disposable clone; it intentionally does not resolve the active tester market while testers may still trade it.",
+      "Installed unattended official-result polling remains future work."
+    ],
+    "p2": [
+      "Operator settlement UI and multi-event settlement queue remain future work."
+    ]
+  }
+}

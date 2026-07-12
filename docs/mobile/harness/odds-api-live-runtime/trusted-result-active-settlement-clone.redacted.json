@@ -1,0 +1,15 @@
+{
+  "source": "the-odds-api-scores-fixture",
+  "sourceEventId": "f9aa13a662d1658e5a02cfc06d6a2d73-settlement-clone-c07b22db7d",
+  "eventSlug": "odds-api-single-soccer-test-settlement-clone-c07b22db7d",
+  "eventTitle": "Spain vs. France Settlement Clone",
+  "status": "final",
+  "period": "full_time",
+  "homeTeam": "France",
+  "awayTeam": "Spain",
+  "homeScore": 1,
+  "awayScore": 2,
+  "advanceTeam": "Spain",
+  "evidenceUrl": null,
+  "recordedAt": "2026-07-15T00:05:00Z"
+}

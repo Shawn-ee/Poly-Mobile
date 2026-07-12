@@ -58,6 +58,8 @@ const PATHS = {
     "docs/mobile/harness/odds-api-live-runtime/one-event-result-review-trail-summary.redacted.json",
   approvedAutoSettlement:
     "docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-summary.redacted.json",
+  activeSettlementClone:
+    "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-clone-summary.redacted.json",
   supervisorApprovedSettlement:
     "docs/mobile/harness/odds-api-live-runtime/one-event-supervisor-approved-settlement-wait-summary.redacted.json",
   makerSeed: "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
@@ -451,6 +453,23 @@ async function main() {
         "This proves an approval-file driven scheduler path: exact result digest/confirmation must match, live markets wait, and execution occurs only after close. It still does not install unattended official-result polling.",
     }),
     requirement({
+      id: "active-event-settlement-clone",
+      priority: "P1",
+      requirement:
+        "Approved trusted-result settlement is proven against a disposable clone of the active tester event's selected market semantics.",
+      achieved:
+        pass(entries.activeSettlementClone) &&
+        getPath(entries.activeSettlementClone, ["checks", "cloneUsesActiveMarketSemantics"]) === true &&
+        getPath(entries.activeSettlementClone, ["checks", "executeSchedulerPassed"]) === true &&
+        getPath(entries.activeSettlementClone, ["checks", "executeSettlementPassed"]) === true &&
+        getPath(entries.activeSettlementClone, ["checks", "cloneResolved"]) === true &&
+        getPath(entries.activeSettlementClone, ["checks", "activeTesterEventNotMutated"]) === true &&
+        getPath(entries.activeSettlementClone, ["checks", "providerQuotaNotUsed"]) === true,
+      evidence: [PATHS.activeSettlementClone],
+      notes:
+        "This closes the semantics gap between generic disposable settlement and the active tester event's current market shape while intentionally preserving the active event for internal trading.",
+    }),
+    requirement({
       id: "supervisor-approved-settlement-wait",
       priority: "P0",
       requirement:
@@ -593,10 +612,11 @@ async function main() {
         PATHS.settlementAuditEvent,
         PATHS.resultReviewTrail,
         PATHS.approvedAutoSettlement,
+        PATHS.activeSettlementClone,
         PATHS.supervisorApprovedSettlement,
       ],
       notes:
-        "Provider-shaped result ingestion replay, durable canonical result-ingestion audit evidence, a dedicated local result polling runner with background process management, durable canonical settlement audit events, approval-file auto-execution, supervisor-approved wait mode, and trusted-result scheduler execution are proven on local evidence. Execution is blocked while the target market remains LIVE unless it later closes and exactly matches an approval file. Live score ingestion is available only behind explicit live flags plus THE_ODDS_API_KEY, including the quota-capped poller and supervisor paths. Installed unattended provider result polling and unconfirmed active-event execution remain future work.",
+        "Provider-shaped result ingestion replay, durable canonical result-ingestion audit evidence, a dedicated local result polling runner with background process management, durable canonical settlement audit events, approval-file auto-execution, active-event market clone settlement, supervisor-approved wait mode, and trusted-result scheduler execution are proven on local evidence. Execution is blocked while the target market remains LIVE unless it later closes and exactly matches an approval file. Live score ingestion is available only behind explicit live flags plus THE_ODDS_API_KEY, including the quota-capped poller and supervisor paths. Installed unattended provider result polling and unconfirmed active-event execution remain future work.",
     }),
   ];
   const openP0 = requirements.filter((item) => item.priority === "P0" && item.status !== "complete");

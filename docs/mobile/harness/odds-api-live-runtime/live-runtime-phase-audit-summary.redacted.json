@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T14:28:08.304Z",
+  "generatedAt": "2026-07-12T14:37:36.201Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T14:28:07.842Z"
+      "timestamp": "2026-07-12T14:37:36.167Z"
     },
     "error": null
   },
@@ -65,46 +65,47 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 7.36,
-    "onboarding": 3.73,
-    "readiness": 3.73,
-    "runtimeStatus": 0.14,
-    "runtimeLaunch": 1.68,
-    "supervisor": 1.68,
-    "supervisorProcess": 0.93,
-    "internalTesterRuntime": 0.93,
-    "internalTesterResultPoller": 0.93,
-    "localRuntimeTask": 2.85,
-    "localRuntimeTaskInstall": 2.67,
-    "localRuntimeStartup": 2.16,
-    "localRuntimeStartupInstall": 0.68,
-    "localRuntimeLaunchProfile": 0,
-    "continuousSupervisor": 3.27,
-    "staleGuardProof": 4.95,
-    "staleGuardRun": 4.84,
-    "lifecycleControls": 3.73,
-    "lifecycleScheduler": 3.73,
-    "lifecycleSchedulerRun": 3.27,
-    "lifecycleMatrix": 0.36,
-    "settlementReadiness": 3.73,
-    "settlementExecution": 3.44,
-    "resultSettlementExecution": 2.59,
-    "resultSettlementLiveBlocked": 2.59,
-    "manualSettlement": 3.73,
-    "resultIngestion": 0.93,
-    "resultIngestionAuditEvent": 0.79,
-    "resultPoller": 1.39,
-    "resultPollerProcess": 0.92,
-    "continuousResultPoller": 1.09,
-    "resultSettlement": 0.93,
-    "resultSettlementRun": 0.93,
-    "settlementPreflight": 2.36,
-    "settlementAuditEvent": 2.04,
-    "resultReviewTrail": 0.5,
-    "approvedAutoSettlement": 1.86,
-    "supervisorApprovedSettlement": 1.68,
-    "makerSeed": 3.27,
-    "s23Visible": 7.19
+    "liveProof": 7.52,
+    "onboarding": 3.89,
+    "readiness": 3.89,
+    "runtimeStatus": 0.29,
+    "runtimeLaunch": 1.84,
+    "supervisor": 1.84,
+    "supervisorProcess": 1.09,
+    "internalTesterRuntime": 1.09,
+    "internalTesterResultPoller": 1.09,
+    "localRuntimeTask": 3.01,
+    "localRuntimeTaskInstall": 2.82,
+    "localRuntimeStartup": 2.31,
+    "localRuntimeStartupInstall": 0.84,
+    "localRuntimeLaunchProfile": 0.16,
+    "continuousSupervisor": 3.43,
+    "staleGuardProof": 5.11,
+    "staleGuardRun": 5,
+    "lifecycleControls": 3.89,
+    "lifecycleScheduler": 3.89,
+    "lifecycleSchedulerRun": 3.43,
+    "lifecycleMatrix": 0.52,
+    "settlementReadiness": 3.89,
+    "settlementExecution": 3.6,
+    "resultSettlementExecution": 2.75,
+    "resultSettlementLiveBlocked": 2.75,
+    "manualSettlement": 3.89,
+    "resultIngestion": 1.09,
+    "resultIngestionAuditEvent": 0.95,
+    "resultPoller": 1.54,
+    "resultPollerProcess": 1.08,
+    "continuousResultPoller": 1.25,
+    "resultSettlement": 1.09,
+    "resultSettlementRun": 1.09,
+    "settlementPreflight": 2.51,
+    "settlementAuditEvent": 2.19,
+    "resultReviewTrail": 0.66,
+    "approvedAutoSettlement": 2.02,
+    "activeSettlementClone": 0,
+    "supervisorApprovedSettlement": 1.84,
+    "makerSeed": 3.43,
+    "s23Visible": 7.34
   },
   "requirements": [
     {
@@ -325,6 +326,16 @@
       "notes": "This proves an approval-file driven scheduler path: exact result digest/confirmation must match, live markets wait, and execution occurs only after close. It still does not install unattended official-result polling."
     },
     {
+      "id": "active-event-settlement-clone",
+      "priority": "P1",
+      "requirement": "Approved trusted-result settlement is proven against a disposable clone of the active tester event's selected market semantics.",
+      "status": "complete",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-clone-summary.redacted.json"
+      ],
+      "notes": "This closes the semantics gap between generic disposable settlement and the active tester event's current market shape while intentionally preserving the active event for internal trading."
+    },
+    {
       "id": "supervisor-approved-settlement-wait",
       "priority": "P0",
       "requirement": "Local supervisor approved settlement mode is wired and waits safely while the active market remains live.",
@@ -435,9 +446,10 @@
         "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-audit-event-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-review-trail-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-clone-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-supervisor-approved-settlement-wait-summary.redacted.json"
       ],
-      "notes": "Provider-shaped result ingestion replay, durable canonical result-ingestion audit evidence, a dedicated local result polling runner with background process management, durable canonical settlement audit events, approval-file auto-execution, supervisor-approved wait mode, and trusted-result scheduler execution are proven on local evidence. Execution is blocked while the target market remains LIVE unless it later closes and exactly matches an approval file. Live score ingestion is available only behind explicit live flags plus THE_ODDS_API_KEY, including the quota-capped poller and supervisor paths. Installed unattended provider result polling and unconfirmed active-event execution remain future work."
+      "notes": "Provider-shaped result ingestion replay, durable canonical result-ingestion audit evidence, a dedicated local result polling runner with background process management, durable canonical settlement audit events, approval-file auto-execution, active-event market clone settlement, supervisor-approved wait mode, and trusted-result scheduler execution are proven on local evidence. Execution is blocked while the target market remains LIVE unless it later closes and exactly matches an approval file. Live score ingestion is available only behind explicit live flags plus THE_ODDS_API_KEY, including the quota-capped poller and supervisor paths. Installed unattended provider result polling and unconfirmed active-event execution remain future work."
     }
   ],
   "conclusion": {

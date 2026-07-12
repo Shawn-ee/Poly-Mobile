@@ -10261,3 +10261,10 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable service install state, service heartbeats, official-result records, approval records, and production runtime monitoring remain P1/P2.
 - Temporary mock/static data: none added. The report reads existing redacted proof summaries and spends no provider quota.
 - Future migration concern: launch-profile truth currently comes from local proof JSON and Windows process context. Production should persist service ownership, launch configuration, provider polling state, and approval state in durable backend/service-managed infrastructure.
+## Cycle ONEEVENTACTIVESETTLEMENTCLONE - Active Event Settlement Clone Proof
+
+- Closed or narrowed: approved trusted-result settlement is now proven against a disposable clone of the active tester event's selected market semantics, not only against a generic disposable market.
+- Route mismatch: none. No mobile API or backend HTTP route changed; this is a local proof command that composes the existing trusted-result settlement scheduler and settlement services.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable official-result records, durable approval records, admin/operator review UI, multi-event settlement queue, production execution policy, and installed official-result polling remain P1/P2.
+- Temporary mock/static data: the proof writes local clone trusted-result and approval JSON, creates a disposable clone event, and spends no Odds API quota. The active tester event is not settled or mutated.
+- Future migration concern: the clone proof is a local safety bridge. Production should execute only from durable official-result evidence and durable approvals, with clear lifecycle ownership and audit UI.
