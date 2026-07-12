@@ -14493,3 +14493,14 @@ Known limitations:
 - API/data dependencies: no new route or schema. The audit reads `internal-tester-watchdog-summary.redacted.json` in addition to existing runtime, launch profile, stale guard, lifecycle, active settlement, and S23 proof artifacts.
 - Proof needed: `npm run mobile:live-runtime-completion-audit`, `npm run mobile:one-event-phase-audit`, and standard server/mobile validation before commit.
 - Known limitations: completion truth still reports local internal runtime readiness, not production unattended service completion.
+
+## Cycle LIVERUNTIMESTATUSAPI - Local Live Runtime Status API
+
+- Feature/page worked on: backend local internal live-runtime status visibility.
+- Frontend components touched: none.
+- Important functions/services touched: added `src/server/services/liveRuntimeStatus.ts`; added `src/app/api/internal/live-runtime/status/route.ts`; added `src/__tests__/internal.live-runtime.status.route.test.ts`; updated `package.json` CI test list.
+- User/runtime interactions supported: local operator or internal testing platform can call `GET /api/internal/live-runtime/status` to see the current one-event runtime readiness, event, selected market, quota/stale/lifecycle answers, watchdog truth, and P0/P1/P2 gaps without reading proof files directly.
+- State transitions: none. The route is read-only, uses existing redacted proof artifacts, and refuses production.
+- API/data dependencies: reads live-runtime completion audit, phase audit, and watchdog summary files. It does not call The Odds API, does not read provider secrets, and does not mutate database state.
+- Proof: route unit test passed; live local route returned `status=ready`; backend health passed; server/mobile typecheck and `npm run test:ci` passed; secret scan clean.
+- Known limitations: this is an internal local status route, not a production monitoring API or installed service manager.

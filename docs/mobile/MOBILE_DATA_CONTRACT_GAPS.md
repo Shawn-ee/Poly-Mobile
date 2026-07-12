@@ -10316,3 +10316,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable service health records and production service ownership remain P1/P2.
 - Temporary mock/static data: none added. The audit reads existing proof summaries and spends no provider quota.
 - Future migration concern: production completion truth should come from durable runtime health endpoints/service records rather than local proof JSON.
+
+## Cycle LIVERUNTIMESTATUSAPI - Local Live Runtime Status API
+
+- Closed or narrowed: local runtime truth is now available through a backend route for internal tester dashboards/tools instead of only shell commands and proof JSON.
+- Route mismatch: new local route `/api/internal/live-runtime/status` is intentionally dev-only and returns 404 in production or when `HOLIWYN_DISABLE_INTERNAL_RUNTIME_STATUS=1`.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable service heartbeats, provider poll state, result poll state, approval state, and production monitoring records remain P1/P2.
+- Temporary mock/static data: none added. The route reads existing redacted proof artifacts and spends no provider quota.
+- Future migration concern: if this status becomes user/admin-facing, replace proof-file reads with durable database/service records and add explicit authorization.
