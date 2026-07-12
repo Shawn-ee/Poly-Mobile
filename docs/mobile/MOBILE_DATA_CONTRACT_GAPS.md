@@ -10388,3 +10388,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable official-result records, durable approval records, production operator UI, authenticated settlement controls, and installed official-result polling remain P1/P2.
 - Temporary mock/static data: none added. The route reads existing redacted active-settlement readiness evidence only.
 - Future migration concern: production should replace local proof-file settlement status with durable event/result/approval/settlement tables and auditable operator workflows.
+
+## Cycle LIVERUNTIMECAPABILITYSPLIT - Runtime Capability vs Latest Run Truth
+
+- Closed or narrowed: the local live-runtime status route now separates the latest supervisor artifact profile from previously proven repeated supervisor/result-poller capabilities, reducing false alarms after a narrow proof run.
+- Route mismatch: `/api/internal/live-runtime/status` adds `runtimeCapabilities` with `latestSupervisorProfile`, `provenCapabilities`, and `currentProcessState`.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable service heartbeat records, provider-refresh job records, result-poll job records, and production process ownership remain P1/P2.
+- Temporary mock/static data: none added. The route reads existing redacted runtime-status proof evidence and local process state only.
+- Future migration concern: when the runtime becomes multi-event or production-facing, replace proof-artifact capability flags with durable scheduler/service records and authenticated operator controls.

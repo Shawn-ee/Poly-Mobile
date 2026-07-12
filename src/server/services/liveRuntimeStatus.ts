@@ -3,6 +3,8 @@ import { prisma } from "@/lib/db";
 
 const COMPLETION_AUDIT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json";
+const RUNTIME_STATUS_PATH =
+  "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json";
 const PHASE_AUDIT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json";
 const WATCHDOG_PATH =
@@ -288,8 +290,17 @@ function buildOperatorNextActions(params: {
 }
 
 export async function getLocalLiveRuntimeStatus() {
-  const [completionAudit, phaseAudit, watchdog, activeSettlementReadiness, supervisorProcess, resultPollerProcess] = await Promise.all([
+  const [
+    completionAudit,
+    runtimeStatus,
+    phaseAudit,
+    watchdog,
+    activeSettlementReadiness,
+    supervisorProcess,
+    resultPollerProcess,
+  ] = await Promise.all([
     readJson(COMPLETION_AUDIT_PATH),
+    readJson(RUNTIME_STATUS_PATH),
     readJson(PHASE_AUDIT_PATH),
     readJson(WATCHDOG_PATH),
     readJson(ACTIVE_SETTLEMENT_READINESS_PATH),
@@ -413,6 +424,37 @@ export async function getLocalLiveRuntimeStatus() {
     freshness: artifactFreshness,
     providerSnapshots,
     settlementDecision,
+    runtimeCapabilities: {
+      latestRunProfileOnly: getPath(runtimeStatus, ["modeTruth", "latestSupervisorRunProfileOnly"]) === true,
+      latestSupervisorProfile: getPath(runtimeStatus, ["supervisor", "latestRunProfile"]) ?? null,
+      provenCapabilities: {
+        repeatedSupervisorCycles:
+          getPath(runtimeStatus, ["provenCapabilities", "repeatedSupervisorCycles"]) === true,
+        makerReseedWhileSupervisorRuns:
+          getPath(runtimeStatus, ["provenCapabilities", "makerReseedWhileSupervisorRuns"]) === true,
+        lifecycleSchedulerWhileSupervisorRuns:
+          getPath(runtimeStatus, ["provenCapabilities", "lifecycleSchedulerWhileSupervisorRuns"]) === true,
+        resultIngestionWhileSupervisorRuns:
+          getPath(runtimeStatus, ["provenCapabilities", "resultIngestionWhileSupervisorRuns"]) === true,
+        resultSettlementSchedulerWhileSupervisorRuns:
+          getPath(runtimeStatus, ["provenCapabilities", "resultSettlementSchedulerWhileSupervisorRuns"]) === true,
+        supervisorProviderRefreshQuotaProtected:
+          getPath(runtimeStatus, ["provenCapabilities", "supervisorProviderRefreshQuotaProtected"]) === true,
+        resultPollingBackgroundProof:
+          getPath(runtimeStatus, ["provenCapabilities", "resultPollingBackgroundProof"]) === true,
+        resultPollingContinuousWhileRunnerRuns:
+          getPath(runtimeStatus, ["provenCapabilities", "resultPollingContinuousWhileRunnerRuns"]) === true,
+        resultSettlementSchedulerWhilePollerRuns:
+          getPath(runtimeStatus, ["provenCapabilities", "resultSettlementSchedulerWhilePollerRuns"]) === true,
+        installedOsService: getPath(runtimeStatus, ["provenCapabilities", "installedOsService"]) === true,
+      },
+      currentProcessState: {
+        anyLoopRunning: supervisorProcess.running || resultPollerProcess.running,
+        quotaSpendingLoopRunning: supervisorProcess.usesProviderQuota || resultPollerProcess.usesProviderQuota,
+      },
+      note:
+        "latestSupervisorProfile describes only the latest supervisor artifact; provenCapabilities describes prior passing repeated supervisor/result-poller proofs.",
+    },
     operatorNextActions,
     managedProcesses: {
       supervisor: supervisorProcess,
@@ -432,6 +474,11 @@ export async function getLocalLiveRuntimeStatus() {
         path: PHASE_AUDIT_PATH,
         pass: pass(phaseAudit),
         generatedAt: phaseAudit?.generatedAt ?? null,
+      },
+      runtimeStatus: {
+        path: RUNTIME_STATUS_PATH,
+        pass: pass(runtimeStatus),
+        generatedAt: runtimeStatus?.generatedAt ?? null,
       },
       watchdog: {
         path: WATCHDOG_PATH,

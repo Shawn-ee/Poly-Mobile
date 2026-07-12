@@ -92,6 +92,36 @@ const makePhaseAudit = (generatedAt = nowIso()) => ({
   },
 });
 
+const makeRuntimeStatus = (generatedAt = nowIso()) => ({
+  generatedAt,
+  pass: true,
+  modeTruth: {
+    latestSupervisorRunProfileOnly: true,
+  },
+  provenCapabilities: {
+    repeatedSupervisorCycles: true,
+    makerReseedWhileSupervisorRuns: true,
+    lifecycleSchedulerWhileSupervisorRuns: true,
+    resultIngestionWhileSupervisorRuns: true,
+    resultSettlementSchedulerWhileSupervisorRuns: true,
+    supervisorProviderRefreshQuotaProtected: true,
+    resultPollingBackgroundProof: true,
+    resultPollingContinuousWhileRunnerRuns: true,
+    resultSettlementSchedulerWhilePollerRuns: true,
+    installedOsService: false,
+  },
+  supervisor: {
+    latestRunProfile: {
+      makerSeedEnabled: false,
+      lifecycleSchedulerEnabled: false,
+      resultIngestionEnabled: false,
+      resultSettlementEnabled: true,
+      approvedResultSettlementEnabled: true,
+      runProviderProof: false,
+    },
+  },
+});
+
 const makeWatchdog = (generatedAt = nowIso()) => ({
   generatedAt,
   pass: true,
@@ -167,6 +197,7 @@ describe("live runtime status service", () => {
   test("returns ready only when audits pass and proof artifacts are fresh", async () => {
     readFile.mockImplementation(async (filePath: string) => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
+      if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
@@ -250,6 +281,34 @@ describe("live runtime status service", () => {
       supervisorApprovedSettlementWaitProven: true,
       nextSafeAction: "wait_for_or_apply_market_close_before_execution",
     });
+    expect(status.runtimeCapabilities).toMatchObject({
+      latestRunProfileOnly: true,
+      latestSupervisorProfile: {
+        makerSeedEnabled: false,
+        lifecycleSchedulerEnabled: false,
+        resultIngestionEnabled: false,
+        resultSettlementEnabled: true,
+        approvedResultSettlementEnabled: true,
+        runProviderProof: false,
+      },
+      provenCapabilities: {
+        repeatedSupervisorCycles: true,
+        makerReseedWhileSupervisorRuns: true,
+        lifecycleSchedulerWhileSupervisorRuns: true,
+        resultIngestionWhileSupervisorRuns: true,
+        resultSettlementSchedulerWhileSupervisorRuns: true,
+        supervisorProviderRefreshQuotaProtected: true,
+        resultPollingBackgroundProof: true,
+        resultPollingContinuousWhileRunnerRuns: true,
+        resultSettlementSchedulerWhilePollerRuns: true,
+        installedOsService: false,
+      },
+      currentProcessState: {
+        anyLoopRunning: false,
+        quotaSpendingLoopRunning: false,
+      },
+      note: expect.stringContaining("latestSupervisorProfile"),
+    });
     expect(status.managedProcesses).toMatchObject({
       anyLoopRunning: false,
       quotaSpendingLoopRunning: false,
@@ -275,6 +334,7 @@ describe("live runtime status service", () => {
   test("returns needs_attention when a required proof artifact is stale", async () => {
     readFile.mockImplementation(async (filePath: string) => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit(staleIso()));
+      if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
@@ -301,6 +361,7 @@ describe("live runtime status service", () => {
           }),
         );
       }
+      if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
@@ -330,6 +391,7 @@ describe("live runtime status service", () => {
     ]);
     readFile.mockImplementation(async (filePath: string) => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
+      if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
@@ -354,6 +416,7 @@ describe("live runtime status service", () => {
     referenceQuoteSnapshotFindMany.mockResolvedValue(refreshDueSnapshot());
     readFile.mockImplementation(async (filePath: string) => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
+      if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
@@ -400,6 +463,7 @@ describe("live runtime status service", () => {
     });
     readFile.mockImplementation(async (filePath: string) => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
+      if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());

@@ -14592,3 +14592,14 @@ Known limitations:
 - API/data dependencies: status response adds `settlementDecision` with artifact pass/generatedAt, active market/event status, execution eligibility, operator decision, blocker list, closed-market guard, known exact-confirmation truth, active execution attempted flag, disposable clone proof truth, supervisor wait proof truth, and next safe action.
 - Proof needed: focused status service tests, direct live route proof, `npm run mobile:one-event-phase-audit`, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: active tester settlement remains intentionally blocked while the market is `LIVE`; installed unattended official-result polling and production operator UI remain P1/P2.
+
+## Cycle LIVERUNTIMECAPABILITYSPLIT - Runtime Capability vs Latest Run Truth
+
+- Feature/page worked on: backend local internal live-runtime operator status.
+- Frontend components touched: none.
+- Important functions/services touched: updated `src/server/services/liveRuntimeStatus.ts` and `src/__tests__/liveRuntimeStatus.service.test.ts`.
+- User/runtime interactions supported: local operator or internal testing platform can call `GET /api/internal/live-runtime/status` and see which repeated supervisor/result-poller capabilities are proven separately from the latest narrow supervisor artifact and current process state.
+- State transitions: none. This is a read-only status projection over existing runtime-status proof artifacts plus current process checks. It does not start loops, stop loops, call The Odds API, mutate market/order/position state, or read provider secrets.
+- API/data dependencies: status response adds `runtimeCapabilities.latestRunProfileOnly`, `latestSupervisorProfile`, `provenCapabilities`, `currentProcessState`, and a note explaining that latest run profile is not the same as missing capability.
+- Proof needed: focused status service tests, direct live route proof, `npm run mobile:one-event-phase-audit`, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: capabilities are still based on local proof artifacts. Production should replace this with durable service heartbeat and job-run records.
