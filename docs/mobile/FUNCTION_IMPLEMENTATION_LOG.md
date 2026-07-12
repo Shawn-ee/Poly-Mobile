@@ -13797,3 +13797,26 @@ Known limitations:
   - Scheduler selection requires `isListed=true`, so delisted historical rows no longer enter pause/close proofs.
 - Known limitations:
   - The local one-event runtime still uses a reusable event slug. Per-provider-event slugs are a better future shape for multi-event onboarding.
+
+# Cycle ONEEVENTSETTLEMENTREADINESS - One-Event Settlement Readiness
+
+- Feature/page worked on: settlement readiness for the selected one-event sportsbook market.
+- Frontend components touched: none. This is backend/runtime proof only and does not change mobile UI.
+- Important functions/services touched:
+  - `scripts/report_odds_api_one_event_settlement_readiness.ts`
+  - `package.json` script `mobile:one-event-settlement-readiness`
+  - `previewOrderbookSettlement`
+  - `resolveOrderbookMarket`
+  - Admin settlement routes `POST /api/admin/markets/:id/settlement-preview`, `POST /api/admin/markets/:id/resolve`, and `POST /api/admin/markets/resolve`
+- User interactions supported:
+  - Proves the backend can preview settlement payouts for the selected fake-token sportsbook market after a trusted winning outcome is known.
+  - Does not mutate user portfolios, orders, balances, or market resolution state during the readiness report.
+- State transitions:
+  - Selected event/market/outcomes are loaded from the local backend database.
+  - Each active/tradable outcome is passed through settlement preview.
+  - The report writes payout counts, loser-position counts, conservation checks, and manual route/service availability.
+  - The market remains `LIVE` and unresolved after the report.
+- Known limitations:
+  - Official soccer result provider ingestion is not wired.
+  - Automatic settlement execution is not implemented.
+  - Actual resolution still requires a trusted admin/manual outcome selection before `resolveOrderbookMarket` or admin resolve routes are used.

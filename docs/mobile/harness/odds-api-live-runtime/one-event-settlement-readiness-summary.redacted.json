@@ -1,0 +1,135 @@
+{
+  "generatedAt": "2026-07-12T09:00:02.112Z",
+  "scope": "odds-api-one-event-settlement-readiness",
+  "pass": true,
+  "event": {
+    "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
+    "slug": "odds-api-single-soccer-test",
+    "title": "Spain vs. France",
+    "startTime": "2026-07-14T19:00:00.000Z",
+    "status": "active",
+    "liveStatus": "LIVE"
+  },
+  "selectedMarket": {
+    "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "slug": "odds-api-single-soccer-test-totals-7439c2d603",
+    "title": "Spain vs. France: Total Goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "line": "2.5",
+    "status": "LIVE",
+    "resolvedOutcomeId": null,
+    "settlementStatus": null,
+    "collateralUSDC": "6100"
+  },
+  "settlementPath": {
+    "previewService": "previewOrderbookSettlement",
+    "resolveService": "resolveOrderbookMarket",
+    "adminPreviewRoute": "POST /api/admin/markets/:id/settlement-preview",
+    "adminResolveRoute": "POST /api/admin/markets/:id/resolve or POST /api/admin/markets/resolve",
+    "proofMutation": "none",
+    "automaticOfficialResultSettlementReady": false,
+    "officialResultProvider": null,
+    "officialResultProviderStatus": "missing",
+    "canSettleManuallyAfterTrustedResultInput": true,
+    "settlementPossibleNow": true
+  },
+  "previews": [
+    {
+      "outcome": {
+        "id": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+        "name": "Over +2.5",
+        "label": "Over +2.5",
+        "side": "over"
+      },
+      "result": {
+        "ok": true,
+        "preview": {
+          "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+          "marketStatus": "LIVE",
+          "winningOutcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+          "winningOutcomeName": "Over +2.5",
+          "collateralUSDC": "6100",
+          "totalShares": "12200",
+          "totalWinningShares": "6100",
+          "totalPayout": "6100",
+          "payoutConservationPass": true,
+          "blockers": [],
+          "openOrderCleanup": {
+            "openOrderCount": 2,
+            "buyOrderLockedUSDCToRelease": "94",
+            "sellOrderSharesToRelease": "200"
+          },
+          "payoutCount": 33,
+          "loserPositionCount": 31,
+          "mutation": "none"
+        },
+        "serviceAvailable": true,
+        "mutation": "none",
+        "settlementPossibleNow": true,
+        "blockers": []
+      }
+    },
+    {
+      "outcome": {
+        "id": "ee7237f3-ee58-4a66-a092-adaa58b3547f",
+        "name": "Under +2.5",
+        "label": "Under +2.5",
+        "side": "under"
+      },
+      "result": {
+        "ok": true,
+        "preview": {
+          "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+          "marketStatus": "LIVE",
+          "winningOutcomeId": "ee7237f3-ee58-4a66-a092-adaa58b3547f",
+          "winningOutcomeName": "Under +2.5",
+          "collateralUSDC": "6100",
+          "totalShares": "12200",
+          "totalWinningShares": "6100",
+          "totalPayout": "6100",
+          "payoutConservationPass": true,
+          "blockers": [],
+          "openOrderCleanup": {
+            "openOrderCount": 2,
+            "buyOrderLockedUSDCToRelease": "94",
+            "sellOrderSharesToRelease": "200"
+          },
+          "payoutCount": 31,
+          "loserPositionCount": 33,
+          "mutation": "none"
+        },
+        "serviceAvailable": true,
+        "mutation": "none",
+        "settlementPossibleNow": true,
+        "blockers": []
+      }
+    }
+  ],
+  "postPreviewMarket": {
+    "status": "LIVE",
+    "resolvedOutcomeId": null,
+    "settlementStatus": null,
+    "collateralUSDC": "6100"
+  },
+  "checks": {
+    "eventLoaded": true,
+    "marketLoaded": true,
+    "outcomesAvailable": true,
+    "manualPreviewServiceAvailable": true,
+    "manualResolveServiceAvailable": true,
+    "previewsAreNonMutating": true,
+    "marketNotResolvedByReport": true,
+    "officialResultProviderMissingIsExplicit": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "Official soccer result provider is not wired, so automatic settlement remains unavailable.",
+      "Manual/admin settlement requires trusted winning outcome input and admin review."
+    ],
+    "p2": [
+      "Operator settlement UI and multi-event settlement queue remain future work."
+    ]
+  }
+}

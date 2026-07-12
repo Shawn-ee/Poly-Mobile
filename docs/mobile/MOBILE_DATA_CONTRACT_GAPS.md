@@ -10021,3 +10021,11 @@ Future migration concern:
 - Temporary mock/static data: none added. The safe scheduler runner uses the real current time and spends no provider quota; the proof uses temporary timestamps on the existing event and restores them afterward.
 - Future migration concern: `npm run mobile:one-event-data-hygiene-proof` now gates listed visible rows for the reusable test slug. Per-provider-event slugs remain the cleaner future contract before broader internal testing.
 - Runtime gap: `npm run mobile:one-event-live-supervisor` now runs data hygiene and the safe scheduler while the foreground command is active, but a durable process manager/daemon contract is still missing.
+
+## Cycle ONEEVENTSETTLEMENTREADINESS - One-Event Settlement Readiness
+
+- Closed or narrowed: the selected one-event sportsbook market now has a non-mutating readiness proof for manual settlement. Both active outcomes can be previewed, payout conservation passes, and the report confirms the market remains unresolved after preview.
+- Route mismatch: none for the existing manual/admin settlement path. The readiness report calls backend services directly and documents the matching admin preview/resolve routes.
+- Fields Holiwyn still needs but backend/provider does not fully provide: official soccer result source, trusted final score/result ingestion, outcome mapping from official result to `Outcome.id`, and automatic resolve execution policy.
+- Temporary mock/static data: none added. The report uses the existing local backend market, positions, orders, and balances and spends no provider quota.
+- Future migration concern: automatic settlement should stay separate from provider odds refresh. Odds snapshots are pricing inputs, not official result sources.

@@ -128,6 +128,7 @@
     "mobile:one-event-lifecycle-proof": "tsx scripts/prove_odds_api_event_lifecycle_controls.ts",
     "mobile:one-event-lifecycle-scheduler-run": "tsx scripts/run_odds_api_one_event_lifecycle_scheduler.ts",
     "mobile:one-event-lifecycle-scheduler-proof": "npm run mobile:one-event-data-hygiene-proof && tsx scripts/prove_odds_api_event_lifecycle_scheduler.ts && npm run mobile:one-event-live-maker-seed",
+    "mobile:one-event-settlement-readiness": "tsx scripts/report_odds_api_one_event_settlement_readiness.ts",
     "mobile:one-event-runtime-status": "tsx scripts/report_odds_api_one_event_runtime_status.ts",
     "mobile:one-event-live-readiness": "powershell -ExecutionPolicy Bypass -File scripts/prove_holiwyn_one_event_live_readiness.ps1",
     "mobile:one-event-live-runtime": "powershell -ExecutionPolicy Bypass -File scripts/start_holiwyn_one_event_live_runtime.ps1",
