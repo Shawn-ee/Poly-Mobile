@@ -37,6 +37,16 @@ const refreshDueSnapshot = () => [
     reason: null,
   },
 ];
+const mobileStaleButLocallyFreshSnapshot = () => [
+  {
+    source: "sportsbook-odds",
+    fetchedAt: new Date(Date.now() - 5 * 60_000),
+    acceptingOrders: true,
+    mmEligible: true,
+    qualityStatus: "available",
+    reason: null,
+  },
+];
 
 const makeCompletionAudit = (
   generatedAt = nowIso(),
@@ -246,6 +256,8 @@ describe("live runtime status service", () => {
     expect(status.runtimeTruth.providerQuotaUsedByStatus).toBe(false);
     expect(status.operatorNextActions).toMatchObject({
       recommendedFirstAction: "cached_internal_testing",
+      defaultNoQuotaAction: "cached_internal_testing",
+      liveOddsAction: "none",
       nextProviderAction: "none",
       safety: expect.stringContaining("THE_ODDS_API_KEY"),
     });
@@ -440,6 +452,8 @@ describe("live runtime status service", () => {
     });
     expect(status.operatorNextActions).toMatchObject({
       recommendedFirstAction: "refresh_mobile_live_odds",
+      defaultNoQuotaAction: "cached_internal_testing",
+      liveOddsAction: "refresh_mobile_live_odds",
       nextProviderAction: "refresh_provider_snapshots",
     });
     expect(status.operatorNextActions.actions).toEqual(
@@ -448,6 +462,50 @@ describe("live runtime status service", () => {
           id: "refresh_mobile_live_odds",
           command: "npm run mobile:one-event-live-runtime:provider",
           requiresProviderKey: true,
+          spendsProviderQuota: true,
+        }),
+      ]),
+    );
+  });
+
+  test("keeps cached internal testing as default when mobile odds are stale but local proof window is fresh", async () => {
+    referenceQuoteSnapshotFindMany.mockResolvedValue(mobileStaleButLocallyFreshSnapshot());
+    readFile.mockImplementation(async (filePath: string) => {
+      if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
+      if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
+      if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
+      if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
+      if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
+      throw new Error(`unexpected path ${filePath}`);
+    });
+
+    const status = await getLocalLiveRuntimeStatus();
+
+    expect(status.status).toBe("ready");
+    expect(status.providerSnapshots).toMatchObject({
+      fresh: true,
+      mobileRouteFresh: false,
+      mobileRouteRefreshDue: false,
+      mobileRouteStale: true,
+      mobileLifecycleStatus: "stale",
+      nextProviderAction: "refresh_provider_snapshots_or_keep_cached_test_mode",
+    });
+    expect(status.operatorNextActions).toMatchObject({
+      recommendedFirstAction: "cached_internal_testing",
+      defaultNoQuotaAction: "cached_internal_testing",
+      liveOddsAction: "refresh_mobile_live_odds",
+      nextProviderAction: "refresh_provider_snapshots_or_keep_cached_test_mode",
+    });
+    expect(status.operatorNextActions.actions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "cached_internal_testing",
+          spendsProviderQuota: false,
+        }),
+        expect.objectContaining({
+          id: "refresh_mobile_live_odds",
           spendsProviderQuota: true,
         }),
       ]),

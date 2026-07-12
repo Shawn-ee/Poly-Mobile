@@ -10396,3 +10396,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable service heartbeat records, provider-refresh job records, result-poll job records, and production process ownership remain P1/P2.
 - Temporary mock/static data: none added. The route reads existing redacted runtime-status proof evidence and local process state only.
 - Future migration concern: when the runtime becomes multi-event or production-facing, replace proof-artifact capability flags with durable scheduler/service records and authenticated operator controls.
+
+## Cycle LIVERUNTIMEQUOTASAFEDEFAULT - Quota-Safe Runtime Status Default
+
+- Closed or narrowed: when local proof is ready but mobile-display provider snapshots are stale, the status route no longer recommends quota-spending live refresh as the first/default action. It keeps cached internal testing as the no-quota default and exposes live refresh separately.
+- Route mismatch: `/api/internal/live-runtime/status` adds `operatorNextActions.defaultNoQuotaAction` and `operatorNextActions.liveOddsAction`; `recommendedFirstAction` now stays `cached_internal_testing` for `refresh_provider_snapshots_or_keep_cached_test_mode`.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable provider-refresh jobs, quota ledger entries, authenticated operator controls, and multi-event refresh planning remain P1/P2.
+- Temporary mock/static data: none added. The route reads existing status and snapshot data only and spends no provider quota.
+- Future migration concern: production/internal dashboards should trigger refresh through a backend job system rather than exposing local shell commands.

@@ -14603,3 +14603,14 @@ Known limitations:
 - API/data dependencies: status response adds `runtimeCapabilities.latestRunProfileOnly`, `latestSupervisorProfile`, `provenCapabilities`, `currentProcessState`, and a note explaining that latest run profile is not the same as missing capability.
 - Proof needed: focused status service tests, direct live route proof, `npm run mobile:one-event-phase-audit`, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: capabilities are still based on local proof artifacts. Production should replace this with durable service heartbeat and job-run records.
+
+## Cycle LIVERUNTIMEQUOTASAFEDEFAULT - Quota-Safe Runtime Status Default
+
+- Feature/page worked on: backend local internal live-runtime operator guidance.
+- Frontend components touched: none.
+- Important functions/services touched: updated `src/server/services/liveRuntimeStatus.ts`, `src/__tests__/liveRuntimeStatus.service.test.ts`, and `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: local operator or internal testing platform can call `GET /api/internal/live-runtime/status` and see cached internal testing as the default no-quota action when the local runtime is ready but mobile-display odds are stale, while still seeing the explicit live odds refresh action.
+- State transitions: none. This is read-only command guidance. It does not call The Odds API, spend quota, start loops, mutate market/order/position state, or read provider secrets.
+- API/data dependencies: `operatorNextActions` now includes `defaultNoQuotaAction` and `liveOddsAction`. For `refresh_provider_snapshots_or_keep_cached_test_mode`, `recommendedFirstAction` remains `cached_internal_testing`.
+- Proof needed: focused status service tests, direct live route proof, `npm run mobile:one-event-phase-audit`, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: production should replace local command strings with authenticated actions and durable provider-refresh jobs.

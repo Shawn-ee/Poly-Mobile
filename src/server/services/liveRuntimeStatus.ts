@@ -277,11 +277,13 @@ function buildOperatorNextActions(params: {
     recommendedFirstAction:
       nextProviderAction === "none"
         ? "cached_internal_testing"
-        : nextProviderAction === "refresh_provider_snapshots" ||
-            nextProviderAction === "refresh_provider_snapshots_or_keep_cached_test_mode" ||
-            nextProviderAction === "import_or_refresh_provider_snapshots"
+        : nextProviderAction === "refresh_provider_snapshots_or_keep_cached_test_mode"
+          ? "cached_internal_testing"
+          : nextProviderAction === "refresh_provider_snapshots" || nextProviderAction === "import_or_refresh_provider_snapshots"
           ? "refresh_mobile_live_odds"
           : "cached_internal_testing",
+    defaultNoQuotaAction: "cached_internal_testing",
+    liveOddsAction: mobileLifecycleStatus === "ready" ? "none" : "refresh_mobile_live_odds",
     nextProviderAction,
     actions,
     safety:

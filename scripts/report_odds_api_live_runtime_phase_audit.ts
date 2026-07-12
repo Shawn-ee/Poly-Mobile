@@ -266,6 +266,8 @@ async function main() {
         typeof getPath(localRuntimeStatusBody, ["providerSnapshots", "nextProviderAction"]) === "string" &&
         Number(getPath(localRuntimeStatusBody, ["providerSnapshots", "snapshotCount"]) ?? 0) > 0 &&
         typeof getPath(localRuntimeStatusBody, ["operatorNextActions", "recommendedFirstAction"]) === "string" &&
+        getPath(localRuntimeStatusBody, ["operatorNextActions", "defaultNoQuotaAction"]) === "cached_internal_testing" &&
+        typeof getPath(localRuntimeStatusBody, ["operatorNextActions", "liveOddsAction"]) === "string" &&
         Array.isArray(getPath(localRuntimeStatusBody, ["operatorNextActions", "actions"])) &&
         (getPath(localRuntimeStatusBody, ["operatorNextActions", "actions"]) as unknown[]).some(
           (action) =>
