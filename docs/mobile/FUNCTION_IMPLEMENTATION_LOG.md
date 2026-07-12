@@ -14260,3 +14260,24 @@ Known limitations:
 - Known limitations:
   - This is a local background process manager, not an installed OS service.
   - Live result ingestion still requires explicit `THE_ODDS_API_KEY` in the process environment plus quota caps.
+
+# Cycle ONEEVENTINTERNALRESULTPOLLERCONTROL - Internal Tester Result Poller Control
+
+- Feature/page worked on: backend local internal tester runtime control plane.
+- Frontend components touched: none. This is backend/runtime proof only and does not change mobile UI.
+- Important functions/services touched:
+  - `scripts/manage_holiwyn_internal_tester_runtime.ps1`
+  - `scripts/prove_holiwyn_internal_tester_result_poller_control.ps1`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `package.json` script `mobile:internal-tester-result-poller-control`
+- User/runtime interactions supported:
+  - Operator can use the local internal tester runtime manager to start backend/Expo as before and also start the dedicated result poller with `-StartResultPoller`.
+  - Runtime status now reports result-poller process state.
+  - Runtime stop delegates to the result-poller process manager so no proof process is left running.
+- State transitions:
+  - Backend/Expo ownership remains unchanged: external listeners are reused, and only manager-owned backend/Expo processes are stopped.
+  - Result poller start/status/stop is delegated to `manage_holiwyn_one_event_result_poller.ps1`.
+  - Default proof uses provider-shaped replay/no-quota result evidence and dry-run settlement scheduling only.
+- Known limitations:
+  - This is still a local control plane, not an installed OS service.
+  - Live result ingestion remains opt-in and quota-capped.

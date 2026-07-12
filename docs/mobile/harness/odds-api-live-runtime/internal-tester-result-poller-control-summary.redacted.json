@@ -1,0 +1,344 @@
+{
+    "generatedAt":  "2026-07-12T13:32:29.6739268Z",
+    "scope":  "holiwyn-internal-tester-result-poller-control",
+    "pass":  true,
+    "startedAt":  "2026-07-12T13:32:12.2943722Z",
+    "completedAt":  "2026-07-12T13:32:29.6749293Z",
+    "settings":  {
+                     "backendPort":  3002,
+                     "expoPort":  8081,
+                     "resultPollerIntervalSeconds":  1,
+                     "providerQuotaSpent":  false
+                 },
+    "runtimeTruth":  {
+                         "internalTesterRuntimeCanStartResultPoller":  true,
+                         "internalTesterRuntimeCanReportResultPoller":  true,
+                         "internalTesterRuntimeCanStopResultPoller":  true,
+                         "heartbeatAdvanced":  true,
+                         "providerQuotaUsed":  false,
+                         "activeTesterSettlementExecution":  false,
+                         "installedOsService":  false,
+                         "fakeTokenOnly":  true
+                     },
+    "proof":  {
+                  "startSummary":  {
+                                       "generatedAt":  "2026-07-12T13:32:19.2651308Z",
+                                       "pass":  true,
+                                       "action":  "start",
+                                       "operations":  [
+                                                          {
+                                                              "target":  "backend",
+                                                              "result":  "external_listener_reused",
+                                                              "exitCode":  null
+                                                          },
+                                                          {
+                                                              "target":  "expo",
+                                                              "result":  "external_listener_reused",
+                                                              "exitCode":  null
+                                                          },
+                                                          {
+                                                              "target":  "result-poller",
+                                                              "result":  "started_or_running",
+                                                              "exitCode":  0
+                                                          }
+                                                      ],
+                                       "readiness":  {
+                                                         "backendReady":  true,
+                                                         "expoReady":  true,
+                                                         "postgresReady":  true,
+                                                         "s23Connected":  true
+                                                     },
+                                       "backend":  {
+                                                       "portOwner":  {
+                                                                         "port":  3002,
+                                                                         "pid":  37208,
+                                                                         "processName":  "node"
+                                                                     },
+                                                       "ownedByManager":  false
+                                                   },
+                                       "expo":  {
+                                                    "portOwner":  {
+                                                                      "port":  8081,
+                                                                      "pid":  44952,
+                                                                      "processName":  "node"
+                                                                  },
+                                                    "ownedByManager":  false
+                                                },
+                                       "resultPoller":  {
+                                                            "startRequested":  true,
+                                                            "statusSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-poller-process-summary.redacted.json",
+                                                            "running":  true,
+                                                            "resultPollingMode":  "provider-shaped replay polling; no provider quota spent",
+                                                            "activeTesterSettlementExecution":  false
+                                                        },
+                                       "runtimeTruth":  {
+                                                            "localControlPlaneAvailable":  true,
+                                                            "backendStartStopAvailableWhenPortFree":  true,
+                                                            "expoStartStopAvailableWhenPortFree":  true,
+                                                            "supervisorBackgroundProcessAvailable":  true,
+                                                            "resultPollerBackgroundProcessAvailable":  true,
+                                                            "resultPollerBackgroundProcessRunning":  true,
+                                                            "stopsOnlyOwnedBackendExpoProcesses":  true,
+                                                            "installedOsService":  false,
+                                                            "fakeTokenOnly":  true,
+                                                            "approvedSettlementModeRequested":  false,
+                                                            "activeTesterSettlementExecution":  false
+                                                        }
+                                   },
+                  "statusSummary":  {
+                                        "generatedAt":  "2026-07-12T13:32:25.2076283Z",
+                                        "pass":  true,
+                                        "action":  "status",
+                                        "operations":  [
+
+                                                       ],
+                                        "readiness":  {
+                                                          "backendReady":  true,
+                                                          "expoReady":  true,
+                                                          "postgresReady":  true,
+                                                          "s23Connected":  true
+                                                      },
+                                        "backend":  {
+                                                        "portOwner":  {
+                                                                          "port":  3002,
+                                                                          "pid":  37208,
+                                                                          "processName":  "node"
+                                                                      },
+                                                        "ownedByManager":  false
+                                                    },
+                                        "expo":  {
+                                                     "portOwner":  {
+                                                                       "port":  8081,
+                                                                       "pid":  44952,
+                                                                       "processName":  "node"
+                                                                   },
+                                                     "ownedByManager":  false
+                                                 },
+                                        "resultPoller":  {
+                                                             "startRequested":  false,
+                                                             "statusSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-poller-process-summary.redacted.json",
+                                                             "running":  true,
+                                                             "resultPollingMode":  "provider-shaped replay polling; no provider quota spent",
+                                                             "activeTesterSettlementExecution":  false
+                                                         },
+                                        "runtimeTruth":  {
+                                                             "localControlPlaneAvailable":  true,
+                                                             "backendStartStopAvailableWhenPortFree":  true,
+                                                             "expoStartStopAvailableWhenPortFree":  true,
+                                                             "supervisorBackgroundProcessAvailable":  true,
+                                                             "resultPollerBackgroundProcessAvailable":  true,
+                                                             "resultPollerBackgroundProcessRunning":  true,
+                                                             "stopsOnlyOwnedBackendExpoProcesses":  true,
+                                                             "installedOsService":  false,
+                                                             "fakeTokenOnly":  true,
+                                                             "approvedSettlementModeRequested":  false,
+                                                             "activeTesterSettlementExecution":  false
+                                                         }
+                                    },
+                  "stopSummary":  {
+                                      "generatedAt":  "2026-07-12T13:32:29.6091188Z",
+                                      "pass":  true,
+                                      "action":  "stop",
+                                      "operations":  [
+                                                         {
+                                                             "target":  "supervisor",
+                                                             "result":  "{\r\n    \"generatedAt\":  \"2026-07-12T13:32:25.8915335Z\",\r\n    \"scope\":  \"holiwyn-one-event-live-supervisor-process\",\r\n    \"pass\":  true,\r\n    \"operation\":  {\r\n                      \"...[truncated]",
+                                                             "exitCode":  null
+                                                         },
+                                                         {
+                                                             "target":  "result-poller",
+                                                             "result":  "{\r\n    \"generatedAt\":  \"2026-07-12T13:32:27.7606271Z\",\r\n    \"scope\":  \"holiwyn-one-event-result-poller-process\",\r\n    \"pass\":  true,\r\n    \"operation\":  {\r\n                      \"ac...[truncated]",
+                                                             "exitCode":  null
+                                                         },
+                                                         {
+                                                             "target":  "expo",
+                                                             "result":  "not_owned",
+                                                             "exitCode":  null
+                                                         },
+                                                         {
+                                                             "target":  "backend",
+                                                             "result":  "not_owned",
+                                                             "exitCode":  null
+                                                         }
+                                                     ],
+                                      "readiness":  {
+                                                        "backendReady":  true,
+                                                        "expoReady":  true,
+                                                        "postgresReady":  true,
+                                                        "s23Connected":  true
+                                                    },
+                                      "backend":  {
+                                                      "portOwner":  {
+                                                                        "port":  3002,
+                                                                        "pid":  37208,
+                                                                        "processName":  "node"
+                                                                    },
+                                                      "ownedByManager":  false
+                                                  },
+                                      "expo":  {
+                                                   "portOwner":  {
+                                                                     "port":  8081,
+                                                                     "pid":  44952,
+                                                                     "processName":  "node"
+                                                                 },
+                                                   "ownedByManager":  false
+                                               },
+                                      "resultPoller":  {
+                                                           "startRequested":  false,
+                                                           "statusSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-poller-process-summary.redacted.json",
+                                                           "running":  false,
+                                                           "resultPollingMode":  "provider-shaped replay polling; no provider quota spent",
+                                                           "activeTesterSettlementExecution":  false
+                                                       },
+                                      "runtimeTruth":  {
+                                                           "localControlPlaneAvailable":  true,
+                                                           "backendStartStopAvailableWhenPortFree":  true,
+                                                           "expoStartStopAvailableWhenPortFree":  true,
+                                                           "supervisorBackgroundProcessAvailable":  true,
+                                                           "resultPollerBackgroundProcessAvailable":  true,
+                                                           "resultPollerBackgroundProcessRunning":  false,
+                                                           "stopsOnlyOwnedBackendExpoProcesses":  true,
+                                                           "installedOsService":  false,
+                                                           "fakeTokenOnly":  true,
+                                                           "approvedSettlementModeRequested":  false,
+                                                           "activeTesterSettlementExecution":  false
+                                                       }
+                                  },
+                  "heartbeatPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-poller-heartbeat.redacted.json",
+                  "heartbeatIterations":  2
+              },
+    "commands":  [
+                     {
+                         "label":  "pre-stop-internal-runtime",
+                         "command":  "npm run mobile:internal-tester-runtime -- -Action stop",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T13:32:12.3018774Z",
+                         "finishedAt":  "2026-07-12T13:32:15.5727834Z",
+                         "outputTail":  [
+                                            "    \"statePath\":  \".runtime/holiwyn-internal-tester-runtime/runtime-state.json\",",
+                                            "    \"logs\":  {",
+                                            "                 \"backendStdout\":  \".runtime/holiwyn-internal-tester-runtime/backend.out.log\",",
+                                            "                 \"backendStderr\":  \".runtime/holiwyn-internal-tester-runtime/backend.err.log\",",
+                                            "                 \"expoStdout\":  \".runtime/holiwyn-internal-tester-runtime/expo.out.log\",",
+                                            "                 \"expoStderr\":  \".runtime/holiwyn-internal-tester-runtime/expo.err.log\"",
+                                            "             },",
+                                            "    \"gaps\":  {",
+                                            "                 \"p0\":  [",
+                                            "",
+                                            "                        ],",
+                                            "                 \"p1\":  [",
+                                            "                            \"This is a local process control plane, not an installed OS service.\",",
+                                            "                            \"Official-result auto-execution still requires trusted operator confirmation.\"",
+                                            "                        ],",
+                                            "                 \"p2\":  [",
+                                            "                            \"Multi-event production process supervision remains future work.\"",
+                                            "                        ]",
+                                            "             }",
+                                            "}"
+                                        ]
+                     },
+                     {
+                         "label":  "start-internal-runtime-with-result-poller",
+                         "command":  "npm run mobile:internal-tester-runtime -- -Action start -StartResultPoller -ResultPollerIntervalSeconds 1 -BackendPort 3002 -ExpoPort 8081",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T13:32:15.5800339Z",
+                         "finishedAt":  "2026-07-12T13:32:19.3109368Z",
+                         "outputTail":  [
+                                            "    \"statePath\":  \".runtime/holiwyn-internal-tester-runtime/runtime-state.json\",",
+                                            "    \"logs\":  {",
+                                            "                 \"backendStdout\":  \".runtime/holiwyn-internal-tester-runtime/backend.out.log\",",
+                                            "                 \"backendStderr\":  \".runtime/holiwyn-internal-tester-runtime/backend.err.log\",",
+                                            "                 \"expoStdout\":  \".runtime/holiwyn-internal-tester-runtime/expo.out.log\",",
+                                            "                 \"expoStderr\":  \".runtime/holiwyn-internal-tester-runtime/expo.err.log\"",
+                                            "             },",
+                                            "    \"gaps\":  {",
+                                            "                 \"p0\":  [",
+                                            "",
+                                            "                        ],",
+                                            "                 \"p1\":  [",
+                                            "                            \"This is a local process control plane, not an installed OS service.\",",
+                                            "                            \"Official-result auto-execution still requires trusted operator confirmation.\"",
+                                            "                        ],",
+                                            "                 \"p2\":  [",
+                                            "                            \"Multi-event production process supervision remains future work.\"",
+                                            "                        ]",
+                                            "             }",
+                                            "}"
+                                        ]
+                     },
+                     {
+                         "label":  "status-internal-runtime-with-result-poller",
+                         "command":  "npm run mobile:internal-tester-runtime -- -Action status",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T13:32:21.3453592Z",
+                         "finishedAt":  "2026-07-12T13:32:25.2679392Z",
+                         "outputTail":  [
+                                            "    \"statePath\":  \".runtime/holiwyn-internal-tester-runtime/runtime-state.json\",",
+                                            "    \"logs\":  {",
+                                            "                 \"backendStdout\":  \".runtime/holiwyn-internal-tester-runtime/backend.out.log\",",
+                                            "                 \"backendStderr\":  \".runtime/holiwyn-internal-tester-runtime/backend.err.log\",",
+                                            "                 \"expoStdout\":  \".runtime/holiwyn-internal-tester-runtime/expo.out.log\",",
+                                            "                 \"expoStderr\":  \".runtime/holiwyn-internal-tester-runtime/expo.err.log\"",
+                                            "             },",
+                                            "    \"gaps\":  {",
+                                            "                 \"p0\":  [",
+                                            "",
+                                            "                        ],",
+                                            "                 \"p1\":  [",
+                                            "                            \"This is a local process control plane, not an installed OS service.\",",
+                                            "                            \"Official-result auto-execution still requires trusted operator confirmation.\"",
+                                            "                        ],",
+                                            "                 \"p2\":  [",
+                                            "                            \"Multi-event production process supervision remains future work.\"",
+                                            "                        ]",
+                                            "             }",
+                                            "}"
+                                        ]
+                     },
+                     {
+                         "label":  "stop-internal-runtime-with-result-poller",
+                         "command":  "npm run mobile:internal-tester-runtime -- -Action stop",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T13:32:25.2709479Z",
+                         "finishedAt":  "2026-07-12T13:32:29.6557880Z",
+                         "outputTail":  [
+                                            "    \"statePath\":  \".runtime/holiwyn-internal-tester-runtime/runtime-state.json\",",
+                                            "    \"logs\":  {",
+                                            "                 \"backendStdout\":  \".runtime/holiwyn-internal-tester-runtime/backend.out.log\",",
+                                            "                 \"backendStderr\":  \".runtime/holiwyn-internal-tester-runtime/backend.err.log\",",
+                                            "                 \"expoStdout\":  \".runtime/holiwyn-internal-tester-runtime/expo.out.log\",",
+                                            "                 \"expoStderr\":  \".runtime/holiwyn-internal-tester-runtime/expo.err.log\"",
+                                            "             },",
+                                            "    \"gaps\":  {",
+                                            "                 \"p0\":  [",
+                                            "",
+                                            "                        ],",
+                                            "                 \"p1\":  [",
+                                            "                            \"This is a local process control plane, not an installed OS service.\",",
+                                            "                            \"Official-result auto-execution still requires trusted operator confirmation.\"",
+                                            "                        ],",
+                                            "                 \"p2\":  [",
+                                            "                            \"Multi-event production process supervision remains future work.\"",
+                                            "                        ]",
+                                            "             }",
+                                            "}"
+                                        ]
+                     }
+                 ],
+    "gaps":  {
+                 "p0":  [
+
+                        ],
+                 "p1":  [
+                            "This proves local control-plane start/status/stop for the result poller, not an installed OS service.",
+                            "Live result ingestion remains explicit and quota-capped when enabled."
+                        ],
+                 "p2":  [
+                            "Multi-event result poller orchestration remains future work."
+                        ]
+             }
+}

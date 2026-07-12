@@ -1,10 +1,10 @@
 {
-    "generatedAt":  "2026-07-12T13:22:59.7216132Z",
+    "generatedAt":  "2026-07-12T13:32:52.1872708Z",
     "scope":  "holiwyn-one-event-result-poller-process",
     "pass":  true,
     "operation":  {
                       "action":  "status",
-                      "startedAt":  "2026-07-12T13:22:59.6793209Z",
+                      "startedAt":  "2026-07-12T13:32:52.1465303Z",
                       "force":  false,
                       "result":  "not_running"
                   },
@@ -14,12 +14,12 @@
                     "stderr":  ".runtime/one-event-result-poller/result-poller.err.log",
                     "before":  {
                                    "known":  true,
-                                   "pid":  40980,
+                                   "pid":  67520,
                                    "running":  false,
                                    "process":  null,
                                    "state":  {
-                                                 "pid":  40980,
-                                                 "startedAt":  "2026-07-12T13:22:35.7714976Z",
+                                                 "pid":  67520,
+                                                 "startedAt":  "2026-07-12T13:32:17.7491623Z",
                                                  "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0",
                                                  "eventSlug":  "odds-api-single-soccer-test",
                                                  "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
@@ -38,12 +38,12 @@
                                },
                     "after":  {
                                   "known":  true,
-                                  "pid":  40980,
+                                  "pid":  67520,
                                   "running":  false,
                                   "process":  null,
                                   "state":  {
-                                                "pid":  40980,
-                                                "startedAt":  "2026-07-12T13:22:35.7714976Z",
+                                                "pid":  67520,
+                                                "startedAt":  "2026-07-12T13:32:17.7491623Z",
                                                 "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0",
                                                 "eventSlug":  "odds-api-single-soccer-test",
                                                 "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",

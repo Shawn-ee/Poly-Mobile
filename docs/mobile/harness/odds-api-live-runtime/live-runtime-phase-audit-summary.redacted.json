@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T13:22:49.322Z",
+  "generatedAt": "2026-07-12T13:32:40.425Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T13:22:49.279Z"
+      "timestamp": "2026-07-12T13:32:40.390Z"
     },
     "error": null
   },
@@ -65,41 +65,42 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 6.27,
-    "onboarding": 2.64,
-    "readiness": 2.64,
-    "runtimeStatus": 1.38,
-    "runtimeLaunch": 0.6,
-    "supervisor": 0.6,
-    "supervisorProcess": 2.01,
-    "internalTesterRuntime": 2.01,
-    "localRuntimeTask": 1.76,
-    "localRuntimeTaskInstall": 1.58,
-    "localRuntimeStartup": 1.07,
-    "localRuntimeStartupInstall": 0.43,
-    "continuousSupervisor": 2.18,
-    "staleGuardProof": 3.87,
-    "staleGuardRun": 3.75,
-    "lifecycleControls": 2.64,
-    "lifecycleScheduler": 2.64,
-    "lifecycleSchedulerRun": 2.18,
-    "settlementReadiness": 2.64,
-    "settlementExecution": 2.35,
-    "resultSettlementExecution": 1.5,
-    "resultSettlementLiveBlocked": 1.5,
-    "manualSettlement": 2.64,
-    "resultIngestion": 0,
-    "resultPoller": 0.3,
+    "liveProof": 6.44,
+    "onboarding": 2.8,
+    "readiness": 2.81,
+    "runtimeStatus": 1.55,
+    "runtimeLaunch": 0.76,
+    "supervisor": 0.76,
+    "supervisorProcess": 0,
+    "internalTesterRuntime": 0,
+    "internalTesterResultPoller": 0,
+    "localRuntimeTask": 1.93,
+    "localRuntimeTaskInstall": 1.74,
+    "localRuntimeStartup": 1.23,
+    "localRuntimeStartupInstall": 0.59,
+    "continuousSupervisor": 2.35,
+    "staleGuardProof": 4.03,
+    "staleGuardRun": 3.91,
+    "lifecycleControls": 2.81,
+    "lifecycleScheduler": 2.81,
+    "lifecycleSchedulerRun": 2.35,
+    "settlementReadiness": 2.8,
+    "settlementExecution": 2.51,
+    "resultSettlementExecution": 1.67,
+    "resultSettlementLiveBlocked": 1.67,
+    "manualSettlement": 2.8,
+    "resultIngestion": 0.01,
+    "resultPoller": 0.46,
     "resultPollerProcess": 0,
-    "continuousResultPoller": 0,
+    "continuousResultPoller": 0.17,
     "resultSettlement": 0,
     "resultSettlementRun": 0,
-    "settlementPreflight": 1.27,
-    "settlementAuditEvent": 0.95,
-    "approvedAutoSettlement": 0.77,
-    "supervisorApprovedSettlement": 0.6,
-    "makerSeed": 2.19,
-    "s23Visible": 6.1
+    "settlementPreflight": 1.43,
+    "settlementAuditEvent": 1.11,
+    "approvedAutoSettlement": 0.94,
+    "supervisorApprovedSettlement": 0.76,
+    "makerSeed": 2.35,
+    "s23Visible": 6.26
   },
   "requirements": [
     {
@@ -327,6 +328,18 @@
       "notes": "This proves local operator visibility/control for internal testing. It reuses external backend/Expo listeners when present and only stops manager-owned backend/Expo processes."
     },
     {
+      "id": "internal-tester-result-poller-control",
+      "priority": "P0",
+      "requirement": "Local internal tester runtime manager can start, report, and stop the dedicated result poller without provider quota.",
+      "status": "complete",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/internal-tester-result-poller-control-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-result-poller-process-summary.redacted.json"
+      ],
+      "notes": "This folds the dedicated result poller into the local tester control plane. It remains a local process manager, not an installed OS service."
+    },
+    {
       "id": "startup-approved-settlement-profile",
       "priority": "P0",
       "requirement": "User Startup launcher proof includes the approved-settlement supervisor profile without spending provider quota or leaving a launcher installed.",
@@ -346,13 +359,14 @@
         "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-process-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/internal-tester-result-poller-control-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-install-uninstall-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-install-uninstall-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json"
       ],
-      "notes": "Repeated local supervisor cycles, process-tree stop support, an internal tester runtime manager, a dry-run Windows scheduled-task install plan, a safe scheduled-task permission audit, and a user-level Startup launcher install/uninstall proof are proven. Windows denied scheduled-task registration in the current process context, so no scheduled task remains installed. The Startup launcher can carry the approved-settlement supervisor profile at user logon, but it is not a production service."
+      "notes": "Repeated local supervisor cycles, process-tree stop support, an internal tester runtime manager, internal-tester control of the dedicated result poller, a dry-run Windows scheduled-task install plan, a safe scheduled-task permission audit, and a user-level Startup launcher install/uninstall proof are proven. Windows denied scheduled-task registration in the current process context, so no scheduled task remains installed. The Startup launcher can carry the approved-settlement supervisor profile at user logon, but it is not a production service."
     },
     {
       "id": "official-result-auto-settlement",
@@ -388,6 +402,6 @@
     ],
     "phaseCompleteForLocalInternalRuntime": true,
     "fullProductionRuntimeComplete": false,
-    "runtimeTruth": "Local one-event runtime is internally usable with cached/live-proofed provider data, fake-token trading, local internal tester runtime status/control, supervisor monitoring, managed background result polling, provider-shaped replay result ingestion, opt-in quota-capped live result ingestion controls, and trusted-result settlement dry-run scheduling. It is not a production unattended daemon and does not install unattended official result polling."
+    "runtimeTruth": "Local one-event runtime is internally usable with cached/live-proofed provider data, fake-token trading, local internal tester runtime status/control, supervisor monitoring, internal-tester managed result polling, provider-shaped replay result ingestion, opt-in quota-capped live result ingestion controls, and trusted-result settlement dry-run scheduling. It is not a production unattended daemon and does not install unattended official result polling."
   }
 }

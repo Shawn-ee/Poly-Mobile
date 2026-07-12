@@ -1,12 +1,27 @@
 {
-    "generatedAt":  "2026-07-12T11:22:08.3899447Z",
+    "generatedAt":  "2026-07-12T13:32:29.6091188Z",
     "scope":  "holiwyn-internal-tester-runtime-manager",
     "pass":  true,
-    "action":  "status",
-    "startedAt":  "2026-07-12T11:22:06.4400570Z",
-    "completedAt":  "2026-07-12T11:22:08.3919462Z",
+    "action":  "stop",
+    "startedAt":  "2026-07-12T13:32:25.6597773Z",
+    "completedAt":  "2026-07-12T13:32:29.6106291Z",
     "operations":  [
-
+                       {
+                           "target":  "supervisor",
+                           "result":  "{\r\n    \"generatedAt\":  \"2026-07-12T13:32:25.8915335Z\",\r\n    \"scope\":  \"holiwyn-one-event-live-supervisor-process\",\r\n    \"pass\":  true,\r\n    \"operation\":  {\r\n                      \"action\":  \"stop\",\r\n                      \"startedAt\":  \"2026-07-12T13:32:25.8475062Z\",\r\n                      \"force\":  false,\r\n                      \"result\":  \"not_running\"\r\n                  },\r\n    \"process\":  {\r\n                    \"statePath\":  \".runtime/one-event-live-supervisor/supervisor-process-state.json\",\r\n                    \"stdout\":  \".runtime/one-event-live-supervisor/supervisor.out.log\",\r\n                    \"stderr\":  \".runtime/one-event-live-supervisor/supervisor.err.log\",\r\n                    \"before\":  {\r\n                                   \"known\":  true,\r\n                                   \"pid\":  13140,\r\n                                   \"running\":  false,\r\n                                   \"process\":  null,\r\n                                   \"state\":  {\r\n                                                 \"pid\":  13140,\r\n                                                 \"startedAt\":  \"2026-07-12T10:14:04.9290100Z\",\r\n                                                 \"command\":  \"powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_live_supervisor.ps1 -BackendPort 3002 -IntervalSeconds 2 -Continuous -MaxIterations 0\",\r\n                                                 \"continuous\":  true,\r\n                                                 \"maxIterations\":  0,\r\n                                                 \"intervalSeconds\":  2,\r\n                                                 \"runProviderProof\":  false,\r\n                                                 \"runStaleGuard\":  false,\r\n                                                 \"enforceStaleGuard\":  false,\r\n                                                 \"providerProofEveryIterations\":  0,\r\n                                                 \"maxProviderProofRuns\":  0,\r\n                                                 \"stdout\":  \".runtime/one-event-live-supervisor/supervisor.out.log\",\r\n                                                 \"stderr\":  \".runtime/one-event-live-supervisor/supervisor.err.log\"\r\n                                             }\r\n                               },\r\n                    \"after\":  {\r\n                                  \"known\":  true,\r\n                                  \"pid\":  13140,\r\n                                  \"running\":  false,\r\n                                  \"process\":  null,\r\n                                  \"state\":  {\r\n                                                \"pid\":  13140,\r\n                                                \"startedAt\":  \"2026-07-12T10:14:04.9290100Z\",\r\n                                                \"command\":  \"powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_live_supervisor.ps1 -BackendPort 3002 -IntervalSeconds 2 -Continuous -MaxIterations 0\",\r\n                                                \"continuous\":  true,\r\n                                                \"maxIterations\":  0,\r\n                                                \"intervalSeconds\":  2,\r\n                                                \"runProviderProof\":  false,\r\n                                                \"runStaleGuard\":  false,\r\n                                                \"enforceStaleGuard\":  false,\r\n                                                \"providerProofEveryIterations\":  0,\r\n                                                \"maxProviderProofRuns\":  0,\r\n                                                \"stdout\":  \".runtime/one-event-live-supervisor/supervisor.out.log\",\r\n                                                \"stderr\":  \".runtime/one-event-live-supervisor/supervisor.err.log\"\r\n                                            }\r\n                              }\r\n                },\r\n    \"supervisor\":  {\r\n                       \"summaryPath\":  \"docs\\\\mobile\\\\harness\\\\odds-api-live-runtime\\\\one-event-live-supervisor-summary.redacted.json\",\r\n                       \"digest\":  {\r\n                                      \"generatedAt\":  \"2026-07-12T12:47:05.8616051Z\",\r\n                                      \"pass\":  true,\r\n                                      \"startedAt\":  \"2026-07-12T12:47:01.5365298Z\",\r\n                                      \"completedAt\":  \"2026-07-12T12:47:05.8616051Z\",\r\n                                      \"settings\":  {\r\n                                                       \"continuous\":  false,\r\n                                                       \"maxIterations\":  1,\r\n                                                       \"completedIterations\":  1,\r\n                                                       \"intervalSeconds\":  0,\r\n                                                       \"runProviderProof\":  false,\r\n                                                       \"providerProofRunsCompleted\":  0,\r\n                                                       \"providerProofEveryIterations\":  0,\r\n                                                       \"maxProviderProofRuns\":  0,\r\n                                                       \"dataHygieneEnabled\":  false,\r\n                                                       \"refreshIterationsPerProviderProof\":  0,\r\n                                                       \"maxCreditsPerProviderProof\":  0,\r\n                                                       \"maxCreditsAcrossProviderProofs\":  0,\r\n                                                       \"minRemaining\":  2,\r\n                                                       \"makerSeedEnabled\":  false,\r\n                                                       \"lifecycleSchedulerEnabled\":  false,\r\n                                                       \"staleGuardEnabled\":  false,\r\n                                                       \"staleGuardEnforced\":  false,\r\n                                                       \"resultIngestionEnabled\":  false,\r\n                                                       \"liveResultIngestionEnabled\":  false,\r\n                                                       \"liveResultIngestionRunsCompleted\":  0,\r\n                                                       \"resultIngestionEveryIterations\":  0,\r\n                                                       \"maxLiveResultIngestionRuns\":  0,\r\n                                                       \"maxCreditsPerResultIngestion\":  0,\r\n                                                       \"maxCreditsAcrossResultIngestion\":  0,\r\n                                                       \"resultSettlementEnabled\":  true,\r\n                                                       \"approvedResultSettlementEnabled\":  true,\r\n                                                       \"resultSettlementPath\":  \"docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json\",\r\n                                                       \"resultSettlementApprovalPath\":  \"docs/mobile/harness/odds-api-live-runtime/trusted-result-supervisor-approval.redacted.json\",\r\n                                                       \"cachedModeUsesQuota\":  false\r\n                                                   },\r\n                                      \"runtimeTruth\":  {\r\n                                                           \"backendContinuousWhileSupervisorRuns\":  true,\r\n                                                           \"providerRefreshContinuousWhileSupervisorRuns\":  false,\r\n                                                           \"providerRefreshQuotaCappedWhileSupervisorRuns\":  false,\r\n                                                           \"dataHygieneContinuousWhileSupervisorRuns\":  false,\r\n                                                           \"marketMakerRefreshContinuousWhileSupervisorRuns\":  false,\r\n                                                           \"lifecycleSchedulerContinuousWhileSupervisorRuns\":  false,\r\n                                                           \"staleGuardContinuousWhileSupervisorRuns\":  false,\r\n                                                           \"staleGuardMode\":  \"disabled\",\r\n                                                           \"resultIngestionContinuousWhileSupervisorRuns\":  false,\r\n                                                           \"resultIngestionMode\":  \"disabled\",\r\n                                                           \"liveResultIngestionContinuousWhileSupervisorRuns\":  false,\r\n                                                           \"liveResultIngestionQuotaCappedWhileSupervisorRuns\":  false,\r\n                                                           \"resultSettlementContinuousWhileSupervisorRuns\":  false,\r\n                                                           \"resultSettlementMode\":  \"approved trusted-result scheduler; waits until CLOSED before execution\",\r\n                                                           \"unattendedServiceInstalled\":  false,\r\n                                                           \"providerRefreshMode\":  \"cached provider proof verification; no provider quota spent\",\r\n                                                           \"marketMakerMode\":  \"not seeded by supervisor\",\r\n                                                           \"lifecycleSchedulerMode\":  \"not run by supervisor\",\r\n                                                           \"settlementMode\":  \"manual preview/resolve service plus approval-file trusted-result scheduler; waits until CLOSED before execution\"\r\n                                                       },\r\n                                      \"failure\":  null,\r\n                                      \"gapCounts\":  {\r\n                                                        \"p0\":  0,\r\n                                                        \"p1\":  2,\r\n                                                        \"p2\":  1\r\n                                                    }\r\n                                  }\r\n                   },\r\n    \"runtimeTruth\":  {\r\n                         \"backgroundProcessManagerAvailable\":  true,\r\n                         \"localBackgroundProcessRunning\":  false,\r\n                         \"installedOsService\":  false,\r\n                         \"providerRefreshMode\":  \"cached provider proof verification; no provider quota spent\",\r\n                         \"staleGuardMode\":  \"disabled\",\r\n                         \"resultIngestionMode\":  \"disabled\",\r\n                         \"resultSettlementMode\":  \"disabled\",\r\n                         \"fakeTokenOnly\":  true\r\n                     },\r\n    \"gaps\":  {\r\n                 \"p0\":  [\r\n\r\n                        ],\r\n                 \"p1\":  [\r\n                            \"This is a local background process manager, not an installed OS service.\",\r\n                            \"Provider-shaped replay ingestion and quota-capped live result ingestion are available, but installed unattended official-result polling and unconfirmed execution remain future work.\"\r\n                        ],\r\n                 \"p2\":  [\r\n                            \"Multi-event process supervision remains future work.\"\r\n                        ]\r\n             }\r\n}"
+                       },
+                       {
+                           "target":  "result-poller",
+                           "result":  "{\r\n    \"generatedAt\":  \"2026-07-12T13:32:27.7606271Z\",\r\n    \"scope\":  \"holiwyn-one-event-result-poller-process\",\r\n    \"pass\":  true,\r\n    \"operation\":  {\r\n                      \"action\":  \"stop\",\r\n                      \"startedAt\":  \"2026-07-12T13:32:26.4755189Z\",\r\n                      \"force\":  false,\r\n                      \"result\":  \"stopped\",\r\n                      \"pid\":  67520\r\n                  },\r\n    \"process\":  {\r\n                    \"statePath\":  \".runtime/one-event-result-poller/result-poller-process-state.json\",\r\n                    \"stdout\":  \".runtime/one-event-result-poller/result-poller.out.log\",\r\n                    \"stderr\":  \".runtime/one-event-result-poller/result-poller.err.log\",\r\n                    \"before\":  {\r\n                                   \"known\":  true,\r\n                                   \"pid\":  67520,\r\n                                   \"running\":  true,\r\n                                   \"process\":  {\r\n                                                   \"id\":  67520,\r\n                                                   \"processName\":  \"powershell\",\r\n                                                   \"startTime\":  \"2026-07-12T13:32:17.7419371Z\",\r\n                                                   \"hasExited\":  false\r\n                                               },\r\n                                   \"state\":  {\r\n                                                 \"pid\":  67520,\r\n                                                 \"startedAt\":  \"2026-07-12T13:32:17.7491623Z\",\r\n                                                 \"command\":  \"powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0\",\r\n                                                 \"eventSlug\":  \"odds-api-single-soccer-test\",\r\n                                                 \"resultPath\":  \"docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json\",\r\n                                                 \"continuous\":  true,\r\n                                                 \"maxIterations\":  0,\r\n                                                 \"intervalSeconds\":  1,\r\n                                                 \"runLiveResultIngestion\":  false,\r\n                                                 \"resultIngestionEveryIterations\":  0,\r\n                                                 \"maxLiveResultIngestionRuns\":  0,\r\n                                                 \"maxCreditsPerResultIngestion\":  0,\r\n                                                 \"runApprovedResultSettlement\":  false,\r\n                                                 \"resultSettlementApprovalPath\":  null,\r\n                                                 \"stdout\":  \".runtime/one-event-result-poller/result-poller.out.log\",\r\n                                                 \"stderr\":  \".runtime/one-event-result-poller/result-poller.err.log\"\r\n                                             }\r\n                               },\r\n                    \"after\":  {\r\n                                  \"known\":  true,\r\n                                  \"pid\":  67520,\r\n                                  \"running\":  false,\r\n                                  \"process\":  null,\r\n                                  \"state\":  {\r\n                                                \"pid\":  67520,\r\n                                                \"startedAt\":  \"2026-07-12T13:32:17.7491623Z\",\r\n                                                \"command\":  \"powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0\",\r\n                                                \"eventSlug\":  \"odds-api-single-soccer-test\",\r\n                                                \"resultPath\":  \"docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json\",\r\n                                                \"continuous\":  true,\r\n                                                \"maxIterations\":  0,\r\n                                                \"intervalSeconds\":  1,\r\n                                                \"runLiveResultIngestion\":  false,\r\n                                                \"resultIngestionEveryIterations\":  0,\r\n                                                \"maxLiveResultIngestionRuns\":  0,\r\n                                                \"maxCreditsPerResultIngestion\":  0,\r\n                                                \"runApprovedResultSettlement\":  false,\r\n                                                \"resultSettlementApprovalPath\":  null,\r\n                                                \"stdout\":  \".runtime/one-event-result-poller/result-poller.out.log\",\r\n                                                \"stderr\":  \".runtime/one-event-result-poller/result-poller.err.log\"\r\n                                            }\r\n                              }\r\n                },\r\n    \"poller\":  {\r\n                   \"summaryPath\":  \"docs\\\\mobile\\\\harness\\\\odds-api-live-runtime\\\\one-event-result-poller-summary.redacted.json\",\r\n                   \"digest\":  {\r\n                                  \"generatedAt\":  \"2026-07-12T13:04:58.9120684Z\",\r\n                                  \"pass\":  true,\r\n                                  \"startedAt\":  \"2026-07-12T13:04:52.9089302Z\",\r\n                                  \"completedAt\":  \"2026-07-12T13:04:58.9120684Z\",\r\n                                  \"eventSlug\":  \"odds-api-single-soccer-test\",\r\n                                  \"settings\":  {\r\n                                                   \"continuous\":  false,\r\n                                                   \"maxIterations\":  2,\r\n                                                   \"completedIterations\":  2,\r\n                                                   \"intervalSeconds\":  0,\r\n                                                   \"runLiveResultIngestion\":  false,\r\n                                                   \"liveResultIngestionRunsCompleted\":  0,\r\n                                                   \"resultIngestionEveryIterations\":  0,\r\n                                                   \"maxLiveResultIngestionRuns\":  0,\r\n                                                   \"maxCreditsPerResultIngestion\":  0,\r\n                                                   \"maxCreditsAcrossResultIngestion\":  0,\r\n                                                   \"resultPath\":  \"docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json\",\r\n                                                   \"resultSettlementApprovedMode\":  false,\r\n                                                   \"resultSettlementApprovalPath\":  null,\r\n                                                   \"defaultModeUsesQuota\":  false\r\n                                               },\r\n                                  \"runtimeTruth\":  {\r\n                                                       \"resultPollingRunnerAvailable\":  true,\r\n                                                       \"resultPollingContinuousWhileRunnerRuns\":  true,\r\n                                                       \"resultPollingMode\":  \"provider-shaped replay polling; no provider quota spent\",\r\n                                                       \"liveResultIngestionQuotaCappedWhileRunning\":  false,\r\n                                                       \"settlementSchedulerContinuousWhileRunnerRuns\":  true,\r\n                                                       \"settlementSchedulerMode\":  \"trusted result scheduler dry-run while poller runs\",\r\n                                                       \"activeTesterSettlementExecution\":  false,\r\n                                                       \"installedOsService\":  false,\r\n                                                       \"fakeTokenOnly\":  true\r\n                                                   },\r\n                                  \"gapCounts\":  {\r\n                                                    \"p0\":  0,\r\n                                                    \"p1\":  1,\r\n                                                    \"p2\":  1\r\n                                                }\r\n                              }\r\n               },\r\n    \"runtimeTruth\":  {\r\n                         \"backgroundProcessManagerAvailable\":  true,\r\n                         \"localBackgroundProcessRunning\":  false,\r\n                         \"installedOsService\":  false,\r\n                         \"resultPollingMode\":  \"provider-shaped replay polling; no provider quota spent\",\r\n                         \"resultSettlementMode\":  \"trusted result scheduler dry-run while poller runs\",\r\n                         \"activeTesterSettlementExecution\":  false,\r\n                         \"fakeTokenOnly\":  true\r\n                     },\r\n    \"gaps\":  {\r\n                 \"p0\":  [\r\n\r\n                        ],\r\n                 \"p1\":  [\r\n                            \"This is a local background process manager, not an installed OS service.\",\r\n                            \"Live official-result ingestion remains opt-in and quota-capped; unconfirmed active-event settlement execution remains disabled.\"\r\n                        ],\r\n                 \"p2\":  [\r\n                            \"Multi-event result queue supervision remains future work.\"\r\n                        ]\r\n             }\r\n}"
+                       },
+                       {
+                           "target":  "expo",
+                           "result":  "not_owned"
+                       },
+                       {
+                           "target":  "backend",
+                           "result":  "not_owned"
+                       }
                    ],
     "backend":  {
                     "baseUrl":  "http://127.0.0.1:3002",
@@ -16,7 +31,7 @@
                                                 "status":  "ok",
                                                 "db":  "connected",
                                                 "env":  "development",
-                                                "timestamp":  "2026-07-12T11:22:08.385Z"
+                                                "timestamp":  "2026-07-12T13:32:29.605Z"
                                             },
                                    "error":  null
                                },
@@ -55,12 +70,12 @@
                        "startRequested":  false,
                        "statusSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-live-supervisor-process-summary.redacted.json",
                        "processSummary":  {
-                                              "generatedAt":  "2026-07-12T11:22:07.8447545Z",
+                                              "generatedAt":  "2026-07-12T13:32:29.1473354Z",
                                               "scope":  "holiwyn-one-event-live-supervisor-process",
                                               "pass":  true,
                                               "operation":  {
                                                                 "action":  "status",
-                                                                "startedAt":  "2026-07-12T11:22:07.8007300Z",
+                                                                "startedAt":  "2026-07-12T13:32:29.1060583Z",
                                                                 "force":  false,
                                                                 "result":  "not_running"
                                                             },
@@ -114,29 +129,29 @@
                                               "supervisor":  {
                                                                  "summaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-live-supervisor-summary.redacted.json",
                                                                  "digest":  {
-                                                                                "generatedAt":  "2026-07-12T11:11:44.3525569Z",
+                                                                                "generatedAt":  "2026-07-12T12:47:05.8616051Z",
                                                                                 "pass":  true,
-                                                                                "startedAt":  "2026-07-12T11:11:29.0468733Z",
-                                                                                "completedAt":  "2026-07-12T11:11:44.3525569Z",
+                                                                                "startedAt":  "2026-07-12T12:47:01.5365298Z",
+                                                                                "completedAt":  "2026-07-12T12:47:05.8616051Z",
                                                                                 "settings":  {
                                                                                                  "continuous":  false,
-                                                                                                 "maxIterations":  2,
-                                                                                                 "completedIterations":  2,
-                                                                                                 "intervalSeconds":  1,
+                                                                                                 "maxIterations":  1,
+                                                                                                 "completedIterations":  1,
+                                                                                                 "intervalSeconds":  0,
                                                                                                  "runProviderProof":  false,
                                                                                                  "providerProofRunsCompleted":  0,
                                                                                                  "providerProofEveryIterations":  0,
                                                                                                  "maxProviderProofRuns":  0,
-                                                                                                 "dataHygieneEnabled":  true,
+                                                                                                 "dataHygieneEnabled":  false,
                                                                                                  "refreshIterationsPerProviderProof":  0,
                                                                                                  "maxCreditsPerProviderProof":  0,
                                                                                                  "maxCreditsAcrossProviderProofs":  0,
                                                                                                  "minRemaining":  2,
-                                                                                                 "makerSeedEnabled":  true,
-                                                                                                 "lifecycleSchedulerEnabled":  true,
+                                                                                                 "makerSeedEnabled":  false,
+                                                                                                 "lifecycleSchedulerEnabled":  false,
                                                                                                  "staleGuardEnabled":  false,
                                                                                                  "staleGuardEnforced":  false,
-                                                                                                 "resultIngestionEnabled":  true,
+                                                                                                 "resultIngestionEnabled":  false,
                                                                                                  "liveResultIngestionEnabled":  false,
                                                                                                  "liveResultIngestionRunsCompleted":  0,
                                                                                                  "resultIngestionEveryIterations":  0,
@@ -144,28 +159,31 @@
                                                                                                  "maxCreditsPerResultIngestion":  0,
                                                                                                  "maxCreditsAcrossResultIngestion":  0,
                                                                                                  "resultSettlementEnabled":  true,
+                                                                                                 "approvedResultSettlementEnabled":  true,
+                                                                                                 "resultSettlementPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+                                                                                                 "resultSettlementApprovalPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-supervisor-approval.redacted.json",
                                                                                                  "cachedModeUsesQuota":  false
                                                                                              },
                                                                                 "runtimeTruth":  {
                                                                                                      "backendContinuousWhileSupervisorRuns":  true,
                                                                                                      "providerRefreshContinuousWhileSupervisorRuns":  false,
                                                                                                      "providerRefreshQuotaCappedWhileSupervisorRuns":  false,
-                                                                                                     "dataHygieneContinuousWhileSupervisorRuns":  true,
-                                                                                                     "marketMakerRefreshContinuousWhileSupervisorRuns":  true,
-                                                                                                     "lifecycleSchedulerContinuousWhileSupervisorRuns":  true,
+                                                                                                     "dataHygieneContinuousWhileSupervisorRuns":  false,
+                                                                                                     "marketMakerRefreshContinuousWhileSupervisorRuns":  false,
+                                                                                                     "lifecycleSchedulerContinuousWhileSupervisorRuns":  false,
                                                                                                      "staleGuardContinuousWhileSupervisorRuns":  false,
                                                                                                      "staleGuardMode":  "disabled",
-                                                                                                     "resultIngestionContinuousWhileSupervisorRuns":  true,
-                                                                                                     "resultIngestionMode":  "provider-shaped result ingestion replay while supervisor runs; no provider quota spent",
+                                                                                                     "resultIngestionContinuousWhileSupervisorRuns":  false,
+                                                                                                     "resultIngestionMode":  "disabled",
                                                                                                      "liveResultIngestionContinuousWhileSupervisorRuns":  false,
                                                                                                      "liveResultIngestionQuotaCappedWhileSupervisorRuns":  false,
-                                                                                                     "resultSettlementContinuousWhileSupervisorRuns":  true,
-                                                                                                     "resultSettlementMode":  "trusted result scheduler dry-run while supervisor runs",
+                                                                                                     "resultSettlementContinuousWhileSupervisorRuns":  false,
+                                                                                                     "resultSettlementMode":  "approved trusted-result scheduler; waits until CLOSED before execution",
                                                                                                      "unattendedServiceInstalled":  false,
                                                                                                      "providerRefreshMode":  "cached provider proof verification; no provider quota spent",
-                                                                                                     "marketMakerMode":  "repeated local shifted maker reseed while supervisor runs",
-                                                                                                     "lifecycleSchedulerMode":  "safe real-time scheduler check each cycle; no proof time mutation",
-                                                                                                     "settlementMode":  "manual preview/resolve service plus trusted-result dry-run scheduler; unconfirmed automatic settlement execution not wired"
+                                                                                                     "marketMakerMode":  "not seeded by supervisor",
+                                                                                                     "lifecycleSchedulerMode":  "not run by supervisor",
+                                                                                                     "settlementMode":  "manual preview/resolve service plus approval-file trusted-result scheduler; waits until CLOSED before execution"
                                                                                                  },
                                                                                 "failure":  null,
                                                                                 "gapCounts":  {
@@ -221,6 +239,159 @@
                                                 ""
                                             ]
                    },
+    "resultPoller":  {
+                         "startRequested":  false,
+                         "statusSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-poller-process-summary.redacted.json",
+                         "processSummary":  {
+                                                "generatedAt":  "2026-07-12T13:32:29.3806159Z",
+                                                "scope":  "holiwyn-one-event-result-poller-process",
+                                                "pass":  true,
+                                                "operation":  {
+                                                                  "action":  "status",
+                                                                  "startedAt":  "2026-07-12T13:32:29.3419959Z",
+                                                                  "force":  false,
+                                                                  "result":  "not_running"
+                                                              },
+                                                "process":  {
+                                                                "statePath":  ".runtime/one-event-result-poller/result-poller-process-state.json",
+                                                                "stdout":  ".runtime/one-event-result-poller/result-poller.out.log",
+                                                                "stderr":  ".runtime/one-event-result-poller/result-poller.err.log",
+                                                                "before":  {
+                                                                               "known":  true,
+                                                                               "pid":  67520,
+                                                                               "running":  false,
+                                                                               "process":  null,
+                                                                               "state":  {
+                                                                                             "pid":  67520,
+                                                                                             "startedAt":  "2026-07-12T13:32:17.7491623Z",
+                                                                                             "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0",
+                                                                                             "eventSlug":  "odds-api-single-soccer-test",
+                                                                                             "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+                                                                                             "continuous":  true,
+                                                                                             "maxIterations":  0,
+                                                                                             "intervalSeconds":  1,
+                                                                                             "runLiveResultIngestion":  false,
+                                                                                             "resultIngestionEveryIterations":  0,
+                                                                                             "maxLiveResultIngestionRuns":  0,
+                                                                                             "maxCreditsPerResultIngestion":  0,
+                                                                                             "runApprovedResultSettlement":  false,
+                                                                                             "resultSettlementApprovalPath":  null,
+                                                                                             "stdout":  ".runtime/one-event-result-poller/result-poller.out.log",
+                                                                                             "stderr":  ".runtime/one-event-result-poller/result-poller.err.log"
+                                                                                         }
+                                                                           },
+                                                                "after":  {
+                                                                              "known":  true,
+                                                                              "pid":  67520,
+                                                                              "running":  false,
+                                                                              "process":  null,
+                                                                              "state":  {
+                                                                                            "pid":  67520,
+                                                                                            "startedAt":  "2026-07-12T13:32:17.7491623Z",
+                                                                                            "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0",
+                                                                                            "eventSlug":  "odds-api-single-soccer-test",
+                                                                                            "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+                                                                                            "continuous":  true,
+                                                                                            "maxIterations":  0,
+                                                                                            "intervalSeconds":  1,
+                                                                                            "runLiveResultIngestion":  false,
+                                                                                            "resultIngestionEveryIterations":  0,
+                                                                                            "maxLiveResultIngestionRuns":  0,
+                                                                                            "maxCreditsPerResultIngestion":  0,
+                                                                                            "runApprovedResultSettlement":  false,
+                                                                                            "resultSettlementApprovalPath":  null,
+                                                                                            "stdout":  ".runtime/one-event-result-poller/result-poller.out.log",
+                                                                                            "stderr":  ".runtime/one-event-result-poller/result-poller.err.log"
+                                                                                        }
+                                                                          }
+                                                            },
+                                                "poller":  {
+                                                               "summaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-poller-summary.redacted.json",
+                                                               "digest":  {
+                                                                              "generatedAt":  "2026-07-12T13:04:58.9120684Z",
+                                                                              "pass":  true,
+                                                                              "startedAt":  "2026-07-12T13:04:52.9089302Z",
+                                                                              "completedAt":  "2026-07-12T13:04:58.9120684Z",
+                                                                              "eventSlug":  "odds-api-single-soccer-test",
+                                                                              "settings":  {
+                                                                                               "continuous":  false,
+                                                                                               "maxIterations":  2,
+                                                                                               "completedIterations":  2,
+                                                                                               "intervalSeconds":  0,
+                                                                                               "runLiveResultIngestion":  false,
+                                                                                               "liveResultIngestionRunsCompleted":  0,
+                                                                                               "resultIngestionEveryIterations":  0,
+                                                                                               "maxLiveResultIngestionRuns":  0,
+                                                                                               "maxCreditsPerResultIngestion":  0,
+                                                                                               "maxCreditsAcrossResultIngestion":  0,
+                                                                                               "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+                                                                                               "resultSettlementApprovedMode":  false,
+                                                                                               "resultSettlementApprovalPath":  null,
+                                                                                               "defaultModeUsesQuota":  false
+                                                                                           },
+                                                                              "runtimeTruth":  {
+                                                                                                   "resultPollingRunnerAvailable":  true,
+                                                                                                   "resultPollingContinuousWhileRunnerRuns":  true,
+                                                                                                   "resultPollingMode":  "provider-shaped replay polling; no provider quota spent",
+                                                                                                   "liveResultIngestionQuotaCappedWhileRunning":  false,
+                                                                                                   "settlementSchedulerContinuousWhileRunnerRuns":  true,
+                                                                                                   "settlementSchedulerMode":  "trusted result scheduler dry-run while poller runs",
+                                                                                                   "activeTesterSettlementExecution":  false,
+                                                                                                   "installedOsService":  false,
+                                                                                                   "fakeTokenOnly":  true
+                                                                                               },
+                                                                              "gapCounts":  {
+                                                                                                "p0":  0,
+                                                                                                "p1":  1,
+                                                                                                "p2":  1
+                                                                                            }
+                                                                          }
+                                                           },
+                                                "runtimeTruth":  {
+                                                                     "backgroundProcessManagerAvailable":  true,
+                                                                     "localBackgroundProcessRunning":  false,
+                                                                     "installedOsService":  false,
+                                                                     "resultPollingMode":  "provider-shaped replay polling; no provider quota spent",
+                                                                     "resultSettlementMode":  "trusted result scheduler dry-run while poller runs",
+                                                                     "activeTesterSettlementExecution":  false,
+                                                                     "fakeTokenOnly":  true
+                                                                 },
+                                                "gaps":  {
+                                                             "p0":  [
+
+                                                                    ],
+                                                             "p1":  [
+                                                                        "This is a local background process manager, not an installed OS service.",
+                                                                        "Live official-result ingestion remains opt-in and quota-capped; unconfirmed active-event settlement execution remains disabled."
+                                                                    ],
+                                                             "p2":  [
+                                                                        "Multi-event result queue supervision remains future work."
+                                                                    ]
+                                                         }
+                                            },
+                         "statusOutputTail":  [
+                                                  "                         \"installedOsService\":  false,",
+                                                  "                         \"resultPollingMode\":  \"provider-shaped replay polling; no provider quota spent\",",
+                                                  "                         \"resultSettlementMode\":  \"trusted result scheduler dry-run while poller runs\",",
+                                                  "                         \"activeTesterSettlementExecution\":  false,",
+                                                  "                         \"fakeTokenOnly\":  true",
+                                                  "                     },",
+                                                  "    \"gaps\":  {",
+                                                  "                 \"p0\":  [",
+                                                  "",
+                                                  "                        ],",
+                                                  "                 \"p1\":  [",
+                                                  "                            \"This is a local background process manager, not an installed OS service.\",",
+                                                  "                            \"Live official-result ingestion remains opt-in and quota-capped; unconfirmed active-event settlement execution remains disabled.\"",
+                                                  "                        ],",
+                                                  "                 \"p2\":  [",
+                                                  "                            \"Multi-event result queue supervision remains future work.\"",
+                                                  "                        ]",
+                                                  "             }",
+                                                  "}",
+                                                  ""
+                                              ]
+                     },
     "readiness":  {
                       "waitRequested":  false,
                       "waitResult":  {
@@ -231,7 +402,7 @@
                                                                             "status":  "ok",
                                                                             "db":  "connected",
                                                                             "env":  "development",
-                                                                            "timestamp":  "2026-07-12T11:22:06.475Z"
+                                                                            "timestamp":  "2026-07-12T13:32:27.834Z"
                                                                         },
                                                                "error":  null
                                                            },
@@ -252,9 +423,13 @@
                          "backendStartStopAvailableWhenPortFree":  true,
                          "expoStartStopAvailableWhenPortFree":  true,
                          "supervisorBackgroundProcessAvailable":  true,
+                         "resultPollerBackgroundProcessAvailable":  true,
+                         "resultPollerBackgroundProcessRunning":  false,
                          "stopsOnlyOwnedBackendExpoProcesses":  true,
                          "installedOsService":  false,
-                         "fakeTokenOnly":  true
+                         "fakeTokenOnly":  true,
+                         "approvedSettlementModeRequested":  false,
+                         "activeTesterSettlementExecution":  false
                      },
     "statePath":  ".runtime/holiwyn-internal-tester-runtime/runtime-state.json",
     "logs":  {

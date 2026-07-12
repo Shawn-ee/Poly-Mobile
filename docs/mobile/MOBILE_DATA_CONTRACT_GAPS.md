@@ -10197,3 +10197,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: installed service ownership, durable official result records, multi-event result queue, and production approval storage remain P1/P2.
 - Temporary mock/static data: the proof uses the existing redacted provider-shaped score fixture and spends no provider quota. Live score mode is still explicit and quota-capped.
 - Future migration concern: `.runtime` process state is local operator state, not durable backend truth. Production official-result polling should persist provider result evidence, poll state, approvals, and audit records in backend storage.
+
+## Cycle ONEEVENTINTERNALRESULTPOLLERCONTROL - Internal Tester Result Poller Control
+
+- Closed or narrowed: the local internal tester runtime manager now includes dedicated result-poller status/control, so internal testers can launch and stop the official-result polling runner through the same local control plane used for backend, Expo, and supervisor status.
+- Route mismatch: none. No mobile API or backend HTTP route changed; this is local process orchestration around existing result-poller and settlement scheduler commands.
+- Fields Holiwyn still needs but backend/provider does not fully provide: installed service ownership, durable official-result records, durable approval records, multi-event result queue, and production operator UI remain P1/P2.
+- Temporary mock/static data: the proof uses existing redacted provider-shaped score evidence and spends no provider quota.
+- Future migration concern: process state remains local `.runtime` evidence. Production runtime should persist poller state/result evidence in backend storage and monitor health outside the developer shell.

@@ -15,6 +15,8 @@ const PATHS = {
   supervisorProcess: "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-process-summary.redacted.json",
   internalTesterRuntime:
     "docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json",
+  internalTesterResultPoller:
+    "docs/mobile/harness/odds-api-live-runtime/internal-tester-result-poller-control-summary.redacted.json",
   localRuntimeTask: "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-summary.redacted.json",
   localRuntimeTaskInstall:
     "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-install-uninstall-summary.redacted.json",
@@ -162,6 +164,7 @@ async function main() {
   const quotaRemaining = text(getPath(entries.liveProof, ["provider", "quota", "latest", "requestsRemaining"]));
   const supervisorTruth = getPath(entries.supervisor, ["runtimeTruth"]);
   const internalTesterTruth = getPath(entries.internalTesterRuntime, ["runtimeTruth"]);
+  const internalTesterResultPollerTruth = getPath(entries.internalTesterResultPoller, ["runtimeTruth"]);
   const continuousSupervisorTruth = getPath(entries.continuousSupervisor, ["runtimeTruth"]);
   const continuousResultPollerTruth = getPath(entries.continuousResultPoller, ["runtimeTruth"]);
   const runtimeStatusTruth = getPath(entries.runtimeStatus, ["modeTruth"]);
@@ -431,6 +434,23 @@ async function main() {
         "This proves local operator visibility/control for internal testing. It reuses external backend/Expo listeners when present and only stops manager-owned backend/Expo processes.",
     }),
     requirement({
+      id: "internal-tester-result-poller-control",
+      priority: "P0",
+      requirement:
+        "Local internal tester runtime manager can start, report, and stop the dedicated result poller without provider quota.",
+      achieved:
+        pass(entries.internalTesterResultPoller) &&
+        getPath(internalTesterResultPollerTruth, ["internalTesterRuntimeCanStartResultPoller"]) === true &&
+        getPath(internalTesterResultPollerTruth, ["internalTesterRuntimeCanReportResultPoller"]) === true &&
+        getPath(internalTesterResultPollerTruth, ["internalTesterRuntimeCanStopResultPoller"]) === true &&
+        getPath(internalTesterResultPollerTruth, ["heartbeatAdvanced"]) === true &&
+        getPath(internalTesterResultPollerTruth, ["providerQuotaUsed"]) === false &&
+        getPath(internalTesterResultPollerTruth, ["activeTesterSettlementExecution"]) === false,
+      evidence: [PATHS.internalTesterResultPoller, PATHS.internalTesterRuntime, PATHS.resultPollerProcess],
+      notes:
+        "This folds the dedicated result poller into the local tester control plane. It remains a local process manager, not an installed OS service.",
+    }),
+    requirement({
       id: "startup-approved-settlement-profile",
       priority: "P0",
       requirement:
@@ -455,6 +475,7 @@ async function main() {
         PATHS.supervisor,
         PATHS.supervisorProcess,
         PATHS.internalTesterRuntime,
+        PATHS.internalTesterResultPoller,
         PATHS.localRuntimeTask,
         PATHS.localRuntimeTaskInstall,
         PATHS.localRuntimeStartup,
@@ -462,7 +483,7 @@ async function main() {
         PATHS.continuousSupervisor,
       ],
       notes:
-        "Repeated local supervisor cycles, process-tree stop support, an internal tester runtime manager, a dry-run Windows scheduled-task install plan, a safe scheduled-task permission audit, and a user-level Startup launcher install/uninstall proof are proven. Windows denied scheduled-task registration in the current process context, so no scheduled task remains installed. The Startup launcher can carry the approved-settlement supervisor profile at user logon, but it is not a production service.",
+        "Repeated local supervisor cycles, process-tree stop support, an internal tester runtime manager, internal-tester control of the dedicated result poller, a dry-run Windows scheduled-task install plan, a safe scheduled-task permission audit, and a user-level Startup launcher install/uninstall proof are proven. Windows denied scheduled-task registration in the current process context, so no scheduled task remains installed. The Startup launcher can carry the approved-settlement supervisor profile at user logon, but it is not a production service.",
     }),
     requirement({
       id: "official-result-auto-settlement",
@@ -512,7 +533,7 @@ async function main() {
       phaseCompleteForLocalInternalRuntime: openP0.length === 0,
       fullProductionRuntimeComplete: false,
       runtimeTruth:
-        "Local one-event runtime is internally usable with cached/live-proofed provider data, fake-token trading, local internal tester runtime status/control, supervisor monitoring, managed background result polling, provider-shaped replay result ingestion, opt-in quota-capped live result ingestion controls, and trusted-result settlement dry-run scheduling. It is not a production unattended daemon and does not install unattended official result polling.",
+        "Local one-event runtime is internally usable with cached/live-proofed provider data, fake-token trading, local internal tester runtime status/control, supervisor monitoring, internal-tester managed result polling, provider-shaped replay result ingestion, opt-in quota-capped live result ingestion controls, and trusted-result settlement dry-run scheduling. It is not a production unattended daemon and does not install unattended official result polling.",
     },
   };
   await writeJson(outputPath, summary);

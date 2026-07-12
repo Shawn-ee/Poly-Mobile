@@ -4,6 +4,7 @@ param(
   [int]$BackendPort = 3002,
   [int]$ExpoPort = 8081,
   [switch]$StartSupervisor,
+  [switch]$StartResultPoller,
   [switch]$RunResultIngestion,
   [switch]$RunResultSettlement,
   [switch]$RunApprovedResultSettlement,
@@ -11,6 +12,7 @@ param(
   [string]$ResultSettlementApprovalPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-settlement-approval.redacted.json",
   [switch]$RunLiveResultIngestion,
   [switch]$RunProviderProof,
+  [int]$ResultPollerIntervalSeconds = 15,
   [switch]$Force,
   [switch]$WaitForReady,
   [int]$WaitSeconds = 45,
@@ -27,6 +29,7 @@ $BackendErrPath = Join-Path $RuntimeDir "backend.err.log"
 $ExpoOutPath = Join-Path $RuntimeDir "expo.out.log"
 $ExpoErrPath = Join-Path $RuntimeDir "expo.err.log"
 $SupervisorProcessSummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-live-supervisor-process-summary.redacted.json"
+$ResultPollerProcessSummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-result-poller-process-summary.redacted.json"
 $BackendBaseUrl = "http://127.0.0.1:$BackendPort"
 
 New-Item -ItemType Directory -Force -Path $RuntimeDir | Out-Null
@@ -209,6 +212,7 @@ $state = [ordered]@{
 
 if ($Action -eq "stop") {
   $operations.Add([ordered]@{ target = "supervisor"; result = (& powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_live_supervisor.ps1 -Action stop | Out-String).Trim() }) | Out-Null
+  $operations.Add([ordered]@{ target = "result-poller"; result = (& powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_result_poller.ps1 -Action stop | Out-String).Trim() }) | Out-Null
   $operations.Add([ordered]@{ target = "expo"; result = Stop-OwnedProcessTree $state.expo }) | Out-Null
   $operations.Add([ordered]@{ target = "backend"; result = Stop-OwnedProcessTree $state.backend }) | Out-Null
   $state.backend = $null
@@ -253,6 +257,22 @@ if ($Action -eq "stop") {
     $operations.Add([ordered]@{ target = "supervisor"; result = if ($LASTEXITCODE -eq 0) { "started_or_running" } else { "failed" }; exitCode = $LASTEXITCODE }) | Out-Null
     if ($LASTEXITCODE -ne 0) { throw "Supervisor start failed." }
   }
+
+  if ($StartResultPoller) {
+    $pollerArgs = @(
+      "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "scripts/manage_holiwyn_one_event_result_poller.ps1",
+      "-Action", "start", "-Continuous", "-MaxIterations", "0", "-IntervalSeconds", "$ResultPollerIntervalSeconds", "-Force"
+    )
+    if ($RunLiveResultIngestion) { $pollerArgs += "-RunLiveResultIngestion" }
+    if ($RunApprovedResultSettlement) {
+      $pollerArgs += "-RunApprovedResultSettlement"
+      $pollerArgs += "-ResultSettlementApprovalPath"
+      $pollerArgs += $ResultSettlementApprovalPath
+    }
+    & powershell @pollerArgs | Out-Null
+    $operations.Add([ordered]@{ target = "result-poller"; result = if ($LASTEXITCODE -eq 0) { "started_or_running" } else { "failed" }; exitCode = $LASTEXITCODE }) | Out-Null
+    if ($LASTEXITCODE -ne 0) { throw "Result poller start failed." }
+  }
 }
 
 if ($Action -ne "status") {
@@ -276,6 +296,8 @@ $backendOwnerAfter = Get-PortOwner $BackendPort
 $expoOwnerAfter = Get-PortOwner $ExpoPort
 $supervisorStatusText = (& powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_live_supervisor.ps1 -Action status | Out-String)
 $supervisorProcessSummary = Read-JsonFile (Resolve-RepoPath $SupervisorProcessSummaryPath)
+$resultPollerStatusText = (& powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_result_poller.ps1 -Action status | Out-String)
+$resultPollerProcessSummary = Read-JsonFile (Resolve-RepoPath $ResultPollerProcessSummaryPath)
 $docker = Get-DockerPostgresStatus
 $s23 = Get-S23Status
 $backendHealth = Test-HttpHealth $BackendBaseUrl
@@ -288,6 +310,9 @@ if (-not $docker.ok) { $p0.Add("postgres_not_healthy") | Out-Null }
 if (-not $expoOwnerAfter) { $p0.Add("expo_port_not_listening") | Out-Null }
 if ($StartSupervisor -and -not ($supervisorProcessSummary -and $supervisorProcessSummary.process.after.running -eq $true)) {
   $p0.Add("supervisor_not_running_after_start") | Out-Null
+}
+if ($StartResultPoller -and -not ($resultPollerProcessSummary -and $resultPollerProcessSummary.process.after.running -eq $true)) {
+  $p0.Add("result_poller_not_running_after_start") | Out-Null
 }
 
 $summary = [ordered]@{
@@ -319,6 +344,12 @@ $summary = [ordered]@{
     processSummary = $supervisorProcessSummary
     statusOutputTail = @($supervisorStatusText -split "`r?`n" | Select-Object -Last 20)
   }
+  resultPoller = [ordered]@{
+    startRequested = [bool]$StartResultPoller
+    statusSummaryPath = $ResultPollerProcessSummaryPath
+    processSummary = $resultPollerProcessSummary
+    statusOutputTail = @($resultPollerStatusText -split "`r?`n" | Select-Object -Last 20)
+  }
   readiness = [ordered]@{
     waitRequested = [bool]($WaitForReady -or $Action -eq "start")
     waitResult = $wait
@@ -332,6 +363,8 @@ $summary = [ordered]@{
     backendStartStopAvailableWhenPortFree = $true
     expoStartStopAvailableWhenPortFree = $true
     supervisorBackgroundProcessAvailable = $true
+    resultPollerBackgroundProcessAvailable = $true
+    resultPollerBackgroundProcessRunning = [bool]($resultPollerProcessSummary -and $resultPollerProcessSummary.process.after.running -eq $true)
     stopsOnlyOwnedBackendExpoProcesses = $true
     installedOsService = $false
     fakeTokenOnly = $true
