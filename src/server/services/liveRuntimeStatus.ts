@@ -600,7 +600,7 @@ function buildCurrentRuntimeState(params: {
   };
 }
 
-export async function getLocalLiveRuntimeStatus() {
+export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?: boolean } = {}) {
   const [
     completionAudit,
     runtimeStatus,
@@ -697,7 +697,7 @@ export async function getLocalLiveRuntimeStatus() {
     (getPath(phaseAudit, ["localResultReview", "body", "gaps", "p0"]) as unknown[]).length === 0;
   const ready =
     pass(completionAudit) &&
-    pass(phaseAudit) &&
+    (options.phaseAuditInProgress === true || pass(phaseAudit)) &&
     pass(watchdog) &&
     p0Gaps.length === 0 &&
     artifactFreshness.completionAuditFresh &&

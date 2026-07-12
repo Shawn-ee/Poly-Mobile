@@ -14779,3 +14779,15 @@ Known limitations:
 - API/data dependencies: composes existing completion/phase/watchdog proofs, selected-market provider snapshot freshness, supervisor/result-poller process-state checks, and existing local status route data. Phase and completion audits now require this current-runtime decision to be present with zero P0 gaps.
 - Proof needed: focused status Jest test, direct status route proof through phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this makes operator truth clearer, but it does not install an unattended service. If loops are stopped, the route can still report local capability ready while recommending the internal tester runtime start command.
+
+## Cycle CURRENTRUNTIMEWARMSTATEPROOF - Warm No-Quota Runtime Proof
+
+- Feature/page worked on: backend local internal runtime proof harness.
+- Frontend components touched: none.
+- Important functions/services touched: added `scripts/prove_holiwyn_current_runtime_state.js`, updated `package.json`, updated `scripts/report_odds_api_live_runtime_phase_audit.ts`, updated `scripts/report_holiwyn_live_runtime_completion_audit.ts`, and fixed `scripts/manage_holiwyn_internal_tester_runtime.ps1` stop semantics so stop does not fail because manager-owned backend/Expo are intentionally down after cleanup.
+- User/runtime interactions supported: local tools can run `npm run mobile:current-runtime-state-proof` to start the internal tester runtime, verify `GET /api/internal/live-runtime/status` reports `currentRuntimeState.mode=warm_no_quota_runtime` with supervisor and result-poller loops running, then stop manager-owned loops/processes.
+- State transitions: starts and stops local backend/Expo/supervisor/result-poller processes only for proof. It does not call The Odds API, spend provider quota, place user orders, mutate market lifecycle, approve settlement, or execute active-event settlement.
+- API/data dependencies: reads `/api/internal/live-runtime/status`, local `.runtime` process-state files through that route, and writes `docs/mobile/harness/odds-api-live-runtime/current-runtime-state-proof-summary.redacted.json`. The proof uses existing replay/trusted-result artifacts and no provider secret.
+- Harness note: the phase audit now calls `/api/internal/live-runtime/status?phaseAuditInProgress=1` so it can verify live status truth while regenerating the phase artifact; the normal status route remains strict and still depends on the latest completed phase audit.
+- Proof: `npm run mobile:current-runtime-state-proof` passed with `warmNoQuotaRuntimeObserved=true`, `allLoopsRunningObserved=true`, `providerQuotaUsed=false`, and `stopsLoopsAfterProof=true`.
+- Known limitations: mobile-visible provider snapshots remain stale in no-quota cached mode, so explicit quota-capped live odds refresh remains P1 when fresh phone-visible odds are needed. This is still a local proof harness, not an installed OS service.

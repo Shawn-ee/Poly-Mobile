@@ -1,0 +1,284 @@
+{
+  "generatedAt": "2026-07-12T20:17:51.830Z",
+  "scope": "holiwyn-current-runtime-state-proof",
+  "pass": true,
+  "startedAt": "2026-07-12T20:17:30.135Z",
+  "completedAt": "2026-07-12T20:17:51.830Z",
+  "settings": {
+    "backendPort": 3002,
+    "expoPort": 8081,
+    "resultPollerIntervalSeconds": 1,
+    "waitSeconds": 45,
+    "providerQuotaSpent": false
+  },
+  "runtimeTruth": {
+    "warmNoQuotaRuntimeObserved": true,
+    "allLoopsRunningObserved": true,
+    "localCapabilityReadyWhileRunning": true,
+    "quotaSpendingLoopRunning": false,
+    "testerReadyRightNow": false,
+    "providerSnapshotFresh": false,
+    "mobileOddsLiveFresh": false,
+    "stopsLoopsAfterProof": true,
+    "providerQuotaUsed": false,
+    "installedOsService": false,
+    "activeTesterSettlementExecution": false
+  },
+  "currentRuntimeState": {
+    "checked": true,
+    "mode": "warm_no_quota_runtime",
+    "localCapabilityReady": true,
+    "warmNoQuotaRuntime": true,
+    "allLoopsRunning": true,
+    "anyLoopRunning": true,
+    "supervisorRunning": true,
+    "resultPollerRunning": true,
+    "quotaSpendingLoopRunning": false,
+    "backendProofFresh": true,
+    "providerSnapshotFresh": false,
+    "testerReadyRightNow": false,
+    "p0": [],
+    "p1": [
+      "mobile_provider_snapshot_not_fresh"
+    ],
+    "nextAction": "keep_cached_testing_or_refresh_live_odds",
+    "note": "This separates proven local capability from current process warmth. Ready status can be true while loops are stopped; testerReadyRightNow requires both local loops running without provider quota and fresh mobile-visible provider snapshots."
+  },
+  "managedProcesses": {
+    "supervisor": {
+      "kind": "supervisor",
+      "checked": true,
+      "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
+      "known": true,
+      "pid": 60248,
+      "running": true,
+      "startedAt": "2026-07-12T20:17:39.0101481Z",
+      "continuous": true,
+      "maxIterations": 0,
+      "intervalSeconds": 15,
+      "usesProviderQuota": false,
+      "modes": {
+        "providerProof": false,
+        "staleGuard": false,
+        "staleGuardEnforced": false,
+        "liveResultIngestion": false,
+        "approvedResultSettlement": true
+      }
+    },
+    "resultPoller": {
+      "kind": "result-poller",
+      "checked": true,
+      "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
+      "known": true,
+      "pid": 31012,
+      "running": true,
+      "startedAt": "2026-07-12T20:17:39.3243694Z",
+      "continuous": true,
+      "maxIterations": 0,
+      "intervalSeconds": 1,
+      "usesProviderQuota": false,
+      "modes": {
+        "liveResultIngestion": false,
+        "approvedResultSettlement": true
+      }
+    },
+    "anyLoopRunning": true,
+    "quotaSpendingLoopRunning": false,
+    "note": "Read-only live process check from local .runtime state and OS pid existence. Ready status is based on proven local capability and fresh data, not on requiring background loops to be running right now."
+  },
+  "proof": {
+    "startSummary": {
+      "generatedAt": "2026-07-12T20:17:37.1427174Z",
+      "pass": true,
+      "action": "stop",
+      "readiness": {
+        "backendReady": false,
+        "expoReady": false,
+        "postgresReady": true,
+        "s23Connected": false
+      },
+      "supervisorRunning": false,
+      "resultPollerRunning": false,
+      "runtimeTruth": {
+        "localControlPlaneAvailable": true,
+        "backendStartStopAvailableWhenPortFree": true,
+        "expoStartStopAvailableWhenPortFree": true,
+        "supervisorBackgroundProcessAvailable": true,
+        "resultPollerBackgroundProcessAvailable": true,
+        "resultPollerBackgroundProcessRunning": false,
+        "stopsOnlyOwnedBackendExpoProcesses": true,
+        "installedOsService": false,
+        "fakeTokenOnly": true,
+        "approvedSettlementModeRequested": false,
+        "activeTesterSettlementExecution": false
+      }
+    },
+    "stopSummary": {
+      "generatedAt": "2026-07-12T20:17:51.7727700Z",
+      "pass": true,
+      "action": "stop",
+      "readiness": {
+        "backendReady": false,
+        "expoReady": false,
+        "postgresReady": true,
+        "s23Connected": false
+      },
+      "supervisorRunning": false,
+      "resultPollerRunning": false,
+      "runtimeTruth": {
+        "localControlPlaneAvailable": true,
+        "backendStartStopAvailableWhenPortFree": true,
+        "expoStartStopAvailableWhenPortFree": true,
+        "supervisorBackgroundProcessAvailable": true,
+        "resultPollerBackgroundProcessAvailable": true,
+        "resultPollerBackgroundProcessRunning": false,
+        "stopsOnlyOwnedBackendExpoProcesses": true,
+        "installedOsService": false,
+        "fakeTokenOnly": true,
+        "approvedSettlementModeRequested": false,
+        "activeTesterSettlementExecution": false
+      }
+    },
+    "statusUrl": "http://127.0.0.1:3002/api/internal/live-runtime/status"
+  },
+  "commands": [
+    {
+      "label": "pre-stop-internal-runtime",
+      "args": [
+        "-Action",
+        "stop"
+      ],
+      "exitCode": 0,
+      "pass": true,
+      "signal": null,
+      "startedAt": "2026-07-12T20:17:30.135Z",
+      "finishedAt": "2026-07-12T20:17:37.175Z",
+      "stdout": ".runtime/current-runtime-state-proof/pre-stop-internal-runtime.out.log",
+      "stderr": ".runtime/current-runtime-state-proof/pre-stop-internal-runtime.err.log",
+      "stdoutTail": [
+        "                         \"backendStartStopAvailableWhenPortFree\":  true,",
+        "                         \"expoStartStopAvailableWhenPortFree\":  true,",
+        "                         \"supervisorBackgroundProcessAvailable\":  true,",
+        "                         \"resultPollerBackgroundProcessAvailable\":  true,",
+        "                         \"resultPollerBackgroundProcessRunning\":  false,",
+        "                         \"stopsOnlyOwnedBackendExpoProcesses\":  true,",
+        "                         \"installedOsService\":  false,",
+        "                         \"fakeTokenOnly\":  true,",
+        "                         \"approvedSettlementModeRequested\":  false,",
+        "                         \"activeTesterSettlementExecution\":  false",
+        "                     },",
+        "    \"statePath\":  \".runtime/holiwyn-internal-tester-runtime/runtime-state.json\",",
+        "    \"logs\":  {",
+        "                 \"backendStdout\":  \".runtime/holiwyn-internal-tester-runtime/backend.out.log\",",
+        "                 \"backendStderr\":  \".runtime/holiwyn-internal-tester-runtime/backend.err.log\",",
+        "                 \"expoStdout\":  \".runtime/holiwyn-internal-tester-runtime/expo.out.log\",",
+        "                 \"expoStderr\":  \".runtime/holiwyn-internal-tester-runtime/expo.err.log\"",
+        "             },",
+        "    \"gaps\":  {",
+        "                 \"p0\":  [",
+        "                        ],",
+        "                 \"p1\":  [",
+        "                            \"This is a local process control plane, not an installed OS service.\",",
+        "                            \"Official-result auto-execution still requires trusted operator confirmation.\"",
+        "                        ],",
+        "                 \"p2\":  [",
+        "                            \"Multi-event production process supervision remains future work.\"",
+        "                        ]",
+        "             }",
+        "}"
+      ],
+      "stderrTail": []
+    },
+    {
+      "label": "start-warm-no-quota-runtime",
+      "args": [
+        "-Action",
+        "start",
+        "-BackendPort",
+        "3002",
+        "-ExpoPort",
+        "8081",
+        "-StartSupervisor",
+        "-StartResultPoller",
+        "-RunResultIngestion",
+        "-RunResultSettlement",
+        "-RunApprovedResultSettlement",
+        "-ResultPollerIntervalSeconds",
+        "1",
+        "-WaitForReady",
+        "-WaitSeconds",
+        "45",
+        "-SummaryPath",
+        "docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json"
+      ],
+      "pid": 60552,
+      "background": true,
+      "startedAt": "2026-07-12T20:17:37.183Z",
+      "stdout": ".runtime/current-runtime-state-proof/start-warm-no-quota-runtime.out.log",
+      "stderr": ".runtime/current-runtime-state-proof/start-warm-no-quota-runtime.err.log"
+    },
+    {
+      "label": "stop-warm-no-quota-runtime",
+      "args": [
+        "-Action",
+        "stop",
+        "-BackendPort",
+        "3002",
+        "-ExpoPort",
+        "8081",
+        "-SummaryPath",
+        "docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json"
+      ],
+      "exitCode": 0,
+      "pass": true,
+      "signal": null,
+      "startedAt": "2026-07-12T20:17:41.627Z",
+      "finishedAt": "2026-07-12T20:17:51.824Z",
+      "stdout": ".runtime/current-runtime-state-proof/stop-warm-no-quota-runtime.out.log",
+      "stderr": ".runtime/current-runtime-state-proof/stop-warm-no-quota-runtime.err.log",
+      "stdoutTail": [
+        "                         \"backendStartStopAvailableWhenPortFree\":  true,",
+        "                         \"expoStartStopAvailableWhenPortFree\":  true,",
+        "                         \"supervisorBackgroundProcessAvailable\":  true,",
+        "                         \"resultPollerBackgroundProcessAvailable\":  true,",
+        "                         \"resultPollerBackgroundProcessRunning\":  false,",
+        "                         \"stopsOnlyOwnedBackendExpoProcesses\":  true,",
+        "                         \"installedOsService\":  false,",
+        "                         \"fakeTokenOnly\":  true,",
+        "                         \"approvedSettlementModeRequested\":  false,",
+        "                         \"activeTesterSettlementExecution\":  false",
+        "                     },",
+        "    \"statePath\":  \".runtime/holiwyn-internal-tester-runtime/runtime-state.json\",",
+        "    \"logs\":  {",
+        "                 \"backendStdout\":  \".runtime/holiwyn-internal-tester-runtime/backend.out.log\",",
+        "                 \"backendStderr\":  \".runtime/holiwyn-internal-tester-runtime/backend.err.log\",",
+        "                 \"expoStdout\":  \".runtime/holiwyn-internal-tester-runtime/expo.out.log\",",
+        "                 \"expoStderr\":  \".runtime/holiwyn-internal-tester-runtime/expo.err.log\"",
+        "             },",
+        "    \"gaps\":  {",
+        "                 \"p0\":  [",
+        "                        ],",
+        "                 \"p1\":  [",
+        "                            \"This is a local process control plane, not an installed OS service.\",",
+        "                            \"Official-result auto-execution still requires trusted operator confirmation.\"",
+        "                        ],",
+        "                 \"p2\":  [",
+        "                            \"Multi-event production process supervision remains future work.\"",
+        "                        ]",
+        "             }",
+        "}"
+      ],
+      "stderrTail": []
+    }
+  ],
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "Mobile-visible provider snapshots may still be stale in no-quota mode; live odds refresh remains explicit and quota-capped.",
+      "This proves a local warm runtime, not an installed OS service."
+    ],
+    "p2": [
+      "Multi-event warm-runtime orchestration remains future work."
+    ]
+  }
+}

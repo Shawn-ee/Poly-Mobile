@@ -19,6 +19,8 @@ const PATHS = {
     "docs/mobile/harness/odds-api-live-runtime/internal-tester-result-poller-control-summary.redacted.json",
   internalTesterWatchdog:
     "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
+  currentRuntimeStateProof:
+    "docs/mobile/harness/odds-api-live-runtime/current-runtime-state-proof-summary.redacted.json",
   localRuntimeTask: "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-summary.redacted.json",
   localRuntimeTaskInstall:
     "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-install-uninstall-summary.redacted.json",
@@ -177,7 +179,7 @@ async function main() {
   const quote = selectedMarketId
     ? await fetchJson(`${baseUrl}/api/markets/${encodeURIComponent(selectedMarketId)}/quote`)
     : null;
-  const localRuntimeStatus = await fetchJson(`${baseUrl}/api/internal/live-runtime/status`);
+  const localRuntimeStatus = await fetchJson(`${baseUrl}/api/internal/live-runtime/status?phaseAuditInProgress=1`);
   const localRuntimeStatusBody =
     localRuntimeStatus.body && typeof localRuntimeStatus.body === "object"
       ? (localRuntimeStatus.body as JsonObject)
@@ -349,7 +351,7 @@ async function main() {
         workerOwnedRunCount >= 2 &&
         Array.isArray(getPath(localRuntimeStatusBody, ["gaps", "p0"])) &&
         (getPath(localRuntimeStatusBody, ["gaps", "p0"]) as unknown[]).length === 0,
-      evidence: [`${baseUrl}/api/internal/live-runtime/status`],
+      evidence: [`${baseUrl}/api/internal/live-runtime/status?phaseAuditInProgress=1`],
       notes:
         "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, durable ProviderRefreshRun evidence, durable MarketMakerQuoteRun evidence, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, latest-run-vs-proven-capability separation, current warm-runtime decisioning, read-only supervisor/result-poller process state, durable RuntimeServiceHeartbeat rows, worker-owned RuntimeServiceRun rows, and preserved worker-owned metadata. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
     }),
@@ -780,6 +782,28 @@ async function main() {
       ],
       notes:
         "This adds the local watchdog proof to the authoritative phase gate. S23 reachability is still verified by mobile proof artifacts; the watchdog itself gates backend/Expo/Postgres and runtime loop health.",
+    }),
+    requirement({
+      id: "current-runtime-warm-state",
+      priority: "P0",
+      requirement:
+        "Local runtime status is proven while supervisor and result-poller loops are actually running in no-quota warm mode, then cleaned up.",
+      achieved:
+        pass(entries.currentRuntimeStateProof) &&
+        getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "warmNoQuotaRuntimeObserved"]) === true &&
+        getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "allLoopsRunningObserved"]) === true &&
+        getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "localCapabilityReadyWhileRunning"]) === true &&
+        getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "quotaSpendingLoopRunning"]) === false &&
+        getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "providerQuotaUsed"]) === false &&
+        getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "activeTesterSettlementExecution"]) === false &&
+        getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "stopsLoopsAfterProof"]) === true &&
+        getPath(entries.currentRuntimeStateProof, ["currentRuntimeState", "mode"]) === "warm_no_quota_runtime" &&
+        getPath(entries.currentRuntimeStateProof, ["currentRuntimeState", "allLoopsRunning"]) === true &&
+        Array.isArray(getPath(entries.currentRuntimeStateProof, ["gaps", "p0"])) &&
+        (getPath(entries.currentRuntimeStateProof, ["gaps", "p0"]) as unknown[]).length === 0,
+      evidence: [PATHS.currentRuntimeStateProof, `${baseUrl}/api/internal/live-runtime/status`],
+      notes:
+        "This proves the new currentRuntimeState field against a real warm local runtime, not only a stopped-loop status snapshot. Mobile-visible odds may still require explicit live provider refresh when snapshots are stale.",
     }),
     requirement({
       id: "scheduled-task-approved-settlement-profile",

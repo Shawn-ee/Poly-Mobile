@@ -305,14 +305,23 @@ $backendOwnedRunning = Test-ProcessRunning $state "backend"
 $expoOwnedRunning = Test-ProcessRunning $state "expo"
 
 $p0 = New-Object System.Collections.Generic.List[object]
-if (-not $backendHealth.ok) { $p0.Add("backend_health_failed") | Out-Null }
-if (-not $docker.ok) { $p0.Add("postgres_not_healthy") | Out-Null }
-if (-not $expoOwnerAfter) { $p0.Add("expo_port_not_listening") | Out-Null }
-if ($StartSupervisor -and -not ($supervisorProcessSummary -and $supervisorProcessSummary.process.after.running -eq $true)) {
-  $p0.Add("supervisor_not_running_after_start") | Out-Null
-}
-if ($StartResultPoller -and -not ($resultPollerProcessSummary -and $resultPollerProcessSummary.process.after.running -eq $true)) {
-  $p0.Add("result_poller_not_running_after_start") | Out-Null
+if ($Action -eq "stop") {
+  if ($supervisorProcessSummary -and $supervisorProcessSummary.process.after.running -eq $true) {
+    $p0.Add("supervisor_still_running_after_stop") | Out-Null
+  }
+  if ($resultPollerProcessSummary -and $resultPollerProcessSummary.process.after.running -eq $true) {
+    $p0.Add("result_poller_still_running_after_stop") | Out-Null
+  }
+} else {
+  if (-not $backendHealth.ok) { $p0.Add("backend_health_failed") | Out-Null }
+  if (-not $docker.ok) { $p0.Add("postgres_not_healthy") | Out-Null }
+  if (-not $expoOwnerAfter) { $p0.Add("expo_port_not_listening") | Out-Null }
+  if ($StartSupervisor -and -not ($supervisorProcessSummary -and $supervisorProcessSummary.process.after.running -eq $true)) {
+    $p0.Add("supervisor_not_running_after_start") | Out-Null
+  }
+  if ($StartResultPoller -and -not ($resultPollerProcessSummary -and $resultPollerProcessSummary.process.after.running -eq $true)) {
+    $p0.Add("result_poller_not_running_after_start") | Out-Null
+  }
 }
 
 $summary = [ordered]@{

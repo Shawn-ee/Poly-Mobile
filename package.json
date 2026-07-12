@@ -174,6 +174,7 @@
     "mobile:internal-tester-runtime": "powershell -ExecutionPolicy Bypass -File scripts/manage_holiwyn_internal_tester_runtime.ps1",
     "mobile:internal-tester-watchdog": "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_internal_tester_watchdog.ps1",
     "mobile:internal-tester-watchdog-proof": "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_internal_tester_watchdog.ps1 -MaxIterations 1 -IntervalSeconds 0 -RequireSupervisor -RequireResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -StopLoopProcessesAfterRun -SkipSleep",
+    "mobile:current-runtime-state-proof": "node scripts/prove_holiwyn_current_runtime_state.js",
     "mobile:internal-tester-result-poller-control": "powershell -ExecutionPolicy Bypass -File scripts/prove_holiwyn_internal_tester_result_poller_control.ps1",
     "mobile:local-runtime-task": "powershell -ExecutionPolicy Bypass -File scripts/manage_holiwyn_local_runtime_task.ps1",
     "mobile:local-runtime-task:install-proof": "powershell -ExecutionPolicy Bypass -File scripts/prove_holiwyn_local_runtime_task_install_uninstall.ps1",

@@ -13,6 +13,8 @@ const PATHS = {
     "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
   internalTesterWatchdog:
     "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
+  currentRuntimeStateProof:
+    "docs/mobile/harness/odds-api-live-runtime/current-runtime-state-proof-summary.redacted.json",
   staleGuardProof: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json",
   staleGuardRun: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-run-summary.redacted.json",
   lifecycleMatrix: "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-matrix-summary.redacted.json",
@@ -223,6 +225,15 @@ async function main() {
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "currentRuntimeState", "quotaSpendingLoopRunning"]) === false &&
       Array.isArray(getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "currentRuntimeState", "p0"])) &&
       (getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "currentRuntimeState", "p0"]) as unknown[]).length === 0,
+    currentRuntimeWarmStateProofKnown:
+      pass(entries.currentRuntimeStateProof) &&
+      getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "warmNoQuotaRuntimeObserved"]) === true &&
+      getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "allLoopsRunningObserved"]) === true &&
+      getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "localCapabilityReadyWhileRunning"]) === true &&
+      getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "quotaSpendingLoopRunning"]) === false &&
+      getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "providerQuotaUsed"]) === false &&
+      getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "activeTesterSettlementExecution"]) === false &&
+      getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "stopsLoopsAfterProof"]) === true,
     mobileS23EndToEndTradeProofPass:
       pass(entries.s23Visible) &&
       truthy(getPath(entries.s23Visible, ["assertions", "swipeSubmitReachedPortfolio"])) &&
@@ -305,6 +316,8 @@ async function main() {
         "Supervisor and result-poller loops emit worker-owned RuntimeServiceRun rows when a run finishes; local runtime status requires latest passed rows for both services without quota spend, active settlement execution, or installed-service claims.",
       currentRuntimeState:
         "Local runtime status now separates proven capability from current warm-runtime state, including whether the supervisor/result-poller are running now, whether any running loop spends provider quota, and what operator action should happen next.",
+      currentRuntimeWarmProof:
+        "A local proof starts backend/Expo plus supervisor/result-poller loops, verifies /api/internal/live-runtime/status reports warm_no_quota_runtime with both loops running and no provider quota, then stops the loops again.",
       localWatchdog:
         "Internal tester watchdog verifies backend/Expo/Postgres readiness, repeated supervisor proof, background result-poller proof, no-quota default mode, and loop cleanup.",
     },
