@@ -11,6 +11,7 @@ param(
   [switch]$SkipLifecycleScheduler,
   [switch]$RunStaleGuard,
   [switch]$EnforceStaleGuard,
+  [switch]$RunResultIngestion,
   [switch]$RunResultSettlement,
   [switch]$RestartBackend,
   [int]$RefreshIterations = 1,
@@ -98,6 +99,7 @@ function Write-Heartbeat {
       lifecycleSchedulerEnabled = [bool](-not $SkipLifecycleScheduler)
       staleGuardEnabled = [bool]$RunStaleGuard
       staleGuardEnforced = [bool]$EnforceStaleGuard
+      resultIngestionEnabled = [bool]$RunResultIngestion
       resultSettlementEnabled = [bool]$RunResultSettlement
       cachedModeUsesQuota = $false
     }
@@ -106,6 +108,7 @@ function Write-Heartbeat {
       marketMakerMode = if ($SkipMakerSeed) { "not seeded by supervisor" } else { "repeated local shifted maker reseed while supervisor runs" }
       lifecycleSchedulerMode = if ($SkipLifecycleScheduler) { "not run by supervisor" } else { "safe real-time scheduler check each cycle; no proof time mutation" }
       staleGuardMode = if (-not $RunStaleGuard) { "disabled" } elseif ($EnforceStaleGuard) { "enforce stale provider pause while supervisor runs" } else { "dry-run stale monitor while supervisor runs" }
+      resultIngestionMode = if ($RunResultIngestion) { "provider-shaped result ingestion replay while supervisor runs; no provider quota spent" } else { "disabled" }
       resultSettlementMode = if ($RunResultSettlement) { "trusted result scheduler dry-run while supervisor runs" } else { "disabled" }
       unattendedServiceInstalled = $false
     }
@@ -248,10 +251,21 @@ try {
       $staleGuardSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-stale-guard-run-summary.redacted.json"
       $staleGuardSummary = Read-JsonFile $staleGuardSummaryPath
     }
+    $resultIngestionResult = $null
+    $resultIngestionSummary = $null
+    if ($RunResultIngestion) {
+      $resultIngestionResult = Invoke-CheckedCommand -Label "cycle-$iteration-result-ingestion" -Command "npm run mobile:one-event-result-ingest"
+      $resultIngestionSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-result-ingestion-summary.redacted.json"
+      $resultIngestionSummary = Read-JsonFile $resultIngestionSummaryPath
+    }
     $resultSettlementResult = $null
     $resultSettlementSummary = $null
     if ($RunResultSettlement) {
-      $resultSettlementResult = Invoke-CheckedCommand -Label "cycle-$iteration-result-settlement" -Command "npm run mobile:one-event-result-settlement-run"
+      $resultSettlementCommand = "npm run mobile:one-event-result-settlement-run"
+      if ($RunResultIngestion) {
+        $resultSettlementCommand += " -- --result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json"
+      }
+      $resultSettlementResult = Invoke-CheckedCommand -Label "cycle-$iteration-result-settlement" -Command $resultSettlementCommand
       $resultSettlementSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-result-settlement-run-summary.redacted.json"
       $resultSettlementSummary = Read-JsonFile $resultSettlementSummaryPath
     }
@@ -278,6 +292,9 @@ try {
       staleGuardPass = [bool]((-not $RunStaleGuard) -or ($staleGuardSummary -and $staleGuardSummary.pass -eq $true))
       staleGuardMode = if ($RunStaleGuard) { if ($EnforceStaleGuard) { "enforce-pause" } else { "dry-run-monitor" } } else { "disabled" }
       staleGuardResult = if ($staleGuardSummary) { $staleGuardSummary.result } else { $null }
+      resultIngestion = $resultIngestionResult
+      resultIngestionPass = [bool]((-not $RunResultIngestion) -or ($resultIngestionSummary -and $resultIngestionSummary.pass -eq $true))
+      resultIngestionMode = if ($resultIngestionSummary) { $resultIngestionSummary.mode } else { $null }
       resultSettlement = $resultSettlementResult
       resultSettlementPass = [bool]((-not $RunResultSettlement) -or ($resultSettlementSummary -and $resultSettlementSummary.pass -eq $true))
       resultSettlementAction = if ($resultSettlementSummary) { $resultSettlementSummary.action } else { $null }
@@ -297,6 +314,7 @@ try {
       -not $result.pass -or
       -not ($runtimeSummary -and $runtimeSummary.pass -eq $true) -or
       ($RunStaleGuard -and (-not $staleGuardResult.pass -or -not ($staleGuardSummary -and $staleGuardSummary.pass -eq $true))) -or
+      ($RunResultIngestion -and (-not $resultIngestionResult.pass -or -not ($resultIngestionSummary -and $resultIngestionSummary.pass -eq $true))) -or
       ($RunResultSettlement -and (-not $resultSettlementResult.pass -or -not ($resultSettlementSummary -and $resultSettlementSummary.pass -eq $true))) -or
       (-not $SkipLifecycleScheduler -and (-not $schedulerResult.pass -or -not ($schedulerSummary -and $schedulerSummary.pass -eq $true)))
     ) {
@@ -324,7 +342,7 @@ if (-not $loopPass) {
 }
 $p1Gaps = New-Object System.Collections.Generic.List[object]
 $p1Gaps.Add("supervisor is a local command, not an installed unattended service") | Out-Null
-$p1Gaps.Add("automatic official-result settlement is not complete") | Out-Null
+$p1Gaps.Add("provider-shaped result ingestion and dry-run settlement are available, but unattended official-result polling and execution are not complete") | Out-Null
 $p2Gaps = New-Object System.Collections.Generic.List[object]
 $p2Gaps.Add("multi-event provider polling and inventory-aware multi-market quoting remain future work") | Out-Null
 
@@ -358,6 +376,7 @@ $summary = [ordered]@{
     lifecycleSchedulerEnabled = [bool](-not $SkipLifecycleScheduler)
     staleGuardEnabled = [bool]$RunStaleGuard
     staleGuardEnforced = [bool]$EnforceStaleGuard
+    resultIngestionEnabled = [bool]$RunResultIngestion
     resultSettlementEnabled = [bool]$RunResultSettlement
     cachedModeUsesQuota = $false
   }
@@ -370,6 +389,8 @@ $summary = [ordered]@{
     lifecycleSchedulerContinuousWhileSupervisorRuns = [bool]((-not $SkipLifecycleScheduler) -and ($Continuous -or $cycles.Count -gt 1))
     staleGuardContinuousWhileSupervisorRuns = [bool]($RunStaleGuard -and ($Continuous -or $cycles.Count -gt 1))
     staleGuardMode = if (-not $RunStaleGuard) { "disabled" } elseif ($EnforceStaleGuard) { "enforce stale provider pause while supervisor runs" } else { "dry-run stale monitor while supervisor runs" }
+    resultIngestionContinuousWhileSupervisorRuns = [bool]($RunResultIngestion -and ($Continuous -or $cycles.Count -gt 1))
+    resultIngestionMode = if ($RunResultIngestion) { "provider-shaped result ingestion replay while supervisor runs; no provider quota spent" } else { "disabled" }
     resultSettlementContinuousWhileSupervisorRuns = [bool]($RunResultSettlement -and ($Continuous -or $cycles.Count -gt 1))
     resultSettlementMode = if ($RunResultSettlement) { "trusted result scheduler dry-run while supervisor runs" } else { "disabled" }
     unattendedServiceInstalled = $false

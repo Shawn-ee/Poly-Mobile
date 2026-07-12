@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T10:25:07.899Z",
+  "generatedAt": "2026-07-12T10:44:22.716Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -38,7 +38,7 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-12T10:25:07.898Z"
+        "timestamp": "2026-07-12T10:44:22.714Z"
       },
       "error": null
     }
@@ -46,7 +46,7 @@
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveProofGeneratedAt": "2026-07-12T07:06:21.133Z",
-    "liveProofAgeHours": 3.31,
+    "liveProofAgeHours": 3.63,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
@@ -69,7 +69,7 @@
   },
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-    "makerSeedGeneratedAt": "2026-07-12T10:25:02.667Z",
+    "makerSeedGeneratedAt": "2026-07-12T10:44:21.378Z",
     "makerSeedAgeHours": 0,
     "quoteRoute": {
       "ok": true,
@@ -106,15 +106,15 @@
   },
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
-    "schedulerGeneratedAt": "2026-07-12T10:25:05.611Z",
-    "schedulerAgeHours": 0,
+    "schedulerGeneratedAt": "2026-07-12T10:43:59.719Z",
+    "schedulerAgeHours": 0.01,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 19
   },
   "supervisor": {
     "supervisorPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json",
-    "generatedAt": "2026-07-12T10:25:05.6529697Z",
+    "generatedAt": "2026-07-12T10:43:59.7609784Z",
     "completedIterations": 2,
     "runtimeTruth": {
       "backendContinuousWhileSupervisorRuns": true,
@@ -125,6 +125,8 @@
       "lifecycleSchedulerContinuousWhileSupervisorRuns": true,
       "staleGuardContinuousWhileSupervisorRuns": false,
       "staleGuardMode": "disabled",
+      "resultIngestionContinuousWhileSupervisorRuns": true,
+      "resultIngestionMode": "provider-shaped result ingestion replay while supervisor runs; no provider quota spent",
       "resultSettlementContinuousWhileSupervisorRuns": true,
       "resultSettlementMode": "trusted result scheduler dry-run while supervisor runs",
       "unattendedServiceInstalled": false,

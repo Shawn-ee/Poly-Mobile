@@ -238,6 +238,19 @@ try {
   }
 
   if (-not $SkipSettlementDryRun) {
+    $resultIngestionResult = Invoke-CheckedCommand -Label "one-event-result-ingestion" -Command "npm run mobile:one-event-result-ingest"
+    $commands.Add($resultIngestionResult) | Out-Null
+    if (-not $resultIngestionResult.pass) {
+      $failed.Add("one-event-result-ingestion") | Out-Null
+    }
+
+    $resultSettlementCommand = "npm run mobile:one-event-result-settlement-run -- --result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json"
+    $resultSettlementResult = Invoke-CheckedCommand -Label "one-event-result-settlement-dry-run" -Command $resultSettlementCommand
+    $commands.Add($resultSettlementResult) | Out-Null
+    if (-not $resultSettlementResult.pass) {
+      $failed.Add("one-event-result-settlement-dry-run") | Out-Null
+    }
+
     $settlementCommand = "npm run mobile:one-event-settlement -- --winningOutcome=$WinningOutcome"
     $settlementResult = Invoke-CheckedCommand -Label "one-event-settlement-dry-run" -Command $settlementCommand
     $commands.Add($settlementResult) | Out-Null
@@ -255,6 +268,8 @@ $readinessSummary = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\odds-ap
 $runtimeStatusSummary = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-runtime-status-summary.redacted.json")
 $settlementReadinessSummary = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-settlement-readiness-summary.redacted.json")
 $manualSettlementSummary = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-manual-settlement-summary.redacted.json")
+$resultIngestionSummary = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-result-ingestion-summary.redacted.json")
+$resultSettlementRunSummary = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-result-settlement-run-summary.redacted.json")
 $backendHealth = Test-HttpHealth -BaseUrl $BackendBaseUrl
 $docker = Get-DockerPostgresStatus
 $s23 = Get-S23Status
@@ -269,6 +284,8 @@ $checks = [ordered]@{
   readinessPass = [bool]($SkipReadiness -or ($readinessSummary -and $readinessSummary.pass -eq $true))
   runtimeStatusPass = [bool]($runtimeStatusSummary -and $runtimeStatusSummary.pass -eq $true)
   settlementReadinessPass = [bool]($settlementReadinessSummary -and $settlementReadinessSummary.pass -eq $true)
+  resultIngestionPass = [bool]($SkipSettlementDryRun -or ($resultIngestionSummary -and $resultIngestionSummary.pass -eq $true))
+  resultSettlementDryRunPass = [bool]($SkipSettlementDryRun -or ($resultSettlementRunSummary -and $resultSettlementRunSummary.pass -eq $true))
   settlementDryRunPass = [bool]($SkipSettlementDryRun -or ($manualSettlementSummary -and $manualSettlementSummary.pass -eq $true -and $manualSettlementSummary.mode -eq "dry-run"))
   backendHealth = [bool]$backendHealth.ok
   dockerPostgres = [bool]$docker.ok
@@ -334,6 +351,8 @@ $summary = [ordered]@{
     readiness = "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json"
     runtimeStatus = "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json"
     settlementReadiness = "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json"
+    resultIngestion = "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json"
+    resultSettlementDryRun = "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json"
     manualSettlementDryRun = "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json"
   }
   runtimeTruth = [ordered]@{
@@ -347,12 +366,12 @@ $summary = [ordered]@{
     }
     marketMakerMode = "shifted local maker seed from readiness command; not an installed daemon"
     lifecycleSchedulerMode = "readiness proof plus local callable scheduler; not installed as a service"
-    settlementMode = "manual readiness plus guarded dry-run/execute command; automatic official result settlement not wired"
+    settlementMode = "manual readiness plus provider-shaped result ingestion and guarded dry-run/execute commands; unattended official result polling is not installed"
   }
   gaps = [ordered]@{
     p0 = @($failed | Select-Object -Unique)
     p1 = @(
-      "automatic official-result ingestion and settlement are not complete",
+      "provider-shaped result ingestion and dry-run settlement are available, but unattended official-result polling and execution are not complete",
       "installed always-on provider refresh and market-maker daemons are not complete"
     )
     p2 = @("multi-event onboarding remains future work")

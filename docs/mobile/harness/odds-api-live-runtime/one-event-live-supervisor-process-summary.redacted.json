@@ -1,10 +1,10 @@
 {
-    "generatedAt":  "2026-07-12T10:25:09.8310943Z",
+    "generatedAt":  "2026-07-12T10:44:02.4200110Z",
     "scope":  "holiwyn-one-event-live-supervisor-process",
     "pass":  true,
     "operation":  {
                       "action":  "status",
-                      "startedAt":  "2026-07-12T10:25:09.7874179Z",
+                      "startedAt":  "2026-07-12T10:44:02.3762518Z",
                       "force":  false,
                       "result":  "not_running"
                   },
@@ -58,10 +58,10 @@
     "supervisor":  {
                        "summaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-live-supervisor-summary.redacted.json",
                        "digest":  {
-                                      "generatedAt":  "2026-07-12T10:25:05.6529697Z",
+                                      "generatedAt":  "2026-07-12T10:43:59.7609784Z",
                                       "pass":  true,
-                                      "startedAt":  "2026-07-12T10:24:50.3306721Z",
-                                      "completedAt":  "2026-07-12T10:25:05.6529697Z",
+                                      "startedAt":  "2026-07-12T10:43:41.3967032Z",
+                                      "completedAt":  "2026-07-12T10:43:59.7609784Z",
                                       "settings":  {
                                                        "continuous":  false,
                                                        "maxIterations":  2,
@@ -80,6 +80,7 @@
                                                        "lifecycleSchedulerEnabled":  true,
                                                        "staleGuardEnabled":  false,
                                                        "staleGuardEnforced":  false,
+                                                       "resultIngestionEnabled":  true,
                                                        "resultSettlementEnabled":  true,
                                                        "cachedModeUsesQuota":  false
                                                    },
@@ -92,6 +93,8 @@
                                                            "lifecycleSchedulerContinuousWhileSupervisorRuns":  true,
                                                            "staleGuardContinuousWhileSupervisorRuns":  false,
                                                            "staleGuardMode":  "disabled",
+                                                           "resultIngestionContinuousWhileSupervisorRuns":  true,
+                                                           "resultIngestionMode":  "provider-shaped result ingestion replay while supervisor runs; no provider quota spent",
                                                            "resultSettlementContinuousWhileSupervisorRuns":  true,
                                                            "resultSettlementMode":  "trusted result scheduler dry-run while supervisor runs",
                                                            "unattendedServiceInstalled":  false,
@@ -114,6 +117,7 @@
                          "installedOsService":  false,
                          "providerRefreshMode":  "cached provider proof verification; no provider quota spent",
                          "staleGuardMode":  "disabled",
+                         "resultIngestionMode":  "disabled",
                          "resultSettlementMode":  "disabled",
                          "fakeTokenOnly":  true
                      },
@@ -123,7 +127,7 @@
                         ],
                  "p1":  [
                             "This is a local background process manager, not an installed OS service.",
-                            "Automatic official-result settlement remains future work."
+                            "Provider-shaped result ingestion and dry-run settlement are available, but unattended official-result polling and execution remain future work."
                         ],
                  "p2":  [
                             "Multi-event process supervision remains future work."

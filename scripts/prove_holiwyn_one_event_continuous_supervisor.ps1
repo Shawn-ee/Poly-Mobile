@@ -76,7 +76,7 @@ $nodeBefore = Get-NodeProcessCount
 $commands.Add((Invoke-CheckedCommand -Label "pre-stop-existing-supervisor" -Command "npm run mobile:one-event-live-supervisor:stop")) | Out-Null
 Remove-Item -LiteralPath (Resolve-RepoPath $HeartbeatPath) -Force -ErrorAction SilentlyContinue
 
-$supervisorCommand = "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_live_supervisor.ps1 -BackendPort $BackendPort -MaxIterations $RequiredIterations -IntervalSeconds $IntervalSeconds -RunResultSettlement"
+$supervisorCommand = "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_live_supervisor.ps1 -BackendPort $BackendPort -MaxIterations $RequiredIterations -IntervalSeconds $IntervalSeconds -RunResultIngestion -RunResultSettlement"
 $supervisorRun = Invoke-CheckedCommand -Label "foreground-repeated-supervisor" -Command $supervisorCommand
 $commands.Add($supervisorRun) | Out-Null
 
@@ -109,7 +109,7 @@ if (-not ($statusCommand.pass -and $processStatus -and $processStatus.process.af
 
 $p1.Add("This proves repeated local supervisor cycles, not an installed OS service.") | Out-Null
 $p1.Add("Background start/status/stop is available through the process manager and now stops process trees, but always-on service installation remains future work.") | Out-Null
-$p1.Add("Official result API ingestion and unattended settlement execution remain future work.") | Out-Null
+$p1.Add("Provider-shaped result ingestion is proven in replay mode, but unattended live result polling and settlement execution remain future work.") | Out-Null
 $p2.Add("Multi-event process supervision remains future work.") | Out-Null
 
 $summary = [ordered]@{
@@ -139,6 +139,7 @@ $summary = [ordered]@{
     repeatedLocalSupervisorCyclesProven = [bool]($p0.Count -eq 0)
     marketMakerReseedWhileRunning = [bool]($supervisorSummary -and $supervisorSummary.runtimeTruth.marketMakerRefreshContinuousWhileSupervisorRuns -eq $true)
     lifecycleSchedulerWhileRunning = [bool]($supervisorSummary -and $supervisorSummary.runtimeTruth.lifecycleSchedulerContinuousWhileSupervisorRuns -eq $true)
+    resultIngestionWhileRunning = [bool]($supervisorSummary -and $supervisorSummary.runtimeTruth.resultIngestionContinuousWhileSupervisorRuns -eq $true)
     resultSettlementSchedulerWhileRunning = [bool]($supervisorSummary -and $supervisorSummary.runtimeTruth.resultSettlementContinuousWhileSupervisorRuns -eq $true)
     providerRefreshMode = if ($supervisorSummary) { $supervisorSummary.runtimeTruth.providerRefreshMode } else { "not_proven" }
     quotaProtected = $true

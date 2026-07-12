@@ -11,6 +11,7 @@ param(
   [switch]$SkipLifecycleScheduler,
   [switch]$RunStaleGuard,
   [switch]$EnforceStaleGuard,
+  [switch]$RunResultIngestion,
   [switch]$RunResultSettlement,
   [switch]$RestartBackend,
   [int]$RefreshIterations = 1,
@@ -156,6 +157,7 @@ function Build-SupervisorArguments {
   if ($SkipLifecycleScheduler) { $parts.Add("-SkipLifecycleScheduler") | Out-Null }
   if ($RunStaleGuard) { $parts.Add("-RunStaleGuard") | Out-Null }
   if ($EnforceStaleGuard) { $parts.Add("-EnforceStaleGuard") | Out-Null }
+  if ($RunResultIngestion) { $parts.Add("-RunResultIngestion") | Out-Null }
   if ($RunResultSettlement) { $parts.Add("-RunResultSettlement") | Out-Null }
   if ($RestartBackend) { $parts.Add("-RestartBackend") | Out-Null }
   if ($SkipSleep) { $parts.Add("-SkipSleep") | Out-Null }
@@ -202,6 +204,7 @@ if ($Action -eq "start") {
       runProviderProof = [bool]$RunProviderProof
       runStaleGuard = [bool]$RunStaleGuard
       enforceStaleGuard = [bool]$EnforceStaleGuard
+      runResultIngestion = [bool]$RunResultIngestion
       runResultSettlement = [bool]$RunResultSettlement
       providerProofEveryIterations = if ($RunProviderProof) { $ProviderProofEveryIterations } else { 0 }
       maxProviderProofRuns = if ($RunProviderProof) { $MaxProviderProofRuns } else { 0 }
@@ -287,12 +290,13 @@ $summary = [ordered]@{
     installedOsService = $false
     providerRefreshMode = if ($RunProviderProof) { "quota-capped live provider proof by cadence" } else { "cached provider proof verification; no provider quota spent" }
     staleGuardMode = if (-not $RunStaleGuard) { "disabled" } elseif ($EnforceStaleGuard) { "enforce stale provider pause while supervisor runs" } else { "dry-run stale monitor while supervisor runs" }
+    resultIngestionMode = if ($RunResultIngestion) { "provider-shaped result ingestion replay while supervisor runs; no provider quota spent" } else { "disabled" }
     resultSettlementMode = if ($RunResultSettlement) { "trusted result scheduler dry-run while supervisor runs" } else { "disabled" }
     fakeTokenOnly = $true
   }
   gaps = [ordered]@{
     p0 = @()
-    p1 = @("This is a local background process manager, not an installed OS service.", "Automatic official-result settlement remains future work.")
+    p1 = @("This is a local background process manager, not an installed OS service.", "Provider-shaped result ingestion and dry-run settlement are available, but unattended official-result polling and execution remain future work.")
     p2 = @("Multi-event process supervision remains future work.")
   }
 }

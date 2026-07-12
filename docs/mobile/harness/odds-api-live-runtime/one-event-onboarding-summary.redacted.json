@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-12T09:30:45.8707420Z",
+    "generatedAt":  "2026-07-12T10:44:29.2385225Z",
     "scope":  "holiwyn-one-event-live-onboarding",
     "pass":  true,
-    "startedAt":  "2026-07-12T09:30:27.7529938Z",
-    "completedAt":  "2026-07-12T09:30:45.8717409Z",
+    "startedAt":  "2026-07-12T10:44:08.5623759Z",
+    "completedAt":  "2026-07-12T10:44:29.2400278Z",
     "mode":  "quota-free-replay",
     "providerPolicy":  {
                            "providerSource":  "the-odds-api",
@@ -44,48 +44,64 @@
                          "pass":  true,
                          "skipped":  true,
                          "reason":  "Redacted replay fixture is older than current UTC and a newer live-runtime event summary exists; pass -AllowPastReplay to intentionally overwrite local one-event state with the replay fixture.",
-                         "startedAt":  "2026-07-12T09:30:27.7890452Z",
-                         "finishedAt":  "2026-07-12T09:30:27.7890452Z"
+                         "startedAt":  "2026-07-12T10:44:08.5954533Z",
+                         "finishedAt":  "2026-07-12T10:44:08.5954533Z"
                      },
                      {
                          "label":  "cached-live-runtime-restore",
                          "command":  "npm run mobile:one-event-cached-restore",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T09:30:27.7945485Z",
-                         "finishedAt":  "2026-07-12T09:30:28.3680938Z"
+                         "startedAt":  "2026-07-12T10:44:08.6015776Z",
+                         "finishedAt":  "2026-07-12T10:44:09.2130928Z"
                      },
                      {
                          "label":  "one-event-live-readiness",
                          "command":  "npm run mobile:one-event-live-readiness -- -BackendPort 3002",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T09:30:28.3680938Z",
-                         "finishedAt":  "2026-07-12T09:30:40.9325180Z"
+                         "startedAt":  "2026-07-12T10:44:09.2130928Z",
+                         "finishedAt":  "2026-07-12T10:44:22.2000032Z"
                      },
                      {
                          "label":  "one-event-runtime-status",
                          "command":  "npm run mobile:one-event-runtime-status",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T09:30:40.9325180Z",
-                         "finishedAt":  "2026-07-12T09:30:42.2703057Z"
+                         "startedAt":  "2026-07-12T10:44:22.2005122Z",
+                         "finishedAt":  "2026-07-12T10:44:22.7747218Z"
                      },
                      {
                          "label":  "one-event-settlement-readiness",
                          "command":  "npm run mobile:one-event-settlement-readiness",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T09:30:42.2709036Z",
-                         "finishedAt":  "2026-07-12T09:30:44.8078158Z"
+                         "startedAt":  "2026-07-12T10:44:22.7747218Z",
+                         "finishedAt":  "2026-07-12T10:44:23.8057865Z"
+                     },
+                     {
+                         "label":  "one-event-result-ingestion",
+                         "command":  "npm run mobile:one-event-result-ingest",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T10:44:23.8057865Z",
+                         "finishedAt":  "2026-07-12T10:44:24.8803036Z"
+                     },
+                     {
+                         "label":  "one-event-result-settlement-dry-run",
+                         "command":  "npm run mobile:one-event-result-settlement-run -- --result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T10:44:24.8803036Z",
+                         "finishedAt":  "2026-07-12T10:44:28.1647436Z"
                      },
                      {
                          "label":  "one-event-settlement-dry-run",
                          "command":  "npm run mobile:one-event-settlement -- --winningOutcome=over",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T09:30:44.8098156Z",
-                         "finishedAt":  "2026-07-12T09:30:45.4828685Z"
+                         "startedAt":  "2026-07-12T10:44:28.1657436Z",
+                         "finishedAt":  "2026-07-12T10:44:28.8271899Z"
                      }
                  ],
     "backend":  {
@@ -96,7 +112,7 @@
                                                 "status":  "ok",
                                                 "db":  "connected",
                                                 "env":  "development",
-                                                "timestamp":  "2026-07-12T09:30:45.517Z"
+                                                "timestamp":  "2026-07-12T10:44:28.860Z"
                                             },
                                    "error":  null
                                }
@@ -119,6 +135,8 @@
                    "readinessPass":  true,
                    "runtimeStatusPass":  true,
                    "settlementReadinessPass":  true,
+                   "resultIngestionPass":  true,
+                   "resultSettlementDryRunPass":  true,
                    "settlementDryRunPass":  true,
                    "backendHealth":  true,
                    "dockerPostgres":  true
@@ -130,6 +148,8 @@
                       "readiness":  "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json",
                       "runtimeStatus":  "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
                       "settlementReadiness":  "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json",
+                      "resultIngestion":  "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json",
+                      "resultSettlementDryRun":  "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json",
                       "manualSettlementDryRun":  "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json"
                   },
     "runtimeTruth":  {
@@ -137,14 +157,14 @@
                          "providerRefreshMode":  "freshness-guarded cached live restore; stale replay skipped; no provider quota spent",
                          "marketMakerMode":  "shifted local maker seed from readiness command; not an installed daemon",
                          "lifecycleSchedulerMode":  "readiness proof plus local callable scheduler; not installed as a service",
-                         "settlementMode":  "manual readiness plus guarded dry-run/execute command; automatic official result settlement not wired"
+                         "settlementMode":  "manual readiness plus provider-shaped result ingestion and guarded dry-run/execute commands; unattended official result polling is not installed"
                      },
     "gaps":  {
                  "p0":  [
 
                         ],
                  "p1":  [
-                            "automatic official-result ingestion and settlement are not complete",
+                            "provider-shaped result ingestion and dry-run settlement are available, but unattended official-result polling and execution are not complete",
                             "installed always-on provider refresh and market-maker daemons are not complete"
                         ],
                  "p2":  [

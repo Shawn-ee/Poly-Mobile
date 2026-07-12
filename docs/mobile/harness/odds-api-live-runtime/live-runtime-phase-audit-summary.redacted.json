@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T10:35:00.608Z",
+  "generatedAt": "2026-07-12T10:44:36.538Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T10:35:00.570Z"
+      "timestamp": "2026-07-12T10:44:36.496Z"
     },
     "error": null
   },
@@ -65,26 +65,26 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 3.48,
-    "onboarding": 1.07,
-    "readiness": 1.07,
-    "runtimeStatus": 0.16,
-    "runtimeLaunch": 0.17,
-    "supervisor": 0.17,
-    "supervisorProcess": 0.16,
-    "continuousSupervisor": 0.16,
-    "staleGuardProof": 1.07,
-    "staleGuardRun": 0.95,
-    "lifecycleControls": 1.07,
-    "lifecycleScheduler": 1.07,
-    "lifecycleSchedulerRun": 0.17,
-    "settlementReadiness": 1.07,
-    "manualSettlement": 1.07,
-    "resultIngestion": 0.02,
-    "resultSettlement": 0.01,
-    "resultSettlementRun": 0.01,
-    "makerSeed": 0.17,
-    "s23Visible": 3.3
+    "liveProof": 3.64,
+    "onboarding": 0,
+    "readiness": 0,
+    "runtimeStatus": 0,
+    "runtimeLaunch": 0.01,
+    "supervisor": 0.01,
+    "supervisorProcess": 0.01,
+    "continuousSupervisor": 0.01,
+    "staleGuardProof": 1.23,
+    "staleGuardRun": 1.11,
+    "lifecycleControls": 0.01,
+    "lifecycleScheduler": 0,
+    "lifecycleSchedulerRun": 0.01,
+    "settlementReadiness": 0,
+    "manualSettlement": 0,
+    "resultIngestion": 0,
+    "resultSettlement": 0,
+    "resultSettlementRun": 0,
+    "makerSeed": 0,
+    "s23Visible": 3.46
   },
   "requirements": [
     {

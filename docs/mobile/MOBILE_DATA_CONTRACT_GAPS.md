@@ -10058,9 +10058,17 @@ Future migration concern:
 
 - Closed or narrowed: the local supervisor can now include stale-provider checking every cycle instead of relying only on a standalone proof command.
 - Route mismatch: none. The monitor reads existing provider snapshots and writes only local summary JSON in dry-run mode; enforcement uses existing `Market.status=PAUSED` behavior already respected by `POST /api/orders`.
-- Fields Holiwyn still needs but backend/provider does not fully provide: durable installed stale-provider service ownership and a live refresh daemon that keeps snapshots fresh enough for `-EnforceStaleGuard` to preserve active trading.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable installed stale-provider service ownership, unattended live result polling ownership, and a live refresh daemon that keeps snapshots fresh enough for `-EnforceStaleGuard` to preserve active trading.
 - Temporary mock/static data: none added. The latest dry-run monitor reported all cached one-event markets stale under the 90-second threshold because cached proof snapshots are older than live-runtime freshness rules.
 - Future migration concern: cached internal usability and live-provider enforcement have different freshness policies. Internal tester runs should use monitor mode unless a live provider refresh is intentionally running.
+
+## Cycle ONEEVENTSUPERVISORRESULTS - Supervisor Result Ingestion
+
+- Closed or narrowed: the local supervisor can now run provider-shaped result ingestion before trusted-result settlement dry-run scheduling. The repeated supervisor proof covers both result ingestion and result settlement while the supervisor loop is active.
+- Route mismatch: none. The result ingestion step uses the local command contract and writes trusted result JSON; the settlement scheduler consumes that JSON and uses existing settlement services in dry-run mode.
+- Fields Holiwyn still needs but backend/provider does not fully provide: unattended live score polling, official finality policy, operator review/audit workflow, and execution authorization remain P1 before automatic settlement can be considered complete.
+- Temporary mock/static data: default supervisor result ingestion uses the redacted Odds API scores-shaped fixture and does not spend quota. Live result ingestion remains explicit through `npm run mobile:one-event-result-ingest -- --live`.
+- Future migration concern: keep score/result ingestion separate from odds refresh. The supervisor can coordinate both, but pricing snapshots and settlement evidence must remain distinct contracts.
 
 ## Cycle ONEEVENTRESULTSETTLEMENT - Trusted Result Settlement Intake
 
