@@ -10495,3 +10495,11 @@ Future migration concern:
 - Route mismatch: `/api/internal/live-runtime/status` remains dev-only and read-only. It now reports the latest selected-market `MarketMakerQuoteRun`, but it does not start the market maker, place quotes, call The Odds API, or spend quota.
 - Temporary mock/static data: none added. The backfill command reads existing redacted shifted-maker proof JSON; future maker seed runs write this row as part of the existing local fake-token liquidity path.
 - Remaining gaps: installed continuous market-maker service ownership, multi-event quote scheduling, durable risk/exposure dashboarding, retry/alerting, and production liquidity controls remain P1/P2.
+
+## Cycle REPEATEDMARKERQUOTERUNS - Repeated Durable Maker Quote Evidence
+
+- Closed or narrowed: local runtime status no longer accepts only a single latest maker quote row as continuity evidence. It now reports recent rows and requires at least two passed local rows emitted by the real maker seed script.
+- Route mismatch: `/api/internal/live-runtime/status` adds `marketMakerQuoteRuns.recent`, `recentRunCount`, `repeatedLocalRunCount`, and `repeatedLocalRunsProven`. This remains a local/dev-only status route and does not start the maker.
+- Fields Holiwyn still needs but backend/provider does not fully provide: production maker service identity, continuous scheduling cadence, per-event quote inventory/risk state, retry state, and alerting remain P1/P2.
+- Temporary mock/static data: none added. The proof uses stored provider snapshots and the existing fake-token maker seed path twice; no Odds API quota is spent.
+- Future migration concern: production should replace repeated local proof rows with worker-owned maker service run records, risk limits, and per-market quote scheduling state.

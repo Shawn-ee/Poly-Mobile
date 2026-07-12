@@ -14735,3 +14735,14 @@ Known limitations:
 - API/data dependencies: reads `docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json` for backfill, and future maker seed runs read their in-memory summary. Status reads the latest `MarketMakerQuoteRun` for `sportsbook-odds` and the selected market id.
 - Proof needed: Prisma migration deploy, maker quote run backfill, status route proof, phase audit, completion audit, focused status Jest test, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this narrows durable market-maker quote outcome evidence, but it is not an installed market-maker daemon, multi-event quote scheduler, risk dashboard, retry/alerting system, or production liquidity service.
+
+## Cycle REPEATEDMARKERQUOTERUNS - Repeated Durable Maker Quote Evidence
+
+- Feature/page worked on: backend local internal market-maker continuity evidence.
+- Frontend components touched: none.
+- Important functions/services touched: updated `src/server/services/liveRuntimeStatus.ts`, `src/__tests__/liveRuntimeStatus.service.test.ts`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, and `scripts/report_holiwyn_live_runtime_completion_audit.ts`.
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/status` and verify that the selected market has at least two recent passed, local-only `MarketMakerQuoteRun` rows emitted by the real shifted maker seed command.
+- State transitions: no new mutation path. The proof ran `npm run mobile:one-event-live-maker-seed` twice, which reused the existing local fake-token maker liquidity path, canceled previous maker orders, placed fresh shifted bid/ask orders, and wrote two durable `MarketMakerQuoteRun` rows.
+- API/data dependencies: status now returns `marketMakerQuoteRuns.recent`, `recentRunCount`, `repeatedLocalRunCount`, and `repeatedLocalRunsProven`. Phase and completion audits require `repeatedLocalRunsProven=true`.
+- Proof needed: two maker seed runs, status route proof, phase audit, completion audit, focused status Jest test, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: repeated local maker seed runs prove reusable local quote refresh behavior, but they are still not an installed continuous market-maker service, risk-managed production daemon, or multi-event quote scheduler.

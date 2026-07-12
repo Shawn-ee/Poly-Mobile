@@ -341,16 +341,16 @@ const compactMarketMakerQuoteRunRow = (row: {
   },
 });
 
-async function getLatestMarketMakerQuoteRun(marketId: string | null) {
+async function getRecentMarketMakerQuoteRuns(marketId: string | null) {
   const rows = await prisma.marketMakerQuoteRun.findMany({
     where: {
       ...(marketId ? { marketId } : {}),
       providerSource: "sportsbook-odds",
     },
     orderBy: { startedAt: "desc" },
-    take: 1,
+    take: 5,
   });
-  return rows[0] ? compactMarketMakerQuoteRunRow(rows[0]) : null;
+  return rows.map(compactMarketMakerQuoteRunRow);
 }
 
 async function getProviderSnapshotFreshness(params: {
@@ -584,7 +584,19 @@ export async function getLocalLiveRuntimeStatus() {
   const providerRefreshRun = await getLatestProviderRefreshRun(
     stringValue(getPath(completionAudit, ["event", "localSlug"])) ?? stringValue(getPath(phaseAudit, ["event", "localSlug"])),
   );
-  const marketMakerQuoteRun = await getLatestMarketMakerQuoteRun(selectedMarketId);
+  const marketMakerQuoteRuns = await getRecentMarketMakerQuoteRuns(selectedMarketId);
+  const marketMakerQuoteRun = marketMakerQuoteRuns[0] ?? null;
+  const repeatedLocalMakerQuoteRunCount = marketMakerQuoteRuns.filter(
+    (run) =>
+      run.status === "passed" &&
+      run.metadata.localOnly === true &&
+      run.metadata.emittedBy === "scripts/seed_odds_api_live_shifted_maker.ts" &&
+      run.shiftedBidWorseThanProvider === true &&
+      run.shiftedAskWorseThanProvider === true &&
+      run.quoteRouteShowsBid === true &&
+      run.quoteRouteShowsAsk === true &&
+      run.quoteRouteStatus === 200,
+  ).length;
   const p0Gaps = asStringArray(getPath(completionAudit, ["gaps", "p0"]));
   const artifactFreshness = {
     maxCompletionAuditAgeHours: 24,
@@ -759,6 +771,10 @@ export async function getLocalLiveRuntimeStatus() {
       durable: true,
       source: "MarketMakerQuoteRun",
       latest: marketMakerQuoteRun,
+      recent: marketMakerQuoteRuns,
+      recentRunCount: marketMakerQuoteRuns.length,
+      repeatedLocalRunCount: repeatedLocalMakerQuoteRunCount,
+      repeatedLocalRunsProven: repeatedLocalMakerQuoteRunCount >= 2,
       latestRunPassed: marketMakerQuoteRun?.status === "passed",
       latestRunLocalOnly: marketMakerQuoteRun?.metadata.localOnly === true,
       latestRunShiftedWorseThanProvider:

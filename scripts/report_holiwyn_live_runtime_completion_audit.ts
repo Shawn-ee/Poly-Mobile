@@ -142,6 +142,7 @@ async function main() {
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "marketMakerQuoteRuns", "latestRunShiftedWorseThanProvider"]) === true &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "marketMakerQuoteRuns", "latestRunQuoteRouteReady"]) === true &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "marketMakerQuoteRuns", "latestRunSnapshotFresh"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "marketMakerQuoteRuns", "repeatedLocalRunsProven"]) === true &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "marketMakerQuoteRuns", "installedOsService"]) === false,
     marketMakerContinuityKnown:
       truthy(getPath(entries.runtimeStatus, ["provenCapabilities", "makerReseedWhileSupervisorRuns"])) &&
@@ -273,7 +274,7 @@ async function main() {
       providerRefreshRuns:
         "Bounded live provider refresh proof is persisted as ProviderRefreshRun; local runtime status requires the latest selected-event run to be passed, quota-protected, within budget, stale-before-refresh, and ready-after-refresh without spending quota from the status route.",
       marketMakerQuoteRuns:
-        "Shifted local maker quote proof is persisted as MarketMakerQuoteRun; local runtime status requires the latest selected-market run to be passed, local-only, shifted worse than provider, quote-route visible, and backed by a fresh provider snapshot without claiming an installed OS service.",
+        "Shifted local maker quote proof is persisted as MarketMakerQuoteRun; local runtime status requires the latest selected-market run to be passed, local-only, shifted worse than provider, quote-route visible, backed by a fresh provider snapshot, and supported by at least two repeated local maker seed runs without claiming an installed OS service.",
       runtimeHeartbeats:
         "Supervisor and result-poller loops emit worker-owned RuntimeServiceHeartbeat rows; local runtime status preserves that evidence without claiming an installed OS service.",
       runtimeRuns:

@@ -295,6 +295,7 @@ async function main() {
         getPath(localRuntimeStatusBody, ["marketMakerQuoteRuns", "latestRunShiftedWorseThanProvider"]) === true &&
         getPath(localRuntimeStatusBody, ["marketMakerQuoteRuns", "latestRunQuoteRouteReady"]) === true &&
         getPath(localRuntimeStatusBody, ["marketMakerQuoteRuns", "latestRunSnapshotFresh"]) === true &&
+        getPath(localRuntimeStatusBody, ["marketMakerQuoteRuns", "repeatedLocalRunsProven"]) === true &&
         getPath(localRuntimeStatusBody, ["marketMakerQuoteRuns", "installedOsService"]) === false &&
         typeof getPath(localRuntimeStatusBody, ["operatorNextActions", "recommendedFirstAction"]) === "string" &&
         getPath(localRuntimeStatusBody, ["operatorNextActions", "defaultNoQuotaAction"]) === "cached_internal_testing" &&
@@ -426,6 +427,7 @@ async function main() {
         getPath(localRuntimeStatusBody, ["marketMakerQuoteRuns", "latestRunPassed"]) === true &&
         getPath(localRuntimeStatusBody, ["marketMakerQuoteRuns", "latestRunShiftedWorseThanProvider"]) === true &&
         getPath(localRuntimeStatusBody, ["marketMakerQuoteRuns", "latestRunQuoteRouteReady"]) === true &&
+        getPath(localRuntimeStatusBody, ["marketMakerQuoteRuns", "repeatedLocalRunsProven"]) === true &&
         quote?.ok === true,
       evidence: [
         PATHS.makerSeed,

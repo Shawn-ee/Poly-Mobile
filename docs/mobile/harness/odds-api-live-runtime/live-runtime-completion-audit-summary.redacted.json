@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T19:03:49.493Z",
+  "generatedAt": "2026-07-12T19:15:48.654Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -28,7 +28,7 @@
     "freshness": {
       "liveProofAgeHours": 9.56,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 3.73,
+      "watchdogAgeHours": 3.93,
       "maxWatchdogAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -37,7 +37,7 @@
     "activeSettlement": "wait_for_or_apply_market_close_before_execution",
     "resultReview": "Local result-review API is phase-gated through /api/internal/live-runtime/result-review, reads canonical result/preflight/approval evidence, writes a redacted durable OfficialResultReview row, and does not spend provider quota.",
     "providerRefreshRuns": "Bounded live provider refresh proof is persisted as ProviderRefreshRun; local runtime status requires the latest selected-event run to be passed, quota-protected, within budget, stale-before-refresh, and ready-after-refresh without spending quota from the status route.",
-    "marketMakerQuoteRuns": "Shifted local maker quote proof is persisted as MarketMakerQuoteRun; local runtime status requires the latest selected-market run to be passed, local-only, shifted worse than provider, quote-route visible, and backed by a fresh provider snapshot without claiming an installed OS service.",
+    "marketMakerQuoteRuns": "Shifted local maker quote proof is persisted as MarketMakerQuoteRun; local runtime status requires the latest selected-market run to be passed, local-only, shifted worse than provider, quote-route visible, backed by a fresh provider snapshot, and supported by at least two repeated local maker seed runs without claiming an installed OS service.",
     "runtimeHeartbeats": "Supervisor and result-poller loops emit worker-owned RuntimeServiceHeartbeat rows; local runtime status preserves that evidence without claiming an installed OS service.",
     "runtimeRuns": "Supervisor and result-poller loops emit worker-owned RuntimeServiceRun rows when a run finishes; local runtime status requires latest passed rows for both services without quota spend, active settlement execution, or installed-service claims.",
     "localWatchdog": "Internal tester watchdog verifies backend/Expo/Postgres readiness, repeated supervisor proof, background result-poller proof, no-quota default mode, and loop cleanup."
