@@ -10237,3 +10237,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: production lifecycle dashboard, durable official-result records, durable approval records, and active-event auto-settlement ownership remain P1/P2.
 - Temporary mock/static data: none added. The report reads existing proof artifacts and spends no provider quota.
 - Future migration concern: the matrix is good for local internal verification, but production should store lifecycle/result/settlement state in durable first-class models and expose operator-facing review controls.
+
+## Cycle ONEEVENTRUNTIMESTATUSCAPABILITIES - Runtime Status Capability Truth
+
+- Closed or narrowed: the runtime status report now separates the latest supervisor run profile from proven continuous supervisor/result-poller capabilities, avoiding false operator confusion when the latest proof uses a narrow mode.
+- Route mismatch: none. No mobile API or backend HTTP route changed; the report still reads existing `/api/health` and selected quote routes plus proof artifacts.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable service state, durable official-result records, multi-event runtime status, and production service ownership remain P1/P2.
+- Temporary mock/static data: none added. The report reads committed/local proof summaries and spends no provider quota.
+- Future migration concern: report artifacts are local proof state. Production runtime status should eventually come from durable service heartbeats, provider poll records, result records, and explicit operator approval state.

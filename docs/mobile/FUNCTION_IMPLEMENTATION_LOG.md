@@ -14359,3 +14359,20 @@ Known limitations:
 - Known limitations:
   - Active tester event settlement remains unexecuted until `CLOSED` status plus exact operator confirmation.
   - The lifecycle-control artifact currently has an older selected-market title warning, recorded as P1 in the matrix instead of hidden.
+
+# Cycle ONEEVENTRUNTIMESTATUSCAPABILITIES - Runtime Status Capability Truth
+
+- Feature/page worked on: backend one-event runtime status reporting.
+- Frontend components touched: none. This is backend/runtime proof reporting only and does not change mobile UI.
+- Important functions/services touched:
+  - `scripts/report_odds_api_one_event_runtime_status.ts`
+  - Existing continuous supervisor and result-poller proof summaries
+- User/runtime interactions supported:
+  - Operator can run `npm run mobile:one-event-runtime-status` and see both the latest supervisor run profile and the broader proven local runtime capabilities.
+  - The report now distinguishes a narrow latest supervisor proof from earlier passing continuous supervisor/result-poller proof artifacts.
+- State transitions:
+  - No market, order, position, portfolio, provider, lifecycle, or settlement mutation.
+  - Reads existing proof summaries plus local backend health and selected quote route only.
+- Known limitations:
+  - Provider refresh still requires explicit live-provider flags and quota caps.
+  - This reports local internal runtime truth; it does not install an unattended production service.

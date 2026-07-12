@@ -12,6 +12,10 @@ const MAKER_SEED_PATH =
   "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json";
 const SUPERVISOR_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json";
+const CONTINUOUS_SUPERVISOR_PROOF_PATH =
+  "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json";
+const CONTINUOUS_RESULT_POLLER_PROOF_PATH =
+  "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-result-poller-proof-summary.redacted.json";
 const SCHEDULER_RUN_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json";
 const RESULT_SETTLEMENT_EXECUTION_PATH =
@@ -108,6 +112,8 @@ async function main() {
   const runtimeLaunch = await readJson(RUNTIME_LAUNCH_PATH);
   const makerSeed = await readJson(MAKER_SEED_PATH);
   const supervisor = await readJson(SUPERVISOR_PATH);
+  const continuousSupervisorProof = await readJson(CONTINUOUS_SUPERVISOR_PROOF_PATH);
+  const continuousResultPollerProof = await readJson(CONTINUOUS_RESULT_POLLER_PROOF_PATH);
   const schedulerRun = await readJson(SCHEDULER_RUN_PATH);
   const resultSettlementExecution = await readJson(RESULT_SETTLEMENT_EXECUTION_PATH);
   const resultSettlementLiveBlocked = await readJson(RESULT_SETTLEMENT_LIVE_BLOCKED_PATH);
@@ -127,6 +133,36 @@ async function main() {
   const liveProofFresh =
     liveProofAgeHours != null && liveProofAgeHours >= 0 && liveProofAgeHours <= maxLiveProofAgeHours;
   const supervisorRuntimeTruth = getPath(supervisor, ["runtimeTruth"]);
+  const continuousSupervisorTruth = getPath(continuousSupervisorProof, ["runtimeTruth"]);
+  const continuousResultPollerTruth =
+    getPath(continuousResultPollerProof, ["runtimeTruth"]) ??
+    getPath(continuousResultPollerProof, ["processSummary", "poller", "digest", "runtimeTruth"]);
+  const continuousResultPollerDigestTruth = getPath(continuousResultPollerProof, [
+    "processSummary",
+    "poller",
+    "digest",
+    "runtimeTruth",
+  ]);
+  const provenCapabilities = {
+    repeatedSupervisorCycles: bool(getPath(continuousSupervisorTruth, ["repeatedLocalSupervisorCyclesProven"])),
+    makerReseedWhileSupervisorRuns: bool(getPath(continuousSupervisorTruth, ["marketMakerReseedWhileRunning"])),
+    lifecycleSchedulerWhileSupervisorRuns: bool(getPath(continuousSupervisorTruth, ["lifecycleSchedulerWhileRunning"])),
+    resultIngestionWhileSupervisorRuns: bool(getPath(continuousSupervisorTruth, ["resultIngestionWhileRunning"])),
+    resultSettlementSchedulerWhileSupervisorRuns: bool(
+      getPath(continuousSupervisorTruth, ["resultSettlementSchedulerWhileRunning"]),
+    ),
+    supervisorProviderRefreshQuotaProtected: bool(getPath(continuousSupervisorTruth, ["quotaProtected"])),
+    resultPollingBackgroundProof: bool(continuousResultPollerProof?.pass),
+    resultPollingContinuousWhileRunnerRuns:
+      bool(getPath(continuousResultPollerTruth, ["resultPollingContinuousWhileRunnerRuns"])) ||
+      bool(getPath(continuousResultPollerTruth, ["resultPollingWhileProcessRuns"])) ||
+      bool(getPath(continuousResultPollerDigestTruth, ["resultPollingContinuousWhileRunnerRuns"])),
+    resultSettlementSchedulerWhilePollerRuns: bool(
+      getPath(continuousResultPollerTruth, ["settlementSchedulerContinuousWhileRunnerRuns"]),
+    ) || bool(getPath(continuousResultPollerTruth, ["settlementSchedulerWhileProcessRuns"])) ||
+      bool(getPath(continuousResultPollerDigestTruth, ["settlementSchedulerContinuousWhileRunnerRuns"])),
+    installedOsService: false,
+  };
   const settlementChecks = {
     proofPresent: resultSettlementExecution != null,
     proofPassed: bool(resultSettlementExecution?.pass),
@@ -159,6 +195,14 @@ async function main() {
     schedulerRunPassed: bool(schedulerRun?.pass),
     supervisorPresent: supervisor != null,
     supervisorPassed: bool(supervisor?.pass),
+    continuousSupervisorProofPresent: continuousSupervisorProof != null,
+    continuousSupervisorProofPassed: bool(continuousSupervisorProof?.pass),
+    repeatedSupervisorCapabilitiesKnown:
+      provenCapabilities.repeatedSupervisorCycles &&
+      provenCapabilities.makerReseedWhileSupervisorRuns &&
+      provenCapabilities.lifecycleSchedulerWhileSupervisorRuns,
+    continuousResultPollerProofPresent: continuousResultPollerProof != null,
+    continuousResultPollerProofPassed: bool(continuousResultPollerProof?.pass),
     resultSettlementGuardPresent: settlementChecks.proofPresent,
     resultSettlementGuardPassed: settlementChecks.proofPassed,
     liveResultSettlementBlockedWhileLive:
@@ -178,6 +222,7 @@ async function main() {
     modeTruth: {
       cachedRuntimeUsesQuota: false,
       liveProviderRefreshRequiresExplicitFlag: true,
+      latestSupervisorRunProfileOnly: true,
       liveProviderRefreshContinuousWhileSupervisorRuns: bool(
         getPath(supervisorRuntimeTruth, ["providerRefreshContinuousWhileSupervisorRuns"]),
       ),
@@ -191,6 +236,18 @@ async function main() {
         getPath(supervisorRuntimeTruth, ["lifecycleSchedulerContinuousWhileSupervisorRuns"]),
       ),
       unattendedServiceInstalled: bool(getPath(supervisorRuntimeTruth, ["unattendedServiceInstalled"])),
+    },
+    provenCapabilities: {
+      supervisorProofPath: CONTINUOUS_SUPERVISOR_PROOF_PATH,
+      supervisorProofGeneratedAt: continuousSupervisorProof?.generatedAt ?? null,
+      resultPollerProofPath: CONTINUOUS_RESULT_POLLER_PROOF_PATH,
+      resultPollerProofGeneratedAt: continuousResultPollerProof?.generatedAt ?? null,
+      ...provenCapabilities,
+      notes: [
+        "modeTruth reflects only the latest supervisor summary profile.",
+        "provenCapabilities reflects previously passing continuous supervisor/result-poller proof artifacts.",
+        "Provider refresh can run under the supervisor only with explicit live-provider flags and quota caps; cached supervisor proof spends no provider quota.",
+      ],
     },
     event: liveProof?.event ?? runtimeLaunch?.provider?.proof?.event ?? null,
     selectedMarket: liveProof?.selectedMarket ?? makerSeed?.selectedMarket ?? null,
@@ -237,6 +294,14 @@ async function main() {
       generatedAt: supervisor?.generatedAt ?? null,
       completedIterations: getPath(supervisor, ["settings", "completedIterations"]),
       runtimeTruth: supervisorRuntimeTruth,
+      latestRunProfile: {
+        makerSeedEnabled: getPath(supervisor, ["settings", "makerSeedEnabled"]),
+        lifecycleSchedulerEnabled: getPath(supervisor, ["settings", "lifecycleSchedulerEnabled"]),
+        resultIngestionEnabled: getPath(supervisor, ["settings", "resultIngestionEnabled"]),
+        resultSettlementEnabled: getPath(supervisor, ["settings", "resultSettlementEnabled"]),
+        approvedResultSettlementEnabled: getPath(supervisor, ["settings", "approvedResultSettlementEnabled"]),
+        runProviderProof: getPath(supervisor, ["settings", "runProviderProof"]),
+      },
     },
     checks,
     gaps: {
