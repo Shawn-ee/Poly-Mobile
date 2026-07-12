@@ -6,7 +6,7 @@
 | Prove one upcoming event can refresh from live provider data | P0 | Complete: Spain vs. France live provider proof passed. |
 | Prove stale-to-ready provider lifecycle transition | P0 | Complete: selected quote lifecycle went stale -> ready. |
 | Prove local maker quotes shifted worse than provider | P0 | Complete: provider bid/ask `0.4891/0.5291`, maker bid/ask `0.47/0.55`. |
-| Prove fake-token buy/Portfolio/cashout/history against refreshed event | P0 | Complete: buy filled, Portfolio showed position, sell/cashout filled, History had buy and sell. |
+| Prove fake-token buy/Portfolio/cashout/history against refreshed event | P0 | Complete: backend proof passed and S23 proof passed for Home -> Event Detail -> provider totals line -> ticket -> buy -> Portfolio -> sell/cashout -> History. |
 | Continuous unattended daemon | P1 | Not complete; proof runner is bounded and local-only. |
 | Auto-close/suspend | P1 | Manual routes exist; automatic scheduling is not complete. |
 | Automatic official-result settlement | P1 | Manual/admin settlement exists; result provider is missing. |

@@ -48,5 +48,6 @@ The backend is close enough for a one-event local live proof because the data mo
 - Command: `npm run mobile:odds-api-live-runtime-proof`.
 - Script: `scripts/prove_odds_api_one_event_live_runtime.ts`.
 - Summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`.
+- S23 summary: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`.
 - Result: pass.
 - The proof is bounded and local-only. It proves the minimum live path for one upcoming provider event, but it is not an unattended production daemon.

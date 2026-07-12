@@ -28,6 +28,7 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 ## Latest Lifecycle Proof
 
 - Summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`
+- S23 visible proof: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`
 - Open state: selected market was `LIVE`, visible on Home, visible on Event Detail, and accepted fake-token orders.
 - Stale state: proof forced selected quote snapshots stale and Event Detail reported stale provider quote lifecycle.
 - Refreshed state: live Odds API refresh restored selected quote lifecycle to ready.

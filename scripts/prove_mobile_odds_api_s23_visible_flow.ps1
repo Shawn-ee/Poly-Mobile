@@ -14,7 +14,11 @@ param(
   [string]$Cycle = "ODDSAPIS23",
   [string]$OutputDir = "docs\mobile\screenshots\cycle-ODDSAPIS23-odds-api-s23-visible-flow",
   [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-ODDSAPIS23-odds-api-s23-visible-flow",
-  [string]$DotenvPath = ""
+  [string]$DotenvPath = "",
+  [switch]$SkipReplaySeed,
+  [string]$HomeExpectedTitle = "Switzerland vs. Argentina",
+  [string]$TeamAExpected = "Argentina",
+  [string]$TeamBExpected = "Switzerland"
 )
 
 $ErrorActionPreference = "Stop"
@@ -258,10 +262,12 @@ try {
     throw "Backend health is not ok."
   }
 
-  $replayPath = "docs/mobile/harness/the-odds-api-single-event/event-odds.redacted.json"
-  cmd /c npm run mobile:the-odds-api-single-event -- "--fromRedactedOdds=$replayPath" | Out-Null
-  if ($LASTEXITCODE -ne 0) {
-    throw "The Odds API replay seed failed."
+  if (-not $SkipReplaySeed) {
+    $replayPath = "docs/mobile/harness/the-odds-api-single-event/event-odds.redacted.json"
+    cmd /c npm run mobile:the-odds-api-single-event -- "--fromRedactedOdds=$replayPath" | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+      throw "The Odds API replay seed failed."
+    }
   }
 
   $counterpartyProofPath = Join-Path $HierarchyOutputDir "cycle-$Cycle-odds-api-counterparty.json"
@@ -302,7 +308,7 @@ try {
 
   Save-Screenshot -Name "cycle-$Cycle-home.png" | Out-Null
   $homeXml = Save-Hierarchy -Name "cycle-$Cycle-home.xml"
-  Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Matches", "Switzerland vs. Argentina", "event-card-$EventSlug", "home-compact-retail-feed", "home-card-source-sportsbook-odds", "home-card-source-partial-provider-backed")
+  Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Matches", $HomeExpectedTitle, "event-card-$EventSlug", "home-compact-retail-feed", "home-card-source-sportsbook-odds", "home-card-source-partial-provider-backed")
   Assert-NotContains -Path $homeXml -Unexpected @("This is the developer menu", "SDK version", "Order Book", "event-detail-open-order-book", "Chat", "Provider Breadth")
 
   Tap-Node -Path $homeXml -Identifier "event-card-$EventSlug" -StartsWith -YRatio 0.28
@@ -316,7 +322,7 @@ try {
     Save-Screenshot -Name "cycle-$Cycle-detail-top-retry.png" | Out-Null
     $detailTopXml = Save-Hierarchy -Name "cycle-$Cycle-detail-top-retry.xml"
   }
-  Assert-Contains -Path $detailTopXml -Expected @("event-detail-back", "Game", "Argentina", "Switzerland", "Game Lines", "Player Props")
+  Assert-Contains -Path $detailTopXml -Expected @("event-detail-back", "Game", $TeamAExpected, $TeamBExpected, "Game Lines", "Player Props")
   Assert-NotContains -Path $detailTopXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "event-detail-chat")
 
   $lineXml = $null
@@ -438,6 +444,8 @@ try {
     keyId = $keyId
     apiKey = "redacted"
     eventSlug = $EventSlug
+    skipReplaySeed = [bool]$SkipReplaySeed
+    expectedTitle = $HomeExpectedTitle
     selectedMarket = [ordered]@{
       marketGroupKey = $LineMarketGroupKey
       marketType = $LineMarketType

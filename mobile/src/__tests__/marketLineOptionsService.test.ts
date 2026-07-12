@@ -49,7 +49,7 @@ describe("marketLineOptionsService", () => {
     expect(matchingBackendLineMarket(markets, "spread", "1.5", "Reg. Time")?.id).toBe("spread-rt-15");
   });
 
-  test("prefers signed Holiwyn contract fixtures over raw provider rows for supported spread lines", () => {
+  test("prefers normalized provider-backed rows over contract fixtures for supported spread lines", () => {
     const markets = [
       market({
         id: "provider-spread-15",
@@ -78,7 +78,7 @@ describe("marketLineOptionsService", () => {
     ];
 
     expect(lineOptionsFor(markets, "spread", "Reg. Time")).toEqual(["-1.5", "1.5"]);
-    expect(matchingBackendLineMarket(markets, "spread", "1.5", "Reg. Time")?.id).toBe("fixture-spread-pos-15");
+    expect(matchingBackendLineMarket(markets, "spread", "1.5", "Reg. Time")?.id).toBe("provider-spread-15");
     expect(matchingBackendLineMarket(markets, "spread", "-1.5", "Reg. Time")?.id).toBe("fixture-spread-neg-15");
   });
 

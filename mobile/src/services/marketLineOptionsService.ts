@@ -67,8 +67,11 @@ export const matchingBackendLineMarket = (markets: Market[], type: string, line:
     );
   });
   const signedLine = target > 0 ? `+${target}` : String(target);
+  const providerCandidate = (market: Market) =>
+    market.referenceSource === "sportsbook-odds" || market.referenceSource === "polymarket";
   return (
-    candidates.find((market) => market.referenceSource === "contract-fixture" && market.title.includes(signedLine)) ??
+    candidates.find((market) => providerCandidate(market) && market.title.includes(signedLine)) ??
+    candidates.find(providerCandidate) ??
     candidates.find((market) => market.title.includes(signedLine)) ??
     candidates.find((market) => market.referenceSource === "contract-fixture") ??
     candidates[0]

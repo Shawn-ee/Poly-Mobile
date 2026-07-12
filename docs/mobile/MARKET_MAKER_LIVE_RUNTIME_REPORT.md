@@ -43,4 +43,5 @@ For a selected binary sportsbook market:
 - Provider reference: bid `0.4891`, ask `0.5291`.
 - Local maker quote: bid `0.47`, ask `0.55`, shifted worse than provider by two ticks.
 - Trading proof: fake-token buy filled, Portfolio position appeared, sell/cashout filled, History contained both trades.
+- S23 proof: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`.
 - Continuous status: still bounded proof mode, not an unattended production bot.

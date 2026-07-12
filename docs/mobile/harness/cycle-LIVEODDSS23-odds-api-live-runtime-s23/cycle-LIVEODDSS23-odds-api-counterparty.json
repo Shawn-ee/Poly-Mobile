@@ -1,0 +1,64 @@
+{
+  "pass": true,
+  "liquidityPurpose": "buy-fill",
+  "routeContract": {
+    "mobileFlow": "Event Detail line market -> generic Buy ticket -> /api/orders BUY -> Portfolio History",
+    "expectedRestingSide": "SELL",
+    "source": "local-mvp-internal-liquidity"
+  },
+  "eventSlug": "odds-api-single-soccer-test",
+  "market": {
+    "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "title": "Spain vs. France: Total Goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "period": "regulation",
+    "line": "2.5",
+    "referenceSource": "sportsbook-odds",
+    "externalMarketId": "f9aa13a662d1658e5a02cfc06d6a2d73:betonlineag:totals:2.5",
+    "conditionId": "odds-api-7439c2d6033826e21400f068"
+  },
+  "outcome": {
+    "id": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+    "name": "Over +2.5",
+    "side": "over",
+    "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4",
+    "referenceOutcomeLabel": "Over +2.5"
+  },
+  "cleanupOnly": false,
+  "maker": {
+    "id": "ffcad0c8-eda7-4fee-98bf-fc983c3d9761",
+    "username": "mobile_route_fill_maker_90824b6a"
+  },
+  "cleanup": {
+    "enabled": true,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": [],
+    "cleanupBlockingBids": true,
+    "canceledBlockingBids": [],
+    "cleanupBlockingMarketBids": true,
+    "cleanupBlockingMarketBidsForcedByPurpose": false,
+    "canceledBlockingMarketBids": [],
+    "cleanupProofAsks": false,
+    "canceledProofAsks": [],
+    "cleanupBlockingAsks": false,
+    "canceledBlockingAsks": []
+  },
+  "makerOrder": {
+    "id": "c57002d4-e02e-49e3-a448-859169172613",
+    "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+    "side": "SELL",
+    "price": "0.58",
+    "size": "100",
+    "remaining": "100",
+    "reservedNotional": "0",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "SELL",
+    "price": "0.58",
+    "size": "100",
+    "intendedMobileTaker": "BUY $25 route-backed totals ticket"
+  }
+}
