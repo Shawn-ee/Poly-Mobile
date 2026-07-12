@@ -136,6 +136,7 @@
     "mobile:one-event-settlement-execution-proof": "tsx scripts/prove_odds_api_one_event_settlement_execution.ts",
     "mobile:one-event-result-settlement": "tsx scripts/settle_odds_api_one_event_from_result.ts",
     "mobile:one-event-result-ingest": "tsx scripts/ingest_odds_api_one_event_result.ts",
+    "mobile:one-event-result-ingestion-audit-event-proof": "tsx scripts/prove_odds_api_result_ingestion_audit_event.ts",
     "mobile:one-event-result-poller": "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_result_poller.ps1",
     "mobile:one-event-result-poller-proof": "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_result_poller.ps1 -MaxIterations 2 -IntervalSeconds 0 -SkipSleep",
     "mobile:one-event-result-poller:process": "powershell -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_result_poller.ps1",

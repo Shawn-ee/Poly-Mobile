@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T13:32:40.425Z",
+  "generatedAt": "2026-07-12T13:41:49.839Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T13:32:40.390Z"
+      "timestamp": "2026-07-12T13:41:49.791Z"
     },
     "error": null
   },
@@ -65,42 +65,43 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 6.44,
-    "onboarding": 2.8,
-    "readiness": 2.81,
-    "runtimeStatus": 1.55,
-    "runtimeLaunch": 0.76,
-    "supervisor": 0.76,
-    "supervisorProcess": 0,
-    "internalTesterRuntime": 0,
-    "internalTesterResultPoller": 0,
-    "localRuntimeTask": 1.93,
-    "localRuntimeTaskInstall": 1.74,
-    "localRuntimeStartup": 1.23,
-    "localRuntimeStartupInstall": 0.59,
-    "continuousSupervisor": 2.35,
-    "staleGuardProof": 4.03,
-    "staleGuardRun": 3.91,
-    "lifecycleControls": 2.81,
-    "lifecycleScheduler": 2.81,
-    "lifecycleSchedulerRun": 2.35,
-    "settlementReadiness": 2.8,
-    "settlementExecution": 2.51,
-    "resultSettlementExecution": 1.67,
-    "resultSettlementLiveBlocked": 1.67,
-    "manualSettlement": 2.8,
-    "resultIngestion": 0.01,
-    "resultPoller": 0.46,
-    "resultPollerProcess": 0,
-    "continuousResultPoller": 0.17,
-    "resultSettlement": 0,
-    "resultSettlementRun": 0,
-    "settlementPreflight": 1.43,
-    "settlementAuditEvent": 1.11,
-    "approvedAutoSettlement": 0.94,
-    "supervisorApprovedSettlement": 0.76,
-    "makerSeed": 2.35,
-    "s23Visible": 6.26
+    "liveProof": 6.59,
+    "onboarding": 2.96,
+    "readiness": 2.96,
+    "runtimeStatus": 1.7,
+    "runtimeLaunch": 0.91,
+    "supervisor": 0.91,
+    "supervisorProcess": 0.16,
+    "internalTesterRuntime": 0.16,
+    "internalTesterResultPoller": 0.16,
+    "localRuntimeTask": 2.08,
+    "localRuntimeTaskInstall": 1.89,
+    "localRuntimeStartup": 1.38,
+    "localRuntimeStartupInstall": 0.74,
+    "continuousSupervisor": 2.5,
+    "staleGuardProof": 4.18,
+    "staleGuardRun": 4.07,
+    "lifecycleControls": 2.96,
+    "lifecycleScheduler": 2.96,
+    "lifecycleSchedulerRun": 2.5,
+    "settlementReadiness": 2.96,
+    "settlementExecution": 2.67,
+    "resultSettlementExecution": 1.82,
+    "resultSettlementLiveBlocked": 1.82,
+    "manualSettlement": 2.96,
+    "resultIngestion": 0.16,
+    "resultIngestionAuditEvent": 0.02,
+    "resultPoller": 0.61,
+    "resultPollerProcess": 0.15,
+    "continuousResultPoller": 0.32,
+    "resultSettlement": 0.16,
+    "resultSettlementRun": 0.16,
+    "settlementPreflight": 1.58,
+    "settlementAuditEvent": 1.27,
+    "approvedAutoSettlement": 1.09,
+    "supervisorApprovedSettlement": 0.91,
+    "makerSeed": 2.5,
+    "s23Visible": 6.41
   },
   "requirements": [
     {
@@ -196,6 +197,17 @@
       "notes": "This proves a dedicated local result-polling loop in replay/no-quota mode. Live score polling remains explicit and quota-capped through the same runner; installed unattended official-result polling remains P1."
     },
     {
+      "id": "result-ingestion-audit-event",
+      "priority": "P0",
+      "requirement": "Provider-shaped result ingestion can write durable canonical audit evidence before settlement is considered.",
+      "status": "complete",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-audit-event-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json"
+      ],
+      "notes": "This records provider result ingestion as canonical event-stream evidence in replay/no-quota mode. It is not yet a dedicated official-result table or unattended polling service."
+    },
+    {
       "id": "result-poller-background-process",
       "priority": "P0",
       "requirement": "The dedicated result polling runner can run as a local background process and stop cleanly without provider quota.",
@@ -252,6 +264,7 @@
         "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-audit-event-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-poller-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-poller-process-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-result-poller-proof-summary.redacted.json",
@@ -261,7 +274,7 @@
         "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-audit-event-summary.redacted.json",
         "docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md"
       ],
-      "notes": "Provider-shaped score ingestion can produce trusted result JSON in replay mode, and the local scheduler can dry-run that result. A dedicated local result poller now repeats ingestion plus settlement scheduling and has start/status/stop background process proof. Settlement preflight reports current execution eligibility and blockers. Trusted-result execution is blocked unless the market is CLOSED. Explicit operator/proof runs can write durable canonical settlement audit events. Live score ingestion is explicit and quota-guarded through the command, poller, or supervisor controls; installed unattended official result polling remains P1."
+      "notes": "Provider-shaped score ingestion can produce trusted result JSON in replay mode, write durable canonical result-ingestion audit evidence, and the local scheduler can dry-run that result. A dedicated local result poller now repeats ingestion plus settlement scheduling and has start/status/stop background process proof. Settlement preflight reports current execution eligibility and blockers. Trusted-result execution is blocked unless the market is CLOSED. Explicit operator/proof runs can write durable canonical settlement audit events. Live score ingestion is explicit and quota-guarded through the command, poller, or supervisor controls; installed unattended official result polling remains P1."
     },
     {
       "id": "settlement-execution-disposable",
@@ -380,6 +393,7 @@
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-audit-event-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-poller-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-poller-process-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-result-poller-proof-summary.redacted.json",
@@ -390,7 +404,7 @@
         "docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-supervisor-approved-settlement-wait-summary.redacted.json"
       ],
-      "notes": "Provider-shaped result ingestion replay, a dedicated local result polling runner with background process management, durable canonical settlement audit events, approval-file auto-execution, supervisor-approved wait mode, and trusted-result scheduler execution are proven on local evidence. Execution is blocked while the target market remains LIVE unless it later closes and exactly matches an approval file. Live score ingestion is available only behind explicit live flags plus THE_ODDS_API_KEY, including the quota-capped poller and supervisor paths. Installed unattended provider result polling and unconfirmed active-event execution remain future work."
+      "notes": "Provider-shaped result ingestion replay, durable canonical result-ingestion audit evidence, a dedicated local result polling runner with background process management, durable canonical settlement audit events, approval-file auto-execution, supervisor-approved wait mode, and trusted-result scheduler execution are proven on local evidence. Execution is blocked while the target market remains LIVE unless it later closes and exactly matches an approval file. Live score ingestion is available only behind explicit live flags plus THE_ODDS_API_KEY, including the quota-capped poller and supervisor paths. Installed unattended provider result polling and unconfirmed active-event execution remain future work."
     }
   ],
   "conclusion": {

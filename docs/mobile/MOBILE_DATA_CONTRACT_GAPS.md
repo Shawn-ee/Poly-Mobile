@@ -10205,3 +10205,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: installed service ownership, durable official-result records, durable approval records, multi-event result queue, and production operator UI remain P1/P2.
 - Temporary mock/static data: the proof uses existing redacted provider-shaped score evidence and spends no provider quota.
 - Future migration concern: process state remains local `.runtime` evidence. Production runtime should persist poller state/result evidence in backend storage and monitor health outside the developer shell.
+
+## Cycle ONEEVENTRESULTINGESTIONAUDIT - Durable Result Ingestion Audit Evidence
+
+- Closed or narrowed: provider-shaped result ingestion can now write canonical backend audit evidence with a trusted-result digest before settlement is considered.
+- Route mismatch: none. No mobile API or backend HTTP route changed; this is local runtime evidence using the existing `CanonicalEvent` stream table.
+- Fields Holiwyn still needs but backend/provider does not fully provide: a dedicated durable official-result table, multi-event result queue, provider finality policy, and operator review UI remain P1/P2.
+- Temporary mock/static data: the proof uses the existing redacted Odds API scores-shaped fixture and spends no provider quota. Live score ingestion remains explicit and quota-capped.
+- Future migration concern: canonical events are good audit evidence, but production settlement should persist official result records and review decisions in a first-class backend model.

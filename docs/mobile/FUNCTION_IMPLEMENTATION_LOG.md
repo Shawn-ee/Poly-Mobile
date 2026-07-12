@@ -14281,3 +14281,23 @@ Known limitations:
 - Known limitations:
   - This is still a local control plane, not an installed OS service.
   - Live result ingestion remains opt-in and quota-capped.
+
+# Cycle ONEEVENTRESULTINGESTIONAUDIT - Durable Result Ingestion Audit Evidence
+
+- Feature/page worked on: backend official-result evidence intake.
+- Frontend components touched: none. This is backend/runtime proof only and does not change mobile UI.
+- Important functions/services touched:
+  - `scripts/ingest_odds_api_one_event_result.ts`
+  - `scripts/prove_odds_api_result_ingestion_audit_event.ts`
+  - `src/server/services/orderbookEvents.ts`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `package.json` script `mobile:one-event-result-ingestion-audit-event-proof`
+- User/runtime interactions supported:
+  - Operator can run result ingestion with `--writeAuditEvent` to write canonical provider-result evidence before any settlement action.
+  - Proof verifies the audit event type, topic, trusted-result digest, provider source id, no provider quota, and no settlement execution.
+- State transitions:
+  - Replay score evidence -> trusted result JSON -> canonical `provider.result.ingested` market-stream event.
+  - No market status, order, position, portfolio, or settlement mutation.
+- Known limitations:
+  - This is canonical event-stream evidence, not a dedicated provider-result table.
+  - Installed unattended result polling and operator result-review UI remain P1/P2.

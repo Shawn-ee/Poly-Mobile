@@ -1,6 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { createHash } from "node:crypto";
 import { oddsApiGetJson, assertQuotaBudget, type OddsApiCallRecord } from "@/server/services/theOddsApiSingleEventProvider";
+import { prisma } from "@/lib/db";
+import { emitProviderResultIngestionAuditEvent } from "@/server/services/orderbookEvents";
 
 const DEFAULT_EVENT_SLUG = "odds-api-single-soccer-test";
 const DEFAULT_EVENT_ID = "f9aa13a662d1658e5a02cfc06d6a2d73";
@@ -70,6 +73,13 @@ function inferAdvanceTeam(event: OddsApiScoreEvent, homeScore: number, awayScore
   return null;
 }
 
+function digestJson(value: unknown) {
+  return createHash("sha256")
+    .update(JSON.stringify(value))
+    .digest("hex")
+    .slice(0, 12);
+}
+
 function toTrustedResult(params: {
   eventSlug: string;
   event: OddsApiScoreEvent;
@@ -135,6 +145,7 @@ async function main() {
   const daysFrom = argValue("daysFrom") ?? "3";
   const maxCredits = Number(argValue("maxCredits") ?? "2");
   const minRemaining = Number(argValue("minRemaining") ?? "2");
+  const writeAuditEvent = hasFlag("writeAuditEvent");
   const calls: OddsApiCallRecord[] = [];
 
   let scores: OddsApiScoreEvent[];
@@ -157,9 +168,36 @@ async function main() {
   if (selected && selected.completed !== true) p0.push(`Scores event ${eventId} is not completed.`);
 
   let trustedResult: ReturnType<typeof toTrustedResult> | null = null;
+  let auditEvent: Awaited<ReturnType<typeof emitProviderResultIngestionAuditEvent>> | null = null;
   if (selected && p0.length === 0) {
     trustedResult = toTrustedResult({ eventSlug, event: selected, source });
     await writeJson(trustedResultOutputPath, trustedResult);
+    if (writeAuditEvent) {
+      auditEvent = await emitProviderResultIngestionAuditEvent({
+        eventSlug,
+        sourceEventId: trustedResult.sourceEventId,
+        type: "provider.result.ingested",
+        payload: {
+          mode: live ? "live-provider" : "fixture-replay",
+          sportKey,
+          providerSource: source,
+          sourceEventId: trustedResult.sourceEventId,
+          eventTitle: trustedResult.eventTitle,
+          resultStatus: trustedResult.status,
+          period: trustedResult.period,
+          homeTeam: trustedResult.homeTeam,
+          awayTeam: trustedResult.awayTeam,
+          homeScore: trustedResult.homeScore,
+          awayScore: trustedResult.awayScore,
+          advanceTeam: trustedResult.advanceTeam,
+          recordedAt: trustedResult.recordedAt,
+          trustedResultDigest: digestJson(trustedResult),
+          trustedResultOutputPath,
+          providerQuotaUsed: live,
+          settlementExecutionAttempted: false,
+        },
+      });
+    }
   }
 
   const summary = {
@@ -194,11 +232,25 @@ async function main() {
       : null,
     trustedResultOutputPath,
     trustedResult,
+    auditEvent: auditEvent
+      ? {
+          id: auditEvent.id,
+          type: auditEvent.type,
+          stream: auditEvent.stream,
+          topicKey: `market:provider-result:${eventSlug}`,
+          payload: {
+            trustedResultDigest: digestJson(trustedResult),
+            providerQuotaUsed: live,
+            settlementExecutionAttempted: false,
+          },
+        }
+      : null,
     runtimeTruth: {
       officialResultProviderPathAvailable: true,
       liveProviderCallRequiresExplicitFlag: true,
       defaultModeUsesQuota: false,
       trustedResultContractProduced: trustedResult != null,
+      durableResultIngestionAuditEventWritten: auditEvent != null,
       settlementExecutionAttempted: false,
     },
     gaps: {
@@ -218,4 +270,6 @@ async function main() {
 main().catch((error) => {
   console.error(error instanceof Error ? error.message : error);
   process.exit(1);
+}).finally(async () => {
+  await prisma.$disconnect();
 });

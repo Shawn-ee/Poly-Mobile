@@ -1,0 +1,87 @@
+{
+  "generatedAt": "2026-07-12T13:40:32.907Z",
+  "scope": "odds-api-one-event-result-ingestion-audit-event-proof",
+  "pass": true,
+  "providerQuotaUsed": false,
+  "command": {
+    "executable": "C:\\nvm4w\\nodejs\\node.exe",
+    "args": [
+      "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+      "scripts/ingest_odds_api_one_event_result.ts",
+      "--eventSlug=odds-api-single-soccer-test",
+      "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-audit-event-ingest.redacted.json",
+      "--trustedResultOutput=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+      "--writeAuditEvent"
+    ],
+    "exitCode": 0,
+    "stdoutTail": [
+      "    }",
+      "  },",
+      "  \"runtimeTruth\": {",
+      "    \"officialResultProviderPathAvailable\": true,",
+      "    \"liveProviderCallRequiresExplicitFlag\": true,",
+      "    \"defaultModeUsesQuota\": false,",
+      "    \"trustedResultContractProduced\": true,",
+      "    \"durableResultIngestionAuditEventWritten\": true,",
+      "    \"settlementExecutionAttempted\": false",
+      "  },",
+      "  \"gaps\": {",
+      "    \"p0\": [],",
+      "    \"p1\": [",
+      "      \"Default proof uses provider-shaped replay. Run with --live and THE_ODDS_API_KEY to verify a current provider score response.\"",
+      "    ],",
+      "    \"p2\": [",
+      "      \"Multi-event result ingestion and operator UI remain future work.\"",
+      "    ]",
+      "  }",
+      "}"
+    ],
+    "stderrTail": []
+  },
+  "ingestionSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-audit-event-ingest.redacted.json",
+  "trustedResultOutputPath": "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+  "eventSlug": "odds-api-single-soccer-test",
+  "auditEvent": {
+    "id": "172",
+    "eventType": "provider.result.ingested",
+    "stream": "MARKET",
+    "topicKey": "market:provider-result:odds-api-single-soccer-test",
+    "marketId": null,
+    "outcomeId": null,
+    "createdAt": "2026-07-12T13:40:32.333Z",
+    "payload": {
+      "eventSlug": "odds-api-single-soccer-test",
+      "sourceEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
+      "resultStatus": "final",
+      "homeScore": 1,
+      "awayScore": 2,
+      "advanceTeam": "Spain",
+      "trustedResultDigest": "d3f48fbdf911",
+      "settlementExecutionAttempted": false
+    }
+  },
+  "checks": {
+    "commandPassed": true,
+    "ingestionPassed": true,
+    "summaryIncludesAuditEvent": true,
+    "canonicalEventCreatedAfterStart": true,
+    "canonicalEventTypeMatches": true,
+    "canonicalEventStreamMatches": true,
+    "canonicalEventTopicMatches": true,
+    "payloadEventSlugMatches": true,
+    "payloadSourceEventMatches": true,
+    "payloadDigestMatches": true,
+    "payloadSettlementExecutionFalse": true,
+    "providerQuotaNotUsed": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "Durable provider result ingestion audit events are now available for local proof/operator runs, but unattended official-result polling is still not installed.",
+      "Result ingestion audit evidence is canonical event stream data, not a dedicated provider-result table yet."
+    ],
+    "p2": [
+      "Operator result review UI and multi-event result queue remain future work."
+    ]
+  }
+}

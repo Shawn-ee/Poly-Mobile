@@ -421,6 +421,26 @@ export const emitMarketSettlementAuditEvent = async (params: {
     payload: params.payload,
   });
 
+export const emitProviderResultIngestionAuditEvent = async (params: {
+  eventSlug: string;
+  sourceEventId?: string | null;
+  type: "provider.result.ingested" | "provider.result.unavailable";
+  payload: Record<string, unknown>;
+}) =>
+  createEvent({
+    stream: "market",
+    topicId: `provider-result:${params.eventSlug}`,
+    type: params.type,
+    marketId: null,
+    outcomeId: null,
+    userId: null,
+    payload: {
+      eventSlug: params.eventSlug,
+      sourceEventId: params.sourceEventId ?? null,
+      ...params.payload,
+    },
+  });
+
 export const getMarketBootstrapEvent = (params: { marketId: string; outcomeId?: string | null }) =>
   buildBootstrapEvent({
     stream: "market",
