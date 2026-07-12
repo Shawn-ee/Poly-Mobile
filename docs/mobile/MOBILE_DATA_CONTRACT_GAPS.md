@@ -10380,3 +10380,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable job dispatch, authenticated operator controls, service heartbeat records, provider-refresh job records, and multi-event action planning remain P1/P2.
 - Temporary mock/static data: none added. The route composes existing status fields and does not execute commands.
 - Future migration concern: production should expose authenticated actions backed by job records instead of returning local shell commands.
+
+## Cycle LIVERUNTIMESETTLEMENTSTATUS - Runtime Status Settlement Decision
+
+- Closed or narrowed: the local live-runtime status route now surfaces the active-event settlement execution decision and closed-market guard without requiring operators to open separate proof JSON.
+- Route mismatch: `/api/internal/live-runtime/status` adds `settlementDecision` with execution eligibility, blockers, closed-market requirement, and next safe action. It intentionally exposes only whether the exact confirmation is known, not the confirmation phrase itself.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable official-result records, durable approval records, production operator UI, authenticated settlement controls, and installed official-result polling remain P1/P2.
+- Temporary mock/static data: none added. The route reads existing redacted active-settlement readiness evidence only.
+- Future migration concern: production should replace local proof-file settlement status with durable event/result/approval/settlement tables and auditable operator workflows.

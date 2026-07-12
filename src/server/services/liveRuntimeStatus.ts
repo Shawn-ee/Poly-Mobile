@@ -7,6 +7,8 @@ const PHASE_AUDIT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json";
 const WATCHDOG_PATH =
   "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json";
+const ACTIVE_SETTLEMENT_READINESS_PATH =
+  "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json";
 const SUPERVISOR_STATE_PATH = ".runtime/one-event-live-supervisor/supervisor-process-state.json";
 const RESULT_POLLER_STATE_PATH = ".runtime/one-event-result-poller/result-poller-process-state.json";
 const MOBILE_REFRESH_DUE_SECONDS = 60;
@@ -195,11 +197,14 @@ async function getProviderSnapshotFreshness(params: {
 
 function buildOperatorNextActions(params: {
   providerSnapshots: JsonObject;
+  settlementDecision: JsonObject;
   supervisorRunning: boolean;
   resultPollerRunning: boolean;
 }) {
   const mobileLifecycleStatus = stringValue(params.providerSnapshots.mobileLifecycleStatus) ?? "unknown";
   const nextProviderAction = stringValue(params.providerSnapshots.nextProviderAction) ?? "inspect_status";
+  const settlementOperatorDecision = stringValue(params.settlementDecision.operatorDecision);
+  const settlementEligible = booleanValue(params.settlementDecision.executionEligibleNow);
   const actions = [
     {
       id: "cached_internal_testing",
@@ -253,6 +258,19 @@ function buildOperatorNextActions(params: {
     });
   }
 
+  if (settlementOperatorDecision === "wait_for_or_apply_market_close_before_execution" || settlementEligible === false) {
+    actions.push({
+      id: "settlement_wait_for_closed_market",
+      priority: "P1",
+      label: "Wait for closed market before settlement",
+      command: "npm run mobile:one-event-active-settlement-readiness",
+      requiresProviderKey: false,
+      spendsProviderQuota: false,
+      reason:
+        "Active-event trusted-result settlement is intentionally blocked while the selected market is not CLOSED.",
+    });
+  }
+
   return {
     recommendedFirstAction:
       nextProviderAction === "none"
@@ -270,10 +288,11 @@ function buildOperatorNextActions(params: {
 }
 
 export async function getLocalLiveRuntimeStatus() {
-  const [completionAudit, phaseAudit, watchdog, supervisorProcess, resultPollerProcess] = await Promise.all([
+  const [completionAudit, phaseAudit, watchdog, activeSettlementReadiness, supervisorProcess, resultPollerProcess] = await Promise.all([
     readJson(COMPLETION_AUDIT_PATH),
     readJson(PHASE_AUDIT_PATH),
     readJson(WATCHDOG_PATH),
+    readJson(ACTIVE_SETTLEMENT_READINESS_PATH),
     getManagedProcessStatus({ kind: "supervisor", statePath: SUPERVISOR_STATE_PATH }),
     getManagedProcessStatus({ kind: "result-poller", statePath: RESULT_POLLER_STATE_PATH }),
   ]);
@@ -327,9 +346,38 @@ export async function getLocalLiveRuntimeStatus() {
     providerSnapshots.fresh;
   const operatorNextActions = buildOperatorNextActions({
     providerSnapshots,
+    settlementDecision: {
+      executionEligibleNow: getPath(activeSettlementReadiness, ["executionDecision", "executionEligibleNow"]),
+      operatorDecision: getPath(activeSettlementReadiness, ["executionDecision", "operatorDecision"]),
+    },
     supervisorRunning: supervisorProcess.running,
     resultPollerRunning: resultPollerProcess.running,
   });
+  const settlementDecision = {
+    checked: activeSettlementReadiness != null,
+    path: ACTIVE_SETTLEMENT_READINESS_PATH,
+    pass: pass(activeSettlementReadiness),
+    generatedAt: activeSettlementReadiness?.generatedAt ?? null,
+    providerQuotaUsed: getPath(activeSettlementReadiness, ["providerQuotaUsed"]) === true,
+    activeMarketStatus: getPath(activeSettlementReadiness, ["activeMarket", "status"]),
+    activeEventStatus: getPath(activeSettlementReadiness, ["activeMarket", "event", "status"]),
+    executionEligibleNow: getPath(activeSettlementReadiness, ["executionDecision", "executionEligibleNow"]) === true,
+    operatorDecision: getPath(activeSettlementReadiness, ["executionDecision", "operatorDecision"]),
+    blockers: asStringArray(getPath(activeSettlementReadiness, ["executionDecision", "blockers"])),
+    marketMustBeClosed: getPath(activeSettlementReadiness, ["executionDecision", "marketMustBeClosed"]) === true,
+    exactConfirmationRequiredKnown:
+      typeof getPath(activeSettlementReadiness, ["executionDecision", "exactConfirmationRequired"]) === "string",
+    activeMarketExecutionAttempted:
+      getPath(activeSettlementReadiness, ["executionDecision", "activeMarketExecutionAttempted"]) === true,
+    disposableCloneSettlementProven:
+      getPath(activeSettlementReadiness, ["runtimeTruth", "disposableCloneSettlementProven"]) === true,
+    supervisorApprovedSettlementWaitProven:
+      getPath(activeSettlementReadiness, ["runtimeTruth", "supervisorApprovedSettlementWaitProven"]) === true,
+    nextSafeAction:
+      getPath(activeSettlementReadiness, ["executionDecision", "executionEligibleNow"]) === true
+        ? "execute_only_with_exact_confirmation_after_operator_review"
+        : "wait_for_or_apply_market_close_before_execution",
+  };
 
   return {
     generatedAt: new Date().toISOString(),
@@ -364,6 +412,7 @@ export async function getLocalLiveRuntimeStatus() {
     },
     freshness: artifactFreshness,
     providerSnapshots,
+    settlementDecision,
     operatorNextActions,
     managedProcesses: {
       supervisor: supervisorProcess,
@@ -391,6 +440,11 @@ export async function getLocalLiveRuntimeStatus() {
         cleanupPassed:
           getPath(watchdog, ["cleanup", "supervisor", "pass"]) === true &&
           getPath(watchdog, ["cleanup", "resultPoller", "pass"]) === true,
+      },
+      activeSettlementReadiness: {
+        path: ACTIVE_SETTLEMENT_READINESS_PATH,
+        pass: pass(activeSettlementReadiness),
+        generatedAt: activeSettlementReadiness?.generatedAt ?? null,
       },
     },
   };

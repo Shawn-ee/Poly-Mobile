@@ -101,6 +101,28 @@ const makeWatchdog = (generatedAt = nowIso()) => ({
   },
 });
 
+const makeActiveSettlementReadiness = (generatedAt = nowIso()) => ({
+  generatedAt,
+  pass: true,
+  providerQuotaUsed: false,
+  activeMarket: {
+    status: "LIVE",
+    event: { status: "ACTIVE" },
+  },
+  executionDecision: {
+    executionEligibleNow: false,
+    operatorDecision: "wait_for_or_apply_market_close_before_execution",
+    blockers: ["market_not_closed_for_execution:LIVE"],
+    exactConfirmationRequired: "SETTLE_FROM_RESULT:market-1:outcome-1:digest",
+    marketMustBeClosed: true,
+    activeMarketExecutionAttempted: false,
+  },
+  runtimeTruth: {
+    disposableCloneSettlementProven: true,
+    supervisorApprovedSettlementWaitProven: true,
+  },
+});
+
 const makeSupervisorState = () => ({
   pid: 12345,
   startedAt: nowIso(),
@@ -147,6 +169,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
       if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
       throw new Error(`unexpected path ${filePath}`);
@@ -203,8 +226,30 @@ describe("live runtime status service", () => {
           requiresProviderKey: false,
           spendsProviderQuota: false,
         }),
+        expect.objectContaining({
+          id: "settlement_wait_for_closed_market",
+          command: "npm run mobile:one-event-active-settlement-readiness",
+          requiresProviderKey: false,
+          spendsProviderQuota: false,
+        }),
       ]),
     );
+    expect(status.settlementDecision).toMatchObject({
+      checked: true,
+      pass: true,
+      providerQuotaUsed: false,
+      activeMarketStatus: "LIVE",
+      activeEventStatus: "ACTIVE",
+      executionEligibleNow: false,
+      operatorDecision: "wait_for_or_apply_market_close_before_execution",
+      blockers: ["market_not_closed_for_execution:LIVE"],
+      marketMustBeClosed: true,
+      exactConfirmationRequiredKnown: true,
+      activeMarketExecutionAttempted: false,
+      disposableCloneSettlementProven: true,
+      supervisorApprovedSettlementWaitProven: true,
+      nextSafeAction: "wait_for_or_apply_market_close_before_execution",
+    });
     expect(status.managedProcesses).toMatchObject({
       anyLoopRunning: false,
       quotaSpendingLoopRunning: false,
@@ -232,6 +277,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit(staleIso()));
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
       if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
       throw new Error(`unexpected path ${filePath}`);
@@ -257,6 +303,7 @@ describe("live runtime status service", () => {
       }
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
       if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
       throw new Error(`unexpected path ${filePath}`);
@@ -285,6 +332,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
       if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
       throw new Error(`unexpected path ${filePath}`);
@@ -308,6 +356,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
       if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
       throw new Error(`unexpected path ${filePath}`);
@@ -353,6 +402,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) {
         return JSON.stringify({
           ...makeSupervisorState(),

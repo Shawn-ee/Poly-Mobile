@@ -14581,3 +14581,14 @@ Known limitations:
 - API/data dependencies: status response adds `operatorNextActions.recommendedFirstAction`, `nextProviderAction`, `actions[]`, and a safety note. Action entries include command, provider-key requirement, quota-spend flag, priority, label, and reason.
 - Proof needed: focused status service tests, direct live route proof, `npm run mobile:one-event-phase-audit`, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: these are local operator commands, not a production control plane. The provider refresh command still requires `THE_ODDS_API_KEY` in the local environment and remains quota-capped by the underlying proof scripts.
+
+## Cycle LIVERUNTIMESETTLEMENTSTATUS - Runtime Status Settlement Decision
+
+- Feature/page worked on: backend local internal live-runtime settlement/lifecycle status.
+- Frontend components touched: none.
+- Important functions/services touched: updated `src/server/services/liveRuntimeStatus.ts`, `src/__tests__/liveRuntimeStatus.service.test.ts`, and `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: local operator or internal testing platform can call `GET /api/internal/live-runtime/status` and see whether active-event settlement is eligible now, which blocker applies, whether the selected market must be `CLOSED`, and which read-only command reports the current settlement decision.
+- State transitions: none. This is a read-only status projection over the active-event settlement readiness artifact. It does not execute settlement, call The Odds API, mutate market/order/position state, or read provider secrets.
+- API/data dependencies: status response adds `settlementDecision` with artifact pass/generatedAt, active market/event status, execution eligibility, operator decision, blocker list, closed-market guard, known exact-confirmation truth, active execution attempted flag, disposable clone proof truth, supervisor wait proof truth, and next safe action.
+- Proof needed: focused status service tests, direct live route proof, `npm run mobile:one-event-phase-audit`, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: active tester settlement remains intentionally blocked while the market is `LIVE`; installed unattended official-result polling and production operator UI remain P1/P2.

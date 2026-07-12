@@ -274,6 +274,13 @@ async function main() {
             getPath(action, ["id"]) === "cached_internal_testing" &&
             getPath(action, ["spendsProviderQuota"]) === false,
         ) &&
+        getPath(localRuntimeStatusBody, ["settlementDecision", "checked"]) === true &&
+        getPath(localRuntimeStatusBody, ["settlementDecision", "pass"]) === true &&
+        getPath(localRuntimeStatusBody, ["settlementDecision", "providerQuotaUsed"]) === false &&
+        getPath(localRuntimeStatusBody, ["settlementDecision", "marketMustBeClosed"]) === true &&
+        getPath(localRuntimeStatusBody, ["settlementDecision", "activeMarketExecutionAttempted"]) === false &&
+        getPath(localRuntimeStatusBody, ["settlementDecision", "nextSafeAction"]) ===
+          "wait_for_or_apply_market_close_before_execution" &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "supervisor", "checked"]) === true &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "resultPoller", "checked"]) === true &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "quotaSpendingLoopRunning"]) === false &&
@@ -281,7 +288,7 @@ async function main() {
         (getPath(localRuntimeStatusBody, ["gaps", "p0"]) as unknown[]).length === 0,
       evidence: [`${baseUrl}/api/internal/live-runtime/status`],
       notes:
-        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, mobile-route freshness/stale thresholds, operator next-action guidance, and read-only supervisor/result-poller process state. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
+        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, and read-only supervisor/result-poller process state. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
     }),
     requirement({
       id: "quota-policy",
