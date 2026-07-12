@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T10:44:36.538Z",
+  "generatedAt": "2026-07-12T10:49:49.639Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T10:44:36.496Z"
+      "timestamp": "2026-07-12T10:49:49.595Z"
     },
     "error": null
   },
@@ -65,26 +65,26 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 3.64,
-    "onboarding": 0,
-    "readiness": 0,
-    "runtimeStatus": 0,
-    "runtimeLaunch": 0.01,
-    "supervisor": 0.01,
-    "supervisorProcess": 0.01,
-    "continuousSupervisor": 0.01,
-    "staleGuardProof": 1.23,
-    "staleGuardRun": 1.11,
-    "lifecycleControls": 0.01,
-    "lifecycleScheduler": 0,
-    "lifecycleSchedulerRun": 0.01,
-    "settlementReadiness": 0,
-    "manualSettlement": 0,
-    "resultIngestion": 0,
-    "resultSettlement": 0,
-    "resultSettlementRun": 0,
-    "makerSeed": 0,
-    "s23Visible": 3.46
+    "liveProof": 3.72,
+    "onboarding": 0.09,
+    "readiness": 0.09,
+    "runtimeStatus": 0.09,
+    "runtimeLaunch": 0.09,
+    "supervisor": 0.1,
+    "supervisorProcess": 0.1,
+    "continuousSupervisor": 0.1,
+    "staleGuardProof": 1.32,
+    "staleGuardRun": 1.2,
+    "lifecycleControls": 0.09,
+    "lifecycleScheduler": 0.09,
+    "lifecycleSchedulerRun": 0.1,
+    "settlementReadiness": 0.09,
+    "manualSettlement": 0.09,
+    "resultIngestion": 0.09,
+    "resultSettlement": 0.09,
+    "resultSettlementRun": 0.09,
+    "makerSeed": 0.09,
+    "s23Visible": 3.55
   },
   "requirements": [
     {
@@ -152,7 +152,20 @@
         "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-process-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json"
       ],
-      "notes": "Known truth: maker reseeds across repeated local supervisor cycles. It is not an installed unattended service."
+      "notes": "Known truth: maker reseeds and lifecycle checks run across repeated local supervisor cycles without provider quota. It is not an installed unattended service."
+    },
+    {
+      "id": "supervisor-result-ingestion",
+      "priority": "P0",
+      "requirement": "Supervisor loop runs provider-shaped result ingestion before trusted-result settlement dry-run checks.",
+      "status": "complete",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json"
+      ],
+      "notes": "Replay-mode result ingestion is proven inside repeated supervisor cycles. Live score polling and settlement execution remain explicit P1 work."
     },
     {
       "id": "mobile-trading-flow",

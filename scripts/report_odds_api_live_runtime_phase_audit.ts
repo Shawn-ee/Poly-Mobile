@@ -134,6 +134,7 @@ async function main() {
   const quotaUsed = numberValue(getPath(entries.liveProof, ["provider", "quota", "totalLastCost"]));
   const quotaRemaining = text(getPath(entries.liveProof, ["provider", "quota", "latest", "requestsRemaining"]));
   const supervisorTruth = getPath(entries.supervisor, ["runtimeTruth"]);
+  const continuousSupervisorTruth = getPath(entries.continuousSupervisor, ["runtimeTruth"]);
   const runtimeStatusTruth = getPath(entries.runtimeStatus, ["modeTruth"]);
   const staleRunResult = getPath(entries.staleGuardRun, ["result"]);
   const requirements = [
@@ -189,10 +190,27 @@ async function main() {
         pass(entries.supervisor) &&
         pass(entries.continuousSupervisor) &&
         getPath(supervisorTruth, ["marketMakerMode"]) != null &&
+        getPath(continuousSupervisorTruth, ["marketMakerReseedWhileRunning"]) === true &&
+        getPath(continuousSupervisorTruth, ["lifecycleSchedulerWhileRunning"]) === true &&
+        getPath(continuousSupervisorTruth, ["quotaProtected"]) === true &&
         getPath(supervisorTruth, ["unattendedServiceInstalled"]) === false,
       evidence: [PATHS.supervisor, PATHS.supervisorProcess, PATHS.continuousSupervisor],
       notes:
-        "Known truth: maker reseeds across repeated local supervisor cycles. It is not an installed unattended service.",
+        "Known truth: maker reseeds and lifecycle checks run across repeated local supervisor cycles without provider quota. It is not an installed unattended service.",
+    }),
+    requirement({
+      id: "supervisor-result-ingestion",
+      priority: "P0",
+      requirement: "Supervisor loop runs provider-shaped result ingestion before trusted-result settlement dry-run checks.",
+      achieved:
+        pass(entries.supervisor) &&
+        pass(entries.continuousSupervisor) &&
+        getPath(continuousSupervisorTruth, ["resultIngestionWhileRunning"]) === true &&
+        getPath(continuousSupervisorTruth, ["resultSettlementSchedulerWhileRunning"]) === true &&
+        getPath(continuousSupervisorTruth, ["quotaProtected"]) === true,
+      evidence: [PATHS.supervisor, PATHS.continuousSupervisor, PATHS.resultIngestion, PATHS.resultSettlementRun],
+      notes:
+        "Replay-mode result ingestion is proven inside repeated supervisor cycles. Live score polling and settlement execution remain explicit P1 work.",
     }),
     requirement({
       id: "mobile-trading-flow",
