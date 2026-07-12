@@ -347,6 +347,20 @@ export async function getLocalLiveRuntimeStatus() {
       typeof maxLiveProofAgeHours === "number" &&
       liveProofCurrentAgeHours <= maxLiveProofAgeHours,
   };
+  const resultReviewReady =
+    getPath(phaseAudit, ["localResultReview", "ok"]) === true &&
+    getPath(phaseAudit, ["localResultReview", "body", "status"]) === "ready" &&
+    getPath(phaseAudit, ["localResultReview", "body", "providerQuotaUsed"]) === false &&
+    getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "readOnlyRoute"]) === true &&
+    getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "devOnlyRoute"]) === true &&
+    getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalProviderResultAuditAvailable"]) === true &&
+    getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementPreflightAuditAvailable"]) === true &&
+    getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementApprovalAuditAvailable"]) === true &&
+    getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "exactConfirmationRequiredKnown"]) === true &&
+    getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "exactConfirmationRedacted"]) === true &&
+    getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "activeMarketExecutionAttemptedByThisRoute"]) === false &&
+    Array.isArray(getPath(phaseAudit, ["localResultReview", "body", "gaps", "p0"])) &&
+    (getPath(phaseAudit, ["localResultReview", "body", "gaps", "p0"]) as unknown[]).length === 0;
   const ready =
     pass(completionAudit) &&
     pass(phaseAudit) &&
@@ -356,7 +370,8 @@ export async function getLocalLiveRuntimeStatus() {
     artifactFreshness.phaseAuditFresh &&
     artifactFreshness.watchdogFresh &&
     artifactFreshness.liveProofFresh &&
-    providerSnapshots.fresh;
+    providerSnapshots.fresh &&
+    resultReviewReady;
   const operatorNextActions = buildOperatorNextActions({
     providerSnapshots,
     settlementDecision: {
@@ -389,6 +404,31 @@ export async function getLocalLiveRuntimeStatus() {
     nextSafeAction:
       getPath(activeSettlementReadiness, ["executionDecision", "executionEligibleNow"]) === true
         ? "execute_only_with_exact_confirmation_after_operator_review"
+        : "wait_for_or_apply_market_close_before_execution",
+  };
+  const resultReview = {
+    checked: getPath(phaseAudit, ["localResultReview"]) != null,
+    path: "/api/internal/live-runtime/result-review",
+    pass: resultReviewReady,
+    providerQuotaUsed: getPath(phaseAudit, ["localResultReview", "body", "providerQuotaUsed"]) === true,
+    readOnlyRoute: getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "readOnlyRoute"]) === true,
+    devOnlyRoute: getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "devOnlyRoute"]) === true,
+    canonicalProviderResultAuditAvailable:
+      getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalProviderResultAuditAvailable"]) === true,
+    canonicalSettlementPreflightAuditAvailable:
+      getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementPreflightAuditAvailable"]) === true,
+    canonicalSettlementApprovalAuditAvailable:
+      getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementApprovalAuditAvailable"]) === true,
+    exactConfirmationRequiredKnown:
+      getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "exactConfirmationRequiredKnown"]) === true,
+    exactConfirmationRedacted:
+      getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "exactConfirmationRedacted"]) === true,
+    activeMarketExecutionAttemptedByRoute:
+      getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "activeMarketExecutionAttemptedByThisRoute"]) === true,
+    p0: asStringArray(getPath(phaseAudit, ["localResultReview", "body", "gaps", "p0"])),
+    nextSafeAction:
+      getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "executionEligibleNow"]) === true
+        ? "operator_review_required_before_exact_confirmed_execution"
         : "wait_for_or_apply_market_close_before_execution",
   };
 
@@ -426,6 +466,7 @@ export async function getLocalLiveRuntimeStatus() {
     freshness: artifactFreshness,
     providerSnapshots,
     settlementDecision,
+    resultReview,
     runtimeCapabilities: {
       latestRunProfileOnly: getPath(runtimeStatus, ["modeTruth", "latestSupervisorRunProfileOnly"]) === true,
       latestSupervisorProfile: getPath(runtimeStatus, ["supervisor", "latestRunProfile"]) ?? null,

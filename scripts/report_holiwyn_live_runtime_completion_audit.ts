@@ -6,6 +6,7 @@ const DEFAULT_OUTPUT_PATH =
 
 const PATHS = {
   runtimeStatus: "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
+  phaseAudit: "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
   liveProviderProof: "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
   liveReadiness: "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json",
   localRuntimeLaunchProfile:
@@ -132,6 +133,21 @@ async function main() {
     activeSettlementDecisionKnown:
       pass(entries.activeSettlementReadiness) &&
       truthy(getPath(entries.activeSettlementReadiness, ["runtimeTruth", "activeEventSettlementExecutionDecisionKnown"])),
+    localResultReviewApiKnown:
+      pass(entries.phaseAudit) &&
+      getPath(entries.phaseAudit, ["localResultReview", "ok"]) === true &&
+      getPath(entries.phaseAudit, ["localResultReview", "body", "status"]) === "ready" &&
+      getPath(entries.phaseAudit, ["localResultReview", "body", "providerQuotaUsed"]) === false &&
+      getPath(entries.phaseAudit, ["localResultReview", "body", "runtimeTruth", "readOnlyRoute"]) === true &&
+      getPath(entries.phaseAudit, ["localResultReview", "body", "runtimeTruth", "devOnlyRoute"]) === true &&
+      getPath(entries.phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalProviderResultAuditAvailable"]) === true &&
+      getPath(entries.phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementPreflightAuditAvailable"]) === true &&
+      getPath(entries.phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementApprovalAuditAvailable"]) === true &&
+      getPath(entries.phaseAudit, ["localResultReview", "body", "executionDecision", "exactConfirmationRequiredKnown"]) === true &&
+      getPath(entries.phaseAudit, ["localResultReview", "body", "executionDecision", "exactConfirmationRedacted"]) === true &&
+      getPath(entries.phaseAudit, ["localResultReview", "body", "executionDecision", "activeMarketExecutionAttemptedByThisRoute"]) === false &&
+      Array.isArray(getPath(entries.phaseAudit, ["localResultReview", "body", "gaps", "p0"])) &&
+      (getPath(entries.phaseAudit, ["localResultReview", "body", "gaps", "p0"]) as unknown[]).length === 0,
     mobileS23EndToEndTradeProofPass:
       pass(entries.s23Visible) &&
       truthy(getPath(entries.s23Visible, ["assertions", "swipeSubmitReachedPortfolio"])) &&
@@ -200,6 +216,8 @@ async function main() {
         "S23 proof covers Home -> Event Detail -> line market -> ticket -> buy -> Portfolio -> cashout/sell -> History for the provider-backed event.",
       activeSettlement:
         getPath(entries.activeSettlementReadiness, ["executionDecision", "operatorDecision"]) ?? null,
+      resultReview:
+        "Local result-review API is phase-gated through /api/internal/live-runtime/result-review, reads canonical result/preflight/approval evidence, redacts exact confirmation strings, and does not spend provider quota.",
       localWatchdog:
         "Internal tester watchdog verifies backend/Expo/Postgres readiness, repeated supervisor proof, background result-poller proof, no-quota default mode, and loop cleanup.",
     },

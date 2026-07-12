@@ -100,6 +100,30 @@ const makePhaseAudit = (generatedAt = nowIso()) => ({
   selectedMarket: {
     id: "phase-market",
   },
+  localResultReview: {
+    ok: true,
+    status: 200,
+    body: {
+      status: "ready",
+      providerQuotaUsed: false,
+      runtimeTruth: {
+        readOnlyRoute: true,
+        devOnlyRoute: true,
+        canonicalProviderResultAuditAvailable: true,
+        canonicalSettlementPreflightAuditAvailable: true,
+        canonicalSettlementApprovalAuditAvailable: true,
+      },
+      executionDecision: {
+        exactConfirmationRequiredKnown: true,
+        exactConfirmationRedacted: true,
+        activeMarketExecutionAttemptedByThisRoute: false,
+        executionEligibleNow: false,
+      },
+      gaps: {
+        p0: [],
+      },
+    },
+  },
 });
 
 const makeRuntimeStatus = (generatedAt = nowIso()) => ({
@@ -291,6 +315,21 @@ describe("live runtime status service", () => {
       activeMarketExecutionAttempted: false,
       disposableCloneSettlementProven: true,
       supervisorApprovedSettlementWaitProven: true,
+      nextSafeAction: "wait_for_or_apply_market_close_before_execution",
+    });
+    expect(status.resultReview).toMatchObject({
+      checked: true,
+      pass: true,
+      providerQuotaUsed: false,
+      readOnlyRoute: true,
+      devOnlyRoute: true,
+      canonicalProviderResultAuditAvailable: true,
+      canonicalSettlementPreflightAuditAvailable: true,
+      canonicalSettlementApprovalAuditAvailable: true,
+      exactConfirmationRequiredKnown: true,
+      exactConfirmationRedacted: true,
+      activeMarketExecutionAttemptedByRoute: false,
+      p0: [],
       nextSafeAction: "wait_for_or_apply_market_close_before_execution",
     });
     expect(status.runtimeCapabilities).toMatchObject({

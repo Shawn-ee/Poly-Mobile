@@ -14647,3 +14647,14 @@ Known limitations:
 - API/data dependencies: reads the latest phase-audit selected market from `live-runtime-phase-audit-summary.redacted.json`, then reads `Market` and `CanonicalEvent` rows for `provider.result.ingested`, `settlement.trusted_result.preflight`, `settlement.trusted_result.approved`, and `settlement.trusted_result.executed`.
 - Proof needed: focused route/service Jest tests, direct local backend route proof, `npm run mobile:one-event-phase-audit`, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this narrows operator-review visibility but does not install official-result polling, create a first-class official-result table, create an approval UI, or execute active-event settlement.
+
+## Cycle LIVERUNTIMERESULTREVIEWSTATUS - Result Review Completion/Status Gate
+
+- Feature/page worked on: backend local internal live-runtime completion and status truth.
+- Frontend components touched: none.
+- Important functions/services touched: updated `scripts/report_holiwyn_live_runtime_completion_audit.ts`, `src/server/services/liveRuntimeStatus.ts`, and `src/__tests__/liveRuntimeStatus.service.test.ts`.
+- User/runtime interactions supported: local tools can now rely on `npm run mobile:live-runtime-completion-audit` and `GET /api/internal/live-runtime/status` to fail or report `needs_attention` if the phase-gated result-review route evidence is missing, not ready, quota-spending, not read-only, leaking confirmation state, or carrying unresolved P0 gaps.
+- State transitions: none. This is a read-only audit/status change. It does not call The Odds API, start loops, place orders, mutate markets, approve settlement, or execute settlement.
+- API/data dependencies: completion audit consumes the phase audit's embedded `localResultReview`; status route surfaces `resultReview` readiness from the same phase audit evidence.
+- Proof needed: focused status service tests, completion audit, phase audit, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this strengthens local internal truth reporting but still leaves installed official-result polling, first-class result/approval records, and operator review UI as P1/P2.
