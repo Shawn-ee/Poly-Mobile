@@ -441,6 +441,36 @@ async function main() {
         getPath(localRuntimeStatusBody, ["settlementDecision", "closedStateEligibility", "activeMarketRestored"]) === true &&
         getPath(localRuntimeStatusBody, ["settlementDecision", "nextSafeAction"]) ===
           "wait_for_or_apply_market_close_before_execution" &&
+        getPath(localRuntimeStatusBody, ["settlementQueue", "checked"]) === true &&
+        getPath(localRuntimeStatusBody, ["settlementQueue", "pass"]) === true &&
+        getPath(localRuntimeStatusBody, ["settlementQueue", "providerQuotaUsed"]) === false &&
+        getPath(localRuntimeStatusBody, ["settlementQueue", "readOnlyRoute"]) === true &&
+        getPath(localRuntimeStatusBody, ["settlementQueue", "devOnlyRoute"]) === true &&
+        getPath(localRuntimeStatusBody, ["settlementQueue", "operatorQueueAvailable"]) === true &&
+        getPath(localRuntimeStatusBody, ["settlementQueue", "redactedOperatorExecutionPlanAvailable"]) === true &&
+        getPath(localRuntimeStatusBody, ["settlementQueue", "exactConfirmationStringsExposed"]) === false &&
+        getPath(localRuntimeStatusBody, ["settlementQueue", "exactConfirmationStored"]) === false &&
+        getPath(localRuntimeStatusBody, ["settlementQueue", "activeMarketExecutionAttempted"]) === false &&
+        Number(getPath(localRuntimeStatusBody, ["settlementQueue", "queue", "itemCount"]) ?? 0) > 0 &&
+        typeof getPath(localRuntimeStatusBody, ["settlementQueue", "firstItem", "operatorAction", "label"]) ===
+          "string" &&
+        typeof getPath(localRuntimeStatusBody, ["settlementQueue", "firstItem", "operatorAction", "nextCommand"]) ===
+          "string" &&
+        getPath(localRuntimeStatusBody, [
+          "settlementQueue",
+          "firstItem",
+          "operatorAction",
+          "exactConfirmationExposed",
+        ]) === false &&
+        getPath(localRuntimeStatusBody, [
+          "settlementQueue",
+          "firstItem",
+          "operatorAction",
+          "providerQuotaRequired",
+        ]) === false &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["settlementQueue", "p0"])) &&
+        (getPath(localRuntimeStatusBody, ["settlementQueue", "p0"]) as unknown[]).length === 0 &&
+        !JSON.stringify(getPath(localRuntimeStatusBody, ["settlementQueue"])).includes("SETTLE_FROM_RESULT:") &&
         getPath(localRuntimeStatusBody, ["runtimeCapabilities", "latestRunProfileOnly"]) === true &&
         getPath(localRuntimeStatusBody, ["runtimeCapabilities", "provenCapabilities", "repeatedSupervisorCycles"]) === true &&
         getPath(localRuntimeStatusBody, ["runtimeCapabilities", "provenCapabilities", "makerReseedWhileSupervisorRuns"]) === true &&
@@ -475,7 +505,7 @@ async function main() {
         (getPath(localRuntimeStatusBody, ["gaps", "p0"]) as unknown[]).length === 0,
       evidence: [`${baseUrl}/api/internal/live-runtime/status?phaseAuditInProgress=1`],
       notes:
-        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, durable ProviderRefreshRun evidence, durable MarketMakerQuoteRun evidence, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, active-event closed-state eligibility truth, latest-run-vs-proven-capability separation, current warm-runtime decisioning, read-only supervisor/result-poller process state, durable RuntimeServiceHeartbeat rows, worker-owned RuntimeServiceRun rows, and preserved worker-owned metadata. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
+        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, durable ProviderRefreshRun evidence, durable MarketMakerQuoteRun evidence, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, settlement queue redacted operator-plan truth, active-event closed-state eligibility truth, latest-run-vs-proven-capability separation, current warm-runtime decisioning, read-only supervisor/result-poller process state, durable RuntimeServiceHeartbeat rows, worker-owned RuntimeServiceRun rows, and preserved worker-owned metadata. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
     }),
     requirement({
       id: "local-result-review-api-ready",

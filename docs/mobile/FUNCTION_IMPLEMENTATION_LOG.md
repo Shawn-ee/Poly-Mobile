@@ -2,6 +2,19 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle STATUSSETTLEMENTQUEUE - Runtime Status Settlement Queue Projection
+
+- Feature/page worked on: backend local live-runtime status control-plane projection.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `src/server/services/liveRuntimeStatus.ts`
+  - `src/__tests__/liveRuntimeStatus.service.test.ts`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+- User/runtime interactions supported: `GET /api/internal/live-runtime/status` now reports the settlement queue pass/fail state, queue counts, first pending item identity, and redacted `operatorAction` next command in the same status response operators already use for local runtime readiness.
+- State transitions: none. The route remains read-only and does not execute settlement, close markets, start runtime loops, call providers, read secrets, or expose exact confirmation strings.
+- API/data dependencies: composes the phase audit's `/api/internal/live-runtime/settlement-queue` evidence into the main status route. The phase audit now fails if the status projection is missing, unsafe, quota-spending, execution-attempting, or has unresolved P0 queue gaps.
+- Known limitations: this is durable proof/status projection only. Runtime settlement execution still requires market close, approval evidence, and the guarded scheduler path; production operator UI and installed official-result polling remain P1/P2.
+
 ## Cycle SETTLEMENTPLANGATE - Settlement Operator Plan Audit Gate
 
 - Feature/page worked on: backend live-runtime audit gate for official-result settlement queue.

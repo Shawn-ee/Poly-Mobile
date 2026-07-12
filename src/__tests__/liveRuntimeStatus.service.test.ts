@@ -313,6 +313,53 @@ const makePhaseAudit = (generatedAt = nowIso()) => ({
       },
     },
   },
+  localSettlementQueue: {
+    ok: true,
+    status: 200,
+    body: {
+      status: "ready",
+      providerQuotaUsed: false,
+      runtimeTruth: {
+        readOnlyRoute: true,
+        devOnlyRoute: true,
+        usesDurableOfficialResultReviewRows: true,
+        operatorQueueAvailable: true,
+        redactedOperatorExecutionPlanAvailable: true,
+        exactConfirmationStringsExposed: false,
+        exactConfirmationStored: false,
+        activeMarketExecutionAttempted: false,
+      },
+      queue: {
+        itemCount: 1,
+        pendingCount: 1,
+        executableNowCount: 0,
+        approvedWaitingForCloseCount: 1,
+        items: [
+          {
+            reviewKey: "odds-api-single-soccer-test:phase-market:result-digest",
+            eventSlug: "odds-api-single-soccer-test",
+            marketId: "phase-market",
+            approvalStatus: "approved",
+            nextSafeAction: "wait_for_or_apply_market_close_before_execution",
+            market: { status: "LIVE" },
+            operatorAction: {
+              label: "wait_for_market_close",
+              blockingReason: "market_status_LIVE",
+              nextCommand: "npm run mobile:one-event-settlement-preflight",
+              exactConfirmationExposed: false,
+              providerQuotaRequired: false,
+              activeExecutionRequiresClosedMarket: true,
+              activeExecutionRequiresApproval: true,
+              activeExecutionRequiresExactConfirmation: true,
+            },
+          },
+        ],
+      },
+      gaps: {
+        p0: [],
+      },
+    },
+  },
 });
 
 const makeRuntimeStatus = (generatedAt = nowIso()) => ({
@@ -778,6 +825,44 @@ describe("live runtime status service", () => {
       p0: [],
       nextSafeAction: "wait_for_or_apply_market_close_before_execution",
     });
+    expect(status.settlementQueue).toMatchObject({
+      checked: true,
+      pass: true,
+      providerQuotaUsed: false,
+      readOnlyRoute: true,
+      devOnlyRoute: true,
+      operatorQueueAvailable: true,
+      redactedOperatorExecutionPlanAvailable: true,
+      exactConfirmationStringsExposed: false,
+      exactConfirmationStored: false,
+      activeMarketExecutionAttempted: false,
+      queue: {
+        itemCount: 1,
+        pendingCount: 1,
+        executableNowCount: 0,
+        approvedWaitingForCloseCount: 1,
+      },
+      firstItem: {
+        reviewKey: "odds-api-single-soccer-test:phase-market:result-digest",
+        eventSlug: "odds-api-single-soccer-test",
+        marketId: "phase-market",
+        approvalStatus: "approved",
+        nextSafeAction: "wait_for_or_apply_market_close_before_execution",
+        marketStatus: "LIVE",
+        operatorAction: {
+          label: "wait_for_market_close",
+          blockingReason: "market_status_LIVE",
+          nextCommand: "npm run mobile:one-event-settlement-preflight",
+          exactConfirmationExposed: false,
+          providerQuotaRequired: false,
+          activeExecutionRequiresClosedMarket: true,
+          activeExecutionRequiresApproval: true,
+          activeExecutionRequiresExactConfirmation: true,
+        },
+      },
+      p0: [],
+    });
+    expect(JSON.stringify(status.settlementQueue)).not.toContain("SETTLE_FROM_RESULT:");
     expect(status.runtimeCapabilities).toMatchObject({
       latestRunProfileOnly: true,
       latestSupervisorProfile: {
@@ -912,6 +997,43 @@ describe("live runtime status service", () => {
         },
       }),
     );
+  });
+
+  test("returns needs_attention when the settlement queue redacted operator plan is missing", async () => {
+    readFile.mockImplementation(async (filePath: string) => {
+      if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
+      if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("phase-audit")) {
+        const phaseAudit = makePhaseAudit();
+        phaseAudit.localSettlementQueue.body.runtimeTruth.redactedOperatorExecutionPlanAvailable = false;
+        phaseAudit.localSettlementQueue.body.queue.items[0].operatorAction.nextCommand = undefined as unknown as string;
+        return JSON.stringify(phaseAudit);
+      }
+      if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
+      if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
+      if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
+      if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
+      if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
+      throw new Error(`unexpected path ${filePath}`);
+    });
+
+    const status = await getLocalLiveRuntimeStatus();
+
+    expect(status.status).toBe("needs_attention");
+    expect(status.settlementQueue).toMatchObject({
+      checked: true,
+      pass: false,
+      redactedOperatorExecutionPlanAvailable: false,
+      firstItem: {
+        operatorAction: {
+          label: "wait_for_market_close",
+          nextCommand: null,
+          exactConfirmationExposed: false,
+          providerQuotaRequired: false,
+        },
+      },
+    });
   });
 
   test("returns needs_attention when a required proof artifact is stale", async () => {
