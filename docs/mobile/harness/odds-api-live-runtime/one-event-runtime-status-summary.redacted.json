@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T09:30:42.211Z",
+  "generatedAt": "2026-07-12T10:15:59.265Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -38,7 +38,7 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-12T09:30:42.210Z"
+        "timestamp": "2026-07-12T10:15:59.264Z"
       },
       "error": null
     }
@@ -46,7 +46,7 @@
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveProofGeneratedAt": "2026-07-12T07:06:21.133Z",
-    "liveProofAgeHours": 2.41,
+    "liveProofAgeHours": 3.16,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
@@ -69,7 +69,7 @@
   },
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-    "makerSeedGeneratedAt": "2026-07-12T09:30:39.731Z",
+    "makerSeedGeneratedAt": "2026-07-12T10:15:55.460Z",
     "makerSeedAgeHours": 0,
     "quoteRoute": {
       "ok": true,
@@ -106,15 +106,15 @@
   },
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
-    "schedulerGeneratedAt": "2026-07-12T08:49:05.464Z",
-    "schedulerAgeHours": 0.69,
+    "schedulerGeneratedAt": "2026-07-12T10:15:57.847Z",
+    "schedulerAgeHours": 0,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
-    "schedulerCandidateMarketCount": 3
+    "schedulerCandidateMarketCount": 19
   },
   "supervisor": {
     "supervisorPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json",
-    "generatedAt": "2026-07-12T08:49:05.5074215Z",
+    "generatedAt": "2026-07-12T10:15:57.8881332Z",
     "completedIterations": 2,
     "runtimeTruth": {
       "backendContinuousWhileSupervisorRuns": true,
@@ -123,6 +123,8 @@
       "dataHygieneContinuousWhileSupervisorRuns": true,
       "marketMakerRefreshContinuousWhileSupervisorRuns": true,
       "lifecycleSchedulerContinuousWhileSupervisorRuns": true,
+      "staleGuardContinuousWhileSupervisorRuns": false,
+      "staleGuardMode": "disabled",
       "unattendedServiceInstalled": false,
       "providerRefreshMode": "cached provider proof verification; no provider quota spent",
       "marketMakerMode": "repeated local shifted maker reseed while supervisor runs",

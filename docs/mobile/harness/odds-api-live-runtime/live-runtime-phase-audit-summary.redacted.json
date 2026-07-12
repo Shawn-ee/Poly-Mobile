@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T09:54:06.445Z",
+  "generatedAt": "2026-07-12T10:16:20.998Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T09:54:05.308Z"
+      "timestamp": "2026-07-12T10:16:20.958Z"
     },
     "error": null
   },
@@ -65,23 +65,24 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 2.8,
-    "onboarding": 0.39,
-    "readiness": 0.39,
-    "runtimeStatus": 0.39,
-    "runtimeLaunch": 0.27,
-    "supervisor": 0.27,
-    "supervisorProcess": 1.08,
-    "staleGuardProof": 0.39,
-    "staleGuardRun": 0.27,
-    "lifecycleControls": 0.39,
-    "lifecycleScheduler": 0.39,
-    "lifecycleSchedulerRun": 0.27,
-    "settlementReadiness": 0.39,
-    "manualSettlement": 0.39,
-    "resultSettlement": 0.02,
-    "makerSeed": 0.27,
-    "s23Visible": 2.62
+    "liveProof": 3.17,
+    "onboarding": 0.76,
+    "readiness": 0.76,
+    "runtimeStatus": 0.01,
+    "runtimeLaunch": 0.01,
+    "supervisor": 0.01,
+    "supervisorProcess": 0.01,
+    "continuousSupervisor": 0.01,
+    "staleGuardProof": 0.76,
+    "staleGuardRun": 0.64,
+    "lifecycleControls": 0.76,
+    "lifecycleScheduler": 0.76,
+    "lifecycleSchedulerRun": 0.01,
+    "settlementReadiness": 0.76,
+    "manualSettlement": 0.76,
+    "resultSettlement": 0.4,
+    "makerSeed": 0.01,
+    "s23Visible": 2.99
   },
   "requirements": [
     {
@@ -146,9 +147,10 @@
       "status": "complete",
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json",
-        "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-process-summary.redacted.json"
+        "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-process-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json"
       ],
-      "notes": "Known truth: maker reseeds while the foreground/background supervisor runs. It is not an installed unattended service."
+      "notes": "Known truth: maker reseeds across repeated local supervisor cycles. It is not an installed unattended service."
     },
     {
       "id": "mobile-trading-flow",
@@ -217,9 +219,10 @@
       "status": "open",
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json",
-        "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-process-summary.redacted.json"
+        "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-process-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json"
       ],
-      "notes": "Local foreground/background process manager exists, but no OS/service manager install exists."
+      "notes": "Repeated local supervisor cycles and process-tree stop support are proven, but no OS/service manager install exists."
     },
     {
       "id": "official-result-auto-settlement",

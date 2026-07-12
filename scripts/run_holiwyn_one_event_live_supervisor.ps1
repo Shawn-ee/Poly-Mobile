@@ -1,6 +1,7 @@
 param(
   [int]$BackendPort = 3002,
   [string]$SummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-live-supervisor-summary.redacted.json",
+  [string]$HeartbeatPath = "docs\mobile\harness\odds-api-live-runtime\one-event-live-supervisor-heartbeat.redacted.json",
   [int]$MaxIterations = 2,
   [int]$IntervalSeconds = 15,
   [switch]$Continuous,
@@ -67,6 +68,47 @@ function Write-JsonFile {
   }
   $json = ($Value | ConvertTo-Json -Depth $Depth) -replace "`r`n", "`n"
   [System.IO.File]::WriteAllText($Path, "$json`n", [System.Text.UTF8Encoding]::new($false))
+}
+
+function Write-Heartbeat {
+  param(
+    [Parameter(Mandatory = $true)] [object]$Cycles,
+    [string]$Failure = $null,
+    [bool]$LoopPass = $true
+  )
+  $heartbeat = [ordered]@{
+    generatedAt = (Get-Date).ToUniversalTime().ToString("o")
+    scope = "holiwyn-one-event-live-supervisor-heartbeat"
+    running = [bool]($Continuous -or $cycles.Count -lt $MaxIterations)
+    passSoFar = [bool]$LoopPass
+    startedAt = $startedAt.ToString("o")
+    completedIterations = $Cycles.Count
+    latestIteration = if ($Cycles.Count -gt 0) { $Cycles[$Cycles.Count - 1] } else { $null }
+    settings = [ordered]@{
+      continuous = [bool]$Continuous
+      maxIterations = $MaxIterations
+      intervalSeconds = $IntervalSeconds
+      runProviderProof = [bool]$RunProviderProof
+      providerProofRunsCompleted = $providerProofRunCount
+      providerProofEveryIterations = if ($RunProviderProof) { $ProviderProofEveryIterations } else { 0 }
+      maxProviderProofRuns = if ($RunProviderProof) { $MaxProviderProofRuns } else { 0 }
+      dataHygieneEnabled = [bool](-not $SkipDataHygiene)
+      makerSeedEnabled = [bool](-not $SkipMakerSeed)
+      lifecycleSchedulerEnabled = [bool](-not $SkipLifecycleScheduler)
+      staleGuardEnabled = [bool]$RunStaleGuard
+      staleGuardEnforced = [bool]$EnforceStaleGuard
+      cachedModeUsesQuota = $false
+    }
+    runtimeTruth = [ordered]@{
+      providerRefreshMode = if ($RunProviderProof) { "quota-capped live provider proof by cadence; cached verification after cap or cadence skips" } else { "cached provider proof verification; no provider quota spent" }
+      marketMakerMode = if ($SkipMakerSeed) { "not seeded by supervisor" } else { "repeated local shifted maker reseed while supervisor runs" }
+      lifecycleSchedulerMode = if ($SkipLifecycleScheduler) { "not run by supervisor" } else { "safe real-time scheduler check each cycle; no proof time mutation" }
+      staleGuardMode = if (-not $RunStaleGuard) { "disabled" } elseif ($EnforceStaleGuard) { "enforce stale provider pause while supervisor runs" } else { "dry-run stale monitor while supervisor runs" }
+      unattendedServiceInstalled = $false
+    }
+    failure = $Failure
+  }
+  Write-JsonFile -Value $heartbeat -Path (Resolve-RepoPath $HeartbeatPath) -Depth 60
 }
 
 function Invoke-CheckedCommand {
@@ -162,6 +204,7 @@ try {
           dataHygiene = $dataHygieneResult
           dataHygienePass = [bool]($dataHygieneSummary -and $dataHygieneSummary.pass -eq $true)
         }) | Out-Null
+        Write-Heartbeat -Cycles $cycles -Failure "Cycle $iteration data hygiene failed." -LoopPass $false
         $loopPass = $false
         $failure = "Cycle $iteration data hygiene failed."
         break
@@ -235,6 +278,7 @@ try {
       selectedMarket = $runtimeSummary.provider.proof.selectedMarket
       maker = $runtimeSummary.runtime.makerSeedSummary
     }) | Out-Null
+    Write-Heartbeat -Cycles $cycles -LoopPass $true
 
     if (
       -not $result.pass -or
@@ -244,6 +288,7 @@ try {
     ) {
       $loopPass = $false
       $failure = "Cycle $iteration failed."
+      Write-Heartbeat -Cycles $cycles -Failure $failure -LoopPass $false
       break
     }
 

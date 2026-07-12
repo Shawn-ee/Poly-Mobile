@@ -18,7 +18,7 @@ The current Local MVP is backend-owned and fake-token only. It has proven one sp
 | Provider lifecycle surface | `mobileLiveEventDetail.ts` reports quote/depth/chart lifecycle as `ready`, `refresh_due`, `stale`, or `unavailable`. Quote snapshots are stale after 90 seconds and refresh-due after 60 seconds. | Exists. Needs a provider refresh runner to keep snapshots fresh. |
 | Local matching/order flow | `matching.ts`, canonical order route, Portfolio/history routes. | Proven for fake-token buy/sell and negative sell cases. |
 | One-shot maker liquidity | Internal harnesses mint complete sets and place maker ask/bid orders directly with `placeOrderAndMatch`. | Works for proof. Not continuous by default. |
-| One-event local supervisor | `scripts/run_holiwyn_one_event_live_supervisor.ps1` repeats data hygiene, the proven runtime launch command, local maker reseeding, and the safe real-time lifecycle scheduler on an interval. It can optionally run quota-guarded provider refresh. | Continuous only while the local command is running. It is not an installed unattended service. |
+| One-event local supervisor | `scripts/run_holiwyn_one_event_live_supervisor.ps1` repeats data hygiene, the proven runtime launch command, local maker reseeding, and the safe real-time lifecycle scheduler on an interval. It can optionally run quota-guarded provider refresh and now writes heartbeat evidence after each cycle. | Continuous only while the local command is running. `npm run mobile:one-event-live-supervisor:continuous-proof` proves local continuous mode starts, stays alive through status/runtime checks, and stops cleanly. It is not an installed unattended service. |
 | Continuous bot/soak harness | `scripts/soak_orderbook_bots.ts` references a sibling `poly-bot` package. `scripts/create_sim_bot_credentials.ts` writes bot config to `../poly-bot`. | Not self-contained in this repo. Do not assume it is running or available for mobile MVP runtime. |
 | Reference liquidity seeding | `referenceLiquiditySeeding.ts` supports approved Polymarket reference markets only. | Not usable for Odds API sportsbook markets without new source-aware logic. |
 | Event pause/close/resolve | Admin routes can pause/close markets and resolve orderbook markets. | Manual/admin lifecycle exists. No automatic soccer settlement or result ingest exists yet. |
@@ -64,6 +64,7 @@ The backend is close enough for a one-event local live proof because the data mo
 - Safe lifecycle scheduler runner: `scripts/run_odds_api_one_event_lifecycle_scheduler.ts`.
 - Consolidated readiness gate: `scripts/prove_holiwyn_one_event_live_readiness.ps1`.
 - One-event local supervisor: `scripts/run_holiwyn_one_event_live_supervisor.ps1`.
+- Continuous local supervisor proof: `scripts/prove_holiwyn_one_event_continuous_supervisor.ps1`.
 - Settlement readiness report: `scripts/report_odds_api_one_event_settlement_readiness.ts`.
 - Guarded manual settlement command: `scripts/settle_odds_api_one_event_market.ts`.
 - Trusted result settlement command: `scripts/settle_odds_api_one_event_from_result.ts`.
@@ -88,6 +89,8 @@ The backend is close enough for a one-event local live proof because the data mo
 - Live-runtime phase audit summary: `docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json`.
 - Consolidated readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json`.
 - Supervisor summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json`.
+- Supervisor heartbeat: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-heartbeat.redacted.json`.
+- Continuous supervisor proof summary: `docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json`.
 - S23 summary: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`.
 - Result: pass.
 - The proof is bounded and local-only. It proves the minimum live path for one upcoming provider event and now has a foreground supervisor that repeats hygiene, cached runtime checks, shifted maker seeding, and safe lifecycle scheduling while it runs. It is not an unattended production daemon.

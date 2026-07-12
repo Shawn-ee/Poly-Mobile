@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T09:37:51.894Z",
+  "generatedAt": "2026-07-12T10:15:57.847Z",
   "scope": "odds-api-one-event-lifecycle-scheduler-run",
   "pass": true,
   "dryRun": false,
@@ -7,13 +7,13 @@
   "referenceSource": "sportsbook-odds",
   "suspendBeforeStartSeconds": 300,
   "scheduler": {
-    "generatedAt": "2026-07-12T09:37:51.894Z",
+    "generatedAt": "2026-07-12T10:15:57.846Z",
     "eventSlug": "odds-api-single-soccer-test",
     "eventTitle": "Spain vs. France",
     "eventStartTime": "2026-07-14T19:00:00.000Z",
     "status": "completed",
     "dryRun": false,
-    "now": "2026-07-12T09:37:51.875Z",
+    "now": "2026-07-12T10:15:57.825Z",
     "suspendBeforeStartSeconds": 300,
     "referenceSource": "sportsbook-odds",
     "action": "none",

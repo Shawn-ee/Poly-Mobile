@@ -13,6 +13,7 @@ const PATHS = {
   runtimeLaunch: "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json",
   supervisor: "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json",
   supervisorProcess: "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-process-summary.redacted.json",
+  continuousSupervisor: "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json",
   staleGuardProof: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json",
   staleGuardRun: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-run-summary.redacted.json",
   lifecycleControls: "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json",
@@ -184,11 +185,12 @@ async function main() {
       requirement: "Market maker continuity is explicitly known.",
       achieved:
         pass(entries.supervisor) &&
+        pass(entries.continuousSupervisor) &&
         getPath(supervisorTruth, ["marketMakerMode"]) != null &&
         getPath(supervisorTruth, ["unattendedServiceInstalled"]) === false,
-      evidence: [PATHS.supervisor, PATHS.supervisorProcess],
+      evidence: [PATHS.supervisor, PATHS.supervisorProcess, PATHS.continuousSupervisor],
       notes:
-        "Known truth: maker reseeds while the foreground/background supervisor runs. It is not an installed unattended service.",
+        "Known truth: maker reseeds across repeated local supervisor cycles. It is not an installed unattended service.",
     }),
     requirement({
       id: "mobile-trading-flow",
@@ -244,8 +246,8 @@ async function main() {
       priority: "P1",
       requirement: "Install unattended provider/maker/lifecycle services.",
       achieved: false,
-      evidence: [PATHS.supervisor, PATHS.supervisorProcess],
-      notes: "Local foreground/background process manager exists, but no OS/service manager install exists.",
+      evidence: [PATHS.supervisor, PATHS.supervisorProcess, PATHS.continuousSupervisor],
+      notes: "Repeated local supervisor cycles and process-tree stop support are proven, but no OS/service manager install exists.",
     }),
     requirement({
       id: "official-result-auto-settlement",

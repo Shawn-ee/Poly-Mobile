@@ -69,6 +69,18 @@ function Write-JsonFile {
   [System.IO.File]::WriteAllText($Path, "$json`n", [System.Text.UTF8Encoding]::new($false))
 }
 
+function Stop-SupervisorProcessTree {
+  param([Parameter(Mandatory = $true)] [int]$TargetProcessId)
+  $process = Get-Process -Id $TargetProcessId -ErrorAction SilentlyContinue
+  if (-not $process) {
+    return
+  }
+  $output = & taskkill /PID $TargetProcessId /T /F 2>&1
+  if ($LASTEXITCODE -ne 0) {
+    throw "Failed to stop supervisor process tree for pid ${TargetProcessId}: $output"
+  }
+}
+
 function Get-State {
   $state = Read-JsonFile $StatePath
   if (-not $state -or -not $state.pid) {
@@ -105,24 +117,38 @@ function Get-State {
   }
 }
 
-function Build-SupervisorCommand {
+function Build-SupervisorArguments {
   $parts = New-Object System.Collections.Generic.List[string]
-  $parts.Add("powershell -NoProfile -ExecutionPolicy Bypass -File `"scripts/run_holiwyn_one_event_live_supervisor.ps1`"") | Out-Null
-  $parts.Add("-BackendPort $BackendPort") | Out-Null
-  $parts.Add("-IntervalSeconds $IntervalSeconds") | Out-Null
+  $parts.Add("-NoProfile") | Out-Null
+  $parts.Add("-ExecutionPolicy") | Out-Null
+  $parts.Add("Bypass") | Out-Null
+  $parts.Add("-File") | Out-Null
+  $parts.Add("scripts/run_holiwyn_one_event_live_supervisor.ps1") | Out-Null
+  $parts.Add("-BackendPort") | Out-Null
+  $parts.Add("$BackendPort") | Out-Null
+  $parts.Add("-IntervalSeconds") | Out-Null
+  $parts.Add("$IntervalSeconds") | Out-Null
   if ($Continuous) {
-    $parts.Add("-Continuous -MaxIterations 0") | Out-Null
+    $parts.Add("-Continuous") | Out-Null
+    $parts.Add("-MaxIterations") | Out-Null
+    $parts.Add("0") | Out-Null
   } else {
     $iterations = if ($MaxIterations -gt 0) { $MaxIterations } else { 2 }
-    $parts.Add("-MaxIterations $iterations") | Out-Null
+    $parts.Add("-MaxIterations") | Out-Null
+    $parts.Add("$iterations") | Out-Null
   }
   if ($RunProviderProof) {
     $parts.Add("-RunProviderProof") | Out-Null
-    $parts.Add("-RefreshIterations $RefreshIterations") | Out-Null
-    $parts.Add("-MaxCreditsPerProviderProof $MaxCreditsPerProviderProof") | Out-Null
-    $parts.Add("-ProviderProofEveryIterations $ProviderProofEveryIterations") | Out-Null
-    $parts.Add("-MaxProviderProofRuns $MaxProviderProofRuns") | Out-Null
-    $parts.Add("-MinRemaining $MinRemaining") | Out-Null
+    $parts.Add("-RefreshIterations") | Out-Null
+    $parts.Add("$RefreshIterations") | Out-Null
+    $parts.Add("-MaxCreditsPerProviderProof") | Out-Null
+    $parts.Add("$MaxCreditsPerProviderProof") | Out-Null
+    $parts.Add("-ProviderProofEveryIterations") | Out-Null
+    $parts.Add("$ProviderProofEveryIterations") | Out-Null
+    $parts.Add("-MaxProviderProofRuns") | Out-Null
+    $parts.Add("$MaxProviderProofRuns") | Out-Null
+    $parts.Add("-MinRemaining") | Out-Null
+    $parts.Add("$MinRemaining") | Out-Null
   }
   if ($SkipDataHygiene) { $parts.Add("-SkipDataHygiene") | Out-Null }
   if ($SkipMakerSeed) { $parts.Add("-SkipMakerSeed") | Out-Null }
@@ -131,7 +157,7 @@ function Build-SupervisorCommand {
   if ($EnforceStaleGuard) { $parts.Add("-EnforceStaleGuard") | Out-Null }
   if ($RestartBackend) { $parts.Add("-RestartBackend") | Out-Null }
   if ($SkipSleep) { $parts.Add("-SkipSleep") | Out-Null }
-  return ($parts -join " ")
+  return $parts
 }
 
 $startedAt = (Get-Date).ToUniversalTime()
@@ -148,16 +174,17 @@ if ($Action -eq "start") {
     $operation.result = "already_running"
   } else {
     if ($stateBefore.running -and $Force) {
-      Stop-Process -Id $stateBefore.pid -Force -ErrorAction Stop
+      Stop-SupervisorProcessTree -TargetProcessId $stateBefore.pid
       Start-Sleep -Seconds 1
     }
     if ($RunProviderProof -and [string]::IsNullOrWhiteSpace($env:THE_ODDS_API_KEY)) {
       throw "RunProviderProof requires THE_ODDS_API_KEY in the process environment. The key is not read from files or printed."
     }
-    $command = Build-SupervisorCommand
+    $argumentList = Build-SupervisorArguments
+    $command = "powershell " + ($argumentList -join " ")
     $process = Start-Process `
-      -FilePath "cmd.exe" `
-      -ArgumentList @("/c", $command) `
+      -FilePath "powershell" `
+      -ArgumentList $argumentList `
       -WorkingDirectory $RepoRoot `
       -WindowStyle Hidden `
       -RedirectStandardOutput $StdoutPath `
@@ -202,7 +229,7 @@ if ($Action -eq "start") {
   }
 } elseif ($Action -eq "stop") {
   if ($stateBefore.running) {
-    Stop-Process -Id $stateBefore.pid -Force -ErrorAction Stop
+    Stop-SupervisorProcessTree -TargetProcessId $stateBefore.pid
     Start-Sleep -Seconds 1
     $operation.result = "stopped"
     $operation.pid = $stateBefore.pid
