@@ -5,7 +5,9 @@ param(
   [int]$IntervalSeconds = 15,
   [switch]$Continuous,
   [switch]$RunProviderProof,
+  [switch]$SkipDataHygiene,
   [switch]$SkipMakerSeed,
+  [switch]$SkipLifecycleScheduler,
   [switch]$RestartBackend,
   [int]$RefreshIterations = 1,
   [int]$MaxCreditsPerProviderProof = 8,
@@ -135,6 +137,26 @@ try {
   do {
     $iteration += 1
     $cycleStartedAt = (Get-Date).ToUniversalTime()
+    $dataHygieneResult = $null
+    $dataHygieneSummary = $null
+    if (-not $SkipDataHygiene) {
+      $dataHygieneResult = Invoke-CheckedCommand -Label "cycle-$iteration-data-hygiene" -Command "npm run mobile:one-event-data-hygiene-proof"
+      $dataHygieneSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-data-hygiene-summary.redacted.json"
+      $dataHygieneSummary = Read-JsonFile $dataHygieneSummaryPath
+      if (-not $dataHygieneResult.pass -or -not ($dataHygieneSummary -and $dataHygieneSummary.pass -eq $true)) {
+        $cycles.Add([ordered]@{
+          iteration = $iteration
+          startedAt = $cycleStartedAt.ToString("o")
+          finishedAt = (Get-Date).ToUniversalTime().ToString("o")
+          dataHygiene = $dataHygieneResult
+          dataHygienePass = [bool]($dataHygieneSummary -and $dataHygieneSummary.pass -eq $true)
+        }) | Out-Null
+        $loopPass = $false
+        $failure = "Cycle $iteration data hygiene failed."
+        break
+      }
+    }
+
     $command = "npm run mobile:one-event-live-runtime -- -BackendPort $BackendPort"
     if ($RestartBackend -and $iteration -eq 1) {
       $command += " -RestartBackend"
@@ -149,16 +171,28 @@ try {
       $command += " -SkipSleep"
     }
 
-    $result = Invoke-CheckedCommand -Label "cycle-$iteration" -Command $command
+    $result = Invoke-CheckedCommand -Label "cycle-$iteration-runtime" -Command $command
     $runtimeSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-runtime-launch-summary.redacted.json"
     $runtimeSummary = Read-JsonFile $runtimeSummaryPath
+    $schedulerResult = $null
+    $schedulerSummary = $null
+    if (-not $SkipLifecycleScheduler) {
+      $schedulerResult = Invoke-CheckedCommand -Label "cycle-$iteration-lifecycle-scheduler" -Command "npm run mobile:one-event-lifecycle-scheduler-run"
+      $schedulerSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-lifecycle-scheduler-run-summary.redacted.json"
+      $schedulerSummary = Read-JsonFile $schedulerSummaryPath
+    }
     $cycles.Add([ordered]@{
       iteration = $iteration
       startedAt = $cycleStartedAt.ToString("o")
       finishedAt = (Get-Date).ToUniversalTime().ToString("o")
+      dataHygiene = $dataHygieneResult
+      dataHygienePass = [bool]($SkipDataHygiene -or ($dataHygieneSummary -and $dataHygieneSummary.pass -eq $true))
       command = $result
       runtimeSummaryPath = ConvertTo-RepoPath $runtimeSummaryPath
       runtimePass = [bool]($runtimeSummary -and $runtimeSummary.pass -eq $true)
+      lifecycleScheduler = $schedulerResult
+      lifecycleSchedulerPass = [bool]($SkipLifecycleScheduler -or ($schedulerSummary -and $schedulerSummary.pass -eq $true))
+      lifecycleSchedulerAction = $schedulerSummary.scheduler.action
       providerProofRan = [bool]$RunProviderProof
       makerSeeded = [bool](-not $SkipMakerSeed)
       event = $runtimeSummary.provider.proof.event
@@ -166,7 +200,11 @@ try {
       maker = $runtimeSummary.runtime.makerSeedSummary
     }) | Out-Null
 
-    if (-not $result.pass -or -not ($runtimeSummary -and $runtimeSummary.pass -eq $true)) {
+    if (
+      -not $result.pass -or
+      -not ($runtimeSummary -and $runtimeSummary.pass -eq $true) -or
+      (-not $SkipLifecycleScheduler -and (-not $schedulerResult.pass -or -not ($schedulerSummary -and $schedulerSummary.pass -eq $true)))
+    ) {
       $loopPass = $false
       $failure = "Cycle $iteration failed."
       break
@@ -191,7 +229,6 @@ if (-not $loopPass) {
 $p1Gaps = New-Object System.Collections.Generic.List[object]
 $p1Gaps.Add("supervisor is a local command, not an installed unattended service") | Out-Null
 $p1Gaps.Add("automatic official-result settlement is not complete") | Out-Null
-$p1Gaps.Add("automatic event close/suspend scheduler is not complete") | Out-Null
 $p2Gaps = New-Object System.Collections.Generic.List[object]
 $p2Gaps.Add("multi-event provider polling and inventory-aware multi-market quoting remain future work") | Out-Null
 
@@ -213,19 +250,24 @@ $summary = [ordered]@{
     completedIterations = $cycles.Count
     intervalSeconds = $IntervalSeconds
     runProviderProof = [bool]$RunProviderProof
+    dataHygieneEnabled = [bool](-not $SkipDataHygiene)
     refreshIterationsPerProviderProof = if ($RunProviderProof) { $RefreshIterations } else { 0 }
     maxCreditsPerProviderProof = if ($RunProviderProof) { $MaxCreditsPerProviderProof } else { 0 }
     minRemaining = $MinRemaining
     makerSeedEnabled = [bool](-not $SkipMakerSeed)
+    lifecycleSchedulerEnabled = [bool](-not $SkipLifecycleScheduler)
     cachedModeUsesQuota = $false
   }
   runtimeTruth = [ordered]@{
     backendContinuousWhileSupervisorRuns = $true
     providerRefreshContinuousWhileSupervisorRuns = [bool]($RunProviderProof -and ($Continuous -or $cycles.Count -gt 1))
+    dataHygieneContinuousWhileSupervisorRuns = [bool]((-not $SkipDataHygiene) -and ($Continuous -or $cycles.Count -gt 1))
     marketMakerRefreshContinuousWhileSupervisorRuns = [bool]((-not $SkipMakerSeed) -and ($Continuous -or $cycles.Count -gt 1))
+    lifecycleSchedulerContinuousWhileSupervisorRuns = [bool]((-not $SkipLifecycleScheduler) -and ($Continuous -or $cycles.Count -gt 1))
     unattendedServiceInstalled = $false
     providerRefreshMode = if ($RunProviderProof) { "quota-guarded repeated live provider proof while supervisor runs" } else { "cached provider proof verification; no provider quota spent" }
     marketMakerMode = if ($SkipMakerSeed) { "not seeded by supervisor" } else { "repeated local shifted maker reseed while supervisor runs" }
+    lifecycleSchedulerMode = if ($SkipLifecycleScheduler) { "not run by supervisor" } else { "safe real-time scheduler check each cycle; no proof time mutation" }
     settlementMode = "manual preview/resolve service; automatic official-result settlement not wired"
   }
   failure = $failure

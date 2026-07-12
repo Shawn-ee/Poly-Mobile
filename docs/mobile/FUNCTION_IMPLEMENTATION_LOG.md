@@ -13691,19 +13691,26 @@ Known limitations:
 - Frontend components touched: none. This cycle supports the existing mobile-visible event and trade ticket by keeping backend checks and local maker quotes refreshed while the supervisor command is running.
 - Important functions/services touched:
   - `scripts/run_holiwyn_one_event_live_supervisor.ps1`
+  - `scripts/run_odds_api_one_event_lifecycle_scheduler.ts`
   - `package.json` script `mobile:one-event-live-supervisor`
+  - `package.json` script `mobile:one-event-lifecycle-scheduler-run`
   - Child command `mobile:one-event-live-runtime`
+  - Child command `mobile:one-event-data-hygiene-proof`
+  - Child command `mobile:one-event-lifecycle-scheduler-run`
   - Optional child path `mobile:one-event-live-runtime -RunProviderProof`
   - Existing backend health, Docker/Postgres, S23 reachability, provider proof summary, maker seed summary, and quote route proof
 - User interactions supported:
   - Internal testers can keep the selected event locally tradable over repeated test cycles instead of manually rerunning maker seed after every local runtime check.
   - The default supervisor run does not spend provider quota; it uses the latest stored provider snapshot and reseeds shifted fake-token maker quotes.
+  - While the supervisor is active, each cycle also checks data hygiene and applies the real-time lifecycle scheduler for the current event start time.
 - State transitions:
-  - Cycle start -> backend health check -> cached provider proof freshness check -> optional live provider refresh -> maker quote cleanup/reseed -> quote route verification.
+  - Cycle start -> data hygiene guard -> backend health check -> cached provider proof freshness check -> optional live provider refresh -> maker quote cleanup/reseed -> quote route verification -> safe lifecycle scheduler run.
+  - Scheduler run uses the real current time only; unlike the scheduler proof, it does not temporarily change event start time.
   - The supervisor writes a summary that separates "continuous while this command runs" from "installed unattended service."
 - Known limitations:
   - The supervisor is still a foreground local command, not a service or production daemon.
-  - Automatic event-start close/suspend scheduling and official-result settlement remain P1.
+  - Event-start close/suspend scheduling runs only while this foreground supervisor is active; it is not installed as an unattended service.
+  - Official-result settlement remains P1.
   - Multi-event polling and inventory-aware maker quoting remain P2.
 
 # Cycle ONEEVENTLIFECYCLESCHEDULER - One-Event Start-Time Lifecycle Scheduler

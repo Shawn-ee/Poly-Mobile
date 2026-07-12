@@ -17,16 +17,17 @@
 2. For the quota-free consolidated readiness pass, run `npm run mobile:one-event-live-readiness`.
 3. For only a quota-free restart check, run `npm run mobile:one-event-live-runtime`.
 4. To leave local fake-token liquidity available for testers, run `npm run mobile:one-event-live-runtime -- -SeedMaker`.
-5. To keep the one-event local runtime warm for repeated internal checks, run `npm run mobile:one-event-live-supervisor -- -MaxIterations 2 -IntervalSeconds 1`.
+5. To keep the one-event local runtime warm for repeated internal checks, run `npm run mobile:one-event-live-supervisor -- -MaxIterations 2 -IntervalSeconds 1`. This foreground loop runs data hygiene, runtime/maker refresh, and the safe real-time lifecycle scheduler each cycle.
 6. For a live provider refresh proof, set `THE_ODDS_API_KEY` in the local process environment and run `npm run mobile:one-event-live-runtime:provider`.
 7. For a repeated live-provider supervisor, run `npm run mobile:one-event-live-supervisor -- -RunProviderProof -Continuous -MaxIterations 0` only during intentional manual testing.
 8. Confirm the proof reports provider refresh `ready`.
 9. Confirm local shifted maker quotes exist.
 10. Open mobile and trade the selected event with fake tokens.
 11. To prove local lifecycle controls only, run `npm run mobile:one-event-lifecycle-proof`.
-12. To prove local start-time lifecycle automation, run `npm run mobile:one-event-lifecycle-scheduler-proof`.
-13. If provider goes stale, pause/close the market manually until stale-data lifecycle rules are added.
-14. Do not settle automatically unless official result input and admin review are added.
+12. To run the safe real-time lifecycle scheduler once, run `npm run mobile:one-event-lifecycle-scheduler-run`.
+13. To prove local start-time lifecycle automation with temporary event-time mutations and restore, run `npm run mobile:one-event-lifecycle-scheduler-proof`.
+14. If provider goes stale, pause/close the market manually until stale-data lifecycle rules are added.
+15. Do not settle automatically unless official result input and admin review are added.
 
 ## Completion Boundary
 
@@ -39,6 +40,7 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - Maker seed summary: `docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json`
 - Lifecycle controls summary: `docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json`
 - Lifecycle scheduler summary: `docs/mobile/harness/odds-api-live-runtime/event-lifecycle-scheduler-summary.redacted.json`
+- Safe lifecycle scheduler run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json`
 - Consolidated readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json`
 - Supervisor summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json`
 - S23 visible proof: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`

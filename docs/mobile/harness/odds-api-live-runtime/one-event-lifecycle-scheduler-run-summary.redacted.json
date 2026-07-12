@@ -1,0 +1,35 @@
+{
+  "generatedAt": "2026-07-12T08:28:07.000Z",
+  "scope": "odds-api-one-event-lifecycle-scheduler-run",
+  "pass": true,
+  "dryRun": false,
+  "eventSlug": "odds-api-single-soccer-test",
+  "referenceSource": "sportsbook-odds",
+  "suspendBeforeStartSeconds": 300,
+  "scheduler": {
+    "generatedAt": "2026-07-12T08:28:06.999Z",
+    "eventSlug": "odds-api-single-soccer-test",
+    "eventTitle": "Spain vs. France",
+    "eventStartTime": "2026-07-14T19:00:00.000Z",
+    "status": "completed",
+    "dryRun": false,
+    "now": "2026-07-12T08:28:06.980Z",
+    "suspendBeforeStartSeconds": 300,
+    "referenceSource": "sportsbook-odds",
+    "action": "none",
+    "reason": "Event is not inside the suspend/close window.",
+    "candidateMarketCount": 3,
+    "changedMarketCount": 0,
+    "canceledOrderCount": 0,
+    "changes": []
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "This command is foreground/local; it is not an installed unattended daemon."
+    ],
+    "p2": [
+      "Multi-event lifecycle scheduling remains future work."
+    ]
+  }
+}
