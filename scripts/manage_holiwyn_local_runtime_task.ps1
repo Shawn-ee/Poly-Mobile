@@ -5,10 +5,15 @@ param(
   [int]$BackendPort = 3002,
   [int]$ExpoPort = 8081,
   [switch]$StartSupervisor,
+  [switch]$StartResultPoller,
   [switch]$RunResultIngestion,
   [switch]$RunResultSettlement,
+  [switch]$RunApprovedResultSettlement,
+  [string]$ResultSettlementPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+  [string]$ResultSettlementApprovalPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
   [switch]$RunProviderProof,
   [switch]$RunLiveResultIngestion,
+  [int]$ResultPollerIntervalSeconds = 15,
   [switch]$AtLogon,
   [string]$DailyAt = "",
   [switch]$Apply,
@@ -88,8 +93,20 @@ function Build-TaskCommand {
   $args.Add("$ExpoPort") | Out-Null
   $args.Add("-WaitForReady") | Out-Null
   if ($StartSupervisor) { $args.Add("-StartSupervisor") | Out-Null }
+  if ($StartResultPoller) {
+    $args.Add("-StartResultPoller") | Out-Null
+    $args.Add("-ResultPollerIntervalSeconds") | Out-Null
+    $args.Add("$ResultPollerIntervalSeconds") | Out-Null
+  }
   if ($RunResultIngestion) { $args.Add("-RunResultIngestion") | Out-Null }
   if ($RunResultSettlement) { $args.Add("-RunResultSettlement") | Out-Null }
+  if ($RunApprovedResultSettlement) {
+    $args.Add("-RunApprovedResultSettlement") | Out-Null
+    $args.Add("-ResultSettlementPath") | Out-Null
+    $args.Add($ResultSettlementPath) | Out-Null
+    $args.Add("-ResultSettlementApprovalPath") | Out-Null
+    $args.Add($ResultSettlementApprovalPath) | Out-Null
+  }
   if ($RunProviderProof) { $args.Add("-RunProviderProof") | Out-Null }
   if ($RunLiveResultIngestion) { $args.Add("-RunLiveResultIngestion") | Out-Null }
   return $args
@@ -122,8 +139,17 @@ function Build-TaskPlan {
     } else {
       "default scheduled task plan spends no provider quota"
     }
+    resultPollerMode = if ($StartResultPoller) {
+      "dedicated result poller will be started by the internal tester runtime manager"
+    } else {
+      "dedicated result poller not requested"
+    }
     settlementMode = if ($RunResultSettlement) {
-      "trusted-result settlement scheduler remains dry-run unless separate guarded execution controls are used"
+      if ($RunApprovedResultSettlement) {
+        "approved trusted-result settlement scheduler is requested; execution still waits for CLOSED market and exact approval match"
+      } else {
+        "trusted-result settlement scheduler remains dry-run unless separate guarded execution controls are used"
+      }
     } else {
       "settlement scheduler not requested"
     }
@@ -173,6 +199,9 @@ $operation = [ordered]@{
 $p0 = New-Object System.Collections.Generic.List[object]
 
 try {
+  if ($RunApprovedResultSettlement -and -not $RunResultSettlement) {
+    throw "RunApprovedResultSettlement requires RunResultSettlement."
+  }
   if ($Action -eq "install") {
     if ($Apply) {
       Install-Task -Plan $plan
@@ -221,6 +250,9 @@ $summary = [ordered]@{
     fakeTokenOnly = $true
     defaultPlanUsesProviderQuota = [bool]($RunProviderProof -or $RunLiveResultIngestion)
     activeTesterSettlementExecution = $false
+    approvedSettlementModeRequested = [bool]$RunApprovedResultSettlement
+    resultPollerStartRequested = [bool]$StartResultPoller
+    resultPollerIntervalSeconds = if ($StartResultPoller) { $ResultPollerIntervalSeconds } else { 0 }
   }
   gaps = [ordered]@{
     p0 = @($p0 | ForEach-Object { $_ })

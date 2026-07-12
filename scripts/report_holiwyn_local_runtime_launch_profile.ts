@@ -103,6 +103,12 @@ async function main() {
       getPath(entries.localRuntimeStartupInstall, ["runtimeTruth", "approvedSettlementModeInstallProof"]) === true,
     scheduledTaskPlanPresent: pass(entries.localRuntimeTask),
     scheduledTaskInstallAuditPass: pass(entries.localRuntimeTaskInstall),
+    scheduledTaskProofIncludesResultPoller:
+      getPath(entries.localRuntimeTaskInstall, ["runtimeTruth", "scheduledTaskIncludesResultPoller"]) === true,
+    scheduledTaskProofIncludesApprovedSettlement:
+      getPath(entries.localRuntimeTaskInstall, ["runtimeTruth", "approvedSettlementModeInstallProof"]) === true,
+    scheduledTaskProofUsesActiveApprovalPath:
+      getPath(entries.localRuntimeTaskInstall, ["runtimeTruth", "scheduledTaskUsesActiveApprovalPath"]) === true,
     scheduledTaskNotInstalled:
       getPath(entries.localRuntimeTaskInstall, ["runtimeTruth", "noPersistentTaskLeftInstalled"]) === true ||
       getPath(entries.localRuntimeTask, ["runtimeTruth", "installedScheduledTask"]) === false,
@@ -149,9 +155,9 @@ async function main() {
       },
       scheduledTaskProfile: {
         planCommand:
-          "npm run mobile:local-runtime-task -- -Action plan -StartSupervisor -RunResultIngestion -RunResultSettlement",
+          "npm run mobile:local-runtime-task -- -Action plan -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
         installCommand:
-          "npm run mobile:local-runtime-task -- -Action install -Apply -StartSupervisor -RunResultIngestion -RunResultSettlement",
+          "npm run mobile:local-runtime-task -- -Action install -Apply -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
         usableInCurrentContext: !scheduledTaskRegistrationDenied,
         currentContextNote: scheduledTaskRegistrationDenied
           ? "Windows scheduled-task registration was denied in the current process context; use Startup fallback or an elevated shell/task-registration rights before applying."

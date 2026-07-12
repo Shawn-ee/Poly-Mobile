@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-12T11:48:12.1987234Z",
+    "generatedAt":  "2026-07-12T17:18:07.8903513Z",
     "scope":  "holiwyn-local-runtime-scheduled-task-install-uninstall-proof",
     "pass":  true,
-    "startedAt":  "2026-07-12T11:48:07.6576579Z",
-    "completedAt":  "2026-07-12T11:48:12.1997234Z",
+    "startedAt":  "2026-07-12T17:18:03.0689836Z",
+    "completedAt":  "2026-07-12T17:18:07.8908531Z",
     "taskName":  "HoliwynInternalTesterRuntimeProof",
     "before":  {
                    "installed":  false,
@@ -13,14 +13,14 @@
     "installStep":  {
                         "action":  "install",
                         "exitCode":  1,
-                        "startedAt":  "2026-07-12T11:48:08.2464345Z",
-                        "finishedAt":  "2026-07-12T11:48:09.6649029Z",
+                        "startedAt":  "2026-07-12T17:18:03.6326010Z",
+                        "finishedAt":  "2026-07-12T17:18:05.1882650Z",
                         "outputTail":  [
-                                           "                         \"dryRunDefault\":  false,",
-                                           "                         \"persistentOsTaskMutationRequiresApply\":  true,",
-                                           "                         \"fakeTokenOnly\":  true,",
                                            "                         \"defaultPlanUsesProviderQuota\":  false,",
-                                           "                         \"activeTesterSettlementExecution\":  false",
+                                           "                         \"activeTesterSettlementExecution\":  false,",
+                                           "                         \"approvedSettlementModeRequested\":  true,",
+                                           "                         \"resultPollerStartRequested\":  true,",
+                                           "                         \"resultPollerIntervalSeconds\":  15",
                                            "                     },",
                                            "    \"gaps\":  {",
                                            "                 \"p0\":  [",
@@ -47,15 +47,15 @@
     "uninstallStep":  {
                           "action":  "uninstall",
                           "exitCode":  0,
-                          "startedAt":  "2026-07-12T11:48:10.1333453Z",
-                          "finishedAt":  "2026-07-12T11:48:11.6748179Z",
+                          "startedAt":  "2026-07-12T17:18:05.6528275Z",
+                          "finishedAt":  "2026-07-12T17:18:07.3924363Z",
                           "outputTail":  [
-                                             "                         \"installedScheduledTask\":  false,",
-                                             "                         \"dryRunDefault\":  false,",
-                                             "                         \"persistentOsTaskMutationRequiresApply\":  true,",
                                              "                         \"fakeTokenOnly\":  true,",
                                              "                         \"defaultPlanUsesProviderQuota\":  false,",
-                                             "                         \"activeTesterSettlementExecution\":  false",
+                                             "                         \"activeTesterSettlementExecution\":  false,",
+                                             "                         \"approvedSettlementModeRequested\":  true,",
+                                             "                         \"resultPollerStartRequested\":  true,",
+                                             "                         \"resultPollerIntervalSeconds\":  15",
                                              "                     },",
                                              "    \"gaps\":  {",
                                              "                 \"p0\":  [",
@@ -79,20 +79,20 @@
                            "state":  "not_found"
                        },
     "installSummary":  {
-                           "generatedAt":  "2026-07-12T11:48:09.6032415Z",
+                           "generatedAt":  "2026-07-12T17:18:05.1480390Z",
                            "scope":  "holiwyn-local-runtime-scheduled-task",
                            "pass":  false,
                            "operation":  {
                                              "action":  "install",
                                              "apply":  true,
-                                             "startedAt":  "2026-07-12T11:48:08.4795346Z",
+                                             "startedAt":  "2026-07-12T17:18:04.1465059Z",
                                              "result":  "failed"
                                          },
                            "plan":  {
                                         "taskName":  "HoliwynInternalTesterRuntimeProof",
                                         "workingDirectory":  "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main",
                                         "executable":  "powershell.exe",
-                                        "arguments":  "-NoProfile -ExecutionPolicy Bypass -File scripts\\manage_holiwyn_internal_tester_runtime.ps1 -Action start -BackendPort 3002 -ExpoPort 8081 -WaitForReady -StartSupervisor -RunResultIngestion -RunResultSettlement",
+                                        "arguments":  "-NoProfile -ExecutionPolicy Bypass -File scripts\\manage_holiwyn_internal_tester_runtime.ps1 -Action start -BackendPort 3002 -ExpoPort 8081 -WaitForReady -StartSupervisor -StartResultPoller -ResultPollerIntervalSeconds 15 -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                                         "logs":  {
                                                      "stdout":  ".runtime/holiwyn-local-runtime-task/scheduled-task.out.log",
                                                      "stderr":  ".runtime/holiwyn-local-runtime-task/scheduled-task.err.log"
@@ -104,7 +104,8 @@
                                                             }
                                                         ],
                                         "providerQuotaMode":  "default scheduled task plan spends no provider quota",
-                                        "settlementMode":  "trusted-result settlement scheduler remains dry-run unless separate guarded execution controls are used"
+                                        "resultPollerMode":  "dedicated result poller will be started by the internal tester runtime manager",
+                                        "settlementMode":  "approved trusted-result settlement scheduler is requested; execution still waits for CLOSED market and exact approval match"
                                     },
                            "before":  {
                                           "installed":  false,
@@ -125,7 +126,10 @@
                                                 "persistentOsTaskMutationRequiresApply":  true,
                                                 "fakeTokenOnly":  true,
                                                 "defaultPlanUsesProviderQuota":  false,
-                                                "activeTesterSettlementExecution":  false
+                                                "activeTesterSettlementExecution":  false,
+                                                "approvedSettlementModeRequested":  true,
+                                                "resultPollerStartRequested":  true,
+                                                "resultPollerIntervalSeconds":  15
                                             },
                            "gaps":  {
                                         "p0":  [
@@ -142,20 +146,20 @@
                                     }
                        },
     "uninstallSummary":  {
-                             "generatedAt":  "2026-07-12T11:48:11.6388056Z",
+                             "generatedAt":  "2026-07-12T17:18:07.3537359Z",
                              "scope":  "holiwyn-local-runtime-scheduled-task",
                              "pass":  true,
                              "operation":  {
                                                "action":  "uninstall",
                                                "apply":  true,
-                                               "startedAt":  "2026-07-12T11:48:10.2978037Z",
+                                               "startedAt":  "2026-07-12T17:18:06.0232252Z",
                                                "result":  "uninstalled_if_present"
                                            },
                              "plan":  {
                                           "taskName":  "HoliwynInternalTesterRuntimeProof",
                                           "workingDirectory":  "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main",
                                           "executable":  "powershell.exe",
-                                          "arguments":  "-NoProfile -ExecutionPolicy Bypass -File scripts\\manage_holiwyn_internal_tester_runtime.ps1 -Action start -BackendPort 3002 -ExpoPort 8081 -WaitForReady -StartSupervisor -RunResultIngestion -RunResultSettlement",
+                                          "arguments":  "-NoProfile -ExecutionPolicy Bypass -File scripts\\manage_holiwyn_internal_tester_runtime.ps1 -Action start -BackendPort 3002 -ExpoPort 8081 -WaitForReady -StartSupervisor -StartResultPoller -ResultPollerIntervalSeconds 15 -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                                           "logs":  {
                                                        "stdout":  ".runtime/holiwyn-local-runtime-task/scheduled-task.out.log",
                                                        "stderr":  ".runtime/holiwyn-local-runtime-task/scheduled-task.err.log"
@@ -167,7 +171,8 @@
                                                               }
                                                           ],
                                           "providerQuotaMode":  "default scheduled task plan spends no provider quota",
-                                          "settlementMode":  "trusted-result settlement scheduler remains dry-run unless separate guarded execution controls are used"
+                                          "resultPollerMode":  "dedicated result poller will be started by the internal tester runtime manager",
+                                          "settlementMode":  "approved trusted-result settlement scheduler is requested; execution still waits for CLOSED market and exact approval match"
                                       },
                              "before":  {
                                             "installed":  false,
@@ -188,7 +193,10 @@
                                                   "persistentOsTaskMutationRequiresApply":  true,
                                                   "fakeTokenOnly":  true,
                                                   "defaultPlanUsesProviderQuota":  false,
-                                                  "activeTesterSettlementExecution":  false
+                                                  "activeTesterSettlementExecution":  false,
+                                                  "approvedSettlementModeRequested":  true,
+                                                  "resultPollerStartRequested":  true,
+                                                  "resultPollerIntervalSeconds":  15
                                               },
                              "gaps":  {
                                           "p0":  [
@@ -210,7 +218,10 @@
                          "noPersistentTaskLeftInstalled":  true,
                          "providerQuotaUsed":  false,
                          "fakeTokenOnly":  true,
-                         "activeTesterSettlementExecution":  false
+                         "activeTesterSettlementExecution":  false,
+                         "scheduledTaskIncludesResultPoller":  true,
+                         "approvedSettlementModeInstallProof":  true,
+                         "scheduledTaskUsesActiveApprovalPath":  true
                      },
     "checks":  {
                    "startedCleanOrCleaned":  true,
@@ -219,7 +230,10 @@
                    "uninstallCommandPassed":  true,
                    "taskRemovedAfterProof":  true,
                    "providerQuotaNotUsed":  true,
-                   "leftPersistentTaskInstalled":  false
+                   "leftPersistentTaskInstalled":  false,
+                   "planIncludesResultPoller":  true,
+                   "planIncludesApprovedSettlement":  true,
+                   "planUsesActiveApprovalPath":  true
                },
     "gaps":  {
                  "p0":  [

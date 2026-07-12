@@ -638,6 +638,22 @@ async function main() {
         "This adds the local watchdog proof to the authoritative phase gate. S23 reachability is still verified by mobile proof artifacts; the watchdog itself gates backend/Expo/Postgres and runtime loop health.",
     }),
     requirement({
+      id: "scheduled-task-approved-settlement-profile",
+      priority: "P0",
+      requirement:
+        "Scheduled-task plan/proof includes the dedicated result poller and approved-settlement wait profile without spending provider quota or leaving a task installed.",
+      achieved:
+        pass(entries.localRuntimeTaskInstall) &&
+        getPath(entries.localRuntimeTaskInstall, ["runtimeTruth", "scheduledTaskIncludesResultPoller"]) === true &&
+        getPath(entries.localRuntimeTaskInstall, ["runtimeTruth", "approvedSettlementModeInstallProof"]) === true &&
+        getPath(entries.localRuntimeTaskInstall, ["runtimeTruth", "scheduledTaskUsesActiveApprovalPath"]) === true &&
+        getPath(entries.localRuntimeTaskInstall, ["runtimeTruth", "providerQuotaUsed"]) === false &&
+        getPath(entries.localRuntimeTaskInstall, ["runtimeTruth", "noPersistentTaskLeftInstalled"]) === true,
+      evidence: [PATHS.localRuntimeTaskInstall, PATHS.localRuntimeTask],
+      notes:
+        "This narrows the unattended-runtime gap by proving the scheduled-task profile carries the same result-poller and approved-settlement wait controls as the Startup fallback. Current Windows permissions may still block actual task registration.",
+    }),
+    requirement({
       id: "startup-approved-settlement-profile",
       priority: "P0",
       requirement:

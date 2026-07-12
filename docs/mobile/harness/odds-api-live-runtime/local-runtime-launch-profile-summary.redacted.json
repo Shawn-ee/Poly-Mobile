@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T14:28:07.809Z",
+  "generatedAt": "2026-07-12T17:18:14.014Z",
   "scope": "holiwyn-local-runtime-launch-profile",
   "pass": true,
   "launchProfiles": {
@@ -32,8 +32,8 @@
       ]
     },
     "scheduledTaskProfile": {
-      "planCommand": "npm run mobile:local-runtime-task -- -Action plan -StartSupervisor -RunResultIngestion -RunResultSettlement",
-      "installCommand": "npm run mobile:local-runtime-task -- -Action install -Apply -StartSupervisor -RunResultIngestion -RunResultSettlement",
+      "planCommand": "npm run mobile:local-runtime-task -- -Action plan -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
+      "installCommand": "npm run mobile:local-runtime-task -- -Action install -Apply -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
       "usableInCurrentContext": false,
       "currentContextNote": "Windows scheduled-task registration was denied in the current process context; use Startup fallback or an elevated shell/task-registration rights before applying."
     },
@@ -56,16 +56,16 @@
     "localRuntimeStartupInstall": "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-install-uninstall-summary.redacted.json"
   },
   "artifactAgesHours": {
-    "runtimeStatus": 0.14,
-    "internalTesterRuntime": 0.93,
-    "supervisorProcess": 0.93,
-    "continuousSupervisor": 3.27,
-    "resultPollerProcess": 0.92,
-    "continuousResultPoller": 1.09,
-    "localRuntimeTask": 2.85,
-    "localRuntimeTaskInstall": 2.67,
-    "localRuntimeStartup": 2.16,
-    "localRuntimeStartupInstall": 0.68
+    "runtimeStatus": 0.64,
+    "internalTesterRuntime": 0.2,
+    "supervisorProcess": 0.2,
+    "continuousSupervisor": 6.11,
+    "resultPollerProcess": 0.2,
+    "continuousResultPoller": 3.93,
+    "localRuntimeTask": 0,
+    "localRuntimeTaskInstall": 0,
+    "localRuntimeStartup": 4.99,
+    "localRuntimeStartupInstall": 3.52
   },
   "checks": {
     "runtimeStatusPass": true,
@@ -78,6 +78,9 @@
     "startupProofIncludesSupervisorAndResultPoller": true,
     "scheduledTaskPlanPresent": true,
     "scheduledTaskInstallAuditPass": true,
+    "scheduledTaskProofIncludesResultPoller": true,
+    "scheduledTaskProofIncludesApprovedSettlement": true,
+    "scheduledTaskProofUsesActiveApprovalPath": true,
     "scheduledTaskNotInstalled": true,
     "providerQuotaNotUsedByLaunchProofs": true,
     "activeTesterSettlementNotExecuted": true

@@ -10412,3 +10412,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable approval records, official result records, service heartbeat records, and a production operator control plane remain P1/P2.
 - Temporary mock/static data: none added. Existing redacted trusted-result and active approval proof files are reused, and no provider quota is spent.
 - Future migration concern: replace local approval JSON paths with durable approval rows keyed by event/market/outcome/result digest before moving beyond local internal testing.
+
+## Cycle LIVERUNTIMESCHEDULEDTASKPROFILE - Scheduled Task Result-Poller Approval Profile
+
+- Closed or narrowed: the scheduled-task launch profile now carries the same dedicated result-poller and active approved-settlement wait controls as the user Startup fallback, so the dry-run task plan is no longer missing runtime pieces needed for local unattended testing.
+- Route mismatch: no mobile/backend HTTP route changed. This is a local Windows launch-profile contract for the internal tester runtime manager.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable service heartbeats, official result records, durable settlement approvals, and production service ownership remain P1/P2. Windows task registration is still permission-blocked in this process context.
+- Temporary mock/static data: none added. Existing redacted trusted-result and active approval proof files are reused, no provider quota is spent, and no persistent scheduled task is left installed.
+- Future migration concern: production should replace local JSON approval paths and Windows task profile strings with durable approval records plus a real service supervisor.

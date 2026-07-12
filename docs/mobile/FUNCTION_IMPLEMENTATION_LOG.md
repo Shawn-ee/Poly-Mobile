@@ -14625,3 +14625,14 @@ Known limitations:
 - API/data dependencies: default approved-settlement local approval file is now `docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json`, matching the active Spain vs. France selected market proof. The supervisor process manager now starts the continuous loop without blocking the caller on redirected process output.
 - Proof needed: isolated result-poller one-iteration approved-settlement proof, direct supervisor process start timing, full internal tester runtime start/status proof, process cleanup, local status route check, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this is still a local process control plane, not an installed OS service. Active tester settlement execution remains guarded and waits for the selected market to be `CLOSED`.
+
+## Cycle LIVERUNTIMESCHEDULEDTASKPROFILE - Scheduled Task Result-Poller Approval Profile
+
+- Feature/page worked on: Windows scheduled-task launch profile for the local internal tester runtime.
+- Frontend components touched: none.
+- Important functions/services touched: updated `scripts/manage_holiwyn_local_runtime_task.ps1`, `scripts/prove_holiwyn_local_runtime_task_install_uninstall.ps1`, `scripts/report_holiwyn_local_runtime_launch_profile.ts`, and `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: `npm run mobile:local-runtime-task -- -Action plan -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement` now previews a scheduled-task command that starts the supervisor and dedicated result poller with the active approved-settlement wait profile. The install/uninstall proof verifies the generated plan carries the result poller, approval file, no-quota default, and cleanup truth even when the current Windows context cannot register the task.
+- State transitions: none by default. The plan/proof does not install a persistent task, start runtime loops, call The Odds API, mutate markets, place orders, or execute active-event settlement.
+- API/data dependencies: no new HTTP route. The generated task calls the existing internal tester runtime manager, which then uses already documented supervisor, result-poller, trusted-result, and approval-file paths.
+- Proof needed: scheduled-task plan, scheduled-task install/uninstall proof, local runtime launch profile, one-event phase audit, live-runtime completion audit, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: actual scheduled-task registration is still blocked by Windows permissions in the current process context, so unattended service ownership remains P1. This cycle narrows the gap by proving the command profile is now complete and safe.

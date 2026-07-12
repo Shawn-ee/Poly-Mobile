@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T17:11:10.452Z",
+  "generatedAt": "2026-07-12T17:21:01.891Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T17:11:10.405Z"
+      "timestamp": "2026-07-12T17:21:01.818Z"
     },
     "error": null
   },
@@ -68,7 +68,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-12T17:11:10.450Z",
+      "generatedAt": "2026-07-12T17:21:01.889Z",
       "scope": "holiwyn-local-live-runtime-status",
       "status": "ready",
       "event": {
@@ -150,11 +150,11 @@
         "maxPhaseAuditAgeHours": 24,
         "maxWatchdogAgeHours": 24,
         "maxLiveProofAgeHours": 24,
-        "completionAuditAgeHours": 0.02,
-        "phaseAuditAgeHours": 0.02,
-        "watchdogAgeHours": 1.85,
+        "completionAuditAgeHours": 0,
+        "phaseAuditAgeHours": 0.04,
+        "watchdogAgeHours": 2.02,
         "liveProofAgeAtCompletionHours": 9.56,
-        "liveProofCurrentAgeHours": 9.58,
+        "liveProofCurrentAgeHours": 9.56,
         "completionAuditFresh": true,
         "phaseAuditFresh": true,
         "watchdogFresh": true,
@@ -168,8 +168,8 @@
         "reason": null,
         "snapshotCount": 2,
         "latestFetchedAt": "2026-07-12T07:06:18.254Z",
-        "latestAgeHours": 10.08,
-        "latestAgeSeconds": 36292,
+        "latestAgeHours": 10.25,
+        "latestAgeSeconds": 36884,
         "maxAgeHours": 24,
         "sources": [
           "sportsbook-odds"
@@ -336,12 +336,12 @@
         "completionAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-12T17:10:00.553Z"
+          "generatedAt": "2026-07-12T17:21:01.805Z"
         },
         "phaseAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-12T17:09:41.650Z"
+          "generatedAt": "2026-07-12T17:18:20.262Z"
         },
         "runtimeStatus": {
           "path": "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
@@ -364,51 +364,51 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 10.08,
-    "onboarding": 6.44,
-    "readiness": 6.45,
-    "runtimeStatus": 0.52,
-    "runtimeLaunch": 0.05,
-    "supervisor": 0.05,
-    "supervisorProcess": 0.08,
-    "internalTesterRuntime": 0.08,
-    "internalTesterResultPoller": 3.64,
-    "internalTesterWatchdog": 1.85,
-    "localRuntimeTask": 5.57,
-    "localRuntimeTaskInstall": 5.38,
-    "localRuntimeStartup": 4.87,
-    "localRuntimeStartupInstall": 3.4,
-    "localRuntimeLaunchProfile": 2.72,
-    "liveRuntimeCompletionAudit": 0.02,
-    "continuousSupervisor": 5.99,
-    "staleGuardProof": 7.67,
-    "staleGuardRun": 7.56,
-    "lifecycleControls": 6.45,
-    "lifecycleScheduler": 6.45,
-    "lifecycleSchedulerRun": 0.05,
-    "lifecycleMatrix": 3.08,
-    "settlementReadiness": 6.45,
-    "settlementExecution": 6.16,
-    "resultSettlementExecution": 5.31,
-    "resultSettlementLiveBlocked": 5.31,
-    "manualSettlement": 6.44,
-    "resultIngestion": 0.05,
-    "resultIngestionAuditEvent": 3.51,
-    "resultPoller": 0.16,
-    "resultPollerProcess": 0.08,
-    "continuousResultPoller": 3.81,
-    "resultSettlement": 0.05,
-    "resultSettlementRun": 0.05,
-    "settlementPreflight": 5.07,
-    "settlementAuditEvent": 4.75,
-    "settlementApprovalAuditEvent": 2.43,
-    "resultReviewTrail": 2.33,
-    "activeSettlementReadiness": 2.22,
-    "approvedAutoSettlement": 4.58,
-    "activeSettlementClone": 2.56,
-    "supervisorApprovedSettlement": 4.4,
-    "makerSeed": 0.06,
-    "s23Visible": 9.9
+    "liveProof": 10.24,
+    "onboarding": 6.61,
+    "readiness": 6.61,
+    "runtimeStatus": 0.68,
+    "runtimeLaunch": 0.22,
+    "supervisor": 0.22,
+    "supervisorProcess": 0.25,
+    "internalTesterRuntime": 0.25,
+    "internalTesterResultPoller": 3.81,
+    "internalTesterWatchdog": 2.02,
+    "localRuntimeTask": 0.05,
+    "localRuntimeTaskInstall": 0.05,
+    "localRuntimeStartup": 5.04,
+    "localRuntimeStartupInstall": 3.57,
+    "localRuntimeLaunchProfile": 0.05,
+    "liveRuntimeCompletionAudit": 0.03,
+    "continuousSupervisor": 6.15,
+    "staleGuardProof": 7.84,
+    "staleGuardRun": 7.72,
+    "lifecycleControls": 6.61,
+    "lifecycleScheduler": 6.61,
+    "lifecycleSchedulerRun": 0.22,
+    "lifecycleMatrix": 3.24,
+    "settlementReadiness": 6.61,
+    "settlementExecution": 6.32,
+    "resultSettlementExecution": 5.47,
+    "resultSettlementLiveBlocked": 5.47,
+    "manualSettlement": 6.61,
+    "resultIngestion": 0.22,
+    "resultIngestionAuditEvent": 3.67,
+    "resultPoller": 0.32,
+    "resultPollerProcess": 0.25,
+    "continuousResultPoller": 3.97,
+    "resultSettlement": 0.22,
+    "resultSettlementRun": 0.22,
+    "settlementPreflight": 5.24,
+    "settlementAuditEvent": 4.92,
+    "settlementApprovalAuditEvent": 2.6,
+    "resultReviewTrail": 2.49,
+    "activeSettlementReadiness": 2.39,
+    "approvedAutoSettlement": 4.74,
+    "activeSettlementClone": 2.73,
+    "supervisorApprovedSettlement": 4.57,
+    "makerSeed": 0.22,
+    "s23Visible": 10.07
   },
   "requirements": [
     {
@@ -707,6 +707,17 @@
         "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-result-poller-proof-summary.redacted.json"
       ],
       "notes": "This adds the local watchdog proof to the authoritative phase gate. S23 reachability is still verified by mobile proof artifacts; the watchdog itself gates backend/Expo/Postgres and runtime loop health."
+    },
+    {
+      "id": "scheduled-task-approved-settlement-profile",
+      "priority": "P0",
+      "requirement": "Scheduled-task plan/proof includes the dedicated result poller and approved-settlement wait profile without spending provider quota or leaving a task installed.",
+      "status": "complete",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-install-uninstall-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-summary.redacted.json"
+      ],
+      "notes": "This narrows the unattended-runtime gap by proving the scheduled-task profile carries the same result-poller and approved-settlement wait controls as the Startup fallback. Current Windows permissions may still block actual task registration."
     },
     {
       "id": "startup-approved-settlement-profile",

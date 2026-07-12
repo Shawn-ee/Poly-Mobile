@@ -1,18 +1,18 @@
 {
-    "generatedAt":  "2026-07-12T11:48:09.6032415Z",
+    "generatedAt":  "2026-07-12T17:18:05.1480390Z",
     "scope":  "holiwyn-local-runtime-scheduled-task",
     "pass":  false,
     "operation":  {
                       "action":  "install",
                       "apply":  true,
-                      "startedAt":  "2026-07-12T11:48:08.4795346Z",
+                      "startedAt":  "2026-07-12T17:18:04.1465059Z",
                       "result":  "failed"
                   },
     "plan":  {
                  "taskName":  "HoliwynInternalTesterRuntimeProof",
                  "workingDirectory":  "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main",
                  "executable":  "powershell.exe",
-                 "arguments":  "-NoProfile -ExecutionPolicy Bypass -File scripts\\manage_holiwyn_internal_tester_runtime.ps1 -Action start -BackendPort 3002 -ExpoPort 8081 -WaitForReady -StartSupervisor -RunResultIngestion -RunResultSettlement",
+                 "arguments":  "-NoProfile -ExecutionPolicy Bypass -File scripts\\manage_holiwyn_internal_tester_runtime.ps1 -Action start -BackendPort 3002 -ExpoPort 8081 -WaitForReady -StartSupervisor -StartResultPoller -ResultPollerIntervalSeconds 15 -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                  "logs":  {
                               "stdout":  ".runtime/holiwyn-local-runtime-task/scheduled-task.out.log",
                               "stderr":  ".runtime/holiwyn-local-runtime-task/scheduled-task.err.log"
@@ -24,7 +24,8 @@
                                      }
                                  ],
                  "providerQuotaMode":  "default scheduled task plan spends no provider quota",
-                 "settlementMode":  "trusted-result settlement scheduler remains dry-run unless separate guarded execution controls are used"
+                 "resultPollerMode":  "dedicated result poller will be started by the internal tester runtime manager",
+                 "settlementMode":  "approved trusted-result settlement scheduler is requested; execution still waits for CLOSED market and exact approval match"
              },
     "before":  {
                    "installed":  false,
@@ -45,7 +46,10 @@
                          "persistentOsTaskMutationRequiresApply":  true,
                          "fakeTokenOnly":  true,
                          "defaultPlanUsesProviderQuota":  false,
-                         "activeTesterSettlementExecution":  false
+                         "activeTesterSettlementExecution":  false,
+                         "approvedSettlementModeRequested":  true,
+                         "resultPollerStartRequested":  true,
+                         "resultPollerIntervalSeconds":  15
                      },
     "gaps":  {
                  "p0":  [

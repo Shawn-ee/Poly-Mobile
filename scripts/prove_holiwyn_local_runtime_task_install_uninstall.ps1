@@ -73,8 +73,10 @@ function Invoke-Manager {
     "-TaskName",
     $TaskName,
     "-StartSupervisor",
+    "-StartResultPoller",
     "-RunResultIngestion",
     "-RunResultSettlement",
+    "-RunApprovedResultSettlement",
     "-Apply",
     "-SummaryPath",
     $OutputPath
@@ -126,6 +128,9 @@ $checks = [ordered]@{
   taskRemovedAfterProof = [bool]($afterUninstall -and $afterUninstall.installed -eq $false)
   providerQuotaNotUsed = $true
   leftPersistentTaskInstalled = [bool]($afterUninstall -and $afterUninstall.installed -eq $true)
+  planIncludesResultPoller = [bool]($installSummary -and $installSummary.runtimeTruth.resultPollerStartRequested -eq $true)
+  planIncludesApprovedSettlement = [bool]($installSummary -and $installSummary.runtimeTruth.approvedSettlementModeRequested -eq $true)
+  planUsesActiveApprovalPath = [bool]($installSummary -and "$($installSummary.plan.arguments)" -match "trusted-result-audit-approved\.redacted\.json")
 }
 $installBlockedByPermission = [bool](
   -not $checks.installCommandPassed -and
@@ -166,6 +171,9 @@ $summary = [ordered]@{
     providerQuotaUsed = $false
     fakeTokenOnly = $true
     activeTesterSettlementExecution = $false
+    scheduledTaskIncludesResultPoller = [bool]$checks.planIncludesResultPoller
+    approvedSettlementModeInstallProof = [bool]$checks.planIncludesApprovedSettlement
+    scheduledTaskUsesActiveApprovalPath = [bool]$checks.planUsesActiveApprovalPath
   }
   checks = $checks
   gaps = [ordered]@{
