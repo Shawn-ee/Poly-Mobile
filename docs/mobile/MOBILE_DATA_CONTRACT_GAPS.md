@@ -10348,3 +10348,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: multi-event provider polling state, durable provider poll run records, and per-market runtime health for all active markets remain P1/P2. This cycle checks the selected one-event runtime market only.
 - Temporary mock/static data: none added. The route reads existing DB rows and spends no provider quota.
 - Future migration concern: selected-market status is enough for the current one-event local runtime, but production/local multi-event runtime should report provider freshness across every active event and market family.
+
+## Cycle LIVERUNTIMEPHASESTATUSGATE - Phase Audit Status API Gate
+
+- Closed or narrowed: the authoritative one-event phase audit now calls `/api/internal/live-runtime/status` and fails if the status API is not ready. This makes proof freshness, watchdog freshness, and selected-market DB provider snapshot freshness part of the phase gate.
+- Route mismatch: no new route. `npm run mobile:one-event-phase-audit` now embeds the status route response as `localRuntimeStatus` and adds P0 requirement `local-status-api-ready`.
+- Fields Holiwyn still needs but backend/provider does not fully provide: multi-event provider freshness and durable production runtime health remain P1/P2. This gate still targets the selected one-event local runtime.
+- Temporary mock/static data: none added. The audit reads local backend routes and existing proof artifacts only, and spends no provider quota.
+- Future migration concern: once runtime expands beyond one selected event, the phase audit should gate an all-active-markets status endpoint instead of a selected-market status route.

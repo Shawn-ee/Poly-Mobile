@@ -175,6 +175,11 @@ async function main() {
   const quote = selectedMarketId
     ? await fetchJson(`${baseUrl}/api/markets/${encodeURIComponent(selectedMarketId)}/quote`)
     : null;
+  const localRuntimeStatus = await fetchJson(`${baseUrl}/api/internal/live-runtime/status`);
+  const localRuntimeStatusBody =
+    localRuntimeStatus.body && typeof localRuntimeStatus.body === "object"
+      ? (localRuntimeStatus.body as JsonObject)
+      : null;
   const liveEventStart = text(getPath(entries.liveProof, ["event", "commenceTime"]));
   const eventUpcoming = liveEventStart ? Date.parse(liveEventStart) > Date.now() : false;
   const quotaUsed = numberValue(getPath(entries.liveProof, ["provider", "quota", "totalLastCost"]));
@@ -239,6 +244,28 @@ async function main() {
       evidence: [PATHS.runtimeStatus, PATHS.continuousSupervisor, PATHS.continuousResultPoller],
       notes:
         "This prevents narrow latest supervisor proof runs from hiding previously proven repeated maker reseed, lifecycle scheduling, result ingestion, and result-poller behavior.",
+    }),
+    requirement({
+      id: "local-status-api-ready",
+      priority: "P0",
+      requirement:
+        "Local live-runtime status API reports ready with fresh proof artifacts and fresh selected-market provider snapshots.",
+      achieved:
+        localRuntimeStatus.ok === true &&
+        getPath(localRuntimeStatusBody, ["status"]) === "ready" &&
+        getPath(localRuntimeStatusBody, ["runtimeTruth", "localInternalRuntimeReady"]) === true &&
+        getPath(localRuntimeStatusBody, ["runtimeTruth", "providerQuotaUsedByStatus"]) === false &&
+        getPath(localRuntimeStatusBody, ["freshness", "completionAuditFresh"]) === true &&
+        getPath(localRuntimeStatusBody, ["freshness", "phaseAuditFresh"]) === true &&
+        getPath(localRuntimeStatusBody, ["freshness", "watchdogFresh"]) === true &&
+        getPath(localRuntimeStatusBody, ["freshness", "liveProofFresh"]) === true &&
+        getPath(localRuntimeStatusBody, ["providerSnapshots", "fresh"]) === true &&
+        Number(getPath(localRuntimeStatusBody, ["providerSnapshots", "snapshotCount"]) ?? 0) > 0 &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["gaps", "p0"])) &&
+        (getPath(localRuntimeStatusBody, ["gaps", "p0"]) as unknown[]).length === 0,
+      evidence: [`${baseUrl}/api/internal/live-runtime/status`],
+      notes:
+        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness and DB-backed ReferenceQuoteSnapshot freshness for the selected market.",
     }),
     requirement({
       id: "quota-policy",
@@ -702,6 +729,7 @@ async function main() {
     selectedMarket: entries.liveProof?.selectedMarket ?? null,
     health,
     quote,
+    localRuntimeStatus,
     artifactAgesHours: Object.fromEntries(
       Object.entries(entries).map(([key, value]) => [key, ageHours(value?.generatedAt)]),
     ),

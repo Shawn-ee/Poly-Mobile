@@ -14537,3 +14537,14 @@ Known limitations:
 - API/data dependencies: reads selected market id from phase/completion artifacts, then reads `ReferenceQuoteSnapshot` rows for that market and reports `providerSnapshots.checked`, `fresh`, `snapshotCount`, `latestFetchedAt`, `latestAgeHours`, `sources`, `acceptingOrderSnapshotCount`, and `mmEligibleSnapshotCount`.
 - Proof needed: focused status service tests, live route proof showing stored sportsbook snapshots are fresh, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this narrows local runtime truth but is still a selected-market check. Multi-event runtime should eventually report provider snapshot freshness for every active internal tester event/market.
+
+## Cycle LIVERUNTIMEPHASESTATUSGATE - Phase Audit Status API Gate
+
+- Feature/page worked on: backend live-runtime phase audit gate.
+- Frontend components touched: none.
+- Important functions/services touched: updated `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: operator can run `npm run mobile:one-event-phase-audit` and the phase audit now verifies the local status API directly, including zero P0 gaps, fresh proof artifacts, no provider quota spend by status, and fresh selected-market DB provider snapshots.
+- State transitions: none. This is a read-only HTTP check against `/api/internal/live-runtime/status`; it does not call The Odds API, start processes, mutate market/order state, or change settlement state.
+- API/data dependencies: reads `GET /api/internal/live-runtime/status` and records the response in the phase audit summary under `localRuntimeStatus`.
+- Proof needed: `npm run mobile:one-event-phase-audit`, focused status route/service tests, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this gates the one-event local runtime. Multi-event production/runtime status should eventually verify all active events and markets.
