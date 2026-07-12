@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T09:46:37.129Z",
+  "generatedAt": "2026-07-12T09:54:06.445Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T09:46:37.098Z"
+      "timestamp": "2026-07-12T09:54:05.308Z"
     },
     "error": null
   },
@@ -65,22 +65,23 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 2.67,
-    "onboarding": 0.26,
-    "readiness": 0.27,
-    "runtimeStatus": 0.27,
-    "runtimeLaunch": 0.15,
-    "supervisor": 0.15,
-    "supervisorProcess": 0.96,
-    "staleGuardProof": 0.26,
-    "staleGuardRun": 0.15,
-    "lifecycleControls": 0.27,
-    "lifecycleScheduler": 0.27,
-    "lifecycleSchedulerRun": 0.15,
-    "settlementReadiness": 0.26,
-    "manualSettlement": 0.26,
-    "makerSeed": 0.15,
-    "s23Visible": 2.49
+    "liveProof": 2.8,
+    "onboarding": 0.39,
+    "readiness": 0.39,
+    "runtimeStatus": 0.39,
+    "runtimeLaunch": 0.27,
+    "supervisor": 0.27,
+    "supervisorProcess": 1.08,
+    "staleGuardProof": 0.39,
+    "staleGuardRun": 0.27,
+    "lifecycleControls": 0.39,
+    "lifecycleScheduler": 0.39,
+    "lifecycleSchedulerRun": 0.27,
+    "settlementReadiness": 0.39,
+    "manualSettlement": 0.39,
+    "resultSettlement": 0.02,
+    "makerSeed": 0.27,
+    "s23Visible": 2.62
   },
   "requirements": [
     {
@@ -188,14 +189,15 @@
     {
       "id": "settlement-readiness",
       "priority": "P0",
-      "requirement": "Settlement readiness and guarded manual settlement are documented/proven.",
+      "requirement": "Settlement readiness, trusted result mapping, and guarded settlement are documented/proven.",
       "status": "complete",
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
         "docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md"
       ],
-      "notes": "Official result ingestion and automatic settlement remain P1."
+      "notes": "Trusted result JSON can map to a winning outcome and preview settlement. Official result API ingestion remains P1."
     },
     {
       "id": "backend-runtime-health",
@@ -226,9 +228,10 @@
       "status": "open",
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json",
-        "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json"
+        "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json"
       ],
-      "notes": "Manual preview/resolve is proven. Official result ingestion is not implemented."
+      "notes": "Manual preview/resolve and trusted result mapping are proven. Official result API ingestion is not implemented."
     }
   ],
   "conclusion": {

@@ -10061,3 +10061,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable installed stale-provider service ownership and a live refresh daemon that keeps snapshots fresh enough for `-EnforceStaleGuard` to preserve active trading.
 - Temporary mock/static data: none added. The latest dry-run monitor reported all cached one-event markets stale under the 90-second threshold because cached proof snapshots are older than live-runtime freshness rules.
 - Future migration concern: cached internal usability and live-provider enforcement have different freshness policies. Internal tester runs should use monitor mode unless a live provider refresh is intentionally running.
+
+## Cycle ONEEVENTRESULTSETTLEMENT - Trusted Result Settlement Intake
+
+- Closed or narrowed: settlement no longer depends only on a manually supplied outcome id. A trusted soccer result JSON contract can now map score/result evidence to the selected market's winning outcome and produce a guarded dry-run settlement preview.
+- Route mismatch: none. The command uses existing settlement services directly and documents the matching admin preview/resolve routes.
+- Fields Holiwyn still needs but backend/provider does not fully provide: official result provider API payload, provider event id matching across multiple events, final/official status semantics from provider, and unattended result polling cadence.
+- Temporary mock/static data: the proof uses `trusted-result-fixture.redacted.json`, a local trusted result fixture for Spain vs. France. It is not an official provider response and spends no quota.
+- Future migration concern: official result ingestion should feed the same result contract fields (`sourceEventId`, `status`, `homeScore`, `awayScore`, `advanceTeam`, evidence URL) before any automatic execute path is considered.

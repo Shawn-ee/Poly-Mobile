@@ -13925,3 +13925,22 @@ Known limitations:
 - Known limitations:
   - The audit intentionally reports local internal runtime readiness, not production readiness.
   - It leaves unattended service installation and official-result automatic settlement as open P1 gaps.
+
+# Cycle ONEEVENTRESULTSETTLEMENT - Trusted Result Settlement Intake
+
+- Feature/page worked on: one-event settlement from trusted soccer result JSON.
+- Frontend components touched: none. This is backend/runtime/operator tooling.
+- Important functions/services touched:
+  - `scripts/settle_odds_api_one_event_from_result.ts`
+  - `package.json` script `mobile:one-event-result-settlement`
+  - `docs/mobile/harness/odds-api-live-runtime/trusted-result-fixture.redacted.json`
+  - Existing settlement services `previewOrderbookSettlement` and `resolveOrderbookMarket`
+- User interactions supported:
+  - Operators can dry-run settlement from trusted score/result evidence instead of manually typing an outcome id.
+  - The command maps the selected market rules to a winning outcome and prints an exact `SETTLE_FROM_RESULT:<marketId>:<outcomeId>:<digest>` phrase for guarded execution.
+- State transitions:
+  - Dry-run: trusted result JSON -> event/source id validation -> market selection -> result-to-outcome mapping -> settlement preview -> summary written -> market remains unresolved.
+  - Execute mode: same mapping path -> explicit `--execute` and exact confirmation phrase -> `resolveOrderbookMarket`.
+- Known limitations:
+  - The proof uses a trusted local result fixture, not an official result provider API.
+  - Unattended result polling and automatic execution remain open P1 work.

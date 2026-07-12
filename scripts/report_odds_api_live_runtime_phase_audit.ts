@@ -20,6 +20,7 @@ const PATHS = {
   lifecycleSchedulerRun: "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
   settlementReadiness: "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json",
   manualSettlement: "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json",
+  resultSettlement: "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
   makerSeed: "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
   s23Visible: "docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json",
 };
@@ -221,10 +222,15 @@ async function main() {
     requirement({
       id: "settlement-readiness",
       priority: "P0",
-      requirement: "Settlement readiness and guarded manual settlement are documented/proven.",
-      achieved: pass(entries.settlementReadiness) && pass(entries.manualSettlement),
-      evidence: [PATHS.settlementReadiness, PATHS.manualSettlement, "docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md"],
-      notes: "Official result ingestion and automatic settlement remain P1.",
+      requirement: "Settlement readiness, trusted result mapping, and guarded settlement are documented/proven.",
+      achieved: pass(entries.settlementReadiness) && pass(entries.manualSettlement) && pass(entries.resultSettlement),
+      evidence: [
+        PATHS.settlementReadiness,
+        PATHS.manualSettlement,
+        PATHS.resultSettlement,
+        "docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md",
+      ],
+      notes: "Trusted result JSON can map to a winning outcome and preview settlement. Official result API ingestion remains P1.",
     }),
     requirement({
       id: "backend-runtime-health",
@@ -246,8 +252,8 @@ async function main() {
       priority: "P1",
       requirement: "Automatically ingest official soccer results and settle markets.",
       achieved: false,
-      evidence: [PATHS.settlementReadiness, PATHS.manualSettlement],
-      notes: "Manual preview/resolve is proven. Official result ingestion is not implemented.",
+      evidence: [PATHS.settlementReadiness, PATHS.manualSettlement, PATHS.resultSettlement],
+      notes: "Manual preview/resolve and trusted result mapping are proven. Official result API ingestion is not implemented.",
     }),
   ];
   const openP0 = requirements.filter((item) => item.priority === "P0" && item.status !== "complete");

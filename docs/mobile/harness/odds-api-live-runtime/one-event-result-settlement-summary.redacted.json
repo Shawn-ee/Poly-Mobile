@@ -1,0 +1,98 @@
+{
+  "generatedAt": "2026-07-12T09:52:38.084Z",
+  "scope": "odds-api-one-event-result-settlement",
+  "pass": true,
+  "mode": "dry-run",
+  "resultInput": {
+    "path": "docs/mobile/harness/odds-api-live-runtime/trusted-result-fixture.redacted.json",
+    "source": "trusted-local-fixture",
+    "sourceEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
+    "eventSlug": "odds-api-single-soccer-test",
+    "status": "final",
+    "period": "full_time",
+    "homeTeam": "France",
+    "awayTeam": "Spain",
+    "homeScore": 1,
+    "awayScore": 2,
+    "advanceTeam": "Spain",
+    "evidenceUrl": null,
+    "recordedAt": "2026-07-12T09:50:00.000Z"
+  },
+  "event": {
+    "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
+    "slug": "odds-api-single-soccer-test",
+    "title": "Spain vs. France",
+    "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
+    "startTime": "2026-07-14T19:00:00.000Z"
+  },
+  "selectedMarket": {
+    "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "slug": "odds-api-single-soccer-test-totals-7439c2d603",
+    "title": "Spain vs. France: Total Goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "line": "2.5",
+    "statusBefore": "LIVE",
+    "resolvedOutcomeIdBefore": null,
+    "collateralUSDCBefore": "7100"
+  },
+  "mappedResolution": {
+    "rule": "total_goals",
+    "line": 2.5,
+    "totalGoals": 3,
+    "winningSide": "over"
+  },
+  "winningOutcome": {
+    "id": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+    "name": "Over +2.5",
+    "label": "Over +2.5",
+    "side": "over",
+    "code": "over-2-5"
+  },
+  "preview": {
+    "marketStatus": "LIVE",
+    "totalShares": "14200",
+    "totalWinningShares": "7100",
+    "totalPayout": "7100",
+    "collateralUSDC": "7100",
+    "payoutConservationPass": true,
+    "blockers": [],
+    "openOrderCleanup": {
+      "openOrderCount": 2,
+      "buyOrderLockedUSDCToRelease": "94",
+      "sellOrderSharesToRelease": "200"
+    },
+    "payoutCount": 38,
+    "loserPositionCount": 36,
+    "mutation": "none"
+  },
+  "execution": {
+    "attempted": false,
+    "reason": "dry_run_default",
+    "requiredConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:faed3c7cae9e"
+  },
+  "postMarket": {
+    "status": "LIVE",
+    "resolvedOutcomeId": null,
+    "settlementStatus": null,
+    "collateralUSDC": "7100"
+  },
+  "controls": {
+    "dryRunIsDefault": true,
+    "executeRequiresFlag": "--execute",
+    "executeRequiresConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:faed3c7cae9e",
+    "resultDigest": "faed3c7cae9e",
+    "actorUserId": "holiwyn-local-result-settlement-operator",
+    "providerStatus": "fixture_only"
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "Official soccer result provider API ingestion is not wired; this command accepts trusted result JSON.",
+      "Automatic unattended result polling and settlement execution are not installed."
+    ],
+    "p2": [
+      "Operator settlement UI and multi-event settlement queue remain future work."
+    ]
+  }
+}

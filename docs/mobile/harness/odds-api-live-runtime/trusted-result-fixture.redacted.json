@@ -1,0 +1,15 @@
+{
+  "source": "trusted-local-fixture",
+  "sourceEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
+  "eventSlug": "odds-api-single-soccer-test",
+  "eventTitle": "Spain vs. France",
+  "status": "final",
+  "period": "full_time",
+  "homeTeam": "France",
+  "awayTeam": "Spain",
+  "homeScore": 1,
+  "awayScore": 2,
+  "advanceTeam": "Spain",
+  "evidenceUrl": null,
+  "recordedAt": "2026-07-12T09:50:00.000Z"
+}
