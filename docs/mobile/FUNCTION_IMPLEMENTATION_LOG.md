@@ -14504,3 +14504,14 @@ Known limitations:
 - API/data dependencies: reads live-runtime completion audit, phase audit, and watchdog summary files. It does not call The Odds API, does not read provider secrets, and does not mutate database state.
 - Proof: route unit test passed; live local route returned `status=ready`; backend health passed; server/mobile typecheck and `npm run test:ci` passed; secret scan clean.
 - Known limitations: this is an internal local status route, not a production monitoring API or installed service manager.
+
+## Cycle LIVERUNTIMEFRESHNESS - Local Runtime Freshness Gate
+
+- Feature/page worked on: backend local internal live-runtime readiness truth.
+- Frontend components touched: none.
+- Important functions/services touched: updated `scripts/report_holiwyn_live_runtime_completion_audit.ts`, `src/server/services/liveRuntimeStatus.ts`, and `src/__tests__/liveRuntimeStatus.service.test.ts`.
+- User/runtime interactions supported: local operator or internal testing platform can still call `GET /api/internal/live-runtime/status`, but the route now reports `needs_attention` when the completion audit, phase audit, or watchdog proof artifact is stale instead of treating old proof files as ready forever.
+- State transitions: none. This is a read-only audit/status change over existing proof JSON and does not call The Odds API, start processes, mutate events, create orders, or change settlement state.
+- API/data dependencies: completion audit now exposes `answers.freshness` and gates live-provider proof/watchdog freshness; status API now exposes a `freshness` object with artifact ages, max age thresholds, and per-artifact fresh booleans.
+- Proof needed: `npm run mobile:live-runtime-completion-audit`, `npm run mobile:one-event-phase-audit`, direct status API check, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this is still local proof-file readiness. Production should replace the artifact freshness contract with durable service heartbeats, provider poll records, result poll records, and operator approval state.

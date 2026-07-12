@@ -64,6 +64,13 @@ function pass(entry: JsonObject | null) {
   return entry?.pass === true || entry?.result === "pass";
 }
 
+function ageHours(generatedAt: unknown) {
+  if (typeof generatedAt !== "string") return null;
+  const parsed = Date.parse(generatedAt);
+  if (!Number.isFinite(parsed)) return null;
+  return Number(((Date.now() - parsed) / 3_600_000).toFixed(2));
+}
+
 async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to run local live-runtime completion audit in production.");
@@ -79,6 +86,10 @@ async function main() {
   const commenceTime =
     getPath(entries.runtimeStatus, ["event", "commenceTime"]) ??
     getPath(entries.liveProviderProof, ["event", "commenceTime"]);
+  const liveProofAgeHours = getPath(entries.runtimeStatus, ["provider", "liveProofAgeHours"]);
+  const maxLiveProofAgeHours = getPath(entries.runtimeStatus, ["provider", "maxLiveProofAgeHours"]);
+  const watchdogAgeHours = ageHours(getPath(entries.internalTesterWatchdog, ["generatedAt"]));
+  const maxWatchdogAgeHours = 24;
   const checks = {
     backendRuntimeStatusPass: pass(entries.runtimeStatus),
     oneRealUpcomingEventKnown:
@@ -87,6 +98,10 @@ async function main() {
       typeof getPath(entries.runtimeStatus, ["event", "providerEventId"]) === "string" &&
       isFutureIso(commenceTime),
     liveProviderProofPass: pass(entries.liveProviderProof),
+    liveProviderProofFresh:
+      typeof liveProofAgeHours === "number" &&
+      typeof maxLiveProofAgeHours === "number" &&
+      liveProofAgeHours <= maxLiveProofAgeHours,
     oddsRefreshModeKnown:
       truthy(getPath(entries.runtimeStatus, ["modeTruth", "cachedRuntimeUsesQuota"])) === false &&
       truthy(getPath(entries.runtimeStatus, ["modeTruth", "liveProviderRefreshRequiresExplicitFlag"])) === true,
@@ -136,6 +151,7 @@ async function main() {
       getPath(entries.internalTesterWatchdog, ["iterations", "0", "resultPollerProofExitCode"]) === 0 &&
       truthy(getPath(entries.internalTesterWatchdog, ["cleanup", "supervisor", "pass"])) &&
       truthy(getPath(entries.internalTesterWatchdog, ["cleanup", "resultPoller", "pass"])),
+    internalTesterWatchdogFresh: typeof watchdogAgeHours === "number" && watchdogAgeHours <= maxWatchdogAgeHours,
   };
   const p0 = Object.entries(checks)
     .filter(([, value]) => value !== true)
@@ -169,6 +185,12 @@ async function main() {
         maxCredits: getPath(entries.runtimeStatus, ["provider", "policy", "maxCredits"]),
         minRemaining: getPath(entries.runtimeStatus, ["provider", "policy", "minRemaining"]),
         oneEventOnly: getPath(entries.liveProviderProof, ["policy", "oneEventOnly"]),
+      },
+      freshness: {
+        liveProofAgeHours,
+        maxLiveProofAgeHours,
+        watchdogAgeHours,
+        maxWatchdogAgeHours,
       },
       staleHandling:
         "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",

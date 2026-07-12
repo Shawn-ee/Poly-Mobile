@@ -10324,3 +10324,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable service heartbeats, provider poll state, result poll state, approval state, and production monitoring records remain P1/P2.
 - Temporary mock/static data: none added. The route reads existing redacted proof artifacts and spends no provider quota.
 - Future migration concern: if this status becomes user/admin-facing, replace proof-file reads with durable database/service records and add explicit authorization.
+
+## Cycle LIVERUNTIMEFRESHNESS - Local Runtime Freshness Gate
+
+- Closed or narrowed: local runtime status no longer stays green solely because old proof files exist. The completion audit now gates live-provider proof freshness and watchdog freshness, and the local status API gates completion, phase, and watchdog artifacts under a 24-hour local freshness window.
+- Route mismatch: `/api/internal/live-runtime/status` remains a local/dev-only route, but its response contract now includes a `freshness` object with artifact age and threshold fields.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable runtime heartbeats, provider refresh records, result poll records, operator approval state, and production service ownership remain P1/P2. The current route is still proof-file based.
+- Temporary mock/static data: none added. The freshness gate reads existing redacted proof artifacts only and spends no provider quota.
+- Future migration concern: once this moves beyond local internal testing, replace the 24-hour artifact-age rule with durable service heartbeat SLAs and provider/result poll records stored by backend runtime services.
