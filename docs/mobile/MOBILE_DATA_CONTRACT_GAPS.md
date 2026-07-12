@@ -10229,3 +10229,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: first-class official-result records, durable approval records, operator review UI, multi-event result queue, and production service health/state remain P1/P2.
 - Temporary mock/static data: none added. The report reads committed/local proof evidence, spends no provider quota, and does not execute settlement.
 - Future migration concern: canonical events are useful audit evidence, but production settlement should promote official result evidence, review decisions, approval state, and execution state into durable first-class backend models.
+
+## Cycle ONEEVENTLIFECYCLEMATRIX - One-Event Lifecycle Matrix
+
+- Closed or narrowed: open, paused, closed, and settled/resolved evidence is now visible in one read-only matrix instead of scattered across separate proof summaries.
+- Route mismatch: none. No mobile API or backend HTTP route changed; this is a local report over existing proof artifacts plus current event/market metadata.
+- Fields Holiwyn still needs but backend/provider does not fully provide: production lifecycle dashboard, durable official-result records, durable approval records, and active-event auto-settlement ownership remain P1/P2.
+- Temporary mock/static data: none added. The report reads existing proof artifacts and spends no provider quota.
+- Future migration concern: the matrix is good for local internal verification, but production should store lifecycle/result/settlement state in durable first-class models and expose operator-facing review controls.

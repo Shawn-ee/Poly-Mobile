@@ -31,6 +31,7 @@
 16. To prove local lifecycle controls only, run `npm run mobile:one-event-lifecycle-proof`.
 17. To run the safe real-time lifecycle scheduler once, run `npm run mobile:one-event-lifecycle-scheduler-run`.
 18. To prove local start-time lifecycle automation with temporary event-time mutations and restore, run `npm run mobile:one-event-lifecycle-scheduler-proof`.
+18a. To inspect open, paused, closed, and settled/resolved lifecycle evidence in one read-only report, run `npm run mobile:one-event-lifecycle-matrix`.
 19. To prove non-mutating settlement readiness, run `npm run mobile:one-event-settlement-readiness`.
 20. To prove settlement execution safely without mutating the active tester event, run `npm run mobile:one-event-settlement-execution-proof`.
 21. To prove trusted-result scheduler execution safely without mutating the active tester event, run `npm run mobile:one-event-result-settlement-execution-proof`. It creates a disposable sportsbook-shaped event, dry-runs trusted-result settlement to get the exact confirmation phrase, executes through the scheduler with that phrase, and verifies the active tester event was not mutated.
@@ -86,6 +87,7 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - Lifecycle controls summary: `docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json`
 - Lifecycle scheduler summary: `docs/mobile/harness/odds-api-live-runtime/event-lifecycle-scheduler-summary.redacted.json`
 - Safe lifecycle scheduler run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json`
+- Lifecycle matrix summary: `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-matrix-summary.redacted.json`
 - Settlement readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json`
 - Settlement execution proof summary: `docs/mobile/harness/odds-api-live-runtime/one-event-settlement-execution-summary.redacted.json`
 - Trusted-result scheduler execution proof summary: `docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json`

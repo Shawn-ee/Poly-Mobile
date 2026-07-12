@@ -30,6 +30,7 @@ const PATHS = {
   lifecycleControls: "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json",
   lifecycleScheduler: "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-scheduler-summary.redacted.json",
   lifecycleSchedulerRun: "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
+  lifecycleMatrix: "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-matrix-summary.redacted.json",
   settlementReadiness: "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json",
   settlementExecution: "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-execution-summary.redacted.json",
   resultSettlementExecution:
@@ -324,13 +325,19 @@ async function main() {
     requirement({
       id: "event-open-suspend-close",
       priority: "P0",
-      requirement: "Event lifecycle open, suspended, and closed behavior is proven.",
+      requirement: "Event lifecycle open, suspended, closed, and settled/resolved behavior is proven or explicitly bounded.",
       achieved:
         pass(entries.lifecycleControls) &&
         pass(entries.lifecycleScheduler) &&
+        pass(entries.lifecycleMatrix) &&
         getPath(entries.lifecycleControls, ["checks", "pausedOrderRejected"]) === true &&
-        getPath(entries.lifecycleControls, ["checks", "closedOrderRejected"]) === true,
-      evidence: [PATHS.lifecycleControls, PATHS.lifecycleScheduler, PATHS.lifecycleSchedulerRun],
+        getPath(entries.lifecycleControls, ["checks", "closedOrderRejected"]) === true &&
+        getPath(entries.lifecycleMatrix, ["checks", "openStateProven"]) === true &&
+        getPath(entries.lifecycleMatrix, ["checks", "pausedStateProven"]) === true &&
+        getPath(entries.lifecycleMatrix, ["checks", "closedStateProven"]) === true &&
+        getPath(entries.lifecycleMatrix, ["checks", "settlementMechanicsProvenOnDisposableMarket"]) === true &&
+        getPath(entries.lifecycleMatrix, ["runtimeTruth", "activeTesterEventSettlementExecuted"]) === false,
+      evidence: [PATHS.lifecycleControls, PATHS.lifecycleScheduler, PATHS.lifecycleSchedulerRun, PATHS.lifecycleMatrix],
     }),
     requirement({
       id: "settlement-readiness",

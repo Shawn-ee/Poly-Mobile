@@ -1,0 +1,85 @@
+{
+  "generatedAt": "2026-07-12T14:06:25.187Z",
+  "scope": "odds-api-one-event-lifecycle-matrix",
+  "pass": true,
+  "providerQuotaUsed": false,
+  "event": {
+    "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
+    "slug": "odds-api-single-soccer-test",
+    "title": "Spain vs. France",
+    "startTime": "2026-07-14T19:00:00.000Z",
+    "status": "ACTIVE",
+    "liveStatus": "scheduled",
+    "listedSportsbookMarketCount": 19,
+    "currentMarketStatuses": [
+      "LIVE"
+    ],
+    "resolvedMarketCount": 0
+  },
+  "lifecycleMatrix": {
+    "open": {
+      "proven": true,
+      "evidence": "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json",
+      "userImpact": "LIVE market accepts fake-token orders."
+    },
+    "suspendedPaused": {
+      "proven": true,
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-scheduler-summary.redacted.json"
+      ],
+      "userImpact": "PAUSED market rejects orders with MARKET_UNAVAILABLE."
+    },
+    "closed": {
+      "proven": true,
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-scheduler-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json"
+      ],
+      "userImpact": "CLOSED market rejects orders and lifecycle scheduler can close after start."
+    },
+    "settledResolved": {
+      "proven": true,
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-execution-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-result-review-trail-summary.redacted.json"
+      ],
+      "userImpact": "Settlement mechanics and trusted-result scheduler execution are proven on disposable local markets; active tester event still waits for CLOSED status plus operator confirmation."
+    }
+  },
+  "runtimeTruth": {
+    "readOnlyReport": true,
+    "activeTesterEventSettlementExecuted": false,
+    "activeTesterEventReviewTrailExists": true,
+    "disposableSettlementExecutionProven": true,
+    "automaticOfficialResultSettlementInstalled": false,
+    "providerQuotaUsed": false,
+    "lifecycleControlsArtifactHasEventTitleWarning": true
+  },
+  "checks": {
+    "eventFound": true,
+    "openStateProven": true,
+    "pausedStateProven": true,
+    "closedStateProven": true,
+    "settlementPreviewProven": true,
+    "settlementMechanicsProvenOnDisposableMarket": true,
+    "trustedResultSchedulerSettlementProvenOnDisposableMarket": true,
+    "activeEventReviewTrailProven": true,
+    "activeEventNotSettledByMatrix": true,
+    "reportIsReadOnly": true,
+    "providerQuotaNotUsed": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "The active tester event remains unexecuted until CLOSED status and exact operator confirmation.",
+      "Official-result polling and production service ownership are still not installed.",
+      "lifecycle_controls_selected_market_title_does_not_match_current_event_title"
+    ],
+    "p2": [
+      "A first-class lifecycle dashboard/operator UI remains future work."
+    ]
+  }
+}

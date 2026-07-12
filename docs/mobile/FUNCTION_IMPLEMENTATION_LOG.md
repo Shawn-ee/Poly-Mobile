@@ -14340,3 +14340,22 @@ Known limitations:
 - Known limitations:
   - This narrows operator review workflow but is not a dedicated official-result table, durable approval model, or review UI.
   - Official result polling and active-event execution remain explicitly gated.
+
+# Cycle ONEEVENTLIFECYCLEMATRIX - One-Event Lifecycle Matrix
+
+- Feature/page worked on: backend one-event lifecycle evidence consolidation.
+- Frontend components touched: none. This is backend/runtime proof only and does not change mobile UI.
+- Important functions/services touched:
+  - `scripts/report_odds_api_one_event_lifecycle_matrix.ts`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `package.json` script `mobile:one-event-lifecycle-matrix`
+  - Existing lifecycle, scheduler, settlement, trusted-result, and result-review proof summaries
+- User/runtime interactions supported:
+  - Operator can run one read-only report that summarizes the evidence for open, paused, closed, and settled/resolved lifecycle states.
+  - Report distinguishes active tester event state from disposable settlement execution proof.
+- State transitions:
+  - No market, order, position, portfolio, provider, or settlement mutation.
+  - Reads proof summaries and current event/market metadata only.
+- Known limitations:
+  - Active tester event settlement remains unexecuted until `CLOSED` status plus exact operator confirmation.
+  - The lifecycle-control artifact currently has an older selected-market title warning, recorded as P1 in the matrix instead of hidden.
