@@ -10101,3 +10101,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: installed unattended result polling, official finality policy across postponed/abandoned matches, operator approval UI, audit log workflow, and unconfirmed execution policy.
 - Temporary mock/static data: default proof still uses the redacted scores fixture. Live mode requires `THE_ODDS_API_KEY` in the process environment and does not read secrets from files.
 - Future migration concern: opt-in live result ingestion should remain separate from odds refresh. Scores/final results settle markets; odds snapshots price markets.
+
+## Cycle ONEEVENTINTERNALRUNTIME - Internal Tester Runtime Manager
+
+- Closed or narrowed: local tester launch now has one status/control command for backend, Expo, Docker/Postgres, S23 reachability, and one-event supervisor status.
+- Route mismatch: none for mobile routes. The manager reads `/api/health` and local process/device state; it does not add backend routes or schema fields.
+- Fields Holiwyn still needs but backend/provider does not fully provide: installed OS/service-manager ownership for always-on provider refresh, maker reseeding, lifecycle scheduling, and official-result settlement remains P1.
+- Temporary mock/static data: none added. Status mode spends no provider quota and reads existing runtime/proof state only.
+- Future migration concern: keep the local tester manager separate from production process management. It is safe for internal Windows development because it reuses external backend/Expo listeners and stops only manager-owned backend/Expo processes.

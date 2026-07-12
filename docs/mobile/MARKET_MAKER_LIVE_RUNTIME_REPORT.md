@@ -22,6 +22,7 @@ The Local MVP has deterministic one-shot maker liquidity. A true production daem
 | One-event runtime status report | Added for operator safety | `npm run mobile:one-event-runtime-status` reads local proof summaries and backend health/quote routes to report cached-vs-live mode, live proof freshness, quota from the last provider proof, maker quote status, and scheduler state without calling the provider. |
 | Local background supervisor process | Added for internal runtime testing | `npm run mobile:one-event-live-supervisor:process -- -Action start` starts the supervisor hidden with process state/log files; status and stop wrappers are available. This is local process management, not an installed OS service. |
 | Continuous local supervisor proof | Added for internal runtime testing | `npm run mobile:one-event-live-supervisor:continuous-proof` starts the local supervisor in continuous mode, waits for heartbeat proof of at least one completed cycle, confirms the process is still running, checks runtime status, then stops it cleanly. |
+| Internal tester runtime manager | Added for internal tester launch | `npm run mobile:internal-tester-runtime -- -Action status/start/stop` reports backend, Expo, Docker/Postgres, S23, and supervisor status. It can start backend/Expo when ports are free and can optionally start the supervisor, while reusing external listeners and stopping only manager-owned processes. |
 
 ## Live Proof Strategy
 
@@ -56,6 +57,7 @@ For a selected binary sportsbook market:
 - Local background supervisor command: `npm run mobile:one-event-live-supervisor:process -- -Action start -Continuous -MaxIterations 0`
 - Local background supervisor status/stop: `npm run mobile:one-event-live-supervisor:status`, `npm run mobile:one-event-live-supervisor:stop`
 - Continuous local supervisor proof: `npm run mobile:one-event-live-supervisor:continuous-proof`
+- Internal tester runtime manager status: `npm run mobile:internal-tester-runtime -- -Action status`
 - Runtime status command: `npm run mobile:one-event-runtime-status`
 - Maker seed command: `npm run mobile:one-event-live-maker-seed`
 - Lifecycle controls command: `npm run mobile:one-event-lifecycle-proof`
@@ -79,6 +81,7 @@ For a selected binary sportsbook market:
 - Provider-shaped result ingestion summary: `docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json`
 - Trusted result settlement scheduler summary: `docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json`
 - One-command onboarding summary: `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json`
+- Internal tester runtime manager summary: `docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json`
 - Result: pass.
 - Provider event: Spain vs. France, `soccer_fifa_world_cup`, starts `2026-07-14T19:00:00Z`.
 - Selected local market: Total Goals 2.5.
@@ -97,3 +100,4 @@ For a selected binary sportsbook market:
 - Continuous local supervisor proof: the repeated local supervisor proof emits heartbeat evidence and keeps shifted maker reseeding, lifecycle checks, provider-shaped result ingestion, and trusted-result settlement dry-run scheduling active across cycles without leaving the proof supervisor running.
 - S23 proof: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`.
 - Continuous status: the supervisor can run repeated local maker reseeds while it is open, but there is still no installed unattended production bot.
+- Internal tester runtime status: the manager reports backend, Expo, Docker/Postgres, S23, and supervisor process state without provider quota. It is a local tester control plane and does not replace an installed production daemon.

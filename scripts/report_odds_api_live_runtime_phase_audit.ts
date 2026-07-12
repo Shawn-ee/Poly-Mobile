@@ -13,6 +13,8 @@ const PATHS = {
   runtimeLaunch: "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json",
   supervisor: "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json",
   supervisorProcess: "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-process-summary.redacted.json",
+  internalTesterRuntime:
+    "docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json",
   continuousSupervisor: "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json",
   staleGuardProof: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json",
   staleGuardRun: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-run-summary.redacted.json",
@@ -135,6 +137,7 @@ async function main() {
   const quotaUsed = numberValue(getPath(entries.liveProof, ["provider", "quota", "totalLastCost"]));
   const quotaRemaining = text(getPath(entries.liveProof, ["provider", "quota", "latest", "requestsRemaining"]));
   const supervisorTruth = getPath(entries.supervisor, ["runtimeTruth"]);
+  const internalTesterTruth = getPath(entries.internalTesterRuntime, ["runtimeTruth"]);
   const continuousSupervisorTruth = getPath(entries.continuousSupervisor, ["runtimeTruth"]);
   const runtimeStatusTruth = getPath(entries.runtimeStatus, ["modeTruth"]);
   const staleRunResult = getPath(entries.staleGuardRun, ["result"]);
@@ -286,12 +289,30 @@ async function main() {
       evidence: [`${baseUrl}/api/health`, quote ? `${baseUrl}/api/markets/${selectedMarketId}/quote` : "missing quote route"],
     }),
     requirement({
+      id: "internal-tester-runtime-manager",
+      priority: "P0",
+      requirement: "Local internal tester runtime manager can report backend, Expo, Postgres, S23, and supervisor status without spending provider quota.",
+      achieved:
+        pass(entries.internalTesterRuntime) &&
+        getPath(entries.internalTesterRuntime, ["readiness", "backendReady"]) === true &&
+        getPath(entries.internalTesterRuntime, ["readiness", "expoReady"]) === true &&
+        getPath(entries.internalTesterRuntime, ["readiness", "postgresReady"]) === true &&
+        getPath(entries.internalTesterRuntime, ["s23", "connected"]) === true &&
+        getPath(internalTesterTruth, ["localControlPlaneAvailable"]) === true &&
+        getPath(internalTesterTruth, ["stopsOnlyOwnedBackendExpoProcesses"]) === true &&
+        getPath(internalTesterTruth, ["installedOsService"]) === false,
+      evidence: [PATHS.internalTesterRuntime],
+      notes:
+        "This proves local operator visibility/control for internal testing. It reuses external backend/Expo listeners when present and only stops manager-owned backend/Expo processes.",
+    }),
+    requirement({
       id: "unattended-service",
       priority: "P1",
       requirement: "Install unattended provider/maker/lifecycle services.",
       achieved: false,
-      evidence: [PATHS.supervisor, PATHS.supervisorProcess, PATHS.continuousSupervisor],
-      notes: "Repeated local supervisor cycles and process-tree stop support are proven, but no OS/service manager install exists.",
+      evidence: [PATHS.supervisor, PATHS.supervisorProcess, PATHS.internalTesterRuntime, PATHS.continuousSupervisor],
+      notes:
+        "Repeated local supervisor cycles, process-tree stop support, and an internal tester runtime manager are proven. No OS/service manager install exists.",
     }),
     requirement({
       id: "official-result-auto-settlement",
@@ -332,7 +353,7 @@ async function main() {
       phaseCompleteForLocalInternalRuntime: openP0.length === 0,
       fullProductionRuntimeComplete: false,
       runtimeTruth:
-        "Local one-event runtime is internally usable with cached/live-proofed provider data, fake-token trading, supervisor monitoring, provider-shaped replay result ingestion, opt-in quota-capped live result ingestion controls, and trusted-result settlement dry-run scheduling. It is not a production unattended daemon and does not install unattended official result polling.",
+        "Local one-event runtime is internally usable with cached/live-proofed provider data, fake-token trading, local internal tester runtime status/control, supervisor monitoring, provider-shaped replay result ingestion, opt-in quota-capped live result ingestion controls, and trusted-result settlement dry-run scheduling. It is not a production unattended daemon and does not install unattended official result polling.",
     },
   };
   await writeJson(outputPath, summary);

@@ -13966,3 +13966,25 @@ Known limitations:
   - This is still a local supervisor command/background process manager, not an installed OS service.
   - Live result ingestion requires `THE_ODDS_API_KEY` in process env and was not run in the committed proof to protect quota.
   - Unconfirmed active-event settlement execution remains P1.
+
+# Cycle ONEEVENTINTERNALRUNTIME - Internal Tester Runtime Manager
+
+- Feature/page worked on: local internal tester runtime launch/status control.
+- Frontend components touched: none. This cycle does not change mobile UI, order routes, schemas, provider normalization, or proof screenshots.
+- Important functions/services touched:
+  - `scripts/manage_holiwyn_internal_tester_runtime.ps1`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `package.json` script `mobile:internal-tester-runtime`
+  - Local route `GET /api/health`
+  - Existing one-event supervisor process manager status command
+- User/runtime interactions supported:
+  - Operator can run one command to see backend health, Docker/Postgres status, Expo port status, S23 device/model, and one-event supervisor state.
+  - Operator can start backend/Expo when ports are free and optionally start the one-event supervisor.
+  - Operator can stop only manager-owned backend/Expo processes, leaving external listeners untouched.
+- State transitions:
+  - `status`: read health/process/device/supervisor state, write `internal-tester-runtime-manager-summary.redacted.json`, spend no provider quota.
+  - `start`: reuse existing backend/Expo listeners if present; otherwise start hidden manager-owned backend/Expo processes and optionally start supervisor.
+  - `stop`: stop supervisor and manager-owned backend/Expo process trees only.
+- Known limitations:
+  - This is a local Windows development/test control plane, not an installed OS service.
+  - It does not make live provider refresh, live result polling, or settlement execution automatic by itself.

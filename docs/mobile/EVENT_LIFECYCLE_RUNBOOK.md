@@ -46,7 +46,10 @@
 31. To monitor stale provider handling inside the supervisor without mutating local tester state, run `npm run mobile:one-event-live-supervisor -- -RunStaleGuard -MaxIterations 1 -IntervalSeconds 0 -SkipSleep`.
 32. To enforce stale provider handling inside the supervisor, add `-EnforceStaleGuard`. Use enforcement only when you intend stale markets to pause.
 33. To audit the whole one-event live-runtime phase, run `npm run mobile:one-event-phase-audit`.
-34. Do not settle automatically unless official result input and admin review are added.
+34. To check the whole local internal tester runtime without spending provider quota, run `npm run mobile:internal-tester-runtime -- -Action status`. This reports backend health, Postgres/Docker status, Expo port status, S23 reachability, and one-event supervisor process status.
+35. To start backend and Expo through the local internal tester runtime manager when their ports are free, run `npm run mobile:internal-tester-runtime -- -Action start`. Add `-StartSupervisor` only when you intentionally want the one-event supervisor running in the background.
+36. To stop only processes that the local internal tester runtime manager owns, run `npm run mobile:internal-tester-runtime -- -Action stop`. Existing external backend or Expo listeners are reused and are not stopped by this manager.
+37. Do not settle automatically unless official result input and admin review are added.
 
 ## Completion Boundary
 
@@ -71,6 +74,7 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - Trusted result fixture: `docs/mobile/harness/odds-api-live-runtime/trusted-result-fixture.redacted.json`
 - One-command onboarding summary: `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json`
 - Phase audit summary: `docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json`
+- Internal tester runtime manager summary: `docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json`
 - Cached live restore summary: `docs/mobile/harness/odds-api-live-runtime/one-event-cached-restore-summary.redacted.json`
 - Stale guard summary: `docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json`
 - Stale guard run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-run-summary.redacted.json`
@@ -94,3 +98,4 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - Live result supervisor controls: `-RunLiveResultIngestion` is available for the local supervisor. It is explicit, quota-capped, cadence-controlled, and separate from odds refresh; replay/no-quota ingestion remains the default committed proof mode.
 - One-command onboarding: `npm run mobile:one-event-onboarding` blocked the old replay fixture, restored the cached Spain vs. France live-runtime event without provider quota, ran the readiness gate, runtime status, settlement readiness, provider-shaped result ingestion, trusted-result settlement dry run, and manual settlement dry run, with S23 connected and no unresolved P0 gaps.
 - Phase audit: `npm run mobile:one-event-phase-audit` passed. It verifies 0 unresolved P0 gaps for local one-event internal runtime and leaves unattended service install plus official-result auto-settlement as explicit P1 gaps.
+- Internal tester runtime manager: `npm run mobile:internal-tester-runtime -- -Action status` passed. It confirmed local backend health, Docker/Postgres health, Expo port ownership, S23 reachability, and supervisor status without provider quota. It is a local process control plane, not an installed OS service.

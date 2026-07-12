@@ -1,10 +1,10 @@
 {
-    "generatedAt":  "2026-07-12T11:11:47.3271708Z",
+    "generatedAt":  "2026-07-12T11:22:07.8447545Z",
     "scope":  "holiwyn-one-event-live-supervisor-process",
     "pass":  true,
     "operation":  {
                       "action":  "status",
-                      "startedAt":  "2026-07-12T11:11:47.2836512Z",
+                      "startedAt":  "2026-07-12T11:22:07.8007300Z",
                       "force":  false,
                       "result":  "not_running"
                   },

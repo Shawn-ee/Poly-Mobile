@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T11:12:29.454Z",
+  "generatedAt": "2026-07-12T11:22:16.192Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T11:12:29.422Z"
+      "timestamp": "2026-07-12T11:22:16.150Z"
     },
     "error": null
   },
@@ -65,27 +65,28 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 4.1,
-    "onboarding": 0.47,
-    "readiness": 0.47,
-    "runtimeStatus": 0.01,
-    "runtimeLaunch": 0.01,
-    "supervisor": 0.01,
-    "supervisorProcess": 0.01,
-    "continuousSupervisor": 0.01,
-    "staleGuardProof": 1.69,
-    "staleGuardRun": 1.58,
-    "lifecycleControls": 0.47,
-    "lifecycleScheduler": 0.47,
-    "lifecycleSchedulerRun": 0.01,
-    "settlementReadiness": 0.47,
-    "settlementExecution": 0.18,
-    "manualSettlement": 0.47,
-    "resultIngestion": 0.01,
-    "resultSettlement": 0.01,
-    "resultSettlementRun": 0.01,
-    "makerSeed": 0.01,
-    "s23Visible": 3.93
+    "liveProof": 4.27,
+    "onboarding": 0.63,
+    "readiness": 0.63,
+    "runtimeStatus": 0.17,
+    "runtimeLaunch": 0.18,
+    "supervisor": 0.18,
+    "supervisorProcess": 0,
+    "internalTesterRuntime": 0,
+    "continuousSupervisor": 0.17,
+    "staleGuardProof": 1.86,
+    "staleGuardRun": 1.74,
+    "lifecycleControls": 0.63,
+    "lifecycleScheduler": 0.63,
+    "lifecycleSchedulerRun": 0.18,
+    "settlementReadiness": 0.63,
+    "settlementExecution": 0.34,
+    "manualSettlement": 0.63,
+    "resultIngestion": 0.18,
+    "resultSettlement": 0.18,
+    "resultSettlementRun": 0.18,
+    "makerSeed": 0.18,
+    "s23Visible": 4.09
   },
   "requirements": [
     {
@@ -241,6 +242,16 @@
       "notes": null
     },
     {
+      "id": "internal-tester-runtime-manager",
+      "priority": "P0",
+      "requirement": "Local internal tester runtime manager can report backend, Expo, Postgres, S23, and supervisor status without spending provider quota.",
+      "status": "complete",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json"
+      ],
+      "notes": "This proves local operator visibility/control for internal testing. It reuses external backend/Expo listeners when present and only stops manager-owned backend/Expo processes."
+    },
+    {
       "id": "unattended-service",
       "priority": "P1",
       "requirement": "Install unattended provider/maker/lifecycle services.",
@@ -248,9 +259,10 @@
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-process-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json"
       ],
-      "notes": "Repeated local supervisor cycles and process-tree stop support are proven, but no OS/service manager install exists."
+      "notes": "Repeated local supervisor cycles, process-tree stop support, and an internal tester runtime manager are proven. No OS/service manager install exists."
     },
     {
       "id": "official-result-auto-settlement",
@@ -277,6 +289,6 @@
     ],
     "phaseCompleteForLocalInternalRuntime": true,
     "fullProductionRuntimeComplete": false,
-    "runtimeTruth": "Local one-event runtime is internally usable with cached/live-proofed provider data, fake-token trading, supervisor monitoring, provider-shaped replay result ingestion, opt-in quota-capped live result ingestion controls, and trusted-result settlement dry-run scheduling. It is not a production unattended daemon and does not install unattended official result polling."
+    "runtimeTruth": "Local one-event runtime is internally usable with cached/live-proofed provider data, fake-token trading, local internal tester runtime status/control, supervisor monitoring, provider-shaped replay result ingestion, opt-in quota-capped live result ingestion controls, and trusted-result settlement dry-run scheduling. It is not a production unattended daemon and does not install unattended official result polling."
   }
 }
