@@ -354,6 +354,55 @@ const makeWatchdog = (generatedAt = nowIso()) => ({
   },
 });
 
+const makeLaunchProfile = (generatedAt = nowIso()) => ({
+  generatedAt,
+  pass: true,
+  launchProfiles: {
+    recommendedInternalTesterProfile: {
+      label: "User Startup fallback with backend, Expo, supervisor, result poller, result ingestion, settlement scheduling, and approved-settlement wait mode",
+      command:
+        "npm run mobile:local-runtime-startup -- -Action plan -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
+      installCommand:
+        "npm run mobile:local-runtime-startup -- -Action install -Apply -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
+      quotaMode: "no provider quota unless provider/live-result flags are explicitly added",
+      productionBoundary: "local Windows user-logon fallback, not a production service",
+    },
+    manualForegroundProfile: {
+      commands: [
+        {
+          label: "start backend/expo plus supervisor and result poller",
+          command:
+            "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
+          quotaMode: "no provider quota by default",
+        },
+      ],
+    },
+    scheduledTaskProfile: {
+      usableInCurrentContext: false,
+      currentContextNote: "Windows scheduled-task registration was denied in the current process context.",
+    },
+    liveProviderProfile: {
+      defaultForInternalTesting: false,
+      quotaMode: "requires THE_ODDS_API_KEY and is capped",
+    },
+  },
+  runtimeTruth: {
+    localOperatorLaunchProfileDocumented: true,
+    startupFallbackRecommendedForCurrentWindowsContext: true,
+    proofLeavesNoPersistentStartupLauncher: true,
+    proofLeavesNoPersistentScheduledTask: true,
+    noProviderQuotaSpentByDefaultProfile: true,
+    activeTesterSettlementExecution: false,
+    installedProductionService: false,
+    fakeTokenOnly: true,
+  },
+  gaps: {
+    p0: [],
+    p1: ["not a production service"],
+    p2: ["multi-event launch profile future work"],
+  },
+});
+
 const makeActiveSettlementReadiness = (generatedAt = nowIso()) => ({
   generatedAt,
   pass: true,
@@ -465,6 +514,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
       if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
@@ -605,6 +655,41 @@ describe("live runtime status service", () => {
       p0: [],
       p1: ["installed service remains open"],
       p2: [],
+      note: expect.stringContaining("Read-only projection"),
+    });
+    expect(status.launchProfile).toMatchObject({
+      checked: true,
+      pass: true,
+      recommendedInternalTesterProfile: expect.objectContaining({
+        command:
+          "npm run mobile:local-runtime-startup -- -Action plan -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
+        quotaMode: "no provider quota unless provider/live-result flags are explicitly added",
+        productionBoundary: "local Windows user-logon fallback, not a production service",
+      }),
+      manualForegroundProfile: {
+        commands: expect.arrayContaining([
+          expect.objectContaining({
+            command:
+              "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
+          }),
+        ]),
+      },
+      scheduledTaskProfile: expect.objectContaining({
+        usableInCurrentContext: false,
+      }),
+      liveProviderProfile: expect.objectContaining({
+        defaultForInternalTesting: false,
+      }),
+      runtimeTruth: expect.objectContaining({
+        localOperatorLaunchProfileDocumented: true,
+        noProviderQuotaSpentByDefaultProfile: true,
+        activeTesterSettlementExecution: false,
+        installedProductionService: false,
+        fakeTokenOnly: true,
+      }),
+      p0: [],
+      p1: ["not a production service"],
+      p2: ["multi-event launch profile future work"],
       note: expect.stringContaining("Read-only projection"),
     });
     expect(status.operatorNextActions).toMatchObject({
@@ -835,6 +920,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
       if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
@@ -863,6 +949,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
       if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
@@ -894,6 +981,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
       if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
@@ -920,6 +1008,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
       if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
@@ -965,6 +1054,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
       if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
@@ -1015,6 +1105,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
       if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) {

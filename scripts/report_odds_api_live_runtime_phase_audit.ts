@@ -359,6 +359,18 @@ async function main() {
         (getPath(localRuntimeStatusBody, ["phaseCompletion", "p0"]) as unknown[]).length === 0 &&
         Array.isArray(getPath(localRuntimeStatusBody, ["phaseCompletion", "p1"])) &&
         Array.isArray(getPath(localRuntimeStatusBody, ["phaseCompletion", "p2"])) &&
+        getPath(localRuntimeStatusBody, ["launchProfile", "checked"]) === true &&
+        getPath(localRuntimeStatusBody, ["launchProfile", "pass"]) === true &&
+        getPath(localRuntimeStatusBody, ["launchProfile", "runtimeTruth", "localOperatorLaunchProfileDocumented"]) === true &&
+        getPath(localRuntimeStatusBody, ["launchProfile", "runtimeTruth", "noProviderQuotaSpentByDefaultProfile"]) === true &&
+        getPath(localRuntimeStatusBody, ["launchProfile", "runtimeTruth", "activeTesterSettlementExecution"]) === false &&
+        getPath(localRuntimeStatusBody, ["launchProfile", "runtimeTruth", "installedProductionService"]) === false &&
+        typeof getPath(localRuntimeStatusBody, ["launchProfile", "recommendedInternalTesterProfile", "command"]) === "string" &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["launchProfile", "manualForegroundProfile", "commands"])) &&
+        typeof getPath(localRuntimeStatusBody, ["launchProfile", "scheduledTaskProfile", "usableInCurrentContext"]) === "boolean" &&
+        typeof getPath(localRuntimeStatusBody, ["launchProfile", "liveProviderProfile", "defaultForInternalTesting"]) === "boolean" &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["launchProfile", "p0"])) &&
+        (getPath(localRuntimeStatusBody, ["launchProfile", "p0"]) as unknown[]).length === 0 &&
         getPath(localRuntimeStatusBody, ["freshness", "completionAuditFresh"]) === true &&
         getPath(localRuntimeStatusBody, ["freshness", "phaseAuditFresh"]) === true &&
         getPath(localRuntimeStatusBody, ["freshness", "watchdogFresh"]) === true &&

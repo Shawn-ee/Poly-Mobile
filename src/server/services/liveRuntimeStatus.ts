@@ -10,6 +10,8 @@ const PHASE_AUDIT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json";
 const WATCHDOG_PATH =
   "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json";
+const LOCAL_RUNTIME_LAUNCH_PROFILE_PATH =
+  "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json";
 const ACTIVE_SETTLEMENT_READINESS_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json";
 const ACTIVE_SETTLEMENT_CLOSED_ELIGIBILITY_PATH =
@@ -633,6 +635,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     runtimeStatus,
     phaseAudit,
     watchdog,
+    localRuntimeLaunchProfile,
     activeSettlementReadiness,
     activeSettlementClosedEligibility,
     supervisorProcess,
@@ -642,6 +645,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     readJson(RUNTIME_STATUS_PATH),
     readJson(PHASE_AUDIT_PATH),
     readJson(WATCHDOG_PATH),
+    readJson(LOCAL_RUNTIME_LAUNCH_PROFILE_PATH),
     readJson(ACTIVE_SETTLEMENT_READINESS_PATH),
     readJson(ACTIVE_SETTLEMENT_CLOSED_ELIGIBILITY_PATH),
     getManagedProcessStatus({ kind: "supervisor", statePath: SUPERVISOR_STATE_PATH }),
@@ -896,6 +900,26 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
       p2: asStringArray(getPath(completionAudit, ["gaps", "p2"])),
       note:
         "Read-only projection of the live-runtime completion audit. It answers the phase completion questions without starting loops, calling the provider, spending quota, or executing settlement.",
+    },
+    launchProfile: {
+      checked: localRuntimeLaunchProfile != null,
+      path: LOCAL_RUNTIME_LAUNCH_PROFILE_PATH,
+      pass: pass(localRuntimeLaunchProfile),
+      generatedAt: localRuntimeLaunchProfile?.generatedAt ?? null,
+      recommendedInternalTesterProfile:
+        getPath(localRuntimeLaunchProfile, ["launchProfiles", "recommendedInternalTesterProfile"]) ?? null,
+      manualForegroundProfile:
+        getPath(localRuntimeLaunchProfile, ["launchProfiles", "manualForegroundProfile"]) ?? null,
+      scheduledTaskProfile:
+        getPath(localRuntimeLaunchProfile, ["launchProfiles", "scheduledTaskProfile"]) ?? null,
+      liveProviderProfile:
+        getPath(localRuntimeLaunchProfile, ["launchProfiles", "liveProviderProfile"]) ?? null,
+      runtimeTruth: localRuntimeLaunchProfile?.runtimeTruth ?? {},
+      p0: asStringArray(getPath(localRuntimeLaunchProfile, ["gaps", "p0"])),
+      p1: asStringArray(getPath(localRuntimeLaunchProfile, ["gaps", "p1"])),
+      p2: asStringArray(getPath(localRuntimeLaunchProfile, ["gaps", "p2"])),
+      note:
+        "Read-only projection of the local runtime launch profile. It reports local operator launch options and does not start processes, install Startup entries, install scheduled tasks, call providers, or execute settlement.",
     },
     checks: completionAudit?.checks ?? null,
     gaps: {
