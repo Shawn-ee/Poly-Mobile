@@ -18,6 +18,8 @@ const PATHS = {
   lifecycleMatrix: "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-matrix-summary.redacted.json",
   activeSettlementReadiness:
     "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json",
+  providerMakerHandoff:
+    "docs/mobile/harness/odds-api-live-runtime/provider-maker-handoff-summary.redacted.json",
   s23Visible: "docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json",
 };
 
@@ -148,6 +150,17 @@ async function main() {
       truthy(getPath(entries.runtimeStatus, ["provenCapabilities", "makerReseedWhileSupervisorRuns"])) &&
       truthy(getPath(entries.runtimeStatus, ["provenCapabilities", "repeatedSupervisorCycles"])) &&
       getPath(entries.runtimeStatus, ["provenCapabilities", "installedOsService"]) === false,
+    providerMakerHandoffKnown:
+      pass(entries.providerMakerHandoff) &&
+      getPath(entries.providerMakerHandoff, ["runtimeTruth", "providerRefreshToMakerQuoteHandoffProven"]) === true &&
+      getPath(entries.providerMakerHandoff, ["runtimeTruth", "sameEventMarketOutcome"]) === true &&
+      getPath(entries.providerMakerHandoff, ["runtimeTruth", "noProviderQuotaSpentByThisReport"]) === true &&
+      getPath(entries.providerMakerHandoff, ["runtimeTruth", "localOnlyMakerQuote"]) === true &&
+      getPath(entries.providerMakerHandoff, ["runtimeTruth", "installedOsService"]) === false &&
+      getPath(entries.providerMakerHandoff, ["checks", "providerRunReadyAfterRefresh"]) === true &&
+      getPath(entries.providerMakerHandoff, ["checks", "makerRunAfterProviderRefreshPassed"]) === true &&
+      getPath(entries.providerMakerHandoff, ["checks", "makerRunShiftedWorseThanProvider"]) === true &&
+      getPath(entries.providerMakerHandoff, ["checks", "makerRunQuoteRouteVisible"]) === true,
     makerQuoteAvailable:
       truthy(getPath(entries.runtimeStatus, ["checks", "quoteRouteHealthy"])) &&
       truthy(getPath(entries.runtimeStatus, ["checks", "makerSeedPassed"])),
@@ -275,6 +288,8 @@ async function main() {
         "Bounded live provider refresh proof is persisted as ProviderRefreshRun; local runtime status requires the latest selected-event run to be passed, quota-protected, within budget, stale-before-refresh, and ready-after-refresh without spending quota from the status route.",
       marketMakerQuoteRuns:
         "Shifted local maker quote proof is persisted as MarketMakerQuoteRun; local runtime status requires the latest selected-market run to be passed, local-only, shifted worse than provider, quote-route visible, backed by a fresh provider snapshot, and supported by at least two repeated local maker seed runs without claiming an installed OS service.",
+      providerMakerHandoff:
+        "Provider-to-maker handoff is proven by a no-quota report that verifies the latest selected-event provider refresh has a later shifted local maker quote run for the same event, market, and outcome.",
       runtimeHeartbeats:
         "Supervisor and result-poller loops emit worker-owned RuntimeServiceHeartbeat rows; local runtime status preserves that evidence without claiming an installed OS service.",
       runtimeRuns:

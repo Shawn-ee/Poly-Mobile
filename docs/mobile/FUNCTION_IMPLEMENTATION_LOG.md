@@ -14757,3 +14757,14 @@ Known limitations:
 - API/data dependencies: uses existing `GET /api/health`, existing runtime status/proof scripts, and writes `continuous-supervisor-backend-start-summary.redacted.json` plus the existing continuous supervisor proof summary.
 - Proof needed: continuous supervisor proof, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this fixes proof process safety and repeated local supervisor evidence, but it is still a local foreground/proof harness. Installed unattended backend/provider/maker/lifecycle ownership remains P1.
+
+## Cycle PROVIDERMAKERHANDOFF - Provider Refresh To Maker Quote Handoff
+
+- Feature/page worked on: backend local internal provider-to-maker runtime evidence.
+- Frontend components touched: none.
+- Important functions/services touched: added `scripts/report_holiwyn_provider_maker_handoff.ts`; updated `package.json`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, and `scripts/report_holiwyn_live_runtime_completion_audit.ts`.
+- User/runtime interactions supported: `npm run mobile:provider-maker-handoff` now verifies that the latest passed one-event provider refresh row is followed by a later shifted local maker quote row for the same event, market, and outcome.
+- State transitions: none. The report is read-only, does not call The Odds API, does not spend provider quota, does not place orders, does not start or stop loops, and does not mutate markets.
+- API/data dependencies: reads `ProviderRefreshRun` and `MarketMakerQuoteRun`; writes only `docs/mobile/harness/odds-api-live-runtime/provider-maker-handoff-summary.redacted.json`.
+- Proof needed: provider-maker handoff report, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this narrows automatic quote replacement evidence for the selected one-event runtime, but it is still not an installed production maker daemon or multi-event provider-to-maker scheduler.

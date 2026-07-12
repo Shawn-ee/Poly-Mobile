@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T19:32:50.681Z",
+  "generatedAt": "2026-07-12T19:39:41.827Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T19:32:50.021Z"
+      "timestamp": "2026-07-12T19:39:41.127Z"
     },
     "error": null
   },
@@ -68,7 +68,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-12T19:32:50.598Z",
+      "generatedAt": "2026-07-12T19:39:41.687Z",
       "scope": "holiwyn-local-live-runtime-status",
       "status": "ready",
       "event": {
@@ -155,11 +155,11 @@
         "maxPhaseAuditAgeHours": 24,
         "maxWatchdogAgeHours": 24,
         "maxLiveProofAgeHours": 24,
-        "completionAuditAgeHours": 0.05,
-        "phaseAuditAgeHours": 0.05,
-        "watchdogAgeHours": 4.22,
-        "liveProofAgeAtCompletionHours": 12.39,
-        "liveProofCurrentAgeHours": 12.44,
+        "completionAuditAgeHours": 0.11,
+        "phaseAuditAgeHours": 0.11,
+        "watchdogAgeHours": 4.33,
+        "liveProofAgeAtCompletionHours": 12.44,
+        "liveProofCurrentAgeHours": 12.55,
         "completionAuditFresh": true,
         "phaseAuditFresh": true,
         "watchdogFresh": true,
@@ -173,8 +173,8 @@
         "reason": null,
         "snapshotCount": 2,
         "latestFetchedAt": "2026-07-12T07:06:18.254Z",
-        "latestAgeHours": 12.44,
-        "latestAgeSeconds": 44792,
+        "latestAgeHours": 12.56,
+        "latestAgeSeconds": 45203,
         "maxAgeHours": 24,
         "sources": [
           "sportsbook-odds"
@@ -528,11 +528,11 @@
       "runtimeCapabilities": {
         "latestRunProfileOnly": true,
         "latestSupervisorProfile": {
-          "makerSeedEnabled": true,
-          "lifecycleSchedulerEnabled": true,
-          "resultIngestionEnabled": true,
+          "makerSeedEnabled": false,
+          "lifecycleSchedulerEnabled": false,
+          "resultIngestionEnabled": false,
           "resultSettlementEnabled": true,
-          "approvedResultSettlementEnabled": false,
+          "approvedResultSettlementEnabled": true,
           "runProviderProof": false
         },
         "provenCapabilities": {
@@ -666,8 +666,8 @@
             "installedOsService": false,
             "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
             "startedAt": "2026-07-12T17:05:20.616Z",
-            "heartbeatAt": "2026-07-12T19:32:50.582Z",
-            "updatedAt": "2026-07-12T19:32:50.585Z",
+            "heartbeatAt": "2026-07-12T19:39:41.670Z",
+            "updatedAt": "2026-07-12T19:39:41.673Z",
             "metadata": {
               "source": "local-runtime-status-route",
               "workerOwned": true,
@@ -687,8 +687,8 @@
             "installedOsService": false,
             "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
             "startedAt": "2026-07-12T17:05:22.278Z",
-            "heartbeatAt": "2026-07-12T19:32:50.582Z",
-            "updatedAt": "2026-07-12T19:32:50.585Z",
+            "heartbeatAt": "2026-07-12T19:39:41.670Z",
+            "updatedAt": "2026-07-12T19:39:41.673Z",
             "metadata": {
               "source": "local-runtime-status-route",
               "workerOwned": true,
@@ -768,17 +768,17 @@
         "completionAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-12T19:30:03.439Z"
+          "generatedAt": "2026-07-12T19:32:53.057Z"
         },
         "phaseAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-12T19:30:00.734Z"
+          "generatedAt": "2026-07-12T19:32:50.681Z"
         },
         "runtimeStatus": {
           "path": "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-12T19:32:29.093Z"
+          "generatedAt": "2026-07-12T16:40:06.245Z"
         },
         "watchdog": {
           "path": "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
@@ -799,7 +799,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-12T19:32:50.651Z",
+      "generatedAt": "2026-07-12T19:39:41.800Z",
       "scope": "holiwyn-local-live-runtime-result-review",
       "status": "ready",
       "providerQuotaUsed": false,
@@ -901,7 +901,7 @@
         "exactConfirmationStored": false,
         "activeMarketExecutionAttempted": false,
         "providerQuotaUsed": false,
-        "updatedAt": "2026-07-12T19:32:50.645Z"
+        "updatedAt": "2026-07-12T19:39:41.719Z"
       },
       "executionDecision": {
         "activeMarketStatus": "LIVE",
@@ -951,7 +951,7 @@
         "phaseAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-12T19:30:00.734Z"
+          "generatedAt": "2026-07-12T19:32:50.681Z"
         }
       }
     },
@@ -962,7 +962,7 @@
     "status": 200,
     "body": {
       "status": "ready",
-      "generatedAt": "2026-07-12T19:32:50.679Z",
+      "generatedAt": "2026-07-12T19:39:41.826Z",
       "providerQuotaUsed": false,
       "event": {
         "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
@@ -1036,7 +1036,7 @@
           "path": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
           "present": true,
           "pass": true,
-          "generatedAt": "2026-07-12T19:32:26.267Z",
+          "generatedAt": "2026-07-12T18:38:43.713Z",
           "providerQuotaUsed": false
         },
         "lifecycleMatrix": {
@@ -1114,51 +1114,52 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 12.44,
-    "onboarding": 8.81,
-    "readiness": 8.81,
-    "runtimeStatus": 0.01,
-    "runtimeLaunch": 0.01,
-    "supervisor": 0.01,
-    "supervisorProcess": 0.01,
-    "internalTesterRuntime": 2.44,
-    "internalTesterResultPoller": 6.01,
-    "internalTesterWatchdog": 4.22,
-    "localRuntimeTask": 2.25,
-    "localRuntimeTaskInstall": 2.25,
-    "localRuntimeStartup": 7.23,
-    "localRuntimeStartupInstall": 5.76,
-    "localRuntimeLaunchProfile": 2.24,
-    "liveRuntimeCompletionAudit": 0.05,
-    "continuousSupervisor": 0,
-    "staleGuardProof": 10.03,
-    "staleGuardRun": 9.92,
-    "lifecycleControls": 8.81,
-    "lifecycleScheduler": 8.81,
-    "lifecycleSchedulerRun": 0.01,
-    "lifecycleMatrix": 5.44,
-    "settlementReadiness": 8.81,
-    "settlementExecution": 8.52,
-    "resultSettlementExecution": 7.67,
-    "resultSettlementLiveBlocked": 7.67,
-    "manualSettlement": 8.81,
-    "resultIngestion": 0.01,
-    "resultIngestionAuditEvent": 5.87,
-    "resultPoller": 0.91,
-    "resultPollerProcess": 2.44,
-    "continuousResultPoller": 6.17,
-    "resultSettlement": 0.01,
-    "resultSettlementRun": 0.01,
-    "settlementPreflight": 7.43,
-    "settlementAuditEvent": 7.12,
-    "settlementApprovalAuditEvent": 4.79,
-    "resultReviewTrail": 4.69,
-    "activeSettlementReadiness": 4.58,
-    "approvedAutoSettlement": 6.94,
-    "activeSettlementClone": 4.92,
-    "supervisorApprovedSettlement": 6.76,
-    "makerSeed": 0.01,
-    "s23Visible": 12.26
+    "liveProof": 12.56,
+    "onboarding": 8.92,
+    "readiness": 8.92,
+    "runtimeStatus": 2.99,
+    "runtimeLaunch": 1.02,
+    "supervisor": 1.02,
+    "supervisorProcess": 2.56,
+    "internalTesterRuntime": 2.56,
+    "internalTesterResultPoller": 6.12,
+    "internalTesterWatchdog": 4.33,
+    "localRuntimeTask": 2.36,
+    "localRuntimeTaskInstall": 2.36,
+    "localRuntimeStartup": 7.35,
+    "localRuntimeStartupInstall": 5.88,
+    "localRuntimeLaunchProfile": 2.36,
+    "liveRuntimeCompletionAudit": 0.11,
+    "continuousSupervisor": 0.12,
+    "staleGuardProof": 10.15,
+    "staleGuardRun": 10.03,
+    "lifecycleControls": 8.92,
+    "lifecycleScheduler": 8.92,
+    "lifecycleSchedulerRun": 1.02,
+    "lifecycleMatrix": 5.55,
+    "settlementReadiness": 8.92,
+    "settlementExecution": 8.63,
+    "resultSettlementExecution": 7.78,
+    "resultSettlementLiveBlocked": 7.78,
+    "manualSettlement": 8.92,
+    "resultIngestion": 1.03,
+    "resultIngestionAuditEvent": 5.99,
+    "resultPoller": 1.03,
+    "resultPollerProcess": 2.56,
+    "continuousResultPoller": 6.28,
+    "resultSettlement": 1.03,
+    "resultSettlementRun": 1.03,
+    "settlementPreflight": 7.55,
+    "settlementAuditEvent": 7.23,
+    "settlementApprovalAuditEvent": 4.91,
+    "resultReviewTrail": 4.81,
+    "activeSettlementReadiness": 4.7,
+    "approvedAutoSettlement": 7.06,
+    "activeSettlementClone": 5.04,
+    "supervisorApprovedSettlement": 6.88,
+    "makerSeed": 0.4,
+    "providerMakerHandoff": 0,
+    "s23Visible": 12.38
   },
   "requirements": [
     {
@@ -1270,6 +1271,18 @@
         "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json"
       ],
       "notes": "Known truth: maker reseeds and lifecycle checks run across repeated local supervisor cycles without provider quota. It is not an installed unattended service."
+    },
+    {
+      "id": "provider-maker-handoff",
+      "priority": "P0",
+      "requirement": "Latest provider refresh evidence is followed by shifted maker quote evidence for the same event, market, and outcome.",
+      "status": "complete",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/provider-maker-handoff-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json"
+      ],
+      "notes": "This narrows automatic quote replacement: the selected one-event provider refresh has durable handoff evidence to later local shifted maker quotes. It is still not an installed production daemon."
     },
     {
       "id": "supervisor-result-ingestion",

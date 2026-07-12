@@ -13,6 +13,7 @@ The Local MVP has deterministic one-shot maker liquidity. A true production daem
 | Reference liquidity seeding | Polymarket-only | `referenceLiquiditySeeding.ts` rejects non-Polymarket markets. |
 | Odds API local shifted maker | Added as proof mode | The one-event live proof places local bid/ask quotes around provider reference price, shifted worse by configurable ticks. |
 | Odds API reusable maker seed | Added for local testing | `npm run mobile:one-event-live-maker-seed` uses the latest stored sportsbook snapshot, cancels prior local shifted-maker quotes for the selected market, and leaves a new fake-token bid/ask resting. |
+| Provider-to-maker handoff report | Added for local testing | `npm run mobile:provider-maker-handoff` verifies that the latest selected-event provider refresh row is followed by a later shifted maker quote row for the same event, market, and outcome. It is read-only and spends no provider quota. |
 | Odds API one-event supervisor | Added for local testing | `npm run mobile:one-event-live-supervisor` repeats runtime checks and maker reseeding while the command is running. With `-RunProviderProof`, it also runs quota-guarded live provider refresh cycles. |
 | Supervisor stale-provider monitor | Added for local testing | `npm run mobile:one-event-live-supervisor -- -RunStaleGuard` reports stale-provider would-pause counts each cycle. Add `-EnforceStaleGuard` to pause stale markets intentionally. |
 | Supervisor trusted-result settlement monitor | Added for local testing | `npm run mobile:one-event-live-supervisor -- -RunResultIngestion -RunResultSettlement` runs provider-shaped result ingestion and the trusted-result settlement scheduler in dry-run mode each cycle. |
@@ -61,6 +62,7 @@ For a selected binary sportsbook market:
 - Local background supervisor command: `npm run mobile:one-event-live-supervisor:process -- -Action start -Continuous -MaxIterations 0`
 - Local background supervisor status/stop: `npm run mobile:one-event-live-supervisor:status`, `npm run mobile:one-event-live-supervisor:stop`
 - Continuous local supervisor proof: `npm run mobile:one-event-live-supervisor:continuous-proof`
+- Provider-to-maker handoff report: `npm run mobile:provider-maker-handoff`
 - Internal tester runtime manager status: `npm run mobile:internal-tester-runtime -- -Action status`
 - Local runtime launch profile: `npm run mobile:local-runtime-launch-profile`
 - Runtime status command: `npm run mobile:one-event-runtime-status`
@@ -112,6 +114,7 @@ For a selected binary sportsbook market:
 - Active event settlement clone proof: the active Spain vs. France Total Goals 2.5 market shape is cloned into a disposable event, approved trusted-result auto-execution resolves the clone after close, and the active tester market remains `LIVE`, unresolved, and untouched.
 - Runtime status settlement safety: the status report now surfaces that trusted-result execution requires `CLOSED` market status and that the latest live-market execute attempt was blocked without resolving the proof market.
 - Runtime status capability truth: the status report now separates the latest supervisor run profile from prior passing continuous supervisor/result-poller proof artifacts, so a narrow latest proof does not hide proven repeated maker reseed, lifecycle scheduling, result ingestion, and result-poller behavior.
+- Provider-to-maker handoff proof: the latest selected-event `ProviderRefreshRun` is followed by shifted local `MarketMakerQuoteRun` evidence for the same event, market, and outcome without spending provider quota.
 - One-command onboarding proof: quota-free replay/import, readiness, runtime status, settlement readiness, and settlement dry-run all passed with S23 connected.
 - Supervisor stale monitor proof: one supervisor cycle ran data hygiene, runtime/maker seed, dry-run stale guard, and safe lifecycle scheduler. It reported 19 cached markets that would pause under the 90-second stale threshold and did not mutate markets.
 - Continuous local supervisor proof: the repeated local supervisor proof emits heartbeat evidence and keeps shifted maker reseeding, lifecycle checks, provider-shaped result ingestion, and trusted-result settlement dry-run scheduling active across cycles without leaving proof-owned supervisor or backend processes running.

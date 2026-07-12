@@ -71,6 +71,8 @@ const PATHS = {
   supervisorApprovedSettlement:
     "docs/mobile/harness/odds-api-live-runtime/one-event-supervisor-approved-settlement-wait-summary.redacted.json",
   makerSeed: "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
+  providerMakerHandoff:
+    "docs/mobile/harness/odds-api-live-runtime/provider-maker-handoff-summary.redacted.json",
   s23Visible: "docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json",
 };
 
@@ -450,6 +452,25 @@ async function main() {
       evidence: [PATHS.supervisor, PATHS.supervisorProcess, PATHS.continuousSupervisor],
       notes:
         "Known truth: maker reseeds and lifecycle checks run across repeated local supervisor cycles without provider quota. It is not an installed unattended service.",
+    }),
+    requirement({
+      id: "provider-maker-handoff",
+      priority: "P0",
+      requirement: "Latest provider refresh evidence is followed by shifted maker quote evidence for the same event, market, and outcome.",
+      achieved:
+        pass(entries.providerMakerHandoff) &&
+        getPath(entries.providerMakerHandoff, ["runtimeTruth", "providerRefreshToMakerQuoteHandoffProven"]) === true &&
+        getPath(entries.providerMakerHandoff, ["runtimeTruth", "sameEventMarketOutcome"]) === true &&
+        getPath(entries.providerMakerHandoff, ["runtimeTruth", "noProviderQuotaSpentByThisReport"]) === true &&
+        getPath(entries.providerMakerHandoff, ["runtimeTruth", "localOnlyMakerQuote"]) === true &&
+        getPath(entries.providerMakerHandoff, ["runtimeTruth", "installedOsService"]) === false &&
+        getPath(entries.providerMakerHandoff, ["checks", "providerRunReadyAfterRefresh"]) === true &&
+        getPath(entries.providerMakerHandoff, ["checks", "makerRunAfterProviderRefreshPassed"]) === true &&
+        getPath(entries.providerMakerHandoff, ["checks", "makerRunShiftedWorseThanProvider"]) === true &&
+        getPath(entries.providerMakerHandoff, ["checks", "makerRunQuoteRouteVisible"]) === true,
+      evidence: [PATHS.providerMakerHandoff, PATHS.liveProof, PATHS.makerSeed],
+      notes:
+        "This narrows automatic quote replacement: the selected one-event provider refresh has durable handoff evidence to later local shifted maker quotes. It is still not an installed production daemon.",
     }),
     requirement({
       id: "supervisor-result-ingestion",

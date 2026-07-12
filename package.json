@@ -148,6 +148,7 @@
     "mobile:runtime-run-record": "tsx scripts/write_runtime_service_run.ts",
     "mobile:provider-refresh-run-record": "tsx scripts/write_provider_refresh_run.ts",
     "mobile:market-maker-quote-run-record": "tsx scripts/write_market_maker_quote_run.ts",
+    "mobile:provider-maker-handoff": "tsx scripts/report_holiwyn_provider_maker_handoff.ts",
     "mobile:one-event-result-settlement-run": "tsx scripts/run_odds_api_one_event_result_settlement_scheduler.ts",
     "mobile:one-event-settlement-preflight": "tsx scripts/report_odds_api_one_event_settlement_preflight.ts",
     "mobile:one-event-settlement-audit-event-proof": "tsx scripts/prove_odds_api_settlement_audit_event.ts",
