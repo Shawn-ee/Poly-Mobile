@@ -10454,3 +10454,11 @@ Future migration concern:
 - Temporary mock/static data: none added. The route records observed local process state, spends no provider quota, and does not start/stop loops.
 - Remaining gaps: installed service ownership, worker-emitted heartbeats, alerting, provider/result poll job records, and multi-event queue state remain P1/P2.
 - Future migration concern: replace proof-artifact result-review readiness with durable backend/service-managed state before production or multi-event operations.
+
+## Cycle LIVERUNTIMELIFECYCLEAPI - Local Lifecycle Status API
+
+- Closed or narrowed: local internal tools can now read `GET /api/internal/live-runtime/lifecycle` to see one-event open, suspended, closed, and settled/resolved proof truth in one backend response.
+- Route mismatch: this is intentionally a local/dev-only internal route, not a public mobile API and not a lifecycle mutation or settlement execution endpoint. It is disabled in production or when `HOLIWYN_DISABLE_INTERNAL_RUNTIME_STATUS=1`.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable worker-owned lifecycle records, official result records, settlement execution queue state, authenticated operator controls, and multi-event lifecycle status remain P1/P2.
+- Temporary mock/static data: none added. The route reads existing DB event/market rows and redacted proof artifacts, spends no provider quota, and does not execute active-event settlement.
+- Future migration concern: replace proof-artifact-backed lifecycle route fields with durable lifecycle job/event records before production or multi-event operations.

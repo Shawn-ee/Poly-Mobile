@@ -32,6 +32,7 @@
 17. To run the safe real-time lifecycle scheduler once, run `npm run mobile:one-event-lifecycle-scheduler-run`.
 18. To prove local start-time lifecycle automation with temporary event-time mutations and restore, run `npm run mobile:one-event-lifecycle-scheduler-proof`.
 18a. To inspect open, paused, closed, and settled/resolved lifecycle evidence in one read-only report, run `npm run mobile:one-event-lifecycle-matrix`.
+18b. To inspect the same lifecycle truth through the local backend, call `GET /api/internal/live-runtime/lifecycle`. This route is dev-only, read-only, spends no provider quota, does not mutate markets, and reports that active tester settlement has not executed.
 19. To prove non-mutating settlement readiness, run `npm run mobile:one-event-settlement-readiness`.
 20. To prove settlement execution safely without mutating the active tester event, run `npm run mobile:one-event-settlement-execution-proof`.
 21. To prove trusted-result scheduler execution safely without mutating the active tester event, run `npm run mobile:one-event-result-settlement-execution-proof`. It creates a disposable sportsbook-shaped event, dry-runs trusted-result settlement to get the exact confirmation phrase, executes through the scheduler with that phrase, and verifies the active tester event was not mutated.

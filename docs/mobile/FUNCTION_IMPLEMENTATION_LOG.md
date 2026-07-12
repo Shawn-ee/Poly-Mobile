@@ -14680,3 +14680,14 @@ Known limitations:
 - API/data dependencies: reads `.runtime/one-event-live-supervisor/supervisor-process-state.json` and `.runtime/one-event-result-poller/result-poller-process-state.json`, checks OS pids, then writes `RuntimeServiceHeartbeat` rows keyed as `local:one-event-live-supervisor` and `local:one-event-result-poller`.
 - Proof needed: Prisma migration deploy, focused status Jest tests, direct local status route proof, direct DB row proof, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this narrows durable service heartbeat state but still does not install a production OS service, scheduler, or daemon. Production process ownership, health alerting, and multi-event queue supervision remain P1/P2.
+
+## Cycle LIVERUNTIMELIFECYCLEAPI - Local Lifecycle Status API
+
+- Feature/page worked on: backend local internal event lifecycle status surface.
+- Frontend components touched: none.
+- Important functions/services touched: added `src/server/services/liveRuntimeLifecycle.ts`, `src/app/api/internal/live-runtime/lifecycle/route.ts`, `src/__tests__/liveRuntimeLifecycle.service.test.ts`, `src/__tests__/internal.live-runtime.lifecycle.route.test.ts`, and updated `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/lifecycle` to inspect open, suspended, closed, and settled/resolved lifecycle proof in one backend response instead of reading lifecycle proof JSON files directly.
+- State transitions: none. This is a read-only dev-only route. It does not call The Odds API, spend quota, start loops, place orders, mutate market status, approve settlement, expose the exact settlement confirmation phrase, or execute active-event settlement.
+- API/data dependencies: reads redacted lifecycle proof artifacts plus the current `Event` and listed sportsbook `Market` rows for the one-event runtime. It reports active-event no-execution truth, disposable settlement proof truth, and the `CLOSED` execution guard.
+- Proof needed: focused route/service Jest tests, direct local lifecycle route proof, `npm run mobile:one-event-phase-audit`, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this narrows lifecycle visibility for internal tools, but it is still local/dev-only and proof-artifact-backed. Production still needs worker-owned lifecycle records, official-result polling, authenticated operator controls, and multi-event lifecycle queues.

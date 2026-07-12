@@ -185,6 +185,9 @@ async function main() {
     localResultReview.body && typeof localResultReview.body === "object"
       ? (localResultReview.body as JsonObject)
       : null;
+  const localLifecycle = await fetchJson(`${baseUrl}/api/internal/live-runtime/lifecycle`);
+  const localLifecycleBody =
+    localLifecycle.body && typeof localLifecycle.body === "object" ? (localLifecycle.body as JsonObject) : null;
   const liveEventStart = text(getPath(entries.liveProof, ["event", "commenceTime"]));
   const eventUpcoming = liveEventStart ? Date.parse(liveEventStart) > Date.now() : false;
   const quotaUsed = numberValue(getPath(entries.liveProof, ["provider", "quota", "totalLastCost"]));
@@ -338,6 +341,35 @@ async function main() {
       evidence: [`${baseUrl}/api/internal/live-runtime/result-review`],
       notes:
         "This narrows the official-result operator-review gap by exposing the canonical result/preflight/approval trail through a dev-only backend route instead of only shell proof scripts. It is read-only and intentionally redacts exact execution confirmation strings.",
+    }),
+    requirement({
+      id: "local-lifecycle-api-ready",
+      priority: "P0",
+      requirement:
+        "Local lifecycle API exposes open, suspended, closed, and settled/resolved proof status without spending quota or executing active-event settlement.",
+      achieved:
+        !!localLifecycleBody &&
+        localLifecycle.ok === true &&
+        getPath(localLifecycleBody, ["status"]) === "ready" &&
+        getPath(localLifecycleBody, ["providerQuotaUsed"]) === false &&
+        getPath(localLifecycleBody, ["runtimeTruth", "readOnlyRoute"]) === true &&
+        getPath(localLifecycleBody, ["runtimeTruth", "devOnlyRoute"]) === true &&
+        getPath(localLifecycleBody, ["runtimeTruth", "activeTesterEventSettlementExecuted"]) === false &&
+        getPath(localLifecycleBody, ["runtimeTruth", "automaticOfficialResultSettlementInstalled"]) === false &&
+        getPath(localLifecycleBody, ["runtimeTruth", "installedOsService"]) === false &&
+        getPath(localLifecycleBody, ["lifecycle", "open", "proven"]) === true &&
+        getPath(localLifecycleBody, ["lifecycle", "suspended", "proven"]) === true &&
+        getPath(localLifecycleBody, ["lifecycle", "closed", "proven"]) === true &&
+        getPath(localLifecycleBody, ["lifecycle", "settledResolved", "proven"]) === true &&
+        getPath(localLifecycleBody, ["lifecycle", "settledResolved", "activeTesterEventSettlementExecuted"]) === false &&
+        getPath(localLifecycleBody, ["lifecycle", "settledResolved", "executionRequiresMarketStatus"]) === "CLOSED" &&
+        Array.isArray(getPath(localLifecycleBody, ["gaps", "p0"])) &&
+        (getPath(localLifecycleBody, ["gaps", "p0"]) as unknown[]).length === 0 &&
+        !JSON.stringify(localLifecycleBody).includes("SETTLE_FROM_RESULT:") &&
+        !JSON.stringify(localLifecycleBody).includes("THE_ODDS_API_KEY"),
+      evidence: [`${baseUrl}/api/internal/live-runtime/lifecycle`],
+      notes:
+        "This gives internal tools one backend route for lifecycle truth: open orders, paused rejection, closed rejection, disposable settlement mechanics, trusted-result scheduler execution on disposable evidence, and active-event no-execution truth.",
     }),
     requirement({
       id: "quota-policy",
@@ -821,6 +853,7 @@ async function main() {
     quote,
     localRuntimeStatus,
     localResultReview,
+    localLifecycle,
     artifactAgesHours: Object.fromEntries(
       Object.entries(entries).map(([key, value]) => [key, ageHours(value?.generatedAt)]),
     ),

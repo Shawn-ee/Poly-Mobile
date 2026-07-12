@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T17:58:29.349Z",
+  "generatedAt": "2026-07-12T18:11:22.499Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T17:58:28.775Z"
+      "timestamp": "2026-07-12T18:11:21.715Z"
     },
     "error": null
   },
@@ -68,7 +68,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-12T17:58:29.306Z",
+      "generatedAt": "2026-07-12T18:11:22.412Z",
       "scope": "holiwyn-local-live-runtime-status",
       "status": "ready",
       "event": {
@@ -131,6 +131,7 @@
         "lifecycleOpenPausedClosedSettledKnown": true,
         "activeSettlementDecisionKnown": true,
         "localResultReviewApiKnown": true,
+        "durableRuntimeHeartbeatsKnown": true,
         "mobileS23EndToEndTradeProofPass": true,
         "launchProfileKnown": true,
         "internalTesterWatchdogKnown": true,
@@ -151,11 +152,11 @@
         "maxPhaseAuditAgeHours": 24,
         "maxWatchdogAgeHours": 24,
         "maxLiveProofAgeHours": 24,
-        "completionAuditAgeHours": 0.13,
-        "phaseAuditAgeHours": 0.13,
-        "watchdogAgeHours": 2.64,
+        "completionAuditAgeHours": 0.21,
+        "phaseAuditAgeHours": 0.21,
+        "watchdogAgeHours": 2.86,
         "liveProofAgeAtCompletionHours": 9.56,
-        "liveProofCurrentAgeHours": 9.69,
+        "liveProofCurrentAgeHours": 9.77,
         "completionAuditFresh": true,
         "phaseAuditFresh": true,
         "watchdogFresh": true,
@@ -169,8 +170,8 @@
         "reason": null,
         "snapshotCount": 2,
         "latestFetchedAt": "2026-07-12T07:06:18.254Z",
-        "latestAgeHours": 10.87,
-        "latestAgeSeconds": 39131,
+        "latestAgeHours": 11.08,
+        "latestAgeSeconds": 39904,
         "maxAgeHours": 24,
         "sources": [
           "sportsbook-odds"
@@ -373,8 +374,8 @@
             "installedOsService": false,
             "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
             "startedAt": "2026-07-12T17:05:20.616Z",
-            "heartbeatAt": "2026-07-12T17:58:29.296Z",
-            "updatedAt": "2026-07-12T17:58:29.297Z"
+            "heartbeatAt": "2026-07-12T18:11:22.382Z",
+            "updatedAt": "2026-07-12T18:11:22.383Z"
           },
           {
             "serviceKey": "local:one-event-result-poller",
@@ -388,8 +389,8 @@
             "installedOsService": false,
             "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
             "startedAt": "2026-07-12T17:05:22.278Z",
-            "heartbeatAt": "2026-07-12T17:58:29.296Z",
-            "updatedAt": "2026-07-12T17:58:29.297Z"
+            "heartbeatAt": "2026-07-12T18:11:22.382Z",
+            "updatedAt": "2026-07-12T18:11:22.383Z"
           }
         ],
         "allExpectedServicesRecorded": true,
@@ -401,12 +402,12 @@
         "completionAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-12T17:50:36.396Z"
+          "generatedAt": "2026-07-12T17:58:36.214Z"
         },
         "phaseAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-12T17:50:28.865Z"
+          "generatedAt": "2026-07-12T17:58:29.349Z"
         },
         "runtimeStatus": {
           "path": "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
@@ -432,7 +433,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-12T17:58:29.348Z",
+      "generatedAt": "2026-07-12T18:11:22.489Z",
       "scope": "holiwyn-local-live-runtime-result-review",
       "status": "ready",
       "providerQuotaUsed": false,
@@ -534,7 +535,7 @@
         "exactConfirmationStored": false,
         "activeMarketExecutionAttempted": false,
         "providerQuotaUsed": false,
-        "updatedAt": "2026-07-12T17:58:29.343Z"
+        "updatedAt": "2026-07-12T18:11:22.480Z"
       },
       "executionDecision": {
         "activeMarketStatus": "LIVE",
@@ -584,58 +585,214 @@
         "phaseAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-12T17:50:28.865Z"
+          "generatedAt": "2026-07-12T17:58:29.349Z"
         }
       }
     },
     "error": null
   },
+  "localLifecycle": {
+    "ok": true,
+    "status": 200,
+    "body": {
+      "status": "ready",
+      "generatedAt": "2026-07-12T18:11:22.497Z",
+      "providerQuotaUsed": false,
+      "event": {
+        "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
+        "slug": "odds-api-single-soccer-test",
+        "title": "Spain vs. France",
+        "status": "ACTIVE",
+        "liveStatus": "scheduled",
+        "startTime": "2026-07-14T19:00:00.000Z",
+        "source": "the-odds-api",
+        "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
+        "listedSportsbookMarketCount": 19,
+        "currentMarketStatuses": [
+          "LIVE"
+        ],
+        "resolvedMarketCount": 0
+      },
+      "lifecycle": {
+        "open": {
+          "proven": true,
+          "acceptsOrdersWhenLive": true,
+          "evidence": "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json"
+        },
+        "suspended": {
+          "proven": true,
+          "rejectsOrdersWhenPaused": true,
+          "evidence": [
+            "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json",
+            "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-scheduler-summary.redacted.json"
+          ]
+        },
+        "closed": {
+          "proven": true,
+          "rejectsOrdersWhenClosed": true,
+          "schedulerCanCloseAfterStart": true,
+          "evidence": [
+            "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json",
+            "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-scheduler-summary.redacted.json",
+            "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json"
+          ]
+        },
+        "settledResolved": {
+          "proven": true,
+          "activeTesterEventSettlementExecuted": false,
+          "activeExecutionEligibleNow": false,
+          "activeMarketStatus": "LIVE",
+          "executionRequiresMarketStatus": "CLOSED",
+          "evidence": [
+            "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-execution-summary.redacted.json",
+            "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
+            "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json",
+            "docs/mobile/harness/odds-api-live-runtime/one-event-result-review-trail-summary.redacted.json"
+          ]
+        }
+      },
+      "artifacts": {
+        "lifecycleControls": {
+          "path": "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json",
+          "present": true,
+          "pass": true,
+          "generatedAt": "2026-07-12T10:44:16.573Z",
+          "providerQuotaUsed": false
+        },
+        "lifecycleScheduler": {
+          "path": "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-scheduler-summary.redacted.json",
+          "present": true,
+          "pass": true,
+          "generatedAt": "2026-07-12T10:44:18.761Z",
+          "providerQuotaUsed": false
+        },
+        "lifecycleSchedulerRun": {
+          "path": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
+          "present": true,
+          "pass": true,
+          "generatedAt": "2026-07-12T17:07:57.900Z",
+          "providerQuotaUsed": false
+        },
+        "lifecycleMatrix": {
+          "path": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-matrix-summary.redacted.json",
+          "present": true,
+          "pass": true,
+          "generatedAt": "2026-07-12T14:06:25.187Z",
+          "providerQuotaUsed": false
+        },
+        "settlementExecution": {
+          "path": "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-execution-summary.redacted.json",
+          "present": true,
+          "pass": true,
+          "generatedAt": "2026-07-12T11:01:48.429Z",
+          "providerQuotaUsed": false
+        },
+        "trustedResultSettlementExecution": {
+          "path": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
+          "present": true,
+          "pass": true,
+          "generatedAt": "2026-07-12T11:52:39.122Z",
+          "providerQuotaUsed": false
+        },
+        "activeSettlementReadiness": {
+          "path": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json",
+          "present": true,
+          "pass": true,
+          "generatedAt": "2026-07-12T14:57:50.282Z",
+          "providerQuotaUsed": false
+        },
+        "resultReviewTrail": {
+          "path": "docs/mobile/harness/odds-api-live-runtime/one-event-result-review-trail-summary.redacted.json",
+          "present": true,
+          "pass": true,
+          "generatedAt": "2026-07-12T14:51:21.999Z",
+          "providerQuotaUsed": false
+        }
+      },
+      "runtimeTruth": {
+        "readOnlyRoute": true,
+        "devOnlyRoute": true,
+        "providerQuotaUsed": false,
+        "activeTesterEventSettlementExecuted": false,
+        "activeTesterEventReviewTrailExists": true,
+        "disposableSettlementExecutionProven": true,
+        "automaticOfficialResultSettlementInstalled": false,
+        "installedOsService": false
+      },
+      "checks": {
+        "eventFound": true,
+        "routeIsReadOnly": true,
+        "devOnlyRoute": true,
+        "providerQuotaNotUsed": true,
+        "openStateProven": true,
+        "pausedStateProven": true,
+        "closedStateProven": true,
+        "settlementPreviewProven": true,
+        "disposableSettlementMechanicsProven": true,
+        "trustedResultSchedulerDisposableSettlementProven": true,
+        "activeEventReviewTrailProven": true,
+        "activeTesterEventSettlementNotExecuted": true
+      },
+      "gaps": {
+        "p0": [],
+        "p1": [
+          "Active tester event settlement still waits for CLOSED status and exact operator confirmation.",
+          "Installed unattended lifecycle/result service ownership remains open.",
+          "Production official-result auto-settlement remains open."
+        ],
+        "p2": [
+          "A first-class lifecycle dashboard/operator UI remains future work."
+        ]
+      }
+    },
+    "error": null
+  },
   "artifactAgesHours": {
-    "liveProof": 10.87,
-    "onboarding": 7.23,
-    "readiness": 7.24,
-    "runtimeStatus": 1.31,
-    "runtimeLaunch": 0.84,
-    "supervisor": 0.84,
-    "supervisorProcess": 0.87,
-    "internalTesterRuntime": 0.87,
-    "internalTesterResultPoller": 4.43,
-    "internalTesterWatchdog": 2.64,
-    "localRuntimeTask": 0.68,
-    "localRuntimeTaskInstall": 0.67,
-    "localRuntimeStartup": 5.66,
-    "localRuntimeStartupInstall": 4.19,
-    "localRuntimeLaunchProfile": 0.67,
-    "liveRuntimeCompletionAudit": 0.13,
-    "continuousSupervisor": 6.78,
-    "staleGuardProof": 8.46,
-    "staleGuardRun": 8.34,
-    "lifecycleControls": 7.24,
-    "lifecycleScheduler": 7.24,
-    "lifecycleSchedulerRun": 0.84,
-    "lifecycleMatrix": 3.87,
-    "settlementReadiness": 7.23,
-    "settlementExecution": 6.94,
-    "resultSettlementExecution": 6.1,
-    "resultSettlementLiveBlocked": 6.1,
-    "manualSettlement": 7.23,
-    "resultIngestion": 0.84,
-    "resultIngestionAuditEvent": 4.3,
-    "resultPoller": 0.94,
-    "resultPollerProcess": 0.87,
-    "continuousResultPoller": 4.6,
-    "resultSettlement": 0.84,
-    "resultSettlementRun": 0.84,
-    "settlementPreflight": 5.86,
-    "settlementAuditEvent": 5.54,
-    "settlementApprovalAuditEvent": 3.22,
-    "resultReviewTrail": 3.12,
-    "activeSettlementReadiness": 3.01,
-    "approvedAutoSettlement": 5.37,
-    "activeSettlementClone": 3.35,
-    "supervisorApprovedSettlement": 5.19,
-    "makerSeed": 0.84,
-    "s23Visible": 10.69
+    "liveProof": 11.08,
+    "onboarding": 7.45,
+    "readiness": 7.45,
+    "runtimeStatus": 1.52,
+    "runtimeLaunch": 1.06,
+    "supervisor": 1.06,
+    "supervisorProcess": 1.09,
+    "internalTesterRuntime": 1.09,
+    "internalTesterResultPoller": 4.65,
+    "internalTesterWatchdog": 2.86,
+    "localRuntimeTask": 0.89,
+    "localRuntimeTaskInstall": 0.89,
+    "localRuntimeStartup": 5.88,
+    "localRuntimeStartupInstall": 4.4,
+    "localRuntimeLaunchProfile": 0.89,
+    "liveRuntimeCompletionAudit": 0.21,
+    "continuousSupervisor": 6.99,
+    "staleGuardProof": 8.68,
+    "staleGuardRun": 8.56,
+    "lifecycleControls": 7.45,
+    "lifecycleScheduler": 7.45,
+    "lifecycleSchedulerRun": 1.06,
+    "lifecycleMatrix": 4.08,
+    "settlementReadiness": 7.45,
+    "settlementExecution": 7.16,
+    "resultSettlementExecution": 6.31,
+    "resultSettlementLiveBlocked": 6.31,
+    "manualSettlement": 7.45,
+    "resultIngestion": 1.06,
+    "resultIngestionAuditEvent": 4.51,
+    "resultPoller": 1.16,
+    "resultPollerProcess": 1.09,
+    "continuousResultPoller": 4.81,
+    "resultSettlement": 1.06,
+    "resultSettlementRun": 1.06,
+    "settlementPreflight": 6.08,
+    "settlementAuditEvent": 5.76,
+    "settlementApprovalAuditEvent": 3.43,
+    "resultReviewTrail": 3.33,
+    "activeSettlementReadiness": 3.23,
+    "approvedAutoSettlement": 5.58,
+    "activeSettlementClone": 3.56,
+    "supervisorApprovedSettlement": 5.4,
+    "makerSeed": 1.06,
+    "s23Visible": 10.91
   },
   "requirements": [
     {
@@ -701,6 +858,16 @@
         "http://127.0.0.1:3002/api/internal/live-runtime/result-review"
       ],
       "notes": "This narrows the official-result operator-review gap by exposing the canonical result/preflight/approval trail through a dev-only backend route instead of only shell proof scripts. It is read-only and intentionally redacts exact execution confirmation strings."
+    },
+    {
+      "id": "local-lifecycle-api-ready",
+      "priority": "P0",
+      "requirement": "Local lifecycle API exposes open, suspended, closed, and settled/resolved proof status without spending quota or executing active-event settlement.",
+      "status": "complete",
+      "evidence": [
+        "http://127.0.0.1:3002/api/internal/live-runtime/lifecycle"
+      ],
+      "notes": "This gives internal tools one backend route for lifecycle truth: open orders, paused rejection, closed rejection, disposable settlement mechanics, trusted-result scheduler execution on disposable evidence, and active-event no-execution truth."
     },
     {
       "id": "quota-policy",
