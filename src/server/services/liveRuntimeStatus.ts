@@ -63,6 +63,12 @@ const pidRunning = (pid: number | null) => {
   }
 };
 
+const dateValue = (value: unknown) => {
+  if (typeof value !== "string") return null;
+  const parsed = Date.parse(value);
+  return Number.isFinite(parsed) ? new Date(parsed) : null;
+};
+
 async function getManagedProcessStatus(params: {
   statePath: string;
   kind: "supervisor" | "result-poller";
@@ -102,6 +108,72 @@ async function getManagedProcessStatus(params: {
             liveResultIngestion: runLiveResultIngestion === true,
             approvedResultSettlement: booleanValue(state?.runApprovedResultSettlement) === true,
           },
+  };
+}
+
+async function upsertRuntimeHeartbeat(processStatus: Awaited<ReturnType<typeof getManagedProcessStatus>>) {
+  const serviceName =
+    processStatus.kind === "supervisor" ? "one-event-live-supervisor" : "one-event-result-poller";
+  const status = processStatus.running ? "running" : processStatus.known ? "stopped" : "unknown";
+  const row = await prisma.runtimeServiceHeartbeat.upsert({
+    where: { serviceKey: `local:${serviceName}` },
+    create: {
+      serviceKey: `local:${serviceName}`,
+      serviceName,
+      serviceKind: processStatus.kind,
+      status,
+      pid: processStatus.pid,
+      running: processStatus.running,
+      continuous: processStatus.continuous,
+      usesProviderQuota: processStatus.usesProviderQuota,
+      installedOsService: false,
+      statePath: processStatus.statePath,
+      startedAt: dateValue(processStatus.startedAt),
+      heartbeatAt: new Date(),
+      metadata: {
+        source: "local-runtime-status-route",
+        checked: processStatus.checked,
+        known: processStatus.known,
+        maxIterations: processStatus.maxIterations,
+        intervalSeconds: processStatus.intervalSeconds,
+        modes: processStatus.modes,
+      },
+    },
+    update: {
+      status,
+      pid: processStatus.pid,
+      running: processStatus.running,
+      continuous: processStatus.continuous,
+      usesProviderQuota: processStatus.usesProviderQuota,
+      installedOsService: false,
+      statePath: processStatus.statePath,
+      startedAt: dateValue(processStatus.startedAt),
+      heartbeatAt: new Date(),
+      metadata: {
+        source: "local-runtime-status-route",
+        checked: processStatus.checked,
+        known: processStatus.known,
+        maxIterations: processStatus.maxIterations,
+        intervalSeconds: processStatus.intervalSeconds,
+        modes: processStatus.modes,
+      },
+    },
+  });
+
+  return {
+    serviceKey: row.serviceKey,
+    serviceName: row.serviceName,
+    serviceKind: row.serviceKind,
+    status: row.status,
+    pid: row.pid,
+    running: row.running,
+    continuous: row.continuous,
+    usesProviderQuota: row.usesProviderQuota,
+    installedOsService: row.installedOsService,
+    statePath: row.statePath,
+    startedAt: row.startedAt?.toISOString() ?? null,
+    heartbeatAt: row.heartbeatAt.toISOString(),
+    updatedAt: row.updatedAt.toISOString(),
   };
 }
 
@@ -328,6 +400,10 @@ export async function getLocalLiveRuntimeStatus() {
     marketId: selectedMarketId,
     maxAgeHours: maxLiveProofAgeHours,
   });
+  const runtimeHeartbeats = await Promise.all([
+    upsertRuntimeHeartbeat(supervisorProcess),
+    upsertRuntimeHeartbeat(resultPollerProcess),
+  ]);
   const p0Gaps = asStringArray(getPath(completionAudit, ["gaps", "p0"]));
   const artifactFreshness = {
     maxCompletionAuditAgeHours: 24,
@@ -521,6 +597,19 @@ export async function getLocalLiveRuntimeStatus() {
       quotaSpendingLoopRunning: supervisorProcess.usesProviderQuota || resultPollerProcess.usesProviderQuota,
       note:
         "Read-only live process check from local .runtime state and OS pid existence. Ready status is based on proven local capability and fresh data, not on requiring background loops to be running right now.",
+    },
+    runtimeHeartbeats: {
+      checked: true,
+      durable: true,
+      source: "RuntimeServiceHeartbeat",
+      records: runtimeHeartbeats,
+      allExpectedServicesRecorded:
+        runtimeHeartbeats.length === 2 &&
+        runtimeHeartbeats.every((row) => row.serviceKey === "local:one-event-live-supervisor" || row.serviceKey === "local:one-event-result-poller"),
+      quotaSpendingHeartbeatRunning: runtimeHeartbeats.some((row) => row.running && row.usesProviderQuota),
+      installedOsService: runtimeHeartbeats.some((row) => row.installedOsService),
+      note:
+        "These durable rows mirror local process-state checks for internal testing. They do not mean a production OS service is installed.",
     },
     artifacts: {
       completionAudit: {

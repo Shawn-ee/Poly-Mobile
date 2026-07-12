@@ -14669,3 +14669,14 @@ Known limitations:
 - API/data dependencies: reads `Market`, linked `Event`, and canonical `provider.result.ingested`, `settlement.trusted_result.preflight`, `settlement.trusted_result.approved`, and `settlement.trusted_result.executed` events; writes `OfficialResultReview.reviewSnapshot` with redacted review evidence.
 - Proof needed: Prisma migration deploy, focused result-review/status Jest tests, direct local backend route proof, direct DB row proof, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this narrows the durable official-result/approval storage gap, but operator review UI, multi-event settlement queue, installed official-result polling, and active-event execution remain P1/P2.
+
+## Cycle LIVERUNTIMEHEARTBEATS - Durable Runtime Heartbeat Mirror
+
+- Feature/page worked on: backend local internal runtime heartbeat persistence.
+- Frontend components touched: none.
+- Important functions/services touched: added Prisma model `RuntimeServiceHeartbeat`, migration `20260712180500_add_runtime_service_heartbeat`, and updated `src/server/services/liveRuntimeStatus.ts`, `src/__tests__/liveRuntimeStatus.service.test.ts`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, and `scripts/report_holiwyn_live_runtime_completion_audit.ts`.
+- User/runtime interactions supported: `GET /api/internal/live-runtime/status` now mirrors supervisor and result-poller process-state checks into durable DB heartbeat rows while still clearly reporting whether each loop is running, stopped, quota-spending, or merely known from local state.
+- State transitions: writes/updates only `RuntimeServiceHeartbeat`. It does not start loops, stop loops, call The Odds API, place orders, mutate markets, approve settlement, or execute settlement.
+- API/data dependencies: reads `.runtime/one-event-live-supervisor/supervisor-process-state.json` and `.runtime/one-event-result-poller/result-poller-process-state.json`, checks OS pids, then writes `RuntimeServiceHeartbeat` rows keyed as `local:one-event-live-supervisor` and `local:one-event-result-poller`.
+- Proof needed: Prisma migration deploy, focused status Jest tests, direct local status route proof, direct DB row proof, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this narrows durable service heartbeat state but still does not install a production OS service, scheduler, or daemon. Production process ownership, health alerting, and multi-event queue supervision remain P1/P2.

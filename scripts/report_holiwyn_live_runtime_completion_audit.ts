@@ -152,6 +152,13 @@ async function main() {
       getPath(entries.phaseAudit, ["localResultReview", "body", "executionDecision", "activeMarketExecutionAttemptedByThisRoute"]) === false &&
       Array.isArray(getPath(entries.phaseAudit, ["localResultReview", "body", "gaps", "p0"])) &&
       (getPath(entries.phaseAudit, ["localResultReview", "body", "gaps", "p0"]) as unknown[]).length === 0,
+    durableRuntimeHeartbeatsKnown:
+      pass(entries.phaseAudit) &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeHeartbeats", "checked"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeHeartbeats", "durable"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeHeartbeats", "allExpectedServicesRecorded"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeHeartbeats", "quotaSpendingHeartbeatRunning"]) === false &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeHeartbeats", "installedOsService"]) === false,
     mobileS23EndToEndTradeProofPass:
       pass(entries.s23Visible) &&
       truthy(getPath(entries.s23Visible, ["assertions", "swipeSubmitReachedPortfolio"])) &&
@@ -222,6 +229,8 @@ async function main() {
         getPath(entries.activeSettlementReadiness, ["executionDecision", "operatorDecision"]) ?? null,
       resultReview:
         "Local result-review API is phase-gated through /api/internal/live-runtime/result-review, reads canonical result/preflight/approval evidence, writes a redacted durable OfficialResultReview row, and does not spend provider quota.",
+      runtimeHeartbeats:
+        "Local runtime status mirrors supervisor and result-poller process state into durable RuntimeServiceHeartbeat rows without claiming an installed OS service.",
       localWatchdog:
         "Internal tester watchdog verifies backend/Expo/Postgres readiness, repeated supervisor proof, background result-poller proof, no-quota default mode, and loop cleanup.",
     },

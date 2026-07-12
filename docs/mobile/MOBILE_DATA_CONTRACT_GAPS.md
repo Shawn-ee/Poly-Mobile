@@ -10444,4 +10444,13 @@ Future migration concern:
 - Route mismatch: `/api/internal/live-runtime/result-review` is still dev-only and performs the mirror write during a GET. This is acceptable for local internal proof but should become an authenticated operator action or background job before production use.
 - Temporary mock/static data: none added. The route reads existing DB evidence and writes a redacted review row. It stores `exactConfirmationStored=false` and does not expose or persist exact settlement confirmation text.
 - Remaining gaps: operator review UI, multi-event settlement queue, installed official-result polling, and guarded production execution service remain P1/P2.
+
+## Cycle LIVERUNTIMEHEARTBEATS - Durable Runtime Heartbeat Mirror
+
+- Closed or narrowed: local runtime status now has durable backend rows in `RuntimeServiceHeartbeat` for the one-event supervisor and result poller, instead of only `.runtime` files and OS pid checks.
+- Fields added for future backend/operator use: service key/name/kind, status, pid, running, continuous, quota-use truth, installed-service truth, state path, startedAt, heartbeatAt, and metadata describing local modes.
+- Schema mismatch: the heartbeat rows mirror local status checks and are not emitted by an installed worker process. They are useful internal evidence, not production daemon ownership.
+- Route mismatch: `/api/internal/live-runtime/status` still remains dev-only and performs the heartbeat mirror write during a GET. This is acceptable for local internal proof but should become a worker-owned heartbeat write or authenticated status refresh before production.
+- Temporary mock/static data: none added. The route records observed local process state, spends no provider quota, and does not start/stop loops.
+- Remaining gaps: installed service ownership, worker-emitted heartbeats, alerting, provider/result poll job records, and multi-event queue state remain P1/P2.
 - Future migration concern: replace proof-artifact result-review readiness with durable backend/service-managed state before production or multi-event operations.

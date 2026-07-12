@@ -296,11 +296,16 @@ async function main() {
         getPath(localRuntimeStatusBody, ["managedProcesses", "supervisor", "checked"]) === true &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "resultPoller", "checked"]) === true &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "quotaSpendingLoopRunning"]) === false &&
+        getPath(localRuntimeStatusBody, ["runtimeHeartbeats", "checked"]) === true &&
+        getPath(localRuntimeStatusBody, ["runtimeHeartbeats", "durable"]) === true &&
+        getPath(localRuntimeStatusBody, ["runtimeHeartbeats", "allExpectedServicesRecorded"]) === true &&
+        getPath(localRuntimeStatusBody, ["runtimeHeartbeats", "quotaSpendingHeartbeatRunning"]) === false &&
+        getPath(localRuntimeStatusBody, ["runtimeHeartbeats", "installedOsService"]) === false &&
         Array.isArray(getPath(localRuntimeStatusBody, ["gaps", "p0"])) &&
         (getPath(localRuntimeStatusBody, ["gaps", "p0"]) as unknown[]).length === 0,
       evidence: [`${baseUrl}/api/internal/live-runtime/status`],
       notes:
-        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, latest-run-vs-proven-capability separation, and read-only supervisor/result-poller process state. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
+        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, latest-run-vs-proven-capability separation, read-only supervisor/result-poller process state, and durable RuntimeServiceHeartbeat mirror rows. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
     }),
     requirement({
       id: "local-result-review-api-ready",

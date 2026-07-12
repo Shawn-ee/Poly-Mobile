@@ -723,6 +723,29 @@ model OfficialResultReview {
   @@index([trustedResultDigest])
 }
 
+model RuntimeServiceHeartbeat {
+  id                 String   @id @default(uuid())
+  serviceKey         String   @unique
+  serviceName        String
+  serviceKind        String
+  status             String
+  pid                Int?
+  running            Boolean  @default(false)
+  continuous         Boolean?
+  usesProviderQuota  Boolean  @default(false)
+  installedOsService Boolean  @default(false)
+  statePath          String?
+  startedAt          DateTime?
+  heartbeatAt        DateTime
+  metadata           Json
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([serviceKind, updatedAt])
+  @@index([status, updatedAt])
+  @@index([heartbeatAt])
+}
+
 model Fill {
   id           String    @id @default(uuid())
   takerOrderId String

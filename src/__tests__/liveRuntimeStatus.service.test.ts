@@ -1,5 +1,6 @@
 const readFile = jest.fn();
 const referenceQuoteSnapshotFindMany = jest.fn();
+const runtimeServiceHeartbeatUpsert = jest.fn();
 
 jest.mock("node:fs/promises", () => ({
   readFile,
@@ -9,6 +10,9 @@ jest.mock("@/lib/db", () => ({
   prisma: {
     referenceQuoteSnapshot: {
       findMany: (...args: unknown[]) => referenceQuoteSnapshotFindMany(...args),
+    },
+    runtimeServiceHeartbeat: {
+      upsert: (...args: unknown[]) => runtimeServiceHeartbeatUpsert(...args),
     },
   },
 }));
@@ -223,7 +227,24 @@ describe("live runtime status service", () => {
   beforeEach(() => {
     readFile.mockReset();
     referenceQuoteSnapshotFindMany.mockReset();
+    runtimeServiceHeartbeatUpsert.mockReset();
     referenceQuoteSnapshotFindMany.mockResolvedValue(freshSnapshot());
+    runtimeServiceHeartbeatUpsert.mockImplementation(async (args) => ({
+      id: "heartbeat-id",
+      serviceKey: args.where.serviceKey,
+      serviceName: args.create.serviceName,
+      serviceKind: args.create.serviceKind,
+      status: args.create.status,
+      pid: args.create.pid,
+      running: args.create.running,
+      continuous: args.create.continuous,
+      usesProviderQuota: args.create.usesProviderQuota,
+      installedOsService: args.create.installedOsService,
+      statePath: args.create.statePath,
+      startedAt: args.create.startedAt,
+      heartbeatAt: new Date("2026-07-12T18:00:00Z"),
+      updatedAt: new Date("2026-07-12T18:00:01Z"),
+    }));
     killSpy = jest.spyOn(process, "kill").mockImplementation(() => {
       const error = new Error("missing process") as NodeJS.ErrnoException;
       error.code = "ESRCH";
@@ -394,6 +415,35 @@ describe("live runtime status service", () => {
         usesProviderQuota: false,
       },
     });
+    expect(status.runtimeHeartbeats).toMatchObject({
+      checked: true,
+      durable: true,
+      source: "RuntimeServiceHeartbeat",
+      allExpectedServicesRecorded: true,
+      quotaSpendingHeartbeatRunning: false,
+      installedOsService: false,
+      records: expect.arrayContaining([
+        expect.objectContaining({
+          serviceKey: "local:one-event-live-supervisor",
+          serviceName: "one-event-live-supervisor",
+          serviceKind: "supervisor",
+          status: "stopped",
+          running: false,
+          usesProviderQuota: false,
+          installedOsService: false,
+        }),
+        expect.objectContaining({
+          serviceKey: "local:one-event-result-poller",
+          serviceName: "one-event-result-poller",
+          serviceKind: "result-poller",
+          status: "stopped",
+          running: false,
+          usesProviderQuota: false,
+          installedOsService: false,
+        }),
+      ]),
+    });
+    expect(runtimeServiceHeartbeatUpsert).toHaveBeenCalledTimes(2);
   });
 
   test("returns needs_attention when a required proof artifact is stale", async () => {
@@ -607,6 +657,18 @@ describe("live runtime status service", () => {
         running: false,
         usesProviderQuota: false,
       },
+    });
+    expect(status.runtimeHeartbeats).toMatchObject({
+      quotaSpendingHeartbeatRunning: true,
+      records: expect.arrayContaining([
+        expect.objectContaining({
+          serviceKey: "local:one-event-live-supervisor",
+          status: "running",
+          running: true,
+          usesProviderQuota: true,
+          installedOsService: false,
+        }),
+      ]),
     });
   });
 });
