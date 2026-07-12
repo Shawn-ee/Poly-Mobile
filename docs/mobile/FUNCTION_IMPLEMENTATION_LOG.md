@@ -13660,3 +13660,24 @@ Known limitations:
 - Known limitations:
   - This proves local/manual lifecycle controls, not an automatic event-start scheduler.
   - Settlement execution is intentionally not run; automatic official result ingestion and settlement remain P1.
+
+# Cycle ONEREADINESS - Consolidated One-Event Live Readiness Gate
+
+- Feature/page worked on: quota-free one-command readiness gate for the one-event live local runtime.
+- Frontend components touched: none. This is an operator proof wrapper that verifies existing mobile-visible and backend/runtime evidence.
+- Important functions/services touched:
+  - `scripts/prove_holiwyn_one_event_live_readiness.ps1`
+  - `package.json` script `mobile:one-event-live-readiness`
+  - Child commands `mobile:one-event-live-runtime -- -SeedMaker` and `mobile:one-event-lifecycle-proof`
+  - Existing backend health, quote, order, lifecycle, S23 proof, and live provider proof artifacts
+- User interactions supported:
+  - Internal tester setup now has one command to verify the selected live event is ready before testing on S23.
+  - The command does not spend provider quota and leaves shifted local maker liquidity available.
+- State transitions:
+  - Runtime check starts/validates backend, Postgres, S23 reachability, and cached live provider proof.
+  - Maker seed leaves resting local bid/ask liquidity.
+  - Lifecycle proof verifies `LIVE`, `PAUSED`, `CLOSED`, settlement preview, and restore behavior.
+  - Consolidated summary records P0/P1/P2 gaps and the exact artifact paths.
+- Known limitations:
+  - Provider refresh and market maker are still not unattended daemons.
+  - Automatic event-start close/suspend and official-result settlement remain P1.

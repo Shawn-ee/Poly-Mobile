@@ -10,6 +10,7 @@
 | Provide one-command local runtime restart check | P0 | Complete: `npm run mobile:one-event-live-runtime` starts/checks backend, verifies Docker/Postgres, reports S23 reachability, and validates cached one-event live proof without spending provider quota. |
 | Provide reusable local maker liquidity seed for internal testers | P0 | Complete: `npm run mobile:one-event-live-runtime -- -SeedMaker` seeds resting shifted bid/ask liquidity for the selected provider-backed market and quote route reports `0.47/0.55`. |
 | Prove event lifecycle controls for selected live event | P0 | Complete: `npm run mobile:one-event-lifecycle-proof` proves `LIVE` accepts orders, `PAUSED` and `CLOSED` reject with `MARKET_UNAVAILABLE`, settlement preview is non-mutating, and original market status is restored. |
+| Provide consolidated one-event readiness gate | P0 | Complete: `npm run mobile:one-event-live-readiness` runs runtime, maker seed, lifecycle proof, backend health, Docker/Postgres, S23 reachability, cached live provider proof, and S23 visible proof checks into one summary. |
 | Continuous unattended daemon | P1 | Not complete; proof runner is bounded and local-only. |
 | Auto-close/suspend | P1 | Manual routes exist; automatic scheduling is not complete. |
 | Automatic official-result settlement | P1 | Manual/admin settlement exists; result provider is missing. |

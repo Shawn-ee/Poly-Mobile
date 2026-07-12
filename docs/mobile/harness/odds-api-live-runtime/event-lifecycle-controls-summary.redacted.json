@@ -1,6 +1,6 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-12T07:42:34.350Z",
+  "generatedAt": "2026-07-12T07:49:46.189Z",
   "scope": "odds-api-one-event-lifecycle-controls",
   "event": {
     "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
@@ -37,7 +37,7 @@
       "orderStatus": 200,
       "orderBody": {
         "order": {
-          "id": "4aab20c5-1cc0-4407-ae65-7695a0bd6574",
+          "id": "19a9576c-585f-4d7e-a13f-233347d3fcf7",
           "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
           "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
           "side": "BUY",
@@ -48,7 +48,7 @@
           "status": "OPEN",
           "type": "LIMIT",
           "clientOrderId": null,
-          "apiKeyId": "pk_live_bd3ac2f72e135bc6",
+          "apiKeyId": "pk_live_651c43a175b4d269",
           "contractSide": "YES",
           "selection": null
         },
@@ -60,7 +60,7 @@
         "position": null
       },
       "cleanup": {
-        "id": "4aab20c5-1cc0-4407-ae65-7695a0bd6574",
+        "id": "19a9576c-585f-4d7e-a13f-233347d3fcf7",
         "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
         "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
         "side": "BUY",
@@ -95,10 +95,10 @@
       "marketStatus": "CLOSED",
       "winningOutcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
       "winningOutcomeName": "Over +2.5",
-      "collateralUSDC": "1300",
-      "totalShares": "2600",
-      "totalWinningShares": "1300",
-      "totalPayout": "1300",
+      "collateralUSDC": "1900",
+      "totalShares": "3800",
+      "totalWinningShares": "1900",
+      "totalPayout": "1900",
       "payoutConservationPass": true,
       "blockers": [],
       "openOrderCleanup": {
@@ -110,6 +110,13 @@
         {
           "positionId": "e6d1b57f-bed1-4528-bf87-d1cadd9076c7",
           "userId": "04ab2ae2-af2e-4082-b47e-102b333222ad",
+          "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+          "shares": "200",
+          "amountPreview": "200"
+        },
+        {
+          "positionId": "24919593-a304-4f21-a58d-5fc1c63dcdb8",
+          "userId": "4ff75450-5ad0-4af6-9f4d-224300559475",
           "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
           "shares": "200",
           "amountPreview": "200"
@@ -136,6 +143,13 @@
           "amountPreview": "200"
         },
         {
+          "positionId": "ca8a1dde-8856-493d-94a4-3db3ed579858",
+          "userId": "8a893ade-af0f-4e27-b36a-8457f2c4851d",
+          "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+          "shares": "200",
+          "amountPreview": "200"
+        },
+        {
           "positionId": "ae8c09b2-7337-4146-beff-7065f7e18913",
           "userId": "bb6fdd86-242f-4303-9bdb-cd000ccfa228",
           "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
@@ -157,6 +171,13 @@
           "amountPreview": "106.9"
         },
         {
+          "positionId": "7ccb480c-e3ab-4aca-a587-ba8e5ce73f3c",
+          "userId": "ee5af7b9-caba-43be-91b7-8d62bc10a340",
+          "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+          "shares": "200",
+          "amountPreview": "200"
+        },
+        {
           "positionId": "b77cfa82-3d30-443c-9c7c-51ab0d552d5a",
           "userId": "f74c7e83-1933-4fca-9cb3-59f3c219a177",
           "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
@@ -171,7 +192,7 @@
           "amountPreview": "150"
         }
       ],
-      "loserPositionCount": 7,
+      "loserPositionCount": 10,
       "mutation": "none"
     },
     "settlementExecution": {

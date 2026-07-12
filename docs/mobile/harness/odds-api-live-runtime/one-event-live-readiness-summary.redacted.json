@@ -1,0 +1,121 @@
+{
+    "generatedAt":  "2026-07-12T07:49:47.3131637Z",
+    "scope":  "holiwyn-one-event-live-readiness",
+    "pass":  true,
+    "commands":  [
+                     {
+                         "label":  "runtime",
+                         "command":  "npm run mobile:one-event-live-runtime -- -BackendPort 3002 -SeedMaker",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T07:49:42.4533047Z",
+                         "finishedAt":  "2026-07-12T07:49:44.8089179Z"
+                     },
+                     {
+                         "label":  "lifecycle",
+                         "command":  "npm run mobile:one-event-lifecycle-proof -- --baseUrl=http://127.0.0.1:3002",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T07:49:44.8119179Z",
+                         "finishedAt":  "2026-07-12T07:49:46.2297956Z"
+                     }
+                 ],
+    "backend":  {
+                    "baseUrl":  "http://127.0.0.1:3002",
+                    "health":  {
+                                   "ok":  true,
+                                   "body":  {
+                                                "status":  "ok",
+                                                "db":  "connected",
+                                                "env":  "development",
+                                                "timestamp":  "2026-07-12T07:49:46.270Z"
+                                            },
+                                   "error":  null
+                               }
+                },
+    "dockerPostgres":  {
+                           "ok":  true,
+                           "status":  "poly_postgres|Up 7 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp",
+                           "raw":  [
+                                       "poly_postgres|Up 7 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
+                                   ]
+                       },
+    "s23":  {
+                "connected":  true,
+                "deviceId":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+                "model":  "SM_S911U1",
+                "raw":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp device product:dm1quew model:SM_S911U1 device:dm1q transport_id:4"
+            },
+    "listeners":  [
+                      {
+                          "LocalAddress":  "::",
+                          "LocalPort":  8081,
+                          "OwningProcess":  44952
+                      },
+                      {
+                          "LocalAddress":  "::",
+                          "LocalPort":  3002,
+                          "OwningProcess":  37208
+                      }
+                  ],
+    "event":  {
+                  "providerEventId":  "f9aa13a662d1658e5a02cfc06d6a2d73",
+                  "sportKey":  "soccer_fifa_world_cup",
+                  "title":  "Spain vs. France",
+                  "commenceTime":  "2026-07-14T19:00:00Z",
+                  "localSlug":  "odds-api-single-soccer-test"
+              },
+    "selectedMarket":  {
+                           "id":  "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+                           "slug":  "odds-api-single-soccer-test-totals-7439c2d603",
+                           "title":  "Spain vs. France: Total Goals 2.5",
+                           "marketType":  "total_goals",
+                           "marketGroupKey":  "totals",
+                           "line":  "2.5",
+                           "outcomeId":  "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+                           "outcomeName":  "Over +2.5",
+                           "referenceTokenId":  "odds-api-88263b2c42d6b2f5c6dbbda4"
+                       },
+    "artifacts":  {
+                      "liveProviderProof":  "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
+                      "runtimeLaunch":  "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json",
+                      "makerSeed":  "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
+                      "lifecycleControls":  "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json",
+                      "s23VisibleFlow":  "docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json"
+                  },
+    "runtimeTruth":  {
+                         "backendContinuous":  true,
+                         "providerRefreshContinuous":  false,
+                         "marketMakerContinuous":  false,
+                         "providerRefreshMode":  "bounded proof unless mobile:one-event-live-runtime:provider is running",
+                         "marketMakerMode":  "reusable one-shot shifted-maker seed, not unattended daemon",
+                         "settlementMode":  "manual preview/resolve service; automatic official-result settlement not wired"
+                     },
+    "checks":  {
+                   "backendHealth":  true,
+                   "dockerPostgres":  true,
+                   "runtimeSummaryPass":  true,
+                   "liveProviderProofPass":  true,
+                   "makerSeedPass":  true,
+                   "makerQuoteRoutePass":  true,
+                   "lifecycleProofPass":  true,
+                   "lifecycleClosedRejected":  true,
+                   "lifecyclePausedRejected":  true,
+                   "s23VisibleProofPass":  true,
+                   "s23Connected":  true
+               },
+    "gaps":  {
+                 "p0":  [
+
+                        ],
+                 "p1":  [
+                            "continuous unattended provider refresh daemon is not complete",
+                            "continuous unattended source-aware market-maker daemon is not complete",
+                            "automatic event close/suspend scheduler is not complete",
+                            "automatic official-result settlement is not complete"
+                        ],
+                 "p2":  [
+                            "multi-event provider polling and inventory-aware multi-market quoting remain future work"
+                        ]
+             }
+}
