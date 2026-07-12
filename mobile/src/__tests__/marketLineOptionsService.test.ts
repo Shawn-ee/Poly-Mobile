@@ -29,7 +29,10 @@ describe("marketLineOptionsService", () => {
 
   test("returns only backend-backed period and line choices for spread markets", () => {
     const markets = [
+      market({ id: "spread-rt-025", marketType: "spread", period: "full-game", line: "0.25" }),
       market({ id: "spread-rt-05", marketType: "spread", period: "full-game", line: "0.5" }),
+      market({ id: "spread-rt-075", marketType: "spread", period: "full-game", line: "0.75" }),
+      market({ id: "spread-rt-10", marketType: "spread", period: "full-game", line: "1" }),
       market({ id: "spread-rt-15", marketType: "spread", period: "regulation", line: "1.5" }),
       market({ id: "spread-1h-05", marketType: "spread", period: "first-half", line: "0.5" }),
     ];
@@ -38,6 +41,9 @@ describe("marketLineOptionsService", () => {
     expect(lineOptionsFor(markets, "spread", "Reg. Time")).toEqual(["0.5", "1.5"]);
     expect(lineOptionsFor(markets, "spread", "1st Half")).toEqual(["0.5"]);
     expect(lineOptionsFor(markets, "spread", "2nd Half")).toEqual([]);
+    expect(matchingBackendLineMarket(markets, "spread", "0.25", "Reg. Time")).toBeUndefined();
+    expect(matchingBackendLineMarket(markets, "spread", "0.75", "Reg. Time")).toBeUndefined();
+    expect(matchingBackendLineMarket(markets, "spread", "1", "Reg. Time")).toBeUndefined();
     expect(matchingBackendLineMarket(markets, "spread", "1.5", "Reg. Time")?.id).toBe("spread-rt-15");
   });
 
