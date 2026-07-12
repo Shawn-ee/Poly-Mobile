@@ -22,6 +22,7 @@ const PATHS = {
   settlementReadiness: "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json",
   manualSettlement: "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json",
   resultSettlement: "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
+  resultSettlementRun: "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json",
   makerSeed: "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
   s23Visible: "docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json",
 };
@@ -224,15 +225,20 @@ async function main() {
     requirement({
       id: "settlement-readiness",
       priority: "P0",
-      requirement: "Settlement readiness, trusted result mapping, and guarded settlement are documented/proven.",
-      achieved: pass(entries.settlementReadiness) && pass(entries.manualSettlement) && pass(entries.resultSettlement),
+      requirement: "Settlement readiness, trusted result mapping, guarded settlement, and local scheduler run are documented/proven.",
+      achieved:
+        pass(entries.settlementReadiness) &&
+        pass(entries.manualSettlement) &&
+        pass(entries.resultSettlement) &&
+        pass(entries.resultSettlementRun),
       evidence: [
         PATHS.settlementReadiness,
         PATHS.manualSettlement,
         PATHS.resultSettlement,
+        PATHS.resultSettlementRun,
         "docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md",
       ],
-      notes: "Trusted result JSON can map to a winning outcome and preview settlement. Official result API ingestion remains P1.",
+      notes: "Trusted result JSON can map to a winning outcome and the local scheduler can dry-run it. Official result API ingestion remains P1.",
     }),
     requirement({
       id: "backend-runtime-health",
@@ -254,8 +260,8 @@ async function main() {
       priority: "P1",
       requirement: "Automatically ingest official soccer results and settle markets.",
       achieved: false,
-      evidence: [PATHS.settlementReadiness, PATHS.manualSettlement, PATHS.resultSettlement],
-      notes: "Manual preview/resolve and trusted result mapping are proven. Official result API ingestion is not implemented.",
+      evidence: [PATHS.settlementReadiness, PATHS.manualSettlement, PATHS.resultSettlement, PATHS.resultSettlementRun],
+      notes: "Trusted result scheduler dry-run is proven. Official result API ingestion and unconfirmed execution remain future work.",
     }),
   ];
   const openP0 = requirements.filter((item) => item.priority === "P0" && item.status !== "complete");
@@ -280,7 +286,7 @@ async function main() {
       phaseCompleteForLocalInternalRuntime: openP0.length === 0,
       fullProductionRuntimeComplete: false,
       runtimeTruth:
-        "Local one-event runtime is internally usable with cached/live-proofed provider data, fake-token trading, supervisor monitoring, and manual settlement. It is not a production unattended daemon and does not auto-settle from official results.",
+        "Local one-event runtime is internally usable with cached/live-proofed provider data, fake-token trading, supervisor monitoring, and trusted-result settlement dry-run scheduling. It is not a production unattended daemon and does not ingest official results.",
     },
   };
   await writeJson(outputPath, summary);

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T09:52:38.084Z",
+  "generatedAt": "2026-07-12T10:25:04.570Z",
   "scope": "odds-api-one-event-result-settlement",
   "pass": true,
   "mode": "dry-run",
@@ -34,7 +34,7 @@
     "line": "2.5",
     "statusBefore": "LIVE",
     "resolvedOutcomeIdBefore": null,
-    "collateralUSDCBefore": "7100"
+    "collateralUSDCBefore": "24500"
   },
   "mappedResolution": {
     "rule": "total_goals",
@@ -51,10 +51,10 @@
   },
   "preview": {
     "marketStatus": "LIVE",
-    "totalShares": "14200",
-    "totalWinningShares": "7100",
-    "totalPayout": "7100",
-    "collateralUSDC": "7100",
+    "totalShares": "49000",
+    "totalWinningShares": "24500",
+    "totalPayout": "24500",
+    "collateralUSDC": "24500",
     "payoutConservationPass": true,
     "blockers": [],
     "openOrderCleanup": {
@@ -62,8 +62,8 @@
       "buyOrderLockedUSDCToRelease": "94",
       "sellOrderSharesToRelease": "200"
     },
-    "payoutCount": 38,
-    "loserPositionCount": 36,
+    "payoutCount": 125,
+    "loserPositionCount": 123,
     "mutation": "none"
   },
   "execution": {
@@ -75,7 +75,7 @@
     "status": "LIVE",
     "resolvedOutcomeId": null,
     "settlementStatus": null,
-    "collateralUSDC": "7100"
+    "collateralUSDC": "24500"
   },
   "controls": {
     "dryRunIsDefault": true,

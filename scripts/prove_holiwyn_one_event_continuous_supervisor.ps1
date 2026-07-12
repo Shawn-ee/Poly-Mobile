@@ -76,7 +76,7 @@ $nodeBefore = Get-NodeProcessCount
 $commands.Add((Invoke-CheckedCommand -Label "pre-stop-existing-supervisor" -Command "npm run mobile:one-event-live-supervisor:stop")) | Out-Null
 Remove-Item -LiteralPath (Resolve-RepoPath $HeartbeatPath) -Force -ErrorAction SilentlyContinue
 
-$supervisorCommand = "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_live_supervisor.ps1 -BackendPort $BackendPort -MaxIterations $RequiredIterations -IntervalSeconds $IntervalSeconds"
+$supervisorCommand = "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_live_supervisor.ps1 -BackendPort $BackendPort -MaxIterations $RequiredIterations -IntervalSeconds $IntervalSeconds -RunResultSettlement"
 $supervisorRun = Invoke-CheckedCommand -Label "foreground-repeated-supervisor" -Command $supervisorCommand
 $commands.Add($supervisorRun) | Out-Null
 
@@ -139,6 +139,7 @@ $summary = [ordered]@{
     repeatedLocalSupervisorCyclesProven = [bool]($p0.Count -eq 0)
     marketMakerReseedWhileRunning = [bool]($supervisorSummary -and $supervisorSummary.runtimeTruth.marketMakerRefreshContinuousWhileSupervisorRuns -eq $true)
     lifecycleSchedulerWhileRunning = [bool]($supervisorSummary -and $supervisorSummary.runtimeTruth.lifecycleSchedulerContinuousWhileSupervisorRuns -eq $true)
+    resultSettlementSchedulerWhileRunning = [bool]($supervisorSummary -and $supervisorSummary.runtimeTruth.resultSettlementContinuousWhileSupervisorRuns -eq $true)
     providerRefreshMode = if ($supervisorSummary) { $supervisorSummary.runtimeTruth.providerRefreshMode } else { "not_proven" }
     quotaProtected = $true
     installedOsService = $false

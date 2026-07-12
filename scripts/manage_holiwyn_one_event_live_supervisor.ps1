@@ -11,6 +11,7 @@ param(
   [switch]$SkipLifecycleScheduler,
   [switch]$RunStaleGuard,
   [switch]$EnforceStaleGuard,
+  [switch]$RunResultSettlement,
   [switch]$RestartBackend,
   [int]$RefreshIterations = 1,
   [int]$MaxCreditsPerProviderProof = 8,
@@ -155,6 +156,7 @@ function Build-SupervisorArguments {
   if ($SkipLifecycleScheduler) { $parts.Add("-SkipLifecycleScheduler") | Out-Null }
   if ($RunStaleGuard) { $parts.Add("-RunStaleGuard") | Out-Null }
   if ($EnforceStaleGuard) { $parts.Add("-EnforceStaleGuard") | Out-Null }
+  if ($RunResultSettlement) { $parts.Add("-RunResultSettlement") | Out-Null }
   if ($RestartBackend) { $parts.Add("-RestartBackend") | Out-Null }
   if ($SkipSleep) { $parts.Add("-SkipSleep") | Out-Null }
   return $parts
@@ -200,6 +202,7 @@ if ($Action -eq "start") {
       runProviderProof = [bool]$RunProviderProof
       runStaleGuard = [bool]$RunStaleGuard
       enforceStaleGuard = [bool]$EnforceStaleGuard
+      runResultSettlement = [bool]$RunResultSettlement
       providerProofEveryIterations = if ($RunProviderProof) { $ProviderProofEveryIterations } else { 0 }
       maxProviderProofRuns = if ($RunProviderProof) { $MaxProviderProofRuns } else { 0 }
       stdout = ConvertTo-RepoPath $StdoutPath
@@ -284,6 +287,7 @@ $summary = [ordered]@{
     installedOsService = $false
     providerRefreshMode = if ($RunProviderProof) { "quota-capped live provider proof by cadence" } else { "cached provider proof verification; no provider quota spent" }
     staleGuardMode = if (-not $RunStaleGuard) { "disabled" } elseif ($EnforceStaleGuard) { "enforce stale provider pause while supervisor runs" } else { "dry-run stale monitor while supervisor runs" }
+    resultSettlementMode = if ($RunResultSettlement) { "trusted result scheduler dry-run while supervisor runs" } else { "disabled" }
     fakeTokenOnly = $true
   }
   gaps = [ordered]@{

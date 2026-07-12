@@ -11,6 +11,7 @@ param(
   [switch]$SkipLifecycleScheduler,
   [switch]$RunStaleGuard,
   [switch]$EnforceStaleGuard,
+  [switch]$RunResultSettlement,
   [switch]$RestartBackend,
   [int]$RefreshIterations = 1,
   [int]$MaxCreditsPerProviderProof = 8,
@@ -97,6 +98,7 @@ function Write-Heartbeat {
       lifecycleSchedulerEnabled = [bool](-not $SkipLifecycleScheduler)
       staleGuardEnabled = [bool]$RunStaleGuard
       staleGuardEnforced = [bool]$EnforceStaleGuard
+      resultSettlementEnabled = [bool]$RunResultSettlement
       cachedModeUsesQuota = $false
     }
     runtimeTruth = [ordered]@{
@@ -104,6 +106,7 @@ function Write-Heartbeat {
       marketMakerMode = if ($SkipMakerSeed) { "not seeded by supervisor" } else { "repeated local shifted maker reseed while supervisor runs" }
       lifecycleSchedulerMode = if ($SkipLifecycleScheduler) { "not run by supervisor" } else { "safe real-time scheduler check each cycle; no proof time mutation" }
       staleGuardMode = if (-not $RunStaleGuard) { "disabled" } elseif ($EnforceStaleGuard) { "enforce stale provider pause while supervisor runs" } else { "dry-run stale monitor while supervisor runs" }
+      resultSettlementMode = if ($RunResultSettlement) { "trusted result scheduler dry-run while supervisor runs" } else { "disabled" }
       unattendedServiceInstalled = $false
     }
     failure = $Failure
@@ -245,6 +248,13 @@ try {
       $staleGuardSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-stale-guard-run-summary.redacted.json"
       $staleGuardSummary = Read-JsonFile $staleGuardSummaryPath
     }
+    $resultSettlementResult = $null
+    $resultSettlementSummary = $null
+    if ($RunResultSettlement) {
+      $resultSettlementResult = Invoke-CheckedCommand -Label "cycle-$iteration-result-settlement" -Command "npm run mobile:one-event-result-settlement-run"
+      $resultSettlementSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-result-settlement-run-summary.redacted.json"
+      $resultSettlementSummary = Read-JsonFile $resultSettlementSummaryPath
+    }
     $schedulerResult = $null
     $schedulerSummary = $null
     if (-not $SkipLifecycleScheduler) {
@@ -268,6 +278,9 @@ try {
       staleGuardPass = [bool]((-not $RunStaleGuard) -or ($staleGuardSummary -and $staleGuardSummary.pass -eq $true))
       staleGuardMode = if ($RunStaleGuard) { if ($EnforceStaleGuard) { "enforce-pause" } else { "dry-run-monitor" } } else { "disabled" }
       staleGuardResult = if ($staleGuardSummary) { $staleGuardSummary.result } else { $null }
+      resultSettlement = $resultSettlementResult
+      resultSettlementPass = [bool]((-not $RunResultSettlement) -or ($resultSettlementSummary -and $resultSettlementSummary.pass -eq $true))
+      resultSettlementAction = if ($resultSettlementSummary) { $resultSettlementSummary.action } else { $null }
       providerProofRan = [bool]$runProviderThisCycle
       providerProofRunCount = $providerProofRunCount
       providerProofSkippedReason = if ($RunProviderProof -and -not $runProviderThisCycle) {
@@ -284,6 +297,7 @@ try {
       -not $result.pass -or
       -not ($runtimeSummary -and $runtimeSummary.pass -eq $true) -or
       ($RunStaleGuard -and (-not $staleGuardResult.pass -or -not ($staleGuardSummary -and $staleGuardSummary.pass -eq $true))) -or
+      ($RunResultSettlement -and (-not $resultSettlementResult.pass -or -not ($resultSettlementSummary -and $resultSettlementSummary.pass -eq $true))) -or
       (-not $SkipLifecycleScheduler -and (-not $schedulerResult.pass -or -not ($schedulerSummary -and $schedulerSummary.pass -eq $true)))
     ) {
       $loopPass = $false
@@ -344,6 +358,7 @@ $summary = [ordered]@{
     lifecycleSchedulerEnabled = [bool](-not $SkipLifecycleScheduler)
     staleGuardEnabled = [bool]$RunStaleGuard
     staleGuardEnforced = [bool]$EnforceStaleGuard
+    resultSettlementEnabled = [bool]$RunResultSettlement
     cachedModeUsesQuota = $false
   }
   runtimeTruth = [ordered]@{
@@ -355,6 +370,8 @@ $summary = [ordered]@{
     lifecycleSchedulerContinuousWhileSupervisorRuns = [bool]((-not $SkipLifecycleScheduler) -and ($Continuous -or $cycles.Count -gt 1))
     staleGuardContinuousWhileSupervisorRuns = [bool]($RunStaleGuard -and ($Continuous -or $cycles.Count -gt 1))
     staleGuardMode = if (-not $RunStaleGuard) { "disabled" } elseif ($EnforceStaleGuard) { "enforce stale provider pause while supervisor runs" } else { "dry-run stale monitor while supervisor runs" }
+    resultSettlementContinuousWhileSupervisorRuns = [bool]($RunResultSettlement -and ($Continuous -or $cycles.Count -gt 1))
+    resultSettlementMode = if ($RunResultSettlement) { "trusted result scheduler dry-run while supervisor runs" } else { "disabled" }
     unattendedServiceInstalled = $false
     providerRefreshMode = if ($RunProviderProof) { "quota-capped live provider proof by cadence; cached verification after cap or cadence skips" } else { "cached provider proof verification; no provider quota spent" }
     marketMakerMode = if ($SkipMakerSeed) { "not seeded by supervisor" } else { "repeated local shifted maker reseed while supervisor runs" }

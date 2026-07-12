@@ -36,6 +36,8 @@
 21. To execute settlement, pass `--execute` plus the exact `--confirm=SETTLE:<marketId>:<outcomeId>` phrase printed by the dry run. Do not execute without trusted result review.
 22. To dry-run settlement from trusted result JSON, run `npm run mobile:one-event-result-settlement`.
 23. To execute trusted-result settlement, pass `--execute` plus the exact `--confirm=SETTLE_FROM_RESULT:<marketId>:<outcomeId>:<digest>` phrase printed by the dry run. Do not execute without trusted result review.
+24. To run the local trusted-result scheduler path, run `npm run mobile:one-event-result-settlement-run`. It reads the trusted result JSON and invokes the guarded trusted-result settlement command in dry-run mode by default.
+25. To include trusted-result settlement checks in the local supervisor, run `npm run mobile:one-event-live-supervisor -- -RunResultSettlement`.
 24. To prove stale provider handling, run `npm run mobile:one-event-stale-guard-proof`. It forces stored snapshots stale, pauses the selected market, proves order rejection, and restores state after proof.
 25. To monitor stale provider handling inside the supervisor without mutating local tester state, run `npm run mobile:one-event-live-supervisor -- -RunStaleGuard -MaxIterations 1 -IntervalSeconds 0 -SkipSleep`.
 26. To enforce stale provider handling inside the supervisor, add `-EnforceStaleGuard`. Use enforcement only when you intend stale markets to pause.
@@ -57,6 +59,7 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - Settlement readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json`
 - Manual settlement dry-run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json`
 - Trusted result settlement summary: `docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json`
+- Trusted result settlement scheduler summary: `docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json`
 - Trusted result fixture: `docs/mobile/harness/odds-api-live-runtime/trusted-result-fixture.redacted.json`
 - One-command onboarding summary: `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json`
 - Phase audit summary: `docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json`
@@ -77,5 +80,6 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - Settlement readiness: `previewOrderbookSettlement` and `resolveOrderbookMarket` exist. The latest non-mutating readiness proof previews both selected outcomes with payout conservation passing and confirms the market is not resolved by the proof. Automatic soccer result ingestion and automatic settlement remain P1.
 - Manual settlement command: `npm run mobile:one-event-settlement -- --winningOutcome=over` dry-runs the selected event settlement, prints the exact confirmation phrase required for execution, and confirms the market remains unresolved in dry-run mode.
 - Trusted result settlement: `npm run mobile:one-event-result-settlement` reads trusted result JSON, maps final score France 1 - Spain 2 to `Over +2.5` for the selected Spain vs. France Total Goals 2.5 market, previews settlement without mutation, and prints an exact result-digest confirmation phrase for execution.
+- Trusted result scheduler: `npm run mobile:one-event-result-settlement-run` runs the same trusted-result mapping through a scheduler-style local command in dry-run mode by default. Official result API ingestion remains P1.
 - One-command onboarding: `npm run mobile:one-event-onboarding` blocked the old replay fixture, restored the cached Spain vs. France live-runtime event without provider quota, ran the readiness gate, runtime status, settlement readiness, and manual settlement dry run, with S23 connected and no unresolved P0 gaps.
 - Phase audit: `npm run mobile:one-event-phase-audit` passed. It verifies 0 unresolved P0 gaps for local one-event internal runtime and leaves unattended service install plus official-result auto-settlement as explicit P1 gaps.

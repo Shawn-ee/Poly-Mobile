@@ -1,10 +1,10 @@
 {
-    "generatedAt":  "2026-07-12T10:15:59.7597376Z",
+    "generatedAt":  "2026-07-12T10:25:09.8310943Z",
     "scope":  "holiwyn-one-event-live-supervisor-process",
     "pass":  true,
     "operation":  {
                       "action":  "status",
-                      "startedAt":  "2026-07-12T10:15:59.7164784Z",
+                      "startedAt":  "2026-07-12T10:25:09.7874179Z",
                       "force":  false,
                       "result":  "not_running"
                   },
@@ -58,10 +58,10 @@
     "supervisor":  {
                        "summaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-live-supervisor-summary.redacted.json",
                        "digest":  {
-                                      "generatedAt":  "2026-07-12T10:15:57.8881332Z",
+                                      "generatedAt":  "2026-07-12T10:25:05.6529697Z",
                                       "pass":  true,
-                                      "startedAt":  "2026-07-12T10:15:47.0420398Z",
-                                      "completedAt":  "2026-07-12T10:15:57.8881332Z",
+                                      "startedAt":  "2026-07-12T10:24:50.3306721Z",
+                                      "completedAt":  "2026-07-12T10:25:05.6529697Z",
                                       "settings":  {
                                                        "continuous":  false,
                                                        "maxIterations":  2,
@@ -80,6 +80,7 @@
                                                        "lifecycleSchedulerEnabled":  true,
                                                        "staleGuardEnabled":  false,
                                                        "staleGuardEnforced":  false,
+                                                       "resultSettlementEnabled":  true,
                                                        "cachedModeUsesQuota":  false
                                                    },
                                       "runtimeTruth":  {
@@ -91,6 +92,8 @@
                                                            "lifecycleSchedulerContinuousWhileSupervisorRuns":  true,
                                                            "staleGuardContinuousWhileSupervisorRuns":  false,
                                                            "staleGuardMode":  "disabled",
+                                                           "resultSettlementContinuousWhileSupervisorRuns":  true,
+                                                           "resultSettlementMode":  "trusted result scheduler dry-run while supervisor runs",
                                                            "unattendedServiceInstalled":  false,
                                                            "providerRefreshMode":  "cached provider proof verification; no provider quota spent",
                                                            "marketMakerMode":  "repeated local shifted maker reseed while supervisor runs",
@@ -111,6 +114,7 @@
                          "installedOsService":  false,
                          "providerRefreshMode":  "cached provider proof verification; no provider quota spent",
                          "staleGuardMode":  "disabled",
+                         "resultSettlementMode":  "disabled",
                          "fakeTokenOnly":  true
                      },
     "gaps":  {
