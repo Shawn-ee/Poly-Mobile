@@ -8,6 +8,12 @@ const DEFAULT_OUTPUT_PATH =
 const PATHS = {
   liveProof: "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
   onboarding: "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json",
+  onboardingRuntimeStart:
+    "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-start-summary.redacted.json",
+  onboardingRuntimeStatus:
+    "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-status-summary.redacted.json",
+  onboardingRuntimeStop:
+    "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-stop-summary.redacted.json",
   readiness: "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json",
   runtimeStatus: "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
   runtimeLaunch: "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json",
@@ -271,6 +277,58 @@ async function main() {
       evidence: [PATHS.runtimeStatus, PATHS.continuousSupervisor, PATHS.continuousResultPoller],
       notes:
         "This prevents narrow latest supervisor proof runs from hiding previously proven repeated maker reseed, lifecycle scheduling, result ingestion, and result-poller behavior.",
+    }),
+    requirement({
+      id: "one-command-runtime-loop-proof",
+      priority: "P0",
+      requirement:
+        "One-command onboarding can explicitly start the local supervisor/result-poller loops, prove both are running, and clean them up afterward.",
+      achieved:
+        pass(entries.onboarding) &&
+        pass(entries.onboardingRuntimeStart) &&
+        pass(entries.onboardingRuntimeStatus) &&
+        pass(entries.onboardingRuntimeStop) &&
+        getPath(entries.onboarding, ["providerPolicy", "runtimeLoopStartRequiresExplicitFlag"]) === true &&
+        getPath(entries.onboarding, ["providerPolicy", "runtimeLoopCleanupRequested"]) === true &&
+        getPath(entries.onboarding, ["runtimeTruth", "runtimeLoopsStartedByOnboarding"]) === true &&
+        getPath(entries.onboarding, ["runtimeTruth", "runtimeLoopsRunningDuringProof"]) === true &&
+        getPath(entries.onboarding, ["runtimeTruth", "runtimeLoopsStoppedAfterProof"]) === true &&
+        getPath(entries.onboardingRuntimeStatus, [
+          "supervisor",
+          "processSummary",
+          "process",
+          "after",
+          "running",
+        ]) === true &&
+        getPath(entries.onboardingRuntimeStatus, [
+          "resultPoller",
+          "processSummary",
+          "process",
+          "after",
+          "running",
+        ]) === true &&
+        getPath(entries.onboardingRuntimeStop, [
+          "supervisor",
+          "processSummary",
+          "process",
+          "after",
+          "running",
+        ]) === false &&
+        getPath(entries.onboardingRuntimeStop, [
+          "resultPoller",
+          "processSummary",
+          "process",
+          "after",
+          "running",
+        ]) === false,
+      evidence: [
+        PATHS.onboarding,
+        PATHS.onboardingRuntimeStart,
+        PATHS.onboardingRuntimeStatus,
+        PATHS.onboardingRuntimeStop,
+      ],
+      notes:
+        "This proves the local one-event runtime can be brought up through the onboarding wrapper without treating those local processes as installed OS services.",
     }),
     requirement({
       id: "local-status-api-ready",

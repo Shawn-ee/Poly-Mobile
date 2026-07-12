@@ -1,5 +1,5 @@
 {
-    "generatedAt":  "2026-07-12T10:44:22.1512987Z",
+    "generatedAt":  "2026-07-12T21:06:04.7482700Z",
     "scope":  "holiwyn-one-event-live-readiness",
     "pass":  true,
     "commands":  [
@@ -8,32 +8,32 @@
                          "command":  "npm run mobile:one-event-data-hygiene-proof",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T10:44:09.6667731Z",
-                         "finishedAt":  "2026-07-12T10:44:10.5752564Z"
+                         "startedAt":  "2026-07-12T21:05:54.8410499Z",
+                         "finishedAt":  "2026-07-12T21:05:55.3443562Z"
                      },
                      {
                          "label":  "runtime",
                          "command":  "npm run mobile:one-event-live-runtime -- -BackendPort 3002 -SeedMaker",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T10:44:10.5799266Z",
-                         "finishedAt":  "2026-07-12T10:44:15.1613605Z"
+                         "startedAt":  "2026-07-12T21:05:55.3483577Z",
+                         "finishedAt":  "2026-07-12T21:05:59.0621564Z"
                      },
                      {
                          "label":  "lifecycle",
                          "command":  "npm run mobile:one-event-lifecycle-proof -- --baseUrl=http://127.0.0.1:3002",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T10:44:15.1613605Z",
-                         "finishedAt":  "2026-07-12T10:44:16.6150602Z"
+                         "startedAt":  "2026-07-12T21:05:59.0621564Z",
+                         "finishedAt":  "2026-07-12T21:06:00.4475712Z"
                      },
                      {
                          "label":  "lifecycle-scheduler",
                          "command":  "npm run mobile:one-event-lifecycle-scheduler-proof",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T10:44:16.6150602Z",
-                         "finishedAt":  "2026-07-12T10:44:21.4306046Z"
+                         "startedAt":  "2026-07-12T21:06:00.4485712Z",
+                         "finishedAt":  "2026-07-12T21:06:03.7547374Z"
                      }
                  ],
     "backend":  {
@@ -44,34 +44,36 @@
                                                 "status":  "ok",
                                                 "db":  "connected",
                                                 "env":  "development",
-                                                "timestamp":  "2026-07-12T10:44:21.474Z"
+                                                "timestamp":  "2026-07-12T21:06:03.798Z"
                                             },
                                    "error":  null
                                }
                 },
     "dockerPostgres":  {
                            "ok":  true,
-                           "status":  "poly_postgres|Up 7 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp",
+                           "status":  "poly_postgres|Up 8 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp",
                            "raw":  [
-                                       "poly_postgres|Up 7 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
+                                       "poly_postgres|Up 8 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
                                    ]
                        },
     "s23":  {
-                "connected":  true,
-                "deviceId":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
-                "model":  "SM_S911U1",
-                "raw":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp device product:dm1quew model:SM_S911U1 device:dm1q transport_id:4"
+                "connected":  false,
+                "deviceId":  null,
+                "model":  null,
+                "raw":  {
+
+                        }
             },
     "listeners":  [
                       {
                           "LocalAddress":  "::",
                           "LocalPort":  8081,
-                          "OwningProcess":  44952
+                          "OwningProcess":  33236
                       },
                       {
                           "LocalAddress":  "::",
                           "LocalPort":  3002,
-                          "OwningProcess":  37208
+                          "OwningProcess":  23948
                       }
                   ],
     "event":  {
@@ -110,7 +112,8 @@
                          "providerRefreshMode":  "bounded proof unless mobile:one-event-live-runtime:provider is running",
                          "marketMakerMode":  "reusable one-shot shifted-maker seed, not unattended daemon",
                          "lifecycleSchedulerMode":  "local callable scheduler proof, not installed always-on service",
-                         "settlementMode":  "manual preview/resolve service; automatic official-result settlement not wired"
+                         "settlementMode":  "manual preview/resolve service; automatic official-result settlement not wired",
+                         "s23RequiredForThisReadinessRun":  false
                      },
     "checks":  {
                    "backendHealth":  true,

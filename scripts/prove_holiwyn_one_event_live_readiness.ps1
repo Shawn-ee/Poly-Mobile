@@ -5,7 +5,8 @@ param(
   [switch]$SkipMakerSeed,
   [switch]$SkipLifecycleProof,
   [switch]$SkipDataHygiene,
-  [switch]$SkipLifecycleSchedulerProof
+  [switch]$SkipLifecycleSchedulerProof,
+  [switch]$AllowDisconnectedS23
 )
 
 $ErrorActionPreference = "Stop"
@@ -197,7 +198,7 @@ $checks = [ordered]@{
   lifecycleSchedulerCloseProof = [bool]($SkipLifecycleSchedulerProof -or ($lifecycleSchedulerSummary -and $lifecycleSchedulerSummary.checks.closeAfterStart -eq $true))
   lifecycleSchedulerRestored = [bool]($SkipLifecycleSchedulerProof -or ($lifecycleSchedulerSummary -and $lifecycleSchedulerSummary.checks.marketStatusesRestored -eq $true))
   s23VisibleProofPass = [bool]($s23Summary -and $s23Summary.result -eq "pass")
-  s23Connected = [bool]$s23.connected
+  s23Connected = [bool]($AllowDisconnectedS23 -or $s23.connected)
 }
 $failedChecks = @()
 foreach ($entry in $checks.GetEnumerator()) {
@@ -243,6 +244,7 @@ $summary = [ordered]@{
     marketMakerMode = "reusable one-shot shifted-maker seed, not unattended daemon"
     lifecycleSchedulerMode = "local callable scheduler proof, not installed always-on service"
     settlementMode = "manual preview/resolve service; automatic official-result settlement not wired"
+    s23RequiredForThisReadinessRun = [bool](-not $AllowDisconnectedS23)
   }
   checks = $checks
   gaps = [ordered]@{

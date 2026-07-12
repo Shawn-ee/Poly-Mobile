@@ -14,6 +14,7 @@ Temporary Local MVP provider: The Odds API. This policy is for fake-token local 
 - `npm run mobile:one-event-onboarding` is the default one-command local onboarding path. It uses quota-free replay only when the replay fixture is not older than the current live-runtime target; otherwise it skips replay, restores the latest cached live-runtime event from `one-event-live-runtime-summary.redacted.json`, runs readiness/runtime/settlement checks, and does not spend provider quota.
 - `npm run mobile:one-event-onboarding -- -AllowPastReplay` intentionally allows an older redacted replay fixture to overwrite the reusable local one-event slug. Do not use this for internal tester launch unless testing historical replay behavior.
 - `npm run mobile:one-event-onboarding -- -RunProviderRefresh` is the explicit one-command path that may spend quota. It requires `THE_ODDS_API_KEY` in the local process environment.
+- `npm run mobile:one-event-onboarding -- -AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof` is the backend-runtime proof mode. It keeps provider refresh in cached/no-quota mode, starts the local supervisor and result-poller, proves both are running, then stops both. Use this when validating local backend runtime without requiring a phone connection.
 - `npm run mobile:one-event-live-runtime:provider` is the explicit live provider proof command and requires `THE_ODDS_API_KEY`.
 - `npm run mobile:one-event-live-supervisor` repeats data hygiene, the local one-event runtime check, maker seed, and safe real-time lifecycle scheduler without spending provider quota unless `-RunProviderProof` is passed.
 - `npm run mobile:one-event-live-supervisor -- -RunStaleGuard` also runs the stale-provider guard in dry-run monitor mode each cycle. It reports markets that would pause without mutating the tester runtime.
@@ -106,6 +107,10 @@ If the provider fails, quota is low, or no upcoming event has supported markets:
 - Safe lifecycle scheduler run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json`
 - Runtime status summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`
 - One-command onboarding summary: `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json`
+- One-command onboarding runtime-loop start/status/stop summaries:
+  - `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-start-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-status-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-stop-summary.redacted.json`
 - Result: pass.
 - Event: Spain vs. France, `soccer_fifa_world_cup`, `2026-07-14T19:00:00Z`.
 - Provider calls: one sports scan, quota-free event scans, one event-markets call, and two event-odds refreshes.

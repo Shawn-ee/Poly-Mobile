@@ -1,6 +1,6 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-12T10:44:16.573Z",
+  "generatedAt": "2026-07-12T21:06:00.406Z",
   "scope": "odds-api-one-event-lifecycle-controls",
   "event": {
     "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
@@ -37,7 +37,7 @@
       "orderStatus": 200,
       "orderBody": {
         "order": {
-          "id": "85d2afa4-a36e-4772-a8f0-09ef42f603f2",
+          "id": "25e265a1-9d02-4b67-afae-8cad9db2f8b2",
           "marketId": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
           "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
           "side": "BUY",
@@ -48,7 +48,7 @@
           "status": "OPEN",
           "type": "LIMIT",
           "clientOrderId": null,
-          "apiKeyId": "pk_live_a2da9d27b6c132ff",
+          "apiKeyId": "pk_live_47be907b1cfb3d97",
           "contractSide": "YES",
           "selection": null
         },
@@ -60,7 +60,7 @@
         "position": null
       },
       "cleanup": {
-        "id": "85d2afa4-a36e-4772-a8f0-09ef42f603f2",
+        "id": "25e265a1-9d02-4b67-afae-8cad9db2f8b2",
         "marketId": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
         "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
         "side": "BUY",

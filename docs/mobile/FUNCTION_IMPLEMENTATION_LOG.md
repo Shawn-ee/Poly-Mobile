@@ -14824,3 +14824,14 @@ Known limitations:
 - API/data dependencies: reads `OfficialResultReview` rows plus current `Market` and linked `Event` status. Phase audit now gates on the route response.
 - Proof needed: focused service and route tests, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this narrows the local operator queue gap. Production still needs authenticated operator UI/actions, installed official-result polling, and direct active-event execution controls.
+
+## Cycle ONBOARDINGRUNTIMELOOPPROOF - One-Command Runtime Loop Proof
+
+- Feature/page worked on: backend local one-event onboarding/runtime proof harness.
+- Frontend components touched: none.
+- Important functions/services touched: updated `scripts/onboard_holiwyn_one_event_live_runtime.ps1`, `scripts/prove_holiwyn_one_event_live_readiness.ps1`, and `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: local tools can run `npm run mobile:one-event-onboarding -- -AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof` to restore/onboard the selected one-event runtime, run readiness/status/settlement checks, start the local supervisor and result-poller, prove both are running, then stop both.
+- State transitions: starts and stops local supervisor/result-poller processes only when explicitly requested. It does not spend provider quota by default, does not execute active-event settlement, does not install an OS service, and does not change mobile UI.
+- API/data dependencies: uses existing local backend health, runtime status, readiness, settlement readiness, result ingestion, result settlement dry-run, and internal tester runtime manager commands. It writes one onboarding summary plus dedicated runtime start/status/stop summaries under `docs/mobile/harness/odds-api-live-runtime/`.
+- Proof: onboarding runtime-loop mode passed with backend health true, Docker/Postgres true, runtime loops running during proof true, runtime loops stopped after proof true, and no P0 gaps.
+- Known limitations: this narrows local one-command runtime proof. Installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1.

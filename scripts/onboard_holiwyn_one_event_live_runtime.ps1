@@ -7,7 +7,10 @@ param(
   [switch]$AllowPastReplay,
   [switch]$RestartBackend,
   [switch]$SkipReadiness,
-  [switch]$SkipSettlementDryRun
+  [switch]$SkipSettlementDryRun,
+  [switch]$StartRuntimeLoops,
+  [switch]$StopRuntimeLoopsAfterProof,
+  [switch]$AllowDisconnectedS23
 )
 
 $ErrorActionPreference = "Stop"
@@ -175,6 +178,9 @@ $replayFixture = Read-JsonFile (Resolve-RepoPath $ReplayOddsPath)
 $runtimeBeforeSeed = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-live-runtime-summary.redacted.json")
 $replayStart = Get-EventStartTime $replayFixture
 $runtimeStart = Get-EventStartTime $runtimeBeforeSeed
+$runtimeLoopStartSummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-onboarding-runtime-start-summary.redacted.json"
+$runtimeLoopStatusSummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-onboarding-runtime-status-summary.redacted.json"
+$runtimeLoopStopSummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-onboarding-runtime-stop-summary.redacted.json"
 $nowUtc = (Get-Date).ToUniversalTime()
 $skipPastReplay = [bool](
   -not $RunProviderRefresh -and
@@ -218,6 +224,9 @@ try {
     if ($RestartBackend) {
       $readinessCommand += " -RestartBackend"
     }
+    if ($AllowDisconnectedS23) {
+      $readinessCommand += " -AllowDisconnectedS23"
+    }
     $readinessResult = Invoke-CheckedCommand -Label "one-event-live-readiness" -Command $readinessCommand
     $commands.Add($readinessResult) | Out-Null
     if (-not $readinessResult.pass) {
@@ -258,6 +267,31 @@ try {
       $failed.Add("one-event-settlement-dry-run") | Out-Null
     }
   }
+
+  if ($StartRuntimeLoops) {
+    $startRuntimeCommand = "npm run mobile:internal-tester-runtime -- -Action start -BackendPort $BackendPort -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady -SummaryPath $runtimeLoopStartSummaryPath"
+    $startRuntimeResult = Invoke-CheckedCommand -Label "start-local-runtime-loops" -Command $startRuntimeCommand
+    $commands.Add($startRuntimeResult) | Out-Null
+    if (-not $startRuntimeResult.pass) {
+      $failed.Add("start-local-runtime-loops") | Out-Null
+    }
+
+    $statusRuntimeCommand = "npm run mobile:internal-tester-runtime -- -Action status -BackendPort $BackendPort -SummaryPath $runtimeLoopStatusSummaryPath"
+    $statusRuntimeResult = Invoke-CheckedCommand -Label "status-local-runtime-loops" -Command $statusRuntimeCommand
+    $commands.Add($statusRuntimeResult) | Out-Null
+    if (-not $statusRuntimeResult.pass) {
+      $failed.Add("status-local-runtime-loops") | Out-Null
+    }
+
+    if ($StopRuntimeLoopsAfterProof) {
+      $stopRuntimeCommand = "npm run mobile:internal-tester-runtime -- -Action stop -BackendPort $BackendPort -SummaryPath $runtimeLoopStopSummaryPath"
+      $stopRuntimeResult = Invoke-CheckedCommand -Label "stop-local-runtime-loops-after-proof" -Command $stopRuntimeCommand
+      $commands.Add($stopRuntimeResult) | Out-Null
+      if (-not $stopRuntimeResult.pass) {
+        $failed.Add("stop-local-runtime-loops-after-proof") | Out-Null
+      }
+    }
+  }
 } catch {
   $failed.Add($_.Exception.Message) | Out-Null
 }
@@ -270,6 +304,9 @@ $settlementReadinessSummary = Read-JsonFile (Resolve-RepoPath "docs\mobile\harne
 $manualSettlementSummary = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-manual-settlement-summary.redacted.json")
 $resultIngestionSummary = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-result-ingestion-summary.redacted.json")
 $resultSettlementRunSummary = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-result-settlement-run-summary.redacted.json")
+$runtimeLoopStartSummary = Read-JsonFile (Resolve-RepoPath $runtimeLoopStartSummaryPath)
+$runtimeLoopStatusSummary = Read-JsonFile (Resolve-RepoPath $runtimeLoopStatusSummaryPath)
+$runtimeLoopStopSummary = Read-JsonFile (Resolve-RepoPath $runtimeLoopStopSummaryPath)
 $backendHealth = Test-HttpHealth -BaseUrl $BackendBaseUrl
 $docker = Get-DockerPostgresStatus
 $s23 = Get-S23Status
@@ -287,6 +324,25 @@ $checks = [ordered]@{
   resultIngestionPass = [bool]($SkipSettlementDryRun -or ($resultIngestionSummary -and $resultIngestionSummary.pass -eq $true))
   resultSettlementDryRunPass = [bool]($SkipSettlementDryRun -or ($resultSettlementRunSummary -and $resultSettlementRunSummary.pass -eq $true))
   settlementDryRunPass = [bool]($SkipSettlementDryRun -or ($manualSettlementSummary -and $manualSettlementSummary.pass -eq $true -and $manualSettlementSummary.mode -eq "dry-run"))
+  runtimeLoopStartPass = [bool](-not $StartRuntimeLoops -or ($runtimeLoopStartSummary -and $runtimeLoopStartSummary.pass -eq $true))
+  runtimeLoopStatusPass = [bool](-not $StartRuntimeLoops -or ($runtimeLoopStatusSummary -and $runtimeLoopStatusSummary.pass -eq $true))
+  runtimeLoopsRunningDuringProof = [bool](
+    -not $StartRuntimeLoops -or
+    (
+      $runtimeLoopStatusSummary -and
+      $runtimeLoopStatusSummary.supervisor.processSummary.process.after.running -eq $true -and
+      $runtimeLoopStatusSummary.resultPoller.processSummary.process.after.running -eq $true
+    )
+  )
+  runtimeLoopStopPass = [bool](-not $StopRuntimeLoopsAfterProof -or ($runtimeLoopStopSummary -and $runtimeLoopStopSummary.pass -eq $true))
+  runtimeLoopsStoppedAfterProof = [bool](
+    -not $StopRuntimeLoopsAfterProof -or
+    (
+      $runtimeLoopStopSummary -and
+      $runtimeLoopStopSummary.supervisor.processSummary.process.after.running -eq $false -and
+      $runtimeLoopStopSummary.resultPoller.processSummary.process.after.running -eq $false
+    )
+  )
   backendHealth = [bool]$backendHealth.ok
   dockerPostgres = [bool]$docker.ok
 }
@@ -327,6 +383,9 @@ $summary = [ordered]@{
     oneEventOnly = $true
     replayDefaultUsesQuota = $false
     liveRefreshRequiresExplicitFlag = $true
+    runtimeLoopStartRequiresExplicitFlag = $true
+    runtimeLoopCleanupRequested = [bool]$StopRuntimeLoopsAfterProof
+    s23MayBeDisconnectedForBackendOnlyProof = [bool]$AllowDisconnectedS23
     pastReplayBlockedByDefault = $true
     allowPastReplay = [bool]$AllowPastReplay
     skippedPastReplay = [bool]$skipPastReplay
@@ -354,9 +413,20 @@ $summary = [ordered]@{
     resultIngestion = "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json"
     resultSettlementDryRun = "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json"
     manualSettlementDryRun = "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json"
+    runtimeLoopStart = $runtimeLoopStartSummaryPath.Replace("\", "/")
+    runtimeLoopStatus = $runtimeLoopStatusSummaryPath.Replace("\", "/")
+    runtimeLoopStop = $runtimeLoopStopSummaryPath.Replace("\", "/")
   }
   runtimeTruth = [ordered]@{
     backendContinuousAfterOnboarding = $true
+    runtimeLoopsStartedByOnboarding = [bool]$StartRuntimeLoops
+    runtimeLoopsRunningDuringProof = [bool]($StartRuntimeLoops -and $checks.runtimeLoopsRunningDuringProof)
+    runtimeLoopsStoppedAfterProof = [bool]($StopRuntimeLoopsAfterProof -and $checks.runtimeLoopsStoppedAfterProof)
+    runtimeLoopMode = if ($StartRuntimeLoops) {
+      "explicit local supervisor and result-poller process proof"
+    } else {
+      "not started by default onboarding"
+    }
     providerRefreshMode = if ($RunProviderRefresh) {
       "bounded explicit live provider refresh"
     } elseif ($skipPastReplay) {

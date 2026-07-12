@@ -7,6 +7,13 @@ const DEFAULT_OUTPUT_PATH =
 const PATHS = {
   runtimeStatus: "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
   phaseAudit: "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
+  onboarding: "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json",
+  onboardingRuntimeStart:
+    "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-start-summary.redacted.json",
+  onboardingRuntimeStatus:
+    "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-status-summary.redacted.json",
+  onboardingRuntimeStop:
+    "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-stop-summary.redacted.json",
   liveProviderProof: "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
   liveReadiness: "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json",
   localRuntimeLaunchProfile:
@@ -258,6 +265,34 @@ async function main() {
       getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "providerQuotaUsed"]) === false &&
       getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "activeTesterSettlementExecution"]) === false &&
       getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "stopsLoopsAfterProof"]) === true,
+    oneCommandRuntimeLoopProofKnown:
+      pass(entries.onboarding) &&
+      pass(entries.onboardingRuntimeStart) &&
+      pass(entries.onboardingRuntimeStatus) &&
+      pass(entries.onboardingRuntimeStop) &&
+      getPath(entries.onboarding, ["providerPolicy", "runtimeLoopStartRequiresExplicitFlag"]) === true &&
+      getPath(entries.onboarding, ["providerPolicy", "runtimeLoopCleanupRequested"]) === true &&
+      getPath(entries.onboarding, ["runtimeTruth", "runtimeLoopsStartedByOnboarding"]) === true &&
+      getPath(entries.onboarding, ["runtimeTruth", "runtimeLoopsRunningDuringProof"]) === true &&
+      getPath(entries.onboarding, ["runtimeTruth", "runtimeLoopsStoppedAfterProof"]) === true &&
+      getPath(entries.onboardingRuntimeStatus, ["supervisor", "processSummary", "process", "after", "running"]) ===
+        true &&
+      getPath(entries.onboardingRuntimeStatus, [
+        "resultPoller",
+        "processSummary",
+        "process",
+        "after",
+        "running",
+      ]) === true &&
+      getPath(entries.onboardingRuntimeStop, ["supervisor", "processSummary", "process", "after", "running"]) ===
+        false &&
+      getPath(entries.onboardingRuntimeStop, [
+        "resultPoller",
+        "processSummary",
+        "process",
+        "after",
+        "running",
+      ]) === false,
     mobileS23EndToEndTradeProofPass:
       pass(entries.s23Visible) &&
       truthy(getPath(entries.s23Visible, ["assertions", "swipeSubmitReachedPortfolio"])) &&
@@ -346,6 +381,8 @@ async function main() {
         "Local runtime status now separates proven capability from current warm-runtime state, including whether the supervisor/result-poller are running now, whether any running loop spends provider quota, and what operator action should happen next.",
       currentRuntimeWarmProof:
         "A local proof starts backend/Expo plus supervisor/result-poller loops, verifies /api/internal/live-runtime/status reports warm_no_quota_runtime with both loops running and no provider quota, then stops the loops again.",
+      oneCommandRuntimeLoopProof:
+        "The one-command onboarding wrapper can explicitly start the local supervisor/result-poller loops, prove both are running, and stop both afterward without spending provider quota.",
       localWatchdog:
         "Internal tester watchdog verifies backend/Expo/Postgres readiness, repeated supervisor proof, background result-poller proof, no-quota default mode, and loop cleanup.",
     },

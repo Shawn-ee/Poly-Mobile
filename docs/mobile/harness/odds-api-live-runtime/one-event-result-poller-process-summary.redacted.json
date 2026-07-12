@@ -1,10 +1,10 @@
 {
-    "generatedAt":  "2026-07-12T17:06:09.1016200Z",
+    "generatedAt":  "2026-07-12T21:06:21.9212349Z",
     "scope":  "holiwyn-one-event-result-poller-process",
     "pass":  true,
     "operation":  {
                       "action":  "status",
-                      "startedAt":  "2026-07-12T17:06:09.0615733Z",
+                      "startedAt":  "2026-07-12T21:06:21.8823573Z",
                       "force":  false,
                       "result":  "not_running"
                   },
@@ -14,12 +14,12 @@
                     "stderr":  ".runtime/one-event-result-poller/result-poller.err.log",
                     "before":  {
                                    "known":  true,
-                                   "pid":  69872,
+                                   "pid":  59676,
                                    "running":  false,
                                    "process":  null,
                                    "state":  {
-                                                 "pid":  69872,
-                                                 "startedAt":  "2026-07-12T17:05:22.2788474Z",
+                                                 "pid":  59676,
+                                                 "startedAt":  "2026-07-12T21:06:11.7608463Z",
                                                  "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 15 -Continuous -MaxIterations 0 -RunApprovedResultSettlement -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                                                  "eventSlug":  "odds-api-single-soccer-test",
                                                  "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
@@ -38,12 +38,12 @@
                                },
                     "after":  {
                                   "known":  true,
-                                  "pid":  69872,
+                                  "pid":  59676,
                                   "running":  false,
                                   "process":  null,
                                   "state":  {
-                                                "pid":  69872,
-                                                "startedAt":  "2026-07-12T17:05:22.2788474Z",
+                                                "pid":  59676,
+                                                "startedAt":  "2026-07-12T21:06:11.7608463Z",
                                                 "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 15 -Continuous -MaxIterations 0 -RunApprovedResultSettlement -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                                                 "eventSlug":  "odds-api-single-soccer-test",
                                                 "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
@@ -64,10 +64,10 @@
     "poller":  {
                    "summaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-poller-summary.redacted.json",
                    "digest":  {
-                                  "generatedAt":  "2026-07-12T17:01:49.3613778Z",
+                                  "generatedAt":  "2026-07-12T18:37:59.5671026Z",
                                   "pass":  true,
-                                  "startedAt":  "2026-07-12T17:01:45.5341756Z",
-                                  "completedAt":  "2026-07-12T17:01:49.3613778Z",
+                                  "startedAt":  "2026-07-12T18:37:55.8959334Z",
+                                  "completedAt":  "2026-07-12T18:37:59.5671026Z",
                                   "eventSlug":  "odds-api-single-soccer-test",
                                   "settings":  {
                                                    "continuous":  false,
@@ -81,8 +81,8 @@
                                                    "maxCreditsPerResultIngestion":  0,
                                                    "maxCreditsAcrossResultIngestion":  0,
                                                    "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
-                                                   "resultSettlementApprovedMode":  true,
-                                                   "resultSettlementApprovalPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
+                                                   "resultSettlementApprovedMode":  false,
+                                                   "resultSettlementApprovalPath":  null,
                                                    "defaultModeUsesQuota":  false
                                                },
                                   "runtimeTruth":  {
@@ -91,7 +91,7 @@
                                                        "resultPollingMode":  "provider-shaped replay polling; no provider quota spent",
                                                        "liveResultIngestionQuotaCappedWhileRunning":  false,
                                                        "settlementSchedulerContinuousWhileRunnerRuns":  false,
-                                                       "settlementSchedulerMode":  "approved trusted-result scheduler; waits until CLOSED before execution",
+                                                       "settlementSchedulerMode":  "trusted result scheduler dry-run while poller runs",
                                                        "activeTesterSettlementExecution":  false,
                                                        "installedOsService":  false,
                                                        "fakeTokenOnly":  true

@@ -10528,3 +10528,12 @@ Future migration concern:
 - Schema mismatch: the queue currently reads `OfficialResultReview` rows produced by local result-review evidence. Production should separate official-result polling, operator approval, execution authorization, and execution attempt records into authenticated workflow tables.
 - Temporary mock/static data: none added. The route reads DB rows only, spends no provider quota, does not expose exact confirmation strings, and does not execute settlement.
 - Remaining gaps: authenticated operator UI/actions, installed official-result polling, direct active-event settlement execution controls, and production alerting remain P1/P2.
+
+## Cycle ONBOARDINGRUNTIMELOOPPROOF - One-Command Runtime Loop Proof
+
+- Closed or narrowed: one-command onboarding can now explicitly prove local supervisor/result-poller runtime startup and cleanup through the same wrapper used for one-event local runtime onboarding.
+- Fields added for future operator/runtime contracts: `providerPolicy.runtimeLoopStartRequiresExplicitFlag`, `providerPolicy.runtimeLoopCleanupRequested`, `providerPolicy.s23MayBeDisconnectedForBackendOnlyProof`, `checks.runtimeLoopsRunningDuringProof`, `checks.runtimeLoopsStoppedAfterProof`, and `runtimeTruth.runtimeLoopMode`.
+- Route mismatch: no public mobile route changed. The proof uses local commands plus internal dev routes and remains disabled from production assumptions.
+- Schema mismatch: none. Runtime-loop proof still uses local process-state files and existing runtime manager summaries; production should replace this with durable service/job state.
+- Temporary mock/static data: none added. Default proof uses cached provider evidence, spends no provider quota, and does not start live provider refresh.
+- Remaining gaps: installed unattended service ownership, multi-event provider/maker scheduling, authenticated operator controls, and production alerting remain P1/P2.

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T20:54:50.810Z",
+  "generatedAt": "2026-07-12T21:10:10.771Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -26,9 +26,9 @@
       "oneEventOnly": true
     },
     "freshness": {
-      "liveProofAgeHours": 12.69,
+      "liveProofAgeHours": 14,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 5.58,
+      "watchdogAgeHours": 5.84,
       "maxWatchdogAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -45,6 +45,7 @@
     "runtimeRuns": "Supervisor and result-poller loops emit worker-owned RuntimeServiceRun rows when a run finishes; local runtime status requires latest passed rows for both services without quota spend, active settlement execution, or installed-service claims.",
     "currentRuntimeState": "Local runtime status now separates proven capability from current warm-runtime state, including whether the supervisor/result-poller are running now, whether any running loop spends provider quota, and what operator action should happen next.",
     "currentRuntimeWarmProof": "A local proof starts backend/Expo plus supervisor/result-poller loops, verifies /api/internal/live-runtime/status reports warm_no_quota_runtime with both loops running and no provider quota, then stops the loops again.",
+    "oneCommandRuntimeLoopProof": "The one-command onboarding wrapper can explicitly start the local supervisor/result-poller loops, prove both are running, and stop both afterward without spending provider quota.",
     "localWatchdog": "Internal tester watchdog verifies backend/Expo/Postgres readiness, repeated supervisor proof, background result-poller proof, no-quota default mode, and loop cleanup."
   },
   "runtimeTruth": {
@@ -60,6 +61,10 @@
   "sourceEvidence": {
     "runtimeStatus": "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
     "phaseAudit": "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
+    "onboarding": "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json",
+    "onboardingRuntimeStart": "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-start-summary.redacted.json",
+    "onboardingRuntimeStatus": "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-status-summary.redacted.json",
+    "onboardingRuntimeStop": "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-stop-summary.redacted.json",
     "liveProviderProof": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveReadiness": "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json",
     "localRuntimeLaunchProfile": "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
@@ -96,6 +101,7 @@
     "durableRuntimeRunsKnown": true,
     "currentRuntimeStateKnown": true,
     "currentRuntimeWarmStateProofKnown": true,
+    "oneCommandRuntimeLoopProofKnown": true,
     "mobileS23EndToEndTradeProofPass": true,
     "launchProfileKnown": true,
     "internalTesterWatchdogKnown": true,
