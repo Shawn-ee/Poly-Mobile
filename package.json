@@ -135,6 +135,7 @@
     "mobile:one-event-settlement": "tsx scripts/settle_odds_api_one_event_market.ts",
     "mobile:one-event-onboarding": "powershell -ExecutionPolicy Bypass -File scripts/onboard_holiwyn_one_event_live_runtime.ps1",
     "mobile:one-event-runtime-status": "tsx scripts/report_odds_api_one_event_runtime_status.ts",
+    "mobile:one-event-phase-audit": "tsx scripts/report_odds_api_live_runtime_phase_audit.ts",
     "mobile:one-event-live-readiness": "powershell -ExecutionPolicy Bypass -File scripts/prove_holiwyn_one_event_live_readiness.ps1",
     "mobile:one-event-live-runtime": "powershell -ExecutionPolicy Bypass -File scripts/start_holiwyn_one_event_live_runtime.ps1",
     "mobile:one-event-live-runtime:provider": "powershell -ExecutionPolicy Bypass -File scripts/start_holiwyn_one_event_live_runtime.ps1 -RunProviderProof -SkipSleep",

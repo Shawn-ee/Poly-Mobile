@@ -13908,3 +13908,20 @@ Known limitations:
   - Enforcement is still tied to a local supervisor command and is not an installed always-on service.
   - Cached internal testing intentionally uses monitor mode because the last live provider snapshots are older than the 90-second live threshold.
   - Fresh live provider refresh remains explicit and requires `THE_ODDS_API_KEY` in the process environment.
+
+# Cycle ONEEVENTPHASEAUDIT - Live Runtime Phase Audit
+
+- Feature/page worked on: one-event live-runtime completion audit.
+- Frontend components touched: none. This is backend/runtime/operator evidence tooling only.
+- Important functions/services touched:
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `package.json` script `mobile:one-event-phase-audit`
+- User interactions supported:
+  - Operators can run one read-only command to verify the current one-event runtime evidence rather than manually inspecting every proof artifact.
+- State transitions:
+  - The audit reads live proof, onboarding, readiness, runtime status, supervisor, stale guard, lifecycle, settlement, maker seed, and S23 proof summaries.
+  - It calls local `/api/health` and the selected market quote route.
+  - It writes `docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json`.
+- Known limitations:
+  - The audit intentionally reports local internal runtime readiness, not production readiness.
+  - It leaves unattended service installation and official-result automatic settlement as open P1 gaps.
