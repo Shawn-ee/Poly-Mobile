@@ -20,6 +20,7 @@ const PATHS = {
   lifecycleScheduler: "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-scheduler-summary.redacted.json",
   lifecycleSchedulerRun: "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
   settlementReadiness: "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json",
+  settlementExecution: "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-execution-summary.redacted.json",
   manualSettlement: "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json",
   resultIngestion: "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json",
   resultSettlement: "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
@@ -263,6 +264,21 @@ async function main() {
         "Provider-shaped score ingestion can produce trusted result JSON in replay mode, and the local scheduler can dry-run that result. Live score ingestion is explicit and quota-guarded; unattended official result polling remains P1.",
     }),
     requirement({
+      id: "settlement-execution-disposable",
+      priority: "P0",
+      requirement: "Settlement execution is proven on a disposable local market without mutating the active tester event.",
+      achieved:
+        pass(entries.settlementExecution) &&
+        getPath(entries.settlementExecution, ["checks", "settlementExecuted"]) === true &&
+        getPath(entries.settlementExecution, ["checks", "payoutConservationPass"]) === true &&
+        getPath(entries.settlementExecution, ["checks", "collateralZeroAfterPass"]) === true &&
+        getPath(entries.settlementExecution, ["checks", "positionsFinalizedPass"]) === true &&
+        getPath(entries.settlementExecution, ["targetTesterEventMutated"]) === false,
+      evidence: [PATHS.settlementExecution],
+      notes:
+        "Execution proof uses a fresh disposable local market. Active one-event tester settlement still requires trusted operator confirmation.",
+    }),
+    requirement({
       id: "backend-runtime-health",
       priority: "P0",
       requirement: "Backend health and selected quote route are reachable locally.",
@@ -284,6 +300,7 @@ async function main() {
       achieved: false,
       evidence: [
         PATHS.settlementReadiness,
+        PATHS.settlementExecution,
         PATHS.manualSettlement,
         PATHS.resultIngestion,
         PATHS.resultSettlement,

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T10:49:49.639Z",
+  "generatedAt": "2026-07-12T11:01:55.398Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T10:49:49.595Z"
+      "timestamp": "2026-07-12T11:01:55.353Z"
     },
     "error": null
   },
@@ -65,26 +65,27 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 3.72,
-    "onboarding": 0.09,
-    "readiness": 0.09,
-    "runtimeStatus": 0.09,
-    "runtimeLaunch": 0.09,
-    "supervisor": 0.1,
-    "supervisorProcess": 0.1,
-    "continuousSupervisor": 0.1,
-    "staleGuardProof": 1.32,
-    "staleGuardRun": 1.2,
-    "lifecycleControls": 0.09,
-    "lifecycleScheduler": 0.09,
-    "lifecycleSchedulerRun": 0.1,
-    "settlementReadiness": 0.09,
-    "manualSettlement": 0.09,
-    "resultIngestion": 0.09,
-    "resultSettlement": 0.09,
-    "resultSettlementRun": 0.09,
-    "makerSeed": 0.09,
-    "s23Visible": 3.55
+    "liveProof": 3.93,
+    "onboarding": 0.29,
+    "readiness": 0.29,
+    "runtimeStatus": 0.29,
+    "runtimeLaunch": 0.29,
+    "supervisor": 0.3,
+    "supervisorProcess": 0.3,
+    "continuousSupervisor": 0.3,
+    "staleGuardProof": 1.52,
+    "staleGuardRun": 1.4,
+    "lifecycleControls": 0.29,
+    "lifecycleScheduler": 0.29,
+    "lifecycleSchedulerRun": 0.3,
+    "settlementReadiness": 0.29,
+    "settlementExecution": 0,
+    "manualSettlement": 0.29,
+    "resultIngestion": 0.29,
+    "resultSettlement": 0.29,
+    "resultSettlementRun": 0.29,
+    "makerSeed": 0.29,
+    "s23Visible": 3.75
   },
   "requirements": [
     {
@@ -219,6 +220,16 @@
       "notes": "Provider-shaped score ingestion can produce trusted result JSON in replay mode, and the local scheduler can dry-run that result. Live score ingestion is explicit and quota-guarded; unattended official result polling remains P1."
     },
     {
+      "id": "settlement-execution-disposable",
+      "priority": "P0",
+      "requirement": "Settlement execution is proven on a disposable local market without mutating the active tester event.",
+      "status": "complete",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-execution-summary.redacted.json"
+      ],
+      "notes": "Execution proof uses a fresh disposable local market. Active one-event tester settlement still requires trusted operator confirmation."
+    },
+    {
       "id": "backend-runtime-health",
       "priority": "P0",
       "requirement": "Backend health and selected quote route are reachable locally.",
@@ -248,6 +259,7 @@
       "status": "open",
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-execution-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",

@@ -32,19 +32,20 @@
 17. To run the safe real-time lifecycle scheduler once, run `npm run mobile:one-event-lifecycle-scheduler-run`.
 18. To prove local start-time lifecycle automation with temporary event-time mutations and restore, run `npm run mobile:one-event-lifecycle-scheduler-proof`.
 19. To prove non-mutating settlement readiness, run `npm run mobile:one-event-settlement-readiness`.
-20. To dry-run the manual settlement command after a trusted result is known, run `npm run mobile:one-event-settlement -- --winningOutcome=over` or pass the winning outcome id.
-21. To execute settlement, pass `--execute` plus the exact `--confirm=SETTLE:<marketId>:<outcomeId>` phrase printed by the dry run. Do not execute without trusted result review.
-22. To convert provider-shaped score evidence into trusted result JSON without provider quota, run `npm run mobile:one-event-result-ingest`.
-23. To run the same ingestion against live Odds API scores, run `npm run mobile:one-event-result-ingest -- --live` with `THE_ODDS_API_KEY` in the local environment. This should be explicit/manual because it spends provider quota.
-24. To dry-run settlement from trusted result JSON, run `npm run mobile:one-event-result-settlement`.
-25. To execute trusted-result settlement, pass `--execute` plus the exact `--confirm=SETTLE_FROM_RESULT:<marketId>:<outcomeId>:<digest>` phrase printed by the dry run. Do not execute without trusted result review.
-26. To run the local trusted-result scheduler path, run `npm run mobile:one-event-result-settlement-run`. It reads the trusted result JSON and invokes the guarded trusted-result settlement command in dry-run mode by default.
-27. To include trusted-result ingestion and settlement checks in the local supervisor, run `npm run mobile:one-event-live-supervisor -- -RunResultIngestion -RunResultSettlement`.
-28. To prove stale provider handling, run `npm run mobile:one-event-stale-guard-proof`. It forces stored snapshots stale, pauses the selected market, proves order rejection, and restores state after proof.
-29. To monitor stale provider handling inside the supervisor without mutating local tester state, run `npm run mobile:one-event-live-supervisor -- -RunStaleGuard -MaxIterations 1 -IntervalSeconds 0 -SkipSleep`.
-30. To enforce stale provider handling inside the supervisor, add `-EnforceStaleGuard`. Use enforcement only when you intend stale markets to pause.
-31. To audit the whole one-event live-runtime phase, run `npm run mobile:one-event-phase-audit`.
-32. Do not settle automatically unless official result input and admin review are added.
+20. To prove settlement execution safely without mutating the active tester event, run `npm run mobile:one-event-settlement-execution-proof`.
+21. To dry-run the manual settlement command after a trusted result is known, run `npm run mobile:one-event-settlement -- --winningOutcome=over` or pass the winning outcome id.
+22. To execute settlement, pass `--execute` plus the exact `--confirm=SETTLE:<marketId>:<outcomeId>` phrase printed by the dry run. Do not execute without trusted result review.
+23. To convert provider-shaped score evidence into trusted result JSON without provider quota, run `npm run mobile:one-event-result-ingest`.
+24. To run the same ingestion against live Odds API scores, run `npm run mobile:one-event-result-ingest -- --live` with `THE_ODDS_API_KEY` in the local environment. This should be explicit/manual because it spends provider quota.
+25. To dry-run settlement from trusted result JSON, run `npm run mobile:one-event-result-settlement`.
+26. To execute trusted-result settlement, pass `--execute` plus the exact `--confirm=SETTLE_FROM_RESULT:<marketId>:<outcomeId>:<digest>` phrase printed by the dry run. Do not execute without trusted result review.
+27. To run the local trusted-result scheduler path, run `npm run mobile:one-event-result-settlement-run`. It reads the trusted result JSON and invokes the guarded trusted-result settlement command in dry-run mode by default.
+28. To include trusted-result ingestion and settlement checks in the local supervisor, run `npm run mobile:one-event-live-supervisor -- -RunResultIngestion -RunResultSettlement`.
+29. To prove stale provider handling, run `npm run mobile:one-event-stale-guard-proof`. It forces stored snapshots stale, pauses the selected market, proves order rejection, and restores state after proof.
+30. To monitor stale provider handling inside the supervisor without mutating local tester state, run `npm run mobile:one-event-live-supervisor -- -RunStaleGuard -MaxIterations 1 -IntervalSeconds 0 -SkipSleep`.
+31. To enforce stale provider handling inside the supervisor, add `-EnforceStaleGuard`. Use enforcement only when you intend stale markets to pause.
+32. To audit the whole one-event live-runtime phase, run `npm run mobile:one-event-phase-audit`.
+33. Do not settle automatically unless official result input and admin review are added.
 
 ## Completion Boundary
 
@@ -59,6 +60,7 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - Lifecycle scheduler summary: `docs/mobile/harness/odds-api-live-runtime/event-lifecycle-scheduler-summary.redacted.json`
 - Safe lifecycle scheduler run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json`
 - Settlement readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json`
+- Settlement execution proof summary: `docs/mobile/harness/odds-api-live-runtime/one-event-settlement-execution-summary.redacted.json`
 - Manual settlement dry-run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json`
 - Provider-shaped result ingestion summary: `docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json`
 - Provider-ingested trusted result output: `docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json`
@@ -83,6 +85,7 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - Lifecycle scheduler proof: selected event had no action outside the suspend window, paused markets inside the suspend window, closed markets after event start, rejected orders in paused/closed states, restored event/market status, and reseeded local maker quotes.
 - Supervisor stale monitor: latest supervisor proof ran the stale guard in dry-run mode and reported 19 cached markets that would pause under the 90-second provider-stale threshold. It did not mutate markets because enforcement was not requested.
 - Settlement readiness: `previewOrderbookSettlement` and `resolveOrderbookMarket` exist. The latest non-mutating readiness proof previews both selected outcomes with payout conservation passing and confirms the market is not resolved by the proof. Provider-shaped score ingestion now produces the trusted result contract; unattended live result polling and automatic execution remain P1.
+- Settlement execution proof: `npm run mobile:one-event-settlement-execution-proof` creates a fresh disposable local market, runs real orderbook settlement, and verifies payout conservation, collateral zero after settlement, finalized positions, no negative balances, and no stuck locks. It does not mutate the active tester event.
 - Manual settlement command: `npm run mobile:one-event-settlement -- --winningOutcome=over` dry-runs the selected event settlement, prints the exact confirmation phrase required for execution, and confirms the market remains unresolved in dry-run mode.
 - Trusted result settlement: `npm run mobile:one-event-result-settlement` reads trusted result JSON, maps final score France 1 - Spain 2 to `Over +2.5` for the selected Spain vs. France Total Goals 2.5 market, previews settlement without mutation, and prints an exact result-digest confirmation phrase for execution.
 - Provider-shaped result ingestion: `npm run mobile:one-event-result-ingest` reads the redacted Odds API scores fixture and writes trusted result JSON for the selected one-event proof without spending quota. Live provider score ingestion is available only with explicit `--live` and `THE_ODDS_API_KEY`.

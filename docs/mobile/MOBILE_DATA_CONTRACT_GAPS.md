@@ -10085,3 +10085,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: unattended result polling cadence, official provider finality policy for abandoned/postponed matches, multi-event provider id matching, operator review/audit trail, and unconfirmed execution policy.
 - Temporary mock/static data: `odds-api-score-fixture.redacted.json` is a provider-shaped score fixture used to prove mapping without spending quota. It is not treated as live official truth.
 - Future migration concern: live result ingestion should stay separated from price refresh. Odds/price snapshots drive trading; score/final-result evidence drives settlement and should have its own operator controls.
+
+## Cycle ONEEVENTSETTLEMENTEXECUTION - Disposable Settlement Execution Proof
+
+- Closed or narrowed: settlement execution is now proven with a fresh disposable local market instead of only non-mutating previews. The proof executes real orderbook settlement and verifies payout conservation, zero remaining collateral, finalized positions, no negative balances, and no stuck locks.
+- Route mismatch: none for mobile routes. The proof uses backend settlement services directly and does not add a new mobile API route.
+- Fields Holiwyn still needs but backend/provider does not fully provide: trusted official-result polling, finality semantics, operator approval/audit workflow, and safe execution policy for active provider events.
+- Temporary mock/static data: none for provider odds. The proof creates a disposable local simulation market and explicitly does not mutate the active one-event tester market.
+- Future migration concern: this closes the backend settlement-mechanics proof gap, not the unattended official-result settlement gap. Keep active-event settlement behind trusted result confirmation until operator controls exist.

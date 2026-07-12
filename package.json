@@ -133,6 +133,7 @@
     "mobile:one-event-stale-guard-proof": "tsx scripts/prove_odds_api_one_event_stale_guard.ts",
     "mobile:one-event-settlement-readiness": "tsx scripts/report_odds_api_one_event_settlement_readiness.ts",
     "mobile:one-event-settlement": "tsx scripts/settle_odds_api_one_event_market.ts",
+    "mobile:one-event-settlement-execution-proof": "tsx scripts/prove_odds_api_one_event_settlement_execution.ts",
     "mobile:one-event-result-settlement": "tsx scripts/settle_odds_api_one_event_from_result.ts",
     "mobile:one-event-result-ingest": "tsx scripts/ingest_odds_api_one_event_result.ts",
     "mobile:one-event-result-settlement-run": "tsx scripts/run_odds_api_one_event_result_settlement_scheduler.ts",

@@ -1,0 +1,89 @@
+{
+  "generatedAt": "2026-07-12T11:01:48.429Z",
+  "scope": "odds-api-one-event-settlement-execution-proof",
+  "pass": true,
+  "mode": "disposable-local-execution-proof",
+  "providerQuotaUsed": false,
+  "targetTesterEventMutated": false,
+  "disposableMarket": {
+    "seed": "one-event-settlement-execution-proof",
+    "runId": "20260712110148",
+    "id": "5ddd1d55-9f7e-41a3-8d25-a0e015df00df",
+    "slug": "one-event-settlement-execution-one-event-settlement-execution-proof-20260712110148",
+    "users": [
+      "one_event_settlement_one-event-settlement-execution-proof_winner",
+      "one_event_settlement_one-event-settlement-execution-proof_loser"
+    ],
+    "winningOutcomeId": "c048b1ca-7e64-4ab9-a160-cbbad4a4488a",
+    "losingOutcomeId": "6c17e3b8-3f39-4f8e-aa94-f3361d83c806"
+  },
+  "settlement": {
+    "marketId": "5ddd1d55-9f7e-41a3-8d25-a0e015df00df",
+    "winningOutcomeId": "c048b1ca-7e64-4ab9-a160-cbbad4a4488a",
+    "totalPoolPayout": "5",
+    "totalWinningShares": "5",
+    "payouts": [
+      {
+        "userId": "92b12d5b-ac0b-4b73-bb5d-5031a8e8c640",
+        "amountPaid": "3"
+      },
+      {
+        "userId": "52a58fe1-ece2-4393-bc0f-5e99aa6d572d",
+        "amountPaid": "2"
+      }
+    ],
+    "collateralDebitedUSDC": "5"
+  },
+  "preResolution": {
+    "collateralUSDC": "5",
+    "outcomeYesShares": "5",
+    "outcomeNoShares": "5",
+    "invariantSummary": "PASS"
+  },
+  "invariantChecks": {
+    "checksRun": 1,
+    "passed": true
+  },
+  "finalBalanceSummary": {
+    "minAvailableUSDC": "18.65",
+    "minLockedUSDC": "0",
+    "anyNegativeBalances": false,
+    "anyStuckLocksAfterSettlement": false
+  },
+  "activity": {
+    "fillsCount": 1,
+    "tradesCount": 2,
+    "openOrdersCount": 0,
+    "makerSellOrderStatus": "OPEN",
+    "takerBuyOrderStatus": "FILLED",
+    "actionCounts": {
+      "MINT": 2,
+      "SELL": 1,
+      "BUY": 1,
+      "SETTLE": 1
+    }
+  },
+  "checks": {
+    "disposableMarketUsed": true,
+    "matchedTradeExecuted": true,
+    "preSettlementInvariantPassed": true,
+    "settlementExecuted": true,
+    "payoutConservationPass": true,
+    "collateralDebitedMatchesPool": true,
+    "collateralZeroAfterPass": true,
+    "positionsFinalizedPass": true,
+    "noOpenOrdersAfterSettlement": true,
+    "noNegativeBalances": true,
+    "noStuckLocksAfterSettlement": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "This proves settlement execution on a fresh disposable local market, not unattended settlement of the active tester event.",
+      "Official live result polling and automatic unconfirmed execution remain future work."
+    ],
+    "p2": [
+      "Operator settlement UI and multi-event settlement queue remain future work."
+    ]
+  }
+}
