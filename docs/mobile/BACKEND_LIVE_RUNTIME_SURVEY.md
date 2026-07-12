@@ -11,6 +11,7 @@ The current Local MVP is backend-owned and fake-token only. It has proven one sp
 | Area | Existing implementation | Current runtime status |
 | --- | --- | --- |
 | Odds API import | `src/server/services/theOddsApiSingleEventProvider.ts` and `scripts/seed_the_odds_api_single_event.ts` can fetch or replay one soccer event, normalize markets, upsert `Event`, `Market`, `Outcome`, and `ReferenceQuoteSnapshot`. | Live fetch is one-shot. Replay is default for proof. No long-lived polling loop was present before this goal. |
+| One-command local onboarding | `scripts/onboard_holiwyn_one_event_live_runtime.ps1` replays or optionally live-refreshes one provider-shaped event, then runs readiness, runtime status, settlement readiness, and manual settlement dry-run. | Proven in quota-free replay mode. Live provider mode requires explicit `-RunProviderRefresh` and `THE_ODDS_API_KEY`. |
 | Quota protection | `assertQuotaBudget`, `quotaCost`, redacted call records, and `MAX_CREDITS=8` in the seed script. | Present for one-shot import. Needs explicit refresh policy for live loop cadence. |
 | Mobile route stack | `GET /api/events`, `GET /api/mobile/events/:slug/live-detail`, `GET /api/markets/:id/quote`, `POST /api/orders`, `GET /api/portfolio`, `GET /api/portfolio/history`. | Proven for replay event. Can support a live-refreshed backend event if snapshots/orders are seeded. |
 | Provider lifecycle surface | `mobileLiveEventDetail.ts` reports quote/depth/chart lifecycle as `ready`, `refresh_due`, `stale`, or `unavailable`. Quote snapshots are stale after 90 seconds and refresh-due after 60 seconds. | Exists. Needs a provider refresh runner to keep snapshots fresh. |
@@ -60,6 +61,7 @@ The backend is close enough for a one-event local live proof because the data mo
 - One-event local supervisor: `scripts/run_holiwyn_one_event_live_supervisor.ps1`.
 - Settlement readiness report: `scripts/report_odds_api_one_event_settlement_readiness.ts`.
 - Guarded manual settlement command: `scripts/settle_odds_api_one_event_market.ts`.
+- One-command onboarding wrapper: `scripts/onboard_holiwyn_one_event_live_runtime.ps1`.
 - Summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`.
 - Runtime launch summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json`.
 - Maker seed summary: `docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json`.
@@ -68,6 +70,7 @@ The backend is close enough for a one-event local live proof because the data mo
 - Safe lifecycle scheduler run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json`.
 - Settlement readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json`.
 - Manual settlement dry-run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json`.
+- One-command onboarding summary: `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json`.
 - Consolidated readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json`.
 - Supervisor summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json`.
 - S23 summary: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`.

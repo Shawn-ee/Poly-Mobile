@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-07-12T09:07:25.822Z",
+  "generatedAt": "2026-07-12T09:16:22.856Z",
   "scope": "odds-api-one-event-manual-settlement",
   "pass": true,
   "mode": "dry-run",
   "event": {
     "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
     "slug": "odds-api-single-soccer-test",
-    "title": "Spain vs. France",
-    "startTime": "2026-07-14T19:00:00.000Z",
+    "title": "Switzerland vs. Argentina",
+    "startTime": "2026-07-12T01:00:00.000Z",
     "status": "active",
     "liveStatus": "LIVE"
   },
@@ -18,7 +18,7 @@
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "statusBefore": "LIVE",
+    "statusBefore": "CLOSED",
     "resolvedOutcomeIdBefore": null,
     "collateralUSDCBefore": "6100"
   },
@@ -29,7 +29,7 @@
     "side": "over"
   },
   "preview": {
-    "marketStatus": "LIVE",
+    "marketStatus": "CLOSED",
     "totalShares": "12200",
     "totalWinningShares": "6100",
     "totalPayout": "6100",
@@ -51,7 +51,7 @@
     "requiredConfirm": "SETTLE:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace"
   },
   "postMarket": {
-    "status": "LIVE",
+    "status": "CLOSED",
     "resolvedOutcomeId": null,
     "settlementStatus": null,
     "collateralUSDC": "6100"

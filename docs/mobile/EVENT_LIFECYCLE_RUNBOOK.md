@@ -14,26 +14,28 @@
 ## Operator Steps For One Local Live Event
 
 1. Start Postgres and backend.
-2. For the quota-free consolidated readiness pass, run `npm run mobile:one-event-live-readiness`.
-3. For only a quota-free restart check, run `npm run mobile:one-event-live-runtime`.
-4. To leave local fake-token liquidity available for testers, run `npm run mobile:one-event-live-runtime -- -SeedMaker`.
-5. To keep the one-event local runtime warm for repeated internal checks, run `npm run mobile:one-event-live-supervisor -- -MaxIterations 2 -IntervalSeconds 1`. This foreground loop runs data hygiene, runtime/maker refresh, and the safe real-time lifecycle scheduler each cycle.
-6. To run the same supervisor as a local hidden background process, run `npm run mobile:one-event-live-supervisor:process -- -Action start -Continuous -MaxIterations 0`.
-7. To check that local background supervisor process, run `npm run mobile:one-event-live-supervisor:status`.
-8. To stop that local background supervisor process, run `npm run mobile:one-event-live-supervisor:stop`.
-9. For a live provider refresh proof, set `THE_ODDS_API_KEY` in the local process environment and run `npm run mobile:one-event-live-runtime:provider`.
-10. For a repeated live-provider supervisor, run `npm run mobile:one-event-live-supervisor -- -RunProviderProof -Continuous -MaxIterations 0` only during intentional manual testing; provider refresh is capped by cadence and max proof runs.
-11. Confirm the proof reports provider refresh `ready`.
-12. Confirm local shifted maker quotes exist.
-13. Open mobile and trade the selected event with fake tokens.
-14. To prove local lifecycle controls only, run `npm run mobile:one-event-lifecycle-proof`.
-15. To run the safe real-time lifecycle scheduler once, run `npm run mobile:one-event-lifecycle-scheduler-run`.
-16. To prove local start-time lifecycle automation with temporary event-time mutations and restore, run `npm run mobile:one-event-lifecycle-scheduler-proof`.
-17. To prove non-mutating settlement readiness, run `npm run mobile:one-event-settlement-readiness`.
-18. To dry-run the manual settlement command after a trusted result is known, run `npm run mobile:one-event-settlement -- --winningOutcome=over` or pass the winning outcome id.
-19. To execute settlement, pass `--execute` plus the exact `--confirm=SETTLE:<marketId>:<outcomeId>` phrase printed by the dry run. Do not execute without trusted result review.
-20. If provider goes stale, pause/close the market manually until stale-data lifecycle rules are added.
-21. Do not settle automatically unless official result input and admin review are added.
+2. For a quota-free one-command onboarding pass, run `npm run mobile:one-event-onboarding`.
+3. For the same onboarding pass with a live provider refresh, set `THE_ODDS_API_KEY` in the local process environment and run `npm run mobile:one-event-onboarding -- -RunProviderRefresh`.
+4. For only a quota-free consolidated readiness pass, run `npm run mobile:one-event-live-readiness`.
+5. For only a quota-free restart check, run `npm run mobile:one-event-live-runtime`.
+6. To leave local fake-token liquidity available for testers, run `npm run mobile:one-event-live-runtime -- -SeedMaker`.
+7. To keep the one-event local runtime warm for repeated internal checks, run `npm run mobile:one-event-live-supervisor -- -MaxIterations 2 -IntervalSeconds 1`. This foreground loop runs data hygiene, runtime/maker refresh, and the safe real-time lifecycle scheduler each cycle.
+8. To run the same supervisor as a local hidden background process, run `npm run mobile:one-event-live-supervisor:process -- -Action start -Continuous -MaxIterations 0`.
+9. To check that local background supervisor process, run `npm run mobile:one-event-live-supervisor:status`.
+10. To stop that local background supervisor process, run `npm run mobile:one-event-live-supervisor:stop`.
+11. For a live provider refresh proof only, set `THE_ODDS_API_KEY` in the local process environment and run `npm run mobile:one-event-live-runtime:provider`.
+12. For a repeated live-provider supervisor, run `npm run mobile:one-event-live-supervisor -- -RunProviderProof -Continuous -MaxIterations 0` only during intentional manual testing; provider refresh is capped by cadence and max proof runs.
+13. Confirm the proof reports provider refresh `ready`.
+14. Confirm local shifted maker quotes exist.
+15. Open mobile and trade the selected event with fake tokens.
+16. To prove local lifecycle controls only, run `npm run mobile:one-event-lifecycle-proof`.
+17. To run the safe real-time lifecycle scheduler once, run `npm run mobile:one-event-lifecycle-scheduler-run`.
+18. To prove local start-time lifecycle automation with temporary event-time mutations and restore, run `npm run mobile:one-event-lifecycle-scheduler-proof`.
+19. To prove non-mutating settlement readiness, run `npm run mobile:one-event-settlement-readiness`.
+20. To dry-run the manual settlement command after a trusted result is known, run `npm run mobile:one-event-settlement -- --winningOutcome=over` or pass the winning outcome id.
+21. To execute settlement, pass `--execute` plus the exact `--confirm=SETTLE:<marketId>:<outcomeId>` phrase printed by the dry run. Do not execute without trusted result review.
+22. If provider goes stale, pause/close the market manually until stale-data lifecycle rules are added.
+23. Do not settle automatically unless official result input and admin review are added.
 
 ## Completion Boundary
 
@@ -49,6 +51,7 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - Safe lifecycle scheduler run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json`
 - Settlement readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json`
 - Manual settlement dry-run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json`
+- One-command onboarding summary: `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json`
 - Consolidated readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json`
 - Supervisor summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json`
 - Supervisor process summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-process-summary.redacted.json`
@@ -61,3 +64,4 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - Lifecycle scheduler proof: selected event had no action outside the suspend window, paused markets inside the suspend window, closed markets after event start, rejected orders in paused/closed states, restored event/market status, and reseeded local maker quotes.
 - Settlement readiness: `previewOrderbookSettlement` and `resolveOrderbookMarket` exist. The latest non-mutating readiness proof previews both selected outcomes with payout conservation passing and confirms the market is not resolved by the proof. Automatic soccer result ingestion and automatic settlement remain P1.
 - Manual settlement command: `npm run mobile:one-event-settlement -- --winningOutcome=over` dry-runs the selected event settlement, prints the exact confirmation phrase required for execution, and confirms the market remains unresolved in dry-run mode.
+- One-command onboarding: `npm run mobile:one-event-onboarding` replays/imports the selected event without provider quota, runs the readiness gate, runtime status, settlement readiness, and manual settlement dry run, with S23 connected and no unresolved P0 gaps.

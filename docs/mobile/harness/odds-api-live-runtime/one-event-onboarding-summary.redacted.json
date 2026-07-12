@@ -1,0 +1,138 @@
+{
+    "generatedAt":  "2026-07-12T09:16:23.4334047Z",
+    "scope":  "holiwyn-one-event-live-onboarding",
+    "pass":  true,
+    "startedAt":  "2026-07-12T09:16:04.7470596Z",
+    "completedAt":  "2026-07-12T09:16:23.4344114Z",
+    "mode":  "quota-free-replay",
+    "providerPolicy":  {
+                           "providerSource":  "the-odds-api",
+                           "referenceSource":  "sportsbook-odds",
+                           "oneEventOnly":  true,
+                           "replayDefaultUsesQuota":  false,
+                           "liveRefreshRequiresExplicitFlag":  true,
+                           "keySource":  "THE_ODDS_API_KEY process environment only"
+                       },
+    "event":  {
+                  "providerEventId":  "f9aa13a662d1658e5a02cfc06d6a2d73",
+                  "sportKey":  "soccer_fifa_world_cup",
+                  "title":  "Spain vs. France",
+                  "commenceTime":  "2026-07-14T19:00:00Z",
+                  "localSlug":  "odds-api-single-soccer-test"
+              },
+    "selectedMarket":  {
+                           "id":  "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+                           "slug":  "odds-api-single-soccer-test-totals-7439c2d603",
+                           "title":  "Spain vs. France: Total Goals 2.5",
+                           "marketType":  "total_goals",
+                           "marketGroupKey":  "totals",
+                           "line":  "2.5",
+                           "outcomeId":  "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+                           "outcomeName":  "Over +2.5",
+                           "referenceTokenId":  "odds-api-88263b2c42d6b2f5c6dbbda4"
+                       },
+    "commands":  [
+                     {
+                         "label":  "seed-or-replay-provider-event",
+                         "command":  "npm run mobile:the-odds-api-single-event -- --fromRedactedOdds=docs\\mobile\\harness\\the-odds-api-single-event\\event-odds.redacted.json",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T09:16:04.7535718Z",
+                         "finishedAt":  "2026-07-12T09:16:07.7039494Z"
+                     },
+                     {
+                         "label":  "one-event-live-readiness",
+                         "command":  "npm run mobile:one-event-live-readiness -- -BackendPort 3002",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T09:16:07.7069524Z",
+                         "finishedAt":  "2026-07-12T09:16:19.8895923Z"
+                     },
+                     {
+                         "label":  "one-event-runtime-status",
+                         "command":  "npm run mobile:one-event-runtime-status",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T09:16:19.8905919Z",
+                         "finishedAt":  "2026-07-12T09:16:20.6553829Z"
+                     },
+                     {
+                         "label":  "one-event-settlement-readiness",
+                         "command":  "npm run mobile:one-event-settlement-readiness",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T09:16:20.6553829Z",
+                         "finishedAt":  "2026-07-12T09:16:21.7452601Z"
+                     },
+                     {
+                         "label":  "one-event-settlement-dry-run",
+                         "command":  "npm run mobile:one-event-settlement -- --winningOutcome=over",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T09:16:21.7452601Z",
+                         "finishedAt":  "2026-07-12T09:16:22.8968698Z"
+                     }
+                 ],
+    "backend":  {
+                    "baseUrl":  "http://127.0.0.1:3002",
+                    "health":  {
+                                   "ok":  true,
+                                   "body":  {
+                                                "status":  "ok",
+                                                "db":  "connected",
+                                                "env":  "development",
+                                                "timestamp":  "2026-07-12T09:16:22.936Z"
+                                            },
+                                   "error":  null
+                               }
+                },
+    "dockerPostgres":  {
+                           "ok":  true,
+                           "status":  "poly_postgres|Up 7 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp",
+                           "raw":  [
+                                       "poly_postgres|Up 7 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
+                                   ]
+                       },
+    "s23":  {
+                "connected":  true,
+                "deviceId":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+                "model":  "SM_S911U1",
+                "raw":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp device product:dm1quew model:SM_S911U1 device:dm1q transport_id:4"
+            },
+    "checks":  {
+                   "seedOrReplayPass":  true,
+                   "readinessPass":  true,
+                   "runtimeStatusPass":  true,
+                   "settlementReadinessPass":  true,
+                   "settlementDryRunPass":  true,
+                   "backendHealth":  true,
+                   "dockerPostgres":  true
+               },
+    "artifacts":  {
+                      "seedLive":  "docs/mobile/harness/the-odds-api-single-event/single-event-summary.redacted.json",
+                      "seedReplay":  "docs/mobile/harness/the-odds-api-single-event/single-event-replay-summary.redacted.json",
+                      "readiness":  "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json",
+                      "runtimeStatus":  "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
+                      "settlementReadiness":  "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json",
+                      "manualSettlementDryRun":  "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json"
+                  },
+    "runtimeTruth":  {
+                         "backendContinuousAfterOnboarding":  true,
+                         "providerRefreshMode":  "redacted replay import; no provider quota spent",
+                         "marketMakerMode":  "shifted local maker seed from readiness command; not an installed daemon",
+                         "lifecycleSchedulerMode":  "readiness proof plus local callable scheduler; not installed as a service",
+                         "settlementMode":  "manual readiness plus guarded dry-run/execute command; automatic official result settlement not wired"
+                     },
+    "gaps":  {
+                 "p0":  [
+
+                        ],
+                 "p1":  [
+                            "automatic official-result ingestion and settlement are not complete",
+                            "installed always-on provider refresh and market-maker daemons are not complete"
+                        ],
+                 "p2":  [
+                            "multi-event onboarding remains future work"
+                        ]
+             }
+}

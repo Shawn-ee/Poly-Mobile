@@ -40,6 +40,7 @@ For a selected binary sportsbook market:
 ## Latest Proof
 
 - Command: `npm run mobile:odds-api-live-runtime-proof -- --skipSleep --refreshIterations=2 --maxCredits=16 --minRemaining=2`
+- One-command onboarding: `npm run mobile:one-event-onboarding`
 - Restart/runtime command: `npm run mobile:one-event-live-runtime`
 - Runtime command with maker liquidity: `npm run mobile:one-event-live-runtime -- -SeedMaker`
 - Consolidated readiness command: `npm run mobile:one-event-live-readiness`
@@ -62,6 +63,7 @@ For a selected binary sportsbook market:
 - Runtime status summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`
 - Settlement readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json`
 - Manual settlement dry-run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json`
+- One-command onboarding summary: `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json`
 - Result: pass.
 - Provider event: Spain vs. France, `soccer_fifa_world_cup`, starts `2026-07-14T19:00:00Z`.
 - Selected local market: Total Goals 2.5.
@@ -71,5 +73,6 @@ For a selected binary sportsbook market:
 - Trading proof: fake-token buy filled, Portfolio position appeared, sell/cashout filled, History contained both trades.
 - Settlement readiness proof: both selected outcomes preview successfully without mutation, payout conservation passes, and automatic official-result settlement remains a separate P1 gap.
 - Manual settlement proof: dry-run command selected `Over +2.5`, proved payout conservation, printed the explicit execution confirmation phrase, and left the market unresolved.
+- One-command onboarding proof: quota-free replay/import, readiness, runtime status, settlement readiness, and settlement dry-run all passed with S23 connected.
 - S23 proof: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`.
 - Continuous status: the supervisor can run repeated local maker reseeds while it is open, but there is still no installed unattended production bot.

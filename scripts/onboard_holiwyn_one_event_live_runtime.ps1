@@ -1,0 +1,280 @@
+param(
+  [int]$BackendPort = 3002,
+  [string]$SummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-onboarding-summary.redacted.json",
+  [string]$ReplayOddsPath = "docs\mobile\harness\the-odds-api-single-event\event-odds.redacted.json",
+  [string]$WinningOutcome = "over",
+  [switch]$RunProviderRefresh,
+  [switch]$RestartBackend,
+  [switch]$SkipReadiness,
+  [switch]$SkipSettlementDryRun
+)
+
+$ErrorActionPreference = "Stop"
+
+$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+
+function Resolve-RepoPath {
+  param([string]$Path)
+  if ([System.IO.Path]::IsPathRooted($Path)) {
+    return $Path
+  }
+  return Join-Path $RepoRoot $Path
+}
+
+function ConvertTo-RepoPath {
+  param([string]$Path)
+  return $Path.Replace($RepoRoot + "\", "").Replace("\", "/")
+}
+
+function Read-JsonFile {
+  param([string]$Path)
+  if (-not (Test-Path -LiteralPath $Path)) {
+    return $null
+  }
+  return Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json
+}
+
+function Write-JsonFile {
+  param(
+    [Parameter(Mandatory = $true)] [object]$Value,
+    [Parameter(Mandatory = $true)] [string]$Path,
+    [int]$Depth = 40
+  )
+  $directory = Split-Path -Parent $Path
+  if ($directory -and -not (Test-Path -LiteralPath $directory)) {
+    New-Item -ItemType Directory -Path $directory -Force | Out-Null
+  }
+  $json = ($Value | ConvertTo-Json -Depth $Depth) -replace "`r`n", "`n"
+  [System.IO.File]::WriteAllText($Path, "$json`n", [System.Text.UTF8Encoding]::new($false))
+}
+
+function Invoke-CheckedCommand {
+  param(
+    [Parameter(Mandatory = $true)] [string]$Label,
+    [Parameter(Mandatory = $true)] [string]$Command
+  )
+  $startedAt = (Get-Date).ToUniversalTime()
+  cmd /c $Command | Out-Null
+  $exitCode = $LASTEXITCODE
+  return [ordered]@{
+    label = $Label
+    command = $Command
+    exitCode = $exitCode
+    pass = [bool]($exitCode -eq 0)
+    startedAt = $startedAt.ToString("o")
+    finishedAt = (Get-Date).ToUniversalTime().ToString("o")
+  }
+}
+
+function Test-HttpHealth {
+  param([string]$BaseUrl)
+  try {
+    $body = Invoke-RestMethod -Uri "$BaseUrl/api/health" -TimeoutSec 8
+    return [ordered]@{
+      ok = [bool]($body.status -eq "ok" -and $body.db -eq "connected")
+      body = $body
+      error = $null
+    }
+  } catch {
+    return [ordered]@{
+      ok = $false
+      body = $null
+      error = $_.Exception.Message
+    }
+  }
+}
+
+function Get-DockerPostgresStatus {
+  try {
+    $rows = @(docker ps --format "{{.Names}}|{{.Status}}|{{.Ports}}" 2>$null)
+    $postgres = $rows | Where-Object { $_ -match "postgres|poly_postgres" } | Select-Object -First 1
+    return [ordered]@{
+      ok = [bool]($postgres -and $postgres -match "healthy|Up")
+      status = if ($postgres) { $postgres } else { "not_found" }
+      raw = @($rows)
+    }
+  } catch {
+    return [ordered]@{ ok = $false; status = "docker_unavailable"; error = $_.Exception.Message; raw = @() }
+  }
+}
+
+function Get-S23Status {
+  try {
+    $devices = @(adb devices -l 2>$null)
+    $line = $devices | Where-Object { $_ -match "adb-R3CW20LFMLW|R3CW20LFMLW|SM_S911U1" } | Select-Object -First 1
+    return [ordered]@{
+      connected = [bool]$line
+      deviceId = if ($line) { "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp" } else { $null }
+      model = if ($line -and $line -match "model:([^ ]+)") { $Matches[1] } else { $null }
+      raw = $line
+    }
+  } catch {
+    return [ordered]@{ connected = $false; deviceId = $null; model = $null; error = $_.Exception.Message }
+  }
+}
+
+if ($RunProviderRefresh -and [string]::IsNullOrWhiteSpace($env:THE_ODDS_API_KEY)) {
+  throw "RunProviderRefresh requires THE_ODDS_API_KEY in the process environment. The key is not read from files or printed."
+}
+if (-not $RunProviderRefresh -and -not (Test-Path -LiteralPath (Resolve-RepoPath $ReplayOddsPath))) {
+  throw "Replay odds file was not found at $ReplayOddsPath. Run live provider refresh intentionally or restore the redacted replay fixture."
+}
+
+$startedAt = (Get-Date).ToUniversalTime()
+$BackendBaseUrl = "http://127.0.0.1:$BackendPort"
+$commands = New-Object System.Collections.Generic.List[object]
+$failed = New-Object System.Collections.Generic.List[string]
+
+try {
+  if ($RunProviderRefresh) {
+    $seedCommand = "npm run mobile:the-odds-api-single-event"
+  } else {
+    $seedCommand = "npm run mobile:the-odds-api-single-event -- --fromRedactedOdds=$ReplayOddsPath"
+  }
+  $seedResult = Invoke-CheckedCommand -Label "seed-or-replay-provider-event" -Command $seedCommand
+  $commands.Add($seedResult) | Out-Null
+  if (-not $seedResult.pass) {
+    $failed.Add("seed-or-replay-provider-event") | Out-Null
+  }
+
+  if (-not $SkipReadiness) {
+    $readinessCommand = "npm run mobile:one-event-live-readiness -- -BackendPort $BackendPort"
+    if ($RestartBackend) {
+      $readinessCommand += " -RestartBackend"
+    }
+    $readinessResult = Invoke-CheckedCommand -Label "one-event-live-readiness" -Command $readinessCommand
+    $commands.Add($readinessResult) | Out-Null
+    if (-not $readinessResult.pass) {
+      $failed.Add("one-event-live-readiness") | Out-Null
+    }
+  }
+
+  $statusResult = Invoke-CheckedCommand -Label "one-event-runtime-status" -Command "npm run mobile:one-event-runtime-status"
+  $commands.Add($statusResult) | Out-Null
+  if (-not $statusResult.pass) {
+    $failed.Add("one-event-runtime-status") | Out-Null
+  }
+
+  $settlementReadinessResult = Invoke-CheckedCommand -Label "one-event-settlement-readiness" -Command "npm run mobile:one-event-settlement-readiness"
+  $commands.Add($settlementReadinessResult) | Out-Null
+  if (-not $settlementReadinessResult.pass) {
+    $failed.Add("one-event-settlement-readiness") | Out-Null
+  }
+
+  if (-not $SkipSettlementDryRun) {
+    $settlementCommand = "npm run mobile:one-event-settlement -- --winningOutcome=$WinningOutcome"
+    $settlementResult = Invoke-CheckedCommand -Label "one-event-settlement-dry-run" -Command $settlementCommand
+    $commands.Add($settlementResult) | Out-Null
+    if (-not $settlementResult.pass) {
+      $failed.Add("one-event-settlement-dry-run") | Out-Null
+    }
+  }
+} catch {
+  $failed.Add($_.Exception.Message) | Out-Null
+}
+
+$singleEventSummary = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\the-odds-api-single-event\single-event-summary.redacted.json")
+$singleEventReplaySummary = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\the-odds-api-single-event\single-event-replay-summary.redacted.json")
+$readinessSummary = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-live-readiness-summary.redacted.json")
+$runtimeStatusSummary = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-runtime-status-summary.redacted.json")
+$settlementReadinessSummary = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-settlement-readiness-summary.redacted.json")
+$manualSettlementSummary = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-manual-settlement-summary.redacted.json")
+$backendHealth = Test-HttpHealth -BaseUrl $BackendBaseUrl
+$docker = Get-DockerPostgresStatus
+$s23 = Get-S23Status
+$seedOrReplayPass = if ($RunProviderRefresh) {
+  [bool]($singleEventSummary -and $singleEventSummary.pass -eq $true)
+} else {
+  [bool]($singleEventReplaySummary -and $singleEventReplaySummary.pass -eq $true)
+}
+
+$checks = [ordered]@{
+  seedOrReplayPass = $seedOrReplayPass
+  readinessPass = [bool]($SkipReadiness -or ($readinessSummary -and $readinessSummary.pass -eq $true))
+  runtimeStatusPass = [bool]($runtimeStatusSummary -and $runtimeStatusSummary.pass -eq $true)
+  settlementReadinessPass = [bool]($settlementReadinessSummary -and $settlementReadinessSummary.pass -eq $true)
+  settlementDryRunPass = [bool]($SkipSettlementDryRun -or ($manualSettlementSummary -and $manualSettlementSummary.pass -eq $true -and $manualSettlementSummary.mode -eq "dry-run"))
+  backendHealth = [bool]$backendHealth.ok
+  dockerPostgres = [bool]$docker.ok
+}
+foreach ($entry in $checks.GetEnumerator()) {
+  if ($entry.Value -ne $true) {
+    $failed.Add([string]$entry.Key) | Out-Null
+  }
+}
+
+$event = if ($runtimeStatusSummary -and $runtimeStatusSummary.event) {
+  $runtimeStatusSummary.event
+} elseif ($singleEventReplaySummary) {
+  $singleEventReplaySummary.event
+} elseif ($singleEventSummary) {
+  $singleEventSummary.event
+} else {
+  $null
+}
+
+$selectedMarket = if ($runtimeStatusSummary -and $runtimeStatusSummary.selectedMarket) {
+  $runtimeStatusSummary.selectedMarket
+} elseif ($settlementReadinessSummary) {
+  $settlementReadinessSummary.selectedMarket
+} else {
+  $null
+}
+
+$summary = [ordered]@{
+  generatedAt = (Get-Date).ToUniversalTime().ToString("o")
+  scope = "holiwyn-one-event-live-onboarding"
+  pass = [bool]($failed.Count -eq 0)
+  startedAt = $startedAt.ToString("o")
+  completedAt = (Get-Date).ToUniversalTime().ToString("o")
+  mode = if ($RunProviderRefresh) { "live-provider-refresh" } else { "quota-free-replay" }
+  providerPolicy = [ordered]@{
+    providerSource = "the-odds-api"
+    referenceSource = "sportsbook-odds"
+    oneEventOnly = $true
+    replayDefaultUsesQuota = $false
+    liveRefreshRequiresExplicitFlag = $true
+    keySource = "THE_ODDS_API_KEY process environment only"
+  }
+  event = $event
+  selectedMarket = $selectedMarket
+  commands = @($commands | ForEach-Object { $_ })
+  backend = [ordered]@{
+    baseUrl = $BackendBaseUrl
+    health = $backendHealth
+  }
+  dockerPostgres = $docker
+  s23 = $s23
+  checks = $checks
+  artifacts = [ordered]@{
+    seedLive = "docs/mobile/harness/the-odds-api-single-event/single-event-summary.redacted.json"
+    seedReplay = "docs/mobile/harness/the-odds-api-single-event/single-event-replay-summary.redacted.json"
+    readiness = "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json"
+    runtimeStatus = "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json"
+    settlementReadiness = "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json"
+    manualSettlementDryRun = "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json"
+  }
+  runtimeTruth = [ordered]@{
+    backendContinuousAfterOnboarding = $true
+    providerRefreshMode = if ($RunProviderRefresh) { "bounded explicit live provider refresh" } else { "redacted replay import; no provider quota spent" }
+    marketMakerMode = "shifted local maker seed from readiness command; not an installed daemon"
+    lifecycleSchedulerMode = "readiness proof plus local callable scheduler; not installed as a service"
+    settlementMode = "manual readiness plus guarded dry-run/execute command; automatic official result settlement not wired"
+  }
+  gaps = [ordered]@{
+    p0 = @($failed | Select-Object -Unique)
+    p1 = @(
+      "automatic official-result ingestion and settlement are not complete",
+      "installed always-on provider refresh and market-maker daemons are not complete"
+    )
+    p2 = @("multi-event onboarding remains future work")
+  }
+}
+
+$resolvedSummaryPath = Resolve-RepoPath $SummaryPath
+Write-JsonFile -Value $summary -Path $resolvedSummaryPath -Depth 60
+$summary | ConvertTo-Json -Depth 60
+
+if (-not $summary.pass) {
+  exit 1
+}

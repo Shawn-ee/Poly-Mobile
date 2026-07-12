@@ -1,5 +1,5 @@
 {
-    "generatedAt":  "2026-07-12T08:20:29.8745936Z",
+    "generatedAt":  "2026-07-12T09:16:19.8426294Z",
     "scope":  "holiwyn-one-event-live-readiness",
     "pass":  true,
     "commands":  [
@@ -8,32 +8,32 @@
                          "command":  "npm run mobile:one-event-data-hygiene-proof",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T08:20:17.7746093Z",
-                         "finishedAt":  "2026-07-12T08:20:18.2657873Z"
+                         "startedAt":  "2026-07-12T09:16:08.1058846Z",
+                         "finishedAt":  "2026-07-12T09:16:09.0540292Z"
                      },
                      {
                          "label":  "runtime",
                          "command":  "npm run mobile:one-event-live-runtime -- -BackendPort 3002 -SeedMaker",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T08:20:18.2697869Z",
-                         "finishedAt":  "2026-07-12T08:20:22.0556426Z"
+                         "startedAt":  "2026-07-12T09:16:09.0570314Z",
+                         "finishedAt":  "2026-07-12T09:16:13.5040325Z"
                      },
                      {
                          "label":  "lifecycle",
                          "command":  "npm run mobile:one-event-lifecycle-proof -- --baseUrl=http://127.0.0.1:3002",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T08:20:22.0566428Z",
-                         "finishedAt":  "2026-07-12T08:20:25.2469320Z"
+                         "startedAt":  "2026-07-12T09:16:13.5050326Z",
+                         "finishedAt":  "2026-07-12T09:16:14.8727503Z"
                      },
                      {
                          "label":  "lifecycle-scheduler",
                          "command":  "npm run mobile:one-event-lifecycle-scheduler-proof",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T08:20:25.2469320Z",
-                         "finishedAt":  "2026-07-12T08:20:28.5223877Z"
+                         "startedAt":  "2026-07-12T09:16:14.8737509Z",
+                         "finishedAt":  "2026-07-12T09:16:19.0662867Z"
                      }
                  ],
     "backend":  {
@@ -44,7 +44,7 @@
                                                 "status":  "ok",
                                                 "db":  "connected",
                                                 "env":  "development",
-                                                "timestamp":  "2026-07-12T08:20:28.568Z"
+                                                "timestamp":  "2026-07-12T09:16:19.111Z"
                                             },
                                    "error":  null
                                }

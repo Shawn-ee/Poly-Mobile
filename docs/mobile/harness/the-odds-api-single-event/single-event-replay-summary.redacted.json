@@ -1,6 +1,6 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-12T06:21:53.454Z",
+  "generatedAt": "2026-07-12T09:16:07.662Z",
   "dryRun": false,
   "replayedFromRedactedOdds": true,
   "scope": "the-odds-api-single-event-temporary-provider-replay",
@@ -170,8 +170,8 @@
       "slug": "odds-api-single-soccer-test",
       "title": "Switzerland vs. Argentina"
     },
-    "marketCount": 23,
-    "outcomeCount": 48,
+    "marketCount": 26,
+    "outcomeCount": 54,
     "markets": [
       {
         "id": "748a4190-b926-4d65-8074-e69df7eb54b2",
@@ -269,6 +269,33 @@
         "title": "Switzerland vs. Argentina: Team to advance",
         "marketType": "to_advance",
         "marketGroupTitle": "Team To Advance",
+        "line": null,
+        "outcomeCount": 2
+      },
+      {
+        "id": "88a781e9-078c-4d0f-8d01-918186bea1d1",
+        "slug": "odds-api-single-soccer-test-holiwyn-regulation-home",
+        "title": "Switzerland vs. Argentina: Argentina in regulation",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Time Winner",
+        "line": null,
+        "outcomeCount": 2
+      },
+      {
+        "id": "0e407969-0c2a-495e-9c82-ace2fbe5e372",
+        "slug": "odds-api-single-soccer-test-holiwyn-regulation-away",
+        "title": "Switzerland vs. Argentina: Switzerland in regulation",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Time Winner",
+        "line": null,
+        "outcomeCount": 2
+      },
+      {
+        "id": "132e9436-646a-41c4-b143-98885833003c",
+        "slug": "odds-api-single-soccer-test-holiwyn-regulation-draw",
+        "title": "Switzerland vs. Argentina: Draw in regulation",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Time Winner",
         "line": null,
         "outcomeCount": 2
       },

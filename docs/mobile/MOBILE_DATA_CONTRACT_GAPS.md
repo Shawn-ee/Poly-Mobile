@@ -10037,3 +10037,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: official soccer result source, final score/result schema, trusted mapping from official result to winning `Outcome.id`, and automatic resolve scheduling.
 - Temporary mock/static data: none added. The command uses the existing local backend event/market/position/order/ledger state and spends no provider quota.
 - Future migration concern: the `--confirm=SETTLE:<marketId>:<outcomeId>` execution gate is an internal safety control, not a production authorization model. A real settlement operator workflow should use admin auth, audit logs, and official result evidence.
+
+## Cycle ONEEVENTONBOARDING - One-Command Local Event Onboarding
+
+- Closed or narrowed: the selected one-event local runtime now has one quota-free onboarding command that replays/imports provider-shaped data, runs readiness, runtime status, settlement readiness, and settlement dry-run.
+- Route mismatch: none. The wrapper composes existing route/proof commands and writes a single summary instead of creating new backend routes.
+- Fields Holiwyn still needs but backend/provider does not fully provide: multi-event provider selection, per-provider-event slugs, durable provider refresh daemon ownership, durable market-maker daemon ownership, and official result ingestion.
+- Temporary mock/static data: default onboarding uses the existing redacted Odds API replay fixture. This is provider-shaped replay evidence and does not spend quota.
+- Future migration concern: the wrapper's `-RunProviderRefresh` mode should remain explicit and quota guarded; broader scans/imports need owner approval before multi-event onboarding becomes default.

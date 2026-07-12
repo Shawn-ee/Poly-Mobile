@@ -1,17 +1,17 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-12T08:49:01.691Z",
+  "generatedAt": "2026-07-12T09:16:15.982Z",
   "scope": "odds-api-one-event-data-hygiene",
   "mode": "apply",
   "event": {
     "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
     "slug": "odds-api-single-soccer-test",
-    "title": "Spain vs. France",
-    "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
-    "startTime": "2026-07-14T19:00:00.000Z"
+    "title": "Switzerland vs. Argentina",
+    "externalEventId": "200d9cd5eda092c7eb778cc104cd2fd2",
+    "startTime": "2026-07-12T01:00:00.000Z"
   },
   "policy": {
-    "mobileVisibleMarketTitlePrefix": "Spain vs. France:",
+    "mobileVisibleMarketTitlePrefix": "Switzerland vs. Argentina:",
     "referenceSources": [
       "sportsbook-odds",
       "contract-fixture"
@@ -21,15 +21,15 @@
   },
   "before": {
     "totalProviderMarketCount": 33,
-    "visibleProviderMarketCount": 19,
+    "visibleProviderMarketCount": 26,
     "staleVisibleMarketCount": 0,
     "staleVisibleMarkets": []
   },
   "after": {
     "totalProviderMarketCount": 33,
-    "visibleProviderMarketCount": 19,
+    "visibleProviderMarketCount": 26,
     "staleVisibleMarketCount": 0,
-    "validVisibleMarketCount": 19
+    "validVisibleMarketCount": 26
   },
   "checks": {
     "eventLoaded": true,

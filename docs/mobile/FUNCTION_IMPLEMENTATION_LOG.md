@@ -13842,3 +13842,26 @@ Known limitations:
   - Official soccer result provider ingestion is still missing.
   - The command does not decide the winning outcome; a trusted operator must supply it.
   - Multi-event settlement queue and operator UI remain future work.
+
+# Cycle ONEEVENTONBOARDING - One-Command Local Event Onboarding
+
+- Feature/page worked on: repeatable one-command onboarding for the selected one-event local live runtime.
+- Frontend components touched: none. This is backend/runtime/operator tooling.
+- Important functions/services touched:
+  - `scripts/onboard_holiwyn_one_event_live_runtime.ps1`
+  - `package.json` script `mobile:one-event-onboarding`
+  - Child command `mobile:the-odds-api-single-event -- --fromRedactedOdds=...`
+  - Child command `mobile:one-event-live-readiness`
+  - Child command `mobile:one-event-runtime-status`
+  - Child command `mobile:one-event-settlement-readiness`
+  - Child command `mobile:one-event-settlement -- --winningOutcome=over`
+- User interactions supported:
+  - Internal operators now have one quota-free command to replay/import the selected provider-shaped event, seed/verify local runtime readiness, check backend health, confirm S23 reachability, and prove settlement dry-run.
+  - Optional live provider mode is explicit through `-RunProviderRefresh` and requires `THE_ODDS_API_KEY` in the local process environment.
+- State transitions:
+  - Quota-free mode: redacted replay import -> readiness/maker seed/lifecycle checks -> runtime status -> settlement readiness -> manual settlement dry-run -> onboarding summary.
+  - Live provider mode: live provider refresh/import -> same readiness and settlement gates.
+- Known limitations:
+  - Onboarding covers the selected one-event runtime only.
+  - It does not install always-on provider refresh, market maker, lifecycle, or settlement daemons.
+  - Automatic official result ingestion remains P1.

@@ -11,6 +11,8 @@ Temporary Local MVP provider: The Odds API. This policy is for fake-token local 
 - Use live Odds API calls only for a live-runtime proof or a manually approved refresh.
 - `npm run mobile:one-event-live-runtime` is a cached runtime check and does not spend provider quota.
 - `npm run mobile:one-event-live-runtime -- -SeedMaker` seeds local fake-token maker liquidity from stored provider snapshots and does not spend provider quota.
+- `npm run mobile:one-event-onboarding` is the default one-command local onboarding path. It replays the redacted provider-shaped event, runs readiness/runtime/settlement checks, and does not spend provider quota.
+- `npm run mobile:one-event-onboarding -- -RunProviderRefresh` is the explicit one-command path that may spend quota. It requires `THE_ODDS_API_KEY` in the local process environment.
 - `npm run mobile:one-event-live-runtime:provider` is the explicit live provider proof command and requires `THE_ODDS_API_KEY`.
 - `npm run mobile:one-event-live-supervisor` repeats data hygiene, the local one-event runtime check, maker seed, and safe real-time lifecycle scheduler without spending provider quota unless `-RunProviderProof` is passed.
 - `npm run mobile:one-event-live-supervisor -- -RunProviderProof -Continuous -MaxIterations 0` is the local live-provider supervisor mode. It is quota-capped by `-MaxProviderProofRuns` and paced by `-ProviderProofEveryIterations`; use it only for an intentional manual test.
@@ -65,6 +67,7 @@ If the provider fails, quota is low, or no upcoming event has supported markets:
 - Supervisor summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json`
 - Safe lifecycle scheduler run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json`
 - Runtime status summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`
+- One-command onboarding summary: `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json`
 - Result: pass.
 - Event: Spain vs. France, `soccer_fifa_world_cup`, `2026-07-14T19:00:00Z`.
 - Provider calls: one sports scan, quota-free event scans, one event-markets call, and two event-odds refreshes.

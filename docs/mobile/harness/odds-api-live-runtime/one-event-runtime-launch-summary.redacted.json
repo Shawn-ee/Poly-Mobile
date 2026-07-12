@@ -1,5 +1,5 @@
 {
-    "generatedAt":  "2026-07-12T08:49:04.3476622Z",
+    "generatedAt":  "2026-07-12T09:16:13.4555216Z",
     "scope":  "holiwyn-one-event-live-runtime-launch",
     "pass":  true,
     "backend":  {
@@ -10,7 +10,7 @@
                                                       "status":  "ok",
                                                       "db":  "connected",
                                                       "env":  "development",
-                                                      "timestamp":  "2026-07-12T08:49:02.141Z"
+                                                      "timestamp":  "2026-07-12T09:16:10.266Z"
                                                   },
                                          "error":  null
                                      },
@@ -20,7 +20,7 @@
                                                      "status":  "ok",
                                                      "db":  "connected",
                                                      "env":  "development",
-                                                     "timestamp":  "2026-07-12T08:49:02.161Z"
+                                                     "timestamp":  "2026-07-12T09:16:10.286Z"
                                                  },
                                         "error":  null
                                     },
@@ -56,7 +56,7 @@
                                    "fresh":  true,
                                    "reason":  "fresh",
                                    "generatedAt":  "2026-07-12T07:06:21.133Z",
-                                   "ageHours":  1.71,
+                                   "ageHours":  2.16,
                                    "maxAgeHours":  24,
                                    "summaryPath":  "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
                                    "event":  {
@@ -110,60 +110,60 @@
                     "makerSeededThisLaunch":  true,
                     "makerSeedSummary":  {
                                              "pass":  true,
-                                             "generatedAt":  "2026-07-12T08:49:03.705Z",
+                                             "generatedAt":  "2026-07-12T09:16:12.715Z",
                                              "scope":  "odds-api-one-event-shifted-maker-seed",
                                              "mode":  "seed-resting-shifted-maker-quotes",
                                              "event":  {
                                                            "id":  "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
                                                            "slug":  "odds-api-single-soccer-test",
-                                                           "title":  "Spain vs. France",
-                                                           "startTime":  "2026-07-14T19:00:00.000Z"
+                                                           "title":  "Switzerland vs. Argentina",
+                                                           "startTime":  "2026-07-12T01:00:00.000Z"
                                                        },
                                              "selectedMarket":  {
-                                                                    "id":  "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-                                                                    "slug":  "odds-api-single-soccer-test-totals-7439c2d603",
-                                                                    "title":  "Spain vs. France: Total Goals 2.5",
+                                                                    "id":  "47dae8f2-1e6b-4c16-904d-765a610af1c6",
+                                                                    "slug":  "odds-api-single-soccer-test-alternate-totals-38ad59c0f2",
+                                                                    "title":  "Switzerland vs. Argentina: Total Goals 2.5",
                                                                     "marketType":  "total_goals",
                                                                     "marketGroupKey":  "totals",
                                                                     "line":  "2.5",
-                                                                    "outcomeId":  "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+                                                                    "outcomeId":  "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
                                                                     "outcomeName":  "Over +2.5",
-                                                                    "referenceTokenId":  "odds-api-88263b2c42d6b2f5c6dbbda4"
+                                                                    "referenceTokenId":  "odds-api-69c87a86defa44e2d0b1bb27"
                                                                 },
                                              "providerSnapshot":  {
-                                                                      "fetchedAt":  "2026-07-12T07:06:18.254Z",
-                                                                      "ageMs":  6164922,
+                                                                      "fetchedAt":  "2026-07-12T09:16:06.600Z",
+                                                                      "ageMs":  5646,
                                                                       "maxSnapshotAgeMs":  86400000,
                                                                       "allowStale":  false,
                                                                       "source":  "sportsbook-odds",
-                                                                      "referenceBid":  0.4891,
-                                                                      "referenceAsk":  0.5291,
-                                                                      "outcomePrice":  0.5091
+                                                                      "referenceBid":  0.389,
+                                                                      "referenceAsk":  0.429,
+                                                                      "outcomePrice":  0.409
                                                                   },
                                              "maker":  {
-                                                           "id":  "cdbe3e60-d849-4645-8473-a1304e4e6a83",
-                                                           "username":  "odds_live_runtime_shifted_maker_b7af7ea1"
+                                                           "id":  "96dd06b9-ee81-4d52-ad0e-eaf8b2f35fbe",
+                                                           "username":  "odds_live_runtime_shifted_maker_07ff7066"
                                                        },
                                              "plan":  {
                                                           "quoteOffsetTicks":  2,
-                                                          "plannedBid":  0.47,
-                                                          "plannedAsk":  0.55,
+                                                          "plannedBid":  0.37,
+                                                          "plannedAsk":  0.45,
                                                           "size":  "200",
                                                           "mintQuantity":  "200"
                                                       },
                                              "canceledPreviousOrders":  [
                                                                             {
-                                                                                "orderId":  "541fd65b-24ab-41c8-90b4-9d504ec85f77",
+                                                                                "orderId":  "0a7e7e8a-1f09-44bb-bb14-b62ba28d2289",
                                                                                 "side":  "BUY",
-                                                                                "price":  "0.47",
+                                                                                "price":  "0.37",
                                                                                 "remaining":  "200",
                                                                                 "statusBefore":  "OPEN",
                                                                                 "canceled":  true
                                                                             },
                                                                             {
-                                                                                "orderId":  "f250d0e0-a833-40c9-975b-55dfc7d5b354",
+                                                                                "orderId":  "cb35de7e-00e1-4388-be6f-20d316cbb536",
                                                                                 "side":  "SELL",
-                                                                                "price":  "0.55",
+                                                                                "price":  "0.45",
                                                                                 "remaining":  "200",
                                                                                 "statusBefore":  "OPEN",
                                                                                 "canceled":  true
@@ -171,36 +171,36 @@
                                                                         ],
                                              "restingOrders":  [
                                                                    {
-                                                                       "id":  "20d32840-5e8e-4e1b-a590-58e668380628",
-                                                                       "username":  "odds_live_runtime_shifted_maker_b7af7ea1",
+                                                                       "id":  "a44a28a4-e0bc-40fb-b950-edf0d5e3ec52",
+                                                                       "username":  "odds_live_runtime_shifted_maker_07ff7066",
                                                                        "side":  "BUY",
-                                                                       "price":  "0.47",
+                                                                       "price":  "0.37",
                                                                        "remaining":  "200",
                                                                        "status":  "OPEN"
                                                                    },
                                                                    {
-                                                                       "id":  "eaee2821-8544-45bf-85fd-4ca60b3805d0",
-                                                                       "username":  "odds_live_runtime_shifted_maker_b7af7ea1",
+                                                                       "id":  "53a57b43-ad40-40d3-b480-70fb6d7643d8",
+                                                                       "username":  "odds_live_runtime_shifted_maker_07ff7066",
                                                                        "side":  "SELL",
-                                                                       "price":  "0.55",
+                                                                       "price":  "0.45",
                                                                        "remaining":  "200",
                                                                        "status":  "OPEN"
                                                                    }
                                                                ],
                                              "quoteRoute":  {
-                                                                "url":  "http://127.0.0.1:3002/api/markets/78ea76f1-fc8f-419b-ac21-2554d79093f6/quote",
+                                                                "url":  "http://127.0.0.1:3002/api/markets/47dae8f2-1e6b-4c16-904d-765a610af1c6/quote",
                                                                 "ok":  true,
                                                                 "status":  200,
                                                                 "selectedOutcomeQuote":  {
-                                                                                             "outcomeId":  "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+                                                                                             "outcomeId":  "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
                                                                                              "outcomeName":  "Over +2.5",
-                                                                                             "bestBid":  "0.47",
-                                                                                             "bestAsk":  "0.55",
+                                                                                             "bestBid":  "0.37",
+                                                                                             "bestAsk":  "0.45",
                                                                                              "bestBidSize":  200,
                                                                                              "bestAskSize":  200,
-                                                                                             "midPrice":  "0.51",
-                                                                                             "lastPrice":  "0.47",
-                                                                                             "lastTradeAt":  "2026-07-12T07:16:40.841Z"
+                                                                                             "midPrice":  "0.41",
+                                                                                             "lastPrice":  "0.43",
+                                                                                             "lastTradeAt":  "2026-07-12T06:26:21.600Z"
                                                                                          }
                                                             },
                                              "checks":  {
