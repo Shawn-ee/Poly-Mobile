@@ -10053,3 +10053,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: installed stale-provider monitor/daemon ownership, per-provider-event slugging, and a fresh live provider refresh when the cached summary becomes too old for internal testing.
 - Temporary mock/static data: no new mock data. Cached restore uses the previously redacted live provider summary for Spain vs. France and spends no Odds API quota.
 - Future migration concern: cached restore is a local safety valve, not a substitute for live provider polling. Multi-event runtime should avoid reusable slug drift by storing provider event ids under stable per-event slugs.
+
+## Cycle ONEEVENTSUPERVISORSTALE - Supervisor Stale Provider Monitor
+
+- Closed or narrowed: the local supervisor can now include stale-provider checking every cycle instead of relying only on a standalone proof command.
+- Route mismatch: none. The monitor reads existing provider snapshots and writes only local summary JSON in dry-run mode; enforcement uses existing `Market.status=PAUSED` behavior already respected by `POST /api/orders`.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable installed stale-provider service ownership and a live refresh daemon that keeps snapshots fresh enough for `-EnforceStaleGuard` to preserve active trading.
+- Temporary mock/static data: none added. The latest dry-run monitor reported all cached one-event markets stale under the 90-second threshold because cached proof snapshots are older than live-runtime freshness rules.
+- Future migration concern: cached internal usability and live-provider enforcement have different freshness policies. Internal tester runs should use monitor mode unless a live provider refresh is intentionally running.

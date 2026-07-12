@@ -9,6 +9,8 @@ param(
   [switch]$SkipDataHygiene,
   [switch]$SkipMakerSeed,
   [switch]$SkipLifecycleScheduler,
+  [switch]$RunStaleGuard,
+  [switch]$EnforceStaleGuard,
   [switch]$RestartBackend,
   [int]$RefreshIterations = 1,
   [int]$MaxCreditsPerProviderProof = 8,
@@ -125,6 +127,8 @@ function Build-SupervisorCommand {
   if ($SkipDataHygiene) { $parts.Add("-SkipDataHygiene") | Out-Null }
   if ($SkipMakerSeed) { $parts.Add("-SkipMakerSeed") | Out-Null }
   if ($SkipLifecycleScheduler) { $parts.Add("-SkipLifecycleScheduler") | Out-Null }
+  if ($RunStaleGuard) { $parts.Add("-RunStaleGuard") | Out-Null }
+  if ($EnforceStaleGuard) { $parts.Add("-EnforceStaleGuard") | Out-Null }
   if ($RestartBackend) { $parts.Add("-RestartBackend") | Out-Null }
   if ($SkipSleep) { $parts.Add("-SkipSleep") | Out-Null }
   return ($parts -join " ")
@@ -167,6 +171,8 @@ if ($Action -eq "start") {
       maxIterations = if ($Continuous) { 0 } elseif ($MaxIterations -gt 0) { $MaxIterations } else { 2 }
       intervalSeconds = $IntervalSeconds
       runProviderProof = [bool]$RunProviderProof
+      runStaleGuard = [bool]$RunStaleGuard
+      enforceStaleGuard = [bool]$EnforceStaleGuard
       providerProofEveryIterations = if ($RunProviderProof) { $ProviderProofEveryIterations } else { 0 }
       maxProviderProofRuns = if ($RunProviderProof) { $MaxProviderProofRuns } else { 0 }
       stdout = ConvertTo-RepoPath $StdoutPath
@@ -250,6 +256,7 @@ $summary = [ordered]@{
     localBackgroundProcessRunning = [bool]$stateAfter.running
     installedOsService = $false
     providerRefreshMode = if ($RunProviderProof) { "quota-capped live provider proof by cadence" } else { "cached provider proof verification; no provider quota spent" }
+    staleGuardMode = if (-not $RunStaleGuard) { "disabled" } elseif ($EnforceStaleGuard) { "enforce stale provider pause while supervisor runs" } else { "dry-run stale monitor while supervisor runs" }
     fakeTokenOnly = $true
   }
   gaps = [ordered]@{

@@ -13887,3 +13887,24 @@ Known limitations:
   - Cached restore is not a live provider refresh; it spends no quota and depends on a previously passing live-runtime summary.
   - Stale guard is a local callable proof and is not yet installed into an unattended production supervisor.
   - Per-provider-event slugs remain future work before multi-event onboarding.
+
+# Cycle ONEEVENTSUPERVISORSTALE - Supervisor Stale Provider Monitor
+
+- Feature/page worked on: one-event local supervisor stale-provider monitoring.
+- Frontend components touched: none. This is backend/runtime/operator tooling only.
+- Important functions/services touched:
+  - `scripts/run_odds_api_one_event_stale_guard.ts`
+  - `scripts/run_holiwyn_one_event_live_supervisor.ps1`
+  - `scripts/manage_holiwyn_one_event_live_supervisor.ps1`
+  - `package.json` script `mobile:one-event-stale-guard-run`
+- User interactions supported:
+  - Operators can run the local supervisor with `-RunStaleGuard` to see whether the current provider snapshots would pause trading under the 90-second stale threshold.
+  - Operators can add `-EnforceStaleGuard` when they intentionally want stale `LIVE` markets to become `PAUSED`.
+- State transitions:
+  - Dry-run mode: selected event/markets are read, stale status is calculated, and `would_pause` counts are written without mutation.
+  - Enforcement mode: stale `LIVE` markets are updated to `PAUSED` with `settlementStatus=paused_provider_stale`.
+  - Supervisor proof ran one cycle with stale guard dry-run enabled, data hygiene, runtime/maker seed, and safe lifecycle scheduler; it reported 19 stale markets and 19 `would_pause` actions with no market mutation.
+- Known limitations:
+  - Enforcement is still tied to a local supervisor command and is not an installed always-on service.
+  - Cached internal testing intentionally uses monitor mode because the last live provider snapshots are older than the 90-second live threshold.
+  - Fresh live provider refresh remains explicit and requires `THE_ODDS_API_KEY` in the process environment.

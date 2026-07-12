@@ -1,0 +1,232 @@
+{
+  "generatedAt": "2026-07-12T09:37:50.292Z",
+  "scope": "odds-api-one-event-stale-provider-guard-run",
+  "pass": true,
+  "mode": "dry-run-monitor",
+  "event": {
+    "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
+    "slug": "odds-api-single-soccer-test",
+    "title": "Spain vs. France",
+    "startTime": "2026-07-14T19:00:00.000Z"
+  },
+  "policy": {
+    "source": "sportsbook-odds",
+    "staleAfterSeconds": 90,
+    "dryRun": true,
+    "actionWhenStale": "report-would-pause",
+    "providerQuotaUsed": false
+  },
+  "result": {
+    "checkedMarketCount": 19,
+    "staleMarketCount": 19,
+    "pausedCount": 0,
+    "wouldPauseCount": 19
+  },
+  "markets": [
+    {
+      "marketId": "88a781e9-078c-4d0f-8d01-918186bea1d1",
+      "title": "Spain vs. France: France in regulation",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": null,
+      "stalenessSeconds": null,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    },
+    {
+      "marketId": "0e407969-0c2a-495e-9c82-ace2fbe5e372",
+      "title": "Spain vs. France: Spain in regulation",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": null,
+      "stalenessSeconds": null,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    },
+    {
+      "marketId": "132e9436-646a-41c4-b143-98885833003c",
+      "title": "Spain vs. France: Draw in regulation",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": null,
+      "stalenessSeconds": null,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    },
+    {
+      "marketId": "378abc5d-144e-4797-9f07-8b271103468b",
+      "title": "Spain vs. France: Regulation Time Winner",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": "2026-07-12T07:06:18.254Z",
+      "stalenessSeconds": 9092,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    },
+    {
+      "marketId": "528f1f87-cc1c-44a0-8732-876ef0676071",
+      "title": "Spain vs. France: Regulation Time Winner",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": "2026-07-12T07:06:18.254Z",
+      "stalenessSeconds": 9092,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    },
+    {
+      "marketId": "8a2fce43-c3fd-428d-8a62-00c36e5a678e",
+      "title": "Spain vs. France: France -3.5",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": null,
+      "stalenessSeconds": null,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    },
+    {
+      "marketId": "f7076ecf-f097-4069-99f0-b772def0adab",
+      "title": "Spain vs. France: France -2.5",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": null,
+      "stalenessSeconds": null,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    },
+    {
+      "marketId": "2fe6074d-96a5-4ce5-9599-41c4e5f10dc1",
+      "title": "Spain vs. France: France -1.5",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": null,
+      "stalenessSeconds": null,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    },
+    {
+      "marketId": "7ab91fec-4e3f-4aeb-bafa-60a16bc88f44",
+      "title": "Spain vs. France: France +1.5",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": null,
+      "stalenessSeconds": null,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    },
+    {
+      "marketId": "a71049ce-f598-4713-9ae5-ff1874cdf448",
+      "title": "Spain vs. France: France +2.5",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": null,
+      "stalenessSeconds": null,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    },
+    {
+      "marketId": "ef2c74a4-0a6c-48b5-b263-738e7718e75a",
+      "title": "Spain vs. France: France +3.5",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": null,
+      "stalenessSeconds": null,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    },
+    {
+      "marketId": "51f895fa-c0ed-4463-b74c-d0e50dc56ecc",
+      "title": "Spain vs. France: Team to advance",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": null,
+      "stalenessSeconds": null,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    },
+    {
+      "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+      "title": "Spain vs. France: Total Goals 2.5",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": "2026-07-12T07:06:18.254Z",
+      "stalenessSeconds": 9092,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    },
+    {
+      "marketId": "6a04afc7-d661-4f69-946a-6d3eee3ed450",
+      "title": "Spain vs. France: Total goals 0.5",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": null,
+      "stalenessSeconds": null,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    },
+    {
+      "marketId": "e97678b5-311e-417e-8602-6b8ef40b9b62",
+      "title": "Spain vs. France: Total goals 1.5",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": null,
+      "stalenessSeconds": null,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    },
+    {
+      "marketId": "9c51b257-917a-4b29-b3c0-3d0ad9102b41",
+      "title": "Spain vs. France: Total goals 2.5",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": null,
+      "stalenessSeconds": null,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    },
+    {
+      "marketId": "3692dcbc-5c8e-420e-8898-596d35f2d233",
+      "title": "Spain vs. France: Total goals 3.5",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": null,
+      "stalenessSeconds": null,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    },
+    {
+      "marketId": "48b17b95-d3c8-4935-94df-d2cf6ba4acfe",
+      "title": "Spain vs. France: Total goals 4.5",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": null,
+      "stalenessSeconds": null,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    },
+    {
+      "marketId": "7babfa24-e0be-4518-8d71-a219d68b7a22",
+      "title": "Spain vs. France: Total goals 5.5",
+      "statusBefore": "LIVE",
+      "latestFetchedAt": null,
+      "stalenessSeconds": null,
+      "staleAfterSeconds": 90,
+      "stale": true,
+      "action": "would_pause"
+    }
+  ],
+  "checks": {
+    "eventFound": true,
+    "marketsChecked": true,
+    "noProductionMutation": true,
+    "dryRunDidNotMutate": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "stale guard can run inside the local supervisor, but it is still local process behavior rather than an installed production service"
+    ],
+    "p2": [
+      "multi-event stale provider policy remains future work"
+    ]
+  }
+}

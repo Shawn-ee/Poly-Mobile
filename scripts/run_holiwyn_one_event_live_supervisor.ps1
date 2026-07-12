@@ -8,6 +8,8 @@ param(
   [switch]$SkipDataHygiene,
   [switch]$SkipMakerSeed,
   [switch]$SkipLifecycleScheduler,
+  [switch]$RunStaleGuard,
+  [switch]$EnforceStaleGuard,
   [switch]$RestartBackend,
   [int]$RefreshIterations = 1,
   [int]$MaxCreditsPerProviderProof = 8,
@@ -189,6 +191,17 @@ try {
     $result = Invoke-CheckedCommand -Label "cycle-$iteration-runtime" -Command $command
     $runtimeSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-runtime-launch-summary.redacted.json"
     $runtimeSummary = Read-JsonFile $runtimeSummaryPath
+    $staleGuardResult = $null
+    $staleGuardSummary = $null
+    if ($RunStaleGuard) {
+      $staleGuardCommand = "npm run mobile:one-event-stale-guard-run"
+      if (-not $EnforceStaleGuard) {
+        $staleGuardCommand += " -- --dryRun"
+      }
+      $staleGuardResult = Invoke-CheckedCommand -Label "cycle-$iteration-stale-guard" -Command $staleGuardCommand
+      $staleGuardSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-stale-guard-run-summary.redacted.json"
+      $staleGuardSummary = Read-JsonFile $staleGuardSummaryPath
+    }
     $schedulerResult = $null
     $schedulerSummary = $null
     if (-not $SkipLifecycleScheduler) {
@@ -208,6 +221,10 @@ try {
       lifecycleScheduler = $schedulerResult
       lifecycleSchedulerPass = [bool]($SkipLifecycleScheduler -or ($schedulerSummary -and $schedulerSummary.pass -eq $true))
       lifecycleSchedulerAction = $schedulerSummary.scheduler.action
+      staleGuard = $staleGuardResult
+      staleGuardPass = [bool]((-not $RunStaleGuard) -or ($staleGuardSummary -and $staleGuardSummary.pass -eq $true))
+      staleGuardMode = if ($RunStaleGuard) { if ($EnforceStaleGuard) { "enforce-pause" } else { "dry-run-monitor" } } else { "disabled" }
+      staleGuardResult = if ($staleGuardSummary) { $staleGuardSummary.result } else { $null }
       providerProofRan = [bool]$runProviderThisCycle
       providerProofRunCount = $providerProofRunCount
       providerProofSkippedReason = if ($RunProviderProof -and -not $runProviderThisCycle) {
@@ -222,6 +239,7 @@ try {
     if (
       -not $result.pass -or
       -not ($runtimeSummary -and $runtimeSummary.pass -eq $true) -or
+      ($RunStaleGuard -and (-not $staleGuardResult.pass -or -not ($staleGuardSummary -and $staleGuardSummary.pass -eq $true))) -or
       (-not $SkipLifecycleScheduler -and (-not $schedulerResult.pass -or -not ($schedulerSummary -and $schedulerSummary.pass -eq $true)))
     ) {
       $loopPass = $false
@@ -279,6 +297,8 @@ $summary = [ordered]@{
     minRemaining = $MinRemaining
     makerSeedEnabled = [bool](-not $SkipMakerSeed)
     lifecycleSchedulerEnabled = [bool](-not $SkipLifecycleScheduler)
+    staleGuardEnabled = [bool]$RunStaleGuard
+    staleGuardEnforced = [bool]$EnforceStaleGuard
     cachedModeUsesQuota = $false
   }
   runtimeTruth = [ordered]@{
@@ -288,6 +308,8 @@ $summary = [ordered]@{
     dataHygieneContinuousWhileSupervisorRuns = [bool]((-not $SkipDataHygiene) -and ($Continuous -or $cycles.Count -gt 1))
     marketMakerRefreshContinuousWhileSupervisorRuns = [bool]((-not $SkipMakerSeed) -and ($Continuous -or $cycles.Count -gt 1))
     lifecycleSchedulerContinuousWhileSupervisorRuns = [bool]((-not $SkipLifecycleScheduler) -and ($Continuous -or $cycles.Count -gt 1))
+    staleGuardContinuousWhileSupervisorRuns = [bool]($RunStaleGuard -and ($Continuous -or $cycles.Count -gt 1))
+    staleGuardMode = if (-not $RunStaleGuard) { "disabled" } elseif ($EnforceStaleGuard) { "enforce stale provider pause while supervisor runs" } else { "dry-run stale monitor while supervisor runs" }
     unattendedServiceInstalled = $false
     providerRefreshMode = if ($RunProviderProof) { "quota-capped live provider proof by cadence; cached verification after cap or cadence skips" } else { "cached provider proof verification; no provider quota spent" }
     marketMakerMode = if ($SkipMakerSeed) { "not seeded by supervisor" } else { "repeated local shifted maker reseed while supervisor runs" }
