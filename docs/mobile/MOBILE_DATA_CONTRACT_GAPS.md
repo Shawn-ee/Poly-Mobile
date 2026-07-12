@@ -10261,6 +10261,14 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable service install state, service heartbeats, official-result records, approval records, and production runtime monitoring remain P1/P2.
 - Temporary mock/static data: none added. The report reads existing redacted proof summaries and spends no provider quota.
 - Future migration concern: launch-profile truth currently comes from local proof JSON and Windows process context. Production should persist service ownership, launch configuration, provider polling state, and approval state in durable backend/service-managed infrastructure.
+## Cycle ONEEVENTAPPROVALAUDIT - Durable Settlement Approval Audit Evidence
+
+- Closed or narrowed: active-event trusted-result approval evidence is now backend-readable through a canonical `settlement.trusted_result.approved` market event, not only a local JSON file.
+- Route mismatch: none. No mobile API or backend HTTP route changed; the local proof command writes to the existing `CanonicalEvent` stream model.
+- Fields Holiwyn still needs but backend/provider does not fully provide: first-class durable approval records, operator approval UI, multi-event approval queue, production execution policy, and installed official-result polling remain P1/P2.
+- Temporary mock/static data: the proof exports a local approval JSON file from the canonical approval evidence for compatibility with the existing scheduler. It spends no Odds API quota and does not execute settlement.
+- Future migration concern: canonical events are sufficient local audit evidence, but production should promote approvals into a durable review workflow with explicit operator identity, revocation, and execution-state tracking.
+
 ## Cycle ONEEVENTACTIVESETTLEMENTCLONE - Active Event Settlement Clone Proof
 
 - Closed or narrowed: approved trusted-result settlement is now proven against a disposable clone of the active tester event's selected market semantics, not only against a generic disposable market.

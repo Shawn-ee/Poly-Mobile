@@ -1,0 +1,109 @@
+{
+  "generatedAt": "2026-07-12T14:45:18.636Z",
+  "scope": "odds-api-settlement-approval-audit-event-proof",
+  "pass": true,
+  "providerQuotaUsed": false,
+  "eventSlug": "odds-api-single-soccer-test",
+  "selectedMarket": {
+    "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "title": "Spain vs. France: Total Goals 2.5",
+    "marketType": "total_goals",
+    "statusBefore": "LIVE",
+    "statusAfter": "LIVE",
+    "resolvedOutcomeIdAfter": null
+  },
+  "winningOutcome": {
+    "id": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+    "name": "Over +2.5",
+    "side": "over"
+  },
+  "paths": {
+    "resultPath": "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+    "approvalPath": "docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
+    "schedulerOutput": "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-approval-audit-dry-run.redacted.json",
+    "settlementOutput": "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-approval-audit-settlement.redacted.json"
+  },
+  "command": {
+    "executable": "C:\\nvm4w\\nodejs\\node.exe",
+    "args": [
+      "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+      "scripts/run_odds_api_one_event_result_settlement_scheduler.ts",
+      "--eventSlug=odds-api-single-soccer-test",
+      "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+      "--output=docs/mobile/harness/odds-api-live-runtime/one-event-settlement-approval-audit-dry-run.redacted.json",
+      "--settlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-settlement-approval-audit-settlement.redacted.json"
+    ],
+    "exitCode": 0,
+    "stdoutTail": [
+      "      \"providerStatus\": \"trusted_external_input\"",
+      "    }",
+      "  },",
+      "  \"runtimeTruth\": {",
+      "    \"canRunFromSupervisorOrCron\": true,",
+      "    \"providerResultIngestionAvailable\": true,",
+      "    \"unattendedResultPollingInstalled\": false,",
+      "    \"dryRunDefault\": true,",
+      "    \"executeRequiresConfirmation\": true,",
+      "    \"autoExecuteRequiresApprovalFile\": true,",
+      "    \"autoExecuteRequiresClosedMarket\": true,",
+      "    \"fakeTokenOnly\": true",
+      "  },",
+      "  \"gaps\": {",
+      "    \"p0\": [],",
+      "    \"p1\": [",
+      "      \"This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.\",",
+      "      \"Dry-run preview is the default; execution requires either explicit confirmation or an exact local approval file.\"",
+      "    ],",
+      "    \"p2\": [",
+      "      \"Multi-event result queue and operator UI remain future work.\"",
+      "    ]",
+      "  }",
+      "}"
+    ],
+    "stderrTail": []
+  },
+  "approval": {
+    "approvedBy": "holiwyn-local-approval-audit-proof",
+    "resultDigest": "f3a5743c73f2",
+    "confirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:f3a5743c73f2",
+    "executionRequiresMarketStatus": "CLOSED",
+    "currentMarketStatus": "LIVE"
+  },
+  "auditEvent": {
+    "id": "180",
+    "storedId": "180",
+    "type": "settlement.trusted_result.approved",
+    "stream": "market",
+    "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+    "createdAt": "2026-07-12T14:45:18.630Z"
+  },
+  "runtimeTruth": {
+    "approvalHasCanonicalEventEvidence": true,
+    "approvalFileExportedForLocalScheduler": true,
+    "activeTesterEventMutated": false,
+    "providerQuotaUsed": false,
+    "installedApprovalService": false
+  },
+  "checks": {
+    "dryRunPassed": true,
+    "approvalFileWritten": true,
+    "canonicalEventWritten": true,
+    "payloadDigestMatches": true,
+    "payloadConfirmMatches": true,
+    "payloadApprovalActorMatches": true,
+    "activeMarketNotMutated": true,
+    "providerQuotaNotUsed": true,
+    "activeTesterSettlementExecutionFalse": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "Approval evidence now exists in CanonicalEvent plus an exported local approval file, but there is still no first-class approval table or operator UI.",
+      "Installed unattended official-result polling remains future work."
+    ],
+    "p2": [
+      "Multi-event approval queue and production review workflow remain future work."
+    ]
+  }
+}

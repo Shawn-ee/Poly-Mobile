@@ -5042,6 +5042,16 @@ Proof: Samsung S23 `SM-S911U1` passed `docs/mobile/harness/cycle-SL-ticket-swipe
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Local runtime launch profile | `npm run mobile:local-runtime-launch-profile`; reads runtime status, internal tester manager proof, supervisor/result-poller proofs, Startup launcher proof, and scheduled-task permission proof | Local Node command; no HTTP route and no provider call | Local developer/runtime only; refuses production. No provider key and no mobile auth. | Optional `summaryPath` | Recommended local launch profile, manual foreground commands, Startup fallback command, scheduled-task blocker, live-provider opt-in command, P0/P1/P2 gaps | No database or schema changes. Reads proof summaries only. | Uses existing redacted proof artifacts. It spends no provider quota and does not mutate processes, Startup files, scheduled tasks, markets, or settlement state. | Production service ownership, durable official-result records, and multi-event runtime launch profiles remain P1/P2. |
 | Phase audit launch-profile gate | `npm run mobile:one-event-phase-audit`; reads `local-runtime-launch-profile-summary.redacted.json` | Local Node command plus existing health/quote checks | No provider key; no mobile auth | Optional `baseUrl` and `summaryPath` | New P0 requirement `local-runtime-launch-profile`, current Windows-context launch recommendation, no-quota/no-persistent-mutation truth | No schema changes and no writes. | Uses generated launch-profile artifact and existing proof summaries. | Installed service ownership remains P1. |
+## Cycle ONEEVENTAPPROVALAUDIT - Durable Settlement Approval Audit Evidence
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Local runtime settlement approval proof | None added | N/A | Local script only | N/A | N/A | `CanonicalEvent`, `Market`, `Outcome`, linked `Event` through active trusted-result dry-run | Redacted trusted-result JSON and exported local approval JSON are used for local scheduler compatibility; no provider quota spent | First-class approval table, operator UI, multi-event approval queue, and installed official-result polling remain P1/P2 |
+
+Notes:
+- `settlement.trusted_result.approved` is now an allowed canonical market event type.
+- The proof writes backend-readable approval evidence and exports the approval file consumed by existing local supervisor/scheduler commands.
+
 ## Cycle ONEEVENTACTIVESETTLEMENTCLONE - Active Event Settlement Clone Proof
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

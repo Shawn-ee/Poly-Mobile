@@ -14412,6 +14412,17 @@ Known limitations:
 - Known limitations:
   - This narrows local internal runtime operations but does not install a production service.
   - Official-result execution remains guarded by `CLOSED` status, exact approval, and local operator controls.
+## Cycle ONEEVENTAPPROVALAUDIT - Durable Settlement Approval Audit Evidence
+
+- Feature/page worked on: backend live runtime settlement approval evidence for the active one-event local tester event.
+- Frontend components touched: none.
+- Important functions/services touched: added `scripts/prove_odds_api_settlement_approval_audit_event.ts`; updated `src/server/services/orderbookEvents.ts` to allow `settlement.trusted_result.approved`; updated `package.json`; updated `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User interactions supported: unchanged. The mobile Local MVP trading path remains Home -> Event Detail -> line market -> ticket -> fake-token order -> Portfolio/history.
+- State transitions: the proof dry-runs active-event trusted-result settlement, writes a matching local approval JSON file, emits a canonical `settlement.trusted_result.approved` market event, and verifies the active market remains `LIVE`, unresolved, and unchanged.
+- API/data dependencies: no mobile HTTP route changed. The proof uses existing trusted-result settlement dry-run output and the existing `CanonicalEvent` stream table.
+- Proof: `npm run mobile:one-event-settlement-approval-audit-event-proof` passed; `npm run mobile:one-event-phase-audit` passed with the new approval audit evidence included.
+- Known limitations: this is canonical audit evidence plus local approval-file export, not a first-class production approval table or operator UI. Installed official-result polling remains P1.
+
 ## Cycle ONEEVENTACTIVESETTLEMENTCLONE - Active Event Settlement Clone Proof
 
 - Feature/page worked on: backend live runtime settlement proof for the active one-event local tester event.

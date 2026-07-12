@@ -18,6 +18,7 @@ The Local MVP has deterministic one-shot maker liquidity. A true production daem
 | Supervisor trusted-result settlement monitor | Added for local testing | `npm run mobile:one-event-live-supervisor -- -RunResultIngestion -RunResultSettlement` runs provider-shaped result ingestion and the trusted-result settlement scheduler in dry-run mode each cycle. |
 | Supervisor live-result ingestion mode | Added for local testing | `npm run mobile:one-event-live-supervisor -- -RunResultIngestion -RunLiveResultIngestion -RunResultSettlement` makes live Odds API scores ingestion opt-in, quota-capped, and cadence-controlled while keeping settlement dry-run by default. |
 | Provider-shaped result ingestion | Added for local testing | `npm run mobile:one-event-result-ingest` converts an Odds API scores-shaped payload into trusted result JSON. Replay fixture mode is default and quota-free; live mode requires explicit `--live` and `THE_ODDS_API_KEY`. |
+| Settlement approval audit event proof | Added for local testing | `npm run mobile:one-event-settlement-approval-audit-event-proof` records active-event approval evidence as a canonical `settlement.trusted_result.approved` market event and exports the matching local scheduler approval file without settling the active market. |
 | Disposable settlement execution proof | Added for local testing | `npm run mobile:one-event-settlement-execution-proof` creates a fresh disposable local market, executes settlement, and verifies payout conservation, collateral cleanup, finalized positions, no negative balances, and no stuck locks without mutating the active tester event. |
 | Trusted result scheduler execution proof | Added for local testing | `npm run mobile:one-event-result-settlement-execution-proof` creates a disposable sportsbook-shaped event, dry-runs trusted-result scheduler settlement, executes with the exact confirmation phrase, and proves active tester event safety. |
 | Active event settlement clone proof | Added for local testing | `npm run mobile:one-event-active-settlement-clone-proof` clones the active one-event selected market shape into a disposable event, executes approved trusted-result settlement after close, and proves the active tester event is not mutated. |
@@ -70,6 +71,7 @@ For a selected binary sportsbook market:
 - Manual settlement dry-run command: `npm run mobile:one-event-settlement -- --winningOutcome=over`
 - Provider-shaped result ingestion command: `npm run mobile:one-event-result-ingest`
 - Trusted result settlement scheduler command: `npm run mobile:one-event-result-settlement-run`
+- Trusted result approval audit proof command: `npm run mobile:one-event-settlement-approval-audit-event-proof`
 - Trusted result scheduler execution proof command: `npm run mobile:one-event-result-settlement-execution-proof`
 - Active event settlement clone proof command: `npm run mobile:one-event-active-settlement-clone-proof`
 - Live provider wrapper command: `npm run mobile:one-event-live-runtime:provider`
@@ -86,6 +88,7 @@ For a selected binary sportsbook market:
 - Manual settlement dry-run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json`
 - Provider-shaped result ingestion summary: `docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json`
 - Trusted result settlement scheduler summary: `docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json`
+- Trusted result approval audit event summary: `docs/mobile/harness/odds-api-live-runtime/one-event-settlement-approval-audit-event-summary.redacted.json`
 - Trusted result scheduler execution proof summary: `docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json`
 - Active event settlement clone proof summary: `docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-clone-summary.redacted.json`
 - One-command onboarding summary: `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json`
@@ -104,6 +107,7 @@ For a selected binary sportsbook market:
 - Provider-shaped result ingestion proof: replay mode converts a redacted Odds API scores-shaped payload into trusted result JSON for the selected proof event without spending quota.
 - Live result ingestion supervisor path: available only through explicit `-RunLiveResultIngestion`, with `THE_ODDS_API_KEY`, result-ingestion cadence, max live-result run count, and per-run credit cap. The latest committed proof keeps replay/no-quota mode.
 - Trusted result scheduler proof: dry-run scheduler command reads trusted result JSON and invokes guarded trusted-result settlement without mutating the market.
+- Trusted result approval audit proof: active-event approval evidence is now written to `CanonicalEvent` as `settlement.trusted_result.approved` and exported as a local scheduler approval file, while the active market remains `LIVE` and unresolved.
 - Trusted result scheduler execution proof: disposable scheduler proof executes the same trusted-result settlement path with the exact confirmation phrase, resolves only the disposable market, and confirms the active tester event is not mutated.
 - Active event settlement clone proof: the active Spain vs. France Total Goals 2.5 market shape is cloned into a disposable event, approved trusted-result auto-execution resolves the clone after close, and the active tester market remains `LIVE`, unresolved, and untouched.
 - Runtime status settlement safety: the status report now surfaces that trusted-result execution requires `CLOSED` market status and that the latest live-market execute attempt was blocked without resolving the proof market.

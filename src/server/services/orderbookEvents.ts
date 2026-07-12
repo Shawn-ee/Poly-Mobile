@@ -408,7 +408,11 @@ export const emitUserUpdate = async (params: { userId: string; marketId?: string
 export const emitMarketSettlementAuditEvent = async (params: {
   marketId: string;
   outcomeId?: string | null;
-  type: "settlement.trusted_result.preflight" | "settlement.trusted_result.blocked" | "settlement.trusted_result.executed";
+  type:
+    | "settlement.trusted_result.preflight"
+    | "settlement.trusted_result.approved"
+    | "settlement.trusted_result.blocked"
+    | "settlement.trusted_result.executed";
   payload: Record<string, unknown>;
 }) =>
   createEvent({
