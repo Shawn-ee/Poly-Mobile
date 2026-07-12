@@ -182,6 +182,18 @@ export async function getLocalLiveRuntimeSettlementQueue() {
         exactConfirmationRedacted: true,
         providerQuotaUsed: review.providerQuotaUsed,
       },
+      executionEvidence: {
+        status: alreadyExecuted ? "executed" : "not_executed",
+        source: "OfficialResultReview+CanonicalEvent",
+        durableReviewRowAvailable: true,
+        canonicalExecutionEventAvailable: review.settlementExecutedCanonicalId != null,
+        canonicalExecutionEventId: review.settlementExecutedCanonicalId?.toString() ?? null,
+        resultDigestAvailable: typeof review.resultDigest === "string" && review.resultDigest.length > 0,
+        exactConfirmationStored: review.exactConfirmationStored,
+        exactConfirmationRedacted: true,
+        providerQuotaUsed: review.providerQuotaUsed,
+        activeMarketExecutionAttempted: review.activeMarketExecutionAttempted,
+      },
       market: market
         ? {
             id: market.id,
@@ -216,6 +228,9 @@ export async function getLocalLiveRuntimeSettlementQueue() {
     canonicalApprovalEvidenceForApprovedReviews: items
       .filter((item) => item.approvalStatus === "approved")
       .every((item) => item.approvalEvidence.canonicalApprovalEventAvailable === true),
+    canonicalExecutionEvidenceForExecutedReviews: items
+      .filter((item) => item.nextSafeAction === "already_executed" || item.hasExecutionAudit)
+      .every((item) => item.executionEvidence.canonicalExecutionEventAvailable === true),
   };
   const p0 = Object.entries(checks)
     .filter(([, value]) => value !== true)
@@ -249,6 +264,9 @@ export async function getLocalLiveRuntimeSettlementQueue() {
       ),
       durableApprovalEvidenceAvailable: items.some(
         (item) => item.approvalEvidence.status === "approved" && item.approvalEvidence.canonicalApprovalEventAvailable,
+      ),
+      durableExecutionEvidenceAvailable: items.some(
+        (item) => item.executionEvidence.status === "executed" && item.executionEvidence.canonicalExecutionEventAvailable,
       ),
       multiEventCapableShape: true,
     },

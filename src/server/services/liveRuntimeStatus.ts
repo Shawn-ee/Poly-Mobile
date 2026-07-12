@@ -907,6 +907,8 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
       getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "redactedOperatorExecutionPlanAvailable"]) === true,
     durableApprovalEvidenceAvailable:
       getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "durableApprovalEvidenceAvailable"]) === true,
+    durableExecutionEvidenceAvailable:
+      getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "durableExecutionEvidenceAvailable"]) === true,
     exactConfirmationStringsExposed:
       getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "exactConfirmationStringsExposed"]) === true,
     exactConfirmationStored:
@@ -947,6 +949,26 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
                 getPath(settlementQueueItem, ["approvalEvidence", "exactConfirmationRedacted"]) === true,
               providerQuotaUsed:
                 getPath(settlementQueueItem, ["approvalEvidence", "providerQuotaUsed"]) === true,
+            },
+            executionEvidence: {
+              status: getPath(settlementQueueItem, ["executionEvidence", "status"]) ?? null,
+              source: getPath(settlementQueueItem, ["executionEvidence", "source"]) ?? null,
+              durableReviewRowAvailable:
+                getPath(settlementQueueItem, ["executionEvidence", "durableReviewRowAvailable"]) === true,
+              canonicalExecutionEventAvailable:
+                getPath(settlementQueueItem, ["executionEvidence", "canonicalExecutionEventAvailable"]) === true,
+              canonicalExecutionEventId:
+                getPath(settlementQueueItem, ["executionEvidence", "canonicalExecutionEventId"]) ?? null,
+              resultDigestAvailable:
+                getPath(settlementQueueItem, ["executionEvidence", "resultDigestAvailable"]) === true,
+              exactConfirmationStored:
+                getPath(settlementQueueItem, ["executionEvidence", "exactConfirmationStored"]) === true,
+              exactConfirmationRedacted:
+                getPath(settlementQueueItem, ["executionEvidence", "exactConfirmationRedacted"]) === true,
+              providerQuotaUsed:
+                getPath(settlementQueueItem, ["executionEvidence", "providerQuotaUsed"]) === true,
+              activeMarketExecutionAttempted:
+                getPath(settlementQueueItem, ["executionEvidence", "activeMarketExecutionAttempted"]) === true,
             },
             operatorAction: {
               label: getPath(settlementQueueItem, ["operatorAction", "label"]) ?? null,

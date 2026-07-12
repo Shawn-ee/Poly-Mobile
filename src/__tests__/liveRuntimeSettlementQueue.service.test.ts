@@ -98,6 +98,18 @@ describe("live runtime settlement queue service", () => {
         exactConfirmationRedacted: true,
         providerQuotaUsed: false,
       },
+      executionEvidence: {
+        status: "not_executed",
+        source: "OfficialResultReview+CanonicalEvent",
+        durableReviewRowAvailable: true,
+        canonicalExecutionEventAvailable: false,
+        canonicalExecutionEventId: null,
+        resultDigestAvailable: true,
+        exactConfirmationStored: false,
+        exactConfirmationRedacted: true,
+        providerQuotaUsed: false,
+        activeMarketExecutionAttempted: false,
+      },
       nextSafeAction: "wait_for_or_apply_market_close_before_execution",
       operatorAction: {
         label: "wait_for_market_close",
@@ -122,9 +134,11 @@ describe("live runtime settlement queue service", () => {
       operatorQueueAvailable: true,
       redactedOperatorExecutionPlanAvailable: true,
       durableApprovalEvidenceAvailable: true,
+      durableExecutionEvidenceAvailable: false,
     });
     expect(result.checks).toMatchObject({
       canonicalApprovalEvidenceForApprovedReviews: true,
+      canonicalExecutionEvidenceForExecutedReviews: true,
     });
     expect(JSON.stringify(result)).not.toContain("SETTLE_FROM_RESULT:");
     expect(officialResultReviewFindMany).toHaveBeenCalledWith(
@@ -252,5 +266,81 @@ describe("live runtime settlement queue service", () => {
       exactConfirmationStored: false,
       exactConfirmationRedacted: true,
     });
+  });
+
+  test("returns durable execution evidence for executed reviews", async () => {
+    officialResultReviewFindMany.mockResolvedValue([
+      {
+        id: "review-4",
+        reviewKey: "odds-api-single-soccer-test:market-1:result-digest",
+        eventSlug: "odds-api-single-soccer-test",
+        marketId: "market-1",
+        outcomeId: "outcome-1",
+        providerSource: "the-odds-api",
+        providerEventId: "provider-event-1",
+        resultStatus: "final",
+        homeScore: 2,
+        awayScore: 1,
+        advanceTeam: null,
+        trustedResultDigest: "trusted-digest",
+        resultDigest: "result-digest",
+        settlementPreflightCanonicalId: 10n,
+        settlementApprovalCanonicalId: 11n,
+        settlementExecutedCanonicalId: 12n,
+        approvalStatus: "approved",
+        executionDecision: "already_executed",
+        executionEligibleNow: false,
+        confirmationRequiredKnown: true,
+        exactConfirmationStored: false,
+        activeMarketExecutionAttempted: false,
+        providerQuotaUsed: false,
+        updatedAt: new Date("2026-07-12T12:30:00Z"),
+      },
+    ]);
+    marketFindMany.mockResolvedValue([
+      {
+        id: "market-1",
+        slug: "spain-france-total-25",
+        title: "Spain vs. France: Total Goals 2.5",
+        status: "RESOLVED",
+        settlementStatus: "settled",
+        resolvedOutcomeId: "outcome-1",
+        event: {
+          id: "event-1",
+          slug: "odds-api-single-soccer-test",
+          title: "Spain vs. France",
+          status: "ACTIVE",
+          liveStatus: "final",
+          startTime: new Date("2026-07-14T19:00:00Z"),
+        },
+      },
+    ]);
+
+    const result = await getLocalLiveRuntimeSettlementQueue();
+
+    expect(result.status).toBe("ready");
+    expect(result.queue.items[0]).toMatchObject({
+      nextSafeAction: "already_executed",
+      hasExecutionAudit: true,
+      executionEvidence: {
+        status: "executed",
+        source: "OfficialResultReview+CanonicalEvent",
+        durableReviewRowAvailable: true,
+        canonicalExecutionEventAvailable: true,
+        canonicalExecutionEventId: "12",
+        resultDigestAvailable: true,
+        exactConfirmationStored: false,
+        exactConfirmationRedacted: true,
+        providerQuotaUsed: false,
+        activeMarketExecutionAttempted: false,
+      },
+      operatorAction: {
+        label: "settlement_already_executed",
+        exactConfirmationExposed: false,
+      },
+    });
+    expect(result.runtimeTruth.durableExecutionEvidenceAvailable).toBe(true);
+    expect(result.checks.canonicalExecutionEvidenceForExecutedReviews).toBe(true);
+    expect(JSON.stringify(result)).not.toContain("SETTLE_FROM_RESULT:");
   });
 });

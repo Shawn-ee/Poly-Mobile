@@ -14961,3 +14961,14 @@ Known limitations:
 - API/data dependencies: reads `docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json` and exposes redacted launch-profile data through the existing dev-only status route. Phase audit now requires the `launchProfile` block to remain present and P0-clean.
 - Proof needed: focused status service test, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this improves local operator truth but remains local/dev-only artifact projection, not an authenticated production dashboard or installed service.
+
+## Cycle SETTLEMENTEXECUTIONEVIDENCE - Durable Settlement Execution Evidence
+
+- Feature/page worked on: backend local internal official-result settlement queue/status contract.
+- Frontend components touched: none.
+- Important functions/services touched: updated `src/server/services/liveRuntimeSettlementQueue.ts`, `src/server/services/liveRuntimeStatus.ts`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, `src/__tests__/liveRuntimeSettlementQueue.service.test.ts`, `src/__tests__/internal.live-runtime.settlement-queue.route.test.ts`, and `src/__tests__/liveRuntimeStatus.service.test.ts`.
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/settlement-queue` or `GET /api/internal/live-runtime/status` and see redacted `executionEvidence` beside approval evidence, including whether a durable canonical execution event exists after a guarded scheduler run.
+- State transitions: none. The routes and audit gate are read-only; they do not call The Odds API, spend provider quota, close markets, approve settlement, expose exact confirmation text, or execute active-event settlement.
+- API/data dependencies: reads `OfficialResultReview.settlementExecutedCanonicalId`, `OfficialResultReview.resultDigest`, current `Market`/`Event` status, and phase-audit settlement queue evidence. Phase audit now requires execution evidence to stay redacted and requires executed reviews to have canonical execution evidence.
+- Proof needed: focused settlement queue/status route tests, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this narrows the official-result auto-settlement evidence gap. Authenticated operator UI, installed official-result polling, and direct active-event execution controls remain P1/P2.

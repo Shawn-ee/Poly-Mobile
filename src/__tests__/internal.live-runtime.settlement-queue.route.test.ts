@@ -33,6 +33,14 @@ describe("internal live-runtime settlement-queue route", () => {
               exactConfirmationStored: false,
               exactConfirmationRedacted: true,
             },
+            executionEvidence: {
+              status: "not_executed",
+              canonicalExecutionEventAvailable: false,
+              canonicalExecutionEventId: null,
+              exactConfirmationStored: false,
+              exactConfirmationRedacted: true,
+              activeMarketExecutionAttempted: false,
+            },
             operatorAction: {
               exactConfirmationExposed: false,
               nextCommand: "npm run mobile:one-event-settlement-preflight",
@@ -56,6 +64,13 @@ describe("internal live-runtime settlement-queue route", () => {
       canonicalApprovalEventAvailable: true,
       exactConfirmationStored: false,
       exactConfirmationRedacted: true,
+    });
+    expect(body.queue.items[0].executionEvidence).toMatchObject({
+      status: "not_executed",
+      canonicalExecutionEventAvailable: false,
+      exactConfirmationStored: false,
+      exactConfirmationRedacted: true,
+      activeMarketExecutionAttempted: false,
     });
     expect(JSON.stringify(body)).not.toContain("SETTLE_FROM_RESULT:");
     expect(JSON.stringify(body)).not.toContain("THE_ODDS_API_KEY");
