@@ -1,0 +1,135 @@
+{
+    "generatedAt":  "2026-07-12T07:27:19.3295213Z",
+    "scope":  "holiwyn-one-event-live-runtime-launch",
+    "pass":  true,
+    "backend":  {
+                    "baseUrl":  "http://127.0.0.1:3002",
+                    "healthBefore":  {
+                                         "ok":  true,
+                                         "body":  {
+                                                      "status":  "ok",
+                                                      "db":  "connected",
+                                                      "env":  "development",
+                                                      "timestamp":  "2026-07-12T07:27:18.440Z"
+                                                  },
+                                         "error":  null
+                                     },
+                    "healthAfter":  {
+                                        "ok":  true,
+                                        "body":  {
+                                                     "status":  "ok",
+                                                     "db":  "connected",
+                                                     "env":  "development",
+                                                     "timestamp":  "2026-07-12T07:27:18.481Z"
+                                                 },
+                                        "error":  null
+                                    },
+                    "startSummary":  null
+                },
+    "dockerPostgres":  {
+                           "ok":  true,
+                           "status":  "poly_postgres|Up 7 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp",
+                           "raw":  [
+                                       "poly_postgres|Up 7 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
+                                   ]
+                       },
+    "s23":  {
+                "connected":  true,
+                "deviceId":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+                "model":  "SM_S911U1",
+                "raw":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp device product:dm1quew model:SM_S911U1 device:dm1q transport_id:4"
+            },
+    "provider":  {
+                     "liveProofRanThisLaunch":  false,
+                     "liveProofExitCode":  null,
+                     "quotaPolicy":  {
+                                         "oneEventOnly":  true,
+                                         "maxCredits":  16,
+                                         "minRemaining":  2,
+                                         "refreshIterations":  2,
+                                         "keySource":  "THE_ODDS_API_KEY process environment only",
+                                         "cachedModeUsesQuota":  false
+                                     },
+                     "proof":  {
+                                   "present":  true,
+                                   "pass":  true,
+                                   "fresh":  true,
+                                   "reason":  "fresh",
+                                   "generatedAt":  "2026-07-12T07:06:21.133Z",
+                                   "ageHours":  0.35,
+                                   "maxAgeHours":  24,
+                                   "summaryPath":  "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
+                                   "event":  {
+                                                 "providerEventId":  "f9aa13a662d1658e5a02cfc06d6a2d73",
+                                                 "sportKey":  "soccer_fifa_world_cup",
+                                                 "title":  "Spain vs. France",
+                                                 "commenceTime":  "2026-07-14T19:00:00Z",
+                                                 "localSlug":  "odds-api-single-soccer-test"
+                                             },
+                                   "selectedMarket":  {
+                                                          "id":  "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+                                                          "slug":  "odds-api-single-soccer-test-totals-7439c2d603",
+                                                          "title":  "Spain vs. France: Total Goals 2.5",
+                                                          "marketType":  "total_goals",
+                                                          "marketGroupKey":  "totals",
+                                                          "line":  "2.5",
+                                                          "outcomeId":  "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+                                                          "outcomeName":  "Over +2.5",
+                                                          "referenceTokenId":  "odds-api-88263b2c42d6b2f5c6dbbda4"
+                                                      },
+                                   "marketMaker":  {
+                                                       "continuous":  false,
+                                                       "mode":  "bounded-proof-local-shifted-maker",
+                                                       "makerUserId":  "7f527756-3a90-43e4-a13d-4528e774d061",
+                                                       "bidOrderId":  "aec7c7f7-992a-4a9f-8a83-7bf46c42841f",
+                                                       "askOrderId":  "1e7e1167-7ada-44c6-a101-2bff22a8ae4f",
+                                                       "referenceBid":  0.4891,
+                                                       "referenceAsk":  0.5291,
+                                                       "plannedBid":  0.47,
+                                                       "plannedAsk":  0.55
+                                                   },
+                                   "gaps":  {
+                                                "p0":  [
+
+                                                       ],
+                                                "p1":  [
+                                                           "continuous unattended market-maker daemon is not complete; this proof is bounded",
+                                                           "automatic event close/suspend scheduler is not complete",
+                                                           "automatic official-result settlement is not complete"
+                                                       ],
+                                                "p2":  [
+                                                           "multi-event polling remains out of scope to protect quota"
+                                                       ]
+                                            }
+                               }
+                 },
+    "runtime":  {
+                    "backendContinuous":  true,
+                    "providerRefreshContinuous":  false,
+                    "marketMakerContinuous":  false,
+                    "mode":  "cached-proof-runtime-check",
+                    "notes":  [
+                                  "Backend can stay running locally on the configured port.",
+                                  "Provider refresh is bounded proof mode unless a future daemon is added.",
+                                  "Market-maker quotes are seeded by the proof runner and are not an unattended daemon.",
+                                  "Automatic event close/suspend and official-result settlement remain documented P1 gaps."
+                              ]
+                },
+    "listeners":  [
+                      {
+                          "LocalAddress":  "::",
+                          "LocalPort":  8081,
+                          "OwningProcess":  44952
+                      },
+                      {
+                          "LocalAddress":  "::",
+                          "LocalPort":  3002,
+                          "OwningProcess":  37208
+                      }
+                  ],
+    "commands":  {
+                     "cachedCheck":  "npm run mobile:one-event-live-runtime",
+                     "liveProviderProof":  "set THE_ODDS_API_KEY in the local process, then npm run mobile:one-event-live-runtime:provider",
+                     "s23VisibleProof":  "npm run mobile:the-odds-api-s23-visible-flow -- -SkipReplaySeed -HomeExpectedTitle \"Spain vs. France\" -TeamAExpected \"France\" -TeamBExpected \"Spain\""
+                 }
+}

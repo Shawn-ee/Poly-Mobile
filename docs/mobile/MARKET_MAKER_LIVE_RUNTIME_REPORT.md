@@ -36,7 +36,10 @@ For a selected binary sportsbook market:
 ## Latest Proof
 
 - Command: `npm run mobile:odds-api-live-runtime-proof -- --skipSleep --refreshIterations=2 --maxCredits=16 --minRemaining=2`
+- Restart/runtime command: `npm run mobile:one-event-live-runtime`
+- Live provider wrapper command: `npm run mobile:one-event-live-runtime:provider`
 - Summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`
+- Runtime launch summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json`
 - Result: pass.
 - Provider event: Spain vs. France, `soccer_fifa_world_cup`, starts `2026-07-14T19:00:00Z`.
 - Selected local market: Total Goals 2.5.

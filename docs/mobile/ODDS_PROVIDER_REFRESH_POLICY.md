@@ -9,6 +9,8 @@ Temporary Local MVP provider: The Odds API. This policy is for fake-token local 
 - Refresh exactly one event unless the owner explicitly approves a broader scan.
 - Prefer replay fixtures for ordinary readiness checks.
 - Use live Odds API calls only for a live-runtime proof or a manually approved refresh.
+- `npm run mobile:one-event-live-runtime` is a cached runtime check and does not spend provider quota.
+- `npm run mobile:one-event-live-runtime:provider` is the explicit live provider proof command and requires `THE_ODDS_API_KEY`.
 - Do not print or commit `THE_ODDS_API_KEY`.
 - Track provider quota from response headers:
   - `x-requests-used`
@@ -52,6 +54,7 @@ If the provider fails, quota is low, or no upcoming event has supported markets:
 ## Latest Live Refresh Proof
 
 - Summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`
+- Quota-free runtime launch summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json`
 - Result: pass.
 - Event: Spain vs. France, `soccer_fifa_world_cup`, `2026-07-14T19:00:00Z`.
 - Provider calls: one sports scan, quota-free event scans, one event-markets call, and two event-odds refreshes.

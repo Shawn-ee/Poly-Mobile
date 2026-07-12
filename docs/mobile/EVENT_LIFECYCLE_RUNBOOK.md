@@ -14,7 +14,8 @@
 ## Operator Steps For One Local Live Event
 
 1. Start Postgres and backend.
-2. Run one-event live runtime proof with `THE_ODDS_API_KEY` in local environment.
+2. For a quota-free restart check, run `npm run mobile:one-event-live-runtime`.
+3. For a live provider refresh proof, set `THE_ODDS_API_KEY` in the local process environment and run `npm run mobile:one-event-live-runtime:provider`.
 3. Confirm the proof reports provider refresh `ready`.
 4. Confirm local shifted maker quotes exist.
 5. Open mobile and trade the selected event with fake tokens.
@@ -28,6 +29,7 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 ## Latest Lifecycle Proof
 
 - Summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`
+- Restart/runtime launch summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json`
 - S23 visible proof: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`
 - Open state: selected market was `LIVE`, visible on Home, visible on Event Detail, and accepted fake-token orders.
 - Stale state: proof forced selected quote snapshots stale and Event Detail reported stale provider quote lifecycle.

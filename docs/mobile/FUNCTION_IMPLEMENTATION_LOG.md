@@ -13591,3 +13591,26 @@ Known limitations:
   - Raw provider sportsbook rows are not promoted as first-class visible markets unless they pass the clean prediction-market policy.
   - Team-total availability still depends on the capped provider payload.
   - A real team-to-advance provider market is required before must-advance top buttons can be shown for knockout games.
+
+# Cycle ONELIVERUNTIME - One-Event Live Runtime Launcher
+
+- Feature/page worked on: one-command local runtime restart and live-provider proof launcher for the backend-owned one-event sportsbook runtime.
+- Frontend components touched: none. This cycle does not change visible mobile UI; it consumes the existing S23 proof for the provider-backed Home -> Event Detail -> ticket -> Portfolio flow.
+- Important functions/services touched:
+  - `scripts/start_holiwyn_one_event_live_runtime.ps1`
+  - `scripts/start_holiwyn_internal_beta_backend.ps1` through the wrapper start/check path
+  - `scripts/prove_odds_api_one_event_live_runtime.ts` through the explicit provider-proof wrapper path
+  - `package.json` scripts `mobile:one-event-live-runtime` and `mobile:one-event-live-runtime:provider`
+  - `GET /api/health` for backend/DB readiness
+- User interactions supported:
+  - No new UI interaction is added.
+  - The operator can run one command to confirm the local backend runtime is healthy and the one-event proof is fresh before testing on mobile.
+  - The operator can run a separate explicit provider command to refresh the one live soccer event with quota caps.
+- State transitions:
+  - Cached mode: backend health + Docker/Postgres + S23 reachability + cached live proof freshness -> redacted launch summary.
+  - Provider mode: same startup check + bounded The Odds API refresh proof -> stale provider quote -> ready provider quote -> shifted local maker quote -> fake-token buy/sell proof.
+  - The launch summary explicitly reports `providerRefreshContinuous=false` and `marketMakerContinuous=false` until a future daemon exists.
+- Known limitations:
+  - The backend can run continuously, but provider refresh and market-maker quoting are still bounded proof runners.
+  - Automatic close/suspend scheduling and official-result settlement remain P1.
+  - Cached mode intentionally does not spend provider quota.
