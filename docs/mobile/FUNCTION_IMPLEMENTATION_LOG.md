@@ -14791,3 +14791,14 @@ Known limitations:
 - Harness note: the phase audit now calls `/api/internal/live-runtime/status?phaseAuditInProgress=1` so it can verify live status truth while regenerating the phase artifact; the normal status route remains strict and still depends on the latest completed phase audit.
 - Proof: `npm run mobile:current-runtime-state-proof` passed with `warmNoQuotaRuntimeObserved=true`, `allLoopsRunningObserved=true`, `providerQuotaUsed=false`, and `stopsLoopsAfterProof=true`.
 - Known limitations: mobile-visible provider snapshots remain stale in no-quota cached mode, so explicit quota-capped live odds refresh remains P1 when fresh phone-visible odds are needed. This is still a local proof harness, not an installed OS service.
+
+## Cycle ACTIVESETTLEMENTCLOSEDELIGIBILITY - Active Event Closed Settlement Eligibility
+
+- Feature/page worked on: backend local internal official-result settlement readiness for the active one-event tester market.
+- Frontend components touched: none.
+- Important functions/services touched: added `scripts/prove_odds_api_active_event_closed_settlement_eligibility.ts`; updated `package.json`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, and `scripts/report_holiwyn_live_runtime_completion_audit.ts`.
+- User/runtime interactions supported: local tools can run `npm run mobile:one-event-active-settlement-closed-eligibility-proof` to prove the selected active market would become eligible for exact-confirmation trusted-result execution after close, without leaving the tester market closed or resolved.
+- State transitions: the proof temporarily sets the selected active market to `CLOSED`, runs the existing trusted-result dry-run/audit-event path, then restores `status`, `settlementStatus`, `resolvedOutcomeId`, and `closeTime` in `finally`. It does not execute settlement.
+- API/data dependencies: reads `one-event-active-settlement-readiness-summary.redacted.json`, `trusted-result-provider.redacted.json`, `Market`, linked `Event`, and canonical `settlement.trusted_result.approved` evidence. It writes `one-event-active-settlement-closed-eligibility-summary.redacted.json` and `one-event-active-settlement-closed-eligibility-dry-run.redacted.json`.
+- Proof: `npm run mobile:one-event-active-settlement-closed-eligibility-proof` passed with active-market restoration, no provider quota, no active-event settlement execution, and exact-confirmation eligibility once closed.
+- Known limitations: this narrows active-event settlement readiness, but installed unattended official-result polling, operator review UI, multi-event settlement queue, and direct active-event execution remain P1/P2.

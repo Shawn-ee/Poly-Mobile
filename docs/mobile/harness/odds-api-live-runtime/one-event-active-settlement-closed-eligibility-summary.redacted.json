@@ -1,0 +1,109 @@
+{
+  "generatedAt": "2026-07-12T20:32:54.022Z",
+  "scope": "odds-api-active-event-closed-settlement-eligibility-proof",
+  "pass": true,
+  "providerQuotaUsed": false,
+  "eventSlug": "odds-api-single-soccer-test",
+  "selectedMarket": {
+    "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "slug": "odds-api-single-soccer-test-totals-7439c2d603",
+    "title": "Spain vs. France: Total Goals 2.5",
+    "eventTitle": "Spain vs. France",
+    "statusBeforeProof": "LIVE",
+    "settlementStatusBeforeProof": null,
+    "restored": true,
+    "afterRestore": {
+      "status": "LIVE",
+      "settlementStatus": null,
+      "resolvedOutcomeId": null,
+      "closeTime": null
+    }
+  },
+  "closedStateDecision": {
+    "dryRunOutput": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-closed-eligibility-dry-run.redacted.json",
+    "winningOutcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+    "resultDigest": "f3a5743c73f2",
+    "exactConfirmationRequired": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:f3a5743c73f2",
+    "operatorDecisionWhenClosed": "eligible_for_exact_confirmation_execution_after_market_close",
+    "executionAttempted": false
+  },
+  "approvalEvidence": {
+    "id": "180",
+    "eventType": "settlement.trusted_result.approved",
+    "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+    "resultDigest": "f3a5743c73f2",
+    "exactConfirmationStored": true
+  },
+  "run": {
+    "executable": "C:\\nvm4w\\nodejs\\node.exe",
+    "args": [
+      "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+      "scripts/settle_odds_api_one_event_from_result.ts",
+      "--eventSlug=odds-api-single-soccer-test",
+      "--marketId=78ea76f1-fc8f-419b-ac21-2554d79093f6",
+      "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+      "--output=docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-closed-eligibility-dry-run.redacted.json",
+      "--writeAuditEvent"
+    ],
+    "exitCode": 0,
+    "stdoutTail": [
+      "    \"resultDigest\": \"f3a5743c73f2\",",
+      "    \"actorUserId\": \"holiwyn-local-result-settlement-operator\",",
+      "    \"providerStatus\": \"trusted_external_input\"",
+      "  },",
+      "  \"auditEvent\": {",
+      "    \"id\": \"423\",",
+      "    \"sequence\": \"423\",",
+      "    \"type\": \"settlement.trusted_result.preflight\",",
+      "    \"stream\": \"market\",",
+      "    \"marketId\": \"78ea76f1-fc8f-419b-ac21-2554d79093f6\",",
+      "    \"outcomeId\": \"dd0797bc-e297-4c19-b55c-ccf1bb96dace\",",
+      "    \"createdAt\": \"2026-07-12T20:32:53.976Z\"",
+      "  },",
+      "  \"gaps\": {",
+      "    \"p0\": [],",
+      "    \"p1\": [",
+      "      \"Provider-shaped result ingestion can produce trusted result JSON, but this command intentionally consumes only reviewed trusted result JSON.\",",
+      "      \"Automatic unattended result polling and settlement execution are not installed.\"",
+      "    ],",
+      "    \"p2\": [",
+      "      \"Operator settlement UI and multi-event settlement queue remain future work.\"",
+      "    ]",
+      "  }",
+      "}"
+    ],
+    "stderrTail": []
+  },
+  "runtimeTruth": {
+    "provesActiveEventClosedStateEligibility": true,
+    "activeEventSettlementExecuted": false,
+    "activeMarketRestored": true,
+    "providerQuotaUsed": false,
+    "exactApprovalStillRequiredForExecution": true
+  },
+  "checks": {
+    "dryRunCommandPassed": true,
+    "dryRunSummaryPassed": true,
+    "activeMarketWasTemporarilyClosed": true,
+    "dryRunDidNotExecuteSettlement": true,
+    "dryRunPreviewConservationPassed": true,
+    "exactConfirmationKnown": true,
+    "approvalEventFound": true,
+    "approvalDigestMatchesDryRun": true,
+    "approvalConfirmMatchesDryRun": true,
+    "restoredOriginalStatus": true,
+    "restoredOriginalSettlementStatus": true,
+    "activeMarketStillUnresolved": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "This proves active-event closed-state eligibility, not unattended official-result polling.",
+      "The active tester market is restored after proof; actual execution still requires market CLOSED plus exact operator confirmation."
+    ],
+    "p2": [
+      "Operator settlement UI and multi-event settlement queue remain future work."
+    ]
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T20:21:32.667Z",
+  "generatedAt": "2026-07-12T20:33:17.977Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T20:21:32.529Z"
+      "timestamp": "2026-07-12T20:33:17.356Z"
     },
     "error": null
   },
@@ -68,7 +68,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-12T20:21:32.642Z",
+      "generatedAt": "2026-07-12T20:33:17.918Z",
       "scope": "holiwyn-local-live-runtime-status",
       "status": "ready",
       "event": {
@@ -158,11 +158,11 @@
         "maxPhaseAuditAgeHours": 24,
         "maxWatchdogAgeHours": 24,
         "maxLiveProofAgeHours": 24,
-        "completionAuditAgeHours": 0.02,
-        "phaseAuditAgeHours": 0.02,
-        "watchdogAgeHours": 5.03,
+        "completionAuditAgeHours": 0.19,
+        "phaseAuditAgeHours": 0.2,
+        "watchdogAgeHours": 5.22,
         "liveProofAgeAtCompletionHours": 12.69,
-        "liveProofCurrentAgeHours": 12.71,
+        "liveProofCurrentAgeHours": 12.88,
         "completionAuditFresh": true,
         "phaseAuditFresh": true,
         "watchdogFresh": true,
@@ -176,8 +176,8 @@
         "reason": null,
         "snapshotCount": 2,
         "latestFetchedAt": "2026-07-12T07:06:18.254Z",
-        "latestAgeHours": 13.25,
-        "latestAgeSeconds": 47714,
+        "latestAgeHours": 13.45,
+        "latestAgeSeconds": 48420,
         "maxAgeHours": 24,
         "sources": [
           "sportsbook-odds"
@@ -691,8 +691,8 @@
             "installedOsService": false,
             "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
             "startedAt": "2026-07-12T20:17:39.010Z",
-            "heartbeatAt": "2026-07-12T20:21:32.626Z",
-            "updatedAt": "2026-07-12T20:21:32.629Z",
+            "heartbeatAt": "2026-07-12T20:33:17.903Z",
+            "updatedAt": "2026-07-12T20:33:17.906Z",
             "metadata": {
               "source": "local-runtime-status-route",
               "workerOwned": true,
@@ -712,8 +712,8 @@
             "installedOsService": false,
             "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
             "startedAt": "2026-07-12T20:17:39.324Z",
-            "heartbeatAt": "2026-07-12T20:21:32.626Z",
-            "updatedAt": "2026-07-12T20:21:32.629Z",
+            "heartbeatAt": "2026-07-12T20:33:17.903Z",
+            "updatedAt": "2026-07-12T20:33:17.906Z",
             "metadata": {
               "source": "local-runtime-status-route",
               "workerOwned": true,
@@ -793,12 +793,12 @@
         "completionAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-12T20:20:09.923Z"
+          "generatedAt": "2026-07-12T20:21:38.278Z"
         },
         "phaseAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
-          "pass": false,
-          "generatedAt": "2026-07-12T20:20:32.884Z"
+          "pass": true,
+          "generatedAt": "2026-07-12T20:21:32.667Z"
         },
         "runtimeStatus": {
           "path": "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
@@ -824,7 +824,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-12T20:21:32.658Z",
+      "generatedAt": "2026-07-12T20:33:17.952Z",
       "scope": "holiwyn-local-live-runtime-result-review",
       "status": "ready",
       "providerQuotaUsed": false,
@@ -868,19 +868,19 @@
           }
         },
         "settlementPreflightEvent": {
-          "id": "421",
+          "id": "423",
           "stream": "MARKET",
           "topicKey": "market:78ea76f1-fc8f-419b-ac21-2554d79093f6",
           "eventType": "settlement.trusted_result.preflight",
           "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
           "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
-          "createdAt": "2026-07-12T20:17:41.942Z",
+          "createdAt": "2026-07-12T20:32:53.976Z",
           "payload": {
             "resultDigest": "f3a5743c73f2",
             "executionMode": "dry-run",
             "executionAttempted": false,
             "previewPayoutConservationPass": true,
-            "currentMarketStatus": "LIVE",
+            "currentMarketStatus": "CLOSED",
             "approvedBy": null,
             "approvedAt": null,
             "executionRequiresMarketStatus": null,
@@ -926,7 +926,7 @@
         "exactConfirmationStored": false,
         "activeMarketExecutionAttempted": false,
         "providerQuotaUsed": false,
-        "updatedAt": "2026-07-12T20:21:32.654Z"
+        "updatedAt": "2026-07-12T20:33:17.947Z"
       },
       "executionDecision": {
         "activeMarketStatus": "LIVE",
@@ -975,8 +975,8 @@
       "artifacts": {
         "phaseAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
-          "pass": false,
-          "generatedAt": "2026-07-12T20:20:32.884Z"
+          "pass": true,
+          "generatedAt": "2026-07-12T20:21:32.667Z"
         }
       }
     },
@@ -987,7 +987,7 @@
     "status": 200,
     "body": {
       "status": "ready",
-      "generatedAt": "2026-07-12T20:21:32.666Z",
+      "generatedAt": "2026-07-12T20:33:17.976Z",
       "providerQuotaUsed": false,
       "event": {
         "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
@@ -1061,7 +1061,7 @@
           "path": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
           "present": true,
           "pass": true,
-          "generatedAt": "2026-07-12T20:13:10.298Z",
+          "generatedAt": "2026-07-12T18:38:43.713Z",
           "providerQuotaUsed": false
         },
         "lifecycleMatrix": {
@@ -1139,53 +1139,54 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 13.25,
-    "onboarding": 9.62,
-    "readiness": 9.62,
-    "runtimeStatus": 0.56,
-    "runtimeLaunch": 0.13,
-    "supervisor": 1.71,
-    "supervisorProcess": 0.02,
-    "internalTesterRuntime": 0.02,
-    "internalTesterResultPoller": 6.82,
-    "internalTesterWatchdog": 5.03,
-    "currentRuntimeStateProof": 0.06,
-    "localRuntimeTask": 3.06,
-    "localRuntimeTaskInstall": 3.06,
-    "localRuntimeStartup": 8.05,
-    "localRuntimeStartupInstall": 6.57,
-    "localRuntimeLaunchProfile": 3.06,
-    "liveRuntimeCompletionAudit": 0.02,
-    "continuousSupervisor": 0.82,
-    "staleGuardProof": 10.84,
-    "staleGuardRun": 10.73,
-    "lifecycleControls": 9.62,
-    "lifecycleScheduler": 9.62,
-    "lifecycleSchedulerRun": 0.14,
-    "lifecycleMatrix": 6.25,
-    "settlementReadiness": 9.62,
-    "settlementExecution": 9.33,
-    "resultSettlementExecution": 8.48,
-    "resultSettlementLiveBlocked": 8.48,
-    "manualSettlement": 9.62,
-    "resultIngestion": 0.06,
-    "resultIngestionAuditEvent": 6.68,
-    "resultPoller": 1.73,
-    "resultPollerProcess": 0.02,
-    "continuousResultPoller": 6.98,
-    "resultSettlement": 0.06,
-    "resultSettlementRun": 0.06,
-    "settlementPreflight": 8.25,
-    "settlementAuditEvent": 7.93,
-    "settlementApprovalAuditEvent": 5.6,
-    "resultReviewTrail": 5.5,
-    "activeSettlementReadiness": 5.4,
-    "approvedAutoSettlement": 7.75,
-    "activeSettlementClone": 5.73,
-    "supervisorApprovedSettlement": 7.57,
-    "makerSeed": 0.06,
-    "providerMakerHandoff": 0.7,
-    "s23Visible": 13.08
+    "liveProof": 13.45,
+    "onboarding": 9.81,
+    "readiness": 9.82,
+    "runtimeStatus": 0.76,
+    "runtimeLaunch": 1.91,
+    "supervisor": 1.91,
+    "supervisorProcess": 3.45,
+    "internalTesterRuntime": 0.21,
+    "internalTesterResultPoller": 7.01,
+    "internalTesterWatchdog": 5.22,
+    "currentRuntimeStateProof": 0.26,
+    "localRuntimeTask": 3.26,
+    "localRuntimeTaskInstall": 3.25,
+    "localRuntimeStartup": 8.24,
+    "localRuntimeStartupInstall": 6.77,
+    "localRuntimeLaunchProfile": 3.25,
+    "liveRuntimeCompletionAudit": 0.19,
+    "continuousSupervisor": 1.01,
+    "staleGuardProof": 11.04,
+    "staleGuardRun": 10.92,
+    "lifecycleControls": 9.82,
+    "lifecycleScheduler": 9.82,
+    "lifecycleSchedulerRun": 1.91,
+    "lifecycleMatrix": 6.45,
+    "settlementReadiness": 9.82,
+    "settlementExecution": 9.52,
+    "resultSettlementExecution": 8.68,
+    "resultSettlementLiveBlocked": 8.68,
+    "manualSettlement": 9.81,
+    "resultIngestion": 1.92,
+    "resultIngestionAuditEvent": 6.88,
+    "resultPoller": 1.92,
+    "resultPollerProcess": 3.45,
+    "continuousResultPoller": 7.18,
+    "resultSettlement": 1.92,
+    "resultSettlementRun": 1.92,
+    "settlementPreflight": 8.44,
+    "settlementAuditEvent": 8.12,
+    "settlementApprovalAuditEvent": 5.8,
+    "resultReviewTrail": 5.7,
+    "activeSettlementReadiness": 5.59,
+    "activeSettlementClosedEligibility": 0.01,
+    "approvedAutoSettlement": 7.95,
+    "activeSettlementClone": 5.93,
+    "supervisorApprovedSettlement": 7.77,
+    "makerSeed": 1.3,
+    "providerMakerHandoff": 0.89,
+    "s23Visible": 13.27
   },
   "requirements": [
     {
@@ -1415,9 +1416,10 @@
         "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-approval-audit-event-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-review-trail-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-closed-eligibility-summary.redacted.json",
         "docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md"
       ],
-      "notes": "Provider-shaped score ingestion can produce trusted result JSON in replay mode, write durable canonical result-ingestion audit evidence, and the local scheduler can dry-run that result. A dedicated local result poller now repeats ingestion plus settlement scheduling and has start/status/stop background process proof. Settlement preflight reports current execution eligibility and blockers. Trusted-result execution is blocked unless the market is CLOSED. Explicit operator/proof runs can write durable canonical settlement preflight and approval audit events, the result review trail report stitches provider result evidence, settlement preflight evidence, and approval evidence into one read-only operator view, and the active settlement readiness report states the exact current execution decision without mutating the active event. Live score ingestion is explicit and quota-guarded through the command, poller, or supervisor controls; installed unattended official result polling remains P1."
+      "notes": "Provider-shaped score ingestion can produce trusted result JSON in replay mode, write durable canonical result-ingestion audit evidence, and the local scheduler can dry-run that result. A dedicated local result poller now repeats ingestion plus settlement scheduling and has start/status/stop background process proof. Settlement preflight reports current execution eligibility and blockers. Trusted-result execution is blocked unless the market is CLOSED. Explicit operator/proof runs can write durable canonical settlement preflight and approval audit events, the result review trail report stitches provider result evidence, settlement preflight evidence, and approval evidence into one read-only operator view, the active settlement readiness report states the exact current execution decision without mutating the active event, and closed-state eligibility is proven by temporarily closing/restoring the active selected market without executing settlement. Live score ingestion is explicit and quota-guarded through the command, poller, or supervisor controls; installed unattended official result polling remains P1."
     },
     {
       "id": "settlement-execution-disposable",
@@ -1459,6 +1461,16 @@
         "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-clone-summary.redacted.json"
       ],
       "notes": "This closes the semantics gap between generic disposable settlement and the active tester event's current market shape while intentionally preserving the active event for internal trading."
+    },
+    {
+      "id": "active-event-closed-settlement-eligibility",
+      "priority": "P1",
+      "requirement": "The active tester event's selected market is proven eligible for exact-confirmation execution after close without leaving the active market closed or resolved.",
+      "status": "complete",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-closed-eligibility-summary.redacted.json"
+      ],
+      "notes": "This narrows the last active-event execution gap: once the selected active market is CLOSED and exact approval evidence matches, dry-run eligibility passes. The proof restores the market to its prior LIVE/unresolved state and does not execute settlement."
     },
     {
       "id": "supervisor-approved-settlement-wait",
@@ -1618,9 +1630,10 @@
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-review-trail-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-clone-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-closed-eligibility-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-supervisor-approved-settlement-wait-summary.redacted.json"
       ],
-      "notes": "Provider-shaped result ingestion replay, durable canonical result-ingestion audit evidence, a dedicated local result polling runner with background process management, durable canonical settlement preflight/approval audit events, approval-file auto-execution, active-event market clone settlement, supervisor-approved wait mode, and trusted-result scheduler execution are proven on local evidence. Execution is blocked while the target market remains LIVE unless it later closes and exactly matches approval evidence. Live score ingestion is available only behind explicit live flags plus THE_ODDS_API_KEY, including the quota-capped poller and supervisor paths. Installed unattended provider result polling and unconfirmed active-event execution remain future work."
+      "notes": "Provider-shaped result ingestion replay, durable canonical result-ingestion audit evidence, a dedicated local result polling runner with background process management, durable canonical settlement preflight/approval audit events, approval-file auto-execution, active-event market clone settlement, active-event closed-state eligibility, supervisor-approved wait mode, and trusted-result scheduler execution are proven on local evidence. Execution is blocked while the target market remains LIVE unless it later closes and exactly matches approval evidence. Live score ingestion is available only behind explicit live flags plus THE_ODDS_API_KEY, including the quota-capped poller and supervisor paths. Installed unattended provider result polling and unconfirmed active-event execution remain future work."
     }
   ],
   "conclusion": {

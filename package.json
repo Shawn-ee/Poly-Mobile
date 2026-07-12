@@ -155,6 +155,7 @@
     "mobile:one-event-settlement-approval-audit-event-proof": "tsx scripts/prove_odds_api_settlement_approval_audit_event.ts",
     "mobile:one-event-result-review-trail": "tsx scripts/report_odds_api_one_event_result_review_trail.ts",
     "mobile:one-event-active-settlement-readiness": "tsx scripts/report_odds_api_active_event_settlement_readiness.ts",
+    "mobile:one-event-active-settlement-closed-eligibility-proof": "tsx scripts/prove_odds_api_active_event_closed_settlement_eligibility.ts",
     "mobile:one-event-approved-auto-settlement-proof": "tsx scripts/prove_odds_api_approved_auto_settlement.ts",
     "mobile:one-event-supervisor-approved-settlement-proof": "powershell -ExecutionPolicy Bypass -File scripts/prove_holiwyn_supervisor_approved_settlement_wait.ps1",
     "mobile:one-event-result-settlement-execution-proof": "tsx scripts/prove_odds_api_trusted_result_settlement_scheduler_execution.ts",

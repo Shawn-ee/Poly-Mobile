@@ -20,6 +20,8 @@ const PATHS = {
   lifecycleMatrix: "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-matrix-summary.redacted.json",
   activeSettlementReadiness:
     "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json",
+  activeSettlementClosedEligibility:
+    "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-closed-eligibility-summary.redacted.json",
   providerMakerHandoff:
     "docs/mobile/harness/odds-api-live-runtime/provider-maker-handoff-summary.redacted.json",
   s23Visible: "docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json",
@@ -179,6 +181,12 @@ async function main() {
     activeSettlementDecisionKnown:
       pass(entries.activeSettlementReadiness) &&
       truthy(getPath(entries.activeSettlementReadiness, ["runtimeTruth", "activeEventSettlementExecutionDecisionKnown"])),
+    activeSettlementClosedEligibilityKnown:
+      pass(entries.activeSettlementClosedEligibility) &&
+      truthy(getPath(entries.activeSettlementClosedEligibility, ["runtimeTruth", "provesActiveEventClosedStateEligibility"])) &&
+      getPath(entries.activeSettlementClosedEligibility, ["runtimeTruth", "activeEventSettlementExecuted"]) === false &&
+      getPath(entries.activeSettlementClosedEligibility, ["runtimeTruth", "activeMarketRestored"]) === true &&
+      getPath(entries.activeSettlementClosedEligibility, ["runtimeTruth", "providerQuotaUsed"]) === false,
     localResultReviewApiKnown:
       pass(entries.phaseAudit) &&
       getPath(entries.phaseAudit, ["localResultReview", "ok"]) === true &&
@@ -302,6 +310,8 @@ async function main() {
         "S23 proof covers Home -> Event Detail -> line market -> ticket -> buy -> Portfolio -> cashout/sell -> History for the provider-backed event.",
       activeSettlement:
         getPath(entries.activeSettlementReadiness, ["executionDecision", "operatorDecision"]) ?? null,
+      activeSettlementClosedEligibility:
+        getPath(entries.activeSettlementClosedEligibility, ["closedStateDecision", "operatorDecisionWhenClosed"]) ?? null,
       resultReview:
         "Local result-review API is phase-gated through /api/internal/live-runtime/result-review, reads canonical result/preflight/approval evidence, writes a redacted durable OfficialResultReview row, and does not spend provider quota.",
       providerRefreshRuns:
@@ -329,6 +339,8 @@ async function main() {
       providerQuotaUsedByThisAudit: false,
       activeTesterSettlementExecutionAttempted:
         getPath(entries.activeSettlementReadiness, ["runtimeTruth", "activeEventSettlementExecutionAttempted"]) ?? null,
+      activeEventClosedStateEligibilityProven:
+        getPath(entries.activeSettlementClosedEligibility, ["runtimeTruth", "provesActiveEventClosedStateEligibility"]) ?? null,
       s23ProofDevice: getPath(entries.s23Visible, ["device"]) ?? null,
     },
     sourceEvidence: PATHS,

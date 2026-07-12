@@ -5091,6 +5091,16 @@ Notes:
 - Existing route dependency remains `/api/health` and selected `/api/markets/:marketId/quote` through the phase audit; no new mobile route was added for this proof.
 - `npm run mobile:one-event-active-settlement-clone-proof` executes the trusted-result scheduler path against a disposable clone of the active event's selected market semantics.
 
+## Cycle ACTIVESETTLEMENTCLOSEDELIGIBILITY - Active Event Closed Settlement Eligibility
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile/proof | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Active-event closed settlement eligibility proof | `npm run mobile:one-event-active-settlement-closed-eligibility-proof`; internally calls `scripts/settle_odds_api_one_event_from_result.ts --writeAuditEvent` | Local Node command; no mobile route | Local developer/runtime only; refuses production. No provider key and no mobile auth. | Optional `eventSlug`, `marketId`, `result`, `output`, and `dryRunOutput` | `runtimeTruth.provesActiveEventClosedStateEligibility`, `activeEventSettlementExecuted=false`, `activeMarketRestored=true`, `providerQuotaUsed=false`, and `closedStateDecision.operatorDecisionWhenClosed` | Reads and temporarily updates `Market`; reads linked `Event` and `CanonicalEvent`; writes canonical settlement preflight audit evidence through the existing dry-run path | Uses existing redacted trusted-result evidence only. It spends no provider quota and restores `status`, `settlementStatus`, `resolvedOutcomeId`, and `closeTime` after proof. | Production needs authenticated operator controls, durable settlement approval records, multi-event official-result queue, and installed official-result polling before active-event execution can be automated. |
+
+Notes:
+- No backend API route or schema is added in this cycle. The proof intentionally exercises the existing guarded settlement command while restoring active tester state.
+- Phase and completion audits now require this closed-state eligibility artifact so active-event settlement readiness is not only proven on disposable clones.
+
 ## Cycle ONEEVENTINTERNALWATCHDOG - Internal Tester Runtime Watchdog
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body / params | Response fields consumed by mobile/proof | Database tables/models implied | Mock fallback behavior | Missing backend support |

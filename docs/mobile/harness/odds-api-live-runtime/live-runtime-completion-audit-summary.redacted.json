@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T20:21:38.278Z",
+  "generatedAt": "2026-07-12T20:33:23.196Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -28,13 +28,14 @@
     "freshness": {
       "liveProofAgeHours": 12.69,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 5.03,
+      "watchdogAgeHours": 5.22,
       "maxWatchdogAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
     "lifecycle": "Open/paused/closed are proven on the active event lifecycle controls; settlement mechanics and trusted-result scheduler execution are proven on disposable/clone markets while active event remains guarded.",
     "mobileTrading": "S23 proof covers Home -> Event Detail -> line market -> ticket -> buy -> Portfolio -> cashout/sell -> History for the provider-backed event.",
     "activeSettlement": "wait_for_or_apply_market_close_before_execution",
+    "activeSettlementClosedEligibility": "eligible_for_exact_confirmation_execution_after_market_close",
     "resultReview": "Local result-review API is phase-gated through /api/internal/live-runtime/result-review, reads canonical result/preflight/approval evidence, writes a redacted durable OfficialResultReview row, and does not spend provider quota.",
     "providerRefreshRuns": "Bounded live provider refresh proof is persisted as ProviderRefreshRun; local runtime status requires the latest selected-event run to be passed, quota-protected, within budget, stale-before-refresh, and ready-after-refresh without spending quota from the status route.",
     "marketMakerQuoteRuns": "Shifted local maker quote proof is persisted as MarketMakerQuoteRun; local runtime status requires the latest selected-market run to be passed, local-only, shifted worse than provider, quote-route visible, backed by a fresh provider snapshot, and supported by at least two repeated local maker seed runs without claiming an installed OS service.",
@@ -52,6 +53,7 @@
     "internalTesterWatchdogPass": true,
     "providerQuotaUsedByThisAudit": false,
     "activeTesterSettlementExecutionAttempted": false,
+    "activeEventClosedStateEligibilityProven": true,
     "s23ProofDevice": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp"
   },
   "sourceEvidence": {
@@ -66,6 +68,7 @@
     "staleGuardRun": "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-run-summary.redacted.json",
     "lifecycleMatrix": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-matrix-summary.redacted.json",
     "activeSettlementReadiness": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json",
+    "activeSettlementClosedEligibility": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-closed-eligibility-summary.redacted.json",
     "providerMakerHandoff": "docs/mobile/harness/odds-api-live-runtime/provider-maker-handoff-summary.redacted.json",
     "s23Visible": "docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json"
   },
@@ -85,6 +88,7 @@
     "staleHandlingKnown": true,
     "lifecycleOpenPausedClosedSettledKnown": true,
     "activeSettlementDecisionKnown": true,
+    "activeSettlementClosedEligibilityKnown": true,
     "localResultReviewApiKnown": true,
     "durableRuntimeHeartbeatsKnown": true,
     "durableRuntimeRunsKnown": true,
