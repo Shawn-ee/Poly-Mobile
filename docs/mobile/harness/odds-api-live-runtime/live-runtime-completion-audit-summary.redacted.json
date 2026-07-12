@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T20:42:34.674Z",
+  "generatedAt": "2026-07-12T20:54:50.810Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -28,7 +28,7 @@
     "freshness": {
       "liveProofAgeHours": 12.69,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 5.38,
+      "watchdogAgeHours": 5.58,
       "maxWatchdogAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -37,6 +37,7 @@
     "activeSettlement": "wait_for_or_apply_market_close_before_execution",
     "activeSettlementClosedEligibility": "eligible_for_exact_confirmation_execution_after_market_close",
     "resultReview": "Local result-review API is phase-gated through /api/internal/live-runtime/result-review, reads canonical result/preflight/approval evidence, writes a redacted durable OfficialResultReview row, and does not spend provider quota.",
+    "settlementQueue": "Local settlement-queue API is phase-gated through /api/internal/live-runtime/settlement-queue, reads durable OfficialResultReview rows, reports pending/approved execution state, and redacts exact confirmation strings.",
     "providerRefreshRuns": "Bounded live provider refresh proof is persisted as ProviderRefreshRun; local runtime status requires the latest selected-event run to be passed, quota-protected, within budget, stale-before-refresh, and ready-after-refresh without spending quota from the status route.",
     "marketMakerQuoteRuns": "Shifted local maker quote proof is persisted as MarketMakerQuoteRun; local runtime status requires the latest selected-market run to be passed, local-only, shifted worse than provider, quote-route visible, backed by a fresh provider snapshot, and supported by at least two repeated local maker seed runs without claiming an installed OS service.",
     "providerMakerHandoff": "Provider-to-maker handoff is proven by a no-quota report that verifies the latest selected-event provider refresh has a later shifted local maker quote run for the same event, market, and outcome.",
@@ -90,6 +91,7 @@
     "activeSettlementDecisionKnown": true,
     "activeSettlementClosedEligibilityKnown": true,
     "localResultReviewApiKnown": true,
+    "localSettlementQueueApiKnown": true,
     "durableRuntimeHeartbeatsKnown": true,
     "durableRuntimeRunsKnown": true,
     "currentRuntimeStateKnown": true,

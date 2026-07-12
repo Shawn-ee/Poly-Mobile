@@ -206,6 +206,22 @@ async function main() {
       getPath(entries.phaseAudit, ["localResultReview", "body", "executionDecision", "activeMarketExecutionAttemptedByThisRoute"]) === false &&
       Array.isArray(getPath(entries.phaseAudit, ["localResultReview", "body", "gaps", "p0"])) &&
       (getPath(entries.phaseAudit, ["localResultReview", "body", "gaps", "p0"]) as unknown[]).length === 0,
+    localSettlementQueueApiKnown:
+      pass(entries.phaseAudit) &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "ok"]) === true &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "status"]) === "ready" &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "providerQuotaUsed"]) === false &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "readOnlyRoute"]) === true &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "devOnlyRoute"]) === true &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "usesDurableOfficialResultReviewRows"]) === true &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "operatorQueueAvailable"]) === true &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "exactConfirmationStringsExposed"]) === false &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "exactConfirmationStored"]) === false &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "activeMarketExecutionAttempted"]) === false &&
+      typeof getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "itemCount"]) === "number" &&
+      (getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "itemCount"]) as number) > 0 &&
+      Array.isArray(getPath(entries.phaseAudit, ["localSettlementQueue", "body", "gaps", "p0"])) &&
+      (getPath(entries.phaseAudit, ["localSettlementQueue", "body", "gaps", "p0"]) as unknown[]).length === 0,
     durableRuntimeHeartbeatsKnown:
       pass(entries.phaseAudit) &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeHeartbeats", "checked"]) === true &&
@@ -314,6 +330,8 @@ async function main() {
         getPath(entries.activeSettlementClosedEligibility, ["closedStateDecision", "operatorDecisionWhenClosed"]) ?? null,
       resultReview:
         "Local result-review API is phase-gated through /api/internal/live-runtime/result-review, reads canonical result/preflight/approval evidence, writes a redacted durable OfficialResultReview row, and does not spend provider quota.",
+      settlementQueue:
+        "Local settlement-queue API is phase-gated through /api/internal/live-runtime/settlement-queue, reads durable OfficialResultReview rows, reports pending/approved execution state, and redacts exact confirmation strings.",
       providerRefreshRuns:
         "Bounded live provider refresh proof is persisted as ProviderRefreshRun; local runtime status requires the latest selected-event run to be passed, quota-protected, within budget, stale-before-refresh, and ready-after-refresh without spending quota from the status route.",
       marketMakerQuoteRuns:

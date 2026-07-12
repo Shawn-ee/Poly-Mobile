@@ -14813,3 +14813,14 @@ Known limitations:
 - API/data dependencies: reads `one-event-active-settlement-readiness-summary.redacted.json`, `one-event-active-settlement-closed-eligibility-summary.redacted.json`, completion audit, phase audit, watchdog proof, provider snapshots, and runtime rows.
 - Proof needed: focused status service test, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this improves internal operator truth. It is still proof-artifact-backed local status, not an authenticated production settlement/operator control plane.
+
+## Cycle SETTLEMENTQUEUEAPI - Local Settlement Queue API
+
+- Feature/page worked on: backend local internal official-result settlement queue.
+- Frontend components touched: none.
+- Important functions/services touched: added `src/server/services/liveRuntimeSettlementQueue.ts`, `src/app/api/internal/live-runtime/settlement-queue/route.ts`, `src/__tests__/liveRuntimeSettlementQueue.service.test.ts`, `src/__tests__/internal.live-runtime.settlement-queue.route.test.ts`; updated `package.json`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, and `scripts/report_holiwyn_live_runtime_completion_audit.ts`.
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/settlement-queue` to inspect durable `OfficialResultReview` rows, pending/approved counts, market close blockers, redacted confirmation truth, and safe next actions.
+- State transitions: none. The route is read-only, local/dev-only, does not call The Odds API, does not spend provider quota, does not expose exact confirmation strings, and does not execute settlement.
+- API/data dependencies: reads `OfficialResultReview` rows plus current `Market` and linked `Event` status. Phase audit now gates on the route response.
+- Proof needed: focused service and route tests, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this narrows the local operator queue gap. Production still needs authenticated operator UI/actions, installed official-result polling, and direct active-event execution controls.

@@ -191,6 +191,11 @@ async function main() {
     localResultReview.body && typeof localResultReview.body === "object"
       ? (localResultReview.body as JsonObject)
       : null;
+  const localSettlementQueue = await fetchJson(`${baseUrl}/api/internal/live-runtime/settlement-queue`);
+  const localSettlementQueueBody =
+    localSettlementQueue.body && typeof localSettlementQueue.body === "object"
+      ? (localSettlementQueue.body as JsonObject)
+      : null;
   const localLifecycle = await fetchJson(`${baseUrl}/api/internal/live-runtime/lifecycle`);
   const localLifecycleBody =
     localLifecycle.body && typeof localLifecycle.body === "object" ? (localLifecycle.body as JsonObject) : null;
@@ -393,6 +398,32 @@ async function main() {
       evidence: [`${baseUrl}/api/internal/live-runtime/result-review`],
       notes:
         "This narrows the official-result operator-review gap by exposing the canonical result/preflight/approval trail through a dev-only backend route instead of only shell proof scripts. It is read-only and intentionally redacts exact execution confirmation strings.",
+    }),
+    requirement({
+      id: "local-settlement-queue-api-ready",
+      priority: "P0",
+      requirement:
+        "Local settlement queue API exposes durable official-result review rows and safe next actions without spending quota or exposing exact settlement confirmation.",
+      achieved:
+        !!localSettlementQueueBody &&
+        localSettlementQueue.ok === true &&
+        getPath(localSettlementQueueBody, ["status"]) === "ready" &&
+        getPath(localSettlementQueueBody, ["providerQuotaUsed"]) === false &&
+        getPath(localSettlementQueueBody, ["runtimeTruth", "readOnlyRoute"]) === true &&
+        getPath(localSettlementQueueBody, ["runtimeTruth", "devOnlyRoute"]) === true &&
+        getPath(localSettlementQueueBody, ["runtimeTruth", "usesDurableOfficialResultReviewRows"]) === true &&
+        getPath(localSettlementQueueBody, ["runtimeTruth", "operatorQueueAvailable"]) === true &&
+        getPath(localSettlementQueueBody, ["runtimeTruth", "exactConfirmationStringsExposed"]) === false &&
+        getPath(localSettlementQueueBody, ["runtimeTruth", "exactConfirmationStored"]) === false &&
+        getPath(localSettlementQueueBody, ["runtimeTruth", "activeMarketExecutionAttempted"]) === false &&
+        getPath(localSettlementQueueBody, ["queue", "itemCount"]) !== 0 &&
+        Array.isArray(getPath(localSettlementQueueBody, ["gaps", "p0"])) &&
+        (getPath(localSettlementQueueBody, ["gaps", "p0"]) as unknown[]).length === 0 &&
+        !JSON.stringify(localSettlementQueueBody).includes("SETTLE_FROM_RESULT:") &&
+        !JSON.stringify(localSettlementQueueBody).includes("THE_ODDS_API_KEY"),
+      evidence: [`${baseUrl}/api/internal/live-runtime/settlement-queue`],
+      notes:
+        "This narrows the operator-review/multi-event queue gap by exposing durable pending settlement work through a dev-only read-only backend route. It does not execute settlement or reveal exact confirmation strings.",
     }),
     requirement({
       id: "local-lifecycle-api-ready",
@@ -978,6 +1009,7 @@ async function main() {
     quote,
     localRuntimeStatus,
     localResultReview,
+    localSettlementQueue,
     localLifecycle,
     artifactAgesHours: Object.fromEntries(
       Object.entries(entries).map(([key, value]) => [key, ageHours(value?.generatedAt)]),

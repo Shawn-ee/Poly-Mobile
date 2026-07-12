@@ -10519,3 +10519,12 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: production maker service identity, per-refresh quote scheduling jobs, multi-event provider-to-maker queue state, risk/exposure controls, and alerting remain P1/P2.
 - Temporary mock/static data: none added. The report reads durable `ProviderRefreshRun` and `MarketMakerQuoteRun` rows and spends no provider quota.
 - Future migration concern: production should replace proof-row handoff checks with a worker-owned provider refresh job that directly schedules maker quote updates and records per-market outcomes.
+
+## Cycle SETTLEMENTQUEUEAPI - Local Settlement Queue API
+
+- Closed or narrowed: local internal tools can now read `GET /api/internal/live-runtime/settlement-queue` to inspect pending official-result settlement work from durable `OfficialResultReview` rows.
+- Fields exposed for future backend/operator use: review id/key, event slug, market/outcome ids, provider source/event id, result status/score/digests, approval status, execution decision, execution eligibility, redacted confirmation truth, provider-quota truth, active-execution truth, current market/event status, and `nextSafeAction`.
+- Route mismatch: this is intentionally a local/dev-only internal route, not a public mobile API and not a settlement execution endpoint. It is disabled in production or when `HOLIWYN_DISABLE_INTERNAL_RUNTIME_STATUS=1`.
+- Schema mismatch: the queue currently reads `OfficialResultReview` rows produced by local result-review evidence. Production should separate official-result polling, operator approval, execution authorization, and execution attempt records into authenticated workflow tables.
+- Temporary mock/static data: none added. The route reads DB rows only, spends no provider quota, does not expose exact confirmation strings, and does not execute settlement.
+- Remaining gaps: authenticated operator UI/actions, installed official-result polling, direct active-event settlement execution controls, and production alerting remain P1/P2.
