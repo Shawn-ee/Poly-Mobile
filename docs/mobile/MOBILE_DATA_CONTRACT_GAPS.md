@@ -10118,6 +10118,14 @@ Future migration concern:
 - Temporary mock/static data: the proof writes disposable trusted-local result JSON for the disposable event and spends no provider quota. This is not live official evidence.
 - Future migration concern: keep disposable scheduler execution proof separate from live official settlement. A future production path should require official provider evidence, durable result storage, admin review, audit logs, and explicit active-event execution policy.
 
+## Cycle ONEEVENTSETTLEMENTPREFLIGHT - Active Event Settlement Preflight
+
+- Closed or narrowed: active-event settlement now has a no-quota preflight that reports final trusted result evidence, payout preview, confirmation phrase, current market state, execution blockers, and next operator action before any execute attempt.
+- Route mismatch: none. The preflight runs local scheduler/settlement commands and reads their summary artifacts; it does not add mobile or backend API routes.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable official result storage, operator approval/audit records, installed result polling, and active-event automatic execution policy remain P1.
+- Temporary mock/static data: the committed proof uses redacted Odds API scores-shaped trusted result evidence and spends no provider quota. It does not mutate the active tester event.
+- Future migration concern: keep preflight and execution separate. The current active event is not execution eligible until lifecycle closes the market, even though final trusted result evidence and payout preview exist.
+
 ## Cycle ONEEVENTLOCALTASK - Local Runtime Scheduled Task Plan
 
 - Closed or narrowed: local unattended-runtime ownership now has a Windows scheduled-task manager with plan/status/install/uninstall actions. The default proof is dry-run and requires `-Apply` before any OS mutation.

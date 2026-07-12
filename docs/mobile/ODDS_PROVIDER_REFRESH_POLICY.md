@@ -26,6 +26,7 @@ Temporary Local MVP provider: The Odds API. This policy is for fake-token local 
 - `npm run mobile:one-event-result-ingest` reads a redacted Odds API scores-shaped fixture and writes trusted result JSON without spending quota.
 - `npm run mobile:one-event-result-ingest -- --live` calls the Odds API scores endpoint and requires `THE_ODDS_API_KEY` in the local process environment. Use it only for an intentional result verification because it may spend quota.
 - `npm run mobile:one-event-result-settlement-run` reads trusted result JSON and invokes the guarded trusted-result settlement path in dry-run mode by default. It does not call the odds provider and does not execute settlement unless explicit execution flags and confirmation are supplied.
+- `npm run mobile:one-event-settlement-preflight` reads trusted result JSON, runs the settlement scheduler in dry-run mode, and reports active-event execution eligibility/blockers without provider quota or mutation.
 - `npm run mobile:one-event-settlement-execution-proof` proves settlement mechanics on a fresh disposable local market. It does not call the odds provider, spend quota, or mutate the active tester event.
 - Do not print or commit `THE_ODDS_API_KEY`.
 - Track provider quota from response headers:
@@ -91,6 +92,7 @@ If the provider fails, quota is low, or no upcoming event has supported markets:
 - Continuous supervisor proof summary: `docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json`
 - Provider-shaped result ingestion summary: `docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json`
 - Trusted result settlement scheduler summary: `docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json`
+- Trusted result settlement preflight summary: `docs/mobile/harness/odds-api-live-runtime/one-event-settlement-preflight-summary.redacted.json`
 - Settlement execution proof summary: `docs/mobile/harness/odds-api-live-runtime/one-event-settlement-execution-summary.redacted.json`
 - Safe lifecycle scheduler run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json`
 - Runtime status summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`
@@ -104,3 +106,4 @@ If the provider fails, quota is low, or no upcoming event has supported markets:
 - Stale trading guard proof: selected market was forced stale, paused, rejected order placement with `MARKET_UNAVAILABLE`, and was restored to `LIVE`.
 - Supervisor stale monitor proof: one supervisor cycle ran the stale guard in dry-run mode and reported that all cached markets would pause under the 90-second stale rule; no market was mutated.
 - Runtime status proof: status mode reports the closed-market settlement guard, including `executionRequiresMarketStatus=CLOSED` and the latest blocked live-market settlement attempt reason, without spending provider quota.
+- Settlement preflight proof: active one-event trusted-result dry-run passes, but execution is blocked by `market_not_closed_for_execution:LIVE` until lifecycle close.

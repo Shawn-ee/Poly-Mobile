@@ -14099,3 +14099,24 @@ Known limitations:
 - Known limitations:
   - This improves operator visibility, not unattended official-result polling.
   - Active tester event settlement still requires trusted operator confirmation.
+
+# Cycle ONEEVENTSETTLEMENTPREFLIGHT - Active Event Settlement Preflight
+
+- Feature/page worked on: backend trusted-result settlement preflight for the active one-event local runtime.
+- Frontend components touched: none. This is backend/runtime operator evidence tooling only.
+- Important functions/services touched:
+  - `scripts/report_odds_api_one_event_settlement_preflight.ts`
+  - Existing `scripts/run_odds_api_one_event_result_settlement_scheduler.ts`
+  - Existing `scripts/settle_odds_api_one_event_from_result.ts`
+  - `package.json` script `mobile:one-event-settlement-preflight`
+- User/runtime interactions supported:
+  - Operators can run a no-quota preflight to see whether the active tester event is eligible for trusted-result settlement execution.
+  - The report exposes final result evidence, dry-run payout conservation, selected market status, exact confirmation phrase, blockers, and next operator action.
+- State transitions:
+  - Reads trusted result JSON and existing backend settlement dry-run output.
+  - Runs the scheduler in dry-run mode only.
+  - Writes `one-event-settlement-preflight-summary.redacted.json`, `one-event-settlement-preflight-scheduler.redacted.json`, and `one-event-settlement-preflight-dry-run.redacted.json`.
+  - Does not call The Odds API and does not mutate event, market, order, portfolio, or settlement state.
+- Known limitations:
+  - Latest active event preflight is not execution eligible because the selected market is still `LIVE`.
+  - Installed official-result polling and automatic execution remain P1.

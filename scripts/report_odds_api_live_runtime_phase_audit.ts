@@ -34,6 +34,8 @@ const PATHS = {
   resultIngestion: "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json",
   resultSettlement: "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
   resultSettlementRun: "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json",
+  settlementPreflight:
+    "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-preflight-summary.redacted.json",
   makerSeed: "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
   s23Visible: "docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json",
 };
@@ -268,17 +270,21 @@ async function main() {
         pass(entries.manualSettlement) &&
         pass(entries.resultIngestion) &&
         pass(entries.resultSettlement) &&
-        pass(entries.resultSettlementRun),
+        pass(entries.resultSettlementRun) &&
+        pass(entries.settlementPreflight) &&
+        getPath(entries.settlementPreflight, ["executionPreflight", "dryRunPreviewPass"]) === true &&
+        getPath(entries.settlementPreflight, ["executionPreflight", "executionRequiresMarketStatus"]) === "CLOSED",
       evidence: [
         PATHS.settlementReadiness,
         PATHS.manualSettlement,
         PATHS.resultIngestion,
         PATHS.resultSettlement,
         PATHS.resultSettlementRun,
+        PATHS.settlementPreflight,
         "docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md",
       ],
       notes:
-        "Provider-shaped score ingestion can produce trusted result JSON in replay mode, and the local scheduler can dry-run that result. Trusted-result execution is blocked unless the market is CLOSED. Live score ingestion is explicit and quota-guarded through the command or supervisor controls; installed unattended official result polling remains P1.",
+        "Provider-shaped score ingestion can produce trusted result JSON in replay mode, and the local scheduler can dry-run that result. Settlement preflight reports current execution eligibility and blockers. Trusted-result execution is blocked unless the market is CLOSED. Live score ingestion is explicit and quota-guarded through the command or supervisor controls; installed unattended official result polling remains P1.",
     }),
     requirement({
       id: "settlement-execution-disposable",
@@ -367,6 +373,7 @@ async function main() {
         PATHS.resultIngestion,
         PATHS.resultSettlement,
         PATHS.resultSettlementRun,
+        PATHS.settlementPreflight,
       ],
       notes:
         "Provider-shaped result ingestion replay and trusted-result scheduler execution are proven on disposable local evidence. Execution is blocked while the target market remains LIVE. Live score ingestion is available only behind explicit live flags plus THE_ODDS_API_KEY, including the quota-capped supervisor path. Installed unattended provider result polling and unconfirmed active-event execution remain future work.",
