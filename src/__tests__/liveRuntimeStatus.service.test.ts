@@ -257,6 +257,7 @@ const makeCompletionAudit = (
     staleHandling: "stale markets reject orders",
     lifecycle: "open paused closed proven",
     activeSettlement: "wait for closed market",
+    activeSettlementClosedEligibility: "eligible after close",
     localWatchdog: "watchdog proof passed",
     freshness: {
       liveProofAgeHours: freshness.liveProofAgeHours ?? 1,
@@ -375,6 +376,22 @@ const makeActiveSettlementReadiness = (generatedAt = nowIso()) => ({
   },
 });
 
+const makeActiveSettlementClosedEligibility = (generatedAt = nowIso()) => ({
+  generatedAt,
+  pass: true,
+  providerQuotaUsed: false,
+  closedStateDecision: {
+    operatorDecisionWhenClosed: "eligible_for_exact_confirmation_execution_after_market_close",
+  },
+  runtimeTruth: {
+    provesActiveEventClosedStateEligibility: true,
+    activeEventSettlementExecuted: false,
+    activeMarketRestored: true,
+    providerQuotaUsed: false,
+    exactApprovalStillRequiredForExecution: true,
+  },
+});
+
 const makeSupervisorState = () => ({
   pid: 12345,
   startedAt: nowIso(),
@@ -448,6 +465,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
       if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
@@ -560,6 +578,7 @@ describe("live runtime status service", () => {
     );
     expect(status.gaps.p0).toEqual([]);
     expect(status.runtimeTruth.providerQuotaUsedByStatus).toBe(false);
+    expect(status.runtimeTruth.activeEventClosedStateEligibilityProven).toBe(true);
     expect(status.operatorNextActions).toMatchObject({
       recommendedFirstAction: "cached_internal_testing",
       defaultNoQuotaAction: "cached_internal_testing",
@@ -595,6 +614,17 @@ describe("live runtime status service", () => {
       marketMustBeClosed: true,
       exactConfirmationRequiredKnown: true,
       activeMarketExecutionAttempted: false,
+      closedStateEligibilityProven: true,
+      closedStateEligibility: {
+        checked: true,
+        pass: true,
+        providerQuotaUsed: false,
+        provesEligibilityAfterClose: true,
+        operatorDecisionWhenClosed: "eligible_for_exact_confirmation_execution_after_market_close",
+        activeEventSettlementExecuted: false,
+        activeMarketRestored: true,
+        exactApprovalStillRequiredForExecution: true,
+      },
       disposableCloneSettlementProven: true,
       supervisorApprovedSettlementWaitProven: true,
       nextSafeAction: "wait_for_or_apply_market_close_before_execution",
@@ -763,6 +793,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
       if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
@@ -790,6 +821,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
       if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
@@ -820,6 +852,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
       if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
@@ -845,6 +878,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
       if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
@@ -889,6 +923,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
       if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
@@ -938,6 +973,7 @@ describe("live runtime status service", () => {
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
       if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
       if (filePath.includes("supervisor-process-state")) {
         return JSON.stringify({

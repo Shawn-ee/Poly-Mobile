@@ -12,6 +12,8 @@ const WATCHDOG_PATH =
   "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json";
 const ACTIVE_SETTLEMENT_READINESS_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json";
+const ACTIVE_SETTLEMENT_CLOSED_ELIGIBILITY_PATH =
+  "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-closed-eligibility-summary.redacted.json";
 const SUPERVISOR_STATE_PATH = ".runtime/one-event-live-supervisor/supervisor-process-state.json";
 const RESULT_POLLER_STATE_PATH = ".runtime/one-event-result-poller/result-poller-process-state.json";
 const MOBILE_REFRESH_DUE_SECONDS = 60;
@@ -607,6 +609,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     phaseAudit,
     watchdog,
     activeSettlementReadiness,
+    activeSettlementClosedEligibility,
     supervisorProcess,
     resultPollerProcess,
   ] = await Promise.all([
@@ -615,6 +618,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     readJson(PHASE_AUDIT_PATH),
     readJson(WATCHDOG_PATH),
     readJson(ACTIVE_SETTLEMENT_READINESS_PATH),
+    readJson(ACTIVE_SETTLEMENT_CLOSED_ELIGIBILITY_PATH),
     getManagedProcessStatus({ kind: "supervisor", statePath: SUPERVISOR_STATE_PATH }),
     getManagedProcessStatus({ kind: "result-poller", statePath: RESULT_POLLER_STATE_PATH }),
   ]);
@@ -659,6 +663,16 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
       run.quoteRouteStatus === 200,
   ).length;
   const p0Gaps = asStringArray(getPath(completionAudit, ["gaps", "p0"]));
+  const activeSettlementClosedEligibilityReady =
+    pass(activeSettlementClosedEligibility) &&
+    getPath(activeSettlementClosedEligibility, ["runtimeTruth", "provesActiveEventClosedStateEligibility"]) === true &&
+    getPath(activeSettlementClosedEligibility, ["runtimeTruth", "activeEventSettlementExecuted"]) === false &&
+    getPath(activeSettlementClosedEligibility, ["runtimeTruth", "activeMarketRestored"]) === true &&
+    getPath(activeSettlementClosedEligibility, ["runtimeTruth", "providerQuotaUsed"]) === false;
+  const statusP0Gaps = [...p0Gaps];
+  if (!activeSettlementClosedEligibilityReady) {
+    statusP0Gaps.push("active_settlement_closed_eligibility_missing_or_failed");
+  }
   const artifactFreshness = {
     maxCompletionAuditAgeHours: 24,
     maxPhaseAuditAgeHours: 24,
@@ -699,7 +713,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     pass(completionAudit) &&
     (options.phaseAuditInProgress === true || pass(phaseAudit)) &&
     pass(watchdog) &&
-    p0Gaps.length === 0 &&
+    statusP0Gaps.length === 0 &&
     artifactFreshness.completionAuditFresh &&
     artifactFreshness.phaseAuditFresh &&
     artifactFreshness.watchdogFresh &&
@@ -744,6 +758,23 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
       typeof getPath(activeSettlementReadiness, ["executionDecision", "exactConfirmationRequired"]) === "string",
     activeMarketExecutionAttempted:
       getPath(activeSettlementReadiness, ["executionDecision", "activeMarketExecutionAttempted"]) === true,
+    closedStateEligibility: {
+      checked: activeSettlementClosedEligibility != null,
+      path: ACTIVE_SETTLEMENT_CLOSED_ELIGIBILITY_PATH,
+      pass: pass(activeSettlementClosedEligibility),
+      generatedAt: activeSettlementClosedEligibility?.generatedAt ?? null,
+      providerQuotaUsed: getPath(activeSettlementClosedEligibility, ["runtimeTruth", "providerQuotaUsed"]) === true,
+      provesEligibilityAfterClose:
+        getPath(activeSettlementClosedEligibility, ["runtimeTruth", "provesActiveEventClosedStateEligibility"]) === true,
+      operatorDecisionWhenClosed:
+        getPath(activeSettlementClosedEligibility, ["closedStateDecision", "operatorDecisionWhenClosed"]) ?? null,
+      activeEventSettlementExecuted:
+        getPath(activeSettlementClosedEligibility, ["runtimeTruth", "activeEventSettlementExecuted"]) === true,
+      activeMarketRestored: getPath(activeSettlementClosedEligibility, ["runtimeTruth", "activeMarketRestored"]) === true,
+      exactApprovalStillRequiredForExecution:
+        getPath(activeSettlementClosedEligibility, ["runtimeTruth", "exactApprovalStillRequiredForExecution"]) === true,
+    },
+    closedStateEligibilityProven: activeSettlementClosedEligibilityReady,
     disposableCloneSettlementProven:
       getPath(activeSettlementReadiness, ["runtimeTruth", "disposableCloneSettlementProven"]) === true,
     supervisorApprovedSettlementWaitProven:
@@ -804,6 +835,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
       providerQuotaUsedByStatus: false,
       activeTesterSettlementExecutionAttempted:
         getPath(completionAudit, ["runtimeTruth", "activeTesterSettlementExecutionAttempted"]) === true,
+      activeEventClosedStateEligibilityProven: activeSettlementClosedEligibilityReady,
     },
     answers: {
       marketMakerContinuous: getPath(completionAudit, ["answers", "marketMakerContinuous"]),
@@ -813,11 +845,12 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
       staleHandling: getPath(completionAudit, ["answers", "staleHandling"]),
       lifecycle: getPath(completionAudit, ["answers", "lifecycle"]),
       activeSettlement: getPath(completionAudit, ["answers", "activeSettlement"]),
+      activeSettlementClosedEligibility: getPath(completionAudit, ["answers", "activeSettlementClosedEligibility"]),
       localWatchdog: getPath(completionAudit, ["answers", "localWatchdog"]),
     },
     checks: completionAudit?.checks ?? null,
     gaps: {
-      p0: p0Gaps,
+      p0: statusP0Gaps,
       p1: asStringArray(getPath(completionAudit, ["gaps", "p1"])),
       p2: asStringArray(getPath(completionAudit, ["gaps", "p2"])),
     },

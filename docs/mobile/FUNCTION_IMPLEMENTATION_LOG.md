@@ -14802,3 +14802,14 @@ Known limitations:
 - API/data dependencies: reads `one-event-active-settlement-readiness-summary.redacted.json`, `trusted-result-provider.redacted.json`, `Market`, linked `Event`, and canonical `settlement.trusted_result.approved` evidence. It writes `one-event-active-settlement-closed-eligibility-summary.redacted.json` and `one-event-active-settlement-closed-eligibility-dry-run.redacted.json`.
 - Proof: `npm run mobile:one-event-active-settlement-closed-eligibility-proof` passed with active-market restoration, no provider quota, no active-event settlement execution, and exact-confirmation eligibility once closed.
 - Known limitations: this narrows active-event settlement readiness, but installed unattended official-result polling, operator review UI, multi-event settlement queue, and direct active-event execution remain P1/P2.
+
+## Cycle ACTIVESETTLEMENTSTATUSCONTRACT - Active Settlement Status Contract
+
+- Feature/page worked on: backend local internal runtime status contract.
+- Frontend components touched: none.
+- Important functions/services touched: updated `src/server/services/liveRuntimeStatus.ts`, `src/__tests__/liveRuntimeStatus.service.test.ts`, and `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/status` and see both the active settlement blocker while `LIVE` and the closed-state eligibility proof that applies after lifecycle close.
+- State transitions: none. The status route is read-only; it does not call The Odds API, spend provider quota, close markets, approve settlement, expose exact confirmation text, or execute active-event settlement.
+- API/data dependencies: reads `one-event-active-settlement-readiness-summary.redacted.json`, `one-event-active-settlement-closed-eligibility-summary.redacted.json`, completion audit, phase audit, watchdog proof, provider snapshots, and runtime rows.
+- Proof needed: focused status service test, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this improves internal operator truth. It is still proof-artifact-backed local status, not an authenticated production settlement/operator control plane.
