@@ -10340,3 +10340,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable provider-poll timestamps and provider-poll freshness stored in backend runtime state remain P1/P2. The current value is still derived from local proof artifacts.
 - Temporary mock/static data: none added. The route does not call The Odds API and spends no quota.
 - Future migration concern: once a production provider refresh service exists, status should read latest provider poll rows directly instead of relying on a completion audit's embedded proof age.
+
+## Cycle LIVERUNTIMEDBFRESHNESS - DB Provider Snapshot Freshness
+
+- Closed or narrowed: local runtime status now cross-checks the selected market against stored `ReferenceQuoteSnapshot` rows. A ready status now requires both proof freshness and fresh database provider snapshot evidence for the selected market.
+- Route mismatch: `/api/internal/live-runtime/status` adds a `providerSnapshots` object with selected market id, latest provider snapshot age, max age, source list, snapshot count, accepting-order count, and market-maker-eligible count.
+- Fields Holiwyn still needs but backend/provider does not fully provide: multi-event provider polling state, durable provider poll run records, and per-market runtime health for all active markets remain P1/P2. This cycle checks the selected one-event runtime market only.
+- Temporary mock/static data: none added. The route reads existing DB rows and spends no provider quota.
+- Future migration concern: selected-market status is enough for the current one-event local runtime, but production/local multi-event runtime should report provider freshness across every active event and market family.

@@ -14526,3 +14526,14 @@ Known limitations:
 - API/data dependencies: status API freshness now includes `liveProofAgeAtCompletionHours`, `liveProofCurrentAgeHours`, `maxLiveProofAgeHours`, and `liveProofFresh`.
 - Proof needed: focused status service tests, route proof, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: live proof freshness still comes from local artifact evidence. Production should persist provider poll timestamps and freshness directly in runtime storage.
+
+## Cycle LIVERUNTIMEDBFRESHNESS - DB Provider Snapshot Freshness
+
+- Feature/page worked on: backend local internal live-runtime status truth.
+- Frontend components touched: none.
+- Important functions/services touched: updated `src/server/services/liveRuntimeStatus.ts` and `src/__tests__/liveRuntimeStatus.service.test.ts`.
+- User/runtime interactions supported: local operator or internal testing platform can call `GET /api/internal/live-runtime/status` and see whether the selected market has fresh stored provider quote snapshots in the database, not only fresh proof artifacts.
+- State transitions: none. This is a read-only `ReferenceQuoteSnapshot` check; it does not call The Odds API, spend quota, start processes, mutate markets, place orders, or change settlement state.
+- API/data dependencies: reads selected market id from phase/completion artifacts, then reads `ReferenceQuoteSnapshot` rows for that market and reports `providerSnapshots.checked`, `fresh`, `snapshotCount`, `latestFetchedAt`, `latestAgeHours`, `sources`, `acceptingOrderSnapshotCount`, and `mmEligibleSnapshotCount`.
+- Proof needed: focused status service tests, live route proof showing stored sportsbook snapshots are fresh, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this narrows local runtime truth but is still a selected-market check. Multi-event runtime should eventually report provider snapshot freshness for every active internal tester event/market.

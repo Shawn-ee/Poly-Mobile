@@ -1,13 +1,32 @@
 const readFile = jest.fn();
+const referenceQuoteSnapshotFindMany = jest.fn();
 
 jest.mock("node:fs/promises", () => ({
   readFile,
+}));
+
+jest.mock("@/lib/db", () => ({
+  prisma: {
+    referenceQuoteSnapshot: {
+      findMany: (...args: unknown[]) => referenceQuoteSnapshotFindMany(...args),
+    },
+  },
 }));
 
 import { getLocalLiveRuntimeStatus } from "@/server/services/liveRuntimeStatus";
 
 const nowIso = () => new Date().toISOString();
 const staleIso = () => new Date(Date.now() - 25 * 3_600_000).toISOString();
+const freshSnapshot = () => [
+  {
+    source: "sportsbook-odds",
+    fetchedAt: new Date(),
+    acceptingOrders: true,
+    mmEligible: true,
+    qualityStatus: "available",
+    reason: null,
+  },
+];
 
 const makeCompletionAudit = (
   generatedAt = nowIso(),
@@ -59,7 +78,7 @@ const makePhaseAudit = (generatedAt = nowIso()) => ({
   generatedAt,
   pass: true,
   selectedMarket: {
-    marketId: "phase-market",
+    id: "phase-market",
   },
 });
 
@@ -75,6 +94,8 @@ const makeWatchdog = (generatedAt = nowIso()) => ({
 describe("live runtime status service", () => {
   beforeEach(() => {
     readFile.mockReset();
+    referenceQuoteSnapshotFindMany.mockReset();
+    referenceQuoteSnapshotFindMany.mockResolvedValue(freshSnapshot());
   });
 
   test("returns ready only when audits pass and proof artifacts are fresh", async () => {
@@ -99,6 +120,20 @@ describe("live runtime status service", () => {
       liveProofFresh: true,
     });
     expect(status.freshness.liveProofCurrentAgeHours).toBeGreaterThanOrEqual(1);
+    expect(status.providerSnapshots).toMatchObject({
+      checked: true,
+      fresh: true,
+      marketId: "phase-market",
+      snapshotCount: 1,
+      sources: ["sportsbook-odds"],
+      acceptingOrderSnapshotCount: 1,
+      mmEligibleSnapshotCount: 1,
+    });
+    expect(referenceQuoteSnapshotFindMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { marketId: "phase-market" },
+      }),
+    );
     expect(status.gaps.p0).toEqual([]);
     expect(status.runtimeTruth.providerQuotaUsedByStatus).toBe(false);
   });
@@ -140,5 +175,35 @@ describe("live runtime status service", () => {
     expect(status.freshness.completionAuditFresh).toBe(true);
     expect(status.freshness.liveProofCurrentAgeHours).toBeGreaterThan(24);
     expect(status.freshness.liveProofFresh).toBe(false);
+  });
+
+  test("returns needs_attention when selected market provider snapshots are stale in the database", async () => {
+    referenceQuoteSnapshotFindMany.mockResolvedValue([
+      {
+        source: "sportsbook-odds",
+        fetchedAt: new Date(Date.now() - 25 * 3_600_000),
+        acceptingOrders: true,
+        mmEligible: true,
+        qualityStatus: "available",
+        reason: null,
+      },
+    ]);
+    readFile.mockImplementation(async (filePath: string) => {
+      if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
+      if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
+      if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      throw new Error(`unexpected path ${filePath}`);
+    });
+
+    const status = await getLocalLiveRuntimeStatus();
+
+    expect(status.status).toBe("needs_attention");
+    expect(status.providerSnapshots).toMatchObject({
+      checked: true,
+      fresh: false,
+      marketId: "phase-market",
+      reason: "provider_snapshots_stale",
+      snapshotCount: 1,
+    });
   });
 });

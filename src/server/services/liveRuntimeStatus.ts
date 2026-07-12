@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import { prisma } from "@/lib/db";
 
 const COMPLETION_AUDIT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json";
@@ -40,6 +41,66 @@ const ageHours = (generatedAt: unknown) => {
 
 const numberValue = (value: unknown) => (typeof value === "number" && Number.isFinite(value) ? value : null);
 
+const stringValue = (value: unknown) => (typeof value === "string" && value.length > 0 ? value : null);
+
+async function getProviderSnapshotFreshness(params: {
+  marketId: string | null;
+  maxAgeHours: number | null;
+}) {
+  if (!params.marketId) {
+    return {
+      checked: false,
+      fresh: false,
+      marketId: null,
+      reason: "missing_selected_market_id",
+      snapshotCount: 0,
+      latestFetchedAt: null,
+      latestAgeHours: null,
+      maxAgeHours: params.maxAgeHours,
+      sources: [],
+      acceptingOrderSnapshotCount: 0,
+      mmEligibleSnapshotCount: 0,
+    };
+  }
+
+  const snapshots = await prisma.referenceQuoteSnapshot.findMany({
+    where: { marketId: params.marketId },
+    select: {
+      source: true,
+      fetchedAt: true,
+      acceptingOrders: true,
+      mmEligible: true,
+      qualityStatus: true,
+      reason: true,
+    },
+    orderBy: { fetchedAt: "desc" },
+  });
+  const latest = snapshots[0] ?? null;
+  const latestAgeHours = latest ? Number(((Date.now() - latest.fetchedAt.getTime()) / 3_600_000).toFixed(2)) : null;
+  const fresh =
+    snapshots.length > 0 &&
+    typeof latestAgeHours === "number" &&
+    typeof params.maxAgeHours === "number" &&
+    latestAgeHours <= params.maxAgeHours;
+  const sources = Array.from(new Set(snapshots.map((snapshot) => snapshot.source))).sort();
+
+  return {
+    checked: true,
+    fresh,
+    marketId: params.marketId,
+    reason: snapshots.length === 0 ? "missing_provider_snapshots" : fresh ? null : "provider_snapshots_stale",
+    snapshotCount: snapshots.length,
+    latestFetchedAt: latest?.fetchedAt.toISOString() ?? null,
+    latestAgeHours,
+    maxAgeHours: params.maxAgeHours,
+    sources,
+    acceptingOrderSnapshotCount: snapshots.filter((snapshot) => snapshot.acceptingOrders).length,
+    mmEligibleSnapshotCount: snapshots.filter((snapshot) => snapshot.mmEligible).length,
+    latestQualityStatus: latest?.qualityStatus ?? null,
+    latestReason: latest?.reason ?? null,
+  };
+}
+
 export async function getLocalLiveRuntimeStatus() {
   const [completionAudit, phaseAudit, watchdog] = await Promise.all([
     readJson(COMPLETION_AUDIT_PATH),
@@ -56,6 +117,15 @@ export async function getLocalLiveRuntimeStatus() {
     typeof liveProofAgeAtCompletionHours === "number" && typeof completionAgeHours === "number"
       ? Number((liveProofAgeAtCompletionHours + completionAgeHours).toFixed(2))
       : null;
+  const selectedMarketId =
+    stringValue(getPath(phaseAudit, ["selectedMarket", "id"])) ??
+    stringValue(getPath(phaseAudit, ["selectedMarket", "marketId"])) ??
+    stringValue(getPath(completionAudit, ["selectedMarket", "id"])) ??
+    stringValue(getPath(completionAudit, ["selectedMarket", "marketId"]));
+  const providerSnapshots = await getProviderSnapshotFreshness({
+    marketId: selectedMarketId,
+    maxAgeHours: maxLiveProofAgeHours,
+  });
   const p0Gaps = asStringArray(getPath(completionAudit, ["gaps", "p0"]));
   const artifactFreshness = {
     maxCompletionAuditAgeHours: 24,
@@ -83,7 +153,8 @@ export async function getLocalLiveRuntimeStatus() {
     artifactFreshness.completionAuditFresh &&
     artifactFreshness.phaseAuditFresh &&
     artifactFreshness.watchdogFresh &&
-    artifactFreshness.liveProofFresh;
+    artifactFreshness.liveProofFresh &&
+    providerSnapshots.fresh;
 
   return {
     generatedAt: new Date().toISOString(),
@@ -117,6 +188,7 @@ export async function getLocalLiveRuntimeStatus() {
       p2: asStringArray(getPath(completionAudit, ["gaps", "p2"])),
     },
     freshness: artifactFreshness,
+    providerSnapshots,
     artifacts: {
       completionAudit: {
         path: COMPLETION_AUDIT_PATH,
