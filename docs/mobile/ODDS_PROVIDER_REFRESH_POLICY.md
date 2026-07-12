@@ -60,6 +60,13 @@ The mobile event detail route classifies provider quote snapshots as:
 - `stale`: snapshot is older than the stale threshold.
 - `unavailable`: no snapshot exists.
 
+The local internal status route intentionally reports two freshness lenses:
+
+- Local proof freshness: whether the selected market has stored provider evidence fresh enough for the no-quota internal runtime proof window.
+- Mobile-route freshness: whether the same selected market is currently `ready`, `refresh_due`, `stale`, or `unavailable` under the 60/90-second live display thresholds.
+
+This means `/api/internal/live-runtime/status` can be `ready` for cached local internal testing while also reporting `providerSnapshots.mobileLifecycleStatus=stale`. That is expected in no-quota mode. To refresh mobile-visible live odds, use the explicit quota-capped provider refresh commands.
+
 The live proof intentionally forces the selected market's existing quote snapshots stale before a refresh, then proves the route returns to `ready` after a live provider refresh.
 
 The stale-guard proof intentionally forces the selected market's stored provider snapshots stale, pauses the `LIVE` market with `settlementStatus=paused_provider_stale`, verifies `POST /api/orders` rejects with `MARKET_UNAVAILABLE`, then restores the original market and snapshot timestamps. This proof is local and quota-free.

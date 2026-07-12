@@ -27,6 +27,16 @@ const freshSnapshot = () => [
     reason: null,
   },
 ];
+const refreshDueSnapshot = () => [
+  {
+    source: "sportsbook-odds",
+    fetchedAt: new Date(Date.now() - 65_000),
+    acceptingOrders: true,
+    mmEligible: true,
+    qualityStatus: "available",
+    reason: null,
+  },
+];
 
 const makeCompletionAudit = (
   generatedAt = nowIso(),
@@ -159,11 +169,19 @@ describe("live runtime status service", () => {
     expect(status.providerSnapshots).toMatchObject({
       checked: true,
       fresh: true,
+      freshnessBasis: "local_proof_window",
       marketId: "phase-market",
       snapshotCount: 1,
       sources: ["sportsbook-odds"],
       acceptingOrderSnapshotCount: 1,
       mmEligibleSnapshotCount: 1,
+      mobileRouteFresh: true,
+      mobileRouteRefreshDue: false,
+      mobileRouteStale: false,
+      mobileLifecycleStatus: "ready",
+      mobileRefreshDueSeconds: 60,
+      mobileStaleAfterSeconds: 90,
+      nextProviderAction: "none",
     });
     expect(referenceQuoteSnapshotFindMany).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -266,6 +284,32 @@ describe("live runtime status service", () => {
       marketId: "phase-market",
       reason: "provider_snapshots_stale",
       snapshotCount: 1,
+    });
+  });
+
+  test("reports mobile route freshness separately from local proof freshness", async () => {
+    referenceQuoteSnapshotFindMany.mockResolvedValue(refreshDueSnapshot());
+    readFile.mockImplementation(async (filePath: string) => {
+      if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
+      if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
+      if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
+      if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
+      throw new Error(`unexpected path ${filePath}`);
+    });
+
+    const status = await getLocalLiveRuntimeStatus();
+
+    expect(status.status).toBe("ready");
+    expect(status.providerSnapshots).toMatchObject({
+      fresh: true,
+      mobileRouteFresh: false,
+      mobileRouteRefreshDue: true,
+      mobileRouteStale: false,
+      mobileLifecycleStatus: "refresh_due",
+      mobileRefreshDueSeconds: 60,
+      mobileStaleAfterSeconds: 90,
+      nextProviderAction: "refresh_provider_snapshots",
     });
   });
 

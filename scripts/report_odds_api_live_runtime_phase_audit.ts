@@ -260,6 +260,10 @@ async function main() {
         getPath(localRuntimeStatusBody, ["freshness", "watchdogFresh"]) === true &&
         getPath(localRuntimeStatusBody, ["freshness", "liveProofFresh"]) === true &&
         getPath(localRuntimeStatusBody, ["providerSnapshots", "fresh"]) === true &&
+        getPath(localRuntimeStatusBody, ["providerSnapshots", "freshnessBasis"]) === "local_proof_window" &&
+        typeof getPath(localRuntimeStatusBody, ["providerSnapshots", "mobileLifecycleStatus"]) === "string" &&
+        typeof getPath(localRuntimeStatusBody, ["providerSnapshots", "mobileStaleAfterSeconds"]) === "number" &&
+        typeof getPath(localRuntimeStatusBody, ["providerSnapshots", "nextProviderAction"]) === "string" &&
         Number(getPath(localRuntimeStatusBody, ["providerSnapshots", "snapshotCount"]) ?? 0) > 0 &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "supervisor", "checked"]) === true &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "resultPoller", "checked"]) === true &&
@@ -268,7 +272,7 @@ async function main() {
         (getPath(localRuntimeStatusBody, ["gaps", "p0"]) as unknown[]).length === 0,
       evidence: [`${baseUrl}/api/internal/live-runtime/status`],
       notes:
-        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, and read-only supervisor/result-poller process state. It does not require loops to be running to report local capability ready, but it must expose whether they are running right now.",
+        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, mobile-route freshness/stale thresholds, and read-only supervisor/result-poller process state. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
     }),
     requirement({
       id: "quota-policy",

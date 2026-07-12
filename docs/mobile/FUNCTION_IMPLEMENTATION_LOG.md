@@ -14559,3 +14559,14 @@ Known limitations:
 - API/data dependencies: the route now includes `managedProcesses.supervisor`, `managedProcesses.resultPoller`, `managedProcesses.anyLoopRunning`, and `managedProcesses.quotaSpendingLoopRunning`. The phase audit now requires this process visibility and fails if a quota-spending loop is currently running during the no-quota status check.
 - Proof needed: focused status service tests, direct live route proof, `npm run mobile:one-event-phase-audit`, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this reports local process truth from `.runtime` state and pid existence. Production should use durable service heartbeats and a real process supervisor instead of local proof/process files.
+
+## Cycle LIVERUNTIMEFRESHNESSLENSES - Proof vs Mobile Freshness Truth
+
+- Feature/page worked on: backend local internal live-runtime status truth.
+- Frontend components touched: none.
+- Important functions/services touched: updated `src/server/services/liveRuntimeStatus.ts`, `src/__tests__/liveRuntimeStatus.service.test.ts`, and `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: local operator or internal testing platform can call `GET /api/internal/live-runtime/status` and see both the local proof freshness window and the mobile live-route freshness window for the selected provider-backed market.
+- State transitions: none. This is a read-only status contract change over stored `ReferenceQuoteSnapshot` rows. It does not call The Odds API, refresh provider data, start loops, mutate markets, place orders, or change settlement state.
+- API/data dependencies: `providerSnapshots` now includes `freshnessBasis=local_proof_window`, `latestAgeSeconds`, `mobileRouteFresh`, `mobileRouteRefreshDue`, `mobileRouteStale`, `mobileLifecycleStatus`, `mobileRefreshDueSeconds`, `mobileStaleAfterSeconds`, `mobileRefreshDueAt`, `mobileStaleAt`, and `nextProviderAction`.
+- Proof needed: focused status service tests, direct live route proof, `npm run mobile:one-event-phase-audit`, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: local runtime readiness can remain ready while mobile-route provider freshness is stale, because cached local internal testing is intentionally no-quota by default. To get mobile-fresh odds, run the explicit quota-capped provider refresh path.

@@ -9,6 +9,8 @@ const WATCHDOG_PATH =
   "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json";
 const SUPERVISOR_STATE_PATH = ".runtime/one-event-live-supervisor/supervisor-process-state.json";
 const RESULT_POLLER_STATE_PATH = ".runtime/one-event-result-poller/result-poller-process-state.json";
+const MOBILE_REFRESH_DUE_SECONDS = 60;
+const MOBILE_STALE_AFTER_SECONDS = 90;
 
 type JsonObject = Record<string, unknown>;
 
@@ -133,27 +135,61 @@ async function getProviderSnapshotFreshness(params: {
   });
   const latest = snapshots[0] ?? null;
   const latestAgeHours = latest ? Number(((Date.now() - latest.fetchedAt.getTime()) / 3_600_000).toFixed(2)) : null;
+  const latestAgeSeconds = latest ? Math.max(0, Math.round((Date.now() - latest.fetchedAt.getTime()) / 1000)) : null;
   const fresh =
     snapshots.length > 0 &&
     typeof latestAgeHours === "number" &&
     typeof params.maxAgeHours === "number" &&
     latestAgeHours <= params.maxAgeHours;
+  const mobileLifecycleStatus =
+    latestAgeSeconds == null
+      ? "unavailable"
+      : latestAgeSeconds > MOBILE_STALE_AFTER_SECONDS
+        ? "stale"
+        : latestAgeSeconds >= MOBILE_REFRESH_DUE_SECONDS
+          ? "refresh_due"
+          : "ready";
+  const mobileRouteFresh = mobileLifecycleStatus === "ready";
+  const mobileRouteRefreshDue = mobileLifecycleStatus === "refresh_due";
+  const mobileRouteStale = mobileLifecycleStatus === "stale";
   const sources = Array.from(new Set(snapshots.map((snapshot) => snapshot.source))).sort();
 
   return {
     checked: true,
     fresh,
+    freshnessBasis: "local_proof_window",
     marketId: params.marketId,
     reason: snapshots.length === 0 ? "missing_provider_snapshots" : fresh ? null : "provider_snapshots_stale",
     snapshotCount: snapshots.length,
     latestFetchedAt: latest?.fetchedAt.toISOString() ?? null,
     latestAgeHours,
+    latestAgeSeconds,
     maxAgeHours: params.maxAgeHours,
     sources,
     acceptingOrderSnapshotCount: snapshots.filter((snapshot) => snapshot.acceptingOrders).length,
     mmEligibleSnapshotCount: snapshots.filter((snapshot) => snapshot.mmEligible).length,
     latestQualityStatus: latest?.qualityStatus ?? null,
     latestReason: latest?.reason ?? null,
+    mobileRouteFresh,
+    mobileRouteRefreshDue,
+    mobileRouteStale,
+    mobileLifecycleStatus,
+    mobileRefreshDueSeconds: MOBILE_REFRESH_DUE_SECONDS,
+    mobileStaleAfterSeconds: MOBILE_STALE_AFTER_SECONDS,
+    mobileRefreshDueAt: latest
+      ? new Date(latest.fetchedAt.getTime() + MOBILE_REFRESH_DUE_SECONDS * 1000).toISOString()
+      : null,
+    mobileStaleAt: latest
+      ? new Date(latest.fetchedAt.getTime() + MOBILE_STALE_AFTER_SECONDS * 1000).toISOString()
+      : null,
+    nextProviderAction:
+      mobileLifecycleStatus === "ready"
+        ? "none"
+        : mobileLifecycleStatus === "refresh_due"
+          ? "refresh_provider_snapshots"
+          : mobileLifecycleStatus === "stale"
+            ? "refresh_provider_snapshots_or_keep_cached_test_mode"
+            : "import_or_refresh_provider_snapshots",
   };
 }
 

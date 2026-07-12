@@ -10364,3 +10364,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable service heartbeat records, provider poll run records, result poll run records, and production process ownership remain P1/P2. Current process truth comes from `.runtime` state files and OS pid checks.
 - Temporary mock/static data: none added. The route reads local process-state files only and spends no provider quota.
 - Future migration concern: for production or multi-event runtime, replace local pid checks with durable supervisor-managed service state, heartbeat timestamps, and per-event queue status.
+
+## Cycle LIVERUNTIMEFRESHNESSLENSES - Proof vs Mobile Freshness Truth
+
+- Closed or narrowed: the local live-runtime status route now separates the 24-hour local proof freshness window from the 60/90-second mobile route provider freshness window.
+- Route mismatch: `/api/internal/live-runtime/status` adds mobile-route freshness fields under `providerSnapshots` while preserving the existing `fresh` field as local proof-window freshness.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable provider poll run records, next-refresh scheduling state, and multi-event mobile freshness health remain P1/P2. The current route computes freshness from selected-market `ReferenceQuoteSnapshot` rows only.
+- Temporary mock/static data: none added. The route does not call The Odds API or invent provider data.
+- Future migration concern: production/local multi-event runtime should make this freshness model durable and cover all active provider-backed markets, with clear operator actions for stale mobile odds.
