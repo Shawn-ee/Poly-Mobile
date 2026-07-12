@@ -249,7 +249,7 @@ async function main() {
       id: "local-status-api-ready",
       priority: "P0",
       requirement:
-        "Local live-runtime status API reports ready with fresh proof artifacts and fresh selected-market provider snapshots.",
+        "Local live-runtime status API reports ready with fresh proof artifacts, fresh selected-market provider snapshots, and current managed process visibility.",
       achieved:
         localRuntimeStatus.ok === true &&
         getPath(localRuntimeStatusBody, ["status"]) === "ready" &&
@@ -261,11 +261,14 @@ async function main() {
         getPath(localRuntimeStatusBody, ["freshness", "liveProofFresh"]) === true &&
         getPath(localRuntimeStatusBody, ["providerSnapshots", "fresh"]) === true &&
         Number(getPath(localRuntimeStatusBody, ["providerSnapshots", "snapshotCount"]) ?? 0) > 0 &&
+        getPath(localRuntimeStatusBody, ["managedProcesses", "supervisor", "checked"]) === true &&
+        getPath(localRuntimeStatusBody, ["managedProcesses", "resultPoller", "checked"]) === true &&
+        getPath(localRuntimeStatusBody, ["managedProcesses", "quotaSpendingLoopRunning"]) === false &&
         Array.isArray(getPath(localRuntimeStatusBody, ["gaps", "p0"])) &&
         (getPath(localRuntimeStatusBody, ["gaps", "p0"]) as unknown[]).length === 0,
       evidence: [`${baseUrl}/api/internal/live-runtime/status`],
       notes:
-        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness and DB-backed ReferenceQuoteSnapshot freshness for the selected market.",
+        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, and read-only supervisor/result-poller process state. It does not require loops to be running to report local capability ready, but it must expose whether they are running right now.",
     }),
     requirement({
       id: "quota-policy",

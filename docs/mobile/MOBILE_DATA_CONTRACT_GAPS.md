@@ -10356,3 +10356,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: multi-event provider freshness and durable production runtime health remain P1/P2. This gate still targets the selected one-event local runtime.
 - Temporary mock/static data: none added. The audit reads local backend routes and existing proof artifacts only, and spends no provider quota.
 - Future migration concern: once runtime expands beyond one selected event, the phase audit should gate an all-active-markets status endpoint instead of a selected-market status route.
+
+## Cycle LIVERUNTIMEPROCESSVISIBILITY - Managed Runtime Process Visibility
+
+- Closed or narrowed: the local live-runtime status route now distinguishes proven runtime capability from current process state by reporting whether the one-event supervisor and result poller are actually running right now.
+- Route mismatch: `/api/internal/live-runtime/status` adds `managedProcesses` with supervisor/result-poller process-state fields and quota-spending loop flags. This remains a local/dev-only status route.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable service heartbeat records, provider poll run records, result poll run records, and production process ownership remain P1/P2. Current process truth comes from `.runtime` state files and OS pid checks.
+- Temporary mock/static data: none added. The route reads local process-state files only and spends no provider quota.
+- Future migration concern: for production or multi-event runtime, replace local pid checks with durable supervisor-managed service state, heartbeat timestamps, and per-event queue status.

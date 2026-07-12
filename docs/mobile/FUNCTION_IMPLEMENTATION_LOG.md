@@ -14548,3 +14548,14 @@ Known limitations:
 - API/data dependencies: reads `GET /api/internal/live-runtime/status` and records the response in the phase audit summary under `localRuntimeStatus`.
 - Proof needed: `npm run mobile:one-event-phase-audit`, focused status route/service tests, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this gates the one-event local runtime. Multi-event production/runtime status should eventually verify all active events and markets.
+
+## Cycle LIVERUNTIMEPROCESSVISIBILITY - Managed Runtime Process Visibility
+
+- Feature/page worked on: backend local internal live-runtime status truth.
+- Frontend components touched: none.
+- Important functions/services touched: updated `src/server/services/liveRuntimeStatus.ts`, `src/__tests__/liveRuntimeStatus.service.test.ts`, and `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: local operator or internal testing platform can call `GET /api/internal/live-runtime/status` and see whether the one-event supervisor and dedicated result poller are known, currently running, continuous, and configured to spend provider quota.
+- State transitions: none. This is a read-only check over local `.runtime` process-state files plus OS pid existence. It does not start/stop loops, call The Odds API, mutate markets, place orders, or change settlement state.
+- API/data dependencies: the route now includes `managedProcesses.supervisor`, `managedProcesses.resultPoller`, `managedProcesses.anyLoopRunning`, and `managedProcesses.quotaSpendingLoopRunning`. The phase audit now requires this process visibility and fails if a quota-spending loop is currently running during the no-quota status check.
+- Proof needed: focused status service tests, direct live route proof, `npm run mobile:one-event-phase-audit`, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this reports local process truth from `.runtime` state and pid existence. Production should use durable service heartbeats and a real process supervisor instead of local proof/process files.

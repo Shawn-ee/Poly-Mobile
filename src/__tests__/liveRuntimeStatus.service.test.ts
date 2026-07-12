@@ -91,11 +91,45 @@ const makeWatchdog = (generatedAt = nowIso()) => ({
   },
 });
 
+const makeSupervisorState = () => ({
+  pid: 12345,
+  startedAt: nowIso(),
+  continuous: true,
+  maxIterations: 0,
+  intervalSeconds: 2,
+  runProviderProof: false,
+  runStaleGuard: true,
+  enforceStaleGuard: false,
+  runLiveResultIngestion: false,
+  runApprovedResultSettlement: true,
+});
+
+const makeResultPollerState = () => ({
+  pid: 23456,
+  startedAt: nowIso(),
+  continuous: true,
+  maxIterations: 0,
+  intervalSeconds: 1,
+  runLiveResultIngestion: false,
+  runApprovedResultSettlement: false,
+});
+
 describe("live runtime status service", () => {
+  let killSpy: jest.SpyInstance;
+
   beforeEach(() => {
     readFile.mockReset();
     referenceQuoteSnapshotFindMany.mockReset();
     referenceQuoteSnapshotFindMany.mockResolvedValue(freshSnapshot());
+    killSpy = jest.spyOn(process, "kill").mockImplementation(() => {
+      const error = new Error("missing process") as NodeJS.ErrnoException;
+      error.code = "ESRCH";
+      throw error;
+    });
+  });
+
+  afterEach(() => {
+    killSpy.mockRestore();
   });
 
   test("returns ready only when audits pass and proof artifacts are fresh", async () => {
@@ -103,6 +137,8 @@ describe("live runtime status service", () => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
+      if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
       throw new Error(`unexpected path ${filePath}`);
     });
 
@@ -136,6 +172,26 @@ describe("live runtime status service", () => {
     );
     expect(status.gaps.p0).toEqual([]);
     expect(status.runtimeTruth.providerQuotaUsedByStatus).toBe(false);
+    expect(status.managedProcesses).toMatchObject({
+      anyLoopRunning: false,
+      quotaSpendingLoopRunning: false,
+      supervisor: {
+        known: true,
+        pid: 12345,
+        running: false,
+        usesProviderQuota: false,
+        modes: {
+          staleGuard: true,
+          approvedResultSettlement: true,
+        },
+      },
+      resultPoller: {
+        known: true,
+        pid: 23456,
+        running: false,
+        usesProviderQuota: false,
+      },
+    });
   });
 
   test("returns needs_attention when a required proof artifact is stale", async () => {
@@ -143,6 +199,8 @@ describe("live runtime status service", () => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit(staleIso()));
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
+      if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
       throw new Error(`unexpected path ${filePath}`);
     });
 
@@ -166,6 +224,8 @@ describe("live runtime status service", () => {
       }
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
+      if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
       throw new Error(`unexpected path ${filePath}`);
     });
 
@@ -192,6 +252,8 @@ describe("live runtime status service", () => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
+      if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
       throw new Error(`unexpected path ${filePath}`);
     });
 
@@ -204,6 +266,49 @@ describe("live runtime status service", () => {
       marketId: "phase-market",
       reason: "provider_snapshots_stale",
       snapshotCount: 1,
+    });
+  });
+
+  test("reports current managed loop process state without spending provider quota", async () => {
+    killSpy.mockImplementation((pid: number | string) => {
+      if (pid === 12345) return true;
+      const error = new Error("missing process") as NodeJS.ErrnoException;
+      error.code = "ESRCH";
+      throw error;
+    });
+    readFile.mockImplementation(async (filePath: string) => {
+      if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
+      if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
+      if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("supervisor-process-state")) {
+        return JSON.stringify({
+          ...makeSupervisorState(),
+          runProviderProof: true,
+        });
+      }
+      if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
+      throw new Error(`unexpected path ${filePath}`);
+    });
+
+    const status = await getLocalLiveRuntimeStatus();
+
+    expect(status.status).toBe("ready");
+    expect(status.runtimeTruth.providerQuotaUsedByStatus).toBe(false);
+    expect(status.managedProcesses).toMatchObject({
+      anyLoopRunning: true,
+      quotaSpendingLoopRunning: true,
+      supervisor: {
+        running: true,
+        usesProviderQuota: true,
+        modes: {
+          providerProof: true,
+          liveResultIngestion: false,
+        },
+      },
+      resultPoller: {
+        running: false,
+        usesProviderQuota: false,
+      },
     });
   });
 });

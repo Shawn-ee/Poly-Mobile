@@ -7,6 +7,8 @@ const PHASE_AUDIT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json";
 const WATCHDOG_PATH =
   "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json";
+const SUPERVISOR_STATE_PATH = ".runtime/one-event-live-supervisor/supervisor-process-state.json";
+const RESULT_POLLER_STATE_PATH = ".runtime/one-event-result-poller/result-poller-process-state.json";
 
 type JsonObject = Record<string, unknown>;
 
@@ -42,6 +44,60 @@ const ageHours = (generatedAt: unknown) => {
 const numberValue = (value: unknown) => (typeof value === "number" && Number.isFinite(value) ? value : null);
 
 const stringValue = (value: unknown) => (typeof value === "string" && value.length > 0 ? value : null);
+
+const booleanValue = (value: unknown) => (typeof value === "boolean" ? value : null);
+
+const pidRunning = (pid: number | null) => {
+  if (!pid) return false;
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch (error) {
+    return (error as NodeJS.ErrnoException).code === "EPERM";
+  }
+};
+
+async function getManagedProcessStatus(params: {
+  statePath: string;
+  kind: "supervisor" | "result-poller";
+}) {
+  const state = await readJson(params.statePath);
+  const pid = numberValue(state?.pid);
+  const running = pidRunning(pid);
+  const continuous = booleanValue(state?.continuous);
+  const runProviderProof = booleanValue(state?.runProviderProof);
+  const runLiveResultIngestion = booleanValue(state?.runLiveResultIngestion);
+
+  return {
+    kind: params.kind,
+    checked: true,
+    statePath: params.statePath,
+    known: state != null,
+    pid,
+    running,
+    startedAt: stringValue(state?.startedAt),
+    continuous,
+    maxIterations: numberValue(state?.maxIterations),
+    intervalSeconds: numberValue(state?.intervalSeconds),
+    usesProviderQuota:
+      params.kind === "supervisor"
+        ? runProviderProof === true || runLiveResultIngestion === true
+        : runLiveResultIngestion === true,
+    modes:
+      params.kind === "supervisor"
+        ? {
+            providerProof: runProviderProof === true,
+            staleGuard: booleanValue(state?.runStaleGuard) === true,
+            staleGuardEnforced: booleanValue(state?.enforceStaleGuard) === true,
+            liveResultIngestion: runLiveResultIngestion === true,
+            approvedResultSettlement: booleanValue(state?.runApprovedResultSettlement) === true,
+          }
+        : {
+            liveResultIngestion: runLiveResultIngestion === true,
+            approvedResultSettlement: booleanValue(state?.runApprovedResultSettlement) === true,
+          },
+  };
+}
 
 async function getProviderSnapshotFreshness(params: {
   marketId: string | null;
@@ -102,10 +158,12 @@ async function getProviderSnapshotFreshness(params: {
 }
 
 export async function getLocalLiveRuntimeStatus() {
-  const [completionAudit, phaseAudit, watchdog] = await Promise.all([
+  const [completionAudit, phaseAudit, watchdog, supervisorProcess, resultPollerProcess] = await Promise.all([
     readJson(COMPLETION_AUDIT_PATH),
     readJson(PHASE_AUDIT_PATH),
     readJson(WATCHDOG_PATH),
+    getManagedProcessStatus({ kind: "supervisor", statePath: SUPERVISOR_STATE_PATH }),
+    getManagedProcessStatus({ kind: "result-poller", statePath: RESULT_POLLER_STATE_PATH }),
   ]);
 
   const completionAgeHours = ageHours(completionAudit?.generatedAt);
@@ -189,6 +247,14 @@ export async function getLocalLiveRuntimeStatus() {
     },
     freshness: artifactFreshness,
     providerSnapshots,
+    managedProcesses: {
+      supervisor: supervisorProcess,
+      resultPoller: resultPollerProcess,
+      anyLoopRunning: supervisorProcess.running || resultPollerProcess.running,
+      quotaSpendingLoopRunning: supervisorProcess.usesProviderQuota || resultPollerProcess.usesProviderQuota,
+      note:
+        "Read-only live process check from local .runtime state and OS pid existence. Ready status is based on proven local capability and fresh data, not on requiring background loops to be running right now.",
+    },
     artifacts: {
       completionAudit: {
         path: COMPLETION_AUDIT_PATH,
