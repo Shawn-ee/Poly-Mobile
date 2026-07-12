@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T21:15:55.226Z",
+  "generatedAt": "2026-07-12T21:23:51.036Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -28,7 +28,7 @@
     "freshness": {
       "liveProofAgeHours": 14,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 5.93,
+      "watchdogAgeHours": 6.07,
       "maxWatchdogAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",

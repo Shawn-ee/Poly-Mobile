@@ -862,6 +862,30 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
       activeSettlementClosedEligibility: getPath(completionAudit, ["answers", "activeSettlementClosedEligibility"]),
       localWatchdog: getPath(completionAudit, ["answers", "localWatchdog"]),
     },
+    phaseCompletion: {
+      checked: completionAudit != null,
+      path: COMPLETION_AUDIT_PATH,
+      pass: pass(completionAudit),
+      generatedAt: completionAudit?.generatedAt ?? null,
+      providerQuotaUsedByStatus: false,
+      phaseCompleteForLocalInternalRuntime:
+        getPath(completionAudit, ["runtimeTruth", "phaseCompleteForLocalInternalRuntime"]) === true,
+      fullProductionRuntimeComplete:
+        getPath(completionAudit, ["runtimeTruth", "fullProductionRuntimeComplete"]) === true,
+      installedUnattendedService:
+        getPath(completionAudit, ["runtimeTruth", "installedUnattendedService"]) === true,
+      activeTesterSettlementExecutionAttempted:
+        getPath(completionAudit, ["runtimeTruth", "activeTesterSettlementExecutionAttempted"]) === true,
+      event: completionAudit?.event ?? null,
+      answers: completionAudit?.answers ?? {},
+      checks: completionAudit?.checks ?? {},
+      sourceEvidence: completionAudit?.sourceEvidence ?? {},
+      p0: asStringArray(getPath(completionAudit, ["gaps", "p0"])),
+      p1: asStringArray(getPath(completionAudit, ["gaps", "p1"])),
+      p2: asStringArray(getPath(completionAudit, ["gaps", "p2"])),
+      note:
+        "Read-only projection of the live-runtime completion audit. It answers the phase completion questions without starting loops, calling the provider, spending quota, or executing settlement.",
+    },
     checks: completionAudit?.checks ?? null,
     gaps: {
       p0: statusP0Gaps,

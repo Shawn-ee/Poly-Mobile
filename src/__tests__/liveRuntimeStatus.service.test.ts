@@ -579,6 +579,34 @@ describe("live runtime status service", () => {
     expect(status.gaps.p0).toEqual([]);
     expect(status.runtimeTruth.providerQuotaUsedByStatus).toBe(false);
     expect(status.runtimeTruth.activeEventClosedStateEligibilityProven).toBe(true);
+    expect(status.phaseCompletion).toMatchObject({
+      checked: true,
+      pass: true,
+      providerQuotaUsedByStatus: false,
+      phaseCompleteForLocalInternalRuntime: true,
+      fullProductionRuntimeComplete: false,
+      installedUnattendedService: false,
+      activeTesterSettlementExecutionAttempted: false,
+      event: {
+        title: "Spain vs France",
+        providerEventId: "odds-api-event-1",
+        localSlug: "odds-api-single-soccer-test",
+      },
+      answers: expect.objectContaining({
+        marketMakerContinuous: "foreground supervisor only",
+        oddsRefreshLiveOrReplay: "cached by default",
+        staleHandling: "stale markets reject orders",
+        lifecycle: "open paused closed proven",
+        activeSettlement: "wait for closed market",
+      }),
+      checks: {
+        internalTesterWatchdogKnown: true,
+      },
+      p0: [],
+      p1: ["installed service remains open"],
+      p2: [],
+      note: expect.stringContaining("Read-only projection"),
+    });
     expect(status.operatorNextActions).toMatchObject({
       recommendedFirstAction: "cached_internal_testing",
       defaultNoQuotaAction: "cached_internal_testing",

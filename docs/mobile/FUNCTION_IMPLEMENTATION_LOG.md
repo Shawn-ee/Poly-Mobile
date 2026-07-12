@@ -14846,3 +14846,14 @@ Known limitations:
 - API/data dependencies: composes existing local process status and operator action metadata. Phase audit now requires the new action to remain present with `requiresProviderKey=false` and `spendsProviderQuota=false`.
 - Proof needed: focused status service test, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this improves operator guidance but is still local command guidance, not authenticated production service control.
+
+## Cycle RUNTIMESTATUSPHASECOMPLETION - Runtime Status Phase Completion Contract
+
+- Feature/page worked on: backend local internal runtime status contract.
+- Frontend components touched: none.
+- Important functions/services touched: updated `src/server/services/liveRuntimeStatus.ts`, `src/__tests__/liveRuntimeStatus.service.test.ts`, and `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/status` and read `phaseCompletion`, a no-quota projection of the completion audit answers for market-maker continuity, live-vs-replay odds mode, refresh cadence, quota protection, stale handling, lifecycle, active settlement, checks, source evidence, and P0/P1/P2 gaps.
+- State transitions: none. This is a read-only status projection and does not start loops, call The Odds API, spend quota, place orders, mutate lifecycle state, approve settlement, or execute active-event settlement.
+- API/data dependencies: reads `docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json` and exposes redacted completion data through the existing dev-only status route. Phase audit now requires the `phaseCompletion` block to remain present and P0-clean.
+- Proof needed: focused status service test, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this improves internal operator truth but remains local/dev-only audit projection, not an authenticated production control plane.

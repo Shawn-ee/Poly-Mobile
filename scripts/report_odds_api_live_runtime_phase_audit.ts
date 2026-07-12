@@ -339,6 +339,26 @@ async function main() {
         !!localRuntimeStatusBody &&
         getPath(localRuntimeStatusBody, ["runtimeTruth", "localInternalRuntimeReady"]) === true &&
         getPath(localRuntimeStatusBody, ["runtimeTruth", "providerQuotaUsedByStatus"]) === false &&
+        getPath(localRuntimeStatusBody, ["phaseCompletion", "checked"]) === true &&
+        getPath(localRuntimeStatusBody, ["phaseCompletion", "pass"]) === true &&
+        getPath(localRuntimeStatusBody, ["phaseCompletion", "providerQuotaUsedByStatus"]) === false &&
+        getPath(localRuntimeStatusBody, ["phaseCompletion", "phaseCompleteForLocalInternalRuntime"]) === true &&
+        getPath(localRuntimeStatusBody, ["phaseCompletion", "fullProductionRuntimeComplete"]) === false &&
+        getPath(localRuntimeStatusBody, ["phaseCompletion", "installedUnattendedService"]) === false &&
+        getPath(localRuntimeStatusBody, ["phaseCompletion", "activeTesterSettlementExecutionAttempted"]) === false &&
+        typeof getPath(localRuntimeStatusBody, ["phaseCompletion", "answers", "marketMakerContinuous"]) === "string" &&
+        typeof getPath(localRuntimeStatusBody, ["phaseCompletion", "answers", "oddsRefreshLiveOrReplay"]) === "string" &&
+        getPath(localRuntimeStatusBody, ["phaseCompletion", "answers", "oddsRefreshCadence"]) != null &&
+        typeof getPath(localRuntimeStatusBody, ["phaseCompletion", "answers", "oddsRefreshCadence"]) === "object" &&
+        getPath(localRuntimeStatusBody, ["phaseCompletion", "answers", "quotaProtection"]) != null &&
+        typeof getPath(localRuntimeStatusBody, ["phaseCompletion", "answers", "quotaProtection"]) === "object" &&
+        typeof getPath(localRuntimeStatusBody, ["phaseCompletion", "answers", "staleHandling"]) === "string" &&
+        typeof getPath(localRuntimeStatusBody, ["phaseCompletion", "answers", "lifecycle"]) === "string" &&
+        typeof getPath(localRuntimeStatusBody, ["phaseCompletion", "answers", "activeSettlement"]) === "string" &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["phaseCompletion", "p0"])) &&
+        (getPath(localRuntimeStatusBody, ["phaseCompletion", "p0"]) as unknown[]).length === 0 &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["phaseCompletion", "p1"])) &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["phaseCompletion", "p2"])) &&
         getPath(localRuntimeStatusBody, ["freshness", "completionAuditFresh"]) === true &&
         getPath(localRuntimeStatusBody, ["freshness", "phaseAuditFresh"]) === true &&
         getPath(localRuntimeStatusBody, ["freshness", "watchdogFresh"]) === true &&
