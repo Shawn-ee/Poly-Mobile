@@ -73,7 +73,7 @@ type OrderbookDepthEntry = {
   levels: ReturnType<typeof depthLevelsFromSnapshot>;
 };
 
-const MAX_MARKETS = 14;
+const MAX_MARKETS = 20;
 const MAX_DEPTH_LEVELS = 24;
 const STALE_AFTER_SECONDS = 90;
 const CHART_REFRESH_TTL_SECONDS = 60;

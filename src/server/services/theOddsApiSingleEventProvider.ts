@@ -544,10 +544,11 @@ function eventMetadata(params: {
     hiddenProviderMarketPolicy: {
       quarterAsianHandicapLines: "hidden_from_mobile_main_ui",
       asianTotalLines: "hidden_from_mobile_main_ui",
-      cleanSpreadLines: ["-2.5", "-1.5", "-0.5", "0.5", "1.5", "2.5"],
-      cleanTotalLines: ["0.5", "1.5", "2.5", "3.5"],
+      cleanSpreadLines: ["-3.5", "-2.5", "-1.5", "1.5", "2.5", "3.5"],
+      cleanTotalLines: ["0.5", "1.5", "2.5", "3.5", "4.5", "5.5"],
       supplementalAdvanceMarket: "holiwyn-owned-contract-fixture-because-provider-h2h-is-regulation-only",
-      supplementalSpreadMarkets: "holiwyn-owned-contract-fixture-clean-signed-half-goal-ladder",
+      supplementalSpreadMarkets: "holiwyn-owned-contract-fixture-clean-signed-half-goal-ladder-without-duplicative-half-goal-lines",
+      supplementalTotalMarkets: "holiwyn-owned-contract-fixture-clean-goal-total-ladder",
     },
     normalizedSoccer: {
       version: 2,
@@ -599,8 +600,10 @@ function supplementalKnockoutMarketSpecs(params: {
   const home = params.oddsEvent.home_team;
   const away = params.oddsEvent.away_team;
   const advance = h2hAdvanceProbabilities(params.markets, params.oddsEvent);
-  const spreadLines = [-2.5, -1.5, -0.5, 0.5, 1.5, 2.5];
+  const spreadLines = [-3.5, -2.5, -1.5, 1.5, 2.5, 3.5];
+  const totalLines = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5];
   const spreadProbability = (line: number) => clampPrice(0.5 + line * 0.09);
+  const overProbability = (line: number) => clampPrice(0.86 - line * 0.12);
 
   return [
     {
@@ -633,6 +636,25 @@ function supplementalKnockoutMarketSpecs(params: {
         outcomes: [
           { code: "HOME", name: `${home} ${formatSigned(line)}`, side: "home", probability: homeProbability },
           { code: "AWAY", name: `${away} ${formatSigned(awayLine)}`, side: "away", probability: clampPrice(1 - homeProbability) },
+        ],
+      };
+    }),
+    ...totalLines.map((line, index) => {
+      const probability = overProbability(line);
+      return {
+        key: `holiwyn-total-goals-${String(line).replace(".", "-")}`,
+        title: `Total goals ${line}`,
+        marketType: "total_goals",
+        marketGroupKey: "totals",
+        marketGroupTitle: "Total Goals",
+        period: "regulation",
+        displayOrder: 60 + index,
+        line,
+        unit: "goals",
+        participantName: null,
+        outcomes: [
+          { code: "OVER", name: `Over ${line}`, side: "over", probability },
+          { code: "UNDER", name: `Under ${line}`, side: "under", probability: clampPrice(1 - probability) },
         ],
       };
     }),

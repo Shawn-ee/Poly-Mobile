@@ -5,10 +5,11 @@ param(
   [string]$MobileApiBaseUrl = "http://172.16.200.14:3002",
   [string]$BackendBaseUrl = "http://127.0.0.1:3002",
   [string]$EventSlug = "odds-api-single-soccer-test",
-  [string]$LineMarketGroupKey = "spread",
-  [string]$LineValue = "0.5",
-  [string]$LineOutcomeSide = "home",
-  [string]$LineOutcomeLabel = "Argentina -0.5",
+  [string]$LineMarketGroupKey = "totals",
+  [string]$LineMarketType = "totals",
+  [string]$LineValue = "2.5",
+  [string]$LineOutcomeSide = "over",
+  [string]$LineOutcomeLabel = "Over 2.5",
   [string]$CashoutBidPrice = "0.58",
   [string]$Cycle = "ODDSAPIS23",
   [string]$OutputDir = "docs\mobile\screenshots\cycle-ODDSAPIS23-odds-api-s23-visible-flow",
@@ -319,7 +320,7 @@ try {
   Assert-NotContains -Path $detailTopXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "event-detail-chat")
 
   $lineXml = $null
-  $lineTokens = @("selection-provider-source-sportsbook-odds", "selection-market-type-spread", "selection-line-$LineValue", "selection-side-$LineOutcomeSide")
+  $lineTokens = @("selection-provider-source-sportsbook-odds", "selection-market-type-$LineMarketType", "selection-line-$LineValue", "selection-side-$LineOutcomeSide")
   for ($attempt = 1; (-not $lineXml) -and $attempt -le 8; $attempt++) {
     $candidate = Save-Hierarchy -Name "cycle-$Cycle-line-attempt-$attempt.xml"
     $candidateRaw = Get-Content -Raw -Path $candidate
@@ -339,18 +340,18 @@ try {
   }
   if (-not $lineXml) {
     Save-Screenshot -Name "cycle-$Cycle-line-not-found.png" | Out-Null
-    throw "Could not find sportsbook-backed spread line $LineValue on S23."
+    throw "Could not find sportsbook-backed $LineMarketType line $LineValue on S23."
   }
   Save-Screenshot -Name "cycle-$Cycle-line-market.png" | Out-Null
-  Assert-Contains -Path $lineXml -Expected @("selection-provider-source-sportsbook-odds", "selection-market-type-spread", "selection-line-$LineValue", "selection-side-$LineOutcomeSide", "line-market-sportsbook-odds", "market-source-sportsbook-readable")
-  Assert-AnyContains -Path $lineXml -AnyExpected @($LineOutcomeLabel, "Argentina") -Reason "selected sportsbook spread outcome label"
+  Assert-Contains -Path $lineXml -Expected @("selection-provider-source-sportsbook-odds", "selection-market-type-$LineMarketType", "selection-line-$LineValue", "selection-side-$LineOutcomeSide", "line-market-sportsbook-odds", "market-source-sportsbook-readable")
+  Assert-AnyContains -Path $lineXml -AnyExpected @($LineOutcomeLabel, "Over") -Reason "selected sportsbook line outcome label"
   Assert-NotContains -Path $lineXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
   Tap-NodeContainingAll -Path $lineXml -Tokens $lineTokens
   Start-Sleep -Seconds 2
   Save-Screenshot -Name "cycle-$Cycle-ticket-initial.png" | Out-Null
   $ticketXml = Save-Hierarchy -Name "cycle-$Cycle-ticket-initial.xml"
-  Assert-Contains -Path $ticketXml -Expected @("trade-ticket", "Choose an amount", "ticket-preset-25", "ticket-market-type-spread", "ticket-line-$LineValue", "ticket-provider-source-sportsbook-odds", "ticket-source-sportsbook-odds", "ticket-provider-backed-pricing", "ticket-sportsbook-odds-pricing")
+  Assert-Contains -Path $ticketXml -Expected @("trade-ticket", "Choose an amount", "ticket-preset-25", "ticket-market-type-$LineMarketType", "ticket-line-$LineValue", "ticket-provider-source-sportsbook-odds", "ticket-source-sportsbook-odds", "ticket-provider-backed-pricing", "ticket-sportsbook-odds-pricing")
   Assert-NotContains -Path $ticketXml -Unexpected @("Order Book", "Chat")
 
   Tap-Node -Path $ticketXml -Identifier "ticket-preset-25"
@@ -363,7 +364,7 @@ try {
   Start-Sleep -Seconds 7
   Save-Screenshot -Name "cycle-$Cycle-after-submit.png" | Out-Null
   $afterSubmitXml = Save-Hierarchy -Name "cycle-$Cycle-after-submit.xml"
-  Assert-Contains -Path $afterSubmitXml -Expected @("Portfolio", "portfolio-market-type-spread", "portfolio-line-$LineValue", "portfolio-provider-source-sportsbook-odds", "portfolio-provider-backed-pricing", "portfolio-sportsbook-odds-pricing")
+  Assert-Contains -Path $afterSubmitXml -Expected @("Portfolio", "portfolio-market-type-$LineMarketType", "portfolio-line-$LineValue", "portfolio-provider-source-sportsbook-odds", "portfolio-provider-backed-pricing", "portfolio-sportsbook-odds-pricing")
   Assert-Contains -Path $afterSubmitXml -Expected @("position-card-", "portfolio-position-cash-out-", "portfolio-position-source-badge")
   Assert-NotContains -Path $afterSubmitXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
@@ -399,7 +400,7 @@ try {
   Start-Sleep -Seconds 2
   Save-Screenshot -Name "cycle-$Cycle-portfolio-history.png" | Out-Null
   $historyXml = Save-Hierarchy -Name "cycle-$Cycle-portfolio-history.xml"
-  Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "activity-sold", "portfolio-market-type-spread", "portfolio-line-$LineValue", "portfolio-provider-source-sportsbook-odds")
+  Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "activity-sold", "portfolio-market-type-$LineMarketType", "portfolio-line-$LineValue", "portfolio-provider-source-sportsbook-odds")
   Assert-NotContains -Path $historyXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
   $artifacts = @(
@@ -439,7 +440,7 @@ try {
     eventSlug = $EventSlug
     selectedMarket = [ordered]@{
       marketGroupKey = $LineMarketGroupKey
-      marketType = "spread"
+      marketType = $LineMarketType
       line = $LineValue
       outcomeSide = $LineOutcomeSide
       outcomeLabel = $LineOutcomeLabel
@@ -453,7 +454,7 @@ try {
       homeKeepsMvpFeedClean = $true
       detailShowsGameLines = $true
       detailHidesOrderBookAndChat = $true
-      sportsbookSpreadLineVisible = $true
+      sportsbookLineVisible = $true
       ticketPreservesSportsbookLineIdentity = $true
       swipeSubmitReachedPortfolio = $true
       portfolioPreservesSportsbookLineIdentity = $true

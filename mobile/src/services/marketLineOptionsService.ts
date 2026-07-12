@@ -22,6 +22,13 @@ const isCleanHalfGoalLine = (value: string | null | undefined) => {
   return parsed !== null && Math.abs(parsed % 1) === 0.5;
 };
 
+const isMainUiLineForType = (type: string, value: string | null | undefined) => {
+  const parsed = lineAsNumber(value);
+  if (parsed === null || !isCleanHalfGoalLine(value)) return false;
+  if (type === "spread") return Math.abs(parsed) >= 1.5;
+  return true;
+};
+
 const lineTypeAliases = (type: string) => type === "totals"
   ? ["totals", "total_goals"]
   : type === "team-total"
@@ -31,7 +38,7 @@ const lineTypeAliases = (type: string) => type === "totals"
 export const marketMatchesLineType = (market: Market, type: string) => lineTypeAliases(type).includes(market.marketType ?? "");
 
 export const marketsForLineType = (markets: Market[], type: string) =>
-  markets.filter((market) => marketMatchesLineType(market, type) && isCleanHalfGoalLine(market.line));
+  markets.filter((market) => marketMatchesLineType(market, type) && isMainUiLineForType(type, market.line));
 
 export const lineOptionsFor = (markets: Market[], type: string, period: LinePeriod) =>
   Array.from(new Set(
@@ -54,7 +61,7 @@ export const matchingBackendLineMarket = (markets: Market[], type: string, line:
     return (
       marketMatchesLineType(market, type) &&
       marketLine !== null &&
-      isCleanHalfGoalLine(market.line) &&
+      isMainUiLineForType(type, market.line) &&
       Math.abs(marketLine - target) < Number.EPSILON &&
       (!market.period || equivalentMarketPeriod(market.period) === equivalentMarketPeriod(targetPeriod))
     );

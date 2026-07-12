@@ -1,6 +1,6 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-12T05:51:34.158Z",
+  "generatedAt": "2026-07-12T06:04:03.012Z",
   "scope": "odds-api-repeatable-internal-testing-environment",
   "policy": {
     "providerSource": "the-odds-api",
@@ -19,7 +19,7 @@
           "status": "ok",
           "db": "connected",
           "env": "development",
-          "timestamp": "2026-07-12T05:51:29.877Z"
+          "timestamp": "2026-07-12T06:03:58.804Z"
         }
       },
       "postgres": {
@@ -50,7 +50,7 @@
           "status": "ok",
           "db": "connected",
           "env": "development",
-          "timestamp": "2026-07-12T05:51:34.157Z"
+          "timestamp": "2026-07-12T06:04:03.011Z"
         }
       },
       "postgres": {
@@ -83,8 +83,8 @@
         "slug": "odds-api-single-soccer-test",
         "title": "Switzerland vs. Argentina"
       },
-      "marketCount": 17,
-      "outcomeCount": 36,
+      "marketCount": 23,
+      "outcomeCount": 48,
       "markets": [
         {
           "id": "748a4190-b926-4d65-8074-e69df7eb54b2",
@@ -186,6 +186,15 @@
           "outcomeCount": 2
         },
         {
+          "id": "8a2fce43-c3fd-428d-8a62-00c36e5a678e",
+          "slug": "odds-api-single-soccer-test-holiwyn-spread-home-neg-3-5",
+          "title": "Switzerland vs. Argentina: Argentina -3.5",
+          "marketType": "spread",
+          "marketGroupTitle": "Spread",
+          "line": "-3.5",
+          "outcomeCount": 2
+        },
+        {
           "id": "f7076ecf-f097-4069-99f0-b772def0adab",
           "slug": "odds-api-single-soccer-test-holiwyn-spread-home-neg-2-5",
           "title": "Switzerland vs. Argentina: Argentina -2.5",
@@ -204,24 +213,6 @@
           "outcomeCount": 2
         },
         {
-          "id": "04168280-a7e3-4a41-8dea-3587176fbaa8",
-          "slug": "odds-api-single-soccer-test-holiwyn-spread-home-neg-0-5",
-          "title": "Switzerland vs. Argentina: Argentina -0.5",
-          "marketType": "spread",
-          "marketGroupTitle": "Spread",
-          "line": "-0.5",
-          "outcomeCount": 2
-        },
-        {
-          "id": "df560bd6-bbdf-4dce-96c9-025c5f03c12b",
-          "slug": "odds-api-single-soccer-test-holiwyn-spread-home-0-5",
-          "title": "Switzerland vs. Argentina: Argentina +0.5",
-          "marketType": "spread",
-          "marketGroupTitle": "Spread",
-          "line": "0.5",
-          "outcomeCount": 2
-        },
-        {
           "id": "7ab91fec-4e3f-4aeb-bafa-60a16bc88f44",
           "slug": "odds-api-single-soccer-test-holiwyn-spread-home-1-5",
           "title": "Switzerland vs. Argentina: Argentina +1.5",
@@ -237,6 +228,69 @@
           "marketType": "spread",
           "marketGroupTitle": "Spread",
           "line": "2.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "ef2c74a4-0a6c-48b5-b263-738e7718e75a",
+          "slug": "odds-api-single-soccer-test-holiwyn-spread-home-3-5",
+          "title": "Switzerland vs. Argentina: Argentina +3.5",
+          "marketType": "spread",
+          "marketGroupTitle": "Spread",
+          "line": "3.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "6a04afc7-d661-4f69-946a-6d3eee3ed450",
+          "slug": "odds-api-single-soccer-test-holiwyn-total-goals-0-5",
+          "title": "Switzerland vs. Argentina: Total goals 0.5",
+          "marketType": "total_goals",
+          "marketGroupTitle": "Total Goals",
+          "line": "0.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "e97678b5-311e-417e-8602-6b8ef40b9b62",
+          "slug": "odds-api-single-soccer-test-holiwyn-total-goals-1-5",
+          "title": "Switzerland vs. Argentina: Total goals 1.5",
+          "marketType": "total_goals",
+          "marketGroupTitle": "Total Goals",
+          "line": "1.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "9c51b257-917a-4b29-b3c0-3d0ad9102b41",
+          "slug": "odds-api-single-soccer-test-holiwyn-total-goals-2-5",
+          "title": "Switzerland vs. Argentina: Total goals 2.5",
+          "marketType": "total_goals",
+          "marketGroupTitle": "Total Goals",
+          "line": "2.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "3692dcbc-5c8e-420e-8898-596d35f2d233",
+          "slug": "odds-api-single-soccer-test-holiwyn-total-goals-3-5",
+          "title": "Switzerland vs. Argentina: Total goals 3.5",
+          "marketType": "total_goals",
+          "marketGroupTitle": "Total Goals",
+          "line": "3.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "48b17b95-d3c8-4935-94df-d2cf6ba4acfe",
+          "slug": "odds-api-single-soccer-test-holiwyn-total-goals-4-5",
+          "title": "Switzerland vs. Argentina: Total goals 4.5",
+          "marketType": "total_goals",
+          "marketGroupTitle": "Total Goals",
+          "line": "4.5",
+          "outcomeCount": 2
+        },
+        {
+          "id": "7babfa24-e0be-4518-8d71-a219d68b7a22",
+          "slug": "odds-api-single-soccer-test-holiwyn-total-goals-5-5",
+          "title": "Switzerland vs. Argentina: Total goals 5.5",
+          "marketType": "total_goals",
+          "marketGroupTitle": "Total Goals",
+          "line": "5.5",
           "outcomeCount": 2
         }
       ]
@@ -330,22 +384,22 @@
     "title": "Switzerland vs. Argentina"
   },
   "selectedMarket": {
-    "id": "29346e58-158a-4260-953d-259c98fa24ff",
-    "slug": "odds-api-single-soccer-test-spreads-02da927e1b",
-    "title": "Switzerland vs. Argentina: Spread +0.5",
-    "marketType": "spread",
-    "marketGroupKey": "spread",
-    "line": "0.5",
+    "id": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
+    "slug": "odds-api-single-soccer-test-alternate-totals-38ad59c0f2",
+    "title": "Switzerland vs. Argentina: Total Goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "line": "2.5",
     "referenceSource": "sportsbook-odds",
-    "externalMarketId": "200d9cd5eda092c7eb778cc104cd2fd2:betonlineag:spreads:0.5",
-    "conditionId": "odds-api-02da927e1babf505d936e7c8"
+    "externalMarketId": "200d9cd5eda092c7eb778cc104cd2fd2:betonlineag:alternate_totals:2.5",
+    "conditionId": "odds-api-38ad59c0f2b83f38e7cdd9b9"
   },
   "selectedOutcome": {
-    "id": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
-    "name": "Argentina -0.5",
-    "side": "home",
-    "referenceTokenId": "odds-api-38b7b87cb420684a05351898",
-    "referenceOutcomeLabel": "Argentina -0.5"
+    "id": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
+    "name": "Over +2.5",
+    "side": "over",
+    "referenceTokenId": "odds-api-69c87a86defa44e2d0b1bb27",
+    "referenceOutcomeLabel": "Over +2.5"
   },
   "routes": {
     "health": "GET /api/health",
@@ -359,86 +413,86 @@
   "marketMaker": {
     "continuousBotRunning": false,
     "proofMode": "one-shot deterministic local maker liquidity",
-    "makerAskOrderId": "5c0e8a7a-9698-4598-b9dd-7c1c1ac9b041",
-    "cashoutBidOrderId": "6e0cbbf2-77dd-4725-bd00-3b66794bc425"
+    "makerAskOrderId": "b3920bda-93cc-424d-81de-4c4366a974ac",
+    "cashoutBidOrderId": "190cfa08-f043-4534-abcb-51f8994c2249"
   },
   "positiveFlow": {
     "buyOrder": {
-      "id": "38b39be4-d115-4770-b4d7-e078ce2aaf3e",
-      "marketId": "29346e58-158a-4260-953d-259c98fa24ff",
-      "outcomeId": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
+      "id": "452fff73-4dae-48dd-80c3-3fe5bd2efac2",
+      "marketId": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
+      "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
       "side": "BUY",
-      "price": "0.58",
+      "price": "0.43",
       "size": "1.25",
       "remaining": "0",
       "reservedNotional": "0",
       "status": "FILLED",
       "type": "LIMIT",
-      "clientOrderId": "odds-internal-env-buy-b08c88e8-a913-44b5-ab6d-7a9d1884d336",
+      "clientOrderId": "odds-internal-env-buy-8d8d0181-20dc-468b-aff8-94b82e93ac47",
       "apiKeyId": "[redacted-api-key-id]",
       "contractSide": "YES",
       "selection": {
-        "marketId": "29346e58-158a-4260-953d-259c98fa24ff",
-        "outcomeId": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
-        "marketGroupId": "spread",
-        "marketType": "spread",
-        "line": "0.5",
+        "marketId": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
+        "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
+        "marketGroupId": "totals",
+        "marketType": "totals",
+        "line": "2.5",
         "period": "regulation",
-        "side": "home",
-        "displayLabel": "Argentina -0.5",
+        "side": "over",
+        "displayLabel": "Over +2.5",
         "contractSide": "yes",
         "referenceSource": "sportsbook-odds",
         "providerSource": "sportsbook-odds",
         "externalSlug": "soccer_fifa_world_cup-200d9cd5eda092c7eb778cc104cd2fd2",
-        "externalMarketId": "200d9cd5eda092c7eb778cc104cd2fd2:betonlineag:spreads:0.5",
-        "conditionId": "odds-api-02da927e1babf505d936e7c8",
-        "referenceTokenId": "odds-api-38b7b87cb420684a05351898",
-        "tokenId": "odds-api-38b7b87cb420684a05351898",
-        "referenceOutcomeLabel": "Argentina -0.5",
-        "limitPrice": 0.5835,
+        "externalMarketId": "200d9cd5eda092c7eb778cc104cd2fd2:betonlineag:alternate_totals:2.5",
+        "conditionId": "odds-api-38ad59c0f2b83f38e7cdd9b9",
+        "referenceTokenId": "odds-api-69c87a86defa44e2d0b1bb27",
+        "tokenId": "odds-api-69c87a86defa44e2d0b1bb27",
+        "referenceOutcomeLabel": "Over +2.5",
+        "limitPrice": 0.429,
         "limitSide": "ask"
       }
     },
     "cashoutSellOrder": {
-      "id": "eeaded89-c38f-4a63-b93e-37fa486b0d16",
-      "marketId": "29346e58-158a-4260-953d-259c98fa24ff",
-      "outcomeId": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
+      "id": "4aefad34-99ff-4087-9f52-415ca0ccb309",
+      "marketId": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
+      "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
       "side": "SELL",
-      "price": "0.58",
+      "price": "0.43",
       "size": "1.25",
       "remaining": "0",
       "reservedNotional": "0",
       "status": "FILLED",
       "type": "LIMIT",
-      "clientOrderId": "odds-internal-env-cashout-sell-f85c3036-7b66-4503-b3af-417552a67579",
+      "clientOrderId": "odds-internal-env-cashout-sell-b455d17a-1aee-45e9-a5fc-6be55b963594",
       "apiKeyId": "[redacted-api-key-id]",
       "contractSide": "YES",
       "selection": {
-        "marketId": "29346e58-158a-4260-953d-259c98fa24ff",
-        "outcomeId": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
-        "marketGroupId": "spread",
-        "marketType": "spread",
-        "line": "0.5",
+        "marketId": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
+        "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
+        "marketGroupId": "totals",
+        "marketType": "totals",
+        "line": "2.5",
         "period": "regulation",
-        "side": "home",
-        "displayLabel": "Argentina -0.5",
+        "side": "over",
+        "displayLabel": "Over +2.5",
         "contractSide": "yes",
         "referenceSource": "sportsbook-odds",
         "providerSource": "sportsbook-odds",
         "externalSlug": "soccer_fifa_world_cup-200d9cd5eda092c7eb778cc104cd2fd2",
-        "externalMarketId": "200d9cd5eda092c7eb778cc104cd2fd2:betonlineag:spreads:0.5",
-        "conditionId": "odds-api-02da927e1babf505d936e7c8",
-        "referenceTokenId": "odds-api-38b7b87cb420684a05351898",
-        "tokenId": "odds-api-38b7b87cb420684a05351898",
-        "referenceOutcomeLabel": "Argentina -0.5",
-        "limitPrice": 0.5835,
+        "externalMarketId": "200d9cd5eda092c7eb778cc104cd2fd2:betonlineag:alternate_totals:2.5",
+        "conditionId": "odds-api-38ad59c0f2b83f38e7cdd9b9",
+        "referenceTokenId": "odds-api-69c87a86defa44e2d0b1bb27",
+        "tokenId": "odds-api-69c87a86defa44e2d0b1bb27",
+        "referenceOutcomeLabel": "Over +2.5",
+        "limitPrice": 0.429,
         "limitSide": "bid"
       }
     },
     "positionSharesBeforeCashout": 1.25,
     "positionSharesAfterCashout": 0,
-    "buyHistoryTradeId": "f7b6d5a0-bff0-49d6-b74b-770a28d4cb8f",
-    "sellHistoryTradeId": "9632c210-0775-45ed-8bc8-efd8f8b82047"
+    "buyHistoryTradeId": "30033a63-9a4f-4c14-921d-f623b486e7e2",
+    "sellHistoryTradeId": "419f4f80-0468-482d-9a29-5cebd0230ca8"
   },
   "negativeCases": {
     "noPositionSell": {

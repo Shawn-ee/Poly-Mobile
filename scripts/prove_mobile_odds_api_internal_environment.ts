@@ -234,8 +234,10 @@ async function loadSelectedMarket(eventSlug: string) {
   });
   assert(event, `Missing seeded event ${eventSlug}.`);
   const market =
-    event.markets.find((item) => item.marketType === "spread") ??
+    event.markets.find((item) => item.marketType === "total_goals" && item.line?.toString() === "2.5") ??
+    event.markets.find((item) => item.marketType === "spread" && ["1.5", "2.5", "3.5"].includes(item.line?.toString() ?? "")) ??
     event.markets.find((item) => item.marketType === "total_goals") ??
+    event.markets.find((item) => item.marketType === "spread") ??
     event.markets.find((item) => item.marketType === "match_winner_1x2") ??
     event.markets[0];
   assert(market, `Seeded event ${eventSlug} has no sportsbook-odds markets.`);

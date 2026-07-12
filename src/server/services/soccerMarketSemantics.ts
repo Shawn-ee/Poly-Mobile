@@ -8,8 +8,8 @@ export type SoccerMobileMarketSemantics = {
   providerMarketType?: string | null;
 };
 
-const CLEAN_SPREAD_LINES = new Set([0.5, 1.5, 2.5, 3.5]);
-const CLEAN_TOTAL_LINES = new Set([0.5, 1.5, 2.5, 3.5]);
+const CLEAN_SPREAD_LINES = new Set([1.5, 2.5, 3.5]);
+const CLEAN_TOTAL_LINES = new Set([0.5, 1.5, 2.5, 3.5, 4.5, 5.5]);
 
 export function normalizeSoccerResultMode(value: unknown, fallback: SoccerResultMode = "can_draw_90"): SoccerResultMode {
   const normalized = `${value ?? ""}`.trim().toLowerCase();
