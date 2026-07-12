@@ -18,6 +18,10 @@ const PATHS = {
   localRuntimeTask: "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-summary.redacted.json",
   localRuntimeTaskInstall:
     "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-install-uninstall-summary.redacted.json",
+  localRuntimeStartup:
+    "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-summary.redacted.json",
+  localRuntimeStartupInstall:
+    "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-install-uninstall-summary.redacted.json",
   continuousSupervisor: "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json",
   staleGuardProof: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json",
   staleGuardRun: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-run-summary.redacted.json",
@@ -354,10 +358,12 @@ async function main() {
         PATHS.internalTesterRuntime,
         PATHS.localRuntimeTask,
         PATHS.localRuntimeTaskInstall,
+        PATHS.localRuntimeStartup,
+        PATHS.localRuntimeStartupInstall,
         PATHS.continuousSupervisor,
       ],
       notes:
-        "Repeated local supervisor cycles, process-tree stop support, an internal tester runtime manager, a dry-run Windows scheduled-task install plan, and a safe install/uninstall permission audit are proven. Windows denied task registration in the current process context, so no OS task remains installed.",
+        "Repeated local supervisor cycles, process-tree stop support, an internal tester runtime manager, a dry-run Windows scheduled-task install plan, a safe scheduled-task permission audit, and a user-level Startup launcher install/uninstall proof are proven. Windows denied scheduled-task registration in the current process context, so no scheduled task remains installed. The Startup launcher is a user-logon fallback, not a production service.",
     }),
     requirement({
       id: "official-result-auto-settlement",

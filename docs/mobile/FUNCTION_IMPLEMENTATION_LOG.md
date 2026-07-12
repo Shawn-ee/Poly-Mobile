@@ -14040,6 +14040,26 @@ Known limitations:
 # Cycle ONEEVENTLOCALTASKINSTALL - Scheduled Task Install Permission Audit
 
 - Feature/page worked on: local scheduled-task install/uninstall proof.
+# Cycle ONEEVENTLOCALSTARTUP - User Startup Runtime Launcher Fallback
+
+- Feature/page worked on: local runtime user Startup launcher fallback.
+- Frontend components touched: none. This is local runtime/operator tooling only.
+- Important functions/services touched:
+  - `scripts/manage_holiwyn_local_runtime_startup.ps1`
+  - `scripts/prove_holiwyn_local_runtime_startup_install_uninstall.ps1`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `package.json` scripts `mobile:local-runtime-startup` and `mobile:local-runtime-startup:install-proof`
+- User/runtime interactions supported:
+  - Operator can preview, install, status-check, and uninstall a current-user Windows Startup launcher for the local internal tester runtime.
+  - Proof installs only `HoliwynInternalTesterRuntimeProof.cmd`, verifies it exists, removes it, and verifies no launcher remains.
+- State transitions:
+  - Plan/status: writes summary only; no OS launcher mutation.
+  - Install proof: absent -> proof launcher installed -> proof launcher removed.
+- Known limitations:
+  - The Startup launcher runs at Windows user logon only.
+  - It is not a scheduled task, production Windows service, health-monitored daemon, or official-result auto-settlement path.
+  - Default plan spends no provider quota and does not execute active tester settlement.
+
 - Frontend components touched: none. This is local runtime/operator tooling only.
 - Important functions/services touched:
   - `scripts/prove_holiwyn_local_runtime_task_install_uninstall.ps1`

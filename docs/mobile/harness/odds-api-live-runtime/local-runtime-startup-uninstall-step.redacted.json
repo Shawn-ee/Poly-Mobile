@@ -1,0 +1,57 @@
+{
+    "generatedAt":  "2026-07-12T12:18:56.3717227Z",
+    "scope":  "holiwyn-local-runtime-user-startup-launcher",
+    "pass":  true,
+    "operation":  {
+                      "action":  "uninstall",
+                      "apply":  true,
+                      "startedAt":  "2026-07-12T12:18:56.3070261Z",
+                      "result":  "uninstalled_if_present"
+                  },
+    "plan":  {
+                 "launcherName":  "HoliwynInternalTesterRuntimeProof.cmd",
+                 "startupDirectory":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup",
+                 "launcherPath":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\HoliwynInternalTesterRuntimeProof.cmd",
+                 "repoRoot":  "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main",
+                 "launcherContentPreview":  "@echo off\r\ncd /d \"C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\"\r\nstart \"Holiwyn Internal Tester Runtime\" /min powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts\\manage_holiwyn_internal_tester_runtime.ps1 -Action start -BackendPort 3002 -ExpoPort 8081 -WaitForReady -StartSupervisor -RunResultIngestion -RunResultSettlement",
+                 "providerQuotaMode":  "default user Startup launcher spends no provider quota",
+                 "settlementMode":  "trusted-result settlement scheduler remains dry-run unless separate guarded execution controls are used",
+                 "startMode":  "runs when the Windows user logs in; not a production Windows service"
+             },
+    "before":  {
+                   "installed":  true,
+                   "launcherName":  "HoliwynInternalTesterRuntimeProof.cmd",
+                   "startupDirectory":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup",
+                   "launcherPath":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\HoliwynInternalTesterRuntimeProof.cmd",
+                   "contentSha256":  "0A647731F8FA93568C55759961A5BCF2A8F20A0AC1C9E874C3B1E4B8BAC83DE2"
+               },
+    "after":  {
+                  "installed":  false,
+                  "launcherName":  "HoliwynInternalTesterRuntimeProof.cmd",
+                  "startupDirectory":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup",
+                  "launcherPath":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\HoliwynInternalTesterRuntimeProof.cmd",
+                  "contentSha256":  null
+              },
+    "runtimeTruth":  {
+                         "startupLauncherManagerAvailable":  true,
+                         "installedStartupLauncher":  false,
+                         "dryRunDefault":  false,
+                         "persistentOsStartupMutationRequiresApply":  true,
+                         "defaultPlanUsesProviderQuota":  false,
+                         "fakeTokenOnly":  true,
+                         "activeTesterSettlementExecution":  false,
+                         "userLevelStartupFallback":  true,
+                         "installedWindowsService":  false
+                     },
+    "gaps":  {
+                 "p0":  [
+
+                        ],
+                 "p1":  [
+                            "User Startup launcher is a local internal-testing fallback that runs at user logon only; it is not a production service, scheduled daemon, or health-monitored worker."
+                        ],
+                 "p2":  [
+                            "Production service supervision and multi-event runtime install remain future work."
+                        ]
+             }
+}

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T12:09:05.681Z",
+  "generatedAt": "2026-07-12T12:19:02.014Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T12:09:05.637Z"
+      "timestamp": "2026-07-12T12:19:01.971Z"
     },
     "error": null
   },
@@ -65,33 +65,35 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 5.05,
-    "onboarding": 1.41,
-    "readiness": 1.41,
-    "runtimeStatus": 0.16,
-    "runtimeLaunch": 0.96,
-    "supervisor": 0.96,
-    "supervisorProcess": 0.78,
-    "internalTesterRuntime": 0.78,
-    "localRuntimeTask": 0.53,
-    "localRuntimeTaskInstall": 0.35,
-    "continuousSupervisor": 0.96,
-    "staleGuardProof": 2.64,
-    "staleGuardRun": 2.52,
-    "lifecycleControls": 1.41,
-    "lifecycleScheduler": 1.41,
-    "lifecycleSchedulerRun": 0.96,
-    "settlementReadiness": 1.41,
-    "settlementExecution": 1.12,
-    "resultSettlementExecution": 0.27,
-    "resultSettlementLiveBlocked": 0.27,
-    "manualSettlement": 1.41,
-    "resultIngestion": 0.96,
-    "resultSettlement": 0.96,
-    "resultSettlementRun": 0.96,
-    "settlementPreflight": 0.04,
-    "makerSeed": 0.96,
-    "s23Visible": 4.87
+    "liveProof": 5.21,
+    "onboarding": 1.58,
+    "readiness": 1.58,
+    "runtimeStatus": 0.32,
+    "runtimeLaunch": 1.12,
+    "supervisor": 1.12,
+    "supervisorProcess": 0.95,
+    "internalTesterRuntime": 0.95,
+    "localRuntimeTask": 0.7,
+    "localRuntimeTaskInstall": 0.51,
+    "localRuntimeStartup": 0,
+    "localRuntimeStartupInstall": 0,
+    "continuousSupervisor": 1.12,
+    "staleGuardProof": 2.8,
+    "staleGuardRun": 2.69,
+    "lifecycleControls": 1.58,
+    "lifecycleScheduler": 1.58,
+    "lifecycleSchedulerRun": 1.12,
+    "settlementReadiness": 1.58,
+    "settlementExecution": 1.29,
+    "resultSettlementExecution": 0.44,
+    "resultSettlementLiveBlocked": 0.44,
+    "manualSettlement": 1.58,
+    "resultIngestion": 1.12,
+    "resultSettlement": 1.12,
+    "resultSettlementRun": 1.12,
+    "settlementPreflight": 0.2,
+    "makerSeed": 1.12,
+    "s23Visible": 5.03
   },
   "requirements": [
     {
@@ -279,9 +281,11 @@
         "docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-install-uninstall-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-install-uninstall-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json"
       ],
-      "notes": "Repeated local supervisor cycles, process-tree stop support, an internal tester runtime manager, a dry-run Windows scheduled-task install plan, and a safe install/uninstall permission audit are proven. Windows denied task registration in the current process context, so no OS task remains installed."
+      "notes": "Repeated local supervisor cycles, process-tree stop support, an internal tester runtime manager, a dry-run Windows scheduled-task install plan, a safe scheduled-task permission audit, and a user-level Startup launcher install/uninstall proof are proven. Windows denied scheduled-task registration in the current process context, so no scheduled task remains installed. The Startup launcher is a user-logon fallback, not a production service."
     },
     {
       "id": "official-result-auto-settlement",

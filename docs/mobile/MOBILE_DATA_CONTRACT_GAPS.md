@@ -10141,3 +10141,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: elevated shell/task-registration rights are needed before applying the local scheduled task. Provider/live-result secret provisioning remains external and explicit.
 - Temporary mock/static data: none added. The proof spends no provider quota and does not leave a persistent scheduled task.
 - Future migration concern: do not mark unattended service complete merely because the plan exists. The machine must either run the install proof successfully under the intended account or use a different service manager.
+
+## Cycle ONEEVENTLOCALSTARTUP - User Startup Runtime Launcher Fallback
+
+- Closed or narrowed: local internal testing now has a current-user Windows Startup launcher manager plus install/uninstall proof. This gives a practical user-logon restart fallback when scheduled-task registration is denied.
+- Route mismatch: none. No backend or mobile route is touched.
+- Fields Holiwyn still needs but backend/provider does not fully provide: production-grade service supervision, health monitoring, official-result active-event execution policy, and operator audit workflow remain P1.
+- Temporary mock/static data: none added. The proof spends no provider quota and does not leave a persistent launcher.
+- Future migration concern: keep the user Startup launcher separate from production deployment. It starts local fake-token internal tester runtime at user logon only and should not be treated as a real unattended service.
