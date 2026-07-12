@@ -50,8 +50,10 @@ The backend is close enough for a one-event local live proof because the data mo
 - Explicit live-provider wrapper: `npm run mobile:one-event-live-runtime:provider`.
 - Script: `scripts/prove_odds_api_one_event_live_runtime.ts`.
 - Runtime launcher: `scripts/start_holiwyn_one_event_live_runtime.ps1`.
+- Reusable maker seed: `scripts/seed_odds_api_live_shifted_maker.ts`.
 - Summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`.
 - Runtime launch summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json`.
+- Maker seed summary: `docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json`.
 - S23 summary: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`.
 - Result: pass.
-- The proof is bounded and local-only. It proves the minimum live path for one upcoming provider event, but it is not an unattended production daemon.
+- The proof is bounded and local-only. It proves the minimum live path for one upcoming provider event and now has a reusable local maker-seed command for tester liquidity, but it is not an unattended production daemon.

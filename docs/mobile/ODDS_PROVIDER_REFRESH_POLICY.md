@@ -10,6 +10,7 @@ Temporary Local MVP provider: The Odds API. This policy is for fake-token local 
 - Prefer replay fixtures for ordinary readiness checks.
 - Use live Odds API calls only for a live-runtime proof or a manually approved refresh.
 - `npm run mobile:one-event-live-runtime` is a cached runtime check and does not spend provider quota.
+- `npm run mobile:one-event-live-runtime -- -SeedMaker` seeds local fake-token maker liquidity from stored provider snapshots and does not spend provider quota.
 - `npm run mobile:one-event-live-runtime:provider` is the explicit live provider proof command and requires `THE_ODDS_API_KEY`.
 - Do not print or commit `THE_ODDS_API_KEY`.
 - Track provider quota from response headers:

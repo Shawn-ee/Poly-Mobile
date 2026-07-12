@@ -123,6 +123,7 @@
     "mobile:the-odds-api-single-event-flow": "tsx scripts/prove_mobile_the_odds_api_single_event_flow.ts",
     "mobile:odds-api-internal-env-proof": "tsx scripts/prove_mobile_odds_api_internal_environment.ts",
     "mobile:odds-api-live-runtime-proof": "tsx scripts/prove_odds_api_one_event_live_runtime.ts",
+    "mobile:one-event-live-maker-seed": "tsx scripts/seed_odds_api_live_shifted_maker.ts",
     "mobile:one-event-live-runtime": "powershell -ExecutionPolicy Bypass -File scripts/start_holiwyn_one_event_live_runtime.ps1",
     "mobile:one-event-live-runtime:provider": "powershell -ExecutionPolicy Bypass -File scripts/start_holiwyn_one_event_live_runtime.ps1 -RunProviderProof -SkipSleep",
     "mobile:the-odds-api-s23-visible-flow": "powershell -ExecutionPolicy Bypass -File scripts/prove_mobile_odds_api_s23_visible_flow.ps1",

@@ -6,6 +6,7 @@ param(
   [int]$MaxProofAgeHours = 24,
   [switch]$RestartBackend,
   [switch]$RunProviderProof,
+  [switch]$SeedMaker,
   [int]$RefreshIterations = 2,
   [int]$MaxCredits = 16,
   [int]$MinRemaining = 2,
@@ -201,6 +202,15 @@ if ($RunProviderProof) {
 
 $resolvedLiveProofSummaryPath = Resolve-RepoPath $LiveProofSummaryPath
 $liveProof = Get-ProofFreshness -Path $resolvedLiveProofSummaryPath -MaxAgeHours $MaxProofAgeHours
+$makerSeed = $null
+if ($SeedMaker) {
+  $makerSeedPath = "docs\mobile\harness\odds-api-live-runtime\shifted-maker-seed-summary.redacted.json"
+  cmd /c npm run mobile:one-event-live-maker-seed -- "--summaryPath=$makerSeedPath" | Out-Null
+  if ($LASTEXITCODE -ne 0) {
+    throw "Local shifted maker seeding failed."
+  }
+  $makerSeed = Read-JsonFile (Resolve-RepoPath $makerSeedPath)
+}
 $docker = Get-DockerPostgresStatus
 $s23 = Get-S23Status
 $listeners = @(Get-PortListeners @(3002, 8081, 8289))
@@ -234,6 +244,8 @@ $summary = [ordered]@{
     backendContinuous = $true
     providerRefreshContinuous = $false
     marketMakerContinuous = $false
+    makerSeededThisLaunch = [bool]$SeedMaker
+    makerSeedSummary = $makerSeed
     mode = if ($RunProviderProof) { "bounded-live-provider-proof" } else { "cached-proof-runtime-check" }
     notes = @(
       "Backend can stay running locally on the configured port.",
@@ -245,6 +257,7 @@ $summary = [ordered]@{
   listeners = $listeners
   commands = [ordered]@{
     cachedCheck = "npm run mobile:one-event-live-runtime"
+    cachedCheckWithMaker = "npm run mobile:one-event-live-runtime -- -SeedMaker"
     liveProviderProof = "set THE_ODDS_API_KEY in the local process, then npm run mobile:one-event-live-runtime:provider"
     s23VisibleProof = "npm run mobile:the-odds-api-s23-visible-flow -- -SkipReplaySeed -HomeExpectedTitle `"Spain vs. France`" -TeamAExpected `"France`" -TeamBExpected `"Spain`""
   }

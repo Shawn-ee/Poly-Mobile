@@ -13614,3 +13614,24 @@ Known limitations:
   - The backend can run continuously, but provider refresh and market-maker quoting are still bounded proof runners.
   - Automatic close/suspend scheduling and official-result settlement remain P1.
   - Cached mode intentionally does not spend provider quota.
+
+# Cycle ONELIVEMAKER - Reusable One-Event Shifted Maker Seed
+
+- Feature/page worked on: local fake-token liquidity for the selected one-event live sportsbook runtime.
+- Frontend components touched: none. This cycle makes existing mobile tickets more testable by leaving server-side liquidity on the selected market.
+- Important functions/services touched:
+  - `scripts/seed_odds_api_live_shifted_maker.ts`
+  - `scripts/start_holiwyn_one_event_live_runtime.ps1`
+  - `package.json` scripts `mobile:one-event-live-maker-seed` and `mobile:one-event-live-runtime -- -SeedMaker`
+  - `mintCompleteSetForPublicOrderbook`, `placeOrderAndMatch`, and `cancelOrderAndUnlock`
+  - `GET /api/markets/:marketId/quote` for route proof
+- User interactions supported:
+  - A tester can open the existing S23-proven event and see ticket pricing backed by a resting local maker ask.
+  - A tester with a position can cashout/sell against a resting local maker bid.
+- State transitions:
+  - Stored sportsbook snapshot -> shifted local price plan -> cancel prior shifted-maker quotes -> mint complete sets -> place resting local BUY and SELL maker orders.
+  - Quote route confirms the selected provider-backed market now exposes best bid `0.47` and best ask `0.55`.
+- Known limitations:
+  - This is a reusable one-shot local maker seed, not a continuous unattended daemon.
+  - Provider refresh remains bounded proof mode unless the explicit provider command is run.
+  - Multi-market inventory-aware quoting remains future P2.
