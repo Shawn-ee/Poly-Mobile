@@ -14,6 +14,7 @@ The Local MVP has deterministic one-shot maker liquidity. A true production daem
 | Odds API local shifted maker | Added as proof mode | The one-event live proof places local bid/ask quotes around provider reference price, shifted worse by configurable ticks. |
 | Odds API reusable maker seed | Added for local testing | `npm run mobile:one-event-live-maker-seed` uses the latest stored sportsbook snapshot, cancels prior local shifted-maker quotes for the selected market, and leaves a new fake-token bid/ask resting. |
 | Odds API one-event supervisor | Added for local testing | `npm run mobile:one-event-live-supervisor` repeats runtime checks and maker reseeding while the command is running. With `-RunProviderProof`, it also runs quota-guarded live provider refresh cycles. |
+| One-event runtime status report | Added for operator safety | `npm run mobile:one-event-runtime-status` reads local proof summaries and backend health/quote routes to report cached-vs-live mode, live proof freshness, quota from the last provider proof, maker quote status, and scheduler state without calling the provider. |
 
 ## Live Proof Strategy
 
@@ -42,6 +43,7 @@ For a selected binary sportsbook market:
 - Runtime command with maker liquidity: `npm run mobile:one-event-live-runtime -- -SeedMaker`
 - Consolidated readiness command: `npm run mobile:one-event-live-readiness`
 - Repeated local supervisor command: `npm run mobile:one-event-live-supervisor -- -MaxIterations 2 -IntervalSeconds 1`
+- Runtime status command: `npm run mobile:one-event-runtime-status`
 - Maker seed command: `npm run mobile:one-event-live-maker-seed`
 - Lifecycle controls command: `npm run mobile:one-event-lifecycle-proof`
 - Live provider wrapper command: `npm run mobile:one-event-live-runtime:provider`
@@ -51,6 +53,7 @@ For a selected binary sportsbook market:
 - Lifecycle controls summary: `docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json`
 - Consolidated readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json`
 - Supervisor summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json`
+- Runtime status summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`
 - Result: pass.
 - Provider event: Spain vs. France, `soccer_fifa_world_cup`, starts `2026-07-14T19:00:00Z`.
 - Selected local market: Total Goals 2.5.

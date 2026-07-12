@@ -13713,6 +13713,26 @@ Known limitations:
   - Official-result settlement remains P1.
   - Multi-event polling and inventory-aware maker quoting remain P2.
 
+# Cycle ONEEVENTRUNTIMESTATUS - No-Quota Runtime Status Report
+
+- Feature/page worked on: operator-facing local runtime status for the selected sportsbook-backed event.
+- Frontend components touched: none. This improves backend/runtime confidence before mobile testing without changing the mobile UI.
+- Important functions/services touched:
+  - `scripts/report_odds_api_one_event_runtime_status.ts`
+  - `package.json` script `mobile:one-event-runtime-status`
+  - Local route `GET /api/health`
+  - Local route `GET /api/markets/:marketId/quote`
+  - Existing live proof, runtime launch, maker seed, supervisor, and lifecycle scheduler summary files
+- User interactions supported:
+  - Internal testers/operators can verify whether the current local runtime is cached-only or live-provider-refreshing before testing the phone app.
+  - The status report confirms the selected event, selected market, maker quote route, last live proof freshness, last provider quota numbers, and scheduler state without calling The Odds API.
+- State transitions:
+  - Reads existing summaries -> checks backend health -> checks selected market quote route -> writes `one-event-runtime-status-summary.redacted.json`.
+  - No provider refresh occurs and no provider quota is spent.
+- Known limitations:
+  - The status report proves foreground/local runtime truth only; it does not install an unattended service.
+  - Official-result settlement remains P1.
+
 # Cycle ONEEVENTLIFECYCLESCHEDULER - One-Event Start-Time Lifecycle Scheduler
 
 - Feature/page worked on: backend event lifecycle automation for the selected sportsbook-backed event.

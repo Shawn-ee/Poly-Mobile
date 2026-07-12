@@ -14,6 +14,7 @@ Temporary Local MVP provider: The Odds API. This policy is for fake-token local 
 - `npm run mobile:one-event-live-runtime:provider` is the explicit live provider proof command and requires `THE_ODDS_API_KEY`.
 - `npm run mobile:one-event-live-supervisor` repeats data hygiene, the local one-event runtime check, maker seed, and safe real-time lifecycle scheduler without spending provider quota unless `-RunProviderProof` is passed.
 - `npm run mobile:one-event-live-supervisor -- -RunProviderProof -Continuous -MaxIterations 0` is the local repeated live-provider mode. Use it only for an intentional manual test because it spends provider quota each cycle.
+- `npm run mobile:one-event-runtime-status` reads local proof summaries plus local backend health/quote routes and reports whether the current runtime is cached-only, how fresh the last live proof is, and what quota the last proof used. It does not call the provider.
 - Do not print or commit `THE_ODDS_API_KEY`.
 - Track provider quota from response headers:
   - `x-requests-used`
@@ -61,6 +62,7 @@ If the provider fails, quota is low, or no upcoming event has supported markets:
 - Quota-free runtime launch summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json`
 - Supervisor summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json`
 - Safe lifecycle scheduler run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json`
+- Runtime status summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`
 - Result: pass.
 - Event: Spain vs. France, `soccer_fifa_world_cup`, `2026-07-14T19:00:00Z`.
 - Provider calls: one sports scan, quota-free event scans, one event-markets call, and two event-odds refreshes.
