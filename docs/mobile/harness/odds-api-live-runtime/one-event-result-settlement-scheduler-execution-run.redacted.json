@@ -1,0 +1,133 @@
+{
+  "generatedAt": "2026-07-12T11:29:26.358Z",
+  "scope": "odds-api-one-event-result-settlement-scheduler-run",
+  "pass": true,
+  "eventSlug": "scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677",
+  "resultInput": {
+    "path": "docs/mobile/harness/odds-api-live-runtime/trusted-result-scheduler-execution-disposable.redacted.json",
+    "source": "trusted-local-fixture",
+    "sourceEventId": "scheduler-settlement-proof-97df442677",
+    "eventSlug": "scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677",
+    "status": "final",
+    "homeScore": 2,
+    "awayScore": 1,
+    "recordedAt": "2026-07-12T11:29:24.090Z"
+  },
+  "action": "execute_settlement",
+  "executionRequested": true,
+  "providerStatus": "fixture_only",
+  "command": {
+    "executable": "C:\\nvm4w\\nodejs\\node.exe",
+    "args": [
+      "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+      "scripts/settle_odds_api_one_event_from_result.ts",
+      "--eventSlug=scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677",
+      "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-scheduler-execution-disposable.redacted.json",
+      "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-result.redacted.json",
+      "--execute",
+      "--confirm=SETTLE_FROM_RESULT:511bf7e6-c52e-4ab9-a119-eaac0e71a74f:4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a:766f39cd3bf9"
+    ],
+    "exitCode": 0,
+    "stdoutTail": [
+      "  },",
+      "  \"controls\": {",
+      "    \"dryRunIsDefault\": true,",
+      "    \"executeRequiresFlag\": \"--execute\",",
+      "    \"executeRequiresConfirm\": \"SETTLE_FROM_RESULT:511bf7e6-c52e-4ab9-a119-eaac0e71a74f:4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a:766f39cd3bf9\",",
+      "    \"resultDigest\": \"766f39cd3bf9\",",
+      "    \"actorUserId\": \"holiwyn-local-result-settlement-operator\",",
+      "    \"providerStatus\": \"fixture_only\"",
+      "  },",
+      "  \"gaps\": {",
+      "    \"p0\": [],",
+      "    \"p1\": [",
+      "      \"Provider-shaped result ingestion can produce trusted result JSON, but this command intentionally consumes only reviewed trusted result JSON.\",",
+      "      \"Automatic unattended result polling and settlement execution are not installed.\"",
+      "    ],",
+      "    \"p2\": [",
+      "      \"Operator settlement UI and multi-event settlement queue remain future work.\"",
+      "    ]",
+      "  }",
+      "}"
+    ],
+    "stderrTail": []
+  },
+  "settlementSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-result.redacted.json",
+  "settlementDigest": {
+    "pass": true,
+    "mode": "execute",
+    "selectedMarket": {
+      "id": "511bf7e6-c52e-4ab9-a119-eaac0e71a74f",
+      "slug": "scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677-total-goals-2-5",
+      "title": "Scheduler Settlement Proof trusted-result-scheduler-execution: Total Goals 2.5",
+      "marketType": "total_goals",
+      "marketGroupKey": "totals",
+      "line": "2.5",
+      "statusBefore": "LIVE",
+      "resolvedOutcomeIdBefore": null,
+      "collateralUSDCBefore": "5"
+    },
+    "winningOutcome": {
+      "id": "4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a",
+      "name": "Over +2.5",
+      "label": "Over 2.5 total goals",
+      "side": "over",
+      "code": "OVER"
+    },
+    "preview": {
+      "marketStatus": "LIVE",
+      "totalShares": "10",
+      "totalWinningShares": "5",
+      "totalPayout": "5",
+      "collateralUSDC": "5",
+      "payoutConservationPass": true,
+      "blockers": [],
+      "openOrderCleanup": {
+        "openOrderCount": 0,
+        "buyOrderLockedUSDCToRelease": "0",
+        "sellOrderSharesToRelease": "0"
+      },
+      "payoutCount": 2,
+      "loserPositionCount": 1,
+      "mutation": "none"
+    },
+    "execution": {
+      "attempted": true,
+      "ok": true,
+      "result": {
+        "marketId": "511bf7e6-c52e-4ab9-a119-eaac0e71a74f",
+        "winningOutcomeId": "4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a",
+        "totalPoolPayout": "5",
+        "totalWinningShares": "5",
+        "payoutCount": 2,
+        "collateralDebitedUSDC": "5"
+      }
+    },
+    "controls": {
+      "dryRunIsDefault": true,
+      "executeRequiresFlag": "--execute",
+      "executeRequiresConfirm": "SETTLE_FROM_RESULT:511bf7e6-c52e-4ab9-a119-eaac0e71a74f:4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a:766f39cd3bf9",
+      "resultDigest": "766f39cd3bf9",
+      "actorUserId": "holiwyn-local-result-settlement-operator",
+      "providerStatus": "fixture_only"
+    }
+  },
+  "runtimeTruth": {
+    "canRunFromSupervisorOrCron": true,
+    "providerResultIngestionAvailable": true,
+    "unattendedResultPollingInstalled": false,
+    "dryRunDefault": true,
+    "executeRequiresConfirmation": true,
+    "fakeTokenOnly": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.",
+      "Dry-run preview is the default; execution still requires explicit confirmation."
+    ],
+    "p2": [
+      "Multi-event result queue and operator UI remain future work."
+    ]
+  }
+}

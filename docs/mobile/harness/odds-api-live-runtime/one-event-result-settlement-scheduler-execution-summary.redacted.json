@@ -1,0 +1,137 @@
+{
+  "generatedAt": "2026-07-12T11:29:26.384Z",
+  "scope": "odds-api-trusted-result-settlement-scheduler-execution-proof",
+  "pass": true,
+  "mode": "disposable-scheduler-execution-proof",
+  "providerQuotaUsed": false,
+  "targetTesterEvent": {
+    "slug": "odds-api-single-soccer-test",
+    "title": "Spain vs. France",
+    "mutated": false
+  },
+  "disposableEvent": {
+    "slug": "scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677",
+    "title": "Scheduler Settlement Proof trusted-result-scheduler-execution",
+    "marketId": "511bf7e6-c52e-4ab9-a119-eaac0e71a74f",
+    "marketSlug": "scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677-total-goals-2-5",
+    "winningOutcomeId": "4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a",
+    "losingOutcomeId": "b2092b29-5881-4349-afae-a38982b4fa64",
+    "operator": "scheduler_settlement_trusted-result-scheduler-execution_operator",
+    "users": [
+      "scheduler_settlement_trusted-result-scheduler-execution_winner",
+      "scheduler_settlement_trusted-result-scheduler-execution_loser"
+    ]
+  },
+  "trustedResultPath": "docs/mobile/harness/odds-api-live-runtime/trusted-result-scheduler-execution-disposable.redacted.json",
+  "dryRun": {
+    "command": {
+      "executable": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+        "scripts/run_odds_api_one_event_result_settlement_scheduler.ts",
+        "--eventSlug=scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677",
+        "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-scheduler-execution-disposable.redacted.json",
+        "--settlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-dry-run.redacted.json",
+        "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-run.redacted.json"
+      ],
+      "exitCode": 0,
+      "stdoutTail": [
+        "  },",
+        "  \"runtimeTruth\": {",
+        "    \"canRunFromSupervisorOrCron\": true,",
+        "    \"providerResultIngestionAvailable\": true,",
+        "    \"unattendedResultPollingInstalled\": false,",
+        "    \"dryRunDefault\": true,",
+        "    \"executeRequiresConfirmation\": true,",
+        "    \"fakeTokenOnly\": true",
+        "  },",
+        "  \"gaps\": {",
+        "    \"p0\": [],",
+        "    \"p1\": [",
+        "      \"This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.\",",
+        "      \"Dry-run preview is the default; execution still requires explicit confirmation.\"",
+        "    ],",
+        "    \"p2\": [",
+        "      \"Multi-event result queue and operator UI remain future work.\"",
+        "    ]",
+        "  }",
+        "}"
+      ],
+      "stderrTail": []
+    },
+    "settlementSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-dry-run.redacted.json",
+    "confirmationPhraseProduced": true
+  },
+  "execute": {
+    "command": {
+      "executable": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+        "scripts/run_odds_api_one_event_result_settlement_scheduler.ts",
+        "--eventSlug=scheduler-settlement-proof-trusted-result-scheduler-execution-97df442677",
+        "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-scheduler-execution-disposable.redacted.json",
+        "--settlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-result.redacted.json",
+        "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-run.redacted.json",
+        "--execute",
+        "--confirm=SETTLE_FROM_RESULT:511bf7e6-c52e-4ab9-a119-eaac0e71a74f:4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a:766f39cd3bf9",
+        "--allowTrustedLocalFixture"
+      ],
+      "exitCode": 0,
+      "stdoutTail": [
+        "  },",
+        "  \"runtimeTruth\": {",
+        "    \"canRunFromSupervisorOrCron\": true,",
+        "    \"providerResultIngestionAvailable\": true,",
+        "    \"unattendedResultPollingInstalled\": false,",
+        "    \"dryRunDefault\": true,",
+        "    \"executeRequiresConfirmation\": true,",
+        "    \"fakeTokenOnly\": true",
+        "  },",
+        "  \"gaps\": {",
+        "    \"p0\": [],",
+        "    \"p1\": [",
+        "      \"This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.\",",
+        "      \"Dry-run preview is the default; execution still requires explicit confirmation.\"",
+        "    ],",
+        "    \"p2\": [",
+        "      \"Multi-event result queue and operator UI remain future work.\"",
+        "    ]",
+        "  }",
+        "}"
+      ],
+      "stderrTail": []
+    },
+    "settlementSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-result.redacted.json",
+    "schedulerSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-run.redacted.json",
+    "schedulerAction": "execute_settlement",
+    "settlementMode": "execute"
+  },
+  "postSettlement": {
+    "marketStatus": "RESOLVED",
+    "resolvedOutcomeId": "4d7b9ff2-4ac4-4a07-a18f-ae053b87e70a",
+    "settlementStatus": null,
+    "collateralUSDC": "0",
+    "openOrdersAfter": 0,
+    "activePositionsAfter": 0
+  },
+  "checks": {
+    "dryRunSchedulerPassed": true,
+    "confirmationPhraseProduced": true,
+    "executeSchedulerPassed": true,
+    "executeSettlementPassed": true,
+    "disposableMarketResolved": true,
+    "collateralZeroAfterSettlement": true,
+    "noOpenOrdersAfterSettlement": true,
+    "positionsFinalizedAfterSettlement": true,
+    "targetTesterEventNotMutated": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "This proves trusted-result scheduler execution on a fresh disposable sportsbook-shaped event, not unattended official polling for the active tester event."
+    ],
+    "p2": [
+      "Operator settlement UI and multi-event settlement queue remain future work."
+    ]
+  }
+}

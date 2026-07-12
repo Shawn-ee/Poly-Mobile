@@ -23,6 +23,8 @@ const PATHS = {
   lifecycleSchedulerRun: "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
   settlementReadiness: "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json",
   settlementExecution: "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-execution-summary.redacted.json",
+  resultSettlementExecution:
+    "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
   manualSettlement: "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json",
   resultIngestion: "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json",
   resultSettlement: "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
@@ -282,6 +284,22 @@ async function main() {
         "Execution proof uses a fresh disposable local market. Active one-event tester settlement still requires trusted operator confirmation.",
     }),
     requirement({
+      id: "trusted-result-scheduler-execution-disposable",
+      priority: "P0",
+      requirement: "Trusted-result settlement scheduler execution is proven on a disposable sportsbook-shaped event without mutating the active tester event.",
+      achieved:
+        pass(entries.resultSettlementExecution) &&
+        getPath(entries.resultSettlementExecution, ["checks", "dryRunSchedulerPassed"]) === true &&
+        getPath(entries.resultSettlementExecution, ["checks", "confirmationPhraseProduced"]) === true &&
+        getPath(entries.resultSettlementExecution, ["checks", "executeSchedulerPassed"]) === true &&
+        getPath(entries.resultSettlementExecution, ["checks", "executeSettlementPassed"]) === true &&
+        getPath(entries.resultSettlementExecution, ["checks", "disposableMarketResolved"]) === true &&
+        getPath(entries.resultSettlementExecution, ["checks", "targetTesterEventNotMutated"]) === true,
+      evidence: [PATHS.resultSettlementExecution],
+      notes:
+        "This proves the scheduler execute path with reviewed trusted result JSON and an exact confirmation phrase. It still does not install unattended official-result polling.",
+    }),
+    requirement({
       id: "backend-runtime-health",
       priority: "P0",
       requirement: "Backend health and selected quote route are reachable locally.",
@@ -322,13 +340,14 @@ async function main() {
       evidence: [
         PATHS.settlementReadiness,
         PATHS.settlementExecution,
+        PATHS.resultSettlementExecution,
         PATHS.manualSettlement,
         PATHS.resultIngestion,
         PATHS.resultSettlement,
         PATHS.resultSettlementRun,
       ],
       notes:
-        "Provider-shaped result ingestion replay is proven. Live score ingestion is available only behind explicit live flags plus THE_ODDS_API_KEY, including the quota-capped supervisor path. Installed unattended provider result polling and unconfirmed execution remain future work.",
+        "Provider-shaped result ingestion replay and trusted-result scheduler execution are proven on disposable local evidence. Live score ingestion is available only behind explicit live flags plus THE_ODDS_API_KEY, including the quota-capped supervisor path. Installed unattended provider result polling and unconfirmed active-event execution remain future work.",
     }),
   ];
   const openP0 = requirements.filter((item) => item.priority === "P0" && item.status !== "complete");

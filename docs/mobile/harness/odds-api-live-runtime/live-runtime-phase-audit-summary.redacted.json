@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T11:22:16.192Z",
+  "generatedAt": "2026-07-12T11:29:33.732Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T11:22:16.150Z"
+      "timestamp": "2026-07-12T11:29:33.690Z"
     },
     "error": null
   },
@@ -65,28 +65,29 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 4.27,
-    "onboarding": 0.63,
-    "readiness": 0.63,
-    "runtimeStatus": 0.17,
-    "runtimeLaunch": 0.18,
-    "supervisor": 0.18,
-    "supervisorProcess": 0,
-    "internalTesterRuntime": 0,
-    "continuousSupervisor": 0.17,
-    "staleGuardProof": 1.86,
-    "staleGuardRun": 1.74,
-    "lifecycleControls": 0.63,
-    "lifecycleScheduler": 0.63,
-    "lifecycleSchedulerRun": 0.18,
-    "settlementReadiness": 0.63,
-    "settlementExecution": 0.34,
-    "manualSettlement": 0.63,
-    "resultIngestion": 0.18,
-    "resultSettlement": 0.18,
-    "resultSettlementRun": 0.18,
-    "makerSeed": 0.18,
-    "s23Visible": 4.09
+    "liveProof": 4.39,
+    "onboarding": 0.75,
+    "readiness": 0.75,
+    "runtimeStatus": 0.3,
+    "runtimeLaunch": 0.3,
+    "supervisor": 0.3,
+    "supervisorProcess": 0.12,
+    "internalTesterRuntime": 0.12,
+    "continuousSupervisor": 0.3,
+    "staleGuardProof": 1.98,
+    "staleGuardRun": 1.86,
+    "lifecycleControls": 0.75,
+    "lifecycleScheduler": 0.75,
+    "lifecycleSchedulerRun": 0.3,
+    "settlementReadiness": 0.75,
+    "settlementExecution": 0.46,
+    "resultSettlementExecution": 0,
+    "manualSettlement": 0.75,
+    "resultIngestion": 0.3,
+    "resultSettlement": 0.3,
+    "resultSettlementRun": 0.3,
+    "makerSeed": 0.3,
+    "s23Visible": 4.21
   },
   "requirements": [
     {
@@ -231,6 +232,16 @@
       "notes": "Execution proof uses a fresh disposable local market. Active one-event tester settlement still requires trusted operator confirmation."
     },
     {
+      "id": "trusted-result-scheduler-execution-disposable",
+      "priority": "P0",
+      "requirement": "Trusted-result settlement scheduler execution is proven on a disposable sportsbook-shaped event without mutating the active tester event.",
+      "status": "complete",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json"
+      ],
+      "notes": "This proves the scheduler execute path with reviewed trusted result JSON and an exact confirmation phrase. It still does not install unattended official-result polling."
+    },
+    {
       "id": "backend-runtime-health",
       "priority": "P0",
       "requirement": "Backend health and selected quote route are reachable locally.",
@@ -272,12 +283,13 @@
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-execution-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json"
       ],
-      "notes": "Provider-shaped result ingestion replay is proven. Live score ingestion is available only behind explicit live flags plus THE_ODDS_API_KEY, including the quota-capped supervisor path. Installed unattended provider result polling and unconfirmed execution remain future work."
+      "notes": "Provider-shaped result ingestion replay and trusted-result scheduler execution are proven on disposable local evidence. Live score ingestion is available only behind explicit live flags plus THE_ODDS_API_KEY, including the quota-capped supervisor path. Installed unattended provider result polling and unconfirmed active-event execution remain future work."
     }
   ],
   "conclusion": {
