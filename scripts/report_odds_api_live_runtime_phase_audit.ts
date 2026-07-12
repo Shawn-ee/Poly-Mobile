@@ -15,6 +15,7 @@ const PATHS = {
   supervisorProcess: "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-process-summary.redacted.json",
   internalTesterRuntime:
     "docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json",
+  localRuntimeTask: "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-summary.redacted.json",
   continuousSupervisor: "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json",
   staleGuardProof: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json",
   staleGuardRun: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-run-summary.redacted.json",
@@ -328,9 +329,15 @@ async function main() {
       priority: "P1",
       requirement: "Install unattended provider/maker/lifecycle services.",
       achieved: false,
-      evidence: [PATHS.supervisor, PATHS.supervisorProcess, PATHS.internalTesterRuntime, PATHS.continuousSupervisor],
+      evidence: [
+        PATHS.supervisor,
+        PATHS.supervisorProcess,
+        PATHS.internalTesterRuntime,
+        PATHS.localRuntimeTask,
+        PATHS.continuousSupervisor,
+      ],
       notes:
-        "Repeated local supervisor cycles, process-tree stop support, and an internal tester runtime manager are proven. No OS/service manager install exists.",
+        "Repeated local supervisor cycles, process-tree stop support, an internal tester runtime manager, and a dry-run Windows scheduled-task install plan are proven. No OS/service manager install has been applied.",
     }),
     requirement({
       id: "official-result-auto-settlement",

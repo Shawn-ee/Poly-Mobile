@@ -50,7 +50,10 @@
 35. To check the whole local internal tester runtime without spending provider quota, run `npm run mobile:internal-tester-runtime -- -Action status`. This reports backend health, Postgres/Docker status, Expo port status, S23 reachability, and one-event supervisor process status.
 36. To start backend and Expo through the local internal tester runtime manager when their ports are free, run `npm run mobile:internal-tester-runtime -- -Action start`. Add `-StartSupervisor` only when you intentionally want the one-event supervisor running in the background.
 37. To stop only processes that the local internal tester runtime manager owns, run `npm run mobile:internal-tester-runtime -- -Action stop`. Existing external backend or Expo listeners are reused and are not stopped by this manager.
-38. Do not settle the active tester event automatically unless official result input and admin review are added.
+38. To preview a Windows scheduled-task setup for the local tester runtime without changing the OS, run `npm run mobile:local-runtime-task -- -Action plan -StartSupervisor -RunResultIngestion -RunResultSettlement`. This spends no provider quota and does not install anything by default.
+39. To intentionally install that scheduled task, rerun the same command with `-Action install -Apply`. Only use `-RunProviderProof` or `-RunLiveResultIngestion` when `THE_ODDS_API_KEY` is present in the process environment and you intend to spend quota.
+40. To remove the scheduled task, run `npm run mobile:local-runtime-task -- -Action uninstall -Apply`.
+41. Do not settle the active tester event automatically unless official result input and admin review are added.
 
 ## Completion Boundary
 
@@ -77,6 +80,7 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - One-command onboarding summary: `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json`
 - Phase audit summary: `docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json`
 - Internal tester runtime manager summary: `docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json`
+- Local runtime scheduled-task summary: `docs/mobile/harness/odds-api-live-runtime/local-runtime-task-summary.redacted.json`
 - Cached live restore summary: `docs/mobile/harness/odds-api-live-runtime/one-event-cached-restore-summary.redacted.json`
 - Stale guard summary: `docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json`
 - Stale guard run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-run-summary.redacted.json`
@@ -102,3 +106,4 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - One-command onboarding: `npm run mobile:one-event-onboarding` blocked the old replay fixture, restored the cached Spain vs. France live-runtime event without provider quota, ran the readiness gate, runtime status, settlement readiness, provider-shaped result ingestion, trusted-result settlement dry run, and manual settlement dry run, with S23 connected and no unresolved P0 gaps.
 - Phase audit: `npm run mobile:one-event-phase-audit` passed. It verifies 0 unresolved P0 gaps for local one-event internal runtime and leaves unattended service install plus official-result auto-settlement as explicit P1 gaps.
 - Internal tester runtime manager: `npm run mobile:internal-tester-runtime -- -Action status` passed. It confirmed local backend health, Docker/Postgres health, Expo port ownership, S23 reachability, and supervisor status without provider quota. It is a local process control plane, not an installed OS service.
+- Local runtime scheduled-task plan: `npm run mobile:local-runtime-task -- -Action plan -StartSupervisor -RunResultIngestion -RunResultSettlement` passed. It produced an AtLogon Windows scheduled-task plan for the internal tester runtime, confirmed no task is installed by default, and spends no provider quota.

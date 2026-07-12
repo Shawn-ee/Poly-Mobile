@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T11:29:33.732Z",
+  "generatedAt": "2026-07-12T11:38:28.092Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T11:29:33.690Z"
+      "timestamp": "2026-07-12T11:38:28.034Z"
     },
     "error": null
   },
@@ -65,29 +65,30 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 4.39,
-    "onboarding": 0.75,
-    "readiness": 0.75,
-    "runtimeStatus": 0.3,
-    "runtimeLaunch": 0.3,
-    "supervisor": 0.3,
-    "supervisorProcess": 0.12,
-    "internalTesterRuntime": 0.12,
-    "continuousSupervisor": 0.3,
-    "staleGuardProof": 1.98,
-    "staleGuardRun": 1.86,
-    "lifecycleControls": 0.75,
-    "lifecycleScheduler": 0.75,
-    "lifecycleSchedulerRun": 0.3,
-    "settlementReadiness": 0.75,
-    "settlementExecution": 0.46,
-    "resultSettlementExecution": 0,
-    "manualSettlement": 0.75,
-    "resultIngestion": 0.3,
-    "resultSettlement": 0.3,
-    "resultSettlementRun": 0.3,
-    "makerSeed": 0.3,
-    "s23Visible": 4.21
+    "liveProof": 4.54,
+    "onboarding": 0.9,
+    "readiness": 0.9,
+    "runtimeStatus": 0.44,
+    "runtimeLaunch": 0.45,
+    "supervisor": 0.45,
+    "supervisorProcess": 0.27,
+    "internalTesterRuntime": 0.27,
+    "localRuntimeTask": 0.02,
+    "continuousSupervisor": 0.44,
+    "staleGuardProof": 2.13,
+    "staleGuardRun": 2.01,
+    "lifecycleControls": 0.9,
+    "lifecycleScheduler": 0.9,
+    "lifecycleSchedulerRun": 0.45,
+    "settlementReadiness": 0.9,
+    "settlementExecution": 0.61,
+    "resultSettlementExecution": 0.15,
+    "manualSettlement": 0.9,
+    "resultIngestion": 0.45,
+    "resultSettlement": 0.45,
+    "resultSettlementRun": 0.45,
+    "makerSeed": 0.45,
+    "s23Visible": 4.36
   },
   "requirements": [
     {
@@ -271,9 +272,10 @@
         "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-process-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json"
       ],
-      "notes": "Repeated local supervisor cycles, process-tree stop support, and an internal tester runtime manager are proven. No OS/service manager install exists."
+      "notes": "Repeated local supervisor cycles, process-tree stop support, an internal tester runtime manager, and a dry-run Windows scheduled-task install plan are proven. No OS/service manager install has been applied."
     },
     {
       "id": "official-result-auto-settlement",

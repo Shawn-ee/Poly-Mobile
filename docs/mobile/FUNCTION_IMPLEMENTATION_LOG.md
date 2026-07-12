@@ -14012,3 +14012,27 @@ Known limitations:
   - This proves the scheduler execute path, not unattended official-result polling.
   - Active tester event settlement still requires trusted operator confirmation.
   - Operator UI, audit-log workflow, and multi-event settlement queue remain future work.
+
+# Cycle ONEEVENTLOCALTASK - Local Runtime Scheduled Task Plan
+
+- Feature/page worked on: local unattended-runtime ownership and operator process control.
+- Frontend components touched: none. This is backend/runtime/operator tooling only and does not change mobile UI or routes.
+- Important functions/services touched:
+  - `scripts/manage_holiwyn_local_runtime_task.ps1`
+  - `package.json` script `mobile:local-runtime-task`
+  - Existing `scripts/manage_holiwyn_internal_tester_runtime.ps1`
+  - Windows Scheduled Tasks APIs when and only when `-Apply` is passed
+- User/runtime interactions supported:
+  - Operator can preview the Windows scheduled task that would start backend, Expo, and optionally the one-event supervisor.
+  - Operator can check whether the scheduled task is installed.
+  - Operator can intentionally install or uninstall the task with `-Apply`.
+  - Default plan spends no provider quota and does not mutate the OS.
+- State transitions:
+  - `plan`: builds the task action/trigger/log plan and writes `local-runtime-task-summary.redacted.json`.
+  - `status`: reads the Windows scheduled task state and writes the same summary.
+  - `install -Apply`: registers or updates the task.
+  - `uninstall -Apply`: removes the task if present.
+- Known limitations:
+  - The committed proof is dry-run and confirms no task is installed by default.
+  - This is local Windows Task Scheduler support, not production service monitoring.
+  - Quota-spending provider modes still require explicit flags and `THE_ODDS_API_KEY` in the process environment.

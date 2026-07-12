@@ -10117,3 +10117,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: installed unattended official-result polling, official finality policy, active-event operator approval/audit workflow, and unconfirmed active-event execution policy remain P1.
 - Temporary mock/static data: the proof writes disposable trusted-local result JSON for the disposable event and spends no provider quota. This is not live official evidence.
 - Future migration concern: keep disposable scheduler execution proof separate from live official settlement. A future production path should require official provider evidence, durable result storage, admin review, audit logs, and explicit active-event execution policy.
+
+## Cycle ONEEVENTLOCALTASK - Local Runtime Scheduled Task Plan
+
+- Closed or narrowed: local unattended-runtime ownership now has a Windows scheduled-task manager with plan/status/install/uninstall actions. The default proof is dry-run and requires `-Apply` before any OS mutation.
+- Route mismatch: none for mobile or backend routes. The planned task starts the existing internal tester runtime manager; it does not add HTTP APIs or schema fields.
+- Fields Holiwyn still needs but backend/provider does not fully provide: a production-grade service monitor, secrets provisioning for intentionally quota-spending scheduled modes, official-result active-event execution policy, and operator audit workflow remain P1.
+- Temporary mock/static data: none added. The dry-run plan spends no provider quota and does not install a task.
+- Future migration concern: keep local Windows scheduled-task support separate from production hosting/daemon strategy. If installed, it should remain fake-token local-development only.

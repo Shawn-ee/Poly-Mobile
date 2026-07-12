@@ -20,6 +20,7 @@ The current Local MVP is backend-owned and fake-token only. It has proven one sp
 | One-shot maker liquidity | Internal harnesses mint complete sets and place maker ask/bid orders directly with `placeOrderAndMatch`. | Works for proof. Not continuous by default. |
 | One-event local supervisor | `scripts/run_holiwyn_one_event_live_supervisor.ps1` repeats data hygiene, the proven runtime launch command, local maker reseeding, and the safe real-time lifecycle scheduler on an interval. It can optionally run quota-guarded provider refresh, stale guard, replay result ingestion, opt-in quota-capped live result ingestion, and trusted-result settlement scheduling, and it writes heartbeat evidence after each cycle. | Continuous only while the local command is running. `npm run mobile:one-event-live-supervisor:continuous-proof` proves repeated local cycles, replay-mode result ingestion, dry-run result settlement scheduling, and clean stop behavior. Live result ingestion requires `-RunLiveResultIngestion` plus `THE_ODDS_API_KEY` and is capped by run count/cadence/credits. It is not an installed unattended service. |
 | Internal tester runtime manager | `scripts/manage_holiwyn_internal_tester_runtime.ps1` provides local start/status/stop orchestration for backend, Expo, Docker/Postgres visibility, S23 reachability, and one-event supervisor status. It reuses existing backend/Expo listeners when ports are already occupied and stops only manager-owned backend/Expo processes. | Status proof passed without provider quota. This is an internal local control plane for tester launch, not an installed OS service or production daemon. |
+| Local runtime scheduled-task manager | `scripts/manage_holiwyn_local_runtime_task.ps1` plans, reports, installs, or uninstalls a Windows scheduled task that starts the internal tester runtime. It is dry-run by default and requires `-Apply` for OS mutation. | Dry-run plan proof passed without provider quota and confirmed no scheduled task is installed by default. This narrows service ownership but does not close installed-service readiness until explicitly applied. |
 | Continuous bot/soak harness | `scripts/soak_orderbook_bots.ts` references a sibling `poly-bot` package. `scripts/create_sim_bot_credentials.ts` writes bot config to `../poly-bot`. | Not self-contained in this repo. Do not assume it is running or available for mobile MVP runtime. |
 | Reference liquidity seeding | `referenceLiquiditySeeding.ts` supports approved Polymarket reference markets only. | Not usable for Odds API sportsbook markets without new source-aware logic. |
 | Event pause/close/resolve | Admin routes can pause/close markets and resolve orderbook markets. | Manual/admin lifecycle exists. No automatic soccer settlement or result ingest exists yet. |
@@ -79,6 +80,7 @@ The backend is close enough for a one-event local live proof because the data mo
 - Supervisor stale-provider monitor/enforcer: `scripts/run_odds_api_one_event_stale_guard.ts`.
 - Live-runtime phase audit: `scripts/report_odds_api_live_runtime_phase_audit.ts`.
 - Internal tester runtime manager: `scripts/manage_holiwyn_internal_tester_runtime.ps1`.
+- Local runtime scheduled-task manager: `scripts/manage_holiwyn_local_runtime_task.ps1`.
 - Summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`.
 - Runtime launch summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json`.
 - Maker seed summary: `docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json`.
@@ -100,6 +102,7 @@ The backend is close enough for a one-event local live proof because the data mo
 - Stale guard run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-run-summary.redacted.json`.
 - Live-runtime phase audit summary: `docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json`.
 - Internal tester runtime manager summary: `docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json`.
+- Local runtime scheduled-task summary: `docs/mobile/harness/odds-api-live-runtime/local-runtime-task-summary.redacted.json`.
 - Consolidated readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json`.
 - Supervisor summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json`.
 - Supervisor heartbeat: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-heartbeat.redacted.json`.
