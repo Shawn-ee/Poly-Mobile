@@ -16,6 +16,8 @@ const PATHS = {
   internalTesterRuntime:
     "docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json",
   localRuntimeTask: "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-summary.redacted.json",
+  localRuntimeTaskInstall:
+    "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-install-uninstall-summary.redacted.json",
   continuousSupervisor: "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json",
   staleGuardProof: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json",
   staleGuardRun: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-run-summary.redacted.json",
@@ -334,10 +336,11 @@ async function main() {
         PATHS.supervisorProcess,
         PATHS.internalTesterRuntime,
         PATHS.localRuntimeTask,
+        PATHS.localRuntimeTaskInstall,
         PATHS.continuousSupervisor,
       ],
       notes:
-        "Repeated local supervisor cycles, process-tree stop support, an internal tester runtime manager, and a dry-run Windows scheduled-task install plan are proven. No OS/service manager install has been applied.",
+        "Repeated local supervisor cycles, process-tree stop support, an internal tester runtime manager, a dry-run Windows scheduled-task install plan, and a safe install/uninstall permission audit are proven. Windows denied task registration in the current process context, so no OS task remains installed.",
     }),
     requirement({
       id: "official-result-auto-settlement",

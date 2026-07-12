@@ -10122,6 +10122,14 @@ Future migration concern:
 
 - Closed or narrowed: local unattended-runtime ownership now has a Windows scheduled-task manager with plan/status/install/uninstall actions. The default proof is dry-run and requires `-Apply` before any OS mutation.
 - Route mismatch: none for mobile or backend routes. The planned task starts the existing internal tester runtime manager; it does not add HTTP APIs or schema fields.
-- Fields Holiwyn still needs but backend/provider does not fully provide: a production-grade service monitor, secrets provisioning for intentionally quota-spending scheduled modes, official-result active-event execution policy, and operator audit workflow remain P1.
+- Fields Holiwyn still needs but backend/provider does not fully provide: a production-grade service monitor, Windows task-registration rights for this process, secrets provisioning for intentionally quota-spending scheduled modes, official-result active-event execution policy, and operator audit workflow remain P1.
 - Temporary mock/static data: none added. The dry-run plan spends no provider quota and does not install a task.
 - Future migration concern: keep local Windows scheduled-task support separate from production hosting/daemon strategy. If installed, it should remain fake-token local-development only.
+
+## Cycle ONEEVENTLOCALTASKINSTALL - Scheduled Task Install Permission Audit
+
+- Closed or narrowed: the install/uninstall proof now confirms the local scheduled-task path is blocked by Windows permissions in the current process context, while cleanup leaves no task installed.
+- Route mismatch: none. No backend or mobile route is touched.
+- Fields Holiwyn still needs but backend/provider does not fully provide: elevated shell/task-registration rights are needed before applying the local scheduled task. Provider/live-result secret provisioning remains external and explicit.
+- Temporary mock/static data: none added. The proof spends no provider quota and does not leave a persistent scheduled task.
+- Future migration concern: do not mark unattended service complete merely because the plan exists. The machine must either run the install proof successfully under the intended account or use a different service manager.

@@ -14036,3 +14036,25 @@ Known limitations:
   - The committed proof is dry-run and confirms no task is installed by default.
   - This is local Windows Task Scheduler support, not production service monitoring.
   - Quota-spending provider modes still require explicit flags and `THE_ODDS_API_KEY` in the process environment.
+
+# Cycle ONEEVENTLOCALTASKINSTALL - Scheduled Task Install Permission Audit
+
+- Feature/page worked on: local scheduled-task install/uninstall proof.
+- Frontend components touched: none. This is local runtime/operator tooling only.
+- Important functions/services touched:
+  - `scripts/prove_holiwyn_local_runtime_task_install_uninstall.ps1`
+  - `scripts/manage_holiwyn_local_runtime_task.ps1`
+  - `package.json` script `mobile:local-runtime-task:install-proof`
+- User/runtime interactions supported:
+  - Operator can run one command to test whether the current Windows process can install and remove the local runtime scheduled task.
+  - The proof leaves no scheduled task installed, even when registration fails.
+- State transitions:
+  - Start with proof task absent.
+  - Attempt `install -Apply` using a proof task name.
+  - Record Windows access-denied result if this process lacks task-registration rights.
+  - Run `uninstall -Apply` in cleanup.
+  - Verify no proof task remains installed.
+- Known limitations:
+  - Current proof shows Windows denies scheduled-task registration in this process context.
+  - This narrows the unattended-service gap to environment permission/elevation, but does not close it.
+  - No provider quota is spent and no active tester settlement execution occurs.

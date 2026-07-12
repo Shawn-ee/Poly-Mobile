@@ -151,6 +151,7 @@
     "mobile:one-event-live-supervisor:stop": "powershell -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_live_supervisor.ps1 -Action stop",
     "mobile:internal-tester-runtime": "powershell -ExecutionPolicy Bypass -File scripts/manage_holiwyn_internal_tester_runtime.ps1",
     "mobile:local-runtime-task": "powershell -ExecutionPolicy Bypass -File scripts/manage_holiwyn_local_runtime_task.ps1",
+    "mobile:local-runtime-task:install-proof": "powershell -ExecutionPolicy Bypass -File scripts/prove_holiwyn_local_runtime_task_install_uninstall.ps1",
     "mobile:the-odds-api-s23-visible-flow": "powershell -ExecutionPolicy Bypass -File scripts/prove_mobile_odds_api_s23_visible_flow.ps1",
     "bots:reset-state": "tsx scripts/reset_bot_state.ts",
     "bot:e2e:seed": "tsx tests/bot-e2e/seed.ts",

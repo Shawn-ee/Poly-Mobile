@@ -1,0 +1,63 @@
+{
+    "generatedAt":  "2026-07-12T11:48:09.6032415Z",
+    "scope":  "holiwyn-local-runtime-scheduled-task",
+    "pass":  false,
+    "operation":  {
+                      "action":  "install",
+                      "apply":  true,
+                      "startedAt":  "2026-07-12T11:48:08.4795346Z",
+                      "result":  "failed"
+                  },
+    "plan":  {
+                 "taskName":  "HoliwynInternalTesterRuntimeProof",
+                 "workingDirectory":  "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main",
+                 "executable":  "powershell.exe",
+                 "arguments":  "-NoProfile -ExecutionPolicy Bypass -File scripts\\manage_holiwyn_internal_tester_runtime.ps1 -Action start -BackendPort 3002 -ExpoPort 8081 -WaitForReady -StartSupervisor -RunResultIngestion -RunResultSettlement",
+                 "logs":  {
+                              "stdout":  ".runtime/holiwyn-local-runtime-task/scheduled-task.out.log",
+                              "stderr":  ".runtime/holiwyn-local-runtime-task/scheduled-task.err.log"
+                          },
+                 "triggerPlan":  [
+                                     {
+                                         "type":  "AtLogon",
+                                         "enabled":  true
+                                     }
+                                 ],
+                 "providerQuotaMode":  "default scheduled task plan spends no provider quota",
+                 "settlementMode":  "trusted-result settlement scheduler remains dry-run unless separate guarded execution controls are used"
+             },
+    "before":  {
+                   "installed":  false,
+                   "taskName":  "HoliwynInternalTesterRuntimeProof",
+                   "state":  "not_found",
+                   "error":  null
+               },
+    "after":  {
+                  "installed":  false,
+                  "taskName":  "HoliwynInternalTesterRuntimeProof",
+                  "state":  "not_found",
+                  "error":  null
+              },
+    "runtimeTruth":  {
+                         "scheduledTaskManagerAvailable":  true,
+                         "installedScheduledTask":  false,
+                         "dryRunDefault":  false,
+                         "persistentOsTaskMutationRequiresApply":  true,
+                         "fakeTokenOnly":  true,
+                         "defaultPlanUsesProviderQuota":  false,
+                         "activeTesterSettlementExecution":  false
+                     },
+    "gaps":  {
+                 "p0":  [
+                            "Access is denied.\r\n",
+                            "scheduled_task_not_installed_after_apply"
+                        ],
+                 "p1":  [
+                            "Local scheduled-task installer exists but is not installed unless run with -Apply.",
+                            "Official-result active-event execution remains guarded/manual."
+                        ],
+                 "p2":  [
+                            "Multi-event production service supervision remains future work."
+                        ]
+             }
+}
