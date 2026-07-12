@@ -202,6 +202,10 @@ async function main() {
   const runtimeStatusTruth = getPath(entries.runtimeStatus, ["modeTruth"]);
   const runtimeStatusCapabilities = getPath(entries.runtimeStatus, ["provenCapabilities"]);
   const staleRunResult = getPath(entries.staleGuardRun, ["result"]);
+  const runtimeHeartbeatRecords = getPath(localRuntimeStatusBody, ["runtimeHeartbeats", "records"]);
+  const workerOwnedHeartbeatCount = Array.isArray(runtimeHeartbeatRecords)
+    ? runtimeHeartbeatRecords.filter((record) => getPath(record, ["metadata", "workerOwned"]) === true).length
+    : 0;
   const requirements = [
     requirement({
       id: "survey-existing-runtime-services",
@@ -304,11 +308,12 @@ async function main() {
         getPath(localRuntimeStatusBody, ["runtimeHeartbeats", "allExpectedServicesRecorded"]) === true &&
         getPath(localRuntimeStatusBody, ["runtimeHeartbeats", "quotaSpendingHeartbeatRunning"]) === false &&
         getPath(localRuntimeStatusBody, ["runtimeHeartbeats", "installedOsService"]) === false &&
+        workerOwnedHeartbeatCount >= 2 &&
         Array.isArray(getPath(localRuntimeStatusBody, ["gaps", "p0"])) &&
         (getPath(localRuntimeStatusBody, ["gaps", "p0"]) as unknown[]).length === 0,
       evidence: [`${baseUrl}/api/internal/live-runtime/status`],
       notes:
-        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, latest-run-vs-proven-capability separation, read-only supervisor/result-poller process state, and durable RuntimeServiceHeartbeat mirror rows. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
+        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, latest-run-vs-proven-capability separation, read-only supervisor/result-poller process state, durable RuntimeServiceHeartbeat rows, and preserved worker-owned heartbeat metadata. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
     }),
     requirement({
       id: "local-result-review-api-ready",

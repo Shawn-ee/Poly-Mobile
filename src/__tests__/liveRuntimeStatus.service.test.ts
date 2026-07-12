@@ -1,5 +1,6 @@
 const readFile = jest.fn();
 const referenceQuoteSnapshotFindMany = jest.fn();
+const runtimeServiceHeartbeatFindUnique = jest.fn();
 const runtimeServiceHeartbeatUpsert = jest.fn();
 
 jest.mock("node:fs/promises", () => ({
@@ -12,6 +13,7 @@ jest.mock("@/lib/db", () => ({
       findMany: (...args: unknown[]) => referenceQuoteSnapshotFindMany(...args),
     },
     runtimeServiceHeartbeat: {
+      findUnique: (...args: unknown[]) => runtimeServiceHeartbeatFindUnique(...args),
       upsert: (...args: unknown[]) => runtimeServiceHeartbeatUpsert(...args),
     },
   },
@@ -227,8 +229,10 @@ describe("live runtime status service", () => {
   beforeEach(() => {
     readFile.mockReset();
     referenceQuoteSnapshotFindMany.mockReset();
+    runtimeServiceHeartbeatFindUnique.mockReset();
     runtimeServiceHeartbeatUpsert.mockReset();
     referenceQuoteSnapshotFindMany.mockResolvedValue(freshSnapshot());
+    runtimeServiceHeartbeatFindUnique.mockResolvedValue(null);
     runtimeServiceHeartbeatUpsert.mockImplementation(async (args) => ({
       id: "heartbeat-id",
       serviceKey: args.where.serviceKey,
@@ -244,6 +248,7 @@ describe("live runtime status service", () => {
       startedAt: args.create.startedAt,
       heartbeatAt: new Date("2026-07-12T18:00:00Z"),
       updatedAt: new Date("2026-07-12T18:00:01Z"),
+      metadata: args.create.metadata,
     }));
     killSpy = jest.spyOn(process, "kill").mockImplementation(() => {
       const error = new Error("missing process") as NodeJS.ErrnoException;

@@ -138,6 +138,25 @@ function Write-Heartbeat {
     failure = $Failure
   }
   Write-JsonFile -Value $heartbeat -Path (Resolve-RepoPath $HeartbeatPath) -Depth 60
+  $status = if ($heartbeat.running) { "running" } elseif ($LoopPass) { "stopped" } else { "failed" }
+  $heartbeatArgs = @(
+    "run", "mobile:runtime-heartbeat", "--",
+    "--serviceName=one-event-live-supervisor",
+    "--serviceKind=supervisor",
+    "--status=$status",
+    "--pid=$PID",
+    "--running=$($heartbeat.running.ToString().ToLowerInvariant())",
+    "--continuous=$($Continuous.ToString().ToLowerInvariant())",
+    "--usesProviderQuota=$(([bool]($RunProviderProof -or $RunLiveResultIngestion)).ToString().ToLowerInvariant())",
+    "--installedOsService=false",
+    "--statePath=$HeartbeatPath",
+    "--startedAt=$($startedAt.ToString("o"))",
+    "--source=local-runtime-worker"
+  )
+  & npm @heartbeatArgs | Out-Null
+  if ($LASTEXITCODE -ne 0) {
+    throw "Failed to write worker-owned supervisor runtime heartbeat."
+  }
 }
 
 function Invoke-CheckedCommand {

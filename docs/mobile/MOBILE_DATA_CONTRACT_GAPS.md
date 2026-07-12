@@ -10455,6 +10455,15 @@ Future migration concern:
 - Remaining gaps: installed service ownership, worker-emitted heartbeats, alerting, provider/result poll job records, and multi-event queue state remain P1/P2.
 - Future migration concern: replace proof-artifact result-review readiness with durable backend/service-managed state before production or multi-event operations.
 
+## Cycle LIVERUNTIMEWORKERHEARTBEATS - Worker-Owned Runtime Heartbeats
+
+- Closed or narrowed: `RuntimeServiceHeartbeat` rows are no longer only written by the status route. The one-event supervisor and result-poller loops now emit worker-owned heartbeat metadata through `npm run mobile:runtime-heartbeat`.
+- Fields added for future backend/operator use: heartbeat metadata now preserves `workerOwned`, `workerSource`, and `workerHeartbeatAt` even after `/api/internal/live-runtime/status` mirrors current process state.
+- Schema mismatch: the worker-owned heartbeat evidence comes from local scripts, not an installed production service manager. It proves local loop ownership of heartbeat writes, not production daemon ownership.
+- Route mismatch: `/api/internal/live-runtime/status` still remains dev-only and still mirrors current local process state during a GET, but it now preserves the worker-owned heartbeat fields instead of replacing them.
+- Temporary mock/static data: none added. The worker heartbeat command writes observed local worker state and spends no provider quota.
+- Remaining gaps: installed service ownership, alerting, durable provider/result poll run records, and multi-event queue state remain P1/P2.
+
 ## Cycle LIVERUNTIMELIFECYCLEAPI - Local Lifecycle Status API
 
 - Closed or narrowed: local internal tools can now read `GET /api/internal/live-runtime/lifecycle` to see one-event open, suspended, closed, and settled/resolved proof truth in one backend response.

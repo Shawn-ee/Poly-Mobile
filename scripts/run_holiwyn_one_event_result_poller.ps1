@@ -122,6 +122,25 @@ function Write-Heartbeat {
     failure = $Failure
   }
   Write-JsonFile -Value $heartbeat -Path $HeartbeatPath -Depth 80
+  $status = if ($heartbeat.running) { "running" } elseif ($LoopPass) { "stopped" } else { "failed" }
+  $heartbeatArgs = @(
+    "run", "mobile:runtime-heartbeat", "--",
+    "--serviceName=one-event-result-poller",
+    "--serviceKind=result-poller",
+    "--status=$status",
+    "--pid=$PID",
+    "--running=$($heartbeat.running.ToString().ToLowerInvariant())",
+    "--continuous=$($Continuous.ToString().ToLowerInvariant())",
+    "--usesProviderQuota=$($RunLiveResultIngestion.ToString().ToLowerInvariant())",
+    "--installedOsService=false",
+    "--statePath=$HeartbeatPath",
+    "--startedAt=$($startedAt.ToString("o"))",
+    "--source=local-runtime-worker"
+  )
+  & npm @heartbeatArgs | Out-Null
+  if ($LASTEXITCODE -ne 0) {
+    throw "Failed to write worker-owned result-poller runtime heartbeat."
+  }
 }
 
 $startedAt = (Get-Date).ToUniversalTime()

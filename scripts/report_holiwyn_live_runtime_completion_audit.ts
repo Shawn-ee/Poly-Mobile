@@ -61,6 +61,11 @@ function truthy(value: unknown) {
   return value === true;
 }
 
+function workerOwnedHeartbeatCount(value: unknown) {
+  if (!Array.isArray(value)) return 0;
+  return value.filter((record) => getPath(record, ["metadata", "workerOwned"]) === true).length;
+}
+
 function pass(entry: JsonObject | null) {
   return entry?.pass === true || entry?.result === "pass";
 }
@@ -158,7 +163,8 @@ async function main() {
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeHeartbeats", "durable"]) === true &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeHeartbeats", "allExpectedServicesRecorded"]) === true &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeHeartbeats", "quotaSpendingHeartbeatRunning"]) === false &&
-      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeHeartbeats", "installedOsService"]) === false,
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeHeartbeats", "installedOsService"]) === false &&
+      workerOwnedHeartbeatCount(getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeHeartbeats", "records"])) >= 2,
     mobileS23EndToEndTradeProofPass:
       pass(entries.s23Visible) &&
       truthy(getPath(entries.s23Visible, ["assertions", "swipeSubmitReachedPortfolio"])) &&
@@ -230,7 +236,7 @@ async function main() {
       resultReview:
         "Local result-review API is phase-gated through /api/internal/live-runtime/result-review, reads canonical result/preflight/approval evidence, writes a redacted durable OfficialResultReview row, and does not spend provider quota.",
       runtimeHeartbeats:
-        "Local runtime status mirrors supervisor and result-poller process state into durable RuntimeServiceHeartbeat rows without claiming an installed OS service.",
+        "Supervisor and result-poller loops emit worker-owned RuntimeServiceHeartbeat rows; local runtime status preserves that evidence without claiming an installed OS service.",
       localWatchdog:
         "Internal tester watchdog verifies backend/Expo/Postgres readiness, repeated supervisor proof, background result-poller proof, no-quota default mode, and loop cleanup.",
     },

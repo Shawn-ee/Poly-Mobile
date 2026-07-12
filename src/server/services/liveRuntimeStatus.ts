@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import { prisma } from "@/lib/db";
+import { writeRuntimeServiceHeartbeat } from "@/server/services/runtimeServiceHeartbeat";
 
 const COMPLETION_AUDIT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json";
@@ -63,12 +64,6 @@ const pidRunning = (pid: number | null) => {
   }
 };
 
-const dateValue = (value: unknown) => {
-  if (typeof value !== "string") return null;
-  const parsed = Date.parse(value);
-  return Number.isFinite(parsed) ? new Date(parsed) : null;
-};
-
 async function getManagedProcessStatus(params: {
   statePath: string;
   kind: "supervisor" | "result-poller";
@@ -115,66 +110,26 @@ async function upsertRuntimeHeartbeat(processStatus: Awaited<ReturnType<typeof g
   const serviceName =
     processStatus.kind === "supervisor" ? "one-event-live-supervisor" : "one-event-result-poller";
   const status = processStatus.running ? "running" : processStatus.known ? "stopped" : "unknown";
-  const row = await prisma.runtimeServiceHeartbeat.upsert({
-    where: { serviceKey: `local:${serviceName}` },
-    create: {
-      serviceKey: `local:${serviceName}`,
-      serviceName,
-      serviceKind: processStatus.kind,
-      status,
-      pid: processStatus.pid,
-      running: processStatus.running,
-      continuous: processStatus.continuous,
-      usesProviderQuota: processStatus.usesProviderQuota,
-      installedOsService: false,
-      statePath: processStatus.statePath,
-      startedAt: dateValue(processStatus.startedAt),
-      heartbeatAt: new Date(),
-      metadata: {
-        source: "local-runtime-status-route",
-        checked: processStatus.checked,
-        known: processStatus.known,
-        maxIterations: processStatus.maxIterations,
-        intervalSeconds: processStatus.intervalSeconds,
-        modes: processStatus.modes,
-      },
-    },
-    update: {
-      status,
-      pid: processStatus.pid,
-      running: processStatus.running,
-      continuous: processStatus.continuous,
-      usesProviderQuota: processStatus.usesProviderQuota,
-      installedOsService: false,
-      statePath: processStatus.statePath,
-      startedAt: dateValue(processStatus.startedAt),
-      heartbeatAt: new Date(),
-      metadata: {
-        source: "local-runtime-status-route",
-        checked: processStatus.checked,
-        known: processStatus.known,
-        maxIterations: processStatus.maxIterations,
-        intervalSeconds: processStatus.intervalSeconds,
-        modes: processStatus.modes,
-      },
+  return writeRuntimeServiceHeartbeat({
+    serviceName,
+    serviceKind: processStatus.kind,
+    status,
+    pid: processStatus.pid,
+    running: processStatus.running,
+    continuous: processStatus.continuous,
+    usesProviderQuota: processStatus.usesProviderQuota,
+    installedOsService: false,
+    statePath: processStatus.statePath,
+    startedAt: processStatus.startedAt,
+    source: "local-runtime-status-route",
+    metadata: {
+      checked: processStatus.checked,
+      known: processStatus.known,
+      maxIterations: processStatus.maxIterations,
+      intervalSeconds: processStatus.intervalSeconds,
+      modes: processStatus.modes,
     },
   });
-
-  return {
-    serviceKey: row.serviceKey,
-    serviceName: row.serviceName,
-    serviceKind: row.serviceKind,
-    status: row.status,
-    pid: row.pid,
-    running: row.running,
-    continuous: row.continuous,
-    usesProviderQuota: row.usesProviderQuota,
-    installedOsService: row.installedOsService,
-    statePath: row.statePath,
-    startedAt: row.startedAt?.toISOString() ?? null,
-    heartbeatAt: row.heartbeatAt.toISOString(),
-    updatedAt: row.updatedAt.toISOString(),
-  };
 }
 
 async function getProviderSnapshotFreshness(params: {
@@ -609,7 +564,7 @@ export async function getLocalLiveRuntimeStatus() {
       quotaSpendingHeartbeatRunning: runtimeHeartbeats.some((row) => row.running && row.usesProviderQuota),
       installedOsService: runtimeHeartbeats.some((row) => row.installedOsService),
       note:
-        "These durable rows mirror local process-state checks for internal testing. They do not mean a production OS service is installed.",
+        "These durable rows include worker-emitted heartbeat metadata when the local loops run, then the status route mirrors current process-state checks. They do not mean a production OS service is installed.",
     },
     artifacts: {
       completionAudit: {

@@ -14681,6 +14681,17 @@ Known limitations:
 - Proof needed: Prisma migration deploy, focused status Jest tests, direct local status route proof, direct DB row proof, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this narrows durable service heartbeat state but still does not install a production OS service, scheduler, or daemon. Production process ownership, health alerting, and multi-event queue supervision remain P1/P2.
 
+## Cycle LIVERUNTIMEWORKERHEARTBEATS - Worker-Owned Runtime Heartbeats
+
+- Feature/page worked on: backend local internal runtime heartbeat ownership.
+- Frontend components touched: none.
+- Important functions/services touched: added `src/server/services/runtimeServiceHeartbeat.ts` and `scripts/write_runtime_service_heartbeat.ts`; updated `scripts/run_holiwyn_one_event_live_supervisor.ps1`, `scripts/run_holiwyn_one_event_result_poller.ps1`, `src/server/services/liveRuntimeStatus.ts`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, and `scripts/report_holiwyn_live_runtime_completion_audit.ts`.
+- User/runtime interactions supported: the supervisor and result-poller loops now emit their own `RuntimeServiceHeartbeat` rows through `npm run mobile:runtime-heartbeat` when they run. The status route preserves `workerOwned=true` metadata while still mirroring current stopped/running process state.
+- State transitions: writes/updates only `RuntimeServiceHeartbeat`. It does not call The Odds API, spend quota, start additional loops, place orders, mutate markets, approve settlement, or execute settlement.
+- API/data dependencies: worker scripts write heartbeat rows keyed as `local:one-event-live-supervisor` and `local:one-event-result-poller`; phase and completion audits now require both records to retain worker-owned metadata.
+- Proof needed: one-iteration supervisor proof, result-poller proof, direct DB heartbeat inspection, status route proof, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this narrows worker-owned heartbeat evidence, but these are still local scripts/processes. Installed OS service ownership, alerting, worker-emitted provider/result poll run records, and multi-event queue supervision remain P1/P2.
+
 ## Cycle LIVERUNTIMELIFECYCLEAPI - Local Lifecycle Status API
 
 - Feature/page worked on: backend local internal event lifecycle status surface.
