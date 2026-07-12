@@ -223,6 +223,7 @@ async function main() {
       getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "usesDurableOfficialResultReviewRows"]) === true &&
       getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "operatorQueueAvailable"]) === true &&
       getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "redactedOperatorExecutionPlanAvailable"]) === true &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "durableApprovalEvidenceAvailable"]) === true &&
       getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "exactConfirmationStringsExposed"]) === false &&
       getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "exactConfirmationStored"]) === false &&
       getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "activeMarketExecutionAttempted"]) === false &&
@@ -232,6 +233,11 @@ async function main() {
       typeof getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorAction", "nextCommand"]) === "string" &&
       getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorAction", "exactConfirmationExposed"]) === false &&
       getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorAction", "providerQuotaRequired"]) === false &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "approvalEvidence", "durableReviewRowAvailable"]) === true &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "approvalEvidence", "canonicalApprovalEventAvailable"]) === true &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "approvalEvidence", "exactConfirmationStored"]) === false &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "approvalEvidence", "exactConfirmationRedacted"]) === true &&
+      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "checks", "canonicalApprovalEvidenceForApprovedReviews"]) === true &&
       Array.isArray(getPath(entries.phaseAudit, ["localSettlementQueue", "body", "gaps", "p0"])) &&
       (getPath(entries.phaseAudit, ["localSettlementQueue", "body", "gaps", "p0"]) as unknown[]).length === 0,
     durableRuntimeHeartbeatsKnown:

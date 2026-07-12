@@ -171,6 +171,17 @@ export async function getLocalLiveRuntimeSettlementQueue() {
       hasPreflightAudit: review.settlementPreflightCanonicalId != null,
       hasApprovalAudit: review.settlementApprovalCanonicalId != null,
       hasExecutionAudit: review.settlementExecutedCanonicalId != null,
+      approvalEvidence: {
+        status: review.approvalStatus,
+        source: "OfficialResultReview+CanonicalEvent",
+        durableReviewRowAvailable: true,
+        canonicalApprovalEventAvailable: review.settlementApprovalCanonicalId != null,
+        canonicalApprovalEventId: review.settlementApprovalCanonicalId?.toString() ?? null,
+        resultDigestAvailable: typeof review.resultDigest === "string" && review.resultDigest.length > 0,
+        exactConfirmationStored: review.exactConfirmationStored,
+        exactConfirmationRedacted: true,
+        providerQuotaUsed: review.providerQuotaUsed,
+      },
       market: market
         ? {
             id: market.id,
@@ -202,6 +213,9 @@ export async function getLocalLiveRuntimeSettlementQueue() {
     providerQuotaNotUsed: items.every((item) => item.providerQuotaUsed === false),
     activeMarketExecutionNotAttempted: items.every((item) => item.activeMarketExecutionAttempted === false),
     approvedOrExecutedReviewAvailable: items.some((item) => item.approvalStatus === "approved" || item.hasExecutionAudit),
+    canonicalApprovalEvidenceForApprovedReviews: items
+      .filter((item) => item.approvalStatus === "approved")
+      .every((item) => item.approvalEvidence.canonicalApprovalEventAvailable === true),
   };
   const p0 = Object.entries(checks)
     .filter(([, value]) => value !== true)
@@ -232,6 +246,9 @@ export async function getLocalLiveRuntimeSettlementQueue() {
       operatorQueueAvailable: p0.length === 0,
       redactedOperatorExecutionPlanAvailable: items.every(
         (item) => item.operatorAction.exactConfirmationExposed === false && item.operatorAction.providerQuotaRequired === false,
+      ),
+      durableApprovalEvidenceAvailable: items.some(
+        (item) => item.approvalEvidence.status === "approved" && item.approvalEvidence.canonicalApprovalEventAvailable,
       ),
       multiEventCapableShape: true,
     },

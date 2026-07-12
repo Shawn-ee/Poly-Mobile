@@ -775,6 +775,10 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     typeof getPath(phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorAction", "nextCommand"]) === "string" &&
     getPath(phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorAction", "exactConfirmationExposed"]) === false &&
     getPath(phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorAction", "providerQuotaRequired"]) === false &&
+    getPath(phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "approvalEvidence", "durableReviewRowAvailable"]) === true &&
+    getPath(phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "approvalEvidence", "canonicalApprovalEventAvailable"]) === true &&
+    getPath(phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "approvalEvidence", "exactConfirmationStored"]) === false &&
+    getPath(phaseAudit, ["localSettlementQueue", "body", "checks", "canonicalApprovalEvidenceForApprovedReviews"]) === true &&
     Array.isArray(getPath(phaseAudit, ["localSettlementQueue", "body", "gaps", "p0"])) &&
     (getPath(phaseAudit, ["localSettlementQueue", "body", "gaps", "p0"]) as unknown[]).length === 0;
   const ready =
@@ -901,6 +905,8 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
       getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "operatorQueueAvailable"]) === true,
     redactedOperatorExecutionPlanAvailable:
       getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "redactedOperatorExecutionPlanAvailable"]) === true,
+    durableApprovalEvidenceAvailable:
+      getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "durableApprovalEvidenceAvailable"]) === true,
     exactConfirmationStringsExposed:
       getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "exactConfirmationStringsExposed"]) === true,
     exactConfirmationStored:
@@ -924,6 +930,24 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
             approvalStatus: getPath(settlementQueueItem, ["approvalStatus"]) ?? null,
             nextSafeAction: getPath(settlementQueueItem, ["nextSafeAction"]) ?? null,
             marketStatus: getPath(settlementQueueItem, ["market", "status"]) ?? null,
+            approvalEvidence: {
+              status: getPath(settlementQueueItem, ["approvalEvidence", "status"]) ?? null,
+              source: getPath(settlementQueueItem, ["approvalEvidence", "source"]) ?? null,
+              durableReviewRowAvailable:
+                getPath(settlementQueueItem, ["approvalEvidence", "durableReviewRowAvailable"]) === true,
+              canonicalApprovalEventAvailable:
+                getPath(settlementQueueItem, ["approvalEvidence", "canonicalApprovalEventAvailable"]) === true,
+              canonicalApprovalEventId:
+                getPath(settlementQueueItem, ["approvalEvidence", "canonicalApprovalEventId"]) ?? null,
+              resultDigestAvailable:
+                getPath(settlementQueueItem, ["approvalEvidence", "resultDigestAvailable"]) === true,
+              exactConfirmationStored:
+                getPath(settlementQueueItem, ["approvalEvidence", "exactConfirmationStored"]) === true,
+              exactConfirmationRedacted:
+                getPath(settlementQueueItem, ["approvalEvidence", "exactConfirmationRedacted"]) === true,
+              providerQuotaUsed:
+                getPath(settlementQueueItem, ["approvalEvidence", "providerQuotaUsed"]) === true,
+            },
             operatorAction: {
               label: getPath(settlementQueueItem, ["operatorAction", "label"]) ?? null,
               blockingReason: getPath(settlementQueueItem, ["operatorAction", "blockingReason"]) ?? null,

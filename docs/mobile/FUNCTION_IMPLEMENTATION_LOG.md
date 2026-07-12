@@ -2,6 +2,22 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle APPROVALEVIDENCE - Durable Settlement Approval Evidence
+
+- Feature/page worked on: backend live-runtime settlement queue and status evidence.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `src/server/services/liveRuntimeSettlementQueue.ts`
+  - `src/server/services/liveRuntimeStatus.ts`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `scripts/report_holiwyn_live_runtime_completion_audit.ts`
+  - `src/__tests__/liveRuntimeSettlementQueue.service.test.ts`
+  - `src/__tests__/liveRuntimeStatus.service.test.ts`
+- User/runtime interactions supported: `GET /api/internal/live-runtime/settlement-queue` now exposes redacted `approvalEvidence` for each queued review, including whether the approval is backed by an `OfficialResultReview` row plus a canonical approval event. `/api/internal/live-runtime/status` projects the same evidence.
+- State transitions: none. This remains read-only and does not execute settlement, write approval, close markets, call providers, read secrets, or expose exact confirmation strings.
+- API/data dependencies: reads durable `OfficialResultReview` rows, canonical approval/preflight/execution IDs already stored on those rows, and current `Market` status.
+- Known limitations: this narrows the first-class approval-evidence gap without adding a new operator UI. Production still needs authenticated operator controls and installed official-result polling before active-event execution is allowed.
+
 ## Cycle COMPLETIONREQS - Machine-Readable Live Runtime Completion Requirements
 
 - Feature/page worked on: backend live-runtime completion/status gate.

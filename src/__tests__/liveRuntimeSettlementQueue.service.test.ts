@@ -87,6 +87,17 @@ describe("live runtime settlement queue service", () => {
       hasPreflightAudit: true,
       hasApprovalAudit: true,
       hasExecutionAudit: false,
+      approvalEvidence: {
+        status: "approved",
+        source: "OfficialResultReview+CanonicalEvent",
+        durableReviewRowAvailable: true,
+        canonicalApprovalEventAvailable: true,
+        canonicalApprovalEventId: "11",
+        resultDigestAvailable: true,
+        exactConfirmationStored: false,
+        exactConfirmationRedacted: true,
+        providerQuotaUsed: false,
+      },
       nextSafeAction: "wait_for_or_apply_market_close_before_execution",
       operatorAction: {
         label: "wait_for_market_close",
@@ -110,6 +121,10 @@ describe("live runtime settlement queue service", () => {
       activeMarketExecutionAttempted: false,
       operatorQueueAvailable: true,
       redactedOperatorExecutionPlanAvailable: true,
+      durableApprovalEvidenceAvailable: true,
+    });
+    expect(result.checks).toMatchObject({
+      canonicalApprovalEvidenceForApprovedReviews: true,
     });
     expect(JSON.stringify(result)).not.toContain("SETTLE_FROM_RESULT:");
     expect(officialResultReviewFindMany).toHaveBeenCalledWith(
@@ -195,5 +210,47 @@ describe("live runtime settlement queue service", () => {
     });
     expect(result.queue.items[0].operatorAction.nextCommand).toContain("--autoExecuteApproved");
     expect(JSON.stringify(result)).not.toContain("SETTLE_FROM_RESULT:");
+  });
+
+  test("returns needs_attention when an approved review lacks canonical approval evidence", async () => {
+    officialResultReviewFindMany.mockResolvedValue([
+      {
+        id: "review-3",
+        reviewKey: "odds-api-single-soccer-test:market-1:result-digest",
+        eventSlug: "odds-api-single-soccer-test",
+        marketId: "market-1",
+        outcomeId: "outcome-1",
+        providerSource: "the-odds-api",
+        providerEventId: "provider-event-1",
+        resultStatus: "final",
+        homeScore: 2,
+        awayScore: 1,
+        advanceTeam: null,
+        trustedResultDigest: "trusted-digest",
+        resultDigest: "result-digest",
+        settlementPreflightCanonicalId: 10n,
+        settlementApprovalCanonicalId: null,
+        settlementExecutedCanonicalId: null,
+        approvalStatus: "approved",
+        executionDecision: "wait_for_or_apply_market_close_before_execution",
+        executionEligibleNow: false,
+        confirmationRequiredKnown: true,
+        exactConfirmationStored: false,
+        activeMarketExecutionAttempted: false,
+        providerQuotaUsed: false,
+        updatedAt: new Date("2026-07-12T12:20:00Z"),
+      },
+    ]);
+
+    const result = await getLocalLiveRuntimeSettlementQueue();
+
+    expect(result.status).toBe("needs_attention");
+    expect(result.gaps.p0).toContain("canonicalApprovalEvidenceForApprovedReviews");
+    expect(result.queue.items[0].approvalEvidence).toMatchObject({
+      status: "approved",
+      canonicalApprovalEventAvailable: false,
+      exactConfirmationStored: false,
+      exactConfirmationRedacted: true,
+    });
   });
 });

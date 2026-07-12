@@ -480,6 +480,30 @@ async function main() {
           "operatorAction",
           "providerQuotaRequired",
         ]) === false &&
+        getPath(localRuntimeStatusBody, [
+          "settlementQueue",
+          "firstItem",
+          "approvalEvidence",
+          "durableReviewRowAvailable",
+        ]) === true &&
+        getPath(localRuntimeStatusBody, [
+          "settlementQueue",
+          "firstItem",
+          "approvalEvidence",
+          "canonicalApprovalEventAvailable",
+        ]) === true &&
+        getPath(localRuntimeStatusBody, [
+          "settlementQueue",
+          "firstItem",
+          "approvalEvidence",
+          "exactConfirmationStored",
+        ]) === false &&
+        getPath(localRuntimeStatusBody, [
+          "settlementQueue",
+          "firstItem",
+          "approvalEvidence",
+          "exactConfirmationRedacted",
+        ]) === true &&
         Array.isArray(getPath(localRuntimeStatusBody, ["settlementQueue", "p0"])) &&
         (getPath(localRuntimeStatusBody, ["settlementQueue", "p0"]) as unknown[]).length === 0 &&
         !JSON.stringify(getPath(localRuntimeStatusBody, ["settlementQueue"])).includes("SETTLE_FROM_RESULT:") &&
@@ -566,6 +590,7 @@ async function main() {
         getPath(localSettlementQueueBody, ["runtimeTruth", "usesDurableOfficialResultReviewRows"]) === true &&
         getPath(localSettlementQueueBody, ["runtimeTruth", "operatorQueueAvailable"]) === true &&
         getPath(localSettlementQueueBody, ["runtimeTruth", "redactedOperatorExecutionPlanAvailable"]) === true &&
+        getPath(localSettlementQueueBody, ["runtimeTruth", "durableApprovalEvidenceAvailable"]) === true &&
         getPath(localSettlementQueueBody, ["runtimeTruth", "exactConfirmationStringsExposed"]) === false &&
         getPath(localSettlementQueueBody, ["runtimeTruth", "exactConfirmationStored"]) === false &&
         getPath(localSettlementQueueBody, ["runtimeTruth", "activeMarketExecutionAttempted"]) === false &&
@@ -574,6 +599,11 @@ async function main() {
         typeof getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorAction", "nextCommand"]) === "string" &&
         getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorAction", "exactConfirmationExposed"]) === false &&
         getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorAction", "providerQuotaRequired"]) === false &&
+        getPath(localSettlementQueueBody, ["queue", "items", "0", "approvalEvidence", "durableReviewRowAvailable"]) === true &&
+        getPath(localSettlementQueueBody, ["queue", "items", "0", "approvalEvidence", "canonicalApprovalEventAvailable"]) === true &&
+        getPath(localSettlementQueueBody, ["queue", "items", "0", "approvalEvidence", "exactConfirmationStored"]) === false &&
+        getPath(localSettlementQueueBody, ["queue", "items", "0", "approvalEvidence", "exactConfirmationRedacted"]) === true &&
+        getPath(localSettlementQueueBody, ["checks", "canonicalApprovalEvidenceForApprovedReviews"]) === true &&
         Array.isArray(getPath(localSettlementQueueBody, ["gaps", "p0"])) &&
         (getPath(localSettlementQueueBody, ["gaps", "p0"]) as unknown[]).length === 0 &&
         !JSON.stringify(localSettlementQueueBody).includes("SETTLE_FROM_RESULT:") &&
