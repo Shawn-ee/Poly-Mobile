@@ -1,0 +1,110 @@
+{
+  "generatedAt": "2026-07-12T12:36:20.421Z",
+  "scope": "odds-api-one-event-result-settlement",
+  "pass": true,
+  "mode": "dry-run",
+  "resultInput": {
+    "path": "docs/mobile/harness/odds-api-live-runtime/trusted-result-approved-auto-settlement.redacted.json",
+    "source": "trusted-local-fixture",
+    "sourceEventId": "approved-auto-settlement-proof-29d20abb02",
+    "eventSlug": "approved-auto-settlement-proof-trusted-result-approved-auto-29d20abb02",
+    "status": "final",
+    "period": "full_time",
+    "homeTeam": "Proof Home",
+    "awayTeam": "Proof Away",
+    "homeScore": 2,
+    "awayScore": 1,
+    "advanceTeam": "Proof Home",
+    "evidenceUrl": null,
+    "recordedAt": "2026-07-12T12:36:17.369Z"
+  },
+  "event": {
+    "id": "cbcf3d44-ffbe-41d4-b52d-a482b8dd9eca",
+    "slug": "approved-auto-settlement-proof-trusted-result-approved-auto-29d20abb02",
+    "title": "Approved Auto Settlement Proof trusted-result-approved-auto",
+    "externalEventId": "approved-auto-settlement-proof-29d20abb02",
+    "startTime": "2026-07-14T12:36:17.239Z"
+  },
+  "selectedMarket": {
+    "id": "2f72a49c-2133-4efb-a828-127aa1b40f6b",
+    "slug": "approved-auto-settlement-proof-trusted-result-approved-auto-29d20abb02-total-goals-2-5",
+    "title": "Approved Auto Settlement Proof trusted-result-approved-auto: Total Goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "line": "2.5",
+    "statusBefore": "CLOSED",
+    "resolvedOutcomeIdBefore": null,
+    "collateralUSDCBefore": "5"
+  },
+  "mappedResolution": {
+    "rule": "total_goals",
+    "line": 2.5,
+    "totalGoals": 3,
+    "winningSide": "over"
+  },
+  "winningOutcome": {
+    "id": "719a4a3f-8157-490d-b9b0-08756dc4b886",
+    "name": "Over +2.5",
+    "label": "Over 2.5 total goals",
+    "side": "over",
+    "code": "OVER"
+  },
+  "preview": {
+    "marketStatus": "CLOSED",
+    "totalShares": "10",
+    "totalWinningShares": "5",
+    "totalPayout": "5",
+    "collateralUSDC": "5",
+    "payoutConservationPass": true,
+    "blockers": [],
+    "openOrderCleanup": {
+      "openOrderCount": 0,
+      "buyOrderLockedUSDCToRelease": "0",
+      "sellOrderSharesToRelease": "0"
+    },
+    "payoutCount": 2,
+    "loserPositionCount": 1,
+    "mutation": "none"
+  },
+  "execution": {
+    "attempted": false,
+    "reason": "dry_run_default",
+    "requiredConfirm": "SETTLE_FROM_RESULT:2f72a49c-2133-4efb-a828-127aa1b40f6b:719a4a3f-8157-490d-b9b0-08756dc4b886:49466bc26179"
+  },
+  "postMarket": {
+    "status": "CLOSED",
+    "resolvedOutcomeId": null,
+    "settlementStatus": "closed_for_approved_auto_settlement_proof",
+    "collateralUSDC": "5"
+  },
+  "controls": {
+    "dryRunIsDefault": true,
+    "writeAuditEvent": true,
+    "executeRequiresFlag": "--execute",
+    "executeRequiresConfirm": "SETTLE_FROM_RESULT:2f72a49c-2133-4efb-a828-127aa1b40f6b:719a4a3f-8157-490d-b9b0-08756dc4b886:49466bc26179",
+    "executeRequiresMarketStatus": "CLOSED",
+    "currentMarketStatus": "CLOSED",
+    "resultDigest": "49466bc26179",
+    "actorUserId": "holiwyn-local-result-settlement-operator",
+    "providerStatus": "fixture_only"
+  },
+  "auditEvent": {
+    "id": "169",
+    "sequence": "169",
+    "type": "settlement.trusted_result.preflight",
+    "stream": "market",
+    "marketId": "2f72a49c-2133-4efb-a828-127aa1b40f6b",
+    "outcomeId": "719a4a3f-8157-490d-b9b0-08756dc4b886",
+    "createdAt": "2026-07-12T12:36:20.416Z"
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "Provider-shaped result ingestion can produce trusted result JSON, but this command intentionally consumes only reviewed trusted result JSON.",
+      "Automatic unattended result polling and settlement execution are not installed."
+    ],
+    "p2": [
+      "Operator settlement UI and multi-event settlement queue remain future work."
+    ]
+  }
+}

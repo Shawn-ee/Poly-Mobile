@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T12:29:04.554Z",
+  "generatedAt": "2026-07-12T12:38:50.029Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T12:29:04.510Z"
+      "timestamp": "2026-07-12T12:38:49.987Z"
     },
     "error": null
   },
@@ -65,36 +65,37 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 5.38,
-    "onboarding": 1.74,
-    "readiness": 1.75,
-    "runtimeStatus": 0.49,
-    "runtimeLaunch": 1.29,
-    "supervisor": 1.29,
-    "supervisorProcess": 1.12,
-    "internalTesterRuntime": 1.12,
-    "localRuntimeTask": 0.87,
-    "localRuntimeTaskInstall": 0.68,
-    "localRuntimeStartup": 0.17,
-    "localRuntimeStartupInstall": 0.17,
-    "continuousSupervisor": 1.29,
-    "staleGuardProof": 2.97,
-    "staleGuardRun": 2.85,
-    "lifecycleControls": 1.75,
-    "lifecycleScheduler": 1.75,
-    "lifecycleSchedulerRun": 1.29,
-    "settlementReadiness": 1.74,
-    "settlementExecution": 1.45,
-    "resultSettlementExecution": 0.61,
-    "resultSettlementLiveBlocked": 0.61,
-    "manualSettlement": 1.74,
-    "resultIngestion": 1.29,
-    "resultSettlement": 1.29,
-    "resultSettlementRun": 1.29,
-    "settlementPreflight": 0.37,
-    "settlementAuditEvent": 0.05,
-    "makerSeed": 1.29,
-    "s23Visible": 5.2
+    "liveProof": 5.54,
+    "onboarding": 1.91,
+    "readiness": 1.91,
+    "runtimeStatus": 0.65,
+    "runtimeLaunch": 1.45,
+    "supervisor": 1.45,
+    "supervisorProcess": 1.28,
+    "internalTesterRuntime": 1.28,
+    "localRuntimeTask": 1.03,
+    "localRuntimeTaskInstall": 0.84,
+    "localRuntimeStartup": 0.33,
+    "localRuntimeStartupInstall": 0.33,
+    "continuousSupervisor": 1.45,
+    "staleGuardProof": 3.13,
+    "staleGuardRun": 3.02,
+    "lifecycleControls": 1.91,
+    "lifecycleScheduler": 1.91,
+    "lifecycleSchedulerRun": 1.45,
+    "settlementReadiness": 1.91,
+    "settlementExecution": 1.62,
+    "resultSettlementExecution": 0.77,
+    "resultSettlementLiveBlocked": 0.77,
+    "manualSettlement": 1.91,
+    "resultIngestion": 1.45,
+    "resultSettlement": 1.45,
+    "resultSettlementRun": 1.45,
+    "settlementPreflight": 0.53,
+    "settlementAuditEvent": 0.22,
+    "approvedAutoSettlement": 0.04,
+    "makerSeed": 1.45,
+    "s23Visible": 5.36
   },
   "requirements": [
     {
@@ -252,6 +253,16 @@
       "notes": "This proves the scheduler execute path with reviewed trusted result JSON, an exact confirmation phrase, and a CLOSED-market execution guard. It still does not install unattended official-result polling."
     },
     {
+      "id": "approved-auto-settlement-disposable",
+      "priority": "P0",
+      "requirement": "Operator-approved trusted-result auto-execution is proven on a disposable sportsbook-shaped event with closed-market guard.",
+      "status": "complete",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-summary.redacted.json"
+      ],
+      "notes": "This proves an approval-file driven scheduler path: exact result digest/confirmation must match, live markets wait, and execution occurs only after close. It still does not install unattended official-result polling."
+    },
+    {
       "id": "backend-runtime-health",
       "priority": "P0",
       "requirement": "Backend health and selected quote route are reachable locally.",
@@ -304,9 +315,10 @@
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-preflight-summary.redacted.json",
-        "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-audit-event-summary.redacted.json"
+        "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-audit-event-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-summary.redacted.json"
       ],
-      "notes": "Provider-shaped result ingestion replay, durable canonical settlement audit events, and trusted-result scheduler execution are proven on local evidence. Execution is blocked while the target market remains LIVE. Live score ingestion is available only behind explicit live flags plus THE_ODDS_API_KEY, including the quota-capped supervisor path. Installed unattended provider result polling and unconfirmed active-event execution remain future work."
+      "notes": "Provider-shaped result ingestion replay, durable canonical settlement audit events, approval-file auto-execution, and trusted-result scheduler execution are proven on local evidence. Execution is blocked while the target market remains LIVE unless it later closes and exactly matches an approval file. Live score ingestion is available only behind explicit live flags plus THE_ODDS_API_KEY, including the quota-capped supervisor path. Installed unattended provider result polling and unconfirmed active-event execution remain future work."
     }
   ],
   "conclusion": {

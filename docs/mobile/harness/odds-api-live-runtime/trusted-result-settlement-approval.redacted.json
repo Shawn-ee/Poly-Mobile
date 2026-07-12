@@ -1,0 +1,14 @@
+{
+  "approvals": [
+    {
+      "approved": true,
+      "eventSlug": "approved-auto-settlement-proof-trusted-result-approved-auto-29d20abb02",
+      "marketId": "2f72a49c-2133-4efb-a828-127aa1b40f6b",
+      "outcomeId": "719a4a3f-8157-490d-b9b0-08756dc4b886",
+      "resultDigest": "49466bc26179",
+      "confirm": "SETTLE_FROM_RESULT:2f72a49c-2133-4efb-a828-127aa1b40f6b:719a4a3f-8157-490d-b9b0-08756dc4b886:49466bc26179",
+      "approvedBy": "approved_auto_settlement_trusted-result-approved-auto_operator",
+      "approvedAt": "2026-07-12T12:36:18.096Z"
+    }
+  ]
+}

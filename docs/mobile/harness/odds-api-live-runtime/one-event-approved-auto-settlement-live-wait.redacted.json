@@ -1,0 +1,210 @@
+{
+  "generatedAt": "2026-07-12T12:36:19.434Z",
+  "scope": "odds-api-one-event-result-settlement-scheduler-run",
+  "pass": true,
+  "eventSlug": "approved-auto-settlement-proof-trusted-result-approved-auto-29d20abb02",
+  "resultInput": {
+    "path": "docs/mobile/harness/odds-api-live-runtime/trusted-result-approved-auto-settlement.redacted.json",
+    "source": "trusted-local-fixture",
+    "sourceEventId": "approved-auto-settlement-proof-29d20abb02",
+    "eventSlug": "approved-auto-settlement-proof-trusted-result-approved-auto-29d20abb02",
+    "status": "final",
+    "homeScore": 2,
+    "awayScore": 1,
+    "recordedAt": "2026-07-12T12:36:17.369Z"
+  },
+  "action": "approved_waiting_for_closed_market",
+  "executionRequested": false,
+  "autoExecuteApproved": true,
+  "approval": {
+    "path": "docs/mobile/harness/odds-api-live-runtime/trusted-result-settlement-approval.redacted.json",
+    "matched": {
+      "eventSlug": "approved-auto-settlement-proof-trusted-result-approved-auto-29d20abb02",
+      "marketId": "2f72a49c-2133-4efb-a828-127aa1b40f6b",
+      "outcomeId": "719a4a3f-8157-490d-b9b0-08756dc4b886",
+      "resultDigest": "49466bc26179",
+      "approvedBy": "approved_auto_settlement_trusted-result-approved-auto_operator",
+      "approvedAt": "2026-07-12T12:36:18.096Z"
+    }
+  },
+  "providerStatus": "fixture_only",
+  "command": {
+    "executable": "C:\\nvm4w\\nodejs\\node.exe",
+    "args": [
+      "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+      "scripts/settle_odds_api_one_event_from_result.ts",
+      "--eventSlug=approved-auto-settlement-proof-trusted-result-approved-auto-29d20abb02",
+      "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-approved-auto-settlement.redacted.json",
+      "--output=docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-live-wait.redacted.json",
+      "--writeAuditEvent"
+    ],
+    "exitCode": 0,
+    "stdoutTail": [
+      "  \"auditEvent\": {",
+      "    \"id\": \"168\",",
+      "    \"sequence\": \"168\",",
+      "    \"type\": \"settlement.trusted_result.preflight\",",
+      "    \"stream\": \"market\",",
+      "    \"marketId\": \"2f72a49c-2133-4efb-a828-127aa1b40f6b\",",
+      "    \"outcomeId\": \"719a4a3f-8157-490d-b9b0-08756dc4b886\",",
+      "    \"createdAt\": \"2026-07-12T12:36:18.982Z\"",
+      "  },",
+      "  \"gaps\": {",
+      "    \"p0\": [],",
+      "    \"p1\": [",
+      "      \"Provider-shaped result ingestion can produce trusted result JSON, but this command intentionally consumes only reviewed trusted result JSON.\",",
+      "      \"Automatic unattended result polling and settlement execution are not installed.\"",
+      "    ],",
+      "    \"p2\": [",
+      "      \"Operator settlement UI and multi-event settlement queue remain future work.\"",
+      "    ]",
+      "  }",
+      "}"
+    ],
+    "stderrTail": []
+  },
+  "previewCommand": {
+    "executable": "C:\\nvm4w\\nodejs\\node.exe",
+    "args": [
+      "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+      "scripts/settle_odds_api_one_event_from_result.ts",
+      "--eventSlug=approved-auto-settlement-proof-trusted-result-approved-auto-29d20abb02",
+      "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-approved-auto-settlement.redacted.json",
+      "--output=docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-live-wait.redacted.json",
+      "--writeAuditEvent"
+    ],
+    "exitCode": 0,
+    "stdoutTail": [
+      "  \"auditEvent\": {",
+      "    \"id\": \"168\",",
+      "    \"sequence\": \"168\",",
+      "    \"type\": \"settlement.trusted_result.preflight\",",
+      "    \"stream\": \"market\",",
+      "    \"marketId\": \"2f72a49c-2133-4efb-a828-127aa1b40f6b\",",
+      "    \"outcomeId\": \"719a4a3f-8157-490d-b9b0-08756dc4b886\",",
+      "    \"createdAt\": \"2026-07-12T12:36:18.982Z\"",
+      "  },",
+      "  \"gaps\": {",
+      "    \"p0\": [],",
+      "    \"p1\": [",
+      "      \"Provider-shaped result ingestion can produce trusted result JSON, but this command intentionally consumes only reviewed trusted result JSON.\",",
+      "      \"Automatic unattended result polling and settlement execution are not installed.\"",
+      "    ],",
+      "    \"p2\": [",
+      "      \"Operator settlement UI and multi-event settlement queue remain future work.\"",
+      "    ]",
+      "  }",
+      "}"
+    ],
+    "stderrTail": []
+  },
+  "settlementSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-live-wait.redacted.json",
+  "previewSettlementDigest": {
+    "pass": true,
+    "mode": "dry-run",
+    "selectedMarket": {
+      "id": "2f72a49c-2133-4efb-a828-127aa1b40f6b",
+      "slug": "approved-auto-settlement-proof-trusted-result-approved-auto-29d20abb02-total-goals-2-5",
+      "title": "Approved Auto Settlement Proof trusted-result-approved-auto: Total Goals 2.5",
+      "marketType": "total_goals",
+      "marketGroupKey": "totals",
+      "line": "2.5",
+      "statusBefore": "LIVE",
+      "resolvedOutcomeIdBefore": null,
+      "collateralUSDCBefore": "5"
+    },
+    "winningOutcome": {
+      "id": "719a4a3f-8157-490d-b9b0-08756dc4b886",
+      "name": "Over +2.5",
+      "label": "Over 2.5 total goals",
+      "side": "over",
+      "code": "OVER"
+    },
+    "controls": {
+      "dryRunIsDefault": true,
+      "writeAuditEvent": true,
+      "executeRequiresFlag": "--execute",
+      "executeRequiresConfirm": "SETTLE_FROM_RESULT:2f72a49c-2133-4efb-a828-127aa1b40f6b:719a4a3f-8157-490d-b9b0-08756dc4b886:49466bc26179",
+      "executeRequiresMarketStatus": "CLOSED",
+      "currentMarketStatus": "LIVE",
+      "resultDigest": "49466bc26179",
+      "actorUserId": "holiwyn-local-result-settlement-operator",
+      "providerStatus": "fixture_only"
+    }
+  },
+  "settlementDigest": {
+    "pass": true,
+    "mode": "dry-run",
+    "selectedMarket": {
+      "id": "2f72a49c-2133-4efb-a828-127aa1b40f6b",
+      "slug": "approved-auto-settlement-proof-trusted-result-approved-auto-29d20abb02-total-goals-2-5",
+      "title": "Approved Auto Settlement Proof trusted-result-approved-auto: Total Goals 2.5",
+      "marketType": "total_goals",
+      "marketGroupKey": "totals",
+      "line": "2.5",
+      "statusBefore": "LIVE",
+      "resolvedOutcomeIdBefore": null,
+      "collateralUSDCBefore": "5"
+    },
+    "winningOutcome": {
+      "id": "719a4a3f-8157-490d-b9b0-08756dc4b886",
+      "name": "Over +2.5",
+      "label": "Over 2.5 total goals",
+      "side": "over",
+      "code": "OVER"
+    },
+    "preview": {
+      "marketStatus": "LIVE",
+      "totalShares": "10",
+      "totalWinningShares": "5",
+      "totalPayout": "5",
+      "collateralUSDC": "5",
+      "payoutConservationPass": true,
+      "blockers": [],
+      "openOrderCleanup": {
+        "openOrderCount": 0,
+        "buyOrderLockedUSDCToRelease": "0",
+        "sellOrderSharesToRelease": "0"
+      },
+      "payoutCount": 2,
+      "loserPositionCount": 1,
+      "mutation": "none"
+    },
+    "execution": {
+      "attempted": false,
+      "reason": "dry_run_default",
+      "requiredConfirm": "SETTLE_FROM_RESULT:2f72a49c-2133-4efb-a828-127aa1b40f6b:719a4a3f-8157-490d-b9b0-08756dc4b886:49466bc26179"
+    },
+    "controls": {
+      "dryRunIsDefault": true,
+      "writeAuditEvent": true,
+      "executeRequiresFlag": "--execute",
+      "executeRequiresConfirm": "SETTLE_FROM_RESULT:2f72a49c-2133-4efb-a828-127aa1b40f6b:719a4a3f-8157-490d-b9b0-08756dc4b886:49466bc26179",
+      "executeRequiresMarketStatus": "CLOSED",
+      "currentMarketStatus": "LIVE",
+      "resultDigest": "49466bc26179",
+      "actorUserId": "holiwyn-local-result-settlement-operator",
+      "providerStatus": "fixture_only"
+    }
+  },
+  "runtimeTruth": {
+    "canRunFromSupervisorOrCron": true,
+    "providerResultIngestionAvailable": true,
+    "unattendedResultPollingInstalled": false,
+    "dryRunDefault": true,
+    "executeRequiresConfirmation": true,
+    "autoExecuteRequiresApprovalFile": true,
+    "autoExecuteRequiresClosedMarket": true,
+    "fakeTokenOnly": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.",
+      "Dry-run preview is the default; execution requires either explicit confirmation or an exact local approval file."
+    ],
+    "p2": [
+      "Multi-event result queue and operator UI remain future work."
+    ]
+  }
+}

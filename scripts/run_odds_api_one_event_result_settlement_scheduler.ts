@@ -9,6 +9,8 @@ const DEFAULT_SETTLEMENT_OUTPUT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json";
 const DEFAULT_OUTPUT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json";
+const DEFAULT_APPROVAL_PATH =
+  "docs/mobile/harness/odds-api-live-runtime/trusted-result-settlement-approval.redacted.json";
 
 type TrustedResult = {
   status?: string | null;
@@ -21,6 +23,20 @@ type TrustedResult = {
 };
 
 type JsonObject = Record<string, unknown>;
+type SettlementApproval = {
+  approved?: boolean;
+  eventSlug?: string | null;
+  marketId?: string | null;
+  outcomeId?: string | null;
+  resultDigest?: string | null;
+  confirm?: string | null;
+  approvedBy?: string | null;
+  approvedAt?: string | null;
+};
+
+type SettlementApprovalFile = SettlementApproval & {
+  approvals?: SettlementApproval[];
+};
 
 const argValue = (name: string) => {
   const prefix = `--${name}=`;
@@ -50,6 +66,41 @@ function isFinalStatus(status: unknown) {
   return ["final", "official"].includes(String(status ?? "").toLowerCase());
 }
 
+function getPath(source: unknown, keys: string[]) {
+  let cursor = source;
+  for (const key of keys) {
+    if (!cursor || typeof cursor !== "object" || !(key in cursor)) return null;
+    cursor = (cursor as JsonObject)[key];
+  }
+  return cursor;
+}
+
+function approvalsFromFile(source: SettlementApprovalFile | null) {
+  if (!source) return [] as SettlementApproval[];
+  if (Array.isArray(source.approvals)) return source.approvals;
+  return [source];
+}
+
+function findApproval(params: {
+  approvalFile: SettlementApprovalFile | null;
+  eventSlug: string;
+  marketId: string | null;
+  outcomeId: string | null;
+  resultDigest: string | null;
+  confirm: string | null;
+}) {
+  return (
+    approvalsFromFile(params.approvalFile).find((approval) =>
+      approval.approved === true &&
+      approval.eventSlug === params.eventSlug &&
+      approval.marketId === params.marketId &&
+      approval.outcomeId === params.outcomeId &&
+      approval.resultDigest === params.resultDigest &&
+      approval.confirm === params.confirm,
+    ) ?? null
+  );
+}
+
 async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to run local result settlement scheduler in production.");
@@ -61,9 +112,13 @@ async function main() {
     argValue("settlementOutput") ?? DEFAULT_SETTLEMENT_OUTPUT_PATH;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
   const execute = hasFlag("execute");
+  const autoExecuteApproved = hasFlag("autoExecuteApproved");
+  const writeAuditEvent = hasFlag("writeAuditEvent");
   const confirm = argValue("confirm");
+  const approvalPath = argValue("approval") ?? argValue("approvalPath") ?? DEFAULT_APPROVAL_PATH;
   const allowTrustedLocalFixture = hasFlag("allowTrustedLocalFixture");
   const result = await readJson<TrustedResult>(resultPath);
+  const approvalFile = autoExecuteApproved ? await readJson<SettlementApprovalFile>(approvalPath) : null;
   const p0: string[] = [];
   const p1: string[] = [];
   const p2: string[] = [];
@@ -71,9 +126,14 @@ async function main() {
     | "no_result_file"
     | "waiting_for_final_result"
     | "preview_settlement"
-    | "execute_settlement" = "no_result_file";
+    | "execute_settlement"
+    | "approved_waiting_for_closed_market"
+    | "auto_execute_settlement" = "no_result_file";
   let commandResult: JsonObject | null = null;
+  let previewCommandResult: JsonObject | null = null;
   let command: JsonObject | null = null;
+  let previewCommand: JsonObject | null = null;
+  let matchedApproval: SettlementApproval | null = null;
 
   if (!result) {
     action = "no_result_file";
@@ -83,6 +143,8 @@ async function main() {
     action = "waiting_for_final_result";
   } else if (execute && result.source === "trusted-local-fixture" && !allowTrustedLocalFixture) {
     p0.push("Execution from trusted-local-fixture requires --allowTrustedLocalFixture.");
+  } else if (autoExecuteApproved && result.source === "trusted-local-fixture" && !allowTrustedLocalFixture) {
+    p0.push("Approved auto-execution from trusted-local-fixture requires --allowTrustedLocalFixture.");
   } else {
     action = execute ? "execute_settlement" : "preview_settlement";
     const args = [
@@ -96,6 +158,7 @@ async function main() {
       args.push("--execute");
       if (confirm) args.push(`--confirm=${confirm}`);
     }
+    if (writeAuditEvent) args.push("--writeAuditEvent");
     const executable = process.execPath;
     const run = spawnSync(executable, args, {
       cwd: process.cwd(),
@@ -110,22 +173,79 @@ async function main() {
       stderrTail: cleanOutput(run.stderr ?? ""),
     };
     commandResult = await readJson<JsonObject>(settlementOutputPath);
-    if (run.status !== 0 || commandResult?.pass !== true) {
+    if (!autoExecuteApproved && (run.status !== 0 || commandResult?.pass !== true)) {
       p0.push("Trusted result settlement command failed.");
+    }
+    if (autoExecuteApproved) {
+      previewCommand = command;
+      previewCommandResult = commandResult;
+      if (run.status !== 0 || commandResult?.pass !== true) {
+        p0.push("Trusted result settlement preflight command failed.");
+      } else {
+        const marketId = getPath(commandResult, ["selectedMarket", "id"]);
+        const outcomeId = getPath(commandResult, ["winningOutcome", "id"]);
+        const resultDigest = getPath(commandResult, ["controls", "resultDigest"]);
+        const requiredConfirm = getPath(commandResult, ["controls", "executeRequiresConfirm"]);
+        const currentMarketStatus = getPath(commandResult, ["controls", "currentMarketStatus"]);
+        matchedApproval = findApproval({
+          approvalFile,
+          eventSlug,
+          marketId: typeof marketId === "string" ? marketId : null,
+          outcomeId: typeof outcomeId === "string" ? outcomeId : null,
+          resultDigest: typeof resultDigest === "string" ? resultDigest : null,
+          confirm: typeof requiredConfirm === "string" ? requiredConfirm : null,
+        });
+        if (!matchedApproval) {
+          p0.push("No matching trusted-result settlement approval was found.");
+        } else if (currentMarketStatus !== "CLOSED") {
+          action = "approved_waiting_for_closed_market";
+        } else {
+          action = "auto_execute_settlement";
+          const executeOutputPath = argValue("executeSettlementOutput") ?? settlementOutputPath;
+          const executeArgs = [
+            path.join(process.cwd(), "node_modules", "tsx", "dist", "cli.mjs"),
+            "scripts/settle_odds_api_one_event_from_result.ts",
+            `--eventSlug=${eventSlug}`,
+            `--result=${resultPath}`,
+            `--output=${executeOutputPath}`,
+            "--execute",
+            `--confirm=${requiredConfirm}`,
+          ];
+          if (writeAuditEvent) executeArgs.push("--writeAuditEvent");
+          const executeRun = spawnSync(executable, executeArgs, {
+            cwd: process.cwd(),
+            encoding: "utf8",
+            env: process.env,
+          });
+          command = {
+            executable,
+            args: executeArgs,
+            exitCode: executeRun.status,
+            stdoutTail: cleanOutput(executeRun.stdout ?? ""),
+            stderrTail: cleanOutput(executeRun.stderr ?? ""),
+          };
+          commandResult = await readJson<JsonObject>(executeOutputPath);
+          if (executeRun.status !== 0 || commandResult?.pass !== true || commandResult?.mode !== "execute") {
+            p0.push("Approved trusted result settlement execution failed.");
+          }
+        }
+      }
     }
   }
 
   p1.push(
     "This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.",
   );
-  p1.push("Dry-run preview is the default; execution still requires explicit confirmation.");
+  p1.push("Dry-run preview is the default; execution requires either explicit confirmation or an exact local approval file.");
   p2.push("Multi-event result queue and operator UI remain future work.");
 
   const pass =
     p0.length === 0 &&
     (action === "no_result_file" ||
       action === "waiting_for_final_result" ||
-      (commandResult?.pass === true && commandResult?.mode === (execute ? "execute" : "dry-run")));
+      action === "approved_waiting_for_closed_market" ||
+      (commandResult?.pass === true &&
+        commandResult?.mode === (action === "auto_execute_settlement" || execute ? "execute" : "dry-run")));
 
   const summary = {
     generatedAt: new Date().toISOString(),
@@ -146,6 +266,22 @@ async function main() {
       : null,
     action,
     executionRequested: execute,
+    autoExecuteApproved,
+    approval: autoExecuteApproved
+      ? {
+          path: approvalPath,
+          matched: matchedApproval
+            ? {
+                eventSlug: matchedApproval.eventSlug ?? null,
+                marketId: matchedApproval.marketId ?? null,
+                outcomeId: matchedApproval.outcomeId ?? null,
+                resultDigest: matchedApproval.resultDigest ?? null,
+                approvedBy: matchedApproval.approvedBy ?? null,
+                approvedAt: matchedApproval.approvedAt ?? null,
+              }
+            : null,
+        }
+      : null,
     providerStatus:
       result?.source === "trusted-local-fixture"
         ? "fixture_only"
@@ -153,7 +289,17 @@ async function main() {
           ? "trusted_external_input"
           : "missing",
     command,
+    previewCommand,
     settlementSummaryPath: settlementOutputPath,
+    previewSettlementDigest: previewCommandResult
+      ? {
+          pass: previewCommandResult.pass,
+          mode: previewCommandResult.mode,
+          selectedMarket: previewCommandResult.selectedMarket ?? null,
+          winningOutcome: previewCommandResult.winningOutcome ?? null,
+          controls: previewCommandResult.controls ?? null,
+        }
+      : null,
     settlementDigest: commandResult
       ? {
           pass: commandResult.pass,
@@ -171,6 +317,8 @@ async function main() {
       unattendedResultPollingInstalled: false,
       dryRunDefault: true,
       executeRequiresConfirmation: true,
+      autoExecuteRequiresApprovalFile: true,
+      autoExecuteRequiresClosedMarket: true,
       fakeTokenOnly: true,
     },
     gaps: {

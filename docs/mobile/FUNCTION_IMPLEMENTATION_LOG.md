@@ -14040,6 +14040,26 @@ Known limitations:
 # Cycle ONEEVENTLOCALTASKINSTALL - Scheduled Task Install Permission Audit
 
 - Feature/page worked on: local scheduled-task install/uninstall proof.
+# Cycle ONEEVENTAPPROVEDAUTOSETTLEMENT - Approved Auto Settlement
+
+- Feature/page worked on: operator-approved trusted-result auto-settlement.
+- Frontend components touched: none. This is backend/runtime settlement automation only.
+- Important functions/services touched:
+  - `scripts/run_odds_api_one_event_result_settlement_scheduler.ts`
+  - `scripts/prove_odds_api_approved_auto_settlement.ts`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - Existing trusted-result settlement command and canonical settlement audit event writer
+- User/runtime interactions supported:
+  - Scheduler can run with `--autoExecuteApproved --approval=<path>`.
+  - It first dry-runs settlement, then executes only if an approval file exactly matches event slug, market id, outcome id, result digest, and confirmation phrase.
+  - It waits without mutating while the market is still `LIVE`.
+- State transitions:
+  - Disposable proof market: `LIVE` -> approved wait with no resolution -> `CLOSED` -> approved auto-execute -> `RESOLVED`.
+  - Active tester event is not mutated.
+- Known limitations:
+  - This is approval-file automation, not unconfirmed active-event auto-settlement.
+  - Installed unattended official result polling remains P1.
+
 # Cycle ONEEVENTSETTLEMENTAUDIT - Durable Settlement Audit Event
 
 - Feature/page worked on: trusted-result settlement operator evidence.

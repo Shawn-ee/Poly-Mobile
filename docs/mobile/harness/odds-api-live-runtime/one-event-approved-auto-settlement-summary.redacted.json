@@ -1,0 +1,190 @@
+{
+  "generatedAt": "2026-07-12T12:36:21.236Z",
+  "scope": "odds-api-approved-auto-settlement-proof",
+  "pass": true,
+  "providerQuotaUsed": false,
+  "disposableEvent": {
+    "slug": "approved-auto-settlement-proof-trusted-result-approved-auto-29d20abb02",
+    "title": "Approved Auto Settlement Proof trusted-result-approved-auto",
+    "marketId": "2f72a49c-2133-4efb-a828-127aa1b40f6b",
+    "winningOutcomeId": "719a4a3f-8157-490d-b9b0-08756dc4b886",
+    "operator": "approved_auto_settlement_trusted-result-approved-auto_operator",
+    "users": [
+      "approved_auto_settlement_trusted-result-approved-auto_winner",
+      "approved_auto_settlement_trusted-result-approved-auto_loser"
+    ]
+  },
+  "paths": {
+    "resultPath": "docs/mobile/harness/odds-api-live-runtime/trusted-result-approved-auto-settlement.redacted.json",
+    "approvalPath": "docs/mobile/harness/odds-api-live-runtime/trusted-result-settlement-approval.redacted.json",
+    "dryRunOutput": "docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-dry-run.redacted.json",
+    "liveWaitOutput": "docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-live-wait.redacted.json",
+    "executeOutput": "docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-execute.redacted.json",
+    "executeSettlementOutput": "docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-execute-result.redacted.json"
+  },
+  "dryRun": {
+    "command": {
+      "executable": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+        "scripts/run_odds_api_one_event_result_settlement_scheduler.ts",
+        "--eventSlug=approved-auto-settlement-proof-trusted-result-approved-auto-29d20abb02",
+        "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-approved-auto-settlement.redacted.json",
+        "--settlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-dry-run.redacted.json",
+        "--output=docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-dry-run.redacted.json"
+      ],
+      "exitCode": 0,
+      "stdoutTail": [
+        "    \"canRunFromSupervisorOrCron\": true,",
+        "    \"providerResultIngestionAvailable\": true,",
+        "    \"unattendedResultPollingInstalled\": false,",
+        "    \"dryRunDefault\": true,",
+        "    \"executeRequiresConfirmation\": true,",
+        "    \"autoExecuteRequiresApprovalFile\": true,",
+        "    \"autoExecuteRequiresClosedMarket\": true,",
+        "    \"fakeTokenOnly\": true",
+        "  },",
+        "  \"gaps\": {",
+        "    \"p0\": [],",
+        "    \"p1\": [",
+        "      \"This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.\",",
+        "      \"Dry-run preview is the default; execution requires either explicit confirmation or an exact local approval file.\"",
+        "    ],",
+        "    \"p2\": [",
+        "      \"Multi-event result queue and operator UI remain future work.\"",
+        "    ]",
+        "  }",
+        "}"
+      ],
+      "stderrTail": []
+    },
+    "action": "preview_settlement",
+    "approvalDigest": "49466bc26179"
+  },
+  "liveWait": {
+    "command": {
+      "executable": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+        "scripts/run_odds_api_one_event_result_settlement_scheduler.ts",
+        "--eventSlug=approved-auto-settlement-proof-trusted-result-approved-auto-29d20abb02",
+        "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-approved-auto-settlement.redacted.json",
+        "--approval=docs/mobile/harness/odds-api-live-runtime/trusted-result-settlement-approval.redacted.json",
+        "--settlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-live-wait.redacted.json",
+        "--output=docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-live-wait.redacted.json",
+        "--autoExecuteApproved",
+        "--allowTrustedLocalFixture",
+        "--writeAuditEvent"
+      ],
+      "exitCode": 0,
+      "stdoutTail": [
+        "    \"canRunFromSupervisorOrCron\": true,",
+        "    \"providerResultIngestionAvailable\": true,",
+        "    \"unattendedResultPollingInstalled\": false,",
+        "    \"dryRunDefault\": true,",
+        "    \"executeRequiresConfirmation\": true,",
+        "    \"autoExecuteRequiresApprovalFile\": true,",
+        "    \"autoExecuteRequiresClosedMarket\": true,",
+        "    \"fakeTokenOnly\": true",
+        "  },",
+        "  \"gaps\": {",
+        "    \"p0\": [],",
+        "    \"p1\": [",
+        "      \"This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.\",",
+        "      \"Dry-run preview is the default; execution requires either explicit confirmation or an exact local approval file.\"",
+        "    ],",
+        "    \"p2\": [",
+        "      \"Multi-event result queue and operator UI remain future work.\"",
+        "    ]",
+        "  }",
+        "}"
+      ],
+      "stderrTail": []
+    },
+    "action": "approved_waiting_for_closed_market",
+    "marketStatusAfterWait": "LIVE"
+  },
+  "execute": {
+    "command": {
+      "executable": "C:\\nvm4w\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+        "scripts/run_odds_api_one_event_result_settlement_scheduler.ts",
+        "--eventSlug=approved-auto-settlement-proof-trusted-result-approved-auto-29d20abb02",
+        "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-approved-auto-settlement.redacted.json",
+        "--approval=docs/mobile/harness/odds-api-live-runtime/trusted-result-settlement-approval.redacted.json",
+        "--settlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-dry-run.redacted.json",
+        "--executeSettlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-execute-result.redacted.json",
+        "--output=docs/mobile/harness/odds-api-live-runtime/one-event-approved-auto-settlement-execute.redacted.json",
+        "--autoExecuteApproved",
+        "--allowTrustedLocalFixture",
+        "--writeAuditEvent"
+      ],
+      "exitCode": 0,
+      "stdoutTail": [
+        "    \"canRunFromSupervisorOrCron\": true,",
+        "    \"providerResultIngestionAvailable\": true,",
+        "    \"unattendedResultPollingInstalled\": false,",
+        "    \"dryRunDefault\": true,",
+        "    \"executeRequiresConfirmation\": true,",
+        "    \"autoExecuteRequiresApprovalFile\": true,",
+        "    \"autoExecuteRequiresClosedMarket\": true,",
+        "    \"fakeTokenOnly\": true",
+        "  },",
+        "  \"gaps\": {",
+        "    \"p0\": [],",
+        "    \"p1\": [",
+        "      \"This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.\",",
+        "      \"Dry-run preview is the default; execution requires either explicit confirmation or an exact local approval file.\"",
+        "    ],",
+        "    \"p2\": [",
+        "      \"Multi-event result queue and operator UI remain future work.\"",
+        "    ]",
+        "  }",
+        "}"
+      ],
+      "stderrTail": []
+    },
+    "action": "auto_execute_settlement",
+    "settlementMode": "execute",
+    "auditEventId": "170"
+  },
+  "postSettlement": {
+    "marketStatus": "RESOLVED",
+    "resolvedOutcomeId": "719a4a3f-8157-490d-b9b0-08756dc4b886",
+    "settlementStatus": "closed_for_approved_auto_settlement_proof",
+    "collateralUSDC": "0",
+    "openOrdersAfter": 0,
+    "activePositionsAfter": 0
+  },
+  "runtimeTruth": {
+    "autoExecutionRequiresApprovalFile": true,
+    "autoExecutionRequiresExactDigestAndConfirm": true,
+    "autoExecutionWaitsForClosedMarket": true,
+    "activeTesterEventMutated": false,
+    "providerQuotaUsed": false
+  },
+  "checks": {
+    "dryRunPassed": true,
+    "approvalFileWritten": true,
+    "liveAutoWaitPassed": true,
+    "liveMarketNotResolvedByWait": true,
+    "executeSchedulerPassed": true,
+    "executeSettlementPassed": true,
+    "disposableMarketResolved": true,
+    "collateralZeroAfterSettlement": true,
+    "noOpenOrdersAfterSettlement": true,
+    "positionsFinalizedAfterSettlement": true,
+    "executedAuditEventWritten": true,
+    "providerQuotaNotUsed": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "This proves operator-approved auto-execution on a disposable sportsbook-shaped event, not installed unattended official result polling for active tester events."
+    ],
+    "p2": [
+      "Operator settlement UI and multi-event settlement queue remain future work."
+    ]
+  }
+}

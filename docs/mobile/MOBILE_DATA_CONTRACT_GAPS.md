@@ -10134,6 +10134,14 @@ Future migration concern:
 - Temporary mock/static data: no new mock provider data. The proof reads existing redacted trusted result evidence and spends no provider quota.
 - Future migration concern: this is backend audit evidence, not an end-user settlement screen. A production path should pair canonical audit events with admin review controls and durable official result ingestion.
 
+## Cycle ONEEVENTAPPROVEDAUTOSETTLEMENT - Approved Auto Settlement
+
+- Closed or narrowed: trusted-result settlement can now auto-execute from a local approval file when the generated digest/confirmation/market/outcome/event exactly match and the market is already closed.
+- Route mismatch: none for mobile routes. The scheduler is local runtime automation and uses existing settlement services.
+- Fields Holiwyn still needs but backend/provider does not fully provide: official result polling, durable approval storage/admin UI, multi-event settlement queue, and production execution policy remain P1/P2.
+- Temporary mock/static data: the proof uses a disposable local market and local trusted-result JSON. It does not call the provider and does not mutate the active tester event.
+- Future migration concern: approval-file automation is a local internal bridge. A production version should store approvals and official result evidence in durable backend tables with admin review and audit controls.
+
 ## Cycle ONEEVENTLOCALTASK - Local Runtime Scheduled Task Plan
 
 - Closed or narrowed: local unattended-runtime ownership now has a Windows scheduled-task manager with plan/status/install/uninstall actions. The default proof is dry-run and requires `-Apply` before any OS mutation.

@@ -1,0 +1,15 @@
+{
+  "source": "trusted-local-fixture",
+  "sourceEventId": "approved-auto-settlement-proof-29d20abb02",
+  "eventSlug": "approved-auto-settlement-proof-trusted-result-approved-auto-29d20abb02",
+  "eventTitle": "Approved Auto Settlement Proof trusted-result-approved-auto",
+  "status": "final",
+  "period": "full_time",
+  "homeTeam": "Proof Home",
+  "awayTeam": "Proof Away",
+  "homeScore": 2,
+  "awayScore": 1,
+  "advanceTeam": "Proof Home",
+  "evidenceUrl": null,
+  "recordedAt": "2026-07-12T12:36:17.369Z"
+}

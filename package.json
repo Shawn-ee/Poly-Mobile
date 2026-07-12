@@ -139,6 +139,7 @@
     "mobile:one-event-result-settlement-run": "tsx scripts/run_odds_api_one_event_result_settlement_scheduler.ts",
     "mobile:one-event-settlement-preflight": "tsx scripts/report_odds_api_one_event_settlement_preflight.ts",
     "mobile:one-event-settlement-audit-event-proof": "tsx scripts/prove_odds_api_settlement_audit_event.ts",
+    "mobile:one-event-approved-auto-settlement-proof": "tsx scripts/prove_odds_api_approved_auto_settlement.ts",
     "mobile:one-event-result-settlement-execution-proof": "tsx scripts/prove_odds_api_trusted_result_settlement_scheduler_execution.ts",
     "mobile:one-event-onboarding": "powershell -ExecutionPolicy Bypass -File scripts/onboard_holiwyn_one_event_live_runtime.ps1",
     "mobile:one-event-runtime-status": "tsx scripts/report_odds_api_one_event_runtime_status.ts",
