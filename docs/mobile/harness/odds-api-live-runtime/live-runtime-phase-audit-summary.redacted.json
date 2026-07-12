@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T11:55:09.713Z",
+  "generatedAt": "2026-07-12T12:01:55.336Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T11:55:09.286Z"
+      "timestamp": "2026-07-12T12:01:55.295Z"
     },
     "error": null
   },
@@ -65,32 +65,32 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 4.81,
-    "onboarding": 1.18,
-    "readiness": 1.18,
-    "runtimeStatus": 0.72,
-    "runtimeLaunch": 0.72,
-    "supervisor": 0.72,
-    "supervisorProcess": 0.55,
-    "internalTesterRuntime": 0.55,
-    "localRuntimeTask": 0.3,
-    "localRuntimeTaskInstall": 0.12,
-    "continuousSupervisor": 0.72,
-    "staleGuardProof": 2.4,
-    "staleGuardRun": 2.29,
-    "lifecycleControls": 1.18,
-    "lifecycleScheduler": 1.18,
-    "lifecycleSchedulerRun": 0.72,
-    "settlementReadiness": 1.18,
-    "settlementExecution": 0.89,
-    "resultSettlementExecution": 0.04,
-    "resultSettlementLiveBlocked": 0.04,
-    "manualSettlement": 1.18,
-    "resultIngestion": 0.72,
-    "resultSettlement": 0.72,
-    "resultSettlementRun": 0.72,
-    "makerSeed": 0.72,
-    "s23Visible": 4.64
+    "liveProof": 4.93,
+    "onboarding": 1.29,
+    "readiness": 1.29,
+    "runtimeStatus": 0.04,
+    "runtimeLaunch": 0.84,
+    "supervisor": 0.84,
+    "supervisorProcess": 0.66,
+    "internalTesterRuntime": 0.66,
+    "localRuntimeTask": 0.42,
+    "localRuntimeTaskInstall": 0.23,
+    "continuousSupervisor": 0.84,
+    "staleGuardProof": 2.52,
+    "staleGuardRun": 2.4,
+    "lifecycleControls": 1.29,
+    "lifecycleScheduler": 1.29,
+    "lifecycleSchedulerRun": 0.84,
+    "settlementReadiness": 1.29,
+    "settlementExecution": 1,
+    "resultSettlementExecution": 0.15,
+    "resultSettlementLiveBlocked": 0.16,
+    "manualSettlement": 1.29,
+    "resultIngestion": 0.84,
+    "resultSettlement": 0.84,
+    "resultSettlementRun": 0.84,
+    "makerSeed": 0.84,
+    "s23Visible": 4.75
   },
   "requirements": [
     {
@@ -123,7 +123,7 @@
         "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json"
       ],
-      "notes": null
+      "notes": "Runtime status also surfaces the trusted-result settlement guard: execution requires CLOSED market status and live-market execution is blocked."
     },
     {
       "id": "quota-policy",

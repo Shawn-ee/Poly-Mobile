@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T11:11:46.795Z",
+  "generatedAt": "2026-07-12T11:59:46.545Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -38,7 +38,7 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-12T11:11:46.793Z"
+        "timestamp": "2026-07-12T11:59:46.545Z"
       },
       "error": null
     }
@@ -46,7 +46,7 @@
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveProofGeneratedAt": "2026-07-12T07:06:21.133Z",
-    "liveProofAgeHours": 4.09,
+    "liveProofAgeHours": 4.89,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
@@ -70,7 +70,7 @@
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
     "makerSeedGeneratedAt": "2026-07-12T11:11:40.330Z",
-    "makerSeedAgeHours": 0,
+    "makerSeedAgeHours": 0.8,
     "quoteRoute": {
       "ok": true,
       "status": 200,
@@ -107,10 +107,33 @@
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
     "schedulerGeneratedAt": "2026-07-12T11:11:44.311Z",
-    "schedulerAgeHours": 0,
+    "schedulerAgeHours": 0.8,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 19
+  },
+  "settlementSafety": {
+    "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
+    "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
+    "resultSettlementExecutionGeneratedAt": "2026-07-12T11:52:39.122Z",
+    "resultSettlementExecutionAgeHours": 0.12,
+    "resultSettlementLiveBlockedGeneratedAt": "2026-07-12T11:52:37.215Z",
+    "resultSettlementLiveBlockedAgeHours": 0.12,
+    "executionRequiresMarketStatus": "CLOSED",
+    "blockedExecutionReason": "market_must_be_closed_before_result_settlement:LIVE",
+    "activeTesterEventMutated": false,
+    "checks": {
+      "proofPresent": true,
+      "proofPassed": true,
+      "dryRunSchedulerPassed": true,
+      "confirmationPhraseProduced": true,
+      "liveMarketExecutionBlocked": true,
+      "liveMarketNotResolvedByBlockedAttempt": true,
+      "closedMarketExecutionPassed": true,
+      "targetTesterEventNotMutated": true,
+      "liveBlockedArtifactPresent": true,
+      "liveBlockedArtifactShowsBlocked": true
+    }
   },
   "supervisor": {
     "supervisorPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json",
@@ -150,13 +173,16 @@
     "schedulerRunPresent": true,
     "schedulerRunPassed": true,
     "supervisorPresent": true,
-    "supervisorPassed": true
+    "supervisorPassed": true,
+    "resultSettlementGuardPresent": true,
+    "resultSettlementGuardPassed": true,
+    "liveResultSettlementBlockedWhileLive": true
   },
   "gaps": {
     "p0": [],
     "p1": [
       "Status report proves foreground/local runtime truth only; it does not install an unattended daemon.",
-      "Official-result automatic settlement remains future work."
+      "Official-result automatic settlement remains future work; current trusted-result execution is guarded by exact confirmation and CLOSED market status."
     ],
     "p2": [
       "Multi-event provider polling remains future work."

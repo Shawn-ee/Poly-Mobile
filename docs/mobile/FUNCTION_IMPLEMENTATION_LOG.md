@@ -14080,3 +14080,22 @@ Known limitations:
   - This closes a lifecycle safety hole, but does not install unattended official-result polling.
   - Active tester event settlement still requires trusted operator confirmation.
   - Operator UI, audit-log workflow, and multi-event settlement queue remain future work.
+
+# Cycle ONEEVENTRUNTIMESTATUSSETTLEMENT - Runtime Status Settlement Guard Surface
+
+- Feature/page worked on: backend live-runtime operator status.
+- Frontend components touched: none. This is backend/runtime evidence tooling only and does not change mobile UI, order routes, schemas, provider normalization, or S23 flows.
+- Important functions/services touched:
+  - `scripts/report_odds_api_one_event_runtime_status.ts`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `package.json` script `mobile:one-event-runtime-status`
+- User/runtime interactions supported:
+  - Operators can run one no-quota status command to see backend health, provider proof freshness, maker quote status, lifecycle scheduler state, and trusted-result settlement guard state.
+  - The status report now surfaces that trusted-result execution requires `CLOSED` market status and that the latest live-market execution attempt was blocked.
+- State transitions:
+  - Reads proof summaries and backend health/quote routes.
+  - Writes `one-event-runtime-status-summary.redacted.json`.
+  - Does not call The Odds API and does not mutate provider, market, order, portfolio, or settlement state.
+- Known limitations:
+  - This improves operator visibility, not unattended official-result polling.
+  - Active tester event settlement still requires trusted operator confirmation.

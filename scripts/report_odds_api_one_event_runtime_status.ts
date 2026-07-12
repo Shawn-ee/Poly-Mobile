@@ -14,6 +14,10 @@ const SUPERVISOR_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json";
 const SCHEDULER_RUN_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json";
+const RESULT_SETTLEMENT_EXECUTION_PATH =
+  "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json";
+const RESULT_SETTLEMENT_LIVE_BLOCKED_PATH =
+  "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json";
 
 const argValue = (name: string) => {
   const prefix = `--${name}=`;
@@ -105,6 +109,8 @@ async function main() {
   const makerSeed = await readJson(MAKER_SEED_PATH);
   const supervisor = await readJson(SUPERVISOR_PATH);
   const schedulerRun = await readJson(SCHEDULER_RUN_PATH);
+  const resultSettlementExecution = await readJson(RESULT_SETTLEMENT_EXECUTION_PATH);
+  const resultSettlementLiveBlocked = await readJson(RESULT_SETTLEMENT_LIVE_BLOCKED_PATH);
 
   const selectedMarketId =
     stringValue(getPath(makerSeed, ["selectedMarket", "id"])) ??
@@ -116,9 +122,29 @@ async function main() {
   const liveProofAgeHours = ageHours(liveProof?.generatedAt);
   const makerSeedAgeHours = ageHours(makerSeed?.generatedAt);
   const schedulerAgeHours = ageHours(schedulerRun?.generatedAt);
+  const resultSettlementExecutionAgeHours = ageHours(resultSettlementExecution?.generatedAt);
+  const resultSettlementLiveBlockedAgeHours = ageHours(resultSettlementLiveBlocked?.generatedAt);
   const liveProofFresh =
     liveProofAgeHours != null && liveProofAgeHours >= 0 && liveProofAgeHours <= maxLiveProofAgeHours;
   const supervisorRuntimeTruth = getPath(supervisor, ["runtimeTruth"]);
+  const settlementChecks = {
+    proofPresent: resultSettlementExecution != null,
+    proofPassed: bool(resultSettlementExecution?.pass),
+    dryRunSchedulerPassed: getPath(resultSettlementExecution, ["checks", "dryRunSchedulerPassed"]) === true,
+    confirmationPhraseProduced: getPath(resultSettlementExecution, ["checks", "confirmationPhraseProduced"]) === true,
+    liveMarketExecutionBlocked: getPath(resultSettlementExecution, ["checks", "liveMarketExecutionBlocked"]) === true,
+    liveMarketNotResolvedByBlockedAttempt:
+      getPath(resultSettlementExecution, ["checks", "liveMarketNotResolvedByBlockedAttempt"]) === true,
+    closedMarketExecutionPassed: getPath(resultSettlementExecution, ["checks", "executeSettlementPassed"]) === true,
+    targetTesterEventNotMutated: getPath(resultSettlementExecution, ["checks", "targetTesterEventNotMutated"]) === true,
+    liveBlockedArtifactPresent: resultSettlementLiveBlocked != null,
+    liveBlockedArtifactShowsBlocked:
+      resultSettlementLiveBlocked?.pass === false &&
+      getPath(resultSettlementLiveBlocked, ["execution", "attempted"]) === false &&
+      String(getPath(resultSettlementLiveBlocked, ["execution", "reason"]) ?? "").startsWith(
+        "market_must_be_closed_before_result_settlement:",
+      ),
+  };
 
   const checks = {
     backendHealthy: health.ok && (health.body as JsonObject | null)?.status === "ok",
@@ -133,6 +159,12 @@ async function main() {
     schedulerRunPassed: bool(schedulerRun?.pass),
     supervisorPresent: supervisor != null,
     supervisorPassed: bool(supervisor?.pass),
+    resultSettlementGuardPresent: settlementChecks.proofPresent,
+    resultSettlementGuardPassed: settlementChecks.proofPassed,
+    liveResultSettlementBlockedWhileLive:
+      settlementChecks.liveMarketExecutionBlocked &&
+      settlementChecks.liveMarketNotResolvedByBlockedAttempt &&
+      settlementChecks.liveBlockedArtifactShowsBlocked,
   };
   const p0Gaps = Object.entries(checks)
     .filter(([, value]) => !value)
@@ -188,6 +220,18 @@ async function main() {
       schedulerReason: getPath(schedulerRun, ["scheduler", "reason"]),
       schedulerCandidateMarketCount: getPath(schedulerRun, ["scheduler", "candidateMarketCount"]),
     },
+    settlementSafety: {
+      resultSettlementExecutionPath: RESULT_SETTLEMENT_EXECUTION_PATH,
+      resultSettlementLiveBlockedPath: RESULT_SETTLEMENT_LIVE_BLOCKED_PATH,
+      resultSettlementExecutionGeneratedAt: resultSettlementExecution?.generatedAt ?? null,
+      resultSettlementExecutionAgeHours,
+      resultSettlementLiveBlockedGeneratedAt: resultSettlementLiveBlocked?.generatedAt ?? null,
+      resultSettlementLiveBlockedAgeHours,
+      executionRequiresMarketStatus: getPath(resultSettlementLiveBlocked, ["controls", "executeRequiresMarketStatus"]),
+      blockedExecutionReason: getPath(resultSettlementLiveBlocked, ["execution", "reason"]),
+      activeTesterEventMutated: getPath(resultSettlementExecution, ["targetTesterEvent", "mutated"]),
+      checks: settlementChecks,
+    },
     supervisor: {
       supervisorPath: SUPERVISOR_PATH,
       generatedAt: supervisor?.generatedAt ?? null,
@@ -199,7 +243,7 @@ async function main() {
       p0: p0Gaps,
       p1: [
         "Status report proves foreground/local runtime truth only; it does not install an unattended daemon.",
-        "Official-result automatic settlement remains future work.",
+        "Official-result automatic settlement remains future work; current trusted-result execution is guarded by exact confirmation and CLOSED market status.",
       ],
       p2: ["Multi-event provider polling remains future work."],
     },

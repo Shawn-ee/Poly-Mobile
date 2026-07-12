@@ -168,8 +168,15 @@ async function main() {
       id: "refresh-mode-truth",
       priority: "P0",
       requirement: "Runtime distinguishes live provider refresh from replay/cached checks.",
-      achieved: pass(entries.runtimeStatus) && getPath(runtimeStatusTruth, ["cachedRuntimeUsesQuota"]) === false,
+      achieved:
+        pass(entries.runtimeStatus) &&
+        getPath(runtimeStatusTruth, ["cachedRuntimeUsesQuota"]) === false &&
+        getPath(entries.runtimeStatus, ["settlementSafety", "checks", "liveMarketExecutionBlocked"]) === true &&
+        getPath(entries.runtimeStatus, ["settlementSafety", "checks", "liveBlockedArtifactShowsBlocked"]) === true &&
+        getPath(entries.runtimeStatus, ["settlementSafety", "executionRequiresMarketStatus"]) === "CLOSED",
       evidence: [PATHS.runtimeStatus, PATHS.onboarding],
+      notes:
+        "Runtime status also surfaces the trusted-result settlement guard: execution requires CLOSED market status and live-market execution is blocked.",
     }),
     requirement({
       id: "quota-policy",
