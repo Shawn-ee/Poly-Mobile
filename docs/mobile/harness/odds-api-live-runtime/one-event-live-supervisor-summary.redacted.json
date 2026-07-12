@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-12T12:47:05.8616051Z",
+    "generatedAt":  "2026-07-12T17:07:57.9765584Z",
     "scope":  "holiwyn-one-event-live-supervisor",
     "pass":  true,
-    "startedAt":  "2026-07-12T12:47:01.5365298Z",
-    "completedAt":  "2026-07-12T12:47:05.8616051Z",
+    "startedAt":  "2026-07-12T17:07:49.2936548Z",
+    "completedAt":  "2026-07-12T17:07:57.9765584Z",
     "backend":  {
                     "baseUrl":  "http://127.0.0.1:3002",
                     "health":  {
@@ -12,23 +12,25 @@
                                                 "status":  "ok",
                                                 "db":  "connected",
                                                 "env":  "development",
-                                                "timestamp":  "2026-07-12T12:47:05.878Z"
+                                                "timestamp":  "2026-07-12T17:07:57.993Z"
                                             },
                                    "error":  null
                                }
                 },
     "dockerPostgres":  {
                            "ok":  true,
-                           "status":  "poly_postgres|Up 7 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp",
+                           "status":  "poly_postgres|Up 8 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp",
                            "raw":  [
-                                       "poly_postgres|Up 7 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
+                                       "poly_postgres|Up 8 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
                                    ]
                        },
     "s23":  {
-                "connected":  true,
-                "deviceId":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
-                "model":  "SM_S911U1",
-                "raw":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp device product:dm1quew model:SM_S911U1 device:dm1q transport_id:4"
+                "connected":  false,
+                "deviceId":  null,
+                "model":  null,
+                "raw":  {
+
+                        }
             },
     "settings":  {
                      "continuous":  false,
@@ -39,16 +41,16 @@
                      "providerProofRunsCompleted":  0,
                      "providerProofEveryIterations":  0,
                      "maxProviderProofRuns":  0,
-                     "dataHygieneEnabled":  false,
+                     "dataHygieneEnabled":  true,
                      "refreshIterationsPerProviderProof":  0,
                      "maxCreditsPerProviderProof":  0,
                      "maxCreditsAcrossProviderProofs":  0,
                      "minRemaining":  2,
-                     "makerSeedEnabled":  false,
-                     "lifecycleSchedulerEnabled":  false,
+                     "makerSeedEnabled":  true,
+                     "lifecycleSchedulerEnabled":  true,
                      "staleGuardEnabled":  false,
                      "staleGuardEnforced":  false,
-                     "resultIngestionEnabled":  false,
+                     "resultIngestionEnabled":  true,
                      "liveResultIngestionEnabled":  false,
                      "liveResultIngestionRunsCompleted":  0,
                      "resultIngestionEveryIterations":  0,
@@ -58,7 +60,7 @@
                      "resultSettlementEnabled":  true,
                      "approvedResultSettlementEnabled":  true,
                      "resultSettlementPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
-                     "resultSettlementApprovalPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-supervisor-approval.redacted.json",
+                     "resultSettlementApprovalPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                      "cachedModeUsesQuota":  false
                  },
     "runtimeTruth":  {
@@ -71,62 +73,83 @@
                          "staleGuardContinuousWhileSupervisorRuns":  false,
                          "staleGuardMode":  "disabled",
                          "resultIngestionContinuousWhileSupervisorRuns":  false,
-                         "resultIngestionMode":  "disabled",
+                         "resultIngestionMode":  "provider-shaped result ingestion replay while supervisor runs; no provider quota spent",
                          "liveResultIngestionContinuousWhileSupervisorRuns":  false,
                          "liveResultIngestionQuotaCappedWhileSupervisorRuns":  false,
                          "resultSettlementContinuousWhileSupervisorRuns":  false,
                          "resultSettlementMode":  "approved trusted-result scheduler; waits until CLOSED before execution",
                          "unattendedServiceInstalled":  false,
                          "providerRefreshMode":  "cached provider proof verification; no provider quota spent",
-                         "marketMakerMode":  "not seeded by supervisor",
-                         "lifecycleSchedulerMode":  "not run by supervisor",
+                         "marketMakerMode":  "repeated local shifted maker reseed while supervisor runs",
+                         "lifecycleSchedulerMode":  "safe real-time scheduler check each cycle; no proof time mutation",
                          "settlementMode":  "manual preview/resolve service plus approval-file trusted-result scheduler; waits until CLOSED before execution"
                      },
     "failure":  null,
     "cycles":  [
                    {
                        "iteration":  1,
-                       "startedAt":  "2026-07-12T12:47:01.5386303Z",
-                       "finishedAt":  "2026-07-12T12:47:05.8130690Z",
-                       "dataHygiene":  null,
+                       "startedAt":  "2026-07-12T17:07:49.2971594Z",
+                       "finishedAt":  "2026-07-12T17:07:57.9393107Z",
+                       "dataHygiene":  {
+                                           "label":  "cycle-1-data-hygiene",
+                                           "command":  "npm run mobile:one-event-data-hygiene-proof",
+                                           "exitCode":  0,
+                                           "pass":  true,
+                                           "startedAt":  "2026-07-12T17:07:49.3001598Z",
+                                           "finishedAt":  "2026-07-12T17:07:49.8010967Z"
+                                       },
                        "dataHygienePass":  true,
                        "command":  {
                                        "label":  "cycle-1-runtime",
-                                       "command":  "npm run mobile:one-event-live-runtime -- -BackendPort 3002 -SkipSleep",
+                                       "command":  "npm run mobile:one-event-live-runtime -- -BackendPort 3002 -SeedMaker -SkipSleep",
                                        "exitCode":  0,
                                        "pass":  true,
-                                       "startedAt":  "2026-07-12T12:47:01.5429791Z",
-                                       "finishedAt":  "2026-07-12T12:47:03.4492379Z"
+                                       "startedAt":  "2026-07-12T17:07:49.8238291Z",
+                                       "finishedAt":  "2026-07-12T17:07:53.3299935Z"
                                    },
                        "runtimeSummaryPath":  "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json",
                        "runtimePass":  true,
-                       "lifecycleScheduler":  null,
+                       "lifecycleScheduler":  {
+                                                  "label":  "cycle-1-lifecycle-scheduler",
+                                                  "command":  "npm run mobile:one-event-lifecycle-scheduler-run",
+                                                  "exitCode":  0,
+                                                  "pass":  true,
+                                                  "startedAt":  "2026-07-12T17:07:56.8876689Z",
+                                                  "finishedAt":  "2026-07-12T17:07:57.9393107Z"
+                                              },
                        "lifecycleSchedulerPass":  true,
-                       "lifecycleSchedulerAction":  null,
+                       "lifecycleSchedulerAction":  "none",
                        "staleGuard":  null,
                        "staleGuardPass":  true,
                        "staleGuardMode":  "disabled",
                        "staleGuardResult":  null,
-                       "resultIngestion":  null,
+                       "resultIngestion":  {
+                                               "label":  "cycle-1-result-ingestion",
+                                               "command":  "npm run mobile:one-event-result-ingest",
+                                               "exitCode":  0,
+                                               "pass":  true,
+                                               "startedAt":  "2026-07-12T17:07:53.3325706Z",
+                                               "finishedAt":  "2026-07-12T17:07:55.5103339Z"
+                                           },
                        "resultIngestionPass":  true,
-                       "resultIngestionMode":  null,
+                       "resultIngestionMode":  "fixture-replay",
                        "liveResultIngestionRan":  false,
                        "liveResultIngestionRunCount":  0,
                        "liveResultIngestionSkippedReason":  null,
                        "resultSettlement":  {
                                                 "label":  "cycle-1-result-settlement",
-                                                "command":  "npm run mobile:one-event-result-settlement-run -- --result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json --autoExecuteApproved --approval=docs/mobile/harness/odds-api-live-runtime/trusted-result-supervisor-approval.redacted.json --writeAuditEvent",
+                                                "command":  "npm run mobile:one-event-result-settlement-run -- --result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json --autoExecuteApproved --approval=docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json --writeAuditEvent",
                                                 "exitCode":  0,
                                                 "pass":  true,
-                                                "startedAt":  "2026-07-12T12:47:03.4747465Z",
-                                                "finishedAt":  "2026-07-12T12:47:05.8110663Z"
+                                                "startedAt":  "2026-07-12T17:07:55.5171443Z",
+                                                "finishedAt":  "2026-07-12T17:07:56.8866656Z"
                                             },
                        "resultSettlementPass":  true,
                        "resultSettlementAction":  "approved_waiting_for_closed_market",
                        "providerProofRan":  false,
                        "providerProofRunCount":  0,
                        "providerProofSkippedReason":  null,
-                       "makerSeeded":  false,
+                       "makerSeeded":  true,
                        "event":  {
                                      "providerEventId":  "f9aa13a662d1658e5a02cfc06d6a2d73",
                                      "sportKey":  "soccer_fifa_world_cup",
@@ -145,7 +168,125 @@
                                               "outcomeName":  "Over +2.5",
                                               "referenceTokenId":  "odds-api-88263b2c42d6b2f5c6dbbda4"
                                           },
-                       "maker":  null
+                       "maker":  {
+                                     "pass":  true,
+                                     "generatedAt":  "2026-07-12T17:07:52.128Z",
+                                     "scope":  "odds-api-one-event-shifted-maker-seed",
+                                     "mode":  "seed-resting-shifted-maker-quotes",
+                                     "event":  {
+                                                   "id":  "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
+                                                   "slug":  "odds-api-single-soccer-test",
+                                                   "title":  "Spain vs. France",
+                                                   "startTime":  "2026-07-14T19:00:00.000Z"
+                                               },
+                                     "selectedMarket":  {
+                                                            "id":  "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+                                                            "slug":  "odds-api-single-soccer-test-totals-7439c2d603",
+                                                            "title":  "Spain vs. France: Total Goals 2.5",
+                                                            "marketType":  "total_goals",
+                                                            "marketGroupKey":  "totals",
+                                                            "line":  "2.5",
+                                                            "outcomeId":  "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+                                                            "outcomeName":  "Over +2.5",
+                                                            "referenceTokenId":  "odds-api-88263b2c42d6b2f5c6dbbda4"
+                                                        },
+                                     "providerSnapshot":  {
+                                                              "fetchedAt":  "2026-07-12T07:06:18.254Z",
+                                                              "ageMs":  36093434,
+                                                              "maxSnapshotAgeMs":  86400000,
+                                                              "allowStale":  false,
+                                                              "source":  "sportsbook-odds",
+                                                              "referenceBid":  0.4891,
+                                                              "referenceAsk":  0.5291,
+                                                              "outcomePrice":  0.5091
+                                                          },
+                                     "maker":  {
+                                                   "id":  "516e3802-3423-4268-a823-8589613f663e",
+                                                   "username":  "odds_live_runtime_shifted_maker_21057670"
+                                               },
+                                     "plan":  {
+                                                  "quoteOffsetTicks":  2,
+                                                  "plannedBid":  0.47,
+                                                  "plannedAsk":  0.55,
+                                                  "size":  "200",
+                                                  "mintQuantity":  "200"
+                                              },
+                                     "canceledPreviousOrders":  [
+                                                                    {
+                                                                        "orderId":  "bf935c40-7664-4937-9046-d8272b82c1e6",
+                                                                        "side":  "BUY",
+                                                                        "price":  "0.47",
+                                                                        "remaining":  "200",
+                                                                        "statusBefore":  "OPEN",
+                                                                        "canceled":  true
+                                                                    },
+                                                                    {
+                                                                        "orderId":  "f8b4ed5d-f34b-4ec7-9934-6194f379652b",
+                                                                        "side":  "SELL",
+                                                                        "price":  "0.55",
+                                                                        "remaining":  "200",
+                                                                        "statusBefore":  "OPEN",
+                                                                        "canceled":  true
+                                                                    }
+                                                                ],
+                                     "restingOrders":  [
+                                                           {
+                                                               "id":  "38a14f22-3c9d-4591-8db1-e88713069a4a",
+                                                               "username":  "odds_live_runtime_shifted_maker_21057670",
+                                                               "side":  "BUY",
+                                                               "price":  "0.47",
+                                                               "remaining":  "200",
+                                                               "status":  "OPEN"
+                                                           },
+                                                           {
+                                                               "id":  "cb18e36f-19f2-4ef9-815f-5f0137df8a36",
+                                                               "username":  "odds_live_runtime_shifted_maker_21057670",
+                                                               "side":  "SELL",
+                                                               "price":  "0.55",
+                                                               "remaining":  "200",
+                                                               "status":  "OPEN"
+                                                           }
+                                                       ],
+                                     "quoteRoute":  {
+                                                        "url":  "http://127.0.0.1:3002/api/markets/78ea76f1-fc8f-419b-ac21-2554d79093f6/quote",
+                                                        "ok":  true,
+                                                        "status":  200,
+                                                        "selectedOutcomeQuote":  {
+                                                                                     "outcomeId":  "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+                                                                                     "outcomeName":  "Over +2.5",
+                                                                                     "bestBid":  "0.47",
+                                                                                     "bestAsk":  "0.55",
+                                                                                     "bestBidSize":  200,
+                                                                                     "bestAskSize":  200,
+                                                                                     "midPrice":  "0.51",
+                                                                                     "lastPrice":  "0.47",
+                                                                                     "lastTradeAt":  "2026-07-12T07:16:40.841Z"
+                                                                                 }
+                                                    },
+                                     "checks":  {
+                                                    "eventLoaded":  true,
+                                                    "marketLive":  true,
+                                                    "snapshotFresh":  true,
+                                                    "shiftedBidWorseThanProvider":  true,
+                                                    "shiftedAskWorseThanProvider":  true,
+                                                    "makerBidResting":  true,
+                                                    "makerAskResting":  true,
+                                                    "quoteRouteShowsBid":  true,
+                                                    "quoteRouteShowsAsk":  true
+                                                },
+                                     "gaps":  {
+                                                  "p0":  [
+
+                                                         ],
+                                                  "p1":  [
+                                                             "this command seeds resting shifted maker quotes once; it is reusable but not an unattended daemon by itself",
+                                                             "provider refresh still comes from the bounded live proof or future daemon"
+                                                         ],
+                                                  "p2":  [
+                                                             "multi-market inventory-aware quoting remains future work"
+                                                         ]
+                                              }
+                                 }
                    }
                ],
     "gaps":  {

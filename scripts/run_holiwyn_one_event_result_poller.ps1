@@ -12,7 +12,7 @@ param(
   [int]$MaxCreditsPerResultIngestion = 2,
   [int]$MinRemaining = 2,
   [switch]$RunApprovedResultSettlement,
-  [string]$ResultSettlementApprovalPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-settlement-approval.redacted.json",
+  [string]$ResultSettlementApprovalPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
   [switch]$SkipSleep
 )
 

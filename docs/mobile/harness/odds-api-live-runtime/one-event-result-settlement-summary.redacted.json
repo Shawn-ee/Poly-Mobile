@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T13:32:25.603Z",
+  "generatedAt": "2026-07-12T17:07:56.824Z",
   "scope": "odds-api-one-event-result-settlement",
   "pass": true,
   "mode": "dry-run",
@@ -34,7 +34,7 @@
     "line": "2.5",
     "statusBefore": "LIVE",
     "resolvedOutcomeIdBefore": null,
-    "collateralUSDCBefore": "26500"
+    "collateralUSDCBefore": "31100"
   },
   "mappedResolution": {
     "rule": "total_goals",
@@ -51,10 +51,10 @@
   },
   "preview": {
     "marketStatus": "LIVE",
-    "totalShares": "53000",
-    "totalWinningShares": "26500",
-    "totalPayout": "26500",
-    "collateralUSDC": "26500",
+    "totalShares": "62200",
+    "totalWinningShares": "31100",
+    "totalPayout": "31100",
+    "collateralUSDC": "31100",
     "payoutConservationPass": true,
     "blockers": [],
     "openOrderCleanup": {
@@ -62,8 +62,8 @@
       "buyOrderLockedUSDCToRelease": "94",
       "sellOrderSharesToRelease": "200"
     },
-    "payoutCount": 135,
-    "loserPositionCount": 133,
+    "payoutCount": 158,
+    "loserPositionCount": 156,
     "mutation": "none"
   },
   "execution": {
@@ -75,11 +75,11 @@
     "status": "LIVE",
     "resolvedOutcomeId": null,
     "settlementStatus": null,
-    "collateralUSDC": "26500"
+    "collateralUSDC": "31100"
   },
   "controls": {
     "dryRunIsDefault": true,
-    "writeAuditEvent": false,
+    "writeAuditEvent": true,
     "executeRequiresFlag": "--execute",
     "executeRequiresConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:f3a5743c73f2",
     "executeRequiresMarketStatus": "CLOSED",
@@ -88,7 +88,15 @@
     "actorUserId": "holiwyn-local-result-settlement-operator",
     "providerStatus": "trusted_external_input"
   },
-  "auditEvent": null,
+  "auditEvent": {
+    "id": "212",
+    "sequence": "212",
+    "type": "settlement.trusted_result.preflight",
+    "stream": "market",
+    "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+    "createdAt": "2026-07-12T17:07:56.820Z"
+  },
   "gaps": {
     "p0": [],
     "p1": [

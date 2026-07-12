@@ -14614,3 +14614,14 @@ Known limitations:
 - API/data dependencies: `operatorNextActions` now includes `defaultNoQuotaAction` and `liveOddsAction`. For `refresh_provider_snapshots_or_keep_cached_test_mode`, `recommendedFirstAction` remains `cached_internal_testing`.
 - Proof needed: focused status service tests, direct live route proof, `npm run mobile:one-event-phase-audit`, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: production should replace local command strings with authenticated actions and durable provider-refresh jobs.
+
+## Cycle LIVERUNTIMEACTIVEAPPROVALDEFAULT - Active Approval Path for Warm Runtime
+
+- Feature/page worked on: local internal tester live-runtime manager and one-event supervisor/result-poller startup.
+- Frontend components touched: none.
+- Important functions/services touched: updated `scripts/manage_holiwyn_internal_tester_runtime.ps1`, `scripts/manage_holiwyn_one_event_live_supervisor.ps1`, `scripts/run_holiwyn_one_event_live_supervisor.ps1`, `scripts/manage_holiwyn_one_event_result_poller.ps1`, `scripts/run_holiwyn_one_event_result_poller.ps1`, and `scripts/manage_holiwyn_local_runtime_startup.ps1`.
+- User/runtime interactions supported: `npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady -ResultPollerIntervalSeconds 15` now starts both warm local loops with the active event's audited approval file and returns promptly. The proof passed with backend 3002 ready, Expo 8081 ready, Docker/Postgres healthy, supervisor running, result poller running, and no quota-spending provider loop.
+- State transitions: starts and stops local PowerShell loop processes only. It does not call The Odds API, refresh live odds, place orders, mutate markets, execute settlement, or read provider secrets.
+- API/data dependencies: default approved-settlement local approval file is now `docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json`, matching the active Spain vs. France selected market proof. The supervisor process manager now starts the continuous loop without blocking the caller on redirected process output.
+- Proof needed: isolated result-poller one-iteration approved-settlement proof, direct supervisor process start timing, full internal tester runtime start/status proof, process cleanup, local status route check, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this is still a local process control plane, not an installed OS service. Active tester settlement execution remains guarded and waits for the selected market to be `CLOSED`.

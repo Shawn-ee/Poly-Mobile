@@ -10404,3 +10404,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable provider-refresh jobs, quota ledger entries, authenticated operator controls, and multi-event refresh planning remain P1/P2.
 - Temporary mock/static data: none added. The route reads existing status and snapshot data only and spends no provider quota.
 - Future migration concern: production/internal dashboards should trigger refresh through a backend job system rather than exposing local shell commands.
+
+## Cycle LIVERUNTIMEACTIVEAPPROVALDEFAULT - Active Approval Path for Warm Runtime
+
+- Closed or narrowed: the no-quota local runtime manager no longer defaults approved-settlement loops to the disposable proof approval file. It now uses the active event's audited approval proof by default, so the supervisor and result poller can run the approved-wait profile without a false `No matching trusted-result settlement approval was found` P0.
+- Route mismatch: no new mobile API route. This is a local runtime control-plane/script contract fix. `/api/internal/live-runtime/status` remains the read-only status surface for process truth.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable approval records, official result records, service heartbeat records, and a production operator control plane remain P1/P2.
+- Temporary mock/static data: none added. Existing redacted trusted-result and active approval proof files are reused, and no provider quota is spent.
+- Future migration concern: replace local approval JSON paths with durable approval rows keyed by event/market/outcome/result digest before moving beyond local internal testing.

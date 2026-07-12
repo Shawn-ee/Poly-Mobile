@@ -16,7 +16,7 @@ param(
   [switch]$RunResultSettlement,
   [switch]$RunApprovedResultSettlement,
   [string]$ResultSettlementPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
-  [string]$ResultSettlementApprovalPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-settlement-approval.redacted.json",
+  [string]$ResultSettlementApprovalPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
   [switch]$RestartBackend,
   [int]$RefreshIterations = 1,
   [int]$MaxCreditsPerProviderProof = 8,
