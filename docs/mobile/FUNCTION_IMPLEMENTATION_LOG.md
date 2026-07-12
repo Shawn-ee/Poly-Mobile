@@ -14460,3 +14460,14 @@ Known limitations:
 - API/data dependencies: no mobile HTTP route changed. The proof composes existing local settlement scheduler and settlement service behavior, reads `trusted-result-provider.redacted.json`, and writes `one-event-active-settlement-clone-summary.redacted.json`.
 - Proof: `npm run mobile:one-event-active-settlement-clone-proof` passed; `npm run mobile:one-event-phase-audit` passed with the new P1 evidence item complete.
 - Known limitations: this intentionally does not settle the active tester event. Installed unattended official-result polling and direct active-event execution remain P1.
+
+## Cycle ONEEVENTINTERNALWATCHDOG - Internal Tester Runtime Watchdog
+
+- Feature/page worked on: backend local internal tester runtime watchdog and proof harness.
+- Frontend components touched: none.
+- Important functions/services touched: added `scripts/run_holiwyn_internal_tester_watchdog.ps1`; added package scripts `mobile:internal-tester-watchdog` and `mobile:internal-tester-watchdog-proof`.
+- User/runtime interactions supported: operator can run one command to verify backend, Expo, Docker/Postgres, repeated local supervisor capability, background result-poller capability, and loop cleanup without spending provider quota by default.
+- State transitions: no market, order, position, provider, or settlement state changes beyond the child proof commands' documented replay/dry-run behavior. The proof stops supervisor/result-poller loop processes after completion and leaves backend/Expo listeners alone.
+- API/data dependencies: uses the local internal tester runtime manager, `/api/health`, the existing supervisor proof, and the existing result-poller proof. No mobile HTTP route or schema changed.
+- Proof: `npm run mobile:internal-tester-watchdog-proof` passed. Latest S23 reachability in the watchdog summary was false, but that is not a P0 for this backend/runtime watchdog proof.
+- Known limitations: this is not an installed OS service. Production runtime ownership, service monitoring, and direct active-event settlement execution remain P1.

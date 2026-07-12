@@ -10292,3 +10292,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable official-result records, durable approval records, admin/operator review UI, multi-event settlement queue, production execution policy, and installed official-result polling remain P1/P2.
 - Temporary mock/static data: the proof writes local clone trusted-result and approval JSON, creates a disposable clone event, and spends no Odds API quota. The active tester event is not settled or mutated.
 - Future migration concern: the clone proof is a local safety bridge. Production should execute only from durable official-result evidence and durable approvals, with clear lifecycle ownership and audit UI.
+
+## Cycle ONEEVENTINTERNALWATCHDOG - Internal Tester Runtime Watchdog
+
+- Closed or narrowed: local internal runtime readiness now has a single watchdog proof that checks base runtime health, repeated supervisor capability, background result-poller capability, and cleanup behavior.
+- Route mismatch: none. No mobile API or backend HTTP route changed; the proof composes existing local runtime manager and proof commands.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable service heartbeat records, production process ownership, health alerting, durable provider poll state, and production official-result execution ownership remain P1/P2.
+- Temporary mock/static data: none added. The default proof uses existing redacted provider-shaped evidence through child proof commands and spends no provider quota.
+- Future migration concern: watchdog truth currently lives in local proof JSON. Production should move runtime health, provider polling, result polling, approvals, and settlement execution state into durable service-managed records.
