@@ -82,6 +82,7 @@ function Invoke-Manager {
     "-StartSupervisor",
     "-RunResultIngestion",
     "-RunResultSettlement",
+    "-RunApprovedResultSettlement",
     "-Apply",
     "-SummaryPath",
     $OutputPath
@@ -172,6 +173,7 @@ $summary = [ordered]@{
     providerQuotaUsed = $false
     fakeTokenOnly = $true
     activeTesterSettlementExecution = $false
+    approvedSettlementModeInstallProof = $true
     installedWindowsService = $false
   }
   checks = $checks

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T12:50:46.152Z",
+  "generatedAt": "2026-07-12T12:58:57.135Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T12:50:45.768Z"
+      "timestamp": "2026-07-12T12:58:57.091Z"
     },
     "error": null
   },
@@ -65,38 +65,38 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 5.74,
-    "onboarding": 2.1,
-    "readiness": 2.11,
-    "runtimeStatus": 0.85,
-    "runtimeLaunch": 0.06,
-    "supervisor": 0.06,
-    "supervisorProcess": 1.48,
-    "internalTesterRuntime": 1.48,
-    "localRuntimeTask": 1.23,
-    "localRuntimeTaskInstall": 1.04,
-    "localRuntimeStartup": 0.53,
-    "localRuntimeStartupInstall": 0.53,
-    "continuousSupervisor": 1.65,
-    "staleGuardProof": 3.33,
-    "staleGuardRun": 3.22,
-    "lifecycleControls": 2.11,
-    "lifecycleScheduler": 2.11,
-    "lifecycleSchedulerRun": 1.65,
-    "settlementReadiness": 2.11,
-    "settlementExecution": 1.82,
-    "resultSettlementExecution": 0.97,
-    "resultSettlementLiveBlocked": 0.97,
-    "manualSettlement": 2.1,
-    "resultIngestion": 1.65,
-    "resultSettlement": 0.06,
-    "resultSettlementRun": 0.06,
-    "settlementPreflight": 0.73,
-    "settlementAuditEvent": 0.41,
-    "approvedAutoSettlement": 0.24,
-    "supervisorApprovedSettlement": 0.06,
-    "makerSeed": 1.65,
-    "s23Visible": 5.56
+    "liveProof": 5.88,
+    "onboarding": 2.24,
+    "readiness": 2.24,
+    "runtimeStatus": 0.99,
+    "runtimeLaunch": 0.2,
+    "supervisor": 0.2,
+    "supervisorProcess": 1.61,
+    "internalTesterRuntime": 1.61,
+    "localRuntimeTask": 1.37,
+    "localRuntimeTaskInstall": 1.18,
+    "localRuntimeStartup": 0.67,
+    "localRuntimeStartupInstall": 0.03,
+    "continuousSupervisor": 1.79,
+    "staleGuardProof": 3.47,
+    "staleGuardRun": 3.35,
+    "lifecycleControls": 2.24,
+    "lifecycleScheduler": 2.24,
+    "lifecycleSchedulerRun": 1.79,
+    "settlementReadiness": 2.24,
+    "settlementExecution": 1.95,
+    "resultSettlementExecution": 1.11,
+    "resultSettlementLiveBlocked": 1.11,
+    "manualSettlement": 2.24,
+    "resultIngestion": 1.79,
+    "resultSettlement": 0.2,
+    "resultSettlementRun": 0.2,
+    "settlementPreflight": 0.87,
+    "settlementAuditEvent": 0.55,
+    "approvedAutoSettlement": 0.38,
+    "supervisorApprovedSettlement": 0.2,
+    "makerSeed": 1.79,
+    "s23Visible": 5.7
   },
   "requirements": [
     {
@@ -297,6 +297,17 @@
       "notes": "This proves local operator visibility/control for internal testing. It reuses external backend/Expo listeners when present and only stops manager-owned backend/Expo processes."
     },
     {
+      "id": "startup-approved-settlement-profile",
+      "priority": "P0",
+      "requirement": "User Startup launcher proof includes the approved-settlement supervisor profile without spending provider quota or leaving a launcher installed.",
+      "status": "complete",
+      "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-install-uninstall-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-summary.redacted.json"
+      ],
+      "notes": "This narrows the unattended-runtime gap by proving the user-logon fallback can launch backend/Expo/supervisor with result ingestion, settlement scheduling, and approved-settlement wait mode. It is still a local user Startup launcher, not a production service."
+    },
+    {
       "id": "unattended-service",
       "priority": "P1",
       "requirement": "Install unattended provider/maker/lifecycle services.",
@@ -311,7 +322,7 @@
         "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-install-uninstall-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json"
       ],
-      "notes": "Repeated local supervisor cycles, process-tree stop support, an internal tester runtime manager, a dry-run Windows scheduled-task install plan, a safe scheduled-task permission audit, and a user-level Startup launcher install/uninstall proof are proven. Windows denied scheduled-task registration in the current process context, so no scheduled task remains installed. The Startup launcher is a user-logon fallback, not a production service."
+      "notes": "Repeated local supervisor cycles, process-tree stop support, an internal tester runtime manager, a dry-run Windows scheduled-task install plan, a safe scheduled-task permission audit, and a user-level Startup launcher install/uninstall proof are proven. Windows denied scheduled-task registration in the current process context, so no scheduled task remains installed. The Startup launcher can carry the approved-settlement supervisor profile at user logon, but it is not a production service."
     },
     {
       "id": "official-result-auto-settlement",

@@ -60,10 +60,11 @@
 45. To remove the scheduled task, run `npm run mobile:local-runtime-task -- -Action uninstall -Apply`.
 46. To audit whether this Windows process can install and remove the local scheduled task while leaving no task behind, run `npm run mobile:local-runtime-task:install-proof`. Current proof shows Windows denies registration in this process context, so use an elevated shell or grant task-registration rights before applying the task.
 47. To preview a user-level Windows Startup launcher fallback without changing the OS, run `npm run mobile:local-runtime-startup -- -Action plan -StartSupervisor -RunResultIngestion -RunResultSettlement`. This spends no provider quota and does not install anything by default.
-48. To intentionally install that user-logon launcher, rerun the same command with `-Action install -Apply`. It writes a `.cmd` file to the current user's Startup folder and starts the internal tester runtime when that Windows user logs in.
-49. To remove the user Startup launcher, run `npm run mobile:local-runtime-startup -- -Action uninstall -Apply`.
-50. To audit that the user Startup launcher can install and uninstall while leaving no launcher behind, run `npm run mobile:local-runtime-startup:install-proof`. The proof uses `HoliwynInternalTesterRuntimeProof.cmd`, not the real launcher, and spends no provider quota.
-51. Do not settle the active tester event automatically unless official result input and admin review are added.
+48. To preview the same user-logon launcher with approved trusted-result settlement wait mode, add `-RunApprovedResultSettlement`. The launcher still spends no provider quota unless provider/live-result flags are also requested, and settlement execution still waits for `CLOSED` market plus exact approval match.
+49. To intentionally install that user-logon launcher, rerun the same command with `-Action install -Apply`. It writes a `.cmd` file to the current user's Startup folder and starts the internal tester runtime when that Windows user logs in.
+50. To remove the user Startup launcher, run `npm run mobile:local-runtime-startup -- -Action uninstall -Apply`.
+51. To audit that the user Startup launcher can install and uninstall while leaving no launcher behind, run `npm run mobile:local-runtime-startup:install-proof`. The proof uses `HoliwynInternalTesterRuntimeProof.cmd`, includes the approved-settlement supervisor profile, and spends no provider quota.
+52. Do not settle the active tester event automatically unless official result input and admin review are added.
 
 ## Completion Boundary
 
@@ -131,4 +132,4 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - Local runtime scheduled-task plan: `npm run mobile:local-runtime-task -- -Action plan -StartSupervisor -RunResultIngestion -RunResultSettlement` passed. It produced an AtLogon Windows scheduled-task plan for the internal tester runtime, confirmed no task is installed by default, and spends no provider quota.
 - Local runtime scheduled-task install/uninstall audit: `npm run mobile:local-runtime-task:install-proof` passed as a safe permission audit. Windows denied scheduled-task registration in the current process context, cleanup confirmed no task remains installed, and no provider quota was spent.
 - Local runtime user Startup launcher plan: `npm run mobile:local-runtime-startup -- -Action plan -StartSupervisor -RunResultIngestion -RunResultSettlement` previews a current-user Startup folder launcher for the internal tester runtime, confirms no launcher is installed by default, and spends no provider quota.
-- Local runtime user Startup launcher install/uninstall audit: `npm run mobile:local-runtime-startup:install-proof` installs and removes a proof-only `.cmd` launcher in the current user's Startup folder, confirms no launcher remains afterward, and spends no provider quota.
+- Local runtime user Startup launcher install/uninstall audit: `npm run mobile:local-runtime-startup:install-proof` installs and removes a proof-only `.cmd` launcher in the current user's Startup folder, confirms no launcher remains afterward, includes result ingestion, trusted-result settlement scheduling, and approved-settlement wait mode, and spends no provider quota.

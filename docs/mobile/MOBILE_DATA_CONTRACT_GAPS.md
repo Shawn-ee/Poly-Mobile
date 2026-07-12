@@ -10173,3 +10173,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: durable official result storage, durable approval storage, admin/operator approval UI, installed official-result polling, and active-event execution policy remain P1/P2.
 - Temporary mock/static data: the proof uses committed redacted trusted-result evidence and writes a local approval JSON file generated from the active-event dry run. It spends no Odds API quota and does not treat the approval file as production storage.
 - Future migration concern: local approval-file automation should become a durable backend approval/audit workflow before production use. Keep active-event execution gated by market `CLOSED`, exact digest/confirmation matching, and operator review.
+
+## Cycle ONEEVENTSTARTUPAPPROVEDPROFILE - Startup Launcher Approved Settlement Profile
+
+- Closed or narrowed: the current-user Startup launcher can now carry the full safer local runtime profile through backend/Expo/supervisor startup, including result ingestion, trusted-result settlement scheduling, and approved-settlement wait mode.
+- Route mismatch: none. No mobile route or backend HTTP route was added; the change is a local PowerShell parameter chain and generated `.cmd` launcher content.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable official result records, durable approval records, admin/operator approval UI, installed service monitoring, and production deployment ownership remain P1/P2.
+- Temporary mock/static data: no provider data is added. The proof installs and removes a proof-only Startup launcher and spends no provider quota.
+- Future migration concern: user Startup launchers should stay local/internal. A production path should move these controls into an explicit service manager with secure environment provisioning, durable approvals, and health checks.

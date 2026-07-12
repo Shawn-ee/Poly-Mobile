@@ -14199,3 +14199,24 @@ Known limitations:
 - Known limitations:
   - This wires approved settlement into the local supervisor, not an installed production service.
   - Installed unattended official-result polling remains P1.
+
+# Cycle ONEEVENTSTARTUPAPPROVEDPROFILE - Startup Launcher Approved Settlement Profile
+
+- Feature/page worked on: local internal tester runtime user-logon launcher.
+- Frontend components touched: none. This is backend/runtime operator tooling only.
+- Important functions/services touched:
+  - `scripts/manage_holiwyn_local_runtime_startup.ps1`
+  - `scripts/manage_holiwyn_internal_tester_runtime.ps1`
+  - `scripts/manage_holiwyn_one_event_live_supervisor.ps1`
+  - `scripts/prove_holiwyn_local_runtime_startup_install_uninstall.ps1`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+- User/runtime interactions supported:
+  - Operator can generate or install a current-user Startup launcher that starts backend, Expo, and the one-event supervisor at Windows user logon.
+  - The launcher profile can now include result ingestion, trusted-result settlement scheduling, and approved-settlement wait mode.
+  - Proof installs only a proof launcher, verifies generated command content, removes it, and confirms no persistent launcher remains.
+- State transitions:
+  - No runtime market state changes. The proof mutates only the current user's Startup folder for a proof `.cmd` file, then removes it.
+  - Active tester settlement execution remains false.
+- Known limitations:
+  - This narrows local unattended ownership but is still a user-logon fallback, not a production service or scheduled daemon.
+  - Provider/live-result quota-spending modes still require `THE_ODDS_API_KEY` in the user environment.

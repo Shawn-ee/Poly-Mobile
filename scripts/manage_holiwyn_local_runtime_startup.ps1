@@ -7,6 +7,9 @@ param(
   [switch]$StartSupervisor,
   [switch]$RunResultIngestion,
   [switch]$RunResultSettlement,
+  [switch]$RunApprovedResultSettlement,
+  [string]$ResultSettlementPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+  [string]$ResultSettlementApprovalPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-settlement-approval.redacted.json",
   [switch]$RunProviderProof,
   [switch]$RunLiveResultIngestion,
   [switch]$Apply,
@@ -86,6 +89,13 @@ function Build-RuntimeArguments {
   if ($StartSupervisor) { $args.Add("-StartSupervisor") | Out-Null }
   if ($RunResultIngestion) { $args.Add("-RunResultIngestion") | Out-Null }
   if ($RunResultSettlement) { $args.Add("-RunResultSettlement") | Out-Null }
+  if ($RunApprovedResultSettlement) {
+    $args.Add("-RunApprovedResultSettlement") | Out-Null
+    $args.Add("-ResultSettlementPath") | Out-Null
+    $args.Add($ResultSettlementPath) | Out-Null
+    $args.Add("-ResultSettlementApprovalPath") | Out-Null
+    $args.Add($ResultSettlementApprovalPath) | Out-Null
+  }
   if ($RunProviderProof) { $args.Add("-RunProviderProof") | Out-Null }
   if ($RunLiveResultIngestion) { $args.Add("-RunLiveResultIngestion") | Out-Null }
   return $args
@@ -144,6 +154,9 @@ try {
   $startupDir = Get-StartupDirectory
   $launcherPath = Join-Path $startupDir $LauncherName
   Assert-SafeLauncherPath -StartupDir $startupDir -LauncherPath $launcherPath
+  if ($RunApprovedResultSettlement -and -not $RunResultSettlement) {
+    throw "RunApprovedResultSettlement requires RunResultSettlement."
+  }
   $launcherContent = Build-LauncherContent
   $plan = [ordered]@{
     launcherName = $LauncherName
@@ -156,7 +169,9 @@ try {
     } else {
       "default user Startup launcher spends no provider quota"
     }
-    settlementMode = if ($RunResultSettlement) {
+    settlementMode = if ($RunApprovedResultSettlement) {
+      "approved trusted-result settlement scheduler is requested; execution still waits for CLOSED market and exact approval match"
+    } elseif ($RunResultSettlement) {
       "trusted-result settlement scheduler remains dry-run unless separate guarded execution controls are used"
     } else {
       "settlement scheduler not requested"
@@ -221,6 +236,7 @@ $summary = [ordered]@{
     defaultPlanUsesProviderQuota = [bool]($RunProviderProof -or $RunLiveResultIngestion)
     fakeTokenOnly = $true
     activeTesterSettlementExecution = $false
+    approvedSettlementModeRequested = [bool]$RunApprovedResultSettlement
     userLevelStartupFallback = $true
     installedWindowsService = $false
   }

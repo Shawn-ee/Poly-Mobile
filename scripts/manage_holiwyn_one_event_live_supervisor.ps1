@@ -14,6 +14,9 @@ param(
   [switch]$RunResultIngestion,
   [switch]$RunLiveResultIngestion,
   [switch]$RunResultSettlement,
+  [switch]$RunApprovedResultSettlement,
+  [string]$ResultSettlementPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+  [string]$ResultSettlementApprovalPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-settlement-approval.redacted.json",
   [switch]$RestartBackend,
   [int]$RefreshIterations = 1,
   [int]$MaxCreditsPerProviderProof = 8,
@@ -172,6 +175,13 @@ function Build-SupervisorArguments {
     $parts.Add("$MaxCreditsPerResultIngestion") | Out-Null
   }
   if ($RunResultSettlement) { $parts.Add("-RunResultSettlement") | Out-Null }
+  if ($RunApprovedResultSettlement) {
+    $parts.Add("-RunApprovedResultSettlement") | Out-Null
+    $parts.Add("-ResultSettlementPath") | Out-Null
+    $parts.Add($ResultSettlementPath) | Out-Null
+    $parts.Add("-ResultSettlementApprovalPath") | Out-Null
+    $parts.Add($ResultSettlementApprovalPath) | Out-Null
+  }
   if ($RestartBackend) { $parts.Add("-RestartBackend") | Out-Null }
   if ($SkipSleep) { $parts.Add("-SkipSleep") | Out-Null }
   return $parts
@@ -189,6 +199,9 @@ $exitCode = 0
 if ($Action -eq "start") {
   if ($RunLiveResultIngestion -and -not $RunResultIngestion) {
     throw "RunLiveResultIngestion requires RunResultIngestion."
+  }
+  if ($RunApprovedResultSettlement -and -not $RunResultSettlement) {
+    throw "RunApprovedResultSettlement requires RunResultSettlement."
   }
   if ($RunLiveResultIngestion -and $MaxLiveResultIngestionRuns -lt 1) {
     throw "RunLiveResultIngestion requires MaxLiveResultIngestionRuns of at least 1. This keeps live result ingestion quota-capped."
@@ -235,6 +248,9 @@ if ($Action -eq "start") {
       maxLiveResultIngestionRuns = if ($RunLiveResultIngestion) { $MaxLiveResultIngestionRuns } else { 0 }
       maxCreditsPerResultIngestion = if ($RunLiveResultIngestion) { $MaxCreditsPerResultIngestion } else { 0 }
       runResultSettlement = [bool]$RunResultSettlement
+      runApprovedResultSettlement = [bool]$RunApprovedResultSettlement
+      resultSettlementPath = if ($RunApprovedResultSettlement) { $ResultSettlementPath } else { $null }
+      resultSettlementApprovalPath = if ($RunApprovedResultSettlement) { $ResultSettlementApprovalPath } else { $null }
       providerProofEveryIterations = if ($RunProviderProof) { $ProviderProofEveryIterations } else { 0 }
       maxProviderProofRuns = if ($RunProviderProof) { $MaxProviderProofRuns } else { 0 }
       stdout = ConvertTo-RepoPath $StdoutPath
@@ -320,7 +336,7 @@ $summary = [ordered]@{
     providerRefreshMode = if ($RunProviderProof) { "quota-capped live provider proof by cadence" } else { "cached provider proof verification; no provider quota spent" }
     staleGuardMode = if (-not $RunStaleGuard) { "disabled" } elseif ($EnforceStaleGuard) { "enforce stale provider pause while supervisor runs" } else { "dry-run stale monitor while supervisor runs" }
     resultIngestionMode = if (-not $RunResultIngestion) { "disabled" } elseif ($RunLiveResultIngestion) { "quota-capped live result ingestion by cadence; replay disabled for result ingestion cycles" } else { "provider-shaped result ingestion replay while supervisor runs; no provider quota spent" }
-    resultSettlementMode = if ($RunResultSettlement) { "trusted result scheduler dry-run while supervisor runs" } else { "disabled" }
+    resultSettlementMode = if ($RunApprovedResultSettlement) { "approved trusted-result scheduler; waits until CLOSED before execution" } elseif ($RunResultSettlement) { "trusted result scheduler dry-run while supervisor runs" } else { "disabled" }
     fakeTokenOnly = $true
   }
   gaps = [ordered]@{

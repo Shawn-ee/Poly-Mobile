@@ -6,6 +6,9 @@ param(
   [switch]$StartSupervisor,
   [switch]$RunResultIngestion,
   [switch]$RunResultSettlement,
+  [switch]$RunApprovedResultSettlement,
+  [string]$ResultSettlementPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+  [string]$ResultSettlementApprovalPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-settlement-approval.redacted.json",
   [switch]$RunLiveResultIngestion,
   [switch]$RunProviderProof,
   [switch]$Force,
@@ -239,6 +242,13 @@ if ($Action -eq "stop") {
     if ($RunResultIngestion) { $supervisorArgs += "-RunResultIngestion" }
     if ($RunLiveResultIngestion) { $supervisorArgs += "-RunLiveResultIngestion" }
     if ($RunResultSettlement) { $supervisorArgs += "-RunResultSettlement" }
+    if ($RunApprovedResultSettlement) {
+      $supervisorArgs += "-RunApprovedResultSettlement"
+      $supervisorArgs += "-ResultSettlementPath"
+      $supervisorArgs += $ResultSettlementPath
+      $supervisorArgs += "-ResultSettlementApprovalPath"
+      $supervisorArgs += $ResultSettlementApprovalPath
+    }
     & powershell @supervisorArgs | Out-Null
     $operations.Add([ordered]@{ target = "supervisor"; result = if ($LASTEXITCODE -eq 0) { "started_or_running" } else { "failed" }; exitCode = $LASTEXITCODE }) | Out-Null
     if ($LASTEXITCODE -ne 0) { throw "Supervisor start failed." }
@@ -325,6 +335,8 @@ $summary = [ordered]@{
     stopsOnlyOwnedBackendExpoProcesses = $true
     installedOsService = $false
     fakeTokenOnly = $true
+    approvedSettlementModeRequested = [bool]$RunApprovedResultSettlement
+    activeTesterSettlementExecution = $false
   }
   statePath = ConvertTo-RepoPath $StatePath
   logs = [ordered]@{

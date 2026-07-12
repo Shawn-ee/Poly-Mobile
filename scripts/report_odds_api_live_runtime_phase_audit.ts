@@ -389,6 +389,22 @@ async function main() {
         "This proves local operator visibility/control for internal testing. It reuses external backend/Expo listeners when present and only stops manager-owned backend/Expo processes.",
     }),
     requirement({
+      id: "startup-approved-settlement-profile",
+      priority: "P0",
+      requirement:
+        "User Startup launcher proof includes the approved-settlement supervisor profile without spending provider quota or leaving a launcher installed.",
+      achieved:
+        pass(entries.localRuntimeStartupInstall) &&
+        getPath(entries.localRuntimeStartupInstall, ["runtimeTruth", "startupLauncherInstallWorks"]) === true &&
+        getPath(entries.localRuntimeStartupInstall, ["runtimeTruth", "startupLauncherUninstallWorks"]) === true &&
+        getPath(entries.localRuntimeStartupInstall, ["runtimeTruth", "noPersistentLauncherLeftInstalled"]) === true &&
+        getPath(entries.localRuntimeStartupInstall, ["runtimeTruth", "providerQuotaUsed"]) === false &&
+        getPath(entries.localRuntimeStartupInstall, ["runtimeTruth", "approvedSettlementModeInstallProof"]) === true,
+      evidence: [PATHS.localRuntimeStartupInstall, PATHS.localRuntimeStartup],
+      notes:
+        "This narrows the unattended-runtime gap by proving the user-logon fallback can launch backend/Expo/supervisor with result ingestion, settlement scheduling, and approved-settlement wait mode. It is still a local user Startup launcher, not a production service.",
+    }),
+    requirement({
       id: "unattended-service",
       priority: "P1",
       requirement: "Install unattended provider/maker/lifecycle services.",
@@ -404,7 +420,7 @@ async function main() {
         PATHS.continuousSupervisor,
       ],
       notes:
-        "Repeated local supervisor cycles, process-tree stop support, an internal tester runtime manager, a dry-run Windows scheduled-task install plan, a safe scheduled-task permission audit, and a user-level Startup launcher install/uninstall proof are proven. Windows denied scheduled-task registration in the current process context, so no scheduled task remains installed. The Startup launcher is a user-logon fallback, not a production service.",
+        "Repeated local supervisor cycles, process-tree stop support, an internal tester runtime manager, a dry-run Windows scheduled-task install plan, a safe scheduled-task permission audit, and a user-level Startup launcher install/uninstall proof are proven. Windows denied scheduled-task registration in the current process context, so no scheduled task remains installed. The Startup launcher can carry the approved-settlement supervisor profile at user logon, but it is not a production service.",
     }),
     requirement({
       id: "official-result-auto-settlement",
