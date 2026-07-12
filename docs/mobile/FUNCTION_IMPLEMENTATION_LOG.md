@@ -13725,4 +13725,22 @@ Known limitations:
 - Known limitations:
   - This scheduler is callable local logic and proof harness, not an installed always-on service.
   - Official-result ingestion and automatic settlement remain future work.
-  - The current proof DB still contains some older mixed-title sportsbook markets under the selected event; mobile-visible MVP filtering still selects the intended Spain vs. France market, but broader provider data cleanup remains P1.
+
+# Cycle ONEEVENTDATAHYGIENE - One-Event Runtime Data Hygiene
+
+- Feature/page worked on: backend one-event runtime market hygiene.
+- Frontend components touched: none. This prevents stale provider rows from leaking into backend runtime and lifecycle proofs.
+- Important functions/services touched:
+  - `scripts/prove_odds_api_one_event_data_hygiene.ts`
+  - `package.json` script `mobile:one-event-data-hygiene-proof`
+  - `src/server/services/oneEventLifecycleScheduler.ts`
+  - `scripts/prove_odds_api_event_lifecycle_scheduler.ts`
+- User interactions supported:
+  - Internal testers see the intended current event markets, not stale mixed-title markets from prior one-event imports.
+  - Lifecycle automation only pauses/closes currently listed mobile-tradable markets.
+- State transitions:
+  - Hygiene proof inspects sportsbook/contract markets under the selected event.
+  - Any listed active market whose title does not start with the current event title is set `isListed=false` and `status=CLOSED`.
+  - Scheduler selection requires `isListed=true`, so delisted historical rows no longer enter pause/close proofs.
+- Known limitations:
+  - The local one-event runtime still uses a reusable event slug. Per-provider-event slugs are a better future shape for multi-event onboarding.

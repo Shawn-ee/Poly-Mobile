@@ -62,6 +62,7 @@ async function loadEvent(eventSlug: string) {
           referenceSource: "sportsbook-odds",
           visibility: "PUBLIC",
           mechanism: "ORDERBOOK",
+          isListed: true,
           isCanceled: false,
           outcomes: { some: { isActive: true, isTradable: true } },
         },

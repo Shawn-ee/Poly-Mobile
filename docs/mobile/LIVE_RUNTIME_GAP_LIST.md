@@ -16,5 +16,6 @@
 | Continuous unattended daemon | P1 | Not complete; the supervisor is a foreground local command, not an installed service. |
 | Always-on auto-close/suspend daemon | P1 | Local one-event scheduler proof exists, but it is not installed as an always-on daemon/service. |
 | Automatic official-result settlement | P1 | Manual/admin settlement exists; result provider is missing. |
-| One-event data hygiene | P1 | Current one-event proof DB still includes some older mixed-title sportsbook markets under the selected event. Mobile filters the visible MVP market, but import cleanup should remove unrelated provider rows before broader testing. |
+| One-event data hygiene guard | P0 | Complete: `npm run mobile:one-event-data-hygiene-proof` verifies listed mobile-visible sportsbook/contract markets belong to the current event title; lifecycle scheduler now only touches `isListed=true` markets. |
+| Per-provider-event slugging | P2 | Future improvement: replace the reusable `odds-api-single-soccer-test` slug with per-provider-event slugs once multi-event onboarding starts. |
 | Multi-event provider polling | P2 | Intentionally out of scope to protect quota. |

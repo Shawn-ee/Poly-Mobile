@@ -10016,7 +10016,7 @@ Future migration concern:
 ## Cycle ONEEVENTLIFECYCLESCHEDULER - Start-Time Lifecycle Scheduler
 
 - Closed or narrowed: backend lifecycle timing now has a local scheduler contract for one event: no action before the suspend window, pause inside the suspend window, and close/cancel open orders at or after start.
-- Route mismatch: none. The proof uses existing `/api/health` and `/api/orders`; the scheduler mutates `Event.startTime`, `Market.status`, and `Market.closeTime` only in the local proof window and restores them afterward.
+- Route mismatch: none. The proof uses existing `/api/health` and `/api/orders`; the scheduler mutates `Event.startTime`, `Market.status`, and `Market.closeTime` only in the local proof window and restores them afterward. Scheduler candidates are restricted to `isListed=true` mobile-tradable markets.
 - Fields Holiwyn still needs but backend/provider does not fully provide: official-result feed data for automatic settlement and a durable daemon/service ownership model for always-on scheduling.
 - Temporary mock/static data: none added. The proof uses temporary timestamps on the existing event and spends no provider quota.
-- Future migration concern: the current one-event proof database still contains some older mixed-title sportsbook markets under `odds-api-single-soccer-test`. Mobile MVP filtering selects the intended Spain vs. France market, but the import/runtime cleanup path should remove unrelated provider rows before broader internal testing.
+- Future migration concern: `npm run mobile:one-event-data-hygiene-proof` now gates listed visible rows for the reusable test slug. Per-provider-event slugs remain the cleaner future contract before broader internal testing.

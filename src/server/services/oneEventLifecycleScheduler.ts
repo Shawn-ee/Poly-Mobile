@@ -37,6 +37,7 @@ export async function runOneEventLifecycleScheduler(options: OneEventLifecycleSc
           mechanism: "ORDERBOOK",
           referenceSource,
           isCanceled: false,
+          isListed: true,
           status: { in: ["UPCOMING", "LIVE", "PAUSED"] },
         },
         select: {

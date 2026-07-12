@@ -1,0 +1,47 @@
+{
+  "pass": true,
+  "generatedAt": "2026-07-12T08:14:28.105Z",
+  "scope": "odds-api-one-event-data-hygiene",
+  "mode": "apply",
+  "event": {
+    "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
+    "slug": "odds-api-single-soccer-test",
+    "title": "Spain vs. France",
+    "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
+    "startTime": "2026-07-14T19:00:00.000Z"
+  },
+  "policy": {
+    "mobileVisibleMarketTitlePrefix": "Spain vs. France:",
+    "referenceSources": [
+      "sportsbook-odds",
+      "contract-fixture"
+    ],
+    "actionForStaleVisibleMarkets": "set isListed=false and status=CLOSED",
+    "providerQuotaUsed": false
+  },
+  "before": {
+    "totalProviderMarketCount": 33,
+    "visibleProviderMarketCount": 19,
+    "staleVisibleMarketCount": 0,
+    "staleVisibleMarkets": []
+  },
+  "after": {
+    "totalProviderMarketCount": 33,
+    "visibleProviderMarketCount": 19,
+    "staleVisibleMarketCount": 0,
+    "validVisibleMarketCount": 19
+  },
+  "checks": {
+    "eventLoaded": true,
+    "staleVisibleMarketsRemoved": true,
+    "validVisibleMarketsRemain": true,
+    "cleanupAppliedWhenNeeded": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [],
+    "p2": [
+      "future import should use per-provider-event slugs instead of a single reusable test slug"
+    ]
+  }
+}
