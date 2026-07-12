@@ -30,16 +30,14 @@
 - Detail visible: true
 - Sportsbook market count: 10
 - Tradable outcome count: 22
-- Backend fake-token order: filled BUY on the sportsbook-derived spread line.
-- Backend cashout/sell: filled SELL against local fake-token bid liquidity; Portfolio position reduced to zero in the latest backend proof.
-- S23 visible proof: Home -> Event Detail -> spread line -> Buy ticket -> Portfolio -> Cash out/Sell ticket -> Portfolio History.
 
 ## Result
 - Pass: true
 - No-quota replay: pass. The run used the redacted odds fixture and made no provider API calls.
 - Live-key refresh evidence remains captured in the redacted API call headers from the original single-event fetch.
-- Backend fake-token flow: pass. Home, Event Detail, quote, buy order, cashout sell, Portfolio, and History preserve `sportsbook-odds` line identity.
+- Backend fake-token flow: pass. Home, Event Detail, quote, order, Portfolio, and History preserve `sportsbook-odds` line identity.
 - S23 visible proof: pass.
 - S23 proof summary: `docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json`
 - S23 proof screenshots: `docs/mobile/screenshots/cycle-ODDSAPIS23-odds-api-s23-visible-flow/`
 - Remaining blocker: none for the temporary sportsbook Local MVP bridge. This still does not claim Polymarket-backed provider parity.
+

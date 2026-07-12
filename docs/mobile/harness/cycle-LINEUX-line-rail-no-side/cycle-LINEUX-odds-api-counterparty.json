@@ -1,0 +1,74 @@
+{
+  "pass": true,
+  "liquidityPurpose": "buy-fill",
+  "routeContract": {
+    "mobileFlow": "Event Detail line market -> generic Buy ticket -> /api/orders BUY -> Portfolio History",
+    "expectedRestingSide": "SELL",
+    "source": "local-mvp-internal-liquidity"
+  },
+  "eventSlug": "odds-api-single-soccer-test",
+  "market": {
+    "id": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
+    "title": "Switzerland vs. Argentina: Total Goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "period": "regulation",
+    "line": "2.5",
+    "referenceSource": "sportsbook-odds",
+    "externalMarketId": "200d9cd5eda092c7eb778cc104cd2fd2:betonlineag:alternate_totals:2.5",
+    "conditionId": "odds-api-38ad59c0f2b83f38e7cdd9b9"
+  },
+  "outcome": {
+    "id": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
+    "name": "Over +2.5",
+    "side": "over",
+    "referenceTokenId": "odds-api-69c87a86defa44e2d0b1bb27",
+    "referenceOutcomeLabel": "Over +2.5"
+  },
+  "cleanupOnly": false,
+  "maker": {
+    "id": "018b7e0c-e479-4303-8ad6-794de3cd9d33",
+    "username": "mobile_route_fill_maker_47d47c1e"
+  },
+  "cleanup": {
+    "enabled": true,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": [],
+    "cleanupBlockingBids": true,
+    "canceledBlockingBids": [],
+    "cleanupBlockingMarketBids": true,
+    "cleanupBlockingMarketBidsForcedByPurpose": false,
+    "canceledBlockingMarketBids": [
+      {
+        "id": "190cfa08-f043-4534-abcb-51f8994c2249",
+        "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
+        "username": "odds_internal_env_cashout_maker_cd5b41e6",
+        "previousStatus": "PARTIAL",
+        "price": "0.43",
+        "remaining": "198.75",
+        "canceledStatus": "CANCELED"
+      }
+    ],
+    "cleanupProofAsks": false,
+    "canceledProofAsks": [],
+    "cleanupBlockingAsks": false,
+    "canceledBlockingAsks": []
+  },
+  "makerOrder": {
+    "id": "5a87b428-d8b3-42a7-9702-aa3a34cbfdf2",
+    "marketId": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
+    "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
+    "side": "SELL",
+    "price": "0.58",
+    "size": "100",
+    "remaining": "100",
+    "reservedNotional": "0",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "SELL",
+    "price": "0.58",
+    "size": "100",
+    "intendedMobileTaker": "BUY $25 route-backed totals ticket"
+  }
+}

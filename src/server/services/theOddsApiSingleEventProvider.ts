@@ -600,6 +600,7 @@ function supplementalKnockoutMarketSpecs(params: {
   const home = params.oddsEvent.home_team;
   const away = params.oddsEvent.away_team;
   const advance = h2hAdvanceProbabilities(params.markets, params.oddsEvent);
+  const regulation = regulationOutcomeProbabilities(params.markets, params.oddsEvent);
   const spreadLines = [-3.5, -2.5, -1.5, 1.5, 2.5, 3.5];
   const totalLines = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5];
   const spreadProbability = (line: number) => clampPrice(0.5 + line * 0.09);
@@ -619,6 +620,19 @@ function supplementalKnockoutMarketSpecs(params: {
         { code: "AWAY_ADVANCES", name: `${away} advances`, side: "away", probability: advance.away },
       ],
     },
+    ...regulation.map((outcome, index) => ({
+      key: `holiwyn-regulation-${outcome.code.toLowerCase()}`,
+      title: `${outcome.name} in regulation`,
+      marketType: "match_winner_1x2",
+      marketGroupKey: "regulation-winner",
+      marketGroupTitle: "Regulation Time Winner",
+      period: "regulation",
+      displayOrder: 20 + index,
+      outcomes: [
+        { code: "YES", name: "Yes", side: "yes", probability: outcome.probability },
+        { code: "NO", name: "No", side: "no", probability: clampPrice(1 - outcome.probability) },
+      ],
+    })),
     ...spreadLines.map((line, index) => {
       const homeProbability = spreadProbability(line);
       const awayLine = -line;
@@ -658,6 +672,34 @@ function supplementalKnockoutMarketSpecs(params: {
         ],
       };
     }),
+  ];
+}
+
+function regulationOutcomeProbabilities(markets: NormalizedOddsApiMarket[], oddsEvent: OddsApiEventOddsResponse) {
+  const h2h = markets.find((market) => market.marketKey === "h2h_3_way" || market.marketKey === "h2h");
+  const fallback = [
+    { code: "HOME", name: oddsEvent.home_team, side: "home", probability: 0.45 },
+    { code: "AWAY", name: oddsEvent.away_team, side: "away", probability: 0.35 },
+    { code: "DRAW", name: "Draw", side: "draw", probability: 0.2 },
+  ];
+  if (!h2h) return fallback;
+
+  const byRole = new Map<string, (typeof fallback)[number]>();
+  for (const outcome of h2h.outcomes) {
+    const side = outcome.side === "home" || outcome.side === "away" || outcome.side === "draw" ? outcome.side : null;
+    if (!side) continue;
+    byRole.set(side, {
+      code: side.toUpperCase(),
+      name: side === "home" ? oddsEvent.home_team : side === "away" ? oddsEvent.away_team : "Draw",
+      side,
+      probability: clampPrice(outcome.normalizedProbability),
+    });
+  }
+
+  return [
+    byRole.get("home") ?? fallback[0]!,
+    byRole.get("away") ?? fallback[1]!,
+    byRole.get("draw") ?? fallback[2]!,
   ];
 }
 

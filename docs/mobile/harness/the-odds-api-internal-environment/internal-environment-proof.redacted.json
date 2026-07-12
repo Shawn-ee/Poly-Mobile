@@ -1,6 +1,6 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-12T06:04:03.012Z",
+  "generatedAt": "2026-07-12T06:26:24.885Z",
   "scope": "odds-api-repeatable-internal-testing-environment",
   "policy": {
     "providerSource": "the-odds-api",
@@ -19,7 +19,7 @@
           "status": "ok",
           "db": "connected",
           "env": "development",
-          "timestamp": "2026-07-12T06:03:58.804Z"
+          "timestamp": "2026-07-12T06:26:19.229Z"
         }
       },
       "postgres": {
@@ -50,7 +50,7 @@
           "status": "ok",
           "db": "connected",
           "env": "development",
-          "timestamp": "2026-07-12T06:04:03.011Z"
+          "timestamp": "2026-07-12T06:26:24.884Z"
         }
       },
       "postgres": {
@@ -83,8 +83,8 @@
         "slug": "odds-api-single-soccer-test",
         "title": "Switzerland vs. Argentina"
       },
-      "marketCount": 23,
-      "outcomeCount": 48,
+      "marketCount": 26,
+      "outcomeCount": 54,
       "markets": [
         {
           "id": "748a4190-b926-4d65-8074-e69df7eb54b2",
@@ -182,6 +182,33 @@
           "title": "Switzerland vs. Argentina: Team to advance",
           "marketType": "to_advance",
           "marketGroupTitle": "Team To Advance",
+          "line": null,
+          "outcomeCount": 2
+        },
+        {
+          "id": "88a781e9-078c-4d0f-8d01-918186bea1d1",
+          "slug": "odds-api-single-soccer-test-holiwyn-regulation-home",
+          "title": "Switzerland vs. Argentina: Argentina in regulation",
+          "marketType": "match_winner_1x2",
+          "marketGroupTitle": "Regulation Time Winner",
+          "line": null,
+          "outcomeCount": 2
+        },
+        {
+          "id": "0e407969-0c2a-495e-9c82-ace2fbe5e372",
+          "slug": "odds-api-single-soccer-test-holiwyn-regulation-away",
+          "title": "Switzerland vs. Argentina: Switzerland in regulation",
+          "marketType": "match_winner_1x2",
+          "marketGroupTitle": "Regulation Time Winner",
+          "line": null,
+          "outcomeCount": 2
+        },
+        {
+          "id": "132e9436-646a-41c4-b143-98885833003c",
+          "slug": "odds-api-single-soccer-test-holiwyn-regulation-draw",
+          "title": "Switzerland vs. Argentina: Draw in regulation",
+          "marketType": "match_winner_1x2",
+          "marketGroupTitle": "Regulation Time Winner",
           "line": null,
           "outcomeCount": 2
         },
@@ -413,12 +440,12 @@
   "marketMaker": {
     "continuousBotRunning": false,
     "proofMode": "one-shot deterministic local maker liquidity",
-    "makerAskOrderId": "b3920bda-93cc-424d-81de-4c4366a974ac",
-    "cashoutBidOrderId": "190cfa08-f043-4534-abcb-51f8994c2249"
+    "makerAskOrderId": "a14632fe-ff21-4770-9c78-51064e28a23f",
+    "cashoutBidOrderId": "c4ddbe3c-dc55-4b46-bb33-b395ff791211"
   },
   "positiveFlow": {
     "buyOrder": {
-      "id": "452fff73-4dae-48dd-80c3-3fe5bd2efac2",
+      "id": "ffa5efb5-69d3-42a8-89a5-5467d435fe58",
       "marketId": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
       "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
       "side": "BUY",
@@ -428,7 +455,7 @@
       "reservedNotional": "0",
       "status": "FILLED",
       "type": "LIMIT",
-      "clientOrderId": "odds-internal-env-buy-8d8d0181-20dc-468b-aff8-94b82e93ac47",
+      "clientOrderId": "odds-internal-env-buy-4d174ab9-1b6c-4d73-9a39-f03678033958",
       "apiKeyId": "[redacted-api-key-id]",
       "contractSide": "YES",
       "selection": {
@@ -454,7 +481,7 @@
       }
     },
     "cashoutSellOrder": {
-      "id": "4aefad34-99ff-4087-9f52-415ca0ccb309",
+      "id": "e50629e1-fa62-452c-a24e-fd215b0be587",
       "marketId": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
       "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
       "side": "SELL",
@@ -464,7 +491,7 @@
       "reservedNotional": "0",
       "status": "FILLED",
       "type": "LIMIT",
-      "clientOrderId": "odds-internal-env-cashout-sell-b455d17a-1aee-45e9-a5fc-6be55b963594",
+      "clientOrderId": "odds-internal-env-cashout-sell-286ee5f6-4a1e-4d6d-ad1c-4cbc34d40b88",
       "apiKeyId": "[redacted-api-key-id]",
       "contractSide": "YES",
       "selection": {
@@ -491,8 +518,8 @@
     },
     "positionSharesBeforeCashout": 1.25,
     "positionSharesAfterCashout": 0,
-    "buyHistoryTradeId": "30033a63-9a4f-4c14-921d-f623b486e7e2",
-    "sellHistoryTradeId": "419f4f80-0468-482d-9a29-5cebd0230ca8"
+    "buyHistoryTradeId": "c4cc75a0-f7df-4217-b565-3f4276b78eba",
+    "sellHistoryTradeId": "823cc204-32c0-40a4-be66-454f8ae5cb01"
   },
   "negativeCases": {
     "noPositionSell": {

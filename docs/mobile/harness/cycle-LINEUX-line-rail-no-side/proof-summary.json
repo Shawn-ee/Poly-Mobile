@@ -1,0 +1,25 @@
+{
+  "cycle": "LINEUX-line-rail-no-side",
+  "device": {
+    "adbId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model": "SM-S911U1"
+  },
+  "scope": [
+    "Event Detail multi-line selector",
+    "Regulation Time Winner Yes/No outcome selection"
+  ],
+  "evidence": {
+    "eventDetailScreenshot": "docs/mobile/screenshots/cycle-LINEUX-line-rail-no-side/cycle-LINEUX-clean-detail2.png",
+    "eventDetailHierarchy": "docs/mobile/harness/cycle-LINEUX-line-rail-no-side/cycle-LINEUX-clean-detail2.xml",
+    "noSideTicketScreenshot": "docs/mobile/screenshots/cycle-LINEUX-line-rail-no-side/cycle-LINEUX-no-ticket.png",
+    "noSideTicketHierarchy": "docs/mobile/harness/cycle-LINEUX-line-rail-no-side/cycle-LINEUX-no-ticket.xml"
+  },
+  "assertions": [
+    "Knockout event top primary actions show advancing teams only and do not show Draw as a top primary action.",
+    "Regulation Time Winner remains available as a lower market with Team A, Draw, and Team B rows.",
+    "Each Regulation Time Winner row exposes separate Yes and No buttons when backed by binary markets.",
+    "Tapping a No button opens the trade ticket with contract side No.",
+    "Spread line choices render as a horizontally scrollable tick rail instead of squeezed full-width options."
+  ],
+  "result": "passed"
+}

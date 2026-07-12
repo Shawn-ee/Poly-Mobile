@@ -439,11 +439,15 @@ type DisplayOutcome = {
   label: string;
   color: string;
   probability: number;
+  noColor?: string;
+  noProbability?: number;
   odds?: string;
   icon?: string;
   miniLine?: number;
   ticketOutcome?: Outcome;
   ticketSelection?: TicketSelection;
+  noTicketOutcome?: Outcome;
+  noTicketSelection?: TicketSelection;
 };
 
 type GameLineGroup = {
@@ -520,6 +524,9 @@ const marketSourceBadge = (market?: Market) => {
     accessibility: `market-source-badge-unknown market-source-${source || "unknown"}`,
   };
 };
+
+const noOutcomeForMarket = (market: Market | undefined) =>
+  market?.outcomes.find((outcome) => outcome.side === "no" || /^no$/i.test(outcome.label));
 
 const ticketSelectionIdentityLabel = (selection?: TicketSelection) =>
   selection
@@ -786,25 +793,34 @@ export function EventDetail({
   const selectedWinnerMarket = matchingBackendPeriodWinnerMarket(marketPeriodForLinePeriod(selectedWinnerPeriod)) ?? regulationMarket;
   const selectedWinnerSourceBadge = marketSourceBadge(selectedWinnerMarket);
   const winnerMarketTitle = selectedWinnerPeriod === "1st Half"
-    ? "1st Half Winner"
-    : selectedWinnerPeriod === "2nd Half"
+      ? "1st Half Winner"
+      : selectedWinnerPeriod === "2nd Half"
       ? "2nd Half Winner"
       : regulationMarketTitle;
   const winnerMarketSubcopy = selectedWinnerPeriod === "Reg. Time"
-    ? primaryMarketSubcopy
+    ? winnerMarketTitle === "Regulation Time Winner"
+      ? "90 minutes plus stoppage time"
+      : primaryMarketSubcopy
     : `Includes tie for ${selectedWinnerPeriod.toLowerCase()}`;
   const regulationWinnerRows: DisplayOutcome[] = providerRegulationSelections.length === 3 && selectedWinnerPeriod === "Reg. Time"
-    ? providerRegulationSelections.map((selection, index) => ({
+    ? providerRegulationSelections.map((selection, index) => {
+        const noOutcome = noOutcomeForMarket(selection.market);
+        return {
         id: selection.outcome.id,
         label: label(locale, selection.outcome),
         color: primaryOutcomeDisplayColor(selection.outcome),
         probability: selection.outcome.probability,
+        noColor: "#273244",
+        noProbability: noOutcome?.probability ?? Math.max(1, Math.min(99, 100 - selection.outcome.probability)),
         odds: `${outcomeOdds(selection.outcome)}x`,
         icon: selection.role === "draw" ? "%" : selection.role === "home" ? teamA?.flag ?? "" : teamB?.flag ?? "",
         miniLine: selection.outcome.probability,
         ticketOutcome: selection.outcome,
         ticketSelection: orderBookTicketSelection(selection.market, selection.outcome, 0, winnerMarketTitle),
-      }))
+        noTicketOutcome: noOutcome,
+        noTicketSelection: noOutcome ? orderBookTicketSelection(selection.market, noOutcome, selection.market.outcomes.findIndex((item) => item.id === noOutcome.id), winnerMarketTitle) : undefined,
+      };
+      })
     : selectedWinnerMarket?.outcomes.map((outcome, index) => ({
     id: outcome.id,
     label: label(locale, outcome),
@@ -1392,6 +1408,16 @@ export function EventDetail({
       syntheticMarkets: {},
       fallbackMarket: groupMarket ?? primaryMarket,
     });
+    const noTicketTarget = outcome.noTicketSelection && outcome.noTicketOutcome
+      ? resolveLineTicketTarget({
+          selection: outcome.noTicketSelection,
+          backendMarket: groupMarket,
+          backendOutcome: outcome.noTicketOutcome,
+          syntheticOutcome: outcome.noTicketOutcome,
+          syntheticMarkets: {},
+          fallbackMarket: groupMarket ?? primaryMarket,
+        })
+      : null;
     return (
     <View key={outcome.id} style={styles.parityOutcomeRow}>
       <View style={styles.parityOutcomeIcon}>
@@ -1404,17 +1430,34 @@ export function EventDetail({
         </View>
       </View>
       <Text style={styles.oddsMultiplier}>{outcome.odds}</Text>
-      <Pressable
-        accessibilityLabel={`event-detail-outcome-${marketId}-${outcome.id} ticket-source-${ticketTarget?.source ?? "unavailable"} ticket-market-${ticketTarget?.market.id ?? "none"} ticket-outcome-${ticketTarget?.outcome.id ?? "none"} ${ticketSelectionIdentityLabel(outcome.ticketSelection)} ${providerIdentityLabel(ticketTarget?.market ?? groupMarket, ticketTarget?.outcome ?? outcome.ticketOutcome ?? matchingOutcome)}`}
-        onPress={() => {
-          if (!ticketTarget) return;
-          openTicket(ticketTarget.market, ticketTarget.outcome, event, defaultSide, outcome.ticketSelection);
-        }}
-        style={[styles.parityProbButton, { backgroundColor: outcome.color }]}
-        testID={`event-detail-outcome-${marketId}-${outcome.id}`}
-      >
-        <Text style={styles.parityProbText}>{outcome.probability}%</Text>
-      </Pressable>
+      <View style={outcome.noTicketSelection ? styles.parityBinaryButtonCluster : undefined}>
+        <Pressable
+          accessibilityLabel={`event-detail-outcome-${marketId}-${outcome.id} yes-selection ticket-source-${ticketTarget?.source ?? "unavailable"} ticket-market-${ticketTarget?.market.id ?? "none"} ticket-outcome-${ticketTarget?.outcome.id ?? "none"} ${ticketSelectionIdentityLabel(outcome.ticketSelection)} ${providerIdentityLabel(ticketTarget?.market ?? groupMarket, ticketTarget?.outcome ?? outcome.ticketOutcome ?? matchingOutcome)}`}
+          onPress={() => {
+            if (!ticketTarget) return;
+            openTicket(ticketTarget.market, ticketTarget.outcome, event, defaultSide, outcome.ticketSelection);
+          }}
+          style={[styles.parityProbButton, outcome.noTicketSelection && styles.parityBinaryProbButton, { backgroundColor: outcome.color }]}
+          testID={`event-detail-outcome-${marketId}-${outcome.id}`}
+        >
+          {outcome.noTicketSelection && <Text style={styles.parityProbSideText}>Yes</Text>}
+          <Text style={styles.parityProbText}>{outcome.probability}%</Text>
+        </Pressable>
+        {outcome.noTicketSelection && (
+          <Pressable
+            accessibilityLabel={`event-detail-outcome-${marketId}-${outcome.id}-no no-selection ticket-source-${noTicketTarget?.source ?? "unavailable"} ticket-market-${noTicketTarget?.market.id ?? "none"} ticket-outcome-${noTicketTarget?.outcome.id ?? "none"} ${ticketSelectionIdentityLabel(outcome.noTicketSelection)} ${providerIdentityLabel(noTicketTarget?.market ?? groupMarket, noTicketTarget?.outcome ?? outcome.noTicketOutcome)}`}
+            onPress={() => {
+              if (!noTicketTarget) return;
+              openTicket(noTicketTarget.market, noTicketTarget.outcome, event, defaultSide, outcome.noTicketSelection);
+            }}
+            style={[styles.parityProbButton, styles.parityBinaryProbButton, styles.parityNoProbButton]}
+            testID={`event-detail-outcome-${marketId}-${outcome.id}-no`}
+          >
+            <Text style={styles.parityProbSideText}>No</Text>
+            <Text style={styles.parityProbText}>{outcome.noProbability}%</Text>
+          </Pressable>
+        )}
+      </View>
     </View>
     );
   };
@@ -1544,7 +1587,14 @@ export function EventDetail({
             </View>
           )}
           {group.lineOptions && group.onSelectLine && (
-            <View style={styles.lineRailRow}>
+            <ScrollView
+              accessibilityLabel={`event-detail-${group.id}-line-scroll selectable-line-tick-rail horizontal-scroll`}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={styles.lineRailScroll}
+              contentContainerStyle={styles.lineRailRow}
+              testID={`event-detail-${group.id}-line-scroll`}
+            >
               {group.lineOptions.map((line) => (
                 <Pressable
                   accessibilityLabel={`event-detail-${group.id}-line-${line} ${group.lineValue === line ? "selected-line-value" : "inactive-line-value"}`}
@@ -1556,7 +1606,7 @@ export function EventDetail({
                   <Text style={[styles.lineRailText, group.lineValue === line && styles.lineRailTextActive]}>{line}</Text>
                 </Pressable>
               ))}
-            </View>
+            </ScrollView>
           )}
           {group.rows.map((outcome, index) => renderParityOutcomeRow(outcome, group.id, group.backendMarket?.outcomes[index], group.backendMarket))}
         </>
@@ -2107,10 +2157,11 @@ const styles = StyleSheet.create({
   subSegmentActive: { backgroundColor: "#273244" },
   subSegmentText: { color: "#8b93a3", fontSize: 12, fontWeight: "900" },
   subSegmentTextActive: { color: "#f8fafc" },
-  lineRailRow: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10, marginTop: 8, marginBottom: 4 },
-  lineRailOption: { minWidth: 58, minHeight: 36, alignItems: "center", justifyContent: "center", borderRadius: 11, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937" },
+  lineRailScroll: { marginTop: 8, marginBottom: 4, marginHorizontal: -18 },
+  lineRailRow: { flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 18, paddingVertical: 2 },
+  lineRailOption: { minWidth: 52, minHeight: 34, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937" },
   lineRailOptionActive: { backgroundColor: "#052e1b", borderColor: "#0a8f61" },
-  lineRailText: { color: "#8b93a3", fontSize: 16, fontWeight: "900" },
+  lineRailText: { color: "#8b93a3", fontSize: 14, fontWeight: "900" },
   lineRailTextActive: { color: "#86efac" },
   depthRow: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 10, marginBottom: 6 },
   depthText: { color: "#8b93a3", fontSize: 11, fontWeight: "800" },
@@ -2122,6 +2173,10 @@ const styles = StyleSheet.create({
   miniLineFill: { height: 4, borderRadius: 999 },
   oddsMultiplier: { width: 50, color: "#cbd5e1", fontSize: 13, fontWeight: "900", textAlign: "right" },
   parityProbButton: { width: 62, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 11 },
+  parityBinaryButtonCluster: { flexDirection: "row", alignItems: "center", gap: 6 },
+  parityBinaryProbButton: { width: 56, minHeight: 42, borderRadius: 10 },
+  parityNoProbButton: { backgroundColor: "#273244", borderWidth: 1, borderColor: "#38455a" },
+  parityProbSideText: { color: "rgba(255,255,255,0.72)", fontSize: 9, fontWeight: "900", lineHeight: 11, marginBottom: 1 },
   parityProbText: { color: "#ffffff", fontSize: 15, fontWeight: "900" },
   propToolsRow: { minHeight: 42, flexDirection: "row", alignItems: "center", gap: 8, marginTop: 8, marginBottom: 6 },
   propFilterChip: { minHeight: 32, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#111827", paddingHorizontal: 14 },

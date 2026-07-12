@@ -1,6 +1,6 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-11T23:48:28.678Z",
+  "generatedAt": "2026-07-12T06:21:53.454Z",
   "dryRun": false,
   "replayedFromRedactedOdds": true,
   "scope": "the-odds-api-single-event-temporary-provider-replay",
@@ -170,8 +170,8 @@
       "slug": "odds-api-single-soccer-test",
       "title": "Switzerland vs. Argentina"
     },
-    "marketCount": 10,
-    "outcomeCount": 22,
+    "marketCount": 23,
+    "outcomeCount": 48,
     "markets": [
       {
         "id": "748a4190-b926-4d65-8074-e69df7eb54b2",
@@ -262,6 +262,123 @@
         "marketGroupTitle": "Regulation Time Winner",
         "line": null,
         "outcomeCount": 3
+      },
+      {
+        "id": "51f895fa-c0ed-4463-b74c-d0e50dc56ecc",
+        "slug": "odds-api-single-soccer-test-holiwyn-advance",
+        "title": "Switzerland vs. Argentina: Team to advance",
+        "marketType": "to_advance",
+        "marketGroupTitle": "Team To Advance",
+        "line": null,
+        "outcomeCount": 2
+      },
+      {
+        "id": "8a2fce43-c3fd-428d-8a62-00c36e5a678e",
+        "slug": "odds-api-single-soccer-test-holiwyn-spread-home-neg-3-5",
+        "title": "Switzerland vs. Argentina: Argentina -3.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "-3.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "f7076ecf-f097-4069-99f0-b772def0adab",
+        "slug": "odds-api-single-soccer-test-holiwyn-spread-home-neg-2-5",
+        "title": "Switzerland vs. Argentina: Argentina -2.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "-2.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "2fe6074d-96a5-4ce5-9599-41c4e5f10dc1",
+        "slug": "odds-api-single-soccer-test-holiwyn-spread-home-neg-1-5",
+        "title": "Switzerland vs. Argentina: Argentina -1.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "-1.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "7ab91fec-4e3f-4aeb-bafa-60a16bc88f44",
+        "slug": "odds-api-single-soccer-test-holiwyn-spread-home-1-5",
+        "title": "Switzerland vs. Argentina: Argentina +1.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "1.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "a71049ce-f598-4713-9ae5-ff1874cdf448",
+        "slug": "odds-api-single-soccer-test-holiwyn-spread-home-2-5",
+        "title": "Switzerland vs. Argentina: Argentina +2.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "2.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "ef2c74a4-0a6c-48b5-b263-738e7718e75a",
+        "slug": "odds-api-single-soccer-test-holiwyn-spread-home-3-5",
+        "title": "Switzerland vs. Argentina: Argentina +3.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "3.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "6a04afc7-d661-4f69-946a-6d3eee3ed450",
+        "slug": "odds-api-single-soccer-test-holiwyn-total-goals-0-5",
+        "title": "Switzerland vs. Argentina: Total goals 0.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "0.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "e97678b5-311e-417e-8602-6b8ef40b9b62",
+        "slug": "odds-api-single-soccer-test-holiwyn-total-goals-1-5",
+        "title": "Switzerland vs. Argentina: Total goals 1.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "1.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "9c51b257-917a-4b29-b3c0-3d0ad9102b41",
+        "slug": "odds-api-single-soccer-test-holiwyn-total-goals-2-5",
+        "title": "Switzerland vs. Argentina: Total goals 2.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "2.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "3692dcbc-5c8e-420e-8898-596d35f2d233",
+        "slug": "odds-api-single-soccer-test-holiwyn-total-goals-3-5",
+        "title": "Switzerland vs. Argentina: Total goals 3.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "3.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "48b17b95-d3c8-4935-94df-d2cf6ba4acfe",
+        "slug": "odds-api-single-soccer-test-holiwyn-total-goals-4-5",
+        "title": "Switzerland vs. Argentina: Total goals 4.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "4.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "7babfa24-e0be-4518-8d71-a219d68b7a22",
+        "slug": "odds-api-single-soccer-test-holiwyn-total-goals-5-5",
+        "title": "Switzerland vs. Argentina: Total goals 5.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "5.5",
+        "outcomeCount": 2
       }
     ]
   },
@@ -284,7 +401,7 @@
     "path": "docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json",
     "device": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
     "model": "SM-S911U1",
-    "generatedAt": "2026-07-11T21:53:37.1457610Z",
+    "generatedAt": "2026-07-11T23:50:15.6952293Z",
     "screenshotsPath": "docs/mobile/screenshots/cycle-ODDSAPIS23-odds-api-s23-visible-flow/"
   },
   "resultNotes": [

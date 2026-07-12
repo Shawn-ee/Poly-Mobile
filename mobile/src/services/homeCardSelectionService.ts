@@ -48,7 +48,13 @@ const selectionFromMarket = (
 };
 
 export const homeCardSelectionsForEvent = (event: Event): HomeCardSelection[] => {
-  if (event.marketProfile !== "regulation_90" || !["can_draw", "can_draw_90"].includes(event.resultMode ?? "")) {
+  const hasRegulationProfile = event.marketProfile === "regulation_90" || event.supportedMarketTypes?.includes("regulation_90");
+  const canDisplayRegulationRows = hasRegulationProfile && (
+    ["can_draw", "can_draw_90"].includes(event.resultMode ?? "") ||
+    event.primaryMarketProfile === "advance" ||
+    event.resultMode === "must_advance"
+  );
+  if (!canDisplayRegulationRows) {
     return [];
   }
 

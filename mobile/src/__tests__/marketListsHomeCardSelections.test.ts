@@ -101,4 +101,21 @@ describe("homeCardSelectionsForEvent", () => {
       "winner",
     ]);
   });
+
+  test("still composes regulation rows for knockout events with separate advance primary buttons", () => {
+    const selections = homeCardSelectionsForEvent({
+      ...event,
+      marketProfile: "to_advance",
+      primaryMarketProfile: "advance",
+      resultMode: "must_advance",
+      supportedMarketTypes: ["to_advance", "regulation_90"],
+    });
+
+    expect(selections.map((selection) => selection.outcome.label)).toEqual([
+      "Switzerland",
+      "Draw",
+      "Colombia",
+    ]);
+    expect(selections.every((selection) => selection.market.outcomes.some((outcome) => outcome.side === "no"))).toBe(true);
+  });
 });

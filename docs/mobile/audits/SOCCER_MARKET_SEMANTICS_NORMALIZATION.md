@@ -15,13 +15,17 @@ Fix the Odds API soccer import and mobile event contracts so Holiwyn shows clean
 | Quarter spread lines | `0.25` and `0.75` handicap lines are hidden from compact mobile markets. | `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts` and `src/__tests__/mobile-live-event-detail.test.ts` |
 | Asian total lines | `1.75`, `2.0`, and `2.25` totals are hidden from compact mobile markets. | `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts` |
 | Clean half-goal totals/spreads | Main spread UI hides duplicative `±0.5` lines and keeps `±1.5`, `±2.5`, `±3.5`; totals expose a fuller `0.5`, `1.5`, `2.5`, `3.5`, `4.5`, `5.5` ladder. | Same focused test files plus S23 proof |
+| Multi-line selector UX | Spread/totals ladders render as a horizontally scrollable tick rail instead of squeezing every line into the phone width. | `mobile/src/__tests__/eventDetailContractSideContract.test.ts` plus S23 proof |
+| Regulation binary side UX | Provider-composed Regulation Time Winner rows expose both Yes and No ticket entry when the backend market has a No outcome. | `mobile/src/__tests__/eventDetailContractSideContract.test.ts` |
 | Trading flow compatibility | Market/outcome/line/provider identity remains preserved for quote/order/Portfolio routes. | Existing internal readiness and mobile order proof harnesses |
 
 ## Implementation Notes
 
 - Kalshi-style reference behavior treats knockout advancement as a separate no-draw prediction question. Holiwyn now uses a Holiwyn-owned `Team to advance` fake-token contract for the top primary buttons when the temporary sportsbook provider only supplies regulation-time h2h odds.
 - Regulation Time Winner stays available lower in Game Lines with Draw preserved.
+- Regulation Time Winner rows can now show Yes/No side buttons for each listed outcome. A No selection uses the same provider binary market's No outcome, so "No Team A" means the other regulation outcomes can happen without inventing a new three-way order contract.
 - Spread `-0.5` duplicates regulation winner, while spread `+0.5` is closer to a double-chance style contract. Both are hidden from the main spread ladder for MVP clarity; they can be added later as separate named markets if desired.
+- Spread and totals line choices use a horizontally scrollable tick rail so six or more values remain readable on Samsung S23 width.
 - The temporary sportsbook proof now prefers a visible totals line instead of reinforcing the old sportsbook `0.5` spread path.
 - Raw provider identity is preserved in metadata through `providerMarketType`, `providerSource`, and `mobileDisplayPolicy`.
 - New imports filter mobile-visible markets at normalization time.
