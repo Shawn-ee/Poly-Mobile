@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T12:47:05.750Z",
+  "generatedAt": "2026-07-12T12:47:00.947Z",
   "scope": "odds-api-one-event-result-settlement",
   "pass": true,
   "mode": "dry-run",
@@ -79,7 +79,7 @@
   },
   "controls": {
     "dryRunIsDefault": true,
-    "writeAuditEvent": true,
+    "writeAuditEvent": false,
     "executeRequiresFlag": "--execute",
     "executeRequiresConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:f3a5743c73f2",
     "executeRequiresMarketStatus": "CLOSED",
@@ -88,15 +88,7 @@
     "actorUserId": "holiwyn-local-result-settlement-operator",
     "providerStatus": "trusted_external_input"
   },
-  "auditEvent": {
-    "id": "171",
-    "sequence": "171",
-    "type": "settlement.trusted_result.preflight",
-    "stream": "market",
-    "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-    "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
-    "createdAt": "2026-07-12T12:47:05.746Z"
-  },
+  "auditEvent": null,
   "gaps": {
     "p0": [],
     "p1": [

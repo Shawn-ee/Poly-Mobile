@@ -1,0 +1,179 @@
+{
+    "generatedAt":  "2026-07-12T12:47:06.0700372Z",
+    "scope":  "holiwyn-supervisor-approved-settlement-wait-proof",
+    "pass":  true,
+    "providerQuotaUsed":  false,
+    "startedAt":  "2026-07-12T12:46:59.6319376Z",
+    "completedAt":  "2026-07-12T12:47:06.0715422Z",
+    "eventSlug":  "odds-api-single-soccer-test",
+    "approvalPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-supervisor-approval.redacted.json",
+    "dryRun":  {
+                   "command":  {
+                                   "label":  "prepare-active-event-approval-dry-run",
+                                   "command":  "npm run mobile:one-event-result-settlement-run -- --eventSlug=odds-api-single-soccer-test --result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json --output=docs/mobile/harness/odds-api-live-runtime/one-event-supervisor-approved-settlement-dry-run.redacted.json --settlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-supervisor-approved-settlement-dry-run-settlement.redacted.json",
+                                   "exitCode":  0,
+                                   "pass":  true,
+                                   "startedAt":  "2026-07-12T12:46:59.6394502Z",
+                                   "finishedAt":  "2026-07-12T12:47:01.0102111Z",
+                                   "outputTail":  [
+                                                      "    \"canRunFromSupervisorOrCron\": true,",
+                                                      "    \"providerResultIngestionAvailable\": true,",
+                                                      "    \"unattendedResultPollingInstalled\": false,",
+                                                      "    \"dryRunDefault\": true,",
+                                                      "    \"executeRequiresConfirmation\": true,",
+                                                      "    \"autoExecuteRequiresApprovalFile\": true,",
+                                                      "    \"autoExecuteRequiresClosedMarket\": true,",
+                                                      "    \"fakeTokenOnly\": true",
+                                                      "  },",
+                                                      "  \"gaps\": {",
+                                                      "    \"p0\": [],",
+                                                      "    \"p1\": [",
+                                                      "      \"This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.\",",
+                                                      "      \"Dry-run preview is the default; execution requires either explicit confirmation or an exact local approval file.\"",
+                                                      "    ],",
+                                                      "    \"p2\": [",
+                                                      "      \"Multi-event result queue and operator UI remain future work.\"",
+                                                      "    ]",
+                                                      "  }",
+                                                      "}"
+                                                  ]
+                               },
+                   "schedulerSummaryPath":  "docs/mobile/harness/odds-api-live-runtime/one-event-supervisor-approved-settlement-dry-run.redacted.json",
+                   "settlementSummaryPath":  "docs/mobile/harness/odds-api-live-runtime/one-event-supervisor-approved-settlement-dry-run-settlement.redacted.json",
+                   "selectedMarket":  {
+                                          "id":  "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+                                          "slug":  "odds-api-single-soccer-test-totals-7439c2d603",
+                                          "title":  "Spain vs. France: Total Goals 2.5",
+                                          "marketType":  "total_goals",
+                                          "marketGroupKey":  "totals",
+                                          "line":  "2.5",
+                                          "statusBefore":  "LIVE",
+                                          "resolvedOutcomeIdBefore":  null,
+                                          "collateralUSDCBefore":  "26500"
+                                      },
+                   "winningOutcome":  {
+                                          "id":  "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+                                          "name":  "Over +2.5",
+                                          "label":  "Over +2.5",
+                                          "side":  "over",
+                                          "code":  "over-2-5"
+                                      },
+                   "resultDigest":  "f3a5743c73f2"
+               },
+    "supervisor":  {
+                       "command":  {
+                                       "label":  "supervisor-approved-settlement-wait",
+                                       "command":  "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_live_supervisor.ps1 -BackendPort 3002 -MaxIterations 1 -IntervalSeconds 0 -SkipSleep -SkipDataHygiene -SkipMakerSeed -SkipLifecycleScheduler -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-supervisor-approval.redacted.json",
+                                       "exitCode":  0,
+                                       "pass":  true,
+                                       "startedAt":  "2026-07-12T12:47:01.0545994Z",
+                                       "finishedAt":  "2026-07-12T12:47:06.0634019Z",
+                                       "outputTail":  [
+                                                          "                                              \"outcomeId\":  \"dd0797bc-e297-4c19-b55c-ccf1bb96dace\",",
+                                                          "                                              \"outcomeName\":  \"Over +2.5\",",
+                                                          "                                              \"referenceTokenId\":  \"odds-api-88263b2c42d6b2f5c6dbbda4\"",
+                                                          "                                          },",
+                                                          "                       \"maker\":  null",
+                                                          "                   }",
+                                                          "               ],",
+                                                          "    \"gaps\":  {",
+                                                          "                 \"p0\":  [",
+                                                          "",
+                                                          "                        ],",
+                                                          "                 \"p1\":  [",
+                                                          "                            \"supervisor is a local command, not an installed unattended service\",",
+                                                          "                            \"provider-shaped replay ingestion and quota-capped live result ingestion are available in the local supervisor, but installed unattended official-result polling and unconfirmed execution are not complete\"",
+                                                          "                        ],",
+                                                          "                 \"p2\":  [",
+                                                          "                            \"multi-event provider polling and inventory-aware multi-market quoting remain future work\"",
+                                                          "                        ]",
+                                                          "             }",
+                                                          "}"
+                                                      ]
+                                   },
+                       "summaryPath":  "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json",
+                       "resultSettlementAction":  "approved_waiting_for_closed_market",
+                       "resultSettlementPass":  true,
+                       "runtimeSettlementMode":  "approved trusted-result scheduler; waits until CLOSED before execution"
+                   },
+    "runtimeTruth":  {
+                         "approvalFileMatched":  true,
+                         "supervisorApprovalModeWired":  true,
+                         "activeMarketStillLiveSoNoExecution":  true,
+                         "providerQuotaUsed":  false,
+                         "activeTesterSettlementExecution":  false
+                     },
+    "commands":  [
+                     {
+                         "label":  "prepare-active-event-approval-dry-run",
+                         "command":  "npm run mobile:one-event-result-settlement-run -- --eventSlug=odds-api-single-soccer-test --result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json --output=docs/mobile/harness/odds-api-live-runtime/one-event-supervisor-approved-settlement-dry-run.redacted.json --settlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-supervisor-approved-settlement-dry-run-settlement.redacted.json",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T12:46:59.6394502Z",
+                         "finishedAt":  "2026-07-12T12:47:01.0102111Z",
+                         "outputTail":  [
+                                            "    \"canRunFromSupervisorOrCron\": true,",
+                                            "    \"providerResultIngestionAvailable\": true,",
+                                            "    \"unattendedResultPollingInstalled\": false,",
+                                            "    \"dryRunDefault\": true,",
+                                            "    \"executeRequiresConfirmation\": true,",
+                                            "    \"autoExecuteRequiresApprovalFile\": true,",
+                                            "    \"autoExecuteRequiresClosedMarket\": true,",
+                                            "    \"fakeTokenOnly\": true",
+                                            "  },",
+                                            "  \"gaps\": {",
+                                            "    \"p0\": [],",
+                                            "    \"p1\": [",
+                                            "      \"This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.\",",
+                                            "      \"Dry-run preview is the default; execution requires either explicit confirmation or an exact local approval file.\"",
+                                            "    ],",
+                                            "    \"p2\": [",
+                                            "      \"Multi-event result queue and operator UI remain future work.\"",
+                                            "    ]",
+                                            "  }",
+                                            "}"
+                                        ]
+                     },
+                     {
+                         "label":  "supervisor-approved-settlement-wait",
+                         "command":  "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_live_supervisor.ps1 -BackendPort 3002 -MaxIterations 1 -IntervalSeconds 0 -SkipSleep -SkipDataHygiene -SkipMakerSeed -SkipLifecycleScheduler -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-supervisor-approval.redacted.json",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T12:47:01.0545994Z",
+                         "finishedAt":  "2026-07-12T12:47:06.0634019Z",
+                         "outputTail":  [
+                                            "                                              \"outcomeId\":  \"dd0797bc-e297-4c19-b55c-ccf1bb96dace\",",
+                                            "                                              \"outcomeName\":  \"Over +2.5\",",
+                                            "                                              \"referenceTokenId\":  \"odds-api-88263b2c42d6b2f5c6dbbda4\"",
+                                            "                                          },",
+                                            "                       \"maker\":  null",
+                                            "                   }",
+                                            "               ],",
+                                            "    \"gaps\":  {",
+                                            "                 \"p0\":  [",
+                                            "",
+                                            "                        ],",
+                                            "                 \"p1\":  [",
+                                            "                            \"supervisor is a local command, not an installed unattended service\",",
+                                            "                            \"provider-shaped replay ingestion and quota-capped live result ingestion are available in the local supervisor, but installed unattended official-result polling and unconfirmed execution are not complete\"",
+                                            "                        ],",
+                                            "                 \"p2\":  [",
+                                            "                            \"multi-event provider polling and inventory-aware multi-market quoting remain future work\"",
+                                            "                        ]",
+                                            "             }",
+                                            "}"
+                                        ]
+                     }
+                 ],
+    "gaps":  {
+                 "p0":  [
+
+                        ],
+                 "p1":  [
+                            "Supervisor approved settlement mode is wired and waits safely, but installed unattended official-result polling remains future work."
+                        ],
+                 "p2":  [
+                            "Production approval storage and operator UI remain future work."
+                        ]
+             }
+}

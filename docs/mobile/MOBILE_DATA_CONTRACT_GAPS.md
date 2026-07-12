@@ -10165,3 +10165,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: production-grade service supervision, health monitoring, official-result active-event execution policy, and operator audit workflow remain P1.
 - Temporary mock/static data: none added. The proof spends no provider quota and does not leave a persistent launcher.
 - Future migration concern: keep the user Startup launcher separate from production deployment. It starts local fake-token internal tester runtime at user logon only and should not be treated as a real unattended service.
+
+## Cycle ONEEVENTSUPERVISORAPPROVEDSETTLEMENT - Supervisor Approved Settlement Wait
+
+- Closed or narrowed: approved trusted-result settlement scheduling is now wired into the local supervisor and proven to wait safely while the active tester market is still `LIVE`.
+- Route mismatch: none. No mobile API route or backend HTTP route was added; this is local runtime automation around the existing trusted-result settlement command and settlement services.
+- Fields Holiwyn still needs but backend/provider does not fully provide: durable official result storage, durable approval storage, admin/operator approval UI, installed official-result polling, and active-event execution policy remain P1/P2.
+- Temporary mock/static data: the proof uses committed redacted trusted-result evidence and writes a local approval JSON file generated from the active-event dry run. It spends no Odds API quota and does not treat the approval file as production storage.
+- Future migration concern: local approval-file automation should become a durable backend approval/audit workflow before production use. Keep active-event execution gated by market `CLOSED`, exact digest/confirmation matching, and operator review.

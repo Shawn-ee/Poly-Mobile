@@ -14180,3 +14180,22 @@ Known limitations:
 - Known limitations:
   - Latest active event preflight is not execution eligible because the selected market is still `LIVE`.
   - Installed official-result polling and automatic execution remain P1.
+
+# Cycle ONEEVENTSUPERVISORAPPROVEDSETTLEMENT - Supervisor Approved Settlement Wait
+
+- Feature/page worked on: backend local supervisor settlement automation.
+- Frontend components touched: none. This is backend/runtime proof only and does not change mobile UI.
+- Important functions/services touched:
+  - `scripts/run_holiwyn_one_event_live_supervisor.ps1`
+  - `scripts/prove_holiwyn_supervisor_approved_settlement_wait.ps1`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `package.json` script `mobile:one-event-supervisor-approved-settlement-proof`
+- User/runtime interactions supported:
+  - Operator can run one proof command to verify the local supervisor carries an exact approval file into trusted-result settlement scheduling.
+  - The scheduler still waits when the selected active tester market is `LIVE`; no active tester settlement execution occurs.
+- State transitions:
+  - Active event trusted-result dry run -> local approval file -> one supervisor cycle -> approved wait result.
+  - Market/order/position settlement state remains unchanged while the selected market is `LIVE`.
+- Known limitations:
+  - This wires approved settlement into the local supervisor, not an installed production service.
+  - Installed unattended official-result polling remains P1.

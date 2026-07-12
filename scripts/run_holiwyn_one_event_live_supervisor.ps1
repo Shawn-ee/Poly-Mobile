@@ -14,6 +14,9 @@ param(
   [switch]$RunResultIngestion,
   [switch]$RunLiveResultIngestion,
   [switch]$RunResultSettlement,
+  [switch]$RunApprovedResultSettlement,
+  [string]$ResultSettlementPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+  [string]$ResultSettlementApprovalPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-settlement-approval.redacted.json",
   [switch]$RestartBackend,
   [int]$RefreshIterations = 1,
   [int]$MaxCreditsPerProviderProof = 8,
@@ -118,6 +121,9 @@ function Write-Heartbeat {
       resultIngestionEveryIterations = if ($RunLiveResultIngestion) { $ResultIngestionEveryIterations } else { 0 }
       maxLiveResultIngestionRuns = if ($RunLiveResultIngestion) { $MaxLiveResultIngestionRuns } else { 0 }
       resultSettlementEnabled = [bool]$RunResultSettlement
+      approvedResultSettlementEnabled = [bool]$RunApprovedResultSettlement
+      resultSettlementPath = if ($RunApprovedResultSettlement -or $RunResultIngestion) { $ResultSettlementPath } else { $null }
+      resultSettlementApprovalPath = if ($RunApprovedResultSettlement) { $ResultSettlementApprovalPath } else { $null }
       cachedModeUsesQuota = $false
     }
     runtimeTruth = [ordered]@{
@@ -126,7 +132,7 @@ function Write-Heartbeat {
       lifecycleSchedulerMode = if ($SkipLifecycleScheduler) { "not run by supervisor" } else { "safe real-time scheduler check each cycle; no proof time mutation" }
       staleGuardMode = if (-not $RunStaleGuard) { "disabled" } elseif ($EnforceStaleGuard) { "enforce stale provider pause while supervisor runs" } else { "dry-run stale monitor while supervisor runs" }
       resultIngestionMode = if (-not $RunResultIngestion) { "disabled" } elseif ($RunLiveResultIngestion) { "quota-capped live result ingestion by cadence; replay disabled for result ingestion cycles" } else { "provider-shaped result ingestion replay while supervisor runs; no provider quota spent" }
-      resultSettlementMode = if ($RunResultSettlement) { "trusted result scheduler dry-run while supervisor runs" } else { "disabled" }
+      resultSettlementMode = if ($RunApprovedResultSettlement) { "approved trusted-result scheduler; waits until CLOSED before execution" } elseif ($RunResultSettlement) { "trusted result scheduler dry-run while supervisor runs" } else { "disabled" }
       unattendedServiceInstalled = $false
     }
     failure = $Failure
@@ -294,8 +300,17 @@ try {
     $resultSettlementSummary = $null
     if ($RunResultSettlement) {
       $resultSettlementCommand = "npm run mobile:one-event-result-settlement-run"
-      if ($RunResultIngestion) {
-        $resultSettlementCommand += " -- --result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json"
+      $resultSettlementArgs = New-Object System.Collections.Generic.List[string]
+      if ($RunResultIngestion -or $RunApprovedResultSettlement) {
+        $resultSettlementArgs.Add("--result=$ResultSettlementPath") | Out-Null
+      }
+      if ($RunApprovedResultSettlement) {
+        $resultSettlementArgs.Add("--autoExecuteApproved") | Out-Null
+        $resultSettlementArgs.Add("--approval=$ResultSettlementApprovalPath") | Out-Null
+        $resultSettlementArgs.Add("--writeAuditEvent") | Out-Null
+      }
+      if ($resultSettlementArgs.Count -gt 0) {
+        $resultSettlementCommand += " -- " + ($resultSettlementArgs -join " ")
       }
       $resultSettlementResult = Invoke-CheckedCommand -Label "cycle-$iteration-result-settlement" -Command $resultSettlementCommand
       $resultSettlementSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-result-settlement-run-summary.redacted.json"
@@ -421,6 +436,9 @@ $summary = [ordered]@{
     maxCreditsPerResultIngestion = if ($RunLiveResultIngestion) { $MaxCreditsPerResultIngestion } else { 0 }
     maxCreditsAcrossResultIngestion = if ($RunLiveResultIngestion) { $MaxCreditsPerResultIngestion * $MaxLiveResultIngestionRuns } else { 0 }
     resultSettlementEnabled = [bool]$RunResultSettlement
+    approvedResultSettlementEnabled = [bool]$RunApprovedResultSettlement
+    resultSettlementPath = if ($RunApprovedResultSettlement -or $RunResultIngestion) { $ResultSettlementPath } else { $null }
+    resultSettlementApprovalPath = if ($RunApprovedResultSettlement) { $ResultSettlementApprovalPath } else { $null }
     cachedModeUsesQuota = $false
   }
   runtimeTruth = [ordered]@{
@@ -437,12 +455,12 @@ $summary = [ordered]@{
     liveResultIngestionContinuousWhileSupervisorRuns = [bool]($RunLiveResultIngestion -and $liveResultIngestionRunCount -gt 1)
     liveResultIngestionQuotaCappedWhileSupervisorRuns = [bool]($RunLiveResultIngestion -and $liveResultIngestionRunCount -gt 0)
     resultSettlementContinuousWhileSupervisorRuns = [bool]($RunResultSettlement -and ($Continuous -or $cycles.Count -gt 1))
-    resultSettlementMode = if ($RunResultSettlement) { "trusted result scheduler dry-run while supervisor runs" } else { "disabled" }
+    resultSettlementMode = if ($RunApprovedResultSettlement) { "approved trusted-result scheduler; waits until CLOSED before execution" } elseif ($RunResultSettlement) { "trusted result scheduler dry-run while supervisor runs" } else { "disabled" }
     unattendedServiceInstalled = $false
     providerRefreshMode = if ($RunProviderProof) { "quota-capped live provider proof by cadence; cached verification after cap or cadence skips" } else { "cached provider proof verification; no provider quota spent" }
     marketMakerMode = if ($SkipMakerSeed) { "not seeded by supervisor" } else { "repeated local shifted maker reseed while supervisor runs" }
     lifecycleSchedulerMode = if ($SkipLifecycleScheduler) { "not run by supervisor" } else { "safe real-time scheduler check each cycle; no proof time mutation" }
-    settlementMode = "manual preview/resolve service plus trusted-result dry-run scheduler; unconfirmed automatic settlement execution not wired"
+    settlementMode = if ($RunApprovedResultSettlement) { "manual preview/resolve service plus approval-file trusted-result scheduler; waits until CLOSED before execution" } else { "manual preview/resolve service plus trusted-result dry-run scheduler; unconfirmed automatic settlement execution not wired" }
   }
   failure = $failure
   cycles = @($cycles | ForEach-Object { $_ })

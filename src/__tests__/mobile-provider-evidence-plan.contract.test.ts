@@ -39,7 +39,7 @@ describe("mobile provider evidence refresh planner", () => {
           "scripts/plan_mobile_provider_evidence_refresh.ts",
           "--summaryPath=docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json",
           `--output=${outputPath}`,
-          "--refreshWindowHours=1",
+          "--refreshWindowHours=0",
         ],
         { encoding: "utf8" },
       );
