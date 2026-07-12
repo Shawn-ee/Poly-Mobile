@@ -27,7 +27,7 @@ The current Local MVP is backend-owned and fake-token only. It has proven one sp
 | Supervisor stale-provider monitor/enforcer | `scripts/run_odds_api_one_event_stale_guard.ts` can run in dry-run monitor mode or enforcement mode, and `run_holiwyn_one_event_live_supervisor.ps1` can invoke it every cycle with `-RunStaleGuard`. | Proven in one supervisor cycle in dry-run mode. Enforcement is available through `-EnforceStaleGuard`, but it is still local process behavior. |
 | One-event phase audit | `scripts/report_odds_api_live_runtime_phase_audit.ts` reads all live-runtime proof summaries plus local health/quote routes and reports P0/P1/P2 phase status. | Proven locally. Current result has 0 open P0 gaps for the local internal one-event runtime, with unattended services and official result auto-settlement open as P1. |
 | Settlement | `settlement.ts`, `previewOrderbookSettlement`, `resolveOrderbookMarket`, admin preview/resolve routes, and `scripts/settle_odds_api_one_event_market.ts` exist for orderbook markets. | Manual/admin-driven. Non-mutating readiness proof and a guarded one-event manual settlement dry run exist; automatic sports result ingestion and automatic settlement are not implemented. |
-| Trusted result settlement intake | `scripts/settle_odds_api_one_event_from_result.ts` reads trusted soccer result JSON, maps score/result evidence to a winning outcome, previews settlement, and keeps execution behind an exact result-digest confirmation phrase. `scripts/run_odds_api_one_event_result_settlement_scheduler.ts` can run that path from a local scheduler/cron style command, dry-run by default. | Proven in dry-run mode for Spain vs. France Total Goals 2.5. Official result API ingestion and unconfirmed execution remain P1. |
+| Trusted result settlement intake | `scripts/ingest_odds_api_one_event_result.ts` converts an Odds API scores payload into trusted soccer result JSON. `scripts/settle_odds_api_one_event_from_result.ts` maps that result evidence to a winning outcome, previews settlement, and keeps execution behind an exact result-digest confirmation phrase. `scripts/run_odds_api_one_event_result_settlement_scheduler.ts` can run that path from a local scheduler/cron style command, dry-run by default. | Provider-shaped replay ingestion and dry-run scheduling are proven for Spain vs. France Total Goals 2.5. Live score ingestion requires explicit `--live` and `THE_ODDS_API_KEY`; unattended official result polling and unconfirmed execution remain P1. |
 
 ## Odds API Usage Classification
 
@@ -44,7 +44,7 @@ The current Local MVP is backend-owned and fake-token only. It has proven one sp
 | Source-aware Odds API refresh loop | P0 for this goal | Need configurable interval, quota cap, stale detection, and failure handling. |
 | Continuous local market maker tied to provider odds | P0 for this goal | Need maker quotes shifted worse than provider, with risk caps and cleanup. |
 | Auto-close/suspend near event start or provider unavailable | P1 | Start-time pause/close now runs inside the foreground supervisor while it is active. A stale-provider pause guard is proven as a callable command. Neither is installed as an always-on daemon. |
-| Automatic settlement from official result | P1 | Existing settlement can be run from trusted local result JSON by a scheduler-style command, dry-run by default, but no final soccer result provider API is wired. |
+| Automatic settlement from official result | P1 | Existing settlement can ingest provider-shaped score evidence into trusted result JSON and run a scheduler-style dry run, but live score ingestion is explicit/manual and no unattended result polling or unconfirmed execution is wired. |
 | Production bot daemon ownership | P1 | `poly-bot` is not inside this repo, so mobile repo must not claim continuous bot readiness from that script alone. |
 
 ## Survey Conclusion
@@ -67,6 +67,7 @@ The backend is close enough for a one-event local live proof because the data mo
 - Continuous local supervisor proof: `scripts/prove_holiwyn_one_event_continuous_supervisor.ps1`.
 - Settlement readiness report: `scripts/report_odds_api_one_event_settlement_readiness.ts`.
 - Guarded manual settlement command: `scripts/settle_odds_api_one_event_market.ts`.
+- Provider-shaped result ingestion command: `scripts/ingest_odds_api_one_event_result.ts`.
 - Trusted result settlement command: `scripts/settle_odds_api_one_event_from_result.ts`.
 - Trusted result settlement scheduler run: `scripts/run_odds_api_one_event_result_settlement_scheduler.ts`.
 - One-command onboarding wrapper: `scripts/onboard_holiwyn_one_event_live_runtime.ps1`.
@@ -82,6 +83,9 @@ The backend is close enough for a one-event local live proof because the data mo
 - Safe lifecycle scheduler run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json`.
 - Settlement readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json`.
 - Manual settlement dry-run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json`.
+- Provider-shaped score fixture: `docs/mobile/harness/odds-api-live-runtime/odds-api-score-fixture.redacted.json`.
+- Provider-shaped result ingestion summary: `docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json`.
+- Provider-ingested trusted result output: `docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json`.
 - Trusted result settlement summary: `docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json`.
 - Trusted result settlement scheduler summary: `docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json`.
 - One-command onboarding summary: `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json`.

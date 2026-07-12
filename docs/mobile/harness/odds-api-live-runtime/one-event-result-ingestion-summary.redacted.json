@@ -1,0 +1,61 @@
+{
+  "generatedAt": "2026-07-12T10:33:53.672Z",
+  "scope": "odds-api-one-event-result-ingestion",
+  "pass": true,
+  "mode": "fixture-replay",
+  "eventSlug": "odds-api-single-soccer-test",
+  "eventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
+  "sportKey": "soccer_fifa_world_cup",
+  "provider": {
+    "source": "the-odds-api-scores-fixture",
+    "endpoint": null,
+    "live": false,
+    "daysFrom": "3",
+    "quota": {
+      "maxCredits": 2,
+      "minRemaining": 2,
+      "calls": []
+    }
+  },
+  "selectedScoreEvent": {
+    "id": "f9aa13a662d1658e5a02cfc06d6a2d73",
+    "sportKey": "soccer_fifa_world_cup",
+    "commenceTime": "2026-07-14T19:00:00Z",
+    "completed": true,
+    "homeTeam": "France",
+    "awayTeam": "Spain",
+    "lastUpdate": "2026-07-15T00:05:00Z"
+  },
+  "trustedResultOutputPath": "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+  "trustedResult": {
+    "source": "the-odds-api-scores-fixture",
+    "sourceEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
+    "eventSlug": "odds-api-single-soccer-test",
+    "eventTitle": "Spain vs. France",
+    "status": "final",
+    "period": "full_time",
+    "homeTeam": "France",
+    "awayTeam": "Spain",
+    "homeScore": 1,
+    "awayScore": 2,
+    "advanceTeam": "Spain",
+    "evidenceUrl": null,
+    "recordedAt": "2026-07-15T00:05:00Z"
+  },
+  "runtimeTruth": {
+    "officialResultProviderPathAvailable": true,
+    "liveProviderCallRequiresExplicitFlag": true,
+    "defaultModeUsesQuota": false,
+    "trustedResultContractProduced": true,
+    "settlementExecutionAttempted": false
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "Default proof uses provider-shaped replay. Run with --live and THE_ODDS_API_KEY to verify a current provider score response."
+    ],
+    "p2": [
+      "Multi-event result ingestion and operator UI remain future work."
+    ]
+  }
+}

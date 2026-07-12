@@ -115,7 +115,9 @@ async function main() {
     }
   }
 
-  p1.push("This scheduler consumes trusted local result JSON; official soccer result API ingestion is still not wired.");
+  p1.push(
+    "This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.",
+  );
   p1.push("Dry-run preview is the default; execution still requires explicit confirmation.");
   p2.push("Multi-event result queue and operator UI remain future work.");
 
@@ -165,7 +167,8 @@ async function main() {
       : null,
     runtimeTruth: {
       canRunFromSupervisorOrCron: true,
-      officialResultProviderApiWired: false,
+      providerResultIngestionAvailable: true,
+      unattendedResultPollingInstalled: false,
       dryRunDefault: true,
       executeRequiresConfirmation: true,
       fakeTokenOnly: true,

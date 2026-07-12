@@ -1,28 +1,28 @@
 {
-  "generatedAt": "2026-07-12T10:25:04.596Z",
+  "generatedAt": "2026-07-12T10:34:41.427Z",
   "scope": "odds-api-one-event-result-settlement-scheduler-run",
   "pass": true,
   "eventSlug": "odds-api-single-soccer-test",
   "resultInput": {
-    "path": "docs/mobile/harness/odds-api-live-runtime/trusted-result-fixture.redacted.json",
-    "source": "trusted-local-fixture",
+    "path": "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+    "source": "the-odds-api-scores-fixture",
     "sourceEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
     "eventSlug": "odds-api-single-soccer-test",
     "status": "final",
     "homeScore": 1,
     "awayScore": 2,
-    "recordedAt": "2026-07-12T09:50:00.000Z"
+    "recordedAt": "2026-07-15T00:05:00Z"
   },
   "action": "preview_settlement",
   "executionRequested": false,
-  "providerStatus": "fixture_only",
+  "providerStatus": "trusted_external_input",
   "command": {
     "executable": "C:\\nvm4w\\nodejs\\node.exe",
     "args": [
       "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
       "scripts/settle_odds_api_one_event_from_result.ts",
       "--eventSlug=odds-api-single-soccer-test",
-      "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-fixture.redacted.json",
+      "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
       "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json"
     ],
     "exitCode": 0,
@@ -31,15 +31,15 @@
       "  \"controls\": {",
       "    \"dryRunIsDefault\": true,",
       "    \"executeRequiresFlag\": \"--execute\",",
-      "    \"executeRequiresConfirm\": \"SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:faed3c7cae9e\",",
-      "    \"resultDigest\": \"faed3c7cae9e\",",
+      "    \"executeRequiresConfirm\": \"SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:f3a5743c73f2\",",
+      "    \"resultDigest\": \"f3a5743c73f2\",",
       "    \"actorUserId\": \"holiwyn-local-result-settlement-operator\",",
-      "    \"providerStatus\": \"fixture_only\"",
+      "    \"providerStatus\": \"trusted_external_input\"",
       "  },",
       "  \"gaps\": {",
       "    \"p0\": [],",
       "    \"p1\": [",
-      "      \"Official soccer result provider API ingestion is not wired; this command accepts trusted result JSON.\",",
+      "      \"Provider-shaped result ingestion can produce trusted result JSON, but this command intentionally consumes only reviewed trusted result JSON.\",",
       "      \"Automatic unattended result polling and settlement execution are not installed.\"",
       "    ],",
       "    \"p2\": [",
@@ -92,20 +92,21 @@
     "execution": {
       "attempted": false,
       "reason": "dry_run_default",
-      "requiredConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:faed3c7cae9e"
+      "requiredConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:f3a5743c73f2"
     },
     "controls": {
       "dryRunIsDefault": true,
       "executeRequiresFlag": "--execute",
-      "executeRequiresConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:faed3c7cae9e",
-      "resultDigest": "faed3c7cae9e",
+      "executeRequiresConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:f3a5743c73f2",
+      "resultDigest": "f3a5743c73f2",
       "actorUserId": "holiwyn-local-result-settlement-operator",
-      "providerStatus": "fixture_only"
+      "providerStatus": "trusted_external_input"
     }
   },
   "runtimeTruth": {
     "canRunFromSupervisorOrCron": true,
-    "officialResultProviderApiWired": false,
+    "providerResultIngestionAvailable": true,
+    "unattendedResultPollingInstalled": false,
     "dryRunDefault": true,
     "executeRequiresConfirmation": true,
     "fakeTokenOnly": true
@@ -113,7 +114,7 @@
   "gaps": {
     "p0": [],
     "p1": [
-      "This scheduler consumes trusted local result JSON; official soccer result API ingestion is still not wired.",
+      "This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.",
       "Dry-run preview is the default; execution still requires explicit confirmation."
     ],
     "p2": [

@@ -1,0 +1,27 @@
+{
+  "source": "the-odds-api-scores-fixture",
+  "redacted": true,
+  "sportKey": "soccer_fifa_world_cup",
+  "scores": [
+    {
+      "id": "f9aa13a662d1658e5a02cfc06d6a2d73",
+      "sport_key": "soccer_fifa_world_cup",
+      "sport_title": "FIFA World Cup",
+      "commence_time": "2026-07-14T19:00:00Z",
+      "completed": true,
+      "home_team": "France",
+      "away_team": "Spain",
+      "scores": [
+        {
+          "name": "France",
+          "score": "1"
+        },
+        {
+          "name": "Spain",
+          "score": "2"
+        }
+      ],
+      "last_update": "2026-07-15T00:05:00Z"
+    }
+  ]
+}

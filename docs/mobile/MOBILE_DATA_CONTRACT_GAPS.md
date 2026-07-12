@@ -10069,3 +10069,11 @@ Future migration concern:
 - Fields Holiwyn still needs but backend/provider does not fully provide: official result provider API payload, provider event id matching across multiple events, final/official status semantics from provider, and unattended result polling cadence.
 - Temporary mock/static data: the proof uses `trusted-result-fixture.redacted.json`, a local trusted result fixture for Spain vs. France. It is not an official provider response and spends no quota.
 - Future migration concern: official result ingestion should feed the same result contract fields (`sourceEventId`, `status`, `homeScore`, `awayScore`, `advanceTeam`, evidence URL) before any automatic execute path is considered.
+
+## Cycle ONEEVENTRESULTINGEST - Provider-Shaped Result Ingestion
+
+- Closed or narrowed: result evidence can now be normalized from an Odds API scores-shaped payload into the same trusted soccer result contract used by settlement. Default proof is replay-only and quota-free; live ingestion is available only with explicit `--live` and an environment-provided `THE_ODDS_API_KEY`.
+- Route mismatch: none for mobile routes. The ingestion command writes trusted result JSON that feeds the existing trusted-result settlement command; it does not create a new mobile API route or database schema.
+- Fields Holiwyn still needs but backend/provider does not fully provide: unattended result polling cadence, official provider finality policy for abandoned/postponed matches, multi-event provider id matching, operator review/audit trail, and unconfirmed execution policy.
+- Temporary mock/static data: `odds-api-score-fixture.redacted.json` is a provider-shaped score fixture used to prove mapping without spending quota. It is not treated as live official truth.
+- Future migration concern: live result ingestion should stay separated from price refresh. Odds/price snapshots drive trading; score/final-result evidence drives settlement and should have its own operator controls.

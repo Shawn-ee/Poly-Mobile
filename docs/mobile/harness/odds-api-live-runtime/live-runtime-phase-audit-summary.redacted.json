@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T10:25:20.009Z",
+  "generatedAt": "2026-07-12T10:35:00.608Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-12T10:25:19.962Z"
+      "timestamp": "2026-07-12T10:35:00.570Z"
     },
     "error": null
   },
@@ -65,25 +65,26 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 3.32,
-    "onboarding": 0.91,
-    "readiness": 0.91,
-    "runtimeStatus": 0,
-    "runtimeLaunch": 0,
-    "supervisor": 0,
-    "supervisorProcess": 0,
-    "continuousSupervisor": 0,
-    "staleGuardProof": 0.91,
-    "staleGuardRun": 0.79,
-    "lifecycleControls": 0.91,
-    "lifecycleScheduler": 0.91,
-    "lifecycleSchedulerRun": 0,
-    "settlementReadiness": 0.91,
-    "manualSettlement": 0.91,
-    "resultSettlement": 0,
-    "resultSettlementRun": 0,
-    "makerSeed": 0,
-    "s23Visible": 3.14
+    "liveProof": 3.48,
+    "onboarding": 1.07,
+    "readiness": 1.07,
+    "runtimeStatus": 0.16,
+    "runtimeLaunch": 0.17,
+    "supervisor": 0.17,
+    "supervisorProcess": 0.16,
+    "continuousSupervisor": 0.16,
+    "staleGuardProof": 1.07,
+    "staleGuardRun": 0.95,
+    "lifecycleControls": 1.07,
+    "lifecycleScheduler": 1.07,
+    "lifecycleSchedulerRun": 0.17,
+    "settlementReadiness": 1.07,
+    "manualSettlement": 1.07,
+    "resultIngestion": 0.02,
+    "resultSettlement": 0.01,
+    "resultSettlementRun": 0.01,
+    "makerSeed": 0.17,
+    "s23Visible": 3.3
   },
   "requirements": [
     {
@@ -197,11 +198,12 @@
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json",
         "docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md"
       ],
-      "notes": "Trusted result JSON can map to a winning outcome and the local scheduler can dry-run it. Official result API ingestion remains P1."
+      "notes": "Provider-shaped score ingestion can produce trusted result JSON in replay mode, and the local scheduler can dry-run that result. Live score ingestion is explicit and quota-guarded; unattended official result polling remains P1."
     },
     {
       "id": "backend-runtime-health",
@@ -234,10 +236,11 @@
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json"
       ],
-      "notes": "Trusted result scheduler dry-run is proven. Official result API ingestion and unconfirmed execution remain future work."
+      "notes": "Provider-shaped result ingestion replay is proven and live score ingestion is available only behind --live plus THE_ODDS_API_KEY. Unattended provider result polling and unconfirmed execution remain future work."
     }
   ],
   "conclusion": {
@@ -249,6 +252,6 @@
     ],
     "phaseCompleteForLocalInternalRuntime": true,
     "fullProductionRuntimeComplete": false,
-    "runtimeTruth": "Local one-event runtime is internally usable with cached/live-proofed provider data, fake-token trading, supervisor monitoring, and trusted-result settlement dry-run scheduling. It is not a production unattended daemon and does not ingest official results."
+    "runtimeTruth": "Local one-event runtime is internally usable with cached/live-proofed provider data, fake-token trading, supervisor monitoring, provider-shaped result ingestion, and trusted-result settlement dry-run scheduling. It is not a production unattended daemon and does not install unattended official result polling."
   }
 }

@@ -22,6 +22,8 @@ Temporary Local MVP provider: The Odds API. This policy is for fake-token local 
 - `npm run mobile:one-event-live-supervisor -- -RunProviderProof -Continuous -MaxIterations 0` is the local live-provider supervisor mode. It is quota-capped by `-MaxProviderProofRuns` and paced by `-ProviderProofEveryIterations`; use it only for an intentional manual test.
 - `npm run mobile:one-event-live-supervisor:continuous-proof` starts the supervisor in continuous cached mode, proves at least one heartbeat cycle while the process remains alive, checks runtime status, and stops it. It does not spend provider quota.
 - `npm run mobile:one-event-runtime-status` reads local proof summaries plus local backend health/quote routes and reports whether the current runtime is cached-only, how fresh the last live proof is, and what quota the last proof used. It does not call the provider.
+- `npm run mobile:one-event-result-ingest` reads a redacted Odds API scores-shaped fixture and writes trusted result JSON without spending quota.
+- `npm run mobile:one-event-result-ingest -- --live` calls the Odds API scores endpoint and requires `THE_ODDS_API_KEY` in the local process environment. Use it only for an intentional result verification because it may spend quota.
 - `npm run mobile:one-event-result-settlement-run` reads trusted result JSON and invokes the guarded trusted-result settlement path in dry-run mode by default. It does not call the odds provider and does not execute settlement unless explicit execution flags and confirmation are supplied.
 - Do not print or commit `THE_ODDS_API_KEY`.
 - Track provider quota from response headers:
@@ -85,6 +87,7 @@ If the provider fails, quota is low, or no upcoming event has supported markets:
 - Supervisor summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json`
 - Supervisor heartbeat: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-heartbeat.redacted.json`
 - Continuous supervisor proof summary: `docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json`
+- Provider-shaped result ingestion summary: `docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json`
 - Trusted result settlement scheduler summary: `docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json`
 - Safe lifecycle scheduler run summary: `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json`
 - Runtime status summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`

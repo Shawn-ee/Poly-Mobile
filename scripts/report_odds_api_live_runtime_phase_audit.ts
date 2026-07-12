@@ -21,6 +21,7 @@ const PATHS = {
   lifecycleSchedulerRun: "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
   settlementReadiness: "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json",
   manualSettlement: "docs/mobile/harness/odds-api-live-runtime/one-event-manual-settlement-summary.redacted.json",
+  resultIngestion: "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json",
   resultSettlement: "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
   resultSettlementRun: "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json",
   makerSeed: "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
@@ -229,16 +230,19 @@ async function main() {
       achieved:
         pass(entries.settlementReadiness) &&
         pass(entries.manualSettlement) &&
+        pass(entries.resultIngestion) &&
         pass(entries.resultSettlement) &&
         pass(entries.resultSettlementRun),
       evidence: [
         PATHS.settlementReadiness,
         PATHS.manualSettlement,
+        PATHS.resultIngestion,
         PATHS.resultSettlement,
         PATHS.resultSettlementRun,
         "docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md",
       ],
-      notes: "Trusted result JSON can map to a winning outcome and the local scheduler can dry-run it. Official result API ingestion remains P1.",
+      notes:
+        "Provider-shaped score ingestion can produce trusted result JSON in replay mode, and the local scheduler can dry-run that result. Live score ingestion is explicit and quota-guarded; unattended official result polling remains P1.",
     }),
     requirement({
       id: "backend-runtime-health",
@@ -260,8 +264,15 @@ async function main() {
       priority: "P1",
       requirement: "Automatically ingest official soccer results and settle markets.",
       achieved: false,
-      evidence: [PATHS.settlementReadiness, PATHS.manualSettlement, PATHS.resultSettlement, PATHS.resultSettlementRun],
-      notes: "Trusted result scheduler dry-run is proven. Official result API ingestion and unconfirmed execution remain future work.",
+      evidence: [
+        PATHS.settlementReadiness,
+        PATHS.manualSettlement,
+        PATHS.resultIngestion,
+        PATHS.resultSettlement,
+        PATHS.resultSettlementRun,
+      ],
+      notes:
+        "Provider-shaped result ingestion replay is proven and live score ingestion is available only behind --live plus THE_ODDS_API_KEY. Unattended provider result polling and unconfirmed execution remain future work.",
     }),
   ];
   const openP0 = requirements.filter((item) => item.priority === "P0" && item.status !== "complete");
@@ -286,7 +297,7 @@ async function main() {
       phaseCompleteForLocalInternalRuntime: openP0.length === 0,
       fullProductionRuntimeComplete: false,
       runtimeTruth:
-        "Local one-event runtime is internally usable with cached/live-proofed provider data, fake-token trading, supervisor monitoring, and trusted-result settlement dry-run scheduling. It is not a production unattended daemon and does not ingest official results.",
+        "Local one-event runtime is internally usable with cached/live-proofed provider data, fake-token trading, supervisor monitoring, provider-shaped result ingestion, and trusted-result settlement dry-run scheduling. It is not a production unattended daemon and does not install unattended official result polling.",
     },
   };
   await writeJson(outputPath, summary);

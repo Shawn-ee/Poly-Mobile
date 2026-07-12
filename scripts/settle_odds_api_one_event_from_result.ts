@@ -387,7 +387,7 @@ async function main() {
     gaps: {
       p0: dryRunPass || executePass ? [] : ["result_settlement_command_failed"],
       p1: [
-        "Official soccer result provider API ingestion is not wired; this command accepts trusted result JSON.",
+        "Provider-shaped result ingestion can produce trusted result JSON, but this command intentionally consumes only reviewed trusted result JSON.",
         "Automatic unattended result polling and settlement execution are not installed.",
       ],
       p2: ["Operator settlement UI and multi-event settlement queue remain future work."],
