@@ -10537,3 +10537,12 @@ Future migration concern:
 - Schema mismatch: none. Runtime-loop proof still uses local process-state files and existing runtime manager summaries; production should replace this with durable service/job state.
 - Temporary mock/static data: none added. Default proof uses cached provider evidence, spends no provider quota, and does not start live provider refresh.
 - Remaining gaps: installed unattended service ownership, multi-event provider/maker scheduling, authenticated operator controls, and production alerting remain P1/P2.
+
+## Cycle RUNTIMESTATUSOPERATORACTION - Runtime Status Operator Action
+
+- Closed or narrowed: local runtime status now exposes the exact one-command runtime-loop proof as an operator next action when supervisor or result-poller loops are not running.
+- Fields added for future operator/runtime contracts: `operatorNextActions.actions[].id=prove_one_command_runtime_loops`, command text, provider-key requirement, quota-spend truth, and reason.
+- Route mismatch: this remains a local/dev-only read-only status route. It reports commands but does not execute them.
+- Schema mismatch: none. Production should replace command-string actions with authenticated operation records, role checks, and durable job IDs.
+- Temporary mock/static data: none added. The action is derived from current local process state.
+- Remaining gaps: authenticated operator dashboard, production service controls, and installed service ownership remain P1/P2.

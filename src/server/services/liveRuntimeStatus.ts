@@ -469,6 +469,20 @@ function buildOperatorNextActions(params: {
     },
   ];
 
+  if (!params.supervisorRunning || !params.resultPollerRunning) {
+    actions.push({
+      id: "prove_one_command_runtime_loops",
+      priority: "P0",
+      label: "Prove one-command local runtime loops",
+      command:
+        "npm run mobile:one-event-onboarding -- -AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof",
+      requiresProviderKey: false,
+      spendsProviderQuota: false,
+      reason:
+        "Starts the local supervisor/result-poller through onboarding, proves both are running, then stops them without provider quota.",
+    });
+  }
+
   if (mobileLifecycleStatus !== "ready") {
     actions.push({
       id: "refresh_mobile_live_odds",

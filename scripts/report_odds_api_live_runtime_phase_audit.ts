@@ -377,6 +377,16 @@ async function main() {
             getPath(action, ["id"]) === "cached_internal_testing" &&
             getPath(action, ["spendsProviderQuota"]) === false,
         ) &&
+        (getPath(localRuntimeStatusBody, ["operatorNextActions", "actions"]) as unknown[]).some(
+          (action) =>
+            action &&
+            typeof action === "object" &&
+            getPath(action, ["id"]) === "prove_one_command_runtime_loops" &&
+            getPath(action, ["requiresProviderKey"]) === false &&
+            getPath(action, ["spendsProviderQuota"]) === false &&
+            getPath(action, ["command"]) ===
+              "npm run mobile:one-event-onboarding -- -AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof",
+        ) &&
         getPath(localRuntimeStatusBody, ["settlementDecision", "checked"]) === true &&
         getPath(localRuntimeStatusBody, ["settlementDecision", "pass"]) === true &&
         getPath(localRuntimeStatusBody, ["settlementDecision", "providerQuotaUsed"]) === false &&

@@ -595,6 +595,13 @@ describe("live runtime status service", () => {
           spendsProviderQuota: false,
         }),
         expect.objectContaining({
+          id: "prove_one_command_runtime_loops",
+          command:
+            "npm run mobile:one-event-onboarding -- -AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof",
+          requiresProviderKey: false,
+          spendsProviderQuota: false,
+        }),
+        expect.objectContaining({
           id: "settlement_wait_for_closed_market",
           command: "npm run mobile:one-event-active-settlement-readiness",
           requiresProviderKey: false,

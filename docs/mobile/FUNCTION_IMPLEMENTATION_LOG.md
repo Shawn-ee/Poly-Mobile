@@ -14835,3 +14835,14 @@ Known limitations:
 - API/data dependencies: uses existing local backend health, runtime status, readiness, settlement readiness, result ingestion, result settlement dry-run, and internal tester runtime manager commands. It writes one onboarding summary plus dedicated runtime start/status/stop summaries under `docs/mobile/harness/odds-api-live-runtime/`.
 - Proof: onboarding runtime-loop mode passed with backend health true, Docker/Postgres true, runtime loops running during proof true, runtime loops stopped after proof true, and no P0 gaps.
 - Known limitations: this narrows local one-command runtime proof. Installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1.
+
+## Cycle RUNTIMESTATUSOPERATORACTION - Runtime Status Operator Action
+
+- Feature/page worked on: backend local internal runtime operator status.
+- Frontend components touched: none.
+- Important functions/services touched: updated `src/server/services/liveRuntimeStatus.ts`, `src/__tests__/liveRuntimeStatus.service.test.ts`, and `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/status` and see `prove_one_command_runtime_loops`, the exact no-quota command that starts the local supervisor/result-poller through onboarding, proves both are running, then stops them.
+- State transitions: none. The status route is read-only and does not start loops, stop loops, call The Odds API, place orders, mutate markets, or execute settlement.
+- API/data dependencies: composes existing local process status and operator action metadata. Phase audit now requires the new action to remain present with `requiresProviderKey=false` and `spendsProviderQuota=false`.
+- Proof needed: focused status service test, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this improves operator guidance but is still local command guidance, not authenticated production service control.
