@@ -22,6 +22,7 @@ import {
   type OddsApiMarketsResponse,
   type OddsApiSport,
 } from "@/server/services/theOddsApiSingleEventProvider";
+import { writeProviderRefreshRun } from "@/server/services/providerRefreshRun";
 
 const DEFAULT_BASE_URL = "http://127.0.0.1:3002";
 const DEFAULT_OUTPUT_PATH = "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json";
@@ -423,6 +424,7 @@ async function main() {
   const quoteOffsetTicks = intArg("quoteOffsetTicks", DEFAULT_QUOTE_OFFSET_TICKS);
   const skipSleep = boolFlag("skipSleep");
   const calls: OddsApiCallRecord[] = [];
+  const startedAt = new Date();
 
   const health = await fetchRaw(`${baseUrl}/api/health`);
   assert(health.ok && health.body?.status === "ok", `Backend health failed: ${JSON.stringify(health.body)}`);
@@ -591,6 +593,7 @@ async function main() {
   const summary = {
     pass: Object.values(checks).every(Boolean),
     generatedAt: new Date().toISOString(),
+    startedAt: startedAt.toISOString(),
     scope: "odds-api-one-event-live-runtime",
     policy: {
       fakeTokenOnly: true,
@@ -687,6 +690,40 @@ async function main() {
   };
 
   await writeJson(outputPath, summary);
+  await writeProviderRefreshRun({
+    providerSource: summary.policy.providerSource,
+    referenceSource: summary.policy.referenceSource,
+    status: summary.pass ? "passed" : "failed",
+    mode: "bounded-live-provider-proof",
+    startedAt,
+    finishedAt: summary.generatedAt,
+    eventSlug: summary.event.localSlug,
+    providerEventId: summary.event.providerEventId,
+    sportKey: summary.event.sportKey,
+    selectedMarketId: summary.selectedMarket.id,
+    selectedOutcomeId: summary.selectedMarket.outcomeId,
+    refreshIterations: summary.policy.refreshIterations,
+    providerCallCount: summary.provider.calls.length,
+    quotaCost: summary.provider.quota.totalLastCost,
+    requestsRemaining: summary.provider.quota.latest?.requestsRemaining ?? null,
+    maxCredits: summary.policy.maxCredits,
+    minRemaining: summary.policy.minRemaining,
+    marketCount: summary.provider.normalizedMarketCount,
+    outcomeCount: summary.provider.seed?.outcomeCount ?? 0,
+    snapshotCount: summary.provider.seed?.outcomeCount ?? 0,
+    staleBeforeRefresh: checks.staleDetectedBeforeRefresh,
+    readyAfterRefresh: checks.readyAfterRefresh,
+    metadata: {
+      source: "local-provider-refresh-proof",
+      emittedBy: "scripts/prove_odds_api_one_event_live_runtime.ts",
+      quotaProtected: checks.quotaProtected,
+      summaryPath: outputPath,
+      selectedMarketKeys: summary.provider.selectedMarketKeys,
+      importedMarketKeys: summary.provider.importedMarketKeys,
+      checks,
+      gaps: summary.gaps,
+    },
+  });
   process.stdout.write(`${JSON.stringify(summary, null, 2)}\n`);
   if (!summary.pass) process.exitCode = 1;
 }

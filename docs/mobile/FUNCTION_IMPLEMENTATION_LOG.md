@@ -14703,6 +14703,17 @@ Known limitations:
 - Proof needed: Prisma migration deploy, one-iteration supervisor proof, result-poller proof, direct DB run inspection, local runtime status route proof, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this closes the proof-artifact-only outcome gap for local workers, but it still does not install production service ownership, retry/alerting, multi-event job queues, or authenticated operator controls.
 
+## Cycle PROVIDERREFRESHRUNS - Durable Provider Refresh Run Records
+
+- Feature/page worked on: backend local internal provider refresh evidence persistence.
+- Frontend components touched: none.
+- Important functions/services touched: added Prisma model `ProviderRefreshRun`, migration `20260712190000_add_provider_refresh_run`, `src/server/services/providerRefreshRun.ts`, and `scripts/write_provider_refresh_run.ts`; updated `scripts/prove_odds_api_one_event_live_runtime.ts`, `src/server/services/liveRuntimeStatus.ts`, `src/__tests__/liveRuntimeStatus.service.test.ts`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, and `scripts/report_holiwyn_live_runtime_completion_audit.ts`.
+- User/runtime interactions supported: local tools can inspect `GET /api/internal/live-runtime/status` and see whether the selected one-event live provider refresh has a durable passed, quota-protected, within-budget, ready-after-refresh record.
+- State transitions: writes/updates only `ProviderRefreshRun`. The backfill command reads existing redacted live-provider proof JSON and does not call The Odds API. Future explicit live-provider proof runs write the same row after the existing quota-capped provider refresh path.
+- API/data dependencies: reads `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json` for backfill, and future live proofs read their in-memory summary. Status reads the latest `ProviderRefreshRun` for `the-odds-api`/`sportsbook-odds` and the selected event slug.
+- Proof needed: Prisma migration deploy, provider-refresh run backfill, status route proof, phase audit, completion audit, focused status Jest test, server/mobile typecheck, and `npm run test:ci`.
+- Known limitations: this narrows durable provider refresh outcome evidence, but it is not an installed provider polling daemon, multi-event queue, retry system, alerting surface, or production quota ledger.
+
 ## Cycle LIVERUNTIMELIFECYCLEAPI - Local Lifecycle Status API
 
 - Feature/page worked on: backend local internal event lifecycle status surface.

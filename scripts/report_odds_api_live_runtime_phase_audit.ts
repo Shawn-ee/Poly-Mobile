@@ -280,6 +280,14 @@ async function main() {
         typeof getPath(localRuntimeStatusBody, ["providerSnapshots", "mobileStaleAfterSeconds"]) === "number" &&
         typeof getPath(localRuntimeStatusBody, ["providerSnapshots", "nextProviderAction"]) === "string" &&
         Number(getPath(localRuntimeStatusBody, ["providerSnapshots", "snapshotCount"]) ?? 0) > 0 &&
+        getPath(localRuntimeStatusBody, ["providerRefreshRuns", "checked"]) === true &&
+        getPath(localRuntimeStatusBody, ["providerRefreshRuns", "durable"]) === true &&
+        getPath(localRuntimeStatusBody, ["providerRefreshRuns", "latestRunPassed"]) === true &&
+        getPath(localRuntimeStatusBody, ["providerRefreshRuns", "latestRunQuotaProtected"]) === true &&
+        getPath(localRuntimeStatusBody, ["providerRefreshRuns", "latestRunWithinBudget"]) === true &&
+        getPath(localRuntimeStatusBody, ["providerRefreshRuns", "latestRunReadyAfterRefresh"]) === true &&
+        getPath(localRuntimeStatusBody, ["providerRefreshRuns", "latestRunStaleBeforeRefresh"]) === true &&
+        getPath(localRuntimeStatusBody, ["providerRefreshRuns", "providerQuotaUsedByStatus"]) === false &&
         typeof getPath(localRuntimeStatusBody, ["operatorNextActions", "recommendedFirstAction"]) === "string" &&
         getPath(localRuntimeStatusBody, ["operatorNextActions", "defaultNoQuotaAction"]) === "cached_internal_testing" &&
         typeof getPath(localRuntimeStatusBody, ["operatorNextActions", "liveOddsAction"]) === "string" &&
@@ -325,7 +333,7 @@ async function main() {
         (getPath(localRuntimeStatusBody, ["gaps", "p0"]) as unknown[]).length === 0,
       evidence: [`${baseUrl}/api/internal/live-runtime/status`],
       notes:
-        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, latest-run-vs-proven-capability separation, read-only supervisor/result-poller process state, durable RuntimeServiceHeartbeat rows, worker-owned RuntimeServiceRun rows, and preserved worker-owned metadata. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
+        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, durable ProviderRefreshRun evidence, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, latest-run-vs-proven-capability separation, read-only supervisor/result-poller process state, durable RuntimeServiceHeartbeat rows, worker-owned RuntimeServiceRun rows, and preserved worker-owned metadata. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
     }),
     requirement({
       id: "local-result-review-api-ready",

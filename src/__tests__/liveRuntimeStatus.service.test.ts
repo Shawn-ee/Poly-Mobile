@@ -3,6 +3,7 @@ const referenceQuoteSnapshotFindMany = jest.fn();
 const runtimeServiceHeartbeatFindUnique = jest.fn();
 const runtimeServiceHeartbeatUpsert = jest.fn();
 const runtimeServiceRunFindMany = jest.fn();
+const providerRefreshRunFindMany = jest.fn();
 
 jest.mock("node:fs/promises", () => ({
   readFile,
@@ -19,6 +20,9 @@ jest.mock("@/lib/db", () => ({
     },
     runtimeServiceRun: {
       findMany: (...args: unknown[]) => runtimeServiceRunFindMany(...args),
+    },
+    providerRefreshRun: {
+      findMany: (...args: unknown[]) => providerRefreshRunFindMany(...args),
     },
   },
 }));
@@ -87,6 +91,40 @@ const runtimeRunRows = () => [
     },
   },
 ];
+const providerRefreshRunRows = () => [
+  {
+    runKey: `the-odds-api:sportsbook-odds:odds-api-single-soccer-test:${nowIso()}`,
+    providerSource: "the-odds-api",
+    referenceSource: "sportsbook-odds",
+    status: "passed",
+    mode: "bounded-live-provider-proof",
+    startedAt: new Date(),
+    finishedAt: new Date(),
+    durationMs: 2000,
+    eventSlug: "odds-api-single-soccer-test",
+    providerEventId: "provider-event-1",
+    sportKey: "soccer_fifa_world_cup",
+    selectedMarketId: "phase-market",
+    selectedOutcomeId: "phase-outcome",
+    refreshIterations: 2,
+    providerCallCount: 4,
+    quotaCost: 13,
+    requestsRemaining: "459",
+    maxCredits: 16,
+    minRemaining: 2,
+    marketCount: 12,
+    outcomeCount: 24,
+    snapshotCount: 24,
+    staleBeforeRefresh: true,
+    readyAfterRefresh: true,
+    updatedAt: new Date(),
+    metadata: {
+      source: "local-provider-refresh-proof",
+      emittedBy: "scripts/write_provider_refresh_run.ts",
+      quotaProtected: true,
+    },
+  },
+];
 const refreshDueSnapshot = () => [
   {
     source: "sportsbook-odds",
@@ -117,6 +155,7 @@ const makeCompletionAudit = (
   event: {
     title: "Spain vs France",
     providerEventId: "odds-api-event-1",
+    localSlug: "odds-api-single-soccer-test",
   },
   selectedMarket: {
     marketId: "market-1",
@@ -286,8 +325,10 @@ describe("live runtime status service", () => {
     runtimeServiceHeartbeatFindUnique.mockReset();
     runtimeServiceHeartbeatUpsert.mockReset();
     runtimeServiceRunFindMany.mockReset();
+    providerRefreshRunFindMany.mockReset();
     referenceQuoteSnapshotFindMany.mockResolvedValue(freshSnapshot());
     runtimeServiceRunFindMany.mockResolvedValue(runtimeRunRows());
+    providerRefreshRunFindMany.mockResolvedValue(providerRefreshRunRows());
     runtimeServiceHeartbeatFindUnique.mockResolvedValue(null);
     runtimeServiceHeartbeatUpsert.mockImplementation(async (args) => ({
       id: "heartbeat-id",
@@ -360,6 +401,36 @@ describe("live runtime status service", () => {
       mobileStaleAfterSeconds: 90,
       nextProviderAction: "none",
     });
+    expect(status.providerRefreshRuns).toMatchObject({
+      checked: true,
+      durable: true,
+      source: "ProviderRefreshRun",
+      latestRunPassed: true,
+      latestRunQuotaProtected: true,
+      latestRunWithinBudget: true,
+      latestRunReadyAfterRefresh: true,
+      latestRunStaleBeforeRefresh: true,
+      providerQuotaUsedByStatus: false,
+      latest: expect.objectContaining({
+        providerSource: "the-odds-api",
+        referenceSource: "sportsbook-odds",
+        status: "passed",
+        mode: "bounded-live-provider-proof",
+        eventSlug: "odds-api-single-soccer-test",
+        selectedMarketId: "phase-market",
+        quotaCost: 13,
+        maxCredits: 16,
+      }),
+    });
+    expect(providerRefreshRunFindMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          providerSource: "the-odds-api",
+          referenceSource: "sportsbook-odds",
+          eventSlug: "odds-api-single-soccer-test",
+        },
+      }),
+    );
     expect(referenceQuoteSnapshotFindMany).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { marketId: "phase-market" },

@@ -10078,6 +10078,14 @@ Future migration concern:
 - Temporary mock/static data: none added. The rows are emitted by local runtime workers after real local proof commands finish and do not spend provider quota.
 - Future migration concern: promote this local row contract into a production job-run/service-run contract before adding multi-event provider polling, so operator tooling can distinguish replay, live-provider, dry-run settlement, and approved execution modes.
 
+## Cycle PROVIDERREFRESHRUNS - Durable Provider Refresh Run Records
+
+- Closed or narrowed: live provider refresh outcome evidence is no longer only in the redacted proof JSON. `ProviderRefreshRun` stores selected one-event provider/reference source, run status, event/market/outcome identity, refresh iterations, provider call count, quota cost, requests remaining, imported counts, stale-before-refresh truth, ready-after-refresh truth, and quota-protected metadata.
+- Route mismatch: none. `/api/internal/live-runtime/status` exposes `providerRefreshRuns`; phase/completion audits require latest selected-event row to be passed, quota-protected, within budget, stale-before-refresh, and ready-after-refresh.
+- Fields Holiwyn still needs but backend/provider does not fully provide: installed provider polling service ownership, multi-event provider queue state, retry/alerting, and production quota accounting remain P1/P2.
+- Temporary mock/static data: none added. The row was backfilled from the current redacted live-provider proof without a new provider call. Future explicit `mobile:one-event-live-runtime:provider` runs write the same row directly after real provider refresh.
+- Future migration concern: this row is a local one-event proof contract, not the final multi-event provider polling ledger. Keep the mode/source fields when promoting it into a production scheduler so replay, cached, and live provider refresh attempts remain distinguishable.
+
 ## Cycle ONEEVENTRESULTSETTLEMENT - Trusted Result Settlement Intake
 
 - Closed or narrowed: settlement no longer depends only on a manually supplied outcome id. A trusted soccer result JSON contract can now map score/result evidence to the selected market's winning outcome and produce a guarded dry-run settlement preview.

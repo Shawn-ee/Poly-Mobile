@@ -196,6 +196,79 @@ async function getLatestRuntimeRuns() {
   return Array.from(latestByService.values()).map(compactRuntimeRunRow);
 }
 
+const compactProviderRefreshRunRow = (row: {
+  runKey: string;
+  providerSource: string;
+  referenceSource: string;
+  status: string;
+  mode: string;
+  startedAt: Date;
+  finishedAt: Date | null;
+  durationMs: number | null;
+  eventSlug: string | null;
+  providerEventId: string | null;
+  sportKey: string | null;
+  selectedMarketId: string | null;
+  selectedOutcomeId: string | null;
+  refreshIterations: number;
+  providerCallCount: number;
+  quotaCost: number;
+  requestsRemaining: string | null;
+  maxCredits: number | null;
+  minRemaining: number | null;
+  marketCount: number;
+  outcomeCount: number;
+  snapshotCount: number;
+  staleBeforeRefresh: boolean;
+  readyAfterRefresh: boolean;
+  updatedAt: Date;
+  metadata: unknown;
+}) => ({
+  runKey: row.runKey,
+  providerSource: row.providerSource,
+  referenceSource: row.referenceSource,
+  status: row.status,
+  mode: row.mode,
+  startedAt: row.startedAt.toISOString(),
+  finishedAt: row.finishedAt?.toISOString() ?? null,
+  durationMs: row.durationMs,
+  eventSlug: row.eventSlug,
+  providerEventId: row.providerEventId,
+  sportKey: row.sportKey,
+  selectedMarketId: row.selectedMarketId,
+  selectedOutcomeId: row.selectedOutcomeId,
+  refreshIterations: row.refreshIterations,
+  providerCallCount: row.providerCallCount,
+  quotaCost: row.quotaCost,
+  requestsRemaining: row.requestsRemaining,
+  maxCredits: row.maxCredits,
+  minRemaining: row.minRemaining,
+  marketCount: row.marketCount,
+  outcomeCount: row.outcomeCount,
+  snapshotCount: row.snapshotCount,
+  staleBeforeRefresh: row.staleBeforeRefresh,
+  readyAfterRefresh: row.readyAfterRefresh,
+  updatedAt: row.updatedAt.toISOString(),
+  metadata: {
+    source: stringValue(objectValue(row.metadata).source),
+    emittedBy: stringValue(objectValue(row.metadata).emittedBy),
+    quotaProtected: objectValue(row.metadata).quotaProtected === true,
+  },
+});
+
+async function getLatestProviderRefreshRun(eventSlug: string | null) {
+  const rows = await prisma.providerRefreshRun.findMany({
+    where: {
+      providerSource: "the-odds-api",
+      referenceSource: "sportsbook-odds",
+      ...(eventSlug ? { eventSlug } : {}),
+    },
+    orderBy: { startedAt: "desc" },
+    take: 1,
+  });
+  return rows[0] ? compactProviderRefreshRunRow(rows[0]) : null;
+}
+
 async function getProviderSnapshotFreshness(params: {
   marketId: string | null;
   maxAgeHours: number | null;
@@ -424,6 +497,9 @@ export async function getLocalLiveRuntimeStatus() {
     upsertRuntimeHeartbeat(resultPollerProcess),
   ]);
   const runtimeRuns = await getLatestRuntimeRuns();
+  const providerRefreshRun = await getLatestProviderRefreshRun(
+    stringValue(getPath(completionAudit, ["event", "localSlug"])) ?? stringValue(getPath(phaseAudit, ["event", "localSlug"])),
+  );
   const p0Gaps = asStringArray(getPath(completionAudit, ["gaps", "p0"]));
   const artifactFreshness = {
     maxCompletionAuditAgeHours: 24,
@@ -576,6 +652,23 @@ export async function getLocalLiveRuntimeStatus() {
     },
     freshness: artifactFreshness,
     providerSnapshots,
+    providerRefreshRuns: {
+      checked: true,
+      durable: true,
+      source: "ProviderRefreshRun",
+      latest: providerRefreshRun,
+      latestRunPassed: providerRefreshRun?.status === "passed",
+      latestRunQuotaProtected: providerRefreshRun?.metadata.quotaProtected === true,
+      latestRunWithinBudget:
+        providerRefreshRun != null &&
+        typeof providerRefreshRun.maxCredits === "number" &&
+        providerRefreshRun.quotaCost <= providerRefreshRun.maxCredits,
+      latestRunReadyAfterRefresh: providerRefreshRun?.readyAfterRefresh === true,
+      latestRunStaleBeforeRefresh: providerRefreshRun?.staleBeforeRefresh === true,
+      providerQuotaUsedByStatus: false,
+      note:
+        "This durable row records the latest bounded live provider refresh proof for the selected one-event runtime. The status route reads it but does not call the provider or spend quota.",
+    },
     settlementDecision,
     resultReview,
     runtimeCapabilities: {

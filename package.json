@@ -146,6 +146,7 @@
     "mobile:one-event-result-poller:stop": "powershell -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_result_poller.ps1 -Action stop",
     "mobile:runtime-heartbeat": "tsx scripts/write_runtime_service_heartbeat.ts",
     "mobile:runtime-run-record": "tsx scripts/write_runtime_service_run.ts",
+    "mobile:provider-refresh-run-record": "tsx scripts/write_provider_refresh_run.ts",
     "mobile:one-event-result-settlement-run": "tsx scripts/run_odds_api_one_event_result_settlement_scheduler.ts",
     "mobile:one-event-settlement-preflight": "tsx scripts/report_odds_api_one_event_settlement_preflight.ts",
     "mobile:one-event-settlement-audit-event-proof": "tsx scripts/prove_odds_api_settlement_audit_event.ts",

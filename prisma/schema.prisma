@@ -450,6 +450,42 @@ model ReferenceQuoteSnapshot {
   @@index([source, updatedAt])
 }
 
+model ProviderRefreshRun {
+  id                 String    @id @default(uuid())
+  runKey             String    @unique
+  providerSource     String
+  referenceSource    String
+  status             String
+  mode               String
+  startedAt          DateTime
+  finishedAt         DateTime?
+  durationMs         Int?
+  eventSlug          String?
+  providerEventId    String?
+  sportKey           String?
+  selectedMarketId   String?
+  selectedOutcomeId  String?
+  refreshIterations  Int       @default(0)
+  providerCallCount  Int       @default(0)
+  quotaCost          Int       @default(0)
+  requestsRemaining  String?
+  maxCredits         Int?
+  minRemaining       Int?
+  marketCount        Int       @default(0)
+  outcomeCount       Int       @default(0)
+  snapshotCount      Int       @default(0)
+  staleBeforeRefresh Boolean   @default(false)
+  readyAfterRefresh  Boolean   @default(false)
+  metadata           Json
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  @@index([providerSource, startedAt])
+  @@index([referenceSource, startedAt])
+  @@index([eventSlug, startedAt])
+  @@index([status, startedAt])
+}
+
 model ReferenceOrderbookDepthSnapshot {
   id               String   @id @default(uuid())
   marketId         String

@@ -123,6 +123,16 @@ async function main() {
       truthy(getPath(entries.liveProviderProof, ["policy", "oneEventOnly"])) &&
       typeof getPath(entries.runtimeStatus, ["provider", "quota", "totalLastCost"]) === "number" &&
       typeof getPath(entries.runtimeStatus, ["provider", "policy", "maxCredits"]) === "number",
+    durableProviderRefreshRunKnown:
+      pass(entries.phaseAudit) &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshRuns", "checked"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshRuns", "durable"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshRuns", "latestRunPassed"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshRuns", "latestRunQuotaProtected"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshRuns", "latestRunWithinBudget"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshRuns", "latestRunReadyAfterRefresh"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshRuns", "latestRunStaleBeforeRefresh"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshRuns", "providerQuotaUsedByStatus"]) === false,
     marketMakerContinuityKnown:
       truthy(getPath(entries.runtimeStatus, ["provenCapabilities", "makerReseedWhileSupervisorRuns"])) &&
       truthy(getPath(entries.runtimeStatus, ["provenCapabilities", "repeatedSupervisorCycles"])) &&
@@ -250,6 +260,8 @@ async function main() {
         getPath(entries.activeSettlementReadiness, ["executionDecision", "operatorDecision"]) ?? null,
       resultReview:
         "Local result-review API is phase-gated through /api/internal/live-runtime/result-review, reads canonical result/preflight/approval evidence, writes a redacted durable OfficialResultReview row, and does not spend provider quota.",
+      providerRefreshRuns:
+        "Bounded live provider refresh proof is persisted as ProviderRefreshRun; local runtime status requires the latest selected-event run to be passed, quota-protected, within budget, stale-before-refresh, and ready-after-refresh without spending quota from the status route.",
       runtimeHeartbeats:
         "Supervisor and result-poller loops emit worker-owned RuntimeServiceHeartbeat rows; local runtime status preserves that evidence without claiming an installed OS service.",
       runtimeRuns:
