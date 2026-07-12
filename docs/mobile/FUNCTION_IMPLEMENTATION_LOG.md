@@ -359,6 +359,15 @@ Purpose: document the app functions, services, API calls, state transitions, and
 - Proof: run `npm run mobile:internal-readiness-batch` and confirm the summary/gap list reports `S23 Google consent path ready: yes (lan-callback-preflight)` when the LAN callback preflight passes.
 - Known limitations: this does not complete Google consent or change Google Cloud settings. Real consent still requires the reported callback to be registered in Google Cloud.
 
+## Cycle ONEEVENTREVIEWTRAILAPPROVAL - Result Review Trail Approval Evidence
+
+- Feature/page worked on: backend live-runtime settlement review trail.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/report_odds_api_one_event_result_review_trail.ts` now reads canonical `settlement.trusted_result.approved` events alongside provider-result and settlement-preflight events. `scripts/report_odds_api_live_runtime_phase_audit.ts` now requires the review trail to prove approval evidence and digest matching.
+- User interactions supported: unchanged in mobile. The operator-facing local report now gives one read-only chain for provider result evidence, settlement dry-run/preflight evidence, and approval evidence before any execution attempt.
+- State transitions: no backend market/order/portfolio mutation. The report is read-only, spends no provider quota, and keeps active tester settlement execution false.
+- Known limitations: approval evidence still lives in `CanonicalEvent` plus local approval-file proof. A first-class official result table, durable approval model, and operator review UI remain P1/P2.
+
 ## Cycle LINEFAMILYGATE - S23 Line-Family Proof Gate
 
 - Feature/page worked on: Local MVP S23 proof aggregation for line-family coverage.

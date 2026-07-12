@@ -7,6 +7,8 @@ const DEFAULT_SETTLEMENT_AUDIT_SUMMARY_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-audit-event-summary.redacted.json";
 const DEFAULT_RESULT_INGESTION_AUDIT_SUMMARY_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-audit-event-summary.redacted.json";
+const DEFAULT_SETTLEMENT_APPROVAL_AUDIT_SUMMARY_PATH =
+  "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-approval-audit-event-summary.redacted.json";
 const DEFAULT_OUTPUT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-result-review-trail-summary.redacted.json";
 
@@ -56,6 +58,11 @@ function compactPayload(payload: unknown) {
     settlementExecutionAttempted: value.settlementExecutionAttempted ?? null,
     previewPayoutConservationPass: value.previewPayoutConservationPass ?? null,
     currentMarketStatus: value.currentMarketStatus ?? null,
+    confirm: value.confirm ?? null,
+    approvedBy: value.approvedBy ?? null,
+    approvedAt: value.approvedAt ?? null,
+    executionRequiresMarketStatus: value.executionRequiresMarketStatus ?? null,
+    activeTesterSettlementExecution: value.activeTesterSettlementExecution ?? null,
   };
 }
 
@@ -82,11 +89,14 @@ async function main() {
   const settlementAuditSummaryPath = argValue("settlementAuditSummary") ?? DEFAULT_SETTLEMENT_AUDIT_SUMMARY_PATH;
   const resultIngestionAuditSummaryPath =
     argValue("resultIngestionAuditSummary") ?? DEFAULT_RESULT_INGESTION_AUDIT_SUMMARY_PATH;
+  const settlementApprovalAuditSummaryPath =
+    argValue("settlementApprovalAuditSummary") ?? DEFAULT_SETTLEMENT_APPROVAL_AUDIT_SUMMARY_PATH;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
 
-  const [settlementAuditSummary, resultIngestionAuditSummary] = await Promise.all([
+  const [settlementAuditSummary, resultIngestionAuditSummary, settlementApprovalAuditSummary] = await Promise.all([
     readJson(settlementAuditSummaryPath),
     readJson(resultIngestionAuditSummaryPath),
+    readJson(settlementApprovalAuditSummaryPath),
   ]);
 
   const selectedMarketId =
@@ -96,7 +106,8 @@ async function main() {
   const winningOutcomeId =
     (argValue("outcomeId") as string | undefined) ??
     (getPath(settlementAuditSummary, ["winningOutcomeId"]) as string | null) ??
-    (getPath(settlementAuditSummary, ["auditEvent", "outcomeId"]) as string | null);
+    (getPath(settlementAuditSummary, ["auditEvent", "outcomeId"]) as string | null) ??
+    (getPath(settlementApprovalAuditSummary, ["auditEvent", "outcomeId"]) as string | null);
 
   const providerResultEvent = await prisma.canonicalEvent.findFirst({
     where: {
@@ -112,6 +123,17 @@ async function main() {
           stream: "MARKET",
           marketId: selectedMarketId,
           eventType: "settlement.trusted_result.preflight",
+        },
+        orderBy: { id: "desc" },
+      })
+    : null;
+  const settlementApprovalEvent = selectedMarketId
+    ? await prisma.canonicalEvent.findFirst({
+        where: {
+          stream: "MARKET",
+          marketId: selectedMarketId,
+          outcomeId: winningOutcomeId ?? undefined,
+          eventType: "settlement.trusted_result.approved",
         },
         orderBy: { id: "desc" },
       })
@@ -133,6 +155,7 @@ async function main() {
 
   const providerPayload = providerResultEvent?.payload as JsonObject | null | undefined;
   const settlementPayload = settlementPreflightEvent?.payload as JsonObject | null | undefined;
+  const approvalPayload = settlementApprovalEvent?.payload as JsonObject | null | undefined;
   const checks = {
     providerResultAuditEventFound: providerResultEvent != null,
     providerResultTopicMatches: providerResultEvent?.topicKey === `market:provider-result:${eventSlug}`,
@@ -145,6 +168,17 @@ async function main() {
     settlementPreflightDryRun: settlementPayload?.executionMode === "dry-run",
     settlementDidNotExecuteActiveMarket: settlementPayload?.executionAttempted === false,
     settlementPayoutPreviewPassed: settlementPayload?.previewPayoutConservationPass === true,
+    settlementApprovalAuditEventFound: settlementApprovalEvent != null,
+    approvalMarketMatchesSelected: settlementApprovalEvent?.marketId === selectedMarketId,
+    approvalOutcomeMatchesSelected: settlementApprovalEvent?.outcomeId === winningOutcomeId,
+    approvalDigestMatchesPreflight:
+      typeof approvalPayload?.resultDigest === "string" &&
+      approvalPayload.resultDigest === settlementPayload?.resultDigest,
+    approvalConfirmMatchesPreflightDigest:
+      typeof approvalPayload?.confirm === "string" &&
+      typeof settlementPayload?.resultDigest === "string" &&
+      approvalPayload.confirm.includes(settlementPayload.resultDigest),
+    approvalDoesNotExecuteActiveMarket: approvalPayload?.activeTesterSettlementExecution === false,
     selectedMarketExists: market != null,
     reportIsReadOnly: true,
     providerQuotaNotUsed: true,
@@ -164,6 +198,7 @@ async function main() {
     sourceEvidence: {
       settlementAuditSummaryPath,
       resultIngestionAuditSummaryPath,
+      settlementApprovalAuditSummaryPath,
     },
     market: market
       ? {
@@ -183,8 +218,9 @@ async function main() {
     reviewTrail: {
       providerResultEvent: compactEvent(providerResultEvent),
       settlementPreflightEvent: compactEvent(settlementPreflightEvent),
+      settlementApprovalEvent: compactEvent(settlementApprovalEvent),
       digestNote:
-        "trustedResultDigest hashes the provider-shaped trusted-result JSON; resultDigest hashes the guarded settlement confirmation tuple.",
+        "trustedResultDigest hashes the provider-shaped trusted-result JSON; resultDigest hashes the guarded settlement confirmation tuple; approval confirm must include the same resultDigest.",
       operatorDecision:
         settlementPayload?.currentMarketStatus === "CLOSED"
           ? "eligible_for_exact_confirmation_review"
@@ -193,6 +229,7 @@ async function main() {
     runtimeTruth: {
       canonicalProviderResultAuditAvailable: providerResultEvent != null,
       canonicalSettlementPreflightAuditAvailable: settlementPreflightEvent != null,
+      approvalHasCanonicalEventEvidence: settlementApprovalEvent != null,
       executionRequiresMarketClosed: true,
       activeTesterSettlementExecution: false,
       readOnlyReport: true,

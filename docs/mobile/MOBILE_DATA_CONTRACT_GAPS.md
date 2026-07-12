@@ -10224,7 +10224,7 @@ Future migration concern:
 
 ## Cycle ONEEVENTRESULTREVIEWTRAIL - Result Review Trail Report
 
-- Closed or narrowed: operators can now inspect provider result ingestion evidence and settlement preflight evidence for the active one-event market from one read-only summary.
+- Closed or narrowed: operators can now inspect provider result ingestion evidence, settlement preflight evidence, and settlement approval evidence for the active one-event market from one read-only summary. The report verifies the approval result digest matches the preflight result digest and confirms no active-event settlement execution occurred.
 - Route mismatch: none. No mobile API or backend HTTP route changed; this is a local report over existing canonical event stream data and selected market metadata.
 - Fields Holiwyn still needs but backend/provider does not fully provide: first-class official-result records, durable approval records, operator review UI, multi-event result queue, and production service health/state remain P1/P2.
 - Temporary mock/static data: none added. The report reads committed/local proof evidence, spends no provider quota, and does not execute settlement.

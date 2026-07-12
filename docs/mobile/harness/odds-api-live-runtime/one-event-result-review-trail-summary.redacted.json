@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T13:58:06.180Z",
+  "generatedAt": "2026-07-12T14:51:21.999Z",
   "scope": "odds-api-one-event-result-review-trail",
   "pass": true,
   "providerQuotaUsed": false,
@@ -8,7 +8,8 @@
   "winningOutcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
   "sourceEvidence": {
     "settlementAuditSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-audit-event-summary.redacted.json",
-    "resultIngestionAuditSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-audit-event-summary.redacted.json"
+    "resultIngestionAuditSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-audit-event-summary.redacted.json",
+    "settlementApprovalAuditSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-approval-audit-event-summary.redacted.json"
   },
   "market": {
     "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
@@ -45,7 +46,12 @@
         "executionAttempted": null,
         "settlementExecutionAttempted": false,
         "previewPayoutConservationPass": null,
-        "currentMarketStatus": null
+        "currentMarketStatus": null,
+        "confirm": null,
+        "approvedBy": null,
+        "approvedAt": null,
+        "executionRequiresMarketStatus": null,
+        "activeTesterSettlementExecution": null
       }
     },
     "settlementPreflightEvent": {
@@ -69,15 +75,50 @@
         "executionAttempted": false,
         "settlementExecutionAttempted": null,
         "previewPayoutConservationPass": true,
-        "currentMarketStatus": "LIVE"
+        "currentMarketStatus": "LIVE",
+        "confirm": null,
+        "approvedBy": null,
+        "approvedAt": null,
+        "executionRequiresMarketStatus": null,
+        "activeTesterSettlementExecution": null
       }
     },
-    "digestNote": "trustedResultDigest hashes the provider-shaped trusted-result JSON; resultDigest hashes the guarded settlement confirmation tuple.",
+    "settlementApprovalEvent": {
+      "id": "180",
+      "eventType": "settlement.trusted_result.approved",
+      "stream": "MARKET",
+      "topicKey": "market:78ea76f1-fc8f-419b-ac21-2554d79093f6",
+      "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+      "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+      "createdAt": "2026-07-12T14:45:18.630Z",
+      "payload": {
+        "eventSlug": "odds-api-single-soccer-test",
+        "sourceEventId": null,
+        "resultStatus": null,
+        "homeScore": null,
+        "awayScore": null,
+        "advanceTeam": null,
+        "trustedResultDigest": null,
+        "resultDigest": "f3a5743c73f2",
+        "executionMode": null,
+        "executionAttempted": null,
+        "settlementExecutionAttempted": null,
+        "previewPayoutConservationPass": null,
+        "currentMarketStatus": "LIVE",
+        "confirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:f3a5743c73f2",
+        "approvedBy": "holiwyn-local-approval-audit-proof",
+        "approvedAt": "2026-07-12T14:45:18.627Z",
+        "executionRequiresMarketStatus": "CLOSED",
+        "activeTesterSettlementExecution": false
+      }
+    },
+    "digestNote": "trustedResultDigest hashes the provider-shaped trusted-result JSON; resultDigest hashes the guarded settlement confirmation tuple; approval confirm must include the same resultDigest.",
     "operatorDecision": "wait_for_closed_market_before_execution"
   },
   "runtimeTruth": {
     "canonicalProviderResultAuditAvailable": true,
     "canonicalSettlementPreflightAuditAvailable": true,
+    "approvalHasCanonicalEventEvidence": true,
     "executionRequiresMarketClosed": true,
     "activeTesterSettlementExecution": false,
     "readOnlyReport": true,
@@ -97,6 +138,12 @@
     "settlementPreflightDryRun": true,
     "settlementDidNotExecuteActiveMarket": true,
     "settlementPayoutPreviewPassed": true,
+    "settlementApprovalAuditEventFound": true,
+    "approvalMarketMatchesSelected": true,
+    "approvalOutcomeMatchesSelected": true,
+    "approvalDigestMatchesPreflight": true,
+    "approvalConfirmMatchesPreflightDigest": true,
+    "approvalDoesNotExecuteActiveMarket": true,
     "selectedMarketExists": true,
     "reportIsReadOnly": true,
     "providerQuotaNotUsed": true

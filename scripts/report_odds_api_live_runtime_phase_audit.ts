@@ -390,6 +390,9 @@ async function main() {
         getPath(entries.settlementApprovalAuditEvent, ["checks", "activeMarketNotMutated"]) === true &&
         getPath(entries.resultReviewTrail, ["checks", "providerResultAuditEventFound"]) === true &&
         getPath(entries.resultReviewTrail, ["checks", "settlementPreflightAuditEventFound"]) === true &&
+        getPath(entries.resultReviewTrail, ["checks", "settlementApprovalAuditEventFound"]) === true &&
+        getPath(entries.resultReviewTrail, ["checks", "approvalDigestMatchesPreflight"]) === true &&
+        getPath(entries.resultReviewTrail, ["runtimeTruth", "approvalHasCanonicalEventEvidence"]) === true &&
         getPath(entries.resultReviewTrail, ["runtimeTruth", "activeTesterSettlementExecution"]) === false,
       evidence: [
         PATHS.settlementReadiness,
@@ -408,7 +411,7 @@ async function main() {
         "docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md",
       ],
       notes:
-        "Provider-shaped score ingestion can produce trusted result JSON in replay mode, write durable canonical result-ingestion audit evidence, and the local scheduler can dry-run that result. A dedicated local result poller now repeats ingestion plus settlement scheduling and has start/status/stop background process proof. Settlement preflight reports current execution eligibility and blockers. Trusted-result execution is blocked unless the market is CLOSED. Explicit operator/proof runs can write durable canonical settlement preflight and approval audit events, and the result review trail report stitches provider result evidence plus settlement preflight evidence into one read-only operator view. Live score ingestion is explicit and quota-guarded through the command, poller, or supervisor controls; installed unattended official result polling remains P1.",
+        "Provider-shaped score ingestion can produce trusted result JSON in replay mode, write durable canonical result-ingestion audit evidence, and the local scheduler can dry-run that result. A dedicated local result poller now repeats ingestion plus settlement scheduling and has start/status/stop background process proof. Settlement preflight reports current execution eligibility and blockers. Trusted-result execution is blocked unless the market is CLOSED. Explicit operator/proof runs can write durable canonical settlement preflight and approval audit events, and the result review trail report stitches provider result evidence, settlement preflight evidence, and approval evidence into one read-only operator view. Live score ingestion is explicit and quota-guarded through the command, poller, or supervisor controls; installed unattended official result polling remains P1.",
     }),
     requirement({
       id: "settlement-execution-disposable",
