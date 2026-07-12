@@ -1,23 +1,39 @@
 {
-    "generatedAt":  "2026-07-12T07:49:47.3131637Z",
+    "generatedAt":  "2026-07-12T08:20:29.8745936Z",
     "scope":  "holiwyn-one-event-live-readiness",
     "pass":  true,
     "commands":  [
+                     {
+                         "label":  "data-hygiene",
+                         "command":  "npm run mobile:one-event-data-hygiene-proof",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T08:20:17.7746093Z",
+                         "finishedAt":  "2026-07-12T08:20:18.2657873Z"
+                     },
                      {
                          "label":  "runtime",
                          "command":  "npm run mobile:one-event-live-runtime -- -BackendPort 3002 -SeedMaker",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T07:49:42.4533047Z",
-                         "finishedAt":  "2026-07-12T07:49:44.8089179Z"
+                         "startedAt":  "2026-07-12T08:20:18.2697869Z",
+                         "finishedAt":  "2026-07-12T08:20:22.0556426Z"
                      },
                      {
                          "label":  "lifecycle",
                          "command":  "npm run mobile:one-event-lifecycle-proof -- --baseUrl=http://127.0.0.1:3002",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T07:49:44.8119179Z",
-                         "finishedAt":  "2026-07-12T07:49:46.2297956Z"
+                         "startedAt":  "2026-07-12T08:20:22.0566428Z",
+                         "finishedAt":  "2026-07-12T08:20:25.2469320Z"
+                     },
+                     {
+                         "label":  "lifecycle-scheduler",
+                         "command":  "npm run mobile:one-event-lifecycle-scheduler-proof",
+                         "exitCode":  0,
+                         "pass":  true,
+                         "startedAt":  "2026-07-12T08:20:25.2469320Z",
+                         "finishedAt":  "2026-07-12T08:20:28.5223877Z"
                      }
                  ],
     "backend":  {
@@ -28,7 +44,7 @@
                                                 "status":  "ok",
                                                 "db":  "connected",
                                                 "env":  "development",
-                                                "timestamp":  "2026-07-12T07:49:46.270Z"
+                                                "timestamp":  "2026-07-12T08:20:28.568Z"
                                             },
                                    "error":  null
                                }
@@ -80,15 +96,20 @@
                       "liveProviderProof":  "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
                       "runtimeLaunch":  "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json",
                       "makerSeed":  "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
+                      "dataHygiene":  "docs/mobile/harness/odds-api-live-runtime/one-event-data-hygiene-summary.redacted.json",
                       "lifecycleControls":  "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json",
+                      "lifecycleScheduler":  "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-scheduler-summary.redacted.json",
                       "s23VisibleFlow":  "docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json"
                   },
     "runtimeTruth":  {
                          "backendContinuous":  true,
                          "providerRefreshContinuous":  false,
                          "marketMakerContinuous":  false,
+                         "dataHygieneGate":  true,
+                         "lifecycleSchedulerLocalProof":  true,
                          "providerRefreshMode":  "bounded proof unless mobile:one-event-live-runtime:provider is running",
                          "marketMakerMode":  "reusable one-shot shifted-maker seed, not unattended daemon",
+                         "lifecycleSchedulerMode":  "local callable scheduler proof, not installed always-on service",
                          "settlementMode":  "manual preview/resolve service; automatic official-result settlement not wired"
                      },
     "checks":  {
@@ -98,9 +119,15 @@
                    "liveProviderProofPass":  true,
                    "makerSeedPass":  true,
                    "makerQuoteRoutePass":  true,
+                   "dataHygienePass":  true,
+                   "dataHygieneNoStaleVisibleMarkets":  true,
                    "lifecycleProofPass":  true,
                    "lifecycleClosedRejected":  true,
                    "lifecyclePausedRejected":  true,
+                   "lifecycleSchedulerPass":  true,
+                   "lifecycleSchedulerPauseProof":  true,
+                   "lifecycleSchedulerCloseProof":  true,
+                   "lifecycleSchedulerRestored":  true,
                    "s23VisibleProofPass":  true,
                    "s23Connected":  true
                },
@@ -111,7 +138,7 @@
                  "p1":  [
                             "continuous unattended provider refresh daemon is not complete",
                             "continuous unattended source-aware market-maker daemon is not complete",
-                            "automatic event close/suspend scheduler is not complete",
+                            "installed always-on event close/suspend scheduler service is not complete",
                             "automatic official-result settlement is not complete"
                         ],
                  "p2":  [

@@ -3,7 +3,9 @@ param(
   [int]$BackendPort = 3002,
   [switch]$RestartBackend,
   [switch]$SkipMakerSeed,
-  [switch]$SkipLifecycleProof
+  [switch]$SkipLifecycleProof,
+  [switch]$SkipDataHygiene,
+  [switch]$SkipLifecycleSchedulerProof
 )
 
 $ErrorActionPreference = "Stop"
@@ -121,6 +123,14 @@ function Get-PortListeners {
 }
 
 $commands = New-Object System.Collections.Generic.List[object]
+if (-not $SkipDataHygiene) {
+  $dataHygieneResult = Invoke-CheckedCommand -Label "data-hygiene" -Command "npm run mobile:one-event-data-hygiene-proof"
+  $commands.Add($dataHygieneResult) | Out-Null
+  if (-not $dataHygieneResult.pass) {
+    throw "Data hygiene proof failed."
+  }
+}
+
 $runtimeCommand = "npm run mobile:one-event-live-runtime -- -BackendPort $BackendPort"
 if ($RestartBackend) {
   $runtimeCommand += " -RestartBackend"
@@ -142,16 +152,28 @@ if (-not $SkipLifecycleProof) {
   }
 }
 
+if (-not $SkipLifecycleSchedulerProof) {
+  $schedulerResult = Invoke-CheckedCommand -Label "lifecycle-scheduler" -Command "npm run mobile:one-event-lifecycle-scheduler-proof"
+  $commands.Add($schedulerResult) | Out-Null
+  if (-not $schedulerResult.pass) {
+    throw "Lifecycle scheduler proof failed."
+  }
+}
+
 $runtimeSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-runtime-launch-summary.redacted.json"
 $liveSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-live-runtime-summary.redacted.json"
 $makerSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\shifted-maker-seed-summary.redacted.json"
 $lifecycleSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\event-lifecycle-controls-summary.redacted.json"
+$dataHygieneSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-data-hygiene-summary.redacted.json"
+$lifecycleSchedulerSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\event-lifecycle-scheduler-summary.redacted.json"
 $s23SummaryPath = Resolve-RepoPath "docs\mobile\harness\cycle-LIVEODDSS23-odds-api-live-runtime-s23\cycle-LIVEODDSS23-odds-api-s23-visible-flow.json"
 
 $runtimeSummary = Read-JsonFile $runtimeSummaryPath
 $liveSummary = Read-JsonFile $liveSummaryPath
 $makerSummary = Read-JsonFile $makerSummaryPath
 $lifecycleSummary = Read-JsonFile $lifecycleSummaryPath
+$dataHygieneSummary = Read-JsonFile $dataHygieneSummaryPath
+$lifecycleSchedulerSummary = Read-JsonFile $lifecycleSchedulerSummaryPath
 $s23Summary = Read-JsonFile $s23SummaryPath
 $backendHealth = Test-HttpHealth
 $docker = Get-DockerPostgresStatus
@@ -165,9 +187,15 @@ $checks = [ordered]@{
   liveProviderProofPass = [bool]($liveSummary -and $liveSummary.pass -eq $true)
   makerSeedPass = [bool]($SkipMakerSeed -or ($makerSummary -and $makerSummary.pass -eq $true))
   makerQuoteRoutePass = [bool]($SkipMakerSeed -or ($makerSummary -and $makerSummary.checks.quoteRouteShowsBid -eq $true -and $makerSummary.checks.quoteRouteShowsAsk -eq $true))
+  dataHygienePass = [bool]($SkipDataHygiene -or ($dataHygieneSummary -and $dataHygieneSummary.pass -eq $true))
+  dataHygieneNoStaleVisibleMarkets = [bool]($SkipDataHygiene -or ($dataHygieneSummary -and $dataHygieneSummary.after.staleVisibleMarketCount -eq 0))
   lifecycleProofPass = [bool]($SkipLifecycleProof -or ($lifecycleSummary -and $lifecycleSummary.pass -eq $true))
   lifecycleClosedRejected = [bool]($SkipLifecycleProof -or ($lifecycleSummary -and $lifecycleSummary.checks.closedOrderRejected -eq $true))
   lifecyclePausedRejected = [bool]($SkipLifecycleProof -or ($lifecycleSummary -and $lifecycleSummary.checks.pausedOrderRejected -eq $true))
+  lifecycleSchedulerPass = [bool]($SkipLifecycleSchedulerProof -or ($lifecycleSchedulerSummary -and $lifecycleSchedulerSummary.pass -eq $true))
+  lifecycleSchedulerPauseProof = [bool]($SkipLifecycleSchedulerProof -or ($lifecycleSchedulerSummary -and $lifecycleSchedulerSummary.checks.pauseInsideWindow -eq $true))
+  lifecycleSchedulerCloseProof = [bool]($SkipLifecycleSchedulerProof -or ($lifecycleSchedulerSummary -and $lifecycleSchedulerSummary.checks.closeAfterStart -eq $true))
+  lifecycleSchedulerRestored = [bool]($SkipLifecycleSchedulerProof -or ($lifecycleSchedulerSummary -and $lifecycleSchedulerSummary.checks.marketStatusesRestored -eq $true))
   s23VisibleProofPass = [bool]($s23Summary -and $s23Summary.result -eq "pass")
   s23Connected = [bool]$s23.connected
 }
@@ -200,15 +228,20 @@ $summary = [ordered]@{
     liveProviderProof = ConvertTo-RepoPath $liveSummaryPath
     runtimeLaunch = ConvertTo-RepoPath $runtimeSummaryPath
     makerSeed = ConvertTo-RepoPath $makerSummaryPath
+    dataHygiene = ConvertTo-RepoPath $dataHygieneSummaryPath
     lifecycleControls = ConvertTo-RepoPath $lifecycleSummaryPath
+    lifecycleScheduler = ConvertTo-RepoPath $lifecycleSchedulerSummaryPath
     s23VisibleFlow = ConvertTo-RepoPath $s23SummaryPath
   }
   runtimeTruth = [ordered]@{
     backendContinuous = $true
     providerRefreshContinuous = $false
     marketMakerContinuous = $false
+    dataHygieneGate = $true
+    lifecycleSchedulerLocalProof = [bool](-not $SkipLifecycleSchedulerProof)
     providerRefreshMode = "bounded proof unless mobile:one-event-live-runtime:provider is running"
     marketMakerMode = "reusable one-shot shifted-maker seed, not unattended daemon"
+    lifecycleSchedulerMode = "local callable scheduler proof, not installed always-on service"
     settlementMode = "manual preview/resolve service; automatic official-result settlement not wired"
   }
   checks = $checks
@@ -217,7 +250,7 @@ $summary = [ordered]@{
     p1 = @(
       "continuous unattended provider refresh daemon is not complete",
       "continuous unattended source-aware market-maker daemon is not complete",
-      "automatic event close/suspend scheduler is not complete",
+      "installed always-on event close/suspend scheduler service is not complete",
       "automatic official-result settlement is not complete"
     )
     p2 = @("multi-event provider polling and inventory-aware multi-market quoting remain future work")

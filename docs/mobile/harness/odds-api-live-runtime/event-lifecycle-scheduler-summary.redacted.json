@@ -1,6 +1,6 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-12T08:14:28.919Z",
+  "generatedAt": "2026-07-12T08:20:27.263Z",
   "scope": "odds-api-one-event-lifecycle-scheduler",
   "event": {
     "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
@@ -27,13 +27,13 @@
   },
   "runs": {
     "noAction": {
-      "generatedAt": "2026-07-12T08:14:28.733Z",
+      "generatedAt": "2026-07-12T08:20:27.087Z",
       "eventSlug": "odds-api-single-soccer-test",
       "eventTitle": "Spain vs. France",
-      "eventStartTime": "2026-07-12T09:14:28.719Z",
+      "eventStartTime": "2026-07-12T09:20:27.074Z",
       "status": "completed",
       "dryRun": false,
-      "now": "2026-07-12T08:14:28.719Z",
+      "now": "2026-07-12T08:20:27.074Z",
       "suspendBeforeStartSeconds": 300,
       "referenceSource": "sportsbook-odds",
       "action": "none",
@@ -44,13 +44,13 @@
       "changes": []
     },
     "pauseRun": {
-      "generatedAt": "2026-07-12T08:14:28.754Z",
+      "generatedAt": "2026-07-12T08:20:27.105Z",
       "eventSlug": "odds-api-single-soccer-test",
       "eventTitle": "Spain vs. France",
-      "eventStartTime": "2026-07-12T08:15:28.719Z",
+      "eventStartTime": "2026-07-12T08:21:27.074Z",
       "status": "completed",
       "dryRun": false,
-      "now": "2026-07-12T08:14:28.719Z",
+      "now": "2026-07-12T08:20:27.074Z",
       "suspendBeforeStartSeconds": 300,
       "referenceSource": "sportsbook-odds",
       "action": "pause",
@@ -86,13 +86,13 @@
       ]
     },
     "closeRun": {
-      "generatedAt": "2026-07-12T08:14:28.844Z",
+      "generatedAt": "2026-07-12T08:20:27.192Z",
       "eventSlug": "odds-api-single-soccer-test",
       "eventTitle": "Spain vs. France",
-      "eventStartTime": "2026-07-12T08:14:27.719Z",
+      "eventStartTime": "2026-07-12T08:20:26.074Z",
       "status": "completed",
       "dryRun": false,
-      "now": "2026-07-12T08:14:28.719Z",
+      "now": "2026-07-12T08:20:27.074Z",
       "suspendBeforeStartSeconds": 300,
       "referenceSource": "sportsbook-odds",
       "action": "close",
@@ -107,7 +107,7 @@
           "fromStatus": "LIVE",
           "toStatus": "CLOSED",
           "closeTimeBefore": null,
-          "closeTimeAfter": "2026-07-12T08:14:28.719Z"
+          "closeTimeAfter": "2026-07-12T08:20:27.074Z"
         },
         {
           "marketId": "528f1f87-cc1c-44a0-8732-876ef0676071",
@@ -115,7 +115,7 @@
           "fromStatus": "LIVE",
           "toStatus": "CLOSED",
           "closeTimeBefore": null,
-          "closeTimeAfter": "2026-07-12T08:14:28.719Z"
+          "closeTimeAfter": "2026-07-12T08:20:27.074Z"
         },
         {
           "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
@@ -123,7 +123,7 @@
           "fromStatus": "LIVE",
           "toStatus": "CLOSED",
           "closeTimeBefore": null,
-          "closeTimeAfter": "2026-07-12T08:14:28.719Z"
+          "closeTimeAfter": "2026-07-12T08:20:27.074Z"
         }
       ]
     }

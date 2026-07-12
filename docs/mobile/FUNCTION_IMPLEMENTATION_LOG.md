@@ -13668,19 +13668,22 @@ Known limitations:
 - Important functions/services touched:
   - `scripts/prove_holiwyn_one_event_live_readiness.ps1`
   - `package.json` script `mobile:one-event-live-readiness`
-  - Child commands `mobile:one-event-live-runtime -- -SeedMaker` and `mobile:one-event-lifecycle-proof`
-  - Existing backend health, quote, order, lifecycle, S23 proof, and live provider proof artifacts
+  - Child commands `mobile:one-event-data-hygiene-proof`, `mobile:one-event-live-runtime -- -SeedMaker`, `mobile:one-event-lifecycle-proof`, and `mobile:one-event-lifecycle-scheduler-proof`
+  - Existing backend health, quote, order, lifecycle, scheduler, hygiene, S23 proof, and live provider proof artifacts
 - User interactions supported:
   - Internal tester setup now has one command to verify the selected live event is ready before testing on S23.
   - The command does not spend provider quota and leaves shifted local maker liquidity available.
 - State transitions:
   - Runtime check starts/validates backend, Postgres, S23 reachability, and cached live provider proof.
+  - Data hygiene gate proves listed visible markets belong to the selected event.
   - Maker seed leaves resting local bid/ask liquidity.
   - Lifecycle proof verifies `LIVE`, `PAUSED`, `CLOSED`, settlement preview, and restore behavior.
+  - Lifecycle scheduler proof verifies no-action, pause, close, order rejection, restore, and maker reseed.
   - Consolidated summary records P0/P1/P2 gaps and the exact artifact paths.
 - Known limitations:
   - Provider refresh and market maker are still not unattended daemons.
-  - Automatic event-start close/suspend and official-result settlement remain P1.
+  - The start-time scheduler is proven as local callable logic, but it is not installed as an always-on service.
+  - Official-result settlement remains P1.
 
 # Cycle ONEEVENTSUPERVISOR - Repeated One-Event Local Runtime
 
