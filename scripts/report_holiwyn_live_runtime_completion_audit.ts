@@ -10,6 +10,8 @@ const PATHS = {
   liveReadiness: "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json",
   localRuntimeLaunchProfile:
     "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
+  internalTesterWatchdog:
+    "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
   staleGuardProof: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json",
   staleGuardRun: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-run-summary.redacted.json",
   lifecycleMatrix: "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-matrix-summary.redacted.json",
@@ -123,6 +125,17 @@ async function main() {
     launchProfileKnown:
       pass(entries.localRuntimeLaunchProfile) &&
       truthy(getPath(entries.localRuntimeLaunchProfile, ["runtimeTruth", "localOperatorLaunchProfileDocumented"])),
+    internalTesterWatchdogKnown:
+      pass(entries.internalTesterWatchdog) &&
+      truthy(getPath(entries.internalTesterWatchdog, ["runtimeTruth", "watchdogCanVerifyBaseRuntime"])) &&
+      truthy(getPath(entries.internalTesterWatchdog, ["runtimeTruth", "noProviderQuotaByDefault"])) &&
+      truthy(getPath(entries.internalTesterWatchdog, ["runtimeTruth", "stopsLoopProcessesOnly"])) &&
+      getPath(entries.internalTesterWatchdog, ["runtimeTruth", "installedOsService"]) === false &&
+      truthy(getPath(entries.internalTesterWatchdog, ["iterations", "0", "runtimePassAfterIteration"])) &&
+      getPath(entries.internalTesterWatchdog, ["iterations", "0", "supervisorProofExitCode"]) === 0 &&
+      getPath(entries.internalTesterWatchdog, ["iterations", "0", "resultPollerProofExitCode"]) === 0 &&
+      truthy(getPath(entries.internalTesterWatchdog, ["cleanup", "supervisor", "pass"])) &&
+      truthy(getPath(entries.internalTesterWatchdog, ["cleanup", "resultPoller", "pass"])),
   };
   const p0 = Object.entries(checks)
     .filter(([, value]) => value !== true)
@@ -165,11 +178,14 @@ async function main() {
         "S23 proof covers Home -> Event Detail -> line market -> ticket -> buy -> Portfolio -> cashout/sell -> History for the provider-backed event.",
       activeSettlement:
         getPath(entries.activeSettlementReadiness, ["executionDecision", "operatorDecision"]) ?? null,
+      localWatchdog:
+        "Internal tester watchdog verifies backend/Expo/Postgres readiness, repeated supervisor proof, background result-poller proof, no-quota default mode, and loop cleanup.",
     },
     runtimeTruth: {
       phaseCompleteForLocalInternalRuntime: p0.length === 0,
       fullProductionRuntimeComplete: false,
       installedUnattendedService: false,
+      internalTesterWatchdogPass: pass(entries.internalTesterWatchdog),
       providerQuotaUsedByThisAudit: false,
       activeTesterSettlementExecutionAttempted:
         getPath(entries.activeSettlementReadiness, ["runtimeTruth", "activeEventSettlementExecutionAttempted"]) ?? null,

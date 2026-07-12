@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T15:06:44.635Z",
+  "generatedAt": "2026-07-12T15:33:08.690Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -28,12 +28,14 @@
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
     "lifecycle": "Open/paused/closed are proven on the active event lifecycle controls; settlement mechanics and trusted-result scheduler execution are proven on disposable/clone markets while active event remains guarded.",
     "mobileTrading": "S23 proof covers Home -> Event Detail -> line market -> ticket -> buy -> Portfolio -> cashout/sell -> History for the provider-backed event.",
-    "activeSettlement": "wait_for_or_apply_market_close_before_execution"
+    "activeSettlement": "wait_for_or_apply_market_close_before_execution",
+    "localWatchdog": "Internal tester watchdog verifies backend/Expo/Postgres readiness, repeated supervisor proof, background result-poller proof, no-quota default mode, and loop cleanup."
   },
   "runtimeTruth": {
     "phaseCompleteForLocalInternalRuntime": true,
     "fullProductionRuntimeComplete": false,
     "installedUnattendedService": false,
+    "internalTesterWatchdogPass": true,
     "providerQuotaUsedByThisAudit": false,
     "activeTesterSettlementExecutionAttempted": false,
     "s23ProofDevice": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp"
@@ -43,6 +45,7 @@
     "liveProviderProof": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveReadiness": "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json",
     "localRuntimeLaunchProfile": "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
+    "internalTesterWatchdog": "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
     "staleGuardProof": "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json",
     "staleGuardRun": "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-run-summary.redacted.json",
     "lifecycleMatrix": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-matrix-summary.redacted.json",
@@ -62,7 +65,8 @@
     "lifecycleOpenPausedClosedSettledKnown": true,
     "activeSettlementDecisionKnown": true,
     "mobileS23EndToEndTradeProofPass": true,
-    "launchProfileKnown": true
+    "launchProfileKnown": true,
+    "internalTesterWatchdogKnown": true
   },
   "gaps": {
     "p0": [],
