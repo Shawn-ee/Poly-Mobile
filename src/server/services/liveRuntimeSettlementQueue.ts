@@ -19,6 +19,86 @@ const decisionFor = (params: {
   return "operator_review_required_before_exact_confirmed_execution";
 };
 
+const operatorActionFor = (params: {
+  nextSafeAction: string;
+  marketStatus: string | null;
+  approvalStatus: string;
+  confirmationRequiredKnown: boolean;
+}) => {
+  const base = {
+    exactConfirmationExposed: false,
+    providerQuotaRequired: false,
+    activeExecutionRequiresClosedMarket: true,
+    activeExecutionRequiresApproval: true,
+    activeExecutionRequiresExactConfirmation: true,
+  };
+
+  if (params.nextSafeAction === "already_executed") {
+    return {
+      ...base,
+      label: "settlement_already_executed",
+      blockingReason: null,
+      nextCommand: "GET /api/internal/live-runtime/settlement-queue",
+      notes: ["Review the execution audit trail; no repeat execution should be attempted."],
+    };
+  }
+
+  if (params.nextSafeAction === "ready_for_exact_confirmation_execution") {
+    return {
+      ...base,
+      label: "ready_for_operator_approved_execution",
+      blockingReason: null,
+      nextCommand:
+        "npm run mobile:one-event-result-settlement-run -- --result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json --approval=docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json --autoExecuteApproved --writeAuditEvent --allowTrustedLocalFixture",
+      notes: [
+        "Runs the approved local scheduler path; it still matches event, market, outcome, digest, and exact confirmation internally.",
+        "The exact confirmation phrase remains redacted from this API.",
+      ],
+    };
+  }
+
+  if (params.nextSafeAction === "wait_for_or_apply_market_close_before_execution") {
+    return {
+      ...base,
+      label: "wait_for_market_close",
+      blockingReason: `market_status_${params.marketStatus ?? "unknown"}`,
+      nextCommand: "npm run mobile:one-event-settlement-preflight",
+      notes: [
+        "Do not execute while the market is not CLOSED.",
+        "After lifecycle close, rerun preflight and settlement queue before using the approved execution command.",
+      ],
+    };
+  }
+
+  if (params.nextSafeAction === "wait_for_operator_approval") {
+    return {
+      ...base,
+      label: "wait_for_operator_approval",
+      blockingReason: `approval_status_${params.approvalStatus}`,
+      nextCommand: "npm run mobile:one-event-settlement-approval-audit-event-proof",
+      notes: ["Approval evidence must match event, market, outcome, result digest, and confirmation phrase."],
+    };
+  }
+
+  if (params.nextSafeAction === "rerun_settlement_preflight_for_exact_confirmation") {
+    return {
+      ...base,
+      label: "rerun_preflight_for_confirmation",
+      blockingReason: params.confirmationRequiredKnown ? null : "exact_confirmation_unknown",
+      nextCommand: "npm run mobile:one-event-settlement-preflight",
+      notes: ["Preflight regenerates the result digest and exact-confirmation requirement without executing settlement."],
+    };
+  }
+
+  return {
+    ...base,
+    label: "operator_review_required",
+    blockingReason: params.nextSafeAction,
+    nextCommand: "npm run mobile:one-event-active-settlement-readiness",
+    notes: ["Use the active settlement readiness report before attempting any execution path."],
+  };
+};
+
 export async function getLocalLiveRuntimeSettlementQueue() {
   const reviews = await prisma.officialResultReview.findMany({
     orderBy: { updatedAt: "desc" },
@@ -59,6 +139,12 @@ export async function getLocalLiveRuntimeSettlementQueue() {
       confirmationRequiredKnown: review.confirmationRequiredKnown,
       executionEligibleNow: review.executionEligibleNow,
       alreadyExecuted,
+    });
+    const operatorAction = operatorActionFor({
+      nextSafeAction,
+      marketStatus: market?.status ?? null,
+      approvalStatus: review.approvalStatus,
+      confirmationRequiredKnown: review.confirmationRequiredKnown,
     });
     return {
       id: review.id,
@@ -104,6 +190,7 @@ export async function getLocalLiveRuntimeSettlementQueue() {
           }
         : null,
       nextSafeAction,
+      operatorAction,
       updatedAt: review.updatedAt.toISOString(),
     };
   });
@@ -143,6 +230,9 @@ export async function getLocalLiveRuntimeSettlementQueue() {
       activeMarketExecutionAttempted: items.some((item) => item.activeMarketExecutionAttempted),
       usesDurableOfficialResultReviewRows: true,
       operatorQueueAvailable: p0.length === 0,
+      redactedOperatorExecutionPlanAvailable: items.every(
+        (item) => item.operatorAction.exactConfirmationExposed === false && item.operatorAction.providerQuotaRequired === false,
+      ),
       multiEventCapableShape: true,
     },
     checks,

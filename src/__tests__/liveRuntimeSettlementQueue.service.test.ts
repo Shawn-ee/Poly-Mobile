@@ -88,6 +88,14 @@ describe("live runtime settlement queue service", () => {
       hasApprovalAudit: true,
       hasExecutionAudit: false,
       nextSafeAction: "wait_for_or_apply_market_close_before_execution",
+      operatorAction: {
+        label: "wait_for_market_close",
+        blockingReason: "market_status_LIVE",
+        nextCommand: "npm run mobile:one-event-settlement-preflight",
+        exactConfirmationExposed: false,
+        providerQuotaRequired: false,
+        activeExecutionRequiresClosedMarket: true,
+      },
       market: {
         status: "LIVE",
         event: { slug: "odds-api-single-soccer-test" },
@@ -101,6 +109,7 @@ describe("live runtime settlement queue service", () => {
       exactConfirmationStored: false,
       activeMarketExecutionAttempted: false,
       operatorQueueAvailable: true,
+      redactedOperatorExecutionPlanAvailable: true,
     });
     expect(JSON.stringify(result)).not.toContain("SETTLE_FROM_RESULT:");
     expect(officialResultReviewFindMany).toHaveBeenCalledWith(
@@ -125,5 +134,66 @@ describe("live runtime settlement queue service", () => {
     expect(result.status).toBe("needs_attention");
     expect(result.gaps.p0).toContain("durableReviewRowsFound");
     expect(result.queue.itemCount).toBe(0);
+  });
+
+  test("returns approved execution command only after market is closed and eligible", async () => {
+    officialResultReviewFindMany.mockResolvedValue([
+      {
+        id: "review-2",
+        reviewKey: "odds-api-single-soccer-test:market-1:result-digest",
+        eventSlug: "odds-api-single-soccer-test",
+        marketId: "market-1",
+        outcomeId: "outcome-1",
+        providerSource: "the-odds-api",
+        providerEventId: "provider-event-1",
+        resultStatus: "final",
+        homeScore: 2,
+        awayScore: 1,
+        advanceTeam: null,
+        trustedResultDigest: "trusted-digest",
+        resultDigest: "result-digest",
+        settlementPreflightCanonicalId: 10n,
+        settlementApprovalCanonicalId: 11n,
+        settlementExecutedCanonicalId: null,
+        approvalStatus: "approved",
+        executionDecision: "ready_for_exact_confirmation_execution",
+        executionEligibleNow: true,
+        confirmationRequiredKnown: true,
+        exactConfirmationStored: false,
+        activeMarketExecutionAttempted: false,
+        providerQuotaUsed: false,
+        updatedAt: new Date("2026-07-12T12:10:00Z"),
+      },
+    ]);
+    marketFindMany.mockResolvedValue([
+      {
+        id: "market-1",
+        slug: "spain-france-total-25",
+        title: "Spain vs. France: Total Goals 2.5",
+        status: "CLOSED",
+        settlementStatus: "closed",
+        resolvedOutcomeId: null,
+        event: {
+          id: "event-1",
+          slug: "odds-api-single-soccer-test",
+          title: "Spain vs. France",
+          status: "ACTIVE",
+          liveStatus: "final",
+          startTime: new Date("2026-07-14T19:00:00Z"),
+        },
+      },
+    ]);
+
+    const result = await getLocalLiveRuntimeSettlementQueue();
+
+    expect(result.queue.executableNowCount).toBe(1);
+    expect(result.queue.items[0].operatorAction).toMatchObject({
+      label: "ready_for_operator_approved_execution",
+      blockingReason: null,
+      providerQuotaRequired: false,
+      exactConfirmationExposed: false,
+    });
+    expect(result.queue.items[0].operatorAction.nextCommand).toContain("--autoExecuteApproved");
+    expect(JSON.stringify(result)).not.toContain("SETTLE_FROM_RESULT:");
   });
 });

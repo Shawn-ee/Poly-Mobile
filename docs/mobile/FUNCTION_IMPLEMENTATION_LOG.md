@@ -2,6 +2,18 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle SETTLEMENTPLAN - Redacted Settlement Operator Plan
+
+- Feature/page worked on: backend local settlement queue for official-result runtime.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `src/server/services/liveRuntimeSettlementQueue.ts`
+  - `src/__tests__/liveRuntimeSettlementQueue.service.test.ts`
+- User/runtime interactions supported: `GET /api/internal/live-runtime/settlement-queue` now includes a redacted `operatorAction` per queue item, showing whether the operator should wait for close, rerun preflight, record approval, or run the approved local scheduler command.
+- State transitions: none. The route remains read-only and does not close markets, execute settlement, call providers, or expose exact confirmation strings.
+- API/data dependencies: reads durable `OfficialResultReview` rows and current `Market` status. The ready command points to the existing guarded scheduler path, which still requires matching event, market, outcome, result digest, exact confirmation, and approval evidence internally.
+- Known limitations: this narrows operator execution clarity for local internal runtime only. It does not create a public operator UI, install official-result polling, or remove the closed-market guard.
+
 ## Cycle RUNTIMEPROFILES - Local Runtime Operator Command Profiles
 
 - Feature/page worked on: backend local internal tester runtime startup profiles.

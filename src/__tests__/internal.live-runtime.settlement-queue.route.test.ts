@@ -26,6 +26,10 @@ describe("internal live-runtime settlement-queue route", () => {
           {
             exactConfirmationRedacted: true,
             exactConfirmationStored: false,
+            operatorAction: {
+              exactConfirmationExposed: false,
+              nextCommand: "npm run mobile:one-event-settlement-preflight",
+            },
           },
         ],
       },
@@ -36,6 +40,10 @@ describe("internal live-runtime settlement-queue route", () => {
     expect(res.headers.get("cache-control")).toBe("no-store");
     const body = await res.json();
     expect(body.status).toBe("ready");
+    expect(body.queue.items[0].operatorAction).toMatchObject({
+      exactConfirmationExposed: false,
+      nextCommand: "npm run mobile:one-event-settlement-preflight",
+    });
     expect(JSON.stringify(body)).not.toContain("SETTLE_FROM_RESULT:");
     expect(JSON.stringify(body)).not.toContain("THE_ODDS_API_KEY");
   });
