@@ -1,6 +1,6 @@
 {
     "pass":  true,
-    "generatedAt":  "2026-07-12T05:23:02.449Z",
+    "generatedAt":  "2026-07-12T05:44:52.200Z",
     "scope":  "mobile-mvp-local-match-breadth",
     "baseUrl":  "http://127.0.0.1:3002",
     "policy":  {
@@ -18,12 +18,6 @@
                    "eventCount":  5,
                    "events":  [
                                   {
-                                      "slug":  "odds-api-single-soccer-test",
-                                      "title":  "Switzerland vs. Argentina",
-                                      "eventType":  "match",
-                                      "marketCount":  10
-                                  },
-                                  {
                                       "slug":  "holiwyn-local-australia-vs-egypt",
                                       "title":  "Australia vs. Egypt",
                                       "eventType":  "match",
@@ -40,6 +34,12 @@
                                       "title":  "Mexico vs. Ecuador",
                                       "eventType":  "match",
                                       "marketCount":  5
+                                  },
+                                  {
+                                      "slug":  "odds-api-single-soccer-test",
+                                      "title":  "Switzerland vs. Argentina",
+                                      "eventType":  "match",
+                                      "marketCount":  10
                                   },
                                   {
                                       "slug":  "argentina-vs-egypt",

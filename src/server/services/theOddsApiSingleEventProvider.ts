@@ -78,6 +78,27 @@ type OddsApiBookmaker = {
   markets?: OddsApiMarket[];
 };
 
+type SupplementalOutcomeSpec = {
+  code: string;
+  name: string;
+  side: string;
+  probability: number;
+};
+
+type SupplementalMarketSpec = {
+  key: string;
+  title: string;
+  marketType: string;
+  marketGroupKey: string;
+  marketGroupTitle: string;
+  period: string;
+  displayOrder: number;
+  line?: number | null;
+  unit?: string | null;
+  participantName?: string | null;
+  outcomes: SupplementalOutcomeSpec[];
+};
+
 export type OddsApiMarketsResponse = OddsApiEvent & {
   bookmakers?: Array<{
     key: string;
@@ -472,12 +493,20 @@ export async function seedOddsApiSingleEvent(params: {
       now,
     }));
   }
+  for (const marketSpec of supplementalKnockoutMarketSpecs({ oddsEvent: params.oddsEvent, markets: params.markets })) {
+    seededMarkets.push(await seedSupplementalMarket({
+      event: { id: event.id, slug: event.slug!, title: event.title },
+      oddsEvent: params.oddsEvent,
+      spec: marketSpec,
+      now,
+    }));
+  }
 
   const activeMarketIds = seededMarkets.map(({ market }) => market.id);
   await prisma.market.updateMany({
     where: {
       eventId: event.id,
-      referenceSource: REFERENCE_SOURCE,
+      referenceSource: { in: [REFERENCE_SOURCE, "contract-fixture"] },
       id: { notIn: activeMarketIds },
     },
     data: { isListed: false, status: "CLOSED" },
@@ -509,31 +538,33 @@ function eventMetadata(params: {
     providerSource: PROVIDER_SOURCE,
     referenceSource: REFERENCE_SOURCE,
     sport: "soccer",
-    resultMode: "can_draw_90",
-    primaryMarketProfile: "regulation_90",
+    resultMode: "must_advance",
+    primaryMarketProfile: "advance",
     providerMarketTypes: Array.from(new Set(params.markets.map((market) => market.marketKey))),
     hiddenProviderMarketPolicy: {
       quarterAsianHandicapLines: "hidden_from_mobile_main_ui",
       asianTotalLines: "hidden_from_mobile_main_ui",
-      cleanSpreadLines: ["1.5", "2.5", "3.5"],
+      cleanSpreadLines: ["-2.5", "-1.5", "-0.5", "0.5", "1.5", "2.5"],
       cleanTotalLines: ["0.5", "1.5", "2.5", "3.5"],
+      supplementalAdvanceMarket: "holiwyn-owned-contract-fixture-because-provider-h2h-is-regulation-only",
+      supplementalSpreadMarkets: "holiwyn-owned-contract-fixture-clean-signed-half-goal-ladder",
     },
     normalizedSoccer: {
       version: 2,
       sportKey: "soccer",
       leagueKey: "world_cup",
       eventType: "match",
-      marketProfile: "regulation_90",
-      primaryMarketProfile: "regulation_90",
-      resultMode: "can_draw_90",
-      legacyResultMode: "can_draw",
+      marketProfile: "full_match_with_overtime",
+      primaryMarketProfile: "advance",
+      resultMode: "must_advance",
+      legacyResultMode: "no_draw",
       providerSource: PROVIDER_SOURCE,
       gameRules: {
-        allowDraw: true,
-        includesOvertime: false,
-        description: "Regulation-time soccer market can settle as home win, draw, or away win.",
+        allowDraw: false,
+        includesOvertime: true,
+        description: "Knockout-style internal test match: top primary contract is who advances. Provider h2h remains regulation-time only.",
       },
-      supportedMarketTypes: Array.from(new Set(["regulation_90", ...params.markets.map((market) => market.marketType)])),
+      supportedMarketTypes: Array.from(new Set(["to_advance", "regulation_90", ...params.markets.map((market) => market.marketType)])),
     },
     sportsbookDerived: true,
     temporarySingleEventProvider: true,
@@ -545,6 +576,67 @@ function eventMetadata(params: {
     importedMarketKeys: Array.from(new Set(params.markets.map((market) => market.marketKey))),
     excludes: ["real-money", "polymarket-backed-claim", "orderbook-ui", "chat", "live-stats"],
   };
+}
+
+function h2hAdvanceProbabilities(markets: NormalizedOddsApiMarket[], oddsEvent: OddsApiEventOddsResponse) {
+  const winner = markets.find((market) => market.marketKey === "h2h" || market.marketKey === "h2h_3_way");
+  const home = winner?.outcomes.find((outcome) => outcome.name === oddsEvent.home_team || outcome.side === "home");
+  const away = winner?.outcomes.find((outcome) => outcome.name === oddsEvent.away_team || outcome.side === "away");
+  const total = (home?.normalizedProbability ?? 0) + (away?.normalizedProbability ?? 0);
+  if (home && away && total > 0) {
+    return {
+      home: clampPrice(home.normalizedProbability / total),
+      away: clampPrice(away.normalizedProbability / total),
+    };
+  }
+  return { home: 0.58, away: 0.42 };
+}
+
+function supplementalKnockoutMarketSpecs(params: {
+  oddsEvent: OddsApiEventOddsResponse;
+  markets: NormalizedOddsApiMarket[];
+}): SupplementalMarketSpec[] {
+  const home = params.oddsEvent.home_team;
+  const away = params.oddsEvent.away_team;
+  const advance = h2hAdvanceProbabilities(params.markets, params.oddsEvent);
+  const spreadLines = [-2.5, -1.5, -0.5, 0.5, 1.5, 2.5];
+  const spreadProbability = (line: number) => clampPrice(0.5 + line * 0.09);
+
+  return [
+    {
+      key: "holiwyn-advance",
+      title: "Team to advance",
+      marketType: "to_advance",
+      marketGroupKey: "to-advance",
+      marketGroupTitle: "Team To Advance",
+      period: "full-game",
+      displayOrder: 5,
+      outcomes: [
+        { code: "HOME_ADVANCES", name: `${home} advances`, side: "home", probability: advance.home },
+        { code: "AWAY_ADVANCES", name: `${away} advances`, side: "away", probability: advance.away },
+      ],
+    },
+    ...spreadLines.map((line, index) => {
+      const homeProbability = spreadProbability(line);
+      const awayLine = -line;
+      return {
+        key: `holiwyn-spread-home-${String(line).replace("-", "neg-").replace(".", "-")}`,
+        title: `${home} ${formatSigned(line)}`,
+        marketType: "spread",
+        marketGroupKey: "spread",
+        marketGroupTitle: "Spread",
+        period: "regulation",
+        displayOrder: 40 + index,
+        line,
+        unit: "goals",
+        participantName: home,
+        outcomes: [
+          { code: "HOME", name: `${home} ${formatSigned(line)}`, side: "home", probability: homeProbability },
+          { code: "AWAY", name: `${away} ${formatSigned(awayLine)}`, side: "away", probability: clampPrice(1 - homeProbability) },
+        ],
+      };
+    }),
+  ];
 }
 
 async function seedOddsMarket(params: {
@@ -692,6 +784,193 @@ async function seedOddsMarket(params: {
   }));
 
   return { market, outcomeCount: outcomes.length };
+}
+
+async function seedSupplementalMarket(params: {
+  event: { id: string; slug: string; title: string };
+  oddsEvent: OddsApiEventOddsResponse;
+  spec: SupplementalMarketSpec;
+  now: Date;
+}) {
+  const marketSlug = `${params.event.slug}-${params.spec.key}`;
+  const externalMarketId = `holiwyn-contract-${marketSlug}`;
+  const conditionId = `holiwyn-contract-${shortHash(marketSlug, 24)}`;
+  const market = await prisma.market.upsert({
+    where: { slug: marketSlug },
+    create: {
+      slug: marketSlug,
+      title: `${params.event.title}: ${params.spec.title}`,
+      description: "Holiwyn-owned fake-token prediction contract used to present clean soccer market semantics for internal testing.",
+      categoryLegacy: "sports",
+      type: "BINARY",
+      marketType: params.spec.marketType,
+      marketGroupKey: params.spec.marketGroupKey,
+      marketGroupTitle: params.spec.marketGroupTitle,
+      displayOrder: params.spec.displayOrder,
+      line: params.spec.line == null ? undefined : dec(params.spec.line),
+      unit: params.spec.unit ?? undefined,
+      period: params.spec.period,
+      participantName: params.spec.participantName ?? undefined,
+      participantType: params.spec.participantName ? "team" : undefined,
+      propCategory: propCategoryForMarketType(params.spec.marketType),
+      status: "LIVE",
+      eventId: params.event.id,
+      visibility: "PUBLIC",
+      mechanism: "ORDERBOOK",
+      kind: "ORDERBOOK",
+      isListed: true,
+      referenceSource: "contract-fixture",
+      externalSlug: marketSlug,
+      externalMarketId,
+      conditionId,
+      sourceUpdatedAt: params.now,
+      rules: {
+        source: "contract-fixture",
+        providerSource: PROVIDER_SOURCE,
+        providerEventId: params.oddsEvent.id,
+        providerMarketType: "holiwyn_supplemental_prediction_contract",
+        line: params.spec.line ?? null,
+        period: params.spec.period,
+      },
+      rulesText: "Internal fake-token market. Provider h2h remains regulation-only; this contract supplies the prediction-market UX layer.",
+      referenceMetadata: {
+        providerSource: PROVIDER_SOURCE,
+        referenceSource: "contract-fixture",
+        sportsbookDerived: false,
+        providerBacked: false,
+        importStatus: "approved",
+        referenceOnly: false,
+        tradable: true,
+        reason: params.spec.marketType === "to_advance"
+          ? "Knockout top buttons need team-to-advance semantics; provider h2h is regulation-only."
+          : "Clean signed half-goal prediction-market spread ladder for mobile internal testing.",
+      },
+    },
+    update: {
+      title: `${params.event.title}: ${params.spec.title}`,
+      description: "Holiwyn-owned fake-token prediction contract used to present clean soccer market semantics for internal testing.",
+      marketType: params.spec.marketType,
+      marketGroupKey: params.spec.marketGroupKey,
+      marketGroupTitle: params.spec.marketGroupTitle,
+      displayOrder: params.spec.displayOrder,
+      line: params.spec.line == null ? null : dec(params.spec.line),
+      unit: params.spec.unit,
+      period: params.spec.period,
+      participantName: params.spec.participantName,
+      participantType: params.spec.participantName ? "team" : null,
+      propCategory: propCategoryForMarketType(params.spec.marketType),
+      status: "LIVE",
+      visibility: "PUBLIC",
+      mechanism: "ORDERBOOK",
+      kind: "ORDERBOOK",
+      isListed: true,
+      referenceSource: "contract-fixture",
+      externalSlug: marketSlug,
+      externalMarketId,
+      conditionId,
+      sourceUpdatedAt: params.now,
+      rules: {
+        source: "contract-fixture",
+        providerSource: PROVIDER_SOURCE,
+        providerEventId: params.oddsEvent.id,
+        providerMarketType: "holiwyn_supplemental_prediction_contract",
+        line: params.spec.line ?? null,
+        period: params.spec.period,
+      },
+      rulesText: "Internal fake-token market. Provider h2h remains regulation-only; this contract supplies the prediction-market UX layer.",
+    },
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      externalSlug: true,
+      externalMarketId: true,
+      conditionId: true,
+      marketType: true,
+      marketGroupTitle: true,
+      line: true,
+    },
+  });
+
+  const outcomes = [];
+  for (const [index, outcomeSpec] of params.spec.outcomes.entries()) {
+    outcomes.push(await seedSupplementalOutcome({ marketId: market.id, marketSlug, spec: outcomeSpec, index }));
+  }
+  await prisma.outcome.updateMany({
+    where: { marketId: market.id, id: { notIn: outcomes.map((outcome) => outcome.id) } },
+    data: { isActive: false, status: "archived" },
+  });
+  await upsertReferenceQuoteSnapshots(outcomes.map((outcome, index) => {
+    const outcomeSpec = params.spec.outcomes[index]!;
+    const price = clampPrice(outcomeSpec.probability);
+    return {
+      marketId: market.id,
+      outcomeId: outcome.id,
+      source: "contract-fixture",
+      externalSlug: market.externalSlug,
+      externalMarketId: market.externalMarketId,
+      conditionId: market.conditionId,
+      tokenId: outcome.referenceTokenId,
+      outcomeLabel: outcome.referenceOutcomeLabel,
+      outcomePrice: price,
+      bestBid: Math.max(0.01, Number((price - 0.02).toFixed(4))),
+      bestAsk: Math.min(0.99, Number((price + 0.02).toFixed(4))),
+      spread: 0.04,
+      lastTradePrice: price,
+      volume: 0,
+      volume24hr: 0,
+      liquidity: 1000,
+      liquidityClob: 0,
+      acceptingOrders: true,
+      qualityStatus: "approved",
+      mmEligible: false,
+      reason: "holiwyn_supplemental_prediction_contract",
+      fetchedAt: params.now,
+    };
+  }));
+
+  return { market, outcomeCount: outcomes.length };
+}
+
+async function seedSupplementalOutcome(params: {
+  marketId: string;
+  marketSlug: string;
+  spec: SupplementalOutcomeSpec;
+  index: number;
+}) {
+  const existing = await prisma.outcome.findFirst({
+    where: { marketId: params.marketId, code: params.spec.code },
+    select: { id: true },
+  });
+  const referenceTokenId = `holiwyn-contract-${shortHash(`${params.marketSlug}:${params.spec.code}`, 24)}`;
+  const data = {
+    name: params.spec.name,
+    label: params.spec.name,
+    side: params.spec.side,
+    displayOrder: params.index,
+    isActive: true,
+    isTradable: true,
+    status: "active",
+    referenceTokenId,
+    referenceOutcomeLabel: params.spec.name,
+    referenceMetadata: {
+      providerSource: PROVIDER_SOURCE,
+      referenceSource: "contract-fixture",
+      sportsbookDerived: false,
+      normalizedProbability: params.spec.probability,
+    },
+  };
+
+  return existing
+    ? prisma.outcome.update({ where: { id: existing.id }, data })
+    : prisma.outcome.create({
+        data: {
+          marketId: params.marketId,
+          code: params.spec.code,
+          slug: `${params.marketSlug}-${slugify(params.spec.code)}`,
+          ...data,
+        },
+      });
 }
 
 async function seedOddsOutcome(params: {

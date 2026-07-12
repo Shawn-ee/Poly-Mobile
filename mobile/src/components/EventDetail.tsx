@@ -596,7 +596,13 @@ export function EventDetail({
   const orderBookSelectedOutcome = orderBookMarket?.outcomes.find((outcome) => outcome.id === orderBookOutcomeId) ?? orderBookMarket?.outcomes[0];
   const providerRegulationSelections = useMemo(() => homeCardSelectionsForEvent(event), [event]);
   const primaryOutcomes = primaryMarket?.outcomes.slice(0, 3) ?? [];
-  const primaryDisplayOutcomes = providerRegulationSelections.length === 3
+  const shouldComposeRegulationPrimary = Boolean(
+    primaryMarket &&
+      isRegulationWinnerMarket(primaryMarket) &&
+      event.primaryMarketProfile !== "advance" &&
+      event.resultMode !== "must_advance",
+  );
+  const primaryDisplayOutcomes = shouldComposeRegulationPrimary && providerRegulationSelections.length === 3
     ? providerRegulationSelections.map((selection) => selection.outcome)
     : primaryOutcomes;
   const outrightSelections = outrightMarkets.flatMap((market) => {

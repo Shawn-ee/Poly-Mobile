@@ -113,7 +113,8 @@ export function MarketList({
       {events.map((event) => {
         const winner = homeCardMarket(event);
         const sourceReadiness = eventSourceReadiness(event, locale);
-        const regulationSelections = homeCardSelectionsForEvent(event);
+        const displayAsAdvance = Boolean(winner && usesAdvanceDisplay(event, winner));
+        const regulationSelections = displayAsAdvance ? [] : homeCardSelectionsForEvent(event);
         const outrightSelections = isOutrightEvent(event)
           ? event.markets
               .filter((market) => market.type === "future")
@@ -122,7 +123,6 @@ export function MarketList({
                 return outcome ? [{ market, outcome }] : [];
               })
           : [];
-        const displayAsAdvance = Boolean(winner && usesAdvanceDisplay(event, winner));
         const cardOutcomes = winner && displayAsAdvance ? winner.outcomes.slice(0, 2) : winner?.outcomes.slice(0, 3) ?? [];
         const isSaved = savedEventIds?.has(event.id) ?? false;
         return (

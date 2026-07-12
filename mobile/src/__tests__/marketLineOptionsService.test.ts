@@ -47,6 +47,39 @@ describe("marketLineOptionsService", () => {
     expect(matchingBackendLineMarket(markets, "spread", "1.5", "Reg. Time")?.id).toBe("spread-rt-15");
   });
 
+  test("prefers signed Holiwyn contract fixtures over raw provider rows for duplicate spread lines", () => {
+    const markets = [
+      market({
+        id: "provider-spread-05",
+        title: "Argentina vs Switzerland - Spread +0.5",
+        marketType: "spread",
+        period: "regulation",
+        line: "0.5",
+        referenceSource: "sportsbook-odds",
+      }),
+      market({
+        id: "fixture-spread-pos-05",
+        title: "Argentina vs Switzerland: Argentina +0.5",
+        marketType: "spread",
+        period: "regulation",
+        line: "0.5",
+        referenceSource: "contract-fixture",
+      }),
+      market({
+        id: "fixture-spread-neg-05",
+        title: "Argentina vs Switzerland: Argentina -0.5",
+        marketType: "spread",
+        period: "regulation",
+        line: "-0.5",
+        referenceSource: "contract-fixture",
+      }),
+    ];
+
+    expect(lineOptionsFor(markets, "spread", "Reg. Time")).toEqual(["-0.5", "0.5"]);
+    expect(matchingBackendLineMarket(markets, "spread", "0.5", "Reg. Time")?.id).toBe("fixture-spread-pos-05");
+    expect(matchingBackendLineMarket(markets, "spread", "-0.5", "Reg. Time")?.id).toBe("fixture-spread-neg-05");
+  });
+
   test("treats provider totals aliases as totals markets", () => {
     const markets = [
       market({ id: "provider-total-25", marketType: "total_goals" as Market["marketType"], period: "full-game", line: "2.5" }),

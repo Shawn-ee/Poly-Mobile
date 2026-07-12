@@ -49,7 +49,7 @@ export const matchingBackendLineMarket = (markets: Market[], type: string, line:
   const target = Number(line);
   if (!Number.isFinite(target)) return undefined;
   const targetPeriod = marketPeriodForLinePeriod(period);
-  return markets.find((market) => {
+  const candidates = markets.filter((market) => {
     const marketLine = lineAsNumber(market.line);
     return (
       marketMatchesLineType(market, type) &&
@@ -59,4 +59,11 @@ export const matchingBackendLineMarket = (markets: Market[], type: string, line:
       (!market.period || equivalentMarketPeriod(market.period) === equivalentMarketPeriod(targetPeriod))
     );
   });
+  const signedLine = target > 0 ? `+${target}` : String(target);
+  return (
+    candidates.find((market) => market.referenceSource === "contract-fixture" && market.title.includes(signedLine)) ??
+    candidates.find((market) => market.title.includes(signedLine)) ??
+    candidates.find((market) => market.referenceSource === "contract-fixture") ??
+    candidates[0]
+  );
 };
