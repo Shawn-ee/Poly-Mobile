@@ -267,6 +267,95 @@ async function main() {
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "currentRuntimeState", "quotaSpendingLoopRunning"]) === false &&
       Array.isArray(getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "currentRuntimeState", "p0"])) &&
       (getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "currentRuntimeState", "p0"]) as unknown[]).length === 0,
+    serviceOwnershipKnown:
+      pass(entries.phaseAudit) &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "serviceOwnership", "checked"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "serviceOwnership", "serviceModel"]) ===
+        "local_foreground_worker_processes" &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "serviceOwnership", "productionServiceInstalled"]) ===
+        false &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "serviceOwnership", "installedOsService"]) === false &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "serviceOwnership", "foregroundSupervisorProven"]) ===
+        true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "serviceOwnership", "foregroundResultPollerProven"]) ===
+        true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "serviceOwnership", "foregroundLoopsProven"]) ===
+        true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "serviceOwnership", "current", "quotaSpendingLoopRunning"]) ===
+        false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "liveProviderMode",
+        "statusRouteSpendsProviderQuota",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "liveProviderMode",
+        "defaultInternalTesterModeSpendsProviderQuota",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "liveProviderMode",
+        "requiresExplicitProviderFlag",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "liveProviderMode",
+        "requiresTheOddsApiKeyForLiveProviderCalls",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "durableEvidence",
+        "providerRefreshRunRecorded",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "durableEvidence",
+        "providerRefreshQuotaProtected",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "durableEvidence",
+        "marketMakerQuoteRunRecorded",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "durableEvidence",
+        "runtimeHeartbeatsRecorded",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "durableEvidence",
+        "runtimeRunsRecorded",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "durableEvidence",
+        "runtimeRunsPassed",
+      ]) === true &&
+      Array.isArray(getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "serviceOwnership", "p0"])) &&
+      (getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "serviceOwnership", "p0"]) as unknown[]).length ===
+        0,
     currentRuntimeWarmStateProofKnown:
       pass(entries.currentRuntimeStateProof) &&
       getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "warmNoQuotaRuntimeObserved"]) === true &&
@@ -394,10 +483,11 @@ async function main() {
         checks.launchProfileKnown &&
         checks.internalTesterWatchdogKnown &&
         checks.currentRuntimeStateKnown &&
+        checks.serviceOwnershipKnown &&
         checks.currentRuntimeWarmStateProofKnown &&
         checks.oneCommandRuntimeLoopProofKnown,
       answer:
-        "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, and cleaned up after proof.",
+        "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, exposes explicit foreground-vs-installed service ownership, and cleans up after proof.",
       evidence: [
         PATHS.localRuntimeLaunchProfile,
         PATHS.internalTesterWatchdog,

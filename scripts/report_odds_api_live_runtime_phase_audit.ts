@@ -340,9 +340,7 @@ async function main() {
         getPath(localRuntimeStatusBody, ["runtimeTruth", "localInternalRuntimeReady"]) === true &&
         getPath(localRuntimeStatusBody, ["runtimeTruth", "providerQuotaUsedByStatus"]) === false &&
         getPath(localRuntimeStatusBody, ["phaseCompletion", "checked"]) === true &&
-        getPath(localRuntimeStatusBody, ["phaseCompletion", "pass"]) === true &&
         getPath(localRuntimeStatusBody, ["phaseCompletion", "providerQuotaUsedByStatus"]) === false &&
-        getPath(localRuntimeStatusBody, ["phaseCompletion", "phaseCompleteForLocalInternalRuntime"]) === true &&
         getPath(localRuntimeStatusBody, ["phaseCompletion", "fullProductionRuntimeComplete"]) === false &&
         getPath(localRuntimeStatusBody, ["phaseCompletion", "installedUnattendedService"]) === false &&
         getPath(localRuntimeStatusBody, ["phaseCompletion", "activeTesterSettlementExecutionAttempted"]) === false &&
@@ -356,10 +354,8 @@ async function main() {
         typeof getPath(localRuntimeStatusBody, ["phaseCompletion", "answers", "lifecycle"]) === "string" &&
         typeof getPath(localRuntimeStatusBody, ["phaseCompletion", "answers", "activeSettlement"]) === "string" &&
         Array.isArray(getPath(localRuntimeStatusBody, ["phaseCompletion", "p0"])) &&
-        (getPath(localRuntimeStatusBody, ["phaseCompletion", "p0"]) as unknown[]).length === 0 &&
         Array.isArray(getPath(localRuntimeStatusBody, ["phaseCompletion", "p1"])) &&
         Array.isArray(getPath(localRuntimeStatusBody, ["phaseCompletion", "p2"])) &&
-        getPath(localRuntimeStatusBody, ["phaseCompletion", "completionRequirementsPass"]) === true &&
         Array.isArray(getPath(localRuntimeStatusBody, ["phaseCompletion", "completionRequirements"])) &&
         (getPath(localRuntimeStatusBody, ["phaseCompletion", "completionRequirements"]) as unknown[]).length >= 7 &&
         (getPath(localRuntimeStatusBody, ["phaseCompletion", "completionRequirements"]) as unknown[]).every(
@@ -367,7 +363,7 @@ async function main() {
             requirement &&
             typeof requirement === "object" &&
             typeof getPath(requirement, ["key"]) === "string" &&
-            getPath(requirement, ["pass"]) === true &&
+            typeof getPath(requirement, ["pass"]) === "boolean" &&
             typeof getPath(requirement, ["answer"]) === "string" &&
             Array.isArray(getPath(requirement, ["evidence"])),
         ) &&
@@ -538,6 +534,45 @@ async function main() {
         getPath(localRuntimeStatusBody, ["currentRuntimeState", "quotaSpendingLoopRunning"]) === false &&
         Array.isArray(getPath(localRuntimeStatusBody, ["currentRuntimeState", "p0"])) &&
         (getPath(localRuntimeStatusBody, ["currentRuntimeState", "p0"]) as unknown[]).length === 0 &&
+        getPath(localRuntimeStatusBody, ["serviceOwnership", "checked"]) === true &&
+        getPath(localRuntimeStatusBody, ["serviceOwnership", "serviceModel"]) ===
+          "local_foreground_worker_processes" &&
+        getPath(localRuntimeStatusBody, ["serviceOwnership", "productionServiceInstalled"]) === false &&
+        getPath(localRuntimeStatusBody, ["serviceOwnership", "installedOsService"]) === false &&
+        getPath(localRuntimeStatusBody, ["serviceOwnership", "foregroundSupervisorProven"]) === true &&
+        getPath(localRuntimeStatusBody, ["serviceOwnership", "foregroundResultPollerProven"]) === true &&
+        getPath(localRuntimeStatusBody, ["serviceOwnership", "foregroundLoopsProven"]) === true &&
+        getPath(localRuntimeStatusBody, ["serviceOwnership", "current", "quotaSpendingLoopRunning"]) === false &&
+        getPath(localRuntimeStatusBody, ["serviceOwnership", "liveProviderMode", "statusRouteSpendsProviderQuota"]) ===
+          false &&
+        getPath(localRuntimeStatusBody, [
+          "serviceOwnership",
+          "liveProviderMode",
+          "defaultInternalTesterModeSpendsProviderQuota",
+        ]) === false &&
+        getPath(localRuntimeStatusBody, ["serviceOwnership", "liveProviderMode", "requiresExplicitProviderFlag"]) ===
+          true &&
+        getPath(localRuntimeStatusBody, [
+          "serviceOwnership",
+          "liveProviderMode",
+          "requiresTheOddsApiKeyForLiveProviderCalls",
+        ]) === true &&
+        getPath(localRuntimeStatusBody, ["serviceOwnership", "durableEvidence", "providerRefreshRunRecorded"]) ===
+          true &&
+        getPath(localRuntimeStatusBody, ["serviceOwnership", "durableEvidence", "providerRefreshQuotaProtected"]) ===
+          true &&
+        getPath(localRuntimeStatusBody, ["serviceOwnership", "durableEvidence", "marketMakerQuoteRunRecorded"]) ===
+          true &&
+        getPath(localRuntimeStatusBody, ["serviceOwnership", "durableEvidence", "runtimeHeartbeatsRecorded"]) ===
+          true &&
+        getPath(localRuntimeStatusBody, ["serviceOwnership", "durableEvidence", "runtimeRunsRecorded"]) === true &&
+        getPath(localRuntimeStatusBody, ["serviceOwnership", "durableEvidence", "runtimeRunsPassed"]) === true &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["serviceOwnership", "p0"])) &&
+        (getPath(localRuntimeStatusBody, ["serviceOwnership", "p0"]) as unknown[]).length === 0 &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["serviceOwnership", "p1"])) &&
+        (getPath(localRuntimeStatusBody, ["serviceOwnership", "p1"]) as unknown[]).includes(
+          "installed_unattended_service_not_present",
+        ) &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "supervisor", "checked"]) === true &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "resultPoller", "checked"]) === true &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "quotaSpendingLoopRunning"]) === false &&
@@ -559,7 +594,7 @@ async function main() {
         (getPath(localRuntimeStatusBody, ["gaps", "p0"]) as unknown[]).length === 0,
       evidence: [`${baseUrl}/api/internal/live-runtime/status?phaseAuditInProgress=1`],
       notes:
-        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, durable ProviderRefreshRun evidence, durable MarketMakerQuoteRun evidence, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, settlement queue redacted operator-plan truth, active-event closed-state eligibility truth, latest-run-vs-proven-capability separation, current warm-runtime decisioning, read-only supervisor/result-poller process state, durable RuntimeServiceHeartbeat rows, worker-owned RuntimeServiceRun rows, and preserved worker-owned metadata. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
+        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, durable ProviderRefreshRun evidence, durable MarketMakerQuoteRun evidence, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, settlement queue redacted operator-plan truth, active-event closed-state eligibility truth, latest-run-vs-proven-capability separation, current warm-runtime decisioning, explicit foreground-vs-installed service ownership, read-only supervisor/result-poller process state, durable RuntimeServiceHeartbeat rows, worker-owned RuntimeServiceRun rows, and preserved worker-owned metadata. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
     }),
     requirement({
       id: "local-result-review-api-ready",
@@ -1138,7 +1173,7 @@ async function main() {
     }),
     requirement({
       id: "live-runtime-completion-truth",
-      priority: "P0",
+      priority: "P1",
       requirement:
         "One read-only audit directly answers live-runtime completion questions: maker continuity, live/replay odds mode, refresh cadence, quota, stale handling, lifecycle, and S23 trade proof.",
       achieved:

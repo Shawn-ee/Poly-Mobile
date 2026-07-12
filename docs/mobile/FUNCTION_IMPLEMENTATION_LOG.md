@@ -2,6 +2,19 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle SERVICEOWNERSHIP - Live Runtime Service Ownership Status
+
+- Feature/page worked on: Local internal live-runtime status/control plane.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `src/server/services/liveRuntimeStatus.ts`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `scripts/report_holiwyn_live_runtime_completion_audit.ts`
+  - `src/__tests__/liveRuntimeStatus.service.test.ts`
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/status` and read `serviceOwnership`, a single summary of whether Holiwyn is using foreground local supervisor/result-poller workers or an installed OS service, whether foreground loops are proven, whether live provider mode spends quota by default, and what next runtime action should be taken.
+- State transitions: none. The status route still mirrors heartbeat rows as before, but this cycle adds a read-only response contract and audit gates only. It does not start loops, install services, call The Odds API, place orders, mutate markets, approve settlement, or execute settlement.
+- Known limitations: service ownership remains local MVP foreground-process ownership. No production daemon, authenticated service manager, retry/alerting, or installed unattended provider/maker/lifecycle service is introduced in this cycle.
+
 ## Cycle CASHOUTPOSITIONUX - Position Close Ticket Contract
 
 - Feature/page worked on: Portfolio and Event Detail cashout entry into the mobile Trade Ticket.

@@ -1024,6 +1024,57 @@ describe("live runtime status service", () => {
       p1: expect.arrayContaining(["supervisor_loop_not_running_now", "result_poller_loop_not_running_now"]),
       nextAction: "start_internal_tester_runtime_with_supervisor_and_result_poller",
     });
+    expect(status.serviceOwnership).toMatchObject({
+      checked: true,
+      serviceModel: "local_foreground_worker_processes",
+      productionServiceInstalled: false,
+      installedOsService: false,
+      foregroundSupervisorProven: true,
+      foregroundResultPollerProven: true,
+      foregroundLoopsProven: true,
+      marketMakerContinuity: "continuous_while_one_event_supervisor_process_runs",
+      providerRefreshContinuity: "explicit_quota_capped_live_refresh_or_cached_replay",
+      resultPollingContinuity: "continuous_while_one_event_result_poller_process_runs",
+      current: {
+        mode: "proven_capability_loops_stopped",
+        supervisorRunning: false,
+        resultPollerRunning: false,
+        allLoopsRunning: false,
+        quotaSpendingLoopRunning: false,
+        testerReadyRightNow: false,
+      },
+      liveProviderMode: {
+        statusRouteSpendsProviderQuota: false,
+        defaultInternalTesterModeSpendsProviderQuota: false,
+        requiresExplicitProviderFlag: true,
+        requiresTheOddsApiKeyForLiveProviderCalls: true,
+      },
+      localLaunch: {
+        recommendedProfileLabel:
+          "User Startup fallback with backend, Expo, supervisor, result poller, result ingestion, settlement scheduling, and approved-settlement wait mode",
+        scheduledTaskUsableInCurrentContext: false,
+        scheduledTaskContextNote: "Windows scheduled-task registration was denied in the current process context.",
+      },
+      durableEvidence: {
+        providerRefreshRunRecorded: true,
+        providerRefreshQuotaProtected: true,
+        marketMakerQuoteRunRecorded: true,
+        marketMakerQuoteRunLocalOnly: true,
+        runtimeHeartbeatsRecorded: true,
+        runtimeRunsRecorded: true,
+        runtimeRunsPassed: true,
+      },
+      p0: [],
+      p1: expect.arrayContaining([
+        "installed_unattended_service_not_present",
+        "supervisor_loop_not_running_now",
+        "result_poller_loop_not_running_now",
+      ]),
+      nextAction: "start_internal_tester_runtime_with_supervisor_and_result_poller",
+    });
+    expect(status.serviceOwnership.localLaunch.manualForegroundCommands).toContain(
+      "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
+    );
     expect(status.managedProcesses).toMatchObject({
       anyLoopRunning: false,
       quotaSpendingLoopRunning: false,

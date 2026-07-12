@@ -1,5 +1,13 @@
 # Mobile Data Contract Gaps
 
+## Cycle SERVICEOWNERSHIP - Live Runtime Service Ownership Status
+
+- Closed or narrowed: `/api/internal/live-runtime/status` now exposes a single `serviceOwnership` contract instead of requiring operators to infer service ownership from `runtimeCapabilities`, `managedProcesses`, `runtimeHeartbeats`, and `runtimeRuns`.
+- Backend-supported fields used: `RuntimeServiceHeartbeat`, `RuntimeServiceRun`, `ProviderRefreshRun`, `MarketMakerQuoteRun`, local runtime proof artifacts, launch-profile artifacts, and current supervisor/result-poller process-state files.
+- Route mismatch: none for public mobile APIs. The status route remains local/dev-only and now returns `serviceOwnership.serviceModel`, `installedOsService`, foreground loop proof, current loop status, live-provider quota policy, local launch commands, durable evidence, and P0/P1 gaps.
+- Temporary mock/static data: none added. The route does not call providers, spend quota, start loops, install services, place orders, or execute settlement.
+- Future migration concern: production still needs durable installed service/job ownership, authenticated runtime controls, retry/alerting, and multi-event provider/maker lifecycle supervision. The current contract deliberately reports `installedOsService=false` for the local MVP.
+
 ## Cycle CASHOUTPOSITIONUX - Position Close Ticket Contract
 
 - Closed or narrowed: cashout no longer treats wallet balance as available amount. Mobile cashout mode now uses position `shares`, `currentPrice`/`bestBid`, `marketId`, and `outcomeId`.

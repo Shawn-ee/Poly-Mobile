@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T22:37:20.370Z",
+  "generatedAt": "2026-07-12T23:05:43.229Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -28,7 +28,7 @@
     "freshness": {
       "liveProofAgeHours": 14.63,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 7.29,
+      "watchdogAgeHours": 7.76,
       "maxWatchdogAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -100,6 +100,7 @@
     "durableRuntimeHeartbeatsKnown": true,
     "durableRuntimeRunsKnown": true,
     "currentRuntimeStateKnown": true,
+    "serviceOwnershipKnown": true,
     "currentRuntimeWarmStateProofKnown": true,
     "oneCommandRuntimeLoopProofKnown": true,
     "mobileS23EndToEndTradeProofPass": true,
@@ -165,7 +166,7 @@
     },
     "runtimeLaunch": {
       "pass": true,
-      "answer": "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, and cleaned up after proof.",
+      "answer": "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, exposes explicit foreground-vs-installed service ownership, and cleans up after proof.",
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",

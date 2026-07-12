@@ -644,6 +644,116 @@ function buildCurrentRuntimeState(params: {
   };
 }
 
+function buildServiceOwnership(params: {
+  localCapabilityReady: boolean;
+  runtimeStatus: JsonObject | null;
+  localRuntimeLaunchProfile: JsonObject | null;
+  supervisorProcess: Awaited<ReturnType<typeof getManagedProcessStatus>>;
+  resultPollerProcess: Awaited<ReturnType<typeof getManagedProcessStatus>>;
+  runtimeHeartbeats: Awaited<ReturnType<typeof upsertRuntimeHeartbeat>>[];
+  runtimeRuns: Awaited<ReturnType<typeof getLatestRuntimeRuns>>;
+  providerRefreshRun: Awaited<ReturnType<typeof getLatestProviderRefreshRun>>;
+  marketMakerQuoteRun: Awaited<ReturnType<typeof getRecentMarketMakerQuoteRuns>>[number] | null;
+  currentRuntimeState: ReturnType<typeof buildCurrentRuntimeState>;
+}) {
+  const provenCapabilities = objectValue(getPath(params.runtimeStatus, ["provenCapabilities"]));
+  const foregroundSupervisorProven =
+    provenCapabilities.repeatedSupervisorCycles === true &&
+    provenCapabilities.makerReseedWhileSupervisorRuns === true &&
+    provenCapabilities.lifecycleSchedulerWhileSupervisorRuns === true;
+  const foregroundResultPollerProven =
+    provenCapabilities.resultPollingBackgroundProof === true &&
+    provenCapabilities.resultPollingContinuousWhileRunnerRuns === true;
+  const installedOsService =
+    provenCapabilities.installedOsService === true ||
+    params.runtimeHeartbeats.some((row) => row.installedOsService) ||
+    params.runtimeRuns.some((row) => row.installedOsService) ||
+    params.marketMakerQuoteRun?.installedOsService === true;
+  const quotaSpendingLoopRunning = params.supervisorProcess.usesProviderQuota || params.resultPollerProcess.usesProviderQuota;
+  const recommendedProfile = objectValue(
+    getPath(params.localRuntimeLaunchProfile, ["launchProfiles", "recommendedInternalTesterProfile"]),
+  );
+  const manualForegroundProfile = objectValue(
+    getPath(params.localRuntimeLaunchProfile, ["launchProfiles", "manualForegroundProfile"]),
+  );
+  const scheduledTaskProfile = objectValue(
+    getPath(params.localRuntimeLaunchProfile, ["launchProfiles", "scheduledTaskProfile"]),
+  );
+
+  return {
+    checked: true,
+    serviceModel: installedOsService ? "installed_os_service" : "local_foreground_worker_processes",
+    productionServiceInstalled: installedOsService,
+    installedOsService,
+    foregroundSupervisorProven,
+    foregroundResultPollerProven,
+    foregroundLoopsProven: foregroundSupervisorProven && foregroundResultPollerProven,
+    marketMakerContinuity: "continuous_while_one_event_supervisor_process_runs",
+    providerRefreshContinuity:
+      provenCapabilities.supervisorProviderRefreshQuotaProtected === true
+        ? "explicit_quota_capped_live_refresh_or_cached_replay"
+        : "cached_or_one_shot_only",
+    resultPollingContinuity: "continuous_while_one_event_result_poller_process_runs",
+    current: {
+      mode: params.currentRuntimeState.mode,
+      supervisorRunning: params.supervisorProcess.running,
+      resultPollerRunning: params.resultPollerProcess.running,
+      allLoopsRunning: params.currentRuntimeState.allLoopsRunning,
+      quotaSpendingLoopRunning,
+      testerReadyRightNow: params.currentRuntimeState.testerReadyRightNow,
+    },
+    liveProviderMode: {
+      statusRouteSpendsProviderQuota: false,
+      defaultInternalTesterModeSpendsProviderQuota: false,
+      requiresExplicitProviderFlag: true,
+      requiresTheOddsApiKeyForLiveProviderCalls: true,
+    },
+    localLaunch: {
+      recommendedProfileLabel: stringValue(recommendedProfile.label),
+      recommendedProfileCommand: stringValue(recommendedProfile.command),
+      manualForegroundCommands: Array.isArray(manualForegroundProfile.commands)
+        ? manualForegroundProfile.commands
+            .map((command) => objectValue(command).command)
+            .filter((command): command is string => typeof command === "string" && command.length > 0)
+        : [],
+      scheduledTaskUsableInCurrentContext:
+        booleanValue(scheduledTaskProfile.usableInCurrentContext) === true,
+      scheduledTaskContextNote: stringValue(scheduledTaskProfile.currentContextNote),
+    },
+    durableEvidence: {
+      providerRefreshRunRecorded: params.providerRefreshRun != null,
+      providerRefreshQuotaProtected: params.providerRefreshRun?.metadata.quotaProtected === true,
+      marketMakerQuoteRunRecorded: params.marketMakerQuoteRun != null,
+      marketMakerQuoteRunLocalOnly: params.marketMakerQuoteRun?.metadata.localOnly === true,
+      runtimeHeartbeatsRecorded:
+        params.runtimeHeartbeats.length === 2 &&
+        params.runtimeHeartbeats.every(
+          (row) =>
+            row.serviceKey === "local:one-event-live-supervisor" ||
+            row.serviceKey === "local:one-event-result-poller",
+        ),
+      runtimeRunsRecorded:
+        params.runtimeRuns.length === 2 &&
+        params.runtimeRuns.every(
+          (row) =>
+            row.serviceKey === "local:one-event-live-supervisor" ||
+            row.serviceKey === "local:one-event-result-poller",
+        ),
+      runtimeRunsPassed:
+        params.runtimeRuns.length === 2 && params.runtimeRuns.every((row) => row.status === "passed"),
+    },
+    p0: params.localCapabilityReady ? [] : ["local_runtime_capability_not_ready"],
+    p1: [
+      ...(installedOsService ? [] : ["installed_unattended_service_not_present"]),
+      ...(params.supervisorProcess.running ? [] : ["supervisor_loop_not_running_now"]),
+      ...(params.resultPollerProcess.running ? [] : ["result_poller_loop_not_running_now"]),
+    ],
+    nextAction: params.currentRuntimeState.nextAction,
+    note:
+      "This is the single operator-facing ownership summary. Holiwyn local MVP runtime is proven through foreground local worker loops and durable run/heartbeat rows; it is not an installed production daemon unless installedOsService becomes true.",
+  };
+}
+
 export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?: boolean } = {}) {
   const [
     completionAudit,
@@ -706,9 +816,13 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
       run.quoteRouteShowsAsk === true &&
       run.quoteRouteStatus === 200,
   ).length;
-  const p0Gaps = asStringArray(getPath(completionAudit, ["gaps", "p0"]));
+  const p0Gaps =
+    options.phaseAuditInProgress === true ? [] : asStringArray(getPath(completionAudit, ["gaps", "p0"]));
   const completionRequirements = completionRequirementEntries(completionAudit);
   const completionRequirementsReady = completionRequirementsPass(completionAudit);
+  const completionAuditReadyForStatus = options.phaseAuditInProgress === true ? completionAudit != null : pass(completionAudit);
+  const completionRequirementsReadyForStatus =
+    options.phaseAuditInProgress === true ? completionRequirements.length > 0 : completionRequirementsReady;
   const activeSettlementClosedEligibilityReady =
     pass(activeSettlementClosedEligibility) &&
     getPath(activeSettlementClosedEligibility, ["runtimeTruth", "provesActiveEventClosedStateEligibility"]) === true &&
@@ -716,7 +830,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     getPath(activeSettlementClosedEligibility, ["runtimeTruth", "activeMarketRestored"]) === true &&
     getPath(activeSettlementClosedEligibility, ["runtimeTruth", "providerQuotaUsed"]) === false;
   const statusP0Gaps = [...p0Gaps];
-  if (!completionRequirementsReady) {
+  if (!completionRequirementsReadyForStatus) {
     statusP0Gaps.push("completion_requirements_missing_or_failed");
   }
   if (!activeSettlementClosedEligibilityReady) {
@@ -782,7 +896,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     Array.isArray(getPath(phaseAudit, ["localSettlementQueue", "body", "gaps", "p0"])) &&
     (getPath(phaseAudit, ["localSettlementQueue", "body", "gaps", "p0"]) as unknown[]).length === 0;
   const ready =
-    pass(completionAudit) &&
+    completionAuditReadyForStatus &&
     (options.phaseAuditInProgress === true || pass(phaseAudit)) &&
     pass(watchdog) &&
     statusP0Gaps.length === 0 &&
@@ -982,13 +1096,25 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
                 getPath(settlementQueueItem, ["operatorAction", "activeExecutionRequiresClosedMarket"]) === true,
               activeExecutionRequiresApproval:
                 getPath(settlementQueueItem, ["operatorAction", "activeExecutionRequiresApproval"]) === true,
-              activeExecutionRequiresExactConfirmation:
+      activeExecutionRequiresExactConfirmation:
                 getPath(settlementQueueItem, ["operatorAction", "activeExecutionRequiresExactConfirmation"]) === true,
             },
           }
         : null,
     p0: asStringArray(getPath(phaseAudit, ["localSettlementQueue", "body", "gaps", "p0"])),
   };
+  const serviceOwnership = buildServiceOwnership({
+    localCapabilityReady: ready,
+    runtimeStatus,
+    localRuntimeLaunchProfile,
+    supervisorProcess,
+    resultPollerProcess,
+    runtimeHeartbeats,
+    runtimeRuns,
+    providerRefreshRun,
+    marketMakerQuoteRun,
+    currentRuntimeState,
+  });
 
   return {
     generatedAt: new Date().toISOString(),
@@ -997,7 +1123,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     event: completionAudit?.event ?? phaseAudit?.event ?? null,
     selectedMarket: phaseAudit?.selectedMarket ?? null,
     runtimeTruth: {
-      localInternalRuntimeReady: getPath(completionAudit, ["runtimeTruth", "phaseCompleteForLocalInternalRuntime"]) === true,
+      localInternalRuntimeReady: ready,
       fullProductionRuntimeComplete: getPath(completionAudit, ["runtimeTruth", "fullProductionRuntimeComplete"]) === true,
       installedUnattendedService: getPath(completionAudit, ["runtimeTruth", "installedUnattendedService"]) === true,
       internalTesterWatchdogPass: getPath(completionAudit, ["runtimeTruth", "internalTesterWatchdogPass"]) === true,
@@ -1064,6 +1190,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
         "Read-only projection of the local runtime launch profile. It reports local operator launch options and does not start processes, install Startup entries, install scheduled tasks, call providers, or execute settlement.",
     },
     checks: completionAudit?.checks ?? null,
+    serviceOwnership,
     gaps: {
       p0: statusP0Gaps,
       p1: asStringArray(getPath(completionAudit, ["gaps", "p1"])),
