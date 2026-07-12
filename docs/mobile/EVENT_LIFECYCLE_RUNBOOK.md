@@ -73,7 +73,8 @@
 51. To intentionally install that user-logon launcher, rerun the same command with `-Action install -Apply`. It writes a `.cmd` file to the current user's Startup folder and starts the internal tester runtime when that Windows user logs in.
 52. To remove the user Startup launcher, run `npm run mobile:local-runtime-startup -- -Action uninstall -Apply`.
 53. To audit that the user Startup launcher can install and uninstall while leaving no launcher behind, run `npm run mobile:local-runtime-startup:install-proof`. The proof uses `HoliwynInternalTesterRuntimeProof.cmd`, includes the approved-settlement supervisor profile plus the dedicated result poller, and spends no provider quota.
-54. Do not settle the active tester event automatically unless official result input and admin review are added.
+54. To see the recommended local internal tester launch profile, run `npm run mobile:local-runtime-launch-profile`. It is read-only, spends no provider quota, recommends the user Startup fallback in the current Windows context, records the scheduled-task permission blocker, and lists the manual foreground plus live-provider opt-in commands.
+55. Do not settle the active tester event automatically unless official result input and admin review are added.
 
 ## Completion Boundary
 
@@ -151,3 +152,4 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - Local runtime scheduled-task install/uninstall audit: `npm run mobile:local-runtime-task:install-proof` passed as a safe permission audit. Windows denied scheduled-task registration in the current process context, cleanup confirmed no task remains installed, and no provider quota was spent.
 - Local runtime user Startup launcher plan: `npm run mobile:local-runtime-startup -- -Action plan -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement` previews a current-user Startup folder launcher for the internal tester runtime, confirms no launcher is installed by default, and spends no provider quota.
 - Local runtime user Startup launcher install/uninstall audit: `npm run mobile:local-runtime-startup:install-proof` installs and removes a proof-only `.cmd` launcher in the current user's Startup folder, confirms no launcher remains afterward, includes result ingestion, trusted-result settlement scheduling, approved-settlement wait mode, and the dedicated result poller, and spends no provider quota.
+- Local runtime launch profile: `npm run mobile:local-runtime-launch-profile` passed. It consolidates the manual foreground profile, user Startup fallback, scheduled-task permission blocker, and explicit live-provider supervisor profile into one read-only no-quota operator report.

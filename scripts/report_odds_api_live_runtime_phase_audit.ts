@@ -24,6 +24,8 @@ const PATHS = {
     "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-summary.redacted.json",
   localRuntimeStartupInstall:
     "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-install-uninstall-summary.redacted.json",
+  localRuntimeLaunchProfile:
+    "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
   continuousSupervisor: "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json",
   staleGuardProof: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json",
   staleGuardRun: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-run-summary.redacted.json",
@@ -522,6 +524,34 @@ async function main() {
         "This narrows the unattended-runtime gap by proving the user-logon fallback can launch backend/Expo/supervisor plus the dedicated result poller with result ingestion, settlement scheduling, and approved-settlement wait mode. It is still a local user Startup launcher, not a production service.",
     }),
     requirement({
+      id: "local-runtime-launch-profile",
+      priority: "P0",
+      requirement:
+        "A read-only launch profile tells operators which local runtime mode to use and what is not installed.",
+      achieved:
+        pass(entries.localRuntimeLaunchProfile) &&
+        getPath(entries.localRuntimeLaunchProfile, ["runtimeTruth", "localOperatorLaunchProfileDocumented"]) === true &&
+        getPath(entries.localRuntimeLaunchProfile, [
+          "runtimeTruth",
+          "startupFallbackRecommendedForCurrentWindowsContext",
+        ]) === true &&
+        getPath(entries.localRuntimeLaunchProfile, ["runtimeTruth", "proofLeavesNoPersistentStartupLauncher"]) ===
+          true &&
+        getPath(entries.localRuntimeLaunchProfile, ["runtimeTruth", "proofLeavesNoPersistentScheduledTask"]) === true &&
+        getPath(entries.localRuntimeLaunchProfile, ["runtimeTruth", "noProviderQuotaSpentByDefaultProfile"]) === true &&
+        getPath(entries.localRuntimeLaunchProfile, ["runtimeTruth", "activeTesterSettlementExecution"]) === false &&
+        getPath(entries.localRuntimeLaunchProfile, ["runtimeTruth", "installedProductionService"]) === false,
+      evidence: [
+        PATHS.localRuntimeLaunchProfile,
+        PATHS.localRuntimeStartupInstall,
+        PATHS.localRuntimeTaskInstall,
+        PATHS.continuousSupervisor,
+        PATHS.continuousResultPoller,
+      ],
+      notes:
+        "This consolidates manual foreground, user Startup fallback, scheduled-task blocker, and live-provider opt-in commands into one no-quota operator profile.",
+    }),
+    requirement({
       id: "unattended-service",
       priority: "P1",
       requirement: "Install unattended provider/maker/lifecycle services.",
@@ -535,6 +565,7 @@ async function main() {
         PATHS.localRuntimeTaskInstall,
         PATHS.localRuntimeStartup,
         PATHS.localRuntimeStartupInstall,
+        PATHS.localRuntimeLaunchProfile,
         PATHS.continuousSupervisor,
       ],
       notes:

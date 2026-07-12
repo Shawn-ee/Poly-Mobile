@@ -168,6 +168,7 @@
     "mobile:local-runtime-task:install-proof": "powershell -ExecutionPolicy Bypass -File scripts/prove_holiwyn_local_runtime_task_install_uninstall.ps1",
     "mobile:local-runtime-startup": "powershell -ExecutionPolicy Bypass -File scripts/manage_holiwyn_local_runtime_startup.ps1",
     "mobile:local-runtime-startup:install-proof": "powershell -ExecutionPolicy Bypass -File scripts/prove_holiwyn_local_runtime_startup_install_uninstall.ps1",
+    "mobile:local-runtime-launch-profile": "tsx scripts/report_holiwyn_local_runtime_launch_profile.ts",
     "mobile:the-odds-api-s23-visible-flow": "powershell -ExecutionPolicy Bypass -File scripts/prove_mobile_odds_api_s23_visible_flow.ps1",
     "bots:reset-state": "tsx scripts/reset_bot_state.ts",
     "bot:e2e:seed": "tsx tests/bot-e2e/seed.ts",

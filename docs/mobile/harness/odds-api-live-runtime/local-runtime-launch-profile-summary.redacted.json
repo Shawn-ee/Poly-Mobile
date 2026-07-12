@@ -1,0 +1,106 @@
+{
+  "generatedAt": "2026-07-12T14:28:07.809Z",
+  "scope": "holiwyn-local-runtime-launch-profile",
+  "pass": true,
+  "launchProfiles": {
+    "recommendedInternalTesterProfile": {
+      "label": "User Startup fallback with backend, Expo, supervisor, result poller, result ingestion, settlement scheduling, and approved-settlement wait mode",
+      "command": "npm run mobile:local-runtime-startup -- -Action plan -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
+      "installCommand": "npm run mobile:local-runtime-startup -- -Action install -Apply -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
+      "uninstallCommand": "npm run mobile:local-runtime-startup -- -Action uninstall -Apply",
+      "quotaMode": "no provider quota unless provider/live-result flags are explicitly added",
+      "settlementMode": "approved scheduler waits for CLOSED market plus exact local approval match before execution",
+      "productionBoundary": "local Windows user-logon fallback, not a production service"
+    },
+    "manualForegroundProfile": {
+      "commands": [
+        {
+          "label": "runtime status",
+          "command": "npm run mobile:internal-tester-runtime -- -Action status",
+          "quotaMode": "no provider quota by default"
+        },
+        {
+          "label": "start backend/expo plus supervisor and result poller",
+          "command": "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
+          "quotaMode": "no provider quota by default"
+        },
+        {
+          "label": "stop manager-owned local runtime",
+          "command": "npm run mobile:internal-tester-runtime -- -Action stop",
+          "quotaMode": "no provider quota by default"
+        }
+      ]
+    },
+    "scheduledTaskProfile": {
+      "planCommand": "npm run mobile:local-runtime-task -- -Action plan -StartSupervisor -RunResultIngestion -RunResultSettlement",
+      "installCommand": "npm run mobile:local-runtime-task -- -Action install -Apply -StartSupervisor -RunResultIngestion -RunResultSettlement",
+      "usableInCurrentContext": false,
+      "currentContextNote": "Windows scheduled-task registration was denied in the current process context; use Startup fallback or an elevated shell/task-registration rights before applying."
+    },
+    "liveProviderProfile": {
+      "command": "npm run mobile:one-event-live-supervisor -- -RunProviderProof -Continuous -MaxIterations 0 -MaxProviderProofRuns 1 -ProviderProofEveryIterations 1",
+      "quotaMode": "requires THE_ODDS_API_KEY and is capped by run count, cadence, per-run credits, and min remaining quota",
+      "defaultForInternalTesting": false
+    }
+  },
+  "artifacts": {
+    "runtimeStatus": "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
+    "internalTesterRuntime": "docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json",
+    "supervisorProcess": "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-process-summary.redacted.json",
+    "continuousSupervisor": "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json",
+    "resultPollerProcess": "docs/mobile/harness/odds-api-live-runtime/one-event-result-poller-process-summary.redacted.json",
+    "continuousResultPoller": "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-result-poller-proof-summary.redacted.json",
+    "localRuntimeTask": "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-summary.redacted.json",
+    "localRuntimeTaskInstall": "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-install-uninstall-summary.redacted.json",
+    "localRuntimeStartup": "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-summary.redacted.json",
+    "localRuntimeStartupInstall": "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-install-uninstall-summary.redacted.json"
+  },
+  "artifactAgesHours": {
+    "runtimeStatus": 0.14,
+    "internalTesterRuntime": 0.93,
+    "supervisorProcess": 0.93,
+    "continuousSupervisor": 3.27,
+    "resultPollerProcess": 0.92,
+    "continuousResultPoller": 1.09,
+    "localRuntimeTask": 2.85,
+    "localRuntimeTaskInstall": 2.67,
+    "localRuntimeStartup": 2.16,
+    "localRuntimeStartupInstall": 0.68
+  },
+  "checks": {
+    "runtimeStatusPass": true,
+    "internalTesterRuntimeStatusPass": true,
+    "continuousSupervisorProofPass": true,
+    "continuousResultPollerProofPass": true,
+    "startupPlanPresent": true,
+    "startupInstallProofPass": true,
+    "startupProofLeavesNoLauncher": true,
+    "startupProofIncludesSupervisorAndResultPoller": true,
+    "scheduledTaskPlanPresent": true,
+    "scheduledTaskInstallAuditPass": true,
+    "scheduledTaskNotInstalled": true,
+    "providerQuotaNotUsedByLaunchProofs": true,
+    "activeTesterSettlementNotExecuted": true
+  },
+  "runtimeTruth": {
+    "localOperatorLaunchProfileDocumented": true,
+    "startupFallbackRecommendedForCurrentWindowsContext": true,
+    "scheduledTaskInstallerAvailableButNotInstalledByDefault": true,
+    "proofLeavesNoPersistentStartupLauncher": true,
+    "proofLeavesNoPersistentScheduledTask": true,
+    "noProviderQuotaSpentByDefaultProfile": true,
+    "activeTesterSettlementExecution": false,
+    "installedProductionService": false,
+    "fakeTokenOnly": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "This launch profile narrows local internal runtime operation; it does not install a production service.",
+      "Official-result execution remains guarded by CLOSED market status, exact approval, and local operator controls."
+    ],
+    "p2": [
+      "Multi-event production runtime launch profiles remain future work."
+    ]
+  }
+}

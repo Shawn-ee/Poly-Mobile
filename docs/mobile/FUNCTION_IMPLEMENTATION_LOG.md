@@ -14392,3 +14392,23 @@ Known limitations:
   - Reads existing proof summaries plus local backend health and selected quote route only.
 - Known limitations:
   - This strengthens audit coverage for local internal runtime truth; installed service ownership and official-result auto-settlement remain P1.
+
+# Cycle ONEEVENTLAUNCHPROFILE - Local Runtime Launch Profile
+
+- Feature/page worked on: backend local runtime operator launch profile.
+- Frontend components touched: none. This is backend/runtime operator evidence only and does not change mobile UI.
+- Important functions/services touched:
+  - `scripts/report_holiwyn_local_runtime_launch_profile.ts`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `package.json` script `mobile:local-runtime-launch-profile`
+  - Existing internal tester runtime, Startup launcher, scheduled-task, supervisor, and result-poller proof summaries
+- User/runtime interactions supported:
+  - Operator can run `npm run mobile:local-runtime-launch-profile` to see the recommended local internal tester launch profile.
+  - Report consolidates manual foreground, user Startup fallback, scheduled-task blocker, and live-provider opt-in commands.
+  - Phase audit now fails if the launch profile artifact is missing or stops documenting the current safe local launch path.
+- State transitions:
+  - No market, order, position, portfolio, provider, lifecycle, settlement, process, Startup folder, or scheduled-task mutation.
+  - Reads existing proof summaries only.
+- Known limitations:
+  - This narrows local internal runtime operations but does not install a production service.
+  - Official-result execution remains guarded by `CLOSED` status, exact approval, and local operator controls.
