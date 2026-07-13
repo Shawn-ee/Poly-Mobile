@@ -1240,10 +1240,13 @@ async function main() {
       internalTesterRuntimeScript.includes("EXPO_PUBLIC_ORDER_MODE = 'server'") &&
       internalTesterRuntimeScript.includes("EXPO_PUBLIC_MARKET_DATA_MODE = 'server'") &&
       internalTesterRuntimeScript.includes("EXPO_PUBLIC_SHOW_ORDERBOOK = '0'") &&
-      internalTesterRuntimeScript.includes("npm --prefix mobile run start -- --host localhost --port $ExpoPort") &&
-      internalTesterRuntimeScript.includes('adb -s $Device.deviceId reverse "tcp:$port" "tcp:$port"') &&
-      internalTesterRuntimeScript.includes("s23_adb_reverse_failed") &&
-      internalTesterRuntimeScript.includes("managerStartedExpoUsesServerMode"),
+        internalTesterRuntimeScript.includes("npm --prefix mobile run start -- --host localhost --port $ExpoPort") &&
+        internalTesterRuntimeScript.includes('adb -s $Device.deviceId reverse "tcp:$port" "tcp:$port"') &&
+        internalTesterRuntimeScript.includes("s23_adb_reverse_failed") &&
+        internalTesterRuntimeScript.includes("managerStartedExpoUsesServerMode") &&
+        internalTesterRuntimeScript.includes("externalExpoServerModeUnverified") &&
+        internalTesterRuntimeScript.includes("external_listener_unverified") &&
+        internalTesterRuntimeScript.includes("Use -Force or stop the old Expo server"),
   };
   const p0 = Object.entries(checks)
     .filter(([, value]) => value !== true)
@@ -1326,8 +1329,8 @@ async function main() {
         checks.currentRuntimeWarmStateProofKnown &&
         checks.oneCommandRuntimeLoopProofKnown &&
         checks.managedS23ServerModeStartupKnown,
-      answer:
-        "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, starts managed Expo in server-backed S23 mode, exposes explicit foreground-vs-installed service ownership plus read-only operator-control boundaries, and cleans up after proof.",
+        answer:
+          "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, starts managed Expo in server-backed S23 mode, flags reused external Expo listeners as unverified, exposes explicit foreground-vs-installed service ownership plus read-only operator-control boundaries, and cleans up after proof.",
       evidence: [
         PATHS.localRuntimeLaunchProfile,
         PATHS.internalTesterWatchdog,

@@ -15313,3 +15313,12 @@ Known limitations:
 - User/runtime interactions supported: when the manager starts Expo itself, it still records the server-mode environment used by the S23 tester app. When it reuses an already-running Expo listener, it now reports `externalExpoServerModeUnverified=true`, `expo.serverModeSource="external_listener_unverified"`, and a P1 warning telling the operator to restart with `-Force` or stop stale Expo if the phone shows fixture/non-server behavior.
 - State transitions: none. This is a no-quota runtime status/reporting change only; it does not start provider refresh, place orders, mutate DB records, or alter mobile UI.
 - Known limitations: the manager cannot introspect environment variables from an arbitrary already-running Expo process. The safe resolution remains restarting Expo through the manager or using `-Force`.
+
+## Cycle XU - Audit Gate For External Expo Runtime Truth
+
+- Feature/runtime worked on: live-runtime phase/completion audit gate for S23 server-backed startup.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/report_odds_api_live_runtime_phase_audit.ts`, `scripts/report_holiwyn_live_runtime_completion_audit.ts`, and the Odds API single-event contract test.
+- User/runtime interactions supported: live-runtime audits now require the runtime manager contract that flags reused external Expo listeners as unverified, so a stale or fixture-mode Expo process cannot be counted as verified server-mode S23 proof.
+- State transitions: none. This is a no-quota audit/source-contract gate only; it does not call provider APIs, start loops, place orders, or mutate DB rows.
+- Known limitations: this gate verifies the source/runtime contract. If the current phone session is reusing an external Expo listener, the operator still needs to restart with `-Force` or stop the old Expo server to obtain verified manager-owned Expo proof.

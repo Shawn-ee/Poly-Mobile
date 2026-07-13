@@ -218,7 +218,10 @@ async function main() {
     internalTesterRuntimeScript.includes("npm --prefix mobile run start -- --host localhost --port $ExpoPort") &&
     internalTesterRuntimeScript.includes('adb -s $Device.deviceId reverse "tcp:$port" "tcp:$port"') &&
     internalTesterRuntimeScript.includes("s23_adb_reverse_failed") &&
-    internalTesterRuntimeScript.includes("managerStartedExpoUsesServerMode");
+    internalTesterRuntimeScript.includes("managerStartedExpoUsesServerMode") &&
+    internalTesterRuntimeScript.includes("externalExpoServerModeUnverified") &&
+    internalTesterRuntimeScript.includes("external_listener_unverified") &&
+    internalTesterRuntimeScript.includes("Use -Force or stop the old Expo server");
   const health = await fetchJson(`${baseUrl}/api/health`);
   const selectedMarketId = text(getPath(entries.liveProof, ["selectedMarket", "id"]));
   const quote = selectedMarketId
@@ -1543,9 +1546,9 @@ async function main() {
         "Manager-owned Expo startup must use server-backed mobile settings and configure S23 ADB reverse so internal tester phones can reach backend events.",
       achieved: managedS23ServerModeStartupKnown,
       evidence: ["scripts/manage_holiwyn_internal_tester_runtime.ps1"],
-      notes:
-        "This gates the source contract without restarting the active S23 proof session: manager-owned Expo sets API/auth base URLs to the backend, enables server order/market data mode, hides order book, and fails readiness if S23 port forwarding fails.",
-    }),
+        notes:
+          "This gates the source contract without restarting the active S23 proof session: manager-owned Expo sets API/auth base URLs to the backend, enables server order/market data mode, hides order book, fails readiness if S23 port forwarding fails, and reports reused external Expo listeners as unverified instead of silently treating them as server-mode proof.",
+      }),
     requirement({
       id: "internal-tester-result-poller-control",
       priority: "P0",
