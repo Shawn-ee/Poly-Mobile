@@ -10855,3 +10855,12 @@ Future migration concern:
 - Closed or narrowed: operators no longer need to put the Odds API key directly on a command line to run the existing live provider proof; the wrapper can read from an ignored `.runtime` secret file.
 - Remaining P1: no live provider refresh was run in this cycle because no key source was present. Mobile-route provider snapshots remain stale under the 90-second display threshold until an explicit refresh runs.
 - Mock/static data: none added. Missing secret reports readiness state only and does not fabricate provider odds.
+
+## Cycle ZV - Clean Expo Onboarding Runtime Proof
+
+- Fields added/confirmed for tooling: no new backend/mobile route fields. Current evidence confirms `one-event-onboarding-summary.redacted.json` reports `verifiedServerModeExpoDuringRuntimeStart=true`, `runtimeLoopsRunningDuringProof=true`, `runtimeLoopsStoppedAfterProof=true`, and S23 model `SM_S911U1`; `one-event-onboarding-runtime-start-summary.redacted.json` reports `managerStartedExpoUsesServerMode=true` and `s23AdbReverseConfiguredOnStart=true`.
+- Closed or narrowed: internal tester onboarding can intentionally replace stale/external Expo with manager-owned server-mode Expo, prove supervisor/result-poller loops running, and clean up proof-owned loops afterward. This narrows the runtime/operator ambiguity without adding production service ownership.
+- Route mismatch: no public mobile route changed. Proof consumes existing `GET /api/health`, `GET /api/internal/live-runtime/status`, quote readiness, lifecycle, and settlement readiness contracts.
+- Schema mismatch: none. No Prisma schema changes. Runtime proof still uses existing durable provider/maker/runtime rows plus redacted harness summaries.
+- Temporary mock/static data: none added. The proof uses cached/replay runtime evidence and explicitly spends no provider quota.
+- Remaining gaps: installed always-on provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1. This cycle must not be interpreted as a production daemon install.
