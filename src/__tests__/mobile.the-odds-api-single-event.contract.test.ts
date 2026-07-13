@@ -16,6 +16,7 @@ describe("The Odds API single-event temporary provider", () => {
   const script = () => readFileSync("scripts/seed_the_odds_api_single_event.ts", "utf8");
   const liveRuntimeScript = () => readFileSync("scripts/start_holiwyn_one_event_live_runtime.ps1", "utf8");
   const internalTesterRuntimeScript = () => readFileSync("scripts/manage_holiwyn_internal_tester_runtime.ps1", "utf8");
+  const runtimeStatusScript = () => readFileSync("scripts/report_odds_api_one_event_runtime_status.ts", "utf8");
   const phaseAuditScript = () => readFileSync("scripts/report_odds_api_live_runtime_phase_audit.ts", "utf8");
   const completionAuditScript = () => readFileSync("scripts/report_holiwyn_live_runtime_completion_audit.ts", "utf8");
   const internalEnvScript = () => readFileSync("scripts/prove_mobile_odds_api_internal_environment.ts", "utf8");
@@ -90,6 +91,17 @@ describe("The Odds API single-event temporary provider", () => {
     expect(completionAuditScript()).toContain("externalExpoServerModeUnverified");
     expect(completionAuditScript()).toContain("ReplaceExternalExpo");
     expect(completionAuditScript()).toContain("scripts/manage_holiwyn_internal_tester_runtime.ps1");
+  });
+
+  it("separates current loop process state from proven runtime capability in one-event status", () => {
+    const source = runtimeStatusScript();
+    expect(source).toContain("currentManagedProcesses");
+    expect(source).toContain("continuityAnswer");
+    expect(source).toContain("SUPERVISOR_STATE_PATH");
+    expect(source).toContain("RESULT_POLLER_STATE_PATH");
+    expect(source).toContain("local .runtime process state plus OS pid check");
+    expect(source).toContain("marketMakerContinuousWhileSupervisorRuns");
+    expect(source).toContain("installedUnattendedService: false");
   });
 
   it("limits discovery to preferred active soccer sport keys", () => {

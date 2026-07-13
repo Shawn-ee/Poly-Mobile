@@ -22,6 +22,8 @@ const RESULT_SETTLEMENT_EXECUTION_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json";
 const RESULT_SETTLEMENT_LIVE_BLOCKED_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json";
+const SUPERVISOR_STATE_PATH = ".runtime/one-event-live-supervisor/supervisor-process-state.json";
+const RESULT_POLLER_STATE_PATH = ".runtime/one-event-result-poller/result-poller-process-state.json";
 
 const argValue = (name: string) => {
   const prefix = `--${name}=`;
@@ -81,6 +83,54 @@ function getPath(source: unknown, keys: string[]) {
   return cursor;
 }
 
+function numberValue(value: unknown) {
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+function pidRunning(pid: number | null) {
+  if (!pid) return false;
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch (error) {
+    return (error as NodeJS.ErrnoException).code === "EPERM";
+  }
+}
+
+async function managedProcessState(params: { statePath: string; kind: "supervisor" | "result-poller" }) {
+  const state = await readJson(params.statePath);
+  const pid = numberValue(state?.pid);
+  const running = pidRunning(pid);
+  const runProviderProof = bool(getPath(state, ["runProviderProof"]));
+  const runLiveResultIngestion = bool(getPath(state, ["runLiveResultIngestion"]));
+  return {
+    kind: params.kind,
+    checked: true,
+    statePath: params.statePath,
+    known: state != null,
+    pid,
+    running,
+    startedAt: stringValue(state?.startedAt),
+    continuous: bool(state?.continuous),
+    maxIterations: numberValue(state?.maxIterations),
+    intervalSeconds: numberValue(state?.intervalSeconds),
+    usesProviderQuota: params.kind === "supervisor" ? runProviderProof || runLiveResultIngestion : runLiveResultIngestion,
+    modes:
+      params.kind === "supervisor"
+        ? {
+            providerProof: runProviderProof,
+            staleGuard: bool(getPath(state, ["runStaleGuard"])),
+            staleGuardEnforced: bool(getPath(state, ["enforceStaleGuard"])),
+            liveResultIngestion: runLiveResultIngestion,
+            approvedResultSettlement: bool(getPath(state, ["runApprovedResultSettlement"])),
+          }
+        : {
+            liveResultIngestion: runLiveResultIngestion,
+            approvedResultSettlement: bool(getPath(state, ["runApprovedResultSettlement"])),
+          },
+  };
+}
+
 function ageHours(generatedAt: unknown) {
   const text = stringValue(generatedAt);
   if (!text) return null;
@@ -117,6 +167,14 @@ async function main() {
   const schedulerRun = await readJson(SCHEDULER_RUN_PATH);
   const resultSettlementExecution = await readJson(RESULT_SETTLEMENT_EXECUTION_PATH);
   const resultSettlementLiveBlocked = await readJson(RESULT_SETTLEMENT_LIVE_BLOCKED_PATH);
+  const supervisorProcess = await managedProcessState({
+    statePath: SUPERVISOR_STATE_PATH,
+    kind: "supervisor",
+  });
+  const resultPollerProcess = await managedProcessState({
+    statePath: RESULT_POLLER_STATE_PATH,
+    kind: "result-poller",
+  });
 
   const selectedMarketId =
     stringValue(getPath(makerSeed, ["selectedMarket", "id"])) ??
@@ -213,6 +271,33 @@ async function main() {
   const p0Gaps = Object.entries(checks)
     .filter(([, value]) => !value)
     .map(([key]) => key);
+  const currentManagedProcesses = {
+    checked: true,
+    supervisor: supervisorProcess,
+    resultPoller: resultPollerProcess,
+    allLoopsRunning: supervisorProcess.running && resultPollerProcess.running,
+    quotaSpendingLoopRunning: supervisorProcess.usesProviderQuota || resultPollerProcess.usesProviderQuota,
+    localTesterReadyRightNow:
+      checks.backendHealthy &&
+      checks.liveProofFresh &&
+      checks.repeatedSupervisorCapabilitiesKnown &&
+      supervisorProcess.running &&
+      resultPollerProcess.running &&
+      !supervisorProcess.usesProviderQuota &&
+      !resultPollerProcess.usesProviderQuota,
+    source: "local .runtime process state plus OS pid check",
+  };
+  const continuityAnswer = {
+    latestSupervisorRunProfileOnly: true,
+    currentLoopsRunningNow: currentManagedProcesses.allLoopsRunning,
+    currentLoopsQuotaSpending: currentManagedProcesses.quotaSpendingLoopRunning,
+    marketMakerContinuousWhileSupervisorRuns: provenCapabilities.makerReseedWhileSupervisorRuns,
+    lifecycleSchedulerContinuousWhileSupervisorRuns: provenCapabilities.lifecycleSchedulerWhileSupervisorRuns,
+    resultPollerContinuousWhileRunnerRuns: provenCapabilities.resultPollingContinuousWhileRunnerRuns,
+    installedUnattendedService: false,
+    operatorMeaning:
+      "Holiwyn has proven continuous local foreground/background loops while the supervisor/result-poller are running; it does not have an installed unattended production daemon.",
+  };
 
   const summary = {
     generatedAt: new Date().toISOString(),
@@ -249,6 +334,8 @@ async function main() {
         "Provider refresh can run under the supervisor only with explicit live-provider flags and quota caps; cached supervisor proof spends no provider quota.",
       ],
     },
+    currentManagedProcesses,
+    continuityAnswer,
     event: liveProof?.event ?? runtimeLaunch?.provider?.proof?.event ?? null,
     selectedMarket: liveProof?.selectedMarket ?? makerSeed?.selectedMarket ?? null,
     backend: {

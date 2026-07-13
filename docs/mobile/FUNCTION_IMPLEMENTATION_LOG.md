@@ -15429,3 +15429,14 @@ Known limitations:
 - API/data dependencies: `GET /api/internal/live-runtime/status`, result-review and settlement-queue audit routes, `CanonicalEvent`, `OfficialResultReview`, Prisma `DATABASE_URL`, and redacted runtime summaries under `docs/mobile/harness/odds-api-live-runtime/`.
 - Proof: `npm run mobile:one-event-result-review-trail`, `npm run mobile:one-event-phase-audit`, and `npm run mobile:live-runtime-completion-audit` passed with zero open P0 runtime gaps.
 - Known limitations: this is local runtime proof/audit preservation only. Installed unattended service ownership and production official-result auto-settlement remain P1 gaps.
+
+## Cycle RUNTIMETRUTH - Current Loop State vs Proven Continuity
+
+- Feature/runtime worked on: one-event runtime status clarity for the Spain vs France local internal tester pipeline.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/report_odds_api_one_event_runtime_status.ts` and `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`.
+- User/runtime interactions supported: the runtime status summary now separates the latest supervisor run profile, previously proven continuous local capability, and current `.runtime` process-state/OS pid visibility. Operators can see whether supervisor/result-poller loops are running right now, whether any running loop is quota-spending, and what “continuous” means for local internal testing.
+- State transitions: none. The report reads local proof artifacts, backend health, quote route, and process-state files only. It does not call The Odds API, place orders, mutate markets, start loops, or execute settlement.
+- API/data dependencies: reads `GET /api/health`, `GET /api/markets/:marketId/quote`, local `.runtime/one-event-live-supervisor/supervisor-process-state.json`, `.runtime/one-event-result-poller/result-poller-process-state.json`, and existing redacted runtime proof summaries.
+- Proof: `npm run mobile:one-event-runtime-status`, `npm run mobile:one-event-phase-audit`, and `npm run mobile:live-runtime-completion-audit` passed with zero open P0 runtime gaps. The status summary reports `currentManagedProcesses.allLoopsRunning=false`, `quotaSpendingLoopRunning=false`, and `continuityAnswer.marketMakerContinuousWhileSupervisorRuns=true`.
+- Known limitations: this is runtime truth/reporting only. It does not install an unattended daemon and does not change the guarded active-event settlement policy.

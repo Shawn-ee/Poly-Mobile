@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T10:27:01.087Z",
+  "generatedAt": "2026-07-13T10:38:17.300Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -34,6 +34,60 @@
       "Provider refresh can run under the supervisor only with explicit live-provider flags and quota caps; cached supervisor proof spends no provider quota."
     ]
   },
+  "currentManagedProcesses": {
+    "checked": true,
+    "supervisor": {
+      "kind": "supervisor",
+      "checked": true,
+      "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
+      "known": true,
+      "pid": 6976,
+      "running": false,
+      "startedAt": "2026-07-13T10:09:46.1408450Z",
+      "continuous": true,
+      "maxIterations": 0,
+      "intervalSeconds": 15,
+      "usesProviderQuota": false,
+      "modes": {
+        "providerProof": false,
+        "staleGuard": false,
+        "staleGuardEnforced": false,
+        "liveResultIngestion": false,
+        "approvedResultSettlement": false
+      }
+    },
+    "resultPoller": {
+      "kind": "result-poller",
+      "checked": true,
+      "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
+      "known": true,
+      "pid": 61300,
+      "running": false,
+      "startedAt": "2026-07-13T10:09:46.7296371Z",
+      "continuous": true,
+      "maxIterations": 0,
+      "intervalSeconds": 1,
+      "usesProviderQuota": false,
+      "modes": {
+        "liveResultIngestion": false,
+        "approvedResultSettlement": false
+      }
+    },
+    "allLoopsRunning": false,
+    "quotaSpendingLoopRunning": false,
+    "localTesterReadyRightNow": false,
+    "source": "local .runtime process state plus OS pid check"
+  },
+  "continuityAnswer": {
+    "latestSupervisorRunProfileOnly": true,
+    "currentLoopsRunningNow": false,
+    "currentLoopsQuotaSpending": false,
+    "marketMakerContinuousWhileSupervisorRuns": true,
+    "lifecycleSchedulerContinuousWhileSupervisorRuns": true,
+    "resultPollerContinuousWhileRunnerRuns": true,
+    "installedUnattendedService": false,
+    "operatorMeaning": "Holiwyn has proven continuous local foreground/background loops while the supervisor/result-poller are running; it does not have an installed unattended production daemon."
+  },
   "event": {
     "providerEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
     "sportKey": "soccer_fifa_world_cup",
@@ -60,7 +114,7 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-13T10:27:01.085Z"
+        "timestamp": "2026-07-13T10:38:17.299Z"
       },
       "error": null
     }
@@ -68,7 +122,7 @@
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveProofGeneratedAt": "2026-07-13T09:24:03.509Z",
-    "liveProofAgeHours": 1.05,
+    "liveProofAgeHours": 1.24,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
@@ -92,7 +146,7 @@
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
     "makerSeedGeneratedAt": "2026-07-13T08:25:46.639Z",
-    "makerSeedAgeHours": 2.02,
+    "makerSeedAgeHours": 2.21,
     "quoteRoute": {
       "ok": true,
       "status": 200,
@@ -129,7 +183,7 @@
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
     "schedulerGeneratedAt": "2026-07-13T10:11:21.742Z",
-    "schedulerAgeHours": 0.26,
+    "schedulerAgeHours": 0.45,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 3
@@ -138,9 +192,9 @@
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
     "resultSettlementExecutionGeneratedAt": "2026-07-12T11:52:39.122Z",
-    "resultSettlementExecutionAgeHours": 22.57,
+    "resultSettlementExecutionAgeHours": 22.76,
     "resultSettlementLiveBlockedGeneratedAt": "2026-07-12T11:52:37.215Z",
-    "resultSettlementLiveBlockedAgeHours": 22.57,
+    "resultSettlementLiveBlockedAgeHours": 22.76,
     "executionRequiresMarketStatus": "CLOSED",
     "blockedExecutionReason": "market_must_be_closed_before_result_settlement:LIVE",
     "activeTesterEventMutated": false,
