@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T21:50:06.038Z",
+  "generatedAt": "2026-07-13T01:50:24.263Z",
   "scope": "holiwyn-local-runtime-launch-profile",
   "pass": true,
   "launchProfiles": {
@@ -62,16 +62,47 @@
     "localRuntimeStartupInstall": "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-install-uninstall-summary.redacted.json"
   },
   "artifactAgesHours": {
-    "runtimeStatus": 0.1,
-    "internalTesterRuntime": 1.49,
-    "supervisorProcess": 0.73,
-    "continuousSupervisor": 2.29,
-    "resultPollerProcess": 0.73,
-    "continuousResultPoller": 8.46,
-    "localRuntimeTask": 4.54,
-    "localRuntimeTaskInstall": 4.53,
-    "localRuntimeStartup": 9.52,
-    "localRuntimeStartupInstall": 8.05
+    "runtimeStatus": 0.11,
+    "internalTesterRuntime": 1.35,
+    "supervisorProcess": 1.35,
+    "continuousSupervisor": 6.3,
+    "resultPollerProcess": 1.35,
+    "continuousResultPoller": 12.46,
+    "localRuntimeTask": 8.54,
+    "localRuntimeTaskInstall": 8.54,
+    "localRuntimeStartup": 13.53,
+    "localRuntimeStartupInstall": 12.06
+  },
+  "ownershipProof": {
+    "startup": {
+      "planPass": true,
+      "installProofPass": true,
+      "installWorks": true,
+      "uninstallWorks": true,
+      "launcherInstalledNow": false,
+      "proofLeavesNoLauncher": true,
+      "includesSupervisorAndResultPoller": true,
+      "userLevelStartupFallback": true,
+      "productionService": false
+    },
+    "scheduledTask": {
+      "planPass": true,
+      "installAuditPass": true,
+      "installBlockedByWindowsPermission": true,
+      "installedNow": false,
+      "proofLeavesNoTask": true,
+      "includesResultPoller": true,
+      "includesApprovedSettlement": true,
+      "usesActiveApprovalPath": true,
+      "productionService": false
+    },
+    "foregroundProcesses": {
+      "internalTesterRuntimeStatusPass": true,
+      "continuousSupervisorProofPass": true,
+      "continuousResultPollerProofPass": true,
+      "noProviderQuotaByDefault": true,
+      "activeTesterSettlementNotExecuted": true
+    }
   },
   "checks": {
     "runtimeStatusPass": true,

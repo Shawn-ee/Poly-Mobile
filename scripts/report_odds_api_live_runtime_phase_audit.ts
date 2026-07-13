@@ -617,6 +617,55 @@ async function main() {
         ]) === false &&
         typeof getPath(localRuntimeStatusBody, ["serviceOwnership", "localLaunch", "liveProviderQuotaMode"]) ===
           "string" &&
+        getPath(localRuntimeStatusBody, [
+          "serviceOwnership",
+          "localLaunch",
+          "ownershipProof",
+          "startup",
+          "installProofPass",
+        ]) === true &&
+        typeof getPath(localRuntimeStatusBody, [
+          "serviceOwnership",
+          "localLaunch",
+          "ownershipProof",
+          "startup",
+          "launcherInstalledNow",
+        ]) === "boolean" &&
+        getPath(localRuntimeStatusBody, [
+          "serviceOwnership",
+          "localLaunch",
+          "ownershipProof",
+          "startup",
+          "proofLeavesNoLauncher",
+        ]) === true &&
+        getPath(localRuntimeStatusBody, [
+          "serviceOwnership",
+          "localLaunch",
+          "ownershipProof",
+          "scheduledTask",
+          "installAuditPass",
+        ]) === true &&
+        typeof getPath(localRuntimeStatusBody, [
+          "serviceOwnership",
+          "localLaunch",
+          "ownershipProof",
+          "scheduledTask",
+          "installBlockedByWindowsPermission",
+        ]) === "boolean" &&
+        typeof getPath(localRuntimeStatusBody, [
+          "serviceOwnership",
+          "localLaunch",
+          "ownershipProof",
+          "scheduledTask",
+          "installedNow",
+        ]) === "boolean" &&
+        getPath(localRuntimeStatusBody, [
+          "serviceOwnership",
+          "localLaunch",
+          "ownershipProof",
+          "foregroundProcesses",
+          "noProviderQuotaByDefault",
+        ]) === true &&
         getPath(localRuntimeStatusBody, ["serviceOwnership", "liveProviderMode", "statusRouteSpendsProviderQuota"]) ===
           false &&
         getPath(localRuntimeStatusBody, [

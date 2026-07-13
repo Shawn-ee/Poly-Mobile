@@ -369,6 +369,69 @@ async function main() {
         "localRuntimeStatus",
         "body",
         "serviceOwnership",
+        "localLaunch",
+        "ownershipProof",
+        "startup",
+        "installProofPass",
+      ]) === true &&
+      typeof getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "localLaunch",
+        "ownershipProof",
+        "startup",
+        "launcherInstalledNow",
+      ]) === "boolean" &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "localLaunch",
+        "ownershipProof",
+        "startup",
+        "proofLeavesNoLauncher",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "localLaunch",
+        "ownershipProof",
+        "scheduledTask",
+        "installAuditPass",
+      ]) === true &&
+      typeof getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "localLaunch",
+        "ownershipProof",
+        "scheduledTask",
+        "installBlockedByWindowsPermission",
+      ]) === "boolean" &&
+      typeof getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "localLaunch",
+        "ownershipProof",
+        "scheduledTask",
+        "installedNow",
+      ]) === "boolean" &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "localLaunch",
+        "ownershipProof",
+        "foregroundProcesses",
+        "noProviderQuotaByDefault",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
         "liveProviderMode",
         "statusRouteSpendsProviderQuota",
       ]) === false &&

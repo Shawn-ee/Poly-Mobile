@@ -749,6 +749,7 @@ function buildServiceOwnership(params: {
       liveProviderInternalTesterCommand: stringValue(liveProviderProfile.internalTesterCommand),
       liveProviderDefaultForInternalTesting: booleanValue(liveProviderProfile.defaultForInternalTesting) === true,
       liveProviderQuotaMode: stringValue(liveProviderProfile.quotaMode),
+      ownershipProof: getPath(params.localRuntimeLaunchProfile, ["ownershipProof"]) ?? null,
     },
     durableEvidence: {
       providerRefreshRunRecorded: params.providerRefreshRun != null,

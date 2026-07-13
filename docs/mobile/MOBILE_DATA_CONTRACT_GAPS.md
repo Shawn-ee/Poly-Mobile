@@ -10666,3 +10666,12 @@ Future migration concern:
 - Schema mismatch: none. Production should eventually store operator actions and service ownership as durable authenticated records rather than local command-string projections.
 - Temporary mock/static data: none added. The audit reads the existing status route and spends no provider quota.
 - Remaining gaps: installed unattended service ownership, authenticated production operator controls, and durable job execution records remain P1/P2.
+
+## Cycle XH - Runtime Ownership Proof Projection
+
+- Closed or narrowed: local runtime status now exposes structured ownership proof beside the launch commands, so operators and audit gates can distinguish current install truth, proof-only cleanup truth, Windows scheduled-task permission blockers, and foreground process proof.
+- Fields required by local runtime tooling: `serviceOwnership.localLaunch.ownershipProof.startup.installProofPass`, `startup.launcherInstalledNow`, `startup.proofLeavesNoLauncher`, `scheduledTask.installAuditPass`, `scheduledTask.installBlockedByWindowsPermission`, `scheduledTask.installedNow`, `scheduledTask.proofLeavesNoTask`, `foregroundProcesses.noProviderQuotaByDefault`, and `foregroundProcesses.activeTesterSettlementNotExecuted`.
+- Route mismatch: this remains a local/dev-only status projection. It does not install Startup entries, install scheduled tasks, authenticate operators, or start/stop processes.
+- Schema mismatch: none. Production should eventually store service ownership and operator job state as durable authenticated records rather than local JSON proof projections.
+- Temporary mock/static data: none added. The profile reads existing proof artifacts and spends no provider quota.
+- Remaining gaps: installed unattended production service ownership and authenticated production operator controls remain P1/P2.

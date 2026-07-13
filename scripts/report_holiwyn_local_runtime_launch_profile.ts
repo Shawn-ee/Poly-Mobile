@@ -123,6 +123,41 @@ async function main() {
       getPath(entries.continuousResultPoller, ["runtimeTruth", "activeTesterSettlementExecution"]) === false,
   };
 
+  const ownershipProof = {
+    startup: {
+      planPass: checks.startupPlanPresent,
+      installProofPass: checks.startupInstallProofPass,
+      installWorks:
+        getPath(entries.localRuntimeStartupInstall, ["runtimeTruth", "startupLauncherInstallWorks"]) === true,
+      uninstallWorks:
+        getPath(entries.localRuntimeStartupInstall, ["runtimeTruth", "startupLauncherUninstallWorks"]) === true,
+      launcherInstalledNow:
+        getPath(entries.localRuntimeStartup, ["runtimeTruth", "installedStartupLauncher"]) === true,
+      proofLeavesNoLauncher: checks.startupProofLeavesNoLauncher,
+      includesSupervisorAndResultPoller: checks.startupProofIncludesSupervisorAndResultPoller,
+      userLevelStartupFallback: true,
+      productionService: false,
+    },
+    scheduledTask: {
+      planPass: checks.scheduledTaskPlanPresent,
+      installAuditPass: checks.scheduledTaskInstallAuditPass,
+      installBlockedByWindowsPermission: scheduledTaskRegistrationDenied,
+      installedNow: getPath(entries.localRuntimeTask, ["runtimeTruth", "installedScheduledTask"]) === true,
+      proofLeavesNoTask: checks.scheduledTaskNotInstalled,
+      includesResultPoller: checks.scheduledTaskProofIncludesResultPoller,
+      includesApprovedSettlement: checks.scheduledTaskProofIncludesApprovedSettlement,
+      usesActiveApprovalPath: checks.scheduledTaskProofUsesActiveApprovalPath,
+      productionService: false,
+    },
+    foregroundProcesses: {
+      internalTesterRuntimeStatusPass: checks.internalTesterRuntimeStatusPass,
+      continuousSupervisorProofPass: checks.continuousSupervisorProofPass,
+      continuousResultPollerProofPass: checks.continuousResultPollerProofPass,
+      noProviderQuotaByDefault: checks.providerQuotaNotUsedByLaunchProofs,
+      activeTesterSettlementNotExecuted: checks.activeTesterSettlementNotExecuted,
+    },
+  };
+
   const p0 = Object.entries(checks)
     .filter(([, value]) => !value)
     .map(([key]) => key);
@@ -179,6 +214,7 @@ async function main() {
     artifactAgesHours: Object.fromEntries(
       Object.entries(entries).map(([key, value]) => [key, ageHours(value?.generatedAt)]),
     ),
+    ownershipProof,
     checks,
     runtimeTruth: {
       localOperatorLaunchProfileDocumented: true,

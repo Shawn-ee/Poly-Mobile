@@ -547,6 +547,37 @@ const makeLaunchProfile = (generatedAt = nowIso()) => ({
     installedProductionService: false,
     fakeTokenOnly: true,
   },
+  ownershipProof: {
+    startup: {
+      planPass: true,
+      installProofPass: true,
+      installWorks: true,
+      uninstallWorks: true,
+      launcherInstalledNow: false,
+      proofLeavesNoLauncher: true,
+      includesSupervisorAndResultPoller: true,
+      userLevelStartupFallback: true,
+      productionService: false,
+    },
+    scheduledTask: {
+      planPass: true,
+      installAuditPass: true,
+      installBlockedByWindowsPermission: true,
+      installedNow: false,
+      proofLeavesNoTask: true,
+      includesResultPoller: true,
+      includesApprovedSettlement: true,
+      usesActiveApprovalPath: true,
+      productionService: false,
+    },
+    foregroundProcesses: {
+      internalTesterRuntimeStatusPass: true,
+      continuousSupervisorProofPass: true,
+      continuousResultPollerProofPass: true,
+      noProviderQuotaByDefault: true,
+      activeTesterSettlementNotExecuted: true,
+    },
+  },
   gaps: {
     p0: [],
     p1: ["not a production service"],
@@ -1127,6 +1158,21 @@ describe("live runtime status service", () => {
         liveProviderInternalTesterCommand: "npm run mobile:internal-tester-runtime:live-provider-start",
         liveProviderDefaultForInternalTesting: false,
         liveProviderQuotaMode: "requires THE_ODDS_API_KEY and is capped",
+        ownershipProof: {
+          startup: {
+            installProofPass: true,
+            launcherInstalledNow: false,
+            proofLeavesNoLauncher: true,
+          },
+          scheduledTask: {
+            installAuditPass: true,
+            installBlockedByWindowsPermission: true,
+            installedNow: false,
+          },
+          foregroundProcesses: {
+            noProviderQuotaByDefault: true,
+          },
+        },
       },
       durableEvidence: {
         providerRefreshRunRecorded: true,
