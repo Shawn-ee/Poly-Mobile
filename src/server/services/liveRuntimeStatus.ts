@@ -725,6 +725,28 @@ function buildServiceOwnership(params: {
   const liveProviderProfile = objectValue(
     getPath(params.localRuntimeLaunchProfile, ["launchProfiles", "liveProviderProfile"]),
   );
+  const ownershipProof = objectValue(getPath(params.localRuntimeLaunchProfile, ["ownershipProof"]));
+  const startupProof = objectValue(ownershipProof.startup);
+  const scheduledTaskProof = objectValue(ownershipProof.scheduledTask);
+  const foregroundProof = objectValue(ownershipProof.foregroundProcesses);
+  const startupFallbackProven =
+    booleanValue(startupProof.installProofPass) === true &&
+    booleanValue(startupProof.proofLeavesNoLauncher) === true;
+  const scheduledTaskPlanProven = booleanValue(scheduledTaskProof.installAuditPass) === true;
+  const scheduledTaskInstallBlockedByWindowsPermission =
+    booleanValue(scheduledTaskProof.installBlockedByWindowsPermission) === true;
+  const scheduledTaskInstalledNow = booleanValue(scheduledTaskProof.installedNow) === true;
+  const startupLauncherInstalledNow = booleanValue(startupProof.launcherInstalledNow) === true;
+  const noProviderQuotaByDefault = booleanValue(foregroundProof.noProviderQuotaByDefault) === true;
+  const unattendedClassification = installedOsService
+    ? "installed_os_service_ready"
+    : startupFallbackProven && scheduledTaskPlanProven
+      ? scheduledTaskInstallBlockedByWindowsPermission
+        ? "local_user_startup_fallback_ready_scheduled_task_permission_blocked"
+        : "local_user_startup_fallback_ready_scheduled_task_optional"
+      : foregroundSupervisorProven && foregroundResultPollerProven
+        ? "manual_foreground_runtime_only"
+        : "runtime_ownership_incomplete";
 
   return {
     checked: true,
@@ -775,7 +797,50 @@ function buildServiceOwnership(params: {
       liveProviderInternalTesterCommand: stringValue(liveProviderProfile.internalTesterCommand),
       liveProviderDefaultForInternalTesting: booleanValue(liveProviderProfile.defaultForInternalTesting) === true,
       liveProviderQuotaMode: stringValue(liveProviderProfile.quotaMode),
-      ownershipProof: getPath(params.localRuntimeLaunchProfile, ["ownershipProof"]) ?? null,
+      ownershipProof: Object.keys(ownershipProof).length > 0 ? ownershipProof : null,
+    },
+    unattendedReadiness: {
+      checked: true,
+      classification: unattendedClassification,
+      localInternalTesterReady:
+        params.localCapabilityReady &&
+        foregroundSupervisorProven &&
+        foregroundResultPollerProven &&
+        startupFallbackProven &&
+        noProviderQuotaByDefault,
+      installedProductionServiceReady: installedOsService,
+      productionDaemonInstalled: installedOsService,
+      foregroundLoopsProven: foregroundSupervisorProven && foregroundResultPollerProven,
+      startupFallbackProven,
+      startupLauncherInstalledNow,
+      noPersistentStartupLauncherAfterProof: booleanValue(startupProof.proofLeavesNoLauncher) === true,
+      scheduledTaskPlanProven,
+      scheduledTaskInstallBlockedByWindowsPermission,
+      scheduledTaskInstalledNow,
+      noPersistentScheduledTaskAfterProof: scheduledTaskPlanProven && !scheduledTaskInstalledNow,
+      noProviderQuotaByDefault,
+      recommendedInternalMode:
+        installedOsService
+          ? "installed_os_service"
+          : startupFallbackProven
+            ? "user_startup_fallback_or_manual_cached_runtime"
+            : "manual_foreground_cached_runtime",
+      nextOperatorAction:
+        installedOsService
+          ? "monitor_installed_service"
+          : startupFallbackProven
+            ? "use_cached_start_for_testing_or_install_user_startup_launcher_if_desired"
+            : "run_manual_cached_internal_tester_runtime",
+      p0:
+        params.localCapabilityReady && (installedOsService || startupFallbackProven || foregroundSupervisorProven)
+          ? []
+          : ["local_runtime_launch_path_not_proven"],
+      p1: [
+        ...(installedOsService ? [] : ["installed_production_service_missing"]),
+        ...(scheduledTaskInstallBlockedByWindowsPermission ? ["scheduled_task_registration_permission_blocked"] : []),
+      ],
+      note:
+        "This classifies long-running ownership for internal testing. Local internal testing can use foreground/manual or user Startup fallback without provider quota; production daemon ownership remains P1 until installedOsService is true.",
     },
     durableEvidence: {
       providerRefreshRunRecorded: params.providerRefreshRun != null,

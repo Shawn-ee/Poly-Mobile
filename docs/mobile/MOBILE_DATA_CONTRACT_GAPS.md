@@ -10834,3 +10834,12 @@ Future migration concern:
 - Schema mismatch: none. No database schema or route contract changed in this gate cycle.
 - Temporary mock/static data: none added. Missing or invalid snapshot fails audits.
 - Remaining gaps: installed unattended runtime service and production official-result auto-settlement remain P1.
+
+## Cycle ZO - Unattended Runtime Readiness Classification
+
+- Closed or narrowed: `GET /api/internal/live-runtime/status` now has a first-class `serviceOwnership.unattendedReadiness` contract so runtime reports do not rely on prose to distinguish internal tester readiness from installed production service ownership.
+- Fields added/confirmed for tooling: `classification`, `localInternalTesterReady`, `installedProductionServiceReady`, `productionDaemonInstalled`, `foregroundLoopsProven`, `startupFallbackProven`, `scheduledTaskPlanProven`, `scheduledTaskInstallBlockedByWindowsPermission`, `scheduledTaskInstalledNow`, `noProviderQuotaByDefault`, `recommendedInternalMode`, `nextOperatorAction`, `p0`, and `p1`.
+- Route mismatch: no public/mobile route changed. This remains an internal local status route and does not start services or call providers.
+- Schema mismatch: none. The field is derived from existing proof artifacts and durable runtime rows.
+- Temporary mock/static data: none added. Tests mock existing runtime proof artifacts only.
+- Remaining gaps: production needs a real installed/hosted service with monitoring and ownership evidence. Current scheduled-task install remains permission-blocked in this Windows context; user Startup fallback is suitable for local internal testing only.

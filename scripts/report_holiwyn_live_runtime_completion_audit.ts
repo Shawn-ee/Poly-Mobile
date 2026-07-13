@@ -502,6 +502,115 @@ async function main() {
         "localRuntimeStatus",
         "body",
         "serviceOwnership",
+        "unattendedReadiness",
+        "checked",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "unattendedReadiness",
+        "classification",
+      ]) === "local_user_startup_fallback_ready_scheduled_task_permission_blocked" &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "unattendedReadiness",
+        "localInternalTesterReady",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "unattendedReadiness",
+        "installedProductionServiceReady",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "unattendedReadiness",
+        "productionDaemonInstalled",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "unattendedReadiness",
+        "foregroundLoopsProven",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "unattendedReadiness",
+        "startupFallbackProven",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "unattendedReadiness",
+        "scheduledTaskPlanProven",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "unattendedReadiness",
+        "scheduledTaskInstallBlockedByWindowsPermission",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "unattendedReadiness",
+        "noProviderQuotaByDefault",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "unattendedReadiness",
+        "recommendedInternalMode",
+      ]) === "user_startup_fallback_or_manual_cached_runtime" &&
+      Array.isArray(
+        getPath(entries.phaseAudit, [
+          "localRuntimeStatus",
+          "body",
+          "serviceOwnership",
+          "unattendedReadiness",
+          "p0",
+        ]),
+      ) &&
+      (getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "unattendedReadiness",
+        "p0",
+      ]) as unknown[]).length === 0 &&
+      Array.isArray(
+        getPath(entries.phaseAudit, [
+          "localRuntimeStatus",
+          "body",
+          "serviceOwnership",
+          "unattendedReadiness",
+          "p1",
+        ]),
+      ) &&
+      (getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "unattendedReadiness",
+        "p1",
+      ]) as unknown[]).includes("installed_production_service_missing") &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
         "liveProviderMode",
         "statusRouteSpendsProviderQuota",
       ]) === false &&

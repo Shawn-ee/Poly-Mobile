@@ -15593,3 +15593,14 @@ Known limitations:
 - API/data dependencies: consumes `docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json`, which itself reads `GET /api/health` and `GET /api/internal/live-runtime/status`.
 - Proof: pending validation in Cycle ZN audit doc.
 - Known limitations: still no installed unattended service and no production official-result auto-settlement.
+
+## Cycle ZO - Unattended Runtime Readiness Classification
+
+- Feature/runtime worked on: backend live-runtime ownership clarity for the Spain vs France one-event internal tester pipeline.
+- Frontend components touched: none.
+- Important functions/services touched: `src/server/services/liveRuntimeStatus.ts`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, `scripts/report_holiwyn_live_runtime_completion_audit.ts`, and `src/__tests__/liveRuntimeStatus.service.test.ts`.
+- User/runtime interactions supported: `GET /api/internal/live-runtime/status` now exposes `serviceOwnership.unattendedReadiness`, a compact decision object that says whether internal testing is ready through foreground/user Startup fallback, whether scheduled-task registration is blocked by Windows permissions, and whether an installed production daemon exists.
+- State transitions: none. The status route remains read-only for market/provider/order state; it does not call The Odds API, install a service, start loops, place orders, or execute settlement.
+- API/data dependencies: consumes existing launch-profile ownership proof, current supervisor/result-poller process status, runtime heartbeat/run rows, provider refresh run rows, and market maker quote run rows.
+- Proof: phase/completion audits now require the classification, `localInternalTesterReady=true`, `productionDaemonInstalled=false`, `scheduledTaskInstallBlockedByWindowsPermission=true`, and no P0 ownership gaps.
+- Known limitations: this closes ambiguity, not the P1 itself. Installed production service ownership remains P1 until a real daemon/service is installed and monitored.

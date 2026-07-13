@@ -85,7 +85,8 @@
 52. To remove the user Startup launcher, run `npm run mobile:local-runtime-startup -- -Action uninstall -Apply`.
 53. To audit that the user Startup launcher can install and uninstall while leaving no launcher behind, run `npm run mobile:local-runtime-startup:install-proof`. The proof uses `HoliwynInternalTesterRuntimeProof.cmd`, includes the approved-settlement supervisor profile plus the dedicated result poller, and spends no provider quota.
 54. To see the recommended local internal tester launch profile, run `npm run mobile:local-runtime-launch-profile`. It is read-only, spends no provider quota, recommends the user Startup fallback in the current Windows context, records the scheduled-task permission blocker, and lists the manual foreground plus live-provider opt-in commands.
-55. Do not settle the active tester event automatically unless official result input and admin review are added.
+55. To see the machine-readable long-running ownership decision, read `serviceOwnership.unattendedReadiness` from `GET /api/internal/live-runtime/status`. Current expected classification is `local_user_startup_fallback_ready_scheduled_task_permission_blocked`: local internal testing is ready through foreground/runtime-manager or user Startup fallback, scheduled-task registration is blocked by Windows permissions in this context, and installed production daemon ownership remains P1.
+56. Do not settle the active tester event automatically unless official result input and admin review are added.
 
 ## Completion Boundary
 
