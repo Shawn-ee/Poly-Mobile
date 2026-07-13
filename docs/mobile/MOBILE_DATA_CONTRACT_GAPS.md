@@ -10616,3 +10616,12 @@ Future migration concern:
 - Schema mismatch: none. The proof reads existing open `Order` rows and writes existing `ProviderRefreshRun`/`MarketMakerQuoteRun` proof rows; no migration is required.
 - Temporary mock/static data: none added. The selected Spain vs. France event and quotes came from the explicit Odds API provider refresh; trading remains local fake-token exchange state.
 - Remaining gaps: provider refresh remains opt-in and quota-gated, not a default no-quota loop. Installed unattended runtime service, multi-event provider polling, production quota monitoring, and official-result auto-settlement remain P1/P2.
+
+## Cycle XF - Structured Settlement Operator Plan
+
+- Closed or narrowed: settlement queue/status responses now include a machine-readable `operatorExecutionPlan`, so local tooling no longer has to scrape a command string to know whether settlement is blocked, ready, or already executed.
+- Fields added for future operator/runtime contracts: `operatorExecutionPlan.version`, `mode`, `executableNow`, `dryRunFirst`, `providerQuotaRequired`, `exactConfirmationExposed`, `exactConfirmationStored`, `activeMarketExecutionAttempted`, `prerequisites`, `blockerKeys`, and redacted command metadata.
+- Route mismatch: the plan is still exposed only through local/dev read-only runtime routes. It is not a public mobile route and not an execution endpoint.
+- Schema mismatch: no new table was added. Production should eventually store operator execution plans/attempts as durable authenticated records instead of deriving them from `OfficialResultReview` and market state at read time.
+- Temporary mock/static data: none added. The plan is derived from durable review rows and current market status, spends no provider quota, and redacts exact confirmation data.
+- Remaining gaps: authenticated operator UI/actions, installed official-result polling, and production active-event execution controls remain P1/P2.

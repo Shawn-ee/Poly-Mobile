@@ -99,6 +99,69 @@ const operatorActionFor = (params: {
   };
 };
 
+const operatorExecutionPlanFor = (params: {
+  nextSafeAction: string;
+  marketStatus: string | null;
+  approvalStatus: string;
+  hasPreflightAudit: boolean;
+  hasApprovalAudit: boolean;
+  hasExecutionAudit: boolean;
+  confirmationRequiredKnown: boolean;
+}) => {
+  const prerequisites = {
+    marketClosed: params.marketStatus === "CLOSED",
+    approvedReview: params.approvalStatus === "approved",
+    preflightAuditPresent: params.hasPreflightAudit,
+    approvalAuditPresent: params.hasApprovalAudit,
+    executionAuditPresent: params.hasExecutionAudit,
+    exactConfirmationKnownButRedacted: params.confirmationRequiredKnown,
+  };
+  const blockerKeys = Object.entries({
+    market_not_closed: !prerequisites.marketClosed && !params.hasExecutionAudit,
+    approval_not_recorded: !prerequisites.approvedReview && !params.hasExecutionAudit,
+    preflight_audit_missing: !prerequisites.preflightAuditPresent && !params.hasExecutionAudit,
+    approval_audit_missing: !prerequisites.approvalAuditPresent && !params.hasExecutionAudit,
+    exact_confirmation_unknown: !prerequisites.exactConfirmationKnownButRedacted && !params.hasExecutionAudit,
+  })
+    .filter(([, blocked]) => blocked)
+    .map(([key]) => key);
+
+  return {
+    version: 1,
+    mode: params.hasExecutionAudit
+      ? "already_executed"
+      : params.nextSafeAction === "ready_for_exact_confirmation_execution"
+        ? "operator_approved_execution_ready"
+        : "blocked_or_review_required",
+    executableNow: params.nextSafeAction === "ready_for_exact_confirmation_execution",
+    dryRunFirst: true,
+    providerQuotaRequired: false,
+    exactConfirmationExposed: false,
+    exactConfirmationStored: false,
+    activeMarketExecutionAttempted: false,
+    prerequisites,
+    blockerKeys,
+    command: {
+      npmScript: "mobile:one-event-result-settlement-run",
+      args:
+        params.nextSafeAction === "ready_for_exact_confirmation_execution"
+          ? [
+              "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+              "--approval=docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
+              "--autoExecuteApproved",
+              "--writeAuditEvent",
+              "--allowTrustedLocalFixture",
+            ]
+          : ["--dry-run"],
+      commandRedacted:
+        params.nextSafeAction === "ready_for_exact_confirmation_execution"
+          ? "npm run mobile:one-event-result-settlement-run -- --result=<trusted-result-redacted-json> --approval=<approval-redacted-json> --autoExecuteApproved --writeAuditEvent --allowTrustedLocalFixture"
+          : "npm run mobile:one-event-settlement-preflight",
+      exactConfirmationArgumentRedacted: true,
+    },
+  };
+};
+
 export async function getLocalLiveRuntimeSettlementQueue() {
   const reviews = await prisma.officialResultReview.findMany({
     orderBy: { updatedAt: "desc" },
@@ -146,6 +209,18 @@ export async function getLocalLiveRuntimeSettlementQueue() {
       approvalStatus: review.approvalStatus,
       confirmationRequiredKnown: review.confirmationRequiredKnown,
     });
+    const hasPreflightAudit = review.settlementPreflightCanonicalId != null;
+    const hasApprovalAudit = review.settlementApprovalCanonicalId != null;
+    const hasExecutionAudit = review.settlementExecutedCanonicalId != null;
+    const operatorExecutionPlan = operatorExecutionPlanFor({
+      nextSafeAction,
+      marketStatus: market?.status ?? null,
+      approvalStatus: review.approvalStatus,
+      hasPreflightAudit,
+      hasApprovalAudit,
+      hasExecutionAudit,
+      confirmationRequiredKnown: review.confirmationRequiredKnown,
+    });
     return {
       id: review.id,
       reviewKey: review.reviewKey,
@@ -168,9 +243,9 @@ export async function getLocalLiveRuntimeSettlementQueue() {
       exactConfirmationRedacted: true,
       activeMarketExecutionAttempted: review.activeMarketExecutionAttempted,
       providerQuotaUsed: review.providerQuotaUsed,
-      hasPreflightAudit: review.settlementPreflightCanonicalId != null,
-      hasApprovalAudit: review.settlementApprovalCanonicalId != null,
-      hasExecutionAudit: review.settlementExecutedCanonicalId != null,
+      hasPreflightAudit,
+      hasApprovalAudit,
+      hasExecutionAudit,
       approvalEvidence: {
         status: review.approvalStatus,
         source: "OfficialResultReview+CanonicalEvent",
@@ -214,6 +289,7 @@ export async function getLocalLiveRuntimeSettlementQueue() {
         : null,
       nextSafeAction,
       operatorAction,
+      operatorExecutionPlan,
       updatedAt: review.updatedAt.toISOString(),
     };
   });
@@ -261,6 +337,13 @@ export async function getLocalLiveRuntimeSettlementQueue() {
       operatorQueueAvailable: p0.length === 0,
       redactedOperatorExecutionPlanAvailable: items.every(
         (item) => item.operatorAction.exactConfirmationExposed === false && item.operatorAction.providerQuotaRequired === false,
+      ),
+      structuredOperatorExecutionPlanAvailable: items.every(
+        (item) =>
+          item.operatorExecutionPlan.version === 1 &&
+          item.operatorExecutionPlan.exactConfirmationExposed === false &&
+          item.operatorExecutionPlan.exactConfirmationStored === false &&
+          item.operatorExecutionPlan.providerQuotaRequired === false,
       ),
       durableApprovalEvidenceAvailable: items.some(
         (item) => item.approvalEvidence.status === "approved" && item.approvalEvidence.canonicalApprovalEventAvailable,

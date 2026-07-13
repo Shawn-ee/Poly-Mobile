@@ -456,6 +456,7 @@ async function main() {
         getPath(localRuntimeStatusBody, ["settlementQueue", "devOnlyRoute"]) === true &&
         getPath(localRuntimeStatusBody, ["settlementQueue", "operatorQueueAvailable"]) === true &&
         getPath(localRuntimeStatusBody, ["settlementQueue", "redactedOperatorExecutionPlanAvailable"]) === true &&
+        getPath(localRuntimeStatusBody, ["settlementQueue", "structuredOperatorExecutionPlanAvailable"]) === true &&
         getPath(localRuntimeStatusBody, ["settlementQueue", "exactConfirmationStringsExposed"]) === false &&
         getPath(localRuntimeStatusBody, ["settlementQueue", "exactConfirmationStored"]) === false &&
         getPath(localRuntimeStatusBody, ["settlementQueue", "activeMarketExecutionAttempted"]) === false &&
@@ -475,6 +476,30 @@ async function main() {
           "firstItem",
           "operatorAction",
           "providerQuotaRequired",
+        ]) === false &&
+        getPath(localRuntimeStatusBody, [
+          "settlementQueue",
+          "firstItem",
+          "operatorExecutionPlan",
+          "version",
+        ]) === 1 &&
+        getPath(localRuntimeStatusBody, [
+          "settlementQueue",
+          "firstItem",
+          "operatorExecutionPlan",
+          "providerQuotaRequired",
+        ]) === false &&
+        getPath(localRuntimeStatusBody, [
+          "settlementQueue",
+          "firstItem",
+          "operatorExecutionPlan",
+          "exactConfirmationExposed",
+        ]) === false &&
+        getPath(localRuntimeStatusBody, [
+          "settlementQueue",
+          "firstItem",
+          "operatorExecutionPlan",
+          "exactConfirmationStored",
         ]) === false &&
         getPath(localRuntimeStatusBody, [
           "settlementQueue",
@@ -663,6 +688,7 @@ async function main() {
         getPath(localSettlementQueueBody, ["runtimeTruth", "usesDurableOfficialResultReviewRows"]) === true &&
         getPath(localSettlementQueueBody, ["runtimeTruth", "operatorQueueAvailable"]) === true &&
         getPath(localSettlementQueueBody, ["runtimeTruth", "redactedOperatorExecutionPlanAvailable"]) === true &&
+        getPath(localSettlementQueueBody, ["runtimeTruth", "structuredOperatorExecutionPlanAvailable"]) === true &&
         getPath(localSettlementQueueBody, ["runtimeTruth", "durableApprovalEvidenceAvailable"]) === true &&
         getPath(localSettlementQueueBody, ["runtimeTruth", "exactConfirmationStringsExposed"]) === false &&
         getPath(localSettlementQueueBody, ["runtimeTruth", "exactConfirmationStored"]) === false &&
@@ -672,6 +698,10 @@ async function main() {
         typeof getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorAction", "nextCommand"]) === "string" &&
         getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorAction", "exactConfirmationExposed"]) === false &&
         getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorAction", "providerQuotaRequired"]) === false &&
+        getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorExecutionPlan", "version"]) === 1 &&
+        getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorExecutionPlan", "providerQuotaRequired"]) === false &&
+        getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorExecutionPlan", "exactConfirmationExposed"]) === false &&
+        getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorExecutionPlan", "exactConfirmationStored"]) === false &&
         getPath(localSettlementQueueBody, ["queue", "items", "0", "approvalEvidence", "durableReviewRowAvailable"]) === true &&
         getPath(localSettlementQueueBody, ["queue", "items", "0", "approvalEvidence", "canonicalApprovalEventAvailable"]) === true &&
         getPath(localSettlementQueueBody, ["queue", "items", "0", "approvalEvidence", "exactConfirmationStored"]) === false &&

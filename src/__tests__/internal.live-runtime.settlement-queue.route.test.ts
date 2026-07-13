@@ -45,6 +45,17 @@ describe("internal live-runtime settlement-queue route", () => {
               exactConfirmationExposed: false,
               nextCommand: "npm run mobile:one-event-settlement-preflight",
             },
+            operatorExecutionPlan: {
+              version: 1,
+              mode: "blocked_or_review_required",
+              executableNow: false,
+              providerQuotaRequired: false,
+              exactConfirmationExposed: false,
+              exactConfirmationStored: false,
+              command: {
+                exactConfirmationArgumentRedacted: true,
+              },
+            },
           },
         ],
       },
@@ -58,6 +69,15 @@ describe("internal live-runtime settlement-queue route", () => {
     expect(body.queue.items[0].operatorAction).toMatchObject({
       exactConfirmationExposed: false,
       nextCommand: "npm run mobile:one-event-settlement-preflight",
+    });
+    expect(body.queue.items[0].operatorExecutionPlan).toMatchObject({
+      version: 1,
+      providerQuotaRequired: false,
+      exactConfirmationExposed: false,
+      exactConfirmationStored: false,
+      command: {
+        exactConfirmationArgumentRedacted: true,
+      },
     });
     expect(body.queue.items[0].approvalEvidence).toMatchObject({
       status: "approved",

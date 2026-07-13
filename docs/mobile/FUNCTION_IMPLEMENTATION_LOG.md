@@ -15047,3 +15047,14 @@ Known limitations:
 - API/data dependencies: reads/writes `ReferenceQuoteSnapshot`, `ProviderRefreshRun`, `MarketMakerQuoteRun`, local `Order`/`Position` rows, and local runtime heartbeat/run records. Verifies `GET /api/health`, `GET /api/internal/live-runtime/status`, `GET /api/markets/:marketId/quote`, `GET /api/events`, `GET /api/mobile/events/:slug/live-detail`, `POST /api/orders`, `GET /api/portfolio`, and `GET /api/portfolio/history`.
 - Proof: bounded live-provider proof passed for Spain vs. France after moving planned maker ask above an existing `0.55` tester bid; `npm run mobile:one-event-runtime-status` passed; `npm run mobile:one-event-phase-audit` passed with no open P0; root typecheck, focused runtime tests, mobile typecheck, and `npm run test:ci` passed.
 - Known limitations: provider refresh is still explicit/key-gated and quota-capped, not the default no-quota loop. Installed unattended service ownership and production official-result auto-settlement remain P1.
+
+## Cycle XF - Structured Settlement Operator Plan
+
+- Feature/runtime worked on: backend local internal official-result settlement queue/status contract.
+- Frontend components touched: none.
+- Important functions/services touched: `src/server/services/liveRuntimeSettlementQueue.ts`, `src/server/services/liveRuntimeStatus.ts`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, `scripts/report_holiwyn_live_runtime_completion_audit.ts`, and focused settlement/status tests.
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/settlement-queue` or `GET /api/internal/live-runtime/status` and read a structured `operatorExecutionPlan` with version, mode, executable-now truth, prerequisites, blocker keys, redacted command shape, and no-quota/no-confirmation-exposure safety booleans.
+- State transitions: none. The routes and audits are read-only; they do not call The Odds API, spend quota, close markets, approve settlement, expose exact confirmation text, or execute active-event settlement.
+- API/data dependencies: reads existing `OfficialResultReview`, `Market`, `Event`, approval/execution canonical ids, and local phase-audit artifacts. No schema migration was added.
+- Proof needed: focused settlement queue/status tests, no-quota runtime status, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
+- Known limitations: this narrows the official-result operator-safety contract but remains a local/dev-only proof route. Authenticated production operator controls and installed official-result polling remain P1/P2.

@@ -972,6 +972,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "devOnlyRoute"]) === true &&
     getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "operatorQueueAvailable"]) === true &&
     getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "redactedOperatorExecutionPlanAvailable"]) === true &&
+    getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "structuredOperatorExecutionPlanAvailable"]) === true &&
     getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "exactConfirmationStringsExposed"]) === false &&
     getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "exactConfirmationStored"]) === false &&
     getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "activeMarketExecutionAttempted"]) === false &&
@@ -981,6 +982,10 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     typeof getPath(phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorAction", "nextCommand"]) === "string" &&
     getPath(phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorAction", "exactConfirmationExposed"]) === false &&
     getPath(phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorAction", "providerQuotaRequired"]) === false &&
+    getPath(phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorExecutionPlan", "version"]) === 1 &&
+    getPath(phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorExecutionPlan", "providerQuotaRequired"]) === false &&
+    getPath(phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorExecutionPlan", "exactConfirmationExposed"]) === false &&
+    getPath(phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorExecutionPlan", "exactConfirmationStored"]) === false &&
     getPath(phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "approvalEvidence", "durableReviewRowAvailable"]) === true &&
     getPath(phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "approvalEvidence", "canonicalApprovalEventAvailable"]) === true &&
     getPath(phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "approvalEvidence", "exactConfirmationStored"]) === false &&
@@ -1111,6 +1116,8 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
       getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "operatorQueueAvailable"]) === true,
     redactedOperatorExecutionPlanAvailable:
       getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "redactedOperatorExecutionPlanAvailable"]) === true,
+    structuredOperatorExecutionPlanAvailable:
+      getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "structuredOperatorExecutionPlanAvailable"]) === true,
     durableApprovalEvidenceAvailable:
       getPath(phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "durableApprovalEvidenceAvailable"]) === true,
     durableExecutionEvidenceAvailable:
@@ -1188,8 +1195,36 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
                 getPath(settlementQueueItem, ["operatorAction", "activeExecutionRequiresClosedMarket"]) === true,
               activeExecutionRequiresApproval:
                 getPath(settlementQueueItem, ["operatorAction", "activeExecutionRequiresApproval"]) === true,
-      activeExecutionRequiresExactConfirmation:
+              activeExecutionRequiresExactConfirmation:
                 getPath(settlementQueueItem, ["operatorAction", "activeExecutionRequiresExactConfirmation"]) === true,
+            },
+            operatorExecutionPlan: {
+              version: getPath(settlementQueueItem, ["operatorExecutionPlan", "version"]) ?? null,
+              mode: getPath(settlementQueueItem, ["operatorExecutionPlan", "mode"]) ?? null,
+              executableNow: getPath(settlementQueueItem, ["operatorExecutionPlan", "executableNow"]) === true,
+              dryRunFirst: getPath(settlementQueueItem, ["operatorExecutionPlan", "dryRunFirst"]) === true,
+              providerQuotaRequired:
+                getPath(settlementQueueItem, ["operatorExecutionPlan", "providerQuotaRequired"]) === true,
+              exactConfirmationExposed:
+                getPath(settlementQueueItem, ["operatorExecutionPlan", "exactConfirmationExposed"]) === true,
+              exactConfirmationStored:
+                getPath(settlementQueueItem, ["operatorExecutionPlan", "exactConfirmationStored"]) === true,
+              activeMarketExecutionAttempted:
+                getPath(settlementQueueItem, ["operatorExecutionPlan", "activeMarketExecutionAttempted"]) === true,
+              prerequisites: getPath(settlementQueueItem, ["operatorExecutionPlan", "prerequisites"]) ?? null,
+              blockerKeys: asStringArray(getPath(settlementQueueItem, ["operatorExecutionPlan", "blockerKeys"])),
+              command: {
+                npmScript: getPath(settlementQueueItem, ["operatorExecutionPlan", "command", "npmScript"]) ?? null,
+                args: asStringArray(getPath(settlementQueueItem, ["operatorExecutionPlan", "command", "args"])),
+                commandRedacted:
+                  getPath(settlementQueueItem, ["operatorExecutionPlan", "command", "commandRedacted"]) ?? null,
+                exactConfirmationArgumentRedacted:
+                  getPath(settlementQueueItem, [
+                    "operatorExecutionPlan",
+                    "command",
+                    "exactConfirmationArgumentRedacted",
+                  ]) === true,
+              },
             },
           }
         : null,

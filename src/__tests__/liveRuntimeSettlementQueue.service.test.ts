@@ -119,6 +119,29 @@ describe("live runtime settlement queue service", () => {
         providerQuotaRequired: false,
         activeExecutionRequiresClosedMarket: true,
       },
+      operatorExecutionPlan: {
+        version: 1,
+        mode: "blocked_or_review_required",
+        executableNow: false,
+        providerQuotaRequired: false,
+        exactConfirmationExposed: false,
+        exactConfirmationStored: false,
+        activeMarketExecutionAttempted: false,
+        prerequisites: {
+          marketClosed: false,
+          approvedReview: true,
+          preflightAuditPresent: true,
+          approvalAuditPresent: true,
+          executionAuditPresent: false,
+          exactConfirmationKnownButRedacted: true,
+        },
+        blockerKeys: ["market_not_closed"],
+        command: {
+          npmScript: "mobile:one-event-result-settlement-run",
+          args: ["--dry-run"],
+          exactConfirmationArgumentRedacted: true,
+        },
+      },
       market: {
         status: "LIVE",
         event: { slug: "odds-api-single-soccer-test" },
@@ -133,6 +156,7 @@ describe("live runtime settlement queue service", () => {
       activeMarketExecutionAttempted: false,
       operatorQueueAvailable: true,
       redactedOperatorExecutionPlanAvailable: true,
+      structuredOperatorExecutionPlanAvailable: true,
       durableApprovalEvidenceAvailable: true,
       durableExecutionEvidenceAvailable: false,
     });
@@ -223,6 +247,26 @@ describe("live runtime settlement queue service", () => {
       exactConfirmationExposed: false,
     });
     expect(result.queue.items[0].operatorAction.nextCommand).toContain("--autoExecuteApproved");
+    expect(result.queue.items[0].operatorExecutionPlan).toMatchObject({
+      mode: "operator_approved_execution_ready",
+      executableNow: true,
+      providerQuotaRequired: false,
+      exactConfirmationExposed: false,
+      prerequisites: {
+        marketClosed: true,
+        approvedReview: true,
+        preflightAuditPresent: true,
+        approvalAuditPresent: true,
+        executionAuditPresent: false,
+        exactConfirmationKnownButRedacted: true,
+      },
+      blockerKeys: [],
+      command: {
+        npmScript: "mobile:one-event-result-settlement-run",
+        args: expect.arrayContaining(["--autoExecuteApproved", "--writeAuditEvent"]),
+        exactConfirmationArgumentRedacted: true,
+      },
+    });
     expect(JSON.stringify(result)).not.toContain("SETTLE_FROM_RESULT:");
   });
 
@@ -337,6 +381,15 @@ describe("live runtime settlement queue service", () => {
       operatorAction: {
         label: "settlement_already_executed",
         exactConfirmationExposed: false,
+      },
+      operatorExecutionPlan: {
+        mode: "already_executed",
+        executableNow: false,
+        providerQuotaRequired: false,
+        exactConfirmationExposed: false,
+        prerequisites: {
+          executionAuditPresent: true,
+        },
       },
     });
     expect(result.runtimeTruth.durableExecutionEvidenceAvailable).toBe(true);
