@@ -956,7 +956,10 @@ async function main() {
           getPath(route, ["id"]) === "settlement_execution" &&
           getPath(route, ["requiresClosedMarket"]) === true &&
           getPath(route, ["requiresExactConfirmation"]) === true &&
-          getPath(route, ["implementationStatus"]) === "missing",
+          getPath(route, ["implementationStatus"]) === "implemented_guarded_dry_run_no_settlement_mutation" &&
+          getPath(route, ["dryRunOnly"]) === true &&
+          getPath(route, ["exactConfirmationStored"]) === false &&
+          getPath(route, ["activeSettlementExecution"]) === false,
       ) &&
       Array.isArray(
         getPath(entries.phaseAudit, [

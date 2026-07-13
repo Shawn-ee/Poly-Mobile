@@ -47,7 +47,12 @@ describe("internal operator session route", () => {
         canReviewSettlementQueue: true,
         canApproveSettlement: true,
         canExecuteSettlement: false,
+        canRequestSettlementExecutionDryRun: true,
         canViewExactConfirmation: false,
+      },
+      productionBoundary: {
+        executionRouteAvailable: true,
+        executionRouteMode: "guarded_dry_run_no_settlement_mutation",
       },
     });
     expect(JSON.stringify(body)).not.toContain("SETTLE_FROM_RESULT:");

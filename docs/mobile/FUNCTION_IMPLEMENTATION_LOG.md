@@ -15212,3 +15212,15 @@ Known limitations:
 - API/data dependencies: reads `OfficialResultReview`, `Market`, and existing admin session identity; writes `CanonicalEvent` with `eventType=settlement.trusted_result.approved` and `userId=<operatorUserId>`, then updates `OfficialResultReview.approvalStatus`, `settlementApprovalCanonicalId`, `executionDecision`, and redacted review snapshot metadata.
 - Proof needed: focused approval service/route tests, operator session/status tests, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
 - Known limitations: execution remains blocked behind the missing guarded execution endpoint, exact confirmation remains outside status/API responses, dedicated operator role model and two-person/admin approval workflow remain P1.
+
+## Cycle XO - Guarded Settlement Execution Dry-Run Route
+
+- Feature/runtime worked on: backend internal operator settlement execution boundary for official-result settlement review.
+- Frontend components touched: none.
+- Important functions/services touched: `src/app/api/internal/live-runtime/settlement-queue/[reviewId]/execute/route.ts`, `src/server/services/liveRuntimeSettlementExecution.ts`, `src/server/services/liveRuntimeStatus.ts`, `src/server/services/liveRuntimeOperatorSession.ts`, phase/completion audit scripts, and focused operator/status/execution tests.
+- User/runtime interactions supported: an authenticated admin can call `POST /api/internal/live-runtime/settlement-queue/:reviewId/execute` as a dry-run execution request. Direct `{ "execute": true }` requests are rejected. The route is disabled in production and by `HOLIWYN_DISABLE_INTERNAL_OPERATOR_CONTROLS=1`.
+- State transitions: when all guards pass, writes only a canonical dry-run request audit event and redacted review snapshot metadata. It does not set `settlementExecutedCanonicalId`, resolve markets, change positions/balances, call providers, store exact confirmation, or expose exact confirmation strings.
+- API/data dependencies: reads `OfficialResultReview`, current `Market`, and admin session identity; writes `CanonicalEvent(eventType=settlement.trusted_result.execution.dry_run_requested)` and `OfficialResultReview.reviewSnapshot.operatorExecutionDryRun` only for guard-passing dry-run requests.
+- Runtime proof: local route call against active review `900d9d09-22e7-4ae9-9158-71832e8fd8e7` returned HTTP 409 with `blockerKeys=["market_not_closed","execution_not_eligible"]`, `providerQuotaUsed=false`, `mutatesSettlement=false`, `exactConfirmationExposed=false`, `exactConfirmationStored=false`, and `activeMarketExecutionAttempted=false`.
+- Proof needed: focused execution service/route tests, operator session/status tests, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
+- Known limitations: direct exact-confirmation settlement execution remains disabled. Production still needs first-class operator audit schema, two-person/admin policy, dedicated operator roles, installed official-result polling, and operator UI.

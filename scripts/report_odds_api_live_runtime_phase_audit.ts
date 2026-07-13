@@ -900,7 +900,10 @@ async function main() {
             getPath(route, ["mutatesState"]) === true &&
             getPath(route, ["requiresClosedMarket"]) === true &&
             getPath(route, ["requiresExactConfirmation"]) === true &&
-            getPath(route, ["implementationStatus"]) === "missing",
+            getPath(route, ["implementationStatus"]) === "implemented_guarded_dry_run_no_settlement_mutation" &&
+            getPath(route, ["dryRunOnly"]) === true &&
+            getPath(route, ["exactConfirmationStored"]) === false &&
+            getPath(route, ["activeSettlementExecution"]) === false,
         ) &&
         Array.isArray(getPath(localRuntimeStatusBody, ["operatorControlBoundary", "productionAuthRequirements", "requiredSchema"])) &&
         (getPath(localRuntimeStatusBody, [
@@ -935,6 +938,20 @@ async function main() {
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementApprovalRoute", "exactConfirmationStored"]) ===
           false &&
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementApprovalRoute", "activeSettlementExecution"]) ===
+          false &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementExecutionRoute", "available"]) ===
+          true &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementExecutionRoute", "dryRunOnly"]) ===
+          true &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementExecutionRoute", "mutationScope"]) ===
+          "execution_dry_run_request_audit_only" &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementExecutionRoute", "providerQuotaRequired"]) ===
+          false &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementExecutionRoute", "exactConfirmationExposed"]) ===
+          false &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementExecutionRoute", "exactConfirmationStored"]) ===
+          false &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementExecutionRoute", "activeSettlementExecution"]) ===
           false &&
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "resultReviewRoute", "available"]) ===
           true &&

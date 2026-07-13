@@ -15,10 +15,9 @@ describe("live runtime operator session service", () => {
     expect(status.capabilities.canReviewSettlementQueue).toBe(true);
     expect(status.capabilities.canApproveSettlement).toBe(true);
     expect(status.capabilities.canExecuteSettlement).toBe(false);
-    expect(status.p1).toEqual(
-      expect.arrayContaining([
-        "settlement_execution_route_missing",
-      ]),
-    );
+    expect(status.capabilities.canRequestSettlementExecutionDryRun).toBe(true);
+    expect(status.productionBoundary.executionRouteAvailable).toBe(true);
+    expect(status.productionBoundary.executionRouteMode).toBe("guarded_dry_run_no_settlement_mutation");
+    expect(status.p1).toEqual(expect.arrayContaining(["direct_settlement_execution_route_disabled"]));
   });
 });

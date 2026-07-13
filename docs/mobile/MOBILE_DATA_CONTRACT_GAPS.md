@@ -10737,3 +10737,12 @@ Future migration concern:
 - Schema mismatch: approval currently records operator identity through `CanonicalEvent.userId` and redacted `OfficialResultReview.reviewSnapshot.operatorApproval`. Production still needs first-class `approvedByUserId`, `approvedAt`, role snapshots, request ids, and an `OperatorAuditEvent` or equivalent audit table.
 - Temporary mock/static data: none added. The route requires an existing review/preflight row and authenticated admin operator.
 - Remaining gaps: settlement execution route, exact-confirmation execution handoff, two-person/admin approval policy, dedicated operator roles, production operator UI, installed official-result polling, and production service ownership remain P1.
+
+## Cycle XO - Guarded Settlement Execution Dry-Run Route
+
+- Closed or narrowed: `POST /api/internal/live-runtime/settlement-queue/:reviewId/execute` now exists as an authenticated guarded dry-run request route. It proves the server-owned execution boundary without allowing active-event settlement mutation.
+- Fields added/confirmed for local runtime tooling: route response includes `status`, `blockerKeys` when blocked, `executionRequestEvidence.canonicalExecutionRequestEventId` when guards pass, `operator.durableIdentityRecorded`, `providerQuotaUsed=false`, `mutatesSettlement=false`, `exactConfirmationExposed=false`, `exactConfirmationStored=false`, and `activeMarketExecutionAttempted=false`.
+- Route mismatch: this is not a direct settlement execution endpoint. `{ "execute": true }` is rejected, and dry-run requests require closed market, approval evidence, preflight evidence, known exact-confirmation requirement, and `executionEligibleNow=true`.
+- Schema mismatch: dry-run execution identity is recorded through `CanonicalEvent.userId` and redacted `OfficialResultReview.reviewSnapshot.operatorExecutionDryRun`. Production still needs first-class `executedByUserId`, `executedAt`, role snapshot, request id, two-person approval linkage, and an `OperatorAuditEvent` or equivalent table before direct execution is enabled.
+- Temporary mock/static data: none added. Service/route tests mock Prisma for contract coverage; runtime proof used the local active review row and correctly blocked because the active market is not closed/executable.
+- Remaining gaps: direct exact-confirmation settlement execution handoff, two-person/admin approval policy, dedicated operator roles, production operator UI, installed official-result polling, and production service ownership remain P1.
