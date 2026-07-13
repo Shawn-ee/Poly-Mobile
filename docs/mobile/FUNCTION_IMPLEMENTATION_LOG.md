@@ -15322,3 +15322,12 @@ Known limitations:
 - User/runtime interactions supported: live-runtime audits now require the runtime manager contract that flags reused external Expo listeners as unverified, so a stale or fixture-mode Expo process cannot be counted as verified server-mode S23 proof.
 - State transitions: none. This is a no-quota audit/source-contract gate only; it does not call provider APIs, start loops, place orders, or mutate DB rows.
 - Known limitations: this gate verifies the source/runtime contract. If the current phone session is reusing an external Expo listener, the operator still needs to restart with `-Force` or stop the old Expo server to obtain verified manager-owned Expo proof.
+
+## Cycle XV - Explicit Verified Expo Replacement Path
+
+- Feature/runtime worked on: local internal tester runtime manager startup safety for replacing stale external Expo/Metro listeners.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/manage_holiwyn_internal_tester_runtime.ps1`, live-runtime phase/completion audit scripts, and the Odds API single-event contract test.
+- User/runtime interactions supported: `npm run mobile:internal-tester-runtime -- -Action start -Force -ReplaceExternalExpo -WaitForReady` can intentionally stop an external Expo/Metro listener on the configured Expo port and start a manager-owned server-mode Expo listener. Plain `-Force` no longer attempts to replace an external Expo listener; it reuses and reports it as unverified.
+- State transitions: no database, provider, order, portfolio, or settlement state changes. This is process-control behavior only. The external stop path is limited to the Expo port and refuses to stop a listener that does not look like Expo/Metro.
+- Known limitations: this remains local Windows process control for internal testing, not installed service management. Operators should use the replacement flag only when they intentionally want to clear a stale Expo listener.

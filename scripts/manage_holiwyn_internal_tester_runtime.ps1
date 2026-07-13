@@ -14,6 +14,7 @@ param(
   [switch]$RunProviderProof,
   [int]$ResultPollerIntervalSeconds = 15,
   [switch]$Force,
+  [switch]$ReplaceExternalExpo,
   [switch]$WaitForReady,
   [int]$WaitSeconds = 45,
   [string]$SummaryPath = "docs\mobile\harness\odds-api-live-runtime\internal-tester-runtime-manager-summary.redacted.json"
@@ -112,6 +113,24 @@ function Stop-OwnedProcessTree {
     throw "Failed to stop owned process pid=$($ProcessState.pid): $output"
   }
   return "stopped"
+}
+
+function Stop-ExternalExpoListener {
+  param([object]$PortOwner)
+  if (-not $PortOwner -or -not $PortOwner.pid) { return "not_running" }
+  $process = Get-CimInstance Win32_Process -Filter "ProcessId = $($PortOwner.pid)" -ErrorAction SilentlyContinue
+  $commandLine = if ($process) { [string]$process.CommandLine } else { "" }
+  $looksLikeExpo =
+    $PortOwner.processName -eq "node" -and
+    ($commandLine -match "expo|metro|@expo|react-native|mobile")
+  if (-not $looksLikeExpo) {
+    throw "Refusing to stop external listener pid=$($PortOwner.pid) on port $ExpoPort because it does not look like Expo/Metro. Stop it manually or use the existing listener."
+  }
+  $output = & taskkill /PID ([int]$PortOwner.pid) /T /F 2>&1
+  if ($LASTEXITCODE -ne 0) {
+    throw "Failed to stop external Expo listener pid=$($PortOwner.pid): $output"
+  }
+  return "stopped_external_expo_listener"
 }
 
 function Start-OwnedBackend {
@@ -265,7 +284,9 @@ if ($Action -eq "stop") {
 } elseif ($Action -eq "start") {
   $backendOwner = Get-PortOwner $BackendPort
   $expoOwner = Get-PortOwner $ExpoPort
-  if ($backendOwner -and -not $Force) {
+  $backendOwnedByManager = [bool]($state.backend -and $state.backend.owned -and $backendOwner -and $state.backend.pid -eq $backendOwner.pid)
+  $expoOwnedByManager = [bool]($state.expo -and $state.expo.owned -and $expoOwner -and $state.expo.pid -eq $expoOwner.pid)
+  if ($backendOwner -and (-not $Force -or -not $backendOwnedByManager)) {
     $state.backend = [ordered]@{ owned = $false; pid = $backendOwner.pid; command = "external-listener"; detected = $backendOwner }
     $operations.Add([ordered]@{ target = "backend"; result = "external_listener_reused"; pid = $backendOwner.pid }) | Out-Null
   } else {
@@ -276,8 +297,15 @@ if ($Action -eq "stop") {
   if ($expoOwner -and -not $Force) {
     $state.expo = [ordered]@{ owned = $false; pid = $expoOwner.pid; command = "external-listener"; detected = $expoOwner }
     $operations.Add([ordered]@{ target = "expo"; result = "external_listener_reused"; pid = $expoOwner.pid }) | Out-Null
+  } elseif ($expoOwner -and $Force -and -not $expoOwnedByManager -and -not $ReplaceExternalExpo) {
+    $state.expo = [ordered]@{ owned = $false; pid = $expoOwner.pid; command = "external-listener"; detected = $expoOwner; forceBlocked = "replace_external_expo_not_requested" }
+    $operations.Add([ordered]@{ target = "expo"; result = "external_listener_reused_force_requires_replace_external_expo"; pid = $expoOwner.pid }) | Out-Null
   } else {
-    if ($Force) { $operations.Add([ordered]@{ target = "expo"; result = Stop-OwnedProcessTree $state.expo }) | Out-Null }
+    if ($Force -and $expoOwnedByManager) {
+      $operations.Add([ordered]@{ target = "expo"; result = Stop-OwnedProcessTree $state.expo }) | Out-Null
+    } elseif ($Force -and $expoOwner -and $ReplaceExternalExpo) {
+      $operations.Add([ordered]@{ target = "expo"; result = Stop-ExternalExpoListener $expoOwner; pid = $expoOwner.pid }) | Out-Null
+    }
     $state.expo = Start-OwnedExpo
     $operations.Add([ordered]@{ target = "expo"; result = "started"; pid = $state.expo.pid }) | Out-Null
   }
@@ -382,8 +410,9 @@ if ($Action -eq "stop") {
 }
 $p1 = New-Object System.Collections.Generic.List[object]
 if ($externalExpoServerModeUnverified) {
-  $p1.Add("External Expo listener reused; server-mode env cannot be verified. Use -Force or stop the old Expo server if S23 shows stale, fixture, or non-server behavior.") | Out-Null
+  $p1.Add("External Expo listener reused; server-mode env cannot be verified. Use -Force -ReplaceExternalExpo or stop the old Expo server if S23 shows stale, fixture, or non-server behavior.") | Out-Null
 }
+$p1.Add("Use -Force -ReplaceExternalExpo only when you intentionally want the runtime manager to stop an external Expo/Metro listener on the Expo port and start a verified server-mode listener.") | Out-Null
 $p1.Add("This is a local process control plane, not an installed OS service.") | Out-Null
 $p1.Add("Official-result auto-execution still requires trusted operator confirmation.") | Out-Null
 
@@ -445,6 +474,8 @@ $summary = [ordered]@{
     managerStartedExpoUsesServerMode = $managerStartedExpoUsesServerMode
     expoServerModeSource = $expoServerModeSource
     externalExpoServerModeUnverified = $externalExpoServerModeUnverified
+    replaceExternalExpoAvailable = $true
+    replaceExternalExpoRequested = [bool]$ReplaceExternalExpo
     s23AdbReverseConfiguredOnStart = [bool]($Action -ne "start" -or $adbReverse.ok -or -not $s23Before.connected)
     stopsOnlyOwnedBackendExpoProcesses = $true
     installedOsService = $false

@@ -221,7 +221,9 @@ async function main() {
     internalTesterRuntimeScript.includes("managerStartedExpoUsesServerMode") &&
     internalTesterRuntimeScript.includes("externalExpoServerModeUnverified") &&
     internalTesterRuntimeScript.includes("external_listener_unverified") &&
-    internalTesterRuntimeScript.includes("Use -Force or stop the old Expo server");
+    internalTesterRuntimeScript.includes("ReplaceExternalExpo") &&
+    internalTesterRuntimeScript.includes("replaceExternalExpoAvailable") &&
+    internalTesterRuntimeScript.includes("Use -Force -ReplaceExternalExpo");
   const health = await fetchJson(`${baseUrl}/api/health`);
   const selectedMarketId = text(getPath(entries.liveProof, ["selectedMarket", "id"]));
   const quote = selectedMarketId
@@ -1547,7 +1549,7 @@ async function main() {
       achieved: managedS23ServerModeStartupKnown,
       evidence: ["scripts/manage_holiwyn_internal_tester_runtime.ps1"],
         notes:
-          "This gates the source contract without restarting the active S23 proof session: manager-owned Expo sets API/auth base URLs to the backend, enables server order/market data mode, hides order book, fails readiness if S23 port forwarding fails, and reports reused external Expo listeners as unverified instead of silently treating them as server-mode proof.",
+          "This gates the source contract without restarting the active S23 proof session: manager-owned Expo sets API/auth base URLs to the backend, enables server order/market data mode, hides order book, fails readiness if S23 port forwarding fails, reports reused external Expo listeners as unverified instead of silently treating them as server-mode proof, and exposes an explicit -Force -ReplaceExternalExpo path for verified restart when the operator intentionally wants to replace a stale Expo listener.",
       }),
     requirement({
       id: "internal-tester-result-poller-control",

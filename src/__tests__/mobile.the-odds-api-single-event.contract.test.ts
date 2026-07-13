@@ -59,15 +59,19 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("managerStartedExpoUsesServerMode");
     expect(source).toContain("externalExpoServerModeUnverified");
     expect(source).toContain("external_listener_unverified");
-    expect(source).toContain("Use -Force or stop the old Expo server");
+    expect(source).toContain("ReplaceExternalExpo");
+    expect(source).toContain("replaceExternalExpoAvailable");
+    expect(source).toContain("Use -Force -ReplaceExternalExpo");
   });
 
   it("gates live-runtime audits on managed S23 server-backed startup", () => {
     expect(phaseAuditScript()).toContain('id: "managed-s23-server-mode-startup"');
     expect(phaseAuditScript()).toContain("managedS23ServerModeStartupKnown");
     expect(phaseAuditScript()).toContain("externalExpoServerModeUnverified");
+    expect(phaseAuditScript()).toContain("ReplaceExternalExpo");
     expect(completionAuditScript()).toContain("managedS23ServerModeStartupKnown");
     expect(completionAuditScript()).toContain("externalExpoServerModeUnverified");
+    expect(completionAuditScript()).toContain("ReplaceExternalExpo");
     expect(completionAuditScript()).toContain("scripts/manage_holiwyn_internal_tester_runtime.ps1");
   });
 

@@ -1246,7 +1246,9 @@ async function main() {
         internalTesterRuntimeScript.includes("managerStartedExpoUsesServerMode") &&
         internalTesterRuntimeScript.includes("externalExpoServerModeUnverified") &&
         internalTesterRuntimeScript.includes("external_listener_unverified") &&
-        internalTesterRuntimeScript.includes("Use -Force or stop the old Expo server"),
+        internalTesterRuntimeScript.includes("ReplaceExternalExpo") &&
+        internalTesterRuntimeScript.includes("replaceExternalExpoAvailable") &&
+        internalTesterRuntimeScript.includes("Use -Force -ReplaceExternalExpo"),
   };
   const p0 = Object.entries(checks)
     .filter(([, value]) => value !== true)
@@ -1330,7 +1332,7 @@ async function main() {
         checks.oneCommandRuntimeLoopProofKnown &&
         checks.managedS23ServerModeStartupKnown,
         answer:
-          "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, starts managed Expo in server-backed S23 mode, flags reused external Expo listeners as unverified, exposes explicit foreground-vs-installed service ownership plus read-only operator-control boundaries, and cleans up after proof.",
+          "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, starts managed Expo in server-backed S23 mode, flags reused external Expo listeners as unverified, provides an explicit -Force -ReplaceExternalExpo path for verified manager-owned S23 startup, exposes explicit foreground-vs-installed service ownership plus read-only operator-control boundaries, and cleans up after proof.",
       evidence: [
         PATHS.localRuntimeLaunchProfile,
         PATHS.internalTesterWatchdog,
