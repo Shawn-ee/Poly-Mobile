@@ -95,6 +95,32 @@ function runCommand(label, command) {
   };
 }
 
+function runLoopManager(label, scriptName, args) {
+  const startedAt = new Date().toISOString();
+  const stdoutPath = path.join(logDir, `${label}.out.log`);
+  const stderrPath = path.join(logDir, `${label}.err.log`);
+  const result = spawnSync("powershell", ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", `scripts/${scriptName}`, ...args], {
+    cwd: repoRoot,
+    encoding: "utf8",
+    stdio: ["ignore", fs.openSync(stdoutPath, "w"), fs.openSync(stderrPath, "w")],
+    timeout: 60000,
+  });
+  return {
+    label,
+    args: [scriptName, ...args],
+    exitCode: result.status ?? 124,
+    pass: result.status === 0,
+    signal: result.signal || null,
+    error: result.error ? result.error.message : null,
+    startedAt,
+    finishedAt: new Date().toISOString(),
+    stdout: rel(stdoutPath),
+    stderr: rel(stderrPath),
+    stdoutTail: tail(stdoutPath),
+    stderrTail: tail(stderrPath),
+  };
+}
+
 async function getStatus() {
   try {
     const response = await fetch(statusUrl, { signal: AbortSignal.timeout(8000) });
@@ -159,7 +185,8 @@ async function main() {
   ];
   const p2 = ["Multi-event warm-runtime orchestration remains future work."];
 
-  commands.push(runManager("pre-stop-internal-runtime", ["-Action", "stop"]));
+  commands.push(runLoopManager("pre-stop-supervisor", "manage_holiwyn_one_event_live_supervisor.ps1", ["-Action", "stop"]));
+  commands.push(runLoopManager("pre-stop-result-poller", "manage_holiwyn_one_event_result_poller.ps1", ["-Action", "stop"]));
   const restoreCommand = {
     ...runCommand("restore-cached-live-one-event", [
       "npm",
@@ -180,6 +207,8 @@ async function main() {
     "-BackendPort", String(backendPort),
     "-Force",
     "-RunResultIngestion",
+    "-RunResultSettlement",
+    "-RunApprovedResultSettlement",
   ]));
   commands.push(runCommand("start-result-poller-warm-no-quota", [
     "npm", "run", "mobile:one-event-result-poller:process", "--",
@@ -188,6 +217,8 @@ async function main() {
     "-MaxIterations", "0",
     "-IntervalSeconds", String(resultPollerIntervalSeconds),
     "-Force",
+    "-RunApprovedResultSettlement",
+    "-ResultSettlementApprovalPath", "docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
   ]));
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
