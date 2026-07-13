@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-07-12T12:25:54.606Z",
+  "generatedAt": "2026-07-13T09:01:59.723Z",
   "scope": "odds-api-one-event-settlement-audit-event-proof",
   "pass": true,
   "providerQuotaUsed": false,
   "command": {
     "executable": "C:\\nvm4w\\nodejs\\node.exe",
     "args": [
-      "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+      "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\node_modules\\tsx\\dist\\cli.mjs",
       "scripts/settle_odds_api_one_event_from_result.ts",
       "--eventSlug=odds-api-single-soccer-test",
       "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
@@ -16,13 +16,13 @@
     "exitCode": 0,
     "stdoutTail": [
       "  \"auditEvent\": {",
-      "    \"id\": \"167\",",
-      "    \"sequence\": \"167\",",
+      "    \"id\": \"8\",",
+      "    \"sequence\": \"8\",",
       "    \"type\": \"settlement.trusted_result.preflight\",",
       "    \"stream\": \"market\",",
       "    \"marketId\": \"78ea76f1-fc8f-419b-ac21-2554d79093f6\",",
-      "    \"outcomeId\": \"dd0797bc-e297-4c19-b55c-ccf1bb96dace\",",
-      "    \"createdAt\": \"2026-07-12T12:25:54.570Z\"",
+      "    \"outcomeId\": \"24515f22-3717-4b61-82a2-c072febc8f5b\",",
+      "    \"createdAt\": \"2026-07-13T09:01:59.057Z\"",
       "  },",
       "  \"gaps\": {",
       "    \"p0\": [],",
@@ -36,20 +36,30 @@
       "  }",
       "}"
     ],
-    "stderrTail": []
+    "stderrTail": [
+      "[config] warnings {",
+      "  env: 'development',",
+      "  warnings: [",
+      "    'ADMIN_EMAILS is not set; admin bootstrap may be limited',",
+      "    'POLYGON_RPC_URL is not set; Polygon deposit monitor is disabled',",
+      "    'POLYGON_USDC_ADDRESS is not set; Polygon deposit monitor is disabled',",
+      "    'DEPOSIT_WALLET_ENCRYPTION_KEY is not set; deposit wallet generation is disabled'",
+      "  ]",
+      "}"
+    ]
   },
   "settlementSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-audit-event-dry-run.redacted.json",
   "eventSlug": "odds-api-single-soccer-test",
   "selectedMarketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-  "winningOutcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+  "winningOutcomeId": "24515f22-3717-4b61-82a2-c072febc8f5b",
   "auditEvent": {
-    "id": "167",
+    "id": "8",
     "eventType": "settlement.trusted_result.preflight",
     "stream": "MARKET",
     "topicKey": "market:78ea76f1-fc8f-419b-ac21-2554d79093f6",
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-    "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
-    "createdAt": "2026-07-12T12:25:54.570Z",
+    "outcomeId": "24515f22-3717-4b61-82a2-c072febc8f5b",
+    "createdAt": "2026-07-13T09:01:59.057Z",
     "payload": {
       "eventSlug": "odds-api-single-soccer-test",
       "resultDigest": "f3a5743c73f2",

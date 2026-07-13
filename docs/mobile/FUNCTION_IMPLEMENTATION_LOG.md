@@ -15365,3 +15365,12 @@ Known limitations:
 - User/runtime interactions supported: `npm run mobile:one-event-phase-audit` can now discover a local `.env` through `DOTENV_CONFIG_PATH`, the current worktree, or nearby project roots before it uses Prisma to resolve the local audit admin user. This keeps the authenticated result-review and settlement-queue audit gate runnable without copying secrets into the mobile repo.
 - State transitions: none. This is a local harness/audit startup fix only. It does not call provider APIs, place orders, mutate markets, start loops, or settle anything.
 - Known limitations: if no local `.env` or `DATABASE_URL` exists anywhere in the local workspace, the audit now fails with a clearer setup message. Secrets are loaded into the process environment only and are not printed.
+
+## Cycle XZ - Durable Runtime Proof Writer Env Loading
+
+- Feature/runtime worked on: local live-runtime proof writer reliability for internal tester readiness.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/write_provider_refresh_run.ts`, `scripts/write_market_maker_quote_run.ts`, `scripts/prove_odds_api_result_ingestion_audit_event.ts`, `scripts/prove_odds_api_settlement_audit_event.ts`, and `scripts/prove_odds_api_settlement_approval_audit_event.ts`.
+- User/runtime interactions supported: local proof commands now load the same local `DATABASE_URL` discovery helper before importing Prisma-backed services, so durable `ProviderRefreshRun`, `MarketMakerQuoteRun`, `RuntimeServiceRun`, and canonical result/settlement audit evidence are written into the DB read by `/api/internal/live-runtime/status`.
+- State transitions: proof commands write durable local runtime/audit evidence only. They do not call The Odds API, do not place orders, do not start runtime loops, and do not execute active-event settlement.
+- Known limitations: mobile-visible provider snapshots may still be stale in cached no-quota mode; live refresh remains explicit, key-gated, and quota-capped. Installed unattended service ownership and production official-result auto-settlement remain P1.

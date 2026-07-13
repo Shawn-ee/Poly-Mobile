@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-07-12T13:40:32.907Z",
+  "generatedAt": "2026-07-13T09:01:58.031Z",
   "scope": "odds-api-one-event-result-ingestion-audit-event-proof",
   "pass": true,
   "providerQuotaUsed": false,
   "command": {
     "executable": "C:\\nvm4w\\nodejs\\node.exe",
     "args": [
-      "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+      "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\node_modules\\tsx\\dist\\cli.mjs",
       "scripts/ingest_odds_api_one_event_result.ts",
       "--eventSlug=odds-api-single-soccer-test",
       "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-audit-event-ingest.redacted.json",
@@ -36,19 +36,29 @@
       "  }",
       "}"
     ],
-    "stderrTail": []
+    "stderrTail": [
+      "[config] warnings {",
+      "  env: 'development',",
+      "  warnings: [",
+      "    'ADMIN_EMAILS is not set; admin bootstrap may be limited',",
+      "    'POLYGON_RPC_URL is not set; Polygon deposit monitor is disabled',",
+      "    'POLYGON_USDC_ADDRESS is not set; Polygon deposit monitor is disabled',",
+      "    'DEPOSIT_WALLET_ENCRYPTION_KEY is not set; deposit wallet generation is disabled'",
+      "  ]",
+      "}"
+    ]
   },
   "ingestionSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-audit-event-ingest.redacted.json",
   "trustedResultOutputPath": "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
   "eventSlug": "odds-api-single-soccer-test",
   "auditEvent": {
-    "id": "172",
+    "id": "7",
     "eventType": "provider.result.ingested",
     "stream": "MARKET",
     "topicKey": "market:provider-result:odds-api-single-soccer-test",
     "marketId": null,
     "outcomeId": null,
-    "createdAt": "2026-07-12T13:40:32.333Z",
+    "createdAt": "2026-07-13T09:01:57.996Z",
     "payload": {
       "eventSlug": "odds-api-single-soccer-test",
       "sourceEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",

@@ -1,8 +1,10 @@
 import fs from "node:fs/promises";
-import { prisma } from "@/lib/db";
-import { writeMarketMakerQuoteRun } from "@/server/services/marketMakerQuoteRun";
+import { loadLocalEnvForScript } from "./local_env";
 
 type JsonObject = Record<string, unknown>;
+
+let prisma: typeof import("@/lib/db")["prisma"];
+let writeMarketMakerQuoteRun: typeof import("@/server/services/marketMakerQuoteRun")["writeMarketMakerQuoteRun"];
 
 const DEFAULT_SUMMARY_PATH = "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json";
 
@@ -27,6 +29,9 @@ async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to write local market-maker quote run in production.");
   }
+  loadLocalEnvForScript(["DATABASE_URL"]);
+  ({ prisma } = await import("@/lib/db"));
+  ({ writeMarketMakerQuoteRun } = await import("@/server/services/marketMakerQuoteRun"));
 
   const summaryPath = argValue("summaryPath") ?? argValue("input") ?? DEFAULT_SUMMARY_PATH;
   const summary = JSON.parse(await fs.readFile(summaryPath, "utf8")) as JsonObject;
@@ -95,5 +100,5 @@ main()
     process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect();
+    if (prisma) await prisma.$disconnect();
   });

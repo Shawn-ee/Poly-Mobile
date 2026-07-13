@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T05:49:04.974Z",
+  "generatedAt": "2026-07-13T09:02:29.409Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -60,7 +60,7 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-13T05:49:04.973Z"
+        "timestamp": "2026-07-13T09:02:29.409Z"
       },
       "error": null
     }
@@ -68,7 +68,7 @@
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveProofGeneratedAt": "2026-07-13T00:24:21.875Z",
-    "liveProofAgeHours": 5.41,
+    "liveProofAgeHours": 8.64,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
@@ -91,8 +91,8 @@
   },
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-    "makerSeedGeneratedAt": "2026-07-13T05:48:49.617Z",
-    "makerSeedAgeHours": 0,
+    "makerSeedGeneratedAt": "2026-07-13T08:25:46.639Z",
+    "makerSeedAgeHours": 0.61,
     "quoteRoute": {
       "ok": true,
       "status": 200,
@@ -100,19 +100,19 @@
         "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
         "quotes": [
           {
-            "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
-            "outcomeName": "Over +2.5",
+            "outcomeId": "24515f22-3717-4b61-82a2-c072febc8f5b",
+            "outcomeName": "Over 2.5",
             "bestBid": "0.58",
-            "bestAsk": "0.59",
+            "bestAsk": "0.6",
             "bestBidSize": 36.9,
             "bestAskSize": 200,
-            "midPrice": "0.585",
+            "midPrice": "0.59",
             "lastPrice": "0.58",
-            "lastTradeAt": "2026-07-13T05:40:59.926Z"
+            "lastTradeAt": "2026-07-13T08:43:38.933Z"
           },
           {
-            "outcomeId": "ee7237f3-ee58-4a66-a092-adaa58b3547f",
-            "outcomeName": "Under +2.5",
+            "outcomeId": "651d8407-2f22-4a37-8d2a-72f483b580fe",
+            "outcomeName": "Under 2.5",
             "bestBid": null,
             "bestAsk": null,
             "bestBidSize": null,
@@ -129,7 +129,7 @@
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
     "schedulerGeneratedAt": "2026-07-13T05:48:55.212Z",
-    "schedulerAgeHours": 0,
+    "schedulerAgeHours": 3.23,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 3
@@ -138,9 +138,9 @@
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
     "resultSettlementExecutionGeneratedAt": "2026-07-12T11:52:39.122Z",
-    "resultSettlementExecutionAgeHours": 17.94,
+    "resultSettlementExecutionAgeHours": 21.16,
     "resultSettlementLiveBlockedGeneratedAt": "2026-07-12T11:52:37.215Z",
-    "resultSettlementLiveBlockedAgeHours": 17.94,
+    "resultSettlementLiveBlockedAgeHours": 21.16,
     "executionRequiresMarketStatus": "CLOSED",
     "blockedExecutionReason": "market_must_be_closed_before_result_settlement:LIVE",
     "activeTesterEventMutated": false,

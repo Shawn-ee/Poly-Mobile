@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-07-13T08:25:54.458Z",
+  "generatedAt": "2026-07-13T08:57:16.806Z",
   "scope": "holiwyn-current-runtime-state-proof",
   "pass": true,
-  "startedAt": "2026-07-13T08:25:39.649Z",
-  "completedAt": "2026-07-13T08:25:54.458Z",
+  "startedAt": "2026-07-13T08:57:00.900Z",
+  "completedAt": "2026-07-13T08:57:16.806Z",
   "settings": {
     "backendPort": 3002,
     "expoPort": 8081,
@@ -14,8 +14,8 @@
   "runtimeTruth": {
     "warmNoQuotaRuntimeObserved": true,
     "allLoopsRunningObserved": true,
-    "backendStatusRouteWarmNoQuotaObserved": false,
-    "backendStatusRouteAllLoopsObserved": false,
+    "backendStatusRouteWarmNoQuotaObserved": true,
+    "backendStatusRouteAllLoopsObserved": true,
     "localCapabilityReadyWhileRunning": true,
     "quotaSpendingLoopRunning": false,
     "testerReadyRightNow": false,
@@ -28,24 +28,22 @@
   },
   "currentRuntimeState": {
     "checked": true,
-    "mode": "proven_capability_loops_stopped",
+    "mode": "warm_no_quota_runtime",
     "localCapabilityReady": true,
-    "warmNoQuotaRuntime": false,
-    "allLoopsRunning": false,
-    "anyLoopRunning": false,
-    "supervisorRunning": false,
-    "resultPollerRunning": false,
+    "warmNoQuotaRuntime": true,
+    "allLoopsRunning": true,
+    "anyLoopRunning": true,
+    "supervisorRunning": true,
+    "resultPollerRunning": true,
     "quotaSpendingLoopRunning": false,
     "backendProofFresh": true,
     "providerSnapshotFresh": false,
     "testerReadyRightNow": false,
     "p0": [],
     "p1": [
-      "supervisor_loop_not_running_now",
-      "result_poller_loop_not_running_now",
       "mobile_provider_snapshot_not_fresh"
     ],
-    "nextAction": "start_internal_tester_runtime_with_supervisor_and_result_poller",
+    "nextAction": "keep_cached_testing_or_refresh_live_odds",
     "note": "This separates proven local capability from current process warmth. Ready status can be true while loops are stopped; testerReadyRightNow requires both local loops running without provider quota and fresh mobile-visible provider snapshots."
   },
   "managedProcesses": {
@@ -54,9 +52,9 @@
       "checked": true,
       "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
       "known": true,
-      "pid": 70832,
-      "running": false,
-      "startedAt": "2026-07-13T05:18:08.2841029Z",
+      "pid": 82344,
+      "running": true,
+      "startedAt": "2026-07-13T08:57:06.1375727Z",
       "continuous": true,
       "maxIterations": 0,
       "intervalSeconds": 15,
@@ -71,7 +69,7 @@
         "staleGuard": false,
         "staleGuardEnforced": false,
         "liveResultIngestion": false,
-        "approvedResultSettlement": true
+        "approvedResultSettlement": false
       }
     },
     "resultPoller": {
@@ -79,12 +77,12 @@
       "checked": true,
       "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
       "known": true,
-      "pid": 66776,
-      "running": false,
-      "startedAt": "2026-07-13T05:18:08.6050761Z",
+      "pid": 65832,
+      "running": true,
+      "startedAt": "2026-07-13T08:57:06.7348617Z",
       "continuous": true,
       "maxIterations": 0,
-      "intervalSeconds": 15,
+      "intervalSeconds": 1,
       "providerProofEveryIterations": null,
       "maxProviderProofRuns": null,
       "refreshIterations": null,
@@ -93,16 +91,16 @@
       "usesProviderQuota": false,
       "modes": {
         "liveResultIngestion": false,
-        "approvedResultSettlement": true
+        "approvedResultSettlement": false
       }
     },
-    "anyLoopRunning": false,
+    "anyLoopRunning": true,
     "quotaSpendingLoopRunning": false,
     "note": "Read-only live process check from local .runtime state and OS pid existence. Ready status is based on proven local capability and fresh data, not on requiring background loops to be running right now."
   },
   "proof": {
     "startSummary": {
-      "generatedAt": "2026-07-13T08:25:42.5075499Z",
+      "generatedAt": "2026-07-13T08:57:03.9889496Z",
       "pass": true,
       "action": "stop",
       "readiness": {
@@ -134,25 +132,25 @@
       }
     },
     "supervisorWhileRunning": {
-      "generatedAt": "2026-07-13T08:25:50.3297201Z",
+      "generatedAt": "2026-07-13T08:57:12.5226222Z",
       "pass": true,
       "action": "status",
       "operationResult": "running",
       "running": true,
-      "pid": 80292,
+      "pid": 82344,
       "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json"
     },
     "resultPollerWhileRunning": {
-      "generatedAt": "2026-07-13T08:25:50.8568991Z",
+      "generatedAt": "2026-07-13T08:57:13.0466109Z",
       "pass": true,
       "action": "status",
       "operationResult": "running",
       "running": true,
-      "pid": 47436,
+      "pid": 65832,
       "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json"
     },
     "stopSummary": {
-      "generatedAt": "2026-07-13T08:25:42.5075499Z",
+      "generatedAt": "2026-07-13T08:57:03.9889496Z",
       "pass": true,
       "action": "stop",
       "readiness": {
@@ -184,21 +182,21 @@
       }
     },
     "supervisorStopSummary": {
-      "generatedAt": "2026-07-13T08:25:52.6088541Z",
+      "generatedAt": "2026-07-13T08:57:14.8296454Z",
       "pass": true,
       "action": "stop",
       "operationResult": "stopped",
       "running": false,
-      "pid": 80292,
+      "pid": 82344,
       "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json"
     },
     "resultPollerStopSummary": {
-      "generatedAt": "2026-07-13T08:25:54.4042937Z",
+      "generatedAt": "2026-07-13T08:57:16.6199734Z",
       "pass": true,
       "action": "stop",
       "operationResult": "stopped",
       "running": false,
-      "pid": 47436,
+      "pid": 65832,
       "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json"
     },
     "statusUrl": "http://127.0.0.1:3002/api/internal/live-runtime/status"
@@ -213,8 +211,8 @@
       "exitCode": 0,
       "pass": true,
       "signal": null,
-      "startedAt": "2026-07-13T08:25:39.649Z",
-      "finishedAt": "2026-07-13T08:25:42.552Z",
+      "startedAt": "2026-07-13T08:57:00.900Z",
+      "finishedAt": "2026-07-13T08:57:04.045Z",
       "stdout": ".runtime/current-runtime-state-proof/pre-stop-internal-runtime.out.log",
       "stderr": ".runtime/current-runtime-state-proof/pre-stop-internal-runtime.err.log",
       "stdoutTail": [
@@ -262,8 +260,8 @@
       "pass": true,
       "signal": null,
       "error": null,
-      "startedAt": "2026-07-13T08:25:42.561Z",
-      "finishedAt": "2026-07-13T08:25:43.666Z",
+      "startedAt": "2026-07-13T08:57:04.054Z",
+      "finishedAt": "2026-07-13T08:57:05.629Z",
       "stdout": ".runtime/current-runtime-state-proof/restore-cached-live-one-event.out.log",
       "stderr": ".runtime/current-runtime-state-proof/restore-cached-live-one-event.err.log",
       "stdoutTail": [
@@ -324,14 +322,14 @@
       "pass": true,
       "signal": null,
       "error": null,
-      "startedAt": "2026-07-13T08:25:43.673Z",
-      "finishedAt": "2026-07-13T08:25:44.239Z",
+      "startedAt": "2026-07-13T08:57:05.636Z",
+      "finishedAt": "2026-07-13T08:57:06.218Z",
       "stdout": ".runtime/current-runtime-state-proof/start-supervisor-warm-no-quota.out.log",
       "stderr": ".runtime/current-runtime-state-proof/start-supervisor-warm-no-quota.err.log",
       "stdoutTail": [
-        "                                      \"failure\":  \"Cycle 1 failed.\",",
+        "                                      \"failure\":  null,",
         "                                      \"gapCounts\":  {",
-        "                                                        \"p0\":  1,",
+        "                                                        \"p0\":  0,",
         "                                                        \"p1\":  2,",
         "                                                        \"p2\":  1",
         "                                                    }",
@@ -382,8 +380,8 @@
       "pass": true,
       "signal": null,
       "error": null,
-      "startedAt": "2026-07-13T08:25:44.247Z",
-      "finishedAt": "2026-07-13T08:25:44.813Z",
+      "startedAt": "2026-07-13T08:57:06.227Z",
+      "finishedAt": "2026-07-13T08:57:06.819Z",
       "stdout": ".runtime/current-runtime-state-proof/start-result-poller-warm-no-quota.out.log",
       "stderr": ".runtime/current-runtime-state-proof/start-result-poller-warm-no-quota.err.log",
       "stdoutTail": [
@@ -431,14 +429,14 @@
       "pass": true,
       "signal": null,
       "error": null,
-      "startedAt": "2026-07-13T08:25:49.869Z",
-      "finishedAt": "2026-07-13T08:25:50.379Z",
+      "startedAt": "2026-07-13T08:57:12.060Z",
+      "finishedAt": "2026-07-13T08:57:12.570Z",
       "stdout": ".runtime/current-runtime-state-proof/status-supervisor-while-running.out.log",
       "stderr": ".runtime/current-runtime-state-proof/status-supervisor-while-running.err.log",
       "stdoutTail": [
-        "                                      \"failure\":  \"Cycle 1 failed.\",",
+        "                                      \"failure\":  null,",
         "                                      \"gapCounts\":  {",
-        "                                                        \"p0\":  1,",
+        "                                                        \"p0\":  0,",
         "                                                        \"p1\":  2,",
         "                                                        \"p2\":  1",
         "                                                    }",
@@ -480,8 +478,8 @@
       "pass": true,
       "signal": null,
       "error": null,
-      "startedAt": "2026-07-13T08:25:50.387Z",
-      "finishedAt": "2026-07-13T08:25:50.901Z",
+      "startedAt": "2026-07-13T08:57:12.578Z",
+      "finishedAt": "2026-07-13T08:57:13.090Z",
       "stdout": ".runtime/current-runtime-state-proof/status-result-poller-while-running.out.log",
       "stderr": ".runtime/current-runtime-state-proof/status-result-poller-while-running.err.log",
       "stdoutTail": [
@@ -529,14 +527,14 @@
       "pass": true,
       "signal": null,
       "error": null,
-      "startedAt": "2026-07-13T08:25:50.910Z",
-      "finishedAt": "2026-07-13T08:25:52.654Z",
+      "startedAt": "2026-07-13T08:57:13.098Z",
+      "finishedAt": "2026-07-13T08:57:14.875Z",
       "stdout": ".runtime/current-runtime-state-proof/stop-supervisor-after-proof.out.log",
       "stderr": ".runtime/current-runtime-state-proof/stop-supervisor-after-proof.err.log",
       "stdoutTail": [
-        "                                      \"failure\":  \"Cycle 1 failed.\",",
+        "                                      \"failure\":  null,",
         "                                      \"gapCounts\":  {",
-        "                                                        \"p0\":  1,",
+        "                                                        \"p0\":  0,",
         "                                                        \"p1\":  2,",
         "                                                        \"p2\":  1",
         "                                                    }",
@@ -578,8 +576,8 @@
       "pass": true,
       "signal": null,
       "error": null,
-      "startedAt": "2026-07-13T08:25:52.662Z",
-      "finishedAt": "2026-07-13T08:25:54.450Z",
+      "startedAt": "2026-07-13T08:57:14.883Z",
+      "finishedAt": "2026-07-13T08:57:16.797Z",
       "stdout": ".runtime/current-runtime-state-proof/stop-result-poller-after-proof.out.log",
       "stderr": ".runtime/current-runtime-state-proof/stop-result-poller-after-proof.err.log",
       "stdoutTail": [
@@ -621,10 +619,7 @@
     "p0": [],
     "p1": [
       "Mobile-visible provider snapshots may still be stale in no-quota mode; live odds refresh remains explicit and quota-capped.",
-      "This proves a local warm runtime, not an installed OS service.",
-      "backend_status_route_did_not_report_warm_no_quota_runtime",
-      "backend_status_route_did_not_report_all_loops_running",
-      "backend_status_route_managed_processes_did_not_report_both_loops_running"
+      "This proves a local warm runtime, not an installed OS service."
     ],
     "p2": [
       "Multi-event warm-runtime orchestration remains future work."

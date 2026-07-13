@@ -1,8 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
-import { prisma } from "@/lib/db";
-import { emitMarketSettlementAuditEvent } from "@/server/services/orderbookEvents";
+import { loadLocalEnvForScript } from "./local_env";
 
 const DEFAULT_EVENT_SLUG = "odds-api-single-soccer-test";
 const DEFAULT_RESULT_PATH =
@@ -17,6 +16,9 @@ const DEFAULT_OUTPUT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-approval-audit-event-summary.redacted.json";
 
 type JsonObject = Record<string, any>;
+
+let prisma: typeof import("@/lib/db")["prisma"];
+let emitMarketSettlementAuditEvent: typeof import("@/server/services/orderbookEvents")["emitMarketSettlementAuditEvent"];
 
 const argValue = (name: string) => {
   const prefix = `--${name}=`;
@@ -66,6 +68,9 @@ async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to write local settlement approval audit evidence in production.");
   }
+  loadLocalEnvForScript(["DATABASE_URL"]);
+  ({ prisma } = await import("@/lib/db"));
+  ({ emitMarketSettlementAuditEvent } = await import("@/server/services/orderbookEvents"));
 
   const eventSlug = argValue("eventSlug") ?? DEFAULT_EVENT_SLUG;
   const resultPath = argValue("result") ?? argValue("resultPath") ?? DEFAULT_RESULT_PATH;
@@ -241,5 +246,5 @@ main()
     process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect();
+    if (prisma) await prisma.$disconnect();
   });

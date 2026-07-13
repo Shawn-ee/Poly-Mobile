@@ -1,8 +1,10 @@
 import fs from "node:fs/promises";
-import { prisma } from "@/lib/db";
-import { writeProviderRefreshRun } from "@/server/services/providerRefreshRun";
+import { loadLocalEnvForScript } from "./local_env";
 
 type JsonObject = Record<string, unknown>;
+
+let prisma: typeof import("@/lib/db")["prisma"];
+let writeProviderRefreshRun: typeof import("@/server/services/providerRefreshRun")["writeProviderRefreshRun"];
 
 const DEFAULT_SUMMARY_PATH = "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json";
 
@@ -28,6 +30,9 @@ async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to write local provider refresh run in production.");
   }
+  loadLocalEnvForScript(["DATABASE_URL"]);
+  ({ prisma } = await import("@/lib/db"));
+  ({ writeProviderRefreshRun } = await import("@/server/services/providerRefreshRun"));
 
   const summaryPath = argValue("summaryPath") ?? argValue("input") ?? DEFAULT_SUMMARY_PATH;
   const summary = JSON.parse(await fs.readFile(summaryPath, "utf8")) as JsonObject;
@@ -87,5 +92,5 @@ main()
     process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect();
+    if (prisma) await prisma.$disconnect();
   });

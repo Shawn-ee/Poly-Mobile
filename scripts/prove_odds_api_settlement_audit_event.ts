@@ -1,7 +1,7 @@
 import { spawnSync } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { prisma } from "@/lib/db";
+import { loadLocalEnvForScript } from "./local_env";
 
 const DEFAULT_EVENT_SLUG = "odds-api-single-soccer-test";
 const DEFAULT_RESULT_PATH =
@@ -12,6 +12,8 @@ const DEFAULT_OUTPUT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-audit-event-summary.redacted.json";
 
 type JsonObject = Record<string, unknown>;
+
+let prisma: typeof import("@/lib/db")["prisma"];
 
 const argValue = (name: string) => {
   const prefix = `--${name}=`;
@@ -77,6 +79,8 @@ async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to run local settlement audit proof in production.");
   }
+  loadLocalEnvForScript(["DATABASE_URL"]);
+  ({ prisma } = await import("@/lib/db"));
 
   const eventSlug = argValue("eventSlug") ?? DEFAULT_EVENT_SLUG;
   const resultPath = argValue("result") ?? argValue("resultPath") ?? DEFAULT_RESULT_PATH;
@@ -168,5 +172,5 @@ main()
     process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect();
+    if (prisma) await prisma.$disconnect();
   });
