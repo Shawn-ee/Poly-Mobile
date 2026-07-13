@@ -21,6 +21,7 @@ const SUPERVISOR_STATE_PATH = ".runtime/one-event-live-supervisor/supervisor-pro
 const RESULT_POLLER_STATE_PATH = ".runtime/one-event-result-poller/result-poller-process-state.json";
 const MOBILE_REFRESH_DUE_SECONDS = 60;
 const MOBILE_STALE_AFTER_SECONDS = 90;
+const DEFAULT_SUSPEND_BEFORE_START_SECONDS = 5 * 60;
 
 type JsonObject = Record<string, unknown>;
 
@@ -411,6 +412,107 @@ async function getRecentMarketMakerQuoteRuns(marketId: string | null) {
     take: 5,
   });
   return rows.map(compactMarketMakerQuoteRunRow);
+}
+
+async function getSelectedEventLifecycle(eventSlug: string | null) {
+  if (!eventSlug) {
+    return {
+      checked: false,
+      found: false,
+      eventSlug: null,
+      reason: "missing_selected_event_slug",
+      now: new Date().toISOString(),
+      suspendBeforeStartSeconds: DEFAULT_SUSPEND_BEFORE_START_SECONDS,
+      tradingWindow: "unknown",
+      schedulerActionNow: "none",
+      operatorNextAction: "inspect_selected_event",
+    };
+  }
+
+  const now = new Date();
+  const event = await prisma.event.findUnique({
+    where: { slug: eventSlug },
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      status: true,
+      liveStatus: true,
+      sportKey: true,
+      leagueKey: true,
+      source: true,
+      externalEventId: true,
+      startTime: true,
+      sourceUpdatedAt: true,
+    },
+  });
+
+  if (!event) {
+    return {
+      checked: true,
+      found: false,
+      eventSlug,
+      reason: "event_not_found",
+      now: now.toISOString(),
+      suspendBeforeStartSeconds: DEFAULT_SUSPEND_BEFORE_START_SECONDS,
+      tradingWindow: "unknown",
+      schedulerActionNow: "none",
+      operatorNextAction: "restore_or_import_selected_event",
+    };
+  }
+
+  const msUntilStart = event.startTime ? event.startTime.getTime() - now.getTime() : null;
+  const secondsUntilStart = msUntilStart == null ? null : Math.round(msUntilStart / 1000);
+  const startAgeSeconds = msUntilStart == null ? null : Math.max(0, Math.round(-msUntilStart / 1000));
+  const insideSuspendWindow =
+    typeof secondsUntilStart === "number" &&
+    secondsUntilStart > 0 &&
+    secondsUntilStart <= DEFAULT_SUSPEND_BEFORE_START_SECONDS;
+  const startPassed = typeof secondsUntilStart === "number" && secondsUntilStart <= 0;
+  const tradingWindow = !event.startTime
+    ? "unknown"
+    : startPassed
+      ? "past_start"
+      : insideSuspendWindow
+        ? "pre_start_suspend_window"
+        : "pre_start_open";
+  const schedulerActionNow =
+    tradingWindow === "past_start" ? "close" : tradingWindow === "pre_start_suspend_window" ? "pause" : "none";
+  const operatorNextAction =
+    tradingWindow === "past_start"
+      ? "run_lifecycle_scheduler_to_close_markets_before_settlement"
+      : tradingWindow === "pre_start_suspend_window"
+        ? "run_lifecycle_scheduler_to_pause_trading"
+        : tradingWindow === "pre_start_open"
+          ? "keep_trading_available_until_suspend_window"
+          : "set_or_import_event_start_time";
+
+  return {
+    checked: true,
+    found: true,
+    eventSlug: event.slug,
+    eventId: event.id,
+    title: event.title,
+    status: event.status,
+    liveStatus: event.liveStatus,
+    sportKey: event.sportKey,
+    leagueKey: event.leagueKey,
+    source: event.source,
+    externalEventId: event.externalEventId,
+    sourceUpdatedAt: event.sourceUpdatedAt?.toISOString() ?? null,
+    now: now.toISOString(),
+    startTime: event.startTime?.toISOString() ?? null,
+    secondsUntilStart,
+    startAgeSeconds,
+    suspendBeforeStartSeconds: DEFAULT_SUSPEND_BEFORE_START_SECONDS,
+    insideSuspendWindow,
+    startPassed,
+    tradingWindow,
+    schedulerActionNow,
+    operatorNextAction,
+    note:
+      "Read-only selected-event lifecycle timing. It mirrors the one-event lifecycle scheduler timing rule and does not mutate markets.",
+  };
 }
 
 async function getProviderSnapshotFreshness(params: {
@@ -1325,9 +1427,10 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     upsertRuntimeHeartbeat(resultPollerProcess),
   ]);
   const runtimeRuns = await getLatestRuntimeRuns();
-  const providerRefreshRun = await getLatestProviderRefreshRun(
-    stringValue(getPath(completionAudit, ["event", "localSlug"])) ?? stringValue(getPath(phaseAudit, ["event", "localSlug"])),
-  );
+  const selectedEventSlug =
+    stringValue(getPath(completionAudit, ["event", "localSlug"])) ?? stringValue(getPath(phaseAudit, ["event", "localSlug"]));
+  const selectedEventLifecycle = await getSelectedEventLifecycle(selectedEventSlug);
+  const providerRefreshRun = await getLatestProviderRefreshRun(selectedEventSlug);
   const marketMakerQuoteRuns = await getRecentMarketMakerQuoteRuns(selectedMarketId);
   const marketMakerQuoteRun = marketMakerQuoteRuns[0] ?? null;
   const repeatedLocalMakerQuoteRunCount = marketMakerQuoteRuns.filter(
@@ -1360,6 +1463,9 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
   }
   if (!activeSettlementClosedEligibilityReady) {
     statusP0Gaps.push("active_settlement_closed_eligibility_missing_or_failed");
+  }
+  if (selectedEventLifecycle.checked && !selectedEventLifecycle.found) {
+    statusP0Gaps.push("selected_event_missing_from_db");
   }
   const artifactFreshness = {
     maxCompletionAuditAgeHours: 24,
@@ -1826,6 +1932,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     scope: "holiwyn-local-live-runtime-status",
     status: ready ? "ready" : "needs_attention",
     event: completionAudit?.event ?? phaseAudit?.event ?? null,
+    selectedEventLifecycle,
     selectedMarket: phaseAudit?.selectedMarket ?? null,
     runtimeTruth: {
       localInternalRuntimeReady: ready,

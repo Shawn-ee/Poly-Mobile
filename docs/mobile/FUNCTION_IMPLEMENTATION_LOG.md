@@ -2,6 +2,20 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZV - Selected Event Lifecycle Status
+
+- Feature/runtime worked on: read-only live-runtime status for the current Spain vs. France internal tester event.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `src/server/services/liveRuntimeStatus.ts`
+  - `src/__tests__/liveRuntimeStatus.service.test.ts`
+  - `GET /api/internal/live-runtime/status`
+- User/runtime interactions supported: internal testers and operators can now see whether the selected backend event is pre-start/open, inside the pre-start suspend window, or past start and should be paused/closed by the lifecycle scheduler.
+- State transitions: none. This is a read-only projection and does not mutate events, markets, orders, portfolio, provider snapshots, or settlement state.
+- API/data dependencies: selected event slug from existing completion/phase audit evidence, `Event` row by slug, current event `startTime`, and the existing 5-minute one-event lifecycle scheduler suspend window.
+- Known limitations: this does not install an unattended lifecycle daemon. It reports the correct next lifecycle action; the existing scheduler/supervisor still performs the actual pause/close behavior when run.
+- Proof: `docs/mobile/harness/odds-api-live-runtime/zv-selected-event-lifecycle-status.redacted.json`.
+
 ## Cycle ZU - Runtime S23 Detection Hardening
 
 - Feature/runtime worked on: one-event backend/live-runtime operator scripts for the Spain vs. France internal tester pipeline.

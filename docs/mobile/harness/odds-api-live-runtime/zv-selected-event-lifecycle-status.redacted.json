@@ -1,0 +1,47 @@
+{
+  "generatedAt": "2026-07-13T18:17:31.356Z",
+  "scope": "cycle-ZV-selected-event-lifecycle-status",
+  "route": {
+    "ok": true,
+    "status": 200,
+    "statusText": "ready"
+  },
+  "selectedEventLifecycle": {
+    "checked": true,
+    "found": true,
+    "eventSlug": "odds-api-single-soccer-test",
+    "eventId": "3c4716b1-5857-4150-a779-c2c98ab30361",
+    "title": "Spain vs. France",
+    "status": "active",
+    "liveStatus": "LIVE",
+    "sportKey": "soccer_fifa_world_cup",
+    "leagueKey": "soccer_fifa_world_cup",
+    "source": "the-odds-api",
+    "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
+    "sourceUpdatedAt": "2026-07-13T09:24:03.509Z",
+    "now": "2026-07-13T18:17:31.346Z",
+    "startTime": "2026-07-14T19:00:00.000Z",
+    "secondsUntilStart": 88949,
+    "startAgeSeconds": 0,
+    "suspendBeforeStartSeconds": 300,
+    "insideSuspendWindow": false,
+    "startPassed": false,
+    "tradingWindow": "pre_start_open",
+    "schedulerActionNow": "none",
+    "operatorNextAction": "keep_trading_available_until_suspend_window",
+    "note": "Read-only selected-event lifecycle timing. It mirrors the one-event lifecycle scheduler timing rule and does not mutate markets."
+  },
+  "providerQuotaUsed": false,
+  "activeSettlementExecutionAttempted": false,
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "Installed unattended provider/maker/lifecycle service ownership remains open.",
+      "Production official-result auto-settlement remains open; active-event execution is still guarded by CLOSED market status and exact confirmation."
+    ],
+    "p2": [
+      "Multi-event provider polling and production dashboard/operator UI remain future work."
+    ]
+  },
+  "pass": true
+}

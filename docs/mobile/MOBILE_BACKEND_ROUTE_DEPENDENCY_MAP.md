@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ZV - Selected Event Lifecycle Status
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Internal tester selected-event lifecycle status | `/api/internal/live-runtime/status` | `GET` | Local/dev only; route returns unavailable outside the internal runtime status environment | Optional `phaseAuditInProgress=1` for audit bootstrap | `selectedEventLifecycle.checked`, `found`, `eventSlug`, `eventId`, `title`, `status`, `liveStatus`, `startTime`, `secondsUntilStart`, `suspendBeforeStartSeconds`, `tradingWindow`, `schedulerActionNow`, and `operatorNextAction` | Reads existing `Event` row by selected local slug from completion/phase audit evidence; no schema change and no writes | None. If the event is missing, status becomes `needs_attention` with P0 gap `selected_event_missing_from_db` | Installed unattended lifecycle service remains P1. This route reports lifecycle timing; the existing scheduler/supervisor still performs pause/close behavior when run. |
+
 ## Cycle ZL - One-Command Onboarding Aliases
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

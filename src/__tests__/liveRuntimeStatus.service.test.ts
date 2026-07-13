@@ -5,6 +5,7 @@ const runtimeServiceHeartbeatUpsert = jest.fn();
 const runtimeServiceRunFindMany = jest.fn();
 const providerRefreshRunFindMany = jest.fn();
 const marketMakerQuoteRunFindMany = jest.fn();
+const eventFindUnique = jest.fn();
 const execFileSync = jest.fn();
 
 jest.mock("node:fs/promises", () => ({
@@ -32,6 +33,9 @@ jest.mock("@/lib/db", () => ({
     },
     marketMakerQuoteRun: {
       findMany: (...args: unknown[]) => marketMakerQuoteRunFindMany(...args),
+    },
+    event: {
+      findUnique: (...args: unknown[]) => eventFindUnique(...args),
     },
   },
 }));
@@ -232,6 +236,19 @@ const mobileStaleButLocallyFreshSnapshot = () => [
     reason: null,
   },
 ];
+const selectedEventRow = (startOffsetMs = 3_600_000) => ({
+  id: "event-1",
+  slug: "odds-api-single-soccer-test",
+  title: "Spain vs France",
+  status: "ACTIVE",
+  liveStatus: "pre_match",
+  sportKey: "soccer_fifa_world_cup",
+  leagueKey: "world_cup",
+  source: "the-odds-api",
+  externalEventId: "odds-api-event-1",
+  sourceUpdatedAt: new Date(),
+  startTime: new Date(Date.now() + startOffsetMs),
+});
 
 const makeCompletionAudit = (
   generatedAt = nowIso(),
@@ -682,10 +699,12 @@ describe("live runtime status service", () => {
     runtimeServiceRunFindMany.mockReset();
     providerRefreshRunFindMany.mockReset();
     marketMakerQuoteRunFindMany.mockReset();
+    eventFindUnique.mockReset();
     referenceQuoteSnapshotFindMany.mockResolvedValue(freshSnapshot());
     runtimeServiceRunFindMany.mockResolvedValue(runtimeRunRows());
     providerRefreshRunFindMany.mockResolvedValue(providerRefreshRunRows());
     marketMakerQuoteRunFindMany.mockResolvedValue(marketMakerQuoteRunRows());
+    eventFindUnique.mockResolvedValue(selectedEventRow());
     execFileSync.mockReset();
     execFileSync.mockReturnValue("");
     runtimeServiceHeartbeatFindUnique.mockResolvedValue(null);
@@ -798,6 +817,30 @@ describe("live runtime status service", () => {
         },
       }),
     );
+    expect(eventFindUnique).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { slug: "odds-api-single-soccer-test" },
+      }),
+    );
+    expect(status.selectedEventLifecycle).toMatchObject({
+      checked: true,
+      found: true,
+      eventSlug: "odds-api-single-soccer-test",
+      eventId: "event-1",
+      title: "Spain vs France",
+      status: "ACTIVE",
+      liveStatus: "pre_match",
+      sportKey: "soccer_fifa_world_cup",
+      source: "the-odds-api",
+      externalEventId: "odds-api-event-1",
+      suspendBeforeStartSeconds: 300,
+      insideSuspendWindow: false,
+      startPassed: false,
+      tradingWindow: "pre_start_open",
+      schedulerActionNow: "none",
+      operatorNextAction: "keep_trading_available_until_suspend_window",
+    });
+    expect(status.selectedEventLifecycle.secondsUntilStart).toBeGreaterThan(300);
     expect(status.marketMakerQuoteRuns).toMatchObject({
       checked: true,
       durable: true,
@@ -1712,6 +1755,36 @@ describe("live runtime status service", () => {
         }),
       ]),
     );
+  });
+
+  test("returns needs_attention when the selected tester event is missing from the database", async () => {
+    eventFindUnique.mockResolvedValue(null);
+    readFile.mockImplementation(async (filePath: string) => {
+      if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
+      if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
+      if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
+      if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
+      if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
+      if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
+      if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
+      throw new Error(`unexpected path ${filePath}`);
+    });
+
+    const status = await getLocalLiveRuntimeStatus();
+
+    expect(status.status).toBe("needs_attention");
+    expect(status.gaps.p0).toContain("selected_event_missing_from_db");
+    expect(status.selectedEventLifecycle).toMatchObject({
+      checked: true,
+      found: false,
+      eventSlug: "odds-api-single-soccer-test",
+      reason: "event_not_found",
+      tradingWindow: "unknown",
+      schedulerActionNow: "none",
+      operatorNextAction: "restore_or_import_selected_event",
+    });
   });
 
   test("returns needs_attention when a required proof artifact is stale", async () => {
