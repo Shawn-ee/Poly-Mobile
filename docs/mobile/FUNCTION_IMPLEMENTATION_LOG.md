@@ -2,6 +2,19 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZG - Freshest S23 Cashout Proof Selection in Runtime Audits
+
+- Feature/runtime worked on: live-runtime phase/completion audit evidence selection for the Spain vs. France S23 cashout proof.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/report_holiwyn_live_runtime_completion_audit.ts`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+- User/runtime interactions supported: local runtime audits now discover the newest passing `spain-france-cashout` S23 proof summary instead of hardcoding an older proof artifact.
+- State transitions: none. This is a read-only audit-gate change; it does not start Expo, call The Odds API, place orders, change positions, mutate markets, approve settlement, or execute settlement.
+- API/data dependencies: reads committed S23 proof summaries under `docs/mobile/harness/cycle-*-spain-france-cashout*` and requires close-position cashout assertions before accepting a proof path.
+- Known limitations: this is still proof selection from committed artifacts; it does not automatically run a new S23 proof when all matching artifacts are stale or missing.
+
 ## Cycle ZF - Spain vs. France Fresh S23 Cashout Proof
 
 - Feature/page worked on: S23 proof harness for the current internal tester trading path, focused on Portfolio Cash out -> close-position Trade Ticket -> Max -> Sell -> History.

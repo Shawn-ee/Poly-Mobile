@@ -105,6 +105,46 @@ async function readJson(filePath: string): Promise<JsonObject | null> {
   }
 }
 
+async function resolveLatestS23VisibleProofPath() {
+  const fallback = PATHS.s23Visible;
+  const harnessRoot = "docs/mobile/harness";
+  let entries: string[] = [];
+  try {
+    entries = await fs.readdir(harnessRoot);
+  } catch {
+    return fallback;
+  }
+
+  const candidates = await Promise.all(
+    entries
+      .filter((name) => /^cycle-.*spain-france-cashout/i.test(name))
+      .map(async (name) => {
+        const dirPath = path.join(harnessRoot, name);
+        const files = await fs.readdir(dirPath).catch(() => []);
+        const proofFile = files.find((file) => /odds-api-s23-visible-flow\.json$/i.test(file));
+        if (!proofFile) return null;
+        const proofPath = path.join(dirPath, proofFile).replace(/\\/g, "/");
+        const proof = await readJson(proofPath);
+        if (
+          !pass(proof) ||
+          getPath(proof, ["assertions", "cashoutTicketIsClosePositionMode"]) !== true ||
+          getPath(proof, ["assertions", "cashoutMaxUsesOwnedShares"]) !== true ||
+          getPath(proof, ["assertions", "cashoutTicketHidesYesNoSelector"]) !== true
+        ) {
+          return null;
+        }
+        const generatedAt = getPath(proof, ["generatedAt"]);
+        const timestamp = typeof generatedAt === "string" ? Date.parse(generatedAt) : NaN;
+        return { proofPath, timestamp: Number.isFinite(timestamp) ? timestamp : 0 };
+      }),
+  );
+
+  const latest = candidates
+    .filter((candidate): candidate is { proofPath: string; timestamp: number } => candidate !== null)
+    .sort((a, b) => b.timestamp - a.timestamp)[0];
+  return latest?.proofPath ?? fallback;
+}
+
 async function writeJson(outputPath: string, value: unknown) {
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
   await fs.writeFile(outputPath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
@@ -214,6 +254,7 @@ async function main() {
       }
     : undefined;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
+  PATHS.s23Visible = await resolveLatestS23VisibleProofPath();
   const entries = Object.fromEntries(
     await Promise.all(Object.entries(PATHS).map(async ([key, filePath]) => [key, await readJson(filePath)])),
   ) as Record<keyof typeof PATHS, JsonObject | null>;
