@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T19:41:08.113Z",
+  "generatedAt": "2026-07-13T23:04:04.991Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -18,7 +18,7 @@
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "f2634596-0692-428d-a0ee-457dcc6f32ce",
+    "outcomeId": "be4cfe8b-fa1e-4109-a627-2c13189a92a0",
     "outcomeName": "Over +2.5",
     "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
   },
@@ -29,7 +29,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-13T19:41:07.206Z"
+      "timestamp": "2026-07-13T23:04:03.742Z"
     },
     "error": null
   },
@@ -39,22 +39,24 @@
     "localTesterReadyRightNow": false,
     "currentRuntimeState": {
       "checked": true,
-      "mode": "warm_no_quota_runtime",
+      "mode": "proven_capability_loops_stopped",
       "localCapabilityReady": true,
-      "warmNoQuotaRuntime": true,
-      "allLoopsRunning": true,
-      "anyLoopRunning": true,
-      "supervisorRunning": true,
-      "resultPollerRunning": true,
+      "warmNoQuotaRuntime": false,
+      "allLoopsRunning": false,
+      "anyLoopRunning": false,
+      "supervisorRunning": false,
+      "resultPollerRunning": false,
       "quotaSpendingLoopRunning": false,
       "backendProofFresh": true,
       "providerSnapshotFresh": false,
       "testerReadyRightNow": false,
       "p0": [],
       "p1": [
+        "supervisor_loop_not_running_now",
+        "result_poller_loop_not_running_now",
         "mobile_provider_snapshot_not_fresh"
       ],
-      "nextAction": "keep_cached_testing_or_refresh_live_odds",
+      "nextAction": "start_internal_tester_runtime_with_supervisor_and_result_poller",
       "note": "This separates proven local capability from current process warmth. Ready status can be true while loops are stopped; testerReadyRightNow requires both local loops running without provider quota and fresh mobile-visible provider snapshots."
     },
     "managedProcesses": {
@@ -63,9 +65,9 @@
         "checked": true,
         "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
         "known": true,
-        "pid": 15660,
-        "running": true,
-        "startedAt": "2026-07-13T19:40:48.5665697Z",
+        "pid": 72060,
+        "running": false,
+        "startedAt": "2026-07-13T22:15:38.2550382Z",
         "continuous": true,
         "maxIterations": 0,
         "intervalSeconds": 15,
@@ -88,9 +90,9 @@
         "checked": true,
         "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
         "known": true,
-        "pid": 74292,
-        "running": true,
-        "startedAt": "2026-07-13T19:40:49.2701830Z",
+        "pid": 83088,
+        "running": false,
+        "startedAt": "2026-07-13T22:15:38.9861143Z",
         "continuous": true,
         "maxIterations": 0,
         "intervalSeconds": 15,
@@ -105,7 +107,7 @@
           "approvedResultSettlement": true
         }
       },
-      "anyLoopRunning": true,
+      "anyLoopRunning": false,
       "quotaSpendingLoopRunning": false,
       "note": "Read-only live process check from local .runtime state and OS pid existence. Ready status is based on proven local capability and fresh data, not on requiring background loops to be running right now."
     },
@@ -122,9 +124,9 @@
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
     "reason": null,
     "snapshotCount": 4,
-    "latestFetchedAt": "2026-07-13T19:22:57.213Z",
-    "latestAgeHours": 0.3,
-    "latestAgeSeconds": 1091,
+    "latestFetchedAt": "2026-07-13T21:38:09.297Z",
+    "latestAgeHours": 1.43,
+    "latestAgeSeconds": 5156,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
@@ -139,8 +141,8 @@
     "mobileLifecycleStatus": "stale",
     "mobileRefreshDueSeconds": 60,
     "mobileStaleAfterSeconds": 90,
-    "mobileRefreshDueAt": "2026-07-13T19:23:57.213Z",
-    "mobileStaleAt": "2026-07-13T19:24:27.213Z",
+    "mobileRefreshDueAt": "2026-07-13T21:39:09.297Z",
+    "mobileStaleAt": "2026-07-13T21:39:39.297Z",
     "nextProviderAction": "refresh_provider_snapshots_or_keep_cached_test_mode"
   },
   "operatorNextActions": {
@@ -152,7 +154,7 @@
     "eventLifecycleAction": "none",
     "eventLifecycleWindow": "pre_start_open",
     "eventLifecycleOperatorAction": "keep_trading_available_until_suspend_window",
-    "actionCount": 5,
+    "actionCount": 7,
     "selectedAction": {
       "id": "cached_internal_testing",
       "priority": "P0",
@@ -168,7 +170,7 @@
     "checked": true,
     "found": true,
     "eventSlug": "odds-api-single-soccer-test",
-    "eventId": "df92490e-c29f-4c64-b0da-d28f70840f99",
+    "eventId": "6a94107f-6513-4131-876d-87018782334f",
     "title": "Spain vs. France",
     "status": "active",
     "liveStatus": "LIVE",
@@ -176,10 +178,10 @@
     "leagueKey": "soccer_fifa_world_cup",
     "source": "the-odds-api",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
-    "sourceUpdatedAt": "2026-07-13T19:22:57.213Z",
-    "now": "2026-07-13T19:41:08.104Z",
+    "sourceUpdatedAt": "2026-07-13T21:38:09.297Z",
+    "now": "2026-07-13T23:04:04.983Z",
     "startTime": "2026-07-14T19:00:00.000Z",
-    "secondsUntilStart": 83932,
+    "secondsUntilStart": 71755,
     "startAgeSeconds": 0,
     "suspendBeforeStartSeconds": 300,
     "insideSuspendWindow": false,
@@ -203,7 +205,7 @@
         "step": "Start or verify local tester runtime",
         "expected": "npm run mobile:one-event-onboarding",
         "pass": true,
-        "notes": "Runtime loops are currently warm in no-quota mode."
+        "notes": "Runtime capability is proven, but supervisor/result-poller loops are not both running now."
       },
       {
         "step": "Open Holiwyn on Samsung S23",
