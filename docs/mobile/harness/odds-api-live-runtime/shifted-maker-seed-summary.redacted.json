@@ -1,7 +1,7 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-13T23:12:16.276Z",
-  "startedAt": "2026-07-13T23:12:15.837Z",
+  "generatedAt": "2026-07-13T23:30:41.772Z",
+  "startedAt": "2026-07-13T23:30:41.515Z",
   "scope": "odds-api-one-event-shifted-maker-seed",
   "mode": "seed-resting-shifted-maker-quotes",
   "event": {
@@ -23,7 +23,7 @@
   },
   "providerSnapshot": {
     "fetchedAt": "2026-07-13T21:38:09.297Z",
-    "ageMs": 5646565,
+    "ageMs": 6752239,
     "maxSnapshotAgeMs": 86400000,
     "allowStale": false,
     "source": "sportsbook-odds",
@@ -32,8 +32,8 @@
     "outcomePrice": 0.56
   },
   "maker": {
-    "id": "a1761cb2-8d88-4d78-9fb1-1edbf154395d",
-    "username": "odds_live_runtime_shifted_maker_5c925f4c"
+    "id": "84d38e6d-b6f8-44f5-bc56-0d4c334add8a",
+    "username": "odds_live_runtime_shifted_maker_3c811f8e"
   },
   "plan": {
     "quoteOffsetTicks": 2,
@@ -49,7 +49,7 @@
           "side": "BUY",
           "price": "0.58",
           "remaining": "36.9",
-          "username": "mobile_route_fill_maker_c6fb6487"
+          "username": "mobile_route_fill_maker_64d06671"
         }
       ]
     },
@@ -59,16 +59,16 @@
   "canceledPreviousOrders": [],
   "restingOrders": [
     {
-      "id": "071d177d-e1a7-4e6b-b6e1-ff8a6a74c72b",
-      "username": "odds_live_runtime_shifted_maker_5c925f4c",
+      "id": "7952d14b-058a-40d0-bd9f-4cfb554476a7",
+      "username": "odds_live_runtime_shifted_maker_3c811f8e",
       "side": "BUY",
       "price": "0.52",
       "remaining": "200",
       "status": "OPEN"
     },
     {
-      "id": "a950927e-e7ca-4048-96c7-2c95d7767fcd",
-      "username": "odds_live_runtime_shifted_maker_5c925f4c",
+      "id": "f6482310-5725-483b-8da1-2753b8da7117",
+      "username": "odds_live_runtime_shifted_maker_3c811f8e",
       "side": "SELL",
       "price": "0.6",
       "remaining": "200",
@@ -88,7 +88,7 @@
       "bestAskSize": 200,
       "midPrice": "0.59",
       "lastPrice": "0.58",
-      "lastTradeAt": "2026-07-13T22:51:46.337Z"
+      "lastTradeAt": "2026-07-13T23:28:26.487Z"
     }
   },
   "checks": {

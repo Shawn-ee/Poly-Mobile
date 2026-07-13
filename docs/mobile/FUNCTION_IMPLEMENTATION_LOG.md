@@ -2,6 +2,20 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZE - Fresh S23 Cashout Regression Proof
+
+- Feature/page worked on: proof-only regression for the internal tester mobile trading flow: Home -> Event Detail -> totals line market -> Buy ticket -> Portfolio -> Cash out -> Max -> SELL -> History.
+- Frontend components touched: none.
+- Backend/API routes touched: none.
+- Important functions/services touched:
+  - `scripts/prove_mobile_odds_api_s23_visible_flow.ps1` was executed, not edited.
+  - Existing Home, Event Detail, Trade Ticket, Portfolio, and History screens were exercised on Samsung S23.
+- User interactions supported/proved: Home showed `Spain vs. France`; Event Detail loaded backend markets; Over 2.5 opened the Buy ticket; swipe buy reached Portfolio; Portfolio Cash out opened close-position mode; Max used owned shares only; Yes/No was hidden in cashout mode; swipe cashout submitted a SELL; Portfolio History showed sold activity.
+- State transitions: server-backed fake-token BUY created a Portfolio position; close-position SELL used the owned market/outcome identity and reduced/closed the owned position; Portfolio History recorded the sold activity.
+- API/data dependencies: `GET /api/events`, `GET /api/mobile/events/:slug/live-detail`, `GET /api/markets/:marketId/quote`, `POST /api/orders`, `GET /api/portfolio`, and `GET /api/portfolio/history`.
+- Known limitations: no source changes were made in this cycle. The proof used the selected `Total Goals 2.5` market with existing local maker liquidity and cached/no-quota provider state.
+- Proof: `docs/mobile/harness/cycle-ZE-spain-france-cashout-fresh/cycle-ZE-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json`.
+
 ## Cycle ZY - Operator Snapshot Lifecycle Handoff
 
 - Feature/runtime worked on: compact internal tester operator snapshot for Spain vs. France lifecycle timing.

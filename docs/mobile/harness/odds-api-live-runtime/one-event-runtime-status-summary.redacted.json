@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T23:18:53.491Z",
+  "generatedAt": "2026-07-13T23:30:59.364Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -114,7 +114,7 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-13T23:18:53.490Z"
+        "timestamp": "2026-07-13T23:30:59.363Z"
       },
       "error": null
     }
@@ -122,7 +122,7 @@
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveProofGeneratedAt": "2026-07-13T21:38:09.297Z",
-    "liveProofAgeHours": 1.68,
+    "liveProofAgeHours": 1.88,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
@@ -145,8 +145,8 @@
   },
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-    "makerSeedGeneratedAt": "2026-07-13T23:12:16.276Z",
-    "makerSeedAgeHours": 0.11,
+    "makerSeedGeneratedAt": "2026-07-13T23:30:41.772Z",
+    "makerSeedAgeHours": 0,
     "quoteRoute": {
       "ok": true,
       "status": 200,
@@ -162,7 +162,7 @@
             "bestAskSize": 200,
             "midPrice": "0.59",
             "lastPrice": "0.58",
-            "lastTradeAt": "2026-07-13T22:51:46.337Z"
+            "lastTradeAt": "2026-07-13T23:28:26.487Z"
           },
           {
             "outcomeId": "602a03e4-9258-41ae-8660-adb4497c0232",
@@ -191,7 +191,7 @@
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
     "schedulerGeneratedAt": "2026-07-13T22:15:54.517Z",
-    "schedulerAgeHours": 1.05,
+    "schedulerAgeHours": 1.25,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 3
@@ -200,9 +200,9 @@
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
     "resultSettlementExecutionGeneratedAt": "2026-07-13T12:32:50.663Z",
-    "resultSettlementExecutionAgeHours": 10.77,
+    "resultSettlementExecutionAgeHours": 10.97,
     "resultSettlementLiveBlockedGeneratedAt": "2026-07-13T12:32:49.154Z",
-    "resultSettlementLiveBlockedAgeHours": 10.77,
+    "resultSettlementLiveBlockedAgeHours": 10.97,
     "maxSettlementProofAgeHours": 24,
     "resultSettlementExecutionFresh": true,
     "resultSettlementLiveBlockedFresh": true,
