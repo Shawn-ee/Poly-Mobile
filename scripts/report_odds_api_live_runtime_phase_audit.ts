@@ -274,6 +274,8 @@ async function main() {
   const continuousResultPollerTruth = getPath(entries.continuousResultPoller, ["runtimeTruth"]);
   const runtimeStatusTruth = getPath(entries.runtimeStatus, ["modeTruth"]);
   const runtimeStatusCapabilities = getPath(entries.runtimeStatus, ["provenCapabilities"]);
+  const runtimeStatusCurrentProcesses = getPath(entries.runtimeStatus, ["currentManagedProcesses"]);
+  const runtimeStatusContinuityAnswer = getPath(entries.runtimeStatus, ["continuityAnswer"]);
   const staleRunResult = getPath(entries.staleGuardRun, ["result"]);
   const runtimeHeartbeatRecords = getPath(localRuntimeStatusBody, ["runtimeHeartbeats", "records"]);
   const workerOwnedHeartbeatCount = Array.isArray(runtimeHeartbeatRecords)
@@ -317,7 +319,7 @@ async function main() {
       id: "runtime-status-capability-truth",
       priority: "P0",
       requirement:
-        "Runtime status separates latest supervisor run profile from proven continuous supervisor/result-poller capabilities.",
+        "Runtime status separates latest supervisor run profile, current process state, and proven continuous supervisor/result-poller capabilities.",
       achieved:
         pass(entries.runtimeStatus) &&
         getPath(runtimeStatusTruth, ["latestSupervisorRunProfileOnly"]) === true &&
@@ -329,10 +331,22 @@ async function main() {
         getPath(runtimeStatusCapabilities, ["resultPollingBackgroundProof"]) === true &&
         getPath(runtimeStatusCapabilities, ["resultPollingContinuousWhileRunnerRuns"]) === true &&
         getPath(runtimeStatusCapabilities, ["resultSettlementSchedulerWhilePollerRuns"]) === true &&
-        getPath(runtimeStatusCapabilities, ["installedOsService"]) === false,
+        getPath(runtimeStatusCapabilities, ["installedOsService"]) === false &&
+        getPath(runtimeStatusCurrentProcesses, ["checked"]) === true &&
+        typeof getPath(runtimeStatusCurrentProcesses, ["allLoopsRunning"]) === "boolean" &&
+        getPath(runtimeStatusCurrentProcesses, ["quotaSpendingLoopRunning"]) === false &&
+        typeof getPath(runtimeStatusCurrentProcesses, ["localTesterReadyRightNow"]) === "boolean" &&
+        getPath(runtimeStatusCurrentProcesses, ["supervisor", "checked"]) === true &&
+        getPath(runtimeStatusCurrentProcesses, ["resultPoller", "checked"]) === true &&
+        getPath(runtimeStatusContinuityAnswer, ["latestSupervisorRunProfileOnly"]) === true &&
+        typeof getPath(runtimeStatusContinuityAnswer, ["currentLoopsRunningNow"]) === "boolean" &&
+        getPath(runtimeStatusContinuityAnswer, ["currentLoopsQuotaSpending"]) === false &&
+        getPath(runtimeStatusContinuityAnswer, ["marketMakerContinuousWhileSupervisorRuns"]) === true &&
+        getPath(runtimeStatusContinuityAnswer, ["resultPollerContinuousWhileRunnerRuns"]) === true &&
+        getPath(runtimeStatusContinuityAnswer, ["installedUnattendedService"]) === false,
       evidence: [PATHS.runtimeStatus, PATHS.continuousSupervisor, PATHS.continuousResultPoller],
       notes:
-        "This prevents narrow latest supervisor proof runs from hiding previously proven repeated maker reseed, lifecycle scheduling, result ingestion, and result-poller behavior.",
+        "This prevents narrow latest supervisor proof runs from hiding previously proven repeated maker reseed, lifecycle scheduling, result ingestion, result-poller behavior, or the current stopped/running loop truth.",
     }),
     requirement({
       id: "one-command-runtime-loop-proof",

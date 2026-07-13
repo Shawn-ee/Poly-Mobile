@@ -15440,3 +15440,14 @@ Known limitations:
 - API/data dependencies: reads `GET /api/health`, `GET /api/markets/:marketId/quote`, local `.runtime/one-event-live-supervisor/supervisor-process-state.json`, `.runtime/one-event-result-poller/result-poller-process-state.json`, and existing redacted runtime proof summaries.
 - Proof: `npm run mobile:one-event-runtime-status`, `npm run mobile:one-event-phase-audit`, and `npm run mobile:live-runtime-completion-audit` passed with zero open P0 runtime gaps. The status summary reports `currentManagedProcesses.allLoopsRunning=false`, `quotaSpendingLoopRunning=false`, and `continuityAnswer.marketMakerContinuousWhileSupervisorRuns=true`.
 - Known limitations: this is runtime truth/reporting only. It does not install an unattended daemon and does not change the guarded active-event settlement policy.
+
+## Cycle RUNTIMEGATE - Gate Audits On Loop-State Truth
+
+- Feature/runtime worked on: live-runtime phase/completion audit gate hardening for one-event internal tester runtime truth.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/report_odds_api_live_runtime_phase_audit.ts`, `scripts/report_holiwyn_live_runtime_completion_audit.ts`, and `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`.
+- User/runtime interactions supported: a runtime cycle can no longer pass the authoritative phase/completion audits if the one-event status report omits current supervisor/result-poller process state, quota-spending loop truth, or the explicit continuity answer.
+- State transitions: none. This is no-quota audit logic only; it does not call The Odds API, start loops, place orders, mutate markets, or execute settlement.
+- API/data dependencies: consumes `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`, continuous supervisor proof, continuous result-poller proof, and the existing local runtime status API evidence captured by phase audit.
+- Proof: stricter `npm run mobile:one-event-phase-audit` and `npm run mobile:live-runtime-completion-audit` must pass with zero open P0 runtime gaps.
+- Known limitations: the gate still preserves the honest P1 boundary: local foreground/background process control is proven, but no installed production daemon is claimed.

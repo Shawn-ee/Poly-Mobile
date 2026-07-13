@@ -104,6 +104,15 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("installedUnattendedService: false");
   });
 
+  it("gates phase and completion audits on current loop state plus continuity truth", () => {
+    expect(phaseAuditScript()).toContain("runtimeStatusCurrentProcesses");
+    expect(phaseAuditScript()).toContain("runtimeStatusContinuityAnswer");
+    expect(phaseAuditScript()).toContain("current stopped/running loop truth");
+    expect(completionAuditScript()).toContain("currentManagedProcesses");
+    expect(completionAuditScript()).toContain("continuityAnswer");
+    expect(completionAuditScript()).toContain("currentLoopsQuotaSpending");
+  });
+
   it("limits discovery to preferred active soccer sport keys", () => {
     const sports = selectCandidateSoccerSports([
       { key: "americanfootball_nfl", group: "American Football", active: true },

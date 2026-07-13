@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T10:38:17.980Z",
+  "generatedAt": "2026-07-13T10:45:25.955Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-13T10:38:17.835Z"
+      "timestamp": "2026-07-13T10:45:25.791Z"
     },
     "error": null
   },
@@ -68,7 +68,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-13T10:38:17.911Z",
+      "generatedAt": "2026-07-13T10:45:25.889Z",
       "scope": "holiwyn-local-live-runtime-status",
       "status": "ready",
       "event": {
@@ -123,7 +123,7 @@
         "checked": true,
         "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json",
         "pass": true,
-        "generatedAt": "2026-07-13T10:29:53.552Z",
+        "generatedAt": "2026-07-13T10:38:18.856Z",
         "providerQuotaUsedByStatus": false,
         "phaseCompleteForLocalInternalRuntime": true,
         "fullProductionRuntimeComplete": false,
@@ -152,9 +152,9 @@
             "oneEventOnly": true
           },
           "freshness": {
-            "liveProofAgeHours": 1.05,
+            "liveProofAgeHours": 1.24,
             "maxLiveProofAgeHours": 24,
-            "watchdogAgeHours": 19.17,
+            "watchdogAgeHours": 19.31,
             "maxWatchdogAgeHours": 24
           },
           "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -566,7 +566,7 @@
         "mobileFreshness": {
           "status": "stale",
           "mobileRouteFresh": false,
-          "latestSnapshotAgeSeconds": 4454,
+          "latestSnapshotAgeSeconds": 4882,
           "refreshDueSeconds": 60,
           "staleAfterSeconds": 90,
           "nextProviderAction": "refresh_provider_snapshots_or_keep_cached_test_mode"
@@ -915,11 +915,11 @@
         "maxPhaseAuditAgeHours": 24,
         "maxWatchdogAgeHours": 24,
         "maxLiveProofAgeHours": 24,
-        "completionAuditAgeHours": 0.14,
-        "phaseAuditAgeHours": 0.14,
-        "watchdogAgeHours": 19.31,
-        "liveProofAgeAtCompletionHours": 1.05,
-        "liveProofCurrentAgeHours": 1.19,
+        "completionAuditAgeHours": 0.12,
+        "phaseAuditAgeHours": 0.12,
+        "watchdogAgeHours": 19.43,
+        "liveProofAgeAtCompletionHours": 1.24,
+        "liveProofCurrentAgeHours": 1.36,
         "completionAuditFresh": true,
         "phaseAuditFresh": true,
         "watchdogFresh": true,
@@ -933,8 +933,8 @@
         "reason": null,
         "snapshotCount": 4,
         "latestFetchedAt": "2026-07-13T09:24:03.509Z",
-        "latestAgeHours": 1.24,
-        "latestAgeSeconds": 4454,
+        "latestAgeHours": 1.36,
+        "latestAgeSeconds": 4882,
         "maxAgeHours": 24,
         "sources": [
           "sportsbook-odds"
@@ -1586,8 +1586,8 @@
             "installedOsService": false,
             "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
             "startedAt": "2026-07-13T10:09:46.140Z",
-            "heartbeatAt": "2026-07-13T10:38:17.883Z",
-            "updatedAt": "2026-07-13T10:38:17.886Z",
+            "heartbeatAt": "2026-07-13T10:45:25.864Z",
+            "updatedAt": "2026-07-13T10:45:25.868Z",
             "metadata": {
               "source": "local-runtime-status-route",
               "workerOwned": true,
@@ -1607,8 +1607,8 @@
             "installedOsService": false,
             "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
             "startedAt": "2026-07-13T10:09:46.729Z",
-            "heartbeatAt": "2026-07-13T10:38:17.883Z",
-            "updatedAt": "2026-07-13T10:38:17.886Z",
+            "heartbeatAt": "2026-07-13T10:45:25.864Z",
+            "updatedAt": "2026-07-13T10:45:25.868Z",
             "metadata": {
               "source": "local-runtime-status-route",
               "workerOwned": true,
@@ -1688,12 +1688,12 @@
         "completionAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-13T10:29:53.552Z"
+          "generatedAt": "2026-07-13T10:38:18.856Z"
         },
         "phaseAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-13T10:29:53.122Z"
+          "generatedAt": "2026-07-13T10:38:17.980Z"
         },
         "runtimeStatus": {
           "path": "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
@@ -1719,7 +1719,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-13T10:38:17.953Z",
+      "generatedAt": "2026-07-13T10:45:25.932Z",
       "scope": "holiwyn-local-live-runtime-result-review",
       "status": "ready",
       "providerQuotaUsed": false,
@@ -1824,7 +1824,7 @@
         "exactConfirmationStored": false,
         "activeMarketExecutionAttempted": false,
         "providerQuotaUsed": false,
-        "updatedAt": "2026-07-13T10:38:17.943Z"
+        "updatedAt": "2026-07-13T10:45:25.924Z"
       },
       "executionDecision": {
         "activeMarketStatus": "LIVE",
@@ -1878,7 +1878,7 @@
         "phaseAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-13T10:29:53.122Z"
+          "generatedAt": "2026-07-13T10:38:17.980Z"
         }
       }
     },
@@ -1888,7 +1888,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-13T10:38:17.965Z",
+      "generatedAt": "2026-07-13T10:45:25.945Z",
       "scope": "holiwyn-local-live-runtime-settlement-queue",
       "status": "ready",
       "providerQuotaUsed": false,
@@ -2006,7 +2006,7 @@
                 "exactConfirmationArgumentRedacted": true
               }
             },
-            "updatedAt": "2026-07-13T10:38:17.943Z"
+            "updatedAt": "2026-07-13T10:45:25.924Z"
           },
           {
             "id": "f1ef786a-2851-4f54-a530-0c1de611e859",
@@ -2167,7 +2167,7 @@
     "status": 200,
     "body": {
       "status": "ready",
-      "generatedAt": "2026-07-13T10:38:17.979Z",
+      "generatedAt": "2026-07-13T10:45:25.954Z",
       "providerQuotaUsed": false,
       "event": {
         "id": "3c4716b1-5857-4150-a779-c2c98ab30361",
@@ -2319,57 +2319,57 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 1.24,
-    "onboarding": 13.53,
-    "onboardingRuntimeStart": 13.53,
-    "onboardingRuntimeStatus": 13.53,
-    "onboardingRuntimeStop": 13.53,
-    "readiness": 13.54,
-    "runtimeStatus": 0,
-    "runtimeLaunch": 1.24,
-    "supervisor": 0.45,
-    "supervisorProcess": 0.47,
-    "internalTesterRuntime": 0.48,
-    "internalTesterResultPoller": 21.1,
-    "internalTesterWatchdog": 19.31,
-    "currentRuntimeStateProof": 0.47,
-    "localRuntimeTask": 17.34,
-    "localRuntimeTaskInstall": 17.34,
-    "localRuntimeStartup": 22.32,
-    "localRuntimeStartupInstall": 20.85,
-    "localRuntimeLaunchProfile": 3.67,
-    "liveRuntimeCompletionAudit": 0.14,
-    "continuousSupervisor": 15.1,
-    "staleGuardProof": 25.12,
-    "staleGuardRun": 25.01,
-    "lifecycleControls": 13.54,
-    "lifecycleScheduler": 13.54,
-    "lifecycleSchedulerRun": 0.45,
-    "lifecycleMatrix": 20.53,
-    "settlementReadiness": 13.54,
-    "settlementExecution": 23.61,
-    "resultSettlementExecution": 22.76,
-    "resultSettlementLiveBlocked": 22.76,
-    "manualSettlement": 13.54,
-    "resultIngestion": 0.45,
-    "resultIngestionAuditEvent": 1.61,
-    "resultPoller": 2.31,
-    "resultPollerProcess": 0.47,
-    "continuousResultPoller": 21.26,
-    "resultSettlement": 4.82,
-    "resultSettlementRun": 4.82,
-    "settlementPreflight": 0.16,
-    "settlementAuditEvent": 0.16,
-    "settlementApprovalAuditEvent": 0.16,
-    "resultReviewTrail": 0.15,
-    "activeSettlementReadiness": 19.67,
-    "activeSettlementClosedEligibility": 14.09,
-    "approvedAutoSettlement": 22.03,
-    "activeSettlementClone": 20.01,
-    "supervisorApprovedSettlement": 21.85,
-    "makerSeed": 2.21,
-    "providerMakerHandoff": 14.98,
-    "s23Visible": 27.36
+    "liveProof": 1.36,
+    "onboarding": 13.65,
+    "onboardingRuntimeStart": 13.65,
+    "onboardingRuntimeStatus": 13.65,
+    "onboardingRuntimeStop": 13.65,
+    "readiness": 13.66,
+    "runtimeStatus": 0.12,
+    "runtimeLaunch": 1.36,
+    "supervisor": 0.57,
+    "supervisorProcess": 0.59,
+    "internalTesterRuntime": 0.6,
+    "internalTesterResultPoller": 21.22,
+    "internalTesterWatchdog": 19.43,
+    "currentRuntimeStateProof": 0.59,
+    "localRuntimeTask": 17.46,
+    "localRuntimeTaskInstall": 17.46,
+    "localRuntimeStartup": 22.44,
+    "localRuntimeStartupInstall": 20.97,
+    "localRuntimeLaunchProfile": 3.79,
+    "liveRuntimeCompletionAudit": 0.12,
+    "continuousSupervisor": 15.21,
+    "staleGuardProof": 25.24,
+    "staleGuardRun": 25.13,
+    "lifecycleControls": 13.66,
+    "lifecycleScheduler": 13.66,
+    "lifecycleSchedulerRun": 0.57,
+    "lifecycleMatrix": 20.65,
+    "settlementReadiness": 13.66,
+    "settlementExecution": 23.73,
+    "resultSettlementExecution": 22.88,
+    "resultSettlementLiveBlocked": 22.88,
+    "manualSettlement": 13.65,
+    "resultIngestion": 0.57,
+    "resultIngestionAuditEvent": 1.72,
+    "resultPoller": 2.43,
+    "resultPollerProcess": 0.59,
+    "continuousResultPoller": 21.38,
+    "resultSettlement": 4.94,
+    "resultSettlementRun": 4.94,
+    "settlementPreflight": 0.28,
+    "settlementAuditEvent": 0.28,
+    "settlementApprovalAuditEvent": 0.28,
+    "resultReviewTrail": 0.27,
+    "activeSettlementReadiness": 19.79,
+    "activeSettlementClosedEligibility": 14.21,
+    "approvedAutoSettlement": 22.15,
+    "activeSettlementClone": 20.13,
+    "supervisorApprovedSettlement": 21.97,
+    "makerSeed": 2.33,
+    "providerMakerHandoff": 15.1,
+    "s23Visible": 27.47
   },
   "requirements": [
     {
@@ -2407,14 +2407,14 @@
     {
       "id": "runtime-status-capability-truth",
       "priority": "P0",
-      "requirement": "Runtime status separates latest supervisor run profile from proven continuous supervisor/result-poller capabilities.",
+      "requirement": "Runtime status separates latest supervisor run profile, current process state, and proven continuous supervisor/result-poller capabilities.",
       "status": "complete",
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-result-poller-proof-summary.redacted.json"
       ],
-      "notes": "This prevents narrow latest supervisor proof runs from hiding previously proven repeated maker reseed, lifecycle scheduling, result ingestion, and result-poller behavior."
+      "notes": "This prevents narrow latest supervisor proof runs from hiding previously proven repeated maker reseed, lifecycle scheduling, result ingestion, result-poller behavior, or the current stopped/running loop truth."
     },
     {
       "id": "one-command-runtime-loop-proof",

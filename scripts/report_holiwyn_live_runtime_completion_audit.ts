@@ -161,7 +161,19 @@ async function main() {
     marketMakerContinuityKnown:
       truthy(getPath(entries.runtimeStatus, ["provenCapabilities", "makerReseedWhileSupervisorRuns"])) &&
       truthy(getPath(entries.runtimeStatus, ["provenCapabilities", "repeatedSupervisorCycles"])) &&
-      getPath(entries.runtimeStatus, ["provenCapabilities", "installedOsService"]) === false,
+      getPath(entries.runtimeStatus, ["provenCapabilities", "installedOsService"]) === false &&
+      getPath(entries.runtimeStatus, ["currentManagedProcesses", "checked"]) === true &&
+      typeof getPath(entries.runtimeStatus, ["currentManagedProcesses", "allLoopsRunning"]) === "boolean" &&
+      getPath(entries.runtimeStatus, ["currentManagedProcesses", "quotaSpendingLoopRunning"]) === false &&
+      typeof getPath(entries.runtimeStatus, ["currentManagedProcesses", "localTesterReadyRightNow"]) === "boolean" &&
+      getPath(entries.runtimeStatus, ["currentManagedProcesses", "supervisor", "checked"]) === true &&
+      getPath(entries.runtimeStatus, ["currentManagedProcesses", "resultPoller", "checked"]) === true &&
+      getPath(entries.runtimeStatus, ["continuityAnswer", "latestSupervisorRunProfileOnly"]) === true &&
+      typeof getPath(entries.runtimeStatus, ["continuityAnswer", "currentLoopsRunningNow"]) === "boolean" &&
+      getPath(entries.runtimeStatus, ["continuityAnswer", "currentLoopsQuotaSpending"]) === false &&
+      getPath(entries.runtimeStatus, ["continuityAnswer", "marketMakerContinuousWhileSupervisorRuns"]) === true &&
+      getPath(entries.runtimeStatus, ["continuityAnswer", "resultPollerContinuousWhileRunnerRuns"]) === true &&
+      getPath(entries.runtimeStatus, ["continuityAnswer", "installedUnattendedService"]) === false,
     providerMakerHandoffKnown:
       pass(entries.providerMakerHandoff) &&
       getPath(entries.providerMakerHandoff, ["runtimeTruth", "providerRefreshToMakerQuoteHandoffProven"]) === true &&
