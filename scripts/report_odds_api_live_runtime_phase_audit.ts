@@ -224,7 +224,9 @@ async function main() {
     internalTesterRuntimeScript.includes("EXPO_PUBLIC_MARKET_DATA_MODE = 'server'") &&
     internalTesterRuntimeScript.includes("EXPO_PUBLIC_SHOW_ORDERBOOK = '0'") &&
     internalTesterRuntimeScript.includes("npm --prefix mobile run start -- --host localhost --port $ExpoPort") &&
-    internalTesterRuntimeScript.includes('adb -s $Device.deviceId reverse "tcp:$port" "tcp:$port"') &&
+    internalTesterRuntimeScript.includes("Invoke-AdbWithTimeout") &&
+    internalTesterRuntimeScript.includes('"reverse", "tcp:$port", "tcp:$port"') &&
+    internalTesterRuntimeScript.includes("adb timed out after ${TimeoutSeconds}s") &&
     internalTesterRuntimeScript.includes("s23_adb_reverse_failed") &&
     internalTesterRuntimeScript.includes("managerStartedExpoUsesServerMode") &&
     internalTesterRuntimeScript.includes("externalExpoServerModeUnverified") &&

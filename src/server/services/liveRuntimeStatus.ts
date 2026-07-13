@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import { execFileSync } from "node:child_process";
 import { prisma } from "@/lib/db";
 import { writeRuntimeServiceHeartbeat } from "@/server/services/runtimeServiceHeartbeat";
 
@@ -76,8 +77,33 @@ const completionRequirementsPass = (completionAudit: JsonObject | null) => {
   return entries.length > 0 && entries.every((entry) => entry.pass === true);
 };
 
-const pidRunning = (pid: number | null) => {
+const windowsProcessCommandLine = (pid: number | null) => {
+  if (!pid || process.platform !== "win32") return null;
+  try {
+    const command = [
+      "$process = Get-CimInstance Win32_Process -Filter 'ProcessId = " + pid + "' -ErrorAction SilentlyContinue;",
+      "if ($process) { $process.CommandLine }",
+    ].join(" ");
+    const output = execFileSync("powershell", ["-NoProfile", "-Command", command], {
+      encoding: "utf8",
+      timeout: 5000,
+      windowsHide: true,
+    }).trim();
+    return output.length > 0 ? output : null;
+  } catch (error) {
+    return null;
+  }
+};
+
+const expectedRuntimeCommand = (kind: "supervisor" | "result-poller") =>
+  kind === "supervisor" ? "run_holiwyn_one_event_live_supervisor.ps1" : "run_holiwyn_one_event_result_poller.ps1";
+
+const pidRunning = (pid: number | null, kind: "supervisor" | "result-poller") => {
   if (!pid) return false;
+  const commandLine = windowsProcessCommandLine(pid);
+  if (process.platform === "win32") {
+    return commandLine?.includes(expectedRuntimeCommand(kind)) === true;
+  }
   try {
     process.kill(pid, 0);
     return true;
@@ -92,7 +118,7 @@ async function getManagedProcessStatus(params: {
 }) {
   const state = await readJson(params.statePath);
   const pid = numberValue(state?.pid);
-  const running = pidRunning(pid);
+  const running = pidRunning(pid, params.kind);
   const continuous = booleanValue(state?.continuous);
   const runProviderProof = booleanValue(state?.runProviderProof);
   const runLiveResultIngestion = booleanValue(state?.runLiveResultIngestion);

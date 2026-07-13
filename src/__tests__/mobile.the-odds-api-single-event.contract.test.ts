@@ -107,6 +107,9 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("local .runtime process state plus OS pid check");
     expect(source).toContain("marketMakerContinuousWhileSupervisorRuns");
     expect(source).toContain("installedUnattendedService: false");
+    expect(source).toContain("windowsProcessCommandLine");
+    expect(source).toContain("run_holiwyn_one_event_live_supervisor.ps1");
+    expect(source).toContain("run_holiwyn_one_event_result_poller.ps1");
   });
 
   it("gates phase and completion audits on current loop state plus continuity truth", () => {

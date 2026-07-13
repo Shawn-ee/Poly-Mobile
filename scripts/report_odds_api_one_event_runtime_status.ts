@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { execFileSync } from "node:child_process";
 
 const DEFAULT_BASE_URL = "http://127.0.0.1:3002";
 const DEFAULT_OUTPUT_PATH =
@@ -87,8 +88,34 @@ function numberValue(value: unknown) {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
-function pidRunning(pid: number | null) {
+function windowsProcessCommandLine(pid: number | null) {
+  if (!pid || process.platform !== "win32") return null;
+  try {
+    const command = [
+      "$process = Get-CimInstance Win32_Process -Filter 'ProcessId = " + pid + "' -ErrorAction SilentlyContinue;",
+      "if ($process) { $process.CommandLine }",
+    ].join(" ");
+    const output = execFileSync("powershell", ["-NoProfile", "-Command", command], {
+      encoding: "utf8",
+      timeout: 5000,
+      windowsHide: true,
+    }).trim();
+    return output.length > 0 ? output : null;
+  } catch (error) {
+    return null;
+  }
+}
+
+function expectedRuntimeCommand(kind: "supervisor" | "result-poller") {
+  return kind === "supervisor" ? "run_holiwyn_one_event_live_supervisor.ps1" : "run_holiwyn_one_event_result_poller.ps1";
+}
+
+function pidRunning(pid: number | null, kind: "supervisor" | "result-poller") {
   if (!pid) return false;
+  const commandLine = windowsProcessCommandLine(pid);
+  if (process.platform === "win32") {
+    return commandLine?.includes(expectedRuntimeCommand(kind)) === true;
+  }
   try {
     process.kill(pid, 0);
     return true;
@@ -100,7 +127,7 @@ function pidRunning(pid: number | null) {
 async function managedProcessState(params: { statePath: string; kind: "supervisor" | "result-poller" }) {
   const state = await readJson(params.statePath);
   const pid = numberValue(state?.pid);
-  const running = pidRunning(pid);
+  const running = pidRunning(pid, params.kind);
   const runProviderProof = bool(getPath(state, ["runProviderProof"]));
   const runLiveResultIngestion = bool(getPath(state, ["runLiveResultIngestion"]));
   return {

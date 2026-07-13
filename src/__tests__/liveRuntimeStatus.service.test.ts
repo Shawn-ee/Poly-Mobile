@@ -5,9 +5,14 @@ const runtimeServiceHeartbeatUpsert = jest.fn();
 const runtimeServiceRunFindMany = jest.fn();
 const providerRefreshRunFindMany = jest.fn();
 const marketMakerQuoteRunFindMany = jest.fn();
+const execFileSync = jest.fn();
 
 jest.mock("node:fs/promises", () => ({
   readFile,
+}));
+
+jest.mock("node:child_process", () => ({
+  execFileSync: (...args: unknown[]) => execFileSync(...args),
 }));
 
 jest.mock("@/lib/db", () => ({
@@ -667,6 +672,8 @@ describe("live runtime status service", () => {
     runtimeServiceRunFindMany.mockResolvedValue(runtimeRunRows());
     providerRefreshRunFindMany.mockResolvedValue(providerRefreshRunRows());
     marketMakerQuoteRunFindMany.mockResolvedValue(marketMakerQuoteRunRows());
+    execFileSync.mockReset();
+    execFileSync.mockReturnValue("");
     runtimeServiceHeartbeatFindUnique.mockResolvedValue(null);
     runtimeServiceHeartbeatUpsert.mockImplementation(async (args) => ({
       id: "heartbeat-id",
@@ -1844,6 +1851,13 @@ describe("live runtime status service", () => {
   });
 
   test("reports current managed loop process state without spending provider quota", async () => {
+    execFileSync.mockImplementation((_command: string, args: unknown[]) => {
+      const command = Array.isArray(args) ? String(args[2] ?? "") : "";
+      if (command.includes("ProcessId = 12345")) {
+        return "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_live_supervisor.ps1";
+      }
+      return "";
+    });
     killSpy.mockImplementation((pid: number | string) => {
       if (pid === 12345) return true;
       const error = new Error("missing process") as NodeJS.ErrnoException;

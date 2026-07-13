@@ -15462,3 +15462,25 @@ Known limitations:
 - API/data dependencies: reads `GET /api/health`, `GET /api/internal/live-runtime/status`, Docker Postgres status, Expo/backend port ownership, and local `.runtime` supervisor/result-poller process-state files.
 - Proof: `npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -WaitForReady -WaitSeconds 75` passed. The summary records `liveRuntimeStatus.warmRuntimeObserved=true`, `currentRuntimeState.mode=warm_no_quota_runtime`, `allLoopsRunning=true`, and `quotaSpendingLoopRunning=false`.
 - Known limitations: this remains a local process control plane, not an installed OS service. The proof reported mobile-visible provider snapshots as stale in no-quota mode; fresh live odds still require the explicit quota-capped provider refresh path.
+
+## Cycle RUNTIMEPIDOWNERSHIP - Runtime Loop Process Ownership Check
+
+- Feature/runtime worked on: backend live-runtime status truth for current supervisor/result-poller loop state.
+- Frontend components touched: none.
+- Important functions/services touched: `src/server/services/liveRuntimeStatus.ts`, `scripts/report_odds_api_one_event_runtime_status.ts`, and `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`.
+- User/runtime interactions supported: `GET /api/internal/live-runtime/status` and `npm run mobile:one-event-runtime-status` now verify that a saved loop PID still belongs to the expected Holiwyn supervisor or result-poller command on Windows. A reused or stale PID no longer makes the status route report a ghost loop as running.
+- State transitions: no provider, market, order, portfolio, or settlement state changes. The status route still writes durable heartbeat rows from read-only process-state inspection.
+- API/data dependencies: reads `.runtime/one-event-live-supervisor/supervisor-process-state.json`, `.runtime/one-event-result-poller/result-poller-process-state.json`, and Windows process command lines for local ownership verification.
+- Proof: live `GET /api/internal/live-runtime/status` and `npm run mobile:one-event-runtime-status` both reported `currentRuntimeState.mode=proven_capability_loops_stopped`, `allLoopsRunning=false`, `supervisorRunning=false`, `resultPollerRunning=false`, and `quotaSpendingLoopRunning=false` after the warm proof loops were stopped.
+- Known limitations: this is local Windows process ownership hardening only. It does not install an unattended runtime service and does not refresh stale mobile-visible provider snapshots.
+
+## Cycle ZD - Fresh S23 Cashout Proof For Spain vs France
+
+- Feature/runtime worked on: current internal tester mobile trading flow for the Spain vs France Odds API event, focused on Portfolio cashout/position close.
+- Frontend components touched: none.
+- Important functions/services touched: no production code changed for the cashout UX in this proof cycle. Existing paths exercised were `mobile/src/components/TradeTicket.tsx`, `mobile/App.tsx`, `mobile/src/services/positionCloseService.ts`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+- User interactions supported/proved on S23: Home shows Spain vs France, Event Detail loads backend markets, Over 2.5 opens a Buy ticket, swipe buy reaches Portfolio, Portfolio Cash out opens close-position mode, Max uses owned shares only, Yes/No is hidden in cashout mode, swipe cashout submits a SELL, and Portfolio History shows the sold activity.
+- State transitions: the proof seeds a local maker ask for the buy, fills the phone buy into a position, seeds a local maker bid for cashout, sells the owned position, and updates Portfolio/History. No provider quota was spent and no schema changed.
+- API/data dependencies: uses backend health, market quote/order placement, portfolio position, and portfolio history routes for `odds-api-single-soccer-test` totals line `2.5`.
+- Proof: `scripts/prove_mobile_odds_api_s23_visible_flow.ps1` passed on Samsung S23 `SM-S911U1` / `172.16.200.27:44029`; summary path `docs/mobile/harness/cycle-ZD-spain-france-cashout-fresh/cycle-ZD-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json` records `cashoutTicketIsClosePositionMode=true`, `cashoutMaxUsesOwnedShares=true`, `cashoutTicketHidesYesNoSelector=true`, `cashoutSellSubmitted=true`, and `cashoutHistoryVisible=true`.
+- Known limitations: this is local fake-token/internal tester proof. Dedicated server-owned close-position quote preview remains a P1 improvement.
