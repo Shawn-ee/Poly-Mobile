@@ -2,6 +2,19 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZY - Operator Snapshot Lifecycle Handoff
+
+- Feature/runtime worked on: compact internal tester operator snapshot for Spain vs. France lifecycle timing.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/report_holiwyn_internal_tester_operator_snapshot.ts`
+  - `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+- User/runtime interactions supported: the no-quota tester snapshot now tells operators the current event lifecycle window and the next lifecycle action/timestamp directly in the checklist.
+- State transitions: none. The snapshot reads `/api/health` and `/api/internal/live-runtime/status`; it does not call providers, start loops, mutate markets, or execute settlement.
+- API/data dependencies: `GET /api/internal/live-runtime/status` fields `selectedEventLifecycle` and `operatorNextActions`; derived next pause time from `Event.startTime` and the 5-minute suspend window.
+- Known limitations: this is a read-only handoff artifact. It does not install an unattended lifecycle service or run the scheduler.
+- Proof: `docs/mobile/harness/odds-api-live-runtime/zy-operator-snapshot-lifecycle.redacted.json`.
+
 ## Cycle ZX - Lifecycle Scheduler Timing Proof
 
 - Feature/runtime worked on: one-event lifecycle scheduler output for the Spain vs. France internal tester event.

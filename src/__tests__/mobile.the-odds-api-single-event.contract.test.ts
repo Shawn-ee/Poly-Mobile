@@ -108,6 +108,12 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("recommendedCommand");
     expect(source).toContain("testerLaunchChecklist");
     expect(source).toContain("manualTradingFlow");
+    expect(source).toContain("selectedEventLifecycle");
+    expect(source).toContain("eventLifecycleAction");
+    expect(source).toContain("eventLifecycleWindow");
+    expect(source).toContain("eventLifecycleOperatorAction");
+    expect(source).toContain("Event lifecycle timing");
+    expect(source).toContain("next lifecycle action");
     expect(source).toContain("Cashout/sell");
     expect(source).toContain("Max uses owned shares only");
     expect(source).toContain("provider_secret_exposed");

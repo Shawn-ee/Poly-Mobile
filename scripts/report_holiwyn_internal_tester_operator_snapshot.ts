@@ -29,6 +29,28 @@ const stringValue = (value: unknown) => (typeof value === "string" && value.leng
 const objectValue = (value: unknown): JsonObject =>
   value && typeof value === "object" && !Array.isArray(value) ? (value as JsonObject) : {};
 
+function deriveLifecycleNextAction(selectedEventLifecycle: JsonObject) {
+  const schedulerActionNow = stringValue(selectedEventLifecycle.schedulerActionNow) ?? "none";
+  const startTime = stringValue(selectedEventLifecycle.startTime);
+  const suspendBeforeStartSeconds =
+    typeof selectedEventLifecycle.suspendBeforeStartSeconds === "number"
+      ? selectedEventLifecycle.suspendBeforeStartSeconds
+      : 300;
+  const startMs = startTime ? Date.parse(startTime) : NaN;
+  const pauseAt = Number.isFinite(startMs) ? new Date(startMs - suspendBeforeStartSeconds * 1000).toISOString() : null;
+  const nextLifecycleAction =
+    schedulerActionNow === "close" ? "close" : schedulerActionNow === "pause" ? "pause" : "pause";
+  const nextLifecycleActionAt =
+    schedulerActionNow === "close" ? startTime : schedulerActionNow === "pause" ? pauseAt : pauseAt;
+  return {
+    schedulerActionNow,
+    nextLifecycleAction,
+    nextLifecycleActionAt,
+    pauseAt,
+    closeAt: startTime,
+  };
+}
+
 async function fetchJson(url: string) {
   try {
     const response = await fetch(url);
@@ -68,6 +90,7 @@ function buildTesterChecklist(params: {
 }) {
   const event = objectValue(params.statusBody.event);
   const selectedMarket = objectValue(params.statusBody.selectedMarket);
+  const selectedEventLifecycle = objectValue(params.statusBody.selectedEventLifecycle);
   const currentRuntimeState = objectValue(params.statusBody.currentRuntimeState);
   const serviceOwnership = objectValue(params.statusBody.serviceOwnership);
   const unattendedReadiness = objectValue(serviceOwnership.unattendedReadiness);
@@ -79,6 +102,8 @@ function buildTesterChecklist(params: {
   const warmNoQuotaRuntime = getPath(currentRuntimeState, ["warmNoQuotaRuntime"]) === true;
   const providerSnapshotFresh = getPath(currentRuntimeState, ["providerSnapshotFresh"]) === true;
   const localInternalTesterReady = getPath(unattendedReadiness, ["localInternalTesterReady"]) === true;
+  const tradingWindow = stringValue(selectedEventLifecycle.tradingWindow) ?? "unknown";
+  const lifecycleNext = deriveLifecycleNextAction(selectedEventLifecycle);
 
   return {
     generatedFrom: "/api/internal/live-runtime/status",
@@ -147,6 +172,21 @@ function buildTesterChecklist(params: {
       },
     ],
     lifecycleChecks: [
+      {
+        step: "Event lifecycle timing",
+        expected:
+          lifecycleNext.schedulerActionNow === "close"
+            ? "Run the lifecycle scheduler now so markets close before settlement review."
+            : lifecycleNext.schedulerActionNow === "pause"
+              ? "Run the lifecycle scheduler now so trading pauses before kickoff."
+              : "Event remains open for internal testing until the next lifecycle action.",
+        routeDependency: "GET /api/internal/live-runtime/status",
+        pass: params.backendOk && tradingWindow !== "unknown",
+        notes:
+          lifecycleNext.schedulerActionNow === "none"
+            ? `Current window: ${tradingWindow}; next lifecycle action: ${lifecycleNext.nextLifecycleAction} at ${lifecycleNext.nextLifecycleActionAt ?? "unknown"}.`
+            : `Current window: ${tradingWindow}; scheduler action now: ${lifecycleNext.schedulerActionNow}.`,
+      },
       {
         step: "Stale odds",
         expected: "Stale/closed markets reject order placement with MARKET_UNAVAILABLE.",
@@ -227,10 +267,14 @@ async function main() {
       defaultNoQuotaAction: getPath(statusBody, ["operatorNextActions", "defaultNoQuotaAction"]),
       liveOddsAction: getPath(statusBody, ["operatorNextActions", "liveOddsAction"]),
       nextProviderAction: getPath(statusBody, ["operatorNextActions", "nextProviderAction"]),
+      eventLifecycleAction: getPath(statusBody, ["operatorNextActions", "eventLifecycleAction"]),
+      eventLifecycleWindow: getPath(statusBody, ["operatorNextActions", "eventLifecycleWindow"]),
+      eventLifecycleOperatorAction: getPath(statusBody, ["operatorNextActions", "eventLifecycleOperatorAction"]),
       actionCount: selectedAction.actionCount,
       selectedAction: selectedAction.action,
       safety: getPath(statusBody, ["operatorNextActions", "safety"]),
     },
+    selectedEventLifecycle: statusBody.selectedEventLifecycle ?? null,
     testerLaunchChecklist,
     settlement: {
       decision: statusBody.settlementDecision ?? null,

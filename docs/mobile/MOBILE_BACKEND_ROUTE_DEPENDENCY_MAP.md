@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ZY - Operator Snapshot Lifecycle Handoff
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Internal tester lifecycle handoff snapshot | `/api/health`; `/api/internal/live-runtime/status`; local command `npm run mobile:internal-tester-operator-snapshot` | `GET` plus local CLI | Local/internal status route only; no mobile auth and no provider key. The snapshot command refuses production. | Optional `--baseUrl` and `--summaryPath`; no request body | `selectedEventLifecycle`, `operatorNextActions.eventLifecycleAction`, `eventLifecycleWindow`, `eventLifecycleOperatorAction`, tester checklist lifecycle row, derived next lifecycle action and timestamp | Reads status route projection of existing `Event.startTime`; no schema change and no writes | None. If health/status is unavailable or status has P0 gaps, the snapshot fails rather than fabricating tester readiness | Installed unattended lifecycle service remains P1. The snapshot is read-only and does not run the lifecycle scheduler. |
+
 ## Cycle ZX - Lifecycle Scheduler Timing Proof
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
