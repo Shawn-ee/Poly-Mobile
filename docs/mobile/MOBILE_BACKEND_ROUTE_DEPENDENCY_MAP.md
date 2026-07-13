@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle OPERATORCONTROLBOUNDARY - Runtime Operator Controls Boundary
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Local operator controls boundary | `/api/internal/live-runtime/status`; source evidence from `/api/internal/live-runtime/result-review` and `/api/internal/live-runtime/settlement-queue` inside phase audit | `GET` | Local/dev only; route returns 404 in production or when internal status is disabled; no public mobile auth and no provider key | Optional `phaseAuditInProgress=1` for audit bootstrap | `operatorControlBoundary.mode`, `devOnly`, `readOnly`, `noProviderQuota`, `authenticatedControls.*`, `localControls.resultReviewRoute`, `localControls.settlementQueueRoute`, `localControls.approvedSchedulerCommand`, `executionSafety.*`, `productionBlockers`, `requiredBeforeProduction`, `p0`, `p1` | Reads existing local proof artifacts plus `OfficialResultReview`, `CanonicalEvent`, `Market`, and `Event` evidence through phase-audit snapshots; no schema change and no writes from status route | None. The route projects existing local read-only evidence and spends no provider quota. | Production still needs authenticated operator controls, role checks, durable operator identity, audited approval/execution workflow, installed official-result polling, and service ownership. |
+
 ## Cycle RUNTIMECOMMANDS - Operator Launch Commands in Runtime Status
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

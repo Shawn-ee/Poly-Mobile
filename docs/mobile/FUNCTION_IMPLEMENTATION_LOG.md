@@ -2,6 +2,20 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle OPERATORCONTROLBOUNDARY - Runtime Operator Controls Boundary
+
+- Feature/runtime worked on: backend local live-runtime status/operator safety contract.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `src/server/services/liveRuntimeStatus.ts`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `scripts/report_holiwyn_live_runtime_completion_audit.ts`
+  - `src/__tests__/liveRuntimeStatus.service.test.ts`
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/status` and read `operatorControlBoundary`, which clearly separates available local read-only result-review/settlement-queue controls from missing authenticated production operator controls.
+- State transitions: none. This cycle is read-only status projection. It does not call The Odds API, spend quota, mutate markets, approve settlement, expose exact confirmation text, or execute settlement.
+- API/data dependencies: reads existing phase-audit evidence for `/api/internal/live-runtime/result-review` and `/api/internal/live-runtime/settlement-queue`, plus the local settlement automation and production readiness status blocks.
+- Known limitations: this narrows operator safety visibility only. Production still needs authenticated operator login/role checks, durable operator identity on approval/execution records, an audited operator UI or admin workflow, installed official-result polling, and production service ownership.
+
 ## Cycle RUNTIMECOMMANDS - Operator Launch Commands in Runtime Status
 
 - Feature/runtime worked on: backend local live-runtime status/operator contract.

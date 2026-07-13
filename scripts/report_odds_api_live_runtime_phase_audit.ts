@@ -824,6 +824,57 @@ async function main() {
           .length >= 4 &&
         Array.isArray(getPath(localRuntimeStatusBody, ["productionReadinessBoundary", "p0"])) &&
         (getPath(localRuntimeStatusBody, ["productionReadinessBoundary", "p0"]) as unknown[]).length === 0 &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "checked"]) === true &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "mode"]) ===
+          "local_dev_read_only_operator_controls" &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "devOnly"]) === true &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "readOnly"]) === true &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "noProviderQuota"]) === true &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "publicMobileRoute"]) === false &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "productionOperatorWorkflowReady"]) === false &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "authenticatedControls", "requiredForProduction"]) ===
+          true &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "authenticatedControls", "available"]) === false &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "resultReviewRoute", "available"]) ===
+          true &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "resultReviewRoute", "mutatesState"]) ===
+          false &&
+        getPath(localRuntimeStatusBody, [
+          "operatorControlBoundary",
+          "localControls",
+          "settlementQueueRoute",
+          "available",
+        ]) === true &&
+        getPath(localRuntimeStatusBody, [
+          "operatorControlBoundary",
+          "localControls",
+          "settlementQueueRoute",
+          "providerQuotaRequired",
+        ]) === false &&
+        getPath(localRuntimeStatusBody, [
+          "operatorControlBoundary",
+          "localControls",
+          "approvedSchedulerCommand",
+          "exactConfirmationArgumentRedacted",
+        ]) === true &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "executionSafety", "activeExecutionAttempted"]) ===
+          false &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "executionSafety", "activeSettlementExecuted"]) ===
+          false &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "executionSafety", "requiresClosedMarket"]) === true &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "executionSafety", "requiresApproval"]) === true &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "executionSafety", "requiresExactConfirmation"]) ===
+          true &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "executionSafety", "exactConfirmationExposed"]) ===
+          false &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "executionSafety", "exactConfirmationStored"]) ===
+          false &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["operatorControlBoundary", "productionBlockers"])) &&
+        (getPath(localRuntimeStatusBody, ["operatorControlBoundary", "productionBlockers"]) as unknown[]).includes(
+          "authenticated_operator_controls_missing",
+        ) &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["operatorControlBoundary", "p0"])) &&
+        (getPath(localRuntimeStatusBody, ["operatorControlBoundary", "p0"]) as unknown[]).length === 0 &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "supervisor", "checked"]) === true &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "resultPoller", "checked"]) === true &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "quotaSpendingLoopRunning"]) === false &&
@@ -845,7 +896,7 @@ async function main() {
         (getPath(localRuntimeStatusBody, ["gaps", "p0"]) as unknown[]).length === 0,
       evidence: [`${baseUrl}/api/internal/live-runtime/status?phaseAuditInProgress=1`],
       notes:
-        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, durable ProviderRefreshRun evidence, machine-readable provider-refresh loop cadence/quota policy, durable MarketMakerQuoteRun evidence, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, settlement queue redacted operator-plan truth, active-event closed-state eligibility truth, latest-run-vs-proven-capability separation, current warm-runtime decisioning, explicit foreground-vs-installed service ownership, read-only supervisor/result-poller process state, durable RuntimeServiceHeartbeat rows, worker-owned RuntimeServiceRun rows, and preserved worker-owned metadata. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
+        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, durable ProviderRefreshRun evidence, machine-readable provider-refresh loop cadence/quota policy, durable MarketMakerQuoteRun evidence, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, settlement queue redacted operator-plan truth, operator control boundary truth, active-event closed-state eligibility truth, latest-run-vs-proven-capability separation, current warm-runtime decisioning, explicit foreground-vs-installed service ownership, read-only supervisor/result-poller process state, durable RuntimeServiceHeartbeat rows, worker-owned RuntimeServiceRun rows, and preserved worker-owned metadata. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
     }),
     requirement({
       id: "local-result-review-api-ready",

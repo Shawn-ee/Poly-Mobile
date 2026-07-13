@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T02:26:55.191Z",
+  "generatedAt": "2026-07-13T02:44:48.032Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -28,7 +28,7 @@
     "freshness": {
       "liveProofAgeHours": 1.87,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 11.12,
+      "watchdogAgeHours": 11.41,
       "maxWatchdogAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -104,6 +104,7 @@
     "providerRefreshLoopKnown": true,
     "settlementAutomationKnown": true,
     "productionReadinessBoundaryKnown": true,
+    "operatorControlBoundaryKnown": true,
     "currentRuntimeWarmStateProofKnown": true,
     "oneCommandRuntimeLoopProofKnown": true,
     "mobileS23EndToEndTradeProofPass": true,
@@ -170,12 +171,13 @@
     },
     "runtimeLaunch": {
       "pass": true,
-      "answer": "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, exposes explicit foreground-vs-installed service ownership, and cleans up after proof.",
+      "answer": "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, exposes explicit foreground-vs-installed service ownership plus read-only operator-control boundaries, and cleans up after proof.",
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/current-runtime-state-proof-summary.redacted.json",
-        "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json"
+        "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json",
+        "localRuntimeStatus.operatorControlBoundary"
       ]
     }
   },

@@ -1,5 +1,13 @@
 # Mobile Data Contract Gaps
 
+## Cycle OPERATORCONTROLBOUNDARY - Runtime Operator Controls Boundary
+
+- Closed or narrowed: `/api/internal/live-runtime/status` now exposes `operatorControlBoundary`, a machine-readable local operator safety contract for result review, settlement queue review, redacted approved-scheduler command metadata, and active-event execution guards.
+- Backend-supported fields used: phase-audit snapshots of `/api/internal/live-runtime/result-review` and `/api/internal/live-runtime/settlement-queue`, plus existing `settlementAutomation`, `productionReadinessBoundary`, `OfficialResultReview`, `CanonicalEvent`, `Market`, and `Event` evidence.
+- Route mismatch: none for public mobile APIs. This remains a local/dev-only runtime status route and does not create a public mobile or production operator route.
+- Temporary mock/static data: none added.
+- Future migration concern: production still needs first-class authenticated operator-control data: durable operator identity, role checks, approval/execution records tied to an authenticated user, an audited UI or admin workflow, and installed official-result polling/service ownership.
+
 ## Cycle RUNTIMECOMMANDS - Operator Launch Commands in Runtime Status
 
 - Closed or narrowed: `/api/internal/live-runtime/status` now projects actionable local runtime launch commands from the launch-profile artifact, so operators can see plan/install/uninstall commands and live-provider opt-in commands from the single status endpoint.

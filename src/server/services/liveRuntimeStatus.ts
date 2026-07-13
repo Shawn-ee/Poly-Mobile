@@ -928,6 +928,122 @@ function buildProductionReadinessBoundary(params: {
   };
 }
 
+function buildOperatorControlBoundary(params: {
+  settlementDecision: JsonObject;
+  resultReview: JsonObject;
+  settlementQueue: JsonObject;
+  settlementAutomation: JsonObject;
+  productionReadinessBoundary: ReturnType<typeof buildProductionReadinessBoundary>;
+}) {
+  const firstQueueItem = getPath(params.settlementQueue, ["firstItem"]);
+  const exactConfirmationExposed =
+    getPath(params.resultReview, ["exactConfirmationRedacted"]) !== true ||
+    getPath(params.settlementQueue, ["exactConfirmationStringsExposed"]) === true ||
+    getPath(firstQueueItem, ["operatorAction", "exactConfirmationExposed"]) === true ||
+    getPath(firstQueueItem, ["operatorExecutionPlan", "exactConfirmationExposed"]) === true;
+  const exactConfirmationStored =
+    getPath(params.resultReview, ["officialResultReview", "exactConfirmationStored"]) === true ||
+    getPath(params.settlementQueue, ["exactConfirmationStored"]) === true ||
+    getPath(firstQueueItem, ["operatorExecutionPlan", "exactConfirmationStored"]) === true;
+  const activeExecutionAttempted =
+    getPath(params.resultReview, ["activeMarketExecutionAttemptedByRoute"]) === true ||
+    getPath(params.settlementQueue, ["activeMarketExecutionAttempted"]) === true ||
+    getPath(params.settlementAutomation, ["approvedScheduler", "activeEventExecutionAttempted"]) === true ||
+    getPath(params.settlementAutomation, ["approvedScheduler", "activeEventSettlementExecuted"]) === true;
+  const p0 =
+    getPath(params.resultReview, ["pass"]) === true &&
+    getPath(params.settlementQueue, ["pass"]) === true &&
+    getPath(params.settlementAutomation, ["safety", "providerQuotaUsedByStatus"]) === false &&
+    getPath(params.settlementAutomation, ["safety", "providerQuotaRequiredForExecutionPlan"]) === false &&
+    exactConfirmationExposed === false &&
+    exactConfirmationStored === false &&
+    activeExecutionAttempted === false
+      ? []
+      : ["operator_control_boundary_missing_or_unsafe"];
+
+  return {
+    checked: true,
+    mode: "local_dev_read_only_operator_controls",
+    devOnly: true,
+    readOnly: true,
+    noProviderQuota: true,
+    publicMobileRoute: false,
+    productionOperatorWorkflowReady: false,
+    authenticatedControls: {
+      requiredForProduction: true,
+      available: false,
+      roleChecksAvailable: false,
+      durableOperatorIdentityAvailable: false,
+      twoPersonApprovalAvailable: false,
+      reason: "Local runtime has redacted review/status routes and guarded commands, but no authenticated production operator workflow.",
+    },
+    localControls: {
+      resultReviewRoute: {
+        route: "GET /api/internal/live-runtime/result-review",
+        available: getPath(params.resultReview, ["pass"]) === true,
+        mutatesState: false,
+        providerQuotaRequired: false,
+      },
+      settlementQueueRoute: {
+        route: "GET /api/internal/live-runtime/settlement-queue",
+        available: getPath(params.settlementQueue, ["pass"]) === true,
+        mutatesState: false,
+        providerQuotaRequired: false,
+      },
+      approvedSchedulerCommand: {
+        available: typeof getPath(firstQueueItem, ["operatorExecutionPlan", "command", "npmScript"]) === "string",
+        npmScript: getPath(firstQueueItem, ["operatorExecutionPlan", "command", "npmScript"]) ?? null,
+        commandRedacted: getPath(firstQueueItem, ["operatorExecutionPlan", "command", "commandRedacted"]) ?? null,
+        dryRunFirst: getPath(firstQueueItem, ["operatorExecutionPlan", "dryRunFirst"]) === true,
+        exactConfirmationArgumentRedacted:
+          getPath(firstQueueItem, ["operatorExecutionPlan", "command", "exactConfirmationArgumentRedacted"]) === true,
+      },
+    },
+    executionSafety: {
+      activeMarketStatus: getPath(params.settlementDecision, ["activeMarketStatus"]) ?? null,
+      executionEligibleNow: getPath(params.settlementDecision, ["executionEligibleNow"]) === true,
+      localExecutionReadyWhenClosed:
+        getPath(firstQueueItem, ["operatorExecutionPlan", "executableNow"]) === true &&
+        getPath(firstQueueItem, ["operatorExecutionPlan", "providerQuotaRequired"]) === false,
+      activeExecutionAttempted,
+      activeSettlementExecuted:
+        getPath(params.settlementAutomation, ["approvedScheduler", "activeEventSettlementExecuted"]) === true,
+      requiresClosedMarket: getPath(params.settlementAutomation, ["safety", "requiresClosedMarket"]) === true,
+      requiresApproval: getPath(params.settlementAutomation, ["safety", "requiresApproval"]) === true,
+      requiresExactConfirmation: getPath(params.settlementAutomation, ["safety", "requiresExactConfirmation"]) === true,
+      exactConfirmationExposed,
+      exactConfirmationStored,
+      exactConfirmationRedacted: getPath(params.settlementAutomation, ["safety", "exactConfirmationRedacted"]) === true,
+      repeatExecutionBlocked: getPath(params.settlementAutomation, ["safety", "repeatExecutionBlocked"]) === true,
+      providerQuotaRequired: getPath(params.settlementAutomation, ["safety", "providerQuotaRequiredForExecutionPlan"]) === true,
+    },
+    productionBlockers: [
+      "authenticated_operator_controls_missing",
+      "production_operator_ui_not_present",
+      "durable_operator_identity_and_role_checks_missing",
+      "two_person_or_admin_approval_workflow_missing",
+      "installed_official_result_polling_missing",
+    ],
+    requiredBeforeProduction: [
+      "add authenticated operator login and role checks for settlement review",
+      "store durable operator identity on approval and execution records",
+      "provide an audited operator UI or admin workflow for queue review",
+      "keep exact-confirmation redaction and CLOSED-market guards",
+      "connect installed official-result polling only after service ownership exists",
+    ],
+    p0,
+    p1: [
+      "authenticated_operator_controls_missing",
+      "production_operator_ui_not_present",
+      ...asStringArray(getPath(params.productionReadinessBoundary, ["productionBlockers"])).filter(
+        (gap) => gap.includes("official_result") || gap.includes("auto_settlement"),
+      ),
+    ],
+    note:
+      "This boundary is intentionally read-only. It exposes the local operator control contract and production blockers without adding a public route, spending provider quota, or executing settlement.",
+  };
+}
+
 export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?: boolean } = {}) {
   const [
     completionAudit,
@@ -1445,6 +1561,13 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     settlementAutomation,
     currentRuntimeState,
   });
+  const operatorControlBoundary = buildOperatorControlBoundary({
+    settlementDecision,
+    resultReview,
+    settlementQueue,
+    settlementAutomation,
+    productionReadinessBoundary,
+  });
 
   return {
     generatedAt: new Date().toISOString(),
@@ -1524,6 +1647,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     providerRefreshLoop,
     settlementAutomation,
     productionReadinessBoundary,
+    operatorControlBoundary,
     gaps: {
       p0: statusP0Gaps,
       p1: asStringArray(getPath(completionAudit, ["gaps", "p1"])),

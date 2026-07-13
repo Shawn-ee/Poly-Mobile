@@ -823,6 +823,98 @@ async function main() {
       Array.isArray(getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "productionReadinessBoundary", "p0"])) &&
       (getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "productionReadinessBoundary", "p0"]) as unknown[])
         .length === 0,
+    operatorControlBoundaryKnown:
+      pass(entries.phaseAudit) &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "operatorControlBoundary", "checked"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "operatorControlBoundary", "mode"]) ===
+        "local_dev_read_only_operator_controls" &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "operatorControlBoundary", "devOnly"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "operatorControlBoundary", "readOnly"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "operatorControlBoundary", "noProviderQuota"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "operatorControlBoundary", "publicMobileRoute"]) ===
+        false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "productionOperatorWorkflowReady",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "authenticatedControls",
+        "requiredForProduction",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "authenticatedControls",
+        "available",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "localControls",
+        "resultReviewRoute",
+        "available",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "localControls",
+        "settlementQueueRoute",
+        "available",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "localControls",
+        "approvedSchedulerCommand",
+        "exactConfirmationArgumentRedacted",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "executionSafety",
+        "activeExecutionAttempted",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "executionSafety",
+        "activeSettlementExecuted",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "executionSafety",
+        "requiresClosedMarket",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "executionSafety",
+        "exactConfirmationExposed",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "executionSafety",
+        "exactConfirmationStored",
+      ]) === false &&
+      Array.isArray(getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "operatorControlBoundary", "p0"])) &&
+      (getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "operatorControlBoundary", "p0"]) as unknown[])
+        .length === 0,
     currentRuntimeWarmStateProofKnown:
       pass(entries.currentRuntimeStateProof) &&
       getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "warmNoQuotaRuntimeObserved"]) === true &&
@@ -958,15 +1050,17 @@ async function main() {
         checks.currentRuntimeStateKnown &&
         checks.serviceOwnershipKnown &&
         checks.productionReadinessBoundaryKnown &&
+        checks.operatorControlBoundaryKnown &&
         checks.currentRuntimeWarmStateProofKnown &&
         checks.oneCommandRuntimeLoopProofKnown,
       answer:
-        "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, exposes explicit foreground-vs-installed service ownership, and cleans up after proof.",
+        "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, exposes explicit foreground-vs-installed service ownership plus read-only operator-control boundaries, and cleans up after proof.",
       evidence: [
         PATHS.localRuntimeLaunchProfile,
         PATHS.internalTesterWatchdog,
         PATHS.currentRuntimeStateProof,
         PATHS.onboarding,
+        "localRuntimeStatus.operatorControlBoundary",
       ],
     },
   };

@@ -1151,6 +1151,69 @@ describe("live runtime status service", () => {
       ]),
       note: expect.stringContaining("local internal tester readiness"),
     });
+    expect(status.operatorControlBoundary).toMatchObject({
+      checked: true,
+      mode: "local_dev_read_only_operator_controls",
+      devOnly: true,
+      readOnly: true,
+      noProviderQuota: true,
+      publicMobileRoute: false,
+      productionOperatorWorkflowReady: false,
+      authenticatedControls: {
+        requiredForProduction: true,
+        available: false,
+        roleChecksAvailable: false,
+        durableOperatorIdentityAvailable: false,
+        twoPersonApprovalAvailable: false,
+      },
+      localControls: {
+        resultReviewRoute: {
+          route: "GET /api/internal/live-runtime/result-review",
+          available: true,
+          mutatesState: false,
+          providerQuotaRequired: false,
+        },
+        settlementQueueRoute: {
+          route: "GET /api/internal/live-runtime/settlement-queue",
+          available: true,
+          mutatesState: false,
+          providerQuotaRequired: false,
+        },
+        approvedSchedulerCommand: {
+          available: true,
+          npmScript: "mobile:one-event-result-settlement-run",
+          dryRunFirst: true,
+          exactConfirmationArgumentRedacted: true,
+        },
+      },
+      executionSafety: {
+        activeMarketStatus: "LIVE",
+        executionEligibleNow: false,
+        localExecutionReadyWhenClosed: false,
+        activeExecutionAttempted: false,
+        activeSettlementExecuted: false,
+        requiresClosedMarket: true,
+        requiresApproval: true,
+        requiresExactConfirmation: true,
+        exactConfirmationExposed: false,
+        exactConfirmationStored: false,
+        exactConfirmationRedacted: true,
+        providerQuotaRequired: false,
+      },
+      productionBlockers: expect.arrayContaining([
+        "authenticated_operator_controls_missing",
+        "production_operator_ui_not_present",
+        "durable_operator_identity_and_role_checks_missing",
+      ]),
+      requiredBeforeProduction: expect.arrayContaining([
+        "add authenticated operator login and role checks for settlement review",
+        "store durable operator identity on approval and execution records",
+      ]),
+      p0: [],
+      p1: expect.arrayContaining(["authenticated_operator_controls_missing", "production_operator_ui_not_present"]),
+      note: expect.stringContaining("read-only"),
+    });
+    expect(JSON.stringify(status.operatorControlBoundary)).not.toContain("SETTLE_FROM_RESULT:");
     expect(status.runtimeCapabilities).toMatchObject({
       latestRunProfileOnly: true,
       latestSupervisorProfile: {
