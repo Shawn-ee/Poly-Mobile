@@ -38,6 +38,7 @@ For a selected binary sportsbook market:
 - Local maker ask is provider ask shifted up by `QUOTE_OFFSET_TICKS`.
 - If only a midpoint exists, the proof builds a small local spread around it.
 - The proof cancels its own previous local maker quotes before placing replacements.
+- The reusable seed checks the current selected-outcome book after cleanup and adjusts planned maker prices away from existing user/test orders so the new maker bid/ask rest instead of crossing and filling immediately.
 - The proof does not start a permanent unattended bot by default.
 
 ## Remaining Gaps
@@ -115,6 +116,7 @@ For a selected binary sportsbook market:
 - Runtime status settlement safety: the status report now surfaces that trusted-result execution requires `CLOSED` market status and that the latest live-market execute attempt was blocked without resolving the proof market.
 - Runtime status capability truth: the status report now separates the latest supervisor run profile from prior passing continuous supervisor/result-poller proof artifacts, so a narrow latest proof does not hide proven repeated maker reseed, lifecycle scheduling, result ingestion, and result-poller behavior.
 - Provider-to-maker handoff proof: the latest selected-event `ProviderRefreshRun` is followed by shifted local `MarketMakerQuoteRun` evidence for the same event, market, and outcome without spending provider quota.
+- Non-crossing reseed proof: after a test/user bid at `0.55` existed on the selected Over 2.5 outcome, `npm run mobile:one-event-live-maker-seed` adjusted the planned maker ask to `0.56`, left both maker orders resting, and the quote route reported bid `0.55` / ask `0.56`.
 - One-command onboarding proof: quota-free replay/import, readiness, runtime status, settlement readiness, and settlement dry-run all passed with S23 connected.
 - Supervisor stale monitor proof: one supervisor cycle ran data hygiene, runtime/maker seed, dry-run stale guard, and safe lifecycle scheduler. It reported 19 cached markets that would pause under the 90-second stale threshold and did not mutate markets.
 - Continuous local supervisor proof: the repeated local supervisor proof emits heartbeat evidence and keeps shifted maker reseeding, lifecycle checks, provider-shaped result ingestion, and trusted-result settlement dry-run scheduling active across cycles without leaving proof-owned supervisor or backend processes running.

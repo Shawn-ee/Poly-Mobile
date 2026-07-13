@@ -15026,3 +15026,13 @@ Known limitations:
 - API/data dependencies: uses existing Portfolio position fields `marketId`, `outcomeId`, `shares`, `bestBid`, `currentPrice`, and `probability`; uses existing `api.placeLimitOrder` for canonical `SELL` payloads.
 - Proof: focused mobile contract tests passed, mobile typecheck passed, backend cashout/open-position tests passed. S23 proof passed on `SM_S911U1`: Portfolio cashout opened close-position mode, Max selected `500` owned shares, sell price normalized to `47%`, and estimated proceeds showed `$235` instead of wallet-sized balance values.
 - Known limitations: a dedicated backend close-position quote route is still P1; current close ticket prices come from position bid/current price fields and normalize percent-form values.
+
+## Cycle XD - Non-Crossing One-Event Maker Seed
+
+- Feature/runtime worked on: Odds API one-event local market-maker seed for the selected provider-backed Total Goals 2.5 market.
+- Important functions/services touched: `scripts/seed_odds_api_live_shifted_maker.ts`; existing `MarketMakerQuoteRun` persistence remains the durable proof sink.
+- User/runtime interactions supported: repeated local maker seeding now tolerates pre-existing user/test liquidity on the selected market. If the current book already has a bid or ask, the script adjusts the planned shifted maker prices so new maker orders rest instead of accidentally filling.
+- State transitions: cancels only previous local shifted-maker orders, preserves user/test orders, places fresh maker bid/ask orders, writes a new shifted-maker summary, and persists a new `MarketMakerQuoteRun`.
+- API/data dependencies: reads current open `Order` rows for the selected market/outcome before seeding, reads the stored `ReferenceQuoteSnapshot`, and verifies `/api/markets/:marketId/quote` after placement.
+- Proof: `npm run mobile:one-event-live-maker-seed` passed after detecting an existing `0.55` user bid and moving the planned ask to `0.56`; `npm run mobile:one-event-runtime-status` and `npm run mobile:one-event-phase-audit` passed with quote route bid `0.55` and ask `0.56`; root typecheck passed.
+- Known limitations: this is still one-shot/local maker seeding. Installed unattended market-maker service ownership remains P1.

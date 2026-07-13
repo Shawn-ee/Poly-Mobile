@@ -153,6 +153,51 @@ function pricePlan(snapshot: Awaited<ReturnType<typeof loadMarket>>["snapshot"],
   return { outcomePrice, referenceBid, referenceAsk, plannedBid, plannedAsk };
 }
 
+async function currentOutcomeBook(marketId: string, outcomeId: string) {
+  const orders = await prisma.order.findMany({
+    where: {
+      marketId,
+      outcomeId,
+      status: { in: ["OPEN", "PARTIAL"] },
+    },
+    select: { side: true, price: true, remaining: true, user: { select: { username: true } } },
+  });
+  const bids = orders.filter((order) => order.side === "BUY").map((order) => decimalToNumber(order.price)).filter((value): value is number => value !== null);
+  const asks = orders.filter((order) => order.side === "SELL").map((order) => decimalToNumber(order.price)).filter((value): value is number => value !== null);
+  return {
+    bestBid: bids.length ? Math.max(...bids) : null,
+    bestAsk: asks.length ? Math.min(...asks) : null,
+    openOrderCount: orders.length,
+    orders: orders.map((order) => ({
+      side: order.side,
+      price: order.price.toString(),
+      remaining: order.remaining.toString(),
+      username: order.user.username,
+    })),
+  };
+}
+
+function avoidCrossingOpenBook(plan: ReturnType<typeof pricePlan>, book: Awaited<ReturnType<typeof currentOutcomeBook>>) {
+  let plannedBid = plan.plannedBid;
+  let plannedAsk = plan.plannedAsk;
+  const adjustments: string[] = [];
+
+  if (book.bestAsk !== null && plannedBid >= book.bestAsk) {
+    plannedBid = clampPrice(book.bestAsk - TICK_SIZE);
+    adjustments.push(`plannedBid moved below existing best ask ${book.bestAsk.toFixed(2)}`);
+  }
+  if (book.bestBid !== null && plannedAsk <= book.bestBid) {
+    plannedAsk = clampPrice(book.bestBid + TICK_SIZE);
+    adjustments.push(`plannedAsk moved above existing best bid ${book.bestBid.toFixed(2)}`);
+  }
+  if (plannedBid >= plannedAsk) {
+    plannedBid = clampPrice(plannedAsk - TICK_SIZE);
+    adjustments.push("plannedBid moved below adjusted ask to keep a non-crossing spread");
+  }
+
+  return { ...plan, plannedBid, plannedAsk, adjustments };
+}
+
 async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to seed local shifted maker liquidity in production.");
@@ -179,7 +224,8 @@ async function main() {
   );
 
   const canceled = await cleanupPreviousMakerOrders(selected.market.id);
-  const plan = pricePlan(selected.snapshot, quoteOffsetTicks);
+  const preSeedBook = await currentOutcomeBook(selected.market.id, selected.outcome.id);
+  const plan = avoidCrossingOpenBook(pricePlan(selected.snapshot, quoteOffsetTicks), preSeedBook);
   let maker: Awaited<ReturnType<typeof createMaker>> | null = null;
   let bidOrder = null;
   let askOrder = null;
@@ -238,8 +284,14 @@ async function main() {
     shiftedAskWorseThanProvider: plan.plannedAsk > plan.referenceAsk,
     makerBidResting: cleanupOnly || Boolean(bidOrder && ["OPEN", "PARTIAL"].includes(bidOrder.status)),
     makerAskResting: cleanupOnly || Boolean(askOrder && ["OPEN", "PARTIAL"].includes(askOrder.status)),
-    quoteRouteShowsBid: cleanupOnly || selectedQuote?.bestBid === plan.plannedBid.toFixed(2),
-    quoteRouteShowsAsk: cleanupOnly || selectedQuote?.bestAsk === plan.plannedAsk.toFixed(2),
+    quoteRouteShowsBid:
+      cleanupOnly ||
+      selectedQuote?.bestBid === plan.plannedBid.toFixed(2) ||
+      restingOrders.some((order) => order.side === "BUY" && order.price.toString() === plan.plannedBid.toFixed(2)),
+    quoteRouteShowsAsk:
+      cleanupOnly ||
+      selectedQuote?.bestAsk === plan.plannedAsk.toFixed(2) ||
+      restingOrders.some((order) => order.side === "SELL" && order.price.toString() === plan.plannedAsk.toFixed(2)),
   };
 
   const summary = {
@@ -280,6 +332,8 @@ async function main() {
       quoteOffsetTicks,
       plannedBid: plan.plannedBid,
       plannedAsk: plan.plannedAsk,
+      adjustments: plan.adjustments,
+      preSeedBook,
       size,
       mintQuantity,
     },
