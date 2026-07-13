@@ -783,6 +783,47 @@ async function main() {
         getPath(localRuntimeStatusBody, ["settlementAutomation", "safety", "requiresExactConfirmation"]) === true &&
         Array.isArray(getPath(localRuntimeStatusBody, ["settlementAutomation", "p0"])) &&
         (getPath(localRuntimeStatusBody, ["settlementAutomation", "p0"]) as unknown[]).length === 0 &&
+        getPath(localRuntimeStatusBody, ["productionReadinessBoundary", "checked"]) === true &&
+        getPath(localRuntimeStatusBody, ["productionReadinessBoundary", "localInternalRuntimeReady"]) === true &&
+        getPath(localRuntimeStatusBody, ["productionReadinessBoundary", "productionReady"]) === false &&
+        getPath(localRuntimeStatusBody, ["productionReadinessBoundary", "fullProductionRuntimeComplete"]) === false &&
+        getPath(localRuntimeStatusBody, ["productionReadinessBoundary", "fakeTokenOnly"]) === true &&
+        getPath(localRuntimeStatusBody, ["productionReadinessBoundary", "noRealMoneyDeployment"]) === true &&
+        getPath(localRuntimeStatusBody, ["productionReadinessBoundary", "defaultModeSpendsProviderQuota"]) === false &&
+        getPath(localRuntimeStatusBody, ["productionReadinessBoundary", "providerRefreshStatusRouteSpendsQuota"]) ===
+          false &&
+        getPath(localRuntimeStatusBody, [
+          "productionReadinessBoundary",
+          "officialResultAutomation",
+          "approvedSchedulerProofAvailable",
+        ]) === true &&
+        getPath(localRuntimeStatusBody, [
+          "productionReadinessBoundary",
+          "officialResultAutomation",
+          "activeEventExecutionGuard",
+        ]) === "requires_closed_market_approval_and_exact_confirmation" &&
+        getPath(localRuntimeStatusBody, [
+          "productionReadinessBoundary",
+          "officialResultAutomation",
+          "activeEventExecutionAttempted",
+        ]) === false &&
+        getPath(localRuntimeStatusBody, [
+          "productionReadinessBoundary",
+          "officialResultAutomation",
+          "activeEventSettlementExecuted",
+        ]) === false &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["productionReadinessBoundary", "productionBlockers"])) &&
+        (getPath(localRuntimeStatusBody, ["productionReadinessBoundary", "productionBlockers"]) as unknown[]).includes(
+          "installed_unattended_runtime_service_missing",
+        ) &&
+        (getPath(localRuntimeStatusBody, ["productionReadinessBoundary", "productionBlockers"]) as unknown[]).includes(
+          "production_auto_settlement_execution_not_enabled",
+        ) &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["productionReadinessBoundary", "requiredBeforeProduction"])) &&
+        (getPath(localRuntimeStatusBody, ["productionReadinessBoundary", "requiredBeforeProduction"]) as unknown[])
+          .length >= 4 &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["productionReadinessBoundary", "p0"])) &&
+        (getPath(localRuntimeStatusBody, ["productionReadinessBoundary", "p0"]) as unknown[]).length === 0 &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "supervisor", "checked"]) === true &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "resultPoller", "checked"]) === true &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "quotaSpendingLoopRunning"]) === false &&

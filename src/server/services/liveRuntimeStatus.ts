@@ -860,6 +860,74 @@ function buildProviderRefreshLoop(params: {
   };
 }
 
+function buildProductionReadinessBoundary(params: {
+  localCapabilityReady: boolean;
+  serviceOwnership: ReturnType<typeof buildServiceOwnership>;
+  providerRefreshLoop: ReturnType<typeof buildProviderRefreshLoop>;
+  settlementAutomation: JsonObject;
+  currentRuntimeState: ReturnType<typeof buildCurrentRuntimeState>;
+}) {
+  const installedService = params.serviceOwnership.installedOsService === true;
+  const liveProviderLoopRunning = params.providerRefreshLoop.enabledNow === true;
+  const settlementP0 = asStringArray(getPath(params.settlementAutomation, ["p0"]));
+  const productionBlockers = [
+    ...(installedService ? [] : ["installed_unattended_runtime_service_missing"]),
+    ...(liveProviderLoopRunning ? [] : ["live_provider_refresh_loop_not_running_by_default"]),
+    "authenticated_operator_controls_missing",
+    "installed_official_result_polling_missing",
+    "production_auto_settlement_execution_not_enabled",
+  ];
+
+  return {
+    checked: true,
+    localInternalRuntimeReady: params.localCapabilityReady,
+    localTesterReadyRightNow: params.currentRuntimeState.testerReadyRightNow,
+    productionReady: false,
+    fullProductionRuntimeComplete: false,
+    fakeTokenOnly: true,
+    noRealMoneyDeployment: true,
+    defaultModeSpendsProviderQuota: false,
+    providerRefreshStatusRouteSpendsQuota: false,
+    currentServiceModel: params.serviceOwnership.serviceModel,
+    installedUnattendedService: installedService,
+    liveProviderRefreshLoopRunning: liveProviderLoopRunning,
+    officialResultAutomation: {
+      replayIngestionAvailable: getPath(params.settlementAutomation, ["resultPolling", "replayIngestionAvailable"]) === true,
+      liveResultIngestionRequiresExplicitFlag:
+        getPath(params.settlementAutomation, ["resultPolling", "liveResultIngestionRequiresExplicitFlag"]) === true,
+      approvedSchedulerProofAvailable:
+        getPath(params.settlementAutomation, ["approvedScheduler", "supervisorWaitModeProven"]) === true,
+      activeEventExecutionGuard:
+        getPath(params.settlementAutomation, ["safety", "requiresClosedMarket"]) === true
+          ? "requires_closed_market_approval_and_exact_confirmation"
+          : "not_safe_for_execution",
+      activeEventExecutionAttempted:
+        getPath(params.settlementAutomation, ["approvedScheduler", "activeEventExecutionAttempted"]) === true,
+      activeEventSettlementExecuted:
+        getPath(params.settlementAutomation, ["approvedScheduler", "activeEventSettlementExecuted"]) === true,
+      p0: settlementP0,
+    },
+    productionBlockers,
+    requiredBeforeProduction: [
+      "install_or_host_provider_maker_lifecycle_workers_as_owned_services",
+      "add_authenticated_operator_controls_for_result_review_and_settlement",
+      "enable_quota_capped_live_official_result_polling_under_service_ownership",
+      "keep exact-confirmation and closed-market guards for any active-event settlement execution",
+      "add production monitoring, retry, alerting, and multi-event scheduling before public use",
+    ],
+    p0:
+      params.localCapabilityReady &&
+      settlementP0.length === 0 &&
+      getPath(params.settlementAutomation, ["safety", "exactConfirmationExposed"]) === false &&
+      getPath(params.settlementAutomation, ["approvedScheduler", "activeEventExecutionAttempted"]) === false
+        ? []
+        : ["production_boundary_local_readiness_or_settlement_safety_incomplete"],
+    p1: productionBlockers,
+    note:
+      "This boundary prevents local internal tester readiness from being mistaken for production automation. Holiwyn can be locally ready while productionReady remains false.",
+  };
+}
+
 export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?: boolean } = {}) {
   const [
     completionAudit,
@@ -1370,6 +1438,13 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     providerRefreshRun,
     providerSnapshots,
   });
+  const productionReadinessBoundary = buildProductionReadinessBoundary({
+    localCapabilityReady: ready,
+    serviceOwnership,
+    providerRefreshLoop,
+    settlementAutomation,
+    currentRuntimeState,
+  });
 
   return {
     generatedAt: new Date().toISOString(),
@@ -1448,6 +1523,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     serviceOwnership,
     providerRefreshLoop,
     settlementAutomation,
+    productionReadinessBoundary,
     gaps: {
       p0: statusP0Gaps,
       p1: asStringArray(getPath(completionAudit, ["gaps", "p1"])),

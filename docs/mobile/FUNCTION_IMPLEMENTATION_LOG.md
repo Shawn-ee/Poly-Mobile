@@ -15154,3 +15154,14 @@ Known limitations:
 - API/data dependencies: uses the existing server Portfolio routes and existing close-position ticket payload. No new route was added.
 - Proof: S23 `SM_S911U1` runtime proof showed Portfolio position visible, Cash out opened `cashout-mode-active-true`, no Yes/No selector, `cashout-available-shares-9.000000`, Max selected `9` shares, and no wallet-sized `$9000`/`10000` amount appeared.
 - Known limitations: cashout still uses the existing generic sell order endpoint; a dedicated close-position quote route remains P1.
+
+## Cycle XK - Production Readiness Boundary Status
+
+- Feature/runtime worked on: backend local live-runtime status truth for local readiness versus production automation.
+- Frontend components touched: none.
+- Important functions/services touched: `src/server/services/liveRuntimeStatus.ts`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, `scripts/report_holiwyn_live_runtime_completion_audit.ts`, and `src/__tests__/liveRuntimeStatus.service.test.ts`.
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/status` and read `productionReadinessBoundary`, a single explicit statement that the one-event local internal runtime can be ready while production automation remains not ready.
+- State transitions: none. The route and audits are read-only; they do not start loops, install services, call The Odds API, execute settlement, expose confirmation strings, or change market state.
+- API/data dependencies: composes existing `serviceOwnership`, `providerRefreshLoop`, `settlementAutomation`, and `currentRuntimeState` fields.
+- Proof needed: focused status service test, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
+- Known limitations: this narrows ambiguity only. Installed service ownership, authenticated operator controls, installed official-result polling, and production auto-settlement remain P1.

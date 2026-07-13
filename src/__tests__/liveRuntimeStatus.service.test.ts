@@ -1111,6 +1111,46 @@ describe("live runtime status service", () => {
       },
       p0: [],
     });
+    expect(status.productionReadinessBoundary).toMatchObject({
+      checked: true,
+      localInternalRuntimeReady: true,
+      localTesterReadyRightNow: false,
+      productionReady: false,
+      fullProductionRuntimeComplete: false,
+      fakeTokenOnly: true,
+      noRealMoneyDeployment: true,
+      defaultModeSpendsProviderQuota: false,
+      providerRefreshStatusRouteSpendsQuota: false,
+      currentServiceModel: "local_foreground_worker_processes",
+      installedUnattendedService: false,
+      liveProviderRefreshLoopRunning: false,
+      officialResultAutomation: {
+        replayIngestionAvailable: true,
+        liveResultIngestionRequiresExplicitFlag: true,
+        approvedSchedulerProofAvailable: true,
+        activeEventExecutionGuard: "requires_closed_market_approval_and_exact_confirmation",
+        activeEventExecutionAttempted: false,
+        activeEventSettlementExecuted: false,
+        p0: [],
+      },
+      productionBlockers: expect.arrayContaining([
+        "installed_unattended_runtime_service_missing",
+        "live_provider_refresh_loop_not_running_by_default",
+        "authenticated_operator_controls_missing",
+        "installed_official_result_polling_missing",
+        "production_auto_settlement_execution_not_enabled",
+      ]),
+      requiredBeforeProduction: expect.arrayContaining([
+        "install_or_host_provider_maker_lifecycle_workers_as_owned_services",
+        "add_authenticated_operator_controls_for_result_review_and_settlement",
+      ]),
+      p0: [],
+      p1: expect.arrayContaining([
+        "installed_unattended_runtime_service_missing",
+        "production_auto_settlement_execution_not_enabled",
+      ]),
+      note: expect.stringContaining("local internal tester readiness"),
+    });
     expect(status.runtimeCapabilities).toMatchObject({
       latestRunProfileOnly: true,
       latestSupervisorProfile: {

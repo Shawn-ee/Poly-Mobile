@@ -752,6 +752,77 @@ async function main() {
       Array.isArray(getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "settlementAutomation", "p0"])) &&
       (getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "settlementAutomation", "p0"]) as unknown[])
         .length === 0,
+    productionReadinessBoundaryKnown:
+      pass(entries.phaseAudit) &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "productionReadinessBoundary", "checked"]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "productionReadinessBoundary",
+        "localInternalRuntimeReady",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "productionReadinessBoundary",
+        "productionReady",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "productionReadinessBoundary",
+        "fullProductionRuntimeComplete",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "productionReadinessBoundary",
+        "fakeTokenOnly",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "productionReadinessBoundary",
+        "noRealMoneyDeployment",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "productionReadinessBoundary",
+        "providerRefreshStatusRouteSpendsQuota",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "productionReadinessBoundary",
+        "officialResultAutomation",
+        "activeEventExecutionAttempted",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "productionReadinessBoundary",
+        "officialResultAutomation",
+        "activeEventSettlementExecuted",
+      ]) === false &&
+      Array.isArray(
+        getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "productionReadinessBoundary", "productionBlockers"]),
+      ) &&
+      (getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "productionReadinessBoundary",
+        "productionBlockers",
+      ]) as unknown[]).includes("installed_unattended_runtime_service_missing") &&
+      (getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "productionReadinessBoundary",
+        "productionBlockers",
+      ]) as unknown[]).includes("production_auto_settlement_execution_not_enabled") &&
+      Array.isArray(getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "productionReadinessBoundary", "p0"])) &&
+      (getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "productionReadinessBoundary", "p0"]) as unknown[])
+        .length === 0,
     currentRuntimeWarmStateProofKnown:
       pass(entries.currentRuntimeStateProof) &&
       getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "warmNoQuotaRuntimeObserved"]) === true &&
@@ -886,6 +957,7 @@ async function main() {
         checks.internalTesterWatchdogKnown &&
         checks.currentRuntimeStateKnown &&
         checks.serviceOwnershipKnown &&
+        checks.productionReadinessBoundaryKnown &&
         checks.currentRuntimeWarmStateProofKnown &&
         checks.oneCommandRuntimeLoopProofKnown,
       answer:
