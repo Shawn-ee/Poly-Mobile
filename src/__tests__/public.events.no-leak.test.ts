@@ -94,10 +94,12 @@ const expectedEventSummaryKeys = [
   "image",
   "imageUrl",
   "leagueKey",
+  "legacyResultMode",
   "liveStats",
   "marketCount",
   "marketProfile",
   "metadata",
+  "primaryMarketProfile",
   "resultMode",
   "slug",
   "source",
@@ -235,8 +237,8 @@ describe("public event API no-leak checks", () => {
           AND: expect.arrayContaining([
             expect.objectContaining({
               category: "sports",
-              sportKey: "soccer",
-              leagueKey: "world_cup",
+              sportKey: { in: ["soccer", "soccer_fifa_world_cup"] },
+              leagueKey: { in: ["world_cup", "soccer_fifa_world_cup"] },
             }),
           ]),
         }),
@@ -312,7 +314,7 @@ describe("public event API no-leak checks", () => {
     mockPrisma.event.findMany.mockResolvedValue([
       {
         ...baseEvent,
-        startTime: new Date("2026-07-08T16:00:00.000Z"),
+        startTime: new Date("2026-07-14T16:00:00.000Z"),
         status: "active",
         liveStatus: "LIVE",
         markets: [mobileListMarket],
@@ -329,8 +331,8 @@ describe("public event API no-leak checks", () => {
         where: expect.objectContaining({
           AND: expect.arrayContaining([
             expect.objectContaining({
-              sportKey: "soccer",
-              leagueKey: "world_cup",
+              sportKey: { in: ["soccer", "soccer_fifa_world_cup"] },
+              leagueKey: { in: ["world_cup", "soccer_fifa_world_cup"] },
               OR: [
                 { status: "live" },
                 { liveStatus: "LIVE" },
@@ -405,8 +407,8 @@ describe("public event API no-leak checks", () => {
               ],
             }),
             expect.objectContaining({
-              sportKey: "soccer",
-              leagueKey: "world_cup",
+              sportKey: { in: ["soccer", "soccer_fifa_world_cup"] },
+              leagueKey: { in: ["world_cup", "soccer_fifa_world_cup"] },
             }),
           ]),
         }),
@@ -420,6 +422,50 @@ describe("public event API no-leak checks", () => {
       slug: "france-vs-argentina",
       eventType: "match",
       markets: [{ id: "market-1" }],
+    });
+    expectNoForbiddenKeys(body);
+  });
+
+  test("GET /api/events treats FIFA World Cup provider keys as mobile World Cup soccer aliases", async () => {
+    mockPrisma.event.findMany.mockResolvedValue([
+      {
+        ...baseEvent,
+        slug: "odds-api-single-soccer-test",
+        title: "Spain vs. France",
+        sportKey: "soccer_fifa_world_cup",
+        leagueKey: "soccer_fifa_world_cup",
+        eventType: "match",
+        homeTeamName: "France",
+        awayTeamName: "Spain",
+        markets: [mobileListMarket],
+      },
+    ]);
+
+    const response = await listEvents(
+      new NextRequest("http://localhost/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10"),
+    );
+
+    expect(response.status).toBe(200);
+    expect(mockPrisma.event.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          AND: expect.arrayContaining([
+            expect.objectContaining({
+              sportKey: { in: ["soccer", "soccer_fifa_world_cup"] },
+              leagueKey: { in: ["world_cup", "soccer_fifa_world_cup"] },
+            }),
+          ]),
+        }),
+      }),
+    );
+
+    const body = await response.json();
+    expect(body.events).toHaveLength(1);
+    expect(body.events[0]).toMatchObject({
+      slug: "odds-api-single-soccer-test",
+      title: "Spain vs. France",
+      sportKey: "soccer_fifa_world_cup",
+      leagueKey: "soccer_fifa_world_cup",
     });
     expectNoForbiddenKeys(body);
   });
@@ -484,8 +530,8 @@ describe("public event API no-leak checks", () => {
         where: expect.objectContaining({
           AND: expect.arrayContaining([
             expect.objectContaining({
-              sportKey: "soccer",
-              leagueKey: "world_cup",
+              sportKey: { in: ["soccer", "soccer_fifa_world_cup"] },
+              leagueKey: { in: ["world_cup", "soccer_fifa_world_cup"] },
               OR: expect.arrayContaining([
                 { title: { contains: "Argentina", mode: "insensitive" } },
                 { description: { contains: "Argentina", mode: "insensitive" } },

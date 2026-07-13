@@ -2,6 +2,13 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle S23CASHOUT - Spain vs. France Cashout Proof
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home shows backend-owned provider World Cup event | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1` | `GET` | None for public event list | Query only. `sportKey=soccer` now includes provider alias `soccer_fifa_world_cup`; `leagueKey=world_cup` now includes provider alias `soccer_fifa_world_cup`. | `events[].slug`, `title`, `sportKey`, `leagueKey`, `eventType`, team names, status/live status, compact `markets`, market source summary | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot` | No mobile fallback in server mode; if the route is unreachable, Home may show fallback/local empty state. | None for the tested internal event. |
+| S23 buy/cashout/history flow | `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | `GET`/`POST` | Local mobile dev credential/API key | Buy order uses selected market/outcome/side/price/size; cashout Sell uses owned market/outcome and owned share quantity | Event detail markets, quote price, order fill result, Portfolio position, sold History row | `Event`, `Market`, `Outcome`, `Order`, `Trade`, `Position`, user balance | Deterministic proof liquidity is seeded by `scripts/seed_mobile_route_spread_counterparty.ts`; no provider quota used | Provider line breadth remains P1 for unavailable line families. |
+
 ## Cycle S23STARTUPGATE - S23 Startup Audit Gate
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

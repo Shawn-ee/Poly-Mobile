@@ -14,6 +14,32 @@ $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $RuntimeDir = Join-Path $RepoRoot ".runtime\internal-beta-backend"
 New-Item -ItemType Directory -Force -Path $RuntimeDir | Out-Null
 
+function Import-LocalEnvFile {
+  $candidates = @(
+    (Join-Path $RepoRoot ".env"),
+    "C:\Users\hecto\Desktop\projects\PolyProj\Poly\.env"
+  )
+  foreach ($candidate in $candidates) {
+    if (-not (Test-Path -LiteralPath $candidate)) {
+      continue
+    }
+    foreach ($line in Get-Content -LiteralPath $candidate) {
+      $trimmed = $line.Trim()
+      if (-not $trimmed -or $trimmed.StartsWith("#") -or $trimmed -notmatch "=") {
+        continue
+      }
+      $parts = $trimmed.Split("=", 2)
+      $name = $parts[0].Trim()
+      $value = $parts[1].Trim().Trim('"').Trim("'")
+      if ($name -and -not [Environment]::GetEnvironmentVariable($name, "Process")) {
+        [Environment]::SetEnvironmentVariable($name, $value, "Process")
+      }
+    }
+    return $candidate
+  }
+  return ""
+}
+
 function Test-HttpOk([string]$Url) {
   try {
     $response = Invoke-WebRequest -Uri $Url -UseBasicParsing -TimeoutSec 5
@@ -71,6 +97,7 @@ $healthUrl = "http://127.0.0.1:$Port/api/health"
 $resolvedAuthBaseUrl = if ($AuthBaseUrl.Trim()) { $AuthBaseUrl.Trim().TrimEnd("/") } else { "http://127.0.0.1:$Port" }
 $lanIp = Get-LanIp
 $lanBaseUrl = if ($lanIp) { "http://$lanIp`:$Port" } else { "" }
+$loadedEnvPath = Import-LocalEnvFile
 $started = $null
 $stopped = @()
 $status = "unknown"
@@ -88,6 +115,7 @@ if ($CheckOnly) {
     $stdoutPath = Join-Path $RuntimeDir "backend-$Port.out.log"
     $stderrPath = Join-Path $RuntimeDir "backend-$Port.err.log"
     $command = @"
+`$env:DATABASE_URL='$($env:DATABASE_URL)'
 `$env:REFERENCE_STALE_MS='90000'
 `$env:INTERNAL_TRADING_BETA_ENABLED='true'
 `$env:TRADING_KILL_SWITCH='false'
@@ -139,6 +167,7 @@ $summary = [ordered]@{
   healthUrl = $healthUrl
   lanBaseUrl = $lanBaseUrl
   nextAuthUrl = $resolvedAuthBaseUrl
+  localEnvLoaded = [bool]$loadedEnvPath
   internalTradingBetaEnabled = $true
   tradingKillSwitch = $false
   nextPublicInternalTradingBetaEnabled = $true

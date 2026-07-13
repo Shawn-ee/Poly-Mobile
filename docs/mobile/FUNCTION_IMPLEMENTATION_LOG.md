@@ -2,6 +2,22 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle S23CASHOUT - Spain vs. France Cashout Proof
+
+- Feature/runtime worked on: internal tester trading flow for the backend-owned Odds API `Spain vs. France` event.
+- Frontend components touched:
+  - `mobile/src/services/homeEventFeedService.ts`
+  - `mobile/src/__tests__/homeEventFeedService.test.ts`
+- Backend/routes/scripts touched:
+  - `src/app/api/events/route.ts`
+  - `src/__tests__/public.events.no-leak.test.ts`
+  - `scripts/seed_mobile_route_spread_counterparty.ts`
+  - `scripts/start_holiwyn_internal_beta_backend.ps1`
+- User interactions supported: S23 Home now shows provider-owned World Cup soccer matches whose provider sport/league keys are `soccer_fifa_world_cup`; the user can open `Spain vs. France`, buy `Over 2.5`, see the Portfolio position, tap Cash out, use Max as owned shares, sell, and see History update.
+- State transitions: fake-token server-backed BUY fills into a Portfolio position; Portfolio Cash out opens close-position ticket mode; Max fills owned shares; SELL closes the position and writes sold History.
+- API/data dependencies: `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+- Known limitations: no Odds API quota was spent; the event still mixes sportsbook-backed totals with Holiwyn-owned contract fixtures where provider lines are unavailable.
+
 ## Cycle S23STARTUPGATE - S23 Startup Audit Gate
 
 - Feature/runtime worked on: live-runtime phase/completion audit coverage for managed S23 server-backed startup.

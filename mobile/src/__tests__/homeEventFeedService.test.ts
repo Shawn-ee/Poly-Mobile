@@ -169,6 +169,35 @@ describe("homeEventFeedService", () => {
     });
   });
 
+  test("keeps provider-owned FIFA World Cup soccer matches in the Home feed", async () => {
+    const listWorldCupEvents = vi.fn(async () => ({
+      events: [
+        event({
+          id: "match-1",
+          slug: "odds-api-single-soccer-test",
+          title: "Spain vs. France",
+          sportKey: "soccer_fifa_world_cup",
+          leagueKey: "soccer_fifa_world_cup",
+          eventType: "match",
+          homeTeamName: "France",
+          awayTeamName: "Spain",
+        }),
+      ],
+      page: { limit: 10, nextCursor: null, hasMore: false },
+    }));
+
+    await expect(
+      loadHomeEventFeedPage({
+        api: { listWorldCupEvents },
+        filter: "all",
+        limit: 10,
+      }),
+    ).resolves.toMatchObject({
+      source: "server-route",
+      events: [{ slug: "odds-api-single-soccer-test" }],
+    });
+  });
+
   test("keeps Local MVP contract-fixture match rows in the Home feed", async () => {
     const listWorldCupEvents = vi.fn(async () => ({
       events: [

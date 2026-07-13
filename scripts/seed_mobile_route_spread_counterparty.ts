@@ -9,6 +9,7 @@ import { loadLocalEnvForScript } from "./local_env";
 loadLocalEnvForScript(["DATABASE_URL"]);
 const prisma = new PrismaClient();
 const dec = (value: Prisma.Decimal.Value) => new Prisma.Decimal(value);
+const ACTIVE_MARKET_STATUSES = new Set(["LIVE", "OPEN"]);
 
 const argValue = (name: string) => {
   const prefix = `--${name}=`;
@@ -41,6 +42,17 @@ const shouldCleanupBlockingMarketBids = cleanupBlockingMarketBids || liquidityPu
 const assert: (condition: unknown, message: string) => asserts condition = (condition, message) => {
   if (!condition) throw new Error(message);
 };
+
+const isActiveProofMarket = (market: {
+  status: string;
+  isCanceled: boolean;
+  mechanism: string;
+  visibility: string;
+}) =>
+  !market.isCanceled &&
+  market.mechanism === "ORDERBOOK" &&
+  market.visibility === "PUBLIC" &&
+  ACTIVE_MARKET_STATUSES.has(market.status);
 
 async function createMaker() {
   const suffix = randomUUID().slice(0, 8);
@@ -85,12 +97,20 @@ async function main() {
     },
   });
   assert(event, `Event ${eventSlug} was not found.`);
+  const preferredMarkets = event.markets.filter(isActiveProofMarket);
+  const selectableMarkets = preferredMarkets.length > 0 ? preferredMarkets : event.markets;
   const market = externalMarketId
-    ? event.markets.find((item) => item.externalMarketId === externalMarketId)
+    ? selectableMarkets.find((item) => item.externalMarketId === externalMarketId) ??
+      event.markets.find((item) => item.externalMarketId === externalMarketId)
     : line
-    ? event.markets.find((item) => item.line?.equals(dec(line)))
-    : event.markets[0];
+    ? selectableMarkets.find((item) => item.line?.equals(dec(line))) ??
+      event.markets.find((item) => item.line?.equals(dec(line)))
+    : selectableMarkets[0];
   assert(market, `Event ${eventSlug} has no ${marketGroupKey} market.`);
+  assert(
+    isActiveProofMarket(market),
+    `Selected ${marketGroupKey} market ${market.id} is not open for proof liquidity (status=${market.status}).`,
+  );
   const outcome = market.outcomes.find((item) => item.side === outcomeSide) ?? market.outcomes[0];
   assert(outcome, `${marketGroupKey} market ${market.id} has no outcome.`);
 

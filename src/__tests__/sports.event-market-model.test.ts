@@ -91,8 +91,8 @@ describe("sports event market model", () => {
           AND: expect.arrayContaining([
             expect.objectContaining({
               category: "sports",
-              sportKey: "soccer",
-              leagueKey: "world_cup",
+              sportKey: { in: ["soccer", "soccer_fifa_world_cup"] },
+              leagueKey: { in: ["world_cup", "soccer_fifa_world_cup"] },
               status: "scheduled",
             }),
           ]),

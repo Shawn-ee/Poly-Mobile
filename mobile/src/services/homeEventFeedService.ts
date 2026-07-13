@@ -26,6 +26,8 @@ export type LoadHomeEventFeedPageInput = {
 };
 
 const statusForFilter = (filter: HomeEventFeedFilter) => filter === "all" ? null : filter;
+const SOCCER_SPORT_KEYS = new Set(["soccer", "soccer_fifa_world_cup"]);
+const WORLD_CUP_LEAGUE_KEYS = new Set(["world_cup", "soccer_fifa_world_cup"]);
 
 const matchesFilter = (event: EventSummary, filter: HomeEventFeedFilter) => {
   if (filter === "all") return true;
@@ -36,8 +38,8 @@ const matchesFilter = (event: EventSummary, filter: HomeEventFeedFilter) => {
 };
 
 const isWorldCupMatchEvent = (event: EventSummary) =>
-  event.sportKey === "soccer" &&
-  event.leagueKey === "world_cup" &&
+  SOCCER_SPORT_KEYS.has(String(event.sportKey ?? "").toLowerCase()) &&
+  WORLD_CUP_LEAGUE_KEYS.has(String(event.leagueKey ?? "").toLowerCase()) &&
   !["future", "futures", "outright", "outrights"].includes(`${event.eventType ?? ""}`.trim().toLowerCase()) &&
   (
     event.eventType === "match" ||

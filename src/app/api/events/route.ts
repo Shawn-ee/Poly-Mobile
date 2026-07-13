@@ -7,6 +7,8 @@ import { buildMobileMarketSourceSummary, selectCompactLiveMarkets } from "@/serv
 
 const DEFAULT_LIMIT = 50;
 const MAX_LIMIT = 100;
+const SOCCER_SPORT_ALIASES = ["soccer", "soccer_fifa_world_cup"];
+const WORLD_CUP_LEAGUE_ALIASES = ["world_cup", "soccer_fifa_world_cup"];
 
 const paginationLimit = (value: string | null) => {
   const parsed = Number(value ?? DEFAULT_LIMIT);
@@ -92,6 +94,20 @@ const eventStatusFilter = (status: string): Prisma.EventWhereInput => {
     };
   }
   return { status };
+};
+
+const leagueKeyFilter = (leagueKey: string): Prisma.EventWhereInput => {
+  if (!leagueKey) return {};
+  return leagueKey === "world_cup"
+    ? { leagueKey: { in: WORLD_CUP_LEAGUE_ALIASES } }
+    : { leagueKey };
+};
+
+const sportKeyFilter = (sportKey: string): Prisma.EventWhereInput => {
+  if (!sportKey) return {};
+  return sportKey === "soccer"
+    ? { sportKey: { in: SOCCER_SPORT_ALIASES } }
+    : { sportKey };
 };
 
 const liveDatePattern = /\b(20\d{2})-(\d{2})-(\d{2})\b/;
@@ -192,8 +208,8 @@ export async function GET(request: NextRequest) {
         }
         : {}),
     ...(category ? { category } : {}),
-    ...(sportKey ? { sportKey } : {}),
-    ...(leagueKey ? { leagueKey } : {}),
+    ...sportKeyFilter(sportKey),
+    ...leagueKeyFilter(leagueKey),
     ...(source ? { source } : {}),
     ...eventStatusFilter(status),
     },
