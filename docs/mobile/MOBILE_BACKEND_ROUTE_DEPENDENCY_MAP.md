@@ -2,6 +2,13 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ODDSAPIS23CASHOUTFRESH - Spain vs. France Cashout and Event Restore
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Cached Spain vs. France restore for S23 tester proof | Local command `npm run mobile:one-event-cached-restore`; public Home route `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1` | Local CLI plus `GET` | Local DB for restore; no auth for Home route | Restore reads `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json` | Event `title=Spain vs. France`, `resultMode=must_advance`, `primaryMarketProfile=advance`, `marketProfile=full_match_with_overtime`, and top advance outcomes `France advances` / `Spain advances` | Existing `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot` | Cached restore avoids provider quota and closes stale replay markets under the reusable test slug | Per-provider-event slugs remain P2 before multi-event onboarding. |
+| S23 buy/cashout/history proof | `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history`, `/api/internal/live-runtime/status` | `GET`/`POST` | Generated local mobile dev credential for order/portfolio routes | Buy uses selected market/outcome/size/price; cashout Sell uses owned market/outcome, `side=SELL`, owned share quantity, and current bid/sell price | Event detail markets, quote price, order fill result, Portfolio position, cashout close-position markers, History row, runtime P0/P1/P2 state | `Event`, `Market`, `Outcome`, `Order`, `Trade`, `Position`, `UserBalance`, local runtime proof rows | Proof-only liquidity seeded by `scripts/seed_mobile_route_spread_counterparty.ts`; no provider quota used | No P0 for internal tester trading. Installed unattended runtime service and official result auto-settlement remain P1. |
+
 ## Cycle SETTLEMENTFRESHSTATUS - Settlement Guard Freshness in Runtime Status
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

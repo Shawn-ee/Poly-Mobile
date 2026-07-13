@@ -16,9 +16,9 @@ param(
   [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-ODDSAPIS23-odds-api-s23-visible-flow",
   [string]$DotenvPath = "",
   [switch]$SkipReplaySeed,
-  [string]$HomeExpectedTitle = "Switzerland vs. Argentina",
-  [string]$TeamAExpected = "Argentina",
-  [string]$TeamBExpected = "Switzerland"
+  [string]$HomeExpectedTitle = "Spain vs. France",
+  [string]$TeamAExpected = "France",
+  [string]$TeamBExpected = "Spain"
 )
 
 $ErrorActionPreference = "Stop"
@@ -51,6 +51,30 @@ function Set-ProofDotenvPath {
   $defaultProjectEnv = "C:\Users\hecto\Desktop\projects\PolyProj\Poly\.env"
   if (Test-Path -LiteralPath $defaultProjectEnv) {
     $env:DOTENV_CONFIG_PATH = $defaultProjectEnv
+  }
+}
+
+function Set-LocalDatabaseEnv {
+  Set-ProofDotenvPath
+  if ($env:DATABASE_URL) {
+    return
+  }
+  $candidates = New-Object System.Collections.Generic.List[string]
+  if ($env:DOTENV_CONFIG_PATH) {
+    $candidates.Add($env:DOTENV_CONFIG_PATH) | Out-Null
+  }
+  $candidates.Add((Join-Path $repoRoot ".env.local")) | Out-Null
+  $candidates.Add((Join-Path $repoRoot ".env")) | Out-Null
+  $candidates.Add("C:\Users\hecto\Desktop\projects\PolyProj\Poly\.env") | Out-Null
+  foreach ($path in ($candidates | Select-Object -Unique)) {
+    if (-not $path -or -not (Test-Path -LiteralPath $path)) {
+      continue
+    }
+    $line = Get-Content -LiteralPath $path | Where-Object { $_ -match "^\s*DATABASE_URL\s*=" } | Select-Object -First 1
+    if ($line) {
+      $env:DATABASE_URL = ($line -replace "^\s*DATABASE_URL\s*=\s*", "").Trim().Trim('"').Trim("'")
+      return
+    }
   }
 }
 
@@ -266,6 +290,8 @@ $previousEnv = @{
   MOBILE_DEV_MAX_ORDER_SIZE = $env:MOBILE_DEV_MAX_ORDER_SIZE
   MOBILE_DEV_MAX_ORDER_NOTIONAL = $env:MOBILE_DEV_MAX_ORDER_NOTIONAL
   MOBILE_DEV_DAILY_NOTIONAL = $env:MOBILE_DEV_DAILY_NOTIONAL
+  DATABASE_URL = $env:DATABASE_URL
+  DOTENV_CONFIG_PATH = $env:DOTENV_CONFIG_PATH
 }
 $expo = $null
 try {
@@ -279,12 +305,12 @@ try {
   if ($health.status -ne "ok") {
     throw "Backend health is not ok."
   }
+  Set-LocalDatabaseEnv
 
   if (-not $SkipReplaySeed) {
-    $replayPath = "docs/mobile/harness/the-odds-api-single-event/event-odds.redacted.json"
-    cmd /c npm run mobile:the-odds-api-single-event -- "--fromRedactedOdds=$replayPath" | Out-Null
+    cmd /c npm run mobile:one-event-cached-restore | Out-Null
     if ($LASTEXITCODE -ne 0) {
-      throw "The Odds API replay seed failed."
+      throw "The Odds API cached live event restore failed."
     }
   }
 

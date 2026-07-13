@@ -11,6 +11,7 @@ param(
   [int]$MaxLiveResultIngestionRuns = 1,
   [int]$MaxCreditsPerResultIngestion = 2,
   [int]$MinRemaining = 2,
+  [switch]$RunResultSettlement,
   [switch]$RunApprovedResultSettlement,
   [string]$ResultSettlementApprovalPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
   [switch]$SkipSleep,
@@ -182,8 +183,10 @@ function Build-PollerArguments {
     $parts.Add("-MinRemaining") | Out-Null
     $parts.Add("$MinRemaining") | Out-Null
   }
-  if ($RunApprovedResultSettlement) {
+  if ($RunResultSettlement) {
     $parts.Add("-RunResultSettlement") | Out-Null
+  }
+  if ($RunApprovedResultSettlement) {
     $parts.Add("-RunApprovedResultSettlement") | Out-Null
     $parts.Add("-ResultSettlementApprovalPath") | Out-Null
     $parts.Add($ResultSettlementApprovalPath) | Out-Null
@@ -200,6 +203,9 @@ if ($ResultIngestionEveryIterations -lt 1) {
 }
 if ($RunLiveResultIngestion -and $MaxLiveResultIngestionRuns -lt 1) {
   throw "RunLiveResultIngestion requires MaxLiveResultIngestionRuns of at least 1. This keeps live result polling quota-capped."
+}
+if ($RunApprovedResultSettlement -and -not $RunResultSettlement) {
+  $RunResultSettlement = $true
 }
 
 $startedAt = (Get-Date).ToUniversalTime()
@@ -246,7 +252,7 @@ if ($Action -eq "start") {
       resultIngestionEveryIterations = if ($RunLiveResultIngestion) { $ResultIngestionEveryIterations } else { 0 }
       maxLiveResultIngestionRuns = if ($RunLiveResultIngestion) { $MaxLiveResultIngestionRuns } else { 0 }
       maxCreditsPerResultIngestion = if ($RunLiveResultIngestion) { $MaxCreditsPerResultIngestion } else { 0 }
-      runResultSettlement = [bool]$RunApprovedResultSettlement
+      runResultSettlement = [bool]$RunResultSettlement
       runApprovedResultSettlement = [bool]$RunApprovedResultSettlement
       resultSettlementApprovalPath = if ($RunApprovedResultSettlement) { $ResultSettlementApprovalPath } else { $null }
       stdout = ConvertTo-RepoPath $StdoutPath
@@ -329,7 +335,7 @@ $summary = [ordered]@{
     localBackgroundProcessRunning = [bool]$stateAfter.running
     installedOsService = $false
     resultPollingMode = if ($RunLiveResultIngestion) { "quota-capped live provider score polling by cadence" } else { "provider-shaped replay polling; no provider quota spent" }
-    resultSettlementMode = if ($RunApprovedResultSettlement) { "approved trusted-result scheduler; waits until CLOSED before execution" } else { "disabled for warm local polling; run settlement proof separately" }
+    resultSettlementMode = if (-not $RunResultSettlement) { "disabled for warm local polling; run settlement proof separately" } elseif ($RunApprovedResultSettlement) { "approved trusted-result scheduler; waits until CLOSED before execution" } else { "trusted result scheduler dry-run while poller runs" }
     activeTesterSettlementExecution = $false
     fakeTokenOnly = $true
   }

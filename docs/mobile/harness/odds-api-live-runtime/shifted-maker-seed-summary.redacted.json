@@ -1,7 +1,7 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-13T13:07:06.427Z",
-  "startedAt": "2026-07-13T13:07:06.255Z",
+  "generatedAt": "2026-07-13T13:31:42.764Z",
+  "startedAt": "2026-07-13T13:31:42.586Z",
   "scope": "odds-api-one-event-shifted-maker-seed",
   "mode": "seed-resting-shifted-maker-quotes",
   "event": {
@@ -23,7 +23,7 @@
   },
   "providerSnapshot": {
     "fetchedAt": "2026-07-13T09:24:03.509Z",
-    "ageMs": 13382765,
+    "ageMs": 14859095,
     "maxSnapshotAgeMs": 86400000,
     "allowStale": false,
     "source": "sportsbook-odds",
@@ -32,8 +32,8 @@
     "outcomePrice": 0.56
   },
   "maker": {
-    "id": "91e0c642-440d-4212-a685-8ebcb5aeecb8",
-    "username": "odds_live_runtime_shifted_maker_d82bbb8f"
+    "id": "dfeac5dd-86f2-424f-bd9e-4aebf1ce5e7d",
+    "username": "odds_live_runtime_shifted_maker_6712ba10"
   },
   "plan": {
     "quoteOffsetTicks": 2,
@@ -49,19 +49,36 @@
     "size": "200",
     "mintQuantity": "200"
   },
-  "canceledPreviousOrders": [],
+  "canceledPreviousOrders": [
+    {
+      "orderId": "cf509279-eea3-4065-8a1c-068a78f94b09",
+      "side": "BUY",
+      "price": "0.52",
+      "remaining": "200",
+      "statusBefore": "OPEN",
+      "canceled": true
+    },
+    {
+      "orderId": "15dddc1a-0f13-45ba-8cf1-5abe58be1b7a",
+      "side": "SELL",
+      "price": "0.6",
+      "remaining": "200",
+      "statusBefore": "OPEN",
+      "canceled": true
+    }
+  ],
   "restingOrders": [
     {
-      "id": "2e96ab2c-4c99-4b80-8649-81bb26195642",
-      "username": "odds_live_runtime_shifted_maker_d82bbb8f",
+      "id": "82283648-f3b3-4452-8f66-f03a060edc5d",
+      "username": "odds_live_runtime_shifted_maker_6712ba10",
       "side": "BUY",
       "price": "0.52",
       "remaining": "200",
       "status": "OPEN"
     },
     {
-      "id": "f3f7c232-8b08-4eca-a13e-988eaab9848d",
-      "username": "odds_live_runtime_shifted_maker_d82bbb8f",
+      "id": "70d150de-bff2-4f0a-b767-e1a37ec316c5",
+      "username": "odds_live_runtime_shifted_maker_6712ba10",
       "side": "SELL",
       "price": "0.6",
       "remaining": "200",

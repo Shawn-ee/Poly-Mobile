@@ -320,6 +320,18 @@ async function main() {
         liveRuntimeSummaryPath: summaryPath,
         resultMode: "must_advance",
         primaryMarketProfile: "advance",
+        normalizedSoccer: {
+          marketProfile: "full_match_with_overtime",
+          primaryMarketProfile: "advance",
+          resultMode: "must_advance",
+          legacyResultMode: "no_draw",
+          gameRules: {
+            allowDraw: false,
+            includesOvertime: true,
+            description: `${eventTitle} must produce one advancing team.`,
+          },
+          supportedMarketTypes: ["full_match_with_overtime", "to_advance", "spread", "totals", "regulation_90"],
+        },
       },
     },
     update: {
@@ -345,6 +357,18 @@ async function main() {
         liveRuntimeSummaryPath: summaryPath,
         resultMode: "must_advance",
         primaryMarketProfile: "advance",
+        normalizedSoccer: {
+          marketProfile: "full_match_with_overtime",
+          primaryMarketProfile: "advance",
+          resultMode: "must_advance",
+          legacyResultMode: "no_draw",
+          gameRules: {
+            allowDraw: false,
+            includesOvertime: true,
+            description: `${eventTitle} must produce one advancing team.`,
+          },
+          supportedMarketTypes: ["full_match_with_overtime", "to_advance", "spread", "totals", "regulation_90"],
+        },
       },
     },
   });

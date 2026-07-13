@@ -39,21 +39,62 @@ function Write-JsonFile {
   [System.IO.File]::WriteAllText($Path, "$json`n", [System.Text.UTF8Encoding]::new($false))
 }
 
+function Stop-ProcessTree {
+  param([int]$ProcessId)
+  if (-not $ProcessId) {
+    return
+  }
+  $children = @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object { $_.ParentProcessId -eq $ProcessId })
+  foreach ($child in $children) {
+    Stop-ProcessTree -ProcessId ([int]$child.ProcessId)
+  }
+  Stop-Process -Id $ProcessId -Force -ErrorAction SilentlyContinue
+}
+
 function Invoke-CheckedCommand {
   param(
     [Parameter(Mandatory = $true)] [string]$Label,
-    [Parameter(Mandatory = $true)] [string]$Command
+    [Parameter(Mandatory = $true)] [string]$Command,
+    [int]$TimeoutSeconds = 180
   )
   $startedAt = (Get-Date).ToUniversalTime()
-  $output = cmd /c $Command 2>&1
-  $exitCode = $LASTEXITCODE
-  return [ordered]@{
+  $runtimeDir = Join-Path $RepoRoot ".runtime\command-capture"
+  New-Item -ItemType Directory -Force -Path $runtimeDir | Out-Null
+  $safeLabel = ($Label -replace '[^A-Za-z0-9_.-]', '-')
+  $stamp = [Guid]::NewGuid().ToString("N")
+  $stdoutPath = Join-Path $runtimeDir "$safeLabel-$stamp.out.log"
+  $stderrPath = Join-Path $runtimeDir "$safeLabel-$stamp.err.log"
+  $process = Start-Process `
+    -FilePath "powershell.exe" `
+    -ArgumentList @("-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", $Command) `
+    -WorkingDirectory $RepoRoot `
+    -WindowStyle Hidden `
+    -RedirectStandardOutput $stdoutPath `
+    -RedirectStandardError $stderrPath `
+    -PassThru
+  $completed = $process.WaitForExit($TimeoutSeconds * 1000)
+  if (-not $completed) {
+    Stop-ProcessTree -ProcessId $process.Id
+    $exitCode = 124
+  } else {
+    $process.Refresh()
+    $exitCode = if ($null -ne $process.ExitCode) { [int]$process.ExitCode } else { 0 }
+  }
+  $output = @()
+  if (Test-Path -LiteralPath $stdoutPath) {
+    $output += Get-Content -LiteralPath $stdoutPath -Tail 20 -ErrorAction SilentlyContinue
+  }
+  if (Test-Path -LiteralPath $stderrPath) {
+    $output += Get-Content -LiteralPath $stderrPath -Tail 20 -ErrorAction SilentlyContinue
+  }
+  return [pscustomobject][ordered]@{
     label = $Label
     command = $Command
     exitCode = $exitCode
     pass = [bool]($exitCode -eq 0)
     startedAt = $startedAt.ToString("o")
     finishedAt = (Get-Date).ToUniversalTime().ToString("o")
+    timedOut = [bool](-not $completed)
     outputTail = @($output | Select-Object -Last 20)
   }
 }
@@ -75,7 +116,7 @@ try {
   $commands.Add((Invoke-CheckedCommand -Label "pre-stop-existing-result-poller" -Command "npm run mobile:one-event-result-poller:stop")) | Out-Null
   Remove-Item -LiteralPath (Resolve-RepoPath $HeartbeatPath) -Force -ErrorAction SilentlyContinue
 
-  $startCommand = "npm run mobile:one-event-result-poller:process -- -Action start -EventSlug $EventSlug -Continuous -MaxIterations 0 -IntervalSeconds $IntervalSeconds -Force"
+  $startCommand = "npm run mobile:one-event-result-poller:process -- -Action start -EventSlug $EventSlug -Continuous -MaxIterations 0 -IntervalSeconds $IntervalSeconds -RunResultSettlement -Force"
   $start = Invoke-CheckedCommand -Label "start-background-result-poller" -Command $startCommand
   $commands.Add($start) | Out-Null
 
@@ -96,10 +137,14 @@ try {
   $stop = Invoke-CheckedCommand -Label "stop-background-result-poller" -Command "npm run mobile:one-event-result-poller:stop"
   $commands.Add($stop) | Out-Null
   $stoppedStatus = Read-JsonFile (Resolve-RepoPath $ProcessSummaryPath)
+
+  $foregroundSummaryCommand = "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_result_poller.ps1 -EventSlug $EventSlug -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -MaxIterations 2 -IntervalSeconds 1 -RunResultSettlement -SkipSleep"
+  $commands.Add((Invoke-CheckedCommand -Label "refresh-foreground-result-poller-summary" -Command $foregroundSummaryCommand)) | Out-Null
 } finally {
   $cleanupStatus = Read-JsonFile (Resolve-RepoPath $ProcessSummaryPath)
   if ($cleanupStatus -and $cleanupStatus.process.after.running -eq $true) {
     $commands.Add((Invoke-CheckedCommand -Label "cleanup-stop-background-result-poller" -Command "npm run mobile:one-event-result-poller:stop")) | Out-Null
+    $stoppedStatus = Read-JsonFile (Resolve-RepoPath $ProcessSummaryPath)
   }
 }
 
@@ -126,6 +171,19 @@ if (-not ($pollerSummary -and $pollerSummary.pass -eq $true)) {
 $p1.Add("This proves a local background result-poller process, not an installed OS service.") | Out-Null
 $p1.Add("Default proof uses provider-shaped replay evidence and spends no Odds API quota; live score polling remains explicit and quota-capped.") | Out-Null
 $p2.Add("Multi-event official-result queue supervision remains future work.") | Out-Null
+
+$commandSummaries = @($commands | ForEach-Object {
+  [ordered]@{
+    label = [string]$_.label
+    command = [string]$_.command
+    exitCode = [int]$_.exitCode
+    pass = [bool]$_.pass
+    timedOut = [bool]$_.timedOut
+    startedAt = [string]$_.startedAt
+    finishedAt = [string]$_.finishedAt
+    outputTail = @($_.outputTail | ForEach-Object { [string]$_ })
+  }
+})
 
 $summary = [ordered]@{
   generatedAt = (Get-Date).ToUniversalTime().ToString("o")
@@ -160,7 +218,7 @@ $summary = [ordered]@{
     installedOsService = $false
     fakeTokenOnly = $true
   }
-  commands = @($commands | ForEach-Object { $_ })
+  commands = $commandSummaries
   processSummary = $processSummary
   gaps = [ordered]@{
     p0 = @($p0 | ForEach-Object { $_ })
@@ -169,8 +227,20 @@ $summary = [ordered]@{
   }
 }
 
-Write-JsonFile -Value $summary -Path (Resolve-RepoPath $SummaryPath) -Depth 90
-$summary | ConvertTo-Json -Depth 90
+Write-JsonFile -Value $summary -Path (Resolve-RepoPath $SummaryPath) -Depth 30
+[ordered]@{
+  pass = $summary.pass
+  generatedAt = $summary.generatedAt
+  scope = $summary.scope
+  completedIterations = $summary.proof.completedIterations
+  heartbeatIterations = $summary.proof.heartbeatIterations
+  processRunningDuringProof = $summary.proof.processRunningDuringProof
+  processStoppedAfterProof = $summary.proof.processStoppedAfterProof
+  p0 = $summary.gaps.p0
+  p1 = $summary.gaps.p1
+  p2 = $summary.gaps.p2
+  summaryPath = $SummaryPath
+} | ConvertTo-Json -Depth 10
 
 if (-not $summary.pass) {
   exit 1

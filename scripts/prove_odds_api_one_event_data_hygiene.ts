@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { prisma } from "@/lib/db";
+import { loadLocalEnvForScript } from "./local_env";
 
 const DEFAULT_EVENT_SLUG = "odds-api-single-soccer-test";
 const DEFAULT_OUTPUT_PATH =
@@ -22,6 +23,7 @@ async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to run local one-event data hygiene proof in production.");
   }
+  loadLocalEnvForScript(["DATABASE_URL"]);
 
   const eventSlug = argValue("eventSlug") ?? DEFAULT_EVENT_SLUG;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;

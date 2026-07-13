@@ -1,5 +1,13 @@
 # Mobile Data Contract Gaps
 
+## Cycle ODDSAPIS23CASHOUTFRESH - Spain vs. France Cashout and Event Restore
+
+- Closed or narrowed: cached one-event restore now writes normalized soccer metadata consumed by Home/Event Detail read models, so the Spain vs. France knockout event reports `resultMode=must_advance` and `primaryMarketProfile=advance` instead of exposing Draw as a primary top action.
+- Backend-supported fields used: `Event.metadata.normalizedSoccer`, `Market.marketType`, `Market.marketGroupKey`, `Market.line`, `Outcome.referenceOutcomeLabel`, `ReferenceQuoteSnapshot.bestBid/bestAsk`, `Position.shares`, order selection snapshots, and `/api/internal/live-runtime/status` P0/P1/P2 status.
+- Route mismatch: none for the tested local internal path. `GET /api/events` and `GET /api/mobile/events/:slug/live-detail` now agree on the current event semantics.
+- Temporary mock/static data: spread markets and extra total lines still use Holiwyn-owned `contract-fixture` markets where provider data is unavailable. They are deliberately marked as fixture-backed rather than provider-backed.
+- Future migration concern: replace fixture-only spread/extra totals with provider-backed data when available, and move from the reusable `odds-api-single-soccer-test` slug to per-provider-event slugs before multi-event onboarding.
+
 ## Cycle OPERATORCONTROLBOUNDARY - Runtime Operator Controls Boundary
 
 - Closed or narrowed: `/api/internal/live-runtime/status` now exposes `operatorControlBoundary`, a machine-readable local operator safety contract for result review, settlement queue review, redacted approved-scheduler command metadata, and active-event execution guards.

@@ -2,6 +2,22 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ODDSAPIS23CASHOUTFRESH - Spain vs. France Cashout and Event Restore
+
+- Feature/runtime worked on: internal tester S23 trading flow for `Spain vs. France`, plus cached one-event restore semantics.
+- Frontend components touched: none. The visible proof exercised existing Home, Event Detail, Trade Ticket, Portfolio, and History screens on S23.
+- Important functions/services touched:
+  - `scripts/prove_mobile_odds_api_s23_visible_flow.ps1`
+  - `scripts/restore_odds_api_one_event_from_live_summary.ts`
+  - `scripts/prove_odds_api_one_event_data_hygiene.ts`
+  - `scripts/prove_holiwyn_one_event_continuous_supervisor.ps1`
+  - `scripts/prove_holiwyn_one_event_continuous_result_poller.ps1`
+  - `scripts/manage_holiwyn_one_event_result_poller.ps1`
+- User interactions supported: Home shows Spain vs. France, Event Detail opens backend markets, user buys Over 2.5, Portfolio shows the position, Cash out opens close-position mode, Max uses owned shares, Sell closes the position, and History updates.
+- State transitions: cached live summary -> restored backend event/markets/outcomes/quote snapshots -> proof liquidity -> BUY filled -> position created -> SELL filled -> position removed/history visible.
+- API/data dependencies: `GET /api/events`, `GET /api/mobile/events/:slug/live-detail`, `GET /api/markets/:marketId/quote`, `POST /api/orders`, `GET /api/portfolio`, `GET /api/portfolio/history`, `GET /api/internal/live-runtime/status`.
+- Known limitations: no installed unattended runtime service; spread/extra total markets still use local contract fixtures where provider data is unavailable.
+
 ## Cycle ZH - Consolidated Readiness Uses Freshest S23 Cashout Proof
 
 - Feature/runtime worked on: one-event live readiness wrapper for the Spain vs. France local internal tester runtime.
