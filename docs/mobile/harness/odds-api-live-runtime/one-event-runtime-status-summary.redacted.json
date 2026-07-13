@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T02:16:37.289Z",
+  "generatedAt": "2026-07-13T05:49:04.974Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -60,7 +60,7 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-13T02:16:37.288Z"
+        "timestamp": "2026-07-13T05:49:04.973Z"
       },
       "error": null
     }
@@ -68,7 +68,7 @@
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveProofGeneratedAt": "2026-07-13T00:24:21.875Z",
-    "liveProofAgeHours": 1.87,
+    "liveProofAgeHours": 5.41,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
@@ -91,7 +91,7 @@
   },
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-    "makerSeedGeneratedAt": "2026-07-13T02:16:25.226Z",
+    "makerSeedGeneratedAt": "2026-07-13T05:48:49.617Z",
     "makerSeedAgeHours": 0,
     "quoteRoute": {
       "ok": true,
@@ -102,13 +102,13 @@
           {
             "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
             "outcomeName": "Over +2.5",
-            "bestBid": "0.55",
-            "bestAsk": "0.56",
-            "bestBidSize": 308.09,
+            "bestBid": "0.58",
+            "bestAsk": "0.59",
+            "bestBidSize": 36.9,
             "bestAskSize": 200,
-            "midPrice": "0.555",
-            "lastPrice": "0.55",
-            "lastTradeAt": "2026-07-13T00:24:21.217Z"
+            "midPrice": "0.585",
+            "lastPrice": "0.58",
+            "lastTradeAt": "2026-07-13T05:40:59.926Z"
           },
           {
             "outcomeId": "ee7237f3-ee58-4a66-a092-adaa58b3547f",
@@ -128,7 +128,7 @@
   },
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
-    "schedulerGeneratedAt": "2026-07-13T02:16:31.985Z",
+    "schedulerGeneratedAt": "2026-07-13T05:48:55.212Z",
     "schedulerAgeHours": 0,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
@@ -138,9 +138,9 @@
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
     "resultSettlementExecutionGeneratedAt": "2026-07-12T11:52:39.122Z",
-    "resultSettlementExecutionAgeHours": 14.4,
+    "resultSettlementExecutionAgeHours": 17.94,
     "resultSettlementLiveBlockedGeneratedAt": "2026-07-12T11:52:37.215Z",
-    "resultSettlementLiveBlockedAgeHours": 14.4,
+    "resultSettlementLiveBlockedAgeHours": 17.94,
     "executionRequiresMarketStatus": "CLOSED",
     "blockedExecutionReason": "market_must_be_closed_before_result_settlement:LIVE",
     "activeTesterEventMutated": false,
@@ -159,7 +159,7 @@
   },
   "supervisor": {
     "supervisorPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json",
-    "generatedAt": "2026-07-12T18:38:44.6609572Z",
+    "generatedAt": "2026-07-13T05:48:56.0147341Z",
     "completedIterations": 1,
     "runtimeTruth": {
       "backendContinuousWhileSupervisorRuns": true,
@@ -171,23 +171,23 @@
       "staleGuardContinuousWhileSupervisorRuns": false,
       "staleGuardMode": "disabled",
       "resultIngestionContinuousWhileSupervisorRuns": false,
-      "resultIngestionMode": "disabled",
+      "resultIngestionMode": "provider-shaped result ingestion replay while supervisor runs; no provider quota spent",
       "liveResultIngestionContinuousWhileSupervisorRuns": false,
       "liveResultIngestionQuotaCappedWhileSupervisorRuns": false,
       "resultSettlementContinuousWhileSupervisorRuns": false,
-      "resultSettlementMode": "disabled",
+      "resultSettlementMode": "approved trusted-result scheduler; waits until CLOSED before execution",
       "unattendedServiceInstalled": false,
       "providerRefreshMode": "cached provider proof verification; no provider quota spent",
       "marketMakerMode": "repeated local shifted maker reseed while supervisor runs",
       "lifecycleSchedulerMode": "safe real-time scheduler check each cycle; no proof time mutation",
-      "settlementMode": "manual preview/resolve service plus trusted-result dry-run scheduler; unconfirmed automatic settlement execution not wired"
+      "settlementMode": "manual preview/resolve service plus approval-file trusted-result scheduler; waits until CLOSED before execution"
     },
     "latestRunProfile": {
       "makerSeedEnabled": true,
       "lifecycleSchedulerEnabled": true,
-      "resultIngestionEnabled": false,
-      "resultSettlementEnabled": false,
-      "approvedResultSettlementEnabled": false,
+      "resultIngestionEnabled": true,
+      "resultSettlementEnabled": true,
+      "approvedResultSettlementEnabled": true,
       "runProviderProof": false
     }
   },

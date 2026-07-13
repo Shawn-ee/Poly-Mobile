@@ -14,6 +14,7 @@ import { buildMobileMarketSourceSummary } from "@/server/services/mobileLiveEven
 describe("The Odds API single-event temporary provider", () => {
   const packageJson = () => readFileSync("package.json", "utf8");
   const script = () => readFileSync("scripts/seed_the_odds_api_single_event.ts", "utf8");
+  const liveRuntimeScript = () => readFileSync("scripts/start_holiwyn_one_event_live_runtime.ps1", "utf8");
   const internalEnvScript = () => readFileSync("scripts/prove_mobile_odds_api_internal_environment.ts", "utf8");
   const service = () => readFileSync("src/server/services/theOddsApiSingleEventProvider.ts", "utf8");
 
@@ -33,6 +34,13 @@ describe("The Odds API single-event temporary provider", () => {
   it("redacts apiKey from recorded request paths", () => {
     const url = new URL("https://api.the-odds-api.com/v4/sports/soccer_epl/events?id=1&apiKey=secret");
     expect(sanitizeOddsApiPath(url)).toBe("/v4/sports/soccer_epl/events?id=1");
+  });
+
+  it("lets cached one-event runtime checks reuse canonical fresh provider proof without spending quota", () => {
+    const source = liveRuntimeScript();
+    expect(source).toContain("if (-not $RunProviderProof -and -not (Test-Path -LiteralPath $resolvedLiveProofSummaryPath))");
+    expect(source).toContain("docs\\mobile\\harness\\odds-api-live-runtime\\one-event-live-runtime-summary.redacted.json");
+    expect(source).toContain("$canonicalLiveProofSummaryPath");
   });
 
   it("limits discovery to preferred active soccer sport keys", () => {

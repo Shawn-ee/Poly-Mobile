@@ -201,6 +201,12 @@ if ($RunProviderProof) {
 }
 
 $resolvedLiveProofSummaryPath = Resolve-RepoPath $LiveProofSummaryPath
+if (-not $RunProviderProof -and -not (Test-Path -LiteralPath $resolvedLiveProofSummaryPath)) {
+  $canonicalLiveProofSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-live-runtime-summary.redacted.json"
+  if (Test-Path -LiteralPath $canonicalLiveProofSummaryPath) {
+    $resolvedLiveProofSummaryPath = $canonicalLiveProofSummaryPath
+  }
+}
 $liveProof = Get-ProofFreshness -Path $resolvedLiveProofSummaryPath -MaxAgeHours $MaxProofAgeHours
 $makerSeed = $null
 if ($SeedMaker) {

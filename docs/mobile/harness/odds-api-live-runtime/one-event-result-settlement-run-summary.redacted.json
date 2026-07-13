@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T02:18:42.247Z",
+  "generatedAt": "2026-07-13T05:48:54.117Z",
   "scope": "odds-api-one-event-result-settlement-scheduler-run",
   "pass": true,
   "eventSlug": "odds-api-single-soccer-test",
@@ -41,13 +41,13 @@
     "exitCode": 0,
     "stdoutTail": [
       "  \"auditEvent\": {",
-      "    \"id\": \"635\",",
-      "    \"sequence\": \"635\",",
+      "    \"id\": \"670\",",
+      "    \"sequence\": \"670\",",
       "    \"type\": \"settlement.trusted_result.preflight\",",
       "    \"stream\": \"market\",",
       "    \"marketId\": \"78ea76f1-fc8f-419b-ac21-2554d79093f6\",",
       "    \"outcomeId\": \"dd0797bc-e297-4c19-b55c-ccf1bb96dace\",",
-      "    \"createdAt\": \"2026-07-13T02:18:42.214Z\"",
+      "    \"createdAt\": \"2026-07-13T05:48:54.080Z\"",
       "  },",
       "  \"gaps\": {",
       "    \"p0\": [],",
@@ -76,13 +76,13 @@
     "exitCode": 0,
     "stdoutTail": [
       "  \"auditEvent\": {",
-      "    \"id\": \"635\",",
-      "    \"sequence\": \"635\",",
+      "    \"id\": \"670\",",
+      "    \"sequence\": \"670\",",
       "    \"type\": \"settlement.trusted_result.preflight\",",
       "    \"stream\": \"market\",",
       "    \"marketId\": \"78ea76f1-fc8f-419b-ac21-2554d79093f6\",",
       "    \"outcomeId\": \"dd0797bc-e297-4c19-b55c-ccf1bb96dace\",",
-      "    \"createdAt\": \"2026-07-13T02:18:42.214Z\"",
+      "    \"createdAt\": \"2026-07-13T05:48:54.080Z\"",
       "  },",
       "  \"gaps\": {",
       "    \"p0\": [],",
@@ -111,7 +111,7 @@
       "line": "2.5",
       "statusBefore": "LIVE",
       "resolvedOutcomeIdBefore": null,
-      "collateralUSDCBefore": "59300"
+      "collateralUSDCBefore": "61550"
     },
     "winningOutcome": {
       "id": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
@@ -144,7 +144,7 @@
       "line": "2.5",
       "statusBefore": "LIVE",
       "resolvedOutcomeIdBefore": null,
-      "collateralUSDCBefore": "59300"
+      "collateralUSDCBefore": "61550"
     },
     "winningOutcome": {
       "id": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
@@ -155,19 +155,19 @@
     },
     "preview": {
       "marketStatus": "LIVE",
-      "totalShares": "118600",
-      "totalWinningShares": "59300",
-      "totalPayout": "59300",
-      "collateralUSDC": "59300",
+      "totalShares": "123100",
+      "totalWinningShares": "61550",
+      "totalPayout": "61550",
+      "collateralUSDC": "61550",
       "payoutConservationPass": true,
       "blockers": [],
       "openOrderCleanup": {
-        "openOrderCount": 4,
-        "buyOrderLockedUSDCToRelease": "353.4495",
+        "openOrderCount": 3,
+        "buyOrderLockedUSDCToRelease": "113.402",
         "sellOrderSharesToRelease": "200"
       },
-      "payoutCount": 296,
-      "loserPositionCount": 297,
+      "payoutCount": 310,
+      "loserPositionCount": 309,
       "mutation": "none"
     },
     "execution": {
