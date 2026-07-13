@@ -115,7 +115,9 @@ async function main() {
   const liveProofAgeHours = getPath(entries.runtimeStatus, ["provider", "liveProofAgeHours"]);
   const maxLiveProofAgeHours = getPath(entries.runtimeStatus, ["provider", "maxLiveProofAgeHours"]);
   const watchdogAgeHours = ageHours(getPath(entries.internalTesterWatchdog, ["generatedAt"]));
+  const s23ProofAgeHours = ageHours(getPath(entries.s23Visible, ["generatedAt"]));
   const maxWatchdogAgeHours = 24;
+  const maxS23ProofAgeHours = 24;
   const checks = {
     backendRuntimeStatusPass: pass(entries.runtimeStatus),
     oneRealUpcomingEventKnown:
@@ -1229,6 +1231,8 @@ async function main() {
       ]) === false,
     mobileS23EndToEndTradeProofPass:
       pass(entries.s23Visible) &&
+      typeof s23ProofAgeHours === "number" &&
+      s23ProofAgeHours <= maxS23ProofAgeHours &&
       truthy(getPath(entries.s23Visible, ["assertions", "swipeSubmitReachedPortfolio"])) &&
       truthy(getPath(entries.s23Visible, ["assertions", "cashoutTicketIsClosePositionMode"])) &&
       truthy(getPath(entries.s23Visible, ["assertions", "cashoutMaxUsesOwnedShares"])) &&
@@ -1413,6 +1417,8 @@ async function main() {
         maxLiveProofAgeHours,
         watchdogAgeHours,
         maxWatchdogAgeHours,
+        s23ProofAgeHours,
+        maxS23ProofAgeHours,
       },
       staleHandling:
         "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -1458,6 +1464,8 @@ async function main() {
       activeEventClosedStateEligibilityProven:
         getPath(entries.activeSettlementClosedEligibility, ["runtimeTruth", "provesActiveEventClosedStateEligibility"]) ?? null,
       s23ProofDevice: getPath(entries.s23Visible, ["device"]) ?? null,
+      s23ProofAgeHours,
+      maxS23ProofAgeHours,
     },
     sourceEvidence: PATHS,
     checks,

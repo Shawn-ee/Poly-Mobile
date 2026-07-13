@@ -217,6 +217,8 @@ async function main() {
   const entries = Object.fromEntries(
     await Promise.all(Object.entries(PATHS).map(async ([key, filePath]) => [key, await readJson(filePath)])),
   ) as Record<keyof typeof PATHS, JsonObject | null>;
+  const s23ProofAgeHours = ageHours(getPath(entries.s23Visible, ["generatedAt"]));
+  const maxS23ProofAgeHours = 24;
   const internalTesterRuntimeScript = await fs.readFile("scripts/manage_holiwyn_internal_tester_runtime.ps1", "utf8");
   const managedS23ServerModeStartupKnown =
     internalTesterRuntimeScript.includes("EXPO_PUBLIC_API_BASE_URL = '$BackendBaseUrl'") &&
@@ -1369,6 +1371,8 @@ async function main() {
       achieved:
         pass(entries.liveProof) &&
         entries.s23Visible?.result === "pass" &&
+        typeof s23ProofAgeHours === "number" &&
+        s23ProofAgeHours <= maxS23ProofAgeHours &&
         getPath(entries.s23Visible, ["assertions", "swipeSubmitReachedPortfolio"]) === true &&
         getPath(entries.s23Visible, ["assertions", "cashoutTicketIsClosePositionMode"]) === true &&
         getPath(entries.s23Visible, ["assertions", "cashoutMaxUsesOwnedShares"]) === true &&
@@ -1377,6 +1381,8 @@ async function main() {
         getPath(entries.s23Visible, ["assertions", "cashoutHistoryVisible"]) === true &&
         pass(entries.readiness),
       evidence: [PATHS.liveProof, PATHS.readiness, PATHS.s23Visible],
+      notes:
+        `Fresh S23 proof age: ${s23ProofAgeHours ?? "unknown"}h; max accepted age: ${maxS23ProofAgeHours}h.`,
     }),
     requirement({
       id: "stale-handling",
@@ -1812,6 +1818,10 @@ async function main() {
     artifactAgesHours: Object.fromEntries(
       Object.entries(entries).map(([key, value]) => [key, ageHours(value?.generatedAt)]),
     ),
+    freshnessPolicy: {
+      s23VisibleProofAgeHours: s23ProofAgeHours,
+      s23VisibleProofMaxAgeHours: maxS23ProofAgeHours,
+    },
     requirements,
     conclusion: {
       p0Complete: openP0.length === 0,

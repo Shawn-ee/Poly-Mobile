@@ -108,9 +108,13 @@ describe("The Odds API single-event temporary provider", () => {
     expect(phaseAuditScript()).toContain("cashoutTicketIsClosePositionMode");
     expect(phaseAuditScript()).toContain("cashoutMaxUsesOwnedShares");
     expect(phaseAuditScript()).toContain("cashoutTicketHidesYesNoSelector");
+    expect(phaseAuditScript()).toContain("s23ProofAgeHours");
+    expect(phaseAuditScript()).toContain("maxS23ProofAgeHours");
     expect(completionAuditScript()).toContain("cashoutTicketIsClosePositionMode");
     expect(completionAuditScript()).toContain("cashoutMaxUsesOwnedShares");
     expect(completionAuditScript()).toContain("cashoutTicketHidesYesNoSelector");
+    expect(completionAuditScript()).toContain("s23ProofAgeHours");
+    expect(completionAuditScript()).toContain("maxS23ProofAgeHours");
     expect(liveReadinessScript()).toContain("s23CashoutClosePositionMode");
     expect(liveReadinessScript()).toContain("s23CashoutMaxUsesOwnedShares");
     expect(liveReadinessScript()).toContain("s23CashoutHidesYesNoSelector");

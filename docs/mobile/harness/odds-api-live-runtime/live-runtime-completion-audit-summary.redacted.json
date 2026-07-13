@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T12:07:31.724Z",
+  "generatedAt": "2026-07-13T12:14:09.106Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -28,8 +28,10 @@
     "freshness": {
       "liveProofAgeHours": 2.61,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 20.79,
-      "maxWatchdogAgeHours": 24
+      "watchdogAgeHours": 20.9,
+      "maxWatchdogAgeHours": 24,
+      "s23ProofAgeHours": 0.37,
+      "maxS23ProofAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
     "lifecycle": "Open/paused/closed are proven on the active event lifecycle controls; settlement mechanics and trusted-result scheduler execution are proven on disposable/clone markets while active event remains guarded.",
@@ -56,7 +58,9 @@
     "providerQuotaUsedByThisAudit": false,
     "activeTesterSettlementExecutionAttempted": false,
     "activeEventClosedStateEligibilityProven": true,
-    "s23ProofDevice": "172.16.200.27:44029"
+    "s23ProofDevice": "172.16.200.27:44029",
+    "s23ProofAgeHours": 0.37,
+    "maxS23ProofAgeHours": 24
   },
   "sourceEvidence": {
     "runtimeStatus": "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
