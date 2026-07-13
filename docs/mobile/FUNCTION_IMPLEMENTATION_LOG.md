@@ -2,6 +2,20 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZT - Runtime Manager S23 Detection and Spain vs. France Cashout Proof
+
+- Feature/page worked on: proof and runtime-readiness cleanup for the internal tester mobile flow: Home -> Event Detail -> totals line market -> Buy ticket -> Portfolio -> Cash out -> Max -> SELL -> History.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/manage_holiwyn_internal_tester_runtime.ps1`
+  - `scripts/prove_mobile_odds_api_s23_visible_flow.ps1` was executed, not edited.
+  - Runtime status route was checked through the existing backend on port `3002`.
+- User interactions supported: S23 proof confirmed Spain vs. France appears from backend data, Event Detail loads backend markets, Buy submits, Portfolio position appears, Portfolio Cash out opens close-position ticket mode, Max uses owned shares, no Yes/No selector appears, SELL submits, and History records the sell.
+- State transitions: fake-token BUY creates a position; close-position SELL uses the owned market/outcome identity and reduces/closes the position; Portfolio History records the sold activity.
+- API/data dependencies: `GET /api/health`, `GET /api/internal/live-runtime/status`, `GET /api/events`, `GET /api/mobile/events/:slug/live-detail`, `GET /api/markets/:marketId/quote`, `POST /api/orders`, `GET /api/portfolio`, and `GET /api/portfolio/history`.
+- Known limitations: the runtime is using cached/no-quota provider data; live Odds API refresh still requires explicit key/approval. Runtime control is local process management, not an installed unattended service.
+- Proof: `docs/mobile/harness/cycle-ZT-spain-france-cashout-runtime-manager/cycle-ZT-odds-api-s23-visible-flow.json`.
+
 ## Cycle ZS - Spain vs. France Cashout S23 Reproof
 
 - Feature/page worked on: proof-only regression for the internal tester mobile flow: Home -> Event Detail -> line market -> Buy ticket -> Portfolio -> Cash out -> Max -> SELL -> History.

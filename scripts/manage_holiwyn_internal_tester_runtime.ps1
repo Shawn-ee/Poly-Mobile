@@ -494,10 +494,12 @@ function Invoke-AdbWithTimeout {
     }
     $stdout = if (Test-Path -LiteralPath $tempOut) { Get-Content -Raw -LiteralPath $tempOut } else { "" }
     $stderr = if (Test-Path -LiteralPath $tempErr) { Get-Content -Raw -LiteralPath $tempErr } else { "" }
+    $exitCode = $process.ExitCode
+    $ok = [bool]($exitCode -eq 0 -or ($null -eq $exitCode -and [string]::IsNullOrWhiteSpace($stderr)))
     return [ordered]@{
-      ok = [bool]($process.ExitCode -eq 0)
+      ok = $ok
       timedOut = $false
-      exitCode = $process.ExitCode
+      exitCode = $exitCode
       output = $stdout
       error = $stderr
     }
@@ -522,7 +524,7 @@ function Set-S23AdbReverse {
   $ports = @($BackendPort, $ExpoPort)
   $results = New-Object System.Collections.Generic.List[object]
   foreach ($port in $ports) {
-    $adbResult = Invoke-AdbWithTimeout @("-s", $Device.deviceId, "reverse", "tcp:$port", "tcp:$port")
+    $adbResult = Invoke-AdbWithTimeout -Arguments @("-s", $Device.deviceId, "reverse", "tcp:$port", "tcp:$port")
     $results.Add([ordered]@{
       port = $port
       ok = [bool]$adbResult.ok
@@ -556,7 +558,7 @@ function Get-DockerPostgresStatus {
 
 function Get-S23Status {
   try {
-    $adbResult = Invoke-AdbWithTimeout @("devices", "-l")
+    $adbResult = Invoke-AdbWithTimeout -Arguments @("devices", "-l")
     if (-not $adbResult.ok) {
       return [ordered]@{
         connected = $false
@@ -567,11 +569,14 @@ function Get-S23Status {
         error = $adbResult.error
       }
     }
-    $devices = @($adbResult.output -split "`r?`n")
-    $line = $devices | Where-Object { $_ -match "adb-R3CW20LFMLW|R3CW20LFMLW|SM_S911U1" } | Select-Object -First 1
+    $devices = @($adbResult.output -split "`r?`n" | Where-Object { $_ -match "\sdevice\s" })
+    $line = $devices |
+      Where-Object { $_ -match "adb-R3CW20LFMLW|R3CW20LFMLW|SM_S911U1|model:SM_S911U1" } |
+      Select-Object -First 1
+    $serial = if ($line -and $line -match "^(\S+)") { $Matches[1] } else { $null }
     return [ordered]@{
       connected = [bool]$line
-      deviceId = if ($line) { "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp" } else { $null }
+      deviceId = $serial
       model = if ($line -and $line -match "model:([^ ]+)") { $Matches[1] } else { $null }
       raw = $line
       adbTimedOut = $false
@@ -884,6 +889,9 @@ $outputSummary = [ordered]@{
     connected = [bool]$s23.connected
     deviceId = if ($s23.deviceId) { [string]$s23.deviceId } else { $null }
     model = if ($s23.model) { [string]$s23.model } else { $null }
+    raw = if ($s23.raw) { [string]$s23.raw } else { $null }
+    adbTimedOut = [bool]$s23.adbTimedOut
+    error = if ($s23.error) { [string]$s23.error } else { $null }
   }
   supervisor = [ordered]@{
     startRequested = [bool]$StartSupervisor

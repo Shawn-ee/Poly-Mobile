@@ -1,0 +1,73 @@
+{
+  "pass": true,
+  "liquidityPurpose": "buy-fill",
+  "routeContract": {
+    "mobileFlow": "Event Detail line market -> generic Buy ticket -> /api/orders BUY -> Portfolio History",
+    "expectedRestingSide": "SELL",
+    "source": "local-mvp-internal-liquidity"
+  },
+  "eventSlug": "odds-api-single-soccer-test",
+  "market": {
+    "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "title": "Spain vs. France: Total Goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "period": "regulation",
+    "line": "2.5",
+    "referenceSource": "sportsbook-odds",
+    "externalMarketId": "f9aa13a662d1658e5a02cfc06d6a2d73:total_goals:2.5",
+    "conditionId": "odds-api-00c86ad8b5e6561e27f78508"
+  },
+  "outcome": {
+    "id": "24515f22-3717-4b61-82a2-c072febc8f5b",
+    "name": "Over 2.5",
+    "side": "over",
+    "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e",
+    "referenceOutcomeLabel": "Over 2.5"
+  },
+  "cleanupOnly": false,
+  "maker": {
+    "id": "54747c80-4d6d-48b1-8792-c556815dadd4",
+    "username": "mobile_route_fill_maker_94c6b664"
+  },
+  "cleanup": {
+    "resetSelectedMarketState": {
+      "requested": true,
+      "canonicalEventsPreserved": true,
+      "deletedFills": 2,
+      "deletedTrades": 4,
+      "deletedOrders": 24,
+      "deletedPositions": 24,
+      "collateralReset": true
+    },
+    "enabled": true,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": [],
+    "cleanupBlockingBids": true,
+    "canceledBlockingBids": [],
+    "cleanupBlockingMarketBids": true,
+    "cleanupBlockingMarketBidsForcedByPurpose": false,
+    "canceledBlockingMarketBids": [],
+    "cleanupProofAsks": false,
+    "canceledProofAsks": [],
+    "cleanupBlockingAsks": false,
+    "canceledBlockingAsks": []
+  },
+  "makerOrder": {
+    "id": "60e94732-bdc5-414c-b026-13542a237a32",
+    "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "outcomeId": "24515f22-3717-4b61-82a2-c072febc8f5b",
+    "side": "SELL",
+    "price": "0.58",
+    "size": "100",
+    "remaining": "100",
+    "reservedNotional": "0",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "SELL",
+    "price": "0.58",
+    "size": "100",
+    "intendedMobileTaker": "BUY $25 route-backed totals ticket"
+  }
+}
