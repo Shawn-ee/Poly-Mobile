@@ -263,6 +263,14 @@ async function loadSelectedMarket(eventSlug: string) {
   return { event, market, outcome, snapshot };
 }
 
+async function tryLoadSelectedMarket(eventSlug: string) {
+  try {
+    return await loadSelectedMarket(eventSlug);
+  } catch {
+    return null;
+  }
+}
+
 function snapshotPricePlan(snapshot: SelectedMarket["snapshot"], offsetTicks: number) {
   const outcomePrice = decimalToNumber(snapshot.outcomePrice) ?? 0.5;
   const referenceBid = decimalToNumber(snapshot.bestBid) ?? Math.max(0.01, outcomePrice - TICK_SIZE);
@@ -586,21 +594,32 @@ async function main() {
   });
   assert(selected, "No upcoming soccer event found inside the quota-safe search window.");
 
-  const firstRefresh = await fetchAndSeedLiveEvent({
-    apiKey,
-    calls,
-    sportKey: selected.sport.key,
-    eventId: selected.event.id,
-    maxCredits,
-    minRemaining,
-  });
-  let selectedMarket = await loadSelectedMarket(firstRefresh.seed.event.slug ?? "odds-api-single-soccer-test");
+  const defaultEventSlug = "odds-api-single-soccer-test";
+  const refreshes = [];
+  let selectedMarket = await tryLoadSelectedMarket(defaultEventSlug);
+  let selectedMarketKeys: string[] | undefined;
+  let seededEventSlug = defaultEventSlug;
+
+  if (!selectedMarket) {
+    const firstRefresh = await fetchAndSeedLiveEvent({
+      apiKey,
+      calls,
+      sportKey: selected.sport.key,
+      eventId: selected.event.id,
+      maxCredits,
+      minRemaining,
+    });
+    refreshes.push(firstRefresh);
+    selectedMarketKeys = firstRefresh.selectedMarketKeys;
+    seededEventSlug = firstRefresh.seed.event.slug ?? defaultEventSlug;
+    selectedMarket = await loadSelectedMarket(seededEventSlug);
+  }
+
   const forcedStaleAt = await forceSelectedMarketSnapshotsStale(selectedMarket.market.id);
   const lifecycleBeforeRefresh = await lifecycleForMarket(baseUrl, selectedMarket.event.slug ?? "", selectedMarket.market.id);
+  const recoveryRefreshesNeeded = selectedMarketKeys ? Math.max(1, refreshIterations - refreshes.length) : refreshIterations;
 
-  const refreshes = [firstRefresh];
-  let selectedMarketKeys = firstRefresh.selectedMarketKeys;
-  for (let index = 1; index < refreshIterations; index += 1) {
+  for (let index = 0; index < recoveryRefreshesNeeded; index += 1) {
     if (!skipSleep && refreshIntervalMs > 0) {
       await new Promise((resolve) => setTimeout(resolve, refreshIntervalMs));
     }
@@ -613,9 +632,11 @@ async function main() {
       maxCredits,
       minRemaining,
     }));
+    selectedMarketKeys = refreshes.at(-1)?.selectedMarketKeys ?? selectedMarketKeys;
   }
   selectedMarketKeys = refreshes.at(-1)?.selectedMarketKeys ?? selectedMarketKeys;
-  selectedMarket = await loadSelectedMarket(firstRefresh.seed.event.slug ?? "odds-api-single-soccer-test");
+  seededEventSlug = refreshes.at(-1)?.seed.event.slug ?? seededEventSlug;
+  selectedMarket = await loadSelectedMarket(seededEventSlug);
   const lifecycleAfterRefresh = await lifecycleForMarket(baseUrl, selectedMarket.event.slug ?? "", selectedMarket.market.id);
   const initialPricePlan = snapshotPricePlan(selectedMarket.snapshot, quoteOffsetTicks);
   const preSeedBook = await currentOutcomeBook(selectedMarket.market.id, selectedMarket.outcome.id);
@@ -723,7 +744,7 @@ async function main() {
   const checks = {
     backendHealth: health.ok && health.body?.status === "ok",
     oneUpcomingProviderEventSelected: Boolean(selected.event.id),
-    providerLiveRefreshRan: refreshes.length === refreshIterations,
+    providerLiveRefreshRan: refreshes.length >= refreshIterations,
     quotaProtected: calls.reduce((total, call) => total + quotaCost(call.quota), 0) <= maxCredits,
     staleDetectedBeforeRefresh: lifecycleBeforeRefresh?.status === "stale" || lifecycleBeforeRefresh?.quote?.stale === true,
     readyAfterRefresh: lifecycleAfterRefresh?.status === "ready" || lifecycleAfterRefresh?.quote?.ready === true,

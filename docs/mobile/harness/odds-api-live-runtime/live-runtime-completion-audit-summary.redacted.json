@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T19:16:27.612Z",
+  "generatedAt": "2026-07-13T19:25:28.325Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -14,23 +14,23 @@
     "marketMakerContinuous": "Foreground/local supervisor proof shows maker reseeding while the supervisor runs; no installed OS service exists.",
     "oddsRefreshLiveOrReplay": "Cached runtime checks use replay/stored proof and no quota. Live provider refresh is proven, explicit, and requires live-provider flags plus THE_ODDS_API_KEY.",
     "oddsRefreshCadence": {
-      "liveProofIterations": 2,
+      "liveProofIterations": 1,
       "liveProofIntervalMs": 0,
       "supervisorProviderProofCadence": "Only when -RunProviderProof is passed; capped by MaxProviderProofRuns and ProviderProofEveryIterations."
     },
     "quotaProtection": {
-      "lastLiveProofCost": 13,
-      "requestsRemaining": "393",
-      "maxCredits": 16,
+      "lastLiveProofCost": 7,
+      "requestsRemaining": "366",
+      "maxCredits": 8,
       "minRemaining": 2,
       "oneEventOnly": true
     },
     "freshness": {
-      "liveProofAgeHours": 9.87,
+      "liveProofAgeHours": 0.04,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 3.42,
+      "watchdogAgeHours": 3.57,
       "maxWatchdogAgeHours": 24,
-      "s23ProofAgeHours": 0.57,
+      "s23ProofAgeHours": 0.72,
       "maxS23ProofAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -59,7 +59,7 @@
     "activeTesterSettlementExecutionAttempted": false,
     "activeEventClosedStateEligibilityProven": true,
     "s23ProofDevice": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
-    "s23ProofAgeHours": 0.57,
+    "s23ProofAgeHours": 0.72,
     "maxS23ProofAgeHours": 24
   },
   "sourceEvidence": {
