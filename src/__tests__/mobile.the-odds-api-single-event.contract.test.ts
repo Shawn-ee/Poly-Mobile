@@ -33,8 +33,13 @@ describe("The Odds API single-event temporary provider", () => {
 
   it("is exposed as an env-var-only script and does not contain a hardcoded API key", () => {
     expect(packageJson()).toContain("mobile:the-odds-api-single-event");
+    expect(packageJson()).toContain("mobile:the-odds-api-single-event:replay");
     expect(packageJson()).toContain("mobile:the-odds-api-single-event-flow");
     expect(packageJson()).toContain("mobile:odds-api-internal-env-proof");
+    expect(packageJson()).toContain("--fromRedactedOdds=docs/mobile/harness/the-odds-api-single-event/event-odds.redacted.json");
+    expect(script()).toContain("single-event-replay-summary.redacted.json");
+    expect(script()).toContain("single-event-summary.redacted.json");
+    expect(script()).toContain('import "./load_local_env_side_effect"');
     expect(script()).toContain("process.env.THE_ODDS_API_KEY");
     expect(script()).not.toContain("apiKey: \"");
     expect(service()).not.toContain("apiKey: \"");

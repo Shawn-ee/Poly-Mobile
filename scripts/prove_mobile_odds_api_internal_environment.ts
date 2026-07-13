@@ -2,23 +2,25 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
-import { Prisma } from "@prisma/client";
-import { prisma } from "@/lib/db";
-import { API_KEY_SCOPES, createApiCredential } from "@/lib/canonicalAuth";
-import { mintCompleteSetForPublicOrderbook } from "@/server/services/orderbookCollateral";
-import { cancelOrderAndUnlock, placeOrderAndMatch } from "@/server/services/matching";
-import {
-  expandLineMarketsByPoint,
-  oddsApiSingleEventSlug,
-  seedOddsApiSingleEvent,
-  type OddsApiEventOddsResponse,
-} from "@/server/services/theOddsApiSingleEventProvider";
+import { Prisma, type PrismaClient } from "@prisma/client";
+import { loadLocalEnvForScript } from "./local_env";
+import type { OddsApiEventOddsResponse } from "@/server/services/theOddsApiSingleEventProvider";
 
 const DEFAULT_BASE_URL = "http://127.0.0.1:3002";
 const DEFAULT_FIXTURE_PATH = "docs/mobile/harness/the-odds-api-single-event/event-odds.redacted.json";
 const DEFAULT_OUTPUT_PATH = "docs/mobile/harness/the-odds-api-internal-environment/internal-environment-proof.redacted.json";
 const S23_PROOF_PATH =
   "docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json";
+
+let prisma: PrismaClient;
+let API_KEY_SCOPES: typeof import("@/lib/canonicalAuth").API_KEY_SCOPES;
+let createApiCredential: typeof import("@/lib/canonicalAuth").createApiCredential;
+let mintCompleteSetForPublicOrderbook: typeof import("@/server/services/orderbookCollateral").mintCompleteSetForPublicOrderbook;
+let cancelOrderAndUnlock: typeof import("@/server/services/matching").cancelOrderAndUnlock;
+let placeOrderAndMatch: typeof import("@/server/services/matching").placeOrderAndMatch;
+let expandLineMarketsByPoint: typeof import("@/server/services/theOddsApiSingleEventProvider").expandLineMarketsByPoint;
+let oddsApiSingleEventSlug: typeof import("@/server/services/theOddsApiSingleEventProvider").oddsApiSingleEventSlug;
+let seedOddsApiSingleEvent: typeof import("@/server/services/theOddsApiSingleEventProvider").seedOddsApiSingleEvent;
 
 const dec = (value: Prisma.Decimal.Value) => new Prisma.Decimal(value);
 
@@ -47,6 +49,31 @@ async function readJsonIfExists<T = any>(filePath: string): Promise<T | null> {
 async function writeJson(outputPath: string, value: unknown) {
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
   await fs.writeFile(outputPath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+}
+
+async function loadRuntimeDependencies() {
+  const env = loadLocalEnvForScript(["DATABASE_URL"]);
+  if (env.missingKeys.length > 0) {
+    throw new Error(
+      `Missing required local environment keys for internal environment proof: ${env.missingKeys.join(", ")}`,
+    );
+  }
+
+  const dbModule = await import("@/lib/db");
+  const authModule = await import("@/lib/canonicalAuth");
+  const collateralModule = await import("@/server/services/orderbookCollateral");
+  const matchingModule = await import("@/server/services/matching");
+  const oddsProviderModule = await import("@/server/services/theOddsApiSingleEventProvider");
+
+  prisma = dbModule.prisma;
+  API_KEY_SCOPES = authModule.API_KEY_SCOPES;
+  createApiCredential = authModule.createApiCredential;
+  mintCompleteSetForPublicOrderbook = collateralModule.mintCompleteSetForPublicOrderbook;
+  cancelOrderAndUnlock = matchingModule.cancelOrderAndUnlock;
+  placeOrderAndMatch = matchingModule.placeOrderAndMatch;
+  expandLineMarketsByPoint = oddsProviderModule.expandLineMarketsByPoint;
+  oddsApiSingleEventSlug = oddsProviderModule.oddsApiSingleEventSlug;
+  seedOddsApiSingleEvent = oddsProviderModule.seedOddsApiSingleEvent;
 }
 
 async function fetchRaw(url: string, init?: RequestInit) {
@@ -314,6 +341,8 @@ async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to run internal sportsbook environment proof in production.");
   }
+  await loadRuntimeDependencies();
+
   const baseUrl = argValue("baseUrl") ?? DEFAULT_BASE_URL;
   const fixturePath = argValue("fixture") ?? DEFAULT_FIXTURE_PATH;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
@@ -593,5 +622,5 @@ main()
     process.exitCode = 1;
   })
   .finally(async () => {
-    await prisma.$disconnect();
+    await prisma?.$disconnect();
   });

@@ -1,7 +1,7 @@
 {
     "cycle":  "BATCHREADINESS",
     "result":  "inspection-pass",
-    "inspectedAt":  "2026-07-13T09:49:27.064Z",
+    "inspectedAt":  "2026-07-13T20:18:18.159Z",
     "baseUrl":  "http://127.0.0.1:3002",
     "homeRoute":  {
                       "url":  "http://127.0.0.1:3002/api/events?sportKey=soccer\u0026leagueKey=world_cup\u0026includeMobileMarkets=1\u0026mobileMvpMatches=1\u0026limit=10",
@@ -53,10 +53,10 @@
                                      },
                                      {
                                          "slug":  "odds-api-single-soccer-test",
-                                         "title":  "Spain vs. France",
+                                         "title":  "Switzerland vs. Argentina",
                                          "eventType":  "match",
                                          "liveStatus":  "LIVE",
-                                         "marketCount":  19,
+                                         "marketCount":  26,
                                          "regulationWinnerStatus":  "provider-backed",
                                          "lineMarketStatus":  "partial-provider-backed",
                                          "lineFamilies":  [
@@ -68,7 +68,7 @@
                   },
     "selectedMvpEvent":  {
                              "slug":  "odds-api-single-soccer-test",
-                             "title":  "Spain vs. France",
+                             "title":  "Switzerland vs. Argentina",
                              "marketSourceSummary":  {
                                                          "totalMarketCount":  19,
                                                          "sourceBreakdown":  {
@@ -269,7 +269,7 @@
                                             "line":  null,
                                             "period":  "regulation",
                                             "referenceSource":  "sportsbook-odds",
-                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
+                                            "externalSlug":  "soccer_fifa_world_cup-200d9cd5eda092c7eb778cc104cd2fd2",
                                             "outcomeCount":  3
                                         },
                                         {
@@ -287,7 +287,7 @@
                                             "line":  "2.5",
                                             "period":  "regulation",
                                             "referenceSource":  "sportsbook-odds",
-                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
+                                            "externalSlug":  "soccer_fifa_world_cup-200d9cd5eda092c7eb778cc104cd2fd2",
                                             "outcomeCount":  2
                                         },
                                         {
@@ -323,7 +323,7 @@
                                             "line":  null,
                                             "period":  "regulation",
                                             "referenceSource":  "sportsbook-odds",
-                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
+                                            "externalSlug":  "soccer_fifa_world_cup-200d9cd5eda092c7eb778cc104cd2fd2",
                                             "outcomeCount":  3
                                         },
                                         {

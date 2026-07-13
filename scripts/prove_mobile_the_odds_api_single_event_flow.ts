@@ -1,3 +1,4 @@
+import "./load_local_env_side_effect";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
@@ -48,6 +49,31 @@ async function createUser(prefix: string, balance = "10000") {
   return user;
 }
 
+async function cancelRestingOrders(params: {
+  marketId: string;
+  outcomeId: string;
+  side: "BUY" | "SELL";
+  price: number;
+}) {
+  const orders = await prisma.order.findMany({
+    where: {
+      marketId: params.marketId,
+      outcomeId: params.outcomeId,
+      side: params.side,
+      status: { in: ["OPEN", "PARTIAL"] },
+      price:
+        params.side === "SELL"
+          ? { lte: dec(params.price.toFixed(2)) }
+          : { gte: dec(params.price.toFixed(2)) },
+    },
+    select: { id: true, userId: true },
+  });
+  for (const order of orders) {
+    await cancelOrderAndUnlock({ orderId: order.id, userId: order.userId });
+  }
+  return orders.length;
+}
+
 async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to run The Odds API mobile flow proof in production.");
@@ -83,17 +109,67 @@ async function main() {
     },
   });
   assert(event, `Missing seeded event ${eventSlug}. Run mobile:the-odds-api-single-event first.`);
-  const market =
-    event.markets.find((item) => item.marketType === "spread") ??
-    event.markets.find((item) => item.marketType === "total_goals") ??
-    event.markets[0];
-  assert(market, `Seeded event ${eventSlug} has no sportsbook-odds markets.`);
-  const outcome = market.outcomes[0];
+
+  const [homePayload, detailPayload] = await Promise.all([
+    fetchJson(`${baseUrl}/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10`),
+    fetchJson(`${baseUrl}/api/mobile/events/${encodeURIComponent(eventSlug)}/live-detail`),
+  ]);
+  assert(
+    Array.isArray(homePayload.events) && homePayload.events.some((item: { slug?: string }) => item.slug === eventSlug),
+    "Home route did not expose the seeded sportsbook event.",
+  );
+  assert(Array.isArray(detailPayload.markets) && detailPayload.markets.length > 0, "Event Detail route exposed no markets.");
+
+  const visibleMarket =
+    detailPayload.markets.find(
+      (item: { referenceSource?: string; marketType?: string; line?: string | number | null }) =>
+        item.referenceSource === "sportsbook-odds" &&
+        item.marketType === "total_goals" &&
+        String(item.line ?? "") === "2.5",
+    ) ??
+    detailPayload.markets.find(
+      (item: { referenceSource?: string; marketType?: string }) =>
+        item.referenceSource === "sportsbook-odds" && item.marketType === "total_goals",
+    ) ??
+    detailPayload.markets.find((item: { marketType?: string }) => item.marketType === "total_goals") ??
+    detailPayload.markets.find((item: { marketType?: string }) => item.marketType === "spread") ??
+    detailPayload.markets[0];
+  assert(visibleMarket?.id, "Event Detail route did not expose a selectable mobile market.");
+
+  const market = await prisma.market.findFirst({
+    where: {
+      id: visibleMarket.id,
+      eventId: event.id,
+      isListed: true,
+      visibility: "PUBLIC",
+      status: "LIVE",
+      outcomes: { some: { isActive: true, isTradable: true } },
+    },
+    include: {
+      outcomes: {
+        where: { isActive: true, isTradable: true },
+        orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }],
+      },
+      referenceQuoteSnapshots: {
+        orderBy: [{ fetchedAt: "desc" }, { updatedAt: "desc" }],
+        take: 10,
+      },
+    },
+  });
+  assert(market, `Mobile-visible market ${visibleMarket.id} is not tradable in the database.`);
+  const visibleOutcomeId = Array.isArray(visibleMarket.outcomes) ? visibleMarket.outcomes[0]?.id : null;
+  const outcome = market.outcomes.find((item) => item.id === visibleOutcomeId) ?? market.outcomes[0];
   assert(outcome, `Selected market ${market.id} has no tradable outcome.`);
   const quote = market.referenceQuoteSnapshots.find((snapshot) => snapshot.outcomeId === outcome.id) ?? null;
   const price = Number(quote?.bestAsk ?? quote?.outcomePrice ?? "0.55");
   assert(Number.isFinite(price) && price > 0 && price < 1, "Selected sportsbook reference price is invalid.");
 
+  const canceledBlockingAsksBeforeBuy = await cancelRestingOrders({
+    marketId: market.id,
+    outcomeId: outcome.id,
+    side: "SELL",
+    price,
+  });
   const maker = await createUser("odds_api_single_event_maker", "1000");
   await mintCompleteSetForPublicOrderbook({ marketId: market.id, userId: maker.id, quantity: "200" });
   const makerOrder = await placeOrderAndMatch({
@@ -137,19 +213,7 @@ async function main() {
       }),
   } as unknown as PolyApi;
 
-  const [homePayload, detailPayload, quotePayload] = await Promise.all([
-    fetchJson(`${baseUrl}/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10`),
-    fetchJson(`${baseUrl}/api/mobile/events/${encodeURIComponent(eventSlug)}/live-detail`),
-    fetchJson(`${baseUrl}/api/markets/${encodeURIComponent(market.id)}/quote`),
-  ]);
-  assert(
-    Array.isArray(homePayload.events) && homePayload.events.some((item: { slug?: string }) => item.slug === eventSlug),
-    "Home route did not expose the seeded sportsbook event.",
-  );
-  assert(
-    Array.isArray(detailPayload.markets) && detailPayload.markets.some((item: { id?: string }) => item.id === market.id),
-    "Event Detail route did not expose the selected sportsbook market.",
-  );
+  const quotePayload = await fetchJson(`${baseUrl}/api/markets/${encodeURIComponent(market.id)}/quote`);
 
   const probability = Math.max(1, Math.min(99, Math.round(price * 100)));
   const orderResult = await submitTicketOrder({
@@ -221,19 +285,12 @@ async function main() {
   assert(position, "Portfolio did not show the filled sportsbook-derived position.");
 
   await cancelOrderAndUnlock({ orderId: makerOrder.order.id, userId: maker.id });
-  const blockingAsks = await prisma.order.findMany({
-    where: {
-      marketId: market.id,
-      outcomeId: outcome.id,
-      side: "SELL",
-      status: { in: ["OPEN", "PARTIAL"] },
-      price: { lte: dec(price.toFixed(2)) },
-    },
-    select: { id: true, userId: true },
+  const canceledBlockingBidsBeforeCashout = await cancelRestingOrders({
+    marketId: market.id,
+    outcomeId: outcome.id,
+    side: "BUY",
+    price,
   });
-  for (const order of blockingAsks) {
-    await cancelOrderAndUnlock({ orderId: order.id, userId: order.userId });
-  }
   const cashoutMaker = await createUser("odds_api_single_event_cashout_maker", "1000");
   const cashoutBid = await placeOrderAndMatch({
     marketId: market.id,
@@ -310,6 +367,7 @@ async function main() {
       orderId: makerOrder.order.id,
       price: makerOrder.order.price,
       remaining: makerOrder.order.remaining,
+      canceledBlockingAsksBeforeBuy,
     },
     checks: {
       homeVisible: true,
@@ -330,6 +388,7 @@ async function main() {
       makerBidOrderId: cashoutBid.order.id,
       makerBidPrice: cashoutBid.order.price,
       makerBidRemaining: cashoutBid.order.remaining,
+      canceledBlockingBidsBeforeCashout,
       positionSharesBefore: position.shares,
       positionSharesAfter: positionAfterCashout?.shares ?? 0,
     },

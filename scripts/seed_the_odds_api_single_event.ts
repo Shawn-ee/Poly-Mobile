@@ -1,3 +1,4 @@
+import "./load_local_env_side_effect";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { prisma } from "@/lib/db";
@@ -294,6 +295,7 @@ async function replayRedactedOdds(params: { replayPath: string; outputDir: strin
     resultNotes: resultNotes({ replay: true, fakeTokenFlow: proof.homeVisible && proof.detailVisible, s23Proof }),
   };
   await writeJson(path.join(params.outputDir, "single-event-replay-summary.redacted.json"), summary);
+  await writeJson(path.join(params.outputDir, "single-event-summary.redacted.json"), summary);
   await writeAudit({
     ...summary,
     sport: { key: oddsEvent.sport_key },
