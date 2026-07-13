@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle S23PROOFFRESHSTATUS - S23 Proof Freshness in Runtime Status
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Internal tester S23 proof freshness gate | `/api/internal/live-runtime/status` | `GET` | Local/dev only; route returns 404 in production or when internal status is disabled; no public mobile auth and no provider key | Optional `phaseAuditInProgress=1` for audit bootstrap | `freshness.s23ProofPath`, `s23ProofDevice`, `s23ProofAgeAtCompletionHours`, `s23ProofCurrentAgeHours`, `maxS23ProofAgeHours`, `s23ProofFresh`, and `s23ProofNextAction`; readiness becomes `needs_attention` when S23 proof is stale | Reads existing redacted proof artifacts only; no database schema change and no writes | None. The route projects existing completion-audit proof metadata and does not run physical-device proof | Automatic S23 proof refresh remains manual/operator-driven. If stale, rerun the S23 cashout/trading proof before claiming internal tester readiness. |
+
 ## Cycle LIVEODDSREPEAT - Repeatable Live Provider Proof
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

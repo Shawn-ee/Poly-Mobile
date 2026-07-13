@@ -2,6 +2,18 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle S23PROOFFRESHSTATUS - S23 Proof Freshness in Runtime Status
+
+- Feature/runtime worked on: local internal tester runtime status for the S23 cashout/trading proof freshness gate.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `src/server/services/liveRuntimeStatus.ts`
+  - `src/__tests__/liveRuntimeStatus.service.test.ts`
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/status` and see whether the latest S23 trading proof is still within the 24-hour freshness window, which device produced it, which proof artifact backs it, and whether the next action is to rerun the S23 cashout trading proof.
+- State transitions: none. This is a read-only status projection. It does not start Expo, call The Odds API, place orders, change positions, mutate markets, approve settlement, or execute settlement.
+- API/data dependencies: reads the existing live-runtime completion audit fields `answers.freshness.s23ProofAgeHours`, `answers.freshness.maxS23ProofAgeHours`, `runtimeTruth.s23ProofDevice`, and `sourceEvidence.s23Visible`, then combines S23 proof age with the completion-audit age to compute current phone-proof freshness.
+- Known limitations: the status route still relies on the last completion audit embedding the S23 proof metadata. If the proof ages out, the route reports `needs_attention` and `rerun_s23_cashout_trading_proof`; it does not automatically run physical-device proof.
+
 ## Cycle LIVEODDSREPEAT - Repeatable Live Provider Proof
 
 - Feature/runtime worked on: repeatable one-event Odds API live-provider proof for the backend-owned `Spain vs. France` event.

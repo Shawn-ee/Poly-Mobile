@@ -1235,6 +1235,17 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     typeof liveProofAgeAtCompletionHours === "number" && typeof completionAgeHours === "number"
       ? Number((liveProofAgeAtCompletionHours + completionAgeHours).toFixed(2))
       : null;
+  const s23ProofAgeAtCompletionHours =
+    numberValue(getPath(completionAudit, ["answers", "freshness", "s23ProofAgeHours"])) ??
+    numberValue(getPath(completionAudit, ["runtimeTruth", "s23ProofAgeHours"]));
+  const maxS23ProofAgeHours =
+    numberValue(getPath(completionAudit, ["answers", "freshness", "maxS23ProofAgeHours"])) ??
+    numberValue(getPath(completionAudit, ["runtimeTruth", "maxS23ProofAgeHours"])) ??
+    24;
+  const s23ProofCurrentAgeHours =
+    typeof s23ProofAgeAtCompletionHours === "number" && typeof completionAgeHours === "number"
+      ? Number((s23ProofAgeAtCompletionHours + completionAgeHours).toFixed(2))
+      : null;
   const selectedMarketId =
     stringValue(getPath(phaseAudit, ["selectedMarket", "id"])) ??
     stringValue(getPath(phaseAudit, ["selectedMarket", "marketId"])) ??
@@ -1295,6 +1306,11 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     watchdogAgeHours,
     liveProofAgeAtCompletionHours,
     liveProofCurrentAgeHours,
+    s23ProofPath: stringValue(getPath(completionAudit, ["sourceEvidence", "s23Visible"])),
+    s23ProofDevice: stringValue(getPath(completionAudit, ["runtimeTruth", "s23ProofDevice"])),
+    s23ProofAgeAtCompletionHours,
+    s23ProofCurrentAgeHours,
+    maxS23ProofAgeHours,
     completionAuditFresh: typeof completionAgeHours === "number" && completionAgeHours <= 24,
     phaseAuditFresh: typeof phaseAgeHours === "number" && phaseAgeHours <= 24,
     watchdogFresh: typeof watchdogAgeHours === "number" && watchdogAgeHours <= 24,
@@ -1302,6 +1318,16 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
       typeof liveProofCurrentAgeHours === "number" &&
       typeof maxLiveProofAgeHours === "number" &&
       liveProofCurrentAgeHours <= maxLiveProofAgeHours,
+    s23ProofFresh:
+      typeof s23ProofCurrentAgeHours === "number" &&
+      typeof maxS23ProofAgeHours === "number" &&
+      s23ProofCurrentAgeHours <= maxS23ProofAgeHours,
+    s23ProofNextAction:
+      typeof s23ProofCurrentAgeHours === "number" &&
+      typeof maxS23ProofAgeHours === "number" &&
+      s23ProofCurrentAgeHours <= maxS23ProofAgeHours
+        ? "none"
+        : "rerun_s23_cashout_trading_proof",
   };
   const resultReviewReady =
     getPath(phaseAudit, ["localResultReview", "ok"]) === true &&
@@ -1365,6 +1391,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     artifactFreshness.phaseAuditFresh &&
     artifactFreshness.watchdogFresh &&
     artifactFreshness.liveProofFresh &&
+    artifactFreshness.s23ProofFresh &&
     providerSnapshots.fresh &&
     resultReviewReady &&
     settlementQueueReady;
@@ -1378,7 +1405,8 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
       artifactFreshness.completionAuditFresh &&
       artifactFreshness.phaseAuditFresh &&
       artifactFreshness.watchdogFresh &&
-      artifactFreshness.liveProofFresh,
+      artifactFreshness.liveProofFresh &&
+      artifactFreshness.s23ProofFresh,
     providerSnapshotFresh: providerSnapshots.mobileRouteFresh === true,
   });
   const operatorNextActions = buildOperatorNextActions({

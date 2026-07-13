@@ -235,7 +235,12 @@ const mobileStaleButLocallyFreshSnapshot = () => [
 
 const makeCompletionAudit = (
   generatedAt = nowIso(),
-  freshness: { liveProofAgeHours?: number; maxLiveProofAgeHours?: number } = {},
+  freshness: {
+    liveProofAgeHours?: number;
+    maxLiveProofAgeHours?: number;
+    s23ProofAgeHours?: number;
+    maxS23ProofAgeHours?: number;
+  } = {},
 ) => ({
   generatedAt,
   pass: true,
@@ -253,6 +258,9 @@ const makeCompletionAudit = (
     installedUnattendedService: false,
     internalTesterWatchdogPass: true,
     activeTesterSettlementExecutionAttempted: false,
+    s23ProofDevice: "172.16.200.27:44029",
+    s23ProofAgeHours: freshness.s23ProofAgeHours ?? 1,
+    maxS23ProofAgeHours: freshness.maxS23ProofAgeHours ?? 24,
   },
   answers: {
     marketMakerContinuous: "foreground supervisor only",
@@ -269,10 +277,16 @@ const makeCompletionAudit = (
       maxLiveProofAgeHours: freshness.maxLiveProofAgeHours ?? 24,
       watchdogAgeHours: 1,
       maxWatchdogAgeHours: 24,
+      s23ProofAgeHours: freshness.s23ProofAgeHours ?? 1,
+      maxS23ProofAgeHours: freshness.maxS23ProofAgeHours ?? 24,
     },
   },
   checks: {
     internalTesterWatchdogKnown: true,
+  },
+  sourceEvidence: {
+    s23Visible:
+      "docs/mobile/harness/cycle-ZD-spain-france-cashout-fresh/cycle-ZD-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json",
   },
   completionRequirements: {
     marketMakerContinuity: {
@@ -729,8 +743,14 @@ describe("live runtime status service", () => {
       phaseAuditFresh: true,
       watchdogFresh: true,
       liveProofFresh: true,
+      s23ProofPath:
+        "docs/mobile/harness/cycle-ZD-spain-france-cashout-fresh/cycle-ZD-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json",
+      s23ProofDevice: "172.16.200.27:44029",
+      s23ProofFresh: true,
+      s23ProofNextAction: "none",
     });
     expect(status.freshness.liveProofCurrentAgeHours).toBeGreaterThanOrEqual(1);
+    expect(status.freshness.s23ProofCurrentAgeHours).toBeGreaterThanOrEqual(1);
     expect(status.providerSnapshots).toMatchObject({
       checked: true,
       fresh: true,
@@ -1720,6 +1740,36 @@ describe("live runtime status service", () => {
     expect(status.freshness.completionAuditFresh).toBe(true);
     expect(status.freshness.liveProofCurrentAgeHours).toBeGreaterThan(24);
     expect(status.freshness.liveProofFresh).toBe(false);
+  });
+
+  test("returns needs_attention when the embedded S23 cashout proof ages past its limit", async () => {
+    readFile.mockImplementation(async (filePath: string) => {
+      if (filePath.includes("completion-audit")) {
+        return JSON.stringify(
+          makeCompletionAudit(new Date(Date.now() - 2 * 3_600_000).toISOString(), {
+            s23ProofAgeHours: 23,
+            maxS23ProofAgeHours: 24,
+          }),
+        );
+      }
+      if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
+      if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
+      if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
+      if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
+      if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
+      if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
+      throw new Error(`unexpected path ${filePath}`);
+    });
+
+    const status = await getLocalLiveRuntimeStatus();
+
+    expect(status.status).toBe("needs_attention");
+    expect(status.freshness.completionAuditFresh).toBe(true);
+    expect(status.freshness.s23ProofCurrentAgeHours).toBeGreaterThan(24);
+    expect(status.freshness.s23ProofFresh).toBe(false);
+    expect(status.freshness.s23ProofNextAction).toBe("rerun_s23_cashout_trading_proof");
   });
 
   test("returns needs_attention when selected market provider snapshots are stale in the database", async () => {
