@@ -1,5 +1,5 @@
 {
-    "generatedAt":  "2026-07-13T13:07:07.7715854Z",
+    "generatedAt":  "2026-07-13T15:05:23.6596246Z",
     "scope":  "holiwyn-one-event-live-readiness",
     "pass":  true,
     "commands":  [
@@ -8,32 +8,32 @@
                          "command":  "npm run mobile:one-event-data-hygiene-proof",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T13:06:58.6787098Z",
-                         "finishedAt":  "2026-07-13T13:06:59.2006182Z"
+                         "startedAt":  "2026-07-13T15:05:06.9863525Z",
+                         "finishedAt":  "2026-07-13T15:05:08.9127678Z"
                      },
                      {
                          "label":  "runtime",
                          "command":  "npm run mobile:one-event-live-runtime -- -BackendPort 3002 -SeedMaker",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T13:06:59.2041297Z",
-                         "finishedAt":  "2026-07-13T13:07:02.1102174Z"
+                         "startedAt":  "2026-07-13T15:05:08.9167735Z",
+                         "finishedAt":  "2026-07-13T15:05:13.2337732Z"
                      },
                      {
                          "label":  "lifecycle",
                          "command":  "npm run mobile:one-event-lifecycle-proof -- --baseUrl=http://127.0.0.1:3002",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T13:07:02.1112164Z",
-                         "finishedAt":  "2026-07-13T13:07:03.5484149Z"
+                         "startedAt":  "2026-07-13T15:05:13.2354590Z",
+                         "finishedAt":  "2026-07-13T15:05:14.4203953Z"
                      },
                      {
                          "label":  "lifecycle-scheduler",
                          "command":  "npm run mobile:one-event-lifecycle-scheduler-proof",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T13:07:03.5484149Z",
-                         "finishedAt":  "2026-07-13T13:07:06.4971158Z"
+                         "startedAt":  "2026-07-13T15:05:14.4203953Z",
+                         "finishedAt":  "2026-07-13T15:05:22.0500121Z"
                      }
                  ],
     "backend":  {
@@ -44,7 +44,7 @@
                                                 "status":  "ok",
                                                 "db":  "connected",
                                                 "env":  "development",
-                                                "timestamp":  "2026-07-13T13:07:06.638Z"
+                                                "timestamp":  "2026-07-13T15:05:22.174Z"
                                             },
                                    "error":  null
                                }
@@ -66,12 +66,12 @@
                       {
                           "LocalAddress":  "::",
                           "LocalPort":  8081,
-                          "OwningProcess":  13380
+                          "OwningProcess":  14332
                       },
                       {
                           "LocalAddress":  "::",
                           "LocalPort":  3002,
-                          "OwningProcess":  65972
+                          "OwningProcess":  43088
                       }
                   ],
     "event":  {
@@ -99,7 +99,7 @@
                       "dataHygiene":  "docs/mobile/harness/odds-api-live-runtime/one-event-data-hygiene-summary.redacted.json",
                       "lifecycleControls":  "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json",
                       "lifecycleScheduler":  "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-scheduler-summary.redacted.json",
-                      "s23VisibleFlow":  "docs/mobile/harness/cycle-ZF-spain-france-cashout-fresh/cycle-ZF-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json"
+                      "s23VisibleFlow":  "docs/mobile/harness/cycle-ZG-spain-france-cashout-current/cycle-ZG-SPAIN-FRANCE-CASHOUT-CURRENT-odds-api-s23-visible-flow.json"
                   },
     "runtimeTruth":  {
                          "backendContinuous":  true,
