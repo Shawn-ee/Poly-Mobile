@@ -208,16 +208,22 @@ async function main() {
   const directSupervisorRunning = Boolean(supervisorWhileRunning && supervisorWhileRunning.process && supervisorWhileRunning.process.after && supervisorWhileRunning.process.after.running === true);
   const directResultPollerRunning = Boolean(resultPollerWhileRunning && resultPollerWhileRunning.process && resultPollerWhileRunning.process.after && resultPollerWhileRunning.process.after.running === true);
   const directWarmNoQuotaRuntime = directSupervisorRunning && directResultPollerRunning;
+  const backendStatusWarmNoQuotaRuntime = Boolean(runningState && runningState.warmNoQuotaRuntime === true);
+  const backendStatusAllLoopsRunning = Boolean(runningState && runningState.allLoopsRunning === true);
+  const backendStatusManagedProcessesRunning = Boolean(managedProcesses && managedProcesses.supervisor.running === true && managedProcesses.resultPoller.running === true);
+  const warmNoQuotaRuntimeObserved = backendStatusWarmNoQuotaRuntime && backendStatusAllLoopsRunning;
+  const allLoopsRunningObserved = warmNoQuotaRuntimeObserved || directWarmNoQuotaRuntime;
 
   if (!(runningStatus && runningStatus.status === "ready")) p0.push("local_runtime_status_not_ready_while_running");
   if (restoreCommand.pass !== true) p0.push("cached_one_event_restore_failed");
   if (!(runningState && runningState.localCapabilityReady === true)) p0.push("current_runtime_state_local_capability_not_ready");
-  if (!directWarmNoQuotaRuntime) p0.push("direct_process_state_did_not_see_warm_no_quota_runtime");
+  if (!allLoopsRunningObserved) p0.push("warm_no_quota_runtime_not_observed");
+  if (!directWarmNoQuotaRuntime) p1.push("direct_process_state_did_not_see_warm_no_quota_runtime");
   if (runningState && runningState.quotaSpendingLoopRunning === true) p0.push("quota_spending_loop_running");
   if (runningState && Array.isArray(runningState.p0) && runningState.p0.length > 0) p0.push("current_runtime_state_has_p0_gaps");
-  if (!(runningState && runningState.warmNoQuotaRuntime === true)) p1.push("backend_status_route_did_not_report_warm_no_quota_runtime");
-  if (!(runningState && runningState.allLoopsRunning === true)) p1.push("backend_status_route_did_not_report_all_loops_running");
-  if (!(managedProcesses && managedProcesses.supervisor.running === true && managedProcesses.resultPoller.running === true)) {
+  if (!backendStatusWarmNoQuotaRuntime) p1.push("backend_status_route_did_not_report_warm_no_quota_runtime");
+  if (!backendStatusAllLoopsRunning) p1.push("backend_status_route_did_not_report_all_loops_running");
+  if (!backendStatusManagedProcessesRunning) {
     p1.push("backend_status_route_managed_processes_did_not_report_both_loops_running");
   }
   if (!(supervisorStopSummary && supervisorStopSummary.process && supervisorStopSummary.process.after && supervisorStopSummary.process.after.running === false && resultPollerStopSummary && resultPollerStopSummary.process && resultPollerStopSummary.process.after && resultPollerStopSummary.process.after.running === false)) {
@@ -238,10 +244,12 @@ async function main() {
       providerQuotaSpent: false,
     },
     runtimeTruth: {
-      warmNoQuotaRuntimeObserved: directWarmNoQuotaRuntime,
-      allLoopsRunningObserved: directWarmNoQuotaRuntime,
-      backendStatusRouteWarmNoQuotaObserved: Boolean(runningState && runningState.warmNoQuotaRuntime === true),
-      backendStatusRouteAllLoopsObserved: Boolean(runningState && runningState.allLoopsRunning === true),
+      warmNoQuotaRuntimeObserved,
+      allLoopsRunningObserved,
+      backendStatusRouteWarmNoQuotaObserved: backendStatusWarmNoQuotaRuntime,
+      backendStatusRouteAllLoopsObserved: backendStatusAllLoopsRunning,
+      backendStatusRouteManagedProcessesObserved: backendStatusManagedProcessesRunning,
+      directProcessStateWarmNoQuotaObserved: directWarmNoQuotaRuntime,
       localCapabilityReadyWhileRunning: Boolean(runningState && runningState.localCapabilityReady === true),
       quotaSpendingLoopRunning: Boolean(runningState && runningState.quotaSpendingLoopRunning === true),
       testerReadyRightNow: Boolean(runningState && runningState.testerReadyRightNow === true),

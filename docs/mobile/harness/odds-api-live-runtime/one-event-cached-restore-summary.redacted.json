@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T08:25:43.625Z",
+  "generatedAt": "2026-07-13T10:09:45.164Z",
   "scope": "odds-api-one-event-cached-live-restore",
   "pass": true,
   "sourceSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
@@ -14,7 +14,7 @@
   "markets": {
     "restoredMarketCount": 19,
     "restoredOutcomeCount": 40,
-    "staleReplayClosedCount": 26,
+    "staleReplayClosedCount": 10,
     "visibleMarketCount": 19,
     "sportsbookMarketCount": 3,
     "contractFixtureMarketCount": 16,

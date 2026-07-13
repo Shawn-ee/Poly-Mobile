@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T09:24:27.234Z",
+  "generatedAt": "2026-07-13T10:11:33.845Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -60,7 +60,7 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-13T09:24:27.233Z"
+        "timestamp": "2026-07-13T10:11:33.844Z"
       },
       "error": null
     }
@@ -68,7 +68,7 @@
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveProofGeneratedAt": "2026-07-13T09:24:03.509Z",
-    "liveProofAgeHours": 0.01,
+    "liveProofAgeHours": 0.79,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
@@ -92,7 +92,7 @@
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
     "makerSeedGeneratedAt": "2026-07-13T08:25:46.639Z",
-    "makerSeedAgeHours": 0.98,
+    "makerSeedAgeHours": 1.76,
     "quoteRoute": {
       "ok": true,
       "status": 200,
@@ -100,24 +100,24 @@
         "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
         "quotes": [
           {
-            "outcomeId": "72c3377d-ae57-4f2b-b75d-0850b40bf5de",
-            "outcomeName": "Over +2.5",
-            "bestBid": null,
-            "bestAsk": null,
-            "bestBidSize": null,
-            "bestAskSize": null,
-            "midPrice": null,
-            "lastPrice": "0.46",
-            "lastTradeAt": "2026-07-13T09:24:03.327Z"
+            "outcomeId": "24515f22-3717-4b61-82a2-c072febc8f5b",
+            "outcomeName": "Over 2.5",
+            "bestBid": "0.54",
+            "bestAsk": "0.58",
+            "bestBidSize": 231.481481,
+            "bestAskSize": 215.517241,
+            "midPrice": "0.56",
+            "lastPrice": "0.58",
+            "lastTradeAt": "2026-07-13T08:43:38.933Z"
           },
           {
-            "outcomeId": "70ad531f-dbde-4247-897f-4132ea15fe5d",
-            "outcomeName": "Under +2.5",
-            "bestBid": null,
-            "bestAsk": null,
-            "bestBidSize": null,
-            "bestAskSize": null,
-            "midPrice": null,
+            "outcomeId": "651d8407-2f22-4a37-8d2a-72f483b580fe",
+            "outcomeName": "Under 2.5",
+            "bestBid": "0.42",
+            "bestAsk": "0.46",
+            "bestBidSize": 297.619048,
+            "bestAskSize": 271.73913,
+            "midPrice": "0.44",
             "lastPrice": null,
             "lastTradeAt": null
           }
@@ -128,8 +128,8 @@
   },
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
-    "schedulerGeneratedAt": "2026-07-13T05:48:55.212Z",
-    "schedulerAgeHours": 3.59,
+    "schedulerGeneratedAt": "2026-07-13T10:11:21.742Z",
+    "schedulerAgeHours": 0,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 3
@@ -138,9 +138,9 @@
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
     "resultSettlementExecutionGeneratedAt": "2026-07-12T11:52:39.122Z",
-    "resultSettlementExecutionAgeHours": 21.53,
+    "resultSettlementExecutionAgeHours": 22.32,
     "resultSettlementLiveBlockedGeneratedAt": "2026-07-12T11:52:37.215Z",
-    "resultSettlementLiveBlockedAgeHours": 21.53,
+    "resultSettlementLiveBlockedAgeHours": 22.32,
     "executionRequiresMarketStatus": "CLOSED",
     "blockedExecutionReason": "market_must_be_closed_before_result_settlement:LIVE",
     "activeTesterEventMutated": false,
@@ -159,7 +159,7 @@
   },
   "supervisor": {
     "supervisorPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json",
-    "generatedAt": "2026-07-13T05:48:56.0147341Z",
+    "generatedAt": "2026-07-13T10:11:22.3703533Z",
     "completedIterations": 1,
     "runtimeTruth": {
       "backendContinuousWhileSupervisorRuns": true,
@@ -175,19 +175,19 @@
       "liveResultIngestionContinuousWhileSupervisorRuns": false,
       "liveResultIngestionQuotaCappedWhileSupervisorRuns": false,
       "resultSettlementContinuousWhileSupervisorRuns": false,
-      "resultSettlementMode": "approved trusted-result scheduler; waits until CLOSED before execution",
+      "resultSettlementMode": "disabled",
       "unattendedServiceInstalled": false,
       "providerRefreshMode": "cached provider proof verification; no provider quota spent",
       "marketMakerMode": "repeated local shifted maker reseed while supervisor runs",
       "lifecycleSchedulerMode": "safe real-time scheduler check each cycle; no proof time mutation",
-      "settlementMode": "manual preview/resolve service plus approval-file trusted-result scheduler; waits until CLOSED before execution"
+      "settlementMode": "manual preview/resolve service plus trusted-result dry-run scheduler; unconfirmed automatic settlement execution not wired"
     },
     "latestRunProfile": {
       "makerSeedEnabled": true,
       "lifecycleSchedulerEnabled": true,
       "resultIngestionEnabled": true,
-      "resultSettlementEnabled": true,
-      "approvedResultSettlementEnabled": true,
+      "resultSettlementEnabled": false,
+      "approvedResultSettlementEnabled": false,
       "runProviderProof": false
     }
   },

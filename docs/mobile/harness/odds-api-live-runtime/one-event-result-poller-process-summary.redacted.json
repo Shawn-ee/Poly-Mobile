@@ -1,13 +1,13 @@
 {
-    "generatedAt":  "2026-07-13T08:25:54.4042937Z",
+    "generatedAt":  "2026-07-13T10:09:55.6395503Z",
     "scope":  "holiwyn-one-event-result-poller-process",
     "pass":  true,
     "operation":  {
                       "action":  "stop",
-                      "startedAt":  "2026-07-13T08:25:53.0739737Z",
+                      "startedAt":  "2026-07-13T10:09:53.8696171Z",
                       "force":  false,
                       "result":  "stopped",
-                      "pid":  47436
+                      "pid":  61300
                   },
     "process":  {
                     "statePath":  ".runtime/one-event-result-poller/result-poller-process-state.json",
@@ -15,17 +15,17 @@
                     "stderr":  ".runtime/one-event-result-poller/result-poller.err.log",
                     "before":  {
                                    "known":  true,
-                                   "pid":  47436,
+                                   "pid":  61300,
                                    "running":  true,
                                    "process":  {
-                                                   "id":  47436,
+                                                   "id":  61300,
                                                    "processName":  "powershell",
-                                                   "startTime":  "2026-07-13T08:25:44.7265238Z",
+                                                   "startTime":  "2026-07-13T10:09:46.7210878Z",
                                                    "hasExited":  false
                                                },
                                    "state":  {
-                                                 "pid":  47436,
-                                                 "startedAt":  "2026-07-13T08:25:44.7344443Z",
+                                                 "pid":  61300,
+                                                 "startedAt":  "2026-07-13T10:09:46.7296371Z",
                                                  "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0",
                                                  "eventSlug":  "odds-api-single-soccer-test",
                                                  "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
@@ -45,12 +45,12 @@
                                },
                     "after":  {
                                   "known":  true,
-                                  "pid":  47436,
+                                  "pid":  61300,
                                   "running":  false,
                                   "process":  null,
                                   "state":  {
-                                                "pid":  47436,
-                                                "startedAt":  "2026-07-13T08:25:44.7344443Z",
+                                                "pid":  61300,
+                                                "startedAt":  "2026-07-13T10:09:46.7296371Z",
                                                 "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0",
                                                 "eventSlug":  "odds-api-single-soccer-test",
                                                 "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",

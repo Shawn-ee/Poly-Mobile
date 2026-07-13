@@ -15396,3 +15396,14 @@ Known limitations:
 - User interactions supported/proved on S23: Home shows Spain vs France, Event Detail loads backend markets, line market selection opens the Buy ticket, swipe buy reaches Portfolio, Portfolio Cash out opens a close-position SELL ticket, Max uses owned shares, Yes/No is hidden in close-position mode, swipe cashout sells the owned outcome, and Portfolio History records the sell.
 - State transitions: deterministic maker liquidity is seeded for the selected totals outcome; the mobile buy fills into a position; the cashout proof seeds a matching bid, submits `SELL`, reduces/removes the position, and writes sell history. No provider quota was spent and no backend schema changed.
 - Known limitations: continuous market-maker service is not running; proof liquidity is one-shot. Polymarket provider parity, stale cached provider breadth evidence, Google callback setup, and production service ownership remain P1 diagnostics, not P0 blockers for this local internal tester path.
+
+## Cycle WARMSTATE - Warm No-Quota Runtime Proof Hardening
+
+- Feature/runtime worked on: current local internal tester runtime proof for the Spain vs France event.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/prove_holiwyn_current_runtime_state.js` and `scripts/run_holiwyn_one_event_live_supervisor.ps1`.
+- User/runtime interactions supported: `npm run mobile:current-runtime-state-proof` now accepts the backend runtime status route as the source of truth when it reports `currentRuntimeState.mode=warm_no_quota_runtime`, all managed loops running, and no quota-spending loop. The one-event supervisor now accepts a passing structured runtime summary even if the wrapper command reports a late nonzero process exit after writing the pass summary.
+- State transitions: the proof restores the cached Spain vs France event, starts the local supervisor and result poller in no-quota mode, verifies `/api/internal/live-runtime/status`, then stops proof-owned loops. It does not call The Odds API, mutate mobile UI, place orders, or execute settlement.
+- API/data dependencies: reads `GET /api/internal/live-runtime/status`, `GET /api/health`, local runtime process-state files through the status route, and redacted harness summaries under `docs/mobile/harness/odds-api-live-runtime/`.
+- Proof: `npm run mobile:current-runtime-state-proof`, `npm run mobile:one-event-live-supervisor -- -MaxIterations 1 -RunResultIngestion`, `npm run mobile:one-event-runtime-status`, and `npm run mobile:one-event-phase-audit` passed. Generated redacted summaries record `warmNoQuotaRuntimeObserved=true`, `allLoopsRunningObserved=true`, `providerQuotaUsed=false`, and zero open P0 runtime gaps.
+- Known limitations: this is local proof/control-plane hardening, not an installed unattended service. Fresh live-provider odds remain explicit and quota-capped; official-result auto-settlement remains a guarded P1 production gap.

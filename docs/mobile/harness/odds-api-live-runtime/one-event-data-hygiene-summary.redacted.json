@@ -1,10 +1,10 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-13T05:48:47.306Z",
+  "generatedAt": "2026-07-13T10:11:18.722Z",
   "scope": "odds-api-one-event-data-hygiene",
   "mode": "apply",
   "event": {
-    "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
+    "id": "3c4716b1-5857-4150-a779-c2c98ab30361",
     "slug": "odds-api-single-soccer-test",
     "title": "Spain vs. France",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
@@ -20,13 +20,13 @@
     "providerQuotaUsed": false
   },
   "before": {
-    "totalProviderMarketCount": 33,
+    "totalProviderMarketCount": 29,
     "visibleProviderMarketCount": 19,
     "staleVisibleMarketCount": 0,
     "staleVisibleMarkets": []
   },
   "after": {
-    "totalProviderMarketCount": 33,
+    "totalProviderMarketCount": 29,
     "visibleProviderMarketCount": 19,
     "staleVisibleMarketCount": 0,
     "validVisibleMarketCount": 19

@@ -317,6 +317,8 @@ try {
     $result = Invoke-CheckedCommand -Label "cycle-$iteration-runtime" -Command $command
     $runtimeSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-runtime-launch-summary.redacted.json"
     $runtimeSummary = Read-JsonFile $runtimeSummaryPath
+    $runtimeSummaryPass = [bool]($runtimeSummary -and $runtimeSummary.pass -eq $true)
+    $runtimeCommandAccepted = [bool]($result.pass -or $runtimeSummaryPass)
     $staleGuardResult = $null
     $staleGuardSummary = $null
     if ($RunStaleGuard) {
@@ -380,8 +382,9 @@ try {
       dataHygiene = $dataHygieneResult
       dataHygienePass = [bool]($SkipDataHygiene -or ($dataHygieneSummary -and $dataHygieneSummary.pass -eq $true))
       command = $result
+      runtimeCommandAccepted = $runtimeCommandAccepted
       runtimeSummaryPath = ConvertTo-RepoPath $runtimeSummaryPath
-      runtimePass = [bool]($runtimeSummary -and $runtimeSummary.pass -eq $true)
+      runtimePass = $runtimeSummaryPass
       lifecycleScheduler = $schedulerResult
       lifecycleSchedulerPass = [bool]($SkipLifecycleScheduler -or ($schedulerSummary -and $schedulerSummary.pass -eq $true))
       lifecycleSchedulerAction = $schedulerSummary.scheduler.action
@@ -413,8 +416,8 @@ try {
     Write-Heartbeat -Cycles $cycles -LoopPass $true
 
     if (
-      -not $result.pass -or
-      -not ($runtimeSummary -and $runtimeSummary.pass -eq $true) -or
+      -not $runtimeCommandAccepted -or
+      -not $runtimeSummaryPass -or
       ($RunStaleGuard -and (-not $staleGuardResult.pass -or -not ($staleGuardSummary -and $staleGuardSummary.pass -eq $true))) -or
       ($RunResultIngestion -and (-not $resultIngestionResult.pass -or -not ($resultIngestionSummary -and $resultIngestionSummary.pass -eq $true))) -or
       ($RunResultSettlement -and (-not $resultSettlementResult.pass -or -not ($resultSettlementSummary -and $resultSettlementSummary.pass -eq $true))) -or
