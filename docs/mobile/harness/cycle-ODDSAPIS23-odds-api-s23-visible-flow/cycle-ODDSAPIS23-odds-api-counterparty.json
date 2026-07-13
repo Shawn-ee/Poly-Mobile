@@ -15,22 +15,31 @@
     "period": "regulation",
     "line": "2.5",
     "referenceSource": "sportsbook-odds",
-    "externalMarketId": "f9aa13a662d1658e5a02cfc06d6a2d73:betonlineag:totals:2.5",
-    "conditionId": "odds-api-7439c2d6033826e21400f068"
+    "externalMarketId": "f9aa13a662d1658e5a02cfc06d6a2d73:total_goals:2.5",
+    "conditionId": "odds-api-00c86ad8b5e6561e27f78508"
   },
   "outcome": {
-    "id": "72c3377d-ae57-4f2b-b75d-0850b40bf5de",
-    "name": "Over +2.5",
+    "id": "24515f22-3717-4b61-82a2-c072febc8f5b",
+    "name": "Over 2.5",
     "side": "over",
-    "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4",
-    "referenceOutcomeLabel": "Over +2.5"
+    "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e",
+    "referenceOutcomeLabel": "Over 2.5"
   },
   "cleanupOnly": false,
   "maker": {
-    "id": "bba7f0b9-c381-47fe-8f01-97f2c25b5697",
-    "username": "mobile_route_fill_maker_35224837"
+    "id": "1cb0319f-de80-4bed-8fa5-ca037a067e30",
+    "username": "mobile_route_fill_maker_cf22aefb"
   },
   "cleanup": {
+    "resetSelectedMarketState": {
+      "requested": true,
+      "deletedCanonicalEvents": 16,
+      "deletedFills": 6,
+      "deletedTrades": 12,
+      "deletedOrders": 64,
+      "deletedPositions": 67,
+      "collateralReset": true
+    },
     "enabled": true,
     "proofUserPrefix": "holiwyn-mobile-",
     "canceledProofBids": [],
@@ -45,9 +54,9 @@
     "canceledBlockingAsks": []
   },
   "makerOrder": {
-    "id": "45bc84b2-d4b5-4705-b644-363e203c838f",
+    "id": "350efbfc-0f1f-4e3d-a728-c5f1117730ea",
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-    "outcomeId": "72c3377d-ae57-4f2b-b75d-0850b40bf5de",
+    "outcomeId": "24515f22-3717-4b61-82a2-c072febc8f5b",
     "side": "SELL",
     "price": "0.58",
     "size": "100",

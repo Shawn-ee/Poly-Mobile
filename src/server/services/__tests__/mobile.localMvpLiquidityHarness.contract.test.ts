@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 
 const seedScript = () => readFileSync("scripts/seed_mobile_route_spread_counterparty.ts", "utf8");
 const s23Proof = () => readFileSync("scripts/prove_mobile_current_mvp_s23_visible_flow.ps1", "utf8");
+const oddsApiS23Proof = () => readFileSync("scripts/prove_mobile_odds_api_s23_visible_flow.ps1", "utf8");
 
 describe("mobile Local MVP liquidity proof harness", () => {
   test("labels buy-fill and cashout-sell-fill liquidity with opposite resting sides", () => {
@@ -15,6 +16,8 @@ describe("mobile Local MVP liquidity proof harness", () => {
     expect(source).toContain("local-mvp-internal-liquidity");
     expect(source).toContain('liquidityPurpose === "buy-fill"');
     expect(source).toContain("cleanupBlockingMarketBidsForcedByPurpose");
+    expect(source).toContain("resetSelectedMarketState");
+    expect(source).toContain("collateralReset");
   });
 
   test("S23 current MVP proof passes explicit liquidity purpose flags", () => {
@@ -33,6 +36,14 @@ describe("mobile Local MVP liquidity proof harness", () => {
       '$fixtureOrderLandedAsPosition = $afterSubmitRaw -match [regex]::Escape("position-card-")',
     );
     expect(source).toContain("filledPositionVisible = $fixtureOrderLandedAsPosition");
+  });
+
+  test("Odds API S23 proof starts from a clean selected market before buying", () => {
+    const source = oddsApiS23Proof();
+
+    expect(source).toContain('"--resetSelectedMarketState"');
+    expect(source).toContain('"--liquidityPurpose=buy-fill"');
+    expect(source).toContain('"--liquidityPurpose=cashout-sell-fill"');
   });
 
   test("S23 current MVP proof can target line families beyond spread", () => {

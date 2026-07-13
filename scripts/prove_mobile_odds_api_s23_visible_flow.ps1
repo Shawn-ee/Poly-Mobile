@@ -288,7 +288,7 @@ try {
   }
 
   $counterpartyProofPath = Join-Path $HierarchyOutputDir "cycle-$Cycle-odds-api-counterparty.json"
-  cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=$LineMarketGroupKey" "--line=$LineValue" "--outcomeSide=$LineOutcomeSide" "--askPrice=0.58" "--askSize=100" "--mintQuantity=150" "--makerBalance=250" "--cleanupProofBids" "--cleanupBlockingBids" "--cleanupBlockingMarketBids" "--liquidityPurpose=buy-fill" "--proofUserPrefix=holiwyn-mobile-" "--output=$counterpartyProofPath" | Out-Null
+  cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=$LineMarketGroupKey" "--line=$LineValue" "--outcomeSide=$LineOutcomeSide" "--askPrice=0.58" "--askSize=100" "--mintQuantity=150" "--makerBalance=250" "--cleanupProofBids" "--cleanupBlockingBids" "--cleanupBlockingMarketBids" "--resetSelectedMarketState" "--liquidityPurpose=buy-fill" "--proofUserPrefix=holiwyn-mobile-" "--output=$counterpartyProofPath" | Out-Null
   if ($LASTEXITCODE -ne 0) {
     throw "Sportsbook line counterparty seed failed for $EventSlug."
   }

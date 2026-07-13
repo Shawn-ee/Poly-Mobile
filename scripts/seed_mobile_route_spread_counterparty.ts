@@ -35,6 +35,7 @@ const cleanupBlockingMarketBids = process.argv.includes("--cleanupBlockingMarket
 const cleanupProofAsks = process.argv.includes("--cleanupProofAsks");
 const cleanupBlockingAsks = process.argv.includes("--cleanupBlockingAsks");
 const cleanupOnly = process.argv.includes("--cleanupOnly");
+const resetSelectedMarketState = process.argv.includes("--resetSelectedMarketState");
 const proofUserPrefix = argValue("proofUserPrefix") ?? "holiwyn-mobile-";
 const liquidityPurpose = argValue("liquidityPurpose") ?? (makerSideValue === "BUY" ? "cashout-sell-fill" : "buy-fill");
 const shouldCleanupBlockingMarketBids = cleanupBlockingMarketBids || liquidityPurpose === "buy-fill";
@@ -113,6 +114,30 @@ async function main() {
   );
   const outcome = market.outcomes.find((item) => item.side === outcomeSide) ?? market.outcomes[0];
   assert(outcome, `${marketGroupKey} market ${market.id} has no outcome.`);
+
+  const resetSummary = {
+    requested: resetSelectedMarketState,
+    deletedCanonicalEvents: 0,
+    deletedFills: 0,
+    deletedTrades: 0,
+    deletedOrders: 0,
+    deletedPositions: 0,
+    collateralReset: false,
+  };
+  if (resetSelectedMarketState) {
+    await prisma.$transaction(async (tx) => {
+      resetSummary.deletedCanonicalEvents = (await tx.canonicalEvent.deleteMany({ where: { marketId: market.id } })).count;
+      resetSummary.deletedFills = (await tx.fill.deleteMany({ where: { marketId: market.id } })).count;
+      resetSummary.deletedTrades = (await tx.trade.deleteMany({ where: { marketId: market.id } })).count;
+      resetSummary.deletedOrders = (await tx.order.deleteMany({ where: { marketId: market.id } })).count;
+      resetSummary.deletedPositions = (await tx.position.deleteMany({ where: { marketId: market.id } })).count;
+      await tx.market.update({
+        where: { id: market.id },
+        data: { collateralUSDC: dec("0") },
+      });
+      resetSummary.collateralReset = true;
+    });
+  }
 
   const canceledProofBids = [];
   if (cleanupProofBids) {
@@ -312,6 +337,7 @@ async function main() {
         }
       : null,
     cleanup: {
+      resetSelectedMarketState: resetSummary,
       enabled: cleanupProofBids,
       proofUserPrefix,
       canceledProofBids,
