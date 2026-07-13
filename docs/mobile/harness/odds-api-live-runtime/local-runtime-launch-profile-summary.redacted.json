@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T06:57:50.906Z",
+  "generatedAt": "2026-07-13T19:41:17.399Z",
   "scope": "holiwyn-local-runtime-launch-profile",
   "pass": true,
   "launchProfiles": {
@@ -67,16 +67,16 @@
     "localRuntimeStartupInstall": "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-install-uninstall-summary.redacted.json"
   },
   "artifactAgesHours": {
-    "runtimeStatus": 1.15,
-    "internalTesterRuntime": 4.92,
-    "supervisorProcess": 4.92,
-    "continuousSupervisor": 11.42,
-    "resultPollerProcess": 4.92,
-    "continuousResultPoller": 17.59,
-    "localRuntimeTask": 13.66,
-    "localRuntimeTaskInstall": 13.66,
-    "localRuntimeStartup": 18.65,
-    "localRuntimeStartupInstall": 17.18
+    "runtimeStatus": 0,
+    "internalTesterRuntime": 0.01,
+    "supervisorProcess": 0.01,
+    "continuousSupervisor": 3.85,
+    "resultPollerProcess": 0.01,
+    "continuousResultPoller": 3.84,
+    "localRuntimeTask": 26.39,
+    "localRuntimeTaskInstall": 26.39,
+    "localRuntimeStartup": 31.37,
+    "localRuntimeStartupInstall": 29.9
   },
   "ownershipProof": {
     "startup": {

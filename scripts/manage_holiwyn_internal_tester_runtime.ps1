@@ -522,16 +522,26 @@ function Set-S23AdbReverse {
     return [ordered]@{ attempted = $false; ok = $false; reason = "s23_not_connected"; ports = @() }
   }
   $ports = @($BackendPort, $ExpoPort)
-  $results = New-Object System.Collections.Generic.List[object]
+  $results = @()
   foreach ($port in $ports) {
     $adbResult = Invoke-AdbWithTimeout -Arguments @("-s", $Device.deviceId, "reverse", "tcp:$port", "tcp:$port")
-    $results.Add([ordered]@{
+    if (-not $adbResult) {
+      $adbResult = [ordered]@{
+        ok = $false
+        exitCode = $null
+        timedOut = $false
+        output = ""
+        error = "adb reverse returned no result"
+      }
+    }
+    $adbOutput = (($adbResult.output, $adbResult.error | Where-Object { $null -ne $_ }) -join "").Trim()
+    $results += [ordered]@{
       port = $port
       ok = [bool]$adbResult.ok
       exitCode = $adbResult.exitCode
       timedOut = [bool]$adbResult.timedOut
-      output = ($adbResult.output + $adbResult.error).Trim()
-    }) | Out-Null
+      output = $adbOutput
+    }
   }
   return [ordered]@{
     attempted = $true

@@ -1,30 +1,35 @@
 {
-    "generatedAt":  "2026-07-13T17:18:57.6567290Z",
+    "generatedAt":  "2026-07-13T19:40:53.9786947Z",
     "scope":  "holiwyn-internal-tester-runtime-manager",
     "pass":  true,
-    "action":  "stop",
-    "startedAt":  "2026-07-13T17:18:47.9292333Z",
-    "completedAt":  "2026-07-13T17:18:57.6587354Z",
+    "action":  "start",
+    "startedAt":  "2026-07-13T19:40:44.5800426Z",
+    "completedAt":  "2026-07-13T19:40:53.9797023Z",
     "operations":  [
                        {
-                           "target":  "supervisor",
-                           "result":  "captured_output_redacted",
-                           "pid":  null
-                       },
-                       {
-                           "target":  "result-poller",
-                           "result":  "captured_output_redacted",
-                           "pid":  null
-                       },
-                       {
-                           "target":  "expo",
-                           "result":  "not_owned",
+                           "target":  "s23-adb-reverse",
+                           "result":  "configured",
                            "pid":  null
                        },
                        {
                            "target":  "backend",
-                           "result":  "not_owned",
-                           "pid":  null
+                           "result":  "external_listener_reused",
+                           "pid":  43088
+                       },
+                       {
+                           "target":  "expo",
+                           "result":  "external_listener_reused",
+                           "pid":  16004
+                       },
+                       {
+                           "target":  "supervisor",
+                           "result":  "started_direct",
+                           "pid":  15660
+                       },
+                       {
+                           "target":  "result-poller",
+                           "result":  "started_direct",
+                           "pid":  74292
                        }
                    ],
     "backend":  {
@@ -34,7 +39,7 @@
                                    "status":  "ok",
                                    "db":  "connected",
                                    "env":  "development",
-                                   "timestamp":  "2026-07-13T17:18:57.645Z",
+                                   "timestamp":  "2026-07-13T19:40:53.938Z",
                                    "error":  null
                                },
                     "portOwner":  {
@@ -43,17 +48,17 @@
                                       "processName":  "node"
                                   },
                     "ownedByManager":  false,
-                    "ownedProcessRunning":  false
+                    "ownedProcessRunning":  true
                 },
     "expo":  {
                  "port":  8081,
                  "portOwner":  {
                                    "port":  8081,
-                                   "pid":  14332,
+                                   "pid":  16004,
                                    "processName":  "node"
                                },
                  "ownedByManager":  false,
-                 "ownedProcessRunning":  false,
+                 "ownedProcessRunning":  true,
                  "serverModeSource":  "external_listener_unverified",
                  "serverModeVerified":  false,
                  "externalServerModeUnverified":  true
@@ -63,74 +68,77 @@
                            "status":  "poly_postgres|Up 9 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
                        },
     "s23":  {
-                "connected":  false,
-                "deviceId":  null,
-                "model":  null
+                "connected":  true,
+                "deviceId":  "172.16.200.27:44029",
+                "model":  "SM_S911U1",
+                "raw":  "172.16.200.27:44029    device product:dm1quew model:SM_S911U1 device:dm1q transport_id:2",
+                "adbTimedOut":  false,
+                "error":  null
             },
     "supervisor":  {
-                       "startRequested":  false,
+                       "startRequested":  true,
                        "statusSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-live-supervisor-process-summary.redacted.json",
                        "processSummary":  {
                                               "pass":  true,
                                               "operation":  {
                                                                 "action":  "status",
-                                                                "result":  "not_running",
+                                                                "result":  "running",
                                                                 "pid":  null
                                                             },
                                               "process":  {
                                                               "before":  {
-                                                                             "pid":  75572,
-                                                                             "running":  false
+                                                                             "pid":  15660,
+                                                                             "running":  true
                                                                          },
                                                               "after":  {
-                                                                            "pid":  75572,
-                                                                            "running":  false
+                                                                            "pid":  15660,
+                                                                            "running":  true
                                                                         }
                                                           }
                                           }
                    },
     "resultPoller":  {
-                         "startRequested":  false,
+                         "startRequested":  true,
                          "statusSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-poller-process-summary.redacted.json",
                          "processSummary":  {
                                                 "pass":  true,
                                                 "operation":  {
                                                                   "action":  "status",
-                                                                  "result":  "not_running",
+                                                                  "result":  "running",
                                                                   "pid":  null
                                                               },
                                                 "process":  {
                                                                 "before":  {
-                                                                               "pid":  39036,
-                                                                               "running":  false
+                                                                               "pid":  74292,
+                                                                               "running":  true
                                                                            },
                                                                 "after":  {
-                                                                              "pid":  39036,
-                                                                              "running":  false
+                                                                              "pid":  74292,
+                                                                              "running":  true
                                                                           }
                                                             }
                                             }
                      },
     "readiness":  {
-                      "waitRequested":  false,
+                      "waitRequested":  true,
                       "backendReady":  true,
                       "expoReady":  true,
                       "postgresReady":  true,
-                      "s23Connected":  false
+                      "s23Connected":  true
                   },
     "liveRuntimeStatus":  {
                               "checked":  true,
-                              "warmRuntimeRequired":  false,
-                              "warmRuntimeObserved":  false,
+                              "warmRuntimeRequired":  true,
+                              "warmRuntimeObserved":  true,
                               "statusDigest":  {
                                                    "ok":  true,
                                                    "status":  200,
                                                    "currentRuntimeState":  {
-                                                                               "mode":  "proven_capability_loops_stopped",
+                                                                               "mode":  "warm_no_quota_runtime",
                                                                                "localCapabilityReady":  true,
-                                                                               "allLoopsRunning":  false,
-                                                                               "supervisorRunning":  false,
-                                                                               "resultPollerRunning":  false,
+                                                                               "allLoopsRunning":  true,
+                                                                               "supervisorRunning":  true,
+                                                                               "resultPollerRunning":  true,
                                                                                "quotaSpendingLoopRunning":  false,
                                                                                "providerSnapshotFresh":  false,
                                                                                "testerReadyRightNow":  false,
@@ -138,11 +146,9 @@
 
                                                                                       ],
                                                                                "p1":  [
-                                                                                          "supervisor_loop_not_running_now",
-                                                                                          "result_poller_loop_not_running_now",
                                                                                           "mobile_provider_snapshot_not_fresh"
                                                                                       ],
-                                                                               "nextAction":  "start_internal_tester_runtime_with_supervisor_and_result_poller"
+                                                                               "nextAction":  "keep_cached_testing_or_refresh_live_odds"
                                                                            },
                                                    "providerQuotaUsedByStatus":  false,
                                                    "error":  null
@@ -154,9 +160,9 @@
                          "expoStartStopAvailableWhenPortFree":  true,
                          "supervisorBackgroundProcessAvailable":  true,
                          "resultPollerBackgroundProcessAvailable":  true,
-                         "resultPollerBackgroundProcessRunning":  false,
-                         "liveRuntimeStatusWarmObserved":  false,
-                         "liveRuntimeStatusWarmRequiredForLoopStart":  false,
+                         "resultPollerBackgroundProcessRunning":  true,
+                         "liveRuntimeStatusWarmObserved":  true,
+                         "liveRuntimeStatusWarmRequiredForLoopStart":  true,
                          "managerStartedExpoUsesServerMode":  false,
                          "expoServerModeSource":  "external_listener_unverified",
                          "externalExpoServerModeUnverified":  true,
@@ -165,7 +171,7 @@
                          "s23AdbReverseConfiguredOnStart":  true,
                          "stopsOnlyOwnedBackendExpoProcesses":  true,
                          "installedOsService":  false,
-                         "approvedSettlementModeRequested":  false,
+                         "approvedSettlementModeRequested":  true,
                          "activeTesterSettlementExecution":  false,
                          "fakeTokenOnly":  true
                      },

@@ -1,12 +1,12 @@
 {
-    "generatedAt":  "2026-07-13T19:15:20.7921425Z",
+    "generatedAt":  "2026-07-13T19:40:52.6413722Z",
     "scope":  "holiwyn-one-event-live-supervisor-process",
     "pass":  true,
     "operation":  {
                       "action":  "status",
-                      "startedAt":  "2026-07-13T19:15:20.7399663Z",
+                      "startedAt":  "2026-07-13T19:40:52.5842081Z",
                       "force":  false,
-                      "result":  "not_running"
+                      "result":  "running"
                   },
     "process":  {
                     "statePath":  ".runtime/one-event-live-supervisor/supervisor-process-state.json",
@@ -14,12 +14,17 @@
                     "stderr":  ".runtime/one-event-live-supervisor/supervisor.err.log",
                     "before":  {
                                    "known":  true,
-                                   "pid":  7852,
-                                   "running":  false,
-                                   "process":  null,
+                                   "pid":  15660,
+                                   "running":  true,
+                                   "process":  {
+                                                   "id":  15660,
+                                                   "processName":  "powershell",
+                                                   "startTime":  "2026-07-13T19:40:48.5575130Z",
+                                                   "hasExited":  false
+                                               },
                                    "state":  {
-                                                 "pid":  7852,
-                                                 "startedAt":  "2026-07-13T19:13:49.3912440Z",
+                                                 "pid":  15660,
+                                                 "startedAt":  "2026-07-13T19:40:48.5665697Z",
                                                  "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_live_supervisor.ps1 -BackendPort 3002 -IntervalSeconds 15 -Continuous -MaxIterations 0 -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                                                  "continuous":  true,
                                                  "maxIterations":  0,
@@ -47,12 +52,17 @@
                                },
                     "after":  {
                                   "known":  true,
-                                  "pid":  7852,
-                                  "running":  false,
-                                  "process":  null,
+                                  "pid":  15660,
+                                  "running":  true,
+                                  "process":  {
+                                                  "id":  15660,
+                                                  "processName":  "powershell",
+                                                  "startTime":  "2026-07-13T19:40:48.5575130Z",
+                                                  "hasExited":  false
+                                              },
                                   "state":  {
-                                                "pid":  7852,
-                                                "startedAt":  "2026-07-13T19:13:49.3912440Z",
+                                                "pid":  15660,
+                                                "startedAt":  "2026-07-13T19:40:48.5665697Z",
                                                 "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_live_supervisor.ps1 -BackendPort 3002 -IntervalSeconds 15 -Continuous -MaxIterations 0 -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                                                 "continuous":  true,
                                                 "maxIterations":  0,
@@ -148,7 +158,7 @@
                    },
     "runtimeTruth":  {
                          "backgroundProcessManagerAvailable":  true,
-                         "localBackgroundProcessRunning":  false,
+                         "localBackgroundProcessRunning":  true,
                          "installedOsService":  false,
                          "providerRefreshMode":  "cached provider proof verification; no provider quota spent",
                          "staleGuardMode":  "disabled",

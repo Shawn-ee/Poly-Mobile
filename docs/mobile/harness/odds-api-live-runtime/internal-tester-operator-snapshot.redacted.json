@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T17:17:46.211Z",
+  "generatedAt": "2026-07-13T19:41:08.113Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -18,7 +18,7 @@
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "72c3377d-ae57-4f2b-b75d-0850b40bf5de",
+    "outcomeId": "f2634596-0692-428d-a0ee-457dcc6f32ce",
     "outcomeName": "Over +2.5",
     "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
   },
@@ -29,7 +29,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-13T17:17:45.102Z"
+      "timestamp": "2026-07-13T19:41:07.206Z"
     },
     "error": null
   },
@@ -63,9 +63,9 @@
         "checked": true,
         "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
         "known": true,
-        "pid": 75572,
+        "pid": 15660,
         "running": true,
-        "startedAt": "2026-07-13T17:17:25.8092038Z",
+        "startedAt": "2026-07-13T19:40:48.5665697Z",
         "continuous": true,
         "maxIterations": 0,
         "intervalSeconds": 15,
@@ -88,9 +88,9 @@
         "checked": true,
         "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
         "known": true,
-        "pid": 39036,
+        "pid": 74292,
         "running": true,
-        "startedAt": "2026-07-13T17:17:26.1038183Z",
+        "startedAt": "2026-07-13T19:40:49.2701830Z",
         "continuous": true,
         "maxIterations": 0,
         "intervalSeconds": 15,
@@ -122,9 +122,9 @@
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
     "reason": null,
     "snapshotCount": 4,
-    "latestFetchedAt": "2026-07-13T14:53:10.824Z",
-    "latestAgeHours": 2.41,
-    "latestAgeSeconds": 8675,
+    "latestFetchedAt": "2026-07-13T19:22:57.213Z",
+    "latestAgeHours": 0.3,
+    "latestAgeSeconds": 1091,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
@@ -132,15 +132,15 @@
     "acceptingOrderSnapshotCount": 4,
     "mmEligibleSnapshotCount": 0,
     "latestQualityStatus": "approved",
-    "latestReason": "temporary_sportsbook_odds_single_event_provider",
+    "latestReason": "cached_live_runtime_restore",
     "mobileRouteFresh": false,
     "mobileRouteRefreshDue": false,
     "mobileRouteStale": true,
     "mobileLifecycleStatus": "stale",
     "mobileRefreshDueSeconds": 60,
     "mobileStaleAfterSeconds": 90,
-    "mobileRefreshDueAt": "2026-07-13T14:54:10.824Z",
-    "mobileStaleAt": "2026-07-13T14:54:40.824Z",
+    "mobileRefreshDueAt": "2026-07-13T19:23:57.213Z",
+    "mobileStaleAt": "2026-07-13T19:24:27.213Z",
     "nextProviderAction": "refresh_provider_snapshots_or_keep_cached_test_mode"
   },
   "operatorNextActions": {
@@ -149,6 +149,9 @@
     "defaultNoQuotaAction": "cached_internal_testing",
     "liveOddsAction": "refresh_mobile_live_odds",
     "nextProviderAction": "refresh_provider_snapshots_or_keep_cached_test_mode",
+    "eventLifecycleAction": "none",
+    "eventLifecycleWindow": "pre_start_open",
+    "eventLifecycleOperatorAction": "keep_trading_available_until_suspend_window",
     "actionCount": 5,
     "selectedAction": {
       "id": "cached_internal_testing",
@@ -160,6 +163,31 @@
       "reason": "Replays/restores the selected one-event runtime and verifies readiness without provider quota."
     },
     "safety": "Commands are local-only. Provider-refresh commands require THE_ODDS_API_KEY in the environment and remain quota-capped by the underlying proof scripts; the status route never returns or reads the key."
+  },
+  "selectedEventLifecycle": {
+    "checked": true,
+    "found": true,
+    "eventSlug": "odds-api-single-soccer-test",
+    "eventId": "df92490e-c29f-4c64-b0da-d28f70840f99",
+    "title": "Spain vs. France",
+    "status": "active",
+    "liveStatus": "LIVE",
+    "sportKey": "soccer_fifa_world_cup",
+    "leagueKey": "soccer_fifa_world_cup",
+    "source": "the-odds-api",
+    "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
+    "sourceUpdatedAt": "2026-07-13T19:22:57.213Z",
+    "now": "2026-07-13T19:41:08.104Z",
+    "startTime": "2026-07-14T19:00:00.000Z",
+    "secondsUntilStart": 83932,
+    "startAgeSeconds": 0,
+    "suspendBeforeStartSeconds": 300,
+    "insideSuspendWindow": false,
+    "startPassed": false,
+    "tradingWindow": "pre_start_open",
+    "schedulerActionNow": "none",
+    "operatorNextAction": "keep_trading_available_until_suspend_window",
+    "note": "Read-only selected-event lifecycle timing. It mirrors the one-event lifecycle scheduler timing rule and does not mutate markets."
   },
   "testerLaunchChecklist": {
     "generatedFrom": "/api/internal/live-runtime/status",
@@ -222,6 +250,13 @@
       }
     ],
     "lifecycleChecks": [
+      {
+        "step": "Event lifecycle timing",
+        "expected": "Event remains open for internal testing until the next lifecycle action.",
+        "routeDependency": "GET /api/internal/live-runtime/status",
+        "pass": true,
+        "notes": "Current window: pre_start_open; next lifecycle action: pause at 2026-07-14T18:55:00.000Z."
+      },
       {
         "step": "Stale odds",
         "expected": "Stale/closed markets reject order placement with MARKET_UNAVAILABLE.",

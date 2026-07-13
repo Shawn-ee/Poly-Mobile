@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T19:25:28.325Z",
+  "generatedAt": "2026-07-13T19:41:07.260Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -26,11 +26,11 @@
       "oneEventOnly": true
     },
     "freshness": {
-      "liveProofAgeHours": 0.04,
+      "liveProofAgeHours": 0.27,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 3.57,
+      "watchdogAgeHours": 3.83,
       "maxWatchdogAgeHours": 24,
-      "s23ProofAgeHours": 0.72,
+      "s23ProofAgeHours": 0.12,
       "maxS23ProofAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -59,7 +59,7 @@
     "activeTesterSettlementExecutionAttempted": false,
     "activeEventClosedStateEligibilityProven": true,
     "s23ProofDevice": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
-    "s23ProofAgeHours": 0.72,
+    "s23ProofAgeHours": 0.12,
     "maxS23ProofAgeHours": 24
   },
   "sourceEvidence": {
@@ -81,7 +81,7 @@
     "activeSettlementReadiness": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json",
     "activeSettlementClosedEligibility": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-closed-eligibility-summary.redacted.json",
     "providerMakerHandoff": "docs/mobile/harness/odds-api-live-runtime/provider-maker-handoff-summary.redacted.json",
-    "s23Visible": "docs/mobile/harness/cycle-S23CASHOUTMAIN-spain-france-cashout/cycle-S23CASHOUTMAIN-odds-api-s23-visible-flow.json"
+    "s23Visible": "docs/mobile/harness/cycle-ZF-spain-france-cashout-fresh/cycle-ZF-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json"
   },
   "checks": {
     "backendRuntimeStatusPass": true,
@@ -173,7 +173,7 @@
       "answer": "One real upcoming soccer event is visible and tradable from S23 through event detail, quote, buy, portfolio, cashout/sell, and history proof.",
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json",
-        "docs/mobile/harness/cycle-S23CASHOUTMAIN-spain-france-cashout/cycle-S23CASHOUTMAIN-odds-api-s23-visible-flow.json"
+        "docs/mobile/harness/cycle-ZF-spain-france-cashout-fresh/cycle-ZF-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json"
       ]
     },
     "runtimeLaunch": {
