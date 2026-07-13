@@ -246,7 +246,10 @@ async function main() {
       getPath(entries.providerMakerHandoff, ["checks", "makerRunQuoteRouteVisible"]) === true,
     makerQuoteAvailable:
       truthy(getPath(entries.runtimeStatus, ["checks", "quoteRouteHealthy"])) &&
-      truthy(getPath(entries.runtimeStatus, ["checks", "makerSeedPassed"])),
+      truthy(getPath(entries.runtimeStatus, ["checks", "makerSeedPassed"])) &&
+      truthy(getPath(entries.runtimeStatus, ["checks", "selectedOutcomeQuoteFound"])) &&
+      truthy(getPath(entries.runtimeStatus, ["checks", "selectedOutcomeBidVisible"])) &&
+      truthy(getPath(entries.runtimeStatus, ["checks", "selectedOutcomeAskVisible"])),
     staleHandlingKnown:
       pass(entries.staleGuardProof) &&
       pass(entries.staleGuardRun) &&

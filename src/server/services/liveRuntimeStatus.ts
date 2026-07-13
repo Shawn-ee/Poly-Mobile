@@ -1437,11 +1437,14 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     typeof s23ProofAgeAtCompletionHours === "number" && typeof completionAgeHours === "number"
       ? Number((s23ProofAgeAtCompletionHours + completionAgeHours).toFixed(2))
       : null;
+  const selectedMarketForStatus =
+    getPath(phaseAudit, ["currentSelectedMarket"]) ??
+    getPath(phaseAudit, ["selectedMarket"]) ??
+    getPath(completionAudit, ["currentSelectedMarket"]) ??
+    getPath(completionAudit, ["selectedMarket"]);
   const selectedMarketId =
-    stringValue(getPath(phaseAudit, ["selectedMarket", "id"])) ??
-    stringValue(getPath(phaseAudit, ["selectedMarket", "marketId"])) ??
-    stringValue(getPath(completionAudit, ["selectedMarket", "id"])) ??
-    stringValue(getPath(completionAudit, ["selectedMarket", "marketId"]));
+    stringValue(getPath(selectedMarketForStatus, ["id"])) ??
+    stringValue(getPath(selectedMarketForStatus, ["marketId"]));
   const providerSnapshots = await getProviderSnapshotFreshness({
     marketId: selectedMarketId,
     maxAgeHours: maxLiveProofAgeHours,
@@ -1958,7 +1961,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     status: ready ? "ready" : "needs_attention",
     event: completionAudit?.event ?? phaseAudit?.event ?? null,
     selectedEventLifecycle,
-    selectedMarket: phaseAudit?.selectedMarket ?? null,
+    selectedMarket: selectedMarketForStatus ?? null,
     runtimeTruth: {
       localInternalRuntimeReady: ready,
       fullProductionRuntimeComplete: getPath(completionAudit, ["runtimeTruth", "fullProductionRuntimeComplete"]) === true,

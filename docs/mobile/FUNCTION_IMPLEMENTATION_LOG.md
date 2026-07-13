@@ -15865,3 +15865,22 @@ Known limitations:
   - `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`
   - `docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json`
 - Known limitations: this tightens local selected-outcome quote proof only. Installed unattended services and production official-result auto-settlement remain P1.
+
+## Cycle ZZD - Runtime Status Selected Outcome Alignment
+
+- Feature/runtime worked on: Backend Live Runtime Survey / One Event Live Pipeline operator/status truth for the current selected `Spain vs. France` market outcome.
+- Frontend components touched: none.
+- Backend/routes touched: `GET /api/internal/live-runtime/status` through `src/server/services/liveRuntimeStatus.ts`.
+- Important functions/services touched: `scripts/report_holiwyn_live_runtime_completion_audit.ts` and `src/server/services/liveRuntimeStatus.ts`.
+- User/runtime interactions supported: internal tester/operator status now exposes the same current maker-selected outcome used by the quote and ticket proof. The completion audit also requires the selected-outcome quote checks from runtime status, so it can no longer pass from generic quote-route health alone.
+- State transitions: read-only status/audit refresh. No provider quota was spent, no provider scan ran, no mobile UI changed, no orders were placed, and no settlement executed.
+- Proof:
+  - `npm run mobile:live-runtime-completion-audit`
+  - `npm run mobile:one-event-runtime-status`
+  - `npm run mobile:one-event-phase-audit`
+  - `npx jest --runInBand src/__tests__/liveRuntimeStatus.service.test.ts src/__tests__/internal.live-runtime.status.route.test.ts`
+- Proof summaries:
+  - `docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json`
+- Known limitations: this aligns local runtime status and completion gates only. Installed unattended services and production official-result auto-settlement remain P1.
