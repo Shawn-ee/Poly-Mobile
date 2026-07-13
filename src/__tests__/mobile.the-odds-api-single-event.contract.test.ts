@@ -39,6 +39,16 @@ describe("The Odds API single-event temporary provider", () => {
     expect(sanitizeOddsApiPath(url)).toBe("/v4/sports/soccer_epl/events?id=1");
   });
 
+  it("keeps provider outcome seeding repeatable when legacy global slugs collide", () => {
+    const source = service();
+    expect(source).toContain("export async function outcomeSlugForUpsert");
+    expect(source).toContain("findUnique({");
+    expect(source).toContain("where: { slug: baseSlug }");
+    expect(source).toContain("existing.marketId === marketId && existing.code === outcomeCode");
+    expect(source).toContain('return `${baseSlug}-${shortHash(`${marketId}:${outcomeCode}`, 8)}`');
+    expect(source).toContain("const slug = await outcomeSlugForUpsert(params.marketId, params.marketSlug, params.spec.code)");
+  });
+
   it("lets cached one-event runtime checks reuse canonical fresh provider proof without spending quota", () => {
     const source = liveRuntimeScript();
     expect(source).toContain("if (-not $RunProviderProof -and -not (Test-Path -LiteralPath $resolvedLiveProofSummaryPath))");

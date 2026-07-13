@@ -116,8 +116,10 @@ If the provider fails, quota is low, or no upcoming event has supported markets:
 - Event: Spain vs. France, `soccer_fifa_world_cup`, `2026-07-14T19:00:00Z`.
 - Provider calls: one sports scan, quota-free event scans, one event-markets call, and two event-odds refreshes.
 - Quota used by provider headers: 13 credits, under the 16-credit cap.
-- Latest remaining quota at proof time: 459.
+- Latest remaining quota at proof time: 393.
 - Stale handling proof: selected market quote lifecycle changed from stale before refresh to ready after refresh.
+- Repeatability proof: provider outcome seeding now handles legacy/global outcome slug collisions with deterministic per-market suffixes instead of failing repeat imports.
+- Local proof-state hygiene: the live proof records `marketMaker.collateralRepair` if a balanced public `sportsbook-odds` orderbook market needs local collateral metadata reconciled before fake-token maker seeding.
 - Stale trading guard proof: selected market was forced stale, paused, rejected order placement with `MARKET_UNAVAILABLE`, and was restored to `LIVE`.
 - Supervisor stale monitor proof: one supervisor cycle ran the stale guard in dry-run mode and reported that all cached markets would pause under the 90-second stale rule; no market was mutated.
 - Runtime status proof: status mode reports the closed-market settlement guard, including `executionRequiresMarketStatus=CLOSED` and the latest blocked live-market settlement attempt reason, without spending provider quota. It also separates latest-run supervisor settings from proven repeated runtime capabilities so operator status stays clear after narrow proof runs.

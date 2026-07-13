@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T09:02:29.409Z",
+  "generatedAt": "2026-07-13T09:24:27.234Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -48,7 +48,7 @@
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+    "outcomeId": "72c3377d-ae57-4f2b-b75d-0850b40bf5de",
     "outcomeName": "Over +2.5",
     "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
   },
@@ -60,20 +60,20 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-13T09:02:29.409Z"
+        "timestamp": "2026-07-13T09:24:27.233Z"
       },
       "error": null
     }
   },
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
-    "liveProofGeneratedAt": "2026-07-13T00:24:21.875Z",
-    "liveProofAgeHours": 8.64,
+    "liveProofGeneratedAt": "2026-07-13T09:24:03.509Z",
+    "liveProofAgeHours": 0.01,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
-      "requestsUsed": "67",
-      "requestsRemaining": "433",
+      "requestsUsed": "107",
+      "requestsRemaining": "393",
       "requestsLast": "6"
     },
     "policy": {
@@ -92,7 +92,7 @@
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
     "makerSeedGeneratedAt": "2026-07-13T08:25:46.639Z",
-    "makerSeedAgeHours": 0.61,
+    "makerSeedAgeHours": 0.98,
     "quoteRoute": {
       "ok": true,
       "status": 200,
@@ -100,19 +100,19 @@
         "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
         "quotes": [
           {
-            "outcomeId": "24515f22-3717-4b61-82a2-c072febc8f5b",
-            "outcomeName": "Over 2.5",
-            "bestBid": "0.58",
-            "bestAsk": "0.6",
-            "bestBidSize": 36.9,
-            "bestAskSize": 200,
-            "midPrice": "0.59",
-            "lastPrice": "0.58",
-            "lastTradeAt": "2026-07-13T08:43:38.933Z"
+            "outcomeId": "72c3377d-ae57-4f2b-b75d-0850b40bf5de",
+            "outcomeName": "Over +2.5",
+            "bestBid": null,
+            "bestAsk": null,
+            "bestBidSize": null,
+            "bestAskSize": null,
+            "midPrice": null,
+            "lastPrice": "0.46",
+            "lastTradeAt": "2026-07-13T09:24:03.327Z"
           },
           {
-            "outcomeId": "651d8407-2f22-4a37-8d2a-72f483b580fe",
-            "outcomeName": "Under 2.5",
+            "outcomeId": "70ad531f-dbde-4247-897f-4132ea15fe5d",
+            "outcomeName": "Under +2.5",
             "bestBid": null,
             "bestAsk": null,
             "bestBidSize": null,
@@ -129,7 +129,7 @@
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
     "schedulerGeneratedAt": "2026-07-13T05:48:55.212Z",
-    "schedulerAgeHours": 3.23,
+    "schedulerAgeHours": 3.59,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 3
@@ -138,9 +138,9 @@
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
     "resultSettlementExecutionGeneratedAt": "2026-07-12T11:52:39.122Z",
-    "resultSettlementExecutionAgeHours": 21.16,
+    "resultSettlementExecutionAgeHours": 21.53,
     "resultSettlementLiveBlockedGeneratedAt": "2026-07-12T11:52:37.215Z",
-    "resultSettlementLiveBlockedAgeHours": 21.16,
+    "resultSettlementLiveBlockedAgeHours": 21.53,
     "executionRequiresMarketStatus": "CLOSED",
     "blockedExecutionReason": "market_must_be_closed_before_result_settlement:LIVE",
     "activeTesterEventMutated": false,

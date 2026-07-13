@@ -2,27 +2,14 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { Prisma } from "@prisma/client";
-import { prisma } from "@/lib/db";
-import { API_KEY_SCOPES, createApiCredential } from "@/lib/canonicalAuth";
-import { mintCompleteSetForPublicOrderbook } from "@/server/services/orderbookCollateral";
-import { cancelOrderAndUnlock, placeOrderAndMatch } from "@/server/services/matching";
-import {
-  assertQuotaBudget,
-  availableMarketKeysFromResponse,
-  normalizeOddsApiEvent,
-  oddsApiGetJson,
-  quotaCost,
-  seedOddsApiSingleEvent,
-  selectCandidateSoccerSports,
-  selectOddsMarkets,
-  selectPreferredEvent,
+import { loadLocalEnvForScript } from "./local_env";
+import type {
   type OddsApiCallRecord,
   type OddsApiEvent,
   type OddsApiEventOddsResponse,
   type OddsApiMarketsResponse,
   type OddsApiSport,
 } from "@/server/services/theOddsApiSingleEventProvider";
-import { writeProviderRefreshRun } from "@/server/services/providerRefreshRun";
 
 const DEFAULT_BASE_URL = "http://127.0.0.1:3002";
 const DEFAULT_OUTPUT_PATH = "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json";
@@ -36,6 +23,23 @@ const DEFAULT_QUOTE_OFFSET_TICKS = 2;
 const TICK_SIZE = 0.01;
 
 type SelectedMarket = Awaited<ReturnType<typeof loadSelectedMarket>>;
+
+let prisma: typeof import("@/lib/db")["prisma"];
+let API_KEY_SCOPES: typeof import("@/lib/canonicalAuth")["API_KEY_SCOPES"];
+let createApiCredential: typeof import("@/lib/canonicalAuth")["createApiCredential"];
+let mintCompleteSetForPublicOrderbook: typeof import("@/server/services/orderbookCollateral")["mintCompleteSetForPublicOrderbook"];
+let cancelOrderAndUnlock: typeof import("@/server/services/matching")["cancelOrderAndUnlock"];
+let placeOrderAndMatch: typeof import("@/server/services/matching")["placeOrderAndMatch"];
+let assertQuotaBudget: typeof import("@/server/services/theOddsApiSingleEventProvider")["assertQuotaBudget"];
+let availableMarketKeysFromResponse: typeof import("@/server/services/theOddsApiSingleEventProvider")["availableMarketKeysFromResponse"];
+let normalizeOddsApiEvent: typeof import("@/server/services/theOddsApiSingleEventProvider")["normalizeOddsApiEvent"];
+let oddsApiGetJson: typeof import("@/server/services/theOddsApiSingleEventProvider")["oddsApiGetJson"];
+let quotaCost: typeof import("@/server/services/theOddsApiSingleEventProvider")["quotaCost"];
+let seedOddsApiSingleEvent: typeof import("@/server/services/theOddsApiSingleEventProvider")["seedOddsApiSingleEvent"];
+let selectCandidateSoccerSports: typeof import("@/server/services/theOddsApiSingleEventProvider")["selectCandidateSoccerSports"];
+let selectOddsMarkets: typeof import("@/server/services/theOddsApiSingleEventProvider")["selectOddsMarkets"];
+let selectPreferredEvent: typeof import("@/server/services/theOddsApiSingleEventProvider")["selectPreferredEvent"];
+let writeProviderRefreshRun: typeof import("@/server/services/providerRefreshRun")["writeProviderRefreshRun"];
 
 const dec = (value: Prisma.Decimal.Value) => new Prisma.Decimal(value);
 
@@ -53,6 +57,26 @@ const boolFlag = (name: string) => process.argv.includes(`--${name}`);
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
+}
+
+async function loadRuntimeDependencies() {
+  loadLocalEnvForScript(["DATABASE_URL"]);
+  ({ prisma } = await import("@/lib/db"));
+  ({ API_KEY_SCOPES, createApiCredential } = await import("@/lib/canonicalAuth"));
+  ({ mintCompleteSetForPublicOrderbook } = await import("@/server/services/orderbookCollateral"));
+  ({ cancelOrderAndUnlock, placeOrderAndMatch } = await import("@/server/services/matching"));
+  ({
+    assertQuotaBudget,
+    availableMarketKeysFromResponse,
+    normalizeOddsApiEvent,
+    oddsApiGetJson,
+    quotaCost,
+    seedOddsApiSingleEvent,
+    selectCandidateSoccerSports,
+    selectOddsMarkets,
+    selectPreferredEvent,
+  } = await import("@/server/services/theOddsApiSingleEventProvider"));
+  ({ writeProviderRefreshRun } = await import("@/server/services/providerRefreshRun"));
 }
 
 async function writeJson(outputPath: string, value: unknown) {
@@ -286,6 +310,74 @@ async function currentOutcomeBook(marketId: string, outcomeId: string) {
   };
 }
 
+async function reconcileLocalProofCollateral(marketId: string) {
+  assert(process.env.NODE_ENV !== "production", "Refusing to reconcile proof collateral in production.");
+
+  const market = await prisma.market.findUnique({
+    where: { id: marketId },
+    select: {
+      id: true,
+      mechanism: true,
+      visibility: true,
+      collateralUSDC: true,
+      referenceSource: true,
+    },
+  });
+  assert(market, `Missing market ${marketId}.`);
+  assert(
+    market.mechanism === "ORDERBOOK" && market.visibility === "PUBLIC" && market.referenceSource === "sportsbook-odds",
+    "Proof collateral reconciliation only supports public sportsbook-odds orderbook markets.",
+  );
+
+  const outcomes = await prisma.outcome.findMany({
+    where: { marketId, isActive: true },
+    select: { id: true, code: true },
+    orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }],
+  });
+  assert(outcomes.length >= 2, "Proof collateral reconciliation requires at least two active outcomes.");
+
+  const grouped = await prisma.position.groupBy({
+    by: ["outcomeId"],
+    where: {
+      marketId,
+      outcomeId: { in: outcomes.map((outcome) => outcome.id) },
+      shares: { gt: dec(0) },
+    },
+    _sum: { shares: true },
+  });
+  const outstanding = new Map(grouped.map((row) => [row.outcomeId, row._sum.shares ?? dec(0)]));
+  const byOutcome = outcomes.map((outcome) => ({
+    outcomeId: outcome.id,
+    code: outcome.code,
+    shares: (outstanding.get(outcome.id) ?? dec(0)).toString(),
+  }));
+  const expectedCollateral = dec(byOutcome[0]?.shares ?? 0);
+  const imbalanced = byOutcome.some((outcome) => !dec(outcome.shares).equals(expectedCollateral));
+  assert(!imbalanced, `Cannot reconcile imbalanced proof market positions: ${JSON.stringify(byOutcome)}`);
+
+  const before = dec(market.collateralUSDC);
+  if (before.equals(expectedCollateral)) {
+    return {
+      repaired: false,
+      before: before.toString(),
+      after: before.toString(),
+      byOutcome,
+    };
+  }
+
+  await prisma.market.update({
+    where: { id: marketId },
+    data: { collateralUSDC: expectedCollateral },
+  });
+
+  return {
+    repaired: true,
+    before: before.toString(),
+    after: expectedCollateral.toString(),
+    byOutcome,
+  };
+}
+
 function avoidCrossingOpenBook(
   plan: ReturnType<typeof snapshotPricePlan>,
   book: Awaited<ReturnType<typeof currentOutcomeBook>>,
@@ -466,6 +558,7 @@ async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to run one-event live runtime proof in production.");
   }
+  await loadRuntimeDependencies();
   const apiKey = process.env.THE_ODDS_API_KEY?.trim();
   assert(apiKey, "THE_ODDS_API_KEY must be set in the local environment. It is never read from files or printed.");
 
@@ -527,6 +620,7 @@ async function main() {
   const initialPricePlan = snapshotPricePlan(selectedMarket.snapshot, quoteOffsetTicks);
   const preSeedBook = await currentOutcomeBook(selectedMarket.market.id, selectedMarket.outcome.id);
   const pricePlan = avoidCrossingOpenBook(initialPricePlan, preSeedBook);
+  const collateralRepair = await reconcileLocalProofCollateral(selectedMarket.market.id);
   const maker = await seedShiftedMakerQuotes({
     market: selectedMarket.market,
     outcome: selectedMarket.outcome,
@@ -713,6 +807,7 @@ async function main() {
       referenceBid: pricePlan.referenceBid,
       referenceAsk: pricePlan.referenceAsk,
       preSeedBook,
+      collateralRepair,
       adjustments: pricePlan.adjustments,
       plannedBid: pricePlan.plannedBid,
       plannedAsk: pricePlan.plannedAsk,
@@ -792,5 +887,5 @@ main()
     process.exitCode = 1;
   })
   .finally(async () => {
-    await prisma.$disconnect();
+    if (prisma) await prisma.$disconnect();
   });

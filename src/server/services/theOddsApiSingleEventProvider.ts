@@ -1002,6 +1002,7 @@ async function seedSupplementalOutcome(params: {
   spec: SupplementalOutcomeSpec;
   index: number;
 }) {
+  const slug = await outcomeSlugForUpsert(params.marketId, params.marketSlug, params.spec.code);
   const existing = await prisma.outcome.findFirst({
     where: { marketId: params.marketId, code: params.spec.code },
     select: { id: true },
@@ -1031,7 +1032,7 @@ async function seedSupplementalOutcome(params: {
         data: {
           marketId: params.marketId,
           code: params.spec.code,
-          slug: `${params.marketSlug}-${slugify(params.spec.code)}`,
+          slug,
           ...data,
         },
       });
@@ -1044,6 +1045,7 @@ async function seedOddsOutcome(params: {
   index: number;
   provider: NormalizedOddsApiMarket;
 }) {
+  const slug = await outcomeSlugForUpsert(params.marketId, params.marketSlug, params.spec.code);
   const existing = await prisma.outcome.findFirst({
     where: { marketId: params.marketId, code: params.spec.code },
     select: { id: true },
@@ -1083,10 +1085,24 @@ async function seedOddsOutcome(params: {
         data: {
           marketId: params.marketId,
           code: params.spec.code,
-          slug: `${params.marketSlug}-${slugify(params.spec.code)}`,
+          slug,
           ...data,
         },
       });
+}
+
+export async function outcomeSlugForUpsert(marketId: string, marketSlug: string, outcomeCode: string) {
+  const baseSlug = `${marketSlug}-${slugify(outcomeCode)}`;
+  const existing = await prisma.outcome.findUnique({
+    where: { slug: baseSlug },
+    select: { marketId: true, code: true },
+  });
+
+  if (!existing || (existing.marketId === marketId && existing.code === outcomeCode)) {
+    return baseSlug;
+  }
+
+  return `${baseSlug}-${shortHash(`${marketId}:${outcomeCode}`, 8)}`;
 }
 
 function marketReferenceMetadata(params: {

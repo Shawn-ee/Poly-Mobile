@@ -2,6 +2,14 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle LIVEODDSREPEAT - Repeatable Live Provider Proof
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Repeatable one-event live provider refresh | The Odds API `/v4/sports`, `/v4/sports/{sport}/events`, `/v4/sports/{sport}/events/{eventId}/markets`, `/v4/sports/{sport}/events/{eventId}/odds`; local command `npm run mobile:one-event-live-runtime:provider` | Provider `GET`; local proof command | `THE_ODDS_API_KEY` in the caller's process environment only | One event, capped market keys, `regions=us`, `oddsFormat=decimal`, two refresh iterations under quota cap | Redacted quota headers, selected event, normalized markets/outcomes, provider quote snapshots, stale-to-ready quote lifecycle | Existing `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `MarketOutcomeSnapshot`, `ProviderRefreshRun` | Cached runtime/status checks read the redacted proof and do not call the provider | Continuous unattended provider refresh remains P1. |
+| Repeatable outcome identity upsert | Internal provider seeding service `seedOddsApiSingleEvent` | Local DB/service call | Local dev DB only | Normalized market/outcome specs from provider response | Stable outcome `code`, `slug`, `referenceTokenId`, `referenceMetadata`, and market/outcome identity | Existing globally unique `Outcome.slug` and unique `(marketId, code)` constraints | None | No schema change. Legacy/global slug collisions get deterministic per-market suffixes instead of failing the import. |
+| Local proof collateral reconciliation | Internal proof helper in `scripts/prove_odds_api_one_event_live_runtime.ts` before maker seeding | Local DB/service call | Local development only; refuses production | Selected public `sportsbook-odds` market id | Records `marketMaker.collateralRepair` with before/after collateral and by-outcome outstanding shares | Existing `Market.collateralUSDC`, `Outcome`, `Position` | None | This is proof-state hygiene only. Production accounting/settlement reconciliation remains outside this cycle. |
+
 ## Cycle S23CASHOUT - Spain vs. France Cashout Proof
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

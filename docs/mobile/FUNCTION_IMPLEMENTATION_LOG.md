@@ -2,6 +2,19 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle LIVEODDSREPEAT - Repeatable Live Provider Proof
+
+- Feature/runtime worked on: repeatable one-event Odds API live-provider proof for the backend-owned `Spain vs. France` event.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/prove_odds_api_one_event_live_runtime.ts`
+  - `src/server/services/theOddsApiSingleEventProvider.ts`
+  - `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+- User/runtime interactions supported: the proof can refresh the same provider event repeatedly, preserve provider market/outcome identity, seed shifted fake-token maker quotes, place a fake-token buy, reject a no-position sell, close the bought position with a sell, and verify Portfolio/history through existing backend routes.
+- State transitions: provider quote snapshots are forced stale, refreshed twice from The Odds API, recorded as ready for quote data, maker liquidity is seeded locally, a BUY fills into a position, a SELL closes it, and history records both sides.
+- API/data dependencies: The Odds API `/sports`, `/events`, `/markets`, `/odds`; local `/api/health`, `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+- Known limitations: the proof remains bounded and explicit, not an unattended provider/maker daemon. Local proof collateral reconciliation is limited to balanced public `sportsbook-odds` orderbook markets and is recorded in the redacted summary when needed.
+
 ## Cycle S23CASHOUT - Spain vs. France Cashout Proof
 
 - Feature/runtime worked on: internal tester trading flow for the backend-owned Odds API `Spain vs. France` event.
