@@ -10891,3 +10891,12 @@ Future migration concern:
 - Schema mismatch: none. Existing position/order/fill/trade/balance models support the buy and cashout/sell path.
 - Temporary mock/static data: no ad hoc mobile fixture data added. The event remains the backend-owned Odds API internal tester event with local fake-token execution.
 - Remaining gaps: a dedicated cashout preview/proceeds endpoint could improve UX later, but it is not a P0 blocker for the proven S23 flow.
+
+## Cycle ZZ - Live Runtime Evidence Refresh
+
+- Fields added/confirmed for tooling: no backend/mobile response fields changed. The refreshed runtime status and audits continue to expose the one-event runtime answers for market-maker continuity, live/replay odds mode, refresh cadence, quota protection, stale handling, lifecycle state, settlement guard state, and S23 proof source.
+- Closed or narrowed: completion/phase audits now cite the latest S23 proof path, `docs/mobile/harness/cycle-ZY-spain-france-cashout-s23/cycle-ZY-odds-api-s23-visible-flow.json`, for one-event mobile trading evidence.
+- Route mismatch: none. The cycle reads existing health, runtime status, quote, and audit summary contracts.
+- Schema mismatch: none. No Prisma migration or model change.
+- Temporary mock/static data: none added. The status/audit commands use stored proof and live local backend state without provider calls.
+- Remaining gaps: installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1; multi-event provider polling remains P2.

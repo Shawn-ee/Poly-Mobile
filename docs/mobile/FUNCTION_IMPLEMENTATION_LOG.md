@@ -15817,3 +15817,17 @@ Known limitations:
 - State transitions: proof seeded/used test liquidity, bought `Over 2.5`, created a position, sold owned shares through cashout, and verified Portfolio/history. No provider quota was spent beyond the proof's normal local replay/setup path, no new provider scan ran, and no settlement executed.
 - Proof: `docs/mobile/harness/cycle-ZY-spain-france-cashout-s23/cycle-ZY-odds-api-s23-visible-flow.json`.
 - Known limitations: this proves the current backend-owned sportsbook event only. Google OAuth readiness and Polymarket provider breadth remain P1 outside this cashout flow.
+
+## Cycle ZZ - Live Runtime Evidence Refresh
+
+- Feature/runtime worked on: Backend Live Runtime Survey / One Event Live Pipeline evidence refresh after the fresh ZY S23 proof.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. Existing `GET /api/health`, `GET /api/internal/live-runtime/status`, and `GET /api/markets/:marketId/quote` were read by the audit/status commands.
+- Important functions/services touched: no source implementation changes. Refreshed `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`, `live-runtime-completion-audit-summary.redacted.json`, and `live-runtime-phase-audit-summary.redacted.json`.
+- User/runtime interactions supported: no tester-facing behavior changed. The authoritative live-runtime audits now point at the latest S23 cashout proof (`cycle-ZY`) instead of an older proof.
+- State transitions: read-only audit/status cycle. It spent no provider quota, imported no markets, placed no orders, started no runtime loops, and executed no settlement.
+- Proof:
+  - `npm run mobile:one-event-runtime-status`
+  - `npm run mobile:live-runtime-completion-audit`
+  - `npm run mobile:one-event-phase-audit`
+- Known limitations: local internal runtime remains foreground/local-supervisor based. Installed unattended service ownership and production official-result auto-settlement remain P1.
