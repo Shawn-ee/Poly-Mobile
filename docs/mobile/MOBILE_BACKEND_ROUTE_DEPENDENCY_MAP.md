@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle RUNTIMECOMMANDS - Operator Launch Commands in Runtime Status
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Local runtime launch command projection | `/api/internal/live-runtime/status` | `GET` | Local/dev only; route returns 404 in production or when internal status is disabled; no mobile auth and no provider key | Optional `phaseAuditInProgress=1` for audit bootstrap | `serviceOwnership.localLaunch.recommendedProfileCommand`, `recommendedProfileInstallCommand`, `recommendedProfileUninstallCommand`, `scheduledTaskPlanCommand`, `scheduledTaskInstallCommand`, `liveProviderCommand`, `liveProviderInternalTesterCommand`, quota/prod-boundary fields | Reads existing launch-profile proof artifacts plus runtime status artifacts; no database schema change and no writes | None. The route projects existing no-quota artifact data and does not start or install anything. | Production still needs authenticated runtime controls, installed service ownership, and official-result auto-settlement controls. |
+
 ## Cycle SETTLEMENTBLOCKEDEVIDENCE - Blocked Settlement Audit Trail
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

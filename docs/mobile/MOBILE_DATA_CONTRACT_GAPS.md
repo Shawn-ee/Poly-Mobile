@@ -1,5 +1,13 @@
 # Mobile Data Contract Gaps
 
+## Cycle RUNTIMECOMMANDS - Operator Launch Commands in Runtime Status
+
+- Closed or narrowed: `/api/internal/live-runtime/status` now projects actionable local runtime launch commands from the launch-profile artifact, so operators can see plan/install/uninstall commands and live-provider opt-in commands from the single status endpoint.
+- Backend-supported fields used: launch-profile `recommendedInternalTesterProfile`, `manualForegroundProfile`, `scheduledTaskProfile`, and `liveProviderProfile` fields.
+- Route mismatch: none for public mobile APIs. This remains a local/dev-only runtime status contract and does not mutate the OS or start runtime loops.
+- Temporary mock/static data: none added.
+- Future migration concern: production still needs authenticated runtime operation records and durable service/job ownership instead of local artifact-backed command projection.
+
 ## Cycle SETTLEMENTBLOCKEDEVIDENCE - Blocked Settlement Audit Trail
 
 - Closed or narrowed: local result-review/status now project canonical `settlement.trusted_result.blocked` audit evidence, so blocked active-event execution attempts are visible as redacted operator evidence instead of only proof-script artifacts.

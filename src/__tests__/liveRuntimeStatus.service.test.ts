@@ -507,6 +507,7 @@ const makeLaunchProfile = (generatedAt = nowIso()) => ({
         "npm run mobile:local-runtime-startup -- -Action plan -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
       installCommand:
         "npm run mobile:local-runtime-startup -- -Action install -Apply -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
+      uninstallCommand: "npm run mobile:local-runtime-startup -- -Action uninstall -Apply",
       quotaMode: "no provider quota unless provider/live-result flags are explicitly added",
       productionBoundary: "local Windows user-logon fallback, not a production service",
     },
@@ -521,10 +522,17 @@ const makeLaunchProfile = (generatedAt = nowIso()) => ({
       ],
     },
     scheduledTaskProfile: {
+      planCommand:
+        "npm run mobile:local-runtime-task -- -Action plan -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
+      installCommand:
+        "npm run mobile:local-runtime-task -- -Action install -Apply -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
       usableInCurrentContext: false,
       currentContextNote: "Windows scheduled-task registration was denied in the current process context.",
     },
     liveProviderProfile: {
+      command:
+        "npm run mobile:one-event-live-supervisor -- -RunProviderProof -Continuous -MaxIterations 0 -MaxProviderProofRuns 1 -ProviderProofEveryIterations 1",
+      internalTesterCommand: "npm run mobile:internal-tester-runtime:live-provider-start",
       defaultForInternalTesting: false,
       quotaMode: "requires THE_ODDS_API_KEY and is capped",
     },
@@ -1101,8 +1109,24 @@ describe("live runtime status service", () => {
       localLaunch: {
         recommendedProfileLabel:
           "User Startup fallback with backend, Expo, supervisor, result poller, result ingestion, settlement scheduling, and approved-settlement wait mode",
+        recommendedProfileCommand:
+          "npm run mobile:local-runtime-startup -- -Action plan -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
+        recommendedProfileInstallCommand:
+          "npm run mobile:local-runtime-startup -- -Action install -Apply -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
+        recommendedProfileUninstallCommand: "npm run mobile:local-runtime-startup -- -Action uninstall -Apply",
+        recommendedProfileQuotaMode: "no provider quota unless provider/live-result flags are explicitly added",
+        recommendedProfileProductionBoundary: "local Windows user-logon fallback, not a production service",
+        scheduledTaskPlanCommand:
+          "npm run mobile:local-runtime-task -- -Action plan -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
+        scheduledTaskInstallCommand:
+          "npm run mobile:local-runtime-task -- -Action install -Apply -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
         scheduledTaskUsableInCurrentContext: false,
         scheduledTaskContextNote: "Windows scheduled-task registration was denied in the current process context.",
+        liveProviderCommand:
+          "npm run mobile:one-event-live-supervisor -- -RunProviderProof -Continuous -MaxIterations 0 -MaxProviderProofRuns 1 -ProviderProofEveryIterations 1",
+        liveProviderInternalTesterCommand: "npm run mobile:internal-tester-runtime:live-provider-start",
+        liveProviderDefaultForInternalTesting: false,
+        liveProviderQuotaMode: "requires THE_ODDS_API_KEY and is capped",
       },
       durableEvidence: {
         providerRefreshRunRecorded: true,

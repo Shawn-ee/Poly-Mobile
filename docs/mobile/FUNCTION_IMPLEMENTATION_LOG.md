@@ -2,6 +2,18 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle RUNTIMECOMMANDS - Operator Launch Commands in Runtime Status
+
+- Feature/runtime worked on: backend local live-runtime status/operator contract.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `src/server/services/liveRuntimeStatus.ts`
+  - `src/__tests__/liveRuntimeStatus.service.test.ts`
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/status` and read the recommended local startup plan/install/uninstall commands, scheduled-task plan/install commands, and explicit live-provider command without opening separate launch-profile artifacts.
+- State transitions: none. This cycle is read-only status projection. It does not install Startup launchers, install scheduled tasks, start loops, call The Odds API, spend quota, mutate markets, or execute settlement.
+- API/data dependencies: reads the existing no-quota `local-runtime-launch-profile-summary.redacted.json` artifact and projects safe command strings into `serviceOwnership.localLaunch`.
+- Known limitations: this narrows local operator readiness only. It does not create an installed production daemon or unguarded official-result auto-settlement.
+
 ## Cycle SETTLEMENTBLOCKEDEVIDENCE - Blocked Settlement Audit Trail
 
 - Feature/runtime worked on: backend local official-result review/status evidence.

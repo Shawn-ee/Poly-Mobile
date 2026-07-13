@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T01:23:45.616Z",
+  "generatedAt": "2026-07-13T01:30:52.217Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -60,7 +60,7 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-13T01:23:45.614Z"
+        "timestamp": "2026-07-13T01:30:52.216Z"
       },
       "error": null
     }
@@ -68,7 +68,7 @@
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveProofGeneratedAt": "2026-07-13T00:24:21.875Z",
-    "liveProofAgeHours": 0.99,
+    "liveProofAgeHours": 1.11,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
@@ -92,7 +92,7 @@
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
     "makerSeedGeneratedAt": "2026-07-13T00:29:11.529Z",
-    "makerSeedAgeHours": 0.91,
+    "makerSeedAgeHours": 1.03,
     "quoteRoute": {
       "ok": true,
       "status": 200,
@@ -129,7 +129,7 @@
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
     "schedulerGeneratedAt": "2026-07-13T00:29:16.128Z",
-    "schedulerAgeHours": 0.91,
+    "schedulerAgeHours": 1.03,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 3
@@ -138,9 +138,9 @@
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
     "resultSettlementExecutionGeneratedAt": "2026-07-12T11:52:39.122Z",
-    "resultSettlementExecutionAgeHours": 13.52,
+    "resultSettlementExecutionAgeHours": 13.64,
     "resultSettlementLiveBlockedGeneratedAt": "2026-07-12T11:52:37.215Z",
-    "resultSettlementLiveBlockedAgeHours": 13.52,
+    "resultSettlementLiveBlockedAgeHours": 13.64,
     "executionRequiresMarketStatus": "CLOSED",
     "blockedExecutionReason": "market_must_be_closed_before_result_settlement:LIVE",
     "activeTesterEventMutated": false,

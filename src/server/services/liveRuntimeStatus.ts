@@ -696,6 +696,9 @@ function buildServiceOwnership(params: {
   const scheduledTaskProfile = objectValue(
     getPath(params.localRuntimeLaunchProfile, ["launchProfiles", "scheduledTaskProfile"]),
   );
+  const liveProviderProfile = objectValue(
+    getPath(params.localRuntimeLaunchProfile, ["launchProfiles", "liveProviderProfile"]),
+  );
 
   return {
     checked: true,
@@ -728,14 +731,24 @@ function buildServiceOwnership(params: {
     localLaunch: {
       recommendedProfileLabel: stringValue(recommendedProfile.label),
       recommendedProfileCommand: stringValue(recommendedProfile.command),
+      recommendedProfileInstallCommand: stringValue(recommendedProfile.installCommand),
+      recommendedProfileUninstallCommand: stringValue(recommendedProfile.uninstallCommand),
+      recommendedProfileQuotaMode: stringValue(recommendedProfile.quotaMode),
+      recommendedProfileProductionBoundary: stringValue(recommendedProfile.productionBoundary),
       manualForegroundCommands: Array.isArray(manualForegroundProfile.commands)
         ? manualForegroundProfile.commands
             .map((command) => objectValue(command).command)
             .filter((command): command is string => typeof command === "string" && command.length > 0)
         : [],
+      scheduledTaskPlanCommand: stringValue(scheduledTaskProfile.planCommand),
+      scheduledTaskInstallCommand: stringValue(scheduledTaskProfile.installCommand),
       scheduledTaskUsableInCurrentContext:
         booleanValue(scheduledTaskProfile.usableInCurrentContext) === true,
       scheduledTaskContextNote: stringValue(scheduledTaskProfile.currentContextNote),
+      liveProviderCommand: stringValue(liveProviderProfile.command),
+      liveProviderInternalTesterCommand: stringValue(liveProviderProfile.internalTesterCommand),
+      liveProviderDefaultForInternalTesting: booleanValue(liveProviderProfile.defaultForInternalTesting) === true,
+      liveProviderQuotaMode: stringValue(liveProviderProfile.quotaMode),
     },
     durableEvidence: {
       providerRefreshRunRecorded: params.providerRefreshRun != null,
