@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-13T19:57:43.0248691Z",
+    "generatedAt":  "2026-07-13T22:16:07.7995074Z",
     "scope":  "holiwyn-one-event-live-onboarding",
     "pass":  true,
-    "startedAt":  "2026-07-13T19:56:07.9789085Z",
-    "completedAt":  "2026-07-13T19:57:43.0258928Z",
+    "startedAt":  "2026-07-13T22:15:01.5890494Z",
+    "completedAt":  "2026-07-13T22:16:07.8005349Z",
     "mode":  "quota-free-replay",
     "providerPolicy":  {
                            "providerSource":  "the-odds-api",
@@ -35,7 +35,7 @@
                            "marketType":  "total_goals",
                            "marketGroupKey":  "totals",
                            "line":  "2.5",
-                           "outcomeId":  "f2634596-0692-428d-a0ee-457dcc6f32ce",
+                           "outcomeId":  "be4cfe8b-fa1e-4109-a627-2c13189a92a0",
                            "outcomeName":  "Over +2.5",
                            "referenceTokenId":  "odds-api-88263b2c42d6b2f5c6dbbda4"
                        },
@@ -47,8 +47,8 @@
                          "pass":  true,
                          "skipped":  true,
                          "reason":  "Redacted replay fixture is older than current UTC and a newer live-runtime event summary exists; pass -AllowPastReplay to intentionally overwrite local one-event state with the replay fixture.",
-                         "startedAt":  "2026-07-13T19:56:08.0284044Z",
-                         "finishedAt":  "2026-07-13T19:56:08.0284044Z"
+                         "startedAt":  "2026-07-13T22:15:01.6249081Z",
+                         "finishedAt":  "2026-07-13T22:15:01.6249081Z"
                      },
                      {
                          "label":  "cached-live-runtime-restore",
@@ -57,8 +57,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T19:56:08.0379176Z",
-                         "finishedAt":  "2026-07-13T19:56:10.6063474Z"
+                         "startedAt":  "2026-07-13T22:15:01.6327358Z",
+                         "finishedAt":  "2026-07-13T22:15:03.2180920Z"
                      },
                      {
                          "label":  "one-event-live-readiness",
@@ -67,8 +67,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T19:56:10.6073474Z",
-                         "finishedAt":  "2026-07-13T19:56:32.6360056Z"
+                         "startedAt":  "2026-07-13T22:15:03.2180920Z",
+                         "finishedAt":  "2026-07-13T22:15:21.6053922Z"
                      },
                      {
                          "label":  "one-event-runtime-status",
@@ -77,8 +77,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T19:56:32.6360056Z",
-                         "finishedAt":  "2026-07-13T19:56:36.5997672Z"
+                         "startedAt":  "2026-07-13T22:15:21.6063914Z",
+                         "finishedAt":  "2026-07-13T22:15:24.2452287Z"
                      },
                      {
                          "label":  "one-event-settlement-readiness",
@@ -87,8 +87,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T19:56:36.5997672Z",
-                         "finishedAt":  "2026-07-13T19:56:40.7306927Z"
+                         "startedAt":  "2026-07-13T22:15:24.2467324Z",
+                         "finishedAt":  "2026-07-13T22:15:27.5321930Z"
                      },
                      {
                          "label":  "one-event-result-ingestion",
@@ -97,8 +97,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T19:56:40.7306927Z",
-                         "finishedAt":  "2026-07-13T19:56:41.9232931Z"
+                         "startedAt":  "2026-07-13T22:15:27.5321930Z",
+                         "finishedAt":  "2026-07-13T22:15:28.7269807Z"
                      },
                      {
                          "label":  "one-event-result-settlement-dry-run",
@@ -107,8 +107,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T19:56:41.9242930Z",
-                         "finishedAt":  "2026-07-13T19:56:45.2974198Z"
+                         "startedAt":  "2026-07-13T22:15:28.7279818Z",
+                         "finishedAt":  "2026-07-13T22:15:31.7115796Z"
                      },
                      {
                          "label":  "one-event-settlement-dry-run",
@@ -117,8 +117,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T19:56:45.2979620Z",
-                         "finishedAt":  "2026-07-13T19:56:47.6003290Z"
+                         "startedAt":  "2026-07-13T22:15:31.7115796Z",
+                         "finishedAt":  "2026-07-13T22:15:34.4039665Z"
                      },
                      {
                          "label":  "start-local-runtime-loops",
@@ -127,8 +127,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T19:56:47.6008318Z",
-                         "finishedAt":  "2026-07-13T19:57:20.6051147Z"
+                         "startedAt":  "2026-07-13T22:15:34.4039665Z",
+                         "finishedAt":  "2026-07-13T22:15:47.2219858Z"
                      },
                      {
                          "label":  "status-local-runtime-loops",
@@ -137,8 +137,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T19:57:20.6066178Z",
-                         "finishedAt":  "2026-07-13T19:57:31.2619287Z"
+                         "startedAt":  "2026-07-13T22:15:47.2219858Z",
+                         "finishedAt":  "2026-07-13T22:15:55.7430176Z"
                      },
                      {
                          "label":  "stop-local-runtime-loops-after-proof",
@@ -147,8 +147,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T19:57:31.2629309Z",
-                         "finishedAt":  "2026-07-13T19:57:42.3534639Z"
+                         "startedAt":  "2026-07-13T22:15:55.7430176Z",
+                         "finishedAt":  "2026-07-13T22:16:07.5671123Z"
                      }
                  ],
     "backend":  {
@@ -159,7 +159,7 @@
                                                 "status":  "ok",
                                                 "db":  "connected",
                                                 "env":  "development",
-                                                "timestamp":  "2026-07-13T19:57:42.391Z"
+                                                "timestamp":  "2026-07-13T22:16:07.601Z"
                                             },
                                    "error":  null
                                }

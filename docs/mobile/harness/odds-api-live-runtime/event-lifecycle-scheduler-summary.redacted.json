@@ -1,9 +1,9 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-13T15:56:05.870Z",
+  "generatedAt": "2026-07-13T22:15:16.303Z",
   "scope": "odds-api-one-event-lifecycle-scheduler",
   "event": {
-    "id": "3c4716b1-5857-4150-a779-c2c98ab30361",
+    "id": "6a94107f-6513-4131-876d-87018782334f",
     "slug": "odds-api-single-soccer-test",
     "title": "Spain vs. France",
     "originalStartTime": "2026-07-14T19:00:00.000Z"
@@ -15,7 +15,7 @@
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "24515f22-3717-4b61-82a2-c072febc8f5b",
+    "outcomeId": "8720dab4-70ff-44d0-8d74-5fcff36f8420",
     "outcomeName": "Over 2.5"
   },
   "schedulerPolicy": {
@@ -27,36 +27,84 @@
   },
   "runs": {
     "noAction": {
-      "generatedAt": "2026-07-13T15:56:05.695Z",
+      "generatedAt": "2026-07-13T22:15:16.123Z",
       "eventSlug": "odds-api-single-soccer-test",
       "eventTitle": "Spain vs. France",
-      "eventStartTime": "2026-07-13T16:56:05.682Z",
+      "eventStatus": "active",
+      "eventLiveStatus": "SCHEDULED",
+      "eventStartTime": "2026-07-13T23:15:16.110Z",
       "status": "completed",
       "dryRun": false,
-      "now": "2026-07-13T15:56:05.682Z",
+      "now": "2026-07-13T22:15:16.110Z",
       "suspendBeforeStartSeconds": 300,
       "referenceSource": "sportsbook-odds",
       "action": "none",
       "reason": "Event is not inside the suspend/close window.",
+      "timing": {
+        "now": "2026-07-13T22:15:16.110Z",
+        "startTime": "2026-07-13T23:15:16.110Z",
+        "pauseAt": "2026-07-13T23:10:16.110Z",
+        "closeAt": "2026-07-13T23:15:16.110Z",
+        "secondsUntilStart": 3600,
+        "startAgeSeconds": 0,
+        "secondsUntilPause": 3300,
+        "suspendBeforeStartSeconds": 300,
+        "insideSuspendWindow": false,
+        "startPassed": false,
+        "tradingWindow": "pre_start_open",
+        "schedulerActionNow": "none",
+        "nextLifecycleAction": "pause",
+        "nextLifecycleActionAt": "2026-07-13T23:10:16.110Z",
+        "secondsUntilNextLifecycleAction": 3300,
+        "operatorNextAction": "wait_until_suspend_window"
+      },
       "candidateMarketCount": 3,
+      "candidateMarketStatusCounts": {
+        "LIVE": 3
+      },
       "changedMarketCount": 0,
+      "mutationApplied": false,
       "canceledOrderCount": 0,
       "changes": []
     },
     "pauseRun": {
-      "generatedAt": "2026-07-13T15:56:05.714Z",
+      "generatedAt": "2026-07-13T22:15:16.143Z",
       "eventSlug": "odds-api-single-soccer-test",
       "eventTitle": "Spain vs. France",
-      "eventStartTime": "2026-07-13T15:57:05.682Z",
+      "eventStatus": "active",
+      "eventLiveStatus": "SCHEDULED",
+      "eventStartTime": "2026-07-13T22:16:16.110Z",
       "status": "completed",
       "dryRun": false,
-      "now": "2026-07-13T15:56:05.682Z",
+      "now": "2026-07-13T22:15:16.110Z",
       "suspendBeforeStartSeconds": 300,
       "referenceSource": "sportsbook-odds",
       "action": "pause",
       "reason": "Event is inside the pre-start suspend window; pause trading.",
+      "timing": {
+        "now": "2026-07-13T22:15:16.110Z",
+        "startTime": "2026-07-13T22:16:16.110Z",
+        "pauseAt": "2026-07-13T22:11:16.110Z",
+        "closeAt": "2026-07-13T22:16:16.110Z",
+        "secondsUntilStart": 60,
+        "startAgeSeconds": 0,
+        "secondsUntilPause": -240,
+        "suspendBeforeStartSeconds": 300,
+        "insideSuspendWindow": true,
+        "startPassed": false,
+        "tradingWindow": "pre_start_suspend_window",
+        "schedulerActionNow": "pause",
+        "nextLifecycleAction": "pause",
+        "nextLifecycleActionAt": "2026-07-13T22:11:16.110Z",
+        "secondsUntilNextLifecycleAction": 0,
+        "operatorNextAction": "pause_trading_before_kickoff"
+      },
       "candidateMarketCount": 3,
+      "candidateMarketStatusCounts": {
+        "LIVE": 3
+      },
       "changedMarketCount": 3,
+      "mutationApplied": true,
       "canceledOrderCount": 0,
       "changes": [
         {
@@ -86,20 +134,44 @@
       ]
     },
     "closeRun": {
-      "generatedAt": "2026-07-13T15:56:05.797Z",
+      "generatedAt": "2026-07-13T22:15:16.233Z",
       "eventSlug": "odds-api-single-soccer-test",
       "eventTitle": "Spain vs. France",
-      "eventStartTime": "2026-07-13T15:56:04.682Z",
+      "eventStatus": "active",
+      "eventLiveStatus": "LIVE",
+      "eventStartTime": "2026-07-13T22:15:15.110Z",
       "status": "completed",
       "dryRun": false,
-      "now": "2026-07-13T15:56:05.682Z",
+      "now": "2026-07-13T22:15:16.110Z",
       "suspendBeforeStartSeconds": 300,
       "referenceSource": "sportsbook-odds",
       "action": "close",
       "reason": "Event startTime has passed or is now; close mobile-tradable markets.",
+      "timing": {
+        "now": "2026-07-13T22:15:16.110Z",
+        "startTime": "2026-07-13T22:15:15.110Z",
+        "pauseAt": "2026-07-13T22:10:15.110Z",
+        "closeAt": "2026-07-13T22:15:15.110Z",
+        "secondsUntilStart": -1,
+        "startAgeSeconds": 1,
+        "secondsUntilPause": -301,
+        "suspendBeforeStartSeconds": 300,
+        "insideSuspendWindow": false,
+        "startPassed": true,
+        "tradingWindow": "past_start",
+        "schedulerActionNow": "close",
+        "nextLifecycleAction": "close",
+        "nextLifecycleActionAt": "2026-07-13T22:15:15.110Z",
+        "secondsUntilNextLifecycleAction": 0,
+        "operatorNextAction": "close_markets_before_settlement"
+      },
       "candidateMarketCount": 3,
+      "candidateMarketStatusCounts": {
+        "LIVE": 3
+      },
       "changedMarketCount": 3,
-      "canceledOrderCount": 2,
+      "mutationApplied": true,
+      "canceledOrderCount": 3,
       "changes": [
         {
           "marketId": "378abc5d-144e-4797-9f07-8b271103468b",
@@ -107,7 +179,7 @@
           "fromStatus": "LIVE",
           "toStatus": "CLOSED",
           "closeTimeBefore": null,
-          "closeTimeAfter": "2026-07-13T15:56:05.682Z"
+          "closeTimeAfter": "2026-07-13T22:15:16.110Z"
         },
         {
           "marketId": "528f1f87-cc1c-44a0-8732-876ef0676071",
@@ -115,7 +187,7 @@
           "fromStatus": "LIVE",
           "toStatus": "CLOSED",
           "closeTimeBefore": null,
-          "closeTimeAfter": "2026-07-13T15:56:05.682Z"
+          "closeTimeAfter": "2026-07-13T22:15:16.110Z"
         },
         {
           "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
@@ -123,7 +195,7 @@
           "fromStatus": "LIVE",
           "toStatus": "CLOSED",
           "closeTimeBefore": null,
-          "closeTimeAfter": "2026-07-13T15:56:05.682Z"
+          "closeTimeAfter": "2026-07-13T22:15:16.110Z"
         }
       ]
     }

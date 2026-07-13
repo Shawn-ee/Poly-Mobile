@@ -15751,3 +15751,24 @@ Known limitations:
 - Proof summary: `docs/mobile/harness/odds-api-live-runtime/current-runtime-state-proof-summary.redacted.json`.
 - Audit doc: `docs/mobile/audits/cycle-ZU-current-warm-runtime-proof.md`.
 - Known limitations: market-maker and result-poller continuity is proven only while local loop processes are running. No installed production daemon exists. Fresh mobile-visible live odds still require explicit quota-capped provider refresh.
+
+## Cycle ZV - Clean Expo Onboarding Runtime Refresh
+
+- Feature/runtime worked on: one-command local internal tester onboarding for the Spain vs France event.
+- Frontend components touched: none.
+- Backend/routes touched: no backend route implementation changes. The proof reads `GET /api/health`, `GET /api/internal/live-runtime/status`, quote readiness, lifecycle/settlement readiness, and cached provider/runtime proof artifacts.
+- Important functions/services touched: no source code changes. Refreshed the existing `scripts/onboard_holiwyn_one_event_live_runtime.ps1` cached-runtime path and internal tester runtime manager proof.
+- User/runtime interactions supported: an operator can run `npm run mobile:one-event-onboarding:cached-runtime-clean-expo` to restore the cached one-event state, start local supervisor/result-poller loops, replace stale/external Expo with manager-owned server-mode Expo for S23, verify runtime status, then stop proof-owned loops.
+- State transitions: cached/live-runtime restore and local readiness proofs refresh redacted summary artifacts. The run spent no provider quota, did not import a new event, did not place orders, and did not execute active settlement.
+- API/data dependencies: consumes existing Spain vs France backend-owned event state, `docs/mobile/harness/odds-api-live-runtime/*`, local runtime process state, Docker Postgres health, and S23 ADB reverse readiness.
+- Proof:
+  - `npm run mobile:one-event-onboarding:cached-runtime-clean-expo`
+  - `npm run mobile:one-event-runtime-status`
+  - `npm run mobile:live-runtime-completion-audit`
+- Proof summaries:
+  - `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-start-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-status-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-stop-summary.redacted.json`
+- Audit doc: `docs/mobile/audits/cycle-ZV-clean-expo-onboarding-runtime-proof.md`.
+- Known limitations: this proves local operator-started runtime, not an installed always-on service. Official-result auto-settlement and installed provider/maker daemons remain P1.

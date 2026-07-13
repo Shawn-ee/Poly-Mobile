@@ -1,13 +1,12 @@
 {
-    "generatedAt":  "2026-07-13T22:09:06.2143728Z",
+    "generatedAt":  "2026-07-13T22:16:05.9515023Z",
     "scope":  "holiwyn-one-event-live-supervisor-process",
     "pass":  true,
     "operation":  {
-                      "action":  "stop",
-                      "startedAt":  "2026-07-13T22:09:04.8664460Z",
+                      "action":  "status",
+                      "startedAt":  "2026-07-13T22:16:05.9075076Z",
                       "force":  false,
-                      "result":  "stopped",
-                      "pid":  81260
+                      "result":  "not_running"
                   },
     "process":  {
                     "statePath":  ".runtime/one-event-live-supervisor/supervisor-process-state.json",
@@ -15,17 +14,12 @@
                     "stderr":  ".runtime/one-event-live-supervisor/supervisor.err.log",
                     "before":  {
                                    "known":  true,
-                                   "pid":  81260,
-                                   "running":  true,
-                                   "process":  {
-                                                   "id":  81260,
-                                                   "processName":  "powershell",
-                                                   "startTime":  "2026-07-13T22:08:47.5342172Z",
-                                                   "hasExited":  false
-                                               },
+                                   "pid":  72060,
+                                   "running":  false,
+                                   "process":  null,
                                    "state":  {
-                                                 "pid":  81260,
-                                                 "startedAt":  "2026-07-13T22:08:47.5436925Z",
+                                                 "pid":  72060,
+                                                 "startedAt":  "2026-07-13T22:15:38.2550382Z",
                                                  "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_live_supervisor.ps1 -BackendPort 3002 -IntervalSeconds 15 -Continuous -MaxIterations 0 -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                                                  "continuous":  true,
                                                  "maxIterations":  0,
@@ -53,12 +47,12 @@
                                },
                     "after":  {
                                   "known":  true,
-                                  "pid":  81260,
+                                  "pid":  72060,
                                   "running":  false,
                                   "process":  null,
                                   "state":  {
-                                                "pid":  81260,
-                                                "startedAt":  "2026-07-13T22:08:47.5436925Z",
+                                                "pid":  72060,
+                                                "startedAt":  "2026-07-13T22:15:38.2550382Z",
                                                 "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_live_supervisor.ps1 -BackendPort 3002 -IntervalSeconds 15 -Continuous -MaxIterations 0 -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                                                 "continuous":  true,
                                                 "maxIterations":  0,

@@ -1,10 +1,10 @@
 {
-    "generatedAt":  "2026-07-13T19:57:20.5367421Z",
+    "generatedAt":  "2026-07-13T22:15:47.1242209Z",
     "scope":  "holiwyn-internal-tester-runtime-manager",
     "pass":  true,
     "action":  "start",
-    "startedAt":  "2026-07-13T19:56:48.8469174Z",
-    "completedAt":  "2026-07-13T19:57:20.5377421Z",
+    "startedAt":  "2026-07-13T22:15:34.8992198Z",
+    "completedAt":  "2026-07-13T22:15:47.1249248Z",
     "operations":  [
                        {
                            "target":  "s23-adb-reverse",
@@ -19,22 +19,22 @@
                        {
                            "target":  "expo",
                            "result":  "stopped_external_expo_listener",
-                           "pid":  40500
+                           "pid":  80736
                        },
                        {
                            "target":  "expo",
                            "result":  "started",
-                           "pid":  18332
+                           "pid":  66532
                        },
                        {
                            "target":  "supervisor",
                            "result":  "started_direct",
-                           "pid":  47184
+                           "pid":  72060
                        },
                        {
                            "target":  "result-poller",
                            "result":  "started_direct",
-                           "pid":  21456
+                           "pid":  83088
                        }
                    ],
     "backend":  {
@@ -44,7 +44,7 @@
                                    "status":  "ok",
                                    "db":  "connected",
                                    "env":  "development",
-                                   "timestamp":  "2026-07-13T19:57:19.893Z",
+                                   "timestamp":  "2026-07-13T22:15:46.417Z",
                                    "error":  null
                                },
                     "portOwner":  {
@@ -59,7 +59,7 @@
                  "port":  8081,
                  "portOwner":  {
                                    "port":  8081,
-                                   "pid":  53580,
+                                   "pid":  38660,
                                    "processName":  "node"
                                },
                  "ownedByManager":  true,
@@ -92,11 +92,11 @@
                                                             },
                                               "process":  {
                                                               "before":  {
-                                                                             "pid":  47184,
+                                                                             "pid":  72060,
                                                                              "running":  true
                                                                          },
                                                               "after":  {
-                                                                            "pid":  47184,
+                                                                            "pid":  72060,
                                                                             "running":  true
                                                                         }
                                                           }
@@ -114,11 +114,11 @@
                                                               },
                                                 "process":  {
                                                                 "before":  {
-                                                                               "pid":  21456,
+                                                                               "pid":  83088,
                                                                                "running":  true
                                                                            },
                                                                 "after":  {
-                                                                              "pid":  21456,
+                                                                              "pid":  83088,
                                                                               "running":  true
                                                                           }
                                                             }

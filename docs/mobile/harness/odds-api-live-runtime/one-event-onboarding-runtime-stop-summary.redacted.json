@@ -1,10 +1,10 @@
 {
-    "generatedAt":  "2026-07-13T19:57:42.2576759Z",
+    "generatedAt":  "2026-07-13T22:16:07.4625410Z",
     "scope":  "holiwyn-internal-tester-runtime-manager",
     "pass":  true,
     "action":  "stop",
-    "startedAt":  "2026-07-13T19:57:32.1585595Z",
-    "completedAt":  "2026-07-13T19:57:42.2602939Z",
+    "startedAt":  "2026-07-13T22:15:58.2843078Z",
+    "completedAt":  "2026-07-13T22:16:07.4645887Z",
     "operations":  [
                        {
                            "target":  "supervisor",
@@ -34,7 +34,7 @@
                                    "status":  "ok",
                                    "db":  "connected",
                                    "env":  "development",
-                                   "timestamp":  "2026-07-13T19:57:42.250Z",
+                                   "timestamp":  "2026-07-13T22:16:07.455Z",
                                    "error":  null
                                },
                     "portOwner":  {
@@ -78,11 +78,11 @@
                                                             },
                                               "process":  {
                                                               "before":  {
-                                                                             "pid":  47184,
+                                                                             "pid":  72060,
                                                                              "running":  false
                                                                          },
                                                               "after":  {
-                                                                            "pid":  47184,
+                                                                            "pid":  72060,
                                                                             "running":  false
                                                                         }
                                                           }
@@ -100,11 +100,11 @@
                                                               },
                                                 "process":  {
                                                                 "before":  {
-                                                                               "pid":  21456,
+                                                                               "pid":  83088,
                                                                                "running":  false
                                                                            },
                                                                 "after":  {
-                                                                              "pid":  21456,
+                                                                              "pid":  83088,
                                                                               "running":  false
                                                                           }
                                                             }
