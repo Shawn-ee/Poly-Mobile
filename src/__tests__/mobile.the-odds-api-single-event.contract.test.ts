@@ -72,7 +72,8 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("EXPO_PUBLIC_MARKET_DATA_MODE = 'server'");
     expect(source).toContain("EXPO_PUBLIC_SHOW_ORDERBOOK = '0'");
     expect(source).toContain("npm --prefix mobile run start -- --host localhost --port $ExpoPort");
-    expect(source).toContain("adb -s $Device.deviceId reverse \"tcp:$port\" \"tcp:$port\"");
+    expect(source).toContain("Invoke-AdbWithTimeout");
+    expect(source).toContain("adb timed out after ${TimeoutSeconds}s");
     expect(source).toContain("s23_adb_reverse_failed");
     expect(source).toContain("managerStartedExpoUsesServerMode");
     expect(source).toContain("externalExpoServerModeUnverified");
@@ -80,6 +81,10 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("ReplaceExternalExpo");
     expect(source).toContain("replaceExternalExpoAvailable");
     expect(source).toContain("Use -Force -ReplaceExternalExpo");
+    expect(source).toContain("Get-LiveRuntimeStatus");
+    expect(source).toContain("Wait-LiveRuntimeWarm");
+    expect(source).toContain("live_runtime_status_not_warm_after_loop_start");
+    expect(source).toContain("liveRuntimeStatusWarmObserved");
   });
 
   it("gates live-runtime audits on managed S23 server-backed startup", () => {

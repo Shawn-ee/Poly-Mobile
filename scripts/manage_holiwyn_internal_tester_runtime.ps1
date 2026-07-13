@@ -31,9 +31,19 @@ $ExpoOutPath = Join-Path $RuntimeDir "expo.out.log"
 $ExpoErrPath = Join-Path $RuntimeDir "expo.err.log"
 $SupervisorProcessSummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-live-supervisor-process-summary.redacted.json"
 $ResultPollerProcessSummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-result-poller-process-summary.redacted.json"
+$SupervisorRuntimeDir = Join-Path $RepoRoot ".runtime\one-event-live-supervisor"
+$SupervisorStatePath = Join-Path $SupervisorRuntimeDir "supervisor-process-state.json"
+$SupervisorOutPath = Join-Path $SupervisorRuntimeDir "supervisor.out.log"
+$SupervisorErrPath = Join-Path $SupervisorRuntimeDir "supervisor.err.log"
+$ResultPollerRuntimeDir = Join-Path $RepoRoot ".runtime\one-event-result-poller"
+$ResultPollerStatePath = Join-Path $ResultPollerRuntimeDir "result-poller-process-state.json"
+$ResultPollerOutPath = Join-Path $ResultPollerRuntimeDir "result-poller.out.log"
+$ResultPollerErrPath = Join-Path $ResultPollerRuntimeDir "result-poller.err.log"
 $BackendBaseUrl = "http://127.0.0.1:$BackendPort"
 
 New-Item -ItemType Directory -Force -Path $RuntimeDir | Out-Null
+New-Item -ItemType Directory -Force -Path $SupervisorRuntimeDir | Out-Null
+New-Item -ItemType Directory -Force -Path $ResultPollerRuntimeDir | Out-Null
 
 function Resolve-RepoPath {
   param([string]$Path)
@@ -78,6 +88,50 @@ function Test-HttpHealth {
   } catch {
     return [ordered]@{ ok = $false; body = $null; error = $_.Exception.Message }
   }
+}
+
+function Get-LiveRuntimeStatus {
+  param([string]$Url)
+  try {
+    $body = Invoke-RestMethod -Uri "$Url/api/internal/live-runtime/status" -TimeoutSec 10
+    return [ordered]@{
+      ok = $true
+      status = 200
+      body = $body
+      error = $null
+    }
+  } catch {
+    $statusCode = $null
+    if ($_.Exception.Response -and $_.Exception.Response.StatusCode) {
+      $statusCode = [int]$_.Exception.Response.StatusCode
+    }
+    return [ordered]@{
+      ok = $false
+      status = $statusCode
+      body = $null
+      error = $_.Exception.Message
+    }
+  }
+}
+
+function Wait-LiveRuntimeWarm {
+  param([int]$DeadlineSeconds)
+  $deadline = (Get-Date).AddSeconds($DeadlineSeconds)
+  do {
+    $status = Get-LiveRuntimeStatus $BackendBaseUrl
+    $state = if ($status.body) { $status.body.currentRuntimeState } else { $null }
+    if (
+      $status.ok -and
+      $state -and
+      $state.mode -eq "warm_no_quota_runtime" -and
+      $state.allLoopsRunning -eq $true -and
+      $state.quotaSpendingLoopRunning -eq $false
+    ) {
+      return [ordered]@{ ready = $true; status = $status }
+    }
+    Start-Sleep -Seconds 1
+  } while ((Get-Date) -lt $deadline)
+  return [ordered]@{ ready = $false; status = Get-LiveRuntimeStatus $BackendBaseUrl }
 }
 
 function Get-PortOwner {
@@ -188,6 +242,170 @@ npm --prefix mobile run start -- --host localhost --port $ExpoPort
   }
 }
 
+function Stop-LocalSupervisorIfRunning {
+  $output = & powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_live_supervisor.ps1 -Action stop 2>&1
+  if ($LASTEXITCODE -ne 0) {
+    throw "Failed to stop existing supervisor before direct start: $($output -join "`n")"
+  }
+}
+
+function Stop-LocalResultPollerIfRunning {
+  $output = & powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_result_poller.ps1 -Action stop 2>&1
+  if ($LASTEXITCODE -ne 0) {
+    throw "Failed to stop existing result poller before direct start: $($output -join "`n")"
+  }
+}
+
+function Start-LocalSupervisorDirect {
+  Stop-LocalSupervisorIfRunning
+  $args = @(
+    "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", (Join-Path $RepoRoot "scripts\run_holiwyn_one_event_live_supervisor.ps1"),
+    "-BackendPort", "$BackendPort", "-IntervalSeconds", "15", "-Continuous", "-MaxIterations", "0"
+  )
+  if ($RunProviderProof) { $args += "-RunProviderProof" }
+  if ($RunResultIngestion) { $args += "-RunResultIngestion" }
+  if ($RunLiveResultIngestion) { $args += "-RunLiveResultIngestion" }
+  if ($RunResultSettlement) { $args += "-RunResultSettlement" }
+  if ($RunApprovedResultSettlement) {
+    $args += "-RunApprovedResultSettlement"
+    $args += "-ResultSettlementPath"
+    $args += $ResultSettlementPath
+    $args += "-ResultSettlementApprovalPath"
+    $args += $ResultSettlementApprovalPath
+  }
+  $process = Start-Process `
+    -FilePath "powershell" `
+    -ArgumentList $args `
+    -WorkingDirectory $RepoRoot `
+    -WindowStyle Hidden `
+    -RedirectStandardOutput $SupervisorOutPath `
+    -RedirectStandardError $SupervisorErrPath `
+    -PassThru
+  $state = [ordered]@{
+    pid = $process.Id
+    startedAt = (Get-Date).ToUniversalTime().ToString("o")
+    command = "powershell " + ($args -join " ")
+    continuous = $true
+    maxIterations = 0
+    intervalSeconds = 15
+    runProviderProof = [bool]$RunProviderProof
+    runStaleGuard = $false
+    enforceStaleGuard = $false
+    runResultIngestion = [bool]$RunResultIngestion
+    runLiveResultIngestion = [bool]$RunLiveResultIngestion
+    resultIngestionEveryIterations = 0
+    maxLiveResultIngestionRuns = 0
+    maxCreditsPerResultIngestion = 0
+    runResultSettlement = [bool]$RunResultSettlement
+    runApprovedResultSettlement = [bool]$RunApprovedResultSettlement
+    resultSettlementPath = if ($RunApprovedResultSettlement -or $RunResultIngestion) { $ResultSettlementPath } else { $null }
+    resultSettlementApprovalPath = if ($RunApprovedResultSettlement) { $ResultSettlementApprovalPath } else { $null }
+    providerProofEveryIterations = 0
+    maxProviderProofRuns = 0
+    refreshIterations = 0
+    maxCreditsPerProviderProof = 0
+    minRemaining = 0
+    stdout = ConvertTo-RepoPath $SupervisorOutPath
+    stderr = ConvertTo-RepoPath $SupervisorErrPath
+  }
+  Write-JsonFile -Value $state -Path $SupervisorStatePath -Depth 30
+  return [ordered]@{ pid = $process.Id; statePath = ConvertTo-RepoPath $SupervisorStatePath }
+}
+
+function Start-LocalResultPollerDirect {
+  Stop-LocalResultPollerIfRunning
+  $args = @(
+    "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", (Join-Path $RepoRoot "scripts\run_holiwyn_one_event_result_poller.ps1"),
+    "-EventSlug", "odds-api-single-soccer-test",
+    "-ResultPath", "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+    "-IntervalSeconds", "$ResultPollerIntervalSeconds", "-Continuous", "-MaxIterations", "0"
+  )
+  if ($RunLiveResultIngestion) { $args += "-RunLiveResultIngestion" }
+  if ($RunApprovedResultSettlement) {
+    $args += "-RunResultSettlement"
+    $args += "-RunApprovedResultSettlement"
+    $args += "-ResultSettlementApprovalPath"
+    $args += $ResultSettlementApprovalPath
+  }
+  $process = Start-Process `
+    -FilePath "powershell" `
+    -ArgumentList $args `
+    -WorkingDirectory $RepoRoot `
+    -WindowStyle Hidden `
+    -RedirectStandardOutput $ResultPollerOutPath `
+    -RedirectStandardError $ResultPollerErrPath `
+    -PassThru
+  $state = [ordered]@{
+    pid = $process.Id
+    startedAt = (Get-Date).ToUniversalTime().ToString("o")
+    command = "powershell " + ($args -join " ")
+    eventSlug = "odds-api-single-soccer-test"
+    resultPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json"
+    continuous = $true
+    maxIterations = 0
+    intervalSeconds = $ResultPollerIntervalSeconds
+    runLiveResultIngestion = [bool]$RunLiveResultIngestion
+    resultIngestionEveryIterations = 0
+    maxLiveResultIngestionRuns = 0
+    maxCreditsPerResultIngestion = 0
+    runResultSettlement = [bool]$RunApprovedResultSettlement
+    runApprovedResultSettlement = [bool]$RunApprovedResultSettlement
+    resultSettlementApprovalPath = if ($RunApprovedResultSettlement) { $ResultSettlementApprovalPath } else { $null }
+    stdout = ConvertTo-RepoPath $ResultPollerOutPath
+    stderr = ConvertTo-RepoPath $ResultPollerErrPath
+  }
+  Write-JsonFile -Value $state -Path $ResultPollerStatePath -Depth 30
+  return [ordered]@{ pid = $process.Id; statePath = ConvertTo-RepoPath $ResultPollerStatePath }
+}
+
+function Invoke-AdbWithTimeout {
+  param(
+    [string[]]$Arguments,
+    [int]$TimeoutSeconds = 5
+  )
+  $tempOut = [System.IO.Path]::GetTempFileName()
+  $tempErr = [System.IO.Path]::GetTempFileName()
+  try {
+    $process = Start-Process `
+      -FilePath "adb" `
+      -ArgumentList $Arguments `
+      -WorkingDirectory $RepoRoot `
+      -WindowStyle Hidden `
+      -RedirectStandardOutput $tempOut `
+      -RedirectStandardError $tempErr `
+      -PassThru
+    if (-not $process.WaitForExit($TimeoutSeconds * 1000)) {
+      try { Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue } catch {}
+      return [ordered]@{
+        ok = $false
+        timedOut = $true
+        exitCode = $null
+        output = ""
+        error = "adb timed out after ${TimeoutSeconds}s"
+      }
+    }
+    $stdout = if (Test-Path -LiteralPath $tempOut) { Get-Content -Raw -LiteralPath $tempOut } else { "" }
+    $stderr = if (Test-Path -LiteralPath $tempErr) { Get-Content -Raw -LiteralPath $tempErr } else { "" }
+    return [ordered]@{
+      ok = [bool]($process.ExitCode -eq 0)
+      timedOut = $false
+      exitCode = $process.ExitCode
+      output = $stdout
+      error = $stderr
+    }
+  } catch {
+    return [ordered]@{
+      ok = $false
+      timedOut = $false
+      exitCode = $null
+      output = ""
+      error = $_.Exception.Message
+    }
+  } finally {
+    Remove-Item -LiteralPath $tempOut, $tempErr -Force -ErrorAction SilentlyContinue
+  }
+}
+
 function Set-S23AdbReverse {
   param([object]$Device)
   if (-not $Device -or -not $Device.connected -or -not $Device.deviceId) {
@@ -196,12 +414,13 @@ function Set-S23AdbReverse {
   $ports = @($BackendPort, $ExpoPort)
   $results = New-Object System.Collections.Generic.List[object]
   foreach ($port in $ports) {
-    $output = @(adb -s $Device.deviceId reverse "tcp:$port" "tcp:$port" 2>&1)
+    $adbResult = Invoke-AdbWithTimeout @("-s", $Device.deviceId, "reverse", "tcp:$port", "tcp:$port")
     $results.Add([ordered]@{
       port = $port
-      ok = [bool]($LASTEXITCODE -eq 0)
-      exitCode = $LASTEXITCODE
-      output = ($output -join "`n")
+      ok = [bool]$adbResult.ok
+      exitCode = $adbResult.exitCode
+      timedOut = [bool]$adbResult.timedOut
+      output = ($adbResult.output + $adbResult.error).Trim()
     }) | Out-Null
   }
   return [ordered]@{
@@ -229,13 +448,25 @@ function Get-DockerPostgresStatus {
 
 function Get-S23Status {
   try {
-    $devices = @(adb devices -l 2>$null)
+    $adbResult = Invoke-AdbWithTimeout @("devices", "-l")
+    if (-not $adbResult.ok) {
+      return [ordered]@{
+        connected = $false
+        deviceId = $null
+        model = $null
+        raw = $adbResult.output
+        adbTimedOut = [bool]$adbResult.timedOut
+        error = $adbResult.error
+      }
+    }
+    $devices = @($adbResult.output -split "`r?`n")
     $line = $devices | Where-Object { $_ -match "adb-R3CW20LFMLW|R3CW20LFMLW|SM_S911U1" } | Select-Object -First 1
     return [ordered]@{
       connected = [bool]$line
       deviceId = if ($line) { "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp" } else { $null }
       model = if ($line -and $line -match "model:([^ ]+)") { $Matches[1] } else { $null }
       raw = $line
+      adbTimedOut = $false
     }
   } catch {
     return [ordered]@{ connected = $false; deviceId = $null; model = $null; error = $_.Exception.Message }
@@ -311,40 +542,13 @@ if ($Action -eq "stop") {
   }
 
   if ($StartSupervisor) {
-    $supervisorArgs = @(
-      "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "scripts/manage_holiwyn_one_event_live_supervisor.ps1",
-      "-Action", "start", "-Continuous", "-MaxIterations", "0", "-BackendPort", "$BackendPort", "-Force"
-    )
-    if ($RunProviderProof) { $supervisorArgs += "-RunProviderProof" }
-    if ($RunResultIngestion) { $supervisorArgs += "-RunResultIngestion" }
-    if ($RunLiveResultIngestion) { $supervisorArgs += "-RunLiveResultIngestion" }
-    if ($RunResultSettlement) { $supervisorArgs += "-RunResultSettlement" }
-    if ($RunApprovedResultSettlement) {
-      $supervisorArgs += "-RunApprovedResultSettlement"
-      $supervisorArgs += "-ResultSettlementPath"
-      $supervisorArgs += $ResultSettlementPath
-      $supervisorArgs += "-ResultSettlementApprovalPath"
-      $supervisorArgs += $ResultSettlementApprovalPath
-    }
-    & powershell @supervisorArgs | Out-Null
-    $operations.Add([ordered]@{ target = "supervisor"; result = if ($LASTEXITCODE -eq 0) { "started_or_running" } else { "failed" }; exitCode = $LASTEXITCODE }) | Out-Null
-    if ($LASTEXITCODE -ne 0) { throw "Supervisor start failed." }
+    $supervisorStart = Start-LocalSupervisorDirect
+    $operations.Add([ordered]@{ target = "supervisor"; result = "started_direct"; pid = $supervisorStart.pid; statePath = $supervisorStart.statePath }) | Out-Null
   }
 
   if ($StartResultPoller) {
-    $pollerArgs = @(
-      "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "scripts/manage_holiwyn_one_event_result_poller.ps1",
-      "-Action", "start", "-Continuous", "-MaxIterations", "0", "-IntervalSeconds", "$ResultPollerIntervalSeconds", "-Force"
-    )
-    if ($RunLiveResultIngestion) { $pollerArgs += "-RunLiveResultIngestion" }
-    if ($RunApprovedResultSettlement) {
-      $pollerArgs += "-RunApprovedResultSettlement"
-      $pollerArgs += "-ResultSettlementApprovalPath"
-      $pollerArgs += $ResultSettlementApprovalPath
-    }
-    & powershell @pollerArgs | Out-Null
-    $operations.Add([ordered]@{ target = "result-poller"; result = if ($LASTEXITCODE -eq 0) { "started_or_running" } else { "failed" }; exitCode = $LASTEXITCODE }) | Out-Null
-    if ($LASTEXITCODE -ne 0) { throw "Result poller start failed." }
+    $pollerStart = Start-LocalResultPollerDirect
+    $operations.Add([ordered]@{ target = "result-poller"; result = "started_direct"; pid = $pollerStart.pid; statePath = $pollerStart.statePath }) | Out-Null
   }
 }
 
@@ -364,6 +568,14 @@ if ($WaitForReady -or $Action -eq "start") {
     note = "No wait requested; this is an immediate readiness snapshot."
   }
 }
+
+$shouldRequireWarmRuntimeStatus = [bool]($Action -eq "start" -and $StartSupervisor -and $StartResultPoller)
+$liveRuntimeStatusWait = if ($shouldRequireWarmRuntimeStatus) {
+  Wait-LiveRuntimeWarm $WaitSeconds
+} else {
+  [ordered]@{ ready = $false; status = Get-LiveRuntimeStatus $BackendBaseUrl; reason = "warm_runtime_not_required_for_this_action" }
+}
+$liveRuntimeStatus = $liveRuntimeStatusWait.status
 
 $backendOwnerAfter = Get-PortOwner $BackendPort
 $expoOwnerAfter = Get-PortOwner $ExpoPort
@@ -406,6 +618,9 @@ if ($Action -eq "stop") {
   }
   if ($StartResultPoller -and -not ($resultPollerProcessSummary -and $resultPollerProcessSummary.process.after.running -eq $true)) {
     $p0.Add("result_poller_not_running_after_start") | Out-Null
+  }
+  if ($shouldRequireWarmRuntimeStatus -and -not $liveRuntimeStatusWait.ready) {
+    $p0.Add("live_runtime_status_not_warm_after_loop_start") | Out-Null
   }
 }
 $p1 = New-Object System.Collections.Generic.List[object]
@@ -464,6 +679,17 @@ $summary = [ordered]@{
     postgresReady = [bool]$docker.ok
     s23Connected = [bool]$s23.connected
   }
+  liveRuntimeStatus = [ordered]@{
+    checked = $true
+    warmRuntimeRequired = $shouldRequireWarmRuntimeStatus
+    warmRuntimeObserved = [bool]$liveRuntimeStatusWait.ready
+    ok = [bool]$liveRuntimeStatus.ok
+    status = $liveRuntimeStatus.status
+    currentRuntimeState = if ($liveRuntimeStatus.body) { $liveRuntimeStatus.body.currentRuntimeState } else { $null }
+    currentManagedProcesses = if ($liveRuntimeStatus.body) { $liveRuntimeStatus.body.runtimeCapabilities.currentProcessState } else { $null }
+    providerQuotaUsedByStatus = if ($liveRuntimeStatus.body) { $liveRuntimeStatus.body.runtimeTruth.providerQuotaUsedByStatus } else { $null }
+    error = $liveRuntimeStatus.error
+  }
   runtimeTruth = [ordered]@{
     localControlPlaneAvailable = $true
     backendStartStopAvailableWhenPortFree = $true
@@ -471,6 +697,8 @@ $summary = [ordered]@{
     supervisorBackgroundProcessAvailable = $true
     resultPollerBackgroundProcessAvailable = $true
     resultPollerBackgroundProcessRunning = [bool]($resultPollerProcessSummary -and $resultPollerProcessSummary.process.after.running -eq $true)
+    liveRuntimeStatusWarmObserved = [bool]$liveRuntimeStatusWait.ready
+    liveRuntimeStatusWarmRequiredForLoopStart = $shouldRequireWarmRuntimeStatus
     managerStartedExpoUsesServerMode = $managerStartedExpoUsesServerMode
     expoServerModeSource = $expoServerModeSource
     externalExpoServerModeUnverified = $externalExpoServerModeUnverified

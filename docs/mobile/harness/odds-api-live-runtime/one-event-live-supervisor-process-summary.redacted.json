@@ -1,12 +1,12 @@
 {
-    "generatedAt":  "2026-07-13T10:09:53.4104261Z",
+    "generatedAt":  "2026-07-13T11:24:28.6514520Z",
     "scope":  "holiwyn-one-event-live-supervisor-process",
     "pass":  true,
     "operation":  {
-                      "action":  "stop",
-                      "startedAt":  "2026-07-13T10:09:53.3669616Z",
+                      "action":  "status",
+                      "startedAt":  "2026-07-13T11:24:28.5914880Z",
                       "force":  false,
-                      "result":  "not_running"
+                      "result":  "running"
                   },
     "process":  {
                     "statePath":  ".runtime/one-event-live-supervisor/supervisor-process-state.json",
@@ -14,12 +14,17 @@
                     "stderr":  ".runtime/one-event-live-supervisor/supervisor.err.log",
                     "before":  {
                                    "known":  true,
-                                   "pid":  6976,
-                                   "running":  false,
-                                   "process":  null,
+                                   "pid":  37956,
+                                   "running":  true,
+                                   "process":  {
+                                                   "id":  37956,
+                                                   "processName":  "powershell",
+                                                   "startTime":  "2026-07-13T11:24:26.3717285Z",
+                                                   "hasExited":  false
+                                               },
                                    "state":  {
-                                                 "pid":  6976,
-                                                 "startedAt":  "2026-07-13T10:09:46.1408450Z",
+                                                 "pid":  37956,
+                                                 "startedAt":  "2026-07-13T11:24:26.3795286Z",
                                                  "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_live_supervisor.ps1 -BackendPort 3002 -IntervalSeconds 15 -Continuous -MaxIterations 0 -RunResultIngestion",
                                                  "continuous":  true,
                                                  "maxIterations":  0,
@@ -34,7 +39,7 @@
                                                  "maxCreditsPerResultIngestion":  0,
                                                  "runResultSettlement":  false,
                                                  "runApprovedResultSettlement":  false,
-                                                 "resultSettlementPath":  null,
+                                                 "resultSettlementPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
                                                  "resultSettlementApprovalPath":  null,
                                                  "providerProofEveryIterations":  0,
                                                  "maxProviderProofRuns":  0,
@@ -47,12 +52,17 @@
                                },
                     "after":  {
                                   "known":  true,
-                                  "pid":  6976,
-                                  "running":  false,
-                                  "process":  null,
+                                  "pid":  37956,
+                                  "running":  true,
+                                  "process":  {
+                                                  "id":  37956,
+                                                  "processName":  "powershell",
+                                                  "startTime":  "2026-07-13T11:24:26.3717285Z",
+                                                  "hasExited":  false
+                                              },
                                   "state":  {
-                                                "pid":  6976,
-                                                "startedAt":  "2026-07-13T10:09:46.1408450Z",
+                                                "pid":  37956,
+                                                "startedAt":  "2026-07-13T11:24:26.3795286Z",
                                                 "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_live_supervisor.ps1 -BackendPort 3002 -IntervalSeconds 15 -Continuous -MaxIterations 0 -RunResultIngestion",
                                                 "continuous":  true,
                                                 "maxIterations":  0,
@@ -67,7 +77,7 @@
                                                 "maxCreditsPerResultIngestion":  0,
                                                 "runResultSettlement":  false,
                                                 "runApprovedResultSettlement":  false,
-                                                "resultSettlementPath":  null,
+                                                "resultSettlementPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
                                                 "resultSettlementApprovalPath":  null,
                                                 "providerProofEveryIterations":  0,
                                                 "maxProviderProofRuns":  0,
@@ -82,13 +92,13 @@
     "supervisor":  {
                        "summaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-live-supervisor-summary.redacted.json",
                        "digest":  {
-                                      "generatedAt":  "2026-07-13T10:09:51.3094455Z",
-                                      "pass":  false,
-                                      "startedAt":  "2026-07-13T10:09:46.3374455Z",
-                                      "completedAt":  "2026-07-13T10:09:51.3094455Z",
+                                      "generatedAt":  "2026-07-13T10:11:22.3703533Z",
+                                      "pass":  true,
+                                      "startedAt":  "2026-07-13T10:11:18.2532175Z",
+                                      "completedAt":  "2026-07-13T10:11:22.3703533Z",
                                       "settings":  {
-                                                       "continuous":  true,
-                                                       "maxIterations":  0,
+                                                       "continuous":  false,
+                                                       "maxIterations":  1,
                                                        "completedIterations":  1,
                                                        "intervalSeconds":  15,
                                                        "runProviderProof":  false,
@@ -121,12 +131,12 @@
                                                            "backendContinuousWhileSupervisorRuns":  true,
                                                            "providerRefreshContinuousWhileSupervisorRuns":  false,
                                                            "providerRefreshQuotaCappedWhileSupervisorRuns":  false,
-                                                           "dataHygieneContinuousWhileSupervisorRuns":  true,
-                                                           "marketMakerRefreshContinuousWhileSupervisorRuns":  true,
-                                                           "lifecycleSchedulerContinuousWhileSupervisorRuns":  true,
+                                                           "dataHygieneContinuousWhileSupervisorRuns":  false,
+                                                           "marketMakerRefreshContinuousWhileSupervisorRuns":  false,
+                                                           "lifecycleSchedulerContinuousWhileSupervisorRuns":  false,
                                                            "staleGuardContinuousWhileSupervisorRuns":  false,
                                                            "staleGuardMode":  "disabled",
-                                                           "resultIngestionContinuousWhileSupervisorRuns":  true,
+                                                           "resultIngestionContinuousWhileSupervisorRuns":  false,
                                                            "resultIngestionMode":  "provider-shaped result ingestion replay while supervisor runs; no provider quota spent",
                                                            "liveResultIngestionContinuousWhileSupervisorRuns":  false,
                                                            "liveResultIngestionQuotaCappedWhileSupervisorRuns":  false,
@@ -138,9 +148,9 @@
                                                            "lifecycleSchedulerMode":  "safe real-time scheduler check each cycle; no proof time mutation",
                                                            "settlementMode":  "manual preview/resolve service plus trusted-result dry-run scheduler; unconfirmed automatic settlement execution not wired"
                                                        },
-                                      "failure":  "Cycle 1 failed.",
+                                      "failure":  null,
                                       "gapCounts":  {
-                                                        "p0":  1,
+                                                        "p0":  0,
                                                         "p1":  2,
                                                         "p2":  1
                                                     }
@@ -148,7 +158,7 @@
                    },
     "runtimeTruth":  {
                          "backgroundProcessManagerAvailable":  true,
-                         "localBackgroundProcessRunning":  false,
+                         "localBackgroundProcessRunning":  true,
                          "installedOsService":  false,
                          "providerRefreshMode":  "cached provider proof verification; no provider quota spent",
                          "staleGuardMode":  "disabled",

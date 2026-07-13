@@ -15451,3 +15451,14 @@ Known limitations:
 - API/data dependencies: consumes `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`, continuous supervisor proof, continuous result-poller proof, and the existing local runtime status API evidence captured by phase audit.
 - Proof: stricter `npm run mobile:one-event-phase-audit` and `npm run mobile:live-runtime-completion-audit` must pass with zero open P0 runtime gaps.
 - Known limitations: the gate still preserves the honest P1 boundary: local foreground/background process control is proven, but no installed production daemon is claimed.
+
+## Cycle RUNTIMEWARMSTART - Internal Tester Warm Loop Manager
+
+- Feature/runtime worked on: local internal tester runtime manager warm-start proof for the Spain vs France one-event pipeline.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/manage_holiwyn_internal_tester_runtime.ps1` and `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`.
+- User/runtime interactions supported: `npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -WaitForReady` now starts the local supervisor and result poller directly, waits for `GET /api/internal/live-runtime/status` to report `currentRuntimeState.mode=warm_no_quota_runtime`, and fails if both loops are not visible as running. S23 ADB discovery/reverse now has a bounded timeout, so a sticky wireless-debug session is reported instead of freezing backend runtime proof.
+- State transitions: starts local no-quota runtime loops for proof and writes redacted runtime-manager/process summaries. It does not call The Odds API, place orders, mutate mobile UI, or execute settlement.
+- API/data dependencies: reads `GET /api/health`, `GET /api/internal/live-runtime/status`, Docker Postgres status, Expo/backend port ownership, and local `.runtime` supervisor/result-poller process-state files.
+- Proof: `npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -WaitForReady -WaitSeconds 75` passed. The summary records `liveRuntimeStatus.warmRuntimeObserved=true`, `currentRuntimeState.mode=warm_no_quota_runtime`, `allLoopsRunning=true`, and `quotaSpendingLoopRunning=false`.
+- Known limitations: this remains a local process control plane, not an installed OS service. The proof reported mobile-visible provider snapshots as stale in no-quota mode; fresh live odds still require the explicit quota-capped provider refresh path.
