@@ -10791,3 +10791,12 @@ Future migration concern:
 - Schema mismatch: none. Existing position/order/fill/trade/balance models support the path.
 - Temporary mock/static data: none added. S23 proof used one deterministic local maker bid for the cashout fill.
 - Remaining gaps: a dedicated cashout preview/proceeds route could make the UX clearer later, but it is not a P0 blocker.
+
+## Cycle XY - Clean Worktree Runtime Audit Env Loading
+
+- Closed or narrowed: clean local worktrees no longer need a copied `.env` file in the repo root for `npm run mobile:one-event-phase-audit` when a valid local env file exists nearby or `DOTENV_CONFIG_PATH` is set.
+- Fields added/confirmed for tooling: no backend response fields changed. `scripts/local_env.ts` loads only missing required process env keys, currently `DATABASE_URL`, before Prisma admin discovery.
+- Route mismatch: none. Internal result-review and settlement-queue routes remain authenticated local admin routes; the audit still proves them through `x-dev-admin-user-id`.
+- Schema mismatch: none. No Prisma schema or route contract change.
+- Temporary mock/static data: none added. The helper does not fabricate users, provider data, reviews, approvals, or settlement state.
+- Remaining gaps: brand-new machines still need local env setup or `DOTENV_CONFIG_PATH`; secrets remain local-only and must not be committed.

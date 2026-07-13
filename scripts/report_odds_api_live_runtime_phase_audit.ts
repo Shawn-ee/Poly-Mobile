@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { PrismaClient } from "@prisma/client";
+import { loadLocalEnvForScript } from "./local_env";
 
 const DEFAULT_BASE_URL = "http://127.0.0.1:3002";
 const DEFAULT_OUTPUT_PATH =
@@ -159,6 +160,13 @@ async function fetchJson(url: string, init?: RequestInit) {
 async function resolveLocalAuditAdminUserId() {
   const explicit = argValue("adminUserId") ?? process.env.HOLIWYN_INTERNAL_OPERATOR_USER_ID ?? process.env.HOLIWYN_DEV_ADMIN_USER_ID;
   if (explicit) return explicit;
+
+  const envLoad = loadLocalEnvForScript(["DATABASE_URL"]);
+  if (envLoad.missingKeys.includes("DATABASE_URL")) {
+    throw new Error(
+      "DATABASE_URL is required to discover the local audit admin user. Set DATABASE_URL, set DOTENV_CONFIG_PATH, or run from a workspace with a local .env.",
+    );
+  }
 
   const prisma = new PrismaClient();
   try {

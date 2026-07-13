@@ -15340,3 +15340,12 @@ Known limitations:
 - User/runtime interactions supported: `/api/internal/live-runtime/status` now projects the verified Expo replacement command inside `launchProfile.manualForegroundProfile.commands` and `serviceOwnership.localLaunch.manualForegroundCommands`, so operators can discover the S23 clean-start path from the status contract.
 - State transitions: none. This is a no-quota read-only launch-profile/reporting change.
 - Known limitations: the command still requires intentional local operator action. It does not install a production service or automatically replace external Expo listeners during status checks.
+
+## Cycle XY - Clean Worktree Runtime Audit Env Loading
+
+- Feature/runtime worked on: repeatable live-runtime phase audit execution from a clean cloned worktree.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/local_env.ts` and `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: `npm run mobile:one-event-phase-audit` can now discover a local `.env` through `DOTENV_CONFIG_PATH`, the current worktree, or nearby project roots before it uses Prisma to resolve the local audit admin user. This keeps the authenticated result-review and settlement-queue audit gate runnable without copying secrets into the mobile repo.
+- State transitions: none. This is a local harness/audit startup fix only. It does not call provider APIs, place orders, mutate markets, start loops, or settle anything.
+- Known limitations: if no local `.env` or `DATABASE_URL` exists anywhere in the local workspace, the audit now fails with a clearer setup message. Secrets are loaded into the process environment only and are not printed.
