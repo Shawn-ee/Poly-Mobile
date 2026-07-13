@@ -10873,3 +10873,12 @@ Future migration concern:
 - Schema mismatch: none. The credential script uses existing `User`, `ApiCredential`, balance, and ledger models.
 - Temporary mock/static data: no provider or market mock data added. The generated mobile API token remains local-only under ignored `.runtime`.
 - Remaining gaps: Google OAuth preflight still needs real Google client config and a phone-reachable registered callback; provider-backed Polymarket match/line breadth remains unavailable in cached evidence.
+
+## Cycle ZX - Provider Batch Gap Classification
+
+- Fields added/confirmed for tooling: no backend or mobile response fields changed. `BATCH_INTERNAL_READINESS_GAP_LIST.md` now maps `provider_internal_exchange_not_ready`, `provider_mvp_match_market_not_found`, and `google_lan_callback_preflight_has_warnings` to explicit readiness criteria.
+- Closed or narrowed: reporting ambiguity is closed. Provider-backed exchange readiness now clearly requires a real provider-backed match market with usable pricing and local-MM seeding readiness; provider MVP tradable flow now clearly requires Home/Event Detail/order/Portfolio/history proof for a real current team-match provider market; Google LAN callback readiness now clearly requires configured OAuth credentials and a phone-reachable registered callback.
+- Route mismatch: no route changed. The mapped dependencies remain `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+- Schema mismatch: none. This cycle did not add provider models, market schema fields, quote snapshots, orders, fills, or portfolio fields.
+- Temporary mock/static data: none added. The batch uses cached provider evidence only and does not fabricate provider markets.
+- Remaining gaps: cached provider evidence still reports zero provider-visible/local-MM-ready Local MVP match markets and zero attach-ready provider line candidates, so provider-backed market parity remains P1 and does not block backend-owned sportsbook internal testing.

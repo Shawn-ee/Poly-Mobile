@@ -15792,3 +15792,17 @@ Known limitations:
   - `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`
   - `docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md`
 - Known limitations: this closes the manual server-mode API-key readiness gap only. Google OAuth client secrets/callback registration and Polymarket provider breadth remain P1.
+
+## Cycle ZX - Provider Batch Gap Classification
+
+- Feature/runtime worked on: internal-readiness batch reporting for provider-backed Local MVP readiness gaps.
+- Frontend components touched: none.
+- Backend/routes touched: no backend route implementation changes.
+- Important functions/services touched: `scripts/write_mobile_internal_readiness_gap_list.ts`.
+- User/runtime interactions supported: no tester-facing mobile behavior changed. The batch gap report now names provider-backed exchange readiness, provider MVP tradable match flow, and Google LAN callback readiness as explicit P1 readiness criteria instead of generic fallback blockers.
+- State transitions: none. The cycle used cached provider evidence only, spent no provider quota, imported no markets, placed no orders, and started no runtime loops.
+- API/data dependencies: consumes existing batch summary fields from `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`, `internal-exchange-readiness.json`, and `provider-visible-tradable-flow.json`.
+- Proof:
+  - `npm run mobile:internal-readiness-batch`
+  - `docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md`
+- Known limitations: provider-backed Polymarket match/line breadth remains P1 because cached evidence still has zero provider-visible/local-MM-ready Local MVP match markets.

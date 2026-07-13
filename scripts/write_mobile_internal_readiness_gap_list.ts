@@ -156,6 +156,22 @@ const blockerRows: Record<string, Omit<GapRow, "priority">> = {
     proofNeeded: "`internal-exchange-readiness.json` showing provider books ready, or explicit unavailable/closed evidence.",
     blocksInternalTesting: false,
   },
+  provider_internal_exchange_not_ready: {
+    pageFunction: "Provider-backed exchange readiness",
+    actualBehavior: "Cached provider evidence does not currently expose any provider-visible, local-MM-ready markets for the Local MVP match flow.",
+    expectedBehavior: "Provider-backed exchange readiness should pass only when at least one real provider-backed match market is visible, has usable provider pricing, and can be seeded by the local fake-token market maker.",
+    affectedFilesRoutes: "`scripts/check_poly_internal_exchange_readiness.ts`; `docs/mobile/harness/batch-internal-readiness-latest/internal-exchange-readiness.json`; `ReferenceQuoteSnapshot`; `/api/markets/:marketId/quote`.",
+    proofNeeded: "`internal-exchange-readiness.json` with provider-visible/local-MM-ready market counts above zero, or explicit provider-unavailable evidence kept as P1.",
+    blocksInternalTesting: false,
+  },
+  provider_mvp_match_market_not_found: {
+    pageFunction: "Provider MVP tradable match flow",
+    actualBehavior: "The provider-visible tradable-flow proof could not select a current provider-backed World Cup team-match market for the Local MVP route.",
+    expectedBehavior: "Provider MVP tradable flow should pass only after a real current team-match provider market can be mapped to Home/Event Detail, priced, seeded, traded, and reflected in Portfolio/history.",
+    affectedFilesRoutes: "`scripts/prove_mobile_provider_visible_tradable_flow.ts`; `docs/mobile/harness/batch-internal-readiness-latest/provider-visible-tradable-flow.json`; `/api/events`; `/api/mobile/events/:slug/live-detail`; `/api/orders`; `/api/portfolio`; `/api/portfolio/history`.",
+    proofNeeded: "`provider-visible-tradable-flow.json` with `pass=true`, or cached provider evidence proving no usable current team-match market exists.",
+    blocksInternalTesting: false,
+  },
   provider_mvp_match_snapshot_not_mm_safe: {
     pageFunction: "Provider-visible tradable match proof",
     actualBehavior: "The selected provider match is visible but its latest provider quote snapshot is not safe for local market-maker quote placement.",
@@ -226,6 +242,14 @@ const blockerRows: Record<string, Omit<GapRow, "priority">> = {
     expectedBehavior: "S23 consent should use a hosted or LAN callback that the phone can open and Google Cloud authorizes.",
     affectedFilesRoutes: "`/api/auth/google/start`; `scripts/mobile_google_lan_auth_preflight.ps1`; local `NEXTAUTH_URL`; Google Cloud OAuth client settings.",
     proofNeeded: "`google-auth-lan-callback-preflight.json` and strict runtime preflight with the LAN/hosted callback.",
+    blocksInternalTesting: false,
+  },
+  google_lan_callback_preflight_has_warnings: {
+    pageFunction: "Google/account LAN callback",
+    actualBehavior: "The LAN callback preflight still reports warnings, currently because Google OAuth client credentials are not configured for this local runtime.",
+    expectedBehavior: "LAN callback preflight should only be treated as ready after the backend callback URL is phone-reachable and the exact callback is registered with configured Google OAuth credentials.",
+    affectedFilesRoutes: "`/api/auth/google/start`; `scripts/mobile_google_lan_auth_preflight.ps1`; `NEXTAUTH_URL`; Google Cloud OAuth client settings.",
+    proofNeeded: "`google-auth-lan-callback-preflight.json` with no failed checks and a phone-reachable callback URL.",
     blocksInternalTesting: false,
   },
 };
