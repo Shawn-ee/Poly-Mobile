@@ -134,6 +134,16 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("run_holiwyn_one_event_result_poller.ps1");
   });
 
+  it("gates one-event runtime status on fresh trusted-result settlement guard proof", () => {
+    const source = runtimeStatusScript();
+    expect(source).toContain("maxSettlementProofAgeHours");
+    expect(source).toContain("resultSettlementExecutionFresh");
+    expect(source).toContain("resultSettlementLiveBlockedFresh");
+    expect(source).toContain("resultSettlementGuardFresh");
+    expect(source).toContain("rerun_trusted_result_settlement_execution_proof");
+    expect(source).toContain("resultSettlementGuardFresh: resultSettlementExecutionFresh && resultSettlementLiveBlockedFresh");
+  });
+
   it("gates phase and completion audits on current loop state plus continuity truth", () => {
     expect(phaseAuditScript()).toContain("runtimeStatusCurrentProcesses");
     expect(phaseAuditScript()).toContain("runtimeStatusContinuityAnswer");

@@ -185,6 +185,7 @@ async function main() {
   const baseUrl = argValue("baseUrl") ?? DEFAULT_BASE_URL;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
   const maxLiveProofAgeHours = numberArg("maxLiveProofAgeHours", 24);
+  const maxSettlementProofAgeHours = numberArg("maxSettlementProofAgeHours", 24);
   const liveProof = await readJson(LIVE_PROOF_PATH);
   const runtimeLaunch = await readJson(RUNTIME_LAUNCH_PATH);
   const makerSeed = await readJson(MAKER_SEED_PATH);
@@ -217,6 +218,14 @@ async function main() {
   const resultSettlementLiveBlockedAgeHours = ageHours(resultSettlementLiveBlocked?.generatedAt);
   const liveProofFresh =
     liveProofAgeHours != null && liveProofAgeHours >= 0 && liveProofAgeHours <= maxLiveProofAgeHours;
+  const resultSettlementExecutionFresh =
+    resultSettlementExecutionAgeHours != null &&
+    resultSettlementExecutionAgeHours >= 0 &&
+    resultSettlementExecutionAgeHours <= maxSettlementProofAgeHours;
+  const resultSettlementLiveBlockedFresh =
+    resultSettlementLiveBlockedAgeHours != null &&
+    resultSettlementLiveBlockedAgeHours >= 0 &&
+    resultSettlementLiveBlockedAgeHours <= maxSettlementProofAgeHours;
   const supervisorRuntimeTruth = getPath(supervisor, ["runtimeTruth"]);
   const continuousSupervisorTruth = getPath(continuousSupervisorProof, ["runtimeTruth"]);
   const continuousResultPollerTruth =
@@ -290,6 +299,7 @@ async function main() {
     continuousResultPollerProofPassed: bool(continuousResultPollerProof?.pass),
     resultSettlementGuardPresent: settlementChecks.proofPresent,
     resultSettlementGuardPassed: settlementChecks.proofPassed,
+    resultSettlementGuardFresh: resultSettlementExecutionFresh && resultSettlementLiveBlockedFresh,
     liveResultSettlementBlockedWhileLive:
       settlementChecks.liveMarketExecutionBlocked &&
       settlementChecks.liveMarketNotResolvedByBlockedAttempt &&
@@ -398,6 +408,14 @@ async function main() {
       resultSettlementExecutionAgeHours,
       resultSettlementLiveBlockedGeneratedAt: resultSettlementLiveBlocked?.generatedAt ?? null,
       resultSettlementLiveBlockedAgeHours,
+      maxSettlementProofAgeHours,
+      resultSettlementExecutionFresh,
+      resultSettlementLiveBlockedFresh,
+      resultSettlementGuardFresh: resultSettlementExecutionFresh && resultSettlementLiveBlockedFresh,
+      nextSettlementProofAction:
+        resultSettlementExecutionFresh && resultSettlementLiveBlockedFresh
+          ? "none"
+          : "rerun_trusted_result_settlement_execution_proof",
       executionRequiresMarketStatus: getPath(resultSettlementLiveBlocked, ["controls", "executeRequiresMarketStatus"]),
       blockedExecutionReason: getPath(resultSettlementLiveBlocked, ["execution", "reason"]),
       activeTesterEventMutated: getPath(resultSettlementExecution, ["targetTesterEvent", "mutated"]),

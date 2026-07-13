@@ -6,6 +6,7 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { placeOrderAndMatch } from "@/server/services/matching";
 import { mintCompleteSetForPublicOrderbook } from "@/server/services/orderbookCollateral";
+import { loadLocalEnvForScript } from "./local_env";
 
 const DEFAULT_OUTPUT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json";
@@ -21,6 +22,8 @@ const DEFAULT_SCHEDULER_OUTPUT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-run.redacted.json";
 const DEFAULT_TARGET_EVENT_SLUG = "odds-api-single-soccer-test";
 const ZERO = new Prisma.Decimal(0);
+
+loadLocalEnvForScript(["DATABASE_URL"]);
 
 const argValue = (name: string) => {
   const prefix = `--${name}=`;

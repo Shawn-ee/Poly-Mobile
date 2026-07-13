@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T12:24:30.175Z",
+  "generatedAt": "2026-07-13T12:33:00.011Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -114,7 +114,7 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-13T12:24:30.174Z"
+        "timestamp": "2026-07-13T12:33:00.011Z"
       },
       "error": null
     }
@@ -122,7 +122,7 @@
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveProofGeneratedAt": "2026-07-13T09:24:03.509Z",
-    "liveProofAgeHours": 3.01,
+    "liveProofAgeHours": 3.15,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
@@ -146,7 +146,7 @@
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
     "makerSeedGeneratedAt": "2026-07-13T11:59:16.483Z",
-    "makerSeedAgeHours": 0.42,
+    "makerSeedAgeHours": 0.56,
     "quoteRoute": {
       "ok": true,
       "status": 200,
@@ -183,7 +183,7 @@
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
     "schedulerGeneratedAt": "2026-07-13T11:59:20.558Z",
-    "schedulerAgeHours": 0.42,
+    "schedulerAgeHours": 0.56,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 3
@@ -191,10 +191,15 @@
   "settlementSafety": {
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
-    "resultSettlementExecutionGeneratedAt": "2026-07-12T11:52:39.122Z",
-    "resultSettlementExecutionAgeHours": 24.53,
-    "resultSettlementLiveBlockedGeneratedAt": "2026-07-12T11:52:37.215Z",
-    "resultSettlementLiveBlockedAgeHours": 24.53,
+    "resultSettlementExecutionGeneratedAt": "2026-07-13T12:32:50.663Z",
+    "resultSettlementExecutionAgeHours": 0,
+    "resultSettlementLiveBlockedGeneratedAt": "2026-07-13T12:32:49.154Z",
+    "resultSettlementLiveBlockedAgeHours": 0,
+    "maxSettlementProofAgeHours": 24,
+    "resultSettlementExecutionFresh": true,
+    "resultSettlementLiveBlockedFresh": true,
+    "resultSettlementGuardFresh": true,
+    "nextSettlementProofAction": "none",
     "executionRequiresMarketStatus": "CLOSED",
     "blockedExecutionReason": "market_must_be_closed_before_result_settlement:LIVE",
     "activeTesterEventMutated": false,
@@ -265,6 +270,7 @@
     "continuousResultPollerProofPassed": true,
     "resultSettlementGuardPresent": true,
     "resultSettlementGuardPassed": true,
+    "resultSettlementGuardFresh": true,
     "liveResultSettlementBlockedWhileLive": true
   },
   "gaps": {

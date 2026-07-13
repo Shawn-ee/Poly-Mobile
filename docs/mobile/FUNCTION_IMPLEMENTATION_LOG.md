@@ -2,6 +2,19 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle SETTLEMENTFRESHSTATUS - Settlement Guard Freshness in Runtime Status
+
+- Feature/runtime worked on: one-event runtime status gate for trusted-result settlement guard proof freshness.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/report_odds_api_one_event_runtime_status.ts`
+  - `scripts/prove_odds_api_trusted_result_settlement_scheduler_execution.ts`
+  - `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+- User/runtime interactions supported: local tools can run `npm run mobile:one-event-runtime-status` and see whether the trusted-result scheduler execution proof and live-market blocked-execution proof are still fresh, whether the active tester event was left unmutated, and whether the next action is to rerun the trusted-result settlement execution proof.
+- State transitions: the refreshed proof creates and settles a disposable sportsbook-shaped event, proves a `LIVE` market blocks execution, proves execution only after closing the disposable market, and confirms the active `Spain vs. France` tester event is not mutated. Runtime status itself is read-only.
+- API/data dependencies: local Prisma DB through the trusted-result settlement proof; runtime status reads `one-event-result-settlement-scheduler-execution-summary.redacted.json` and `one-event-result-settlement-scheduler-execution-live-blocked.redacted.json`. No provider API call or quota spend is required.
+- Known limitations: this is still local proof evidence, not installed unattended official-result settlement. Active tester settlement remains guarded by `CLOSED` market status and exact approval/confirmation.
+
 ## Cycle S23PROOFFRESHSTATUS - S23 Proof Freshness in Runtime Status
 
 - Feature/runtime worked on: local internal tester runtime status for the S23 cashout/trading proof freshness gate.

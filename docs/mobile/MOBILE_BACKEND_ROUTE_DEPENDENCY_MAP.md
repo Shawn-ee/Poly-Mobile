@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle SETTLEMENTFRESHSTATUS - Settlement Guard Freshness in Runtime Status
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| One-event settlement guard freshness gate | Local command `npm run mobile:one-event-runtime-status`; proof command `npm run mobile:one-event-result-settlement-execution-proof` | Local CLI plus DB/service calls | Local development DB only; no provider key and no mobile auth | Optional CLI `--maxSettlementProofAgeHours`; proof uses a disposable event and local trusted-result fixture | `settlementSafety.resultSettlementExecutionFresh`, `resultSettlementLiveBlockedFresh`, `resultSettlementGuardFresh`, `maxSettlementProofAgeHours`, `nextSettlementProofAction`, `executionRequiresMarketStatus`, and `activeTesterEventMutated` | Existing `Event`, `Market`, `Outcome`, `Order`, `Position`, settlement/audit rows touched by the disposable proof; active tester event is only snapshotted | None. The gate reads committed redacted proof artifacts and the proof refreshes disposable local data only | Installed unattended official-result polling/settlement remains P1. Active event execution still requires closed market status plus exact approval/confirmation. |
+
 ## Cycle S23PROOFFRESHSTATUS - S23 Proof Freshness in Runtime Status
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
