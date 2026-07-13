@@ -128,7 +128,11 @@ function Stop-SupervisorProcessTree {
   }
   $output = & taskkill /PID $TargetProcessId /T /F 2>&1
   if ($LASTEXITCODE -ne 0) {
-    throw "Failed to stop supervisor process tree for pid ${TargetProcessId}: $output"
+    Start-Sleep -Seconds 1
+    $stillRunning = Get-Process -Id $TargetProcessId -ErrorAction SilentlyContinue
+    if ($stillRunning) {
+      throw "Failed to stop supervisor process tree for pid ${TargetProcessId}: $output"
+    }
   }
 }
 

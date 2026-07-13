@@ -110,7 +110,11 @@ function Stop-PollerProcessTree {
   if (-not $process) { return }
   $output = & taskkill /PID $TargetProcessId /T /F 2>&1
   if ($LASTEXITCODE -ne 0) {
-    throw "Failed to stop result poller process tree for pid ${TargetProcessId}: $output"
+    Start-Sleep -Seconds 1
+    $stillRunning = Get-Process -Id $TargetProcessId -ErrorAction SilentlyContinue
+    if ($stillRunning) {
+      throw "Failed to stop result poller process tree for pid ${TargetProcessId}: $output"
+    }
   }
 }
 

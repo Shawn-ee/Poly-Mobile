@@ -1,21 +1,21 @@
 {
-    "generatedAt":  "2026-07-13T17:58:03.8822413Z",
+    "generatedAt":  "2026-07-13T19:14:07.6689516Z",
     "scope":  "holiwyn-one-event-result-poller-heartbeat",
     "running":  true,
     "passSoFar":  true,
-    "startedAt":  "2026-07-13T17:49:01.9441848Z",
-    "completedIterations":  27,
+    "startedAt":  "2026-07-13T19:13:51.4180330Z",
+    "completedIterations":  2,
     "latestIteration":  {
-                            "iteration":  27,
-                            "startedAt":  "2026-07-13T17:57:58.7603501Z",
-                            "finishedAt":  "2026-07-13T17:58:03.8822413Z",
+                            "iteration":  2,
+                            "startedAt":  "2026-07-13T19:14:00.5858985Z",
+                            "finishedAt":  "2026-07-13T19:14:07.6689516Z",
                             "resultIngestion":  {
-                                                    "label":  "poll-27-result-ingestion",
+                                                    "label":  "poll-2-result-ingestion",
                                                     "command":  "npm run mobile:one-event-result-ingest -- --eventSlug=odds-api-single-soccer-test --trustedResultOutput=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
                                                     "exitCode":  0,
                                                     "pass":  true,
-                                                    "startedAt":  "2026-07-13T17:57:58.7603501Z",
-                                                    "finishedAt":  "2026-07-13T17:58:01.9891394Z",
+                                                    "startedAt":  "2026-07-13T19:14:00.5858985Z",
+                                                    "finishedAt":  "2026-07-13T19:14:05.0994768Z",
                                                     "outputTail":  [
                                                                        "  },",
                                                                        "  \"auditEvent\": null,",
@@ -45,12 +45,12 @@
                             "liveResultIngestionRunCount":  0,
                             "liveResultIngestionSkippedReason":  null,
                             "resultSettlement":  {
-                                                     "label":  "poll-27-result-settlement",
+                                                     "label":  "poll-2-result-settlement",
                                                      "command":  "npm run mobile:one-event-result-settlement-run -- --eventSlug=odds-api-single-soccer-test --result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json --autoExecuteApproved --approval=docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json --writeAuditEvent",
                                                      "exitCode":  0,
                                                      "pass":  true,
-                                                     "startedAt":  "2026-07-13T17:58:01.9911393Z",
-                                                     "finishedAt":  "2026-07-13T17:58:03.8812408Z",
+                                                     "startedAt":  "2026-07-13T19:14:05.1004791Z",
+                                                     "finishedAt":  "2026-07-13T19:14:07.6679516Z",
                                                      "outputTail":  [
                                                                         "    \"canRunFromSupervisorOrCron\": true,",
                                                                         "    \"providerResultIngestionAvailable\": true,",
@@ -103,10 +103,10 @@
                                                                             "line":  "2.5",
                                                                             "statusBefore":  "LIVE",
                                                                             "resolvedOutcomeIdBefore":  null,
-                                                                            "collateralUSDCBefore":  "1950"
+                                                                            "collateralUSDCBefore":  "800"
                                                                         },
                                                      "winningOutcome":  {
-                                                                            "id":  "24515f22-3717-4b61-82a2-c072febc8f5b",
+                                                                            "id":  "4afc49b4-69cd-4b35-8ffe-68533c787949",
                                                                             "name":  "Over 2.5",
                                                                             "label":  "Over 2.5",
                                                                             "side":  "over",
@@ -114,33 +114,33 @@
                                                                         },
                                                      "preview":  {
                                                                      "marketStatus":  "LIVE",
-                                                                     "totalShares":  "3900",
-                                                                     "totalWinningShares":  "1950",
-                                                                     "totalPayout":  "1950",
-                                                                     "collateralUSDC":  "1950",
+                                                                     "totalShares":  "1600",
+                                                                     "totalWinningShares":  "800",
+                                                                     "totalPayout":  "800",
+                                                                     "collateralUSDC":  "800",
                                                                      "payoutConservationPass":  true,
                                                                      "blockers":  [
 
                                                                                   ],
                                                                      "openOrderCleanup":  {
-                                                                                              "openOrderCount":  3,
-                                                                                              "buyOrderLockedUSDCToRelease":  "125.402",
+                                                                                              "openOrderCount":  2,
+                                                                                              "buyOrderLockedUSDCToRelease":  "104",
                                                                                               "sellOrderSharesToRelease":  "200"
                                                                                           },
-                                                                     "payoutCount":  11,
-                                                                     "loserPositionCount":  10,
+                                                                     "payoutCount":  4,
+                                                                     "loserPositionCount":  4,
                                                                      "mutation":  "none"
                                                                  },
                                                      "execution":  {
                                                                        "attempted":  false,
                                                                        "reason":  "dry_run_default",
-                                                                       "requiredConfirm":  "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:24515f22-3717-4b61-82a2-c072febc8f5b:f3a5743c73f2"
+                                                                       "requiredConfirm":  "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:4afc49b4-69cd-4b35-8ffe-68533c787949:f3a5743c73f2"
                                                                    },
                                                      "controls":  {
                                                                       "dryRunIsDefault":  true,
                                                                       "writeAuditEvent":  true,
                                                                       "executeRequiresFlag":  "--execute",
-                                                                      "executeRequiresConfirm":  "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:24515f22-3717-4b61-82a2-c072febc8f5b:f3a5743c73f2",
+                                                                      "executeRequiresConfirm":  "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:4afc49b4-69cd-4b35-8ffe-68533c787949:f3a5743c73f2",
                                                                       "executeRequiresMarketStatus":  "CLOSED",
                                                                       "currentMarketStatus":  "LIVE",
                                                                       "resultDigest":  "f3a5743c73f2",
@@ -153,7 +153,7 @@
                      "eventSlug":  "odds-api-single-soccer-test",
                      "continuous":  true,
                      "maxIterations":  0,
-                     "intervalSeconds":  15,
+                     "intervalSeconds":  1,
                      "runLiveResultIngestion":  false,
                      "resultIngestionEveryIterations":  0,
                      "maxLiveResultIngestionRuns":  0,

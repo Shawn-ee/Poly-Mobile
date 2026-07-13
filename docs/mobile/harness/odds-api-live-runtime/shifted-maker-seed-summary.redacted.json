@@ -1,7 +1,7 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-13T19:06:50.683Z",
-  "startedAt": "2026-07-13T19:06:50.322Z",
+  "generatedAt": "2026-07-13T19:13:56.202Z",
+  "startedAt": "2026-07-13T19:13:55.191Z",
   "scope": "odds-api-one-event-shifted-maker-seed",
   "mode": "seed-resting-shifted-maker-quotes",
   "event": {
@@ -23,7 +23,7 @@
   },
   "providerSnapshot": {
     "fetchedAt": "2026-07-13T09:24:03.509Z",
-    "ageMs": 34966830,
+    "ageMs": 35391698,
     "maxSnapshotAgeMs": 86400000,
     "allowStale": false,
     "source": "sportsbook-odds",
@@ -32,8 +32,8 @@
     "outcomePrice": 0.56
   },
   "maker": {
-    "id": "88a30e54-92a5-4473-9f52-5a51b543b1e5",
-    "username": "odds_live_runtime_shifted_maker_983f2605"
+    "id": "29a7ec50-e3d1-4f41-8cab-83c7d30af2d5",
+    "username": "odds_live_runtime_shifted_maker_ea6020bf"
   },
   "plan": {
     "quoteOffsetTicks": 2,
@@ -51,7 +51,7 @@
   },
   "canceledPreviousOrders": [
     {
-      "orderId": "0e19ec1f-8989-45bc-b72d-3d61d0fa0c87",
+      "orderId": "f73f589a-333e-40de-8bce-53714a330867",
       "side": "BUY",
       "price": "0.52",
       "remaining": "200",
@@ -59,7 +59,7 @@
       "canceled": true
     },
     {
-      "orderId": "cf26581d-a479-4a99-bbf8-c6a0ab1c78bb",
+      "orderId": "ad8de405-e32b-49ea-90be-f2370cc49cb7",
       "side": "SELL",
       "price": "0.6",
       "remaining": "200",
@@ -69,16 +69,16 @@
   ],
   "restingOrders": [
     {
-      "id": "8127cb30-1616-4840-9b42-498cbce1519f",
-      "username": "odds_live_runtime_shifted_maker_983f2605",
+      "id": "b0f80893-66dc-4302-9a27-e94d09a9b5b1",
+      "username": "odds_live_runtime_shifted_maker_ea6020bf",
       "side": "BUY",
       "price": "0.52",
       "remaining": "200",
       "status": "OPEN"
     },
     {
-      "id": "4a47de7b-8ec3-43d5-950b-3bbb8fd988ef",
-      "username": "odds_live_runtime_shifted_maker_983f2605",
+      "id": "a683f643-ed6a-42ef-ad8a-c30a40cfe595",
+      "username": "odds_live_runtime_shifted_maker_ea6020bf",
       "side": "SELL",
       "price": "0.6",
       "remaining": "200",
