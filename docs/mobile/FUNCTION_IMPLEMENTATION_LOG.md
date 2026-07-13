@@ -2,6 +2,15 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZF - Spain vs. France Fresh S23 Cashout Proof
+
+- Feature/page worked on: S23 proof harness for the current internal tester trading path, focused on Portfolio Cash out -> close-position Trade Ticket -> Max -> Sell -> History.
+- Frontend components touched: none in product UI. `mobile/src/components/Portfolio.tsx` and `mobile/src/components/TradeTicket.tsx` behavior was re-proven from current `main`.
+- Important functions/services touched: `scripts/prove_mobile_odds_api_s23_visible_flow.ps1` now dismisses Expo Go first-run/developer overlays through explicit Continue/close taps before taking Home assertions.
+- User interactions supported: Home event selection, Event Detail line selection, buy ticket, swipe buy, Portfolio position, Cash out, Max owned shares, swipe cashout, Portfolio History.
+- State transitions: no product state transition changes. The S23 proof confirmed buy creates a position and cashout/sell removes or updates that position while adding history.
+- Known limitations: proof relies on local seeded counterparty liquidity for the cashout bid; Expo Go can still show first-run overlays in manual use.
+
 ## Cycle SETTLEMENTFRESHSTATUS - Settlement Guard Freshness in Runtime Status
 
 - Feature/runtime worked on: one-event runtime status gate for trusted-result settlement guard proof freshness.

@@ -192,23 +192,24 @@ function Tap-NodeContainingAll {
 
 function Dismiss-ExpoDeveloperMenu {
   param([string]$NamePrefix)
-  $xmlPath = Save-Hierarchy -Name "$NamePrefix-preflight.xml"
-  $raw = Get-Content -Raw -Path $xmlPath
-  if ($raw -notmatch [regex]::Escape("This is the developer menu") -and $raw -notmatch [regex]::Escape("SDK version")) {
-    return $xmlPath
+  for ($attempt = 1; $attempt -le 5; $attempt++) {
+    $xmlPath = Save-Hierarchy -Name "$NamePrefix-preflight-$attempt.xml"
+    $raw = Get-Content -Raw -Path $xmlPath
+    $hasDeveloperIntro = $raw -match [regex]::Escape("This is the developer menu")
+    $hasExpoSheet = $raw -match [regex]::Escape("SDK version") -or $raw -match [regex]::Escape("Connected to expo-cli")
+    if (-not $hasDeveloperIntro -and -not $hasExpoSheet) {
+      return $xmlPath
+    }
+
+    if ($raw -match [regex]::Escape("Continue")) {
+      & $adb -s $Device shell input tap 540 2070 | Out-Null
+    } else {
+      & $adb -s $Device shell input tap 1000 780 | Out-Null
+    }
+    Start-Sleep -Seconds 2
   }
 
-  & $adb -s $Device shell input tap 1000 1300 | Out-Null
-  Start-Sleep -Seconds 2
-  $xmlPath = Save-Hierarchy -Name "$NamePrefix-preflight-after-close.xml"
-  $raw = Get-Content -Raw -Path $xmlPath
-  if ($raw -notmatch [regex]::Escape("This is the developer menu") -and $raw -notmatch [regex]::Escape("SDK version")) {
-    return $xmlPath
-  }
-
-  & $adb -s $Device shell input keyevent 4 | Out-Null
-  Start-Sleep -Seconds 2
-  return Save-Hierarchy -Name "$NamePrefix-preflight-after-back.xml"
+  return Save-Hierarchy -Name "$NamePrefix-preflight-after-dismiss-attempts.xml"
 }
 
 function Wait-ExpoReady {
