@@ -9,7 +9,8 @@ describe("Trade Ticket mode clarity", () => {
 
     expect(source).toContain("ticket-order-mode-visible");
     expect(source).toContain("ticket-order-mode-${side}");
-    expect(source).toContain('const modeLabel = side === "sell" ? t.sell : t.buy;');
+    expect(source).toContain('const effectiveSide = isClosePositionTicket ? "sell" : side;');
+    expect(source).toContain('const modeLabel = effectiveSide === "sell" ? t.sell : t.buy;');
     expect(source).toContain("modeOutcomeLabel");
     expect(source).toContain("orderModeBadgeSell");
     expect(source).toContain('accessibilityLabel={`ticket-side-${option} ${ticketReadOnly ? "ticket-side-disabled-readonly" : "ticket-side-enabled"}`}');

@@ -10598,3 +10598,12 @@ Future migration concern:
 - Schema mismatch: none. Production should store launch profile state, service ownership, and operator actions as durable records rather than reading local redacted JSON artifacts.
 - Temporary mock/static data: none added. The route reads the existing launch-profile artifact and spends no provider quota.
 - Remaining gaps: authenticated operator dashboard, production service controls, installed service ownership, and production official-result automation remain P1/P2.
+
+## Cycle XC - Position Close Cashout Contract
+
+- Closed or narrowed: mobile cashout semantics now treat the ticket amount as owned share quantity, not wallet cash. Max maps to owned shares, and the close payload remains the owned `marketId`/`outcomeId` with `side=SELL`.
+- Fields required by mobile: Portfolio positions must include stable `id`, `marketId`, `outcomeId`, positive `shares`, `bestBid` when available, `currentPrice` fallback, `probability` fallback, and optional immutable `selection` identity.
+- Schema mismatch: there is no dedicated mobile close-position quote contract yet. Estimated proceeds are derived from position quote fields instead of a server-returned close quote with slippage/fees/fillability.
+- Route mismatch: cashout still uses generic limit-order placement. That is acceptable for fake-token local MVP, but a future backend-owned close route should reject no-position and oversell before order placement and return a purpose-built quote.
+- Temporary mock/static data: none added. Mock mode still updates local state for offline UI proof; server mode uses existing backend routes.
+- Remaining gaps: S23 proof passed for corrected Max/share behavior. Dedicated close quote and backend-owned cashout availability status remain P1.

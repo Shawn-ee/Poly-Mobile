@@ -439,15 +439,11 @@ type DisplayOutcome = {
   label: string;
   color: string;
   probability: number;
-  noColor?: string;
-  noProbability?: number;
   odds?: string;
   icon?: string;
   miniLine?: number;
   ticketOutcome?: Outcome;
   ticketSelection?: TicketSelection;
-  noTicketOutcome?: Outcome;
-  noTicketSelection?: TicketSelection;
 };
 
 type GameLineGroup = {
@@ -524,9 +520,6 @@ const marketSourceBadge = (market?: Market) => {
     accessibility: `market-source-badge-unknown market-source-${source || "unknown"}`,
   };
 };
-
-const noOutcomeForMarket = (market: Market | undefined) =>
-  market?.outcomes.find((outcome) => outcome.side === "no" || /^no$/i.test(outcome.label));
 
 const ticketSelectionIdentityLabel = (selection?: TicketSelection) =>
   selection
@@ -803,24 +796,17 @@ export function EventDetail({
       : primaryMarketSubcopy
     : `Includes tie for ${selectedWinnerPeriod.toLowerCase()}`;
   const regulationWinnerRows: DisplayOutcome[] = providerRegulationSelections.length === 3 && selectedWinnerPeriod === "Reg. Time"
-    ? providerRegulationSelections.map((selection, index) => {
-        const noOutcome = noOutcomeForMarket(selection.market);
-        return {
+    ? providerRegulationSelections.map((selection, index) => ({
         id: selection.outcome.id,
         label: label(locale, selection.outcome),
         color: primaryOutcomeDisplayColor(selection.outcome),
         probability: selection.outcome.probability,
-        noColor: "#273244",
-        noProbability: noOutcome?.probability ?? Math.max(1, Math.min(99, 100 - selection.outcome.probability)),
         odds: `${outcomeOdds(selection.outcome)}x`,
         icon: selection.role === "draw" ? "%" : selection.role === "home" ? teamA?.flag ?? "" : teamB?.flag ?? "",
         miniLine: selection.outcome.probability,
         ticketOutcome: selection.outcome,
         ticketSelection: orderBookTicketSelection(selection.market, selection.outcome, 0, winnerMarketTitle),
-        noTicketOutcome: noOutcome,
-        noTicketSelection: noOutcome ? orderBookTicketSelection(selection.market, noOutcome, selection.market.outcomes.findIndex((item) => item.id === noOutcome.id), winnerMarketTitle) : undefined,
-      };
-      })
+      }))
     : selectedWinnerMarket?.outcomes.map((outcome, index) => ({
     id: outcome.id,
     label: label(locale, outcome),
@@ -1408,16 +1394,6 @@ export function EventDetail({
       syntheticMarkets: {},
       fallbackMarket: groupMarket ?? primaryMarket,
     });
-    const noTicketTarget = outcome.noTicketSelection && outcome.noTicketOutcome
-      ? resolveLineTicketTarget({
-          selection: outcome.noTicketSelection,
-          backendMarket: groupMarket,
-          backendOutcome: outcome.noTicketOutcome,
-          syntheticOutcome: outcome.noTicketOutcome,
-          syntheticMarkets: {},
-          fallbackMarket: groupMarket ?? primaryMarket,
-        })
-      : null;
     return (
     <View key={outcome.id} style={styles.parityOutcomeRow}>
       <View style={styles.parityOutcomeIcon}>
@@ -1430,33 +1406,18 @@ export function EventDetail({
         </View>
       </View>
       <Text style={styles.oddsMultiplier}>{outcome.odds}</Text>
-      <View style={outcome.noTicketSelection ? styles.parityBinaryButtonCluster : undefined}>
+      <View>
         <Pressable
           accessibilityLabel={`event-detail-outcome-${marketId}-${outcome.id} yes-selection ticket-source-${ticketTarget?.source ?? "unavailable"} ticket-market-${ticketTarget?.market.id ?? "none"} ticket-outcome-${ticketTarget?.outcome.id ?? "none"} ${ticketSelectionIdentityLabel(outcome.ticketSelection)} ${providerIdentityLabel(ticketTarget?.market ?? groupMarket, ticketTarget?.outcome ?? outcome.ticketOutcome ?? matchingOutcome)}`}
           onPress={() => {
             if (!ticketTarget) return;
             openTicket(ticketTarget.market, ticketTarget.outcome, event, defaultSide, outcome.ticketSelection);
           }}
-          style={[styles.parityProbButton, outcome.noTicketSelection && styles.parityBinaryProbButton, { backgroundColor: outcome.color }]}
+          style={[styles.parityProbButton, { backgroundColor: outcome.color }]}
           testID={`event-detail-outcome-${marketId}-${outcome.id}`}
         >
-          {outcome.noTicketSelection && <Text style={styles.parityProbSideText}>Yes</Text>}
           <Text style={styles.parityProbText}>{outcome.probability}%</Text>
         </Pressable>
-        {outcome.noTicketSelection && (
-          <Pressable
-            accessibilityLabel={`event-detail-outcome-${marketId}-${outcome.id}-no no-selection ticket-source-${noTicketTarget?.source ?? "unavailable"} ticket-market-${noTicketTarget?.market.id ?? "none"} ticket-outcome-${noTicketTarget?.outcome.id ?? "none"} ${ticketSelectionIdentityLabel(outcome.noTicketSelection)} ${providerIdentityLabel(noTicketTarget?.market ?? groupMarket, noTicketTarget?.outcome ?? outcome.noTicketOutcome)}`}
-            onPress={() => {
-              if (!noTicketTarget) return;
-              openTicket(noTicketTarget.market, noTicketTarget.outcome, event, defaultSide, outcome.noTicketSelection);
-            }}
-            style={[styles.parityProbButton, styles.parityBinaryProbButton, styles.parityNoProbButton]}
-            testID={`event-detail-outcome-${marketId}-${outcome.id}-no`}
-          >
-            <Text style={styles.parityProbSideText}>No</Text>
-            <Text style={styles.parityProbText}>{outcome.noProbability}%</Text>
-          </Pressable>
-        )}
       </View>
     </View>
     );

@@ -310,9 +310,10 @@ const mexicoEcuadorGamePositionFixture = (): Position | undefined => {
 const openOrderRemainingShares = (order: OpenOrder) => order.remainingShares ?? order.remaining;
 const openOrderValue = (order: OpenOrder) => order.orderValue ?? openOrderRemainingShares(order) * order.price;
 const sharesForTicketAmount = (amount: number, probability: number) => amount / Math.max(probability / 100, 0.01);
+const normalizeProbabilityPrice = (price: number) => (price > 1 ? price / 100 : price);
 const cashoutSellPrice = (position: Position) => {
   const price = position.bestBid ?? position.currentPrice ?? position.probability / 100;
-  return Number.isFinite(price) && price > 0 ? price : 0;
+  return Number.isFinite(price) && price > 0 ? normalizeProbabilityPrice(price) : 0;
 };
 
 type MainTab = "home" | "live" | "portfolio" | "search" | "account";
@@ -1605,7 +1606,9 @@ export default function App() {
 
   const placeOrder = async (amount: number, side: "buy" | "sell", contractSide?: Ticket["contractSide"]) => {
     if (!ticket || amount <= 0) return;
-    const isClosePositionTicket = Boolean(ticket.closePosition && ticket.sourcePositionId && side === "sell");
+    const hasClosePositionPayload = Boolean(ticket.closePosition && ticket.sourcePositionId);
+    const effectiveSide = hasClosePositionPayload ? "sell" : side;
+    const isClosePositionTicket = hasClosePositionPayload && effectiveSide === "sell";
     const closeShares = isClosePositionTicket ? amount : undefined;
     const closePrice = ticket.closePosition?.sellPrice ?? 0;
     const closeProceeds = isClosePositionTicket && closeShares ? closeShares * closePrice : 0;
@@ -1615,7 +1618,7 @@ export default function App() {
     const sourcePosition = ticket.sourcePositionId
       ? positions.find((position) => position.id === ticket.sourcePositionId)
       : undefined;
-    if (side === "sell" && ticket.sourcePositionId) {
+    if (effectiveSide === "sell" && ticket.sourcePositionId) {
       if (!sourcePosition) {
         setTicketOrderError(t.orderFailed);
         setTicketOrderErrorDetail("No position is available to cash out.");
@@ -1645,7 +1648,7 @@ export default function App() {
         outcome: ticket.outcome,
         selection: ticket.selection,
         contractSide: contractSide ?? ticket.contractSide,
-        side,
+        side: effectiveSide,
         amount: cost,
         sizeShares: closeShares,
       });

@@ -9,7 +9,9 @@ export type ClosePositionInput = {
 };
 
 const closePrice = (position: Position) =>
-  (typeof position.currentPrice === "number" ? position.currentPrice : position.probability / 100).toFixed(2);
+  normalizePositionPrice(typeof position.bestBid === "number" ? position.bestBid : typeof position.currentPrice === "number" ? position.currentPrice : position.probability / 100).toFixed(2);
+
+const normalizePositionPrice = (price: number) => (Number.isFinite(price) && price > 1 ? price / 100 : price);
 
 const closeSize = (position: Position) => {
   const shares = typeof position.shares === "number" ? position.shares : undefined;

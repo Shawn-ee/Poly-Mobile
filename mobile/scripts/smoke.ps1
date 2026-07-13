@@ -2045,14 +2045,14 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-server-position-trade-ticket.png"
       $serverPositionTradeTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-trade-ticket.xml"
-      Assert-HierarchyContains -Path $serverPositionTradeTicketHierarchy -Expected @("trade-ticket", "World Cup winner", "France", "ticket-order-mode-visible", "ticket-order-mode-sell", "Sell France", "ticket-side-sell", "ticket-amount-keypad", "ticket-preset-25", "ticket-odds-available", "place-mock-order")
-      Assert-HierarchyDoesNotContain -Path $serverPositionTradeTicketHierarchy -Unexpected @("Checking")
-      Invoke-TapHierarchyNode -Path $serverPositionTradeTicketHierarchy -Identifier "ticket-preset-25" -StartsWith
+      Assert-HierarchyContains -Path $serverPositionTradeTicketHierarchy -Expected @("trade-ticket", "World Cup winner", "France", "cashout-ticket-no-yes-no-selector", "cashout-close-existing-position", "cashout-mode-active-true", "cashout-source-position-present", "cashout-effective-side-sell", "cashout-available-shares-500.000000", "cashout-share-quantity-display", "cashout-max-owned-shares", "ticket-amount-keypad", "cashout-available-owned-shares", "place-mock-order")
+      Assert-HierarchyDoesNotContain -Path $serverPositionTradeTicketHierarchy -Unexpected @("Checking", "ticket-side-buy", "ticket-side-enabled", '$9000', '$9,000', '$10000', '$10,000')
+      Invoke-TapHierarchyNode -Path $serverPositionTradeTicketHierarchy -Identifier "ticket-max-amount"
       Start-Sleep -Seconds 1
-      & $adb -s $Device shell input swipe 540 1850 540 950 450 | Out-Null
-      Start-Sleep -Seconds 1
-      $serverPositionTradeButtonHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-trade-ticket-button.xml"
-      Assert-HierarchyContains -Path $serverPositionTradeButtonHierarchy -Expected @("place-mock-order", "Swipe to sell")
+      Save-Screenshot -Name "cycle-current-holiwyn-server-position-trade-ticket-max.png"
+      $serverPositionTradeButtonHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-trade-ticket-max.xml"
+      Assert-HierarchyContains -Path $serverPositionTradeButtonHierarchy -Expected @("cashout-ticket-no-yes-no-selector", "cashout-amount-is-shares", "cashout-available-shares-500.000000", "500", "shares", "place-mock-order", "Swipe to cash out")
+      Assert-HierarchyDoesNotContain -Path $serverPositionTradeButtonHierarchy -Unexpected @('$9000', '$9,000', '$10000', '$10,000', "Swipe to sell", "ticket-side-buy", "ticket-side-enabled")
       return
     }
 

@@ -142,6 +142,7 @@
     "smoke:samsung:server-portfolio-fixture": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerPortfolioFixture -Port 8150",
     "smoke:samsung:server-close-fixture": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerCloseFixture -Port 8151",
     "smoke:samsung:server-position-trade": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerPositionTrade -Port 8152",
+    "smoke:samsung:cashout-close-position": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerPositionTrade -Port 8152",
     "smoke:samsung:server-position-buy-trade": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerPositionBuyTrade -Port 8153",
     "smoke:samsung:server-position-fallback-trade": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerPositionFallbackTrade -Port 8174",
     "smoke:samsung:server-position-fallback-order": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerPositionFallbackOrder -Port 8175",

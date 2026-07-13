@@ -86,6 +86,40 @@ describe("position close service", () => {
     expect(placeLimitOrder).toHaveBeenCalledWith(expect.objectContaining({ price: "0.42" }));
   });
 
+  test("uses current sell bid before display price for cashout proceeds", async () => {
+    const placeLimitOrder = vi.fn(async () => ({ order: { id: "close-order-bid" } }));
+    const api = { placeLimitOrder } as unknown as PolyApi;
+
+    await closePositionOnServer({
+      mode: "server",
+      api,
+      position: {
+        ...position,
+        bestBid: 0.49,
+        currentPrice: 0.55,
+      },
+    });
+
+    expect(placeLimitOrder).toHaveBeenCalledWith(expect.objectContaining({ price: "0.49" }));
+  });
+
+  test("normalizes percent-form sell bid before closing a server position", async () => {
+    const placeLimitOrder = vi.fn(async () => ({ order: { id: "close-order-percent-bid" } }));
+    const api = { placeLimitOrder } as unknown as PolyApi;
+
+    await closePositionOnServer({
+      mode: "server",
+      api,
+      position: {
+        ...position,
+        bestBid: 47,
+        currentPrice: 55,
+      },
+    });
+
+    expect(placeLimitOrder).toHaveBeenCalledWith(expect.objectContaining({ price: "0.47" }));
+  });
+
   test("rejects server closes without market, outcome, and share identity", async () => {
     const placeLimitOrder = vi.fn();
     const api = { placeLimitOrder } as unknown as PolyApi;

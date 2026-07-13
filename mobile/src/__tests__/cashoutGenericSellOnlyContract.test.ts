@@ -15,8 +15,12 @@ describe("cashout generic Sell ticket contract", () => {
     expect(app).toContain("closePosition:");
     expect(app).toContain("availableShares: availablePositionShares(position)");
     expect(app).toContain("sizeShares: closeShares");
+    expect(app).toContain("const hasClosePositionPayload = Boolean(ticket.closePosition && ticket.sourcePositionId);");
+    expect(app).toContain('const effectiveSide = hasClosePositionPayload ? "sell" : side;');
+    expect(app).toContain("side: effectiveSide");
     expect(ticket).toContain("cashout-ticket-no-yes-no-selector");
     expect(ticket).toContain("cashout-max-owned-shares");
+    expect(ticket).toContain("cashout-close-position-outcome");
   });
 
   test("cashout ticket is share/proceeds based, not wallet-balance based", () => {
@@ -27,5 +31,10 @@ describe("cashout generic Sell ticket contract", () => {
     expect(ticket).toContain("estimatedProceeds");
     expect(ticket).toContain("closeAvailableShares.toFixed(6)");
     expect(ticket).toContain("numericAmount > closeAvailableShares");
+    expect(ticket).toContain("function trimShareAmount");
+    expect(ticket).toContain("trimShareAmount(closeAvailableShares)");
+    expect(ticket).toContain('const effectiveSide = isClosePositionTicket ? "sell" : side;');
+    expect(ticket).toContain("onSubmit={() => placeOrder(numericAmount, effectiveSide, contractSide)}");
+    expect(ticket).not.toContain('closeAvailableShares.toFixed(6).replace(/\\.?0+$/, "")');
   });
 });

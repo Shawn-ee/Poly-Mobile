@@ -11,12 +11,13 @@ describe("EventDetail contract-side identity", () => {
     expect(eventDetail).toContain('market.outcomes.findIndex((item) => item.id === outcome.id), "Outrights"');
   });
 
-  test("exposes regulation winner No-side tickets when provider binary markets include them", () => {
+  test("does not expose redundant top-level No-side buttons for binary team markets", () => {
     const eventDetail = source();
 
-    expect(eventDetail).toContain("const noOutcome = noOutcomeForMarket(selection.market);");
-    expect(eventDetail).toContain("noTicketSelection: noOutcome ? orderBookTicketSelection");
-    expect(eventDetail).toContain("no-selection ticket-source-");
+    expect(eventDetail).not.toContain("noOutcomeForMarket");
+    expect(eventDetail).not.toContain("noTicketSelection");
+    expect(eventDetail).not.toContain("no-selection ticket-source-");
+    expect(eventDetail).not.toContain('testID={`event-detail-outcome-${marketId}-${outcome.id}-no`}');
   });
 
   test("renders multi-line spread and totals selectors as a horizontal tick rail", () => {

@@ -15015,3 +15015,14 @@ Known limitations:
 - API/data dependencies: reads `OfficialResultReview.settlementExecutedCanonicalId`, `OfficialResultReview.resultDigest`, current `Market`/`Event` status, and phase-audit settlement queue evidence. Phase audit now requires execution evidence to stay redacted and requires executed reviews to have canonical execution evidence.
 - Proof needed: focused settlement queue/status route tests, phase audit, completion audit, server/mobile typecheck, and `npm run test:ci`.
 - Known limitations: this narrows the official-result auto-settlement evidence gap. Authenticated operator UI, installed official-result polling, and direct active-event execution controls remain P1/P2.
+
+## Cycle XC - Position Close Cashout Contract
+
+- Feature/page worked on: mobile Portfolio/Event Detail cashout and Trade Ticket close-position mode.
+- Frontend components touched: `mobile/src/components/TradeTicket.tsx`, `mobile/src/components/EventDetail.tsx`.
+- Important functions/services touched: `mobile/src/services/positionCloseService.ts`.
+- User interactions supported: Portfolio and Event Detail cashout now open a close-position ticket where amount means owned shares, Max means full owned share count, estimated proceeds use sell/bid price, and the Yes/No selector is not shown. Binary team-market rows expose the team Yes choice as the top-level action rather than duplicating a No button.
+- State transitions: cashout still submits through the existing server fake-token order path as a `SELL` order for the owned market/outcome. The frontend rejects zero-share, missing-position, and oversell cases before submission.
+- API/data dependencies: uses existing Portfolio position fields `marketId`, `outcomeId`, `shares`, `bestBid`, `currentPrice`, and `probability`; uses existing `api.placeLimitOrder` for canonical `SELL` payloads.
+- Proof: focused mobile contract tests passed, mobile typecheck passed, backend cashout/open-position tests passed. S23 proof passed on `SM_S911U1`: Portfolio cashout opened close-position mode, Max selected `500` owned shares, sell price normalized to `47%`, and estimated proceeds showed `$235` instead of wallet-sized balance values.
+- Known limitations: a dedicated backend close-position quote route is still P1; current close ticket prices come from position bid/current price fields and normalize percent-form values.

@@ -313,6 +313,11 @@ function compactCash(value: number) {
   return `$${value.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
 }
 
+function trimShareAmount(value: number) {
+  if (!Number.isFinite(value)) return "0";
+  return value.toFixed(6).replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "");
+}
+
 function marketAvailabilityLabel(market: Market) {
   const status = market.availability?.status;
   if (status === "ready") return "Market live";
@@ -586,16 +591,17 @@ export function TradeTicket({
     setAmount(nextAmount.replace(/^0+(\d)/, "$1"));
   };
   const numericAmount = Number(amount) || 0;
+  const isClosePositionTicket = Boolean(ticket.closePosition && ticket.sourcePositionId);
+  const effectiveSide = isClosePositionTicket ? "sell" : side;
   const contractSide = activeContractSide;
   const contractProbability = contractSide === "no" ? 100 - ticket.outcome.probability : ticket.outcome.probability;
   const averagePrice = contractProbability / 100;
-  const isClosePositionTicket = Boolean(ticket.closePosition && ticket.sourcePositionId && side === "sell");
   const closeAvailableShares = ticket.closePosition?.availableShares ?? 0;
   const closeSellPrice = ticket.closePosition?.sellPrice ?? averagePrice;
   const estimatedShares = isClosePositionTicket ? numericAmount : averagePrice > 0 ? numericAmount / averagePrice : 0;
   const estimatedPayout = isClosePositionTicket ? numericAmount * closeSellPrice : contractProbability > 0 ? numericAmount * (100 / contractProbability) : 0;
   const estimatedProceeds = numericAmount * closeSellPrice;
-  const swipeLabel = isClosePositionTicket ? "Swipe to cash out" : side === "buy" ? t.swipeBuyOrder : t.swipeSellOrder;
+  const swipeLabel = isClosePositionTicket ? "Swipe to cash out" : effectiveSide === "buy" ? t.swipeBuyOrder : t.swipeSellOrder;
   const amountPresets = [25, 50];
   const keypadKeys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "backspace"];
   const isLiveTicket = ticket.event?.status === "live";
@@ -610,8 +616,9 @@ export function TradeTicket({
   const outcomeLabel = label(locale, ticket.outcome);
   const sideLabel = contractSide === "yes" ? "Yes" : "No";
   const selectionLabel = ticket.selection?.referenceOutcomeLabel ?? outcomeLabel;
+  const cashoutSelectionLabel = selectionLabel && selectionLabel !== "No" ? `Cash out ${selectionLabel}` : "Cash out position";
   const marketLabel = ticket.selection?.displayLabel ?? label(locale, ticket.market);
-  const modeLabel = side === "sell" ? t.sell : t.buy;
+  const modeLabel = effectiveSide === "sell" ? t.sell : t.buy;
   const modeOutcomeLabel = `${modeLabel} ${outcomeLabel}`;
   const teamCode = teamCodeForTicket(ticket);
   const teamFlag = teamCode ? teamFlags[teamCode] : undefined;
@@ -646,7 +653,7 @@ export function TradeTicket({
     : isClosePositionTicket
       ? `Sell up to ${closeAvailableShares.toLocaleString(undefined, { maximumFractionDigits: 6 })} shares`
       : t.finalCostMayVary;
-  const submitArmedLabel = isClosePositionTicket ? "Release to cash out" : side === "buy" ? t.releaseBuyOrder : t.releaseSellOrder;
+  const submitArmedLabel = isClosePositionTicket ? "Release to cash out" : effectiveSide === "buy" ? t.releaseBuyOrder : t.releaseSellOrder;
   const activeSubmitProgress = marketTradable ? swipeSubmitProgress : 0;
   const footerBaseHeight = usePhoneTicketFit ? 172 : 184;
   const submitSheetHeight = footerBaseHeight + activeSubmitProgress * Math.max(viewportHeight - footerBaseHeight, 0);
@@ -742,7 +749,7 @@ export function TradeTicket({
                 <View style={styles.ticketSelectionMetaRow}>
                   <Text accessibilityLabel="ticket-selection-line ticket-header-selected-outcome-simple ticket-header-actual-outcome-label" testID="ticket-selection-line" numberOfLines={2} style={styles.ticketOutcome}>
                     {isClosePositionTicket ? (
-                      <Text style={styles.ticketOutcomeSide}>Cash out</Text>
+                      <Text style={styles.ticketOutcomeSide}>{cashoutSelectionLabel}</Text>
                     ) : (
                       <><Text style={styles.ticketOutcomeSide}>{sideLabel}</Text> <Text style={styles.ticketOutcomeDot}>-</Text> {selectionLabel}</>
                     )}
@@ -800,7 +807,7 @@ export function TradeTicket({
               <Text style={[styles.amountDisplayText, usePhoneTicketFit && styles.amountDisplayTextPhone, numericAmount <= 0 && styles.amountDisplayTextEmpty, !marketTradable && styles.amountDisplayTextUnavailable]}>{amountDisplay}</Text>
               {isClosePositionTicket && <Text style={styles.closeSharesUnit}>shares</Text>}
             </View>
-            <View accessibilityLabel={`${sideLabel} - ${outcomeLabel}`} testID="ticket-contract-outcome-row" style={styles.orderReviewA11y}>
+            <View accessibilityLabel={isClosePositionTicket ? `cashout-close-position-outcome ${outcomeLabel}` : `${sideLabel} - ${outcomeLabel}`} testID="ticket-contract-outcome-row" style={styles.orderReviewA11y}>
               <Text accessibilityLabel="ticket-selected-outcome-choice" testID="ticket-selected-outcome-choice">
                 {outcomeLabel}
               </Text>
@@ -850,7 +857,7 @@ export function TradeTicket({
             </View>}
             {isClosePositionTicket && (
               <View
-                accessibilityLabel={`cashout-ticket-no-yes-no-selector cashout-close-existing-position cashout-available-shares-${closeAvailableShares.toFixed(6)} cashout-sell-price-${closeSellPrice.toFixed(2)}`}
+                accessibilityLabel={`cashout-ticket-no-yes-no-selector cashout-close-existing-position cashout-mode-active-${isClosePositionTicket ? "true" : "false"} cashout-source-position-${ticket.sourcePositionId ? "present" : "missing"} cashout-ticket-side-${ticket.side} cashout-local-side-${side} cashout-effective-side-${effectiveSide} cashout-available-shares-${closeAvailableShares.toFixed(6)} cashout-sell-price-${closeSellPrice.toFixed(2)}`}
                 style={styles.closePositionInfo}
                 testID="cashout-position-info"
               >
@@ -890,7 +897,7 @@ export function TradeTicket({
                 accessibilityLabel={`ticket-max-amount ${isClosePositionTicket ? "cashout-max-owned-shares" : ""} ${inputBlocked ? "ticket-preset-disabled-readonly" : "ticket-preset-enabled"}`}
                 disabled={inputBlocked}
                 testID="ticket-max-amount"
-                onPress={() => setAmount(isClosePositionTicket ? closeAvailableShares.toFixed(6).replace(/\.?0+$/, "") : String(Math.floor(balance)))}
+                onPress={() => setAmount(isClosePositionTicket ? trimShareAmount(closeAvailableShares) : String(Math.floor(balance)))}
                 style={[styles.presetButton, inputBlocked && styles.presetButtonDisabled]}
               >
                 <Text style={[styles.presetText, inputBlocked && styles.presetTextDisabled]}>{t.max}</Text>
@@ -953,13 +960,13 @@ export function TradeTicket({
             <SwipeSubmitControl
               disabled={numericAmount <= 0 || submitBlocked}
               unavailable={!marketTradable}
-              tone={side}
+              tone={effectiveSide}
               helper={submitHelper}
               label={submitLabel}
               armedLabel={submitArmedLabel}
               armedHelper={t.releaseToSubmit}
               onProgressChange={setSwipeSubmitProgress}
-              onSubmit={() => placeOrder(numericAmount, side, contractSide)}
+              onSubmit={() => placeOrder(numericAmount, effectiveSide, contractSide)}
             />
           </View>
         </View>
