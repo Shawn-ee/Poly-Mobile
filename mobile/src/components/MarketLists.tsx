@@ -103,7 +103,7 @@ export function MarketList({
   events: Event[];
   empty: string;
   openEvent: (event: Event) => void;
-  openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
+  openTicket: (market: Market, outcome: Outcome, event?: Event, side?: "buy" | "sell") => void;
   savedEventIds?: Set<string>;
   toggleSavedEvent?: (event: Event) => void;
 }) {
@@ -175,7 +175,7 @@ export function MarketList({
                     key={`${market.id}-${outcome.id}`}
                     onPress={(pressEvent) => {
                       pressEvent.stopPropagation();
-                      openTicket(market, outcome, event);
+                      openTicket(market, outcome, event, "buy");
                     }}
                     style={[
                       styles.retailOutcomeButton,
@@ -205,7 +205,7 @@ export function MarketList({
                     key={`${market.id}-${outcome.id}`}
                     onPress={(pressEvent) => {
                       pressEvent.stopPropagation();
-                      openTicket(market, outcome, event);
+                      openTicket(market, outcome, event, "buy");
                     }}
                     style={[
                       styles.retailOutcomeButton,
@@ -235,7 +235,7 @@ export function MarketList({
                     key={outcome.id}
                     onPress={(pressEvent) => {
                       pressEvent.stopPropagation();
-                      openTicket(winner, outcome, event);
+                      openTicket(winner, outcome, event, "buy");
                     }}
                     style={[
                       styles.retailOutcomeButton,
