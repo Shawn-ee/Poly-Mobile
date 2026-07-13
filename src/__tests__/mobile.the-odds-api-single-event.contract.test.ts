@@ -102,6 +102,14 @@ describe("The Odds API single-event temporary provider", () => {
   it("gates one-event readiness on the fresh S23 close-position cashout proof", () => {
     expect(phaseAuditScript()).toContain("resolveLatestS23VisibleProofPath");
     expect(completionAuditScript()).toContain("resolveLatestS23VisibleProofPath");
+    expect(phaseAuditScript()).toContain("isSpainFranceOddsApiVisibleProof");
+    expect(completionAuditScript()).toContain("isSpainFranceOddsApiVisibleProof");
+    expect(phaseAuditScript()).toContain('eventSlug === "odds-api-single-soccer-test"');
+    expect(completionAuditScript()).toContain('eventSlug === "odds-api-single-soccer-test"');
+    expect(phaseAuditScript()).toContain('expectedTitle === "Spain vs. France"');
+    expect(completionAuditScript()).toContain('expectedTitle === "Spain vs. France"');
+    expect(phaseAuditScript()).toContain('getPath(proof, ["selectedMarket", "referenceSource"]) === "sportsbook-odds"');
+    expect(completionAuditScript()).toContain('getPath(proof, ["selectedMarket", "referenceSource"]) === "sportsbook-odds"');
     expect(liveReadinessScript()).toContain("Resolve-LatestS23VisibleProofPath");
     expect(phaseAuditScript()).toContain("odds-api-s23-visible-flow\\.json");
     expect(completionAuditScript()).toContain("odds-api-s23-visible-flow\\.json");

@@ -51,6 +51,17 @@ async function readJson(filePath: string): Promise<JsonObject | null> {
   }
 }
 
+function isSpainFranceOddsApiVisibleProof(proof: JsonObject | null) {
+  if (!pass(proof)) return false;
+  const eventSlug = getPath(proof, ["eventSlug"]);
+  const expectedTitle = getPath(proof, ["expectedTitle"]);
+  return (
+    eventSlug === "odds-api-single-soccer-test" ||
+    expectedTitle === "Spain vs. France" ||
+    getPath(proof, ["selectedMarket", "referenceSource"]) === "sportsbook-odds"
+  );
+}
+
 async function resolveLatestS23VisibleProofPath() {
   const fallback = PATHS.s23Visible;
   const harnessRoot = "docs/mobile/harness";
@@ -63,7 +74,7 @@ async function resolveLatestS23VisibleProofPath() {
 
   const candidates = await Promise.all(
     entries
-      .filter((name) => /^cycle-.*spain-france-cashout/i.test(name))
+      .filter((name) => /^cycle-/i.test(name))
       .map(async (name) => {
         const dirPath = path.join(harnessRoot, name);
         const files = await fs.readdir(dirPath).catch(() => []);
@@ -72,7 +83,7 @@ async function resolveLatestS23VisibleProofPath() {
         const proofPath = path.join(dirPath, proofFile).replace(/\\/g, "/");
         const proof = await readJson(proofPath);
         if (
-          !pass(proof) ||
+          !isSpainFranceOddsApiVisibleProof(proof) ||
           !truthy(getPath(proof, ["assertions", "cashoutTicketIsClosePositionMode"])) ||
           !truthy(getPath(proof, ["assertions", "cashoutMaxUsesOwnedShares"])) ||
           !truthy(getPath(proof, ["assertions", "cashoutTicketHidesYesNoSelector"]))
