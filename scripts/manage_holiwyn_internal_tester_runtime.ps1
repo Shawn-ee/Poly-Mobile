@@ -348,6 +348,17 @@ $s23 = Get-S23Status
 $backendHealth = Test-HttpHealth $BackendBaseUrl
 $backendOwnedRunning = Test-ProcessRunning $state "backend"
 $expoOwnedRunning = Test-ProcessRunning $state "expo"
+$managerStartedExpoUsesServerMode = [bool]($state.expo -and $state.expo.owned -and $expoOwnedRunning -and $expoOwnerAfter -and $state.expo.pid -eq $expoOwnerAfter.pid -and $state.expo.env.EXPO_PUBLIC_ORDER_MODE -eq "server" -and $state.expo.env.EXPO_PUBLIC_MARKET_DATA_MODE -eq "server" -and $state.expo.env.EXPO_PUBLIC_API_BASE_URL -eq $BackendBaseUrl)
+$externalExpoServerModeUnverified = [bool]($expoOwnerAfter -and -not $managerStartedExpoUsesServerMode)
+$expoServerModeSource = if ($managerStartedExpoUsesServerMode) {
+  "manager_owned_server_env"
+} elseif ($externalExpoServerModeUnverified) {
+  "external_listener_unverified"
+} elseif ($expoOwnerAfter) {
+  "listener_without_server_env"
+} else {
+  "not_listening"
+}
 
 $p0 = New-Object System.Collections.Generic.List[object]
 if ($Action -eq "stop") {
@@ -369,6 +380,12 @@ if ($Action -eq "stop") {
     $p0.Add("result_poller_not_running_after_start") | Out-Null
   }
 }
+$p1 = New-Object System.Collections.Generic.List[object]
+if ($externalExpoServerModeUnverified) {
+  $p1.Add("External Expo listener reused; server-mode env cannot be verified. Use -Force or stop the old Expo server if S23 shows stale, fixture, or non-server behavior.") | Out-Null
+}
+$p1.Add("This is a local process control plane, not an installed OS service.") | Out-Null
+$p1.Add("Official-result auto-execution still requires trusted operator confirmation.") | Out-Null
 
 $summary = [ordered]@{
   generatedAt = (Get-Date).ToUniversalTime().ToString("o")
@@ -391,6 +408,9 @@ $summary = [ordered]@{
     ownedByManager = [bool]($state.expo -and $state.expo.owned)
     ownedProcessRunning = $expoOwnedRunning
     serverModeEnv = if ($state.expo -and $state.expo.env) { $state.expo.env } else { $null }
+    serverModeSource = $expoServerModeSource
+    serverModeVerified = $managerStartedExpoUsesServerMode
+    externalServerModeUnverified = $externalExpoServerModeUnverified
   }
   dockerPostgres = $docker
   s23 = $s23
@@ -422,7 +442,9 @@ $summary = [ordered]@{
     supervisorBackgroundProcessAvailable = $true
     resultPollerBackgroundProcessAvailable = $true
     resultPollerBackgroundProcessRunning = [bool]($resultPollerProcessSummary -and $resultPollerProcessSummary.process.after.running -eq $true)
-    managerStartedExpoUsesServerMode = [bool]($state.expo -and $state.expo.owned -and $state.expo.env.EXPO_PUBLIC_ORDER_MODE -eq "server" -and $state.expo.env.EXPO_PUBLIC_MARKET_DATA_MODE -eq "server" -and $state.expo.env.EXPO_PUBLIC_API_BASE_URL -eq $BackendBaseUrl)
+    managerStartedExpoUsesServerMode = $managerStartedExpoUsesServerMode
+    expoServerModeSource = $expoServerModeSource
+    externalExpoServerModeUnverified = $externalExpoServerModeUnverified
     s23AdbReverseConfiguredOnStart = [bool]($Action -ne "start" -or $adbReverse.ok -or -not $s23Before.connected)
     stopsOnlyOwnedBackendExpoProcesses = $true
     installedOsService = $false
@@ -439,7 +461,7 @@ $summary = [ordered]@{
   }
   gaps = [ordered]@{
     p0 = @($p0 | ForEach-Object { $_ })
-    p1 = @("This is a local process control plane, not an installed OS service.", "Official-result auto-execution still requires trusted operator confirmation.")
+    p1 = @($p1 | ForEach-Object { $_ })
     p2 = @("Multi-event production process supervision remains future work.")
   }
 }

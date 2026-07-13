@@ -15304,3 +15304,12 @@ Known limitations:
 - User interactions supported: Portfolio Cash out opens a close-position ticket, hides Yes/No choice, displays owned shares, Max selects owned shares only, and swipe submits a SELL for the owned market/outcome.
 - State transitions: route-backed buy creates a position; cashout fetches the latest bid before opening the ticket; swipe sell places a backend SELL using `sizeShares`; filled sell removes/reduces the position and adds sold history.
 - Known limitations: cashout quote preview still uses the existing market quote route. A dedicated cashout preview route remains P1 polish, not a blocker for local internal testing.
+
+## Cycle XT - Internal Tester Expo Server-Mode Truth
+
+- Feature/runtime worked on: local internal tester runtime manager safety for S23 server-backed testing.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/manage_holiwyn_internal_tester_runtime.ps1` and the Odds API single-event contract test.
+- User/runtime interactions supported: when the manager starts Expo itself, it still records the server-mode environment used by the S23 tester app. When it reuses an already-running Expo listener, it now reports `externalExpoServerModeUnverified=true`, `expo.serverModeSource="external_listener_unverified"`, and a P1 warning telling the operator to restart with `-Force` or stop stale Expo if the phone shows fixture/non-server behavior.
+- State transitions: none. This is a no-quota runtime status/reporting change only; it does not start provider refresh, place orders, mutate DB records, or alter mobile UI.
+- Known limitations: the manager cannot introspect environment variables from an arbitrary already-running Expo process. The safe resolution remains restarting Expo through the manager or using `-Force`.

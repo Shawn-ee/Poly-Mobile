@@ -57,6 +57,9 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("adb -s $Device.deviceId reverse \"tcp:$port\" \"tcp:$port\"");
     expect(source).toContain("s23_adb_reverse_failed");
     expect(source).toContain("managerStartedExpoUsesServerMode");
+    expect(source).toContain("externalExpoServerModeUnverified");
+    expect(source).toContain("external_listener_unverified");
+    expect(source).toContain("Use -Force or stop the old Expo server");
   });
 
   it("gates live-runtime audits on managed S23 server-backed startup", () => {
