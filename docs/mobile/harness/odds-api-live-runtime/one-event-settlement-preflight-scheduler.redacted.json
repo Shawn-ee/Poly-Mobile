@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T12:06:47.599Z",
+  "generatedAt": "2026-07-13T10:28:43.226Z",
   "scope": "odds-api-one-event-result-settlement-scheduler-run",
   "pass": true,
   "eventSlug": "odds-api-single-soccer-test",
@@ -15,11 +15,13 @@
   },
   "action": "preview_settlement",
   "executionRequested": false,
+  "autoExecuteApproved": false,
+  "approval": null,
   "providerStatus": "trusted_external_input",
   "command": {
     "executable": "C:\\nvm4w\\nodejs\\node.exe",
     "args": [
-      "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+      "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\node_modules\\tsx\\dist\\cli.mjs",
       "scripts/settle_odds_api_one_event_from_result.ts",
       "--eventSlug=odds-api-single-soccer-test",
       "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
@@ -27,15 +29,15 @@
     ],
     "exitCode": 0,
     "stdoutTail": [
-      "    \"dryRunIsDefault\": true,",
       "    \"executeRequiresFlag\": \"--execute\",",
-      "    \"executeRequiresConfirm\": \"SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:f3a5743c73f2\",",
+      "    \"executeRequiresConfirm\": \"SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:24515f22-3717-4b61-82a2-c072febc8f5b:f3a5743c73f2\",",
       "    \"executeRequiresMarketStatus\": \"CLOSED\",",
       "    \"currentMarketStatus\": \"LIVE\",",
       "    \"resultDigest\": \"f3a5743c73f2\",",
       "    \"actorUserId\": \"holiwyn-local-result-settlement-operator\",",
       "    \"providerStatus\": \"trusted_external_input\"",
       "  },",
+      "  \"auditEvent\": null,",
       "  \"gaps\": {",
       "    \"p0\": [],",
       "    \"p1\": [",
@@ -48,9 +50,21 @@
       "  }",
       "}"
     ],
-    "stderrTail": []
+    "stderrTail": [
+      "[config] warnings {",
+      "  env: 'development',",
+      "  warnings: [",
+      "    'ADMIN_EMAILS is not set; admin bootstrap may be limited',",
+      "    'POLYGON_RPC_URL is not set; Polygon deposit monitor is disabled',",
+      "    'POLYGON_USDC_ADDRESS is not set; Polygon deposit monitor is disabled',",
+      "    'DEPOSIT_WALLET_ENCRYPTION_KEY is not set; deposit wallet generation is disabled'",
+      "  ]",
+      "}"
+    ]
   },
+  "previewCommand": null,
   "settlementSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-preflight-dry-run.redacted.json",
+  "previewSettlementDigest": null,
   "settlementDigest": {
     "pass": true,
     "mode": "dry-run",
@@ -63,41 +77,42 @@
       "line": "2.5",
       "statusBefore": "LIVE",
       "resolvedOutcomeIdBefore": null,
-      "collateralUSDCBefore": "26500"
+      "collateralUSDCBefore": "150"
     },
     "winningOutcome": {
-      "id": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
-      "name": "Over +2.5",
-      "label": "Over +2.5",
+      "id": "24515f22-3717-4b61-82a2-c072febc8f5b",
+      "name": "Over 2.5",
+      "label": "Over 2.5",
       "side": "over",
-      "code": "over-2-5"
+      "code": "OVER"
     },
     "preview": {
       "marketStatus": "LIVE",
-      "totalShares": "53000",
-      "totalWinningShares": "26500",
-      "totalPayout": "26500",
-      "collateralUSDC": "26500",
+      "totalShares": "300",
+      "totalWinningShares": "150",
+      "totalPayout": "150",
+      "collateralUSDC": "150",
       "payoutConservationPass": true,
       "blockers": [],
       "openOrderCleanup": {
-        "openOrderCount": 2,
-        "buyOrderLockedUSDCToRelease": "94",
-        "sellOrderSharesToRelease": "200"
+        "openOrderCount": 1,
+        "buyOrderLockedUSDCToRelease": "21.402",
+        "sellOrderSharesToRelease": "0"
       },
-      "payoutCount": 135,
-      "loserPositionCount": 133,
+      "payoutCount": 2,
+      "loserPositionCount": 1,
       "mutation": "none"
     },
     "execution": {
       "attempted": false,
       "reason": "dry_run_default",
-      "requiredConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:f3a5743c73f2"
+      "requiredConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:24515f22-3717-4b61-82a2-c072febc8f5b:f3a5743c73f2"
     },
     "controls": {
       "dryRunIsDefault": true,
+      "writeAuditEvent": false,
       "executeRequiresFlag": "--execute",
-      "executeRequiresConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:f3a5743c73f2",
+      "executeRequiresConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:24515f22-3717-4b61-82a2-c072febc8f5b:f3a5743c73f2",
       "executeRequiresMarketStatus": "CLOSED",
       "currentMarketStatus": "LIVE",
       "resultDigest": "f3a5743c73f2",
@@ -111,13 +126,15 @@
     "unattendedResultPollingInstalled": false,
     "dryRunDefault": true,
     "executeRequiresConfirmation": true,
+    "autoExecuteRequiresApprovalFile": true,
+    "autoExecuteRequiresClosedMarket": true,
     "fakeTokenOnly": true
   },
   "gaps": {
     "p0": [],
     "p1": [
       "This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.",
-      "Dry-run preview is the default; execution still requires explicit confirmation."
+      "Dry-run preview is the default; execution requires either explicit confirmation or an exact local approval file."
     ],
     "p2": [
       "Multi-event result queue and operator UI remain future work."

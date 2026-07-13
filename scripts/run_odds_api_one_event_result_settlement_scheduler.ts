@@ -1,6 +1,9 @@
 import { spawnSync } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { loadLocalEnvForScript } from "./local_env";
+
+loadLocalEnvForScript(["DATABASE_URL"]);
 
 const DEFAULT_EVENT_SLUG = "odds-api-single-soccer-test";
 const DEFAULT_RESULT_PATH =

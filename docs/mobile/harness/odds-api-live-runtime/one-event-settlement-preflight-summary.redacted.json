@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T12:06:47.619Z",
+  "generatedAt": "2026-07-13T10:28:43.249Z",
   "scope": "odds-api-one-event-settlement-preflight",
   "pass": true,
   "eventSlug": "odds-api-single-soccer-test",
@@ -16,7 +16,7 @@
     "command": {
       "executable": "C:\\nvm4w\\nodejs\\node.exe",
       "args": [
-        "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+        "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\node_modules\\tsx\\dist\\cli.mjs",
         "scripts/run_odds_api_one_event_result_settlement_scheduler.ts",
         "--eventSlug=odds-api-single-soccer-test",
         "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
@@ -25,20 +25,20 @@
       ],
       "exitCode": 0,
       "stdoutTail": [
-        "  },",
-        "  \"runtimeTruth\": {",
         "    \"canRunFromSupervisorOrCron\": true,",
         "    \"providerResultIngestionAvailable\": true,",
         "    \"unattendedResultPollingInstalled\": false,",
         "    \"dryRunDefault\": true,",
         "    \"executeRequiresConfirmation\": true,",
+        "    \"autoExecuteRequiresApprovalFile\": true,",
+        "    \"autoExecuteRequiresClosedMarket\": true,",
         "    \"fakeTokenOnly\": true",
         "  },",
         "  \"gaps\": {",
         "    \"p0\": [],",
         "    \"p1\": [",
         "      \"This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.\",",
-        "      \"Dry-run preview is the default; execution still requires explicit confirmation.\"",
+        "      \"Dry-run preview is the default; execution requires either explicit confirmation or an exact local approval file.\"",
         "    ],",
         "    \"p2\": [",
         "      \"Multi-event result queue and operator UI remain future work.\"",
@@ -64,36 +64,37 @@
       "line": "2.5",
       "statusBefore": "LIVE",
       "resolvedOutcomeIdBefore": null,
-      "collateralUSDCBefore": "26500"
+      "collateralUSDCBefore": "150"
     },
     "winningOutcome": {
-      "id": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
-      "name": "Over +2.5",
-      "label": "Over +2.5",
+      "id": "24515f22-3717-4b61-82a2-c072febc8f5b",
+      "name": "Over 2.5",
+      "label": "Over 2.5",
       "side": "over",
-      "code": "over-2-5"
+      "code": "OVER"
     },
     "preview": {
       "marketStatus": "LIVE",
-      "totalShares": "53000",
-      "totalWinningShares": "26500",
-      "totalPayout": "26500",
-      "collateralUSDC": "26500",
+      "totalShares": "300",
+      "totalWinningShares": "150",
+      "totalPayout": "150",
+      "collateralUSDC": "150",
       "payoutConservationPass": true,
       "blockers": [],
       "openOrderCleanup": {
-        "openOrderCount": 2,
-        "buyOrderLockedUSDCToRelease": "94",
-        "sellOrderSharesToRelease": "200"
+        "openOrderCount": 1,
+        "buyOrderLockedUSDCToRelease": "21.402",
+        "sellOrderSharesToRelease": "0"
       },
-      "payoutCount": 135,
-      "loserPositionCount": 133,
+      "payoutCount": 2,
+      "loserPositionCount": 1,
       "mutation": "none"
     },
     "controls": {
       "dryRunIsDefault": true,
+      "writeAuditEvent": false,
       "executeRequiresFlag": "--execute",
-      "executeRequiresConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:f3a5743c73f2",
+      "executeRequiresConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:24515f22-3717-4b61-82a2-c072febc8f5b:f3a5743c73f2",
       "executeRequiresMarketStatus": "CLOSED",
       "currentMarketStatus": "LIVE",
       "resultDigest": "f3a5743c73f2",
@@ -107,7 +108,7 @@
     "dryRunPreviewPass": true,
     "executionEligibleNow": false,
     "executionRequiresMarketStatus": "CLOSED",
-    "executeRequiresConfirmation": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:f3a5743c73f2",
+    "executeRequiresConfirmation": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:24515f22-3717-4b61-82a2-c072febc8f5b:f3a5743c73f2",
     "blockers": [
       "market_not_closed_for_execution:LIVE"
     ],

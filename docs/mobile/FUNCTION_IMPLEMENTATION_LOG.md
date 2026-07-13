@@ -15418,3 +15418,14 @@ Known limitations:
 - API/data dependencies: uses the existing backend health route, order submission route, portfolio/positions/history routes, and the selected `odds-api-single-soccer-test` totals market. Cleanup is refused in production by the seeder's existing environment guard.
 - Proof: `npm run mobile:the-odds-api-s23-visible-flow -- -SkipReplaySeed -HomeExpectedTitle "Spain vs. France" -TeamAExpected "France" -TeamBExpected "Spain"` passed on `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / `SM-S911U1`; summary path `docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json` records `cashoutTicketIsClosePositionMode=true`, `cashoutMaxUsesOwnedShares=true`, `cashoutTicketHidesYesNoSelector=true`, `cashoutSellSubmitted=true`, and `cashoutHistoryVisible=true`.
 - Known limitations: this is a local internal proof reset, not production market repair tooling. The continuous market maker remains local/proof-owned rather than an installed service.
+
+## Cycle RUNTIMEAUDITRECOVER - Preserve Settlement Evidence During S23 Cleanup
+
+- Feature/runtime worked on: live-runtime settlement/result audit recovery after the S23 clean-market proof reset.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/seed_mobile_route_spread_counterparty.ts`, `scripts/run_odds_api_one_event_result_settlement_scheduler.ts`, `scripts/report_odds_api_one_event_result_review_trail.ts`, and `src/server/services/__tests__/mobile.localMvpLiquidityHarness.contract.test.ts`.
+- User/runtime interactions supported: S23 proof cleanup now clears only local trading state for the selected market while preserving canonical provider/result/preflight/approval audit evidence needed by `/api/internal/live-runtime/status`, result-review, and settlement-queue checks.
+- State transitions: local proof cleanup clears selected-market fills/trades/orders/positions/collateral, then regenerated settlement preflight/approval review evidence for the Spain vs France totals market. No provider quota was spent, no mobile UI changed, and no active settlement execution was performed.
+- API/data dependencies: `GET /api/internal/live-runtime/status`, result-review and settlement-queue audit routes, `CanonicalEvent`, `OfficialResultReview`, Prisma `DATABASE_URL`, and redacted runtime summaries under `docs/mobile/harness/odds-api-live-runtime/`.
+- Proof: `npm run mobile:one-event-result-review-trail`, `npm run mobile:one-event-phase-audit`, and `npm run mobile:live-runtime-completion-audit` passed with zero open P0 runtime gaps.
+- Known limitations: this is local runtime proof/audit preservation only. Installed unattended service ownership and production official-result auto-settlement remain P1 gaps.

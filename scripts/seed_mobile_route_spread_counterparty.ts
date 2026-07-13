@@ -117,7 +117,7 @@ async function main() {
 
   const resetSummary = {
     requested: resetSelectedMarketState,
-    deletedCanonicalEvents: 0,
+    canonicalEventsPreserved: true,
     deletedFills: 0,
     deletedTrades: 0,
     deletedOrders: 0,
@@ -126,7 +126,6 @@ async function main() {
   };
   if (resetSelectedMarketState) {
     await prisma.$transaction(async (tx) => {
-      resetSummary.deletedCanonicalEvents = (await tx.canonicalEvent.deleteMany({ where: { marketId: market.id } })).count;
       resetSummary.deletedFills = (await tx.fill.deleteMany({ where: { marketId: market.id } })).count;
       resetSummary.deletedTrades = (await tx.trade.deleteMany({ where: { marketId: market.id } })).count;
       resetSummary.deletedOrders = (await tx.order.deleteMany({ where: { marketId: market.id } })).count;

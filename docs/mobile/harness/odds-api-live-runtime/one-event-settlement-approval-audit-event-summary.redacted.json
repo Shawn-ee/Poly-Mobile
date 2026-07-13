@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T09:02:01.669Z",
+  "generatedAt": "2026-07-13T10:28:46.014Z",
   "scope": "odds-api-settlement-approval-audit-event-proof",
   "pass": true,
   "providerQuotaUsed": false,
@@ -70,13 +70,13 @@
     "currentMarketStatus": "LIVE"
   },
   "auditEvent": {
-    "id": "9",
-    "storedId": "9",
+    "id": "25",
+    "storedId": "25",
     "type": "settlement.trusted_result.approved",
     "stream": "market",
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
     "outcomeId": "24515f22-3717-4b61-82a2-c072febc8f5b",
-    "createdAt": "2026-07-13T09:02:01.654Z"
+    "createdAt": "2026-07-13T10:28:46.005Z"
   },
   "runtimeTruth": {
     "approvalHasCanonicalEventEvidence": true,

@@ -1,5 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { loadLocalEnvForScript } from "./local_env";
+
+loadLocalEnvForScript(["DATABASE_URL"]);
+
 import { prisma } from "@/lib/db";
 
 const DEFAULT_EVENT_SLUG = "odds-api-single-soccer-test";

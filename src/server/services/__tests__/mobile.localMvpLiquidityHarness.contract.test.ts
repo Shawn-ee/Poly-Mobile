@@ -18,6 +18,8 @@ describe("mobile Local MVP liquidity proof harness", () => {
     expect(source).toContain("cleanupBlockingMarketBidsForcedByPurpose");
     expect(source).toContain("resetSelectedMarketState");
     expect(source).toContain("collateralReset");
+    expect(source).toContain("canonicalEventsPreserved");
+    expect(source).not.toContain("canonicalEvent.deleteMany");
   });
 
   test("S23 current MVP proof passes explicit liquidity purpose flags", () => {
