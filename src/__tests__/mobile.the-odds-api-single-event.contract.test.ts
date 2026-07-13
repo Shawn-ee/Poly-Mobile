@@ -84,6 +84,10 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("/api/internal/live-runtime/status");
     expect(source).toContain("providerQuotaUsedByThisReport: false");
     expect(source).toContain("recommendedCommand");
+    expect(source).toContain("testerLaunchChecklist");
+    expect(source).toContain("manualTradingFlow");
+    expect(source).toContain("Cashout/sell");
+    expect(source).toContain("Max uses owned shares only");
     expect(source).toContain("provider_secret_exposed");
     expect(source).toContain("does not call providers");
     expect(source).not.toContain("process.env.THE_ODDS_API_KEY");

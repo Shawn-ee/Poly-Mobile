@@ -15604,3 +15604,12 @@ Known limitations:
 - API/data dependencies: consumes existing launch-profile ownership proof, current supervisor/result-poller process status, runtime heartbeat/run rows, provider refresh run rows, and market maker quote run rows.
 - Proof: phase/completion audits now require the classification, `localInternalTesterReady=true`, `productionDaemonInstalled=false`, `scheduledTaskInstallBlockedByWindowsPermission=true`, and no P0 ownership gaps.
 - Known limitations: this closes ambiguity, not the P1 itself. Installed production service ownership remains P1 until a real daemon/service is installed and monitored.
+## Cycle ZP - Operator Snapshot Tester Checklist
+
+- Feature/page worked on: local internal tester runtime handoff for the one-event Spain vs. France flow.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes; `scripts/report_holiwyn_internal_tester_operator_snapshot.ts` now reads `GET /api/health` and `GET /api/internal/live-runtime/status` and emits a generated `testerLaunchChecklist`.
+- Important functions/services touched: added checklist generation for Home, Event Detail, quote/buy, Portfolio, cashout/sell, stale-market handling, and settlement guard checks.
+- User interactions supported: internal testers can read one redacted snapshot to know which event to open, which selected market/outcome is the current proof target, which local command is recommended, and what the expected mobile trading flow should do.
+- State transitions: read-only. The snapshot does not start loops, call providers, place orders, or execute settlement.
+- Known limitations: this is an operator handoff improvement, not an installed service. Production daemon ownership and official-result auto-settlement remain P1.

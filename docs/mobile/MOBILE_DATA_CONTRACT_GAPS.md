@@ -10843,3 +10843,9 @@ Future migration concern:
 - Schema mismatch: none. The field is derived from existing proof artifacts and durable runtime rows.
 - Temporary mock/static data: none added. Tests mock existing runtime proof artifacts only.
 - Remaining gaps: production needs a real installed/hosted service with monitoring and ownership evidence. Current scheduled-task install remains permission-blocked in this Windows context; user Startup fallback is suitable for local internal testing only.
+## Cycle ZP - Operator Snapshot Tester Checklist
+
+- Fields added/confirmed for tooling: `testerLaunchChecklist.eventToOpen`, `testerLaunchChecklist.launch`, `testerLaunchChecklist.manualTradingFlow`, and `testerLaunchChecklist.lifecycleChecks` are now generated from `/api/internal/live-runtime/status`.
+- Closed or narrowed: internal testers no longer need to infer the current one-event mobile flow from broad proof artifacts. The snapshot now states the current event, selected market/outcome, expected Home/Event Detail/Buy/Portfolio/Cashout behavior, and API dependency for each manual proof step.
+- Remaining P1: the checklist still reports the existing runtime boundary truth. It does not install an unattended daemon and does not execute official-result settlement for the active event.
+- Mock/static data: none added. The checklist reflects local backend status and saved proof state only.

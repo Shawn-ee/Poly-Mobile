@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T16:37:33.015Z",
+  "generatedAt": "2026-07-13T17:11:29.349Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -29,7 +29,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-13T16:37:31.564Z"
+      "timestamp": "2026-07-13T17:11:28.106Z"
     },
     "error": null
   },
@@ -125,8 +125,8 @@
     "reason": null,
     "snapshotCount": 4,
     "latestFetchedAt": "2026-07-13T14:53:10.824Z",
-    "latestAgeHours": 1.74,
-    "latestAgeSeconds": 6262,
+    "latestAgeHours": 2.31,
+    "latestAgeSeconds": 8299,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
@@ -162,6 +162,83 @@
       "reason": "Replays/restores the selected one-event runtime and verifies readiness without provider quota."
     },
     "safety": "Commands are local-only. Provider-refresh commands require THE_ODDS_API_KEY in the environment and remain quota-capped by the underlying proof scripts; the status route never returns or reads the key."
+  },
+  "testerLaunchChecklist": {
+    "generatedFrom": "/api/internal/live-runtime/status",
+    "providerQuotaUsedByChecklist": false,
+    "eventToOpen": {
+      "title": "Spain vs. France",
+      "localSlug": "odds-api-single-soccer-test",
+      "selectedMarket": "Spain vs. France: Total Goals 2.5",
+      "selectedOutcome": "Over +2.5"
+    },
+    "launch": [
+      {
+        "step": "Start or verify local tester runtime",
+        "expected": "npm run mobile:one-event-onboarding",
+        "pass": true,
+        "notes": "Runtime capability is proven, but supervisor/result-poller loops are not both running now."
+      },
+      {
+        "step": "Open Holiwyn on Samsung S23",
+        "expected": "Expo should load the server-backed app and reach the backend on port 3002.",
+        "pass": true,
+        "notes": "If a stale Expo listener is reused, restart with the explicit ReplaceExternalExpo manager path."
+      }
+    ],
+    "manualTradingFlow": [
+      {
+        "step": "Home",
+        "expected": "Home shows Spain vs. France.",
+        "routeDependency": "GET /api/events",
+        "pass": true,
+        "notes": "Tap the event card to open Event Detail."
+      },
+      {
+        "step": "Event Detail",
+        "expected": "Markets load from backend for odds-api-single-soccer-test; selected proof market is Spain vs. France: Total Goals 2.5.",
+        "routeDependency": "GET /api/mobile/events/odds-api-single-soccer-test/live-detail",
+        "pass": true,
+        "notes": "Cached mode is usable for internal testing; live mobile odds refresh requires the explicit provider-refresh command."
+      },
+      {
+        "step": "Quote and buy",
+        "expected": "Open Over +2.5, enter an amount, and swipe to buy with fake tokens.",
+        "routeDependency": "GET /api/markets/:id/quote; POST /api/orders",
+        "pass": true,
+        "notes": "Order must use the selected market/outcome identity from Event Detail."
+      },
+      {
+        "step": "Portfolio position",
+        "expected": "Portfolio shows the bought position and activity/history records.",
+        "routeDependency": "GET /api/portfolio; GET /api/portfolio/history",
+        "pass": true,
+        "notes": "Cashout should open close-position mode, not a new buy ticket."
+      },
+      {
+        "step": "Cashout/sell",
+        "expected": "Max uses owned shares only, no Yes/No selector appears, and selling updates History.",
+        "routeDependency": "POST /api/orders; GET /api/portfolio/history",
+        "pass": true,
+        "notes": "Selling more than owned shares must be impossible in UI and rejected by backend."
+      }
+    ],
+    "lifecycleChecks": [
+      {
+        "step": "Stale odds",
+        "expected": "Stale/closed markets reject order placement with MARKET_UNAVAILABLE.",
+        "routeDependency": "POST /api/orders",
+        "pass": true,
+        "notes": "Use stale-guard proof for automated verification; do not spend provider quota for this checklist."
+      },
+      {
+        "step": "Settlement",
+        "expected": "Active event waits for CLOSED market plus exact approval before settlement.",
+        "routeDependency": "GET /api/internal/live-runtime/settlement-queue",
+        "pass": true,
+        "notes": "Active tester settlement must not execute while the selected market is LIVE."
+      }
+    ]
   },
   "settlement": {
     "decision": {
@@ -209,5 +286,5 @@
       "Multi-event provider polling and production dashboard/operator UI remain future work."
     ]
   },
-  "note": "Read-only operator snapshot. It calls local health/status routes only, does not call providers, does not read provider keys, and does not start loops or execute settlement."
+  "note": "Read-only operator snapshot. It calls local health/status routes only, does not call providers, does not read provider keys, and does not start loops or execute settlement. The checklist is generated from backend status so testers can run the current one-event flow without digging through broad proof artifacts."
 }
