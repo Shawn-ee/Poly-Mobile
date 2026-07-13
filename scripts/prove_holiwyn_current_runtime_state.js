@@ -232,7 +232,6 @@ async function main() {
   const supervisorStopSummary = readJson(supervisorProcessSummaryPath);
   commands.push(runCommand("stop-result-poller-after-proof", ["npm", "run", "mobile:one-event-result-poller:stop"]));
   const resultPollerStopSummary = readJson(resultPollerProcessSummaryPath);
-  const stopSummary = readJson(runtimeSummaryPath);
 
   const runningState = runningStatus && runningStatus.currentRuntimeState ? runningStatus.currentRuntimeState : null;
   const managedProcesses = runningStatus && runningStatus.managedProcesses ? runningStatus.managedProcesses : null;
@@ -297,9 +296,9 @@ async function main() {
       startSummary: runtimeDigest(startSummary),
       supervisorWhileRunning: processDigest(supervisorWhileRunning),
       resultPollerWhileRunning: processDigest(resultPollerWhileRunning),
-      stopSummary: runtimeDigest(stopSummary),
       supervisorStopSummary: processDigest(supervisorStopSummary),
       resultPollerStopSummary: processDigest(resultPollerStopSummary),
+      cleanupEvidence: "Loop cleanup is proven by supervisorStopSummary and resultPollerStopSummary, not by the internal tester runtime manager summary.",
       statusUrl,
     },
     commands,

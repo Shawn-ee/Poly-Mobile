@@ -1,12 +1,13 @@
 {
-    "generatedAt":  "2026-07-13T21:37:29.5392782Z",
+    "generatedAt":  "2026-07-13T22:09:09.3549050Z",
     "scope":  "holiwyn-one-event-result-poller-process",
     "pass":  true,
     "operation":  {
-                      "action":  "status",
-                      "startedAt":  "2026-07-13T21:37:29.4853286Z",
+                      "action":  "stop",
+                      "startedAt":  "2026-07-13T22:09:07.6576087Z",
                       "force":  false,
-                      "result":  "running"
+                      "result":  "stopped",
+                      "pid":  67080
                   },
     "process":  {
                     "statePath":  ".runtime/one-event-result-poller/result-poller-process-state.json",
@@ -14,60 +15,55 @@
                     "stderr":  ".runtime/one-event-result-poller/result-poller.err.log",
                     "before":  {
                                    "known":  true,
-                                   "pid":  26096,
+                                   "pid":  67080,
                                    "running":  true,
                                    "process":  {
-                                                   "id":  26096,
+                                                   "id":  67080,
                                                    "processName":  "powershell",
-                                                   "startTime":  "2026-07-13T21:37:25.2429554Z",
+                                                   "startTime":  "2026-07-13T22:08:49.2521742Z",
                                                    "hasExited":  false
                                                },
                                    "state":  {
-                                                 "pid":  26096,
-                                                 "startedAt":  "2026-07-13T21:37:25.2500681Z",
-                                                 "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 15 -Continuous -MaxIterations 0",
+                                                 "pid":  67080,
+                                                 "startedAt":  "2026-07-13T22:08:49.2591137Z",
+                                                 "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0 -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                                                  "eventSlug":  "odds-api-single-soccer-test",
                                                  "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
                                                  "continuous":  true,
                                                  "maxIterations":  0,
-                                                 "intervalSeconds":  15,
+                                                 "intervalSeconds":  1,
                                                  "runLiveResultIngestion":  false,
                                                  "resultIngestionEveryIterations":  0,
                                                  "maxLiveResultIngestionRuns":  0,
                                                  "maxCreditsPerResultIngestion":  0,
-                                                 "runResultSettlement":  false,
-                                                 "runApprovedResultSettlement":  false,
-                                                 "resultSettlementApprovalPath":  null,
+                                                 "runResultSettlement":  true,
+                                                 "runApprovedResultSettlement":  true,
+                                                 "resultSettlementApprovalPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                                                  "stdout":  ".runtime/one-event-result-poller/result-poller.out.log",
                                                  "stderr":  ".runtime/one-event-result-poller/result-poller.err.log"
                                              }
                                },
                     "after":  {
                                   "known":  true,
-                                  "pid":  26096,
-                                  "running":  true,
-                                  "process":  {
-                                                  "id":  26096,
-                                                  "processName":  "powershell",
-                                                  "startTime":  "2026-07-13T21:37:25.2429554Z",
-                                                  "hasExited":  false
-                                              },
+                                  "pid":  67080,
+                                  "running":  false,
+                                  "process":  null,
                                   "state":  {
-                                                "pid":  26096,
-                                                "startedAt":  "2026-07-13T21:37:25.2500681Z",
-                                                "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 15 -Continuous -MaxIterations 0",
+                                                "pid":  67080,
+                                                "startedAt":  "2026-07-13T22:08:49.2591137Z",
+                                                "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0 -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                                                 "eventSlug":  "odds-api-single-soccer-test",
                                                 "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
                                                 "continuous":  true,
                                                 "maxIterations":  0,
-                                                "intervalSeconds":  15,
+                                                "intervalSeconds":  1,
                                                 "runLiveResultIngestion":  false,
                                                 "resultIngestionEveryIterations":  0,
                                                 "maxLiveResultIngestionRuns":  0,
                                                 "maxCreditsPerResultIngestion":  0,
-                                                "runResultSettlement":  false,
-                                                "runApprovedResultSettlement":  false,
-                                                "resultSettlementApprovalPath":  null,
+                                                "runResultSettlement":  true,
+                                                "runApprovedResultSettlement":  true,
+                                                "resultSettlementApprovalPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                                                 "stdout":  ".runtime/one-event-result-poller/result-poller.out.log",
                                                 "stderr":  ".runtime/one-event-result-poller/result-poller.err.log"
                                             }
@@ -118,7 +114,7 @@
                },
     "runtimeTruth":  {
                          "backgroundProcessManagerAvailable":  true,
-                         "localBackgroundProcessRunning":  true,
+                         "localBackgroundProcessRunning":  false,
                          "installedOsService":  false,
                          "resultPollingMode":  "provider-shaped replay polling; no provider quota spent",
                          "resultSettlementMode":  "disabled for warm local polling; run settlement proof separately",

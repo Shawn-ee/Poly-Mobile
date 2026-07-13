@@ -15733,3 +15733,21 @@ Known limitations:
 - Proof: `npm run mobile:internal-readiness-batch:provider-refresh`, `npm run mobile:internal-readiness-batch`, `npm run mobile:provider-evidence-plan`, `npm run mobile:definition-of-done-sweep`, `powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_odds_api_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle ZQ -OutputDir docs\mobile\screenshots\cycle-ZQ-spain-france-cashout-s23 -HierarchyOutputDir docs\mobile\harness\cycle-ZQ-spain-france-cashout-s23`, focused cashout/portfolio Vitest, focused portfolio Jest, root typecheck, mobile typecheck, and full `npm run test:ci` passed.
 - S23 proof summary: `docs/mobile/harness/cycle-ZQ-spain-france-cashout-s23/cycle-ZQ-odds-api-s23-visible-flow.json`, including `cashoutMaxUsesOwnedShares=true`, `cashoutTicketHidesYesNoSelector=true`, and `cashoutSellSubmitted=true`.
 - Known limitations: refreshed provider evidence still has no attach-ready Polymarket World Cup match/line markets, so provider parity remains P1. Local MVP/internal testing continues on the backend-owned Odds API event.
+
+## Cycle ZU - Current Warm Runtime Proof
+
+- Feature/runtime worked on: one-event backend live-runtime current-state proof for the Spain vs France internal tester pipeline.
+- Frontend components touched: none.
+- Backend/routes touched: no backend route implementation changes. Proof reads `GET /api/health`, `GET /api/internal/live-runtime/status`, and `GET /api/markets/:marketId/quote`.
+- Important functions/services touched: `scripts/prove_holiwyn_current_runtime_state.js`.
+- User/runtime interactions supported: local proof starts the one-event supervisor and result poller, verifies both are running in no-quota warm mode, checks runtime status, then stops proof-owned loops so stale Node processes are not left running.
+- State transitions: cached one-event restore refreshes the local Spain vs France backend-owned event from existing proof data; maker seed and lifecycle/result-poller proof summaries are refreshed. No provider quota is spent, no mobile UI behavior changes, and no active settlement execution occurs.
+- API/data dependencies: `.runtime/one-event-live-supervisor/supervisor-process-state.json`, `.runtime/one-event-result-poller/result-poller-process-state.json`, `docs/mobile/harness/odds-api-live-runtime/*`, and the existing selected market `Total Goals 2.5`.
+- Proof:
+  - `npm run mobile:current-runtime-state-proof`
+  - `npm run mobile:one-event-runtime-status`
+  - `npm run mobile:live-runtime-completion-audit`
+  - `npm run mobile:one-event-phase-audit`
+- Proof summary: `docs/mobile/harness/odds-api-live-runtime/current-runtime-state-proof-summary.redacted.json`.
+- Audit doc: `docs/mobile/audits/cycle-ZU-current-warm-runtime-proof.md`.
+- Known limitations: market-maker and result-poller continuity is proven only while local loop processes are running. No installed production daemon exists. Fresh mobile-visible live odds still require explicit quota-capped provider refresh.
