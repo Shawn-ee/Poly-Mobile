@@ -568,6 +568,55 @@ async function main() {
         getPath(localRuntimeStatusBody, ["serviceOwnership", "foregroundResultPollerProven"]) === true &&
         getPath(localRuntimeStatusBody, ["serviceOwnership", "foregroundLoopsProven"]) === true &&
         getPath(localRuntimeStatusBody, ["serviceOwnership", "current", "quotaSpendingLoopRunning"]) === false &&
+        typeof getPath(localRuntimeStatusBody, [
+          "serviceOwnership",
+          "localLaunch",
+          "recommendedProfileCommand",
+        ]) === "string" &&
+        typeof getPath(localRuntimeStatusBody, [
+          "serviceOwnership",
+          "localLaunch",
+          "recommendedProfileInstallCommand",
+        ]) === "string" &&
+        typeof getPath(localRuntimeStatusBody, [
+          "serviceOwnership",
+          "localLaunch",
+          "recommendedProfileUninstallCommand",
+        ]) === "string" &&
+        typeof getPath(localRuntimeStatusBody, [
+          "serviceOwnership",
+          "localLaunch",
+          "recommendedProfileQuotaMode",
+        ]) === "string" &&
+        typeof getPath(localRuntimeStatusBody, [
+          "serviceOwnership",
+          "localLaunch",
+          "recommendedProfileProductionBoundary",
+        ]) === "string" &&
+        typeof getPath(localRuntimeStatusBody, [
+          "serviceOwnership",
+          "localLaunch",
+          "scheduledTaskPlanCommand",
+        ]) === "string" &&
+        typeof getPath(localRuntimeStatusBody, [
+          "serviceOwnership",
+          "localLaunch",
+          "scheduledTaskInstallCommand",
+        ]) === "string" &&
+        typeof getPath(localRuntimeStatusBody, ["serviceOwnership", "localLaunch", "liveProviderCommand"]) ===
+          "string" &&
+        typeof getPath(localRuntimeStatusBody, [
+          "serviceOwnership",
+          "localLaunch",
+          "liveProviderInternalTesterCommand",
+        ]) === "string" &&
+        getPath(localRuntimeStatusBody, [
+          "serviceOwnership",
+          "localLaunch",
+          "liveProviderDefaultForInternalTesting",
+        ]) === false &&
+        typeof getPath(localRuntimeStatusBody, ["serviceOwnership", "localLaunch", "liveProviderQuotaMode"]) ===
+          "string" &&
         getPath(localRuntimeStatusBody, ["serviceOwnership", "liveProviderMode", "statusRouteSpendsProviderQuota"]) ===
           false &&
         getPath(localRuntimeStatusBody, [

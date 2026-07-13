@@ -288,6 +288,83 @@ async function main() {
         true &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "serviceOwnership", "current", "quotaSpendingLoopRunning"]) ===
         false &&
+      typeof getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "localLaunch",
+        "recommendedProfileCommand",
+      ]) === "string" &&
+      typeof getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "localLaunch",
+        "recommendedProfileInstallCommand",
+      ]) === "string" &&
+      typeof getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "localLaunch",
+        "recommendedProfileUninstallCommand",
+      ]) === "string" &&
+      typeof getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "localLaunch",
+        "recommendedProfileQuotaMode",
+      ]) === "string" &&
+      typeof getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "localLaunch",
+        "recommendedProfileProductionBoundary",
+      ]) === "string" &&
+      typeof getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "localLaunch",
+        "scheduledTaskPlanCommand",
+      ]) === "string" &&
+      typeof getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "localLaunch",
+        "scheduledTaskInstallCommand",
+      ]) === "string" &&
+      typeof getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "localLaunch",
+        "liveProviderCommand",
+      ]) === "string" &&
+      typeof getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "localLaunch",
+        "liveProviderInternalTesterCommand",
+      ]) === "string" &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "localLaunch",
+        "liveProviderDefaultForInternalTesting",
+      ]) === false &&
+      typeof getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "serviceOwnership",
+        "localLaunch",
+        "liveProviderQuotaMode",
+      ]) === "string" &&
       getPath(entries.phaseAudit, [
         "localRuntimeStatus",
         "body",

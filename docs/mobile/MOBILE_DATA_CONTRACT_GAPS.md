@@ -10657,3 +10657,12 @@ Future migration concern:
 - Schema mismatch: no new table was added. Production should eventually store operator execution plans/attempts as durable authenticated records instead of deriving them from `OfficialResultReview` and market state at read time.
 - Temporary mock/static data: none added. The plan is derived from durable review rows and current market status, spends no provider quota, and redacts exact confirmation data.
 - Remaining gaps: authenticated operator UI/actions, installed official-result polling, and production active-event execution controls remain P1/P2.
+
+## Cycle XG - Runtime Launch Command Audit Gate
+
+- Closed or narrowed: phase and completion audits now require the local runtime status route to preserve the operator launch/install command contract and explicit live-provider opt-in command fields.
+- Fields required by local runtime tooling: `serviceOwnership.localLaunch.recommendedProfileCommand`, `recommendedProfileInstallCommand`, `recommendedProfileUninstallCommand`, `recommendedProfileQuotaMode`, `recommendedProfileProductionBoundary`, `scheduledTaskPlanCommand`, `scheduledTaskInstallCommand`, `liveProviderCommand`, `liveProviderInternalTesterCommand`, `liveProviderDefaultForInternalTesting=false`, and `liveProviderQuotaMode`.
+- Route mismatch: this remains local/dev-only evidence. The route reports commands but does not execute, authenticate, schedule, or install them.
+- Schema mismatch: none. Production should eventually store operator actions and service ownership as durable authenticated records rather than local command-string projections.
+- Temporary mock/static data: none added. The audit reads the existing status route and spends no provider quota.
+- Remaining gaps: installed unattended service ownership, authenticated production operator controls, and durable job execution records remain P1/P2.

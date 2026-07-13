@@ -15110,3 +15110,14 @@ Known limitations:
 - API/data dependencies: reads existing `OfficialResultReview`, `Market`, `Event`, approval/execution canonical ids, and local phase-audit artifacts. No schema migration was added.
 - Proof needed: focused settlement queue/status tests, no-quota runtime status, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
 - Known limitations: this narrows the official-result operator-safety contract but remains a local/dev-only proof route. Authenticated production operator controls and installed official-result polling remain P1/P2.
+
+## Cycle XG - Runtime Launch Command Audit Gate
+
+- Feature/runtime worked on: backend local live-runtime phase/completion audit gates.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/report_odds_api_live_runtime_phase_audit.ts` and `scripts/report_holiwyn_live_runtime_completion_audit.ts`.
+- User/runtime interactions supported: local phase and completion audits now fail if `GET /api/internal/live-runtime/status` stops exposing the recommended Startup plan/install/uninstall commands, scheduled-task plan/install commands, explicit live-provider opt-in commands, and no-quota/live-provider safety flags.
+- State transitions: none. The scripts read local status evidence only; they do not start processes, install Startup entries, install scheduled tasks, call The Odds API, place orders, or execute settlement.
+- API/data dependencies: reads `serviceOwnership.localLaunch` from the existing dev-only status route response captured during phase audit.
+- Proof needed: no-quota runtime status, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
+- Known limitations: this protects the local operator-command contract but remains a command/reporting gate, not installed production service ownership.
