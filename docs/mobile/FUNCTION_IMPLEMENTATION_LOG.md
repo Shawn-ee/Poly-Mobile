@@ -15236,3 +15236,15 @@ Known limitations:
 - Runtime proof: local backend returned `401` for both routes without auth and `200 ready` for both routes with dev admin header `b24ba407-b26a-4a25-bdd1-87b9f1361dc7`; `providerQuotaUsed=false` for both authenticated responses.
 - Proof needed: focused result-review/settlement-queue route tests, status test, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
 - Known limitations: this uses the existing admin role source. Dedicated settlement-operator roles, two-person/admin policy, production operator UI, direct exact-confirmation execution, and installed official-result polling remain P1.
+
+## Cycle XQ - Durable Operator Audit Event Table
+
+- Feature/runtime worked on: backend durable operator audit evidence for guarded settlement approval and dry-run execution requests.
+- Frontend components touched: none.
+- Important functions/services touched: `prisma/schema.prisma`, `prisma/migrations/20260713042000_add_operator_audit_event`, `src/server/services/liveRuntimeSettlementApproval.ts`, `src/server/services/liveRuntimeSettlementExecution.ts`, `src/server/services/liveRuntimeStatus.ts`, phase/completion audit scripts, and focused approval/execution/status tests.
+- User/runtime interactions supported: first-time settlement approval now writes an `OperatorAuditEvent(action=settlement_approval_recorded)` row linked to the review/operator/canonical approval event; guard-passing execution dry-run requests write `OperatorAuditEvent(action=settlement_execution_dry_run_requested)`.
+- State transitions: approval still records approval evidence only; execution remains dry-run request audit only. Neither path executes settlement, stores or exposes exact confirmation text, spends provider quota, or mutates active tester markets.
+- API/data dependencies: adds `OperatorAuditEvent(operatorUserId, reviewId, action, roleSnapshot, requestId, canonicalEventId, metadata, createdAt)` with foreign keys to `User` and `OfficialResultReview`. Status/audit contracts now report `implemented_dedicated_operator_audit_table`.
+- Runtime proof: migration applied locally; backend health returned OK after restart.
+- Proof needed: Prisma validate/migrate, focused approval/execution/status tests, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
+- Known limitations: dedicated settlement-operator roles, two-person/admin execution policy, production operator UI, direct exact-confirmation execution, and installed official-result polling remain P1.

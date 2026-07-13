@@ -981,7 +981,7 @@ async function main() {
           model &&
           typeof model === "object" &&
           getPath(model, ["model"]) === "OperatorAuditEvent" &&
-          getPath(model, ["status"]) === "required_new_model_or_equivalent_audit_table",
+          getPath(model, ["status"]) === "implemented_dedicated_operator_audit_table",
       ) &&
       Array.isArray(
         getPath(entries.phaseAudit, [
@@ -1031,6 +1031,22 @@ async function main() {
         "settlementApprovalRoute",
         "mutationScope",
       ]) === "approval_evidence_only" &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "localControls",
+        "settlementApprovalRoute",
+        "operatorAuditEventRecorded",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "localControls",
+        "settlementExecutionRoute",
+        "operatorAuditEventRecorded",
+      ]) === true &&
       getPath(entries.phaseAudit, [
         "localRuntimeStatus",
         "body",

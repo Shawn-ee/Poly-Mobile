@@ -947,7 +947,7 @@ async function main() {
             model &&
             typeof model === "object" &&
             getPath(model, ["model"]) === "OperatorAuditEvent" &&
-            getPath(model, ["status"]) === "required_new_model_or_equivalent_audit_table",
+            getPath(model, ["status"]) === "implemented_dedicated_operator_audit_table",
         ) &&
         Array.isArray(getPath(localRuntimeStatusBody, ["operatorControlBoundary", "productionAuthRequirements", "requiredGuards"])) &&
         (getPath(localRuntimeStatusBody, [
@@ -967,6 +967,8 @@ async function main() {
           true &&
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementApprovalRoute", "mutationScope"]) ===
           "approval_evidence_only" &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementApprovalRoute", "operatorAuditEventRecorded"]) ===
+          true &&
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementApprovalRoute", "exactConfirmationStored"]) ===
           false &&
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementApprovalRoute", "activeSettlementExecution"]) ===
@@ -977,6 +979,8 @@ async function main() {
           true &&
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementExecutionRoute", "mutationScope"]) ===
           "execution_dry_run_request_audit_only" &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementExecutionRoute", "operatorAuditEventRecorded"]) ===
+          true &&
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementExecutionRoute", "providerQuotaRequired"]) ===
           false &&
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementExecutionRoute", "exactConfirmationExposed"]) ===

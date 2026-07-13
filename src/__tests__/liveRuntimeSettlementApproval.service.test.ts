@@ -3,6 +3,7 @@ const officialResultReviewUpdate = jest.fn();
 const marketFindUnique = jest.fn();
 const canonicalEventFindUnique = jest.fn();
 const canonicalEventCreate = jest.fn();
+const operatorAuditEventCreate = jest.fn();
 
 jest.mock("@/lib/db", () => ({
   prisma: {
@@ -16,6 +17,9 @@ jest.mock("@/lib/db", () => ({
     canonicalEvent: {
       findUnique: (...args: unknown[]) => canonicalEventFindUnique(...args),
       create: (...args: unknown[]) => canonicalEventCreate(...args),
+    },
+    operatorAuditEvent: {
+      create: (...args: unknown[]) => operatorAuditEventCreate(...args),
     },
   },
 }));
@@ -78,10 +82,12 @@ describe("live runtime settlement approval service", () => {
     marketFindUnique.mockReset();
     canonicalEventFindUnique.mockReset();
     canonicalEventCreate.mockReset();
+    operatorAuditEventCreate.mockReset();
 
     officialResultReviewFindUnique.mockResolvedValue(review);
     marketFindUnique.mockResolvedValue(market);
     canonicalEventCreate.mockResolvedValue(approvalEvent);
+    operatorAuditEventCreate.mockResolvedValue({ id: "operator-audit-1" });
     officialResultReviewUpdate.mockImplementation(({ data }) =>
       Promise.resolve({
         ...review,
@@ -116,6 +122,7 @@ describe("live runtime settlement approval service", () => {
     expect(result.operator).toMatchObject({
       id: "admin-user-1",
       durableIdentityRecorded: true,
+      durableAuditEventRecorded: true,
     });
     expect(canonicalEventCreate).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -135,6 +142,22 @@ describe("live runtime settlement approval service", () => {
         }),
       }),
     );
+    expect(operatorAuditEventCreate).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        operatorUserId: "admin-user-1",
+        reviewId: "review-1",
+        action: "settlement_approval_recorded",
+        roleSnapshot: ["admin", "settlement_operator"],
+        canonicalEventId: 21n,
+        metadata: expect.objectContaining({
+          mutatesSettlement: false,
+          exactConfirmationStored: false,
+          exactConfirmationExposed: false,
+          providerQuotaUsed: false,
+          activeMarketExecutionAttempted: false,
+        }),
+      }),
+    });
     expect(officialResultReviewUpdate).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { id: "review-1" },
@@ -172,6 +195,7 @@ describe("live runtime settlement approval service", () => {
     expect(result.status).toBe("ready");
     expect(result.idempotent).toBe(true);
     expect(canonicalEventCreate).not.toHaveBeenCalled();
+    expect(operatorAuditEventCreate).not.toHaveBeenCalled();
     expect(canonicalEventFindUnique).toHaveBeenCalledWith({ where: { id: 21n } });
   });
 
@@ -194,5 +218,6 @@ describe("live runtime settlement approval service", () => {
     expect(result.status).toBe("conflict");
     expect(result.httpStatus).toBe(409);
     expect(canonicalEventCreate).not.toHaveBeenCalled();
+    expect(operatorAuditEventCreate).not.toHaveBeenCalled();
   });
 });

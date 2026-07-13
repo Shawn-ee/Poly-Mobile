@@ -1,4 +1,5 @@
 import { CanonicalEventStream } from "@prisma/client";
+import { randomUUID } from "crypto";
 import { prisma } from "@/lib/db";
 
 type Operator = {
@@ -127,6 +128,34 @@ export async function approveLocalLiveRuntimeSettlementReview(params: {
     });
   }
 
+  const operatorAuditEvent = existingApprovalId
+    ? null
+    : await prisma.operatorAuditEvent.create({
+        data: {
+          operatorUserId: params.operator.id,
+          reviewId: review.id,
+          action: "settlement_approval_recorded",
+          roleSnapshot: params.operator.roles,
+          requestId: randomUUID(),
+          canonicalEventId: approvalEvent.id,
+          metadata: {
+            eventSlug: review.eventSlug,
+            marketId: review.marketId,
+            outcomeId: review.outcomeId,
+            resultDigest: review.resultDigest,
+            trustedResultDigest: review.trustedResultDigest,
+            approvalStatusBefore: review.approvalStatus,
+            approvalStatusAfter: "approved",
+            source: "internal-operator-session",
+            mutatesSettlement: false,
+            exactConfirmationStored: false,
+            exactConfirmationExposed: false,
+            providerQuotaUsed: false,
+            activeMarketExecutionAttempted: false,
+          },
+        },
+      });
+
   const updated = await prisma.officialResultReview.update({
     where: { id: review.id },
     data: {
@@ -140,8 +169,9 @@ export async function approveLocalLiveRuntimeSettlementReview(params: {
       reviewSnapshot: {
         ...(typeof review.reviewSnapshot === "object" && review.reviewSnapshot ? review.reviewSnapshot : {}),
         operatorApproval: {
-      status: existingApprovalId && approvalEvent.id === existingApprovalId ? "already_approved" : "approved",
+          status: existingApprovalId && approvalEvent.id === existingApprovalId ? "already_approved" : "approved",
           canonicalApprovalEventId: approvalEvent.id.toString(),
+          operatorAuditEventId: operatorAuditEvent?.id ?? null,
           approvedByUserId: params.operator.id,
           roleSnapshot: params.operator.roles,
           approvedAt:
@@ -182,6 +212,7 @@ export async function approveLocalLiveRuntimeSettlementReview(params: {
     approvalEvidence: {
       canonicalApprovalEventAvailable: true,
       canonicalApprovalEventId: approvalEvent.id.toString(),
+      operatorAuditEventId: operatorAuditEvent?.id ?? null,
       eventType: approvalEvent.eventType,
       userId: approvalEvent.userId,
       payload: toSerializable({
@@ -197,6 +228,7 @@ export async function approveLocalLiveRuntimeSettlementReview(params: {
       id: params.operator.id,
       roles: params.operator.roles,
       durableIdentityRecorded: true,
+      durableAuditEventRecorded: operatorAuditEvent != null,
     },
   };
 }

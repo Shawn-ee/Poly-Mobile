@@ -2,6 +2,7 @@ const officialResultReviewFindUnique = jest.fn();
 const officialResultReviewUpdate = jest.fn();
 const marketFindUnique = jest.fn();
 const canonicalEventCreate = jest.fn();
+const operatorAuditEventCreate = jest.fn();
 
 jest.mock("@/lib/db", () => ({
   prisma: {
@@ -14,6 +15,9 @@ jest.mock("@/lib/db", () => ({
     },
     canonicalEvent: {
       create: (...args: unknown[]) => canonicalEventCreate(...args),
+    },
+    operatorAuditEvent: {
+      create: (...args: unknown[]) => operatorAuditEventCreate(...args),
     },
   },
 }));
@@ -70,9 +74,11 @@ describe("live runtime settlement execution dry-run service", () => {
     officialResultReviewUpdate.mockReset();
     marketFindUnique.mockReset();
     canonicalEventCreate.mockReset();
+    operatorAuditEventCreate.mockReset();
     officialResultReviewFindUnique.mockResolvedValue(baseReview);
     marketFindUnique.mockResolvedValue(closedMarket);
     canonicalEventCreate.mockResolvedValue({ id: 12n });
+    operatorAuditEventCreate.mockResolvedValue({ id: "operator-audit-2" });
     officialResultReviewUpdate.mockResolvedValue({});
   });
 
@@ -97,6 +103,7 @@ describe("live runtime settlement execution dry-run service", () => {
       activeMarketExecutionAttempted: false,
       executionRequestEvidence: {
         canonicalExecutionRequestEventId: "12",
+        operatorAuditEventId: "operator-audit-2",
         eventType: "settlement.trusted_result.execution.dry_run_requested",
         dryRunOnly: true,
         operatorUserId: "admin-1",
@@ -121,6 +128,23 @@ describe("live runtime settlement execution dry-run service", () => {
         }),
       }),
     });
+    expect(operatorAuditEventCreate).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        operatorUserId: "admin-1",
+        reviewId: "review-1",
+        action: "settlement_execution_dry_run_requested",
+        roleSnapshot: ["admin", "settlement_operator"],
+        canonicalEventId: 12n,
+        metadata: expect.objectContaining({
+          dryRunOnly: true,
+          mutatesSettlement: false,
+          exactConfirmationExposed: false,
+          exactConfirmationStored: false,
+          providerQuotaUsed: false,
+          activeMarketExecutionAttempted: false,
+        }),
+      }),
+    });
     expect(officialResultReviewUpdate).toHaveBeenCalledWith({
       where: { id: "review-1" },
       data: {
@@ -129,6 +153,7 @@ describe("live runtime settlement execution dry-run service", () => {
           operatorExecutionDryRun: expect.objectContaining({
             requestedByUserId: "admin-1",
             canonicalExecutionRequestEventId: "12",
+            operatorAuditEventId: "operator-audit-2",
             mutatesSettlement: false,
             exactConfirmationExposed: false,
             exactConfirmationStored: false,
@@ -158,6 +183,7 @@ describe("live runtime settlement execution dry-run service", () => {
       activeMarketExecutionAttempted: false,
     });
     expect(canonicalEventCreate).not.toHaveBeenCalled();
+    expect(operatorAuditEventCreate).not.toHaveBeenCalled();
     expect(officialResultReviewUpdate).not.toHaveBeenCalled();
   });
 
@@ -179,6 +205,7 @@ describe("live runtime settlement execution dry-run service", () => {
       mutatesSettlement: false,
     });
     expect(canonicalEventCreate).not.toHaveBeenCalled();
+    expect(operatorAuditEventCreate).not.toHaveBeenCalled();
   });
 
   test("rejects already executed reviews", async () => {
@@ -199,5 +226,6 @@ describe("live runtime settlement execution dry-run service", () => {
     });
     expect(marketFindUnique).not.toHaveBeenCalled();
     expect(canonicalEventCreate).not.toHaveBeenCalled();
+    expect(operatorAuditEventCreate).not.toHaveBeenCalled();
   });
 });

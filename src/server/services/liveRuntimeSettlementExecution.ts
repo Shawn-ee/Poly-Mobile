@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import { prisma } from "@/lib/db";
 
 type Operator = {
@@ -144,6 +145,34 @@ export async function requestLocalLiveRuntimeSettlementExecutionDryRun(params: {
     },
   });
 
+  const operatorAuditEvent = await prisma.operatorAuditEvent.create({
+    data: {
+      operatorUserId: params.operator.id,
+      reviewId: review.id,
+      action: "settlement_execution_dry_run_requested",
+      roleSnapshot: params.operator.roles,
+      requestId: randomUUID(),
+      canonicalEventId: executionRequestEvent.id,
+      metadata: {
+        eventSlug: review.eventSlug,
+        marketId: review.marketId,
+        outcomeId: review.outcomeId,
+        resultDigest: review.resultDigest,
+        trustedResultDigest: review.trustedResultDigest,
+        approvalCanonicalEventId: review.settlementApprovalCanonicalId?.toString() ?? null,
+        preflightCanonicalEventId: review.settlementPreflightCanonicalId?.toString() ?? null,
+        requestedAt: requestedAt.toISOString(),
+        source: "internal-operator-session",
+        dryRunOnly: true,
+        mutatesSettlement: false,
+        exactConfirmationExposed: false,
+        exactConfirmationStored: false,
+        providerQuotaUsed: false,
+        activeMarketExecutionAttempted: false,
+      },
+    },
+  });
+
   await prisma.officialResultReview.update({
     where: { id: review.id },
     data: {
@@ -154,6 +183,7 @@ export async function requestLocalLiveRuntimeSettlementExecutionDryRun(params: {
           requestedByUserId: params.operator.id,
           roleSnapshot: params.operator.roles,
           canonicalExecutionRequestEventId: executionRequestEvent.id.toString(),
+          operatorAuditEventId: operatorAuditEvent.id,
           mutatesSettlement: false,
           exactConfirmationExposed: false,
           exactConfirmationStored: false,
@@ -177,6 +207,7 @@ export async function requestLocalLiveRuntimeSettlementExecutionDryRun(params: {
     executionWouldRequireClosedMarket: true,
     executionRequestEvidence: {
       canonicalExecutionRequestEventId: executionRequestEvent.id.toString(),
+      operatorAuditEventId: operatorAuditEvent.id,
       eventType: "settlement.trusted_result.execution.dry_run_requested",
       dryRunOnly: true,
       operatorUserId: params.operator.id,
@@ -210,6 +241,7 @@ export async function requestLocalLiveRuntimeSettlementExecutionDryRun(params: {
       id: params.operator.id,
       roles: params.operator.roles,
       durableIdentityRecorded: true,
+      durableAuditEventRecorded: true,
     },
   };
 }

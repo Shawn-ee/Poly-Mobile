@@ -10755,3 +10755,12 @@ Future migration concern:
 - Schema mismatch: no schema change. Production still needs dedicated operator roles/permissions, role snapshots, request ids, and a first-class operator audit table or equivalent.
 - Temporary mock/static data: none added. Tests mock `requireAdmin()`; runtime proof used the real local admin user and local DB.
 - Remaining gaps: dedicated settlement-operator role model, two-person/admin policy, production operator UI, direct exact-confirmation execution, installed official-result polling, and production service ownership remain P1.
+
+## Cycle XQ - Durable Operator Audit Event Table
+
+- Closed or narrowed: `OperatorAuditEvent` is now a first-class Prisma model and migration, and approval/execution dry-run services write dedicated operator audit rows for guard-passing operator actions.
+- Fields added/confirmed for local runtime tooling: `operatorUserId`, `reviewId`, `action`, `roleSnapshot`, `requestId`, `canonicalEventId`, `metadata`, and `createdAt`. Approval responses can include `approvalEvidence.operatorAuditEventId`; dry-run execution responses can include `executionRequestEvidence.operatorAuditEventId`.
+- Route mismatch: no public mobile route added. Approval remains approval-evidence only, and execution remains dry-run request audit only.
+- Schema mismatch: the first-class audit table gap is closed. Production still needs dedicated settlement-operator roles/permissions and a two-person/admin execution policy before direct execution can be enabled.
+- Temporary mock/static data: none added. Focused tests mock Prisma; local migration applied to the real Postgres database.
+- Remaining gaps: dedicated settlement-operator role model, two-person/admin policy, production operator UI, direct exact-confirmation execution, installed official-result polling, and production service ownership remain P1.

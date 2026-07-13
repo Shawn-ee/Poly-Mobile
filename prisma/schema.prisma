@@ -216,6 +216,7 @@ model User {
   apiCredentialUsageLogs      ApiCredentialUsageLog[]
   createdEvents               Event[]                 @relation("EventCreatedBy")
   profilePreferences          UserProfilePreference?
+  operatorAuditEvents         OperatorAuditEvent[]
 }
 
 model UserProfilePreference {
@@ -794,11 +795,32 @@ model OfficialResultReview {
   reviewSnapshot                  Json
   createdAt                       DateTime @default(now())
   updatedAt                       DateTime @updatedAt
+  operatorAuditEvents             OperatorAuditEvent[]
 
   @@index([eventSlug, updatedAt])
   @@index([marketId, updatedAt])
   @@index([resultDigest])
   @@index([trustedResultDigest])
+}
+
+model OperatorAuditEvent {
+  id               String               @id @default(uuid())
+  operatorUserId   String
+  reviewId         String
+  action           String
+  roleSnapshot     Json
+  requestId        String
+  canonicalEventId BigInt?
+  metadata         Json
+  createdAt        DateTime             @default(now())
+  operator         User                 @relation(fields: [operatorUserId], references: [id], onDelete: Cascade)
+  review           OfficialResultReview @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  @@index([operatorUserId, createdAt])
+  @@index([reviewId, createdAt])
+  @@index([action, createdAt])
+  @@index([canonicalEventId])
+  @@index([requestId])
 }
 
 model RuntimeServiceHeartbeat {

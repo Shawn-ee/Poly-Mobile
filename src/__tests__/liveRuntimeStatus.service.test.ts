@@ -1215,7 +1215,8 @@ describe("live runtime status service", () => {
           }),
           expect.objectContaining({
             model: "OperatorAuditEvent",
-            status: "required_new_model_or_equivalent_audit_table",
+            status: "implemented_dedicated_operator_audit_table",
+            fields: expect.arrayContaining(["operatorUserId", "reviewId", "action", "roleSnapshot", "requestId"]),
           }),
         ]),
         requiredGuards: expect.arrayContaining([
@@ -1240,6 +1241,7 @@ describe("live runtime status service", () => {
           available: true,
           mutatesState: true,
           mutationScope: "approval_evidence_only",
+          operatorAuditEventRecorded: true,
           providerQuotaRequired: false,
           publicMobileRoute: false,
           exactConfirmationExposed: false,
@@ -1252,6 +1254,7 @@ describe("live runtime status service", () => {
           mutatesState: true,
           mutationScope: "execution_dry_run_request_audit_only",
           dryRunOnly: true,
+          operatorAuditEventRecorded: true,
           providerQuotaRequired: false,
           publicMobileRoute: false,
           exactConfirmationExposed: false,
@@ -1298,7 +1301,7 @@ describe("live runtime status service", () => {
         "production_operator_ui_not_present",
       ]),
       requiredBeforeProduction: expect.arrayContaining([
-        "store durable operator identity on approval and execution records",
+        "enforce dedicated settlement-operator roles and two-person/admin execution policy",
       ]),
       p0: [],
       p1: expect.arrayContaining(["authenticated_operator_controls_missing", "production_operator_ui_not_present"]),
