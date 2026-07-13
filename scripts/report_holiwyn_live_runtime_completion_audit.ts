@@ -956,8 +956,11 @@ async function main() {
           getPath(route, ["id"]) === "settlement_execution" &&
           getPath(route, ["requiresClosedMarket"]) === true &&
           getPath(route, ["requiresExactConfirmation"]) === true &&
-          getPath(route, ["implementationStatus"]) === "implemented_guarded_dry_run_no_settlement_mutation" &&
-          getPath(route, ["dryRunOnly"]) === true &&
+          getPath(route, ["implementationStatus"]) === "implemented_guarded_exact_confirmation_local_execution" &&
+          getPath(route, ["dryRunOnly"]) === false &&
+          getPath(route, ["exactConfirmationExecutionSupported"]) === true &&
+          getPath(route, ["executeRequiresApproval"]) === true &&
+          getPath(route, ["executeRequiresTwoPersonOrAdminPolicy"]) === true &&
           getPath(route, ["exactConfirmationStored"]) === false &&
           getPath(route, ["activeSettlementExecution"]) === false,
       ) &&
@@ -1038,6 +1041,38 @@ async function main() {
         "localControls",
         "settlementApprovalRoute",
         "operatorAuditEventRecorded",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "localControls",
+        "settlementExecutionRoute",
+        "exactConfirmationExecutionSupported",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "localControls",
+        "settlementExecutionRoute",
+        "executeRequiresClosedMarket",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "localControls",
+        "settlementExecutionRoute",
+        "executeRequiresApproval",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "localControls",
+        "settlementExecutionRoute",
+        "executeRequiresExactConfirmation",
       ]) === true &&
       getPath(entries.phaseAudit, [
         "localRuntimeStatus",

@@ -1,5 +1,6 @@
 const requireAdmin = jest.fn();
 const requestExecutionDryRun = jest.fn();
+const executeSettlementReview = jest.fn();
 
 jest.mock("@/lib/admin", () => ({
   requireAdmin: () => requireAdmin(),
@@ -7,6 +8,7 @@ jest.mock("@/lib/admin", () => ({
 
 jest.mock("@/server/services/liveRuntimeSettlementExecution", () => ({
   requestLocalLiveRuntimeSettlementExecutionDryRun: (...args: unknown[]) => requestExecutionDryRun(...args),
+  executeLocalLiveRuntimeSettlementReview: (...args: unknown[]) => executeSettlementReview(...args),
 }));
 
 import { POST } from "@/app/api/internal/live-runtime/settlement-queue/[reviewId]/execute/route";
@@ -15,6 +17,7 @@ describe("internal live-runtime settlement execution route", () => {
   beforeEach(() => {
     requireAdmin.mockReset();
     requestExecutionDryRun.mockReset();
+    executeSettlementReview.mockReset();
     delete process.env.HOLIWYN_DISABLE_INTERNAL_OPERATOR_CONTROLS;
     requireAdmin.mockResolvedValue({
       user: {
@@ -35,6 +38,22 @@ describe("internal live-runtime settlement execution route", () => {
       executionRequestEvidence: {
         canonicalExecutionRequestEventId: "12",
         dryRunOnly: true,
+        operatorUserId: "admin-1",
+      },
+    });
+    executeSettlementReview.mockResolvedValue({
+      status: "executed",
+      httpStatus: 200,
+      reviewId: "review-1",
+      providerQuotaUsed: false,
+      mutatesSettlement: true,
+      exactConfirmationExposed: false,
+      exactConfirmationStored: false,
+      activeMarketExecutionAttempted: true,
+      executionEvidence: {
+        canonicalExecutionEventId: "44",
+        operatorAuditEventId: "operator-audit-exec",
+        eventType: "settlement.trusted_result.executed",
         operatorUserId: "admin-1",
       },
     });
@@ -77,27 +96,40 @@ describe("internal live-runtime settlement execution route", () => {
     expect(JSON.stringify(body)).not.toContain("THE_ODDS_API_KEY");
   });
 
-  test("rejects direct execution requests", async () => {
+  test("routes exact-confirmation execution requests through authenticated service", async () => {
     const res = await POST(
       new Request("http://local.test/api/internal/live-runtime/settlement-queue/review-1/execute", {
         method: "POST",
-        body: JSON.stringify({ execute: true }),
+        body: JSON.stringify({
+          execute: true,
+          exactConfirmation: "SETTLE_FROM_RESULT:market-1:outcome-1:result-digest",
+        }),
       }),
       { params: Promise.resolve({ reviewId: "review-1" }) },
     );
 
-    expect(res.status).toBe(409);
+    expect(res.status).toBe(200);
     const body = await res.json();
     expect(body).toMatchObject({
-      status: "execution_disabled",
+      status: "executed",
       providerQuotaUsed: false,
-      mutatesSettlement: false,
+      mutatesSettlement: true,
       exactConfirmationExposed: false,
       exactConfirmationStored: false,
-      activeMarketExecutionAttempted: false,
+      activeMarketExecutionAttempted: true,
     });
-    expect(requireAdmin).not.toHaveBeenCalled();
     expect(requestExecutionDryRun).not.toHaveBeenCalled();
+    expect(executeSettlementReview).toHaveBeenCalledWith({
+      reviewId: "review-1",
+      exactConfirmation: "SETTLE_FROM_RESULT:market-1:outcome-1:result-digest",
+      operator: {
+        id: "admin-1",
+        email: "admin@holiwyn.local",
+        username: "admin",
+        roles: ["admin", "settlement_operator"],
+      },
+    });
+    expect(JSON.stringify(body)).not.toContain("SETTLE_FROM_RESULT:");
   });
 
   test("requires admin authentication", async () => {
@@ -112,6 +144,7 @@ describe("internal live-runtime settlement execution route", () => {
 
     expect(res.status).toBe(401);
     expect(requestExecutionDryRun).not.toHaveBeenCalled();
+    expect(executeSettlementReview).not.toHaveBeenCalled();
   });
 
   test("can be disabled outside internal operator contexts", async () => {
@@ -127,5 +160,6 @@ describe("internal live-runtime settlement execution route", () => {
     expect(res.status).toBe(404);
     expect(requireAdmin).not.toHaveBeenCalled();
     expect(requestExecutionDryRun).not.toHaveBeenCalled();
+    expect(executeSettlementReview).not.toHaveBeenCalled();
   });
 });

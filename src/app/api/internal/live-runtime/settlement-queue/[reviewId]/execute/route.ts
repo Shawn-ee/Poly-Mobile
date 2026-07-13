@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/admin";
-import { requestLocalLiveRuntimeSettlementExecutionDryRun } from "@/server/services/liveRuntimeSettlementExecution";
+import {
+  executeLocalLiveRuntimeSettlementReview,
+  requestLocalLiveRuntimeSettlementExecutionDryRun,
+} from "@/server/services/liveRuntimeSettlementExecution";
 
 export async function POST(
   request: Request,
@@ -14,20 +17,13 @@ export async function POST(
   }
 
   const body = await request.json().catch(() => ({}));
-  if (body && typeof body === "object" && "execute" in body && body.execute === true) {
-    return NextResponse.json(
-      {
-        error: "Direct settlement execution is disabled for the local internal route.",
-        status: "execution_disabled",
-        providerQuotaUsed: false,
-        mutatesSettlement: false,
-        exactConfirmationExposed: false,
-        exactConfirmationStored: false,
-        activeMarketExecutionAttempted: false,
-      },
-      { status: 409 },
-    );
-  }
+  const executeRequested = body && typeof body === "object" && "execute" in body && body.execute === true;
+  const exactConfirmation =
+    body && typeof body === "object" && typeof body.exactConfirmation === "string"
+      ? body.exactConfirmation
+      : body && typeof body === "object" && typeof body.confirm === "string"
+        ? body.confirm
+        : null;
 
   const admin = await requireAdmin();
   if ("error" in admin) {
@@ -35,15 +31,22 @@ export async function POST(
   }
 
   const { reviewId } = await context.params;
-  const result = await requestLocalLiveRuntimeSettlementExecutionDryRun({
-    reviewId,
-    operator: {
-      id: admin.user.id,
-      email: admin.user.email,
-      username: admin.user.username,
-      roles: ["admin", "settlement_operator"],
-    },
-  });
+  const operator = {
+    id: admin.user.id,
+    email: admin.user.email,
+    username: admin.user.username,
+    roles: ["admin", "settlement_operator"],
+  };
+  const result = executeRequested
+    ? await executeLocalLiveRuntimeSettlementReview({
+        reviewId,
+        operator,
+        exactConfirmation,
+      })
+    : await requestLocalLiveRuntimeSettlementExecutionDryRun({
+        reviewId,
+        operator,
+      });
 
   return NextResponse.json(result, {
     status: result.httpStatus,

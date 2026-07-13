@@ -10742,7 +10742,7 @@ Future migration concern:
 
 - Closed or narrowed: `POST /api/internal/live-runtime/settlement-queue/:reviewId/execute` now exists as an authenticated guarded dry-run request route. It proves the server-owned execution boundary without allowing active-event settlement mutation.
 - Fields added/confirmed for local runtime tooling: route response includes `status`, `blockerKeys` when blocked, `executionRequestEvidence.canonicalExecutionRequestEventId` when guards pass, `operator.durableIdentityRecorded`, `providerQuotaUsed=false`, `mutatesSettlement=false`, `exactConfirmationExposed=false`, `exactConfirmationStored=false`, and `activeMarketExecutionAttempted=false`.
-- Route mismatch: this is not a direct settlement execution endpoint. `{ "execute": true }` is rejected, and dry-run requests require closed market, approval evidence, preflight evidence, known exact-confirmation requirement, and `executionEligibleNow=true`.
+- Route mismatch: at the time of this cycle this was not a direct settlement execution endpoint and `{ "execute": true }` was rejected; Cycle XS later adds guarded local exact-confirmed execution for reviewed CLOSED markets. Dry-run requests still require closed market, approval evidence, preflight evidence, known exact-confirmation requirement, and `executionEligibleNow=true`.
 - Schema mismatch: dry-run execution identity is recorded through `CanonicalEvent.userId` and redacted `OfficialResultReview.reviewSnapshot.operatorExecutionDryRun`. Production still needs first-class `executedByUserId`, `executedAt`, role snapshot, request id, two-person approval linkage, and an `OperatorAuditEvent` or equivalent table before direct execution is enabled.
 - Temporary mock/static data: none added. Service/route tests mock Prisma for contract coverage; runtime proof used the local active review row and correctly blocked because the active market is not closed/executable.
 - Remaining gaps: direct exact-confirmation settlement execution handoff, two-person/admin approval policy, dedicated operator roles, production operator UI, installed official-result polling, and production service ownership remain P1.
@@ -10754,7 +10754,7 @@ Future migration concern:
 - Route mismatch: these remain local/dev internal operator routes, not public mobile routes. They still use `User.isAdmin` as the role source rather than a dedicated settlement-operator permission table.
 - Schema mismatch: no schema change. Production still needs dedicated operator roles/permissions, role snapshots, request ids, and a first-class operator audit table or equivalent.
 - Temporary mock/static data: none added. Tests mock `requireAdmin()`; runtime proof used the real local admin user and local DB.
-- Remaining gaps: dedicated production settlement-operator role model, production operator UI, direct exact-confirmation execution, installed official-result polling, and production service ownership remain P1; Cycle XR adds the dry-run two-person/admin policy check.
+- Remaining gaps: dedicated production settlement-operator role model, production operator UI, installed official-result polling, and production service ownership remain P1; Cycle XR adds the dry-run two-person/admin policy check and Cycle XS adds guarded local exact-confirmed execution.
 
 ## Cycle XQ - Durable Operator Audit Event Table
 
@@ -10763,7 +10763,7 @@ Future migration concern:
 - Route mismatch: no public mobile route added. Approval remains approval-evidence only, and execution remains dry-run request audit only.
 - Schema mismatch: the first-class audit table gap is closed. Production still needs dedicated settlement-operator roles/permissions; Cycle XR adds the dry-run two-person/admin policy check, while direct execution remains disabled.
 - Temporary mock/static data: none added. Focused tests mock Prisma; local migration applied to the real Postgres database.
-- Remaining gaps: dedicated production settlement-operator role model, production operator UI, direct exact-confirmation execution, installed official-result polling, and production service ownership remain P1.
+- Remaining gaps: dedicated production settlement-operator role model, production operator UI, installed official-result polling, and production service ownership remain P1; Cycle XS adds local exact-confirmed execution for reviewed CLOSED markets.
 
 ## Cycle XR - Two-Person Or Admin Execution Dry-Run Policy
 
@@ -10772,4 +10772,13 @@ Future migration concern:
 - Route mismatch: the route still does not execute settlement. Direct `{ "execute": true }` remains disabled.
 - Schema mismatch: no schema change. The policy uses existing `CanonicalEvent.userId`/payload approval identity plus authenticated operator roles. Production still needs a dedicated settlement-operator role model.
 - Temporary mock/static data: none added. Focused tests cover admin override success and same-operator non-admin block.
-- Remaining gaps: dedicated production settlement-operator role model, production operator UI, direct exact-confirmation execution, installed official-result polling, and production service ownership remain P1.
+- Remaining gaps: dedicated production settlement-operator role model, production operator UI, installed official-result polling, and production service ownership remain P1; Cycle XS adds guarded local exact-confirmed execution.
+
+## Cycle XS - Exact-Confirmed Local Settlement Execution Route
+
+- Closed or narrowed: local internal execution route now supports exact-confirmed settlement execution for reviewed CLOSED markets instead of only dry-run request evidence.
+- Fields added/confirmed for local runtime tooling: `executionEvidence.canonicalExecutionEventId`, `executionEvidence.operatorAuditEventId`, `operatorControlBoundary.localControls.settlementExecutionRoute.exactConfirmationExecutionSupported=true`, `executeRequiresClosedMarket=true`, `executeRequiresApproval=true`, and `executeRequiresExactConfirmation=true`.
+- Route mismatch: public/mobile routes still cannot execute settlement. This remains an internal dev/admin route disabled in production and by `HOLIWYN_DISABLE_INTERNAL_OPERATOR_CONTROLS=1`.
+- Schema mismatch: no schema change. Successful local execution uses existing `OfficialResultReview.settlementExecutedCanonicalId`, `CanonicalEvent(eventType=settlement.trusted_result.executed)`, and `OperatorAuditEvent(action=settlement_execution_completed)`.
+- Temporary mock/static data: none added. Focused tests mock Prisma and settlement service only.
+- Remaining gaps: installed official-result polling, dedicated production settlement-operator role model, production operator UI, and production service ownership remain P1.

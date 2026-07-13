@@ -4,6 +4,7 @@ const marketFindUnique = jest.fn();
 const canonicalEventFindUnique = jest.fn();
 const canonicalEventCreate = jest.fn();
 const operatorAuditEventCreate = jest.fn();
+const resolveOrderbookMarket = jest.fn();
 
 jest.mock("@/lib/db", () => ({
   prisma: {
@@ -24,7 +25,14 @@ jest.mock("@/lib/db", () => ({
   },
 }));
 
-import { requestLocalLiveRuntimeSettlementExecutionDryRun } from "@/server/services/liveRuntimeSettlementExecution";
+jest.mock("@/server/services/settlement", () => ({
+  resolveOrderbookMarket: (...args: unknown[]) => resolveOrderbookMarket(...args),
+}));
+
+import {
+  executeLocalLiveRuntimeSettlementReview,
+  requestLocalLiveRuntimeSettlementExecutionDryRun,
+} from "@/server/services/liveRuntimeSettlementExecution";
 
 const baseReview = {
   id: "review-1",
@@ -70,6 +78,9 @@ const closedMarket = {
   },
 };
 
+const stringifyForSecretCheck = (value: unknown) =>
+  JSON.stringify(value, (_key, item) => (typeof item === "bigint" ? item.toString() : item));
+
 describe("live runtime settlement execution dry-run service", () => {
   beforeEach(() => {
     officialResultReviewFindUnique.mockReset();
@@ -78,6 +89,7 @@ describe("live runtime settlement execution dry-run service", () => {
     canonicalEventFindUnique.mockReset();
     canonicalEventCreate.mockReset();
     operatorAuditEventCreate.mockReset();
+    resolveOrderbookMarket.mockReset();
     officialResultReviewFindUnique.mockResolvedValue(baseReview);
     marketFindUnique.mockResolvedValue(closedMarket);
     canonicalEventFindUnique.mockResolvedValue({
@@ -86,11 +98,20 @@ describe("live runtime settlement execution dry-run service", () => {
       userId: "approver-1",
       payload: {
         approvedByUserId: "approver-1",
+        confirm: "SETTLE_FROM_RESULT:market-1:outcome-1:result-digest",
       },
     });
     canonicalEventCreate.mockResolvedValue({ id: 12n });
     operatorAuditEventCreate.mockResolvedValue({ id: "operator-audit-2" });
     officialResultReviewUpdate.mockResolvedValue({});
+    resolveOrderbookMarket.mockResolvedValue({
+      marketId: "market-1",
+      winningOutcomeId: "outcome-1",
+      totalPoolPayout: "10",
+      totalWinningShares: "10",
+      payouts: [{ userId: "user-1", amountPaid: "10" }],
+      collateralDebitedUSDC: "10",
+    });
   });
 
   test("records a durable dry-run execution request without settlement mutation", async () => {
@@ -285,5 +306,142 @@ describe("live runtime settlement execution dry-run service", () => {
     expect(marketFindUnique).not.toHaveBeenCalled();
     expect(canonicalEventCreate).not.toHaveBeenCalled();
     expect(operatorAuditEventCreate).not.toHaveBeenCalled();
+  });
+
+  test("executes a closed approved review with exact confirmation without exposing the phrase", async () => {
+    canonicalEventCreate.mockResolvedValue({ id: 44n });
+    operatorAuditEventCreate.mockResolvedValue({ id: "operator-audit-exec" });
+
+    const result = await executeLocalLiveRuntimeSettlementReview({
+      reviewId: "review-1",
+      operator: {
+        id: "admin-1",
+        email: "admin@holiwyn.local",
+        username: "admin",
+        roles: ["admin", "settlement_operator"],
+      },
+      exactConfirmation: "SETTLE_FROM_RESULT:market-1:outcome-1:result-digest",
+    });
+
+    expect(resolveOrderbookMarket).toHaveBeenCalledWith({
+      marketId: "market-1",
+      winningOutcomeId: "outcome-1",
+      actorUserId: "admin-1",
+    });
+    expect(result).toMatchObject({
+      status: "executed",
+      httpStatus: 200,
+      providerQuotaUsed: false,
+      mutatesSettlement: true,
+      exactConfirmationExposed: false,
+      exactConfirmationStored: false,
+      activeMarketExecutionAttempted: true,
+      executionEvidence: {
+        canonicalExecutionEventId: "44",
+        operatorAuditEventId: "operator-audit-exec",
+        eventType: "settlement.trusted_result.executed",
+        operatorUserId: "admin-1",
+        durableIdentityRecorded: true,
+      },
+      settlement: {
+        marketId: "market-1",
+        winningOutcomeId: "outcome-1",
+        payoutCount: 1,
+      },
+    });
+    expect(canonicalEventCreate).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        eventType: "settlement.trusted_result.executed",
+        marketId: "market-1",
+        outcomeId: "outcome-1",
+        userId: "admin-1",
+        payload: expect.objectContaining({
+          mutatesSettlement: true,
+          exactConfirmationMatched: true,
+          exactConfirmationExposed: false,
+          exactConfirmationStored: false,
+          activeMarketExecutionAttempted: true,
+        }),
+      }),
+    });
+    expect(operatorAuditEventCreate).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        action: "settlement_execution_completed",
+        canonicalEventId: 44n,
+        metadata: expect.objectContaining({
+          mutatesSettlement: true,
+          exactConfirmationMatched: true,
+          exactConfirmationExposed: false,
+          exactConfirmationStored: false,
+        }),
+      }),
+    });
+    expect(officialResultReviewUpdate).toHaveBeenCalledWith({
+      where: { id: "review-1" },
+      data: expect.objectContaining({
+        settlementExecutedCanonicalId: 44n,
+        executionDecision: "already_executed",
+        executionEligibleNow: false,
+        exactConfirmationStored: false,
+        activeMarketExecutionAttempted: true,
+      }),
+    });
+    expect(JSON.stringify(result)).not.toContain("SETTLE_FROM_RESULT:");
+    expect(stringifyForSecretCheck(canonicalEventCreate.mock.calls)).not.toContain("SETTLE_FROM_RESULT:");
+    expect(stringifyForSecretCheck(operatorAuditEventCreate.mock.calls)).not.toContain("SETTLE_FROM_RESULT:");
+  });
+
+  test("blocks execution when exact confirmation is missing or mismatched", async () => {
+    const missing = await executeLocalLiveRuntimeSettlementReview({
+      reviewId: "review-1",
+      operator: { id: "admin-1", roles: ["admin"] },
+      exactConfirmation: null,
+    });
+    expect(missing).toMatchObject({
+      status: "execution_blocked",
+      blockerKeys: ["exact_confirmation_missing"],
+      mutatesSettlement: false,
+      activeMarketExecutionAttempted: false,
+    });
+
+    const mismatched = await executeLocalLiveRuntimeSettlementReview({
+      reviewId: "review-1",
+      operator: { id: "admin-1", roles: ["admin"] },
+      exactConfirmation: "wrong-confirmation",
+    });
+    expect(mismatched).toMatchObject({
+      status: "execution_blocked",
+      blockerKeys: ["exact_confirmation_mismatch"],
+      mutatesSettlement: false,
+      activeMarketExecutionAttempted: false,
+    });
+    expect(resolveOrderbookMarket).not.toHaveBeenCalled();
+    expect(canonicalEventCreate).not.toHaveBeenCalled();
+    expect(operatorAuditEventCreate).not.toHaveBeenCalled();
+  });
+
+  test("blocks execution when approval does not carry exact confirmation evidence", async () => {
+    canonicalEventFindUnique.mockResolvedValue({
+      id: 11n,
+      eventType: "settlement.trusted_result.approved",
+      userId: "approver-1",
+      payload: {
+        approvedByUserId: "approver-1",
+      },
+    });
+
+    const result = await executeLocalLiveRuntimeSettlementReview({
+      reviewId: "review-1",
+      operator: { id: "admin-1", roles: ["admin"] },
+      exactConfirmation: "SETTLE_FROM_RESULT:market-1:outcome-1:result-digest",
+    });
+
+    expect(result).toMatchObject({
+      status: "execution_blocked",
+      blockerKeys: ["exact_confirmation_not_available_for_route"],
+      mutatesSettlement: false,
+    });
+    expect(resolveOrderbookMarket).not.toHaveBeenCalled();
+    expect(canonicalEventCreate).not.toHaveBeenCalled();
   });
 });
