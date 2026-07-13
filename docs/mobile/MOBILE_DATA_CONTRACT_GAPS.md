@@ -10754,13 +10754,22 @@ Future migration concern:
 - Route mismatch: these remain local/dev internal operator routes, not public mobile routes. They still use `User.isAdmin` as the role source rather than a dedicated settlement-operator permission table.
 - Schema mismatch: no schema change. Production still needs dedicated operator roles/permissions, role snapshots, request ids, and a first-class operator audit table or equivalent.
 - Temporary mock/static data: none added. Tests mock `requireAdmin()`; runtime proof used the real local admin user and local DB.
-- Remaining gaps: dedicated settlement-operator role model, two-person/admin policy, production operator UI, direct exact-confirmation execution, installed official-result polling, and production service ownership remain P1.
+- Remaining gaps: dedicated production settlement-operator role model, production operator UI, direct exact-confirmation execution, installed official-result polling, and production service ownership remain P1; Cycle XR adds the dry-run two-person/admin policy check.
 
 ## Cycle XQ - Durable Operator Audit Event Table
 
 - Closed or narrowed: `OperatorAuditEvent` is now a first-class Prisma model and migration, and approval/execution dry-run services write dedicated operator audit rows for guard-passing operator actions.
 - Fields added/confirmed for local runtime tooling: `operatorUserId`, `reviewId`, `action`, `roleSnapshot`, `requestId`, `canonicalEventId`, `metadata`, and `createdAt`. Approval responses can include `approvalEvidence.operatorAuditEventId`; dry-run execution responses can include `executionRequestEvidence.operatorAuditEventId`.
 - Route mismatch: no public mobile route added. Approval remains approval-evidence only, and execution remains dry-run request audit only.
-- Schema mismatch: the first-class audit table gap is closed. Production still needs dedicated settlement-operator roles/permissions and a two-person/admin execution policy before direct execution can be enabled.
+- Schema mismatch: the first-class audit table gap is closed. Production still needs dedicated settlement-operator roles/permissions; Cycle XR adds the dry-run two-person/admin policy check, while direct execution remains disabled.
 - Temporary mock/static data: none added. Focused tests mock Prisma; local migration applied to the real Postgres database.
-- Remaining gaps: dedicated settlement-operator role model, two-person/admin policy, production operator UI, direct exact-confirmation execution, installed official-result polling, and production service ownership remain P1.
+- Remaining gaps: dedicated production settlement-operator role model, production operator UI, direct exact-confirmation execution, installed official-result polling, and production service ownership remain P1.
+
+## Cycle XR - Two-Person Or Admin Execution Dry-Run Policy
+
+- Closed or narrowed: guarded execution dry-run now checks the approval canonical event and requires either admin override or a different execution requester than the approver before writing dry-run evidence.
+- Fields added/confirmed for local runtime tooling: `executionRequestEvidence.twoPersonOrAdminPolicy`, `operator.twoPersonOrAdminPolicy`, and status field `localControls.settlementExecutionRoute.twoPersonOrAdminPolicyChecked=true`.
+- Route mismatch: the route still does not execute settlement. Direct `{ "execute": true }` remains disabled.
+- Schema mismatch: no schema change. The policy uses existing `CanonicalEvent.userId`/payload approval identity plus authenticated operator roles. Production still needs a dedicated settlement-operator role model.
+- Temporary mock/static data: none added. Focused tests cover admin override success and same-operator non-admin block.
+- Remaining gaps: dedicated production settlement-operator role model, production operator UI, direct exact-confirmation execution, installed official-result polling, and production service ownership remain P1.

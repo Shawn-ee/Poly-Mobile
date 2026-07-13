@@ -1255,6 +1255,7 @@ describe("live runtime status service", () => {
           mutationScope: "execution_dry_run_request_audit_only",
           dryRunOnly: true,
           operatorAuditEventRecorded: true,
+          twoPersonOrAdminPolicyChecked: true,
           providerQuotaRequired: false,
           publicMobileRoute: false,
           exactConfirmationExposed: false,
@@ -1301,7 +1302,7 @@ describe("live runtime status service", () => {
         "production_operator_ui_not_present",
       ]),
       requiredBeforeProduction: expect.arrayContaining([
-        "enforce dedicated settlement-operator roles and two-person/admin execution policy",
+        "enforce dedicated settlement-operator role model in production auth",
       ]),
       p0: [],
       p1: expect.arrayContaining(["authenticated_operator_controls_missing", "production_operator_ui_not_present"]),

@@ -981,6 +981,8 @@ async function main() {
           "execution_dry_run_request_audit_only" &&
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementExecutionRoute", "operatorAuditEventRecorded"]) ===
           true &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementExecutionRoute", "twoPersonOrAdminPolicyChecked"]) ===
+          true &&
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementExecutionRoute", "providerQuotaRequired"]) ===
           false &&
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementExecutionRoute", "exactConfirmationExposed"]) ===

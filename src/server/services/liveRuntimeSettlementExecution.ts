@@ -13,6 +13,8 @@ type JsonObject = Record<string, unknown>;
 const asSnapshotObject = (value: unknown): JsonObject =>
   value && typeof value === "object" && !Array.isArray(value) ? (value as JsonObject) : {};
 
+const hasAdminOverride = (operator: Operator) => operator.roles.includes("admin");
+
 const blocked = (params: {
   reviewId: string;
   status: string;
@@ -82,16 +84,47 @@ export async function requestLocalLiveRuntimeSettlementExecutionDryRun(params: {
       })
     : null;
 
+  const approvalEvent = review.settlementApprovalCanonicalId
+    ? await prisma.canonicalEvent.findUnique({
+        where: { id: review.settlementApprovalCanonicalId },
+        select: {
+          id: true,
+          userId: true,
+          eventType: true,
+          payload: true,
+        },
+      })
+    : null;
+
+  const approvedByUserId =
+    approvalEvent?.userId ??
+    (approvalEvent?.payload && typeof approvalEvent.payload === "object"
+      ? (approvalEvent.payload as JsonObject).approvedByUserId
+      : null);
+  const twoPersonOrAdminPolicy = {
+    checked: true,
+    mode: "admin_override_or_different_operator",
+    adminOverride: hasAdminOverride(params.operator),
+    approvedByUserId: typeof approvedByUserId === "string" ? approvedByUserId : null,
+    requestedByUserId: params.operator.id,
+    differentOperator:
+      typeof approvedByUserId === "string" ? approvedByUserId !== params.operator.id : false,
+  };
+
   const blockerKeys = Object.entries({
     market_missing: review.marketId != null && market == null,
     market_not_closed: market?.status !== "CLOSED",
     approval_not_recorded: review.approvalStatus !== "approved",
-    approval_audit_missing: review.settlementApprovalCanonicalId == null,
+    approval_audit_missing: review.settlementApprovalCanonicalId == null || approvalEvent == null,
     preflight_audit_missing: review.settlementPreflightCanonicalId == null,
     exact_confirmation_unknown: !review.confirmationRequiredKnown,
     execution_not_eligible: !review.executionEligibleNow,
     exact_confirmation_stored: review.exactConfirmationStored,
     provider_quota_used: review.providerQuotaUsed,
+    two_person_or_admin_policy_not_satisfied:
+      approvalEvent != null &&
+      !twoPersonOrAdminPolicy.adminOverride &&
+      !twoPersonOrAdminPolicy.differentOperator,
   })
     .filter(([, value]) => value === true)
     .map(([key]) => key);
@@ -125,6 +158,7 @@ export async function requestLocalLiveRuntimeSettlementExecutionDryRun(params: {
         trustedResultDigest: review.trustedResultDigest,
         approvalCanonicalEventId: review.settlementApprovalCanonicalId?.toString() ?? null,
         preflightCanonicalEventId: review.settlementPreflightCanonicalId?.toString() ?? null,
+        twoPersonOrAdminPolicy,
         operator: {
           id: params.operator.id,
           email: params.operator.email ?? null,
@@ -161,6 +195,7 @@ export async function requestLocalLiveRuntimeSettlementExecutionDryRun(params: {
         trustedResultDigest: review.trustedResultDigest,
         approvalCanonicalEventId: review.settlementApprovalCanonicalId?.toString() ?? null,
         preflightCanonicalEventId: review.settlementPreflightCanonicalId?.toString() ?? null,
+        twoPersonOrAdminPolicy,
         requestedAt: requestedAt.toISOString(),
         source: "internal-operator-session",
         dryRunOnly: true,
@@ -184,6 +219,7 @@ export async function requestLocalLiveRuntimeSettlementExecutionDryRun(params: {
           roleSnapshot: params.operator.roles,
           canonicalExecutionRequestEventId: executionRequestEvent.id.toString(),
           operatorAuditEventId: operatorAuditEvent.id,
+          twoPersonOrAdminPolicy,
           mutatesSettlement: false,
           exactConfirmationExposed: false,
           exactConfirmationStored: false,
@@ -212,6 +248,7 @@ export async function requestLocalLiveRuntimeSettlementExecutionDryRun(params: {
       dryRunOnly: true,
       operatorUserId: params.operator.id,
       durableIdentityRecorded: true,
+      twoPersonOrAdminPolicy,
     },
     review: {
       id: review.id,
@@ -242,6 +279,7 @@ export async function requestLocalLiveRuntimeSettlementExecutionDryRun(params: {
       roles: params.operator.roles,
       durableIdentityRecorded: true,
       durableAuditEventRecorded: true,
+      twoPersonOrAdminPolicy,
     },
   };
 }

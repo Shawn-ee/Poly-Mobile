@@ -1,6 +1,7 @@
 const officialResultReviewFindUnique = jest.fn();
 const officialResultReviewUpdate = jest.fn();
 const marketFindUnique = jest.fn();
+const canonicalEventFindUnique = jest.fn();
 const canonicalEventCreate = jest.fn();
 const operatorAuditEventCreate = jest.fn();
 
@@ -14,6 +15,7 @@ jest.mock("@/lib/db", () => ({
       findUnique: (...args: unknown[]) => marketFindUnique(...args),
     },
     canonicalEvent: {
+      findUnique: (...args: unknown[]) => canonicalEventFindUnique(...args),
       create: (...args: unknown[]) => canonicalEventCreate(...args),
     },
     operatorAuditEvent: {
@@ -73,10 +75,19 @@ describe("live runtime settlement execution dry-run service", () => {
     officialResultReviewFindUnique.mockReset();
     officialResultReviewUpdate.mockReset();
     marketFindUnique.mockReset();
+    canonicalEventFindUnique.mockReset();
     canonicalEventCreate.mockReset();
     operatorAuditEventCreate.mockReset();
     officialResultReviewFindUnique.mockResolvedValue(baseReview);
     marketFindUnique.mockResolvedValue(closedMarket);
+    canonicalEventFindUnique.mockResolvedValue({
+      id: 11n,
+      eventType: "settlement.trusted_result.approved",
+      userId: "approver-1",
+      payload: {
+        approvedByUserId: "approver-1",
+      },
+    });
     canonicalEventCreate.mockResolvedValue({ id: 12n });
     operatorAuditEventCreate.mockResolvedValue({ id: "operator-audit-2" });
     officialResultReviewUpdate.mockResolvedValue({});
@@ -108,6 +119,14 @@ describe("live runtime settlement execution dry-run service", () => {
         dryRunOnly: true,
         operatorUserId: "admin-1",
         durableIdentityRecorded: true,
+        twoPersonOrAdminPolicy: {
+          checked: true,
+          mode: "admin_override_or_different_operator",
+          adminOverride: true,
+          approvedByUserId: "approver-1",
+          requestedByUserId: "admin-1",
+          differentOperator: true,
+        },
       },
     });
     expect(canonicalEventCreate).toHaveBeenCalledWith({
@@ -125,6 +144,11 @@ describe("live runtime settlement execution dry-run service", () => {
           exactConfirmationStored: false,
           providerQuotaUsed: false,
           activeMarketExecutionAttempted: false,
+          twoPersonOrAdminPolicy: expect.objectContaining({
+            checked: true,
+            adminOverride: true,
+            approvedByUserId: "approver-1",
+          }),
         }),
       }),
     });
@@ -154,6 +178,10 @@ describe("live runtime settlement execution dry-run service", () => {
             requestedByUserId: "admin-1",
             canonicalExecutionRequestEventId: "12",
             operatorAuditEventId: "operator-audit-2",
+            twoPersonOrAdminPolicy: expect.objectContaining({
+              checked: true,
+              adminOverride: true,
+            }),
             mutatesSettlement: false,
             exactConfirmationExposed: false,
             exactConfirmationStored: false,
@@ -165,6 +193,36 @@ describe("live runtime settlement execution dry-run service", () => {
     });
     expect(JSON.stringify(result)).not.toContain("SETTLE_FROM_RESULT:");
     expect(JSON.stringify(result)).not.toContain("THE_ODDS_API_KEY");
+  });
+
+  test("blocks non-admin dry-run when the same operator approved and requests execution", async () => {
+    canonicalEventFindUnique.mockResolvedValue({
+      id: 11n,
+      eventType: "settlement.trusted_result.approved",
+      userId: "operator-1",
+      payload: {
+        approvedByUserId: "operator-1",
+      },
+    });
+
+    const result = await requestLocalLiveRuntimeSettlementExecutionDryRun({
+      reviewId: "review-1",
+      operator: {
+        id: "operator-1",
+        roles: ["settlement_operator"],
+      },
+    });
+
+    expect(result).toMatchObject({
+      status: "execution_blocked",
+      httpStatus: 409,
+      blockerKeys: ["two_person_or_admin_policy_not_satisfied"],
+      mutatesSettlement: false,
+      activeMarketExecutionAttempted: false,
+    });
+    expect(canonicalEventCreate).not.toHaveBeenCalled();
+    expect(operatorAuditEventCreate).not.toHaveBeenCalled();
+    expect(officialResultReviewUpdate).not.toHaveBeenCalled();
   });
 
   test("blocks dry-run when the market is not closed", async () => {

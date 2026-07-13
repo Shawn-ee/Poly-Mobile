@@ -1052,6 +1052,14 @@ async function main() {
         "body",
         "operatorControlBoundary",
         "localControls",
+        "settlementExecutionRoute",
+        "twoPersonOrAdminPolicyChecked",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "localControls",
         "settlementApprovalRoute",
         "exactConfirmationStored",
       ]) === false &&

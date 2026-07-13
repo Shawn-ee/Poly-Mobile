@@ -1098,6 +1098,7 @@ function buildOperatorControlBoundary(params: {
         mutationScope: "execution_dry_run_request_audit_only",
         dryRunOnly: true,
         operatorAuditEventRecorded: true,
+        twoPersonOrAdminPolicyChecked: true,
         providerQuotaRequired: false,
         publicMobileRoute: false,
         exactConfirmationExposed: false,
@@ -1148,12 +1149,11 @@ function buildOperatorControlBoundary(params: {
     productionBlockers: [
       "authenticated_operator_controls_missing",
       "production_operator_ui_not_present",
-      "two_person_or_admin_approval_workflow_missing",
       "installed_official_result_polling_missing",
     ],
     requiredBeforeProduction: [
       "provide an audited operator UI or admin workflow for queue review",
-      "enforce dedicated settlement-operator roles and two-person/admin execution policy",
+      "enforce dedicated settlement-operator role model in production auth",
       "keep exact-confirmation redaction and CLOSED-market guards",
       "connect installed official-result polling only after service ownership exists",
     ],

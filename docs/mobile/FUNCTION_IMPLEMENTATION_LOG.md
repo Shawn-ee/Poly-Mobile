@@ -15223,7 +15223,7 @@ Known limitations:
 - API/data dependencies: reads `OfficialResultReview`, current `Market`, and admin session identity; writes `CanonicalEvent(eventType=settlement.trusted_result.execution.dry_run_requested)` and `OfficialResultReview.reviewSnapshot.operatorExecutionDryRun` only for guard-passing dry-run requests.
 - Runtime proof: local route call against active review `900d9d09-22e7-4ae9-9158-71832e8fd8e7` returned HTTP 409 with `blockerKeys=["market_not_closed","execution_not_eligible"]`, `providerQuotaUsed=false`, `mutatesSettlement=false`, `exactConfirmationExposed=false`, `exactConfirmationStored=false`, and `activeMarketExecutionAttempted=false`.
 - Proof needed: focused execution service/route tests, operator session/status tests, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
-- Known limitations: direct exact-confirmation settlement execution remains disabled. Production still needs first-class operator audit schema, two-person/admin policy, dedicated operator roles, installed official-result polling, and operator UI.
+- Known limitations: direct exact-confirmation settlement execution remains disabled. Production still needs durable operator audit storage, two-person/admin policy, dedicated operator roles, installed official-result polling, and operator UI.
 
 ## Cycle XP - Operator Auth Gate For Result Review And Settlement Queue
 
@@ -15235,7 +15235,7 @@ Known limitations:
 - API/data dependencies: reads existing `User.isAdmin` through `requireAdmin()`, plus the existing result-review and settlement-queue service data. No schema migration or provider call was added.
 - Runtime proof: local backend returned `401` for both routes without auth and `200 ready` for both routes with dev admin header `b24ba407-b26a-4a25-bdd1-87b9f1361dc7`; `providerQuotaUsed=false` for both authenticated responses.
 - Proof needed: focused result-review/settlement-queue route tests, status test, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
-- Known limitations: this uses the existing admin role source. Dedicated settlement-operator roles, two-person/admin policy, production operator UI, direct exact-confirmation execution, and installed official-result polling remain P1.
+- Known limitations: this uses the existing admin role source. Dedicated production settlement-operator role model, production operator UI, direct exact-confirmation execution, and installed official-result polling remain P1; Cycle XR adds the dry-run two-person/admin policy check.
 
 ## Cycle XQ - Durable Operator Audit Event Table
 
@@ -15247,4 +15247,15 @@ Known limitations:
 - API/data dependencies: adds `OperatorAuditEvent(operatorUserId, reviewId, action, roleSnapshot, requestId, canonicalEventId, metadata, createdAt)` with foreign keys to `User` and `OfficialResultReview`. Status/audit contracts now report `implemented_dedicated_operator_audit_table`.
 - Runtime proof: migration applied locally; backend health returned OK after restart.
 - Proof needed: Prisma validate/migrate, focused approval/execution/status tests, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
-- Known limitations: dedicated settlement-operator roles, two-person/admin execution policy, production operator UI, direct exact-confirmation execution, and installed official-result polling remain P1.
+- Known limitations: dedicated production settlement-operator role model, production operator UI, direct exact-confirmation execution, and installed official-result polling remain P1; Cycle XR adds the dry-run two-person/admin policy check.
+
+## Cycle XR - Two-Person Or Admin Execution Dry-Run Policy
+
+- Feature/runtime worked on: backend guarded settlement execution dry-run policy.
+- Frontend components touched: none.
+- Important functions/services touched: `src/server/services/liveRuntimeSettlementExecution.ts`, `src/server/services/liveRuntimeStatus.ts`, phase/completion audit scripts, and focused execution/status tests.
+- User/runtime interactions supported: guard-passing execution dry-run now verifies the approval canonical event and requires either an admin override or a different execution requester than the approver before writing dry-run request evidence.
+- State transitions: blocked policy failures return `execution_blocked` and write no canonical event, no operator audit event, and no review snapshot update. Passing requests remain dry-run only and do not execute settlement.
+- API/data dependencies: reads `OfficialResultReview.settlementApprovalCanonicalId` and the linked `CanonicalEvent.userId`/payload approval identity. Status reports `localControls.settlementExecutionRoute.twoPersonOrAdminPolicyChecked=true`.
+- Proof needed: focused execution service/route/status tests, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
+- Known limitations: dedicated production settlement-operator role model, production operator UI, direct exact-confirmation execution, and installed official-result polling remain P1.
