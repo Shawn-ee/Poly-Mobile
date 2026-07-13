@@ -104,3 +104,55 @@ Fresh gaps:
 - P0: none for the tested current internal tester path.
 - P1: the unseeded `France advances` quick buy can still become an open order if local maker liquidity is not seeded for that market. The current one-event maker seed prepares `Total Goals 2.5`; broaden seed selection only if internal testers need advance-market fills before line-market fills.
 - P1: the generic buy ticket still exposes a Yes/No selector for binary markets. Cashout correctly hides it, but the retail buy ticket can be simplified later.
+
+## Fresh S23 Current-Main Proof - 2026-07-13 11:49 CT
+
+Reason: confirm the real phone is not running a stale bundle and cannot still produce a wallet-sized cashout amount like `$9000`.
+
+Device and runtime:
+
+- Samsung S23: `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.
+- Branch: `main`.
+- Backend: `http://127.0.0.1:3002`, health `ok`, DB `connected`.
+- Mobile API: `http://172.16.200.14:3002`.
+- Expo proof server: temporary clean server on port `8289`; proof script cleared Expo Go state before launch.
+
+Fresh proof result:
+
+- Result: pass.
+- Home showed backend-owned `Spain vs. France`.
+- Event Detail loaded backend markets.
+- Buy flow selected sportsbook-backed `Total Goals 2.5`, outcome `Over 2.5`.
+- Portfolio showed the filled position after buy.
+- Portfolio `Cash out` opened close-position mode, not the generic buy ticket.
+- Cashout ticket hid the Yes/No selector.
+- Cashout `Max` used owned shares only: `43.1 SHARES`.
+- Cashout ticket displayed `43.1 shares available at 58%` and `Sell up to 43.1 shares`.
+- The proof explicitly rejected wallet-sized cashout strings: `9,000 USDT`, `9000 USDT`, `10,000 USDT`, and `10000 USDT`.
+- Swipe cashout submitted a server-backed SELL for the owned market/outcome.
+- Portfolio History showed the sold activity and preserved sportsbook-backed market identity.
+
+Fresh evidence artifacts:
+
+- Summary: `docs/mobile/harness/cycle-S23CASHOUTLIVE-spain-france-cashout/cycle-S23CASHOUTLIVE-odds-api-s23-visible-flow.json`
+- Home: `docs/mobile/screenshots/cycle-S23CASHOUTLIVE-spain-france-cashout/cycle-S23CASHOUTLIVE-home.png`
+- Event Detail: `docs/mobile/screenshots/cycle-S23CASHOUTLIVE-spain-france-cashout/cycle-S23CASHOUTLIVE-detail-top.png`
+- Line market: `docs/mobile/screenshots/cycle-S23CASHOUTLIVE-spain-france-cashout/cycle-S23CASHOUTLIVE-line-market.png`
+- Buy ticket ready: `docs/mobile/screenshots/cycle-S23CASHOUTLIVE-spain-france-cashout/cycle-S23CASHOUTLIVE-ticket-ready.png`
+- Portfolio after buy: `docs/mobile/screenshots/cycle-S23CASHOUTLIVE-spain-france-cashout/cycle-S23CASHOUTLIVE-after-submit.png`
+- Cashout Max: `docs/mobile/screenshots/cycle-S23CASHOUTLIVE-spain-france-cashout/cycle-S23CASHOUTLIVE-cashout-ticket-ready.png`
+- Cashout Max XML: `docs/mobile/harness/cycle-S23CASHOUTLIVE-spain-france-cashout/cycle-S23CASHOUTLIVE-cashout-ticket-ready.xml`
+- Portfolio History: `docs/mobile/screenshots/cycle-S23CASHOUTLIVE-spain-france-cashout/cycle-S23CASHOUTLIVE-portfolio-history.png`
+
+Fresh validation:
+
+- Focused mobile cashout/portfolio/order tests: `npx vitest run --config vitest.mobile.config.mts mobile/src/__tests__/positionCloseService.test.ts mobile/src/__tests__/cashoutGenericSellOnlyContract.test.ts mobile/src/__tests__/portfolioPositionTradeContract.test.ts mobile/src/__tests__/eventDetailPositionTradeContract.test.ts mobile/src/__tests__/orderService.test.ts mobile/src/__tests__/positionTradeTicketService.test.ts` - pass, 37 tests.
+- Mobile typecheck: `npm --prefix mobile run typecheck` - pass.
+- Root typecheck: `npx tsc --noEmit --pretty false --incremental false` - pass.
+- Backend CI: `npm run test:ci` - pass, 34 suites / 159 tests.
+
+Fresh gaps:
+
+- P0: none for the current Spain vs. France internal tester path Home -> Event Detail -> Buy -> Portfolio -> Cash out Max -> SELL -> History.
+- P1: advance-market fills still depend on maker liquidity being seeded for that specific market; this proof used `Total Goals 2.5`.
+- P1: local supervisor/result-poller remain proven but not installed as unattended production services.
