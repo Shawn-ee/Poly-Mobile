@@ -15720,3 +15720,15 @@ Known limitations:
 - User/runtime interactions supported: operators can keep `THE_ODDS_API_KEY` out of command lines by storing it in ignored `.runtime/secrets/the-odds-api-key.txt`; preflight reports whether a key source exists without calling the provider.
 - State transitions: preflight is read-only and no-quota. Refresh mode delegates to the existing one-event live provider proof and may spend quota only when explicitly invoked.
 - Known limitations: no live refresh was run in this cycle. Mobile-visible provider snapshots remain stale until an explicit provider refresh runs with a key source present.
+
+## Cycle ZP - Provider Evidence Refresh And DoD Gate
+
+- Feature/runtime worked on: refreshed Polymarket/provider-discovery evidence and final Definition of Done audit gating.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. The batch consumed existing backend health, mobile event/detail, provider evidence, and runtime proof routes/artifacts.
+- Important functions/services touched: `scripts/mobile_definition_of_done_sweep.ts`, `scripts/mobile_internal_readiness_batch.ps1`, `scripts/plan_mobile_provider_evidence_refresh.ts`, and `scripts/plan_mobile_autonomous_next_action.ts`.
+- User/runtime interactions supported: no user-facing app behavior changed. The autonomous loop now has fresh provider evidence and the DoD sweep recognizes the current Odds API internal-environment/live-runtime/S23 cashout proof instead of underreporting the temporary sportsbook bridge as stale.
+- State transitions: provider-discovery batch refreshed cached Polymarket/provider evidence. It did not import new tradable markets, place orders, change schemas, or spend The Odds API quota.
+- API/data dependencies: reads/writes `docs/mobile/harness/batch-internal-readiness-latest/*`, `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`, `docs/mobile/harness/the-odds-api-internal-environment/internal-environment-proof.redacted.json`, and `docs/mobile/harness/cycle-ZM-spain-france-cashout-s23/cycle-ZM-odds-api-s23-visible-flow.json`.
+- Proof: `npm run mobile:internal-readiness-batch:provider-refresh`, `npm run mobile:provider-evidence-plan`, `npm run mobile:definition-of-done-sweep`, focused Jest contracts, root typecheck, mobile typecheck, and full `npm run test:ci` passed.
+- Known limitations: refreshed provider evidence still has no attach-ready Polymarket World Cup match/line markets, so provider parity remains P1. Local MVP/internal testing continues on the backend-owned Odds API event.

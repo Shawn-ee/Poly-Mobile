@@ -1,6 +1,6 @@
 # Batch Internal Readiness Gap List
 
-Generated: 2026-07-13T20:19:05.358Z
+Generated: 2026-07-13T21:49:15.987Z
 
 Source summary: `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`
 
@@ -18,7 +18,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Backend health ready: yes
 - DB container healthy: yes
 - S23 connected: yes (adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp, SM_S911U1)
-- Expo running: no
+- Expo running: yes
 - Continuous bot running: no
 - Worktree clean at batch start: no
 - Root typecheck: yes
@@ -26,38 +26,38 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Mobile typecheck: yes
 - S23 Local MVP proof ready: yes
 - Temporary sportsbook S23 bridge proof ready: yes
-- Temporary sportsbook backend proof ready: yes (next stale: sportsbook-repeatable-internal-environment in 23.89 hours)
+- Temporary sportsbook backend proof ready: yes (next stale: sportsbook-repeatable-internal-environment in 22.39 hours)
 - Temporary sportsbook internal environment ready: yes
 - S23 proof max age: 24 hours
-- S23 proof next stale: temporary-sportsbook-filled-buy-history in 19.78 hours (2026-07-14T16:05:37.0490077Z)
+- S23 proof next stale: temporary-sportsbook-filled-buy-history in 18.27 hours (2026-07-14T16:05:37.0490077Z)
 - S23 startup contract ready: yes
 - S23 Google consent path ready: no (not-ready)
 - Provider-backed exchange ready: no
-- Provider discovery mode: cached
-- Cached provider evidence fresh: no (max age 24 hours)
-- Cached provider evidence next stale: provider-visible-tradable-flow in -30.48 hours (2026-07-12T13:50:21.2740000Z)
+- Provider discovery mode: refresh
+- Cached provider evidence fresh: yes (max age 24 hours)
+- Cached provider evidence next stale: provider-visible-tradable-flow in 23.95 hours (2026-07-14T21:46:09.0720000Z)
 - P0 blocker count: 0
-- P1 blocker count: 9
+- P1 blocker count: 8
 - P2 blocker count: 0
 
 ## Current Runtime Snapshot
 
 - Backend base URL: `http://127.0.0.1:3002`
 - Mobile-visible events: 4
-- Provider-visible markets: 3
+- Provider-visible markets: 0
 - Provider local-MM-ready markets: 0
 - Local MVP match breadth ready: yes (4 events)
-- Provider books unavailable or closed: yes
-- Provider snapshot refresh succeeded: yes (6 updated)
-- Temporary sportsbook backend proofs: sportsbook-single-event-live-seed:fresh(0.05h), sportsbook-mobile-fake-token-flow:fresh(0.02h), sportsbook-repeatable-internal-environment:fresh(0.11h)
+- Provider books unavailable or closed: no
+- Provider snapshot refresh succeeded: yes (0 updated)
+- Temporary sportsbook backend proofs: sportsbook-single-event-live-seed:fresh(1.56h), sportsbook-mobile-fake-token-flow:fresh(1.52h), sportsbook-repeatable-internal-environment:fresh(1.61h)
 - Temporary sportsbook internal environment proof: `docs/mobile/harness/the-odds-api-internal-environment/internal-environment-proof.redacted.json`
-- Cached provider evidence: provider-snapshot-refresh:stale(54.48h), internal-exchange-readiness:stale(54.48h), provider-visible-tradable-flow:stale(54.48h), worldcup-match-scan:stale(54.47h), provider-line-scan:stale(54.44h)
-- Provider MVP tradable flow ready: no (provider_mvp_match_snapshot_not_mm_safe)
+- Cached provider evidence: provider-snapshot-refresh:fresh(0.05h), internal-exchange-readiness:fresh(0.05h), provider-visible-tradable-flow:fresh(0.05h), worldcup-match-scan:fresh(0.04h), provider-line-scan:fresh(0.01h)
+- Provider MVP tradable flow ready: no (provider_mvp_match_market_not_found)
 - World Cup team-match provider events scanned: 422 (0 open/upcoming, 422 closed/ended)
 - Generic non-soccer World Cup matches excluded: 0
 - Usable World Cup team-match provider events: 0
-- Open World Cup provider events scanned: 64 (56 usable, 56 usable non-match/futures/props excluded from Local MVP match flow)
-- Provider line-family candidates scanned: 2483 (2483 identity-complete, 2483 closed/unavailable identity candidates)
+- Open World Cup provider events scanned: 59 (43 usable, 43 usable non-match/futures/props excluded from Local MVP match flow)
+- Provider line-family candidates scanned: 2484 (2484 identity-complete, 2484 closed/unavailable identity candidates)
 - Attach-ready provider line candidates: 0
 - Internal MVP startup callback: `http://172.16.200.14:3002/api/auth/google/callback`
 - S23 Google callback: unknown
@@ -66,11 +66,10 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 
 | Page/function | Actual behavior | Expected behavior | Priority | Affected files/routes | Proof needed | Blocks internal testing? |
 | --- | --- | --- | --- | --- | --- | --- |
-| Provider-backed World Cup match books | Polymarket-backed World Cup match books are unavailable, closed, not accepting orders, or invalid for local-MM seeding. | At least one provider-backed World Cup match market should have a usable accepting-order book before provider-backed match trading is claimed. | P1 | `scripts/check_poly_internal_exchange_readiness.ts`; `scripts/refresh_reference_snapshots.ts`; Gamma/CLOB provider data; reference snapshots. | `internal-exchange-readiness.json` showing provider books ready, or explicit unavailable/closed evidence. | No |
-| Provider-visible tradable match proof | The selected provider match is visible but its latest provider quote snapshot is not safe for local market-maker quote placement. | A provider-backed match should have a fresh non-edge bid/ask snapshot before local-MM fake-token trading is claimed. | P1 | `scripts/prove_mobile_provider_visible_tradable_flow.ts`; `ReferenceQuoteSnapshot`; `/api/markets/:marketId/quote`; `/api/orders`. | `provider-visible-tradable-flow.json` with `pass=true`, or the current blocker recorded as provider data debt. | No |
+| provider_internal_exchange_not_ready | Batch reported blocker `provider_internal_exchange_not_ready`. | Investigate the batch output and convert this blocker into a named readiness criterion. | P1 | See `internal-readiness-batch-summary.json` and step logs. | Updated blocker mapping plus passing batch evidence. | No |
+| provider_mvp_match_market_not_found | Batch reported blocker `provider_mvp_match_market_not_found`. | Investigate the batch output and convert this blocker into a named readiness criterion. | P1 | See `internal-readiness-batch-summary.json` and step logs. | Updated blocker mapping plus passing batch evidence. | No |
 | Provider World Cup team-match discovery | The scanner found no usable attach-ready Polymarket World Cup team-match books. | Discovery should find match-like provider events only when they are real, relevant, and usable for the MVP path. | P1 | `scripts/scan_polymarket_worldcup_match_events.ts`; Gamma API; CLOB market data. | `worldcup-match-event-scan.json` showing at least one usable team-match event. | No |
 | Provider line-market discovery | No attach-ready Polymarket-backed spread, total, team-total, or similar line market is available for the current World Cup match flow. | Line-market provider parity should only pass when real provider markets can attach to stable event, market, outcome, and token IDs. | P1 | `scripts/prove_mobile_provider_line_breadth_scan.ts`; Gamma API; mobile live-detail data contract. | `provider-line-breadth-scan.json` showing attach-ready line candidates. | No |
-| Provider cached evidence freshness | The default cached provider evidence is older than the allowed freshness window, so provider-backed parity decisions may be stale. | Cached provider summaries should be fresh enough for audit decisions, or the batch should be rerun in provider refresh mode. | P1 | `scripts/mobile_internal_readiness_batch.ps1`; `provider-snapshot-refresh.json`; `internal-exchange-readiness.json`; `provider-visible-tradable-flow.json`; `worldcup-match-event-scan.json`; `provider-line-breadth-scan.json`. | `internal-readiness-batch-summary.json` with `cachedProviderEvidenceFresh=true`, or a fresh `npm run mobile:internal-readiness-batch:provider-refresh` run. | No |
 | manual_server_mode_needs_generated_mobile_api_key | Batch reported blocker `manual_server_mode_needs_generated_mobile_api_key`. | Investigate the batch output and convert this blocker into a named readiness criterion. | P1 | See `internal-readiness-batch-summary.json` and step logs. | Updated blocker mapping plus passing batch evidence. | No |
 | Google/account login | Google auth runtime preflight has warnings. | Auth preflight should run without warnings before claiming real Google consent readiness. | P1 | `/api/auth/google/start`; mobile Google auth preflight scripts. | Runtime preflight JSON with zero failed checks. | No |
 | Google/account login on S23 | The physical-device Google callback is not reachable from the phone, commonly because it points at localhost. | S23 consent should use a hosted or LAN callback that the phone can open and Google Cloud authorizes. | P1 | `/api/auth/google/start`; `scripts/mobile_google_lan_auth_preflight.ps1`; local `NEXTAUTH_URL`; Google Cloud OAuth client settings. | `google-auth-lan-callback-preflight.json` and strict runtime preflight with the LAN/hosted callback. | No |
@@ -89,7 +88,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 | Temporary sportsbook backend proof | yes | `single-event-summary.redacted.json` plus `mobile-flow-proof.redacted.json` must pass and remain fresh. |
 | Temporary sportsbook internal environment | yes | `internal-environment-proof.redacted.json` must prove restart/import, backend/Postgres/S23, buy/cashout/history, and negative order guards. |
 | S23 Google consent callback | no | `google-auth-lan-callback-preflight.json` when LAN-ready; localhost probes remain raw diagnostics only. |
-| Cached provider evidence | no | Provider snapshot, exchange, tradable-flow, match-scan, and line-scan summaries must be within the freshness window. |
+| Cached provider evidence | yes | Provider snapshot, exchange, tradable-flow, match-scan, and line-scan summaries must be within the freshness window. |
 | Root typecheck | yes | `root-typecheck.json`. |
 | Jest CI | yes | `jest-ci.json`. |
 | Mobile typecheck | yes | `mobile-typecheck.json`. |

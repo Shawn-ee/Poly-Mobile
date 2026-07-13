@@ -44,6 +44,9 @@ const evidence = {
   oddsApiMobileFlowProof: "docs/mobile/harness/the-odds-api-single-event/mobile-flow-proof.redacted.json",
   oddsApiS23Reachability: "docs/mobile/harness/the-odds-api-single-event/s23-device-reachability.redacted.json",
   oddsApiS23VisibleProof: "docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json",
+  oddsApiInternalEnvironmentProof: "docs/mobile/harness/the-odds-api-internal-environment/internal-environment-proof.redacted.json",
+  oddsApiLiveRuntimeProof: "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
+  oddsApiS23CashoutProof: "docs/mobile/harness/cycle-ZM-spain-france-cashout-s23/cycle-ZM-odds-api-s23-visible-flow.json",
 };
 
 const readJson = <T,>(file: string): T | null => {
@@ -119,6 +122,26 @@ const internalReadiness = readJson<{
     mobileTypecheckReady?: boolean;
     temporarySportsbookBackendProofReady?: boolean;
     temporarySportsbookBackendProofHoursUntilStale?: number | null;
+    temporarySportsbookInternalEnvironmentReady?: boolean;
+    temporarySportsbookInternalEnvironmentChecks?: {
+      backendHealth?: boolean;
+      postgresHealth?: boolean;
+      s23Reachable?: boolean;
+      homeRouteVisible?: boolean;
+      eventDetailVisible?: boolean;
+      quoteRouteVisible?: boolean;
+      buyOrderFilled?: boolean;
+      positionVisibleAfterBuy?: boolean;
+      cannotCashoutWithoutPosition?: boolean;
+      cannotSellMoreThanOwned?: boolean;
+      staleOrClosedMarketRejected?: boolean;
+      missingProviderDataFailsGracefully?: boolean;
+      cashoutSellFilled?: boolean;
+      positionReducedAfterCashout?: boolean;
+      buyHistoryVisible?: boolean;
+      sellHistoryVisible?: boolean;
+      s23VisibleProofFreshEnough?: boolean;
+    };
   };
   blockers?: {
     p0?: string[];
@@ -168,26 +191,114 @@ const oddsApiS23VisibleProof = readJson<{
     ticketPreservesSportsbookLineIdentity?: boolean;
     swipeSubmitReachedPortfolio?: boolean;
     portfolioPreservesSportsbookLineIdentity?: boolean;
+    cashoutTicketOpened?: boolean;
+    cashoutTicketIsClosePositionMode?: boolean;
+    cashoutMaxUsesOwnedShares?: boolean;
+    cashoutTicketHidesYesNoSelector?: boolean;
+    cashoutSellSubmitted?: boolean;
+    cashoutHistoryVisible?: boolean;
     historyPreservesSportsbookLineIdentity?: boolean;
   };
 }>(evidence.oddsApiS23VisibleProof);
+const oddsApiS23CashoutProof = readJson<{
+  result?: string;
+  assertions?: typeof oddsApiS23VisibleProof extends { assertions?: infer Assertions } ? Assertions : Record<string, boolean | undefined>;
+}>(evidence.oddsApiS23CashoutProof);
+const oddsApiInternalEnvironmentProof = readJson<{
+  pass?: boolean;
+  checks?: NonNullable<NonNullable<typeof internalReadiness>["readiness"]>["temporarySportsbookInternalEnvironmentChecks"];
+}>(evidence.oddsApiInternalEnvironmentProof);
+const oddsApiLiveRuntimeProof = readJson<{
+  pass?: boolean;
+  checks?: {
+    backendHealth?: boolean;
+    oneUpcomingProviderEventSelected?: boolean;
+    providerLiveRefreshRan?: boolean;
+    quotaProtected?: boolean;
+    readyAfterRefresh?: boolean;
+    homeVisible?: boolean;
+    detailVisible?: boolean;
+    buyFilled?: boolean;
+    portfolioPositionVisible?: boolean;
+    noCashoutWithoutPositionRejected?: boolean;
+    closedMarketRejectsTrading?: boolean;
+    cashoutSellFilled?: boolean;
+    historyHasBuyAndSell?: boolean;
+  };
+}>(evidence.oddsApiLiveRuntimeProof);
+const latestOddsApiS23Proof = oddsApiS23CashoutProof ?? oddsApiS23VisibleProof;
+const latestOddsApiS23Assertions = latestOddsApiS23Proof?.assertions;
 const temporarySportsbookProviderBridgeReady =
-  internalReadiness?.readiness?.temporarySportsbookBackendProofReady === true &&
-  oddsApiSummary?.pass === true &&
-  (oddsApiSummary.mobile?.sportsbookMarketCount ?? 0) > 0 &&
-  oddsApiMobileFlowProof?.pass === true &&
+  (
+    internalReadiness?.readiness?.temporarySportsbookBackendProofReady === true &&
+    oddsApiSummary?.pass === true &&
+    (oddsApiSummary.mobile?.sportsbookMarketCount ?? 0) > 0 &&
+    oddsApiMobileFlowProof?.pass === true &&
     oddsApiMobileFlowProof.checks?.fakeTokenOrderFilled === true &&
     oddsApiMobileFlowProof.checks?.portfolioPositionVisible === true &&
-    oddsApiMobileFlowProof.checks?.historyTradeVisible === true;
+    (
+      oddsApiMobileFlowProof.checks?.historyTradeVisible === true ||
+      (
+        oddsApiMobileFlowProof.checks?.buyHistoryTradeVisible === true &&
+        oddsApiMobileFlowProof.checks?.sellHistoryTradeVisible === true
+      )
+    )
+  ) ||
+  (
+    internalReadiness?.readiness?.temporarySportsbookInternalEnvironmentReady === true &&
+    oddsApiInternalEnvironmentProof?.pass === true &&
+    oddsApiInternalEnvironmentProof.checks?.backendHealth === true &&
+    oddsApiInternalEnvironmentProof.checks?.postgresHealth === true &&
+    oddsApiInternalEnvironmentProof.checks?.s23Reachable === true &&
+    oddsApiInternalEnvironmentProof.checks?.homeRouteVisible === true &&
+    oddsApiInternalEnvironmentProof.checks?.eventDetailVisible === true &&
+    oddsApiInternalEnvironmentProof.checks?.quoteRouteVisible === true &&
+    oddsApiInternalEnvironmentProof.checks?.buyOrderFilled === true &&
+    oddsApiInternalEnvironmentProof.checks?.positionVisibleAfterBuy === true &&
+    oddsApiInternalEnvironmentProof.checks?.cannotCashoutWithoutPosition === true &&
+    oddsApiInternalEnvironmentProof.checks?.cannotSellMoreThanOwned === true &&
+    oddsApiInternalEnvironmentProof.checks?.staleOrClosedMarketRejected === true &&
+    oddsApiInternalEnvironmentProof.checks?.missingProviderDataFailsGracefully === true &&
+    oddsApiInternalEnvironmentProof.checks?.cashoutSellFilled === true &&
+    oddsApiInternalEnvironmentProof.checks?.positionReducedAfterCashout === true &&
+    oddsApiInternalEnvironmentProof.checks?.buyHistoryVisible === true &&
+    oddsApiInternalEnvironmentProof.checks?.sellHistoryVisible === true &&
+    oddsApiInternalEnvironmentProof.checks?.s23VisibleProofFreshEnough === true
+  ) ||
+  (
+    oddsApiLiveRuntimeProof?.pass === true &&
+    oddsApiLiveRuntimeProof.checks?.backendHealth === true &&
+    oddsApiLiveRuntimeProof.checks?.oneUpcomingProviderEventSelected === true &&
+    oddsApiLiveRuntimeProof.checks?.providerLiveRefreshRan === true &&
+    oddsApiLiveRuntimeProof.checks?.quotaProtected === true &&
+    oddsApiLiveRuntimeProof.checks?.readyAfterRefresh === true &&
+    oddsApiLiveRuntimeProof.checks?.homeVisible === true &&
+    oddsApiLiveRuntimeProof.checks?.detailVisible === true &&
+    oddsApiLiveRuntimeProof.checks?.buyFilled === true &&
+    oddsApiLiveRuntimeProof.checks?.portfolioPositionVisible === true &&
+    oddsApiLiveRuntimeProof.checks?.noCashoutWithoutPositionRejected === true &&
+    oddsApiLiveRuntimeProof.checks?.closedMarketRejectsTrading === true &&
+    oddsApiLiveRuntimeProof.checks?.cashoutSellFilled === true &&
+    oddsApiLiveRuntimeProof.checks?.historyHasBuyAndSell === true
+  );
 const temporarySportsbookProviderS23VisibleReady =
-  oddsApiS23VisibleProof?.result === "pass" &&
-  oddsApiS23VisibleProof.assertions?.homeShowsTemporarySportsbookEvent === true &&
-  oddsApiS23VisibleProof.assertions?.detailShowsGameLines === true &&
-  oddsApiS23VisibleProof.assertions?.sportsbookSpreadLineVisible === true &&
-  oddsApiS23VisibleProof.assertions?.ticketPreservesSportsbookLineIdentity === true &&
-  oddsApiS23VisibleProof.assertions?.swipeSubmitReachedPortfolio === true &&
-  oddsApiS23VisibleProof.assertions?.portfolioPreservesSportsbookLineIdentity === true &&
-  oddsApiS23VisibleProof.assertions?.historyPreservesSportsbookLineIdentity === true;
+  latestOddsApiS23Proof?.result === "pass" &&
+  latestOddsApiS23Assertions?.homeShowsTemporarySportsbookEvent === true &&
+  latestOddsApiS23Assertions?.detailShowsGameLines === true &&
+  (
+    latestOddsApiS23Assertions?.sportsbookLineVisible === true ||
+    latestOddsApiS23Assertions?.sportsbookSpreadLineVisible === true
+  ) &&
+  latestOddsApiS23Assertions?.ticketPreservesSportsbookLineIdentity === true &&
+  latestOddsApiS23Assertions?.swipeSubmitReachedPortfolio === true &&
+  latestOddsApiS23Assertions?.portfolioPreservesSportsbookLineIdentity === true &&
+  latestOddsApiS23Assertions?.cashoutTicketOpened === true &&
+  latestOddsApiS23Assertions?.cashoutTicketIsClosePositionMode === true &&
+  latestOddsApiS23Assertions?.cashoutMaxUsesOwnedShares === true &&
+  latestOddsApiS23Assertions?.cashoutTicketHidesYesNoSelector === true &&
+  latestOddsApiS23Assertions?.cashoutSellSubmitted === true &&
+  latestOddsApiS23Assertions?.cashoutHistoryVisible === true &&
+  latestOddsApiS23Assertions?.historyPreservesSportsbookLineIdentity === true;
 const temporarySportsbookProviderNeedsVisibleS23 =
   temporarySportsbookProviderBridgeReady &&
   !temporarySportsbookProviderS23VisibleReady &&
@@ -306,6 +417,9 @@ const criteria: Criterion[] = [
       evidence.oddsApiMobileFlowProof,
       evidence.oddsApiS23Reachability,
       evidence.oddsApiS23VisibleProof,
+      evidence.oddsApiInternalEnvironmentProof,
+      evidence.oddsApiLiveRuntimeProof,
+      evidence.oddsApiS23CashoutProof,
     ],
     notes: temporarySportsbookProviderBridgeReady
       ? temporarySportsbookProviderNeedsVisibleS23

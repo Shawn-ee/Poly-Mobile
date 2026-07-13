@@ -1,6 +1,6 @@
 {
     "pass":  true,
-    "generatedAt":  "2026-07-13T20:18:13.365Z",
+    "generatedAt":  "2026-07-13T21:46:00.269Z",
     "scope":  "mobile-mvp-local-match-breadth",
     "baseUrl":  "http://127.0.0.1:3002",
     "policy":  {
@@ -15,31 +15,13 @@
                },
     "before":  {
                    "status":  200,
-                   "eventCount":  4,
+                   "eventCount":  1,
                    "events":  [
                                   {
                                       "slug":  "odds-api-single-soccer-test",
-                                      "title":  "Switzerland vs. Argentina",
+                                      "title":  "Spain vs. France",
                                       "eventType":  "match",
-                                      "marketCount":  26
-                                  },
-                                  {
-                                      "slug":  "holiwyn-local-australia-vs-egypt",
-                                      "title":  "Australia vs. Egypt",
-                                      "eventType":  "match",
-                                      "marketCount":  5
-                                  },
-                                  {
-                                      "slug":  "holiwyn-local-england-vs-congo-dr",
-                                      "title":  "England vs. Congo DR",
-                                      "eventType":  "match",
-                                      "marketCount":  5
-                                  },
-                                  {
-                                      "slug":  "holiwyn-local-mexico-vs-ecuador",
-                                      "title":  "Mexico vs. Ecuador",
-                                      "eventType":  "match",
-                                      "marketCount":  5
+                                      "marketCount":  19
                                   }
                               ]
                },
@@ -67,23 +49,23 @@
                                  },
                                  {
                                      "slug":  "odds-api-single-soccer-test",
-                                     "title":  "Switzerland vs. Argentina",
+                                     "title":  "Spain vs. France",
                                      "eventType":  "match",
-                                     "marketCount":  26
+                                     "marketCount":  19
                                  }
                              ]
               },
     "seeded":  [
                    {
                        "event":  {
-                                     "id":  "80216e60-4518-40f8-8576-7f0222d4857d",
+                                     "id":  "eaee631a-c4ce-4db9-b21b-3ce7ef268baa",
                                      "slug":  "holiwyn-local-mexico-vs-ecuador",
                                      "title":  "Mexico vs. Ecuador"
                                  },
                        "marketCount":  5,
                        "markets":  [
                                        {
-                                           "id":  "501563a6-1c7a-44f7-bec9-72c4c91ac78b",
+                                           "id":  "b9e6e3fd-7ffb-41ec-be46-dbe6203b724e",
                                            "slug":  "holiwyn-local-mexico-vs-ecuador-winner-home",
                                            "title":  "Mexico vs. Ecuador: Mexico to win",
                                            "marketType":  "match_winner_1x2",
@@ -91,7 +73,7 @@
                                            "outcomeCount":  2
                                        },
                                        {
-                                           "id":  "621752c5-fc90-4855-9552-b598ad2c020e",
+                                           "id":  "754eff07-802a-40dc-a49f-1a00b3a16470",
                                            "slug":  "holiwyn-local-mexico-vs-ecuador-spread-home-0-5",
                                            "title":  "Mexico vs. Ecuador: Mexico +0.5",
                                            "marketType":  "spread",
@@ -99,7 +81,7 @@
                                            "outcomeCount":  2
                                        },
                                        {
-                                           "id":  "02c3c00c-b57f-49e2-bed5-e86921bf3e36",
+                                           "id":  "8834b1a7-3428-44d3-a02f-3fb1dcc66086",
                                            "slug":  "holiwyn-local-mexico-vs-ecuador-spread-away-1-5",
                                            "title":  "Mexico vs. Ecuador: Ecuador +1.5",
                                            "marketType":  "spread",
@@ -107,7 +89,7 @@
                                            "outcomeCount":  2
                                        },
                                        {
-                                           "id":  "ddad58d7-7ffe-46b5-9297-9d36399332f4",
+                                           "id":  "d964f7fc-100d-4012-bdf4-784ffbb1c5ed",
                                            "slug":  "holiwyn-local-mexico-vs-ecuador-total-goals-2-5",
                                            "title":  "Mexico vs. Ecuador: Total goals 2.5",
                                            "marketType":  "total_goals",
@@ -115,7 +97,7 @@
                                            "outcomeCount":  2
                                        },
                                        {
-                                           "id":  "c0279d80-6201-4693-986e-440c0cf620e9",
+                                           "id":  "9a59e323-4a9c-4d72-a099-1d9a1bea9513",
                                            "slug":  "holiwyn-local-mexico-vs-ecuador-team-total-home-1-5",
                                            "title":  "Mexico vs. Ecuador: Mexico total goals 1.5",
                                            "marketType":  "team_total_goals",
@@ -126,14 +108,14 @@
                    },
                    {
                        "event":  {
-                                     "id":  "4284a620-7a67-416b-bd29-b31e09ac3ed1",
+                                     "id":  "be9f6dac-87a1-4210-9a0b-9e729d5e9cdd",
                                      "slug":  "holiwyn-local-england-vs-congo-dr",
                                      "title":  "England vs. Congo DR"
                                  },
                        "marketCount":  5,
                        "markets":  [
                                        {
-                                           "id":  "3c6f5c30-b751-4dd6-bab3-5e8d5b087fbe",
+                                           "id":  "b4a5fce5-bbd6-47b7-a08b-0ab9a130945f",
                                            "slug":  "holiwyn-local-england-vs-congo-dr-winner-home",
                                            "title":  "England vs. Congo DR: England to win",
                                            "marketType":  "match_winner_1x2",
@@ -141,7 +123,7 @@
                                            "outcomeCount":  2
                                        },
                                        {
-                                           "id":  "6705610e-4d54-494d-9c14-59033d62ba44",
+                                           "id":  "1503488f-410d-4586-ae70-e600d50dd52a",
                                            "slug":  "holiwyn-local-england-vs-congo-dr-spread-home-0-5",
                                            "title":  "England vs. Congo DR: England +0.5",
                                            "marketType":  "spread",
@@ -149,7 +131,7 @@
                                            "outcomeCount":  2
                                        },
                                        {
-                                           "id":  "b56411e5-2b48-4edb-b213-60c49504a5b4",
+                                           "id":  "1694cfbd-2258-4f68-8c1c-7833ab30d1ec",
                                            "slug":  "holiwyn-local-england-vs-congo-dr-spread-away-1-5",
                                            "title":  "England vs. Congo DR: Congo DR +1.5",
                                            "marketType":  "spread",
@@ -157,7 +139,7 @@
                                            "outcomeCount":  2
                                        },
                                        {
-                                           "id":  "1dde13e9-d1f3-4cab-b3db-b4194d18ba57",
+                                           "id":  "79f7c6a6-070a-4374-bc23-72fe52b37000",
                                            "slug":  "holiwyn-local-england-vs-congo-dr-total-goals-2-5",
                                            "title":  "England vs. Congo DR: Total goals 2.5",
                                            "marketType":  "total_goals",
@@ -165,7 +147,7 @@
                                            "outcomeCount":  2
                                        },
                                        {
-                                           "id":  "f6b1791f-ff2b-4536-8184-b37d5dd318b9",
+                                           "id":  "a6c76ba7-d055-4511-98c3-90c11a08252c",
                                            "slug":  "holiwyn-local-england-vs-congo-dr-team-total-home-1-5",
                                            "title":  "England vs. Congo DR: England total goals 1.5",
                                            "marketType":  "team_total_goals",
@@ -176,14 +158,14 @@
                    },
                    {
                        "event":  {
-                                     "id":  "2f379892-da62-4453-8fee-2d85e9d7f728",
+                                     "id":  "e1aac1ad-2da6-4e31-bc42-37c0636d63c2",
                                      "slug":  "holiwyn-local-australia-vs-egypt",
                                      "title":  "Australia vs. Egypt"
                                  },
                        "marketCount":  5,
                        "markets":  [
                                        {
-                                           "id":  "df75d93b-aed9-438b-9246-185727dc9cf0",
+                                           "id":  "58bcad1d-4b28-4c32-8989-26f5ae88b968",
                                            "slug":  "holiwyn-local-australia-vs-egypt-winner-home",
                                            "title":  "Australia vs. Egypt: Australia to win",
                                            "marketType":  "match_winner_1x2",
@@ -191,7 +173,7 @@
                                            "outcomeCount":  2
                                        },
                                        {
-                                           "id":  "4116b694-1edc-4077-9808-4f8e3ab466bd",
+                                           "id":  "b29d27c7-5bb6-40f4-aff7-bb2d4cbd919f",
                                            "slug":  "holiwyn-local-australia-vs-egypt-spread-home-0-5",
                                            "title":  "Australia vs. Egypt: Australia +0.5",
                                            "marketType":  "spread",
@@ -199,7 +181,7 @@
                                            "outcomeCount":  2
                                        },
                                        {
-                                           "id":  "da0d772d-cb00-424a-9296-e7bdf60ea97f",
+                                           "id":  "cdfcc39f-d6d7-4513-ada0-b89db3e5f8ed",
                                            "slug":  "holiwyn-local-australia-vs-egypt-spread-away-1-5",
                                            "title":  "Australia vs. Egypt: Egypt +1.5",
                                            "marketType":  "spread",
@@ -207,7 +189,7 @@
                                            "outcomeCount":  2
                                        },
                                        {
-                                           "id":  "ae5e90b0-64f6-4862-84ef-6b44fa215ae5",
+                                           "id":  "40987324-4951-483e-842d-713bef54d532",
                                            "slug":  "holiwyn-local-australia-vs-egypt-total-goals-2-5",
                                            "title":  "Australia vs. Egypt: Total goals 2.5",
                                            "marketType":  "total_goals",
@@ -215,7 +197,7 @@
                                            "outcomeCount":  2
                                        },
                                        {
-                                           "id":  "8a446ede-9989-4168-801b-56c7bb3324b7",
+                                           "id":  "6f0c25d4-2fa2-40d4-b9bb-739cc31adff8",
                                            "slug":  "holiwyn-local-australia-vs-egypt-team-total-home-1-5",
                                            "title":  "Australia vs. Egypt: Australia total goals 1.5",
                                            "marketType":  "team_total_goals",

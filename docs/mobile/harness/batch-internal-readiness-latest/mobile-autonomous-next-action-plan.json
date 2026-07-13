@@ -1,19 +1,17 @@
 {
-  "generatedAt": "2026-07-13T09:49:57.855Z",
-  "status": "refresh-provider-evidence",
+  "generatedAt": "2026-07-13T21:49:35.881Z",
+  "status": "provider-parity-wait",
   "priority": "P1",
-  "reason": "Provider evidence is stale, nearly stale, missing, or explicitly due for refresh.",
-  "recommendedAction": "Refresh provider evidence and only begin provider-backed work if refreshed evidence shows a real attach-ready World Cup match or line market.",
-  "commands": [
-    "npm run mobile:internal-readiness-batch:provider-refresh"
-  ],
+  "reason": "Provider-backed Polymarket parity is the only remaining partial criterion, but provider evidence is fresh.",
+  "recommendedAction": "Do not open a new provider scan. Keep Local MVP internal testing/regression proof ready while waiting for provider evidence to become stale or a real candidate signal. Next wait trigger: s23-proof 'temporary-sportsbook-filled-buy-history' at 2026-07-14T16:05:37.0490077Z (18.27 hours).",
+  "commands": [],
   "wait": {
-    "shouldWait": false,
-    "wakeAt": null,
-    "triggerKind": null,
-    "triggerName": null,
-    "waitSeconds": null,
-    "pollAfterSeconds": null,
+    "shouldWait": true,
+    "wakeAt": "2026-07-14T16:05:37.0490077Z",
+    "triggerKind": "s23-proof",
+    "triggerName": "temporary-sportsbook-filled-buy-history",
+    "waitSeconds": 65772,
+    "pollAfterSeconds": 900,
     "resumeCommand": "npm run mobile:autonomous-next-action"
   },
   "sourceEvidence": {
@@ -29,12 +27,10 @@
     "localMvpReady": true,
     "p0Blockers": [],
     "p1Blockers": [
-      "provider_worldcup_match_books_unavailable_or_closed",
-      "provider_mvp_match_snapshot_not_mm_safe",
+      "provider_internal_exchange_not_ready",
+      "provider_mvp_match_market_not_found",
       "no_usable_polymarket_worldcup_team_match_books",
       "no_attach_ready_polymarket_worldcup_line_markets",
-      "provider_cached_evidence_stale",
-      "temporary_sportsbook_backend_proof_stale_or_missing",
       "manual_server_mode_needs_generated_mobile_api_key",
       "google_auth_runtime_preflight_has_warnings",
       "google_physical_callback_not_phone_reachable",
@@ -42,11 +38,11 @@
     ],
     "s23ProofReady": true,
     "s23ProofNextStaleName": "temporary-sportsbook-filled-buy-history",
-    "s23ProofHoursUntilStale": 23.76,
+    "s23ProofHoursUntilStale": 18.27,
     "providerPlanStatus": "skip-refresh",
-    "providerEvidenceHoursUntilStale": -19.99,
-    "temporaryProviderBackendProofReady": false,
-    "temporaryProviderBackendProofHoursUntilStale": -11.02,
+    "providerEvidenceHoursUntilStale": 23.94,
+    "temporaryProviderBackendProofReady": true,
+    "temporaryProviderBackendProofHoursUntilStale": 22.38,
     "readyToDeclareDone": false,
     "dodCounts": {
       "verified": 11,
@@ -57,14 +53,14 @@
       "dod-provider-polymarket-parity",
       "dod-temporary-sportsbook-provider-bridge"
     ],
-    "temporaryProviderReady": false,
+    "temporaryProviderReady": true,
     "temporaryProviderNeedsS23VisualProof": false,
     "temporaryProviderEventSlug": "odds-api-single-soccer-test",
     "nextWaitTrigger": {
-      "kind": "provider-evidence",
-      "name": "provider-visible-tradable-flow",
-      "staleAt": "2026-07-12T13:50:21.2740000Z",
-      "hoursUntilStale": -19.99
+      "kind": "s23-proof",
+      "name": "temporary-sportsbook-filled-buy-history",
+      "staleAt": "2026-07-14T16:05:37.0490077Z",
+      "hoursUntilStale": 18.27
     }
   }
 }

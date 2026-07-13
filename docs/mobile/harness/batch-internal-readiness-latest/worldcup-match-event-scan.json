@@ -1,5 +1,5 @@
 {
-    "generatedAt":  "2026-07-11T13:50:41.668Z",
+    "generatedAt":  "2026-07-13T21:46:32.562Z",
     "source":  "gamma-api.polymarket.com/events",
     "readOnly":  true,
     "scope":  "world-cup-match-only-provider-breadth",
@@ -24,17 +24,17 @@
                    "matchEventEvidenceLimit":  60
                },
     "summary":  {
-                    "eventsInspected":  2137,
+                    "eventsInspected":  2140,
                     "matchEventCount":  422,
                     "usableMatchEventCount":  0,
                     "openMatchEventCount":  0,
                     "closedOrEndedMatchEventCount":  422,
                     "excludedGenericWorldCupMatchEventCount":  0,
-                    "openWorldCupEventCount":  64,
-                    "usableOpenWorldCupEventCount":  56,
-                    "usableOpenNonMatchWorldCupEventCount":  56,
+                    "openWorldCupEventCount":  59,
+                    "usableOpenWorldCupEventCount":  43,
+                    "usableOpenNonMatchWorldCupEventCount":  43,
                     "futuresEventCount":  187,
-                    "nonWorldCupOrPropUsableCount":  79,
+                    "nonWorldCupOrPropUsableCount":  65,
                     "pass":  false
                 },
     "usableMatchEvents":  [
@@ -7629,20 +7629,61 @@
                                                                      "playerPropLike":  true,
                                                                      "futuresLike":  false,
                                                                      "marketCount":  155,
-                                                                     "usableMarketCount":  27,
-                                                                     "acceptingOrderMarketCount":  30,
+                                                                     "usableMarketCount":  22,
+                                                                     "acceptingOrderMarketCount":  24,
                                                                      "sampleUsableMarket":  {
-                                                                                                "slug":  "will-julin-lvarez-score-a-goal-at-the-2026-fifa-world-cup",
-                                                                                                "question":  "Will JuliÃ¡n Ãlvarez score a goal at the 2026 FIFA World Cup?",
+                                                                                                "slug":  "will-rodri-score-a-goal-at-the-2026-fifa-world-cup",
+                                                                                                "question":  "Will Rodri score a goal at the 2026 FIFA World Cup?",
                                                                                                 "acceptingOrders":  true,
                                                                                                 "active":  true,
                                                                                                 "closed":  false,
                                                                                                 "archived":  false,
                                                                                                 "outcomeCount":  2,
                                                                                                 "tokenCount":  2,
-                                                                                                "bestBid":  0.51,
-                                                                                                "bestAsk":  0.52,
+                                                                                                "bestBid":  0.15,
+                                                                                                "bestAsk":  0.16,
                                                                                                 "spread":  0.01,
+                                                                                                "usableBook":  true,
+                                                                                                "rejectionReasons":  [
+
+                                                                                                                     ]
+                                                                                            }
+                                                                 },
+                                                                 {
+                                                                     "slug":  "world-cup-bronze-ball-winner-20260603194938828",
+                                                                     "title":  "World Cup: Bronze Ball Winner",
+                                                                     "startDate":  "2026-06-03T20:17:49.829759Z",
+                                                                     "endDate":  "2026-07-20T03:59:00Z",
+                                                                     "ended":  false,
+                                                                     "upcomingOrLive":  true,
+                                                                     "tags":  [
+                                                                                  "soccer",
+                                                                                  "sports",
+                                                                                  "world-cup",
+                                                                                  "fifa-world-cup",
+                                                                                  "2026-fifa-world-cup",
+                                                                                  "world-cup-awards"
+                                                                              ],
+                                                                     "matchLike":  false,
+                                                                     "worldCupLike":  true,
+                                                                     "worldCupRelevant":  true,
+                                                                     "playerPropLike":  true,
+                                                                     "futuresLike":  true,
+                                                                     "marketCount":  41,
+                                                                     "usableMarketCount":  10,
+                                                                     "acceptingOrderMarketCount":  41,
+                                                                     "sampleUsableMarket":  {
+                                                                                                "slug":  "will-kylian-mbappe-win-the-bronze-ball-at-the-2026-fifa-world-cup-20260603194939941",
+                                                                                                "question":  "Will Kylian MbappÃ© win the Bronze Ball at the 2026 FIFA World Cup?",
+                                                                                                "acceptingOrders":  true,
+                                                                                                "active":  true,
+                                                                                                "closed":  false,
+                                                                                                "archived":  false,
+                                                                                                "outcomeCount":  2,
+                                                                                                "tokenCount":  2,
+                                                                                                "bestBid":  0.066,
+                                                                                                "bestAsk":  0.069,
+                                                                                                "spread":  0.003,
                                                                                                 "usableBook":  true,
                                                                                                 "rejectionReasons":  [
 
@@ -7682,49 +7723,8 @@
                                                                                                 "outcomeCount":  2,
                                                                                                 "tokenCount":  2,
                                                                                                 "bestBid":  0.193,
-                                                                                                "bestAsk":  0.198,
-                                                                                                "spread":  0.005,
-                                                                                                "usableBook":  true,
-                                                                                                "rejectionReasons":  [
-
-                                                                                                                     ]
-                                                                                            }
-                                                                 },
-                                                                 {
-                                                                     "slug":  "world-cup-bronze-ball-winner-20260603194938828",
-                                                                     "title":  "World Cup: Bronze Ball Winner",
-                                                                     "startDate":  "2026-06-03T20:17:49.829759Z",
-                                                                     "endDate":  "2026-07-20T03:59:00Z",
-                                                                     "ended":  false,
-                                                                     "upcomingOrLive":  true,
-                                                                     "tags":  [
-                                                                                  "soccer",
-                                                                                  "sports",
-                                                                                  "world-cup",
-                                                                                  "fifa-world-cup",
-                                                                                  "2026-fifa-world-cup",
-                                                                                  "world-cup-awards"
-                                                                              ],
-                                                                     "matchLike":  false,
-                                                                     "worldCupLike":  true,
-                                                                     "worldCupRelevant":  true,
-                                                                     "playerPropLike":  true,
-                                                                     "futuresLike":  true,
-                                                                     "marketCount":  41,
-                                                                     "usableMarketCount":  9,
-                                                                     "acceptingOrderMarketCount":  41,
-                                                                     "sampleUsableMarket":  {
-                                                                                                "slug":  "will-kylian-mbappe-win-the-bronze-ball-at-the-2026-fifa-world-cup-20260603194939941",
-                                                                                                "question":  "Will Kylian MbappÃ© win the Bronze Ball at the 2026 FIFA World Cup?",
-                                                                                                "acceptingOrders":  true,
-                                                                                                "active":  true,
-                                                                                                "closed":  false,
-                                                                                                "archived":  false,
-                                                                                                "outcomeCount":  2,
-                                                                                                "tokenCount":  2,
-                                                                                                "bestBid":  0.059,
-                                                                                                "bestAsk":  0.099,
-                                                                                                "spread":  0.04,
+                                                                                                "bestAsk":  0.197,
+                                                                                                "spread":  0.004,
                                                                                                 "usableBook":  true,
                                                                                                 "rejectionReasons":  [
 
@@ -7753,7 +7753,7 @@
                                                                      "playerPropLike":  true,
                                                                      "futuresLike":  true,
                                                                      "marketCount":  41,
-                                                                     "usableMarketCount":  9,
+                                                                     "usableMarketCount":  8,
                                                                      "acceptingOrderMarketCount":  41,
                                                                      "sampleUsableMarket":  {
                                                                                                 "slug":  "will-kylian-mbappe-win-the-golden-ball-at-the-2026-fifa-world-cup-20260603194032279",
@@ -7764,213 +7764,9 @@
                                                                                                 "archived":  false,
                                                                                                 "outcomeCount":  2,
                                                                                                 "tokenCount":  2,
-                                                                                                "bestBid":  0.4,
-                                                                                                "bestAsk":  0.41,
+                                                                                                "bestBid":  0.41,
+                                                                                                "bestAsk":  0.42,
                                                                                                 "spread":  0.01,
-                                                                                                "usableBook":  true,
-                                                                                                "rejectionReasons":  [
-
-                                                                                                                     ]
-                                                                                            }
-                                                                 },
-                                                                 {
-                                                                     "slug":  "world-cup-finals-exact-matchup-20260708195422328",
-                                                                     "title":  "World Cup: Finals Exact Matchup",
-                                                                     "startDate":  "2026-07-08T22:21:59.42935Z",
-                                                                     "endDate":  "2026-07-19T23:59:00Z",
-                                                                     "ended":  false,
-                                                                     "upcomingOrLive":  true,
-                                                                     "tags":  [
-                                                                                  "soccer",
-                                                                                  "sports",
-                                                                                  "world-cup",
-                                                                                  "fifa-world-cup",
-                                                                                  "wc-tournament-futures",
-                                                                                  "2026-fifa-world-cup"
-                                                                              ],
-                                                                     "matchLike":  false,
-                                                                     "worldCupLike":  true,
-                                                                     "worldCupRelevant":  true,
-                                                                     "playerPropLike":  false,
-                                                                     "futuresLike":  false,
-                                                                     "marketCount":  17,
-                                                                     "usableMarketCount":  8,
-                                                                     "acceptingOrderMarketCount":  9,
-                                                                     "sampleUsableMarket":  {
-                                                                                                "slug":  "will-the-final-be-fra-vs-nor-at-the-2026-fifa-world-cup-20260708195422329",
-                                                                                                "question":  "Will the final be FRA vs NOR at the 2026 FIFA World Cup?",
-                                                                                                "acceptingOrders":  true,
-                                                                                                "active":  true,
-                                                                                                "closed":  false,
-                                                                                                "archived":  false,
-                                                                                                "outcomeCount":  2,
-                                                                                                "tokenCount":  2,
-                                                                                                "bestBid":  0.09,
-                                                                                                "bestAsk":  0.11,
-                                                                                                "spread":  0.02,
-                                                                                                "usableBook":  true,
-                                                                                                "rejectionReasons":  [
-
-                                                                                                                     ]
-                                                                                            }
-                                                                 },
-                                                                 {
-                                                                     "slug":  "world-cup-golden-glove-winner-20260603195306910",
-                                                                     "title":  "World Cup: Golden Glove Winner",
-                                                                     "startDate":  "2026-06-04T17:12:22.555133Z",
-                                                                     "endDate":  "2026-07-20T03:59:00Z",
-                                                                     "ended":  false,
-                                                                     "upcomingOrLive":  true,
-                                                                     "tags":  [
-                                                                                  "soccer",
-                                                                                  "sports",
-                                                                                  "world-cup",
-                                                                                  "fifa-world-cup",
-                                                                                  "2026-fifa-world-cup"
-                                                                              ],
-                                                                     "matchLike":  false,
-                                                                     "worldCupLike":  true,
-                                                                     "worldCupRelevant":  true,
-                                                                     "playerPropLike":  true,
-                                                                     "futuresLike":  true,
-                                                                     "marketCount":  41,
-                                                                     "usableMarketCount":  6,
-                                                                     "acceptingOrderMarketCount":  41,
-                                                                     "sampleUsableMarket":  {
-                                                                                                "slug":  "will-mike-maignan-win-the-golden-glove-at-the-2026-fifa-world-cup-20260603195307476",
-                                                                                                "question":  "Will Mike Maignan win the Golden Glove at the 2026 FIFA World Cup?",
-                                                                                                "acceptingOrders":  true,
-                                                                                                "active":  true,
-                                                                                                "closed":  false,
-                                                                                                "archived":  false,
-                                                                                                "outcomeCount":  2,
-                                                                                                "tokenCount":  2,
-                                                                                                "bestBid":  0.32,
-                                                                                                "bestAsk":  0.33,
-                                                                                                "spread":  0.01,
-                                                                                                "usableBook":  true,
-                                                                                                "rejectionReasons":  [
-
-                                                                                                                     ]
-                                                                                            }
-                                                                 },
-                                                                 {
-                                                                     "slug":  "world-cup-winner",
-                                                                     "title":  "World Cup Winner",
-                                                                     "startDate":  "2025-07-02T22:26:48.104Z",
-                                                                     "endDate":  "2026-07-20T00:00:00Z",
-                                                                     "ended":  false,
-                                                                     "upcomingOrLive":  true,
-                                                                     "tags":  [
-                                                                                  "sports",
-                                                                                  "soccer",
-                                                                                  "fifa-world-cup",
-                                                                                  "2026-fifa-world-cup",
-                                                                                  "hide-from-new",
-                                                                                  "wc-tournament-futures"
-                                                                              ],
-                                                                     "matchLike":  false,
-                                                                     "worldCupLike":  true,
-                                                                     "worldCupRelevant":  true,
-                                                                     "playerPropLike":  false,
-                                                                     "futuresLike":  true,
-                                                                     "marketCount":  60,
-                                                                     "usableMarketCount":  6,
-                                                                     "acceptingOrderMarketCount":  16,
-                                                                     "sampleUsableMarket":  {
-                                                                                                "slug":  "will-spain-win-the-2026-fifa-world-cup-963",
-                                                                                                "question":  "Will Spain win the 2026 FIFA World Cup?",
-                                                                                                "acceptingOrders":  true,
-                                                                                                "active":  true,
-                                                                                                "closed":  false,
-                                                                                                "archived":  false,
-                                                                                                "outcomeCount":  2,
-                                                                                                "tokenCount":  2,
-                                                                                                "bestBid":  0.209,
-                                                                                                "bestAsk":  0.21,
-                                                                                                "spread":  0.001,
-                                                                                                "usableBook":  true,
-                                                                                                "rejectionReasons":  [
-
-                                                                                                                     ]
-                                                                                            }
-                                                                 },
-                                                                 {
-                                                                     "slug":  "world-cup-3rd-place-game-exact-matchup-20260708194423346",
-                                                                     "title":  "World Cup: 3rd Place Game Exact Matchup",
-                                                                     "startDate":  "2026-07-08T19:49:43.608213Z",
-                                                                     "endDate":  null,
-                                                                     "ended":  false,
-                                                                     "upcomingOrLive":  true,
-                                                                     "tags":  [
-                                                                                  "soccer",
-                                                                                  "sports",
-                                                                                  "world-cup",
-                                                                                  "fifa-world-cup",
-                                                                                  "wc-tournament-futures",
-                                                                                  "2026-fifa-world-cup"
-                                                                              ],
-                                                                     "matchLike":  false,
-                                                                     "worldCupLike":  true,
-                                                                     "worldCupRelevant":  true,
-                                                                     "playerPropLike":  false,
-                                                                     "futuresLike":  false,
-                                                                     "marketCount":  17,
-                                                                     "usableMarketCount":  6,
-                                                                     "acceptingOrderMarketCount":  9,
-                                                                     "sampleUsableMarket":  {
-                                                                                                "slug":  "will-the-third-place-match-be-fra-vs-nor-at-the-2026-fifa-world-cup-20260708194423347",
-                                                                                                "question":  "Will the third-place match be FRA vs NOR at the 2026 FIFA World Cup?",
-                                                                                                "acceptingOrders":  true,
-                                                                                                "active":  true,
-                                                                                                "closed":  false,
-                                                                                                "archived":  false,
-                                                                                                "outcomeCount":  2,
-                                                                                                "tokenCount":  2,
-                                                                                                "bestBid":  0.08,
-                                                                                                "bestAsk":  0.15,
-                                                                                                "spread":  0.07,
-                                                                                                "usableBook":  true,
-                                                                                                "rejectionReasons":  [
-
-                                                                                                                     ]
-                                                                                            }
-                                                                 },
-                                                                 {
-                                                                     "slug":  "world-cup-nation-to-reach-final",
-                                                                     "title":  "World Cup: Nation to Reach Final",
-                                                                     "startDate":  "2026-04-27T14:37:00.731006Z",
-                                                                     "endDate":  "2026-07-20T00:00:00Z",
-                                                                     "ended":  false,
-                                                                     "upcomingOrLive":  true,
-                                                                     "tags":  [
-                                                                                  "2026-fifa-world-cup",
-                                                                                  "soccer",
-                                                                                  "fifa-world-cup",
-                                                                                  "sports",
-                                                                                  "wc-team-props",
-                                                                                  "wc-tournament-futures"
-                                                                              ],
-                                                                     "matchLike":  false,
-                                                                     "worldCupLike":  true,
-                                                                     "worldCupRelevant":  true,
-                                                                     "playerPropLike":  false,
-                                                                     "futuresLike":  false,
-                                                                     "marketCount":  48,
-                                                                     "usableMarketCount":  6,
-                                                                     "acceptingOrderMarketCount":  6,
-                                                                     "sampleUsableMarket":  {
-                                                                                                "slug":  "will-switzerland-reach-the-2026-fifa-world-cup-final",
-                                                                                                "question":  "Will Switzerland reach the 2026 FIFA World Cup final?",
-                                                                                                "acceptingOrders":  true,
-                                                                                                "active":  true,
-                                                                                                "closed":  false,
-                                                                                                "archived":  false,
-                                                                                                "outcomeCount":  2,
-                                                                                                "tokenCount":  2,
-                                                                                                "bestBid":  0.068,
-                                                                                                "bestAsk":  0.069,
-                                                                                                "spread":  0.001,
                                                                                                 "usableBook":  true,
                                                                                                 "rejectionReasons":  [
 
@@ -8009,9 +7805,212 @@
                                                                                                 "archived":  false,
                                                                                                 "outcomeCount":  2,
                                                                                                 "tokenCount":  2,
-                                                                                                "bestBid":  0.019,
-                                                                                                "bestAsk":  0.028,
-                                                                                                "spread":  0.009,
+                                                                                                "bestBid":  0.014,
+                                                                                                "bestAsk":  0.015,
+                                                                                                "spread":  0.001,
+                                                                                                "usableBook":  true,
+                                                                                                "rejectionReasons":  [
+
+                                                                                                                     ]
+                                                                                            }
+                                                                 },
+                                                                 {
+                                                                     "slug":  "world-cup-lionel-messi-goals-20260611144827122",
+                                                                     "title":  "World Cup: Lionel Messi Goals",
+                                                                     "startDate":  "2026-06-11T18:02:15.336705Z",
+                                                                     "endDate":  null,
+                                                                     "ended":  false,
+                                                                     "upcomingOrLive":  true,
+                                                                     "tags":  [
+                                                                                  "soccer",
+                                                                                  "sports",
+                                                                                  "world-cup",
+                                                                                  "fifa-world-cup",
+                                                                                  "wc-player-futures",
+                                                                                  "2026-fifa-world-cup"
+                                                                              ],
+                                                                     "matchLike":  false,
+                                                                     "worldCupLike":  true,
+                                                                     "worldCupRelevant":  true,
+                                                                     "playerPropLike":  true,
+                                                                     "futuresLike":  false,
+                                                                     "marketCount":  13,
+                                                                     "usableMarketCount":  5,
+                                                                     "acceptingOrderMarketCount":  5,
+                                                                     "sampleUsableMarket":  {
+                                                                                                "slug":  "will-lionel-messi-score-10-goals-during-the-2026-fifa-world-cup",
+                                                                                                "question":  "Will Lionel Messi score 10+ goals during the 2026 FIFA World Cup?",
+                                                                                                "acceptingOrders":  true,
+                                                                                                "active":  true,
+                                                                                                "closed":  false,
+                                                                                                "archived":  false,
+                                                                                                "outcomeCount":  2,
+                                                                                                "tokenCount":  2,
+                                                                                                "bestBid":  0.286,
+                                                                                                "bestAsk":  0.297,
+                                                                                                "spread":  0.011,
+                                                                                                "usableBook":  true,
+                                                                                                "rejectionReasons":  [
+
+                                                                                                                     ]
+                                                                                            }
+                                                                 },
+                                                                 {
+                                                                     "slug":  "world-cup-golden-boot-winner",
+                                                                     "title":  "World Cup: Golden Boot Winner",
+                                                                     "startDate":  "2026-04-24T17:09:43.432674Z",
+                                                                     "endDate":  "2026-07-20T00:00:00Z",
+                                                                     "ended":  false,
+                                                                     "upcomingOrLive":  true,
+                                                                     "tags":  [
+                                                                                  "2026-fifa-world-cup",
+                                                                                  "soccer",
+                                                                                  "fifa-world-cup",
+                                                                                  "sports",
+                                                                                  "world-cup-awards"
+                                                                              ],
+                                                                     "matchLike":  false,
+                                                                     "worldCupLike":  true,
+                                                                     "worldCupRelevant":  true,
+                                                                     "playerPropLike":  true,
+                                                                     "futuresLike":  true,
+                                                                     "marketCount":  80,
+                                                                     "usableMarketCount":  4,
+                                                                     "acceptingOrderMarketCount":  45,
+                                                                     "sampleUsableMarket":  {
+                                                                                                "slug":  "will-lionel-messi-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+                                                                                                "question":  "Will Lionel Messi be the top goalscorer at the 2026 FIFA World Cup?",
+                                                                                                "acceptingOrders":  true,
+                                                                                                "active":  true,
+                                                                                                "closed":  false,
+                                                                                                "archived":  false,
+                                                                                                "outcomeCount":  2,
+                                                                                                "tokenCount":  2,
+                                                                                                "bestBid":  0.338,
+                                                                                                "bestAsk":  0.339,
+                                                                                                "spread":  0.001,
+                                                                                                "usableBook":  true,
+                                                                                                "rejectionReasons":  [
+
+                                                                                                                     ]
+                                                                                            }
+                                                                 },
+                                                                 {
+                                                                     "slug":  "world-cup-golden-glove-winner-20260603195306910",
+                                                                     "title":  "World Cup: Golden Glove Winner",
+                                                                     "startDate":  "2026-06-04T17:12:22.555133Z",
+                                                                     "endDate":  "2026-07-20T03:59:00Z",
+                                                                     "ended":  false,
+                                                                     "upcomingOrLive":  true,
+                                                                     "tags":  [
+                                                                                  "soccer",
+                                                                                  "sports",
+                                                                                  "world-cup",
+                                                                                  "fifa-world-cup",
+                                                                                  "2026-fifa-world-cup"
+                                                                              ],
+                                                                     "matchLike":  false,
+                                                                     "worldCupLike":  true,
+                                                                     "worldCupRelevant":  true,
+                                                                     "playerPropLike":  true,
+                                                                     "futuresLike":  true,
+                                                                     "marketCount":  41,
+                                                                     "usableMarketCount":  4,
+                                                                     "acceptingOrderMarketCount":  41,
+                                                                     "sampleUsableMarket":  {
+                                                                                                "slug":  "will-mike-maignan-win-the-golden-glove-at-the-2026-fifa-world-cup-20260603195307476",
+                                                                                                "question":  "Will Mike Maignan win the Golden Glove at the 2026 FIFA World Cup?",
+                                                                                                "acceptingOrders":  true,
+                                                                                                "active":  true,
+                                                                                                "closed":  false,
+                                                                                                "archived":  false,
+                                                                                                "outcomeCount":  2,
+                                                                                                "tokenCount":  2,
+                                                                                                "bestBid":  0.36,
+                                                                                                "bestAsk":  0.37,
+                                                                                                "spread":  0.01,
+                                                                                                "usableBook":  true,
+                                                                                                "rejectionReasons":  [
+
+                                                                                                                     ]
+                                                                                            }
+                                                                 },
+                                                                 {
+                                                                     "slug":  "world-cup-bronze-boot-winner-20260603200444388",
+                                                                     "title":  "World Cup: Bronze Boot Winner",
+                                                                     "startDate":  "2026-06-03T20:23:52.770163Z",
+                                                                     "endDate":  "2026-07-20T03:59:00Z",
+                                                                     "ended":  false,
+                                                                     "upcomingOrLive":  true,
+                                                                     "tags":  [
+                                                                                  "soccer",
+                                                                                  "sports",
+                                                                                  "world-cup",
+                                                                                  "fifa-world-cup",
+                                                                                  "2026-fifa-world-cup",
+                                                                                  "world-cup-awards"
+                                                                              ],
+                                                                     "matchLike":  false,
+                                                                     "worldCupLike":  true,
+                                                                     "worldCupRelevant":  true,
+                                                                     "playerPropLike":  true,
+                                                                     "futuresLike":  true,
+                                                                     "marketCount":  41,
+                                                                     "usableMarketCount":  4,
+                                                                     "acceptingOrderMarketCount":  34,
+                                                                     "sampleUsableMarket":  {
+                                                                                                "slug":  "will-lionel-messi-win-the-bronze-boot-at-the-2026-fifa-world-cup-20260603200445119",
+                                                                                                "question":  "Will Lionel Messi win the Bronze Boot at the 2026 FIFA World Cup?",
+                                                                                                "acceptingOrders":  true,
+                                                                                                "active":  true,
+                                                                                                "closed":  false,
+                                                                                                "archived":  false,
+                                                                                                "outcomeCount":  2,
+                                                                                                "tokenCount":  2,
+                                                                                                "bestBid":  0.1,
+                                                                                                "bestAsk":  0.11,
+                                                                                                "spread":  0.01,
+                                                                                                "usableBook":  true,
+                                                                                                "rejectionReasons":  [
+
+                                                                                                                     ]
+                                                                                            }
+                                                                 },
+                                                                 {
+                                                                     "slug":  "world-cup-silver-boot-winner-20260603195826159",
+                                                                     "title":  "World Cup: Silver Boot Winner",
+                                                                     "startDate":  "2026-06-03T22:36:10.852Z",
+                                                                     "endDate":  "2026-07-20T03:59:00Z",
+                                                                     "ended":  false,
+                                                                     "upcomingOrLive":  true,
+                                                                     "tags":  [
+                                                                                  "soccer",
+                                                                                  "sports",
+                                                                                  "world-cup",
+                                                                                  "fifa-world-cup",
+                                                                                  "2026-fifa-world-cup",
+                                                                                  "world-cup-awards"
+                                                                              ],
+                                                                     "matchLike":  false,
+                                                                     "worldCupLike":  true,
+                                                                     "worldCupRelevant":  true,
+                                                                     "playerPropLike":  true,
+                                                                     "futuresLike":  true,
+                                                                     "marketCount":  41,
+                                                                     "usableMarketCount":  4,
+                                                                     "acceptingOrderMarketCount":  33,
+                                                                     "sampleUsableMarket":  {
+                                                                                                "slug":  "will-kylian-mbapp-win-the-silver-boot-at-the-2026-fifa-world-cup",
+                                                                                                "question":  "Will Kylian MbappÃ© win the Silver Boot at the 2026 FIFA World Cup?",
+                                                                                                "acceptingOrders":  true,
+                                                                                                "active":  true,
+                                                                                                "closed":  false,
+                                                                                                "archived":  false,
+                                                                                                "outcomeCount":  2,
+                                                                                                "tokenCount":  2,
+                                                                                                "bestBid":  0.26,
+                                                                                                "bestAsk":  0.28,
+                                                                                                "spread":  0.02,
                                                                                                 "usableBook":  true,
                                                                                                 "rejectionReasons":  [
 
@@ -8040,7 +8039,7 @@
                                                   "playerPropLike":  true,
                                                   "futuresLike":  true,
                                                   "marketCount":  40,
-                                                  "usableMarketCount":  17,
+                                                  "usableMarketCount":  19,
                                                   "acceptingOrderMarketCount":  40,
                                                   "sampleUsableMarket":  {
                                                                              "slug":  "will-josh-allen-win-the-2026-nfl-mvp",
@@ -8051,9 +8050,50 @@
                                                                              "archived":  false,
                                                                              "outcomeCount":  2,
                                                                              "tokenCount":  2,
-                                                                             "bestBid":  0.14,
-                                                                             "bestAsk":  0.15,
+                                                                             "bestBid":  0.09,
+                                                                             "bestAsk":  0.1,
                                                                              "spread":  0.01,
+                                                                             "usableBook":  true,
+                                                                             "rejectionReasons":  [
+
+                                                                                                  ]
+                                                                         }
+                                              },
+                                              {
+                                                  "slug":  "world-cup-bronze-ball-winner-20260603194938828",
+                                                  "title":  "World Cup: Bronze Ball Winner",
+                                                  "startDate":  "2026-06-03T20:17:49.829759Z",
+                                                  "endDate":  "2026-07-20T03:59:00Z",
+                                                  "ended":  false,
+                                                  "upcomingOrLive":  true,
+                                                  "tags":  [
+                                                               "soccer",
+                                                               "sports",
+                                                               "world-cup",
+                                                               "fifa-world-cup",
+                                                               "2026-fifa-world-cup",
+                                                               "world-cup-awards"
+                                                           ],
+                                                  "matchLike":  false,
+                                                  "worldCupLike":  true,
+                                                  "worldCupRelevant":  true,
+                                                  "playerPropLike":  true,
+                                                  "futuresLike":  true,
+                                                  "marketCount":  41,
+                                                  "usableMarketCount":  10,
+                                                  "acceptingOrderMarketCount":  41,
+                                                  "sampleUsableMarket":  {
+                                                                             "slug":  "will-kylian-mbappe-win-the-bronze-ball-at-the-2026-fifa-world-cup-20260603194939941",
+                                                                             "question":  "Will Kylian MbappÃ© win the Bronze Ball at the 2026 FIFA World Cup?",
+                                                                             "acceptingOrders":  true,
+                                                                             "active":  true,
+                                                                             "closed":  false,
+                                                                             "archived":  false,
+                                                                             "outcomeCount":  2,
+                                                                             "tokenCount":  2,
+                                                                             "bestBid":  0.066,
+                                                                             "bestAsk":  0.069,
+                                                                             "spread":  0.003,
                                                                              "usableBook":  true,
                                                                              "rejectionReasons":  [
 
@@ -8093,49 +8133,8 @@
                                                                              "outcomeCount":  2,
                                                                              "tokenCount":  2,
                                                                              "bestBid":  0.193,
-                                                                             "bestAsk":  0.198,
-                                                                             "spread":  0.005,
-                                                                             "usableBook":  true,
-                                                                             "rejectionReasons":  [
-
-                                                                                                  ]
-                                                                         }
-                                              },
-                                              {
-                                                  "slug":  "world-cup-bronze-ball-winner-20260603194938828",
-                                                  "title":  "World Cup: Bronze Ball Winner",
-                                                  "startDate":  "2026-06-03T20:17:49.829759Z",
-                                                  "endDate":  "2026-07-20T03:59:00Z",
-                                                  "ended":  false,
-                                                  "upcomingOrLive":  true,
-                                                  "tags":  [
-                                                               "soccer",
-                                                               "sports",
-                                                               "world-cup",
-                                                               "fifa-world-cup",
-                                                               "2026-fifa-world-cup",
-                                                               "world-cup-awards"
-                                                           ],
-                                                  "matchLike":  false,
-                                                  "worldCupLike":  true,
-                                                  "worldCupRelevant":  true,
-                                                  "playerPropLike":  true,
-                                                  "futuresLike":  true,
-                                                  "marketCount":  41,
-                                                  "usableMarketCount":  9,
-                                                  "acceptingOrderMarketCount":  41,
-                                                  "sampleUsableMarket":  {
-                                                                             "slug":  "will-kylian-mbappe-win-the-bronze-ball-at-the-2026-fifa-world-cup-20260603194939941",
-                                                                             "question":  "Will Kylian MbappÃ© win the Bronze Ball at the 2026 FIFA World Cup?",
-                                                                             "acceptingOrders":  true,
-                                                                             "active":  true,
-                                                                             "closed":  false,
-                                                                             "archived":  false,
-                                                                             "outcomeCount":  2,
-                                                                             "tokenCount":  2,
-                                                                             "bestBid":  0.059,
-                                                                             "bestAsk":  0.099,
-                                                                             "spread":  0.04,
+                                                                             "bestAsk":  0.197,
+                                                                             "spread":  0.004,
                                                                              "usableBook":  true,
                                                                              "rejectionReasons":  [
 
@@ -8164,7 +8163,7 @@
                                                   "playerPropLike":  true,
                                                   "futuresLike":  true,
                                                   "marketCount":  41,
-                                                  "usableMarketCount":  9,
+                                                  "usableMarketCount":  8,
                                                   "acceptingOrderMarketCount":  41,
                                                   "sampleUsableMarket":  {
                                                                              "slug":  "will-kylian-mbappe-win-the-golden-ball-at-the-2026-fifa-world-cup-20260603194032279",
@@ -8175,90 +8174,9 @@
                                                                              "archived":  false,
                                                                              "outcomeCount":  2,
                                                                              "tokenCount":  2,
-                                                                             "bestBid":  0.4,
-                                                                             "bestAsk":  0.41,
+                                                                             "bestBid":  0.41,
+                                                                             "bestAsk":  0.42,
                                                                              "spread":  0.01,
-                                                                             "usableBook":  true,
-                                                                             "rejectionReasons":  [
-
-                                                                                                  ]
-                                                                         }
-                                              },
-                                              {
-                                                  "slug":  "world-cup-golden-glove-winner-20260603195306910",
-                                                  "title":  "World Cup: Golden Glove Winner",
-                                                  "startDate":  "2026-06-04T17:12:22.555133Z",
-                                                  "endDate":  "2026-07-20T03:59:00Z",
-                                                  "ended":  false,
-                                                  "upcomingOrLive":  true,
-                                                  "tags":  [
-                                                               "soccer",
-                                                               "sports",
-                                                               "world-cup",
-                                                               "fifa-world-cup",
-                                                               "2026-fifa-world-cup"
-                                                           ],
-                                                  "matchLike":  false,
-                                                  "worldCupLike":  true,
-                                                  "worldCupRelevant":  true,
-                                                  "playerPropLike":  true,
-                                                  "futuresLike":  true,
-                                                  "marketCount":  41,
-                                                  "usableMarketCount":  6,
-                                                  "acceptingOrderMarketCount":  41,
-                                                  "sampleUsableMarket":  {
-                                                                             "slug":  "will-mike-maignan-win-the-golden-glove-at-the-2026-fifa-world-cup-20260603195307476",
-                                                                             "question":  "Will Mike Maignan win the Golden Glove at the 2026 FIFA World Cup?",
-                                                                             "acceptingOrders":  true,
-                                                                             "active":  true,
-                                                                             "closed":  false,
-                                                                             "archived":  false,
-                                                                             "outcomeCount":  2,
-                                                                             "tokenCount":  2,
-                                                                             "bestBid":  0.32,
-                                                                             "bestAsk":  0.33,
-                                                                             "spread":  0.01,
-                                                                             "usableBook":  true,
-                                                                             "rejectionReasons":  [
-
-                                                                                                  ]
-                                                                         }
-                                              },
-                                              {
-                                                  "slug":  "world-cup-winner",
-                                                  "title":  "World Cup Winner",
-                                                  "startDate":  "2025-07-02T22:26:48.104Z",
-                                                  "endDate":  "2026-07-20T00:00:00Z",
-                                                  "ended":  false,
-                                                  "upcomingOrLive":  true,
-                                                  "tags":  [
-                                                               "sports",
-                                                               "soccer",
-                                                               "fifa-world-cup",
-                                                               "2026-fifa-world-cup",
-                                                               "hide-from-new",
-                                                               "wc-tournament-futures"
-                                                           ],
-                                                  "matchLike":  false,
-                                                  "worldCupLike":  true,
-                                                  "worldCupRelevant":  true,
-                                                  "playerPropLike":  false,
-                                                  "futuresLike":  true,
-                                                  "marketCount":  60,
-                                                  "usableMarketCount":  6,
-                                                  "acceptingOrderMarketCount":  16,
-                                                  "sampleUsableMarket":  {
-                                                                             "slug":  "will-spain-win-the-2026-fifa-world-cup-963",
-                                                                             "question":  "Will Spain win the 2026 FIFA World Cup?",
-                                                                             "acceptingOrders":  true,
-                                                                             "active":  true,
-                                                                             "closed":  false,
-                                                                             "archived":  false,
-                                                                             "outcomeCount":  2,
-                                                                             "tokenCount":  2,
-                                                                             "bestBid":  0.209,
-                                                                             "bestAsk":  0.21,
-                                                                             "spread":  0.001,
                                                                              "usableBook":  true,
                                                                              "rejectionReasons":  [
 
@@ -8297,9 +8215,9 @@
                                                                              "archived":  false,
                                                                              "outcomeCount":  2,
                                                                              "tokenCount":  2,
-                                                                             "bestBid":  0.019,
-                                                                             "bestAsk":  0.028,
-                                                                             "spread":  0.009,
+                                                                             "bestBid":  0.014,
+                                                                             "bestAsk":  0.015,
+                                                                             "spread":  0.001,
                                                                              "usableBook":  true,
                                                                              "rejectionReasons":  [
 
@@ -8327,7 +8245,7 @@
                                                   "futuresLike":  true,
                                                   "marketCount":  80,
                                                   "usableMarketCount":  4,
-                                                  "acceptingOrderMarketCount":  47,
+                                                  "acceptingOrderMarketCount":  45,
                                                   "sampleUsableMarket":  {
                                                                              "slug":  "will-lionel-messi-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
                                                                              "question":  "Will Lionel Messi be the top goalscorer at the 2026 FIFA World Cup?",
@@ -8337,9 +8255,90 @@
                                                                              "archived":  false,
                                                                              "outcomeCount":  2,
                                                                              "tokenCount":  2,
-                                                                             "bestBid":  0.368,
-                                                                             "bestAsk":  0.369,
+                                                                             "bestBid":  0.338,
+                                                                             "bestAsk":  0.339,
                                                                              "spread":  0.001,
+                                                                             "usableBook":  true,
+                                                                             "rejectionReasons":  [
+
+                                                                                                  ]
+                                                                         }
+                                              },
+                                              {
+                                                  "slug":  "world-cup-golden-glove-winner-20260603195306910",
+                                                  "title":  "World Cup: Golden Glove Winner",
+                                                  "startDate":  "2026-06-04T17:12:22.555133Z",
+                                                  "endDate":  "2026-07-20T03:59:00Z",
+                                                  "ended":  false,
+                                                  "upcomingOrLive":  true,
+                                                  "tags":  [
+                                                               "soccer",
+                                                               "sports",
+                                                               "world-cup",
+                                                               "fifa-world-cup",
+                                                               "2026-fifa-world-cup"
+                                                           ],
+                                                  "matchLike":  false,
+                                                  "worldCupLike":  true,
+                                                  "worldCupRelevant":  true,
+                                                  "playerPropLike":  true,
+                                                  "futuresLike":  true,
+                                                  "marketCount":  41,
+                                                  "usableMarketCount":  4,
+                                                  "acceptingOrderMarketCount":  41,
+                                                  "sampleUsableMarket":  {
+                                                                             "slug":  "will-mike-maignan-win-the-golden-glove-at-the-2026-fifa-world-cup-20260603195307476",
+                                                                             "question":  "Will Mike Maignan win the Golden Glove at the 2026 FIFA World Cup?",
+                                                                             "acceptingOrders":  true,
+                                                                             "active":  true,
+                                                                             "closed":  false,
+                                                                             "archived":  false,
+                                                                             "outcomeCount":  2,
+                                                                             "tokenCount":  2,
+                                                                             "bestBid":  0.36,
+                                                                             "bestAsk":  0.37,
+                                                                             "spread":  0.01,
+                                                                             "usableBook":  true,
+                                                                             "rejectionReasons":  [
+
+                                                                                                  ]
+                                                                         }
+                                              },
+                                              {
+                                                  "slug":  "world-cup-bronze-boot-winner-20260603200444388",
+                                                  "title":  "World Cup: Bronze Boot Winner",
+                                                  "startDate":  "2026-06-03T20:23:52.770163Z",
+                                                  "endDate":  "2026-07-20T03:59:00Z",
+                                                  "ended":  false,
+                                                  "upcomingOrLive":  true,
+                                                  "tags":  [
+                                                               "soccer",
+                                                               "sports",
+                                                               "world-cup",
+                                                               "fifa-world-cup",
+                                                               "2026-fifa-world-cup",
+                                                               "world-cup-awards"
+                                                           ],
+                                                  "matchLike":  false,
+                                                  "worldCupLike":  true,
+                                                  "worldCupRelevant":  true,
+                                                  "playerPropLike":  true,
+                                                  "futuresLike":  true,
+                                                  "marketCount":  41,
+                                                  "usableMarketCount":  4,
+                                                  "acceptingOrderMarketCount":  34,
+                                                  "sampleUsableMarket":  {
+                                                                             "slug":  "will-lionel-messi-win-the-bronze-boot-at-the-2026-fifa-world-cup-20260603200445119",
+                                                                             "question":  "Will Lionel Messi win the Bronze Boot at the 2026 FIFA World Cup?",
+                                                                             "acceptingOrders":  true,
+                                                                             "active":  true,
+                                                                             "closed":  false,
+                                                                             "archived":  false,
+                                                                             "outcomeCount":  2,
+                                                                             "tokenCount":  2,
+                                                                             "bestBid":  0.1,
+                                                                             "bestAsk":  0.11,
+                                                                             "spread":  0.01,
                                                                              "usableBook":  true,
                                                                              "rejectionReasons":  [
 
@@ -8368,7 +8367,7 @@
                                                   "futuresLike":  true,
                                                   "marketCount":  41,
                                                   "usableMarketCount":  4,
-                                                  "acceptingOrderMarketCount":  34,
+                                                  "acceptingOrderMarketCount":  33,
                                                   "sampleUsableMarket":  {
                                                                              "slug":  "will-kylian-mbapp-win-the-silver-boot-at-the-2026-fifa-world-cup",
                                                                              "question":  "Will Kylian MbappÃ© win the Silver Boot at the 2026 FIFA World Cup?",
@@ -8378,9 +8377,9 @@
                                                                              "archived":  false,
                                                                              "outcomeCount":  2,
                                                                              "tokenCount":  2,
-                                                                             "bestBid":  0.21,
-                                                                             "bestAsk":  0.22,
-                                                                             "spread":  0.01,
+                                                                             "bestBid":  0.26,
+                                                                             "bestAsk":  0.28,
+                                                                             "spread":  0.02,
                                                                              "usableBook":  true,
                                                                              "rejectionReasons":  [
 
@@ -8388,41 +8387,40 @@
                                                                          }
                                               },
                                               {
-                                                  "slug":  "world-cup-boot-brand-worn-by-golden-ball-winner-20260623194803363",
-                                                  "title":  "World Cup: Boot Brand Worn by Golden Ball Winner",
-                                                  "startDate":  "2026-06-24T17:21:30.482407Z",
-                                                  "endDate":  "2026-07-19T23:59:00Z",
+                                                  "slug":  "world-cup-winner",
+                                                  "title":  "World Cup Winner",
+                                                  "startDate":  "2025-07-02T22:26:48.104Z",
+                                                  "endDate":  "2026-07-20T00:00:00Z",
                                                   "ended":  false,
                                                   "upcomingOrLive":  true,
                                                   "tags":  [
-                                                               "soccer",
                                                                "sports",
-                                                               "pop-culture",
-                                                               "world-cup",
+                                                               "soccer",
                                                                "fifa-world-cup",
-                                                               "wc-culture-mentions",
-                                                               "2026-fifa-world-cup"
+                                                               "2026-fifa-world-cup",
+                                                               "hide-from-new",
+                                                               "wc-tournament-futures"
                                                            ],
                                                   "matchLike":  false,
                                                   "worldCupLike":  true,
                                                   "worldCupRelevant":  true,
                                                   "playerPropLike":  false,
                                                   "futuresLike":  true,
-                                                  "marketCount":  17,
+                                                  "marketCount":  60,
                                                   "usableMarketCount":  4,
-                                                  "acceptingOrderMarketCount":  17,
+                                                  "acceptingOrderMarketCount":  14,
                                                   "sampleUsableMarket":  {
-                                                                             "slug":  "will-adidas-be-the-brand-of-boot-worn-by-the-golden-ball-winner-at-the-2026-fifa-world-cup-20260623194803548",
-                                                                             "question":  "Will Adidas be the brand of boot worn by the Golden Ball winner at the 2026 FIFA World Cup?",
+                                                                             "slug":  "will-spain-win-the-2026-fifa-world-cup-963",
+                                                                             "question":  "Will Spain win the 2026 FIFA World Cup?",
                                                                              "acceptingOrders":  true,
                                                                              "active":  true,
                                                                              "closed":  false,
                                                                              "archived":  false,
                                                                              "outcomeCount":  2,
                                                                              "tokenCount":  2,
-                                                                             "bestBid":  0.37,
-                                                                             "bestAsk":  0.55,
-                                                                             "spread":  0.01,
+                                                                             "bestBid":  0.212,
+                                                                             "bestAsk":  0.213,
+                                                                             "spread":  0.001,
                                                                              "usableBook":  true,
                                                                              "rejectionReasons":  [
 
@@ -8431,6 +8429,46 @@
                                               }
                                           ],
                         "usableNonMatchEvents":  [
+                                                     {
+                                                         "slug":  "big-game-champion-2027",
+                                                         "title":  "NFL Champion 2027",
+                                                         "startDate":  "2026-02-09T00:41:51.439Z",
+                                                         "endDate":  "2027-02-14T23:55:00Z",
+                                                         "ended":  false,
+                                                         "upcomingOrLive":  true,
+                                                         "tags":  [
+                                                                      "sports",
+                                                                      "nfl",
+                                                                      "football",
+                                                                      "super-bowl",
+                                                                      "nfl-team-futures"
+                                                                  ],
+                                                         "matchLike":  false,
+                                                         "worldCupLike":  false,
+                                                         "worldCupRelevant":  false,
+                                                         "playerPropLike":  false,
+                                                         "futuresLike":  false,
+                                                         "marketCount":  33,
+                                                         "usableMarketCount":  25,
+                                                         "acceptingOrderMarketCount":  33,
+                                                         "sampleUsableMarket":  {
+                                                                                    "slug":  "will-the-atlanta-falcons-win-the-2027-nfl-league-championship",
+                                                                                    "question":  "Will the Atlanta Falcons win the 2027 NFL league championship?",
+                                                                                    "acceptingOrders":  true,
+                                                                                    "active":  true,
+                                                                                    "closed":  false,
+                                                                                    "archived":  false,
+                                                                                    "outcomeCount":  2,
+                                                                                    "tokenCount":  2,
+                                                                                    "bestBid":  0.011,
+                                                                                    "bestAsk":  0.012,
+                                                                                    "spread":  0.001,
+                                                                                    "usableBook":  true,
+                                                                                    "rejectionReasons":  [
+
+                                                                                                         ]
+                                                                                }
+                                                     },
                                                      {
                                                          "slug":  "world-cup-player-to-score",
                                                          "title":  "World Cup: Player to score",
@@ -8453,60 +8491,20 @@
                                                          "playerPropLike":  true,
                                                          "futuresLike":  false,
                                                          "marketCount":  155,
-                                                         "usableMarketCount":  27,
-                                                         "acceptingOrderMarketCount":  30,
+                                                         "usableMarketCount":  22,
+                                                         "acceptingOrderMarketCount":  24,
                                                          "sampleUsableMarket":  {
-                                                                                    "slug":  "will-julin-lvarez-score-a-goal-at-the-2026-fifa-world-cup",
-                                                                                    "question":  "Will JuliÃ¡n Ãlvarez score a goal at the 2026 FIFA World Cup?",
+                                                                                    "slug":  "will-rodri-score-a-goal-at-the-2026-fifa-world-cup",
+                                                                                    "question":  "Will Rodri score a goal at the 2026 FIFA World Cup?",
                                                                                     "acceptingOrders":  true,
                                                                                     "active":  true,
                                                                                     "closed":  false,
                                                                                     "archived":  false,
                                                                                     "outcomeCount":  2,
                                                                                     "tokenCount":  2,
-                                                                                    "bestBid":  0.51,
-                                                                                    "bestAsk":  0.52,
+                                                                                    "bestBid":  0.15,
+                                                                                    "bestAsk":  0.16,
                                                                                     "spread":  0.01,
-                                                                                    "usableBook":  true,
-                                                                                    "rejectionReasons":  [
-
-                                                                                                         ]
-                                                                                }
-                                                     },
-                                                     {
-                                                         "slug":  "big-game-champion-2027",
-                                                         "title":  "NFL Champion 2027",
-                                                         "startDate":  "2026-02-09T00:41:51.439Z",
-                                                         "endDate":  "2027-02-14T23:55:00Z",
-                                                         "ended":  false,
-                                                         "upcomingOrLive":  true,
-                                                         "tags":  [
-                                                                      "sports",
-                                                                      "nfl",
-                                                                      "football",
-                                                                      "super-bowl",
-                                                                      "nfl-team-futures"
-                                                                  ],
-                                                         "matchLike":  false,
-                                                         "worldCupLike":  false,
-                                                         "worldCupRelevant":  false,
-                                                         "playerPropLike":  false,
-                                                         "futuresLike":  false,
-                                                         "marketCount":  33,
-                                                         "usableMarketCount":  24,
-                                                         "acceptingOrderMarketCount":  33,
-                                                         "sampleUsableMarket":  {
-                                                                                    "slug":  "will-the-baltimore-ravens-win-the-2027-nfl-league-championship",
-                                                                                    "question":  "Will the Baltimore Ravens win the 2027 NFL league championship?",
-                                                                                    "acceptingOrders":  true,
-                                                                                    "active":  true,
-                                                                                    "closed":  false,
-                                                                                    "archived":  false,
-                                                                                    "outcomeCount":  2,
-                                                                                    "tokenCount":  2,
-                                                                                    "bestBid":  0.064,
-                                                                                    "bestAsk":  0.066,
-                                                                                    "spread":  0.002,
                                                                                     "usableBook":  true,
                                                                                     "rejectionReasons":  [
 
@@ -8533,7 +8531,7 @@
                                                          "playerPropLike":  true,
                                                          "futuresLike":  true,
                                                          "marketCount":  40,
-                                                         "usableMarketCount":  17,
+                                                         "usableMarketCount":  19,
                                                          "acceptingOrderMarketCount":  40,
                                                          "sampleUsableMarket":  {
                                                                                     "slug":  "will-josh-allen-win-the-2026-nfl-mvp",
@@ -8544,8 +8542,8 @@
                                                                                     "archived":  false,
                                                                                     "outcomeCount":  2,
                                                                                     "tokenCount":  2,
-                                                                                    "bestBid":  0.14,
-                                                                                    "bestAsk":  0.15,
+                                                                                    "bestBid":  0.09,
+                                                                                    "bestAsk":  0.1,
                                                                                     "spread":  0.01,
                                                                                     "usableBook":  true,
                                                                                     "rejectionReasons":  [
@@ -8586,8 +8584,8 @@
                                                                                     "outcomeCount":  2,
                                                                                     "tokenCount":  2,
                                                                                     "bestBid":  0.01,
-                                                                                    "bestAsk":  0.044,
-                                                                                    "spread":  0.034,
+                                                                                    "bestAsk":  0.05,
+                                                                                    "spread":  0.04,
                                                                                     "usableBook":  true,
                                                                                     "rejectionReasons":  [
 
@@ -8668,8 +8666,8 @@
                                                                                     "outcomeCount":  2,
                                                                                     "tokenCount":  2,
                                                                                     "bestBid":  0.045,
-                                                                                    "bestAsk":  0.07,
-                                                                                    "spread":  0.025,
+                                                                                    "bestAsk":  0.06,
+                                                                                    "spread":  0.015,
                                                                                     "usableBook":  true,
                                                                                     "rejectionReasons":  [
 
@@ -8710,8 +8708,49 @@
                                                                                     "outcomeCount":  2,
                                                                                     "tokenCount":  2,
                                                                                     "bestBid":  0.1,
-                                                                                    "bestAsk":  0.13,
+                                                                                    "bestAsk":  0.12,
                                                                                     "spread":  0.02,
+                                                                                    "usableBook":  true,
+                                                                                    "rejectionReasons":  [
+
+                                                                                                         ]
+                                                                                }
+                                                     },
+                                                     {
+                                                         "slug":  "world-cup-bronze-ball-winner-20260603194938828",
+                                                         "title":  "World Cup: Bronze Ball Winner",
+                                                         "startDate":  "2026-06-03T20:17:49.829759Z",
+                                                         "endDate":  "2026-07-20T03:59:00Z",
+                                                         "ended":  false,
+                                                         "upcomingOrLive":  true,
+                                                         "tags":  [
+                                                                      "soccer",
+                                                                      "sports",
+                                                                      "world-cup",
+                                                                      "fifa-world-cup",
+                                                                      "2026-fifa-world-cup",
+                                                                      "world-cup-awards"
+                                                                  ],
+                                                         "matchLike":  false,
+                                                         "worldCupLike":  true,
+                                                         "worldCupRelevant":  true,
+                                                         "playerPropLike":  true,
+                                                         "futuresLike":  true,
+                                                         "marketCount":  41,
+                                                         "usableMarketCount":  10,
+                                                         "acceptingOrderMarketCount":  41,
+                                                         "sampleUsableMarket":  {
+                                                                                    "slug":  "will-kylian-mbappe-win-the-bronze-ball-at-the-2026-fifa-world-cup-20260603194939941",
+                                                                                    "question":  "Will Kylian MbappÃ© win the Bronze Ball at the 2026 FIFA World Cup?",
+                                                                                    "acceptingOrders":  true,
+                                                                                    "active":  true,
+                                                                                    "closed":  false,
+                                                                                    "archived":  false,
+                                                                                    "outcomeCount":  2,
+                                                                                    "tokenCount":  2,
+                                                                                    "bestBid":  0.066,
+                                                                                    "bestAsk":  0.069,
+                                                                                    "spread":  0.003,
                                                                                     "usableBook":  true,
                                                                                     "rejectionReasons":  [
 
@@ -8751,49 +8790,8 @@
                                                                                     "outcomeCount":  2,
                                                                                     "tokenCount":  2,
                                                                                     "bestBid":  0.193,
-                                                                                    "bestAsk":  0.198,
-                                                                                    "spread":  0.005,
-                                                                                    "usableBook":  true,
-                                                                                    "rejectionReasons":  [
-
-                                                                                                         ]
-                                                                                }
-                                                     },
-                                                     {
-                                                         "slug":  "world-cup-bronze-ball-winner-20260603194938828",
-                                                         "title":  "World Cup: Bronze Ball Winner",
-                                                         "startDate":  "2026-06-03T20:17:49.829759Z",
-                                                         "endDate":  "2026-07-20T03:59:00Z",
-                                                         "ended":  false,
-                                                         "upcomingOrLive":  true,
-                                                         "tags":  [
-                                                                      "soccer",
-                                                                      "sports",
-                                                                      "world-cup",
-                                                                      "fifa-world-cup",
-                                                                      "2026-fifa-world-cup",
-                                                                      "world-cup-awards"
-                                                                  ],
-                                                         "matchLike":  false,
-                                                         "worldCupLike":  true,
-                                                         "worldCupRelevant":  true,
-                                                         "playerPropLike":  true,
-                                                         "futuresLike":  true,
-                                                         "marketCount":  41,
-                                                         "usableMarketCount":  9,
-                                                         "acceptingOrderMarketCount":  41,
-                                                         "sampleUsableMarket":  {
-                                                                                    "slug":  "will-kylian-mbappe-win-the-bronze-ball-at-the-2026-fifa-world-cup-20260603194939941",
-                                                                                    "question":  "Will Kylian MbappÃ© win the Bronze Ball at the 2026 FIFA World Cup?",
-                                                                                    "acceptingOrders":  true,
-                                                                                    "active":  true,
-                                                                                    "closed":  false,
-                                                                                    "archived":  false,
-                                                                                    "outcomeCount":  2,
-                                                                                    "tokenCount":  2,
-                                                                                    "bestBid":  0.059,
-                                                                                    "bestAsk":  0.099,
-                                                                                    "spread":  0.04,
+                                                                                    "bestAsk":  0.197,
+                                                                                    "spread":  0.004,
                                                                                     "usableBook":  true,
                                                                                     "rejectionReasons":  [
 
@@ -8822,7 +8820,7 @@
                                                          "playerPropLike":  true,
                                                          "futuresLike":  true,
                                                          "marketCount":  41,
-                                                         "usableMarketCount":  9,
+                                                         "usableMarketCount":  8,
                                                          "acceptingOrderMarketCount":  41,
                                                          "sampleUsableMarket":  {
                                                                                     "slug":  "will-kylian-mbappe-win-the-golden-ball-at-the-2026-fifa-world-cup-20260603194032279",
@@ -8833,8 +8831,8 @@
                                                                                     "archived":  false,
                                                                                     "outcomeCount":  2,
                                                                                     "tokenCount":  2,
-                                                                                    "bestBid":  0.4,
-                                                                                    "bestAsk":  0.41,
+                                                                                    "bestBid":  0.41,
+                                                                                    "bestAsk":  0.42,
                                                                                     "spread":  0.01,
                                                                                     "usableBook":  true,
                                                                                     "rejectionReasons":  [

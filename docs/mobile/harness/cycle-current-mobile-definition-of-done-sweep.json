@@ -2,11 +2,11 @@
   "ready": true,
   "readyToDeclareDone": false,
   "counts": {
-    "verified": 11,
-    "partial": 2,
+    "verified": 12,
+    "partial": 1,
     "blocked": 0
   },
-  "generatedAt": "2026-07-11T23:56:36.032Z",
+  "generatedAt": "2026-07-13T21:51:56.397Z",
   "criteria": [
     {
       "id": "dod-android-runtime",
@@ -108,20 +108,23 @@
         "docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md",
         "docs/mobile/harness/batch-internal-readiness-latest/provider-evidence-refresh-plan.json"
       ],
-      "notes": "Current batch still tracks 4 provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity. Provider refresh plan status is skip-refresh, so another provider refresh should be skipped until the next stale window or a real candidate signal appears."
+      "notes": "Current batch still tracks 8 provider P1 gap(s), so Local MVP readiness must not be mistaken for full Polymarket/provider parity. Provider refresh plan status is skip-refresh, so another provider refresh should be skipped until the next stale window or a real candidate signal appears."
     },
     {
       "id": "dod-temporary-sportsbook-provider-bridge",
       "criterion": "Temporary sportsbook provider bridge is available for Local MVP testing without claiming Polymarket-backed parity.",
-      "status": "partial",
+      "status": "verified",
       "evidence": [
         "docs/mobile/audits/BATCH_THE_ODDS_API_SINGLE_EVENT.md",
         "docs/mobile/harness/the-odds-api-single-event/single-event-summary.redacted.json",
         "docs/mobile/harness/the-odds-api-single-event/mobile-flow-proof.redacted.json",
         "docs/mobile/harness/the-odds-api-single-event/s23-device-reachability.redacted.json",
-        "docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json"
+        "docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json",
+        "docs/mobile/harness/the-odds-api-internal-environment/internal-environment-proof.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
+        "docs/mobile/harness/cycle-ZM-spain-france-cashout-s23/cycle-ZM-odds-api-s23-visible-flow.json"
       ],
-      "notes": "The temporary sportsbook provider bridge is missing, stale, or not fully proven. This does not block Local MVP readiness but should be recovered before using sportsbook-derived markets for manual testing."
+      "notes": "The Odds API single-event bridge is seeded and has fresh backend proof, fake-token order, Portfolio/history, and S23 evidence. Backend proof hours until stale: 22.39."
     },
     {
       "id": "dod-final-cycle",
