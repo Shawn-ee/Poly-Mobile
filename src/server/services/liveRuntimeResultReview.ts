@@ -185,11 +185,14 @@ export async function getLocalLiveRuntimeResultReview(params: {
   const p0 = Object.entries(checks)
     .filter(([, value]) => value !== true)
     .map(([key]) => key);
-  const executionDecision =
-    market?.status === "CLOSED"
+  const settlementAlreadyExecuted = settlementExecutedEvent != null;
+  const executionDecision = settlementAlreadyExecuted
+    ? "already_executed"
+    : market?.status === "CLOSED"
       ? "eligible_for_exact_confirmation_review"
       : "wait_for_or_apply_market_close_before_execution";
   const executionEligibleNow =
+    !settlementAlreadyExecuted &&
     market?.status === "CLOSED" &&
     checks.approvalDigestMatchesPreflight &&
     typeof approvalPayload.confirm === "string";
@@ -210,6 +213,8 @@ export async function getLocalLiveRuntimeResultReview(params: {
       activeMarketStatus: market?.status ?? null,
       executionEligibleNow,
       operatorDecision: executionDecision,
+      settlementAlreadyExecuted,
+      repeatExecutionBlocked: settlementAlreadyExecuted,
       exactConfirmationRequiredKnown: typeof approvalPayload.confirm === "string",
       exactConfirmationRedacted: true,
       activeMarketExecutionAttemptedByThisRoute: false,
@@ -325,6 +330,8 @@ export async function getLocalLiveRuntimeResultReview(params: {
       activeMarketStatus: market?.status ?? null,
       executionEligibleNow,
       operatorDecision: executionDecision,
+      settlementAlreadyExecuted,
+      repeatExecutionBlocked: settlementAlreadyExecuted,
       exactConfirmationRequiredKnown: typeof approvalPayload.confirm === "string",
       exactConfirmationRedacted: true,
       activeMarketExecutionAttemptedByThisRoute: false,
@@ -336,6 +343,7 @@ export async function getLocalLiveRuntimeResultReview(params: {
       canonicalSettlementPreflightAuditAvailable: settlementPreflightEvent != null,
       canonicalSettlementApprovalAuditAvailable: settlementApprovalEvent != null,
       canonicalSettlementExecutionAuditAvailable: settlementExecutedEvent != null,
+      repeatSettlementExecutionBlocked: settlementAlreadyExecuted,
       activeTesterSettlementExecutionAttempted: false,
       providerQuotaUsed: false,
       dedicatedOfficialResultTableExists: reviewRecord != null,

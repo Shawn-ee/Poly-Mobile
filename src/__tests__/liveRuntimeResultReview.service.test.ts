@@ -173,6 +173,115 @@ describe("live runtime result review service", () => {
     ).not.toContain("SETTLE_FROM_RESULT:");
   });
 
+  test("marks executed settlement reviews terminal and blocks repeat execution eligibility", async () => {
+    marketFindUnique.mockResolvedValueOnce({
+      id: "market-1",
+      slug: "spain-france-total-25",
+      title: "Spain vs. France: Total Goals 2.5",
+      status: "CLOSED",
+      settlementStatus: "settled",
+      resolvedOutcomeId: "outcome-1",
+      marketType: "total_goals",
+      marketGroupKey: "totals",
+      line: { toString: () => "2.5" },
+      event: {
+        id: "event-1",
+        slug: "odds-api-single-soccer-test",
+        title: "Spain vs. France",
+        status: "ACTIVE",
+        liveStatus: "final",
+        startTime: new Date("2026-07-14T19:00:00Z"),
+        source: "the-odds-api",
+        externalEventId: "provider-event-1",
+      },
+    });
+    canonicalEventFindFirst.mockReset();
+    canonicalEventFindFirst
+      .mockResolvedValueOnce(
+        canonicalEvent("provider.result.ingested", {
+          trustedResultDigest: "trusted-digest",
+          settlementExecutionAttempted: false,
+        }),
+      )
+      .mockResolvedValueOnce(
+        canonicalEvent("settlement.trusted_result.preflight", {
+          resultDigest: "result-digest",
+          executionMode: "dry-run",
+          executionAttempted: false,
+          previewPayoutConservationPass: true,
+          confirm: "SETTLE_FROM_RESULT:market-1:outcome-1:result-digest",
+        }),
+      )
+      .mockResolvedValueOnce(
+        canonicalEvent("settlement.trusted_result.approved", {
+          resultDigest: "result-digest",
+          approvedBy: "local-audit",
+          activeTesterSettlementExecution: false,
+          confirm: "SETTLE_FROM_RESULT:market-1:outcome-1:result-digest",
+        }),
+      )
+      .mockResolvedValueOnce(
+        canonicalEvent(
+          "settlement.trusted_result.executed",
+          {
+            resultDigest: "result-digest",
+            executionMode: "execute",
+            executionAttempted: true,
+            activeTesterSettlementExecution: true,
+          },
+          44n,
+        ),
+      );
+    officialResultReviewUpsert.mockResolvedValueOnce({
+      id: "review-1",
+      reviewKey: "odds-api-single-soccer-test:market-1:result-digest",
+      eventSlug: "odds-api-single-soccer-test",
+      marketId: "market-1",
+      outcomeId: "outcome-1",
+      resultDigest: "result-digest",
+      trustedResultDigest: "trusted-digest",
+      approvalStatus: "approved",
+      executionDecision: "already_executed",
+      executionEligibleNow: false,
+      confirmationRequiredKnown: true,
+      exactConfirmationStored: false,
+      activeMarketExecutionAttempted: false,
+      providerQuotaUsed: false,
+      updatedAt: new Date("2026-07-12T12:06:00Z"),
+    });
+
+    const result = await getLocalLiveRuntimeResultReview();
+
+    expect(result.executionDecision).toMatchObject({
+      activeMarketStatus: "CLOSED",
+      executionEligibleNow: false,
+      operatorDecision: "already_executed",
+      settlementAlreadyExecuted: true,
+      repeatExecutionBlocked: true,
+      exactConfirmationRedacted: true,
+    });
+    expect(result.runtimeTruth).toMatchObject({
+      canonicalSettlementExecutionAuditAvailable: true,
+      repeatSettlementExecutionBlocked: true,
+      providerQuotaUsed: false,
+    });
+    expect(officialResultReviewUpsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        create: expect.objectContaining({
+          settlementExecutedCanonicalId: 44n,
+          executionDecision: "already_executed",
+          executionEligibleNow: false,
+        }),
+        update: expect.objectContaining({
+          settlementExecutedCanonicalId: 44n,
+          executionDecision: "already_executed",
+          executionEligibleNow: false,
+        }),
+      }),
+    );
+    expect(JSON.stringify(result)).not.toContain("SETTLE_FROM_RESULT:");
+  });
+
   test("returns needs_attention when approval digest does not match preflight", async () => {
     canonicalEventFindFirst.mockReset();
     canonicalEventFindFirst

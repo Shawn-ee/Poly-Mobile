@@ -1,5 +1,13 @@
 # Mobile Data Contract Gaps
 
+## Cycle SETTLEMENTIDEMPOTENCY - Result Review Repeat-Execution Guard
+
+- Closed or narrowed: `/api/internal/live-runtime/result-review` now treats canonical `settlement.trusted_result.executed` evidence as terminal and persists `OfficialResultReview.executionDecision="already_executed"` with `executionEligibleNow=false`.
+- Backend-supported fields used: `CanonicalEvent` rows for provider result, settlement preflight, approval, and execution; selected `Market`/`Event`; `OfficialResultReview.settlementExecutedCanonicalId`, `executionDecision`, `executionEligibleNow`, `exactConfirmationStored`, `providerQuotaUsed`, and `activeMarketExecutionAttempted`.
+- Route mismatch: none for public mobile APIs. This remains a local/dev-only runtime status route and does not execute settlement.
+- Temporary mock/static data: none added.
+- Future migration concern: production still needs authenticated operator execution controls, durable execution-attempt rows, installed official-result polling, and alerting for failed/retried settlement attempts.
+
 ## Cycle PROVIDERREFRESHLOOP - Provider Refresh Loop Status Contract
 
 - Closed or narrowed: `/api/internal/live-runtime/status` now exposes a machine-readable `providerRefreshLoop` contract for live-provider refresh cadence, quota caps, latest durable provider refresh proof, and mobile freshness thresholds.

@@ -2,6 +2,19 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle SETTLEMENTIDEMPOTENCY - Result Review Repeat-Execution Guard
+
+- Feature/runtime worked on: backend local official-result review and settlement execution safety.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `src/server/services/liveRuntimeResultReview.ts`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `src/__tests__/liveRuntimeResultReview.service.test.ts`
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/result-review` after a canonical `settlement.trusted_result.executed` event exists and see a terminal `executionDecision.operatorDecision="already_executed"` with `executionEligibleNow=false`, `settlementAlreadyExecuted=true`, and `repeatExecutionBlocked=true`.
+- State transitions: writes/updates only the redacted `OfficialResultReview` row when the route is called. It does not execute settlement, call The Odds API, spend quota, expose exact confirmation text, place orders, or mutate market lifecycle state.
+- API/data dependencies: reads the selected `Market`, linked `Event`, and canonical `provider.result.ingested`, `settlement.trusted_result.preflight`, `settlement.trusted_result.approved`, and `settlement.trusted_result.executed` events. Persists `OfficialResultReview.settlementExecutedCanonicalId`, terminal `executionDecision`, and `executionEligibleNow=false`.
+- Known limitations: this narrows idempotency/status safety for local internal runtime. Production still needs authenticated operator controls, installed official-result polling, and audited execution ownership.
+
 ## Cycle PROVIDERREFRESHLOOP - Provider Refresh Loop Status Contract
 
 - Feature/page worked on: Local internal live-provider refresh status/control plane.
