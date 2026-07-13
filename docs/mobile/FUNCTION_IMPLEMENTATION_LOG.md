@@ -2,6 +2,20 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZF - Ordered Live Runtime Audit Gate
+
+- Feature/runtime worked on: no-quota ordered audit gate for the one-event internal tester runtime.
+- Frontend components touched: none.
+- Backend/API routes touched: none directly; the gate executes existing runtime status and audit scripts that read `GET /api/health`, `GET /api/internal/live-runtime/status`, `GET /api/internal/live-runtime/result-review`, `GET /api/internal/live-runtime/settlement-queue`, `GET /api/internal/live-runtime/lifecycle`, and `GET /api/markets/:marketId/quote`.
+- Important functions/services touched:
+  - `scripts/run_holiwyn_live_runtime_audit_gate.ts`
+  - `package.json`
+  - `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+- User/runtime interactions supported: operators can now run `npm run mobile:live-runtime-audit-gate` to refresh runtime-status, phase-audit, and completion-audit evidence in the correct order.
+- State transitions: none. The gate does not start loops, call providers, spend quota, mutate markets, place orders, or execute settlement.
+- Known limitations: this strengthens audit ordering only. It does not install a production service or enable official-result auto-settlement.
+- Proof: `docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json`.
+
 ## Cycle ZE - Fresh S23 Cashout Regression Proof
 
 - Feature/page worked on: proof-only regression for the internal tester mobile trading flow: Home -> Event Detail -> totals line market -> Buy ticket -> Portfolio -> Cash out -> Max -> SELL -> History.

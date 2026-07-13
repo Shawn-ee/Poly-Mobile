@@ -25,6 +25,7 @@ describe("The Odds API single-event temporary provider", () => {
     readFileSync("scripts/report_holiwyn_internal_tester_operator_snapshot.ts", "utf8");
   const phaseAuditScript = () => readFileSync("scripts/report_odds_api_live_runtime_phase_audit.ts", "utf8");
   const completionAuditScript = () => readFileSync("scripts/report_holiwyn_live_runtime_completion_audit.ts", "utf8");
+  const auditGateScript = () => readFileSync("scripts/run_holiwyn_live_runtime_audit_gate.ts", "utf8");
   const liveReadinessScript = () => readFileSync("scripts/prove_holiwyn_one_event_live_readiness.ps1", "utf8");
   const internalEnvScript = () => readFileSync("scripts/prove_mobile_odds_api_internal_environment.ts", "utf8");
   const routeCounterpartyScript = () => readFileSync("scripts/seed_mobile_route_spread_counterparty.ts", "utf8");
@@ -138,6 +139,22 @@ describe("The Odds API single-event temporary provider", () => {
     expect(completionAuditScript()).toContain("internalTesterOperatorSnapshotKnown");
     expect(completionAuditScript()).toContain("providerQuotaUsedByThisReport");
     expect(completionAuditScript()).toContain("recommendedCommand");
+  });
+
+  it("exposes an ordered no-quota live-runtime audit gate", () => {
+    const pkg = packageJson();
+    const source = auditGateScript();
+    expect(pkg).toContain("mobile:live-runtime-audit-gate");
+    expect(source).toContain("holiwyn-live-runtime-ordered-audit-gate");
+    expect(source).toContain("mobile:one-event-runtime-status");
+    expect(source).toContain("mobile:one-event-phase-audit");
+    expect(source).toContain("mobile:live-runtime-completion-audit");
+    expect(source.indexOf("mobile:one-event-runtime-status")).toBeLessThan(source.indexOf("mobile:one-event-phase-audit"));
+    expect(source.indexOf("mobile:one-event-phase-audit")).toBeLessThan(source.indexOf("mobile:live-runtime-completion-audit"));
+    expect(source).toContain("providerQuotaUsedByThisGate: false");
+    expect(source).toContain("Runtime status must be refreshed before phase audit");
+    expect(source).not.toContain("process.env.THE_ODDS_API_KEY");
+    expect(source).not.toContain("THE_ODDS_API_KEY=");
   });
 
   it("starts managed Expo in server-backed S23 tester mode", () => {

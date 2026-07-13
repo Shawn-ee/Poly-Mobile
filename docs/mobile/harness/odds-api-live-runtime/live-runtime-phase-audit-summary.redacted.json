@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T23:36:19.103Z",
+  "generatedAt": "2026-07-13T23:42:28.999Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -39,7 +39,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-13T23:36:17.677Z"
+      "timestamp": "2026-07-13T23:42:26.803Z"
     },
     "error": null
   },
@@ -87,7 +87,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-13T23:36:19.052Z",
+      "generatedAt": "2026-07-13T23:42:28.952Z",
       "scope": "holiwyn-local-live-runtime-status",
       "status": "ready",
       "event": {
@@ -110,9 +110,9 @@
         "source": "the-odds-api",
         "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
         "sourceUpdatedAt": "2026-07-13T21:38:09.297Z",
-        "now": "2026-07-13T23:36:19.049Z",
+        "now": "2026-07-13T23:42:28.947Z",
         "startTime": "2026-07-14T19:00:00.000Z",
-        "secondsUntilStart": 69821,
+        "secondsUntilStart": 69451,
         "startAgeSeconds": 0,
         "suspendBeforeStartSeconds": 300,
         "insideSuspendWindow": false,
@@ -167,7 +167,7 @@
         "checked": true,
         "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json",
         "pass": true,
-        "generatedAt": "2026-07-13T23:18:42.796Z",
+        "generatedAt": "2026-07-13T23:36:21.313Z",
         "providerQuotaUsedByStatus": false,
         "phaseCompleteForLocalInternalRuntime": true,
         "fullProductionRuntimeComplete": false,
@@ -196,11 +196,11 @@
             "oneEventOnly": true
           },
           "freshness": {
-            "liveProofAgeHours": 1.57,
+            "liveProofAgeHours": 1.97,
             "maxLiveProofAgeHours": 24,
-            "watchdogAgeHours": 7.46,
+            "watchdogAgeHours": 7.76,
             "maxWatchdogAgeHours": 24,
-            "s23ProofAgeHours": 0.44,
+            "s23ProofAgeHours": 0.13,
             "maxS23ProofAgeHours": 24
           },
           "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -276,7 +276,7 @@
           "activeSettlementReadiness": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json",
           "activeSettlementClosedEligibility": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-closed-eligibility-summary.redacted.json",
           "providerMakerHandoff": "docs/mobile/harness/odds-api-live-runtime/provider-maker-handoff-summary.redacted.json",
-          "s23Visible": "docs/mobile/harness/cycle-ZY-spain-france-cashout-s23/cycle-ZY-odds-api-s23-visible-flow.json"
+          "s23Visible": "docs/mobile/harness/cycle-ZE-spain-france-cashout-fresh/cycle-ZE-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json"
         },
         "completionRequirements": [
           {
@@ -338,7 +338,7 @@
             "answer": "One real upcoming soccer event is visible and tradable from S23 through event detail, quote, buy, portfolio, cashout/sell, and history proof.",
             "evidence": [
               "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json",
-              "docs/mobile/harness/cycle-ZY-spain-france-cashout-s23/cycle-ZY-odds-api-s23-visible-flow.json"
+              "docs/mobile/harness/cycle-ZE-spain-france-cashout-fresh/cycle-ZE-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json"
             ]
           },
           {
@@ -642,7 +642,7 @@
         "mobileFreshness": {
           "status": "stale",
           "mobileRouteFresh": false,
-          "latestSnapshotAgeSeconds": 7090,
+          "latestSnapshotAgeSeconds": 7460,
           "refreshDueSeconds": 60,
           "staleAfterSeconds": 90,
           "nextProviderAction": "refresh_provider_snapshots_or_keep_cached_test_mode"
@@ -991,15 +991,15 @@
         "maxPhaseAuditAgeHours": 24,
         "maxWatchdogAgeHours": 24,
         "maxLiveProofAgeHours": 24,
-        "completionAuditAgeHours": 0.29,
-        "phaseAuditAgeHours": 0.29,
-        "watchdogAgeHours": 7.75,
-        "liveProofAgeAtCompletionHours": 1.57,
-        "liveProofCurrentAgeHours": 1.86,
-        "s23ProofPath": "docs/mobile/harness/cycle-ZY-spain-france-cashout-s23/cycle-ZY-odds-api-s23-visible-flow.json",
+        "completionAuditAgeHours": 0.1,
+        "phaseAuditAgeHours": 0.1,
+        "watchdogAgeHours": 7.86,
+        "liveProofAgeAtCompletionHours": 1.97,
+        "liveProofCurrentAgeHours": 2.07,
+        "s23ProofPath": "docs/mobile/harness/cycle-ZE-spain-france-cashout-fresh/cycle-ZE-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json",
         "s23ProofDevice": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
-        "s23ProofAgeAtCompletionHours": 0.44,
-        "s23ProofCurrentAgeHours": 0.73,
+        "s23ProofAgeAtCompletionHours": 0.13,
+        "s23ProofCurrentAgeHours": 0.23,
         "maxS23ProofAgeHours": 24,
         "completionAuditFresh": true,
         "phaseAuditFresh": true,
@@ -1016,8 +1016,8 @@
         "reason": null,
         "snapshotCount": 4,
         "latestFetchedAt": "2026-07-13T21:38:09.297Z",
-        "latestAgeHours": 1.97,
-        "latestAgeSeconds": 7090,
+        "latestAgeHours": 2.07,
+        "latestAgeSeconds": 7460,
         "maxAgeHours": 24,
         "sources": [
           "sportsbook-odds"
@@ -1672,8 +1672,8 @@
             "installedOsService": false,
             "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
             "startedAt": "2026-07-13T22:15:38.255Z",
-            "heartbeatAt": "2026-07-13T23:36:19.037Z",
-            "updatedAt": "2026-07-13T23:36:19.041Z",
+            "heartbeatAt": "2026-07-13T23:42:28.934Z",
+            "updatedAt": "2026-07-13T23:42:28.937Z",
             "metadata": {
               "source": "local-runtime-status-route",
               "workerOwned": true,
@@ -1693,8 +1693,8 @@
             "installedOsService": false,
             "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
             "startedAt": "2026-07-13T22:15:38.986Z",
-            "heartbeatAt": "2026-07-13T23:36:19.037Z",
-            "updatedAt": "2026-07-13T23:36:19.041Z",
+            "heartbeatAt": "2026-07-13T23:42:28.934Z",
+            "updatedAt": "2026-07-13T23:42:28.937Z",
             "metadata": {
               "source": "local-runtime-status-route",
               "workerOwned": true,
@@ -1774,17 +1774,17 @@
         "completionAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-13T23:18:42.796Z"
+          "generatedAt": "2026-07-13T23:36:21.313Z"
         },
         "phaseAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-13T23:19:02.078Z"
+          "generatedAt": "2026-07-13T23:36:19.103Z"
         },
         "runtimeStatus": {
           "path": "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-13T23:36:16.767Z"
+          "generatedAt": "2026-07-13T23:42:24.292Z"
         },
         "watchdog": {
           "path": "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
@@ -1805,7 +1805,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-13T23:36:19.074Z",
+      "generatedAt": "2026-07-13T23:42:28.981Z",
       "scope": "holiwyn-local-live-runtime-result-review",
       "status": "ready",
       "providerQuotaUsed": false,
@@ -1910,7 +1910,7 @@
         "exactConfirmationStored": false,
         "activeMarketExecutionAttempted": false,
         "providerQuotaUsed": false,
-        "updatedAt": "2026-07-13T23:36:19.070Z"
+        "updatedAt": "2026-07-13T23:42:28.977Z"
       },
       "executionDecision": {
         "activeMarketStatus": "LIVE",
@@ -1964,7 +1964,7 @@
         "phaseAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-13T23:19:02.078Z"
+          "generatedAt": "2026-07-13T23:36:19.103Z"
         }
       }
     },
@@ -1974,7 +1974,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-13T23:36:19.095Z",
+      "generatedAt": "2026-07-13T23:42:28.990Z",
       "scope": "holiwyn-local-live-runtime-settlement-queue",
       "status": "ready",
       "providerQuotaUsed": false,
@@ -2092,7 +2092,7 @@
                 "exactConfirmationArgumentRedacted": true
               }
             },
-            "updatedAt": "2026-07-13T23:36:19.070Z"
+            "updatedAt": "2026-07-13T23:42:28.977Z"
           },
           {
             "id": "24dbb817-ebba-43cc-a254-32b7319527c2",
@@ -2253,7 +2253,7 @@
     "status": 200,
     "body": {
       "status": "ready",
-      "generatedAt": "2026-07-13T23:36:19.102Z",
+      "generatedAt": "2026-07-13T23:42:28.998Z",
       "providerQuotaUsed": false,
       "event": {
         "id": "6a94107f-6513-4131-876d-87018782334f",
@@ -2405,62 +2405,62 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 1.97,
-    "onboarding": 1.34,
-    "onboardingRuntimeStart": 1.34,
-    "onboardingRuntimeStatus": 1.34,
-    "onboardingRuntimeStop": 1.34,
-    "readiness": 1.35,
+    "liveProof": 2.07,
+    "onboarding": 1.44,
+    "onboardingRuntimeStart": 1.44,
+    "onboardingRuntimeStatus": 1.44,
+    "onboardingRuntimeStop": 1.44,
+    "readiness": 1.45,
     "runtimeStatus": 0,
-    "runtimeLaunch": 1.34,
-    "supervisor": 7.77,
-    "supervisorProcess": 1.34,
-    "internalTesterRuntime": 1.98,
-    "internalTesterResultPoller": 34.06,
-    "internalTesterWatchdog": 7.75,
-    "internalTesterOperatorSnapshot": 0.54,
-    "managerOwnedExpoStart": 3.79,
-    "currentRuntimeStateProof": 1.45,
-    "localRuntimeTask": 30.31,
-    "localRuntimeTaskInstall": 30.3,
-    "localRuntimeStartup": 35.29,
-    "localRuntimeStartupInstall": 33.82,
-    "localRuntimeLaunchProfile": 0.54,
-    "liveRuntimeCompletionAudit": 0.29,
-    "continuousSupervisor": 7.76,
-    "staleGuardProof": 38.09,
-    "staleGuardRun": 37.97,
-    "lifecycleControls": 1.35,
-    "lifecycleScheduler": 1.35,
-    "lifecycleSchedulerRun": 1.34,
-    "lifecycleMatrix": 33.5,
-    "settlementReadiness": 1.35,
-    "settlementExecution": 36.58,
-    "resultSettlementExecution": 11.06,
-    "resultSettlementLiveBlocked": 11.06,
-    "manualSettlement": 1.35,
-    "resultIngestion": 1.34,
-    "resultIngestionAuditEvent": 2.77,
-    "resultPoller": 7.76,
-    "resultPollerProcess": 1.34,
-    "continuousResultPoller": 7.76,
-    "resultSettlement": 1.34,
-    "resultSettlementRun": 1.34,
-    "settlementPreflight": 2.77,
-    "settlementAuditEvent": 2.77,
-    "settlementApprovalAuditEvent": 2.77,
-    "resultReviewTrail": 2.77,
-    "activeSettlementReadiness": 32.64,
-    "activeSettlementClosedEligibility": 27.06,
-    "approvedAutoSettlement": 35,
-    "activeSettlementClone": 32.98,
-    "supervisorApprovedSettlement": 34.82,
-    "makerSeed": 0.09,
-    "providerMakerHandoff": 2.79,
-    "s23Visible": 0.13
+    "runtimeLaunch": 1.44,
+    "supervisor": 7.87,
+    "supervisorProcess": 1.44,
+    "internalTesterRuntime": 2.08,
+    "internalTesterResultPoller": 34.17,
+    "internalTesterWatchdog": 7.86,
+    "internalTesterOperatorSnapshot": 0.64,
+    "managerOwnedExpoStart": 3.89,
+    "currentRuntimeStateProof": 1.56,
+    "localRuntimeTask": 30.41,
+    "localRuntimeTaskInstall": 30.41,
+    "localRuntimeStartup": 35.39,
+    "localRuntimeStartupInstall": 33.92,
+    "localRuntimeLaunchProfile": 0.64,
+    "liveRuntimeCompletionAudit": 0.1,
+    "continuousSupervisor": 7.87,
+    "staleGuardProof": 38.19,
+    "staleGuardRun": 38.08,
+    "lifecycleControls": 1.45,
+    "lifecycleScheduler": 1.45,
+    "lifecycleSchedulerRun": 1.44,
+    "lifecycleMatrix": 33.6,
+    "settlementReadiness": 1.45,
+    "settlementExecution": 36.68,
+    "resultSettlementExecution": 11.16,
+    "resultSettlementLiveBlocked": 11.16,
+    "manualSettlement": 1.45,
+    "resultIngestion": 1.44,
+    "resultIngestionAuditEvent": 2.88,
+    "resultPoller": 7.86,
+    "resultPollerProcess": 1.44,
+    "continuousResultPoller": 7.86,
+    "resultSettlement": 1.44,
+    "resultSettlementRun": 1.44,
+    "settlementPreflight": 2.88,
+    "settlementAuditEvent": 2.87,
+    "settlementApprovalAuditEvent": 2.87,
+    "resultReviewTrail": 2.87,
+    "activeSettlementReadiness": 32.74,
+    "activeSettlementClosedEligibility": 27.16,
+    "approvedAutoSettlement": 35.1,
+    "activeSettlementClone": 33.08,
+    "supervisorApprovedSettlement": 34.92,
+    "makerSeed": 0.2,
+    "providerMakerHandoff": 2.89,
+    "s23Visible": 0.23
   },
   "freshnessPolicy": {
-    "s23VisibleProofAgeHours": 0.13,
+    "s23VisibleProofAgeHours": 0.23,
     "s23VisibleProofMaxAgeHours": 24
   },
   "requirements": [
@@ -2667,7 +2667,7 @@
         "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json",
         "docs/mobile/harness/cycle-ZE-spain-france-cashout-fresh/cycle-ZE-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json"
       ],
-      "notes": "Fresh S23 proof age: 0.13h; max accepted age: 24h."
+      "notes": "Fresh S23 proof age: 0.23h; max accepted age: 24h."
     },
     {
       "id": "stale-handling",
