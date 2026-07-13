@@ -74,7 +74,17 @@ function New-MobileDevCredential {
     } else {
       "npm.cmd run mobile:dev-credential"
     }
-    $rawOutput = & cmd /c $command 2>&1
+    $previousErrorActionPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+      $rawOutput = & cmd /c $command 2>&1
+      $exitCode = $LASTEXITCODE
+    } finally {
+      $ErrorActionPreference = $previousErrorActionPreference
+    }
+    if ($exitCode -ne 0) {
+      throw "Credential command failed with exit code $exitCode."
+    }
     $lines = @($rawOutput | ForEach-Object { [string]$_ })
     return Read-JsonObjectFromOutput -Lines $lines
   } finally {
