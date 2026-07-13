@@ -1,7 +1,7 @@
 {
     "cycle":  "BATCHREADINESS",
     "result":  "inspection-pass",
-    "inspectedAt":  "2026-07-13T21:56:06.100Z",
+    "inspectedAt":  "2026-07-13T22:33:09.088Z",
     "baseUrl":  "http://127.0.0.1:3002",
     "homeRoute":  {
                       "url":  "http://127.0.0.1:3002/api/events?sportKey=soccer\u0026leagueKey=world_cup\u0026includeMobileMarkets=1\u0026mobileMvpMatches=1\u0026limit=10",
@@ -72,8 +72,8 @@
                              "marketSourceSummary":  {
                                                          "totalMarketCount":  19,
                                                          "sourceBreakdown":  {
-                                                                                 "sportsbook-odds":  3,
-                                                                                 "contract-fixture":  16
+                                                                                 "contract-fixture":  16,
+                                                                                 "sportsbook-odds":  3
                                                                              },
                                                          "polymarketMarketCount":  0,
                                                          "contractFixtureMarketCount":  16,
@@ -260,7 +260,7 @@
                                             "line":  null,
                                             "period":  "full-game",
                                             "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-advance",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
                                             "outcomeCount":  2
                                         },
                                         {
@@ -268,9 +268,9 @@
                                             "marketType":  "match_winner_1x2",
                                             "line":  null,
                                             "period":  "regulation",
-                                            "referenceSource":  "sportsbook-odds",
+                                            "referenceSource":  "contract-fixture",
                                             "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
-                                            "outcomeCount":  3
+                                            "outcomeCount":  2
                                         },
                                         {
                                             "marketGroupTitle":  "Spread",
@@ -278,7 +278,7 @@
                                             "line":  "1.5",
                                             "period":  "regulation",
                                             "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-spread-home-1-5",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
                                             "outcomeCount":  2
                                         },
                                         {
@@ -296,7 +296,7 @@
                                             "line":  null,
                                             "period":  "regulation",
                                             "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-regulation-home",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
                                             "outcomeCount":  2
                                         },
                                         {
@@ -305,7 +305,7 @@
                                             "line":  null,
                                             "period":  "regulation",
                                             "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-regulation-away",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
                                             "outcomeCount":  2
                                         },
                                         {
@@ -313,9 +313,9 @@
                                             "marketType":  "match_winner_1x2",
                                             "line":  null,
                                             "period":  "regulation",
-                                            "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-regulation-draw",
-                                            "outcomeCount":  2
+                                            "referenceSource":  "sportsbook-odds",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
+                                            "outcomeCount":  3
                                         },
                                         {
                                             "marketGroupTitle":  "Regulation Time Winner",
@@ -332,7 +332,7 @@
                                             "line":  "-3.5",
                                             "period":  "regulation",
                                             "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-spread-home-neg-3-5",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
                                             "outcomeCount":  2
                                         },
                                         {
@@ -341,7 +341,7 @@
                                             "line":  "-2.5",
                                             "period":  "regulation",
                                             "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-spread-home-neg-2-5",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
                                             "outcomeCount":  2
                                         },
                                         {
@@ -350,7 +350,7 @@
                                             "line":  "-1.5",
                                             "period":  "regulation",
                                             "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-spread-home-neg-1-5",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
                                             "outcomeCount":  2
                                         },
                                         {
@@ -359,7 +359,7 @@
                                             "line":  "2.5",
                                             "period":  "regulation",
                                             "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-spread-home-2-5",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
                                             "outcomeCount":  2
                                         },
                                         {
@@ -368,7 +368,7 @@
                                             "line":  "3.5",
                                             "period":  "regulation",
                                             "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-spread-home-3-5",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
                                             "outcomeCount":  2
                                         },
                                         {
@@ -377,7 +377,7 @@
                                             "line":  "0.5",
                                             "period":  "regulation",
                                             "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-total-goals-0-5",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
                                             "outcomeCount":  2
                                         },
                                         {
@@ -386,7 +386,7 @@
                                             "line":  "1.5",
                                             "period":  "regulation",
                                             "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-total-goals-1-5",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
                                             "outcomeCount":  2
                                         },
                                         {
@@ -395,7 +395,7 @@
                                             "line":  "2.5",
                                             "period":  "regulation",
                                             "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-total-goals-2-5",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
                                             "outcomeCount":  2
                                         },
                                         {
@@ -404,7 +404,7 @@
                                             "line":  "3.5",
                                             "period":  "regulation",
                                             "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-total-goals-3-5",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
                                             "outcomeCount":  2
                                         },
                                         {
@@ -413,7 +413,7 @@
                                             "line":  "4.5",
                                             "period":  "regulation",
                                             "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-total-goals-4-5",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
                                             "outcomeCount":  2
                                         },
                                         {
@@ -422,7 +422,7 @@
                                             "line":  "5.5",
                                             "period":  "regulation",
                                             "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-total-goals-5-5",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
                                             "outcomeCount":  2
                                         }
                                     ]

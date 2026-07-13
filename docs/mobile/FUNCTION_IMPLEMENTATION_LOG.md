@@ -15772,3 +15772,23 @@ Known limitations:
   - `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-stop-summary.redacted.json`
 - Audit doc: `docs/mobile/audits/cycle-ZV-clean-expo-onboarding-runtime-proof.md`.
 - Known limitations: this proves local operator-started runtime, not an installed always-on service. Official-result auto-settlement and installed provider/maker daemons remain P1.
+
+## Cycle ZW - Manual Server Mode Credential Readiness
+
+- Feature/runtime worked on: local S23/server-mode credential setup for internal tester mobile proof.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. The existing mobile API credential creation path still writes to the local database and the mobile app still consumes `EXPO_PUBLIC_API_KEY` from environment.
+- Important functions/services touched: `scripts/create_mobile_dev_credential.ts` now loads the local `DATABASE_URL` through the shared local-env helper; `scripts/mobile_credential_readiness.ps1` now tolerates harmless local config warnings while parsing the credential dry-run JSON contract.
+- User/runtime interactions supported: `npm run mobile:manual-testing-env` now succeeds from a clean shell, generates a local-only server-mode Expo env file under `.runtime/mobile-manual-testing/server-mode-env.ps1`, and keeps the token redacted from committed summaries.
+- State transitions: local-only mobile dev API credential was created/refreshed for `holiwyn-mobile-dev` and funded to the fake-token testing target. No provider quota was spent, no mobile UI changed, no markets were imported, and no settlement was executed.
+- API/data dependencies: local Postgres, `User`, `ApiCredential`, `UserBalance`, ledger deposit events, and the existing mobile Bearer-auth contract.
+- Proof:
+  - `npm run mobile:manual-testing-env`
+  - `powershell -ExecutionPolicy Bypass -File scripts\mobile_credential_readiness.ps1 -SummaryPath docs/mobile/harness/batch-internal-readiness-latest/mobile-credential-readiness.json`
+  - `npm run mobile:internal-readiness-batch`
+  - `npx jest --runInBand src/__tests__/mobile.manual-testing-env.contract.test.ts`
+- Proof summaries:
+  - `docs/mobile/harness/batch-internal-readiness-latest/mobile-credential-readiness.json`
+  - `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`
+  - `docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md`
+- Known limitations: this closes the manual server-mode API-key readiness gap only. Google OAuth client secrets/callback registration and Polymarket provider breadth remain P1.

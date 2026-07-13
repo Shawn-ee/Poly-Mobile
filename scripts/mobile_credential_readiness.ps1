@@ -39,6 +39,40 @@ function Read-ExpoApiKeyFromRuntimeEnv {
   return ""
 }
 
+function Read-CredentialDryRunJson {
+  param([object[]]$Output)
+  $lines = @($Output | ForEach-Object { [string]$_ })
+  for ($index = 0; $index -lt $lines.Count; $index += 1) {
+    if ($lines[$index].Trim() -ne "{") {
+      continue
+    }
+    $depth = 0
+    $jsonEnd = -1
+    for ($cursor = $index; $cursor -lt $lines.Count; $cursor += 1) {
+      $line = $lines[$cursor]
+      $depth += ([regex]::Matches($line, "\{")).Count
+      $depth -= ([regex]::Matches($line, "\}")).Count
+      if ($depth -eq 0) {
+        $jsonEnd = $cursor
+        break
+      }
+    }
+    if ($jsonEnd -lt $index) {
+      continue
+    }
+    $jsonText = $lines[$index..$jsonEnd] -join "`n"
+    try {
+      $parsed = $jsonText | ConvertFrom-Json
+      if ($parsed.dryRun -eq $true) {
+        return $parsed
+      }
+    } catch {
+      continue
+    }
+  }
+  throw "Credential dry-run did not emit a parseable dryRun JSON object."
+}
+
 $requiredCredentialScopes = @(
   "orders:read",
   "orders:write",
@@ -53,23 +87,20 @@ $dryRunError = ""
 try {
   Push-Location $RepoRoot
   try {
-    $dryRunOutput = & cmd /c npm.cmd run mobile:dev-credential:dry-run 2>&1
+    $previousErrorActionPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+      $dryRunOutput = & cmd /c npm.cmd run mobile:dev-credential:dry-run 2>&1
+    } finally {
+      $ErrorActionPreference = $previousErrorActionPreference
+    }
   } finally {
     Pop-Location
   }
-  $dryRunText = ($dryRunOutput | Out-String)
-  $jsonStart = $dryRunText.IndexOf("{$([Environment]::NewLine)  `"dryRun`"")
-  if ($jsonStart -lt 0) {
-    $jsonStart = $dryRunText.IndexOf("{`n  `"dryRun`"")
-  }
-  if ($jsonStart -ge 0) {
-    $dryRunSummary = $dryRunText.Substring($jsonStart) | ConvertFrom-Json
-    $dryRunScopes = @($dryRunSummary.scopes)
-    $missingDryRunScopes = @($requiredCredentialScopes | Where-Object { $dryRunScopes -notcontains $_ })
-    $dryRunIncludesRequiredScopes = $missingDryRunScopes.Count -eq 0
-  } else {
-    $dryRunError = "Credential dry-run did not emit JSON."
-  }
+  $dryRunSummary = Read-CredentialDryRunJson -Output $dryRunOutput
+  $dryRunScopes = @($dryRunSummary.scopes)
+  $missingDryRunScopes = @($requiredCredentialScopes | Where-Object { $dryRunScopes -notcontains $_ })
+  $dryRunIncludesRequiredScopes = $missingDryRunScopes.Count -eq 0
 } catch {
   $dryRunError = $_.Exception.Message
 }

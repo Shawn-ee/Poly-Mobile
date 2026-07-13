@@ -1,3 +1,4 @@
+import "./load_local_env_side_effect";
 import { randomBytes } from "node:crypto";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";

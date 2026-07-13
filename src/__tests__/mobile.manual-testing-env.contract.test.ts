@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 describe("mobile manual testing env helper", () => {
   const packageJson = () => readFileSync("package.json", "utf8");
   const helper = () => readFileSync("scripts/prepare_mobile_manual_testing_env.ps1", "utf8");
+  const credentialCreator = () => readFileSync("scripts/create_mobile_dev_credential.ts", "utf8");
   const credentialReadiness = () => readFileSync("scripts/mobile_credential_readiness.ps1", "utf8");
   const batch = () => readFileSync("scripts/mobile_internal_readiness_batch.ps1", "utf8");
   const doc = () => readFileSync("docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md", "utf8");
@@ -41,6 +42,12 @@ describe("mobile manual testing env helper", () => {
     expect(source).not.toContain("bot:polymarket:mm:live-local");
   });
 
+  it("loads local database env before creating the dev credential", () => {
+    const source = credentialCreator();
+
+    expect(source).toContain('import "./load_local_env_side_effect"');
+  });
+
   it("documents how to clear the manual API-key readiness gap", () => {
     const text = doc();
 
@@ -59,6 +66,8 @@ describe("mobile manual testing env helper", () => {
     expect(credentialSource).toContain("apiKeySource");
     expect(credentialSource).toContain("local-runtime-env");
     expect(credentialSource).toContain("localRuntimeApiKeyPresent");
+    expect(credentialSource).toContain("Read-CredentialDryRunJson");
+    expect(credentialSource).toContain("parseable dryRun JSON object");
     expect(credentialSource).not.toContain("token = $trimmedApiKey");
     expect(batchSource).toContain("serverModeApiKeySource");
     expect(batchSource).toContain("localRuntimeEnvReadyForManualServerMode");

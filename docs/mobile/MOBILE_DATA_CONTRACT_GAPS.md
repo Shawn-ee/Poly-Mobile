@@ -10864,3 +10864,12 @@ Future migration concern:
 - Schema mismatch: none. No Prisma schema changes. Runtime proof still uses existing durable provider/maker/runtime rows plus redacted harness summaries.
 - Temporary mock/static data: none added. The proof uses cached/replay runtime evidence and explicitly spends no provider quota.
 - Remaining gaps: installed always-on provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1. This cycle must not be interpreted as a production daemon install.
+
+## Cycle ZW - Manual Server Mode Credential Readiness
+
+- Fields added/confirmed for tooling: `mobile-credential-readiness.json` now reports `readyForServerBackedSamsungProof=true`, `apiKeySource=local-runtime-env`, `localRuntimeApiKeyPresent=true`, and `apiKeyLooksValid=true` when `.runtime/mobile-manual-testing/server-mode-env.ps1` exists.
+- Closed or narrowed: `manual_server_mode_needs_generated_mobile_api_key` is no longer a batch P1 blocker after running `npm run mobile:manual-testing-env`; the batch can recognize the local runtime env file without committing the generated key.
+- Route mismatch: none for public/mobile APIs. The existing authenticated mobile routes still use Bearer API-key auth.
+- Schema mismatch: none. The credential script uses existing `User`, `ApiCredential`, balance, and ledger models.
+- Temporary mock/static data: no provider or market mock data added. The generated mobile API token remains local-only under ignored `.runtime`.
+- Remaining gaps: Google OAuth preflight still needs real Google client config and a phone-reachable registered callback; provider-backed Polymarket match/line breadth remains unavailable in cached evidence.
