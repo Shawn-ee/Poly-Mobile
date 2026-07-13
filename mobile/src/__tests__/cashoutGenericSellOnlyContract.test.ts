@@ -22,7 +22,9 @@ describe("cashout generic Sell ticket contract", () => {
     expect(app).toContain("await loadTicketQuotes(api, position.marketId, position.outcomeId)");
     expect(app).toContain("cashoutSellPriceFromQuote(latestCashoutQuote, fallbackPositionSellPrice)");
     expect(app).toContain("outcomeWithCashoutQuote(target.outcome, latestCashoutQuote)");
-    expect(app).toContain("const hasClosePositionPayload = Boolean(ticket.closePosition && ticket.sourcePositionId);");
+    expect(app).toContain("ticket.sourcePositionId &&");
+    expect(app).toContain('ticket.side === "sell"');
+    expect(app).toContain("ticket.closePosition || typeof ticket.selection?.limitShares === \"number\"");
     expect(app).toContain('const effectiveSide = hasClosePositionPayload ? "sell" : side;');
     expect(app).toContain("side: effectiveSide");
     expect(ticket).toContain("cashout-ticket-no-yes-no-selector");
@@ -38,6 +40,9 @@ describe("cashout generic Sell ticket contract", () => {
     expect(ticket).toContain("estimatedProceeds");
     expect(ticket).toContain("closeAvailableShares.toFixed(6)");
     expect(ticket).toContain("numericAmount > closeAvailableShares");
+    expect(ticket).toContain("const closePositionAvailableShares = (ticket: Ticket)");
+    expect(ticket).toContain("ticket.selection?.limitShares");
+    expect(ticket).toContain('ticket.sourcePositionId && ticket.side === "sell"');
     expect(ticket).toContain("function trimShareAmount");
     expect(ticket).toContain("trimShareAmount(closeAvailableShares)");
     expect(ticket).toContain('const effectiveSide = isClosePositionTicket ? "sell" : side;');

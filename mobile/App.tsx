@@ -1632,11 +1632,15 @@ export default function App() {
 
   const placeOrder = async (amount: number, side: "buy" | "sell", contractSide?: Ticket["contractSide"]) => {
     if (!ticket || amount <= 0) return;
-    const hasClosePositionPayload = Boolean(ticket.closePosition && ticket.sourcePositionId);
+    const hasClosePositionPayload = Boolean(
+      ticket.sourcePositionId &&
+        ticket.side === "sell" &&
+        (ticket.closePosition || typeof ticket.selection?.limitShares === "number"),
+    );
     const effectiveSide = hasClosePositionPayload ? "sell" : side;
     const isClosePositionTicket = hasClosePositionPayload && effectiveSide === "sell";
     const closeShares = isClosePositionTicket ? amount : undefined;
-    const closePrice = ticket.closePosition?.sellPrice ?? 0;
+    const closePrice = ticket.closePosition?.sellPrice ?? ticket.selection?.limitPrice ?? 0;
     const closeProceeds = isClosePositionTicket && closeShares ? closeShares * closePrice : 0;
     const cost = isClosePositionTicket ? closeProceeds : Math.min(amount, balance);
     setTicketOrderError(null);

@@ -503,6 +503,18 @@ const ticketSelectionIdentityLabel = (selection?: TicketSelection, activeContrac
     ? `ticket-market-family-${selection.marketType} ticket-market-type-${selection.marketType} ticket-market-id-${selection.marketId ?? "none"} ticket-outcome-id-${selection.outcomeId ?? "none"} ticket-market-group-${selection.marketGroupId ?? "none"} ticket-line-${selection.line ?? "none"} ticket-period-${selection.period ?? "none"} ticket-selection-side-${activeContractSide ?? selection.side ?? "yes"} ticket-display-label-${selection.displayLabel} ticket-contract-side-${activeContractSide ?? selection.contractSide ?? "yes"} ticket-provider-source-${selection.referenceSource ?? "none"} ticket-provider-market-${selection.externalMarketId ?? "none"} ticket-provider-condition-${selection.conditionId ?? "none"} ticket-provider-token-${selection.referenceTokenId ?? "none"} ticket-provider-outcome-${selection.referenceOutcomeLabel ?? "none"} ${limitIdentityLabel(selection)}`
     : "ticket-market-family-none ticket-line-none ticket-period-none ticket-limit-side-none ticket-limit-price-none ticket-limit-shares-none";
 
+const closePositionAvailableShares = (ticket: Ticket) => {
+  if (typeof ticket.closePosition?.availableShares === "number") return ticket.closePosition.availableShares;
+  if (typeof ticket.selection?.limitShares === "number") return ticket.selection.limitShares;
+  return 0;
+};
+
+const closePositionSellPrice = (ticket: Ticket, fallbackPrice: number) => {
+  if (typeof ticket.closePosition?.sellPrice === "number") return ticket.closePosition.sellPrice;
+  if (typeof ticket.selection?.limitPrice === "number") return ticket.selection.limitPrice;
+  return fallbackPrice;
+};
+
 export function TradeTicket({
   locale,
   t,
@@ -591,13 +603,13 @@ export function TradeTicket({
     setAmount(nextAmount.replace(/^0+(\d)/, "$1"));
   };
   const numericAmount = Number(amount) || 0;
-  const isClosePositionTicket = Boolean(ticket.closePosition && ticket.sourcePositionId);
+  const isClosePositionTicket = Boolean(ticket.sourcePositionId && ticket.side === "sell" && (ticket.closePosition || typeof ticket.selection?.limitShares === "number"));
   const effectiveSide = isClosePositionTicket ? "sell" : side;
   const contractSide = activeContractSide;
   const contractProbability = contractSide === "no" ? 100 - ticket.outcome.probability : ticket.outcome.probability;
   const averagePrice = contractProbability / 100;
-  const closeAvailableShares = ticket.closePosition?.availableShares ?? 0;
-  const closeSellPrice = ticket.closePosition?.sellPrice ?? averagePrice;
+  const closeAvailableShares = closePositionAvailableShares(ticket);
+  const closeSellPrice = closePositionSellPrice(ticket, averagePrice);
   const estimatedShares = isClosePositionTicket ? numericAmount : averagePrice > 0 ? numericAmount / averagePrice : 0;
   const estimatedPayout = isClosePositionTicket ? numericAmount * closeSellPrice : contractProbability > 0 ? numericAmount * (100 / contractProbability) : 0;
   const estimatedProceeds = numericAmount * closeSellPrice;
