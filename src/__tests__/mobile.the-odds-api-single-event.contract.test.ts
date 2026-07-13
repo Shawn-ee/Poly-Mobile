@@ -15,6 +15,7 @@ describe("The Odds API single-event temporary provider", () => {
   const packageJson = () => readFileSync("package.json", "utf8");
   const script = () => readFileSync("scripts/seed_the_odds_api_single_event.ts", "utf8");
   const liveRuntimeScript = () => readFileSync("scripts/start_holiwyn_one_event_live_runtime.ps1", "utf8");
+  const internalTesterRuntimeScript = () => readFileSync("scripts/manage_holiwyn_internal_tester_runtime.ps1", "utf8");
   const internalEnvScript = () => readFileSync("scripts/prove_mobile_odds_api_internal_environment.ts", "utf8");
   const service = () => readFileSync("src/server/services/theOddsApiSingleEventProvider.ts", "utf8");
 
@@ -41,6 +42,19 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("if (-not $RunProviderProof -and -not (Test-Path -LiteralPath $resolvedLiveProofSummaryPath))");
     expect(source).toContain("docs\\mobile\\harness\\odds-api-live-runtime\\one-event-live-runtime-summary.redacted.json");
     expect(source).toContain("$canonicalLiveProofSummaryPath");
+  });
+
+  it("starts managed Expo in server-backed S23 tester mode", () => {
+    const source = internalTesterRuntimeScript();
+    expect(source).toContain("EXPO_PUBLIC_API_BASE_URL = '$BackendBaseUrl'");
+    expect(source).toContain("EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL = '$BackendBaseUrl'");
+    expect(source).toContain("EXPO_PUBLIC_ORDER_MODE = 'server'");
+    expect(source).toContain("EXPO_PUBLIC_MARKET_DATA_MODE = 'server'");
+    expect(source).toContain("EXPO_PUBLIC_SHOW_ORDERBOOK = '0'");
+    expect(source).toContain("npm --prefix mobile run start -- --host localhost --port $ExpoPort");
+    expect(source).toContain("adb -s $Device.deviceId reverse \"tcp:$port\" \"tcp:$port\"");
+    expect(source).toContain("s23_adb_reverse_failed");
+    expect(source).toContain("managerStartedExpoUsesServerMode");
   });
 
   it("limits discovery to preferred active soccer sport keys", () => {

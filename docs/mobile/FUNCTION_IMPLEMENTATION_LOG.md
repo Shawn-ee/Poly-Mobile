@@ -2,6 +2,18 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle S23SERVERMODESTART - Managed Expo Server-Mode Startup
+
+- Feature/runtime worked on: local internal tester runtime startup for S23 mobile trading.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/manage_holiwyn_internal_tester_runtime.ps1`
+  - `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+- User/runtime interactions supported: when the local runtime manager starts Expo, it now launches Metro with `EXPO_PUBLIC_API_BASE_URL`, `EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL`, `EXPO_PUBLIC_ORDER_MODE=server`, `EXPO_PUBLIC_MARKET_DATA_MODE=server`, and `EXPO_PUBLIC_SHOW_ORDERBOOK=0`. If the Samsung S23 is connected, the manager configures ADB reverse for backend and Expo ports so the phone can reach the host services through `127.0.0.1`.
+- State transitions: none. This only changes local process launch/readiness behavior. It does not call The Odds API, spend quota, mutate markets, place orders, approve settlement, or execute settlement.
+- API/data dependencies: mobile runtime still consumes the existing backend routes through `http://127.0.0.1:3002`, especially `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+- Known limitations: the manager can only prove environment settings for Expo processes it starts. If an unrelated Expo listener is already occupying the port, the manager reports the listener but cannot prove that listener was started with server-mode environment variables.
+
 ## Cycle OPERATORCONTROLBOUNDARY - Runtime Operator Controls Boundary
 
 - Feature/runtime worked on: backend local live-runtime status/operator safety contract.

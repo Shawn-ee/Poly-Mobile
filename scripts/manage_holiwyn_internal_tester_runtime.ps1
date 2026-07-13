@@ -135,7 +135,15 @@ function Start-OwnedBackend {
 }
 
 function Start-OwnedExpo {
-  $args = @("-NoProfile", "-Command", "npm --prefix mobile run start -- --host lan --port $ExpoPort")
+  $expoCommand = @"
+`$env:EXPO_PUBLIC_API_BASE_URL = '$BackendBaseUrl'
+`$env:EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL = '$BackendBaseUrl'
+`$env:EXPO_PUBLIC_ORDER_MODE = 'server'
+`$env:EXPO_PUBLIC_MARKET_DATA_MODE = 'server'
+`$env:EXPO_PUBLIC_SHOW_ORDERBOOK = '0'
+npm --prefix mobile run start -- --host localhost --port $ExpoPort
+"@
+  $args = @("-NoProfile", "-Command", $expoCommand)
   $process = Start-Process `
     -FilePath "powershell" `
     -ArgumentList $args `
@@ -147,10 +155,42 @@ function Start-OwnedExpo {
   return [ordered]@{
     owned = $true
     pid = $process.Id
-    command = "npm --prefix mobile run start -- --host lan --port $ExpoPort"
+    command = "npm --prefix mobile run start -- --host localhost --port $ExpoPort"
+    env = [ordered]@{
+      EXPO_PUBLIC_API_BASE_URL = $BackendBaseUrl
+      EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL = $BackendBaseUrl
+      EXPO_PUBLIC_ORDER_MODE = "server"
+      EXPO_PUBLIC_MARKET_DATA_MODE = "server"
+      EXPO_PUBLIC_SHOW_ORDERBOOK = "0"
+    }
     stdout = ConvertTo-RepoPath $ExpoOutPath
     stderr = ConvertTo-RepoPath $ExpoErrPath
     startedAt = (Get-Date).ToUniversalTime().ToString("o")
+  }
+}
+
+function Set-S23AdbReverse {
+  param([object]$Device)
+  if (-not $Device -or -not $Device.connected -or -not $Device.deviceId) {
+    return [ordered]@{ attempted = $false; ok = $false; reason = "s23_not_connected"; ports = @() }
+  }
+  $ports = @($BackendPort, $ExpoPort)
+  $results = New-Object System.Collections.Generic.List[object]
+  foreach ($port in $ports) {
+    $output = @(adb -s $Device.deviceId reverse "tcp:$port" "tcp:$port" 2>&1)
+    $results.Add([ordered]@{
+      port = $port
+      ok = [bool]($LASTEXITCODE -eq 0)
+      exitCode = $LASTEXITCODE
+      output = ($output -join "`n")
+    }) | Out-Null
+  }
+  return [ordered]@{
+    attempted = $true
+    ok = [bool](-not (@($results | Where-Object { -not $_.ok }) | Select-Object -First 1))
+    deviceId = $Device.deviceId
+    model = $Device.model
+    ports = @($results | ForEach-Object { $_ })
   }
 }
 
@@ -204,6 +244,11 @@ function Wait-UntilReady {
 $startedAt = (Get-Date).ToUniversalTime()
 $stateBefore = Read-JsonFile $StatePath
 $operations = New-Object System.Collections.Generic.List[object]
+$s23Before = Get-S23Status
+$adbReverse = if ($Action -eq "start") { Set-S23AdbReverse $s23Before } else { [ordered]@{ attempted = $false; ok = $false; reason = "action_$Action"; ports = @() } }
+if ($adbReverse.attempted) {
+  $operations.Add([ordered]@{ target = "s23-adb-reverse"; result = if ($adbReverse.ok) { "configured" } else { "failed_or_partial" }; details = $adbReverse }) | Out-Null
+}
 $state = [ordered]@{
   generatedAt = (Get-Date).ToUniversalTime().ToString("o")
   backend = if ($stateBefore -and $stateBefore.backend) { $stateBefore.backend } else { $null }
@@ -316,6 +361,7 @@ if ($Action -eq "stop") {
   if (-not $backendHealth.ok) { $p0.Add("backend_health_failed") | Out-Null }
   if (-not $docker.ok) { $p0.Add("postgres_not_healthy") | Out-Null }
   if (-not $expoOwnerAfter) { $p0.Add("expo_port_not_listening") | Out-Null }
+  if ($Action -eq "start" -and $s23Before.connected -and -not $adbReverse.ok) { $p0.Add("s23_adb_reverse_failed") | Out-Null }
   if ($StartSupervisor -and -not ($supervisorProcessSummary -and $supervisorProcessSummary.process.after.running -eq $true)) {
     $p0.Add("supervisor_not_running_after_start") | Out-Null
   }
@@ -344,9 +390,11 @@ $summary = [ordered]@{
     portOwner = $expoOwnerAfter
     ownedByManager = [bool]($state.expo -and $state.expo.owned)
     ownedProcessRunning = $expoOwnedRunning
+    serverModeEnv = if ($state.expo -and $state.expo.env) { $state.expo.env } else { $null }
   }
   dockerPostgres = $docker
   s23 = $s23
+  adbReverse = $adbReverse
   supervisor = [ordered]@{
     startRequested = [bool]$StartSupervisor
     statusSummaryPath = $SupervisorProcessSummaryPath
@@ -374,6 +422,8 @@ $summary = [ordered]@{
     supervisorBackgroundProcessAvailable = $true
     resultPollerBackgroundProcessAvailable = $true
     resultPollerBackgroundProcessRunning = [bool]($resultPollerProcessSummary -and $resultPollerProcessSummary.process.after.running -eq $true)
+    managerStartedExpoUsesServerMode = [bool]($state.expo -and $state.expo.owned -and $state.expo.env.EXPO_PUBLIC_ORDER_MODE -eq "server" -and $state.expo.env.EXPO_PUBLIC_MARKET_DATA_MODE -eq "server" -and $state.expo.env.EXPO_PUBLIC_API_BASE_URL -eq $BackendBaseUrl)
+    s23AdbReverseConfiguredOnStart = [bool]($Action -ne "start" -or $adbReverse.ok -or -not $s23Before.connected)
     stopsOnlyOwnedBackendExpoProcesses = $true
     installedOsService = $false
     fakeTokenOnly = $true

@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle S23SERVERMODESTART - Managed Expo Server-Mode Startup
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| S23 server-backed internal tester launch | Backend `GET /api/health` for readiness; mobile app then uses `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` through `EXPO_PUBLIC_API_BASE_URL=http://127.0.0.1:3002` | Local PowerShell process launch plus existing HTTP routes | Local dev runtime only. Mobile order routes still require the existing local API key/session flow. No provider key is required for cached startup. | Runtime manager flags: `Action=start`, `BackendPort`, `ExpoPort`, optional supervisor/result-poller flags. ADB reverse maps `tcp:3002` and `tcp:8081` when S23 is connected. | Runtime summary now records manager-started Expo server-mode env and ADB reverse results; mobile consumes existing event/detail/quote/order/portfolio fields | No schema change. Existing `Event`, `Market`, `Outcome`, `Order`, `Position`, `Trade`, and wallet/balance models remain unchanged. | None. This prevents accidental mock/default mobile mode during managed internal tester startup. | Manager can only verify Expo env for processes it owns. If an external Expo listener already occupies the port, restart it through the manager or manually start Expo with the same server-mode env. |
+
 ## Cycle OPERATORCONTROLBOUNDARY - Runtime Operator Controls Boundary
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
