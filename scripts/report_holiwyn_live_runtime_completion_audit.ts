@@ -31,7 +31,8 @@ const PATHS = {
     "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-closed-eligibility-summary.redacted.json",
   providerMakerHandoff:
     "docs/mobile/harness/odds-api-live-runtime/provider-maker-handoff-summary.redacted.json",
-  s23Visible: "docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json",
+  s23Visible:
+    "docs/mobile/harness/cycle-ZD-spain-france-cashout-fresh/cycle-ZD-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json",
 };
 
 type JsonObject = Record<string, unknown>;
@@ -1229,6 +1230,9 @@ async function main() {
     mobileS23EndToEndTradeProofPass:
       pass(entries.s23Visible) &&
       truthy(getPath(entries.s23Visible, ["assertions", "swipeSubmitReachedPortfolio"])) &&
+      truthy(getPath(entries.s23Visible, ["assertions", "cashoutTicketIsClosePositionMode"])) &&
+      truthy(getPath(entries.s23Visible, ["assertions", "cashoutMaxUsesOwnedShares"])) &&
+      truthy(getPath(entries.s23Visible, ["assertions", "cashoutTicketHidesYesNoSelector"])) &&
       truthy(getPath(entries.s23Visible, ["assertions", "cashoutSellSubmitted"])) &&
       truthy(getPath(entries.s23Visible, ["assertions", "historyPreservesSportsbookLineIdentity"])),
       launchProfileKnown:
@@ -1265,10 +1269,11 @@ async function main() {
       internalTesterRuntimeScript.includes("EXPO_PUBLIC_API_BASE_URL = '$BackendBaseUrl'") &&
       internalTesterRuntimeScript.includes("EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL = '$BackendBaseUrl'") &&
       internalTesterRuntimeScript.includes("EXPO_PUBLIC_ORDER_MODE = 'server'") &&
-      internalTesterRuntimeScript.includes("EXPO_PUBLIC_MARKET_DATA_MODE = 'server'") &&
-      internalTesterRuntimeScript.includes("EXPO_PUBLIC_SHOW_ORDERBOOK = '0'") &&
+        internalTesterRuntimeScript.includes("EXPO_PUBLIC_MARKET_DATA_MODE = 'server'") &&
+        internalTesterRuntimeScript.includes("EXPO_PUBLIC_SHOW_ORDERBOOK = '0'") &&
         internalTesterRuntimeScript.includes("npm --prefix mobile run start -- --host localhost --port $ExpoPort") &&
-        internalTesterRuntimeScript.includes('adb -s $Device.deviceId reverse "tcp:$port" "tcp:$port"') &&
+        internalTesterRuntimeScript.includes("Invoke-AdbWithTimeout") &&
+        internalTesterRuntimeScript.includes('"reverse", "tcp:$port", "tcp:$port"') &&
         internalTesterRuntimeScript.includes("s23_adb_reverse_failed") &&
         internalTesterRuntimeScript.includes("managerStartedExpoUsesServerMode") &&
         internalTesterRuntimeScript.includes("externalExpoServerModeUnverified") &&

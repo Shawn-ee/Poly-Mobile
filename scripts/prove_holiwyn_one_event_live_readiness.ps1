@@ -167,7 +167,7 @@ $makerSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\
 $lifecycleSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\event-lifecycle-controls-summary.redacted.json"
 $dataHygieneSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-data-hygiene-summary.redacted.json"
 $lifecycleSchedulerSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\event-lifecycle-scheduler-summary.redacted.json"
-$s23SummaryPath = Resolve-RepoPath "docs\mobile\harness\cycle-LIVEODDSS23-odds-api-live-runtime-s23\cycle-LIVEODDSS23-odds-api-s23-visible-flow.json"
+$s23SummaryPath = Resolve-RepoPath "docs\mobile\harness\cycle-ZD-spain-france-cashout-fresh\cycle-ZD-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json"
 
 $runtimeSummary = Read-JsonFile $runtimeSummaryPath
 $liveSummary = Read-JsonFile $liveSummaryPath
@@ -198,6 +198,11 @@ $checks = [ordered]@{
   lifecycleSchedulerCloseProof = [bool]($SkipLifecycleSchedulerProof -or ($lifecycleSchedulerSummary -and $lifecycleSchedulerSummary.checks.closeAfterStart -eq $true))
   lifecycleSchedulerRestored = [bool]($SkipLifecycleSchedulerProof -or ($lifecycleSchedulerSummary -and $lifecycleSchedulerSummary.checks.marketStatusesRestored -eq $true))
   s23VisibleProofPass = [bool]($s23Summary -and $s23Summary.result -eq "pass")
+  s23CashoutClosePositionMode = [bool]($s23Summary -and $s23Summary.assertions.cashoutTicketIsClosePositionMode -eq $true)
+  s23CashoutMaxUsesOwnedShares = [bool]($s23Summary -and $s23Summary.assertions.cashoutMaxUsesOwnedShares -eq $true)
+  s23CashoutHidesYesNoSelector = [bool]($s23Summary -and $s23Summary.assertions.cashoutTicketHidesYesNoSelector -eq $true)
+  s23CashoutSellSubmitted = [bool]($s23Summary -and $s23Summary.assertions.cashoutSellSubmitted -eq $true)
+  s23CashoutHistoryVisible = [bool]($s23Summary -and $s23Summary.assertions.cashoutHistoryVisible -eq $true)
   s23Connected = [bool]($AllowDisconnectedS23 -or $s23.connected)
 }
 $failedChecks = @()

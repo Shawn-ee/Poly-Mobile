@@ -19,6 +19,7 @@ describe("The Odds API single-event temporary provider", () => {
   const runtimeStatusScript = () => readFileSync("scripts/report_odds_api_one_event_runtime_status.ts", "utf8");
   const phaseAuditScript = () => readFileSync("scripts/report_odds_api_live_runtime_phase_audit.ts", "utf8");
   const completionAuditScript = () => readFileSync("scripts/report_holiwyn_live_runtime_completion_audit.ts", "utf8");
+  const liveReadinessScript = () => readFileSync("scripts/prove_holiwyn_one_event_live_readiness.ps1", "utf8");
   const internalEnvScript = () => readFileSync("scripts/prove_mobile_odds_api_internal_environment.ts", "utf8");
   const routeCounterpartyScript = () => readFileSync("scripts/seed_mobile_route_spread_counterparty.ts", "utf8");
   const service = () => readFileSync("src/server/services/theOddsApiSingleEventProvider.ts", "utf8");
@@ -96,6 +97,23 @@ describe("The Odds API single-event temporary provider", () => {
     expect(completionAuditScript()).toContain("externalExpoServerModeUnverified");
     expect(completionAuditScript()).toContain("ReplaceExternalExpo");
     expect(completionAuditScript()).toContain("scripts/manage_holiwyn_internal_tester_runtime.ps1");
+  });
+
+  it("gates one-event readiness on the fresh S23 close-position cashout proof", () => {
+    const freshCashoutProof =
+      "cycle-ZD-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json";
+    expect(phaseAuditScript()).toContain(freshCashoutProof);
+    expect(completionAuditScript()).toContain(freshCashoutProof);
+    expect(liveReadinessScript()).toContain(freshCashoutProof);
+    expect(phaseAuditScript()).toContain("cashoutTicketIsClosePositionMode");
+    expect(phaseAuditScript()).toContain("cashoutMaxUsesOwnedShares");
+    expect(phaseAuditScript()).toContain("cashoutTicketHidesYesNoSelector");
+    expect(completionAuditScript()).toContain("cashoutTicketIsClosePositionMode");
+    expect(completionAuditScript()).toContain("cashoutMaxUsesOwnedShares");
+    expect(completionAuditScript()).toContain("cashoutTicketHidesYesNoSelector");
+    expect(liveReadinessScript()).toContain("s23CashoutClosePositionMode");
+    expect(liveReadinessScript()).toContain("s23CashoutMaxUsesOwnedShares");
+    expect(liveReadinessScript()).toContain("s23CashoutHidesYesNoSelector");
   });
 
   it("separates current loop process state from proven runtime capability in one-event status", () => {

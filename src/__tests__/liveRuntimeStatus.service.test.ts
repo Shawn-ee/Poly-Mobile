@@ -303,7 +303,7 @@ const makeCompletionAudit = (
     oneEventMobileTrading: {
       pass: true,
       answer: "S23 proof passed",
-      evidence: ["cycle-LIVEODDSS23-odds-api-s23-visible-flow.json"],
+      evidence: ["cycle-ZD-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json"],
     },
     runtimeLaunch: {
       pass: true,

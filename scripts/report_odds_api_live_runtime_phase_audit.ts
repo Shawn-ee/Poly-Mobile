@@ -85,7 +85,8 @@ const PATHS = {
   makerSeed: "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
   providerMakerHandoff:
     "docs/mobile/harness/odds-api-live-runtime/provider-maker-handoff-summary.redacted.json",
-  s23Visible: "docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json",
+  s23Visible:
+    "docs/mobile/harness/cycle-ZD-spain-france-cashout-fresh/cycle-ZD-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json",
 };
 
 type JsonObject = Record<string, unknown>;
@@ -1365,7 +1366,16 @@ async function main() {
       id: "mobile-trading-flow",
       priority: "P0",
       requirement: "Mobile can trade the one upcoming event end-to-end and Portfolio/history reflect it.",
-      achieved: pass(entries.liveProof) && entries.s23Visible?.result === "pass" && pass(entries.readiness),
+      achieved:
+        pass(entries.liveProof) &&
+        entries.s23Visible?.result === "pass" &&
+        getPath(entries.s23Visible, ["assertions", "swipeSubmitReachedPortfolio"]) === true &&
+        getPath(entries.s23Visible, ["assertions", "cashoutTicketIsClosePositionMode"]) === true &&
+        getPath(entries.s23Visible, ["assertions", "cashoutMaxUsesOwnedShares"]) === true &&
+        getPath(entries.s23Visible, ["assertions", "cashoutTicketHidesYesNoSelector"]) === true &&
+        getPath(entries.s23Visible, ["assertions", "cashoutSellSubmitted"]) === true &&
+        getPath(entries.s23Visible, ["assertions", "cashoutHistoryVisible"]) === true &&
+        pass(entries.readiness),
       evidence: [PATHS.liveProof, PATHS.readiness, PATHS.s23Visible],
     }),
     requirement({
