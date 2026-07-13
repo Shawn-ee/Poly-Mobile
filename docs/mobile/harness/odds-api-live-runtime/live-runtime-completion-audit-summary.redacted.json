@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T06:10:00.795Z",
+  "generatedAt": "2026-07-13T07:32:45.145Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -28,7 +28,7 @@
     "freshness": {
       "liveProofAgeHours": 5.41,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 14.84,
+      "watchdogAgeHours": 16.21,
       "maxWatchdogAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -172,7 +172,7 @@
     },
     "runtimeLaunch": {
       "pass": true,
-      "answer": "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, starts managed Expo in server-backed S23 mode, exposes explicit foreground-vs-installed service ownership plus read-only operator-control boundaries, and cleans up after proof.",
+      "answer": "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, starts managed Expo in server-backed S23 mode, flags reused external Expo listeners as unverified, provides an explicit -Force -ReplaceExternalExpo path for verified manager-owned S23 startup, exposes explicit foreground-vs-installed service ownership plus read-only operator-control boundaries, and cleans up after proof.",
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",

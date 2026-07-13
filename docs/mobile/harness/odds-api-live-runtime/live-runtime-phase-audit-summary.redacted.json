@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T06:10:01.032Z",
+  "generatedAt": "2026-07-13T07:32:44.657Z",
   "scope": "odds-api-live-runtime-phase-audit",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -28,7 +28,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-13T06:10:00.889Z"
+      "timestamp": "2026-07-13T07:32:44.118Z"
     },
     "error": null
   },
@@ -44,10 +44,10 @@
           "bestBid": "0.58",
           "bestAsk": "0.59",
           "bestBidSize": 36.9,
-          "bestAskSize": 200,
+          "bestAskSize": 243.1,
           "midPrice": "0.585",
           "lastPrice": "0.58",
-          "lastTradeAt": "2026-07-13T05:40:59.926Z"
+          "lastTradeAt": "2026-07-13T07:09:17.563Z"
         },
         {
           "outcomeId": "ee7237f3-ee58-4a66-a092-adaa58b3547f",
@@ -68,7 +68,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-13T06:10:00.969Z",
+      "generatedAt": "2026-07-13T07:32:44.580Z",
       "scope": "holiwyn-local-live-runtime-status",
       "status": "ready",
       "event": {
@@ -321,7 +321,7 @@
         "checked": true,
         "path": "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
         "pass": true,
-        "generatedAt": "2026-07-13T01:50:24.263Z",
+        "generatedAt": "2026-07-13T06:57:50.906Z",
         "recommendedInternalTesterProfile": {
           "label": "User Startup fallback with backend, Expo, supervisor, result poller, result ingestion, settlement scheduling, and approved-settlement wait mode",
           "command": "npm run mobile:local-runtime-startup -- -Action plan -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
@@ -346,6 +346,11 @@
             {
               "label": "start backend/expo plus supervisor and result poller",
               "command": "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
+              "quotaMode": "no provider quota by default"
+            },
+            {
+              "label": "replace stale Expo with verified server-mode Expo",
+              "command": "npm run mobile:internal-tester-runtime -- -Action start -Force -ReplaceExternalExpo -WaitForReady",
               "quotaMode": "no provider quota by default"
             },
             {
@@ -375,6 +380,7 @@
           "proofLeavesNoPersistentScheduledTask": true,
           "noProviderQuotaSpentByDefaultProfile": true,
           "activeTesterSettlementExecution": false,
+          "verifiedExpoReplacementCommandDocumented": true,
           "installedProductionService": false,
           "fakeTokenOnly": true
         },
@@ -459,6 +465,7 @@
             "npm run mobile:internal-tester-runtime -- -Action status",
             "npm run mobile:internal-tester-runtime:cached-start",
             "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
+            "npm run mobile:internal-tester-runtime -- -Action start -Force -ReplaceExternalExpo -WaitForReady",
             "npm run mobile:internal-tester-runtime:stop"
           ],
           "scheduledTaskPlanCommand": "npm run mobile:local-runtime-task -- -Action plan -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement",
@@ -559,7 +566,7 @@
         "mobileFreshness": {
           "status": "stale",
           "mobileRouteFresh": false,
-          "latestSnapshotAgeSeconds": 20741,
+          "latestSnapshotAgeSeconds": 25705,
           "refreshDueSeconds": 60,
           "staleAfterSeconds": 90,
           "nextProviderAction": "refresh_provider_snapshots_or_keep_cached_test_mode"
@@ -908,11 +915,11 @@
         "maxPhaseAuditAgeHours": 24,
         "maxWatchdogAgeHours": 24,
         "maxLiveProofAgeHours": 24,
-        "completionAuditAgeHours": 0,
-        "phaseAuditAgeHours": 0.35,
-        "watchdogAgeHours": 14.84,
+        "completionAuditAgeHours": 1.38,
+        "phaseAuditAgeHours": 1.38,
+        "watchdogAgeHours": 16.21,
         "liveProofAgeAtCompletionHours": 5.41,
-        "liveProofCurrentAgeHours": 5.41,
+        "liveProofCurrentAgeHours": 6.79,
         "completionAuditFresh": true,
         "phaseAuditFresh": true,
         "watchdogFresh": true,
@@ -926,8 +933,8 @@
         "reason": null,
         "snapshotCount": 2,
         "latestFetchedAt": "2026-07-13T00:24:19.924Z",
-        "latestAgeHours": 5.76,
-        "latestAgeSeconds": 20741,
+        "latestAgeHours": 7.14,
+        "latestAgeSeconds": 25705,
         "maxAgeHours": 24,
         "sources": [
           "sportsbook-odds"
@@ -1579,8 +1586,8 @@
             "installedOsService": false,
             "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
             "startedAt": "2026-07-13T05:18:08.284Z",
-            "heartbeatAt": "2026-07-13T06:10:00.944Z",
-            "updatedAt": "2026-07-13T06:10:00.948Z",
+            "heartbeatAt": "2026-07-13T07:32:44.557Z",
+            "updatedAt": "2026-07-13T07:32:44.561Z",
             "metadata": {
               "source": "local-runtime-status-route",
               "workerOwned": true,
@@ -1600,8 +1607,8 @@
             "installedOsService": false,
             "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
             "startedAt": "2026-07-13T05:18:08.605Z",
-            "heartbeatAt": "2026-07-13T06:10:00.944Z",
-            "updatedAt": "2026-07-13T06:10:00.948Z",
+            "heartbeatAt": "2026-07-13T07:32:44.558Z",
+            "updatedAt": "2026-07-13T07:32:44.561Z",
             "metadata": {
               "source": "local-runtime-status-route",
               "workerOwned": true,
@@ -1686,7 +1693,7 @@
         "phaseAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-13T05:49:05.136Z"
+          "generatedAt": "2026-07-13T06:10:01.032Z"
         },
         "runtimeStatus": {
           "path": "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
@@ -1712,7 +1719,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-13T06:10:01.007Z",
+      "generatedAt": "2026-07-13T07:32:44.617Z",
       "scope": "holiwyn-local-live-runtime-result-review",
       "status": "ready",
       "providerQuotaUsed": false,
@@ -1817,7 +1824,7 @@
         "exactConfirmationStored": false,
         "activeMarketExecutionAttempted": false,
         "providerQuotaUsed": false,
-        "updatedAt": "2026-07-13T06:10:01.000Z"
+        "updatedAt": "2026-07-13T07:32:44.610Z"
       },
       "executionDecision": {
         "activeMarketStatus": "LIVE",
@@ -1871,7 +1878,7 @@
         "phaseAudit": {
           "path": "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
           "pass": true,
-          "generatedAt": "2026-07-13T05:49:05.136Z"
+          "generatedAt": "2026-07-13T06:10:01.032Z"
         }
       }
     },
@@ -1881,7 +1888,7 @@
     "ok": true,
     "status": 200,
     "body": {
-      "generatedAt": "2026-07-13T06:10:01.020Z",
+      "generatedAt": "2026-07-13T07:32:44.641Z",
       "scope": "holiwyn-local-live-runtime-settlement-queue",
       "status": "ready",
       "providerQuotaUsed": false,
@@ -1999,7 +2006,7 @@
                 "exactConfirmationArgumentRedacted": true
               }
             },
-            "updatedAt": "2026-07-13T06:10:01.000Z"
+            "updatedAt": "2026-07-13T07:32:44.610Z"
           }
         ]
       },
@@ -2046,7 +2053,7 @@
     "status": 200,
     "body": {
       "status": "ready",
-      "generatedAt": "2026-07-13T06:10:01.030Z",
+      "generatedAt": "2026-07-13T07:32:44.655Z",
       "providerQuotaUsed": false,
       "event": {
         "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
@@ -2198,57 +2205,57 @@
     "error": null
   },
   "artifactAgesHours": {
-    "liveProof": 5.76,
-    "onboarding": 9.06,
-    "onboardingRuntimeStart": 9.06,
-    "onboardingRuntimeStatus": 9.06,
-    "onboardingRuntimeStop": 9.06,
-    "readiness": 9.07,
-    "runtimeStatus": 0.35,
-    "runtimeLaunch": 0.35,
-    "supervisor": 0.35,
-    "supervisorProcess": 4.12,
-    "internalTesterRuntime": 4.12,
-    "internalTesterResultPoller": 16.63,
-    "internalTesterWatchdog": 14.84,
-    "currentRuntimeStateProof": 9.87,
-    "localRuntimeTask": 12.87,
-    "localRuntimeTaskInstall": 12.86,
-    "localRuntimeStartup": 17.85,
-    "localRuntimeStartupInstall": 16.38,
-    "localRuntimeLaunchProfile": 4.33,
-    "liveRuntimeCompletionAudit": 0,
-    "continuousSupervisor": 10.62,
-    "staleGuardProof": 20.65,
-    "staleGuardRun": 20.54,
-    "lifecycleControls": 9.07,
-    "lifecycleScheduler": 9.07,
-    "lifecycleSchedulerRun": 0.35,
-    "lifecycleMatrix": 16.06,
-    "settlementReadiness": 9.07,
-    "settlementExecution": 19.14,
-    "resultSettlementExecution": 18.29,
-    "resultSettlementLiveBlocked": 18.29,
-    "manualSettlement": 9.06,
-    "resultIngestion": 0.35,
-    "resultIngestionAuditEvent": 16.49,
-    "resultPoller": 11.53,
-    "resultPollerProcess": 4.12,
-    "continuousResultPoller": 16.79,
-    "resultSettlement": 0.35,
-    "resultSettlementRun": 0.35,
-    "settlementPreflight": 18.05,
-    "settlementAuditEvent": 17.74,
-    "settlementApprovalAuditEvent": 15.41,
-    "resultReviewTrail": 15.31,
-    "activeSettlementReadiness": 15.2,
-    "activeSettlementClosedEligibility": 9.62,
-    "approvedAutoSettlement": 17.56,
-    "activeSettlementClone": 15.54,
-    "supervisorApprovedSettlement": 17.38,
-    "makerSeed": 0.35,
-    "providerMakerHandoff": 10.51,
-    "s23Visible": 22.88
+    "liveProof": 7.14,
+    "onboarding": 10.44,
+    "onboardingRuntimeStart": 10.44,
+    "onboardingRuntimeStatus": 10.44,
+    "onboardingRuntimeStop": 10.44,
+    "readiness": 10.44,
+    "runtimeStatus": 1.73,
+    "runtimeLaunch": 1.73,
+    "supervisor": 1.73,
+    "supervisorProcess": 5.5,
+    "internalTesterRuntime": 5.5,
+    "internalTesterResultPoller": 18,
+    "internalTesterWatchdog": 16.21,
+    "currentRuntimeStateProof": 11.25,
+    "localRuntimeTask": 14.25,
+    "localRuntimeTaskInstall": 14.24,
+    "localRuntimeStartup": 19.23,
+    "localRuntimeStartupInstall": 17.76,
+    "localRuntimeLaunchProfile": 0.58,
+    "liveRuntimeCompletionAudit": 0.02,
+    "continuousSupervisor": 12,
+    "staleGuardProof": 22.03,
+    "staleGuardRun": 21.92,
+    "lifecycleControls": 10.45,
+    "lifecycleScheduler": 10.45,
+    "lifecycleSchedulerRun": 1.73,
+    "lifecycleMatrix": 17.44,
+    "settlementReadiness": 10.44,
+    "settlementExecution": 20.52,
+    "resultSettlementExecution": 19.67,
+    "resultSettlementLiveBlocked": 19.67,
+    "manualSettlement": 10.44,
+    "resultIngestion": 1.73,
+    "resultIngestionAuditEvent": 17.87,
+    "resultPoller": 12.91,
+    "resultPollerProcess": 5.5,
+    "continuousResultPoller": 18.17,
+    "resultSettlement": 1.73,
+    "resultSettlementRun": 1.73,
+    "settlementPreflight": 19.43,
+    "settlementAuditEvent": 19.11,
+    "settlementApprovalAuditEvent": 16.79,
+    "resultReviewTrail": 16.69,
+    "activeSettlementReadiness": 16.58,
+    "activeSettlementClosedEligibility": 11,
+    "approvedAutoSettlement": 18.94,
+    "activeSettlementClone": 16.92,
+    "supervisorApprovedSettlement": 18.76,
+    "makerSeed": 1.73,
+    "providerMakerHandoff": 11.89,
+    "s23Visible": 24.26
   },
   "requirements": [
     {
@@ -2598,7 +2605,7 @@
       "evidence": [
         "scripts/manage_holiwyn_internal_tester_runtime.ps1"
       ],
-      "notes": "This gates the source contract without restarting the active S23 proof session: manager-owned Expo sets API/auth base URLs to the backend, enables server order/market data mode, hides order book, and fails readiness if S23 port forwarding fails."
+      "notes": "This gates the source contract without restarting the active S23 proof session: manager-owned Expo sets API/auth base URLs to the backend, enables server order/market data mode, hides order book, fails readiness if S23 port forwarding fails, reports reused external Expo listeners as unverified instead of silently treating them as server-mode proof, and exposes an explicit -Force -ReplaceExternalExpo path for verified restart when the operator intentionally wants to replace a stale Expo listener."
     },
     {
       "id": "internal-tester-result-poller-control",
