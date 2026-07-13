@@ -1,0 +1,59 @@
+{
+  "generatedAt": "2026-07-13T18:29:44.081Z",
+  "scope": "odds-api-one-event-lifecycle-scheduler-run",
+  "pass": true,
+  "dryRun": true,
+  "eventSlug": "odds-api-single-soccer-test",
+  "referenceSource": "sportsbook-odds",
+  "suspendBeforeStartSeconds": 300,
+  "scheduler": {
+    "generatedAt": "2026-07-13T18:29:44.081Z",
+    "eventSlug": "odds-api-single-soccer-test",
+    "eventTitle": "Spain vs. France",
+    "eventStatus": "active",
+    "eventLiveStatus": "LIVE",
+    "eventStartTime": "2026-07-14T19:00:00.000Z",
+    "status": "completed",
+    "dryRun": true,
+    "now": "2026-07-13T18:29:44.044Z",
+    "suspendBeforeStartSeconds": 300,
+    "referenceSource": "sportsbook-odds",
+    "action": "none",
+    "reason": "Event is not inside the suspend/close window.",
+    "timing": {
+      "now": "2026-07-13T18:29:44.044Z",
+      "startTime": "2026-07-14T19:00:00.000Z",
+      "pauseAt": "2026-07-14T18:55:00.000Z",
+      "closeAt": "2026-07-14T19:00:00.000Z",
+      "secondsUntilStart": 88216,
+      "startAgeSeconds": 0,
+      "secondsUntilPause": 87916,
+      "suspendBeforeStartSeconds": 300,
+      "insideSuspendWindow": false,
+      "startPassed": false,
+      "tradingWindow": "pre_start_open",
+      "schedulerActionNow": "none",
+      "nextLifecycleAction": "pause",
+      "nextLifecycleActionAt": "2026-07-14T18:55:00.000Z",
+      "secondsUntilNextLifecycleAction": 87916,
+      "operatorNextAction": "wait_until_suspend_window"
+    },
+    "candidateMarketCount": 3,
+    "candidateMarketStatusCounts": {
+      "LIVE": 3
+    },
+    "changedMarketCount": 0,
+    "mutationApplied": false,
+    "canceledOrderCount": 0,
+    "changes": []
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "This command is foreground/local; it is not an installed unattended daemon."
+    ],
+    "p2": [
+      "Multi-event lifecycle scheduling remains future work."
+    ]
+  }
+}

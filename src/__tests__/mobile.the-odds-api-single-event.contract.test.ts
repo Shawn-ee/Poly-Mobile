@@ -29,6 +29,7 @@ describe("The Odds API single-event temporary provider", () => {
   const internalEnvScript = () => readFileSync("scripts/prove_mobile_odds_api_internal_environment.ts", "utf8");
   const routeCounterpartyScript = () => readFileSync("scripts/seed_mobile_route_spread_counterparty.ts", "utf8");
   const service = () => readFileSync("src/server/services/theOddsApiSingleEventProvider.ts", "utf8");
+  const lifecycleSchedulerService = () => readFileSync("src/server/services/oneEventLifecycleScheduler.ts", "utf8");
 
   it("is exposed as an env-var-only script and does not contain a hardcoded API key", () => {
     expect(packageJson()).toContain("mobile:the-odds-api-single-event");
@@ -168,6 +169,20 @@ describe("The Odds API single-event temporary provider", () => {
       expect(source).toContain("deviceId = $serial");
       expect(source).not.toContain('deviceId = if ($line) { "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp" }');
     }
+  });
+
+  it("exposes lifecycle timing and mutation truth from the one-event scheduler", () => {
+    const source = lifecycleSchedulerService();
+    expect(source).toContain("function lifecycleTiming");
+    expect(source).toContain("tradingWindow");
+    expect(source).toContain("pre_start_suspend_window");
+    expect(source).toContain("secondsUntilNextLifecycleAction");
+    expect(source).toContain("nextLifecycleActionAt");
+    expect(source).toContain("operatorNextAction");
+    expect(source).toContain("candidateMarketStatusCounts");
+    expect(source).toContain("mutationApplied");
+    expect(source).toContain("eventStatus");
+    expect(source).toContain("eventLiveStatus");
   });
 
   it("gates live-runtime audits on managed S23 server-backed startup", () => {

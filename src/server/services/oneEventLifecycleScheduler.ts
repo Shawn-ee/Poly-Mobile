@@ -31,6 +31,8 @@ export async function runOneEventLifecycleScheduler(options: OneEventLifecycleSc
       slug: true,
       title: true,
       startTime: true,
+      status: true,
+      liveStatus: true,
       markets: {
         where: {
           visibility: "PUBLIC",
@@ -58,13 +60,20 @@ export async function runOneEventLifecycleScheduler(options: OneEventLifecycleSc
       status: "event_not_found" as const,
       dryRun: options.dryRun === true,
       now: now.toISOString(),
-      action: "none" as const,
-      reason: "Event was not found.",
-      candidateMarketCount: 0,
-      changedMarketCount: 0,
-      canceledOrderCount: 0,
-      changes: [],
-    };
+        action: "none" as const,
+        reason: "Event was not found.",
+        timing: lifecycleTiming({
+          startTime: null,
+          now,
+          suspendBeforeStartSeconds,
+        }),
+        candidateMarketCount: 0,
+        candidateMarketStatusCounts: {},
+        changedMarketCount: 0,
+        mutationApplied: false,
+        canceledOrderCount: 0,
+        changes: [],
+      };
   }
 
   const decision = decideEventLifecycleAction({
@@ -75,9 +84,14 @@ export async function runOneEventLifecycleScheduler(options: OneEventLifecycleSc
   const changes = event.markets
     .map((market) => buildMarketLifecycleChange({ market, action: decision.action, now }))
     .filter((change): change is NonNullable<typeof change> => change != null);
+  const statusCounts = event.markets.reduce<Record<string, number>>((counts, market) => {
+    counts[market.status] = (counts[market.status] ?? 0) + 1;
+    return counts;
+  }, {});
 
   let canceledOrderCount = 0;
-  if (!options.dryRun && changes.length > 0) {
+  const mutationApplied = !options.dryRun && changes.length > 0;
+  if (mutationApplied) {
     const closeTime = now;
     await prisma.$transaction(async (tx) => {
       for (const change of changes) {
@@ -100,6 +114,8 @@ export async function runOneEventLifecycleScheduler(options: OneEventLifecycleSc
     generatedAt: new Date().toISOString(),
     eventSlug: event.slug,
     eventTitle: event.title,
+    eventStatus: event.status,
+    eventLiveStatus: event.liveStatus,
     eventStartTime: event.startTime?.toISOString() ?? null,
     status: "completed" as const,
     dryRun: options.dryRun === true,
@@ -108,8 +124,11 @@ export async function runOneEventLifecycleScheduler(options: OneEventLifecycleSc
     referenceSource,
     action: decision.action,
     reason: decision.reason,
+    timing: decision.timing,
     candidateMarketCount: event.markets.length,
+    candidateMarketStatusCounts: statusCounts,
     changedMarketCount: changes.length,
+    mutationApplied,
     canceledOrderCount,
     changes,
   };
@@ -120,10 +139,12 @@ function decideEventLifecycleAction(params: {
   now: Date;
   suspendBeforeStartSeconds: number;
 }) {
+  const timing = lifecycleTiming(params);
   if (!params.startTime) {
     return {
       action: "none" as const,
       reason: "Event has no startTime, so scheduler cannot infer lifecycle timing.",
+      timing,
     };
   }
   const msUntilStart = params.startTime.getTime() - params.now.getTime();
@@ -131,17 +152,83 @@ function decideEventLifecycleAction(params: {
     return {
       action: "close" as const,
       reason: "Event startTime has passed or is now; close mobile-tradable markets.",
+      timing,
     };
   }
   if (msUntilStart <= params.suspendBeforeStartSeconds * 1000) {
     return {
       action: "pause" as const,
       reason: "Event is inside the pre-start suspend window; pause trading.",
+      timing,
     };
   }
   return {
     action: "none" as const,
     reason: "Event is not inside the suspend/close window.",
+    timing,
+  };
+}
+
+function lifecycleTiming(params: {
+  startTime: Date | null;
+  now: Date;
+  suspendBeforeStartSeconds: number;
+}) {
+  const pauseAt = params.startTime
+    ? new Date(params.startTime.getTime() - params.suspendBeforeStartSeconds * 1000)
+    : null;
+  const closeAt = params.startTime;
+  const msUntilStart = params.startTime ? params.startTime.getTime() - params.now.getTime() : null;
+  const secondsUntilStart = msUntilStart == null ? null : Math.round(msUntilStart / 1000);
+  const startAgeSeconds = msUntilStart == null ? null : Math.max(0, Math.round(-msUntilStart / 1000));
+  const msUntilPause = pauseAt ? pauseAt.getTime() - params.now.getTime() : null;
+  const secondsUntilPause = msUntilPause == null ? null : Math.round(msUntilPause / 1000);
+  const startPassed = typeof secondsUntilStart === "number" && secondsUntilStart <= 0;
+  const insideSuspendWindow =
+    typeof secondsUntilStart === "number" &&
+    secondsUntilStart > 0 &&
+    secondsUntilStart <= params.suspendBeforeStartSeconds;
+  const tradingWindow = !params.startTime
+    ? "unknown"
+    : startPassed
+      ? "past_start"
+      : insideSuspendWindow
+        ? "pre_start_suspend_window"
+        : "pre_start_open";
+  const schedulerActionNow =
+    tradingWindow === "past_start" ? "close" : tradingWindow === "pre_start_suspend_window" ? "pause" : "none";
+  const nextLifecycleAction =
+    tradingWindow === "past_start" ? "close" : tradingWindow === "pre_start_suspend_window" ? "pause" : "pause";
+  const nextLifecycleActionAt =
+    tradingWindow === "past_start" ? closeAt : tradingWindow === "pre_start_suspend_window" ? pauseAt : pauseAt;
+  const secondsUntilNextLifecycleAction =
+    schedulerActionNow === "none" ? Math.max(0, secondsUntilPause ?? 0) : 0;
+  const operatorNextAction =
+    tradingWindow === "past_start"
+      ? "close_markets_before_settlement"
+      : tradingWindow === "pre_start_suspend_window"
+        ? "pause_trading_before_kickoff"
+        : tradingWindow === "pre_start_open"
+          ? "wait_until_suspend_window"
+          : "set_or_import_event_start_time";
+
+  return {
+    now: params.now.toISOString(),
+    startTime: params.startTime?.toISOString() ?? null,
+    pauseAt: pauseAt?.toISOString() ?? null,
+    closeAt: closeAt?.toISOString() ?? null,
+    secondsUntilStart,
+    startAgeSeconds,
+    secondsUntilPause,
+    suspendBeforeStartSeconds: params.suspendBeforeStartSeconds,
+    insideSuspendWindow,
+    startPassed,
+    tradingWindow,
+    schedulerActionNow,
+    nextLifecycleAction,
+    nextLifecycleActionAt: nextLifecycleActionAt?.toISOString() ?? null,
+    secondsUntilNextLifecycleAction,
+    operatorNextAction,
   };
 }
 

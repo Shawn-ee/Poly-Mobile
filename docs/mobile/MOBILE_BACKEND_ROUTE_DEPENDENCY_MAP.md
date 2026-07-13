@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ZX - Lifecycle Scheduler Timing Proof
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| One-event lifecycle scheduler timing artifact | `npm run mobile:one-event-lifecycle-scheduler-run` | Local CLI/service call | Local dev DB only; no provider key and no mobile auth | Optional `eventSlug`, `suspendBeforeStartSeconds`, `referenceSource`, `dryRun`, and `summaryPath` | `scheduler.timing.tradingWindow`, `pauseAt`, `closeAt`, `secondsUntilStart`, `secondsUntilPause`, `nextLifecycleAction`, `nextLifecycleActionAt`, `secondsUntilNextLifecycleAction`, `operatorNextAction`, `candidateMarketStatusCounts`, and `mutationApplied` | Reads `Event.startTime`, `Event.status`, `Event.liveStatus`, and public sportsbook-backed `Market.status`; may update `Market.status`/`closeTime` and cancel open orders only when not dry-run and action is due | Dry-run mode produces the same timing evidence without mutation or provider quota | Installed unattended lifecycle service remains P1. This command is still foreground/local unless run by the local supervisor. |
+
 ## Cycle ZW - Lifecycle-Aware Operator Actions
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

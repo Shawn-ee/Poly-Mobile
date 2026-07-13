@@ -2,6 +2,20 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZX - Lifecycle Scheduler Timing Proof
+
+- Feature/runtime worked on: one-event lifecycle scheduler output for the Spain vs. France internal tester event.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `src/server/services/oneEventLifecycleScheduler.ts`
+  - `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+  - `scripts/run_odds_api_one_event_lifecycle_scheduler.ts` was executed in dry-run mode, not edited.
+- User/runtime interactions supported: scheduler artifacts now report the current trading window, pause/close timestamps, seconds until the next lifecycle action, candidate market status counts, and whether a mutation was applied.
+- State transitions: dry-run proof applied no mutations. The service still mutates only when not dry-run and the event is inside the pause/close window.
+- API/data dependencies: `Event.startTime`, `Event.status`, `Event.liveStatus`, public sportsbook-backed `Market.status` rows, and the existing 5-minute lifecycle suspend window.
+- Known limitations: this improves local scheduler evidence only. It does not install an unattended lifecycle service or execute active-event settlement.
+- Proof: `docs/mobile/harness/odds-api-live-runtime/zx-lifecycle-scheduler-timing-summary.redacted.json`.
+
 ## Cycle ZW - Lifecycle-Aware Operator Actions
 
 - Feature/runtime worked on: read-only operator next actions for the current Spain vs. France internal tester event lifecycle.
