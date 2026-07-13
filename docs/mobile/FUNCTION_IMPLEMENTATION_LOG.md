@@ -15846,3 +15846,22 @@ Known limitations:
   - `npm run mobile:live-runtime-completion-audit`
   - `npm run mobile:one-event-phase-audit`
 - Known limitations: this is an internal tester handoff refresh, not an installed service. Production official-result auto-settlement remains P1.
+
+## Cycle ZZC - Selected Outcome Quote Guard
+
+- Feature/runtime worked on: Backend Live Runtime Survey / One Event Live Pipeline quote readiness for the current `Spain vs. France` internal tester market.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. The guard reads existing `GET /api/markets/:marketId/quote`, `GET /api/health`, and live-runtime status routes.
+- Important functions/services touched: `scripts/report_odds_api_one_event_runtime_status.ts` and `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: internal tester buy flow is now protected from a false-green runtime status where the selected ticket outcome exists but lacks visible ask liquidity. The audit now prefers the current maker-seeded selected outcome over older live-proof outcome metadata, then requires that exact outcome to appear in the quote route with both bid and ask.
+- State transitions: `npm run mobile:one-event-runtime-status` first failed with `selectedOutcomeAskVisible=false`, proving the new guard caught missing buy-side ask liquidity. `npm run mobile:one-event-live-maker-seed` then restored shifted maker ask liquidity for the current selected `Over 2.5` outcome, and the runtime/phase gates passed. No provider quota was spent, no provider scan ran, no mobile UI changed, and no settlement executed.
+- Proof:
+  - `npm run mobile:one-event-runtime-status` failed before reseed with P0 `selectedOutcomeAskVisible`.
+  - `npm run mobile:one-event-live-maker-seed`
+  - `npm run mobile:one-event-runtime-status`
+  - `npm run mobile:one-event-phase-audit`
+- Proof summaries:
+  - `docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json`
+- Known limitations: this tightens local selected-outcome quote proof only. Installed unattended services and production official-result auto-settlement remain P1.

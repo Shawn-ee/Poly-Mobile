@@ -174,6 +174,23 @@ function getPath(source: unknown, keys: string[]) {
   return cursor;
 }
 
+function asObject(value: unknown): JsonObject | null {
+  return value && typeof value === "object" && !Array.isArray(value) ? (value as JsonObject) : null;
+}
+
+function quoteForOutcome(quoteRoute: { body: unknown } | null, outcomeId: string | null) {
+  const quotes = asObject(quoteRoute?.body)?.quotes;
+  if (!Array.isArray(quotes) || !outcomeId) return null;
+  return quotes
+    .map((quote) => asObject(quote))
+    .find((quote) => quote?.outcomeId === outcomeId) ?? null;
+}
+
+function hasDisplayedPrice(value: unknown) {
+  if (typeof value === "number") return Number.isFinite(value);
+  return typeof value === "string" && value.trim().length > 0;
+}
+
 function bool(value: unknown) {
   return value === true;
 }
@@ -301,10 +318,16 @@ async function main() {
     internalTesterRuntimeScript.includes("replaceExternalExpoAvailable") &&
     internalTesterRuntimeScript.includes("Use -Force -ReplaceExternalExpo");
   const health = await fetchJson(`${baseUrl}/api/health`);
-  const selectedMarketId = text(getPath(entries.liveProof, ["selectedMarket", "id"]));
+  const currentSelectedMarket = asObject(entries.makerSeed?.selectedMarket) ?? asObject(entries.liveProof?.selectedMarket);
+  const selectedMarketId = text(currentSelectedMarket?.id);
+  const selectedOutcomeId = text(currentSelectedMarket?.outcomeId);
   const quote = selectedMarketId
     ? await fetchJson(`${baseUrl}/api/markets/${encodeURIComponent(selectedMarketId)}/quote`)
     : null;
+  const selectedOutcomeQuote = quoteForOutcome(quote, selectedOutcomeId);
+  const selectedOutcomeQuoteFound = selectedOutcomeQuote != null;
+  const selectedOutcomeBidVisible = hasDisplayedPrice(selectedOutcomeQuote?.bestBid);
+  const selectedOutcomeAskVisible = hasDisplayedPrice(selectedOutcomeQuote?.bestAsk);
   const localRuntimeStatus = await fetchJson(`${baseUrl}/api/internal/live-runtime/status?phaseAuditInProgress=1`);
   const localRuntimeStatusBody =
     localRuntimeStatus.body && typeof localRuntimeStatus.body === "object"
@@ -642,7 +665,7 @@ async function main() {
     requirement({
       id: "market-maker-liquidity",
       priority: "P0",
-      requirement: "Market maker liquidity is available and shifted worse than provider.",
+      requirement: "Market maker liquidity is available for the current selected outcome and shifted worse than provider.",
       achieved:
         pass(entries.makerSeed) &&
         getPath(entries.makerSeed, ["checks", "shiftedBidWorseThanProvider"]) === true &&
@@ -651,12 +674,17 @@ async function main() {
         getPath(localRuntimeStatusBody, ["marketMakerQuoteRuns", "latestRunShiftedWorseThanProvider"]) === true &&
         getPath(localRuntimeStatusBody, ["marketMakerQuoteRuns", "latestRunQuoteRouteReady"]) === true &&
         getPath(localRuntimeStatusBody, ["marketMakerQuoteRuns", "repeatedLocalRunsProven"]) === true &&
-        quote?.ok === true,
+        quote?.ok === true &&
+        selectedOutcomeQuoteFound &&
+        selectedOutcomeBidVisible &&
+        selectedOutcomeAskVisible,
       evidence: [
         PATHS.makerSeed,
         quote ? `${baseUrl}/api/markets/${selectedMarketId}/quote` : "missing quote route",
         `${baseUrl}/api/internal/live-runtime/status`,
       ],
+      notes:
+        `selectedOutcomeId=${selectedOutcomeId ?? "unknown"}, quoteFound=${selectedOutcomeQuoteFound}, bidVisible=${selectedOutcomeBidVisible}, askVisible=${selectedOutcomeAskVisible}`,
     }),
     requirement({
       id: "market-maker-continuity",
@@ -1230,8 +1258,17 @@ async function main() {
     baseUrl,
     event: entries.liveProof?.event ?? null,
     selectedMarket: entries.liveProof?.selectedMarket ?? null,
+    currentSelectedMarket,
     health,
     quote,
+    selectedOutcomeQuote: {
+      outcomeId: selectedOutcomeId,
+      quoteFound: selectedOutcomeQuoteFound,
+      showsBid: selectedOutcomeBidVisible,
+      showsAsk: selectedOutcomeAskVisible,
+      bid: selectedOutcomeQuote?.bestBid ?? null,
+      ask: selectedOutcomeQuote?.bestAsk ?? null,
+    },
     localRuntimeStatus,
     localResultReview,
     localSettlementQueue,

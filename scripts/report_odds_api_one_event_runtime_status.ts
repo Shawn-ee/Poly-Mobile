@@ -67,6 +67,23 @@ async function fetchRaw(url: string) {
   }
 }
 
+function asObject(value: unknown): JsonObject | null {
+  return value && typeof value === "object" && !Array.isArray(value) ? (value as JsonObject) : null;
+}
+
+function quoteForOutcome(quoteRoute: Awaited<ReturnType<typeof fetchRaw>> | null, outcomeId: string | null) {
+  const quotes = asObject(quoteRoute?.body)?.quotes;
+  if (!Array.isArray(quotes) || !outcomeId) return null;
+  return quotes
+    .map((quote) => asObject(quote))
+    .find((quote) => quote?.outcomeId === outcomeId) ?? null;
+}
+
+function hasDisplayedPrice(value: unknown) {
+  if (typeof value === "number") return Number.isFinite(value);
+  return typeof value === "string" && value.trim().length > 0;
+}
+
 function bool(value: unknown) {
   return value === true;
 }
@@ -204,12 +221,21 @@ async function main() {
     kind: "result-poller",
   });
 
-  const selectedMarketId =
-    stringValue(getPath(makerSeed, ["selectedMarket", "id"])) ??
-    stringValue(getPath(liveProof, ["selectedMarket", "id"]));
+  const currentSelectedMarket = asObject(makerSeed?.selectedMarket) ?? asObject(liveProof?.selectedMarket);
+  const selectedMarketId = stringValue(currentSelectedMarket?.id);
+  const selectedOutcomeId = stringValue(currentSelectedMarket?.outcomeId);
   const quoteRoute = selectedMarketId
     ? await fetchRaw(`${baseUrl}/api/markets/${encodeURIComponent(selectedMarketId)}/quote`)
     : null;
+  const selectedOutcomeQuote = quoteForOutcome(quoteRoute, selectedOutcomeId);
+  const selectedOutcomeQuoteReady = {
+    outcomeId: selectedOutcomeId,
+    quoteFound: selectedOutcomeQuote != null,
+    showsBid: hasDisplayedPrice(selectedOutcomeQuote?.bestBid),
+    showsAsk: hasDisplayedPrice(selectedOutcomeQuote?.bestAsk),
+    bid: selectedOutcomeQuote?.bestBid ?? null,
+    ask: selectedOutcomeQuote?.bestAsk ?? null,
+  };
   const health = await fetchRaw(`${baseUrl}/api/health`);
   const liveProofAgeHours = ageHours(liveProof?.generatedAt);
   const makerSeedAgeHours = ageHours(makerSeed?.generatedAt);
@@ -285,6 +311,9 @@ async function main() {
     makerSeedPresent: makerSeed != null,
     makerSeedPassed: bool(makerSeed?.pass),
     quoteRouteHealthy: quoteRoute?.ok === true,
+    selectedOutcomeQuoteFound: selectedOutcomeQuoteReady.quoteFound,
+    selectedOutcomeBidVisible: selectedOutcomeQuoteReady.showsBid,
+    selectedOutcomeAskVisible: selectedOutcomeQuoteReady.showsAsk,
     schedulerRunPresent: schedulerRun != null,
     schedulerRunPassed: bool(schedulerRun?.pass),
     supervisorPresent: supervisor != null,
@@ -374,7 +403,7 @@ async function main() {
     currentManagedProcesses,
     continuityAnswer,
     event: liveProof?.event ?? runtimeLaunch?.provider?.proof?.event ?? null,
-    selectedMarket: liveProof?.selectedMarket ?? makerSeed?.selectedMarket ?? null,
+    selectedMarket: currentSelectedMarket,
     backend: {
       health,
     },
@@ -392,6 +421,7 @@ async function main() {
       makerSeedGeneratedAt: makerSeed?.generatedAt ?? null,
       makerSeedAgeHours,
       quoteRoute,
+      selectedOutcomeQuote: selectedOutcomeQuoteReady,
     },
     lifecycle: {
       schedulerRunPath: SCHEDULER_RUN_PATH,
