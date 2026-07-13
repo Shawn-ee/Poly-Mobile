@@ -2,6 +2,20 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZG - Internal Tester Readiness Gate
+
+- Feature/runtime worked on: no-quota go/no-go gate for the local one-event internal tester flow.
+- Frontend components touched: none.
+- Backend/API routes touched: none directly; the gate runs existing audit/status scripts that read `GET /api/health`, `GET /api/internal/live-runtime/status`, `GET /api/internal/live-runtime/result-review`, `GET /api/internal/live-runtime/settlement-queue`, `GET /api/internal/live-runtime/lifecycle`, and `GET /api/markets/:marketId/quote`.
+- Important functions/services touched:
+  - `scripts/run_holiwyn_internal_tester_readiness_gate.ts`
+  - `package.json`
+  - `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+- User/runtime interactions supported: operators can run `npm run mobile:internal-tester-readiness-gate` to refresh ordered runtime evidence and then generate one tester-facing checklist with the current event, market, command, manual S23 flow, lifecycle notes, and P0/P1/P2 gaps.
+- State transitions: none. The gate does not start loops, call providers, spend quota, place orders, mutate lifecycle state, or execute settlement.
+- Known limitations: this is a local readiness/reporting gate. It does not install a production service, start an always-on daemon, or perform official-result settlement.
+- Proof: `docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json`.
+
 ## Cycle ZF - Ordered Live Runtime Audit Gate
 
 - Feature/runtime worked on: no-quota ordered audit gate for the one-event internal tester runtime.

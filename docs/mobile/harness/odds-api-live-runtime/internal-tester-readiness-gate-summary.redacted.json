@@ -1,0 +1,154 @@
+{
+  "generatedAt": "2026-07-13T23:51:36.004Z",
+  "scope": "holiwyn-internal-tester-readiness-gate",
+  "pass": true,
+  "providerQuotaUsedByThisGate": false,
+  "orderInvariant": {
+    "requiredOrder": [
+      "ordered-live-runtime-audit",
+      "operator-snapshot"
+    ],
+    "reason": "Refresh the ordered runtime audit before generating the tester-facing operator snapshot so tester instructions are based on current backend/runtime evidence."
+  },
+  "stages": [
+    {
+      "id": "ordered-live-runtime-audit",
+      "command": "npm run mobile:live-runtime-audit-gate",
+      "summaryPath": "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json",
+      "startedAt": "2026-07-13T23:51:21.459Z",
+      "finishedAt": "2026-07-13T23:51:32.189Z",
+      "exitCode": 0,
+      "pass": true,
+      "providerQuotaUsedByStage": false
+    },
+    {
+      "id": "operator-snapshot",
+      "command": "npm run mobile:internal-tester-operator-snapshot",
+      "summaryPath": "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
+      "startedAt": "2026-07-13T23:51:32.190Z",
+      "finishedAt": "2026-07-13T23:51:36.001Z",
+      "exitCode": 0,
+      "pass": true,
+      "providerQuotaUsedByStage": false
+    }
+  ],
+  "testerReady": {
+    "event": {
+      "title": "Spain vs. France",
+      "providerEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
+      "sportKey": "soccer_fifa_world_cup",
+      "commenceTime": "2026-07-14T19:00:00Z",
+      "localSlug": "odds-api-single-soccer-test"
+    },
+    "selectedMarket": {
+      "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+      "slug": "odds-api-single-soccer-test-totals-7439c2d603",
+      "title": "Spain vs. France: Total Goals 2.5",
+      "marketType": "total_goals",
+      "marketGroupKey": "totals",
+      "line": "2.5",
+      "outcomeId": "8720dab4-70ff-44d0-8d74-5fcff36f8420",
+      "outcomeName": "Over 2.5",
+      "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
+    },
+    "recommendedFirstAction": "cached_internal_testing",
+    "recommendedCommand": "npm run mobile:one-event-onboarding",
+    "localTesterReadyRightNow": false,
+    "launchChecklist": [
+      {
+        "step": "Start or verify local tester runtime",
+        "expected": "npm run mobile:one-event-onboarding",
+        "pass": true,
+        "notes": "Runtime capability is proven, but supervisor/result-poller loops are not both running now."
+      },
+      {
+        "step": "Open Holiwyn on Samsung S23",
+        "expected": "Expo should load the server-backed app and reach the backend on port 3002.",
+        "pass": true,
+        "notes": "If a stale Expo listener is reused, restart with the explicit ReplaceExternalExpo manager path."
+      }
+    ],
+    "manualTradingFlow": [
+      {
+        "step": "Home",
+        "expected": "Home shows Spain vs. France.",
+        "routeDependency": "GET /api/events",
+        "pass": true,
+        "notes": "Tap the event card to open Event Detail."
+      },
+      {
+        "step": "Event Detail",
+        "expected": "Markets load from backend for odds-api-single-soccer-test; selected proof market is Spain vs. France: Total Goals 2.5.",
+        "routeDependency": "GET /api/mobile/events/odds-api-single-soccer-test/live-detail",
+        "pass": true,
+        "notes": "Cached mode is usable for internal testing; live mobile odds refresh requires the explicit provider-refresh command."
+      },
+      {
+        "step": "Quote and buy",
+        "expected": "Open Over 2.5, enter an amount, and swipe to buy with fake tokens.",
+        "routeDependency": "GET /api/markets/:id/quote; POST /api/orders",
+        "pass": true,
+        "notes": "Order must use the selected market/outcome identity from Event Detail."
+      },
+      {
+        "step": "Portfolio position",
+        "expected": "Portfolio shows the bought position and activity/history records.",
+        "routeDependency": "GET /api/portfolio; GET /api/portfolio/history",
+        "pass": true,
+        "notes": "Cashout should open close-position mode, not a new buy ticket."
+      },
+      {
+        "step": "Cashout/sell",
+        "expected": "Max uses owned shares only, no Yes/No selector appears, and selling updates History.",
+        "routeDependency": "POST /api/orders; GET /api/portfolio/history",
+        "pass": true,
+        "notes": "Selling more than owned shares must be impossible in UI and rejected by backend."
+      }
+    ],
+    "lifecycleChecks": [
+      {
+        "step": "Event lifecycle timing",
+        "expected": "Event remains open for internal testing until the next lifecycle action.",
+        "routeDependency": "GET /api/internal/live-runtime/status",
+        "pass": true,
+        "notes": "Current window: pre_start_open; next lifecycle action: pause at 2026-07-14T18:55:00.000Z."
+      },
+      {
+        "step": "Stale odds",
+        "expected": "Stale/closed markets reject order placement with MARKET_UNAVAILABLE.",
+        "routeDependency": "POST /api/orders",
+        "pass": true,
+        "notes": "Use stale-guard proof for automated verification; do not spend provider quota for this checklist."
+      },
+      {
+        "step": "Settlement",
+        "expected": "Active event waits for CLOSED market plus exact approval before settlement.",
+        "routeDependency": "GET /api/internal/live-runtime/settlement-queue",
+        "pass": true,
+        "notes": "Active tester settlement must not execute while the selected market is LIVE."
+      }
+    ]
+  },
+  "evidence": {
+    "auditGate": "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json",
+    "operatorSnapshot": "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json"
+  },
+  "checks": {
+    "orderedAuditGatePass": true,
+    "operatorSnapshotPass": true,
+    "noOpenP0": true,
+    "hasRecommendedCommand": true,
+    "hasManualTradingFlow": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "Installed unattended provider/maker/lifecycle service ownership remains open.",
+      "Production official-result auto-settlement remains open; active-event execution is still guarded by CLOSED market status and exact confirmation."
+    ],
+    "p2": [
+      "Multi-event provider polling and production dashboard/operator UI remain future work."
+    ]
+  },
+  "note": "No-quota internal tester readiness gate. It does not call providers, start loops, execute settlement, or read secrets. It only refreshes existing local audit evidence and emits a tester-facing summary."
+}

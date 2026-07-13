@@ -169,6 +169,7 @@
     "mobile:one-event-phase-audit": "tsx scripts/report_odds_api_live_runtime_phase_audit.ts",
     "mobile:live-runtime-completion-audit": "tsx scripts/report_holiwyn_live_runtime_completion_audit.ts",
     "mobile:live-runtime-audit-gate": "tsx scripts/run_holiwyn_live_runtime_audit_gate.ts",
+    "mobile:internal-tester-readiness-gate": "tsx scripts/run_holiwyn_internal_tester_readiness_gate.ts",
     "mobile:internal-tester-operator-snapshot": "tsx scripts/report_holiwyn_internal_tester_operator_snapshot.ts",
     "mobile:one-event-live-readiness": "powershell -ExecutionPolicy Bypass -File scripts/prove_holiwyn_one_event_live_readiness.ps1",
     "mobile:one-event-live-runtime": "powershell -ExecutionPolicy Bypass -File scripts/start_holiwyn_one_event_live_runtime.ps1",

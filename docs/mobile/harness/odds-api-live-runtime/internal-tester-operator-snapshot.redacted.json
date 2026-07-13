@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T23:04:04.991Z",
+  "generatedAt": "2026-07-13T23:51:35.942Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -18,9 +18,9 @@
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "be4cfe8b-fa1e-4109-a627-2c13189a92a0",
-    "outcomeName": "Over +2.5",
-    "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
+    "outcomeId": "8720dab4-70ff-44d0-8d74-5fcff36f8420",
+    "outcomeName": "Over 2.5",
+    "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
   },
   "backend": {
     "ok": true,
@@ -29,7 +29,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-13T23:04:03.742Z"
+      "timestamp": "2026-07-13T23:51:34.664Z"
     },
     "error": null
   },
@@ -125,8 +125,8 @@
     "reason": null,
     "snapshotCount": 4,
     "latestFetchedAt": "2026-07-13T21:38:09.297Z",
-    "latestAgeHours": 1.43,
-    "latestAgeSeconds": 5156,
+    "latestAgeHours": 2.22,
+    "latestAgeSeconds": 8007,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
@@ -179,9 +179,9 @@
     "source": "the-odds-api",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
     "sourceUpdatedAt": "2026-07-13T21:38:09.297Z",
-    "now": "2026-07-13T23:04:04.983Z",
+    "now": "2026-07-13T23:51:35.934Z",
     "startTime": "2026-07-14T19:00:00.000Z",
-    "secondsUntilStart": 71755,
+    "secondsUntilStart": 68904,
     "startAgeSeconds": 0,
     "suspendBeforeStartSeconds": 300,
     "insideSuspendWindow": false,
@@ -198,7 +198,7 @@
       "title": "Spain vs. France",
       "localSlug": "odds-api-single-soccer-test",
       "selectedMarket": "Spain vs. France: Total Goals 2.5",
-      "selectedOutcome": "Over +2.5"
+      "selectedOutcome": "Over 2.5"
     },
     "launch": [
       {
@@ -231,7 +231,7 @@
       },
       {
         "step": "Quote and buy",
-        "expected": "Open Over +2.5, enter an amount, and swipe to buy with fake tokens.",
+        "expected": "Open Over 2.5, enter an amount, and swipe to buy with fake tokens.",
         "routeDependency": "GET /api/markets/:id/quote; POST /api/orders",
         "pass": true,
         "notes": "Order must use the selected market/outcome identity from Event Detail."
