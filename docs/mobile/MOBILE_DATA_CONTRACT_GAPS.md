@@ -10719,3 +10719,12 @@ Future migration concern:
 - Schema mismatch: future production support needs durable operator identity on approval/execution, role snapshots, request ids, and audit events. Existing `OfficialResultReview` evidence remains redacted/local proof; `OperatorAuditEvent` is a required future model or equivalent audit table.
 - Temporary mock/static data: none added. The status route reports requirements only and does not create local mock operator identities or fake approvals.
 - Remaining gaps: authenticated operator UI/actions, role checks, two-person/admin approval, production execution endpoint, installed official-result polling, and production service ownership remain P1.
+
+## Cycle XM - Operator Session Route Foundation
+
+- Closed or narrowed: the first authenticated operator-control route now exists as `GET /api/internal/operator/session`, and runtime status marks the `operator_session` requirement as `implemented_read_only`.
+- Fields required by local runtime tooling: `operator.id`, `email`, `username`, `roles`, `roleSource`, `durableIdentityAvailable`, `capabilities.canReviewSettlementQueue`, `canApproveSettlement=false`, `canExecuteSettlement=false`, `canViewExactConfirmation=false`, and `productionBoundary.authenticatedSessionRouteAvailable=true`.
+- Route mismatch: approval and execution are still intentionally missing. `GET /api/internal/live-runtime/settlement-queue` remains local/dev read-only and is not yet protected by a dedicated operator-session gate.
+- Schema mismatch: `User.isAdmin` is the current role source. Production needs a dedicated operator role/permission model, durable operator identity fields on approval/execution, and an `OperatorAuditEvent` or equivalent audit table.
+- Temporary mock/static data: none added. The route returns the authenticated admin user and does not fabricate approvals, executions, or exact confirmation strings.
+- Remaining gaps: settlement approval route, settlement execution route, two-person/admin approval workflow, production operator UI, installed official-result polling, and production service ownership remain P1.

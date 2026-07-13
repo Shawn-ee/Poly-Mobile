@@ -857,6 +857,27 @@ async function main() {
         "localRuntimeStatus",
         "body",
         "operatorControlBoundary",
+        "authenticatedControls",
+        "sessionRouteAvailable",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "authenticatedControls",
+        "roleChecksAvailable",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "authenticatedControls",
+        "durableOperatorIdentityAvailable",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
         "productionAuthRequirements",
         "version",
       ]) === 1 &&
@@ -866,7 +887,7 @@ async function main() {
         "operatorControlBoundary",
         "productionAuthRequirements",
         "status",
-      ]) === "not_implemented" &&
+      ]) === "session_route_implemented" &&
       getPath(entries.phaseAudit, [
         "localRuntimeStatus",
         "body",
@@ -900,9 +921,25 @@ async function main() {
         (route) =>
           route &&
           typeof route === "object" &&
+          getPath(route, ["id"]) === "operator_session" &&
+          getPath(route, ["method"]) === "GET" &&
+          getPath(route, ["mutatesState"]) === false &&
+          getPath(route, ["implementationStatus"]) === "implemented_read_only",
+      ) &&
+      (getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "productionAuthRequirements",
+        "requiredRoutes",
+      ]) as unknown[]).some(
+        (route) =>
+          route &&
+          typeof route === "object" &&
           getPath(route, ["id"]) === "settlement_execution" &&
           getPath(route, ["requiresClosedMarket"]) === true &&
-          getPath(route, ["requiresExactConfirmation"]) === true,
+          getPath(route, ["requiresExactConfirmation"]) === true &&
+          getPath(route, ["implementationStatus"]) === "missing",
       ) &&
       Array.isArray(
         getPath(entries.phaseAudit, [
@@ -942,6 +979,22 @@ async function main() {
         "productionAuthRequirements",
         "requiredGuards",
       ]) as unknown[]).includes("public_mobile_routes_must_not_expose_operator_controls") &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "localControls",
+        "operatorSessionRoute",
+        "available",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "localControls",
+        "operatorSessionRoute",
+        "mutatesState",
+      ]) === false &&
       getPath(entries.phaseAudit, [
         "localRuntimeStatus",
         "body",

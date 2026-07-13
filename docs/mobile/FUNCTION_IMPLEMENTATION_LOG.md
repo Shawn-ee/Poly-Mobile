@@ -15190,3 +15190,14 @@ Known limitations:
 - API/data dependencies: composes existing result-review, settlement-queue, settlement-automation, and production-readiness status blocks. The new requirements reference future `OfficialResultReview` operator identity fields and a future `OperatorAuditEvent`-equivalent audit table but do not add a schema migration in this cycle.
 - Proof needed: focused status service test, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
 - Known limitations: this narrows the authenticated-operator P1 by defining the route/schema/guard contract. It is not an authenticated operator UI, not a production execution endpoint, and not an installed official-result polling service.
+
+## Cycle XM - Operator Session Route Foundation
+
+- Feature/runtime worked on: backend internal operator identity discovery for live-runtime settlement review.
+- Frontend components touched: none.
+- Important functions/services touched: `src/app/api/internal/operator/session/route.ts`, `src/server/services/liveRuntimeOperatorSession.ts`, `src/server/services/liveRuntimeStatus.ts`, phase/completion audit scripts, and focused operator/status tests.
+- User/runtime interactions supported: an authenticated admin can call `GET /api/internal/operator/session` and receive redacted operator identity, roles, and read-only settlement-review capabilities. The route does not approve reviews, execute settlement, call providers, or expose exact confirmation strings.
+- State transitions: none. This is a read-only server-owned route. It spends no provider quota, mutates no markets, creates no approvals, and does not change mobile UI.
+- API/data dependencies: uses the existing `requireAdmin()` session/dev-admin path and `User.isAdmin` as the current role source. `GET /api/internal/live-runtime/status` now reports the operator session route as `implemented_read_only` while preserving missing approval/execution routes as P1.
+- Proof needed: operator session route tests, operator session service test, focused live-runtime status test, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
+- Known limitations: dedicated settlement-operator roles, two-person approval, durable operator audit events, approval endpoint, execution endpoint, and production operator UI remain P1.

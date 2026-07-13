@@ -1162,13 +1162,14 @@ describe("live runtime status service", () => {
       authenticatedControls: {
         requiredForProduction: true,
         available: false,
-        roleChecksAvailable: false,
-        durableOperatorIdentityAvailable: false,
+        sessionRouteAvailable: true,
+        roleChecksAvailable: true,
+        durableOperatorIdentityAvailable: true,
         twoPersonApprovalAvailable: false,
       },
       productionAuthRequirements: {
         version: 1,
-        status: "not_implemented",
+        status: "session_route_implemented",
         p1Gap: "authenticated_operator_controls_missing",
         mustRemainServerOwned: true,
         publicMobileRouteAllowed: false,
@@ -1180,6 +1181,7 @@ describe("live runtime status service", () => {
             path: "/api/internal/operator/session",
             requiredRoles: ["admin", "settlement_operator"],
             mutatesState: false,
+            implementationStatus: "implemented_read_only",
           }),
           expect.objectContaining({
             id: "settlement_approval",
@@ -1188,6 +1190,7 @@ describe("live runtime status service", () => {
             requiredRoles: ["admin", "settlement_operator"],
             mutatesState: true,
             requiresTwoPersonApproval: true,
+            implementationStatus: "missing",
           }),
           expect.objectContaining({
             id: "settlement_execution",
@@ -1197,6 +1200,7 @@ describe("live runtime status service", () => {
             mutatesState: true,
             requiresClosedMarket: true,
             requiresExactConfirmation: true,
+            implementationStatus: "missing",
           }),
         ]),
         requiredSchema: expect.arrayContaining([
@@ -1218,6 +1222,14 @@ describe("live runtime status service", () => {
         ]),
       },
       localControls: {
+        operatorSessionRoute: {
+          route: "GET /api/internal/operator/session",
+          available: true,
+          mutatesState: false,
+          providerQuotaRequired: false,
+          publicMobileRoute: false,
+          exactConfirmationExposed: false,
+        },
         resultReviewRoute: {
           route: "GET /api/internal/live-runtime/result-review",
           available: true,

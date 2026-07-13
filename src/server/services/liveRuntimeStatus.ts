@@ -972,14 +972,15 @@ function buildOperatorControlBoundary(params: {
     authenticatedControls: {
       requiredForProduction: true,
       available: false,
-      roleChecksAvailable: false,
-      durableOperatorIdentityAvailable: false,
+      sessionRouteAvailable: true,
+      roleChecksAvailable: true,
+      durableOperatorIdentityAvailable: true,
       twoPersonApprovalAvailable: false,
-      reason: "Local runtime has redacted review/status routes and guarded commands, but no authenticated production operator workflow.",
+      reason: "Authenticated operator session discovery exists, but approval and execution controls are still missing.",
     },
     productionAuthRequirements: {
       version: 1,
-      status: "not_implemented",
+      status: "session_route_implemented",
       p1Gap: "authenticated_operator_controls_missing",
       mustRemainServerOwned: true,
       publicMobileRouteAllowed: false,
@@ -992,6 +993,7 @@ function buildOperatorControlBoundary(params: {
           purpose: "Return the authenticated internal operator identity and roles before showing settlement controls.",
           requiredRoles: ["admin", "settlement_operator"],
           mutatesState: false,
+          implementationStatus: "implemented_read_only",
         },
         {
           id: "settlement_queue_review",
@@ -1000,6 +1002,7 @@ function buildOperatorControlBoundary(params: {
           purpose: "List pending trusted-result reviews with redacted execution plans.",
           requiredRoles: ["admin", "settlement_operator"],
           mutatesState: false,
+          implementationStatus: "implemented_read_only_without_operator_auth_gate",
         },
         {
           id: "settlement_approval",
@@ -1009,6 +1012,7 @@ function buildOperatorControlBoundary(params: {
           requiredRoles: ["admin", "settlement_operator"],
           mutatesState: true,
           requiresTwoPersonApproval: true,
+          implementationStatus: "missing",
         },
         {
           id: "settlement_execution",
@@ -1019,6 +1023,7 @@ function buildOperatorControlBoundary(params: {
           mutatesState: true,
           requiresClosedMarket: true,
           requiresExactConfirmation: true,
+          implementationStatus: "missing",
         },
       ],
       requiredSchema: [
@@ -1058,6 +1063,14 @@ function buildOperatorControlBoundary(params: {
       ],
     },
     localControls: {
+      operatorSessionRoute: {
+        route: "GET /api/internal/operator/session",
+        available: true,
+        mutatesState: false,
+        providerQuotaRequired: false,
+        publicMobileRoute: false,
+        exactConfirmationExposed: false,
+      },
       resultReviewRoute: {
         route: "GET /api/internal/live-runtime/result-review",
         available: getPath(params.resultReview, ["pass"]) === true,
