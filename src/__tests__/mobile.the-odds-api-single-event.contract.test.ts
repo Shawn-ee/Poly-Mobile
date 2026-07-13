@@ -18,6 +18,8 @@ describe("The Odds API single-event temporary provider", () => {
   const liveRuntimeSecretScript = () =>
     readFileSync("scripts/run_holiwyn_one_event_live_runtime_with_secret.ps1", "utf8");
   const internalTesterRuntimeScript = () => readFileSync("scripts/manage_holiwyn_internal_tester_runtime.ps1", "utf8");
+  const oneEventOnboardingScript = () => readFileSync("scripts/onboard_holiwyn_one_event_live_runtime.ps1", "utf8");
+  const oneEventSupervisorScript = () => readFileSync("scripts/run_holiwyn_one_event_live_supervisor.ps1", "utf8");
   const runtimeStatusScript = () => readFileSync("scripts/report_odds_api_one_event_runtime_status.ts", "utf8");
   const operatorSnapshotScript = () =>
     readFileSync("scripts/report_holiwyn_internal_tester_operator_snapshot.ts", "utf8");
@@ -145,6 +147,27 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("Wait-LiveRuntimeWarm");
     expect(source).toContain("live_runtime_status_not_warm_after_loop_start");
     expect(source).toContain("liveRuntimeStatusWarmObserved");
+  });
+
+  it("uses bounded actual-serial S23 detection in one-event runtime operator scripts", () => {
+    const scripts = [
+      internalTesterRuntimeScript(),
+      liveRuntimeScript(),
+      liveReadinessScript(),
+      oneEventOnboardingScript(),
+      oneEventSupervisorScript(),
+    ];
+
+    for (const source of scripts) {
+      expect(source).toContain("Invoke-AdbWithTimeout");
+      expect(source).toContain('"devices", "-l"');
+      expect(source).toContain("adb timed out after ${TimeoutSeconds}s");
+      expect(source).toContain('Where-Object { $_ -match "\\sdevice\\s" }');
+      expect(source).toContain("model:SM_S911U1");
+      expect(source).toContain("$serial = if ($line -and $line -match");
+      expect(source).toContain("deviceId = $serial");
+      expect(source).not.toContain('deviceId = if ($line) { "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp" }');
+    }
   });
 
   it("gates live-runtime audits on managed S23 server-backed startup", () => {

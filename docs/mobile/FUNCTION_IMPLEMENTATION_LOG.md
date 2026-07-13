@@ -2,6 +2,22 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZU - Runtime S23 Detection Hardening
+
+- Feature/runtime worked on: one-event backend/live-runtime operator scripts for the Spain vs. France internal tester pipeline.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/onboard_holiwyn_one_event_live_runtime.ps1`
+  - `scripts/prove_holiwyn_one_event_live_readiness.ps1`
+  - `scripts/start_holiwyn_one_event_live_runtime.ps1`
+  - `scripts/run_holiwyn_one_event_live_supervisor.ps1`
+  - `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+- User/runtime interactions supported: one-command onboarding, readiness, runtime launch, and supervisor scripts now use bounded ADB calls and report the actual connected S23 serial instead of hardcoding the wireless DNS id.
+- State transitions: no provider, market, order, portfolio, settlement, schema, or mobile UI state changed. Proof commands ran in cached/no-quota mode and refreshed local redacted summaries.
+- API/data dependencies: local `adb devices -l`, `GET /api/health`, Docker Postgres status, existing cached provider proof, and the selected Spain vs. France market summaries.
+- Known limitations: this hardens local operator proof reliability only. It does not install an unattended service or enable unguarded production settlement.
+- Proof: `docs/mobile/harness/odds-api-live-runtime/zu-start-runtime-s23-detect-summary.redacted.json`, `docs/mobile/harness/odds-api-live-runtime/zu-readiness-s23-detect-summary.redacted.json`, and `docs/mobile/harness/odds-api-live-runtime/zu-onboarding-s23-detect-summary.redacted.json`.
+
 ## Cycle ZT - Runtime Manager S23 Detection and Spain vs. France Cashout Proof
 
 - Feature/page worked on: proof and runtime-readiness cleanup for the internal tester mobile flow: Home -> Event Detail -> totals line market -> Buy ticket -> Portfolio -> Cash out -> Max -> SELL -> History.

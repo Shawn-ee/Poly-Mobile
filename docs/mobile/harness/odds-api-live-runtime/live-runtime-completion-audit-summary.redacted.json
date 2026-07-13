@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T17:57:40.861Z",
+  "generatedAt": "2026-07-13T18:08:19.956Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -26,11 +26,11 @@
       "oneEventOnly": true
     },
     "freshness": {
-      "liveProofAgeHours": 8.56,
+      "liveProofAgeHours": 8.74,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 2.11,
+      "watchdogAgeHours": 2.29,
       "maxWatchdogAgeHours": 24,
-      "s23ProofAgeHours": 0.02,
+      "s23ProofAgeHours": 0.2,
       "maxS23ProofAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -59,7 +59,7 @@
     "activeTesterSettlementExecutionAttempted": false,
     "activeEventClosedStateEligibilityProven": true,
     "s23ProofDevice": "172.16.200.27:44029",
-    "s23ProofAgeHours": 0.02,
+    "s23ProofAgeHours": 0.2,
     "maxS23ProofAgeHours": 24
   },
   "sourceEvidence": {

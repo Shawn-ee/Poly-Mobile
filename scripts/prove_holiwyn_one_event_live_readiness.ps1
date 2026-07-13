@@ -180,15 +180,67 @@ function Get-DockerPostgresStatus {
   }
 }
 
+function Invoke-AdbWithTimeout {
+  param(
+    [string[]]$Arguments,
+    [int]$TimeoutSeconds = 5
+  )
+  $tempOut = [System.IO.Path]::GetTempFileName()
+  $tempErr = [System.IO.Path]::GetTempFileName()
+  try {
+    $process = Start-Process `
+      -FilePath "adb" `
+      -ArgumentList $Arguments `
+      -WorkingDirectory $RepoRoot `
+      -WindowStyle Hidden `
+      -RedirectStandardOutput $tempOut `
+      -RedirectStandardError $tempErr `
+      -PassThru
+    if (-not $process.WaitForExit($TimeoutSeconds * 1000)) {
+      try { Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue } catch {}
+      return [ordered]@{ ok = $false; timedOut = $true; output = ""; error = "adb timed out after ${TimeoutSeconds}s" }
+    }
+    $stdout = if (Test-Path -LiteralPath $tempOut) { Get-Content -Raw -LiteralPath $tempOut } else { "" }
+    $stderr = if (Test-Path -LiteralPath $tempErr) { Get-Content -Raw -LiteralPath $tempErr } else { "" }
+    $exitCode = $process.ExitCode
+    return [ordered]@{
+      ok = [bool]($exitCode -eq 0 -or ($null -eq $exitCode -and [string]::IsNullOrWhiteSpace($stderr)))
+      timedOut = $false
+      exitCode = $exitCode
+      output = $stdout
+      error = $stderr
+    }
+  } catch {
+    return [ordered]@{ ok = $false; timedOut = $false; output = ""; error = $_.Exception.Message }
+  } finally {
+    Remove-Item -LiteralPath $tempOut, $tempErr -Force -ErrorAction SilentlyContinue
+  }
+}
+
 function Get-S23Status {
   try {
-    $devices = @(adb devices -l 2>$null)
-    $line = $devices | Where-Object { $_ -match "adb-R3CW20LFMLW|R3CW20LFMLW|SM_S911U1" } | Select-Object -First 1
+    $adbResult = Invoke-AdbWithTimeout -Arguments @("devices", "-l")
+    if (-not $adbResult.ok) {
+      return [ordered]@{
+        connected = $false
+        deviceId = $null
+        model = $null
+        raw = $adbResult.output
+        adbTimedOut = [bool]$adbResult.timedOut
+        error = $adbResult.error
+      }
+    }
+    $devices = @($adbResult.output -split "`r?`n" | Where-Object { $_ -match "\sdevice\s" })
+    $line = $devices |
+      Where-Object { $_ -match "adb-R3CW20LFMLW|R3CW20LFMLW|SM_S911U1|model:SM_S911U1" } |
+      Select-Object -First 1
+    $serial = if ($line -and $line -match "^(\S+)") { $Matches[1] } else { $null }
     return [ordered]@{
       connected = [bool]$line
-      deviceId = if ($line) { "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp" } else { $null }
+      deviceId = $serial
       model = if ($line -and $line -match "model:([^ ]+)") { $Matches[1] } else { $null }
       raw = $line
+      adbTimedOut = $false
     }
   } catch {
     return [ordered]@{ connected = $false; deviceId = $null; model = $null; error = $_.Exception.Message }

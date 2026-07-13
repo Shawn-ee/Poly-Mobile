@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T15:56:14.948Z",
+  "generatedAt": "2026-07-13T18:07:02.169Z",
   "scope": "odds-api-one-event-settlement-readiness",
   "pass": true,
   "event": {
@@ -20,7 +20,7 @@
     "status": "LIVE",
     "resolvedOutcomeId": null,
     "settlementStatus": null,
-    "collateralUSDC": "8150"
+    "collateralUSDC": "2350"
   },
   "settlementPath": {
     "previewService": "previewOrderbookSettlement",
@@ -49,19 +49,19 @@
           "marketStatus": "LIVE",
           "winningOutcomeId": "24515f22-3717-4b61-82a2-c072febc8f5b",
           "winningOutcomeName": "Over 2.5",
-          "collateralUSDC": "8150",
-          "totalShares": "16300",
-          "totalWinningShares": "8150",
-          "totalPayout": "8150",
+          "collateralUSDC": "2350",
+          "totalShares": "4700",
+          "totalWinningShares": "2350",
+          "totalPayout": "2350",
           "payoutConservationPass": true,
           "blockers": [],
           "openOrderCleanup": {
-            "openOrderCount": 2,
-            "buyOrderLockedUSDCToRelease": "104",
+            "openOrderCount": 3,
+            "buyOrderLockedUSDCToRelease": "125.402",
             "sellOrderSharesToRelease": "200"
           },
-          "payoutCount": 42,
-          "loserPositionCount": 41,
+          "payoutCount": 13,
+          "loserPositionCount": 12,
           "mutation": "none"
         },
         "serviceAvailable": true,
@@ -84,19 +84,19 @@
           "marketStatus": "LIVE",
           "winningOutcomeId": "651d8407-2f22-4a37-8d2a-72f483b580fe",
           "winningOutcomeName": "Under 2.5",
-          "collateralUSDC": "8150",
-          "totalShares": "16300",
-          "totalWinningShares": "8150",
-          "totalPayout": "8150",
+          "collateralUSDC": "2350",
+          "totalShares": "4700",
+          "totalWinningShares": "2350",
+          "totalPayout": "2350",
           "payoutConservationPass": true,
           "blockers": [],
           "openOrderCleanup": {
-            "openOrderCount": 2,
-            "buyOrderLockedUSDCToRelease": "104",
+            "openOrderCount": 3,
+            "buyOrderLockedUSDCToRelease": "125.402",
             "sellOrderSharesToRelease": "200"
           },
-          "payoutCount": 41,
-          "loserPositionCount": 42,
+          "payoutCount": 12,
+          "loserPositionCount": 13,
           "mutation": "none"
         },
         "serviceAvailable": true,
@@ -110,7 +110,7 @@
     "status": "LIVE",
     "resolvedOutcomeId": null,
     "settlementStatus": null,
-    "collateralUSDC": "8150"
+    "collateralUSDC": "2350"
   },
   "checks": {
     "eventLoaded": true,
