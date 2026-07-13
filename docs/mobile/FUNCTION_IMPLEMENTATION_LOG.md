@@ -2,6 +2,19 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZS - Spain vs. France Cashout S23 Reproof
+
+- Feature/page worked on: proof-only regression for the internal tester mobile flow: Home -> Event Detail -> line market -> Buy ticket -> Portfolio -> Cash out -> Max -> SELL -> History.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/prove_mobile_odds_api_s23_visible_flow.ps1` was executed, not edited.
+  - Existing Home, Event Detail, Trade Ticket, Portfolio, and History screens were exercised on Samsung S23.
+- User interactions supported: S23 proof confirmed the current runtime opens Portfolio Cash out in close-position mode, hides the Yes/No selector, uses owned shares for Max, rejects wallet-sized Max values, submits a server-backed SELL, and shows sold activity in Portfolio History.
+- State transitions: fake-token BUY creates a Portfolio position; close-position SELL consumes the owned shares and records History.
+- API/data dependencies: `GET /api/events`, `GET /api/mobile/events/:slug/live-detail`, `GET /api/markets/:marketId/quote`, `POST /api/orders`, `GET /api/portfolio`, and `GET /api/portfolio/history`.
+- Known limitations: proof used the seeded `Total Goals 2.5` market; advance-market fills still need explicit maker liquidity if testers should trade the top advance buttons.
+- Proof: `docs/mobile/harness/cycle-ZS-spain-france-cashout-s23/cycle-ZS-odds-api-s23-visible-flow.json`.
+
 ## Cycle ZL - One-Command Onboarding Aliases
 
 - Feature/runtime worked on: one-event live runtime onboarding operator commands.

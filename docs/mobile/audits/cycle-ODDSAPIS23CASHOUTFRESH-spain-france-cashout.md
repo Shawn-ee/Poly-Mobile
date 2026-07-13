@@ -156,3 +156,57 @@ Fresh gaps:
 - P0: none for the current Spain vs. France internal tester path Home -> Event Detail -> Buy -> Portfolio -> Cash out Max -> SELL -> History.
 - P1: advance-market fills still depend on maker liquidity being seeded for that specific market; this proof used `Total Goals 2.5`.
 - P1: local supervisor/result-poller remain proven but not installed as unattended production services.
+
+## Fresh S23 Current-Main Proof - 2026-07-13 12:36 CT (Cycle ZS)
+
+Reason: rerun from current `main` after cleaning the tree and clearing Expo Go state, specifically to verify the real S23 cashout path still opens close-position mode and cannot produce a wallet-sized Max value.
+
+Device and runtime:
+
+- Samsung S23: `172.16.200.27:44029`, model `SM-S911U1`.
+- Backend: `http://127.0.0.1:3002`, health `ok`, DB `connected`.
+- Mobile API: `http://172.16.200.14:3002`.
+- Expo proof server: temporary clean server on port `8291`; proof script cleared Expo Go state before launch.
+- Event: backend-owned `Spain vs. France`, slug `odds-api-single-soccer-test`.
+- Selected market: sportsbook-backed `Total Goals 2.5`, outcome `Over 2.5`.
+
+Fresh proof result:
+
+- Result: pass.
+- Home showed backend-owned `Spain vs. France`.
+- Event Detail loaded backend markets and kept Order Book / Chat hidden.
+- Buy flow selected `Over 2.5` and reached Portfolio after server-backed fake-token buy.
+- Portfolio showed the filled position and `Cash out`.
+- Portfolio `Cash out` opened close-position mode, not the generic buy ticket.
+- Cashout ticket hid the Yes/No selector.
+- Cashout `Max` used owned shares only; the summary assertion `cashoutMaxUsesOwnedShares` is `true`.
+- Cashout ticket reported `cashoutTicketIsClosePositionMode = true`, `cashoutTicketHidesYesNoSelector = true`, `cashoutSellSubmitted = true`, and `cashoutHistoryVisible = true`.
+- The proof explicitly rejected wallet-sized cashout strings: `9,000 USDT`, `9000 USDT`, `10,000 USDT`, and `10000 USDT`.
+- Portfolio History showed the sold activity and preserved sportsbook-backed market identity.
+
+Fresh evidence artifacts:
+
+- Summary: `docs/mobile/harness/cycle-ZS-spain-france-cashout-s23/cycle-ZS-odds-api-s23-visible-flow.json`
+- Backend cashout route safety: `docs/mobile/harness/cycle-ZS-spain-france-cashout-s23/cycle-ZS-cashout-route-sell-safety.json`
+- Home: `docs/mobile/screenshots/cycle-ZS-spain-france-cashout-s23/cycle-ZS-home.png`
+- Event Detail: `docs/mobile/screenshots/cycle-ZS-spain-france-cashout-s23/cycle-ZS-detail-top.png`
+- Line market: `docs/mobile/screenshots/cycle-ZS-spain-france-cashout-s23/cycle-ZS-line-market.png`
+- Buy ticket ready: `docs/mobile/screenshots/cycle-ZS-spain-france-cashout-s23/cycle-ZS-ticket-ready.png`
+- Portfolio after buy: `docs/mobile/screenshots/cycle-ZS-spain-france-cashout-s23/cycle-ZS-after-submit.png`
+- Cashout initial: `docs/mobile/screenshots/cycle-ZS-spain-france-cashout-s23/cycle-ZS-cashout-ticket.png`
+- Cashout Max: `docs/mobile/screenshots/cycle-ZS-spain-france-cashout-s23/cycle-ZS-cashout-ticket-ready.png`
+- Cashout Max XML: `docs/mobile/harness/cycle-ZS-spain-france-cashout-s23/cycle-ZS-cashout-ticket-ready.xml`
+- Portfolio History: `docs/mobile/screenshots/cycle-ZS-spain-france-cashout-s23/cycle-ZS-portfolio-history.png`
+
+Fresh validation:
+
+- Mobile typecheck: `npm --prefix mobile run typecheck` - pass.
+- Backend cashout route proof: `npx tsx -r dotenv/config scripts/prove_mobile_cashout_route_sell_safety.ts --output=docs/mobile/harness/cycle-ZS-spain-france-cashout-s23/cycle-ZS-cashout-route-sell-safety.json` - pass; no-position sell and oversell rejected, valid owned-position sell accepted.
+- S23 proof: `powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_odds_api_s23_visible_flow.ps1 -Device 172.16.200.27:44029 -Cycle ZS -OutputDir docs\mobile\screenshots\cycle-ZS-spain-france-cashout-s23 -HierarchyOutputDir docs\mobile\harness\cycle-ZS-spain-france-cashout-s23 -Port 8291` - pass.
+- Previous pushed cleanup CI: `https://github.com/Shawn-ee/Poly-Mobile/actions/runs/29270721168` - pass.
+
+Fresh gaps:
+
+- P0: none for the tested current internal tester path Home -> Event Detail -> Buy -> Portfolio -> Cash out Max -> SELL -> History.
+- P1: this proof uses `Total Goals 2.5`; advance-market fills still require maker liquidity for that specific market.
+- P1: local supervisor/result-poller remain proven but are not installed as unattended production services.
