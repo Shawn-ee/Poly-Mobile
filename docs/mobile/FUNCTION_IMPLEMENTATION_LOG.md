@@ -15613,3 +15613,12 @@ Known limitations:
 - User interactions supported: internal testers can read one redacted snapshot to know which event to open, which selected market/outcome is the current proof target, which local command is recommended, and what the expected mobile trading flow should do.
 - State transitions: read-only. The snapshot does not start loops, call providers, place orders, or execute settlement.
 - Known limitations: this is an operator handoff improvement, not an installed service. Production daemon ownership and official-result auto-settlement remain P1.
+## Cycle ZR - Live Provider Secret Preflight Wrapper
+
+- Feature/page worked on: live provider refresh operator readiness for the one-event Spain vs. France runtime.
+- Frontend components touched: none.
+- Backend/routes touched: no backend route implementation changes; added local wrapper `scripts/run_holiwyn_one_event_live_runtime_with_secret.ps1`.
+- Important functions/services touched: added npm aliases `mobile:one-event-live-runtime:provider-secret-preflight` and `mobile:one-event-live-runtime:provider-secret`.
+- User/runtime interactions supported: operators can keep `THE_ODDS_API_KEY` out of command lines by storing it in ignored `.runtime/secrets/the-odds-api-key.txt`; preflight reports whether a key source exists without calling the provider.
+- State transitions: preflight is read-only and no-quota. Refresh mode delegates to the existing one-event live provider proof and may spend quota only when explicitly invoked.
+- Known limitations: no live refresh was run in this cycle. Mobile-visible provider snapshots remain stale until an explicit provider refresh runs with a key source present.

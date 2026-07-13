@@ -170,6 +170,8 @@
     "mobile:one-event-live-readiness": "powershell -ExecutionPolicy Bypass -File scripts/prove_holiwyn_one_event_live_readiness.ps1",
     "mobile:one-event-live-runtime": "powershell -ExecutionPolicy Bypass -File scripts/start_holiwyn_one_event_live_runtime.ps1",
     "mobile:one-event-live-runtime:provider": "powershell -ExecutionPolicy Bypass -File scripts/start_holiwyn_one_event_live_runtime.ps1 -RunProviderProof -SkipSleep",
+    "mobile:one-event-live-runtime:provider-secret-preflight": "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_live_runtime_with_secret.ps1",
+    "mobile:one-event-live-runtime:provider-secret": "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_live_runtime_with_secret.ps1 -RunProviderProof -SkipSleep",
     "mobile:one-event-live-supervisor": "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_live_supervisor.ps1",
     "mobile:one-event-live-supervisor:process": "powershell -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_live_supervisor.ps1",
     "mobile:one-event-live-supervisor:continuous-proof": "powershell -ExecutionPolicy Bypass -File scripts/prove_holiwyn_one_event_continuous_supervisor.ps1",

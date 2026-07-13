@@ -15,6 +15,8 @@ describe("The Odds API single-event temporary provider", () => {
   const packageJson = () => readFileSync("package.json", "utf8");
   const script = () => readFileSync("scripts/seed_the_odds_api_single_event.ts", "utf8");
   const liveRuntimeScript = () => readFileSync("scripts/start_holiwyn_one_event_live_runtime.ps1", "utf8");
+  const liveRuntimeSecretScript = () =>
+    readFileSync("scripts/run_holiwyn_one_event_live_runtime_with_secret.ps1", "utf8");
   const internalTesterRuntimeScript = () => readFileSync("scripts/manage_holiwyn_internal_tester_runtime.ps1", "utf8");
   const runtimeStatusScript = () => readFileSync("scripts/report_odds_api_one_event_runtime_status.ts", "utf8");
   const operatorSnapshotScript = () =>
@@ -74,6 +76,23 @@ describe("The Odds API single-event temporary provider", () => {
     expect(pkg).toContain("-AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof");
     expect(pkg).toContain("-RunProviderRefresh -StartRuntimeLoops -StopRuntimeLoopsAfterProof");
     expect(pkg).not.toContain("mobile:one-event-onboarding:cached-runtime\": \"powershell -ExecutionPolicy Bypass -File scripts/onboard_holiwyn_one_event_live_runtime.ps1 -RunProviderRefresh");
+  });
+
+  it("supports a redacted local secret-file wrapper for live provider refresh", () => {
+    const pkg = packageJson();
+    const source = liveRuntimeSecretScript();
+    const gitignore = readFileSync(".gitignore", "utf8");
+    expect(pkg).toContain("mobile:one-event-live-runtime:provider-secret-preflight");
+    expect(pkg).toContain("mobile:one-event-live-runtime:provider-secret");
+    expect(source).toContain(".runtime\\secrets\\the-odds-api-key.txt");
+    expect(source).toContain("providerQuotaUsedByPreflight = $false");
+    expect(source).toContain("valuePrinted = $false");
+    expect(source).toContain("commandLineContainsSecret = $false");
+    expect(source).toContain("start_holiwyn_one_event_live_runtime.ps1");
+    expect(source).toContain("-RunProviderProof");
+    expect(source).not.toContain("THE_ODDS_API_KEY=");
+    expect(source).not.toContain("apiKey:");
+    expect(gitignore).toContain(".runtime/");
   });
 
   it("exposes a redacted no-quota internal tester operator snapshot", () => {

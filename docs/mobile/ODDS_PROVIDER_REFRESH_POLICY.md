@@ -18,6 +18,8 @@ Temporary Local MVP provider: The Odds API. This policy is for fake-token local 
 - `npm run mobile:one-event-onboarding:cached-runtime` is the preferred shortcut for the same cached/no-quota runtime-loop proof mode.
 - `npm run mobile:one-event-onboarding:live-provider-runtime` is the explicit shortcut for a live-provider refresh plus runtime-loop proof. It requires `THE_ODDS_API_KEY`, is quota-capped by the underlying onboarding/live-runtime commands, and should only be used when a live provider refresh is intentional.
 - `npm run mobile:one-event-live-runtime:provider` is the explicit live provider proof command and requires `THE_ODDS_API_KEY`.
+- `npm run mobile:one-event-live-runtime:provider-secret-preflight` checks whether live refresh can obtain the key from the process environment or from `.runtime/secrets/the-odds-api-key.txt`. It is redacted, local-only, and does not call the provider.
+- `npm run mobile:one-event-live-runtime:provider-secret` runs the same explicit live provider proof while loading the key from the process environment or from `.runtime/secrets/the-odds-api-key.txt`. The key is never passed on the command line, never printed, and the `.runtime` path is git-ignored.
 - `npm run mobile:one-event-live-supervisor` repeats data hygiene, the local one-event runtime check, maker seed, and safe real-time lifecycle scheduler without spending provider quota unless `-RunProviderProof` is passed.
 - `npm run mobile:one-event-live-supervisor -- -RunStaleGuard` also runs the stale-provider guard in dry-run monitor mode each cycle. It reports markets that would pause without mutating the tester runtime.
 - `npm run mobile:one-event-live-supervisor -- -RunStaleGuard -EnforceStaleGuard` pauses stale `LIVE` markets while the supervisor runs. Use this only after a fresh live provider refresh or when intentionally testing stale-data trade blocking.
@@ -33,6 +35,7 @@ Temporary Local MVP provider: The Odds API. This policy is for fake-token local 
 - `npm run mobile:one-event-settlement-preflight` reads trusted result JSON, runs the settlement scheduler in dry-run mode, and reports active-event execution eligibility/blockers without provider quota or mutation.
 - `npm run mobile:one-event-settlement-execution-proof` proves settlement mechanics on a fresh disposable local market. It does not call the odds provider, spend quota, or mutate the active tester event.
 - Do not print or commit `THE_ODDS_API_KEY`.
+- If using the local secret-file path, store only the raw key in `.runtime/secrets/the-odds-api-key.txt`. Do not place quotes, labels, or shell syntax in that file.
 - Track provider quota from response headers:
   - `x-requests-used`
   - `x-requests-remaining`

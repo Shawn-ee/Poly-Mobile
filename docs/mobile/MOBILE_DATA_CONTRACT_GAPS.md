@@ -10849,3 +10849,9 @@ Future migration concern:
 - Closed or narrowed: internal testers no longer need to infer the current one-event mobile flow from broad proof artifacts. The snapshot now states the current event, selected market/outcome, expected Home/Event Detail/Buy/Portfolio/Cashout behavior, and API dependency for each manual proof step.
 - Remaining P1: the checklist still reports the existing runtime boundary truth. It does not install an unattended daemon and does not execute official-result settlement for the active event.
 - Mock/static data: none added. The checklist reflects local backend status and saved proof state only.
+## Cycle ZR - Live Provider Secret Preflight Wrapper
+
+- Fields added/confirmed for tooling: `live-provider-key-preflight.redacted.json` records redacted key-source availability, quota caps, whether provider proof ran, and next action.
+- Closed or narrowed: operators no longer need to put the Odds API key directly on a command line to run the existing live provider proof; the wrapper can read from an ignored `.runtime` secret file.
+- Remaining P1: no live provider refresh was run in this cycle because no key source was present. Mobile-route provider snapshots remain stale under the 90-second display threshold until an explicit refresh runs.
+- Mock/static data: none added. Missing secret reports readiness state only and does not fabricate provider odds.

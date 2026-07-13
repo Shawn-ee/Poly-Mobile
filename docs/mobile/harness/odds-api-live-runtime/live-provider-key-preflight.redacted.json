@@ -1,0 +1,38 @@
+{
+    "generatedAt":  "2026-07-13T17:27:29.6240153Z",
+    "scope":  "holiwyn-live-provider-secret-preflight",
+    "pass":  false,
+    "providerQuotaUsedByPreflight":  false,
+    "providerProofRan":  false,
+    "providerProofMayHaveUsedQuota":  false,
+    "providerProofExitCode":  null,
+    "providerProofError":  null,
+    "secret":  {
+                   "checked":  true,
+                   "source":  "missing",
+                   "envPresent":  false,
+                   "filePresent":  false,
+                   "fileHasValue":  false,
+                   "filePath":  ".runtime/secrets/the-odds-api-key.txt",
+                   "valuePrinted":  false,
+                   "valueStoredInRepo":  false,
+                   "gitignoreCoversRuntime":  true
+               },
+    "policy":  {
+                   "oneEventOnly":  true,
+                   "refreshIterations":  2,
+                   "maxCredits":  16,
+                   "minRemaining":  2,
+                   "liveProofSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-live-runtime-summary.redacted.json",
+                   "commandLineContainsSecret":  false,
+                   "defaultModeSpendsQuota":  false
+               },
+    "nextAction":  "write_the_key_to_ignored_runtime_secret_file_or_set_process_env_before_live_refresh",
+    "p0":  [
+
+           ],
+    "p1":  [
+               "live_provider_secret_missing"
+           ],
+    "note":  "Preflight is local-only and redacted. It never prints the provider key. The secret file path is under .runtime, which is ignored by git. Passing -RunProviderProof may spend provider quota under the existing one-event caps."
+}
