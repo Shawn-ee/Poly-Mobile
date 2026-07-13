@@ -1,12 +1,31 @@
 {
-    "generatedAt":  "2026-07-13T15:53:29.4541821Z",
+    "generatedAt":  "2026-07-13T17:18:57.6567290Z",
     "scope":  "holiwyn-internal-tester-runtime-manager",
     "pass":  true,
-    "action":  "status",
-    "startedAt":  "2026-07-13T15:53:20.4385620Z",
-    "completedAt":  "2026-07-13T15:53:29.4561824Z",
+    "action":  "stop",
+    "startedAt":  "2026-07-13T17:18:47.9292333Z",
+    "completedAt":  "2026-07-13T17:18:57.6587354Z",
     "operations":  [
-
+                       {
+                           "target":  "supervisor",
+                           "result":  "captured_output_redacted",
+                           "pid":  null
+                       },
+                       {
+                           "target":  "result-poller",
+                           "result":  "captured_output_redacted",
+                           "pid":  null
+                       },
+                       {
+                           "target":  "expo",
+                           "result":  "not_owned",
+                           "pid":  null
+                       },
+                       {
+                           "target":  "backend",
+                           "result":  "not_owned",
+                           "pid":  null
+                       }
                    ],
     "backend":  {
                     "baseUrl":  "http://127.0.0.1:3002",
@@ -15,7 +34,7 @@
                                    "status":  "ok",
                                    "db":  "connected",
                                    "env":  "development",
-                                   "timestamp":  "2026-07-13T15:53:29.443Z",
+                                   "timestamp":  "2026-07-13T17:18:57.645Z",
                                    "error":  null
                                },
                     "portOwner":  {
@@ -60,11 +79,11 @@
                                                             },
                                               "process":  {
                                                               "before":  {
-                                                                             "pid":  4868,
+                                                                             "pid":  75572,
                                                                              "running":  false
                                                                          },
                                                               "after":  {
-                                                                            "pid":  4868,
+                                                                            "pid":  75572,
                                                                             "running":  false
                                                                         }
                                                           }
@@ -82,11 +101,11 @@
                                                               },
                                                 "process":  {
                                                                 "before":  {
-                                                                               "pid":  57380,
+                                                                               "pid":  39036,
                                                                                "running":  false
                                                                            },
                                                                 "after":  {
-                                                                              "pid":  57380,
+                                                                              "pid":  39036,
                                                                               "running":  false
                                                                           }
                                                             }
@@ -104,11 +123,29 @@
                               "warmRuntimeRequired":  false,
                               "warmRuntimeObserved":  false,
                               "statusDigest":  {
-                                                   "ok":  false,
-                                                   "status":  503,
-                                                   "currentRuntimeState":  null,
-                                                   "providerQuotaUsedByStatus":  null,
-                                                   "error":  "The remote server returned an error: (503) Server Unavailable."
+                                                   "ok":  true,
+                                                   "status":  200,
+                                                   "currentRuntimeState":  {
+                                                                               "mode":  "proven_capability_loops_stopped",
+                                                                               "localCapabilityReady":  true,
+                                                                               "allLoopsRunning":  false,
+                                                                               "supervisorRunning":  false,
+                                                                               "resultPollerRunning":  false,
+                                                                               "quotaSpendingLoopRunning":  false,
+                                                                               "providerSnapshotFresh":  false,
+                                                                               "testerReadyRightNow":  false,
+                                                                               "p0":  [
+
+                                                                                      ],
+                                                                               "p1":  [
+                                                                                          "supervisor_loop_not_running_now",
+                                                                                          "result_poller_loop_not_running_now",
+                                                                                          "mobile_provider_snapshot_not_fresh"
+                                                                                      ],
+                                                                               "nextAction":  "start_internal_tester_runtime_with_supervisor_and_result_poller"
+                                                                           },
+                                                   "providerQuotaUsedByStatus":  false,
+                                                   "error":  null
                                                }
                           },
     "runtimeTruth":  {

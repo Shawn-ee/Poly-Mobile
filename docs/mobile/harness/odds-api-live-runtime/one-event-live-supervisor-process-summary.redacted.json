@@ -1,10 +1,10 @@
 {
-    "generatedAt":  "2026-07-13T15:56:44.8780096Z",
+    "generatedAt":  "2026-07-13T17:18:56.6589899Z",
     "scope":  "holiwyn-one-event-live-supervisor-process",
     "pass":  true,
     "operation":  {
                       "action":  "status",
-                      "startedAt":  "2026-07-13T15:56:44.8325605Z",
+                      "startedAt":  "2026-07-13T17:18:56.6135420Z",
                       "force":  false,
                       "result":  "not_running"
                   },
@@ -14,12 +14,12 @@
                     "stderr":  ".runtime/one-event-live-supervisor/supervisor.err.log",
                     "before":  {
                                    "known":  true,
-                                   "pid":  41524,
+                                   "pid":  75572,
                                    "running":  false,
                                    "process":  null,
                                    "state":  {
-                                                 "pid":  41524,
-                                                 "startedAt":  "2026-07-13T15:56:25.3724596Z",
+                                                 "pid":  75572,
+                                                 "startedAt":  "2026-07-13T17:17:25.8092038Z",
                                                  "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_live_supervisor.ps1 -BackendPort 3002 -IntervalSeconds 15 -Continuous -MaxIterations 0 -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                                                  "continuous":  true,
                                                  "maxIterations":  0,
@@ -47,12 +47,12 @@
                                },
                     "after":  {
                                   "known":  true,
-                                  "pid":  41524,
+                                  "pid":  75572,
                                   "running":  false,
                                   "process":  null,
                                   "state":  {
-                                                "pid":  41524,
-                                                "startedAt":  "2026-07-13T15:56:25.3724596Z",
+                                                "pid":  75572,
+                                                "startedAt":  "2026-07-13T17:17:25.8092038Z",
                                                 "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_live_supervisor.ps1 -BackendPort 3002 -IntervalSeconds 15 -Continuous -MaxIterations 0 -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                                                 "continuous":  true,
                                                 "maxIterations":  0,

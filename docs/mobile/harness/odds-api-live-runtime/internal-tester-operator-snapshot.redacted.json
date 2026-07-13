@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T17:11:29.349Z",
+  "generatedAt": "2026-07-13T17:17:46.211Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -29,7 +29,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-13T17:11:28.106Z"
+      "timestamp": "2026-07-13T17:17:45.102Z"
     },
     "error": null
   },
@@ -39,24 +39,22 @@
     "localTesterReadyRightNow": false,
     "currentRuntimeState": {
       "checked": true,
-      "mode": "proven_capability_loops_stopped",
+      "mode": "warm_no_quota_runtime",
       "localCapabilityReady": true,
-      "warmNoQuotaRuntime": false,
-      "allLoopsRunning": false,
-      "anyLoopRunning": false,
-      "supervisorRunning": false,
-      "resultPollerRunning": false,
+      "warmNoQuotaRuntime": true,
+      "allLoopsRunning": true,
+      "anyLoopRunning": true,
+      "supervisorRunning": true,
+      "resultPollerRunning": true,
       "quotaSpendingLoopRunning": false,
       "backendProofFresh": true,
       "providerSnapshotFresh": false,
       "testerReadyRightNow": false,
       "p0": [],
       "p1": [
-        "supervisor_loop_not_running_now",
-        "result_poller_loop_not_running_now",
         "mobile_provider_snapshot_not_fresh"
       ],
-      "nextAction": "start_internal_tester_runtime_with_supervisor_and_result_poller",
+      "nextAction": "keep_cached_testing_or_refresh_live_odds",
       "note": "This separates proven local capability from current process warmth. Ready status can be true while loops are stopped; testerReadyRightNow requires both local loops running without provider quota and fresh mobile-visible provider snapshots."
     },
     "managedProcesses": {
@@ -65,9 +63,9 @@
         "checked": true,
         "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
         "known": true,
-        "pid": 41524,
-        "running": false,
-        "startedAt": "2026-07-13T15:56:25.3724596Z",
+        "pid": 75572,
+        "running": true,
+        "startedAt": "2026-07-13T17:17:25.8092038Z",
         "continuous": true,
         "maxIterations": 0,
         "intervalSeconds": 15,
@@ -90,9 +88,9 @@
         "checked": true,
         "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
         "known": true,
-        "pid": 52592,
-        "running": false,
-        "startedAt": "2026-07-13T15:56:25.6679304Z",
+        "pid": 39036,
+        "running": true,
+        "startedAt": "2026-07-13T17:17:26.1038183Z",
         "continuous": true,
         "maxIterations": 0,
         "intervalSeconds": 15,
@@ -107,7 +105,7 @@
           "approvedResultSettlement": true
         }
       },
-      "anyLoopRunning": false,
+      "anyLoopRunning": true,
       "quotaSpendingLoopRunning": false,
       "note": "Read-only live process check from local .runtime state and OS pid existence. Ready status is based on proven local capability and fresh data, not on requiring background loops to be running right now."
     },
@@ -125,8 +123,8 @@
     "reason": null,
     "snapshotCount": 4,
     "latestFetchedAt": "2026-07-13T14:53:10.824Z",
-    "latestAgeHours": 2.31,
-    "latestAgeSeconds": 8299,
+    "latestAgeHours": 2.41,
+    "latestAgeSeconds": 8675,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
@@ -151,7 +149,7 @@
     "defaultNoQuotaAction": "cached_internal_testing",
     "liveOddsAction": "refresh_mobile_live_odds",
     "nextProviderAction": "refresh_provider_snapshots_or_keep_cached_test_mode",
-    "actionCount": 7,
+    "actionCount": 5,
     "selectedAction": {
       "id": "cached_internal_testing",
       "priority": "P0",
@@ -177,7 +175,7 @@
         "step": "Start or verify local tester runtime",
         "expected": "npm run mobile:one-event-onboarding",
         "pass": true,
-        "notes": "Runtime capability is proven, but supervisor/result-poller loops are not both running now."
+        "notes": "Runtime loops are currently warm in no-quota mode."
       },
       {
         "step": "Open Holiwyn on Samsung S23",
