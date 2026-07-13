@@ -1052,8 +1052,24 @@ async function main() {
         "body",
         "operatorControlBoundary",
         "localControls",
+        "resultReviewRoute",
+        "authRequired",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "localControls",
         "settlementQueueRoute",
         "available",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "localControls",
+        "settlementQueueRoute",
+        "authRequired",
       ]) === true &&
       getPath(entries.phaseAudit, [
         "localRuntimeStatus",

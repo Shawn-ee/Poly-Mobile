@@ -1,7 +1,12 @@
 import { NextRequest } from "next/server";
 import { GET } from "@/app/api/internal/live-runtime/result-review/route";
 
+const requireAdmin = jest.fn();
 const getLocalLiveRuntimeResultReview = jest.fn();
+
+jest.mock("@/lib/admin", () => ({
+  requireAdmin: () => requireAdmin(),
+}));
 
 jest.mock("@/server/services/liveRuntimeResultReview", () => ({
   getLocalLiveRuntimeResultReview: (params: unknown) => getLocalLiveRuntimeResultReview(params),
@@ -11,8 +16,16 @@ describe("internal live-runtime result-review route", () => {
   const originalNodeEnv = process.env.NODE_ENV;
 
   beforeEach(() => {
+    requireAdmin.mockReset();
     getLocalLiveRuntimeResultReview.mockReset();
     delete process.env.HOLIWYN_DISABLE_INTERNAL_RUNTIME_STATUS;
+    requireAdmin.mockResolvedValue({
+      user: {
+        id: "admin-1",
+        email: "admin@holiwyn.local",
+        username: "admin",
+      },
+    });
   });
 
   afterAll(() => {
@@ -68,11 +81,21 @@ describe("internal live-runtime result-review route", () => {
     expect(body.status).toBe("needs_attention");
   });
 
+  test("requires admin authentication", async () => {
+    requireAdmin.mockResolvedValue({ error: "Unauthorized", status: 401 });
+
+    const res = await GET(new NextRequest("http://localhost/api/internal/live-runtime/result-review"));
+    expect(res.status).toBe(401);
+    expect(await res.json()).toEqual({ error: "Unauthorized" });
+    expect(getLocalLiveRuntimeResultReview).not.toHaveBeenCalled();
+  });
+
   test("can be disabled outside local runtime contexts", async () => {
     process.env.HOLIWYN_DISABLE_INTERNAL_RUNTIME_STATUS = "1";
 
     const res = await GET(new NextRequest("http://localhost/api/internal/live-runtime/result-review"));
     expect(res.status).toBe(404);
+    expect(requireAdmin).not.toHaveBeenCalled();
     expect(getLocalLiveRuntimeResultReview).not.toHaveBeenCalled();
   });
 });

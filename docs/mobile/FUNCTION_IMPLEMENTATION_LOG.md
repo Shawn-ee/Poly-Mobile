@@ -15224,3 +15224,15 @@ Known limitations:
 - Runtime proof: local route call against active review `900d9d09-22e7-4ae9-9158-71832e8fd8e7` returned HTTP 409 with `blockerKeys=["market_not_closed","execution_not_eligible"]`, `providerQuotaUsed=false`, `mutatesSettlement=false`, `exactConfirmationExposed=false`, `exactConfirmationStored=false`, and `activeMarketExecutionAttempted=false`.
 - Proof needed: focused execution service/route tests, operator session/status tests, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
 - Known limitations: direct exact-confirmation settlement execution remains disabled. Production still needs first-class operator audit schema, two-person/admin policy, dedicated operator roles, installed official-result polling, and operator UI.
+
+## Cycle XP - Operator Auth Gate For Result Review And Settlement Queue
+
+- Feature/runtime worked on: backend internal operator authentication for local result-review and settlement-queue routes.
+- Frontend components touched: none.
+- Important functions/services touched: `src/app/api/internal/live-runtime/result-review/route.ts`, `src/app/api/internal/live-runtime/settlement-queue/route.ts`, `src/server/services/liveRuntimeStatus.ts`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, `scripts/report_holiwyn_live_runtime_completion_audit.ts`, and focused route/status tests.
+- User/runtime interactions supported: unauthenticated callers now receive `401` from `GET /api/internal/live-runtime/result-review` and `GET /api/internal/live-runtime/settlement-queue`; authenticated admin/operator calls still return redacted ready evidence for local internal tooling.
+- State transitions: none. Both routes remain read-only and no-quota. The phase audit resolves a local admin id and sends the dev admin header only for internal route proof.
+- API/data dependencies: reads existing `User.isAdmin` through `requireAdmin()`, plus the existing result-review and settlement-queue service data. No schema migration or provider call was added.
+- Runtime proof: local backend returned `401` for both routes without auth and `200 ready` for both routes with dev admin header `b24ba407-b26a-4a25-bdd1-87b9f1361dc7`; `providerQuotaUsed=false` for both authenticated responses.
+- Proof needed: focused result-review/settlement-queue route tests, status test, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
+- Known limitations: this uses the existing admin role source. Dedicated settlement-operator roles, two-person/admin policy, production operator UI, direct exact-confirmation execution, and installed official-result polling remain P1.

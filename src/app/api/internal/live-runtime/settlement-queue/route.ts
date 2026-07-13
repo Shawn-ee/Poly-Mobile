@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/admin";
 import { getLocalLiveRuntimeSettlementQueue } from "@/server/services/liveRuntimeSettlementQueue";
 
 export async function GET() {
@@ -7,6 +8,11 @@ export async function GET() {
       { error: "Local live runtime settlement queue is unavailable in production." },
       { status: 404 },
     );
+  }
+
+  const admin = await requireAdmin();
+  if ("error" in admin) {
+    return NextResponse.json({ error: admin.error }, { status: admin.status });
   }
 
   const status = await getLocalLiveRuntimeSettlementQueue();

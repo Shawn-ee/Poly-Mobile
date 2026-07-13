@@ -1,6 +1,11 @@
 import { GET } from "@/app/api/internal/live-runtime/settlement-queue/route";
 
+const requireAdmin = jest.fn();
 const getLocalLiveRuntimeSettlementQueue = jest.fn();
+
+jest.mock("@/lib/admin", () => ({
+  requireAdmin: () => requireAdmin(),
+}));
 
 jest.mock("@/server/services/liveRuntimeSettlementQueue", () => ({
   getLocalLiveRuntimeSettlementQueue: () => getLocalLiveRuntimeSettlementQueue(),
@@ -8,8 +13,16 @@ jest.mock("@/server/services/liveRuntimeSettlementQueue", () => ({
 
 describe("internal live-runtime settlement-queue route", () => {
   beforeEach(() => {
+    requireAdmin.mockReset();
     getLocalLiveRuntimeSettlementQueue.mockReset();
     delete process.env.HOLIWYN_DISABLE_INTERNAL_RUNTIME_STATUS;
+    requireAdmin.mockResolvedValue({
+      user: {
+        id: "admin-1",
+        email: "admin@holiwyn.local",
+        username: "admin",
+      },
+    });
   });
 
   afterEach(() => {
@@ -108,11 +121,21 @@ describe("internal live-runtime settlement-queue route", () => {
     expect(body.status).toBe("needs_attention");
   });
 
+  test("requires admin authentication", async () => {
+    requireAdmin.mockResolvedValue({ error: "Unauthorized", status: 401 });
+
+    const res = await GET();
+    expect(res.status).toBe(401);
+    expect(await res.json()).toEqual({ error: "Unauthorized" });
+    expect(getLocalLiveRuntimeSettlementQueue).not.toHaveBeenCalled();
+  });
+
   test("can be disabled outside local runtime contexts", async () => {
     process.env.HOLIWYN_DISABLE_INTERNAL_RUNTIME_STATUS = "1";
 
     const res = await GET();
     expect(res.status).toBe(404);
+    expect(requireAdmin).not.toHaveBeenCalled();
     expect(getLocalLiveRuntimeSettlementQueue).not.toHaveBeenCalled();
   });
 });

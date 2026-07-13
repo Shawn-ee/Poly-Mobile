@@ -1003,7 +1003,7 @@ function buildOperatorControlBoundary(params: {
           purpose: "List pending trusted-result reviews with redacted execution plans.",
           requiredRoles: ["admin", "settlement_operator"],
           mutatesState: false,
-          implementationStatus: "implemented_read_only_without_operator_auth_gate",
+          implementationStatus: "implemented_read_only_with_operator_auth_gate",
         },
         {
           id: "settlement_approval",
@@ -1104,12 +1104,14 @@ function buildOperatorControlBoundary(params: {
         route: "GET /api/internal/live-runtime/result-review",
         available: getPath(params.resultReview, ["pass"]) === true,
         mutatesState: false,
+        authRequired: true,
         providerQuotaRequired: false,
       },
       settlementQueueRoute: {
         route: "GET /api/internal/live-runtime/settlement-queue",
         available: getPath(params.settlementQueue, ["pass"]) === true,
         mutatesState: false,
+        authRequired: true,
         providerQuotaRequired: false,
       },
       approvedSchedulerCommand: {
@@ -1142,12 +1144,10 @@ function buildOperatorControlBoundary(params: {
     productionBlockers: [
       "authenticated_operator_controls_missing",
       "production_operator_ui_not_present",
-      "durable_operator_identity_and_role_checks_missing",
       "two_person_or_admin_approval_workflow_missing",
       "installed_official_result_polling_missing",
     ],
     requiredBeforeProduction: [
-      "add authenticated operator login and role checks for settlement review",
       "store durable operator identity on approval and execution records",
       "provide an audited operator UI or admin workflow for queue review",
       "keep exact-confirmation redaction and CLOSED-market guards",

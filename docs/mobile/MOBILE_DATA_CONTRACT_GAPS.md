@@ -10746,3 +10746,12 @@ Future migration concern:
 - Schema mismatch: dry-run execution identity is recorded through `CanonicalEvent.userId` and redacted `OfficialResultReview.reviewSnapshot.operatorExecutionDryRun`. Production still needs first-class `executedByUserId`, `executedAt`, role snapshot, request id, two-person approval linkage, and an `OperatorAuditEvent` or equivalent table before direct execution is enabled.
 - Temporary mock/static data: none added. Service/route tests mock Prisma for contract coverage; runtime proof used the local active review row and correctly blocked because the active market is not closed/executable.
 - Remaining gaps: direct exact-confirmation settlement execution handoff, two-person/admin approval policy, dedicated operator roles, production operator UI, installed official-result polling, and production service ownership remain P1.
+
+## Cycle XP - Operator Auth Gate For Result Review And Settlement Queue
+
+- Closed or narrowed: `GET /api/internal/live-runtime/result-review` and `GET /api/internal/live-runtime/settlement-queue` now require `requireAdmin()` instead of being only dev-disabled/read-only. Runtime status exposes `authRequired=true` for both local controls.
+- Fields added/confirmed for local runtime tooling: route behavior now includes 401 unauthenticated responses and authenticated `200 ready` responses with existing redacted result-review/queue fields. Phase audit can supply `x-dev-admin-user-id` from local admin identity for proof.
+- Route mismatch: these remain local/dev internal operator routes, not public mobile routes. They still use `User.isAdmin` as the role source rather than a dedicated settlement-operator permission table.
+- Schema mismatch: no schema change. Production still needs dedicated operator roles/permissions, role snapshots, request ids, and a first-class operator audit table or equivalent.
+- Temporary mock/static data: none added. Tests mock `requireAdmin()`; runtime proof used the real local admin user and local DB.
+- Remaining gaps: dedicated settlement-operator role model, two-person/admin policy, production operator UI, direct exact-confirmation execution, installed official-result polling, and production service ownership remain P1.

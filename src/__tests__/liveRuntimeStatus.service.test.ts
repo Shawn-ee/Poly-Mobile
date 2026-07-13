@@ -1262,12 +1262,14 @@ describe("live runtime status service", () => {
           route: "GET /api/internal/live-runtime/result-review",
           available: true,
           mutatesState: false,
+          authRequired: true,
           providerQuotaRequired: false,
         },
         settlementQueueRoute: {
           route: "GET /api/internal/live-runtime/settlement-queue",
           available: true,
           mutatesState: false,
+          authRequired: true,
           providerQuotaRequired: false,
         },
         approvedSchedulerCommand: {
@@ -1294,10 +1296,8 @@ describe("live runtime status service", () => {
       productionBlockers: expect.arrayContaining([
         "authenticated_operator_controls_missing",
         "production_operator_ui_not_present",
-        "durable_operator_identity_and_role_checks_missing",
       ]),
       requiredBeforeProduction: expect.arrayContaining([
-        "add authenticated operator login and role checks for settlement review",
         "store durable operator identity on approval and execution records",
       ]),
       p0: [],

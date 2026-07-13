@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { PrismaClient } from "@prisma/client";
 
 const DEFAULT_BASE_URL = "http://127.0.0.1:3002";
 const DEFAULT_OUTPUT_PATH =
@@ -140,9 +141,9 @@ function ageHours(generatedAt: unknown) {
   return Number(((Date.now() - parsed) / 3_600_000).toFixed(2));
 }
 
-async function fetchJson(url: string) {
+async function fetchJson(url: string, init?: RequestInit) {
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, init);
     const body = await response.json().catch(() => ({}));
     return { ok: response.ok, status: response.status, body, error: null };
   } catch (error) {
@@ -152,6 +153,23 @@ async function fetchJson(url: string) {
       body: null,
       error: error instanceof Error ? error.message : String(error),
     };
+  }
+}
+
+async function resolveLocalAuditAdminUserId() {
+  const explicit = argValue("adminUserId") ?? process.env.HOLIWYN_INTERNAL_OPERATOR_USER_ID ?? process.env.HOLIWYN_DEV_ADMIN_USER_ID;
+  if (explicit) return explicit;
+
+  const prisma = new PrismaClient();
+  try {
+    const admin = await prisma.user.findFirst({
+      where: { isAdmin: true },
+      select: { id: true },
+      orderBy: { createdAt: "asc" },
+    });
+    return admin?.id ?? null;
+  } finally {
+    await prisma.$disconnect();
   }
 }
 
@@ -178,6 +196,14 @@ async function main() {
     throw new Error("Refusing to run live runtime phase audit in production.");
   }
   const baseUrl = argValue("baseUrl") ?? DEFAULT_BASE_URL;
+  const auditAdminUserId = await resolveLocalAuditAdminUserId();
+  const internalOperatorFetchInit = auditAdminUserId
+    ? {
+        headers: {
+          "x-dev-admin-user-id": auditAdminUserId,
+        },
+      }
+    : undefined;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
   const entries = Object.fromEntries(
     await Promise.all(Object.entries(PATHS).map(async ([key, filePath]) => [key, await readJson(filePath)])),
@@ -192,12 +218,18 @@ async function main() {
     localRuntimeStatus.body && typeof localRuntimeStatus.body === "object"
       ? (localRuntimeStatus.body as JsonObject)
       : null;
-  const localResultReview = await fetchJson(`${baseUrl}/api/internal/live-runtime/result-review`);
+  const localResultReview = await fetchJson(
+    `${baseUrl}/api/internal/live-runtime/result-review`,
+    internalOperatorFetchInit,
+  );
   const localResultReviewBody =
     localResultReview.body && typeof localResultReview.body === "object"
       ? (localResultReview.body as JsonObject)
       : null;
-  const localSettlementQueue = await fetchJson(`${baseUrl}/api/internal/live-runtime/settlement-queue`);
+  const localSettlementQueue = await fetchJson(
+    `${baseUrl}/api/internal/live-runtime/settlement-queue`,
+    internalOperatorFetchInit,
+  );
   const localSettlementQueueBody =
     localSettlementQueue.body && typeof localSettlementQueue.body === "object"
       ? (localSettlementQueue.body as JsonObject)
@@ -957,11 +989,19 @@ async function main() {
           true &&
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "resultReviewRoute", "mutatesState"]) ===
           false &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "resultReviewRoute", "authRequired"]) ===
+          true &&
         getPath(localRuntimeStatusBody, [
           "operatorControlBoundary",
           "localControls",
           "settlementQueueRoute",
           "available",
+        ]) === true &&
+        getPath(localRuntimeStatusBody, [
+          "operatorControlBoundary",
+          "localControls",
+          "settlementQueueRoute",
+          "authRequired",
         ]) === true &&
         getPath(localRuntimeStatusBody, [
           "operatorControlBoundary",

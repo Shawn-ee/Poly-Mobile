@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/admin";
 import { getLocalLiveRuntimeResultReview } from "@/server/services/liveRuntimeResultReview";
 
 export async function GET(request: NextRequest) {
@@ -7,6 +8,11 @@ export async function GET(request: NextRequest) {
       { error: "Local live runtime result review is unavailable in production." },
       { status: 404 },
     );
+  }
+
+  const admin = await requireAdmin();
+  if ("error" in admin) {
+    return NextResponse.json({ error: admin.error }, { status: admin.status });
   }
 
   const status = await getLocalLiveRuntimeResultReview({
