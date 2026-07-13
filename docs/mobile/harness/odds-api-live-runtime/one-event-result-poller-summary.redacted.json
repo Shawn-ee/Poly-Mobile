@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-13T08:19:50.9867493Z",
+    "generatedAt":  "2026-07-13T11:59:25.2644142Z",
     "scope":  "holiwyn-one-event-result-poller",
     "pass":  true,
-    "startedAt":  "2026-07-13T08:19:48.1679424Z",
-    "completedAt":  "2026-07-13T08:19:50.9867493Z",
+    "startedAt":  "2026-07-13T11:59:22.3263066Z",
+    "completedAt":  "2026-07-13T11:59:25.2644142Z",
     "eventSlug":  "odds-api-single-soccer-test",
     "settings":  {
                      "continuous":  false,
@@ -36,15 +36,15 @@
     "cycles":  [
                    {
                        "iteration":  1,
-                       "startedAt":  "2026-07-13T08:19:48.1714528Z",
-                       "finishedAt":  "2026-07-13T08:19:48.8958905Z",
+                       "startedAt":  "2026-07-13T11:59:22.3293052Z",
+                       "finishedAt":  "2026-07-13T11:59:23.5051244Z",
                        "resultIngestion":  {
                                                "label":  "poll-1-result-ingestion",
                                                "command":  "npm run mobile:one-event-result-ingest -- --eventSlug=odds-api-single-soccer-test --trustedResultOutput=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
                                                "exitCode":  0,
                                                "pass":  true,
-                                               "startedAt":  "2026-07-13T08:19:48.1754789Z",
-                                               "finishedAt":  "2026-07-13T08:19:48.8767584Z",
+                                               "startedAt":  "2026-07-13T11:59:22.3333056Z",
+                                               "finishedAt":  "2026-07-13T11:59:23.4843782Z",
                                                "outputTail":  [
                                                                   "  },",
                                                                   "  \"auditEvent\": null,",
@@ -95,15 +95,15 @@
                    },
                    {
                        "iteration":  2,
-                       "startedAt":  "2026-07-13T08:19:49.4184348Z",
-                       "finishedAt":  "2026-07-13T08:19:50.5202843Z",
+                       "startedAt":  "2026-07-13T11:59:24.0325187Z",
+                       "finishedAt":  "2026-07-13T11:59:24.7379484Z",
                        "resultIngestion":  {
                                                "label":  "poll-2-result-ingestion",
                                                "command":  "npm run mobile:one-event-result-ingest -- --eventSlug=odds-api-single-soccer-test --trustedResultOutput=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
                                                "exitCode":  0,
                                                "pass":  true,
-                                               "startedAt":  "2026-07-13T08:19:49.4184348Z",
-                                               "finishedAt":  "2026-07-13T08:19:50.5081681Z",
+                                               "startedAt":  "2026-07-13T11:59:24.0335201Z",
+                                               "finishedAt":  "2026-07-13T11:59:24.7257594Z",
                                                "outputTail":  [
                                                                   "  },",
                                                                   "  \"auditEvent\": null,",

@@ -1,5 +1,5 @@
 {
-    "generatedAt":  "2026-07-13T09:24:04.3644395Z",
+    "generatedAt":  "2026-07-13T11:59:17.3854067Z",
     "scope":  "holiwyn-one-event-live-runtime-launch",
     "pass":  true,
     "backend":  {
@@ -10,7 +10,7 @@
                                                       "status":  "ok",
                                                       "db":  "connected",
                                                       "env":  "development",
-                                                      "timestamp":  "2026-07-13T09:23:58.635Z"
+                                                      "timestamp":  "2026-07-13T11:59:15.183Z"
                                                   },
                                          "error":  null
                                      },
@@ -20,7 +20,7 @@
                                                      "status":  "ok",
                                                      "db":  "connected",
                                                      "env":  "development",
-                                                     "timestamp":  "2026-07-13T09:23:58.656Z"
+                                                     "timestamp":  "2026-07-13T11:59:15.203Z"
                                                  },
                                         "error":  null
                                     },
@@ -37,11 +37,11 @@
                 "connected":  true,
                 "deviceId":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
                 "model":  "SM_S911U1",
-                "raw":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp device product:dm1quew model:SM_S911U1 device:dm1q transport_id:1"
+                "raw":  "172.16.200.27:44029    device product:dm1quew model:SM_S911U1 device:dm1q transport_id:2"
             },
     "provider":  {
-                     "liveProofRanThisLaunch":  true,
-                     "liveProofExitCode":  0,
+                     "liveProofRanThisLaunch":  false,
+                     "liveProofExitCode":  null,
                      "quotaPolicy":  {
                                          "oneEventOnly":  true,
                                          "maxCredits":  16,
@@ -56,7 +56,7 @@
                                    "fresh":  true,
                                    "reason":  "fresh",
                                    "generatedAt":  "2026-07-13T09:24:03.509Z",
-                                   "ageHours":  0,
+                                   "ageHours":  2.59,
                                    "maxAgeHours":  24,
                                    "summaryPath":  "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
                                    "event":  {
@@ -135,9 +135,129 @@
                     "backendContinuous":  true,
                     "providerRefreshContinuous":  false,
                     "marketMakerContinuous":  false,
-                    "makerSeededThisLaunch":  false,
-                    "makerSeedSummary":  null,
-                    "mode":  "bounded-live-provider-proof",
+                    "makerSeededThisLaunch":  true,
+                    "makerSeedSummary":  {
+                                             "pass":  true,
+                                             "generatedAt":  "2026-07-13T11:59:16.483Z",
+                                             "startedAt":  "2026-07-13T11:59:15.934Z",
+                                             "scope":  "odds-api-one-event-shifted-maker-seed",
+                                             "mode":  "seed-resting-shifted-maker-quotes",
+                                             "event":  {
+                                                           "id":  "3c4716b1-5857-4150-a779-c2c98ab30361",
+                                                           "slug":  "odds-api-single-soccer-test",
+                                                           "title":  "Spain vs. France",
+                                                           "startTime":  "2026-07-14T19:00:00.000Z"
+                                                       },
+                                             "selectedMarket":  {
+                                                                    "id":  "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+                                                                    "slug":  "odds-api-single-soccer-test-totals-7439c2d603",
+                                                                    "title":  "Spain vs. France: Total Goals 2.5",
+                                                                    "marketType":  "total_goals",
+                                                                    "marketGroupKey":  "totals",
+                                                                    "line":  "2.5",
+                                                                    "outcomeId":  "24515f22-3717-4b61-82a2-c072febc8f5b",
+                                                                    "outcomeName":  "Over 2.5",
+                                                                    "referenceTokenId":  "odds-api-6ec5620aa25c4fcd08f1d70e"
+                                                                },
+                                             "providerSnapshot":  {
+                                                                      "fetchedAt":  "2026-07-13T09:24:03.509Z",
+                                                                      "ageMs":  9312442,
+                                                                      "maxSnapshotAgeMs":  86400000,
+                                                                      "allowStale":  false,
+                                                                      "source":  "sportsbook-odds",
+                                                                      "referenceBid":  0.54,
+                                                                      "referenceAsk":  0.58,
+                                                                      "outcomePrice":  0.56
+                                                                  },
+                                             "maker":  {
+                                                           "id":  "ef3d05ce-75e3-4448-bdee-c5141aa5fc19",
+                                                           "username":  "odds_live_runtime_shifted_maker_28b447fe"
+                                                       },
+                                             "plan":  {
+                                                          "quoteOffsetTicks":  2,
+                                                          "plannedBid":  0.52,
+                                                          "plannedAsk":  0.6,
+                                                          "adjustments":  [
+
+                                                                          ],
+                                                          "preSeedBook":  {
+                                                                              "bestBid":  0.58,
+                                                                              "bestAsk":  null,
+                                                                              "openOrderCount":  1,
+                                                                              "orders":  [
+                                                                                             {
+                                                                                                 "side":  "BUY",
+                                                                                                 "price":  "0.58",
+                                                                                                 "remaining":  "36.9",
+                                                                                                 "username":  "mobile_route_fill_maker_5a155fa2"
+                                                                                             }
+                                                                                         ]
+                                                                          },
+                                                          "size":  "200",
+                                                          "mintQuantity":  "200"
+                                                      },
+                                             "canceledPreviousOrders":  [
+
+                                                                        ],
+                                             "restingOrders":  [
+                                                                   {
+                                                                       "id":  "3833eb8c-6286-48ff-9439-31b663d1b7c6",
+                                                                       "username":  "odds_live_runtime_shifted_maker_28b447fe",
+                                                                       "side":  "BUY",
+                                                                       "price":  "0.52",
+                                                                       "remaining":  "200",
+                                                                       "status":  "OPEN"
+                                                                   },
+                                                                   {
+                                                                       "id":  "a48726b7-bd28-455a-bdb1-faa28cf20b9e",
+                                                                       "username":  "odds_live_runtime_shifted_maker_28b447fe",
+                                                                       "side":  "SELL",
+                                                                       "price":  "0.6",
+                                                                       "remaining":  "200",
+                                                                       "status":  "OPEN"
+                                                                   }
+                                                               ],
+                                             "quoteRoute":  {
+                                                                "url":  "http://127.0.0.1:3002/api/markets/78ea76f1-fc8f-419b-ac21-2554d79093f6/quote",
+                                                                "ok":  true,
+                                                                "status":  200,
+                                                                "selectedOutcomeQuote":  {
+                                                                                             "outcomeId":  "24515f22-3717-4b61-82a2-c072febc8f5b",
+                                                                                             "outcomeName":  "Over 2.5",
+                                                                                             "bestBid":  "0.58",
+                                                                                             "bestAsk":  "0.6",
+                                                                                             "bestBidSize":  36.9,
+                                                                                             "bestAskSize":  200,
+                                                                                             "midPrice":  "0.59",
+                                                                                             "lastPrice":  "0.58",
+                                                                                             "lastTradeAt":  "2026-07-13T11:51:34.068Z"
+                                                                                         }
+                                                            },
+                                             "checks":  {
+                                                            "eventLoaded":  true,
+                                                            "marketLive":  true,
+                                                            "snapshotFresh":  true,
+                                                            "shiftedBidWorseThanProvider":  true,
+                                                            "shiftedAskWorseThanProvider":  true,
+                                                            "makerBidResting":  true,
+                                                            "makerAskResting":  true,
+                                                            "quoteRouteShowsBid":  true,
+                                                            "quoteRouteShowsAsk":  true
+                                                        },
+                                             "gaps":  {
+                                                          "p0":  [
+
+                                                                 ],
+                                                          "p1":  [
+                                                                     "this command seeds resting shifted maker quotes once; it is reusable but not an unattended daemon by itself",
+                                                                     "provider refresh still comes from the bounded live proof or future daemon"
+                                                                 ],
+                                                          "p2":  [
+                                                                     "multi-market inventory-aware quoting remains future work"
+                                                                 ]
+                                                      }
+                                         },
+                    "mode":  "cached-proof-runtime-check",
                     "notes":  [
                                   "Backend can stay running locally on the configured port.",
                                   "Provider refresh is bounded proof mode unless a future daemon is added.",
@@ -149,7 +269,7 @@
                       {
                           "LocalAddress":  "::",
                           "LocalPort":  8081,
-                          "OwningProcess":  3248
+                          "OwningProcess":  13380
                       },
                       {
                           "LocalAddress":  "::",
