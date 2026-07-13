@@ -15571,3 +15571,14 @@ Known limitations:
 - API/data dependencies: uses backend health, market quote/order placement, portfolio position, and portfolio history routes for `odds-api-single-soccer-test` totals line `2.5`.
 - Proof: `scripts/prove_mobile_odds_api_s23_visible_flow.ps1` passed on Samsung S23 `SM-S911U1` / `172.16.200.27:44029`; summary path `docs/mobile/harness/cycle-ZD-spain-france-cashout-fresh/cycle-ZD-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json` records `cashoutTicketIsClosePositionMode=true`, `cashoutMaxUsesOwnedShares=true`, `cashoutTicketHidesYesNoSelector=true`, `cashoutSellSubmitted=true`, and `cashoutHistoryVisible=true`.
 - Known limitations: this is local fake-token/internal tester proof. Dedicated server-owned close-position quote preview remains a P1 improvement.
+
+## Cycle ZM - Internal Tester Operator Snapshot
+
+- Feature/runtime worked on: local runtime operator handoff for the Spain vs France one-event internal tester pipeline.
+- Frontend components touched: none.
+- Important functions/services touched: added `scripts/report_holiwyn_internal_tester_operator_snapshot.ts`; added npm alias `mobile:internal-tester-operator-snapshot`.
+- User/runtime interactions supported: the operator can generate one compact redacted JSON summary with backend health, event, selected market, runtime warmth, provider freshness, settlement guard truth, and the recommended next command.
+- State transitions: read-only. It calls `GET /api/health` and `GET /api/internal/live-runtime/status`; it does not call The Odds API, start loops, place orders, mutate markets, or execute settlement.
+- API/data dependencies: consumes existing local status route fields `runtimeTruth`, `currentRuntimeState`, `providerSnapshots`, `operatorNextActions`, `settlementDecision`, `serviceOwnership`, and `gaps`.
+- Proof: `npm run mobile:internal-tester-operator-snapshot` writes `docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json` and fails if backend health/runtime status is not ready, if no recommended command exists, or if a provider secret-like value is exposed.
+- Known limitations: this is an operator readability layer, not a new runtime service. Installed unattended service ownership and production official-result auto-settlement remain P1.

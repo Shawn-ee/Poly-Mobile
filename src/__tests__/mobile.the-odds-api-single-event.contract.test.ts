@@ -17,6 +17,8 @@ describe("The Odds API single-event temporary provider", () => {
   const liveRuntimeScript = () => readFileSync("scripts/start_holiwyn_one_event_live_runtime.ps1", "utf8");
   const internalTesterRuntimeScript = () => readFileSync("scripts/manage_holiwyn_internal_tester_runtime.ps1", "utf8");
   const runtimeStatusScript = () => readFileSync("scripts/report_odds_api_one_event_runtime_status.ts", "utf8");
+  const operatorSnapshotScript = () =>
+    readFileSync("scripts/report_holiwyn_internal_tester_operator_snapshot.ts", "utf8");
   const phaseAuditScript = () => readFileSync("scripts/report_odds_api_live_runtime_phase_audit.ts", "utf8");
   const completionAuditScript = () => readFileSync("scripts/report_holiwyn_live_runtime_completion_audit.ts", "utf8");
   const liveReadinessScript = () => readFileSync("scripts/prove_holiwyn_one_event_live_readiness.ps1", "utf8");
@@ -72,6 +74,20 @@ describe("The Odds API single-event temporary provider", () => {
     expect(pkg).toContain("-AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof");
     expect(pkg).toContain("-RunProviderRefresh -StartRuntimeLoops -StopRuntimeLoopsAfterProof");
     expect(pkg).not.toContain("mobile:one-event-onboarding:cached-runtime\": \"powershell -ExecutionPolicy Bypass -File scripts/onboard_holiwyn_one_event_live_runtime.ps1 -RunProviderRefresh");
+  });
+
+  it("exposes a redacted no-quota internal tester operator snapshot", () => {
+    const pkg = packageJson();
+    const source = operatorSnapshotScript();
+    expect(pkg).toContain("mobile:internal-tester-operator-snapshot");
+    expect(source).toContain("holiwyn-internal-tester-operator-snapshot");
+    expect(source).toContain("/api/internal/live-runtime/status");
+    expect(source).toContain("providerQuotaUsedByThisReport: false");
+    expect(source).toContain("recommendedCommand");
+    expect(source).toContain("provider_secret_exposed");
+    expect(source).toContain("does not call providers");
+    expect(source).not.toContain("process.env.THE_ODDS_API_KEY");
+    expect(source).not.toContain("THE_ODDS_API_KEY=");
   });
 
   it("starts managed Expo in server-backed S23 tester mode", () => {

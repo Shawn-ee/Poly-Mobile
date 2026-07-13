@@ -10816,3 +10816,12 @@ Future migration concern:
 - Schema mismatch: none. No Prisma schema or route contract change.
 - Temporary mock/static data: none added. The helper does not fabricate users, provider data, reviews, approvals, or settlement state.
 - Remaining gaps: brand-new machines still need local env setup or `DOTENV_CONFIG_PATH`; secrets remain local-only and must not be committed.
+
+## Cycle ZM - Internal Tester Operator Snapshot
+
+- Closed or narrowed: internal testers now have a compact redacted snapshot of the current one-event runtime status and recommended next command, rather than relying on large status/audit JSON files.
+- Fields added/confirmed for tooling: `operatorNextActions.recommendedFirstAction`, `operatorNextActions.recommendedCommand`, `providerSnapshots.nextProviderAction`, `currentRuntimeState`, `managedProcesses`, `serviceOwnership.serviceModel`, and settlement decision fields are projected into `internal-tester-operator-snapshot.redacted.json`.
+- Route mismatch: no public/mobile route changed. The snapshot consumes the existing internal local status route and backend health route only.
+- Schema mismatch: none. No new database fields are required. The status route may continue writing existing runtime heartbeat mirror rows.
+- Temporary mock/static data: none added. The snapshot fails if the backend/status route is not ready, if no recommended command exists, or if a provider secret-like value appears.
+- Remaining gaps: installed unattended runtime service and production official-result auto-settlement remain P1. The snapshot does not make live provider refresh automatic; live odds refresh still requires explicit quota-capped commands.
