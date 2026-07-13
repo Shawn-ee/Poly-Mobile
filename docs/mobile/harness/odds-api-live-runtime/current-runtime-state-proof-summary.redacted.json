@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-07-13T14:08:14.785Z",
+  "generatedAt": "2026-07-13T14:48:21.334Z",
   "scope": "holiwyn-current-runtime-state-proof",
   "pass": true,
-  "startedAt": "2026-07-13T14:07:49.008Z",
-  "completedAt": "2026-07-13T14:08:14.785Z",
+  "startedAt": "2026-07-13T14:47:55.403Z",
+  "completedAt": "2026-07-13T14:48:21.334Z",
   "settings": {
     "backendPort": 3002,
     "expoPort": 8081,
@@ -54,9 +54,9 @@
       "checked": true,
       "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
       "known": true,
-      "pid": 3588,
+      "pid": 3592,
       "running": true,
-      "startedAt": "2026-07-13T14:07:57.4961375Z",
+      "startedAt": "2026-07-13T14:48:03.1017341Z",
       "continuous": true,
       "maxIterations": 0,
       "intervalSeconds": 15,
@@ -79,9 +79,9 @@
       "checked": true,
       "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
       "known": true,
-      "pid": 61076,
+      "pid": 49860,
       "running": true,
-      "startedAt": "2026-07-13T14:07:58.9491844Z",
+      "startedAt": "2026-07-13T14:48:05.8239093Z",
       "continuous": true,
       "maxIterations": 0,
       "intervalSeconds": 1,
@@ -136,21 +136,21 @@
       }
     },
     "supervisorWhileRunning": {
-      "generatedAt": "2026-07-13T14:08:06.5316392Z",
+      "generatedAt": "2026-07-13T14:48:13.4808048Z",
       "pass": true,
       "action": "status",
       "operationResult": "running",
       "running": true,
-      "pid": 3588,
+      "pid": 3592,
       "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json"
     },
     "resultPollerWhileRunning": {
-      "generatedAt": "2026-07-13T14:08:09.5743707Z",
+      "generatedAt": "2026-07-13T14:48:14.2377525Z",
       "pass": true,
       "action": "status",
       "operationResult": "running",
       "running": true,
-      "pid": 61076,
+      "pid": 49860,
       "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json"
     },
     "stopSummary": {
@@ -188,21 +188,21 @@
       }
     },
     "supervisorStopSummary": {
-      "generatedAt": "2026-07-13T14:08:12.0418538Z",
+      "generatedAt": "2026-07-13T14:48:18.2493638Z",
       "pass": true,
       "action": "stop",
       "operationResult": "stopped",
       "running": false,
-      "pid": 3588,
+      "pid": 3592,
       "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json"
     },
     "resultPollerStopSummary": {
-      "generatedAt": "2026-07-13T14:08:14.7351817Z",
+      "generatedAt": "2026-07-13T14:48:21.2793750Z",
       "pass": true,
       "action": "stop",
       "operationResult": "stopped",
       "running": false,
-      "pid": 61076,
+      "pid": 49860,
       "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json"
     },
     "statusUrl": "http://127.0.0.1:3002/api/internal/live-runtime/status"
@@ -219,8 +219,8 @@
       "pass": true,
       "signal": null,
       "error": null,
-      "startedAt": "2026-07-13T14:07:49.009Z",
-      "finishedAt": "2026-07-13T14:07:49.299Z",
+      "startedAt": "2026-07-13T14:47:55.403Z",
+      "finishedAt": "2026-07-13T14:47:56.185Z",
       "stdout": ".runtime/current-runtime-state-proof/pre-stop-supervisor.out.log",
       "stderr": ".runtime/current-runtime-state-proof/pre-stop-supervisor.err.log",
       "stdoutTail": [
@@ -268,8 +268,8 @@
       "pass": true,
       "signal": null,
       "error": null,
-      "startedAt": "2026-07-13T14:07:49.307Z",
-      "finishedAt": "2026-07-13T14:07:49.809Z",
+      "startedAt": "2026-07-13T14:47:56.194Z",
+      "finishedAt": "2026-07-13T14:47:57.217Z",
       "stdout": ".runtime/current-runtime-state-proof/pre-stop-result-poller.out.log",
       "stderr": ".runtime/current-runtime-state-proof/pre-stop-result-poller.err.log",
       "stdoutTail": [
@@ -317,8 +317,8 @@
       "pass": true,
       "signal": null,
       "error": null,
-      "startedAt": "2026-07-13T14:07:49.817Z",
-      "finishedAt": "2026-07-13T14:07:54.878Z",
+      "startedAt": "2026-07-13T14:47:57.225Z",
+      "finishedAt": "2026-07-13T14:48:01.618Z",
       "stdout": ".runtime/current-runtime-state-proof/restore-cached-live-one-event.out.log",
       "stderr": ".runtime/current-runtime-state-proof/restore-cached-live-one-event.err.log",
       "stdoutTail": [
@@ -381,8 +381,8 @@
       "pass": true,
       "signal": null,
       "error": null,
-      "startedAt": "2026-07-13T14:07:54.885Z",
-      "finishedAt": "2026-07-13T14:07:57.578Z",
+      "startedAt": "2026-07-13T14:48:01.623Z",
+      "finishedAt": "2026-07-13T14:48:03.188Z",
       "stdout": ".runtime/current-runtime-state-proof/start-supervisor-warm-no-quota.out.log",
       "stderr": ".runtime/current-runtime-state-proof/start-supervisor-warm-no-quota.err.log",
       "stdoutTail": [
@@ -442,8 +442,8 @@
       "pass": true,
       "signal": null,
       "error": null,
-      "startedAt": "2026-07-13T14:07:57.586Z",
-      "finishedAt": "2026-07-13T14:07:59.031Z",
+      "startedAt": "2026-07-13T14:48:03.196Z",
+      "finishedAt": "2026-07-13T14:48:05.903Z",
       "stdout": ".runtime/current-runtime-state-proof/start-result-poller-warm-no-quota.out.log",
       "stderr": ".runtime/current-runtime-state-proof/start-result-poller-warm-no-quota.err.log",
       "stdoutTail": [
@@ -491,8 +491,8 @@
       "pass": true,
       "signal": null,
       "error": null,
-      "startedAt": "2026-07-13T14:08:05.254Z",
-      "finishedAt": "2026-07-13T14:08:06.584Z",
+      "startedAt": "2026-07-13T14:48:12.631Z",
+      "finishedAt": "2026-07-13T14:48:13.530Z",
       "stdout": ".runtime/current-runtime-state-proof/status-supervisor-while-running.out.log",
       "stderr": ".runtime/current-runtime-state-proof/status-supervisor-while-running.err.log",
       "stdoutTail": [
@@ -540,8 +540,8 @@
       "pass": true,
       "signal": null,
       "error": null,
-      "startedAt": "2026-07-13T14:08:06.592Z",
-      "finishedAt": "2026-07-13T14:08:09.622Z",
+      "startedAt": "2026-07-13T14:48:13.538Z",
+      "finishedAt": "2026-07-13T14:48:14.285Z",
       "stdout": ".runtime/current-runtime-state-proof/status-result-poller-while-running.out.log",
       "stderr": ".runtime/current-runtime-state-proof/status-result-poller-while-running.err.log",
       "stdoutTail": [
@@ -589,8 +589,8 @@
       "pass": true,
       "signal": null,
       "error": null,
-      "startedAt": "2026-07-13T14:08:09.628Z",
-      "finishedAt": "2026-07-13T14:08:12.087Z",
+      "startedAt": "2026-07-13T14:48:14.293Z",
+      "finishedAt": "2026-07-13T14:48:18.297Z",
       "stdout": ".runtime/current-runtime-state-proof/stop-supervisor-after-proof.out.log",
       "stderr": ".runtime/current-runtime-state-proof/stop-supervisor-after-proof.err.log",
       "stdoutTail": [
@@ -638,8 +638,8 @@
       "pass": true,
       "signal": null,
       "error": null,
-      "startedAt": "2026-07-13T14:08:12.094Z",
-      "finishedAt": "2026-07-13T14:08:14.778Z",
+      "startedAt": "2026-07-13T14:48:18.304Z",
+      "finishedAt": "2026-07-13T14:48:21.324Z",
       "stdout": ".runtime/current-runtime-state-proof/stop-result-poller-after-proof.out.log",
       "stderr": ".runtime/current-runtime-state-proof/stop-result-poller-after-proof.err.log",
       "stdoutTail": [

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T13:39:12.486Z",
+  "generatedAt": "2026-07-13T14:48:19.707Z",
   "scope": "odds-api-one-event-result-settlement",
   "pass": true,
   "mode": "dry-run",
@@ -34,7 +34,7 @@
     "line": "2.5",
     "statusBefore": "LIVE",
     "resolvedOutcomeIdBefore": null,
-    "collateralUSDCBefore": "2950"
+    "collateralUSDCBefore": "1550"
   },
   "mappedResolution": {
     "rule": "total_goals",
@@ -51,19 +51,19 @@
   },
   "preview": {
     "marketStatus": "LIVE",
-    "totalShares": "5900",
-    "totalWinningShares": "2950",
-    "totalPayout": "2950",
-    "collateralUSDC": "2950",
+    "totalShares": "3100",
+    "totalWinningShares": "1550",
+    "totalPayout": "1550",
+    "collateralUSDC": "1550",
     "payoutConservationPass": true,
     "blockers": [],
     "openOrderCleanup": {
-      "openOrderCount": 2,
-      "buyOrderLockedUSDCToRelease": "104",
+      "openOrderCount": 3,
+      "buyOrderLockedUSDCToRelease": "124.4334",
       "sellOrderSharesToRelease": "200"
     },
-    "payoutCount": 16,
-    "loserPositionCount": 15,
+    "payoutCount": 9,
+    "loserPositionCount": 8,
     "mutation": "none"
   },
   "execution": {
@@ -75,11 +75,11 @@
     "status": "LIVE",
     "resolvedOutcomeId": null,
     "settlementStatus": null,
-    "collateralUSDC": "2950"
+    "collateralUSDC": "1550"
   },
   "controls": {
     "dryRunIsDefault": true,
-    "writeAuditEvent": false,
+    "writeAuditEvent": true,
     "executeRequiresFlag": "--execute",
     "executeRequiresConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:24515f22-3717-4b61-82a2-c072febc8f5b:f3a5743c73f2",
     "executeRequiresMarketStatus": "CLOSED",
@@ -88,7 +88,15 @@
     "actorUserId": "holiwyn-local-result-settlement-operator",
     "providerStatus": "trusted_external_input"
   },
-  "auditEvent": null,
+  "auditEvent": {
+    "id": "126",
+    "sequence": "126",
+    "type": "settlement.trusted_result.preflight",
+    "stream": "market",
+    "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "outcomeId": "24515f22-3717-4b61-82a2-c072febc8f5b",
+    "createdAt": "2026-07-13T14:48:19.703Z"
+  },
   "gaps": {
     "p0": [],
     "p1": [
