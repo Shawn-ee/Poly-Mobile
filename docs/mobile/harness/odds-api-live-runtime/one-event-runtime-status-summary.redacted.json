@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T13:51:23.227Z",
+  "generatedAt": "2026-07-13T15:12:55.625Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -41,9 +41,9 @@
       "checked": true,
       "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
       "known": true,
-      "pid": 17836,
+      "pid": 3592,
       "running": false,
-      "startedAt": "2026-07-13T11:38:41.2995980Z",
+      "startedAt": "2026-07-13T14:48:03.1017341Z",
       "continuous": true,
       "maxIterations": 0,
       "intervalSeconds": 15,
@@ -61,16 +61,16 @@
       "checked": true,
       "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
       "known": true,
-      "pid": 64936,
+      "pid": 49860,
       "running": false,
-      "startedAt": "2026-07-13T13:39:02.9430095Z",
+      "startedAt": "2026-07-13T14:48:05.8239093Z",
       "continuous": true,
       "maxIterations": 0,
       "intervalSeconds": 1,
       "usesProviderQuota": false,
       "modes": {
         "liveResultIngestion": false,
-        "approvedResultSettlement": false
+        "approvedResultSettlement": true
       }
     },
     "allLoopsRunning": false,
@@ -114,7 +114,7 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-13T13:51:23.226Z"
+        "timestamp": "2026-07-13T15:12:55.623Z"
       },
       "error": null
     }
@@ -122,7 +122,7 @@
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveProofGeneratedAt": "2026-07-13T09:24:03.509Z",
-    "liveProofAgeHours": 4.46,
+    "liveProofAgeHours": 5.81,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
@@ -145,8 +145,8 @@
   },
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-    "makerSeedGeneratedAt": "2026-07-13T13:31:42.764Z",
-    "makerSeedAgeHours": 0.33,
+    "makerSeedGeneratedAt": "2026-07-13T14:48:10.015Z",
+    "makerSeedAgeHours": 0.41,
     "quoteRoute": {
       "ok": true,
       "status": 200,
@@ -156,13 +156,13 @@
           {
             "outcomeId": "24515f22-3717-4b61-82a2-c072febc8f5b",
             "outcomeName": "Over 2.5",
-            "bestBid": "0.58",
-            "bestAsk": null,
-            "bestBidSize": 36.9,
-            "bestAskSize": null,
-            "midPrice": "0.58",
+            "bestBid": "0.52",
+            "bestAsk": "0.6",
+            "bestBidSize": 200,
+            "bestAskSize": 200,
+            "midPrice": "0.56",
             "lastPrice": "0.58",
-            "lastTradeAt": "2026-07-13T13:48:31.792Z"
+            "lastTradeAt": "2026-07-13T15:03:25.870Z"
           },
           {
             "outcomeId": "651d8407-2f22-4a37-8d2a-72f483b580fe",
@@ -183,7 +183,7 @@
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
     "schedulerGeneratedAt": "2026-07-13T13:31:45.848Z",
-    "schedulerAgeHours": 0.33,
+    "schedulerAgeHours": 1.69,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 3
@@ -192,9 +192,9 @@
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
     "resultSettlementExecutionGeneratedAt": "2026-07-13T12:32:50.663Z",
-    "resultSettlementExecutionAgeHours": 1.31,
+    "resultSettlementExecutionAgeHours": 2.67,
     "resultSettlementLiveBlockedGeneratedAt": "2026-07-13T12:32:49.154Z",
-    "resultSettlementLiveBlockedAgeHours": 1.31,
+    "resultSettlementLiveBlockedAgeHours": 2.67,
     "maxSettlementProofAgeHours": 24,
     "resultSettlementExecutionFresh": true,
     "resultSettlementLiveBlockedFresh": true,

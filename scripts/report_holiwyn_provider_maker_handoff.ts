@@ -3,6 +3,7 @@ import path from "node:path";
 import { prisma } from "@/lib/db";
 import { compactMarketMakerQuoteRunRow } from "@/server/services/marketMakerQuoteRun";
 import { compactProviderRefreshRunRow } from "@/server/services/providerRefreshRun";
+import { loadLocalEnvForScript } from "./local_env";
 
 const DEFAULT_OUTPUT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/provider-maker-handoff-summary.redacted.json";
@@ -30,6 +31,7 @@ async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to run local provider-maker handoff report in production.");
   }
+  loadLocalEnvForScript(["DATABASE_URL"]);
 
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
   const eventSlug = argValue("eventSlug") ?? DEFAULT_EVENT_SLUG;
