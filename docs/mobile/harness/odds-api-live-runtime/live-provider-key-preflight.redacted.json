@@ -1,5 +1,5 @@
 {
-    "generatedAt":  "2026-07-13T19:22:59.7855778Z",
+    "generatedAt":  "2026-07-13T21:38:10.3635761Z",
     "scope":  "holiwyn-live-provider-secret-preflight",
     "pass":  true,
     "providerQuotaUsedByPreflight":  false,
@@ -9,10 +9,10 @@
     "providerProofError":  null,
     "secret":  {
                    "checked":  true,
-                   "source":  "process_env",
-                   "envPresent":  true,
-                   "filePresent":  false,
-                   "fileHasValue":  false,
+                   "source":  "runtime_secret_file",
+                   "envPresent":  false,
+                   "filePresent":  true,
+                   "fileHasValue":  true,
                    "filePath":  ".runtime/secrets/the-odds-api-key.txt",
                    "valuePrinted":  false,
                    "valueStoredInRepo":  false,
@@ -20,8 +20,8 @@
                },
     "policy":  {
                    "oneEventOnly":  true,
-                   "refreshIterations":  1,
-                   "maxCredits":  8,
+                   "refreshIterations":  2,
+                   "maxCredits":  16,
                    "minRemaining":  2,
                    "liveProofSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-live-runtime-summary.redacted.json",
                    "commandLineContainsSecret":  false,

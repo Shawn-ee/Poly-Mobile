@@ -1,10 +1,10 @@
 {
-    "generatedAt":  "2026-07-13T20:51:33.4688354Z",
+    "generatedAt":  "2026-07-13T21:37:30.0643116Z",
     "scope":  "holiwyn-internal-tester-runtime-manager",
     "pass":  true,
     "action":  "start",
-    "startedAt":  "2026-07-13T20:50:33.7942964Z",
-    "completedAt":  "2026-07-13T20:51:33.4693372Z",
+    "startedAt":  "2026-07-13T21:37:22.0542239Z",
+    "completedAt":  "2026-07-13T21:37:30.0653095Z",
     "operations":  [
                        {
                            "target":  "s23-adb-reverse",
@@ -18,18 +18,18 @@
                        },
                        {
                            "target":  "expo",
-                           "result":  "started",
-                           "pid":  37196
+                           "result":  "external_listener_reused",
+                           "pid":  80736
                        },
                        {
                            "target":  "supervisor",
                            "result":  "started_direct",
-                           "pid":  10620
+                           "pid":  55136
                        },
                        {
                            "target":  "result-poller",
                            "result":  "started_direct",
-                           "pid":  19608
+                           "pid":  26096
                        }
                    ],
     "backend":  {
@@ -39,7 +39,7 @@
                                    "status":  "ok",
                                    "db":  "connected",
                                    "env":  "development",
-                                   "timestamp":  "2026-07-13T20:51:32.681Z",
+                                   "timestamp":  "2026-07-13T21:37:30.032Z",
                                    "error":  null
                                },
                     "portOwner":  {
@@ -57,11 +57,11 @@
                                    "pid":  80736,
                                    "processName":  "node"
                                },
-                 "ownedByManager":  true,
+                 "ownedByManager":  false,
                  "ownedProcessRunning":  true,
-                 "serverModeSource":  "manager_owned_server_env",
-                 "serverModeVerified":  true,
-                 "externalServerModeUnverified":  false
+                 "serverModeSource":  "external_listener_unverified",
+                 "serverModeVerified":  false,
+                 "externalServerModeUnverified":  true
              },
     "dockerPostgres":  {
                            "ok":  true,
@@ -87,11 +87,11 @@
                                                             },
                                               "process":  {
                                                               "before":  {
-                                                                             "pid":  10620,
+                                                                             "pid":  55136,
                                                                              "running":  true
                                                                          },
                                                               "after":  {
-                                                                            "pid":  10620,
+                                                                            "pid":  55136,
                                                                             "running":  true
                                                                         }
                                                           }
@@ -109,11 +109,11 @@
                                                               },
                                                 "process":  {
                                                                 "before":  {
-                                                                               "pid":  19608,
+                                                                               "pid":  26096,
                                                                                "running":  true
                                                                            },
                                                                 "after":  {
-                                                                              "pid":  19608,
+                                                                              "pid":  26096,
                                                                               "running":  true
                                                                           }
                                                             }
@@ -129,13 +129,29 @@
     "liveRuntimeStatus":  {
                               "checked":  true,
                               "warmRuntimeRequired":  true,
-                              "warmRuntimeObserved":  false,
+                              "warmRuntimeObserved":  true,
                               "statusDigest":  {
-                                                   "ok":  false,
-                                                   "status":  503,
-                                                   "currentRuntimeState":  null,
-                                                   "providerQuotaUsedByStatus":  null,
-                                                   "error":  "The remote server returned an error: (503) Server Unavailable."
+                                                   "ok":  true,
+                                                   "status":  200,
+                                                   "currentRuntimeState":  {
+                                                                               "mode":  "warm_no_quota_runtime",
+                                                                               "localCapabilityReady":  true,
+                                                                               "allLoopsRunning":  true,
+                                                                               "supervisorRunning":  true,
+                                                                               "resultPollerRunning":  true,
+                                                                               "quotaSpendingLoopRunning":  false,
+                                                                               "providerSnapshotFresh":  false,
+                                                                               "testerReadyRightNow":  false,
+                                                                               "p0":  [
+
+                                                                                      ],
+                                                                               "p1":  [
+                                                                                          "mobile_provider_snapshot_not_fresh"
+                                                                                      ],
+                                                                               "nextAction":  "keep_cached_testing_or_refresh_live_odds"
+                                                                           },
+                                                   "providerQuotaUsedByStatus":  false,
+                                                   "error":  null
                                                }
                           },
     "runtimeTruth":  {
@@ -145,17 +161,17 @@
                          "supervisorBackgroundProcessAvailable":  true,
                          "resultPollerBackgroundProcessAvailable":  true,
                          "resultPollerBackgroundProcessRunning":  true,
-                         "liveRuntimeStatusWarmObserved":  false,
+                         "liveRuntimeStatusWarmObserved":  true,
                          "liveRuntimeStatusWarmRequiredForLoopStart":  true,
-                         "managerStartedExpoUsesServerMode":  true,
-                         "expoServerModeSource":  "manager_owned_server_env",
-                         "externalExpoServerModeUnverified":  false,
+                         "managerStartedExpoUsesServerMode":  false,
+                         "expoServerModeSource":  "external_listener_unverified",
+                         "externalExpoServerModeUnverified":  true,
                          "replaceExternalExpoAvailable":  true,
                          "replaceExternalExpoRequested":  false,
                          "s23AdbReverseConfiguredOnStart":  true,
                          "stopsOnlyOwnedBackendExpoProcesses":  true,
                          "installedOsService":  false,
-                         "approvedSettlementModeRequested":  true,
+                         "approvedSettlementModeRequested":  false,
                          "activeTesterSettlementExecution":  false,
                          "fakeTokenOnly":  true
                      },
@@ -165,7 +181,7 @@
 
                         ],
                  "p1":  [
-                            "Backend live-runtime status route did not report warm during start, but direct process proof is accepted when supervisor and result-poller are both running.",
+                            "External Expo listener reused; server-mode env cannot be verified. Use -Force -ReplaceExternalExpo or stop the old Expo server if S23 shows stale, fixture, or non-server behavior.",
                             "Use -Force -ReplaceExternalExpo only when you intentionally want the runtime manager to stop an external Expo/Metro listener on the Expo port and start a verified server-mode listener.",
                             "This is a local process control plane, not an installed OS service.",
                             "Official-result auto-execution still requires trusted operator confirmation."
