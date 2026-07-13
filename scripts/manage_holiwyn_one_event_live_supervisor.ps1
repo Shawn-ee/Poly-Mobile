@@ -43,6 +43,40 @@ $StderrPath = Join-Path $RuntimeDir "supervisor.err.log"
 $SupervisorSummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-live-supervisor-summary.redacted.json"
 New-Item -ItemType Directory -Force -Path $RuntimeDir | Out-Null
 
+function Load-LocalEnvKeys {
+  param([string[]]$Keys = @("DATABASE_URL"))
+  $candidates = New-Object System.Collections.Generic.List[string]
+  if (-not [string]::IsNullOrWhiteSpace($env:DOTENV_CONFIG_PATH)) {
+    $candidates.Add($env:DOTENV_CONFIG_PATH) | Out-Null
+  }
+  $current = $RepoRoot
+  for ($depth = 0; $depth -lt 8; $depth += 1) {
+    $candidates.Add((Join-Path $current ".env")) | Out-Null
+    $candidates.Add((Join-Path $current "Poly\.env")) | Out-Null
+    $parent = Split-Path -Parent $current
+    if ($parent -eq $current -or [string]::IsNullOrWhiteSpace($parent)) { break }
+    $current = $parent
+  }
+  foreach ($candidate in ($candidates | Select-Object -Unique)) {
+    if (-not (Test-Path -LiteralPath $candidate)) { continue }
+    foreach ($line in (Get-Content -LiteralPath $candidate)) {
+      $trimmed = $line.Trim()
+      if ([string]::IsNullOrWhiteSpace($trimmed) -or $trimmed.StartsWith("#")) { continue }
+      $separator = $trimmed.IndexOf("=")
+      if ($separator -le 0) { continue }
+      $key = $trimmed.Substring(0, $separator).Trim()
+      if ($Keys -notcontains $key -or -not [string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable($key, "Process"))) { continue }
+      $value = $trimmed.Substring($separator + 1).Trim()
+      if (($value.StartsWith('"') -and $value.EndsWith('"')) -or ($value.StartsWith("'") -and $value.EndsWith("'"))) {
+        $value = $value.Substring(1, $value.Length - 2)
+      }
+      [Environment]::SetEnvironmentVariable($key, $value, "Process")
+    }
+    $missing = @($Keys | Where-Object { [string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable($_, "Process")) })
+    if ($missing.Count -eq 0) { return }
+  }
+}
+
 function Resolve-RepoPath {
   param([string]$Path)
   if ([System.IO.Path]::IsPathRooted($Path)) {
@@ -75,7 +109,15 @@ function Write-JsonFile {
     New-Item -ItemType Directory -Path $directory -Force | Out-Null
   }
   $json = ($Value | ConvertTo-Json -Depth $Depth) -replace "`r`n", "`n"
-  [System.IO.File]::WriteAllText($Path, "$json`n", [System.Text.UTF8Encoding]::new($false))
+  for ($attempt = 1; $attempt -le 5; $attempt += 1) {
+    try {
+      [System.IO.File]::WriteAllText($Path, "$json`n", [System.Text.UTF8Encoding]::new($false))
+      return
+    } catch {
+      if ($attempt -eq 5) { throw }
+      Start-Sleep -Milliseconds (150 * $attempt)
+    }
+  }
 }
 
 function Stop-SupervisorProcessTree {
@@ -132,7 +174,7 @@ function Build-SupervisorArguments {
   $parts.Add("-ExecutionPolicy") | Out-Null
   $parts.Add("Bypass") | Out-Null
   $parts.Add("-File") | Out-Null
-  $parts.Add("scripts/run_holiwyn_one_event_live_supervisor.ps1") | Out-Null
+  $parts.Add((Join-Path $RepoRoot "scripts\run_holiwyn_one_event_live_supervisor.ps1")) | Out-Null
   $parts.Add("-BackendPort") | Out-Null
   $parts.Add("$BackendPort") | Out-Null
   $parts.Add("-IntervalSeconds") | Out-Null
@@ -197,6 +239,7 @@ $operation = [ordered]@{
 $exitCode = 0
 
 if ($Action -eq "start") {
+  Load-LocalEnvKeys -Keys @("DATABASE_URL")
   if ($RunLiveResultIngestion -and -not $RunResultIngestion) {
     throw "RunLiveResultIngestion requires RunResultIngestion."
   }
@@ -228,6 +271,8 @@ if ($Action -eq "start") {
       -FilePath "powershell" `
       -ArgumentList $argumentList `
       -WorkingDirectory $RepoRoot `
+      -RedirectStandardOutput $StdoutPath `
+      -RedirectStandardError $StderrPath `
       -WindowStyle Hidden `
       -PassThru
     $state = [ordered]@{

@@ -1,6 +1,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { runOneEventLifecycleScheduler } from "@/server/services/oneEventLifecycleScheduler";
+import { loadLocalEnvForScript } from "./local_env";
+
+let runOneEventLifecycleScheduler: typeof import("@/server/services/oneEventLifecycleScheduler")["runOneEventLifecycleScheduler"];
 
 const DEFAULT_EVENT_SLUG = "odds-api-single-soccer-test";
 const DEFAULT_OUTPUT_PATH =
@@ -22,6 +24,8 @@ async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to run local one-event lifecycle scheduler in production.");
   }
+  loadLocalEnvForScript(["DATABASE_URL"]);
+  ({ runOneEventLifecycleScheduler } = await import("@/server/services/oneEventLifecycleScheduler"));
 
   const eventSlug = argValue("eventSlug") ?? DEFAULT_EVENT_SLUG;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;

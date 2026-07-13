@@ -1,6 +1,8 @@
 import fs from "node:fs/promises";
-import { prisma } from "@/lib/db";
-import { writeRuntimeServiceRun } from "@/server/services/runtimeServiceRun";
+import { loadLocalEnvForScript } from "./local_env";
+
+let prisma: typeof import("@/lib/db")["prisma"];
+let writeRuntimeServiceRun: typeof import("@/server/services/runtimeServiceRun")["writeRuntimeServiceRun"];
 
 type JsonObject = Record<string, unknown>;
 
@@ -53,6 +55,9 @@ async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to write local runtime run record in production.");
   }
+  loadLocalEnvForScript(["DATABASE_URL"]);
+  ({ prisma } = await import("@/lib/db"));
+  ({ writeRuntimeServiceRun } = await import("@/server/services/runtimeServiceRun"));
 
   const serviceName = required("serviceName");
   const serviceKind = required("serviceKind");
@@ -116,5 +121,5 @@ main()
     process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect();
+    if (prisma) await prisma.$disconnect();
   });

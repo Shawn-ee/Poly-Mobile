@@ -2,10 +2,13 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { Prisma } from "@prisma/client";
-import { prisma } from "@/lib/db";
-import { mintCompleteSetForPublicOrderbook } from "@/server/services/orderbookCollateral";
-import { cancelOrderAndUnlock, placeOrderAndMatch } from "@/server/services/matching";
-import { writeMarketMakerQuoteRun } from "@/server/services/marketMakerQuoteRun";
+import { loadLocalEnvForScript } from "./local_env";
+
+let prisma: typeof import("@/lib/db")["prisma"];
+let mintCompleteSetForPublicOrderbook: typeof import("@/server/services/orderbookCollateral")["mintCompleteSetForPublicOrderbook"];
+let cancelOrderAndUnlock: typeof import("@/server/services/matching")["cancelOrderAndUnlock"];
+let placeOrderAndMatch: typeof import("@/server/services/matching")["placeOrderAndMatch"];
+let writeMarketMakerQuoteRun: typeof import("@/server/services/marketMakerQuoteRun")["writeMarketMakerQuoteRun"];
 
 const DEFAULT_EVENT_SLUG = "odds-api-single-soccer-test";
 const DEFAULT_SUMMARY_PATH = "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json";
@@ -198,10 +201,20 @@ function avoidCrossingOpenBook(plan: ReturnType<typeof pricePlan>, book: Awaited
   return { ...plan, plannedBid, plannedAsk, adjustments };
 }
 
+function priceEquals(left: unknown, right: number) {
+  const parsed = Number(left);
+  return Number.isFinite(parsed) && Math.abs(parsed - right) < 0.000001;
+}
+
 async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to seed local shifted maker liquidity in production.");
   }
+  loadLocalEnvForScript(["DATABASE_URL"]);
+  ({ prisma } = await import("@/lib/db"));
+  ({ mintCompleteSetForPublicOrderbook } = await import("@/server/services/orderbookCollateral"));
+  ({ cancelOrderAndUnlock, placeOrderAndMatch } = await import("@/server/services/matching"));
+  ({ writeMarketMakerQuoteRun } = await import("@/server/services/marketMakerQuoteRun"));
 
   const eventSlug = argValue("eventSlug") ?? DEFAULT_EVENT_SLUG;
   const marketId = argValue("marketId");
@@ -286,12 +299,12 @@ async function main() {
     makerAskResting: cleanupOnly || Boolean(askOrder && ["OPEN", "PARTIAL"].includes(askOrder.status)),
     quoteRouteShowsBid:
       cleanupOnly ||
-      selectedQuote?.bestBid === plan.plannedBid.toFixed(2) ||
-      restingOrders.some((order) => order.side === "BUY" && order.price.toString() === plan.plannedBid.toFixed(2)),
+      priceEquals(selectedQuote?.bestBid, plan.plannedBid) ||
+      restingOrders.some((order) => order.side === "BUY" && priceEquals(order.price.toString(), plan.plannedBid)),
     quoteRouteShowsAsk:
       cleanupOnly ||
-      selectedQuote?.bestAsk === plan.plannedAsk.toFixed(2) ||
-      restingOrders.some((order) => order.side === "SELL" && order.price.toString() === plan.plannedAsk.toFixed(2)),
+      priceEquals(selectedQuote?.bestAsk, plan.plannedAsk) ||
+      restingOrders.some((order) => order.side === "SELL" && priceEquals(order.price.toString(), plan.plannedAsk)),
   };
 
   const summary = {
@@ -413,5 +426,5 @@ main()
     process.exitCode = 1;
   })
   .finally(async () => {
-    await prisma.$disconnect();
+    if (prisma) await prisma.$disconnect();
   });

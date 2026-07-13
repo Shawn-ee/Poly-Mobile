@@ -190,8 +190,14 @@ function Invoke-CheckedCommand {
     [Parameter(Mandatory = $true)] [string]$Command
   )
   $startedAt = (Get-Date).ToUniversalTime()
-  cmd /c $Command | Out-Null
-  $exitCode = $LASTEXITCODE
+  $previousErrorActionPreference = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
+  try {
+    & cmd.exe /d /s /c $Command 2>&1 | Out-Null
+    $exitCode = $LASTEXITCODE
+  } finally {
+    $ErrorActionPreference = $previousErrorActionPreference
+  }
   return [ordered]@{
     label = $Label
     command = $Command

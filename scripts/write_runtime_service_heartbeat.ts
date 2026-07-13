@@ -1,5 +1,7 @@
-import { writeRuntimeServiceHeartbeat } from "@/server/services/runtimeServiceHeartbeat";
-import { prisma } from "@/lib/db";
+import { loadLocalEnvForScript } from "./local_env";
+
+let prisma: typeof import("@/lib/db")["prisma"];
+let writeRuntimeServiceHeartbeat: typeof import("@/server/services/runtimeServiceHeartbeat")["writeRuntimeServiceHeartbeat"];
 
 const argValue = (name: string) => {
   const prefix = `--${name}=`;
@@ -29,6 +31,9 @@ async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to write local runtime heartbeat in production.");
   }
+  loadLocalEnvForScript(["DATABASE_URL"]);
+  ({ prisma } = await import("@/lib/db"));
+  ({ writeRuntimeServiceHeartbeat } = await import("@/server/services/runtimeServiceHeartbeat"));
 
   const serviceName = required("serviceName");
   const serviceKind = required("serviceKind");
@@ -70,5 +75,5 @@ main()
     process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect();
+    if (prisma) await prisma.$disconnect();
   });

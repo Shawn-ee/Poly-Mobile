@@ -11,6 +11,7 @@ param(
   [int]$MaxLiveResultIngestionRuns = 1,
   [int]$MaxCreditsPerResultIngestion = 2,
   [int]$MinRemaining = 2,
+  [switch]$RunResultSettlement,
   [switch]$RunApprovedResultSettlement,
   [string]$ResultSettlementApprovalPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
   [switch]$SkipSleep
@@ -29,6 +30,9 @@ if ($RunLiveResultIngestion -and $MaxLiveResultIngestionRuns -lt 1) {
 }
 if ($RunLiveResultIngestion -and [string]::IsNullOrWhiteSpace($env:THE_ODDS_API_KEY)) {
   throw "RunLiveResultIngestion requires THE_ODDS_API_KEY in the process environment. The key is not read from files or printed."
+}
+if ($RunApprovedResultSettlement -and -not $RunResultSettlement) {
+  throw "RunApprovedResultSettlement requires RunResultSettlement."
 }
 
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
@@ -72,12 +76,19 @@ function Invoke-CheckedCommand {
     [Parameter(Mandatory = $true)] [string]$Command
   )
   $startedAt = (Get-Date).ToUniversalTime()
-  $output = cmd /c $Command 2>&1
+  $previousErrorActionPreference = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
+  try {
+    $output = & cmd.exe /d /s /c $Command 2>&1 | ForEach-Object { "$_" }
+    $exitCode = $LASTEXITCODE
+  } finally {
+    $ErrorActionPreference = $previousErrorActionPreference
+  }
   return [ordered]@{
     label = $Label
     command = $Command
-    exitCode = $LASTEXITCODE
-    pass = [bool]($LASTEXITCODE -eq 0)
+    exitCode = $exitCode
+    pass = [bool]($exitCode -eq 0)
     startedAt = $startedAt.ToString("o")
     finishedAt = (Get-Date).ToUniversalTime().ToString("o")
     outputTail = @($output | Select-Object -Last 20)
@@ -107,6 +118,7 @@ function Write-Heartbeat {
       resultIngestionEveryIterations = if ($RunLiveResultIngestion) { $ResultIngestionEveryIterations } else { 0 }
       maxLiveResultIngestionRuns = if ($RunLiveResultIngestion) { $MaxLiveResultIngestionRuns } else { 0 }
       maxCreditsPerResultIngestion = if ($RunLiveResultIngestion) { $MaxCreditsPerResultIngestion } else { 0 }
+      resultSettlementEnabled = [bool]$RunResultSettlement
       resultSettlementApprovedMode = [bool]$RunApprovedResultSettlement
       resultPath = $ResultPath
       approvalPath = if ($RunApprovedResultSettlement) { $ResultSettlementApprovalPath } else { $null }
@@ -115,7 +127,7 @@ function Write-Heartbeat {
     runtimeTruth = [ordered]@{
       resultPollingRunnerAvailable = $true
       resultPollingMode = if ($RunLiveResultIngestion) { "quota-capped live provider scores polling by cadence" } else { "provider-shaped replay polling; no provider quota spent" }
-      settlementSchedulerMode = if ($RunApprovedResultSettlement) { "approved trusted-result scheduler; waits until CLOSED before execution" } else { "trusted result scheduler dry-run while poller runs" }
+      settlementSchedulerMode = if (-not $RunResultSettlement) { "disabled for warm local polling; run settlement proof separately" } elseif ($RunApprovedResultSettlement) { "approved trusted-result scheduler; waits until CLOSED before execution" } else { "trusted result scheduler dry-run while poller runs" }
       activeTesterSettlementExecution = $false
       installedOsService = $false
     }
@@ -193,12 +205,16 @@ try {
     $ingestResult = Invoke-CheckedCommand -Label "poll-$iteration-result-ingestion" -Command $ingestCommand
     $ingestSummary = Read-JsonFile "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json"
 
-    $settlementCommand = "npm run mobile:one-event-result-settlement-run -- --eventSlug=$EventSlug --result=$ResultPath"
-    if ($RunApprovedResultSettlement) {
-      $settlementCommand += " --autoExecuteApproved --approval=$ResultSettlementApprovalPath --writeAuditEvent"
+    $settlementResult = $null
+    $settlementSummary = $null
+    if ($RunResultSettlement) {
+      $settlementCommand = "npm run mobile:one-event-result-settlement-run -- --eventSlug=$EventSlug --result=$ResultPath"
+      if ($RunApprovedResultSettlement) {
+        $settlementCommand += " --autoExecuteApproved --approval=$ResultSettlementApprovalPath --writeAuditEvent"
+      }
+      $settlementResult = Invoke-CheckedCommand -Label "poll-$iteration-result-settlement" -Command $settlementCommand
+      $settlementSummary = Read-JsonFile "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json"
     }
-    $settlementResult = Invoke-CheckedCommand -Label "poll-$iteration-result-settlement" -Command $settlementCommand
-    $settlementSummary = Read-JsonFile "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json"
 
     $cycle = [ordered]@{
       iteration = $iteration
@@ -213,7 +229,7 @@ try {
         if ($liveResultIngestionRunCount -ge $MaxLiveResultIngestionRuns) { "max_live_result_ingestion_runs_reached" } else { "cadence_skip" }
       } else { $null }
       resultSettlement = $settlementResult
-      resultSettlementPass = [bool]($settlementSummary -and $settlementSummary.pass -eq $true)
+      resultSettlementPass = [bool](-not $RunResultSettlement -or ($settlementSummary -and $settlementSummary.pass -eq $true))
       resultSettlementAction = if ($settlementSummary) { $settlementSummary.action } else { $null }
       trustedResult = if ($ingestSummary) { $ingestSummary.trustedResult } else { $null }
       settlementDigest = if ($settlementSummary) { $settlementSummary.settlementDigest } else { $null }
@@ -221,7 +237,7 @@ try {
     $cycles.Add($cycle) | Out-Null
     Write-Heartbeat -Cycles $cycles -LoopPass $true
 
-    if (-not $ingestResult.pass -or -not ($ingestSummary -and $ingestSummary.pass -eq $true) -or -not $settlementResult.pass -or -not ($settlementSummary -and $settlementSummary.pass -eq $true)) {
+    if (-not $ingestResult.pass -or -not ($ingestSummary -and $ingestSummary.pass -eq $true) -or ($RunResultSettlement -and (-not $settlementResult.pass -or -not ($settlementSummary -and $settlementSummary.pass -eq $true)))) {
       $loopPass = $false
       $failure = "Result poller cycle $iteration failed."
       Write-Heartbeat -Cycles $cycles -Failure $failure -LoopPass $false
@@ -262,6 +278,7 @@ $summary = [ordered]@{
     maxCreditsPerResultIngestion = if ($RunLiveResultIngestion) { $MaxCreditsPerResultIngestion } else { 0 }
     maxCreditsAcrossResultIngestion = if ($RunLiveResultIngestion) { $MaxCreditsPerResultIngestion * $MaxLiveResultIngestionRuns } else { 0 }
     resultPath = $ResultPath
+    resultSettlementEnabled = [bool]$RunResultSettlement
     resultSettlementApprovedMode = [bool]$RunApprovedResultSettlement
     resultSettlementApprovalPath = if ($RunApprovedResultSettlement) { $ResultSettlementApprovalPath } else { $null }
     defaultModeUsesQuota = $false
@@ -271,8 +288,8 @@ $summary = [ordered]@{
     resultPollingContinuousWhileRunnerRuns = [bool]($Continuous -or $cycles.Count -gt 1)
     resultPollingMode = if ($RunLiveResultIngestion) { "quota-capped live provider scores polling by cadence" } else { "provider-shaped replay polling; no provider quota spent" }
     liveResultIngestionQuotaCappedWhileRunning = [bool]($RunLiveResultIngestion -and $liveResultIngestionRunCount -gt 0)
-    settlementSchedulerContinuousWhileRunnerRuns = [bool]($Continuous -or $cycles.Count -gt 1)
-    settlementSchedulerMode = if ($RunApprovedResultSettlement) { "approved trusted-result scheduler; waits until CLOSED before execution" } else { "trusted result scheduler dry-run while poller runs" }
+    settlementSchedulerContinuousWhileRunnerRuns = [bool]($RunResultSettlement -and ($Continuous -or $cycles.Count -gt 1))
+    settlementSchedulerMode = if (-not $RunResultSettlement) { "disabled for warm local polling; run settlement proof separately" } elseif ($RunApprovedResultSettlement) { "approved trusted-result scheduler; waits until CLOSED before execution" } else { "trusted result scheduler dry-run while poller runs" }
     activeTesterSettlementExecution = $false
     installedOsService = $false
     fakeTokenOnly = $true

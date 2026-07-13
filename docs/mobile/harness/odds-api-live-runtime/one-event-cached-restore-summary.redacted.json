@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-07-12T21:05:53.965Z",
+  "generatedAt": "2026-07-13T08:25:43.625Z",
   "scope": "odds-api-one-event-cached-live-restore",
   "pass": true,
   "sourceSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
   "event": {
-    "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
+    "id": "3c4716b1-5857-4150-a779-c2c98ab30361",
     "slug": "odds-api-single-soccer-test",
     "title": "Spain vs. France",
     "startTime": "2026-07-14T19:00:00.000Z",
@@ -13,8 +13,11 @@
   },
   "markets": {
     "restoredMarketCount": 19,
-    "staleReplayClosedCount": 12,
+    "restoredOutcomeCount": 40,
+    "staleReplayClosedCount": 26,
     "visibleMarketCount": 19,
+    "sportsbookMarketCount": 3,
+    "contractFixtureMarketCount": 16,
     "visibleTitles": [
       "Spain vs. France: Team to advance",
       "Spain vs. France: France in regulation",
@@ -41,6 +44,7 @@
     "eventTitleRestored": true,
     "eventUpcomingOrCurrent": true,
     "restoredMarketsVisible": true,
+    "restoredTradableOutcomes": true,
     "staleReplayMarketsClosed": true
   },
   "gaps": {
