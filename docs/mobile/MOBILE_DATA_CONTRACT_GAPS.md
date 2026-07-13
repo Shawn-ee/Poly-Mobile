@@ -10782,3 +10782,12 @@ Future migration concern:
 - Schema mismatch: no schema change. Successful local execution uses existing `OfficialResultReview.settlementExecutedCanonicalId`, `CanonicalEvent(eventType=settlement.trusted_result.executed)`, and `OperatorAuditEvent(action=settlement_execution_completed)`.
 - Temporary mock/static data: none added. Focused tests mock Prisma and settlement service only.
 - Remaining gaps: installed official-result polling, dedicated production settlement-operator role model, production operator UI, and production service ownership remain P1.
+
+## Cycle CASHOUTS23B - Spain vs France Close-Position Cashout
+
+- Closed or narrowed: cashout ticket now refreshes the current backend quote before opening, so close-position Max uses owned shares and SELL pricing uses the current bid instead of wallet balance or stale display price.
+- Fields added/confirmed for mobile: no new response fields. Existing `/api/markets/:marketId/quote` fields `quotes[].outcomeId`, `bestBid`, `bestAsk`, `bestBidSize`, and `bestAskSize` are consumed before opening the close-position ticket.
+- Route mismatch: none for local MVP. `/api/orders` already accepts SELL with explicit `size`; `/api/portfolio` and `/api/portfolio/history` already reflect the filled cashout.
+- Schema mismatch: none. Existing position/order/fill/trade/balance models support the path.
+- Temporary mock/static data: none added. S23 proof used one deterministic local maker bid for the cashout fill.
+- Remaining gaps: a dedicated cashout preview/proceeds route could make the UX clearer later, but it is not a P0 blocker.

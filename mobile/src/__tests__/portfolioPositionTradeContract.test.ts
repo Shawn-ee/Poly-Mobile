@@ -1,7 +1,11 @@
 import { readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { describe, expect, test } from "vitest";
 
-const portfolioSource = () => readFileSync("mobile/src/components/Portfolio.tsx", "utf8");
+const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
+const readRepoFile = (path: string) => readFileSync(resolve(repoRoot, path), "utf8");
+const portfolioSource = () => readRepoFile("mobile/src/components/Portfolio.tsx");
 
 describe("Portfolio position trade actions", () => {
   test("keeps explicit Sell trade affordance for manual position adds", () => {
@@ -16,7 +20,7 @@ describe("Portfolio position trade actions", () => {
 
   test("routes the visible Cash out action into close-position TradeTicket mode", () => {
     const source = portfolioSource();
-    const app = readFileSync("mobile/App.tsx", "utf8");
+    const app = readRepoFile("mobile/App.tsx");
     const cashOutActionIndex = source.indexOf("portfolio-position-cash-out-");
     const cashOutActionBlock = source.slice(cashOutActionIndex, cashOutActionIndex + 500);
 
@@ -29,7 +33,7 @@ describe("Portfolio position trade actions", () => {
   });
 
   test("does not keep a hidden dedicated cashout component in the default MVP path", () => {
-    const app = readFileSync("mobile/App.tsx", "utf8");
+    const app = readRepoFile("mobile/App.tsx");
 
     expect(app).not.toContain("CashoutTicket");
     expect(app).not.toContain("openCashoutPosition");

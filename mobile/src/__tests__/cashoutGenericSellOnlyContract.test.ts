@@ -1,11 +1,15 @@
 import { existsSync, readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { describe, expect, test } from "vitest";
 
-const read = (path: string) => readFileSync(path, "utf8");
+const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
+const repoPath = (path: string) => resolve(repoRoot, path);
+const read = (path: string) => readFileSync(repoPath(path), "utf8");
 
 describe("cashout generic Sell ticket contract", () => {
   test("uses TradeTicket close-position mode instead of a dormant separate sheet", () => {
-    expect(existsSync("mobile/src/components/CashoutTicket.tsx")).toBe(false);
+    expect(existsSync(repoPath("mobile/src/components/CashoutTicket.tsx"))).toBe(false);
 
     const app = read("mobile/App.tsx");
     const ticket = read("mobile/src/components/TradeTicket.tsx");
@@ -15,6 +19,9 @@ describe("cashout generic Sell ticket contract", () => {
     expect(app).toContain("closePosition:");
     expect(app).toContain("availableShares: availablePositionShares(position)");
     expect(app).toContain("sizeShares: closeShares");
+    expect(app).toContain("await loadTicketQuotes(api, position.marketId, position.outcomeId)");
+    expect(app).toContain("cashoutSellPriceFromQuote(latestCashoutQuote, fallbackPositionSellPrice)");
+    expect(app).toContain("outcomeWithCashoutQuote(target.outcome, latestCashoutQuote)");
     expect(app).toContain("const hasClosePositionPayload = Boolean(ticket.closePosition && ticket.sourcePositionId);");
     expect(app).toContain('const effectiveSide = hasClosePositionPayload ? "sell" : side;');
     expect(app).toContain("side: effectiveSide");

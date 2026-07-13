@@ -15295,3 +15295,12 @@ Known limitations:
 - API/data dependencies: uses existing `OfficialResultReview`, approval `CanonicalEvent`, `Market`, `Outcome`, `Position`, `Order`, `UserBalance`, `CanonicalEvent`, and `OperatorAuditEvent`. The exact confirmation phrase is accepted from the operator request, matched internally, and never returned or stored.
 - Proof needed: focused execution service/route/status tests, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
 - Known limitations: installed official-result polling, dedicated production settlement-operator role model, and production operator UI remain P1.
+
+## Cycle CASHOUTS23B - Spain vs France Close-Position Cashout
+
+- Feature/page worked on: local MVP mobile trading flow for Spain vs France Portfolio cashout.
+- Frontend components touched: `mobile/App.tsx`, mobile cashout/portfolio contract tests, and mobile Vitest config.
+- Important functions/services touched: `openPositionTrade()`, `loadTicketQuotes()`, `submitTicketOrder()`, `assertCanSellPositionShares()`, and the existing Trade Ticket close-position path.
+- User interactions supported: Portfolio Cash out opens a close-position ticket, hides Yes/No choice, displays owned shares, Max selects owned shares only, and swipe submits a SELL for the owned market/outcome.
+- State transitions: route-backed buy creates a position; cashout fetches the latest bid before opening the ticket; swipe sell places a backend SELL using `sizeShares`; filled sell removes/reduces the position and adds sold history.
+- Known limitations: cashout quote preview still uses the existing market quote route. A dedicated cashout preview route remains P1 polish, not a blocker for local internal testing.

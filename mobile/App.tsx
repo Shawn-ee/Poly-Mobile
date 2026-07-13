@@ -53,6 +53,7 @@ import {
   applyTicketQuotesToEvent,
   applyTicketQuotesToMarket,
   applyTicketQuotesToMarkets,
+  TicketQuote,
   loadMarketQuotesById,
   loadTicketQuotes,
 } from "./src/services/quoteService";
@@ -314,6 +315,26 @@ const normalizeProbabilityPrice = (price: number) => (price > 1 ? price / 100 : 
 const cashoutSellPrice = (position: Position) => {
   const price = position.bestBid ?? position.currentPrice ?? position.probability / 100;
   return Number.isFinite(price) && price > 0 ? normalizeProbabilityPrice(price) : 0;
+};
+const cashoutQuoteForPosition = (quotes: TicketQuote[], position: Position) =>
+  quotes.find((quote) => quote.outcomeId === position.outcomeId) ??
+  quotes.find((quote) => quote.outcomeName.trim().toLowerCase() === position.outcome.trim().toLowerCase());
+const cashoutSellPriceFromQuote = (quote: TicketQuote | undefined, fallback: number) => {
+  const price = quote?.bestBid ?? null;
+  return typeof price === "number" && Number.isFinite(price) && price > 0
+    ? normalizeProbabilityPrice(price)
+    : fallback;
+};
+const outcomeWithCashoutQuote = (outcome: Outcome, quote: TicketQuote | undefined): Outcome => {
+  if (!quote) return outcome;
+  return {
+    ...outcome,
+    probability: quote.probability > 0 ? quote.probability : outcome.probability,
+    bestBid: quote.bestBid ?? outcome.bestBid ?? null,
+    bestAsk: quote.bestAsk ?? outcome.bestAsk ?? null,
+    bestBidSize: quote.bestBidSize ?? outcome.bestBidSize ?? null,
+    bestAskSize: quote.bestAskSize ?? outcome.bestAskSize ?? null,
+  };
 };
 
 type MainTab = "home" | "live" | "portfolio" | "search" | "account";
@@ -1775,7 +1796,7 @@ export default function App() {
     }
   };
 
-  const openPositionTrade = (position: Position, side: "buy" | "sell") => {
+  const openPositionTrade = async (position: Position, side: "buy" | "sell") => {
     if (side === "sell" && availablePositionShares(position) <= 0) {
       setTicketOrderError(t.orderFailed);
       setTicketOrderErrorDetail("No shares are available to cash out.");
@@ -1787,7 +1808,19 @@ export default function App() {
       return;
     }
     const tradeIdentity = buildPositionTradeTicketIdentity(position);
-    const positionSellPrice = cashoutSellPrice(position);
+    const fallbackPositionSellPrice = cashoutSellPrice(position);
+    let latestCashoutQuote: TicketQuote | undefined;
+    if (side === "sell" && ORDER_MODE === "server" && position.marketId && position.outcomeId) {
+      try {
+        latestCashoutQuote = cashoutQuoteForPosition(
+          await loadTicketQuotes(api, position.marketId, position.outcomeId),
+          position,
+        );
+      } catch {
+        latestCashoutQuote = undefined;
+      }
+    }
+    const positionSellPrice = cashoutSellPriceFromQuote(latestCashoutQuote, fallbackPositionSellPrice);
     const closeSelection = side === "sell" && tradeIdentity.selection
       ? {
           ...tradeIdentity.selection,
@@ -1796,13 +1829,16 @@ export default function App() {
           limitShares: availablePositionShares(position),
         }
       : tradeIdentity.selection;
+    const ticketOutcome = side === "sell"
+      ? outcomeWithCashoutQuote(target.outcome, latestCashoutQuote)
+      : target.outcome;
     setSelectedEvent(target.event ?? null);
     setMainTab("portfolio");
     setTicketOrderError(null);
     setTicketOrderErrorDetail(null);
     setTicket({
       market: target.market,
-      outcome: target.outcome,
+      outcome: ticketOutcome,
       event: target.event,
       side,
       contractSide: tradeIdentity.contractSide,
