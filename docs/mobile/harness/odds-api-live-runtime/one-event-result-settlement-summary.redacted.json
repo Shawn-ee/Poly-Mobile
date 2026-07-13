@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T21:06:14.438Z",
+  "generatedAt": "2026-07-13T00:29:24.537Z",
   "scope": "odds-api-one-event-result-settlement",
   "pass": true,
   "mode": "dry-run",
@@ -34,7 +34,7 @@
     "line": "2.5",
     "statusBefore": "LIVE",
     "resolvedOutcomeIdBefore": null,
-    "collateralUSDCBefore": "42900"
+    "collateralUSDCBefore": "51700"
   },
   "mappedResolution": {
     "rule": "total_goals",
@@ -51,19 +51,19 @@
   },
   "preview": {
     "marketStatus": "LIVE",
-    "totalShares": "85800",
-    "totalWinningShares": "42900",
-    "totalPayout": "42900",
-    "collateralUSDC": "42900",
+    "totalShares": "103400",
+    "totalWinningShares": "51700",
+    "totalPayout": "51700",
+    "collateralUSDC": "51700",
     "payoutConservationPass": true,
     "blockers": [],
     "openOrderCleanup": {
-      "openOrderCount": 2,
-      "buyOrderLockedUSDCToRelease": "94",
+      "openOrderCount": 4,
+      "buyOrderLockedUSDCToRelease": "353.4495",
       "sellOrderSharesToRelease": "200"
     },
-    "payoutCount": 217,
-    "loserPositionCount": 215,
+    "payoutCount": 258,
+    "loserPositionCount": 259,
     "mutation": "none"
   },
   "execution": {
@@ -75,7 +75,7 @@
     "status": "LIVE",
     "resolvedOutcomeId": null,
     "settlementStatus": null,
-    "collateralUSDC": "42900"
+    "collateralUSDC": "51700"
   },
   "controls": {
     "dryRunIsDefault": true,
@@ -89,13 +89,13 @@
     "providerStatus": "trusted_external_input"
   },
   "auditEvent": {
-    "id": "443",
-    "sequence": "443",
+    "id": "546",
+    "sequence": "546",
     "type": "settlement.trusted_result.preflight",
     "stream": "market",
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
     "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
-    "createdAt": "2026-07-12T21:06:14.434Z"
+    "createdAt": "2026-07-13T00:29:24.533Z"
   },
   "gaps": {
     "p0": [],

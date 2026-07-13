@@ -256,6 +256,60 @@ function snapshotPricePlan(snapshot: SelectedMarket["snapshot"], offsetTicks: nu
   return { outcomePrice, referenceBid, referenceAsk, plannedBid, plannedAsk };
 }
 
+async function currentOutcomeBook(marketId: string, outcomeId: string) {
+  const orders = await prisma.order.findMany({
+    where: {
+      marketId,
+      outcomeId,
+      status: { in: ["OPEN", "PARTIAL"] },
+    },
+    select: { side: true, price: true, remaining: true, user: { select: { username: true } } },
+  });
+  const bids = orders
+    .filter((order) => order.side === "BUY")
+    .map((order) => decimalToNumber(order.price))
+    .filter((value): value is number => value !== null);
+  const asks = orders
+    .filter((order) => order.side === "SELL")
+    .map((order) => decimalToNumber(order.price))
+    .filter((value): value is number => value !== null);
+  return {
+    bestBid: bids.length ? Math.max(...bids) : null,
+    bestAsk: asks.length ? Math.min(...asks) : null,
+    openOrderCount: orders.length,
+    orders: orders.map((order) => ({
+      side: order.side,
+      price: order.price.toString(),
+      remaining: order.remaining.toString(),
+      username: order.user.username,
+    })),
+  };
+}
+
+function avoidCrossingOpenBook(
+  plan: ReturnType<typeof snapshotPricePlan>,
+  book: Awaited<ReturnType<typeof currentOutcomeBook>>,
+) {
+  let plannedBid = plan.plannedBid;
+  let plannedAsk = plan.plannedAsk;
+  const adjustments: string[] = [];
+
+  if (book.bestAsk !== null && plannedBid >= book.bestAsk) {
+    plannedBid = clampPrice(book.bestAsk - TICK_SIZE);
+    adjustments.push(`plannedBid moved below existing best ask ${book.bestAsk.toFixed(2)}`);
+  }
+  if (book.bestBid !== null && plannedAsk <= book.bestBid) {
+    plannedAsk = clampPrice(book.bestBid + TICK_SIZE);
+    adjustments.push(`plannedAsk moved above existing best bid ${book.bestBid.toFixed(2)}`);
+  }
+  if (plannedBid >= plannedAsk) {
+    plannedBid = clampPrice(plannedAsk - TICK_SIZE);
+    adjustments.push("plannedBid moved below adjusted ask to keep a non-crossing spread");
+  }
+
+  return { ...plan, plannedBid, plannedAsk, adjustments };
+}
+
 async function createUser(prefix: string, balance = "10000") {
   const suffix = randomUUID().slice(0, 8);
   const user = await prisma.user.create({
@@ -470,7 +524,9 @@ async function main() {
   selectedMarketKeys = refreshes.at(-1)?.selectedMarketKeys ?? selectedMarketKeys;
   selectedMarket = await loadSelectedMarket(firstRefresh.seed.event.slug ?? "odds-api-single-soccer-test");
   const lifecycleAfterRefresh = await lifecycleForMarket(baseUrl, selectedMarket.event.slug ?? "", selectedMarket.market.id);
-  const pricePlan = snapshotPricePlan(selectedMarket.snapshot, quoteOffsetTicks);
+  const initialPricePlan = snapshotPricePlan(selectedMarket.snapshot, quoteOffsetTicks);
+  const preSeedBook = await currentOutcomeBook(selectedMarket.market.id, selectedMarket.outcome.id);
+  const pricePlan = avoidCrossingOpenBook(initialPricePlan, preSeedBook);
   const maker = await seedShiftedMakerQuotes({
     market: selectedMarket.market,
     outcome: selectedMarket.outcome,
@@ -656,6 +712,8 @@ async function main() {
       askOrderId: maker.askOrderId,
       referenceBid: pricePlan.referenceBid,
       referenceAsk: pricePlan.referenceAsk,
+      preSeedBook,
+      adjustments: pricePlan.adjustments,
       plannedBid: pricePlan.plannedBid,
       plannedAsk: pricePlan.plannedAsk,
     },

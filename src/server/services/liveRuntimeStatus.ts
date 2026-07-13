@@ -501,30 +501,32 @@ function buildOperatorNextActions(params: {
     },
   ];
 
-  if (!params.supervisorRunning || !params.resultPollerRunning) {
-    actions.push({
-      id: "start_full_internal_tester_runtime",
-      priority: "P1",
-      label: "Start full local internal tester runtime",
-      command:
-        "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
-      requiresProviderKey: false,
-      spendsProviderQuota: false,
-      reason:
-        "Starts or reuses local backend/Expo, then starts the cached supervisor and result-poller with result ingestion and approved-settlement wait mode.",
-    });
-    actions.push({
-      id: "prove_one_command_runtime_loops",
-      priority: "P0",
-      label: "Prove one-command local runtime loops",
-      command:
-        "npm run mobile:one-event-onboarding -- -AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof",
-      requiresProviderKey: false,
-      spendsProviderQuota: false,
-      reason:
-        "Starts the local supervisor/result-poller through onboarding, proves both are running, then stops them without provider quota.",
-    });
-  }
+  actions.push({
+    id: "start_full_internal_tester_runtime",
+    priority: params.supervisorRunning && params.resultPollerRunning ? "P2" : "P1",
+    label: "Start full local internal tester runtime",
+    command:
+      "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
+    requiresProviderKey: false,
+    spendsProviderQuota: false,
+    reason:
+      params.supervisorRunning && params.resultPollerRunning
+        ? "The cached supervisor and result-poller are already running; this remains the no-quota restart/recover command."
+        : "Starts or reuses local backend/Expo, then starts the cached supervisor and result-poller with result ingestion and approved-settlement wait mode.",
+  });
+  actions.push({
+    id: "prove_one_command_runtime_loops",
+    priority: "P0",
+    label: "Prove one-command local runtime loops",
+    command:
+      "npm run mobile:one-event-onboarding -- -AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof",
+    requiresProviderKey: false,
+    spendsProviderQuota: false,
+    reason:
+      params.supervisorRunning && params.resultPollerRunning
+        ? "Re-proves the local supervisor/result-poller loop lifecycle without provider quota; use when refreshing proof artifacts."
+        : "Starts the local supervisor/result-poller through onboarding, proves both are running, then stops them without provider quota.",
+  });
 
   if (mobileLifecycleStatus !== "ready") {
     actions.push({

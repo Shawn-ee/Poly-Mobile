@@ -1,21 +1,21 @@
 {
-    "generatedAt":  "2026-07-12T21:06:14.5131034Z",
+    "generatedAt":  "2026-07-13T00:29:24.6057964Z",
     "scope":  "holiwyn-one-event-result-poller-heartbeat",
     "running":  true,
     "passSoFar":  true,
-    "startedAt":  "2026-07-12T21:06:11.9441732Z",
-    "completedIterations":  1,
+    "startedAt":  "2026-07-13T00:12:19.8488348Z",
+    "completedIterations":  54,
     "latestIteration":  {
-                            "iteration":  1,
-                            "startedAt":  "2026-07-12T21:06:11.9471734Z",
-                            "finishedAt":  "2026-07-12T21:06:14.5025957Z",
+                            "iteration":  54,
+                            "startedAt":  "2026-07-13T00:29:19.2247442Z",
+                            "finishedAt":  "2026-07-13T00:29:24.6057964Z",
                             "resultIngestion":  {
-                                                    "label":  "poll-1-result-ingestion",
+                                                    "label":  "poll-54-result-ingestion",
                                                     "command":  "npm run mobile:one-event-result-ingest -- --eventSlug=odds-api-single-soccer-test --trustedResultOutput=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
                                                     "exitCode":  0,
                                                     "pass":  true,
-                                                    "startedAt":  "2026-07-12T21:06:11.9511733Z",
-                                                    "finishedAt":  "2026-07-12T21:06:12.9673643Z",
+                                                    "startedAt":  "2026-07-13T00:29:19.2247442Z",
+                                                    "finishedAt":  "2026-07-13T00:29:21.7713628Z",
                                                     "outputTail":  [
                                                                        "  },",
                                                                        "  \"auditEvent\": null,",
@@ -45,12 +45,12 @@
                             "liveResultIngestionRunCount":  0,
                             "liveResultIngestionSkippedReason":  null,
                             "resultSettlement":  {
-                                                     "label":  "poll-1-result-settlement",
+                                                     "label":  "poll-54-result-settlement",
                                                      "command":  "npm run mobile:one-event-result-settlement-run -- --eventSlug=odds-api-single-soccer-test --result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json --autoExecuteApproved --approval=docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json --writeAuditEvent",
                                                      "exitCode":  0,
                                                      "pass":  true,
-                                                     "startedAt":  "2026-07-12T21:06:12.9849932Z",
-                                                     "finishedAt":  "2026-07-12T21:06:14.5005961Z",
+                                                     "startedAt":  "2026-07-13T00:29:21.7719781Z",
+                                                     "finishedAt":  "2026-07-13T00:29:24.6047923Z",
                                                      "outputTail":  [
                                                                         "    \"canRunFromSupervisorOrCron\": true,",
                                                                         "    \"providerResultIngestionAvailable\": true,",
@@ -103,7 +103,7 @@
                                                                             "line":  "2.5",
                                                                             "statusBefore":  "LIVE",
                                                                             "resolvedOutcomeIdBefore":  null,
-                                                                            "collateralUSDCBefore":  "42900"
+                                                                            "collateralUSDCBefore":  "51700"
                                                                         },
                                                      "winningOutcome":  {
                                                                             "id":  "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
@@ -114,21 +114,21 @@
                                                                         },
                                                      "preview":  {
                                                                      "marketStatus":  "LIVE",
-                                                                     "totalShares":  "85800",
-                                                                     "totalWinningShares":  "42900",
-                                                                     "totalPayout":  "42900",
-                                                                     "collateralUSDC":  "42900",
+                                                                     "totalShares":  "103400",
+                                                                     "totalWinningShares":  "51700",
+                                                                     "totalPayout":  "51700",
+                                                                     "collateralUSDC":  "51700",
                                                                      "payoutConservationPass":  true,
                                                                      "blockers":  [
 
                                                                                   ],
                                                                      "openOrderCleanup":  {
-                                                                                              "openOrderCount":  2,
-                                                                                              "buyOrderLockedUSDCToRelease":  "94",
+                                                                                              "openOrderCount":  4,
+                                                                                              "buyOrderLockedUSDCToRelease":  "353.4495",
                                                                                               "sellOrderSharesToRelease":  "200"
                                                                                           },
-                                                                     "payoutCount":  217,
-                                                                     "loserPositionCount":  215,
+                                                                     "payoutCount":  258,
+                                                                     "loserPositionCount":  259,
                                                                      "mutation":  "none"
                                                                  },
                                                      "execution":  {

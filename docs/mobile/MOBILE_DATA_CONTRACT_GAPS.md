@@ -10607,3 +10607,12 @@ Future migration concern:
 - Route mismatch: cashout still uses generic limit-order placement. That is acceptable for fake-token local MVP, but a future backend-owned close route should reject no-position and oversell before order placement and return a purpose-built quote.
 - Temporary mock/static data: none added. Mock mode still updates local state for offline UI proof; server mode uses existing backend routes.
 - Remaining gaps: S23 proof passed for corrected Max/share behavior. Dedicated close quote and backend-owned cashout availability status remain P1.
+
+## Cycle XE - Live Provider Proof Non-Crossing Runtime Gate
+
+- Closed or narrowed: the explicit one-event live provider proof now tolerates existing local tester liquidity by inspecting the selected market/outcome book and adjusting planned shifted maker bid/ask before placement. This closes the false failure where a valid live provider refresh was blocked by an ask crossing an older local bid.
+- Fields added/confirmed for future runtime contracts: live proof summaries now include `marketMaker.preSeedBook` and `marketMaker.adjustments`; runtime status always exposes no-quota `start_full_internal_tester_runtime` and `prove_one_command_runtime_loops` operator actions.
+- Route mismatch: no public mobile API changed. The proof still uses existing mobile/backend routes and the dev-only `/api/internal/live-runtime/status` route.
+- Schema mismatch: none. The proof reads existing open `Order` rows and writes existing `ProviderRefreshRun`/`MarketMakerQuoteRun` proof rows; no migration is required.
+- Temporary mock/static data: none added. The selected Spain vs. France event and quotes came from the explicit Odds API provider refresh; trading remains local fake-token exchange state.
+- Remaining gaps: provider refresh remains opt-in and quota-gated, not a default no-quota loop. Installed unattended runtime service, multi-event provider polling, production quota monitoring, and official-result auto-settlement remain P1/P2.

@@ -15036,3 +15036,14 @@ Known limitations:
 - API/data dependencies: reads current open `Order` rows for the selected market/outcome before seeding, reads the stored `ReferenceQuoteSnapshot`, and verifies `/api/markets/:marketId/quote` after placement.
 - Proof: `npm run mobile:one-event-live-maker-seed` passed after detecting an existing `0.55` user bid and moving the planned ask to `0.56`; `npm run mobile:one-event-runtime-status` and `npm run mobile:one-event-phase-audit` passed with quote route bid `0.55` and ask `0.56`; root typecheck passed.
 - Known limitations: this is still one-shot/local maker seeding. Installed unattended market-maker service ownership remains P1.
+
+## Cycle XE - Live Provider Proof Non-Crossing Runtime Gate
+
+- Feature/runtime worked on: one-event Odds API live-provider proof and local runtime status/audit gate.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/prove_odds_api_one_event_live_runtime.ts` and `src/server/services/liveRuntimeStatus.ts`.
+- User/runtime interactions supported: the bounded live-provider proof can refresh exactly one selected soccer event, seed local shifted maker liquidity, execute fake-token buy/sell/cashout proof, and leave the local status route/audit gate green even when existing tester liquidity is already on the book.
+- State transitions: live proof refreshes provider snapshots for the selected event, forces stale-before-refresh evidence, proves ready-after-refresh, places local maker bid/ask orders, runs a buy, rejects no-position sell, rejects closed-market trading, runs a sell/cashout, and records history. The status route remains read-only.
+- API/data dependencies: reads/writes `ReferenceQuoteSnapshot`, `ProviderRefreshRun`, `MarketMakerQuoteRun`, local `Order`/`Position` rows, and local runtime heartbeat/run records. Verifies `GET /api/health`, `GET /api/internal/live-runtime/status`, `GET /api/markets/:marketId/quote`, `GET /api/events`, `GET /api/mobile/events/:slug/live-detail`, `POST /api/orders`, `GET /api/portfolio`, and `GET /api/portfolio/history`.
+- Proof: bounded live-provider proof passed for Spain vs. France after moving planned maker ask above an existing `0.55` tester bid; `npm run mobile:one-event-runtime-status` passed; `npm run mobile:one-event-phase-audit` passed with no open P0; root typecheck, focused runtime tests, mobile typecheck, and `npm run test:ci` passed.
+- Known limitations: provider refresh is still explicit/key-gated and quota-capped, not the default no-quota loop. Installed unattended service ownership and production official-result auto-settlement remain P1.
