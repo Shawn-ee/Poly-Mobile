@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-13T13:31:50.2840917Z",
+    "generatedAt":  "2026-07-13T15:50:25.2184882Z",
     "scope":  "holiwyn-one-event-continuous-supervisor-proof",
     "pass":  true,
-    "startedAt":  "2026-07-13T13:31:32.9177671Z",
-    "completedAt":  "2026-07-13T13:31:50.2840917Z",
+    "startedAt":  "2026-07-13T15:49:39.0847859Z",
+    "completedAt":  "2026-07-13T15:50:25.2184882Z",
     "settings":  {
                      "backendPort":  3002,
                      "intervalSeconds":  1,
@@ -17,12 +17,12 @@
                   "completedIterations":  2,
                   "heartbeatIterations":  2,
                   "processStoppedAfterProof":  true,
-                  "runtimeStatusPass":  false,
+                  "runtimeStatusPass":  true,
                   "runtimeStatusPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-runtime-status-summary.redacted.json",
                   "backendStartSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\continuous-supervisor-backend-start-summary.redacted.json",
                   "backendStartedProcessStopped":  null,
-                  "nodeProcessCountBefore":  22,
-                  "nodeProcessCountAfter":  22
+                  "nodeProcessCountBefore":  23,
+                  "nodeProcessCountAfter":  23
               },
     "runtimeTruth":  {
                          "repeatedLocalSupervisorCyclesProven":  true,
@@ -42,8 +42,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-13T13:31:32.9340479Z",
-                         "finishedAt":  "2026-07-13T13:31:33.6724473Z",
+                         "startedAt":  "2026-07-13T15:49:39.1016967Z",
+                         "finishedAt":  "2026-07-13T15:49:40.0615243Z",
                          "outputTail":  [
                                             "                         \"installedOsService\":  false,",
                                             "                         \"providerRefreshMode\":  \"cached provider proof verification; no provider quota spent\",",
@@ -73,8 +73,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-13T13:31:32.9177671Z",
-                         "finishedAt":  "2026-07-13T13:31:33.7339004Z",
+                         "startedAt":  "2026-07-13T15:49:39.0847859Z",
+                         "finishedAt":  "2026-07-13T15:49:40.1159823Z",
                          "outputTail":  [
                                             "backend status: already_healthy"
                                         ]
@@ -85,8 +85,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-13T13:31:33.7360387Z",
-                         "finishedAt":  "2026-07-13T13:31:47.3482318Z",
+                         "startedAt":  "2026-07-13T15:49:40.1179823Z",
+                         "finishedAt":  "2026-07-13T15:50:18.6320819Z",
                          "outputTail":  [
                                             "                                                  \"p2\":  [",
                                             "                                                             \"multi-market inventory-aware quoting remains future work\"",
@@ -116,19 +116,20 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-13T13:31:47.3567427Z",
-                         "finishedAt":  "2026-07-13T13:31:49.5457150Z",
+                         "startedAt":  "2026-07-13T15:50:18.6407012Z",
+                         "finishedAt":  "2026-07-13T15:50:23.0549552Z",
                          "outputTail":  [
+                                            "    \"continuousSupervisorProofPassed\": true,",
+                                            "    \"repeatedSupervisorCapabilitiesKnown\": true,",
+                                            "    \"continuousResultPollerProofPresent\": true,",
+                                            "    \"continuousResultPollerProofPassed\": true,",
                                             "    \"resultSettlementGuardPresent\": true,",
                                             "    \"resultSettlementGuardPassed\": true,",
                                             "    \"resultSettlementGuardFresh\": true,",
                                             "    \"liveResultSettlementBlockedWhileLive\": true",
                                             "  },",
                                             "  \"gaps\": {",
-                                            "    \"p0\": [",
-                                            "      \"continuousSupervisorProofPassed\",",
-                                            "      \"repeatedSupervisorCapabilitiesKnown\"",
-                                            "    ],",
+                                            "    \"p0\": [],",
                                             "    \"p1\": [",
                                             "      \"Status report proves foreground/local runtime truth only; it does not install an unattended daemon.\",",
                                             "      \"Official-result automatic settlement remains future work; current trusted-result execution is guarded by exact confirmation and CLOSED market status.\"",
@@ -137,8 +138,7 @@
                                             "      \"Multi-event provider polling remains future work.\"",
                                             "    ]",
                                             "  }",
-                                            "}",
-                                            "Assertion failed: !(handle-\u003eflags \u0026 UV_HANDLE_CLOSING), file src\\win\\async.c, line 76"
+                                            "}"
                                         ]
                      },
                      {
@@ -147,8 +147,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-13T13:31:49.5467153Z",
-                         "finishedAt":  "2026-07-13T13:31:50.2649223Z",
+                         "startedAt":  "2026-07-13T15:50:23.0564587Z",
+                         "finishedAt":  "2026-07-13T15:50:25.1869592Z",
                          "outputTail":  [
                                             "                         \"installedOsService\":  false,",
                                             "                         \"providerRefreshMode\":  \"cached provider proof verification; no provider quota spent\",",

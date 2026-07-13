@@ -55,16 +55,49 @@ function Write-JsonFile {
 function Invoke-CheckedCommand {
   param(
     [Parameter(Mandatory = $true)] [string]$Label,
-    [Parameter(Mandatory = $true)] [string]$Command
+    [Parameter(Mandatory = $true)] [string]$Command,
+    [int]$TimeoutSeconds = 180
   )
   $startedAt = (Get-Date).ToUniversalTime()
-  cmd /c $Command | Out-Null
-  $exitCode = $LASTEXITCODE
+  $tempOut = [System.IO.Path]::GetTempFileName()
+  $tempErr = [System.IO.Path]::GetTempFileName()
+  $tempExit = [System.IO.Path]::GetTempFileName()
+  $timedOut = $false
+  $exitCode = $null
+  try {
+    $cmdWithExitCapture = "$Command & echo %ERRORLEVEL% > `"$tempExit`""
+    $process = Start-Process `
+      -FilePath "cmd.exe" `
+      -ArgumentList @("/d", "/s", "/c", $cmdWithExitCapture) `
+      -WorkingDirectory $RepoRoot `
+      -WindowStyle Hidden `
+      -RedirectStandardOutput $tempOut `
+      -RedirectStandardError $tempErr `
+      -PassThru
+    if (-not $process.WaitForExit($TimeoutSeconds * 1000)) {
+      $timedOut = $true
+      try { taskkill /PID $process.Id /T /F | Out-Null } catch {}
+    } else {
+      $process.Refresh()
+      $capturedExitCode = if (Test-Path -LiteralPath $tempExit) {
+        (Get-Content -Raw -LiteralPath $tempExit -ErrorAction SilentlyContinue).Trim()
+      } else { "" }
+      if ($capturedExitCode -match "^-?\d+$") {
+        $exitCode = [int]$capturedExitCode
+      } elseif ($null -ne $process.ExitCode) {
+        $exitCode = $process.ExitCode
+      }
+    }
+  } finally {
+    Remove-Item -LiteralPath $tempOut, $tempErr, $tempExit -Force -ErrorAction SilentlyContinue
+  }
   return [ordered]@{
     label = $Label
     command = $Command
     exitCode = $exitCode
-    pass = [bool]($exitCode -eq 0)
+    timedOut = $timedOut
+    timeoutSeconds = $TimeoutSeconds
+    pass = [bool]((-not $timedOut) -and $exitCode -eq 0)
     startedAt = $startedAt.ToString("o")
     finishedAt = (Get-Date).ToUniversalTime().ToString("o")
   }

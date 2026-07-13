@@ -1,6 +1,6 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-13T13:07:05.584Z",
+  "generatedAt": "2026-07-13T15:56:05.870Z",
   "scope": "odds-api-one-event-lifecycle-scheduler",
   "event": {
     "id": "3c4716b1-5857-4150-a779-c2c98ab30361",
@@ -27,13 +27,13 @@
   },
   "runs": {
     "noAction": {
-      "generatedAt": "2026-07-13T13:07:05.370Z",
+      "generatedAt": "2026-07-13T15:56:05.695Z",
       "eventSlug": "odds-api-single-soccer-test",
       "eventTitle": "Spain vs. France",
-      "eventStartTime": "2026-07-13T14:07:05.352Z",
+      "eventStartTime": "2026-07-13T16:56:05.682Z",
       "status": "completed",
       "dryRun": false,
-      "now": "2026-07-13T13:07:05.352Z",
+      "now": "2026-07-13T15:56:05.682Z",
       "suspendBeforeStartSeconds": 300,
       "referenceSource": "sportsbook-odds",
       "action": "none",
@@ -44,13 +44,13 @@
       "changes": []
     },
     "pauseRun": {
-      "generatedAt": "2026-07-13T13:07:05.394Z",
+      "generatedAt": "2026-07-13T15:56:05.714Z",
       "eventSlug": "odds-api-single-soccer-test",
       "eventTitle": "Spain vs. France",
-      "eventStartTime": "2026-07-13T13:08:05.352Z",
+      "eventStartTime": "2026-07-13T15:57:05.682Z",
       "status": "completed",
       "dryRun": false,
-      "now": "2026-07-13T13:07:05.352Z",
+      "now": "2026-07-13T15:56:05.682Z",
       "suspendBeforeStartSeconds": 300,
       "referenceSource": "sportsbook-odds",
       "action": "pause",
@@ -86,20 +86,20 @@
       ]
     },
     "closeRun": {
-      "generatedAt": "2026-07-13T13:07:05.503Z",
+      "generatedAt": "2026-07-13T15:56:05.797Z",
       "eventSlug": "odds-api-single-soccer-test",
       "eventTitle": "Spain vs. France",
-      "eventStartTime": "2026-07-13T13:07:04.352Z",
+      "eventStartTime": "2026-07-13T15:56:04.682Z",
       "status": "completed",
       "dryRun": false,
-      "now": "2026-07-13T13:07:05.352Z",
+      "now": "2026-07-13T15:56:05.682Z",
       "suspendBeforeStartSeconds": 300,
       "referenceSource": "sportsbook-odds",
       "action": "close",
       "reason": "Event startTime has passed or is now; close mobile-tradable markets.",
       "candidateMarketCount": 3,
       "changedMarketCount": 3,
-      "canceledOrderCount": 3,
+      "canceledOrderCount": 2,
       "changes": [
         {
           "marketId": "378abc5d-144e-4797-9f07-8b271103468b",
@@ -107,7 +107,7 @@
           "fromStatus": "LIVE",
           "toStatus": "CLOSED",
           "closeTimeBefore": null,
-          "closeTimeAfter": "2026-07-13T13:07:05.352Z"
+          "closeTimeAfter": "2026-07-13T15:56:05.682Z"
         },
         {
           "marketId": "528f1f87-cc1c-44a0-8732-876ef0676071",
@@ -115,7 +115,7 @@
           "fromStatus": "LIVE",
           "toStatus": "CLOSED",
           "closeTimeBefore": null,
-          "closeTimeAfter": "2026-07-13T13:07:05.352Z"
+          "closeTimeAfter": "2026-07-13T15:56:05.682Z"
         },
         {
           "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
@@ -123,7 +123,7 @@
           "fromStatus": "LIVE",
           "toStatus": "CLOSED",
           "closeTimeBefore": null,
-          "closeTimeAfter": "2026-07-13T13:07:05.352Z"
+          "closeTimeAfter": "2026-07-13T15:56:05.682Z"
         }
       ]
     }

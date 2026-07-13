@@ -1,6 +1,6 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-13T13:07:03.503Z",
+  "generatedAt": "2026-07-13T15:56:03.123Z",
   "scope": "odds-api-one-event-lifecycle-controls",
   "event": {
     "id": "3c4716b1-5857-4150-a779-c2c98ab30361",
@@ -37,7 +37,7 @@
       "orderStatus": 200,
       "orderBody": {
         "order": {
-          "id": "2aed25ad-c5f4-424a-80cd-18522a5033de",
+          "id": "14eca6d2-e33e-447d-9507-d321cb5c7d9c",
           "marketId": "e6576bab-e980-4cee-a0c6-5c457eefc9e6",
           "outcomeId": "2769159b-605e-407d-b320-bbbf866f7434",
           "side": "BUY",
@@ -48,7 +48,7 @@
           "status": "OPEN",
           "type": "LIMIT",
           "clientOrderId": null,
-          "apiKeyId": "pk_live_54ace7ee5834ec78",
+          "apiKeyId": "pk_live_973d70a78b285e41",
           "contractSide": "YES",
           "selection": null
         },
@@ -60,7 +60,7 @@
         "position": null
       },
       "cleanup": {
-        "id": "2aed25ad-c5f4-424a-80cd-18522a5033de",
+        "id": "14eca6d2-e33e-447d-9507-d321cb5c7d9c",
         "marketId": "e6576bab-e980-4cee-a0c6-5c457eefc9e6",
         "outcomeId": "2769159b-605e-407d-b320-bbbf866f7434",
         "side": "BUY",
@@ -95,19 +95,27 @@
       "marketStatus": "CLOSED",
       "winningOutcomeId": "2769159b-605e-407d-b320-bbbf866f7434",
       "winningOutcomeName": "Over +2.5",
-      "collateralUSDC": "0",
-      "totalShares": "0",
-      "totalWinningShares": "0",
-      "totalPayout": "0",
+      "collateralUSDC": "150",
+      "totalShares": "300",
+      "totalWinningShares": "150",
+      "totalPayout": "150",
       "payoutConservationPass": true,
       "blockers": [],
       "openOrderCleanup": {
-        "openOrderCount": 0,
+        "openOrderCount": 1,
         "buyOrderLockedUSDCToRelease": "0",
-        "sellOrderSharesToRelease": "0"
+        "sellOrderSharesToRelease": "100"
       },
-      "payouts": [],
-      "loserPositionCount": 0,
+      "payouts": [
+        {
+          "positionId": "0b1d2ef4-7070-46d9-91c9-26772793ad50",
+          "userId": "80ffd475-d14e-4129-9b92-bd89a1d27549",
+          "outcomeId": "2769159b-605e-407d-b320-bbbf866f7434",
+          "shares": "150",
+          "amountPreview": "150"
+        }
+      ],
+      "loserPositionCount": 1,
       "mutation": "none"
     },
     "settlementExecution": {

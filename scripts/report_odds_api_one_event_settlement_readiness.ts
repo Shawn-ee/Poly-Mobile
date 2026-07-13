@@ -3,10 +3,13 @@ import path from "node:path";
 import { prisma } from "@/lib/db";
 import { MarketGuardError } from "@/lib/marketGuards";
 import { previewOrderbookSettlement, resolveOrderbookMarket } from "@/server/services/settlement";
+import { loadLocalEnvForScript } from "./local_env";
 
 const DEFAULT_EVENT_SLUG = "odds-api-single-soccer-test";
 const DEFAULT_OUTPUT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-readiness-summary.redacted.json";
+const DEFAULT_RUNTIME_SUMMARY_PATH =
+  "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json";
 
 const argValue = (name: string) => {
   const prefix = `--${name}=`;
@@ -16,6 +19,18 @@ const argValue = (name: string) => {
 async function writeJson(outputPath: string, value: unknown) {
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
   await fs.writeFile(outputPath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+}
+
+async function readRuntimeSelectedMarketId() {
+  try {
+    const raw = await fs.readFile(DEFAULT_RUNTIME_SUMMARY_PATH, "utf8");
+    const parsed = JSON.parse(raw) as { selectedMarket?: { id?: unknown } };
+    return typeof parsed.selectedMarket?.id === "string" && parsed.selectedMarket.id.trim()
+      ? parsed.selectedMarket.id
+      : undefined;
+  } catch {
+    return undefined;
+  }
 }
 
 function guardErrorPayload(error: unknown) {
@@ -108,9 +123,10 @@ async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to run local settlement readiness report in production.");
   }
+  loadLocalEnvForScript(["DATABASE_URL"]);
 
   const eventSlug = argValue("eventSlug") ?? DEFAULT_EVENT_SLUG;
-  const marketId = argValue("marketId");
+  const marketId = argValue("marketId") ?? (await readRuntimeSelectedMarketId());
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
   const selected = await loadSelectedMarket(eventSlug, marketId);
   const previews = await Promise.all(

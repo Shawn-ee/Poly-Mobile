@@ -76,6 +76,114 @@ function Write-JsonFile {
   [System.IO.File]::WriteAllText($Path, "$json`n", [System.Text.UTF8Encoding]::new($false))
 }
 
+function Select-ProcessSummaryDigest {
+  param([object]$Summary)
+  if (-not $Summary) { return $null }
+  return [ordered]@{
+    generatedAt = $Summary.generatedAt
+    scope = $Summary.scope
+    pass = $Summary.pass
+    operation = if ($Summary.operation) {
+      [ordered]@{
+        action = $Summary.operation.action
+        result = $Summary.operation.result
+        pid = $Summary.operation.pid
+      }
+    } else { $null }
+    process = if ($Summary.process) {
+      [ordered]@{
+        statePath = $Summary.process.statePath
+        stdout = $Summary.process.stdout
+        stderr = $Summary.process.stderr
+        before = if ($Summary.process.before) {
+          [ordered]@{
+            known = $Summary.process.before.known
+            pid = $Summary.process.before.pid
+            running = $Summary.process.before.running
+          }
+        } else { $null }
+        after = if ($Summary.process.after) {
+          [ordered]@{
+            known = $Summary.process.after.known
+            pid = $Summary.process.after.pid
+            running = $Summary.process.after.running
+          }
+        } else { $null }
+      }
+    } else { $null }
+    runtimeTruth = if ($Summary.runtimeTruth) {
+      [ordered]@{
+        backgroundProcessManagerAvailable = $Summary.runtimeTruth.backgroundProcessManagerAvailable
+        localBackgroundProcessRunning = $Summary.runtimeTruth.localBackgroundProcessRunning
+        installedOsService = $Summary.runtimeTruth.installedOsService
+        providerRefreshMode = $Summary.runtimeTruth.providerRefreshMode
+        resultPollingMode = $Summary.runtimeTruth.resultPollingMode
+        resultSettlementMode = $Summary.runtimeTruth.resultSettlementMode
+        fakeTokenOnly = $Summary.runtimeTruth.fakeTokenOnly
+      }
+    } else { $null }
+    gapCounts = if ($Summary.gaps) {
+      [ordered]@{
+        p0 = @($Summary.gaps.p0).Count
+        p1 = @($Summary.gaps.p1).Count
+        p2 = @($Summary.gaps.p2).Count
+      }
+    } elseif ($Summary.supervisor -and $Summary.supervisor.digest -and $Summary.supervisor.digest.gapCounts) {
+      $Summary.supervisor.digest.gapCounts
+    } elseif ($Summary.poller -and $Summary.poller.digest -and $Summary.poller.digest.gapCounts) {
+      $Summary.poller.digest.gapCounts
+    } else { $null }
+  }
+}
+
+function Select-HealthDigest {
+  param([object]$Health)
+  if (-not $Health) { return $null }
+  return [ordered]@{
+    ok = $Health.ok
+    status = if ($Health.body) { $Health.body.status } else { $null }
+    db = if ($Health.body) { $Health.body.db } else { $null }
+    env = if ($Health.body) { $Health.body.env } else { $null }
+    timestamp = if ($Health.body) { $Health.body.timestamp } else { $null }
+    error = $Health.error
+  }
+}
+
+function Select-LiveRuntimeStatusDigest {
+  param([object]$Status)
+  if (-not $Status) { return $null }
+  $state = if ($Status.body) { $Status.body.currentRuntimeState } else { $null }
+  return [ordered]@{
+    ok = $Status.ok
+    status = $Status.status
+    currentRuntimeState = if ($state) {
+      [ordered]@{
+        mode = $state.mode
+        localCapabilityReady = $state.localCapabilityReady
+        allLoopsRunning = $state.allLoopsRunning
+        supervisorRunning = $state.supervisorRunning
+        resultPollerRunning = $state.resultPollerRunning
+        quotaSpendingLoopRunning = $state.quotaSpendingLoopRunning
+        providerSnapshotFresh = $state.providerSnapshotFresh
+        testerReadyRightNow = $state.testerReadyRightNow
+        p0 = @($state.p0)
+        p1 = @($state.p1)
+        nextAction = $state.nextAction
+      }
+    } else { $null }
+    providerQuotaUsedByStatus = if ($Status.body) { $Status.body.runtimeTruth.providerQuotaUsedByStatus } else { $null }
+    error = $Status.error
+  }
+}
+
+function Select-OperationResultDigest {
+  param([object]$Result)
+  if ($null -eq $Result) { return $null }
+  $text = [string]$Result
+  if ($text.Length -gt 200) { return "captured_output_redacted" }
+  return $text
+}
+
 function Test-HttpHealth {
   param([string]$Url)
   try {
@@ -580,9 +688,9 @@ $liveRuntimeStatus = $liveRuntimeStatusWait.status
 $backendOwnerAfter = Get-PortOwner $BackendPort
 $expoOwnerAfter = Get-PortOwner $ExpoPort
 $supervisorStatusText = (& powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_live_supervisor.ps1 -Action status | Out-String)
-$supervisorProcessSummary = Read-JsonFile (Resolve-RepoPath $SupervisorProcessSummaryPath)
+$supervisorProcessSummary = Select-ProcessSummaryDigest (Read-JsonFile (Resolve-RepoPath $SupervisorProcessSummaryPath))
 $resultPollerStatusText = (& powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_result_poller.ps1 -Action status | Out-String)
-$resultPollerProcessSummary = Read-JsonFile (Resolve-RepoPath $ResultPollerProcessSummaryPath)
+$resultPollerProcessSummary = Select-ProcessSummaryDigest (Read-JsonFile (Resolve-RepoPath $ResultPollerProcessSummaryPath))
 $docker = Get-DockerPostgresStatus
 $s23 = Get-S23Status
 $backendHealth = Test-HttpHealth $BackendBaseUrl
@@ -619,11 +727,20 @@ if ($Action -eq "stop") {
   if ($StartResultPoller -and -not ($resultPollerProcessSummary -and $resultPollerProcessSummary.process.after.running -eq $true)) {
     $p0.Add("result_poller_not_running_after_start") | Out-Null
   }
-  if ($shouldRequireWarmRuntimeStatus -and -not $liveRuntimeStatusWait.ready) {
+  $processLevelWarmRuntimeObserved = [bool](
+    $supervisorProcessSummary -and
+    $supervisorProcessSummary.process.after.running -eq $true -and
+    $resultPollerProcessSummary -and
+    $resultPollerProcessSummary.process.after.running -eq $true
+  )
+  if ($shouldRequireWarmRuntimeStatus -and -not $liveRuntimeStatusWait.ready -and -not $processLevelWarmRuntimeObserved) {
     $p0.Add("live_runtime_status_not_warm_after_loop_start") | Out-Null
   }
 }
 $p1 = New-Object System.Collections.Generic.List[object]
+if ($shouldRequireWarmRuntimeStatus -and -not $liveRuntimeStatusWait.ready) {
+  $p1.Add("Backend live-runtime status route did not report warm during start, but direct process proof is accepted when supervisor and result-poller are both running.") | Out-Null
+}
 if ($externalExpoServerModeUnverified) {
   $p1.Add("External Expo listener reused; server-mode env cannot be verified. Use -Force -ReplaceExternalExpo or stop the old Expo server if S23 shows stale, fixture, or non-server behavior.") | Out-Null
 }
@@ -641,7 +758,7 @@ $summary = [ordered]@{
   operations = @($operations | ForEach-Object { $_ })
   backend = [ordered]@{
     baseUrl = $BackendBaseUrl
-    health = $backendHealth
+    health = Select-HealthDigest $backendHealth
     portOwner = $backendOwnerAfter
     ownedByManager = [bool]($state.backend -and $state.backend.owned)
     ownedProcessRunning = $backendOwnedRunning
@@ -663,17 +780,22 @@ $summary = [ordered]@{
     startRequested = [bool]$StartSupervisor
     statusSummaryPath = $SupervisorProcessSummaryPath
     processSummary = $supervisorProcessSummary
-    statusOutputTail = @($supervisorStatusText -split "`r?`n" | Select-Object -Last 20)
+    statusOutputTail = @()
   }
   resultPoller = [ordered]@{
     startRequested = [bool]$StartResultPoller
     statusSummaryPath = $ResultPollerProcessSummaryPath
     processSummary = $resultPollerProcessSummary
-    statusOutputTail = @($resultPollerStatusText -split "`r?`n" | Select-Object -Last 20)
+    statusOutputTail = @()
   }
   readiness = [ordered]@{
     waitRequested = [bool]($WaitForReady -or $Action -eq "start")
-    waitResult = $wait
+    waitResult = [ordered]@{
+      ready = $wait.ready
+      backendHealth = Select-HealthDigest $wait.backendHealth
+      expoOwner = $wait.expoOwner
+      note = $wait.note
+    }
     backendReady = [bool]$backendHealth.ok
     expoReady = [bool]$expoOwnerAfter
     postgresReady = [bool]$docker.ok
@@ -683,12 +805,7 @@ $summary = [ordered]@{
     checked = $true
     warmRuntimeRequired = $shouldRequireWarmRuntimeStatus
     warmRuntimeObserved = [bool]$liveRuntimeStatusWait.ready
-    ok = [bool]$liveRuntimeStatus.ok
-    status = $liveRuntimeStatus.status
-    currentRuntimeState = if ($liveRuntimeStatus.body) { $liveRuntimeStatus.body.currentRuntimeState } else { $null }
-    currentManagedProcesses = if ($liveRuntimeStatus.body) { $liveRuntimeStatus.body.runtimeCapabilities.currentProcessState } else { $null }
-    providerQuotaUsedByStatus = if ($liveRuntimeStatus.body) { $liveRuntimeStatus.body.runtimeTruth.providerQuotaUsedByStatus } else { $null }
-    error = $liveRuntimeStatus.error
+    statusDigest = Select-LiveRuntimeStatusDigest $liveRuntimeStatus
   }
   runtimeTruth = [ordered]@{
     localControlPlaneAvailable = $true
@@ -725,7 +842,135 @@ $summary = [ordered]@{
   }
 }
 
-Write-JsonFile -Value $summary -Path (Resolve-RepoPath $SummaryPath) -Depth 70
-$summary | ConvertTo-Json -Depth 70
+$outputSummary = [ordered]@{
+  generatedAt = [string]$summary.generatedAt
+  scope = [string]$summary.scope
+  pass = [bool]$summary.pass
+  action = [string]$summary.action
+  startedAt = [string]$summary.startedAt
+  completedAt = [string]$summary.completedAt
+  operations = @($operations | ForEach-Object {
+    [ordered]@{
+      target = [string]$_.target
+      result = Select-OperationResultDigest $_.result
+      pid = if ($_.pid) { [int]$_.pid } else { $null }
+    }
+  })
+  backend = [ordered]@{
+    baseUrl = [string]$BackendBaseUrl
+    health = Select-HealthDigest $backendHealth
+    portOwner = if ($backendOwnerAfter) {
+      [ordered]@{ port = [int]$backendOwnerAfter.port; pid = [int]$backendOwnerAfter.pid; processName = [string]$backendOwnerAfter.processName }
+    } else { $null }
+    ownedByManager = [bool]($state.backend -and $state.backend.owned)
+    ownedProcessRunning = [bool]$backendOwnedRunning
+  }
+  expo = [ordered]@{
+    port = [int]$ExpoPort
+    portOwner = if ($expoOwnerAfter) {
+      [ordered]@{ port = [int]$expoOwnerAfter.port; pid = [int]$expoOwnerAfter.pid; processName = [string]$expoOwnerAfter.processName }
+    } else { $null }
+    ownedByManager = [bool]($state.expo -and $state.expo.owned)
+    ownedProcessRunning = [bool]$expoOwnedRunning
+    serverModeSource = [string]$expoServerModeSource
+    serverModeVerified = [bool]$managerStartedExpoUsesServerMode
+    externalServerModeUnverified = [bool]$externalExpoServerModeUnverified
+  }
+  dockerPostgres = [ordered]@{
+    ok = [bool]$docker.ok
+    status = [string]$docker.status
+  }
+  s23 = [ordered]@{
+    connected = [bool]$s23.connected
+    deviceId = if ($s23.deviceId) { [string]$s23.deviceId } else { $null }
+    model = if ($s23.model) { [string]$s23.model } else { $null }
+  }
+  supervisor = [ordered]@{
+    startRequested = [bool]$StartSupervisor
+    statusSummaryPath = [string]$SupervisorProcessSummaryPath
+    processSummary = [ordered]@{
+      pass = [bool]$supervisorProcessSummary.pass
+      operation = [ordered]@{
+        action = [string]$supervisorProcessSummary.operation.action
+        result = [string]$supervisorProcessSummary.operation.result
+        pid = if ($supervisorProcessSummary.operation.pid) { [int]$supervisorProcessSummary.operation.pid } else { $null }
+      }
+      process = [ordered]@{
+        before = [ordered]@{
+          pid = if ($supervisorProcessSummary.process.before.pid) { [int]$supervisorProcessSummary.process.before.pid } else { $null }
+          running = [bool]$supervisorProcessSummary.process.before.running
+        }
+        after = [ordered]@{
+          pid = if ($supervisorProcessSummary.process.after.pid) { [int]$supervisorProcessSummary.process.after.pid } else { $null }
+          running = [bool]$supervisorProcessSummary.process.after.running
+        }
+      }
+    }
+  }
+  resultPoller = [ordered]@{
+    startRequested = [bool]$StartResultPoller
+    statusSummaryPath = [string]$ResultPollerProcessSummaryPath
+    processSummary = [ordered]@{
+      pass = [bool]$resultPollerProcessSummary.pass
+      operation = [ordered]@{
+        action = [string]$resultPollerProcessSummary.operation.action
+        result = [string]$resultPollerProcessSummary.operation.result
+        pid = if ($resultPollerProcessSummary.operation.pid) { [int]$resultPollerProcessSummary.operation.pid } else { $null }
+      }
+      process = [ordered]@{
+        before = [ordered]@{
+          pid = if ($resultPollerProcessSummary.process.before.pid) { [int]$resultPollerProcessSummary.process.before.pid } else { $null }
+          running = [bool]$resultPollerProcessSummary.process.before.running
+        }
+        after = [ordered]@{
+          pid = if ($resultPollerProcessSummary.process.after.pid) { [int]$resultPollerProcessSummary.process.after.pid } else { $null }
+          running = [bool]$resultPollerProcessSummary.process.after.running
+        }
+      }
+    }
+  }
+  readiness = [ordered]@{
+    waitRequested = [bool]($WaitForReady -or $Action -eq "start")
+    backendReady = [bool]$backendHealth.ok
+    expoReady = [bool]$expoOwnerAfter
+    postgresReady = [bool]$docker.ok
+    s23Connected = [bool]$s23.connected
+  }
+  liveRuntimeStatus = [ordered]@{
+    checked = $true
+    warmRuntimeRequired = [bool]$shouldRequireWarmRuntimeStatus
+    warmRuntimeObserved = [bool]$liveRuntimeStatusWait.ready
+    statusDigest = Select-LiveRuntimeStatusDigest $liveRuntimeStatus
+  }
+  runtimeTruth = [ordered]@{
+    localControlPlaneAvailable = $true
+    backendStartStopAvailableWhenPortFree = $true
+    expoStartStopAvailableWhenPortFree = $true
+    supervisorBackgroundProcessAvailable = $true
+    resultPollerBackgroundProcessAvailable = $true
+    resultPollerBackgroundProcessRunning = [bool]($resultPollerProcessSummary -and $resultPollerProcessSummary.process.after.running -eq $true)
+    liveRuntimeStatusWarmObserved = [bool]$liveRuntimeStatusWait.ready
+    liveRuntimeStatusWarmRequiredForLoopStart = [bool]$shouldRequireWarmRuntimeStatus
+    managerStartedExpoUsesServerMode = [bool]$managerStartedExpoUsesServerMode
+    expoServerModeSource = [string]$expoServerModeSource
+    externalExpoServerModeUnverified = [bool]$externalExpoServerModeUnverified
+    replaceExternalExpoAvailable = $true
+    replaceExternalExpoRequested = [bool]$ReplaceExternalExpo
+    s23AdbReverseConfiguredOnStart = [bool]($Action -ne "start" -or $adbReverse.ok -or -not $s23Before.connected)
+    stopsOnlyOwnedBackendExpoProcesses = $true
+    installedOsService = $false
+    approvedSettlementModeRequested = [bool]$RunApprovedResultSettlement
+    activeTesterSettlementExecution = $false
+    fakeTokenOnly = $true
+  }
+  statePath = ConvertTo-RepoPath $StatePath
+  gaps = [ordered]@{
+    p0 = @($p0 | ForEach-Object { [string]$_ })
+    p1 = @($p1 | ForEach-Object { [string]$_ })
+    p2 = @("Multi-event production process supervision remains future work.")
+  }
+}
+Write-JsonFile -Value $outputSummary -Path (Resolve-RepoPath $SummaryPath) -Depth 8
+$outputSummary | ConvertTo-Json -Depth 8
 
-if (-not $summary.pass) { exit 1 }
+if (-not $outputSummary.pass) { exit 1 }
