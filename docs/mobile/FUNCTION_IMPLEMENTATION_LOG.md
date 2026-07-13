@@ -15331,3 +15331,12 @@ Known limitations:
 - User/runtime interactions supported: `npm run mobile:internal-tester-runtime -- -Action start -Force -ReplaceExternalExpo -WaitForReady` can intentionally stop an external Expo/Metro listener on the configured Expo port and start a manager-owned server-mode Expo listener. Plain `-Force` no longer attempts to replace an external Expo listener; it reuses and reports it as unverified.
 - State transitions: no database, provider, order, portfolio, or settlement state changes. This is process-control behavior only. The external stop path is limited to the Expo port and refuses to stop a listener that does not look like Expo/Metro.
 - Known limitations: this remains local Windows process control for internal testing, not installed service management. Operators should use the replacement flag only when they intentionally want to clear a stale Expo listener.
+
+## Cycle XW - Launch Profile Verified Expo Command
+
+- Feature/runtime worked on: operator-facing local runtime launch profile and status projection.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/report_holiwyn_local_runtime_launch_profile.ts`, phase/completion audit scripts, and `src/server/services/liveRuntimeStatus.ts` contract tests.
+- User/runtime interactions supported: `/api/internal/live-runtime/status` now projects the verified Expo replacement command inside `launchProfile.manualForegroundProfile.commands` and `serviceOwnership.localLaunch.manualForegroundCommands`, so operators can discover the S23 clean-start path from the status contract.
+- State transitions: none. This is a no-quota read-only launch-profile/reporting change.
+- Known limitations: the command still requires intentional local operator action. It does not install a production service or automatically replace external Expo listeners during status checks.

@@ -1219,9 +1219,24 @@ async function main() {
       truthy(getPath(entries.s23Visible, ["assertions", "swipeSubmitReachedPortfolio"])) &&
       truthy(getPath(entries.s23Visible, ["assertions", "cashoutSellSubmitted"])) &&
       truthy(getPath(entries.s23Visible, ["assertions", "historyPreservesSportsbookLineIdentity"])),
-    launchProfileKnown:
-      pass(entries.localRuntimeLaunchProfile) &&
-      truthy(getPath(entries.localRuntimeLaunchProfile, ["runtimeTruth", "localOperatorLaunchProfileDocumented"])),
+      launchProfileKnown:
+        pass(entries.localRuntimeLaunchProfile) &&
+        truthy(getPath(entries.localRuntimeLaunchProfile, ["runtimeTruth", "localOperatorLaunchProfileDocumented"])) &&
+        truthy(
+          getPath(entries.localRuntimeLaunchProfile, [
+            "runtimeTruth",
+            "verifiedExpoReplacementCommandDocumented",
+          ]),
+        ) &&
+        (getPath(entries.localRuntimeLaunchProfile, ["launchProfiles", "manualForegroundProfile", "commands"]) as
+          | unknown[]
+          | null)?.some(
+          (entry) =>
+            entry &&
+            typeof entry === "object" &&
+            getPath(entry, ["command"]) ===
+              "npm run mobile:internal-tester-runtime -- -Action start -Force -ReplaceExternalExpo -WaitForReady",
+        ) === true,
     internalTesterWatchdogKnown:
       pass(entries.internalTesterWatchdog) &&
       truthy(getPath(entries.internalTesterWatchdog, ["runtimeTruth", "watchdogCanVerifyBaseRuntime"])) &&

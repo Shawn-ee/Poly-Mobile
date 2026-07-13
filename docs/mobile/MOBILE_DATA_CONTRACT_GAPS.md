@@ -10633,7 +10633,7 @@ Future migration concern:
 ## Cycle RUNTIMESTATUSLAUNCHPROFILE - Runtime Status Launch Profile
 
 - Closed or narrowed: local runtime status now exposes `launchProfile`, a single no-quota backend status block that preserves the local runtime launch profile, manual foreground commands, Startup fallback, scheduled-task blocker, live-provider opt-in profile, runtime truth, and P0/P1/P2 gaps.
-- Fields added for future operator/runtime contracts: `launchProfile.checked`, `pass`, `generatedAt`, `recommendedInternalTesterProfile`, `manualForegroundProfile`, `scheduledTaskProfile`, `liveProviderProfile`, `runtimeTruth`, `p0`, `p1`, and `p2`.
+- Fields added for future operator/runtime contracts: `launchProfile.checked`, `pass`, `generatedAt`, `recommendedInternalTesterProfile`, `manualForegroundProfile`, `scheduledTaskProfile`, `liveProviderProfile`, `manualForegroundProfile.commands[].command`, `runtimeTruth.verifiedExpoReplacementCommandDocumented`, `runtimeTruth`, `p0`, `p1`, and `p2`.
 - Route mismatch: this remains a local/dev-only read-only artifact projection. It does not replace durable production runtime launch state.
 - Schema mismatch: none. Production should store launch profile state, service ownership, and operator actions as durable records rather than reading local redacted JSON artifacts.
 - Temporary mock/static data: none added. The route reads the existing launch-profile artifact and spends no provider quota.

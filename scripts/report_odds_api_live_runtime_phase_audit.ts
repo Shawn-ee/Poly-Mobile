@@ -420,9 +420,18 @@ async function main() {
         getPath(localRuntimeStatusBody, ["launchProfile", "runtimeTruth", "localOperatorLaunchProfileDocumented"]) === true &&
         getPath(localRuntimeStatusBody, ["launchProfile", "runtimeTruth", "noProviderQuotaSpentByDefaultProfile"]) === true &&
         getPath(localRuntimeStatusBody, ["launchProfile", "runtimeTruth", "activeTesterSettlementExecution"]) === false &&
+        getPath(localRuntimeStatusBody, ["launchProfile", "runtimeTruth", "verifiedExpoReplacementCommandDocumented"]) === true &&
         getPath(localRuntimeStatusBody, ["launchProfile", "runtimeTruth", "installedProductionService"]) === false &&
         typeof getPath(localRuntimeStatusBody, ["launchProfile", "recommendedInternalTesterProfile", "command"]) === "string" &&
         Array.isArray(getPath(localRuntimeStatusBody, ["launchProfile", "manualForegroundProfile", "commands"])) &&
+        (getPath(localRuntimeStatusBody, ["launchProfile", "manualForegroundProfile", "commands"]) as unknown[])
+          .some(
+            (entry) =>
+              entry &&
+              typeof entry === "object" &&
+              getPath(entry, ["command"]) ===
+                "npm run mobile:internal-tester-runtime -- -Action start -Force -ReplaceExternalExpo -WaitForReady",
+          ) &&
         typeof getPath(localRuntimeStatusBody, ["launchProfile", "scheduledTaskProfile", "usableInCurrentContext"]) === "boolean" &&
         typeof getPath(localRuntimeStatusBody, ["launchProfile", "liveProviderProfile", "defaultForInternalTesting"]) === "boolean" &&
         Array.isArray(getPath(localRuntimeStatusBody, ["launchProfile", "p0"])) &&

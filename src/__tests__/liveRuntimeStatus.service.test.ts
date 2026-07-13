@@ -519,6 +519,11 @@ const makeLaunchProfile = (generatedAt = nowIso()) => ({
             "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
           quotaMode: "no provider quota by default",
         },
+        {
+          label: "replace stale Expo with verified server-mode Expo",
+          command: "npm run mobile:internal-tester-runtime -- -Action start -Force -ReplaceExternalExpo -WaitForReady",
+          quotaMode: "no provider quota by default",
+        },
       ],
     },
     scheduledTaskProfile: {
@@ -544,6 +549,7 @@ const makeLaunchProfile = (generatedAt = nowIso()) => ({
     proofLeavesNoPersistentScheduledTask: true,
     noProviderQuotaSpentByDefaultProfile: true,
     activeTesterSettlementExecution: false,
+    verifiedExpoReplacementCommandDocumented: true,
     installedProductionService: false,
     fakeTokenOnly: true,
   },
@@ -879,6 +885,9 @@ describe("live runtime status service", () => {
             command:
               "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
           }),
+          expect.objectContaining({
+            command: "npm run mobile:internal-tester-runtime -- -Action start -Force -ReplaceExternalExpo -WaitForReady",
+          }),
         ]),
       },
       scheduledTaskProfile: expect.objectContaining({
@@ -891,6 +900,7 @@ describe("live runtime status service", () => {
         localOperatorLaunchProfileDocumented: true,
         noProviderQuotaSpentByDefaultProfile: true,
         activeTesterSettlementExecution: false,
+        verifiedExpoReplacementCommandDocumented: true,
         installedProductionService: false,
         fakeTokenOnly: true,
       }),
@@ -1442,6 +1452,9 @@ describe("live runtime status service", () => {
     });
     expect(status.serviceOwnership.localLaunch.manualForegroundCommands).toContain(
       "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
+    );
+    expect(status.serviceOwnership.localLaunch.manualForegroundCommands).toContain(
+      "npm run mobile:internal-tester-runtime -- -Action start -Force -ReplaceExternalExpo -WaitForReady",
     );
     expect(status.providerRefreshLoop).toMatchObject({
       checked: true,

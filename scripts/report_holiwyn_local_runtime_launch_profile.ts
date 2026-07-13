@@ -121,6 +121,7 @@ async function main() {
       getPath(entries.runtimeStatus, ["settlementSafety", "activeTesterEventMutated"]) === false &&
       getPath(entries.localRuntimeStartupInstall, ["runtimeTruth", "activeTesterSettlementExecution"]) === false &&
       getPath(entries.continuousResultPoller, ["runtimeTruth", "activeTesterSettlementExecution"]) === false,
+    verifiedExpoReplacementCommandDocumented: true,
   };
 
   const ownershipProof = {
@@ -189,6 +190,10 @@ async function main() {
             "start backend/expo plus supervisor and result poller",
             "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
           ),
+          command(
+            "replace stale Expo with verified server-mode Expo",
+            "npm run mobile:internal-tester-runtime -- -Action start -Force -ReplaceExternalExpo -WaitForReady",
+          ),
           command("stop manager-owned local runtime", "npm run mobile:internal-tester-runtime:stop"),
         ],
       },
@@ -224,6 +229,7 @@ async function main() {
       proofLeavesNoPersistentScheduledTask: checks.scheduledTaskNotInstalled,
       noProviderQuotaSpentByDefaultProfile: checks.providerQuotaNotUsedByLaunchProofs,
       activeTesterSettlementExecution: false,
+      verifiedExpoReplacementCommandDocumented: true,
       installedProductionService: false,
       fakeTokenOnly: true,
     },
