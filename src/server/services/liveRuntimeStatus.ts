@@ -609,12 +609,16 @@ async function getProviderSnapshotFreshness(params: {
 
 function buildOperatorNextActions(params: {
   providerSnapshots: JsonObject;
+  selectedEventLifecycle: JsonObject;
   settlementDecision: JsonObject;
   supervisorRunning: boolean;
   resultPollerRunning: boolean;
 }) {
   const mobileLifecycleStatus = stringValue(params.providerSnapshots.mobileLifecycleStatus) ?? "unknown";
   const nextProviderAction = stringValue(params.providerSnapshots.nextProviderAction) ?? "inspect_status";
+  const eventLifecycleAction = stringValue(params.selectedEventLifecycle.schedulerActionNow) ?? "none";
+  const eventLifecycleWindow = stringValue(params.selectedEventLifecycle.tradingWindow) ?? "unknown";
+  const eventLifecycleOperatorAction = stringValue(params.selectedEventLifecycle.operatorNextAction) ?? "inspect_selected_event";
   const settlementOperatorDecision = stringValue(params.settlementDecision.operatorDecision);
   const settlementEligible = booleanValue(params.settlementDecision.executionEligibleNow);
   const actions = [
@@ -673,6 +677,21 @@ function buildOperatorNextActions(params: {
     });
   }
 
+  if (eventLifecycleAction === "pause" || eventLifecycleAction === "close") {
+    actions.push({
+      id: eventLifecycleAction === "close" ? "run_lifecycle_close" : "run_lifecycle_pause",
+      priority: "P0",
+      label: eventLifecycleAction === "close" ? "Close markets after kickoff" : "Pause trading before kickoff",
+      command: "npm run mobile:one-event-lifecycle-scheduler-run",
+      requiresProviderKey: false,
+      spendsProviderQuota: false,
+      reason:
+        eventLifecycleAction === "close"
+          ? "Selected event start time has passed; run the local lifecycle scheduler so mobile trading closes before settlement review."
+          : "Selected event is inside the pre-start suspend window; run the local lifecycle scheduler so trading pauses before kickoff.",
+    });
+  }
+
   if (!params.supervisorRunning) {
     actions.push({
       id: "start_cached_supervisor",
@@ -710,18 +729,23 @@ function buildOperatorNextActions(params: {
     });
   }
 
-  return {
-    recommendedFirstAction:
-      nextProviderAction === "none"
-        ? "cached_internal_testing"
-        : nextProviderAction === "refresh_provider_snapshots_or_keep_cached_test_mode"
-          ? "cached_internal_testing"
-          : nextProviderAction === "refresh_provider_snapshots" || nextProviderAction === "import_or_refresh_provider_snapshots"
+  const recommendedFirstAction =
+    eventLifecycleAction === "close"
+      ? "run_lifecycle_close"
+      : eventLifecycleAction === "pause"
+        ? "run_lifecycle_pause"
+        : nextProviderAction === "refresh_provider_snapshots" || nextProviderAction === "import_or_refresh_provider_snapshots"
           ? "refresh_mobile_live_odds"
-          : "cached_internal_testing",
+          : "cached_internal_testing";
+
+  return {
+    recommendedFirstAction,
     defaultNoQuotaAction: "cached_internal_testing",
     liveOddsAction: mobileLifecycleStatus === "ready" ? "none" : "refresh_mobile_live_odds",
     nextProviderAction,
+    eventLifecycleAction,
+    eventLifecycleWindow,
+    eventLifecycleOperatorAction,
     actions,
     safety:
       "Commands are local-only. Provider-refresh commands require THE_ODDS_API_KEY in the environment and remain quota-capped by the underlying proof scripts; the status route never returns or reads the key.",
@@ -1582,6 +1606,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
   });
   const operatorNextActions = buildOperatorNextActions({
     providerSnapshots,
+    selectedEventLifecycle,
     settlementDecision: {
       executionEligibleNow: getPath(activeSettlementReadiness, ["executionDecision", "executionEligibleNow"]),
       operatorDecision: getPath(activeSettlementReadiness, ["executionDecision", "operatorDecision"]),

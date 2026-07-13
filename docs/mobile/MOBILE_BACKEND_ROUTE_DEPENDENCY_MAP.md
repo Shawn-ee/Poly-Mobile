@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ZW - Lifecycle-Aware Operator Actions
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Lifecycle-aware runtime next action | `/api/internal/live-runtime/status` | `GET` | Local/dev only; route returns unavailable outside the internal runtime status environment | Optional `phaseAuditInProgress=1` for audit bootstrap | `operatorNextActions.recommendedFirstAction`, `eventLifecycleAction`, `eventLifecycleWindow`, `eventLifecycleOperatorAction`, and action rows `run_lifecycle_pause` / `run_lifecycle_close` when applicable | Reads existing `Event.startTime` through `selectedEventLifecycle`; no schema change and no writes | None. Current open event state keeps `cached_internal_testing`; test coverage proves pause/close recommendations with synthetic event timing | Installed unattended lifecycle service remains P1. The action points to the existing lifecycle scheduler command but does not run it from the status route. |
+
 ## Cycle ZV - Selected Event Lifecycle Status
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

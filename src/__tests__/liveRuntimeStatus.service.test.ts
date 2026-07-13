@@ -984,6 +984,9 @@ describe("live runtime status service", () => {
       defaultNoQuotaAction: "cached_internal_testing",
       liveOddsAction: "none",
       nextProviderAction: "none",
+      eventLifecycleAction: "none",
+      eventLifecycleWindow: "pre_start_open",
+      eventLifecycleOperatorAction: "keep_trading_available_until_suspend_window",
       safety: expect.stringContaining("THE_ODDS_API_KEY"),
     });
     expect(status.operatorNextActions.actions).toEqual(
@@ -1785,6 +1788,86 @@ describe("live runtime status service", () => {
       schedulerActionNow: "none",
       operatorNextAction: "restore_or_import_selected_event",
     });
+  });
+
+  test("recommends lifecycle pause when the selected event is inside the suspend window", async () => {
+    eventFindUnique.mockResolvedValue(selectedEventRow(120_000));
+    readFile.mockImplementation(async (filePath: string) => {
+      if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
+      if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
+      if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
+      if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
+      if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
+      if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
+      if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
+      throw new Error(`unexpected path ${filePath}`);
+    });
+
+    const status = await getLocalLiveRuntimeStatus();
+
+    expect(status.selectedEventLifecycle).toMatchObject({
+      tradingWindow: "pre_start_suspend_window",
+      schedulerActionNow: "pause",
+      operatorNextAction: "run_lifecycle_scheduler_to_pause_trading",
+    });
+    expect(status.operatorNextActions).toMatchObject({
+      recommendedFirstAction: "run_lifecycle_pause",
+      eventLifecycleAction: "pause",
+      eventLifecycleWindow: "pre_start_suspend_window",
+      eventLifecycleOperatorAction: "run_lifecycle_scheduler_to_pause_trading",
+    });
+    expect(status.operatorNextActions.actions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "run_lifecycle_pause",
+          command: "npm run mobile:one-event-lifecycle-scheduler-run",
+          requiresProviderKey: false,
+          spendsProviderQuota: false,
+        }),
+      ]),
+    );
+  });
+
+  test("recommends lifecycle close when the selected event has started", async () => {
+    eventFindUnique.mockResolvedValue(selectedEventRow(-1_000));
+    readFile.mockImplementation(async (filePath: string) => {
+      if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
+      if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
+      if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
+      if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
+      if (filePath.includes("active-settlement-closed-eligibility")) return JSON.stringify(makeActiveSettlementClosedEligibility());
+      if (filePath.includes("active-settlement-readiness")) return JSON.stringify(makeActiveSettlementReadiness());
+      if (filePath.includes("supervisor-process-state")) return JSON.stringify(makeSupervisorState());
+      if (filePath.includes("result-poller-process-state")) return JSON.stringify(makeResultPollerState());
+      throw new Error(`unexpected path ${filePath}`);
+    });
+
+    const status = await getLocalLiveRuntimeStatus();
+
+    expect(status.selectedEventLifecycle).toMatchObject({
+      tradingWindow: "past_start",
+      schedulerActionNow: "close",
+      operatorNextAction: "run_lifecycle_scheduler_to_close_markets_before_settlement",
+    });
+    expect(status.operatorNextActions).toMatchObject({
+      recommendedFirstAction: "run_lifecycle_close",
+      eventLifecycleAction: "close",
+      eventLifecycleWindow: "past_start",
+      eventLifecycleOperatorAction: "run_lifecycle_scheduler_to_close_markets_before_settlement",
+    });
+    expect(status.operatorNextActions.actions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "run_lifecycle_close",
+          command: "npm run mobile:one-event-lifecycle-scheduler-run",
+          requiresProviderKey: false,
+          spendsProviderQuota: false,
+        }),
+      ]),
+    );
   });
 
   test("returns needs_attention when a required proof artifact is stale", async () => {

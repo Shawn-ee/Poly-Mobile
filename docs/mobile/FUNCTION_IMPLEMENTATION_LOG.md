@@ -2,6 +2,20 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZW - Lifecycle-Aware Operator Actions
+
+- Feature/runtime worked on: read-only operator next actions for the current Spain vs. France internal tester event lifecycle.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `src/server/services/liveRuntimeStatus.ts`
+  - `src/__tests__/liveRuntimeStatus.service.test.ts`
+  - `GET /api/internal/live-runtime/status`
+- User/runtime interactions supported: when the selected event reaches the pre-start suspend window, status recommends `run_lifecycle_pause`; when the event has started, status recommends `run_lifecycle_close`; otherwise cached internal testing remains the first action.
+- State transitions: none. The status route only reports the next action. The existing lifecycle scheduler command performs pause/close when an operator or supervisor runs it.
+- API/data dependencies: `selectedEventLifecycle.schedulerActionNow`, current `Event.startTime`, and the existing 5-minute lifecycle suspend window.
+- Known limitations: this does not install an unattended lifecycle service or execute settlement. It only makes the next required lifecycle command explicit and machine-readable.
+- Proof: `docs/mobile/harness/odds-api-live-runtime/zw-lifecycle-operator-action-status.redacted.json`.
+
 ## Cycle ZV - Selected Event Lifecycle Status
 
 - Feature/runtime worked on: read-only live-runtime status for the current Spain vs. France internal tester event.
