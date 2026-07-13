@@ -431,6 +431,14 @@ async function main() {
         getPath(entries.onboarding, ["runtimeTruth", "runtimeLoopsStartedByOnboarding"]) === true &&
         getPath(entries.onboarding, ["runtimeTruth", "runtimeLoopsRunningDuringProof"]) === true &&
         getPath(entries.onboarding, ["runtimeTruth", "runtimeLoopsStoppedAfterProof"]) === true &&
+        getPath(entries.onboarding, ["runtimeTruth", "replaceExternalExpoRequested"]) === true &&
+        getPath(entries.onboarding, ["runtimeTruth", "verifiedServerModeExpoDuringRuntimeStart"]) === true &&
+        getPath(entries.onboardingRuntimeStart, ["action"]) === "start" &&
+        getPath(entries.onboardingRuntimeStart, ["expo", "serverModeVerified"]) === true &&
+        getPath(entries.onboardingRuntimeStart, ["runtimeTruth", "managerStartedExpoUsesServerMode"]) === true &&
+        getPath(entries.onboardingRuntimeStart, ["runtimeTruth", "externalExpoServerModeUnverified"]) === false &&
+        getPath(entries.onboardingRuntimeStart, ["runtimeTruth", "replaceExternalExpoRequested"]) === true &&
+        getPath(entries.onboardingRuntimeStart, ["runtimeTruth", "s23AdbReverseConfiguredOnStart"]) === true &&
         getPath(entries.onboardingRuntimeStatus, [
           "supervisor",
           "processSummary",

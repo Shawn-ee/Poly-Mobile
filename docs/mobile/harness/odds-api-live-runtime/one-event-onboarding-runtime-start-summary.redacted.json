@@ -1,11 +1,16 @@
 {
-    "generatedAt":  "2026-07-13T15:56:30.8630561Z",
+    "generatedAt":  "2026-07-13T19:57:20.5367421Z",
     "scope":  "holiwyn-internal-tester-runtime-manager",
     "pass":  true,
     "action":  "start",
-    "startedAt":  "2026-07-13T15:56:22.2914078Z",
-    "completedAt":  "2026-07-13T15:56:30.8651713Z",
+    "startedAt":  "2026-07-13T19:56:48.8469174Z",
+    "completedAt":  "2026-07-13T19:57:20.5377421Z",
     "operations":  [
+                       {
+                           "target":  "s23-adb-reverse",
+                           "result":  "configured",
+                           "pid":  null
+                       },
                        {
                            "target":  "backend",
                            "result":  "external_listener_reused",
@@ -13,18 +18,23 @@
                        },
                        {
                            "target":  "expo",
-                           "result":  "external_listener_reused",
-                           "pid":  14332
+                           "result":  "stopped_external_expo_listener",
+                           "pid":  40500
+                       },
+                       {
+                           "target":  "expo",
+                           "result":  "started",
+                           "pid":  18332
                        },
                        {
                            "target":  "supervisor",
                            "result":  "started_direct",
-                           "pid":  41524
+                           "pid":  47184
                        },
                        {
                            "target":  "result-poller",
                            "result":  "started_direct",
-                           "pid":  52592
+                           "pid":  21456
                        }
                    ],
     "backend":  {
@@ -34,7 +44,7 @@
                                    "status":  "ok",
                                    "db":  "connected",
                                    "env":  "development",
-                                   "timestamp":  "2026-07-13T15:56:30.830Z",
+                                   "timestamp":  "2026-07-13T19:57:19.893Z",
                                    "error":  null
                                },
                     "portOwner":  {
@@ -49,23 +59,26 @@
                  "port":  8081,
                  "portOwner":  {
                                    "port":  8081,
-                                   "pid":  14332,
+                                   "pid":  53580,
                                    "processName":  "node"
                                },
-                 "ownedByManager":  false,
+                 "ownedByManager":  true,
                  "ownedProcessRunning":  true,
-                 "serverModeSource":  "external_listener_unverified",
-                 "serverModeVerified":  false,
-                 "externalServerModeUnverified":  true
+                 "serverModeSource":  "manager_owned_server_env",
+                 "serverModeVerified":  true,
+                 "externalServerModeUnverified":  false
              },
     "dockerPostgres":  {
                            "ok":  true,
                            "status":  "poly_postgres|Up 9 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
                        },
     "s23":  {
-                "connected":  false,
-                "deviceId":  null,
-                "model":  null
+                "connected":  true,
+                "deviceId":  "172.16.200.27:44029",
+                "model":  "SM_S911U1",
+                "raw":  "172.16.200.27:44029    device product:dm1quew model:SM_S911U1 device:dm1q transport_id:2",
+                "adbTimedOut":  false,
+                "error":  null
             },
     "supervisor":  {
                        "startRequested":  true,
@@ -79,11 +92,11 @@
                                                             },
                                               "process":  {
                                                               "before":  {
-                                                                             "pid":  41524,
+                                                                             "pid":  47184,
                                                                              "running":  true
                                                                          },
                                                               "after":  {
-                                                                            "pid":  41524,
+                                                                            "pid":  47184,
                                                                             "running":  true
                                                                         }
                                                           }
@@ -101,11 +114,11 @@
                                                               },
                                                 "process":  {
                                                                 "before":  {
-                                                                               "pid":  52592,
+                                                                               "pid":  21456,
                                                                                "running":  true
                                                                            },
                                                                 "after":  {
-                                                                              "pid":  52592,
+                                                                              "pid":  21456,
                                                                               "running":  true
                                                                           }
                                                             }
@@ -116,7 +129,7 @@
                       "backendReady":  true,
                       "expoReady":  true,
                       "postgresReady":  true,
-                      "s23Connected":  false
+                      "s23Connected":  true
                   },
     "liveRuntimeStatus":  {
                               "checked":  true,
@@ -155,11 +168,11 @@
                          "resultPollerBackgroundProcessRunning":  true,
                          "liveRuntimeStatusWarmObserved":  true,
                          "liveRuntimeStatusWarmRequiredForLoopStart":  true,
-                         "managerStartedExpoUsesServerMode":  false,
-                         "expoServerModeSource":  "external_listener_unverified",
-                         "externalExpoServerModeUnverified":  true,
+                         "managerStartedExpoUsesServerMode":  true,
+                         "expoServerModeSource":  "manager_owned_server_env",
+                         "externalExpoServerModeUnverified":  false,
                          "replaceExternalExpoAvailable":  true,
-                         "replaceExternalExpoRequested":  false,
+                         "replaceExternalExpoRequested":  true,
                          "s23AdbReverseConfiguredOnStart":  true,
                          "stopsOnlyOwnedBackendExpoProcesses":  true,
                          "installedOsService":  false,
@@ -173,7 +186,6 @@
 
                         ],
                  "p1":  [
-                            "External Expo listener reused; server-mode env cannot be verified. Use -Force -ReplaceExternalExpo or stop the old Expo server if S23 shows stale, fixture, or non-server behavior.",
                             "Use -Force -ReplaceExternalExpo only when you intentionally want the runtime manager to stop an external Expo/Metro listener on the Expo port and start a verified server-mode listener.",
                             "This is a local process control plane, not an installed OS service.",
                             "Official-result auto-execution still requires trusted operator confirmation."

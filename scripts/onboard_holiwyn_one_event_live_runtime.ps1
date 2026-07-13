@@ -9,6 +9,7 @@ param(
   [switch]$SkipReadiness,
   [switch]$SkipSettlementDryRun,
   [switch]$StartRuntimeLoops,
+  [switch]$ReplaceExternalExpo,
   [switch]$StopRuntimeLoopsAfterProof,
   [switch]$AllowDisconnectedS23
 )
@@ -355,6 +356,9 @@ try {
 
   if ($StartRuntimeLoops) {
     $startRuntimeCommand = "npm run mobile:internal-tester-runtime -- -Action start -BackendPort $BackendPort -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady -SummaryPath $runtimeLoopStartSummaryPath"
+    if ($ReplaceExternalExpo) {
+      $startRuntimeCommand += " -Force -ReplaceExternalExpo"
+    }
     $startRuntimeResult = Invoke-CheckedCommand -Label "start-local-runtime-loops" -Command $startRuntimeCommand
     $commands.Add($startRuntimeResult) | Out-Null
     if (-not $startRuntimeResult.pass) {
@@ -507,8 +511,14 @@ $summary = [ordered]@{
     runtimeLoopsStartedByOnboarding = [bool]$StartRuntimeLoops
     runtimeLoopsRunningDuringProof = [bool]($StartRuntimeLoops -and $checks.runtimeLoopsRunningDuringProof)
     runtimeLoopsStoppedAfterProof = [bool]($StopRuntimeLoopsAfterProof -and $checks.runtimeLoopsStoppedAfterProof)
+    replaceExternalExpoRequested = [bool]$ReplaceExternalExpo
+    verifiedServerModeExpoDuringRuntimeStart = [bool]($runtimeLoopStartSummary -and $runtimeLoopStartSummary.expo.serverModeVerified -eq $true)
     runtimeLoopMode = if ($StartRuntimeLoops) {
-      "explicit local supervisor and result-poller process proof"
+      if ($ReplaceExternalExpo) {
+        "explicit local supervisor/result-poller proof with manager-owned server-mode Expo replacement"
+      } else {
+        "explicit local supervisor and result-poller process proof"
+      }
     } else {
       "not started by default onboarding"
     }

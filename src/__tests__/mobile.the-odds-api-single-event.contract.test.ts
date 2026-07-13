@@ -75,7 +75,9 @@ describe("The Odds API single-event temporary provider", () => {
   it("exposes explicit one-command onboarding aliases for cached and live-provider runtime proof", () => {
     const pkg = packageJson();
     expect(pkg).toContain("mobile:one-event-onboarding:cached-runtime");
+    expect(pkg).toContain("mobile:one-event-onboarding:cached-runtime-clean-expo");
     expect(pkg).toContain("mobile:one-event-onboarding:live-provider-runtime");
+    expect(pkg).toContain("-AllowDisconnectedS23 -StartRuntimeLoops -ReplaceExternalExpo -StopRuntimeLoopsAfterProof");
     expect(pkg).toContain("-AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof");
     expect(pkg).toContain("-RunProviderRefresh -StartRuntimeLoops -StopRuntimeLoopsAfterProof");
     expect(pkg).not.toContain("mobile:one-event-onboarding:cached-runtime\": \"powershell -ExecutionPolicy Bypass -File scripts/onboard_holiwyn_one_event_live_runtime.ps1 -RunProviderRefresh");
@@ -198,12 +200,18 @@ describe("The Odds API single-event temporary provider", () => {
     expect(phaseAuditScript()).toContain("serverModeVerified");
     expect(phaseAuditScript()).toContain("managerStartedExpoUsesServerMode");
     expect(phaseAuditScript()).toContain("externalExpoServerModeUnverified");
+    expect(phaseAuditScript()).toContain("verifiedServerModeExpoDuringRuntimeStart");
+    expect(phaseAuditScript()).toContain("replaceExternalExpoRequested");
+    expect(phaseAuditScript()).toContain("s23AdbReverseConfiguredOnStart");
     expect(phaseAuditScript()).toContain("ReplaceExternalExpo");
     expect(completionAuditScript()).toContain("managedS23ServerModeStartupKnown");
     expect(completionAuditScript()).toContain("manager-owned-expo-start-summary.redacted.json");
     expect(completionAuditScript()).toContain("serverModeVerified");
     expect(completionAuditScript()).toContain("managerStartedExpoUsesServerMode");
     expect(completionAuditScript()).toContain("externalExpoServerModeUnverified");
+    expect(completionAuditScript()).toContain("verifiedServerModeExpoDuringRuntimeStart");
+    expect(completionAuditScript()).toContain("replaceExternalExpoRequested");
+    expect(completionAuditScript()).toContain("s23AdbReverseConfiguredOnStart");
     expect(completionAuditScript()).toContain("ReplaceExternalExpo");
     expect(completionAuditScript()).toContain("scripts/manage_holiwyn_internal_tester_runtime.ps1");
   });

@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-13T15:56:48.0186290Z",
+    "generatedAt":  "2026-07-13T19:57:43.0248691Z",
     "scope":  "holiwyn-one-event-live-onboarding",
     "pass":  true,
-    "startedAt":  "2026-07-13T15:55:51.1895341Z",
-    "completedAt":  "2026-07-13T15:56:48.0196322Z",
+    "startedAt":  "2026-07-13T19:56:07.9789085Z",
+    "completedAt":  "2026-07-13T19:57:43.0258928Z",
     "mode":  "quota-free-replay",
     "providerPolicy":  {
                            "providerSource":  "the-odds-api",
@@ -13,7 +13,7 @@
                            "liveRefreshRequiresExplicitFlag":  true,
                            "runtimeLoopStartRequiresExplicitFlag":  true,
                            "runtimeLoopCleanupRequested":  true,
-                           "s23MayBeDisconnectedForBackendOnlyProof":  false,
+                           "s23MayBeDisconnectedForBackendOnlyProof":  true,
                            "pastReplayBlockedByDefault":  true,
                            "allowPastReplay":  false,
                            "skippedPastReplay":  true,
@@ -35,7 +35,7 @@
                            "marketType":  "total_goals",
                            "marketGroupKey":  "totals",
                            "line":  "2.5",
-                           "outcomeId":  "72c3377d-ae57-4f2b-b75d-0850b40bf5de",
+                           "outcomeId":  "f2634596-0692-428d-a0ee-457dcc6f32ce",
                            "outcomeName":  "Over +2.5",
                            "referenceTokenId":  "odds-api-88263b2c42d6b2f5c6dbbda4"
                        },
@@ -47,8 +47,8 @@
                          "pass":  true,
                          "skipped":  true,
                          "reason":  "Redacted replay fixture is older than current UTC and a newer live-runtime event summary exists; pass -AllowPastReplay to intentionally overwrite local one-event state with the replay fixture.",
-                         "startedAt":  "2026-07-13T15:55:51.2240499Z",
-                         "finishedAt":  "2026-07-13T15:55:51.2240499Z"
+                         "startedAt":  "2026-07-13T19:56:08.0284044Z",
+                         "finishedAt":  "2026-07-13T19:56:08.0284044Z"
                      },
                      {
                          "label":  "cached-live-runtime-restore",
@@ -57,18 +57,18 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T15:55:51.2325559Z",
-                         "finishedAt":  "2026-07-13T15:55:52.7107501Z"
+                         "startedAt":  "2026-07-13T19:56:08.0379176Z",
+                         "finishedAt":  "2026-07-13T19:56:10.6063474Z"
                      },
                      {
                          "label":  "one-event-live-readiness",
-                         "command":  "npm run mobile:one-event-live-readiness -- -BackendPort 3002",
+                         "command":  "npm run mobile:one-event-live-readiness -- -BackendPort 3002 -AllowDisconnectedS23",
                          "exitCode":  0,
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T15:55:52.7107501Z",
-                         "finishedAt":  "2026-07-13T15:56:08.4078435Z"
+                         "startedAt":  "2026-07-13T19:56:10.6073474Z",
+                         "finishedAt":  "2026-07-13T19:56:32.6360056Z"
                      },
                      {
                          "label":  "one-event-runtime-status",
@@ -77,8 +77,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T15:56:08.4185373Z",
-                         "finishedAt":  "2026-07-13T15:56:13.6338080Z"
+                         "startedAt":  "2026-07-13T19:56:32.6360056Z",
+                         "finishedAt":  "2026-07-13T19:56:36.5997672Z"
                      },
                      {
                          "label":  "one-event-settlement-readiness",
@@ -87,8 +87,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T15:56:13.6338080Z",
-                         "finishedAt":  "2026-07-13T15:56:15.0048991Z"
+                         "startedAt":  "2026-07-13T19:56:36.5997672Z",
+                         "finishedAt":  "2026-07-13T19:56:40.7306927Z"
                      },
                      {
                          "label":  "one-event-result-ingestion",
@@ -97,8 +97,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T15:56:15.0048991Z",
-                         "finishedAt":  "2026-07-13T15:56:16.2901085Z"
+                         "startedAt":  "2026-07-13T19:56:40.7306927Z",
+                         "finishedAt":  "2026-07-13T19:56:41.9232931Z"
                      },
                      {
                          "label":  "one-event-result-settlement-dry-run",
@@ -107,8 +107,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T15:56:16.2901085Z",
-                         "finishedAt":  "2026-07-13T15:56:20.0667996Z"
+                         "startedAt":  "2026-07-13T19:56:41.9242930Z",
+                         "finishedAt":  "2026-07-13T19:56:45.2974198Z"
                      },
                      {
                          "label":  "one-event-settlement-dry-run",
@@ -117,18 +117,18 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T15:56:20.0677979Z",
-                         "finishedAt":  "2026-07-13T15:56:21.5520514Z"
+                         "startedAt":  "2026-07-13T19:56:45.2979620Z",
+                         "finishedAt":  "2026-07-13T19:56:47.6003290Z"
                      },
                      {
                          "label":  "start-local-runtime-loops",
-                         "command":  "npm run mobile:internal-tester-runtime -- -Action start -BackendPort 3002 -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady -SummaryPath docs\\mobile\\harness\\odds-api-live-runtime\\one-event-onboarding-runtime-start-summary.redacted.json",
+                         "command":  "npm run mobile:internal-tester-runtime -- -Action start -BackendPort 3002 -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady -SummaryPath docs\\mobile\\harness\\odds-api-live-runtime\\one-event-onboarding-runtime-start-summary.redacted.json -Force -ReplaceExternalExpo",
                          "exitCode":  0,
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T15:56:21.5520514Z",
-                         "finishedAt":  "2026-07-13T15:56:30.9838885Z"
+                         "startedAt":  "2026-07-13T19:56:47.6008318Z",
+                         "finishedAt":  "2026-07-13T19:57:20.6051147Z"
                      },
                      {
                          "label":  "status-local-runtime-loops",
@@ -137,8 +137,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T15:56:30.9844957Z",
-                         "finishedAt":  "2026-07-13T15:56:37.8394554Z"
+                         "startedAt":  "2026-07-13T19:57:20.6066178Z",
+                         "finishedAt":  "2026-07-13T19:57:31.2619287Z"
                      },
                      {
                          "label":  "stop-local-runtime-loops-after-proof",
@@ -147,8 +147,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T15:56:37.8404565Z",
-                         "finishedAt":  "2026-07-13T15:56:47.3984950Z"
+                         "startedAt":  "2026-07-13T19:57:31.2629309Z",
+                         "finishedAt":  "2026-07-13T19:57:42.3534639Z"
                      }
                  ],
     "backend":  {
@@ -159,7 +159,7 @@
                                                 "status":  "ok",
                                                 "db":  "connected",
                                                 "env":  "development",
-                                                "timestamp":  "2026-07-13T15:56:47.435Z"
+                                                "timestamp":  "2026-07-13T19:57:42.391Z"
                                             },
                                    "error":  null
                                }
@@ -173,9 +173,10 @@
                        },
     "s23":  {
                 "connected":  true,
-                "deviceId":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+                "deviceId":  "172.16.200.27:44029",
                 "model":  "SM_S911U1",
-                "raw":  "172.16.200.27:44029    device product:dm1quew model:SM_S911U1 device:dm1q transport_id:2"
+                "raw":  "172.16.200.27:44029    device product:dm1quew model:SM_S911U1 device:dm1q transport_id:2",
+                "adbTimedOut":  false
             },
     "checks":  {
                    "seedOrReplayPass":  true,
@@ -212,7 +213,9 @@
                          "runtimeLoopsStartedByOnboarding":  true,
                          "runtimeLoopsRunningDuringProof":  true,
                          "runtimeLoopsStoppedAfterProof":  true,
-                         "runtimeLoopMode":  "explicit local supervisor and result-poller process proof",
+                         "replaceExternalExpoRequested":  true,
+                         "verifiedServerModeExpoDuringRuntimeStart":  true,
+                         "runtimeLoopMode":  "explicit local supervisor/result-poller proof with manager-owned server-mode Expo replacement",
                          "providerRefreshMode":  "freshness-guarded cached live restore; stale replay skipped; no provider quota spent",
                          "marketMakerMode":  "shifted local maker seed from readiness command; not an installed daemon",
                          "lifecycleSchedulerMode":  "readiness proof plus local callable scheduler; not installed as a service",
