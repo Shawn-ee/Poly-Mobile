@@ -1,6 +1,6 @@
 {
     "pass":  true,
-    "generatedAt":  "2026-07-13T21:46:00.269Z",
+    "generatedAt":  "2026-07-13T21:56:04.147Z",
     "scope":  "mobile-mvp-local-match-breadth",
     "baseUrl":  "http://127.0.0.1:3002",
     "policy":  {
@@ -15,8 +15,26 @@
                },
     "before":  {
                    "status":  200,
-                   "eventCount":  1,
+                   "eventCount":  4,
                    "events":  [
+                                  {
+                                      "slug":  "holiwyn-local-australia-vs-egypt",
+                                      "title":  "Australia vs. Egypt",
+                                      "eventType":  "match",
+                                      "marketCount":  5
+                                  },
+                                  {
+                                      "slug":  "holiwyn-local-england-vs-congo-dr",
+                                      "title":  "England vs. Congo DR",
+                                      "eventType":  "match",
+                                      "marketCount":  5
+                                  },
+                                  {
+                                      "slug":  "holiwyn-local-mexico-vs-ecuador",
+                                      "title":  "Mexico vs. Ecuador",
+                                      "eventType":  "match",
+                                      "marketCount":  5
+                                  },
                                   {
                                       "slug":  "odds-api-single-soccer-test",
                                       "title":  "Spain vs. France",

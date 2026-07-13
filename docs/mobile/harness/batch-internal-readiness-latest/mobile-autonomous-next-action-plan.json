@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-07-13T21:49:35.881Z",
+  "generatedAt": "2026-07-13T21:57:03.928Z",
   "status": "provider-parity-wait",
   "priority": "P1",
   "reason": "Provider-backed Polymarket parity is the only remaining partial criterion, but provider evidence is fresh.",
-  "recommendedAction": "Do not open a new provider scan. Keep Local MVP internal testing/regression proof ready while waiting for provider evidence to become stale or a real candidate signal. Next wait trigger: s23-proof 'temporary-sportsbook-filled-buy-history' at 2026-07-14T16:05:37.0490077Z (18.27 hours).",
+  "recommendedAction": "Do not open a new provider scan. Keep Local MVP internal testing/regression proof ready while waiting for provider evidence to become stale or a real candidate signal. Next wait trigger: s23-proof 'temporary-sportsbook-filled-buy-history' at 2026-07-14T16:05:37.0490077Z (18.14 hours).",
   "commands": [],
   "wait": {
     "shouldWait": true,
     "wakeAt": "2026-07-14T16:05:37.0490077Z",
     "triggerKind": "s23-proof",
     "triggerName": "temporary-sportsbook-filled-buy-history",
-    "waitSeconds": 65772,
+    "waitSeconds": 65304,
     "pollAfterSeconds": 900,
     "resumeCommand": "npm run mobile:autonomous-next-action"
   },
@@ -38,20 +38,19 @@
     ],
     "s23ProofReady": true,
     "s23ProofNextStaleName": "temporary-sportsbook-filled-buy-history",
-    "s23ProofHoursUntilStale": 18.27,
+    "s23ProofHoursUntilStale": 18.14,
     "providerPlanStatus": "skip-refresh",
-    "providerEvidenceHoursUntilStale": 23.94,
+    "providerEvidenceHoursUntilStale": 23.82,
     "temporaryProviderBackendProofReady": true,
-    "temporaryProviderBackendProofHoursUntilStale": 22.38,
+    "temporaryProviderBackendProofHoursUntilStale": 22.26,
     "readyToDeclareDone": false,
     "dodCounts": {
-      "verified": 11,
-      "partial": 2,
+      "verified": 12,
+      "partial": 1,
       "blocked": 0
     },
     "remainingPartialCriteria": [
-      "dod-provider-polymarket-parity",
-      "dod-temporary-sportsbook-provider-bridge"
+      "dod-provider-polymarket-parity"
     ],
     "temporaryProviderReady": true,
     "temporaryProviderNeedsS23VisualProof": false,
@@ -60,7 +59,7 @@
       "kind": "s23-proof",
       "name": "temporary-sportsbook-filled-buy-history",
       "staleAt": "2026-07-14T16:05:37.0490077Z",
-      "hoursUntilStale": 18.27
+      "hoursUntilStale": 18.14
     }
   }
 }

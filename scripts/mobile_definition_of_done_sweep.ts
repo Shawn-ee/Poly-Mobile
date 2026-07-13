@@ -21,6 +21,24 @@ const argValue = (name: string) => {
 const summaryPath = argValue("summaryPath") ?? "docs/mobile/harness/cycle-current-mobile-definition-of-done-sweep.json";
 const reportPath = argValue("reportPath") ?? "docs/mobile/MOBILE_FINAL_PARITY_SWEEP.md";
 
+const newestSpainFranceCashoutProof = () => {
+  const harnessRoot = path.resolve("docs/mobile/harness");
+  if (!fs.existsSync(harnessRoot)) {
+    return "docs/mobile/harness/cycle-ZM-spain-france-cashout-s23/cycle-ZM-odds-api-s23-visible-flow.json";
+  }
+  const candidates = fs.readdirSync(harnessRoot, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && /^cycle-.*spain-france-cashout-s23$/i.test(entry.name))
+    .flatMap((entry) => {
+      const dir = path.join(harnessRoot, entry.name);
+      return fs.readdirSync(dir)
+        .filter((file) => /^cycle-.*-odds-api-s23-visible-flow\.json$/i.test(file))
+        .map((file) => path.join(dir, file));
+    })
+    .map((file) => ({ file, mtime: fs.statSync(file).mtimeMs }))
+    .sort((a, b) => b.mtime - a.mtime);
+  return candidates[0]?.file ? path.relative(process.cwd(), candidates[0].file).replace(/\\/g, "/") : "docs/mobile/harness/cycle-ZM-spain-france-cashout-s23/cycle-ZM-odds-api-s23-visible-flow.json";
+};
+
 const evidence = {
   loopState: "docs/mobile/MOBILE_LOOP_STATE.md",
   gapTracker: "docs/mobile/MOBILE_FEATURE_GAP_TRACKER.md",
@@ -46,7 +64,7 @@ const evidence = {
   oddsApiS23VisibleProof: "docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json",
   oddsApiInternalEnvironmentProof: "docs/mobile/harness/the-odds-api-internal-environment/internal-environment-proof.redacted.json",
   oddsApiLiveRuntimeProof: "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
-  oddsApiS23CashoutProof: "docs/mobile/harness/cycle-ZM-spain-france-cashout-s23/cycle-ZM-odds-api-s23-visible-flow.json",
+  oddsApiS23CashoutProof: newestSpainFranceCashoutProof(),
 };
 
 const readJson = <T,>(file: string): T | null => {

@@ -39,7 +39,7 @@ That underreported the current bridge because newer proof now lives in:
 
 - `docs/mobile/harness/the-odds-api-internal-environment/internal-environment-proof.redacted.json`
 - `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`
-- `docs/mobile/harness/cycle-ZM-spain-france-cashout-s23/cycle-ZM-odds-api-s23-visible-flow.json`
+- the newest `docs/mobile/harness/cycle-*-spain-france-cashout-s23/cycle-*-odds-api-s23-visible-flow.json` proof
 
 `scripts/mobile_definition_of_done_sweep.ts` now accepts those newer proof shapes, including cashout mode checks:
 
@@ -48,6 +48,27 @@ That underreported the current bridge because newer proof now lives in:
 - Yes/No selector hidden for cashout
 - cashout sell submitted
 - Portfolio/history updated
+
+## Fresh S23 Cashout Proof
+
+- Command: `powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_odds_api_s23_visible_flow.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Cycle ZQ -OutputDir docs\mobile\screenshots\cycle-ZQ-spain-france-cashout-s23 -HierarchyOutputDir docs\mobile\harness\cycle-ZQ-spain-france-cashout-s23`
+- Device: Samsung S23, `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.
+- Event: `Spain vs. France`.
+- Selected market: totals, `Over 2.5`, source `sportsbook-odds`.
+- Result: pass.
+- Proof summary: `docs/mobile/harness/cycle-ZQ-spain-france-cashout-s23/cycle-ZQ-odds-api-s23-visible-flow.json`.
+- Cashout ticket proof: `docs/mobile/harness/cycle-ZQ-spain-france-cashout-s23/cycle-ZQ-cashout-ticket-ready.xml`.
+- Screenshot proof: `docs/mobile/screenshots/cycle-ZQ-spain-france-cashout-s23/`.
+
+Key assertions:
+
+- Home shows the backend-owned temporary sportsbook event.
+- Event Detail loads Game Lines from backend data and hides chat/order book.
+- Buy flow submits and reaches Portfolio.
+- Cashout opens close-position mode.
+- Cashout Max uses owned shares only.
+- Cashout hides the Yes/No selector.
+- Cashout sell submits and History remains visible.
 
 ## Evidence
 
