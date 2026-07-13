@@ -955,6 +955,9 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalProviderResultAuditAvailable"]) === true &&
     getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementPreflightAuditAvailable"]) === true &&
     getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementApprovalAuditAvailable"]) === true &&
+    (options.phaseAuditInProgress === true ||
+      typeof getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementBlockedAuditAvailable"]) ===
+        "boolean") &&
     getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "durableOfficialResultReviewRecordAvailable"]) === true &&
     getPath(phaseAudit, ["localResultReview", "body", "officialResultReview", "exactConfirmationStored"]) === false &&
     getPath(phaseAudit, ["localResultReview", "body", "officialResultReview", "providerQuotaUsed"]) === false &&
@@ -1085,6 +1088,8 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
       getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementPreflightAuditAvailable"]) === true,
     canonicalSettlementApprovalAuditAvailable:
       getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementApprovalAuditAvailable"]) === true,
+    canonicalSettlementBlockedAuditAvailable:
+      getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementBlockedAuditAvailable"]) === true,
     durableOfficialResultReviewRecordAvailable:
       getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "durableOfficialResultReviewRecordAvailable"]) === true,
     officialResultReview: {

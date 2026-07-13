@@ -2,6 +2,21 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle SETTLEMENTBLOCKEDEVIDENCE - Blocked Settlement Audit Trail
+
+- Feature/runtime worked on: backend local official-result review/status evidence.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `src/server/services/liveRuntimeResultReview.ts`
+  - `src/server/services/liveRuntimeStatus.ts`
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `src/__tests__/liveRuntimeResultReview.service.test.ts`
+  - `src/__tests__/liveRuntimeStatus.service.test.ts`
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/result-review` or `GET /api/internal/live-runtime/status` and see whether a canonical `settlement.trusted_result.blocked` audit event exists for the selected market. The blocked trail redacts exact confirmation text and exposes safe payload fields such as `executionReason` and `currentMarketStatus`.
+- State transitions: none. This cycle is read-only evidence projection. It does not execute settlement, call The Odds API, spend quota, approve settlement, mutate markets, or store exact confirmation text.
+- API/data dependencies: reads canonical `settlement.trusted_result.blocked` events already emitted by guarded trusted-result settlement commands, plus existing provider-result/preflight/approval/executed events and `OfficialResultReview` data.
+- Known limitations: blocked evidence helps local operators understand why execution did not proceed, but installed official-result polling, authenticated operator UI, and production settlement execution controls remain P1.
+
 ## Cycle SETTLEMENTSTATUSGUARD - Status Projection for Repeat-Execution Safety
 
 - Feature/runtime worked on: backend local live-runtime status projection.

@@ -656,6 +656,7 @@ async function main() {
         getPath(localResultReviewBody, ["runtimeTruth", "canonicalProviderResultAuditAvailable"]) === true &&
         getPath(localResultReviewBody, ["runtimeTruth", "canonicalSettlementPreflightAuditAvailable"]) === true &&
         getPath(localResultReviewBody, ["runtimeTruth", "canonicalSettlementApprovalAuditAvailable"]) === true &&
+        typeof getPath(localResultReviewBody, ["runtimeTruth", "canonicalSettlementBlockedAuditAvailable"]) === "boolean" &&
         getPath(localResultReviewBody, ["runtimeTruth", "durableOfficialResultReviewRecordAvailable"]) === true &&
         getPath(localResultReviewBody, ["officialResultReview", "exactConfirmationStored"]) === false &&
         getPath(localResultReviewBody, ["officialResultReview", "providerQuotaUsed"]) === false &&
@@ -673,7 +674,7 @@ async function main() {
         !JSON.stringify(localResultReviewBody).includes("THE_ODDS_API_KEY"),
       evidence: [`${baseUrl}/api/internal/live-runtime/result-review`],
       notes:
-        "This narrows the official-result operator-review gap by exposing the canonical result/preflight/approval trail through a dev-only backend route instead of only shell proof scripts. It is read-only, intentionally redacts exact execution confirmation strings, and exposes repeat-execution guard fields without settling the active event.",
+        "This narrows the official-result operator-review gap by exposing the canonical result/preflight/approval/blocked trail through a dev-only backend route instead of only shell proof scripts. It is read-only, intentionally redacts exact execution confirmation strings, and exposes repeat-execution guard fields without settling the active event.",
     }),
     requirement({
       id: "local-settlement-queue-api-ready",

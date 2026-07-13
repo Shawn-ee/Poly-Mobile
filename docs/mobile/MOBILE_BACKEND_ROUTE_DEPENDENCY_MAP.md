@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle SETTLEMENTBLOCKEDEVIDENCE - Blocked Settlement Audit Trail
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Local blocked settlement evidence | `/api/internal/live-runtime/result-review`; `/api/internal/live-runtime/status`; gated by `npm run mobile:one-event-phase-audit` | `GET` | Local/dev only; route returns 404 in production or when internal status is disabled; no mobile auth and no provider key | Optional query `eventSlug`, optional query `marketId`; optional status `phaseAuditInProgress=1` | `reviewTrail.settlementBlockedEvent`, `runtimeTruth.canonicalSettlementBlockedAuditAvailable`, status `resultReview.canonicalSettlementBlockedAuditAvailable`, and redacted blocked payload fields including `executionReason` and `currentMarketStatus` | Reads `CanonicalEvent` rows with type `settlement.trusted_result.blocked`, plus existing `Market`, `Event`, and `OfficialResultReview`; no schema change and no writes from status route | None. This projects existing canonical audit evidence and spends no provider quota. | Production still needs authenticated operator UI/actions, installed official-result polling, and durable execution-attempt ownership. |
+
 ## Cycle SETTLEMENTSTATUSGUARD - Status Projection for Repeat-Execution Safety
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

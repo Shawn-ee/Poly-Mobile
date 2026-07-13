@@ -110,6 +110,7 @@ describe("live runtime result review service", () => {
           confirm: "SETTLE_FROM_RESULT:market-1:outcome-1:result-digest",
         }),
       )
+      .mockResolvedValueOnce(null)
       .mockResolvedValueOnce(null);
   });
 
@@ -145,7 +146,7 @@ describe("live runtime result review service", () => {
       providerQuotaUsed: false,
     });
     expect(JSON.stringify(result)).not.toContain("SETTLE_FROM_RESULT:");
-    expect(canonicalEventFindFirst).toHaveBeenCalledTimes(4);
+    expect(canonicalEventFindFirst).toHaveBeenCalledTimes(5);
     expect(officialResultReviewUpsert).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { reviewKey: "odds-api-single-soccer-test:market-1:result-digest" },
@@ -220,6 +221,7 @@ describe("live runtime result review service", () => {
           confirm: "SETTLE_FROM_RESULT:market-1:outcome-1:result-digest",
         }),
       )
+      .mockResolvedValueOnce(null)
       .mockResolvedValueOnce(
         canonicalEvent(
           "settlement.trusted_result.executed",
@@ -282,12 +284,56 @@ describe("live runtime result review service", () => {
     expect(JSON.stringify(result)).not.toContain("SETTLE_FROM_RESULT:");
   });
 
+  test("surfaces redacted blocked settlement execution audit evidence", async () => {
+    canonicalEventFindFirst.mockReset();
+    canonicalEventFindFirst
+      .mockResolvedValueOnce(canonicalEvent("provider.result.ingested", { trustedResultDigest: "trusted-digest" }))
+      .mockResolvedValueOnce(canonicalEvent("settlement.trusted_result.preflight", { resultDigest: "result-digest" }))
+      .mockResolvedValueOnce(canonicalEvent("settlement.trusted_result.approved", { resultDigest: "result-digest" }))
+      .mockResolvedValueOnce(
+        canonicalEvent(
+          "settlement.trusted_result.blocked",
+          {
+            resultDigest: "result-digest",
+            executionMode: "execute",
+            executionAttempted: false,
+            executionReason: "market_must_be_closed_before_result_settlement:LIVE",
+            currentMarketStatus: "LIVE",
+            confirm: "SETTLE_FROM_RESULT:market-1:outcome-1:result-digest",
+          },
+          33n,
+        ),
+      )
+      .mockResolvedValueOnce(null);
+
+    const result = await getLocalLiveRuntimeResultReview();
+
+    expect(result.status).toBe("ready");
+    expect(result.reviewTrail.settlementBlockedEvent).toMatchObject({
+      id: "33",
+      eventType: "settlement.trusted_result.blocked",
+      payload: {
+        executionAttempted: false,
+        executionReason: "market_must_be_closed_before_result_settlement:LIVE",
+        currentMarketStatus: "LIVE",
+      },
+    });
+    expect(result.runtimeTruth).toMatchObject({
+      canonicalSettlementBlockedAuditAvailable: true,
+      canonicalSettlementExecutionAuditAvailable: false,
+      activeTesterSettlementExecutionAttempted: false,
+      providerQuotaUsed: false,
+    });
+    expect(JSON.stringify(result)).not.toContain("SETTLE_FROM_RESULT:");
+  });
+
   test("returns needs_attention when approval digest does not match preflight", async () => {
     canonicalEventFindFirst.mockReset();
     canonicalEventFindFirst
       .mockResolvedValueOnce(canonicalEvent("provider.result.ingested", { trustedResultDigest: "trusted-digest" }))
       .mockResolvedValueOnce(canonicalEvent("settlement.trusted_result.preflight", { resultDigest: "result-digest" }))
       .mockResolvedValueOnce(canonicalEvent("settlement.trusted_result.approved", { resultDigest: "different" }))
+      .mockResolvedValueOnce(null)
       .mockResolvedValueOnce(null);
 
     const result = await getLocalLiveRuntimeResultReview();

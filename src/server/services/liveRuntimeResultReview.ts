@@ -48,6 +48,7 @@ const compactSettlementPayload = (payload: unknown) => {
     resultDigest: value.resultDigest ?? null,
     executionMode: value.executionMode ?? null,
     executionAttempted: value.executionAttempted ?? null,
+    executionReason: value.executionReason ?? null,
     previewPayoutConservationPass: value.previewPayoutConservationPass ?? null,
     currentMarketStatus: value.currentMarketStatus ?? null,
     approvedBy: value.approvedBy ?? null,
@@ -153,6 +154,16 @@ export async function getLocalLiveRuntimeResultReview(params: {
         orderBy: { id: "desc" },
       })
     : null;
+  const settlementBlockedEvent = selectedMarketId
+    ? await prisma.canonicalEvent.findFirst({
+        where: {
+          stream: CanonicalEventStream.MARKET,
+          marketId: selectedMarketId,
+          eventType: "settlement.trusted_result.blocked",
+        },
+        orderBy: { id: "desc" },
+      })
+    : null;
   const settlementExecutedEvent = selectedMarketId
     ? await prisma.canonicalEvent.findFirst({
         where: {
@@ -200,6 +211,7 @@ export async function getLocalLiveRuntimeResultReview(params: {
     providerResultEvent: compactEvent(providerResultEvent, "result"),
     settlementPreflightEvent: compactEvent(settlementPreflightEvent, "settlement"),
     settlementApprovalEvent: compactEvent(settlementApprovalEvent, "settlement"),
+    settlementBlockedEvent: compactEvent(settlementBlockedEvent, "settlement"),
     settlementExecutedEvent: compactEvent(settlementExecutedEvent, "settlement"),
   };
   const reviewSnapshot = {
@@ -342,6 +354,7 @@ export async function getLocalLiveRuntimeResultReview(params: {
       canonicalProviderResultAuditAvailable: providerResultEvent != null,
       canonicalSettlementPreflightAuditAvailable: settlementPreflightEvent != null,
       canonicalSettlementApprovalAuditAvailable: settlementApprovalEvent != null,
+      canonicalSettlementBlockedAuditAvailable: settlementBlockedEvent != null,
       canonicalSettlementExecutionAuditAvailable: settlementExecutedEvent != null,
       repeatSettlementExecutionBlocked: settlementAlreadyExecuted,
       activeTesterSettlementExecutionAttempted: false,

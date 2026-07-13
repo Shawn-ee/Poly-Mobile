@@ -331,6 +331,7 @@ const makePhaseAudit = (generatedAt = nowIso()) => ({
         canonicalProviderResultAuditAvailable: true,
         canonicalSettlementPreflightAuditAvailable: true,
         canonicalSettlementApprovalAuditAvailable: true,
+        canonicalSettlementBlockedAuditAvailable: false,
         durableOfficialResultReviewRecordAvailable: true,
         repeatSettlementExecutionBlocked: false,
       },
@@ -932,6 +933,7 @@ describe("live runtime status service", () => {
       canonicalProviderResultAuditAvailable: true,
       canonicalSettlementPreflightAuditAvailable: true,
       canonicalSettlementApprovalAuditAvailable: true,
+      canonicalSettlementBlockedAuditAvailable: false,
       durableOfficialResultReviewRecordAvailable: true,
       officialResultReview: {
         reviewKey: "odds-api-single-soccer-test:phase-market:result-digest",

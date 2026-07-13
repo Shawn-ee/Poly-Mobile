@@ -1,5 +1,13 @@
 # Mobile Data Contract Gaps
 
+## Cycle SETTLEMENTBLOCKEDEVIDENCE - Blocked Settlement Audit Trail
+
+- Closed or narrowed: local result-review/status now project canonical `settlement.trusted_result.blocked` audit evidence, so blocked active-event execution attempts are visible as redacted operator evidence instead of only proof-script artifacts.
+- Backend-supported fields used: `CanonicalEvent.eventType="settlement.trusted_result.blocked"`, `payload.executionReason`, `payload.currentMarketStatus`, `payload.executionAttempted`, selected `Market`/`Event`, and existing `OfficialResultReview` fields.
+- Route mismatch: none for public mobile APIs. This remains a local/dev-only runtime status/review contract and does not execute settlement.
+- Temporary mock/static data: none added.
+- Future migration concern: production should store durable execution attempts and operator decisions in first-class authenticated tables instead of relying on local canonical event review projection alone.
+
 ## Cycle SETTLEMENTSTATUSGUARD - Status Projection for Repeat-Execution Safety
 
 - Closed or narrowed: `/api/internal/live-runtime/status` now projects result-review repeat-execution guard fields, so the single operator status endpoint can show whether settlement is already executed and whether repeat execution is blocked.
