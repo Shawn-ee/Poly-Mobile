@@ -100,13 +100,16 @@ describe("The Odds API single-event temporary provider", () => {
   });
 
   it("gates one-event readiness on the fresh S23 close-position cashout proof", () => {
-    const freshCashoutProof =
-      "cycle-ZD-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json";
     expect(phaseAuditScript()).toContain("resolveLatestS23VisibleProofPath");
     expect(completionAuditScript()).toContain("resolveLatestS23VisibleProofPath");
+    expect(liveReadinessScript()).toContain("Resolve-LatestS23VisibleProofPath");
     expect(phaseAuditScript()).toContain("odds-api-s23-visible-flow\\.json");
     expect(completionAuditScript()).toContain("odds-api-s23-visible-flow\\.json");
-    expect(liveReadinessScript()).toContain(freshCashoutProof);
+    expect(liveReadinessScript()).toContain("*odds-api-s23-visible-flow.json");
+    expect(liveReadinessScript()).toContain("cashoutTicketIsClosePositionMode");
+    expect(liveReadinessScript()).toContain("cashoutMaxUsesOwnedShares");
+    expect(liveReadinessScript()).toContain("cashoutTicketHidesYesNoSelector");
+    expect(liveReadinessScript()).toContain("Set-LocalDatabaseEnv");
     expect(phaseAuditScript()).toContain("cashoutTicketIsClosePositionMode");
     expect(phaseAuditScript()).toContain("cashoutMaxUsesOwnedShares");
     expect(phaseAuditScript()).toContain("cashoutTicketHidesYesNoSelector");

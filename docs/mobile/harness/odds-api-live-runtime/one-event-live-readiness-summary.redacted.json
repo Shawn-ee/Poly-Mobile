@@ -1,5 +1,5 @@
 {
-    "generatedAt":  "2026-07-12T21:06:04.7482700Z",
+    "generatedAt":  "2026-07-13T13:07:07.7715854Z",
     "scope":  "holiwyn-one-event-live-readiness",
     "pass":  true,
     "commands":  [
@@ -8,32 +8,32 @@
                          "command":  "npm run mobile:one-event-data-hygiene-proof",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T21:05:54.8410499Z",
-                         "finishedAt":  "2026-07-12T21:05:55.3443562Z"
+                         "startedAt":  "2026-07-13T13:06:58.6787098Z",
+                         "finishedAt":  "2026-07-13T13:06:59.2006182Z"
                      },
                      {
                          "label":  "runtime",
                          "command":  "npm run mobile:one-event-live-runtime -- -BackendPort 3002 -SeedMaker",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T21:05:55.3483577Z",
-                         "finishedAt":  "2026-07-12T21:05:59.0621564Z"
+                         "startedAt":  "2026-07-13T13:06:59.2041297Z",
+                         "finishedAt":  "2026-07-13T13:07:02.1102174Z"
                      },
                      {
                          "label":  "lifecycle",
                          "command":  "npm run mobile:one-event-lifecycle-proof -- --baseUrl=http://127.0.0.1:3002",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T21:05:59.0621564Z",
-                         "finishedAt":  "2026-07-12T21:06:00.4475712Z"
+                         "startedAt":  "2026-07-13T13:07:02.1112164Z",
+                         "finishedAt":  "2026-07-13T13:07:03.5484149Z"
                      },
                      {
                          "label":  "lifecycle-scheduler",
                          "command":  "npm run mobile:one-event-lifecycle-scheduler-proof",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-12T21:06:00.4485712Z",
-                         "finishedAt":  "2026-07-12T21:06:03.7547374Z"
+                         "startedAt":  "2026-07-13T13:07:03.5484149Z",
+                         "finishedAt":  "2026-07-13T13:07:06.4971158Z"
                      }
                  ],
     "backend":  {
@@ -44,7 +44,7 @@
                                                 "status":  "ok",
                                                 "db":  "connected",
                                                 "env":  "development",
-                                                "timestamp":  "2026-07-12T21:06:03.798Z"
+                                                "timestamp":  "2026-07-13T13:07:06.638Z"
                                             },
                                    "error":  null
                                }
@@ -57,23 +57,21 @@
                                    ]
                        },
     "s23":  {
-                "connected":  false,
-                "deviceId":  null,
-                "model":  null,
-                "raw":  {
-
-                        }
+                "connected":  true,
+                "deviceId":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+                "model":  "SM_S911U1",
+                "raw":  "172.16.200.27:44029    device product:dm1quew model:SM_S911U1 device:dm1q transport_id:2"
             },
     "listeners":  [
                       {
                           "LocalAddress":  "::",
                           "LocalPort":  8081,
-                          "OwningProcess":  33236
+                          "OwningProcess":  13380
                       },
                       {
                           "LocalAddress":  "::",
                           "LocalPort":  3002,
-                          "OwningProcess":  23948
+                          "OwningProcess":  65972
                       }
                   ],
     "event":  {
@@ -90,7 +88,7 @@
                            "marketType":  "total_goals",
                            "marketGroupKey":  "totals",
                            "line":  "2.5",
-                           "outcomeId":  "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+                           "outcomeId":  "72c3377d-ae57-4f2b-b75d-0850b40bf5de",
                            "outcomeName":  "Over +2.5",
                            "referenceTokenId":  "odds-api-88263b2c42d6b2f5c6dbbda4"
                        },
@@ -101,7 +99,7 @@
                       "dataHygiene":  "docs/mobile/harness/odds-api-live-runtime/one-event-data-hygiene-summary.redacted.json",
                       "lifecycleControls":  "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json",
                       "lifecycleScheduler":  "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-scheduler-summary.redacted.json",
-                      "s23VisibleFlow":  "docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json"
+                      "s23VisibleFlow":  "docs/mobile/harness/cycle-ZF-spain-france-cashout-fresh/cycle-ZF-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json"
                   },
     "runtimeTruth":  {
                          "backendContinuous":  true,
@@ -113,7 +111,7 @@
                          "marketMakerMode":  "reusable one-shot shifted-maker seed, not unattended daemon",
                          "lifecycleSchedulerMode":  "local callable scheduler proof, not installed always-on service",
                          "settlementMode":  "manual preview/resolve service; automatic official-result settlement not wired",
-                         "s23RequiredForThisReadinessRun":  false
+                         "s23RequiredForThisReadinessRun":  true
                      },
     "checks":  {
                    "backendHealth":  true,
@@ -132,6 +130,11 @@
                    "lifecycleSchedulerCloseProof":  true,
                    "lifecycleSchedulerRestored":  true,
                    "s23VisibleProofPass":  true,
+                   "s23CashoutClosePositionMode":  true,
+                   "s23CashoutMaxUsesOwnedShares":  true,
+                   "s23CashoutHidesYesNoSelector":  true,
+                   "s23CashoutSellSubmitted":  true,
+                   "s23CashoutHistoryVisible":  true,
                    "s23Connected":  true
                },
     "gaps":  {

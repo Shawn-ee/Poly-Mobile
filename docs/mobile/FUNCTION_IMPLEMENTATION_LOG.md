@@ -2,6 +2,18 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZH - Consolidated Readiness Uses Freshest S23 Cashout Proof
+
+- Feature/runtime worked on: one-event live readiness wrapper for the Spain vs. France local internal tester runtime.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/prove_holiwyn_one_event_live_readiness.ps1`
+  - `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+- User/runtime interactions supported: `npm run mobile:one-event-live-readiness` now loads the local `DATABASE_URL` for child proof commands and selects the newest passing `spain-france-cashout` S23 proof summary with close-position, owned-share Max, and no Yes/No selector assertions.
+- State transitions: the readiness run executed data hygiene, runtime check, shifted maker seed, lifecycle proof, and lifecycle scheduler proof. It did not call The Odds API, spend provider quota, execute active-event settlement, or start unattended services.
+- API/data dependencies: reads local `.env.local` / `.env` / parent `Poly\.env` only to populate `DATABASE_URL` for child commands; reads committed S23 proof summaries under `docs/mobile/harness/cycle-*-spain-france-cashout*`.
+- Known limitations: this still consumes existing S23 proof artifacts; it does not automatically drive the phone to recapture screenshots when all matching proofs are stale or missing.
+
 ## Cycle ZG - Freshest S23 Cashout Proof Selection in Runtime Audits
 
 - Feature/runtime worked on: live-runtime phase/completion audit evidence selection for the Spain vs. France S23 cashout proof.

@@ -1,21 +1,21 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-12T21:06:00.406Z",
+  "generatedAt": "2026-07-13T13:07:03.503Z",
   "scope": "odds-api-one-event-lifecycle-controls",
   "event": {
-    "id": "b4f21c34-5f4d-43f2-b954-f2f3c546196f",
+    "id": "3c4716b1-5857-4150-a779-c2c98ab30361",
     "slug": "odds-api-single-soccer-test",
     "title": "Spain vs. France",
     "startTime": "2026-07-14T19:00:00.000Z"
   },
   "selectedMarket": {
-    "id": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
+    "id": "e6576bab-e980-4cee-a0c6-5c457eefc9e6",
     "slug": "odds-api-single-soccer-test-alternate-totals-38ad59c0f2",
     "title": "Switzerland vs. Argentina: Total Goals 2.5",
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
+    "outcomeId": "2769159b-605e-407d-b320-bbbf866f7434",
     "outcomeName": "Over +2.5"
   },
   "originalMarket": {
@@ -37,9 +37,9 @@
       "orderStatus": 200,
       "orderBody": {
         "order": {
-          "id": "25e265a1-9d02-4b67-afae-8cad9db2f8b2",
-          "marketId": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
-          "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
+          "id": "2aed25ad-c5f4-424a-80cd-18522a5033de",
+          "marketId": "e6576bab-e980-4cee-a0c6-5c457eefc9e6",
+          "outcomeId": "2769159b-605e-407d-b320-bbbf866f7434",
           "side": "BUY",
           "price": "0.01",
           "size": "1",
@@ -48,7 +48,7 @@
           "status": "OPEN",
           "type": "LIMIT",
           "clientOrderId": null,
-          "apiKeyId": "pk_live_47be907b1cfb3d97",
+          "apiKeyId": "pk_live_54ace7ee5834ec78",
           "contractSide": "YES",
           "selection": null
         },
@@ -60,9 +60,9 @@
         "position": null
       },
       "cleanup": {
-        "id": "25e265a1-9d02-4b67-afae-8cad9db2f8b2",
-        "marketId": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
-        "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
+        "id": "2aed25ad-c5f4-424a-80cd-18522a5033de",
+        "marketId": "e6576bab-e980-4cee-a0c6-5c457eefc9e6",
+        "outcomeId": "2769159b-605e-407d-b320-bbbf866f7434",
         "side": "BUY",
         "price": "0.01",
         "size": "1",
@@ -91,101 +91,23 @@
       }
     },
     "settlementPreview": {
-      "marketId": "47dae8f2-1e6b-4c16-904d-765a610af1c6",
+      "marketId": "e6576bab-e980-4cee-a0c6-5c457eefc9e6",
       "marketStatus": "CLOSED",
-      "winningOutcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
+      "winningOutcomeId": "2769159b-605e-407d-b320-bbbf866f7434",
       "winningOutcomeName": "Over +2.5",
-      "collateralUSDC": "1750",
-      "totalShares": "3500",
-      "totalWinningShares": "1750",
-      "totalPayout": "1750",
+      "collateralUSDC": "0",
+      "totalShares": "0",
+      "totalWinningShares": "0",
+      "totalPayout": "0",
       "payoutConservationPass": true,
       "blockers": [],
       "openOrderCleanup": {
-        "openOrderCount": 2,
-        "buyOrderLockedUSDCToRelease": "74",
-        "sellOrderSharesToRelease": "200"
+        "openOrderCount": 0,
+        "buyOrderLockedUSDCToRelease": "0",
+        "sellOrderSharesToRelease": "0"
       },
-      "payouts": [
-        {
-          "positionId": "c2bb31e4-cd4d-4789-a805-4995b43734bd",
-          "userId": "018b7e0c-e479-4303-8ad6-794de3cd9d33",
-          "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
-          "shares": "150",
-          "amountPreview": "150"
-        },
-        {
-          "positionId": "15c0609a-2291-4563-b746-05bff97b6cbf",
-          "userId": "2324f44f-fdda-4f36-a82d-4ff8d04cad45",
-          "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
-          "shares": "1.25",
-          "amountPreview": "1.25"
-        },
-        {
-          "positionId": "0ac75e53-e161-423b-b0e2-8530fd876a16",
-          "userId": "27d79be8-9e80-41e4-85a4-09be0c715c18",
-          "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
-          "shares": "198.75",
-          "amountPreview": "198.75"
-        },
-        {
-          "positionId": "81cfd49e-69c2-4850-af7b-f5d4f06a7b73",
-          "userId": "3bc28ccb-6a6f-44b9-b84e-2e29427fe7f6",
-          "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
-          "shares": "200",
-          "amountPreview": "200"
-        },
-        {
-          "positionId": "903e7e8f-64b7-4fe4-9728-2d7d8f1b5d56",
-          "userId": "80204b63-ad2e-45a1-a606-aaf384e71e70",
-          "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
-          "shares": "200",
-          "amountPreview": "200"
-        },
-        {
-          "positionId": "5647f6e5-8e7e-480f-b569-8ec46d4a9b54",
-          "userId": "86c0f80c-657f-4477-9327-3963806ebb42",
-          "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
-          "shares": "200",
-          "amountPreview": "200"
-        },
-        {
-          "positionId": "99566b21-300d-4c2d-ad69-16d691c61ed0",
-          "userId": "96dd06b9-ee81-4d52-ad0e-eaf8b2f35fbe",
-          "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
-          "shares": "200",
-          "amountPreview": "200"
-        },
-        {
-          "positionId": "3a33ebe8-c8f9-4e8d-86ec-38cf95c177f4",
-          "userId": "97829891-97c2-4cd5-afaf-fd1787d859de",
-          "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
-          "shares": "200",
-          "amountPreview": "200"
-        },
-        {
-          "positionId": "8508ad17-23ae-4d59-94d1-b3c2d8d5c67b",
-          "userId": "9bad0572-0f95-4758-8784-4d4a1e5d94e0",
-          "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
-          "shares": "1.25",
-          "amountPreview": "1.25"
-        },
-        {
-          "positionId": "83dfc8e6-f710-4cfc-937f-6ff589f85766",
-          "userId": "b6524f3d-a789-461f-98e3-f458ff798ef7",
-          "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
-          "shares": "198.75",
-          "amountPreview": "198.75"
-        },
-        {
-          "positionId": "c89b23b3-40f1-45c2-9726-61a65dee87a5",
-          "userId": "bdda854f-d489-47f4-a3df-441d4008e842",
-          "outcomeId": "d6e9430b-8fd0-4c3b-bd92-3ce9c2fdff4d",
-          "shares": "200",
-          "amountPreview": "200"
-        }
-      ],
-      "loserPositionCount": 9,
+      "payouts": [],
+      "loserPositionCount": 0,
       "mutation": "none"
     },
     "settlementExecution": {

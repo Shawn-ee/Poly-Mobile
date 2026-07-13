@@ -14,6 +14,43 @@ $ErrorActionPreference = "Stop"
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $BackendBaseUrl = "http://127.0.0.1:$BackendPort"
 
+function Set-LocalDatabaseEnv {
+  if ($env:DATABASE_URL) {
+    return
+  }
+
+  $candidates = New-Object System.Collections.Generic.List[string]
+  if (-not [string]::IsNullOrWhiteSpace($env:DOTENV_CONFIG_PATH)) {
+    $candidates.Add($env:DOTENV_CONFIG_PATH) | Out-Null
+  }
+  foreach ($fileName in @(".env.local", ".env")) {
+    $candidates.Add((Join-Path $RepoRoot $fileName)) | Out-Null
+  }
+  $current = $RepoRoot
+  for ($depth = 0; $depth -lt 8; $depth += 1) {
+    $candidates.Add((Join-Path $current "Poly\.env")) | Out-Null
+    $parent = Split-Path -Parent $current
+    if ($parent -eq $current -or [string]::IsNullOrWhiteSpace($parent)) {
+      break
+    }
+    $current = $parent
+  }
+
+  foreach ($path in ($candidates | Select-Object -Unique)) {
+    if (-not $path -or -not (Test-Path -LiteralPath $path)) {
+      continue
+    }
+    $line = Get-Content -LiteralPath $path | Where-Object { $_ -match "^\s*DATABASE_URL\s*=" } | Select-Object -First 1
+    if ($line) {
+      $env:DATABASE_URL = ($line -replace "^\s*DATABASE_URL\s*=\s*", "").Trim().Trim('"').Trim("'")
+      if ([string]::IsNullOrWhiteSpace($env:DOTENV_CONFIG_PATH)) {
+        $env:DOTENV_CONFIG_PATH = $path
+      }
+      return
+    }
+  }
+}
+
 function Resolve-RepoPath {
   param([string]$Path)
   if ([System.IO.Path]::IsPathRooted($Path)) {
@@ -33,6 +70,51 @@ function Read-JsonFile {
     return $null
   }
   return Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json
+}
+
+function Resolve-LatestS23VisibleProofPath {
+  $fallback = Resolve-RepoPath "docs\mobile\harness\cycle-ZD-spain-france-cashout-fresh\cycle-ZD-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json"
+  $harnessRoot = Resolve-RepoPath "docs\mobile\harness"
+  if (-not (Test-Path -LiteralPath $harnessRoot)) {
+    return $fallback
+  }
+
+  $candidates = @()
+  $proofDirectories = Get-ChildItem -LiteralPath $harnessRoot -Directory -ErrorAction SilentlyContinue |
+    Where-Object { $_.Name -match '^cycle-.*spain-france-cashout' }
+  foreach ($directory in $proofDirectories) {
+    $proofFile = Get-ChildItem -LiteralPath $directory.FullName -File -Filter "*odds-api-s23-visible-flow.json" -ErrorAction SilentlyContinue |
+      Select-Object -First 1
+    if (-not $proofFile) {
+      continue
+    }
+
+    $proof = Read-JsonFile $proofFile.FullName
+    if (
+      -not $proof -or
+      $proof.result -ne "pass" -or
+      $proof.assertions.cashoutTicketIsClosePositionMode -ne $true -or
+      $proof.assertions.cashoutMaxUsesOwnedShares -ne $true -or
+      $proof.assertions.cashoutTicketHidesYesNoSelector -ne $true
+    ) {
+      continue
+    }
+
+    $generatedAt = [DateTimeOffset]::MinValue
+    if ($proof.generatedAt) {
+      [DateTimeOffset]::TryParse([string]$proof.generatedAt, [ref]$generatedAt) | Out-Null
+    }
+    $candidates += [pscustomobject]@{
+      Path = $proofFile.FullName
+      GeneratedAt = $generatedAt
+    }
+  }
+
+  $latest = $candidates | Sort-Object GeneratedAt -Descending | Select-Object -First 1
+  if ($latest) {
+    return $latest.Path
+  }
+  return $fallback
 }
 
 function Write-JsonFile {
@@ -123,6 +205,8 @@ function Get-PortListeners {
   }
 }
 
+Set-LocalDatabaseEnv
+
 $commands = New-Object System.Collections.Generic.List[object]
 if (-not $SkipDataHygiene) {
   $dataHygieneResult = Invoke-CheckedCommand -Label "data-hygiene" -Command "npm run mobile:one-event-data-hygiene-proof"
@@ -167,7 +251,7 @@ $makerSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\
 $lifecycleSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\event-lifecycle-controls-summary.redacted.json"
 $dataHygieneSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-data-hygiene-summary.redacted.json"
 $lifecycleSchedulerSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\event-lifecycle-scheduler-summary.redacted.json"
-$s23SummaryPath = Resolve-RepoPath "docs\mobile\harness\cycle-ZD-spain-france-cashout-fresh\cycle-ZD-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json"
+$s23SummaryPath = Resolve-LatestS23VisibleProofPath
 
 $runtimeSummary = Read-JsonFile $runtimeSummaryPath
 $liveSummary = Read-JsonFile $liveSummaryPath
