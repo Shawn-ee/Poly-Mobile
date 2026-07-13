@@ -4,7 +4,9 @@ import { randomUUID } from "node:crypto";
 import { Prisma, PrismaClient } from "@prisma/client";
 import { mintCompleteSetForPublicOrderbook } from "../src/server/services/orderbookCollateral";
 import { cancelOrderAndUnlock, placeOrderAndMatch } from "../src/server/services/matching";
+import { loadLocalEnvForScript } from "./local_env";
 
+loadLocalEnvForScript(["DATABASE_URL"]);
 const prisma = new PrismaClient();
 const dec = (value: Prisma.Decimal.Value) => new Prisma.Decimal(value);
 
