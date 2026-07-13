@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T10:28:46.014Z",
+  "generatedAt": "2026-07-13T19:07:00.278Z",
   "scope": "odds-api-settlement-approval-audit-event-proof",
   "pass": true,
   "providerQuotaUsed": false,
@@ -13,7 +13,7 @@
     "resolvedOutcomeIdAfter": null
   },
   "winningOutcome": {
-    "id": "24515f22-3717-4b61-82a2-c072febc8f5b",
+    "id": "4afc49b4-69cd-4b35-8ffe-68533c787949",
     "name": "Over 2.5",
     "side": "over"
   },
@@ -65,18 +65,18 @@
   "approval": {
     "approvedBy": "holiwyn-local-approval-audit-proof",
     "resultDigest": "f3a5743c73f2",
-    "confirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:24515f22-3717-4b61-82a2-c072febc8f5b:f3a5743c73f2",
+    "confirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:4afc49b4-69cd-4b35-8ffe-68533c787949:f3a5743c73f2",
     "executionRequiresMarketStatus": "CLOSED",
     "currentMarketStatus": "LIVE"
   },
   "auditEvent": {
-    "id": "25",
-    "storedId": "25",
+    "id": "3",
+    "storedId": "3",
     "type": "settlement.trusted_result.approved",
     "stream": "market",
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-    "outcomeId": "24515f22-3717-4b61-82a2-c072febc8f5b",
-    "createdAt": "2026-07-13T10:28:46.005Z"
+    "outcomeId": "4afc49b4-69cd-4b35-8ffe-68533c787949",
+    "createdAt": "2026-07-13T19:07:00.267Z"
   },
   "runtimeTruth": {
     "approvalHasCanonicalEventEvidence": true,

@@ -62,6 +62,11 @@ The proof summary assertions passed:
 - Mobile focused tests: `npx vitest run src/__tests__/cashoutGenericSellOnlyContract.test.ts src/__tests__/positionCloseService.test.ts src/__tests__/orderService.test.ts src/__tests__/portfolioSnapshotService.test.ts` from `mobile` passed, 35 tests.
 - Backend focused tests: `npx jest --runInBand src/server/services/__tests__/canonical_order_submission.phase5.test.ts src/__tests__/portfolio.open-orders.route.test.ts src/__tests__/portfolio.history.route.test.ts` passed, 29 tests.
 - Mobile typecheck: `npm --prefix mobile run typecheck` passed.
+- Root typecheck: `npx tsc --noEmit --pretty false --incremental false` passed.
+- Runtime readiness gates after the local DB test reset and cached Spain vs. France restore passed:
+  - `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json`
 
 ## Remaining Gaps
 
