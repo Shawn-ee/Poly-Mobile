@@ -27,13 +27,13 @@
   },
   "cleanupOnly": false,
   "maker": {
-    "id": "460ae95a-abc0-4bee-a72d-01d24ce95cde",
-    "username": "mobile_route_fill_maker_e33c8b71"
+    "id": "7f2ef56a-2bb1-417e-bd56-be5341d5a121",
+    "username": "mobile_route_fill_maker_ea9648ef"
   },
   "cleanup": {
     "resetSelectedMarketState": {
       "requested": false,
-      "deletedCanonicalEvents": 0,
+      "canonicalEventsPreserved": true,
       "deletedFills": 0,
       "deletedTrades": 0,
       "deletedOrders": 0,
@@ -53,8 +53,8 @@
     "cleanupBlockingAsks": true,
     "canceledBlockingAsks": [
       {
-        "id": "350efbfc-0f1f-4e3d-a728-c5f1117730ea",
-        "username": "mobile_route_fill_maker_cf22aefb",
+        "id": "8fad8c85-a71c-486b-a263-1de17a2e89a3",
+        "username": "mobile_route_fill_maker_bf768ff5",
         "previousStatus": "PARTIAL",
         "price": "0.58",
         "remaining": "56.9",
@@ -63,7 +63,7 @@
     ]
   },
   "makerOrder": {
-    "id": "6ca39830-d55c-4a71-ad1e-06324b65827f",
+    "id": "6162ba0a-f9d7-4f60-9115-677840399795",
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
     "outcomeId": "24515f22-3717-4b61-82a2-c072febc8f5b",
     "side": "BUY",

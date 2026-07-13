@@ -27,17 +27,17 @@
   },
   "cleanupOnly": false,
   "maker": {
-    "id": "1cb0319f-de80-4bed-8fa5-ca037a067e30",
-    "username": "mobile_route_fill_maker_cf22aefb"
+    "id": "c4a9aa22-7aab-48ac-b45d-bcc77f3c597a",
+    "username": "mobile_route_fill_maker_bf768ff5"
   },
   "cleanup": {
     "resetSelectedMarketState": {
       "requested": true,
-      "deletedCanonicalEvents": 16,
-      "deletedFills": 6,
-      "deletedTrades": 12,
-      "deletedOrders": 64,
-      "deletedPositions": 67,
+      "canonicalEventsPreserved": true,
+      "deletedFills": 2,
+      "deletedTrades": 4,
+      "deletedOrders": 86,
+      "deletedPositions": 86,
       "collateralReset": true
     },
     "enabled": true,
@@ -54,7 +54,7 @@
     "canceledBlockingAsks": []
   },
   "makerOrder": {
-    "id": "350efbfc-0f1f-4e3d-a728-c5f1117730ea",
+    "id": "8fad8c85-a71c-486b-a263-1de17a2e89a3",
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
     "outcomeId": "24515f22-3717-4b61-82a2-c072febc8f5b",
     "side": "SELL",
