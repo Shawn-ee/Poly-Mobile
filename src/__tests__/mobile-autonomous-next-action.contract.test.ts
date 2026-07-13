@@ -39,10 +39,45 @@ describe("mobile autonomous next-action planner", () => {
   it("writes an S23 visible-proof plan when temporary sportsbook provider evidence is backend-proven only", () => {
     const tempDir = mkdtempSync(path.join(os.tmpdir(), "mobile-next-action-"));
     const outputPath = path.join(tempDir, "plan.json");
+    const readinessPath = path.join(tempDir, "readiness.json");
+    const providerPlanPath = path.join(tempDir, "provider-plan.json");
+    const dodPath = path.join(tempDir, "dod.json");
+    const oddsSummaryPath = path.join(tempDir, "odds-summary.json");
+    const oddsFlowPath = path.join(tempDir, "odds-flow.json");
+    const reachabilityPath = path.join(tempDir, "reachability.json");
     const command = process.platform === "win32" ? "cmd.exe" : "npx";
     const commandArgs = process.platform === "win32" ? ["/c", "npx"] : [];
 
     try {
+      writeFileSync(
+        readinessPath,
+        JSON.stringify({
+          readiness: {
+            localMvpReadyForInternalTesting: true,
+            s23LocalMvpDeviceProofReady: true,
+            s23ProofNextStaleAt: "2026-07-12T22:00:00.000Z",
+            s23ProofHoursUntilStale: 34,
+            cachedProviderEvidenceFresh: true,
+            cachedProviderEvidenceNextStaleAt: "2026-07-12T14:00:00.000Z",
+            cachedProviderEvidenceHoursUntilStale: 26,
+            temporarySportsbookBackendProofReady: true,
+            temporarySportsbookBackendProofNextStaleAt: "2026-07-12T21:30:00.000Z",
+            temporarySportsbookBackendProofHoursUntilStale: 33.5,
+          },
+          blockers: {
+            p0: [],
+            p1: ["provider_worldcup_match_books_unavailable_or_closed"],
+            p2: [],
+          },
+          recovery: { rerunBatchCommand: "npm run mobile:internal-readiness-batch" },
+        }),
+      );
+      writeFileSync(providerPlanPath, JSON.stringify({ status: "skip-refresh", shouldRefreshProviderEvidence: false }));
+      writeFileSync(dodPath, JSON.stringify({ readyToDeclareDone: false, criteria: [{ id: "dod-provider-polymarket-parity", status: "partial" }] }));
+      writeFileSync(oddsSummaryPath, JSON.stringify({ pass: true, mobile: { sportsbookMarketCount: 1, eventSlug: "odds-api-single-soccer-test" } }));
+      writeFileSync(oddsFlowPath, JSON.stringify({ pass: true, checks: { fakeTokenOrderFilled: true, portfolioPositionVisible: true, buyHistoryTradeVisible: true, sellHistoryTradeVisible: true } }));
+      writeFileSync(reachabilityPath, JSON.stringify({ pass: true, proofLimitations: ["Reachability is not a full visual walkthrough"] }));
+
       execFileSync(
         command,
         [
@@ -50,6 +85,12 @@ describe("mobile autonomous next-action planner", () => {
           "tsx",
           "scripts/plan_mobile_autonomous_next_action.ts",
           `--output=${outputPath}`,
+          `--readinessSummaryPath=${readinessPath}`,
+          `--providerEvidencePlanPath=${providerPlanPath}`,
+          `--definitionOfDoneSweepPath=${dodPath}`,
+          `--oddsApiSingleEventSummaryPath=${oddsSummaryPath}`,
+          `--oddsApiMobileFlowProofPath=${oddsFlowPath}`,
+          `--oddsApiS23ReachabilityPath=${reachabilityPath}`,
           `--oddsApiS23VisibleProofPath=${path.join(tempDir, "missing-s23-visible-proof.json")}`,
           "--s23RefreshWindowHours=2",
           "--now=2026-07-11T12:00:00.000Z",
@@ -127,11 +168,14 @@ describe("mobile autonomous next-action planner", () => {
       writeFileSync(visiblePath, JSON.stringify({ result: "pass", assertions: {
         homeShowsTemporarySportsbookEvent: true,
         detailShowsGameLines: true,
-        sportsbookSpreadLineVisible: true,
+        sportsbookLineVisible: true,
         ticketPreservesSportsbookLineIdentity: true,
         swipeSubmitReachedPortfolio: true,
         portfolioPreservesSportsbookLineIdentity: true,
         cashoutTicketOpened: true,
+        cashoutTicketIsClosePositionMode: true,
+        cashoutMaxUsesOwnedShares: true,
+        cashoutTicketHidesYesNoSelector: true,
         cashoutSellSubmitted: true,
         cashoutHistoryVisible: true,
         historyPreservesSportsbookLineIdentity: true,
@@ -234,11 +278,14 @@ describe("mobile autonomous next-action planner", () => {
       writeFileSync(visiblePath, JSON.stringify({ result: "pass", assertions: {
         homeShowsTemporarySportsbookEvent: true,
         detailShowsGameLines: true,
-        sportsbookSpreadLineVisible: true,
+        sportsbookLineVisible: true,
         ticketPreservesSportsbookLineIdentity: true,
         swipeSubmitReachedPortfolio: true,
         portfolioPreservesSportsbookLineIdentity: true,
         cashoutTicketOpened: true,
+        cashoutTicketIsClosePositionMode: true,
+        cashoutMaxUsesOwnedShares: true,
+        cashoutTicketHidesYesNoSelector: true,
         cashoutSellSubmitted: true,
         cashoutHistoryVisible: true,
         historyPreservesSportsbookLineIdentity: true,
@@ -318,11 +365,14 @@ describe("mobile autonomous next-action planner", () => {
       writeFileSync(visiblePath, JSON.stringify({ result: "pass", assertions: {
         homeShowsTemporarySportsbookEvent: true,
         detailShowsGameLines: true,
-        sportsbookSpreadLineVisible: true,
+        sportsbookLineVisible: true,
         ticketPreservesSportsbookLineIdentity: true,
         swipeSubmitReachedPortfolio: true,
         portfolioPreservesSportsbookLineIdentity: true,
         cashoutTicketOpened: true,
+        cashoutTicketIsClosePositionMode: true,
+        cashoutMaxUsesOwnedShares: true,
+        cashoutTicketHidesYesNoSelector: true,
         cashoutSellSubmitted: true,
         cashoutHistoryVisible: true,
         historyPreservesSportsbookLineIdentity: true,

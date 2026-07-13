@@ -85,10 +85,14 @@ type OddsApiS23VisibleProof = {
   assertions?: {
     homeShowsTemporarySportsbookEvent?: boolean;
     detailShowsGameLines?: boolean;
+    sportsbookLineVisible?: boolean;
     sportsbookSpreadLineVisible?: boolean;
     ticketPreservesSportsbookLineIdentity?: boolean;
     swipeSubmitReachedPortfolio?: boolean;
     portfolioPreservesSportsbookLineIdentity?: boolean;
+    cashoutTicketIsClosePositionMode?: boolean;
+    cashoutMaxUsesOwnedShares?: boolean;
+    cashoutTicketHidesYesNoSelector?: boolean;
     historyPreservesSportsbookLineIdentity?: boolean;
   };
 };
@@ -334,11 +338,17 @@ function buildPlan(
     oddsApiS23VisibleProof?.result === "pass" &&
     oddsApiS23VisibleProof.assertions?.homeShowsTemporarySportsbookEvent === true &&
     oddsApiS23VisibleProof.assertions?.detailShowsGameLines === true &&
-    oddsApiS23VisibleProof.assertions?.sportsbookSpreadLineVisible === true &&
+    (
+      oddsApiS23VisibleProof.assertions?.sportsbookLineVisible === true ||
+      oddsApiS23VisibleProof.assertions?.sportsbookSpreadLineVisible === true
+    ) &&
     oddsApiS23VisibleProof.assertions?.ticketPreservesSportsbookLineIdentity === true &&
     oddsApiS23VisibleProof.assertions?.swipeSubmitReachedPortfolio === true &&
     oddsApiS23VisibleProof.assertions?.portfolioPreservesSportsbookLineIdentity === true &&
     oddsApiS23VisibleProof.assertions?.cashoutTicketOpened === true &&
+    oddsApiS23VisibleProof.assertions?.cashoutTicketIsClosePositionMode === true &&
+    oddsApiS23VisibleProof.assertions?.cashoutMaxUsesOwnedShares === true &&
+    oddsApiS23VisibleProof.assertions?.cashoutTicketHidesYesNoSelector === true &&
     oddsApiS23VisibleProof.assertions?.cashoutSellSubmitted === true &&
     oddsApiS23VisibleProof.assertions?.cashoutHistoryVisible === true &&
     oddsApiS23VisibleProof.assertions?.historyPreservesSportsbookLineIdentity === true;

@@ -33,6 +33,10 @@ function marketSummary(markets: any[]) {
   }));
 }
 
+function isApprovedProviderSource(source: string | null | undefined) {
+  return source === "polymarket" || source === "sportsbook-odds";
+}
+
 async function main() {
   const baseUrl = argValue("baseUrl") ?? DEFAULT_BASE_URL;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
@@ -44,21 +48,23 @@ async function main() {
   const futures = events.filter((event: any) => event.eventType !== "match");
   const selectedEvent = events.find((event: any) =>
     event.marketSourceSummary?.regulationWinner?.status === "provider-backed" &&
-    event.marketSourceSummary?.lineMarkets?.status === "contract-fixture"
+    ["contract-fixture", "partial-provider-backed", "provider-backed"].includes(
+      event.marketSourceSummary?.lineMarkets?.status
+    )
   );
 
   assert(events.length > 0, "Home route returned no World Cup events.");
   assert(futures.length === 0, "Mobile MVP route returned futures/outrights even though mobileMvpMatches=1 was requested.");
-  assert(selectedEvent, "No Home event exposes provider-backed winner plus contract-fixture line markets.");
+  assert(selectedEvent, "No Home event exposes provider-backed winner plus Local MVP line markets.");
 
   const detailUrl = `${baseUrl}/api/mobile/events/${encodeURIComponent(selectedEvent.slug)}/live-detail`;
   const detail = await fetchJson(detailUrl);
   const markets = Array.isArray(detail.markets) ? detail.markets : [];
   const providerWinnerMarkets = markets.filter((market: any) =>
-    market.referenceSource === "polymarket" && market.marketType === "match_winner_1x2"
+    isApprovedProviderSource(market.referenceSource) && market.marketType === "match_winner_1x2"
   );
   const providerLineMarkets = markets.filter((market: any) =>
-    market.referenceSource === "polymarket" &&
+    isApprovedProviderSource(market.referenceSource) &&
     ["spread", "total_goals", "team_total_goals", "totals", "team-total"].includes(market.marketType)
   );
   const fixtureLineMarkets = markets.filter((market: any) =>
@@ -102,21 +108,21 @@ async function main() {
     },
     diagnosis: {
       serviceReadiness: {
-        localMvpPathReady: providerWinnerMarkets.length > 0 && fixtureLineMarkets.length > 0,
+        localMvpPathReady: providerWinnerMarkets.length > 0 && (providerLineMarkets.length > 0 || fixtureLineMarkets.length > 0),
         realProviderBackedRegulationWinnerReady: providerWinnerMarkets.length > 0,
         realProviderBackedLineMarketsReady: providerLineMarkets.length > 0,
         contractFixtureLineMarketsReady: fixtureLineMarkets.length > 0,
       },
       regulationWinner: providerWinnerMarkets.length > 0
-        ? "Provider-backed Regulation Winner is available from Polymarket Gamma/CLOB-derived data."
+        ? "Provider-backed Regulation Winner is available from an approved provider source."
         : "Provider-backed Regulation Winner is missing.",
       lineMarkets: providerLineMarkets.length > 0
-        ? "Provider-backed line markets are available."
+        ? "Approved provider-backed line markets are available."
         : "No provider-backed spread/totals/team-total markets are attached for the selected Polymarket event; Local MVP line markets are contract-shaped backend fixtures.",
       nextPath: [
         "Do not block Local MVP on Optic Odds.",
-        "Use the provider-backed Regulation Winner for real Polymarket parity.",
-        "Keep Spread/Totals/Team Total as explicit contract-fixture line markets until Polymarket exposes attach-ready line rows or another approved provider is configured.",
+        "Use approved provider-backed markets for Local MVP trading while Polymarket provider parity remains deferred P1 when attach-ready markets are unavailable.",
+        "Keep missing Spread/Totals/Team Total families as explicit contract-fixture line markets until Polymarket exposes attach-ready line rows or another approved provider supplies them.",
         "Next visible cycle should prove the S23 Home -> Event Detail -> line ticket -> server order -> Portfolio/history path against current route data, not stale FI disposable event names.",
       ],
     },

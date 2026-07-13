@@ -22,6 +22,46 @@ param(
 $ErrorActionPreference = "Stop"
 
 $AppRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+
+function Set-LocalDatabaseEnv {
+  if ($env:DATABASE_URL) {
+    return
+  }
+
+  $candidates = New-Object System.Collections.Generic.List[string]
+  if (-not [string]::IsNullOrWhiteSpace($env:DOTENV_CONFIG_PATH)) {
+    $candidates.Add($env:DOTENV_CONFIG_PATH) | Out-Null
+  }
+  foreach ($fileName in @(".env.local", ".env")) {
+    $candidates.Add((Join-Path $AppRoot $fileName)) | Out-Null
+  }
+  $current = $AppRoot
+  for ($depth = 0; $depth -lt 8; $depth += 1) {
+    $candidates.Add((Join-Path $current "Poly\.env")) | Out-Null
+    $parent = Split-Path -Parent $current
+    if ($parent -eq $current -or [string]::IsNullOrWhiteSpace($parent)) {
+      break
+    }
+    $current = $parent
+  }
+
+  foreach ($path in ($candidates | Select-Object -Unique)) {
+    if (-not $path -or -not (Test-Path -LiteralPath $path)) {
+      continue
+    }
+    $line = Get-Content -LiteralPath $path | Where-Object { $_ -match "^\s*DATABASE_URL\s*=" } | Select-Object -First 1
+    if ($line) {
+      $env:DATABASE_URL = ($line -replace "^\s*DATABASE_URL\s*=\s*", "").Trim().Trim('"').Trim("'")
+      if ([string]::IsNullOrWhiteSpace($env:DOTENV_CONFIG_PATH)) {
+        $env:DOTENV_CONFIG_PATH = $path
+      }
+      return
+    }
+  }
+}
+
+Set-LocalDatabaseEnv
+
 if (-not $SkipBots) {
   if (-not $BotRoot.Trim()) {
     $defaultBotRoot = Join-Path $AppRoot "..\poly-bot"

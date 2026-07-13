@@ -1,12 +1,12 @@
 {
     "cycle":  "BATCHREADINESS",
     "result":  "inspection-pass",
-    "inspectedAt":  "2026-07-12T05:44:54.803Z",
+    "inspectedAt":  "2026-07-13T09:49:27.064Z",
     "baseUrl":  "http://127.0.0.1:3002",
     "homeRoute":  {
                       "url":  "http://127.0.0.1:3002/api/events?sportKey=soccer\u0026leagueKey=world_cup\u0026includeMobileMarkets=1\u0026mobileMvpMatches=1\u0026limit=10",
-                      "eventCount":  5,
-                      "matchEventCount":  5,
+                      "eventCount":  4,
+                      "matchEventCount":  4,
                       "futuresCount":  0,
                       "events":  [
                                      {
@@ -53,238 +53,224 @@
                                      },
                                      {
                                          "slug":  "odds-api-single-soccer-test",
-                                         "title":  "Switzerland vs. Argentina",
+                                         "title":  "Spain vs. France",
                                          "eventType":  "match",
                                          "liveStatus":  "LIVE",
-                                         "marketCount":  10,
+                                         "marketCount":  19,
                                          "regulationWinnerStatus":  "provider-backed",
                                          "lineMarketStatus":  "partial-provider-backed",
                                          "lineFamilies":  [
-                                                              "total_goals"
-                                                          ]
-                                     },
-                                     {
-                                         "slug":  "argentina-vs-egypt",
-                                         "title":  "Argentina vs. Egypt",
-                                         "eventType":  "match",
-                                         "liveStatus":  "LIVE",
-                                         "marketCount":  7,
-                                         "regulationWinnerStatus":  "provider-backed",
-                                         "lineMarketStatus":  "contract-fixture",
-                                         "lineFamilies":  [
                                                               "spread",
-                                                              "team_total_goals",
                                                               "total_goals"
                                                           ]
                                      }
                                  ]
                   },
     "selectedMvpEvent":  {
-                             "slug":  "argentina-vs-egypt",
-                             "title":  "Argentina vs. Egypt",
+                             "slug":  "odds-api-single-soccer-test",
+                             "title":  "Spain vs. France",
                              "marketSourceSummary":  {
-                                                         "totalMarketCount":  6,
+                                                         "totalMarketCount":  19,
                                                          "sourceBreakdown":  {
-                                                                                 "polymarket":  3,
-                                                                                 "contract-fixture":  3
+                                                                                 "sportsbook-odds":  3,
+                                                                                 "contract-fixture":  16
                                                                              },
-                                                         "polymarketMarketCount":  3,
-                                                         "contractFixtureMarketCount":  3,
+                                                         "polymarketMarketCount":  0,
+                                                         "contractFixtureMarketCount":  16,
                                                          "unknownSourceMarketCount":  0,
                                                          "regulationWinner":  {
-                                                                                  "totalCount":  3,
-                                                                                  "polymarketCount":  3,
-                                                                                  "providerBackedCount":  3,
-                                                                                  "contractFixtureCount":  0,
+                                                                                  "totalCount":  5,
+                                                                                  "polymarketCount":  0,
+                                                                                  "providerBackedCount":  2,
+                                                                                  "contractFixtureCount":  3,
                                                                                   "status":  "provider-backed"
                                                                               },
                                                          "lineMarkets":  {
-                                                                             "totalCount":  3,
+                                                                             "totalCount":  13,
                                                                              "polymarketCount":  0,
-                                                                             "approvedLineProviderCount":  0,
-                                                                             "contractFixtureCount":  3,
-                                                                             "status":  "contract-fixture",
+                                                                             "approvedLineProviderCount":  1,
+                                                                             "contractFixtureCount":  12,
+                                                                             "status":  "partial-provider-backed",
                                                                              "families":  [
                                                                                               "spread",
-                                                                                              "team_total_goals",
                                                                                               "total_goals"
                                                                                           ],
                                                                              "familyReadiness":  [
                                                                                                      {
                                                                                                          "family":  "spread",
-                                                                                                         "totalCount":  1,
+                                                                                                         "totalCount":  6,
                                                                                                          "polymarketCount":  0,
                                                                                                          "approvedLineProviderCount":  0,
-                                                                                                         "contractFixtureCount":  1,
+                                                                                                         "contractFixtureCount":  6,
                                                                                                          "status":  "contract-fixture",
                                                                                                          "reason":  "spread is served by Local MVP contract fixtures for this event."
                                                                                                      },
                                                                                                      {
                                                                                                          "family":  "total",
-                                                                                                         "totalCount":  1,
+                                                                                                         "totalCount":  7,
                                                                                                          "polymarketCount":  0,
-                                                                                                         "approvedLineProviderCount":  0,
-                                                                                                         "contractFixtureCount":  1,
-                                                                                                         "status":  "contract-fixture",
-                                                                                                         "reason":  "total is served by Local MVP contract fixtures for this event."
+                                                                                                         "approvedLineProviderCount":  1,
+                                                                                                         "contractFixtureCount":  6,
+                                                                                                         "status":  "provider-backed",
+                                                                                                         "reason":  "total has route-visible provider-backed line markets."
                                                                                                      },
                                                                                                      {
                                                                                                          "family":  "team_total",
-                                                                                                         "totalCount":  1,
+                                                                                                         "totalCount":  0,
                                                                                                          "polymarketCount":  0,
                                                                                                          "approvedLineProviderCount":  0,
-                                                                                                         "contractFixtureCount":  1,
-                                                                                                         "status":  "contract-fixture",
-                                                                                                         "reason":  "team_total is served by Local MVP contract fixtures for this event."
+                                                                                                         "contractFixtureCount":  0,
+                                                                                                         "status":  "missing",
+                                                                                                         "reason":  "team_total is unavailable from the current Polymarket-backed route for this event."
                                                                                                      }
                                                                                                  ],
                                                                              "providerAvailability":  {
-                                                                                                          "source":  "polymarket-gamma",
-                                                                                                          "status":  "unavailable",
-                                                                                                          "providerBackedLineMarketCount":  0,
-                                                                                                          "approvedLineProviderMarketCount":  0,
-                                                                                                          "contractFixtureLineMarketCount":  3,
+                                                                                                          "source":  "polymarket-gamma-or-approved-line-provider",
+                                                                                                          "status":  "partial",
+                                                                                                          "providerBackedLineMarketCount":  1,
+                                                                                                          "approvedLineProviderMarketCount":  1,
+                                                                                                          "contractFixtureLineMarketCount":  12,
                                                                                                           "expectedFamilies":  [
                                                                                                                                    "spread",
                                                                                                                                    "total",
                                                                                                                                    "team_total"
                                                                                                                                ],
                                                                                                           "providerBackedFamilies":  [
-
+                                                                                                                                         "total"
                                                                                                                                      ],
                                                                                                           "contractFixtureFamilies":  [
                                                                                                                                           "spread",
-                                                                                                                                          "team_total",
                                                                                                                                           "total"
                                                                                                                                       ],
                                                                                                           "providerUnavailableFamilies":  [
                                                                                                                                               "spread",
-                                                                                                                                              "total",
                                                                                                                                               "team_total"
                                                                                                                                           ],
                                                                                                           "fixtureOnlyFamilies":  [
-                                                                                                                                      "spread",
-                                                                                                                                      "total",
-                                                                                                                                      "team_total"
+                                                                                                                                      "spread"
                                                                                                                                   ],
                                                                                                           "missingFamilies":  [
-
+                                                                                                                                  "team_total"
                                                                                                                               ],
-                                                                                                          "nextProviderAction":  "discover_attach_ready_polymarket_line_markets_or_configure_approved_line_provider",
-                                                                                                          "reason":  "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures for: spread, total, team_total."
+                                                                                                          "nextProviderAction":  "replace_remaining_fixture_line_families_with_provider_markets",
+                                                                                                          "reason":  "Route includes partial provider-backed line markets; remaining provider-backed families needed: spread, team_total."
                                                                                                       },
-                                                                             "reason":  "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured."
+                                                                             "reason":  "Some line markets are provider-backed, but at least one expected MVP line family is still fixture-only or missing."
                                                                          }
                                                      }
                          },
     "detailRoute":  {
-                        "url":  "http://127.0.0.1:3002/api/mobile/events/argentina-vs-egypt/live-detail",
+                        "url":  "http://127.0.0.1:3002/api/mobile/events/odds-api-single-soccer-test/live-detail",
                         "marketSourceSummary":  {
-                                                    "totalMarketCount":  6,
+                                                    "totalMarketCount":  19,
                                                     "sourceBreakdown":  {
-                                                                            "polymarket":  3,
-                                                                            "contract-fixture":  3
+                                                                            "contract-fixture":  16,
+                                                                            "sportsbook-odds":  3
                                                                         },
-                                                    "polymarketMarketCount":  3,
-                                                    "contractFixtureMarketCount":  3,
+                                                    "polymarketMarketCount":  0,
+                                                    "contractFixtureMarketCount":  16,
                                                     "unknownSourceMarketCount":  0,
                                                     "regulationWinner":  {
-                                                                             "totalCount":  3,
-                                                                             "polymarketCount":  3,
-                                                                             "providerBackedCount":  3,
-                                                                             "contractFixtureCount":  0,
+                                                                             "totalCount":  5,
+                                                                             "polymarketCount":  0,
+                                                                             "providerBackedCount":  2,
+                                                                             "contractFixtureCount":  3,
                                                                              "status":  "provider-backed"
                                                                          },
                                                     "lineMarkets":  {
-                                                                        "totalCount":  3,
+                                                                        "totalCount":  13,
                                                                         "polymarketCount":  0,
-                                                                        "approvedLineProviderCount":  0,
-                                                                        "contractFixtureCount":  3,
-                                                                        "status":  "contract-fixture",
+                                                                        "approvedLineProviderCount":  1,
+                                                                        "contractFixtureCount":  12,
+                                                                        "status":  "partial-provider-backed",
                                                                         "families":  [
                                                                                          "spread",
-                                                                                         "total_goals",
-                                                                                         "team_total_goals"
+                                                                                         "total_goals"
                                                                                      ],
                                                                         "familyReadiness":  [
                                                                                                 {
                                                                                                     "family":  "spread",
-                                                                                                    "totalCount":  1,
+                                                                                                    "totalCount":  6,
                                                                                                     "polymarketCount":  0,
                                                                                                     "approvedLineProviderCount":  0,
-                                                                                                    "contractFixtureCount":  1,
+                                                                                                    "contractFixtureCount":  6,
                                                                                                     "status":  "contract-fixture",
                                                                                                     "reason":  "spread is served by Local MVP contract fixtures for this event."
                                                                                                 },
                                                                                                 {
                                                                                                     "family":  "total",
-                                                                                                    "totalCount":  1,
+                                                                                                    "totalCount":  7,
                                                                                                     "polymarketCount":  0,
-                                                                                                    "approvedLineProviderCount":  0,
-                                                                                                    "contractFixtureCount":  1,
-                                                                                                    "status":  "contract-fixture",
-                                                                                                    "reason":  "total is served by Local MVP contract fixtures for this event."
+                                                                                                    "approvedLineProviderCount":  1,
+                                                                                                    "contractFixtureCount":  6,
+                                                                                                    "status":  "provider-backed",
+                                                                                                    "reason":  "total has route-visible provider-backed line markets."
                                                                                                 },
                                                                                                 {
                                                                                                     "family":  "team_total",
-                                                                                                    "totalCount":  1,
+                                                                                                    "totalCount":  0,
                                                                                                     "polymarketCount":  0,
                                                                                                     "approvedLineProviderCount":  0,
-                                                                                                    "contractFixtureCount":  1,
-                                                                                                    "status":  "contract-fixture",
-                                                                                                    "reason":  "team_total is served by Local MVP contract fixtures for this event."
+                                                                                                    "contractFixtureCount":  0,
+                                                                                                    "status":  "missing",
+                                                                                                    "reason":  "team_total is unavailable from the current Polymarket-backed route for this event."
                                                                                                 }
                                                                                             ],
                                                                         "providerAvailability":  {
-                                                                                                     "source":  "polymarket-gamma",
-                                                                                                     "status":  "unavailable",
-                                                                                                     "providerBackedLineMarketCount":  0,
-                                                                                                     "approvedLineProviderMarketCount":  0,
-                                                                                                     "contractFixtureLineMarketCount":  3,
+                                                                                                     "source":  "polymarket-gamma-or-approved-line-provider",
+                                                                                                     "status":  "partial",
+                                                                                                     "providerBackedLineMarketCount":  1,
+                                                                                                     "approvedLineProviderMarketCount":  1,
+                                                                                                     "contractFixtureLineMarketCount":  12,
                                                                                                      "expectedFamilies":  [
                                                                                                                               "spread",
                                                                                                                               "total",
                                                                                                                               "team_total"
                                                                                                                           ],
                                                                                                      "providerBackedFamilies":  [
-
+                                                                                                                                    "total"
                                                                                                                                 ],
                                                                                                      "contractFixtureFamilies":  [
                                                                                                                                      "spread",
-                                                                                                                                     "total",
-                                                                                                                                     "team_total"
+                                                                                                                                     "total"
                                                                                                                                  ],
                                                                                                      "providerUnavailableFamilies":  [
                                                                                                                                          "spread",
-                                                                                                                                         "total",
                                                                                                                                          "team_total"
                                                                                                                                      ],
                                                                                                      "fixtureOnlyFamilies":  [
-                                                                                                                                 "spread",
-                                                                                                                                 "total",
-                                                                                                                                 "team_total"
+                                                                                                                                 "spread"
                                                                                                                              ],
                                                                                                      "missingFamilies":  [
-
+                                                                                                                             "team_total"
                                                                                                                          ],
-                                                                                                     "nextProviderAction":  "discover_attach_ready_polymarket_line_markets_or_configure_approved_line_provider",
-                                                                                                     "reason":  "No route-visible provider-backed Polymarket line markets are attached; Local MVP uses contract fixtures for: spread, total, team_total."
+                                                                                                     "nextProviderAction":  "replace_remaining_fixture_line_families_with_provider_markets",
+                                                                                                     "reason":  "Route includes partial provider-backed line markets; remaining provider-backed families needed: spread, team_total."
                                                                                                  },
-                                                                        "reason":  "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured."
+                                                                        "reason":  "Some line markets are provider-backed, but at least one expected MVP line family is still fixture-only or missing."
                                                                     }
                                                 },
-                        "providerWinnerMarketCount":  3,
-                        "providerLineMarketCount":  0,
-                        "fixtureLineMarketCount":  3,
+                        "providerWinnerMarketCount":  2,
+                        "providerLineMarketCount":  1,
+                        "fixtureLineMarketCount":  12,
                         "markets":  [
                                         {
-                                            "marketGroupTitle":  "Regulation Winner",
+                                            "marketGroupTitle":  "Team To Advance",
+                                            "marketType":  "to_advance",
+                                            "line":  null,
+                                            "period":  "full-game",
+                                            "referenceSource":  "contract-fixture",
+                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-advance",
+                                            "outcomeCount":  2
+                                        },
+                                        {
+                                            "marketGroupTitle":  "Regulation Time Winner",
                                             "marketType":  "match_winner_1x2",
                                             "line":  null,
                                             "period":  "regulation",
-                                            "referenceSource":  "polymarket",
-                                            "externalSlug":  "fifwc-arg-egy-2026-07-07-arg",
-                                            "outcomeCount":  2
+                                            "referenceSource":  "sportsbook-odds",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
+                                            "outcomeCount":  3
                                         },
                                         {
                                             "marketGroupTitle":  "Spread",
@@ -292,43 +278,151 @@
                                             "line":  "1.5",
                                             "period":  "regulation",
                                             "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "argentina-vs-egypt-spread-away-1-5",
+                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-spread-home-1-5",
                                             "outcomeCount":  2
                                         },
                                         {
-                                            "marketGroupTitle":  "Totals",
+                                            "marketGroupTitle":  "Total Goals",
+                                            "marketType":  "total_goals",
+                                            "line":  "2.5",
+                                            "period":  "regulation",
+                                            "referenceSource":  "sportsbook-odds",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
+                                            "outcomeCount":  2
+                                        },
+                                        {
+                                            "marketGroupTitle":  "Regulation Time Winner",
+                                            "marketType":  "match_winner_1x2",
+                                            "line":  null,
+                                            "period":  "regulation",
+                                            "referenceSource":  "contract-fixture",
+                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-regulation-home",
+                                            "outcomeCount":  2
+                                        },
+                                        {
+                                            "marketGroupTitle":  "Regulation Time Winner",
+                                            "marketType":  "match_winner_1x2",
+                                            "line":  null,
+                                            "period":  "regulation",
+                                            "referenceSource":  "contract-fixture",
+                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-regulation-away",
+                                            "outcomeCount":  2
+                                        },
+                                        {
+                                            "marketGroupTitle":  "Regulation Time Winner",
+                                            "marketType":  "match_winner_1x2",
+                                            "line":  null,
+                                            "period":  "regulation",
+                                            "referenceSource":  "contract-fixture",
+                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-regulation-draw",
+                                            "outcomeCount":  2
+                                        },
+                                        {
+                                            "marketGroupTitle":  "Regulation Time Winner",
+                                            "marketType":  "match_winner_1x2",
+                                            "line":  null,
+                                            "period":  "regulation",
+                                            "referenceSource":  "sportsbook-odds",
+                                            "externalSlug":  "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
+                                            "outcomeCount":  3
+                                        },
+                                        {
+                                            "marketGroupTitle":  "Spread",
+                                            "marketType":  "spread",
+                                            "line":  "-3.5",
+                                            "period":  "regulation",
+                                            "referenceSource":  "contract-fixture",
+                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-spread-home-neg-3-5",
+                                            "outcomeCount":  2
+                                        },
+                                        {
+                                            "marketGroupTitle":  "Spread",
+                                            "marketType":  "spread",
+                                            "line":  "-2.5",
+                                            "period":  "regulation",
+                                            "referenceSource":  "contract-fixture",
+                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-spread-home-neg-2-5",
+                                            "outcomeCount":  2
+                                        },
+                                        {
+                                            "marketGroupTitle":  "Spread",
+                                            "marketType":  "spread",
+                                            "line":  "-1.5",
+                                            "period":  "regulation",
+                                            "referenceSource":  "contract-fixture",
+                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-spread-home-neg-1-5",
+                                            "outcomeCount":  2
+                                        },
+                                        {
+                                            "marketGroupTitle":  "Spread",
+                                            "marketType":  "spread",
+                                            "line":  "2.5",
+                                            "period":  "regulation",
+                                            "referenceSource":  "contract-fixture",
+                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-spread-home-2-5",
+                                            "outcomeCount":  2
+                                        },
+                                        {
+                                            "marketGroupTitle":  "Spread",
+                                            "marketType":  "spread",
+                                            "line":  "3.5",
+                                            "period":  "regulation",
+                                            "referenceSource":  "contract-fixture",
+                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-spread-home-3-5",
+                                            "outcomeCount":  2
+                                        },
+                                        {
+                                            "marketGroupTitle":  "Total Goals",
+                                            "marketType":  "total_goals",
+                                            "line":  "0.5",
+                                            "period":  "regulation",
+                                            "referenceSource":  "contract-fixture",
+                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-total-goals-0-5",
+                                            "outcomeCount":  2
+                                        },
+                                        {
+                                            "marketGroupTitle":  "Total Goals",
+                                            "marketType":  "total_goals",
+                                            "line":  "1.5",
+                                            "period":  "regulation",
+                                            "referenceSource":  "contract-fixture",
+                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-total-goals-1-5",
+                                            "outcomeCount":  2
+                                        },
+                                        {
+                                            "marketGroupTitle":  "Total Goals",
                                             "marketType":  "total_goals",
                                             "line":  "2.5",
                                             "period":  "regulation",
                                             "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "argentina-vs-egypt-total-goals-2-5",
+                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-total-goals-2-5",
                                             "outcomeCount":  2
                                         },
                                         {
-                                            "marketGroupTitle":  "Team Totals",
-                                            "marketType":  "team_total_goals",
-                                            "line":  "1.5",
+                                            "marketGroupTitle":  "Total Goals",
+                                            "marketType":  "total_goals",
+                                            "line":  "3.5",
                                             "period":  "regulation",
                                             "referenceSource":  "contract-fixture",
-                                            "externalSlug":  "argentina-vs-egypt-team-total-home-1-5",
+                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-total-goals-3-5",
                                             "outcomeCount":  2
                                         },
                                         {
-                                            "marketGroupTitle":  "Regulation Winner",
-                                            "marketType":  "match_winner_1x2",
-                                            "line":  null,
+                                            "marketGroupTitle":  "Total Goals",
+                                            "marketType":  "total_goals",
+                                            "line":  "4.5",
                                             "period":  "regulation",
-                                            "referenceSource":  "polymarket",
-                                            "externalSlug":  "fifwc-arg-egy-2026-07-07-draw",
+                                            "referenceSource":  "contract-fixture",
+                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-total-goals-4-5",
                                             "outcomeCount":  2
                                         },
                                         {
-                                            "marketGroupTitle":  "Regulation Winner",
-                                            "marketType":  "match_winner_1x2",
-                                            "line":  null,
+                                            "marketGroupTitle":  "Total Goals",
+                                            "marketType":  "total_goals",
+                                            "line":  "5.5",
                                             "period":  "regulation",
-                                            "referenceSource":  "polymarket",
-                                            "externalSlug":  "fifwc-arg-egy-2026-07-07-egy",
+                                            "referenceSource":  "contract-fixture",
+                                            "externalSlug":  "odds-api-single-soccer-test-holiwyn-total-goals-5-5",
                                             "outcomeCount":  2
                                         }
                                     ]
@@ -337,15 +431,15 @@
                       "serviceReadiness":  {
                                                "localMvpPathReady":  true,
                                                "realProviderBackedRegulationWinnerReady":  true,
-                                               "realProviderBackedLineMarketsReady":  false,
+                                               "realProviderBackedLineMarketsReady":  true,
                                                "contractFixtureLineMarketsReady":  true
                                            },
-                      "regulationWinner":  "Provider-backed Regulation Winner is available from Polymarket Gamma/CLOB-derived data.",
-                      "lineMarkets":  "No provider-backed spread/totals/team-total markets are attached for the selected Polymarket event; Local MVP line markets are contract-shaped backend fixtures.",
+                      "regulationWinner":  "Provider-backed Regulation Winner is available from an approved provider source.",
+                      "lineMarkets":  "Approved provider-backed line markets are available.",
                       "nextPath":  [
                                        "Do not block Local MVP on Optic Odds.",
-                                       "Use the provider-backed Regulation Winner for real Polymarket parity.",
-                                       "Keep Spread/Totals/Team Total as explicit contract-fixture line markets until Polymarket exposes attach-ready line rows or another approved provider is configured.",
+                                       "Use approved provider-backed markets for Local MVP trading while Polymarket provider parity remains deferred P1 when attach-ready markets are unavailable.",
+                                       "Keep missing Spread/Totals/Team Total families as explicit contract-fixture line markets until Polymarket exposes attach-ready line rows or another approved provider supplies them.",
                                        "Next visible cycle should prove the S23 Home -\u003e Event Detail -\u003e line ticket -\u003e server order -\u003e Portfolio/history path against current route data, not stale FI disposable event names."
                                    ]
                   }

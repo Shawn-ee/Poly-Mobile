@@ -91,7 +91,7 @@ async function main() {
     include: {
       markets: {
         where: { marketGroupKey },
-        include: { outcomes: { orderBy: { displayOrder: "asc" } } },
+        include: { outcomes: { where: { isActive: true, isTradable: true }, orderBy: { displayOrder: "asc" } } },
         orderBy: { displayOrder: "asc" },
       },
     },

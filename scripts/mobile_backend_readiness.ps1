@@ -31,16 +31,32 @@ function Read-EnvDatabaseUrl {
     return @{ Source = "process env"; Value = $env:DATABASE_URL }
   }
 
+  $candidates = New-Object System.Collections.Generic.List[string]
+  if (-not [string]::IsNullOrWhiteSpace($env:DOTENV_CONFIG_PATH)) {
+    $candidates.Add($env:DOTENV_CONFIG_PATH) | Out-Null
+  }
   foreach ($fileName in @(".env.local", ".env", ".env.example")) {
-    $path = Join-Path $RepoRoot $fileName
-    if (-not (Test-Path $path)) {
+    $candidates.Add((Join-Path $RepoRoot $fileName)) | Out-Null
+  }
+  $current = $RepoRoot.Path
+  for ($depth = 0; $depth -lt 8; $depth += 1) {
+    $candidates.Add((Join-Path $current "Poly\.env")) | Out-Null
+    $parent = Split-Path -Parent $current
+    if ($parent -eq $current -or [string]::IsNullOrWhiteSpace($parent)) {
+      break
+    }
+    $current = $parent
+  }
+
+  foreach ($path in ($candidates | Select-Object -Unique)) {
+    if (-not $path -or -not (Test-Path -LiteralPath $path)) {
       continue
     }
 
-    $line = Get-Content $path | Where-Object { $_ -match "^\s*DATABASE_URL\s*=" } | Select-Object -First 1
+    $line = Get-Content -LiteralPath $path | Where-Object { $_ -match "^\s*DATABASE_URL\s*=" } | Select-Object -First 1
     if ($line) {
       $value = ($line -replace "^\s*DATABASE_URL\s*=\s*", "").Trim().Trim('"').Trim("'")
-      return @{ Source = $fileName; Value = $value }
+      return @{ Source = $path; Value = $value }
     }
   }
 

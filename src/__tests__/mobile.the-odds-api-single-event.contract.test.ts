@@ -19,6 +19,7 @@ describe("The Odds API single-event temporary provider", () => {
   const phaseAuditScript = () => readFileSync("scripts/report_odds_api_live_runtime_phase_audit.ts", "utf8");
   const completionAuditScript = () => readFileSync("scripts/report_holiwyn_live_runtime_completion_audit.ts", "utf8");
   const internalEnvScript = () => readFileSync("scripts/prove_mobile_odds_api_internal_environment.ts", "utf8");
+  const routeCounterpartyScript = () => readFileSync("scripts/seed_mobile_route_spread_counterparty.ts", "utf8");
   const service = () => readFileSync("src/server/services/theOddsApiSingleEventProvider.ts", "utf8");
 
   it("is exposed as an env-var-only script and does not contain a hardcoded API key", () => {
@@ -37,6 +38,12 @@ describe("The Odds API single-event temporary provider", () => {
   it("redacts apiKey from recorded request paths", () => {
     const url = new URL("https://api.the-odds-api.com/v4/sports/soccer_epl/events?id=1&apiKey=secret");
     expect(sanitizeOddsApiPath(url)).toBe("/v4/sports/soccer_epl/events?id=1");
+  });
+
+  it("seeds S23 route counterparty liquidity against active tradable outcomes only", () => {
+    const source = routeCounterpartyScript();
+    expect(source).toContain("outcomes: { where: { isActive: true, isTradable: true }, orderBy: { displayOrder: \"asc\" } }");
+    expect(source).toContain("placeOrderAndMatch");
   });
 
   it("keeps provider outcome seeding repeatable when legacy global slugs collide", () => {

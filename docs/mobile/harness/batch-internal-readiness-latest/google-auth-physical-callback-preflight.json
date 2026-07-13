@@ -1,24 +1,25 @@
 {
-    "generatedAt":  "2026-07-12T05:44:48.4939316Z",
+    "generatedAt":  "2026-07-13T09:49:21.3298897Z",
     "scope":  "google-auth-runtime-preflight",
     "backendAuthBaseConfigured":  true,
     "mobileReturnUrlScheme":  "holiwyn",
     "nextAuthUrlConfigured":  true,
-    "googleClientIdConfigured":  true,
-    "googleClientSecretConfigured":  true,
+    "googleClientIdConfigured":  false,
+    "googleClientSecretConfigured":  false,
     "expectedCallback":  "http://127.0.0.1:3002/api/auth/google/callback",
-    "observedGoogleRedirectUri":  "http://172.16.200.14:3002/api/auth/google/callback",
-    "observedGoogleRedirectHost":  "accounts.google.com",
+    "observedGoogleRedirectUri":  "",
+    "observedGoogleRedirectHost":  "",
     "redirectUriOriginMatches":  false,
-    "redirectUriPathMatches":  true,
+    "redirectUriPathMatches":  false,
     "redirectUriMatchesExpected":  false,
-    "fixHint":  "Set the running backend NEXTAUTH_URL and the preflight config to the same origin, restart the backend, then register the exact redirect_uri emitted by /api/auth/google/start in Google Cloud Authorized redirect URIs.",
+    "fixHint":  "",
     "requireConfigured":  false,
     "requirePhysicalDeviceCallback":  true,
     "readyForRuntimeStart":  false,
     "failedChecks":  [
-                         "NEXTAUTH_URL is reachable by a physical Android browser",
-                         "Google redirect_uri matches NEXTAUTH_URL callback"
+                         "GOOGLE_CLIENT_ID is configured",
+                         "GOOGLE_CLIENT_SECRET is configured",
+                         "NEXTAUTH_URL is reachable by a physical Android browser"
                      ],
     "checks":  [
                    {
@@ -38,12 +39,12 @@
                    },
                    {
                        "name":  "GOOGLE_CLIENT_ID is configured",
-                       "pass":  true,
+                       "pass":  false,
                        "detail":  "Server-side Google client id is present."
                    },
                    {
                        "name":  "GOOGLE_CLIENT_SECRET is configured",
-                       "pass":  true,
+                       "pass":  false,
                        "detail":  "Server-side Google client secret is present."
                    },
                    {
@@ -55,21 +56,6 @@
                        "name":  "NEXTAUTH_URL is reachable by a physical Android browser",
                        "pass":  false,
                        "detail":  "Use HTTPS hosted auth or a LAN IP callback for S23 Expo/manual testing."
-                   },
-                   {
-                       "name":  "Google start route returns a redirect",
-                       "pass":  true,
-                       "detail":  "Expected a 3xx response from backend auth start."
-                   },
-                   {
-                       "name":  "Google start redirect points at accounts.google.com",
-                       "pass":  true,
-                       "detail":  "Redirect host is checked without printing query secrets."
-                   },
-                   {
-                       "name":  "Google redirect_uri matches NEXTAUTH_URL callback",
-                       "pass":  false,
-                       "detail":  "Google Cloud authorized redirect URI should match this callback exactly."
                    }
                ]
 }

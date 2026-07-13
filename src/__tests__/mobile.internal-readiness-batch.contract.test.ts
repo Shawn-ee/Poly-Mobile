@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 describe("mobile internal readiness batch harness", () => {
   const packageJson = () => readFileSync("package.json", "utf8");
   const harness = () => readFileSync("scripts/mobile_internal_readiness_batch.ps1", "utf8");
+  const currentState = () => readFileSync("scripts/inspect_mobile_mvp_current_state.ts", "utf8");
   const auditDoc = () => readFileSync("docs/mobile/audits/BATCH_INTERNAL_READINESS_HARNESS.md", "utf8");
 
   it("exposes one command for the consolidated Local MVP/provider readiness batch", () => {
@@ -39,6 +40,14 @@ describe("mobile internal readiness batch harness", () => {
     expect(source).toContain("inspect:polymarket-worldcup-matches");
     expect(source).toContain("mobile:provider-line-breadth-scan");
     expect(source).toContain("internal-readiness-batch-summary.json");
+  });
+
+  it("accepts approved temporary sportsbook provider data in current-state readiness", () => {
+    const source = currentState();
+
+    expect(source).toContain('source === "polymarket" || source === "sportsbook-odds"');
+    expect(source).toContain('"partial-provider-backed"');
+    expect(source).toContain("approved provider source");
   });
 
   it("keeps Google runtime warnings as P1 diagnostics instead of blocking Local MVP trading", () => {
@@ -83,9 +92,16 @@ describe("mobile internal readiness batch harness", () => {
     expect(source).toContain("s23ProofHoursUntilStale");
     expect(source).toContain("function Select-NextStaleEvidence");
     expect(source).toContain("Sort-Object { [double]$_.hoursUntilStale }");
-    expect(source).toContain("$s23NextStaleProof = Select-NextStaleEvidence -Evidence $s23Proofs");
+    expect(source).toContain("$s23NextStaleProof = Select-NextStaleEvidence -Evidence $s23ReadinessProofs");
     expect(source).toContain("temporary-sportsbook-filled-buy-history");
     expect(source).toContain("temporarySportsbookS23BridgeProofReady");
+    expect(source).toContain("sportsbookLineVisible");
+    expect(source).toContain("cashoutTicketIsClosePositionMode");
+    expect(source).toContain("cashoutMaxUsesOwnedShares");
+    expect(source).toContain("cashoutTicketHidesYesNoSelector");
+    expect(source).toContain("$s23LocalMvpDeviceProofReady = [bool]($sportsbookS23BridgeProofReady -or $legacyS23DeviceProofReady)");
+    expect(source).toContain("activeS23DeviceProofGate");
+    expect(source).toContain("$s23ReadinessProofs = if ($sportsbookS23BridgeProofReady)");
     expect(gapWriter).toContain("S23 proof next stale");
     expect(gapWriter).toContain("Temporary sportsbook S23 bridge proof ready");
   });

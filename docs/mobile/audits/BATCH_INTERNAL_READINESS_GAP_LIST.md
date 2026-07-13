@@ -1,6 +1,6 @@
 # Batch Internal Readiness Gap List
 
-Generated: 2026-07-12T05:45:40.934Z
+Generated: 2026-07-13T09:49:50.768Z
 
 Source summary: `docs/mobile/harness/batch-internal-readiness-latest/internal-readiness-batch-summary.json`
 
@@ -26,18 +26,18 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Mobile typecheck: yes
 - S23 Local MVP proof ready: yes
 - Temporary sportsbook S23 bridge proof ready: yes
-- Temporary sportsbook backend proof ready: yes (next stale: sportsbook-single-event-live-seed in 17.05 hours)
+- Temporary sportsbook backend proof ready: no (next stale: sportsbook-single-event-live-seed in -11.02 hours)
 - Temporary sportsbook internal environment ready: yes
 - S23 proof max age: 24 hours
-- S23 proof next stale: filled-buy-history in 15.97 hours (2026-07-12T21:44:06.1159252Z)
+- S23 proof next stale: temporary-sportsbook-filled-buy-history in 23.76 hours (2026-07-14T09:35:22.4106618Z)
 - S23 startup contract ready: yes
-- S23 Google consent path ready: yes (lan-callback-preflight)
+- S23 Google consent path ready: no (not-ready)
 - Provider-backed exchange ready: no
 - Provider discovery mode: cached
-- Cached provider evidence fresh: yes (max age 24 hours)
-- Cached provider evidence next stale: provider-visible-tradable-flow in 8.08 hours (2026-07-12T13:50:21.2740000Z)
+- Cached provider evidence fresh: no (max age 24 hours)
+- Cached provider evidence next stale: provider-visible-tradable-flow in -19.99 hours (2026-07-12T13:50:21.2740000Z)
 - P0 blocker count: 0
-- P1 blocker count: 4
+- P1 blocker count: 10
 - P2 blocker count: 0
 
 ## Current Runtime Snapshot
@@ -46,12 +46,12 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Mobile-visible events: 4
 - Provider-visible markets: 3
 - Provider local-MM-ready markets: 0
-- Local MVP match breadth ready: yes (5 events)
+- Local MVP match breadth ready: yes (4 events)
 - Provider books unavailable or closed: yes
 - Provider snapshot refresh succeeded: yes (6 updated)
-- Temporary sportsbook backend proofs: sportsbook-single-event-live-seed:fresh(6.95h), sportsbook-mobile-fake-token-flow:fresh(6h), sportsbook-repeatable-internal-environment:fresh(1.69h)
+- Temporary sportsbook backend proofs: sportsbook-single-event-live-seed:stale(35.02h), sportsbook-mobile-fake-token-flow:stale(34.06h), sportsbook-repeatable-internal-environment:stale(27.39h)
 - Temporary sportsbook internal environment proof: `docs/mobile/harness/the-odds-api-internal-environment/internal-environment-proof.redacted.json`
-- Cached provider evidence: provider-snapshot-refresh:fresh(15.92h), internal-exchange-readiness:fresh(15.92h), provider-visible-tradable-flow:fresh(15.92h), worldcup-match-scan:fresh(15.92h), provider-line-scan:fresh(15.89h)
+- Cached provider evidence: provider-snapshot-refresh:stale(43.99h), internal-exchange-readiness:stale(43.99h), provider-visible-tradable-flow:stale(43.99h), worldcup-match-scan:stale(43.99h), provider-line-scan:stale(43.96h)
 - Provider MVP tradable flow ready: no (provider_mvp_match_snapshot_not_mm_safe)
 - World Cup team-match provider events scanned: 422 (0 open/upcoming, 422 closed/ended)
 - Generic non-soccer World Cup matches excluded: 0
@@ -60,7 +60,7 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 - Provider line-family candidates scanned: 2483 (2483 identity-complete, 2483 closed/unavailable identity candidates)
 - Attach-ready provider line candidates: 0
 - Internal MVP startup callback: `http://172.16.200.14:3002/api/auth/google/callback`
-- S23 Google callback: `http://172.16.200.14:3002/api/auth/google/callback`
+- S23 Google callback: unknown
 
 ## Open Issues
 
@@ -70,6 +70,12 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 | Provider-visible tradable match proof | The selected provider match is visible but its latest provider quote snapshot is not safe for local market-maker quote placement. | A provider-backed match should have a fresh non-edge bid/ask snapshot before local-MM fake-token trading is claimed. | P1 | `scripts/prove_mobile_provider_visible_tradable_flow.ts`; `ReferenceQuoteSnapshot`; `/api/markets/:marketId/quote`; `/api/orders`. | `provider-visible-tradable-flow.json` with `pass=true`, or the current blocker recorded as provider data debt. | No |
 | Provider World Cup team-match discovery | The scanner found no usable attach-ready Polymarket World Cup team-match books. | Discovery should find match-like provider events only when they are real, relevant, and usable for the MVP path. | P1 | `scripts/scan_polymarket_worldcup_match_events.ts`; Gamma API; CLOB market data. | `worldcup-match-event-scan.json` showing at least one usable team-match event. | No |
 | Provider line-market discovery | No attach-ready Polymarket-backed spread, total, team-total, or similar line market is available for the current World Cup match flow. | Line-market provider parity should only pass when real provider markets can attach to stable event, market, outcome, and token IDs. | P1 | `scripts/prove_mobile_provider_line_breadth_scan.ts`; Gamma API; mobile live-detail data contract. | `provider-line-breadth-scan.json` showing attach-ready line candidates. | No |
+| Provider cached evidence freshness | The default cached provider evidence is older than the allowed freshness window, so provider-backed parity decisions may be stale. | Cached provider summaries should be fresh enough for audit decisions, or the batch should be rerun in provider refresh mode. | P1 | `scripts/mobile_internal_readiness_batch.ps1`; `provider-snapshot-refresh.json`; `internal-exchange-readiness.json`; `provider-visible-tradable-flow.json`; `worldcup-match-event-scan.json`; `provider-line-breadth-scan.json`. | `internal-readiness-batch-summary.json` with `cachedProviderEvidenceFresh=true`, or a fresh `npm run mobile:internal-readiness-batch:provider-refresh` run. | No |
+| Temporary sportsbook backend proof freshness | The temporary sportsbook provider/backend proof artifacts are missing, failed, or older than the allowed freshness window. | The one-event sportsbook seed and backend fake-token order/Portfolio/history proof should stay fresh while the Local MVP uses the temporary sportsbook bridge. | P1 | `scripts/seed_the_odds_api_single_event.ts`; `scripts/prove_mobile_the_odds_api_single_event_flow.ts`; `/api/events`; `/api/mobile/events/:slug/live-detail`; `/api/orders`; `/api/portfolio`; `/api/portfolio/history`. | `single-event-summary.redacted.json` and `mobile-flow-proof.redacted.json` with `pass=true`, or rerun `npm run mobile:the-odds-api-single-event` followed by `npm run mobile:the-odds-api-single-event-flow`. | No |
+| manual_server_mode_needs_generated_mobile_api_key | Batch reported blocker `manual_server_mode_needs_generated_mobile_api_key`. | Investigate the batch output and convert this blocker into a named readiness criterion. | P1 | See `internal-readiness-batch-summary.json` and step logs. | Updated blocker mapping plus passing batch evidence. | No |
+| Google/account login | Google auth runtime preflight has warnings. | Auth preflight should run without warnings before claiming real Google consent readiness. | P1 | `/api/auth/google/start`; mobile Google auth preflight scripts. | Runtime preflight JSON with zero failed checks. | No |
+| Google/account login on S23 | The physical-device Google callback is not reachable from the phone, commonly because it points at localhost. | S23 consent should use a hosted or LAN callback that the phone can open and Google Cloud authorizes. | P1 | `/api/auth/google/start`; `scripts/mobile_google_lan_auth_preflight.ps1`; local `NEXTAUTH_URL`; Google Cloud OAuth client settings. | `google-auth-lan-callback-preflight.json` and strict runtime preflight with the LAN/hosted callback. | No |
+| google_lan_callback_preflight_has_warnings | Batch reported blocker `google_lan_callback_preflight_has_warnings`. | Investigate the batch output and convert this blocker into a named readiness criterion. | P1 | See `internal-readiness-batch-summary.json` and step logs. | Updated blocker mapping plus passing batch evidence. | No |
 
 ## Passing Gates
 
@@ -81,10 +87,10 @@ Out of scope: order book UI, chat, live sports statistics, social/watchlist, dep
 | Local match breadth | yes | `mobile-mvp-local-match-breadth.json`. |
 | S23 full MVP proof | yes | XG Spread filled buy/history, XH Spread open-order cancel, XI Spread cashout/sell, WF Totals filled buy/history, WG Team Totals filled buy/history, and ODDSAPIS23 temporary sportsbook filled buy/history summaries. |
 | Temporary sportsbook bridge | yes | ODDSAPIS23 verifies Home -> Event Detail -> sportsbook spread line -> ticket -> fake-token order -> Portfolio/history on the S23. |
-| Temporary sportsbook backend proof | yes | `single-event-summary.redacted.json` plus `mobile-flow-proof.redacted.json` must pass and remain fresh. |
+| Temporary sportsbook backend proof | no | `single-event-summary.redacted.json` plus `mobile-flow-proof.redacted.json` must pass and remain fresh. |
 | Temporary sportsbook internal environment | yes | `internal-environment-proof.redacted.json` must prove restart/import, backend/Postgres/S23, buy/cashout/history, and negative order guards. |
-| S23 Google consent callback | yes | `google-auth-lan-callback-preflight.json` when LAN-ready; localhost probes remain raw diagnostics only. |
-| Cached provider evidence | yes | Provider snapshot, exchange, tradable-flow, match-scan, and line-scan summaries must be within the freshness window. |
+| S23 Google consent callback | no | `google-auth-lan-callback-preflight.json` when LAN-ready; localhost probes remain raw diagnostics only. |
+| Cached provider evidence | no | Provider snapshot, exchange, tradable-flow, match-scan, and line-scan summaries must be within the freshness window. |
 | Root typecheck | yes | `root-typecheck.json`. |
 | Jest CI | yes | `jest-ci.json`. |
 | Mobile typecheck | yes | `mobile-typecheck.json`. |

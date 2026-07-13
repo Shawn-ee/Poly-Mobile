@@ -8,27 +8,27 @@
   },
   "eventSlug": "odds-api-single-soccer-test",
   "market": {
-    "id": "29346e58-158a-4260-953d-259c98fa24ff",
-    "title": "Switzerland vs. Argentina: Spread +0.5",
-    "marketType": "spread",
-    "marketGroupKey": "spread",
+    "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "title": "Spain vs. France: Total Goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
     "period": "regulation",
-    "line": "0.5",
+    "line": "2.5",
     "referenceSource": "sportsbook-odds",
-    "externalMarketId": "200d9cd5eda092c7eb778cc104cd2fd2:betonlineag:spreads:0.5",
-    "conditionId": "odds-api-02da927e1babf505d936e7c8"
+    "externalMarketId": "f9aa13a662d1658e5a02cfc06d6a2d73:betonlineag:totals:2.5",
+    "conditionId": "odds-api-7439c2d6033826e21400f068"
   },
   "outcome": {
-    "id": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
-    "name": "Argentina -0.5",
-    "side": "home",
-    "referenceTokenId": "odds-api-38b7b87cb420684a05351898",
-    "referenceOutcomeLabel": "Argentina -0.5"
+    "id": "72c3377d-ae57-4f2b-b75d-0850b40bf5de",
+    "name": "Over +2.5",
+    "side": "over",
+    "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4",
+    "referenceOutcomeLabel": "Over +2.5"
   },
   "cleanupOnly": false,
   "maker": {
-    "id": "b58ec3a0-86cf-4197-9b03-ddd2826dd0e8",
-    "username": "mobile_route_fill_maker_285f8d39"
+    "id": "5ee2ff10-de20-42e9-a967-34405b062ce1",
+    "username": "mobile_route_fill_maker_b8a197aa"
   },
   "cleanup": {
     "enabled": false,
@@ -44,8 +44,8 @@
     "cleanupBlockingAsks": true,
     "canceledBlockingAsks": [
       {
-        "id": "375b82f3-07dd-49c0-8655-8785293d5fb9",
-        "username": "mobile_route_fill_maker_715d5fdf",
+        "id": "45bc84b2-d4b5-4705-b644-363e203c838f",
+        "username": "mobile_route_fill_maker_35224837",
         "previousStatus": "PARTIAL",
         "price": "0.58",
         "remaining": "56.9",
@@ -54,9 +54,9 @@
     ]
   },
   "makerOrder": {
-    "id": "6df5e8ac-3463-4bd8-ae81-1eb4cb717449",
-    "marketId": "29346e58-158a-4260-953d-259c98fa24ff",
-    "outcomeId": "a3bd018b-3f78-4307-a45f-942e5fe936f7",
+    "id": "ebb29912-3e0a-4d36-845e-26498d29db4d",
+    "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "outcomeId": "72c3377d-ae57-4f2b-b75d-0850b40bf5de",
     "side": "BUY",
     "price": "0.58",
     "size": "80",
@@ -68,6 +68,6 @@
     "side": "BUY",
     "price": "0.58",
     "size": "80",
-    "intendedMobileTaker": "SELL/cashout route-backed spread position"
+    "intendedMobileTaker": "SELL/cashout route-backed totals position"
   }
 }

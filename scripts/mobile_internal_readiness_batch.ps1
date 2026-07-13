@@ -12,6 +12,45 @@ $RepoRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 $ResolvedOutputDir = Join-Path $RepoRoot $OutputDir
 New-Item -ItemType Directory -Force -Path $ResolvedOutputDir | Out-Null
 
+function Set-LocalDatabaseEnv {
+  if ($env:DATABASE_URL) {
+    return
+  }
+
+  $candidates = New-Object System.Collections.Generic.List[string]
+  if (-not [string]::IsNullOrWhiteSpace($env:DOTENV_CONFIG_PATH)) {
+    $candidates.Add($env:DOTENV_CONFIG_PATH) | Out-Null
+  }
+  foreach ($fileName in @(".env.local", ".env")) {
+    $candidates.Add((Join-Path $RepoRoot $fileName)) | Out-Null
+  }
+  $current = $RepoRoot.Path
+  for ($depth = 0; $depth -lt 8; $depth += 1) {
+    $candidates.Add((Join-Path $current "Poly\.env")) | Out-Null
+    $parent = Split-Path -Parent $current
+    if ($parent -eq $current -or [string]::IsNullOrWhiteSpace($parent)) {
+      break
+    }
+    $current = $parent
+  }
+
+  foreach ($path in ($candidates | Select-Object -Unique)) {
+    if (-not $path -or -not (Test-Path -LiteralPath $path)) {
+      continue
+    }
+    $line = Get-Content -LiteralPath $path | Where-Object { $_ -match "^\s*DATABASE_URL\s*=" } | Select-Object -First 1
+    if ($line) {
+      $env:DATABASE_URL = ($line -replace "^\s*DATABASE_URL\s*=\s*", "").Trim().Trim('"').Trim("'")
+      if ([string]::IsNullOrWhiteSpace($env:DOTENV_CONFIG_PATH)) {
+        $env:DOTENV_CONFIG_PATH = $path
+      }
+      return
+    }
+  }
+}
+
+Set-LocalDatabaseEnv
+
 function ConvertTo-RepoPath {
   param([string]$Path)
   return $Path.Replace($RepoRoot.Path + "\", "").Replace("\", "/")
@@ -533,7 +572,7 @@ $sportsbookBackendProofs = @(
 )
 $sportsbookBackendProofNextStale = Select-NextStaleEvidence -Evidence $sportsbookBackendProofs
 $lineFamilyFilledAssertions = @("homeShowsCurrentMatch", "detailShowsGameLines", "detailShowsLineFamilyReadiness", "detailShowsProviderUnavailableLineFamilies", "detailShowsProviderAndFixtureLineSplit", "lineMarketsAreContractFixture", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden")
-$sportsbookFilledAssertions = @("homeShowsTemporarySportsbookEvent", "homeKeepsMvpFeedClean", "detailShowsGameLines", "detailHidesOrderBookAndChat", "sportsbookSpreadLineVisible", "ticketPreservesSportsbookLineIdentity", "swipeSubmitReachedPortfolio", "portfolioPreservesSportsbookLineIdentity", "cashoutTicketOpened", "cashoutSellSubmitted", "cashoutHistoryVisible", "historyPreservesSportsbookLineIdentity")
+$sportsbookFilledAssertions = @("homeShowsTemporarySportsbookEvent", "homeKeepsMvpFeedClean", "detailShowsGameLines", "detailHidesOrderBookAndChat", "sportsbookLineVisible", "ticketPreservesSportsbookLineIdentity", "swipeSubmitReachedPortfolio", "portfolioPreservesSportsbookLineIdentity", "cashoutTicketOpened", "cashoutTicketIsClosePositionMode", "cashoutMaxUsesOwnedShares", "cashoutTicketHidesYesNoSelector", "cashoutSellSubmitted", "cashoutHistoryVisible", "historyPreservesSportsbookLineIdentity")
 $s23Proofs = @(
   (Get-S23ProofEvidence -Name "filled-buy-history" -SummaryPath $filledS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "filledPositionVisible", "filledHistoryVisible", "orderbookHidden") -MaxAgeHours $s23ProofMaxAgeHours),
   (Get-S23ProofEvidence -Name "open-order-cancel" -SummaryPath $cancelS23ProofPath -RequiredAssertions @("homeShowsCurrentMatch", "liveShowsPredictionOnlyLocalMvpSourceDisclosure", "detailShowsGameLines", "ticketPreservesLine", "swipeSubmitReachedPortfolio", "openOrderVisible", "openOrderSourceBadgeVisible", "cancelSubmitted", "canceledHistoryVisible", "orderbookHidden") -MaxAgeHours $s23ProofMaxAgeHours),
@@ -542,13 +581,17 @@ $s23Proofs = @(
   (Get-S23ProofEvidence -Name "team-totals-filled-buy-history" -SummaryPath $teamTotalsS23ProofPath -RequiredAssertions $lineFamilyFilledAssertions -MaxAgeHours $s23ProofMaxAgeHours),
   (Get-S23ProofEvidence -Name "temporary-sportsbook-filled-buy-history" -SummaryPath $sportsbookS23ProofPath -RequiredAssertions $sportsbookFilledAssertions -MaxAgeHours $s23ProofMaxAgeHours)
 )
-$s23NextStaleProof = Select-NextStaleEvidence -Evidence $s23Proofs
 
 $backendReady = [bool]($backend -and $backend.dockerCliAvailable -and $backend.dockerDaemonReachable -and $backend.databaseTcpReachable)
 $localMvpReady = [bool]($currentState -and $currentState.diagnosis.serviceReadiness.localMvpPathReady)
 $localMatchBreadthReady = [bool]($localMatchBreadth -and $localMatchBreadth.pass)
-$s23LocalMvpDeviceProofReady = [bool](($s23Proofs | Where-Object { -not $_.pass }).Count -eq 0)
 $sportsbookS23BridgeProofReady = [bool](@($s23Proofs | Where-Object { $_.name -eq "temporary-sportsbook-filled-buy-history" -and $_.pass }).Count -eq 1)
+$legacyS23Proofs = @($s23Proofs | Where-Object { $_.name -ne "temporary-sportsbook-filled-buy-history" })
+$legacyS23DeviceProofReady = [bool](($legacyS23Proofs | Where-Object { -not $_.pass }).Count -eq 0)
+$s23LocalMvpDeviceProofReady = [bool]($sportsbookS23BridgeProofReady -or $legacyS23DeviceProofReady)
+$activeS23DeviceProofGate = if ($sportsbookS23BridgeProofReady) { "temporary-sportsbook" } elseif ($legacyS23DeviceProofReady) { "legacy-local-fixture-suite" } else { "all-s23-proofs" }
+$s23ReadinessProofs = if ($sportsbookS23BridgeProofReady) { @($s23Proofs | Where-Object { $_.name -eq "temporary-sportsbook-filled-buy-history" }) } else { $s23Proofs }
+$s23NextStaleProof = Select-NextStaleEvidence -Evidence $s23ReadinessProofs
 $sportsbookBackendProofReady = [bool](
   ($sportsbookSingleEventSummary -and $sportsbookSingleEventSummary.pass) -and
   ($sportsbookMobileFlowProof -and $sportsbookMobileFlowProof.pass) -and
@@ -758,6 +801,8 @@ $summary = [ordered]@{
     localMatchBreadthReady = $localMatchBreadthReady
     localMatchBreadthEventCount = if ($localMatchBreadth) { $localMatchBreadth.after.eventCount } else { $null }
     s23LocalMvpDeviceProofReady = $s23LocalMvpDeviceProofReady
+    legacyS23DeviceProofReady = $legacyS23DeviceProofReady
+    activeS23DeviceProofGate = $activeS23DeviceProofGate
     s23ProofMaxAgeHours = $s23ProofMaxAgeHours
     s23ProofNextStaleName = if ($s23NextStaleProof) { $s23NextStaleProof.name } else { $null }
     s23ProofNextStaleAt = if ($s23NextStaleProof) { $s23NextStaleProof.staleAt } else { $null }

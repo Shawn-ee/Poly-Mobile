@@ -61,3 +61,16 @@
 - P1: full Polymarket provider parity remains deferred until provider evidence is stale or a real attach-ready match/line candidate appears.
 - P1: team totals were available but not imported in the existing one-event odds payload because quota discipline took priority.
 - P2: production liquidity, bot risk policy, richer cashout preview, and release-channel hardening remain future work.
+
+## S23 Refresh - Spain vs France
+
+- Fresh proof time: `2026-07-13T09:35:22Z`.
+- Event: Spain vs France.
+- Local slug: `odds-api-single-soccer-test`.
+- Device: `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.
+- Proof summary: `docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json`.
+- Screenshots/XML: `docs/mobile/screenshots/cycle-ODDSAPIS23-odds-api-s23-visible-flow/` and `docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/`.
+- Selected market: totals, line `2.5`, outcome `Over 2.5`, source `sportsbook-odds`.
+- Cashout assertions: `cashoutTicketIsClosePositionMode=true`, `cashoutMaxUsesOwnedShares=true`, `cashoutTicketHidesYesNoSelector=true`, `cashoutSellSubmitted=true`, and `cashoutHistoryVisible=true`.
+- Batch readiness: `localMvpReadyForInternalTesting=true`, active S23 gate `temporary-sportsbook`, P0 blockers `[]`.
+- Result: PASS for the current internal tester path Home -> Event Detail -> line market -> Buy ticket -> fake-token order -> Portfolio -> Cash out/Sell -> History.

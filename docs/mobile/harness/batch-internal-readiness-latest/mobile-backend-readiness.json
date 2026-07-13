@@ -2,7 +2,7 @@
     "dockerCliAvailable":  true,
     "dockerDaemonReachable":  true,
     "composeFileFound":  true,
-    "databaseUrlSource":  ".env",
+    "databaseUrlSource":  "process env",
     "databaseHost":  "localhost",
     "databasePort":  5432,
     "databaseName":  "polymarket",
