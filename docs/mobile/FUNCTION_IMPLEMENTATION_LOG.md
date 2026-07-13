@@ -15806,3 +15806,14 @@ Known limitations:
   - `npm run mobile:internal-readiness-batch`
   - `docs/mobile/audits/BATCH_INTERNAL_READINESS_GAP_LIST.md`
 - Known limitations: provider-backed Polymarket match/line breadth remains P1 because cached evidence still has zero provider-visible/local-MM-ready Local MVP match markets.
+
+## Cycle ZY - Spain vs France S23 Cashout Proof
+
+- Feature/runtime worked on: current internal tester mobile trading flow for the backend-owned Odds API `Spain vs. France` event.
+- Frontend components touched: none for behavior. The S23 proof drove the current app. The proof script now redacts `keyId` in new S23 summary output.
+- Backend/routes touched: no route implementation changes. Existing `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` contracts were exercised.
+- Important functions/services touched: `scripts/prove_mobile_odds_api_s23_visible_flow.ps1`.
+- User interactions supported/proved on S23: Home shows Spain vs France, Event Detail loads backend markets, Buy submits, Portfolio position appears, Portfolio Cash out opens a close-position SELL ticket, Max uses owned shares, Yes/No is hidden in close-position mode, SELL submits, and History records the cashout.
+- State transitions: proof seeded/used test liquidity, bought `Over 2.5`, created a position, sold owned shares through cashout, and verified Portfolio/history. No provider quota was spent beyond the proof's normal local replay/setup path, no new provider scan ran, and no settlement executed.
+- Proof: `docs/mobile/harness/cycle-ZY-spain-france-cashout-s23/cycle-ZY-odds-api-s23-visible-flow.json`.
+- Known limitations: this proves the current backend-owned sportsbook event only. Google OAuth readiness and Polymarket provider breadth remain P1 outside this cashout flow.

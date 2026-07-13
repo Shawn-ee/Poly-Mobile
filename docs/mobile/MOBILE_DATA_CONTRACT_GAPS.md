@@ -10882,3 +10882,12 @@ Future migration concern:
 - Schema mismatch: none. This cycle did not add provider models, market schema fields, quote snapshots, orders, fills, or portfolio fields.
 - Temporary mock/static data: none added. The batch uses cached provider evidence only and does not fabricate provider markets.
 - Remaining gaps: cached provider evidence still reports zero provider-visible/local-MM-ready Local MVP match markets and zero attach-ready provider line candidates, so provider-backed market parity remains P1 and does not block backend-owned sportsbook internal testing.
+
+## Cycle ZY - Spain vs France S23 Cashout Proof
+
+- Fields added/confirmed for mobile: no new backend fields. The S23 proof confirms the existing close-position mobile contract still carries `sourcePositionId`, owned-share availability, sell/bid price, side `SELL`, market identity, outcome identity, and selected sportsbook line identity through the real phone flow.
+- Closed or narrowed: the real S23 cashout path did not reproduce the wallet-sized Max bug. `cashoutMaxUsesOwnedShares=true`, `cashoutTicketIsClosePositionMode=true`, and `cashoutTicketHidesYesNoSelector=true` are recorded in the proof summary.
+- Route mismatch: none for local MVP. The proof exercises the existing Home, Event Detail, quote, order, Portfolio, and Portfolio History routes against the same `Spain vs. France` event.
+- Schema mismatch: none. Existing position/order/fill/trade/balance models support the buy and cashout/sell path.
+- Temporary mock/static data: no ad hoc mobile fixture data added. The event remains the backend-owned Odds API internal tester event with local fake-token execution.
+- Remaining gaps: a dedicated cashout preview/proceeds endpoint could improve UX later, but it is not a P0 blocker for the proven S23 flow.

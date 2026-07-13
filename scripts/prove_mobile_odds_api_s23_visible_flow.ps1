@@ -539,7 +539,7 @@ try {
     backendBaseUrl = $BackendBaseUrl
     mobileApiBaseUrl = $MobileApiBaseUrl
     expoPort = $Port
-    keyId = $keyId
+    keyId = "redacted"
     apiKey = "redacted"
     eventSlug = $EventSlug
     skipReplaySeed = [bool]$SkipReplaySeed
