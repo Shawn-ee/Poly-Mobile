@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T16:29:55.055Z",
+  "generatedAt": "2026-07-13T16:37:33.015Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -29,7 +29,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-13T16:29:53.675Z"
+      "timestamp": "2026-07-13T16:37:31.564Z"
     },
     "error": null
   },
@@ -125,8 +125,8 @@
     "reason": null,
     "snapshotCount": 4,
     "latestFetchedAt": "2026-07-13T14:53:10.824Z",
-    "latestAgeHours": 1.61,
-    "latestAgeSeconds": 5804,
+    "latestAgeHours": 1.74,
+    "latestAgeSeconds": 6262,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"

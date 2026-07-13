@@ -27,6 +27,8 @@ const PATHS = {
     "docs/mobile/harness/odds-api-live-runtime/internal-tester-result-poller-control-summary.redacted.json",
   internalTesterWatchdog:
     "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
+  internalTesterOperatorSnapshot:
+    "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
   currentRuntimeStateProof:
     "docs/mobile/harness/odds-api-live-runtime/current-runtime-state-proof-summary.redacted.json",
   localRuntimeTask: "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-summary.redacted.json",
@@ -1782,6 +1784,34 @@ async function main() {
       ],
       notes:
         "This consolidates manual foreground, user Startup fallback, scheduled-task blocker, and live-provider opt-in commands into one no-quota operator profile.",
+    }),
+    requirement({
+      id: "internal-tester-operator-snapshot",
+      priority: "P0",
+      requirement:
+        "A compact redacted operator snapshot tells internal testers the current runtime state and safest next command without spending provider quota.",
+      achieved:
+        pass(entries.internalTesterOperatorSnapshot) &&
+        getPath(entries.internalTesterOperatorSnapshot, ["providerQuotaUsedByThisReport"]) === false &&
+        getPath(entries.internalTesterOperatorSnapshot, ["runtime", "localInternalRuntimeReady"]) === true &&
+        typeof getPath(entries.internalTesterOperatorSnapshot, [
+          "operatorNextActions",
+          "recommendedCommand",
+        ]) === "string" &&
+        typeof getPath(entries.internalTesterOperatorSnapshot, [
+          "operatorNextActions",
+          "selectedAction",
+          "spendsProviderQuota",
+        ]) === "boolean" &&
+        getPath(entries.internalTesterOperatorSnapshot, [
+          "settlement",
+          "activeTesterSettlementExecutionAttempted",
+        ]) === false &&
+        Array.isArray(getPath(entries.internalTesterOperatorSnapshot, ["gaps", "p0"])) &&
+        (getPath(entries.internalTesterOperatorSnapshot, ["gaps", "p0"]) as unknown[]).length === 0,
+      evidence: [PATHS.internalTesterOperatorSnapshot, `${baseUrl}/api/internal/live-runtime/status`],
+      notes:
+        "This makes the operator handoff artifact part of the phase gate instead of an optional convenience. It remains read-only and no-quota.",
     }),
     requirement({
       id: "live-runtime-completion-truth",

@@ -15582,3 +15582,14 @@ Known limitations:
 - API/data dependencies: consumes existing local status route fields `runtimeTruth`, `currentRuntimeState`, `providerSnapshots`, `operatorNextActions`, `settlementDecision`, `serviceOwnership`, and `gaps`.
 - Proof: `npm run mobile:internal-tester-operator-snapshot` writes `docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json` and fails if backend health/runtime status is not ready, if no recommended command exists, or if a provider secret-like value is exposed.
 - Known limitations: this is an operator readability layer, not a new runtime service. Installed unattended service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZN - Operator Snapshot Audit Gate
+
+- Feature/runtime worked on: one-event live-runtime phase/completion audit gates.
+- Frontend components touched: none.
+- Important functions/services touched: `scripts/report_odds_api_live_runtime_phase_audit.ts`, `scripts/report_holiwyn_live_runtime_completion_audit.ts`, and `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`.
+- User/runtime interactions supported: a local runtime cycle can no longer pass phase/completion audits unless the compact internal tester operator snapshot exists, passes, has no P0 gaps, is no-quota, and exposes a recommended operator command.
+- State transitions: none. This is read-only audit gating; it does not start loops, call providers, place orders, mutate markets, or execute settlement.
+- API/data dependencies: consumes `docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json`, which itself reads `GET /api/health` and `GET /api/internal/live-runtime/status`.
+- Proof: pending validation in Cycle ZN audit doc.
+- Known limitations: still no installed unattended service and no production official-result auto-settlement.

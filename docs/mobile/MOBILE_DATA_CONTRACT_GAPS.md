@@ -10825,3 +10825,12 @@ Future migration concern:
 - Schema mismatch: none. No new database fields are required. The status route may continue writing existing runtime heartbeat mirror rows.
 - Temporary mock/static data: none added. The snapshot fails if the backend/status route is not ready, if no recommended command exists, or if a provider secret-like value appears.
 - Remaining gaps: installed unattended runtime service and production official-result auto-settlement remain P1. The snapshot does not make live provider refresh automatic; live odds refresh still requires explicit quota-capped commands.
+
+## Cycle ZN - Operator Snapshot Audit Gate
+
+- Closed or narrowed: the compact operator snapshot is now required evidence for live-runtime phase/completion audits, so internal tester handoff cannot silently drift out of date while the broad runtime audit remains green.
+- Fields added/confirmed for tooling: phase/completion audits require snapshot `pass=true`, `providerQuotaUsedByThisReport=false`, runtime readiness, recommended command, selected action quota flag, no active settlement execution, and empty P0 gaps.
+- Route mismatch: no public/mobile route changed. The snapshot remains a local generated artifact backed by the existing internal status route.
+- Schema mismatch: none. No database schema or route contract changed in this gate cycle.
+- Temporary mock/static data: none added. Missing or invalid snapshot fails audits.
+- Remaining gaps: installed unattended runtime service and production official-result auto-settlement remain P1.

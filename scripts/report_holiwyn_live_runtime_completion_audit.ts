@@ -20,6 +20,8 @@ const PATHS = {
     "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
   internalTesterWatchdog:
     "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
+  internalTesterOperatorSnapshot:
+    "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
   currentRuntimeStateProof:
     "docs/mobile/harness/odds-api-live-runtime/current-runtime-state-proof-summary.redacted.json",
   staleGuardProof: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json",
@@ -1321,6 +1323,23 @@ async function main() {
       truthy(getPath(entries.internalTesterWatchdog, ["cleanup", "supervisor", "pass"])) &&
       truthy(getPath(entries.internalTesterWatchdog, ["cleanup", "resultPoller", "pass"])),
     internalTesterWatchdogFresh: typeof watchdogAgeHours === "number" && watchdogAgeHours <= maxWatchdogAgeHours,
+    internalTesterOperatorSnapshotKnown:
+      pass(entries.internalTesterOperatorSnapshot) &&
+      getPath(entries.internalTesterOperatorSnapshot, ["providerQuotaUsedByThisReport"]) === false &&
+      getPath(entries.internalTesterOperatorSnapshot, ["runtime", "localInternalRuntimeReady"]) === true &&
+      typeof getPath(entries.internalTesterOperatorSnapshot, [
+        "operatorNextActions",
+        "recommendedCommand",
+      ]) === "string" &&
+      typeof getPath(entries.internalTesterOperatorSnapshot, [
+        "operatorNextActions",
+        "selectedAction",
+        "spendsProviderQuota",
+      ]) === "boolean" &&
+      getPath(entries.internalTesterOperatorSnapshot, ["settlement", "activeTesterSettlementExecutionAttempted"]) ===
+        false &&
+      Array.isArray(getPath(entries.internalTesterOperatorSnapshot, ["gaps", "p0"])) &&
+      (getPath(entries.internalTesterOperatorSnapshot, ["gaps", "p0"]) as unknown[]).length === 0,
     managedS23ServerModeStartupKnown:
       internalTesterRuntimeScript.includes("EXPO_PUBLIC_API_BASE_URL = '$BackendBaseUrl'") &&
       internalTesterRuntimeScript.includes("EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL = '$BackendBaseUrl'") &&
@@ -1418,12 +1437,14 @@ async function main() {
         checks.operatorControlBoundaryKnown &&
         checks.currentRuntimeWarmStateProofKnown &&
         checks.oneCommandRuntimeLoopProofKnown &&
+        checks.internalTesterOperatorSnapshotKnown &&
         checks.managedS23ServerModeStartupKnown,
         answer:
-          "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, starts managed Expo in server-backed S23 mode, flags reused external Expo listeners as unverified, provides an explicit -Force -ReplaceExternalExpo path for verified manager-owned S23 startup, exposes explicit foreground-vs-installed service ownership plus read-only operator-control boundaries, and cleans up after proof.",
+          "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, starts managed Expo in server-backed S23 mode, flags reused external Expo listeners as unverified, provides an explicit -Force -ReplaceExternalExpo path for verified manager-owned S23 startup, exposes explicit foreground-vs-installed service ownership plus read-only operator-control boundaries, provides a compact operator snapshot, and cleans up after proof.",
       evidence: [
         PATHS.localRuntimeLaunchProfile,
         PATHS.internalTesterWatchdog,
+        PATHS.internalTesterOperatorSnapshot,
         PATHS.currentRuntimeStateProof,
         PATHS.onboarding,
         "scripts/manage_holiwyn_internal_tester_runtime.ps1",

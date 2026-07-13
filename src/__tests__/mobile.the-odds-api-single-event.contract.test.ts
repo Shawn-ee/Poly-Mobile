@@ -90,6 +90,17 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).not.toContain("THE_ODDS_API_KEY=");
   });
 
+  it("gates live-runtime audits on the internal tester operator snapshot", () => {
+    expect(phaseAuditScript()).toContain("internalTesterOperatorSnapshot");
+    expect(phaseAuditScript()).toContain('id: "internal-tester-operator-snapshot"');
+    expect(phaseAuditScript()).toContain("providerQuotaUsedByThisReport");
+    expect(phaseAuditScript()).toContain("recommendedCommand");
+    expect(completionAuditScript()).toContain("internalTesterOperatorSnapshot");
+    expect(completionAuditScript()).toContain("internalTesterOperatorSnapshotKnown");
+    expect(completionAuditScript()).toContain("providerQuotaUsedByThisReport");
+    expect(completionAuditScript()).toContain("recommendedCommand");
+  });
+
   it("starts managed Expo in server-backed S23 tester mode", () => {
     const source = internalTesterRuntimeScript();
     expect(source).toContain("EXPO_PUBLIC_API_BASE_URL = '$BackendBaseUrl'");
