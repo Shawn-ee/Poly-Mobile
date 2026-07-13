@@ -26,6 +26,46 @@ const stringValue = (value: unknown) => (typeof value === "string" && value.leng
 
 const numberValue = (value: unknown) => (typeof value === "number" && Number.isFinite(value) ? value : null);
 
+const normalizeOutcomeLabel = (value: string | null) =>
+  value
+    ?.toLowerCase()
+    .replace(/\+/g, "")
+    .replace(/\s+/g, " ")
+    .trim() ?? null;
+
+async function resolveSelectedOutcomeId(params: {
+  marketId: string | null;
+  outcomeId: string | null;
+  outcomeName: string | null;
+}) {
+  if (!params.marketId) {
+    return { outcomeId: params.outcomeId, reconciled: false, reason: "missing_market_id" };
+  }
+  if (params.outcomeId) {
+    const existing = await prisma.outcome.findFirst({
+      where: { id: params.outcomeId, marketId: params.marketId },
+      select: { id: true },
+    });
+    if (existing) return { outcomeId: params.outcomeId, reconciled: false, reason: "outcome_id_current" };
+  }
+
+  const outcomes = await prisma.outcome.findMany({
+    where: { marketId: params.marketId, isActive: true, isTradable: true },
+    orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }],
+    select: { id: true, name: true },
+  });
+  const normalizedName = normalizeOutcomeLabel(params.outcomeName);
+  const matchedByName = normalizedName
+    ? outcomes.find((outcome) => normalizeOutcomeLabel(outcome.name) === normalizedName)
+    : null;
+  const selected = matchedByName ?? outcomes[0] ?? null;
+  return {
+    outcomeId: selected?.id ?? params.outcomeId,
+    reconciled: Boolean(selected && selected.id !== params.outcomeId),
+    reason: matchedByName ? "matched_current_outcome_label" : selected ? "fallback_first_current_outcome" : "no_current_outcome",
+  };
+}
+
 async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to write local provider refresh run in production.");
@@ -40,6 +80,14 @@ async function main() {
   const calls = getPath(provider, ["calls"]);
   const latestQuota = getPath(provider, ["quota", "latest"]);
   const selectedMarket = getPath(summary, ["selectedMarket"]);
+  const selectedMarketId = stringValue(getPath(selectedMarket, ["id"]));
+  const selectedOutcomeId = stringValue(getPath(selectedMarket, ["outcomeId"]));
+  const selectedOutcomeName = stringValue(getPath(selectedMarket, ["outcomeName"]));
+  const selectedOutcome = await resolveSelectedOutcomeId({
+    marketId: selectedMarketId,
+    outcomeId: selectedOutcomeId,
+    outcomeName: selectedOutcomeName,
+  });
   const policy = getPath(summary, ["policy"]);
   const checks = getPath(summary, ["checks"]);
   const seed = getPath(provider, ["seed"]);
@@ -54,8 +102,8 @@ async function main() {
     eventSlug: stringValue(getPath(summary, ["event", "localSlug"])),
     providerEventId: stringValue(getPath(summary, ["event", "providerEventId"])),
     sportKey: stringValue(getPath(summary, ["event", "sportKey"])),
-    selectedMarketId: stringValue(getPath(selectedMarket, ["id"])),
-    selectedOutcomeId: stringValue(getPath(selectedMarket, ["outcomeId"])),
+    selectedMarketId,
+    selectedOutcomeId: selectedOutcome.outcomeId,
     refreshIterations: numberValue(getPath(policy, ["refreshIterations"])) ?? 0,
     providerCallCount: Array.isArray(calls) ? calls.length : 0,
     quotaCost: numberValue(getPath(provider, ["quota", "totalLastCost"])) ?? 0,
@@ -78,6 +126,13 @@ async function main() {
       summaryPath,
       selectedMarketKeys: getPath(provider, ["selectedMarketKeys"]),
       importedMarketKeys: getPath(provider, ["importedMarketKeys"]),
+      selectedOutcomeReconciliation: {
+        originalOutcomeId: selectedOutcomeId,
+        originalOutcomeName: selectedOutcomeName,
+        reconciledOutcomeId: selectedOutcome.outcomeId,
+        reconciled: selectedOutcome.reconciled,
+        reason: selectedOutcome.reason,
+      },
       checks,
       gaps: getPath(summary, ["gaps"]),
     },

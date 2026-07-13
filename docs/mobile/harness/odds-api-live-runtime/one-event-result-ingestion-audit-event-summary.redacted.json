@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T19:06:55.406Z",
+  "generatedAt": "2026-07-13T20:49:56.432Z",
   "scope": "odds-api-one-event-result-ingestion-audit-event-proof",
   "pass": true,
   "providerQuotaUsed": false,
@@ -52,13 +52,13 @@
   "trustedResultOutputPath": "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
   "eventSlug": "odds-api-single-soccer-test",
   "auditEvent": {
-    "id": "1",
+    "id": "5",
     "eventType": "provider.result.ingested",
     "stream": "MARKET",
     "topicKey": "market:provider-result:odds-api-single-soccer-test",
     "marketId": null,
     "outcomeId": null,
-    "createdAt": "2026-07-13T19:06:55.371Z",
+    "createdAt": "2026-07-13T20:49:56.343Z",
     "payload": {
       "eventSlug": "odds-api-single-soccer-test",
       "sourceEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
