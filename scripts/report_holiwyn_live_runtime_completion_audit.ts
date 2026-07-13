@@ -22,6 +22,8 @@ const PATHS = {
     "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
   internalTesterOperatorSnapshot:
     "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
+  managerOwnedExpoStart:
+    "docs/mobile/harness/odds-api-live-runtime/manager-owned-expo-start-summary.redacted.json",
   currentRuntimeStateProof:
     "docs/mobile/harness/odds-api-live-runtime/current-runtime-state-proof-summary.redacted.json",
   staleGuardProof: "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json",
@@ -1450,6 +1452,13 @@ async function main() {
       Array.isArray(getPath(entries.internalTesterOperatorSnapshot, ["gaps", "p0"])) &&
       (getPath(entries.internalTesterOperatorSnapshot, ["gaps", "p0"]) as unknown[]).length === 0,
     managedS23ServerModeStartupKnown:
+      pass(entries.managerOwnedExpoStart) &&
+      getPath(entries.managerOwnedExpoStart, ["action"]) === "start" &&
+      getPath(entries.managerOwnedExpoStart, ["expo", "serverModeVerified"]) === true &&
+      getPath(entries.managerOwnedExpoStart, ["runtimeTruth", "managerStartedExpoUsesServerMode"]) === true &&
+      getPath(entries.managerOwnedExpoStart, ["runtimeTruth", "externalExpoServerModeUnverified"]) === false &&
+      getPath(entries.managerOwnedExpoStart, ["runtimeTruth", "replaceExternalExpoRequested"]) === true &&
+      getPath(entries.managerOwnedExpoStart, ["runtimeTruth", "s23AdbReverseConfiguredOnStart"]) === true &&
       internalTesterRuntimeScript.includes("EXPO_PUBLIC_API_BASE_URL = '$BackendBaseUrl'") &&
       internalTesterRuntimeScript.includes("EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL = '$BackendBaseUrl'") &&
       internalTesterRuntimeScript.includes("EXPO_PUBLIC_ORDER_MODE = 'server'") &&
@@ -1554,6 +1563,7 @@ async function main() {
         PATHS.localRuntimeLaunchProfile,
         PATHS.internalTesterWatchdog,
         PATHS.internalTesterOperatorSnapshot,
+        PATHS.managerOwnedExpoStart,
         PATHS.currentRuntimeStateProof,
         PATHS.onboarding,
         "scripts/manage_holiwyn_internal_tester_runtime.ps1",

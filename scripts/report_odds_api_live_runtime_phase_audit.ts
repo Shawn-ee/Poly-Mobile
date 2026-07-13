@@ -29,6 +29,8 @@ const PATHS = {
     "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
   internalTesterOperatorSnapshot:
     "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
+  managerOwnedExpoStart:
+    "docs/mobile/harness/odds-api-live-runtime/manager-owned-expo-start-summary.redacted.json",
   currentRuntimeStateProof:
     "docs/mobile/harness/odds-api-live-runtime/current-runtime-state-proof-summary.redacted.json",
   localRuntimeTask: "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-summary.redacted.json",
@@ -275,6 +277,13 @@ async function main() {
   const maxS23ProofAgeHours = 24;
   const internalTesterRuntimeScript = await fs.readFile("scripts/manage_holiwyn_internal_tester_runtime.ps1", "utf8");
   const managedS23ServerModeStartupKnown =
+    pass(entries.managerOwnedExpoStart) &&
+    getPath(entries.managerOwnedExpoStart, ["action"]) === "start" &&
+    getPath(entries.managerOwnedExpoStart, ["expo", "serverModeVerified"]) === true &&
+    getPath(entries.managerOwnedExpoStart, ["runtimeTruth", "managerStartedExpoUsesServerMode"]) === true &&
+    getPath(entries.managerOwnedExpoStart, ["runtimeTruth", "externalExpoServerModeUnverified"]) === false &&
+    getPath(entries.managerOwnedExpoStart, ["runtimeTruth", "replaceExternalExpoRequested"]) === true &&
+    getPath(entries.managerOwnedExpoStart, ["runtimeTruth", "s23AdbReverseConfiguredOnStart"]) === true &&
     internalTesterRuntimeScript.includes("EXPO_PUBLIC_API_BASE_URL = '$BackendBaseUrl'") &&
     internalTesterRuntimeScript.includes("EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL = '$BackendBaseUrl'") &&
     internalTesterRuntimeScript.includes("EXPO_PUBLIC_ORDER_MODE = 'server'") &&
@@ -972,9 +981,9 @@ async function main() {
       requirement:
         "Manager-owned Expo startup must use server-backed mobile settings and configure S23 ADB reverse so internal tester phones can reach backend events.",
       achieved: managedS23ServerModeStartupKnown,
-      evidence: ["scripts/manage_holiwyn_internal_tester_runtime.ps1"],
-        notes:
-          "This gates the source contract without restarting the active S23 proof session: manager-owned Expo sets API/auth base URLs to the backend, enables server order/market data mode, hides order book, fails readiness if S23 port forwarding fails, reports reused external Expo listeners as unverified instead of silently treating them as server-mode proof, and exposes an explicit -Force -ReplaceExternalExpo path for verified restart when the operator intentionally wants to replace a stale Expo listener.",
+      evidence: [PATHS.managerOwnedExpoStart, "scripts/manage_holiwyn_internal_tester_runtime.ps1"],
+      notes:
+          "This gates the proof and source contract: manager-owned Expo sets API/auth base URLs to the backend, enables server order/market data mode, hides order book, configures S23 port forwarding, reports reused external Expo listeners as unverified instead of silently treating them as server-mode proof, and exposes an explicit -Force -ReplaceExternalExpo path for verified restart when the operator intentionally wants to replace a stale Expo listener.",
       }),
     requirement({
       id: "internal-tester-result-poller-control",

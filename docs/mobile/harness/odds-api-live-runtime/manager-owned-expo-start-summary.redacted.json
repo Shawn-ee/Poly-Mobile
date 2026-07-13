@@ -1,0 +1,189 @@
+{
+    "generatedAt":  "2026-07-13T19:49:03.8261150Z",
+    "scope":  "holiwyn-internal-tester-runtime-manager",
+    "pass":  true,
+    "action":  "start",
+    "startedAt":  "2026-07-13T19:48:52.4279550Z",
+    "completedAt":  "2026-07-13T19:49:03.8276561Z",
+    "operations":  [
+                       {
+                           "target":  "s23-adb-reverse",
+                           "result":  "configured",
+                           "pid":  null
+                       },
+                       {
+                           "target":  "backend",
+                           "result":  "external_listener_reused",
+                           "pid":  43088
+                       },
+                       {
+                           "target":  "expo",
+                           "result":  "stopped_external_expo_listener",
+                           "pid":  57664
+                       },
+                       {
+                           "target":  "expo",
+                           "result":  "started",
+                           "pid":  18624
+                       }
+                   ],
+    "backend":  {
+                    "baseUrl":  "http://127.0.0.1:3002",
+                    "health":  {
+                                   "ok":  true,
+                                   "status":  "ok",
+                                   "db":  "connected",
+                                   "env":  "development",
+                                   "timestamp":  "2026-07-13T19:49:03.164Z",
+                                   "error":  null
+                               },
+                    "portOwner":  {
+                                      "port":  3002,
+                                      "pid":  43088,
+                                      "processName":  "node"
+                                  },
+                    "ownedByManager":  false,
+                    "ownedProcessRunning":  true
+                },
+    "expo":  {
+                 "port":  8081,
+                 "portOwner":  {
+                                   "port":  8081,
+                                   "pid":  40500,
+                                   "processName":  "node"
+                               },
+                 "ownedByManager":  true,
+                 "ownedProcessRunning":  true,
+                 "serverModeSource":  "manager_owned_server_env",
+                 "serverModeVerified":  true,
+                 "externalServerModeUnverified":  false
+             },
+    "dockerPostgres":  {
+                           "ok":  true,
+                           "status":  "poly_postgres|Up 9 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
+                       },
+    "s23":  {
+                "connected":  true,
+                "deviceId":  "172.16.200.27:44029",
+                "model":  "SM_S911U1",
+                "raw":  "172.16.200.27:44029    device product:dm1quew model:SM_S911U1 device:dm1q transport_id:2",
+                "adbTimedOut":  false,
+                "error":  null
+            },
+    "supervisor":  {
+                       "startRequested":  false,
+                       "statusSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-live-supervisor-process-summary.redacted.json",
+                       "processSummary":  {
+                                              "pass":  true,
+                                              "operation":  {
+                                                                "action":  "status",
+                                                                "result":  "not_running",
+                                                                "pid":  null
+                                                            },
+                                              "process":  {
+                                                              "before":  {
+                                                                             "pid":  15660,
+                                                                             "running":  false
+                                                                         },
+                                                              "after":  {
+                                                                            "pid":  15660,
+                                                                            "running":  false
+                                                                        }
+                                                          }
+                                          }
+                   },
+    "resultPoller":  {
+                         "startRequested":  false,
+                         "statusSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-poller-process-summary.redacted.json",
+                         "processSummary":  {
+                                                "pass":  true,
+                                                "operation":  {
+                                                                  "action":  "status",
+                                                                  "result":  "not_running",
+                                                                  "pid":  null
+                                                              },
+                                                "process":  {
+                                                                "before":  {
+                                                                               "pid":  74292,
+                                                                               "running":  false
+                                                                           },
+                                                                "after":  {
+                                                                              "pid":  74292,
+                                                                              "running":  false
+                                                                          }
+                                                            }
+                                            }
+                     },
+    "readiness":  {
+                      "waitRequested":  true,
+                      "backendReady":  true,
+                      "expoReady":  true,
+                      "postgresReady":  true,
+                      "s23Connected":  true
+                  },
+    "liveRuntimeStatus":  {
+                              "checked":  true,
+                              "warmRuntimeRequired":  false,
+                              "warmRuntimeObserved":  false,
+                              "statusDigest":  {
+                                                   "ok":  true,
+                                                   "status":  200,
+                                                   "currentRuntimeState":  {
+                                                                               "mode":  "proven_capability_loops_stopped",
+                                                                               "localCapabilityReady":  true,
+                                                                               "allLoopsRunning":  false,
+                                                                               "supervisorRunning":  false,
+                                                                               "resultPollerRunning":  false,
+                                                                               "quotaSpendingLoopRunning":  false,
+                                                                               "providerSnapshotFresh":  false,
+                                                                               "testerReadyRightNow":  false,
+                                                                               "p0":  [
+
+                                                                                      ],
+                                                                               "p1":  [
+                                                                                          "supervisor_loop_not_running_now",
+                                                                                          "result_poller_loop_not_running_now",
+                                                                                          "mobile_provider_snapshot_not_fresh"
+                                                                                      ],
+                                                                               "nextAction":  "start_internal_tester_runtime_with_supervisor_and_result_poller"
+                                                                           },
+                                                   "providerQuotaUsedByStatus":  false,
+                                                   "error":  null
+                                               }
+                          },
+    "runtimeTruth":  {
+                         "localControlPlaneAvailable":  true,
+                         "backendStartStopAvailableWhenPortFree":  true,
+                         "expoStartStopAvailableWhenPortFree":  true,
+                         "supervisorBackgroundProcessAvailable":  true,
+                         "resultPollerBackgroundProcessAvailable":  true,
+                         "resultPollerBackgroundProcessRunning":  false,
+                         "liveRuntimeStatusWarmObserved":  false,
+                         "liveRuntimeStatusWarmRequiredForLoopStart":  false,
+                         "managerStartedExpoUsesServerMode":  true,
+                         "expoServerModeSource":  "manager_owned_server_env",
+                         "externalExpoServerModeUnverified":  false,
+                         "replaceExternalExpoAvailable":  true,
+                         "replaceExternalExpoRequested":  true,
+                         "s23AdbReverseConfiguredOnStart":  true,
+                         "stopsOnlyOwnedBackendExpoProcesses":  true,
+                         "installedOsService":  false,
+                         "approvedSettlementModeRequested":  false,
+                         "activeTesterSettlementExecution":  false,
+                         "fakeTokenOnly":  true
+                     },
+    "statePath":  ".runtime/holiwyn-internal-tester-runtime/runtime-state.json",
+    "gaps":  {
+                 "p0":  [
+
+                        ],
+                 "p1":  [
+                            "Use -Force -ReplaceExternalExpo only when you intentionally want the runtime manager to stop an external Expo/Metro listener on the Expo port and start a verified server-mode listener.",
+                            "This is a local process control plane, not an installed OS service.",
+                            "Official-result auto-execution still requires trusted operator confirmation."
+                        ],
+                 "p2":  [
+                            "Multi-event production process supervision remains future work."
+                        ]
+             }
+}

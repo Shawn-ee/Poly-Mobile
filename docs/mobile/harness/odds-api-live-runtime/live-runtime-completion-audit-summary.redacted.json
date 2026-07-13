@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T19:41:07.260Z",
+  "generatedAt": "2026-07-13T19:50:11.713Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -26,11 +26,11 @@
       "oneEventOnly": true
     },
     "freshness": {
-      "liveProofAgeHours": 0.27,
+      "liveProofAgeHours": 0.3,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 3.83,
+      "watchdogAgeHours": 3.99,
       "maxWatchdogAgeHours": 24,
-      "s23ProofAgeHours": 0.12,
+      "s23ProofAgeHours": 0.27,
       "maxS23ProofAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -59,7 +59,7 @@
     "activeTesterSettlementExecutionAttempted": false,
     "activeEventClosedStateEligibilityProven": true,
     "s23ProofDevice": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
-    "s23ProofAgeHours": 0.12,
+    "s23ProofAgeHours": 0.27,
     "maxS23ProofAgeHours": 24
   },
   "sourceEvidence": {
@@ -74,6 +74,7 @@
     "localRuntimeLaunchProfile": "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
     "internalTesterWatchdog": "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
     "internalTesterOperatorSnapshot": "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
+    "managerOwnedExpoStart": "docs/mobile/harness/odds-api-live-runtime/manager-owned-expo-start-summary.redacted.json",
     "currentRuntimeStateProof": "docs/mobile/harness/odds-api-live-runtime/current-runtime-state-proof-summary.redacted.json",
     "staleGuardProof": "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json",
     "staleGuardRun": "docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-run-summary.redacted.json",
@@ -183,6 +184,7 @@
         "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
+        "docs/mobile/harness/odds-api-live-runtime/manager-owned-expo-start-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/current-runtime-state-proof-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json",
         "scripts/manage_holiwyn_internal_tester_runtime.ps1",

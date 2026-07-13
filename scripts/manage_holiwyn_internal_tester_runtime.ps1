@@ -265,6 +265,21 @@ function Test-ProcessRunning {
   return [bool](Get-Process -Id ([int]$State.$Name.pid) -ErrorAction SilentlyContinue)
 }
 
+function Test-ProcessDescendant {
+  param([int]$ChildPid, [int]$AncestorPid)
+  if (-not $ChildPid -or -not $AncestorPid) { return $false }
+  if ($ChildPid -eq $AncestorPid) { return $true }
+  $currentPid = $ChildPid
+  for ($depth = 0; $depth -lt 12; $depth++) {
+    $process = Get-CimInstance Win32_Process -Filter "ProcessId = $currentPid" -ErrorAction SilentlyContinue
+    if (-not $process -or -not $process.ParentProcessId) { return $false }
+    if ([int]$process.ParentProcessId -eq $AncestorPid) { return $true }
+    if ([int]$process.ParentProcessId -eq $currentPid) { return $false }
+    $currentPid = [int]$process.ParentProcessId
+  }
+  return $false
+}
+
 function Stop-OwnedProcessTree {
   param([object]$ProcessState)
   if (-not $ProcessState -or -not $ProcessState.pid -or -not $ProcessState.owned) { return "not_owned" }
@@ -711,7 +726,13 @@ $s23 = Get-S23Status
 $backendHealth = Test-HttpHealth $BackendBaseUrl
 $backendOwnedRunning = Test-ProcessRunning $state "backend"
 $expoOwnedRunning = Test-ProcessRunning $state "expo"
-$managerStartedExpoUsesServerMode = [bool]($state.expo -and $state.expo.owned -and $expoOwnedRunning -and $expoOwnerAfter -and $state.expo.pid -eq $expoOwnerAfter.pid -and $state.expo.env.EXPO_PUBLIC_ORDER_MODE -eq "server" -and $state.expo.env.EXPO_PUBLIC_MARKET_DATA_MODE -eq "server" -and $state.expo.env.EXPO_PUBLIC_API_BASE_URL -eq $BackendBaseUrl)
+$expoPortOwnedByManagedProcessTree = [bool](
+  $state.expo -and
+  $state.expo.pid -and
+  $expoOwnerAfter -and
+  (Test-ProcessDescendant -ChildPid ([int]$expoOwnerAfter.pid) -AncestorPid ([int]$state.expo.pid))
+)
+$managerStartedExpoUsesServerMode = [bool]($state.expo -and $state.expo.owned -and $expoOwnedRunning -and $expoPortOwnedByManagedProcessTree -and $state.expo.env.EXPO_PUBLIC_ORDER_MODE -eq "server" -and $state.expo.env.EXPO_PUBLIC_MARKET_DATA_MODE -eq "server" -and $state.expo.env.EXPO_PUBLIC_API_BASE_URL -eq $BackendBaseUrl)
 $externalExpoServerModeUnverified = [bool]($expoOwnerAfter -and -not $managerStartedExpoUsesServerMode)
 $expoServerModeSource = if ($managerStartedExpoUsesServerMode) {
   "manager_owned_server_env"
