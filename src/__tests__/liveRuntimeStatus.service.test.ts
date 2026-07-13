@@ -1166,6 +1166,57 @@ describe("live runtime status service", () => {
         durableOperatorIdentityAvailable: false,
         twoPersonApprovalAvailable: false,
       },
+      productionAuthRequirements: {
+        version: 1,
+        status: "not_implemented",
+        p1Gap: "authenticated_operator_controls_missing",
+        mustRemainServerOwned: true,
+        publicMobileRouteAllowed: false,
+        providerQuotaRequired: false,
+        requiredRoutes: expect.arrayContaining([
+          expect.objectContaining({
+            id: "operator_session",
+            method: "GET",
+            path: "/api/internal/operator/session",
+            requiredRoles: ["admin", "settlement_operator"],
+            mutatesState: false,
+          }),
+          expect.objectContaining({
+            id: "settlement_approval",
+            method: "POST",
+            path: "/api/internal/live-runtime/settlement-queue/:reviewId/approve",
+            requiredRoles: ["admin", "settlement_operator"],
+            mutatesState: true,
+            requiresTwoPersonApproval: true,
+          }),
+          expect.objectContaining({
+            id: "settlement_execution",
+            method: "POST",
+            path: "/api/internal/live-runtime/settlement-queue/:reviewId/execute",
+            requiredRoles: ["admin"],
+            mutatesState: true,
+            requiresClosedMarket: true,
+            requiresExactConfirmation: true,
+          }),
+        ]),
+        requiredSchema: expect.arrayContaining([
+          expect.objectContaining({
+            model: "OfficialResultReview",
+            fields: expect.arrayContaining(["approvedByUserId", "executedByUserId", "approvalAuditEventId"]),
+          }),
+          expect.objectContaining({
+            model: "OperatorAuditEvent",
+            status: "required_new_model_or_equivalent_audit_table",
+          }),
+        ]),
+        requiredGuards: expect.arrayContaining([
+          "server_authentication_required",
+          "durable_operator_identity_on_approval",
+          "market_status_closed_required_before_execution",
+          "exact_confirmation_required_but_never_returned_by_status_routes",
+          "public_mobile_routes_must_not_expose_operator_controls",
+        ]),
+      },
       localControls: {
         resultReviewRoute: {
           route: "GET /api/internal/live-runtime/result-review",

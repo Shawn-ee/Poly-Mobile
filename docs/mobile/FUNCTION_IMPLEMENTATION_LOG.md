@@ -15179,3 +15179,14 @@ Known limitations:
 - API/data dependencies: composes existing `serviceOwnership`, `providerRefreshLoop`, `settlementAutomation`, and `currentRuntimeState` fields.
 - Proof needed: focused status service test, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
 - Known limitations: this narrows ambiguity only. Installed service ownership, authenticated operator controls, installed official-result polling, and production auto-settlement remain P1.
+
+## Cycle XL - Operator Auth Requirements Boundary
+
+- Feature/runtime worked on: backend local live-runtime operator-control status contract.
+- Frontend components touched: none.
+- Important functions/services touched: `src/server/services/liveRuntimeStatus.ts`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, `scripts/report_holiwyn_live_runtime_completion_audit.ts`, and `src/__tests__/liveRuntimeStatus.service.test.ts`.
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/status` and read `operatorControlBoundary.productionAuthRequirements`, a machine-readable list of the production operator session, queue review, approval, and execution routes plus schema/audit/guard requirements that must exist before settlement controls become production-safe.
+- State transitions: none. The route and audits are read-only; they do not create operator sessions, approve reviews, execute settlement, call The Odds API, expose exact confirmation strings, or add public mobile routes.
+- API/data dependencies: composes existing result-review, settlement-queue, settlement-automation, and production-readiness status blocks. The new requirements reference future `OfficialResultReview` operator identity fields and a future `OperatorAuditEvent`-equivalent audit table but do not add a schema migration in this cycle.
+- Proof needed: focused status service test, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
+- Known limitations: this narrows the authenticated-operator P1 by defining the route/schema/guard contract. It is not an authenticated operator UI, not a production execution endpoint, and not an installed official-result polling service.

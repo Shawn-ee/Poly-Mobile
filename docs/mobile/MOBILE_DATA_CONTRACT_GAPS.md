@@ -10710,3 +10710,12 @@ Future migration concern:
 - Schema mismatch: none. Production should eventually store readiness state, job ownership, operator approvals, and service health as durable authenticated records instead of composing local proof/status blocks.
 - Temporary mock/static data: none added. The status block composes existing runtime status evidence and spends no provider quota.
 - Remaining gaps: installed service ownership, authenticated operator controls, installed official-result polling, production auto-settlement execution governance, monitoring, retry, and alerting remain P1/P2.
+
+## Cycle XL - Operator Auth Requirements Boundary
+
+- Closed or narrowed: local runtime status now exposes `operatorControlBoundary.productionAuthRequirements`, so the authenticated-operator P1 has concrete route/schema/guard requirements instead of only prose blockers.
+- Fields required by local runtime tooling: `productionAuthRequirements.version=1`, `status=not_implemented`, `p1Gap=authenticated_operator_controls_missing`, `mustRemainServerOwned=true`, `publicMobileRouteAllowed=false`, `providerQuotaRequired=false`, `requiredRoutes[]`, `requiredSchema[]`, and `requiredGuards[]`.
+- Route mismatch: the listed production routes are requirements, not implemented endpoints: `GET /api/internal/operator/session`, `POST /api/internal/live-runtime/settlement-queue/:reviewId/approve`, and `POST /api/internal/live-runtime/settlement-queue/:reviewId/execute` remain future work.
+- Schema mismatch: future production support needs durable operator identity on approval/execution, role snapshots, request ids, and audit events. Existing `OfficialResultReview` evidence remains redacted/local proof; `OperatorAuditEvent` is a required future model or equivalent audit table.
+- Temporary mock/static data: none added. The status route reports requirements only and does not create local mock operator identities or fake approvals.
+- Remaining gaps: authenticated operator UI/actions, role checks, two-person/admin approval, production execution endpoint, installed official-result polling, and production service ownership remain P1.

@@ -857,6 +857,95 @@ async function main() {
         "localRuntimeStatus",
         "body",
         "operatorControlBoundary",
+        "productionAuthRequirements",
+        "version",
+      ]) === 1 &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "productionAuthRequirements",
+        "status",
+      ]) === "not_implemented" &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "productionAuthRequirements",
+        "p1Gap",
+      ]) === "authenticated_operator_controls_missing" &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "productionAuthRequirements",
+        "publicMobileRouteAllowed",
+      ]) === false &&
+      Array.isArray(
+        getPath(entries.phaseAudit, [
+          "localRuntimeStatus",
+          "body",
+          "operatorControlBoundary",
+          "productionAuthRequirements",
+          "requiredRoutes",
+        ]),
+      ) &&
+      (getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "productionAuthRequirements",
+        "requiredRoutes",
+      ]) as unknown[]).some(
+        (route) =>
+          route &&
+          typeof route === "object" &&
+          getPath(route, ["id"]) === "settlement_execution" &&
+          getPath(route, ["requiresClosedMarket"]) === true &&
+          getPath(route, ["requiresExactConfirmation"]) === true,
+      ) &&
+      Array.isArray(
+        getPath(entries.phaseAudit, [
+          "localRuntimeStatus",
+          "body",
+          "operatorControlBoundary",
+          "productionAuthRequirements",
+          "requiredSchema",
+        ]),
+      ) &&
+      (getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "productionAuthRequirements",
+        "requiredSchema",
+      ]) as unknown[]).some(
+        (model) =>
+          model &&
+          typeof model === "object" &&
+          getPath(model, ["model"]) === "OperatorAuditEvent" &&
+          getPath(model, ["status"]) === "required_new_model_or_equivalent_audit_table",
+      ) &&
+      Array.isArray(
+        getPath(entries.phaseAudit, [
+          "localRuntimeStatus",
+          "body",
+          "operatorControlBoundary",
+          "productionAuthRequirements",
+          "requiredGuards",
+        ]),
+      ) &&
+      (getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "productionAuthRequirements",
+        "requiredGuards",
+      ]) as unknown[]).includes("public_mobile_routes_must_not_expose_operator_controls") &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
         "localControls",
         "resultReviewRoute",
         "available",

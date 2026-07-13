@@ -835,6 +835,59 @@ async function main() {
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "authenticatedControls", "requiredForProduction"]) ===
           true &&
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "authenticatedControls", "available"]) === false &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "productionAuthRequirements", "version"]) === 1 &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "productionAuthRequirements", "status"]) ===
+          "not_implemented" &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "productionAuthRequirements", "p1Gap"]) ===
+          "authenticated_operator_controls_missing" &&
+        getPath(localRuntimeStatusBody, [
+          "operatorControlBoundary",
+          "productionAuthRequirements",
+          "mustRemainServerOwned",
+        ]) === true &&
+        getPath(localRuntimeStatusBody, [
+          "operatorControlBoundary",
+          "productionAuthRequirements",
+          "publicMobileRouteAllowed",
+        ]) === false &&
+        getPath(localRuntimeStatusBody, [
+          "operatorControlBoundary",
+          "productionAuthRequirements",
+          "providerQuotaRequired",
+        ]) === false &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["operatorControlBoundary", "productionAuthRequirements", "requiredRoutes"])) &&
+        (getPath(localRuntimeStatusBody, [
+          "operatorControlBoundary",
+          "productionAuthRequirements",
+          "requiredRoutes",
+        ]) as unknown[]).some(
+          (route) =>
+            route &&
+            typeof route === "object" &&
+            getPath(route, ["id"]) === "settlement_execution" &&
+            getPath(route, ["method"]) === "POST" &&
+            getPath(route, ["mutatesState"]) === true &&
+            getPath(route, ["requiresClosedMarket"]) === true &&
+            getPath(route, ["requiresExactConfirmation"]) === true,
+        ) &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["operatorControlBoundary", "productionAuthRequirements", "requiredSchema"])) &&
+        (getPath(localRuntimeStatusBody, [
+          "operatorControlBoundary",
+          "productionAuthRequirements",
+          "requiredSchema",
+        ]) as unknown[]).some(
+          (model) =>
+            model &&
+            typeof model === "object" &&
+            getPath(model, ["model"]) === "OperatorAuditEvent" &&
+            getPath(model, ["status"]) === "required_new_model_or_equivalent_audit_table",
+        ) &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["operatorControlBoundary", "productionAuthRequirements", "requiredGuards"])) &&
+        (getPath(localRuntimeStatusBody, [
+          "operatorControlBoundary",
+          "productionAuthRequirements",
+          "requiredGuards",
+        ]) as unknown[]).includes("public_mobile_routes_must_not_expose_operator_controls") &&
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "resultReviewRoute", "available"]) ===
           true &&
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "resultReviewRoute", "mutatesState"]) ===
@@ -896,7 +949,7 @@ async function main() {
         (getPath(localRuntimeStatusBody, ["gaps", "p0"]) as unknown[]).length === 0,
       evidence: [`${baseUrl}/api/internal/live-runtime/status?phaseAuditInProgress=1`],
       notes:
-        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, durable ProviderRefreshRun evidence, machine-readable provider-refresh loop cadence/quota policy, durable MarketMakerQuoteRun evidence, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, settlement queue redacted operator-plan truth, operator control boundary truth, active-event closed-state eligibility truth, latest-run-vs-proven-capability separation, current warm-runtime decisioning, explicit foreground-vs-installed service ownership, read-only supervisor/result-poller process state, durable RuntimeServiceHeartbeat rows, worker-owned RuntimeServiceRun rows, and preserved worker-owned metadata. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
+        "This gates the phase audit on the dev-only status API, including wall-clock proof freshness, DB-backed ReferenceQuoteSnapshot freshness for the selected market, durable ProviderRefreshRun evidence, machine-readable provider-refresh loop cadence/quota policy, durable MarketMakerQuoteRun evidence, mobile-route freshness/stale thresholds, operator next-action guidance, active settlement closed-market guard truth, settlement queue redacted operator-plan truth, operator control boundary truth, production operator-auth route/schema/guard requirements, active-event closed-state eligibility truth, latest-run-vs-proven-capability separation, current warm-runtime decisioning, explicit foreground-vs-installed service ownership, read-only supervisor/result-poller process state, durable RuntimeServiceHeartbeat rows, worker-owned RuntimeServiceRun rows, and preserved worker-owned metadata. It does not require loops to be running or mobile-route provider snapshots to be fresh to report local capability ready, but it must expose those truths plainly.",
     }),
     requirement({
       id: "local-result-review-api-ready",
