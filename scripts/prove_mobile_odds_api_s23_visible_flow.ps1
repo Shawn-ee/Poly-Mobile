@@ -85,6 +85,23 @@ function Assert-NotContains {
   }
 }
 
+function Get-CashoutAvailableShares {
+  param([string]$Path)
+  $raw = Get-Content -Raw -Path $Path
+  $match = [regex]::Match($raw, "cashout-available-shares-([0-9]+(?:\.[0-9]+)?)")
+  if (-not $match.Success) {
+    throw "Could not read cashout available shares marker from $Path"
+  }
+  return [decimal]::Parse($match.Groups[1].Value, [Globalization.CultureInfo]::InvariantCulture)
+}
+
+function Format-ProofShareAmount {
+  param([decimal]$Value)
+  $text = $Value.ToString("0.######", [Globalization.CultureInfo]::InvariantCulture)
+  if ($text -eq "-0") { return "0" }
+  return $text
+}
+
 function Save-Screenshot {
   param([string]$Name)
   $remote = "/sdcard/$Name"
@@ -385,15 +402,69 @@ try {
   Start-Sleep -Seconds 2
   Save-Screenshot -Name "cycle-$Cycle-cashout-ticket.png" | Out-Null
   $cashoutTicketXml = Save-Hierarchy -Name "cycle-$Cycle-cashout-ticket.xml"
-  Assert-Contains -Path $cashoutTicketXml -Expected @("trade-ticket", "ticket-side-sell", "swipe-to-submit-order", "Choose an amount", "ticket-provider-source-sportsbook-odds", "ticket-line-$LineValue")
-  Assert-NotContains -Path $cashoutTicketXml -Unexpected @("cashout-ticket", "swipe-to-cashout", "Order Book", "event-detail-open-order-book", "Chat")
+  Assert-Contains -Path $cashoutTicketXml -Expected @(
+    "trade-ticket",
+    "cashout-ticket-no-yes-no-selector",
+    "cashout-close-existing-position",
+    "cashout-mode-active-true",
+    "cashout-source-position-present",
+    "cashout-effective-side-sell",
+    "cashout-share-quantity-display",
+    "cashout-share-keypad",
+    "Choose shares",
+    "ticket-max-amount",
+    "cashout-max-owned-shares",
+    "ticket-provider-source-sportsbook-odds",
+    "ticket-line-$LineValue"
+  )
+  Assert-NotContains -Path $cashoutTicketXml -Unexpected @(
+    "ticket-side-enabled",
+    "ticket-side-buy",
+    "Swipe to sell",
+    "9,000 USDT",
+    "9000 USDT",
+    "10,000 USDT",
+    "10000 USDT",
+    "Order Book",
+    "event-detail-open-order-book",
+    "Chat"
+  )
 
-  Tap-Node -Path $cashoutTicketXml -Identifier "ticket-keypad-1"
+  $ownedShares = Get-CashoutAvailableShares -Path $cashoutTicketXml
+  $ownedSharesText = Format-ProofShareAmount -Value $ownedShares
+  Tap-Node -Path $cashoutTicketXml -Identifier "ticket-max-amount"
   Start-Sleep -Milliseconds 800
   Save-Screenshot -Name "cycle-$Cycle-cashout-ticket-ready.png" | Out-Null
   $cashoutTicketReadyXml = Save-Hierarchy -Name "cycle-$Cycle-cashout-ticket-ready.xml"
-  Assert-Contains -Path $cashoutTicketReadyXml -Expected @("trade-ticket", "ticket-side-sell", "Swipe to sell", '$1', "swipe-submit-gesture-required", "ticket-provider-source-sportsbook-odds", "ticket-line-$LineValue")
-  Assert-NotContains -Path $cashoutTicketReadyXml -Unexpected @("cashout-ticket", "swipe-to-cashout", "Order Book", "event-detail-open-order-book", "Chat")
+  Assert-Contains -Path $cashoutTicketReadyXml -Expected @(
+    "trade-ticket",
+    "cashout-ticket-no-yes-no-selector",
+    "cashout-close-existing-position",
+    "cashout-mode-active-true",
+    "cashout-source-position-present",
+    "cashout-effective-side-sell",
+    "cashout-share-quantity-display",
+    "cashout-amount-is-shares",
+    "cashout-max-owned-shares",
+    $ownedSharesText,
+    "shares",
+    "Swipe to cash out",
+    "swipe-submit-gesture-required",
+    "ticket-provider-source-sportsbook-odds",
+    "ticket-line-$LineValue"
+  )
+  Assert-NotContains -Path $cashoutTicketReadyXml -Unexpected @(
+    "ticket-side-enabled",
+    "ticket-side-buy",
+    "Swipe to sell",
+    "9,000 USDT",
+    "9000 USDT",
+    "10,000 USDT",
+    "10000 USDT",
+    "Order Book",
+    "event-detail-open-order-book",
+    "Chat"
+  )
 
   & $adb -s $Device shell input swipe 540 2070 540 1450 2400 | Out-Null
   Start-Sleep -Seconds 7
@@ -467,6 +538,9 @@ try {
       swipeSubmitReachedPortfolio = $true
       portfolioPreservesSportsbookLineIdentity = $true
       cashoutTicketOpened = $true
+      cashoutTicketIsClosePositionMode = $true
+      cashoutMaxUsesOwnedShares = $true
+      cashoutTicketHidesYesNoSelector = $true
       cashoutSellSubmitted = $true
       cashoutHistoryVisible = $true
       historyPreservesSportsbookLineIdentity = $true
